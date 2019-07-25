@@ -2,9 +2,7 @@
 # Instructions for SPM12 Preprocessing Pipeline
 
 ## Order of the analysis:
-batch.m
-getData.m
-mat2tsv.m
+
 1. __Remove Dummy Scans__:
 Remove Dummy scans by running the script: _"mr_removeDummies.m"_
 2. __Slice Time Correction__: Perform Slice Time Correction of the functional volumes by running the script: _"mr_batchSPM12_BIDS_STC_ExperimentName.m"_
