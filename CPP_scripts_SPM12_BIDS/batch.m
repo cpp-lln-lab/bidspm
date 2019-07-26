@@ -1,6 +1,7 @@
 
 WD = pwd;
 
+check_dependencies()
 cd(WD); mr_removeDummies();
 cd(WD); mr_batchSPM12_BIDS_STC_decoding();
 cd(WD); mr_batchSPM12_BIDS_SpatialPrepro_decoding();
