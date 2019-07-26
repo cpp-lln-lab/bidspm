@@ -1,6 +1,12 @@
 
 # Instructions #
 
+## Dependancies:##
+- dcm2Bids
+- dcm2niix  
+Make sure that dcm2Bids and dcm2niix are installed.
+for instructions see the following Link: _https://github.com/cbedetti/Dcm2Bids_
+
 ## STEP 1 ##
 - Open the shell script "dicom2nii_BIDS_Step1.sh" in your preferred text editor.
 - Change your desired BIDS output directory.

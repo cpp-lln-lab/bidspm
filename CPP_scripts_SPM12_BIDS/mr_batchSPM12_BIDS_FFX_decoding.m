@@ -38,16 +38,16 @@ matlabbatch = [];
 switch action
     case 1 % fMRI design and estimate
         tic
-        
+
         %% Loop through the groups, subjects, and sessions
         for iGroup= 1:length(group)              % For each group
             groupName = group(iGroup).name ;     % Get the Group name
-            
+
             for iSub = 1:group(iGroup).numSub    % For each Subject in the group
                 SubNumber = group(iGroup).SubNumber(iSub) ;   % Get the Subject ID
-                
+
                 fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',groupName,iSub,SubNumber)
-                
+
                 files = [] ;
                 condfiles = [];
                 matlabbatch = [];
@@ -55,7 +55,7 @@ switch action
                 matlabbatch{1}.spm.stats.fmri_spec.timing.RT = TR ;
                 matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t = 16;
                 matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = 1;
-                
+
                 % The Directory to save the FFX files (Create it if it doesnt exist)
                 ffx_dir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',SubNumber)],['ses-',sprintf('%02d',1)],...
                     ['ffx_',taskName],['ffx_',num2str(degreeOfSmoothing),'/']);%% change according to files
@@ -69,23 +69,23 @@ switch action
                 matlabbatch{1}.spm.stats.fmri_spec.dir = {ffx_dir};
                 % FMRI DESIGN
                 fprintf(1,'BUILDING JOB : FMRI design\n')
-                
+
                 %
                 ses_counter = 1;
                 % Get the number of sessions for that subject in that group
                 numSessions = group(iGroup).numSess(iSub);
                 for ises = 1:numSessions                        % For each session
-                    
+
                     % Functional data directory
                     SubFuncDataDir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',SubNumber)],['ses-',sprintf('%02d',ises)],'func');
                     cd(SubFuncDataDir)
-                    
+
                     % Get the number of runs in that session for that subject in that group
                     numRuns = group(iGroup).numRuns(iSub);
                     for iRun = 1:numRuns                        % For each run
-                        
+
                         fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i SESSION: %i RUN:  %i \n',groupName,iSub,SubNumber,ises,iRun)
-                        
+
                         % If there is 1 run, get the functional files (note that the name does not contain -run-01)
                         % If more than 1 run, get the functional files that contain the run number in the name
                         if numRuns==1
@@ -102,14 +102,14 @@ switch action
                             tsv_file{ses_counter,1} = ['Onset_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_run-',sprintf('%02d',iRun),'_events.tsv'];
                             rp_file{ses_counter,1} = fullfile(SubFuncDataDir,...
                                 ['rp_','adr_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_run-',sprintf('%02d',iRun),'_bold.txt']);
-                            
+
                         end
-                        
+
                         % Convert the tsv files to a mat file to be used by SPM
                         convert_tsv2mat(tsv_file{ses_counter,1},TR)
-                        
+
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).scans = cellstr(files);
-                        
+
                         condfiles = fullfile(pwd,['Onsets_',tsv_file{ses_counter,1}(1:end-4),'.mat']);
                         % multicondition selection
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).cond = struct('name', {}, 'onset', {}, 'duration', {});
@@ -121,19 +121,19 @@ switch action
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).multi_reg = cellstr(rp_file{ses_counter,1});
                         % HPF
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).hpf = 128;
-                        
+
                         ses_counter  =ses_counter +1;
                     end
                 end
-                
+
                 matlabbatch{1}.spm.stats.fmri_spec.fact = struct('name', {}, 'levels', {});
                 matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
                 matlabbatch{1}.spm.stats.fmri_spec.volt = 1;
                 matlabbatch{1}.spm.stats.fmri_spec.global = 'None';
                 matlabbatch{1}.spm.stats.fmri_spec.mask = {''};
                 matlabbatch{1}.spm.stats.fmri_spec.cvi = 'AR(1)';
-                
-                
+
+
                 % FMRI ESTIMATE
                 fprintf(1,'BUILDING JOB : FMRI estimate\n')
                 matlabbatch{2}.spm.stats.fmri_est.spmmat(1) = cfg_dep;
@@ -146,55 +146,55 @@ switch action
                 matlabbatch{2}.spm.stats.fmri_est.spmmat(1).src_exbranch = substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1});
                 matlabbatch{2}.spm.stats.fmri_est.spmmat(1).src_output = substruct('.','spmmat');
                 matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;
-                
-                
+
+
                 cd(ffx_dir)
                 save (['jobs_ffx_',num2str(degreeOfSmoothing),'_',taskName],'matlabbatch')
                 spm_jobman('run',matlabbatch)
-                
+
                 cd(WD);
             end
         end
-        
-        
+
+
     case 2  % CONTRASTS
         tic
-        
+
         fprintf(1,'BUILDING JOB : FMRI contrasts\n')
-        
+
         %% Loop through the groups, subjects, and sessions
         for iGroup= 1:length(group)                     % For each group
             groupName = group(iGroup).name ;            % Get the group name
             for iSub = 1:group(iGroup).numSub           % For each subject in the group
-                
+
                 SubNumber = group(iGroup).SubNumber(iSub) ;  % Get the Subject ID
                 fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',groupName,iSub,SubNumber)
-                
+
                 % ffx folder
                 ffx_dir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',SubNumber)],['ses-',sprintf('%02d',1)],...
                     ['ffx_',taskName],['ffx_',num2str(degreeOfSmoothing),'/']);         %% change according to files
                 [C, contrastes] = pm_con(ffx_dir,taskName);                             % create contrasts
-                
+
                 cd(ffx_dir)
                 load(['jobs_ffx_',num2str(degreeOfSmoothing),'_',taskName,'.mat'])   % Loading the ss's job to append the contrasts
-                
+
                 matlabbatch{3}.spm.stats.con.spmmat = cellstr(fullfile(ffx_dir,'SPM.mat'));
-                
+
                 for icon = 1:size(contrastes,2)
                     matlabbatch{3}.spm.stats.con.consess{icon}.tcon.name = contrastes(icon).name;
                     matlabbatch{3}.spm.stats.con.consess{icon}.tcon.convec = contrastes(icon).C;
                     matlabbatch{3}.spm.stats.con.consess{icon}.tcon.sessrep = 'none';
                 end
-                
+
                 matlabbatch{3}.spm.stats.con.delete = 1;
-                
+
                 save(['jobs_ffx_',num2str(degreeOfSmoothing),'_',taskName,'.mat'],'matlabbatch')
-                
+
                 % Pruning the empty options
                 for ii = 1:2
                     matlabbatch(1) = []; % no curly brackets to remove array
                 end
-                
+
                 spm_jobman('run',matlabbatch)
                 toc
             end
@@ -319,7 +319,7 @@ for iCond = 1:size(conds,1)                        % for each line in the tsv fi
 end
 
 % Get the unique names of the conditions (removing repeitions)
-names = unique(names_tmp);
+names = unique(names_tmp)';
 NumConditions =length(names);
 
 % Create empty variables of onsets and durations
@@ -328,7 +328,7 @@ durations = cell(1,NumConditions) ;
 
 % for each condition
 for iCond = 1:NumConditions
-    
+
     % Get the index of each condition by comparing the unique names and
     % each line in the tsv files
     idx(:,iCond) = find(strcmp(names(iCond),names_tmp)) ;
