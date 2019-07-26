@@ -1,6 +1,15 @@
 
 # Instructions for SPM12 Preprocessing Pipeline
 
+## Dependancies:##
+- SPM12
+- Tools for NIfTI and ANALYZE image toolbox. <br />
+
+Make sure that the SPM12 and the NIfTI toolbox are installed and added to the matlab path.
+for instructions see the following Links: <br />
+NIfTI toolbox: _https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image_ <br />
+SPM12: _https://www.fil.ion.ucl.ac.uk/spm/software/spm12/_
+
 ## Order of the analysis:
 
 1. __Remove Dummy Scans__:
