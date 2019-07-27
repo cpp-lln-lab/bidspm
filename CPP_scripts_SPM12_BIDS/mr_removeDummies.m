@@ -53,7 +53,7 @@ else
                 n=load_untouch_nii(fileName);
                 
                 % Create a dummies folder if it doesnt exist
-                dummiesOuputDir = fullfile(pwd,'dummies');
+                dummiesOuputDir = fullfile(path,'dummies');
                 if ~exist(dummiesOuputDir,'dir')
                     mkdir(dummiesOuputDir)
                 end
@@ -69,7 +69,7 @@ else
                 n_noDummies = n;
                 n_noDummies.img = n_noDummies.img(:,:,:,numDummies+1:end);
                 n_noDummies.hdr.dime.dim(5) = size(n_noDummies.img,4);   % Change the dimension in the header
-                save_untouch_nii(n_noDummies,['dr_',fileName(1:end-3)])  % dr : dummies removed
+                save_untouch_nii(n_noDummies,[opt.prefix,fileName(1:end-3)])  % dr : dummies removed
                 
             end
         end
