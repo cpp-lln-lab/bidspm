@@ -9,6 +9,7 @@ end
 
 % group of subjects to analyze
 opt.groups = {'blnd', 'ctrl'};
+opt.subjects = {[1:3]};
 % task to analyze
 opt.taskName = 'olfid'; 
 % The directory where the derivatives are located
