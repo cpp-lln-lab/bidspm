@@ -1,5 +1,8 @@
 function opt = getOption()
 
+% TO DO
+% implement a way to only select some subjects from each group
+
 if nargin<1 
     opt = [];
 end
@@ -13,7 +16,7 @@ opt.derivativesDir = 'D:\BIDS\olf_blind';
 
 % Specify the number of dummies that you want to be removed.
 opt.numDummies = 4;
-opt.prefix = 'dr_';
+opt.dummy_prefix = 'dr_';
 
 
 end
