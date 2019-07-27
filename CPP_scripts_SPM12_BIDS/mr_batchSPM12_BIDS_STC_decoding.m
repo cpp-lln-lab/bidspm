@@ -100,34 +100,47 @@ if isfield(opt.metadata, 'SliceTiming')
     matlabbatch = [];
     
     
-%% Loop through the groups, subjects, and sessions
-% For each group
-for iGroup= 1:length(group)
-    groupName = group(iGroup).name ;     % Get the group name
+    %% Loop through the groups, subjects, and sessions
+    % For each group
     
-    for iSub = 1:group(iGroup).numSub    % For each subject in the group
+    for iGroup= 1:length(group)
+        groupName = group(iGroup).name ;     % Get the group name
         
-        % Get the ID of the subject
-        %(i.e SubNumber doesnt have to match the iSub if one subject is exluded for any reason)
-        SubNumber = group(iGroup).SubNumber(iSub) ;
-        fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',groupName,iSub,SubNumber)
-        
-        %% GET FUNCTIOVAL FILES
-        % STC
-        fprintf(1,'BUILDING STC JOB : STC\n')
-        ses_counter = 1;
-        
-        numSessions = group(iGroup).numSess(iSub);  % Number of sessions for the subject
-        for ises = 1:numSessions                    % For each Session
+        for iSub = 1:group(iGroup).numSub    % For each subject in the group
             
-            numRuns = group(iGroup).numRuns(iSub);  % Number of runs for the subject
+            % Get the ID of the subject
+            %(i.e SubNumber doesnt have to match the iSub if one subject is exluded for any reason)
+            subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
+            fprintf(1,' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',groupName,iSub,subNumber)
+            
+            %% GET FUNCTIOVAL FILES
+            % STC
+            fprintf(1,' BUILDING STC JOB : STC\n')
+            
+            % get all runs for that subject across all sessions
+            runs = spm_BIDS(BIDS, 'runs', 'sub', subNumber, 'task', opt.taskName);
+            numRuns = size(runs,2);     % Get the number of runs
+            
             for iRun = 1:numRuns                    % For each Run
                 
-                % Directory of the functional data
-                SubFuncDataDir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',SubNumber)],['ses-',sprintf('%02d',ises)],'func');
-                cd(SubFuncDataDir)
+                % get the filename for this bold run for this task
+                fileName = spm_BIDS(BIDS, 'data', ...
+                    'sub', subNumber, ...
+                    'run', runs{iRun}, ...
+                    'task', opt.taskName, ...
+                    'type', 'bold');
                 
-                % If there is 1 run, get the functional files (note that the name does not contain -run-01)
+                % get fullpath of the file
+                fileName = fileName{1};
+                [SubFuncDataDir, file, ext] = spm_fileparts(fileName);
+                % get filename of the orginal file (drop the gunzip extension)
+                if strcmp(ext, '.gz')
+                    fileName = file;
+                elseif strcmp(ext, '.nii')
+                    fileName = [file ext];
+                end
+                
+                files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '$']);
                 % If more than 1 run, get the functional files that contain the run number in the name
                 if numRuns==1
                     files{1,1} = fullfile(SubFuncDataDir,...
@@ -136,13 +149,12 @@ for iGroup= 1:length(group)
                     files{1,1} = fullfile(SubFuncDataDir,...
                         ['dr_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_run-',sprintf('%02d',iRun),'_bold.nii']);
                 end
-                
+
                 % add the file to the list
-                matlabbatch{1}.spm.temporal.st.scans{ses_counter} =  cellstr(files);
-                ses_counter = ses_counter + 1;
+                matlabbatch{1}.spm.temporal.st.scans{iRun} =  cellstr(files);
+                
                 
             end
-        end
 
             matlabbatch{1}.spm.temporal.st.nslices = numSlices;              % Number of Slices
             matlabbatch{1}.spm.temporal.st.tr = TR;                        % Repetition Time
@@ -159,14 +171,14 @@ for iGroup= 1:length(group)
             end
 
             save(fullfile(JOBS_dir, 'jobs_STC_matlabbatch.mat'), 'matlabbatch') % save the matlabbatch
-        % matlabbatch
-        spm_jobman('run',matlabbatch)
-        
+            spm_jobman('run',matlabbatch)
+            
+        end
     end
+    
+    cd(WD);
+    
 end
 
-cd(WD);
-
 end
 
-end
