@@ -30,6 +30,12 @@ opt.STC_referenceSlice = []; % reference slice: middle acquired slice (NOTE: Mid
 % ms) instead of the slice index of the reference slice.
 opt.STC_prefix = 'a';
 
+% Options for normalize
+opt.realign_prefix = 'w';
+
+% Options for realign
+opt.norm_prefix = 'r';
+
 % suffix output directory for the saved jobs
 opt.JOBS_dir = fullfile('JOBS',opt.taskName);
 

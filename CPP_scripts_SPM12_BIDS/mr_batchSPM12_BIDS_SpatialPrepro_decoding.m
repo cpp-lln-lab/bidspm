@@ -148,7 +148,7 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.interp = 3;
         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.mask = 1;
-        matlabbatch{2}.spm.spatial.realign.estwrite.roptions.prefix = 'r';
+        matlabbatch{2}.spm.spatial.realign.estwrite.roptions.prefix = opt.realign_prefix;
         
         
         % COREGISTER
@@ -257,83 +257,62 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{4}.spm.spatial.preproc.warp.samp = 3;
         matlabbatch{4}.spm.spatial.preproc.warp.write = [1 1];
         
-        % NORMALIZE FUNCTIONALS
+        
+        
+        %% NORMALIZE FUNCTIONALS
         fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE FUNCTIONALS\n');
-        matlabbatch{5}.spm.spatial.normalise.write.subj.def(1) = ...
-            cfg_dep('Segment: Forward Deformations', ...
-            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
-            substruct('.','fordef', '()',{':'}));
+        
+        for iJob = 5:9
+            matlabbatch{iJob}.spm.spatial.normalise.write.subj.def(1) = ...
+                cfg_dep('Segment: Forward Deformations', ...
+                substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
+                substruct('.','fordef', '()',{':'}));
+            matlabbatch{iJob}.spm.spatial.normalise.write.woptions.bb = [-78 -112 -70 ; 78 76 85];
+            matlabbatch{iJob}.spm.spatial.normalise.write.woptions.interp = 4;
+            matlabbatch{iJob}.spm.spatial.normalise.write.woptions.prefix = opt.norm_prefix;
+        end
+        
         matlabbatch{5}.spm.spatial.normalise.write.subj.resample(1) = ...
             cfg_dep('Coregister: Estimate: Coregistered Images', ...
             substruct('.','val', '{}',{3}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
             substruct('.','cfiles'));
-        matlabbatch{5}.spm.spatial.normalise.write.woptions.bb = [-78 -112 -70 ; 78 76 85];
-        matlabbatch{5}.spm.spatial.normalise.write.woptions.vox = [2 2 2];%original voxel size at acquisition
-        matlabbatch{5}.spm.spatial.normalise.write.woptions.interp = 4;
-        matlabbatch{5}.spm.spatial.normalise.write.woptions.prefix = 'w';
+        matlabbatch{5}.spm.spatial.normalise.write.woptions.vox = voxDim;%original voxel size at acquisition
         
+
         % NORMALIZE STRUCTURAL
         fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE STRUCTURAL\n');
-        matlabbatch{6}.spm.spatial.normalise.write.subj.def(1) = ...
-            cfg_dep('Segment: Forward Deformations', ...
-            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
-            substruct('.','fordef', '()',{':'}));
         matlabbatch{6}.spm.spatial.normalise.write.subj.resample(1) = ...
             cfg_dep('Segment: Bias Corrected (1)', ...
             substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
             substruct('.','channel', '()',{1}, '.','biascorr', '()',{':'}));
-        matlabbatch{6}.spm.spatial.normalise.write.woptions.bb  = [-78 -112 -70 ; 78 76 85];
         matlabbatch{6}.spm.spatial.normalise.write.woptions.vox = [1 1 1];% size 3 allow to run RunQA / original voxel size at acquisition
-        matlabbatch{6}.spm.spatial.normalise.write.woptions.interp = 4;
-        matlabbatch{6}.spm.spatial.normalise.write.woptions.prefix = 'w';
-        
         
         % NORMALIZE GREY MATTER
         fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE GREY MATTER\n');
-        matlabbatch{7}.spm.spatial.normalise.write.subj.def(1) = ...
-            cfg_dep('Segment: Forward Deformations', ...
-            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
-            substruct('.','fordef', '()',{':'}));
         matlabbatch{7}.spm.spatial.normalise.write.subj.resample(1) = ...
             cfg_dep('Segment: c1 Images', ...
             substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
             substruct('.','tiss', '()',{1}, '.','c', '()',{':'}));
-        matlabbatch{7}.spm.spatial.normalise.write.woptions.bb  = [-78 -112 -70 ; 78 76 85];
-        matlabbatch{7}.spm.spatial.normalise.write.woptions.vox = [2 2 2];% size 3 allow to run RunQA / original voxel size at acquisition
-        matlabbatch{7}.spm.spatial.normalise.write.woptions.interp = 4;
-        matlabbatch{7}.spm.spatial.normalise.write.woptions.prefix = 'w';
+        matlabbatch{7}.spm.spatial.normalise.write.woptions.vox = voxDim;% size 3 allow to run RunQA / original voxel size at acquisition
         
         % NORMALIZE WHITE MATTER
         fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE WHITE MATTER\n');
-        matlabbatch{8}.spm.spatial.normalise.write.subj.def(1) = ...
-            cfg_dep('Segment: Forward Deformations', ...
-            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
-            substruct('.','fordef', '()',{':'}));
         matlabbatch{8}.spm.spatial.normalise.write.subj.resample(1) = ...
             cfg_dep('Segment: c2 Images', ...
             substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
             substruct('.','tiss', '()',{2}, '.','c', '()',{':'}));
-        matlabbatch{8}.spm.spatial.normalise.write.woptions.bb  = [-78 -112 -70 ; 78 76 85];
-        matlabbatch{8}.spm.spatial.normalise.write.woptions.vox = [2 2 2];% size 3 allow to run RunQA / original voxel size at acquisition
-        matlabbatch{8}.spm.spatial.normalise.write.woptions.interp = 4;
-        matlabbatch{8}.spm.spatial.normalise.write.woptions.prefix = 'w';
+        matlabbatch{8}.spm.spatial.normalise.write.woptions.vox = voxDim;% size 3 allow to run RunQA / original voxel size at acquisition
         
         % NORMALIZE CSF MATTER
         fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE CSF\n');
-        matlabbatch{9}.spm.spatial.normalise.write.subj.def(1) = ...
-            cfg_dep('Segment: Forward Deformations', ...
-            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
-            substruct('.','fordef', '()',{':'}));
         matlabbatch{9}.spm.spatial.normalise.write.subj.resample(1) = ...
             cfg_dep('Segment: c3 Images', ...
             substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
             substruct('.','tiss', '()',{3}, '.','c', '()',{':'}));
-        matlabbatch{9}.spm.spatial.normalise.write.woptions.bb  = [-78 -112 -70 ; 78 76 85];
-        matlabbatch{9}.spm.spatial.normalise.write.woptions.vox = [2 2 2];% size 3 allow to run RunQA / original voxel size at acquisition
-        matlabbatch{9}.spm.spatial.normalise.write.woptions.interp = 4;
-        matlabbatch{9}.spm.spatial.normalise.write.woptions.prefix = 'w';
+        matlabbatch{9}.spm.spatial.normalise.write.woptions.vox = voxDim;% size 3 allow to run RunQA / original voxel size at acquisition
         
-        % SAVING JOBS
+        
+        %% SAVING JOBS
         %Create the JOBS directory if it doesnt exist
         JOBS_dir = fullfile(subFuncDataDir, opt.JOBS_dir);
         [~, ~, ~] = mkdir(JOBS_dir);
