@@ -9,14 +9,19 @@ end
 
 % group of subjects to analyze
 opt.groups = {'blnd', 'ctrl'};
-opt.subjects = {[1:3]};
+opt.subjects = {[1:2], [1:2]};
+
 % task to analyze
 opt.taskName = 'olfid'; 
+
 % The directory where the derivatives are located
 opt.derivativesDir = 'D:\BIDS\olf_blind';
 
+% suffix output directory for the saved jobs
+opt.JOBS_dir = fullfile('JOBS',opt.taskName);
+
 % Specify the number of dummies that you want to be removed.
-opt.numDummies = 4;
+opt.numDummies = 1;
 opt.dummy_prefix = 'dr_';
 
 % Options for slice time correction
