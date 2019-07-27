@@ -14,10 +14,27 @@ subjects = spm_BIDS(BIDS, 'subjects');
 for iGroup = 1:numel(opt.groups)
     group(iGroup).name = opt.groups{iGroup};                            % NAME OF THE GROUP %#ok<*AGROW>
     
-    idx = strfind(subjects, group(iGroup).name);
-    idx = find(cell2mat(idx));
+    
+    % we figure out which subjects to take
+    % if not specified take all
+    if isfield(opt,'subjects') && ~isempty(opt.subjects{iGroup})
+        idx = opt.subjects{iGroup};
+    else
+        % in case no group was specified (e.g. sub-01) we need a way to still
+        % get the subjects ID
+        if strcmp(group(iGroup).name, '')
+            idx = 1:size(subjects,2);
+        else
+            idx = strfind(subjects, group(iGroup).name);
+            idx = find(cell2mat(idx));
+        end
+    end
+    
     group(iGroup).subNumber = subjects(idx);                            % SUBJECT ID .. con01 , con02 , etc.
     group(iGroup).numSub = length(group(1).subNumber) ;                 % Number of subjects in the group
+    
+    fprintf(1,'WILL WORK ON SUBJECTS\n')
+    disp(group(iGroup).subNumber)
 end
 
 
