@@ -99,7 +99,8 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).tgt_spec{1}(2).name = 'strtype';
         matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).tgt_spec{1}(2).value = 'e';
         matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).sname = 'Named File Selector: Structural(1) - Files';
-        matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).src_exbranch = substruct('.','val', '{}',{1}, '.','val', '{}',{1});
+        matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).src_exbranch = ...
+            substruct('.','val', '{}',{1}, '.','val', '{}',{1});
         matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).src_output = substruct('.','files', '{}',{1});
         
         
@@ -111,7 +112,8 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{3}.spm.spatial.coreg.estimate.source(1).tgt_spec{1}(2).name = 'strtype';
         matlabbatch{3}.spm.spatial.coreg.estimate.source(1).tgt_spec{1}(2).value = 'e';
         matlabbatch{3}.spm.spatial.coreg.estimate.source(1).sname = 'Realign: Estimate & Reslice: Mean Image';
-        matlabbatch{3}.spm.spatial.coreg.estimate.source(1).src_exbranch = substruct('.','val', '{}',{2}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1});
+        matlabbatch{3}.spm.spatial.coreg.estimate.source(1).src_exbranch = ...
+            substruct('.','val', '{}',{2}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1});
         matlabbatch{3}.spm.spatial.coreg.estimate.source(1).src_output = substruct('.','rmean');
         
         
@@ -124,14 +126,18 @@ for iGroup= 1:length(group)                 % For each group
             matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).tgt_spec{1}(1).value = 'image';
             matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).tgt_spec{1}(2).name = 'strtype';
             matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).tgt_spec{1}(2).value = 'e';
-            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).sname = ['Realign: Estimate & Reslice: Realigned Images (Sess ' (ises) ')'];
-            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).src_exbranch = substruct('.','val', '{}',{2}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1});
-            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).src_output = substruct('.','sess', '()',{ises}, '.','cfiles');
+            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).sname = ...
+                ['Realign: Estimate & Reslice: Realigned Images (Sess ' (ises) ')'];
+            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).src_exbranch = ...
+                substruct('.','val', '{}',{2}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1});
+            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).src_output = ...
+                substruct('.','sess', '()',{ises}, '.','cfiles');
         end
         % estimation options
         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.cost_fun = 'nmi';
         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.sep = [4 2];
-        matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.tol = [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
+        matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.tol = ...
+            [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.fwhm = [7 7];
         
         
@@ -145,7 +151,10 @@ for iGroup= 1:length(group)                 % For each group
         fprintf(1,'BUILDING SPATIAL JOB : SEGMENT STRUCTURAL\n');
         
         % SAVE BIAS CORRECTED IMAGE
-        matlabbatch{4}.spm.spatial.preproc.channel.vols(1) = cfg_dep('Named File Selector: Structural(1) - Files', substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','files', '{}',{1}));
+        matlabbatch{4}.spm.spatial.preproc.channel.vols(1) = ...
+            cfg_dep('Named File Selector: Structural(1) - Files', ...
+            substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
+            substruct('.','files', '{}',{1}));
         matlabbatch{4}.spm.spatial.preproc.channel.biasreg = 0.001;
         matlabbatch{4}.spm.spatial.preproc.channel.biasfwhm = 60;
         matlabbatch{4}.spm.spatial.preproc.channel.write = [0 1];
@@ -188,8 +197,14 @@ for iGroup= 1:length(group)                 % For each group
         
         % NORMALIZE FUNCTIONALS
         fprintf(1,'BUILDING SPATIAL JOB : NORMALIZE FUNCTIONALS\n');
-        matlabbatch{5}.spm.spatial.normalise.write.subj.def(1) = cfg_dep('Segment: Forward Deformations', substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','fordef', '()',{':'}));
-        matlabbatch{5}.spm.spatial.normalise.write.subj.resample(1) = cfg_dep('Coregister: Estimate: Coregistered Images', substruct('.','val', '{}',{3}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','cfiles'));
+        matlabbatch{5}.spm.spatial.normalise.write.subj.def(1) = ...
+            cfg_dep('Segment: Forward Deformations', ...
+            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
+            substruct('.','fordef', '()',{':'}));
+        matlabbatch{5}.spm.spatial.normalise.write.subj.resample(1) = ...
+            cfg_dep('Coregister: Estimate: Coregistered Images', ...
+            substruct('.','val', '{}',{3}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
+            substruct('.','cfiles'));
         matlabbatch{5}.spm.spatial.normalise.write.woptions.bb = [-78 -112 -70 ; 78 76 85];
         matlabbatch{5}.spm.spatial.normalise.write.woptions.vox = [2 2 2];%original voxel size at acquisition
         matlabbatch{5}.spm.spatial.normalise.write.woptions.interp = 4;
@@ -197,8 +212,14 @@ for iGroup= 1:length(group)                 % For each group
         
         % NORMALIZE STRUCTURAL
         fprintf(1,'BUILDING SPATIAL JOB : NORMALIZE STRUCTURAL\n');
-        matlabbatch{6}.spm.spatial.normalise.write.subj.def(1) = cfg_dep('Segment: Forward Deformations', substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','fordef', '()',{':'}));
-        matlabbatch{6}.spm.spatial.normalise.write.subj.resample(1) = cfg_dep('Segment: Bias Corrected (1)', substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','channel', '()',{1}, '.','biascorr', '()',{':'}));
+        matlabbatch{6}.spm.spatial.normalise.write.subj.def(1) = ...
+            cfg_dep('Segment: Forward Deformations', ...
+            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
+            substruct('.','fordef', '()',{':'}));
+        matlabbatch{6}.spm.spatial.normalise.write.subj.resample(1) = ...
+            cfg_dep('Segment: Bias Corrected (1)', ...
+            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
+            substruct('.','channel', '()',{1}, '.','biascorr', '()',{':'}));
         matlabbatch{6}.spm.spatial.normalise.write.woptions.bb  = [-78 -112 -70 ; 78 76 85];
         matlabbatch{6}.spm.spatial.normalise.write.woptions.vox = [1 1 1];% size 3 allow to run RunQA / original voxel size at acquisition
         matlabbatch{6}.spm.spatial.normalise.write.woptions.interp = 4;
@@ -207,8 +228,14 @@ for iGroup= 1:length(group)                 % For each group
         
         % NORMALIZE GREY MATTER
         fprintf(1,'BUILDING SPATIAL JOB : NORMALIZE GREY MATTER\n');
-        matlabbatch{7}.spm.spatial.normalise.write.subj.def(1) = cfg_dep('Segment: Forward Deformations', substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','fordef', '()',{':'}));
-        matlabbatch{7}.spm.spatial.normalise.write.subj.resample(1) = cfg_dep('Segment: c1 Images', substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','tiss', '()',{1}, '.','c', '()',{':'}));
+        matlabbatch{7}.spm.spatial.normalise.write.subj.def(1) = ...
+            cfg_dep('Segment: Forward Deformations', ...
+            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
+            substruct('.','fordef', '()',{':'}));
+        matlabbatch{7}.spm.spatial.normalise.write.subj.resample(1) = ...
+            cfg_dep('Segment: c1 Images', ...
+            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
+            substruct('.','tiss', '()',{1}, '.','c', '()',{':'}));
         matlabbatch{7}.spm.spatial.normalise.write.woptions.bb  = [-78 -112 -70 ; 78 76 85];
         matlabbatch{7}.spm.spatial.normalise.write.woptions.vox = [2 2 2];% size 3 allow to run RunQA / original voxel size at acquisition
         matlabbatch{7}.spm.spatial.normalise.write.woptions.interp = 4;
@@ -216,8 +243,14 @@ for iGroup= 1:length(group)                 % For each group
         
         % NORMALIZE WHITE MATTER
         fprintf(1,'BUILDING SPATIAL JOB : NORMALIZE WHITE MATTER\n');
-        matlabbatch{8}.spm.spatial.normalise.write.subj.def(1) = cfg_dep('Segment: Forward Deformations', substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','fordef', '()',{':'}));
-        matlabbatch{8}.spm.spatial.normalise.write.subj.resample(1) = cfg_dep('Segment: c2 Images', substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','tiss', '()',{2}, '.','c', '()',{':'}));
+        matlabbatch{8}.spm.spatial.normalise.write.subj.def(1) = ...
+            cfg_dep('Segment: Forward Deformations', ...
+            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
+            substruct('.','fordef', '()',{':'}));
+        matlabbatch{8}.spm.spatial.normalise.write.subj.resample(1) = ...
+            cfg_dep('Segment: c2 Images', ...
+            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
+            substruct('.','tiss', '()',{2}, '.','c', '()',{':'}));
         matlabbatch{8}.spm.spatial.normalise.write.woptions.bb  = [-78 -112 -70 ; 78 76 85];
         matlabbatch{8}.spm.spatial.normalise.write.woptions.vox = [2 2 2];% size 3 allow to run RunQA / original voxel size at acquisition
         matlabbatch{8}.spm.spatial.normalise.write.woptions.interp = 4;
@@ -225,8 +258,14 @@ for iGroup= 1:length(group)                 % For each group
         
         % NORMALIZE CSF MATTER
         fprintf(1,'BUILDING SPATIAL JOB : NORMALIZE CSF\n');
-        matlabbatch{9}.spm.spatial.normalise.write.subj.def(1) = cfg_dep('Segment: Forward Deformations', substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','fordef', '()',{':'}));
-        matlabbatch{9}.spm.spatial.normalise.write.subj.resample(1) = cfg_dep('Segment: c3 Images', substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','tiss', '()',{3}, '.','c', '()',{':'}));
+        matlabbatch{9}.spm.spatial.normalise.write.subj.def(1) = ...
+            cfg_dep('Segment: Forward Deformations', ...
+            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
+            substruct('.','fordef', '()',{':'}));
+        matlabbatch{9}.spm.spatial.normalise.write.subj.resample(1) = ...
+            cfg_dep('Segment: c3 Images', ...
+            substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
+            substruct('.','tiss', '()',{3}, '.','c', '()',{':'}));
         matlabbatch{9}.spm.spatial.normalise.write.woptions.bb  = [-78 -112 -70 ; 78 76 85];
         matlabbatch{9}.spm.spatial.normalise.write.woptions.vox = [2 2 2];% size 3 allow to run RunQA / original voxel size at acquisition
         matlabbatch{9}.spm.spatial.normalise.write.woptions.interp = 4;
