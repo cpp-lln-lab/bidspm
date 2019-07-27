@@ -15,7 +15,7 @@ for iCond = 1:size(conds,1)                        % for each line in the tsv fi
     names_tmp(iCond,1)= cellstr(conds(iCond,:));   % Get the name of the condition
 end
 
-% Get the unique names of the conditions (removing repeitions)
+% Get the unique names of the conditions (removing repetitions)
 names = unique(names_tmp)';
 NumConditions =length(names);
 
