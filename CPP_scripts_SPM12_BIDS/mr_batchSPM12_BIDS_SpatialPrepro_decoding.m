@@ -18,7 +18,15 @@ StructSession = 1;
 
 matlabbatch = [];
 
-matlabbatch = [];
+% creates prefix to look for
+if isfield(opt, 'numDummies') && opt.numDummies>0
+    prefix = opt.dummy_prefix;
+else
+    prefix = '';
+end
+if isfield(opt.metadata, 'SliceTiming') && ~isemtpy(opt.metadata.SliceTiming)
+    prefix = [prefix opt.STC_prefix];
+end
 
 %% Loop through the groups, subjects, and sessions
 for iGroup= 1:length(group)                 % For each group
