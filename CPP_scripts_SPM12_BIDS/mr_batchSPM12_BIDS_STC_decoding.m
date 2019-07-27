@@ -1,4 +1,4 @@
-function mr_batchSPM12_BIDS_STC_decoding
+function mr_batchSPM12_BIDS_STC_decoding(opt)
 %% The script performs SLICE TIMING CORRECTION of the functional data. The
 % script for each subject and can handle multiple sessions and multiple
 % runs.
@@ -60,25 +60,41 @@ function mr_batchSPM12_BIDS_STC_decoding
 WD = pwd;
 
 % load the subjects/Groups information and the task name
-[derivativesDir,taskName,group] = getData();
+[group, opt, BIDS] = getData(opt);
 
-% output directory for the saved jobs
-JOBS_dir = fullfile(derivativesDir,'JOBS',taskName);
-
-% clear/initiate matlabbatch
-matlabbatch = [];
-
-%% load the json file to extract acquisition parameters
-cd (derivativesDir)
-json_file = ['task-',taskName,'_bold.json'];
-j = spm_jsonread(json_file);
-
-TR = j.RepetitionTime ; %2.2;
-%nslices = length(j.SliceTiming);
-nslices = str2num(j.NumSlices);
-TA = TR - (TR/nslices);
-referenceSlice = 2; %ceil(nslices/2) ;
-
+% only run STC if we have a slice timing in metadata
+if isfield(opt.metadata, 'SliceTiming')
+    % prefix of the files to look for 
+    if isfield(opt, 'numDummies') && opt.numDummies>0 
+        prefix = opt.dummy_prefix;
+    else
+        prefix = '';
+    end
+    
+    % get metadata for STC
+    % Note  that  slice  ordering is assumed to be from foot to head. If it is not, enter
+    % instead: TR - INTRASCAN_TIME - SLICE_TIMING_VECTOR
+    
+    % SPM accepts slice time acquisition as inputs for slice order (simplifies
+    % things when dealing with multiecho data)
+    sliceOrder = opt.metadata.SliceTiming;
+    numSlices = length(sliceOrder);
+    TR = opt.metadata.RepetitionTime;
+    TA = TR - (TR/numSlices);
+    
+    maxSliceTime = max(sliceOrder);
+    minSliceTime = min(sliceOrder);
+    if isempty(opt.STC_referenceSlice)
+        referenceSlice = (maxSliceTime - minSliceTime)/2;
+    else
+        referenceSlice = opt.STC_referenceSlice;
+    end
+    if referenceSlice > TA
+        error('%s (%f) %s (%f).\n%s', ...
+            'The reference slice time', referenceSlice, ...
+            'is greater than the acquisition time', TA, ...
+            'Reference slice time must be in milliseconds or leave it empty to use mid-acquisition time as reference.')
+    end
 %% Loop through the groups, subjects, and sessions
 % For each group
 for iGroup= 1:length(group)
@@ -147,3 +163,4 @@ cd(WD);
 
 end
 
+end
