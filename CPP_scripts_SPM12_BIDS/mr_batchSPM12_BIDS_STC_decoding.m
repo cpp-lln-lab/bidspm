@@ -63,7 +63,9 @@ WD = pwd;
 [group, opt, BIDS] = getData(opt);
 
 % only run STC if we have a slice timing in metadata
-if isfield(opt.metadata, 'SliceTiming')
+if ~isfield(opt.metadata, 'SliceTiming') || isemtpy(opt.metadata.SliceTiming)
+    fprintf(1,'SKIPPING SLICE TIME CORRECTION: no slice timing specified.\n')
+else
     % prefix of the files to look for 
     if isfield(opt, 'numDummies') && opt.numDummies>0 
         prefix = opt.dummy_prefix;
