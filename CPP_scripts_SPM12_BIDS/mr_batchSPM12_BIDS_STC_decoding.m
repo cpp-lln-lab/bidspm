@@ -95,6 +95,11 @@ if isfield(opt.metadata, 'SliceTiming')
             'is greater than the acquisition time', TA, ...
             'Reference slice time must be in milliseconds or leave it empty to use mid-acquisition time as reference.')
     end
+    
+    % clear/initiate matlabbatch
+    matlabbatch = [];
+    
+    
 %% Loop through the groups, subjects, and sessions
 % For each group
 for iGroup= 1:length(group)
@@ -138,21 +143,22 @@ for iGroup= 1:length(group)
                 
             end
         end
-        
-        matlabbatch{1}.spm.temporal.st.nslices = nslices;              % Number of Slices
-        matlabbatch{1}.spm.temporal.st.tr = TR;                        % Repetition Time
-        matlabbatch{1}.spm.temporal.st.ta = TA;
-        matlabbatch{1}.spm.temporal.st.so = [1:2:nslices 2:2:nslices]; % Sequencial ascending / #Sequential descending: [nslices:-1:1] / Interleaved bottom>up: [1:2:nslices 2:2:nslices]
-        matlabbatch{1}.spm.temporal.st.refslice = referenceSlice; % middle acquired slice (NOTE: Middle in time of acquisition, not space)
-        matlabbatch{1}.spm.temporal.st.prefix = 'a';
-        
-        %% SAVE THE MATLABBATCH
-        %Create the JOBS directory if it doesnt exist
-        if ~exist(JOBS_dir,'dir')
-            mkdir(JOBS_dir)
-        end
-        cd(JOBS_dir)
-        eval (['save jobs_STC_matlabbatch']) %  save the
+
+            matlabbatch{1}.spm.temporal.st.nslices = numSlices;              % Number of Slices
+            matlabbatch{1}.spm.temporal.st.tr = TR;                        % Repetition Time
+            matlabbatch{1}.spm.temporal.st.ta = TA;
+            matlabbatch{1}.spm.temporal.st.so = sliceOrder; % Sequencial ascending / #Sequential descending: [nslices:-1:1] / Interleaved bottom>up: [1:2:nslices 2:2:nslices]
+            matlabbatch{1}.spm.temporal.st.refslice = referenceSlice; % middle acquired slice (NOTE: Middle in time of acquisition, not space)
+            matlabbatch{1}.spm.temporal.st.prefix = opt.STC_prefix;
+            
+            %% SAVE THE MATLABBATCH
+            %Create the JOBS directory if it doesnt exist
+            JOBS_dir = fullfile(SubFuncDataDir, opt.JOBS_dir);
+            if ~exist(JOBS_dir,'dir')
+                mkdir(JOBS_dir)
+            end
+
+            save(fullfile(JOBS_dir, 'jobs_STC_matlabbatch.mat'), 'matlabbatch') % save the matlabbatch
         % matlabbatch
         spm_jobman('run',matlabbatch)
         
