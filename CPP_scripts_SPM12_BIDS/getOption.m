@@ -19,5 +19,10 @@ opt.derivativesDir = 'D:\BIDS\olf_blind';
 opt.numDummies = 4;
 opt.dummy_prefix = 'dr_';
 
+% Options for slice time correction
+opt.STC_referenceSlice = []; % reference slice: middle acquired slice (NOTE: Middle in time of acquisition, not space)
+% If  slice order is entered in time unit (ms) doing  so,  the  next  item  (Reference Slice) will contain a reference time (in
+% ms) instead of the slice index of the reference slice.
+opt.STC_prefix = 'a';
 
 end
