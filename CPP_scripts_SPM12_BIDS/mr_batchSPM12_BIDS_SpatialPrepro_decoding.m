@@ -28,6 +28,10 @@ if isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)
     prefix = [prefix opt.STC_prefix];
 end
 
+fprintf(1,'DOING PREPROCESSING\n')
+
+
+
 %% Loop through the groups, subjects, and sessions
 for iGroup= 1:length(group)                 % For each group
     groupName = group(iGroup).name ;        % Get the group name
@@ -113,7 +117,7 @@ for iGroup= 1:length(group)                 % For each group
         
         % COREGISTER
         % REFERENCE IMAGE : DEPENDENCY FROM NAMED FILE SELECTOR ('Structural')
-        fprintf(1,'BUILDING SPATIAL JOB : COREGISTER\n')
+        fprintf(1,' BUILDING SPATIAL JOB : COREGISTER\n')
         matlabbatch{3}.spm.spatial.coreg.estimate.ref(1) = cfg_dep;
         matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).tname = 'Reference Image';
         matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).tgt_spec{1}(1).name = 'class';
@@ -170,7 +174,7 @@ for iGroup= 1:length(group)                 % For each group
         % SEGMENT STRUCTURALS (WITH NEW SEGMENT -DEFAULT SEGMENT IN
         % SPM12)
         % DATA : DEPENDENCY FROM NAMED FILE SELECTOR ('Structural')
-        fprintf(1,'BUILDING SPATIAL JOB : SEGMENT STRUCTURAL\n');
+        fprintf(1,' BUILDING SPATIAL JOB : SEGMENT STRUCTURAL\n');
         
         % SAVE BIAS CORRECTED IMAGE
         matlabbatch{4}.spm.spatial.preproc.channel.vols(1) = ...
@@ -218,7 +222,7 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{4}.spm.spatial.preproc.warp.write = [1 1];
         
         % NORMALIZE FUNCTIONALS
-        fprintf(1,'BUILDING SPATIAL JOB : NORMALIZE FUNCTIONALS\n');
+        fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE FUNCTIONALS\n');
         matlabbatch{5}.spm.spatial.normalise.write.subj.def(1) = ...
             cfg_dep('Segment: Forward Deformations', ...
             substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
@@ -233,7 +237,7 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{5}.spm.spatial.normalise.write.woptions.prefix = 'w';
         
         % NORMALIZE STRUCTURAL
-        fprintf(1,'BUILDING SPATIAL JOB : NORMALIZE STRUCTURAL\n');
+        fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE STRUCTURAL\n');
         matlabbatch{6}.spm.spatial.normalise.write.subj.def(1) = ...
             cfg_dep('Segment: Forward Deformations', ...
             substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
@@ -249,7 +253,7 @@ for iGroup= 1:length(group)                 % For each group
         
         
         % NORMALIZE GREY MATTER
-        fprintf(1,'BUILDING SPATIAL JOB : NORMALIZE GREY MATTER\n');
+        fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE GREY MATTER\n');
         matlabbatch{7}.spm.spatial.normalise.write.subj.def(1) = ...
             cfg_dep('Segment: Forward Deformations', ...
             substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
@@ -264,7 +268,7 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{7}.spm.spatial.normalise.write.woptions.prefix = 'w';
         
         % NORMALIZE WHITE MATTER
-        fprintf(1,'BUILDING SPATIAL JOB : NORMALIZE WHITE MATTER\n');
+        fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE WHITE MATTER\n');
         matlabbatch{8}.spm.spatial.normalise.write.subj.def(1) = ...
             cfg_dep('Segment: Forward Deformations', ...
             substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
@@ -279,7 +283,7 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{8}.spm.spatial.normalise.write.woptions.prefix = 'w';
         
         % NORMALIZE CSF MATTER
-        fprintf(1,'BUILDING SPATIAL JOB : NORMALIZE CSF\n');
+        fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE CSF\n');
         matlabbatch{9}.spm.spatial.normalise.write.subj.def(1) = ...
             cfg_dep('Segment: Forward Deformations', ...
             substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
