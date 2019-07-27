@@ -4,6 +4,9 @@ function mr_batchSPM12_BIDS_SpatialPrepro_decoding(opt)
 % The functional data are re-aligned, coregistered with the structural and
 % normalized to MNI space.
 
+%% TO DO
+% find a way to paralelize this over subjects
+
 % define SPM folder
 spmLocation = spm('dir');
 
@@ -65,6 +68,7 @@ for iGroup= 1:length(group)                 % For each group
         struct = struct{1};
         
         
+        
         %% Structural file directory
         [subStrucDataDir, structFile, ext] = spm_fileparts(struct);
         
@@ -82,8 +86,8 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{1}.cfg_basicio.cfg_named_file.files = { {structImage} };
         
         
-        %% REALIGN
         
+        %% REALIGN
         fprintf(1,' BUILDING SPATIAL JOB : REALIGN\n')
         ses_counter = 1;
         
@@ -99,6 +103,9 @@ for iGroup= 1:length(group)                 % For each group
             
             for iRun = 1:numRuns                     % For each run
                 
+                
+                %% THIS WHOLE SECTION IS A COPY PASTE FROM STC function: REFACTOR THIS FOR THE LOVE OF SANIY
+                % But I am tired... I will do it... later.
                 % get the filename for this bold run for this task
                 fileName = spm_BIDS(BIDS, 'data', ...
                     'sub', subNumber, ...
@@ -131,6 +138,8 @@ for iGroup= 1:length(group)                 % For each group
                     end
                 end
                 
+                fprintf(1,' %s\n', files{1});
+                
                 matlabbatch{2}.spm.spatial.realign.estwrite.data{ses_counter} =  cellstr(files);
                 ses_counter = ses_counter + 1;
                 
@@ -151,7 +160,8 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.prefix = opt.realign_prefix;
         
         
-        % COREGISTER
+        
+        %% COREGISTER
         % REFERENCE IMAGE : DEPENDENCY FROM NAMED FILE SELECTOR ('Structural')
         fprintf(1,' BUILDING SPATIAL JOB : COREGISTER\n')
         matlabbatch{3}.spm.spatial.coreg.estimate.ref(1) = cfg_dep;
@@ -202,13 +212,10 @@ for iGroup= 1:length(group)                 % For each group
             [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.fwhm = [7 7];
         
+
         
-        
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % SEGMENT STRUCTURALS (WITH NEW SEGMENT -DEFAULT SEGMENT IN
-        % SPM12)
+        %% SEGMENT STRUCTURALS 
+        % (WITH NEW SEGMENT -DEFAULT SEGMENT IN SPM12)
         % DATA : DEPENDENCY FROM NAMED FILE SELECTOR ('Structural')
         fprintf(1,' BUILDING SPATIAL JOB : SEGMENT STRUCTURAL\n');
         
