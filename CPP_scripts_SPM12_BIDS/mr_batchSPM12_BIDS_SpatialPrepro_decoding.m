@@ -27,7 +27,7 @@ else
     prefix = '';
 end
 if isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)
-    prefix = [prefix opt.STC_prefix];
+    prefix = [opt.STC_prefix prefix];
 end
 
 fprintf(1,'DOING PREPROCESSING\n')
