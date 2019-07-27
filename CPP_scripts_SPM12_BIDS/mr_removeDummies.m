@@ -37,8 +37,13 @@ if isfield(opt, 'numDummies')
                 sessions = spm_BIDS(BIDS, 'sessions', ...
                     'sub', subNumber, ...
                     'task', opt.taskName);
+                numSessions = size(sessions,2);
+                if numSessions==0
+                    numSessions = 1;
+                    sessions = {''};
+                end
                 
-                for iSes = 1:size(sessions,2)
+                for iSes = 1:numSessions
                     
                     % get all runs for that subject across all sessions
                     runs = spm_BIDS(BIDS, 'runs', ...
