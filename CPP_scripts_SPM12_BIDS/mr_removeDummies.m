@@ -1,4 +1,4 @@
-function mr_removeDummies()
+function mr_removeDummies(opt)
 % This scripts removes the initial dummy scans at the beginning of the
 % acquisition to allow for the homogenization of the magnetic field. The
 % script will take the 4D functional nifti images and remove the first
@@ -9,38 +9,43 @@ function mr_removeDummies()
 WD = pwd;
 
 % load the subjects/Groups information and the task name
-[derivativesDir,taskName,group] = getData();
+[group, opt, BIDS] = getData(opt);
 
-% Specify the number of dummies that you want to be removed.
-numDummies = 4;
+numDummies = opt.numDummies;
 
-%% Loop through the groups, subjects, sessions
-for iGroup= 1:length(group)             % For each group
-    groupName = group(iGroup).name ;    % Get the group name
+if numDummies<=0 || isempty(numDummies)
+    return
+else
     
-    for iSub = 1:group(iGroup).numSub   % For each Subject in the group
-        SubNumber = group(iGroup).SubNumber(iSub) ; % Get the subject ID
+    fprintf(1,'REMOVING DUMMIES\n')
+    
+    %% Loop through the groups, subjects, sessions
+    for iGroup= 1:length(group)             % For each group
+        groupName = group(iGroup).name ;    % Get the group name
         
-        % Number of sessions for each subject
-        numSessions = group(iGroup).numSess(iSub);
-        
-        for ises = 1:numSessions % For each session
+        for iSub = 1:group(iGroup).numSub   % For each Subject in the group
+            SubNumber = group(iGroup).SubNumber{iSub} ; % Get the subject ID
             
-            numRuns = group(iGroup).numRuns(iSub);     % Get the number of runs
+            runs = spm_BIDS(BIDS, 'runs', 'sub', SubNumber, 'task', opt.taskName);
+            numRuns = size(runs,2);     % Get the number of runs
+            
             for iRun = 1:numRuns                       % For each Run
                 
-                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i RUN: %i \n',groupName,iSub,SubNumber,iRun)
+                fprintf(1,' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s RUN: %i \n',...
+                    groupName,iSub,SubNumber,iRun)
                 
+                fileName = spm_BIDS(BIDS, 'data', ...
+                    'sub', SubNumber, ...
+                    'run', runs{iRun}, ...
+                    'task', opt.taskName, ...
+                    'type', 'bold');
+                
+                fileName = fileName{1};
+                [path, file, ext] = spm_fileparts(fileName);
+                fileName = [file ext];
+
                 % Go the functional data directory
-                cd(fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',SubNumber)],['ses-',sprintf('%02d',ises)],'func'))
-                
-                % If there is 1 run, get the functional files (note that the name does not contain -run-01)
-                % If more than 1 run, get the functional files that contain the run number in the name
-                if numRuns==1
-                    fileName = ['sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_bold.nii.gz'];
-                elseif numRuns >1
-                    fileName = ['sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_run-',sprintf('%02d',iRun),'_bold.nii.gz'];
-                end
+                cd(path)
                 
                 % load the functional image
                 n=load_untouch_nii(fileName);
@@ -64,11 +69,13 @@ for iGroup= 1:length(group)             % For each group
                 n_noDummies.hdr.dime.dim(5) = size(n_noDummies.img,4);   % Change the dimension in the header
                 save_untouch_nii(n_noDummies,['dr_',fileName(1:end-3)])  % dr : dummies removed
                 
+                
             end
         end
     end
+    
+    cd(WD)
+    
 end
-
-cd(WD)
 
 end

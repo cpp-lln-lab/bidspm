@@ -1,41 +1,27 @@
-function [derivativesDir,taskName,group] = getData()
+function [group, opt, BIDS] = getData(opt)
 % The following structure will be the base that the scripts will use to run
 % the preprocessing pipeline according to the BIDS Structure
 
 % The directory where the derivatives are located
-derivativesDir = '/Data/CrossMot_BIDS/derivatives';
+derivativesDir = opt.derivativesDir;
+
 % Name of the task
-taskName = 'decoding';      
+taskName = opt.taskName;
 
-% Number of Sessions for each subject
-NumberSessions = 1;
-% Number of Runs for each subject
-NumberRuns = 12;
+BIDS = spm_BIDS(derivativesDir);
 
-% ADD the different groups in your experiment
+subjects = spm_BIDS(BIDS, 'subjects');
+
+% Add the different groups in your experiment
 %% GROUP 1
-group(1).name = 'con';                                         % NAME OF THE GROUP
-group(1).SubNumber = 1:4 ;                                     % SUBJECT ID .. con01 , con02 , etc. 
-group(1).numSub = length(group(1).SubNumber) ;                 % Number of subjects in the group
-group(1).numSess = ones(1,group(1).numSub) * NumberSessions ;  % Number of sessions in each subject
-group(1).numRuns = ones(1,group(1).numSub) * NumberRuns ;      % Number of runs in each subject
+for iGroup = 1:numel(opt.groups)
+    group(iGroup).name = opt.groups{iGroup};                            % NAME OF THE GROUP %#ok<*AGROW>
+    
+    idx = strfind(subjects, group(iGroup).name);
+    idx = find(cell2mat(idx));
+    group(iGroup).SubNumber = subjects(idx);                            % SUBJECT ID .. con01 , con02 , etc.
+    group(iGroup).numSub = length(group(1).SubNumber) ;                 % Number of subjects in the group
+end
 
-
-
-% %% GROUP2
-% group(1).name = 'con';
-% group(1).SubNumber = 1:2 ; %1:4 %[1:13];  % Total 13
-% group(1).numSub = length(group(1).SubNumber) ;
-% group(1).numSess = ones(1,group(1).numSub) * NumberSessions ;
-% group(1).numRuns = ones(1,group(1).numSub) * NumberRuns ;
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                                                      %
-%   IF THE NUMBER OF RUNS IS NOT THE SAME ACROSS PARTICIPANTS, THE     %
-%   "group(1).numRuns" should be edited and corrected accordingly.     %
-%                                                                      %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 end
