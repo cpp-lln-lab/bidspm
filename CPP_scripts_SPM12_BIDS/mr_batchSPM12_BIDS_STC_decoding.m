@@ -66,8 +66,8 @@ WD = pwd;
 if ~isfield(opt.metadata, 'SliceTiming') || isemtpy(opt.metadata.SliceTiming)
     fprintf(1,'SKIPPING SLICE TIME CORRECTION: no slice timing specified.\n')
 else
-    % prefix of the files to look for 
-    if isfield(opt, 'numDummies') && opt.numDummies>0 
+    % prefix of the files to look for
+    if isfield(opt, 'numDummies') && opt.numDummies>0
         prefix = opt.dummy_prefix;
     else
         prefix = '';
@@ -121,51 +121,64 @@ else
             % STC
             fprintf(1,' BUILDING STC JOB : STC\n')
             
-            % get all runs for that subject across all sessions
-            runs = spm_BIDS(BIDS, 'runs', 'sub', subNumber, 'task', opt.taskName);
-            numRuns = size(runs,2);     % Get the number of runs
+            sessions = spm_BIDS(BIDS, 'sessions', ...
+                'sub', subNumber, ...
+                'task', opt.taskName);
             
-            for iRun = 1:numRuns                    % For each Run
+            for iSes = 1:size(sessions,2)
                 
-                % get the filename for this bold run for this task
-                fileName = spm_BIDS(BIDS, 'data', ...
+                % get all runs for that subject across all sessions
+                runs = spm_BIDS(BIDS, 'runs', ...
                     'sub', subNumber, ...
-                    'run', runs{iRun}, ...
                     'task', opt.taskName, ...
+                    'ses', sessions{iSes}, ...
                     'type', 'bold');
+                numRuns = size(runs,2);     % Get the number of runs
                 
-                % get fullpath of the file
-                fileName = fileName{1};
-                [SubFuncDataDir, file, ext] = spm_fileparts(fileName);
-                % get filename of the orginal file (drop the gunzip extension)
-                if strcmp(ext, '.gz')
-                    fileName = file;
-                elseif strcmp(ext, '.nii')
-                    fileName = [file ext];
-                end
-                
-                files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '$']);
-                % if this comes out empty we check that it is not because
-                % we are dealing with a file that is ziipped (in case no dummy 
-                % was removed, unzipping might not have happened)
-                if isempty(files)
-                    try
-                        files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '.gz$']);
-                        gunzip(files{1,1})
-                        files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '$']);
-                    catch
-                        error('Cannot find the file %s', ['^' prefix fileName '[.gz]$'])
+                for iRun = 1:numRuns                    % For each Run
+                    
+                    % get the filename for this bold run for this task
+                    fileName = spm_BIDS(BIDS, 'data', ...
+                        'sub', subNumber, ...
+                        'run', runs{iRun}, ...
+                        'ses', sessions{iSes}, ...
+                        'task', opt.taskName, ...
+                        'type', 'bold');
+                    
+                    % get fullpath of the file
+                    fileName = fileName{1};
+                    [SubFuncDataDir, file, ext] = spm_fileparts(fileName);
+                    % get filename of the orginal file (drop the gunzip extension)
+                    if strcmp(ext, '.gz')
+                        fileName = file;
+                    elseif strcmp(ext, '.nii')
+                        fileName = [file ext];
                     end
+                    
+                    files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '$']);
+                    % if this comes out empty we check that it is not because
+                    % we are dealing with a file that is ziipped (in case no dummy
+                    % was removed, unzipping might not have happened)
+                    if isempty(files)
+                        try
+                            files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '.gz$']);
+                            gunzip(files{1,1})
+                            files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '$']);
+                        catch
+                            error('Cannot find the file %s', ['^' prefix fileName '[.gz]$'])
+                        end
+                    end
+                    
+                    % add the file to the list
+                    matlabbatch{1}.spm.temporal.st.scans{iRun} =  cellstr(files);
+                    
+                    % print out to screen files to process
+                    disp(files{1})
+                    
                 end
-
-                % add the file to the list
-                matlabbatch{1}.spm.temporal.st.scans{iRun} =  cellstr(files);
-                
-                % print out to screen files to process
-                disp(files{1})
                 
             end
-
+            
             matlabbatch{1}.spm.temporal.st.nslices = numSlices;              % Number of Slices
             matlabbatch{1}.spm.temporal.st.tr = TR;                        % Repetition Time
             matlabbatch{1}.spm.temporal.st.ta = TA;
@@ -176,10 +189,8 @@ else
             %% SAVE THE MATLABBATCH
             %Create the JOBS directory if it doesnt exist
             JOBS_dir = fullfile(SubFuncDataDir, opt.JOBS_dir);
-            if ~exist(JOBS_dir,'dir')
-                mkdir(JOBS_dir)
-            end
-
+            [~, ~, ~] = mkdir(JOBS_dir);
+            
             save(fullfile(JOBS_dir, 'jobs_STC_matlabbatch.mat'), 'matlabbatch') % save the matlabbatch
             spm_jobman('run',matlabbatch)
             
