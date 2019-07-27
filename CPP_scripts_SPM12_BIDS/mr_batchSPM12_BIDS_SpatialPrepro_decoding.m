@@ -234,28 +234,33 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{4}.spm.spatial.preproc.channel.write = [0 1];
         
         % CREATE SEGMENTS IN NATIVE SPACE OF GM,WM AND CSF (CSF - in case I want to compute TIV later - stefbenet)
-        
-        matlabbatch{4}.spm.spatial.preproc.tissue(1).tpm = {[spmLocation,'tpm/TPM.nii,1']};
+        matlabbatch{4}.spm.spatial.preproc.tissue(1).tpm = ...
+            {[fullfile(spmLocation,'tpm', 'TPM.nii') ',1']};
         matlabbatch{4}.spm.spatial.preproc.tissue(1).ngaus = 1;
         matlabbatch{4}.spm.spatial.preproc.tissue(1).native = [1 1];
         matlabbatch{4}.spm.spatial.preproc.tissue(1).warped = [0 0];
-        matlabbatch{4}.spm.spatial.preproc.tissue(2).tpm = {[spmLocation,'tpm/TPM.nii,2']};
+        matlabbatch{4}.spm.spatial.preproc.tissue(2).tpm = ...
+            {[fullfile(spmLocation,'tpm', 'TPM.nii') ',2']};
         matlabbatch{4}.spm.spatial.preproc.tissue(2).ngaus = 1;
         matlabbatch{4}.spm.spatial.preproc.tissue(2).native = [1 1];
         matlabbatch{4}.spm.spatial.preproc.tissue(2).warped = [0 0];
-        matlabbatch{4}.spm.spatial.preproc.tissue(3).tpm = {[spmLocation,'tpm/TPM.nii,3']};
+        matlabbatch{4}.spm.spatial.preproc.tissue(3).tpm = ...
+            {[fullfile(spmLocation,'tpm', 'TPM.nii') ',3']};
         matlabbatch{4}.spm.spatial.preproc.tissue(3).ngaus = 2;
         matlabbatch{4}.spm.spatial.preproc.tissue(3).native = [1 1];
         matlabbatch{4}.spm.spatial.preproc.tissue(3).warped = [0 0];
-        matlabbatch{4}.spm.spatial.preproc.tissue(4).tpm = {[spmLocation,'tpm/TPM.nii,4']};
+        matlabbatch{4}.spm.spatial.preproc.tissue(4).tpm = ...
+            {[fullfile(spmLocation,'tpm', 'TPM.nii') ',4']};
         matlabbatch{4}.spm.spatial.preproc.tissue(4).ngaus = 3;
         matlabbatch{4}.spm.spatial.preproc.tissue(4).native = [0 0];
         matlabbatch{4}.spm.spatial.preproc.tissue(4).warped = [0 0];
-        matlabbatch{4}.spm.spatial.preproc.tissue(5).tpm = {[spmLocation,'tpm/TPM.nii,5']};
+        matlabbatch{4}.spm.spatial.preproc.tissue(5).tpm = ...
+            {[fullfile(spmLocation,'tpm', 'TPM.nii') ',5']};
         matlabbatch{4}.spm.spatial.preproc.tissue(5).ngaus = 4;
         matlabbatch{4}.spm.spatial.preproc.tissue(5).native = [0 0];
         matlabbatch{4}.spm.spatial.preproc.tissue(5).warped = [0 0];
-        matlabbatch{4}.spm.spatial.preproc.tissue(6).tpm = {[spmLocation,'tpm/TPM.nii,6']};
+        matlabbatch{4}.spm.spatial.preproc.tissue(6).tpm = ...
+            {[fullfile(spmLocation,'tpm', 'TPM.nii') ',6']};
         matlabbatch{4}.spm.spatial.preproc.tissue(6).ngaus = 2;
         matlabbatch{4}.spm.spatial.preproc.tissue(6).native = [0 0];
         matlabbatch{4}.spm.spatial.preproc.tissue(6).warped = [0 0];
