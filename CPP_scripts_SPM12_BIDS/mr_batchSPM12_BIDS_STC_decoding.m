@@ -146,7 +146,7 @@ if isfield(opt.metadata, 'SliceTiming')
                 % if this comes out empty we check that it is not because
                 % we are dealing with a file that is ziipped (in case no dummy 
                 % was removed, unzipping might not have happened)
-                if isemtpy(files)
+                if isempty(files)
                     try
                         files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '.gz$']);
                         gunzip(files{1,1})
