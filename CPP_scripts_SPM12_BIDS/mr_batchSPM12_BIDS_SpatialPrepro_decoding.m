@@ -4,7 +4,7 @@ function mr_batchSPM12_BIDS_SpatialPrepro_decoding(opt)
 % The functional data are re-aligned, coregistered with the structural and
 % normalized to MNI space.
 
-
+% define SPM folder
 spmLocation = spm('dir');
 
 % Get the working directory
@@ -14,9 +14,8 @@ WD = pwd;
 [group, opt, BIDS] = getData(opt);
 
 % Indicate which session the structural data was collected
-StructSession = 1;
+structSession = 1;
 
-matlabbatch = [];
 
 % creates prefix to look for
 if isfield(opt, 'numDummies') && opt.numDummies>0
@@ -31,18 +30,22 @@ end
 fprintf(1,'DOING PREPROCESSING\n')
 
 
-
 %% Loop through the groups, subjects, and sessions
 for iGroup= 1:length(group)                 % For each group
+    
     groupName = group(iGroup).name ;        % Get the group name
     
+    
     for iSub = 1:group(iGroup).numSub       % For each Subject in the group
+        
+        matlabbatch = [];
         
         % Get the ID of the subject
         %(i.e SubNumber doesnt have to match the iSub if one subject is exluded for any reason)
         subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
         fprintf(1,' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',groupName,iSub,subNumber)
         
+        % identify sessions for this subject
         sessions = spm_BIDS(BIDS, 'sessions', ...
             'sub', subNumber, ...
             'task', opt.taskName);
@@ -53,46 +56,79 @@ for iGroup= 1:length(group)                 % For each group
         end
         
         % get all runs for that subject across all sessions
-        runs = spm_BIDS(BIDS, 'data', ...
+        struct = spm_BIDS(BIDS, 'data', ...
             'sub', subNumber, ...
-            'ses', sessions{1}, ...
+            'ses', sessions{structSession}, ...
             'type', 'T1w');
+        % we assume that the first T1w is the correct one (could be an
+        % issue for data set with more than one
+        struct = struct{1};
+        
         
         %% Structural file directory
-        subStrucDataDir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',subNumber)],['ses-',sprintf('%02d',StructSession)],'anat');
+        [subStrucDataDir, structFile, ext] = spm_fileparts(struct);
         
-        %unzip nii.gz structural file to be read by SPM
-        struct = fullfile(subStrucDataDir,['sub-',groupName,sprintf('%02d',subNumber),'_ses-',sprintf('%02d',StructSession),'_T1w.nii.gz']) ;
-        struct = load_untouch_nii(struct) ;
-        save_untouch_nii(struct,fullfile(subStrucDataDir,['sub-',groupName,sprintf('%02d',subNumber),'_ses-',sprintf('%02d',StructSession),'_T1w.nii'])) ;
+        if strcmp(ext, '.gz')
+            %unzip nii.gz structural file to be read by SPM
+            struct = load_untouch_nii(struct);
+            save_untouch_nii(struct,fullfile(subStrucDataDir,structFile));
+            [structImage] = fullfile(subStrucDataDir,structFile);
+        else
+            [structImage] = fullfile(subStrucDataDir,[structFile ext]);
+        end
         
         % NAMED FILE SELECTOR
         matlabbatch{1}.cfg_basicio.cfg_named_file.name = 'Structural';
-        [structImage] = fullfile(subStrucDataDir,['sub-',groupName,sprintf('%02d',subNumber),'_ses-',sprintf('%02d',StructSession),'_T1w.nii']) ;
         matlabbatch{1}.cfg_basicio.cfg_named_file.files = { {structImage} };
+        
         
         %% REALIGN
         
-        fprintf(1,'BUILDING SPATIAL JOB : REALIGN\n')
+        fprintf(1,' BUILDING SPATIAL JOB : REALIGN\n')
         ses_counter = 1;
-        numSessions = group(iGroup).numSess(iSub);   % Number of sessions for this subject in this group
-        for ises = 1:numSessions                     % For each session
+        
+        for iSes = 1:numSessions                     % For each session
             
-            % Define the functional data directory
-            subFuncDataDir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',subNumber)],['ses-',sprintf('%02d',ises)],'func');
+            % get all runs for that subject across all sessions
+            runs = spm_BIDS(BIDS, 'runs', ...
+                'sub', subNumber, ...
+                'task', opt.taskName, ...
+                'ses', sessions{iSes}, ...
+                'type', 'bold');
+            numRuns = size(runs,2);     % Get the number of runs
             
-            % Get the number of runs of this session in this subject in this Group
-            numRuns = group(iGroup).numRuns(iSub);
             for iRun = 1:numRuns                     % For each run
                 
-                % If there is 1 run, get the functional files (note that the name does not contain -run-01)
-                % If more than 1 run, get the functional files that contain the run number in the name
-                if numRuns==1
-                    files{1,1} = fullfile(subFuncDataDir,...
-                        ['adr_sub-',groupName,sprintf('%02d',subNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_bold.nii']);
-                elseif numRuns >1
-                    files{1,1} = fullfile(subFuncDataDir,...
-                        ['adr_sub-',groupName,sprintf('%02d',subNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_run-',sprintf('%02d',iRun),'_bold.nii']);
+                % get the filename for this bold run for this task
+                fileName = spm_BIDS(BIDS, 'data', ...
+                    'sub', subNumber, ...
+                    'run', runs{iRun}, ...
+                    'ses', sessions{iSes}, ...
+                    'task', opt.taskName, ...
+                    'type', 'bold');
+                
+                % get fullpath of the file
+                fileName = fileName{1};
+                [subFuncDataDir, file, ext] = spm_fileparts(fileName);
+                % get filename of the orginal file (drop the gunzip extension)
+                if strcmp(ext, '.gz')
+                    fileName = file;
+                elseif strcmp(ext, '.nii')
+                    fileName = [file ext];
+                end
+                
+                files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '$']);
+                % if this comes out empty we check that it is not because
+                % we are dealing with a file that is unzipped (in case no dummy
+                % was removed and no slice timing happened, unzipping might not have happened)
+                if isempty(files)
+                    try
+                        files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '.gz$']);
+                        gunzip(files{1,1})
+                        files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '$']);
+                    catch
+                        error('Cannot find the file %s', ['^' prefix fileName '[.gz]$'])
+                    end
                 end
                 
                 matlabbatch{2}.spm.spatial.realign.estwrite.data{ses_counter} =  cellstr(files);
@@ -101,8 +137,8 @@ for iGroup= 1:length(group)                 % For each group
             end
         end
         
-        matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.quality = 0.9;
-        matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.sep = 4;
+        matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.quality = 1;
+        matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.sep = 2;
         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.fwhm = 5;
         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.rtm = 1;
         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.interp = 2;
@@ -145,19 +181,19 @@ for iGroup= 1:length(group)                 % For each group
         
         % OTHER IMAGES : DEPENDENCY FROM REALIGNEMENT ('Realign: Estimate & Reslice: Realigned Images (Sess 1 to N)')
         % files %%
-        for ises = 1:ses_counter-1 % '-1' because I added 1 extra session to ses_counter
-            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises) = cfg_dep;
-            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).tname = 'Other Images';
-            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).tgt_spec{1}(1).name = 'filter';
-            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).tgt_spec{1}(1).value = 'image';
-            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).tgt_spec{1}(2).name = 'strtype';
-            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).tgt_spec{1}(2).value = 'e';
-            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).sname = ...
-                ['Realign: Estimate & Reslice: Realigned Images (Sess ' (ises) ')'];
-            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).src_exbranch = ...
+        for iSes = 1:ses_counter-1 % '-1' because I added 1 extra session to ses_counter
+            matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes) = cfg_dep;
+            matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tname = 'Other Images';
+            matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(1).name = 'filter';
+            matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(1).value = 'image';
+            matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(2).name = 'strtype';
+            matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(2).value = 'e';
+            matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).sname = ...
+                ['Realign: Estimate & Reslice: Realigned Images (Sess ' (iSes) ')'];
+            matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).src_exbranch = ...
                 substruct('.','val', '{}',{2}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1});
-            matlabbatch{3}.spm.spatial.coreg.estimate.other(ises).src_output = ...
-                substruct('.','sess', '()',{ises}, '.','cfiles');
+            matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).src_output = ...
+                substruct('.','sess', '()',{iSes}, '.','cfiles');
         end
         % estimation options
         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.cost_fun = 'nmi';
