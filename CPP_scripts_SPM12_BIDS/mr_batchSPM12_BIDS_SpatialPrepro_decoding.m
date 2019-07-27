@@ -124,6 +124,11 @@ for iGroup= 1:length(group)                 % For each group
                     fileName = [file ext];
                 end
                 
+                % get native resolution to reuse it at normalisation;
+                hdr = spm_vol(fullfile(subFuncDataDir,fileName));
+                voxDim = diag(hdr(1).mat);
+                voxDim = abs(voxDim(1:3)');
+                
                 files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '$']);
                 % if this comes out empty we check that it is not because
                 % we are dealing with a file that is unzipped (in case no dummy
