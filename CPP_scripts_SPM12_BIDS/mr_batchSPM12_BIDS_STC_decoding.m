@@ -63,7 +63,7 @@ WD = pwd;
 [group, opt, BIDS] = getData(opt);
 
 % only run STC if we have a slice timing in metadata
-if ~isfield(opt.metadata, 'SliceTiming') || isemtpy(opt.metadata.SliceTiming)
+if ~isfield(opt.metadata, 'SliceTiming') || isempty(opt.metadata.SliceTiming)
     fprintf(1,'SKIPPING SLICE TIME CORRECTION: no slice timing specified.\n')
 else
     % prefix of the files to look for
@@ -124,8 +124,13 @@ else
             sessions = spm_BIDS(BIDS, 'sessions', ...
                 'sub', subNumber, ...
                 'task', opt.taskName);
+            numSessions = size(sessions,2);
+            if numSessions==0
+                numSessions = 1;
+                sessions = {''};
+            end
             
-            for iSes = 1:size(sessions,2)
+            for iSes = 1:numSessions
                 
                 % get all runs for that subject across all sessions
                 runs = spm_BIDS(BIDS, 'runs', ...

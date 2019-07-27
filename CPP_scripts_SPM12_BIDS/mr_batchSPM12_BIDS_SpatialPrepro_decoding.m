@@ -1,4 +1,4 @@
-function mr_batchSPM12_BIDS_SpatialPrepro_decoding
+function mr_batchSPM12_BIDS_SpatialPrepro_decoding(opt)
 %% The scripts performs spatial preprocessing of the functional and structural data.
 % The structural data are segmented and normalized to MNI space.
 % The functional data are re-aligned, coregistered with the structural and
@@ -24,7 +24,7 @@ if isfield(opt, 'numDummies') && opt.numDummies>0
 else
     prefix = '';
 end
-if isfield(opt.metadata, 'SliceTiming') && ~isemtpy(opt.metadata.SliceTiming)
+if isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)
     prefix = [prefix opt.STC_prefix];
 end
 
@@ -34,9 +34,25 @@ for iGroup= 1:length(group)                 % For each group
     
     for iSub = 1:group(iGroup).numSub       % For each Subject in the group
         
-        subNumber = group(iGroup).subNumber(iSub) ;  % Get the Subject ID
+        % Get the ID of the subject
+        %(i.e SubNumber doesnt have to match the iSub if one subject is exluded for any reason)
+        subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
+        fprintf(1,' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',groupName,iSub,subNumber)
         
-        fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',groupName,iSub,subNumber)
+        sessions = spm_BIDS(BIDS, 'sessions', ...
+            'sub', subNumber, ...
+            'task', opt.taskName);
+        numSessions = size(sessions,2);
+        if numSessions==0
+            numSessions = 1;
+            sessions = {''};
+        end
+        
+        % get all runs for that subject across all sessions
+        runs = spm_BIDS(BIDS, 'data', ...
+            'sub', subNumber, ...
+            'ses', sessions{1}, ...
+            'type', 'T1w');
         
         %% Structural file directory
         subStrucDataDir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',subNumber)],['ses-',sprintf('%02d',StructSession)],'anat');
