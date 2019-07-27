@@ -103,6 +103,8 @@ if isfield(opt.metadata, 'SliceTiming')
     %% Loop through the groups, subjects, and sessions
     % For each group
     
+    fprintf(1,'DOING SLICE TIME CORRECTION\n')
+    
     for iGroup= 1:length(group)
         groupName = group(iGroup).name ;     % Get the group name
         
@@ -141,18 +143,24 @@ if isfield(opt.metadata, 'SliceTiming')
                 end
                 
                 files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '$']);
-                % If more than 1 run, get the functional files that contain the run number in the name
-                if numRuns==1
-                    files{1,1} = fullfile(SubFuncDataDir,...
-                        ['dr_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_bold.nii']);
-                elseif numRuns >1
-                    files{1,1} = fullfile(SubFuncDataDir,...
-                        ['dr_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_run-',sprintf('%02d',iRun),'_bold.nii']);
+                % if this comes out empty we check that it is not because
+                % we are dealing with a file that is ziipped (in case no dummy 
+                % was removed, unzipping might not have happened)
+                if isemtpy(files)
+                    try
+                        files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '.gz$']);
+                        gunzip(files{1,1})
+                        files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '$']);
+                    catch
+                        error('Cannot find the file %s', ['^' prefix fileName '[.gz]$'])
+                    end
                 end
 
                 % add the file to the list
                 matlabbatch{1}.spm.temporal.st.scans{iRun} =  cellstr(files);
                 
+                % print out to screen files to process
+                disp(files{1})
                 
             end
 
