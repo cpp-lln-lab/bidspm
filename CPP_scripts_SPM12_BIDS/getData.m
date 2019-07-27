@@ -5,9 +5,6 @@ function [group, opt, BIDS] = getData(opt)
 % The directory where the derivatives are located
 derivativesDir = opt.derivativesDir;
 
-% Name of the task
-taskName = opt.taskName;
-
 BIDS = spm_BIDS(derivativesDir);
 
 subjects = spm_BIDS(BIDS, 'subjects');
@@ -19,8 +16,8 @@ for iGroup = 1:numel(opt.groups)
     
     idx = strfind(subjects, group(iGroup).name);
     idx = find(cell2mat(idx));
-    group(iGroup).SubNumber = subjects(idx);                            % SUBJECT ID .. con01 , con02 , etc.
-    group(iGroup).numSub = length(group(1).SubNumber) ;                 % Number of subjects in the group
+    group(iGroup).subNumber = subjects(idx);                            % SUBJECT ID .. con01 , con02 , etc.
+    group(iGroup).numSub = length(group(1).subNumber) ;                 % Number of subjects in the group
 end
 
 

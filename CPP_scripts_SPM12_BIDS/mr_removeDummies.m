@@ -13,7 +13,7 @@ WD = pwd;
 
 numDummies = opt.numDummies;
 
-if numDummies<=0 || isempty(numDummies)
+if numDummies<=0 || isempty(numDummies) % only run if a non null number of dummies is specified
     return
 else
     
@@ -24,22 +24,24 @@ else
         groupName = group(iGroup).name ;    % Get the group name
         
         for iSub = 1:group(iGroup).numSub   % For each Subject in the group
-            SubNumber = group(iGroup).SubNumber{iSub} ; % Get the subject ID
+            subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
             
-            runs = spm_BIDS(BIDS, 'runs', 'sub', SubNumber, 'task', opt.taskName);
+            runs = spm_BIDS(BIDS, 'runs', 'sub', subNumber, 'task', opt.taskName);
             numRuns = size(runs,2);     % Get the number of runs
             
             for iRun = 1:numRuns                       % For each Run
                 
                 fprintf(1,' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s RUN: %i \n',...
-                    groupName,iSub,SubNumber,iRun)
+                    groupName,iSub,subNumber,iRun)
                 
+                % get the filename for this bold run for this task
                 fileName = spm_BIDS(BIDS, 'data', ...
-                    'sub', SubNumber, ...
+                    'sub', subNumber, ...
                     'run', runs{iRun}, ...
                     'task', opt.taskName, ...
                     'type', 'bold');
                 
+                % get fullpath of the file
                 fileName = fileName{1};
                 [path, file, ext] = spm_fileparts(fileName);
                 fileName = [file ext];
@@ -68,7 +70,6 @@ else
                 n_noDummies.img = n_noDummies.img(:,:,:,numDummies+1:end);
                 n_noDummies.hdr.dime.dim(5) = size(n_noDummies.img,4);   % Change the dimension in the header
                 save_untouch_nii(n_noDummies,['dr_',fileName(1:end-3)])  % dr : dummies removed
-                
                 
             end
         end
