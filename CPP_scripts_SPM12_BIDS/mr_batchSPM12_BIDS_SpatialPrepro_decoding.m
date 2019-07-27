@@ -11,13 +11,12 @@ SPM_LOCATION = spm('dir');
 WD = pwd;
 
 % load the subjects/Groups information and the task name
-[derivativesDir,taskName,group] = getData();
+[group, opt, BIDS] = getData(opt);
 
 % Indicate which session the structural data was collected
 StructSession = 1;
 
-% The output directory for saving the JOBS files
-JOBS_dir = fullfile(derivativesDir,'JOBS',taskName);
+matlabbatch = [];
 
 matlabbatch = [];
 
@@ -270,11 +269,11 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{9}.spm.spatial.normalise.write.woptions.prefix = 'w';
         
         % SAVING JOBS
-        if ~exist(JOBS_dir,'dir')
-            mkdir(JOBS_dir)
-        end
-        cd(JOBS_dir)
-        eval (['save jobs_SpatialPrepocess_matlabbatch_SPM12'])
+        %Create the JOBS directory if it doesnt exist
+        JOBS_dir = fullfile(SubFuncDataDir, opt.JOBS_dir);
+        [~, ~, ~] = mkdir(JOBS_dir);
+        
+        save(fullfile(JOBS_dir, 'jobs_SpatialPrepocess_matlabbatch_SPM12.mat'), 'matlabbatch') % save the matlabbatch
         spm_jobman('run',matlabbatch)
         
         
