@@ -5,7 +5,7 @@ function mr_batchSPM12_BIDS_SpatialPrepro_decoding
 % normalized to MNI space.
 
 
-SPM_LOCATION = spm('dir');
+spmLocation = spm('dir');
 
 % Get the working directory
 WD = pwd;
@@ -31,23 +31,24 @@ end
 %% Loop through the groups, subjects, and sessions
 for iGroup= 1:length(group)                 % For each group
     groupName = group(iGroup).name ;        % Get the group name
+    
     for iSub = 1:group(iGroup).numSub       % For each Subject in the group
         
-        SubNumber = group(iGroup).SubNumber(iSub) ;  % Get the Subject ID
+        subNumber = group(iGroup).subNumber(iSub) ;  % Get the Subject ID
         
-        fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',groupName,iSub,SubNumber)
+        fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',groupName,iSub,subNumber)
         
         %% Structural file directory
-        SubStrucDataDir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',SubNumber)],['ses-',sprintf('%02d',StructSession)],'anat');
+        subStrucDataDir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',subNumber)],['ses-',sprintf('%02d',StructSession)],'anat');
         
         %unzip nii.gz structural file to be read by SPM
-        struct = fullfile(SubStrucDataDir,['sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',StructSession),'_T1w.nii.gz']) ;
+        struct = fullfile(subStrucDataDir,['sub-',groupName,sprintf('%02d',subNumber),'_ses-',sprintf('%02d',StructSession),'_T1w.nii.gz']) ;
         struct = load_untouch_nii(struct) ;
-        save_untouch_nii(struct,fullfile(SubStrucDataDir,['sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',StructSession),'_T1w.nii'])) ;
+        save_untouch_nii(struct,fullfile(subStrucDataDir,['sub-',groupName,sprintf('%02d',subNumber),'_ses-',sprintf('%02d',StructSession),'_T1w.nii'])) ;
         
         % NAMED FILE SELECTOR
         matlabbatch{1}.cfg_basicio.cfg_named_file.name = 'Structural';
-        [structImage] = fullfile(SubStrucDataDir,['sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',StructSession),'_T1w.nii']) ;
+        [structImage] = fullfile(subStrucDataDir,['sub-',groupName,sprintf('%02d',subNumber),'_ses-',sprintf('%02d',StructSession),'_T1w.nii']) ;
         matlabbatch{1}.cfg_basicio.cfg_named_file.files = { {structImage} };
         
         %% REALIGN
@@ -58,7 +59,7 @@ for iGroup= 1:length(group)                 % For each group
         for ises = 1:numSessions                     % For each session
             
             % Define the functional data directory
-            SubFuncDataDir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',SubNumber)],['ses-',sprintf('%02d',ises)],'func');
+            subFuncDataDir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',subNumber)],['ses-',sprintf('%02d',ises)],'func');
             
             % Get the number of runs of this session in this subject in this Group
             numRuns = group(iGroup).numRuns(iSub);
@@ -67,11 +68,11 @@ for iGroup= 1:length(group)                 % For each group
                 % If there is 1 run, get the functional files (note that the name does not contain -run-01)
                 % If more than 1 run, get the functional files that contain the run number in the name
                 if numRuns==1
-                    files{1,1} = fullfile(SubFuncDataDir,...
-                        ['adr_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_bold.nii']);
+                    files{1,1} = fullfile(subFuncDataDir,...
+                        ['adr_sub-',groupName,sprintf('%02d',subNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_bold.nii']);
                 elseif numRuns >1
-                    files{1,1} = fullfile(SubFuncDataDir,...
-                        ['adr_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_run-',sprintf('%02d',iRun),'_bold.nii']);
+                    files{1,1} = fullfile(subFuncDataDir,...
+                        ['adr_sub-',groupName,sprintf('%02d',subNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_run-',sprintf('%02d',iRun),'_bold.nii']);
                 end
                 
                 matlabbatch{2}.spm.spatial.realign.estwrite.data{ses_counter} =  cellstr(files);
@@ -166,27 +167,27 @@ for iGroup= 1:length(group)                 % For each group
         
         % CREATE SEGMENTS IN NATIVE SPACE OF GM,WM AND CSF (CSF - in case I want to compute TIV later - stefbenet)
         
-        matlabbatch{4}.spm.spatial.preproc.tissue(1).tpm = {[SPM_LOCATION,'tpm/TPM.nii,1']};
+        matlabbatch{4}.spm.spatial.preproc.tissue(1).tpm = {[spmLocation,'tpm/TPM.nii,1']};
         matlabbatch{4}.spm.spatial.preproc.tissue(1).ngaus = 1;
         matlabbatch{4}.spm.spatial.preproc.tissue(1).native = [1 1];
         matlabbatch{4}.spm.spatial.preproc.tissue(1).warped = [0 0];
-        matlabbatch{4}.spm.spatial.preproc.tissue(2).tpm = {[SPM_LOCATION,'tpm/TPM.nii,2']};
+        matlabbatch{4}.spm.spatial.preproc.tissue(2).tpm = {[spmLocation,'tpm/TPM.nii,2']};
         matlabbatch{4}.spm.spatial.preproc.tissue(2).ngaus = 1;
         matlabbatch{4}.spm.spatial.preproc.tissue(2).native = [1 1];
         matlabbatch{4}.spm.spatial.preproc.tissue(2).warped = [0 0];
-        matlabbatch{4}.spm.spatial.preproc.tissue(3).tpm = {[SPM_LOCATION,'tpm/TPM.nii,3']};
+        matlabbatch{4}.spm.spatial.preproc.tissue(3).tpm = {[spmLocation,'tpm/TPM.nii,3']};
         matlabbatch{4}.spm.spatial.preproc.tissue(3).ngaus = 2;
         matlabbatch{4}.spm.spatial.preproc.tissue(3).native = [1 1];
         matlabbatch{4}.spm.spatial.preproc.tissue(3).warped = [0 0];
-        matlabbatch{4}.spm.spatial.preproc.tissue(4).tpm = {[SPM_LOCATION,'tpm/TPM.nii,4']};
+        matlabbatch{4}.spm.spatial.preproc.tissue(4).tpm = {[spmLocation,'tpm/TPM.nii,4']};
         matlabbatch{4}.spm.spatial.preproc.tissue(4).ngaus = 3;
         matlabbatch{4}.spm.spatial.preproc.tissue(4).native = [0 0];
         matlabbatch{4}.spm.spatial.preproc.tissue(4).warped = [0 0];
-        matlabbatch{4}.spm.spatial.preproc.tissue(5).tpm = {[SPM_LOCATION,'tpm/TPM.nii,5']};
+        matlabbatch{4}.spm.spatial.preproc.tissue(5).tpm = {[spmLocation,'tpm/TPM.nii,5']};
         matlabbatch{4}.spm.spatial.preproc.tissue(5).ngaus = 4;
         matlabbatch{4}.spm.spatial.preproc.tissue(5).native = [0 0];
         matlabbatch{4}.spm.spatial.preproc.tissue(5).warped = [0 0];
-        matlabbatch{4}.spm.spatial.preproc.tissue(6).tpm = {[SPM_LOCATION,'tpm/TPM.nii,6']};
+        matlabbatch{4}.spm.spatial.preproc.tissue(6).tpm = {[spmLocation,'tpm/TPM.nii,6']};
         matlabbatch{4}.spm.spatial.preproc.tissue(6).ngaus = 2;
         matlabbatch{4}.spm.spatial.preproc.tissue(6).native = [0 0];
         matlabbatch{4}.spm.spatial.preproc.tissue(6).warped = [0 0];
@@ -278,7 +279,7 @@ for iGroup= 1:length(group)                 % For each group
         
         % SAVING JOBS
         %Create the JOBS directory if it doesnt exist
-        JOBS_dir = fullfile(SubFuncDataDir, opt.JOBS_dir);
+        JOBS_dir = fullfile(subFuncDataDir, opt.JOBS_dir);
         [~, ~, ~] = mkdir(JOBS_dir);
         
         save(fullfile(JOBS_dir, 'jobs_SpatialPrepocess_matlabbatch_SPM12.mat'), 'matlabbatch') % save the matlabbatch
