@@ -66,9 +66,6 @@ if isfield(opt, 'numDummies')
                             'task', opt.taskName, ...
                             'type', 'bold');
                         
-                        if isempty(fileName)
-                            warning('WTF?')
-                        end
                         disp(fileName)
                         
                         % get fullpath of the file
