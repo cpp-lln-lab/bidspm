@@ -61,9 +61,6 @@ if isfield(opt, 'numDummies')
                             'task', opt.taskName, ...
                             'type', 'bold');
                         
-                        if isempty(fileName)
-                            warning('WTF?')
-                        end
                         disp(fileName)
                         
                         % get fullpath of the file
@@ -79,9 +76,8 @@ if isfield(opt, 'numDummies')
                         
                         % Create a dummies folder if it doesnt exist
                         dummiesOuputDir = fullfile(path,'dummies');
-                        if ~exist(dummiesOuputDir,'dir')
-                            mkdir(dummiesOuputDir)
-                        end
+                        [~, ~, ~] =  mkdir(dummiesOuputDir);
+
                         
                         %% Create the dummies 4D files and save it
                         n_dummies = n ;
