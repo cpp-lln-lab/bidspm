@@ -4,10 +4,8 @@ function mr_batchSPM12_BIDS_SpatialPrepro_decoding
 % The functional data are re-aligned, coregistered with the structural and
 % normalized to MNI space.
 
-% NOTE : IN THE SEGMENT SECTION, YOU NEED TO CHANGE THE PATH TO YOU SPM
-% FOLDER LOCATION ON YOUR COMPUTER
-SPM_LOCATION = '/Users/mohamed/Documents/MATLAB/Toolboxes_unused/spm12/';
 
+SPM_LOCATION = spm('dir');
 
 % Get the working directory
 WD = pwd;
