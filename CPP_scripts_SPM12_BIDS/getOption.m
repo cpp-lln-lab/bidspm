@@ -31,10 +31,10 @@ opt.STC_referenceSlice = []; % reference slice: middle acquired slice (NOTE: Mid
 opt.STC_prefix = 'a';
 
 % Options for normalize
-opt.realign_prefix = 'w';
+opt.realign_prefix = 'r';
 
 % Options for realign
-opt.norm_prefix = 'r';
+opt.norm_prefix = 'w';
 
 % suffix output directory for the saved jobs
 opt.JOBS_dir = fullfile('JOBS',opt.taskName);
