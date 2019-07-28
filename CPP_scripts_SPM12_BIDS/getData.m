@@ -1,41 +1,41 @@
-function [derivativesDir,taskName,group] = getData()
+function [group, opt, BIDS] = getData(opt)
 % The following structure will be the base that the scripts will use to run
 % the preprocessing pipeline according to the BIDS Structure
 
 % The directory where the derivatives are located
-derivativesDir = '/Data/CrossMot_BIDS/derivatives';
-% Name of the task
-taskName = 'decoding';      
+derivativesDir = opt.derivativesDir;
 
-% Number of Sessions for each subject
-NumberSessions = 1;
-% Number of Runs for each subject
-NumberRuns = 12;
+BIDS = spm_BIDS(derivativesDir);
 
-% ADD the different groups in your experiment
+subjects = spm_BIDS(BIDS, 'subjects');
+
+% Add the different groups in your experiment
 %% GROUP 1
-group(1).name = 'con';                                         % NAME OF THE GROUP
-group(1).SubNumber = 1:4 ;                                     % SUBJECT ID .. con01 , con02 , etc. 
-group(1).numSub = length(group(1).SubNumber) ;                 % Number of subjects in the group
-group(1).numSess = ones(1,group(1).numSub) * NumberSessions ;  % Number of sessions in each subject
-group(1).numRuns = ones(1,group(1).numSub) * NumberRuns ;      % Number of runs in each subject
+for iGroup = 1:numel(opt.groups)
+    group(iGroup).name = opt.groups{iGroup};                            % NAME OF THE GROUP %#ok<*AGROW>
+    
+    
+    % we figure out which subjects to take
+    % if not specified take all
+    if isfield(opt,'subjects') && ~isempty(opt.subjects{iGroup})
+        idx = opt.subjects{iGroup};
+    else
+        % in case no group was specified (e.g. sub-01) we need a way to still
+        % get the subjects ID
+        if strcmp(group(iGroup).name, '')
+            idx = 1:size(subjects,2);
+        else
+            idx = strfind(subjects, group(iGroup).name);
+            idx = find(cell2mat(idx));
+        end
+    end
+    
+    group(iGroup).subNumber = subjects(idx);                            % SUBJECT ID .. con01 , con02 , etc.
+    group(iGroup).numSub = length(group(1).subNumber) ;                 % Number of subjects in the group
+    
+    fprintf(1,'WILL WORK ON SUBJECTS\n')
+    disp(group(iGroup).subNumber)
+end
 
-
-
-% %% GROUP2
-% group(1).name = 'con';
-% group(1).SubNumber = 1:2 ; %1:4 %[1:13];  % Total 13
-% group(1).numSub = length(group(1).SubNumber) ;
-% group(1).numSess = ones(1,group(1).numSub) * NumberSessions ;
-% group(1).numRuns = ones(1,group(1).numSub) * NumberRuns ;
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                                                      %
-%   IF THE NUMBER OF RUNS IS NOT THE SAME ACROSS PARTICIPANTS, THE     %
-%   "group(1).numRuns" should be edited and corrected accordingly.     %
-%                                                                      %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 end

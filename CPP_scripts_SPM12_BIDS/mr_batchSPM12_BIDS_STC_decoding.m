@@ -45,27 +45,16 @@ WD = pwd;
 % load the subjects/Groups information and the task name
 [derivativesDir,taskName,group] = getData();
 
-% output directory for the saved jobs
-JOBS_dir = fullfile(derivativesDir,'JOBS',taskName);
-
-% clear/initiate matlabbatch
-matlabbatch = [];
-
-%% load the json file to extract acquisition parameters
-cd (derivativesDir)
-json_file = ['task-',taskName,'_bold.json'];
-j = spm_jsonread(json_file);
-
-TR = j.RepetitionTime ; %2.2;
-%nslices = length(j.SliceTiming);
-nslices = str2num(j.NumSlices);
-TA = TR - (TR/nslices);
-referenceSlice = 2; %ceil(nslices/2) ;
-
-%% Loop through the groups, subjects, and sessions
-% For each group
-for iGroup= 1:length(group)
-    groupName = group(iGroup).name ;     % Get the group name
+% only run STC if we have a slice timing in metadata
+if ~isfield(opt.metadata, 'SliceTiming') || isempty(opt.metadata.SliceTiming)
+    fprintf(1,'SKIPPING SLICE TIME CORRECTION: no slice timing specified.\n')
+else
+    % prefix of the files to look for
+    if isfield(opt, 'numDummies') && opt.numDummies>0
+        prefix = opt.dummy_prefix;
+    else
+        prefix = '';
+    end
     
     for iSub = 1:group(iGroup).numSub    % For each subject in the group
         
