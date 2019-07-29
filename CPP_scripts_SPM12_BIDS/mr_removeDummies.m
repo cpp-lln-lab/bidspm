@@ -26,7 +26,11 @@ WD = pwd;
 
 fprintf(1,'REMOVING DUMMIES\n')
 
-if isfield(opt, 'numDummies')
+if ~isfield(opt, 'numDummies')
+    
+    error('Number of dummies is not specified!! Leave opt.numDummies empty if you just want to unzip files.')
+    
+else
 
     numDummies = opt.numDummies; % Number of dummies
 
@@ -109,7 +113,6 @@ if isfield(opt, 'numDummies')
     end
 
     cd(WD)
-else
-    error('Number of dummies is not specified!!')
+
 end
 end
