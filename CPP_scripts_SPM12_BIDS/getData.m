@@ -12,7 +12,7 @@ BIDS = spm_BIDS(derivativesDir);
 % get IDs of all subjects
 subjects = spm_BIDS(BIDS, 'subjects');
 
-% get metadata for bold runs for that task 
+% get metadata for bold runs for that task
 % we take those from the first run of the first subject assuming it can
 % apply to all others.
 metadata = spm_BIDS(BIDS, 'metadata', ...
@@ -25,8 +25,8 @@ opt.metadata = metadata{1};
 %% GROUP 1
 for iGroup = 1:numel(opt.groups)
     group(iGroup).name = opt.groups{iGroup};                            % NAME OF THE GROUP %#ok<*AGROW>
-    
-    
+
+
     % we figure out which subjects to take
     % if not specified take all
     if isfield(opt,'subjects') && ~isempty(opt.subjects{iGroup})
@@ -41,10 +41,10 @@ for iGroup = 1:numel(opt.groups)
             idx = find(cell2mat(idx));
         end
     end
-    
+
     group(iGroup).subNumber = subjects(idx);                            % SUBJECT ID .. con01 , con02 , etc.
     group(iGroup).numSub = length(group(1).subNumber) ;                 % Number of subjects in the group
-    
+
     fprintf(1,'WILL WORK ON SUBJECTS\n')
     disp(group(iGroup).subNumber)
 end
