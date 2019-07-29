@@ -141,34 +141,18 @@ for iGroup= 1:length(group)
         % STC
         fprintf(1,' BUILDING STC JOB : STC\n')
         
-        sessions = spm_BIDS(BIDS, 'sessions', ...
-            'sub', subNumber, ...
-            'task', opt.taskName);
-        numSessions = size(sessions,2);
-        if numSessions==0
-            numSessions = 1;
-            sessions = {''};
-        end
+        [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
         
         for iSes = 1:numSessions    % for each session
             
             % get all runs for that subject across all sessions
-            runs = spm_BIDS(BIDS, 'runs', ...
-                'sub', subNumber, ...
-                'task', opt.taskName, ...
-                'ses', sessions{iSes}, ...
-                'type', 'bold');
-            numRuns = size(runs,2);     % Get the number of runs
+            [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
             
             for iRun = 1:numRuns                    % For each Run
                 
                 % get the filename for this bold run for this task
-                fileName = spm_BIDS(BIDS, 'data', ...
-                    'sub', subNumber, ...
-                    'run', runs{iRun}, ...
-                    'ses', sessions{iSes}, ...
-                    'task', opt.taskName, ...
-                    'type', 'bold');
+                    fileName = get_filename(BIDS, subNumber, ...
+                        sessions{iSes}, runs{iRun}, 'bold', opt);
                 
                 % get fullpath of the file
                 fileName = fileName{1};
@@ -181,9 +165,8 @@ for iGroup= 1:length(group)
                 end
                 
                 files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '$']);
-                % if this comes out empty we check that it is not because
-                % we are dealing with a file that is ziipped (in case no dummy
-                % was removed, unzipping might not have happened)
+                % if this comes out empty we throw an error so we don't
+                % have to wait for SPM to crash when running.
                 if isempty(files)
                    error('Cannot find the file %s', ['^' prefix fileName '[.gz]$'])
                 end
