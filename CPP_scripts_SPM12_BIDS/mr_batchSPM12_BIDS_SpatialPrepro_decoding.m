@@ -333,7 +333,7 @@ for iGroup= 1:length(group)                 % For each group
 
         %% SAVING JOBS
         %Create the JOBS directory if it doesnt exist
-        JOBS_dir = opt.JOBS_dir;
+        JOBS_dir = fullfile(SubFuncDataDir, opt.JOBS_dir);
         [~, ~, ~] = mkdir(JOBS_dir);
 
         save(fullfile(JOBS_dir, 'jobs_SpatialPrepocess_matlabbatch_SPM12.mat'), 'matlabbatch') % save the matlabbatch

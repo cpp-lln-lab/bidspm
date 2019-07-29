@@ -213,7 +213,7 @@ for iGroup= 1:length(group)
 
         %% SAVE THE MATLABBATCH
         %Create the JOBS directory if it doesnt exist
-        JOBS_dir = opt.JOBS_dir;
+        JOBS_dir = fullfile(SubFuncDataDir, opt.JOBS_dir);
         [~, ~, ~] = mkdir(JOBS_dir);
 
         save(fullfile(JOBS_dir, 'jobs_STC_matlabbatch.mat'), 'matlabbatch') % save the matlabbatch

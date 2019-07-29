@@ -34,7 +34,7 @@ opt.realign_prefix = 'r';
 opt.norm_prefix = 'w';
 
 % suffix output directory for the saved jobs
-opt.JOBS_dir = fullfile(opt.derivativesDir,'JOBS',opt.taskName);
+opt.JOBS_dir = fullfile('JOBS',opt.taskName);
 
 %% SLICE TIMING INFORMATION
 % TO BE USED ONLY IF SPM_BIDS CANT EXTRACT SLICE INFORMATION
