@@ -135,15 +135,9 @@ for iGroup= 1:length(group)                 % For each group
                 % if this comes out empty we check that it is not because
                 % we are dealing with a file that is unzipped (in case no dummy
                 % was removed and no slice timing happened, unzipping might not have happened)
-%                 if isempty(files)
-%                     try
-%                         files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '.gz$']);
-%                         gunzip(files{1,1})
-%                         files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '$']);
-%                     catch
-%                         error('Cannot find the file %s', ['^' prefix fileName '[.gz]$'])
-%                     end
-%                 end
+                if isempty(files)
+                    error('Cannot find the file %s', ['^' prefix fileName '[.gz]$'])
+                end
 
                 fprintf(1,' %s\n', files{1});
 
