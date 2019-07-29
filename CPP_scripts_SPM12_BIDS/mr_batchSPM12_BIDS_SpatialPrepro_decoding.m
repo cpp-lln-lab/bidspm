@@ -54,14 +54,7 @@ for iGroup= 1:length(group)                 % For each group
         fprintf(1,' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',groupName,iSub,subNumber)
 
         % identify sessions for this subject
-        sessions = spm_BIDS(BIDS, 'sessions', ...
-            'sub', subNumber, ...
-            'task', opt.taskName);
-        numSessions = size(sessions,2);
-        if numSessions==0
-            numSessions = 1;
-            sessions = {''};
-        end
+        [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
 
         % get all runs for that subject across all sessions
         struct = spm_BIDS(BIDS, 'data', ...
@@ -97,24 +90,15 @@ for iGroup= 1:length(group)                 % For each group
         for iSes = 1:numSessions                     % For each session
 
             % get all runs for that subject across all sessions
-            runs = spm_BIDS(BIDS, 'runs', ...
-                'sub', subNumber, ...
-                'task', opt.taskName, ...
-                'ses', sessions{iSes}, ...
-                'type', 'bold');
-            numRuns = size(runs,2);     % Get the number of runs
+            [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
 
             for iRun = 1:numRuns                     % For each run
 
                 %% THIS WHOLE SECTION IS A COPY PASTE FROM STC function: REFACTOR THIS FOR THE LOVE OF SANIY
                 % But I am tired... I will do it... later.
                 % get the filename for this bold run for this task
-                fileName = spm_BIDS(BIDS, 'data', ...
-                    'sub', subNumber, ...
-                    'run', runs{iRun}, ...
-                    'ses', sessions{iSes}, ...
-                    'task', opt.taskName, ...
-                    'type', 'bold');
+                fileName = get_filename(BIDS, subNumber, ...
+                    sessions{iSes}, runs{iRun}, 'bold', opt);
 
                 % get fullpath of the file
                 fileName = fileName{1};
@@ -132,9 +116,8 @@ for iGroup= 1:length(group)                 % For each group
                 voxDim = abs(voxDim(1:3)');
 
                 files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '$']);
-                % if this comes out empty we check that it is not because
-                % we are dealing with a file that is unzipped (in case no dummy
-                % was removed and no slice timing happened, unzipping might not have happened)
+                % if this comes out empty we throw an error so we don't
+                % have to wait for SPM to crash when running.
                 if isempty(files)
                     error('Cannot find the file %s', ['^' prefix fileName '[.gz]$'])
                 end
@@ -327,11 +310,11 @@ for iGroup= 1:length(group)                 % For each group
 
         %% SAVING JOBS
         %Create the JOBS directory if it doesnt exist
-        JOBS_dir = fullfile(SubFuncDataDir, opt.JOBS_dir);
+        JOBS_dir = fullfile(opt.JOBS_dir,subNumber);
         [~, ~, ~] = mkdir(JOBS_dir);
 
         save(fullfile(JOBS_dir, 'jobs_SpatialPrepocess_matlabbatch_SPM12.mat'), 'matlabbatch') % save the matlabbatch
-        spm_jobman('run',matlabbatch)
+     %   spm_jobman('run',matlabbatch)
 
 
     end
