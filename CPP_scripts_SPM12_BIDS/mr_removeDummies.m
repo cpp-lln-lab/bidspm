@@ -46,12 +46,7 @@ else
             for iSes = 1:numSessions    % for each session
 
                 % get all runs for that subject across all sessions
-                runs = spm_BIDS(BIDS, 'runs', ...
-                    'sub', subNumber, ...
-                    'task', opt.taskName, ...
-                    'ses', sessions{iSes}, ...
-                    'type', 'bold');
-                numRuns = size(runs,2);     % Get the number of runs
+                [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
 
                 for iRun = 1:numRuns                       % For each Run
 
