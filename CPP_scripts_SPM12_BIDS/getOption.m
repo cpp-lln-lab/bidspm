@@ -8,8 +8,8 @@ if nargin<1
 end
 
 % group of subjects to analyze
-opt.groups = {'con'};  % {'blnd', 'ctrl'};
-opt.subjects = {[1]};  % {[1:2], [1:2]};
+opt.groups = {'con'};    % {'blnd', 'ctrl'};
+opt.subjects = {[1 2]};  % {[1:2], [1:2]};
 
 % task to analyze
 opt.taskName = 'decoding';
@@ -34,7 +34,7 @@ opt.realign_prefix = 'r';
 opt.norm_prefix = 'w';
 
 % suffix output directory for the saved jobs
-opt.JOBS_dir = fullfile('JOBS',opt.taskName);
+opt.JOBS_dir = fullfile(opt.derivativesDir,'JOBS',opt.taskName);
 
 %% SLICE TIMING INFORMATION
 % TO BE USED ONLY IF SPM_BIDS CANT EXTRACT SLICE INFORMATION

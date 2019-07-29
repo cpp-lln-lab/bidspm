@@ -43,7 +43,7 @@ for iGroup = 1:numel(opt.groups)
     end
 
     group(iGroup).subNumber = subjects(idx);                            % SUBJECT ID .. con01 , con02 , etc.
-    group(iGroup).numSub = length(group(1).subNumber) ;                 % Number of subjects in the group
+    group(iGroup).numSub = length(group(iGroup).subNumber) ;            % Number of subjects in the group
 
     fprintf(1,'WILL WORK ON SUBJECTS\n')
     disp(group(iGroup).subNumber)

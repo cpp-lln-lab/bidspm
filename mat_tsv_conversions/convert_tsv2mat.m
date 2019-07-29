@@ -25,12 +25,12 @@ durations = cell(1,NumConditions) ;
 
 % for each condition
 for iCond = 1:NumConditions
-    
     % Get the index of each condition by comparing the unique names and
     % each line in the tsv files
-    idx(:,iCond) = find(strcmp(names(iCond),names_tmp)) ;
-    onsets{1,iCond} = t.onset(idx(:,iCond))'./TR ;             % Get the onset and duration of each condition
-    durations{1,iCond} = t.duration(idx(:,iCond))'./TR ;       % and divide them by the TR to get the time in TRs
+    %idx(:,iCond) = find(strcmp(names(iCond),names_tmp)) ;
+    idx{iCond,1} = find(strcmp(names(iCond),names_tmp)) ;
+    onsets{1,iCond} = t.onset(idx{iCond,1})'./TR ;             % Get the onset and duration of each condition
+    durations{1,iCond} = t.duration(idx{iCond,1})'./TR ;       % and divide them by the TR to get the time in TRs
     % rather than seconds
 end
 

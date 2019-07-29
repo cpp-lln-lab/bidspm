@@ -1,4 +1,4 @@
-function mr_batchSPM12_BIDS_FFX_decoding(action,degreeOfSmoothing)
+function mr_batchSPM12_BIDS_FFX_decoding(action,degreeOfSmoothing,opt)
 % This scripts builds up the design matrix for each subject.
 % It has to be run in 2 separate steps (action) :
 % case 1 = fMRI design and estimate
@@ -11,29 +11,48 @@ function mr_batchSPM12_BIDS_FFX_decoding(action,degreeOfSmoothing)
 % in this way we can make multiple ffx for different smoothing degrees
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Check which level of smoothing is applied
-if degreeOfSmoothing ==0       % If no smoothing applied
-    smoothOrNonSmooth = 'w';   % Take the normalized data
-elseif degreeOfSmoothing > 0   % If the smoothing is applied
-    smoothOrNonSmooth = ['s',num2str(degreeOfSmoothing),'w']; % Take the smoothed files
-elseif degreeOfSmoothing == -1 % If native space used
-    smoothOrNonSmooth = 'r';   % Take the resliced non-smoothed native space images.
+
+% if input has no opt, load the opt.mat file
+if nargin<3
+    load('opt.mat')
+    fprintf('opt.mat file loaded \n\n')
 end
 
-% Get the current working directory
+% Check which level of smoothing is applied
+if degreeOfSmoothing ==0       % If no smoothing applied
+    smoothingPrefix = '';   % Take the normalized data
+elseif degreeOfSmoothing > 0   % If the smoothing is applied
+    smoothingPrefix = ['s',num2str(degreeOfSmoothing)]; % Take the smoothed files
+end
+
+%%
+% Get current working directory
 WD = pwd;
 
 % load the subjects/Groups information and the task name
-[derivativesDir,taskName,group] = getData();
+[group, opt, BIDS] = getData(opt);
 
-%% load the json file to extract acquisition parameters
-cd (derivativesDir)
-json_file = ['task-',taskName,'_bold.json'];
-j = spm_jsonread(json_file);
-TR = j.RepetitionTime ; %2.2;
+% creates prefix to look for
+if isfield(opt, 'numDummies') && opt.numDummies>0
+    prefix = opt.dummy_prefix;
+else
+    prefix = '';
+end
+
+% Prefix for motion regressor Parameters
+MotionRegressorPrefix = [opt.STC_prefix prefix];
+
+% Check the slice timing information is not in the metadata and not added
+% manually in the opt variable.
+if (isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)) || isfield(opt,'sliceOrder')
+    prefix = [smoothingPrefix opt.norm_prefix opt.STC_prefix prefix];
+end
+
+
+% GET TR from metadata
+TR = opt.metadata.RepetitionTime;
 
 %%
-matlabbatch = [];
 
 switch action
     case 1 % fMRI design and estimate
@@ -44,21 +63,23 @@ switch action
             groupName = group(iGroup).name ;     % Get the Group name
 
             for iSub = 1:group(iGroup).numSub    % For each Subject in the group
-                SubNumber = group(iGroup).SubNumber(iSub) ;   % Get the Subject ID
-
-                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',groupName,iSub,SubNumber)
 
                 files = [] ;
                 condfiles = [];
                 matlabbatch = [];
+
+                subNumber = group(iGroup).subNumber{iSub} ;   % Get the Subject ID
+
+                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',groupName,iSub,subNumber)
+
                 matlabbatch{1}.spm.stats.fmri_spec.timing.units = 'scans';
                 matlabbatch{1}.spm.stats.fmri_spec.timing.RT = TR ;
                 matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t = 16;
                 matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = 1;
 
                 % The Directory to save the FFX files (Create it if it doesnt exist)
-                ffx_dir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',SubNumber)],['ses-',sprintf('%02d',1)],...
-                    ['ffx_',taskName],['ffx_',num2str(degreeOfSmoothing),'/']);%% change according to files
+                ffx_dir = fullfile(opt.derivativesDir,['sub-',subNumber],['ses-01'],['ffx_',opt.taskName],['ffx_',num2str(degreeOfSmoothing)']);
+
                 if ~exist(ffx_dir,'dir')
                     mkdir(ffx_dir)
                 else % If it exists, issue a warning that it has been overwritten
@@ -72,39 +93,50 @@ switch action
 
                 %
                 ses_counter = 1;
-                % Get the number of sessions for that subject in that group
-                numSessions = group(iGroup).numSess(iSub);
-                for ises = 1:numSessions                        % For each session
 
-                    % Functional data directory
-                    SubFuncDataDir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',SubNumber)],['ses-',sprintf('%02d',ises)],'func');
-                    cd(SubFuncDataDir)
+                %%
+                % identify sessions for this subject
+                cd(WD);
+                [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
 
-                    % Get the number of runs in that session for that subject in that group
-                    numRuns = group(iGroup).numRuns(iSub);
+                % clear previous matlabbatch and files
+                %matlabbatch = [];
+                %allfiles=[];
+                %%
+                for iSes = 1:numSessions                        % For each session
+
+                    % get all runs for that subject across all sessions
+                    cd(WD);
+                    [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
+
+                    %numRuns = group(iGroup).numRuns(iSub);
                     for iRun = 1:numRuns                        % For each run
 
-                        fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i SESSION: %i RUN:  %i \n',groupName,iSub,SubNumber,ises,iRun)
+                        fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s SESSION: %i RUN:  %i \n',groupName,iSub,subNumber,iSes,iRun)
 
-                        % If there is 1 run, get the functional files (note that the name does not contain -run-01)
-                        % If more than 1 run, get the functional files that contain the run number in the name
-                        if numRuns==1
-                            files{ses_counter,1} = fullfile(SubFuncDataDir,...    % functional files
-                                [smoothOrNonSmooth,'adr_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_bold.nii']);
-                            % tsv file
-                            tsv_file{ses_counter,1} = ['Onset_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_events.tsv'];
-                            rp_file{ses_counter,1} = fullfile(SubFuncDataDir,...
-                                ['rp_','adr_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_bold.txt']);
-                        elseif numRuns >1
-                            files{1,1} = fullfile(SubFuncDataDir,...     % functional files
-                                [smoothOrNonSmooth,'adr_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_run-',sprintf('%02d',iRun),'_bold.nii']);
-                            % tsv file
-                            tsv_file{ses_counter,1} = ['Onset_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_run-',sprintf('%02d',iRun),'_events.tsv'];
-                            rp_file{ses_counter,1} = fullfile(SubFuncDataDir,...
-                                ['rp_','adr_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_run-',sprintf('%02d',iRun),'_bold.txt']);
 
+                        % get the filename for this bold run for this task
+                        cd(WD);
+                        fileName = get_filename(BIDS, subNumber, ...
+                            sessions{iSes}, runs{iRun}, 'bold', opt);
+
+                        % get fullpath of the file
+                        fileName = fileName{1};
+                        [subFuncDataDir, file, ext] = spm_fileparts(fileName);
+                        % get filename of the orginal file (drop the gunzip extension)
+                        if strcmp(ext, '.gz')
+                            fileName = file;
+                        elseif strcmp(ext, '.nii')
+                            fileName = [file ext];
                         end
 
+                        files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '$']);
+
+                        tsv_file{ses_counter,1} = [fileName(1:end-9),'_events.tsv'];
+                        rp_file{ses_counter,1} = fullfile(subFuncDataDir, ['rp_', MotionRegressorPrefix ,fileName(1:end-4),'.txt'])
+
+
+                        cd(subFuncDataDir)
                         % Convert the tsv files to a mat file to be used by SPM
                         convert_tsv2mat(tsv_file{ses_counter,1},TR)
 
@@ -122,7 +154,7 @@ switch action
                         % HPF
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).hpf = 128;
 
-                        ses_counter  =ses_counter +1;
+                        ses_counter = ses_counter +1;
                     end
                 end
 
@@ -148,8 +180,12 @@ switch action
                 matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;
 
 
-                cd(ffx_dir)
-                save (['jobs_ffx_',num2str(degreeOfSmoothing),'_',taskName],'matlabbatch')
+                %cd(ffx_dir)
+                %Create the JOBS directory if it doesnt exist
+                JOBS_dir = fullfile(opt.JOBS_dir,subNumber);
+                [~, ~, ~] = mkdir(JOBS_dir);
+                save(fullfile(JOBS_dir, ['jobs_ffx_',num2str(degreeOfSmoothing),'_',opt.taskName,'.mat']), 'matlabbatch') % save the matlabbatch
+
                 spm_jobman('run',matlabbatch)
 
                 cd(WD);
@@ -167,16 +203,38 @@ switch action
             groupName = group(iGroup).name ;            % Get the group name
             for iSub = 1:group(iGroup).numSub           % For each subject in the group
 
-                SubNumber = group(iGroup).SubNumber(iSub) ;  % Get the Subject ID
-                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',groupName,iSub,SubNumber)
+                matlabbatch = [];
+                subNumber = group(iGroup).subNumber{iSub} ;  % Get the Subject ID
+                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',groupName,iSub,subNumber)
+
+                JOBS_dir = fullfile(opt.JOBS_dir,subNumber);
+
+                % identify sessions for this subject
+                cd(WD);
+                [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
+
+                for iSes = 1
+                    % get all runs for that subject across all sessions
+                    [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
+                    for iRun = 1
+                        % get the filename for this bold run for this task
+                        fileName = get_filename(BIDS, subNumber, ...
+                            sessions{iSes}, runs{iRun}, 'bold', opt);
+                    end
+                end
+                % get fullpath of the file
+                fileName = fileName{1};
+                [subFuncDataDir, file, ext] = spm_fileparts(fileName);
 
                 % ffx folder
-                ffx_dir = fullfile(derivativesDir,['sub-',groupName,sprintf('%02d',SubNumber)],['ses-',sprintf('%02d',1)],...
-                    ['ffx_',taskName],['ffx_',num2str(degreeOfSmoothing),'/']);         %% change according to files
-                [C, contrastes] = pm_con(ffx_dir,taskName);                             % create contrasts
+                ffx_dir = fullfile(opt.derivativesDir,['sub-',subNumber],['ses-01'],['ffx_',opt.taskName],['ffx_',num2str(degreeOfSmoothing)']);
 
-                cd(ffx_dir)
-                load(['jobs_ffx_',num2str(degreeOfSmoothing),'_',taskName,'.mat'])   % Loading the ss's job to append the contrasts
+                cd(JOBS_dir)
+                % Create Contrasts
+                [C, contrastes] = pm_con(ffx_dir,opt.taskName,JOBS_dir);
+
+                cd(JOBS_dir)
+                load(['jobs_ffx_',num2str(degreeOfSmoothing),'_',opt.taskName,'.mat'])   % Loading the ss's job to append the contrasts
 
                 matlabbatch{3}.spm.stats.con.spmmat = cellstr(fullfile(ffx_dir,'SPM.mat'));
 
@@ -188,12 +246,13 @@ switch action
 
                 matlabbatch{3}.spm.stats.con.delete = 1;
 
-                save(['jobs_ffx_',num2str(degreeOfSmoothing),'_',taskName,'.mat'],'matlabbatch')
-
                 % Pruning the empty options
                 for ii = 1:2
                     matlabbatch(1) = []; % no curly brackets to remove array
                 end
+
+                % Save ffx matlabbatch in JOBS
+                save(fullfile(JOBS_dir, ['jobs_ffx_',num2str(degreeOfSmoothing),'_',opt.taskName,'_Contrasts.mat']), 'matlabbatch') % save the matlabbatch
 
                 spm_jobman('run',matlabbatch)
                 toc
@@ -207,7 +266,7 @@ cd(WD);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [C, contrastes] = pm_con(ffx_folder,taskName)
+function [C, contrastes] = pm_con(ffx_folder,taskName,JOBS_dir)
 % To know the names of the columns of the design matrix, type :
 % strvcat(SPM.xX.name)
 %
@@ -294,8 +353,9 @@ contrastes(line_counter).C = C(end,:);
 contrastes(line_counter).name =  'V_D - A_D';
 %end
 
-%% Save the contrasts
-save(['contrasts_ffx_',taskName,'.mat'],'contrastes')
+
+% Save contrasts in JOBS directory
+save(fullfile(JOBS_dir,['contrasts_ffx_',taskName,'.mat']),'contrastes')
 
 end
 
@@ -331,9 +391,9 @@ for iCond = 1:NumConditions
 
     % Get the index of each condition by comparing the unique names and
     % each line in the tsv files
-    idx(:,iCond) = find(strcmp(names(iCond),names_tmp)) ;
-    onsets{1,iCond} = t.onset(idx(:,iCond))'./TR ;             % Get the onset and duration of each condition
-    durations{1,iCond} = t.duration(idx(:,iCond))'./TR ;       % and divide them by the TR to get the time in TRs
+    idx{iCond,1} = find(strcmp(names(iCond),names_tmp)) ;
+    onsets{1,iCond} = t.onset(idx{iCond,1})'./TR ;             % Get the onset and duration of each condition
+    durations{1,iCond} = t.duration(idx{iCond,1})'./TR ;       % and divide them by the TR to get the time in TRs
     % rather than seconds
 end
 
