@@ -141,18 +141,24 @@ for iGroup= 1:length(group)
         % STC
         fprintf(1,' BUILDING STC JOB : STC\n')
 
+        
         [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
+        
 
         for iSes = 1:numSessions    % for each session
 
             % get all runs for that subject across all sessions
             [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
 
+
+
             for iRun = 1:numRuns                    % For each Run
 
                 % get the filename for this bold run for this task
                     fileName = get_filename(BIDS, subNumber, ...
                         sessions{iSes}, runs{iRun}, 'bold', opt);
+
+
 
                 % get fullpath of the file
                 fileName = fileName{1};

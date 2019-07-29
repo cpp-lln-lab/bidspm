@@ -26,7 +26,11 @@ WD = pwd;
 
 fprintf(1,'REMOVING DUMMIES\n')
 
-if isfield(opt, 'numDummies')
+if ~isfield(opt, 'numDummies')
+    
+    error('Number of dummies is not specified!! Leave opt.numDummies empty if you just want to unzip files.')
+    
+else
 
     numDummies = opt.numDummies; % Number of dummies
 
@@ -37,24 +41,12 @@ if isfield(opt, 'numDummies')
         for iSub = 1:group(iGroup).numSub   % For each Subject in the group
             subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
 
-            sessions = spm_BIDS(BIDS, 'sessions', ...
-                'sub', subNumber, ...
-                'task', opt.taskName);
-            numSessions = size(sessions,2);
-            if numSessions==0
-                numSessions = 1;
-                sessions = {''};
-            end
+            [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
 
             for iSes = 1:numSessions    % for each session
 
                 % get all runs for that subject across all sessions
-                runs = spm_BIDS(BIDS, 'runs', ...
-                    'sub', subNumber, ...
-                    'task', opt.taskName, ...
-                    'ses', sessions{iSes}, ...
-                    'type', 'bold');
-                numRuns = size(runs,2);     % Get the number of runs
+                [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
 
                 for iRun = 1:numRuns                       % For each Run
 
@@ -62,12 +54,8 @@ if isfield(opt, 'numDummies')
                         groupName,iSub,subNumber,iRun)
 
                     % get the filename for this bold run for this task
-                    fileName = spm_BIDS(BIDS, 'data', ...
-                        'sub', subNumber, ...
-                        'run', runs{iRun}, ...
-                        'ses', sessions{iSes}, ...
-                        'task', opt.taskName, ...
-                        'type', 'bold');
+                    fileName = get_filename(BIDS, subNumber, ...
+                        sessions{iSes}, runs{iRun}, 'bold', opt);
 
                     disp(fileName)
 
@@ -109,7 +97,6 @@ if isfield(opt, 'numDummies')
     end
 
     cd(WD)
-else
-    error('Number of dummies is not specified!!')
+
 end
 end
