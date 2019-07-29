@@ -141,14 +141,7 @@ for iGroup= 1:length(group)
         % STC
         fprintf(1,' BUILDING STC JOB : STC\n')
         
-        sessions = spm_BIDS(BIDS, 'sessions', ...
-            'sub', subNumber, ...
-            'task', opt.taskName);
-        numSessions = size(sessions,2);
-        if numSessions==0
-            numSessions = 1;
-            sessions = {''};
-        end
+        [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
         
         for iSes = 1:numSessions    % for each session
             
@@ -181,9 +174,8 @@ for iGroup= 1:length(group)
                 end
                 
                 files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '$']);
-                % if this comes out empty we check that it is not because
-                % we are dealing with a file that is ziipped (in case no dummy
-                % was removed, unzipping might not have happened)
+                % if this comes out empty we throw an error so we don't
+                % have to wait for SPM to crash when running.
                 if isempty(files)
                    error('Cannot find the file %s', ['^' prefix fileName '[.gz]$'])
                 end

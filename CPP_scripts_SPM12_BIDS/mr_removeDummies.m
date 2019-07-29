@@ -41,14 +41,7 @@ else
         for iSub = 1:group(iGroup).numSub   % For each Subject in the group
             subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
 
-            sessions = spm_BIDS(BIDS, 'sessions', ...
-                'sub', subNumber, ...
-                'task', opt.taskName);
-            numSessions = size(sessions,2);
-            if numSessions==0
-                numSessions = 1;
-                sessions = {''};
-            end
+            [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
 
             for iSes = 1:numSessions    % for each session
 
