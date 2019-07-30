@@ -1,7 +1,6 @@
 function opt = getOption()
-
-% TO DO
-% implement a way to only select some subjects from each group
+% returns a structure that contains the options chosen by the user to run
+% slice timing correction, pre-processing, FFX, RFX.
 
 if nargin<1
     opt = [];
@@ -9,6 +8,7 @@ end
 
 % group of subjects to analyze
 opt.groups = {'con'};    % {'blnd', 'ctrl'};
+% suject to run in each group
 opt.subjects = {[1 2]};  % {[1:2], [1:2]};
 
 % task to analyze

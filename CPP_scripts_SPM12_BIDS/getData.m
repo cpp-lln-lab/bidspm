@@ -1,5 +1,5 @@
 function [group, opt, BIDS] = getData(opt)
-% The following structure will be the base that the scripts will use to run
+% The following structure will be the base that the function will use to run
 % the preprocessing pipeline according to the BIDS Structure
 
 fprintf(1,'FOR TASK: %s\n', opt.taskName)
@@ -7,6 +7,7 @@ fprintf(1,'FOR TASK: %s\n', opt.taskName)
 % The directory where the derivatives are located
 derivativesDir = opt.derivativesDir;
 
+% we let SPM figure out what is in this BIDS data set
 BIDS = spm_BIDS(derivativesDir);
 
 % get IDs of all subjects
@@ -21,14 +22,11 @@ metadata = spm_BIDS(BIDS, 'metadata', ...
     'type', 'bold');
 opt.metadata = metadata{1};
 
-% Add the different groups in your experiment
-%% GROUP 1
-for iGroup = 1:numel(opt.groups)
+%% Add the different groups in the experiment
+for iGroup = 1:numel(opt.groups) % for each group
     group(iGroup).name = opt.groups{iGroup};                            % NAME OF THE GROUP %#ok<*AGROW>
 
-
-    % we figure out which subjects to take
-    % if not specified take all
+    % we figure out which subjects to take if not specified take all subjects
     if isfield(opt,'subjects') && ~isempty(opt.subjects{iGroup})
         idx = opt.subjects{iGroup};
     else
@@ -38,7 +36,7 @@ for iGroup = 1:numel(opt.groups)
             idx = 1:size(subjects,2);
         else
             idx = strfind(subjects, group(iGroup).name);
-            idx = find(cell2mat(idx));
+            idx = find(~cellfun('isempty', idx)); %#ok<STRCL1>
         end
     end
 

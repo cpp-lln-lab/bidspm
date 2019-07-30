@@ -1,3 +1,26 @@
+% TO DO
+% - implement a way to only select some subjects from each group < -- Did we
+% TEST this ????
+% - implement a way to give some specific names to each subject otherwise
+% it will always start from '01' even if the user wants to skip X subjects
+% that have alreay been processed
+% - create a function that copies the raw data into a derivatives/SPM12-CPP
+% directory (also make sure that the raw data is in read only mode)
+% - make the name of the opt.mat different for each task ????
+% - add a check to make sure that dummies are not removed AGAIN if this has
+% already been done
+% - create a function to checks options and set some defaults if none are
+% specified (could also make use some of the spm_defaults)
+% - check what happens to the getSession/Run/Filename when we play with their inputs
+% find a way to paralelize this over subjects
+% - not having slice timing specified should not return an error but only a warning:
+% make sure that this does not mess things with the prefix for realignment
+% need to change the 
+%
+% for debugging:
+%   find a way to not run some steps intead of commenting out spm_jobman
+
+
 clear
 clc
 close all
