@@ -1,6 +1,6 @@
 function mr_removeDummies(opt)
 % Removes the initial dummy scans at the beginning of the
-% acquisition to allow for the homogenization of the magnetic field. 
+% acquisition to allow for the homogenization of the magnetic field.
 % If the number of dummy specified in opt.numDummies is empty or equal to 0
 % this function will only unzip the 4D functional files. If it is not
 % specified this will return an error.
@@ -12,12 +12,6 @@ function mr_removeDummies(opt)
 % opt - options structure defined by the getOption function. If no inout is given
 % this function will attempt to load a opt.mat file in the same directory
 % to try to get some options
-
-% TO DO
-% - add a check to make sure that dummies are not removed AGAIN if this has
-% already been done
-% - create a function to checks options and set some defaults if none are
-% specified (could also make use some of the spm_defaults)
 
 
 % if input has no opt, load the opt.mat file
@@ -41,9 +35,9 @@ WD = pwd;
 fprintf(1,'REMOVING DUMMIES\n')
 
 if ~isfield(opt, 'numDummies')
-    
+
     error('Number of dummies is not specified!! Leave opt.numDummies empty if you just want to unzip files.')
-    
+
 else
 
     numDummies = opt.numDummies; % Number of dummies
