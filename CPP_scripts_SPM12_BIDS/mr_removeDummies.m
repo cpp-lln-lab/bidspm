@@ -1,15 +1,23 @@
 function mr_removeDummies(opt)
-% This scripts removes the initial dummy scans at the beginning of the
-% acquisition to allow for the homogenization of the magnetic field. The
-% script will take the 4D functional nifti images and remove the first
+% Removes the initial dummy scans at the beginning of the
+% acquisition to allow for the homogenization of the magnetic field. 
+% If the number of dummy specified in opt.numDummies is empty or equal to 0
+% this function will only unzip the 4D functional files. If it is not
+% specified this will return an error.
+% This takes the 4D functional nifti images and remove the first
 % N-volumes. The dummmies will be saved in a dummies folder and the new 4D
-% images will be saved with a prefix of 'dr_' --> Dummies Removed
+% images will be saved with the prefix prefix in getOption
+%
+% INPUT:
+% opt - options structure defined by the getOption function. If no inout is given
+% this function will attempt to load a opt.mat file in the same directory
+% to try to get some options
 
 % TO DO
 % - add a check to make sure that dummies are not removed AGAIN if this has
 % already been done
-% - can we find a way to run even if no dummy number was specified to at
-% least unzip the data ???
+% - create a function to checks options and set some defaults if none are
+% specified (could also make use some of the spm_defaults)
 
 
 % if input has no opt, load the opt.mat file
@@ -17,6 +25,12 @@ if nargin<1
     load('opt.mat')
     fprintf('opt.mat file loaded \n\n')
 end
+
+%% ADD HERE: option input check setting options defaults
+
+
+
+%%
 
 % Get the current working directory
 WD = pwd;
@@ -77,7 +91,7 @@ else
                         dummiesOuputDir = fullfile(path,'dummies');
                         [~, ~, ~] =  mkdir(dummiesOuputDir);
 
-                        %% Create the dummies 4D files and save it
+                        % Create the dummies 4D files and save it
                         n_dummies = n ;
                         n_dummies.img = n_dummies.img(:,:,:,1:numDummies);
                         n_dummies.hdr.dime.dim(5) = size(n_dummies.img,4);  % Change the dimension in the header
