@@ -11,4 +11,4 @@
 
 
 ### the CPP lab scripts for BIDS and spm12
-See the instructions [here](CPP_scripts_SPM12_BIDS\Instructions.md)
+See the instructions [here](CPP_scripts_SPM12_BIDS/Instructions.md)
