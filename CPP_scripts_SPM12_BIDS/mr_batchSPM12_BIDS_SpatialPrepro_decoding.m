@@ -3,11 +3,10 @@ function mr_batchSPM12_BIDS_SpatialPrepro_decoding(opt)
 % The structural data are segmented and normalized to MNI space.
 % The functional data are re-aligned, coregistered with the structural and
 % normalized to MNI space.
-%
-% INPUT:
-% opt - options structure defined by the getOption function. If no inout is given
-% this function will attempt to load a opt.mat file in the same directory
-% to try to get some options
+
+%% TO DO
+% find a way to paralelize this over subjects
+
 
 % if input has no opt, load the opt.mat file
 if nargin<1
@@ -62,10 +61,10 @@ for iGroup= 1:length(group)                 % For each group
             'sub', subNumber, ...
             'ses', sessions{structSession}, ...
             'type', 'T1w');
-
         % we assume that the first T1w is the correct one (could be an
         % issue for data set with more than one
         struct = struct{1};
+
 
         %% Structural file directory
         [subStrucDataDir, structFile, ext] = spm_fileparts(struct);
@@ -79,8 +78,7 @@ for iGroup= 1:length(group)                 % For each group
             [structImage] = fullfile(subStrucDataDir,[structFile ext]);
         end
 
-
-        %% NAMED FILE SELECTOR
+        % NAMED FILE SELECTOR
         matlabbatch{1}.cfg_basicio.cfg_named_file.name = 'Structural';
         matlabbatch{1}.cfg_basicio.cfg_named_file.files = { {structImage} };
 
@@ -113,10 +111,16 @@ for iGroup= 1:length(group)                 % For each group
                 end
 
                 % get native resolution to reuse it at normalisation;
-                hdr = spm_vol(fullfile(subFuncDataDir,[prefix,fileName]));  % SPM Doesnt deal with nii.gz and all our nii will be unzipped at this stage
-                voxDim = diag(hdr(1).mat);
-                voxDim = abs(voxDim(1:3)');
-
+                if ~isempty(opt.funcVoxelDims)         % If voxel dimensions is defined in the opt
+                    voxDim = opt.funcVoxelDims;        % Get the dimension values
+                else
+                    hdr = spm_vol(fullfile(subFuncDataDir,[prefix,fileName]));  % SPM Doesnt deal with nii.gz and all our nii will be unzipped at this stage
+                    voxDim = diag(hdr(1).mat);
+                    voxDim = abs(voxDim(1:3)');    % Voxel dimensions are not pure integers before reslicing, therefore
+                    voxDim = round(voxDim*10)/10;  % Round the dimensions of the functional files to the 1st decimal point
+                    opt.funcVoxelDims = voxDim ;   % Add it to opt.funcVoxelDims to have the same value for all subjects and sessions
+                end
+                
                 files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '$']);
                 % if this comes out empty we throw an error so we don't
                 % have to wait for SPM to crash when running.
@@ -144,6 +148,7 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.mask = 1;
         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.prefix = opt.realign_prefix;
+
 
 
         %% COREGISTER
@@ -196,6 +201,7 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.tol = ...
             [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.fwhm = [7 7];
+
 
 
         %% SEGMENT STRUCTURALS
@@ -254,6 +260,7 @@ for iGroup= 1:length(group)                 % For each group
         matlabbatch{4}.spm.spatial.preproc.warp.write = [1 1];
 
 
+
         %% NORMALIZE FUNCTIONALS
         fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE FUNCTIONALS\n');
 
@@ -282,7 +289,6 @@ for iGroup= 1:length(group)                 % For each group
             substruct('.','channel', '()',{1}, '.','biascorr', '()',{':'}));
         matlabbatch{6}.spm.spatial.normalise.write.woptions.vox = [1 1 1];% size 3 allow to run RunQA / original voxel size at acquisition
 
-
         % NORMALIZE GREY MATTER
         fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE GREY MATTER\n');
         matlabbatch{7}.spm.spatial.normalise.write.subj.resample(1) = ...
@@ -291,7 +297,6 @@ for iGroup= 1:length(group)                 % For each group
             substruct('.','tiss', '()',{1}, '.','c', '()',{':'}));
         matlabbatch{7}.spm.spatial.normalise.write.woptions.vox = voxDim;% size 3 allow to run RunQA / original voxel size at acquisition
 
-
         % NORMALIZE WHITE MATTER
         fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE WHITE MATTER\n');
         matlabbatch{8}.spm.spatial.normalise.write.subj.resample(1) = ...
@@ -299,7 +304,6 @@ for iGroup= 1:length(group)                 % For each group
             substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
             substruct('.','tiss', '()',{2}, '.','c', '()',{':'}));
         matlabbatch{8}.spm.spatial.normalise.write.woptions.vox = voxDim;% size 3 allow to run RunQA / original voxel size at acquisition
-
 
         % NORMALIZE CSF MATTER
         fprintf(1,' BUILDING SPATIAL JOB : NORMALIZE CSF\n');
@@ -316,7 +320,7 @@ for iGroup= 1:length(group)                 % For each group
         [~, ~, ~] = mkdir(JOBS_dir);
 
         save(fullfile(JOBS_dir, 'jobs_SpatialPrepocess_matlabbatch_SPM12.mat'), 'matlabbatch') % save the matlabbatch
-     %   spm_jobman('run',matlabbatch)
+        spm_jobman('run',matlabbatch)
 
 
     end
