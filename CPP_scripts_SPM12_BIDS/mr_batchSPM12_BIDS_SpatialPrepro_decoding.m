@@ -111,10 +111,16 @@ for iGroup= 1:length(group)                 % For each group
                 end
 
                 % get native resolution to reuse it at normalisation;
-                hdr = spm_vol(fullfile(subFuncDataDir,[prefix,fileName]));  % SPM Doesnt deal with nii.gz and all our nii will be unzipped at this stage
-                voxDim = diag(hdr(1).mat);
-                voxDim = abs(voxDim(1:3)');
-                voxDim = round(voxDim);  % TO AVOID VOXEL DIMENSIONS WITH POINTS
+                if ~isempty(opt.funcVoxelDims)         % If voxel dimensions is defined in the opt
+                    voxDim = opt.funcVoxelDims;        % Get the dimension values
+                else
+                    hdr = spm_vol(fullfile(subFuncDataDir,[prefix,fileName]));  % SPM Doesnt deal with nii.gz and all our nii will be unzipped at this stage
+                    voxDim = diag(hdr(1).mat);
+                    voxDim = abs(voxDim(1:3)');    % Voxel dimensions are not pure integers before reslicing, therefore
+                    voxDim = round(voxDim*10)/10;  % Round the dimensions of the functional files to the 1st decimal point
+                    opt.funcVoxelDims = voxDim ;   % Add it to opt.funcVoxelDims to have the same value for all subjects and sessions
+                end
+                
                 files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '$']);
                 % if this comes out empty we throw an error so we don't
                 % have to wait for SPM to crash when running.

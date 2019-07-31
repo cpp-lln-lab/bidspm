@@ -41,6 +41,7 @@ opt.JOBS_dir = fullfile(opt.derivativesDir,'JOBS',opt.taskName);
 opt.sliceOrder = [1:2:39 ,...
                   2:2:39];
 
+opt.funcVoxelDims = [2 2 2];  % Voxel dimensions of the functional data or leave empty [ ]. 
 % Save the opt variable as a mat file to load directly in the preprocessing
 % scripts
 save('opt.mat','opt')
