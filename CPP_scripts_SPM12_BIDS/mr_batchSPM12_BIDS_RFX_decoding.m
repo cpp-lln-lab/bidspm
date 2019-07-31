@@ -20,7 +20,7 @@ function mr_batchSPM12_BIDS_RFX_decoding(action,mm_Functional_Smoothing,mm_Con_S
 
 % if input has no opt, load the opt.mat file
 if nargin<4
-    load('opt.mat')
+    load('opt.mat') 
     fprintf('opt.mat file loaded \n\n')
 end
 
@@ -62,10 +62,15 @@ switch action
 
             for iSub = 1:group(iGroup).numSub   % For each subject
                 subNumber = group(iGroup).subNumber{iSub} ;   % Get the Subject ID
-                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',groupName,iSub,subNumber)
+                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',...
+                    groupName,iSub,subNumber)
 
                 % FFX Directory
-                ffx_dir = fullfile(opt.derivativesDir,['sub-',subNumber],['ses-01'],['ffx_',opt.taskName],['ffx_',num2str(mm_Functional_Smoothing)]);
+                ffx_dir = fullfile(opt.derivativesDir,...
+                    ['sub-',subNumber],...
+                    ['ses-01'],...
+                    ['ffx_',opt.taskName],...
+                    ['ffx_',num2str(mm_Functional_Smoothing)]);
 
                 cd(ffx_dir)
 
@@ -73,7 +78,8 @@ switch action
                 ConFile = dir(['con_*.nii']) ;
                 for j = 1:size(ConFile,1)
                     cont = cont +1;
-                    matlabbatch{1}.spm.spatial.smooth.data{cont,:} = [pwd '/' ConFile(j).name];
+                    matlabbatch{1}.spm.spatial.smooth.data{cont,:} = ...
+                        fullfile(pwd, ConFile(j).name);
                 end
 
 
@@ -97,7 +103,9 @@ switch action
 
         % Define the RFX folder name and create it in the derivatives
         % directory
-        RFX_FolderName = fullfile(['RFX_',opt.taskName],['RFX_FunctSmooth',num2str(mm_Functional_Smoothing),'_ConSmooth_',num2str(mm_Con_Smoothing)]) ;
+        RFX_FolderName = fullfile(['RFX_',opt.taskName],...
+            ['RFX_FunctSmooth',num2str(mm_Functional_Smoothing),...
+            '_ConSmooth_',num2str(mm_Con_Smoothing)]) ;
         cd(opt.derivativesDir)
         mkdir(RFX_FolderName)
 
@@ -114,7 +122,8 @@ switch action
                 cd(WD);
                 [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
                 for ises = 1
-                    fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',groupName,iSub,subNumber)
+                    fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',...
+                        groupName, iSub,subNumber)
 
                     cd(WD);
                     [runs, numRuns] = get_runs(BIDS, subNumber, sessions{ises}, opt);
@@ -183,17 +192,23 @@ switch action
 
             for iSub = 1:group(iGroup).numSub   % For each subject
                 subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
-                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',groupName,iSub,subNumber)
+                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',...
+                    groupName,iSub,subNumber)
 
                 % FFX DIRECTORY
-                ffx_dir = fullfile(opt.derivativesDir,['sub-',subNumber],['ses-01'],['ffx_',opt.taskName],['ffx_',num2str(mm_Functional_Smoothing)']);
+                ffx_dir = fullfile(opt.derivativesDir,...
+                    ['sub-',subNumber],...
+                    ['ses-01'],...
+                    ['ffx_',opt.taskName],...
+                    ['ffx_',num2str(mm_Functional_Smoothing)']);
 
                 cd(ffx_dir)
                 MaskFileName = dir('mask*.nii');
                 MaskFileName = MaskFileName.name;
                 MaskFile{1} =  MaskFileName;
                 subCounter = subCounter+1;
-                matlabbatch{2}.spm.util.imcalc.input{subCounter,:} = [pwd '/' MaskFile{1}];
+                matlabbatch{2}.spm.util.imcalc.input{subCounter,:} = ...
+                    fullfile(pwd, MaskFile{1});
 
             end
         end
@@ -233,10 +248,15 @@ switch action
 
                 for iSub = 1:group(iGroup).numSub       % For each subject
                     subNumber = group(iGroup).subNumber{iSub} ;  % Get the subject ID
-                    fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',groupName,iSub,subNumber)
+                    fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',...
+                        groupName,iSub,subNumber)
 
                     % FFX DIRECTORY
-                    ffx_dir = fullfile(opt.derivativesDir,['sub-',subNumber],['ses-01'],['ffx_',opt.taskName],['ffx_',num2str(mm_Functional_Smoothing)]);
+                    ffx_dir = fullfile(opt.derivativesDir,...
+                        ['sub-',subNumber],...
+                        ['ses-01'],...
+                        ['ffx_',opt.taskName],...
+                        ['ffx_',num2str(mm_Functional_Smoothing)]);
 
                     cd(ffx_dir)
 
@@ -253,7 +273,7 @@ switch action
                 end
                 c = find(a==0);
                 for pp = 1:size(c,1)
-                    matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).levels = iGroup;
+                    matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).levels = iGroup; %#ok<*AGROW>
                     matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).scans(pp,:) = {range{iGroup}.donnees{c(pp),:}}; % t1: One sample T Test - t2  Two sample T Test
                 end
 
@@ -270,7 +290,8 @@ switch action
             %matlabbatch{j}.spm.stats.factorial_design.cov = [];
             matlabbatch{j}.spm.stats.factorial_design.masking.tm.tm_none = 1;
             matlabbatch{j}.spm.stats.factorial_design.masking.im = 1;
-            matlabbatch{j}.spm.stats.factorial_design.masking.em = { fullfile(opt.derivativesDir,RFX_FolderName,'Meanmask.nii')};
+            matlabbatch{j}.spm.stats.factorial_design.masking.em = {...
+                fullfile(opt.derivativesDir,RFX_FolderName,'Meanmask.nii')};
             matlabbatch{j}.spm.stats.factorial_design.globalc.g_omit = 1;
             matlabbatch{j}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
             matlabbatch{j}.spm.stats.factorial_design.globalm.glonorm = 1;
@@ -286,7 +307,10 @@ switch action
 
             cd(fullfile(opt.derivativesDir,RFX_FolderName))
             mkdir(Session(j).con)
-            matlabbatch{j}.spm.stats.factorial_design.dir = {fullfile(opt.derivativesDir,RFX_FolderName,Session(j).con)};
+            matlabbatch{j}.spm.stats.factorial_design.dir = {...
+                fullfile(opt.derivativesDir,...
+                RFX_FolderName,...
+                Session(j).con)};
         end
 
         % Go to Jobs directory and save the matlabbatch
@@ -300,7 +324,11 @@ switch action
         fprintf(1,'BUILDING JOB: Factorial Design Estimation')
 
         for j = 1:size(Session,2)
-            matlabbatch{j}.spm.stats.fmri_est.spmmat = {fullfile(opt.derivativesDir,RFX_FolderName,Session(j).con,'SPM.mat')};
+            matlabbatch{j}.spm.stats.fmri_est.spmmat = {...
+                fullfile(opt.derivativesDir,...
+                RFX_FolderName,...
+                Session(j).con,...
+                'SPM.mat')};
             matlabbatch{j}.spm.stats.fmri_est.method.Classical = 1;
         end
 
@@ -316,7 +344,11 @@ switch action
 
         % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
         for j = 1:size(Session,2)
-            matlabbatch{j}.spm.stats.con.spmmat = {fullfile(opt.derivativesDir,RFX_FolderName,Session(j).con,'SPM.mat')};
+            matlabbatch{j}.spm.stats.con.spmmat = {...
+                fullfile(opt.derivativesDir,...
+                RFX_FolderName,...
+                Session(j).con,...
+                'SPM.mat')};
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = [1];
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
