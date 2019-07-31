@@ -57,29 +57,47 @@ TR = opt.metadata.RepetitionTime;
 switch action
     case 1 % fMRI design and estimate
         tic
-
+        
         %% Loop through the groups, subjects, and sessions
         for iGroup= 1:length(group)              % For each group
             groupName = group(iGroup).name ;     % Get the Group name
-
+            
             for iSub = 1:group(iGroup).numSub    % For each Subject in the group
-
+                
                 files = [] ;
                 condfiles = [];
                 matlabbatch = [];
-
+                
                 subNumber = group(iGroup).subNumber{iSub} ;   % Get the Subject ID
-
-                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',groupName,iSub,subNumber)
-
+                
+                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',...
+                    groupName,iSub,subNumber)
+                
                 matlabbatch{1}.spm.stats.fmri_spec.timing.units = 'scans';
                 matlabbatch{1}.spm.stats.fmri_spec.timing.RT = TR ;
+                
+                
+                
+                
+                %%% THIS HAS TO BE CHANGED TO MATCH THE OPTION USED IN SLICE
+                %%% TIMING !!!!!
+                
                 matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t = 16;
                 matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = 1;
-
+                
+                %%%
+                %%%
+                
+                
+                
+                
                 % The Directory to save the FFX files (Create it if it doesnt exist)
-                ffx_dir = fullfile(opt.derivativesDir,['sub-',subNumber],['ses-01'],['ffx_',opt.taskName],['ffx_',num2str(degreeOfSmoothing)']);
-
+                ffx_dir = fullfile(opt.derivativesDir,...
+                    ['sub-',subNumber],...
+                    ['ses-01'],...
+                    ['ffx_',opt.taskName],...
+                    ['ffx_',num2str(degreeOfSmoothing)']);
+                
                 if ~exist(ffx_dir,'dir')
                     mkdir(ffx_dir)
                 else % If it exists, issue a warning that it has been overwritten
@@ -90,36 +108,36 @@ switch action
                 matlabbatch{1}.spm.stats.fmri_spec.dir = {ffx_dir};
                 % FMRI DESIGN
                 fprintf(1,'BUILDING JOB : FMRI design\n')
-
+                
                 %
                 ses_counter = 1;
-
+                
                 %%
                 % identify sessions for this subject
                 cd(WD);
                 [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
-
+                
                 % clear previous matlabbatch and files
                 %matlabbatch = [];
                 %allfiles=[];
                 %%
                 for iSes = 1:numSessions                        % For each session
-
+                    
                     % get all runs for that subject across all sessions
                     cd(WD);
                     [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
-
+                    
                     %numRuns = group(iGroup).numRuns(iSub);
                     for iRun = 1:numRuns                        % For each run
-
+                        
                         fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s SESSION: %i RUN:  %i \n',groupName,iSub,subNumber,iSes,iRun)
-
-
+                        
+                        
                         % get the filename for this bold run for this task
                         cd(WD);
                         fileName = get_filename(BIDS, subNumber, ...
                             sessions{iSes}, runs{iRun}, 'bold', opt);
-
+                        
                         % get fullpath of the file
                         fileName = fileName{1};
                         [subFuncDataDir, file, ext] = spm_fileparts(fileName);
@@ -129,43 +147,59 @@ switch action
                         elseif strcmp(ext, '.nii')
                             fileName = [file ext];
                         end
-
+                        
                         files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '$']);
-
+                        
                         tsv_file{ses_counter,1} = [fileName(1:end-9),'_events.tsv'];
-                        rp_file{ses_counter,1} = fullfile(subFuncDataDir, ['rp_', MotionRegressorPrefix ,fileName(1:end-4),'.txt'])
-
-
+                        rp_file{ses_counter,1} = ...
+                            fullfile(subFuncDataDir, ...
+                            ['rp_', MotionRegressorPrefix ,fileName(1:end-4),'.txt']);
+                        
+                        
                         cd(subFuncDataDir)
                         % Convert the tsv files to a mat file to be used by SPM
                         convert_tsv2mat(tsv_file{ses_counter,1},TR)
-
+                        
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).scans = cellstr(files);
-
-                        condfiles = fullfile(pwd,['Onsets_',tsv_file{ses_counter,1}(1:end-4),'.mat']);
+                        
+                        condfiles = ...
+                            fullfile(pwd,['Onsets_',tsv_file{ses_counter,1}(1:end-4),'.mat']);
+                        
                         % multicondition selection
-                        matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).cond = struct('name', {}, 'onset', {}, 'duration', {});
-                        matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).multi = cellstr(condfiles(:,:));
+                        matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).cond = ...
+                            struct('name', {}, 'onset', {}, 'duration', {});
+                        matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).multi = ...
+                            cellstr(condfiles(:,:));
                         % multiregressor selection
                         %rpfile  = spm_select('List',SubFuncDataDir,char(strcat('^rp_adr_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_bold.txt$')));
-                        matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).regress = struct('name', {}, 'val', {});
-                        %matlabbatch{1}.spm.stats.fmri_spec.sess(ises).multi_reg = cellstr(fullfile(SubFuncDataDir,rpfile));
-                        matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).multi_reg = cellstr(rp_file{ses_counter,1});
-                        % HPF
+                        matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).regress = ...
+                            struct('name', {}, 'val', {});
+                        %matlabbatch{1}.spm.stats.fmri_spec.sess(ises).multi_reg = ...cellstr(fullfile(SubFuncDataDir,rpfile));
+                        matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).multi_reg = ...
+                            cellstr(rp_file{ses_counter,1});
+                        
+                        
+                        % HPF - SHOULD BE SET IN OPTIONS!!!
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).hpf = 128;
-
+                        
                         ses_counter = ses_counter +1;
                     end
                 end
-
+                
                 matlabbatch{1}.spm.stats.fmri_spec.fact = struct('name', {}, 'levels', {});
+                
+                %%% SHOULD BE SET IN OPTIONS
                 matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
+                
+                
                 matlabbatch{1}.spm.stats.fmri_spec.volt = 1;
                 matlabbatch{1}.spm.stats.fmri_spec.global = 'None';
                 matlabbatch{1}.spm.stats.fmri_spec.mask = {''};
+                
+                %%% SHOULD BE SET IN OPTIONS
                 matlabbatch{1}.spm.stats.fmri_spec.cvi = 'AR(1)';
-
-
+                
+                
                 % FMRI ESTIMATE
                 fprintf(1,'BUILDING JOB : FMRI estimate\n')
                 matlabbatch{2}.spm.stats.fmri_est.spmmat(1) = cfg_dep;
@@ -174,45 +208,51 @@ switch action
                 matlabbatch{2}.spm.stats.fmri_est.spmmat(1).tgt_spec{1}(1).value = 'mat';
                 matlabbatch{2}.spm.stats.fmri_est.spmmat(1).tgt_spec{1}(2).name = 'strtype';
                 matlabbatch{2}.spm.stats.fmri_est.spmmat(1).tgt_spec{1}(2).value = 'e';
-                matlabbatch{2}.spm.stats.fmri_est.spmmat(1).sname = 'fMRI model specification: SPM.mat File';
-                matlabbatch{2}.spm.stats.fmri_est.spmmat(1).src_exbranch = substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1});
-                matlabbatch{2}.spm.stats.fmri_est.spmmat(1).src_output = substruct('.','spmmat');
+                matlabbatch{2}.spm.stats.fmri_est.spmmat(1).sname = ...
+                    'fMRI model specification: SPM.mat File';
+                matlabbatch{2}.spm.stats.fmri_est.spmmat(1).src_exbranch = ...
+                    substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1});
+                matlabbatch{2}.spm.stats.fmri_est.spmmat(1).src_output = ...
+                    substruct('.','spmmat');
                 matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;
-
-
+                
+                
                 %cd(ffx_dir)
                 %Create the JOBS directory if it doesnt exist
                 JOBS_dir = fullfile(opt.JOBS_dir,subNumber);
                 [~, ~, ~] = mkdir(JOBS_dir);
-                save(fullfile(JOBS_dir, ['jobs_ffx_',num2str(degreeOfSmoothing),'_',opt.taskName,'.mat']), 'matlabbatch') % save the matlabbatch
-
+                save(fullfile(JOBS_dir, ['jobs_ffx_',...
+                    num2str(degreeOfSmoothing),'_',opt.taskName,'.mat']), ...
+                    'matlabbatch')
+                
                 spm_jobman('run',matlabbatch)
-
+                
                 cd(WD);
             end
         end
-
-
+        
+        
     case 2  % CONTRASTS
         tic
-
+        
         fprintf(1,'BUILDING JOB : FMRI contrasts\n')
-
+        
         %% Loop through the groups, subjects, and sessions
         for iGroup= 1:length(group)                     % For each group
             groupName = group(iGroup).name ;            % Get the group name
             for iSub = 1:group(iGroup).numSub           % For each subject in the group
-
+                
                 matlabbatch = [];
                 subNumber = group(iGroup).subNumber{iSub} ;  % Get the Subject ID
-                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',groupName,iSub,subNumber)
-
+                fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',...
+                    groupName,iSub,subNumber)
+                
                 JOBS_dir = fullfile(opt.JOBS_dir,subNumber);
-
+                
                 % identify sessions for this subject
                 cd(WD);
                 [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
-
+                
                 for iSes = 1
                     % get all runs for that subject across all sessions
                     [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
@@ -225,35 +265,38 @@ switch action
                 % get fullpath of the file
                 fileName = fileName{1};
                 [subFuncDataDir, file, ext] = spm_fileparts(fileName);
-
+                
                 % ffx folder
                 ffx_dir = fullfile(opt.derivativesDir,['sub-',subNumber],['ses-01'],['ffx_',opt.taskName],['ffx_',num2str(degreeOfSmoothing)']);
-
+                
                 cd(JOBS_dir)
                 % Create Contrasts
                 [C, contrastes] = pm_con(ffx_dir,opt.taskName,JOBS_dir);
-
+                
                 cd(JOBS_dir)
                 load(['jobs_ffx_',num2str(degreeOfSmoothing),'_',opt.taskName,'.mat'])   % Loading the ss's job to append the contrasts
-
+                
                 matlabbatch{3}.spm.stats.con.spmmat = cellstr(fullfile(ffx_dir,'SPM.mat'));
-
+                
                 for icon = 1:size(contrastes,2)
                     matlabbatch{3}.spm.stats.con.consess{icon}.tcon.name = contrastes(icon).name;
                     matlabbatch{3}.spm.stats.con.consess{icon}.tcon.convec = contrastes(icon).C;
                     matlabbatch{3}.spm.stats.con.consess{icon}.tcon.sessrep = 'none';
                 end
-
+                
                 matlabbatch{3}.spm.stats.con.delete = 1;
-
+                
                 % Pruning the empty options
                 for ii = 1:2
                     matlabbatch(1) = []; % no curly brackets to remove array
                 end
-
+                
                 % Save ffx matlabbatch in JOBS
-                save(fullfile(JOBS_dir, ['jobs_ffx_',num2str(degreeOfSmoothing),'_',opt.taskName,'_Contrasts.mat']), 'matlabbatch') % save the matlabbatch
-
+                save(fullfile(JOBS_dir, ...
+                    ['jobs_ffx_',...
+                    num2str(degreeOfSmoothing),'_',opt.taskName,'_Contrasts.mat']), ...
+                    'matlabbatch') % save the matlabbatch
+                
                 spm_jobman('run',matlabbatch)
                 toc
             end
@@ -388,7 +431,7 @@ durations = cell(1,NumConditions) ;
 
 % for each condition
 for iCond = 1:NumConditions
-
+    
     % Get the index of each condition by comparing the unique names and
     % each line in the tsv files
     idx{iCond,1} = find(strcmp(names(iCond),names_tmp)) ;

@@ -15,7 +15,6 @@
 % find a way to paralelize this over subjects
 % - not having slice timing specified should not return an error but only a warning:
 % make sure that this does not mess things with the prefix for realignment
-% need to change the 
 %
 % for debugging:
 %   find a way to not run some steps intead of commenting out spm_jobman
