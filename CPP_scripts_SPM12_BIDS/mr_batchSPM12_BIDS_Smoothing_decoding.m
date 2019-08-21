@@ -9,9 +9,6 @@ if nargin<2
     fprintf('opt.mat file loaded \n\n')
 end
 
-% define SPM folder
-spmLocation = spm('dir');
-
 % Get current working directory
 WD = pwd;
 
@@ -27,7 +24,7 @@ end
 
 % Check the slice timing information is not in the metadata and not added
 % manually in the opt variable.
-if (isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)) || isfield(opt,'sliceOrder')
+if (isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)) ||  ~isempty(opt.sliceOrder)
     prefix = [opt.norm_prefix opt.STC_prefix prefix];
 end
 
@@ -95,7 +92,7 @@ for iGroup= 1:length(group)              % For each group
     [~, ~, ~] = mkdir(JOBS_dir);
 
     save(fullfile(JOBS_dir, 'jobs_Smoothing_matlabbatch_SPM12.mat'), 'matlabbatch') % save the matlabbatch
-  %  spm_jobman('run',matlabbatch)
+    spm_jobman('run',matlabbatch)
 
     cd(WD);
     end
