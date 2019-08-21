@@ -1,4 +1,37 @@
 function spm_my_defaults
+
+global defaults
+
+% Realignment defaults
+%==========================================================================
+defaults.realign.estimate.quality = 1;
+defaults.realign.estimate.interp  = 2;
+defaults.realign.estimate.wrap    = [0 0 0];
+defaults.realign.estimate.sep     = 2;
+defaults.realign.estimate.fwhm    = 5;
+defaults.realign.estimate.rtm     = 1;
+defaults.realign.write.mask       = 1;
+defaults.realign.write.interp     = 3;
+defaults.realign.write.wrap       = [0 0 0];
+defaults.realign.write.which      = [0 1];
+
+% Coregistration defaults
+%==========================================================================
+defaults.coreg.estimate.cost_fun = 'nmi';
+defaults.coreg.estimate.sep      = [4 2];
+defaults.coreg.estimate.tol      = [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
+defaults.coreg.estimate.fwhm     = [7 7];
+
+
+% Spatial Normalisation defaults
+%==========================================================================
+defaults.normalise.write.preserve   = 0;
+defaults.normalise.write.bb         = [[-78 -112 -70];[78 76 85]];
+defaults.normalise.write.interp     = 4;
+
+
+
+
 % Set the defaults which are used by SPM
 %__________________________________________________________________________
 %
@@ -17,21 +50,9 @@ function spm_my_defaults
 % (apart from SPM internals).
 % To load the defaults, use spm('Defaults',modality).
 % To get/set the defaults, use spm_get_defaults.
-%
-%                 ** This file should not be edited **
-%__________________________________________________________________________
-% Copyright (C) 1994-2018 Wellcome Trust Centre for Neuroimaging
-
-% SPM
-% $Id: spm_defaults.m 7296 2018-04-18 10:36:49Z guillaume $
 
 
-% global defaults
-% 
-% % Command Line Usage default
-% %==========================================================================
-% defaults.cmdline  = 0;
-% 
+
 % % User Interface defaults
 % %==========================================================================
 % defaults.ui.monitor = NaN;
@@ -181,58 +202,3 @@ function spm_my_defaults
 % % Smooth defaults
 % %==========================================================================
 % defaults.smooth.fwhm = [8 8 8];
-% 
-% 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% %-Prevent users from making direct calls to spm_defaults
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% persistent runOnce
-% try
-%     if ~isdeployed && isempty(runOnce)
-%         d = dbstack;
-%         if isempty(intersect({'spm','spm_get_defaults'},{d.name}))
-%             fprintf(['Direct calls to spm_defauts are deprecated.\n' ...
-%                 'Please use spm(''Defaults'',modality) ' ...
-%                 'or spm_get_defaults instead.\n']);
-%             runOnce = 1;
-%         end
-%     end
-% end
-% 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% %-Execute user-specified defaults files
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% def = defaults;
-% user_defaults = 'spm_my_defaults.m';
-% if exist(user_defaults,'file')
-%     if isdeployed && exist(fullfile(spm('Dir'),user_defaults),'file')
-%         user_defaults_file = cellstr(fullfile(spm('Dir'),user_defaults));
-%     else
-%         user_defaults_file = cellstr(which(user_defaults,'-ALL'));
-%     end
-%     for i=1:numel(user_defaults_file)
-%         try
-%             spm('run', user_defaults_file{i});
-%         catch
-%             lr = lasterror;
-%             warning(lr.message);
-%         end
-%     end
-%     if spm_check_version('matlab','8.0') >= 0, my_isequaln = @isequaln;
-%     else my_isequaln = @isequalwithequalnans; end
-%     if ~my_isequaln(def,defaults)
-%         fprintf('Defaults settings have been modified by file(s):\n');
-%         for i=1:numel(user_defaults_file)
-%             fprintf('  %s\n',user_defaults_file{i});
-%         end
-%         fn0 = fieldnames(def);
-%         mf = fn0(~cellfun(@(x) my_isequaln(def.(x),defaults.(x)),fn0));
-%         if ~isempty(mf)
-%             fprintf('Modified fields: ');
-%             for i=1:numel(mf)
-%                 fprintf('%s ',mf{i});
-%             end
-%             fprintf('\n');
-%         end
-%     end
-% end

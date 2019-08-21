@@ -136,17 +136,7 @@ for iGroup= 1:length(group)                 % For each group
             end
         end
 
-        matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.quality = 1;
-        matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.sep = 2;
-        matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.fwhm = 5;
-        matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.rtm = 1;
-        matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.interp = 2;
-        matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.wrap = [0 0 0];
         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.weight = {''};
-        matlabbatch{2}.spm.spatial.realign.estwrite.roptions.which = [0 1];
-        matlabbatch{2}.spm.spatial.realign.estwrite.roptions.interp = 3;
-        matlabbatch{2}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
-        matlabbatch{2}.spm.spatial.realign.estwrite.roptions.mask = 1;
         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.prefix = opt.realign_prefix;
 
 
@@ -195,12 +185,6 @@ for iGroup= 1:length(group)                 % For each group
             matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).src_output = ...
                 substruct('.','sess', '()',{iSes}, '.','cfiles');
         end
-        % estimation options
-        matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.cost_fun = 'nmi';
-        matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.sep = [4 2];
-        matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.tol = ...
-            [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
-        matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.fwhm = [7 7];
 
 
 
@@ -269,8 +253,6 @@ for iGroup= 1:length(group)                 % For each group
                 cfg_dep('Segment: Forward Deformations', ...
                 substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
                 substruct('.','fordef', '()',{':'}));
-            matlabbatch{iJob}.spm.spatial.normalise.write.woptions.bb = [-78 -112 -70 ; 78 76 85];
-            matlabbatch{iJob}.spm.spatial.normalise.write.woptions.interp = 4;
             matlabbatch{iJob}.spm.spatial.normalise.write.woptions.prefix = opt.norm_prefix;
         end
 
