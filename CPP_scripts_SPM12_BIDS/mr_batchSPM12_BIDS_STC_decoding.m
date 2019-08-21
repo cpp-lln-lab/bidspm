@@ -24,23 +24,27 @@ WD = pwd;
 % load the subjects/Groups information and the task name
 [group, opt, BIDS] = getData(opt);
 
+fprintf(1,'DOING SLICE TIME CORRECTION\n')
+
 % IF slice timing is not in the metadata
 if ~isfield(opt.metadata, 'SliceTiming') || isempty(opt.metadata.SliceTiming)
-    %fprintf(1,'SKIPPING SLICE TIME CORRECTION: no slice timing specified.\n')
-    fprintf(1,'SLICE TIMING INFORMATION COULD NOT BE EXTRACTED.\n')
-    fprintf(1,'ADD IT MANUALLY TO THE opt IN THE "getOption" FUNCTION.\n\n')
+    fprintf(1,' SLICE TIMING INFORMATION COULD NOT BE EXTRACTED FROM METADATA.\n')
+    fprintf(1,' CHECKING IF SPECIFIED IN opt IN THE "getOption" FUNCTION.\n\n')
 
     % IF SLICE TIME information is not in the metadata, you have the option
     % to add the slice order manually in the "opt" in the "getOptions"
     % function
-    if isfield(opt,'sliceOrder')
+    if ~isempty(opt.sliceOrder)
         sliceOrder = opt.sliceOrder  ;
-        fprintf('SLICE TIMING INFORMATION EXTRACTED.\n')
+        fprintf(' SLICE TIMING INFORMATION EXTRACTED FROM OPTIONS.\n')
     else
-        error('SLICE TIMING INFORMATION COULD NOT BE EXTRACTED')
+        fprintf(1, ' SLICE TIMING INFORMATION COULD NOT BE EXTRACTED.\n')
+        warning('SKIPPING SLICE TIME CORRECTION: no slice timing specified.')
+        return
     end
 else % Otherwise get the slice order from the metadata
     sliceOrder = opt.metadata.SliceTiming;
+    fprintf(' SLICE TIMING INFORMATION EXTRACTED.\n')
 end
 
 % prefix of the files to look for
@@ -79,8 +83,6 @@ matlabbatch = [];
 
 %% Loop through the groups, subjects, and sessions
 % For each group
-
-fprintf(1,'DOING SLICE TIME CORRECTION\n')
 
 for iGroup= 1:length(group)
     groupName = group(iGroup).name ;     % Get the group name
@@ -149,7 +151,7 @@ for iGroup= 1:length(group)
         [~, ~, ~] = mkdir(JOBS_dir);
 
         save(fullfile(JOBS_dir, 'jobs_STC_matlabbatch.mat'), 'matlabbatch') % save the matlabbatch
-  %      spm_jobman('run',matlabbatch)
+       spm_jobman('run',matlabbatch)
 
     end
 end
