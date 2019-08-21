@@ -73,7 +73,7 @@ switch action
                 fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',...
                     groupName,iSub,subNumber)
                 
-                matlabbatch{1}.spm.stats.fmri_spec.timing.units = 'scans';
+                matlabbatch{1}.spm.stats.fmri_spec.timing.units = 'secs';
                 matlabbatch{1}.spm.stats.fmri_spec.timing.RT = TR ;
                 
                 
@@ -158,7 +158,7 @@ switch action
                         
                         cd(subFuncDataDir)
                         % Convert the tsv files to a mat file to be used by SPM
-                        convert_tsv2mat(tsv_file{ses_counter,1},TR)
+                        convert_tsv2mat(tsv_file{ses_counter,1})
                         
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).scans = cellstr(files);
                         
@@ -404,7 +404,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function convert_tsv2mat(tsv_file,TR)
+function convert_tsv2mat(tsv_file)
 %% This function takes a tsv file and converts it to an onset file suitable for SPM ffx analysis
 % The scripts extracts the conditions' names, onsets, and durations, and
 % converts them to TRs (time unit) and saves the onset file to be used for
@@ -434,14 +434,10 @@ for iCond = 1:NumConditions
     
     % Get the index of each condition by comparing the unique names and
     % each line in the tsv files
-    idx{iCond,1} = find(strcmp(names(iCond),names_tmp)) ;
-    onsets{1,iCond} = t.onset(idx{iCond,1})'./TR ;             % Get the onset and duration of each condition
-    durations{1,iCond} = t.duration(idx{iCond,1})'./TR ;       % and divide them by the TR to get the time in TRs
-    % rather than seconds
+    idx{iCond,1} = find(strcmp(names(iCond), conds)) ;
+    onsets{1,iCond} = t.onset(idx{iCond,1})' ;             % Get the onset and duration of each condition
+    durations{1,iCond} = t.duration(idx{iCond,1})' ;
 end
-
-fprintf('TR : %.4f \n', TR)
-fprintf('Onsets and durations divided by TR \n\n')
 
 % save the onsets as a matfile
 save(['Onsets_',tsv_file(1:end-4),'.mat'],'names','onsets','durations')
