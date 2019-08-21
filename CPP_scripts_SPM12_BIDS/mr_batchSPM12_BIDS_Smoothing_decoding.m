@@ -90,7 +90,7 @@ for iGroup= 1:length(group)              % For each group
 
     %% SAVE THE MATLABBATCH
     %Create the JOBS directory if it doesnt exist
-    JOBS_dir = fullfile(opt.JOBS_dir,subNumber);
+    JOBS_dir = fullfile(opt.derivativesDir, opt.JOBS_dir, subNumber);
     [~, ~, ~] = mkdir(JOBS_dir);
 
     save(fullfile(JOBS_dir, 'jobs_Smoothing_matlabbatch_SPM12.mat'), 'matlabbatch') % save the matlabbatch
