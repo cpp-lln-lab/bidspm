@@ -246,29 +246,16 @@ switch action
                 fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',...
                     groupName,iSub,subNumber)
                 
-                JOBS_dir = fullfile(opt.JOBS_dir,subNumber);
-                
-                % identify sessions for this subject
-                cd(WD);
-                [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
-                
-                for iSes = 1
-                    % get all runs for that subject across all sessions
-                    [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
-                    for iRun = 1
-                        % get the filename for this bold run for this task
-                        fileName = get_filename(BIDS, subNumber, ...
-                            sessions{iSes}, runs{iRun}, 'bold', opt);
-                    end
-                end
-                % get fullpath of the file
-                fileName = fileName{1};
-                [subFuncDataDir, file, ext] = spm_fileparts(fileName);
-                
                 % ffx folder
-                ffx_dir = fullfile(opt.derivativesDir,['sub-',subNumber],['ses-01'],['ffx_',opt.taskName],['ffx_',num2str(degreeOfSmoothing)']);
+                ffx_dir = fullfile(opt.derivativesDir,...
+                    ['sub-',subNumber],...
+                    ['stats'],...
+                    ['ffx_',opt.taskName],...
+                    ['ffx_',num2str(degreeOfSmoothing)']);
                 
+                JOBS_dir = fullfile(opt.derivativesDir, opt.JOBS_dir, subNumber);
                 cd(JOBS_dir)
+                
                 % Create Contrasts
                 [~, contrasts] = pm_con(ffx_dir,opt.taskName,JOBS_dir);
                 
