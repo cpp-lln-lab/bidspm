@@ -30,7 +30,7 @@ FWHM_1 = 6;
 URL = 'http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip';
 
 WD = pwd;
-data_path = WD;
+addpath(genpath(WD))
 
 opt = getOption();
 
@@ -66,7 +66,7 @@ cd(WD); mr_batchSPM12_BIDS_STC_decoding(opt);
 cd(WD); mr_batchSPM12_BIDS_SpatialPrepro_decoding(opt);
 cd(WD); mr_batchSPM12_BIDS_Smoothing_decoding(FWHM_1, opt);
 cd(WD); mr_batchSPM12_BIDS_FFX_decoding(1, FWHM_1, opt);
-cd(WD); mr_batchSPM12_BIDS_FFX_decoding(2, FWHM_1, opt);
+% cd(WD); mr_batchSPM12_BIDS_FFX_decoding(2, FWHM_1, opt);
 % cd(WD); mr_batchSPM12_BIDS_RFX_decoding(1,FWHM,6)
 % cd(WD); mr_batchSPM12_BIDS_RFX_decoding(2,FWHM,6)
 

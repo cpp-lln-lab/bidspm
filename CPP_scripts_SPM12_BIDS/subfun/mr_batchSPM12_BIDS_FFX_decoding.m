@@ -70,7 +70,6 @@ switch action
             for iSub = 1:group(iGroup).numSub    % For each Subject in the group
                 
                 files = [] ;
-                condfiles = [];
                 matlabbatch = [];
                 
                 subNumber = group(iGroup).subNumber{iSub} ;   % Get the Subject ID
@@ -154,7 +153,7 @@ switch action
                         
                         files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '$']);
                         
-                        tsv_file{ses_counter,1} = [fileName(1:end-9),'_events.tsv'];
+                        tsv_file{ses_counter,1} = [fileName(1:end-9),'_events.tsv']; %#ok<*AGROW>
                         rp_file{ses_counter,1} = ...
                             fullfile(subFuncDataDir, ...
                             ['rp_', MotionRegressorPrefix ,fileName(1:end-4),'.txt']);
@@ -175,16 +174,22 @@ switch action
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).multi = ...
                             cellstr(condfiles(:,:));
                         % multiregressor selection
-                        %rpfile  = spm_select('List',SubFuncDataDir,char(strcat('^rp_adr_sub-',groupName,sprintf('%02d',SubNumber),'_ses-',sprintf('%02d',ises),'_task-',taskName,'_bold.txt$')));
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).regress = ...
                             struct('name', {}, 'val', {});
-                        %matlabbatch{1}.spm.stats.fmri_spec.sess(ises).multi_reg = ...cellstr(fullfile(SubFuncDataDir,rpfile));
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).multi_reg = ...
                             cellstr(rp_file{ses_counter,1});
                         
                         
+                        
+                        
+                        
                         % HPF - SHOULD BE SET IN OPTIONS!!!
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).hpf = 128;
+                        
+                        
+                        
+                        
+                        
                         
                         ses_counter = ses_counter +1;
                     end
@@ -192,16 +197,31 @@ switch action
                 
                 matlabbatch{1}.spm.stats.fmri_spec.fact = struct('name', {}, 'levels', {});
                 
+                
+                
+                
+                
                 %%% SHOULD BE SET IN OPTIONS
                 matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
+                
+                
+                
+                
                 
                 
                 matlabbatch{1}.spm.stats.fmri_spec.volt = 1;
                 matlabbatch{1}.spm.stats.fmri_spec.global = 'None';
                 matlabbatch{1}.spm.stats.fmri_spec.mask = {''};
                 
+                
+                
+                
+                
                 %%% SHOULD BE SET IN OPTIONS
                 matlabbatch{1}.spm.stats.fmri_spec.cvi = 'AR(1)';
+                
+                
+                
                 
                 
                 % FMRI ESTIMATE
@@ -221,7 +241,6 @@ switch action
                 matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;
                 
                 
-                %cd(ffx_dir)
                 %Create the JOBS directory if it doesnt exist
                 JOBS_dir = fullfile(opt.derivativesDir, opt.JOBS_dir, subNumber);
                 [~, ~, ~] = mkdir(JOBS_dir);
@@ -302,7 +321,7 @@ cd(WD);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [C, contrastes] = pm_con(ffx_folder,taskName,JOBS_dir)
+function [C, contrasts] = pm_con(ffx_folder,taskName,JOBS_dir)
 % To know the names of the columns of the design matrix, type :
 % strvcat(SPM.xX.name)
 %
@@ -323,7 +342,7 @@ load SPM
 
 
 % C = zeros(18,size(SPM.xX.X,2));
-contrastes = struct('C',[],'name',[]);
+contrasts = struct('C',[],'name',[]);
 line_counter = 0;
 C = [];
 
@@ -337,8 +356,8 @@ for iContrast=1:size(SPM.xX.X,2)
 end
 
 line_counter = line_counter + 1;
-contrastes(line_counter).C = C(end,:);
-contrastes(line_counter).name =  'V_U';
+contrasts(line_counter).C = C(end,:);
+contrasts(line_counter).name =  'V_U';
 %end
 
 
@@ -351,8 +370,8 @@ for iContrast=1:size(SPM.xX.X,2)
 end
 
 line_counter = line_counter + 1;
-contrastes(line_counter).C = C(end,:);
-contrastes(line_counter).name =  'V_D';
+contrasts(line_counter).C = C(end,:);
+contrasts(line_counter).name =  'V_D';
 %end
 
 
@@ -365,8 +384,8 @@ for iContrast=1:size(SPM.xX.X,2)
 end
 
 line_counter = line_counter + 1;
-contrastes(line_counter).C = C(end,:);
-contrastes(line_counter).name =  'A_D';
+contrasts(line_counter).C = C(end,:);
+contrasts(line_counter).name =  'A_D';
 %end
 
 %%
@@ -385,13 +404,13 @@ for iContrast=1:size(SPM.xX.X,2)
 end
 
 line_counter = line_counter + 1;
-contrastes(line_counter).C = C(end,:);
-contrastes(line_counter).name =  'V_D - A_D';
+contrasts(line_counter).C = C(end,:);
+contrasts(line_counter).name =  'V_D - A_D';
 %end
 
 
 % Save contrasts in JOBS directory
-save(fullfile(JOBS_dir,['contrasts_ffx_',taskName,'.mat']),'contrastes')
+save(fullfile(JOBS_dir,['contrasts_ffx_',taskName,'.mat']),'contrasts')
 
 end
 
