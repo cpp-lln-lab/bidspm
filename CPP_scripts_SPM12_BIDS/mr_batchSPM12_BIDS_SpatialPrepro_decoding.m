@@ -35,7 +35,7 @@ end
 
 % Check the slice timing information is not in the metadata and not added
 % manually in the opt variable.
-if (isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)) || isfield(opt,'sliceOrder')
+if (isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)) || ~isempty(opt.sliceOrder)
     prefix = [opt.STC_prefix prefix];
 end
 
