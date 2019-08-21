@@ -26,6 +26,8 @@ end
 % manually in the opt variable.
 if (isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)) ||  ~isempty(opt.sliceOrder)
     prefix = [opt.norm_prefix opt.STC_prefix prefix];
+else
+    prefix = opt.norm_prefix;
 end
 
 
