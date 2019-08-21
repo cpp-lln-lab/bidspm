@@ -127,7 +127,6 @@ switch action
                     cd(WD);
                     [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
                     
-                    %numRuns = group(iGroup).numRuns(iSub);
                     for iRun = 1:numRuns                        % For each run
                         
                         fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s SESSION: %i RUN:  %i \n',groupName,iSub,subNumber,iSes,iRun)
@@ -141,7 +140,7 @@ switch action
                         % get fullpath of the file
                         fileName = fileName{1};
                         [subFuncDataDir, file, ext] = spm_fileparts(fileName);
-                        % get filename of the orginal file (drop the gunzip extension)
+                        % get filename of the original file (drop the gunzip extension)
                         if strcmp(ext, '.gz')
                             fileName = file;
                         elseif strcmp(ext, '.nii')
@@ -271,16 +270,16 @@ switch action
                 
                 cd(JOBS_dir)
                 % Create Contrasts
-                [C, contrastes] = pm_con(ffx_dir,opt.taskName,JOBS_dir);
+                [~, contrasts] = pm_con(ffx_dir,opt.taskName,JOBS_dir);
                 
                 cd(JOBS_dir)
                 load(['jobs_ffx_',num2str(degreeOfSmoothing),'_',opt.taskName,'.mat'])   % Loading the ss's job to append the contrasts
                 
                 matlabbatch{3}.spm.stats.con.spmmat = cellstr(fullfile(ffx_dir,'SPM.mat'));
                 
-                for icon = 1:size(contrastes,2)
-                    matlabbatch{3}.spm.stats.con.consess{icon}.tcon.name = contrastes(icon).name;
-                    matlabbatch{3}.spm.stats.con.consess{icon}.tcon.convec = contrastes(icon).C;
+                for icon = 1:size(contrasts,2)
+                    matlabbatch{3}.spm.stats.con.consess{icon}.tcon.name = contrasts(icon).name;
+                    matlabbatch{3}.spm.stats.con.consess{icon}.tcon.convec = contrasts(icon).C;
                     matlabbatch{3}.spm.stats.con.consess{icon}.tcon.sessrep = 'none';
                 end
                 
@@ -292,9 +291,11 @@ switch action
                 end
                 
                 % Save ffx matlabbatch in JOBS
+                
                 save(fullfile(JOBS_dir, ...
                     ['jobs_ffx_',...
-                    num2str(degreeOfSmoothing),'_',opt.taskName,'_Contrasts.mat']), ...
+                    num2str(degreeOfSmoothing),'_',...
+                    opt.taskName,'_Contrasts.mat']), ...
                     'matlabbatch') % save the matlabbatch
                 
                 spm_jobman('run',matlabbatch)
