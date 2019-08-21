@@ -400,17 +400,12 @@ function convert_tsv2mat(tsv_file)
 %%
 
 % Read the tsv file
-t = tdfread(tsv_file,'tab');
+t = spm_load(tsv_file);
 fprintf('reading the tsv file : %s \n', tsv_file)
-conds = t.condition;        % assign all the tsv information to a variable called conds.
+conds = t.trial_type;        % assign all the tsv information to a variable called conds.
 
-names_tmp=cell(size(conds,1),1);
-for iCond = 1:size(conds,1)                        % for each line in the tsv file
-    names_tmp(iCond,1)= cellstr(conds(iCond,:));   % Get the name of the condition
-end
-
-% Get the unique names of the conditions (removing repeitions)
-names = unique(names_tmp)';
+% Get the unique names of the conditions (removing repetitions)
+names = unique(conds);
 NumConditions =length(names);
 
 % Create empty variables of onsets and durations
