@@ -20,7 +20,11 @@ metadata = spm_BIDS(BIDS, 'metadata', ...
     'task', opt.taskName, ...
     'sub', subjects{1}, ...
     'type', 'bold');
-opt.metadata = metadata{1};
+if iscell(metadata)
+    opt.metadata = metadata{1};
+else
+    opt.metadata = metadata;
+end
 
 %% Add the different groups in the experiment
 for iGroup = 1:numel(opt.groups) % for each group
