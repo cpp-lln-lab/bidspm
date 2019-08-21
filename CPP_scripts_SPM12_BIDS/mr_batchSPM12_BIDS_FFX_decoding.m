@@ -39,13 +39,18 @@ else
     prefix = '';
 end
 
-% Prefix for motion regressor Parameters
-MotionRegressorPrefix = [opt.STC_prefix prefix];
-
 % Check the slice timing information is not in the metadata and not added
 % manually in the opt variable.
-if (isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)) || isfield(opt,'sliceOrder')
-    prefix = [smoothingPrefix opt.norm_prefix opt.STC_prefix prefix];
+if (isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)) ||  ~isempty(opt.sliceOrder)
+    % Prefix for motion regressor Parameters
+    MotionRegressorPrefix = [opt.STC_prefix prefix];
+    
+    prefix = [opt.norm_prefix opt.STC_prefix prefix];
+else
+    % Prefix for motion regressor Parameters
+    MotionRegressorPrefix = prefix;
+    
+    prefix = [smoothingPrefix opt.norm_prefix prefix];
 end
 
 
