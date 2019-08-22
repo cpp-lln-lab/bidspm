@@ -239,6 +239,7 @@ switch action
                 matlabbatch{2}.spm.stats.fmri_est.spmmat(1).src_output = ...
                     substruct('.','spmmat');
                 matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;
+                matlabbatch{2}.spm.stats.fmri_est.write_residuals = 1;
                 
                 
                 %Create the JOBS directory if it doesnt exist
