@@ -79,7 +79,7 @@ else
                     n=load_untouch_nii(fileName);
 
                     if numDummies<=0 || isempty(numDummies) % If no dummies
-                        save_untouch_nii(n,[opt.dummy_prefix,fileName(1:end-3)]) % Save the functional data as unzipped nii
+                        save_untouch_nii(n, fileName(1:end-4)) % Save the functional data as unzipped nii
                     else
                         % Create a dummies folder if it doesnt exist
                         dummiesOuputDir = fullfile(path,'dummies');

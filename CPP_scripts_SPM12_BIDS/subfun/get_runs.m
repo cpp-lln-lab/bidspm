@@ -21,4 +21,9 @@ runs = spm_BIDS(BIDS, 'runs', ...
     'type', 'bold');
 numRuns = size(runs,2);     % Get the number of runs
 
+if numRuns==0
+    numRuns = 1;
+    runs = {''};
+end
+
 end
