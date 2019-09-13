@@ -1,17 +1,20 @@
 %% Run batches
 WD = pwd;
+addpath(genpath(WD))
+toolbox_path = '/home/remi/Dropbox';
+addpath(fullfile(toolbox_path, 'Code', 'MATLAB', 'Neuroimaging', 'NiftiTools'))
 
 opt = getOption();
-check_dependencies();
+checkDependencies();
 
 
-cd(WD); mr_removeDummies(opt);
-cd(WD); mr_batchSPM12_BIDS_STC_decoding(opt);
-cd(WD); mr_batchSPM12_BIDS_SpatialPrepro_decoding(opt);
-cd(WD); mr_batchSPM12_BIDS_Smoothing_decoding(6, opt);
-cd(WD); mr_batchSPM12_BIDS_FFX_decoding(1, 6, opt);
-cd(WD); mr_batchSPM12_BIDS_FFX_decoding(2, 6, opt);
-cd(WD); mr_batchSPM12_BIDS_RFX_decoding(1, 6, 6)
-cd(WD); mr_batchSPM12_BIDS_RFX_decoding(2, 6, 6)
+% BIDS_rmDummies(opt);
+% BIDS_STC(opt);
+% BIDS_SpatialPrepro(opt);
+% BIDS_Smoothing(6, opt);
+BIDS_FFX(1, 6, opt);
+% cd(WD); BIDS_FFX(2, 6, opt);
+% cd(WD); BIDS_RFX(1, 6, 6)
+% cd(WD); BIDS_RFX(2, 6, 6)
 
 cd(WD)

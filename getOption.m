@@ -18,30 +18,32 @@ opt.taskName = '';
 opt.derivativesDir = '';
 
 % Specify the number of dummies that you want to be removed.
-opt.numDummies = 0;
-opt.dummy_prefix = 'dr_';
+opt.numDummies = 2;
+opt.dummyPrefix = 'dr_';
 
 % Options for slice time correction
 opt.STC_referenceSlice = []; % reference slice: middle acquired slice (NOTE: Middle in time of acquisition, not space)
 % If  slice order is entered in time unit (ms) doing  so,  the  next  item  (Reference Slice) will contain a reference time (in
 % ms) instead of the slice index of the reference slice.
-opt.STC_prefix = 'a';
-
-% Options for realign/resliced
-opt.realign_prefix = 'r';
 
 % Options for normalize
-opt.norm_prefix = 'w';
 opt.funcVoxelDims = [];  % voxel dimensions to use for resampling at normalization
 
-% suffix output directory for the saved jobs
+% Suffix output directory for the saved jobs
 opt.JOBS_dir = fullfile(opt.derivativesDir,'JOBS',opt.taskName);
+
+opt.contrastList = {...
+    {'word'}; ...
+    {'pseudoword'}; ...
+%     {'pseudoword-word'}; ...
+    };
 
 %% SLICE TIMING INFORMATION
 % TO BE USED ONLY IF SPM_BIDS CAN'T EXTRACT SLICE INFORMATION
 opt.sliceOrder = [];
 
 opt.funcVoxelDims = [];  % Voxel dimensions of the functional data or leave empty [ ]. 
+
 % Save the opt variable as a mat file to load directly in the preprocessing
 % scripts
 save('opt.mat','opt')

@@ -41,15 +41,15 @@ if addToolboxs2Path
     addpath(fullfile(toolbox_path, 'Code', 'MATLAB', 'Neuroimaging', 'NiftiTools'))
     addpath(fullfile(toolbox_path, 'Code', 'MATLAB', 'Neuroimaging', 'SPM', 'spm12'))
 end
-check_dependencies();
+checkDependencies();
 
 
 %% Run batches
-cd(WD); mr_removeDummies(opt);
-cd(WD); mr_batchSPM12_BIDS_STC_decoding(opt);
-cd(WD); mr_batchSPM12_BIDS_SpatialPrepro_decoding(opt);
-cd(WD); mr_batchSPM12_BIDS_Smoothing_decoding(FWHM_1, opt);
-cd(WD); mr_batchSPM12_BIDS_FFX_decoding(1, FWHM_1, opt);
-% cd(WD); mr_batchSPM12_BIDS_FFX_decoding(2, FWHM_1, opt);
+BIDS_rmDummies(opt);
+BIDS_STC(opt);
+% BIDS_SpatialPrepro(opt);
+% BIDS_Smoothing(FWHM_1, opt);
+% BIDS_FFX(1, FWHM_1, opt);
+% BIDS_FFX(2, FWHM_1, opt);
 
 cd(WD)

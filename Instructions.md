@@ -52,31 +52,32 @@ The directory where your files are located on your computer: make sure you have 
 
 1. __Remove Dummy Scans__:
 Removes dummy scans by running the script:
-`mr_removeDummies.m`
+`BIDS_rmDummies.m`
 
 2. __Slice Time Correction__: Performs Slice Time Correction of the functional volumes by running the script:
-`mr_batchSPM12_BIDS_STC_ExperimentName.m`
+`BIDS_STC.m`
 
 3. __Spatial Preprocessing__:
 Performs spatial preprocessing by running the script:
-`mr_batchSPM12_BIDS_SpatialPrepro_ExperimentName.m`
+`BIDS_SpatialPrepro.m`
 
 4. __SMOOTHING__:
 Performs smoothing of the functional data by running the script:
-`mr_batchSPM12_BIDS_Smoothing_ExperimentName.m`
+`BIDS_Smoothing.m`
 
 5. __FIXED EFFECTS ANALYSIS (FIRST-LEVEL ANALYSIS)__:
 Performs the fixed effects analysis by running the ffx script:
-`mr_batchSPM12_BIDS_FFX_ExperimentName.m`
+`BIDS_FFX.m`
 
 This will run twice, once for model specification and another time for model estimation. See the function for more details.
 
 6. __RANDOM EFFECTS ANALYSIS (SECOND-LEVEL ANALYSIS)__:
 Performs the random effects analysis by running the RFX script:
-`mr_batchSPM12_BIDS_RFX_ExperimentName.m`
+`BIDS_RFX.m`
 
 - See __"batch.m"__ for examples and for the order of the scripts.
 
+- See __"batch_dowload_run.m"__ for an example of how to download a data set and analyze all in one go.
 
 ## Details about some steps
 
