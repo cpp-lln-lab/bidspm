@@ -40,7 +40,7 @@ for iGroup = 1:numel(opt.groups) % for each group
             idx = 1:size(subjects,2);
         else
             idx = strfind(subjects, group(iGroup).name);
-            idx = find(~cellfun('isempty', idx)); %#ok<STRCL1>
+            idx = find(~cellfun('isempty', idx));
         end
     end
 

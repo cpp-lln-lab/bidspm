@@ -69,6 +69,7 @@ switch action
             
             for iSub = 1:group(iGroup).numSub    % For each Subject in the group
                 
+                % clear previous matlabbatch and files
                 files = [] ;
                 matlabbatch = [];
                 
@@ -83,18 +84,15 @@ switch action
                 
                 
                 
-                %%% THIS HAS TO BE CHANGED TO MATCH THE OPTION USED IN SLICE
-                %%% TIMING !!!!!
-                
-                matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t = 16;
-                matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = 1;
-                
-                %%%
-                %%%
-                
-                
-                
-                
+                % should be adapted to match what was done in the slice
+                % timing
+%                 matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t = 16;
+%                 matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = 1;
+
+
+
+
+
                 % The Directory to save the FFX files (Create it if it doesnt exist)
                 ffx_dir = fullfile(opt.derivativesDir,...
                     ['sub-',subNumber],...
@@ -121,9 +119,6 @@ switch action
                 cd(WD);
                 [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
                 
-                % clear previous matlabbatch and files
-                %matlabbatch = [];
-                %allfiles=[];
                 %%
                 for iSes = 1:numSessions                        % For each session
                     
@@ -179,17 +174,9 @@ switch action
                         matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).multi_reg = ...
                             cellstr(rp_file{ses_counter,1});
                         
-                        
-                        
-                        
-                        
-                        % HPF - SHOULD BE SET IN OPTIONS!!!
-                        matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).hpf = 128;
-                        
-                        
-                        
-                        
-                        
+                        % The following lines are commented out because those parameters
+                        % can be set in the spm_my_defaults.m
+                        %                          matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).hpf = 128;
                         
                         ses_counter = ses_counter +1;
                     end
@@ -197,33 +184,18 @@ switch action
                 
                 matlabbatch{1}.spm.stats.fmri_spec.fact = struct('name', {}, 'levels', {});
                 
-                
-                
-                
-                
-                %%% SHOULD BE SET IN OPTIONS
                 matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
                 
-                
-                
-                
-                
-                
                 matlabbatch{1}.spm.stats.fmri_spec.volt = 1;
+                
                 matlabbatch{1}.spm.stats.fmri_spec.global = 'None';
+                
                 matlabbatch{1}.spm.stats.fmri_spec.mask = {''};
                 
-                
-                
-                
-                
-                %%% SHOULD BE SET IN OPTIONS
-                matlabbatch{1}.spm.stats.fmri_spec.cvi = 'AR(1)';
-                
-                
-                
-                
-                
+                % The following lines are commented out because those parameters
+                % can be set in the spm_my_defaults.m
+                %                 matlabbatch{1}.spm.stats.fmri_spec.cvi = 'AR(1)';
+
                 % FMRI ESTIMATE
                 fprintf(1,'BUILDING JOB : FMRI estimate\n')
                 matlabbatch{2}.spm.stats.fmri_est.spmmat(1) = cfg_dep;

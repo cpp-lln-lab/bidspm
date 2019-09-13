@@ -30,6 +30,13 @@ defaults.normalise.write.bb         = [[-78 -112 -70];[78 76 85]];
 defaults.normalise.write.interp     = 4;
 
 
+% fMRI design defaults
+%==========================================================================
+defaults.stats.fmri.t   = 16;
+defaults.stats.fmri.t0  = 8;
+defaults.stats.fmri.hpf = 128;
+defaults.stats.fmri.cvi = 'FAST';
+
 
 
 % Set the defaults which are used by SPM
