@@ -23,9 +23,9 @@ opt.numDummies = 1;
 if ~exist(opt.derivativesDir, 'dir')
     [~,~,~] = mkdir(opt.derivativesDir);
 end
-fprintf('%-40s:', 'Downloading dataset...');
-urlwrite(URL, 'MoAEpilot.zip');
-unzip('MoAEpilot.zip', WD);
+% fprintf('%-40s:', 'Downloading dataset...');
+% urlwrite(URL, 'MoAEpilot.zip');
+% unpack('MoAEpilot.zip', WD);
 
 
 %% Check dependencies
@@ -33,8 +33,8 @@ unzip('MoAEpilot.zip', WD);
 % the path
 if addToolboxs2Path
     toolbox_path = '/home/remi/Dropbox';
-    addpath(fullfile(toolbox_path, 'Code', 'MATLAB', 'Neuroimaging', 'NiftiTools'))
     addpath(fullfile(toolbox_path, 'Code', 'MATLAB', 'Neuroimaging', 'SPM', 'spm12'))
+    addpath('/opt/spm12')
 end
 checkDependencies();
 

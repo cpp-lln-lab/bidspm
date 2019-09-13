@@ -75,6 +75,19 @@ Performs the random effects analysis by running the RFX script:
 -   See __"batch.m"__ for examples and for the order of the scripts.
 -   See __"batch_dowload_run.m"__ for an example of how to download a data set and analyze all in one go.
 
+## Docker
+
+``` bash
+docker run -it --rm \
+--entrypoint /bin/sh \
+-v ~/github/CPP_BIDS_SPM_pipeline:/code \
+spmcentral/spm:octave-latest
+
+octave
+
+/code/batch_download_run
+```
+
 ## Details about some steps
 
 ### Slice timing correction
