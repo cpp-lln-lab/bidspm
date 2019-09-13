@@ -16,6 +16,7 @@ opt.derivativesDir = fullfile(WD, 'MoAEpilot');
 opt.groups = {''};    % {'blnd', 'ctrl'};
 opt.subjects = {1};  % {[1:2], [1:2]};
 opt.taskName = 'auditory'; % task to analyze
+opt.numDummies = 1;
 
 
 %% Get data
@@ -41,9 +42,9 @@ checkDependencies();
 %% Run batches
 BIDS_rmDummies(opt);
 BIDS_STC(opt);
-% BIDS_SpatialPrepro(opt);
-% BIDS_Smoothing(FWHM_1, opt);
-% BIDS_FFX(1, FWHM_1, opt);
-% BIDS_FFX(2, FWHM_1, opt);
+BIDS_SpatialPrepro(opt);
+BIDS_Smoothing(FWHM_1, opt);
+BIDS_FFX(1, FWHM_1, opt);
+BIDS_FFX(2, FWHM_1, opt);
 
 cd(WD)
