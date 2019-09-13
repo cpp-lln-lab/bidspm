@@ -30,12 +30,12 @@ opt.groups = {'control', 'blind'};
 ```
 
 If there are no groups (i.e subjects names are of the form `sub-01` for example), then use:
-```
+```matlab
 opt.groups = {''};
 ```
 
 Subjects to run in each group. If you have 2 groups the  following will run the first and second subjects of the first group and the third and fourth of the second group.
-```
+```matlab
 opt.subjects = {[1 2], [3 4]};
 ```
 
@@ -73,7 +73,6 @@ Performs the random effects analysis by running the RFX script:
 `BIDS_RFX.m`
 
 -   See __"batch.m"__ for examples and for the order of the scripts.
-
 -   See __"batch_dowload_run.m"__ for an example of how to download a data set and analyze all in one go.
 
 ## Details about some steps
