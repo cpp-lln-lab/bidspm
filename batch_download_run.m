@@ -1,9 +1,3 @@
-% TO DO
-% - make the name of the opt.mat different for each task ????
-% - add a check to make sure that dummies are not removed AGAIN if this has
-% already been done
-
-
 clear
 clc
 close all

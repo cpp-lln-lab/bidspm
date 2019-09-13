@@ -300,7 +300,7 @@ for iGroup= 1:length(group)                 % For each group
         JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
         [~, ~, ~] = mkdir(JOBS_dir);
 
-        save(fullfile(JOBS_dir, 'jobs_SpatialPrepocess_matlabbatch_SPM12.mat'), 'matlabbatch') % save the matlabbatch
+        save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_SpatialPrepocess.mat'), 'matlabbatch') % save the matlabbatch
         spm_jobman('run',matlabbatch)
 
 
