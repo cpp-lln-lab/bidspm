@@ -1,4 +1,4 @@
-function mr_batchSPM12_BIDS_SpatialPrepro_decoding(opt)
+function BIDS_SpatialPrepro(opt)
 %% The scripts performs spatial preprocessing of the functional and structural data.
 % The structural data are segmented and normalized to MNI space.
 % The functional data are re-aligned, coregistered with the structural and
@@ -17,9 +17,6 @@ end
 % define SPM folder
 spmLocation = spm('dir');
 
-% Get the working directory
-WD = pwd;
-
 % load the subjects/Groups information and the task name
 [group, opt, BIDS] = getData(opt);
 
@@ -27,17 +24,7 @@ WD = pwd;
 structSession = 1;
 
 % creates prefix to look for
-if isfield(opt, 'numDummies') && opt.numDummies>0
-    prefix = opt.dummy_prefix;
-else
-    prefix = '';
-end
-
-% Check the slice timing information is not in the metadata and not added
-% manually in the opt variable.
-if (isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)) || ~isempty(opt.sliceOrder)
-    prefix = [opt.STC_prefix prefix];
-end
+prefix = getPrefix('preprocess',opt);
 
 fprintf(1,'DOING PREPROCESSING\n')
 
@@ -51,10 +38,11 @@ for iGroup= 1:length(group)                 % For each group
         % Get the ID of the subject
         %(i.e SubNumber doesnt have to match the iSub if one subject is exluded for any reason)
         subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
-        fprintf(1,' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',groupName,iSub,subNumber)
+        fprintf(1,' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',...
+            groupName, iSub, subNumber)
 
         % identify sessions for this subject
-        [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
+        [sessions, numSessions] = getSessions(BIDS, subNumber, opt);
 
         % get all runs for that subject across all sessions
         struct = spm_BIDS(BIDS, 'data', ...
@@ -72,10 +60,10 @@ for iGroup= 1:length(group)                 % For each group
         if strcmp(ext, '.gz')
             %unzip nii.gz structural file to be read by SPM
             struct = load_untouch_nii(struct);
-            save_untouch_nii(struct,fullfile(subStrucDataDir,structFile));
-            [structImage] = fullfile(subStrucDataDir,structFile);
+            save_untouch_nii(struct, fullfile(subStrucDataDir, structFile));
+            [structImage] = fullfile(subStrucDataDir, structFile);
         else
-            [structImage] = fullfile(subStrucDataDir,[structFile ext]);
+            [structImage] = fullfile(subStrucDataDir, [structFile ext]);
         end
 
         % NAMED FILE SELECTOR
@@ -85,30 +73,22 @@ for iGroup= 1:length(group)                 % For each group
 
         %% REALIGN
         fprintf(1,' BUILDING SPATIAL JOB : REALIGN\n')
-        ses_counter = 1;
+        sesCounter = 1;
 
         for iSes = 1:numSessions                     % For each session
 
             % get all runs for that subject across all sessions
-            [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
+            [runs, numRuns] = getRuns(BIDS, subNumber, sessions{iSes}, opt);
 
             for iRun = 1:numRuns                     % For each run
 
-                %% THIS WHOLE SECTION IS A COPY PASTE FROM STC function: REFACTOR THIS FOR THE LOVE OF SANIY
-                % But I am tired... I will do it... later.
                 % get the filename for this bold run for this task
-                fileName = get_filename(BIDS, subNumber, ...
-                    sessions{iSes}, runs{iRun}, 'bold', opt);
-
-                % get fullpath of the file
-                fileName = fileName{1};
-                [subFuncDataDir, file, ext] = spm_fileparts(fileName);
-                % get filename of the orginal file (drop the gunzip extension)
-                if strcmp(ext, '.gz')
-                    fileName = file;
-                elseif strcmp(ext, '.nii')
-                    fileName = [file ext];
-                end
+                [fileName, subFuncDataDir]= getBoldFilename(...
+                    BIDS, ...
+                    subNumber, sessions{iSes}, runs{iRun}, opt);
+                
+                % check that the file with the right prefix exist
+                files = inputFileValidation(subFuncDataDir, prefix, fileName);
 
                 % get native resolution to reuse it at normalisation;
                 if ~isempty(opt.funcVoxelDims)         % If voxel dimensions is defined in the opt
@@ -120,26 +100,32 @@ for iGroup= 1:length(group)                 % For each group
                     voxDim = round(voxDim*10)/10;  % Round the dimensions of the functional files to the 1st decimal point
                     opt.funcVoxelDims = voxDim ;   % Add it to opt.funcVoxelDims to have the same value for all subjects and sessions
                 end
-                
-                files{1,1} = spm_select('FPList', subFuncDataDir, ['^' prefix fileName '$']);
-                % if this comes out empty we throw an error so we don't
-                % have to wait for SPM to crash when running.
-                if isempty(files)
-                    error('Cannot find the file %s', ['^' prefix fileName '[.gz]$'])
-                end
 
                 fprintf(1,' %s\n', files{1});
 
-                matlabbatch{2}.spm.spatial.realign.estwrite.data{ses_counter} =  cellstr(files);
-                ses_counter = ses_counter + 1;
+                matlabbatch{2}.spm.spatial.realign.estwrite.data{sesCounter} =  cellstr(files);
+                
+                sesCounter = sesCounter + 1;
 
             end
         end
 
         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.weight = {''};
-        matlabbatch{2}.spm.spatial.realign.estwrite.roptions.prefix = opt.realign_prefix;
+        
+        % The following lines are commented out because those parameters
+        % can be set in the spm_my_defaults.m
+        %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.quality = 1;
+        %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.sep = 2;
+        %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.fwhm = 5;
+        %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.rtm = 1;
+        %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.interp = 2;
+        %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.wrap = [0 0 0];
+        %         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.which = [0 1];
+        %         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.interp = 3;
+        %         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
+        %         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.mask = 1;
 
-
+        
 
         %% COREGISTER
         % REFERENCE IMAGE : DEPENDENCY FROM NAMED FILE SELECTOR ('Structural')
@@ -171,7 +157,7 @@ for iGroup= 1:length(group)                 % For each group
 
         % OTHER IMAGES : DEPENDENCY FROM REALIGNEMENT ('Realign: Estimate & Reslice: Realigned Images (Sess 1 to N)')
         % files %%
-        for iSes = 1:ses_counter-1 % '-1' because I added 1 extra session to ses_counter
+        for iSes = 1:sesCounter-1 % '-1' because I added 1 extra session to ses_counter
             matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes) = cfg_dep;
             matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tname = 'Other Images';
             matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(1).name = 'filter';
@@ -186,6 +172,13 @@ for iGroup= 1:length(group)                 % For each group
                 substruct('.','sess', '()',{iSes}, '.','cfiles');
         end
 
+        % The following lines are commented out because those parameters
+        % can be set in the spm_my_defaults.m
+        %         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.cost_fun = 'nmi';
+        %         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.sep = [4 2];
+        %         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.tol = ...
+        %             [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
+        %         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.fwhm = [7 7];
 
 
         %% SEGMENT STRUCTURALS
@@ -253,7 +246,13 @@ for iGroup= 1:length(group)                 % For each group
                 cfg_dep('Segment: Forward Deformations', ...
                 substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), ...
                 substruct('.','fordef', '()',{':'}));
-            matlabbatch{iJob}.spm.spatial.normalise.write.woptions.prefix = opt.norm_prefix;
+
+            % The following lines are commented out because those parameters
+            % can be set in the spm_my_defaults.m
+            %             matlabbatch{iJob}.spm.spatial.normalise.write.woptions.bb = [-78 -112 -70 ; 78 76 85];
+            %             matlabbatch{iJob}.spm.spatial.normalise.write.woptions.interp = 4;
+            %             matlabbatch{iJob}.spm.spatial.normalise.write.woptions.prefix = spm_get_defaults('normalise.write.prefix');
+        
         end
 
         matlabbatch{5}.spm.spatial.normalise.write.subj.resample(1) = ...
@@ -298,16 +297,14 @@ for iGroup= 1:length(group)                 % For each group
 
         %% SAVING JOBS
         %Create the JOBS directory if it doesnt exist
-        JOBS_dir = fullfile(opt.derivativesDir, opt.JOBS_dir, subNumber);
+        JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
         [~, ~, ~] = mkdir(JOBS_dir);
 
-        save(fullfile(JOBS_dir, 'jobs_SpatialPrepocess_matlabbatch_SPM12.mat'), 'matlabbatch') % save the matlabbatch
+        save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_SpatialPrepocess.mat'), 'matlabbatch') % save the matlabbatch
         spm_jobman('run',matlabbatch)
 
 
     end
 end
-
-cd(WD)
 
 end

@@ -1,4 +1,4 @@
-function check_dependencies()
+function checkDependencies()
 % Checks that that the right dependencies are installed. ALso loads the spm defaults.
 
 

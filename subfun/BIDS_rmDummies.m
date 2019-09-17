@@ -1,4 +1,4 @@
-function mr_removeDummies(opt)
+function BIDS_rmDummies(opt)
 % Removes the initial dummy scans at the beginning of the
 % acquisition to allow for the homogenization of the magnetic field.
 % If the number of dummy specified in opt.numDummies is empty or equal to 0
@@ -20,12 +20,6 @@ if nargin<1
     fprintf('opt.mat file loaded \n\n')
 end
 
-%% ADD HERE: option input check setting options defaults
-
-
-
-%%
-
 % Get the current working directory
 WD = pwd;
 
@@ -40,6 +34,9 @@ if ~isfield(opt, 'numDummies')
 
 else
 
+    % prefix to append to the files with dummy removed
+    prefix = getPrefix('rmDummies',opt);
+    
     numDummies = opt.numDummies; % Number of dummies
 
     %% Loop through the groups, subjects, sessions
@@ -49,28 +46,28 @@ else
         for iSub = 1:group(iGroup).numSub   % For each Subject in the group
             subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
 
-            [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
+            [sessions, numSessions] = getSessions(BIDS, subNumber, opt);
 
             for iSes = 1:numSessions    % for each session
 
                 % get all runs for that subject across all sessions
-                [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
+                [runs, numRuns] = getRuns(BIDS, subNumber, sessions{iSes}, opt);
 
                 for iRun = 1:numRuns                       % For each Run
 
                     fprintf(1,' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s RUN: %i \n',...
-                        groupName,iSub,subNumber,iRun)
+                        groupName, iSub, subNumber, iRun)
 
                     % get the filename for this bold run for this task
-                    fileName = get_filename(BIDS, subNumber, ...
+                    fileName = getFilename(BIDS, subNumber, ...
                         sessions{iSes}, runs{iRun}, 'bold', opt);
-
-                    disp(fileName)
 
                     % get fullpath of the file
                     fileName = fileName{1};
                     [path, file, ext] = spm_fileparts(fileName);
                     fileName = [file ext];
+                    
+                    disp(fileName)
 
                     % Go the functional data directory
                     cd(path)
@@ -80,23 +77,24 @@ else
 
                     if numDummies<=0 || isempty(numDummies) % If no dummies
                         save_untouch_nii(n, fileName(1:end-4)) % Save the functional data as unzipped nii
+                        
                     else
                         % Create a dummies folder if it doesnt exist
                         dummiesOuputDir = fullfile(path,'dummies');
                         [~, ~, ~] =  mkdir(dummiesOuputDir);
 
                         % Create the dummies 4D files and save it
-                        n_dummies = n ;
-                        n_dummies.img = n_dummies.img(:,:,:,1:numDummies);
-                        n_dummies.hdr.dime.dim(5) = size(n_dummies.img,4);  % Change the dimension in the header
-                        save_untouch_nii(n_dummies,fullfile(dummiesOuputDir,['dummies_',fileName]) )
+                        nDummies = n ;
+                        nDummies.img = nDummies.img(:,:,:,1:numDummies);
+                        nDummies.hdr.dime.dim(5) = size(nDummies.img,4);  % Change the dimension in the header
+                        save_untouch_nii(nDummies, fullfile(dummiesOuputDir, ['dummies_',fileName]) )
 
                         % Create the 4D functional files without the dummies and
                         % save them
-                        n_noDummies = n;
-                        n_noDummies.img = n_noDummies.img(:,:,:,numDummies+1:end);
-                        n_noDummies.hdr.dime.dim(5) = size(n_noDummies.img,4);   % Change the dimension in the header
-                        save_untouch_nii(n_noDummies,[opt.dummy_prefix,fileName(1:end-3)])  % dr : dummies removed
+                        nNoDummies = n;
+                        nNoDummies.img = nNoDummies.img(:,:,:,numDummies+1:end);
+                        nNoDummies.hdr.dime.dim(5) = size(nNoDummies.img,4);   % Change the dimension in the header
+                        save_untouch_nii(nNoDummies, [prefix, fileName(1:end-3)])  % dr : dummies removed
 
                     end
                 end

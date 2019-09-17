@@ -1,4 +1,4 @@
-function mr_batchSPM12_BIDS_STC_decoding(opt)
+function BIDS_STC(opt)
 % Performs SLICE TIMING CORRECTION of the functional data. The
 % script for each subject and can handle multiple sessions and multiple
 % runs.
@@ -19,40 +19,20 @@ if nargin<1
     fprintf('opt.mat file loaded \n\n')
 end
 
-WD = pwd;
-
 % load the subjects/Groups information and the task name
 [group, opt, BIDS] = getData(opt);
 
+
 fprintf(1,'DOING SLICE TIME CORRECTION\n')
 
-% IF slice timing is not in the metadata
-if ~isfield(opt.metadata, 'SliceTiming') || isempty(opt.metadata.SliceTiming)
-    fprintf(1,' SLICE TIMING INFORMATION COULD NOT BE EXTRACTED FROM METADATA.\n')
-    fprintf(1,' CHECKING IF SPECIFIED IN opt IN THE "getOption" FUNCTION.\n\n')
-
-    % IF SLICE TIME information is not in the metadata, you have the option
-    % to add the slice order manually in the "opt" in the "getOptions"
-    % function
-    if ~isempty(opt.sliceOrder)
-        sliceOrder = opt.sliceOrder  ;
-        fprintf(' SLICE TIMING INFORMATION EXTRACTED FROM OPTIONS.\n')
-    else
-        fprintf(1, ' SLICE TIMING INFORMATION COULD NOT BE EXTRACTED.\n')
-        warning('SKIPPING SLICE TIME CORRECTION: no slice timing specified.')
-        return
-    end
-else % Otherwise get the slice order from the metadata
-    sliceOrder = opt.metadata.SliceTiming;
-    fprintf(' SLICE TIMING INFORMATION EXTRACTED.\n')
+% get slice order
+sliceOrder = getSliceOrder(opt, 1);
+if isempty(sliceOrder)
+    return
 end
 
 % prefix of the files to look for
-if isfield(opt, 'numDummies') && opt.numDummies>0
-    prefix = opt.dummy_prefix;
-else
-    prefix = '';
-end
+prefix = getPrefix('STC', opt);
 
 % get metadata for STC
 % Note  that  slice  ordering is assumed to be from foot to head. If it is not, enter
@@ -60,7 +40,7 @@ end
 
 % SPM accepts slice time acquisition as inputs for slice order (simplifies
 % things when dealing with multiecho data)
-numSlices = length(sliceOrder);
+numSlices = length(sliceOrder); % unique is necessary in case of multi echo
 TR = opt.metadata.RepetitionTime;
 TA = TR - (TR/numSlices);
 
@@ -86,76 +66,64 @@ matlabbatch = [];
 
 for iGroup= 1:length(group)
     groupName = group(iGroup).name ;     % Get the group name
-
+    
     for iSub = 1:group(iGroup).numSub    % For each subject in the group
-
+        
         % Get the ID of the subject
         %(i.e SubNumber doesnt have to match the iSub if one subject is exluded for any reason)
         subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
-        fprintf(1,' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',groupName,iSub,subNumber)
-
+        fprintf(1,' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',...
+            groupName, iSub, subNumber)
+        
         %% GET FUNCTIOVAL FILES
         fprintf(1,' BUILDING STC JOB : STC\n')
-
-        [sessions, numSessions] = get_sessions(BIDS, subNumber, opt);
-
+        
+        [sessions, numSessions] = getSessions(BIDS, subNumber, opt);
+        
         for iSes = 1:numSessions    % for each session
-
+            
             % get all runs for that subject across all sessions
-            [runs, numRuns] = get_runs(BIDS, subNumber, sessions{iSes}, opt);
-
-
+            [runs, numRuns] = getRuns(BIDS, subNumber, sessions{iSes}, opt);
+            
+            
             for iRun = 1:numRuns                    % For each Run
-
+                
                 % get the filename for this bold run for this task
-                    fileName = get_filename(BIDS, subNumber, ...
-                        sessions{iSes}, runs{iRun}, 'bold', opt);
+                [fileName, subFuncDataDir]= getBoldFilename(...
+                    BIDS, ...
+                    subNumber, sessions{iSes}, runs{iRun}, opt);
 
-                % get fullpath of the file
-                fileName = fileName{1};
-                [SubFuncDataDir, file, ext] = spm_fileparts(fileName);
-                % get filename of the orginal file (drop the gunzip extension)
-                if strcmp(ext, '.gz')
-                    fileName = file;
-                elseif strcmp(ext, '.nii')
-                    fileName = [file ext];
-                end
-
-                files{1,1} = spm_select('FPList', SubFuncDataDir, ['^' prefix fileName '$']);
-                % if this comes out empty we throw an error so we don't
-                % have to wait for SPM to crash when running.
-                if isempty(files)
-                   error('Cannot find the file %s', ['^' prefix fileName '[.gz]$'])
-                end
-
+                % check that the file with the right prefix exist
+                files = inputFileValidation(subFuncDataDir, prefix, fileName);
+                
                 % add the file to the list
                 matlabbatch{1}.spm.temporal.st.scans{iRun} =  cellstr(files);
-
+                
                 % print out to screen files to process
                 disp(files{1})
-
+                
             end
-
+            
         end
-
+        
         matlabbatch{1}.spm.temporal.st.nslices = numSlices;              % Number of Slices
         matlabbatch{1}.spm.temporal.st.tr = TR;                          % Repetition Time
         matlabbatch{1}.spm.temporal.st.ta = TA;
         matlabbatch{1}.spm.temporal.st.so = sliceOrder;
         matlabbatch{1}.spm.temporal.st.refslice = referenceSlice;
-        matlabbatch{1}.spm.temporal.st.prefix = opt.STC_prefix;
-
+        % The following lines are commented out because those parameters
+        % can be set in the spm_my_defaults.m
+        % matlabbatch{1}.spm.temporal.st.prefix = spm_get_defaults('slicetiming.prefix');
+        
         %% SAVE THE MATLABBATCH
         %Create the JOBS directory if it doesnt exist
-        JOBS_dir = fullfile(opt.derivativesDir, opt.JOBS_dir, subNumber);
+        JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
         [~, ~, ~] = mkdir(JOBS_dir);
-
-        save(fullfile(JOBS_dir, 'jobs_STC_matlabbatch.mat'), 'matlabbatch') % save the matlabbatch
-       spm_jobman('run',matlabbatch)
-
+        
+        save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_STC.mat'), 'matlabbatch') % save the matlabbatch
+        spm_jobman('run',matlabbatch)
+        
     end
 end
-
-cd(WD);
 
 end

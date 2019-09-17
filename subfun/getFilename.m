@@ -1,4 +1,4 @@
-function fileName = get_filename(BIDS, subNumber, session, run, type, opt)
+function fileName = getFilename(BIDS, subNumber, session, run, type, opt)
 % for a given BIDS data set, subject identity, session, runs and options 
 % this returns the name of the file for that run.
 %

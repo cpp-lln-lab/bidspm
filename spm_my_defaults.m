@@ -1,4 +1,9 @@
 function spm_my_defaults
+% This is where we set the defautls we want to use.
+% These will overide the spm defaults. 
+% When "not enough" information is specified in the batch files, SPM falls
+% back on the defaults to fill in the blanks. This allows to make the
+% script simpler.
 
 global defaults
 
@@ -29,6 +34,24 @@ defaults.normalise.write.preserve   = 0;
 defaults.normalise.write.bb         = [[-78 -112 -70];[78 76 85]];
 defaults.normalise.write.interp     = 4;
 
+
+% fMRI design defaults
+%==========================================================================
+defaults.stats.fmri.t   = 16;
+defaults.stats.fmri.t0  = 8;
+defaults.stats.fmri.hpf = 128;
+defaults.stats.fmri.cvi = 'FAST';
+
+% Filename prefix defaults
+%==========================================================================
+defaults.slicetiming.prefix           = 'a';
+defaults.realign.write.prefix         = 'r';
+defaults.coreg.write.prefix           = 'r';
+defaults.unwarp.write.prefix          = 'u';
+defaults.normalise.write.prefix       = 'w';
+defaults.deformations.modulate.prefix = 'm';
+defaults.smooth.prefix                = 's';
+defaults.imcalc.prefix                = 'i';
 
 
 

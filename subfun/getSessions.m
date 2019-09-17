@@ -1,4 +1,4 @@
-function [sessions, numSessions] = get_sessions(BIDS, subID, opt)
+function [sessions, numSessions] = getSessions(BIDS, subID, opt)
 % for a given BIDS data set, subject identity and options this returns the
 % name of the sessions and their number
 %

@@ -1,4 +1,4 @@
-function [runs, numRuns] = get_runs(BIDS, subID, session, opt)
+function [runs, numRuns] = getRuns(BIDS, subID, session, opt)
 % for a given BIDS data set, subject identity, session and options this returns the
 % name of the runs and their number
 %
