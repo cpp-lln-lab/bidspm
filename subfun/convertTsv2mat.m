@@ -8,7 +8,7 @@ function convertTsv2mat(tsvFile)
 % Read the tsv file
 t = spm_load(tsvFile);
 fprintf('reading the tsv file : %s \n', tsvFile)
-conds = t.trial_type;        % assign all the tsv information to a variable called conds.
+conds = t.condition;        % assign all the tsv information to a variable called conds.
 
 % Get the unique names of the conditions (removing repetitions)
 names = unique(conds);
@@ -20,7 +20,7 @@ durations = cell(1,numConditions) ;
 
 % for each condition
 for iCond = 1:numConditions
-    
+
     % Get the index of each condition by comparing the unique names and
     % each line in the tsv files
     idx{iCond,1} = find(strcmp(names(iCond), conds)) ;

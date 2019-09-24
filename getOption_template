@@ -7,18 +7,18 @@ if nargin<1
 end
 
 % group of subjects to analyze
-opt.groups = {''};    % {'blnd', 'ctrl'};
+opt.groups = {};    % {'blnd', 'ctrl'};
 % suject to run in each group
-opt.subjects = {[1:2]};  % {[1:2], [1:2]};
+opt.subjects = {};  % {[1:2], [1:2]};
 
 % task to analyze
-opt.taskName = 'visMotion';
+opt.taskName = '';
 
 % The directory where the derivatives are located
-opt.derivativesDir = '/Users/mohamed/Desktop/MotionWorkshop/derivatives';
+opt.derivativesDir = '';
 
 % Specify the number of dummies that you want to be removed.
-opt.numDummies = 0;
+opt.numDummies = 2;
 opt.dummyPrefix = 'dr_';
 
 % Options for slice time correction
@@ -33,9 +33,9 @@ opt.funcVoxelDims = [];  % voxel dimensions to use for resampling at normalizati
 opt.JOBS_dir = fullfile(opt.derivativesDir,'JOBS',opt.taskName);
 
 opt.contrastList = {...
-    {'VisMot'}; ...
-    {'VisStat'}; ...
-   % {'VisMot-VisStatic'}; ...
+    {'word'}; ...
+    {'pseudoword'}; ...
+%     {'pseudoword-word'}; ...
     };
 
 %% SLICE TIMING INFORMATION

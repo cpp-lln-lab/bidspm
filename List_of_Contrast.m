@@ -1,11 +1,11 @@
-%List of all possible contrasts 
+%List of all possible contrasts
 % Should match the FFX contrasts in NAME and ORDER
 
-a = {   
-    'V_U';
-    'V_D';
-    'A_D';
-    'V_D - A_D'
+a = {
+    'VisMot';
+    'VisStat';
+    'VisMot-VisStat'
+    'VisStat-VisMot'
     };
 
 
