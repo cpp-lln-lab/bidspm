@@ -60,14 +60,14 @@ switch action
     case 1 % Smooth all con images
 
         matlabbatch = {};
-
+        counter = 0;
         %% Loop through the groups, subjects, and sessions
         for iGroup= 1:length(group)
 
             groupName = group(iGroup).name ;    % Get the Group Name
 
             for iSub = 1:group(iGroup).numSub   % For each subject
-
+                counter = counter+1;
                 subNumber = group(iGroup).subNumber{iSub} ;   % Get the Subject ID
 
                 fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',...
@@ -76,16 +76,16 @@ switch action
                 % FFX Directory
                 ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt);
                 conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
-                matlabbatch{1}.spm.spatial.smooth.data = cellstr(conImg);
+                matlabbatch{counter}.spm.spatial.smooth.data = cellstr(conImg);
+
+                % Define how much smoothing is required
+                matlabbatch{counter}.spm.spatial.smooth.fwhm = [mmConSmoothing mmConSmoothing mmConSmoothing];
+                matlabbatch{counter}.spm.spatial.smooth.dtype = 0;
+                matlabbatch{counter}.spm.spatial.smooth.prefix = [...
+                spm_get_defaults('smooth.prefix'), num2str(mmConSmoothing)];
 
             end
         end
-
-        % Define how much smoothing is required
-        matlabbatch{1}.spm.spatial.smooth.fwhm = [mmConSmoothing mmConSmoothing mmConSmoothing];
-        matlabbatch{1}.spm.spatial.smooth.dtype = 0;
-        matlabbatch{1}.spm.spatial.smooth.prefix = [...
-            spm_get_defaults('smooth.prefix'), num2str(mmConSmoothing)];
 
         % save the matlabbatch
         save(fullfile(JOBS_dir, ...
@@ -212,7 +212,6 @@ switch action
         % Load the list of contrasts on interest for the RFX
 
         fprintf(1,'BUILDING JOB: Factorial Design Specification')
-
         cd(WD)
         cd ..
         eval (['load ConOfInterest']) % In this mat file, there should be the contrasts of interests to analyze. They should match the name and order of those in the FFX folder.
@@ -243,9 +242,8 @@ switch action
                     ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt);
 
                     a = Session(j).con;
-                    ConList = dir(sprintf([smoothOrNonSmooth,'con_%0.4d.nii'],con));
-                    range{iGroup}.donnees{iSub,:} = fullfile([ffxDir, ConList.name]);
-
+                    ConList = dir(fullfile(ffxDir,sprintf([smoothOrNonSmooth,'con_%0.4d.nii'],con)));
+                    range{iGroup}.donnees{iSub,:} = fullfile(ffxDir, ConList.name);
 
                 end
 
@@ -273,7 +271,7 @@ switch action
             matlabbatch{j}.spm.stats.factorial_design.masking.tm.tm_none = 1;
             matlabbatch{j}.spm.stats.factorial_design.masking.im = 1;
             matlabbatch{j}.spm.stats.factorial_design.masking.em = {...
-                fullfile(opt.derivativesDir,RFX_FolderName,'Meanmask.nii')};
+                fullfile(RFX_FolderName,'Meanmask.nii')};
             matlabbatch{j}.spm.stats.factorial_design.globalc.g_omit = 1;
             matlabbatch{j}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
             matlabbatch{j}.spm.stats.factorial_design.globalm.glonorm = 1;
@@ -286,7 +284,6 @@ switch action
             if ~isempty(findstr(' ',Session(j).con))
                 Session(j).con(findstr(' ',Session(j).con)) = '';
             end
-
 
             cd(RFX_FolderName)
             mkdir(Session(j).con)
@@ -326,8 +323,7 @@ switch action
         % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
         for j = 1:size(Session,2)
             matlabbatch{j}.spm.stats.con.spmmat = {...
-                fullfile(opt.derivativesDir,...
-                RFX_FolderName,...
+                fullfile(RFX_FolderName,...
                 Session(j).con,...
                 'SPM.mat')};
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
