@@ -44,7 +44,7 @@ else
         groupName = group(iGroup).name ;    % Get the group name
 
         for iSub = 1:group(iGroup).numSub   % For each Subject in the group
-            cd(WD);   % Go to scripts directory to run getSessions & GetRuns functions
+            %cd(WD);   % Go to scripts directory to run getSessions & GetRuns functions
             subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
 
             [sessions, numSessions] = getSessions(BIDS, subNumber, opt);

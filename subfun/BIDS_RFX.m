@@ -271,7 +271,7 @@ switch action
             matlabbatch{j}.spm.stats.factorial_design.masking.tm.tm_none = 1;
             matlabbatch{j}.spm.stats.factorial_design.masking.im = 1;
             matlabbatch{j}.spm.stats.factorial_design.masking.em = {...
-                fullfile(RFX_FolderName,'Meanmask.nii')};
+                fullfile(RFX_FolderName,'MeanMask.nii')};
             matlabbatch{j}.spm.stats.factorial_design.globalc.g_omit = 1;
             matlabbatch{j}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
             matlabbatch{j}.spm.stats.factorial_design.globalm.glonorm = 1;
