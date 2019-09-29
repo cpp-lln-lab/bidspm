@@ -15,10 +15,10 @@ opt.subjects = {[1:2]};  % {[1:2], [1:2]};
 opt.taskName = 'visMotion';
 
 % The directory where the derivatives are located
-opt.derivativesDir = '/home/mohamed/Desktop/MotionWorkshop/derivatives';
+opt.derivativesDir = '/Users/mohamed/Desktop/MotionWorkshop/derivatives';
 
 % Specify the number of dummies that you want to be removed.
-opt.numDummies = 4;
+opt.numDummies = 0;
 opt.dummyPrefix = 'dr_';
 
 % Options for slice time correction
