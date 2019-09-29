@@ -13,10 +13,13 @@ addpath(genpath(WD))
 opt = getOption();
 
 opt.derivativesDir = fullfile(WD, 'MoAEpilot');
-opt.groups = {''};    % {'blnd', 'ctrl'};
-opt.subjects = {1};  % {[1:2], [1:2]};
+opt.groups = {''}; % no specific group
+opt.subjects = {1};  % subject one
 opt.taskName = 'auditory'; % task to analyze
-opt.numDummies = 1;
+opt.numDummies = 0;
+opt.contrastList = {...
+    {'listening'} ...
+    };
 
 
 %% Get data
