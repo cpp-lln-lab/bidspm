@@ -1,10 +1,17 @@
 %% Run batches
 opt = getOption();
 
-WD = fullfile(pwd,'subfun');
+% the cdirectory with this script becomes the current directory
+WD = pwd;
+
+% we add all the subfunctions that are in the sub directories
 addpath(genpath(WD))
-toolbox_path = '/home/remi/Dropbox';
-addpath(fullfile(toolbox_path, 'Code', 'MATLAB', 'Neuroimaging', 'NiftiTools'))
+
+% In case some toolboxes need to be added the matlab path, specify and uncomment 
+% in the lines below
+% toolbox_path = '';
+% addpath(fullfile(toolbox_path)
+
 
 %cd(WD); checkDependencies();
 %cd(WD); BIDS_rmDummies(opt);

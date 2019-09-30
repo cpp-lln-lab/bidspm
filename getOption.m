@@ -26,23 +26,20 @@ opt.STC_referenceSlice = []; % reference slice: middle acquired slice (NOTE: Mid
 % If  slice order is entered in time unit (ms) doing  so,  the  next  item  (Reference Slice) will contain a reference time (in
 % ms) instead of the slice index of the reference slice.
 
+opt.sliceOrder = []; % TO BE USED ONLY IF SPM_BIDS CAN'T EXTRACT SLICE INFORMATION
+
 % Options for normalize
-opt.funcVoxelDims = [];  % voxel dimensions to use for resampling at normalization
+% Voxel dimensions for resampling at normalization of functional data or leave empty [ ].
+opt.funcVoxelDims = [];  
 
 % Suffix output directory for the saved jobs
-opt.JOBS_dir = fullfile(opt.derivativesDir,'JOBS',opt.taskName);
+opt.JOBS_dir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
 
 opt.contrastList = {...
     {'VisMot'}; ...
     {'VisStat'}; ...
    % {'VisMot-VisStatic'}; ...
     };
-
-%% SLICE TIMING INFORMATION
-% TO BE USED ONLY IF SPM_BIDS CAN'T EXTRACT SLICE INFORMATION
-opt.sliceOrder = [];
-
-opt.funcVoxelDims = [];  % Voxel dimensions of the functional data or leave empty [ ].
 
 % Save the opt variable as a mat file to load directly in the preprocessing
 % scripts
