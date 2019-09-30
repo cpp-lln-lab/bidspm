@@ -1,10 +1,8 @@
 # this is mostly taken from the spm docker files: https://github.com/spm/spm-docker
 FROM ubuntu:cosmic
 
-MAINTAINER Remi Gau <remi.gau@gmail.com>
-
 # basic OS tools install and also octave
-RUN apt-get update && apt-get -y install \
+RUN apt-get update && apt-get -y install --no-install-recommends \
      build-essential \
      git \
      zip unzip \
