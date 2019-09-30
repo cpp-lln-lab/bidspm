@@ -77,15 +77,16 @@ Performs the random effects analysis by running the RFX script:
 
 ## Docker
 
+### build docker image
+
+From the `docker/octave` folder, build the image with the `Dockerfile` by typing :
+
+`docker build  -t cpp_spm:0.0.1 .`
+
+### run docker image
+
 ``` bash
-docker run -it --rm \
---entrypoint /bin/sh \
--v ~/github/CPP_BIDS_SPM_pipeline:/code \
-spmcentral/spm:octave-latest
-
-octave
-
-/code/batch_download_run
+docker run -it --rm cpp_spm:0.0.1
 ```
 
 ## Details about some steps

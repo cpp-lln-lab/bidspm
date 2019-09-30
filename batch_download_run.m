@@ -26,19 +26,23 @@ opt.contrastList = {...
 if ~exist(opt.derivativesDir, 'dir')
     [~,~,~] = mkdir(opt.derivativesDir);
 end
-% fprintf('%-40s:', 'Downloading dataset...');
-% urlwrite(URL, 'MoAEpilot.zip');
-% unpack('MoAEpilot.zip', WD);
+fprintf('%-40s:', 'Downloading dataset...');
+urlwrite(URL, 'MoAEpilot.zip');
+unpack('MoAEpilot.zip', WD);
 
 
 %% Check dependencies
 % If toolboxes are not in the MATLAB Directory and needed to be added to
 % the path
-if addToolboxs2Path
-    toolbox_path = '/home/remi/Dropbox';
-    addpath(fullfile(toolbox_path, 'Code', 'MATLAB', 'Neuroimaging', 'SPM', 'spm12'))
-    addpath('/opt/spm12')
-end
+
+% In case some toolboxes need to be added the matlab path, specify and uncomment 
+% in the lines below
+
+% if addToolboxs2Path
+%     toolbox_path = '';
+%     addpath(fullfile(toolbox_path)
+% end
+
 checkDependencies();
 
 
