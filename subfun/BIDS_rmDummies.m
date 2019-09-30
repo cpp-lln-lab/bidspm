@@ -36,7 +36,7 @@ else
 
     % prefix to append to the files with dummy removed
     prefix = getPrefix('rmDummies',opt);
-    
+
     numDummies = opt.numDummies; % Number of dummies
 
     %% Loop through the groups, subjects, sessions
@@ -44,6 +44,7 @@ else
         groupName = group(iGroup).name ;    % Get the group name
 
         for iSub = 1:group(iGroup).numSub   % For each Subject in the group
+            %cd(WD);   % Go to scripts directory to run getSessions & GetRuns functions
             subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
 
             [sessions, numSessions] = getSessions(BIDS, subNumber, opt);
@@ -66,7 +67,7 @@ else
                     fileName = fileName{1};
                     [path, file, ext] = spm_fileparts(fileName);
                     fileName = [file ext];
-                    
+
                     disp(fileName)
 
                     % Go the functional data directory
@@ -77,7 +78,7 @@ else
 
                     if numDummies<=0 || isempty(numDummies) % If no dummies
                         save_untouch_nii(n, fileName(1:end-4)) % Save the functional data as unzipped nii
-                        
+
                     else
                         % Create a dummies folder if it doesnt exist
                         dummiesOuputDir = fullfile(path,'dummies');

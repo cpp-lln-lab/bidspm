@@ -20,7 +20,7 @@ durations = cell(1,numConditions) ;
 
 % for each condition
 for iCond = 1:numConditions
-    
+
     % Get the index of each condition by comparing the unique names and
     % each line in the tsv files
     idx{iCond,1} = find(strcmp(names(iCond), conds)) ;
