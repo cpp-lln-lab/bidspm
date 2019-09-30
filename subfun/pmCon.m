@@ -40,43 +40,5 @@ for iCon = 1:size(opt.contrastList,1)
 end
 
 
-%%
-C = [C ;zeros(1,size(SPM.xX.X,2))]; % add 1 lign to C (more flexible than adding a fixed whole bunch at once)
-
-for iContrast=1:size(SPM.xX.X,2)
-    if findstr(SPM.xX.name{iContrast},'VisMot*bf(1)')
-        C(end,iContrast) = 1;
-    end
-end
-
-for iContrast=1:size(SPM.xX.X,2)
-    if findstr(SPM.xX.name{iContrast},'VisStat*bf(1)')
-        C(end,iContrast) = -1;
-    end
-end
-
-line_counter = line_counter + 1;
-contrasts(line_counter).C = C(end,:);
-contrasts(line_counter).name =  'VisMot - VisStat';
-
-%%
-C = [C ;zeros(1,size(SPM.xX.X,2))]; % add 1 lign to C (more flexible than adding a fixed whole bunch at once)
-
-for iContrast=1:size(SPM.xX.X,2)
-    if findstr(SPM.xX.name{iContrast},'VisStat*bf(1)')
-        C(end,iContrast) = 1;
-    end
-end
-
-for iContrast=1:size(SPM.xX.X,2)
-    if findstr(SPM.xX.name{iContrast},'VisMot*bf(1)')
-        C(end,iContrast) = -1;
-    end
-end
-
-line_counter = line_counter + 1;
-contrasts(line_counter).C = C(end,:);
-contrasts(line_counter).name =  'VisStat - VisMot';
-
 
 end
