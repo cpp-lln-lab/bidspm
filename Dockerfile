@@ -29,15 +29,14 @@ RUN mkdir /opt/spm12 \
  && make -C /opt/spm12/src PLATFORM=octave install \
  && ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
 
-RUN octave --no-gui --eval "addpath (\"/opt/spm12\"); savepath ();"
+RUN octave --no-gui --eval "addpath(\"/opt/spm12\"); savepath ();"
 
 # get the CPP BIDS pipeline code
-RUN mkdir /CPP_BIDS_pipeline /output /code
+RUN mkdir /CPP_BIDS_pipeline /output /code \
+ && git clone https://github.com/Remi-Gau/CPP_BIDS_SPM_pipeline.git /CPP_BIDS_pipeline/
 
-#  && git clone https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline.git /code
+RUN octave --no-gui --eval "addpath(genpath(\"/CPP_BIDS_pipeline\")); savepath ();"
 
 WORKDIR /CPP_BIDS_pipeline
 
-COPY /* /CPP_BIDS_pipeline/
-
-RUN octave --no-gui --eval "addpath (\"/CPP_BIDS_pipeline\"); savepath ();"
+RUN git checkout remi-docker_dev
