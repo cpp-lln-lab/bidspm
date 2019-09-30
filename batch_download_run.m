@@ -39,7 +39,6 @@ opt.sliceOrder = [];
 opt.funcVoxelDims = [];
 opt.JOBS_dir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
 
-
 %% Get data
 if ~exist(opt.derivativesDir, 'dir')
     [~,~,~] = mkdir(opt.derivativesDir);
