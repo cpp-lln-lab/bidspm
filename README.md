@@ -86,7 +86,9 @@ From the `docker/octave` folder, build the image with the `Dockerfile` by typing
 ### run docker image
 
 ``` bash
-docker run -it --rm cpp_spm:0.0.1
+docker run -it --rm \
+-v /home/remi/output:/output \
+-v /home/remi/code:/code cpp_spm:0.0.1
 ```
 
 ## Details about some steps
