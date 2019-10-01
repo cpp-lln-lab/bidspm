@@ -205,48 +205,52 @@ switch action
         %% Factorial design specification
 
         % Load the list of contrasts on interest for the RFX
+        model = spm_jsonread(opt.model.file);
+        for iStep = 1:length(model.Steps)
+            if strcmp(model.Steps{iStep}.Level, 'dataset')
+                Session = model.Steps{iStep}.AutoContrasts;
+                break
+            end
+        end
 
         fprintf(1,'BUILDING JOB: Factorial Design Specification')
-        cd(WD)
-        cd ..
-        eval (['load ConOfInterest']) % In this mat file, there should be the contrasts of interests to analyze. They should match the name and order of those in the FFX folder.
-        cd(WD)
 
         con = 0;
 
         matlabbatch = {};
-
+        
         % For each contrast
-        for j = 1:size(Session,2)
+        for j = 1:size(Session,1)
 
-            range = {};
             con = con+1;
 
             % For each group
             for iGroup= 1:length(group)
+                
                 groupName = group(iGroup).name ;
+                
+                matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).levels = iGroup; %#ok<*AGROW>
 
                 for iSub = 1:group(iGroup).numSub       % For each subject
                     subNumber = group(iGroup).subNumber{iSub} ;  % Get the subject ID
                     fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',...
-                        groupName,iSub,subNumber)
+                        groupName, iSub, subNumber)
 
-                    % FFX DIRECTORY
+                    % FFX directory and load SPM.mat of that subject
                     ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt);
+                    load(fullfile(ffxDir, 'SPM.mat'))
+                    
+                    % find which contrast of that subject has the name of the contrast we
+                    % want to bring to the group level ; the strrep(Session{j}, 'trial_type.', '')
+                    % is there to remove 'trial_type.' because contrasts against baseline are
+                    % renamed at the subejct level
+                    conName = strrep(Session{j}, 'trial_type.', '');
+                    conIdx = find(strcmp({SPM.xCon.name}, conName));
+                    fileName = sprintf('con_%0.4d.nii', conIdx);
+                    file = inputFileValidation(ffxDir, smoothOrNonSmooth, fileName);
 
-                    ConList = dir(fullfile(ffxDir,sprintf([smoothOrNonSmooth,'con_%0.4d.nii'],con)));
-                    range{iGroup}.donnees{iSub,:} = fullfile(ffxDir, ConList.name);
+                    matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).scans(iSub,:) = file;
 
-                end
-
-                a = [];
-                for i = 1:size(range{iGroup}.donnees,1)
-                    a = [a;isempty(range{iGroup}.donnees{i})];
-                end
-                c = find(a==0);
-                for pp = 1:size(c,1)
-                    matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).levels = iGroup; %#ok<*AGROW>
-                    matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).scans(pp,:) = {range{iGroup}.donnees{c(pp),:}}; % t1: One sample T Test - t2  Two sample T Test
                 end
 
             end
@@ -268,20 +272,25 @@ switch action
             matlabbatch{j}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
             matlabbatch{j}.spm.stats.factorial_design.globalm.glonorm = 1;
 
+            
             %% Linux does not support directory name '*' or ' ' that are replaced by
             %% 'x' or '' here
-            if ~isempty(findstr('*',Session(j).con))
-                Session(j).con(findstr('*',Session(j).con)) = 'x';
+            if ~isempty(findstr('*', Session{j}))
+                Session{j}( findstr('*', Session{j} ) ) = 'x';
             end
-            if ~isempty(findstr(' ',Session(j).con))
-                Session(j).con(findstr(' ',Session(j).con)) = '';
+            if ~isempty(findstr(' ',Session{j}))
+                Session{j}( findstr(' ', Session{j}) ) = '';
             end
 
-            cd(RFX_FolderName)
-            mkdir(Session(j).con)
+            if exist(fullfile(RFX_FolderName, Session{j}),'dir') % If it exists, issue a warning that it has been overwritten
+                fprintf(1,'A DIRECTORY WITH THIS NAME ALREADY EXISTED AND WAS OVERWRITTEN, SORRY \n');
+                rmdir(fullfile(RFX_FolderName, Session{j}),'s')
+                mkdir(fullfile(RFX_FolderName, Session{j}))
+            end
+
             matlabbatch{j}.spm.stats.factorial_design.dir = {...
                 fullfile(RFX_FolderName,...
-                Session(j).con)};
+                Session{j}) };
         end
 
         % Go to Jobs directory and save the matlabbatch
@@ -297,10 +306,12 @@ switch action
         %% Factorial design estimation
         fprintf(1,'BUILDING JOB: Factorial Design Estimation')
 
-        for j = 1:size(Session,2)
+        matlabbatch = {};
+        
+        for j = 1:size(Session,1)
             matlabbatch{j}.spm.stats.fmri_est.spmmat = {...
                 fullfile(RFX_FolderName,...
-                Session(j).con,...
+                Session{j},...
                 'SPM.mat')};
             matlabbatch{j}.spm.stats.fmri_est.method.Classical = 1;
         end
@@ -316,14 +327,16 @@ switch action
         
         
 
-        %Contrast estimation
+        %% Contrast estimation
         fprintf(1,'BUILDING JOB: Contrast estimation')
+        
+        matlabbatch = {};
 
         % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
-        for j = 1:size(Session,2)
+        for j = 1:size(Session,1)
             matlabbatch{j}.spm.stats.con.spmmat = {...
                 fullfile(RFX_FolderName,...
-                Session(j).con,...
+                Session{j},...
                 'SPM.mat')};
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = 1;
