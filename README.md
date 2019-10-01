@@ -6,11 +6,13 @@ Make sure that the following toolboxes are installed and added to the matlab pat
 
 For instructions see the following links:
 
-| Dependencies                                                                                                                             | Used version |
-|------------------------------------------------------------------------------------------------------------------------------------------|--------------|
-| [Matlab](https://www.mathworks.com/products/matlab.html)                                                                                 | 20???        |
-| [SPM12](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/)                                                                               | v7487        |
-| [Tools for NIfTI and ANALYZE image toolbox](https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image) | NA           |
+| Dependencies                                                                              | Used version |
+|-------------------------------------------------------------------------------------------|--------------|
+| [Matlab](https://www.mathworks.com/products/matlab.html)                                  | 20???        |
+| [SPM12](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/)                                | v7487        |
+| [Tools for NIfTI and ANALYZE image toolbox](https://github.com/sergivalverde/nifti_tools) | NA           |
+
+For simplicity the NIfTI tools toolbox has been added to this repo in the `subfun` folder.
 
 ## General description
 This set of function will read and unzip the data from a BIDS data set. It will then perform slice timing correction, preprocessing, smoothing, GLM at the first level and then GLM at the group level a la SPM (i.e summary statistics approach).
