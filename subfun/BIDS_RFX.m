@@ -40,8 +40,6 @@ cd(WD)
 % JOBS Directory
 JOBS_dir = fullfile(opt.JOBS_dir);
 
-matlabbatch = [];
-
 % Check which level of CON smoothing is desired
 if mmConSmoothing==0
     smoothOrNonSmooth = '';
@@ -54,13 +52,12 @@ end
 % TASK NAME
 ExperimentName = opt.taskName;
 
-%origdir = pwd;
-
 switch action
     case 1 % Smooth all con images
 
         matlabbatch = {};
         counter = 0;
+        
         %% Loop through the groups, subjects, and sessions
         for iGroup= 1:length(group)
 
@@ -167,7 +164,6 @@ switch action
 
         %% Generate the equation to get the mean of the mask and structural image
         % example : if we have 5 subjects, Average equation = '(i1+i2+i3+i4+i5)/5'
-        tmpImg = [] ;
         numImg = subCounter ;
         imgNum  = 1:subCounter ;
 
@@ -227,7 +223,6 @@ switch action
             range = {};
             con = con+1;
 
-            %subCounter=0;
             % For each group
             for iGroup= 1:length(group)
                 groupName = group(iGroup).name ;
@@ -238,10 +233,8 @@ switch action
                         groupName,iSub,subNumber)
 
                     % FFX DIRECTORY
-                    cd(WD);
                     ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt);
 
-                    a = Session(j).con;
                     ConList = dir(fullfile(ffxDir,sprintf([smoothOrNonSmooth,'con_%0.4d.nii'],con)));
                     range{iGroup}.donnees{iSub,:} = fullfile(ffxDir, ConList.name);
 
@@ -327,24 +320,8 @@ switch action
                 Session(j).con,...
                 'SPM.mat')};
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
-            matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = [1];
+            matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = 1;
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
-
-            %             matlabbatch{j}.spm.stats.con.consess{2}.tcon.name = 'CATARACT';
-            %             matlabbatch{j}.spm.stats.con.consess{2}.tcon.convec = [0 1];
-            %             matlabbatch{j}.spm.stats.con.consess{2}.tcon.sessrep = 'none';
-            %
-            %             matlabbatch{j}.spm.stats.con.consess{3}.tcon.name = 'CATARACT + CONTROL';
-            %             matlabbatch{j}.spm.stats.con.consess{3}.tcon.convec = [1 1];
-            %             matlabbatch{j}.spm.stats.con.consess{3}.tcon.sessrep = 'none';
-            %
-            %             matlabbatch{j}.spm.stats.con.consess{4}.tcon.name = 'CONTROL > CATARACT';
-            %             matlabbatch{j}.spm.stats.con.consess{4}.tcon.convec = [1 -1];
-            %             matlabbatch{j}.spm.stats.con.consess{4}.tcon.sessrep = 'none';
-            %
-            %             matlabbatch{j}.spm.stats.con.consess{5}.tcon.name = 'CATARACT > CONTROL';
-            %             matlabbatch{j}.spm.stats.con.consess{5}.tcon.convec = [-1 1];
-            %             matlabbatch{j}.spm.stats.con.consess{5}.tcon.sessrep = 'none';
 
             matlabbatch{j}.spm.stats.con.delete = 0;
         end
@@ -354,7 +331,6 @@ switch action
         eval (['save jobs_RFX_',ExperimentName,'_contrasts'])
         fprintf(1,'Contrast Estimation...')
         spm_jobman('run',matlabbatch)
-        matlabbatch = {};
 
 end
 
