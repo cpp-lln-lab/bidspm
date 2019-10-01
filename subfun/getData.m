@@ -28,7 +28,7 @@ end
 
 %% Add the different groups in the experiment
 for iGroup = 1:numel(opt.groups) % for each group
-    group(iGroup).name = opt.groups{iGroup};                            % NAME OF THE GROUP %#ok<*AGROW>
+    group(iGroup).name = opt.groups{iGroup}; %#ok<*AGROW>                            % NAME OF THE GROUP 
 
     % we figure out which subjects to take if not specified take all subjects
     if isfield(opt,'subjects') && ~isempty(opt.subjects{iGroup})
