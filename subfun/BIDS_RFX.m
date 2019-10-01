@@ -49,9 +49,6 @@ else
     error ('Check you Con files')
 end
 
-% TASK NAME
-ExperimentName = opt.taskName;
-
 switch action
     case 1 % Smooth all con images
 
@@ -286,11 +283,14 @@ switch action
         end
 
         % Go to Jobs directory and save the matlabbatch
-        cd(JOBS_dir)
-        eval (['save jobs_RFX_',ExperimentName])
+        % save the matlabbatch
+        save(fullfile(JOBS_dir, ...
+            'jobs_matlabbatch_SPM12_RFX_specification.mat'), ...
+            'matlabbatch')
+        
         fprintf(1,'Factorial Design Specification...')
-        spm_jobman('run',matlabbatch)
-        matlabbatch = {};
+        spm_jobman('run', matlabbatch)
+        
 
         %% Factorial design estimation
         fprintf(1,'BUILDING JOB: Factorial Design Estimation')
@@ -304,11 +304,15 @@ switch action
         end
 
         % Go to Jobs directory and save the matlabbatch
-        cd(JOBS_dir)
-        eval (['save jobs_RFX_',ExperimentName,'_modelEstimation'])
+        % save the matlabbatch
+        save(fullfile(JOBS_dir, ...
+            'jobs_matlabbatch_SPM12_RFX_estimation.mat'), ...
+            'matlabbatch')
+        
         fprintf(1,'Factorial Design Estimation...')
-        spm_jobman('run',matlabbatch)
-        matlabbatch = {};
+        spm_jobman('run', matlabbatch)
+        
+        
 
         %Contrast estimation
         fprintf(1,'BUILDING JOB: Contrast estimation')
@@ -325,12 +329,14 @@ switch action
 
             matlabbatch{j}.spm.stats.con.delete = 0;
         end
-
-        % Go to Jobs directory and save the matlabbatch
-        cd(JOBS_dir)
-        eval (['save jobs_RFX_',ExperimentName,'_contrasts'])
+        
+        % save the matlabbatch
+        save(fullfile(JOBS_dir, ...
+            'jobs_matlabbatch_SPM12_RFX_contrasts.mat'), ...
+            'matlabbatch')
+        
         fprintf(1,'Contrast Estimation...')
-        spm_jobman('run',matlabbatch)
+        spm_jobman('run', matlabbatch)
 
 end
 
