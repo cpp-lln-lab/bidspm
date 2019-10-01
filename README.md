@@ -55,9 +55,7 @@ Set the task to analyze in the BIDS data set
 The directory where your files are located on your computer: make sure you have a copy of the data set as this pipeline will change it.
 `opt.derivativesDir = '/Data/auditoryBIDS/derivatives'`
 
-
 Some more SPM options can be set in the `spm_my_defaults.m`.
-
 
 ## Order of the analysis
 
@@ -168,7 +166,7 @@ Table of constrast with weight: WIP
 
 Group level: WIP
 
-__References__
+### References
 
 Friston KJ, Ashburner J, Frith CD, Poline J-B, Heather JD & Frackowiak RSJ (1995) Spatial registration and normalization of images Hum. Brain Map. 2:165-189
 
