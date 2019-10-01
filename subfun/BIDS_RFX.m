@@ -22,17 +22,11 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt)
 % The Contrast names should match those in the single level FFX and in THE
 % SAME ORDER.
 
-% Get the current working directory
-WD = pwd;
-
 % if input has no opt, load the opt.mat file
 if nargin<4
-    cd ..
     load('opt.mat')
     fprintf('opt.mat file loaded \n\n')
 end
-
-cd(WD)
 
 % load the subjects/Groups information and the task name
 [group, opt, BIDS] = getData(opt);
@@ -354,7 +348,5 @@ switch action
         spm_jobman('run', matlabbatch)
 
 end
-
-cd(WD);
 
 end
