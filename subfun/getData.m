@@ -2,6 +2,7 @@ function [group, opt, BIDS] = getData(opt)
 % The following structure will be the base that the function will use to run
 % the preprocessing pipeline according to the BIDS Structure
 
+% we check the option inputs and add any missing field with some defaults
 opt = checkOptions(opt);
 
 fprintf(1,'FOR TASK: %s\n', opt.taskName)
@@ -58,6 +59,8 @@ end
 
 
 function opt = checkOptions(opt)
+% we check the option inputs and add any missing field with some defaults
+
 options = getDefaultOption();
 
 % update options with user input
@@ -74,6 +77,8 @@ end
 
 
 function options = getDefaultOption()
+% this defines the missing fields
+
 % group of subjects to analyze
 options.groups = {''};
 % suject to run in each group
