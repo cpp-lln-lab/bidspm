@@ -44,7 +44,7 @@ JOBS_dir = fullfile(opt.JOBS_dir);
 if mmConSmoothing==0
     smoothOrNonSmooth = '';
 elseif mmConSmoothing > 0
-    smoothOrNonSmooth = ['s',num2str(mmConSmoothing)];
+    smoothOrNonSmooth = ['s', num2str(mmConSmoothing)];
 else
     error ('Check you Con files')
 end
@@ -91,6 +91,7 @@ switch action
         fprintf(1,'SMOOTHING CON IMAGES...')
         spm_jobman('run',matlabbatch)
 
+        
     case 2
 
         matlabbatch = {};
@@ -110,6 +111,7 @@ switch action
         subCounter = 0;
 
         for iGroup= 1:length(group)                    % For each group
+            
             groupName = group(iGroup).name ;           % Get the group name
 
             for iSub = 1:group(iGroup).numSub          % For each subject
@@ -195,7 +197,7 @@ switch action
         % save the matlabbatch
         save(fullfile(JOBS_dir, ...
             'jobs_matlabbatch_SPM12_CreateMeanStrucMask.mat'), ...
-            'matlabbatch') % save the matlabbatch
+            'matlabbatch')
 
         spm_jobman('run',matlabbatch)
 
@@ -257,7 +259,7 @@ switch action
             matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.variance = 1; % 1: Assumes that the variance is not the same across groups / 0= There is no difference in the variance between groups
             matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.gmsca = 0;
             matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.ancova = 0;
-            %matlabbatch{j}.spm.stats.factorial_design.cov = [];
+            % matlabbatch{j}.spm.stats.factorial_design.cov = [];
             matlabbatch{j}.spm.stats.factorial_design.masking.tm.tm_none = 1;
             matlabbatch{j}.spm.stats.factorial_design.masking.im = 1;
             matlabbatch{j}.spm.stats.factorial_design.masking.em = {...
