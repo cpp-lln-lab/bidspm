@@ -21,9 +21,6 @@ end
 
 
 %%
-% Get current working directory
-WD = pwd;
-
 % load the subjects/Groups information and the task name
 [group, opt, BIDS] = getData(opt);
 
