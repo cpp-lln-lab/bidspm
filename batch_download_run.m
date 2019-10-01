@@ -23,13 +23,12 @@ opt = getOption();
 
 % respecify options here in case the getOption file has been modified on
 % the repository
-opt.derivativesDir = fullfile(WD, '..', 'output', 'MoAEpilot'); % the dataset will downloaded and analysed there
+
+ % the dataset will downloaded and analysed there
+opt.derivativesDir = fullfile(WD, '..', 'output', 'MoAEpilot');
 opt.groups = {''}; % no specific group
 opt.subjects = {1};  % first subject
 opt.taskName = 'auditory'; % task to analyze
-opt.contrastList = {...
-    {'listening'} ...
-    };
 
 % the following options are less important but are added to reset all
 % options
@@ -38,6 +37,11 @@ opt.STC_referenceSlice = [];
 opt.sliceOrder = [];
 opt.funcVoxelDims = [];
 opt.JOBS_dir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
+
+
+% specify the model file that contains the contrasts to compute
+opt.model.file = fullfile(WD, 'model-MoAE_smdl.json');
+
 
 %% Get data
 if ~exist(opt.derivativesDir, 'dir')
@@ -68,4 +72,5 @@ BIDS_SpatialPrepro(opt);
 BIDS_Smoothing(FWHM, opt);
 BIDS_FFX(1, FWHM, opt);
 BIDS_FFX(2, FWHM, opt);
+
 

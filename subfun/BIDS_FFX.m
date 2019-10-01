@@ -238,7 +238,7 @@ switch action
                 JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
 
                 % Create Contrasts
-                [~, contrasts] = pmCon(ffxDir, opt.taskName, JOBS_dir, opt);
+                [~, contrasts] = pmCon(ffxDir, opt.taskName, opt);
 
                 matlabbatch{1}.spm.stats.con.spmmat = cellstr(fullfile(ffxDir,'SPM.mat'));
 
