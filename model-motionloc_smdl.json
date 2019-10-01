@@ -1,0 +1,31 @@
+{
+  "Name": "Motion localizer",
+  "Description": "contrasts for the motion localizer dataset",
+  "Input": {
+    "task": "visMotion"
+  },
+  "Steps": [
+    {
+      "Level": "subject",
+      "AutoContrasts": ["trial_type.VisStat", "trial_type.VisMot"],
+      "Contrasts": [
+        {
+          "Name": "VisStat_gt_VisMot",
+          "ConditionList": [
+            "trial_type.VisStat", "trial_type.VisMot"
+          ],
+          "weights": [1, -1],
+          "type": "t"
+        },
+        {
+          "Name": "VisMot_gt_VisStat",
+          "ConditionList": [
+            "trial_type.VisMot", "trial_type.VisStat"
+          ],
+          "weights": [1, -1],
+          "type": "t"
+        }
+      ]
+    }
+  ]
+}

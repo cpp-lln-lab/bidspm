@@ -15,7 +15,9 @@ opt.subjects = {[1:2]};  % {[1:2], [1:2]};
 opt.taskName = 'visMotion';
 
 % The directory where the derivatives are located
-opt.derivativesDir = '/Users/mohamed/Desktop/MotionWorkshop/derivatives';
+% opt.derivativesDir = '/Users/mohamed/Desktop/MotionWorkshop/derivatives';
+opt.derivativesDir = '/home/remi/BIDS/motion_stat/raw';
+
 
 % Specify the number of dummies that you want to be removed.
 opt.numDummies = 0;
@@ -35,11 +37,14 @@ opt.funcVoxelDims = [];
 % Suffix output directory for the saved jobs
 opt.JOBS_dir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
 
-opt.contrastList = {...
-    {'VisMot'}; ...
-    {'VisStat'}; ...
-   % {'VisMot-VisStatic'}; ...
-    };
+% opt.contrastList = {...
+%     {'VisMot'}; ...
+%     {'VisStat'}; ...
+%    % {'VisMot-VisStatic'}; ...
+%     };
+
+% specify the model file that contains the contrasts to compute
+opt.model.file = fullfile('/home/remi/github/CPP_BIDS_SPM_pipeline', 'model-motionloc_smdl.json');
 
 % Save the opt variable as a mat file to load directly in the preprocessing
 % scripts
