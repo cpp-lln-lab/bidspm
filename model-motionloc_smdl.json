@@ -26,6 +26,10 @@
           "type": "t"
         }
       ]
+    },
+    {
+      "Level": "dataset",
+      "AutoContrasts": ["trial_type.VisStat", "trial_type.VisMot", "VisStat_gt_VisMot", "VisMot_gt_VisStat"]
     }
   ]
 }
