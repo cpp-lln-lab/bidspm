@@ -15,15 +15,25 @@ For instructions see the following links:
 For simplicity the NIfTI tools toolbox has been added to this repo in the `subfun` folder.
 
 ## General description
-This set of function will read and unzip the data from a BIDS data set. It will then perform slice timing correction, preprocessing, smoothing, GLM at the first level and then GLM at the group level a la SPM (i.e summary statistics approach).
+
+This set of function will read and unzip the data from a [BIDS data set](https://bids.neuroimaging.io/). It will then perform:
+-   slice timing correction,
+-   spatial preprocessing (realignment, normalization to MNI space),
+-   smoothing,
+-   GLM at the subject level and
+-   GLM at the group level a la SPM (i.e summary statistics approach).
 
 This has to be run for each task independently. All parameters should preferably be changed in the `getOptions.m` file.
 
+The core functions are in the sub-function folder `subfun`
+
 ## Assumption
+
 At the moment This pipeline makes some assumptions:
 -   it assumes the metadata for a given task are the same as those the first run of the first subject this pipeline is being run on.
 
 ## Setting up
+
 All the details specific to your analysis should be set in the `getOptions.m`.
 
 Set the group of subjects to analyze.
@@ -46,6 +56,8 @@ Set the task to analyze in the BIDS data set
 
 The directory where your files are located on your computer: make sure you have a copy of the data set as this pipeline will change it.
 `opt.derivativesDir = '/Data/auditoryBIDS/derivatives'`
+
+Some more SPM options can be set in the `spm_my_defaults.m`.
 
 ## Order of the analysis
 
@@ -75,7 +87,7 @@ Performs the random effects analysis by running the RFX script:
 `BIDS_RFX.m`
 
 -   See __"batch.m"__ for examples and for the order of the scripts.
--   See __"batch_dowload_run.m"__ for an example of how to download a data set and analyze all in one go.
+-   See __"batch_dowload_run.m"__ for an example of how to download a data set and analyze it all in one go.
 
 ## Docker
 
@@ -91,7 +103,7 @@ This will create an image with the tag name `cpp_spm_octave:0.0.1`
 
 ### run docker image
 
-The following code would start the docker image and would map 2 folders one for output and one for code you want to run.
+The following code would start the docker image and would map 2 folders one for `output` and one for `code` you want to run.
 
 ``` bash
 docker run -it --rm \
@@ -99,7 +111,7 @@ docker run -it --rm \
 -v [code_folder]:/code cpp_spm:0.0.1
 ```
 
-To test you can copy the `batch_download_run.m` file in the `code` folder on your computer and then start running the docker and type:
+To test it you can copy the `batch_download_run.m` file in the `code` folder on your computer and then start running the docker and type:
 
 ```bash
 cd /code # to change to the code folder inside the container (running the command 'ls' should show only batch_download_run.m )
@@ -122,20 +134,42 @@ _There's no way to avoid all the error (short of doing a four-dimensional realig
 
 ## Boiler plate methods section
 
-Work in progress...
+### Preprocessing
 
+The fMRI data were pre-processed and analyzed using statistical parametric mapping (SPM12 – v7487; Wellcome Center for Neuroimaging, London, UK; www.fil.ion.ucl.ac.uk/spm) running on {octave 4.{??} / matlab 20{XX} (Mathworks)}.
 
-The fMRI data were pre-processed and analyzed using statistical parametric mapping (SPM12 – [v7487]; Wellcome Center for Neuroimaging, London, UK; www.fil.ion.ucl.ac.uk/spm) running on matlab 20[XX] (Mathworks).
+The preprocessing of the functional images was performed in the following order: removing of dummy scans, {slice timing correction}, realignment, normalization to MNI, smoothing.
 
-The preprocessing of the functional images was performed in the following order: removing of dummy scans, [slice timing correction], realignment, normalization to MNI, smoothing.
+{XX} dummy scans were removed to allow signal stabilization.
 
-Slice timing correction was then performed taking the [XXXX] th slice as a reference (interpolation: sinc interpolation).
+{Slice timing correction was then performed taking the {XX} th slice as a reference (interpolation: sinc interpolation).}
 
-Functional scans from each participant were realigned using the first scan as a reference.
+Functional scans from each participant were realigned using the first scan as a reference (number of degrees of freedom: 6 ; cost function: least square) (Friston et al, 1995).
 
-Normalization
-(interpolation: 4th degree b-spline).
+The mean image obtained from realignement was then co-registered to the anatomical T1 image (number of degrees of freedom: 6 ; cost function: normalized mutual information) (Friston et al, 1995). The transformation matrix from this coregistration was then applied to all the functional images.
 
-At the first level, we performed a mass univariate analysis with a linear regression at each voxel, using generalized least squares with a global approximate AR(1) autocorrelation model and a drift fit with discrete cosine transform basis ([XXXX] seconds cut-off).
+The anatomical T1 image was bias field corrected, segmented and normalized to MNI space (target space resolution: 1 mm ; interpolation: 4th degree b-spline) using a unified segmentation. The deformation field obtained from this step was then applied to all the functional images (target space resolution equal that used at acquisition ; interpolation: 4th degree b-spline)
+
+Functional MNI normalized images were then spatially smoothed using a 3D gaussian kernel (FWHM = {XX} mm).
+
+### fMRI data analysis
+
+At the subject level, we performed a mass univariate analysis with a linear regression at each voxel of the brain, using generalized least squares with a global FAST model to account for temporal auto-correlation (Corbin et al, 2018) and a drift fit with discrete cosine transform basis (128 seconds cut-off). Image intensity scaling was done run-wide before statistical modeling such that the mean image will have mean intracerebral intensity of 100.
 
 We modeled the fMRI experiment in an event related design with regressors entered into the run-specific design matrix after convolving the onsets of each event with a canonical hemodynamic response function (HRF).
+
+Table of conditions with duration of each event: WIP
+
+Nuisance covariates included the 6 realignment parameters to account for residual motion artefacts.
+
+Contrast images were computed for the following condition and spatially smoothed using a 3D gaussian kernel (FWHM = {XX} mm).
+
+Table of constrast with weight: WIP
+
+Group level: WIP
+
+### References
+
+Friston KJ, Ashburner J, Frith CD, Poline J-B, Heather JD & Frackowiak RSJ (1995) Spatial registration and normalization of images Hum. Brain Map. 2:165-189
+
+Corbin, N., Todd, N., Friston, K. J. & Callaghan, M. F. Accurate modeling of temporal correlations in rapidly sampled fMRI time series. Hum. Brain Mapp. 39, 3884–3897 (2018).
