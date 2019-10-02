@@ -1,4 +1,4 @@
-function diffrent outputs = getInfo(BIDS, subID, info, session, run, type, opt)
+function varargout = getInfo(BIDS, subID, info, session, run, type, opt)
 
 % for a given BIDS data set, subject identity, and info type,
 % if info=Sessions, this returns name of the sessions and their number
@@ -22,8 +22,6 @@ function diffrent outputs = getInfo(BIDS, subID, info, session, run, type, opt)
 
   if nargin==4 && info=='Sessions'
 
-    DONT KNOW how to say... outputs will be [sessions, numSessions]..return?
-
      sessions = spm_BIDS(BIDS, 'sessions', ...
          'sub', subID, ...
          'task', opt.taskName);
@@ -33,9 +31,9 @@ function diffrent outputs = getInfo(BIDS, subID, info, session, run, type, opt)
          sessions = {''};
      end
 
-  elseif nargin==5 && info=='Runs'
+     varargout=[sessions, numSessions];
 
-    DONT KNOW how to say...outputs will be [runs, numRuns]
+  elseif nargin==5 && info=='Runs'
 
     runs = spm_BIDS(BIDS, 'runs', ...
         'sub', subID, ...
@@ -49,9 +47,9 @@ function diffrent outputs = getInfo(BIDS, subID, info, session, run, type, opt)
         runs = {''};
     end
 
-  elseif nargin==6 && info=='Filename'
+    varargout=[runs, numRuns];
 
-    output will be fileName
+  elseif nargin==6 && info=='Filename'
 
     fileName = spm_BIDS(BIDS, 'data', ...
         'sub', subID, ...
@@ -60,7 +58,10 @@ function diffrent outputs = getInfo(BIDS, subID, info, session, run, type, opt)
         'task', opt.taskName, ...
         'type', type);
 
+    varargout=fileName;
+
   end
+
 end
 
 
