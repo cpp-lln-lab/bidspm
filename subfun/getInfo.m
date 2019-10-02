@@ -19,6 +19,7 @@ function varargout = getInfo(BIDS, subID, opt, info, session, run, type)
 % opt - options structure defined by the getOption function. Mostly used to find the
 % task name.
 
+varargout = {};
 
   if nargin==4 && info=='Sessions'
 
@@ -30,8 +31,8 @@ function varargout = getInfo(BIDS, subID, opt, info, session, run, type)
          numSessions = 1;
          sessions = {''};
      end
-
-     varargout=[sessions, numSessions];
+    
+    varargout = {sessions, numSessions};
 
   elseif nargin==5 && info=='Runs'
 
@@ -47,7 +48,7 @@ function varargout = getInfo(BIDS, subID, opt, info, session, run, type)
         runs = {''};
     end
 
-    varargout=[runs, numRuns];
+    varargout = {runs, numRuns};
 
   elseif nargin==6 && info=='Filename'
 
@@ -58,9 +59,11 @@ function varargout = getInfo(BIDS, subID, opt, info, session, run, type)
         'task', opt.taskName, ...
         'type', type);
 
-    varargout=fileName;
-
-  end
+    varargout = {fileName};
+    
+else
+    error('Not sure what info you want me to get.')
+end
 
 end
 
