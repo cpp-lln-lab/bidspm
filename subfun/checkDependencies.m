@@ -32,6 +32,6 @@ else
     fprintf(' Nifti tools detected\n')
 end
 
-fprintf(" We got all we need. Let's get to work.\n")
+fprintf(' We got all we need. Let''s get to work.\n')
 
 end
