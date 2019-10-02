@@ -1,4 +1,4 @@
-function varargout = getInfo(BIDS, subID, info, opt, session, run, type)
+function varargout = getInfo(BIDS, subID, opt, info, session, run, type)
 
 % for a given BIDS data set, subject identity, and info type,
 % if info=Sessions, this returns name of the sessions and their number
