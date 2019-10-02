@@ -21,44 +21,44 @@ function varargout = getInfo(BIDS, subID, opt, info, session, run, type)
 
 varargout = {};
 
-  if nargin==4 && info=='Sessions'
-
-     sessions = spm_BIDS(BIDS, 'sessions', ...
-         'sub', subID, ...
-         'task', opt.taskName);
-     numSessions = size(sessions,2);
-     if numSessions==0
-         numSessions = 1;
-         sessions = {''};
-     end
+if nargin==4 && strcmp(info, 'Sessions')
+    
+    sessions = spm_BIDS(BIDS, 'sessions', ...
+        'sub', subID, ...
+        'task', opt.taskName);
+    numSessions = size(sessions,2);
+    if numSessions==0
+        numSessions = 1;
+        sessions = {''};
+    end
     
     varargout = {sessions, numSessions};
-
-  elseif nargin==5 && info=='Runs'
-
+    
+elseif nargin==5 && strcmp(info, 'Runs')
+    
     runs = spm_BIDS(BIDS, 'runs', ...
         'sub', subID, ...
         'task', opt.taskName, ...
         'ses', session, ...
         'type', 'bold');
     numRuns = size(runs,2);     % Get the number of runs
-
+    
     if numRuns==0
         numRuns = 1;
         runs = {''};
     end
-
+    
     varargout = {runs, numRuns};
-
-  elseif nargin==6 && info=='Filename'
-
+    
+elseif nargin==7 && strcmp(info, 'Filename')
+    
     fileName = spm_BIDS(BIDS, 'data', ...
         'sub', subID, ...
         'run', run, ...
         'ses', session, ...
         'task', opt.taskName, ...
         'type', type);
-
+    
     varargout = {fileName};
     
 else
@@ -66,8 +66,3 @@ else
 end
 
 end
-
-
-% TO CHECK
-% what happens if several subID/sessions/runs are given as input (as a cell of strings)?
-% is 'type' a necessary input argument?
