@@ -47,7 +47,7 @@ else
             %cd(WD);   % Go to scripts directory to run getSessions & GetRuns functions
             subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
 
-            [sessions, numSessions] = getInfo(BIDS, subNumber, opt,'Sessions');
+            [sessions, numSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
 
             for iSes = 1:numSessions    % for each session
 
