@@ -31,19 +31,19 @@ if strcmp(model.Input.task, taskName)
     for iStep = 1:length(model.Steps)
         
         % only compute contrasts at the subject level
-        if strcmp(model.Steps{iStep}.Level, 'subject')
+        if strcmp(model.Steps(iStep).Level, 'subject')
             
             % specify all the contrasts
             
             % first the contrasts to compute automatically against baseline
-            for iCon = 1:length(model.Steps{iStep}.AutoContrasts)
+            for iCon = 1:length(model.Steps(iStep).AutoContrasts)
                 
                 con_counter = con_counter + 1;
                 
                 C = zeros(1,size(SPM.xX.X,2));
                 
                 % get condition name
-                cdt_name = model.Steps{iStep}.AutoContrasts{iCon};
+                cdt_name = model.Steps(iStep).AutoContrasts{iCon};
                 cdt_name = strrep(cdt_name, 'trial_type.', '');
                 
                 % get regressors index corresponding to the HRF of that condition
@@ -61,16 +61,16 @@ if strcmp(model.Input.task, taskName)
             
             % then the contrasts that involve contrasting conditions
             % amongst themselves or soemthing inferior to baseline
-            for iCon = 1:length(model.Steps{iStep}.Contrasts)
+            for iCon = 1:length(model.Steps(iStep).Contrasts)
                 
                 con_counter = con_counter + 1;
                 
                 C = zeros(1,size(SPM.xX.X,2));
                 
-                for iCdt = 1:length(model.Steps{iStep}.Contrasts(iCon).ConditionList)
+                for iCdt = 1:length(model.Steps(iStep).Contrasts(iCon).ConditionList)
                     
                     % get condition name
-                    cdt_name = model.Steps{iStep}.Contrasts(iCon).ConditionList{iCdt};
+                    cdt_name = model.Steps(iStep).Contrasts(iCon).ConditionList{iCdt};
                     cdt_name = strrep(cdt_name, 'trial_type.', '');
                     
                     % get regressors index corresponding to the HRF of that condition
@@ -78,14 +78,14 @@ if strcmp(model.Input.task, taskName)
                     regIdx = ~cellfun('isempty', regIdx);
                     
                     % give them a value of 1
-                    C(end,regIdx) = model.Steps{iStep}.Contrasts(iCon).weights(iCdt);
+                    C(end,regIdx) = model.Steps(iStep).Contrasts(iCon).weights(iCdt);
                     
                 end
                 
                 % stores the specification
                 contrasts(con_counter).C = C;
                 contrasts(con_counter).name =  ...
-                model.Steps{iStep}.Contrasts(iCon).Name;
+                    model.Steps(iStep).Contrasts(iCon).Name;
                 
             end
             
