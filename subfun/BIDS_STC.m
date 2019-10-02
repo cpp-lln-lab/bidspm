@@ -78,12 +78,12 @@ for iGroup= 1:length(group)
         %% GET FUNCTIOVAL FILES
         fprintf(1,' BUILDING STC JOB : STC\n')
 
-        [sessions, numSessions] = getInfo(BIDS, subNumber,'Sessions',opt);
+        [sessions, numSessions] = getInfo(BIDS, subNumber, opt ,'Sessions');
 
         for iSes = 1:numSessions    % for each session
 
             % get all runs for that subject across all sessions
-            [runs, numRuns] = getInfo(BIDS, subNumber,'Runs', sessions{iSes}, opt);
+            [runs, numRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
 
 
             for iRun = 1:numRuns                    % For each Run

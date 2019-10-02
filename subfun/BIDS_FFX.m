@@ -100,12 +100,12 @@ switch action
 
                 %%
                 % identify sessions for this subject
-                [sessions, numSessions] = getInfo(BIDS, subNumber,'Sessions',opt);
+                [sessions, numSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
 
                 for iSes = 1:numSessions % For each session
 
                     % get all runs for that subject across all sessions
-                    [runs, numRuns] = getInfo(BIDS, subNumber,'Runs', sessions{iSes}, opt);
+                    [runs, numRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
 
                     for iRun = 1:numRuns % For each run
 
@@ -244,7 +244,7 @@ switch action
                 [~, contrasts] = pmCon(ffxDir, opt.taskName, JOBS_dir, opt);
 
                 matlabbatch{1}.spm.stats.con.spmmat = cellstr(fullfile(ffxDir,'SPM.mat'));
-                
+
                 for icon = 1:size(contrasts,2)
                     matlabbatch{1}.spm.stats.con.consess{icon}.tcon.name = contrasts(icon).name;
                     matlabbatch{1}.spm.stats.con.consess{icon}.tcon.convec = contrasts(icon).C;

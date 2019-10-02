@@ -42,7 +42,7 @@ for iGroup= 1:length(group)                 % For each group
             groupName, iSub, subNumber)
 
         % identify sessions for this subject
-        [sessions, numSessions] = getInfo(BIDS, subNumber,'Sessions',opt);
+        [sessions, numSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
 
         % get all runs for that subject across all sessions
         struct = spm_BIDS(BIDS, 'data', ...
@@ -78,7 +78,7 @@ for iGroup= 1:length(group)                 % For each group
         for iSes = 1:numSessions                     % For each session
 
             % get all runs for that subject across all sessions
-            [runs, numRuns] = getInfo(BIDS, subNumber,'Runs', sessions{iSes}, opt);
+            [runs, numRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
 
             for iRun = 1:numRuns                     % For each run
 

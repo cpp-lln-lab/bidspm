@@ -46,12 +46,12 @@ else
         for iSub = 1:group(iGroup).numSub   % For each Subject in the group
             subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
 
-            [sessions, numSessions] = getInfo(BIDS, subNumber,'Sessions',opt);
+            [sessions, numSessions] = getInfo(BIDS, subNumber, opt,'Sessions');
 
             for iSes = 1:numSessions    % for each session
 
                 % get all runs for that subject across all sessions
-                [runs, numRuns] = getInfo(BIDS, subNumber,'Runs', sessions{iSes}, opt);
+                [runs, numRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
 
                 for iRun = 1:numRuns                       % For each Run
 
@@ -59,8 +59,8 @@ else
                         groupName, iSub, subNumber, iRun)
 
                     % get the filename for this bold run for this task
-                    fileName = getInfo(BIDS, subNumber,'Filename',...
-                        sessions{iSes}, runs{iRun}, 'bold', opt);
+                    fileName = getInfo(BIDS, subNumber, opt,'Filename',...
+                        sessions{iSes}, runs{iRun}, 'bold');
 
                     % get fullpath of the file
                     fileName = fileName{1};
