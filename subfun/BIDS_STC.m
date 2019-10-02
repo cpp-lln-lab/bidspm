@@ -2,7 +2,7 @@ function BIDS_STC(opt)
 % Performs SLICE TIMING CORRECTION of the functional data. The
 % script for each subject and can handle multiple sessions and multiple
 % runs.
-% In the case the slice timing information wasn't sepcified in the json FILES
+% In the case the slice timing information was not sepcified in the json FILES
 % in the BIDS data set (e.g it couldnt be extracted from the trento old scanner),
 % then add this information manually in opt.sliceOrder field.
 % If this is empty the slice timing correction will not be performed
@@ -66,28 +66,28 @@ matlabbatch = [];
 
 for iGroup= 1:length(group)
     groupName = group(iGroup).name ;     % Get the group name
-    
+
     for iSub = 1:group(iGroup).numSub    % For each subject in the group
-        
+
         % Get the ID of the subject
         %(i.e SubNumber doesnt have to match the iSub if one subject is exluded for any reason)
         subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
         fprintf(1,' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n',...
             groupName, iSub, subNumber)
-        
+
         %% GET FUNCTIOVAL FILES
         fprintf(1,' BUILDING STC JOB : STC\n')
-        
-        [sessions, numSessions] = getSessions(BIDS, subNumber, opt);
-        
+
+        [sessions, numSessions] = getInfo(BIDS, subNumber,'Sessions',opt);
+
         for iSes = 1:numSessions    % for each session
-            
+
             % get all runs for that subject across all sessions
-            [runs, numRuns] = getRuns(BIDS, subNumber, sessions{iSes}, opt);
-            
-            
+            [runs, numRuns] = getInfo(BIDS, subNumber,'Runs', sessions{iSes}, opt);
+
+
             for iRun = 1:numRuns                    % For each Run
-                
+
                 % get the filename for this bold run for this task
                 [fileName, subFuncDataDir]= getBoldFilename(...
                     BIDS, ...
@@ -95,17 +95,17 @@ for iGroup= 1:length(group)
 
                 % check that the file with the right prefix exist
                 files = inputFileValidation(subFuncDataDir, prefix, fileName);
-                
+
                 % add the file to the list
                 matlabbatch{1}.spm.temporal.st.scans{iRun} =  cellstr(files);
-                
+
                 % print out to screen files to process
                 disp(files{1})
-                
+
             end
-            
+
         end
-        
+
         matlabbatch{1}.spm.temporal.st.nslices = numSlices;              % Number of Slices
         matlabbatch{1}.spm.temporal.st.tr = TR;                          % Repetition Time
         matlabbatch{1}.spm.temporal.st.ta = TA;
@@ -114,15 +114,15 @@ for iGroup= 1:length(group)
         % The following lines are commented out because those parameters
         % can be set in the spm_my_defaults.m
         % matlabbatch{1}.spm.temporal.st.prefix = spm_get_defaults('slicetiming.prefix');
-        
+
         %% SAVE THE MATLABBATCH
         %Create the JOBS directory if it doesnt exist
         JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
         [~, ~, ~] = mkdir(JOBS_dir);
-        
+
         save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_STC.mat'), 'matlabbatch') % save the matlabbatch
         spm_jobman('run',matlabbatch)
-        
+
     end
 end
 

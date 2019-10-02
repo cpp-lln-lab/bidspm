@@ -36,7 +36,7 @@ else
 
     % prefix to append to the files with dummy removed
     prefix = getPrefix('rmDummies',opt);
-    
+
     numDummies = opt.numDummies; % Number of dummies
 
     %% Loop through the groups, subjects, sessions
@@ -46,12 +46,12 @@ else
         for iSub = 1:group(iGroup).numSub   % For each Subject in the group
             subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
 
-            [sessions, numSessions] = getSessions(BIDS, subNumber, opt);
+            [sessions, numSessions] = getInfo(BIDS, subNumber,'Sessions',opt);
 
             for iSes = 1:numSessions    % for each session
 
                 % get all runs for that subject across all sessions
-                [runs, numRuns] = getRuns(BIDS, subNumber, sessions{iSes}, opt);
+                [runs, numRuns] = getInfo(BIDS, subNumber,'Runs', sessions{iSes}, opt);
 
                 for iRun = 1:numRuns                       % For each Run
 
@@ -59,14 +59,14 @@ else
                         groupName, iSub, subNumber, iRun)
 
                     % get the filename for this bold run for this task
-                    fileName = getFilename(BIDS, subNumber, ...
+                    fileName = getInfo(BIDS, subNumber,'Filename',...
                         sessions{iSes}, runs{iRun}, 'bold', opt);
 
                     % get fullpath of the file
                     fileName = fileName{1};
                     [path, file, ext] = spm_fileparts(fileName);
                     fileName = [file ext];
-                    
+
                     disp(fileName)
 
                     % Go the functional data directory
@@ -77,7 +77,7 @@ else
 
                     if numDummies<=0 || isempty(numDummies) % If no dummies
                         save_untouch_nii(n, fileName(1:end-4)) % Save the functional data as unzipped nii
-                        
+
                     else
                         % Create a dummies folder if it doesnt exist
                         dummiesOuputDir = fullfile(path,'dummies');
