@@ -85,7 +85,7 @@ if strcmp(model.Input.task, taskName)
                 % stores the specification
                 contrasts(con_counter).C = C;
                 contrasts(con_counter).name =  ...
-                    model.Steps{iStep}.Contrasts(iCon).Name;
+                model.Steps{iStep}.Contrasts(iCon).Name;
 
             end
 
