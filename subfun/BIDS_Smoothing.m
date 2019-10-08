@@ -27,7 +27,7 @@ for iGroup= 1:length(group)              % For each group
         sesCounter = 1;                 % file/loop counter
 
         % identify sessions for this subject
-        [sessions, numSessions] = getInfo(BIDS, subNumber, opt ,'Sessions');
+        [sessions, numSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
 
         % clear previous matlabbatch and files
         matlabbatch = [];
