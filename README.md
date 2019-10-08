@@ -144,7 +144,7 @@ The preprocessing of the functional images was performed in the following order:
 
 {Slice timing correction was then performed taking the {XX} th slice as a reference (interpolation: sinc interpolation).}
 
-Functional scans from each participant were realigned using the first scan as a reference (number of degrees of freedom: 6 ; cost function: least square) (Friston et al, 1995).
+Functional scans from each participant were realigned using the mean image as a reference (SPM 2 passes ; number of degrees of freedom: 6 ; cost function: least square) (Friston et al, 1995).
 
 The mean image obtained from realignement was then co-registered to the anatomical T1 image (number of degrees of freedom: 6 ; cost function: normalized mutual information) (Friston et al, 1995). The transformation matrix from this coregistration was then applied to all the functional images.
 
