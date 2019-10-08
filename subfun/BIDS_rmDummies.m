@@ -47,12 +47,12 @@ else
             %cd(WD);   % Go to scripts directory to run getSessions & GetRuns functions
             subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
 
-            [sessions, numSessions] = getSessions(BIDS, subNumber, opt);
+            [sessions, numSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
 
             for iSes = 1:numSessions    % for each session
 
                 % get all runs for that subject across all sessions
-                [runs, numRuns] = getRuns(BIDS, subNumber, sessions{iSes}, opt);
+                [runs, numRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
 
                 for iRun = 1:numRuns                       % For each Run
 
@@ -60,8 +60,8 @@ else
                         groupName, iSub, subNumber, iRun)
 
                     % get the filename for this bold run for this task
-                    fileName = getFilename(BIDS, subNumber, ...
-                        sessions{iSes}, runs{iRun}, 'bold', opt);
+                    fileName = getInfo(BIDS, subNumber, opt,'Filename',...
+                        sessions{iSes}, runs{iRun}, 'bold');
 
                     % get fullpath of the file
                     fileName = fileName{1};

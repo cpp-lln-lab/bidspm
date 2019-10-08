@@ -42,7 +42,7 @@ for iGroup= 1:length(group)                 % For each group
             groupName, iSub, subNumber)
 
         % identify sessions for this subject
-        [sessions, numSessions] = getSessions(BIDS, subNumber, opt);
+        [sessions, numSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
 
         % get all runs for that subject across all sessions
         struct = spm_BIDS(BIDS, 'data', ...
@@ -78,7 +78,7 @@ for iGroup= 1:length(group)                 % For each group
         for iSes = 1:numSessions                     % For each session
 
             % get all runs for that subject across all sessions
-            [runs, numRuns] = getRuns(BIDS, subNumber, sessions{iSes}, opt);
+            [runs, numRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
 
             for iRun = 1:numRuns                     % For each run
 
@@ -86,7 +86,7 @@ for iGroup= 1:length(group)                 % For each group
                 [fileName, subFuncDataDir]= getBoldFilename(...
                     BIDS, ...
                     subNumber, sessions{iSes}, runs{iRun}, opt);
-                
+
                 % check that the file with the right prefix exist
                 files = inputFileValidation(subFuncDataDir, prefix, fileName);
 
@@ -104,14 +104,14 @@ for iGroup= 1:length(group)                 % For each group
                 fprintf(1,' %s\n', files{1});
 
                 matlabbatch{2}.spm.spatial.realign.estwrite.data{sesCounter} =  cellstr(files);
-                
+
                 sesCounter = sesCounter + 1;
 
             end
         end
 
         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.weight = {''};
-        
+
         % The following lines are commented out because those parameters
         % can be set in the spm_my_defaults.m
         %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.quality = 1;
@@ -125,7 +125,7 @@ for iGroup= 1:length(group)                 % For each group
         %         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
         %         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.mask = 1;
 
-        
+
 
         %% COREGISTER
         % REFERENCE IMAGE : DEPENDENCY FROM NAMED FILE SELECTOR ('Structural')
@@ -252,7 +252,7 @@ for iGroup= 1:length(group)                 % For each group
             %             matlabbatch{iJob}.spm.spatial.normalise.write.woptions.bb = [-78 -112 -70 ; 78 76 85];
             %             matlabbatch{iJob}.spm.spatial.normalise.write.woptions.interp = 4;
             %             matlabbatch{iJob}.spm.spatial.normalise.write.woptions.prefix = spm_get_defaults('normalise.write.prefix');
-        
+
         end
 
         matlabbatch{5}.spm.spatial.normalise.write.subj.resample(1) = ...
