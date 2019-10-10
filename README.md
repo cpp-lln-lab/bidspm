@@ -65,8 +65,12 @@ Some more SPM options can be set in the `spm_my_defaults.m`.
 Removes dummy scans by running the script:
 `BIDS_rmDummies.m`
 
-2.  __Slice Time Correction__: Performs Slice Time Correction of the functional volumes by running the script:
+2.  __Slice Time Correction__: Performs Slice Time Correction (STC) of the functional volumes by running the script:
 `BIDS_STC.m`
+STC will be performed using the information provided in the BIDS data set. It will use the mid-volume acquisition time point as as reference.
+The `getOption.m` fields related to STC can still be used to do some slice timing correction even no information is can be found in the BIDS data set.
+In general slice order and reference slice is entered in time unit (ms) (this is the BIDS way of doing things) instead of the slice index of the reference slice (the "SPM" way of doing things).
+More info available on this page of the [SPM wikibook](https://en.wikibooks.org/wiki/SPM/Slice_Timing).
 
 3.  __Spatial Preprocessing__:
 Performs spatial preprocessing by running the script:
@@ -81,6 +85,8 @@ Performs the fixed effects analysis by running the ffx script:
 `BIDS_FFX.m`
 
 This will run twice, once for model specification and another time for model estimation. See the function for more details.
+
+This will take each condition present in the `events.tsv` file of each run and convolve it with a canonical HRF. It will also add the 6 realignment parameters of every run as confound regressors.
 
 6.  __RANDOM EFFECTS ANALYSIS (SECOND-LEVEL ANALYSIS)__:
 Performs the random effects analysis by running the RFX script:

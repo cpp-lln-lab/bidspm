@@ -3,13 +3,13 @@ function opt = getOption()
 % slice timing correction, pre-processing, FFX, RFX.
 
 if nargin<1
-    opt = [];
+ opt = [];
 end
 
 % group of subjects to analyze
-opt.groups = {''};    % {'blnd', 'ctrl'};
+opt.groups = {''}; % {'blnd', 'ctrl'};
 % suject to run in each group
-opt.subjects = {[1:2]};  % {[1:2], [1:2]};
+opt.subjects = {[1:2]}; % {[1:2], [1:2]};
 
 % task to analyze
 opt.taskName = 'visMotion';
@@ -22,24 +22,27 @@ opt.numDummies = 0;
 opt.dummyPrefix = 'dr_';
 
 % Options for slice time correction
-opt.STC_referenceSlice = []; % reference slice: middle acquired slice (NOTE: Middle in time of acquisition, not space)
-% If  slice order is entered in time unit (ms) doing  so,  the  next  item  (Reference Slice) will contain a reference time (in
-% ms) instead of the slice index of the reference slice.
+% If left unspecified the slice timing will be done using the mid-volume acquisition
+% time point as reference.
+% Slice order must be entered in time unit (ms) (this is the BIDS way of doing things)
+% instead of the slice index of the reference slice (the "SPM" way of doing things).
+% More info here: https://en.wikibooks.org/wiki/SPM/Slice_Timing
+opt.sliceOrder = [];
+opt.STC_referenceSlice = [];
 
-opt.sliceOrder = []; % TO BE USED ONLY IF SPM_BIDS CAN'T EXTRACT SLICE INFORMATION
 
 % Options for normalize
 % Voxel dimensions for resampling at normalization of functional data or leave empty [ ].
-opt.funcVoxelDims = [];  
+opt.funcVoxelDims = [];
 
 % Suffix output directory for the saved jobs
 opt.JOBS_dir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
 
 opt.contrastList = {...
-    {'VisMot'}; ...
-    {'VisStat'}; ...
-   % {'VisMot-VisStatic'}; ...
-    };
+ {'VisMot'}; ...
+ {'VisStat'}; ...
+ % {'VisMot-VisStatic'}; ...
+ };
 
 % Save the opt variable as a mat file to load directly in the preprocessing
 % scripts
