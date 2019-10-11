@@ -1,5 +1,9 @@
 function sliceOrder = getSliceOrder(opt, verbose)
 
+if nargin<2
+    verbose = 0
+end
+
 msg = {};
 wng = {};
 
