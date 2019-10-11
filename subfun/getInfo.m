@@ -1,11 +1,10 @@
 function varargout = getInfo(BIDS, subID, opt, info, session, run, type)
-
 % for a given BIDS data set, subject identity, and info type,
 % if info=Sessions, this returns name of the sessions and their number
 % if info=Runs, this returns name of the runs and their number for an specified session.
-% if info=Filename, this returns the name of the file for an specified session and run.
-
-
+% if info=Filename, this returns the name of the file for an specified
+% session and run.
+%
 % INPUTS
 % BIDS - variable returned by spm_BIDS when exploring a BIDS data set
 % subID - ID of the subject ; in BIDS lingo that means that for a file name
@@ -19,9 +18,15 @@ function varargout = getInfo(BIDS, subID, opt, info, session, run, type)
 % opt - options structure defined by the getOption function. Mostly used to find the
 % task name.
 
+if ~any(nargin == [4, 5, 7])
+    error('getInfo needs 4, 5 or 7 input argument to work)')
+end
+
+info = lower(info);
+
 varargout = {};
 
-if nargin==4 && strcmp(info, 'Sessions')
+if nargin==4 && strcmp(info, 'sessions')
     
     sessions = spm_BIDS(BIDS, 'sessions', ...
         'sub', subID, ...
@@ -34,7 +39,7 @@ if nargin==4 && strcmp(info, 'Sessions')
     
     varargout = {sessions, numSessions};
     
-elseif nargin==5 && strcmp(info, 'Runs')
+elseif nargin==5 && strcmp(info, 'runs')
     
     runs = spm_BIDS(BIDS, 'runs', ...
         'sub', subID, ...
@@ -50,7 +55,7 @@ elseif nargin==5 && strcmp(info, 'Runs')
     
     varargout = {runs, numRuns};
     
-elseif nargin==7 && strcmp(info, 'Filename')
+elseif nargin==7 && strcmp(info, 'filename')
     
     fileName = spm_BIDS(BIDS, 'data', ...
         'sub', subID, ...
@@ -61,7 +66,7 @@ elseif nargin==7 && strcmp(info, 'Filename')
     
     varargout = {fileName};
     
-else
+else % extra fail safe
     error('Not sure what info you want me to get.')
 end
 
