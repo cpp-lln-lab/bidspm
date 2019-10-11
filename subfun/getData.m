@@ -88,6 +88,16 @@ if strcmp (options.groups{1}, '') && ~isempty(options.subjects{1})
     options.subjects = {[]}; 
 end
 
+if ~isempty (options.STC_referenceSlice) && length(options.STC_referenceSlice)>1
+    error('options.STC_referenceSlice should be a scalar and current value is: %d', options.STC_referenceSlice)
+end
+
+if ~isempty (opt.funcVoxelDims) && length(opt.funcVoxelDims)~=3
+    error('opt.funcVoxelDims should be a vector of length 3 and current value is: %d', opt.funcVoxelDims)
+end
+
+opt.funcVoxelDims = []; 
+
 opt = options;
 
 end

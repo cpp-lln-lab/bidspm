@@ -1,12 +1,11 @@
 function test_getData()
 % Small test to ensure that getData returns what we asked for
 
-% task to analyze
-opt.taskName = 'vismotion';
-% The directory where the derivatives are located
-opt.derivativesDir = fullfile(pwd, 'dummyData');
-
 addpath(genpath(fullfile(pwd, '..')))
+
+opt.derivativesDir = fullfile(pwd, 'dummyData');
+opt.taskName = 'vismotion';
+
 
 %% Get all groups all subjects
 opt.groups = {''};
@@ -33,7 +32,5 @@ assert(isequal(group(2).subNumber, {'cat02'}))
 % opt.groups = {''};
 % opt.subjects = {2};
 % not implemented yet
-
-
 
 end
