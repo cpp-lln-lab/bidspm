@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/Remi-Gau/CPP_BIDS_SPM_pipeline.svg?branch=master)](https://travis-ci.com/Remi-Gau/CPP_BIDS_SPM_pipeline)
+[![Build Status](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline.svg?branch=master)](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline)
 
 # Instructions for SPM12 Preprocessing Pipeline
 
