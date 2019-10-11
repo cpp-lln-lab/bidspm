@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.com/bids-standard/bids-matlab.svg?branch=master)](https://travis-ci.com/bids-standard/bids-matlab)
+
+https://api.travis-ci.com/Remi-Gau/CPP_BIDS_SPM_pipeline.svg?branch=master
+
 # Instructions for SPM12 Preprocessing Pipeline
 
 <!-- TOC -->
