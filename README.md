@@ -48,7 +48,7 @@ The directory where your files are located on your computer: make sure you have 
 ## Order of the analysis
 
 1.  __Remove Dummy Scans__:
-Removes dummy scans by running the script:
+Unzip bold files and removes dummy scans by running the script (to be run even if `opt.numDummies` set to `0`):
 `BIDS_rmDummies.m`
 
 2.  __Slice Time Correction__: Performs Slice Time Correction of the functional volumes by running the script:
