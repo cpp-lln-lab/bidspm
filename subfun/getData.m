@@ -2,7 +2,6 @@ function [group, opt, BIDS] = getData(opt)
 % The following structure will be the base that the function will use to run
 % the preprocessing pipeline according to the BIDS Structure
 
-% we check the option inputs and add any missing field with some defaults
 opt = checkOptions(opt);
 
 fprintf(1,'FOR TASK: %s\n', opt.taskName)
@@ -31,12 +30,25 @@ end
 
 %% Add the different groups in the experiment
 for iGroup = 1:numel(opt.groups) % for each group
-    group(iGroup).name = opt.groups{iGroup}; %#ok<*AGROW>                            % NAME OF THE GROUP
     
+     % Name of the group
+    group(iGroup).name = opt.groups{iGroup}; %#ok<*AGROW>                           
+
     % we figure out which subjects to take if not specified take all subjects
     if isfield(opt,'subjects') && ~isempty(opt.subjects{iGroup})
+        
         idx = opt.subjects{iGroup};
+        
+        % Number of subjects in the group
+        group(iGroup).numSub = length(idx) ; 
+        
+        % find the subjects that belong to that group
+        groupSubIdx = ~cellfun('isempty', strfind(subjects,group(iGroup).name)); % compare the subjects with the group name 
+        groupSubs = subjects(groupSubIdx) ;                                  % Get the index of the subjects corresponding to this group
+        group(iGroup).subNumber = groupSubs(idx);                            % SUBJECT ID .. con01 , con02 , etc.
+        
     else
+        
         % in case no group was specified (e.g. sub-01) we need a way to still
         % get the subjects ID
         if strcmp(group(iGroup).name, '')
@@ -44,11 +56,12 @@ for iGroup = 1:numel(opt.groups) % for each group
         else
             idx = strfind(subjects, group(iGroup).name);
             idx = find(~cellfun('isempty', idx));
-        end
+        end      
+        group(iGroup).subNumber = subjects(idx);                            % SUBJECT ID .. con01 , con02 , etc.
+        group(iGroup).numSub = length(group(iGroup).subNumber) ;            % Number of subjects in the group
+        
     end
     
-    group(iGroup).subNumber = subjects(idx);                            % SUBJECT ID .. con01 , con02 , etc.
-    group(iGroup).numSub = length(group(iGroup).subNumber) ;            % Number of subjects in the group
     
     fprintf(1,'WILL WORK ON SUBJECTS\n')
     disp(group(iGroup).subNumber)
@@ -56,7 +69,6 @@ end
 
 
 end
-
 
 function opt = checkOptions(opt)
 % we check the option inputs and add any missing field with some defaults
@@ -71,6 +83,19 @@ for f = 1:length(I)
     options = setfield( options,I{f}, getfield(opt,I{f}));
 end
 
+if strcmp (options.groups{1}, '') && ~isempty(options.subjects{1})
+    warning('you want to analyze all groups but still mentioned a subject index : this is not supported at the moment. We will take all the subjects from all groups.')
+    options.subjects = {[]}; 
+end
+
+if ~isempty (options.STC_referenceSlice) && length(options.STC_referenceSlice)>1
+    error('options.STC_referenceSlice should be a scalar and current value is: %d', options.STC_referenceSlice)
+end
+
+if ~isempty (options.funcVoxelDims) && length(options.funcVoxelDims)~=3
+    error('opt.funcVoxelDims should be a vector of length 3 and current value is: %d', opt.funcVoxelDims)
+end
+
 opt = options;
 
 end
@@ -82,7 +107,7 @@ function options = getDefaultOption()
 % group of subjects to analyze
 options.groups = {''};
 % suject to run in each group
-options.subjects = {[]};  % {[1:2], [1:2]};
+options.subjects = {[]}; 
 
 % task to analyze
 options.taskName = '';

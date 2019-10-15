@@ -1,4 +1,27 @@
+[![Build Status](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline.svg?branch=master)](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline)
+
 # Instructions for SPM12 Preprocessing Pipeline
+
+<!-- TOC -->
+
+-   [Instructions for SPM12 Preprocessing Pipeline](#instructions-for-spm12-preprocessing-pipeline)
+  - [Dependencies](#dependencies)
+  - [General description](#general-description)
+  - [Assumption](#assumption)
+  - [Setting up](#setting-up)
+  - [Order of the analysis](#order-of-the-analysis)
+  - [Docker](#docker)
+    - [build docker image](#build-docker-image)
+    - [run docker image](#run-docker-image)
+  - [Details about some steps](#details-about-some-steps)
+    - [Slice timing correction](#slice-timing-correction)
+  - [Boiler plate methods section](#boiler-plate-methods-section)
+    - [Preprocessing](#preprocessing)
+    - [fMRI data analysis](#fmri-data-analysis)
+    - [References](#references)
+  - [Testing](#testing)
+
+<!-- /TOC -->
 
 ## Dependencies
 
@@ -173,3 +196,8 @@ Group level: WIP
 Friston KJ, Ashburner J, Frith CD, Poline J-B, Heather JD & Frackowiak RSJ (1995) Spatial registration and normalization of images Hum. Brain Map. 2:165-189
 
 Corbin, N., Todd, N., Friston, K. J. & Callaghan, M. F. Accurate modeling of temporal correlations in rapidly sampled fMRI time series. Hum. Brain Mapp. 39, 3884–3897 (2018).
+
+
+## Testing
+
+All tests are in the test folder. There is also an empty dummy BIDS dataset that is partly created using the bash script `createDummyDataSet.sh`.
