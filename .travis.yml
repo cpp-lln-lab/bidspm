@@ -1,0 +1,28 @@
+# Travis CI (https://travis-ci.org/)
+
+language: c
+dist: bionic
+cache:
+  apt: true # only works with Pro version
+
+env:
+  global:
+    - OCTFLAGS="--no-gui --no-window-system --silent"
+
+before_install:
+  - travis_retry sudo apt-get -y -qq update
+  - travis_retry sudo apt-get -y install octave
+  - travis_retry sudo apt-get -y install liboctave-dev
+  # install SPM and the relevant patches for octave
+  - git clone https://github.com/spm/spm12.git --depth 1
+  - make -C spm12/src PLATFORM=octave distclean
+  - make -C spm12/src PLATFORM=octave
+  - make -C spm12/src PLATFORM=octave install
+  - octave $OCTFLAGS --eval "addpath(\"spm12\"); savepath ();"
+
+before_script:
+  # Change current directory
+  - cd test
+
+script:
+  - octave $OCTFLAGS --eval "results = runTests; assert(all(~[results.Failed]))"
