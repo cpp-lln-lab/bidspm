@@ -126,6 +126,16 @@ cd /code # to change to the code folder inside the container (running the comman
 octave --no-gui --eval batch_download_run # to run the batch_download_run script
 ```
 
+### MRIQC
+
+If you want to run some quality control on your data you can do it using MRIQC.
+
+```bash
+data_dir=pat_to_data # define where the data is
+
+docker run -it --rm -v $data_dir/raw:/data:ro -v $data_dir:/out poldracklab/mriqc:0.15.0 /data /out/derivatives/mriqc participant --verbose-reports --mem_gb 50 --n_procs 16 -m bold
+```
+
 ## Details about some steps
 
 ### Slice timing correction
