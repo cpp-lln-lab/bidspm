@@ -242,7 +242,7 @@ switch action
                 toc
             end
 
-        end % switch
+        end
 end
 
 end
