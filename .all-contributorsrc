@@ -1,0 +1,23 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "mohmdrezk",
+      "name": "Mohamed Rezk",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/9597815?v=4",
+      "profile": "https://github.com/mohmdrezk",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "CPP_BIDS_SPM_pipeline",
+  "projectOwner": "cpp-lln-lab",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
