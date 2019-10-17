@@ -64,14 +64,21 @@ Set the group of subjects to analyze.
 opt.groups = {'control', 'blind'};
 ```
 
-If there are no groups (i.e subjects names are of the form `sub-01` for example), then use:
+If there are no groups (i.e subjects names are of the form `sub-01` for example) or if you want to run all subjects of all groups then use:
 ```matlab
 opt.groups = {''};
+opt.subjects = {[]};
 ```
 
-Subjects to run in each group. If you have 2 groups the  following will run the first and second subjects of the first group and the third and fourth of the second group.
+If you have 2 groups (`cont` and `cat` for example) the following will run the first and second subjects of the first group and the third and fourth of the second group.
 ```matlab
+opt.groups = {'cont', 'cat'};
 opt.subjects = {[1 2], [3 4]};
+```
+If you have more than 2 groups but want to only run the subjects of 2 groups then you can use.
+```matlab
+opt.groups = {'cont', 'cat'};
+opt.subjects = {[], []};
 ```
 
 Set the task to analyze in the BIDS data set
