@@ -128,27 +128,8 @@ switch action
                             fullfile(subFuncDataDir, ...
                             ['rp_', motionRegressorPrefix, fileName(1:end-4),'.txt']);
                         
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                         % Convert the tsv files to a mat file to be used by SPM
-                        % DO WE NEED TO TRIM ONSET BY A DURATION EQUIVALENT
-                        % TO THE NUMBER OF DUMMIES REMOVED
                         convertTsv2mat(tsvFile{sesCounter,1})
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                         
                         matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).scans = cellstr(files);
                         
