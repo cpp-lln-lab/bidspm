@@ -6,6 +6,16 @@
   "commit": false,
   "contributors": [
     {
+      "login": "mohmdrezk",
+      "name": "Mohamed Rezk",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/9597815?v=4",
+      "profile": "https://github.com/mohmdrezk",
+      "contributions": [
+        "code",
+        "review",
+        "design"
+      ]
+    },
       "login": "marcobarilari",
       "name": "marcobarilari",
       "avatar_url": "https://avatars3.githubusercontent.com/u/38101692?v=4",
@@ -28,7 +38,7 @@
         "infra",
         "design"
       ]
-    },
+    }
   ],
   "contributorsPerLine": 7,
   "projectName": "CPP_BIDS_SPM_pipeline",
