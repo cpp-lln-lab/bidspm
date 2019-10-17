@@ -6,6 +6,16 @@
   "commit": false,
   "contributors": [
     {
+      "login": "OliColli",
+      "name": "OliColli",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/55407947?v=4",
+      "profile": "https://cpplab.be",
+      "contributions": [
+        "code",
+        "design",
+        "doc"
+      ]
+    },
       "login": "anege",
       "name": "anege",
       "avatar_url": "https://avatars0.githubusercontent.com/u/50317099?v=4",
