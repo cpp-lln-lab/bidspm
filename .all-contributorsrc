@@ -15,6 +15,49 @@
         "design",
         "doc"
       ]
+    },
+      "login": "anege",
+      "name": "anege",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/50317099?v=4",
+      "profile": "https://github.com/anege",
+      "contributions": [
+        "code",
+        "design"
+      ]
+    },
+      "login": "mohmdrezk",
+      "name": "Mohamed Rezk",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/9597815?v=4",
+      "profile": "https://github.com/mohmdrezk",
+      "contributions": [
+        "code",
+        "review",
+        "design"
+      ]
+    },
+      "login": "marcobarilari",
+      "name": "marcobarilari",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/38101692?v=4",
+      "profile": "https://github.com/marcobarilari",
+      "contributions": [
+        "code",
+        "design",
+        "review",
+        "doc"
+      ]
+    },
+    {
+      "login": "Remi-Gau",
+      "name": "Remi Gau",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6961185?v=4",
+      "profile": "https://remi-gau.github.io/",
+      "contributions": [
+        "code",
+        "doc",
+        "infra",
+        "design",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
