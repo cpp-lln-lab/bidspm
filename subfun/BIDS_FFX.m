@@ -81,7 +81,7 @@ switch action
                 matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = refBin;
 
                 % The Directory to save the FFX files (Create it if it doesnt exist)
-                ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt);
+                ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt, 0);
 
                 if exist(ffxDir,'dir') % If it exists, issue a warning that it has been overwritten
                     fprintf(1,'A DIRECTORY WITH THIS NAME ALREADY EXISTED AND WAS OVERWRITTEN, SORRY \n');
@@ -233,7 +233,7 @@ switch action
                     groupName,iSub,subNumber)
 
                 % ffx folder
-                ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt);
+                ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt, 0);
 
                 JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
 
