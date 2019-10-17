@@ -53,8 +53,10 @@ The core functions are in the sub-function folder `subfun`
 
 ## Assumption
 
-At the moment This pipeline makes some assumptions:
--   it assumes the metadata for a given task are the same as those the first run of the first subject this pipeline is being run on.
+At the moment this pipeline makes some assumptions:
+-   it assumes that the dummy scans have been removed from the BIDS data set and it can jump straight into pre-processing,
+-   it assumes the metadata for a given task are the same as those the first run of the first subject this pipeline is being run on,
+-   it assumes that group are defined in the subject field (eg `sub-ctrl01`, `sub-blind01`, ...) and not in the `participants.tsv` file.
 
 ## Setting up
 
@@ -65,14 +67,21 @@ Set the group of subjects to analyze.
 opt.groups = {'control', 'blind'};
 ```
 
-If there are no groups (i.e subjects names are of the form `sub-01` for example), then use:
+If there are no groups (i.e subjects names are of the form `sub-01` for example) or if you want to run all subjects of all groups then use:
 ```matlab
 opt.groups = {''};
+opt.subjects = {[]};
 ```
 
-Subjects to run in each group. If you have 2 groups the  following will run the first and second subjects of the first group and the third and fourth of the second group.
+If you have 2 groups (`cont` and `cat` for example) the following will run the first and second subjects of the first group and the third and fourth of the second group.
 ```matlab
+opt.groups = {'cont', 'cat'};
 opt.subjects = {[1 2], [3 4]};
+```
+If you have more than 2 groups but want to only run the subjects of 2 groups then you can use.
+```matlab
+opt.groups = {'cont', 'cat'};
+opt.subjects = {[], []};
 ```
 
 Set the task to analyze in the BIDS data set
@@ -89,8 +98,12 @@ Some more SPM options can be set in the `spm_my_defaults.m`.
 Unzip bold files and removes dummy scans by running the script (to be run even if `opt.numDummies` set to `0`):
 `BIDS_rmDummies.m`
 
-2.  __Slice Time Correction__: Performs Slice Time Correction of the functional volumes by running the script:
+2.  __Slice Time Correction__: Performs Slice Time Correction (STC) of the functional volumes by running the script:
 `BIDS_STC.m`
+STC will be performed using the information provided in the BIDS data set. It will use the mid-volume acquisition time point as as reference.
+The `getOption.m` fields related to STC can still be used to do some slice timing correction even no information is can be found in the BIDS data set.
+In general slice order and reference slice is entered in time unit (ms) (this is the BIDS way of doing things) instead of the slice index of the reference slice (the "SPM" way of doing things).
+More info available on this page of the [SPM wikibook](https://en.wikibooks.org/wiki/SPM/Slice_Timing).
 
 3.  __Spatial Preprocessing__:
 Performs spatial preprocessing by running the script:
@@ -105,6 +118,8 @@ Performs the fixed effects analysis by running the ffx script:
 `BIDS_FFX.m`
 
 This will run twice, once for model specification and another time for model estimation. See the function for more details.
+
+This will take each condition present in the `events.tsv` file of each run and convolve it with a canonical HRF. It will also add the 6 realignment parameters of every run as confound regressors.
 
 6.  __RANDOM EFFECTS ANALYSIS (SECOND-LEVEL ANALYSIS)__:
 Performs the random effects analysis by running the RFX script:
@@ -142,6 +157,16 @@ cd /code # to change to the code folder inside the container (running the comman
 octave --no-gui --eval batch_download_run # to run the batch_download_run script
 ```
 
+### MRIQC
+
+If you want to run some quality control on your data you can do it using MRIQC.
+
+```bash
+data_dir=pat_to_data # define where the data is
+
+docker run -it --rm -v $data_dir/raw:/data:ro -v $data_dir:/out poldracklab/mriqc:0.15.0 /data /out/derivatives/mriqc participant --verbose-reports --mem_gb 50 --n_procs 16 -m bold
+```
+
 ## Details about some steps
 
 ### Slice timing correction
@@ -168,7 +193,7 @@ The preprocessing of the functional images was performed in the following order:
 
 {Slice timing correction was then performed taking the {XX} th slice as a reference (interpolation: sinc interpolation).}
 
-Functional scans from each participant were realigned using the first scan as a reference (number of degrees of freedom: 6 ; cost function: least square) (Friston et al, 1995).
+Functional scans from each participant were realigned using the mean image as a reference (SPM 2 passes ; number of degrees of freedom: 6 ; cost function: least square) (Friston et al, 1995).
 
 The mean image obtained from realignement was then co-registered to the anatomical T1 image (number of degrees of freedom: 6 ; cost function: normalized mutual information) (Friston et al, 1995). The transformation matrix from this coregistration was then applied to all the functional images.
 
@@ -212,6 +237,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/mohmdrezk"><img src="https://avatars2.githubusercontent.com/u/9597815?v=4" width="100px;" alt="Mohamed Rezk"/><br /><sub><b>Mohamed Rezk</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/commits?author=mohmdrezk" title="Code">💻</a> <a href="#review-mohmdrezk" title="Reviewed Pull Requests">👀</a> <a href="#design-mohmdrezk" title="Design">🎨</a></td>
+    <td align="center"><a href="https://github.com/marcobarilari"><img src="https://avatars3.githubusercontent.com/u/38101692?v=4" width="100px;" alt="marcobarilari"/><br /><sub><b>marcobarilari</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/commits?author=marcobarilari" title="Code">💻</a> <a href="#design-marcobarilari" title="Design">🎨</a> <a href="#review-marcobarilari" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/commits?author=marcobarilari" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://remi-gau.github.io/"><img src="https://avatars3.githubusercontent.com/u/6961185?v=4" width="100px;" alt="Remi Gau"/><br /><sub><b>Remi Gau</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/commits?author=Remi-Gau" title="Code">💻</a> <a href="https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/commits?author=Remi-Gau" title="Documentation">📖</a> <a href="#infra-Remi-Gau" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#design-Remi-Gau" title="Design">🎨</a></td>
   </tr>
 </table>
 
