@@ -46,6 +46,10 @@ opt.JOBS_dir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
 % specify the model file that contains the contrasts to compute
 opt.model.file = fullfile('/home/remi/github/CPP_BIDS_SPM_pipeline', 'model-motionloc_smdl.json');
 
+% run FFX as if for MVPA: computes run-wise contrasts instead of
+% subject-wise
+opt.isMVPA
+
 % Save the opt variable as a mat file to load directly in the preprocessing
 % scripts
 save('opt.mat','opt')
