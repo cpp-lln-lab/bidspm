@@ -26,11 +26,10 @@ con_counter = 0;
 
 % for the task of interest
 if strcmp(model.Input.task, taskName)
-    
+
     % check all the steps specified in the model
     for iStep = 1:length(model.Steps)
-        
-        
+
         switch model.Steps{iStep}.Level
             
             %% compute contrasts at the subject level
@@ -120,6 +119,7 @@ end
 
 
 end
+
 
 
 function  regIdx = getRegIdx(model, iStep, iCon, SPM)
