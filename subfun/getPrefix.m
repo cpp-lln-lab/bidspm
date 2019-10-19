@@ -32,6 +32,9 @@ switch step
             prefix = [spm_get_defaults('smooth.prefix') num2str(degreeOfSmoothing) prefix];
         end
         
+    case 'MVPA'
+        error('not implemented yet')
+        
 end
 
 
@@ -46,6 +49,7 @@ else
     prefix = '';
 end
 end
+
 
 function prefix = prefixForSTC(prefix, opt)
 % Check the slice timing information is not in the metadata and not added
