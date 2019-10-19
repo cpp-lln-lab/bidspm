@@ -18,6 +18,12 @@ if nargin<3
     fprintf('opt.mat file loaded \n\n')
 end
 
+if opt.isMVPA
+    mvpaSuffix = 'MVPA_';
+else
+    mvpaSuffix = '';
+end
+
 
 
 %%
@@ -81,7 +87,7 @@ switch action
                 matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = refBin;
 
                 % The Directory to save the FFX files (Create it if it doesnt exist)
-                ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt, 0);
+                ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt);
 
                 if exist(ffxDir,'dir') % If it exists, issue a warning that it has been overwritten
                     fprintf(1,'A DIRECTORY WITH THIS NAME ALREADY EXISTED AND WAS OVERWRITTEN, SORRY \n');
@@ -188,7 +194,7 @@ switch action
                 JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
                 [~, ~, ~] = mkdir(JOBS_dir);
 
-                save(fullfile(JOBS_dir, ['jobs_matlabbatch_SPM12_ffx_',...
+                save(fullfile(JOBS_dir, ['jobs_matlabbatch_SPM12_ffx_', mvpaSuffix,...
                     num2str(degreeOfSmoothing),'_',opt.taskName,'.mat']), ...
                     'matlabbatch')
 
@@ -214,7 +220,7 @@ switch action
                     groupName,iSub,subNumber)
 
                 % ffx folder
-                ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt, 0);
+                ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt);
 
                 JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
 
@@ -233,7 +239,7 @@ switch action
 
                 % Save ffx matlabbatch in JOBS
                 save(fullfile(JOBS_dir, ...
-                    ['jobs_matlabbatch_SPM12_ffx_',...
+                    ['jobs_matlabbatch_SPM12_ffx_', mvpaSuffix,...
                     num2str(degreeOfSmoothing),'_',...
                     opt.taskName,'_Contrasts.mat']), ...
                     'matlabbatch') % save the matlabbatch
