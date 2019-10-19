@@ -18,7 +18,6 @@ opt.taskName = 'visMotion';
 % opt.derivativesDir = '/Users/mohamed/Desktop/MotionWorkshop/derivatives';
 opt.derivativesDir = '/home/remi/BIDS/motion_stat/raw';
 
-
 % Specify the number of dummies that you want to be removed.
 opt.numDummies = 0;
 opt.dummyPrefix = 'dr_';
@@ -37,17 +36,12 @@ opt.funcVoxelDims = [];
 % Suffix output directory for the saved jobs
 opt.JOBS_dir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
 
-% opt.contrastList = {...
-%     {'VisMot'}; ...
-%     {'VisStat'}; ...
-%    % {'VisMot-VisStatic'}; ...
-%     };
-
 % specify the model file that contains the contrasts to compute
 opt.model.file = fullfile('/home/remi/github/CPP_BIDS_SPM_pipeline', 'model-motionloc_smdl.json');
 
 % run FFX as if for MVPA: computes run-wise contrasts instead of
-% subject-wise
+% subject-wise. The subject level GLM will also be estimated in a different
+% folder from the one for the mass univariate
 opt.isMVPA
 
 % Save the opt variable as a mat file to load directly in the preprocessing
