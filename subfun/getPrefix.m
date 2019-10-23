@@ -33,7 +33,11 @@ switch step
         end
         
     case 'MVPA'
-        error('not implemented yet')
+        prefix = prefixForDummies(opt);
+        prefix = prefixForSTC(prefix, opt);
+        
+        % for the motion regressors txt file
+        motionRegressorPrefix = prefix;
         
 end
 

@@ -25,13 +25,16 @@ else
 end
 
 
-
 %%
 % load the subjects/Groups information and the task name
 [group, opt, BIDS] = getData(opt);
 
 % creates prefix to look for
-[prefix, motionRegressorPrefix] = getPrefix('FFX', opt, degreeOfSmoothing);
+if opt.isMVPA
+    [prefix, motionRegressorPrefix] = getPrefix('MVPA', opt, degreeOfSmoothing);
+else
+    [prefix, motionRegressorPrefix] = getPrefix('FFX', opt, degreeOfSmoothing);
+end
 
 % Check the slice timing information is not in the metadata and not added
 % manually in the opt variable.
