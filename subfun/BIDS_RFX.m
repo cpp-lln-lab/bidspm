@@ -198,11 +198,11 @@ switch action
 
         %% Factorial design specification
 
-        % Load the list of contrasts on interest for the RFX
+        % Load the list of contrasts of interest for the RFX
         model = spm_jsonread(opt.model.file);
         for iStep = 1:length(model.Steps)
             if strcmp(model.Steps{iStep}.Level, 'dataset')
-                Session = model.Steps{iStep}.AutoContrasts;
+                grpLvlCon = model.Steps{iStep}.AutoContrasts;
                 break
             end
         end
@@ -214,8 +214,8 @@ switch action
         matlabbatch = {};
         
         % For each contrast
-        for j = 1:size(Session,1)
-
+        for j = 1:size(grpLvlCon,1)
+            
             con = con+1;
 
             % For each group
@@ -267,24 +267,16 @@ switch action
             matlabbatch{j}.spm.stats.factorial_design.globalm.glonorm = 1;
 
             
-            %% Linux does not support directory name '*' or ' ' that are replaced by
-            %% 'x' or '' here
-            if ~isempty(findstr('*', Session{j}))
-                Session{j}( findstr('*', Session{j} ) ) = 'x';
-            end
-            if ~isempty(findstr(' ',Session{j}))
-                Session{j}( findstr(' ', Session{j}) ) = '';
-            end
-
-            if exist(fullfile(RFX_FolderName, Session{j}),'dir') % If it exists, issue a warning that it has been overwritten
+            % If it exists, issue a warning that it has been overwritten
+            if exist(fullfile(RFX_FolderName, conName),'dir') 
                 fprintf(1,'A DIRECTORY WITH THIS NAME ALREADY EXISTED AND WAS OVERWRITTEN, SORRY \n');
-                rmdir(fullfile(RFX_FolderName, Session{j}),'s')
-                mkdir(fullfile(RFX_FolderName, Session{j}))
+                rmdir(fullfile(RFX_FolderName, conName),'s')
             end
+            mkdir(fullfile(RFX_FolderName, conName))
 
             matlabbatch{j}.spm.stats.factorial_design.dir = {...
                 fullfile(RFX_FolderName,...
-                Session{j}) };
+                grpLvlCon{j}) };
         end
 
         % Go to Jobs directory and save the matlabbatch
@@ -302,10 +294,10 @@ switch action
 
         matlabbatch = {};
         
-        for j = 1:size(Session,1)
+        for j = 1:size(grpLvlCon,1)
             matlabbatch{j}.spm.stats.fmri_est.spmmat = {...
                 fullfile(RFX_FolderName,...
-                Session{j},...
+                grpLvlCon{j},...
                 'SPM.mat')};
             matlabbatch{j}.spm.stats.fmri_est.method.Classical = 1;
         end
@@ -327,10 +319,10 @@ switch action
         matlabbatch = {};
 
         % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
-        for j = 1:size(Session,1)
+        for j = 1:size(grpLvlCon,1)
             matlabbatch{j}.spm.stats.con.spmmat = {...
                 fullfile(RFX_FolderName,...
-                Session{j},...
+                grpLvlCon{j},...
                 'SPM.mat')};
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = 1;
