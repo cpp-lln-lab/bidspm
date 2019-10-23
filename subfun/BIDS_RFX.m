@@ -93,7 +93,7 @@ switch action
         % Define the RFX folder name and create it in the derivatives
         % directory
         RFX_FolderName = fullfile(opt.derivativesDir,...
-            ['RFX_',opt.taskName],...
+            ['RFX_', opt.taskName],...
             ['RFX_FunctSmooth',num2str(mmFunctionalSmoothing),...
             '_ConSmooth_',num2str(mmConSmoothing)]) ;
 
@@ -216,6 +216,11 @@ switch action
         % For each contrast
         for j = 1:size(grpLvlCon,1)
             
+            % the strrep(Session{j}, 'trial_type.', '') is there to remove 
+            % 'trial_type.' because contrasts against baseline are renamed 
+            % at the subject level
+            conName = strrep(grpLvlCon{j}, 'trial_type.', '');
+
             con = con+1;
 
             % For each group
@@ -235,10 +240,7 @@ switch action
                     load(fullfile(ffxDir, 'SPM.mat'))
                     
                     % find which contrast of that subject has the name of the contrast we
-                    % want to bring to the group level ; the strrep(Session{j}, 'trial_type.', '')
-                    % is there to remove 'trial_type.' because contrasts against baseline are
-                    % renamed at the subject level
-                    conName = strrep(Session{j}, 'trial_type.', '');
+                    % want to bring to the group level
                     conIdx = find(strcmp({SPM.xCon.name}, conName));
                     fileName = sprintf('con_%0.4d.nii', conIdx);
                     file = inputFileValidation(ffxDir, smoothOrNonSmooth, fileName);
