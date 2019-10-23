@@ -8,6 +8,13 @@ function convertTsv2mat(tsvFile)
 % Read the tsv file
 t = spm_load(tsvFile);
 fprintf('reading the tsv file : %s \n', tsvFile)
+
+if ~isfield(t, 'trial_type')
+    
+    error('There was no trial_type field in the following file \n %s', tsvFile)
+    
+end
+
 conds = t.trial_type;        % assign all the tsv information to a variable called conds.
 
 % Get the unique names of the conditions (removing repetitions)
@@ -26,6 +33,7 @@ for iCond = 1:numConditions
     idx{iCond,1} = find(strcmp(names(iCond), conds)) ;
     onsets{1,iCond} = t.onset(idx{iCond,1})' ;             % Get the onset and duration of each condition
     durations{1,iCond} = t.duration(idx{iCond,1})' ;
+    
 end
 
 % save the onsets as a matfile
