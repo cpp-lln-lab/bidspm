@@ -19,10 +19,6 @@ opt.taskName = 'motionDecoding';
 opt.derivativesDir = '/Users/mohamed/Desktop/Data/derivatives';
 
 
-% Specify the number of dummies that you want to be removed.
-% opt.numDummies = 4;
-% opt.dummyPrefix = 'dr_';
-
 % Options for slice time correction
 opt.STC_referenceSlice = []; % reference slice: middle acquired slice (NOTE: Middle in time of acquisition, not space)
 % If  slice order is entered in time unit (ms) doing  so,  the  next  item  (Reference Slice) will contain a reference time (in
@@ -36,12 +32,6 @@ opt.funcVoxelDims = [];
 
 % Suffix output directory for the saved jobs
 opt.JOBS_dir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
-
-% opt.contrastList = {...
-%     {'VisMot'}; ...
-%     {'VisStat'}; ...
-%    % {'VisMot-VisStatic'}; ...
-%     };
 
 % specify the model file that contains the contrasts to compute
 opt.model.univariate.file = '/Users/mohamed/Documents/GitHub/BIDS_fMRI_scripts/model-motionDecoding_univariate.json';
