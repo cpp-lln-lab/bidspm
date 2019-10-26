@@ -1,27 +1,13 @@
 {
-  "Name": "Motion localizer",
+  "Name": "Motion Decoding",
   "Description": "contrasts for the motion localizer dataset",
   "Input": {
-    "task": "MotionDecoding"
+    "task": "motionDecoding"
   },
   "Steps": [
     {
-      "Level": "subject",
-      "AutoContrasts": ["trial_type.Vis_U", "trial_type.Vis_D"],
-      "Contrasts": [
-        {
-          "Name": "VisU_gt_VisD",
-          "ConditionList": [
-            "trial_type.Vis_U", "trial_type.Vis_D"
-          ],
-          "weights": [1, -1],
-          "type": "t"
-        }
-      ]
-    },
-    {
       "Level": "run",
-      "AutoContrasts": ["trial_type.Vis_U", "trial_type.Vis_D"],
+      "AutoContrasts": ["trial_type.Vis_U", "trial_type.Vis_D", "trial_type.Vis_R", "trial_type.Vis_L","trial_type.Aud_U", "trial_type.Aud_D", "trial_type.Aud_R", "trial_type.Aud_L"],
       "Contrasts": []
     },
     {

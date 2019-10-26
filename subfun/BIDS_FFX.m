@@ -1,4 +1,4 @@
-function BIDS_FFX(action, degreeOfSmoothing, opt)
+function BIDS_FFX(action, degreeOfSmoothing, opt, isMVPA)
 % This scripts builds up the design matrix for each subject.
 % It has to be run in 2 separate steps (action) :
 % case 1 = fMRI design and estimate
@@ -18,23 +18,28 @@ if nargin<3
     fprintf('opt.mat file loaded \n\n')
 end
 
-if opt.isMVPA
+if nargin<4
+    isMVPA = 0;
+end
+
+% Suffix definition (MVPA or not)
+if isMVPA
     mvpaSuffix = 'MVPA_';
 else
     mvpaSuffix = '';
 end
-
 
 %%
 % load the subjects/Groups information and the task name
 [group, opt, BIDS] = getData(opt);
 
 % creates prefix to look for
-if opt.isMVPA
-    [prefix, motionRegressorPrefix] = getPrefix('MVPA', opt, degreeOfSmoothing);
-else
-    [prefix, motionRegressorPrefix] = getPrefix('FFX', opt, degreeOfSmoothing);
-end
+% if opt.isMVPA
+%     [prefix, motionRegressorPrefix] = getPrefix('MVPA', opt, degreeOfSmoothing);
+% else
+%     [prefix, motionRegressorPrefix] = getPrefix('FFX', opt, degreeOfSmoothing);
+% end
+[prefix, motionRegressorPrefix] = getPrefix('FFX', opt, degreeOfSmoothing);
 
 % Check the slice timing information is not in the metadata and not added
 % manually in the opt variable.
@@ -90,7 +95,7 @@ switch action
                 matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = refBin;
 
                 % The Directory to save the FFX files (Create it if it doesnt exist)
-                ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt);
+                ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt, isMVPA);
 
                 if exist(ffxDir,'dir') % If it exists, issue a warning that it has been overwritten
                     fprintf(1,'A DIRECTORY WITH THIS NAME ALREADY EXISTED AND WAS OVERWRITTEN, SORRY \n');
@@ -223,12 +228,12 @@ switch action
                     groupName,iSub,subNumber)
 
                 % ffx folder
-                ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt);
+                ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt, isMVPA);
 
                 JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
 
                 % Create Contrasts
-                contrasts = pmCon(ffxDir, opt.taskName, opt);
+                contrasts = pmCon(ffxDir, opt.taskName, opt, isMVPA);
 
                 matlabbatch{1}.spm.stats.con.spmmat = cellstr(fullfile(ffxDir,'SPM.mat'));
 

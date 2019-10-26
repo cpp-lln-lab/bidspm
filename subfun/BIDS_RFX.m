@@ -1,4 +1,4 @@
-function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt)
+function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
 % This script smooth all con images created at the fisrt level in each
 % subject, create a mean structural image and mean mask over the
 % population, process the factorial design specification  and estimation and estimate Contrats.
@@ -26,6 +26,10 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt)
 if nargin<4
     load('opt.mat')
     fprintf('opt.mat file loaded \n\n')
+end
+
+if nargin<5
+    isMVPA = 0;
 end
 
 % load the subjects/Groups information and the task name
@@ -62,7 +66,7 @@ switch action
                     groupName,iSub,subNumber)
 
                 % FFX Directory
-                ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt);
+                ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt, isMVPA);
                 conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
                 matlabbatch{counter}.spm.spatial.smooth.data = cellstr(conImg);
 
@@ -145,7 +149,7 @@ switch action
 
 
                 %% Mask
-                ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt);
+                ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt, isMVPA);
 
                 files = inputFileValidation(ffxDir, '', 'mask.nii');
 
@@ -199,7 +203,13 @@ switch action
         %% Factorial design specification
 
         % Load the list of contrasts of interest for the RFX
-        model = spm_jsonread(opt.model.file);
+        %model = spm_jsonread(opt.model.file);
+        if isMVPA
+            model = spm_jsonread(opt.model.multivariate.file);
+        else
+            model = spm_jsonread(opt.model.univariate.file);
+        end
+
         for iStep = 1:length(model.Steps)
             if strcmp(model.Steps{iStep}.Level, 'dataset')
                 grpLvlCon = model.Steps{iStep}.AutoContrasts;
@@ -236,7 +246,7 @@ switch action
                         groupName, iSub, subNumber)
 
                     % FFX directory and load SPM.mat of that subject
-                    ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt);
+                    ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt, isMVPA);
                     load(fullfile(ffxDir, 'SPM.mat'))
                     
                     % find which contrast of that subject has the name of the contrast we

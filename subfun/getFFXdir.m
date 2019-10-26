@@ -1,6 +1,6 @@
-function ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt)
+function ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt, isMVPA)
 
-if opt.isMVPA
+if isMVPA
     mvpaSuffix = 'MVPA_';
 else
     mvpaSuffix = '';

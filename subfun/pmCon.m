@@ -1,4 +1,4 @@
-function contrasts = pmCon(ffxDir, taskName, opt)
+function contrasts = pmCon(ffxDir, taskName, opt, isMVPA)
 % Specifies the first level contrasts
 %
 % To know the names of the columns of the design matrix, type :
@@ -18,7 +18,11 @@ function contrasts = pmCon(ffxDir, taskName, opt)
 
 load(fullfile(ffxDir, 'SPM.mat'))
 
-model = spm_jsonread(opt.model.file);
+if isMVPA
+    model = spm_jsonread(opt.model.multivariate.file);
+else
+    model = spm_jsonread(opt.model.univariate.file);
+end
 
 contrasts = struct('C',[],'name',[]);
 con_counter = 0;
