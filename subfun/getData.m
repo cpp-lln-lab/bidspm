@@ -21,6 +21,11 @@ function [group, opt, BIDS] = getData(opt)
 % groups then you can use.
 % opt.groups = {'cont', 'cat'};
 % opt.subjects = {[], []};
+%
+% You can also directly specify the subject label for the participants you want to run
+% opt.groups = {''};
+% opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
+
 
 opt = checkOptions(opt);
 
