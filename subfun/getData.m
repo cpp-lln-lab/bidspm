@@ -85,6 +85,7 @@ for iGroup = 1:numel(opt.groups) % for each group
         idx = 1:idx;
         
     else
+        
         error('Not sure what to do.')
 
     end
@@ -92,8 +93,8 @@ for iGroup = 1:numel(opt.groups) % for each group
     % if only indices were specified we get the subject from that group with that
     if exist('idx', 'var')
         pattern = [group(iGroup).name '%0' num2str(opt.zeropad) '.0f_'];
-        temp = split(sprintf(pattern, idx) ,'_');
-        group(iGroup).subNumber = temp(1:end-1)';
+        temp = strsplit(sprintf(pattern, idx) ,'_');
+        group(iGroup).subNumber = temp(1:end-1);
     end
     
     
@@ -130,7 +131,7 @@ for f = 1:length(I)
     options = setfield( options,I{f}, getfield(opt,I{f}) ); %#ok<GFLD,SFLD>
 end
 
-if ~all(cellfun(@isstr, options.groups))
+if ~all(cellfun(@ischar, options.groups))
     disp(options.groups)
     error('All group names should be string.')
 end
