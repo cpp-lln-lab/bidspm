@@ -10,6 +10,8 @@ end
 opt.groups = {''}; % {'blnd', 'ctrl'};
 % suject to run in each group
 opt.subjects = {[1:2]}; % {[1:2], [1:2]};
+% set the number of zeros used to pad the subject label (2 --> sub-blnd01 ; 3 --> sub-blnd001 )
+opt.zeropad = 2;
 
 % task to analyze
 opt.taskName = 'visMotion';

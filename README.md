@@ -73,7 +73,7 @@ opt.groups = {''};
 opt.subjects = {[]};
 ```
 
-If you have 2 groups (`cont` and `cat` for example) the following will run the first and second subjects of the first group and the third and fourth of the second group.
+If you have 2 groups (`cont` and `cat` for example) the following will run cont01, cont02, cat03, cat04..
 ```matlab
 opt.groups = {'cont', 'cat'};
 opt.subjects = {[1 2], [3 4]};
@@ -82,6 +82,11 @@ If you have more than 2 groups but want to only run the subjects of 2 groups the
 ```matlab
 opt.groups = {'cont', 'cat'};
 opt.subjects = {[], []};
+```
+You can also directly specify the subject label for the participants you want to run
+```matlab
+opt.groups = {''};
+opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
 ```
 
 Set the task to analyze in the BIDS data set

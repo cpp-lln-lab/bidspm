@@ -7,7 +7,7 @@ StartDir=`pwd` # relative to starting directory
 StartDir=$StartDir/dummyData/
 mkdir $StartDir
 
-SubList='ctrl01 ctrl02 blind01 blind02 cat01 cat02 cont01 cont02' # subject list
+SubList='ctrl01 ctrl02 blind01 blind02 cat01 cat02 cont01 cont02 cont03 01 02' # subject list
 SesList='01 02' # session list
 
 for Subject in $SubList # loop through subjects
