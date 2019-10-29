@@ -12,6 +12,9 @@ addpath(genpath(WD))
 % toolbox_path = '';
 % addpath(fullfile(toolbox_path)
 
+% copy raw folder into derivatives folder
+%BIDS_copyRawFolder(opt,deleteZippedNii,leadingZeros)
+
 checkDependencies();
 
 % BIDS_STC(opt);
