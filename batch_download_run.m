@@ -63,7 +63,7 @@ checkDependencies();
 
 
 %% Run batches
-BIDS_copyRawFolder(opt, 1, 2)
+BIDS_copyRawFolder(opt, 1)
 BIDS_STC(opt);
 BIDS_SpatialPrepro(opt);
 BIDS_Smoothing(FWHM, opt);

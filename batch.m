@@ -15,7 +15,7 @@ addpath(genpath(WD))
 checkDependencies();
 
 % copy raw folder into derivatives folder
-% BIDS_copyRawFolder(opt, 1, 2)
+BIDS_copyRawFolder(opt, 1)
 %
 % BIDS_STC(opt);
 % BIDS_SpatialPrepro(opt);

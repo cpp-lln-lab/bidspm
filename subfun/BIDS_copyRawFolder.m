@@ -1,4 +1,4 @@
-function BIDS_copyRawFolder(opt, deleteZippedNii, leadingZeros)
+function BIDS_copyRawFolder(opt, deleteZippedNii)
 % This function will copy the subject's folders from the "raw" folder to the
 % "derivatives" folder, and will copy the dataset description and task json files
 % to the derivatives directory.
@@ -13,15 +13,9 @@ function BIDS_copyRawFolder(opt, deleteZippedNii, leadingZeros)
 %
 % deleteZippedNii - true or false and will delete original zipped files
 % after copying and unzipping
-%
-% leadingZeros - number of zeros used to pad the subject numbers in the raw
-% dataset
+
 
 %% input variables default values
-if nargin<3
-   leadingZeros = 2;   % number of leading zeros in folder name e.g:sub-con02 
-end                    % has 2 leading zeros
-
 if nargin<2            % if second argument isn't specified
    deleteZippedNii = 1;  % delete the original zipped nii.gz
 end
@@ -55,20 +49,24 @@ fprintf('task JSON files copied to derivatives directory \n');
 
 % copy TSV files?
 
-
 %% Loop through the groups, subjects, sessions
-for iGroup= 1:length(opt.groups)        % For each group
-    groupName = opt.groups{iGroup} ;    % Get the group name
+
+group = getData(opt, rawDir);
+
+
+for iGroup= 1:length(group)       % For each group
+    groupName = group(iGroup).name ;    % Get the group name
     
-    for iSub = 1:length(opt.subjects{iGroup})  % For each Subject in the group
-        subNumber = opt.subjects{iGroup}(iSub) ; % Get the subject ID
+    for iSub = 1:group(iGroup).numSub  % For each Subject in the group
+        
+        subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
         
         % the folder containing the subjects data
-        subFolder = sprintf(['sub-', groupName, '%0', num2str(leadingZeros), 'd' ], subNumber);
+        subFolder = ['sub-', groupName, subNumber ];
         
         % copy the whole subject's folder
         copyfile(fullfile(rawDir, subFolder),...
-            fullfile(derivativeDir, subFolder))
+            fullfile(derivativeDir, subFolder));
         
         fprintf('folder copied: %s \n', subFolder)
         
