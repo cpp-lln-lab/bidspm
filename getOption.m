@@ -13,15 +13,15 @@ opt.subjects = {1:3};  % {[1:2], [1:2]};
 
 
 % task to analyze
-% opt.taskName = 'motionDecoding';
-opt.taskName = 'visMotion';
+opt.taskName = 'motionDecoding';
+% opt.taskName = 'visMotion';
 
 
 % The directory where the derivatives are located
 % opt.dataDir = '/Users/mohamed/Desktop/MotionWorkshop/raw';
 % opt.dataDir = '/Users/mohamed/Desktop/Data/raw';
-opt.dataDir = '/home/remi/BIDS/visMotion/raw';
-
+% opt.dataDir = '/home/remi/BIDS/visMotion/raw';
+opt.dataDir = '/home/remi/BIDS/motionDecoding/raw';
 
 % Options for slice time correction
 % If left unspecified the slice timing will be done using the mid-volume acquisition
@@ -44,8 +44,9 @@ opt.JOBS_dir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', 
 % specify the model file that contains the contrasts to compute
 % opt.model.univariate.file = '/Users/mohamed/Documents/GitHub/BIDS_fMRI_scripts/model-motionDecodingUnivariate_smdl.json';
 % opt.model.multivariate.file = '/Users/mohamed/Documents/GitHub/BIDS_fMRI_scripts/model-motionDecodingMultivariate_smdl.json';
-opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-visMotionLoc_smdl.json';
-
+% opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-visMotionLoc_smdl.json';
+opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-motionDecodingUnivariate_smdl.json';
+opt.model.multivariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-motionDecodingMultivariate_smdl.json';
 
 % Save the opt variable as a mat file to load directly in the preprocessing
 % scripts
