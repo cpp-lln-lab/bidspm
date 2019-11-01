@@ -34,12 +34,7 @@ if strcmp(model.Input.task, taskName)
     % check all the steps specified in the model
     for iStep = 1:length(model.Steps)
         
-        % dirty hack to get around the way JSON structures are returned
-        if length(model.Steps) > 1
-            Step = model.Steps{iStep};
-        else
-            Step = model.Steps(iStep);
-        end
+        Step = model.Steps(iStep);
         
         switch Step.Level
             
