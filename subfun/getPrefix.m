@@ -1,23 +1,20 @@
 function [prefix, motionRegressorPrefix] = getPrefix(step,opt,degreeOfSmoothing)
 % generates prefix to append to file name to look for
 
-switch step
+prefix = '';
 
-        
+switch step
+   
     case 'STC'
-        prefix = '';
         
     case 'preprocess'
-        prefix = '';
         prefix = prefixForSTC(prefix, opt);
 
     case 'smoothing'
-        prefix = '';
         prefix = prefixForSTC(prefix, opt);
         prefix = [spm_get_defaults('normalise.write.prefix') prefix];
   
     case 'FFX'
-        prefix = '';
         prefix = prefixForSTC(prefix, opt);
         
         % for the motion regressors txt file
@@ -32,7 +29,6 @@ switch step
         end
         
 %     case 'MVPA'
-%         prefix = prefixForDummies(opt);
 %         prefix = prefixForSTC(prefix, opt);
 %         
 %         % for the motion regressors txt file
