@@ -31,7 +31,7 @@ opt.sliceOrder = []; % TO BE USED ONLY IF SPM_BIDS CAN'T EXTRACT SLICE INFORMATI
 opt.funcVoxelDims = [];
 
 % Suffix output directory for the saved jobs
-opt.JOBS_dir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
+opt.JOBS_dir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
 
 % specify the model file that contains the contrasts to compute
 opt.model.univariate.file = '/Users/mohamed/Documents/GitHub/BIDS_fMRI_scripts/model-motionDecoding_univariate.json';
