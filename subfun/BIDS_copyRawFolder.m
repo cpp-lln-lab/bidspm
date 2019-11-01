@@ -1,4 +1,4 @@
-function BIDS_copyRawFolder(opt,deleteZippedNii,leadingZeros)
+function BIDS_copyRawFolder(opt, deleteZippedNii, leadingZeros)
 % This function will copy the subject's folders from the "raw" folder to the
 % "derivatives" folder, and will copy the dataset description and task json files
 % to the derivatives directory.
@@ -17,11 +17,11 @@ if nargin<3
 end                    % has 2 leading zeros
 
 if nargin<2            % if second argument isn't specified
-   deleteZippedNii=1;  % delete the original zipped nii.gz
+   deleteZippedNii = 1;  % delete the original zipped nii.gz
 end
 
 % if input has no opt, load the opt.mat file
-if nargin<1
+if nargin < 1
     load('opt.mat')
     fprintf('opt.mat file loaded \n\n')
 end
