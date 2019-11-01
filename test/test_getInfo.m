@@ -5,7 +5,7 @@ function test_getInfo()
 
 addpath(genpath(fullfile(pwd, '..')))
 
-opt.derivativesDir = fullfile(pwd, 'dummyData');
+opt.dataDir = fullfile(pwd, 'dummyData', 'derivatives');
 opt.groups = {''};
 opt.subjects = {[], []};
 

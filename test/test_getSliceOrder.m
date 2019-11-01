@@ -3,7 +3,7 @@ function test_getSliceOrder()
 
 addpath(genpath(fullfile(pwd, '..')))
 
-opt.derivativesDir = fullfile(pwd, 'dummyData');
+opt.dataDir = fullfile(pwd, 'dummyData', 'derivatives');
 opt.groups = {''};
 opt.subjects = {[], []};
 
