@@ -27,7 +27,7 @@ opt = getOption();
  % the dataset will downloaded and analysed there
 opt.dataDir = fullfile(WD, 'output', 'MoAEpilot');
 opt.groups = {''}; % no specific group
-opt.subjects = {1};  % first subject
+opt.subjects = {[]};  % first subject
 opt.taskName = 'auditory'; % task to analyze
 
 % the following options are less important but are added to reset all
