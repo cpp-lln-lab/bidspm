@@ -35,6 +35,7 @@ end
 %% All tasks in this experiment
 % raw directory and derivatives directory
 rawDir = opt.dataDir;
+derivativeDir = fullfile(rawDir, '..', 'derivatives', 'SPM12_CPPL');
 
 % make derivatives folder if it doesnt exist
 if ~exist(derivativeDir, 'dir')
@@ -74,23 +75,20 @@ for iGroup= 1:length(opt.groups)        % For each group
     end
 end
 
-% search for nifti files in a compressed nii.gz format
 
+%% search for nifti files in a compressed nii.gz format
+zippedNiifiles = spm_select('FPListRec', derivativeDir, '^*.nii.gz$');
 
-zippedNiifiles = dir ([derivativeDir, '**', '*.nii.gz']);
-if ~isempty(zippedNiifiles)
-    fprintf('Unzipping nii.gz files .. \n')
-    for iFile =1:length(zippedNiifiles)
-        fileName = zippedNiifiles(iFile).name;  % Get the folder name
-        fileLoc = zippedNiifiles(iFile).folder; % Get the path
-        
-        n=load_untouch_nii(fullfile(fileLoc,fileName));  % load the nifti image
-        save_untouch_nii(n, fullfile(fileLoc,fileName(1:end-4))); % Save the functional data as unzipped nii
-        fprintf('unzipped: %s \n',fullfile(fileLoc,fileName))
-        
-        if deleteZippedNii==1
-            delete(fullfile(fileLoc,fileName))  % delete original zipped file
-        end
+for iFile = 1:size(zippedNiifiles,1)
+    
+    file = deblank(zippedNiifiles(iFile,:));
+    
+    n = load_untouch_nii(file);  % load the nifti image
+    save_untouch_nii(n, file(1:end-4)); % Save the functional data as unzipped nii
+    fprintf('unzipped: %s \n', file)
+    
+    if deleteZippedNii==1
+        delete(file)  % delete original zipped file
     end
 end
 
