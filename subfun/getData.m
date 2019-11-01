@@ -78,10 +78,9 @@ for iGroup = 1:numel(opt.groups) % for each group
         group(iGroup).subNumber = subjects;
         
     % if subject ID were directly specified by users we take those
-    elseif strcmp(group(iGroup).name, '') && iscell(opt.subjects)
+    elseif strcmp(group(iGroup).name, '') && iscell(opt.subjects{iGroup})
         
         group(iGroup).subNumber = opt.subjects;
-        
     % if group was specified we figure out which subjects to take
     elseif ~isempty(opt.subjects{iGroup})
         
