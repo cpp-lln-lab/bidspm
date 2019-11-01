@@ -2,7 +2,7 @@
 % tutorial and will run the basic preprocessing, FFX and contrasts on it.
 % Results might be a bit different from those in the manual as some
 % default options are slightly different in this pipeline (e.g use of FAST
-% instead of AR(1))
+% instead of AR(1), motion regressors added)
 
 clear
 clc
@@ -14,8 +14,11 @@ FWHM = 6;
 % URL of the data set to download
 URL = 'http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip';
 
-WD = pwd; % the directory with this script becomes the current directory
-addpath(genpath(WD)) % we add all the subfunctions that are in the sub directories
+% directory with this script becomes the current directory
+WD = fileparts(mfilename('fullpath')); 
+
+% we add all the subfunctions that are in the sub directories
+addpath(genpath(fullfile(WD, '..'))) 
 
 
 %% Set options
@@ -40,7 +43,7 @@ opt.JOBS_dir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', 
 
 % specify the model file that contains the contrasts to compute
 opt = rmfield(opt, 'model');
-opt.model.univariate.file = fullfile(WD, 'model-MoAE_smdl.json');
+opt.model.univariate.file = fullfile(WD, 'demo', 'model-MoAE_smdl.json');
 
 
 %% Get data

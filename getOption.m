@@ -22,7 +22,7 @@ opt.taskName = 'MotionDecoding';
 
 
 
-% The directory where the derivatives are located
+% The directory where the data are located
 
 % opt.dataDir = '/Users/mohamed/Desktop/MotionWorkshop/raw';
 % opt.dataDir = '/Users/mohamed/Desktop/Data/raw';
