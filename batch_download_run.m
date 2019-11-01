@@ -25,7 +25,7 @@ opt = getOption();
 % the repository
 
  % the dataset will downloaded and analysed there
-opt.dataDir = fullfile(WD, '..', 'output', 'MoAEpilot');
+opt.dataDir = fullfile(WD, 'output', 'MoAEpilot');
 opt.groups = {''}; % no specific group
 opt.subjects = {1};  % first subject
 opt.taskName = 'auditory'; % task to analyze
@@ -46,7 +46,7 @@ opt.model.univariate.file = fullfile(WD, 'model-MoAE_smdl.json');
 %% Get data
 fprintf('%-40s:', 'Downloading dataset...');
 urlwrite(URL, 'MoAEpilot.zip');
-unzip('MoAEpilot.zip', fullfile(WD, '..', 'output'));
+unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 
 
 %% Check dependencies
@@ -63,7 +63,7 @@ checkDependencies();
 
 
 %% Run batches
-% BIDS_copyRawFolder(opt, 1, 2)
+BIDS_copyRawFolder(opt, 1, 2)
 BIDS_STC(opt);
 BIDS_SpatialPrepro(opt);
 BIDS_Smoothing(FWHM, opt);
