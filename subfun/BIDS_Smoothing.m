@@ -27,7 +27,7 @@ for iGroup= 1:length(group)              % For each group
         sesCounter = 1;                 % file/loop counter
 
         % identify sessions for this subject
-        [sessions, numSessions] = getSessions(BIDS, subNumber, opt);
+        [sessions, numSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
 
         % clear previous matlabbatch and files
         matlabbatch = [];
@@ -36,7 +36,7 @@ for iGroup= 1:length(group)              % For each group
         for iSes = 1:numSessions        % For each session
 
             % get all runs for that subject across all sessions
-            [runs, numRuns] = getRuns(BIDS, subNumber, sessions{iSes}, opt);
+            [runs, numRuns] = getInfo(BIDS, subNumber, opt ,'Runs', sessions{iSes});
 
             %numRuns = group(iGroup).numRuns(iSub);
             for iRun = 1:numRuns                     % For each run
