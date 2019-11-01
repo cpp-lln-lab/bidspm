@@ -32,21 +32,18 @@ opt.taskName = 'auditory'; % task to analyze
 
 % the following options are less important but are added to reset all
 % options
-opt.numDummies = 0;
 opt.STC_referenceSlice = [];
 opt.sliceOrder = [];
 opt.funcVoxelDims = [];
-opt.JOBS_dir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
+opt.JOBS_dir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
 
 
 % specify the model file that contains the contrasts to compute
-opt.model.file = fullfile(WD, 'model-MoAE_smdl.json');
+opt = rmfield(opt, 'model');
+opt.model.univariate.file = fullfile(WD, 'model-MoAE_smdl.json');
 
 
 %% Get data
-if ~exist(opt.derivativesDir, 'dir')
-    [~,~,~] = mkdir(opt.derivativesDir);
-end
 fprintf('%-40s:', 'Downloading dataset...');
 urlwrite(URL, 'MoAEpilot.zip');
 unzip('MoAEpilot.zip', fullfile(WD, '..', 'output'));
@@ -66,11 +63,11 @@ checkDependencies();
 
 
 %% Run batches
-BIDS_rmDummies(opt);
+% BIDS_copyRawFolder(opt, 1, 2)
 BIDS_STC(opt);
 BIDS_SpatialPrepro(opt);
 BIDS_Smoothing(FWHM, opt);
-BIDS_FFX(1, FWHM, opt);
-BIDS_FFX(2, FWHM, opt);
+BIDS_FFX(1, FWHM, opt, 0);
+BIDS_FFX(2, FWHM, opt, 0);
 
 
