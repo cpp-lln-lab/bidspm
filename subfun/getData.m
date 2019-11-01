@@ -162,11 +162,7 @@ options.zeropad = 2;
 options.taskName = '';
 
 % The directory where the derivatives are located
-options.derivativesDir = '';
-
-% Specify the number of dummies that you want to be removed.
-options.numDummies = 0;
-options.dummyPrefix = 'dr_';
+options.dataDir = '';
 
 % Options for slice time correction
 options.STC_referenceSlice = []; % reference slice: middle acquired slice
