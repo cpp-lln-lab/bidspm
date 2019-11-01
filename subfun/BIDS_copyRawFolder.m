@@ -27,9 +27,6 @@ if nargin < 1
 end
 
 %% All tasks in this experiment
-% will be used to copy the task.json file
-taskNames= {'visMotion','audMotion','motionDecoding'};
-
 % raw directory and derivatives directory
 rawDir = opt.dataDir;
 
@@ -42,19 +39,15 @@ else
 end
 
 % make copy dataset description file from raw folder if it doesnt exist
-if ~exist(fullfile(derivativeDir, 'dataset_description.json'), 'file')
-    copyfile(fullfile(rawDir, 'dataset_description.json'), derivativeDir)
-    fprintf('dataset_description.json copied to derivatives directory \n');
-end
+copyfile(fullfile(rawDir, 'dataset_description.json'), derivativeDir)
+fprintf('dataset_description.json copied to derivatives directory \n');
 
 % copy task json files from raw to derivatives
-for iTask=1:length(taskNames)
-    taskName = taskNames{iTask};
-    if ~exist(fullfile(derivativeDir, ['task-', taskName, '_bold.json'] ), 'file')
-        copyfile(fullfile(rawDir, ['task-',taskName,'_bold.json']), derivativeDir)
-        fprintf('dataset_%s copied to derivatives directory \n', ['task-',taskName,'_bold.json'] );
-    end
-end
+copyfile(fullfile(rawDir, 'task-*_bold.json'), derivativeDir)
+fprintf('task JSON files copied to derivatives directory \n');
+
+% copy TSV files?
+
 
 %% Loop through the groups, subjects, sessions
 for iGroup= 1:length(opt.groups)        % For each group
