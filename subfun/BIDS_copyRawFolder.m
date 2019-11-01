@@ -30,29 +30,29 @@ end
 % will be used to copy the task.json file
 taskNames= {'visMotion','audMotion','motionDecoding'};
 
-% raw directory (same path as derivatives but different folder name)
-rawDir = strrep(opt.derivativesDir,'derivatives','raw');
+% raw directory and derivatives directory
+rawDir = opt.dataDir;
 
 % make derivatives folder if it doesnt exist
-if ~exist(opt.derivativesDir,'dir')
-    mkdir(opt.derivativesDir)
-    fprintf('derivatives directory created: %s \n', opt.derivativesDir)
+if ~exist(derivativeDir, 'dir')
+    mkdir(derivativeDir)
+    fprintf('derivatives directory created: %s \n', derivativeDir)
 else
     fprintf('derivatives directory already exists. \n')
 end
 
 % make copy dataset description file from raw folder if it doesnt exist
-if ~exist(fullfile(opt.derivativesDir,'dataset_description.json'),'file')
-    copyfile(fullfile(rawDir,'dataset_description.json'),opt.derivativesDir)
+if ~exist(fullfile(derivativeDir, 'dataset_description.json'), 'file')
+    copyfile(fullfile(rawDir, 'dataset_description.json'), derivativeDir)
     fprintf('dataset_description.json copied to derivatives directory \n');
 end
 
 % copy task json files from raw to derivatives
 for iTask=1:length(taskNames)
     taskName = taskNames{iTask};
-    if ~exist(fullfile(opt.derivativesDir,['task-',taskName,'_bold.json']),'file')
-        copyfile(fullfile(rawDir,['task-',taskName,'_bold.json']),opt.derivativesDir)
-        fprintf('dataset_%s copied to derivatives directory \n',['task-',taskName,'_bold.json']);
+    if ~exist(fullfile(derivativeDir, ['task-', taskName, '_bold.json'] ), 'file')
+        copyfile(fullfile(rawDir, ['task-',taskName,'_bold.json']), derivativeDir)
+        fprintf('dataset_%s copied to derivatives directory \n', ['task-',taskName,'_bold.json'] );
     end
 end
 
@@ -64,20 +64,21 @@ for iGroup= 1:length(opt.groups)        % For each group
         subNumber = opt.subjects{iGroup}(iSub) ; % Get the subject ID
         
         % the folder containing the subjects data
-        subFolder = sprintf(['sub-',groupName,'%0',num2str(leadingZeros),'d'], subNumber);
+        subFolder = sprintf(['sub-', groupName, '%0', num2str(leadingZeros), 'd' ], subNumber);
         
         % copy the whole subject's folder
-        copyfile(fullfile(rawDir,subFolder),...
-            fullfile(opt.derivativesDir,subFolder))
+        copyfile(fullfile(rawDir, subFolder),...
+            fullfile(derivativeDir, subFolder))
         
         fprintf('folder copied: %s \n', subFolder)
         
     end
 end
 
-% search for nifit files in a compressed nii.gz format
-zippedNiifiles = dir ([opt.derivativesDir,'/**/*.nii.gz']);
+% search for nifti files in a compressed nii.gz format
 
+
+zippedNiifiles = dir ([derivativeDir, '**', '*.nii.gz']);
 if ~isempty(zippedNiifiles)
     fprintf('Unzipping nii.gz files .. \n')
     for iFile =1:length(zippedNiifiles)

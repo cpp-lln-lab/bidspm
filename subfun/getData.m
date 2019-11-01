@@ -5,7 +5,7 @@ function [group, opt, BIDS] = getData(opt)
 fprintf(1,'FOR TASK: %s\n', opt.taskName)
 
 % The directory where the derivatives are located
-derivativesDir = opt.derivativesDir;
+derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
 
 % we let SPM figure out what is in this BIDS data set
 BIDS = spm_BIDS(derivativesDir);

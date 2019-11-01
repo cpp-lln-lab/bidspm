@@ -15,8 +15,8 @@ opt.subjects = {[1 2]};  % {[1:17],[1:15]};
 opt.taskName = 'motionDecoding';
 
 % The directory where the derivatives are located
-% opt.derivativesDir = '/Users/mohamed/Desktop/MotionWorkshop/derivatives';
-opt.derivativesDir = '/Users/mohamed/Desktop/Data/derivatives';
+% opt.dataDir = '/Users/mohamed/Desktop/MotionWorkshop/raw';
+opt.dataDir = '/Users/mohamed/Desktop/Data/raw';
 
 
 % Options for slice time correction

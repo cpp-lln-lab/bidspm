@@ -25,7 +25,7 @@ opt = getOption();
 % the repository
 
  % the dataset will downloaded and analysed there
-opt.derivativesDir = fullfile(WD, '..', 'output', 'MoAEpilot');
+opt.dataDir = fullfile(WD, '..', 'output', 'MoAEpilot');
 opt.groups = {''}; % no specific group
 opt.subjects = {1};  % first subject
 opt.taskName = 'auditory'; % task to analyze
