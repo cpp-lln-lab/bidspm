@@ -37,6 +37,13 @@ derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
 % we let SPM figure out what is in this BIDS data set
 BIDS = spm_BIDS(derivativesDir);
 
+% make sure that the required tasks exist in the data set
+if ~ismember(opt.taskName, spm_BIDS(BIDS, 'tasks'))
+    fprintf('List of tasks present in this dataset:\n')
+    spm_BIDS(BIDS, 'tasks')
+    error('The task %s that you have asded for does not exist in this data set.')
+end
+
 % get IDs of all subjects
 subjects = spm_BIDS(BIDS, 'subjects');
 
