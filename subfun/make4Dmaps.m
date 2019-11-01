@@ -17,16 +17,16 @@ if nargin<2
     fprintf('opt.mat file loaded \n\n')
 end
 
-if nargin <3            % if not 3rd input argument
-    isMVPA = 1;          % assign isMVPA to true
-end
-
-if nargin <4            % delete individual Beta and tmaps
+% delete individual Beta and tmaps
+if nargin <3            
     deleteIndBeta = 1;
     deleteIndTmaps = 1;
     deleteResMaps = 1;
 end
-%%
+
+% assign isMVPA to true
+isMVPA = 1;         
+
 % load the subjects/Groups information and the task name
 [group, opt, ~] = getData(opt);
 
