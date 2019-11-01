@@ -1,4 +1,4 @@
-function [group, opt, BIDS] = getData(opt)
+function [group, opt, BIDS] = getData(opt, BIDSdir)
 % getData checks that all the options specified by the user in getOptions
 % and fills the blank for any that might have been missed out.
 % It then reads the specified BIDS data set and gets the groups and
@@ -26,13 +26,16 @@ function [group, opt, BIDS] = getData(opt)
 % opt.groups = {''};
 % opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
 
-
 opt = checkOptions(opt);
 
-fprintf(1,'FOR TASK: %s\n', opt.taskName)
+if nargin<2
+    % The directory where the derivatives are located
+    derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
+else
+    derivativesDir = BIDSdir;
+end
 
-% The directory where the derivatives are located
-derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
+fprintf(1,'FOR TASK: %s\n', opt.taskName)
 
 % we let SPM figure out what is in this BIDS data set
 BIDS = spm_BIDS(derivativesDir);
