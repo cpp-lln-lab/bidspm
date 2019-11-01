@@ -34,6 +34,13 @@ if strcmp(model.Input.task, taskName)
     % check all the steps specified in the model
     for iStep = 1:length(model.Steps)
         
+        % dirty hack to get around the way JSON structures are returned
+        if length(model.Steps) > 1
+            Step = model.Steps{iStep};
+        else
+            Step = model.Steps(iStep);
+        end
+        
         switch model.Steps{iStep}.Level
             
             %% compute contrasts at the subject level
@@ -41,17 +48,17 @@ if strcmp(model.Input.task, taskName)
                 
                 % specify all the contrasts
                 
-                if isfield(model.Steps{iStep}, 'AutoContrasts')
+                if isfield(Step, 'AutoContrasts')
                     
                     % first the contrasts to compute automatically against baseline
-                    for iCon = 1:length(model.Steps{iStep}.AutoContrasts)
+                    for iCon = 1:length(Step.AutoContrasts)
                         
                         con_counter = con_counter + 1;
                         
                         C = zeros(1,size(SPM.xX.X,2));
                         
                         % get regressors index corresponding to the HRF of that condition
-                        [cdt_name, regIdx] = getRegIdx(model, iStep, iCon, SPM);
+                        [cdt_name, regIdx] = getRegIdx(Step, iCon, SPM);
                         
                         % give them a value of 1
                         C(end,regIdx) = 1;
@@ -65,17 +72,17 @@ if strcmp(model.Input.task, taskName)
                 end
                 
                 
-                if isfield(model.Steps{iStep}, 'Contrasts')
+                if isfield(Step, 'Contrasts')
                     
                     % then the contrasts that involve contrasting conditions
                     % amongst themselves or something inferior to baseline
-                    for iCon = 1:length(model.Steps{iStep}.Contrasts)
+                    for iCon = 1:length(Step.Contrasts)
                         
                         con_counter = con_counter + 1;
                         
                         C = zeros(1,size(SPM.xX.X,2));
                         
-                        for iCdt = 1:length(model.Steps{iStep}.Contrasts(iCon).ConditionList)
+                        for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
                             
                             % get regressors index corresponding to the HRF of that condition
                             [~, regIdx] = getRegIdx(model, iStep, iCon, SPM);
@@ -99,10 +106,10 @@ if strcmp(model.Input.task, taskName)
                 
                 % specify all the contrasts
                 
-                if isfield(model.Steps{iStep}, 'AutoContrasts')
+                if isfield(Step, 'AutoContrasts')
                     
                     % first the contrasts to compute automatically against baseline
-                    for iCon = 1:length(model.Steps{iStep}.AutoContrasts)
+                    for iCon = 1:length(Step.AutoContrasts)
                         
                         % get regressors index corresponding to the HRF of that condition
                         [cdt_name, regIdx] = getRegIdx(model, iStep, iCon, SPM);
@@ -138,11 +145,11 @@ end
 
 
 
-function  [cdt_name, regIdx] = getRegIdx(model, iStep, iCon, SPM)
+function  [cdt_name, regIdx] = getRegIdx(Step, iCon, SPM)
 % get regressors index corresponding to the HRF of of a condition
 
 % get condition name
-cdt_name = model.Steps{iStep}.AutoContrasts{iCon};
+cdt_name = Step.AutoContrasts{iCon};
 cdt_name = strrep(cdt_name, 'trial_type.', '');
 
 % get regressors index corresponding to the HRF of that condition
