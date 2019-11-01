@@ -211,8 +211,8 @@ switch action
         end
 
         for iStep = 1:length(model.Steps)
-            if strcmp(model.Steps{iStep}.Level, 'dataset')
-                grpLvlCon = model.Steps{iStep}.AutoContrasts;
+            if strcmp(model.Steps(iStep).Level, 'dataset')
+                grpLvlCon = model.Steps(iStep).AutoContrasts;
                 break
             end
         end
