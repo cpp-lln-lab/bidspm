@@ -6,10 +6,16 @@ function BIDS_copyRawFolder(opt, deleteZippedNii, leadingZeros)
 % and uncompress it to .nii images.
 %
 % INPUT:
+%
 % opt - options structure defined by the getOption function. If no inout is given
 % this function will attempt to load a opt.mat file in the same directory
 % to try to get some options
-
+%
+% deleteZippedNii - true or false and will delete original zipped files
+% after copying and unzipping
+%
+% leadingZeros - number of zeros used to pad the subject numbers in the raw
+% dataset
 
 %% input variables default values
 if nargin<3
