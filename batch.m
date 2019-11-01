@@ -12,11 +12,11 @@ addpath(genpath(WD))
 % toolbox_path = '';
 % addpath(fullfile(toolbox_path)
 
-% copy raw folder into derivatives folder
-%BIDS_copyRawFolder(opt,deleteZippedNii,leadingZeros)
-
 checkDependencies();
 
+% copy raw folder into derivatives folder
+% BIDS_copyRawFolder(opt, 1, 2)
+%
 % BIDS_STC(opt);
 % BIDS_SpatialPrepro(opt);
 % BIDS_Smoothing(6, opt);
@@ -29,5 +29,5 @@ checkDependencies();
 %make4Dmaps(6,opt)
 
 % Second Level Univariate
-% cd(WD); BIDS_RFX(1, 6, 6)
-% cd(WD); BIDS_RFX(2, 6, 6)
+BIDS_RFX(1, 6, 6)
+BIDS_RFX(2, 6, 6)
