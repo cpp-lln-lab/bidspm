@@ -41,7 +41,7 @@ if strcmp(model.Input.task, taskName)
             Step = model.Steps(iStep);
         end
         
-        switch model.Steps{iStep}.Level
+        switch Step.Level
             
             %% compute contrasts at the subject level
             case 'subject'
@@ -85,17 +85,17 @@ if strcmp(model.Input.task, taskName)
                         for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
                             
                             % get regressors index corresponding to the HRF of that condition
-                            [~, regIdx] = getRegIdx(model, iStep, iCon, SPM);
+                            [~, regIdx] = getRegIdx(Step, iCon, SPM);
                             
                             % give them a value of 1
-                            C(end,regIdx) = model.Steps{iStep}.Contrasts(iCon).weights(iCdt);
+                            C(end,regIdx) = Step.Contrasts(iCon).weights(iCdt);
                             
                         end
                         
                         % stores the specification
                         contrasts(con_counter).C = C;
                         contrasts(con_counter).name =  ...
-                            model.Steps{iStep}.Contrasts(iCon).Name;
+                            Step.Contrasts(iCon).Name;
                         
                     end
                     
@@ -112,7 +112,7 @@ if strcmp(model.Input.task, taskName)
                     for iCon = 1:length(Step.AutoContrasts)
                         
                         % get regressors index corresponding to the HRF of that condition
-                        [cdt_name, regIdx] = getRegIdx(model, iStep, iCon, SPM);
+                        [cdt_name, regIdx] = getRegIdx(Step, iCon, SPM);
                         
                         regIdx = find(regIdx);
                         
