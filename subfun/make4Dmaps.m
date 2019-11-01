@@ -1,12 +1,14 @@
-function make4Dmaps(degreeOfSmoothing,opt,isMVPA,deleteIndBeta,deleteIndTmaps,deleteResMaps)
-% Make 4D beta and t-maps for the MVPA
-% the 4D maps are [up*NrSess; down*NrSess; right*NrSess; left*NrSess]
-
-%smoothing = 0 ;
-
-%[C, contrasts] = pmConMVPA(ffxDir, taskName, opt)
-
-%%%%%%%%%%%%%%%%
+function make4Dmaps(degreeOfSmoothing, opt, deleteIndBeta, deleteIndTmaps, deleteResMaps)
+% Make 4D images of beta and t-maps for the MVPA
+% Inputs
+% degreeOfSmoothing - smoothing (FWHM) applied to the the normalized EPI
+%
+% opt - options structure defined by the getOption function. If no inout is given
+%   this function will attempt to load a opt.mat file in the same directory
+%   to try to get some options
+%
+% deleteIndBeta, deleteIndTmaps, deleteResMaps: boolean to decide to delete
+% original t-maps, beta-maps or ResMaps (default = true)
 
 
 % if input has no opt, load the opt.mat file
@@ -30,20 +32,18 @@ end
 
 %% Loop through the groups, subjects, and sessions
 for iGroup= 1:length(group)              % For each group
-    groupName = group(iGroup).name ;     % Get the Group name
     
     for iSub = 1:group(iGroup).numSub    % For each subject in the group
+        
         subNumber = group(iGroup).subNumber{iSub}; % Get the Subject ID
         fprintf(1,'PREPARING: 4D maps: %s \n',subNumber)
         
         % clear previous matlabbatch and files
         matlabbatch = [];
         
-        % The Directory to save the FFX files (Create it if it doesnt exist)
         ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt, isMVPA);
         
-        cd(ffxDir)
-        load('SPM.mat')
+        load(fullfile(ffxDir, 'SPM.mat'))
         
         contrasts = pmCon(ffxDir, opt.taskName, opt, isMVPA);
         
@@ -53,8 +53,10 @@ for iGroup= 1:length(group)              % For each group
         
         % path to beta and t-map files.
         for iContrast = 1:length(beta_maps)
-            beta_maps{iContrast,1} = sprintf('beta_%04d.nii,1',find(contrasts(iContrast).C)) ;  % Note that the betas are created from the idx (Beta_idx(iBeta))
-            t_maps{iContrast,1} = sprintf('spmT_%04d.nii,1',iContrast) ;               % while the contrastes (t-maps) are not from the index. They were created
+            % Note that the betas are created from the idx (Beta_idx(iBeta))
+            beta_maps{iContrast,1} = sprintf('beta_%04d.nii,1', find(contrasts(iContrast).C)) ;  
+            % while the contrastes (t-maps) are not from the index. They were created
+            t_maps{iContrast,1} = sprintf('spmT_%04d.nii,1', iContrast) ;               
         end
              
         spm('defaults','fmri');
@@ -62,14 +64,13 @@ for iGroup= 1:length(group)              % For each group
         
         %% 4D beta maps
         matlabbatch{1}.spm.util.cat.vols = beta_maps ;
-        matlabbatch{1}.spm.util.cat.name = ['4D_beta_',num2str(degreeOfSmoothing),'.nii'];
+        matlabbatch{1}.spm.util.cat.name = ['4D_beta_', num2str(degreeOfSmoothing), '.nii'];
         matlabbatch{1}.spm.util.cat.dtype = 4;
         
         %% 4D t-maps
         matlabbatch{2}.spm.util.cat.vols = t_maps ;
-        matlabbatch{2}.spm.util.cat.name = ['4D_t_maps_',num2str(degreeOfSmoothing),'.nii'];
+        matlabbatch{2}.spm.util.cat.name = ['4D_t_maps_', num2str(degreeOfSmoothing), '.nii'];
         matlabbatch{2}.spm.util.cat.dtype = 4;
-        %
         
         spm_jobman('run',matlabbatch);
         
@@ -79,10 +80,11 @@ for iGroup= 1:length(group)              % For each group
             % delete all individual beta maps
             fprintf('Deleting individual beta-maps ...  ')
             for iBeta= 1:length(SPM.Vbeta)
-                delete(['beta_',sprintf('%04d',iBeta) ,'.nii'])
+                delete(['beta_', sprintf('%04d',iBeta) ,'.nii'])
                 
             end
             fprintf('Done. \n\n\n ')
+            
         end
         
         if  deleteIndTmaps
@@ -90,9 +92,7 @@ for iGroup= 1:length(group)              % For each group
             % delete all individual con maps (from 1 to length(idx))
             fprintf('Deleting individual con maps ...  ')
             for iCon= 1:length(contrasts)
-                delete(['con_',sprintf('%04d',iCon) ,'.nii'])
-                %    delete(['con_',sprintf('%04d',iTmap) ,'.hdr'])
-                
+                delete(['con_',sprintf('%04d',iCon) ,'.nii'])               
             end
             fprintf('Done. \n\n\n ')
             
@@ -100,8 +100,6 @@ for iGroup= 1:length(group)              % For each group
             fprintf('Deleting individual t-maps ...  ')
             for iTmap= 1:length(contrasts)
                 delete(['spmT_',sprintf('%04d',iTmap) ,'.nii'])
-                %   delete(['spmT_',sprintf('%04d',iTmap) ,'.hdr'])
-                
             end
             fprintf('Done. \n\n\n ')
         end
@@ -118,11 +116,11 @@ for iGroup= 1:length(group)              % For each group
         end
         
         % delete mat files
-        if exist(['4D_beta_',num2str(degreeOfSmoothing),'.mat'],'file')
-            delete(['4D_beta_',num2str(degreeOfSmoothing),'.mat']);
+        if exist(['4D_beta_', num2str(degreeOfSmoothing), '.mat'],'file')
+            delete(['4D_beta_', num2str(degreeOfSmoothing), '.mat']);
         end
-        if exist(['4D_t_maps_',num2str(degreeOfSmoothing),'.mat'],'file')
-            delete(['4D_t_maps_',num2str(degreeOfSmoothing),'.mat']);
+        if exist(['4D_t_maps_', num2str(degreeOfSmoothing), '.mat'],'file')
+            delete(['4D_t_maps_', num2str(degreeOfSmoothing), '.mat']);
         end
         
         %% SAVE THE MATLABBATCH
