@@ -39,18 +39,18 @@ derivativeDir = fullfile(rawDir, '..', 'derivatives', 'SPM12_CPPL');
 
 % make derivatives folder if it doesnt exist
 if ~exist(derivativeDir, 'dir')
-    mkdir(derivativeDir)
+    mkdir(derivativeDir);
     fprintf('derivatives directory created: %s \n', derivativeDir)
 else
     fprintf('derivatives directory already exists. \n')
 end
 
 % make copy dataset description file from raw folder if it doesnt exist
-copyfile(fullfile(rawDir, 'dataset_description.json'), derivativeDir)
+copyfile(fullfile(rawDir, 'dataset_description.json'), derivativeDir);
 fprintf('dataset_description.json copied to derivatives directory \n');
 
 % copy task json files from raw to derivatives
-copyfile(fullfile(rawDir, 'task-*_bold.json'), derivativeDir)
+copyfile(fullfile(rawDir, 'task-*_bold.json'), derivativeDir);
 fprintf('task JSON files copied to derivatives directory \n');
 
 % copy TSV files?
