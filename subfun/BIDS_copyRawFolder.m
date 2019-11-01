@@ -75,7 +75,7 @@ end
 
 
 %% search for nifti files in a compressed nii.gz format
-zippedNiifiles = spm_select('FPListRec', derivativeDir, '^*.nii.gz$');
+zippedNiifiles = spm_select('FPListRec', derivativeDir, '^.*.nii.gz$');
 
 for iFile = 1:size(zippedNiifiles,1)
     
