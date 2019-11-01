@@ -9,7 +9,7 @@ end
 % group of subjects to analyze
 opt.groups = {''}; % {'blnd', 'ctrl'};
 % suject to run in each group
-opt.subjects = {[1:2]};  % {[1:2], [1:2]};
+opt.subjects = {1:3};  % {[1:2], [1:2]};
 
 
 % task to analyze
@@ -33,7 +33,6 @@ opt.sliceOrder = [];
 opt.STC_referenceSlice = [];
 
 
-
 % Options for normalize
 % Voxel dimensions for resampling at normalization of functional data or leave empty [ ].
 opt.funcVoxelDims = [];
@@ -41,12 +40,6 @@ opt.funcVoxelDims = [];
 
 % Suffix output directory for the saved jobs
 opt.JOBS_dir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
-
-opt.contrastList = {...
-    {'VisMot'}; ...
-    {'VisStat'}; ...
-   % {'VisMot-VisStatic'}; ...
-    };
 
 % specify the model file that contains the contrasts to compute
 % opt.model.univariate.file = '/Users/mohamed/Documents/GitHub/BIDS_fMRI_scripts/model-motionDecodingUnivariate_smdl.json';
