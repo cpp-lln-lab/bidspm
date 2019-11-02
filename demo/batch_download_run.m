@@ -43,7 +43,7 @@ opt.JOBS_dir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', 
 
 % specify the model file that contains the contrasts to compute
 opt = rmfield(opt, 'model');
-opt.model.univariate.file = fullfile(WD, 'demo', 'model-MoAE_smdl.json');
+opt.model.univariate.file = fullfile(WD, 'model-MoAE_smdl.json');
 
 
 %% Get data
