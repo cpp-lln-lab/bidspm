@@ -3,7 +3,7 @@ function test_getData()
 
 addpath(genpath(fullfile(pwd, '..')))
 
-opt.derivativesDir = fullfile(pwd, 'dummyData');
+opt.dataDir = fullfile(pwd, 'dummyData', 'derivatives');
 opt.taskName = 'vismotion';
 opt.zeropad = 2;
 

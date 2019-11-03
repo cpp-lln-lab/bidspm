@@ -2,7 +2,7 @@
 % tutorial and will run the basic preprocessing, FFX and contrasts on it.
 % Results might be a bit different from those in the manual as some
 % default options are slightly different in this pipeline (e.g use of FAST
-% instead of AR(1))
+% instead of AR(1), motion regressors added)
 
 clear
 clc
@@ -14,8 +14,11 @@ FWHM = 6;
 % URL of the data set to download
 URL = 'http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip';
 
-WD = pwd; % the directory with this script becomes the current directory
-addpath(genpath(WD)) % we add all the subfunctions that are in the sub directories
+% directory with this script becomes the current directory
+WD = fileparts(mfilename('fullpath')); 
+
+% we add all the subfunctions that are in the sub directories
+addpath(genpath(fullfile(WD, '..'))) 
 
 
 %% Set options
@@ -23,29 +26,30 @@ opt = getOption();
 
 % respecify options here in case the getOption file has been modified on
 % the repository
-opt.derivativesDir = fullfile(WD, '..', 'output', 'MoAEpilot'); % the dataset will downloaded and analysed there
+
+ % the dataset will downloaded and analysed there
+opt.dataDir = fullfile(WD, 'output', 'MoAEpilot');
 opt.groups = {''}; % no specific group
-opt.subjects = {1};  % first subject
+opt.subjects = {[]};  % first subject
 opt.taskName = 'auditory'; % task to analyze
-opt.contrastList = {...
-    {'listening'} ...
-    };
 
 % the following options are less important but are added to reset all
 % options
-opt.numDummies = 0;
 opt.STC_referenceSlice = [];
 opt.sliceOrder = [];
 opt.funcVoxelDims = [];
-opt.JOBS_dir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
+opt.JOBS_dir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
+
+
+% specify the model file that contains the contrasts to compute
+opt = rmfield(opt, 'model');
+opt.model.univariate.file = fullfile(WD, 'model-MoAE_smdl.json');
+
 
 %% Get data
-if ~exist(opt.derivativesDir, 'dir')
-    [~,~,~] = mkdir(opt.derivativesDir);
-end
 fprintf('%-40s:', 'Downloading dataset...');
 urlwrite(URL, 'MoAEpilot.zip');
-unzip('MoAEpilot.zip', fullfile(WD, '..', 'output'));
+unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 
 
 %% Check dependencies
@@ -62,10 +66,11 @@ checkDependencies();
 
 
 %% Run batches
-BIDS_rmDummies(opt);
+BIDS_copyRawFolder(opt, 1)
 BIDS_STC(opt);
 BIDS_SpatialPrepro(opt);
 BIDS_Smoothing(FWHM, opt);
-BIDS_FFX(1, FWHM, opt);
-BIDS_FFX(2, FWHM, opt);
+BIDS_FFX(1, FWHM, opt, 0);
+BIDS_FFX(2, FWHM, opt, 0);
+
 

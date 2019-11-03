@@ -1,24 +1,20 @@
 function [prefix, motionRegressorPrefix] = getPrefix(step,opt,degreeOfSmoothing)
 % generates prefix to append to file name to look for
 
+prefix = '';
+
 switch step
-    case 'rmDummies'
-        prefix = opt.dummyPrefix;
-        
+   
     case 'STC'
-        prefix = prefixForDummies(opt);
         
     case 'preprocess'
-        prefix = prefixForDummies(opt);
         prefix = prefixForSTC(prefix, opt);
 
     case 'smoothing'
-        prefix = prefixForDummies(opt);
         prefix = prefixForSTC(prefix, opt);
         prefix = [spm_get_defaults('normalise.write.prefix') prefix];
   
     case 'FFX'
-        prefix = prefixForDummies(opt);
         prefix = prefixForSTC(prefix, opt);
         
         % for the motion regressors txt file
@@ -32,6 +28,12 @@ switch step
             prefix = [spm_get_defaults('smooth.prefix') num2str(degreeOfSmoothing) prefix];
         end
         
+%     case 'MVPA'
+%         prefix = prefixForSTC(prefix, opt);
+%         
+%         % for the motion regressors txt file
+%         motionRegressorPrefix = prefix;
+        
 end
 
 
@@ -39,13 +41,6 @@ end
 end
 
 
-function prefix = prefixForDummies(opt)
-if opt.numDummies>0
-    prefix = opt.dummyPrefix;
-else
-    prefix = '';
-end
-end
 
 function prefix = prefixForSTC(prefix, opt)
 % Check the slice timing information is not in the metadata and not added

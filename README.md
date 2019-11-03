@@ -49,6 +49,8 @@ This set of function will read and unzip the data from a [BIDS data set](https:/
 
 This has to be run for each task independently. All parameters should preferably be changed in the `getOptions.m` file.
 
+It can also prepare the data to run an MVPA analysis by running a GLM for each subject on non-normalized images and get one beta image for each condition to be used in the MVPA.
+
 The core functions are in the sub-function folder `subfun`
 
 ## Assumption
@@ -59,6 +61,9 @@ At the moment this pipeline makes some assumptions:
 -   it assumes that group are defined in the subject field (eg `sub-ctrl01`, `sub-blind01`, ...) and not in the `participants.tsv` file.
 
 ## Setting up
+
+### getOptions
+
 
 All the details specific to your analysis should be set in the `getOptions.m`.
 
@@ -96,6 +101,58 @@ The directory where your files are located on your computer: make sure you have 
 `opt.derivativesDir = '/Data/auditoryBIDS/derivatives'`
 
 Some more SPM options can be set in the `spm_my_defaults.m`.
+
+### model JSON files
+This files allow you to specify which contrasts to run and follow the BIDS statistical model extension and as implement by [fitlins](https://fitlins.readthedocs.io/en/latest/model.html)
+
+The model json file that describes:
+-   out to prepare the regressors for the GLM: `Transformation`
+-   the design matrix: `X`
+-   the contrasts to compute: `contrasts`
+
+It also allows to specify those for different levels of the analysis:
+-   run
+-   session
+-   subject
+-   dataset
+
+An example of json file could look something like that.
+
+```json
+{
+  "Name": "Basic",
+  "Description": "",
+  "Input": {
+    "task": "motionloc"
+  },
+  "Steps": [
+    {
+      "Level": "subject",
+      "AutoContrasts": ["stim_type.motion", "stim_type.static"],
+      "Contrasts": [
+        {
+          "Name": "motion_vs_static",
+          "ConditionList": [
+            "stim_type.motion",
+            "stim_type.static"
+          ],
+          "weights": [1, -1],
+          "type": "t"
+        }
+      ]
+    },
+    {
+      "Level": "dataset",
+      "AutoContrasts": ["stim_type.motion", "stim_type.static", "motion_vs_static"]
+    }
+  ]
+}
+```
+
+In brief this means:
+-   at the subject level automatically compute the t contrast against baseline for the condition `motion`and `static` and compute the t-contrats for motion VS static with these given weights.
+-   at the level of the data set (so RFX) do the t contrast of the `motion`, `static`, `motion VS static`.
+
 
 ## Order of the analysis
 

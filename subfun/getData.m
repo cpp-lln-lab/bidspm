@@ -1,4 +1,4 @@
-function [group, opt, BIDS] = getData(opt)
+function [group, opt, BIDS] = getData(opt, BIDSdir)
 % getData checks that all the options specified by the user in getOptions
 % and fills the blank for any that might have been missed out.
 % It then reads the specified BIDS data set and gets the groups and
@@ -26,16 +26,26 @@ function [group, opt, BIDS] = getData(opt)
 % opt.groups = {''};
 % opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
 
-
 opt = checkOptions(opt);
+
+if nargin<2
+    % The directory where the derivatives are located
+    derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
+else
+    derivativesDir = BIDSdir;
+end
 
 fprintf(1,'FOR TASK: %s\n', opt.taskName)
 
-% The directory where the derivatives are located
-derivativesDir = opt.derivativesDir;
-
 % we let SPM figure out what is in this BIDS data set
 BIDS = spm_BIDS(derivativesDir);
+
+% make sure that the required tasks exist in the data set
+if ~ismember(opt.taskName, spm_BIDS(BIDS, 'tasks'))
+    fprintf('List of tasks present in this dataset:\n')
+    spm_BIDS(BIDS, 'tasks')
+    error('The task %s that you have asded for does not exist in this data set.')
+end
 
 % get IDs of all subjects
 subjects = spm_BIDS(BIDS, 'subjects');
@@ -68,10 +78,10 @@ for iGroup = 1:numel(opt.groups) % for each group
         group(iGroup).subNumber = subjects;
         
     % if subject ID were directly specified by users we take those
-    elseif strcmp(group(iGroup).name, '') && iscell(opt.subjects)
+    elseif strcmp(group(iGroup).name, '') && iscellstr(opt.subjects)
         
         group(iGroup).subNumber = opt.subjects;
-        
+ 
     % if group was specified we figure out which subjects to take
     elseif ~isempty(opt.subjects{iGroup})
         
@@ -83,7 +93,7 @@ for iGroup = 1:numel(opt.groups) % for each group
         % count how many subjects in that group
         idx = sum(~cellfun(@isempty, strfind(subjects, group(iGroup).name)));
         idx = 1:idx;
-        
+
     else
         
         error('Not sure what to do.')
@@ -162,11 +172,7 @@ options.zeropad = 2;
 options.taskName = '';
 
 % The directory where the derivatives are located
-options.derivativesDir = '';
-
-% Specify the number of dummies that you want to be removed.
-options.numDummies = 0;
-options.dummyPrefix = 'dr_';
+options.dataDir = '';
 
 % Options for slice time correction
 options.STC_referenceSlice = []; % reference slice: middle acquired slice
