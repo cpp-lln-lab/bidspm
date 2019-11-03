@@ -34,7 +34,7 @@ if strcmp(model.Input.task, taskName)
     % check all the steps specified in the model
     for iStep = 1:length(model.Steps)
         
-        Step = model.Steps(iStep);
+        Step = model.Steps{iStep};
         
         switch Step.Level
             

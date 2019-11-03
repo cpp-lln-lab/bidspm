@@ -6,6 +6,11 @@
   },
   "Steps": [
     {
+      "Level": "subject",
+      "AutoContrasts": [],
+      "Contrasts": []
+    },
+    {
       "Level": "run",
       "AutoContrasts": ["trial_type.Vis_U", "trial_type.Vis_D", "trial_type.Vis_R", "trial_type.Vis_L","trial_type.Aud_U", "trial_type.Aud_D", "trial_type.Aud_R", "trial_type.Aud_L"]
     },

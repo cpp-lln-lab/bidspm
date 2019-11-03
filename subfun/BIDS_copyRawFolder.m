@@ -62,7 +62,7 @@ for iGroup= 1:length(group)       % For each group
         subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
         
         % the folder containing the subjects data
-        subFolder = ['sub-', groupName, subNumber ];
+        subFolder = ['sub-', subNumber ];
         
         % copy the whole subject's folder
         copyfile(fullfile(rawDir, subFolder),...
