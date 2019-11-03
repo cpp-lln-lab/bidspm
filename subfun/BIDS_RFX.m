@@ -1,4 +1,4 @@
-function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt)
+function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
 % This script smooth all con images created at the fisrt level in each
 % subject, create a mean structural image and mean mask over the
 % population, process the factorial design specification  and estimation and estimate Contrats.
@@ -22,17 +22,15 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt)
 % The Contrast names should match those in the single level FFX and in THE
 % SAME ORDER.
 
-% Get the current working directory
-WD = pwd;
-
 % if input has no opt, load the opt.mat file
 if nargin<4
-    cd ..
     load('opt.mat')
     fprintf('opt.mat file loaded \n\n')
 end
 
-cd(WD)
+if nargin<5
+    isMVPA = 0;
+end
 
 % load the subjects/Groups information and the task name
 [group, opt, BIDS] = getData(opt);
@@ -40,27 +38,21 @@ cd(WD)
 % JOBS Directory
 JOBS_dir = fullfile(opt.JOBS_dir);
 
-matlabbatch = [];
-
 % Check which level of CON smoothing is desired
 if mmConSmoothing==0
     smoothOrNonSmooth = '';
 elseif mmConSmoothing > 0
-    smoothOrNonSmooth = ['s',num2str(mmConSmoothing)];
+    smoothOrNonSmooth = ['s', num2str(mmConSmoothing)];
 else
     error ('Check you Con files')
 end
-
-% TASK NAME
-ExperimentName = opt.taskName;
-
-%origdir = pwd;
 
 switch action
     case 1 % Smooth all con images
 
         matlabbatch = {};
         counter = 0;
+        
         %% Loop through the groups, subjects, and sessions
         for iGroup= 1:length(group)
 
@@ -74,7 +66,7 @@ switch action
                     groupName,iSub,subNumber)
 
                 % FFX Directory
-                ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt);
+                ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt, isMVPA);
                 conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
                 matlabbatch{counter}.spm.spatial.smooth.data = cellstr(conImg);
 
@@ -97,16 +89,17 @@ switch action
         fprintf(1,'SMOOTHING CON IMAGES...')
         spm_jobman('run',matlabbatch)
 
+        
     case 2
 
         matlabbatch = {};
 
         % Define the RFX folder name and create it in the derivatives
         % directory
-        RFX_FolderName = fullfile(opt.derivativesDir,...
-            ['RFX_',opt.taskName],...
-            ['RFX_FunctSmooth',num2str(mmFunctionalSmoothing),...
-            '_ConSmooth_',num2str(mmConSmoothing)]) ;
+        RFX_FolderName = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', ...
+            ['RFX_', opt.taskName],...
+            ['RFX_FunctSmooth', num2str(mmFunctionalSmoothing),...
+            '_ConSmooth_', num2str(mmConSmoothing)]) ;
 
         [~,~,~] = mkdir(RFX_FolderName);
 
@@ -116,6 +109,7 @@ switch action
         subCounter = 0;
 
         for iGroup= 1:length(group)                    % For each group
+            
             groupName = group(iGroup).name ;           % Get the group name
 
             for iSub = 1:group(iGroup).numSub          % For each subject
@@ -155,7 +149,7 @@ switch action
 
 
                 %% Mask
-                ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt);
+                ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt, isMVPA);
 
                 files = inputFileValidation(ffxDir, '', 'mask.nii');
 
@@ -167,7 +161,6 @@ switch action
 
         %% Generate the equation to get the mean of the mask and structural image
         % example : if we have 5 subjects, Average equation = '(i1+i2+i3+i4+i5)/5'
-        tmpImg = [] ;
         numImg = subCounter ;
         imgNum  = 1:subCounter ;
 
@@ -202,59 +195,68 @@ switch action
         % save the matlabbatch
         save(fullfile(JOBS_dir, ...
             'jobs_matlabbatch_SPM12_CreateMeanStrucMask.mat'), ...
-            'matlabbatch') % save the matlabbatch
+            'matlabbatch')
 
         spm_jobman('run',matlabbatch)
 
 
         %% Factorial design specification
 
-        % Load the list of contrasts on interest for the RFX
+        % Load the list of contrasts of interest for the RFX
+        %model = spm_jsonread(opt.model.file);
+        if isMVPA
+            model = spm_jsonread(opt.model.multivariate.file);
+        else
+            model = spm_jsonread(opt.model.univariate.file);
+        end
+
+        for iStep = 1:length(model.Steps)
+            if strcmp(model.Steps{iStep}.Level, 'dataset')
+                grpLvlCon = model.Steps{iStep}.AutoContrasts;
+                break
+            end
+        end
 
         fprintf(1,'BUILDING JOB: Factorial Design Specification')
-        cd(WD)
-        cd ..
-        eval (['load ConOfInterest']) % In this mat file, there should be the contrasts of interests to analyze. They should match the name and order of those in the FFX folder.
-        cd(WD)
 
         con = 0;
 
         matlabbatch = {};
-
+        
         % For each contrast
-        for j = 1:size(Session,2)
+        for j = 1:size(grpLvlCon,1)
+            
+            % the strrep(Session{j}, 'trial_type.', '') is there to remove 
+            % 'trial_type.' because contrasts against baseline are renamed 
+            % at the subject level
+            conName = strrep(grpLvlCon{j}, 'trial_type.', '');
 
-            range = {};
             con = con+1;
 
-            %subCounter=0;
             % For each group
             for iGroup= 1:length(group)
+                
                 groupName = group(iGroup).name ;
+                
+                matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).levels = iGroup; %#ok<*AGROW>
 
                 for iSub = 1:group(iGroup).numSub       % For each subject
                     subNumber = group(iGroup).subNumber{iSub} ;  % Get the subject ID
                     fprintf(1,'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n',...
-                        groupName,iSub,subNumber)
+                        groupName, iSub, subNumber)
 
-                    % FFX DIRECTORY
-                    cd(WD);
-                    ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt);
+                    % FFX directory and load SPM.mat of that subject
+                    ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt, isMVPA);
+                    load(fullfile(ffxDir, 'SPM.mat'))
+                    
+                    % find which contrast of that subject has the name of the contrast we
+                    % want to bring to the group level
+                    conIdx = find(strcmp({SPM.xCon.name}, conName));
+                    fileName = sprintf('con_%0.4d.nii', conIdx);
+                    file = inputFileValidation(ffxDir, smoothOrNonSmooth, fileName);
 
-                    a = Session(j).con;
-                    ConList = dir(fullfile(ffxDir,sprintf([smoothOrNonSmooth,'con_%0.4d.nii'],con)));
-                    range{iGroup}.donnees{iSub,:} = fullfile(ffxDir, ConList.name);
+                    matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).scans(iSub,:) = file;
 
-                end
-
-                a = [];
-                for i = 1:size(range{iGroup}.donnees,1)
-                    a = [a;isempty(range{iGroup}.donnees{i})];
-                end
-                c = find(a==0);
-                for pp = 1:size(c,1)
-                    matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).levels = iGroup; %#ok<*AGROW>
-                    matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).scans(pp,:) = {range{iGroup}.donnees{c(pp),:}}; % t1: One sample T Test - t2  Two sample T Test
                 end
 
             end
@@ -267,7 +269,7 @@ switch action
             matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.variance = 1; % 1: Assumes that the variance is not the same across groups / 0= There is no difference in the variance between groups
             matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.gmsca = 0;
             matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.ancova = 0;
-            %matlabbatch{j}.spm.stats.factorial_design.cov = [];
+            % matlabbatch{j}.spm.stats.factorial_design.cov = [];
             matlabbatch{j}.spm.stats.factorial_design.masking.tm.tm_none = 1;
             matlabbatch{j}.spm.stats.factorial_design.masking.im = 1;
             matlabbatch{j}.spm.stats.factorial_design.masking.em = {...
@@ -276,88 +278,79 @@ switch action
             matlabbatch{j}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
             matlabbatch{j}.spm.stats.factorial_design.globalm.glonorm = 1;
 
-            %% Linux does not support directory name '*' or ' ' that are replaced by
-            %% 'x' or '' here
-            if ~isempty(findstr('*',Session(j).con))
-                Session(j).con(findstr('*',Session(j).con)) = 'x';
+            
+            % If it exists, issue a warning that it has been overwritten
+            if exist(fullfile(RFX_FolderName, conName),'dir') 
+                fprintf(1,'A DIRECTORY WITH THIS NAME ALREADY EXISTED AND WAS OVERWRITTEN, SORRY \n');
+                rmdir(fullfile(RFX_FolderName, conName),'s')
             end
-            if ~isempty(findstr(' ',Session(j).con))
-                Session(j).con(findstr(' ',Session(j).con)) = '';
-            end
+            mkdir(fullfile(RFX_FolderName, conName))
 
-            cd(RFX_FolderName)
-            mkdir(Session(j).con)
             matlabbatch{j}.spm.stats.factorial_design.dir = {...
                 fullfile(RFX_FolderName,...
-                Session(j).con)};
+                grpLvlCon{j}) };
         end
 
         % Go to Jobs directory and save the matlabbatch
-        cd(JOBS_dir)
-        eval (['save jobs_RFX_',ExperimentName])
+        % save the matlabbatch
+        save(fullfile(JOBS_dir, ...
+            'jobs_matlabbatch_SPM12_RFX_specification.mat'), ...
+            'matlabbatch')
+        
         fprintf(1,'Factorial Design Specification...')
-        spm_jobman('run',matlabbatch)
-        matlabbatch = {};
+        spm_jobman('run', matlabbatch)
+        
 
         %% Factorial design estimation
         fprintf(1,'BUILDING JOB: Factorial Design Estimation')
 
-        for j = 1:size(Session,2)
+        matlabbatch = {};
+        
+        for j = 1:size(grpLvlCon,1)
             matlabbatch{j}.spm.stats.fmri_est.spmmat = {...
                 fullfile(RFX_FolderName,...
-                Session(j).con,...
+                grpLvlCon{j},...
                 'SPM.mat')};
             matlabbatch{j}.spm.stats.fmri_est.method.Classical = 1;
         end
 
         % Go to Jobs directory and save the matlabbatch
-        cd(JOBS_dir)
-        eval (['save jobs_RFX_',ExperimentName,'_modelEstimation'])
+        % save the matlabbatch
+        save(fullfile(JOBS_dir, ...
+            'jobs_matlabbatch_SPM12_RFX_estimation.mat'), ...
+            'matlabbatch')
+        
         fprintf(1,'Factorial Design Estimation...')
-        spm_jobman('run',matlabbatch)
+        spm_jobman('run', matlabbatch)
+        
+        
+
+        %% Contrast estimation
+        fprintf(1,'BUILDING JOB: Contrast estimation')
+        
         matlabbatch = {};
 
-        %Contrast estimation
-        fprintf(1,'BUILDING JOB: Contrast estimation')
-
         % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
-        for j = 1:size(Session,2)
+        for j = 1:size(grpLvlCon,1)
             matlabbatch{j}.spm.stats.con.spmmat = {...
                 fullfile(RFX_FolderName,...
-                Session(j).con,...
+                grpLvlCon{j},...
                 'SPM.mat')};
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
-            matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = [1];
+            matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = 1;
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
-
-            %             matlabbatch{j}.spm.stats.con.consess{2}.tcon.name = 'CATARACT';
-            %             matlabbatch{j}.spm.stats.con.consess{2}.tcon.convec = [0 1];
-            %             matlabbatch{j}.spm.stats.con.consess{2}.tcon.sessrep = 'none';
-            %
-            %             matlabbatch{j}.spm.stats.con.consess{3}.tcon.name = 'CATARACT + CONTROL';
-            %             matlabbatch{j}.spm.stats.con.consess{3}.tcon.convec = [1 1];
-            %             matlabbatch{j}.spm.stats.con.consess{3}.tcon.sessrep = 'none';
-            %
-            %             matlabbatch{j}.spm.stats.con.consess{4}.tcon.name = 'CONTROL > CATARACT';
-            %             matlabbatch{j}.spm.stats.con.consess{4}.tcon.convec = [1 -1];
-            %             matlabbatch{j}.spm.stats.con.consess{4}.tcon.sessrep = 'none';
-            %
-            %             matlabbatch{j}.spm.stats.con.consess{5}.tcon.name = 'CATARACT > CONTROL';
-            %             matlabbatch{j}.spm.stats.con.consess{5}.tcon.convec = [-1 1];
-            %             matlabbatch{j}.spm.stats.con.consess{5}.tcon.sessrep = 'none';
 
             matlabbatch{j}.spm.stats.con.delete = 0;
         end
-
-        % Go to Jobs directory and save the matlabbatch
-        cd(JOBS_dir)
-        eval (['save jobs_RFX_',ExperimentName,'_contrasts'])
+        
+        % save the matlabbatch
+        save(fullfile(JOBS_dir, ...
+            'jobs_matlabbatch_SPM12_RFX_contrasts.mat'), ...
+            'matlabbatch')
+        
         fprintf(1,'Contrast Estimation...')
-        spm_jobman('run',matlabbatch)
-        matlabbatch = {};
+        spm_jobman('run', matlabbatch)
 
 end
-
-cd(WD);
 
 end

@@ -53,7 +53,7 @@ for iGroup= 1:length(group)              % For each group
 
                 % add the files to list
                 allFilesTemp = cellstr(files);
-                allFiles = [allFiles; allFilesTemp];
+                allFiles = [allFiles; allFilesTemp]; %#ok<AGROW>
                 sesCounter = sesCounter + 1;
 
             end
