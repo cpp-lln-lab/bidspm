@@ -188,4 +188,7 @@ options.JOBS_dir = '';
 % specify the model file that contains the contrasts to compute
 options.contrastList = {};
 options.model.file = '';
+
+% specify the results to compute
+options.result = [];
 end

@@ -46,6 +46,29 @@ opt = rmfield(opt, 'model');
 opt.model.univariate.file = fullfile(WD, 'model-MoAE_smdl.json');
 
 
+% specify the result to compute
+opt.result.Steps(1) = struct(...
+    'Level',  'subject', ...
+    'Contrasts', struct(...
+                    'Name', 'listening', ... % has to match 
+                    'Mask', false, ... % this might need improving if a mask is required
+                    'MC', 'FWE', ... FWE, none, FDR
+                    'p', 0.05, ...
+                    'k', 0, ...
+                    'NIDM', true) );
+                
+opt.result.Steps(1).Contrasts(2) = struct(...
+                    'Name', 'listening_inf_baseline', ...
+                    'Mask', false, ...
+                    'MC', 'none', ... FWE, none, FDR
+                    'p', 0.01, ...
+                    'k', 0, ...
+                    'NIDM', true);                
+                
+                
+                
+
+    
 %% Get data
 fprintf('%-40s:', 'Downloading dataset...');
 urlwrite(URL, 'MoAEpilot.zip');
@@ -72,5 +95,6 @@ BIDS_SpatialPrepro(opt);
 BIDS_Smoothing(FWHM, opt);
 BIDS_FFX(1, FWHM, opt, 0);
 BIDS_FFX(2, FWHM, opt, 0);
+BIDS_Results(FWHM, opt, 0)
 
 
