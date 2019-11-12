@@ -190,5 +190,5 @@ options.contrastList = {};
 options.model.file = '';
 
 % specify the results to compute
-options.result = [];
+options.result.Steps = [];
 end

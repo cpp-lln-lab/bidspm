@@ -1,4 +1,4 @@
-function BIDS_Results(FFXSmoothing, opt, isMVPA)
+function BIDS_Results(FFXSmoothing, ConSmoothing, opt, isMVPA)
 % This scripts computes the results for a series of contrast that can be
 % specified at the run, subject or dataset step level (see contrast specification following the BIDS stats model
 % specification)
@@ -36,6 +36,8 @@ for iStep = 1:length(opt.result.Steps)
             case 'subject'
                 
                 for iGroup= 1:length(group)
+                    
+                    groupName = group(iGroup).name ;
 
                     % For each subject
                     for iSub = 1:group(iGroup).numSub   
@@ -65,13 +67,26 @@ for iStep = 1:length(opt.result.Steps)
                 end
                 
             case 'dataset'
-                error('dataset level not implemented yet');
+
+                % Define the RFX folder name and create it in the derivatives
+                % directory
+                rfxDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', ...
+                    ['RFX_', opt.taskName],...
+                    ['RFX_FunctSmooth', num2str(FFXSmoothing),...
+                    '_ConSmooth_', num2str(ConSmoothing)], ...
+                    opt.result.Steps(iStep).Contrasts(iCon).Name) ;
+                
+                load(fullfile(rfxDir, 'SPM.mat'))
+                
+                matlabbatch = result_matlabbatch(matlabbatch, opt, iStep, iCon, rfxDir, 1, 'group level', SPM.nscan);
+
         end
     end
     
 
 end
 
+if ~isempty(matlabbatch)
 % save the matlabbatch
 save(fullfile(JOBS_dir, ...
     'jobs_matlabbatch_SPM12_Results.mat'), ...
@@ -84,6 +99,7 @@ spm_jobman('run',matlabbatch)
 
 % rename NIDM file
 % TODO
+end
 
 end
 

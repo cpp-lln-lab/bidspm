@@ -9,16 +9,16 @@ end
 % group of subjects to analyze
 opt.groups = {''}; % {'blnd', 'ctrl'};
 % suject to run in each group
-% opt.subjects = {[4:6]};  % {[1:2], [1:2]};
-opt.subjects = {[]};  % {[1:2], [1:2]};
+opt.subjects = {[4:6]};  % {[1:2], [1:2]};
+% opt.subjects = {[]};  % {[1:2], [1:2]};
 
 
 % task to analyze
-opt.taskName = 'MotionDecoding';
+% opt.taskName = 'MotionDecoding';
 
 % opt.taskName = 'visMotion';
 
-% opt.taskName = 'balloonanalogrisktask';
+opt.taskName = 'balloonanalogrisktask';
 
 
 
@@ -28,9 +28,9 @@ opt.taskName = 'MotionDecoding';
 % opt.dataDir = '/Users/mohamed/Desktop/Data/raw';
 
 % opt.dataDir = '/home/remi/BIDS/visMotion/raw';
-opt.dataDir = '/home/remi/BIDS/MotionDecoding/raw';
+% opt.dataDir = '/home/remi/BIDS/MotionDecoding/raw';
 
-% opt.dataDir = '/home/remi/BIDS/ds001/rawdata';
+opt.dataDir = '/home/remi/BIDS/ds001/rawdata';
 
 
 % Options for slice time correction
@@ -58,11 +58,23 @@ opt.JOBS_dir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', 
 
 % opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-visMotionLoc_smdl.json';
 
-opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-motionDecodingUnivariate_smdl.json';
-opt.model.multivariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-motionDecodingMultivariate_smdl.json';
+% opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-motionDecodingUnivariate_smdl.json';
+% opt.model.multivariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-motionDecodingMultivariate_smdl.json';
 
-% opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-balloonanalogriskUnivariate_smdl.json';
-% opt.model.multivariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-balloonanalogriskMultivariate_smdl.json';
+opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-balloonanalogriskUnivariate_smdl.json';
+opt.model.multivariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-balloonanalogriskMultivariate_smdl.json';
+
+
+% specify the result to compute
+opt.result.Steps(1) = struct(...
+    'Level',  'dataset', ...
+    'Contrasts', struct(...
+                    'Name', 'pumps_demean', ... % has to match 
+                    'Mask', false, ... % this might need improving if a mask is required
+                    'MC', 'none', ... FWE, none, FDR
+                    'p', 0.05, ...
+                    'k', 0, ...
+                    'NIDM', true) );
 
 
 % Save the opt variable as a mat file to load directly in the preprocessing
