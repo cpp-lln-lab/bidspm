@@ -6,6 +6,10 @@
   },
   "Steps": [
     {
+      "Level": "dataset",
+      "AutoContrasts": []
+    },
+    {
       "Level": "subject",
       "AutoContrasts": ["trial_type.listening"],
       "Contrasts": [
