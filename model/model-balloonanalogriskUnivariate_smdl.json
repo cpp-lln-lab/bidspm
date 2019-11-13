@@ -1,0 +1,22 @@
+{
+  "Name": "balloonanalogrisk",
+  "Description": "contrasts for the balloonanalogrisk dataset",
+  "Input": {
+    "task": "balloonanalogrisktask"
+  },
+  "Steps": [
+    {
+      "Level": "run",
+      "AutoContrasts": [],
+      "Contrasts": []
+    },
+    {
+      "Level": "subject",
+      "AutoContrasts": ["trial_type.pumps_demean", "trial_type.cash_demean"]
+    },
+    {
+      "Level": "dataset",
+      "AutoContrasts": ["pumps_demean"]
+    }
+  ]
+}

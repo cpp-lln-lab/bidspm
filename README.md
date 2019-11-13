@@ -5,24 +5,29 @@
 
 <!-- TOC -->
 
--   [Instructions for SPM12 Preprocessing Pipeline](#instructions-for-spm12-preprocessing-pipeline)
+- [Instructions for SPM12 Preprocessing Pipeline](#instructions-for-spm12-preprocessing-pipeline)
   - [Dependencies](#dependencies)
   - [General description](#general-description)
   - [Assumption](#assumption)
   - [Setting up](#setting-up)
+    - [getOptions](#getoptions)
+    - [model JSON files](#model-json-files)
   - [Order of the analysis](#order-of-the-analysis)
   - [Docker](#docker)
     - [build docker image](#build-docker-image)
     - [run docker image](#run-docker-image)
+    - [MRIQC](#mriqc)
   - [Details about some steps](#details-about-some-steps)
     - [Slice timing correction](#slice-timing-correction)
   - [Boiler plate methods section](#boiler-plate-methods-section)
     - [Preprocessing](#preprocessing)
     - [fMRI data analysis](#fmri-data-analysis)
     - [References](#references)
-  - [Testing](#testing)
+  - [Unit testing](#unit-testing)
+  - [Contributors ✨](#contributors-)
 
 <!-- /TOC -->
+
 
 ## Dependencies
 
@@ -37,6 +42,7 @@ For instructions see the following links:
 | [Tools for NIfTI and ANALYZE image toolbox](https://github.com/sergivalverde/nifti_tools) | NA           |
 
 For simplicity the NIfTI tools toolbox has been added to this repo in the `subfun` folder.
+
 
 ## General description
 
@@ -53,6 +59,7 @@ It can also prepare the data to run an MVPA analysis by running a GLM for each s
 
 The core functions are in the sub-function folder `subfun`
 
+
 ## Assumption
 
 At the moment this pipeline makes some assumptions:
@@ -60,12 +67,13 @@ At the moment this pipeline makes some assumptions:
 -   it assumes the metadata for a given task are the same as those the first run of the first subject this pipeline is being run on,
 -   it assumes that group are defined in the subject field (eg `sub-ctrl01`, `sub-blind01`, ...) and not in the `participants.tsv` file.
 
+
 ## Setting up
 
 ### getOptions
 
 
-All the details specific to your analysis should be set in the `getOptions.m`.
+All the details specific to your analysis should be set in the `getOptions.m`. There is a getOption_template file that shows you would set up the getOption file if one wanted to analyse the [ds001 data set from OpenNeuro](https://openneuro.org/datasets/ds000001/versions/57fecb0ccce88d000ac17538).
 
 Set the group of subjects to analyze.
 ```
@@ -101,6 +109,7 @@ The directory where your files are located on your computer: make sure you have 
 `opt.derivativesDir = '/Data/auditoryBIDS/derivatives'`
 
 Some more SPM options can be set in the `spm_my_defaults.m`.
+
 
 ### model JSON files
 This files allow you to specify which contrasts to run and follow the BIDS statistical model extension and as implement by [fitlins](https://fitlins.readthedocs.io/en/latest/model.html)
@@ -153,46 +162,50 @@ In brief this means:
 -   at the subject level automatically compute the t contrast against baseline for the condition `motion`and `static` and compute the t-contrats for motion VS static with these given weights.
 -   at the level of the data set (so RFX) do the t contrast of the `motion`, `static`, `motion VS static`.
 
+We are currently using this to run different subject level GLM models for our univariate and multivariate analysis where in the first one we compute a con image that averages the beta image of all the runs where as in the latter case we get one con image for each run.
+
 
 ## Order of the analysis
 
 1.  __Remove Dummy Scans__:
-Unzip bold files and removes dummy scans by running the script (to be run even if `opt.numDummies` set to `0`):
-`BIDS_rmDummies.m`
+Unzip bold files and removes dummy scans by running the script (to be run even if `opt.numDummies` set to `0`): `BIDS_rmDummies.m`
 
-2.  __Slice Time Correction__: Performs Slice Time Correction (STC) of the functional volumes by running the script:
-`BIDS_STC.m`
+2.  __Slice Time Correction__: Performs Slice Time Correction (STC) of the functional volumes by running the script: `BIDS_STC.m`
+
 STC will be performed using the information provided in the BIDS data set. It will use the mid-volume acquisition time point as as reference.
+
 The `getOption.m` fields related to STC can still be used to do some slice timing correction even no information is can be found in the BIDS data set.
+
 In general slice order and reference slice is entered in time unit (ms) (this is the BIDS way of doing things) instead of the slice index of the reference slice (the "SPM" way of doing things).
+
 More info available on this page of the [SPM wikibook](https://en.wikibooks.org/wiki/SPM/Slice_Timing).
 
 3.  __Spatial Preprocessing__:
-Performs spatial preprocessing by running the script:
-`BIDS_SpatialPrepro.m`
+Performs spatial preprocessing by running the script: `BIDS_SpatialPrepro.m`
 
 4.  __SMOOTHING__:
-Performs smoothing of the functional data by running the script:
-`BIDS_Smoothing.m`
+Performs smoothing of the functional data by running the script: `BIDS_Smoothing.m`
 
 5.  __FIXED EFFECTS ANALYSIS (FIRST-LEVEL ANALYSIS)__:
-Performs the fixed effects analysis by running the ffx script:
-`BIDS_FFX.m`
+Performs the fixed effects analysis by running the ffx script: `BIDS_FFX.m`
 
 This will run twice, once for model specification and another time for model estimation. See the function for more details.
 
 This will take each condition present in the `events.tsv` file of each run and convolve it with a canonical HRF. It will also add the 6 realignment parameters of every run as confound regressors.
 
 6.  __RANDOM EFFECTS ANALYSIS (SECOND-LEVEL ANALYSIS)__:
-Performs the random effects analysis by running the RFX script:
-`BIDS_RFX.m`
+Performs the random effects analysis by running the RFX script: `BIDS_RFX.m`
+
+7.  __GET THE RESULTS FROM A SPECIFIC CONTRAST__: `BIDS_Results.m`
 
 -   See __"batch.m"__ for examples and for the order of the scripts.
 -   See __"batch_dowload_run.m"__ for an example of how to download a data set and analyze it all in one go.
 
+
 ## Docker
 
 The recipe to build the docker image is in the `Dockerfile`
+
 
 ### build docker image
 
@@ -201,6 +214,7 @@ To build the image with with octave and SPM the `Dockerfile` just type :
 `docker build  -t cpp_spm:0.0.1 .`
 
 This will create an image with the tag name `cpp_spm_octave:0.0.1`
+
 
 ### run docker image
 
@@ -231,6 +245,7 @@ docker run -it --rm -v $data_dir/raw:/data:ro -v $data_dir:/out poldracklab/mriq
 
 ## Details about some steps
 
+
 ### Slice timing correction
 
 BELOW: some comments from [here](http://mindhive.mit.edu/node/109) on STC, when it should be applied
@@ -243,7 +258,9 @@ _If you do slice timing correction before realignment, you might look down your 
 
 _There's no way to avoid all the error (short of doing a four-dimensional realignment process combining spatial and temporal correction - Remi's note: fMRIprep does it), but I believe the current thinking is that doing slice timing first minimizes your possible error. The set of voxels subject to such an interpolation error is small, and the interpolation into another TR will also be small and will only affect a few TRs in the time course. By contrast, if one realigns first, many voxels in a slice could be affected at once, and their whole time courses will be affected. I think that's why it makes sense to do slice timing first. That said, here's some articles from the SPM e-mail list that comment helpfully on this subject both ways, and there are even more if you do a search for "slice timing AND before" in the archives of the list._
 
+
 ## Boiler plate methods section
+
 
 ### Preprocessing
 
@@ -263,6 +280,7 @@ The anatomical T1 image was bias field corrected, segmented and normalized to MN
 
 Functional MNI normalized images were then spatially smoothed using a 3D gaussian kernel (FWHM = {XX} mm).
 
+
 ### fMRI data analysis
 
 At the subject level, we performed a mass univariate analysis with a linear regression at each voxel of the brain, using generalized least squares with a global FAST model to account for temporal auto-correlation (Corbin et al, 2018) and a drift fit with discrete cosine transform basis (128 seconds cut-off). Image intensity scaling was done run-wide before statistical modeling such that the mean image will have mean intracerebral intensity of 100.
@@ -279,6 +297,7 @@ Table of constrast with weight: WIP
 
 Group level: WIP
 
+
 ### References
 
 Friston KJ, Ashburner J, Frith CD, Poline J-B, Heather JD & Frackowiak RSJ (1995) Spatial registration and normalization of images Hum. Brain Map. 2:165-189
@@ -286,9 +305,10 @@ Friston KJ, Ashburner J, Frith CD, Poline J-B, Heather JD & Frackowiak RSJ (1995
 Corbin, N., Todd, N., Friston, K. J. & Callaghan, M. F. Accurate modeling of temporal correlations in rapidly sampled fMRI time series. Hum. Brain Mapp. 39, 3884–3897 (2018).
 
 
-## Testing
+## Unit testing
 
 All tests are in the test folder. There is also an empty dummy BIDS dataset that is partly created using the bash script `createDummyDataSet.sh`.
+
 
 ## Contributors ✨
 

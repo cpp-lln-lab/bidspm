@@ -7,30 +7,18 @@ if nargin<1
 end
 
 % group of subjects to analyze
-opt.groups = {''}; % {'blnd', 'ctrl'};
+opt.groups = {''};
 % suject to run in each group
-% opt.subjects = {[4:6]};  % {[1:2], [1:2]};
-opt.subjects = {[]};  % {[1:2], [1:2]};
+opt.subjects = {[1:2]};
 
 
 % task to analyze
 opt.taskName = 'MotionDecoding';
 
-% opt.taskName = 'visMotion';
-
-% opt.taskName = 'balloonanalogrisktask';
-
-
 
 % The directory where the data are located
-
-% opt.dataDir = '/Users/mohamed/Desktop/MotionWorkshop/raw';
-% opt.dataDir = '/Users/mohamed/Desktop/Data/raw';
-
-% opt.dataDir = '/home/remi/BIDS/visMotion/raw';
-opt.dataDir = '/home/remi/BIDS/MotionDecoding/raw';
-
-% opt.dataDir = '/home/remi/BIDS/ds001/rawdata';
+opt.dataDir = '/Users/mohamed/Desktop/MotionWorkshop/raw';
+opt.dataDir = '/Users/mohamed/Desktop/Data/raw';
 
 
 % Options for slice time correction
@@ -51,22 +39,27 @@ opt.funcVoxelDims = [];
 % Suffix output directory for the saved jobs
 opt.JOBS_dir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
 
+
 % specify the model file that contains the contrasts to compute
+opt.model.univariate.file = '/Users/mohamed/Documents/GitHub/BIDS_fMRI_scripts/model-motionDecodingUnivariate_smdl.json';
+opt.model.multivariate.file = '/Users/mohamed/Documents/GitHub/BIDS_fMRI_scripts/model-motionDecodingMultivariate_smdl.json';
 
-% opt.model.univariate.file = '/Users/mohamed/Documents/GitHub/BIDS_fMRI_scripts/model-motionDecodingUnivariate_smdl.json';
-% opt.model.multivariate.file = '/Users/mohamed/Documents/GitHub/BIDS_fMRI_scripts/model-motionDecodingMultivariate_smdl.json';
 
-% opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-visMotionLoc_smdl.json';
-
-opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-motionDecodingUnivariate_smdl.json';
-opt.model.multivariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-motionDecodingMultivariate_smdl.json';
-
-% opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-balloonanalogriskUnivariate_smdl.json';
-% opt.model.multivariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-balloonanalogriskMultivariate_smdl.json';
+% specify the result to compute
+opt.result.Steps(1) = struct(...
+    'Level',  'dataset', ...
+    'Contrasts', struct(...
+                    'Name', 'Vis_U', ... % has to match one of the contrast defined in the model json file
+                    'Mask', false, ... % this might need improving if a mask is required
+                    'MC', 'none', ... FWE, none, FDR
+                    'p', 0.05, ...
+                    'k', 0, ...
+                    'NIDM', true) );
 
 
 % Save the opt variable as a mat file to load directly in the preprocessing
 % scripts
 save('opt.mat','opt')
+
 
 end

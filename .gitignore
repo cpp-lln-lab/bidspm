@@ -5,3 +5,7 @@
 *.nii
 
 opt.mat
+
+# files in the demo folder related to running the demo analysis
+demo/*.zip
+demo/output/*

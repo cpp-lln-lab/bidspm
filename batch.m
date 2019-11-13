@@ -33,6 +33,8 @@ BIDS_FFX(2, 6, opt);
 BIDS_RFX(1, 6, 6)
 BIDS_RFX(2, 6, 6)
 
+BIDS_Results(6, 6, opt, 0)
+
 % subject level multivariate
 isMVPA=1;
 BIDS_FFX(1, 6, opt, isMVPA);
