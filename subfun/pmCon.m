@@ -53,7 +53,7 @@ if strcmp(model.Input.task, taskName)
                         C = zeros(1,size(SPM.xX.X,2));
                         
                         % get regressors index corresponding to the HRF of that condition
-                        [cdt_name, regIdx] = getRegIdx(Step, iCon, SPM);
+                        [cdt_name, regIdx] = getRegIdx(Step.AutoContrasts, iCon, SPM);
                         
                         % give them a value of 1
                         C(end,regIdx) = 1;
@@ -80,7 +80,7 @@ if strcmp(model.Input.task, taskName)
                         for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
                             
                             % get regressors index corresponding to the HRF of that condition
-                            [~, regIdx] = getRegIdx(Step, iCon, SPM);
+                            [~, regIdx] = getRegIdx(Step.Contrasts, iCon, SPM, iCdt);
                             
                             % give them a value of 1
                             C(end,regIdx) = Step.Contrasts(iCon).weights(iCdt);
@@ -107,7 +107,7 @@ if strcmp(model.Input.task, taskName)
                     for iCon = 1:length(Step.AutoContrasts)
                         
                         % get regressors index corresponding to the HRF of that condition
-                        [cdt_name, regIdx] = getRegIdx(Step, iCon, SPM);
+                        [cdt_name, regIdx] = getRegIdx(Step.AutoContrasts, iCon, SPM);
                         
                         regIdx = find(regIdx);
                         
@@ -140,11 +140,16 @@ end
 
 
 
-function  [cdt_name, regIdx] = getRegIdx(Step, iCon, SPM)
+function  [cdt_name, regIdx] = getRegIdx(conList, iCon, SPM, iCdt)
 % get regressors index corresponding to the HRF of of a condition
 
+if iscell(conList)
+    cdt_name = conList{iCon};
+elseif isstruct(conList)
+    cdt_name = conList(iCon).ConditionList{iCdt};
+end
+
 % get condition name
-cdt_name = Step.AutoContrasts{iCon};
 cdt_name = strrep(cdt_name, 'trial_type.', '');
 
 % get regressors index corresponding to the HRF of that condition
