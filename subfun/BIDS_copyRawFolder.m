@@ -39,15 +39,13 @@ else
     fprintf('derivatives directory already exists. \n')
 end
 
-% make copy dataset description file from raw folder if it doesnt exist
-copyfile(fullfile(rawDir, 'dataset_description.json'), derivativeDir);
-fprintf('dataset_description.json copied to derivatives directory \n');
+% copy TSV and JSON file from raw folder if it doesnt exist
+copyfile(fullfile(rawDir, '*.json'), derivativeDir);
+fprintf(' json files copied to derivatives directory \n');
 
-% copy task json files from raw to derivatives
-copyfile(fullfile(rawDir, 'task-*_bold.json'), derivativeDir);
-fprintf('task JSON files copied to derivatives directory \n');
+copyfile(fullfile(rawDir, '*.tsv'), derivativeDir);
+fprintf(' tsv files copied to derivatives directory \n');
 
-% copy TSV files?
 
 %% Loop through the groups, subjects, sessions
 
