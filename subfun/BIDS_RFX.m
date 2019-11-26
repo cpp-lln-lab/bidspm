@@ -80,6 +80,7 @@ switch action
         end
 
         % save the matlabbatch
+        [~, ~, ~] = mkdir(JOBS_dir);
         save(fullfile(JOBS_dir, ...
             ['jobs_matlabbatch_SPM12_SmoothCon_',...
             num2str(mmConSmoothing),'_',...
@@ -193,6 +194,7 @@ switch action
         fprintf(1,'Create Mean Struct and Mask IMAGES...')
 
         % save the matlabbatch
+        [~, ~, ~] = mkdir(JOBS_dir);
         save(fullfile(JOBS_dir, ...
             'jobs_matlabbatch_SPM12_CreateMeanStrucMask.mat'), ...
             'matlabbatch')
@@ -229,7 +231,7 @@ switch action
             % the strrep(Session{j}, 'trial_type.', '') is there to remove 
             % 'trial_type.' because contrasts against baseline are renamed 
             % at the subject level
-            conName = strrep(grpLvlCon{j}, 'trial_type.', '');
+            conName = rmTrialTypeStr(grpLvlCon{j});
 
             con = con+1;
 
@@ -284,11 +286,10 @@ switch action
                 fprintf(1,'A DIRECTORY WITH THIS NAME ALREADY EXISTED AND WAS OVERWRITTEN, SORRY \n');
                 rmdir(fullfile(RFX_FolderName, conName),'s')
             end
+            
             mkdir(fullfile(RFX_FolderName, conName))
-
-            matlabbatch{j}.spm.stats.factorial_design.dir = {...
-                fullfile(RFX_FolderName,...
-                grpLvlCon{j}) };
+            matlabbatch{j}.spm.stats.factorial_design.dir = { fullfile(RFX_FolderName, conName) };
+            
         end
 
         % Go to Jobs directory and save the matlabbatch
@@ -307,10 +308,8 @@ switch action
         matlabbatch = {};
         
         for j = 1:size(grpLvlCon,1)
-            matlabbatch{j}.spm.stats.fmri_est.spmmat = {...
-                fullfile(RFX_FolderName,...
-                grpLvlCon{j},...
-                'SPM.mat')};
+            conName = rmTrialTypeStr(grpLvlCon{j});
+            matlabbatch{j}.spm.stats.fmri_est.spmmat = { fullfile(RFX_FolderName, conName, 'SPM.mat') };
             matlabbatch{j}.spm.stats.fmri_est.method.Classical = 1;
         end
 
@@ -332,10 +331,8 @@ switch action
 
         % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
         for j = 1:size(grpLvlCon,1)
-            matlabbatch{j}.spm.stats.con.spmmat = {...
-                fullfile(RFX_FolderName,...
-                grpLvlCon{j},...
-                'SPM.mat')};
+            conName = rmTrialTypeStr(grpLvlCon{j});
+            matlabbatch{j}.spm.stats.con.spmmat = {fullfile(RFX_FolderName, conName, 'SPM.mat')};
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = 1;
             matlabbatch{j}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
@@ -353,4 +350,10 @@ switch action
 
 end
 
+end
+
+
+
+function conName = rmTrialTypeStr(conName)
+conName = strrep(conName, 'trial_type.', '');
 end
