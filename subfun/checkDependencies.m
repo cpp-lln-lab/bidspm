@@ -1,6 +1,7 @@
 function checkDependencies()
 % Checks that that the right dependencies are installed. ALso loads the spm defaults.
 
+printCredits()
 
 SPM_main = 'SPM12';
 SPM_sub = '7487';
