@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline.svg?branch=master)](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline)
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
-[![DOI](https://zenodo.org/badge/208231636.svg)](https://zenodo.org/badge/latestdoi/208231636)
+[![DOI](https://zenodo.org/badge/3554331.svg)](https://doi.org/10.5281/zenodo.3554331)
+3548325
 
 
 # Instructions for SPM12 Preprocessing Pipeline
