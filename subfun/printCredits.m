@@ -9,7 +9,7 @@ contributors = {...
     'Ane Gurtubay', ...
     'Marco Barilari'};
 
-DOI_URL = 'https://doi.org/10.5281/zenodo.3554332';
+DOI_URL = 'https://doi.org/10.5281/zenodo.3554331.';
 
 repoURL = 'https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline';
 
