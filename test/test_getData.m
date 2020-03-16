@@ -53,4 +53,11 @@ assert(group(1).numSub == 5)
 assert(isequal(group(1).subNumber, {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'}))
 
 
+%% Only get anat metadata
+opt.groups = {''};
+opt.subjects = {'01'};
+[~, opt] = getData(opt, [], 'T1w');
+assert(opt.metadata.RepetitionTime == 2.3)
+
+
 end

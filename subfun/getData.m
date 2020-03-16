@@ -1,4 +1,4 @@
-function [group, opt, BIDS] = getData(opt, BIDSdir)
+function [group, opt, BIDS] = getData(opt, BIDSdir, type)
 % getData checks that all the options specified by the user in getOptions
 % and fills the blank for any that might have been missed out.
 % It then reads the specified BIDS data set and gets the groups and
@@ -25,10 +25,22 @@ function [group, opt, BIDS] = getData(opt, BIDSdir)
 % You can also directly specify the subject label for the participants you want to run
 % opt.groups = {''};
 % opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
+%
+% You can also specify:
+%  - BIDSdir: the directory where the data is ; default is fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL')
+%  - type: the data type you want to get the metadata of ; supported: bold (default) and T1w
+%
+%  IMPORTANT NOTE: if you specify the type variable for T1w then you must
+%  make sure that the T1w.json is also present in the anat folder because
+%  of the way the spm_BIDS function works at the moment
+
+if nargin<3 || ( exist('type', 'var') && isempty(type) )
+    type = 'bold';
+end
 
 opt = checkOptions(opt);
 
-if nargin<2
+if nargin<2 || ( exist('BIDSdir', 'var') && isempty(BIDSdir) )
     % The directory where the derivatives are located
     derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
 else
@@ -53,10 +65,24 @@ subjects = spm_BIDS(BIDS, 'subjects');
 % get metadata for bold runs for that task
 % we take those from the first run of the first subject assuming it can
 % apply to all others.
-metadata = spm_BIDS(BIDS, 'metadata', ...
-    'task', opt.taskName, ...
-    'sub', subjects{1}, ...
-    'type', 'bold');
+
+% THIS NEEDS FIXING AS WE MIGHT WANT THE METADATA OF THE SUBJECTS SELECTED
+% RATHER THAN THE FIRST SUBJECT OF THE DATASET
+
+switch type
+    case 'bold'
+        metadata = spm_BIDS(BIDS, 'metadata', ...
+            'task', opt.taskName, ...
+            'sub', subjects{1}, ...
+            'type', type);
+    case 'T1w'
+        metadata = spm_BIDS(BIDS, 'metadata', ...
+            'sub', subjects{1}, ...
+            'type', [type]);
+end
+
+
+
 
 if iscell(metadata)
     opt.metadata = metadata{1};
