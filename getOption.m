@@ -38,11 +38,11 @@ opt.taskName = 'visMotion';
 
 
 % The directory where the data are located
-opt.dataDir = '/users/barilari/visMotion/derivatives/';
+opt.dataDir = '/users/barilari/data/visMotion/raw';
 
 
 % specify the model file that contains the contrasts to compute
-opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-visMotionLoc_smdl.json';
+opt.model.univariate.file = '/users/barilari/github/CPP_BIDS_SPM_pipeline/model-visMotionLoc_smdl.json';
 opt.model.multivariate.file = '';
 
 
