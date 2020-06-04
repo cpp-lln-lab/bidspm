@@ -38,7 +38,7 @@ opt.taskName = 'visMotion';
 
 
 % The directory where the data are located
-opt.dataDir = '/home/remi/BIDS/visMotion/derivatives/';
+opt.dataDir = '/users/barilari/visMotion/derivatives/';
 
 
 % specify the model file that contains the contrasts to compute
