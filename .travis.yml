@@ -1,28 +1,27 @@
 # Travis CI (https://travis-ci.org/)
+# This will only work on your repo if you have an account on travis and you
+# have set it up to run continuous integration on this this repo
 
-language: c
+# Linux distribution (bionic beaver)
 dist: bionic
+
+# Language and version
+language: python
+python:
+  - "3.6" # current default Python on Travis CI
+
 cache:
   apt: true # only works with Pro version
 
-env:
-  global:
-    - OCTFLAGS="--no-gui --no-window-system --silent"
-
+# Install the miss_hit linter
 before_install:
-  - travis_retry sudo apt-get -y -qq update
-  - travis_retry sudo apt-get -y install octave
-  - travis_retry sudo apt-get -y install liboctave-dev
-  # install SPM and the relevant patches for octave
-  - git clone https://github.com/spm/spm12.git --depth 1
-  - make -C spm12/src PLATFORM=octave distclean
-  - make -C spm12/src PLATFORM=octave
-  - make -C spm12/src PLATFORM=octave install
-  - octave $OCTFLAGS --eval "addpath(\"spm12\"); savepath ();"
+  - pip3 install miss_hit
 
-before_script:
-  # Change current directory
-  - cd test
-
-script:
-  - octave $OCTFLAGS --eval "results = runTests; assert(all(~[results.Failed]))"
+# Lists all the tasks we will do 
+jobs:
+  include:
+    - name: "miss_hit: checking code quality"
+      script: mh_metric . --ci
+    - name: "miss_hit: checking code style"
+      script: mh_style .
+      
