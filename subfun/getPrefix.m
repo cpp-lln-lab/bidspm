@@ -23,8 +23,8 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, degreeOfSmoothin
             prefix = [spm_get_defaults('normalise.write.prefix') prefix];
 
             % Check which level of smoothing is applied
-            if degreeOfSmoothing == 0       % If no smoothing applied, take the normalized data
-            elseif degreeOfSmoothing > 0   % If the smoothing is applied, take the smoothed files
+            if degreeOfSmoothing == 0 % If no smoothing applied, take the normalized data
+            elseif degreeOfSmoothing > 0 % else, take the smoothed files
                 prefix = [spm_get_defaults('smooth.prefix') num2str(degreeOfSmoothing) prefix];
             end
 
@@ -41,7 +41,9 @@ end
 function prefix = prefixForSTC(prefix, opt)
     % Check the slice timing information is not in the metadata and not added
     % manually in the opt variable.
-    if (isfield(opt.metadata, 'SliceTiming') && ~isempty(opt.metadata.SliceTiming)) || ~isempty(opt.sliceOrder)
+    if (isfield(opt.metadata, 'SliceTiming') && ...
+            ~isempty(opt.metadata.SliceTiming)) || ...
+            ~isempty(opt.sliceOrder)
         prefix = [spm_get_defaults('slicetiming.prefix') prefix];
     end
 end

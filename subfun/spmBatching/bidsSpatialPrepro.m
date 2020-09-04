@@ -1,4 +1,4 @@
-function BIDS_SpatialPrepro(opt)
+function bidsSpatialPrepro(opt)
     %% The scripts performs spatial preprocessing of the functional and structural data.
     % The structural data are segmented and normalized to MNI space.
     % The functional data are re-aligned, coregistered with the structural and
@@ -28,20 +28,22 @@ function BIDS_SpatialPrepro(opt)
     fprintf(1, 'DOING PREPROCESSING\n');
 
     %% Loop through the groups, subjects, and sessions
-    for iGroup = 1:length(group)                 % For each group
-        groupName = group(iGroup).name ;        % Get the group name
+    for iGroup = 1:length(group)
 
-        for iSub = 1:group(iGroup).numSub       % For each Subject in the group
+        groupName = group(iGroup).name;
+
+        for iSub = 1:group(iGroup).numSub
 
             matlabbatch = [];
             % Get the ID of the subject
-            % (i.e SubNumber doesnt have to match the iSub if one subject is exluded for any reason)
-            subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
-            fprintf(1, ' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n', ...
-                groupName, iSub, subNumber);
+            % (i.e SubNumber doesnt have to match the iSub if one subject
+            % is exluded for any reason)
+            subNumber = group(iGroup).subNumber{iSub}; % Get the subject ID
+
+            printProcessingSubject(groupName, iSub, subNumber);
 
             % identify sessions for this subject
-            [sessions, numSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
+            [sessions, nbSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
 
             % get all runs for that subject across all sessions
             struct = spm_BIDS(BIDS, 'data', ...
@@ -49,7 +51,7 @@ function BIDS_SpatialPrepro(opt)
                 'ses', sessions{structSession}, ...
                 'type', 'T1w');
             % we assume that the first T1w is the correct one (could be an
-            % issue for data set with more than one
+            % issue for dataset with more than one
             struct = struct{1};
 
             %% Structural file directory
@@ -72,12 +74,12 @@ function BIDS_SpatialPrepro(opt)
             fprintf(1, ' BUILDING SPATIAL JOB : REALIGN\n');
             sesCounter = 1;
 
-            for iSes = 1:numSessions                     % For each session
+            for iSes = 1:nbSessions  % For each session
 
                 % get all runs for that subject across all sessions
-                [runs, numRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
+                [runs, nbRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
 
-                for iRun = 1:numRuns                     % For each run
+                for iRun = 1:nbRuns  % For each run
 
                     % get the filename for this bold run for this task
                     [fileName, subFuncDataDir] = getBoldFilename( ...
@@ -88,19 +90,26 @@ function BIDS_SpatialPrepro(opt)
                     files = inputFileValidation(subFuncDataDir, prefix, fileName);
 
                     % get native resolution to reuse it at normalisation;
-                    if ~isempty(opt.funcVoxelDims)         % If voxel dimensions is defined in the opt
-                        voxDim = opt.funcVoxelDims;        % Get the dimension values
+                    if ~isempty(opt.funcVoxelDims) % If voxel dimensions is defined in the opt
+                        voxDim = opt.funcVoxelDims; % Get the dimension values
                     else
-                        hdr = spm_vol(fullfile(subFuncDataDir, [prefix, fileName]));  % SPM Doesnt deal with nii.gz and all our nii will be unzipped at this stage
+                        % SPM Doesnt deal with nii.gz and all our nii will be unzipped
+                        % at this stage
+                        hdr = spm_vol(fullfile(subFuncDataDir, [prefix, fileName]));
                         voxDim = diag(hdr(1).mat);
-                        voxDim = abs(voxDim(1:3)');    % Voxel dimensions are not pure integers before reslicing, therefore
-                        voxDim = round(voxDim * 10) / 10;  % Round the dimensions of the functional files to the 1st decimal point
-                        opt.funcVoxelDims = voxDim ;   % Add it to opt.funcVoxelDims to have the same value for all subjects and sessions
+                        % Voxel dimensions are not pure integers before reslicing, therefore
+                        % Round the dimensions of the functional files to the 1st decimal point
+                        voxDim = abs(voxDim(1:3)');
+                        voxDim = round(voxDim * 10) / 10;
+                        % Add it to opt.funcVoxelDims to have the same value for
+                        % all subjects and sessions
+                        opt.funcVoxelDims = voxDim;
                     end
 
                     fprintf(1, ' %s\n', files{1});
 
-                    matlabbatch{2}.spm.spatial.realign.estwrite.data{sesCounter} =  cellstr(files);
+                    matlabbatch{2}.spm.spatial.realign.estwrite.data{sesCounter} = ...
+                        cellstr(files);
 
                     sesCounter = sesCounter + 1;
 
@@ -111,16 +120,16 @@ function BIDS_SpatialPrepro(opt)
 
             % The following lines are commented out because those parameters
             % can be set in the spm_my_defaults.m
-            %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.quality = 1;
-            %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.sep = 2;
-            %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.fwhm = 5;
-            %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.rtm = 1;
-            %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.interp = 2;
-            %         matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.wrap = [0 0 0];
-            %         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.which = [0 1];
-            %         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.interp = 3;
-            %         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
-            %         matlabbatch{2}.spm.spatial.realign.estwrite.roptions.mask = 1;
+            % matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.quality = 1;
+            % matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.sep = 2;
+            % matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.fwhm = 5;
+            % matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.rtm = 1;
+            % matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.interp = 2;
+            % matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.wrap = [0 0 0];
+            % matlabbatch{2}.spm.spatial.realign.estwrite.roptions.which = [0 1];
+            % matlabbatch{2}.spm.spatial.realign.estwrite.roptions.interp = 3;
+            % matlabbatch{2}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
+            % matlabbatch{2}.spm.spatial.realign.estwrite.roptions.mask = 1;
 
             %% COREGISTER
             % REFERENCE IMAGE : DEPENDENCY FROM NAMED FILE SELECTOR ('Structural')
@@ -131,47 +140,67 @@ function BIDS_SpatialPrepro(opt)
             matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).tgt_spec{1}(1).value = 'cfg_files';
             matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).tgt_spec{1}(2).name = 'strtype';
             matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).tgt_spec{1}(2).value = 'e';
-            matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).sname = 'Named File Selector: Structural(1) - Files';
+            matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).sname = ...
+                'Named File Selector: Structural(1) - Files';
             matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).src_exbranch = ...
-                substruct('.', 'val', '{}', {1}, '.', 'val', '{}', {1});
-            matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).src_output = substruct('.', 'files', '{}', {1});
+                substruct( ...
+                '.', 'val', '{}', {1}, ...
+                '.', 'val', '{}', {1});
+            matlabbatch{3}.spm.spatial.coreg.estimate.ref(1).src_output = ...
+                substruct('.', 'files', '{}', {1});
 
-            % SOURCE IMAGE : DEPENDENCY FROM REALIGNEMENT ('Realign: Estimate & Reslice: Mean Image')
+            % SOURCE IMAGE : DEPENDENCY FROM REALIGNEMENT
+            % ('Realign: Estimate & Reslice: Mean Image')
             matlabbatch{3}.spm.spatial.coreg.estimate.source(1) = cfg_dep;
             matlabbatch{3}.spm.spatial.coreg.estimate.source(1).tname = 'Source Image';
             matlabbatch{3}.spm.spatial.coreg.estimate.source(1).tgt_spec{1}(1).name = 'filter';
             matlabbatch{3}.spm.spatial.coreg.estimate.source(1).tgt_spec{1}(1).value = 'image';
             matlabbatch{3}.spm.spatial.coreg.estimate.source(1).tgt_spec{1}(2).name = 'strtype';
             matlabbatch{3}.spm.spatial.coreg.estimate.source(1).tgt_spec{1}(2).value = 'e';
-            matlabbatch{3}.spm.spatial.coreg.estimate.source(1).sname = 'Realign: Estimate & Reslice: Mean Image';
+            matlabbatch{3}.spm.spatial.coreg.estimate.source(1).sname = ...
+                'Realign: Estimate & Reslice: Mean Image';
             matlabbatch{3}.spm.spatial.coreg.estimate.source(1).src_exbranch = ...
-                substruct('.', 'val', '{}', {2}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1});
-            matlabbatch{3}.spm.spatial.coreg.estimate.source(1).src_output = substruct('.', 'rmean');
+                substruct( ...
+                '.', 'val', '{}', {2}, ...
+                '.', 'val', '{}', {1}, ...
+                '.', 'val', '{}', {1}, ...
+                '.', 'val', '{}', {1});
+            matlabbatch{3}.spm.spatial.coreg.estimate.source(1).src_output = ...
+                substruct('.', 'rmean');
 
-            % OTHER IMAGES : DEPENDENCY FROM REALIGNEMENT ('Realign: Estimate & Reslice: Realigned Images (Sess 1 to N)')
+            % OTHER IMAGES : DEPENDENCY FROM REALIGNEMENT ('Realign: Estimate & Reslice:
+            % Realigned Images (Sess 1 to N)')
             % files %%
             for iSes = 1:sesCounter - 1 % '-1' because I added 1 extra session to ses_counter
                 matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes) = cfg_dep;
                 matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tname = 'Other Images';
-                matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(1).name = 'filter';
-                matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(1).value = 'image';
-                matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(2).name = 'strtype';
-                matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(2).value = 'e';
+                matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(1).name = ...
+                    'filter';
+                matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(1).value = ...
+                    'image';
+                matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(2).name = ...
+                    'strtype';
+                matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(2).value = ...
+                    'e';
                 matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).sname = ...
                     ['Realign: Estimate & Reslice: Realigned Images (Sess ' (iSes) ')'];
                 matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).src_exbranch = ...
-                    substruct('.', 'val', '{}', {2}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1});
+                    substruct( ...
+                    '.', 'val', '{}', {2}, ...
+                    '.', 'val', '{}', {1}, ...
+                    '.', 'val', '{}', {1}, ...
+                    '.', 'val', '{}', {1});
                 matlabbatch{3}.spm.spatial.coreg.estimate.other(iSes).src_output = ...
                     substruct('.', 'sess', '()', {iSes}, '.', 'cfiles');
             end
 
             % The following lines are commented out because those parameters
             % can be set in the spm_my_defaults.m
-            %         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.cost_fun = 'nmi';
-            %         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.sep = [4 2];
-            %         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.tol = ...
-            %             [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
-            %         matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.fwhm = [7 7];
+            % matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.cost_fun = 'nmi';
+            % matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.sep = [4 2];
+            % matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.tol = ...
+            % [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
+            % matlabbatch{3}.spm.spatial.coreg.estimate.eoptions.fwhm = [7 7];
 
             %% SEGMENT STRUCTURALS
             % (WITH NEW SEGMENT -DEFAULT SEGMENT IN SPM12)
@@ -181,13 +210,18 @@ function BIDS_SpatialPrepro(opt)
             % SAVE BIAS CORRECTED IMAGE
             matlabbatch{4}.spm.spatial.preproc.channel.vols(1) = ...
                 cfg_dep('Named File Selector: Structural(1) - Files', ...
-                substruct('.', 'val', '{}', {1}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1}), ...
+                substruct( ...
+                '.', 'val', '{}', {1}, ...
+                '.', 'val', '{}', {1}, ...
+                '.', 'val', '{}', {1}, ...
+                '.', 'val', '{}', {1}), ...
                 substruct('.', 'files', '{}', {1}));
             matlabbatch{4}.spm.spatial.preproc.channel.biasreg = 0.001;
             matlabbatch{4}.spm.spatial.preproc.channel.biasfwhm = 60;
             matlabbatch{4}.spm.spatial.preproc.channel.write = [0 1];
 
-            % CREATE SEGMENTS IN NATIVE SPACE OF GM,WM AND CSF (CSF - in case I want to compute TIV later - stefbenet)
+            % CREATE SEGMENTS IN NATIVE SPACE OF GM,WM AND CSF
+            % (CSF - in case I want to compute TIV later - stefbenet)
             matlabbatch{4}.spm.spatial.preproc.tissue(1).tpm = ...
                 {[fullfile(spmLocation, 'tpm', 'TPM.nii') ',1']};
             matlabbatch{4}.spm.spatial.preproc.tissue(1).ngaus = 1;
@@ -234,61 +268,97 @@ function BIDS_SpatialPrepro(opt)
             for iJob = 5:9
                 matlabbatch{iJob}.spm.spatial.normalise.write.subj.def(1) = ...
                     cfg_dep('Segment: Forward Deformations', ...
-                    substruct('.', 'val', '{}', {4}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1}), ...
+                    substruct( ...
+                    '.', 'val', '{}', {4}, ...
+                    '.', 'val', '{}', {1}, ...
+                    '.', 'val', '{}', {1}), ...
                     substruct('.', 'fordef', '()', {':'}));
 
                 % The following lines are commented out because those parameters
                 % can be set in the spm_my_defaults.m
-                %             matlabbatch{iJob}.spm.spatial.normalise.write.woptions.bb = [-78 -112 -70 ; 78 76 85];
-                %             matlabbatch{iJob}.spm.spatial.normalise.write.woptions.interp = 4;
-                %             matlabbatch{iJob}.spm.spatial.normalise.write.woptions.prefix = spm_get_defaults('normalise.write.prefix');
+                % matlabbatch{iJob}.spm.spatial.normalise.write.woptions.bb = ...
+                %  [-78 -112 -70 ; 78 76 85];
+                % matlabbatch{iJob}.spm.spatial.normalise.write.woptions.interp = 4;
+                % matlabbatch{iJob}.spm.spatial.normalise.write.woptions.prefix = ...
+                %  spm_get_defaults('normalise.write.prefix');
 
             end
 
             matlabbatch{5}.spm.spatial.normalise.write.subj.resample(1) = ...
                 cfg_dep('Coregister: Estimate: Coregistered Images', ...
-                substruct('.', 'val', '{}', {3}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1}), ...
+                substruct( ...
+                '.', 'val', '{}', {3}, ...
+                '.', 'val', '{}', {1}, ...
+                '.', 'val', '{}', {1}, ...
+                '.', 'val', '{}', {1}), ...
                 substruct('.', 'cfiles'));
-            matlabbatch{5}.spm.spatial.normalise.write.woptions.vox = voxDim; % original voxel size at acquisition
+
+            % original voxel size at acquisition
+            matlabbatch{5}.spm.spatial.normalise.write.woptions.vox = voxDim;
 
             % NORMALIZE STRUCTURAL
             fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE STRUCTURAL\n');
             matlabbatch{6}.spm.spatial.normalise.write.subj.resample(1) = ...
                 cfg_dep('Segment: Bias Corrected (1)', ...
-                substruct('.', 'val', '{}', {4}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1}), ...
-                substruct('.', 'channel', '()', {1}, '.', 'biascorr', '()', {':'}));
-            matlabbatch{6}.spm.spatial.normalise.write.woptions.vox = [1 1 1]; % size 3 allow to run RunQA / original voxel size at acquisition
+                substruct( ...
+                '.', 'val', '{}', {4}, ...
+                '.', 'val', '{}', {1}, ...
+                '.', 'val', '{}', {1}), ...
+                substruct( ...
+                '.', 'channel', '()', {1}, ...
+                '.', 'biascorr', '()', {':'}));
+            % size 3 allow to run RunQA / original voxel size at acquisition
+            matlabbatch{6}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
 
             % NORMALIZE GREY MATTER
             fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE GREY MATTER\n');
             matlabbatch{7}.spm.spatial.normalise.write.subj.resample(1) = ...
                 cfg_dep('Segment: c1 Images', ...
-                substruct('.', 'val', '{}', {4}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1}), ...
-                substruct('.', 'tiss', '()', {1}, '.', 'c', '()', {':'}));
-            matlabbatch{7}.spm.spatial.normalise.write.woptions.vox = voxDim; % size 3 allow to run RunQA / original voxel size at acquisition
+                substruct( ...
+                '.', 'val', '{}', {4}, ...
+                '.', 'val', '{}', {1}, ...
+                '.', 'val', '{}', {1}), ...
+                substruct( ...
+                '.', 'tiss', '()', {1}, ...
+                '.', 'c', '()', {':'}));
+            % size 3 allow to run RunQA / original voxel size at acquisition
+            matlabbatch{7}.spm.spatial.normalise.write.woptions.vox = voxDim;
 
             % NORMALIZE WHITE MATTER
             fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE WHITE MATTER\n');
             matlabbatch{8}.spm.spatial.normalise.write.subj.resample(1) = ...
                 cfg_dep('Segment: c2 Images', ...
-                substruct('.', 'val', '{}', {4}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1}), ...
-                substruct('.', 'tiss', '()', {2}, '.', 'c', '()', {':'}));
-            matlabbatch{8}.spm.spatial.normalise.write.woptions.vox = voxDim; % size 3 allow to run RunQA / original voxel size at acquisition
+                substruct( ...
+                '.', 'val', '{}', {4}, ...
+                '.', 'val', '{}', {1}, ...
+                '.', 'val', '{}', {1}), ...
+                substruct( ...
+                '.', 'tiss', '()', {2}, ...
+                '.', 'c', '()', {':'}));
+            % size 3 allow to run RunQA / original voxel size at acquisition
+            matlabbatch{8}.spm.spatial.normalise.write.woptions.vox = voxDim;
 
             % NORMALIZE CSF MATTER
             fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE CSF\n');
             matlabbatch{9}.spm.spatial.normalise.write.subj.resample(1) = ...
                 cfg_dep('Segment: c3 Images', ...
-                substruct('.', 'val', '{}', {4}, '.', 'val', '{}', {1}, '.', 'val', '{}', {1}), ...
-                substruct('.', 'tiss', '()', {3}, '.', 'c', '()', {':'}));
-            matlabbatch{9}.spm.spatial.normalise.write.woptions.vox = voxDim; % size 3 allow to run RunQA / original voxel size at acquisition
+                substruct( ...
+                '.', 'val', '{}', {4}, ...
+                '.', 'val', '{}', {1}, ...
+                '.', 'val', '{}', {1}), ...
+                substruct( ...
+                '.', 'tiss', '()', {3}, ...
+                '.', 'c', '()', {':'}));
+            % size 3 allow to run RunQA / original voxel size at acquisition
+            matlabbatch{9}.spm.spatial.normalise.write.woptions.vox = voxDim;
 
             %% SAVING JOBS
             % Create the JOBS directory if it doesnt exist
             JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
             [~, ~, ~] = mkdir(JOBS_dir);
 
-            save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_SpatialPrepocess.mat'), 'matlabbatch'); % save the matlabbatch
+            save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_SpatialPrepocess.mat'), ...
+                'matlabbatch'); % save the matlabbatch
             spm_jobman('run', matlabbatch);
 
         end

@@ -27,8 +27,10 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
     % opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
     %
     % You can also specify:
-    %  - BIDSdir: the directory where the data is ; default is fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL')
-    %  - type: the data type you want to get the metadata of ; supported: bold (default) and T1w
+    %  - BIDSdir: the directory where the data is ; default is :
+    %     fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL')
+    %  - type: the data type you want to get the metadata of ;
+    %     supported: bold (default) and T1w
     %
     %  IMPORTANT NOTE: if you specify the type variable for T1w then you must
     %  make sure that the T1w.json is also present in the anat folder because
@@ -96,7 +98,9 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
         group(iGroup).name = opt.groups{iGroup}; %#ok<*AGROW>
 
         % if no group or subject was specified we take all of them
-        if numel(opt.groups) == 1 && strcmp(group(iGroup).name, '') && isempty(opt.subjects{iGroup})
+        if numel(opt.groups) == 1 && ...
+            strcmp(group(iGroup).name, '') && ...
+            isempty(opt.subjects{iGroup})
 
             group(iGroup).subNumber = subjects;
 
@@ -136,11 +140,13 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
             disp(group(iGroup).subNumber);
             fprintf('subjects present\n');
             disp(subjects);
-            error('Some of the subjects specified do not exist in this data set. This can be due to wrong zero padding: see opt.zeropad in getOptions');
+            error([ ...
+                'Some of the subjects specified do not exist in this data set.' ...
+                'This can be due to wrong zero padding: see opt.zeropad in getOptions']);
         end
 
         % Number of subjects in the group
-        group(iGroup).numSub = length(group(iGroup).subNumber) ;
+        group(iGroup).numSub = length(group(iGroup).subNumber);
 
         fprintf(1, 'WILL WORK ON SUBJECTS\n');
         disp(group(iGroup).subNumber);
@@ -167,11 +173,13 @@ function opt = checkOptions(opt)
     end
 
     if ~isempty (options.STC_referenceSlice) && length(options.STC_referenceSlice) > 1
-        error('options.STC_referenceSlice should be a scalar and current value is: %d', options.STC_referenceSlice);
+        error('options.STC_referenceSlice should be a scalar and current value is: %d', ...
+            options.STC_referenceSlice);
     end
 
     if ~isempty (options.funcVoxelDims) && length(options.funcVoxelDims) ~= 3
-        error('opt.funcVoxelDims should be a vector of length 3 and current value is: %d', opt.funcVoxelDims);
+        error('opt.funcVoxelDims should be a vector of length 3 and current value is: %d', ...
+            opt.funcVoxelDims);
     end
 
     opt = options;

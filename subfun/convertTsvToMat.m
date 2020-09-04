@@ -1,5 +1,5 @@
-function convertTsv2mat(tsvFile)
-    %% This function takes a tsv file and converts it to an onset file suitable for SPM ffx analysis
+function convertTsvToMat(tsvFile)
+    %% Converts a tsv file to an onset file suitable for SPM ffx analysis
     % The scripts extracts the conditions' names, onsets, and durations, and
     % converts them to TRs (time unit) and saves the onset file to be used for
     % SPM
@@ -15,24 +15,25 @@ function convertTsv2mat(tsvFile)
 
     end
 
-    conds = t.trial_type;        % assign all the tsv information to a variable called conds.
+    conds = t.trial_type; % assign all the tsv information to a variable called conds.
 
     % Get the unique names of the conditions (removing repetitions)
     names = unique(conds);
     numConditions = length(names);
 
     % Create empty variables of onsets and durations
-    onsets = cell(1, numConditions) ;
-    durations = cell(1, numConditions) ;
+    onsets = cell(1, numConditions);
+    durations = cell(1, numConditions);
 
     % for each condition
     for iCond = 1:numConditions
 
         % Get the index of each condition by comparing the unique names and
         % each line in the tsv files
-        idx{iCond, 1} = find(strcmp(names(iCond), conds)) ;
-        onsets{1, iCond} = t.onset(idx{iCond, 1})' ;             % Get the onset and duration of each condition
-        durations{1, iCond} = t.duration(idx{iCond, 1})' ;
+        idx{iCond, 1} = find(strcmp(names(iCond), conds));
+        % Get the onset and duration of each condition
+        onsets{1, iCond} = t.onset(idx{iCond, 1})';
+        durations{1, iCond} = t.duration(idx{iCond, 1})';
 
     end
 

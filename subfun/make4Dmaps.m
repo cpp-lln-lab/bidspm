@@ -52,22 +52,22 @@ function make4Dmaps(degreeOfSmoothing, opt, deleteIndBeta, deleteIndTmaps, delet
             % path to beta and t-map files.
             for iContrast = 1:length(beta_maps)
                 % Note that the betas are created from the idx (Beta_idx(iBeta))
-                fileName = sprintf('beta_%04d.nii', find(contrasts(iContrast).C)) ;
+                fileName = sprintf('beta_%04d.nii', find(contrasts(iContrast).C));
                 fileName = inputFileValidation(ffxDir, '', fileName);
                 beta_maps{iContrast, 1} = [fileName{1}, ',1'];
                 % while the contrastes (t-maps) are not from the index. They were created
-                fileName = sprintf('spmT_%04d.nii', iContrast) ;
+                fileName = sprintf('spmT_%04d.nii', iContrast);
                 fileName = inputFileValidation(ffxDir, '', fileName);
                 t_maps{iContrast, 1} = [fileName{1}, ',1'];
             end
 
             %% 4D beta maps
-            matlabbatch{1}.spm.util.cat.vols = beta_maps ;
+            matlabbatch{1}.spm.util.cat.vols = beta_maps;
             matlabbatch{1}.spm.util.cat.name = ['4D_beta_', num2str(degreeOfSmoothing), '.nii'];
             matlabbatch{1}.spm.util.cat.dtype = 4;
 
             %% 4D t-maps
-            matlabbatch{2}.spm.util.cat.vols = t_maps ;
+            matlabbatch{2}.spm.util.cat.vols = t_maps;
             matlabbatch{2}.spm.util.cat.name = ['4D_t_maps_', num2str(degreeOfSmoothing), '.nii'];
             matlabbatch{2}.spm.util.cat.dtype = 4;
 

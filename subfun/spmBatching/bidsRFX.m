@@ -1,7 +1,8 @@
-function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
+function bidsRFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
     % This script smooth all con images created at the fisrt level in each
     % subject, create a mean structural image and mean mask over the
-    % population, process the factorial design specification  and estimation and estimate Contrats.
+    % population, process the factorial design specification  and estimation
+    %  and estimate Contrats.
     %
     % INPUTS
     % - action
@@ -17,7 +18,8 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
     % Your input is twofold :
     % 1. Specify your data at the beginning of the script
     % 2. In the origdir, create a structure containing all possible contrasts,
-    % example: ConOfInterest.mat containing the structure Session.con (contrasts of interest by group)
+    % example: ConOfInterest.mat containing the structure Session.con (contrasts of
+    %  interest by group)
     % IMPORTANT: To create the structure, use the script "List_of_Contrast.m"
     % The Contrast names should match those in the single level FFX and in THE
     % SAME ORDER.
@@ -56,11 +58,11 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
             %% Loop through the groups, subjects, and sessions
             for iGroup = 1:length(group)
 
-                groupName = group(iGroup).name ;    % Get the Group Name
+                groupName = group(iGroup).name;    % Get the Group Name
 
                 for iSub = 1:group(iGroup).numSub   % For each subject
                     counter = counter + 1;
-                    subNumber = group(iGroup).subNumber{iSub} ;   % Get the Subject ID
+                    subNumber = group(iGroup).subNumber{iSub};   % Get the Subject ID
 
                     fprintf(1, 'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n', ...
                         groupName, iSub, subNumber);
@@ -71,7 +73,8 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
                     matlabbatch{counter}.spm.spatial.smooth.data = cellstr(conImg);
 
                     % Define how much smoothing is required
-                    matlabbatch{counter}.spm.spatial.smooth.fwhm = [mmConSmoothing mmConSmoothing mmConSmoothing];
+                    matlabbatch{counter}.spm.spatial.smooth.fwhm = ...
+                        [mmConSmoothing mmConSmoothing mmConSmoothing];
                     matlabbatch{counter}.spm.spatial.smooth.dtype = 0;
                     matlabbatch{counter}.spm.spatial.smooth.prefix = [ ...
                       spm_get_defaults('smooth.prefix'), num2str(mmConSmoothing)];
@@ -99,7 +102,7 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
             RFX_FolderName = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', ...
                 ['RFX_', opt.taskName], ...
                 ['RFX_FunctSmooth', num2str(mmFunctionalSmoothing), ...
-                '_ConSmooth_', num2str(mmConSmoothing)]) ;
+                '_ConSmooth_', num2str(mmConSmoothing)]);
 
             [~, ~, ~] = mkdir(RFX_FolderName);
 
@@ -110,13 +113,13 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
 
             for iGroup = 1:length(group)                    % For each group
 
-                groupName = group(iGroup).name ;           % Get the group name
+                groupName = group(iGroup).name;           % Get the group name
 
                 for iSub = 1:group(iGroup).numSub          % For each subject
 
                     subCounter = subCounter + 1;
 
-                    subNumber = group(iGroup).subNumber{iSub} ;   % Get the Subject ID
+                    subNumber = group(iGroup).subNumber{iSub};   % Get the Subject ID
 
                     fprintf(1, 'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n', ...
                         groupName, iSub, subNumber);
@@ -158,20 +161,22 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
 
             %% Generate the equation to get the mean of the mask and structural image
             % example : if we have 5 subjects, Average equation = '(i1+i2+i3+i4+i5)/5'
-            numImg = subCounter ;
-            imgNum  = 1:subCounter ;
+            numImg = subCounter;
+            imgNum  = 1:subCounter;
 
-            tmpImg = sprintf('+i%i', imgNum) ;
-            tmpImg = tmpImg(2:end) ;
+            tmpImg = sprintf('+i%i', imgNum);
+            tmpImg = tmpImg(2:end);
 
-            sumEquation = ['(', tmpImg, ')'] ;
-            meanStruct_equation = ['(', tmpImg, ')/', num2str(length(imgNum))] ;     % meanStruct_equation = '(i1+i2+i3+i4+i5)/5'
-            meanMask_equation = strcat(sumEquation, '>0.75*', num2str(numImg))  ;     % meanMask_equation = '(i1+i2+i3+i4+i5)>0.75*5'
+            sumEquation = ['(', tmpImg, ')'];
+            % meanStruct_equation = '(i1+i2+i3+i4+i5)/5'
+            meanStruct_equation = ['(', tmpImg, ')/', num2str(length(imgNum))];
+            % meanMask_equation = '(i1+i2+i3+i4+i5)>0.75*5'
+            meanMask_equation = strcat(sumEquation, '>0.75*', num2str(numImg));
 
             %% The mean structural will be saved in the RFX folder
             matlabbatch{1}.spm.util.imcalc.output = 'MeanStruct.nii';
             matlabbatch{1}.spm.util.imcalc.outdir{:} = RFX_FolderName;
-            matlabbatch{1}.spm.util.imcalc.expression = meanStruct_equation ;
+            matlabbatch{1}.spm.util.imcalc.expression = meanStruct_equation;
             matlabbatch{1}.spm.util.imcalc.options.dmtx = 0;
             matlabbatch{1}.spm.util.imcalc.options.mask = 0;
             matlabbatch{1}.spm.util.imcalc.options.interp = 1;
@@ -180,7 +185,7 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
             %% The mean mask will be saved in the RFX folder
             matlabbatch{2}.spm.util.imcalc.output = 'MeanMask.nii';
             matlabbatch{2}.spm.util.imcalc.outdir{:} = RFX_FolderName;
-            matlabbatch{2}.spm.util.imcalc.expression = meanMask_equation ;
+            matlabbatch{2}.spm.util.imcalc.expression = meanMask_equation;
             matlabbatch{2}.spm.util.imcalc.options.dmtx = 0;
             matlabbatch{2}.spm.util.imcalc.options.mask = 0;
             matlabbatch{2}.spm.util.imcalc.options.interp = 1;
@@ -232,12 +237,13 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
                 % For each group
                 for iGroup = 1:length(group)
 
-                    groupName = group(iGroup).name ;
+                    groupName = group(iGroup).name;
 
-                    matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).levels = iGroup; %#ok<*AGROW>
+                    matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).levels = ...
+                        iGroup; %#ok<*AGROW>
 
                     for iSub = 1:group(iGroup).numSub       % For each subject
-                        subNumber = group(iGroup).subNumber{iSub} ;  % Get the subject ID
+                        subNumber = group(iGroup).subNumber{iSub};  % Get the subject ID
                         fprintf(1, 'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %i \n', ...
                             groupName, iSub, subNumber);
 
@@ -251,7 +257,8 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
                         fileName = sprintf('con_%0.4d.nii', conIdx);
                         file = inputFileValidation(ffxDir, smoothOrNonSmooth, fileName);
 
-                        matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).scans(iSub, :) = file;
+                        matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).scans(iSub, :) = ...
+                            file;
 
                     end
 
@@ -262,7 +269,10 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
                 matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.name = 'GROUP';
                 matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.levels = 1;
                 matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.dept = 0;
-                matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.variance = 1; % 1: Assumes that the variance is not the same across groups / 0= There is no difference in the variance between groups
+
+                % 1: Assumes that the variance is not the same across groups
+                % 0: There is no difference in the variance between groups
+                matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.variance = 1;
                 matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.gmsca = 0;
                 matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.ancova = 0;
                 % matlabbatch{j}.spm.stats.factorial_design.cov = [];
@@ -276,7 +286,7 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
 
                 % If it exists, issue a warning that it has been overwritten
                 if exist(fullfile(RFX_FolderName, conName), 'dir')
-                    fprintf(1, 'A DIRECTORY WITH THIS NAME ALREADY EXISTED AND WAS OVERWRITTEN, SORRY \n');
+                    warning('overwriting directory: %s \n', fullfile(RFX_FolderName, conName));
                     rmdir(fullfile(RFX_FolderName, conName), 's');
                 end
 
@@ -301,7 +311,8 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
 
             for j = 1:size(grpLvlCon, 1)
                 conName = rmTrialTypeStr(grpLvlCon{j});
-                matlabbatch{j}.spm.stats.fmri_est.spmmat = { fullfile(RFX_FolderName, conName, 'SPM.mat') };
+                matlabbatch{j}.spm.stats.fmri_est.spmmat = ...
+                    { fullfile(RFX_FolderName, conName, 'SPM.mat') };
                 matlabbatch{j}.spm.stats.fmri_est.method.Classical = 1;
             end
 
@@ -322,7 +333,8 @@ function BIDS_RFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
             % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
             for j = 1:size(grpLvlCon, 1)
                 conName = rmTrialTypeStr(grpLvlCon{j});
-                matlabbatch{j}.spm.stats.con.spmmat = {fullfile(RFX_FolderName, conName, 'SPM.mat')};
+                matlabbatch{j}.spm.stats.con.spmmat = ...
+                    {fullfile(RFX_FolderName, conName, 'SPM.mat')};
                 matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
                 matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = 1;
                 matlabbatch{j}.spm.stats.con.consess{1}.tcon.sessrep = 'none';

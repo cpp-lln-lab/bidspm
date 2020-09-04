@@ -1,4 +1,12 @@
-function test_getInfo()
+function test_suite = test_getInfo %#ok<*STOUT>
+    try % assignment of 'localfunctions' is necessary in Matlab >= 2016
+        test_functions = localfunctions(); %#ok<*NASGU>
+    catch % no problem; early Matlab versions can use initTestSuite fine
+    end
+    initTestSuite;
+end
+
+function test_getInfoBasic()
     % Small test to ensure that getSliceOrder returns what we asked for
 
     % write tests for when no session or only one run
@@ -15,7 +23,7 @@ function test_getInfo()
     info = 'sessions';
     [~, opt, BIDS] = getData(opt);
     sessions = getInfo(BIDS, subID, opt, info);
-    assert(isequal(sessions, {'01' '02'}));
+    assertEqual(sessions, {'01' '02'});
 
     %% Get runs from BIDS
     opt.taskName = 'vismotion';
@@ -24,7 +32,7 @@ function test_getInfo()
     session =  '01';
     [~, opt, BIDS] = getData(opt);
     runs = getInfo(BIDS, subID, opt, info, session);
-    assert(isequal(runs, {'1' '2'}));
+    assertEqual(runs, {'1' '2'});
 
     %% Get runs from BIDS when no run in filename
     opt.taskName = 'vislocalizer';
@@ -33,7 +41,7 @@ function test_getInfo()
     session =  '01';
     [~, opt, BIDS] = getData(opt);
     runs = getInfo(BIDS, subID, opt, info, session);
-    assert(isequal(runs, {''}));
+    assertEqual(runs, {''});
 
     %% Get filename from BIDS
     opt.taskName = 'vismotion';
@@ -50,6 +58,7 @@ function test_getInfo()
         '_task-' opt.taskName, ...
         '_run-' run, ...
         '_bold.nii.gz']);
-    assert(strcmp(filename, FileName));
+    
+    assertEqual(filename{1}, FileName);
 
 end

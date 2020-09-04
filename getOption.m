@@ -38,14 +38,16 @@ function opt = getOption()
     opt.dataDir = '/home/remi/BIDS/visMotion/derivatives/';
 
     % specify the model file that contains the contrasts to compute
-    opt.model.univariate.file = '/home/remi/github/CPP_BIDS_SPM_pipeline/model-visMotionLoc_smdl.json';
+    opt.model.univariate.file = ...
+        '/home/remi/github/CPP_BIDS_SPM_pipeline/model-visMotionLoc_smdl.json';
     opt.model.multivariate.file = '';
 
     % specify the result to compute
+    % Contrasts.Name has to match one of the contrast defined in the model json file
     opt.result.Steps(1) = struct( ...
         'Level',  'dataset', ...
         'Contrasts', struct( ...
-                        'Name', 'VisMot_gt_VisStat', ... % has to match one of the contrast defined in the model json file
+                        'Name', 'VisMot_gt_VisStat', ... %
                         'Mask', false, ... % this might need improving if a mask is required
                         'MC', 'FWE', ... FWE, none, FDR
                         'p', 0.05, ...
@@ -66,7 +68,9 @@ function opt = getOption()
     opt.funcVoxelDims = [];
 
     % Suffix output directory for the saved jobs
-    opt.JOBS_dir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
+    opt.JOBS_dir = fullfile( ...
+        opt.dataDir, '..', 'derivatives', ...
+        'SPM12_CPPL', 'JOBS', opt.taskName);
 
     % Save the opt variable as a mat file to load directly in the preprocessing
     % scripts

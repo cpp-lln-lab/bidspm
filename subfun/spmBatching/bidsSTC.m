@@ -1,4 +1,4 @@
-function BIDS_STC(opt)
+function bidsSTC(opt)
     % Performs SLICE TIMING CORRECTION of the functional data. The
     % script for each subject and can handle multiple sessions and multiple
     % runs.
@@ -48,9 +48,9 @@ function BIDS_STC(opt)
 
     % SPM accepts slice time acquisition as inputs for slice order (simplifies
     % things when dealing with multiecho data)
-    numSlices = length(sliceOrder); % unique is necessary in case of multi echo
+    nbSlices = length(sliceOrder); % unique is necessary in case of multi echo
     TR = opt.metadata.RepetitionTime;
-    TA = TR - (TR / numSlices);
+    TA = TR - (TR / nbSlices);
 
     maxSliceTime = max(sliceOrder);
     minSliceTime = min(sliceOrder);
@@ -63,37 +63,38 @@ function BIDS_STC(opt)
         error('%s (%f) %s (%f).\n%s', ...
           'The reference slice time', referenceSlice, ...
           'is greater than the acquisition time', TA, ...
-          'Reference slice time must be in milliseconds or leave it empty to use mid-acquisition time as reference.');
+          ['Reference slice time must be in milliseconds ' ...
+          'or leave it empty to use mid-acquisition time as reference.']);
     end
 
-    % clear/initiate matlabbatch
     matlabbatch = [];
 
     %% Loop through the groups, subjects, and sessions
     % For each group
 
     for iGroup = 1:length(group)
-        groupName = group(iGroup).name ;   % Get the group name
 
-        for iSub = 1:group(iGroup).numSub  % For each subject in the group
+        groupName = group(iGroup).name;
+
+        for iSub = 1:group(iGroup).numSub
 
             % Get the ID of the subject
-            % (i.e SubNumber doesnt have to match the iSub if one subject is exluded for any reason)
-            subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
-            fprintf(1, ' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n', ...
-              groupName, iSub, subNumber);
+            % (i.e SubNumber doesnt have to match the iSub if one subject is exluded)
+            subNumber = group(iGroup).subNumber{iSub};
+
+            printProcessingSubject(groupName, iSub, subNumber);
 
             %% GET FUNCTIOVAL FILES
             fprintf(1, ' BUILDING STC JOB : STC\n');
 
-            [sessions, numSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
+            [sessions, nbSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
 
-            for iSes = 1:numSessions  % for each session
+            for iSes = 1:nbSessions
 
                 % get all runs for that subject across all sessions
-                [runs, numRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
+                [runs, nbRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
 
-                for iRun = 1:numRuns          % For each Run
+                for iRun = 1:nbRuns
 
                     % get the filename for this bold run for this task
                     [fileName, subFuncDataDir] = getBoldFilename( ...
@@ -106,15 +107,14 @@ function BIDS_STC(opt)
                     % add the file to the list
                     matlabbatch{1}.spm.temporal.st.scans{iRun} = cellstr(files);
 
-                    % print out to screen files to process
                     disp(files{1});
 
                 end
 
             end
 
-            matlabbatch{1}.spm.temporal.st.nslices = numSlices;       % Number of Slices
-            matlabbatch{1}.spm.temporal.st.tr = TR;             % Repetition Time
+            matlabbatch{1}.spm.temporal.st.nslices = nbSlices;
+            matlabbatch{1}.spm.temporal.st.tr = TR;
             matlabbatch{1}.spm.temporal.st.ta = TA;
             matlabbatch{1}.spm.temporal.st.so = sliceOrder;
             matlabbatch{1}.spm.temporal.st.refslice = referenceSlice;
@@ -127,7 +127,7 @@ function BIDS_STC(opt)
             JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
             [~, ~, ~] = mkdir(JOBS_dir);
 
-            save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_STC.mat'), 'matlabbatch'); % save the matlabbatch
+            save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_STC.mat'), 'matlabbatch');
             spm_jobman('run', matlabbatch);
 
         end

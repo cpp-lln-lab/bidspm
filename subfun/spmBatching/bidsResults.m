@@ -1,7 +1,7 @@
-function BIDS_Results(FFXSmoothing, ConSmoothing, opt, isMVPA)
+function bidsResults(FFXSmoothing, ConSmoothing, opt, isMVPA)
     % This scripts computes the results for a series of contrast that can be
-    % specified at the run, subject or dataset step level (see contrast specification following the BIDS stats model
-    % specification)
+    % specified at the run, subject or dataset step level (see contrast specification
+    % following the BIDS stats model specification)
     %
     % FFXSmoothing is the number of the mm smoothing used on the normalized functional files.
     % for unsmoothied data  FFXSmoothing = 0
@@ -37,31 +37,35 @@ function BIDS_Results(FFXSmoothing, ConSmoothing, opt, isMVPA)
 
                     for iGroup = 1:length(group)
 
-                        groupName = group(iGroup).name ;
+                        groupName = group(iGroup).name;
 
                         % For each subject
                         for iSub = 1:group(iGroup).numSub
 
                             % Get the Subject ID
-                            subNumber = group(iGroup).subNumber{iSub} ;
+                            subNumber = group(iGroup).subNumber{iSub};
 
                             % FFX Directory
                             ffxDir = getFFXdir(subNumber, FFXSmoothing, opt, isMVPA);
 
                             load(fullfile(ffxDir, 'SPM.mat'));
 
-                            % identify which contrast number actually has the name the user asked for
-                            conNb = find (strcmp({SPM.xCon.name}', opt.result.Steps(iStep).Contrasts(iCon).Name));
+                            % identify which contrast nb actually has the name the user asked
+                            conNb = find( ...
+                                strcmp({SPM.xCon.name}', ...
+                                opt.result.Steps(iStep).Contrasts(iCon).Name));
 
                             if isempty(conNb)
                                 sprintf('List of contrast in this SPM file');
                                 disp({SPM.xCon.name}');
-                                error('This SPM file %s does not contain a contrast named %s', ...
+                                error( ...
+                                    'This SPM file %s does not contain a contrast named %s', ...
                                     fullfile(Dir, 'SPM.mat'), ...
                                     opt.result.Steps(1).Contrasts(iCon).Name);
                             end
 
-                            matlabbatch = result_matlabbatch(matlabbatch, opt, iStep, iCon, ffxDir, conNb, subNumber, 1);
+                            matlabbatch = resultMatlabbatch( ...
+                                matlabbatch, opt, iStep, iCon, ffxDir, conNb, subNumber, 1);
 
                         end
                     end
@@ -74,11 +78,12 @@ function BIDS_Results(FFXSmoothing, ConSmoothing, opt, isMVPA)
                         ['RFX_', opt.taskName], ...
                         ['RFX_FunctSmooth', num2str(FFXSmoothing), ...
                         '_ConSmooth_', num2str(ConSmoothing)], ...
-                        opt.result.Steps(iStep).Contrasts(iCon).Name) ;
+                        opt.result.Steps(iStep).Contrasts(iCon).Name);
 
                     load(fullfile(rfxDir, 'SPM.mat'));
 
-                    matlabbatch = result_matlabbatch(matlabbatch, opt, iStep, iCon, rfxDir, 1, 'group level', SPM.nscan);
+                    matlabbatch = resultMatlabbatch( ...
+                        matlabbatch, opt, iStep, iCon, rfxDir, 1, 'group level', SPM.nscan);
 
             end
         end
@@ -102,39 +107,42 @@ function BIDS_Results(FFXSmoothing, ConSmoothing, opt, isMVPA)
 
 end
 
-function matlabbatch = result_matlabbatch(matlabbatch, opt, iStep, iCon, Dir, conNb, label, nsubj)
+function batch = resultMatlabbatch(batch, opt, iStep, iCon, Dir, conNb, label, nsubj)
     % outputs the typical matlabbatch to compute the results for a given
     % contrast
 
-    matlabbatch{end + 1}.spm.stats.results.spmmat = {fullfile(Dir, 'SPM.mat')};
+    batch{end + 1}.spm.stats.results.spmmat = {fullfile(Dir, 'SPM.mat')};
 
-    matlabbatch{end}.spm.stats.results.conspec.titlestr = opt.result.Steps(iStep).Contrasts(iCon).Name;
+    batch{end}.spm.stats.results.conspec.titlestr = ...
+        opt.result.Steps(iStep).Contrasts(iCon).Name;
 
-    matlabbatch{end}.spm.stats.results.conspec.contrasts = conNb;
+    batch{end}.spm.stats.results.conspec.contrasts = conNb;
 
-    matlabbatch{end}.spm.stats.results.conspec.threshdesc = opt.result.Steps(iStep).Contrasts(iCon).MC;
+    batch{end}.spm.stats.results.conspec.threshdesc = ...
+      opt.result.Steps(iStep).Contrasts(iCon).MC;
 
-    matlabbatch{end}.spm.stats.results.conspec.thresh = opt.result.Steps(iStep).Contrasts(iCon).p;
+    batch{end}.spm.stats.results.conspec.thresh = opt.result.Steps(iStep).Contrasts(iCon).p;
 
-    matlabbatch{end}.spm.stats.results.conspec.extent = opt.result.Steps(iStep).Contrasts(iCon).k;
+    batch{end}.spm.stats.results.conspec.extent = opt.result.Steps(iStep).Contrasts(iCon).k;
 
-    matlabbatch{end}.spm.stats.results.conspec.conjunction = 1;
+    batch{end}.spm.stats.results.conspec.conjunction = 1;
 
-    matlabbatch{end}.spm.stats.results.conspec.mask.none = ~opt.result.Steps(iStep).Contrasts(iCon).Mask;
+    batch{end}.spm.stats.results.conspec.mask.none = ...
+        ~opt.result.Steps(iStep).Contrasts(iCon).Mask;
 
-    matlabbatch{end}.spm.stats.results.units = 1;
+    batch{end}.spm.stats.results.units = 1;
 
-    matlabbatch{end}.spm.stats.results.export{1}.ps = true;
+    batch{end}.spm.stats.results.export{1}.ps = true;
 
     if opt.result.Steps(1).Contrasts(iCon).NIDM
 
-        matlabbatch{end}.spm.stats.results.export{2}.nidm.modality = 'FMRI';
+        batch{end}.spm.stats.results.export{2}.nidm.modality = 'FMRI';
 
-        matlabbatch{end}.spm.stats.results.export{2}.nidm.refspace = 'ixi';
+        batch{end}.spm.stats.results.export{2}.nidm.refspace = 'ixi';
 
-        matlabbatch{end}.spm.stats.results.export{2}.nidm.group.nsubj = nsubj;
+        batch{end}.spm.stats.results.export{2}.nidm.group.nsubj = nsubj;
 
-        matlabbatch{end}.spm.stats.results.export{2}.nidm.group.label = label;
+        batch{end}.spm.stats.results.export{2}.nidm.group.label = label;
 
     end
 

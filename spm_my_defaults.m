@@ -24,13 +24,14 @@ function spm_my_defaults
     % ==========================================================================
     defaults.coreg.estimate.cost_fun = 'nmi';
     defaults.coreg.estimate.sep      = [4 2];
-    defaults.coreg.estimate.tol      = [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
+    defaults.coreg.estimate.tol      = ...
+        [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
     defaults.coreg.estimate.fwhm     = [7 7];
 
     % Spatial Normalisation defaults
     % ==========================================================================
     defaults.normalise.write.preserve   = 0;
-    defaults.normalise.write.bb         = [[-78 -112 -70];[78 76 85]];
+    defaults.normalise.write.bb         = [[-78 -112 -70]; [78 76 85]];
     defaults.normalise.write.interp     = 4;
 
     % fMRI design defaults
@@ -167,7 +168,8 @@ function spm_my_defaults
     % %==========================================================================
     % defaults.coreg.estimate.cost_fun = 'nmi';
     % defaults.coreg.estimate.sep      = [4 2];
-    % defaults.coreg.estimate.tol      = [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
+    % defaults.coreg.estimate.tol      = ...
+    %  [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
     % defaults.coreg.estimate.fwhm     = [7 7];
     % defaults.coreg.write.interp      = 4;
     % defaults.coreg.write.wrap        = [0 0 0];

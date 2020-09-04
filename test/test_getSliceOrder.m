@@ -1,4 +1,12 @@
-function test_getSliceOrder()
+function test_suite = test_getSliceOrder %#ok<*STOUT>
+    try % assignment of 'localfunctions' is necessary in Matlab >= 2016
+        test_functions = localfunctions(); %#ok<*NASGU>
+    catch % no problem; early Matlab versions can use initTestSuite fine
+    end
+    initTestSuite;
+end
+
+function test_getSliceOrderBasic()
     % Small test to ensure that getSliceOrder returns what we asked for
 
     addpath(genpath(fullfile(pwd, '..')));
@@ -27,7 +35,7 @@ function test_getSliceOrder()
     opt.taskName = 'vismotion';
     [~, opt] = getData(opt);
     BIDS_sliceOrder = getSliceOrder(opt, 0);
-    assert(isequal(sliceOrder, BIDS_sliceOrder));
+    assertEqual(sliceOrder, BIDS_sliceOrder);
 
     %% Get empty slice order from BIDS
     opt.taskName = 'vislocalizer';
@@ -41,6 +49,6 @@ function test_getSliceOrder()
     opt.taskName = 'vislocalizer';
     [~, opt] = getData(opt);
     BIDS_sliceOrder = getSliceOrder(opt, 0);
-    assert(isequal(BIDS_sliceOrder, opt.sliceOrder));
+    assertEqual(BIDS_sliceOrder, opt.sliceOrder);
 
 end

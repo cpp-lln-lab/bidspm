@@ -117,7 +117,7 @@ function contrasts = pmCon(ffxDir, taskName, opt, isMVPA)
 
                                 % add a new line for a new contrast
                                 con_counter = con_counter + 1;
-                                C(end, regIdx(iReg)) = 1 ;   % give each event a value of 1
+                                C(end, regIdx(iReg)) = 1;   % give each event a value of 1
 
                                 % stores the specification
                                 contrasts(con_counter).C = C;
