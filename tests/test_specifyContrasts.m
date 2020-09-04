@@ -1,4 +1,4 @@
-function test_suite = test_pmCon %#ok<*STOUT>
+function test_suite = test_specifyContrasts %#ok<*STOUT>
     try % assignment of 'localfunctions' is necessary in Matlab >= 2016
         test_functions = localfunctions(); %#ok<*NASGU>
     catch % no problem; early Matlab versions can use initTestSuite fine
@@ -6,7 +6,7 @@ function test_suite = test_pmCon %#ok<*STOUT>
     initTestSuite;
 end
 
-function test_pmConBasic()
+function test_specifyContrastsBasic()
     % Small test to ensure that pmCon returns what we asked for
 
     addpath(genpath(fullfile(pwd, '..')));
@@ -20,18 +20,18 @@ function test_pmConBasic()
 
     isMVPA = 0;
 
-    contrasts = pmCon(ffxDir, opt.taskName, opt, isMVPA);
+    contrasts = specifyContrasts(ffxDir, opt.taskName, opt, isMVPA);
 
-    assertEqual(contrasts(1).name, 'VisMot');
-    assertEqual(contrasts(1).C, [1 0 0 0 0 0 0 0 0]);
+    assert(strcmp(contrasts(1).name, 'VisMot'));
+    assert(isequal(contrasts(1).C, [1 0 0 0 0 0 0 0 0]));
 
-    assertEqual(contrasts(2).name, 'VisStat');
-    assertEqual(contrasts(2).C, [0 1 0 0 0 0 0 0 0]);
+    assert(strcmp(contrasts(2).name, 'VisStat'));
+    assert(isequal(contrasts(2).C, [0 1 0 0 0 0 0 0 0]));
 
-    assertEqual(contrasts(3).name, 'VisMot_gt_VisStat');
-    assertEqual(contrasts(3).C, [1 -1 0 0 0 0 0 0 0]);
+    assert(strcmp(contrasts(3).name, 'VisMot_gt_VisStat'));
+    assert(isequal(contrasts(3).C, [1 -1 0 0 0 0 0 0 0]));
 
-    assertEqual(contrasts(4).name, 'VisStat_gt_VisMot');
-    assertEqual(contrasts(4).C, [-1 1 0 0 0 0 0 0 0]);
+    assert(strcmp(contrasts(4).name, 'VisStat_gt_VisMot'));
+    assert(isequal(contrasts(4).C, [-1 1 0 0 0 0 0 0 0]));
 
 end

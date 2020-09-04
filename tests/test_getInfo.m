@@ -23,7 +23,7 @@ function test_getInfoBasic()
     info = 'sessions';
     [~, opt, BIDS] = getData(opt);
     sessions = getInfo(BIDS, subID, opt, info);
-    assertEqual(sessions, {'01' '02'});
+    assert(all(strcmp(sessions, {'01' '02'})));
 
     %% Get runs from BIDS
     opt.taskName = 'vismotion';
@@ -32,7 +32,7 @@ function test_getInfoBasic()
     session =  '01';
     [~, opt, BIDS] = getData(opt);
     runs = getInfo(BIDS, subID, opt, info, session);
-    assertEqual(runs, {'1' '2'});
+    assert(all(strcmp(runs, {'1' '2'})));
 
     %% Get runs from BIDS when no run in filename
     opt.taskName = 'vislocalizer';
@@ -41,7 +41,7 @@ function test_getInfoBasic()
     session =  '01';
     [~, opt, BIDS] = getData(opt);
     runs = getInfo(BIDS, subID, opt, info, session);
-    assertEqual(runs, {''});
+    assert(strcmp(runs, {''}));
 
     %% Get filename from BIDS
     opt.taskName = 'vismotion';
@@ -59,6 +59,6 @@ function test_getInfoBasic()
         '_run-' run, ...
         '_bold.nii.gz']);
 
-    assertEqual(filename{1}, FileName);
+    assert(strcmp(filename{1}, FileName));
 
 end

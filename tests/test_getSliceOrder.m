@@ -35,7 +35,7 @@ function test_getSliceOrderBasic()
     opt.taskName = 'vismotion';
     [~, opt] = getData(opt);
     BIDS_sliceOrder = getSliceOrder(opt, 0);
-    assertEqual(sliceOrder, BIDS_sliceOrder);
+    assert(isequal(sliceOrder, BIDS_sliceOrder));
 
     %% Get empty slice order from BIDS
     opt.taskName = 'vislocalizer';
@@ -49,6 +49,6 @@ function test_getSliceOrderBasic()
     opt.taskName = 'vislocalizer';
     [~, opt] = getData(opt);
     BIDS_sliceOrder = getSliceOrder(opt, 0);
-    assertEqual(BIDS_sliceOrder, opt.sliceOrder);
+    assert(isequal(BIDS_sliceOrder, opt.sliceOrder));
 
 end

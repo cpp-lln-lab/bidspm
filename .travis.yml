@@ -22,12 +22,6 @@ before_install:
   - travis_retry sudo apt-get -y -qq update
   - travis_retry sudo apt-get -y install octave
   - travis_retry sudo apt-get -y install liboctave-dev
-  # install SPM and the relevant patches for octave
-  - git clone https://github.com/spm/spm12.git --depth 1
-  - make -C spm12/src PLATFORM=octave distclean
-  - make -C spm12/src PLATFORM=octave
-  - make -C spm12/src PLATFORM=octave install
-  - octave $OCTFLAGS --eval "addpath(\"spm12\"); savepath ();"
   # install MOX unit
   - git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
   - cd MOxUnit
@@ -38,6 +32,15 @@ before_install:
   - cd MOcov
   - make install
   - cd ..
+  # install SPM and the relevant patches for octave
+  - git clone https://github.com/spm/spm12.git --depth 1
+  - make -C spm12/src PLATFORM=octave distclean
+  - make -C spm12/src PLATFORM=octave
+  - make -C spm12/src PLATFORM=octave install
+  - cd tests
 
 script:
-  - octave $OCTFLAGS --eval "moxunit_runtests('tests', '-verbose', '-recursive', '-with_coverage', '-cover', 'subfun', '-cover_xml_file', 'coverage.xml'))"
+  - octave $OCTFLAGS --eval "runTests"
+  - cat test_report.log | grep 0
+
+
