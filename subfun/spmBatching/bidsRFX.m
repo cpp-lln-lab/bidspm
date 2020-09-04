@@ -61,12 +61,12 @@ function bidsRFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
                 groupName = group(iGroup).name;
 
                 for iSub = 1:group(iGroup).numSub
-                    
+
                     counter = counter + 1;
-                    
-                    subNumber = group(iGroup).subNumber{iSub}; 
-                    
-                    printProcessingSubject(groupName, iSub, subNumber)
+
+                    subNumber = group(iGroup).subNumber{iSub};
+
+                    printProcessingSubject(groupName, iSub, subNumber);
 
                     % FFX Directory
                     ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt, isMVPA);

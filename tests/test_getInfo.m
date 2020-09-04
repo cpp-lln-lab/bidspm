@@ -58,7 +58,7 @@ function test_getInfoBasic()
         '_task-' opt.taskName, ...
         '_run-' run, ...
         '_bold.nii.gz']);
-    
+
     assertEqual(filename{1}, FileName);
 
 end

@@ -20,11 +20,11 @@ function test_getDataBasic()
     opt.subjects = {[]};
 
     [group] = getData(opt);
-    
+
     assertEqual(group(1).name, '');
     assertEqual(group.numSub, 11);
     assertEqual(group.subNumber, ...
-        {...
+        { ...
         '01' '02' ...
         'blind01'  'blind02'  ...
         'cat01'  'cat02'  ...
@@ -36,7 +36,7 @@ function test_getDataBasic()
     opt.subjects = {[1 3], 2};
 
     [group] = getData(opt);
-    
+
     assertEqual(group(1).name, 'cont');
     assertEqual(group(1).numSub, 2);
     assertEqual(group(1).subNumber, {'cont01' 'cont03'});
@@ -49,7 +49,7 @@ function test_getDataBasic()
     opt.subjects = {[], []};
 
     [group] = getData(opt);
-    
+
     assertEqual(group(1).name, 'cont');
     assertEqual(group(1).numSub, 3);
     assertEqual(group(1).subNumber, {'cont01' 'cont02' 'cont03'});
@@ -60,20 +60,20 @@ function test_getDataBasic()
     %% Get some specified subjects
     opt.groups = {''};
     opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
-    
+
     [group] = getData(opt);
-    
+
     assertEqual(group(1).name, '');
     assertEqual(group(1).numSub, 5);
     assertEqual(group(1).subNumber, {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'});
 
     %% Only get anat metadata
     opt.groups = {''};
-    
+
     opt.subjects = {'01'};
-    
+
     [~, opt] = getData(opt, [], 'T1w');
-    
+
     assertEqual(opt.metadata.RepetitionTime, 2.3);
 
 end
