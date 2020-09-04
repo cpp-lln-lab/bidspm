@@ -6,6 +6,10 @@ function checkDependencies()
     SPM_main = 'SPM12';
     SPM_sub = '7487';
 
+    nifti_tools_url = ...
+        ['https://www.mathworks.com/matlabcentral/fileexchange/' ...
+        '8797-tools-for-nifti-and-analyze-image'];
+
     fprintf('Checking dependencies\n');
 
     % check spm version
@@ -27,8 +31,8 @@ function checkDependencies()
     a = which('load_untouch_nii');
     if isempty(a)
         error('%s \n%s', ...
-            'Failed to find the Nifti tools version: Are you sure they in the matlab path?', ...
-            'You can download them here: https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image');
+            'Failed to find the Nifti tools: Are you sure they in the matlab path?', ...
+            'You can download them here: %s', nifti_tools_url);
     else
         fprintf(' Nifti tools detected\n');
     end

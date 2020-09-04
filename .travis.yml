@@ -13,15 +13,34 @@ python:
 cache:
   apt: true # only works with Pro version
 
-# Install the miss_hit linter
-before_install:
-  - pip3 install miss_hit
+env:
+  global:
+    - OCTFLAGS="--no-gui --no-window-system --silent"
 
-# Lists all the tasks we will do 
-jobs:
-  include:
-    - name: "miss_hit: checking code quality"
-      script: mh_metric . --ci
-    - name: "miss_hit: checking code style"
-      script: mh_style .
-      
+before_install:
+  # install octave
+  - travis_retry sudo apt-get -y -qq update
+  - travis_retry sudo apt-get -y install octave
+  - travis_retry sudo apt-get -y install liboctave-dev
+  # install MOX unit
+  - git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
+  - cd MOxUnit
+  - make install
+  - cd ..
+  # install MOcov
+  - git clone https://github.com/MOcov/MOcov.git  --depth 1
+  - cd MOcov
+  - make install
+  - cd ..
+  # install SPM and the relevant patches for octave
+  - git clone https://github.com/spm/spm12.git --depth 1
+  - make -C spm12/src PLATFORM=octave distclean
+  - make -C spm12/src PLATFORM=octave
+  - make -C spm12/src PLATFORM=octave install
+  - cd tests
+
+script:
+  - octave $OCTFLAGS --eval "runTests"
+  - cat test_report.log | grep 0
+
+

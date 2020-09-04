@@ -1,4 +1,4 @@
-function BIDS_Smoothing(mmSmoothing, opt)
+function bidsSmoothing(mmSmoothing, opt)
     % This scripts performs smoothing to the functional data using a full width
     % half maximum smoothing kernel of size "mm_smoothing".
 
@@ -15,31 +15,34 @@ function BIDS_Smoothing(mmSmoothing, opt)
     prefix = getPrefix('smoothing', opt);
 
     %% Loop through the groups, subjects, and sessions
-    for iGroup = 1:length(group)              % For each group
-        groupName = group(iGroup).name ;     % Get the Group name
+    for iGroup = 1:length(group)
 
-        for iSub = 1:group(iGroup).numSub    % For each subject in the group
-            subNumber = group(iGroup).subNumber{iSub}; % Get the Subject ID
+        groupName = group(iGroup).name;
+
+        for iSub = 1:group(iGroup).numSub
+
+            subNumber = group(iGroup).subNumber{iSub};
+
             fprintf(1, 'PREPARING: SMOOTHING JOB \n');
 
             sesCounter = 1;                 % file/loop counter
 
             % identify sessions for this subject
-            [sessions, numSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
+            [sessions, nbSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
 
             % clear previous matlabbatch and files
             matlabbatch = [];
             allFiles = [];
 
-            for iSes = 1:numSessions        % For each session
+            for iSes = 1:nbSessions        % For each session
 
                 % get all runs for that subject across all sessions
-                [runs, numRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
+                [runs, nbRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
 
                 % numRuns = group(iGroup).numRuns(iSub);
-                for iRun = 1:numRuns                     % For each run
-                    fprintf(1, 'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s SESSION: %i RUN:  %i \n', ...
-                        groupName, iSub, subNumber, iSes, iRun);
+                for iRun = 1:nbRuns
+
+                    printProcessingRun(groupName, iSub, subNumber, iSes, iRun);
 
                     % get the filename for this bold run for this task
                     [fileName, subFuncDataDir] = getBoldFilename( ...
@@ -62,15 +65,19 @@ function BIDS_Smoothing(mmSmoothing, opt)
             matlabbatch{1}.spm.spatial.smooth.fwhm = [mmSmoothing mmSmoothing mmSmoothing];
             matlabbatch{1}.spm.spatial.smooth.dtype = 0;
             matlabbatch{1}.spm.spatial.smooth.im = 0;
+
+            % Prefix = s+NumberOfSmoothing
             matlabbatch{1}.spm.spatial.smooth.prefix = ...
-                [spm_get_defaults('smooth.prefix'), num2str(mmSmoothing)];  % Prefix = s+NumberOfSmoothing
+                [spm_get_defaults('smooth.prefix'), num2str(mmSmoothing)];
 
             %% SAVE THE MATLABBATCH
             % Create the JOBS directory if it doesnt exist
             JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
             [~, ~, ~] = mkdir(JOBS_dir);
 
-            save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_Smoothing.mat'), 'matlabbatch'); % save the matlabbatch
+            save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_Smoothing.mat'), ...
+                'matlabbatch');
+
             spm_jobman('run', matlabbatch);
 
         end

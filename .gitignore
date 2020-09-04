@@ -3,8 +3,11 @@
 *.asv
 *.m~
 *.nii
+*.xml
+*.log
+*.html
 
-opt.mat
+*.mat
 
 # files in the demo folder related to running the demo analysis
 demo/*.zip

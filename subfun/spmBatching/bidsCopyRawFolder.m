@@ -1,4 +1,4 @@
-function BIDS_copyRawFolder(opt, deleteZippedNii)
+function bidsCopyRawFolder(opt, deleteZippedNii)
     % This function will copy the subject's folders from the "raw" folder to the
     % "derivatives" folder, and will copy the dataset description and task json files
     % to the derivatives directory.
@@ -49,12 +49,13 @@ function BIDS_copyRawFolder(opt, deleteZippedNii)
 
     group = getData(opt, rawDir);
 
-    for iGroup = 1:length(group)       % For each group
-        groupName = group(iGroup).name ;    % Get the group name
+    for iGroup = 1:length(group)
 
-        for iSub = 1:group(iGroup).numSub  % For each Subject in the group
+        groupName = group(iGroup).name;
 
-            subNumber = group(iGroup).subNumber{iSub} ; % Get the subject ID
+        for iSub = 1:group(iGroup).numSub
+
+            subNumber = group(iGroup).subNumber{iSub};
 
             % the folder containing the subjects data
             subFolder = ['sub-', subNumber];
