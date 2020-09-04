@@ -140,7 +140,7 @@ function bidsFFX(action, degreeOfSmoothing, opt, isMVPA)
                                 ['rp_', motionRegressorPrefix, fileName(1:end - 4), '.txt']);
 
                             % Convert the tsv files to a mat file to be used by SPM
-                            convertTsv2mat(tsvFile{sesCounter, 1});
+                            convertTsvTomat(tsvFile{sesCounter, 1});
 
                             matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).scans = ...
                                 cellstr(files);
@@ -238,7 +238,7 @@ function bidsFFX(action, degreeOfSmoothing, opt, isMVPA)
                     JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
 
                     % Create Contrasts
-                    contrasts = pmCon(ffxDir, opt.taskName, opt, isMVPA);
+                    contrasts = specifyContrasts(ffxDir, opt.taskName, opt, isMVPA);
 
                     matlabbatch{1}.spm.stats.con.spmmat = cellstr(fullfile(ffxDir, 'SPM.mat'));
 
@@ -257,7 +257,7 @@ function bidsFFX(action, degreeOfSmoothing, opt, isMVPA)
                         ['jobs_matlabbatch_SPM12_ffx_', mvpaSuffix, ...
                         num2str(degreeOfSmoothing), '_', ...
                         opt.taskName, '_Contrasts.mat']), ...
-                        'matlabbatch'); % save the matlabbatch
+                        'matlabbatch');
 
                     spm_jobman('run', matlabbatch);
                     toc;

@@ -1,4 +1,4 @@
-function contrasts = pmCon(ffxDir, taskName, opt, isMVPA)
+function contrasts = specifyContrasts(ffxDir, taskName, opt, isMVPA)
     % Specifies the first level contrasts
     %
     % To know the names of the columns of the design matrix, type :

@@ -58,14 +58,15 @@ function bidsRFX(action, mmFunctionalSmoothing, mmConSmoothing, opt, isMVPA)
             %% Loop through the groups, subjects, and sessions
             for iGroup = 1:length(group)
 
-                groupName = group(iGroup).name;    % Get the Group Name
+                groupName = group(iGroup).name;
 
-                for iSub = 1:group(iGroup).numSub   % For each subject
+                for iSub = 1:group(iGroup).numSub
+                    
                     counter = counter + 1;
-                    subNumber = group(iGroup).subNumber{iSub};   % Get the Subject ID
-
-                    fprintf(1, 'PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n', ...
-                        groupName, iSub, subNumber);
+                    
+                    subNumber = group(iGroup).subNumber{iSub}; 
+                    
+                    printProcessingSubject(groupName, iSub, subNumber)
 
                     % FFX Directory
                     ffxDir = getFFXdir(subNumber, mmFunctionalSmoothing, opt, isMVPA);
