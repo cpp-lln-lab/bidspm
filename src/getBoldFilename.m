@@ -1,4 +1,6 @@
-function [fileName, subFuncDataDir] = getBoldFilename(BIDS, subNumber, sessions, runs, opt)
+function [fileName, subFuncDataDir] = getBoldFilename(varargin)
+
+    [BIDS, subNumber, sessions, runs, opt] = deal(varargin{:});
 
     % get the filename for this bold run for this task
     fileName =  getInfo(BIDS, subNumber, opt, 'Filename', sessions, runs, 'bold');

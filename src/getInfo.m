@@ -1,4 +1,4 @@
-function varargout = getInfo(BIDS, subID, opt, info, session, run, type)
+function varargout = getInfo(BIDS, subID, opt, info, varargin)
     % for a given BIDS data set, subject identity, and info type,
     % if info = Sessions, this returns name of the sessions and their number
     % if info = Runs, this returns name of the runs and their number for an specified session.
@@ -24,50 +24,57 @@ function varargout = getInfo(BIDS, subID, opt, info, session, run, type)
 
     info = lower(info);
 
-    varargout = {};
+    varargout = {}; %#ok<*NASGU>
 
-    if nargin == 4 && strcmp(info, 'sessions')
+    switch info
 
-        sessions = spm_BIDS(BIDS, 'sessions', ...
-            'sub', subID, ...
-            'task', opt.taskName);
-        nbSessions = size(sessions, 2);
-        if nbSessions == 0
-            nbSessions = 1;
-            sessions = {''};
-        end
+        case 'sessions'
 
-        varargout = {sessions, nbSessions};
+            sessions = spm_BIDS(BIDS, 'sessions', ...
+                'sub', subID, ...
+                'task', opt.taskName);
+            nbSessions = size(sessions, 2);
+            if nbSessions == 0
+                nbSessions = 1;
+                sessions = {''};
+            end
 
-    elseif nargin == 5 && strcmp(info, 'runs')
+            varargout = {sessions, nbSessions};
 
-        runs = spm_BIDS(BIDS, 'runs', ...
-            'sub', subID, ...
-            'task', opt.taskName, ...
-            'ses', session, ...
-            'type', 'bold');
-        nbRuns = size(runs, 2);     % Get the number of runs
+        case 'runs'
 
-        if nbRuns == 0
-            nbRuns = 1;
-            runs = {''};
-        end
+            session = varargin{1};
 
-        varargout = {runs, nbRuns};
+            runs = spm_BIDS(BIDS, 'runs', ...
+                'sub', subID, ...
+                'task', opt.taskName, ...
+                'ses', session, ...
+                'type', 'bold');
+            nbRuns = size(runs, 2);     % Get the number of runs
 
-    elseif nargin == 7 && strcmp(info, 'filename')
+            if nbRuns == 0
+                nbRuns = 1;
+                runs = {''};
+            end
 
-        fileName = spm_BIDS(BIDS, 'data', ...
-            'sub', subID, ...
-            'run', run, ...
-            'ses', session, ...
-            'task', opt.taskName, ...
-            'type', type);
+            varargout = {runs, nbRuns};
 
-        varargout = {fileName};
+        case 'filename'
 
-    else % extra fail safe
-        error('Not sure what info you want me to get.');
+            [session, run, type] = deal(varargin{:});
+
+            fileName = spm_BIDS(BIDS, 'data', ...
+                'sub', subID, ...
+                'run', run, ...
+                'ses', session, ...
+                'task', opt.taskName, ...
+                'type', type);
+
+            varargout = {fileName};
+
+        otherwise
+            error('Not sure what info you want me to get.');
+
     end
 
 end

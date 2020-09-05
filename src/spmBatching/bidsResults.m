@@ -127,7 +127,9 @@ function batch = resultsMatlabbatch(batch, opt, iStep, iCon, results)
 
 end
 
-function batch = setBatchSubjectLevelResults(batch, grp, funcFWHM, opt, isMVPA, iStep, iCon)
+function batch = setBatchSubjectLevelResults(varargin)
+
+    [batch, grp, funcFWHM, opt, isMVPA, iStep, iCon] = deal(varargin{:});
 
     for iGroup = 1:length(grp)
 
