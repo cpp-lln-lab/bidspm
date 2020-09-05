@@ -57,7 +57,7 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
     if ~ismember(opt.taskName, spm_BIDS(BIDS, 'tasks'))
         fprintf('List of tasks present in this dataset:\n');
         spm_BIDS(BIDS, 'tasks');
-        error('The task %s that you have asded for does not exist in this data set.');
+        error('The task %s that you have asked for does not exist in this data set.');
     end
 
     % get IDs of all subjects
