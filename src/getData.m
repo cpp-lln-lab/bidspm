@@ -36,17 +36,16 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
     %  make sure that the T1w.json is also present in the anat folder because
     %  of the way the spm_BIDS function works at the moment
 
-    if nargin < 3 || (exist('type', 'var') && isempty(type))
-        type = 'bold';
-    end
-
     opt = checkOptions(opt);
 
     if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
         % The directory where the derivatives are located
-        derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
-    else
-        derivativesDir = BIDSdir;
+        BIDSdir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
+    end
+    derivativesDir = BIDSdir;
+
+    if nargin < 3 || (exist('type', 'var') && isempty(type))
+        type = 'bold';
     end
 
     fprintf(1, 'FOR TASK: %s\n', opt.taskName);
@@ -67,27 +66,7 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
     % get metadata for bold runs for that task
     % we take those from the first run of the first subject assuming it can
     % apply to all others.
-
-    % THIS NEEDS FIXING AS WE MIGHT WANT THE METADATA OF THE SUBJECTS SELECTED
-    % RATHER THAN THE FIRST SUBJECT OF THE DATASET
-
-    switch type
-        case 'bold'
-            metadata = spm_BIDS(BIDS, 'metadata', ...
-                'task', opt.taskName, ...
-                'sub', subjects{1}, ...
-                'type', type);
-        case 'T1w'
-            metadata = spm_BIDS(BIDS, 'metadata', ...
-                'sub', subjects{1}, ...
-                'type', [type]);
-    end
-
-    if iscell(metadata)
-        opt.metadata = metadata{1};
-    else
-        opt.metadata = metadata;
-    end
+    opt = getMetaData(BIDS, opt, subjects, type);
 
     %% Add the different groups in the experiment
     for iGroup = 1:numel(opt.groups) % for each group
@@ -97,42 +76,7 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
         % Name of the group
         group(iGroup).name = opt.groups{iGroup}; %#ok<*AGROW>
 
-        % if no group or subject was specified we take all of them
-        if numel(opt.groups) == 1 && ...
-            strcmp(group(iGroup).name, '') && ...
-            isempty(opt.subjects{iGroup})
-
-            group(iGroup).subNumber = subjects;
-
-            % if subject ID were directly specified by users we take those
-        elseif strcmp(group(iGroup).name, '') && iscellstr(opt.subjects)
-
-            group(iGroup).subNumber = opt.subjects;
-
-            % if group was specified we figure out which subjects to take
-        elseif ~isempty(opt.subjects{iGroup})
-
-            idx = opt.subjects{iGroup};
-
-            % else we take all subjects of that group
-        elseif isempty(opt.subjects{iGroup})
-
-            % count how many subjects in that group
-            idx = sum(~cellfun(@isempty, strfind(subjects, group(iGroup).name)));
-            idx = 1:idx;
-
-        else
-
-            error('Not sure what to do.');
-
-        end
-
-        % if only indices were specified we get the subject from that group with that
-        if exist('idx', 'var')
-            pattern = [group(iGroup).name '%0' num2str(opt.zeropad) '.0f_'];
-            temp = strsplit(sprintf(pattern, idx), '_');
-            group(iGroup).subNumber = temp(1:end - 1);
-        end
+        group = getSpecificSubjects(opt, group, iGroup, subjects);
 
         % check that all the subjects asked for exist
         if ~all(ismember(group(iGroup).subNumber, subjects))
@@ -210,7 +154,7 @@ function options = getDefaultOption()
     options.funcVoxelDims = [];
 
     % Suffix output directory for the saved jobs
-    options.JOBS_dir = '';
+    options.jobsDir = '';
 
     % specify the model file that contains the contrasts to compute
     options.contrastList = {};
@@ -218,4 +162,70 @@ function options = getDefaultOption()
 
     % specify the results to compute
     options.result.Steps = [];
+end
+
+function opt = getMetaData(BIDS, opt, subjects, type)
+
+    % THIS NEEDS FIXING AS WE MIGHT WANT THE METADATA OF THE SUBJECTS SELECTED
+    % RATHER THAN THE FIRST SUBJECT OF THE DATASET
+
+    switch type
+        case 'bold'
+            metadata = spm_BIDS(BIDS, 'metadata', ...
+                'task', opt.taskName, ...
+                'sub', subjects{1}, ...
+                'type', type);
+        case 'T1w'
+            metadata = spm_BIDS(BIDS, 'metadata', ...
+                'sub', subjects{1}, ...
+                'type', [type]);
+    end
+
+    if iscell(metadata)
+        opt.metadata = metadata{1};
+    else
+        opt.metadata = metadata;
+    end
+
+end
+
+function group = getSpecificSubjects(opt, group, iGroup, subjects)
+
+    % if no group or subject was specified we take all of them
+    if numel(opt.groups) == 1 && ...
+            strcmp(group(iGroup).name, '') && ...
+            isempty(opt.subjects{iGroup})
+
+        group(iGroup).subNumber = subjects;
+
+        % if subject ID were directly specified by users we take those
+    elseif strcmp(group(iGroup).name, '') && iscellstr(opt.subjects)
+
+        group(iGroup).subNumber = opt.subjects;
+
+        % if group was specified we figure out which subjects to take
+    elseif ~isempty(opt.subjects{iGroup})
+
+        idx = opt.subjects{iGroup};
+
+        % else we take all subjects of that group
+    elseif isempty(opt.subjects{iGroup})
+
+        % count how many subjects in that group
+        idx = sum(~cellfun(@isempty, strfind(subjects, group(iGroup).name)));
+        idx = 1:idx;
+
+    else
+
+        error('Not sure what to do.');
+
+    end
+
+    % if only indices were specified we get the subject from that group with that
+    if exist('idx', 'var')
+        pattern = [group(iGroup).name '%0' num2str(opt.zeropad) '.0f_'];
+        temp = strsplit(sprintf(pattern, idx), '_');
+        group(iGroup).subNumber = temp(1:end - 1);
+    end
+
 end

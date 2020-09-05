@@ -29,12 +29,12 @@ function bidsRealign(opt)
             % Get the ID of the subject
             % (i.e SubNumber doesnt have to match the iSub if one subject
             % is exluded for any reason)
-            subNumber = group(iGroup).subNumber{iSub}; % Get the subject ID
-            fprintf(1, ' PROCESSING GROUP: %s SUBJECT No.: %i SUBJECT ID : %s \n', ...
-                groupName, iSub, subNumber);
+            subID = group(iGroup).subNumber{iSub}; % Get the subject ID
+
+            printProcessingSubject(groupName, iSub, subID);
 
             % identify sessions for this subject
-            [sessions, nbSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
+            [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
             %% REALIGN
             fprintf(1, ' BUILDING SPATIAL JOB : REALIGN\n');
@@ -43,34 +43,17 @@ function bidsRealign(opt)
             for iSes = 1:nbSessions  % For each session
 
                 % get all runs for that subject across all sessions
-                [runs, nbRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
+                [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
 
                 for iRun = 1:nbRuns  % For each run
 
                     % get the filename for this bold run for this task
                     [fileName, subFuncDataDir] = getBoldFilename( ...
                         BIDS, ...
-                        subNumber, sessions{iSes}, runs{iRun}, opt);
+                        subID, sessions{iSes}, runs{iRun}, opt);
 
                     % check that the file with the right prefix exist
                     files = inputFileValidation(subFuncDataDir, prefix, fileName);
-
-                    % get native resolution to reuse it at normalisation;
-                    if ~isempty(opt.funcVoxelDims) % If voxel dimensions is defined in the opt
-                        voxDim = opt.funcVoxelDims; % Get the dimension values
-                    else
-                        % SPM Doesnt deal with nii.gz and all our nii will be unzipped
-                        % at this stage
-                        hdr = spm_vol(fullfile(subFuncDataDir, [prefix, fileName]));
-                        voxDim = diag(hdr(1).mat);
-                        % Voxel dimensions are not pure integers before reslicing, therefore
-                        % Round the dimensions of the functional files to the 1st decimal point
-                        voxDim = abs(voxDim(1:3)');
-                        voxDim = round(voxDim * 10) / 10;
-                        % Add it to opt.funcVoxelDims to have the same value for
-                        % all subjects and sessions
-                        opt.funcVoxelDims = voxDim;
-                    end
 
                     fprintf(1, ' %s\n', files{1});
 
@@ -99,10 +82,10 @@ function bidsRealign(opt)
 
             %% SAVING JOBS
             % Create the JOBS directory if it doesnt exist
-            JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
-            [~, ~, ~] = mkdir(JOBS_dir);
+            jobsDir = fullfile(opt.jobsDir, subID);
+            [~, ~, ~] = mkdir(jobsDir);
 
-            save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_SpatialPrepocess.mat'), ...
+            save(fullfile(jobsDir, 'jobs_matlabbatch_SPM12_SpatialPrepocess.mat'), ...
                 'matlabbatch'); % save the matlabbatch
             spm_jobman('run', matlabbatch);
 

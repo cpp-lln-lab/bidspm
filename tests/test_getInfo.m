@@ -11,9 +11,7 @@ function test_getInfoBasic()
 
     % write tests for when no session or only one run
 
-    addpath(genpath(fullfile(pwd, '..')));
-
-    opt.dataDir = fullfile(pwd, 'dummyData', 'derivatives');
+    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
     opt.groups = {''};
     opt.subjects = {[], []};
 
@@ -51,7 +49,8 @@ function test_getInfoBasic()
     info = 'filename';
     [~, opt, BIDS] = getData(opt);
     filename = getInfo(BIDS, subID, opt, info, session, run, 'bold');
-    FileName = fullfile(pwd, 'dummyData',  'derivatives', 'SPM12_CPPL', ...
+    FileName = fullfile(fileparts(mfilename('fullpath')), 'dummyData',  ...
+        'derivatives', 'SPM12_CPPL', ...
         ['sub-' subID], ['ses-' session], 'func', ...
         ['sub-' subID, ...
         '_ses-' session, ...
