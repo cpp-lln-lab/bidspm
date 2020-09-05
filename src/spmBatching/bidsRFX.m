@@ -38,7 +38,7 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
     [group, opt, ~] = getData(opt);
 
     % JOBS Directory
-    jobsDir = fullfile(opt.JOBS_dir);
+    jobsDir = fullfile(opt.jobsDir);
     [~, ~, ~] = mkdir(jobsDir);
 
     % Check which level of CON smoothing is desired

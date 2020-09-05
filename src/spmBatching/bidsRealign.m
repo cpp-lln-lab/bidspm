@@ -99,10 +99,10 @@ function bidsRealign(opt)
 
             %% SAVING JOBS
             % Create the JOBS directory if it doesnt exist
-            JOBS_dir = fullfile(opt.JOBS_dir, subID);
-            [~, ~, ~] = mkdir(JOBS_dir);
+            jobsDir = fullfile(opt.jobsDir, subID);
+            [~, ~, ~] = mkdir(jobsDir);
 
-            save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_SpatialPrepocess.mat'), ...
+            save(fullfile(jobsDir, 'jobs_matlabbatch_SPM12_SpatialPrepocess.mat'), ...
                 'matlabbatch'); % save the matlabbatch
             spm_jobman('run', matlabbatch);
 

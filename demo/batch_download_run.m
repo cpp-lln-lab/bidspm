@@ -38,7 +38,7 @@ opt.taskName = 'auditory'; % task to analyze
 opt.STC_referenceSlice = [];
 opt.sliceOrder = [];
 opt.funcVoxelDims = [];
-opt.JOBS_dir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
+opt.jobsDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
 
 % specify the model file that contains the contrasts to compute
 opt = rmfield(opt, 'model');
@@ -64,9 +64,9 @@ opt.result.Steps(1).Contrasts(2) = struct( ...
                     'NIDM', true);
 
 %% Get data
-fprintf('%-40s:', 'Downloading dataset...');
-urlwrite(URL, 'MoAEpilot.zip');
-unzip('MoAEpilot.zip', fullfile(WD, 'output'));
+% fprintf('%-40s:', 'Downloading dataset...');
+% urlwrite(URL, 'MoAEpilot.zip');
+% unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 
 %% Check dependencies
 % If toolboxes are not in the MATLAB Directory and needed to be added to

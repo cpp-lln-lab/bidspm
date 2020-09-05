@@ -36,7 +36,7 @@ function bidsSTC(opt)
     % get slice order
     sliceOrder = getSliceOrder(opt, 1);
     if isempty(sliceOrder)
-        warning('No slice order dectected: skipping slice timing correction.')
+        warning('No slice order dectected: skipping slice timing correction.');
         return
     end
 
@@ -126,7 +126,7 @@ function bidsSTC(opt)
 
             %% SAVE THE MATLABBATCH
             % Create the JOBS directory if it doesnt exist
-            jobsDir = fullfile(opt.JOBS_dir, subID);
+            jobsDir = fullfile(opt.jobsDir, subID);
             [~, ~, ~] = mkdir(jobsDir);
 
             save(fullfile(jobsDir, 'jobs_matlabbatch_SPM12_STC.mat'), 'matlabbatch');

@@ -72,7 +72,7 @@ function bidsSmoothing(funcFWHM, opt)
 
             %% SAVE THE MATLABBATCH
             % Create the JOBS directory if it doesnt exist
-            jobsDir = fullfile(opt.JOBS_dir, subID);
+            jobsDir = fullfile(opt.jobsDir, subID);
             [~, ~, ~] = mkdir(jobsDir);
 
             save(fullfile(jobsDir, 'jobs_matlabbatch_SPM12_Smoothing.mat'), ...

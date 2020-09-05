@@ -154,7 +154,7 @@ function options = getDefaultOption()
     options.funcVoxelDims = [];
 
     % Suffix output directory for the saved jobs
-    options.JOBS_dir = '';
+    options.jobsDir = '';
 
     % specify the model file that contains the contrasts to compute
     options.contrastList = {};
