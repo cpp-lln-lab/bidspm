@@ -11,7 +11,7 @@ function test_modelFilesBasic()
 
     demoDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demo');
     modelDir = fullfile(fileparts(mfilename('fullpath')), '..', 'model');
-    
+
     %%
     file = fullfile(demoDir, 'model-MoAE_smdl.json');
 
