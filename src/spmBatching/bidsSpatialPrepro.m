@@ -38,16 +38,16 @@ function bidsSpatialPrepro(opt)
             % Get the ID of the subject
             % (i.e SubNumber doesnt have to match the iSub if one subject
             % is exluded for any reason)
-            subNumber = group(iGroup).subNumber{iSub}; % Get the subject ID
+            subID = group(iGroup).subNumber{iSub}; % Get the subject ID
 
-            printProcessingSubject(groupName, iSub, subNumber);
+            printProcessingSubject(groupName, iSub, subID);
 
             % identify sessions for this subject
-            [sessions, nbSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
+            [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
             % get all runs for that subject across all sessions
             struct = spm_BIDS(BIDS, 'data', ...
-                'sub', subNumber, ...
+                'sub', subID, ...
                 'ses', sessions{structSession}, ...
                 'type', 'T1w');
             % we assume that the first T1w is the correct one (could be an
@@ -77,14 +77,14 @@ function bidsSpatialPrepro(opt)
             for iSes = 1:nbSessions  % For each session
 
                 % get all runs for that subject across all sessions
-                [runs, nbRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
+                [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
 
                 for iRun = 1:nbRuns  % For each run
 
                     % get the filename for this bold run for this task
                     [fileName, subFuncDataDir] = getBoldFilename( ...
                         BIDS, ...
-                        subNumber, sessions{iSes}, runs{iRun}, opt);
+                        subID, sessions{iSes}, runs{iRun}, opt);
 
                     % check that the file with the right prefix exist
                     files = inputFileValidation(subFuncDataDir, prefix, fileName);
@@ -354,10 +354,10 @@ function bidsSpatialPrepro(opt)
 
             %% SAVING JOBS
             % Create the JOBS directory if it doesnt exist
-            JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
-            [~, ~, ~] = mkdir(JOBS_dir);
+            jobsDir = fullfile(opt.JOBS_dir, subID);
+            [~, ~, ~] = mkdir(jobsDir);
 
-            save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_SpatialPrepocess.mat'), ...
+            save(fullfile(jobsDir, 'jobs_matlabbatch_SPM12_SpatialPrepocess.mat'), ...
                 'matlabbatch'); % save the matlabbatch
             spm_jobman('run', matlabbatch);
 

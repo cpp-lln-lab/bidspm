@@ -2,12 +2,13 @@
 .DS_Store
 *.asv
 *.m~
+*.mat
 *.nii
 *.xml
 *.log
 *.html
+*.zip
 
-*.mat
 
 # files in the demo folder related to running the demo analysis
 demo/*.zip

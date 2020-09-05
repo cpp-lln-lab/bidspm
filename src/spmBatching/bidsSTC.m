@@ -36,6 +36,7 @@ function bidsSTC(opt)
     % get slice order
     sliceOrder = getSliceOrder(opt, 1);
     if isempty(sliceOrder)
+        warning('No slice order dectected: skipping slice timing correction.')
         return
     end
 
@@ -80,26 +81,26 @@ function bidsSTC(opt)
 
             % Get the ID of the subject
             % (i.e SubNumber doesnt have to match the iSub if one subject is exluded)
-            subNumber = group(iGroup).subNumber{iSub};
+            subID = group(iGroup).subNumber{iSub};
 
-            printProcessingSubject(groupName, iSub, subNumber);
+            printProcessingSubject(groupName, iSub, subID);
 
             %% GET FUNCTIOVAL FILES
             fprintf(1, ' BUILDING STC JOB : STC\n');
 
-            [sessions, nbSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
+            [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
             for iSes = 1:nbSessions
 
                 % get all runs for that subject across all sessions
-                [runs, nbRuns] = getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
+                [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
 
                 for iRun = 1:nbRuns
 
                     % get the filename for this bold run for this task
                     [fileName, subFuncDataDir] = getBoldFilename( ...
                       BIDS, ...
-                      subNumber, sessions{iSes}, runs{iRun}, opt);
+                      subID, sessions{iSes}, runs{iRun}, opt);
 
                     % check that the file with the right prefix exist
                     files = inputFileValidation(subFuncDataDir, prefix, fileName);
@@ -118,16 +119,17 @@ function bidsSTC(opt)
             matlabbatch{1}.spm.temporal.st.ta = TA;
             matlabbatch{1}.spm.temporal.st.so = sliceOrder;
             matlabbatch{1}.spm.temporal.st.refslice = referenceSlice;
+
             % The following lines are commented out because those parameters
             % can be set in the spm_my_defaults.m
             % matlabbatch{1}.spm.temporal.st.prefix = spm_get_defaults('slicetiming.prefix');
 
             %% SAVE THE MATLABBATCH
             % Create the JOBS directory if it doesnt exist
-            JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
-            [~, ~, ~] = mkdir(JOBS_dir);
+            jobsDir = fullfile(opt.JOBS_dir, subID);
+            [~, ~, ~] = mkdir(jobsDir);
 
-            save(fullfile(JOBS_dir, 'jobs_matlabbatch_SPM12_STC.mat'), 'matlabbatch');
+            save(fullfile(jobsDir, 'jobs_matlabbatch_SPM12_STC.mat'), 'matlabbatch');
             spm_jobman('run', matlabbatch);
 
         end

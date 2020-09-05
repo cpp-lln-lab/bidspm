@@ -42,8 +42,11 @@ function bidsCopyRawFolder(opt, deleteZippedNii)
     copyfile(fullfile(rawDir, '*.json'), derivativeDir);
     fprintf(' json files copied to derivatives directory \n');
 
-    copyfile(fullfile(rawDir, '*.tsv'), derivativeDir);
-    fprintf(' tsv files copied to derivatives directory \n');
+    try
+        copyfile(fullfile(rawDir, '*.tsv'), derivativeDir);
+        fprintf(' tsv files copied to derivatives directory \n');
+    catch
+    end
 
     %% Loop through the groups, subjects, sessions
 
@@ -51,20 +54,18 @@ function bidsCopyRawFolder(opt, deleteZippedNii)
 
     for iGroup = 1:length(group)
 
-        groupName = group(iGroup).name;
-
         for iSub = 1:group(iGroup).numSub
 
-            subNumber = group(iGroup).subNumber{iSub};
+            subID = group(iGroup).subNumber{iSub};
 
             % the folder containing the subjects data
-            subFolder = ['sub-', subNumber];
+            subDir = ['sub-', subID];
 
             % copy the whole subject's folder
-            copyfile(fullfile(rawDir, subFolder), ...
-                fullfile(derivativeDir, subFolder));
+            copyfile(fullfile(rawDir, subDir), ...
+                fullfile(derivativeDir, subDir));
 
-            fprintf('folder copied: %s \n', subFolder);
+            fprintf('folder copied: %s \n', subDir);
 
         end
     end

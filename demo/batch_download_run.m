@@ -18,7 +18,8 @@ URL = 'http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.z
 WD = fileparts(mfilename('fullpath'));
 
 % we add all the subfunctions that are in the sub directories
-addpath(genpath(fullfile(WD, '..')));
+addpath(genpath(fullfile(WD, '..', 'src')));
+addpath(genpath(fullfile(WD, '..', 'lib')));
 
 %% Set options
 opt = getOption();
@@ -80,10 +81,10 @@ unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 checkDependencies();
 
 %% Run batches
-BIDS_copyRawFolder(opt, 1);
-BIDS_STC(opt);
-BIDS_SpatialPrepro(opt);
-BIDS_Smoothing(FWHM, opt);
-BIDS_FFX(1, FWHM, opt, 0);
-BIDS_FFX(2, FWHM, opt, 0);
-BIDS_Results(FWHM, opt, 0);
+bidsCopyRawFolder(opt, 1);
+bidsSTC(opt);
+bidsSpatialPrepro(opt);
+bidsSmoothing(FWHM, opt);
+bidsFFX(1, FWHM, opt, 0);
+bidsFFX(2, FWHM, opt, 0);
+bidsResults(FWHM, [], opt, 0);

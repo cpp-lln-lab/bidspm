@@ -1,10 +1,6 @@
 function ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt, isMVPA)
 
-    if isMVPA
-        mvpaSuffix = 'MVPA_';
-    else
-        mvpaSuffix = '';
-    end
+    mvpaSuffix = setMvpaSuffix(isMVPA);
 
     ffxDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', ...
         ['sub-', subNumber], ...

@@ -1,12 +1,12 @@
-function bidsFFX(action, degreeOfSmoothing, opt, isMVPA)
+function bidsFFX(action, FWHM, opt, isMVPA)
     % This scripts builds up the design matrix for each subject.
     % It has to be run in 2 separate steps (action) :
     % case 1 = fMRI design and estimate
     % case 2 = contrasts
     % Adjust your contrasts as a subfunction at the end of the script
 
-    % degreeOfSmoothing is the number of the mm smoothing used in the
-    % normalized functional files. for unsmoothied data  degreeOfSmoothing = 0
+    % FWHM is the number of the mm smoothing used in the
+    % normalized functional files. for unsmoothied data  FWHM = 0
     % for smoothed data = ... mm
     % in this way we can make multiple ffx for different smoothing degrees
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -21,24 +21,17 @@ function bidsFFX(action, degreeOfSmoothing, opt, isMVPA)
         isMVPA = 0;
     end
 
-    % Suffix definition (MVPA or not)
-    if isMVPA
-        mvpaSuffix = 'MVPA_';
-    else
-        mvpaSuffix = '';
-    end
-
     %%
     % load the subjects/Groups information and the task name
     [group, opt, BIDS] = getData(opt);
 
     % creates prefix to look for
     % if opt.isMVPA
-    %     [prefix, motionRegressorPrefix] = getPrefix('MVPA', opt, degreeOfSmoothing);
+    %     [prefix, motionRegressorPrefix] = getPrefix('MVPA', opt, FWHM);
     % else
-    %     [prefix, motionRegressorPrefix] = getPrefix('FFX', opt, degreeOfSmoothing);
+    %     [prefix, motionRegressorPrefix] = getPrefix('FFX', opt, FWHM);
     % end
-    [prefix, motionRegressorPrefix] = getPrefix('FFX', opt, degreeOfSmoothing);
+    [prefix, motionRegressorPrefix] = getPrefix('FFX', opt, FWHM);
 
     % Check the slice timing information is not in the metadata and not added
     % manually in the opt variable.
@@ -71,8 +64,8 @@ function bidsFFX(action, degreeOfSmoothing, opt, isMVPA)
     %%
 
     switch action
+
         case 1 % fMRI design and estimate
-            tic;
 
             %% Loop through the groups, subjects, and sessions
             for iGroup = 1:length(group)
@@ -84,9 +77,9 @@ function bidsFFX(action, degreeOfSmoothing, opt, isMVPA)
                     % clear previous matlabbatch
                     matlabbatch = [];
 
-                    subNumber = group(iGroup).subNumber{iSub};   % Get the Subject ID
+                    subID = group(iGroup).subNumber{iSub};   % Get the Subject ID
 
-                    printProcessingSubject(groupName, iSub, subNumber);
+                    printProcessingSubject(groupName, iSub, subID);
 
                     matlabbatch{1}.spm.stats.fmri_spec.timing.units = 'secs';
                     matlabbatch{1}.spm.stats.fmri_spec.timing.RT = TR;
@@ -96,7 +89,7 @@ function bidsFFX(action, degreeOfSmoothing, opt, isMVPA)
                     % The Directory to save the FFX files
                     % Create it if it doesnt exist
                     % If it exists, issue a warning that it has been overwritten
-                    ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt, isMVPA);
+                    ffxDir = getFFXdir(subID, FWHM, opt, isMVPA);
 
                     if exist(ffxDir, 'dir') %
                         warning('overwriting directory: %s \n', ffxDir);
@@ -111,22 +104,22 @@ function bidsFFX(action, degreeOfSmoothing, opt, isMVPA)
 
                     %%
                     % identify sessions for this subject
-                    [sessions, nbSessions] = getInfo(BIDS, subNumber, opt, 'Sessions');
+                    [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
                     for iSes = 1:nbSessions
 
                         % get all runs for that subject across all sessions
                         [runs, nbRuns] = ...
-                            getInfo(BIDS, subNumber, opt, 'Runs', sessions{iSes});
+                            getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
 
                         for iRun = 1:nbRuns
 
-                            printProcessingRun(groupName, iSub, subNumber, iSes, iRun);
+                            printProcessingRun(groupName, iSub, subID, iSes, iRun);
 
                             % get the filename for this bold run for this task
                             [fileName, subFuncDataDir] = getBoldFilename( ...
                                 BIDS, ...
-                                subNumber, sessions{iSes}, runs{iRun}, opt);
+                                subID, sessions{iSes}, runs{iRun}, opt);
 
                             % check that the file with the right prefix exist
                             files = inputFileValidation(subFuncDataDir, prefix, fileName);
@@ -140,7 +133,7 @@ function bidsFFX(action, degreeOfSmoothing, opt, isMVPA)
                                 ['rp_', motionRegressorPrefix, fileName(1:end - 4), '.txt']);
 
                             % Convert the tsv files to a mat file to be used by SPM
-                            convertTsvTomat(tsvFile{sesCounter, 1});
+                            convertTsvToMat(tsvFile{sesCounter, 1});
 
                             matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).scans = ...
                                 cellstr(files);
@@ -203,11 +196,13 @@ function bidsFFX(action, degreeOfSmoothing, opt, isMVPA)
                     matlabbatch{2}.spm.stats.fmri_est.write_residuals = 1;
 
                     % Create the JOBS directory if it doesnt exist
-                    JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
+                    JOBS_dir = fullfile(opt.JOBS_dir, subID);
                     [~, ~, ~] = mkdir(JOBS_dir);
 
+                    mvpaSuffix = setMvpaSuffix(isMVPA);
+
                     save(fullfile(JOBS_dir, ['jobs_matlabbatch_SPM12_FFX_', mvpaSuffix, ...
-                        num2str(degreeOfSmoothing), '_', opt.taskName, '.mat']), ...
+                        num2str(FWHM), '_', opt.taskName, '.mat']), ...
                         'matlabbatch');
 
                     spm_jobman('run', matlabbatch);
@@ -216,54 +211,57 @@ function bidsFFX(action, degreeOfSmoothing, opt, isMVPA)
             end
 
         case 2  % CONTRASTS
-            tic;
 
             fprintf(1, 'BUILDING JOB : FMRI contrasts\n');
 
-            %% Loop through the groups, subjects, and sessions
-            for iGroup = 1:length(group)
-
-                groupName = group(iGroup).name;
-
-                for iSub = 1:group(iGroup).numSub
-
-                    matlabbatch = [];
-                    subNumber = group(iGroup).subNumber{iSub};  % Get the Subject I
-
-                    printProcessingSubject(groupName, iSub, subNumber);
-
-                    % ffx folder
-                    ffxDir = getFFXdir(subNumber, degreeOfSmoothing, opt, isMVPA);
-
-                    JOBS_dir = fullfile(opt.JOBS_dir, subNumber);
-
-                    % Create Contrasts
-                    contrasts = specifyContrasts(ffxDir, opt.taskName, opt, isMVPA);
-
-                    matlabbatch{1}.spm.stats.con.spmmat = cellstr(fullfile(ffxDir, 'SPM.mat'));
-
-                    for icon = 1:size(contrasts, 2)
-                        matlabbatch{1}.spm.stats.con.consess{icon}.tcon.name = ...
-                            contrasts(icon).name;
-                        matlabbatch{1}.spm.stats.con.consess{icon}.tcon.convec = ...
-                            contrasts(icon).C;
-                        matlabbatch{1}.spm.stats.con.consess{icon}.tcon.sessrep = 'none';
-                    end
-
-                    matlabbatch{1}.spm.stats.con.delete = 1;
-
-                    % Save ffx matlabbatch in JOBS
-                    save(fullfile(JOBS_dir, ...
-                        ['jobs_matlabbatch_SPM12_ffx_', mvpaSuffix, ...
-                        num2str(degreeOfSmoothing), '_', ...
-                        opt.taskName, '_Contrasts.mat']), ...
-                        'matlabbatch');
-
-                    spm_jobman('run', matlabbatch);
-                    toc;
-                end
-
-            end
+            computeContrasts(group, FWHM, opt, isMVPA);
     end
 
+end
+
+function computeContrasts(group, FWHM, opt, isMVPA)
+    % Loop through the groups, subjects, and sessions
+
+    for iGroup = 1:length(group)
+
+        groupName = group(iGroup).name;
+
+        for iSub = 1:group(iGroup).numSub
+
+            matlabbatch = [];
+            subID = group(iGroup).subNumber{iSub};
+
+            printProcessingSubject(groupName, iSub, subID);
+
+            ffxDir = getFFXdir(subID, FWHM, opt, isMVPA);
+
+            % Create Contrasts
+            contrasts = specifyContrasts(ffxDir, opt.taskName, opt, isMVPA);
+
+            matlabbatch{1}.spm.stats.con.spmmat = cellstr(fullfile(ffxDir, 'SPM.mat'));
+
+            for icon = 1:size(contrasts, 2)
+                matlabbatch{1}.spm.stats.con.consess{icon}.tcon.name = ...
+                    contrasts(icon).name;
+                matlabbatch{1}.spm.stats.con.consess{icon}.tcon.convec = ...
+                    contrasts(icon).C;
+                matlabbatch{1}.spm.stats.con.consess{icon}.tcon.sessrep = 'none';
+            end
+
+            matlabbatch{1}.spm.stats.con.delete = 1;
+
+            % Save ffx matlabbatch in JOBS
+            jobsDir = fullfile(opt.JOBS_dir, subID);
+            mvpaSuffix = setMvpaSuffix(isMVPA);
+            save(fullfile(jobsDir, ...
+                ['jobs_matlabbatch_SPM12_ffx_', mvpaSuffix, ...
+                num2str(FWHM), '_', ...
+                opt.taskName, '_Contrasts.mat']), ...
+                'matlabbatch');
+
+            spm_jobman('run', matlabbatch);
+
+        end
+
+    end
 end
