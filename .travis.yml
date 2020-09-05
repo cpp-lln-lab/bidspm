@@ -43,4 +43,7 @@ script:
   - octave $OCTFLAGS --eval "runTests"
   - cat test_report.log | grep 0
 
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
 
