@@ -37,7 +37,6 @@ before_install:
   - make -C spm12/src PLATFORM=octave distclean
   - make -C spm12/src PLATFORM=octave
   - make -C spm12/src PLATFORM=octave install
-  - cd tests
 
 script:
   - octave $OCTFLAGS --eval "runTests"

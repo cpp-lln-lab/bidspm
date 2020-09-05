@@ -18,10 +18,6 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
     % opt - options structure defined by the getOption function. Mostly used to find the
     %  task name.
 
-    if ~any(nargin == [4, 5, 7])
-        error('getInfo needs 4, 5 or 7 input argument to work)');
-    end
-
     info = lower(info);
 
     varargout = {}; %#ok<*NASGU>

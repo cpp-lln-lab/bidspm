@@ -9,12 +9,11 @@ end
 function test_specifyContrastsBasic()
     % Small test to ensure that pmCon returns what we asked for
 
-    addpath(genpath(fullfile(pwd, '..')));
-
-    opt.dataDir = fullfile(pwd, 'dummyData', 'derivatives');
+    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
     opt.taskName = 'visMotion';
     opt.model.univariate.file = ...
-        fullfile(pwd, 'dummyData', 'model', 'model-visMotionLoc_smdl.json');
+        fullfile(fileparts(mfilename('fullpath')), ...
+        'dummyData', 'model', 'model-visMotionLoc_smdl.json');
 
     ffxDir = fullfile(opt.dataDir, 'SPM12_CPPL', 'sub-01', 'stats', 'ffx_visMotion', 'ffx_6');
 

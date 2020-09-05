@@ -9,16 +9,18 @@ end
 function test_modelFilesBasic()
     % vague attempt at validating our model files
 
+    demoDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demo');
+    modelDir = fullfile(fileparts(mfilename('fullpath')), '..', 'model');
+    
     %%
-    file = fullfile(fileparts(mfilename), '..', ...
-        'demo', 'model-MoAE_smdl.json');
+    file = fullfile(demoDir, 'model-MoAE_smdl.json');
 
     model = spm_jsonread(file);
 
     model.Steps{1};
 
     %%
-    file = fullfile(fileparts(mfilename), '..', ...
+    file = fullfile(fileparts(mfilename('fullpath')), '..', ...
         'model-visMotionLoc_smdl.json');
 
     model = spm_jsonread(file);
@@ -26,7 +28,7 @@ function test_modelFilesBasic()
     model.Steps{1};
 
     %%
-    file = fullfile(fileparts(mfilename), '..', ...
+    file = fullfile(fileparts(mfilename('fullpath')), '..', ...
         'model-motionDecodingUnivariate_smdl.json');
 
     model = spm_jsonread(file);
@@ -34,7 +36,7 @@ function test_modelFilesBasic()
     model.Steps{1};
 
     %%
-    file = fullfile(fileparts(mfilename), '..', ...
+    file = fullfile(fileparts(mfilename('fullpath')), '..', ...
         'model-motionDecodingMultivariate_smdl.json');
 
     model = spm_jsonread(file);
@@ -42,16 +44,14 @@ function test_modelFilesBasic()
     model.Steps{1};
 
     %%
-    file = fullfile(fileparts(mfilename), '..', ...
-        'model', 'model-balloonanalogriskUnivariate_smdl.json');
+    file = fullfile(modelDir, 'model-balloonanalogriskUnivariate_smdl.json');
 
     model = spm_jsonread(file);
 
     model.Steps{1};
 
     %%
-    file = fullfile(fileparts(mfilename), '..', ...
-        'model', 'model-balloonanalogriskMultivariate_smdl.json');
+    file = fullfile(modelDir, 'model-balloonanalogriskMultivariate_smdl.json');
 
     model = spm_jsonread(file);
 

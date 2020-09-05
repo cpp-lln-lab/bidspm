@@ -9,9 +9,8 @@ end
 function test_getSliceOrderBasic()
     % Small test to ensure that getSliceOrder returns what we asked for
 
-    addpath(genpath(fullfile(pwd, '..')));
 
-    opt.dataDir = fullfile(pwd, 'dummyData', 'derivatives');
+    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
     opt.groups = {''};
     opt.subjects = {[], []};
 

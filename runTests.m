@@ -1,13 +1,16 @@
 warning('OFF');
 
-addpath(fullfile(pwd, '..', 'spm12'));
+addpath(fullfile(pwd, 'spm12'));
+addpath(genpath(fullfile(pwd, 'src')));
+addpath(genpath(fullfile(pwd, 'lib')));
 
 spm('defaults', 'fMRI');
 
-folderToCover = fullfile(pwd, '..', 'src');
+folderToCover = fullfile(pwd, 'src');
+testFolder = fullfile(pwd, 'tests');
 
 success = moxunit_runtests( ...
-    pwd, ...
+    testFolder, ...
     '-verbose', '-recursive', '-with_coverage', ...
     '-cover', folderToCover, ...
     '-cover_xml_file', 'coverage.xml', ...
