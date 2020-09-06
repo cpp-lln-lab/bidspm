@@ -1,6 +1,11 @@
 function printCredits()
-
-    version = '0.0.3';
+    
+    try
+        version = fileread(fullfile(fileparts(mfilename('fullpath')), ...
+            '..', '..', 'version.txt'));
+    catch
+        version = 'v0.0.3';
+    end
 
     contributors = { ...
         'Mohamed Rezk', ...
