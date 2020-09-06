@@ -76,7 +76,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
             % get functional files
             [fullpathBoldFileName, prefix] = ...
-                getFunctionalFiles(BIDS, opt, subID, funcFWHM, iSes, iRun);
+                getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);
             matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).scans = ...
                 cellstr(fullpathBoldFileName);
 

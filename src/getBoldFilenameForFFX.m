@@ -1,4 +1,4 @@
-function [boldFileName, prefix] = getFunctionalFiles(varargin)
+function [boldFileName, prefix] = getBoldFilenameForFFX(varargin)
     % [boldFileName, prefix] = getFunctionalFiles(BIDS, opt, subID, funcFWHM, iSes, iRun)
     %
     % get the filename for this bold run for this task for the FFX setup

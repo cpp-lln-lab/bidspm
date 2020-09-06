@@ -1,9 +1,9 @@
 function [fileName, subFuncDataDir] = getBoldFilename(varargin)
 
-    [BIDS, subNumber, sessions, runs, opt] = deal(varargin{:});
+    [BIDS, subID, sessions, runs, opt] = deal(varargin{:});
 
     % get the filename for this bold run for this task
-    fileName =  getInfo(BIDS, subNumber, opt, 'Filename', sessions, runs, 'bold');
+    fileName =  getInfo(BIDS, subID, opt, 'Filename', sessions, runs, 'bold');
 
     % get fullpath of the file
     fileName = fileName{1};

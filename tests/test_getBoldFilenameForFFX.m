@@ -1,4 +1,4 @@
-function test_suite = test_getFunctionalFiles %#ok<*STOUT>
+function test_suite = test_getBoldFilenameForFFX %#ok<*STOUT>
     try % assignment of 'localfunctions' is necessary in Matlab >= 2016
         test_functions = localfunctions(); %#ok<*NASGU>
     catch % no problem; early Matlab versions can use initTestSuite fine
@@ -6,7 +6,7 @@ function test_suite = test_getFunctionalFiles %#ok<*STOUT>
     initTestSuite;
 end
 
-function test_getFunctionalFilesBasic()
+function test_getBoldFilenameForFFXBasic()
 
     subID = '01';
     funcFWHM = 6;
@@ -31,7 +31,7 @@ function test_getFunctionalFilesBasic()
 
 end
 
-function test_getFunctionalFilesNativeSpace()
+function test_getBoldFilenameForFFXNativeSpace()
 
     subID = '01';
     funcFWHM = 6;
