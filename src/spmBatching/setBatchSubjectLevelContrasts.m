@@ -1,4 +1,4 @@
-function matlabbatch = setBatchSubjectLevelContrasts(subID, funcFWHM, opt, isMVPA)
+function matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM, isMVPA)
 
     ffxDir = getFFXdir(subID, funcFWHM, opt, isMVPA);
 

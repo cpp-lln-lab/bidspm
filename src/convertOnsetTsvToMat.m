@@ -1,18 +1,31 @@
-function fullpathOnsetFileName = convertOnsetTsvToMat(tsvFile, opt, isMVPA)
+function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA)
     %% Converts a tsv file to an onset file suitable for SPM ffx analysis
     % The scripts extracts the conditions' names, onsets, and durations, and
     % converts them to TRs (time unit) and saves the onset file to be used for
     % SPM
     %%
+    
+    if ~exist(tsvFile, 'file')
+        
+        errorStruct.identifier = 'convertOnsetTsvToMat:nonExistentFile';
+        errorStruct.message = sprintf('%s\n%s', ...
+            'This onset tsv file deos not exist:', ...
+            tsvFile);
+        error(errorStruct);
+    end
 
     % Read the tsv file
-    t = spm_load(tsvFile);
     fprintf('reading the tsv file : %s \n', tsvFile);
+    t = spm_load(tsvFile);
 
     if ~isfield(t, 'trial_type')
 
-        error('There was no trial_type field in the following file \n %s', tsvFile);
-
+        errorStruct.identifier = 'convertOnsetTsvToMat:noTrialType';
+        errorStruct.message = sprintf('%s\n%s', ...
+            'There was no trial_type field in this file:', ...
+            tsvFile);
+        error(errorStruct);
+        
     end
 
     conds = t.trial_type; % assign all the tsv information to a variable called conds.

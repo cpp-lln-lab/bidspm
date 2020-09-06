@@ -75,20 +75,22 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         for iRun = 1:nbRuns
 
             % get functional files
-            fullpathBoldFileName = getFunctionalFiles(BIDS, opt, funcFWHM, iSes, iRun);
+            [fullpathBoldFileName, prefix] = ...
+                getFunctionalFiles(BIDS, opt, subID, funcFWHM, iSes, iRun);
             matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).scans = ...
                 cellstr(fullpathBoldFileName);
 
             % get stimuli onset time file
             fullpathOnsetFileName = ...
-                createAndReturnOnsetFile(opt, fullpathBoldFileName, isMVPA);
+                createAndReturnOnsetFile(opt, fullpathBoldFileName, prefix, isMVPA);
             matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).multi = ...
                 cellstr(fullpathOnsetFileName);
 
             % get realignment parameters
-            realigntParamFile = getRealignParamFile(opt, funcFWHM, fullpathBoldFileName);
+            realignParamFile = ...
+                getRealignParamFile(opt, fullpathBoldFileName, funcFWHM);
             matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).multi_reg = ...
-                cellstr(realigntParamFile);
+                cellstr(realignParamFile);
 
             % multiregressor selection
             matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).regress = ...
@@ -109,58 +111,40 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
 end
 
-function fullpathBoldFileName = getFunctionalFiles(varargin)
 
-    [BIDS, opt, subID, funcFWHM, iSes, iRun] =  deal(varargin{:});
 
-    % get the filename for this bold run for this task
-    % and check that the file with the right prefix exist
-
-    sessions = getInfo(BIDS, subID, opt, 'Sessions');
-
-    runs = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
-
-    prefix = getPrefix('FFX', opt, funcFWHM);
-    if strcmp(opt.space, 'T1w')
-        prefix = getPrefix('FFX_space-T1w', opt, funcFWHM);
-    end
-
-    [fileName, subFuncDataDir] = getBoldFilename( ...
-        BIDS, ...
-        subID, sessions{iSes}, runs{iRun}, opt);
-
-    fullpathBoldFileName = inputFileValidation( ...
-        subFuncDataDir, ...
-        prefix, ...
-        fileName);
-
-    disp(fullpathBoldFileName);
-
-end
-
-function fullpathOnsetFileName = createAndReturnOnsetFile(opt, fullpathBoldFileName, isMVPA)
-
+function onsetFileName = createAndReturnOnsetFile(opt, boldFileName, prefix, isMVPA)
+    % onsetFileName = createAndReturnOnsetFile(opt, boldFileName, prefix, isMVPA)
+    %
+    % gets the tsv onset file based on the bold file name (removes any prefix)
+    %
     % convert the tsv files to a mat file to be used by SPM
-    % then point the batch to that newly created mat file with the
-    % onsets
 
-    [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName);
+    [funcDataDir, boldFileName] = spm_fileparts(boldFileName{1});
+    
+    tsvFile = strrep(boldFileName, '_bold', '_events.tsv');
+    tsvFile = strrep(tsvFile, prefix, '');
+    tsvFile = fullfile(funcDataDir, tsvFile);
 
-    tsvFile = fullfile( ...
-        funcDataDir, ...
-        strrep(boldFileName, '_bold.nii', '_events.tsv'));
-
-    fullpathOnsetFileName = convertOnsetTsvToMat(tsvFile, opt, isMVPA);
+    onsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA);
 
 end
 
-function realigntParamFile = getRealignParamFile(opt, funcFWHM, fullpathBoldFileName)
+function realignParamFile = getRealignParamFile(opt, fullpathBoldFileName, funcFWHM)
 
-    [~, motionRegressorPrefix] = getPrefix('FFX', opt, funcFWHM);
+    [prefix, motionRegressorPrefix] = getPrefix('FFX', opt, funcFWHM);
 
-    [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName);
-
-    realigntParamFile = ...
-        fullfile(funcDataDir, ...
-        ['rp_', motionRegressorPrefix, strrep(boldFileName, '.nii', '.txt')]);
+    [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName{1});
+    
+    realignParamFile = strrep(boldFileName, prefix, motionRegressorPrefix);
+    realignParamFile = ['rp_', realignParamFile, '.txt'];
+    realignParamFile = fullfile(funcDataDir, realignParamFile);
+    
+    if ~exist(realignParamFile, 'file')
+        errorStruct.identifier = 'getRealignParamFile:nonExistentFile';
+        errorStruct.message = sprintf('%s\n%s', ...
+            'This realignment file does not exist:', ...
+            realignParamFile);
+        error(errorStruct);
+    end
 end
