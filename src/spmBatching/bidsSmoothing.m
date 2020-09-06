@@ -13,6 +13,9 @@ function bidsSmoothing(funcFWHM, opt)
 
     % creates prefix to look for
     prefix = getPrefix('smoothing', opt);
+    if strcmp(opt.space, 'T1w')
+        prefix = getPrefix('smoothing_space-T1w', opt);
+    end
 
     %% Loop through the groups, subjects, and sessions
     for iGroup = 1:length(group)
@@ -70,13 +73,7 @@ function bidsSmoothing(funcFWHM, opt)
             matlabbatch{1}.spm.spatial.smooth.prefix = ...
                 [spm_get_defaults('smooth.prefix'), num2str(funcFWHM)];
 
-            %% SAVE THE MATLABBATCH
-            % Create the JOBS directory if it doesnt exist
-            jobsDir = fullfile(opt.jobsDir, subID);
-            [~, ~, ~] = mkdir(jobsDir);
-
-            save(fullfile(jobsDir, 'jobs_matlabbatch_SPM12_Smoothing.mat'), ...
-                'matlabbatch');
+            saveMatlabBatch(matlabbatch, 'Smoothing', opt, subID);
 
             spm_jobman('run', matlabbatch);
 

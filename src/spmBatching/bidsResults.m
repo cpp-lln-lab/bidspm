@@ -30,6 +30,8 @@ function bidsResults(funcFWHM, conFWHM, opt, isMVPA)
                 case 'run'
                     error('run level not implemented yet');
 
+                    saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID); %#ok<UNRCH>
+
                 case 'subject'
 
                     matlabbatch = ...
@@ -41,6 +43,8 @@ function bidsResults(funcFWHM, conFWHM, opt, isMVPA)
                         isMVPA, ...
                         iStep, ...
                         iCon);
+
+                    saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
 
                 case 'dataset'
 
@@ -56,18 +60,14 @@ function bidsResults(funcFWHM, conFWHM, opt, isMVPA)
                     matlabbatch = resultsMatlabbatch( ...
                         matlabbatch, opt, iStep, iCon, results);
 
+                    saveMatlabBatch(matlabbatch, 'computeFfxResults', opt);
+
             end
         end
 
     end
 
     if ~isempty(matlabbatch)
-
-        jobsDir = fullfile(opt.jobsDir);
-
-        save(fullfile(jobsDir, ...
-            'jobs_matlabbatch_SPM12_Results.mat'), ...
-            'matlabbatch');
 
         spm_jobman('run', matlabbatch);
 

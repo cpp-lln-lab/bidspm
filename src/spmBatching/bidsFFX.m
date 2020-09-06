@@ -26,7 +26,7 @@ function bidsFFX(action, funcFWHM, opt, isMVPA)
 
     switch action
 
-        case 1 % fMRI design and estimate
+        case 'specifyAndEstimate' % fMRI design and estimate
 
             %% Loop through the groups, subjects, and sessions
             for iGroup = 1:length(group)
@@ -35,10 +35,8 @@ function bidsFFX(action, funcFWHM, opt, isMVPA)
 
                     fprintf(1, 'BUILDING JOB : FMRI design\n');
 
-                    grpAndSubIdx = {iGroup, iSub};
-
                     matlabbatch = setBatchSubjectLevelGLMSpec( ...
-                        BIDS, opt, grpAndSubIdx, funcFWHM, isMVPA);
+                        BIDS, opt, iGroup, iSub, funcFWHM, isMVPA);
 
                     fprintf(1, 'BUILDING JOB : FMRI estimate\n');
 
@@ -60,23 +58,20 @@ function bidsFFX(action, funcFWHM, opt, isMVPA)
                     matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;
                     matlabbatch{2}.spm.stats.fmri_est.write_residuals = 1;
 
-                    % Create the JOBS directory if it doesnt exist
                     subID = group(iGroup).subNumber{iSub};
-                    jobsDir = fullfile(opt.jobsDir, subID);
-                    [~, ~, ~] = mkdir(jobsDir);
-
                     mvpaSuffix = setMvpaSuffix(isMVPA);
-
-                    save(fullfile(jobsDir, ['jobs_matlabbatch_SPM12_FFX_', mvpaSuffix, ...
-                        num2str(funcFWHM), '_', opt.taskName, '.mat']), ...
-                        'matlabbatch');
+                    saveMatlabBatch(matlabbatch, ...
+                        ['estimateFfx_task-', opt.taskName, ...
+                        '_FWHM-', num2str(funcFWFM), ...
+                        mvpaSuffix], ...
+                        opt, subID);
 
                     spm_jobman('run', matlabbatch);
 
                 end
             end
 
-        case 2  % CONTRASTS
+        case 'contrasts'
 
             fprintf(1, 'BUILDING JOB : FMRI contrasts\n');
 
@@ -86,9 +81,9 @@ function bidsFFX(action, funcFWHM, opt, isMVPA)
 
 end
 
-function matlabbatch = setBatchSubjectLevelGLMSpec(BIDS, opt, grpAndSubIdx, funcFWHM, isMVPA)
+function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
-    [iGroup, iSub] = deal(grpAndSubIdx{:});
+    [BIDS, opt, iGroup, iSub, funcFWHM, isMVPA] =  deal(varargin{:});
 
     [group, ~, ~] = getData(opt);
 
@@ -259,14 +254,13 @@ function matlabbatch = setBatchSubjectLevelContrasts(group, funcFWHM, opt, isMVP
 
     end
 
-    % Save ffx matlabbatch in JOBS
-    jobsDir = fullfile(opt.jobsDir, subID);
     mvpaSuffix = setMvpaSuffix(isMVPA);
-    save(fullfile(jobsDir, ...
-        ['jobs_matlabbatch_SPM12_ffx_', mvpaSuffix, ...
-        num2str(funcFWHM), '_', ...
-        opt.taskName, '_Contrasts.mat']), ...
-        'matlabbatch');
+    saveMatlabBatch(matlabbatch, ...
+        ['contrastsFfx_task-', opt.taskName, ...
+        '_FWHM-', num2str(funcFWFM), ...
+        mvpaSuffix], ...
+        opt, subID);
 
     spm_jobman('run', matlabbatch);
+
 end

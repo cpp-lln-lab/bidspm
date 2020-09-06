@@ -281,13 +281,8 @@ function bidsSpatialPrepro(opt)
             % size 3 allow to run RunQA / original voxel size at acquisition
             matlabbatch{9}.spm.spatial.normalise.write.woptions.vox = voxDim;
 
-            %% SAVING JOBS
-            % Create the JOBS directory if it doesnt exist
-            jobsDir = fullfile(opt.jobsDir, subID);
-            [~, ~, ~] = mkdir(jobsDir);
+            saveMatlabBatch(matlabbatch, 'spatialPreprocessing', opt, subID);
 
-            save(fullfile(jobsDir, 'jobs_matlabbatch_SPM12_SpatialPrepocess.mat'), ...
-                'matlabbatch'); % save the matlabbatch
             spm_jobman('run', matlabbatch);
 
         end

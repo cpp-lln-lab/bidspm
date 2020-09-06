@@ -1,5 +1,8 @@
-function bidsRealign(opt)
-    %% The scripts realigns the functional
+function bidsRealignReslice(opt)
+    % bidsRealignReslice(opt)
+    %
+    % The scripts realigns the functional
+    % Assumes that bidsSTC ha already been run
 
     %% TO DO
     % find a way to paralelize this over subjects
@@ -70,24 +73,19 @@ function bidsRealign(opt)
 
             % The following lines are commented out because those parameters
             % can be set in the spm_my_defaults.m
-            % matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.quality = 1;
-            % matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.sep = 2;
-            % matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.fwhm = 5;
-            % matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.rtm = 1;
-            % matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.interp = 2;
-            % matlabbatch{2}.spm.spatial.realign.estwrite.eoptions.wrap = [0 0 0];
-            % matlabbatch{2}.spm.spatial.realign.estwrite.roptions.which = [0 1];
-            % matlabbatch{2}.spm.spatial.realign.estwrite.roptions.interp = 3;
-            % matlabbatch{2}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
-            % matlabbatch{2}.spm.spatial.realign.estwrite.roptions.mask = 1;
+            % matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.quality = 1;
+            % matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.sep = 2;
+            % matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.fwhm = 5;
+            % matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.rtm = 1;
+            % matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.interp = 2;
+            % matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.wrap = [0 0 0];
+            % matlabbatch{1}.spm.spatial.realign.estwrite.roptions.which = [0 1];
+            % matlabbatch{1}.spm.spatial.realign.estwrite.roptions.interp = 3;
+            % matlabbatch{1}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
+            % matlabbatch{1}.spm.spatial.realign.estwrite.roptions.mask = 1;
 
-            %% SAVING JOBS
-            % Create the JOBS directory if it doesnt exist
-            jobsDir = fullfile(opt.jobsDir, subID);
-            [~, ~, ~] = mkdir(jobsDir);
+            saveMatlabBatch(matlabbatch, 'RealignReslice', opt, subID);
 
-            save(fullfile(jobsDir, 'jobs_matlabbatch_SPM12_SpatialPrepocess.mat'), ...
-                'matlabbatch'); % save the matlabbatch
             spm_jobman('run', matlabbatch);
 
         end

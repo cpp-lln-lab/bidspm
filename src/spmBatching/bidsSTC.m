@@ -124,12 +124,8 @@ function bidsSTC(opt)
             % can be set in the spm_my_defaults.m
             % matlabbatch{1}.spm.temporal.st.prefix = spm_get_defaults('slicetiming.prefix');
 
-            %% SAVE THE MATLABBATCH
-            % Create the JOBS directory if it doesnt exist
-            jobsDir = fullfile(opt.jobsDir, subID);
-            [~, ~, ~] = mkdir(jobsDir);
+            saveMatlabBatch(matlabbatch, 'STC', opt, subID);
 
-            save(fullfile(jobsDir, 'jobs_matlabbatch_SPM12_STC.mat'), 'matlabbatch');
             spm_jobman('run', matlabbatch);
 
         end

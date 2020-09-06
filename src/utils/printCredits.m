@@ -1,11 +1,6 @@
 function printCredits()
 
-    try
-        version = fileread(fullfile(fileparts(mfilename('fullpath')), ...
-            '..', '..', 'version.txt'));
-    catch
-        version = 'v0.0.3';
-    end
+    versionNumber = getVersion();
 
     contributors = { ...
         'Mohamed Rezk', ...
@@ -28,7 +23,7 @@ function printCredits()
     disp('                                                   ');
 
     splash = 'Thank you for using the CPP lap pipeline - version %s. ';
-    fprintf(splash, version);
+    fprintf(splash, versionNumber);
     fprintf('\n\n');
 
     fprintf('Current list of contributors includes\n');

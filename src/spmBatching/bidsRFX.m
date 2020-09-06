@@ -6,8 +6,8 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
     %
     % INPUTS
     % - action
-    %   - case 1 : smooth con images
-    %   - case 2 : Mean Struct, MeanMask, Factorial design specification and
+    %   - case 'smoothContrasts' : smooth con images
+    %   - case 'RFX' : Mean Struct, MeanMask, Factorial design specification and
     %      estimation, Contrst estimation
     %
     % - funcFWHM = How much smoothing was applied to the functional
@@ -15,14 +15,6 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
     % - conFWHM = How much smoothing is required for the CON images for
     %    the second level analysis
     %
-    % Your input is twofold :
-    % 1. Specify your data at the beginning of the script
-    % 2. In the origdir, create a structure containing all possible contrasts,
-    % example: ConOfInterest.mat containing the structure Session.con (contrasts of
-    %  interest by group)
-    % IMPORTANT: To create the structure, use the script "List_of_Contrast.m"
-    % The Contrast names should match those in the single level FFX and in THE
-    % SAME ORDER.
 
     % if input has no opt, load the opt.mat file
     if nargin < 4
@@ -36,10 +28,6 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
 
     % load the subjects/Groups information and the task name
     [group, opt, ~] = getData(opt);
-
-    % JOBS Directory
-    jobsDir = fullfile(opt.jobsDir);
-    [~, ~, ~] = mkdir(jobsDir);
 
     % Check which level of CON smoothing is desired
     if conFWHM == 0
@@ -58,11 +46,10 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
 
             matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt, isMVPA);
 
-            save(fullfile(jobsDir, ...
-                ['jobs_matlabbatch_SPM12_SmoothCon_', ...
-                num2str(conFWHM), '_', ...
-                opt.taskName, '_Contrasts.mat']), ...
-                'matlabbatch');
+            saveMatlabBatch( ...
+                ['smoothCon_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
+                'STC', ...
+                opt);
 
             spm_jobman('run', matlabbatch);
 
@@ -72,12 +59,23 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
 
             rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
 
+            % ------
+            % TODO
+            % - need to rethink where to save the anat and mask
+            % - need to smooth the anat
+            % - create a masked version of the anat too
+            % ------
+
             matlabbatch = ...
                 setBatchMeanAnatAndMask(opt, funcFWHM, isMVPA, rfxDir);
 
-            save(fullfile(jobsDir, ...
-                'jobs_matlabbatch_SPM12_CreateMeanStrucMask.mat'), ...
-                'matlabbatch');
+            % ------
+            % TODO
+            % needs to be improved (maybe??) as the structural and mask may vary for
+            % different analysis
+            % ------
+
+            saveMatlabBatch(matlabbatch, 'createMeanStrucMask', opt);
 
             spm_jobman('run', matlabbatch);
 
@@ -98,17 +96,24 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
                 end
             end
 
+            % ------
+            % TODO
+            % rfxDir should probably be set in setBatchFactorialDesign
+            % ------
+
             rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
 
             fprintf(1, 'BUILDING JOB: Factorial Design Specification');
 
             matlabbatch = setBatchFactorialDesign(grpLvlCon, group, smoothPrefix, rfxDir);
 
-            % Go to Jobs directory and save the matlabbatch
-            % save the matlabbatch
-            save(fullfile(jobsDir, ...
-                'jobs_matlabbatch_SPM12_RFX_specification.mat'), ...
-                'matlabbatch');
+            % ------
+            % TODO
+            % needs to be improved (maybe??) as the name may vary with FXHM and
+            % contrast
+            % ------
+
+            saveMatlabBatch(matlabbatch, 'rfxSpecification', opt);
 
             fprintf(1, 'Factorial Design Specification...');
 
@@ -127,11 +132,13 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
                 matlabbatch{j}.spm.stats.fmri_est.method.Classical = 1;
             end
 
-            % Go to Jobs directory and save the matlabbatch
-            % save the matlabbatch
-            save(fullfile(jobsDir, ...
-                'jobs_matlabbatch_SPM12_RFX_estimation.mat'), ...
-                'matlabbatch');
+            % ------
+            % TODO
+            % needs to be improved (maybe??) as the name may vary with FXHM and
+            % contrast
+            % ------
+
+            saveMatlabBatch(matlabbatch, 'rfxEstimation', opt);
 
             fprintf(1, 'Factorial Design Estimation...');
 
@@ -155,10 +162,13 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
                 matlabbatch{j}.spm.stats.con.delete = 0;
             end
 
-            % save the matlabbatch
-            save(fullfile(jobsDir, ...
-                'jobs_matlabbatch_SPM12_RFX_contrasts.mat'), ...
-                'matlabbatch');
+            % ------
+            % TODO
+            % needs to be improved (maybe??) as the name may vary with FXHM and
+            % contrast
+            % ------
+
+            saveMatlabBatch(matlabbatch, 'rfxContrasts', opt);
 
             fprintf(1, 'Contrast Estimation...');
 
@@ -237,15 +247,21 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, isMVPA, rfxDir)
 
     tmpImg = sprintf('+i%i', imgRange);
     tmpImg = tmpImg(2:end);
-
     sumEquation = ['(', tmpImg, ')'];
+
     % meanStruct_equation = '(i1+i2+i3+i4+i5)/5'
     meanStruct_equation = ['(', tmpImg, ')/', num2str(nbImg)];
+
+    % ------
+    % TODO
+    % not sure this makes sense for the mask as voxels that have no data for one
+    % subject are excluded anyway !!!!
+
     % meanMask_equation = '(i1+i2+i3+i4+i5)>0.75*5'
     meanMask_equation = strcat(sumEquation, '>0.75*', num2str(nbImg));
 
     %% The mean structural will be saved in the RFX folder
-    matlabbatch{1}.spm.util.imcalc.output = 'MeanStruct.nii';
+    matlabbatch{1}.spm.util.imcalc.output = 'meanAnat.nii';
     matlabbatch{1}.spm.util.imcalc.outdir{:} = rfxDir;
     matlabbatch{1}.spm.util.imcalc.expression = meanStruct_equation;
     matlabbatch{1}.spm.util.imcalc.options.dmtx = 0;
@@ -254,7 +270,7 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, isMVPA, rfxDir)
     matlabbatch{1}.spm.util.imcalc.options.dtype = 4;
 
     %% The mean mask will be saved in the RFX folder
-    matlabbatch{2}.spm.util.imcalc.output = 'MeanMask.nii';
+    matlabbatch{2}.spm.util.imcalc.output = 'meanMask.nii';
     matlabbatch{2}.spm.util.imcalc.outdir{:} = rfxDir;
     matlabbatch{2}.spm.util.imcalc.expression = meanMask_equation;
     matlabbatch{2}.spm.util.imcalc.options.dmtx = 0;

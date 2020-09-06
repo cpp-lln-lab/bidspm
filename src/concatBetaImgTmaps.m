@@ -74,17 +74,11 @@ function concatBetaImgTmaps(funcFWHM, opt, deleteIndBeta, deleteIndTmaps)
             matlabbatch{2}.spm.util.cat.name = ['4D_t_maps_', num2str(funcFWHM), '.nii'];
             matlabbatch{2}.spm.util.cat.dtype = 4;
 
+            saveMatlabBatch(matlabbatch, 'concatBetaImgTmaps', opt, subID);
+
             spm_jobman('run', matlabbatch);
 
             removeBetaImgTmaps(beta_maps, t_maps, deleteIndBeta, deleteIndTmaps);
-
-            %% SAVE THE MATLABBATCH
-            % Create the JOBS directory if it doesnt exist
-            jobdsDir = fullfile(opt.jobdsDir, subID);
-            [~, ~, ~] = mkdir(jobdsDir);
-
-            save(fullfile(jobdsDir, 'Contrasts_MVPA_SPM12.mat'), 'contrasts');
-            save(fullfile(jobdsDir, 'jobs_matlabbatch_SPM12_create4Dmaps.mat'), 'matlabbatch');
 
         end
     end
