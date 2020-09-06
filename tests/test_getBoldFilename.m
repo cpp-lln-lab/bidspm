@@ -19,7 +19,7 @@ function test_getBoldFilenameBasic()
     opt.subjects = {'01'};
 
     [~, opt, BIDS] = getData(opt);
-    
+
     sessions = getInfo(BIDS, subID, opt, 'Sessions');
 
     runs = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
@@ -29,7 +29,7 @@ function test_getBoldFilenameBasic()
         subID, sessions{iSes}, runs{iRun}, opt);
 
     expectedFileName = 'sub-01_ses-01_task-vislocalizer_bold.nii';
-    
+
     expectedSubFuncDataDir = fullfile(fileparts(mfilename('fullpath')), ...
         'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', 'ses-01', 'func');
 

@@ -20,7 +20,7 @@ function test_getBoldFilenameForFFXBasic()
 
     [~, opt, BIDS] = getData(opt);
 
-    [boldFileName, prefix] = getFunctionalFiles(BIDS, opt, subID, funcFWHM, iSes, iRun);
+    [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);
 
     expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
         'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', 'ses-01', 'func', ...
@@ -46,7 +46,7 @@ function test_getBoldFilenameForFFXNativeSpace()
 
     [~, opt, BIDS] = getData(opt);
 
-    [boldFileName, prefix] = getFunctionalFiles(BIDS, opt, subID, funcFWHM, iSes, iRun);
+    [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);
 
     expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
         'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', 'ses-01', 'func', ...

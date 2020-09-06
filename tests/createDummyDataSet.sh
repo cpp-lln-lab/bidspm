@@ -31,6 +31,7 @@ do
 			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii.gz
 			touch $ThisDir/func/s6wsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/func/s6rsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/func/rp_sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.txt
 
 			echo "onset,	duration,	trial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
 			echo "2,	15,	VisMot" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
@@ -45,8 +46,6 @@ do
 			echo "6,	2,	VisMotUp" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
 
 		  mkdir $ThisDir/anat
-
-		  rm $ThisDir/anat/*
 
 		  touch $ThisDir/anat/sub-$Subject\_ses-$Ses\_T1w.nii.gz
 
