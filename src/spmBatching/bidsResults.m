@@ -44,13 +44,7 @@ function bidsResults(funcFWHM, conFWHM, opt, isMVPA)
 
                 case 'dataset'
 
-                    % Define the RFX folder name and create it in the derivatives
-                    % directory
-                    rfxDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', ...
-                        ['RFX_', opt.taskName], ...
-                        ['RFX_FunctSmooth', num2str(funcFWHM), ...
-                        '_ConSmooth_', num2str(conFWHM)], ...
-                        opt.result.Steps(iStep).Contrasts(iCon).Name);
+                    rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
 
                     load(fullfile(rfxDir, 'SPM.mat'));
 

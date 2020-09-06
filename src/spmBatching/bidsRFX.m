@@ -52,7 +52,7 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
 
     switch action
 
-        case 1
+        case 'smoothContrasts'
 
             fprintf(1, 'SMOOTHING CON IMAGES...');
 
@@ -66,19 +66,11 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
 
             spm_jobman('run', matlabbatch);
 
-        case 2
-
-            % create rfxDir in the derivatives directory
-            rfxDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', ...
-                ['RFX_', opt.taskName], ...
-                ['RFX_FunctSmooth', num2str(funcFWHM), ...
-                '_ConSmooth_', num2str(conFWHM)]);
-
-            [~, ~, ~] = mkdir(rfxDir);
-
-            %%
+        case 'RFX'
 
             fprintf(1, 'Create Mean Struct and Mask IMAGES...');
+
+            rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
 
             matlabbatch = ...
                 setBatchMeanAnatAndMask(opt, funcFWHM, isMVPA, rfxDir);
@@ -105,6 +97,8 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
                     break
                 end
             end
+
+            rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
 
             fprintf(1, 'BUILDING JOB: Factorial Design Specification');
 

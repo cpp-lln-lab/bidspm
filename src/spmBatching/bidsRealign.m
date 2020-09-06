@@ -38,6 +38,7 @@ function bidsRealign(opt)
 
             %% REALIGN
             fprintf(1, ' BUILDING SPATIAL JOB : REALIGN\n');
+
             sesCounter = 1;
 
             for iSes = 1:nbSessions  % For each session
