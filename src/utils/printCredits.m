@@ -1,6 +1,6 @@
 function printCredits()
 
-    version = '0.0.3';
+    versionNumber = getVersion();
 
     contributors = { ...
         'Mohamed Rezk', ...
@@ -23,7 +23,7 @@ function printCredits()
     disp('                                                   ');
 
     splash = 'Thank you for using the CPP lap pipeline - version %s. ';
-    fprintf(splash, version);
+    fprintf(splash, versionNumber);
     fprintf('\n\n');
 
     fprintf('Current list of contributors includes\n');

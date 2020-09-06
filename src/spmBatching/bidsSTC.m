@@ -33,46 +33,7 @@ function bidsSTC(opt)
 
     fprintf(1, 'DOING SLICE TIME CORRECTION\n');
 
-    % get slice order
-    sliceOrder = getSliceOrder(opt, 1);
-    if isempty(sliceOrder)
-        warning('No slice order dectected: skipping slice timing correction.');
-        return
-    end
-
-    % prefix of the files to look for
-    prefix = getPrefix('STC', opt);
-
-    % get metadata for STC
-    % Note that slice ordering is assumed to be from foot to head. If it is not, enter
-    % instead: TR - INTRASCAN_TIME - SLICE_TIMING_VECTOR
-
-    % SPM accepts slice time acquisition as inputs for slice order (simplifies
-    % things when dealing with multiecho data)
-    nbSlices = length(sliceOrder); % unique is necessary in case of multi echo
-    TR = opt.metadata.RepetitionTime;
-    TA = TR - (TR / nbSlices);
-
-    maxSliceTime = max(sliceOrder);
-    minSliceTime = min(sliceOrder);
-    if isempty(opt.STC_referenceSlice)
-        referenceSlice = (maxSliceTime - minSliceTime) / 2;
-    else
-        referenceSlice = opt.STC_referenceSlice;
-    end
-    if referenceSlice > TA
-        error('%s (%f) %s (%f).\n%s', ...
-          'The reference slice time', referenceSlice, ...
-          'is greater than the acquisition time', TA, ...
-          ['Reference slice time must be in milliseconds ' ...
-          'or leave it empty to use mid-acquisition time as reference.']);
-    end
-
-    matlabbatch = [];
-
     %% Loop through the groups, subjects, and sessions
-    % For each group
-
     for iGroup = 1:length(group)
 
         groupName = group(iGroup).name;
@@ -88,49 +49,17 @@ function bidsSTC(opt)
             %% GET FUNCTIOVAL FILES
             fprintf(1, ' BUILDING STC JOB : STC\n');
 
-            [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
-
-            for iSes = 1:nbSessions
-
-                % get all runs for that subject across all sessions
-                [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
-
-                for iRun = 1:nbRuns
-
-                    % get the filename for this bold run for this task
-                    [fileName, subFuncDataDir] = getBoldFilename( ...
-                      BIDS, ...
-                      subID, sessions{iSes}, runs{iRun}, opt);
-
-                    % check that the file with the right prefix exist
-                    files = inputFileValidation(subFuncDataDir, prefix, fileName);
-
-                    % add the file to the list
-                    matlabbatch{1}.spm.temporal.st.scans{iRun} = cellstr(files);
-
-                    disp(files{1});
-
-                end
-
-            end
-
-            matlabbatch{1}.spm.temporal.st.nslices = nbSlices;
-            matlabbatch{1}.spm.temporal.st.tr = TR;
-            matlabbatch{1}.spm.temporal.st.ta = TA;
-            matlabbatch{1}.spm.temporal.st.so = sliceOrder;
-            matlabbatch{1}.spm.temporal.st.refslice = referenceSlice;
+            matlabbatch = setBatchSTC(BIDS, opt, subID);
 
             % The following lines are commented out because those parameters
             % can be set in the spm_my_defaults.m
             % matlabbatch{1}.spm.temporal.st.prefix = spm_get_defaults('slicetiming.prefix');
 
-            %% SAVE THE MATLABBATCH
-            % Create the JOBS directory if it doesnt exist
-            jobsDir = fullfile(opt.jobsDir, subID);
-            [~, ~, ~] = mkdir(jobsDir);
+            if ~isempty(matlabbatch)
+                saveMatlabBatch(matlabbatch, 'STC', opt, subID);
 
-            save(fullfile(jobsDir, 'jobs_matlabbatch_SPM12_STC.mat'), 'matlabbatch');
-            spm_jobman('run', matlabbatch);
+                spm_jobman('run', matlabbatch);
+            end
 
         end
     end

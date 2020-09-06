@@ -23,23 +23,30 @@ do
 			mkdir $ThisDir
 
 			mkdir $ThisDir/func
+
+			rm $ThisDir/func/*
+
 			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii.gz
 			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii.gz
 			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii.gz
+			touch $ThisDir/func/s6wsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/func/s6rsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/func/rp_sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.txt
 
-			echo "onset,	duration,	trial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
-			echo "2,	15,	VisMot" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
-			echo "25,	15,	VisStat" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
+			echo "onset\tduration\ttrial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
+			echo "2\t15\tVisMot" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
+			echo "25\t15\tVisStat" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
 
-			echo "onset,	duration,	trial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
-			echo "2,	2,	VisMotUp" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
-			echo "4,	2,	VisMotDown" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
+			echo "onset\tduration\ttrial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
+			echo "2\t2\tVisMotUp" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
+			echo "4\t2\tVisMotDown" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
 
-			echo "onset,	duration,	trial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
-			echo "3,	2,	VisMotDown" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
-			echo "6,	2,	VisMotUp" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
+			echo "onset\tduration\ttrial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
+			echo "3\t2\tVisMotDown" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
+			echo "6\t2\tVisMotUp" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
 
 		  mkdir $ThisDir/anat
+
 		  touch $ThisDir/anat/sub-$Subject\_ses-$Ses\_T1w.nii.gz
 
 		done

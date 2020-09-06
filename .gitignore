@@ -3,7 +3,6 @@
 *.asv
 *.m~
 *.mat
-*.nii
 *.xml
 *.log
 *.html

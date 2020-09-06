@@ -1,4 +1,4 @@
-function bidsResults(funcFWHM, conFWHM, opt, isMVPA)
+function bidsResults(opt, funcFWHM, conFWHM, isMVPA)
     % This scripts computes the results for a series of contrast that can be
     % specified at the run, subject or dataset step level (see contrast specification
     % following the BIDS stats model specification)
@@ -28,7 +28,9 @@ function bidsResults(funcFWHM, conFWHM, opt, isMVPA)
             switch opt.result.Steps(iStep).Level
 
                 case 'run'
-                    error('run level not implemented yet');
+                    warning('run level not implemented yet');
+
+                    % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
 
                 case 'subject'
 
@@ -42,15 +44,14 @@ function bidsResults(funcFWHM, conFWHM, opt, isMVPA)
                         iStep, ...
                         iCon);
 
+                    % TODO
+                    % Save this batch in for each subject and not once for all
+
+                    saveMatlabBatch(matlabbatch, 'computeFfxResults', opt);
+
                 case 'dataset'
 
-                    % Define the RFX folder name and create it in the derivatives
-                    % directory
-                    rfxDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', ...
-                        ['RFX_', opt.taskName], ...
-                        ['RFX_FunctSmooth', num2str(funcFWHM), ...
-                        '_ConSmooth_', num2str(conFWHM)], ...
-                        opt.result.Steps(iStep).Contrasts(iCon).Name);
+                    rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
 
                     load(fullfile(rfxDir, 'SPM.mat'));
 
@@ -62,18 +63,14 @@ function bidsResults(funcFWHM, conFWHM, opt, isMVPA)
                     matlabbatch = resultsMatlabbatch( ...
                         matlabbatch, opt, iStep, iCon, results);
 
+                    saveMatlabBatch(matlabbatch, 'computeRfxResults', opt);
+
             end
         end
 
     end
 
     if ~isempty(matlabbatch)
-
-        jobsDir = fullfile(opt.jobsDir);
-
-        save(fullfile(jobsDir, ...
-            'jobs_matlabbatch_SPM12_Results.mat'), ...
-            'matlabbatch');
 
         spm_jobman('run', matlabbatch);
 

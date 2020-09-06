@@ -30,9 +30,11 @@ function checkDependencies()
     % Check the Nifti tools are indeed there.
     a = which('load_untouch_nii');
     if isempty(a)
-        error('%s \n%s', ...
+        errorStruct.identifier = 'checkDependencies:missingDependency';
+        errorStruct.message = sprintf('%s \n%s', ...
             'Failed to find the Nifti tools: Are you sure they in the matlab path?', ...
             'You can download them here: %s', nifti_tools_url);
+        error(errorStruct);
     else
         fprintf(' Nifti tools detected\n');
     end

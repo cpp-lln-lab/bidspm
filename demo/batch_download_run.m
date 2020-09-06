@@ -18,6 +18,7 @@ URL = 'http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.z
 WD = fileparts(mfilename('fullpath'));
 
 % we add all the subfunctions that are in the sub directories
+addpath(fullfile(WD, '..'));
 addpath(genpath(fullfile(WD, '..', 'src')));
 addpath(genpath(fullfile(WD, '..', 'lib')));
 
@@ -66,7 +67,7 @@ opt.result.Steps(1).Contrasts(2) = struct( ...
 %% Get data
 % fprintf('%-40s:', 'Downloading dataset...');
 % urlwrite(URL, 'MoAEpilot.zip');
-% unzip('MoAEpilot.zip', fullfile(WD, 'output'));
+unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 
 %% Check dependencies
 % If toolboxes are not in the MATLAB Directory and needed to be added to
@@ -81,10 +82,12 @@ opt.result.Steps(1).Contrasts(2) = struct( ...
 checkDependencies();
 
 %% Run batches
+isMVPA = 0;
+
 bidsCopyRawFolder(opt, 1);
 bidsSTC(opt);
 bidsSpatialPrepro(opt);
 bidsSmoothing(FWHM, opt);
-bidsFFX(1, FWHM, opt, 0);
-bidsFFX(2, FWHM, opt, 0);
-bidsResults(FWHM, [], opt, 0);
+bidsFFX('specifyAndEstimate', opt, FWHM, isMVPA);
+bidsFFX('contrasts', opt, FWHM, isMVPA);
+bidsResults(opt, FWHM, [], isMVPA);
