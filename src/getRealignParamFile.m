@@ -5,6 +5,11 @@ function realignParamFile = getRealignParamFile(opt, fullpathBoldFileName, funcF
         [prefix, motionRegressorPrefix] = getPrefix('FFX_space-T1w', opt, funcFWHM);
     end
 
+    if strcmp(prefix, 'r')
+        prefix = 'rsub-';
+        motionRegressorPrefix = 'sub-';
+    end
+
     [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName{1});
 
     realignParamFile = strrep(boldFileName, prefix, motionRegressorPrefix);

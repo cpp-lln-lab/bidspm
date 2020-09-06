@@ -12,6 +12,7 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA)
             'This onset tsv file deos not exist:', ...
             tsvFile);
         error(errorStruct);
+
     end
 
     % Read the tsv file
