@@ -1,5 +1,5 @@
 function printCredits()
-    
+
     try
         version = fileread(fullfile(fileparts(mfilename('fullpath')), ...
             '..', '..', 'version.txt'));

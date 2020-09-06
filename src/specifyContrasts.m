@@ -91,7 +91,7 @@ function [contrasts,  con_counter] = specifySubjectLevelContrasts(Step, con_coun
             C(end, regIdx) = 1;
 
             % stores the specification
-            contrasts(con_counter).C = C;
+            contrasts(con_counter).C = C; %#ok<*AGROW>
             contrasts(con_counter).name = cdt_name;
 
         end
