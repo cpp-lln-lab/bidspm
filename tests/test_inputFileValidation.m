@@ -12,15 +12,15 @@ function test_inputFileValidationBasic()
         'SPM12_CPPL', 'sub-01', 'ses-01', 'func');
     prefix = '';
     fileName = 'sub-01_ses-01_task-vislocalizer_bold.nii.gz';
-    
+
     expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
         'SPM12_CPPL', 'sub-01', 'ses-01', 'func', ...
         'sub-01_ses-01_task-vislocalizer_bold.nii.gz');
-    
+
     file = inputFileValidation(directory, prefix, fileName);
-    
-    assertEqual(expectedOutput, file{1})
-    
+
+    assertEqual(expectedOutput, file{1});
+
 end
 
 function test_inputFileValidationError()
@@ -29,14 +29,13 @@ function test_inputFileValidationError()
         'SPM12_CPPL', 'sub-01', 'ses-01', 'func');
     prefix = 'swa';
     fileName = 'sub-01_ses-01_task-vislocalizer_bold.nii.gz';
-    
+
     expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
         'SPM12_CPPL', 'sub-01', 'ses-01', 'func', ...
         'sub-01_ses-01_task-vislocalizer_bold.nii.gz');
-   
-    
-    assertExceptionThrown(...
+
+    assertExceptionThrown( ...
         @()inputFileValidation(directory, prefix, fileName), ...
-        'inputFileValidation:nonExistentFile')
-    
+        'inputFileValidation:nonExistentFile');
+
 end
