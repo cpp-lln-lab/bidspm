@@ -75,14 +75,14 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         for iRun = 1:nbRuns
 
             % get functional files
-            [fullpathBoldFileName, prefix] = ...
+            fullpathBoldFileName = ...
                 getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);
             matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).scans = ...
                 cellstr(fullpathBoldFileName);
 
             % get stimuli onset time file
             fullpathOnsetFileName = ...
-                createAndReturnOnsetFile(opt, subID, funcFWHM, boldFileName, isMVPA);
+                createAndReturnOnsetFile(opt, subID, funcFWHM, fullpathBoldFileName, isMVPA);
 
             matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).multi = ...
                 cellstr(fullpathOnsetFileName);

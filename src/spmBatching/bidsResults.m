@@ -1,4 +1,4 @@
-function bidsResults(funcFWHM, conFWHM, opt, isMVPA)
+function bidsResults(opt, funcFWHM, conFWHM, isMVPA)
     % This scripts computes the results for a series of contrast that can be
     % specified at the run, subject or dataset step level (see contrast specification
     % following the BIDS stats model specification)
@@ -28,9 +28,9 @@ function bidsResults(funcFWHM, conFWHM, opt, isMVPA)
             switch opt.result.Steps(iStep).Level
 
                 case 'run'
-                    error('run level not implemented yet');
+                    warning('run level not implemented yet');
 
-                    saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID); %#ok<UNRCH>
+                    % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
 
                 case 'subject'
 
@@ -44,7 +44,10 @@ function bidsResults(funcFWHM, conFWHM, opt, isMVPA)
                         iStep, ...
                         iCon);
 
-                    saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
+                    % TODO
+                    % Save this batch in for each subject and not once for all
+
+                    saveMatlabBatch(matlabbatch, 'computeFfxResults', opt);
 
                 case 'dataset'
 
@@ -60,7 +63,7 @@ function bidsResults(funcFWHM, conFWHM, opt, isMVPA)
                     matlabbatch = resultsMatlabbatch( ...
                         matlabbatch, opt, iStep, iCon, results);
 
-                    saveMatlabBatch(matlabbatch, 'computeFfxResults', opt);
+                    saveMatlabBatch(matlabbatch, 'computeRfxResults', opt);
 
             end
         end

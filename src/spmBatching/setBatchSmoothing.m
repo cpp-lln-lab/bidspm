@@ -1,4 +1,4 @@
-function matlabbatch = setBatchSmoothing(BIDS, subID, opt, funcFWHM, groupName)
+function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
 
     % creates prefix to look for
     prefix = getPrefix('smoothing', opt);
@@ -22,8 +22,6 @@ function matlabbatch = setBatchSmoothing(BIDS, subID, opt, funcFWHM, groupName)
 
         % numRuns = group(iGroup).numRuns(iSub);
         for iRun = 1:nbRuns
-
-            printProcessingRun(groupName, iSub, subID, iSes, iRun);
 
             % get the filename for this bold run for this task
             [fileName, subFuncDataDir] = getBoldFilename( ...

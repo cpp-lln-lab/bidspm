@@ -20,9 +20,11 @@ function bidsSmoothing(funcFWHM, opt)
 
             subID = group(iGroup).subNumber{iSub};
 
+            printProcessingSubject(groupName, iSub, subID);
+
             fprintf(1, 'PREPARING: SMOOTHING JOB \n');
 
-            matlabbatch = setBatchSmoothing(BIDS, subID, opt, funcFWHM, groupName);
+            matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM);
 
             saveMatlabBatch(matlabbatch, 'Smoothing', opt, subID);
 

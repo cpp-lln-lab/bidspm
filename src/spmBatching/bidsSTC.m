@@ -49,15 +49,17 @@ function bidsSTC(opt)
             %% GET FUNCTIOVAL FILES
             fprintf(1, ' BUILDING STC JOB : STC\n');
 
-            matlabbatch = setBatchSTC(BIDS, subID, opt);
+            matlabbatch = setBatchSTC(BIDS, opt, subID);
 
             % The following lines are commented out because those parameters
             % can be set in the spm_my_defaults.m
             % matlabbatch{1}.spm.temporal.st.prefix = spm_get_defaults('slicetiming.prefix');
 
-            saveMatlabBatch(matlabbatch, 'STC', opt, subID);
+            if ~isempty(matlabbatch)
+                saveMatlabBatch(matlabbatch, 'STC', opt, subID);
 
-            spm_jobman('run', matlabbatch);
+                spm_jobman('run', matlabbatch);
+            end
 
         end
     end

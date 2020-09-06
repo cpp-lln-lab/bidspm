@@ -39,15 +39,15 @@ function contrasts = specifyContrasts(ffxDir, taskName, opt, isMVPA)
 
         switch Step.Level
 
-            case 'subject'
-
-                [contrasts,  con_counter] = ...
-                    specifySubjectLevelContrasts(Step, con_counter, SPM);
-
             case 'run'
 
                 [contrasts,  con_counter] = ...
-                    specifyRunLevelContrasts(Step, con_counter, SPM);
+                    specifyRunLvlContrasts(contrasts, Step, con_counter, SPM);
+
+            case 'subject'
+
+                [contrasts,  con_counter] = ...
+                    specifySubLvlContrasts(contrasts, Step, con_counter, SPM);
 
         end
 
@@ -73,7 +73,7 @@ function  [cdt_name, regIdx] = getRegIdx(conList, iCon, SPM, iCdt)
 
 end
 
-function [contrasts,  con_counter] = specifySubjectLevelContrasts(Step, con_counter, SPM)
+function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con_counter, SPM)
 
     if isfield(Step, 'AutoContrasts')
 
@@ -129,7 +129,7 @@ function [contrasts,  con_counter] = specifySubjectLevelContrasts(Step, con_coun
 
 end
 
-function [contrasts,  con_counter] = specifyRunLevelContrasts(Step, con_counter, SPM)
+function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con_counter, SPM)
 
     if isfield(Step, 'AutoContrasts')
 

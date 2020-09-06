@@ -1,4 +1,4 @@
-function matlabbatch = setBatchSTC(BIDS, subID, opt)
+function matlabbatch = setBatchSTC(BIDS, opt, subID)
     % Slice timing units is in milliseconds to be BIDS compliant and not in slice number
     % as is more traditionally the case with SPM.
     %
@@ -12,6 +12,8 @@ function matlabbatch = setBatchSTC(BIDS, subID, opt)
     % to do the slice timing correction
     %
     % See README.md for more information about slice timing correction
+
+    matlabbatch = [];
 
     % get slice order
     sliceOrder = getSliceOrder(opt, 1);
@@ -49,8 +51,6 @@ function matlabbatch = setBatchSTC(BIDS, subID, opt)
     prefix = getPrefix('STC', opt);
 
     [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
-
-    matlabbatch = [];
 
     for iSes = 1:nbSessions
 
