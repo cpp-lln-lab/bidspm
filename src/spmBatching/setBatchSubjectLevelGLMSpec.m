@@ -82,7 +82,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
             % get stimuli onset time file
             fullpathOnsetFileName = ...
-                createAndReturnOnsetFile(opt, fullpathBoldFileName, prefix, isMVPA);
+                createAndReturnOnsetFile(opt, subID, funcFWHM, boldFileName, isMVPA);
+
             matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).multi = ...
                 cellstr(fullpathOnsetFileName);
 
@@ -108,22 +109,5 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
         end
     end
-
-end
-
-function onsetFileName = createAndReturnOnsetFile(opt, boldFileName, prefix, isMVPA)
-    % onsetFileName = createAndReturnOnsetFile(opt, boldFileName, prefix, isMVPA)
-    %
-    % gets the tsv onset file based on the bold file name (removes any prefix)
-    %
-    % convert the tsv files to a mat file to be used by SPM
-
-    [funcDataDir, boldFileName] = spm_fileparts(boldFileName{1});
-
-    tsvFile = strrep(boldFileName, '_bold', '_events.tsv');
-    tsvFile = strrep(tsvFile, prefix, '');
-    tsvFile = fullfile(funcDataDir, tsvFile);
-
-    onsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA);
 
 end
