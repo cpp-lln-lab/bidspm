@@ -111,8 +111,6 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
 end
 
-
-
 function onsetFileName = createAndReturnOnsetFile(opt, boldFileName, prefix, isMVPA)
     % onsetFileName = createAndReturnOnsetFile(opt, boldFileName, prefix, isMVPA)
     %
@@ -121,7 +119,7 @@ function onsetFileName = createAndReturnOnsetFile(opt, boldFileName, prefix, isM
     % convert the tsv files to a mat file to be used by SPM
 
     [funcDataDir, boldFileName] = spm_fileparts(boldFileName{1});
-    
+
     tsvFile = strrep(boldFileName, '_bold', '_events.tsv');
     tsvFile = strrep(tsvFile, prefix, '');
     tsvFile = fullfile(funcDataDir, tsvFile);
@@ -135,11 +133,11 @@ function realignParamFile = getRealignParamFile(opt, fullpathBoldFileName, funcF
     [prefix, motionRegressorPrefix] = getPrefix('FFX', opt, funcFWHM);
 
     [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName{1});
-    
+
     realignParamFile = strrep(boldFileName, prefix, motionRegressorPrefix);
     realignParamFile = ['rp_', realignParamFile, '.txt'];
     realignParamFile = fullfile(funcDataDir, realignParamFile);
-    
+
     if ~exist(realignParamFile, 'file')
         errorStruct.identifier = 'getRealignParamFile:nonExistentFile';
         errorStruct.message = sprintf('%s\n%s', ...

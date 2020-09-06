@@ -3,7 +3,7 @@ function structure = setDefaultFields(structure, fieldsToSet)
     %
     % recursively loop through the fields of a structure and sets a value if they don't exist
     %
-    
+
     if isempty(fieldsToSet)
         return
     end

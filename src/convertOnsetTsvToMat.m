@@ -4,9 +4,9 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA)
     % converts them to TRs (time unit) and saves the onset file to be used for
     % SPM
     %%
-    
+
     if ~exist(tsvFile, 'file')
-        
+
         errorStruct.identifier = 'convertOnsetTsvToMat:nonExistentFile';
         errorStruct.message = sprintf('%s\n%s', ...
             'This onset tsv file deos not exist:', ...
@@ -25,7 +25,7 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA)
             'There was no trial_type field in this file:', ...
             tsvFile);
         error(errorStruct);
-        
+
     end
 
     conds = t.trial_type; % assign all the tsv information to a variable called conds.
