@@ -115,6 +115,9 @@ function batch = resultsMatlabbatch(batch, opt, iStep, iCon, results)
         batch{end}.spm.stats.results.export{2}.nidm.modality = 'FMRI';
 
         batch{end}.spm.stats.results.export{2}.nidm.refspace = 'ixi';
+        if strcmp(opt.space, 'T1w')
+            batch{end}.spm.stats.results.export{2}.nidm.refspace = 'subject';
+        end
 
         batch{end}.spm.stats.results.export{2}.nidm.group.nsubj = results.nbSubj;
 
@@ -151,7 +154,7 @@ function batch = setBatchSubjectLevelResults(varargin)
                 disp({SPM.xCon.name}');
                 error( ...
                     'This SPM file %s does not contain a contrast named %s', ...
-                    fullfile(Dir, 'SPM.mat'), ...
+                    fullfile(ffxDir, 'SPM.mat'), ...
                     opt.result.Steps(1).Contrasts(iCon).Name);
             end
 
