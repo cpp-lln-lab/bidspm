@@ -7,10 +7,10 @@ function test_suite = test_setBatchCoregistration %#ok<*STOUT>
 end
 
 function test_setBatchCoregistrationBasic()
-    
+
     spmLocation = spm('dir');
-    
-    addpath(fullfile(spmLocation, 'matlabbatch'))
+
+    addpath(fullfile(spmLocation, 'matlabbatch'));
 
     for sesCounter = 0:2
         matlabbatch = {};
@@ -18,14 +18,13 @@ function test_setBatchCoregistrationBasic()
         expectedBatch = returnExpectedBatch(sesCounter);
         assertEqual(expectedBatch, matlabbatch);
     end
-    
+
 end
 
-
 function expectedBatch = returnExpectedBatch(sesCounter)
-    
+
     expectedBatch = {};
-    
+
     expectedBatch{end + 1}.spm.spatial.coreg.estimate.ref(1) = cfg_dep;
     expectedBatch{end}.spm.spatial.coreg.estimate.ref(1).tname = 'Reference Image';
     expectedBatch{end}.spm.spatial.coreg.estimate.ref(1).tgt_spec{1}(1).name = 'class';
@@ -40,7 +39,7 @@ function expectedBatch = returnExpectedBatch(sesCounter)
         '.', 'val', '{}', {1});
     expectedBatch{end}.spm.spatial.coreg.estimate.ref(1).src_output = ...
         substruct('.', 'files', '{}', {1});
-    
+
     expectedBatch{end}.spm.spatial.coreg.estimate.source(1) = cfg_dep;
     expectedBatch{end}.spm.spatial.coreg.estimate.source(1).tname = 'Source Image';
     expectedBatch{end}.spm.spatial.coreg.estimate.source(1).tgt_spec{1}(1).name = 'filter';
@@ -57,7 +56,7 @@ function expectedBatch = returnExpectedBatch(sesCounter)
         '.', 'val', '{}', {1});
     expectedBatch{end}.spm.spatial.coreg.estimate.source(1).src_output = ...
         substruct('.', 'rmean');
-    
+
     for iSes = 1:sesCounter - 1 % '-1' because I added 1 extra session to ses_counter
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes) = cfg_dep;
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes).tname = 'Other Images';
