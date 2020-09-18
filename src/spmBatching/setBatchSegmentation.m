@@ -1,10 +1,10 @@
 function matlabbatch = setBatchSegmentation(matlabbatch)
-    
+
     % define SPM folder
     spmLocation = spm('dir');
-    
+
     % SAVE BIAS CORRECTED IMAGE
-    matlabbatch{end+1}.spm.spatial.preproc.channel.vols(1) = ...
+    matlabbatch{end + 1}.spm.spatial.preproc.channel.vols(1) = ...
         cfg_dep('Named File Selector: Structural(1) - Files', ...
         substruct( ...
         '.', 'val', '{}', {1}, ...
@@ -15,7 +15,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch)
     matlabbatch{end}.spm.spatial.preproc.channel.biasreg = 0.001;
     matlabbatch{end}.spm.spatial.preproc.channel.biasfwhm = 60;
     matlabbatch{end}.spm.spatial.preproc.channel.write = [0 1];
-    
+
     % CREATE SEGMENTS IN NATIVE SPACE OF GM,WM AND CSF
     % (CSF - in case I want to compute TIV later - stefbenet)
     matlabbatch{end}.spm.spatial.preproc.tissue(1).tpm = ...
@@ -48,7 +48,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch)
     matlabbatch{end}.spm.spatial.preproc.tissue(6).ngaus = 2;
     matlabbatch{end}.spm.spatial.preproc.tissue(6).native = [0 0];
     matlabbatch{end}.spm.spatial.preproc.tissue(6).warped = [0 0];
-    
+
     % SAVE FORWARD DEFORMATION FIELD FOR NORMALISATION
     matlabbatch{end}.spm.spatial.preproc.warp.mrf = 1;
     matlabbatch{end}.spm.spatial.preproc.warp.cleanup = 1;
@@ -58,4 +58,3 @@ function matlabbatch = setBatchSegmentation(matlabbatch)
     matlabbatch{end}.spm.spatial.preproc.warp.samp = 3;
     matlabbatch{end}.spm.spatial.preproc.warp.write = [1 1];
 end
-

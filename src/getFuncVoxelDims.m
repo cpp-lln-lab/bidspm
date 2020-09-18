@@ -1,8 +1,8 @@
 function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName)
     % [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName)
     %
-    % 
-    
+    %
+
     % get native resolution to reuse it at normalisation;
     if ~isempty(opt.funcVoxelDims) % If voxel dimensions is defined in the opt
         voxDim = opt.funcVoxelDims; % Get the dimension values
@@ -19,5 +19,5 @@ function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName)
         % all subjects and sessions
         opt.funcVoxelDims = voxDim;
     end
-    
+
 end

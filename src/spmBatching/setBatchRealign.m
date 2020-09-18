@@ -1,23 +1,23 @@
 function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt)
 
-    matlabbatch{end+1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
-    
+    matlabbatch{end + 1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
+
     [sessions] = getInfo(BIDS, subID, opt, 'Sessions');
-    
+
     sesCounter = 1;
-    
+
     for iSes = 1:nbSessions
-        
+
         % get all runs for that subject across all sessions
         [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
-        
+
         for iRun = 1:nbRuns
-            
+
             % get the filename for this bold run for this task
             [fileName, subFuncDataDir] = getBoldFilename( ...
                 BIDS, ...
                 subID, sessions{iSes}, runs{iRun}, opt);
-            
+
             % check that the file with the right prefix exist and we get and
             % save its voxeldimension
             prefix = getPrefix('preprocess', opt);
@@ -25,12 +25,12 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt)
             [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName);
 
             fprintf(1, ' %s\n', files{1});
-            
+
             matlabbatch{end}.spm.spatial.realign.estwrite.data{sesCounter} = ...
                 cellstr(files);
-            
+
             sesCounter = sesCounter + 1;
-            
+
         end
     end
 
@@ -46,5 +46,5 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt)
     % matlabbatch{end}.spm.spatial.realign.estwrite.roptions.interp = 3;
     % matlabbatch{end}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
     % matlabbatch{end}.spm.spatial.realign.estwrite.roptions.mask = 1;
-    
+
 end
