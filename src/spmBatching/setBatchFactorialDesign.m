@@ -1,7 +1,7 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir)
-    
+
     % Check which level of CON smoothing is desired
     smoothPrefix = '';
     if conFWHM > 0
