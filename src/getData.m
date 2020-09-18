@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function [group, opt, BIDS] = getData(opt, BIDSdir, type)
     % getData checks that all the options specified by the user in getOptions
     % and fills the blank for any that might have been missed out.

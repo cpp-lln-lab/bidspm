@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function matlabbatch = setBatchSTC(BIDS, opt, subID)
     % Slice timing units is in milliseconds to be BIDS compliant and not in slice number
     % as is more traditionally the case with SPM.

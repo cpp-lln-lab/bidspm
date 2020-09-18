@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function printProcessingSubject(groupName, iSub, subID)
 
     fprintf(1, [ ...

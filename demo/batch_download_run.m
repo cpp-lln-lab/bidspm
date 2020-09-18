@@ -1,3 +1,5 @@
+% (C) Copyright 2019 Remi Gau
+
 % This script will download the dataset from the FIL for the block design SPM
 % tutorial and will run the basic preprocessing, FFX and contrasts on it.
 % Results might be a bit different from those in the manual as some

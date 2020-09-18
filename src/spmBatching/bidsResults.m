@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function bidsResults(opt, funcFWHM, conFWHM, isMVPA)
     % This scripts computes the results for a series of contrast that can be
     % specified at the run, subject or dataset step level (see contrast specification

@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function onsetFileName = createAndReturnOnsetFile(opt, subID, funcFWHM, boldFileName, isMVPA)
     % onsetFileName = createAndReturnOnsetFile(opt, boldFileName, prefix, isMVPA)
     %

@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
     % This script smooth all con images created at the fisrt level in each
     % subject, create a mean structural image and mean mask over the

@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function matlabbatch = setBatchSegmentation(matlabbatch)
 
     % define SPM folder

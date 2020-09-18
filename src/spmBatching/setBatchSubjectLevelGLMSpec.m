@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
     [BIDS, opt, subID, funcFWHM, isMVPA] =  deal(varargin{:});

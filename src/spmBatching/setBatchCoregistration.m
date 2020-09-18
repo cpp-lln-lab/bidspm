@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function matlabbatch = setBatchCoregistration(matlabbatch)
 
     matlabbatch{end + 1}.spm.spatial.coreg.estimate.ref(1) = cfg_dep;

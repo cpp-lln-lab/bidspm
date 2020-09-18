@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM, isMVPA)
 
     ffxDir = getFFXdir(subID, funcFWHM, opt, isMVPA);

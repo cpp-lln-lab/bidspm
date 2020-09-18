@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function [boldFileName, prefix] = getBoldFilenameForFFX(varargin)
     % [boldFileName, prefix] = getFunctionalFiles(BIDS, opt, subID, funcFWHM, iSes, iRun)
     %

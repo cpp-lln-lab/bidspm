@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 %   __  ____  ____     _      _    _
 %  / _)(  _ \(  _ \   | |    / \  | )
 % ( (_  )___/ )___/   | |_  / _ \ | \

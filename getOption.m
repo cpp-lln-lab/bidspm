@@ -1,24 +1,7 @@
-function opt = getOption()
-    %   __  ____  ____     _      _    _
-    %  / _)(  _ \(  _ \   | |    / \  | )
-    % ( (_  )___/ )___/   | |_  / _ \ | \
-    %  \__)(__)  (__)     |___||_/ \_||__)
-    %
-    % Thank you for using the CPP lap pipeline - version 0.0.3.
-    %
-    % Current list of contributors includes
-    %  Mohamed Rezk
-    %  Rémi Gau
-    %  Olivier Collignon
-    %  Ane Gurtubay
-    %  Marco Barilari
-    %
-    % Please cite using the following DOI:
-    %  https://doi.org/10.5281/zenodo.3554332
-    %
-    % For bug report, suggestions for improvements or contributions see our github repo:
-    %  https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
+function opt = getOption()
+    % opt = getOption()
     % returns a structure that contains the options chosen by the user to run
     % slice timing correction, pre-processing, FFX, RFX.
 

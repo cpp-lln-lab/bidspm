@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function bidsCopyRawFolder(opt, deleteZippedNii)
     % This function will copy the subject's folders from the "raw" folder to the
     % "derivatives" folder, and will copy the dataset description and task json files

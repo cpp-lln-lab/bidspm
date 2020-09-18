@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function bidsFFX(action, opt, funcFWHM, isMVPA)
     % bidsFFX(action, funcFWHM, opt, isMVPA)
     %

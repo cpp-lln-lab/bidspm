@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
     % generates prefix to append to file name to look for
 

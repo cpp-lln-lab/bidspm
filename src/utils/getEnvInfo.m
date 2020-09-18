@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
+
 function [OS, GeneratedBy] = getEnvInfo()
 
     GeneratedBy(1).name = 'CPP_BIDS_SPM_pipeline';

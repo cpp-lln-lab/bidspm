@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt)
 
     matlabbatch{end + 1}.spm.spatial.realign.estwrite.eoptions.weight = {''};

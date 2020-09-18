@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function checkDependencies()
     % Checks that that the right dependencies are installed. ALso loads the spm defaults.
 

@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function saveMatlabBatch(matlabbatch, batchType, opt, subID)
     % saveMatlabBatch(batch, batchType, opt, subID)
     %

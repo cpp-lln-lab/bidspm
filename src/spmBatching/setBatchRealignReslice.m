@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function matlabbatch = setBatchRealignReslice(BIDS, opt, subID)
 
     % identify sessions for this subject
