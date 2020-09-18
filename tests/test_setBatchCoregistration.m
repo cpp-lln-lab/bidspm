@@ -57,7 +57,7 @@ function expectedBatch = returnExpectedBatch(sesCounter)
     expectedBatch{end}.spm.spatial.coreg.estimate.source(1).src_output = ...
         substruct('.', 'rmean');
 
-    for iSes = 1:sesCounter - 1 % '-1' because I added 1 extra session to ses_counter
+    for iSes = 1:sesCounter
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes) = cfg_dep;
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes).tname = 'Other Images';
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(1).name = ...
