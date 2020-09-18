@@ -114,7 +114,7 @@ function opt = getMetaData(BIDS, opt, subjects, type)
         case 'T1w'
             metadata = spm_BIDS(BIDS, 'metadata', ...
                 'sub', subjects{1}, ...
-                'type', [type]);
+                'type', type);
     end
 
     if iscell(metadata)

@@ -26,9 +26,9 @@ do
 
 			rm $ThisDir/func/*
 
-			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii.gz
-			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii.gz
-			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii.gz
+			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
+			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
+			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/func/s6wsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/func/s6rsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/func/rp_sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.txt
@@ -47,7 +47,7 @@ do
 
 		  mkdir $ThisDir/anat
 
-		  touch $ThisDir/anat/sub-$Subject\_ses-$Ses\_T1w.nii.gz
+		  touch $ThisDir/anat/sub-$Subject\_ses-$Ses\_T1w.nii
 
 		done
 

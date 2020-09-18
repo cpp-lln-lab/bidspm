@@ -53,6 +53,8 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
     prefix = getPrefix('STC', opt);
 
     [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+    
+    runCounter = 1;
 
     for iSes = 1:nbSessions
 
@@ -70,8 +72,10 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
             files = inputFileValidation(subFuncDataDir, prefix, fileName);
 
             % add the file to the list
-            matlabbatch{1}.spm.temporal.st.scans{iRun} = cellstr(files);
+            matlabbatch{1}.spm.temporal.st.scans{runCounter} = cellstr(files);
 
+            runCounter = runCounter + 1;
+            
             disp(files{1});
 
         end

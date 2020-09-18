@@ -11,11 +11,11 @@ function test_inputFileValidationBasic()
     directory = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
         'SPM12_CPPL', 'sub-01', 'ses-01', 'func');
     prefix = '';
-    fileName = 'sub-01_ses-01_task-vislocalizer_bold.nii.gz';
+    fileName = 'sub-01_ses-01_task-vislocalizer_bold.nii';
 
     expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
         'SPM12_CPPL', 'sub-01', 'ses-01', 'func', ...
-        'sub-01_ses-01_task-vislocalizer_bold.nii.gz');
+        'sub-01_ses-01_task-vislocalizer_bold.nii');
 
     file = inputFileValidation(directory, prefix, fileName);
 
