@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function bidsSmoothing(funcFWHM, opt)
     % This scripts performs smoothing to the functional data using a full width
     % half maximum smoothing kernel of size "mm_smoothing".
@@ -26,7 +28,7 @@ function bidsSmoothing(funcFWHM, opt)
 
             matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM);
 
-            saveMatlabBatch(matlabbatch, 'Smoothing', opt, subID);
+            saveMatlabBatch(matlabbatch, ['Smoothing_FWHM-' num2str(funcFWHM)], opt, subID);
 
             spm_jobman('run', matlabbatch);
 

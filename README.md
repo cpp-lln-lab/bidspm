@@ -27,6 +27,7 @@
   - [Assumption](#assumption)
   - [Setting up](#setting-up)
     - [getOptions](#getoptions)
+      - [spm_my_defaults](#spm_my_defaults)
     - [model JSON files](#model-json-files)
   - [Order of the analysis](#order-of-the-analysis)
   - [Docker](#docker)
@@ -126,8 +127,20 @@ Set the task to analyze in the BIDS data set
 The directory where your files are located on your computer: make sure you have a copy of the data set as this pipeline will change it.
 `opt.derivativesDir = '/Data/auditoryBIDS/derivatives'`
 
+#### spm_my_defaults
+
+
 Some more SPM options can be set in the `spm_my_defaults.m`.
 
+- Use of FAST and not AR1 for auto-correlation modelisation
+
+Using FAST does not seem to affect results on time series with "normal" TRs but 
+improves results when using sequences: it is therefore used by default in this 
+pipeline.
+
+> Olszowy, W., Aston, J., Rua, C. et al. Accurate autocorrelation modeling 
+> substantially improves fMRI reliability. Nat Commun 10, 1220 (2019). 
+> https://doi.org/10.1038/s41467-019-09230-w
 
 ### model JSON files
 This files allow you to specify which contrasts to run and follow the BIDS statistical model extension and as implement by [fitlins](https://fitlins.readthedocs.io/en/latest/model.html)

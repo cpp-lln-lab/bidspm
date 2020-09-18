@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
+
 function [fileName, subFuncDataDir] = getBoldFilename(varargin)
     % [fileName, subFuncDataDir] = getBoldFilename(BIDS, opt, subID, sessionID, runID)
 

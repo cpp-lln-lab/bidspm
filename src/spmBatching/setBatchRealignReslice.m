@@ -1,15 +1,19 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function matlabbatch = setBatchRealignReslice(BIDS, opt, subID)
+    % [matlabbatch] = setBatchRealignReslice(matlabbatch, BIDS, subID, opt)
+    %
+    % to set the batch in if you want to reslice the images immediatly
+    % and not continue towards normalization
 
     % identify sessions for this subject
     [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
-    prefix = getPrefix('preprocess', opt);
-
     matlabbatch = [];
 
-    sesCounter = 1;
-
     for iSes = 1:nbSessions  % For each session
+
+        allFiles = {};
 
         % get all runs for that subject across all sessions
         [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
@@ -22,16 +26,23 @@ function matlabbatch = setBatchRealignReslice(BIDS, opt, subID)
                 subID, sessions{iSes}, runs{iRun}, opt);
 
             % check that the file with the right prefix exist
-            files = inputFileValidation(subFuncDataDir, prefix, fileName);
+            prefix = getPrefix('preprocess', opt);
+            file = inputFileValidation(subFuncDataDir, prefix, fileName);
 
-            fprintf(1, ' %s\n', files{1});
+            if numel(file) > 1
+                errorStruct.identifier = 'setBatchRealignReslice:tooManyFiles';
+                errorStruct.message = 'This should only get on file.';
+                error(errorStruct);
+            end
 
-            matlabbatch{1}.spm.spatial.realign.estwrite.data{sesCounter} = ...
-                cellstr(files);
+            fprintf(1, ' %s\n', file{1});
 
-            sesCounter = sesCounter + 1;
+            allFiles{end + 1, 1} = file{1}; %#ok<*AGROW>
 
         end
+
+        matlabbatch{1}.spm.spatial.realign.estwrite.data{iSes} = allFiles;
+
     end
 
     matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.weight = {''};

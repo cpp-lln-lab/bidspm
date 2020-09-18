@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
 
     % creates prefix to look for

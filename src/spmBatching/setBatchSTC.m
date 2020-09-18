@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function matlabbatch = setBatchSTC(BIDS, opt, subID)
     % Slice timing units is in milliseconds to be BIDS compliant and not in slice number
     % as is more traditionally the case with SPM.
@@ -52,6 +54,8 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
 
     [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
+    runCounter = 1;
+
     for iSes = 1:nbSessions
 
         % get all runs for that subject across all sessions
@@ -68,7 +72,9 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
             files = inputFileValidation(subFuncDataDir, prefix, fileName);
 
             % add the file to the list
-            matlabbatch{1}.spm.temporal.st.scans{iRun} = cellstr(files);
+            matlabbatch{1}.spm.temporal.st.scans{runCounter} = cellstr(files);
+
+            runCounter = runCounter + 1;
 
             disp(files{1});
 

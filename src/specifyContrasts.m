@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function contrasts = specifyContrasts(ffxDir, taskName, opt, isMVPA)
     % Specifies the first level contrasts
     %

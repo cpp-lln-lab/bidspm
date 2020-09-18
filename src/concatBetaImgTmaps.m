@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function concatBetaImgTmaps(funcFWHM, opt, deleteIndBeta, deleteIndTmaps)
     % concatBetaImgTmaps(funcFWHM, opt, deleteIndBeta, deleteIndTmaps)
     %

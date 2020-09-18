@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function file = inputFileValidation(dir, prefix, fileName)
     file2Process = spm_select('FPList', dir, ['^' prefix fileName '$']);
 

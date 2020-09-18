@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function spm_my_defaults
     % This is where we set the defautls we want to use.
     % These will overide the spm defaults.

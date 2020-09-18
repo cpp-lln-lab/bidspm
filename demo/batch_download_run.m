@@ -1,3 +1,5 @@
+% (C) Copyright 2019 Remi Gau
+
 % This script will download the dataset from the FIL for the block design SPM
 % tutorial and will run the basic preprocessing, FFX and contrasts on it.
 % Results might be a bit different from those in the manual as some
@@ -67,7 +69,7 @@ opt.result.Steps(1).Contrasts(2) = struct( ...
 %% Get data
 % fprintf('%-40s:', 'Downloading dataset...');
 % urlwrite(URL, 'MoAEpilot.zip');
-unzip('MoAEpilot.zip', fullfile(WD, 'output'));
+% unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 
 %% Check dependencies
 % If toolboxes are not in the MATLAB Directory and needed to be added to
@@ -84,7 +86,7 @@ checkDependencies();
 %% Run batches
 isMVPA = 0;
 
-bidsCopyRawFolder(opt, 1);
+% bidsCopyRawFolder(opt, 1);
 bidsSTC(opt);
 bidsSpatialPrepro(opt);
 bidsSmoothing(FWHM, opt);

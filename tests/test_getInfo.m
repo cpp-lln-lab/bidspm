@@ -17,7 +17,7 @@ function test_getInfoBasic()
 
     %% Get sessions from BIDS
     opt.taskName = 'vismotion';
-    subID = 'cont02';
+    subID = 'ctrl01';
     info = 'sessions';
     [~, opt, BIDS] = getData(opt);
     sessions = getInfo(BIDS, subID, opt, info);
@@ -25,7 +25,7 @@ function test_getInfoBasic()
 
     %% Get runs from BIDS
     opt.taskName = 'vismotion';
-    subID = 'cont02';
+    subID = 'ctrl01';
     info = 'runs';
     session =  '01';
     [~, opt, BIDS] = getData(opt);
@@ -34,7 +34,7 @@ function test_getInfoBasic()
 
     %% Get runs from BIDS when no run in filename
     opt.taskName = 'vislocalizer';
-    subID = 'cont02';
+    subID = 'ctrl01';
     info = 'runs';
     session =  '01';
     [~, opt, BIDS] = getData(opt);
@@ -43,7 +43,7 @@ function test_getInfoBasic()
 
     %% Get filename from BIDS
     opt.taskName = 'vismotion';
-    subID = 'cont02';
+    subID = 'ctrl01';
     session =  '01';
     run = '1';
     info = 'filename';
@@ -56,7 +56,7 @@ function test_getInfoBasic()
         '_ses-' session, ...
         '_task-' opt.taskName, ...
         '_run-' run, ...
-        '_bold.nii.gz']);
+        '_bold.nii']);
 
     assert(strcmp(filename{1}, FileName));
 

@@ -37,6 +37,11 @@ before_install:
   - make -C spm12/src PLATFORM=octave distclean
   - make -C spm12/src PLATFORM=octave
   - make -C spm12/src PLATFORM=octave install
+  # get data
+  - mkdir demo/output
+  - curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output demo/output/MoAEpilot.zip
+  - unzip demo/output/MoAEpilot.zip -d demo/output/
+
 
 script:
   - octave $OCTFLAGS --eval "runTests"

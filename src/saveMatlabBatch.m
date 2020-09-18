@@ -1,4 +1,6 @@
-function saveMatlabBatch(batch, batchType, opt, subID)
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
+function saveMatlabBatch(matlabbatch, batchType, opt, subID)
     % saveMatlabBatch(batch, batchType, opt, subID)
     %
     % Also save some basic environnment info
@@ -25,12 +27,12 @@ function saveMatlabBatch(batch, batchType, opt, subID)
     [OS, GeneratedBy] = getEnvInfo();
     GeneratedBy(1).Description = batchType;
 
-    save(fullfile(jobsDir, filename), 'batch', 'OS', 'GeneratedBy');
+    save(fullfile(jobsDir, filename), 'matlabbatch');
 
     % write as json for more "human readibility"
     opts.indent = '    ';
 
-    json.matlabbach = batch;
+    json.matlabbach = matlabbatch;
     json.GeneratedBy = GeneratedBy;
     json.OS = OS;
 

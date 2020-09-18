@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 warning('OFF');
 
 addpath(fullfile(pwd, 'spm12'));
