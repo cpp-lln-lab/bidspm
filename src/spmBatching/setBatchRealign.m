@@ -4,7 +4,7 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt)
 
     matlabbatch{end + 1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
 
-    [sessions] = getInfo(BIDS, subID, opt, 'Sessions');
+    [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
     sesCounter = 1;
 

@@ -69,7 +69,7 @@ opt.result.Steps(1).Contrasts(2) = struct( ...
 %% Get data
 % fprintf('%-40s:', 'Downloading dataset...');
 % urlwrite(URL, 'MoAEpilot.zip');
-unzip('MoAEpilot.zip', fullfile(WD, 'output'));
+% unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 
 %% Check dependencies
 % If toolboxes are not in the MATLAB Directory and needed to be added to
@@ -86,7 +86,7 @@ checkDependencies();
 %% Run batches
 isMVPA = 0;
 
-bidsCopyRawFolder(opt, 1);
+% bidsCopyRawFolder(opt, 1);
 bidsSTC(opt);
 bidsSpatialPrepro(opt);
 bidsSmoothing(FWHM, opt);

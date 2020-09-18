@@ -50,7 +50,7 @@ function bidsSpatialPrepro(opt)
             printProcessingSubject(groupName, iSub, subID);
 
             % identify sessions for this subject
-            [sessions] = getInfo(BIDS, subID, opt, 'Sessions');
+            [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
             fprintf(1, ' BUILDING SPATIAL JOB : SELECTING ANATOMCAL\n');
             % get all T1w images for that subject and
@@ -72,7 +72,7 @@ function bidsSpatialPrepro(opt)
 
             fprintf(1, ' BUILDING SPATIAL JOB : COREGISTER\n');
             % REFERENCE IMAGE : DEPENDENCY FROM NAMED FILE SELECTOR ('Anatomical')
-            matlabbatch = setBatchCoregistration(matlabbatch);
+            matlabbatch = setBatchCoregistration(matlabbatch, nbSessions);
 
             fprintf(1, ' BUILDING SPATIAL JOB : SEGMENT ANATOMICAL\n');
             % (WITH NEW SEGMENT -DEFAULT SEGMENT IN SPM12)

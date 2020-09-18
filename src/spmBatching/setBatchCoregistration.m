@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function matlabbatch = setBatchCoregistration(matlabbatch, sesCounter)
+function matlabbatch = setBatchCoregistration(matlabbatch, nbSessions)
 
     matlabbatch{end + 1}.spm.spatial.coreg.estimate.ref(1) = cfg_dep;
     matlabbatch{end}.spm.spatial.coreg.estimate.ref(1).tname = 'Reference Image';
@@ -39,7 +39,7 @@ function matlabbatch = setBatchCoregistration(matlabbatch, sesCounter)
     % OTHER IMAGES : DEPENDENCY FROM REALIGNEMENT ('Realign: Estimate & Reslice:
     % Realigned Images (Sess 1 to N)')
     % files %%
-    for iSes = 1:sesCounter - 1 % '-1' because I added 1 extra session to ses_counter
+    for iSes = 1:nbSessions
         matlabbatch{end}.spm.spatial.coreg.estimate.other(iSes) = cfg_dep;
         matlabbatch{end}.spm.spatial.coreg.estimate.other(iSes).tname = 'Other Images';
         matlabbatch{end}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(1).name = ...
