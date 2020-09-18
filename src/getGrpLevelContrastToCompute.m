@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function grpLvlCon = getGrpLevelContrastToCompute(opt, isMVPA)
+function [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt, isMVPA)
 
     model = spm_jsonread(opt.model.univariate.file);
     if isMVPA
