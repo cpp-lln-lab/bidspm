@@ -27,8 +27,8 @@ function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
 
             % get the filename for this bold run for this task
             [fileName, subFuncDataDir] = getBoldFilename( ...
-                BIDS, ...
-                subID, sessions{iSes}, runs{iRun}, opt);
+                                                         BIDS, ...
+                                                         subID, sessions{iSes}, runs{iRun}, opt);
 
             % check that the file with the right prefix exist
             files = inputFileValidation(subFuncDataDir, prefix, fileName);

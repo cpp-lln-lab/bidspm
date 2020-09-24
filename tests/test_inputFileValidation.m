@@ -9,13 +9,13 @@ end
 function test_inputFileValidationBasic()
 
     directory = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
-        'SPM12_CPPL', 'sub-01', 'ses-01', 'func');
+                         'SPM12_CPPL', 'sub-01', 'ses-01', 'func');
     prefix = '';
     fileName = 'sub-01_ses-01_task-vislocalizer_bold.nii';
 
     expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
-        'SPM12_CPPL', 'sub-01', 'ses-01', 'func', ...
-        'sub-01_ses-01_task-vislocalizer_bold.nii');
+                              'SPM12_CPPL', 'sub-01', 'ses-01', 'func', ...
+                              'sub-01_ses-01_task-vislocalizer_bold.nii');
 
     file = inputFileValidation(directory, prefix, fileName);
 
@@ -30,7 +30,7 @@ function test_inputFileValidationError()
     fileName = 'gibberish.nii.gz';
 
     assertExceptionThrown( ...
-        @()inputFileValidation(directory, prefix, fileName), ...
-        'inputFileValidation:nonExistentFile');
+                          @()inputFileValidation(directory, prefix, fileName), ...
+                          'inputFileValidation:nonExistentFile');
 
 end

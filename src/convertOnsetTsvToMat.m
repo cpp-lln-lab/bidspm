@@ -11,8 +11,8 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA)
 
         errorStruct.identifier = 'convertOnsetTsvToMat:nonExistentFile';
         errorStruct.message = sprintf('%s\n%s', ...
-            'This onset tsv file deos not exist:', ...
-            tsvFile);
+                                      'This onset tsv file deos not exist:', ...
+                                      tsvFile);
         error(errorStruct);
 
     end
@@ -25,8 +25,8 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA)
 
         errorStruct.identifier = 'convertOnsetTsvToMat:noTrialType';
         errorStruct.message = sprintf('%s\n%s', ...
-            'There was no trial_type field in this file:', ...
-            tsvFile);
+                                      'There was no trial_type field in this file:', ...
+                                      tsvFile);
         error(errorStruct);
 
     end
@@ -55,8 +55,8 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA)
         if isTrialType{iCond}
 
             conditionName = strrep(model.Steps{runIdx}.Model.X{iCond}, ...
-                'trial_type.', ...
-                '');
+                                   'trial_type.', ...
+                                   '');
 
             % Get the index of each condition by comparing the unique names and
             % each line in the tsv files
@@ -76,6 +76,6 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA)
     fullpathOnsetFileName = fullfile(path, ['onsets_' file '.mat']);
 
     save(fullpathOnsetFileName, ...
-        'names', 'onsets', 'durations');
+         'names', 'onsets', 'durations');
 
 end

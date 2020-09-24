@@ -7,8 +7,8 @@ function file = inputFileValidation(dir, prefix, fileName)
 
         errorStruct.identifier = 'inputFileValidation:nonExistentFile';
         errorStruct.message = sprintf( ...
-            'This file does not exist: %s', ...
-            fullfile(dir, [prefix fileName '[.gz]']));
+                                      'This file does not exist: %s', ...
+                                      fullfile(dir, [prefix fileName '[.gz]']));
         error(errorStruct);
 
     else

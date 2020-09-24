@@ -21,7 +21,7 @@ function test_modelFilesBasic()
 
     %%
     file = fullfile(fileparts(mfilename('fullpath')), '..', ...
-        'model-visMotionLoc_smdl.json');
+                    'model-visMotionLoc_smdl.json');
 
     model = spm_jsonread(file);
 
@@ -29,7 +29,7 @@ function test_modelFilesBasic()
 
     %%
     file = fullfile(fileparts(mfilename('fullpath')), '..', ...
-        'model-motionDecodingUnivariate_smdl.json');
+                    'model-motionDecodingUnivariate_smdl.json');
 
     model = spm_jsonread(file);
 
@@ -37,7 +37,7 @@ function test_modelFilesBasic()
 
     %%
     file = fullfile(fileparts(mfilename('fullpath')), '..', ...
-        'model-motionDecodingMultivariate_smdl.json');
+                    'model-motionDecodingMultivariate_smdl.json');
 
     model = spm_jsonread(file);
 

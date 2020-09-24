@@ -13,7 +13,7 @@ function test_specifyContrastsBasic()
     opt.taskName = 'visMotion';
     opt.model.univariate.file = ...
         fullfile(fileparts(mfilename('fullpath')), ...
-        'dummyData', 'model', 'model-visMotionLoc_smdl.json');
+                 'dummyData', 'model', 'model-visMotionLoc_smdl.json');
 
     ffxDir = fullfile(opt.dataDir, 'SPM12_CPPL', 'sub-01', 'stats', 'ffx_visMotion', 'ffx_6');
 

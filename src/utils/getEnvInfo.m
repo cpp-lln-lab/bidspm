@@ -54,7 +54,7 @@ function [keys, vals] = getenvall(method)
             end
             [~, out] = system(cmd);
             vars = regexp(strtrim(out), '^(.*)=(.*)$', ...
-                'tokens', 'lineanchors', 'dotexceptnewline');
+                          'tokens', 'lineanchors', 'dotexceptnewline');
             vars = vertcat(vars{:});
             keys = vars(:, 1);
             vals = vars(:, 2);

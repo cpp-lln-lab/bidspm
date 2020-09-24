@@ -181,7 +181,7 @@ function applyTransformationMatrix()
     for i = 1:size(imagesToReorient, 1)
         tmp = ...
             sprintf('Reading current orientations... %.0f%%.\n', i / ...
-            size(imagesToReorient, 1) * 100);
+                    size(imagesToReorient, 1) * 100);
         fprintf('%s', tmp);
 
         matricesToChange(:, :, i) = spm_get_space(imagesToReorient(i, :));
