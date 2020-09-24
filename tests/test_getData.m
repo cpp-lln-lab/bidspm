@@ -22,7 +22,7 @@ function test_getDataBasic()
     assert(isequal(group(1).name, ''));
     assert(isequal(group.numSub, 6));
     assert(isequal(group.subNumber, ...
-        {'01' '02' 'blind01' 'blind02' 'ctrl01' 'ctrl02'}));
+                   {'01' '02' 'blind01' 'blind02' 'ctrl01' 'ctrl02'}));
 
     %% Get some subjects of some groups
     opt.groups = {'ctrl', 'blind'};

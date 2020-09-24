@@ -29,7 +29,8 @@ function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt, is
                 [conFWHM conFWHM conFWHM];
             matlabbatch{counter}.spm.spatial.smooth.dtype = 0;
             matlabbatch{counter}.spm.spatial.smooth.prefix = [ ...
-                spm_get_defaults('smooth.prefix'), num2str(conFWHM)];
+                                                              spm_get_defaults('smooth.prefix'), ...
+                                                              num2str(conFWHM)];
 
         end
     end

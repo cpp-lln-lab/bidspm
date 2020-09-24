@@ -33,8 +33,8 @@ function test_checkOptionsErrorGroup()
     opt.groups = {1};
 
     assertExceptionThrown( ...
-        @()checkOptions(opt), ...
-        'checkOptions:groupNotString');
+                          @()checkOptions(opt), ...
+                          'checkOptions:groupNotString');
 
 end
 
@@ -43,8 +43,8 @@ function test_checkOptionsErrorRefSlice()
     opt.STC_referenceSlice = [1:10];
 
     assertExceptionThrown( ...
-        @()checkOptions(opt), ...
-        'checkOptions:refSliceNotScalar');
+                          @()checkOptions(opt), ...
+                          'checkOptions:refSliceNotScalar');
 
 end
 
@@ -53,8 +53,8 @@ function test_checkOptionsErrorVoxDim()
     opt.funcVoxelDims = [1:10];
 
     assertExceptionThrown( ...
-        @()checkOptions(opt), ...
-        'checkOptions:voxDim');
+                          @()checkOptions(opt), ...
+                          'checkOptions:voxDim');
 
 end
 

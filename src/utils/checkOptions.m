@@ -19,7 +19,7 @@ function opt = checkOptions(opt)
 
         errorStruct.identifier = 'checkOptions:groupNotString';
         errorStruct.message = sprintf( ...
-            'All group names should be string.');
+                                      'All group names should be string.');
         error(errorStruct);
 
     end
@@ -28,8 +28,9 @@ function opt = checkOptions(opt)
 
         errorStruct.identifier = 'checkOptions:refSliceNotScalar';
         errorStruct.message = sprintf( ...
-            'options.STC_referenceSlice should be a scalar. \nCurrent value is: %d', ...
-            opt.STC_referenceSlice);
+                                      ['options.STC_referenceSlice should be a scalar.' ...
+                                       '\nCurrent value is: %d'], ...
+                                      opt.STC_referenceSlice);
         error(errorStruct);
 
     end
@@ -38,8 +39,9 @@ function opt = checkOptions(opt)
 
         errorStruct.identifier = 'checkOptions:voxDim';
         errorStruct.message = sprintf( ...
-            'opt.funcVoxelDims should be a vector of length 3. \nCurrent value is: %d', ...
-            opt.funcVoxelDims);
+                                      ['opt.funcVoxelDims should be a vector of length 3. '...
+                                       '\nCurrent value is: %d'], ...
+                                      opt.funcVoxelDims);
         error(errorStruct);
 
     end

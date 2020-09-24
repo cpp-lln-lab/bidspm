@@ -21,8 +21,8 @@ function realignParamFile = getRealignParamFile(opt, fullpathBoldFileName, funcF
     if ~exist(realignParamFile, 'file')
         errorStruct.identifier = 'getRealignParamFile:nonExistentFile';
         errorStruct.message = sprintf('%s\n%s', ...
-            'This realignment file does not exist:', ...
-            realignParamFile);
+                                      'This realignment file does not exist:', ...
+                                      realignParamFile);
         error(errorStruct);
     end
 end

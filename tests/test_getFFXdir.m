@@ -15,7 +15,8 @@ function test_getFFXdirBasic()
     opt.taskName = 'funcLocalizer';
 
     expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
-        'SPM12_CPPL', 'sub-01', 'stats', 'ffx_task-funcLocalizer', 'ffx_FWHM-0');
+                              'SPM12_CPPL', 'sub-01', 'stats', 'ffx_task-funcLocalizer', ...
+                              'ffx_FWHM-0');
 
     ffxDir = getFFXdir(subID, funcFWFM, opt, isMVPA);
 
@@ -32,7 +33,8 @@ function test_getFFXdirMvpa()
     opt.taskName = 'nBack';
 
     expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
-        'SPM12_CPPL', 'sub-02', 'stats', 'ffx_task-nBack', 'ffx_FWHM-6_MVPA');
+                              'SPM12_CPPL', 'sub-02', 'stats', 'ffx_task-nBack', ...
+                              'ffx_FWHM-6_MVPA');
 
     ffxDir = getFFXdir(subID, funcFWFM, opt, isMVPA);
 

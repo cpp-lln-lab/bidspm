@@ -20,8 +20,8 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt)
 
             % get the filename for this bold run for this task
             [fileName, subFuncDataDir] = getBoldFilename( ...
-                BIDS, ...
-                subID, sessions{iSes}, runs{iRun}, opt);
+                                                         BIDS, ...
+                                                         subID, sessions{iSes}, runs{iRun}, opt);
 
             % check that the file with the right prefix exist and we get and
             % save its voxeldimension
