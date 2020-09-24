@@ -28,10 +28,8 @@ jobs:
 
   include:
 
-    # naming the Tests stage
-    - stage: "Unit tests and coverage" 
       # names the first job
-      name: "Unit tests and coverage" 
+    - name: "Unit tests and coverage" 
 
       before_install:
         # install octave
@@ -66,9 +64,7 @@ jobs:
       after_success:
         - bash <(curl -s https://codecov.io/bash) 
 
-    # naming the Linter stage
-    - stage: Markdown linter
-      name: "Check markdown"
+    - name: "Check markdown"
       language: node_js
       node_js:
         - "10"
