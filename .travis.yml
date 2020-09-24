@@ -72,4 +72,6 @@ jobs:
       before_script:
         - npm install `cat npm-requirements.txt`
       script:
+        - pwd
+        - ls -a
         - remark . --frail
