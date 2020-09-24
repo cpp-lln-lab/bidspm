@@ -2,7 +2,13 @@ name: Check Markdown links
 
 # checking for any dead links in markdown files
 
-on: push
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+    branches: '*'
 
 jobs:
   markdown-link-check:
