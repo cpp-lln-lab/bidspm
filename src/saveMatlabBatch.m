@@ -36,8 +36,17 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subID)
     json.GeneratedBy = GeneratedBy;
     json.OS = OS;
 
-    spm_jsonwrite( ...
-                  fullfile(jobsDir, strrep(filename, '.mat', '.json')), ...
-                  json, opts);
+    try
+        spm_jsonwrite( ...
+                      fullfile(jobsDir, strrep(filename, '.mat', '.json')), ...
+                      json, opts);
+    catch
+        % if we have a dependendy object in the batch then we can't save the
+        % batch structure as a json
+        json = rmfield(json, 'matlabbach');
+        spm_jsonwrite( ...
+                      fullfile(jobsDir, strrep(filename, '.mat', '.json')), ...
+                      json, opts);
+    end
 
 end
