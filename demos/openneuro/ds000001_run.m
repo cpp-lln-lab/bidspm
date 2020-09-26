@@ -23,7 +23,6 @@ checkDependencies();
 isMVPA = 0;
 
 % bidsCopyRawFolder(opt, 1);
-% bidsSTC(opt);
 bidsSpatialPrepro(opt);
 bidsSmoothing(FWHM, opt);
 % bidsFFX('specifyAndEstimate', opt, FWHM, isMVPA);
