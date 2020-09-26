@@ -15,7 +15,6 @@ addpath(fullfile(WD, '..'));
 addpath(genpath(fullfile(WD, '..', 'src')));
 addpath(genpath(fullfile(WD, '..', 'lib')));
 
-
 %% Set options
 opt = ds000114_getOption();
 

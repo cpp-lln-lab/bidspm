@@ -8,7 +8,7 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt)
     matlabbatch{end + 1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
 
     [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
-    
+
     runCounter = 1;
 
     for iSes = 1:nbSessions
@@ -39,8 +39,8 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt)
 
             fprintf(1, ' %s\n', file{1});
 
-            matlabbatch{end}.spm.spatial.realign.estwrite.data{1,runCounter} = file;
-            
+            matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = file;
+
             runCounter = runCounter + 1;
         end
 
