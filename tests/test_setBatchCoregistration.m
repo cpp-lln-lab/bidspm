@@ -9,7 +9,7 @@ end
 function test_setBatchCoregistrationBasic()
 
     % necessarry to deal with SPM module dependencies
-    spm_jobman('initcfg')
+    spm_jobman('initcfg');
 
     opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
     opt.taskName = 'vismotion';
@@ -17,12 +17,12 @@ function test_setBatchCoregistrationBasic()
     subID = '02';
 
     matlabbatch = {};
-    matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt);    
+    matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt);
 
     nbRuns = 4;
     expectedBatch = returnExpectedBatch(nbRuns);
     assertEqual(matlabbatch, expectedBatch);
-    
+
 end
 
 function expectedBatch = returnExpectedBatch(nbRuns)
@@ -62,7 +62,7 @@ function expectedBatch = returnExpectedBatch(nbRuns)
         substruct('.', 'rmean');
 
     for iRun = 1:nbRuns
-        
+
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun) = cfg_dep;
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).tname = 'Other Images';
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).tgt_spec{1}(1).name = ...
