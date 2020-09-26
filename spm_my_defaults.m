@@ -16,7 +16,7 @@ function spm_my_defaults
     defaults.realign.estimate.wrap    = [0 0 0];
     defaults.realign.estimate.sep     = 2;
     defaults.realign.estimate.fwhm    = 5;
-    defaults.realign.estimate.rtm     = 1;
+    defaults.realign.estimate.rtm     = 0;
     defaults.realign.write.mask       = 1;
     defaults.realign.write.interp     = 3;
     defaults.realign.write.wrap       = [0 0 0];
