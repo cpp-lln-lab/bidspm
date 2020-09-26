@@ -37,7 +37,7 @@ opt.funcVoxelDims = [];
 
 
 % Suffix output directory for the saved jobs
-opt.JOBS_dir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
+opt.jobsDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
 
 % specify the model file that contains the contrasts to compute
 opt.model.univariate.file =  fullfile(fileparts(mfilename('fullpath')), 'model', model-balloonanalogriskUnivariate_smdl.json');
