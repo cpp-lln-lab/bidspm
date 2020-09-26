@@ -8,20 +8,24 @@ end
 
 function test_setBatchCoregistrationBasic()
 
-    spmLocation = spm('dir');
+    % necessarry to deal with SPM module dependencies
+    spm_jobman('initcfg')
 
-    addpath(fullfile(spmLocation, 'matlabbatch'));
+    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.taskName = 'vismotion';
+    [~, opt, BIDS] = getData(opt);
+    subID = '02';
 
-    for sesCounter = 0:2
-        matlabbatch = {};
-        matlabbatch = setBatchCoregistration(matlabbatch, sesCounter);
-        expectedBatch = returnExpectedBatch(sesCounter);
-        assertEqual(expectedBatch, matlabbatch);
-    end
+    matlabbatch = {};
+    matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt);    
 
+    nbRuns = 4;
+    expectedBatch = returnExpectedBatch(nbRuns);
+    assertEqual(matlabbatch, expectedBatch);
+    
 end
 
-function expectedBatch = returnExpectedBatch(sesCounter)
+function expectedBatch = returnExpectedBatch(nbRuns)
 
     expectedBatch = {};
 
@@ -57,28 +61,29 @@ function expectedBatch = returnExpectedBatch(sesCounter)
     expectedBatch{end}.spm.spatial.coreg.estimate.source(1).src_output = ...
         substruct('.', 'rmean');
 
-    for iSes = 1:sesCounter
-        expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes) = cfg_dep;
-        expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes).tname = 'Other Images';
-        expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(1).name = ...
+    for iRun = 1:nbRuns
+        
+        expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun) = cfg_dep;
+        expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).tname = 'Other Images';
+        expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).tgt_spec{1}(1).name = ...
             'filter';
-        expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(1).value = ...
+        expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).tgt_spec{1}(1).value = ...
             'image';
-        expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(2).name = ...
+        expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).tgt_spec{1}(2).name = ...
             'strtype';
-        expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes).tgt_spec{1}(2).value = ...
+        expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).tgt_spec{1}(2).value = ...
             'e';
-        expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes).sname = ...
-            ['Realign: Estimate & Reslice: Realigned Images (Sess ' (iSes) ')'];
-        expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes).src_exbranch = ...
+        expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).sname = ...
+            ['Realign: Estimate & Reslice: Realigned Images (Sess ' num2str(iRun) ')'];
+        expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).src_exbranch = ...
             substruct( ...
                       '.', 'val', '{}', {2}, ...
                       '.', 'val', '{}', {1}, ...
                       '.', 'val', '{}', {1}, ...
                       '.', 'val', '{}', {1});
-        expectedBatch{end}.spm.spatial.coreg.estimate.other(iSes).src_output = ...
+        expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).src_output = ...
             substruct( ...
-                      '.', 'sess', '()', {iSes}, ...
+                      '.', 'sess', '()', {iRun}, ...
                       '.', 'cfiles');
     end
 
