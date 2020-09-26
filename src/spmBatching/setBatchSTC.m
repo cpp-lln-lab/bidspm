@@ -58,7 +58,7 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
 
     for iSes = 1:nbSessions
 
-        % get all runs for that subject across all sessions
+        % get all runs for that subject for this session
         [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
 
         for iRun = 1:nbRuns
