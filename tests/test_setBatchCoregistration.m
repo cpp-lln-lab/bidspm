@@ -63,6 +63,8 @@ function expectedBatch = returnExpectedBatch(nbRuns)
 
     for iRun = 1:nbRuns
 
+        strToUse = sprintf('Realign: Estimate & Reslice: Realigned Images (Sess %i)', iRun);
+
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun) = cfg_dep;
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).tname = 'Other Images';
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).tgt_spec{1}(1).name = ...
@@ -73,8 +75,8 @@ function expectedBatch = returnExpectedBatch(nbRuns)
             'strtype';
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).tgt_spec{1}(2).value = ...
             'e';
-        expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).sname = ...
-            ['Realign: Estimate & Reslice: Realigned Images (Sess ' num2str(iRun) ')'];
+        expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).sname = strToUse;
+
         expectedBatch{end}.spm.spatial.coreg.estimate.other(iRun).src_exbranch = ...
             substruct( ...
                       '.', 'val', '{}', {2}, ...
