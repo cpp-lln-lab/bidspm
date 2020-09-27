@@ -8,7 +8,7 @@ end
 
 function test_setBatchSTCEmpty()
 
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'vislocalizer';
     [~, opt, BIDS] = getData(opt);
 
@@ -22,7 +22,7 @@ end
 
 function test_setBatchSTCForce()
 
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'vislocalizer';
     % we give it some slice timing value to force slice timing to happen
     opt.sliceOrder = 1:5;
@@ -52,7 +52,7 @@ end
 
 function test_setBatchSTCBasic()
 
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'vismotion';
     [~, opt, BIDS] = getData(opt);
 

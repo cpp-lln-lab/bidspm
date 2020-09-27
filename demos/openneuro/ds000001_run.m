@@ -1,8 +1,9 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 % runDs00014
 
 clear;
 clc;
-close all;
 
 % Smoothing to apply
 FWHM = 6;
@@ -16,15 +17,14 @@ addpath(genpath(fullfile(WD, '..', 'src')));
 addpath(genpath(fullfile(WD, '..', 'lib')));
 
 %% Set options
-opt = ds000114_getOption();
+opt = ds000001_getOption();
 
 checkDependencies();
 
 %% Run batches
 isMVPA = 0;
 
-bidsCopyRawFolder(opt, 1);
-bidsSTC(opt);
+% bidsCopyRawFolder(opt, 1);
 bidsSpatialPrepro(opt);
 bidsSmoothing(FWHM, opt);
 % bidsFFX('specifyAndEstimate', opt, FWHM, isMVPA);

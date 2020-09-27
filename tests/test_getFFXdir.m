@@ -11,8 +11,10 @@ function test_getFFXdirBasic()
     isMVPA = false;
     funcFWFM = 0;
     subID = '01';
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'raw');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'funcLocalizer';
+
+    opt = setDerivativesDir(opt);
 
     expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
                               'SPM12_CPPL', 'sub-01', 'stats', 'ffx_task-funcLocalizer', ...
@@ -29,8 +31,10 @@ function test_getFFXdirMvpa()
     isMVPA = true;
     funcFWFM = 6;
     subID = '02';
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'raw');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'nBack';
+
+    opt = setDerivativesDir(opt);
 
     expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
                               'SPM12_CPPL', 'sub-02', 'stats', 'ffx_task-nBack', ...

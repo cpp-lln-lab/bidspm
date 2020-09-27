@@ -9,7 +9,7 @@ end
 function test_getDataBasic()
     % Small test to ensure that getData returns what we asked for
 
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'vismotion';
     opt.zeropad = 2;
 
@@ -68,5 +68,38 @@ function test_getDataBasic()
     [~, opt] = getData(opt, [], 'T1w');
 
     assert(isequal(opt.metadata.RepetitionTime, 2.3));
+
+end
+
+function test_getDataErrorTask()
+    % Small test to ensure that getData returns what we asked for
+
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+    opt.taskName = 'testTask';
+    opt.zeropad = 2;
+
+    %% Get all groups all subjects
+    opt.groups = {''};
+    opt.subjects = {[]};
+
+    assertExceptionThrown( ...
+                          @()getData(opt), ...
+                          'getData:noMatchingTask');
+
+end
+
+function test_getDataErrorSubject()
+    % Small test to ensure that getData returns what we asked for
+
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+    opt.taskName = 'vismotion';
+
+    %% Get all groups all subjects
+    opt.groups = {''};
+    opt.subjects = {'03'};
+
+    assertExceptionThrown( ...
+                          @()getData(opt), ...
+                          'getData:noMatchingSubject');
 
 end

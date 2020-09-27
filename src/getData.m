@@ -1,6 +1,8 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function [group, opt, BIDS] = getData(opt, BIDSdir, type)
+    % [group, opt, BIDS] = getData(opt, BIDSdir, type)
+    %
     % getData checks that all the options specified by the user in getOptions
     % and fills the blank for any that might have been missed out.
     % It then reads the specified BIDS data set and gets the groups and
@@ -42,7 +44,8 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
 
     if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
         % The directory where the derivatives are located
-        BIDSdir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
+        opt = setDerivativesDir(opt);
+        BIDSdir = opt.derivativesDir;
     end
     derivativesDir = BIDSdir;
 
@@ -59,7 +62,12 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
     if ~ismember(opt.taskName, spm_BIDS(BIDS, 'tasks'))
         fprintf('List of tasks present in this dataset:\n');
         spm_BIDS(BIDS, 'tasks');
-        error('The task %s that you have asked for does not exist in this data set.');
+
+        errorStruct.identifier = 'getData:noMatchingTask';
+        errorStruct.message = sprintf( ...
+                                      ['The task %s that you have asked for ', ...
+                                       'does not exist in this data set.'], opt.taskName);
+        error(errorStruct);
     end
 
     % get IDs of all subjects
@@ -86,9 +94,12 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
             disp(group(iGroup).subNumber);
             fprintf('subjects present\n');
             disp(subjects);
-            error([ ...
-                   'Some of the subjects specified do not exist in this data set.' ...
-                   'This can be due to wrong zero padding: see opt.zeropad in getOptions']);
+
+            errorStruct.identifier = 'getData:noMatchingSubject';
+            msg = ['Some of the subjects specified do not exist in this data set.' ...
+                   'This can be due to wrong zero padding: see opt.zeropad in getOptions'];
+            errorStruct.message = msg;
+            error(errorStruct);
         end
 
         % Number of subjects in the group

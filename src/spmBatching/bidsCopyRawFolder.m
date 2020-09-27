@@ -27,25 +27,28 @@ function bidsCopyRawFolder(opt, deleteZippedNii)
         fprintf('opt.mat file loaded \n\n');
     end
 
+    opt = checkOptions(opt);
+
     %% All tasks in this experiment
     % raw directory and derivatives directory
     rawDir = opt.dataDir;
-    derivativeDir = fullfile(rawDir, '..', 'derivatives', 'SPM12_CPPL');
+    opt = setDerivativesDir(opt);
+    derivativesDir = opt.derivativesDir;
 
     % make derivatives folder if it doesnt exist
-    if ~exist(derivativeDir, 'dir')
-        mkdir(derivativeDir);
-        fprintf('derivatives directory created: %s \n', derivativeDir);
+    if ~exist(derivativesDir, 'dir')
+        mkdir(derivativesDir);
+        fprintf('derivatives directory created: %s \n', derivativesDir);
     else
         fprintf('derivatives directory already exists. \n');
     end
 
     % copy TSV and JSON file from raw folder if it doesnt exist
-    copyfile(fullfile(rawDir, '*.json'), derivativeDir);
+    copyfile(fullfile(rawDir, '*.json'), derivativesDir);
     fprintf(' json files copied to derivatives directory \n');
 
     try
-        copyfile(fullfile(rawDir, '*.tsv'), derivativeDir);
+        copyfile(fullfile(rawDir, '*.tsv'), derivativesDir);
         fprintf(' tsv files copied to derivatives directory \n');
     catch
     end
@@ -70,7 +73,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii)
                 system( ...
                        sprintf('cp -Lr %s %s', ...
                                fullfile(rawDir, subDir), ...
-                               fullfile(derivativeDir, subDir)));
+                               fullfile(derivativesDir, subDir)));
             catch
                 message = [ ...
                            'Copying data with system command failed: ' ...
@@ -81,7 +84,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii)
                 warning(message);
 
                 copyfile(fullfile(rawDir, subDir), ...
-                         fullfile(derivativeDir, subDir));
+                         fullfile(derivativesDir, subDir));
             end
 
             fprintf('folder copied: %s \n', subDir);
@@ -90,7 +93,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii)
     end
 
     %% search for nifti files in a compressed nii.gz format
-    zippedNiifiles = spm_select('FPListRec', derivativeDir, '^.*.nii.gz$');
+    zippedNiifiles = spm_select('FPListRec', derivativesDir, '^.*.nii.gz$');
 
     for iFile = 1:size(zippedNiifiles, 1)
 

@@ -1,4 +1,6 @@
-function opt = ds000114_getOption()
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
+function opt = ds000001_getOption()
     % returns a structure that contains the options chosen by the user to run
     % slice timing correction, pre-processing, FFX, RFX.
 
@@ -12,10 +14,10 @@ function opt = ds000114_getOption()
     opt.subjects = {'01', '02'};
 
     % task to analyze
-    opt.taskName = 'overtwordrepetition';
+    opt.taskName = 'balloonanalogrisktask';
 
     % The directory where the data are located
-    opt.dataDir = '/home/remi/openneuro/ds000114/raw';
+    opt.dataDir = '/home/remi/openneuro/ds000001/raw';
 
     % Options for slice time correction
     % If left unspecified the slice timing will be done using the mid-volume acquisition
@@ -29,9 +31,6 @@ function opt = ds000114_getOption()
     % Options for normalize
     % Voxel dimensions for resampling at normalization of functional data or leave empty [ ].
     opt.funcVoxelDims = [];
-
-    % Suffix output directory for the saved jobs
-    opt.jobsDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
 
     % % specify the model file that contains the contrasts to compute
     % opt.model.univariate.file =  fullfile(...
