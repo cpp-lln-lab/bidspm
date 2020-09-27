@@ -16,7 +16,7 @@ function test_specifyContrastsBasic()
                  'dummyData', 'models', 'model-visMotionLoc_smdl.json');
 
     opt = setDerivativesDir(opt);
-             
+
     ffxDir = fullfile(opt.derivativesDir, 'sub-01', 'stats', 'ffx_visMotion', 'ffx_6');
 
     isMVPA = 0;

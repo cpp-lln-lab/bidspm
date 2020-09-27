@@ -12,14 +12,14 @@ function opt = checkOptions(opt)
     fieldsToSet = setDefaultOption();
 
     opt = setDefaultFields(opt, fieldsToSet);
-    
+
     if ~isfield(opt, 'taskName') || isempty(opt.taskName)
 
         errorStruct.identifier = 'checkOptions:noTask';
         errorStruct.message = sprintf( ...
-            'Provide the name of the task to analyze.');
+                                      'Provide the name of the task to analyze.');
         error(errorStruct);
-        
+
     end
 
     if ~all(cellfun(@ischar, opt.groups))

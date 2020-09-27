@@ -32,7 +32,7 @@ function test_checkOptionsDoNotOverwrite()
 end
 
 function test_checkOptionsErrorTask()
-    
+
     opt.taskName = [];
 
     assertExceptionThrown( ...

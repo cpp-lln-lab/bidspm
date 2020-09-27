@@ -71,7 +71,6 @@ function test_getDataBasic()
 
 end
 
-
 function test_getDataErrorTask()
     % Small test to ensure that getData returns what we asked for
 
@@ -83,10 +82,10 @@ function test_getDataErrorTask()
     opt.groups = {''};
     opt.subjects = {[]};
 
-        assertExceptionThrown( ...
+    assertExceptionThrown( ...
                           @()getData(opt), ...
                           'getData:noMatchingTask');
-    
+
 end
 
 function test_getDataErrorSubject()
@@ -99,8 +98,8 @@ function test_getDataErrorSubject()
     opt.groups = {''};
     opt.subjects = {'03'};
 
-        assertExceptionThrown( ...
+    assertExceptionThrown( ...
                           @()getData(opt), ...
                           'getData:noMatchingSubject');
-    
+
 end
