@@ -39,91 +39,99 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
     %  IMPORTANT NOTE: if you specify the type variable for T1w then you must
     %  make sure that the T1w.json is also present in the anat folder because
     %  of the way the spm_BIDS function works at the moment
-
+    
     opt = checkOptions(opt);
-
+    
     if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
         % The directory where the derivatives are located
         opt = setDerivativesDir(opt);
         BIDSdir = opt.derivativesDir;
     end
     derivativesDir = BIDSdir;
-
+    
     if nargin < 3 || (exist('type', 'var') && isempty(type))
         type = 'bold';
     end
-
+    
     fprintf(1, 'FOR TASK: %s\n', opt.taskName);
-
+    
     % we let SPM figure out what is in this BIDS data set
     BIDS = spm_BIDS(derivativesDir);
-
+    
     % make sure that the required tasks exist in the data set
     if ~ismember(opt.taskName, spm_BIDS(BIDS, 'tasks'))
         fprintf('List of tasks present in this dataset:\n');
         spm_BIDS(BIDS, 'tasks');
-        error('The task %s that you have asked for does not exist in this data set.');
+        
+        errorStruct.identifier = 'getData:noMatchingTask';
+        errorStruct.message = sprintf( ...
+            ['The task %s that you have asked for ', ...
+            'does not exist in this data set.'], opt.taskName);
+        error(errorStruct);
     end
-
+    
     % get IDs of all subjects
     subjects = spm_BIDS(BIDS, 'subjects');
-
+    
     % get metadata for bold runs for that task
     % we take those from the first run of the first subject assuming it can
     % apply to all others.
     opt = getMetaData(BIDS, opt, subjects, type);
-
+    
     %% Add the different groups in the experiment
     for iGroup = 1:numel(opt.groups) % for each group
-
+        
         clear idx;
-
+        
         % Name of the group
         group(iGroup).name = opt.groups{iGroup}; %#ok<*AGROW>
-
+        
         group = getSpecificSubjects(opt, group, iGroup, subjects);
-
+        
         % check that all the subjects asked for exist
         if ~all(ismember(group(iGroup).subNumber, subjects))
             fprintf('subjects specified\n');
             disp(group(iGroup).subNumber);
             fprintf('subjects present\n');
             disp(subjects);
-            error([ ...
-                   'Some of the subjects specified do not exist in this data set.' ...
-                   'This can be due to wrong zero padding: see opt.zeropad in getOptions']);
+            
+            errorStruct.identifier = 'getData:noMatchingSubject';
+            errorStruct.message = sprintf([ ...
+                'Some of the subjects specified do not exist in this data set.' ...
+                'This can be due to wrong zero padding: see opt.zeropad in getOptions']);
+            error(errorStruct);
         end
-
+        
         % Number of subjects in the group
         group(iGroup).numSub = length(group(iGroup).subNumber);
-
+        
         fprintf(1, 'WILL WORK ON SUBJECTS\n');
         disp(group(iGroup).subNumber);
     end
-
+    
 end
 
 function opt = getMetaData(BIDS, opt, subjects, type)
-
+    
     % THIS NEEDS FIXING AS WE MIGHT WANT THE METADATA OF THE SUBJECTS SELECTED
     % RATHER THAN THE FIRST SUBJECT OF THE DATASET
-
+    
     switch type
         case 'bold'
             metadata = spm_BIDS(BIDS, 'metadata', ...
-                                'task', opt.taskName, ...
-                                'sub', subjects{1}, ...
-                                'type', type);
+                'task', opt.taskName, ...
+                'sub', subjects{1}, ...
+                'type', type);
         case 'T1w'
             metadata = spm_BIDS(BIDS, 'metadata', ...
-                                'sub', subjects{1}, ...
-                                'type', type);
+                'sub', subjects{1}, ...
+                'type', type);
     end
-
+    
     if iscell(metadata)
         opt.metadata = metadata{1};
     else
         opt.metadata = metadata;
     end
-
+    
 end
