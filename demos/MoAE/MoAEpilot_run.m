@@ -36,7 +36,7 @@ checkDependencies();
 %% Run batches
 isMVPA = 0;
 
-reportBIDS(opt)
+reportBIDS(opt);
 bidsCopyRawFolder(opt, 1);
 bidsSTC(opt);
 bidsSpatialPrepro(opt);

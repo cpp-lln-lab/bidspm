@@ -14,7 +14,7 @@ function test_getBoldFilenameBasic()
     iRun = 1;
 
     opt.taskName = 'vislocalizer';
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.groups = {''};
     opt.subjects = {'01'};
 

@@ -8,9 +8,8 @@ end
 
 function test_setBatchNormalizationSpatialPreproBasic()
 
-    spmLocation = spm('dir');
-
-    addpath(fullfile(spmLocation, 'matlabbatch'));
+    % necessarry to deal with SPM module dependencies
+    spm_jobman('initcfg');
 
     matlabbatch = {};
     voxDim = [3 3 3];

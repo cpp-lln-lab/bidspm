@@ -11,7 +11,8 @@ function test_getInfoBasic()
 
     % write tests for when no session or only one run
 
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), ...
+                                  'dummyData', 'derivatives', 'SPM12_CPPL');
     opt.groups = {''};
     opt.subjects = {[], []};
 

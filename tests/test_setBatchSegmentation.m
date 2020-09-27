@@ -10,7 +10,8 @@ function test_setBatchSegmentationBasic()
 
     spmLocation = spm('dir');
 
-    addpath(fullfile(spmLocation, 'matlabbatch'));
+    % necessarry to deal with SPM module dependencies
+    spm_jobman('initcfg');
 
     matlabbatch = [];
     matlabbatch = setBatchSegmentation(matlabbatch);

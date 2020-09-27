@@ -10,7 +10,7 @@ function test_getGrpLevelContrastToComputeBasic()
 
     isMVPA = false;
     opt.model.univariate.file = fullfile(fileparts(mfilename('fullpath')), ...
-                                         'dummyData', 'model', 'model-visMotionLoc_smdl.json');
+                                         'dummyData', 'models', 'model-visMotionLoc_smdl.json');
 
     [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt, isMVPA);
 
@@ -26,7 +26,7 @@ function test_getGrpLevelContrastToComputeBasic()
     %%
     isMVPA = true;
     opt.model.multivariate.file = fullfile(fileparts(mfilename('fullpath')), ...
-                                           'dummyData', 'model', 'model-vislocalizer_smdl.json');
+                                           'dummyData', 'models', 'model-vislocalizer_smdl.json');
 
     [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt, isMVPA);
 

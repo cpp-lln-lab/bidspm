@@ -63,6 +63,7 @@ function expectedOptions = defaultOptions()
     expectedOptions.STC_referenceSlice = [];
     expectedOptions.contrastList = {};
     expectedOptions.dataDir = '';
+    expectedOptions.derivativesDir = '';
     expectedOptions.funcVoxelDims = [];
     expectedOptions.groups = {''};
     expectedOptions.jobsDir = '';

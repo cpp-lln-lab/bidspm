@@ -11,7 +11,7 @@ function test_setBatchCoregistrationBasic()
     % necessarry to deal with SPM module dependencies
     spm_jobman('initcfg');
 
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'vismotion';
     [~, opt, BIDS] = getData(opt);
     subID = '02';

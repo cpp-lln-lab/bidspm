@@ -9,7 +9,7 @@ end
 function test_getDataBasic()
     % Small test to ensure that getData returns what we asked for
 
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'vismotion';
     opt.zeropad = 2;
 

@@ -12,3 +12,7 @@
 # files in the demo folder related to running the demo analysis
 demos/MoAE/*.zip
 demos/MoAE/output/*
+
+# test folder
+tests/sub-01/*
+tests/group/*

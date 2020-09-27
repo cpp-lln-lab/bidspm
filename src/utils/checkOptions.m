@@ -65,8 +65,9 @@ function fieldsToSet = setDefaultOption()
     % space where we conduct the analysis
     fieldsToSet.space = 'MNI';
 
-    % The directory where the derivatives are located
+    % The directory where the raw and derivatives are located
     fieldsToSet.dataDir = '';
+    fieldsToSet.derivativesDir = '';
 
     % fieldsToSet for slice time correction
     fieldsToSet.STC_referenceSlice = []; % reference slice: middle acquired slice

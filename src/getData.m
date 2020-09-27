@@ -1,6 +1,8 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function [group, opt, BIDS] = getData(opt, BIDSdir, type)
+    % [group, opt, BIDS] = getData(opt, BIDSdir, type)
+    %
     % getData checks that all the options specified by the user in getOptions
     % and fills the blank for any that might have been missed out.
     % It then reads the specified BIDS data set and gets the groups and
@@ -42,7 +44,8 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
 
     if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
         % The directory where the derivatives are located
-        BIDSdir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
+        opt = setDerivativesDir(opt);
+        BIDSdir = opt.derivativesDir;
     end
     derivativesDir = BIDSdir;
 

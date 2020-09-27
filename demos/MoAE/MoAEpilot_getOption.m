@@ -1,3 +1,5 @@
+% (C) Copyright 2019 Remi Gau
+
 function opt = MoAEpilot_getOption()
     % returns a structure that contains the options chosen by the user to run
     % slice timing correction, pre-processing, FFX, RFX.
@@ -9,7 +11,7 @@ function opt = MoAEpilot_getOption()
     % group of subjects to analyze
     opt.groups = {''};
     % suject to run in each group
-    opt.subjects = {[]}; 
+    opt.subjects = {[]};
 
     % task to analyze
     opt.taskName = 'auditory';
@@ -33,7 +35,8 @@ function opt = MoAEpilot_getOption()
     % Suffix output directory for the saved jobs
     opt.jobsDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
 
-    opt.model.univariate.file = fullfile(fileparts(mfilename('fullpath')), 'models', 'model-MoAE_smdl.json');
+    opt.model.univariate.file = fullfile(fileparts(mfilename('fullpath')), ...
+                                         'models', 'model-MoAE_smdl.json');
 
     % specify the result to compute
     opt.result.Steps(1) = struct( ...
@@ -53,7 +56,5 @@ function opt = MoAEpilot_getOption()
                                               'p', 0.01, ...
                                               'k', 0, ...
                                               'NIDM', true);
-
-
 
 end

@@ -15,11 +15,11 @@ function test_createAndReturnOnsetFileBasic()
     iRun = 1;
 
     opt.taskName = 'vislocalizer';
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.groups = {''};
     opt.subjects = {'01'};
     opt.model.univariate.file = fullfile(fileparts(mfilename('fullpath')), ...
-                                         'dummyData', 'model', ...
+                                         'dummyData', 'models', ...
                                          'model-vislocalizer_smdl.json');
 
     [~, opt, BIDS] = getData(opt);
