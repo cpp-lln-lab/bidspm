@@ -8,14 +8,24 @@ function opt = setDerivativesDir(opt)
         return
     end
 
-    folders = split(opt.derivativesDir, filesep);
+    try
+        folders = split(opt.derivativesDir, filesep);
+    catch
+        % for octave
+        folders = strsplit(opt.derivativesDir, filesep);
+    end
 
     if ~strcmp(folders{end - 1}, 'derivatives') && ~strcmp(folders{end}, 'SPM12_CPPL')
         folders{end + 1} = 'derivatives';
         folders{end + 1} = 'SPM12_CPPL';
     end
 
-    tmp = join(folders, filesep);
+    try
+        tmp = join(folders, filesep);
+    catch
+        % for octave
+        tmp = strjoin(folders, filesep);
+    end
     opt.derivativesDir = tmp{1};
 
 end
