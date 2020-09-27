@@ -22,10 +22,10 @@ function opt = setDerivativesDir(opt)
 
     try
         tmp = join(folders, filesep);
+        opt.derivativesDir = tmp{1};
     catch
         % for octave
-        tmp = strjoin(folders, filesep);
+        opt.derivativesDir = strjoin(folders, filesep);
     end
-    opt.derivativesDir = tmp{1};
 
 end

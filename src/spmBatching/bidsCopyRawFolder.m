@@ -32,7 +32,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii)
     %% All tasks in this experiment
     % raw directory and derivatives directory
     rawDir = opt.dataDir;
-    opt = setDerivativeDir(opt);
+    opt = setDerivativesDir(opt);
     derivativesDir = opt.derivativesDir;
 
     % make derivatives folder if it doesnt exist
