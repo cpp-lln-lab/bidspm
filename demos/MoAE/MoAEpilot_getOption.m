@@ -18,6 +18,7 @@ function opt = MoAEpilot_getOption()
 
     % The directory where the data are located
     opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'output', 'MoAEpilot');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')));
 
     % Options for slice time correction
     % If left unspecified the slice timing will be done using the mid-volume acquisition

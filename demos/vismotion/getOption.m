@@ -50,13 +50,4 @@ function opt = getOption()
     % Voxel dimensions for resampling at normalization of functional data or leave empty [ ].
     opt.funcVoxelDims = [];
 
-    % Suffix output directory for the saved jobs
-    opt.jobsDir = fullfile( ...
-                           opt.dataDir, '..', 'derivatives', ...
-                           'SPM12_CPPL', 'JOBS', opt.taskName);
-
-    % Save the opt variable as a mat file to load directly in the preprocessing
-    % scripts
-    save('opt.mat', 'opt');
-
 end

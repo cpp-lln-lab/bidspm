@@ -12,6 +12,15 @@ function opt = checkOptions(opt)
     fieldsToSet = setDefaultOption();
 
     opt = setDefaultFields(opt, fieldsToSet);
+    
+    if ~isfield(opt, 'taskName') || isempty(opt.taskName)
+
+        errorStruct.identifier = 'checkOptions:noTask';
+        errorStruct.message = sprintf( ...
+            'Provide the name of the task to analyze.');
+        error(errorStruct);
+        
+    end
 
     if ~all(cellfun(@ischar, opt.groups))
 
@@ -59,9 +68,6 @@ function fieldsToSet = setDefaultOption()
     fieldsToSet.subjects = {[]};
     fieldsToSet.zeropad = 2;
 
-    % task to analyze
-    fieldsToSet.taskName = '';
-
     % space where we conduct the analysis
     fieldsToSet.space = 'MNI';
 
@@ -76,9 +82,6 @@ function fieldsToSet = setDefaultOption()
     % fieldsToSet for normalize
     % Voxel dimensions for resampling at normalization of functional data or leave empty [ ].
     fieldsToSet.funcVoxelDims = [];
-
-    % Suffix output directory for the saved jobs
-    fieldsToSet.jobsDir = '';
 
     % specify the model file that contains the contrasts to compute
     fieldsToSet.contrastList = {};

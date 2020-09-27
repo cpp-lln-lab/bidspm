@@ -12,8 +12,10 @@ function test_getRFXdirBasic()
     conFWHM = 0;
 
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-    opt = setDerivativesDir(opt);
     opt.taskName = 'funcLocalizer';
+    
+    opt = setDerivativesDir(opt);
+    
     contrastName = 'stim_gt_baseline';
 
     rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);

@@ -32,9 +32,6 @@ function opt = ds000001_getOption()
     % Voxel dimensions for resampling at normalization of functional data or leave empty [ ].
     opt.funcVoxelDims = [];
 
-    % Suffix output directory for the saved jobs
-    opt.jobsDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
-
     % % specify the model file that contains the contrasts to compute
     % opt.model.univariate.file =  fullfile(...
     %     fileparts(mfilename('fullpath')), ...
