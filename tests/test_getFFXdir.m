@@ -12,6 +12,7 @@ function test_getFFXdirBasic()
     funcFWFM = 0;
     subID = '01';
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+    opt = setDerivativesDir(opt);
     opt.taskName = 'funcLocalizer';
 
     expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
