@@ -5,7 +5,7 @@ function opt = setDerivativesDir(opt)
 
     if ~isfield(opt, 'derivativesDir') || isempty(opt.derivativesDir)
         opt.derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
-        return
+        
     end
 
     try
@@ -27,5 +27,8 @@ function opt = setDerivativesDir(opt)
         % for octave
         opt.derivativesDir = strjoin(folders, filesep);
     end
+    
+    % Suffix output directory for the saved jobs
+    opt.jobsDir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
 
 end

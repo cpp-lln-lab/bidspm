@@ -9,6 +9,7 @@ end
 function test_setDerivativesDirBasic()
 
     opt.dataDir = pwd;
+    opt.taskName = 'testTask';
     opt = setDerivativesDir(opt);
 
     assertEqual(opt.derivativesDir, fullfile(pwd, '..', 'derivatives', 'SPM12_CPPL'));
@@ -18,6 +19,7 @@ end
 function test_setDerivativesDirMissing()
 
     opt.derivativesDir = pwd;
+    opt.taskName = 'testTask';
     opt = setDerivativesDir(opt);
 
     assertEqual(opt.derivativesDir, fullfile(pwd, 'derivatives', 'SPM12_CPPL'));
