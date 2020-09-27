@@ -1,0 +1,1 @@
+Slice timing correction was then performed taking the {stcRefSlice} th slice as a reference (interpolation: sinc interpolation).

@@ -24,8 +24,8 @@ to MNI, smoothing.
 {Slice timing correction was then performed taking the {XX} th slice as a
 reference (interpolation: sinc interpolation).}
 
-Functional scans from each participant were realigned using the mean image as a
-reference (SPM 2 passes ; number of degrees of freedom: 6 ; cost function: least
+Functional scans from each participant were realigned using the first image of the first run as a
+reference (SPM 1 passes ; number of degrees of freedom: 6 ; cost function: least
 square) (Friston et al, 1995).
 
 The mean image obtained from realignement was then co-registered to the
