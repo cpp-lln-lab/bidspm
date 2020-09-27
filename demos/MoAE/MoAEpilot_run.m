@@ -32,9 +32,9 @@ opt = MoAEpilot_getOption();
 opt.space = 'individual';
 
 %% Get data
-fprintf('%-40s:', 'Downloading dataset...');
-urlwrite(URL, 'MoAEpilot.zip');
-unzip('MoAEpilot.zip', fullfile(WD, 'output'));
+% fprintf('%-40s:', 'Downloading dataset...');
+% urlwrite(URL, 'MoAEpilot.zip');
+% unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 
 checkDependencies();
 
@@ -48,6 +48,10 @@ bidsCopyRawFolder(opt, 1);
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
+bidsSmoothing(FWHM, opt);
+bidsFFX('specifyAndEstimate', opt, FWHM, isMVPA);
+bidsFFX('contrasts', opt, FWHM, isMVPA);
+bidsResults(opt, FWHM, [], isMVPA);
 
 % The following do not run on octave for now (because of spmup)
 % anatomicalQA(opt);
