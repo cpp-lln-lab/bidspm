@@ -22,6 +22,16 @@
           "type": "t"
         }
       ]
+    },
+    {
+      "Level": "run",
+      "Model": {
+        "X": [
+          "trial_type.listening",
+          "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
+        ]
+      },
+      "AutoContrasts": ["trial_type.listening"]
     }
   ]
 }

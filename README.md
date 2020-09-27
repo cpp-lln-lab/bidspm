@@ -1,9 +1,21 @@
+**Code quality and style**
+
+[![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/actions)
+![](https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/workflows/CI/badge.svg) 
+
+**Unit tests and coverage**
+
 [![Build Status](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline.svg?branch=master)](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline)
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
+[![codecov](https://codecov.io/gh/cpp-lln-lab/CPP_BIDS_SPM_pipeline/branch/master/graph/badge.svg)](https://codecov.io/gh/cpp-lln-lab/CPP_BIDS_SPM_pipeline)
+
+**How to cite**
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3556173.svg)](https://doi.org/10.5281/zenodo.3556173)
 
-
-
+**Contributors**
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 # Instructions for SPM12 Preprocessing Pipeline
 
@@ -28,6 +40,7 @@
     - [fMRI data analysis](#fmri-data-analysis)
     - [References](#references)
   - [Unit testing](#unit-testing)
+  - [Changelog](#changelog)
   - [Contributors ✨](#contributors-)
 
 <!-- /TOC -->
@@ -314,6 +327,9 @@ Corbin, N., Todd, N., Friston, K. J. & Callaghan, M. F. Accurate modeling of tem
 
 All tests are in the test folder. There is also an empty dummy BIDS dataset that is partly created using the bash script `createDummyDataSet.sh`.
 
+## Changelog
+
+<!-- github_changelog_generator -u cpp-lln-lab -p CPP_BIDS_SPM_pipeline --token 93b4c584bf22883a3c4f8b9031b70e381deef272 -->
 
 ## Contributors ✨
 
