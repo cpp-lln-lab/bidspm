@@ -113,7 +113,7 @@ This will build an html version of the doc in the `build` folder.
 
 ## Buid the documentation with Read the Docs
 
-Add a `.readthedocs.yml` file in the root of your repo.
+Add a [`.readthedocs.yml`](../.readthedocs.yml) file in the root of your repo.
 
 See [HERE](https://docs.readthedocs.io/en/stable/config-file/v2.html) for
 details.
@@ -125,6 +125,7 @@ website: https://readthedocs.org.
 
 ### Sphinx
 
+Some are listed 
 https://github.com/sphinx-contrib/matlabdomain#users
 
 ### Read the docs

@@ -9,4 +9,5 @@ The functions of our pipeline
 
 .. autofunction:: setDerivativesDir
 
+.. autofunction:: getData
 
