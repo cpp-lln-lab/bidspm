@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function bidsCopyRawFolder(opt, deleteZippedNii)
     % This function will copy the subject's folders from the "raw" folder to the
     % "derivatives" folder, and will copy the dataset description and task json files
@@ -25,25 +27,28 @@ function bidsCopyRawFolder(opt, deleteZippedNii)
         fprintf('opt.mat file loaded \n\n');
     end
 
+    opt = checkOptions(opt);
+
     %% All tasks in this experiment
     % raw directory and derivatives directory
     rawDir = opt.dataDir;
-    derivativeDir = fullfile(rawDir, '..', 'derivatives', 'SPM12_CPPL');
+    opt = setDerivativesDir(opt);
+    derivativesDir = opt.derivativesDir;
 
     % make derivatives folder if it doesnt exist
-    if ~exist(derivativeDir, 'dir')
-        mkdir(derivativeDir);
-        fprintf('derivatives directory created: %s \n', derivativeDir);
+    if ~exist(derivativesDir, 'dir')
+        mkdir(derivativesDir);
+        fprintf('derivatives directory created: %s \n', derivativesDir);
     else
         fprintf('derivatives directory already exists. \n');
     end
 
     % copy TSV and JSON file from raw folder if it doesnt exist
-    copyfile(fullfile(rawDir, '*.json'), derivativeDir);
+    copyfile(fullfile(rawDir, '*.json'), derivativesDir);
     fprintf(' json files copied to derivatives directory \n');
 
     try
-        copyfile(fullfile(rawDir, '*.tsv'), derivativeDir);
+        copyfile(fullfile(rawDir, '*.tsv'), derivativesDir);
         fprintf(' tsv files copied to derivatives directory \n');
     catch
     end
@@ -65,20 +70,24 @@ function bidsCopyRawFolder(opt, deleteZippedNii)
             % use a call to system cp function to use the derefence option (-L)
             % to get the data 'out' of an eventual datalad dataset
             try
-                system( ...
-                    sprintf('cp -Lr %s %s', ...
-                    fullfile(rawDir, subDir), ...
-                    fullfile(derivativeDir, subDir)));
-            catch
-                message = [ ...
-                    'Copying data with system command failed: are you running Windows?\n', ...
-                    'Will use matlab/octave copyfile command instead.\n', ...
-                    'Could be an issue if your data set contains symbolic links' ...
-                    '(e.g. if you use datalad or git-annex.'];
-                warning(message);
+                status = system( ...
+                                sprintf('cp -R -L %s %s', ...
+                               fullfile(rawDir, subDir), ...
+                               fullfile(derivativesDir, subDir)));
 
+                if status > 0
+                    message = [ ...
+                               'Copying data with system command failed: ' ...
+                               'are you running Windows?\n', ...
+                               'Will use matlab/octave copyfile command instead.\n', ...
+                               'Could be an issue if your data set contains symbolic links' ...
+                               '(e.g. if you use datalad or git-annex.'];
+                    error(message);
+                end
+
+            catch
                 copyfile(fullfile(rawDir, subDir), ...
-                    fullfile(derivativeDir, subDir));
+                         fullfile(derivativesDir, subDir));
             end
 
             fprintf('folder copied: %s \n', subDir);
@@ -87,7 +96,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii)
     end
 
     %% search for nifti files in a compressed nii.gz format
-    zippedNiifiles = spm_select('FPListRec', derivativeDir, '^.*.nii.gz$');
+    zippedNiifiles = spm_select('FPListRec', derivativesDir, '^.*.nii.gz$');
 
     for iFile = 1:size(zippedNiifiles, 1)
 

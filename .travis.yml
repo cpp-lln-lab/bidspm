@@ -12,37 +12,64 @@ python:
 
 cache:
   apt: true # only works with Pro version
+  directories:
+  - node_modules # NPM packages for the remark markdown linter
+
+branches:
+  only:  # only run the CI for those branches 
+  - master
+  - dev
 
 env:
   global:
     - OCTFLAGS="--no-gui --no-window-system --silent"
 
-before_install:
-  # install octave
-  - travis_retry sudo apt-get -y -qq update
-  - travis_retry sudo apt-get -y install octave
-  - travis_retry sudo apt-get -y install liboctave-dev
-  # install MOX unit
-  - git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
-  - cd MOxUnit
-  - make install
-  - cd ..
-  # install MOcov
-  - git clone https://github.com/MOcov/MOcov.git  --depth 1
-  - cd MOcov
-  - make install
-  - cd ..
-  # install SPM and the relevant patches for octave
-  - git clone https://github.com/spm/spm12.git --depth 1
-  - make -C spm12/src PLATFORM=octave distclean
-  - make -C spm12/src PLATFORM=octave
-  - make -C spm12/src PLATFORM=octave install
+jobs:
 
-script:
-  - octave $OCTFLAGS --eval "runTests"
-  - cat test_report.log | grep 0
+  include:
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+      # names the first job
+    - name: "Unit tests and coverage" 
 
+      before_install:
+        # install octave
+        - travis_retry sudo apt-get -y -qq update
+        - travis_retry sudo apt-get -y install octave
+        - travis_retry sudo apt-get -y install liboctave-dev
+        # install MOX unit
+        - git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
+        - cd MOxUnit
+        - make install
+        - cd ..
+        # install MOcov
+        - git clone https://github.com/MOcov/MOcov.git  --depth 1
+        - cd MOcov
+        - make install
+        - cd ..
+        # install SPM and the relevant patches for octave
+        - git clone https://github.com/spm/spm12.git --depth 1
+        - make -C spm12/src PLATFORM=octave distclean
+        - make -C spm12/src PLATFORM=octave
+        - make -C spm12/src PLATFORM=octave install
+        # get data
+        - output_folder='demos/MoAE/output/'
+        - mkdir $output_folder
+        - curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $output_folder'MoAEpilot.zip'
+        - unzip $output_folder'MoAEpilot.zip' -d $output_folder
 
+      script:
+        - octave $OCTFLAGS --eval "runTests"
+        - cat test_report.log | grep 0
+
+      # to send the results to codecov to get our code coverage
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) 
+
+    - name: "Check markdown"
+      language: node_js
+      node_js:
+        - "10"
+      before_script:
+        - npm install `cat npm-requirements.txt`
+      script:
+        - remark . --frail

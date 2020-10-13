@@ -9,49 +9,34 @@ end
 function test_modelFilesBasic()
     % vague attempt at validating our model files
 
-    demoDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demo');
-    modelDir = fullfile(fileparts(mfilename('fullpath')), '..', 'model');
+    demoDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos');
 
     %%
-    file = fullfile(demoDir, 'model-MoAE_smdl.json');
+    file = fullfile(demoDir, 'MoAE', 'models', 'model-MoAE_smdl.json');
 
     model = spm_jsonread(file);
 
     model.Steps{1};
 
     %%
-    file = fullfile(fileparts(mfilename('fullpath')), '..', ...
-        'model-visMotionLoc_smdl.json');
+    file = fullfile(demoDir, 'vismotion', 'models', ...
+                    'model-visMotionLoc_smdl.json');
 
     model = spm_jsonread(file);
 
     model.Steps{1};
 
     %%
-    file = fullfile(fileparts(mfilename('fullpath')), '..', ...
-        'model-motionDecodingUnivariate_smdl.json');
+    file = fullfile(demoDir, 'vismotion', 'models', ...
+                    'model-motionDecodingUnivariate_smdl.json');
 
     model = spm_jsonread(file);
 
     model.Steps{1};
 
     %%
-    file = fullfile(fileparts(mfilename('fullpath')), '..', ...
-        'model-motionDecodingMultivariate_smdl.json');
-
-    model = spm_jsonread(file);
-
-    model.Steps{1};
-
-    %%
-    file = fullfile(modelDir, 'model-balloonanalogriskUnivariate_smdl.json');
-
-    model = spm_jsonread(file);
-
-    model.Steps{1};
-
-    %%
-    file = fullfile(modelDir, 'model-balloonanalogriskMultivariate_smdl.json');
+    file = fullfile(demoDir, 'vismotion', 'models', ...
+                    'model-motionDecodingMultivariate_smdl.json');
 
     model = spm_jsonread(file);
 

@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function opt = checkOptions(opt)
     % opt = checkOptions(opt)
     %
@@ -11,13 +13,22 @@ function opt = checkOptions(opt)
 
     opt = setDefaultFields(opt, fieldsToSet);
 
+    if ~isfield(opt, 'taskName') || isempty(opt.taskName)
+
+        errorStruct.identifier = 'checkOptions:noTask';
+        errorStruct.message = sprintf( ...
+                                      'Provide the name of the task to analyze.');
+        error(errorStruct);
+
+    end
+
     if ~all(cellfun(@ischar, opt.groups))
 
         disp(opt.groups);
 
         errorStruct.identifier = 'checkOptions:groupNotString';
         errorStruct.message = sprintf( ...
-            'All group names should be string.');
+                                      'All group names should be string.');
         error(errorStruct);
 
     end
@@ -26,8 +37,9 @@ function opt = checkOptions(opt)
 
         errorStruct.identifier = 'checkOptions:refSliceNotScalar';
         errorStruct.message = sprintf( ...
-            'options.STC_referenceSlice should be a scalar. \nCurrent value is: %d', ...
-            opt.STC_referenceSlice);
+                                      ['options.STC_referenceSlice should be a scalar.' ...
+                                       '\nCurrent value is: %d'], ...
+                                      opt.STC_referenceSlice);
         error(errorStruct);
 
     end
@@ -36,8 +48,9 @@ function opt = checkOptions(opt)
 
         errorStruct.identifier = 'checkOptions:voxDim';
         errorStruct.message = sprintf( ...
-            'opt.funcVoxelDims should be a vector of length 3. \nCurrent value is: %d', ...
-            opt.funcVoxelDims);
+                                      ['opt.funcVoxelDims should be a vector of length 3. '...
+                                       '\nCurrent value is: %d'], ...
+                                      opt.funcVoxelDims);
         error(errorStruct);
 
     end
@@ -55,14 +68,12 @@ function fieldsToSet = setDefaultOption()
     fieldsToSet.subjects = {[]};
     fieldsToSet.zeropad = 2;
 
-    % task to analyze
-    fieldsToSet.taskName = '';
-
     % space where we conduct the analysis
     fieldsToSet.space = 'MNI';
 
-    % The directory where the derivatives are located
+    % The directory where the raw and derivatives are located
     fieldsToSet.dataDir = '';
+    fieldsToSet.derivativesDir = '';
 
     % fieldsToSet for slice time correction
     fieldsToSet.STC_referenceSlice = []; % reference slice: middle acquired slice
@@ -71,9 +82,6 @@ function fieldsToSet = setDefaultOption()
     % fieldsToSet for normalize
     % Voxel dimensions for resampling at normalization of functional data or leave empty [ ].
     fieldsToSet.funcVoxelDims = [];
-
-    % Suffix output directory for the saved jobs
-    fieldsToSet.jobsDir = '';
 
     % specify the model file that contains the contrasts to compute
     fieldsToSet.contrastList = {};

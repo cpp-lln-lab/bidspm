@@ -9,13 +9,15 @@ end
 function test_specifyContrastsBasic()
     % Small test to ensure that pmCon returns what we asked for
 
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'visMotion';
     opt.model.univariate.file = ...
         fullfile(fileparts(mfilename('fullpath')), ...
-        'dummyData', 'model', 'model-visMotionLoc_smdl.json');
+                 'dummyData', 'models', 'model-visMotionLoc_smdl.json');
 
-    ffxDir = fullfile(opt.dataDir, 'SPM12_CPPL', 'sub-01', 'stats', 'ffx_visMotion', 'ffx_6');
+    opt = setDerivativesDir(opt);
+
+    ffxDir = fullfile(opt.derivativesDir, 'sub-01', 'stats', 'ffx_visMotion', 'ffx_6');
 
     isMVPA = 0;
 

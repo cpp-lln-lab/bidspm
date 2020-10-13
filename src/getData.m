@@ -1,4 +1,8 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function [group, opt, BIDS] = getData(opt, BIDSdir, type)
+    % [group, opt, BIDS] = getData(opt, BIDSdir, type)
+    %
     % getData checks that all the options specified by the user in getOptions
     % and fills the blank for any that might have been missed out.
     % It then reads the specified BIDS data set and gets the groups and
@@ -40,7 +44,8 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
 
     if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
         % The directory where the derivatives are located
-        BIDSdir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
+        opt = setDerivativesDir(opt);
+        BIDSdir = opt.derivativesDir;
     end
     derivativesDir = BIDSdir;
 
@@ -57,7 +62,12 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
     if ~ismember(opt.taskName, spm_BIDS(BIDS, 'tasks'))
         fprintf('List of tasks present in this dataset:\n');
         spm_BIDS(BIDS, 'tasks');
-        error('The task %s that you have asked for does not exist in this data set.');
+
+        errorStruct.identifier = 'getData:noMatchingTask';
+        errorStruct.message = sprintf( ...
+                                      ['The task %s that you have asked for ', ...
+                                       'does not exist in this data set.'], opt.taskName);
+        error(errorStruct);
     end
 
     % get IDs of all subjects
@@ -84,9 +94,12 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
             disp(group(iGroup).subNumber);
             fprintf('subjects present\n');
             disp(subjects);
-            error([ ...
-                'Some of the subjects specified do not exist in this data set.' ...
-                'This can be due to wrong zero padding: see opt.zeropad in getOptions']);
+
+            errorStruct.identifier = 'getData:noMatchingSubject';
+            msg = ['Some of the subjects specified do not exist in this data set.' ...
+                   'This can be due to wrong zero padding: see opt.zeropad in getOptions'];
+            errorStruct.message = msg;
+            error(errorStruct);
         end
 
         % Number of subjects in the group
@@ -106,60 +119,19 @@ function opt = getMetaData(BIDS, opt, subjects, type)
     switch type
         case 'bold'
             metadata = spm_BIDS(BIDS, 'metadata', ...
-                'task', opt.taskName, ...
-                'sub', subjects{1}, ...
-                'type', type);
+                                'task', opt.taskName, ...
+                                'sub', subjects{1}, ...
+                                'type', type);
         case 'T1w'
             metadata = spm_BIDS(BIDS, 'metadata', ...
-                'sub', subjects{1}, ...
-                'type', [type]);
+                                'sub', subjects{1}, ...
+                                'type', type);
     end
 
     if iscell(metadata)
         opt.metadata = metadata{1};
     else
         opt.metadata = metadata;
-    end
-
-end
-
-function group = getSpecificSubjects(opt, group, iGroup, subjects)
-
-    % if no group or subject was specified we take all of them
-    if numel(opt.groups) == 1 && ...
-            strcmp(group(iGroup).name, '') && ...
-            isempty(opt.subjects{iGroup})
-
-        group(iGroup).subNumber = subjects;
-
-        % if subject ID were directly specified by users we take those
-    elseif strcmp(group(iGroup).name, '') && iscellstr(opt.subjects)
-
-        group(iGroup).subNumber = opt.subjects;
-
-        % if group was specified we figure out which subjects to take
-    elseif ~isempty(opt.subjects{iGroup})
-
-        idx = opt.subjects{iGroup};
-
-        % else we take all subjects of that group
-    elseif isempty(opt.subjects{iGroup})
-
-        % count how many subjects in that group
-        idx = sum(~cellfun(@isempty, strfind(subjects, group(iGroup).name)));
-        idx = 1:idx;
-
-    else
-
-        error('Not sure what to do.');
-
-    end
-
-    % if only indices were specified we get the subject from that group with that
-    if exist('idx', 'var')
-        pattern = [group(iGroup).name '%0' num2str(opt.zeropad) '.0f_'];
-        temp = strsplit(sprintf(pattern, idx), '_');
-        group(iGroup).subNumber = temp(1:end - 1);
     end
 
 end

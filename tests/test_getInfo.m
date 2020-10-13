@@ -11,13 +11,14 @@ function test_getInfoBasic()
 
     % write tests for when no session or only one run
 
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), ...
+                                  'dummyData', 'derivatives', 'SPM12_CPPL');
     opt.groups = {''};
     opt.subjects = {[], []};
 
     %% Get sessions from BIDS
     opt.taskName = 'vismotion';
-    subID = 'cont02';
+    subID = 'ctrl01';
     info = 'sessions';
     [~, opt, BIDS] = getData(opt);
     sessions = getInfo(BIDS, subID, opt, info);
@@ -25,7 +26,7 @@ function test_getInfoBasic()
 
     %% Get runs from BIDS
     opt.taskName = 'vismotion';
-    subID = 'cont02';
+    subID = 'ctrl01';
     info = 'runs';
     session =  '01';
     [~, opt, BIDS] = getData(opt);
@@ -34,7 +35,7 @@ function test_getInfoBasic()
 
     %% Get runs from BIDS when no run in filename
     opt.taskName = 'vislocalizer';
-    subID = 'cont02';
+    subID = 'ctrl01';
     info = 'runs';
     session =  '01';
     [~, opt, BIDS] = getData(opt);
@@ -43,20 +44,20 @@ function test_getInfoBasic()
 
     %% Get filename from BIDS
     opt.taskName = 'vismotion';
-    subID = 'cont02';
+    subID = 'ctrl01';
     session =  '01';
     run = '1';
     info = 'filename';
     [~, opt, BIDS] = getData(opt);
     filename = getInfo(BIDS, subID, opt, info, session, run, 'bold');
     FileName = fullfile(fileparts(mfilename('fullpath')), 'dummyData',  ...
-        'derivatives', 'SPM12_CPPL', ...
-        ['sub-' subID], ['ses-' session], 'func', ...
-        ['sub-' subID, ...
-        '_ses-' session, ...
-        '_task-' opt.taskName, ...
-        '_run-' run, ...
-        '_bold.nii.gz']);
+                        'derivatives', 'SPM12_CPPL', ...
+                        ['sub-' subID], ['ses-' session], 'func', ...
+                        ['sub-' subID, ...
+                         '_ses-' session, ...
+                         '_task-' opt.taskName, ...
+                         '_run-' run, ...
+                         '_bold.nii']);
 
     assert(strcmp(filename{1}, FileName));
 

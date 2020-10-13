@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
     [BIDS, opt, subID, funcFWHM, isMVPA] =  deal(varargin{:});
@@ -14,8 +16,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         % to set the number of time bins we will use to upsample our model
         % during regression creation
         fileName = spm_BIDS(BIDS, 'data', ...
-            'sub', subID, ...
-            'type', 'bold');
+                            'sub', subID, ...
+                            'type', 'bold');
         fileName = strrep(fileName{1}, '.gz', '');
         hdr = spm_vol(fileName);
         % we are assuming axial acquisition here

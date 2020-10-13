@@ -15,12 +15,12 @@ function test_createAndReturnOnsetFileBasic()
     iRun = 1;
 
     opt.taskName = 'vislocalizer';
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.groups = {''};
     opt.subjects = {'01'};
     opt.model.univariate.file = fullfile(fileparts(mfilename('fullpath')), ...
-        'dummyData', 'model', ...
-        'model-vislocalizer_smdl.json');
+                                         'dummyData', 'models', ...
+                                         'model-vislocalizer_smdl.json');
 
     [~, opt, BIDS] = getData(opt);
 
@@ -29,9 +29,9 @@ function test_createAndReturnOnsetFileBasic()
     onsetFileName = createAndReturnOnsetFile(opt, subID, funcFWHM, boldFileName, isMVPA);
 
     expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
-        'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', 'stats', ...
-        'ffx_task-vislocalizer', 'ffx_FWHM-6', ...
-        'onsets_sub-01_ses-01_task-vislocalizer_events.mat');
+                                'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', 'stats', ...
+                                'ffx_task-vislocalizer', 'ffx_FWHM-6', ...
+                                'onsets_sub-01_ses-01_task-vislocalizer_events.mat');
 
     assertEqual(exist(onsetFileName, 'file'), 2);
     assertEqual(exist(expectedFileName, 'file'), 2);

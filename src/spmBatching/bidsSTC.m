@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function bidsSTC(opt)
     % Performs SLICE TIMING CORRECTION of the functional data. The
     % script for each subject and can handle multiple sessions and multiple

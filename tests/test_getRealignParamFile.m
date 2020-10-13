@@ -14,7 +14,7 @@ function test_getRealignParamFileBasic()
     iRun = 1;
 
     opt.taskName = 'vislocalizer';
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.groups = {''};
     opt.subjects = {'01'};
 
@@ -24,8 +24,9 @@ function test_getRealignParamFileBasic()
     realignParamFile = getRealignParamFile(opt, boldFileName, funcFWHM);
 
     expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
-        'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', 'ses-01', 'func', ...
-        'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
+                                'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', ...
+                                'ses-01', 'func', ...
+                                'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
 
     assertEqual(expectedFileName, realignParamFile);
 
@@ -39,7 +40,7 @@ function test_getRealignParamFileNativeSpace()
     iRun = 1;
 
     opt.taskName = 'vislocalizer';
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.groups = {''};
     opt.subjects = {'01'};
     opt.space = 'T1w';
@@ -50,8 +51,9 @@ function test_getRealignParamFileNativeSpace()
     realignParamFile = getRealignParamFile(opt, boldFileName, funcFWHM);
 
     expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
-        'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', 'ses-01', 'func', ...
-        'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
+                                'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', ...
+                                'ses-01', 'func', ...
+                                'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
 
     assertEqual(expectedFileName, realignParamFile);
 
@@ -66,7 +68,7 @@ function test_getRealignParamFileError()
     iRun = 1;
 
     opt.taskName = 'vislocalizer';
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.groups = {''};
     opt.subjects = {'01'};
     opt.space = 'T1w';
@@ -76,7 +78,7 @@ function test_getRealignParamFileError()
     boldFileName = getBoldFilenameForFFX(BIDS, opt, subID, goodFuncFWHM, iSes, iRun);
 
     assertExceptionThrown( ...
-        @()getRealignParamFile(opt, boldFileName, badFuncFWHM), ...
-        'getRealignParamFile:nonExistentFile');
+                          @()getRealignParamFile(opt, boldFileName, badFuncFWHM), ...
+                          'getRealignParamFile:nonExistentFile');
 
 end

@@ -8,9 +8,11 @@ end
 
 function test_checkOptionsBasic()
 
-    opt = checkOptions();
+    opt.taskName = 'testTask';
+    opt = checkOptions(opt);
 
     expectedOptions = defaultOptions();
+    expectedOptions.taskName = 'testTask';
 
     assertEqual(opt, expectedOptions);
 
@@ -20,6 +22,7 @@ function test_checkOptionsDoNotOverwrite()
 
     opt.funcVoxelDims = [1 1 1];
     opt.someExtraField = 'test';
+    opt.taskName = 'testTask';
 
     opt = checkOptions(opt);
 
@@ -28,33 +31,46 @@ function test_checkOptionsDoNotOverwrite()
 
 end
 
+function test_checkOptionsErrorTask()
+
+    opt.taskName = [];
+
+    assertExceptionThrown( ...
+                          @()checkOptions(opt), ...
+                          'checkOptions:noTask');
+
+end
+
 function test_checkOptionsErrorGroup()
 
     opt.groups = {1};
+    opt.taskName = 'testTask';
 
     assertExceptionThrown( ...
-        @()checkOptions(opt), ...
-        'checkOptions:groupNotString');
+                          @()checkOptions(opt), ...
+                          'checkOptions:groupNotString');
 
 end
 
 function test_checkOptionsErrorRefSlice()
 
     opt.STC_referenceSlice = [1:10];
+    opt.taskName = 'testTask';
 
     assertExceptionThrown( ...
-        @()checkOptions(opt), ...
-        'checkOptions:refSliceNotScalar');
+                          @()checkOptions(opt), ...
+                          'checkOptions:refSliceNotScalar');
 
 end
 
 function test_checkOptionsErrorVoxDim()
 
     opt.funcVoxelDims = [1:10];
+    opt.taskName = 'testTask';
 
     assertExceptionThrown( ...
-        @()checkOptions(opt), ...
-        'checkOptions:voxDim');
+                          @()checkOptions(opt), ...
+                          'checkOptions:voxDim');
 
 end
 
@@ -63,9 +79,9 @@ function expectedOptions = defaultOptions()
     expectedOptions.STC_referenceSlice = [];
     expectedOptions.contrastList = {};
     expectedOptions.dataDir = '';
+    expectedOptions.derivativesDir = '';
     expectedOptions.funcVoxelDims = [];
     expectedOptions.groups = {''};
-    expectedOptions.jobsDir = '';
     expectedOptions.sliceOrder = [];
     expectedOptions.space = 'MNI';
     expectedOptions.subjects = {[]};

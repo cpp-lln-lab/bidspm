@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function file = inputFileValidation(dir, prefix, fileName)
     file2Process = spm_select('FPList', dir, ['^' prefix fileName '$']);
 
@@ -5,8 +7,8 @@ function file = inputFileValidation(dir, prefix, fileName)
 
         errorStruct.identifier = 'inputFileValidation:nonExistentFile';
         errorStruct.message = sprintf( ...
-            'This file does not exist: %s', ...
-            fullfile(dir, [prefix fileName '[.gz]']));
+                                      'This file does not exist: %s', ...
+                                      fullfile(dir, [prefix fileName '[.gz]']));
         error(errorStruct);
 
     else

@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+
 function matlabbatch = setBatchSTC(BIDS, opt, subID)
     % Slice timing units is in milliseconds to be BIDS compliant and not in slice number
     % as is more traditionally the case with SPM.
@@ -41,10 +43,10 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
     end
     if referenceSlice > TA
         error('%s (%f) %s (%f).\n%s', ...
-            'The reference slice time', referenceSlice, ...
-            'is greater than the acquisition time', TA, ...
-            ['Reference slice time must be in milliseconds ' ...
-            'or leave it empty to use mid-acquisition time as reference.']);
+              'The reference slice time', referenceSlice, ...
+              'is greater than the acquisition time', TA, ...
+              ['Reference slice time must be in milliseconds ' ...
+               'or leave it empty to use mid-acquisition time as reference.']);
     end
 
     % prefix of the files to look for
@@ -52,25 +54,29 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
 
     [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
+    runCounter = 1;
+
     for iSes = 1:nbSessions
 
-        % get all runs for that subject across all sessions
+        % get all runs for that subject for this session
         [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
 
         for iRun = 1:nbRuns
 
             % get the filename for this bold run for this task
             [fileName, subFuncDataDir] = getBoldFilename( ...
-                BIDS, ...
-                subID, sessions{iSes}, runs{iRun}, opt);
+                                                         BIDS, ...
+                                                         subID, sessions{iSes}, runs{iRun}, opt);
 
             % check that the file with the right prefix exist
-            files = inputFileValidation(subFuncDataDir, prefix, fileName);
+            file = inputFileValidation(subFuncDataDir, prefix, fileName);
 
             % add the file to the list
-            matlabbatch{1}.spm.temporal.st.scans{iRun} = cellstr(files);
+            matlabbatch{1}.spm.temporal.st.scans{runCounter} = cellstr(file);
 
-            disp(files{1});
+            runCounter = runCounter + 1;
+
+            disp(file{1});
 
         end
 

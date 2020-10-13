@@ -14,7 +14,7 @@ function test_getBoldFilenameForFFXBasic()
     iRun = 1;
 
     opt.taskName = 'vislocalizer';
-    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.groups = {''};
     opt.subjects = {'01'};
 
@@ -23,8 +23,9 @@ function test_getBoldFilenameForFFXBasic()
     [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);
 
     expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
-        'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', 'ses-01', 'func', ...
-        's6wsub-01_ses-01_task-vislocalizer_bold.nii');
+                                'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', ...
+                                'ses-01', 'func', ...
+                                's6wsub-01_ses-01_task-vislocalizer_bold.nii');
 
     assertEqual('s6w', prefix);
     assertEqual({expectedFileName}, boldFileName);
@@ -49,8 +50,9 @@ function test_getBoldFilenameForFFXNativeSpace()
     [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);
 
     expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
-        'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', 'ses-01', 'func', ...
-        's6rsub-01_ses-01_task-vislocalizer_bold.nii');
+                                'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', ...
+                                'ses-01', 'func', ...
+                                's6rsub-01_ses-01_task-vislocalizer_bold.nii');
 
     assertEqual('s6r', prefix);
     assertEqual({expectedFileName}, boldFileName);
