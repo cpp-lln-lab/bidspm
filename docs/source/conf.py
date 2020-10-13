@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'cpp_bids_spm'
+project = 'CPP BIDS SPM'
 copyright = '2020, the CPP BIDS SPM pipeline dev team'
 author = 'the CPP BIDS SPM pipeline dev team'
 
@@ -62,17 +62,17 @@ html_static_path = ['_static']
 
 html_logo = '_static/cpp_lab_logo.png'
 
-html_theme_options = {
-    'github_user': 'cpp-lln-lab',
-    'github_repo': 'CPP_BIDS_SPM_pipeline',
-    'github_button': True,
-    'github_banner': True
-}
-html_theme_options = {
-    'collapse_navigation': False,
-    'display_version': False,
-    'navigation_depth': 4,
-}
+# html_theme_options = {
+#     'github_user': 'cpp-lln-lab',
+#     'github_repo': 'CPP_BIDS_SPM_pipeline',
+#     'github_button': True,
+#     'github_banner': True
+# }
+# html_theme_options = {
+#     'collapse_navigation': False,
+#     'display_version': False,
+#     'navigation_depth': 4,
+# }
 
 html_sidebars = {
     '**': [
