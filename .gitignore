@@ -17,3 +17,6 @@ demos/MoAE/derivatives/*
 # test folder
 tests/sub-01/*
 tests/group/*
+
+# ignore virtual env
+cpp_bids_spm/*
