@@ -47,6 +47,12 @@ exclude_patterns = []
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+# The master toctree document.
+master_doc = 'index'
+
+# source_suffix = ['.rst', '.md']
+source_suffix = '.rst'
+
 
 # -- Options for HTML output -------------------------------------------------
 

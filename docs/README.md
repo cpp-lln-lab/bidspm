@@ -120,3 +120,13 @@ details.
 
 You can then trigger the build of the doc by going to the [read the docs]
 website: https://readthedocs.org.
+
+## Other matlab projects that use...
+
+### Sphinx
+
+https://github.com/sphinx-contrib/matlabdomain#users
+
+### Read the docs
+
+- [qMRLab](https://github.com/qMRLab/qMRLab/wiki/Guideline:-Generating-Documentation)
