@@ -60,6 +60,8 @@ function y = my_function(arg1, arg2)
     %
     % Describe what the function does here.
     %
+    %  y = my_function_napoleon(arg1, arg2)
+    %
     % :param arg1: The first input value
     % :param arg2: The second input value
     % :returns: The input value multiplied by two
@@ -73,6 +75,8 @@ function y = my_function(arg1, arg2)
 function y = my_function_napoleon(arg1, arg2)
     %
     % Describe what the function does here.
+    %
+    %  y = my_function_napoleon(arg1, arg2)
     %
     % Parameters:
     %    x: The first input value
