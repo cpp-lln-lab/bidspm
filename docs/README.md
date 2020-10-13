@@ -38,7 +38,7 @@ extensions = [
     'sphinx.ext.autodoc']
 ```
 
-`matlab_src_dir` in `docs/conf.py` should have the path (relative to `conf.py`)
+`matlab_src_dir` in `docs/source/conf.py` should have the path (relative to `conf.py`)
 to the folder containing your matlab code:
 
 ```python
@@ -120,6 +120,12 @@ details.
 
 You can then trigger the build of the doc by going to the [read the docs]
 website: https://readthedocs.org.
+
+You might need to be added as a maintainer of the doc.
+
+The doc can be built from any branch of a repo.
+
+<!-- TODO -->
 
 ## Other matlab projects that use...
 
