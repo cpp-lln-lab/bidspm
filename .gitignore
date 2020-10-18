@@ -7,6 +7,7 @@
 *.log
 *.html
 *.zip
+*.ps
 
 
 # files in the demo folder related to running the demo analysis
