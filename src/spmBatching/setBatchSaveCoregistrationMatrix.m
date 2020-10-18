@@ -10,7 +10,7 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID
                                                  BIDS, ...
                                                  subID, sessions{1}, runs{1}, opt);
 
-    fileName = strrep(fileName, '_bold.nii', 'from-scanner_to-T1w_mode-image_xfm.mat');
+    fileName = strrep(fileName, '_bold.nii', '_from-scanner_to-T1w_mode-image_xfm.mat');
 
     matlabbatch{end + 1}.cfg_basicio.var_ops.cfg_save_vars.name = fileName;
     matlabbatch{end}.cfg_basicio.var_ops.cfg_save_vars.outdir = {subFuncDataDir};
