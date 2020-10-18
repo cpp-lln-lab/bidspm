@@ -67,21 +67,31 @@ function bidsSpatialPrepro(opt)
             matlabbatch{1}.cfg_basicio.cfg_named_file.name = 'Anatomical';
             matlabbatch{1}.cfg_basicio.cfg_named_file.files = { {anatImage} };
 
+            opt.orderBatches.selectAnat = 1;
+
             fprintf(1, ' BUILDING SPATIAL JOB : REALIGN\n');
             [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt);
+
+            opt.orderBatches.realign = 2;
 
             fprintf(1, ' BUILDING SPATIAL JOB : COREGISTER\n');
             % REFERENCE IMAGE : DEPENDENCY FROM NAMED FILE SELECTOR ('Anatomical')
             matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt);
+
+            opt.orderBatches.coregister = 3;
+
+            matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt);
 
             fprintf(1, ' BUILDING SPATIAL JOB : SEGMENT ANATOMICAL\n');
             % (WITH NEW SEGMENT -DEFAULT SEGMENT IN SPM12)
             % DATA : DEPENDENCY FROM NAMED FILE SELECTOR ('Anatomical')
             matlabbatch = setBatchSegmentation(matlabbatch);
 
+            opt.orderBatches.segment = 5;
+
             fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE FUNCTIONALS\n');
 
-            matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim);
+            matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt);
 
             saveMatlabBatch(matlabbatch, 'spatialPreprocessing', opt, subID);
 
