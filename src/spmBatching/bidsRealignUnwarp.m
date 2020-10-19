@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function bidsRealignReslice(opt)
+function bidsRealignUnwarp(opt)
     % bidsRealignReslice(opt)
     %
     % The scripts realigns the functional
@@ -32,7 +32,7 @@ function bidsRealignReslice(opt)
 
             printProcessingSubject(groupName, iSub, subID);
 
-            fprintf(1, ' BUILDING SPATIAL JOB : REALIGN & RESLICE\n');
+            fprintf(1, ' BUILDING SPATIAL JOB : REALIGN & UNWARP\n');
 
             matlabbatch = [];
             [matlabbatch, voxDim] = setBatchRealign( ...
@@ -40,9 +40,9 @@ function bidsRealignReslice(opt)
                                                     BIDS, ...
                                                     subID, ...
                                                     opt, ...
-                                                    'realignReslice');
+                                                    'realignUnwarp');
 
-            saveMatlabBatch(matlabbatch, 'RealignReslice', opt, subID);
+            saveMatlabBatch(matlabbatch, 'RealignUnwarp', opt, subID);
 
             spm_jobman('run', matlabbatch);
 

@@ -7,31 +7,36 @@ function test_suite = test_setBatchRealign %#ok<*STOUT>
 end
 
 function test_setBatchRealignBasic()
+    
+    % TODO
+    % need a test with several sessions and runs
 
-    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-    opt.taskName = 'vismotion';
+    opt.dataDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', ...
+        'MoAE', 'output', 'MoAEpilot');
+    opt.taskName = 'auditory';
+    
     [~, opt, BIDS] = getData(opt);
 
-    subID = '02';
-    matlabbatch = setBatchRealignReslice(BIDS, opt, subID);
+    subID = '01';
+
+    matlabbatch = [];
+    matlabbatch = setBatchRealign(matlabbatch, BIDS, subID, opt);
 
     expectedBatch{1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
+    expectedBatch{end}.spm.spatial.realign.estwrite.roptions.which = [0 1];
 
     runCounter = 1;
-    for iSes = 1:2
+    for iSes = 1
         fileName = spm_BIDS(BIDS, 'data', ...
                             'sub', subID, ...
-                            'ses', sprintf('0%i', iSes), ...
                             'task', opt.taskName, ...
                             'type', 'bold');
 
-        for iFile = 1:numel(fileName)
-            [pth, nam, ext] = spm_fileparts(fileName{iFile});
-            fileName{iFile} = fullfile(pth, ['a' nam ext]);
-        end
-
         expectedBatch{1}.spm.spatial.realign.estwrite.data{iSes} = cellstr(fileName);
     end
+    
+    matlabbatch{1}.spm.spatial.realign.estwrite.data{1}
+    expectedBatch{1}.spm.spatial.realign.estwrite.data{1}
 
     assertEqual(matlabbatch, expectedBatch);
 
