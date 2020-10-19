@@ -32,9 +32,15 @@ function bidsRealignReslice(opt)
 
             printProcessingSubject(groupName, iSub, subID);
 
-            fprintf(1, ' BUILDING SPATIAL JOB : REALIGN\n');
+            fprintf(1, ' BUILDING SPATIAL JOB : REALIGN & RESLICE\n');
 
-            matlabbatch = setBatchRealignReslice(BIDS, opt, subID);
+            matlabbatch = [];
+            [matlabbatch, voxDim] = setBatchRealign( ...
+                                                    matlabbatch, ...
+                                                    BIDS, ...
+                                                    subID, ...
+                                                    opt, ...
+                                                    'realignReslice');
 
             saveMatlabBatch(matlabbatch, 'RealignReslice', opt, subID);
 
