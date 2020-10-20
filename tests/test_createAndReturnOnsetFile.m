@@ -16,12 +16,13 @@ function test_createAndReturnOnsetFileBasic()
 
     opt.taskName = 'vislocalizer';
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-    opt.groups = {''};
     opt.subjects = {'01'};
     opt.model.univariate.file = fullfile(fileparts(mfilename('fullpath')), ...
                                          'dummyData', 'models', ...
                                          'model-vislocalizer_smdl.json');
 
+    opt = checkOptions(opt);                                 
+                                
     [~, opt, BIDS] = getData(opt);
 
     boldFileName = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);
