@@ -26,9 +26,9 @@ function bidsSTC(opt)
 
     % if input has no opt, load the opt.mat file
     if nargin < 1
-        load('opt.mat');
-        fprintf('opt.mat file loaded \n\n');
+        opt = [];
     end
+    opt = loadAndCheckOptions(opt);
 
     % load the subjects/Groups information and the task name
     [group, opt, BIDS] = getData(opt);
@@ -48,14 +48,9 @@ function bidsSTC(opt)
 
             printProcessingSubject(groupName, iSub, subID);
 
-            %% GET FUNCTIOVAL FILES
             fprintf(1, ' BUILDING STC JOB : STC\n');
 
             matlabbatch = setBatchSTC(BIDS, opt, subID);
-
-            % The following lines are commented out because those parameters
-            % can be set in the spm_my_defaults.m
-            % matlabbatch{1}.spm.temporal.st.prefix = spm_get_defaults('slicetiming.prefix');
 
             if ~isempty(matlabbatch)
                 saveMatlabBatch(matlabbatch, 'STC', opt, subID);

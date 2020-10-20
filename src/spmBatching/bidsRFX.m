@@ -28,9 +28,9 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
 
     % if input has no opt, load the opt.mat file
     if nargin < 4
-        load('opt.mat');
-        fprintf('opt.mat file loaded \n\n');
+        opt = [];
     end
+    opt = loadAndCheckOptions(opt);
 
     if nargin < 5 || isempty(isMVPA)
         isMVPA = 0;

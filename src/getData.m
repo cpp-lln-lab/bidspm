@@ -40,8 +40,6 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
     %  make sure that the T1w.json is also present in the anat folder because
     %  of the way the spm_BIDS function works at the moment
 
-    opt = checkOptions(opt);
-
     if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
         % The directory where the derivatives are located
         opt = setDerivativesDir(opt);
