@@ -23,14 +23,12 @@ function bidsCopyRawFolder(opt, deleteZippedNii)
 
     % if input has no opt, load the opt.mat file
     if nargin < 1
-        load('opt.mat');
-        fprintf('opt.mat file loaded \n\n');
+        opt = [];
     end
+    opt = loadAndCheckOptions(opt);
 
     % Will only copy those modalities if they exist
     modalitiesToCopy = {'anat', 'func'};
-
-    opt = checkOptions(opt);
 
     %% All tasks in this experiment
     % raw directory and derivatives directory

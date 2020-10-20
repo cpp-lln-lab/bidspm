@@ -1,6 +1,8 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function matlabbatch = setBatchSTC(BIDS, opt, subID)
+    % matlabbatch = setBatchSTC(BIDS, opt, subID)
+    %
     % Slice timing units is in milliseconds to be BIDS compliant and not in slice number
     % as is more traditionally the case with SPM.
     %
@@ -87,5 +89,9 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
     matlabbatch{1}.spm.temporal.st.ta = TA;
     matlabbatch{1}.spm.temporal.st.so = sliceOrder;
     matlabbatch{1}.spm.temporal.st.refslice = referenceSlice;
+
+    % The following lines are commented out because those parameters
+    % can be set in the spm_my_defaults.m
+    % matlabbatch{1}.spm.temporal.st.prefix = spm_get_defaults('slicetiming.prefix');
 
 end

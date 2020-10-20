@@ -5,10 +5,6 @@ function opt = checkOptions(opt)
     %
     % we check the option inputs and add any missing field with some defaults
 
-    if nargin < 1
-        opt = struct();
-    end
-
     fieldsToSet = setDefaultOption();
 
     opt = setDefaultFields(opt, fieldsToSet);
@@ -75,7 +71,12 @@ function fieldsToSet = setDefaultOption()
     fieldsToSet.dataDir = '';
     fieldsToSet.derivativesDir = '';
 
-    % fieldsToSet for slice time correction
+    % Options for slice time correction
+    % If left unspecified the slice timing will be done using the mid-volume acquisition
+    % time point as reference.
+    % Slice order must be entered in time unit (ms) (this is the BIDS way of doing things)
+    % instead of the slice index of the reference slice (the "SPM" way of doing things).
+    % More info here: https://en.wikibooks.org/wiki/SPM/Slice_Timing
     fieldsToSet.STC_referenceSlice = []; % reference slice: middle acquired slice
     fieldsToSet.sliceOrder = []; % To be used if SPM can't extract slice info
 
@@ -85,8 +86,18 @@ function fieldsToSet = setDefaultOption()
 
     % specify the model file that contains the contrasts to compute
     fieldsToSet.contrastList = {};
-    fieldsToSet.model.file = '';
+    fieldsToSet.model.multivariate.file = '';
+    fieldsToSet.model.univariate.file = '';
 
     % specify the results to compute
-    fieldsToSet.result.Steps = [];
+    fieldsToSet.result.Steps = struct( ...
+                                      'Level',  '', ... % dataset, run, subject
+                                      'Contrasts', struct( ...
+                                                          'Name', '', ...
+                                                          'Mask', false, ...
+                                                          'MC', 'FWE', ... % FWE, none, FDR
+                                                          'p', 0.05, ...
+                                                          'k', 0, ...
+                                                          'NIDM', true));
+
 end

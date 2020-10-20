@@ -9,11 +9,6 @@ function opt = getOption()
         opt = [];
     end
 
-    % group of subjects to analyze
-    opt.groups = {''};
-    % suject to run in each group
-    opt.subjects = {[]};
-
     % task to analyze
     opt.taskName = 'visMotion';
 
@@ -23,7 +18,6 @@ function opt = getOption()
     % specify the model file that contains the contrasts to compute
     opt.model.univariate.file = ...
         '/home/remi/github/CPP_BIDS_SPM_pipeline/model-visMotionLoc_smdl.json';
-    opt.model.multivariate.file = '';
 
     % specify the result to compute
     % Contrasts.Name has to match one of the contrast defined in the model json file
@@ -37,17 +31,8 @@ function opt = getOption()
                                                      'k', 0, ...
                                                      'NIDM', true));
 
-    % Options for slice time correction
-    % If left unspecified the slice timing will be done using the mid-volume acquisition
-    % time point as reference.
-    % Slice order must be entered in time unit (ms) (this is the BIDS way of doing things)
-    % instead of the slice index of the reference slice (the "SPM" way of doing things).
-    % More info here: https://en.wikibooks.org/wiki/SPM/Slice_Timing
-    opt.sliceOrder = [];
-    opt.STC_referenceSlice = [];
-
-    % Options for normalize
-    % Voxel dimensions for resampling at normalization of functional data or leave empty [ ].
-    opt.funcVoxelDims = [];
+    %% DO NOT TOUCH
+    opt = checkOptions(opt);
+    saveOptions(opt);
 
 end

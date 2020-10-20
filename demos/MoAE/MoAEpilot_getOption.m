@@ -8,33 +8,12 @@ function opt = MoAEpilot_getOption()
         opt = [];
     end
 
-    % group of subjects to analyze
-    opt.groups = {''};
-    % suject to run in each group
-    opt.subjects = {[]};
-
     % task to analyze
     opt.taskName = 'auditory';
 
     % The directory where the data are located
     opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'output', 'MoAEpilot');
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')));
-
-    % Options for slice time correction
-    % If left unspecified the slice timing will be done using the mid-volume acquisition
-    % time point as reference.
-    % Slice order must be entered in time unit (ms) (this is the BIDS way of doing things)
-    % instead of the slice index of the reference slice (the "SPM" way of doing things).
-    % More info here: https://en.wikibooks.org/wiki/SPM/Slice_Timing
-    opt.sliceOrder = [];
-    opt.STC_referenceSlice = [];
-
-    % Options for normalize
-    % Voxel dimensions for resampling at normalization of functional data or leave empty [ ].
-    opt.funcVoxelDims = [];
-
-    % Suffix output directory for the saved jobs
-    opt.jobsDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL', 'JOBS', opt.taskName);
 
     opt.model.univariate.file = fullfile(fileparts(mfilename('fullpath')), ...
                                          'models', 'model-MoAE_smdl.json');
@@ -57,5 +36,9 @@ function opt = MoAEpilot_getOption()
                                               'p', 0.01, ...
                                               'k', 0, ...
                                               'NIDM', true);
+
+    %% DO NOT TOUCH
+    opt = checkOptions(opt);
+    saveOptions(opt);
 
 end

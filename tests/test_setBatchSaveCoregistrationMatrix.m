@@ -13,6 +13,9 @@ function test_setBatchSaveCoregistrationMatrixBasic()
 
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'vismotion';
+
+    opt = checkOptions(opt);
+
     [~, opt, BIDS] = getData(opt);
     subID = '02';
 

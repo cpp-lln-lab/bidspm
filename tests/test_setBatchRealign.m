@@ -7,14 +7,16 @@ function test_suite = test_setBatchRealign %#ok<*STOUT>
 end
 
 function test_setBatchRealignBasic()
-    
+
     % TODO
     % need a test with several sessions and runs
 
     opt.dataDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', ...
-        'MoAE', 'output', 'MoAEpilot');
+                           'MoAE', 'output', 'MoAEpilot');
     opt.taskName = 'auditory';
-    
+
+    opt = checkOptions(opt);
+
     [~, opt, BIDS] = getData(opt);
 
     subID = '01';
@@ -34,9 +36,9 @@ function test_setBatchRealignBasic()
 
         expectedBatch{1}.spm.spatial.realign.estwrite.data{iSes} = cellstr(fileName);
     end
-    
-    matlabbatch{1}.spm.spatial.realign.estwrite.data{1}
-    expectedBatch{1}.spm.spatial.realign.estwrite.data{1}
+
+    matlabbatch{1}.spm.spatial.realign.estwrite.data{1};
+    expectedBatch{1}.spm.spatial.realign.estwrite.data{1};
 
     assertEqual(matlabbatch, expectedBatch);
 

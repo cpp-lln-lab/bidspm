@@ -6,9 +6,9 @@ function bidsSmoothing(funcFWHM, opt)
 
     % if input has no opt, load the opt.mat file
     if nargin < 2
-        load('opt.mat');
-        fprintf('opt.mat file loaded \n\n');
+        opt = [];
     end
+    opt = loadAndCheckOptions(opt);
 
     % load the subjects/Groups information and the task name
     [group, opt, BIDS] = getData(opt);
