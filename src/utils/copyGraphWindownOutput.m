@@ -22,9 +22,7 @@ function copyGraphWindownOutput(outputDir, action)
 
         if ~isempty(file)
 
-            [~, filename, ext] = spm_fileparts(file);
-
-            targetFile = [strrep(filename, 'spm_', ['spm_' action '_']) ext];
+            targetFile = ['spm_' action '_' datestr(now, 'yyyymmddHHMM') '.ps'];
 
             movefile( ...
                      file, ...
