@@ -67,7 +67,7 @@ function bidsSpatialPrepro(opt)
             fprintf(1, ' BUILDING SPATIAL JOB : SEGMENT ANATOMICAL\n');
             % (WITH NEW SEGMENT -DEFAULT SEGMENT IN SPM12)
             % DATA : DEPENDENCY FROM NAMED FILE SELECTOR ('Anatomical')
-            matlabbatch = setBatchSegmentation(matlabbatch);
+            matlabbatch = setBatchSegmentation(matlabbatch, opt);
 
             opt.orderBatches.segment = 5;
 
