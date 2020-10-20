@@ -12,6 +12,12 @@ function opt = loadAndCheckOptions(opt)
         opt = spm_select('FPList', pwd, '^options_task-.*.json$');
     end
 
+    if isstruct(opt)
+        opt = checkOptions(opt);
+        fprintf(1, '\nOptions are locked & loaded.\n\n');
+        return
+    end
+
     if size(opt, 1) > 1
         containsDate = cellfun(@any, strfind(cellstr(opt), '_date-'));
         opt = opt(containsDate, :);
@@ -27,6 +33,6 @@ function opt = loadAndCheckOptions(opt)
     end
 
     opt = checkOptions(opt);
-
     fprintf(1, '\nOptions are locked & loaded.\n\n');
+
 end
