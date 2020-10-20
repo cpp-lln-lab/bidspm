@@ -21,8 +21,8 @@ function test_createAndReturnOnsetFileBasic()
                                          'dummyData', 'models', ...
                                          'model-vislocalizer_smdl.json');
 
-    opt = checkOptions(opt);                                 
-                                
+    opt = checkOptions(opt);
+
     [~, opt, BIDS] = getData(opt);
 
     boldFileName = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);

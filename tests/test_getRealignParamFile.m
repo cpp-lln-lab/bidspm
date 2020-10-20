@@ -16,7 +16,7 @@ function test_getRealignParamFileBasic()
     opt.taskName = 'vislocalizer';
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.subjects = {'01'};
-    
+
     opt = checkOptions(opt);
 
     [~, opt, BIDS] = getData(opt);
@@ -44,7 +44,7 @@ function test_getRealignParamFileNativeSpace()
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.subjects = {'01'};
     opt.space = 'T1w';
-    
+
     opt = checkOptions(opt);
 
     [~, opt, BIDS] = getData(opt);
@@ -73,7 +73,7 @@ function test_getRealignParamFileError()
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.subjects = {'01'};
     opt.space = 'T1w';
-    
+
     opt = checkOptions(opt);
 
     [~, opt, BIDS] = getData(opt);

@@ -16,7 +16,7 @@ function test_getBoldFilenameForFFXBasic()
     opt.taskName = 'vislocalizer';
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.subjects = {'01'};
-    
+
     opt = checkOptions(opt);
 
     [~, opt, BIDS] = getData(opt);
@@ -44,7 +44,7 @@ function test_getBoldFilenameForFFXNativeSpace()
     opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
     opt.subjects = {'01'};
     opt.space = 'T1w';
-    
+
     opt = checkOptions(opt);
 
     [~, opt, BIDS] = getData(opt);

@@ -8,25 +8,25 @@ function opt = loadAndCheckOptions(opt)
     %
     % then checks the content of the opt structure and adds missing information
 
-    if nargin<1 || isempty(opt)
+    if nargin < 1 || isempty(opt)
         opt = spm_select('FPList', pwd, '^options_task-.*.json$');
     end
-    
+
     if size(opt, 1) > 1
         containsDate = cellfun(@any, strfind(cellstr(opt), '_date-'));
         opt = opt(containsDate, :);
         opt = sortrows(opt);
         opt = opt(end, :);
     end
-    
+
     if ischar(opt) && exist(opt, 'file')
-        fprintf(1, '\nReading option from: %s.\n', opt)
+        fprintf(1, '\nReading option from: %s.\n', opt);
         opt = spm_jsonread(opt);
     else
-        error('the requested file does not exist: %s', opt)
+        error('the requested file does not exist: %s', opt);
     end
-    
+
     opt = checkOptions(opt);
-    
+
     fprintf(1, '\nOptions are locked & loaded.\n\n');
 end

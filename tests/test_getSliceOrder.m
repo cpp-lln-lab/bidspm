@@ -11,7 +11,7 @@ function test_getSliceOrderBasic()
 
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'vismotion';
-    
+
     opt = checkOptions(opt);
 
     [~, opt] = getData(opt);
@@ -39,31 +39,31 @@ function test_getSliceOrderBasic()
 end
 
 function test_getSliceOrderEmpty()
-    
+
     %% Get empty slice order from BIDS
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'vislocalizer';
-    
+
     opt = checkOptions(opt);
-    
+
     [~, opt] = getData(opt);
-    
+
     BIDS_sliceOrder = getSliceOrder(opt, 0);
-    
+
     assert(isempty(BIDS_sliceOrder));
 
 end
-    
+
 function test_getSliceOrderFromOptions()
-    
+
     %% Get slice order from options
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.STC_referenceSlice = 1000;
     opt.sliceOrder = 0:250:2000;
     opt.taskName = 'vislocalizer';
-    
+
     opt = checkOptions(opt);
-    
+
     [~, opt] = getData(opt);
     BIDS_sliceOrder = getSliceOrder(opt, 0);
     assert(isequal(BIDS_sliceOrder, opt.sliceOrder));

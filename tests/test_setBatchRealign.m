@@ -14,7 +14,7 @@ function test_setBatchRealignBasic()
     opt.dataDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', ...
                            'MoAE', 'output', 'MoAEpilot');
     opt.taskName = 'auditory';
-    
+
     opt = checkOptions(opt);
 
     [~, opt, BIDS] = getData(opt);

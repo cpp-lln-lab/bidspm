@@ -78,34 +78,34 @@ function expectedOptions = defaultOptions()
 
     expectedOptions.sliceOrder = [];
     expectedOptions.STC_referenceSlice = [];
-    
+
     expectedOptions.dataDir = '';
     expectedOptions.derivativesDir = '';
-    
+
     expectedOptions.funcVoxelDims = [];
-    
+
     expectedOptions.groups = {''};
     expectedOptions.subjects = {[]};
 
     expectedOptions.space = 'MNI';
-    
+
     expectedOptions.taskName = '';
-    
+
     expectedOptions.zeropad = 2;
-    
+
     expectedOptions.contrastList = {};
     expectedOptions.model.multivariate.file = '';
     expectedOptions.model.univariate.file = '';
-    
+
     expectedOptions.result.Steps = struct( ...
-        'Level',  '', ...
-        'Contrasts', struct( ...
-        'Name', '', ...
-        'Mask', false, ...
-        'MC', 'FWE', ...
-        'p', 0.05, ...
-        'k', 0, ...
-        'NIDM', true));
+                                          'Level',  '', ...
+                                          'Contrasts', struct( ...
+                                                              'Name', '', ...
+                                                              'Mask', false, ...
+                                                              'MC', 'FWE', ...
+                                                              'p', 0.05, ...
+                                                              'k', 0, ...
+                                                              'NIDM', true));
 
     expectedOptions = orderfields(expectedOptions);
 

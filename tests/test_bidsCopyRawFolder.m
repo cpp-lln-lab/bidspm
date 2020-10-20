@@ -13,15 +13,12 @@ function test_bidsCopyRawFolderBasic()
                            fileparts(mfilename('fullpath')), ...
                            '..', 'demos',  'MoAE', 'output', 'MoAEpilot');
 
-    % group of subjects to analyze
-    opt.groups = {''};
-    % suject to run in each group
-    opt.subjects = {[]};
     % task to analyze
     opt.taskName = 'auditory';
 
-    checkDependencies();
     opt = checkOptions(opt);
+
+    checkDependencies();
 
     bidsCopyRawFolder(opt, 1);
 
