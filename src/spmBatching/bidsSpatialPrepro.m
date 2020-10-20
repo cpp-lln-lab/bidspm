@@ -11,17 +11,11 @@ function bidsSpatialPrepro(opt)
     % The
     %
     % Assumptions:
-    % - will take the first T1w images as reference
-    % - assume the anatomical T1w to use for normalization is in the
-    % first session
     % - the batch is build using dependencies across the different batch modules
 
     % TO DO
     % - find a way to paralelize this over subjects
     % - average T1s across sessions if necessarry
-
-    % Indicate which session the structural data was collected
-    structSession = 1;
 
     % if input has no opt, load the opt.mat file
     if nargin < 1
@@ -32,7 +26,7 @@ function bidsSpatialPrepro(opt)
     % load the subjects/Groups information and the task name
     [group, opt, BIDS] = getData(opt);
 
-    fprintf(1, 'DOING PREPROCESSING\n');
+    fprintf(1, 'DOING SPATIAL PREPROCESSING\n');
 
     %% Loop through the groups, subjects, and sessions
     for iGroup = 1:length(group)
@@ -45,7 +39,7 @@ function bidsSpatialPrepro(opt)
             % Get the ID of the subject
             % (i.e SubNumber doesnt have to match the iSub if one subject
             % is exluded for any reason)
-            subID = group(iGroup).subNumber{iSub}; % Get the subject ID
+            subID = group(iGroup).subNumber{iSub};
 
             printProcessingSubject(groupName, iSub, subID);
 
@@ -53,19 +47,7 @@ function bidsSpatialPrepro(opt)
             sessions = getInfo(BIDS, subID, opt, 'Sessions');
 
             fprintf(1, ' BUILDING SPATIAL JOB : SELECTING ANATOMCAL\n');
-            % get all T1w images for that subject and
-            anat = spm_BIDS(BIDS, 'data', ...
-                            'sub', subID, ...
-                            'ses', sessions{structSession}, ...
-                            'type', 'T1w');
-
-            % we assume that the first T1w is the correct one (could be an
-            % issue for dataset with more than one
-            anat = anat{1};
-            anatImage = unzipImgAndReturnsFullpathName(anat);
-
-            matlabbatch{1}.cfg_basicio.cfg_named_file.name = 'Anatomical';
-            matlabbatch{1}.cfg_basicio.cfg_named_file.files = { {anatImage} };
+            matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
 
             opt.orderBatches.selectAnat = 1;
 
