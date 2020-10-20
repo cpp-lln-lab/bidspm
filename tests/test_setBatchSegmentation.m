@@ -12,9 +12,11 @@ function test_setBatchSegmentationBasic()
 
     % necessarry to deal with SPM module dependencies
     spm_jobman('initcfg');
+    
+    opt.orderBatches.selectAnat = 1;
 
     matlabbatch = [];
-    matlabbatch = setBatchSegmentation(matlabbatch);
+    matlabbatch = setBatchSegmentation(matlabbatch, opt);
 
     expectedBatch = returnExpectedBatch(spmLocation);
 
@@ -27,7 +29,7 @@ function expectedBatch = returnExpectedBatch(spmLocation)
     expectedBatch = [];
 
     expectedBatch{end + 1}.spm.spatial.preproc.channel.vols(1) = ...
-        cfg_dep('Named File Selector: Structural(1) - Files', ...
+        cfg_dep('Named File Selector: Anatomical(1) - Files', ...
                 substruct( ...
                           '.', 'val', '{}', {1}, ...
                           '.', 'val', '{}', {1}, ...
