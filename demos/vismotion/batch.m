@@ -1,41 +1,18 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-%   __  ____  ____     _      _    _
-%  / _)(  _ \(  _ \   | |    / \  | )
-% ( (_  )___/ )___/   | |_  / _ \ | \
-%  \__)(__)  (__)     |___||_/ \_||__)
-%
-% Thank you for using the CPP lap pipeline - version 0.0.3.
-%
-% Current list of contributors includes
-%  Mohamed Rezk
-%  Rémi Gau
-%  Olivier Collignon
-%  Ane Gurtubay
-%  Marco Barilari
-%
-% Please cite using the following DOI:
-%  https://doi.org/10.5281/zenodo.3554332
-%
-% For bug report, suggestions for improvements or contributions see our github repo:
-%  https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline
-
 clear;
 clc;
 
-%% Run batches
-opt = getOption();
-
-% the cdirectory with this script becomes the current directory
-WD = pwd;
+% directory with this script becomes the current directory
+WD = fileparts(mfilename('fullpath'));
 
 % we add all the subfunctions that are in the sub directories
-addpath(genpath(WD));
+addpath(fullfile(WD, '..'));
+addpath(genpath(fullfile(WD, '..', 'src')));
+addpath(genpath(fullfile(WD, '..', 'lib')));
 
-% In case some toolboxes need to be added the matlab path, specify and uncomment
-% in the lines below
-% toolbox_path = '';
-% addpath(fullfile(toolbox_path)
+%% Run batches
+opt = getOption();
 
 checkDependencies();
 

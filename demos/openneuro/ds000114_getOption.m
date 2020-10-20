@@ -19,5 +19,6 @@ function opt = ds000114_getOption()
 
     %% DO NOT TOUCH
     opt = checkOptions(opt);
+    saveOptions(opt);
 
 end

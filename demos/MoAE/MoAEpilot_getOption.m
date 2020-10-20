@@ -39,5 +39,6 @@ function opt = MoAEpilot_getOption()
 
     %% DO NOT TOUCH
     opt = checkOptions(opt);
+    saveOptions(opt);
 
 end

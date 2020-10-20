@@ -33,5 +33,6 @@ function opt = getOption()
 
     %% DO NOT TOUCH
     opt = checkOptions(opt);
+    saveOptions(opt);
 
 end
