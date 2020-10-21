@@ -61,16 +61,20 @@ function preprocessingQA(opt)
             % issue for dataset with more than one
             anat = anat{1};
             
+            [filepath, filename] = spm_fileparts(anat);
+            
+            grayMatterTPM = spm_select('FPList', filepath, ['^c1' filename '.nii$']);
+            whiteMatterTPM = spm_select('FPList', filepath, ['^c2' filename '.nii$']);
+            
             % sanity check that all images are in the same space.
-            V_to_check = Normalized_class';
-            V_to_check{end + 1} = NormalizedAnat_file;
-            spm_check_orientations(spm_vol(char(V_to_check)));
+            volumesToCheck = {anat; grayMatterTPM; whiteMatterTPM};
+            spm_check_orientations(spm_vol(char(volumesToCheck)));
             
             % Basic QA for anatomical data is to get SNR, CNR, FBER and Entropy
             % This is useful to check coregistration and normalization worked fine
-            tmp = spmup_anatQA(NormalizedAnat_file, Normalized_class{1}, Normalized_class{2});
+            anatQA = spmup_anatQA(anat, grayMatterTPM, whiteMatterTPM);
             
-            save([fileparts(NormalizedAnat_file) filesep 'anatQA.mat'], 'tmp');
+            save(strrep(anat, '.nii', '_qa.mat'), 'anatQA');
             
             
             
@@ -128,10 +132,12 @@ function preprocessingQA(opt)
                 if bold_include(frun)
                     
                     fprintf('subject %g: fMRI Quality control: carpet plot \n', s);
+                    
                     P = subjects{s}.func{frun};
                     c1 = EPI_class{1};
                     c2 = EPI_class{2};
                     c3 = EPI_class{3};
+                    
                     spmup_timeseriesplot(P, c1, c2, c3, ...
                         'motion', 'on', ...
                         'nuisances', 'on', ...
