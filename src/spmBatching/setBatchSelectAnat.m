@@ -10,6 +10,8 @@ function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID)
     % We assume that the first anat of that type is the "correct" one
 
     anatType = opt.anatReference.type;
+
+    % TODO allow for the session to be referenced by a string e.g ses-retest
     anatSession = opt.anatReference.session;
 
     % get all anat images for that subject fo that type

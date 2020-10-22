@@ -38,9 +38,9 @@
             "trial_type.Vis_R", 
             "trial_type.Vis_L"
           ],
-          "weights": [0.25 0.25 0.25 0.25],
+          "weights": [0.25, 0.25, 0.25, 0.25],
           "type": "t"
-        }
+        },
         {
           "Name": "Aud",
           "ConditionList": [
@@ -49,9 +49,9 @@
             "trial_type.Aud_R", 
             "trial_type.Aud_L"
           ],
-          "weights": [0.25 0.25 0.25 0.25],
+          "weights": [0.25, 0.25, 0.25, 0.25],
           "type": "t"
-        }
+        },
         {
           "Name": "Vis_gt_Aud",
           "ConditionList": [
@@ -65,16 +65,16 @@
             "trial_type.Aud_L"
           ],
           "weights": [
-            0.25 
-            0.25 
-            0.25 
-            0.25 
-            -0.25 
-            -0.25 
-            -0.25 
+            0.25, 
+            0.25, 
+            0.25, 
+            0.25, 
+            -0.25, 
+            -0.25, 
+            -0.25, 
             -0.25],
           "type": "t"
-        }
+        },
         {
           "Name": "Aud_gt_Vis",
           "ConditionList": [
@@ -88,13 +88,13 @@
             "trial_type.Aud_L"
           ],
           "weights": [
-            -0.25 
-            -0.25 
-            -0.25 
-            -0.25 
-            0.25 
-            0.25 
-            0.25 
+            -0.25, 
+            -0.25, 
+            -0.25, 
+            -0.25, 
+            0.25, 
+            0.25, 
+            0.25, 
             0.25],
           "type": "t"
         }
