@@ -17,7 +17,8 @@ function test_specifyContrastsBasic()
 
     opt = setDerivativesDir(opt);
 
-    ffxDir = fullfile(opt.derivativesDir, 'sub-01', 'stats', 'ffx_visMotion', 'ffx_6');
+    ffxDir = fullfile(opt.derivativesDir, 'sub-01', 'stats', 'ffx_visMotion', ...
+        'ffx_space-MNI_FWHM-6');
 
     contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
