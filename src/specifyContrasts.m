@@ -38,7 +38,7 @@ function contrasts = specifyContrasts(ffxDir, taskName, opt, isMVPA)
     for iStep = 1:length(model.Steps)
 
         step = model.Steps(iStep);
-        
+
         if iscell(step)
             step = step{1};
         end

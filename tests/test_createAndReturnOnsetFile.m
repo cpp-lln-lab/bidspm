@@ -27,7 +27,7 @@ function test_createAndReturnOnsetFileBasic()
 
     sessions = getInfo(BIDS, subID, opt, 'sessions');
     runs = getInfo(BIDS, subID, opt, 'runs', sessions{iSes});
-    
+
     tsvFile = getInfo(BIDS, subID, opt, 'filename', sessions{iSes}, runs{iRun}, 'events');
 
     onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile{1}, funcFWHM, isMVPA);
