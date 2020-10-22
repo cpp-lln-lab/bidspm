@@ -64,6 +64,10 @@ function fieldsToSet = setDefaultOption()
     fieldsToSet.subjects = {[]};
     fieldsToSet.zeropad = 2;
 
+    % session number and type of the anatomical reference
+    fieldsToSet.anatReference.type = 'T1w';
+    fieldsToSet.anatReference.session = 1;
+
     % space where we conduct the analysis
     fieldsToSet.space = 'MNI';
 

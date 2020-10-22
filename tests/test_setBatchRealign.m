@@ -10,6 +10,9 @@ function test_setBatchRealignBasic()
 
     % TODO
     % need a test with several sessions and runs
+    % add test realign and reslice
+    % add test realign and unwarp
+    % check it returns the right voxDim
 
     opt.dataDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', ...
                            'MoAE', 'output', 'MoAEpilot');
@@ -36,9 +39,6 @@ function test_setBatchRealignBasic()
 
         expectedBatch{1}.spm.spatial.realign.estwrite.data{iSes} = cellstr(fileName);
     end
-
-    matlabbatch{1}.spm.spatial.realign.estwrite.data{1};
-    expectedBatch{1}.spm.spatial.realign.estwrite.data{1};
 
     assertEqual(matlabbatch, expectedBatch);
 
