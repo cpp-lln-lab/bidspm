@@ -9,9 +9,9 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
     allowedPrefixCases = {
                           'STC'; ...
                           'preprocess'; ...
-                          'smoothing_space-T1w'; ...
+                          'smoothing_space-individual'; ...
                           'smoothing'; ...
-                          'FFX_space-T1w'; ...
+                          'FFX_space-individual'; ...
                           'FFX'};
 
     switch step
@@ -22,7 +22,7 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
             prefix = prefixForSTC(prefix, opt);
 
             % when smoothing is done on non-normalized data (in the space of T1w)
-        case 'smoothing_space-T1w'
+        case 'smoothing_space-individual'
             prefix = prefixForSTC(prefix, opt);
             prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
 
@@ -30,7 +30,7 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
             prefix = prefixForSTC(prefix, opt);
             prefix = [spm_get_defaults('normalise.write.prefix') prefix];
 
-        case 'FFX_space-T1w'
+        case 'FFX_space-individual'
             prefix = prefixForSTC(prefix, opt);
 
             % for the motion regressors txt file

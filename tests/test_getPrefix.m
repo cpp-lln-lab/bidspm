@@ -74,9 +74,9 @@ function test_getPrefixSmoothing()
 
 end
 
-function test_getPrefixSmoothingT1w()
+function test_getPrefixSmoothingIndividual()
 
-    step = 'smoothing_space-T1w';
+    step = 'smoothing_space-individual';
     funcFWHM = 6;
     opt.metadata = [];
     opt.sliceOrder = [];
@@ -111,9 +111,9 @@ function test_getPrefixFFX()
 
 end
 
-function test_getPrefixFFXT1w()
+function test_getPrefixFfxIndividual()
 
-    step = 'FFX_space-T1w';
+    step = 'FFX_space-individual';
     funcFWHM = 6;
     opt.metadata = [];
     opt.sliceOrder = [];
