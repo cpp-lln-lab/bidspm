@@ -48,7 +48,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
                     % TODO
                     % Save this batch in for each subject and not once for all
 
-                    saveMatlabBatch(matlabbatch, 'computeFfxResults', opt);
+                    saveMatlabBatch(matlabbatch, 'compute_ffx_results', opt);
 
                 case 'dataset'
 
@@ -64,7 +64,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
                     matlabbatch = resultsMatlabbatch( ...
                                                      matlabbatch, opt, iStep, iCon, results);
 
-                    saveMatlabBatch(matlabbatch, 'computeRfxResults', opt);
+                    saveMatlabBatch(matlabbatch, 'compute_rfx_results', opt);
 
             end
         end

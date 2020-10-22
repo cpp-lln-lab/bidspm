@@ -44,7 +44,7 @@ function bidsRFX(action, funcFWHM, conFWHM, opt)
             matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt);
 
             saveMatlabBatch( ...
-                            ['smoothCon_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
+                            ['smooth_con_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
                             'STC', ...
                             opt);
 
@@ -72,7 +72,7 @@ function bidsRFX(action, funcFWHM, conFWHM, opt)
             % different analysis
             % ------
 
-            saveMatlabBatch(matlabbatch, 'createMeanStrucMask', opt);
+            saveMatlabBatch(matlabbatch, 'create_mean_struc_mask', opt);
 
             spm_jobman('run', matlabbatch);
 
@@ -98,7 +98,7 @@ function bidsRFX(action, funcFWHM, conFWHM, opt)
             % contrast
             % ------
 
-            saveMatlabBatch(matlabbatch, 'rfxSpecification', opt);
+            saveMatlabBatch(matlabbatch, 'rfx_specification', opt);
 
             fprintf(1, 'Factorial Design Specification...');
 
@@ -123,7 +123,7 @@ function bidsRFX(action, funcFWHM, conFWHM, opt)
             % contrast
             % ------
 
-            saveMatlabBatch(matlabbatch, 'rfxEstimation', opt);
+            saveMatlabBatch(matlabbatch, 'rfx_estimation', opt);
 
             fprintf(1, 'Factorial Design Estimation...');
 
@@ -153,7 +153,7 @@ function bidsRFX(action, funcFWHM, conFWHM, opt)
             % contrast
             % ------
 
-            saveMatlabBatch(matlabbatch, 'rfxContrasts', opt);
+            saveMatlabBatch(matlabbatch, 'rfx_contrasts', opt);
 
             fprintf(1, 'Contrast Estimation...');
 

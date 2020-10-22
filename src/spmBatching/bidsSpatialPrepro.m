@@ -84,7 +84,7 @@ function bidsSpatialPrepro(opt)
                 matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt);
             end
 
-            batchName = ['spatialPreprocessing' upper(opt.space(1)) opt.space(2:end)];
+            batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];
             saveMatlabBatch(matlabbatch, batchName, opt, subID);
 
             spm_jobman('run', matlabbatch);
