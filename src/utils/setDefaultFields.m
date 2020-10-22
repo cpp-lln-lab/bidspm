@@ -12,26 +12,30 @@ function structure = setDefaultFields(structure, fieldsToSet)
 
     names = fieldnames(fieldsToSet);
 
-    for i = 1:numel(names)
+    for j = 1:numel(structure)
 
-        thisField = fieldsToSet.(names{i});
+        for i = 1:numel(names)
 
-        if isfield(structure, names{i}) && isstruct(structure.(names{i}))
+            thisField = fieldsToSet.(names{i});
 
-            structure.(names{i}) = ...
-                setDefaultFields(structure.(names{i}), fieldsToSet.(names{i}));
+            if isfield(structure(j), names{i}) && isstruct(structure(j).(names{i}))
 
-        else
+                structure(j).(names{i}) = ...
+                    setDefaultFields(structure(j).(names{i}), fieldsToSet.(names{i}));
 
-            structure = setFieldToIfNotPresent( ...
-                                               structure, ...
-                                               names{i}, ...
-                                               thisField);
+            else
+
+                structure = setFieldToIfNotPresent( ...
+                                                   structure, ...
+                                                   names{i}, ...
+                                                   thisField);
+            end
+
         end
 
-    end
+        structure = orderfields(structure);
 
-    structure = orderfields(structure);
+    end
 
 end
 

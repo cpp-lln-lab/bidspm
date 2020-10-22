@@ -41,3 +41,28 @@ function test_setDefaultFieldsNoOverwrite()
     assert(isequal(expectedStructure, structure));
 
 end
+
+function test_setDefaultFieldsCmplxStruct()
+
+    % set up
+    structure = struct();
+
+    fieldsToSet.field.subfield_1 = 1;
+    fieldsToSet.field.subfield_2(1).name = 'a';
+    fieldsToSet.field.subfield_2(1).value = 1;
+    fieldsToSet.field.subfield_2(2).name = 'b';
+    fieldsToSet.field.subfield_2(2).value = 2;
+
+    structure = setDefaultFields(structure, fieldsToSet);
+
+    % data to test against
+    expectedStructure.field.subfield_1 = 1;
+    expectedStructure.field.subfield_2(1).name = 'a';
+    expectedStructure.field.subfield_2(1).value = 1;
+    expectedStructure.field.subfield_2(2).name = 'b';
+    expectedStructure.field.subfield_2(2).value = 2;
+
+    % test
+    assert(isequal(expectedStructure, structure));
+
+end
