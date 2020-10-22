@@ -17,7 +17,9 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt)
 
     matlabbatch{end}.spm.spatial.preproc.channel.biasreg = 0.001;
     matlabbatch{end}.spm.spatial.preproc.channel.biasfwhm = 60;
-    matlabbatch{end}.spm.spatial.preproc.channel.write = [0 1];
+    % save bias correction field = false
+    % save bias corrected image = true
+    matlabbatch{end}.spm.spatial.preproc.channel.write = [false true];
 
     % CREATE SEGMENTS IN NATIVE SPACE OF GM,WM AND CSF
     matlabbatch{end}.spm.spatial.preproc.tissue(1).tpm = ...

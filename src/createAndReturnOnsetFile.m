@@ -1,28 +1,11 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function onsetFileName = createAndReturnOnsetFile(opt, subID, funcFWHM, boldFileName, isMVPA)
+function onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM, isMVPA)
     % onsetFileName = createAndReturnOnsetFile(opt, boldFileName, prefix, isMVPA)
     %
     % gets the tsv onset file based on the bold file name (removes any prefix)
     %
     % convert the tsv files to a mat file to be used by SPM
-
-    replacePrefixBy = '';
-    prefix = getPrefix('FFX', opt, funcFWHM);
-    if strcmp(opt.space, 'T1w')
-        prefix = getPrefix('FFX_space-T1w', opt, funcFWHM);
-    end
-
-    if strcmp(prefix, 'r')
-        prefix = 'rsub-';
-        replacePrefixBy = 'sub-';
-    end
-
-    [funcDataDir, boldFileName] = spm_fileparts(boldFileName{1});
-
-    tsvFile = strrep(boldFileName, '_bold', '_events.tsv');
-    tsvFile = strrep(tsvFile, prefix, replacePrefixBy);
-    tsvFile = fullfile(funcDataDir, tsvFile);
 
     onsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA);
 

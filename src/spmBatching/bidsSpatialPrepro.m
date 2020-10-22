@@ -4,11 +4,11 @@ function bidsSpatialPrepro(opt)
     % bidsSpatialPrepro(opt)
     %
     % Performs spatial preprocessing of the functional and structural data.
+    %
+    % TODO update description
     % The structural data are segmented and normalized to MNI space.
     % The functional data are re-aligned, coregistered with the structural and
     % normalized to MNI space.
-    %
-    % The
     %
     % Assumptions:
     % - the batch is build using dependencies across the different batch modules
@@ -51,13 +51,20 @@ function bidsSpatialPrepro(opt)
 
             opt.orderBatches.selectAnat = 1;
 
-            fprintf(1, ' BUILDING SPATIAL JOB : REALIGN\n');
-            [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt);
+            % TODO hide this wart in a subfunction ?
+            action = [];
+            msg = [];
+            if  strcmp(opt.space, 'T1w')
+                action = 'realignUnwarp';
+                msg = ' & UNWARP';
+            end
+            fprintf(1, ' BUILDING SPATIAL JOB : REALIGN%s\n', msg);
+            [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action);
 
             opt.orderBatches.realign = 2;
 
             fprintf(1, ' BUILDING SPATIAL JOB : COREGISTER\n');
-            % REFERENCE IMAGE : DEPENDENCY FROM NAMED FILE SELECTOR ('Anatomical')
+            % dependency from file selector ('Anatomical')
             matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt);
 
             opt.orderBatches.coregister = 3;
@@ -65,17 +72,20 @@ function bidsSpatialPrepro(opt)
             matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt);
 
             fprintf(1, ' BUILDING SPATIAL JOB : SEGMENT ANATOMICAL\n');
-            % (WITH NEW SEGMENT -DEFAULT SEGMENT IN SPM12)
-            % DATA : DEPENDENCY FROM NAMED FILE SELECTOR ('Anatomical')
+            % dependency from file selector ('Anatomical')
             matlabbatch = setBatchSegmentation(matlabbatch, opt);
 
             opt.orderBatches.segment = 5;
 
-            fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE FUNCTIONALS\n');
+            if strcmp(opt.space, 'MNI')
+                fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE FUNCTIONALS\n');
+                % dependency from segmentation
+                % dependency from coregistration
+                matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt);
+            end
 
-            matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt);
-
-            saveMatlabBatch(matlabbatch, 'spatialPreprocessing', opt, subID);
+            batchName = ['spatialPreprocessing' upper(opt.space(1)) opt.space(2:end)];
+            saveMatlabBatch(matlabbatch, batchName, opt, subID);
 
             spm_jobman('run', matlabbatch);
 

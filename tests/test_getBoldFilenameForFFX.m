@@ -54,9 +54,9 @@ function test_getBoldFilenameForFFXNativeSpace()
     expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                                 'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', ...
                                 'ses-01', 'func', ...
-                                's6rsub-01_ses-01_task-vislocalizer_bold.nii');
+                                's6usub-01_ses-01_task-vislocalizer_bold.nii');
 
-    assertEqual('s6r', prefix);
+    assertEqual('s6u', prefix);
     assertEqual({expectedFileName}, boldFileName);
 
 end

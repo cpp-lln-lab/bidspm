@@ -26,6 +26,11 @@ addpath(genpath(fullfile(WD, '..', 'lib')));
 %% Set options
 opt = MoAEpilot_getOption();
 
+% Uncomment the line below to run preprocessing in "native" space.
+% - use realign and unwarp
+% - don't do normalization
+% opt.space = 'T1w';
+
 %% Get data
 fprintf('%-40s:', 'Downloading dataset...');
 urlwrite(URL, 'MoAEpilot.zip');
@@ -37,11 +42,15 @@ checkDependencies();
 isMVPA = 0;
 
 reportBIDS(opt);
+
 bidsCopyRawFolder(opt, 1);
+
 bidsSTC(opt);
+
 bidsSpatialPrepro(opt);
 
-% bidsSmoothing(FWHM, opt);
-% bidsFFX('specifyAndEstimate', opt, FWHM, isMVPA);
-% bidsFFX('contrasts', opt, FWHM, isMVPA);
-% bidsResults(opt, FWHM, [], isMVPA);
+bidsSmoothing(FWHM, opt);
+
+bidsFFX('specifyAndEstimate', opt, FWHM, isMVPA);
+bidsFFX('contrasts', opt, FWHM, isMVPA);
+bidsResults(opt, FWHM, [], isMVPA);
