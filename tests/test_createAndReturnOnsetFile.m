@@ -8,7 +8,6 @@ end
 
 function test_createAndReturnOnsetFileBasic()
 
-    isMVPA = false;
     subID = '01';
     funcFWHM = 6;
     iSes = 1;
@@ -17,7 +16,7 @@ function test_createAndReturnOnsetFileBasic()
     opt.taskName = 'vislocalizer';
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.subjects = {'01'};
-    opt.model.univariate.file = fullfile(fileparts(mfilename('fullpath')), ...
+    opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                                          'dummyData', 'models', ...
                                          'model-vislocalizer_smdl.json');
 
@@ -30,7 +29,7 @@ function test_createAndReturnOnsetFileBasic()
 
     tsvFile = getInfo(BIDS, subID, opt, 'filename', sessions{iSes}, runs{iRun}, 'events');
 
-    onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile{1}, funcFWHM, isMVPA);
+    onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile{1}, funcFWHM);
 
     expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                                 'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', 'stats', ...
