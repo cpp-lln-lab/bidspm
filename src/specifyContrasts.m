@@ -37,19 +37,23 @@ function contrasts = specifyContrasts(ffxDir, taskName, opt, isMVPA)
     % check all the steps specified in the model
     for iStep = 1:length(model.Steps)
 
-        Step = model.Steps{iStep};
+        step = model.Steps(iStep);
+        
+        if iscell(step)
+            step = step{1};
+        end
 
-        switch Step.Level
+        switch step.Level
 
             case 'run'
 
                 [contrasts,  con_counter] = ...
-                    specifyRunLvlContrasts(contrasts, Step, con_counter, SPM);
+                    specifyRunLvlContrasts(contrasts, step, con_counter, SPM);
 
             case 'subject'
 
                 [contrasts,  con_counter] = ...
-                    specifySubLvlContrasts(contrasts, Step, con_counter, SPM);
+                    specifySubLvlContrasts(contrasts, step, con_counter, SPM);
 
         end
 

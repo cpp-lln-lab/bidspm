@@ -20,15 +20,26 @@ addpath(genpath(fullfile(WD, '..', 'lib')));
 %% Set options
 opt = ds000114_getOption();
 
+% the line below allows to run preprocessing in "native" space.
+% - use realign and unwarp
+% - don't do normalization
+opt.space = 'T1w';
+
 checkDependencies();
 
 %% Run batches
 isMVPA = 0;
 
+reportBIDS(opt);
+
 bidsCopyRawFolder(opt, 1);
+
 bidsSTC(opt);
+
 bidsSpatialPrepro(opt);
+
 bidsSmoothing(FWHM, opt);
-% bidsFFX('specifyAndEstimate', opt, FWHM, isMVPA);
-% bidsFFX('contrasts', opt, FWHM, isMVPA);
-% bidsResults(opt, FWHM, [], isMVPA);
+
+bidsFFX('specifyAndEstimate', opt, FWHM, isMVPA);
+bidsFFX('contrasts', opt, FWHM, isMVPA);
+bidsResults(opt, FWHM, [], isMVPA);

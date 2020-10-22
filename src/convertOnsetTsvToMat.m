@@ -42,19 +42,23 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA)
     end
 
     for runIdx = 1:numel(model.Steps)
-        if strcmp(model.Steps{1}.Level, 'run')
+        step = model.Steps(runIdx);
+        if iscell(step)
+            step = step{1};
+        end
+        if strcmp(step.Level, 'run')
             break
         end
     end
 
-    isTrialType = strfind(model.Steps{runIdx}.Model.X, 'trial_type.');
+    isTrialType = strfind(step.Model.X, 'trial_type.');
 
     % for each condition
     for iCond = 1:numel(isTrialType)
 
         if isTrialType{iCond}
 
-            conditionName = strrep(model.Steps{runIdx}.Model.X{iCond}, ...
+            conditionName = strrep(step.Model.X{iCond}, ...
                                    'trial_type.', ...
                                    '');
 

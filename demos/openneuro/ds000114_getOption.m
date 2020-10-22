@@ -8,14 +8,32 @@ function opt = ds000114_getOption()
         opt = [];
     end
 
+    % The directory where the data are located
+    opt.dataDir = '/home/remi/openneuro/ds000114/raw';
+
     % suject to run in each group
     opt.subjects = {'01', '02'};
 
     % task to analyze
-    opt.taskName = 'overtwordrepetition';
+    opt.taskName = 'linebisection';
 
-    % The directory where the data are located
-    opt.dataDir = '/home/remi/openneuro/ds000114/raw';
+    opt.anatReference.type = 'T1w';
+    opt.anatReference.session = 2;
+
+    opt.model.univariate.file = fullfile(fileparts(mfilename('fullpath')), ...
+                                         'models', ...
+                                         'model-ds000114-linebisection_smdl.json');
+
+    % specify the result to compute
+    opt.result.Steps(1) = struct( ...
+                                 'Level',  'subject', ...
+                                 'Contrasts', struct( ...
+                                                     'Name', 'Correct_Task', ... % has to match
+                                                     'Mask', false, ...
+                                                     'MC', 'FWE', ... FWE, none, FDR
+                                                     'p', 0.05, ...
+                                                     'k', 0, ...
+                                                     'NIDM', true));
 
     %% DO NOT TOUCH
     opt = checkOptions(opt);
