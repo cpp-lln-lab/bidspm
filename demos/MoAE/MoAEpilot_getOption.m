@@ -15,8 +15,8 @@ function opt = MoAEpilot_getOption()
     opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'output', 'MoAEpilot');
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')));
 
-    opt.model.univariate.file = fullfile(fileparts(mfilename('fullpath')), ...
-                                         'models', 'model-MoAE_smdl.json');
+    opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
+                              'models', 'model-MoAE_smdl.json');
 
     % specify the result to compute
     opt.result.Steps(1) = struct( ...
