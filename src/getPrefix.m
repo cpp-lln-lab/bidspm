@@ -24,7 +24,7 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
             % when smoothing is done on non-normalized data (in the space of T1w)
         case 'smoothing_space-T1w'
             prefix = prefixForSTC(prefix, opt);
-            prefix = [spm_get_defaults('realign.write.prefix') prefix];
+            prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
 
         case 'smoothing'
             prefix = prefixForSTC(prefix, opt);
@@ -36,7 +36,7 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
             % for the motion regressors txt file
             motionRegressorPrefix = prefix;
 
-            prefix = [spm_get_defaults('realign.write.prefix') prefix];
+            prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
 
             % Check which level of smoothing is applied
             if funcFWHM > 0 % else, take the smoothed files
