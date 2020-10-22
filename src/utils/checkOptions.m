@@ -90,8 +90,7 @@ function fieldsToSet = setDefaultOption()
 
     % specify the model file that contains the contrasts to compute
     fieldsToSet.contrastList = {};
-    fieldsToSet.model.multivariate.file = '';
-    fieldsToSet.model.univariate.file = '';
+    fieldsToSet.model.file = '';
 
     % specify the results to compute
     fieldsToSet.result.Steps = struct( ...

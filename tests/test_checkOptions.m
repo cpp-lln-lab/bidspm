@@ -97,8 +97,7 @@ function expectedOptions = defaultOptions()
     expectedOptions.zeropad = 2;
 
     expectedOptions.contrastList = {};
-    expectedOptions.model.multivariate.file = '';
-    expectedOptions.model.univariate.file = '';
+    expectedOptions.model.file = '';
 
     expectedOptions.result.Steps = struct( ...
                                           'Level',  '', ...
