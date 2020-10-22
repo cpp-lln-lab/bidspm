@@ -27,7 +27,11 @@ function test_setBatchCoregistrationBasic()
     matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt);
 
     nbRuns = 4;
-    expectedBatch = returnExpectedBatch(nbRuns);
+
+    meanImageToUse = 'rmean';
+    otherImageToUse = 'cfiles';
+
+    expectedBatch = returnExpectedBatch(nbRuns, meanImageToUse, otherImageToUse);
     assertEqual( ...
                 matlabbatch{1}.spm.spatial.coreg.estimate.ref, ...
                 expectedBatch{1}.spm.spatial.coreg.estimate.ref);
@@ -40,7 +44,46 @@ function test_setBatchCoregistrationBasic()
 
 end
 
-function expectedBatch = returnExpectedBatch(nbRuns)
+function test_setBatchCoregistrationNative()
+
+    % necessarry to deal with SPM module dependencies
+    spm_jobman('initcfg');
+
+    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+    opt.taskName = 'vismotion';
+    opt.space = 'T1w';
+
+    opt = checkOptions(opt);
+
+    [~, opt, BIDS] = getData(opt);
+
+    subID = '02';
+
+    opt.orderBatches.selectAnat = 1;
+    opt.orderBatches.realign = 2;
+
+    matlabbatch = {};
+    matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt);
+
+    nbRuns = 4;
+
+    meanImageToUse = 'meanuwr';
+    otherImageToUse = 'uwrfiles';
+
+    expectedBatch = returnExpectedBatch(nbRuns, meanImageToUse, otherImageToUse);
+    assertEqual( ...
+                matlabbatch{1}.spm.spatial.coreg.estimate.ref, ...
+                expectedBatch{1}.spm.spatial.coreg.estimate.ref);
+    assertEqual( ...
+                matlabbatch{1}.spm.spatial.coreg.estimate.source, ...
+                expectedBatch{1}.spm.spatial.coreg.estimate.source);
+    assertEqual( ...
+                matlabbatch{1}.spm.spatial.coreg.estimate.other, ...
+                expectedBatch{1}.spm.spatial.coreg.estimate.other);
+
+end
+
+function expectedBatch = returnExpectedBatch(nbRuns, meanImageToUse, otherImageToUse)
 
     expectedBatch = {};
 
@@ -60,7 +103,7 @@ function expectedBatch = returnExpectedBatch(nbRuns)
                           '.', 'val', '{}', {1}, ...
                           '.', 'val', '{}', {1}, ...
                           '.', 'val', '{}', {1}), ...
-                substruct('.', 'rmean'));
+                substruct('.', meanImageToUse));
 
     for iRun = 1:nbRuns
 
@@ -77,7 +120,7 @@ function expectedBatch = returnExpectedBatch(nbRuns)
                               '.', 'val', '{}', {1}), ...
                     substruct( ...
                               '.', 'sess', '()', {iRun}, ...
-                              '.', 'cfiles'));
+                              '.', otherImageToUse));
 
     end
 
