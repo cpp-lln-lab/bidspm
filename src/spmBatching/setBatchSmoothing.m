@@ -4,8 +4,8 @@ function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
 
     % creates prefix to look for
     prefix = getPrefix('smoothing', opt);
-    if strcmp(opt.space, 'T1w')
-        prefix = getPrefix('smoothing_space-T1w', opt);
+    if strcmp(opt.space, 'individual')
+        prefix = getPrefix('smoothing_space-individual', opt);
     end
 
     % identify sessions for this subject

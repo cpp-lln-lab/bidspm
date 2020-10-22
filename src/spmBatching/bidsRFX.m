@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
+function bidsRFX(action, funcFWHM, conFWHM, opt)
     % This script smooth all con images created at the fisrt level in each
     % subject, create a mean structural image and mean mask over the
     % population, process the factorial design specification  and estimation
@@ -32,10 +32,6 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
     end
     opt = loadAndCheckOptions(opt);
 
-    if nargin < 5 || isempty(isMVPA)
-        isMVPA = 0;
-    end
-
     % load the subjects/Groups information and the task name
     [group, opt, ~] = getData(opt);
 
@@ -45,10 +41,10 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
 
             fprintf(1, 'SMOOTHING CON IMAGES...');
 
-            matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt, isMVPA);
+            matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt);
 
             saveMatlabBatch( ...
-                            ['smoothCon_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
+                            ['smooth_con_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
                             'STC', ...
                             opt);
 
@@ -68,7 +64,7 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
             % ------
 
             matlabbatch = ...
-                setBatchMeanAnatAndMask(opt, funcFWHM, isMVPA, rfxDir);
+                setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir);
 
             % ------
             % TODO
@@ -76,14 +72,14 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
             % different analysis
             % ------
 
-            saveMatlabBatch(matlabbatch, 'createMeanStrucMask', opt);
+            saveMatlabBatch(matlabbatch, 'create_mean_struc_mask', opt);
 
             spm_jobman('run', matlabbatch);
 
             %% Factorial design specification
 
             % Load the list of contrasts of interest for the RFX
-            grpLvlCon = getGrpLevelContrastToCompute(opt, isMVPA);
+            grpLvlCon = getGrpLevelContrastToCompute(opt);
 
             % ------
             % TODO
@@ -102,7 +98,7 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
             % contrast
             % ------
 
-            saveMatlabBatch(matlabbatch, 'rfxSpecification', opt);
+            saveMatlabBatch(matlabbatch, 'rfx_specification', opt);
 
             fprintf(1, 'Factorial Design Specification...');
 
@@ -127,7 +123,7 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
             % contrast
             % ------
 
-            saveMatlabBatch(matlabbatch, 'rfxEstimation', opt);
+            saveMatlabBatch(matlabbatch, 'rfx_estimation', opt);
 
             fprintf(1, 'Factorial Design Estimation...');
 
@@ -157,7 +153,7 @@ function bidsRFX(action, funcFWHM, conFWHM, opt, isMVPA)
             % contrast
             % ------
 
-            saveMatlabBatch(matlabbatch, 'rfxContrasts', opt);
+            saveMatlabBatch(matlabbatch, 'rfx_contrasts', opt);
 
             fprintf(1, 'Contrast Estimation...');
 

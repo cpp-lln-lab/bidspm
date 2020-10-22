@@ -16,7 +16,7 @@ function matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt)
 
     meanImageToUse = 'rmean';
     otherImageToUse = 'cfiles';
-    if strcmp(opt.space, 'T1w')
+    if strcmp(opt.space, 'individual')
         meanImageToUse = 'meanuwr';
         otherImageToUse = 'uwrfiles';
     end

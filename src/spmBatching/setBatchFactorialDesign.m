@@ -35,7 +35,7 @@ function matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir
                 printProcessingSubject(groupName, iSub, subID);
 
                 % FFX directory and load SPM.mat of that subject
-                ffxDir = getFFXdir(subID, funcFWHM, opt, isMVPA);
+                ffxDir = getFFXdir(subID, funcFWHM, opt);
                 load(fullfile(ffxDir, 'SPM.mat'));
 
                 % find which contrast of that subject has the name of the contrast we

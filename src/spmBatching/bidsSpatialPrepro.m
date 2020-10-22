@@ -54,7 +54,7 @@ function bidsSpatialPrepro(opt)
             % TODO hide this wart in a subfunction ?
             action = [];
             msg = [];
-            if  strcmp(opt.space, 'T1w')
+            if  strcmp(opt.space, 'individual')
                 action = 'realignUnwarp';
                 msg = ' & UNWARP';
             end
@@ -84,7 +84,7 @@ function bidsSpatialPrepro(opt)
                 matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt);
             end
 
-            batchName = ['spatialPreprocessing' upper(opt.space(1)) opt.space(2:end)];
+            batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];
             saveMatlabBatch(matlabbatch, batchName, opt, subID);
 
             spm_jobman('run', matlabbatch);

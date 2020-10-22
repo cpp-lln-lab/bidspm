@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function bidsResults(opt, funcFWHM, conFWHM, isMVPA)
+function bidsResults(opt, funcFWHM, conFWHM)
     % This scripts computes the results for a series of contrast that can be
     % specified at the run, subject or dataset step level (see contrast specification
     % following the BIDS stats model specification)
@@ -42,14 +42,13 @@ function bidsResults(opt, funcFWHM, conFWHM, isMVPA)
                                                     group, ...
                                                     funcFWHM, ...
                                                     opt, ...
-                                                    isMVPA, ...
                                                     iStep, ...
                                                     iCon);
 
                     % TODO
                     % Save this batch in for each subject and not once for all
 
-                    saveMatlabBatch(matlabbatch, 'computeFfxResults', opt);
+                    saveMatlabBatch(matlabbatch, 'compute_ffx_results', opt);
 
                 case 'dataset'
 
@@ -65,7 +64,7 @@ function bidsResults(opt, funcFWHM, conFWHM, isMVPA)
                     matlabbatch = resultsMatlabbatch( ...
                                                      matlabbatch, opt, iStep, iCon, results);
 
-                    saveMatlabBatch(matlabbatch, 'computeRfxResults', opt);
+                    saveMatlabBatch(matlabbatch, 'compute_rfx_results', opt);
 
             end
         end
@@ -131,7 +130,7 @@ end
 
 function batch = setBatchSubjectLevelResults(varargin)
 
-    [batch, grp, funcFWHM, opt, isMVPA, iStep, iCon] = deal(varargin{:});
+    [batch, grp, funcFWHM, opt, iStep, iCon] = deal(varargin{:});
 
     for iGroup = 1:length(grp)
 
@@ -142,7 +141,7 @@ function batch = setBatchSubjectLevelResults(varargin)
             subID = grp(iGroup).subNumber{iSub};
 
             % FFX Directory
-            ffxDir = getFFXdir(subID, funcFWHM, opt, isMVPA);
+            ffxDir = getFFXdir(subID, funcFWHM, opt);
 
             load(fullfile(ffxDir, 'SPM.mat'));
 

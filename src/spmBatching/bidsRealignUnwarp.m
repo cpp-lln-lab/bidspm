@@ -42,7 +42,7 @@ function bidsRealignUnwarp(opt)
                                                     opt, ...
                                                     'realignUnwarp');
 
-            saveMatlabBatch(matlabbatch, 'RealignUnwarp', opt, subID);
+            saveMatlabBatch(matlabbatch, 'realign_unwarp', opt, subID);
 
             spm_jobman('run', matlabbatch);
 

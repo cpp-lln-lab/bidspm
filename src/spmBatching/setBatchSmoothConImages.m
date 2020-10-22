@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt, isMVPA)
+function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
 
     counter = 0;
 
@@ -19,7 +19,7 @@ function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt, is
 
             printProcessingSubject(groupName, iSub, subNumber);
 
-            ffxDir = getFFXdir(subNumber, funcFWHM, opt, isMVPA);
+            ffxDir = getFFXdir(subNumber, funcFWHM, opt);
 
             conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
             matlabbatch{counter}.spm.spatial.smooth.data = cellstr(conImg); %#ok<*AGROW>

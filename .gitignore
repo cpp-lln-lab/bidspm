@@ -2,7 +2,7 @@
 .DS_Store
 *.asv
 *.m~
-*.mat
+# *.mat
 *.xml
 *.log
 *.html
@@ -18,3 +18,4 @@ demos/MoAE/derivatives/*
 # test folder
 tests/sub-01/*
 tests/group/*
+onsets*_events.mat

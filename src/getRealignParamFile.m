@@ -3,8 +3,8 @@
 function realignParamFile = getRealignParamFile(opt, fullpathBoldFileName, funcFWHM)
 
     [prefix, motionRegressorPrefix] = getPrefix('FFX', opt, funcFWHM);
-    if strcmp(opt.space, 'T1w')
-        [prefix, motionRegressorPrefix] = getPrefix('FFX_space-T1w', opt, funcFWHM);
+    if strcmp(opt.space, 'individual')
+        [prefix, motionRegressorPrefix] = getPrefix('FFX_space-individual', opt, funcFWHM);
     end
 
     if strcmp(prefix, 'r')

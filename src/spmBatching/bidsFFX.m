@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function bidsFFX(action, opt, funcFWHM, isMVPA)
+function bidsFFX(action, opt, funcFWHM)
     % bidsFFX(action, funcFWHM, opt, isMVPA)
     %
     % This scripts builds up the design matrix for each subject.
@@ -22,10 +22,6 @@ function bidsFFX(action, opt, funcFWHM, isMVPA)
     end
     opt = loadAndCheckOptions(opt);
 
-    if nargin < 4
-        isMVPA = 0;
-    end
-
     % load the subjects/Groups information and the task name
     [group, opt, BIDS] = getData(opt);
 
@@ -38,8 +34,6 @@ function bidsFFX(action, opt, funcFWHM, isMVPA)
 
             subID = group(iGroup).subNumber{iSub};
 
-            mvpaSuffix = setMvpaSuffix(isMVPA);
-
             printProcessingSubject(groupName, iSub, subID);
 
             switch action
@@ -49,28 +43,28 @@ function bidsFFX(action, opt, funcFWHM, isMVPA)
                     fprintf(1, 'BUILDING JOB : FMRI design\n');
 
                     matlabbatch = setBatchSubjectLevelGLMSpec( ...
-                                                              BIDS, opt, subID, funcFWHM, isMVPA);
+                                                              BIDS, opt, subID, funcFWHM);
 
                     fprintf(1, 'BUILDING JOB : FMRI estimate\n');
 
                     matlabbatch = setFmriEstimateBatch(matlabbatch);
 
                     saveMatlabBatch(matlabbatch, ...
-                                    ['specifyAndEstimateFfx_task-', opt.taskName, ...
-                                     '_FWHM-', num2str(funcFWHM), ...
-                                     mvpaSuffix], ...
+                                    ['specify_estimate_ffx_task-', opt.taskName, ...
+                                     '_space-', opt.space, ...
+                                     '_FWHM-', num2str(funcFWHM)], ...
                                     opt, subID);
 
                 case 'contrasts'
 
                     fprintf(1, 'BUILDING JOB : FMRI contrasts\n');
 
-                    matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM, isMVPA);
+                    matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM);
 
                     saveMatlabBatch(matlabbatch, ...
-                                    ['contrastsFfx_task-', opt.taskName, ...
-                                     '_FWHM-', num2str(funcFWHM), ...
-                                     mvpaSuffix], ...
+                                    ['contrasts_ffx_task-', opt.taskName, ...
+                                     '_space-', opt.space, ...
+                                     '_FWHM-', num2str(funcFWHM)], ...
                                     opt, subID);
 
             end

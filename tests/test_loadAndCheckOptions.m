@@ -31,7 +31,7 @@ function test_loadAndCheckOptionsFromFile()
 
     % create dummy json file
     jsonContent.taskName = 'vismotion';
-    jsonContent.space = 'T1';
+    jsonContent.space = 'individual';
     filename = 'options_task-vismotion_space-T1w.json';
     spm_jsonwrite(filename, jsonContent);
 
@@ -40,7 +40,7 @@ function test_loadAndCheckOptionsFromFile()
 
     expectedOptions = defaultOptions();
     expectedOptions.taskName = 'vismotion';
-    expectedOptions.space = 'T1';
+    expectedOptions.space = 'individual';
 
     assertEqual(opt, expectedOptions);
 
@@ -62,13 +62,13 @@ function test_loadAndCheckOptionsFromSeveralFiles()
 
     % create dummy json file with no date
     jsonContent.taskName = 'vismotion';
-    jsonContent.space = 'T1';
+    jsonContent.space = 'individual';
     filename = 'options_task-vismotion_space-T1w.json';
     spm_jsonwrite(filename, jsonContent);
 
     % most recent option file that should be read from
     jsonContent.taskName = 'vismotion';
-    jsonContent.space = 'T1';
+    jsonContent.space = 'individual';
     jsonContent.funcVoxelDims = [1 1 1];
     filename = fullfile(pwd, ['options', ...
                               '_task-', jsonContent.taskName, ...
@@ -81,7 +81,7 @@ function test_loadAndCheckOptionsFromSeveralFiles()
 
     expectedOptions = defaultOptions();
     expectedOptions.taskName = 'vismotion';
-    expectedOptions.space = 'T1';
+    expectedOptions.space = 'individual';
     expectedOptions.funcVoxelDims = [1 1 1]';
 
     assertEqual(opt, expectedOptions);
@@ -111,8 +111,7 @@ function expectedOptions = defaultOptions()
     expectedOptions.zeropad = 2;
 
     expectedOptions.contrastList = {};
-    expectedOptions.model.multivariate.file = '';
-    expectedOptions.model.univariate.file = '';
+    expectedOptions.model.file = '';
 
     expectedOptions.result.Steps = struct( ...
                                           'Level',  '', ...

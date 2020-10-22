@@ -1,11 +1,11 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA)
+function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
     %% Converts a tsv file to an onset file suitable for SPM ffx analysis
     % The scripts extracts the conditions' names, onsets, and durations, and
     % converts them to TRs (time unit) and saves the onset file to be used for
     % SPM
-    %%
+    %
 
     if ~exist(tsvFile, 'file')
 
@@ -35,11 +35,7 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile, isMVPA)
 
     % identify where the conditions to include that are specificed in the 'un' step of the
     % model file
-    if isMVPA
-        model = spm_jsonread(opt.model.multivariate.file);
-    else
-        model = spm_jsonread(opt.model.univariate.file);
-    end
+    model = spm_jsonread(opt.model.file);
 
     for runIdx = 1:numel(model.Steps)
         step = model.Steps(runIdx);

@@ -42,7 +42,7 @@ function bidsRealignReslice(opt)
                                                     opt, ...
                                                     'realignReslice');
 
-            saveMatlabBatch(matlabbatch, 'RealignReslice', opt, subID);
+            saveMatlabBatch(matlabbatch, 'realign_reslice', opt, subID);
 
             spm_jobman('run', matlabbatch);
 

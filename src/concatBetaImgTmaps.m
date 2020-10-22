@@ -14,20 +14,11 @@ function concatBetaImgTmaps(funcFWHM, opt, deleteIndBeta, deleteIndTmaps)
     % deleteIndBeta, deleteIndTmaps: boolean to decide to delete
     %  original t-maps, beta-maps or ResMaps (default = true)
 
-    % if input has no opt, load the opt.mat file
-    if nargin < 2
-        load('opt.mat');
-        fprintf('opt.mat file loaded \n\n');
-    end
-
     % delete individual Beta and tmaps
     if nargin < 3
         deleteIndBeta = 1;
         deleteIndTmaps = 1;
     end
-
-    % assign isMVPA to true
-    isMVPA = 1;
 
     % load the subjects/Groups information and the task name
     [group, opt, ~] = getData(opt);

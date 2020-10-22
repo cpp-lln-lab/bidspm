@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, isMVPA, rfxDir)
+function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
 
     [group, opt, BIDS] = getData(opt);
 
@@ -49,7 +49,7 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, isMVPA, rfxDir)
             matlabbatch{1}.spm.util.imcalc.input{subCounter, :} = files{1};
 
             %% Mask
-            ffxDir = getFFXdir(subID, funcFWHM, opt, isMVPA);
+            ffxDir = getFFXdir(subID, funcFWHM, opt);
 
             files = inputFileValidation(ffxDir, '', 'mask.nii');
 

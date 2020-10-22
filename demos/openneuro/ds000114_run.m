@@ -23,7 +23,7 @@ opt = ds000114_getOption();
 % the line below allows to run preprocessing in "native" space.
 % - use realign and unwarp
 % - don't do normalization
-opt.space = 'T1w';
+opt.space = 'individual';
 
 checkDependencies();
 

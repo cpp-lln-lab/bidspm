@@ -51,7 +51,7 @@ function test_setBatchCoregistrationNative()
 
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'vismotion';
-    opt.space = 'T1w';
+    opt.space = 'individual';
 
     opt = checkOptions(opt);
 

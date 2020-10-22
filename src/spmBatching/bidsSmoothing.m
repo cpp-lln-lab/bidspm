@@ -28,7 +28,7 @@ function bidsSmoothing(funcFWHM, opt)
 
             matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM);
 
-            saveMatlabBatch(matlabbatch, ['Smoothing_FWHM-' num2str(funcFWHM)], opt, subID);
+            saveMatlabBatch(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subID);
 
             spm_jobman('run', matlabbatch);
 

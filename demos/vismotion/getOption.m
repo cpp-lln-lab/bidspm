@@ -16,7 +16,7 @@ function opt = getOption()
     opt.dataDir = '/home/remi/BIDS/visMotion/derivatives/';
 
     % specify the model file that contains the contrasts to compute
-    opt.model.univariate.file = ...
+    opt.model.file = ...
         '/home/remi/github/CPP_BIDS_SPM_pipeline/model-visMotionLoc_smdl.json';
 
     % specify the result to compute

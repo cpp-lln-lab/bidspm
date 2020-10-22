@@ -2,7 +2,7 @@
 
 function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
-    [BIDS, opt, subID, funcFWHM, isMVPA] =  deal(varargin{:});
+    [BIDS, opt, subID, funcFWHM] =  deal(varargin{:});
 
     % Check the slice timing information is not in the metadata and not added
     % manually in the opt variable.
@@ -42,7 +42,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
     % Create ffxDir if it doesnt exist
     % If it exists, issue a warning that it has been overwritten
-    ffxDir = getFFXdir(subID, funcFWHM, opt, isMVPA);
+    ffxDir = getFFXdir(subID, funcFWHM, opt);
     if exist(ffxDir, 'dir') %
         warning('overwriting directory: %s \n', ffxDir);
         rmdir(ffxDir, 's');
@@ -83,12 +83,14 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
                 cellstr(fullpathBoldFileName);
 
             % get stimuli onset time file
-            tsvFile = getInfo(BIDS, subID, opt, 'filename', sessions{iSes}, runs{iRun}, 'events');
+            tsvFile = getInfo(BIDS, subID, opt, 'filename', ...
+                              sessions{iSes}, ...
+                              runs{iRun}, ...
+                              'events');
             fullpathOnsetFileName = createAndReturnOnsetFile(opt, ...
                                                              subID, ...
                                                              tsvFile{1}, ...
-                                                             funcFWHM, ...
-                                                             isMVPA);
+                                                             funcFWHM);
 
             matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).multi = ...
                 cellstr(fullpathOnsetFileName);

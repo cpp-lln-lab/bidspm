@@ -43,7 +43,7 @@ function test_getBoldFilenameForFFXNativeSpace()
     opt.taskName = 'vislocalizer';
     opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
     opt.subjects = {'01'};
-    opt.space = 'T1w';
+    opt.space = 'individual';
 
     opt = checkOptions(opt);
 
