@@ -81,7 +81,7 @@ function test_getPrefixSmoothingT1w()
     opt.metadata = [];
     opt.sliceOrder = [];
 
-    expectedPrefxOutput = spm_get_defaults('realign.write.prefix');
+    expectedPrefxOutput = spm_get_defaults('unwarp.write.prefix');
     expectedMotionRegressorPrefix = '';
 
     [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM);
@@ -121,7 +121,7 @@ function test_getPrefixFFXT1w()
     expectedPrefxOutput = [ ...
                            spm_get_defaults('smooth.prefix'), ...
                            num2str(funcFWHM), ...
-                           spm_get_defaults('realign.write.prefix')];
+                           spm_get_defaults('unwarp.write.prefix')];
     expectedMotionRegressorPrefix = '';
 
     [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM);

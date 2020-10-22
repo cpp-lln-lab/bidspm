@@ -25,9 +25,12 @@ function test_createAndReturnOnsetFileBasic()
 
     [~, opt, BIDS] = getData(opt);
 
-    boldFileName = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);
+    sessions = getInfo(BIDS, subID, opt, 'sessions');
+    runs = getInfo(BIDS, subID, opt, 'runs', sessions{iSes});
+    
+    tsvFile = getInfo(BIDS, subID, opt, 'filename', sessions{iSes}, runs{iRun}, 'events');
 
-    onsetFileName = createAndReturnOnsetFile(opt, subID, funcFWHM, boldFileName, isMVPA);
+    onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile{1}, funcFWHM, isMVPA);
 
     expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                                 'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', 'stats', ...
