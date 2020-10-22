@@ -2,7 +2,7 @@
 .DS_Store
 *.asv
 *.m~
-*.mat
+# *.mat
 *.xml
 *.log
 *.html
