@@ -54,7 +54,7 @@ function bidsSpatialPrepro(opt)
             % TODO hide this wart in a subfunction ?
             action = [];
             msg = [];
-            if  strcmp(opt.space, 'T1w')
+            if  strcmp(opt.space, 'individual')
                 action = 'realignUnwarp';
                 msg = ' & UNWARP';
             end

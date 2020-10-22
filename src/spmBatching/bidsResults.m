@@ -130,7 +130,7 @@ end
 
 function batch = setBatchSubjectLevelResults(varargin)
 
-    [batch, grp, funcFWHM, opt, isMVPA, iStep, iCon] = deal(varargin{:});
+    [batch, grp, funcFWHM, opt, iStep, iCon] = deal(varargin{:});
 
     for iGroup = 1:length(grp)
 
@@ -141,7 +141,7 @@ function batch = setBatchSubjectLevelResults(varargin)
             subID = grp(iGroup).subNumber{iSub};
 
             % FFX Directory
-            ffxDir = getFFXdir(subID, funcFWHM, opt, isMVPA);
+            ffxDir = getFFXdir(subID, funcFWHM, opt);
 
             load(fullfile(ffxDir, 'SPM.mat'));
 
