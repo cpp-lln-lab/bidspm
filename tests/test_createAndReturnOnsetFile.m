@@ -17,8 +17,8 @@ function test_createAndReturnOnsetFileBasic()
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.subjects = {'01'};
     opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
-                                         'dummyData', 'models', ...
-                                         'model-vislocalizer_smdl.json');
+                              'dummyData', 'models', ...
+                              'model-vislocalizer_smdl.json');
 
     opt = checkOptions(opt);
 

@@ -14,7 +14,7 @@ function test_getFFXdirBasic()
     opt.taskName = 'funcLocalizer';
 
     opt = setDerivativesDir(opt);
-    
+
     opt = checkOptions(opt);
 
     expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
@@ -36,7 +36,7 @@ function test_getFFXdirMvpa()
     opt.space = 'individual';
 
     opt = setDerivativesDir(opt);
-    
+
     opt = checkOptions(opt);
 
     expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
