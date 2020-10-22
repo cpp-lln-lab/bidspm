@@ -42,11 +42,15 @@ checkDependencies();
 isMVPA = 0;
 
 reportBIDS(opt);
+
 bidsCopyRawFolder(opt, 1);
+
 bidsSTC(opt);
+
 bidsSpatialPrepro(opt);
 
-% bidsSmoothing(FWHM, opt);
-% bidsFFX('specifyAndEstimate', opt, FWHM, isMVPA);
-% bidsFFX('contrasts', opt, FWHM, isMVPA);
-% bidsResults(opt, FWHM, [], isMVPA);
+bidsSmoothing(FWHM, opt);
+
+bidsFFX('specifyAndEstimate', opt, FWHM, isMVPA);
+bidsFFX('contrasts', opt, FWHM, isMVPA);
+bidsResults(opt, FWHM, [], isMVPA);
