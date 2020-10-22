@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function contrasts = specifyContrasts(ffxDir, taskName, opt, isMVPA)
+function contrasts = specifyContrasts(ffxDir, taskName, opt)
     % Specifies the first level contrasts
     %
     % To know the names of the columns of the design matrix, type :
@@ -20,11 +20,7 @@ function contrasts = specifyContrasts(ffxDir, taskName, opt, isMVPA)
 
     load(fullfile(ffxDir, 'SPM.mat'));
 
-    if isMVPA
-        model = spm_jsonread(opt.model.multivariate.file);
-    else
-        model = spm_jsonread(opt.model.univariate.file);
-    end
+    model = spm_jsonread(opt.model.file);
 
     contrasts = struct('C', [], 'name', []);
     con_counter = 0;

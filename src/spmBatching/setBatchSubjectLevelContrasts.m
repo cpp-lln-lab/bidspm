@@ -1,11 +1,11 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM, isMVPA)
+function matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM)
 
-    ffxDir = getFFXdir(subID, funcFWHM, opt, isMVPA);
+    ffxDir = getFFXdir(subID, funcFWHM, opt);
 
     % Create Contrasts
-    contrasts = specifyContrasts(ffxDir, opt.taskName, opt, isMVPA);
+    contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
     matlabbatch = [];
 

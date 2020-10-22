@@ -11,17 +11,15 @@ function test_specifyContrastsBasic()
 
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
     opt.taskName = 'visMotion';
-    opt.model.univariate.file = ...
+    opt.model.file = ...
         fullfile(fileparts(mfilename('fullpath')), ...
                  'dummyData', 'models', 'model-visMotionLoc_smdl.json');
 
     opt = setDerivativesDir(opt);
 
     ffxDir = fullfile(opt.derivativesDir, 'sub-01', 'stats', 'ffx_visMotion', 'ffx_6');
-
-    isMVPA = 0;
-
-    contrasts = specifyContrasts(ffxDir, opt.taskName, opt, isMVPA);
+    
+    contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
     assert(strcmp(contrasts(1).name, 'VisMot'));
     assert(isequal(contrasts(1).C, [1 0 0 0 0 0 0 0 0]));
