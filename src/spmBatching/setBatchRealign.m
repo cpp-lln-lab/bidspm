@@ -5,7 +5,7 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, 
     %
     % to set the batch in a spatial preprocessing pipeline
 
-    if nargin < 5
+    if nargin < 5 || isempty(action)
         action = 'realign';
     end
 

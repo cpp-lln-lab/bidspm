@@ -12,7 +12,7 @@ function test_setBatchSegmentationBasic()
 
     % necessarry to deal with SPM module dependencies
     spm_jobman('initcfg');
-    
+
     opt.orderBatches.selectAnat = 1;
 
     matlabbatch = [];
