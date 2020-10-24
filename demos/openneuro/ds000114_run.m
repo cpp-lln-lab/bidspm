@@ -37,7 +37,9 @@ bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
-preprocessingQA(opt);
+anatomicalQA(opt);
+bidsResliceTpmToFunc(opt);
+functionalQA(opt);
 
 bidsSmoothing(FWHM, opt);
 

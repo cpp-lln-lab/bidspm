@@ -34,7 +34,7 @@ opt.space = 'individual';
 %% Get data
 % fprintf('%-40s:', 'Downloading dataset...');
 % urlwrite(URL, 'MoAEpilot.zip');
-% unzip('MoAEpilot.zip', fullfile(WD, 'output'));
+unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 
 checkDependencies();
 
@@ -47,7 +47,9 @@ bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
-preprocessingQA(opt);
+anatomicalQA(opt);
+bidsResliceTpmToFunc(opt);
+functionalQA(opt);
 
 bidsSmoothing(FWHM, opt);
 
