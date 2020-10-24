@@ -21,15 +21,13 @@ function test_getAnatFilenameBasic()
 
     [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
 
-    % TODO add assert
+    expectedFileName = 'sub-01_ses-01_T1w.nii';
 
-    %     expectedFileName = 'sub-01_ses-01_task-vislocalizer_bold.nii';
-    %
-    %     expectedSubFuncDataDir = fullfile(fileparts(mfilename('fullpath')), ...
-    %                                       'dummyData', 'derivatives', 'SPM12_CPPL', ...
-    %                                       'sub-01', 'ses-01', 'func');
-    %
-    %     assertEqual(expectedSubFuncDataDir, subFuncDataDir);
-    %     assertEqual(expectedFileName, fileName);
+    expectedAnatDataDir = fullfile(fileparts(mfilename('fullpath')), ...
+                                   'dummyData', 'derivatives', 'SPM12_CPPL', ...
+                                   'sub-01', 'ses-01', 'anat');
+
+    assertEqual(anatDataDir, expectedAnatDataDir);
+    assertEqual(anatImage, expectedFileName);
 
 end
