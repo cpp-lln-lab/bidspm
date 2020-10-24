@@ -5,7 +5,7 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, 
     %
     % to set the batch in a spatial preprocessing pipeline
     %
-    % Assumption about the order of the sessions: 
+    % Assumption about the order of the sessions:
 
     if nargin < 5 || isempty(action)
         action = 'realign';
@@ -47,7 +47,7 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, 
             file = validationInputFile(subFuncDataDir, fileName, prefix);
             [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName);
 
-            if size(file,1) > 1
+            if size(file, 1) > 1
                 errorStruct.identifier = 'setBatchRealign:tooManyFiles';
                 errorStruct.message = 'This should only get on file.';
                 error(errorStruct);

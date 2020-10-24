@@ -6,11 +6,11 @@ function files = validationInputFile(dir, fileName, prefix)
     % Checks if files exist. A prefix can be added.
     %
     % If the filet(s) exist(s), it returns a cell containing list of fullpath.
-    
+
     if nargin < 3
         prefix = '';
     end
-    
+
     files = spm_select('FPList', dir, ['^' prefix fileName '$']);
 
     if isempty(files)
@@ -20,7 +20,7 @@ function files = validationInputFile(dir, fileName, prefix)
                                       'This file does not exist: %s', ...
                                       fullfile(dir, [prefix fileName '[.gz]']));
         error(errorStruct);
-        
+
     end
 
 end

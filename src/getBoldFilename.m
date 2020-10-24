@@ -15,7 +15,7 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
     % get fullpath of the file
     % ASSUMPTION: the first file is the right one.
     boldFileName = unzipImgAndReturnsFullpathName(boldFileName);
-    
+
     [subFuncDataDir, boldFileName, ext] = spm_fileparts(boldFileName);
     boldFileName = [boldFileName ext];
 

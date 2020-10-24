@@ -4,7 +4,7 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
     % [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
     %
     % generates prefix to append to file name to look for
-    
+
     if nargin < 3
         funcFWHM = 0;
     end

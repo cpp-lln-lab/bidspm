@@ -33,7 +33,7 @@ function test_getRealignParamFileBasic()
 end
 
 function test_getRealignParamFileNativeSpace()
-    
+
     subID = '01';
     session = '01';
     run = '';
@@ -58,7 +58,6 @@ function test_getRealignParamFileNativeSpace()
     assertEqual(expectedFileName, realignParamFile);
 
 end
-
 
 function test_getRealignParamFileFFX()
 
