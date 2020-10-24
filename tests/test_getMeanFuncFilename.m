@@ -21,15 +21,13 @@ function test_getMeanFuncFilenameBasic()
 
     [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt);
 
-    % TODO add assert
+    expectedMeanImage = 'meanusub-01_ses-01_task-vislocalizer_bold.nii';
 
-    %     expectedFileName = 'sub-01_ses-01_task-vislocalizer_bold.nii';
-    %
-    %     expectedSubFuncDataDir = fullfile(fileparts(mfilename('fullpath')), ...
-    %                                       'dummyData', 'derivatives', 'SPM12_CPPL', ...
-    %                                       'sub-01', 'ses-01', 'func');
-    %
-    %     assertEqual(expectedSubFuncDataDir, subFuncDataDir);
-    %     assertEqual(expectedFileName, fileName);
+    expectedmeanFuncDir = fullfile(fileparts(mfilename('fullpath')), ...
+                                   'dummyData', 'derivatives', 'SPM12_CPPL', ...
+                                   'sub-01', 'ses-01', 'func');
+
+    assertEqual(meanFuncDir, expectedmeanFuncDir);
+    assertEqual(meanImage, expectedMeanImage);
 
 end
