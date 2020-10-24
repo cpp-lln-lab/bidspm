@@ -14,15 +14,8 @@ function realignParamFile = getRealignParamFile(opt, fullpathBoldFileName, funcF
 
     [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName{1});
 
-    realignParamFile = strrep(boldFileName, prefix, motionRegressorPrefix);
-    realignParamFile = ['rp_', realignParamFile, '.txt'];
-    realignParamFile = fullfile(funcDataDir, realignParamFile);
+    realignParamFile = ['rp_', strrep(boldFileName, prefix, motionRegressorPrefix), '.txt'];    
+    realignParamFile = inputFileValidation(funcDataDir, realignParamFile);
+    realignParamFile = realignParamFile{1};
 
-    if ~exist(realignParamFile, 'file')
-        errorStruct.identifier = 'getRealignParamFile:nonExistentFile';
-        errorStruct.message = sprintf('%s\n%s', ...
-                                      'This realignment file does not exist:', ...
-                                      realignParamFile);
-        error(errorStruct);
-    end
 end

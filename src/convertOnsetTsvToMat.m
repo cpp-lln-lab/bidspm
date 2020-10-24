@@ -7,16 +7,8 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
     % SPM
     %
 
-    if ~exist(tsvFile, 'file')
-
-        errorStruct.identifier = 'convertOnsetTsvToMat:nonExistentFile';
-        errorStruct.message = sprintf('%s\n%s', ...
-                                      'This onset tsv file deos not exist:', ...
-                                      tsvFile);
-        error(errorStruct);
-
-    end
-
+    tsvFile = inputFileValidation(dir, tsvFile);
+    
     % Read the tsv file
     fprintf('reading the tsv file : %s \n', tsvFile);
     t = spm_load(tsvFile);

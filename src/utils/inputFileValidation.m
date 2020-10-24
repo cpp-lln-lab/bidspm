@@ -1,6 +1,16 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function file = inputFileValidation(dir, prefix, fileName)
+function file = inputFileValidation(dir, fileName, prefix)
+    % file = inputFileValidation(dir, prefix, fileName)
+    %
+    % Checks if files exist. A prefix can be added.
+    %
+    % If the filet(s) exist(s), it returns a cell containing list of fullpath.
+    
+    if nargin < 3
+        prefix = '';
+    end
+    
     file2Process = spm_select('FPList', dir, ['^' prefix fileName '$']);
 
     if isempty(file2Process)

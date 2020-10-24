@@ -4,6 +4,8 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, 
     % [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action)
     %
     % to set the batch in a spatial preprocessing pipeline
+    %
+    % Assumption about the order of the sessions: 
 
     if nargin < 5 || isempty(action)
         action = 'realign';
@@ -42,7 +44,7 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, 
             % check that the file with the right prefix exist and we get and
             % save its voxeldimension
             prefix = getPrefix('preprocess', opt);
-            file = inputFileValidation(subFuncDataDir, prefix, fileName);
+            file = inputFileValidation(subFuncDataDir, fileName, prefix);
             [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName);
 
             if numel(file) > 1
