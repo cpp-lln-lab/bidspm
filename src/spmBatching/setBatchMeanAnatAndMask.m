@@ -51,7 +51,7 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
             %% Mask
             ffxDir = getFFXdir(subID, funcFWHM, opt);
 
-            files = inputFileValidation(ffxDir, '', 'mask.nii');
+            files = validationInputFile(ffxDir, 'mask.nii');
 
             matlabbatch{2}.spm.util.imcalc.input{subCounter, :} = files{1};
 

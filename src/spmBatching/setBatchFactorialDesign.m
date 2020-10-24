@@ -42,7 +42,7 @@ function matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir
                 % want to bring to the group level
                 conIdx = find(strcmp({SPM.xCon.name}, conName));
                 fileName = sprintf('con_%0.4d.nii', conIdx);
-                file = inputFileValidation(ffxDir, fileName, smoothPrefix);
+                file = validationInputFile(ffxDir, fileName, smoothPrefix);
 
                 matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).scans(iSub, :) = ...
                     file;

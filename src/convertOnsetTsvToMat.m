@@ -7,7 +7,7 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
     % SPM
     %
 
-    tsvFile = inputFileValidation(dir, tsvFile);
+    tsvFile = validationInputFile(dir, tsvFile);
     
     % Read the tsv file
     fprintf('reading the tsv file : %s \n', tsvFile);

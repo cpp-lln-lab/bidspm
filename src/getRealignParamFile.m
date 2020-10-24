@@ -15,7 +15,7 @@ function realignParamFile = getRealignParamFile(opt, fullpathBoldFileName, funcF
     [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName{1});
 
     realignParamFile = ['rp_', strrep(boldFileName, prefix, motionRegressorPrefix), '.txt'];    
-    realignParamFile = inputFileValidation(funcDataDir, realignParamFile);
+    realignParamFile = validationInputFile(funcDataDir, realignParamFile);
     realignParamFile = realignParamFile{1};
 
 end

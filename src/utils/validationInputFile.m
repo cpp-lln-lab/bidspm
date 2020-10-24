@@ -1,7 +1,7 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function file = inputFileValidation(dir, fileName, prefix)
-    % file = inputFileValidation(dir, prefix, fileName)
+function file = validationInputFile(dir, fileName, prefix)
+    % file = validationInputFile(dir, prefix, fileName)
     %
     % Checks if files exist. A prefix can be added.
     %
@@ -15,7 +15,7 @@ function file = inputFileValidation(dir, fileName, prefix)
 
     if isempty(file2Process)
 
-        errorStruct.identifier = 'inputFileValidation:nonExistentFile';
+        errorStruct.identifier = 'validationInputFile:nonExistentFile';
         errorStruct.message = sprintf( ...
                                       'This file does not exist: %s', ...
                                       fullfile(dir, [prefix fileName '[.gz]']));
