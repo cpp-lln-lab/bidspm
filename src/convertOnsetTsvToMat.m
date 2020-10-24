@@ -76,6 +76,7 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
     fullpathOnsetFileName = fullfile(path, ['onsets_' file '.mat']);
 
     save(fullpathOnsetFileName, ...
-         'names', 'onsets', 'durations');
+         'names', 'onsets', 'durations', ...
+         '-v7');
 
 end

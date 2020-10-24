@@ -8,6 +8,10 @@ function spm_my_defaults
     % script simpler.
 
     global defaults
+    
+    % File format specific
+    %==========================================================================
+    defaults.mat.format     = '-v7';
 
     % Realignment defaults
     % ==========================================================================
