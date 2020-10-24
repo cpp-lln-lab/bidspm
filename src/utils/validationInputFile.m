@@ -3,9 +3,12 @@
 function files = validationInputFile(dir, fileName, prefix)
     % file = validationInputFile(dir, prefix, fileName)
     %
-    % Checks if files exist. A prefix can be added.
+    % Checks if files exist. A prefix can be added. The prefix allows for the
+    % use of regular expression.
     %
-    % If the filet(s) exist(s), it returns a cell containing list of fullpath.
+    % TPMs = validationInputFile(anatDataDir, anatImage, 'c[12]');
+    %
+    % If the filet(s) exist(s), it returns a char array containing list of fullpath.
 
     if nargin < 3
         prefix = '';
