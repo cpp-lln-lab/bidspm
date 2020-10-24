@@ -60,28 +60,3 @@ function test_getRealignParamFileNativeSpace()
     assertEqual(expectedFileName, realignParamFile);
 
 end
-
-function test_getRealignParamFileError()
-
-    subID = '01';
-    goodFuncFWHM = 6;
-    badFuncFWHM = 8;
-    iSes = 1;
-    iRun = 1;
-
-    opt.taskName = 'vislocalizer';
-    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-    opt.subjects = {'01'};
-    opt.space = 'T1w';
-
-    opt = checkOptions(opt);
-
-    [~, opt, BIDS] = getData(opt);
-
-    boldFileName = getBoldFilenameForFFX(BIDS, opt, subID, goodFuncFWHM, iSes, iRun);
-
-    assertExceptionThrown( ...
-                          @()getRealignParamFile(opt, boldFileName, badFuncFWHM), ...
-                          'getRealignParamFile:nonExistentFile');
-
-end

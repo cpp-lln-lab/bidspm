@@ -31,7 +31,7 @@ function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
                                                          subID, sessions{iSes}, runs{iRun}, opt);
 
             % check that the file with the right prefix exist
-            files = validationInputFile(subFuncDataDir, prefix, fileName);
+            files = validationInputFile(subFuncDataDir, fileName, prefix);
 
             % add the files to list
             allFilesTemp = cellstr(files);

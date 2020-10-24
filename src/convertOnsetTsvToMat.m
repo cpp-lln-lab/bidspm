@@ -6,8 +6,9 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
     % converts them to TRs (time unit) and saves the onset file to be used for
     % SPM
     %
-
-    tsvFile = validationInputFile(dir, tsvFile);
+    [pth, file, ext] = spm_fileparts(tsvFile);
+    tsvFile = validationInputFile(pth, [file, ext]);
+    tsvFile = tsvFile{1};
     
     % Read the tsv file
     fprintf('reading the tsv file : %s \n', tsvFile);
@@ -63,9 +64,9 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
     end
 
     % save the onsets as a matfile
-    [path, file] = spm_fileparts(tsvFile);
+    [pth, file] = spm_fileparts(tsvFile);
 
-    fullpathOnsetFileName = fullfile(path, ['onsets_' file '.mat']);
+    fullpathOnsetFileName = fullfile(pth, ['onsets_' file '.mat']);
 
     save(fullpathOnsetFileName, ...
          'names', 'onsets', 'durations', ...
