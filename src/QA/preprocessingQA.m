@@ -1,34 +1,16 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function preprocessingQA(opt)
-    % bidsSpatialPrepro(opt)
-    %
-    % Performs spatial preprocessing of the functional and structural data.
-    % The structural data are segmented and normalized to MNI space.
-    % The functional data are re-aligned, coregistered with the structural and
-    % normalized to MNI space.
-    %
-    % The
-    %
-    % Assumptions:
-    % - will take the first T1w images as reference
-    % - assume the anatomical T1w to use for normalization is in the
-    % first session
-    % - the batch is build using dependencies across the different batch modules
-    
-    % TO DO
-    % - find a way to paralelize this over subjects
-    % - average T1s across sessions if necessarry
-    
-    % Indicate which session the structural data was collected
-    structSession = 1;
+    % preprocessingQA(opt)
     
     % if input has no opt, load the opt.mat file
     if nargin < 1
-        load('opt.mat');
-        fprintf('opt.mat file loaded \n\n');
+        opt = [];
     end
+    opt = loadAndCheckOptions(opt);
     
-    % load the subjects/Groups information and the task name
+    flags = setFlags(opt);
+    
     [group, opt, BIDS] = getData(opt);
     
     fprintf(1, 'DOING PREPROCESSING\n');
@@ -40,113 +22,154 @@ function preprocessingQA(opt)
         
         for iSub = 1:group(iGroup).numSub
             
-            % Get the ID of the subject
-            % (i.e SubNumber doesnt have to match the iSub if one subject
-            % is exluded for any reason)
-            subID = group(iGroup).subNumber{iSub}; % Get the subject ID
+            subID = group(iGroup).subNumber{iSub};
             
             printProcessingSubject(groupName, iSub, subID);
             
-            % identify sessions for this subject
-            sessions = getInfo(BIDS, subID, opt, 'Sessions');
-            
             fprintf(1, ' ANATOMICAL: QUALITY CONTROL\n');
-            % get all T1w images for that subject and
-            anat = spm_BIDS(BIDS, 'data', ...
-                'sub', subID, ...
-                'ses', sessions{structSession}, ...
-                'type', 'T1w');
             
-            % we assume that the first T1w is the correct one (could be an
-            % issue for dataset with more than one
-            anat = anat{1};
+%             [avgDistToSurf] = doAnatQA(BIDS, subID, opt);
             
-            [filepath, filename] = spm_fileparts(anat);
+            fprintf(1, ' ANATOMICAL: RESLICE TPM TO FUNCTIONAL\n');
+            [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt);
             
-            grayMatterTPM = spm_select('FPList', filepath, ['^c1' filename '.nii$']);
-            whiteMatterTPM = spm_select('FPList', filepath, ['^c2' filename '.nii$']);
+            [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+            grayTPM = validationInputFile(anatDataDir, anatImage, 'c1');
+            whiteTPM = validationInputFile(anatDataDir, anatImage, 'c2');
+            csfTPM = validationInputFile(anatDataDir, anatImage, 'c3');
             
-            % sanity check that all images are in the same space.
-            volumesToCheck = {anat; grayMatterTPM; whiteMatterTPM};
-            spm_check_orientations(spm_vol(char(volumesToCheck)));
+            matlabbatch = setBatchReslice(...
+                fullfile(meanFuncDir, meanImage), ...
+                {grayTPM; whiteTPM; csfTPM});
             
-            % Basic QA for anatomical data is to get SNR, CNR, FBER and Entropy
-            % This is useful to check coregistration and normalization worked fine
-            anatQA = spmup_anatQA(anat, grayMatterTPM, whiteMatterTPM);
-            
-            save(strrep(anat, '.nii', '_qa.mat'), 'anatQA');
-            
-            
+            saveMatlabBatch(matlabbatch, 'reslice_tpm', opt, subID);
+            spm_jobman('run', matlabbatch);
             
             fprintf(1, ' FUNCTIONAL: QUALITY CONTROL\n');
             % For functional data, QA is consists in getting temporal SNR and then
             % check for motion - here we also compute additional regressors to
             % account for motion
             
-            davg = spmup_comp_dist2surf(anat);
+            grayTPM = validationInputFile(anatDataDir, anatImage, 'rc1');
+            whiteTPM = validationInputFile(anatDataDir, anatImage, 'rc2');
+            csfTPM = validationInputFile(anatDataDir, anatImage, 'rc3');
             
-            if strcmpi(options.scrubbing, 'on')
-                flags = struct( ...
-                    'motion_parameters', 'on', ...
-                    'globals', 'on', ...
-                    'volume_distance', 'off', ...
-                    'movie', 'off', ...
-                    'AC', [], ...
-                    'average', 'on', ...
-                    'T1', 'on');
-            else
-                flags = struct( ...
-                    'motion_parameters', 'off', ...
-                    'globals', 'off', ...
-                    'volume_distance', 'on', ...
-                    'movie', 'off', ...
-                    'AC', [], ...
-                    'average', 'on', ...
-                    'T1', 'on');
-            end
+            [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
             
-            for frun = 1:size(stats_ready, 1)
+            for iSes = 1:nbSessions
                 
-                % sanity check that all images are in the same space.
-                V_to_check = Normalized_class';
-                V_to_check{end + 1} = stats_ready{frun};
-                spm_check_orientations(spm_vol(char(V_to_check)));
+                % get all runs for that subject across all sessions
+                [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
                 
-                % fMRIQA.tSNR(1, frun) = spmup_temporalSNR(Normalized_files{frun}, Normalized_class, 1);
-                fMRIQA.tSNR(1, frun) = spmup_temporalSNR(Normalized_files{frun}, Normalized_class, 0);
-                
-                tmp = spmup_first_level_qa(NormalizedAnat_file, cell2mat(stats_ready(frun)), flags);
-                fMRIQA.meanFD(1, frun) = mean(spmup_FD(cell2mat(tmp), davg));
-                clear tmp;
-                
-                QA.tSNR = fMRIQA.tSNR(1, frun);
-                QA.meanFD = fMRIQA.meanFD(1, frun);
-                
-                save([fileparts(Normalized_files{frun}) filesep 'fMRIQA.mat'], 'QA');
-                clear QA;
-                
-            end
-            
-            % create carpet plots
-            for frun = 1:size(subjects{s}.func, 1)
-                if bold_include(frun)
+                for iRun = 1:nbRuns
                     
-                    fprintf('subject %g: fMRI Quality control: carpet plot \n', s);
+                    % get the filename for this bold run for this task
+                    [fileName, subFuncDataDir] = getBoldFilename( ...
+                        BIDS, ...
+                        subID, ...
+                        sessions{iSes}, ...
+                        runs{iRun}, ...
+                        opt);
                     
-                    P = subjects{s}.func{frun};
-                    c1 = EPI_class{1};
-                    c2 = EPI_class{2};
-                    c3 = EPI_class{3};
+                    prefix = getPrefix('smoothing_space-individual', opt);
+                    funcImage = validationInputFile(subFuncDataDir, fileName, prefix);
                     
-                    spmup_timeseriesplot(P, c1, c2, c3, ...
-                        'motion', 'on', ...
-                        'nuisances', 'on', ...
-                        'correlation', 'on');
+                    % sanity check that all images are in the same space.
+                    volumesToCheck = {funcImage; grayTPM; whiteTPM; csfTPM};
+                    spm_check_orientations(spm_vol(char(volumesToCheck)));
+                    
+                    
+                    drawFigure = true;
+                    fMRIQA.tSNR(1, iRun) = spmup_temporalSNR(...
+                        funcImage, ...
+                        {grayTPM; whiteTPM; csfTPM}, ...
+                        drawFigure);
+                    
+                    %                     tmp = spmup_first_level_qa(...
+                    %                         NormalizedAnat_file, ...
+                    %                         cell2mat(stats_ready(frun)), ...
+                    %                         flags);
+                    %                     fMRIQA.meanFD(1, frun) = mean( spmup_FD(cell2mat(tmp), davg) );
+                    %                     clear tmp;
+                    %
+                    %                     QA.tSNR = fMRIQA.tSNR(1, frun);
+                    %                     QA.meanFD = fMRIQA.meanFD(1, frun);
+                    %
+                    %                     save([fileparts(Normalized_files{frun}) filesep 'fMRIQA.mat'], 'QA', '-v7');
+                    %                     clear QA;
                     
                 end
+                
             end
-
+            
+            
+            %             [filepath,filename,ext] = fileparts(subjects{s}.anat);
+            %             EPI_class{1} = [filepath filesep 'c1r' filename ext];
+            %             EPI_class{2} = [filepath filesep 'c2r' filename ext];
+            %             EPI_class{3} = [filepath filesep 'c3r' filename ext];
+            %
+            %             % create carpet plots
+            %             for frun = 1:size(subjects{s}.func, 1)
+            %                 if bold_include(frun)
+            %
+            %                     fprintf('subject %g: fMRI Quality control: carpet plot \n', s);
+            %
+            %                     P = subjects{s}.func{frun};
+            %                     c1 = EPI_class{1};
+            %                     c2 = EPI_class{2};
+            %                     c3 = EPI_class{3};
+            %
+            %                     spmup_timeseriesplot(P, c1, c2, c3, ...
+            %                         'motion', 'on', ...
+            %                         'nuisances', 'on', ...
+            %                         'correlation', 'on');
+            %
+            %                 end
+            %             end
+            
         end
+    end
+    
+end
+
+
+function [avgDistToSurf] = doAnatQA(BIDS, subID, opt)
+    
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+    
+    grayMatterTPM = validationInputFile(anatDataDir, anatImage, 'c1');
+    whiteMatterTPM = validationInputFile(anatDataDir, anatImage, 'c2');
+    
+    % sanity check that all images are in the same space.
+    anatImage = fullfile(anatDataDir, anatImage);
+    volumesToCheck = {anatImage; grayMatterTPM; whiteMatterTPM};
+    spm_check_orientations(spm_vol(char(volumesToCheck)));
+    
+    % Basic QA for anatomical data is to get SNR, CNR, FBER and Entropy
+    % This is useful to check coregistration worked fine
+    anatQA = spmup_anatQA(anatImage, grayMatterTPM, whiteMatterTPM); %#ok<*NASGU>
+    
+    save(strrep(anatImage, '.nii', '_qa.mat'), 'anatQA', '-v7');
+    
+    avgDistToSurf = spmup_comp_dist2surf(anatImage);
+    
+end
+
+
+function flags = setFlags(opt)
+    
+    flags = struct( ...
+        'motion_parameters', 'off', ...
+        'globals', 'off', ...
+        'volume_distance', 'on', ...
+        'movie', 'off', ...
+        'AC', [], ...
+        'average', 'on', ...
+        'T1', 'on');
+    
+    if opt.scrubbing.do
+        flags.motion_parameters = 'on';
+        flags.volume_distance = 'off';
     end
     
 end
