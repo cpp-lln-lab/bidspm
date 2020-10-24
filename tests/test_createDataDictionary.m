@@ -29,15 +29,16 @@ function test_createDataDictionaryBasic()
 
     createDataDictionary(subFuncDataDir, fileName, 3);
 
-    % TODO add assert
+    expectedFileName = fullfile( ...
+                                subFuncDataDir, ...
+                                'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.json');
 
-    %     expectedFileName = 'sub-01_ses-01_task-vislocalizer_bold.nii';
-    %
-    %     expectedSubFuncDataDir = fullfile(fileparts(mfilename('fullpath')), ...
-    %                                       'dummyData', 'derivatives', 'SPM12_CPPL', ...
-    %                                       'sub-01', 'ses-01', 'func');
-    %
-    %     assertEqual(expectedSubFuncDataDir, subFuncDataDir);
-    %     assertEqual(expectedFileName, fileName);
+    content = spm_jsonread(expectedFileName);
+
+    expectedNbColumns = 27;
+    expectedHeaderCol = 'censoring_regressor_3';
+
+    assertEqual(numel(content.Columns), expectedNbColumns);
+    assertEqual(content.Columns{expectedNbColumns}, 'censoring_regressor_3');
 
 end
