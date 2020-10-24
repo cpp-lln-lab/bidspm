@@ -17,7 +17,7 @@ function test_inputFileValidationBasic()
                               'SPM12_CPPL', 'sub-01', 'ses-01', 'func', ...
                               'sub-01_ses-01_task-vislocalizer_bold.nii');
 
-    file = inputFileValidation(directory, prefix, fileName);
+    file = inputFileValidation(directory, fileName, prefix);
 
     assertEqual(expectedOutput, file{1});
 
