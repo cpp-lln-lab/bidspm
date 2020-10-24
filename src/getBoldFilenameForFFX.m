@@ -26,6 +26,4 @@ function [boldFileName, prefix] = getBoldFilenameForFFX(varargin)
                                        fileName, ...
                                        prefix);
 
-    disp(boldFileName);
-
 end

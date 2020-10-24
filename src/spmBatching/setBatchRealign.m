@@ -47,19 +47,19 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, 
             file = validationInputFile(subFuncDataDir, fileName, prefix);
             [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName);
 
-            if numel(file) > 1
+            if size(file,1) > 1
                 errorStruct.identifier = 'setBatchRealign:tooManyFiles';
                 errorStruct.message = 'This should only get on file.';
                 error(errorStruct);
             end
 
-            fprintf(1, ' %s\n', file{1});
+            fprintf(1, ' %s\n', file);
 
             if strcmp(action, 'realignUnwarp')
                 matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = '';
-                matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = file;
+                matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = { file };
             else
-                matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = file;
+                matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = { file };
             end
 
             runCounter = runCounter + 1;

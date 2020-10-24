@@ -32,14 +32,14 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
                                         [spm_get_defaults('normalise.write.prefix'), ...
                                          spm_get_defaults('deformations.modulate.prefix')]);
 
-            matlabbatch{1}.spm.util.imcalc.input{subCounter, :} = anatImage{1};
+            matlabbatch{1}.spm.util.imcalc.input{subCounter, :} = anatImage;
 
             %% Mask
             ffxDir = getFFXdir(subID, funcFWHM, opt);
 
             files = validationInputFile(ffxDir, 'mask.nii');
 
-            matlabbatch{2}.spm.util.imcalc.input{subCounter, :} = files{1};
+            matlabbatch{2}.spm.util.imcalc.input{subCounter, :} = files;
 
         end
     end

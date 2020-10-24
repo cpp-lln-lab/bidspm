@@ -45,7 +45,7 @@ function matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir
                 file = validationInputFile(ffxDir, fileName, smoothPrefix);
 
                 matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).scans(iSub, :) = ...
-                    file;
+                    {file};
 
             end
 

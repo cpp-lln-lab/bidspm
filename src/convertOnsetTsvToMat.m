@@ -8,7 +8,6 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
     %
     [pth, file, ext] = spm_fileparts(tsvFile);
     tsvFile = validationInputFile(pth, [file, ext]);
-    tsvFile = tsvFile{1};
     
     % Read the tsv file
     fprintf('reading the tsv file : %s \n', tsvFile);

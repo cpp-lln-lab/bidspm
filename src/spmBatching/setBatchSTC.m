@@ -74,11 +74,11 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
             file = validationInputFile(subFuncDataDir, prefix, fileName);
 
             % add the file to the list
-            matlabbatch{1}.spm.temporal.st.scans{runCounter} = cellstr(file);
+            matlabbatch{1}.spm.temporal.st.scans{runCounter} = {file};
 
             runCounter = runCounter + 1;
 
-            disp(file{1});
+            disp(file);
 
         end
 

@@ -12,10 +12,9 @@ function realignParamFile = getRealignParamFile(opt, fullpathBoldFileName, funcF
         motionRegressorPrefix = 'sub-';
     end
 
-    [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName{1});
+    [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName);
 
     realignParamFile = ['rp_', strrep(boldFileName, prefix, motionRegressorPrefix), '.txt'];    
     realignParamFile = validationInputFile(funcDataDir, realignParamFile);
-    realignParamFile = realignParamFile{1};
 
 end

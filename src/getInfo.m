@@ -71,7 +71,7 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
                                 'task', opt.taskName, ...
                                 'type', type);
 
-            varargout = {fileName};
+            varargout = fileName;
 
         otherwise
             error('Not sure what info you want me to get.');

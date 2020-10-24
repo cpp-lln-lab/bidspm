@@ -19,7 +19,7 @@ function test_validationInputFileBasic()
 
     file = validationInputFile(directory, fileName, prefix);
 
-    assertEqual(expectedOutput, file{1});
+    assertEqual(expectedOutput, file);
 
 end
 
