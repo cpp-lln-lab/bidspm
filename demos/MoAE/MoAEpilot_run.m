@@ -29,12 +29,12 @@ opt = MoAEpilot_getOption();
 % Uncomment the line below to run preprocessing in "native" space.
 % - use realign and unwarp
 % - don't do normalization
-% opt.space = 'individual';
+opt.space = 'individual';
 
 %% Get data
-fprintf('%-40s:', 'Downloading dataset...');
-urlwrite(URL, 'MoAEpilot.zip');
-unzip('MoAEpilot.zip', fullfile(WD, 'output'));
+% fprintf('%-40s:', 'Downloading dataset...');
+% urlwrite(URL, 'MoAEpilot.zip');
+% unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 
 checkDependencies();
 
@@ -46,6 +46,8 @@ bidsCopyRawFolder(opt, 1);
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
+
+preprocessingQA(opt);
 
 bidsSmoothing(FWHM, opt);
 

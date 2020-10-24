@@ -11,16 +11,16 @@ function realignParamFile = getRealignParamFile(opt, fullpathBoldFileName, funcF
         [prefix, motionRegressorPrefix] = getPrefix('FFX_space-individual', opt, funcFWHM);
     end
 
-    if strcmp(prefix, 'r')
+    if strcmp(prefix, 'r') && strcmp(prefix, 'u')
         motionRegressorPrefix = 'sub-';
     end
     
     prefix = [prefix 'sub-'];
-    motionRegressorPrefix = ['rp_' motionRegressorPrefix 'sub-'];
+    motionRegressorPrefix = [motionRegressorPrefix 'sub-'];
 
     [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName);
 
-    realignParamFile = [strrep(boldFileName, prefix, motionRegressorPrefix), '.txt'];    
+    realignParamFile = ['rp_' strrep(boldFileName, prefix, motionRegressorPrefix), '.txt'];    
     realignParamFile = validationInputFile(funcDataDir, realignParamFile);
 
 end

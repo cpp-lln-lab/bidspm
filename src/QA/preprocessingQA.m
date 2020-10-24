@@ -25,29 +25,16 @@ function preprocessingQA(opt)
             printProcessingSubject(groupName, iSub, subID);
             
             fprintf(1, ' ANATOMICAL: QUALITY CONTROL\n');
-            
-            %           doAnatQA(BIDS, subID, opt);
+            doAnatQA(BIDS, subID, opt);
             
             fprintf(1, ' ANATOMICAL: RESLICE TPM TO FUNCTIONAL\n');
-            [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt);
-            
-            [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
-            grayTPM = validationInputFile(anatDataDir, anatImage, 'c1');
-            whiteTPM = validationInputFile(anatDataDir, anatImage, 'c2');
-            csfTPM = validationInputFile(anatDataDir, anatImage, 'c3');
-            
-            matlabbatch = setBatchReslice(...
-                fullfile(meanFuncDir, meanImage), ...
-                {grayTPM; whiteTPM; csfTPM});
-            
-            saveMatlabBatch(matlabbatch, 'reslice_tpm', opt, subID);
-            %             spm_jobman('run', matlabbatch);
+            resliceTpmToFunc(BIDS, subID, opt)
             
             fprintf(1, ' FUNCTIONAL: QUALITY CONTROL\n');
             % For functional data, QA is consists in getting temporal SNR and then
             % check for motion - here we also compute additional regressors to
             % account for motion
-            
+            [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
             avgDistToSurf = spmup_comp_dist2surf(fullfile(anatDataDir, anatImage));
             
             grayTPM = validationInputFile(anatDataDir, anatImage, 'rc1');
@@ -84,8 +71,11 @@ function preprocessingQA(opt)
                     
                     spmup_first_level_qa(...
                         funcImage, ...
+                        'Voltera', 'on', ...
                         'Radius', avgDistToSurf);
                     
+                    % TODO
+                    % convert output txt file to a tsv with a json dictionnary.
                     realignParamFile = getRealignParamFile(opt, fullfile(subFuncDataDir, fileName));
                     fMRIQA.meanFD(1, iRun) = mean( spmup_FD(realignParamFile, avgDistToSurf) );
                     
@@ -99,7 +89,7 @@ function preprocessingQA(opt)
                 
             end
             
-            
+            % create carpet plot
             %             [filepath,filename,ext] = fileparts(subjects{s}.anat);
             %             EPI_class{1} = [filepath filesep 'c1r' filename ext];
             %             EPI_class{2} = [filepath filesep 'c2r' filename ext];
@@ -147,5 +137,24 @@ function doAnatQA(BIDS, subID, opt)
     anatQA = spmup_anatQA(anatImage, grayMatterTPM, whiteMatterTPM); %#ok<*NASGU>
     
     save(strrep(anatImage, '.nii', '_qa.mat'), 'anatQA', '-v7');
+    
+end
+
+
+function resliceTpmToFunc(BIDS, subID, opt)
+    
+    [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt);
+    
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+    grayTPM = validationInputFile(anatDataDir, anatImage, 'c1');
+    whiteTPM = validationInputFile(anatDataDir, anatImage, 'c2');
+    csfTPM = validationInputFile(anatDataDir, anatImage, 'c3');
+    
+    matlabbatch = setBatchReslice(...
+        fullfile(meanFuncDir, meanImage), ...
+        {grayTPM; whiteTPM; csfTPM});
+    
+    saveMatlabBatch(matlabbatch, 'reslice_tpm', opt, subID);
+    spm_jobman('run', matlabbatch);
     
 end
