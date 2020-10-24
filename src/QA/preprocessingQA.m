@@ -9,8 +9,6 @@ function preprocessingQA(opt)
     end
     opt = loadAndCheckOptions(opt);
     
-    flags = setFlags(opt);
-    
     [group, opt, BIDS] = getData(opt);
     
     fprintf(1, 'DOING PREPROCESSING\n');
@@ -28,7 +26,7 @@ function preprocessingQA(opt)
             
             fprintf(1, ' ANATOMICAL: QUALITY CONTROL\n');
             
-%             [avgDistToSurf] = doAnatQA(BIDS, subID, opt);
+            %           doAnatQA(BIDS, subID, opt);
             
             fprintf(1, ' ANATOMICAL: RESLICE TPM TO FUNCTIONAL\n');
             [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt);
@@ -43,12 +41,14 @@ function preprocessingQA(opt)
                 {grayTPM; whiteTPM; csfTPM});
             
             saveMatlabBatch(matlabbatch, 'reslice_tpm', opt, subID);
-            spm_jobman('run', matlabbatch);
+            %             spm_jobman('run', matlabbatch);
             
             fprintf(1, ' FUNCTIONAL: QUALITY CONTROL\n');
             % For functional data, QA is consists in getting temporal SNR and then
             % check for motion - here we also compute additional regressors to
             % account for motion
+            
+            avgDistToSurf = spmup_comp_dist2surf(fullfile(anatDataDir, anatImage));
             
             grayTPM = validationInputFile(anatDataDir, anatImage, 'rc1');
             whiteTPM = validationInputFile(anatDataDir, anatImage, 'rc2');
@@ -78,25 +78,22 @@ function preprocessingQA(opt)
                     volumesToCheck = {funcImage; grayTPM; whiteTPM; csfTPM};
                     spm_check_orientations(spm_vol(char(volumesToCheck)));
                     
-                    
-                    drawFigure = true;
                     fMRIQA.tSNR(1, iRun) = spmup_temporalSNR(...
                         funcImage, ...
-                        {grayTPM; whiteTPM; csfTPM}, ...
-                        drawFigure);
+                        {grayTPM; whiteTPM; csfTPM});
                     
-                    %                     tmp = spmup_first_level_qa(...
-                    %                         NormalizedAnat_file, ...
-                    %                         cell2mat(stats_ready(frun)), ...
-                    %                         flags);
-                    %                     fMRIQA.meanFD(1, frun) = mean( spmup_FD(cell2mat(tmp), davg) );
-                    %                     clear tmp;
-                    %
-                    %                     QA.tSNR = fMRIQA.tSNR(1, frun);
-                    %                     QA.meanFD = fMRIQA.meanFD(1, frun);
-                    %
-                    %                     save([fileparts(Normalized_files{frun}) filesep 'fMRIQA.mat'], 'QA', '-v7');
-                    %                     clear QA;
+                    spmup_first_level_qa(...
+                        funcImage, ...
+                        'Radius', avgDistToSurf);
+                    
+                    realignParamFile = getRealignParamFile(opt, fullfile(subFuncDataDir, fileName));
+                    fMRIQA.meanFD(1, iRun) = mean( spmup_FD(realignParamFile, avgDistToSurf) );
+                    
+                    save(fullfile(...
+                        subFuncDataDir, ...
+                        strrep(fileName, '.nii',  '_fMRIQA.mat')), ...
+                        'fMRIQA', ...
+                        '-v7');
                     
                 end
                 
@@ -133,7 +130,7 @@ function preprocessingQA(opt)
 end
 
 
-function [avgDistToSurf] = doAnatQA(BIDS, subID, opt)
+function doAnatQA(BIDS, subID, opt)
     
     [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
     
@@ -150,26 +147,5 @@ function [avgDistToSurf] = doAnatQA(BIDS, subID, opt)
     anatQA = spmup_anatQA(anatImage, grayMatterTPM, whiteMatterTPM); %#ok<*NASGU>
     
     save(strrep(anatImage, '.nii', '_qa.mat'), 'anatQA', '-v7');
-    
-    avgDistToSurf = spmup_comp_dist2surf(anatImage);
-    
-end
-
-
-function flags = setFlags(opt)
-    
-    flags = struct( ...
-        'motion_parameters', 'off', ...
-        'globals', 'off', ...
-        'volume_distance', 'on', ...
-        'movie', 'off', ...
-        'AC', [], ...
-        'average', 'on', ...
-        'T1', 'on');
-    
-    if opt.scrubbing.do
-        flags.motion_parameters = 'on';
-        flags.volume_distance = 'off';
-    end
     
 end
