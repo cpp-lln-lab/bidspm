@@ -1,6 +1,11 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function varargout = getInfo(BIDS, subID, opt, info, varargin)
+    % varargout = getInfo(BIDS, subID, opt, info, varargin)
+    %
+    % wrapper function to fetch specific info in a BIDS structure returned by
+    % spm_bids.
+    %
     % for a given BIDS data set, subject identity, and info type,
     % if info = Sessions, this returns name of the sessions and their number
     % if info = Runs, this returns name of the runs and their number for an specified session.
@@ -20,11 +25,9 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
     % opt - options structure defined by the getOption function. Mostly used to find the
     %  task name.
 
-    info = lower(info);
-
     varargout = {}; %#ok<*NASGU>
 
-    switch info
+    switch lower(info)
 
         case 'sessions'
 
@@ -68,7 +71,7 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
                                 'task', opt.taskName, ...
                                 'type', type);
 
-            varargout = {fileName};
+            varargout = fileName;
 
         otherwise
             error('Not sure what info you want me to get.');

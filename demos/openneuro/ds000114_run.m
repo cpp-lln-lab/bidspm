@@ -28,7 +28,6 @@ opt.space = 'individual';
 checkDependencies();
 
 %% Run batches
-isMVPA = 0;
 
 reportBIDS(opt);
 
@@ -38,8 +37,12 @@ bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
+anatomicalQA(opt);
+bidsResliceTpmToFunc(opt);
+functionalQA(opt);
+
 bidsSmoothing(FWHM, opt);
 
-bidsFFX('specifyAndEstimate', opt, FWHM, isMVPA);
-bidsFFX('contrasts', opt, FWHM, isMVPA);
-bidsResults(opt, FWHM, [], isMVPA);
+bidsFFX('specifyAndEstimate', opt, FWHM);
+bidsFFX('contrasts', opt, FWHM);
+bidsResults(opt, FWHM, []);

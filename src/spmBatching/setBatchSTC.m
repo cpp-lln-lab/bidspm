@@ -71,14 +71,14 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
                                                          subID, sessions{iSes}, runs{iRun}, opt);
 
             % check that the file with the right prefix exist
-            file = inputFileValidation(subFuncDataDir, prefix, fileName);
+            file = validationInputFile(subFuncDataDir, prefix, fileName);
 
             % add the file to the list
-            matlabbatch{1}.spm.temporal.st.scans{runCounter} = cellstr(file);
+            matlabbatch{1}.spm.temporal.st.scans{runCounter} = {file};
 
             runCounter = runCounter + 1;
 
-            disp(file{1});
+            disp(file);
 
         end
 

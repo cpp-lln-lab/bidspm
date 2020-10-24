@@ -29,7 +29,7 @@ function test_getBoldFilenameForFFXBasic()
                                 's6wsub-01_ses-01_task-vislocalizer_bold.nii');
 
     assertEqual('s6w', prefix);
-    assertEqual({expectedFileName}, boldFileName);
+    assertEqual(expectedFileName, boldFileName);
 
 end
 
@@ -57,6 +57,6 @@ function test_getBoldFilenameForFFXNativeSpace()
                                 's6usub-01_ses-01_task-vislocalizer_bold.nii');
 
     assertEqual('s6u', prefix);
-    assertEqual({expectedFileName}, boldFileName);
+    assertEqual(expectedFileName, boldFileName);
 
 end

@@ -1,28 +1,14 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
-function realignParamFile = getRealignParamFile(opt, fullpathBoldFileName, funcFWHM)
+function realignParamFile = getRealignParamFile(fullpathBoldFileName, prefix)
 
-    [prefix, motionRegressorPrefix] = getPrefix('FFX', opt, funcFWHM);
-    if strcmp(opt.space, 'individual')
-        [prefix, motionRegressorPrefix] = getPrefix('FFX_space-individual', opt, funcFWHM);
+    [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName);
+
+    if nargin > 1
+        boldFileName = strrep(boldFileName, [prefix 'sub-'], 'sub-');
     end
 
-    if strcmp(prefix, 'r')
-        prefix = 'rsub-';
-        motionRegressorPrefix = 'sub-';
-    end
+    realignParamFile = ['rp_.*' boldFileName, '.txt'];
+    realignParamFile = validationInputFile(funcDataDir, realignParamFile);
 
-    [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName{1});
-
-    realignParamFile = strrep(boldFileName, prefix, motionRegressorPrefix);
-    realignParamFile = ['rp_', realignParamFile, '.txt'];
-    realignParamFile = fullfile(funcDataDir, realignParamFile);
-
-    if ~exist(realignParamFile, 'file')
-        errorStruct.identifier = 'getRealignParamFile:nonExistentFile';
-        errorStruct.message = sprintf('%s\n%s', ...
-                                      'This realignment file does not exist:', ...
-                                      realignParamFile);
-        error(errorStruct);
-    end
 end

@@ -45,13 +45,13 @@ function concatBetaImgTmaps(funcFWHM, opt, deleteIndBeta, deleteIndTmaps)
             for iContrast = 1:length(beta_maps)
                 % Note that the betas are created from the idx (Beta_idx(iBeta))
                 fileName = sprintf('beta_%04d.nii', find(contrasts(iContrast).C));
-                fileName = inputFileValidation(ffxDir, '', fileName);
-                beta_maps{iContrast, 1} = [fileName{1}, ',1'];
+                fileName = validationInputFile(ffxDir, fileName);
+                beta_maps{iContrast, 1} = [fileName, ',1'];
 
                 % while the contrastes (t-maps) are not from the index. They were created
                 fileName = sprintf('spmT_%04d.nii', iContrast);
-                fileName = inputFileValidation(ffxDir, '', fileName);
-                t_maps{iContrast, 1} = [fileName{1}, ',1'];
+                fileName = validationInputFile(ffxDir, fileName);
+                t_maps{iContrast, 1} = [fileName, ',1'];
             end
 
             % clear previous matlabbatch and files

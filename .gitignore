@@ -8,6 +8,7 @@
 *.html
 *.zip
 *.ps
+options_task-*.json
 
 
 # files in the demo folder related to running the demo analysis

@@ -242,7 +242,7 @@ function saveReorientationMatrix(imagesToReorient, reorientationMatrix)
 
     fprintf(['Saving reorient matrice to ' [filename '.mat/json'] '.\n']);
 
-    save([filename '.mat'], 'reorientationMatrix', 'imagesToReorient');
+    save([filename '.mat'], 'reorientationMatrix', 'imagesToReorient', '-v7');
 
     json.reorientationMatrix = reorientationMatrix;
     json.imagesToReorient = imagesToReorient;

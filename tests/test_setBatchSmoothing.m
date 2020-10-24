@@ -41,7 +41,7 @@ function test_setBatchSmoothingBasic()
     expectedBatch{1}.spm.spatial.smooth.dtype = 0;
     expectedBatch{1}.spm.spatial.smooth.im = 0;
     expectedBatch{1}.spm.spatial.smooth.prefix = ...
-        [spm_get_defaults('smooth.prefix'), num2str(6)];
+        [spm_get_defaults('smooth.prefix'), '6'];
     expectedBatch{1}.spm.spatial.smooth.data{1} = fileName;
 
     assertEqual( ...

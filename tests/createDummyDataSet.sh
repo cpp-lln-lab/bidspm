@@ -33,6 +33,7 @@ do
 			touch $ThisDir/func/asub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
 			touch $ThisDir/func/asub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
 
+			touch $ThisDir/func/meanusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/func/s6wsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/func/s6rsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/func/s6usub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii

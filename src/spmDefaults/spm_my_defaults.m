@@ -9,6 +9,10 @@ function spm_my_defaults
 
     global defaults
 
+    % File format specific
+    % ==========================================================================
+    defaults.mat.format     = '-v7';
+
     % Realignment defaults
     % ==========================================================================
     defaults.realign.estimate.quality = 1;

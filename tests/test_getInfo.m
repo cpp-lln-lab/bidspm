@@ -59,6 +59,6 @@ function test_getInfoBasic()
                          '_run-' run, ...
                          '_bold.nii']);
 
-    assert(strcmp(filename{1}, FileName));
+    assert(strcmp(filename, FileName));
 
 end
