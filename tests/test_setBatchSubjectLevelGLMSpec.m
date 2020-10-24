@@ -13,17 +13,13 @@ function test_setBatchSubjectLevelGLMSpecBasic()
     iSes = 1;
     iRun = 1;
 
-    % directory with this script becomes the current directory
+    opt.subjects = {subID};
+    opt.taskName = 'auditory';
     opt.dataDir = fullfile( ...
                            fileparts(mfilename('fullpath')), ...
                            '..', 'demos',  'MoAE', 'output', 'MoAEpilot');
-    opt.subjects = {subID};
     opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                               '..', 'demos',  'MoAE', 'models', 'model-MoAE_smdl.json');
-
-    % task to analyze
-    opt.taskName = 'auditory';
-
     opt = checkOptions(opt);
 
     bidsCopyRawFolder(opt, 1);
@@ -44,27 +40,27 @@ function test_setBatchSubjectLevelGLMSpecBasic()
                    fullfile(subFuncDataDir, ['rp_', strrep(fileName, '.nii', '.txt')])));
 
     matlabbatch = setBatchSubjectLevelGLMSpec(BIDS, opt, subID, funcFWHM);
-    
+
     % TODO add assert
-%     expectedBatch = returnExpectedBatch();
-%     assert(matlabbatch, returnExpectedBatch);
+    %     expectedBatch = returnExpectedBatch();
+    %     assert(matlabbatch, returnExpectedBatch);
 
 end
 
 % function expectedBatch = returnExpectedBatch()
-% 
+%
 %     matlabbatch{1}.spm.stats.fmri_spec.dir = { outputDir};
-% 
+%
 %     matlabbatch{1}.spm.stats.fmri_spec.timing.RT = RT;
 %     matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t = nbSlices;
 %     matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = midSlice;
-% 
+%
 %     for iRun = 1:nbRuns
-% 
+%
 %         matlabbatch{1}.spm.stats.fmri_spec.sess(iRun).scans = { boldFileForFFX};
 %         matlabbatch{1}.spm.stats.fmri_spec.sess(end).multi = { eventFile };
 %         matlabbatch{1}.spm.stats.fmri_spec.sess(end).multi_reg = { confoundsFile };
-% 
+%
 %         % Things that are unlikely to change
 %         matlabbatch{1}.spm.stats.fmri_spec.sess(end).hpf = 128;
 %         matlabbatch{1}.spm.stats.fmri_spec.sess(end).regress = struct( ...
@@ -78,24 +74,24 @@ end
 %                                                                    'pmod', {}, ...
 %                                                                    'orth', {});
 %     end
-% 
+%
 %     % Things that may change
 %     matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
-% 
+%
 %     matlabbatch{1}.spm.stats.fmri_spec.mthresh = 0.8;
-% 
+%
 %     matlabbatch{1}.spm.stats.fmri_spec.mask = {''};
-% 
+%
 %     matlabbatch{1}.spm.stats.fmri_spec.cvi = 'FAST';
-% 
+%
 %     % Things that are unlikely to change
 %     matlabbatch{1}.spm.stats.fmri_spec.timing.units = 'secs';
-% 
+%
 %     matlabbatch{1}.spm.stats.fmri_spec.fact = struct( ...
 %                                                      'name', {}, ...
 %                                                      'levels', {});
-% 
+%
 %     matlabbatch{1}.spm.stats.fmri_spec.volt = 1;
 %     matlabbatch{1}.spm.stats.fmri_spec.global = 'None';
-% 
+%
 % end
