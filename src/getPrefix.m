@@ -38,10 +38,6 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
 
         case 'FFX_space-individual'
             prefix = prefixForSTC(prefix, opt);
-
-            % for the motion regressors txt file
-            motionRegressorPrefix = prefix;
-
             prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
 
             % Check which level of smoothing is applied
@@ -51,10 +47,6 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
 
         case 'FFX'
             prefix = prefixForSTC(prefix, opt);
-
-            % for the motion regressors txt file
-            motionRegressorPrefix = prefix;
-
             prefix = [spm_get_defaults('normalise.write.prefix') prefix];
 
             % Check which level of smoothing is applied

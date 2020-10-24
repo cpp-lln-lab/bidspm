@@ -77,7 +77,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         for iRun = 1:nbRuns
 
             % get functional files
-            fullpathBoldFileName = ...
+            [fullpathBoldFileName, prefix]  = ...
                 getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);
             
             disp(fullpathBoldFileName);
@@ -99,8 +99,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
                 cellstr(fullpathOnsetFileName);
 
             % get realignment parameters
-            realignParamFile = ...
-                getRealignParamFile(opt, fullpathBoldFileName, funcFWHM);
+            realignParamFile = getRealignParamFile(fullpathBoldFileName, prefix);
             matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).multi_reg = ...
                 cellstr(realignParamFile);
 

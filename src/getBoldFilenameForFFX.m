@@ -1,7 +1,7 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function [boldFileName, prefix] = getBoldFilenameForFFX(varargin)
-    % [boldFileName, prefix] = getFunctionalFiles(BIDS, opt, subID, funcFWHM, iSes, iRun)
+    % [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun)
     %
     % get the filename for this bold run for this task for the FFX setup
     % and check that the file with the right prefix exist

@@ -76,7 +76,7 @@ function preprocessingQA(opt)
                     
                     % TODO
                     % convert output txt file to a tsv with a json dictionnary.
-                    realignParamFile = getRealignParamFile(opt, fullfile(subFuncDataDir, fileName));
+                    realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, fileName));
                     fMRIQA.meanFD(1, iRun) = mean( spmup_FD(realignParamFile, avgDistToSurf) );
                     
                     save(fullfile(...

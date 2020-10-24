@@ -11,10 +11,12 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt)
                                                  BIDS, ...
                                                  subID, sessions{1}, runs{1}, opt);
 
+    prefix= getPrefix('smoothing_space-individual', opt);
+                                             
     meanImage = validationInputFile(...
         subFuncDataDir, ...
         boldFileName, ...
-        ['mean' spm_get_defaults('unwarp.write.prefix')]);
+        ['mean' prefix]);
                                              
     [meanFuncDir, meanImage, ext] = spm_fileparts(meanImage);
     meanImage = [meanImage ext];
