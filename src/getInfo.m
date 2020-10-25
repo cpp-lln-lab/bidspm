@@ -79,9 +79,16 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
 
       varargout = fileName;
 
-    otherwise
-      error('Not sure what info you want me to get.');
+            varargout = spm_BIDS(BIDS, 'data', ...
+                                'sub', subID, ...
+                                'run', run, ...
+                                'ses', session, ...
+                                'task', opt.taskName, ...
+                                'type', type);
 
-  end
+        otherwise
+            error('Not sure what info you want me to get.');
+
+    end
 
 end
