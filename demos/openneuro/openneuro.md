@@ -27,3 +27,16 @@ datalad get sub-0[12]/*/func/*linebisection*
  datalad get sub-0[12]/anat/*T1w*
  datalad get sub-0[12]/func/*balloonanalogrisktask*
  ```
+
+## ds001168
+
+7T test-retest data set with fieldmaps
+
+```bash
+ datalad clone https://github.com/OpenNeuroDatasets/ds001168.git
+ cd ds001168/
+ datalad get sub-0[12]/ses*/anat/*
+ datalad get sub-0[12]/ses*/func/*fullbrain*
+
+ ```
+
