@@ -25,6 +25,7 @@ function bidsCreateVDM(opt)
             
             subID = group(iGroup).subNumber{iSub};
             
+            % TODO Move to getInfo
             types = spm_BIDS(BIDS, 'types', 'sub', subID);
             
             if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
@@ -35,9 +36,9 @@ function bidsCreateVDM(opt)
                 
                 matlabbatch = setBatchCoregistrationFmap(opt, BIDS, subID);
                 
-                %             saveMatlabBatch(matlabbatch, 'coregister_fmap', opt, subID);
+                saveMatlabBatch(matlabbatch, 'coregister_fmap', opt, subID);
                 
-                %             spm_jobman('run', matlabbatch);
+                spm_jobman('run', matlabbatch);
                 
                 %             fprintf(1, ' FIELDMAP WORKFLOW: CREATING VDMs \n');
                 
