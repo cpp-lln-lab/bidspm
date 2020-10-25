@@ -28,7 +28,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii)
   opt = loadAndCheckOptions(opt);
 
     % Will only copy those modalities if they exist
-%     modalitiesToCopy = {'anat', 'func', 'fmap'};
+    %     modalitiesToCopy = {'anat', 'func', 'fmap'};
 
   %% All tasks in this experiment
   % raw directory and derivatives directory
