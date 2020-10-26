@@ -18,6 +18,7 @@ demos/MoAE/derivatives/*
 # test folder
 tests/sub-01/*
 tests/group/*
+onsets*_events.mat
 
 # ignore content of the build folder of the doc
 docs/build/*
@@ -29,4 +30,3 @@ cpp_bids_spm/*
 
 
 
-onsets*_events.mat
