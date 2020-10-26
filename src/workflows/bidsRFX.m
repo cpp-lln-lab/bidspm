@@ -1,22 +1,28 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function bidsRFX(action, funcFWHM, conFWHM, opt)
+    %
     % This script smooth all con images created at the fisrt level in each
     % subject, create a mean structural image and mean mask over the
     % population, process the factorial design specification  and estimation
-    %  and estimate Contrats.
+    % and estimate Contrats. ::
     %
-    % INPUTS
-    % - action
-    %   - case 'smoothContrasts' : smooth con images
-    %   - case 'RFX' : Mean Struct, MeanMask, Factorial design specification and
-    %      estimation, Contrst estimation
+    %  bidsRFX(action, funcFWHM, conFWHM, opt)
     %
-    % - funcFWHM = How much smoothing was applied to the functional
+    % :param action: (string) ``smoothContrasts`` or ``RFX``
+    % :param funcFWHM: (scalar) 
+    % :param conFWHM: (scalar) 
+    % :param opt: (structure) (see checkOptions())
+    %
+    %   - case 'smoothContrasts': smooth con images
+    %   - case 'RFX': Mean Struct, MeanMask, Factorial design specification and
+    %      estimation, Contrast estimation
+    %
+    %    funcFWHM: How much smoothing was applied to the functional
     %    data in the preprocessing
-    % - conFWHM = How much smoothing is required for the CON images for
-    %    the second level analysis
     %
+    %    conFWHM: How much smoothing is required for the CON images for
+    %    the second level analysis
 
     if nargin < 2 || isempty(funcFWHM)
         funcFWHM = 0;

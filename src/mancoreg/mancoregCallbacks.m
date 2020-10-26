@@ -7,7 +7,7 @@ function mancoregCallbacks(operation, varargin)
     % mancoreg_callbacks(op, varargin)
     %
     % Callback routines for mancoreg.m
-    %
+    
     % Change LOG
     %
     % Version 1.0.1
