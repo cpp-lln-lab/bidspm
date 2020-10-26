@@ -1,18 +1,17 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function concatBetaImgTmaps(funcFWHM, opt, deleteIndBeta, deleteIndTmaps)
-    % concatBetaImgTmaps(funcFWHM, opt, deleteIndBeta, deleteIndTmaps)
+    % Make 4D images of beta and t-maps for the MVPA. ::
     %
-    % Make 4D images of beta and t-maps for the MVPA
+    %   concatBetaImgTmaps(funcFWHM, opt, [deleteIndBeta = true,] [deleteIndTmaps = true])
     %
-    % Inputs
-    % funcFWHM - smoothing (FWHM) applied to the the normalized EPI
-    % opt - options structure defined by the getOption function. If no inout is given
-    %   this function will attempt to load a opt.mat file in the same directory
-    %   to try to get some options
+    % :param funcFWHM: (scalar) smoothing (FWHM) applied to the the normalized EPI
+    % :param opt: (boolean) options structure
+    % :param deleteIndBeta: (boolean)
+    % :param deleteIndTmaps: (boolean) decide to delete t-maps, beta-maps
     %
-    % deleteIndBeta, deleteIndTmaps: boolean to decide to delete
-    %  original t-maps, beta-maps or ResMaps (default = true)
+    % If no ``opt`` input is given this function will attempt to load a json file.
+    %
 
     % delete individual Beta and tmaps
     if nargin < 3

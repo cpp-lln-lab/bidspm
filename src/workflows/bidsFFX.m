@@ -1,21 +1,22 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function bidsFFX(action, opt, funcFWHM)
-    % bidsFFX(action, funcFWHM, opt, isMVPA)
-    %
     % This scripts builds up the design matrix for each subject.
-    % It has to be run in 2 separate steps (action):
+    % It has to be run in 2 separate steps (action). ::
     %
-    % Inputes
-    % - action (string)
-    %   - case specifyAndEstimate = fMRI design and estimate
-    %   - case contrasts = contrasts
-    % - funcFWHM (scalar) is the number of the mm smoothing used in the
-    %   normalized functional files.
-    %     for unsmoothed data  funcFWHM = 0
-    %     for smoothed data = ... mm
+    %  bidsFFX(action, funcFWHM, opt)
+    %
+    % :param action: (string) ``specifyAndEstimate`` or ``contrasts``.
+    % :param opt: (scalar) options (see checkOptions())
+    % :param funcFWHM: (scalar) Gaussian kernel size applied to the functional data.
+    %
+    % ``specifyAndEstimate`` for fMRI design + estimate and 
+    % ``contrasts`` to estimate contrasts.
+    %
+    % For unsmoothed data  ``funcFWHM = 0``, for smoothed data ``funcFWHM = ... mm``. 
     % In this way we can make multiple ffx for different smoothing degrees
-
+    %
+    
     % if input has no opt, load the opt.mat file
     if nargin < 3
         opt = [];
