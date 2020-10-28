@@ -10,7 +10,6 @@ function mancoreg(targetimage, sourceimage)
     %
     % FORMAT mancoreg(targetimage,sourceimage);
     %
-    % ----------------------------------------------------------------------------
     % This function displays 2 ortho views of a TARGET and
     % a SOURCE image that can be manually coregistered.
     %
@@ -27,7 +26,7 @@ function mancoreg(targetimage, sourceimage)
     % The code is loosely based on spm_image.m and spm_orthoviews.m
     % It requires the m-file with the callback functions for the user
     % controls (mancoregCallbacks.m).
-    % ----------------------------------------------------------------------------
+
     % JH 10.01.2004
     % modified DSS 10/02/2009
     %

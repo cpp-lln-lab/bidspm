@@ -4,7 +4,8 @@ function opt = loadAndCheckOptions(opt)
     % opt = loadAndCheckOptions(opt)
     %
     % if not argument is provived checks in the current directory for
-    % opt_task-*.json files and loads the most recent one by name (using the date- key).
+    % ``opt_task-*.json`` files and loads the most recent one by name 
+    % (using the date- key).
     %
     % then checks the content of the opt structure and adds missing information
 

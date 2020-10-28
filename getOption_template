@@ -1,6 +1,6 @@
 function opt = getOption()
-% returns a structure that contains the options chosen by the user to run
-% slice timing correction, pre-processing, FFX, RFX.
+% returns a structure that contains the options chosen by the user to return
+% the different workflows
 
 if nargin<1
  opt = [];
@@ -32,7 +32,6 @@ opt.funcVoxelDims = [];
 
 % specify the model file that contains the contrasts to compute
 opt.model.univariate.file =  fullfile(fileparts(mfilename('fullpath')), 'model', model-balloonanalogriskUnivariate_smdl.json');
-opt.model.multivariate.file = fullfile(fileparts(mfilename('fullpath')), 'model', model-balloonanalogriskMultivariate_smdl.json');
 
 % specify the result to compute
 opt.result.Steps(1) = struct(...

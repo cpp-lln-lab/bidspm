@@ -1,7 +1,15 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function opt = setDerivativesDir(opt)
-    % derivativeDir = setDerivativeDir(opt)
+    % derivativeDir sets the derivatives folder
+    %
+    %   opt = setDerivativesDir(opt)
+    %
+    % Parameters:
+    %   opt: option structure
+    %
+    % Returns:
+    %    opt: with the additional field derivativesDir
 
     if ~isfield(opt, 'derivativesDir') || isempty(opt.derivativesDir)
         opt.derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
