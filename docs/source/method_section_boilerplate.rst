@@ -1,6 +1,8 @@
-# Boilerplate methods section
+Boilerplate methods section
+***************************
 
-## Preprocessing
+Preprocessing
+=============
 
 The fMRI data were pre-processed and analyzed using statistical parametric
 mapping (SPM12 – v7487; Wellcome Center for Neuroimaging, London, UK;
@@ -34,7 +36,8 @@ used at acquisition ; interpolation: 4th degree b-spline)
 Functional MNI normalized images were then spatially smoothed using a 3D
 gaussian kernel (FWHM = {XX} mm).
 
-## fMRI data analysis
+fMRI data analysis
+==================
 
 At the subject level, we performed a mass univariate analysis with a linear
 regression at each voxel of the brain, using generalized least squares with a
@@ -47,7 +50,8 @@ We modeled the fMRI experiment in an event related design with regressors
 entered into the run-specific design matrix after convolving the onsets of each
 event with a canonical hemodynamic response function (HRF).
 
-Table of conditions with duration of each event: WIP
+.. todo:
+    Table of conditions with duration of each event
 
 Nuisance covariates included the 6 realignment parameters to account for
 residual motion artefacts.
@@ -55,11 +59,16 @@ residual motion artefacts.
 Contrast images were computed for the following condition and spatially smoothed
 using a 3D gaussian kernel (FWHM = {XX} mm).
 
-Table of constrast with weight: WIP
+.. todo:
+    Table of constrast with weight
 
-Group level: WIP
+Group level
+===========
 
-### References
+WIP
+
+References
+==========
 
 Friston KJ, Ashburner J, Frith CD, Poline J-B, Heather JD & Frackowiak RSJ
 (1995) Spatial registration and normalization of images Hum. Brain Map.

@@ -1,7 +1,7 @@
 Manual coregistration
 =====================
 
-Manual coregistration
+Manual coregistration tools
 
 ----
 

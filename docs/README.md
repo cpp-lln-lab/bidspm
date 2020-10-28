@@ -58,43 +58,6 @@ reStructured text mark up primers:
 
 ## "Templates"
 
-There are different ways you can document the help section of your matlab
-functions so it can be documented automatically by sphinx.
-
-```matlab
-function y = my_function(arg1, arg2)
-    %
-    % Describe what the function does here.
-    %
-    %  y = my_function_napoleon(arg1, arg2)
-    %
-    % :param arg1: The first input value
-    % :param arg2: The second input value
-    % :returns: The input value multiplied by two
-
-    y = arg1 + arg2
-```
-
-"Napoleon" way more similar to Numpy:
-
-```matlab
-function y = my_function_napoleon(arg1, arg2)
-    %
-    % Describe what the function does here.
-    %
-    %  y = my_function_napoleon(arg1, arg2)
-    %
-    % Parameters:
-    %    x: The first input value
-    %
-    %    y: The second input value
-    %
-    % Returns:
-    %    The input value multiplied by two
-
-    y = x * 2;
-```
-
 You then just need to insert this in your `.rst` file for the documentation to
 be done automatically.
 
@@ -117,7 +80,7 @@ sphinx-build -b html source build
 
 This will build an html version of the doc in the `build` folder.
 
-## Buid the documentation with Read the Docs
+## Build the documentation with Read the Docs
 
 Add a [`.readthedocs.yml`](../.readthedocs.yml) file in the root of your repo.
 
@@ -130,16 +93,3 @@ website: https://readthedocs.org.
 You might need to be added as a maintainer of the doc.
 
 The doc can be built from any branch of a repo.
-
-<!-- TODO -->
-
-## Other matlab projects that use...
-
-### Sphinx
-
-Some are listed 
-https://github.com/sphinx-contrib/matlabdomain#users
-
-### Read the docs
-
-- [qMRLab](https://github.com/qMRLab/qMRLab/wiki/Guideline:-Generating-Documentation)
