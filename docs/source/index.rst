@@ -7,7 +7,7 @@ Welcome to CPP SPM BIDS pipeline documentation!
 ===============================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    installation
@@ -18,6 +18,7 @@ Welcome to CPP SPM BIDS pipeline documentation!
    defaults
    mancoreg
    utils
+   contributing
 
 
 Indices and tables
