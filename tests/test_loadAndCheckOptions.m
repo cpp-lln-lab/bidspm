@@ -105,6 +105,8 @@ function expectedOptions = defaultOptions()
 
     expectedOptions.anatReference.type = 'T1w';
     expectedOptions.anatReference.session = 1;
+    
+    expectedOptions.skullstrip.threshold = 0.75;
 
     expectedOptions.taskName = '';
 
