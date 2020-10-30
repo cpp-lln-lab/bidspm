@@ -1,6 +1,8 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
+    
+    fprintf(1, 'PREPARING: SMOOTHING JOB \n');
 
     % creates prefix to look for
     prefix = getPrefix('smoothing', opt);

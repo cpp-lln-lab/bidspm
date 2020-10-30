@@ -1,6 +1,8 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt)
+    
+    fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE FUNCTIONALS\n');
 
     jobsToAdd = numel(matlabbatch) + 1;
 

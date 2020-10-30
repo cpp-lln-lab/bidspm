@@ -46,42 +46,30 @@ function bidsSpatialPrepro(opt)
             % identify sessions for this subject
             sessions = getInfo(BIDS, subID, opt, 'Sessions');
 
-            fprintf(1, ' BUILDING SPATIAL JOB : SELECTING ANATOMCAL\n');
             matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
-
             opt.orderBatches.selectAnat = 1;
-
-            % TODO hide this wart in a subfunction ?
+            
             action = [];
-            msg = [];
             if  strcmp(opt.space, 'individual')
                 action = 'realignUnwarp';
-                msg = ' & UNWARP';
             end
-            fprintf(1, ' BUILDING SPATIAL JOB : REALIGN%s\n', msg);
             [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action);
-
             opt.orderBatches.realign = 2;
 
-            fprintf(1, ' BUILDING SPATIAL JOB : COREGISTER\n');
             % dependency from file selector ('Anatomical')
             matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt);
-
             opt.orderBatches.coregister = 3;
 
             matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt);
 
-            fprintf(1, ' BUILDING SPATIAL JOB : SEGMENT ANATOMICAL\n');
+            
             % dependency from file selector ('Anatomical')
             matlabbatch = setBatchSegmentation(matlabbatch, opt);
-
             opt.orderBatches.segment = 5;
 
-            fprintf(1, ' BUILDING SPATIAL JOB : SKULL STRIPPING\n');
             matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt);
 
             if strcmp(opt.space, 'MNI')
-                fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE FUNCTIONALS\n');
                 % dependency from segmentation
                 % dependency from coregistration
                 matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt);

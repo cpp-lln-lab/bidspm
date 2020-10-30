@@ -41,12 +41,8 @@ function bidsFFX(action, opt, funcFWHM)
 
                 case 'specifyAndEstimate'
 
-                    fprintf(1, 'BUILDING JOB : FMRI design\n');
-
                     matlabbatch = setBatchSubjectLevelGLMSpec( ...
                                                               BIDS, opt, subID, funcFWHM);
-
-                    fprintf(1, 'BUILDING JOB : FMRI estimate\n');
 
                     matlabbatch = setFmriEstimateBatch(matlabbatch);
 
@@ -57,8 +53,6 @@ function bidsFFX(action, opt, funcFWHM)
                                     opt, subID);
 
                 case 'contrasts'
-
-                    fprintf(1, 'BUILDING JOB : FMRI contrasts\n');
 
                     matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM);
 
@@ -78,6 +72,9 @@ function bidsFFX(action, opt, funcFWHM)
 end
 
 function matlabbatch = setFmriEstimateBatch(matlabbatch)
+    
+    fprintf(1, 'BUILDING JOB : FMRI estimate\n');
+    
     matlabbatch{2}.spm.stats.fmri_est.spmmat(1) = cfg_dep( ...
                                                           'fMRI model specification SPM file', ...
                                                           substruct( ...

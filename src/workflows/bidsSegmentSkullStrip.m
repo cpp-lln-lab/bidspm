@@ -37,18 +37,13 @@ function bidsSegmentSkullStrip(opt)
 
             printProcessingSubject(groupName, iSub, subID);
 
-            fprintf(1, ' BUILDING SPATIAL JOB : SELECTING ANATOMCAL\n');
             matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
-
             opt.orderBatches.selectAnat = 1;
 
-            fprintf(1, ' BUILDING SPATIAL JOB : SEGMENT ANATOMICAL\n');
             % dependency from file selector ('Anatomical')
             matlabbatch = setBatchSegmentation(matlabbatch, opt);
-
             opt.orderBatches.segment = 2;
 
-            fprintf(1, ' BUILDING SPATIAL JOB : SKULL STRIPPING\n');
             matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt);
 
             saveMatlabBatch(matlabbatch, 'segment_skullstrip', opt, subID);

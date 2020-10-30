@@ -1,6 +1,8 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function matlabbatch = setBatchSegmentation(matlabbatch, opt)
+    
+    fprintf(1, ' BUILDING SPATIAL JOB : SEGMENT ANATOMICAL\n');
 
     % define SPM folder
     spmLocation = spm('dir');

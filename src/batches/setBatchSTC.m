@@ -25,6 +25,8 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
         warning('No slice order dectected: skipping slice timing correction.');
         return
     end
+    
+    fprintf(1, ' BUILDING STC JOB : STC\n');
 
     % get metadata for STC
     % Note that slice ordering is assumed to be from foot to head. If it is not, enter

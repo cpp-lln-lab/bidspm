@@ -45,8 +45,6 @@ function bidsRFX(action, funcFWHM, conFWHM, opt)
 
         case 'smoothContrasts'
 
-            fprintf(1, 'SMOOTHING CON IMAGES...');
-
             matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt);
 
             saveMatlabBatch( ...
@@ -93,8 +91,6 @@ function bidsRFX(action, funcFWHM, conFWHM, opt)
             % ------
 
             rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
-
-            fprintf(1, 'BUILDING JOB: Factorial Design Specification');
 
             matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir);
 

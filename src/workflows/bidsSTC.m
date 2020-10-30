@@ -48,8 +48,6 @@ function bidsSTC(opt)
 
             printProcessingSubject(groupName, iSub, subID);
 
-            fprintf(1, ' BUILDING STC JOB : STC\n');
-
             matlabbatch = setBatchSTC(BIDS, opt, subID);
 
             if ~isempty(matlabbatch)

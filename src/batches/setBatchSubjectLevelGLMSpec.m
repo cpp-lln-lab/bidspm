@@ -3,6 +3,8 @@
 function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
     [BIDS, opt, subID, funcFWHM] =  deal(varargin{:});
+    
+    fprintf(1, 'BUILDING JOB : FMRI design\n');
 
     % Check the slice timing information is not in the metadata and not added
     % manually in the opt variable.
