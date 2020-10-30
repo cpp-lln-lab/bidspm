@@ -22,9 +22,14 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   % :returns: - :matlabbatch: (structure) (dimension)
   %           - :voxDim: (array) (dimension)
 
-  [matlabbatch, BIDS, subID, opt, action] = deal(varargin{:});
+  if numel(varargin) < 5
+    [matlabbatch, BIDS, subID, opt] = deal(varargin{:});
+    action = '';
+  else
+    [matlabbatch, BIDS, subID, opt, action] = deal(varargin{:});
+  end
 
-  if nargin < 5 || isempty(action)
+  if isempty(action)
     action = 'realign';
   end
 
