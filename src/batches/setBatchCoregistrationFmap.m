@@ -6,8 +6,7 @@ function matlabbatch = setBatchCoregistrationFmap(opt, BIDS, subID)
   % assumes all the fieldmap relate to the current task
   % - use the "for" metadata field
   % - implement for 'phase12', 'fieldmap', 'epi'
-  
-  
+
   fprintf(1, ' FIELDMAP WORKFLOW: COREGISTERING FIELD MAPS TO FIRST FUNC IMAGE\n');
 
   % Create rough mean of the 1rst run to improve SNR for coregistration
@@ -45,7 +44,7 @@ function matlabbatch = setBatchCoregistrationFmap(opt, BIDS, subID)
       otherImages{1} = strrep(fmapFiles{1}, 'phasediff', 'magnitude2');
       otherImages{2} = fmapFiles{1};
 
-      matlabbatch = setBatchCoregistrationGeneral(matlabbatch, refImage, srcImage, otherImages);
+      matlabbatch = setBatchCoregistration(matlabbatch, refImage, srcImage, otherImages);
 
     end
 

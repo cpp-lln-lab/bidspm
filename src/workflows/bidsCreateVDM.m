@@ -32,21 +32,13 @@ function bidsCreateVDM(opt)
 
         printProcessingSubject(groupName, iSub, subID);
 
-        fprintf(1, ' FIELDMAP WORKFLOW: COREGISTERING FIELD MAPS TO FIRST FUNC IMAGE\n');
-
-        matlabbatch = setBatchCoregistrationFmap(opt, BIDS, subID);
-        %
-        %                 saveMatlabBatch(matlabbatch, 'coregister_fmap', opt, subID);
-
-        %                 spm_jobman('run', matlabbatch);
-
-        fprintf(1, ' FIELDMAP WORKFLOW: CREATING VDMs \n');
+        %         matlabbatch = setBatchCoregistrationFmap(opt, BIDS, subID);
+        %         saveMatlabBatch(matlabbatch, 'coregister_fmap', opt, subID);
+        %         spm_jobman('run', matlabbatch);
 
         matlabbatch = setBatchCreateVDMs(opt, BIDS, subID);
-
         saveMatlabBatch(matlabbatch, 'create_vdm', opt, subID);
-
-        %                 spm_jobman('run', matlabbatch);
+        spm_jobman('run', matlabbatch);
 
         % TODO
         % delete temporary mean images ??

@@ -7,7 +7,13 @@ function matlabbatch = setBatchCreateVDMs(opt, BIDS, subID)
   % - use the "for" metadata field
   % - implement for 'phase12', 'fieldmap', 'epi'
 
+  fprintf(1, ' FIELDMAP WORKFLOW: CREATING VDMs \n');
+
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+
+  runs = getInfo(BIDS, subID, opt, 'Runs', sessions{1});
+  [fileName, subFuncDataDir] = getBoldFilename(BIDS, subID, sessions{1}, runs{1}, opt);
+  refImage = validationInputFile(subFuncDataDir, fileName, 'mean_');
 
   matlabbatch = [];
   for iSes = 1:nbSessions
@@ -19,7 +25,7 @@ function matlabbatch = setBatchCreateVDMs(opt, BIDS, subID)
 
     for iRun = 1:numel(runs)
 
-      matlabbatch = setBatchComputeVDM(matlabbatch, 'phasediff');
+      matlabbatch = setBatchComputeVDM(matlabbatch, 'phasediff', refImage);
 
       % TODO
       % - Move to getInfo
@@ -49,6 +55,7 @@ function matlabbatch = setBatchCreateVDMs(opt, BIDS, subID)
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.et = echotimes;
 
       totalReadoutTime = getTotalReadoutTime(opt, BIDS, subID);
+      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.tert = totalReadoutTime;
 
     end
 
