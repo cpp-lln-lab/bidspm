@@ -19,13 +19,13 @@ function opt = loadAndCheckOptions(opt)
     return
   end
 
-    % finds most recent option file
-    if size(opt, 1) > 1
-        containsDate = cellfun(@any, strfind(cellstr(opt), '_date-'));
-        opt = opt(containsDate, :);
-        opt = sortrows(opt);
-        opt = opt(end, :);
-    end
+  % finds most recent option file
+  if size(opt, 1) > 1
+    containsDate = cellfun(@any, strfind(cellstr(opt), '_date-'));
+    opt = opt(containsDate, :);
+    opt = sortrows(opt);
+    opt = opt(end, :);
+  end
 
   if ischar(opt) && exist(opt, 'file')
     fprintf(1, '\nReading option from: %s.\n', opt);

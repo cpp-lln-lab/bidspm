@@ -1,59 +1,59 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
 
 function bidsCreateVDM(opt)
-    % bidsCreateVDM(opt)
-    %
-    % inspired from spmup spmup_BIDS_preprocess (@ commit
-    % 198c980d6d7520b1a996f0e56269e2ceab72cc83)
+  % bidsCreateVDM(opt)
+  %
+  % inspired from spmup spmup_BIDS_preprocess (@ commit
+  % 198c980d6d7520b1a996f0e56269e2ceab72cc83)
 
-    if nargin < 1
-        opt = [];
-    end
-    opt = loadAndCheckOptions(opt);
+  if nargin < 1
+    opt = [];
+  end
+  opt = loadAndCheckOptions(opt);
 
-    % load the subjects/Groups information and the task name
-    [group, opt, BIDS] = getData(opt);
+  % load the subjects/Groups information and the task name
+  [group, opt, BIDS] = getData(opt);
 
-    fprintf(1, ' FIELDMAP WORKFLOW\n');
+  fprintf(1, ' FIELDMAP WORKFLOW\n');
 
-    %% Loop through the groups, subjects, and sessions
-    for iGroup = 1:length(group)
+  %% Loop through the groups, subjects, and sessions
+  for iGroup = 1:length(group)
 
-        groupName = group(iGroup).name;
+    groupName = group(iGroup).name;
 
-        for iSub = 1:group(iGroup).numSub
+    for iSub = 1:group(iGroup).numSub
 
-            subID = group(iGroup).subNumber{iSub};
+      subID = group(iGroup).subNumber{iSub};
 
-            % TODO Move to getInfo
-            types = spm_BIDS(BIDS, 'types', 'sub', subID);
+      % TODO Move to getInfo
+      types = spm_BIDS(BIDS, 'types', 'sub', subID);
 
-            if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
+      if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
 
-                printProcessingSubject(groupName, iSub, subID);
+        printProcessingSubject(groupName, iSub, subID);
 
-                fprintf(1, ' FIELDMAP WORKFLOW: COREGISTERING FIELD MAPS TO FIRST FUNC IMAGE\n');
+        fprintf(1, ' FIELDMAP WORKFLOW: COREGISTERING FIELD MAPS TO FIRST FUNC IMAGE\n');
 
-                matlabbatch = setBatchCoregistrationFmap(opt, BIDS, subID);
-                %
-                %                 saveMatlabBatch(matlabbatch, 'coregister_fmap', opt, subID);
+        matlabbatch = setBatchCoregistrationFmap(opt, BIDS, subID);
+        %
+        %                 saveMatlabBatch(matlabbatch, 'coregister_fmap', opt, subID);
 
-                %                 spm_jobman('run', matlabbatch);
+        %                 spm_jobman('run', matlabbatch);
 
-                fprintf(1, ' FIELDMAP WORKFLOW: CREATING VDMs \n');
+        fprintf(1, ' FIELDMAP WORKFLOW: CREATING VDMs \n');
 
-                matlabbatch = setBatchCreateVDMs(opt, BIDS, subID);
+        matlabbatch = setBatchCreateVDMs(opt, BIDS, subID);
 
-                saveMatlabBatch(matlabbatch, 'create_vdm', opt, subID);
+        saveMatlabBatch(matlabbatch, 'create_vdm', opt, subID);
 
-                %                 spm_jobman('run', matlabbatch);
+        %                 spm_jobman('run', matlabbatch);
 
-                % TODO
-                % delete temporary mean images ??
+        % TODO
+        % delete temporary mean images ??
 
-            end
-
-        end
+      end
 
     end
+
+  end
 end
