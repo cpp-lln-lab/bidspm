@@ -1,7 +1,7 @@
 Function description
 ====================
   
-List of functions    
+List of functions in the ``src`` folder.  
 
 ----
 
