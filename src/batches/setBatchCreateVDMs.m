@@ -77,8 +77,8 @@ function totalReadoutTime = getTotalReadoutTime(opt, BIDS, subID)
     totalReadoutTime = metadata.RepetitionTime;
 
   elseif isfield(metadata, 'EffectiveEchoSpacing')
-    totalReadoutTime = (metadata.NumberOfEchos - 1) ...
-        * metadata.EffectiveEchoSpacing;
+    totalReadoutTime = (metadata.NumberOfEchos - 1) * ...
+        metadata.EffectiveEchoSpacing;
   end
 
 end
