@@ -1,7 +1,7 @@
 % (C) Copyright 2004-2009 JH
 % (C) Copyright 2009_2012 DSS
 % (C) Copyright 2012_2019 Remi Gau
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
 
 function mancoregCallbacks(operation, varargin)
   % mancoreg_callbacks(op, varargin)
