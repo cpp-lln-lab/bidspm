@@ -95,8 +95,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
                                modalities{iModality});
           targetFolder = fullfile(derivativesDir, ...
                                   subDir, ...
-                                  sessionDir, ...
-                                  modalities{iModality});
+                                  sessionDir);
 
           copyModalityDir(srcFolder, targetFolder);
 
