@@ -43,7 +43,7 @@ checkDependencies();
 
 % bidsCopyRawFolder(opt, 1);
 
-bidsSegmentSkullStrip(opt)
+bidsSegmentSkullStrip(opt);
 
 return
 

@@ -2,13 +2,13 @@
 
 function [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt)
 
-    model = spm_jsonread(opt.model.file);
+  model = spm_jsonread(opt.model.file);
 
-    for iStep = 1:length(model.Steps)
-        if strcmp(model.Steps{iStep}.Level, 'dataset')
-            grpLvlCon = model.Steps{iStep}.AutoContrasts;
-            break
-        end
+  for iStep = 1:length(model.Steps)
+    if strcmp(model.Steps{iStep}.Level, 'dataset')
+      grpLvlCon = model.Steps{iStep}.AutoContrasts;
+      break
     end
+  end
 
 end

@@ -2,9 +2,9 @@
 
 function reportBIDS(opt)
 
-    bids.report(opt.dataDir);
+  bids.report(opt.dataDir);
 
-    % TODO save output in the derivatires folder
-    %     derivativeDir = fullfile(rawDir, '..', 'derivatives', 'SPM12_CPPL');
+  % TODO save output in the derivatires folder
+  %     derivativeDir = fullfile(rawDir, '..', 'derivatives', 'SPM12_CPPL');
 
 end
