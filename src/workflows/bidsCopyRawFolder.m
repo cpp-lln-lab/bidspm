@@ -42,8 +42,8 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
   %% All tasks in this experiment
   % raw directory and derivatives directory
-  rawDir = opt.dataDir;
   opt = setDerivativesDir(opt);
+  rawDir = opt.dataDir;
   derivativesDir = opt.derivativesDir;
 
   createDerivativeDir(derivativesDir);
@@ -72,12 +72,12 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
       for iSes = 1:nbSessions
 
-        sessionFolder = [];
+        sessionDir = [];
         if ~isempty(sessions{iSes})
-          sessionFolder = ['ses-' sessions{iSes}];
+          sessionDir = ['ses-' sessions{iSes}];
         end
 
-        mkdir(fullfile(derivativesDir, subDir, sessionFolder));
+        mkdir(fullfile(derivativesDir, subDir, sessionDir));
 
         modalities = bids.query(BIDS, 'modalities', ...
                                 'sub', subID, ...
@@ -87,37 +87,18 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
         for iModality = 1:numel(modalities)
 
-          mkdir(fullfile(derivativesDir, subDir, sessionFolder, modalities{iModality}));
+          mkdir(fullfile(derivativesDir, subDir, sessionDir, modalities{iModality}));
 
           srcFolder = fullfile(rawDir, ...
                                subDir, ...
-                               sessionFolder, ...
+                               sessionDir, ...
                                modalities{iModality});
           targetFolder = fullfile(derivativesDir, ...
                                   subDir, ...
-                                  sessionFolder, ...
+                                  sessionDir, ...
                                   modalities{iModality});
 
-          try
-            status = system( ...
-                            sprintf('cp -R -L -f %s %s', ...
-                                    srcFolder, ...
-                                    targetFolder));
-
-            if status > 0
-              message = [ ...
-                         'Copying data with system command failed: ' ...
-                         'Are you running Windows?\n', ...
-                         'Will use matlab/octave copyfile command instead.\n', ...
-                         'Maybe your data set contains symbolic links' ...
-                         '(e.g. if you use datalad or git-annex.'];
-              error(message);
-            end
-
-          catch
-            fprintf(1, 'Using octave/matlab to copy files.');
-            copyfile(srcFolder, targetFolder);
-          end
+          copyModalityDir(srcFolder, targetFolder);
 
         end
 
@@ -154,6 +135,31 @@ function copyTsvJson(rawDir, derivativesDir)
     copyfile(fullfile(rawDir, '*.tsv'), derivativesDir);
     fprintf(' tsv files copied to derivatives directory \n');
   catch
+  end
+
+end
+
+function copyModalityDir(srcFolder, targetFolder)
+
+  try
+    status = system( ...
+                    sprintf('cp -R -L -f %s %s', ...
+                            srcFolder, ...
+                            targetFolder));
+
+    if status > 0
+      message = [ ...
+                 'Copying data with system command failed: ' ...
+                 'Are you running Windows?\n', ...
+                 'Will use matlab/octave copyfile command instead.\n', ...
+                 'Maybe your data set contains symbolic links' ...
+                 '(e.g. if you use datalad or git-annex.'];
+      error(message);
+    end
+
+  catch
+    fprintf(1, 'Using octave/matlab to copy files.');
+    copyfile(srcFolder, targetFolder);
   end
 
 end

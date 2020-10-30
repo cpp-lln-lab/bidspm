@@ -7,7 +7,7 @@ function test_suite = test_bidsCopyRawFolder %#ok<*STOUT>
 end
 
 function test_bidsCopyRawFolderBasic()
-  
+
   % TODO add test to only copy some modalities
 
   % directory with this script becomes the current directory
