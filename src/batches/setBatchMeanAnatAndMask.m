@@ -68,8 +68,6 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
   matlabbatch{1}.spm.util.imcalc.output = 'meanAnat.nii';
   matlabbatch{1}.spm.util.imcalc.outdir{:} = rfxDir;
   matlabbatch{1}.spm.util.imcalc.expression = meanStruct_equation;
-  %     matlabbatch{1}.spm.util.imcalc.options.dmtx = 0;
-  %     matlabbatch{1}.spm.util.imcalc.options.mask = 0;
   %     matlabbatch{1}.spm.util.imcalc.options.interp = 1;
   %     matlabbatch{1}.spm.util.imcalc.options.dtype = 4;
 
@@ -77,8 +75,6 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
   matlabbatch{2}.spm.util.imcalc.output = 'meanMask.nii';
   matlabbatch{2}.spm.util.imcalc.outdir{:} = rfxDir;
   matlabbatch{2}.spm.util.imcalc.expression = meanMask_equation;
-  %     matlabbatch{2}.spm.util.imcalc.options.dmtx = 0;
-  %     matlabbatch{2}.spm.util.imcalc.options.mask = 0;
   %     matlabbatch{2}.spm.util.imcalc.options.interp = 1;
   %     matlabbatch{2}.spm.util.imcalc.options.dtype = 4;
 
