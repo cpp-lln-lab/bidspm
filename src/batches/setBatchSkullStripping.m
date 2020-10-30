@@ -20,6 +20,11 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
     %
     % :returns: - :matlabbatch: (structure)
     %
+    % This function will get its inputs from the segmentation batch by reading
+    % the dependency from ``opt.orderBatches.segment``. If this field is not specified it will
+    % try to get the results from the segmentation by relying on the ``anat``
+    % image returned by ``getAnatFilename``.
+    %
     % The threshold for inclusion in the mask can be set by::
     %
     %   opt.skullstrip.threshold
@@ -101,15 +106,6 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
     matlabbatch{end}.spm.util.imcalc.expression = sprintf( ...
                                                           'i1.*((i2+i3+i4)>%f)', ...
                                                           opt.skullstrip.threshold);
-
-    matlabbatch{end}.spm.util.imcalc.var = struct( ...
-                                                  'name', {}, ...
-                                                  'value', {});
-
-    matlabbatch{end}.spm.util.imcalc.options.dmtx = 0;
-    matlabbatch{end}.spm.util.imcalc.options.mask = 0;
-    matlabbatch{end}.spm.util.imcalc.options.interp = -4;
-    matlabbatch{end}.spm.util.imcalc.options.dtype = 4;
 
     % add a batch to output the mask
     matlabbatch{end + 1} = matlabbatch{end};
