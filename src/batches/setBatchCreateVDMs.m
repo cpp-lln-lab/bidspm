@@ -4,7 +4,6 @@ function matlabbatch = setBatchCreateVDMs(opt, BIDS, subID)
 
   % TODO
   % assumes all the fieldmap relate to the current task
-  % - use the "for" metadata field
   % - implement for 'phase12', 'fieldmap', 'epi'
 
   fprintf(1, ' FIELDMAP WORKFLOW: CREATING VDMs \n');
@@ -28,7 +27,7 @@ function matlabbatch = setBatchCreateVDMs(opt, BIDS, subID)
       matlabbatch = setBatchComputeVDM(matlabbatch, 'phasediff', refImage);
 
       % TODO
-      % - Move to getInfo
+      % Move to getInfo ?
       fmapFiles = spm_BIDS(BIDS, 'data', ...
                            'modality', 'fmap', ...
                            'sub', subID, ...
@@ -37,25 +36,23 @@ function matlabbatch = setBatchCreateVDMs(opt, BIDS, subID)
 
       phaseImage = fmapFiles{1};
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.phase = ...
-          {phaseImage};
+        {phaseImage};
 
       magnitudeImage = strrep(phaseImage, 'phasediff', 'magnitude1');
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.magnitude = ...
-          {magnitudeImage};
+        {magnitudeImage};
 
-      metadata = spm_BIDS(BIDS, 'metadata', ...
-                          'modality', 'fmap', ...
-                          'sub', subID, ...
-                          'ses', sessions{iSes}, ...
-                          'run', runs{iRun});
+      [echotimes, totReadTime, blipDir, isEPI] = getFmapMetadata(BIDS, ...
+                                                                 subID, ...
+                                                                 sessions{iSes}, ...
+                                                                 runs{iRun});
 
-      echotimes =  1000 * [ ...
-                           metadata.EchoTime1, ...
-                           metadata.EchoTime2]; % in milliseconds
+      %                                                                totReadTime = 2;
+
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.et = echotimes;
-
-      totalReadoutTime = getTotalReadoutTime(opt, BIDS, subID);
-      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.tert = totalReadoutTime;
+      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.tert = totReadTime;
+      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.blipdir = blipDir;
+      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.epifm = isEPI;
 
     end
 
@@ -63,12 +60,13 @@ function matlabbatch = setBatchCreateVDMs(opt, BIDS, subID)
 
 end
 
-function totalReadoutTime = getTotalReadoutTime(opt, BIDS, subID)
+function varargout = getFmapMetadata(BIDS, subID, sessionID, runID)
 
   metadata = spm_BIDS(BIDS, 'metadata', ...
-                      'type', 'bold', ...
+                      'modality', 'fmap', ...
                       'sub', subID, ...
-                      'task', opt.taskName);
+                      'ses', sessionID, ...
+                      'run', runID);
 
   % func run metadata: if the fmap is applied to several
   % runs we take the metadata of the first run it must
@@ -77,15 +75,37 @@ function totalReadoutTime = getTotalReadoutTime(opt, BIDS, subID)
     metadata = metadata{1};
   end
 
-  if isfield(metadata, 'TotalReadoutTime')
-    totalReadoutTime = metadata.TotalReadoutTime;
+  echotimes = getEchoTimes(metadata);
 
-  elseif isfield(metadata, 'RepetitionTime')
-    totalReadoutTime = metadata.RepetitionTime;
+  totalReadoutTime = getTotalReadoutTime(metadata);
 
-  elseif isfield(metadata, 'EffectiveEchoSpacing')
-    totalReadoutTime = (metadata.NumberOfEchos - 1) * ...
-        metadata.EffectiveEchoSpacing;
+  blipDir = getBlipDirection(metadata);
+
+  isEPI = getFmapPulseSequenceType(metadata);
+
+  varargout{1} = echotimes;
+  varargout{2} = totalReadoutTime;
+  varargout{3} = blipDir;
+  varargout{4} = isEPI;
+
+end
+
+function echotimes = getEchoTimes(metadata)
+
+  echotimes =  1000 * [ ...
+                       metadata.EchoTime1, ...
+                       metadata.EchoTime2]; % in milliseconds
+
+end
+
+function isEPI = getFmapPulseSequenceType(metadata)
+
+  isEPI = 0;
+
+  if isfield(metadata, 'PulseSequenceType') && ...
+     sum(strfind(metadata.PulseSequenceType, 'EPI')) ~= 0
+
+    isEPI = 1;
   end
 
 end

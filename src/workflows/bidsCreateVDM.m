@@ -32,7 +32,7 @@ function bidsCreateVDM(opt)
 
         printProcessingSubject(groupName, iSub, subID);
 
-        %         matlabbatch = setBatchCoregistrationFmap(opt, BIDS, subID);
+        matlabbatch = setBatchCoregistrationFmap(opt, BIDS, subID);
         %         saveMatlabBatch(matlabbatch, 'coregister_fmap', opt, subID);
         %         spm_jobman('run', matlabbatch);
 

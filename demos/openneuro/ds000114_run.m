@@ -4,7 +4,6 @@
 
 clear;
 clc;
-close all;
 
 % Smoothing to apply
 FWHM = 6;
