@@ -57,7 +57,7 @@ function bidsSpatialPrepro(opt)
       opt.orderBatches.realign = 2;
 
       % dependency from file selector ('Anatomical')
-      matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt);
+      matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt);
       opt.orderBatches.coregister = 3;
 
       matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt);
