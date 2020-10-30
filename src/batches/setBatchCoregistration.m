@@ -60,7 +60,7 @@ function matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt)
                             '.', otherImageToUse));
 
       runCounter = runCounter + 1;
-      
+
     end
 
   end
