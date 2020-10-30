@@ -1,174 +1,170 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
 
 function bidsRFX(action, funcFWHM, conFWHM, opt)
-    %
-    % This script smooth all con images created at the fisrt level in each
-    % subject, create a mean structural image and mean mask over the
-    % population, process the factorial design specification  and estimation
-    % and estimate Contrats. ::
-    %
-    %  bidsRFX(action, funcFWHM, conFWHM, opt)
-    %
-    % :param action: (string) ``smoothContrasts`` or ``RFX``
-    % :param funcFWHM: (scalar) 
-    % :param conFWHM: (scalar) 
-    % :param opt: (structure) (see checkOptions())
-    %
-    %   - case 'smoothContrasts': smooth con images
-    %   - case 'RFX': Mean Struct, MeanMask, Factorial design specification and
-    %      estimation, Contrast estimation
-    %
-    %    funcFWHM: How much smoothing was applied to the functional
-    %    data in the preprocessing
-    %
-    %    conFWHM: How much smoothing is required for the CON images for
-    %    the second level analysis
+  %
+  % This script smooth all con images created at the fisrt level in each
+  % subject, create a mean structural image and mean mask over the
+  % population, process the factorial design specification  and estimation
+  % and estimate Contrats. ::
+  %
+  %  bidsRFX(action, funcFWHM, conFWHM, opt)
+  %
+  % :param action: (string) ``smoothContrasts`` or ``RFX``
+  % :param funcFWHM: (scalar)
+  % :param conFWHM: (scalar)
+  % :param opt: (structure) (see checkOptions())
+  %
+  %   - case 'smoothContrasts': smooth con images
+  %   - case 'RFX': Mean Struct, MeanMask, Factorial design specification and
+  %      estimation, Contrast estimation
+  %
+  %    funcFWHM: How much smoothing was applied to the functional
+  %    data in the preprocessing
+  %
+  %    conFWHM: How much smoothing is required for the CON images for
+  %    the second level analysis
 
-    if nargin < 2 || isempty(funcFWHM)
-        funcFWHM = 0;
-    end
+  if nargin < 2 || isempty(funcFWHM)
+    funcFWHM = 0;
+  end
 
-    if nargin < 3 || isempty(conFWHM)
-        conFWHM = 0;
-    end
+  if nargin < 3 || isempty(conFWHM)
+    conFWHM = 0;
+  end
 
-    % if input has no opt, load the opt.mat file
-    if nargin < 4
-        opt = [];
-    end
-    opt = loadAndCheckOptions(opt);
+  % if input has no opt, load the opt.mat file
+  if nargin < 4
+    opt = [];
+  end
+  opt = loadAndCheckOptions(opt);
 
-    % load the subjects/Groups information and the task name
-    [group, opt, ~] = getData(opt);
+  % load the subjects/Groups information and the task name
+  [group, opt, ~] = getData(opt);
 
-    switch action
+  switch action
 
-        case 'smoothContrasts'
+    case 'smoothContrasts'
 
-            fprintf(1, 'SMOOTHING CON IMAGES...');
+      matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt);
 
-            matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt);
+      saveMatlabBatch( ...
+                      ['smooth_con_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
+                      'STC', ...
+                      opt);
 
-            saveMatlabBatch( ...
-                            ['smooth_con_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
-                            'STC', ...
-                            opt);
+      spm_jobman('run', matlabbatch);
 
-            spm_jobman('run', matlabbatch);
+    case 'RFX'
 
-        case 'RFX'
+      fprintf(1, 'Create Mean Struct and Mask IMAGES...');
 
-            fprintf(1, 'Create Mean Struct and Mask IMAGES...');
+      rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
 
-            rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
+      % ------
+      % TODO
+      % - need to rethink where to save the anat and mask
+      % - need to smooth the anat
+      % - create a masked version of the anat too
+      % ------
 
-            % ------
-            % TODO
-            % - need to rethink where to save the anat and mask
-            % - need to smooth the anat
-            % - create a masked version of the anat too
-            % ------
+      matlabbatch = ...
+          setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir);
 
-            matlabbatch = ...
-                setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir);
+      % ------
+      % TODO
+      % needs to be improved (maybe??) as the structural and mask may vary for
+      % different analysis
+      % ------
 
-            % ------
-            % TODO
-            % needs to be improved (maybe??) as the structural and mask may vary for
-            % different analysis
-            % ------
+      saveMatlabBatch(matlabbatch, 'create_mean_struc_mask', opt);
 
-            saveMatlabBatch(matlabbatch, 'create_mean_struc_mask', opt);
+      spm_jobman('run', matlabbatch);
 
-            spm_jobman('run', matlabbatch);
+      %% Factorial design specification
 
-            %% Factorial design specification
+      % Load the list of contrasts of interest for the RFX
+      grpLvlCon = getGrpLevelContrastToCompute(opt);
 
-            % Load the list of contrasts of interest for the RFX
-            grpLvlCon = getGrpLevelContrastToCompute(opt);
+      % ------
+      % TODO
+      % rfxDir should probably be set in setBatchFactorialDesign
+      % ------
 
-            % ------
-            % TODO
-            % rfxDir should probably be set in setBatchFactorialDesign
-            % ------
+      rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
 
-            rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
+      matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir);
 
-            fprintf(1, 'BUILDING JOB: Factorial Design Specification');
+      % ------
+      % TODO
+      % needs to be improved (maybe??) as the name may vary with FXHM and
+      % contrast
+      % ------
 
-            matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir);
+      saveMatlabBatch(matlabbatch, 'rfx_specification', opt);
 
-            % ------
-            % TODO
-            % needs to be improved (maybe??) as the name may vary with FXHM and
-            % contrast
-            % ------
+      fprintf(1, 'Factorial Design Specification...');
 
-            saveMatlabBatch(matlabbatch, 'rfx_specification', opt);
+      spm_jobman('run', matlabbatch);
 
-            fprintf(1, 'Factorial Design Specification...');
+      %% Factorial design estimation
 
-            spm_jobman('run', matlabbatch);
+      fprintf(1, 'BUILDING JOB: Factorial Design Estimation');
 
-            %% Factorial design estimation
+      matlabbatch = {};
 
-            fprintf(1, 'BUILDING JOB: Factorial Design Estimation');
+      for j = 1:size(grpLvlCon, 1)
+        conName = rmTrialTypeStr(grpLvlCon{j});
+        matlabbatch{j}.spm.stats.fmri_est.spmmat = ...
+            { fullfile(rfxDir, conName, 'SPM.mat') }; %#ok<*AGROW>
+        matlabbatch{j}.spm.stats.fmri_est.method.Classical = 1;
+      end
 
-            matlabbatch = {};
+      % ------
+      % TODO
+      % needs to be improved (maybe??) as the name may vary with FXHM and
+      % contrast
+      % ------
 
-            for j = 1:size(grpLvlCon, 1)
-                conName = rmTrialTypeStr(grpLvlCon{j});
-                matlabbatch{j}.spm.stats.fmri_est.spmmat = ...
-                    { fullfile(rfxDir, conName, 'SPM.mat') }; %#ok<*AGROW>
-                matlabbatch{j}.spm.stats.fmri_est.method.Classical = 1;
-            end
+      saveMatlabBatch(matlabbatch, 'rfx_estimation', opt);
 
-            % ------
-            % TODO
-            % needs to be improved (maybe??) as the name may vary with FXHM and
-            % contrast
-            % ------
+      fprintf(1, 'Factorial Design Estimation...');
 
-            saveMatlabBatch(matlabbatch, 'rfx_estimation', opt);
+      spm_jobman('run', matlabbatch);
 
-            fprintf(1, 'Factorial Design Estimation...');
+      %% Contrast estimation
 
-            spm_jobman('run', matlabbatch);
+      fprintf(1, 'BUILDING JOB: Contrast estimation');
 
-            %% Contrast estimation
+      matlabbatch = {};
 
-            fprintf(1, 'BUILDING JOB: Contrast estimation');
+      % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
+      for j = 1:size(grpLvlCon, 1)
+        conName = rmTrialTypeStr(grpLvlCon{j});
+        matlabbatch{j}.spm.stats.con.spmmat = ...
+            {fullfile(rfxDir, conName, 'SPM.mat')};
+        matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
+        matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = 1;
+        matlabbatch{j}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
 
-            matlabbatch = {};
+        matlabbatch{j}.spm.stats.con.delete = 0;
+      end
 
-            % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
-            for j = 1:size(grpLvlCon, 1)
-                conName = rmTrialTypeStr(grpLvlCon{j});
-                matlabbatch{j}.spm.stats.con.spmmat = ...
-                    {fullfile(rfxDir, conName, 'SPM.mat')};
-                matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
-                matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = 1;
-                matlabbatch{j}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
+      % ------
+      % TODO
+      % needs to be improved (maybe??) as the name may vary with FXHM and
+      % contrast
+      % ------
 
-                matlabbatch{j}.spm.stats.con.delete = 0;
-            end
+      saveMatlabBatch(matlabbatch, 'rfx_contrasts', opt);
 
-            % ------
-            % TODO
-            % needs to be improved (maybe??) as the name may vary with FXHM and
-            % contrast
-            % ------
+      fprintf(1, 'Contrast Estimation...');
 
-            saveMatlabBatch(matlabbatch, 'rfx_contrasts', opt);
+      spm_jobman('run', matlabbatch);
 
-            fprintf(1, 'Contrast Estimation...');
-
-            spm_jobman('run', matlabbatch);
-
-    end
+  end
 
 end
 
 function conName = rmTrialTypeStr(conName)
-    conName = strrep(conName, 'trial_type.', '');
+  conName = strrep(conName, 'trial_type.', '');
 end

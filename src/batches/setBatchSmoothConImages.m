@@ -2,37 +2,39 @@
 
 function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
 
-    counter = 0;
+  fprintf(1, 'SMOOTHING CON IMAGES...');
 
-    matlabbatch = {};
+  counter = 0;
 
-    %% Loop through the groups, subjects, and sessions
-    for iGroup = 1:length(group)
+  matlabbatch = {};
 
-        groupName = group(iGroup).name;
+  %% Loop through the groups, subjects, and sessions
+  for iGroup = 1:length(group)
 
-        for iSub = 1:group(iGroup).numSub
+    groupName = group(iGroup).name;
 
-            counter = counter + 1;
+    for iSub = 1:group(iGroup).numSub
 
-            subNumber = group(iGroup).subNumber{iSub};
+      counter = counter + 1;
 
-            printProcessingSubject(groupName, iSub, subNumber);
+      subNumber = group(iGroup).subNumber{iSub};
 
-            ffxDir = getFFXdir(subNumber, funcFWHM, opt);
+      printProcessingSubject(groupName, iSub, subNumber);
 
-            conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
-            matlabbatch{counter}.spm.spatial.smooth.data = cellstr(conImg); %#ok<*AGROW>
+      ffxDir = getFFXdir(subNumber, funcFWHM, opt);
 
-            % Define how much smoothing is required
-            matlabbatch{counter}.spm.spatial.smooth.fwhm = ...
-                [conFWHM conFWHM conFWHM];
-            matlabbatch{counter}.spm.spatial.smooth.dtype = 0;
-            matlabbatch{counter}.spm.spatial.smooth.prefix = [ ...
-                                                              spm_get_defaults('smooth.prefix'), ...
-                                                              num2str(conFWHM)];
+      conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
+      matlabbatch{counter}.spm.spatial.smooth.data = cellstr(conImg); %#ok<*AGROW>
 
-        end
+      % Define how much smoothing is required
+      matlabbatch{counter}.spm.spatial.smooth.fwhm = ...
+          [conFWHM conFWHM conFWHM];
+      matlabbatch{counter}.spm.spatial.smooth.dtype = 0;
+      matlabbatch{counter}.spm.spatial.smooth.prefix = [ ...
+                                                        spm_get_defaults('smooth.prefix'), ...
+                                                        num2str(conFWHM)];
+
     end
+  end
 
 end

@@ -1,40 +1,40 @@
 function test_suite = test_getGrpLevelContrastToCompute %#ok<*STOUT>
-    try % assignment of 'localfunctions' is necessary in Matlab >= 2016
-        test_functions = localfunctions(); %#ok<*NASGU>
-    catch % no problem; early Matlab versions can use initTestSuite fine
-    end
-    initTestSuite;
+  try % assignment of 'localfunctions' is necessary in Matlab >= 2016
+    test_functions = localfunctions(); %#ok<*NASGU>
+  catch % no problem; early Matlab versions can use initTestSuite fine
+  end
+  initTestSuite;
 end
 
 function test_getGrpLevelContrastToComputeBasic()
 
-    opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
-                              'dummyData', 'models', 'model-visMotionLoc_smdl.json');
+  opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
+                            'dummyData', 'models', 'model-visMotionLoc_smdl.json');
 
-    [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt);
+  [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt);
 
-    AutoContrasts = {
-                     'trial_type.VisMot'; ...
-                     'trial_type.VisStat'; ...
-                     'VisMot_gt_VisStat'; ...
-                     'VisStat_gt_VisMot'};
+  AutoContrasts = {
+                   'trial_type.VisMot'; ...
+                   'trial_type.VisStat'; ...
+                   'VisMot_gt_VisStat'; ...
+                   'VisStat_gt_VisMot'};
 
-    assertEqual(iStep, 2);
-    assertEqual(grpLvlCon, AutoContrasts);
+  assertEqual(iStep, 2);
+  assertEqual(grpLvlCon, AutoContrasts);
 
-    %%
-    opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
-                              'dummyData', 'models', 'model-vislocalizer_smdl.json');
+  %%
+  opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
+                            'dummyData', 'models', 'model-vislocalizer_smdl.json');
 
-    [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt);
+  [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt);
 
-    AutoContrasts = {
-                     'trial_type.VisMot'; ...
-                     'trial_type.VisStat'; ...
-                     'VisMot_gt_VisStat'; ...
-                     'VisStat_gt_VisMot'};
+  AutoContrasts = {
+                   'trial_type.VisMot'; ...
+                   'trial_type.VisStat'; ...
+                   'VisMot_gt_VisStat'; ...
+                   'VisStat_gt_VisMot'};
 
-    assertEqual(iStep, 3);
-    assertEqual(grpLvlCon, AutoContrasts);
+  assertEqual(iStep, 3);
+  assertEqual(grpLvlCon, AutoContrasts);
 
 end

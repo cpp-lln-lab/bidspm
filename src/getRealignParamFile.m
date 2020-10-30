@@ -2,13 +2,13 @@
 
 function realignParamFile = getRealignParamFile(fullpathBoldFileName, prefix)
 
-    [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName);
+  [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName);
 
-    if nargin > 1
-        boldFileName = strrep(boldFileName, [prefix 'sub-'], 'sub-');
-    end
+  if nargin > 1
+    boldFileName = strrep(boldFileName, [prefix 'sub-'], 'sub-');
+  end
 
-    realignParamFile = ['rp_.*' boldFileName, '.txt'];
-    realignParamFile = validationInputFile(funcDataDir, realignParamFile);
+  realignParamFile = ['rp_.*' boldFileName, '.txt'];
+  realignParamFile = validationInputFile(funcDataDir, realignParamFile);
 
 end

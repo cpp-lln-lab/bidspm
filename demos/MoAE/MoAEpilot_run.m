@@ -39,9 +39,13 @@ unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 checkDependencies();
 
 %% Run batches
-reportBIDS(opt);
+% reportBIDS(opt);
 
-bidsCopyRawFolder(opt, 1);
+% bidsCopyRawFolder(opt, 1);
+
+bidsSegmentSkullStrip(opt);
+
+return
 
 bidsSTC(opt);
 

@@ -19,7 +19,7 @@ success = moxunit_runtests( ...
                            '-cover_html_dir', fullfile(pwd, 'coverage_html'));
 
 if success
-    system('echo 0 > test_report.log');
+  system('echo 0 > test_report.log');
 else
-    system('echo 1 > test_report.log');
+  system('echo 1 > test_report.log');
 end

@@ -2,22 +2,24 @@
 
 function matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM)
 
-    ffxDir = getFFXdir(subID, funcFWHM, opt);
+  fprintf(1, 'BUILDING JOB : FMRI contrasts\n');
 
-    % Create Contrasts
-    contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
+  ffxDir = getFFXdir(subID, funcFWHM, opt);
 
-    matlabbatch = [];
+  % Create Contrasts
+  contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
-    for icon = 1:size(contrasts, 2)
-        matlabbatch{1}.spm.stats.con.consess{icon}.tcon.name = ...
-            contrasts(icon).name;
-        matlabbatch{1}.spm.stats.con.consess{icon}.tcon.convec = ...
-            contrasts(icon).C;
-        matlabbatch{1}.spm.stats.con.consess{icon}.tcon.sessrep = 'none';
-    end
+  matlabbatch = [];
 
-    matlabbatch{1}.spm.stats.con.spmmat = cellstr(fullfile(ffxDir, 'SPM.mat'));
-    matlabbatch{1}.spm.stats.con.delete = 1;
+  for icon = 1:size(contrasts, 2)
+    matlabbatch{1}.spm.stats.con.consess{icon}.tcon.name = ...
+        contrasts(icon).name;
+    matlabbatch{1}.spm.stats.con.consess{icon}.tcon.convec = ...
+        contrasts(icon).C;
+    matlabbatch{1}.spm.stats.con.consess{icon}.tcon.sessrep = 'none';
+  end
+
+  matlabbatch{1}.spm.stats.con.spmmat = cellstr(fullfile(ffxDir, 'SPM.mat'));
+  matlabbatch{1}.spm.stats.con.delete = 1;
 
 end
