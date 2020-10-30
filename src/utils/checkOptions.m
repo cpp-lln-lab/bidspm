@@ -68,6 +68,10 @@ function fieldsToSet = setDefaultOption()
     fieldsToSet.anatReference.type = 'T1w';
     fieldsToSet.anatReference.session = 1;
 
+    % any voxel with p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold
+    % will be included in the skull stripping mask
+    fieldsToSet.skullstrip.threshold = 0.75;
+
     % space where we conduct the analysis
     fieldsToSet.space = 'MNI';
 

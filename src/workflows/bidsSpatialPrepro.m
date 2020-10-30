@@ -77,6 +77,9 @@ function bidsSpatialPrepro(opt)
 
             opt.orderBatches.segment = 5;
 
+            fprintf(1, ' BUILDING SPATIAL JOB : SKULL STRIPPING\n');
+            matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt);
+
             if strcmp(opt.space, 'MNI')
                 fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE FUNCTIONALS\n');
                 % dependency from segmentation
