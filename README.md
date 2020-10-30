@@ -1,3 +1,5 @@
+<!-- lint disable -->
+
 **Code quality and style**
 
 [![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/actions)
@@ -20,6 +22,8 @@
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+<!-- lint enable -->
+
 # CPPL SPM12 Pipeline
 
 This is a set of functions to fMRI analysis on a
@@ -29,9 +33,9 @@ This can perform:
 
 -   slice timing correction,
 -   spatial preprocessing:
-    -   realignment, coregistration `func` to `anat`, `anat` segmention,
+    -   realignment, coregistration `func` to `anat`, `anat` segmentation,
         normalization to MNI space
-    -   realignm and unwarp, coregistration `func` to `anat`, `anat` segmention
+    -   realignm and unwarp, coregistration `func` to `anat`, `anat` segmentation
 -   smoothing,
 -   Quality analysis:
     -   for anatomical data
@@ -61,13 +65,14 @@ For instructions see the following links:
 | [spmup](https://github.com/CPernet/spmup)                                                 | NA           |
 
 
-## Contributors ✨
+## Contributors
 
 Thanks goes to these wonderful people
 ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
+
 <table>
   <tr>
     <td align="center"><a href="https://cpplab.be"><img src="https://avatars0.githubusercontent.com/u/55407947?v=4" width="100px;" alt="OliColli"/><br /><sub><b>OliColli</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/commits?author=OliColli" title="Code">💻</a> <a href="#design-OliColli" title="Design">🎨</a> <a href="https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/commits?author=OliColli" title="Documentation">📖</a></td>
