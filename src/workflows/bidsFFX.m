@@ -10,13 +10,13 @@ function bidsFFX(action, opt, funcFWHM)
     % :param opt: (scalar) options (see checkOptions())
     % :param funcFWHM: (scalar) Gaussian kernel size applied to the functional data.
     %
-    % ``specifyAndEstimate`` for fMRI design + estimate and 
+    % ``specifyAndEstimate`` for fMRI design + estimate and
     % ``contrasts`` to estimate contrasts.
     %
-    % For unsmoothed data  ``funcFWHM = 0``, for smoothed data ``funcFWHM = ... mm``. 
+    % For unsmoothed data  ``funcFWHM = 0``, for smoothed data ``funcFWHM = ... mm``.
     % In this way we can make multiple ffx for different smoothing degrees
     %
-    
+
     % if input has no opt, load the opt.mat file
     if nargin < 3
         opt = [];

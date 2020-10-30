@@ -10,8 +10,8 @@ function bidsRFX(action, funcFWHM, conFWHM, opt)
     %  bidsRFX(action, funcFWHM, conFWHM, opt)
     %
     % :param action: (string) ``smoothContrasts`` or ``RFX``
-    % :param funcFWHM: (scalar) 
-    % :param conFWHM: (scalar) 
+    % :param funcFWHM: (scalar)
+    % :param conFWHM: (scalar)
     % :param opt: (structure) (see checkOptions())
     %
     %   - case 'smoothContrasts': smooth con images
