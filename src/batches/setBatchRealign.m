@@ -1,11 +1,28 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
 
-function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action)
-  % [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action)
+function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %
-  % to set the batch in a spatial preprocessing pipeline
+  % Set the batch for realign / realign and reslice / realign and unwarp
   %
-  % Assumption about the order of the sessions:
+  % USAGE::
+  %
+  %   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, [action = 'realign'])
+  %
+  % :param matlabbatch: SPM batch
+  % :type matlabbatch: structure
+  % :param BIDS: BIDS layout returned by ``getData``
+  % :type BIDS: structure
+  % :param subID: subject label
+  % :type subID: string
+  % :param opt: options
+  % :type opt: structure
+  % :param action: ``realign``, ``realignReslice``, ``realignUnwarp``
+  % :type action: string
+  %
+  % :returns: - :matlabbatch: (structure) (dimension)
+  %           - :voxDim: (array) (dimension)
+
+  [matlabbatch, BIDS, subID, opt, action] = deal(varargin{:});
 
   if nargin < 5 || isempty(action)
     action = 'realign';
