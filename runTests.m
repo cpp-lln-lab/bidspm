@@ -2,10 +2,6 @@
 
 warning('OFF');
 
-addpath(fullfile(pwd, 'spm12'));
-addpath(genpath(fullfile(pwd, 'src')));
-addpath(genpath(fullfile(pwd, 'lib')));
-
 spm('defaults', 'fMRI');
 
 folderToCover = fullfile(pwd, 'src');

@@ -7,6 +7,10 @@ Defaults of the pipeline.
 
 .. automodule:: src.defaults 
 
+checkOptions
+============
+
+.. autofunction:: checkOptions
 
 spm_my_defaults
 ===============
@@ -27,4 +31,5 @@ pipeline.
 > https://doi.org/10.1038/s41467-019-09230-w
 
 .. autofunction:: spm_my_defaults
+
 

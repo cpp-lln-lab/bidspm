@@ -7,8 +7,8 @@ Welcome to CPP SPM BIDS pipeline documentation!
 ***********************************************
 
 .. toctree::
-   :maxdepth: 3
-   :caption: Contentset_up
+   :maxdepth: 2
+   :caption: Content
 
    set_up
    workflows
@@ -18,7 +18,6 @@ Welcome to CPP SPM BIDS pipeline documentation!
    function_description
    method_section_boilerplate
    mancoreg
-   utils
    docker
    contributing
 

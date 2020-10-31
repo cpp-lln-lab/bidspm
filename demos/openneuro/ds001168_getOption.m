@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
 
-function opt = ds000001_getOption()
+function opt = ds001168_getOption()
   % returns a structure that contains the options chosen by the user to run
   % slice timing correction, pre-processing, FFX, RFX.
 
@@ -8,17 +8,22 @@ function opt = ds000001_getOption()
     opt = [];
   end
 
+  % The directory where the data are located
+  opt.dataDir = '/home/remi/openneuro/ds001168/raw';
+
   % suject to run in each group
-  opt.subjects = {'01', '02'};
+  opt.subjects = {'01'};
 
   % task to analyze
-  opt.taskName = 'balloonanalogrisktask';
+  opt.taskName = 'rest';
 
-  % The directory where the data are located
-  opt.dataDir = '/home/remi/openneuro/ds000001/raw';
+  opt.anatReference.type = 'T1w';
+  opt.anatReference.session = 1;
+
+  opt.ignoreFieldmaps = false;
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);
-  saveOptions(opt);
+  %     saveOptions(opt);
 
 end

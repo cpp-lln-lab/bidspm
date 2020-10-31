@@ -1,4 +1,4 @@
-function test_suite = test_setBatchCoregistration %#ok<*STOUT>
+function test_suite = test_setBatchCoregistrationFuncToAnat %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -6,7 +6,7 @@ function test_suite = test_setBatchCoregistration %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchCoregistrationBasic()
+function test_setBatchCoregistrationFuncToAnatBasic()
 
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
@@ -24,7 +24,7 @@ function test_setBatchCoregistrationBasic()
   opt.orderBatches.realign = 2;
 
   matlabbatch = {};
-  matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt);
+  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt);
 
   nbRuns = 4;
 
@@ -44,7 +44,7 @@ function test_setBatchCoregistrationBasic()
 
 end
 
-function test_setBatchCoregistrationNative()
+function test_setBatchCoregistrationFuncToAnatNative()
 
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
@@ -63,7 +63,7 @@ function test_setBatchCoregistrationNative()
   opt.orderBatches.realign = 2;
 
   matlabbatch = {};
-  matlabbatch = setBatchCoregistration(matlabbatch, BIDS, subID, opt);
+  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt);
 
   nbRuns = 4;
 

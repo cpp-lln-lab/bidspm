@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
 
-% runDs00014
+% runDs001168
 
 clear;
 clc;
@@ -17,7 +17,7 @@ addpath(genpath(fullfile(WD, '..', 'src')));
 addpath(genpath(fullfile(WD, '..', 'lib')));
 
 %% Set options
-opt = ds000114_getOption();
+opt = ds001168_getOption();
 
 % the line below allows to run preprocessing in "native" space.
 % - use realign and unwarp
@@ -32,6 +32,8 @@ reportBIDS(opt);
 
 bidsCopyRawFolder(opt, 1);
 
+bidsCreateVDM(opt);
+
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
@@ -39,9 +41,9 @@ bidsSpatialPrepro(opt);
 anatomicalQA(opt);
 bidsResliceTpmToFunc(opt);
 functionalQA(opt);
-
-bidsSmoothing(FWHM, opt);
-
-bidsFFX('specifyAndEstimate', opt, FWHM);
-bidsFFX('contrasts', opt, FWHM);
-bidsResults(opt, FWHM, []);
+%
+% bidsSmoothing(FWHM, opt);
+%
+% bidsFFX('specifyAndEstimate', opt, FWHM);
+% bidsFFX('contrasts', opt, FWHM);
+% bidsResults(opt, FWHM, []);

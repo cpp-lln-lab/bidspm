@@ -2,61 +2,74 @@
 # This will only work on your repo if you have an account on travis and you
 # have set it up to run continuous integration on this this repo
 
-# Linux distribution (bionic beaver)
 dist: bionic
 
-# Language and version
-language: python
-python:
-  - "3.6" # current default Python on Travis CI
+language: node_js
+node_js:
+  - "10"
 
 cache:
-  apt: true # only works with Pro version
+  apt: true
   directories:
-  - node_modules # NPM packages for the remark markdown linter
+  - node_modules
 
+# only run the CI for those branches 
 branches:
-  only:  # only run the CI for those branches 
-  - master
-  - dev
+  only:  
+    - master
+    - dev
 
 env:
   global:
     - OCTFLAGS="--no-gui --no-window-system --silent"
 
-jobs:
+# TODO maybe this could be refactored as this is not needed to check the 
+# the markdown linting
+install:
+  # install octave
+  - travis_retry sudo apt-get -y -qq update
+  - travis_retry sudo apt-get -y install octave
+  - travis_retry sudo apt-get -y install liboctave-dev
 
+  # install SPM and the relevant patches for octave
+  - git clone https://github.com/spm/spm12.git --depth 1
+  - make -C spm12/src PLATFORM=octave distclean
+  - make -C spm12/src PLATFORM=octave
+  - make -C spm12/src PLATFORM=octave install
+
+  # update octave path
+  - octave $OCTFLAGS --eval "addpath(genpath(fullfile(pwd, 'lib'))); savepath();"
+  - octave $OCTFLAGS --eval "addpath(genpath(fullfile(pwd, 'src'))); savepath();"
+  - octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
+
+jobs:
   include:
 
-      # names the first job
+      #-------------------------------------------------------------------------
+      # first job
+      #-------------------------------------------------------------------------
     - name: "Unit tests and coverage" 
 
-      before_install:
-        # install octave
-        - travis_retry sudo apt-get -y -qq update
-        - travis_retry sudo apt-get -y install octave
-        - travis_retry sudo apt-get -y install liboctave-dev
+      before_script:
+
         # install MOX unit
         - git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
         - cd MOxUnit
         - make install
         - cd ..
+        
         # install MOcov
         - git clone https://github.com/MOcov/MOcov.git  --depth 1
         - cd MOcov
         - make install
         - cd ..
-        # install SPM and the relevant patches for octave
-        - git clone https://github.com/spm/spm12.git --depth 1
-        - make -C spm12/src PLATFORM=octave distclean
-        - make -C spm12/src PLATFORM=octave
-        - make -C spm12/src PLATFORM=octave install
+
         # get data
         - output_folder='demos/MoAE/output/'
         - mkdir $output_folder
         - curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $output_folder'MoAEpilot.zip'
         - unzip $output_folder'MoAEpilot.zip' -d $output_folder
-
+        
       script:
         - octave $OCTFLAGS --eval "runTests"
         - cat test_report.log | grep 0
@@ -65,11 +78,28 @@ jobs:
       after_success:
         - bash <(curl -s https://codecov.io/bash) 
 
+      #-------------------------------------------------------------------------
+      # second job
+      #-------------------------------------------------------------------------
     - name: "Check markdown"
-      language: node_js
-      node_js:
-        - "10"
+
       before_script:
+        # install node.js dependencies
         - npm install `cat npm-requirements.txt`
+
       script:
+        - remark *.md --frail
+        - remark ./demos/ --frail
         - remark ./docs/ --frail
+        - remark ./tests/ --frail
+
+      #-------------------------------------------------------------------------
+      # third job
+      #-------------------------------------------------------------------------
+    - name: "Run demo"
+
+      if: branch = master
+
+      script:
+        - cd demos/MoAE
+        - octave $OCTFLAGS --eval "MoAEpilot_run"

@@ -116,5 +116,7 @@ Comput results
 ---
 
 .. autofunction:: bidsRealignReslice  
-
 .. autofunction:: bidsRealignUnwarp  
+.. autofunction:: bidsCreateVDM
+.. autofunction:: bidsResliceTpmToFunc
+.. autofunction:: bidsSegmentSkullStrip

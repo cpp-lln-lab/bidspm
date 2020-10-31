@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
 
 function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt)
   % [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt)

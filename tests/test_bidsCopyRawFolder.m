@@ -8,6 +8,8 @@ end
 
 function test_bidsCopyRawFolderBasic()
 
+  % TODO add test to only copy some modalities
+
   % directory with this script becomes the current directory
   opt.dataDir = fullfile( ...
                          fileparts(mfilename('fullpath')), ...

@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
 
 function opt = loadAndCheckOptions(opt)
   % opt = loadAndCheckOptions(opt)
@@ -19,6 +19,7 @@ function opt = loadAndCheckOptions(opt)
     return
   end
 
+  % finds most recent option file
   if size(opt, 1) > 1
     containsDate = cellfun(@any, strfind(cellstr(opt), '_date-'));
     opt = opt(containsDate, :);

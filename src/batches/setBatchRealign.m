@@ -1,13 +1,35 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
 
-function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action)
-  % [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action)
+function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %
-  % to set the batch in a spatial preprocessing pipeline
+  % Set the batch for realign / realign and reslice / realign and unwarp
   %
-  % Assumption about the order of the sessions:
+  % USAGE::
+  %
+  %   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, [action = 'realign'])
+  %
+  % :param matlabbatch: SPM batch
+  % :type matlabbatch: structure
+  % :param BIDS: BIDS layout returned by ``getData``
+  % :type BIDS: structure
+  % :param subID: subject label
+  % :type subID: string
+  % :param opt: options
+  % :type opt: structure
+  % :param action: ``realign``, ``realignReslice``, ``realignUnwarp``
+  % :type action: string
+  %
+  % :returns: - :matlabbatch: (structure) (dimension)
+  %           - :voxDim: (array) (dimension)
 
-  if nargin < 5 || isempty(action)
+  if numel(varargin) < 5
+    [matlabbatch, BIDS, subID, opt] = deal(varargin{:});
+    action = '';
+  else
+    [matlabbatch, BIDS, subID, opt, action] = deal(varargin{:});
+  end
+
+  if isempty(action)
     action = 'realign';
   end
 
@@ -44,18 +66,18 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, 
     for iRun = 1:nbRuns
 
       % get the filename for this bold run for this task
-      [fileName, subFuncDataDir] = getBoldFilename( ...
-                                                   BIDS, ...
-                                                   subID, ...
-                                                   sessions{iSes}, ...
-                                                   runs{iRun}, ...
-                                                   opt);
+      [boldFilename, subFuncDataDir] = getBoldFilename( ...
+                                                       BIDS, ...
+                                                       subID, ...
+                                                       sessions{iSes}, ...
+                                                       runs{iRun}, ...
+                                                       opt);
 
       % check that the file with the right prefix exist and we get and
       % save its voxeldimension
       prefix = getPrefix('preprocess', opt);
-      file = validationInputFile(subFuncDataDir, fileName, prefix);
-      [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName);
+      file = validationInputFile(subFuncDataDir, boldFilename, prefix);
+      [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, boldFilename);
 
       if size(file, 1) > 1
         errorStruct.identifier = 'setBatchRealign:tooManyFiles';
@@ -66,10 +88,15 @@ function [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, 
       fprintf(1, ' %s\n', file);
 
       if strcmp(action, 'realignUnwarp')
-        matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = '';
+
+        vdmFile = getVdmFile(BIDS, opt, boldFilename);
+        matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = { vdmFile };
         matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = { file };
+
       else
+
         matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = { file };
+
       end
 
       runCounter = runCounter + 1;

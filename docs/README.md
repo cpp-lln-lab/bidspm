@@ -38,8 +38,8 @@ extensions = [
     'sphinx.ext.autodoc']
 ```
 
-`matlab_src_dir` in `docs/source/conf.py` should have the path (relative to `conf.py`)
-to the folder containing your matlab code:
+`matlab_src_dir` in `docs/source/conf.py` should have the path (relative to
+`conf.py`) to the folder containing your matlab code:
 
 ```python
 matlab_src_dir = os.path.dirname(os.path.abspath('../../src'))
@@ -47,28 +47,41 @@ matlab_src_dir = os.path.dirname(os.path.abspath('../../src'))
 
 ## reStructured text markup
 
-reStructured text mark up primers: 
+reStructured text mark up primers:
 
-- on the [sphinx site](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)
-- more [python oriented](https://pythonhosted.org/an_example_pypi_project/sphinx.html)
+-   on the [sphinx site](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)
 
-- typical doc strings templates
-  - [google way](https://www.sphinx-doc.org/en/master/usage/extensions/example_google.html)
-  - [numpy](https://www.sphinx-doc.org/en/master/usage/extensions/example_numpy.html#example-numpy)
+-   more
+    [python oriented](https://pythonhosted.org/an_example_pypi_project/sphinx.html)
+
+-   typical doc strings templates
+    -   [google way](https://www.sphinx-doc.org/en/master/usage/extensions/example_google.html)
+    -   [numpy](https://www.sphinx-doc.org/en/master/usage/extensions/example_numpy.html#example-numpy)
 
 ## "Templates"
+
+The templates to use for the doc are in the `src/templates` folder.
 
 You then just need to insert this in your `.rst` file for the documentation to
 be done automatically.
 
 ```rst
 
-.. automodule:: src .. <-- This is necessary for autodocumenting the rest 
+.. automodule:: src.folder_name .. <-- This is necessary for auto-documenting the rest
 
-.. autofunction:: my_function
+.. autofunction:: function to document
 
-.. autofunction:: my_function_napoleon
 ```
+
+To get the filenames of all the functions in a folder:
+
+``` bash
+ls -l src/*.m | cut -c42- | rev | cut -c 3- | rev
+```
+
+Increase the `42` to crop more characters at the beginning.
+
+Change the `3` to crop more characters at the end.
 
 ## Build the documentation locally
 
@@ -87,8 +100,8 @@ Add a [`.readthedocs.yml`](../.readthedocs.yml) file in the root of your repo.
 See [HERE](https://docs.readthedocs.io/en/stable/config-file/v2.html) for
 details.
 
-You can then trigger the build of the doc by going to the [read the docs]
-website: https://readthedocs.org.
+You can then trigger the build of the doc by going to the
+[read the docs website](https://readthedocs.org).
 
 You might need to be added as a maintainer of the doc.
 
