@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
 
-function matlabbatch = setBatchCoregistrationFmap(opt, BIDS, subID)
+function matlabbatch = setBatchCoregistrationFmap(BIDS, opt, subID)
 
   % TODO
   % assumes all the fieldmap relate to the current task

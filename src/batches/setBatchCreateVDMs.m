@@ -1,7 +1,21 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
 
-function matlabbatch = setBatchCreateVDMs(opt, BIDS, subID)
-
+function matlabbatch = setBatchCreateVDMs(BIDS, opt, subID)
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   matlabbatch = setBatchCreateVDMs(BIDS, opt, subID)
+  %
+  % :param BIDS:
+  % :type BIDS: structure
+  % :param opt:
+  % :type opt: structure
+  % :param subID:
+  %
+  % :returns: - :matlabbatch: (structure) (dimension)
+  %
   % TODO
   % assumes all the fieldmap relate to the current task
   % - implement for 'phase12', 'fieldmap', 'epi'
@@ -101,55 +115,5 @@ function isEPI = checkFmapPulseSequenceType(fmapMetadata)
 
     isEPI = 1;
   end
-
-end
-
-function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmapMetadata)
-  % get metadata of the associated bold file
-  % find bold file this fmap is intended for, parse its filename and get its
-  % metadata
-
-  % At the moment the VDM is created based on the characteristics of the last
-  % func file in the IntendedFor field
-
-  % TODO
-  % - if there are several func file for this fmap and they have different
-  % characteristic this may require creating a VDM for each
-
-  for  iFile = 1:size(fmapMetadata.IntendedFor)
-
-    if iscell(fmapMetadata.IntendedFor)
-      filename = fmapMetadata.IntendedFor{iFile};
-    else
-      filename = fmapMetadata.IntendedFor(iFile, :);
-    end
-    filename = spm_file(filename, 'filename');
-
-    fragments = bids.internal.parse_filename(filename);
-
-    funcMetadata = spm_BIDS(BIDS, 'metadata', ...
-                            'modality', 'func', ...
-                            'type', fragments.type, ...
-                            'sub', fragments.sub, ...
-                            'ses', fragments.ses, ...
-                            'run', fragments.run, ...
-                            'acq', fragments.acq);
-
-  end
-
-  totalReadoutTime = getTotalReadoutTime(funcMetadata);
-
-  % temporary for designing
-  %   totalReadoutTime = 63;
-
-  if isempty(totalReadoutTime)
-    errorStruct.identifier = 'getMetadataForVDM:emptyReadoutTime';
-    errorStruct.message = [ ...
-                           'Voxel displacement map creation requires a non empty value' ...
-                           'for the TotalReadoutTime of the bold sequence they are matched to.'];
-    error(errorStruct);
-  end
-
-  blipDir = getBlipDirection(funcMetadata);
 
 end

@@ -66,18 +66,18 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
     for iRun = 1:nbRuns
 
       % get the filename for this bold run for this task
-      [fileName, subFuncDataDir] = getBoldFilename( ...
-                                                   BIDS, ...
-                                                   subID, ...
-                                                   sessions{iSes}, ...
-                                                   runs{iRun}, ...
-                                                   opt);
+      [boldFilename, subFuncDataDir] = getBoldFilename( ...
+                                                       BIDS, ...
+                                                       subID, ...
+                                                       sessions{iSes}, ...
+                                                       runs{iRun}, ...
+                                                       opt);
 
       % check that the file with the right prefix exist and we get and
       % save its voxeldimension
       prefix = getPrefix('preprocess', opt);
-      file = validationInputFile(subFuncDataDir, fileName, prefix);
-      [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName);
+      file = validationInputFile(subFuncDataDir, boldFilename, prefix);
+      [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, boldFilename);
 
       if size(file, 1) > 1
         errorStruct.identifier = 'setBatchRealign:tooManyFiles';
@@ -88,10 +88,15 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
       fprintf(1, ' %s\n', file);
 
       if strcmp(action, 'realignUnwarp')
-        matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = '';
+
+        vdmFile = getVdmFile(BIDS, opt, boldFilename);
+        matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = { vdmFile };
         matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = { file };
+
       else
+
         matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = { file };
+
       end
 
       runCounter = runCounter + 1;

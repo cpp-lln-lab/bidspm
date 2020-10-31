@@ -88,6 +88,11 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.STC_referenceSlice = []; % reference slice: middle acquired slice
   fieldsToSet.sliceOrder = []; % To be used if SPM can't extract slice info
 
+  % when opt.ignoreFieldmaps is set to false, the
+  % preprocessing pipeline will look for the voxel displacement maps (created by
+  % the corresponding workflow) and will use them for realign and unwarp
+  fieldsToSet.ignoreFieldmaps = false;
+
   % fieldsToSet for normalize
   % Voxel dimensions for resampling at normalization of functional data or leave empty [ ].
   fieldsToSet.funcVoxelDims = [];
