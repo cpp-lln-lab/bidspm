@@ -38,6 +38,7 @@ functionalQA(opt);
 
 bidsSmoothing(FWHM, opt);
 
+% Not implemented yet
 % bidsFFX('specifyAndEstimate', opt, FWHM);
 % bidsFFX('contrasts', opt, FWHM);
 % bidsResults(opt, FWHM, []);

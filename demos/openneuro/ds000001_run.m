@@ -12,21 +12,27 @@ FWHM = 6;
 WD = fileparts(mfilename('fullpath'));
 
 % we add all the subfunctions that are in the sub directories
-addpath(fullfile(WD, '..'));
-addpath(genpath(fullfile(WD, '..', 'src')));
-addpath(genpath(fullfile(WD, '..', 'lib')));
+addpath(genpath(fullfile(WD, '..', '..', 'src')));
+addpath(genpath(fullfile(WD, '..', '..', 'lib')));
 
 %% Set options
 opt = ds000001_getOption();
 
 checkDependencies();
 
-%% Run batches
-isMVPA = 0;
+reportBIDS(opt);
 
-% bidsCopyRawFolder(opt, 1);
+bidsCopyRawFolder(opt, 1);
+
+bidsSTC(opt);
+
 bidsSpatialPrepro(opt);
+
+anatomicalQA(opt);
+
 bidsSmoothing(FWHM, opt);
-% bidsFFX('specifyAndEstimate', opt, FWHM, isMVPA);
-% bidsFFX('contrasts', opt, FWHM, isMVPA);
-% bidsResults(opt, FWHM, [], isMVPA);
+
+% Not implemented yet
+% bidsFFX('specifyAndEstimate', opt, FWHM);
+% bidsFFX('contrasts', opt, FWHM);
+% bidsResults(opt, FWHM);
