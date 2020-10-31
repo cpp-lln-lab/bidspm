@@ -38,8 +38,8 @@ extensions = [
     'sphinx.ext.autodoc']
 ```
 
-`matlab_src_dir` in `docs/source/conf.py` should have the path (relative to `conf.py`)
-to the folder containing your matlab code:
+`matlab_src_dir` in `docs/source/conf.py` should have the path (relative to
+`conf.py`) to the folder containing your matlab code:
 
 ```python
 matlab_src_dir = os.path.dirname(os.path.abspath('../../src'))
@@ -47,14 +47,16 @@ matlab_src_dir = os.path.dirname(os.path.abspath('../../src'))
 
 ## reStructured text markup
 
-reStructured text mark up primers: 
+reStructured text mark up primers:
 
-- on the [sphinx site](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)
-- more [python oriented](https://pythonhosted.org/an_example_pypi_project/sphinx.html)
+-   on the
+    [sphinx site](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)
+-   more
+    [python oriented](https://pythonhosted.org/an_example_pypi_project/sphinx.html)
 
-- typical doc strings templates
-  - [google way](https://www.sphinx-doc.org/en/master/usage/extensions/example_google.html)
-  - [numpy](https://www.sphinx-doc.org/en/master/usage/extensions/example_numpy.html#example-numpy)
+-   typical doc strings templates
+    -   [google way](https://www.sphinx-doc.org/en/master/usage/extensions/example_google.html)
+    -   [numpy](https://www.sphinx-doc.org/en/master/usage/extensions/example_numpy.html#example-numpy)
 
 ## "Templates"
 
@@ -63,7 +65,7 @@ be done automatically.
 
 ```rst
 
-.. automodule:: src .. <-- This is necessary for autodocumenting the rest 
+.. automodule:: src .. <-- This is necessary for autodocumenting the rest
 
 .. autofunction:: my_function
 
