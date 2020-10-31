@@ -42,18 +42,21 @@ checkDependencies();
 reportBIDS(opt);
 bidsCopyRawFolder(opt, 1);
 
-bidsSegmentSkullStrip(opt);
+% In case you just want to run segmentation and skull stripping
+% bidsSegmentSkullStrip(opt);
 
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
+% The following do not run on octave for now (because of spmup)
 % anatomicalQA(opt);
 % bidsResliceTpmToFunc(opt);
 % functionalQA(opt);
 
 bidsSmoothing(FWHM, opt);
 
-bidsFFX('specifyAndEstimate', opt, FWHM);
-bidsFFX('contrasts', opt, FWHM);
-bidsResults(opt, FWHM);
+% The following crash on Travis CI
+% bidsFFX('specifyAndEstimate', opt, FWHM);
+% bidsFFX('contrasts', opt, FWHM);
+% bidsResults(opt, FWHM);

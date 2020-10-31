@@ -1,12 +1,11 @@
-
 Download with datalad
 
-In case you use the python package for datalad, activate your virtual environment (like conda).
+In case you use the python package for datalad, activate your virtual
+environment (like conda).
 
 ```bash
 conda activate datalad
 ```
-
 
 ## ds000114
 
@@ -26,7 +25,7 @@ datalad get sub-0[12]/*/func/*linebisection*
  cd ds000001/
  datalad get sub-0[12]/anat/*T1w*
  datalad get sub-0[12]/func/*balloonanalogrisktask*
- ```
+```
 
 ## ds001168
 
@@ -38,5 +37,4 @@ datalad get sub-0[12]/*/func/*linebisection*
  datalad get sub-0[12]/ses*/anat/*
  datalad get sub-0[12]/ses*/func/*fullbrain*
 
- ```
-
+```
