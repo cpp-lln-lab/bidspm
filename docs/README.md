@@ -49,8 +49,8 @@ matlab_src_dir = os.path.dirname(os.path.abspath('../../src'))
 
 reStructured text mark up primers:
 
--   on the [sphinx
-    site](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
+-   on the [sphinx site](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)
+
 -   more
     [python oriented](https://pythonhosted.org/an_example_pypi_project/sphinx.html)
 
@@ -60,17 +60,26 @@ reStructured text mark up primers:
 
 ## "Templates"
 
+The templates to use for the doc are in the `templates` folder.
+
 You then just need to insert this in your `.rst` file for the documentation to
 be done automatically.
 
 ```rst
 
-.. automodule:: src .. <-- This is necessary for autodocumenting the rest
+.. automodule:: src.folder_name .. <-- This is necessary for auto-documenting the rest
 
-.. autofunction:: my_function
+.. autofunction:: function to document
 
-.. autofunction:: my_function_napoleon
 ```
+
+To get the filenames of all the functions in a folder:
+
+``` bash
+ls -l src/*.m | cut -c42-
+```
+
+Increase the `42` to crop more characters.
 
 ## Build the documentation locally
 
