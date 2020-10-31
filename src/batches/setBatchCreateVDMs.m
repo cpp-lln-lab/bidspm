@@ -42,12 +42,10 @@ function matlabbatch = setBatchCreateVDMs(opt, BIDS, subID)
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.magnitude = ...
         {magnitudeImage};
 
-      [echotimes, totReadTime, blipDir, isEPI] = getFmapMetadata(BIDS, ...
-                                                                 subID, ...
-                                                                 sessions{iSes}, ...
-                                                                 runs{iRun});
-
-      %                                                                totReadTime = 2;
+      [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, ...
+                                                                   subID, ...
+                                                                   sessions{iSes}, ...
+                                                                   runs{iRun});
 
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.et = echotimes;
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.tert = totReadTime;
@@ -60,52 +58,98 @@ function matlabbatch = setBatchCreateVDMs(opt, BIDS, subID)
 
 end
 
-function varargout = getFmapMetadata(BIDS, subID, sessionID, runID)
+function varargout = getMetadataForVDM(BIDS, subID, sessionID, runID)
 
-  metadata = spm_BIDS(BIDS, 'metadata', ...
-                      'modality', 'fmap', ...
-                      'sub', subID, ...
-                      'ses', sessionID, ...
-                      'run', runID);
-
-  % func run metadata: if the fmap is applied to several
-  % runs we take the metadata of the first run it must
-  % applied to
-  if numel(metadata) > 1
-    metadata = metadata{1};
+  % get metadata fmap and its associated func files
+  fmapMetadata = spm_BIDS(BIDS, 'metadata', ...
+                          'modality', 'fmap', ...
+                          'sub', subID, ...
+                          'ses', sessionID, ...
+                          'run', runID);
+  if numel(fmapMetadata) > 1
+    fmapMetadata = fmapMetadata{1};
   end
 
-  echotimes = getEchoTimes(metadata);
+  echotimes = getEchoTimes(fmapMetadata);
 
-  totalReadoutTime = getTotalReadoutTime(metadata);
-
-  blipDir = getBlipDirection(metadata);
-
-  isEPI = getFmapPulseSequenceType(metadata);
+  isEPI = checkFmapPulseSequenceType(fmapMetadata);
 
   varargout{1} = echotimes;
-  varargout{2} = totalReadoutTime;
-  varargout{3} = blipDir;
-  varargout{4} = isEPI;
+  varargout{2} = isEPI;
+
+  [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmapMetadata);
+
+  varargout{3} = totalReadoutTime;
+  varargout{4} = blipDir;
 
 end
 
-function echotimes = getEchoTimes(metadata)
+function echotimes = getEchoTimes(fmapMetadata)
 
   echotimes =  1000 * [ ...
-                       metadata.EchoTime1, ...
-                       metadata.EchoTime2]; % in milliseconds
+                       fmapMetadata.EchoTime1, ...
+                       fmapMetadata.EchoTime2]; % in milliseconds
 
 end
 
-function isEPI = getFmapPulseSequenceType(metadata)
+function isEPI = checkFmapPulseSequenceType(fmapMetadata)
 
   isEPI = 0;
 
-  if isfield(metadata, 'PulseSequenceType') && ...
-     sum(strfind(metadata.PulseSequenceType, 'EPI')) ~= 0
+  if isfield(fmapMetadata, 'PulseSequenceType') && ...
+     sum(strfind(fmapMetadata.PulseSequenceType, 'EPI')) ~= 0
 
     isEPI = 1;
   end
+
+end
+
+function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmapMetadata)
+  % get metadata of the associated bold file
+  % find bold file this fmap is intended for, parse its filename and get its
+  % metadata
+
+  % At the moment the VDM is created based on the characteristics of the last
+  % func file in the IntendedFor field
+
+  % TODO
+  % - if there are several func file for this fmap and they have different
+  % characteristic this may require creating a VDM for each
+
+  for  iFile = 1:size(fmapMetadata.IntendedFor)
+
+    if iscell(fmapMetadata.IntendedFor)
+      filename = fmapMetadata.IntendedFor{iFile};
+    else
+      filename = fmapMetadata.IntendedFor(iFile, :);
+    end
+    filename = spm_file(filename, 'filename');
+
+    fragments = bids.internal.parse_filename(filename);
+
+    funcMetadata = spm_BIDS(BIDS, 'metadata', ...
+                            'modality', 'func', ...
+                            'type', fragments.type, ...
+                            'sub', fragments.sub, ...
+                            'ses', fragments.ses, ...
+                            'run', fragments.run, ...
+                            'acq', fragments.acq);
+
+  end
+
+  totalReadoutTime = getTotalReadoutTime(funcMetadata);
+
+  % temporary for designing
+  %   totalReadoutTime = 63;
+
+  if isempty(totalReadoutTime)
+    errorStruct.identifier = 'getMetadataForVDM:emptyReadoutTime';
+    errorStruct.message = [ ...
+                           'Voxel displacement map creation requires a non empty value' ...
+                           'for the TotalReadoutTime of the bold sequence they are matched to.'];
+    error(errorStruct);
+  end
+
+  blipDir = getBlipDirection(funcMetadata);
 
 end

@@ -57,7 +57,7 @@ function matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
 
   matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).session.epi = {refImage};
   matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).matchvdm = 1;
-  matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).sessname = 'run';
+  matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).sessname = 'vdm-';
   matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).writeunwarped = 1;
   matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).anat = '';
   matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).matchanat = 0;
