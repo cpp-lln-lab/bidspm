@@ -28,19 +28,19 @@ checkDependencies();
 
 %% Run batches
 
-% reportBIDS(opt);
+reportBIDS(opt);
 
-% bidsCopyRawFolder(opt, 1);
+bidsCopyRawFolder(opt, 1);
 
 bidsCreateVDM(opt);
 
-% bidsSTC(opt);
-%
-% bidsSpatialPrepro(opt);
-%
-% anatomicalQA(opt);
-% bidsResliceTpmToFunc(opt);
-% functionalQA(opt);
+bidsSTC(opt);
+
+bidsSpatialPrepro(opt);
+
+anatomicalQA(opt);
+bidsResliceTpmToFunc(opt);
+functionalQA(opt);
 %
 % bidsSmoothing(FWHM, opt);
 %
