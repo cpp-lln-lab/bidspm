@@ -9,6 +9,10 @@ function spm_my_defaults
 
   global defaults
 
+  % User Interface defaults
+  % ==========================================================================
+  defaults.ui.print   = 'png';
+
   % File format specific
   % ==========================================================================
   defaults.mat.format     = '-v7';

@@ -43,6 +43,7 @@ reportBIDS(opt);
 bidsCopyRawFolder(opt, 1);
 
 % In case you just want to run segmentation and skull stripping
+% Skull stripping is also included in 'bidsSpatialPrepro'
 % bidsSegmentSkullStrip(opt);
 
 bidsSTC(opt);
