@@ -7,35 +7,49 @@ clc;
 WD = fileparts(mfilename('fullpath'));
 
 % we add all the subfunctions that are in the sub directories
-addpath(fullfile(WD, '..'));
-addpath(genpath(fullfile(WD, '..', 'src')));
-addpath(genpath(fullfile(WD, '..', 'lib')));
+addpath(genpath(fullfile(WD, '..', '..', 'src')));
+addpath(genpath(fullfile(WD, '..', '..', 'lib')));
 
 %% Run batches
 opt = getOption();
 
 checkDependencies();
 
-% copy raw folder into derivatives folder
-% BIDS_copyRawFolder(opt, 1)
+reportBIDS(opt);
 
-% preprocessing
-% BIDS_STC(opt);
-% BIDS_SpatialPrepro(opt);
-% BIDS_Smoothing(6, opt);
+bidsCopyRawFolder(opt, 1);
+% 
+% % preprocessing
+bidsSTC(opt);
+bidsSpatialPrepro(opt);
+
+% Quality control
+anatomicalQA(opt);
+
+% Not implemented yet
+% bidsResliceTpmToFunc(opt);
+% functionalQA(opt);
+
+funcFWHM = 6;
+bidsSmoothing(funcFWHM, opt);
 
 % subject level Univariate
-% BIDS_FFX(1, 6, opt);
-% BIDS_FFX(2, 6, opt);
+bidsFFX('specifyAndEstimate', opt, funcFWHM);
+bidsFFX('contrasts', opt, funcFWHM);
 
 % group level univariate
-BIDS_RFX(1, 6, 6);
-BIDS_RFX(2, 6, 6);
+conFWHM = 6;
+bidsRFX('smoothContrasts', funcFWHM, conFWHM, opt);
 
-BIDS_Results(6, 6, opt, 0);
+% Not implemented yet
+% bidsRFX('RFX', funcFWHM, conFWHM, opt);
 
+% Not implemented yet
 % subject level multivariate
-% isMVPA=1;
-% BIDS_FFX(1, 6, opt, isMVPA);
-% BIDS_FFX(2, 6, opt, isMVPA);
-% make4Dmaps(6,opt)
+% opt.model.file = fuufile(WD, ...
+%                          'models', ...
+%                          'model-motionDecodingMultivariate_smdl.json');
+% 
+% bidsFFX('specifyAndEstimate', opt, funcFWHM);
+% bidsFFX('contrasts', opt, funcFWHM);
+% concatBetaImgTmaps(funcFWHM, opt);
