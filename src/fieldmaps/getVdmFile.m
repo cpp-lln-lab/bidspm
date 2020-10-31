@@ -6,18 +6,17 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   vdmFile = getVdmFile(BIDS, opt, boldFilename)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param BIDS:
+  % :type BIDS: structure
+  % :param opt: options
+  % :type opt: structure
+  % :param boldFilename:
+  % :type opt: string
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :vdmFile: (string)
+  %
 
   vdmFile = '';
 
@@ -32,6 +31,10 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
                         'ses', fragments.ses);
 
   if ~opt.ignoreFieldmaps && any(ismember('fmap', modalities))
+    % We loop through the field maps and find the one that is intended for this
+    % bold file by reading from the metadata
+    %
+    % We break the loop when the file has been found
 
     fmapFiles = spm_BIDS(BIDS, 'data', ...
                          'modality', 'fmap', ...
@@ -55,6 +58,10 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
 
     end
 
+  end
+
+  if isempty(vdmFile)
+    warning('No voxel displacement map associated with: \n %s', boldFilename);
   end
 
 end
