@@ -49,8 +49,8 @@ matlab_src_dir = os.path.dirname(os.path.abspath('../../src'))
 
 reStructured text mark up primers:
 
--   on the
-    [sphinx site](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)
+-   on the [sphinx
+    site](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
 -   more
     [python oriented](https://pythonhosted.org/an_example_pypi_project/sphinx.html)
 
@@ -89,8 +89,8 @@ Add a [`.readthedocs.yml`](../.readthedocs.yml) file in the root of your repo.
 See [HERE](https://docs.readthedocs.io/en/stable/config-file/v2.html) for
 details.
 
-You can then trigger the build of the doc by going to the [read the docs]
-website: https://readthedocs.org.
+You can then trigger the build of the doc by going to the
+[read the docs website](https://readthedocs.org).
 
 You might need to be added as a maintainer of the doc.
 
