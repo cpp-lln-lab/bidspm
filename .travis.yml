@@ -24,34 +24,6 @@ env:
   global:
     - OCTFLAGS="--no-gui --no-window-system --silent"
 
-# TODO maybe this could be refactored as this is not needed to check the 
-# the markdown linting
-before_install:
-  # install octave
-  - travis_retry sudo apt-get -y -qq update
-  - travis_retry sudo apt-get -y install octave
-  - travis_retry sudo apt-get -y install liboctave-dev
-  # install MOX unit
-  - git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
-  - cd MOxUnit
-  - make install
-  - cd ..
-  # install MOcov
-  - git clone https://github.com/MOcov/MOcov.git  --depth 1
-  - cd MOcov
-  - make install
-  - cd ..
-  # install SPM and the relevant patches for octave
-  - git clone https://github.com/spm/spm12.git --depth 1
-  - make -C spm12/src PLATFORM=octave distclean
-  - make -C spm12/src PLATFORM=octave
-  - make -C spm12/src PLATFORM=octave install
-  # get data
-  - output_folder='demos/MoAE/output/'
-  - mkdir $output_folder
-  - curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $output_folder'MoAEpilot.zip'
-  - unzip $output_folder'MoAEpilot.zip' -d $output_folder
-
 jobs:
 
   include:
@@ -59,6 +31,34 @@ jobs:
       # names the first job
     - stage: "Test and linter"  
     - name: "Unit tests and coverage" 
+
+      # TODO maybe this could be refactored as this is not needed to check the 
+      # the markdown linting
+      install:
+        # install octave
+        - travis_retry sudo apt-get -y -qq update
+        - travis_retry sudo apt-get -y install octave
+        - travis_retry sudo apt-get -y install liboctave-dev
+        # install MOX unit
+        - git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
+        - cd MOxUnit
+        - make install
+        - cd ..
+        # install MOcov
+        - git clone https://github.com/MOcov/MOcov.git  --depth 1
+        - cd MOcov
+        - make install
+        - cd ..
+        # install SPM and the relevant patches for octave
+        - git clone https://github.com/spm/spm12.git --depth 1
+        - make -C spm12/src PLATFORM=octave distclean
+        - make -C spm12/src PLATFORM=octave
+        - make -C spm12/src PLATFORM=octave install
+        # get data
+        - output_folder='demos/MoAE/output/'
+        - mkdir $output_folder
+        - curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $output_folder'MoAEpilot.zip'
+        - unzip $output_folder'MoAEpilot.zip' -d $output_folder
 
       script:
         - octave $OCTFLAGS --eval "runTests"
@@ -79,6 +79,20 @@ jobs:
 
     - stage: "Test pipeline"
     - name: "run demo"
+
+      # TODO maybe this could be refactored as this is not needed to check the 
+      # the markdown linting
+      install:
+        # install octave
+        - travis_retry sudo apt-get -y -qq update
+        - travis_retry sudo apt-get -y install octave
+        - travis_retry sudo apt-get -y install liboctave-dev
+        # install SPM and the relevant patches for octave
+        - git clone https://github.com/spm/spm12.git --depth 1
+        - make -C spm12/src PLATFORM=octave distclean
+        - make -C spm12/src PLATFORM=octave
+        - make -C spm12/src PLATFORM=octave install
+
       before_script:
         - cd demos/MoAE
       script:
