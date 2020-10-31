@@ -60,7 +60,7 @@ reStructured text mark up primers:
 
 ## "Templates"
 
-The templates to use for the doc are in the `templates` folder.
+The templates to use for the doc are in the `src/templates` folder.
 
 You then just need to insert this in your `.rst` file for the documentation to
 be done automatically.
@@ -76,10 +76,12 @@ be done automatically.
 To get the filenames of all the functions in a folder:
 
 ``` bash
-ls -l src/*.m | cut -c42-
+ls -l src/*.m | cut -c42- | rev | cut -c 3- | rev
 ```
 
-Increase the `42` to crop more characters.
+Increase the `42` to crop more characters at the beginning.
+
+Change the `3` to crop more characters at the end.
 
 ## Build the documentation locally
 

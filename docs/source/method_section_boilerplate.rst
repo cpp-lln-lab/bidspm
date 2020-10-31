@@ -1,6 +1,12 @@
 Boilerplate methods section
 ***************************
 
+Use the report function to get a print out of the content of a dataset.
+
+.. automodule:: src.reports 
+
+.. autofunction:: reportBIDS
+
 Preprocessing
 =============
 
