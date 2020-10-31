@@ -18,7 +18,7 @@ checkDependencies();
 reportBIDS(opt);
 
 bidsCopyRawFolder(opt, 1);
-% 
+%
 % % preprocessing
 bidsSTC(opt);
 bidsSpatialPrepro(opt);
@@ -49,7 +49,7 @@ bidsRFX('smoothContrasts', funcFWHM, conFWHM, opt);
 % opt.model.file = fuufile(WD, ...
 %                          'models', ...
 %                          'model-motionDecodingMultivariate_smdl.json');
-% 
+%
 % bidsFFX('specifyAndEstimate', opt, funcFWHM);
 % bidsFFX('contrasts', opt, funcFWHM);
 % concatBetaImgTmaps(funcFWHM, opt);

@@ -19,7 +19,7 @@ function opt = ds000114_getOption()
 
   opt.anatReference.type = 'T1w';
   opt.anatReference.session = 2;
-  
+
   opt.space = 'individual';
 
   opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
