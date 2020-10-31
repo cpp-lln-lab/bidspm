@@ -19,9 +19,8 @@ URL = 'http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.z
 WD = fileparts(mfilename('fullpath'));
 
 % we add all the subfunctions that are in the sub directories
-addpath(fullfile(WD, '..'));
-addpath(genpath(fullfile(WD, '..', 'src')));
-addpath(genpath(fullfile(WD, '..', 'lib')));
+addpath(genpath(fullfile(WD, '..', '..', 'src')));
+addpath(genpath(fullfile(WD, '..', '..', 'lib')));
 
 %% Set options
 opt = MoAEpilot_getOption();

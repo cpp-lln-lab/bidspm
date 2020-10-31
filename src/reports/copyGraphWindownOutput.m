@@ -24,15 +24,15 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
   %
   % assumes that no file was generated if SPM is running in command line mode
 
-  if ~spm('CmdLine')
+  if nargin < 4 || isempty(imgNb)
+    imgNb = 1;
+  end
 
-    if nargin < 4 || isempty(imgNb)
-      imgNb = 1;
-    end
+  if nargin < 3 || isempty(action)
+    action = '';
+  end
 
-    if nargin < 3 || isempty(action)
-      action = '';
-    end
+  if ~spm('CmdLine') && ~isOctave
 
     figureDir = fullfile(opt.derivativesDir, ['sub-' subID], 'figures');
     if ~exist(figureDir, 'dir')
