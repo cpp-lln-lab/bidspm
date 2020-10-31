@@ -12,17 +12,11 @@ FWHM = 6;
 WD = fileparts(mfilename('fullpath'));
 
 % we add all the subfunctions that are in the sub directories
-addpath(fullfile(WD, '..'));
-addpath(genpath(fullfile(WD, '..', 'src')));
-addpath(genpath(fullfile(WD, '..', 'lib')));
+addpath(genpath(fullfile(WD, '..', '..', 'src')));
+addpath(genpath(fullfile(WD, '..', '..', 'lib')));
 
 %% Set options
 opt = ds001168_getOption();
-
-% the line below allows to run preprocessing in "native" space.
-% - use realign and unwarp
-% - don't do normalization
-opt.space = 'individual';
 
 checkDependencies();
 
@@ -41,9 +35,9 @@ bidsSpatialPrepro(opt);
 anatomicalQA(opt);
 bidsResliceTpmToFunc(opt);
 functionalQA(opt);
-%
-% bidsSmoothing(FWHM, opt);
-%
+
+bidsSmoothing(FWHM, opt);
+
 % bidsFFX('specifyAndEstimate', opt, FWHM);
 % bidsFFX('contrasts', opt, FWHM);
 % bidsResults(opt, FWHM, []);

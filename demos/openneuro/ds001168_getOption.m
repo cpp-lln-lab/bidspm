@@ -20,10 +20,10 @@ function opt = ds001168_getOption()
   opt.anatReference.type = 'T1w';
   opt.anatReference.session = 1;
 
-  opt.ignoreFieldmaps = false;
+  opt.space = 'individual';
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);
-  %     saveOptions(opt);
+  saveOptions(opt);
 
 end
