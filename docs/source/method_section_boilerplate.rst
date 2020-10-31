@@ -1,12 +1,6 @@
 Boilerplate methods section
 ***************************
 
-Use the report function to get a print out of the content of a dataset.
-
-.. automodule:: src.reports 
-
-.. autofunction:: reportBIDS
-
 Preprocessing
 =============
 
@@ -83,3 +77,13 @@ Friston KJ, Ashburner J, Frith CD, Poline J-B, Heather JD & Frackowiak RSJ
 Corbin, N., Todd, N., Friston, K. J. & Callaghan, M. F. Accurate modeling of
 temporal correlations in rapidly sampled fMRI time series. Hum. Brain Mapp. 39,
 3884–3897 (2018).
+
+
+---
+
+Use the report function to get a print out of the content of a dataset.
+
+.. automodule:: src.reports 
+
+.. autofunction:: reportBIDS
+.. autofunction:: copyGraphWindownOutput

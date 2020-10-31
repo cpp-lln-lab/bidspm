@@ -1,4 +1,4 @@
-% (C) Copyright 20120 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
 
 function bidsSegmentSkullStrip(opt)
   %

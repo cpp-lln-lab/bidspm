@@ -23,6 +23,8 @@ function bidsSpatialPrepro(opt)
   end
   opt = loadAndCheckOptions(opt);
 
+  setGraphicWindow();
+
   % load the subjects/Groups information and the task name
   [group, opt, BIDS] = getData(opt);
 
@@ -43,14 +45,11 @@ function bidsSpatialPrepro(opt)
 
       printProcessingSubject(groupName, iSub, subID);
 
-      % identify sessions for this subject
-      sessions = getInfo(BIDS, subID, opt, 'Sessions');
-
       matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
       opt.orderBatches.selectAnat = 1;
 
       action = [];
-      if  strcmp(opt.space, 'individual')
+      if strcmp(opt.space, 'individual')
         action = 'realignUnwarp';
       end
       [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action);
@@ -78,6 +77,12 @@ function bidsSpatialPrepro(opt)
       saveMatlabBatch(matlabbatch, batchName, opt, subID);
 
       spm_jobman('run', matlabbatch);
+
+      imgNb = copyGraphWindownOutput(opt, subID, 'realign');
+      if  strcmp(opt.space, 'individual')
+        imgNb = copyGraphWindownOutput(opt, subID, 'unwarp', imgNb);
+      end
+      imgNb = copyGraphWindownOutput(opt, subID, 'func2anatCoreg', imgNb);
 
     end
   end
