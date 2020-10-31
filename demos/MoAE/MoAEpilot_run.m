@@ -32,28 +32,25 @@ opt = MoAEpilot_getOption();
 opt.space = 'individual';
 
 %% Get data
-% fprintf('%-40s:', 'Downloading dataset...');
-% urlwrite(URL, 'MoAEpilot.zip');
+fprintf('%-40s:', 'Downloading dataset...');
+urlwrite(URL, 'MoAEpilot.zip');
 unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 
 checkDependencies();
 
 %% Run batches
-% reportBIDS(opt);
-
-% bidsCopyRawFolder(opt, 1);
+reportBIDS(opt);
+bidsCopyRawFolder(opt, 1);
 
 bidsSegmentSkullStrip(opt);
-
-return
 
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
-anatomicalQA(opt);
-bidsResliceTpmToFunc(opt);
-functionalQA(opt);
+%anatomicalQA(opt);
+%bidsResliceTpmToFunc(opt);
+%functionalQA(opt);
 
 bidsSmoothing(FWHM, opt);
 

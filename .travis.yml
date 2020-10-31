@@ -73,3 +73,9 @@ jobs:
         - npm install `cat npm-requirements.txt`
       script:
         - remark ./docs/ --frail
+
+    - name: "run demo"
+      before_script:
+        - cd demos/MoAE
+      script:
+        - octave $OCTFLAGS --eval "MoAEpilot_run"
