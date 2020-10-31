@@ -6,17 +6,21 @@
   },
   "Steps": [
     {
+      "Level": "run",
+      "Model": {
+        "X": [
+          "trial_type.VisMot",
+          "trial_type.VisStat",
+          "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
+        ]
+      }
+    },
+    {
       "Level": "subject",
       "Model": {
         "X": [
-          "trial_type.Vis_U",
-          "trial_type.Vis_D",
-          "trial_type.Vis_R",
-          "trial_type.Vis_L",
-          "trial_type.Aud_U",
-          "trial_type.Aud_D",
-          "trial_type.Aud_L",
-          "trial_type.Aud_R",
+          "trial_type.VisMot",
+          "trial_type.VisStat",
           "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
         ]
       },
@@ -42,7 +46,11 @@
     },
     {
       "Level": "dataset",
-      "AutoContrasts": ["trial_type.VisMot", "trial_type.VisStat", "VisMot_gt_VisStat", "VisStat_gt_VisMot"]
+      "AutoContrasts": [
+        "trial_type.VisMot", 
+        "trial_type.VisStat", 
+        "VisMot_gt_VisStat", 
+        "VisStat_gt_VisMot"]
     }
   ]
 }

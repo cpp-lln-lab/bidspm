@@ -13,11 +13,12 @@ function opt = getOption()
   opt.taskName = 'visMotion';
 
   % The directory where the data are located
-  opt.dataDir = '/home/remi/BIDS/visMotion/derivatives/';
+  opt.dataDir = '/home/remi/gin/CPP_visMotion/raw';
+  opt.derivativesDir = '/home/remi/Documents';
 
   % specify the model file that contains the contrasts to compute
   opt.model.file = ...
-      '/home/remi/github/CPP_BIDS_SPM_pipeline/model-visMotionLoc_smdl.json';
+      '/home/remi/github/CPP_BIDS_SPM_pipeline/demos/vismotion/models/model-visMotionLoc_smdl.json';
 
   % specify the result to compute
   % Contrasts.Name has to match one of the contrast defined in the model json file
