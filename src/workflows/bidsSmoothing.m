@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function bidsSmoothing(funcFWHM, opt)
   % This scripts performs smoothing to the functional data using a full width

@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function bidsResults(opt, funcFWHM, conFWHM)
   % This scripts computes the results for a series of contrast that can be

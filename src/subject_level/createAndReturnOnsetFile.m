@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM)
   % onsetFileName = createAndReturnOnsetFile(opt, boldFileName, prefix, isMVPA)

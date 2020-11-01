@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function sliceOrder = getSliceOrder(opt, verbose)
   % get the slice order information from the BIDS data set or from  getOption

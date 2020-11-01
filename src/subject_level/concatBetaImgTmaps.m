@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function concatBetaImgTmaps(funcFWHM, opt, deleteIndBeta, deleteIndTmaps)
   % Make 4D images of beta and t-maps for the MVPA. ::

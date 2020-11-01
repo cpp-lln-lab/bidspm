@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   % [fileName, subFuncDataDir] = getBoldFilename(BIDS, opt, subID, sessionID, runID)
