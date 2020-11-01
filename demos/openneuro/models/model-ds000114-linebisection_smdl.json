@@ -1,0 +1,37 @@
+{
+  "Name": "linebisection",
+  "Description": "contrasts to compute for the line bisection task",
+  "Input": {
+    "task": "linebisection"
+  },
+  "Steps": [
+    {
+      "Level": "subject",
+      "Model": {
+        "X": [
+          "trial_type.Correct_Task",
+          "trial_type.Incorrect_Task",
+          "trial_type.No_Response_Task",
+          "trial_type.Response_Control",
+          "trial_type.No_Response_Control",
+          "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
+        ]
+      },
+      "AutoContrasts": ["trial_type.Correct_Task", "trial_type.Incorrect_Task"]
+    },
+    {
+      "Level": "run",
+      "Model": {
+        "X": [
+          "trial_type.Correct_Task",
+          "trial_type.Incorrect_Task",
+          "trial_type.No_Response_Task",
+          "trial_type.Response_Control",
+          "trial_type.No_Response_Control",
+          "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
+        ]
+      },
+      "AutoContrasts": ["trial_type.Correct_Task", "trial_type.Incorrect_Task"]
+    }
+  ]
+}

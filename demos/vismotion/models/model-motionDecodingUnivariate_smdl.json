@@ -1,0 +1,116 @@
+{
+  "Name": "Motion Decoding",
+  "Description": "contrasts for the motion localizer dataset",
+  "Input": {
+    "task": "motionDecoding"
+  },
+  "Steps": [
+    {
+      "Level": "subject",
+      "Model": {
+        "X": [
+          "trial_type.Vis_U",
+          "trial_type.Vis_D",
+          "trial_type.Vis_R",
+          "trial_type.Vis_L",
+          "trial_type.Aud_U",
+          "trial_type.Aud_D",
+          "trial_type.Aud_L",
+          "trial_type.Aud_R",
+          "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
+        ]
+      },
+      "AutoContrasts": [
+        "trial_type.Vis_U", 
+        "trial_type.Vis_D",
+        "trial_type.Vis_R", 
+        "trial_type.Vis_L",
+        "trial_type.Aud_U", 
+        "trial_type.Aud_D",
+        "trial_type.Aud_R", 
+        "trial_type.Aud_L"],
+      "Contrasts": [
+        {
+          "Name": "Vis",
+          "ConditionList": [
+            "trial_type.Vis_U", 
+            "trial_type.Vis_D", 
+            "trial_type.Vis_R", 
+            "trial_type.Vis_L"
+          ],
+          "weights": [0.25, 0.25, 0.25, 0.25],
+          "type": "t"
+        },
+        {
+          "Name": "Aud",
+          "ConditionList": [
+            "trial_type.Aud_U", 
+            "trial_type.Aud_D", 
+            "trial_type.Aud_R", 
+            "trial_type.Aud_L"
+          ],
+          "weights": [0.25, 0.25, 0.25, 0.25],
+          "type": "t"
+        },
+        {
+          "Name": "Vis_gt_Aud",
+          "ConditionList": [
+            "trial_type.Vis_U", 
+            "trial_type.Vis_D", 
+            "trial_type.Vis_R", 
+            "trial_type.Vis_L", 
+            "trial_type.Aud_U", 
+            "trial_type.Aud_D", 
+            "trial_type.Aud_R", 
+            "trial_type.Aud_L"
+          ],
+          "weights": [
+            0.25, 
+            0.25, 
+            0.25, 
+            0.25, 
+            -0.25, 
+            -0.25, 
+            -0.25, 
+            -0.25],
+          "type": "t"
+        },
+        {
+          "Name": "Aud_gt_Vis",
+          "ConditionList": [
+            "trial_type.Vis_U", 
+            "trial_type.Vis_D", 
+            "trial_type.Vis_R", 
+            "trial_type.Vis_L", 
+            "trial_type.Aud_U", 
+            "trial_type.Aud_D", 
+            "trial_type.Aud_R", 
+            "trial_type.Aud_L"
+          ],
+          "weights": [
+            -0.25, 
+            -0.25, 
+            -0.25, 
+            -0.25, 
+            0.25, 
+            0.25, 
+            0.25, 
+            0.25],
+          "type": "t"
+        }
+      ]
+    },
+    {
+      "Level": "dataset",
+      "AutoContrasts": [
+        "Vis_U", 
+        "Vis_D",
+        "Vis_R", 
+        "Vis_L",
+        "Aud_U", 
+        "Aud_D",
+        "Aud_R", 
+        "Aud_L"]
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "Name": "Listening",
+  "Description": "contrasts to compute for the FIL MoAE dataset",
+  "Input": {
+    "task": "auditory"
+  },
+  "Steps": [
+    {
+      "Level": "dataset",
+      "AutoContrasts": []
+    },
+    {
+      "Level": "subject",
+      "AutoContrasts": ["trial_type.listening"],
+      "Contrasts": [
+        {
+          "Name": "listening_inf_baseline",
+          "ConditionList": [
+            "trial_type.listening"
+          ],
+          "weights": [-1],
+          "type": "t"
+        }
+      ]
+    },
+    {
+      "Level": "run",
+      "Transformations": [
+        {
+          "Name": "Factor",
+          "Inputs": ["trial_type"]
+        },
+        {
+          "Name": "Convolve",
+          "Model": "spm",
+          "Inputs": ["trial_type.listening"]
+        }
+      ],
+      "Model": {
+        "X": [
+          "trial_type.listening",
+          "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
+        ],
+        "Options": {
+          "high_pass_filter_cutoff_secs": 128
+        },
+        "Software": {
+          "SPM": {
+            "whitening": "AR(1)"
+          }
+        },
+        "Mask": ""
+      },
+      "AutoContrasts": ["trial_type.listening"]
+    }
+  ]
+}
