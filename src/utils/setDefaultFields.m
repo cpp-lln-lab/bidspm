@@ -1,40 +1,46 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function structure = setDefaultFields(structure, fieldsToSet)
-    % structure = setDefaultFields(structure, fieldsToSet)
-    %
-    % recursively loop through the fields of a structure and sets a value if they don't exist
-    %
+  % structure = setDefaultFields(structure, fieldsToSet)
+  %
+  % recursively loop through the fields of a structure and sets a value if they don't exist
+  %
 
-    if isempty(fieldsToSet)
-        return
-    end
+  if isempty(fieldsToSet)
+    return
+  end
 
-    names = fieldnames(fieldsToSet);
+  names = fieldnames(fieldsToSet);
+
+  for j = 1:numel(structure)
 
     for i = 1:numel(names)
 
-        thisField = fieldsToSet.(names{i});
+      thisField = fieldsToSet.(names{i});
 
-        if isfield(structure, names{i}) && isstruct(structure.(names{i}))
+      if isfield(structure(j), names{i}) && isstruct(structure(j).(names{i}))
 
-            structure.(names{i}) = ...
-                setDefaultFields(structure.(names{i}), fieldsToSet.(names{i}));
+        structure(j).(names{i}) = ...
+            setDefaultFields(structure(j).(names{i}), fieldsToSet.(names{i}));
 
-        else
+      else
 
-            structure = setFieldToIfNotPresent( ...
-                structure, ...
-                names{i}, ...
-                thisField);
-        end
+        structure = setFieldToIfNotPresent( ...
+                                           structure, ...
+                                           names{i}, ...
+                                           thisField);
+      end
 
     end
 
     structure = orderfields(structure);
 
+  end
+
 end
 
 function structure = setFieldToIfNotPresent(structure, fieldName, value)
-    if ~isfield(structure, fieldName)
-        structure.(fieldName) = value;
-    end
+  if ~isfield(structure, fieldName)
+    structure.(fieldName) = value;
+  end
 end

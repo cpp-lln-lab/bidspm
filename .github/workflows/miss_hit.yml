@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - dev
   pull_request:
     branches: '*'
 
@@ -27,7 +28,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools
-        pip3 install install miss_hit
+        pip3 install miss_hit
 
     - name: Miss_hit code quality
       run: |

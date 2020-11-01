@@ -1,19 +1,22 @@
-function [fileName, subFuncDataDir] = getBoldFilename(varargin)
-    % [fileName, subFuncDataDir] = getBoldFilename(BIDS, opt, subID, sessionID, runID)
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-    [BIDS, subID, sessionID, runID, opt] = deal(varargin{:});
+function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
+  % [fileName, subFuncDataDir] = getBoldFilename(BIDS, opt, subID, sessionID, runID)
+  %
+  % Get the filename and the directory of a bold file for a given session /
+  % run.
+  % Unzips the file if necessary.
 
-    % get the filename for this bold run for this task
-    fileName =  getInfo(BIDS, subID, opt, 'Filename', sessionID, runID, 'bold');
+  [BIDS, subID, sessionID, runID, opt] = deal(varargin{:});
 
-    % get fullpath of the file
-    fileName = fileName{1};
-    [subFuncDataDir, file, ext] = spm_fileparts(fileName);
-    % get filename of the orginal file (drop the gunzip extension)
-    if strcmp(ext, '.gz')
-        fileName = file;
-    elseif strcmp(ext, '.nii')
-        fileName = [file ext];
-    end
+  % get the filename for this bold run for this task
+  boldFileName = getInfo(BIDS, subID, opt, 'Filename', sessionID, runID, 'bold');
+
+  % get fullpath of the file
+  % ASSUMPTION: the first file is the right one.
+  boldFileName = unzipImgAndReturnsFullpathName(boldFileName);
+
+  [subFuncDataDir, boldFileName, ext] = spm_fileparts(boldFileName);
+  boldFileName = [boldFileName ext];
 
 end

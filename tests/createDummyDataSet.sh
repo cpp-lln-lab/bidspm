@@ -7,7 +7,7 @@ StartDir=`pwd` # relative to starting directory
 StartDir=$StartDir/dummyData/derivatives/SPM12_CPPL
 mkdir $StartDir
 
-SubList='ctrl01 ctrl02 blind01 blind02 cat01 cat02 cont01 cont02 cont03 01 02' # subject list
+SubList='ctrl01 ctrl02 blind01 blind02 01 02' # subject list
 SesList='01 02' # session list
 
 for Subject in $SubList # loop through subjects
@@ -26,11 +26,17 @@ do
 
 			rm $ThisDir/func/*
 
-			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii.gz
-			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii.gz
-			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii.gz
+			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
+			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
+			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+
+			touch $ThisDir/func/asub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
+			touch $ThisDir/func/asub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
+
+			touch $ThisDir/func/meanusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/func/s6wsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/func/s6rsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/func/s6usub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/func/rp_sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.txt
 
 			echo "onset\tduration\ttrial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
@@ -47,7 +53,7 @@ do
 
 		  mkdir $ThisDir/anat
 
-		  touch $ThisDir/anat/sub-$Subject\_ses-$Ses\_T1w.nii.gz
+		  touch $ThisDir/anat/sub-$Subject\_ses-$Ses\_T1w.nii
 
 		done
 
