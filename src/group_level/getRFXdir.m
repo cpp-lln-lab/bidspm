@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName)
   % rfxDir = getRFXdir(opt, funcFWHM, conFWHM, iStep, iCon)

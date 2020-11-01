@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmapMetadata)
   % get metadata of the associated bold file

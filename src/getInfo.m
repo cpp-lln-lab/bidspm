@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function varargout = getInfo(BIDS, subID, opt, info, varargin)
   % wrapper function to fetch specific info in a BIDS structure returned by

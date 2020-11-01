@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function matlabbatch = setBatchCoregistration(matlabbatch, ref, src, other)
   % matlabbatch = setBatchCoregistrationGeneral(matlabbatch, ref, src, other)

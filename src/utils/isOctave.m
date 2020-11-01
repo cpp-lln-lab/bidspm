@@ -1,5 +1,5 @@
 % (C) Copyright 2020 Agah Karakuzu
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function retval = isOctave
   % Return: true if the environment is Octave.

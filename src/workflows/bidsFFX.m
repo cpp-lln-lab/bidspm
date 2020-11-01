@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function bidsFFX(action, opt, funcFWHM)
   % This scripts builds up the design matrix for each subject.

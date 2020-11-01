@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function [argout1, argout2] = templateFunction(argin1, argin2, argin3)
   %

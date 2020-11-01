@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developpers
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   %% Converts a tsv file to an onset file suitable for SPM ffx analysis
