@@ -1,12 +1,11 @@
 # this is mostly taken from the spm docker files: https://github.com/spm/spm-docker
-FROM ubuntu:cosmic
+FROM ubuntu:focal
 
 # basic OS tools install and also octave
-RUN apt-get update && apt-get -y install --no-install-recommends \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
      build-essential \
-     git \
-     zip unzip \
      curl \
+     git \
      octave \
      liboctave-dev \
  && apt-get clean \
@@ -16,7 +15,6 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
      /var/lib/apt/lists/* \
      /var/log/apt/term*
 
-# install SPM and the relevant patches for octave
 RUN mkdir /opt/spm12 \
  && curl -SL https://github.com/spm/spm12/archive/r7487.tar.gz \
   | tar -xzC /opt/spm12 --strip-components 1 \
@@ -30,11 +28,10 @@ RUN mkdir /opt/spm12 \
 RUN octave --no-gui --eval "addpath(\"/opt/spm12\"); savepath ();"
 
 # get the CPP BIDS pipeline code
-RUN mkdir /CPP_BIDS_pipeline /output /code \
- && git clone https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline.git /CPP_BIDS_pipeline/
+RUN mkdir /CPP_SPM /output /code \
+ && git clone https://github.com/cpp-lln-lab/CPP_SPM.git /CPP_SPM/
 
-RUN octave --no-gui --eval "addpath(genpath(\"/CPP_BIDS_pipeline\")); savepath ();"
+RUN octave --no-gui --eval "addpath(genpath(\"/CPP_SPM/lib\")); savepath ();"
+RUN octave --no-gui --eval "addpath(genpath(\"/CPP_SPM/src\")); savepath ();"
 
-WORKDIR /CPP_BIDS_pipeline
-
-RUN git checkout remi-docker_dev
+WORKDIR /CPP_SPM
