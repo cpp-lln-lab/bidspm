@@ -1,12 +1,16 @@
 % (C) Copyright 2019 Remi Gau
 
-function opt = MoAEpilot_getOption()
+function opt = MoAEpilot_getOption(optionJsonFile)
   % returns a structure that contains the options chosen by the user to run
   % slice timing correction, pre-processing, FFX, RFX.
 
-  if nargin < 1
+  if nargin == 1
+    
+    opt = loadAndCheckOptions(optionJsonFile);
+    
+  else
     opt = [];
-  end
+  
 
   % task to analyze
   opt.taskName = 'auditory';
@@ -14,6 +18,12 @@ function opt = MoAEpilot_getOption()
   % The directory where the data are located
   opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'output', 'MoAEpilot');
   opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')));
+  
+  % Uncomment the lines below to run preprocessing 
+  % - don't use realign and unwarp
+  % opt.realign.useUnwarp = false;
+  % - in "native" space: don't do normalization
+  % opt.space = 'individual';
 
   opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                             'models', 'model-MoAE_smdl.json');
@@ -36,6 +46,8 @@ function opt = MoAEpilot_getOption()
                                             'p', 0.01, ...
                                             'k', 0, ...
                                             'NIDM', true);
+                                          
+  end                                        
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);
