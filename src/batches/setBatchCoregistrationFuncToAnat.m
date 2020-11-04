@@ -18,7 +18,7 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID
 
   meanImageToUse = 'rmean';
   otherImageToUse = 'cfiles';
-  if strcmp(opt.space, 'individual')
+  if opt.realign.useUnwarp
     meanImageToUse = 'meanuwr';
     otherImageToUse = 'uwrfiles';
   end

@@ -48,8 +48,9 @@ function bidsSpatialPrepro(opt)
       matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
       opt.orderBatches.selectAnat = 1;
 
+      % if action is emtpy then only realign will be done
       action = [];
-      if strcmp(opt.space, 'individual')
+      if opt.realign.useUnwarp
         action = 'realignUnwarp';
       end
       [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action);
@@ -78,13 +79,22 @@ function bidsSpatialPrepro(opt)
 
       spm_jobman('run', matlabbatch);
 
-      imgNb = copyGraphWindownOutput(opt, subID, 'realign');
-      if  strcmp(opt.space, 'individual')
-        imgNb = copyGraphWindownOutput(opt, subID, 'unwarp', imgNb);
-      end
-      imgNb = copyGraphWindownOutput(opt, subID, 'func2anatCoreg', imgNb);
+      copyFigures(opt, subID);
 
     end
   end
 
+end
+
+
+function copyFigures(opt, subID)
+  
+  imgNb = copyGraphWindownOutput(opt, subID, 'realign');
+  
+  if  opt.realign.useUnwarp
+    imgNb = copyGraphWindownOutput(opt, subID, 'unwarp', imgNb);
+  end
+  
+  imgNb = copyGraphWindownOutput(opt, subID, 'func2anatCoreg', imgNb); %#ok<NASGU>
+  
 end
