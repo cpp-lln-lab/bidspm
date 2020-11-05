@@ -25,6 +25,8 @@ function bidsFFX(action, opt, funcFWHM)
 
   % load the subjects/Groups information and the task name
   [group, opt, BIDS] = getData(opt);
+  
+  printWorklowName('subject level GLM')
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

@@ -12,6 +12,8 @@ function bidsSmoothing(funcFWHM, opt)
 
   % load the subjects/Groups information and the task name
   [group, opt, BIDS] = getData(opt);
+  
+  printWorklowName('smoothing functional data')
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

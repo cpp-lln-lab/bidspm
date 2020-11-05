@@ -32,8 +32,8 @@ function bidsSTC(opt)
 
   % load the subjects/Groups information and the task name
   [group, opt, BIDS] = getData(opt);
-
-  fprintf(1, 'DOING SLICE TIME CORRECTION\n');
+  
+  printWorklowName('slice timing correction')
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

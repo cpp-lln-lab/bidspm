@@ -40,6 +40,8 @@ function bidsRFX(action, funcFWHM, conFWHM, opt)
 
   % load the subjects/Groups information and the task name
   [group, opt, ~] = getData(opt);
+  
+  printWorklowName('group level GLM')
 
   switch action
 

@@ -27,8 +27,8 @@ function bidsSpatialPrepro(opt)
 
   % load the subjects/Groups information and the task name
   [group, opt, BIDS] = getData(opt);
-
-  fprintf(1, 'DOING SPATIAL PREPROCESSING\n');
+  
+  printWorklowName('spatial preprocessing')
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

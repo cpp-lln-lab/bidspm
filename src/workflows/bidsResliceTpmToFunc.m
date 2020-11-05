@@ -13,8 +13,8 @@ function bidsResliceTpmToFunc(opt)
   opt = loadAndCheckOptions(opt);
 
   [group, opt, BIDS] = getData(opt);
-
-  fprintf(1, 'RESLICING TPM TO MEAN FUNCTIONAL\n\n');
+  
+  printWorklowName('reslicing tissue probability maps to functional dimension')
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

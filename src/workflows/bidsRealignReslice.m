@@ -17,6 +17,8 @@ function bidsRealignReslice(opt)
 
   % load the subjects/Groups information and the task name
   [group, opt, BIDS] = getData(opt);
+  
+  printWorklowName('realign and reslice')
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

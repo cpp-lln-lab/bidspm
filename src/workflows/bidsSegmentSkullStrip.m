@@ -19,8 +19,8 @@ function bidsSegmentSkullStrip(opt)
 
   % load the subjects/Groups information and the task name
   [group, opt, BIDS] = getData(opt);
-
-  fprintf(1, 'SEGMENTING AND SKULL STRIPPING ANAT\n');
+  
+  printWorklowName('segmentation and skulltripping')
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

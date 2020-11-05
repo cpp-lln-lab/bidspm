@@ -39,6 +39,8 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
     opt = [];
   end
   opt = loadAndCheckOptions(opt);
+  
+  printWorklowName('copy data')
 
   %% All tasks in this experiment
   % raw directory and derivatives directory
