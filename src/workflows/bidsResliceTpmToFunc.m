@@ -33,7 +33,8 @@ function bidsResliceTpmToFunc(opt)
       [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
       TPMs = validationInputFile(anatDataDir, anatImage, 'c[123]');
 
-      matlabbatch = setBatchReslice( ...
+      matlabbatch = [];
+      matlabbatch = setBatchReslice(matlabbatch, ...
                                     fullfile(meanFuncDir, meanImage), ...
                                     cellstr(TPMs));
 
