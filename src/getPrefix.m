@@ -13,61 +13,38 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
   motionRegressorPrefix = '';
 
   allowedPrefixCases = {
-                        'STC'; ...
-                        'preprocess'; ...
-                        'smoothing_space-individual'; ...
-                        'smoothing_unwarp-0'; ...
-                        'smoothing'; ...
-                        'FFX_space-individual'; ...
+                        'realign'; ...
+                        'smooth'; ...
                         'FFX'};
 
   switch step
 
-    case 'STC'
-
-    case 'preprocess'
+    case 'realign'
       prefix = prefixForSTC(prefix, opt);
-      
-    case 'preprocess_unwarp-0'
-      prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('realign.write.prefix') prefix];
 
     %%
-    case 'smoothing'
+    case 'smooth'
       prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
-      prefix = [spm_get_defaults('normalise.write.prefix') prefix];
-    
-    case 'smoothing_space-MNI'
-      prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('normalise.write.prefix') prefix];
       
-    case 'smoothing_space-individual'
-      prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
-
-    case 'smoothing_unwarp-0_space-individual'
-      prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('realign.write.prefix') prefix];
+      if ~opt.realign.useUnwarp && strcmp(opt.space, 'individual')
+        prefix = [spm_get_defaults('realign.write.prefix') prefix];
+      elseif opt.realign.useUnwarp
+        prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
+      end
       
-      
+      if strcmp(opt.space, 'MNI')
+        prefix = [spm_get_defaults('normalise.write.prefix') prefix];
+      end
+          
     %%
     case 'FFX'
-      prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
-      prefix = [spm_get_defaults('normalise.write.prefix') prefix];
+      motionRegressorPrefix = prefixForSTC(prefix, opt);
       
-    case 'FFX_space-individual'
-      prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
+      prefix = getPrefix('smooth', opt);
       
-    case 'FFX_unwarp-0'
-      prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('normalise.write.prefix') prefix];
-      
-    case 'FFX_unwarp-0_space-individual'
-      prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('realign.write.prefix') prefix];
+      if funcFWHM > 0
+        prefix = [spm_get_defaults('smooth.prefix') num2str(funcFWHM) prefix];
+      end
       
     %%  
     otherwise
@@ -84,13 +61,6 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
                                     'See allowed cases above');
       error(errorStruct);
 
-  end
-  
-  if any(ismember(step, 'FFX'))
-    % Check which level of smoothing is applied
-    if funcFWHM > 0
-      prefix = [spm_get_defaults('smooth.prefix') num2str(funcFWHM) prefix];
-    end
   end
 
 end
