@@ -50,8 +50,8 @@ function bidsSpatialPrepro(opt)
 
       % if action is emtpy then only realign will be done
       action = [];
-      if opt.realign.useUnwarp
-        action = 'realignUnwarp';
+      if ~opt.realign.useUnwarp
+        action = 'realign';
       end
       [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action);
       opt.orderBatches.realign = 2;
