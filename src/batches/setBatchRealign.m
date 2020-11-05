@@ -82,7 +82,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
       % check that the file with the right prefix exist and we get and
       % save its voxeldimension
-      prefix = getPrefix('preprocess', opt);
+      prefix = getPrefix('realign', opt);
       file = validationInputFile(subFuncDataDir, boldFilename, prefix);
       [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, boldFilename);
 

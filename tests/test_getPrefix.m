@@ -24,7 +24,7 @@ function test_getPrefixSTC()
 
 end
 
-function test_getNoSTC()
+function test_getPrefixNoSTC()
 
   step = 'realign';
   opt.metadata = [];
@@ -38,6 +38,37 @@ function test_getNoSTC()
   assertEqual(prefix, expectedPrefixOutput);
 
 end
+
+
+function test_getPrefixNormalise()
+
+  step = 'normalise';
+  opt.metadata = [];
+  opt.sliceOrder = [];
+  opt.realign.useUnwarp = true;
+  opt.space = 'MNI';
+  
+  prefix = getPrefix(step, opt);
+
+  expectedPrefixOutput = spm_get_defaults('unwarp.write.prefix');
+
+  assertEqual(prefix, expectedPrefixOutput);
+  
+  %% no unwarp
+  
+  step = 'normalise';
+  opt.metadata = [];
+  opt.sliceOrder = [];
+  opt.realign.useUnwarp = false;
+  
+  prefix = getPrefix(step, opt);
+
+  expectedPrefixOutput = '';
+
+  assertEqual(prefix, expectedPrefixOutput);
+
+end
+
 
 function test_getPrefixSmooth()
 

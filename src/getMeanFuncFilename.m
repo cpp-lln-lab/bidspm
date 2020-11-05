@@ -13,11 +13,7 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt)
                                                    BIDS, ...
                                                    subID, sessions{1}, runs{1}, opt);
 
-  workflowType = 'smoothing_space-individual';
-  if ~opt.realign.useUnwarp
-    workflowType = 'preprocess';
-  end
-  prefix = getPrefix(workflowType, opt);
+  prefix = getPrefix('normalise', opt);
 
   meanImage = validationInputFile( ...
                                   subFuncDataDir, ...

@@ -4,16 +4,7 @@ function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
 
   printBatchName('smoothing functional images');
 
-  % creates prefix to look for
-  workflowType = 'smoothing';
-  if ~opt.realign.useUnwarp && strcmp(opt.space, 'individual')
-    workflowType = 'smoothing_unwarp-0_space-individual';
-  elseif opt.realign.useUnwarp && strcmp(opt.space, 'individual')
-    workflowType = 'smoothing_space-individual';
-  elseif ~opt.realign.useUnwarp && strcmp(opt.space, 'MNI')
-    workflowType = 'smoothing_space-MNI';
-  end
-  prefix = getPrefix(workflowType, opt, funcFWHM);
+  prefix = getPrefix('smooth', opt);
 
   % identify sessions for this subject
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
