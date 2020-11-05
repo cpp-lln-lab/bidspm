@@ -53,9 +53,6 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
            'or leave it empty to use mid-acquisition time as reference.']);
   end
 
-  % prefix of the files to look for
-  prefix = getPrefix('STC', opt);
-
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
   runCounter = 1;
@@ -73,7 +70,7 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
                                                    subID, sessions{iSes}, runs{iRun}, opt);
 
       % check that the file with the right prefix exist
-      file = validationInputFile(subFuncDataDir, prefix, fileName);
+      file = validationInputFile(subFuncDataDir, fileName);
 
       % add the file to the list
       matlabbatch{1}.spm.temporal.st.scans{runCounter} = {file};

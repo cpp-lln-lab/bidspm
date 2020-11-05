@@ -1,7 +1,7 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function files = validationInputFile(dir, fileName, prefix)
-  % file = validationInputFile(dir, prefix, fileName)
+  % file = validationInputFile(dir, fileName, prefix)
   %
   % Checks if files exist. A prefix can be added. The prefix allows for the
   % use of regular expression.
