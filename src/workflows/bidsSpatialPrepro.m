@@ -73,6 +73,12 @@ function bidsSpatialPrepro(opt)
         % dependency from coregistration
         matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt);
       end
+      
+      % if no unwarping was done on func, we reslice the func, so we can use
+      % them for the functionalQA
+      if ~opt.realign.useUnwarp
+        matlabbatch = setBatchRealign(matlabbatch, BIDS, subID, opt, 'reslice');
+      end
 
       batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];
       saveMatlabBatch(matlabbatch, batchName, opt, subID);
