@@ -26,9 +26,9 @@ function test_getBoldFilenameForFFXBasic()
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                               'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', ...
                               'ses-01', 'func', ...
-                              's6wsub-01_ses-01_task-vislocalizer_bold.nii');
+                              's6wusub-01_ses-01_task-vislocalizer_bold.nii');
 
-  assertEqual('s6w', prefix);
+  assertEqual('s6wu', prefix);
   assertEqual(expectedFileName, boldFileName);
 
 end

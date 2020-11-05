@@ -41,7 +41,7 @@ function test_getRealignParamFileNativeSpace()
   opt.taskName = 'vislocalizer';
   opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
   opt.subjects = {subID};
-  opt.space = 'T1w';
+  opt.space = 'individual';
 
   opt = checkOptions(opt);
 
@@ -69,7 +69,7 @@ function test_getRealignParamFileFFX()
   opt.taskName = 'vislocalizer';
   opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
   opt.subjects = {subID};
-  opt.space = 'T1w';
+  opt.space = 'MNI';
 
   opt = checkOptions(opt);
 
