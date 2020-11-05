@@ -14,9 +14,9 @@ function [boldFileName, prefix] = getBoldFilenameForFFX(varargin)
 
   prefix = getPrefix('FFX', opt, funcFWHM);
   if ~opt.realign.useUnwarp && strcmp(opt.space, 'individual')
-    prefix = getPrefix('FFX_unwarp-0_space-individual', opt); 
+    prefix = getPrefix('FFX_unwarp-0_space-individual', opt, funcFWHM); 
   elseif opt.realign.useUnwarp && strcmp(opt.space, 'individual')
-    prefix = getPrefix('FFX_space-individual', opt);
+    prefix = getPrefix('FFX_space-individual', opt, funcFWHM);
   elseif  ~opt.realign.useUnwarp
     prefix = getPrefix('FFX_unwarp-0', opt, funcFWHM);
   end

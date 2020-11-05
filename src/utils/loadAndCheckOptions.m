@@ -31,6 +31,12 @@ function opt = loadAndCheckOptions(opt)
       error('the requested file does not exist: %s', opt);
     end
   end
+  
+  % temporary hack to fix the way spm_jsonread reads some empty fields
+  % REPORT IT TO SPM
+  if isfield(opt, 'subjects') && ~iscell(opt.subjects) && isnan(opt.subjects)
+    opt.subjects = {[]};
+  end
 
   opt = checkOptions(opt);
   fprintf(1, '\nOptions are locked & loaded.\n\n');
