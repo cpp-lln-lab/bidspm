@@ -55,10 +55,12 @@ function functionalQA(opt)
                                                        runs{iRun}, ...
                                                        opt);
 
-          prefix = getPrefix('smoothing_space-individual', opt);
+          workflowType = 'smoothing_space-individual';
           if ~opt.realign.useUnwarp
-            prefix = getPrefix('preprocess_unwarp-0', opt);
+            workflowType = 'preprocess_unwarp-0';
           end
+          prefix = getPrefix(workflowType, opt, funcFWHM);
+          
           funcImage = validationInputFile(subFuncDataDir, fileName, prefix);
 
           % sanity check that all images are in the same space.
