@@ -1,6 +1,8 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt)
+  
+  printBatchName('saving coregistration matrix');
 
   % create name of the output file based on the name of the first image of the
   % first session

@@ -1,8 +1,8 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir)
-
-  fprintf(1, 'BUILDING JOB: Factorial Design Specification');
+  
+  printBatchName('factorial design specification');
 
   % Check which level of CON smoothing is desired
   smoothPrefix = '';

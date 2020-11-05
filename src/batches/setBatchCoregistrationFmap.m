@@ -6,8 +6,8 @@ function matlabbatch = setBatchCoregistrationFmap(BIDS, opt, subID)
   % assumes all the fieldmap relate to the current task
   % - use the "for" metadata field
   % - implement for 'phase12', 'fieldmap', 'epi'
-
-  fprintf(1, ' FIELDMAP WORKFLOW: COREGISTERING FIELD MAPS TO FIRST FUNC IMAGE\n');
+  
+  printBatchName('coregister fieldmaps data to functional');
 
   % Create rough mean of the 1rst run to improve SNR for coregistration
   % TODO use the slice timed EPI if STC was used ?

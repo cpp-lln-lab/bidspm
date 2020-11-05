@@ -1,8 +1,8 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt)
-
-  fprintf(1, ' BUILDING SPATIAL JOB : COREGISTER\n');
+  
+  printBatchName('coregister functional data to anatomical');
 
   matlabbatch{end + 1}.spm.spatial.coreg.estimate.ref(1) = ...
       cfg_dep('Named File Selector: Anatomical(1) - Files', ...

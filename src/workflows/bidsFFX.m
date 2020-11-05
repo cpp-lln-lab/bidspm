@@ -46,7 +46,7 @@ function bidsFFX(action, opt, funcFWHM)
           matlabbatch = setBatchSubjectLevelGLMSpec( ...
                                                     BIDS, opt, subID, funcFWHM);
 
-          matlabbatch = setFmriEstimateBatch(matlabbatch);
+          matlabbatch = setBatchFmriEstimate(matlabbatch);
 
           saveMatlabBatch(matlabbatch, ...
                           ['specify_estimate_ffx_task-', opt.taskName, ...
@@ -69,22 +69,7 @@ function bidsFFX(action, opt, funcFWHM)
       spm_jobman('run', matlabbatch);
 
     end
+    
   end
 
-end
-
-function matlabbatch = setFmriEstimateBatch(matlabbatch)
-
-  fprintf(1, 'BUILDING JOB : FMRI estimate\n');
-
-  matlabbatch{2}.spm.stats.fmri_est.spmmat(1) = cfg_dep( ...
-                                                        'fMRI model specification SPM file', ...
-                                                        substruct( ...
-                                                                  '.', 'val', '{}', {1}, ...
-                                                                  '.', 'val', '{}', {1}, ...
-                                                                  '.', 'val', '{}', {1}), ...
-                                                        substruct('.', 'spmmat'));
-
-  matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;
-  matlabbatch{2}.spm.stats.fmri_est.write_residuals = 1;
 end

@@ -58,8 +58,8 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
       matlabbatch{end + 1}.spm.spatial.realign.write.roptions.which = [2 0];
       
   end
-
-  fprintf(1, ' BUILDING SPATIAL JOB : %s\n', msg);
+  
+  printBatchName(msg);
 
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 

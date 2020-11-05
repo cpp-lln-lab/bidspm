@@ -2,7 +2,7 @@
 
 function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
 
-  fprintf(1, ' BUILDING SMOOTHING JOB \n');
+  printBatchName('smoothing functional images');
 
   % creates prefix to look for
   prefix = getPrefix('smoothing', opt);

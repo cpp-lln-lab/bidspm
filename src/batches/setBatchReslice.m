@@ -7,6 +7,8 @@ function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages)
   %
   % sourceImages: a cell
   
+  printBatchName('reslicing');
+  
   if ischar(referenceImg)
     matlabbatch{end+1}.spm.spatial.coreg.write.ref = {referenceImg};
     

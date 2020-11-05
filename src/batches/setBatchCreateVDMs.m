@@ -19,8 +19,8 @@ function matlabbatch = setBatchCreateVDMs(BIDS, opt, subID)
   % TODO
   % assumes all the fieldmap relate to the current task
   % - implement for 'phase12', 'fieldmap', 'epi'
-
-  fprintf(1, ' FIELDMAP WORKFLOW: CREATING VDMs \n');
+  
+  printBatchName('create voxel displacement map');
 
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
