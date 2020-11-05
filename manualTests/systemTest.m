@@ -42,15 +42,19 @@ fprintf(1, ' Done\n\n');
 checkDependencies();
 
 %% Set up
+delete(fullfile(pwd, 'options_task-*date-*.json'));
+delete(fullfile(pwd, 'spm-*.png'));
 
 optionsFilesList = {...
   ''; ...
-  'options_task-auditory_unwarp.json'; ...
+  'options_task-auditory_unwarp-0.json'; ...
   'options_task-auditory_unwarp-0_space-individual.json'; ...
   'options_task-auditory_space-individual.json'};
 
 % run the pipeline with different options
 for iOption = 1:size(optionsFilesList,1)
+  
+  fprintf(1, repmat('\n', 1, 5));
   
   opt = MoAEpilot_getOption();
   if iOption>1
@@ -59,8 +63,6 @@ for iOption = 1:size(optionsFilesList,1)
   end
   
   %% Run batches
-
-  fprintf(1, repmat('\n', 1, 5));
   
   reportBIDS(opt);
 
@@ -84,5 +86,7 @@ for iOption = 1:size(optionsFilesList,1)
   
   % remove previous analysis
   rmdir(fullfile(opt.derivativesDir, 'derivatives'), 's');
+  
+  cd(WD);
 
 end
