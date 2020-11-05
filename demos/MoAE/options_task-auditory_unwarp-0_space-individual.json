@@ -8,7 +8,6 @@
     "dataDir": "/home/remi/github/CPP_SPM/demos/MoAE/output/MoAEpilot",
     "derivativesDir": "/home/remi/github/CPP_SPM/demos/MoAE",
     "funcVoxelDims": [],
-    "groups": [""],
     "model": {
         "file": "/home/remi/github/CPP_SPM/demos/MoAE/models/model-MoAE_smdl.json"
     },
@@ -43,7 +42,6 @@
     },
     "sliceOrder": [],
     "space": "individual",
-    "subjects": [[]],
     "taskName": "auditory",
     "useFieldmaps": true,
     "zeropad": 2
