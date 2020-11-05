@@ -16,6 +16,7 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
                         'STC'; ...
                         'preprocess'; ...
                         'smoothing_space-individual'; ...
+                        'smoothing_unwarp-0'; ...
                         'smoothing'; ...
                         'FFX_space-individual'; ...
                         'FFX'};
@@ -26,16 +27,38 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
 
     case 'preprocess'
       prefix = prefixForSTC(prefix, opt);
+      
+    case 'preprocess_unwarp-0'
+      prefix = prefixForSTC(prefix, opt);
+      prefix = [spm_get_defaults('realign.write.prefix') prefix];
 
-      % when smoothing is done on non-normalized data (in the space of T1w)
+    % when smoothing is done on non-normalized data (in the space of T1w)
     case 'smoothing_space-individual'
       prefix = prefixForSTC(prefix, opt);
       prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
 
     case 'smoothing'
       prefix = prefixForSTC(prefix, opt);
+      prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
       prefix = [spm_get_defaults('normalise.write.prefix') prefix];
-
+      
+    case 'smoothing_space-MNI'
+      prefix = prefixForSTC(prefix, opt);
+      prefix = [spm_get_defaults('normalise.write.prefix') prefix];
+      
+    case 'smoothing_unwarp-0_space-individual'
+      prefix = prefixForSTC(prefix, opt);
+      prefix = [spm_get_defaults('realign.write.prefix') prefix];
+      
+    case 'FFX_unwarp-0_space-individual'
+      prefix = prefixForSTC(prefix, opt);
+      prefix = [spm_get_defaults('realign.write.prefix') prefix];
+      
+      % Check which level of smoothing is applied
+      if funcFWHM > 0 % else, take the smoothed files
+        prefix = [spm_get_defaults('smooth.prefix') num2str(funcFWHM) prefix];
+      end
+      
     case 'FFX_space-individual'
       prefix = prefixForSTC(prefix, opt);
       prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
@@ -44,9 +67,19 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
       if funcFWHM > 0 % else, take the smoothed files
         prefix = [spm_get_defaults('smooth.prefix') num2str(funcFWHM) prefix];
       end
+      
+    case 'FFX_unwarp-0'
+      prefix = prefixForSTC(prefix, opt);
+      prefix = [spm_get_defaults('normalise.write.prefix') prefix];
+      
+      % Check which level of smoothing is applied
+      if funcFWHM > 0 % else, take the smoothed files
+        prefix = [spm_get_defaults('smooth.prefix') num2str(funcFWHM) prefix];
+      end
 
     case 'FFX'
       prefix = prefixForSTC(prefix, opt);
+      prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
       prefix = [spm_get_defaults('normalise.write.prefix') prefix];
 
       % Check which level of smoothing is applied
@@ -62,10 +95,10 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
       end
 
       errorStruct.identifier = 'getPrefix:unknownPrefixCase';
-      errorStruct.message = sprintf('%s\n%s', ...
+      errorStruct.message = sprintf('%s%s\n%s', ...
                                     ['This prefix case you have requested ' ...
-                                     'does not exist: %s.'], ...
-                                    'See allowed cases above', step);
+                                     'does not exist: '], step, ...
+                                    'See allowed cases above');
       error(errorStruct);
 
   end

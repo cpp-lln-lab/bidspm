@@ -13,8 +13,12 @@ function [boldFileName, prefix] = getBoldFilenameForFFX(varargin)
   runs = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
 
   prefix = getPrefix('FFX', opt, funcFWHM);
-  if strcmp(opt.space, 'individual')
-    prefix = getPrefix('FFX_space-individual', opt, funcFWHM);
+  if ~opt.realign.useUnwarp && strcmp(opt.space, 'individual')
+    prefix = getPrefix('FFX_unwarp-0_space-individual', opt); 
+  elseif opt.realign.useUnwarp && strcmp(opt.space, 'individual')
+    prefix = getPrefix('FFX_space-individual', opt);
+  elseif  ~opt.realign.useUnwarp
+    prefix = getPrefix('FFX_unwarp-0', opt, funcFWHM);
   end
 
   [fileName, subFuncDataDir] = getBoldFilename( ...

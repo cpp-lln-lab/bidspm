@@ -2,12 +2,16 @@
 
 function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
 
-  fprintf(1, 'PREPARING: SMOOTHING JOB \n');
+  fprintf(1, ' BUILDING SMOOTHING JOB \n');
 
   % creates prefix to look for
   prefix = getPrefix('smoothing', opt);
-  if strcmp(opt.space, 'individual')
+  if ~opt.realign.useUnwarp && strcmp(opt.space, 'individual')
+    prefix = getPrefix('smoothing_unwarp-0_space-individual', opt);
+  elseif opt.realign.useUnwarp && strcmp(opt.space, 'individual')
     prefix = getPrefix('smoothing_space-individual', opt);
+  elseif ~opt.realign.useUnwarp
+    prefix = getPrefix('smoothing_space-MNI', opt);
   end
 
   % identify sessions for this subject
