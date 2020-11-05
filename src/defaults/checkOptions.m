@@ -87,6 +87,8 @@ function fieldsToSet = setDefaultOption()
   % More info here: https://en.wikibooks.org/wiki/SPM/Slice_Timing
   fieldsToSet.STC_referenceSlice = []; % reference slice: middle acquired slice
   fieldsToSet.sliceOrder = []; % To be used if SPM can't extract slice info
+  
+  fieldsToSet.realign.useUnwarp = true;
 
   % when opt.ignoreFieldmaps is set to false, the
   % preprocessing pipeline will look for the voxel displacement maps (created by
