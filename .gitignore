@@ -9,7 +9,7 @@
 *.zip
 *.ps
 
-options_task-*.json
+options_task-*date*.json
 onsets*_events.mat
 
 # files in the demo folder related to running the demo analysis

@@ -1,18 +1,51 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function opt = setDerivativesDir(opt)
-  % derivativeDir sets the derivatives folder
+  %
+  % Sets the derivatives folder and the directory where to save the SPM jobs.
+  % The actual creation of the directory is done by
+  % ``createDerivativeDir(opt)``.
+  %
+  % USAGE::
   %
   %   opt = setDerivativesDir(opt)
   %
-  % Parameters:
-  %   opt: option structure
+  % :param opt:
+  % :type opt: structure
   %
-  % Returns:
-  %    opt: with the additional field derivativesDir
+  % :returns: - :opt: (structure)
+  %
+  % Examples:
+  %   % opt.dataDir = '/home/remi/data';
+  %   % opt.taskName = 'testTask';
+  %   % opt = setDerivativesDir(opt);
+  %   %
+  %   % disp(opt.derivativesDir)
+  %   %|| '/home/remi/data/../derivatives/cpp_spm'
+  %   %
+  %   % disp(opt.opt.jobsDir)
+  %   %|| '/home/remi/data/../derivatives/cpp_spm/JOBS/testTask
+  %
+  %   % opt.dataDir = '/home/remi/data';
+  %   % opt.dataDir = '/home/remi/otherFolder';
+  %   % opt.taskName = 'testTask';
+  %   % opt = setDerivativesDir(opt);
+  %   %
+  %   % disp(opt.derivativesDir)
+  %   %|| '/home/remi/otherFolder/derivatives/cpp_spm'
+  %
+  %   % opt.dataDir = '/home/remi/data';
+  %   % opt.dataDir = '/home/remi/derivatives/preprocessing';
+  %   % opt.taskName = 'testTask';
+  %   % opt = setDerivativesDir(opt);
+  %   %
+  %   % disp(opt.derivativesDir)
+  %   %|| '/home/remi/otherFolder/derivatives/preprocessing'
+  %
+  %
 
   if ~isfield(opt, 'derivativesDir') || isempty(opt.derivativesDir)
-    opt.derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL');
+    opt.derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm');
 
   end
 
@@ -23,9 +56,13 @@ function opt = setDerivativesDir(opt)
     folders = strsplit(opt.derivativesDir, filesep);
   end
 
-  if ~strcmp(folders{end - 1}, 'derivatives') && ~strcmp(folders{end}, 'SPM12_CPPL')
+  if strcmp(folders{end}, 'derivatives')
+    folders{end + 1} = 'cpp_spm';
+  end
+
+  if ~strcmp(folders{end - 1}, 'derivatives') && ~strcmp(folders{end}, 'cpp_spm')
     folders{end + 1} = 'derivatives';
-    folders{end + 1} = 'SPM12_CPPL';
+    folders{end + 1} = 'cpp_spm';
   end
 
   try

@@ -2,13 +2,9 @@
 
 function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
 
-  fprintf(1, 'PREPARING: SMOOTHING JOB \n');
+  printBatchName('smoothing functional images');
 
-  % creates prefix to look for
-  prefix = getPrefix('smoothing', opt);
-  if strcmp(opt.space, 'individual')
-    prefix = getPrefix('smoothing_space-individual', opt);
-  end
+  prefix = getPrefix('smooth', opt);
 
   % identify sessions for this subject
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');

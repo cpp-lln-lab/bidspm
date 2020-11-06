@@ -1,17 +1,27 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function bidsSmoothing(funcFWHM, opt)
-  % This scripts performs smoothing to the functional data using a full width
+  %
+  % This performs smoothing to the functional data using a full width
   % half maximum smoothing kernel of size "mm_smoothing".
+  %
+  % USAGE::
+  %
+  %  bidsResults([opt], funcFWHM, conFWHM)
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  % :param funcFWHM: How much smoothing was applied to the functional
+  %                  data in the preprocessing.
+  % :type funcFWHM: scalar
+  %
 
-  % if input has no opt, load the opt.mat file
   if nargin < 2
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
 
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
+  [BIDS, opt, group] = setUpWorkflow(opt, 'smoothing functional data');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)
@@ -26,9 +36,7 @@ function bidsSmoothing(funcFWHM, opt)
 
       matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM);
 
-      saveMatlabBatch(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subID);
-
-      spm_jobman('run', matlabbatch);
+      saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subID);
 
     end
   end

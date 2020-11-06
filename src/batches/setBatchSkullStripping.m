@@ -35,7 +35,7 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
   % will be included in the skull stripping mask.
   %
 
-  fprintf(1, ' BUILDING SPATIAL JOB : SKULL STRIPPING\n');
+  printBatchName('skull stripping');
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
 

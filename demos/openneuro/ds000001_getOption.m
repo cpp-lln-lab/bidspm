@@ -17,6 +17,12 @@ function opt = ds000001_getOption()
   % The directory where the data are located
   opt.dataDir = '/home/remi/openneuro/ds000001/raw';
 
+  % Uncomment the lines below to run preprocessing
+  % - don't use realign and unwarp
+  %   opt.realign.useUnwarp = false;
+  % - in "native" space: don't do normalization
+  %   opt.space = 'individual';
+
   %% DO NOT TOUCH
   opt = checkOptions(opt);
   saveOptions(opt);

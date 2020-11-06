@@ -32,6 +32,9 @@ function test_loadAndCheckOptionsFromFile()
   % create dummy json file
   jsonContent.taskName = 'vismotion';
   jsonContent.space = 'individual';
+  jsonContent.groups = {''};
+  jsonContent.subjects = {[]};
+
   filename = 'options_task-vismotion_space-T1w.json';
   spm_jsonwrite(filename, jsonContent);
 
@@ -108,7 +111,8 @@ function expectedOptions = defaultOptions()
 
   expectedOptions.skullstrip.threshold = 0.75;
 
-  expectedOptions.ignoreFieldmaps = false;
+  expectedOptions.realign.useUnwarp = true;
+  expectedOptions.useFieldmaps = true;
 
   expectedOptions.taskName = '';
 

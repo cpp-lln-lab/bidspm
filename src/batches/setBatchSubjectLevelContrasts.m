@@ -2,7 +2,7 @@
 
 function matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM)
 
-  fprintf(1, 'BUILDING JOB : FMRI contrasts\n');
+  printBatchName('subject level contrasts specification');
 
   ffxDir = getFFXdir(subID, funcFWHM, opt);
 

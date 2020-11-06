@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_setBatchSkullStripping %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -35,7 +37,7 @@ function expectedBatch = returnExpectedBatch(opt)
   expectedFileName = 'sub-01_ses-01_T1w.nii';
 
   expectedAnatDataDir = fullfile(fileparts(mfilename('fullpath')), ...
-                                 'dummyData', 'derivatives', 'SPM12_CPPL', ...
+                                 'dummyData', 'derivatives', 'cpp_spm', ...
                                  'sub-01', 'ses-01', 'anat');
 
   expectedBatch = [];

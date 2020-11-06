@@ -2,6 +2,8 @@
 
 function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt)
 
+  printBatchName('saving coregistration matrix');
+
   % create name of the output file based on the name of the first image of the
   % first session
   sessions = getInfo(BIDS, subID, opt, 'Sessions');

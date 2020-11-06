@@ -2,7 +2,7 @@
 
 function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
 
-  fprintf(1, 'SMOOTHING CON IMAGES...');
+  printBatchName('smoothing contrast images');
 
   counter = 0;
 

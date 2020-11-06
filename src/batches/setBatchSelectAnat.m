@@ -9,7 +9,7 @@ function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID)
   %
   % We assume that the first anat of that type is the "correct" one
 
-  fprintf(1, ' BUILDING SPATIAL JOB : SELECTING ANATOMCAL\n');
+  printBatchName('selecting anatomical image');
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
 

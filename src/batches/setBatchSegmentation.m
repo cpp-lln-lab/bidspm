@@ -2,7 +2,7 @@
 
 function matlabbatch = setBatchSegmentation(matlabbatch, opt)
 
-  fprintf(1, ' BUILDING SPATIAL JOB : SEGMENT ANATOMICAL\n');
+  printBatchName('segmentation anatomical image');
 
   % define SPM folder
   spmLocation = spm('dir');

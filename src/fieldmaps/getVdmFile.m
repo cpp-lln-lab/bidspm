@@ -30,7 +30,7 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
                         'sub', fragments.sub, ...
                         'ses', fragments.ses);
 
-  if ~opt.ignoreFieldmaps && any(ismember('fmap', modalities))
+  if opt.useFieldmaps && any(ismember('fmap', modalities))
     % We loop through the field maps and find the one that is intended for this
     % bold file by reading from the metadata
     %

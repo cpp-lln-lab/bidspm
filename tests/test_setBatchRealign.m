@@ -27,8 +27,8 @@ function test_setBatchRealignBasic()
   matlabbatch = [];
   matlabbatch = setBatchRealign(matlabbatch, BIDS, subID, opt);
 
-  expectedBatch{1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
-  expectedBatch{end}.spm.spatial.realign.estwrite.roptions.which = [0 1];
+  expectedBatch{1}.spm.spatial.realignunwarp.eoptions.weight = {''};
+  expectedBatch{end}.spm.spatial.realignunwarp.uwroptions.uwwhich = [2 1];
 
   runCounter = 1;
   for iSes = 1
@@ -37,7 +37,8 @@ function test_setBatchRealignBasic()
                         'task', opt.taskName, ...
                         'type', 'bold');
 
-    expectedBatch{1}.spm.spatial.realign.estwrite.data{iSes} = cellstr(fileName);
+    expectedBatch{end}.spm.spatial.realignunwarp.data(1, iSes).pmscan = { '' };
+    expectedBatch{end}.spm.spatial.realignunwarp.data(1, iSes).scans = cellstr(fileName);
   end
 
   assertEqual(matlabbatch, expectedBatch);

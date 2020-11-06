@@ -2,7 +2,7 @@
 
 function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt)
 
-  fprintf(1, ' BUILDING SPATIAL JOB : COREGISTER\n');
+  printBatchName('coregister functional data to anatomical');
 
   matlabbatch{end + 1}.spm.spatial.coreg.estimate.ref(1) = ...
       cfg_dep('Named File Selector: Anatomical(1) - Files', ...
@@ -15,12 +15,11 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID
 
   % SOURCE IMAGE : DEPENDENCY FROM REALIGNEMENT
   % Mean Image
-
-  meanImageToUse = 'rmean';
-  otherImageToUse = 'cfiles';
-  if strcmp(opt.space, 'individual')
-    meanImageToUse = 'meanuwr';
-    otherImageToUse = 'uwrfiles';
+  meanImageToUse = 'meanuwr';
+  otherImageToUse = 'uwrfiles';
+  if ~opt.realign.useUnwarp
+    meanImageToUse = 'rmean';
+    otherImageToUse = 'cfiles';
   end
 
   matlabbatch{end}.spm.spatial.coreg.estimate.source(1) = ...

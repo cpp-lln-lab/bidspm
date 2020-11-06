@@ -1,34 +1,48 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function bidsSpatialPrepro(opt)
-  % bidsSpatialPrepro(opt)
   %
   % Performs spatial preprocessing of the functional and structural data.
   %
-  % TODO update description
-  % The structural data are segmented and normalized to MNI space.
-  % The functional data are re-aligned, coregistered with the structural and
-  % normalized to MNI space.
+  % USAGE::
   %
-  % Assumptions:
-  % - the batch is build using dependencies across the different batch modules
+  %   bidsSpatialPrepro([opt])
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
+  % The anatomical data are segmented, skulls-stripped [and normalized to MNI space].
+  %
+  % The functional data are re-aligned (unwarped), coregistered with the structural,
+  % the anatomical data is skull-stripped [and normalized to MNI space].
+  %
+  % If you do not want to:
+  %
+  % - to perform realign AND unwarp, make sure you set
+  %   ``opt.realign.useUnwarp`` to ``false``.
+  % - normalize the data to MNI space, make sure you set
+  %   ``opt.space`` to ``individual``.
+  %
+  % If you want to:
+  %
+  % - use another type of anatomical data than ``T1w`` as a reference or want to specify
+  %   which anatomical session is to be used as a reference, you can set this in
+  %   ``opt.anatReference``::
+  %
+  %     opt.anatReference.type = 'T1w';
+  %     opt.anatReference.session = 1;
+  %
+  % .. TODO:
+  %
+  %  - average T1s across sessions if necessarry
+  %
 
-  % TO DO
-  % - find a way to paralelize this over subjects
-  % - average T1s across sessions if necessarry
-
-  % if input has no opt, load the opt.mat file
   if nargin < 1
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
 
-  setGraphicWindow();
-
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
-
-  fprintf(1, 'DOING SPATIAL PREPROCESSING\n');
+  [BIDS, opt, group] = setUpWorkflow(opt, 'spatial preprocessing');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)
@@ -48,9 +62,10 @@ function bidsSpatialPrepro(opt)
       matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
       opt.orderBatches.selectAnat = 1;
 
+      % if action is emtpy then only realign will be done
       action = [];
-      if strcmp(opt.space, 'individual')
-        action = 'realignUnwarp';
+      if ~opt.realign.useUnwarp
+        action = 'realign';
       end
       [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action);
       opt.orderBatches.realign = 2;
@@ -73,16 +88,17 @@ function bidsSpatialPrepro(opt)
         matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt);
       end
 
-      batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];
-      saveMatlabBatch(matlabbatch, batchName, opt, subID);
-
-      spm_jobman('run', matlabbatch);
-
-      imgNb = copyGraphWindownOutput(opt, subID, 'realign');
-      if  strcmp(opt.space, 'individual')
-        imgNb = copyGraphWindownOutput(opt, subID, 'unwarp', imgNb);
+      % if no unwarping was done on func, we reslice the func, so we can use
+      % them for the functionalQA
+      if ~opt.realign.useUnwarp
+        matlabbatch = setBatchRealign(matlabbatch, BIDS, subID, opt, 'reslice');
       end
-      imgNb = copyGraphWindownOutput(opt, subID, 'func2anatCoreg', imgNb);
+
+      batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];
+
+      saveAndRunWorkflow(matlabbatch, batchName, opt, subID);
+
+      copyFigures(BIDS, opt, subID);
 
     end
   end

@@ -2,7 +2,7 @@
 
 function matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir)
 
-  fprintf(1, 'BUILDING JOB: Factorial Design Specification');
+  printBatchName('specify group level fmri model');
 
   % Check which level of CON smoothing is desired
   smoothPrefix = '';

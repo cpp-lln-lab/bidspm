@@ -7,6 +7,8 @@ function matlabbatch = setBatchCoregistration(matlabbatch, ref, src, other)
   % src: string
   % other: cell string
 
+  printBatchName('coregistration');
+
   matlabbatch{end + 1}.spm.spatial.coreg.estimate.ref = { ref };
   matlabbatch{end}.spm.spatial.coreg.estimate.source = { src };
   matlabbatch{end}.spm.spatial.coreg.estimate.other = other;

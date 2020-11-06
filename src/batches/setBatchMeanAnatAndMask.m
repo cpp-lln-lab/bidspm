@@ -6,8 +6,7 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
 
   matlabbatch = {};
 
-  % Create Mean Structural Image
-  fprintf(1, 'BUILDING JOB: Create Mean Structural Image...');
+  printBatchName('create mean anatomical image and mask');
 
   subCounter = 0;
 

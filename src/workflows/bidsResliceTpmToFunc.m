@@ -1,20 +1,32 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function bidsResliceTpmToFunc(opt)
-  % bidsResliceTpmToFunc(opt)
   %
-  % reslices the tissue probability map from the segmentation to the mean
-  % functional
+  % Reslices the tissue probability map (TPMs) from the segmentation to the mean
+  % functional.
+  %
+  % USAGE::
+  %
+  %   bidsResliceTpmToFunc([opt])
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
+  % Assumes that the anatomical has already been segmented by ``bidsSpatialPrepro()``
+  % or ``bidsSegmentSkullStrip()``.
+  %
+  % It is necessary to run this workflow before running the ``functionalQA`` pipeline
+  % as the computation of the tSNR by ``spmup`` requires the TPMs to have the same dimension
+  % as the functional.
+  %
 
-  % if input has no opt, load the opt.mat file
   if nargin < 1
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
 
-  [group, opt, BIDS] = getData(opt);
-
-  fprintf(1, 'RESLICING TPM TO MEAN FUNCTIONAL\n\n');
+  [BIDS, opt, group] = setUpWorkflow(opt, ...
+                                     'reslicing tissue probability maps to functional dimension');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)
@@ -33,12 +45,12 @@ function bidsResliceTpmToFunc(opt)
       [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
       TPMs = validationInputFile(anatDataDir, anatImage, 'c[123]');
 
-      matlabbatch = setBatchReslice( ...
+      matlabbatch = [];
+      matlabbatch = setBatchReslice(matlabbatch, ...
                                     fullfile(meanFuncDir, meanImage), ...
                                     cellstr(TPMs));
 
-      saveMatlabBatch(matlabbatch, 'reslice_tpm', opt, subID);
-      spm_jobman('run', matlabbatch);
+      saveAndRunWorkflow(matlabbatch, 'reslice_tpm', opt, subID);
 
     end
 

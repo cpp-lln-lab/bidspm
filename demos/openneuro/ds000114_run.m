@@ -24,9 +24,9 @@ checkDependencies();
 
 reportBIDS(opt);
 
-% bidsCopyRawFolder(opt, 1);
-%
-% bidsSTC(opt);
+bidsCopyRawFolder(opt, 1);
+
+bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 

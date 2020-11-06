@@ -38,7 +38,7 @@ function anatomicalQA(opt)
       % This is useful to check coregistration worked fine
       anatQA = spmup_anatQA(anatImage, TPMs(1, :), TPMs(2, :)); %#ok<*NASGU>
 
-      anatQA.avgDistToSurf = spmup_comp_dist2surf(fullfile(anatDataDir, anatImage));
+      anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
 
       spm_jsonwrite( ...
                     strrep(anatImage, '.nii', '_qa.json'), ...

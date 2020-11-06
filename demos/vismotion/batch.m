@@ -42,7 +42,7 @@ conFWHM = 6;
 bidsRFX('smoothContrasts', funcFWHM, conFWHM, opt);
 
 % Not implemented yet
-% bidsRFX('RFX', funcFWHM, conFWHM, opt);
+% bidsRFX(action, opt, funcFWHM, conFWHM);
 
 % Not implemented yet
 % subject level multivariate

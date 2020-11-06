@@ -10,6 +10,6 @@ function saveOptions(opt)
   jsonFormat.indent = '    ';
   spm_jsonwrite(filename, opt, jsonFormat);
 
-  fprintf('Options saved in: \n\n');
+  fprintf('Options saved in: %s\n\n', filename);
 
 end

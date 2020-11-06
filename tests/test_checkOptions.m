@@ -94,7 +94,8 @@ function expectedOptions = defaultOptions()
 
   expectedOptions.skullstrip.threshold = 0.75;
 
-  expectedOptions.ignoreFieldmaps = false;
+  expectedOptions.realign.useUnwarp = true;
+  expectedOptions.useFieldmaps = true;
 
   expectedOptions.taskName = '';
 

@@ -20,7 +20,11 @@ function opt = ds000114_getOption()
   opt.anatReference.type = 'T1w';
   opt.anatReference.session = 2;
 
-  opt.space = 'individual';
+  % Uncomment the lines below to run preprocessing
+  % - don't use realign and unwarp
+  %   opt.realign.useUnwarp = false;
+  % - in "native" space: don't do normalization
+  %   opt.space = 'individual';
 
   opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                             'models', ...
