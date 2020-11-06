@@ -9,12 +9,8 @@ function bidsCreateVDM(opt)
   if nargin < 1
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
-
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
   
-  printWorklowName('create voxel displacement map')
+  [BIDS, opt, group] = setUpWorkflow(opt, 'create voxel displacement map');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

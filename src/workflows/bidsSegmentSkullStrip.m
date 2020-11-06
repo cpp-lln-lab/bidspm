@@ -15,12 +15,8 @@ function bidsSegmentSkullStrip(opt)
   if nargin < 1
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
-
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
   
-  printWorklowName('segmentation and skulltripping')
+  [BIDS, opt, group] = setUpWorkflow(opt, 'segmentation and skulltripping');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

@@ -13,12 +13,8 @@ function bidsRealignUnwarp(opt)
   if nargin < 1
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
-
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
   
-  printWorklowName('realign and unwarp')
+  [BIDS, opt, group] = setUpWorkflow(opt, 'realign and unwarp');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

@@ -21,12 +21,8 @@ function bidsFFX(action, opt, funcFWHM)
   if nargin < 3
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
-
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
   
-  printWorklowName('subject level GLM')
+  [BIDS, opt, group] = setUpWorkflow(opt, 'subject level GLM');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

@@ -10,11 +10,9 @@ function bidsResliceTpmToFunc(opt)
   if nargin < 1
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
-
-  [group, opt, BIDS] = getData(opt);
   
-  printWorklowName('reslicing tissue probability maps to functional dimension')
+  [BIDS, opt, group] = setUpWorkflow(opt, ...
+    'reslicing tissue probability maps to functional dimension');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

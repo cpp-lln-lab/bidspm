@@ -5,8 +5,8 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   % This function will copy the subject's folders from the ``raw`` folder to the
   % ``derivatives`` folder, and will copy the dataset description and task json files
   % to the derivatives directory.
-  % Then it will search the derivatives directory for any zipped nii.gz image
-  % and uncompress it to .nii images.
+  % Then it will search the derivatives directory for any zipped *.gz image
+  % and uncompress the files for the task of interest.
   %
   % USAGE::
   %
@@ -39,6 +39,8 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
     opt = [];
   end
   opt = loadAndCheckOptions(opt);
+  
+  cleanCrash();
   
   printWorklowName('copy data')
 
@@ -195,12 +197,14 @@ function unzipFiles(derivativesDir, deleteZippedNii, opt)
     if any(strcmp(fragments.type, {'bold', 'stim', 'physio'})) && ...
         isfield(fragments, 'task') && strcmp(fragments.task, opt.taskName)
 
-      n = load_untouch_nii(file);  % load the nifti image
-      save_untouch_nii(n, file(1:end - 4)); % Save the functional data as unzipped nii
+      % load the nifti image and saves the functional data as unzipped nii
+      n = load_untouch_nii(file); 
+      save_untouch_nii(n, file(1:end - 4));
       fprintf('unzipped: %s \n', file);
 
+      % delete original zipped file
       if deleteZippedNii
-        delete(file);  % delete original zipped file
+        delete(file); 
       end
     
     end

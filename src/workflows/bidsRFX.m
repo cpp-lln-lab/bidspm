@@ -36,12 +36,8 @@ function bidsRFX(action, funcFWHM, conFWHM, opt)
   if nargin < 4
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
 
-  % load the subjects/Groups information and the task name
-  [group, opt, ~] = getData(opt);
-  
-  printWorklowName('group level GLM')
+  [~, opt, group] = setUpWorkflow(opt, 'group level GLM');
 
   switch action
 

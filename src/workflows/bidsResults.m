@@ -12,12 +12,8 @@ function bidsResults(opt, funcFWHM, conFWHM)
   if nargin < 1
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
-
-  % load the subjects/Groups information and the task name
-  [group, opt] = getData(opt);
   
-  printWorklowName('computing GLM results')
+  [~, opt, group] = setUpWorkflow(opt, 'computing GLM results');
 
   matlabbatch = [];
 

@@ -8,12 +8,8 @@ function bidsSmoothing(funcFWHM, opt)
   if nargin < 2
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
-
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
   
-  printWorklowName('smoothing functional data')
+  [BIDS, opt, group] = setUpWorkflow(opt, 'smoothing functional data');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

@@ -28,12 +28,8 @@ function bidsSTC(opt)
   if nargin < 1
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
-
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
   
-  printWorklowName('slice timing correction')
+  [BIDS, opt, group] = setUpWorkflow(opt, 'slice timing correction');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)
