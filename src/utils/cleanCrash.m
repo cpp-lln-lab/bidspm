@@ -9,13 +9,13 @@ function cleanCrash()
   %
   %
 
-  ext = {'png'};
+  files = {'spm.*.png'};
   
-  for i = 1:numel(ext)
+  for i = 1:numel(files)
   
-    if ~isempty(spm_select('List', pwd, ['^.*.' ext{i} '$']))
+    if ~isempty(spm_select('List', pwd, ['^' files{i} '$']))
 
-      delete(fullfile(pwd, ['*.' ext{i}]), targetDir);
+      delete(fullfile(pwd, strrep(files{i}, '.*', '*' )));
 
     end
   
