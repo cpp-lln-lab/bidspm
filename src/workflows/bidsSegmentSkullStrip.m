@@ -8,10 +8,11 @@ function bidsSegmentSkullStrip(opt)
   %
   %   bidsSegmentSkullStrip([opt])
   %
-  % :param opt: options
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions`` and ``loadAndCheckOptions``.
   % :type opt: structure
+  %
 
-  % if input has no opt, load the opt.mat file
   if nargin < 1
     opt = [];
   end
@@ -25,14 +26,11 @@ function bidsSegmentSkullStrip(opt)
 
     for iSub = 1:group(iGroup).numSub
 
-      matlabbatch = [];
-      % Get the ID of the subject
-      % (i.e SubNumber doesnt have to match the iSub if one subject
-      % is exluded for any reason)
       subID = group(iGroup).subNumber{iSub};
 
       printProcessingSubject(groupName, iSub, subID);
 
+      matlabbatch = [];
       matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
       opt.orderBatches.selectAnat = 1;
 

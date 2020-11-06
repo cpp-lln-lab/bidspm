@@ -1,15 +1,20 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function bidsRealignReslice(opt)
-  % bidsRealignReslice(opt)
   %
-  % The scripts realigns the functional
-  % Assumes that bidsSTC has already been run
+  % Realigns and reslices the functional data of a given task.
+  %
+  % USAGE::
+  %
+  %   bidsRealignReslice(opt)
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  % :type opt: structure
+  %
+  % Assumes that ``bidsSTC`` has already been run.
+  %
 
-  %% TO DO
-  % find a way to paralelize this over subjects
-
-  % if input has no opt, load the opt.mat file
   if nargin < 1
     opt = [];
   end

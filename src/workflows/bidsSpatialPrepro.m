@@ -1,26 +1,43 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function bidsSpatialPrepro(opt)
+  %
   % Performs spatial preprocessing of the functional and structural data.
   %
   % USAGE::
   %
   %   bidsSpatialPrepro([opt])
   %
-  % The structural data are segmented and normalized to MNI space.
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  % :type opt: structure
+  %
+  % The anatomical data are segmented, skulls-stripped [and normalized to MNI space].
   %
   % The functional data are re-aligned (unwarped), coregistered with the structural,
   % the anatomical data is skull-stripped [and normalized to MNI space].
   %
-  % Assumptions:
-  % - the batch is build using dependencies across the different batch modules
+  % If you do not want to:
+  %
+  % - to perform realign AND unwarp, make sure you set
+  %   ``opt.realign.useUnwarp`` to ``false``.
+  % - normalize the data to MNI space, make sure you set
+  %   ``opt.space`` to ``individual``.
+  %
+  % If you want to:
+  %
+  % - use another type of anatomical data than ``T1w`` as a reference or want to specify
+  %   which anatomical session is to be used as a reference, you can set this in 
+  %   ``opt.anatReference``::
+  %
+  %     opt.anatReference.type = 'T1w';
+  %     opt.anatReference.session = 1;
+  %
+  % .. TODO:
+  %
+  %  - average T1s across sessions if necessarry
+  %
 
-  % TO DO
-  % - update description
-  % - find a way to paralelize this over subjects
-  % - average T1s across sessions if necessarry
-
-  % if input has no opt, load the opt.mat file
   if nargin < 1
     opt = [];
   end

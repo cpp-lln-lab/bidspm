@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+
 function [BIDS, opt, group] = setUpWorkflow(opt, workflowName)
   %
   % Calls some common functions to:
@@ -11,7 +13,7 @@ function [BIDS, opt, group] = setUpWorkflow(opt, workflowName)
   %   [BIDS, opt, group] =setUpWorkflow(opt, workflowName)
   %
   % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions`` and ``loadAndCheckOptions``
+  %             ``checkOptions`` and ``loadAndCheckOptions``.
   % :type opt: structure
   % :param workflowName: name that will be printed on screen
   % :type workflowName: string

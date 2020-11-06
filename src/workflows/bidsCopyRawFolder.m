@@ -2,7 +2,7 @@
 
 function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   %
-  % This function will copy the folders from the ``raw`` folder to the
+  % Copies the folders from the ``raw`` folder to the
   % ``derivatives`` folder, and will copy the dataset description and task json files
   % to the derivatives directory.
   %
@@ -15,7 +15,8 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   %                     [deleteZippedNii = true,] ...
   %                     [modalitiesToCopy = {'anat', 'func', 'fmap'}])
   %
-  % :param opt:
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions`` and ``loadAndCheckOptions``.
   % :type opt: type
   % :param deleteZippedNii:
   % :type deleteZippedNii: boolean

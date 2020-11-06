@@ -1,5 +1,14 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+
 function saveAndRunWorkflow(matlabbatch, batchName, opt, subID)
-  
+  %
+  % Saves the SPM matlabbatch and runs it
+  %
+  % USAGE::
+  %
+  %   saveAndRunWorkflow(matlabbatch, batchName, opt, [subID])
+  %
+
   if nargin < 4 
     subID = [];
   end

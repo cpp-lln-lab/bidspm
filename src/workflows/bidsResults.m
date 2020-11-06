@@ -1,14 +1,26 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function bidsResults(opt, funcFWHM, conFWHM)
-  % This scripts computes the results for a series of contrast that can be
-  % specified at the run, subject or dataset step level (see contrast specification
-  % following the BIDS stats model specification)
   %
-  % funcFWHM is the number of the mm smoothing used on the normalized functional files.
-  % for unsmoothied data  FFXSmoothing = 0
+  % Computes the results for a series of contrast that can be
+  % specified at the run, subject or dataset step level (see contrast specification
+  % following the BIDS stats model specification).
+  %
+  % USAGE::
+  %
+  %  bidsResults([opt], funcFWHM, conFWHM)
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  % :type opt: structure
+  % :param funcFWHM: How much smoothing was applied to the functional
+  %                  data in the preprocessing.
+  % :type funcFWHM: scalar
+  % :param conFWHM: How much smoothing will be applied to the contrast
+  %                 images.
+  % :type conFWHM: scalar
+  %
 
-  % if input has no opt, load the opt.mat file
   if nargin < 1
     opt = [];
   end
@@ -59,8 +71,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
           results.label = 'group level';
           results.nbSubj = SPM.nscan;
 
-          matlabbatch = resultsMatlabbatch( ...
-                                           matlabbatch, opt, iStep, iCon, results);
+          matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results);
 
           batchName = 'compute_group_level_results';
 
@@ -79,90 +90,4 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
 end
 
-function batch = resultsMatlabbatch(batch, opt, iStep, iCon, results)
-  % outputs the typical matlabbatch to compute the results for a given
-  % contrast
 
-  batch{end + 1}.spm.stats.results.spmmat = {fullfile(results.dir, 'SPM.mat')};
-
-  batch{end}.spm.stats.results.conspec.titlestr = ...
-      opt.result.Steps(iStep).Contrasts(iCon).Name;
-
-  batch{end}.spm.stats.results.conspec.contrasts = results.contrastNb;
-
-  batch{end}.spm.stats.results.conspec.threshdesc = ...
-      opt.result.Steps(iStep).Contrasts(iCon).MC;
-
-  batch{end}.spm.stats.results.conspec.thresh = opt.result.Steps(iStep).Contrasts(iCon).p;
-
-  batch{end}.spm.stats.results.conspec.extent = opt.result.Steps(iStep).Contrasts(iCon).k;
-
-  batch{end}.spm.stats.results.conspec.conjunction = 1;
-
-  batch{end}.spm.stats.results.conspec.mask.none = ...
-      ~opt.result.Steps(iStep).Contrasts(iCon).Mask;
-
-  batch{end}.spm.stats.results.units = 1;
-
-  batch{end}.spm.stats.results.export{1}.ps = true;
-
-  if opt.result.Steps(1).Contrasts(iCon).NIDM
-
-    batch{end}.spm.stats.results.export{2}.nidm.modality = 'FMRI';
-
-    batch{end}.spm.stats.results.export{2}.nidm.refspace = 'ixi';
-    if strcmp(opt.space, 'T1w')
-      batch{end}.spm.stats.results.export{2}.nidm.refspace = 'subject';
-    end
-
-    batch{end}.spm.stats.results.export{2}.nidm.group.nsubj = results.nbSubj;
-
-    batch{end}.spm.stats.results.export{2}.nidm.group.label = results.label;
-
-  end
-
-end
-
-function batch = setBatchSubjectLevelResults(varargin)
-
-  [batch, grp, funcFWHM, opt, iStep, iCon] = deal(varargin{:});
-
-  for iGroup = 1:length(grp)
-
-    % For each subject
-    for iSub = 1:grp(iGroup).numSub
-
-      % Get the Subject ID
-      subID = grp(iGroup).subNumber{iSub};
-
-      % FFX Directory
-      ffxDir = getFFXdir(subID, funcFWHM, opt);
-
-      load(fullfile(ffxDir, 'SPM.mat'));
-
-      % identify which contrast nb actually has the name the user asked
-      conNb = find( ...
-                   strcmp({SPM.xCon.name}', ...
-                          opt.result.Steps(iStep).Contrasts(iCon).Name));
-
-      if isempty(conNb)
-        sprintf('List of contrast in this SPM file');
-        disp({SPM.xCon.name}');
-        error( ...
-              'This SPM file %s does not contain a contrast named %s', ...
-              fullfile(ffxDir, 'SPM.mat'), ...
-              opt.result.Steps(1).Contrasts(iCon).Name);
-      end
-
-      results.dir = ffxDir;
-      results.contrastNb = conNb;
-      results.label = subID;
-      results.nbSubj = 1;
-
-      batch = resultsMatlabbatch( ...
-                                 batch, opt, iStep, iCon, results);
-
-    end
-  end
-
-end

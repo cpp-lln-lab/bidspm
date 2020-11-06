@@ -1,42 +1,48 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function bidsRFX(action, funcFWHM, conFWHM, opt)
+function bidsRFX(action, opt, funcFWHM, conFWHM)
   %
-  % This script smooth all con images created at the fisrt level in each
-  % subject, create a mean structural image and mean mask over the
-  % population, process the factorial design specification  and estimation
-  % and estimate Contrats. ::
+  % - smooths all contrast images created at the subject level
   %
-  %  bidsRFX(action, funcFWHM, conFWHM, opt)
+  % OR
   %
-  % :param action: (string) ``smoothContrasts`` or ``RFX``
-  % :param funcFWHM: (scalar)
-  % :param conFWHM: (scalar)
-  % :param opt: (structure) (see checkOptions())
+  % - creates a mean structural image and mean mask over the sample, 
+  % - specifies and estimates the group level model,
+  % - computes the group level contrasts.
   %
-  %   - case 'smoothContrasts': smooth con images
-  %   - case 'RFX': Mean Struct, MeanMask, Factorial design specification and
-  %      estimation, Contrast estimation
+  % USAGE::
   %
-  %    funcFWHM: How much smoothing was applied to the functional
-  %    data in the preprocessing
+  %  bidsRFX(action, [opt,] [funcFWHM = 0,] [conFWHM = 0])
   %
-  %    conFWHM: How much smoothing is required for the CON images for
-  %    the second level analysis
+  % :param action: ``smoothContrasts`` or ``RFX``
+  % :type action: string
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  % :type opt: structure
+  % :param funcFWHM: How much smoothing was applied to the functional
+  %                  data in the preprocessing.
+  % :type funcFWHM: scalar
+  % :param conFWHM: How much smoothing will be applied to the contrast
+  %                 images.
+  % :type conFWHM: scalar
+  %
+  % - case ``smoothContrasts``: smooth con images
+  % - case ``RFX``: Mean Struct, MeanMask, Factorial design specification and
+  %   estimation, Contrast estimation
+  %
   
-  if nargin < 2 || isempty(funcFWHM)
+  if nargin < 2
+    opt = [];
+  end
+
+  if nargin < 4 || isempty(funcFWHM)
     funcFWHM = 0;
   end
   
-  if nargin < 3 || isempty(conFWHM)
+  if nargin < 4 || isempty(conFWHM)
     conFWHM = 0;
   end
-  
-  % if input has no opt, load the opt.mat file
-  if nargin < 4
-    opt = [];
-  end
-  
+
   [~, opt, group] = setUpWorkflow(opt, 'group level GLM');
   
   switch action

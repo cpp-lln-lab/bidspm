@@ -5,7 +5,7 @@ Workflows
 
 List of the different workflows of the pipeline.
 
-Each has to be run for each task independently. All parameters should preferably
+Each has to be run for each task independently. All parameters should
 be changed in the `opt` structure.
 
 See the set up section.
@@ -21,19 +21,6 @@ Slice Time Correction
 =====================
 
 .. autofunction:: bidsSTC
-
-Performs Slice Time Correction (STC) of the functional volumes by running the script: 
-``bidsSTC.m``
-
-STC will be performed using the information provided in the BIDS data set. It
-will use the mid-volume acquisition time point as as reference.
-
-The ``getOption.m`` fields related to STC can still be used to do some slice
-timing correction even no information is can be found in the BIDS data set.
-
-In general slice order and reference slice is entered in time unit (ms) (this is
-the BIDS way of doing things) instead of the slice index of the reference slice
-(the "SPM" way of doing things).
 
 More info available on this page of the
 `SPM wikibook <https://en.wikibooks.org/wiki/SPM/Slice_Timing>`_.
@@ -76,20 +63,25 @@ do a search for "slice timing AND before" in the archives of the list.*
 Spatial Preprocessing 
 =====================
 
-Performs spatial preprocessing by running the script: ``bidsSpatialPrepro.m``
+Perform spatial preprocessing by running ``bidsSpatialPrepro``
       
 .. autofunction:: bidsSpatialPrepro
 
+.. autofunction:: bidsRealignReslice
+
+.. autofunction:: bidsRealignUnwarp
+
 Smoothing 
 =========
-Performs smoothing of the functional data by running the function: ``bidsSmoothing.m``
+
+Perform smoothing of the functional data by running ``bidsSmoothing``
 
 .. autofunction:: bidsSmoothing  
 
 Subject level analysis 
 ======================
 
-Performs the subject level analysis by running the ffx script: ``bidsFFX.m``.
+Perform the subject level analysis by running the ffx script: ``bidsFFX``.
 
 This will run twice, once for model specification and another time for model
 estimation. See the function for more details.
@@ -103,20 +95,19 @@ of every run as confound regressors.
 Group level analysis
 ====================
 
-Performs the group level analysis by running the RFX script: ``bidsRFX.m``
+Perform the group level analysis by running the RFX script: ``bidsRFX``.
 
 .. autofunction:: bidsRFX  
 
-Comput results
-==============
+Compute results
+===============
 
 .. autofunction:: bidsResults
 
 
----
+Other
+=====
 
-.. autofunction:: bidsRealignReslice  
-.. autofunction:: bidsRealignUnwarp  
 .. autofunction:: bidsCreateVDM
 .. autofunction:: bidsResliceTpmToFunc
 .. autofunction:: bidsSegmentSkullStrip

@@ -1,10 +1,21 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function bidsCreateVDM(opt)
-  % bidsCreateVDM(opt)
   %
-  % inspired from spmup spmup_BIDS_preprocess (@ commit
-  % 198c980d6d7520b1a996f0e56269e2ceab72cc83)
+  % Creates the voxel displacement maps from the fieldmaps of a BIDS
+  % dataset.
+  %
+  % USAGE::
+  %
+  %   bidsCreateVDM([opt])
+  %
+  % .. TODO:
+  %
+  %    - take care of all types of fieldmaps
+  %
+  % Inspired from spmup ``spmup_BIDS_preprocess`` (@ commit 198c980d6d7520b1a99)
+  % (URL missing)
+  %
 
   if nargin < 1
     opt = [];

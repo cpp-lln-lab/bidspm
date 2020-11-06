@@ -1,15 +1,23 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function bidsRealignUnwarp(opt)
-  % bidsRealignReslice(opt)
   %
-  % The scripts realigns the functional
-  % Assumes that bidsSTC has already been run
+  % Realigns and unwarps the functional data of a given task.
+  %
+  % USAGE::
+  %
+  %   bidsRealignReslice(opt)
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  % :type opt: structure
+  %
+  % Assumes that ``bidsSTC`` has already been run.
+  %
+  % If the ``bidsCreateVDM`` workflow has been run before the voxel displacement
+  % maps will be used unless ``fieldsToSet.useFieldmaps`` is set to ``false``.
+  %
 
-  %% TO DO
-  % find a way to paralelize this over subjects
-
-  % if input has no opt, load the opt.mat file
   if nargin < 1
     opt = [];
   end
