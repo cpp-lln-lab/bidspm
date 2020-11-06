@@ -1,19 +1,22 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function bidsSpatialPrepro(opt)
-  % bidsSpatialPrepro(opt)
-  %
   % Performs spatial preprocessing of the functional and structural data.
   %
-  % TODO update description
+  % USAGE::
+  %
+  %   bidsSpatialPrepro([opt])
+  %
   % The structural data are segmented and normalized to MNI space.
-  % The functional data are re-aligned, coregistered with the structural and
-  % normalized to MNI space.
+  %
+  % The functional data are re-aligned (unwarped), coregistered with the structural,
+  % the anatomical data is skull-stripped [and normalized to MNI space].
   %
   % Assumptions:
   % - the batch is build using dependencies across the different batch modules
 
   % TO DO
+  % - update description
   % - find a way to paralelize this over subjects
   % - average T1s across sessions if necessarry
 
@@ -87,12 +90,17 @@ function bidsSpatialPrepro(opt)
 end
 
 
-function copyFigures(opt, subID)
-  
+function copyFigures(BIDS, opt, subID)
+
   imgNb = copyGraphWindownOutput(opt, subID, 'realign');
   
+  % loop through the figures outputed for unwarp: one per run
   if  opt.realign.useUnwarp
-    imgNb = copyGraphWindownOutput(opt, subID, 'unwarp', imgNb);
+    runs = spm_BIDS(BIDS, 'runs', ...
+      'sub', subID, ...
+      'task', opt.taskName, ...
+      'type', 'bold');
+    imgNb = copyGraphWindownOutput(opt, subID, 'unwarp', imgNb : (imgNb + size(runs, 2) - 1 ));
   end
   
   imgNb = copyGraphWindownOutput(opt, subID, 'func2anatCoreg', imgNb); %#ok<NASGU>
