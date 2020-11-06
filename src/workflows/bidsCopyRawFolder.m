@@ -65,6 +65,11 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
       subDir = ['sub-', subID];
 
       mkdir(fullfile(derivativesDir, subDir));
+      
+      % copy scans.tsv files
+      copyTsvJson(...
+        fullfile(rawDir, subDir), ...
+        fullfile(derivativesDir, subDir))
 
       [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
@@ -80,6 +85,11 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
         end
 
         mkdir(fullfile(derivativesDir, subDir, sessionDir));
+        
+        % copy scans.tsv files
+        copyTsvJson(...
+          fullfile(rawDir, subDir, sessionDir), ...
+          fullfile(derivativesDir, subDir, sessionDir))
 
         modalities = bids.query(BIDS, 'modalities', ...
                                 'sub', subID, ...
@@ -110,7 +120,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
   end
 
-  unzipFiles(derivativesDir, deleteZippedNii);
+  unzipFiles(derivativesDir, deleteZippedNii, opt);
 
 end
 
@@ -126,16 +136,20 @@ function  createDerivativeDir(derivativesDir)
 
 end
 
-function copyTsvJson(rawDir, derivativesDir)
+function copyTsvJson(srcDir, targetDir)
   % copy TSV and JSON file from raw folder
+  
+  ext = {'tsv', 'json'};
+  
+  for i = 1:numel(ext)
+  
+    if ~isempty(spm_select('List', srcDir, ['^.*.' ext{i} '$']))
 
-  copyfile(fullfile(rawDir, '*.json'), derivativesDir);
-  fprintf(' json files copied to derivatives directory \n');
+      copyfile(fullfile(srcDir, ['*.' ext{i}]), targetDir);
+      fprintf(1, ' %s files copied\n', ext{i});
 
-  try
-    copyfile(fullfile(rawDir, '*.tsv'), derivativesDir);
-    fprintf(' tsv files copied to derivatives directory \n');
-  catch
+    end
+  
   end
 
 end
@@ -165,20 +179,30 @@ function copyModalityDir(srcFolder, targetFolder)
 
 end
 
-function unzipFiles(derivativesDir, deleteZippedNii)
+function unzipFiles(derivativesDir, deleteZippedNii, opt)
   %% search for nifti files in a compressed nii.gz format
-  zippedNiifiles = spm_select('FPListRec', derivativesDir, '^.*.nii.gz$');
+
+  zippedNiifiles = spm_select('FPListRec', derivativesDir, '^.*.gz$');
 
   for iFile = 1:size(zippedNiifiles, 1)
 
     file = deblank(zippedNiifiles(iFile, :));
+    
+    fragments = bids.internal.parse_filename(file);
+    
+    % for bold, physio and stim files, we only unzip the files of the task of
+    % interest
+    if any(strcmp(fragments.type, {'bold', 'stim', 'physio'})) && ...
+        isfield(fragments, 'task') && strcmp(fragments.task, opt.taskName)
 
-    n = load_untouch_nii(file);  % load the nifti image
-    save_untouch_nii(n, file(1:end - 4)); % Save the functional data as unzipped nii
-    fprintf('unzipped: %s \n', file);
+      n = load_untouch_nii(file);  % load the nifti image
+      save_untouch_nii(n, file(1:end - 4)); % Save the functional data as unzipped nii
+      fprintf('unzipped: %s \n', file);
 
-    if deleteZippedNii
-      delete(file);  % delete original zipped file
+      if deleteZippedNii
+        delete(file);  % delete original zipped file
+      end
+    
     end
 
   end
