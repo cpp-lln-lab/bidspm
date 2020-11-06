@@ -33,6 +33,15 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
         prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
       end
       
+    case 'mean'
+      prefix = getPrefix('realign', opt);
+      
+      if opt.realign.useUnwarp
+        prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
+      end
+      
+      prefix = ['mean' prefix];
+      
     case 'funcqa'
       prefix = getPrefix('realign', opt);
       

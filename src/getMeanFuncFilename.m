@@ -13,12 +13,12 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt)
                                                    BIDS, ...
                                                    subID, sessions{1}, runs{1}, opt);
 
-  prefix = getPrefix('normalise', opt);
+  prefix = getPrefix('mean', opt);
 
   meanImage = validationInputFile( ...
                                   subFuncDataDir, ...
                                   boldFileName, ...
-                                  ['mean' prefix]);
+                                  prefix);
 
   [meanFuncDir, meanImage, ext] = spm_fileparts(meanImage);
   meanImage = [meanImage ext];

@@ -39,6 +39,36 @@ function test_getPrefixNoSTC()
 
 end
 
+function test_getPrefixMean()
+
+  step = 'mean';
+  opt.metadata = [];
+  opt.sliceOrder = [];
+  opt.realign.useUnwarp = true;
+  opt.space = 'MNI';
+  
+  prefix = getPrefix(step, opt);
+
+  expectedPrefixOutput = ['mean' spm_get_defaults('unwarp.write.prefix')];
+
+  assertEqual(prefix, expectedPrefixOutput);
+  
+  %% no unwarp
+  
+  step = 'mean';
+  opt.metadata.SliceTiming = 1:0.2:1.8;
+  opt.sliceOrder = 1:10;
+  opt.realign.useUnwarp = false;
+  opt.space = 'MNI';
+  
+  prefix = getPrefix(step, opt);
+
+  expectedPrefixOutput = 'meana';
+
+  assertEqual(prefix, expectedPrefixOutput);
+
+end
+
 
 function test_getPrefixNormalise()
 
