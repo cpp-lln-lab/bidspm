@@ -33,12 +33,12 @@ function anatomicalQA(opt)
       anatImage = fullfile(anatDataDir, anatImage);
       volumesToCheck = {anatImage; TPMs(1, :); TPMs(2, :)};
       spm_check_orientations(spm_vol(char(volumesToCheck)));
-      
-      anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
 
       % Basic QA for anatomical data is to get SNR, CNR, FBER and Entropy
       % This is useful to check coregistration worked fine
       anatQA = spmup_anatQA(anatImage, TPMs(1, :), TPMs(2, :)); %#ok<*NASGU>
+      
+      anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
 
       spm_jsonwrite( ...
                     strrep(anatImage, '.nii', '_qa.json'), ...

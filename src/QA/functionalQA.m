@@ -55,7 +55,7 @@ function functionalQA(opt)
                                                        runs{iRun}, ...
                                                        opt);
 
-          prefix = getPrefix('normalise', opt);
+          prefix = getPrefix('funcQA', opt);
           funcImage = validationInputFile(subFuncDataDir, fileName, prefix);
 
           % sanity check that all images are in the same space.
@@ -114,7 +114,7 @@ function fMRIQA = computeFuncQAMetrics(funcImage, TPMs, avgDistToSurf, opt)
 
   [subFuncDataDir, fileName, ext] = spm_fileparts(funcImage);
 
-  prefix = getPrefix('normalise', opt);
+  prefix = getPrefix('funcQA', opt);
 
   fMRIQA.tSNR = spmup_temporalSNR( ...
                                   funcImage, ...

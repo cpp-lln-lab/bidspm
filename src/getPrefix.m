@@ -41,6 +41,8 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
       elseif opt.realign.useUnwarp
         prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
       end
+      
+      motionRegressorPrefix = prefixForSTC(prefix, opt);
      
     case 'smooth'
       prefix = getPrefix('normalise', opt);
