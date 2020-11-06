@@ -6,7 +6,7 @@
     },
     "contrastList": [],
     "dataDir": "/home/remi/openneuro/ds000001/raw",
-    "derivativesDir": "",
+    "derivativesDir": "/home/remi/openneuro/ds000001/derivatives/unwarp-0_native",
     "funcVoxelDims": [],
     "groups": [""],
     "model": {

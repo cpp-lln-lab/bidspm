@@ -6,7 +6,7 @@
     },
     "contrastList": [],
     "dataDir": "/home/remi/github/CPP_SPM/demos/MoAE/output/MoAEpilot",
-    "derivativesDir": "/home/remi/github/CPP_SPM/demos/MoAE",
+    "derivativesDir": "/home/remi/github/CPP_SPM/demos/MoAE/derivatives/unwarp-0",
     "funcVoxelDims": [],
     "model": {
         "file": "/home/remi/github/CPP_SPM/demos/MoAE/models/model-MoAE_smdl.json"
