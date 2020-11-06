@@ -1,11 +1,21 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function functionalQA(opt)
-  % functionalQA(opt)
   %
-  % For functional data, QA is consists in getting temporal SNR and then
+  % For functional data, QA consists in getting temporal SNR and then
   % check for motion - here we also compute additional regressors to
   % account for motion
+  %
+  % USAGE::
+  %
+  %   functionalQA(opt)
+  %
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  %
+  % functionalQA(opt)
+  %
+
 
   % if input has no opt, load the opt.mat file
   if nargin < 1

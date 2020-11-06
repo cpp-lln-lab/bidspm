@@ -11,7 +11,8 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
   %
   %   imgNb = copyGraphWindownOutput(opt, subID, [action = '',] [imgNb = 1])
   %
-  % :param opt: options
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   % :param subID:
   % :type subID: string

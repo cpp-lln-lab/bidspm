@@ -15,10 +15,10 @@ function sliceOrder = getSliceOrder(opt, verbose)
   % :param verbose:
   % :type verbose: boolean
   %
-  % :returns:
+  % :returns: 
   %
-  % - :sliceOrder: a vector of the time when each slice was acquired in
-  %                in a volume or indicating the order of acquisition of the slices.
+  % :sliceOrder: a vector of the time when each slice was acquired in
+  % in a volume or indicating the order of acquisition of the slices.
   %
   % In the case the slice timing information was not specified in the json files
   % in the BIDS data set then ``getSliceOrder`` will try to read the ``opt``

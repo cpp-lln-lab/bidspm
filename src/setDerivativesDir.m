@@ -10,10 +10,12 @@ function opt = setDerivativesDir(opt)
   %
   %   opt = setDerivativesDir(opt)
   %
-  % :param opt:
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % :returns: - :opt: (structure)
+  % :returns: :opt: structure or json filename containing the options. See
+  %           ``checkOptions()`` and ``loadAndCheckOptions()``.
   %
   % Examples:
   %   % opt.dataDir = '/home/remi/data';

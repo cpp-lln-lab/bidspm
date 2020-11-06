@@ -1,6 +1,15 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function spm_my_defaults
+function spm_my_defaults()
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %
+  %
+  %
   % This is where we set the defautls we want to use.
   % These will overide the spm defaults.
   % When "not enough" information is specified in the batch files, SPM falls

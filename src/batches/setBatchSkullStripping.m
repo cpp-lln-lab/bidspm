@@ -18,7 +18,7 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
   % :param opt: options
   % :type opt: structure
   %
-  % :returns: - :matlabbatch: (structure)
+  % :returns: :matlabbatch: (structure)
   %
   % This function will get its inputs from the segmentation batch by reading
   % the dependency from ``opt.orderBatches.segment``. If this field is not specified it will

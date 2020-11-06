@@ -10,7 +10,7 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   %
   % :param BIDS:
   % :type BIDS: structure
-  % :param opt: options
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   % :param boldFilename:
   % :type opt: string

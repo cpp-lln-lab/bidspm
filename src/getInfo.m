@@ -1,19 +1,13 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function varargout = getInfo(BIDS, subID, opt, info, varargin)
-  % wrapper function to fetch specific info in a BIDS structure returned by
-  % spm_bids. ::
+  %
+  % Wrapper function to fetch specific info in a BIDS structure returned by
+  % spm_bids. 
+  %
+  % USAGE::
   %
   %   varargout = getInfo(BIDS, subID, opt, info, varargin)
-  %
-  % for a given BIDS data set, subject identity, and info type,
-  %
-  % if info = Sessions, this returns name of the sessions and their number
-  %
-  % if info = Runs, this returns name of the runs and their number for an specified session.
-  %
-  % if info = Filename, this returns the name of the file for an specified
-  % session and run.
   %
   % :param BIDS: (structure) returned by spm_BIDS when exploring a BIDS data set.
   % :param subID: ID of the subject
@@ -29,6 +23,15 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
   % - run: ID of the run of interest
   % - type - string ; modality type to look for. For example: ``bold``, ``events``,
   %   ``stim``, ``physio``
+  %
+  % for a given BIDS data set, subject identity, and info type,
+  %
+  % if info = Sessions, this returns name of the sessions and their number
+  %
+  % if info = Runs, this returns name of the runs and their number for an specified session.
+  %
+  % if info = Filename, this returns the name of the file for an specified
+  % session and run.
   %
 
   varargout = {}; %#ok<*NASGU>

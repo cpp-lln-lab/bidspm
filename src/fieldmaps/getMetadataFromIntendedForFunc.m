@@ -14,8 +14,8 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
   % :param fmapMetadata:
   % :type fmapMetadata: structure
   %
-  % :returns: - :totalReadoutTime: (type) (dimension)
-  %           - :blipDir: (type) (dimension)
+  % :returns: :totalReadoutTime: (type) (dimension)
+  %           :blipDir: (type) (dimension)
   %
   % At the moment the VDM is created based on the characteristics of the last
   % func file in the IntendedFor field
