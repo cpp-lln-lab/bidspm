@@ -41,10 +41,8 @@ function bidsSegmentSkullStrip(opt)
       opt.orderBatches.segment = 2;
 
       matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt);
-
-      saveMatlabBatch(matlabbatch, 'segment_skullstrip', opt, subID);
-
-      spm_jobman('run', matlabbatch);
+      
+      saveAndRunWorkflow(matlabbatch, 'segment_skullstrip', opt, subID);
 
     end
   end

@@ -37,10 +37,10 @@ function bidsRealignReslice(opt)
                                          subID, ...
                                          opt, ...
                                          'realignReslice');
-
-      saveMatlabBatch(matlabbatch, 'realign_reslice', opt, subID);
-
-      spm_jobman('run', matlabbatch);
+                                      
+      saveAndRunWorkflow(matlabbatch, 'realign_reslice', opt, subID);
+      
+      copyFigures(BIDS, opt, subID);
 
     end
   end

@@ -23,10 +23,8 @@ function bidsSmoothing(funcFWHM, opt)
       printProcessingSubject(groupName, iSub, subID);
 
       matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM);
-
-      saveMatlabBatch(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subID);
-
-      spm_jobman('run', matlabbatch);
+      
+      saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subID);
 
     end
   end

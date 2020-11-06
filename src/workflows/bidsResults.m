@@ -46,7 +46,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
           % TODO
           % Save this batch in for each subject and not once for all
 
-          saveMatlabBatch(matlabbatch, 'compute_ffx_results', opt);
+          batchName = 'compute_subject_level_results';
 
         case 'dataset'
 
@@ -62,23 +62,20 @@ function bidsResults(opt, funcFWHM, conFWHM)
           matlabbatch = resultsMatlabbatch( ...
                                            matlabbatch, opt, iStep, iCon, results);
 
-          saveMatlabBatch(matlabbatch, 'compute_rfx_results', opt);
+          batchName = 'compute_group_level_results';
 
       end
     end
 
   end
+  
+  saveAndRunWorkflow(matlabbatch, batchName, opt);
 
-  if ~isempty(matlabbatch)
+  % move ps file
+  % TODO
 
-    spm_jobman('run', matlabbatch);
-
-    % move ps file
-    % TODO
-
-    % rename NIDM file
-    % TODO
-  end
+  % rename NIDM file
+  % TODO
 
 end
 

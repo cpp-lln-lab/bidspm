@@ -38,19 +38,13 @@ function bidsSTC(opt)
 
     for iSub = 1:group(iGroup).numSub
 
-      % Get the ID of the subject
-      % (i.e SubNumber doesnt have to match the iSub if one subject is exluded)
       subID = group(iGroup).subNumber{iSub};
 
       printProcessingSubject(groupName, iSub, subID);
 
       matlabbatch = setBatchSTC(BIDS, opt, subID);
-
-      if ~isempty(matlabbatch)
-        saveMatlabBatch(matlabbatch, 'STC', opt, subID);
-
-        spm_jobman('run', matlabbatch);
-      end
+      
+      saveAndRunWorkflow(matlabbatch, 'STC', opt, subID);
 
     end
   end

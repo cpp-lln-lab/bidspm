@@ -78,11 +78,10 @@ function bidsSpatialPrepro(opt)
       end
 
       batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];
-      saveMatlabBatch(matlabbatch, batchName, opt, subID);
+      
+      saveAndRunWorkflow(matlabbatch, batchName, opt, subID);
 
-      spm_jobman('run', matlabbatch);
-
-      copyFigures(opt, subID);
+      copyFigures(BIDS, opt, subID);
 
     end
   end
@@ -90,19 +89,3 @@ function bidsSpatialPrepro(opt)
 end
 
 
-function copyFigures(BIDS, opt, subID)
-
-  imgNb = copyGraphWindownOutput(opt, subID, 'realign');
-  
-  % loop through the figures outputed for unwarp: one per run
-  if  opt.realign.useUnwarp
-    runs = spm_BIDS(BIDS, 'runs', ...
-      'sub', subID, ...
-      'task', opt.taskName, ...
-      'type', 'bold');
-    imgNb = copyGraphWindownOutput(opt, subID, 'unwarp', imgNb : (imgNb + size(runs, 2) - 1 ));
-  end
-  
-  imgNb = copyGraphWindownOutput(opt, subID, 'func2anatCoreg', imgNb); %#ok<NASGU>
-  
-end

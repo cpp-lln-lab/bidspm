@@ -37,10 +37,10 @@ function bidsRealignUnwarp(opt)
                                          subID, ...
                                          opt, ...
                                          'realignUnwarp');
-
-      saveMatlabBatch(matlabbatch, 'realign_unwarp', opt, subID);
-
-      spm_jobman('run', matlabbatch);
+                                      
+      saveAndRunWorkflow(matlabbatch, 'realign_unwarp', opt, subID);
+      
+      copyFigures(BIDS, opt, subID);
 
     end
   end

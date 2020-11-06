@@ -35,9 +35,8 @@ function bidsResliceTpmToFunc(opt)
       matlabbatch = setBatchReslice(matlabbatch, ...
                                     fullfile(meanFuncDir, meanImage), ...
                                     cellstr(TPMs));
-
-      saveMatlabBatch(matlabbatch, 'reslice_tpm', opt, subID);
-      spm_jobman('run', matlabbatch);
+      
+      saveAndRunWorkflow(matlabbatch, 'reslice_tpm', opt, subID);
 
     end
 

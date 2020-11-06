@@ -1,6 +1,6 @@
 function matlabbatch = setBatchFmriEstimate(matlabbatch)
   
-  printBatchName('estimate fmri model');
+  printBatchName('estimate subject level fmri model');
 
   matlabbatch{2}.spm.stats.fmri_est.spmmat(1) = cfg_dep( ...
                                                         'fMRI model specification SPM file', ...

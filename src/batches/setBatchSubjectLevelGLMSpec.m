@@ -4,7 +4,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   [BIDS, opt, subID, funcFWHM] =  deal(varargin{:});
   
-  printBatchName('subject level fmri model specification');
+  printBatchName('specify subject level fmri model');
 
   % Check the slice timing information is not in the metadata and not added
   % manually in the opt variable.

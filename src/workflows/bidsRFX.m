@@ -23,146 +23,130 @@ function bidsRFX(action, funcFWHM, conFWHM, opt)
   %
   %    conFWHM: How much smoothing is required for the CON images for
   %    the second level analysis
-
+  
   if nargin < 2 || isempty(funcFWHM)
     funcFWHM = 0;
   end
-
+  
   if nargin < 3 || isempty(conFWHM)
     conFWHM = 0;
   end
-
+  
   % if input has no opt, load the opt.mat file
   if nargin < 4
     opt = [];
   end
-
+  
   [~, opt, group] = setUpWorkflow(opt, 'group level GLM');
-
+  
   switch action
-
+    
     case 'smoothContrasts'
-
+      
       matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt);
-
-      saveMatlabBatch( ...
-                      ['smooth_con_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
-                      'STC', ...
-                      opt);
-
-      spm_jobman('run', matlabbatch);
-
+      
+      saveAndRunWorkflow(matlabbatch, ...
+        ['smooth_con_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
+        opt, subID);
+      
     case 'RFX'
-
-      fprintf(1, 'Create Mean Struct and Mask IMAGES...');
-
+      
       rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
-
+      
+      % Load the list of contrasts of interest for the RFX
+      grpLvlCon = getGrpLevelContrastToCompute(opt);
+      
       % ------
       % TODO
       % - need to rethink where to save the anat and mask
       % - need to smooth the anat
       % - create a masked version of the anat too
-      % ------
-
-      matlabbatch = ...
-          setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir);
-
-      % ------
-      % TODO
-      % needs to be improved (maybe??) as the structural and mask may vary for
+      % - needs to be improved (maybe??) as the structural and mask may vary for
       % different analysis
       % ------
-
-      saveMatlabBatch(matlabbatch, 'create_mean_struc_mask', opt);
-
-      spm_jobman('run', matlabbatch);
-
-      %% Factorial design specification
-
-      % Load the list of contrasts of interest for the RFX
-      grpLvlCon = getGrpLevelContrastToCompute(opt);
-
+      
+      matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir);
+      
+      saveAndRunWorkflow(matlabbatch, 'create_mean_struc_mask', opt);
+      
       % ------
       % TODO
       % rfxDir should probably be set in setBatchFactorialDesign
+      % needs to be improved (maybe??) as the name may vary with FXHM and
+      % contrast
       % ------
-
-      rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
-
+      
       matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir);
-
+      
+      saveAndRunWorkflow(matlabbatch, 'group_level_specification', opt);
+      
+      matlabbatch = setBatchEstimateGroupLevel(grpLvlCon);
+      
       % ------
       % TODO
       % needs to be improved (maybe??) as the name may vary with FXHM and
       % contrast
       % ------
+      
+      saveAndRunWorkflow(matlabbatch, 'group_level_model_estimation', opt);
 
-      saveMatlabBatch(matlabbatch, 'rfx_specification', opt);
-
-      fprintf(1, 'Factorial Design Specification...');
-
-      spm_jobman('run', matlabbatch);
-
-      %% Factorial design estimation
-
-      fprintf(1, 'BUILDING JOB: Factorial Design Estimation');
-
-      matlabbatch = {};
-
-      for j = 1:size(grpLvlCon, 1)
-        conName = rmTrialTypeStr(grpLvlCon{j});
-        matlabbatch{j}.spm.stats.fmri_est.spmmat = ...
-            { fullfile(rfxDir, conName, 'SPM.mat') }; %#ok<*AGROW>
-        matlabbatch{j}.spm.stats.fmri_est.method.Classical = 1;
-      end
-
+      [matlabbatch] = setBatchContrastsGroupLevel(grpLvlCon, rfxDir);
+      
       % ------
       % TODO
       % needs to be improved (maybe??) as the name may vary with FXHM and
       % contrast
       % ------
-
-      saveMatlabBatch(matlabbatch, 'rfx_estimation', opt);
-
-      fprintf(1, 'Factorial Design Estimation...');
-
-      spm_jobman('run', matlabbatch);
-
-      %% Contrast estimation
-
-      fprintf(1, 'BUILDING JOB: Contrast estimation');
-
-      matlabbatch = {};
-
-      % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
-      for j = 1:size(grpLvlCon, 1)
-        conName = rmTrialTypeStr(grpLvlCon{j});
-        matlabbatch{j}.spm.stats.con.spmmat = ...
-            {fullfile(rfxDir, conName, 'SPM.mat')};
-        matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
-        matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = 1;
-        matlabbatch{j}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
-
-        matlabbatch{j}.spm.stats.con.delete = 0;
-      end
-
-      % ------
-      % TODO
-      % needs to be improved (maybe??) as the name may vary with FXHM and
-      % contrast
-      % ------
-
-      saveMatlabBatch(matlabbatch, 'rfx_contrasts', opt);
-
-      fprintf(1, 'Contrast Estimation...');
-
-      spm_jobman('run', matlabbatch);
-
+      
+      saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);
+      
   end
-
+  
 end
 
 function conName = rmTrialTypeStr(conName)
   conName = strrep(conName, 'trial_type.', '');
+end
+
+function matlabbatch = setBatchEstimateGroupLevel(grpLvlCon)
+  
+      printBatchName('estimate group level fmri model');
+      
+      matlabbatch = {};
+      
+      for j = 1:size(grpLvlCon, 1)
+        
+        conName = rmTrialTypeStr(grpLvlCon{j});
+        
+        matlabbatch{j}.spm.stats.fmri_est.spmmat = ...
+          { fullfile(rfxDir, conName, 'SPM.mat') }; %#ok<*AGROW>
+        
+        matlabbatch{j}.spm.stats.fmri_est.method.Classical = 1;
+        
+        
+      end
+      
+end
+
+function [matlabbatch] = setBatchContrastsGroupLevel(grpLvlCon, rfxDir)
+  
+  printBatchName('group level contrast estimation');
+  
+  matlabbatch = {};
+  
+  % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
+  for j = 1:size(grpLvlCon, 1)
+    
+    conName = rmTrialTypeStr(grpLvlCon{j});
+    
+    matlabbatch{j}.spm.stats.con.spmmat = ...
+      {fullfile(rfxDir, conName, 'SPM.mat')};
+    
+    matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
+    matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = 1;
+    matlabbatch{j}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
+    
+    matlabbatch{j}.spm.stats.con.delete = 0;
+  end
+  
 end
