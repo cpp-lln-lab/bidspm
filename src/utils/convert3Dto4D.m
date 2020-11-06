@@ -76,10 +76,9 @@ function convert3Dto4D
         sequencePath = char(fullfile(optSource.sourceDir, optSource.sequenceList(iSeq)));
 
         % Retrieve volume files info
-        [volumesList, outputNameImage] = parseNiiFiles(sequencePath);
+        [volumesList, outputNameImage] = parseFiles('nii', sequencePath);
 
         % Set output name, it takes the file name of the first volume and add subfix '_4D'
-        %             outputName = char(volumesToConvert(1).name);
 
         dotPos = find(outputNameImage == '.');
 
@@ -88,7 +87,7 @@ function convert3Dto4D
         outputNameImage = [outputNameImage '_4D.nii']; %#ok<AGROW>
 
         % Retrieve sidecar json files info
-        [jsonList, outputNameJson] = parseJsonFiles(sequencePath);
+        [jsonList, outputNameJson] = parseFiles('json' ,sequencePath);
 
         jsonFile = jsondecode(fileread(char(jsonList(1))));
 
@@ -110,8 +109,6 @@ function convert3Dto4D
 
         % Save one sidecar json file, it takes the first volume one and add subfix '_4D'
         dotPos = find(char(outputNameJson) == '.');
-
-        %             jsonCopy = char(jsonList(1));
 
         outputNameJson = outputNameJson(1:dotPos(1) - 1);
 
@@ -142,31 +139,25 @@ function convert3Dto4D
 
 end
 
-function [volumesList, outputNameImage] = parseNiiFiles(sequencePath)
+function [fileList, outputName] = parseFiles(fileExstention, sequencePath)
 
-  volumesList = spm_select('list', sequencePath, 'nii');
+  fileList = spm_select('list', sequencePath, fileExstention);
 
-  outputNameImage = volumesList(1, :);
+  if size(fileList, 1) > 0
+      
+  outputName = fileList(1, :);
 
-  volumesList = strcat(sequencePath, filesep, cellstr(volumesList));
-
-end
-
-function [jsonList, outputNameJson] = parseJsonFiles(sequencePath)
-
-  jsonList = spm_select('list', sequencePath, 'json');
-
-  if size(jsonList, 1) > 0
-
-    outputNameJson = jsonList(1, :);
-
-    jsonList = strcat(sequencePath, filesep, cellstr(jsonList));
-
+  fileList = strcat(sequencePath, filesep, cellstr(fileList));
+  
   else
 
-    jsonList = {};
+    fileList = {};
 
-    outputNameJson = [];
+    outputName = [];
+    
+    newline;
+    warning('I have found 0 files with extension ''.%s'' ', fileExstention)
+    newline;
 
   end
 
