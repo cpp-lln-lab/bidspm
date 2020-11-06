@@ -14,8 +14,8 @@ function test_copyGraphWindownOutputBasic()
   imgNb = 1:2;
   action = 'testStep';
   
-  system('touch spm_001.png')
-  system('touch spm_002.png')
+  system('touch spm_001.png');
+  system('touch spm_002.png');
   
   imgNb = copyGraphWindownOutput(opt, subID, action, imgNb);
   

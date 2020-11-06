@@ -4,11 +4,19 @@ function copyFigures(BIDS, opt, subID)
   
   % loop through the figures outputed for unwarp: one per run
   if  opt.realign.useUnwarp
-    runs = spm_BIDS(BIDS, 'runs', ...
+    
+    runs = bids.query(BIDS, 'runs', ...
       'sub', subID, ...
       'task', opt.taskName, ...
       'type', 'bold');
-    imgNb = copyGraphWindownOutput(opt, subID, 'unwarp', imgNb : (imgNb + size(runs, 2) - 1 ));
+    
+    nbRuns = size(runs, 2);
+    if nbRuns == 0
+      nbRuns = 1;
+    end
+    
+    imgNb = copyGraphWindownOutput(opt, subID, 'unwarp', imgNb : (imgNb + nbRuns - 1 ));
+    
   end
   
   imgNb = copyGraphWindownOutput(opt, subID, 'func2anatCoreg', imgNb); %#ok<NASGU>
