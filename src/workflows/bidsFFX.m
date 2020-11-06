@@ -14,14 +14,14 @@ function bidsFFX(action, opt, funcFWHM)
   %
   % :param action: (string) ``specifyAndEstimate`` or ``contrasts``.
   % :param opt: (scalar) structure or json filename containing the options. See
-  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :param funcFWHM: (scalar) Gaussian kernel size applied to the functional data.
   %
   % - ``specifyAndEstimate`` for fMRI design + estimate and
   % - ``contrasts`` to estimate contrasts.
   %
   % For unsmoothed data ``funcFWHM = 0``, for smoothed data ``funcFWHM = ... mm``.
-  % In this way we can make multiple ffx for different smoothing degrees
+  % In this way we can make multiple ffx for different smoothing degrees.
   %
 
   if nargin < 3

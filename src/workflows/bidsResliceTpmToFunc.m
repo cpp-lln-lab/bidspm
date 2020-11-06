@@ -10,11 +10,11 @@ function bidsResliceTpmToFunc(opt)
   %   bidsResliceTpmToFunc([opt])
   %
   % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % Assumes that the anatomical has already been segmented by ``bidsSpatialPrepro``
-  % or ``bidsSegmentSkullStrip``.
+  % Assumes that the anatomical has already been segmented by ``bidsSpatialPrepro()``
+  % or ``bidsSegmentSkullStrip()``.
   %
   % It is necessary to run this workflow before running the ``functionalQA`` pipeline
   % as the computation of the tSNR by ``spmup`` requires the TPMs to have the same dimension

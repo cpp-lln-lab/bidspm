@@ -9,13 +9,13 @@ function bidsRealignUnwarp(opt)
   %   bidsRealignReslice(opt)
   %
   % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
   % Assumes that ``bidsSTC`` has already been run.
   %
-  % If the ``bidsCreateVDM`` workflow has been run before the voxel displacement
-  % maps will be used unless ``fieldsToSet.useFieldmaps`` is set to ``false``.
+  % If the ``bidsCreateVDM()`` workflow has been run before the voxel displacement
+  % maps will be used unless ``opt.useFieldmaps`` is set to ``false``.
   %
 
   if nargin < 1

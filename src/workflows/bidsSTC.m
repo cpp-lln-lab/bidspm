@@ -9,7 +9,7 @@ function bidsSTC(opt)
   %  bidsSTC([opt])
   %
   % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
   % STC will be performed using the information provided in the BIDS data set. It
@@ -25,7 +25,7 @@ function bidsSTC(opt)
   % If no slice timing information is available from the file metadata or from 
   % the ``opt`` strcuture this step will be skipped.
   %
-  % See also ``getSliceOrder``.
+  % See also ``getSliceOrder()``.
   %
   % See the documentation for more information about slice timing correction.
   %

@@ -9,10 +9,10 @@ function bidsRealignReslice(opt)
   %   bidsRealignReslice(opt)
   %
   % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % Assumes that ``bidsSTC`` has already been run.
+  % Assumes that ``bidsSTC()`` has already been run.
   %
 
   if nargin < 1

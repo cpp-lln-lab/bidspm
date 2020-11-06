@@ -16,9 +16,9 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   %                     [modalitiesToCopy = {'anat', 'func', 'fmap'}])
   %
   % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions`` and ``loadAndCheckOptions``.
-  % :type opt: type
-  % :param deleteZippedNii:
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  % :param deleteZippedNii: will delete the original zipped ``.gz`` if set to ``true``
   % :type deleteZippedNii: boolean
   % :param modalitiesToCopy:
   % :type modalitiesToCopy: cell

@@ -11,7 +11,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
   %  bidsResults([opt], funcFWHM, conFWHM)
   %
   % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   % :param funcFWHM: How much smoothing was applied to the functional
   %                  data in the preprocessing.

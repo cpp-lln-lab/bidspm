@@ -104,10 +104,18 @@ Compute results
 
 .. autofunction:: bidsResults
 
-
 Other
 =====
 
 .. autofunction:: bidsCreateVDM
 .. autofunction:: bidsResliceTpmToFunc
 .. autofunction:: bidsSegmentSkullStrip
+
+Helper functions
+================
+
+To be used if you want to create a new workflow.
+
+.. autofunction:: setUpWorkflow
+.. autofunction:: saveAndRunWorkflow
+

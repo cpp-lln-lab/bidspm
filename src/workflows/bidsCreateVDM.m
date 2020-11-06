@@ -9,6 +9,10 @@ function bidsCreateVDM(opt)
   %
   %   bidsCreateVDM([opt])
   %
+  % :param action: (string) ``specifyAndEstimate`` or ``contrasts``.
+  % :param opt: (scalar) structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %
   % .. TODO:
   %
   %    - take care of all types of fieldmaps
