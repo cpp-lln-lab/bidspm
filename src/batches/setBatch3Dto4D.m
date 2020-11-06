@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT)
+function matlabbatch = setBatch3Dto4D(optSource, volumesList)
 %
 % Short description of what the function does goes here.
 %
@@ -24,7 +24,12 @@ function matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT)
 %    - item 1
 %    - item 2
 
-fprintf(1, 'PREPARING: 3D to 4D conversion');
+fprintf(1, 'PREPARING: 3D to 4D conversion\n');
+
+% volumesList = optSource.volumesList;
+outputName = optSource.outputName;
+dataType = optSource.dataType;
+RT = optSource.RT;
 
 matlabbatch{1}.spm.util.cat.vols = volumesList;
 matlabbatch{1}.spm.util.cat.name = outputName;
