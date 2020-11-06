@@ -59,7 +59,7 @@ optSource.sequenceToIgnore = {'001-AAHead_Scout_32ch-head-coil', ...
 % 8:  INT32   - signed int
 % 16: FLOAT32 - single prec. float
 % 64: FLOAT64 - double prec. float
-optSource.dataType = 0;
+dataType = 0;
 
 % Get source folder content
 sourceDataStruc = dir(optSource.sourceDir);
@@ -68,13 +68,13 @@ isDir = [sourceDataStruc(:).isdir];
 
 optSource.sequenceList = {sourceDataStruc(isDir).name}';
 
-%% Loop through the sequence folders
+% Loop through the sequence folders
 
 tic
 
 for iSeq = 1:size(optSource.sequenceList, 1)
 
-    % Skip 'non' foldera
+    % Skip 'non' folders
     if length(char(optSource.sequenceList(iSeq))) > 2
 
         % Check if sequence to ignore or not
@@ -92,7 +92,7 @@ for iSeq = 1:size(optSource.sequenceList, 1)
             sequencePath = char(fullfile(optSource.sourceDir, optSource.sequenceList(iSeq)));
 
             % Retrieve volume files info
-            [volumesToConvert, volumesList] = parseNiiFiles(sequencePath, optSource);
+            [volumesToConvert, volumesList] = parseNiiFiles(sequencePath);
 
             % Set output name, it takes the file name of the first volume and add subfix '_4D'
             outputName = char(volumesToConvert(1).name);
@@ -101,7 +101,7 @@ for iSeq = 1:size(optSource.sequenceList, 1)
 
             outputName = outputName(1:dotPos(1)-1);
 
-            optSource.outputName = [outputName '_4D.nii' ];
+            outputName = [outputName '_4D.nii' ]; %#ok<AGROW>
 
             % Retrieve sidecar json files info
             jsonList = parseJsonFiles(sequencePath);
@@ -109,11 +109,11 @@ for iSeq = 1:size(optSource.sequenceList, 1)
             jsonFile = jsondecode(fileread(char(jsonList(1))));
 
             % % % % % % LIEGE  SPECIFIC % % % % % % %
-            optSource.RT = jsonFile.acqpar.RepetitionTime/1000;
+            RT = jsonFile.acqpar.RepetitionTime/1000;
             % % % % % % % % % % % % % % % % % % % % %
 
             % Set and run spm batch
-            matlabbatch = setBatch3Dto4D(optSource, volumesList);
+            matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT);
 
             spm_jobman('run', matlabbatch);
 
@@ -154,19 +154,19 @@ toc
 
 end
 
-function [volumesToConvert, optSource] = parseNiiFiles(sequencePath, optSource)
+function [volumesToConvert, volumesList] = parseNiiFiles(sequencePath)
 
 volumesToConvert = dir(fullfile(sequencePath, '*.nii'));
 
-optSource.volumesList = {};
+volumesList = {};
 
 for iVol = 1:size(volumesToConvert,1)
 
-    optSource.volumesList{end+1} = [volumesToConvert(iVol).folder filesep volumesToConvert(iVol).name];
+    volumesList{end+1} = [volumesToConvert(iVol).folder filesep volumesToConvert(iVol).name]; %#ok<AGROW>
 
 end
 
-optSource.volumesList = optSource.volumesList';
+volumesList = volumesList';
 
 
 end
@@ -187,6 +187,10 @@ if size(jsonToConvert, 1) > 0
 
     jsonList = jsonList';
 
+else 
+    
+    jsonList = {};
+    
 end
 
 end
