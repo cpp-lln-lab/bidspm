@@ -1,15 +1,10 @@
 % (C) Copyright 2019 Remi Gau
 
-function opt = MoAEpilot_getOption(optionJsonFile)
+function opt = MoAEpilot_getOption()
   % returns a structure that contains the options chosen by the user to run
   % slice timing correction, pre-processing, FFX, RFX.
 
-  if nargin == 1
-    
-    opt = loadAndCheckOptions(optionJsonFile);
-    
-  else
-    opt = [];
+  opt = [];
   
 
   % task to analyze
@@ -46,8 +41,7 @@ function opt = MoAEpilot_getOption(optionJsonFile)
                                             'p', 0.01, ...
                                             'k', 0, ...
                                             'NIDM', true);
-                                          
-  end                                        
+                                                                               
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);

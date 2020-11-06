@@ -46,7 +46,7 @@ delete(fullfile(pwd, 'options_task-*date-*.json'));
 delete(fullfile(pwd, 'spm-*.png'));
 
 optionsFilesList = {...
-  ''; ...
+  'options_task-auditory_unwarp-0.json'; ...
   'options_task-auditory_unwarp-0.json'; ...
   'options_task-auditory_unwarp-0_space-individual.json'; ...
   'options_task-auditory_space-individual.json'};
@@ -56,12 +56,9 @@ for iOption = 1:size(optionsFilesList,1)
   
   fprintf(1, repmat('\n', 1, 5));
   
-  opt = MoAEpilot_getOption();
-  if iOption>1
-    optionJsonFile = optionsFilesList{iOption};
-    opt = MoAEpilot_getOption(optionJsonFile);
-  end
-  
+  optionJsonFile = optionsFilesList{iOption};
+  opt = loadAndCheckOptions(optionJsonFile);
+
   %% Run batches
   
   reportBIDS(opt);
