@@ -1,0 +1,43 @@
+{
+    "STC_referenceSlice": [],
+    "anatReference": {
+        "type": "T1w",
+        "session": 1
+    },
+    "contrastList": [],
+    "dataDir": "/home/remi/openneuro/ds000001/raw",
+    "derivativesDir": "",
+    "funcVoxelDims": [],
+    "groups": [""],
+    "model": {
+        "file": ""
+    },
+    "realign": {
+        "useUnwarp": false
+    },
+    "result": {
+        "Steps": {
+            "Level": "",
+            "Contrasts": {
+                "Name": "",
+                "Mask": false,
+                "MC": "FWE",
+                "p": 0.05,
+                "k": 0,
+                "NIDM": true
+            }
+        }
+    },
+    "skullstrip": {
+        "threshold": 0.75
+    },
+    "sliceOrder": [],
+    "space": "individual",
+    "subjects": [
+        "01",
+        "02"
+    ],
+    "taskName": "balloonanalogrisktask",
+    "useFieldmaps": true,
+    "zeropad": 2
+}
