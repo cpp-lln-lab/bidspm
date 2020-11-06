@@ -2,10 +2,11 @@
 
 function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   %
-  % This function will copy the subject's folders from the ``raw`` folder to the
+  % This function will copy the folders from the ``raw`` folder to the
   % ``derivatives`` folder, and will copy the dataset description and task json files
   % to the derivatives directory.
-  % Then it will search the derivatives directory for any zipped *.gz image
+  %
+  % Then it will search the derivatives directory for any zipped ``*.gz`` image
   % and uncompress the files for the task of interest.
   %
   % USAGE::
@@ -50,7 +51,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   rawDir = opt.dataDir;
   derivativesDir = opt.derivativesDir;
 
-  createDerivativeDir(derivativesDir);
+  createDerivativeDir(opt);
 
   copyTsvJson(rawDir, derivativesDir);
 
@@ -123,18 +124,6 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   end
 
   unzipFiles(derivativesDir, deleteZippedNii, opt);
-
-end
-
-function  createDerivativeDir(derivativesDir)
-  % make derivatives folder if it doesnt exist
-
-  if ~exist(derivativesDir, 'dir')
-    mkdir(derivativesDir);
-    fprintf('derivatives directory created: %s \n', derivativesDir);
-  else
-    fprintf('derivatives directory already exists. \n');
-  end
 
 end
 
