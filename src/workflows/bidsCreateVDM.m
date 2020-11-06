@@ -24,7 +24,7 @@ function bidsCreateVDM(opt)
   if nargin < 1
     opt = [];
   end
-  
+
   [BIDS, opt, group] = setUpWorkflow(opt, 'create voxel displacement map');
 
   %% Loop through the groups, subjects, and sessions
@@ -43,10 +43,10 @@ function bidsCreateVDM(opt)
 
         printProcessingSubject(groupName, iSub, subID);
 
-        matlabbatch = setBatchCoregistrationFmap(BIDS, opt, subID);        
+        matlabbatch = setBatchCoregistrationFmap(BIDS, opt, subID);
         saveAndRunWorkflow(matlabbatch, 'coregister_fmap', opt, subID);
 
-        matlabbatch = setBatchCreateVDMs(BIDS, opt, subID);        
+        matlabbatch = setBatchCreateVDMs(BIDS, opt, subID);
         saveAndRunWorkflow(matlabbatch, 'create_vdm', opt, subID);
 
         % TODO

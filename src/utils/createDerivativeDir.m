@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+
 function  createDerivativeDir(opt)
   %
   % Creates the derivative folder if it does not exist.

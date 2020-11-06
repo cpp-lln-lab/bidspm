@@ -4,7 +4,7 @@
 % options encoded in json files
 %
 % - default options (that is realign & unwarp + space = MNI)
-% - indidivual space 
+% - indidivual space
 % - realign only
 % - indidivual space + realign only
 %
@@ -42,22 +42,22 @@ checkDependencies();
 %% Set up
 delete(fullfile(pwd, 'options_task-*date-*.json'));
 
-optionsFilesList = {...
-  'options_task-auditory.json'; ...
-  'options_task-auditory_unwarp-0.json'; ...
-  'options_task-auditory_unwarp-0_space-individual.json'; ...
-  'options_task-auditory_space-individual.json'};
+optionsFilesList = { ...
+                    'options_task-auditory.json'; ...
+                    'options_task-auditory_unwarp-0.json'; ...
+                    'options_task-auditory_unwarp-0_space-individual.json'; ...
+                    'options_task-auditory_space-individual.json'};
 
 % run the pipeline with different options
-for iOption = 1:size(optionsFilesList,1)
-  
+for iOption = 1:size(optionsFilesList, 1)
+
   fprintf(1, repmat('\n', 1, 5));
-  
+
   optionJsonFile = optionsFilesList{iOption};
   opt = loadAndCheckOptions(optionJsonFile);
 
   %% Run batches
-  
+
   reportBIDS(opt);
 
   bidsCopyRawFolder(opt, 1);
@@ -77,7 +77,7 @@ for iOption = 1:size(optionsFilesList,1)
   bidsFFX('specifyAndEstimate', opt, FWHM);
   bidsFFX('contrasts', opt, FWHM);
   bidsResults(opt, FWHM);
-   
+
   cd(WD);
 
 end

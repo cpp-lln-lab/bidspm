@@ -34,7 +34,7 @@ function test_loadAndCheckOptionsFromFile()
   jsonContent.space = 'individual';
   jsonContent.groups = {''};
   jsonContent.subjects = {[]};
-  
+
   filename = 'options_task-vismotion_space-T1w.json';
   spm_jsonwrite(filename, jsonContent);
 

@@ -21,7 +21,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %
   % :returns: - :matlabbatch: (structure) (dimension)
   %           - :voxDim: (array) (dimension)
-  
+
   % TODO:
   % make which image is resliced more consistent 'which = []'
 
@@ -51,14 +51,14 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
     case 'realign'
       msg = 'REALIGN';
       matlabbatch{end + 1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
-      matlabbatch{end}.spm.spatial.realign.estwrite.roptions.which = [0 1];    
+      matlabbatch{end}.spm.spatial.realign.estwrite.roptions.which = [0 1];
 
     case 'reslice'
       msg = 'RESLICE';
       matlabbatch{end + 1}.spm.spatial.realign.write.roptions.which = [2 0];
-      
+
   end
-  
+
   printBatchName(msg);
 
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
@@ -93,34 +93,34 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
       end
 
       switch action
-        
+
         % we reslice images that come from a previous batch so we can return
         % early
         case 'reslice'
-          
+
           matlabbatch{end}.spm.spatial.realign.write.data(1) = ...
             cfg_dep('Coregister: Estimate: Coregistered Images', ...
-            substruct( ...
-            '.', 'val', '{}', {opt.orderBatches.coregister}, ...
-            '.', 'val', '{}', {1}, ...
-            '.', 'val', '{}', {1}, ...
-            '.', 'val', '{}', {1}), ...
-            substruct('.', 'cfiles'));
-          
+                    substruct( ...
+                              '.', 'val', '{}', {opt.orderBatches.coregister}, ...
+                              '.', 'val', '{}', {1}, ...
+                              '.', 'val', '{}', {1}, ...
+                              '.', 'val', '{}', {1}), ...
+                    substruct('.', 'cfiles'));
+
           return
 
         case 'realignUnwarp'
 
-        vdmFile = getVdmFile(BIDS, opt, boldFilename);
-        matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = { vdmFile };
-        matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = { file };
+          vdmFile = getVdmFile(BIDS, opt, boldFilename);
+          matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = { vdmFile };
+          matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = { file };
 
         otherwise
 
-        matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = { file };
+          matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = { file };
 
       end
-      
+
       fprintf(1, ' %s\n', file);
 
       runCounter = runCounter + 1;

@@ -27,7 +27,7 @@ function bidsFFX(action, opt, funcFWHM)
   if nargin < 3
     opt = [];
   end
-  
+
   [BIDS, opt, group] = setUpWorkflow(opt, 'subject level GLM');
 
   %% Loop through the groups, subjects, and sessions
@@ -52,8 +52,8 @@ function bidsFFX(action, opt, funcFWHM)
 
           batchName = ...
             ['specify_estimate_ffx_task-', opt.taskName, ...
-                           '_space-', opt.space, ...
-                           '_FWHM-', num2str(funcFWHM)];
+             '_space-', opt.space, ...
+             '_FWHM-', num2str(funcFWHM)];
 
         case 'contrasts'
 
@@ -65,11 +65,11 @@ function bidsFFX(action, opt, funcFWHM)
                            '_FWHM-', num2str(funcFWHM)];
 
       end
-      
+
       saveAndRunWorkflow(matlabbatch, batchName, opt, subID);
 
     end
-    
+
   end
 
 end

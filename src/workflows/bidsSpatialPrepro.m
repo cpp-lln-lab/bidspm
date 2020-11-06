@@ -27,7 +27,7 @@ function bidsSpatialPrepro(opt)
   % If you want to:
   %
   % - use another type of anatomical data than ``T1w`` as a reference or want to specify
-  %   which anatomical session is to be used as a reference, you can set this in 
+  %   which anatomical session is to be used as a reference, you can set this in
   %   ``opt.anatReference``::
   %
   %     opt.anatReference.type = 'T1w';
@@ -87,7 +87,7 @@ function bidsSpatialPrepro(opt)
         % dependency from coregistration
         matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt);
       end
-      
+
       % if no unwarping was done on func, we reslice the func, so we can use
       % them for the functionalQA
       if ~opt.realign.useUnwarp
@@ -95,7 +95,7 @@ function bidsSpatialPrepro(opt)
       end
 
       batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];
-      
+
       saveAndRunWorkflow(matlabbatch, batchName, opt, subID);
 
       copyFigures(BIDS, opt, subID);
@@ -104,5 +104,3 @@ function bidsSpatialPrepro(opt)
   end
 
 end
-
-

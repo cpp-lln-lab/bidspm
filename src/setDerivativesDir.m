@@ -22,7 +22,7 @@ function opt = setDerivativesDir(opt)
   %   %
   %   % disp(opt.derivativesDir)
   %   %|| '/home/remi/data/../derivatives/cpp_spm'
-  %   % 
+  %   %
   %   % disp(opt.opt.jobsDir)
   %   %|| '/home/remi/data/../derivatives/cpp_spm/JOBS/testTask
   %
@@ -44,7 +44,6 @@ function opt = setDerivativesDir(opt)
   %
   %
 
-
   if ~isfield(opt, 'derivativesDir') || isempty(opt.derivativesDir)
     opt.derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm');
 
@@ -56,7 +55,7 @@ function opt = setDerivativesDir(opt)
     % for octave
     folders = strsplit(opt.derivativesDir, filesep);
   end
-  
+
   if strcmp(folders{end}, 'derivatives')
     folders{end + 1} = 'cpp_spm';
   end

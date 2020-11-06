@@ -37,7 +37,7 @@ function anatomicalQA(opt)
       % Basic QA for anatomical data is to get SNR, CNR, FBER and Entropy
       % This is useful to check coregistration worked fine
       anatQA = spmup_anatQA(anatImage, TPMs(1, :), TPMs(2, :)); %#ok<*NASGU>
-      
+
       anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
 
       spm_jsonwrite( ...

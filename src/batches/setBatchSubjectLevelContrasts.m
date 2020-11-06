@@ -1,7 +1,7 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM)
-  
+
   printBatchName('subject level contrasts specification');
 
   ffxDir = getFFXdir(subID, funcFWHM, opt);

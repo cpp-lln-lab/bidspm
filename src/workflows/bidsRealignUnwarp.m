@@ -21,7 +21,7 @@ function bidsRealignUnwarp(opt)
   if nargin < 1
     opt = [];
   end
-  
+
   [BIDS, opt, group] = setUpWorkflow(opt, 'realign and unwarp');
 
   %% Loop through the groups, subjects, and sessions
@@ -45,9 +45,9 @@ function bidsRealignUnwarp(opt)
                                          subID, ...
                                          opt, ...
                                          'realignUnwarp');
-                                      
+
       saveAndRunWorkflow(matlabbatch, 'realign_unwarp', opt, subID);
-      
+
       copyFigures(BIDS, opt, subID);
 
     end

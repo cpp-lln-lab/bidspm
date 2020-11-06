@@ -6,6 +6,8 @@ function test_suite = test_bidsSegmentSkullStrip %#ok<*STOUT>
   initTestSuite;
 end
 
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+
 function test_bidsSegmentSkullStripBasic()
 
   % smoke test
@@ -18,12 +20,10 @@ function test_bidsSegmentSkullStripBasic()
   opt.taskName = 'auditory';
   opt = checkOptions(opt);
 
-
   %% Run batches
   checkDependencies();
   reportBIDS(opt);
   bidsCopyRawFolder(opt, 1);
   bidsSegmentSkullStrip(opt);
-
 
 end

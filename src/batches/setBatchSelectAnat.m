@@ -8,7 +8,7 @@ function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID)
   % - session to select the anat from = opt.anatReference.session (default = 1)
   %
   % We assume that the first anat of that type is the "correct" one
-  
+
   printBatchName('selecting anatomical image');
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);

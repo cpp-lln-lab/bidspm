@@ -1,7 +1,7 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
-  
+
   printBatchName('smoothing contrast images');
 
   counter = 0;

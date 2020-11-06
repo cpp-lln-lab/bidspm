@@ -1,7 +1,7 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt)
-  
+
   printBatchName('coregister functional data to anatomical');
 
   matlabbatch{end + 1}.spm.spatial.coreg.estimate.ref(1) = ...
@@ -15,8 +15,8 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID
 
   % SOURCE IMAGE : DEPENDENCY FROM REALIGNEMENT
   % Mean Image
-    meanImageToUse = 'meanuwr';
-    otherImageToUse = 'uwrfiles';
+  meanImageToUse = 'meanuwr';
+  otherImageToUse = 'uwrfiles';
   if ~opt.realign.useUnwarp
     meanImageToUse = 'rmean';
     otherImageToUse = 'cfiles';

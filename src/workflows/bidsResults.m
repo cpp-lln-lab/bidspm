@@ -24,7 +24,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
   if nargin < 1
     opt = [];
   end
-  
+
   [~, opt, group] = setUpWorkflow(opt, 'computing GLM results');
 
   matlabbatch = [];
@@ -79,7 +79,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
     end
 
   end
-  
+
   saveAndRunWorkflow(matlabbatch, batchName, opt);
 
   % move ps file
@@ -89,5 +89,3 @@ function bidsResults(opt, funcFWHM, conFWHM)
   % TODO
 
 end
-
-

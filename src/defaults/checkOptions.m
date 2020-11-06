@@ -14,7 +14,7 @@ function opt = checkOptions(opt)
   % :param opt: structure containing the options.
   % :type opt: structure
   %
-  % :returns: 
+  % :returns:
   %
   % - :opt: the option structure with missing values filled in by the defaults.
   %
@@ -26,14 +26,14 @@ function opt = checkOptions(opt)
   %   - ``opt.groups = {''}`` - group of subjects to analyze
   %   - ``opt.subjects = {[]}`` - suject to run in each group
   %     space where we conduct the analysis
-  %   - ``opt.derivativesDir = ''`` - directory where the raw and derivatives 
+  %   - ``opt.derivativesDir = ''`` - directory where the raw and derivatives
   %     are located. See ``setDerivativesDir()`` for more information.
   %   - ``opt.space = 'MNI'`` - Space where we conduct the analysis
   %   - ``opt.realign.useUnwarp = true``
   %   - ``opt.useFieldmaps = true`` - when set to ``true`` the
   %     preprocessing pipeline will look for the voxel displacement maps (created by
   %     ``bidsCreateVDM()``) and will use them for realign and unwarp.
-  %   - ``opt.model.file = ''`` - path to the BIDS model file that contains the 
+  %   - ``opt.model.file = ''`` - path to the BIDS model file that contains the
   %     model to speficy and the contrasts to compute.
   %
   % OTHER OPTIONS (with their defaults):
@@ -48,11 +48,10 @@ function opt = checkOptions(opt)
   %     at normalization.
   %   - ``opt.STC_referenceSlice = []`` - reference slice for the slice timing correction.
   %     If left emtpy the mid-volume acquisition time point will be selected at run time.
-  %   - ``opt.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED: 
+  %   - ``opt.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED:
   %     if you know the order in which slices were acquired, you should be able to recompute
   %     slice timing and add it to the json files in your BIDS data set.
   %
-
 
   fieldsToSet = setDefaultOption();
 
@@ -95,7 +94,7 @@ function fieldsToSet = setDefaultOption()
   %% Options for model specification and results
   fieldsToSet.model.file = '';
   fieldsToSet.contrastList = {};
-  
+
   % specify the results to compute
   fieldsToSet.result.Steps = struct( ...
                                     'Level',  '', ... % dataset, run, subject

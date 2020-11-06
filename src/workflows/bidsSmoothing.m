@@ -17,13 +17,10 @@ function bidsSmoothing(funcFWHM, opt)
   % :type funcFWHM: scalar
   %
 
-
-
-
   if nargin < 2
     opt = [];
   end
-  
+
   [BIDS, opt, group] = setUpWorkflow(opt, 'smoothing functional data');
 
   %% Loop through the groups, subjects, and sessions
@@ -38,7 +35,7 @@ function bidsSmoothing(funcFWHM, opt)
       printProcessingSubject(groupName, iSub, subID);
 
       matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM);
-      
+
       saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subID);
 
     end

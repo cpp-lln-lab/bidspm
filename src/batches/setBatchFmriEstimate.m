@@ -1,5 +1,7 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+
 function matlabbatch = setBatchFmriEstimate(matlabbatch)
-  
+
   printBatchName('estimate subject level fmri model');
 
   matlabbatch{2}.spm.stats.fmri_est.spmmat(1) = cfg_dep( ...

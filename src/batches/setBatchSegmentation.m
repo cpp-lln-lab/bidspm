@@ -1,7 +1,7 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function matlabbatch = setBatchSegmentation(matlabbatch, opt)
-  
+
   printBatchName('segmentation anatomical image');
 
   % define SPM folder

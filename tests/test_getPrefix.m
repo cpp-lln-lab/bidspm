@@ -12,9 +12,8 @@ function test_getPrefixSTC()
   funcFWHM = 6;
   opt.metadata.SliceTiming = 1:0.2:1.8;
   opt.sliceOrder = 1:10;
-  
+
   [prefix, motionRegressorPrefix] = getPrefix(step, opt);
-  
 
   expectedPrefixOutput = spm_get_defaults('slicetiming.prefix');
   expectedMotionRegressorPrefix = '';
@@ -29,7 +28,7 @@ function test_getPrefixNoSTC()
   step = 'realign';
   opt.metadata = [];
   opt.sliceOrder = [];
-  
+
   prefix = getPrefix(step, opt);
 
   expectedPrefixOutput = '';
@@ -46,21 +45,21 @@ function test_getPrefixMean()
   opt.sliceOrder = [];
   opt.realign.useUnwarp = true;
   opt.space = 'MNI';
-  
+
   prefix = getPrefix(step, opt);
 
   expectedPrefixOutput = ['mean' spm_get_defaults('unwarp.write.prefix')];
 
   assertEqual(prefix, expectedPrefixOutput);
-  
+
   %% no unwarp
-  
+
   step = 'mean';
   opt.metadata.SliceTiming = 1:0.2:1.8;
   opt.sliceOrder = 1:10;
   opt.realign.useUnwarp = false;
   opt.space = 'MNI';
-  
+
   prefix = getPrefix(step, opt);
 
   expectedPrefixOutput = 'meana';
@@ -69,7 +68,6 @@ function test_getPrefixMean()
 
 end
 
-
 function test_getPrefixNormalise()
 
   step = 'normalise';
@@ -77,21 +75,21 @@ function test_getPrefixNormalise()
   opt.sliceOrder = [];
   opt.realign.useUnwarp = true;
   opt.space = 'MNI';
-  
+
   prefix = getPrefix(step, opt);
 
   expectedPrefixOutput = spm_get_defaults('unwarp.write.prefix');
 
   assertEqual(prefix, expectedPrefixOutput);
-  
+
   %% no unwarp
-  
+
   step = 'normalise';
   opt.metadata = [];
   opt.sliceOrder = [];
   opt.realign.useUnwarp = false;
   opt.space = 'MNI';
-  
+
   prefix = getPrefix(step, opt);
 
   expectedPrefixOutput = '';
@@ -107,21 +105,21 @@ function test_getPrefixFuncQA()
   opt.sliceOrder = [];
   opt.realign.useUnwarp = true;
   opt.space = 'MNI';
-  
+
   prefix = getPrefix(step, opt);
 
   expectedPrefixOutput = spm_get_defaults('unwarp.write.prefix');
 
   assertEqual(prefix, expectedPrefixOutput);
-  
+
   %% no unwarp
-  
+
   step = 'funcQA';
   opt.metadata = [];
   opt.sliceOrder = [];
   opt.realign.useUnwarp = false;
   opt.space = 'MNI';
-  
+
   prefix = getPrefix(step, opt);
 
   expectedPrefixOutput = spm_get_defaults('realign.write.prefix');
@@ -130,7 +128,6 @@ function test_getPrefixFuncQA()
 
 end
 
-
 function test_getPrefixSmooth()
 
   step = 'smooth';
@@ -138,39 +135,39 @@ function test_getPrefixSmooth()
   opt.sliceOrder = [];
   opt.realign.useUnwarp = true;
   opt.space = 'MNI';
-  
+
   prefix = getPrefix(step, opt);
 
-  expectedPrefixOutput = [...
-    spm_get_defaults('normalise.write.prefix'), ...
-    spm_get_defaults('unwarp.write.prefix')];
+  expectedPrefixOutput = [ ...
+                          spm_get_defaults('normalise.write.prefix'), ...
+                          spm_get_defaults('unwarp.write.prefix')];
 
   assertEqual(prefix, expectedPrefixOutput);
-  
+
   %% native space
   opt.realign.useUnwarp = true;
   opt.space = 'individual';
-  
+
   prefix = getPrefix(step, opt);
 
   expectedPrefixOutput = spm_get_defaults('unwarp.write.prefix');
 
   assertEqual(prefix, expectedPrefixOutput);
-  
+
   %% native space no unwarp
   opt.realign.useUnwarp = false;
   opt.space = 'individual';
-  
+
   prefix = getPrefix(step, opt);
 
   expectedPrefixOutput = spm_get_defaults('realign.write.prefix');
 
   assertEqual(prefix, expectedPrefixOutput);
-  
+
   %% MNI space no unwarp
   opt.realign.useUnwarp = false;
   opt.space = 'MNI';
-  
+
   prefix = getPrefix(step, opt);
 
   expectedPrefixOutput = spm_get_defaults('normalise.write.prefix');
@@ -187,14 +184,14 @@ function test_getPrefixFFX()
   opt.sliceOrder = [];
   opt.realign.useUnwarp = true;
   opt.space = 'MNI';
-  
+
   [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM);
 
-  expectedPrefixOutput = sprintf('%s%i%s%s',...
-                         spm_get_defaults('smooth.prefix'), ...
-                         funcFWHM, ...
-                         spm_get_defaults('normalise.write.prefix'), ...
-                         spm_get_defaults('unwarp.write.prefix'));
+  expectedPrefixOutput = sprintf('%s%i%s%s', ...
+                                 spm_get_defaults('smooth.prefix'), ...
+                                 funcFWHM, ...
+                                 spm_get_defaults('normalise.write.prefix'), ...
+                                 spm_get_defaults('unwarp.write.prefix'));
   expectedMotionRegressorPrefix = '';
 
   assertEqual(prefix, expectedPrefixOutput);
@@ -203,54 +200,53 @@ function test_getPrefixFFX()
   %% native space
   opt.realign.useUnwarp = true;
   opt.space = 'individual';
-  
+
   [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM);
 
-  expectedPrefixOutput = sprintf('%s%i%s',...
-                         spm_get_defaults('smooth.prefix'), ...
-                         funcFWHM, ...
-                         spm_get_defaults('unwarp.write.prefix'));
+  expectedPrefixOutput = sprintf('%s%i%s', ...
+                                 spm_get_defaults('smooth.prefix'), ...
+                                 funcFWHM, ...
+                                 spm_get_defaults('unwarp.write.prefix'));
   expectedMotionRegressorPrefix = '';
 
   assertEqual(prefix, expectedPrefixOutput);
   assertEqual(motionRegressorPrefix, expectedMotionRegressorPrefix);
-  
+
   %% STC, native space no unwarp
   opt.realign.useUnwarp = false;
   opt.space = 'individual';
   opt.metadata.SliceTiming = 1:0.2:1.8;
   opt.sliceOrder = 1:10;
-  
+
   [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM);
 
   expectedPrefixOutput = sprintf('%s%i%s%s', ...
-                         spm_get_defaults('smooth.prefix'), ...
-                         funcFWHM, ...
-                         spm_get_defaults('realign.write.prefix'), ...
-                         spm_get_defaults('slicetiming.prefix'));
+                                 spm_get_defaults('smooth.prefix'), ...
+                                 funcFWHM, ...
+                                 spm_get_defaults('realign.write.prefix'), ...
+                                 spm_get_defaults('slicetiming.prefix'));
   expectedMotionRegressorPrefix = spm_get_defaults('slicetiming.prefix');
 
   assertEqual(prefix, expectedPrefixOutput);
   assertEqual(motionRegressorPrefix, expectedMotionRegressorPrefix);
-  
+
   %% MNI space no unwarp
   opt.realign.useUnwarp = false;
   opt.space = 'MNI';
   opt.metadata = [];
   opt.sliceOrder = [];
-  
+
   [prefix] = getPrefix(step, opt, funcFWHM);
 
   expectedPrefixOutput = sprintf('%s%i%s%s', ...
-                         spm_get_defaults('smooth.prefix'), ...
-                         funcFWHM, ...
-                         spm_get_defaults('normalise.write.prefix'));
+                                 spm_get_defaults('smooth.prefix'), ...
+                                 funcFWHM, ...
+                                 spm_get_defaults('normalise.write.prefix'));
   expectedMotionRegressorPrefix = spm_get_defaults('slicetiming.prefix');
 
   assertEqual(prefix, expectedPrefixOutput);
-  
-end
 
+end
 
 function test_getPrefixError()
 

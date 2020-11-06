@@ -16,7 +16,7 @@ function bidsSegmentSkullStrip(opt)
   if nargin < 1
     opt = [];
   end
-  
+
   [BIDS, opt, group] = setUpWorkflow(opt, 'segmentation and skulltripping');
 
   %% Loop through the groups, subjects, and sessions
@@ -39,7 +39,7 @@ function bidsSegmentSkullStrip(opt)
       opt.orderBatches.segment = 2;
 
       matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt);
-      
+
       saveAndRunWorkflow(matlabbatch, 'segment_skullstrip', opt, subID);
 
     end

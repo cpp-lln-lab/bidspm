@@ -5,7 +5,6 @@ function opt = MoAEpilot_getOption()
   % slice timing correction, pre-processing, FFX, RFX.
 
   opt = [];
-  
 
   % task to analyze
   opt.taskName = 'auditory';
@@ -13,8 +12,8 @@ function opt = MoAEpilot_getOption()
   % The directory where the data are located
   opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'output', 'MoAEpilot');
   opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')));
-  
-  % Uncomment the lines below to run preprocessing 
+
+  % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp
   % opt.realign.useUnwarp = false;
   % - in "native" space: don't do normalization
@@ -41,7 +40,6 @@ function opt = MoAEpilot_getOption()
                                             'p', 0.01, ...
                                             'k', 0, ...
                                             'NIDM', true);
-                                                                               
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);

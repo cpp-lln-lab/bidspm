@@ -27,7 +27,7 @@ function test_setBatchCoregistrationFuncToAnatBasic()
   matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt);
 
   nbRuns = 4;
-  
+
   meanImageToUse = 'meanuwr';
   otherImageToUse = 'uwrfiles';
 
@@ -66,7 +66,7 @@ function test_setBatchCoregistrationFuncToAnatNoUnwarp()
   matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt);
 
   nbRuns = 4;
-  
+
   meanImageToUse = 'rmean';
   otherImageToUse = 'cfiles';
 

@@ -18,7 +18,7 @@ function bidsRealignReslice(opt)
   if nargin < 1
     opt = [];
   end
-  
+
   [BIDS, opt, group] = setUpWorkflow(opt, 'realign and reslice');
 
   %% Loop through the groups, subjects, and sessions
@@ -42,9 +42,9 @@ function bidsRealignReslice(opt)
                                          subID, ...
                                          opt, ...
                                          'realignReslice');
-                                      
+
       saveAndRunWorkflow(matlabbatch, 'realign_reslice', opt, subID);
-      
+
       copyFigures(BIDS, opt, subID);
 
     end

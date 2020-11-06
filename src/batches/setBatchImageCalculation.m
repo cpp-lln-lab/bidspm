@@ -3,7 +3,7 @@
 function matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outDir, expression)
 
   printBatchName('image calculation');
-  
+
   matlabbatch{end + 1}.spm.util.imcalc.input = input;
   matlabbatch{end}.spm.util.imcalc.output = output;
   matlabbatch{end}.spm.util.imcalc.outdir = { outDir };

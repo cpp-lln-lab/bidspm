@@ -36,7 +36,6 @@ function test_setDerivativesDirPreset1()
 
 end
 
-
 function test_setDerivativesDirPreset2()
 
   opt.derivativesDir = fullfile(pwd, 'derivatives', 'default');

@@ -22,7 +22,7 @@ function bidsSTC(opt)
   % the BIDS way of doing things) instead of the slice index of the reference slice
   % (the "SPM" way of doing things).
   %
-  % If no slice timing information is available from the file metadata or from 
+  % If no slice timing information is available from the file metadata or from
   % the ``opt`` strcuture this step will be skipped.
   %
   % See also ``getSliceOrder()``.
@@ -30,11 +30,10 @@ function bidsSTC(opt)
   % See the documentation for more information about slice timing correction.
   %
 
-
   if nargin < 1
     opt = [];
   end
-  
+
   [BIDS, opt, group] = setUpWorkflow(opt, 'slice timing correction');
 
   %% Loop through the groups, subjects, and sessions
@@ -49,7 +48,7 @@ function bidsSTC(opt)
       printProcessingSubject(groupName, iSub, subID);
 
       matlabbatch = setBatchSTC(BIDS, opt, subID);
-      
+
       saveAndRunWorkflow(matlabbatch, 'STC', opt, subID);
 
     end

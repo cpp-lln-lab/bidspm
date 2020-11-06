@@ -3,10 +3,10 @@
 function [BIDS, opt, group] = setUpWorkflow(opt, workflowName)
   %
   % Calls some common functions to:
-  % - check the configuraton, 
+  % - check the configuraton,
   % - remove some old files from an eventual previous crash
   % - loads the layout of the BIDS dataset
-  % - tries to open a graphic window 
+  % - tries to open a graphic window
   %
   % USAGE::
   %
@@ -18,22 +18,22 @@ function [BIDS, opt, group] = setUpWorkflow(opt, workflowName)
   % :param workflowName: name that will be printed on screen
   % :type workflowName: string
   %
-  % :returns: 
+  % :returns:
   %
   %           - :BIDS: (structure) returned by ``getData``
   %           - :opt: options checked
-  %           - :group: 
+  %           - :group:
   %
-  
+
   opt = loadAndCheckOptions(opt);
 
   % load the subjects/Groups information and the task name
   [group, opt, BIDS] = getData(opt);
-  
+
   cleanCrash();
-  
-  printWorklowName(workflowName)
-  
+
+  printWorklowName(workflowName);
+
   setGraphicWindow();
-  
+
 end

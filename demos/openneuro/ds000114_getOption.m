@@ -20,7 +20,7 @@ function opt = ds000114_getOption()
   opt.anatReference.type = 'T1w';
   opt.anatReference.session = 2;
 
-  % Uncomment the lines below to run preprocessing 
+  % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp
   %   opt.realign.useUnwarp = false;
   % - in "native" space: don't do normalization

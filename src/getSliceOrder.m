@@ -2,7 +2,7 @@
 
 function sliceOrder = getSliceOrder(opt, verbose)
   %
-  % Get the slice order information from the BIDS metadata or from the ``opt`` 
+  % Get the slice order information from the BIDS metadata or from the ``opt``
   % structure.
   %
   % USAGE::
@@ -12,16 +12,16 @@ function sliceOrder = getSliceOrder(opt, verbose)
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions`` and ``loadAndCheckOptions``.
   % :type opt: structure
-  % :param verbose: 
+  % :param verbose:
   % :type verbose: boolean
   %
-  % :returns: 
+  % :returns:
   %
   % - :sliceOrder: a vector of the time when each slice was acquired in
   %                in a volume or indicating the order of acquisition of the slices.
   %
   % In the case the slice timing information was not specified in the json files
-  % in the BIDS data set then ``getSliceOrder`` will try to read the ``opt`` 
+  % in the BIDS data set then ``getSliceOrder`` will try to read the ``opt``
   % structure for any relevant information.
   % If this comes out empty then slice timing correction will be skipped.
   %
@@ -56,7 +56,7 @@ function sliceOrder = getSliceOrder(opt, verbose)
 
       sliceOrder = [];
     end
-    
+
   else % Otherwise get the slice order from the metadata
     sliceOrder = opt.metadata.SliceTiming;
 

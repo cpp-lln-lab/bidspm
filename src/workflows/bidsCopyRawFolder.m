@@ -41,10 +41,10 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
     opt = [];
   end
   opt = loadAndCheckOptions(opt);
-  
+
   cleanCrash();
-  
-  printWorklowName('copy data')
+
+  printWorklowName('copy data');
 
   %% All tasks in this experiment
   % raw directory and derivatives directory
@@ -69,11 +69,11 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
       subDir = ['sub-', subID];
 
       mkdir(fullfile(derivativesDir, subDir));
-      
+
       % copy scans.tsv files
-      copyTsvJson(...
-        fullfile(rawDir, subDir), ...
-        fullfile(derivativesDir, subDir))
+      copyTsvJson( ...
+                  fullfile(rawDir, subDir), ...
+                  fullfile(derivativesDir, subDir));
 
       [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
@@ -89,11 +89,11 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
         end
 
         mkdir(fullfile(derivativesDir, subDir, sessionDir));
-        
+
         % copy scans.tsv files
-        copyTsvJson(...
-          fullfile(rawDir, subDir, sessionDir), ...
-          fullfile(derivativesDir, subDir, sessionDir))
+        copyTsvJson( ...
+                    fullfile(rawDir, subDir, sessionDir), ...
+                    fullfile(derivativesDir, subDir, sessionDir));
 
         modalities = bids.query(BIDS, 'modalities', ...
                                 'sub', subID, ...
@@ -130,18 +130,18 @@ end
 
 function copyTsvJson(srcDir, targetDir)
   % copy TSV and JSON file from raw folder
-  
+
   ext = {'tsv', 'json'};
-  
+
   for i = 1:numel(ext)
-  
+
     if ~isempty(spm_select('List', srcDir, ['^.*.' ext{i} '$']))
 
       copyfile(fullfile(srcDir, ['*.' ext{i}]), targetDir);
       fprintf(1, ' %s files copied\n', ext{i});
 
     end
-  
+
   end
 
 end
@@ -179,24 +179,24 @@ function unzipFiles(derivativesDir, deleteZippedNii, opt)
   for iFile = 1:size(zippedNiifiles, 1)
 
     file = deblank(zippedNiifiles(iFile, :));
-    
+
     fragments = bids.internal.parse_filename(file);
-    
+
     % for bold, physio and stim files, we only unzip the files of the task of
     % interest
     if any(strcmp(fragments.type, {'bold', 'stim', 'physio'})) && ...
         isfield(fragments, 'task') && strcmp(fragments.task, opt.taskName)
 
       % load the nifti image and saves the functional data as unzipped nii
-      n = load_untouch_nii(file); 
+      n = load_untouch_nii(file);
       save_untouch_nii(n, file(1:end - 4));
       fprintf('unzipped: %s \n', file);
 
       % delete original zipped file
       if deleteZippedNii
-        delete(file); 
+        delete(file);
       end
-    
+
     end
 
   end

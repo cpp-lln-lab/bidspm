@@ -34,7 +34,7 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
   % Any voxel with p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold
   % will be included in the skull stripping mask.
   %
-  
+
   printBatchName('skull stripping');
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);

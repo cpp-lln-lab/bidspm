@@ -4,7 +4,7 @@
 % options encoded in json files
 %
 % - default options (that is realign & unwarp + space = MNI)
-% - indidivual space 
+% - indidivual space
 % - realign only
 % - indidivual space + realign only
 %
@@ -27,28 +27,27 @@ cd(WD);
 addpath(genpath(fullfile(WD, '..', '..', 'src')));
 addpath(genpath(fullfile(WD, '..', '..', 'lib')));
 
-
 checkDependencies();
 
 %% Set up
 delete(fullfile(pwd, 'options_task-*date-*.json'));
 
-optionsFilesList = {...
-  'options_task-linebisection.json'; ...
-  'options_task-linebisection_unwarp-0.json'; ...
-  'options_task-linebisection_unwarp-0_space-individual.json'; ...
-  'options_task-linebisection_space-individual.json'};
+optionsFilesList = { ...
+                    'options_task-linebisection.json'; ...
+                    'options_task-linebisection_unwarp-0.json'; ...
+                    'options_task-linebisection_unwarp-0_space-individual.json'; ...
+                    'options_task-linebisection_space-individual.json'};
 
 % run the pipeline with different options
-for iOption = 1:size(optionsFilesList,1)
-  
+for iOption = 1:size(optionsFilesList, 1)
+
   fprintf(1, repmat('\n', 1, 5));
-  
+
   optionJsonFile = fullfile(WD, 'options', optionsFilesList{iOption});
   opt = loadAndCheckOptions(optionJsonFile);
 
   %% Run batches
-  
+
   reportBIDS(opt);
 
   bidsCopyRawFolder(opt, 1);
@@ -68,7 +67,7 @@ for iOption = 1:size(optionsFilesList,1)
   bidsFFX('specifyAndEstimate', opt, FWHM);
   bidsFFX('contrasts', opt, FWHM);
   bidsResults(opt, FWHM);
-  
+
   cd(WD);
 
 end

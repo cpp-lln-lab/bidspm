@@ -7,15 +7,15 @@ function test_suite = test_cleanCrash %#ok<*STOUT>
 end
 
 function test_getcleanCrash()
-  
-  system('touch spm_001.png')
-  system('touch 001.png')
 
-  cleanCrash()
-  
-  assertEqual(exist(fullfile(pwd, '001.png'), 'file'), 2)
-  assertEqual(exist(fullfile(pwd, 'spm_001.png'), 'file'), 0)
-  
-  delete(fullfile(pwd, '001.png'))
+  system('touch spm_001.png');
+  system('touch 001.png');
+
+  cleanCrash();
+
+  assertEqual(exist(fullfile(pwd, '001.png'), 'file'), 2);
+  assertEqual(exist(fullfile(pwd, 'spm_001.png'), 'file'), 0);
+
+  delete(fullfile(pwd, '001.png'));
 
 end

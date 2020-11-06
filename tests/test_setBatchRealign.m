@@ -26,7 +26,7 @@ function test_setBatchRealignBasic()
 
   matlabbatch = [];
   matlabbatch = setBatchRealign(matlabbatch, BIDS, subID, opt);
-  
+
   expectedBatch{1}.spm.spatial.realignunwarp.eoptions.weight = {''};
   expectedBatch{end}.spm.spatial.realignunwarp.uwroptions.uwwhich = [2 1];
 
@@ -36,7 +36,7 @@ function test_setBatchRealignBasic()
                         'sub', subID, ...
                         'task', opt.taskName, ...
                         'type', 'bold');
-    
+
     expectedBatch{end}.spm.spatial.realignunwarp.data(1, iSes).pmscan = { '' };
     expectedBatch{end}.spm.spatial.realignunwarp.data(1, iSes).scans = cellstr(fileName);
   end

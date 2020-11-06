@@ -24,9 +24,9 @@ function bidsResliceTpmToFunc(opt)
   if nargin < 1
     opt = [];
   end
-  
+
   [BIDS, opt, group] = setUpWorkflow(opt, ...
-    'reslicing tissue probability maps to functional dimension');
+                                     'reslicing tissue probability maps to functional dimension');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)
@@ -49,7 +49,7 @@ function bidsResliceTpmToFunc(opt)
       matlabbatch = setBatchReslice(matlabbatch, ...
                                     fullfile(meanFuncDir, meanImage), ...
                                     cellstr(TPMs));
-      
+
       saveAndRunWorkflow(matlabbatch, 'reslice_tpm', opt, subID);
 
     end
