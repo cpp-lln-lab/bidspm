@@ -67,6 +67,7 @@ end
 function fieldsToSet = setDefaultOption()
   % this defines the missing fields
 
+  fieldsToSet.dataDir = '';
   fieldsToSet.derivativesDir = '';
 
   fieldsToSet.groups = {''};

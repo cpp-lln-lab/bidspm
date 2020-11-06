@@ -4,7 +4,7 @@
 
 # defines where the BIDS data set will be created
 StartDir=`pwd` # relative to starting directory
-StartDir=$StartDir/dummyData/derivatives/SPM12_CPPL
+StartDir=$StartDir/dummyData/derivatives/cpp_spm
 mkdir $StartDir
 
 SubList='ctrl01 ctrl02 blind01 blind02 01 02' # subject list
