@@ -60,10 +60,41 @@ function test_getPrefixNormalise()
   opt.metadata = [];
   opt.sliceOrder = [];
   opt.realign.useUnwarp = false;
+  opt.space = 'MNI';
   
   prefix = getPrefix(step, opt);
 
   expectedPrefixOutput = '';
+
+  assertEqual(prefix, expectedPrefixOutput);
+
+end
+
+function test_getPrefixFuncQA()
+
+  step = 'funcQA';
+  opt.metadata = [];
+  opt.sliceOrder = [];
+  opt.realign.useUnwarp = true;
+  opt.space = 'MNI';
+  
+  prefix = getPrefix(step, opt);
+
+  expectedPrefixOutput = spm_get_defaults('unwarp.write.prefix');
+
+  assertEqual(prefix, expectedPrefixOutput);
+  
+  %% no unwarp
+  
+  step = 'funcQA';
+  opt.metadata = [];
+  opt.sliceOrder = [];
+  opt.realign.useUnwarp = false;
+  opt.space = 'MNI';
+  
+  prefix = getPrefix(step, opt);
+
+  expectedPrefixOutput = spm_get_defaults('realign.write.prefix');
 
   assertEqual(prefix, expectedPrefixOutput);
 

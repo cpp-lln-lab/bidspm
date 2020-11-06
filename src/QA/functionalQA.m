@@ -55,12 +55,7 @@ function functionalQA(opt)
                                                        runs{iRun}, ...
                                                        opt);
 
-          workflowType = 'smoothing_space-individual';
-          if ~opt.realign.useUnwarp
-            workflowType = 'preprocess_unwarp-0';
-          end
-          prefix = getPrefix(workflowType, opt, funcFWHM);
-          
+          prefix = getPrefix('normalise', opt);
           funcImage = validationInputFile(subFuncDataDir, fileName, prefix);
 
           % sanity check that all images are in the same space.
@@ -119,10 +114,7 @@ function fMRIQA = computeFuncQAMetrics(funcImage, TPMs, avgDistToSurf, opt)
 
   [subFuncDataDir, fileName, ext] = spm_fileparts(funcImage);
 
-  prefix = getPrefix('smoothing_space-individual', opt);
-  if ~opt.realign.useUnwarp
-    prefix = getPrefix('preprocess_unwarp-0', opt);
-  end
+  prefix = getPrefix('normalise', opt);
 
   fMRIQA.tSNR = spmup_temporalSNR( ...
                                   funcImage, ...
