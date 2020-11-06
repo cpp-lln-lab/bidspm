@@ -77,19 +77,19 @@ for iSeq = 1:size(optSource.sequenceList, 1)
             sequencePath = char(fullfile(optSource.sourceDir, optSource.sequenceList(iSeq)));
 
             % Retrieve volume files info
-            [volumesToConvert, volumesList] = parseNiiFiles(sequencePath);
+            [volumesList, outputNameImage] = parseNiiFiles(sequencePath);
 
             % Set output name, it takes the file name of the first volume and add subfix '_4D'
-            outputName = char(volumesToConvert(1).name);
+%             outputName = char(volumesToConvert(1).name);
 
-            dotPos = find(outputName == '.');
+            dotPos = find(outputNameImage == '.');
 
-            outputName = outputName(1:dotPos(1)-1);
+            outputNameImage = outputNameImage(1:dotPos(1)-1);
 
-            outputName = [outputName '_4D.nii' ]; %#ok<AGROW>
+            outputNameImage = [outputNameImage '_4D.nii' ]; %#ok<AGROW>
 
             % Retrieve sidecar json files info
-            jsonList = parseJsonFiles(sequencePath);
+            [jsonList, outputNameJson] = parseJsonFiles(sequencePath);
 
             jsonFile = jsondecode(fileread(char(jsonList(1))));
 
@@ -98,25 +98,29 @@ for iSeq = 1:size(optSource.sequenceList, 1)
             % % % % % % % % % % % % % % % % % % % % %
 
             % Set and run spm batch
-            matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT);
+            matlabbatch = setBatch3Dto4D(volumesList, outputNameImage, dataType, RT);
 
             spm_jobman('run', matlabbatch);
 
             % Zip and delete the and the new 4D file
             fprintf(1, 'ZIP AND DELETE THE NEW 4D BRAIN \n\n');
 
-            gzip([sequencePath filesep outputName])
+            gzip([sequencePath filesep outputNameImage])
 
-            delete([sequencePath filesep outputName])
+            delete([sequencePath filesep outputNameImage])
 
             % Save one sidecar json file, it takes the first volume one and add subfix '_4D'
-            dotPos = find(char(jsonList(1)) == '.', 1, 'last');
+            dotPos = find(char(outputNameJson) == '.');
 
-            jsonCopy = char(jsonList(1));
+%             jsonCopy = char(jsonList(1));
 
-            jsonCopy = jsonCopy(1:dotPos(1)-1);
+            outputNameJson = outputNameJson(1:dotPos(1)-1);
 
-            copyfile(char(jsonList(1)), [jsonCopy '_4D.json' ])
+            if ~isempty(jsonList)
+                
+            copyfile(char(jsonList(1)), [sequencePath filesep outputNameJson '_4D.json' ])
+            
+            end
 
             % Delete all the single volumes .nii and .json files
             fprintf(1, 'EXTERMINATE SINGLE VOLUMES FILES \n\n');
@@ -139,42 +143,31 @@ toc
 
 end
 
-function [volumesToConvert, volumesList] = parseNiiFiles(sequencePath)
+function [volumesList, outputNameImage] = parseNiiFiles(sequencePath)
 
-volumesToConvert = dir(fullfile(sequencePath, '*.nii'));
+volumesList = spm_select('list', sequencePath, 'nii');
 
-volumesList = {};
+outputNameImage = volumesList(1,:);
 
-for iVol = 1:size(volumesToConvert,1)
-
-    volumesList{end+1} = [volumesToConvert(iVol).folder filesep volumesToConvert(iVol).name]; %#ok<AGROW>
+volumesList = strcat(sequencePath, filesep, cellstr(volumesList));
 
 end
 
-volumesList = volumesList';
+function [jsonList, outputNameJson] = parseJsonFiles(sequencePath)
 
+jsonList = spm_select('list', sequencePath, 'json');
 
-end
-
-function [jsonList] = parseJsonFiles(sequencePath)
-
-jsonToConvert = dir(fullfile(sequencePath, '*.json'));
-
-if size(jsonToConvert, 1) > 0
-
-    jsonList = {};
-
-    for iJson = 1:size(jsonToConvert, 1)
-
-        jsonList{end+1} = [jsonToConvert(iJson).folder filesep jsonToConvert(iJson).name];  %#ok<AGROW>
-
-    end
-
-    jsonList = jsonList';
-
-else 
+if size(jsonList, 1) > 0
     
+    outputNameJson = jsonList(1,:);
+
+    jsonList = strcat(sequencePath, filesep, cellstr(jsonList));
+    
+else
+
     jsonList = {};
+    
+    outputNameJson = [];
     
 end
 
