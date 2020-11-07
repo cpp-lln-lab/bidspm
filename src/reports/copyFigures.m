@@ -2,22 +2,19 @@
 
 function copyFigures(BIDS, opt, subID)
   %
-  % Short description of what the function does goes here.
+  % Copy the figures from spatial preprocessing into a separate folder.
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   copyFigures(BIDS, opt, subID)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param BIDS: BIDS layout returned by ``getData``.
+  % :type BIDS: structure
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :param subID: Subject label (for example `'01'`).
+  % :type subID: string
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
   %
   
   imgNb = copyGraphWindownOutput(opt, subID, 'realign');

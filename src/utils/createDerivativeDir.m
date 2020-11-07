@@ -8,7 +8,7 @@ function  createDerivativeDir(opt)
   %
   %   opt = createDerivativeDir(opt)
   %
-  % :param opt:
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
 

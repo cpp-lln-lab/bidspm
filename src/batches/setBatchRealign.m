@@ -10,7 +10,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %
   % :param matlabbatch: SPM batch
   % :type matlabbatch: structure
-  % :param BIDS: BIDS layout returned by ``getData``
+  % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
   % :param subID: subject label
   % :type subID: string

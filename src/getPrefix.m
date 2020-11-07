@@ -11,9 +11,8 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
   % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
   %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
   % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
   % :param argin3: (dimension) optional argument
   %
   % :returns: - :argout1: (type) (dimension)

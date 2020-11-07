@@ -2,27 +2,26 @@
 
 function rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName)
   %
-  % Short description of what the function does goes here.
+  % Sets the name the group level analysis directory and creates it if it does not exist
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :param funcFWHM: How much smoothing was applied to the functional
+  %                  data in the preprocessing.
+  % :type funcFWHM: scalar
+  % :param conFWHM: How much smoothing will be applied to the contrast
+  %                 images.
+  % :type conFWHM: scalar
+  % :param contrastName: 
+  % :type contrastName: string
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: :rfxDir: (string) Fullpath of the group level directory
   %
-  % rfxDir = getRFXdir(opt, funcFWHM, conFWHM, iStep, iCon)
-  %
-  % sets the name the RFX directory and creates it if it does not exist
-  %
+
 
   rfxDir = fullfile( ...
                     opt.derivativesDir, ...

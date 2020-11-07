@@ -8,10 +8,9 @@ function matlabbatch = setBatchCreateVDMs(BIDS, opt, subID)
   %
   %   matlabbatch = setBatchCreateVDMs(BIDS, opt, subID)
   %
-  % :param BIDS:
+  % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   % :param subID:
   %

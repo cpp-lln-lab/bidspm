@@ -14,7 +14,7 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, o
   % :param argin2: optional argument and its default value. And some of the
   %               options can be shown in litteral like ``this`` or ``that``.
   % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param argin3: Options chosen for the analysis. See ``checkOptions()``.
   %
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)

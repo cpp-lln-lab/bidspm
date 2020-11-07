@@ -8,9 +8,8 @@ function group = getSpecificSubjects(opt, group, iGroup, subjects)
   %
   %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
   % :param argin2: optional argument and its default value. And some of the
   %               options can be shown in litteral like ``this`` or ``that``.
   % :type argin2: string

@@ -4,7 +4,7 @@ function functionalQA(opt)
   %
   % For functional data, QA consists in getting temporal SNR and then
   % check for motion - here we also compute additional regressors to
-  % account for motion
+  % account for motion.
   %
   % USAGE::
   %
@@ -13,8 +13,14 @@ function functionalQA(opt)
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
-  % functionalQA(opt)
-  %
+  % ASSUMPTIONS: 
+  % The previous step must have already been run:
+  % - the functional images have been realigned and resliced using etiher 
+  %   ``bidsSpatialPrepro()``, ``bidsRealignUnwarp()``, ``bidsRealignReslice`()`
+  % - the quality analysis of the anatomical data has been done with ``anatomicalQA()``
+  % - the tissue probability maps have been generated in the "native" space of each subject
+  %   (using ``bidsSpatialPrepro()`` or ``bidsSegmentSkullStrip()``) and have been 
+  %   resliced to the dimension of the functional with ``bidsResliceTpmToFunc()``
 
 
   % if input has no opt, load the opt.mat file

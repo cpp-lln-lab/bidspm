@@ -6,18 +6,14 @@ function createDataDictionary(subFuncDataDir, fileName, nbColums)
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   [createDataDictionary(subFuncDataDir, fileName, nbColums)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
-  %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :param subFuncDataDir: Full path of the directory where the functional file is.
+  % :type subFuncDataDir: type
+  % :param fileName: Name of the boldfile.
+  % :type fileName: string
+  % :param nbColums: Number of extra columns to add as censoring regressors.
+  % :type nbColums: integer
   %
   
   namecColumns = { ...

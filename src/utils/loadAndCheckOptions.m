@@ -1,52 +1,45 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function opt = loadAndCheckOptions(opt)
+function opt = loadAndCheckOptions(optionJsonFile)
   %
-  % Short description of what the function does goes here.
+  % Loads the json file provided describing the options of an analysis. It then checks
+  % its content and fills any missing fields with the defaults.
+  %
+  % If no argument is provived, it checks in the current directory for any
+  % ``opt_task-*.json`` files and loads the most recent one by name
+  % (using the ``date-`` key).
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   opt = loadAndCheckOptions(optionJsonFile)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param optionJsonFile: fullpath to the json file describing the options of an
+  %                        analysis.
+  % :type optionJsonFile: string
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: :opt: (structure) Options chosen for the analysis. See ``checkOptions()``.
   %
-  % opt = loadAndCheckOptions(opt)
-  %
-  % if not argument is provived checks in the current directory for
-  % ``opt_task-*.json`` files and loads the most recent one by name
-  % (using the date- key).
-  %
-  % then checks the content of the opt structure and adds missing information
 
-  if nargin < 1 || isempty(opt)
-    opt = spm_select('FPList', pwd, '^options_task-.*.json$');
+  if nargin < 1 || isempty(optionJsonFile)
+    optionJsonFile = spm_select('FPList', pwd, '^options_task-.*.json$');
   end
 
   % finds most recent option file
-  if size(opt, 1) > 1
-    containsDate = cellfun(@any, strfind(cellstr(opt), '_date-'));
+  if size(optionJsonFile, 1) > 1
+    containsDate = cellfun(@any, strfind(cellstr(optionJsonFile), '_date-'));
     if any(containsDate)
-      opt = opt(containsDate, :);
-      opt = sortrows(opt);
-      opt = opt(end, :);
+      optionJsonFile = optionJsonFile(containsDate, :);
+      optionJsonFile = sortrows(optionJsonFile);
+      optionJsonFile = optionJsonFile(end, :);
     end
   end
 
-  if ischar(opt) && size(opt, 1) == 1
-    if exist(opt, 'file')
-      fprintf(1, '\nReading option from: %s.\n', opt);
-      opt = spm_jsonread(opt);
+  if ischar(optionJsonFile) && size(optionJsonFile, 1) == 1
+    if exist(optionJsonFile, 'file')
+      fprintf(1, '\nReading option from: %s.\n', optionJsonFile);
+      opt = spm_jsonread(optionJsonFile);
     else
-      error('the requested file does not exist: %s', opt);
+      error('the requested file does not exist: %s', optionJsonFile);
     end
   end
 

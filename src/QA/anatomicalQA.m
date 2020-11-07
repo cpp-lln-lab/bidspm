@@ -2,7 +2,7 @@
 
 function anatomicalQA(opt)
   %
-  % Short description of what the function does goes here.
+  % Computes several metrics for anatomical image.
   %
   % USAGE::
   %
@@ -11,7 +11,6 @@ function anatomicalQA(opt)
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
-  % 
 
   % if input has no opt, load the opt.mat file
   if nargin < 1

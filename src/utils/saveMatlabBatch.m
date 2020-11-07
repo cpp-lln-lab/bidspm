@@ -2,32 +2,24 @@
 
 function saveMatlabBatch(matlabbatch, batchType, opt, subID)
   %
-  % Short description of what the function does goes here.
+  % Also save some basic environnment info.
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   saveMatlabBatch(matlabbatch, batchType, opt, [subID])
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
-  %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
-  %
-  % 
-  % saveMatlabBatch(batch, batchType, opt, subID)
-  %
-  % Also save some basic environnment info
-  %
-  % batch : matlabbatch
-  % batchType: (string) name to give to the batch file
+  % :param matlabbatch: 
+  % :type matlabbatch: structure
+  % :param batchType: 
+  % :type batchType: string
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :param subID: 
+  % :type subID: string
   %
   %
+
+
 
   if nargin < 4 || isempty(subID)
     subID = 'group';

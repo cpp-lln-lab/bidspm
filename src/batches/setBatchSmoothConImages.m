@@ -15,6 +15,7 @@ function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
   %               options can be shown in litteral like ``this`` or ``that``.
   % :type argin2: string
   % :param argin3: (dimension) optional argument
+  % Options chosen for the analysis. See ``checkOptions()``.
   %
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)

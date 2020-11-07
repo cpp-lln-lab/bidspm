@@ -15,6 +15,8 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   %               options can be shown in litteral like ``this`` or ``that``.
   % :type argin2: string
   % :param argin3: (dimension) optional argument
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
   %
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)

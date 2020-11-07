@@ -11,10 +11,10 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID
   % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
   %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
   % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
+  % :param BIDS: BIDS layout returned by ``getData``.
+  % :type BIDS: structure
   % :param argin3: (dimension) optional argument
+  % Options chosen for the analysis. See ``checkOptions()``.
   %
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)

@@ -3,17 +3,15 @@
 
 function retval = isOctave()
   %
-  % Short description of what the function does goes here.
+  % Returns true if the environment is Octave.
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   retval = isOctave()
   %
-  %
-  % :returns: - :argout1: (type) (dimension)
+  % :returns: :retval: (boolean)
   %
 
-  % Return: true if the environment is Octave.
   persistent cacheval   % speeds up repeated calls
 
   if isempty (cacheval)

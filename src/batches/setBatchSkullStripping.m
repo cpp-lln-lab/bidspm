@@ -11,11 +11,11 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
-  % :param BIDS: dataset layout returned by getData
+  % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
   % :param subID: subject ID
   % :type subID: string
-  % :param opt: options
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
   % :returns: :matlabbatch: (structure)

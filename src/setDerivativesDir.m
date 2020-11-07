@@ -10,8 +10,7 @@ function opt = setDerivativesDir(opt)
   %
   %   opt = setDerivativesDir(opt)
   %
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
   % :returns: :opt: structure or json filename containing the options. See

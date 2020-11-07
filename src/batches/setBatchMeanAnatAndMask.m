@@ -8,8 +8,7 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
   %
   %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
+  % :param argin1: Options chosen for the analysis. See ``checkOptions()``.
   % :type argin1: type
   % :param argin2: optional argument and its default value. And some of the
   %               options can be shown in litteral like ``this`` or ``that``.

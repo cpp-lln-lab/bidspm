@@ -3,28 +3,20 @@
 % (C) Copyright 2012_2019 Remi Gau
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function mancoregCallbacks(operation, varargin)
+function mancoregCallbacks(operation)
   %
-  % Short description of what the function does goes here.
+  % Callback routines for ``mancoreg()``: defines the different actions for the
+  % different buttons. 
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   mancoreg_callbacks(operation)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param operation: Can be any of the following: ``move``, ``toggle_off``, ``toggle_on``, 
+  %                   ``reset``, ``apply``, ``plotmat``    
+  % :type operation: string
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
-  %
-  % mancoreg_callbacks(op, varargin)
-  %
-  % Callback routines for mancoreg.m
+
 
   % Change LOG
   %
@@ -41,12 +33,12 @@ function mancoregCallbacks(operation, varargin)
 
     case 'move'
       % Update the position of the bottom (source) image according to user settings
-
       moveImage();
 
       % Toggles between source and target display in bottom window
     case 'toggle_off'
       toggleOff();
+
     case 'toggle_on'
       toggleOn();
 
@@ -137,6 +129,7 @@ function toggleOn()
     st.vols{2}.window = mancoregvar.sourceimage.window;
     st.vols{2}.area = mancoregvar.sourceimage.area;
     spm_orthviews('redraw');
+
   end
 
 end

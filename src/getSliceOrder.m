@@ -9,8 +9,7 @@ function sliceOrder = getSliceOrder(opt, verbose)
   %
   %  sliceOrder = getSliceOrder(opt, [verbose = false])
   %
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   % :param verbose:
   % :type verbose: boolean
