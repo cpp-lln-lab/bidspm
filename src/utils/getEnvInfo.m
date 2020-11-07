@@ -1,8 +1,19 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function [OS, GeneratedBy] = getEnvInfo()
-
-  GeneratedBy(1).name = 'CPP_BIDS_SPM_pipeline';
+  %
+  % Gets information about the environement and operating system to help generate
+  % data descriptors for the derivatives.
+  %
+  % USAGE::
+  %
+  %   [OS, GeneratedBy] = getEnvInfo()
+  %
+  % :returns: :OS: (structure) (dimension)
+  %           :GeneratedBy: (structure) (dimension)
+  %
+  
+  GeneratedBy(1).name = 'cpp_spm';
   GeneratedBy(1).Version =  getVersion();
   GeneratedBy(1).Description = '';
   GeneratedBy(1).CodeURL = '';

@@ -1,6 +1,23 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName)
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :param argin2: optional argument and its default value. And some of the
+  %               options can be shown in litteral like ``this`` or ``that``.
+  % :type argin2: string
+  % :param argin3: (dimension) optional argument
+  %
+  % :returns: - :argout1: (type) (dimension)
+  %           - :argout2: (type) (dimension)
+  %
   % [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName)
   %
   %

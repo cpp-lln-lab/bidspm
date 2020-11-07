@@ -1,10 +1,27 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName)
-  % rfxDir = getRFXdir(opt, funcFWHM, conFWHM, iStep, iCon)
   %
-  % sets the name the RFX directory and creates it if it does not exist
+  % Sets the name the group level analysis directory and creates it if it does not exist
   %
+  % USAGE::
+  %
+  %   rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName)
+  %
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :param funcFWHM: How much smoothing was applied to the functional
+  %                  data in the preprocessing.
+  % :type funcFWHM: scalar
+  % :param conFWHM: How much smoothing will be applied to the contrast
+  %                 images.
+  % :type conFWHM: scalar
+  % :param contrastName: 
+  % :type contrastName: string
+  %
+  % :returns: :rfxDir: (string) Fullpath of the group level directory
+  %
+
 
   rfxDir = fullfile( ...
                     opt.derivativesDir, ...

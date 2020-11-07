@@ -1,7 +1,23 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function matlabbatch = setBatchCoregistrationFmap(BIDS, opt, subID)
-
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %
+  % :param BIDS: BIDS layout returned by ``getData``.
+  % :type BIDS: structure
+  % :param argin2: Options chosen for the analysis. See ``checkOptions()``.
+  % :type argin2: string
+  % :param argin3: (dimension) optional argument
+  %
+  % :returns: - :argout1: (type) (dimension)
+  %           - :argout2: (type) (dimension)
+  %
+  
   % TODO
   % assumes all the fieldmap relate to the current task
   % - use the "for" metadata field

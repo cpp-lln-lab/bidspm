@@ -1,7 +1,24 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
-
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %
+  % :param argin1: Options chosen for the analysis. See ``checkOptions()``.
+  % :type argin1: type
+  % :param argin2: optional argument and its default value. And some of the
+  %               options can be shown in litteral like ``this`` or ``that``.
+  % :type argin2: string
+  % :param argin3: (dimension) optional argument
+  %
+  % :returns: - :argout1: (type) (dimension)
+  %           - :argout2: (type) (dimension)
+  %
+  
   [group, opt, BIDS] = getData(opt);
 
   matlabbatch = {};

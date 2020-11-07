@@ -1,8 +1,18 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgName)
-  % unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgName)
   %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgName)
+  %
+  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
+  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
+  % :type argin1: type
+  %
+  % :returns: - :argout1: (type) (dimension)
   %
 
   [directory, filename, ext] = spm_fileparts(fullpathImgName);

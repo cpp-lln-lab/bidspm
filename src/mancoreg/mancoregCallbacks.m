@@ -3,10 +3,20 @@
 % (C) Copyright 2012_2019 Remi Gau
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function mancoregCallbacks(operation, varargin)
-  % mancoreg_callbacks(op, varargin)
+function mancoregCallbacks(operation)
   %
-  % Callback routines for mancoreg.m
+  % Callback routines for ``mancoreg()``: defines the different actions for the
+  % different buttons. 
+  %
+  % USAGE::
+  %
+  %   mancoreg_callbacks(operation)
+  %
+  % :param operation: Can be any of the following: ``move``, ``toggle_off``, ``toggle_on``, 
+  %                   ``reset``, ``apply``, ``plotmat``    
+  % :type operation: string
+  %
+
 
   % Change LOG
   %
@@ -23,12 +33,12 @@ function mancoregCallbacks(operation, varargin)
 
     case 'move'
       % Update the position of the bottom (source) image according to user settings
-
       moveImage();
 
       % Toggles between source and target display in bottom window
     case 'toggle_off'
       toggleOff();
+
     case 'toggle_on'
       toggleOn();
 
@@ -119,6 +129,7 @@ function toggleOn()
     st.vols{2}.window = mancoregvar.sourceimage.window;
     st.vols{2}.area = mancoregvar.sourceimage.area;
     spm_orthviews('redraw');
+
   end
 
 end

@@ -1,7 +1,20 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function checkDependencies()
-  % Checks that that the right dependencies are installed. ALso loads the spm defaults.
+  %
+  % Checks that that the right dependencies are installed: 
+  % - SPM
+  % - Nifti tools 
+  % Also loads the spm defaults.
+  %
+  % USAGE::
+  %
+  %   checkDependencies()
+  %
+  % .. TODO:
+  %
+  %    - need to check other dependencies (bids-matlab, spmup)
+  % 
 
   printCredits();
 

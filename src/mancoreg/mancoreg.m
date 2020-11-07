@@ -4,28 +4,36 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function mancoreg(targetimage, sourceimage)
-  % mancoreg(targetimage, sourceimage)
+  %
+  % This function displays 2 SPM ortho-views of a ``targetimage`` and
+  % a ``sourceimage`` image that can be manually coregistered.
+  %
+  % USAGE::
+  %
+  %   mancoreg([targetimage,] [sourceimage])
+  %
+  % :param targetimage: Filename or fullpath of the target image. If none is provided
+  %                     you will be asked by SPM to select one.  
+  % :type targetimage: type
+  % :param sourceimage: Filename or fullpath of the source image. If none is provided
+  %                     you will be asked by SPM to select one.
+  % :type sourceimage: string
   %
   % Manual coregistration tool
-  %
-  % FORMAT mancoreg(targetimage,sourceimage);
-  %
-  % This function displays 2 ortho views of a TARGET and
-  % a SOURCE image that can be manually coregistered.
   %
   % The source image (bottom graph) can be manually
   % rotated and translated with 6 slider controls. In the source
   % graph the source image can be exchanged with the target image
   % using a radio button toggle. This is helpful for visual fine control
   % of the coregistration. The transformation matrix can be applied
-  % to a selected set of volumes with the "apply transformation" button.
+  % to a selected set of volumes with the ``apply transformation`` button.
   % If the transformation is to be applied to the original source file
   % that file will also need to be selected. If the sourceimage or
   % targetimage are not passed the user will be prompted with a file browser.
   %
-  % The code is loosely based on spm_image.m and spm_orthoviews.m
+  % The code is loosely based on ``spm_image()`` and ``spm_orthoviews()``
   % It requires the m-file with the callback functions for the user
-  % controls (mancoregCallbacks.m).
+  % controls (``mancoregCallbacks()``).
 
   % JH 10.01.2004
   % modified DSS 10/02/2009

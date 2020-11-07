@@ -1,6 +1,16 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function saveOptions(opt)
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  %
 
   filename = fullfile(pwd, ['options', ...
                             '_task-', opt.taskName, ...
