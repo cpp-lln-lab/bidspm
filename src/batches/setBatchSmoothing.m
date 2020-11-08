@@ -17,7 +17,7 @@ function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   printBatchName('smoothing functional images');
 
   prefix = getPrefix('smooth', opt);
@@ -28,8 +28,6 @@ function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
   % clear previous matlabbatch and files
   matlabbatch = [];
   allFiles = [];
-
-  sesCounter = 1;
 
   for iSes = 1:nbSessions        % For each session
 
@@ -50,7 +48,6 @@ function matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM)
       % add the files to list
       allFilesTemp = cellstr(files);
       allFiles = [allFiles; allFilesTemp]; %#ok<AGROW>
-      sesCounter = sesCounter + 1;
 
     end
   end
