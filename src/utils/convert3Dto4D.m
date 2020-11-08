@@ -35,7 +35,10 @@ function convert3Dto4D
                                 't1', ...
                                 'gre_field'};
 
-  % Set data format conversion (0 is reccomended)
+  % Number of volumes to discard ad dummies, (0 is default)
+  optSource.nbDummies = 5;
+
+  % Set data format conversion (0 is default)
 
   % 0:  SAME
   % 2:  UINT8   - unsigned char
@@ -43,7 +46,14 @@ function convert3Dto4D
   % 8:  INT32   - signed int
   % 16: FLOAT32 - single prec. float
   % 64: FLOAT64 - double prec. float
-  dataType = 0;
+
+  optSource.dataType = 0;
+
+  % Boolean to enable gzip of the new 4D file (0 is default)
+  optSource.zip = 0;
+
+  % Check the options provided
+  optSource = checkOptionsSource(optSource);
 
   % Get source folder content
   sourceDataStruc = dir(optSource.sourceDir);
@@ -76,13 +86,13 @@ function convert3Dto4D
         sequencePath = char(fullfile(optSource.sourceDir, optSource.sequenceList(iSeq)));
 
         % Retrieve volume files info
-        [volumesList, outputNameImage] = parseFiles('nii', sequencePath);
+        [volumesList, outputNameImage] = parseFiles('nii', sequencePath, optSource.nbDummies);
 
         % Set output name, it takes the file name of the first volume and add subfix '_4D'
         outputNameImage = strrep(outputNameImage, '.nii', '_4D.nii');
 
         % Retrieve sidecar json files info
-        [jsonList, outputNameJson] = parseFiles('json' ,sequencePath);
+        [jsonList, outputNameJson] = parseFiles('json', sequencePath, optSource.nbDummies);
 
         jsonFile = spm_jsonread(char(jsonList(1)));
 
@@ -91,19 +101,25 @@ function convert3Dto4D
         % % % % % % % % % % % % % % % % % % % % %
 
         % Set and run spm batch
-        matlabbatch = setBatch3Dto4D(volumesList, outputNameImage, dataType, RT);
+        matlabbatch = setBatch3Dto4D(volumesList, outputNameImage, optSource.dataType, RT);
 
         spm_jobman('run', matlabbatch);
 
-%         % Zip and delete the and the new 4D file
-%         fprintf(1, 'ZIP AND DELETE THE NEW 4D BRAIN \n\n');
-% 
-%         gzip([sequencePath filesep outputNameImage]);
-% 
-%         delete([sequencePath filesep outputNameImage]);
+        if optSource.zip
+
+          % Zip and delete the and the new 4D file
+          fprintf(1, 'ZIP AND DELETE THE NEW 4D BRAIN \n\n');
+
+          gzip([sequencePath filesep outputNameImage]);
+
+          delete([sequencePath filesep outputNameImage]);
+
+        end
 
         % Save one sidecar json file, it takes the first volume one and add subfix '_4D'
         if ~isempty(jsonList)
+            
+          
 
           copyfile(char(jsonList(1)), [sequencePath filesep strrep(outputNameJson, '.json', '_4D.json')]);
 
@@ -130,24 +146,27 @@ function convert3Dto4D
 
 end
 
-function [fileList, outputName] = parseFiles(fileExstention, sequencePath)
+function [fileList, outputName] = parseFiles(fileExstention, sequencePath, nbDummies)
 
   fileList = spm_select('list', sequencePath, fileExstention);
+          
+  % Take out dummies from the list of files
+  fileList = fileList(nbDummies+1:end, :);
 
   if size(fileList, 1) > 0
-      
-  outputName = fileList(1, :);
 
-  fileList = strcat(sequencePath, filesep, cellstr(fileList));
-  
+    outputName = fileList(1, :);
+
+    fileList = strcat(sequencePath, filesep, cellstr(fileList));
+
   else
 
     fileList = {};
 
     outputName = [];
-    
+
     newline;
-    warning('I have found 0 files with extension ''.%s'' ', fileExstention)
+    warning('I have found 0 files with extension ''.%s'' ', fileExstention);
     newline;
 
   end
