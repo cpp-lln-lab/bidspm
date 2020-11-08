@@ -79,17 +79,12 @@ function convert3Dto4D
         [volumesList, outputNameImage] = parseFiles('nii', sequencePath);
 
         % Set output name, it takes the file name of the first volume and add subfix '_4D'
-
-        dotPos = find(outputNameImage == '.');
-
-        outputNameImage = outputNameImage(1:dotPos(1) - 1);
-
-        outputNameImage = [outputNameImage '_4D.nii']; %#ok<AGROW>
+        outputNameImage = strrep(outputNameImage, '.nii', '_4D.nii');
 
         % Retrieve sidecar json files info
         [jsonList, outputNameJson] = parseFiles('json' ,sequencePath);
 
-        jsonFile = jsondecode(fileread(char(jsonList(1))));
+        jsonFile = spm_jsonread(char(jsonList(1)));
 
         % % % % % % LIEGE  SPECIFIC % % % % % % %
         RT = jsonFile.acqpar.RepetitionTime / 1000;
@@ -100,21 +95,17 @@ function convert3Dto4D
 
         spm_jobman('run', matlabbatch);
 
-        % Zip and delete the and the new 4D file
-        fprintf(1, 'ZIP AND DELETE THE NEW 4D BRAIN \n\n');
-
-        gzip([sequencePath filesep outputNameImage]);
-
-        delete([sequencePath filesep outputNameImage]);
+%         % Zip and delete the and the new 4D file
+%         fprintf(1, 'ZIP AND DELETE THE NEW 4D BRAIN \n\n');
+% 
+%         gzip([sequencePath filesep outputNameImage]);
+% 
+%         delete([sequencePath filesep outputNameImage]);
 
         % Save one sidecar json file, it takes the first volume one and add subfix '_4D'
-        dotPos = find(char(outputNameJson) == '.');
-
-        outputNameJson = outputNameJson(1:dotPos(1) - 1);
-
         if ~isempty(jsonList)
 
-          copyfile(char(jsonList(1)), [sequencePath filesep outputNameJson '_4D.json']);
+          copyfile(char(jsonList(1)), [sequencePath filesep strrep(outputNameJson, '.json', '_4D.json')]);
 
         end
 
