@@ -87,7 +87,7 @@ function convert3Dto4D
 
       else
 
-        fprintf('\n\nCONVERTING SEQUENCE: %s \n\n', char(optSource.sequenceList(iSeq)));
+        fprintf('\n\nCONVERTING SEQUENCE: %s \n', char(optSource.sequenceList(iSeq)));
 
         % Set whether to remove dummies or not
 
