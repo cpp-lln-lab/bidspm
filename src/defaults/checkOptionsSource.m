@@ -59,5 +59,8 @@ function fieldsToSet = setDefaultOptionSource()
 
   % Number of volumes to discard ad dummies
   fieldsToSet.nbDummies = 0;
+  
+  % The list of sequence(s) where to discarding the dummies
+  fieldsToSet.sequenceRmDummies = {};
 
 end

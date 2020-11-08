@@ -29,7 +29,7 @@ function convert3Dto4D
   % Set the folder where sequences folders exist
   optSource.sourceDir = '/Users/barilari/Desktop/DICOM_UCL_leuven/renamed/sub-pilot001/ses-002/MRI';
 
-  % List the sequences that you want to skip (folder name pattern)
+  % List of the sequences that you want to skip (folder name pattern)
   optSource.sequenceToIgnore = {'AAHead_Scout', ...
                                 'b1map', ...
                                 't1', ...
@@ -37,6 +37,10 @@ function convert3Dto4D
 
   % Number of volumes to discard ad dummies, (0 is default)
   optSource.nbDummies = 5;
+
+  % List of the sequences where you want to remove dummies (folder name pattern)
+  optSource.sequenceRmDummies = {'cmrr_mbep2d_p3_mb2_1.6iso_AABrain', ...
+                                 'cmrr_mbep2d_p4_mb2_750um_AAbrain'};
 
   % Set data format conversion (0 is default)
 
@@ -82,17 +86,29 @@ function convert3Dto4D
 
         fprintf('\n\nCONVERTING SEQUENCE: %s \n\n', char(optSource.sequenceList(iSeq)));
 
+        % Set whether to remove dummies or not
+
+        nbDummies = 0;
+
+        if contains(optSource.sequenceList(iSeq), optSource.sequenceRmDummies)
+
+          nbDummies = optSource.nbDummies;
+
+          fprintf('\n\nREMOVING %s DUMMIES\n\n', num2str(nbDummies));
+
+        end
+
         % Get sequence folder path
         sequencePath = char(fullfile(optSource.sourceDir, optSource.sequenceList(iSeq)));
 
         % Retrieve volume files info
-        [volumesList, outputNameImage] = parseFiles('nii', sequencePath, optSource.nbDummies);
+        [volumesList, outputNameImage] = parseFiles('nii', sequencePath, nbDummies);
 
-        % Set output name, it takes the file name of the first volume and add subfix '_4D'
+        % Set output name, it takes the file name of the 1st volume of the 4D file and add subfix
         outputNameImage = strrep(outputNameImage, '.nii', '_4D.nii');
 
         % Retrieve sidecar json files info
-        [jsonList, outputNameJson] = parseFiles('json', sequencePath, optSource.nbDummies);
+        [jsonList, outputNameJson] = parseFiles('json', sequencePath, nbDummies);
 
         jsonFile = spm_jsonread(char(jsonList(1)));
 
@@ -100,8 +116,11 @@ function convert3Dto4D
         RT = jsonFile.acqpar.RepetitionTime / 1000;
         % % % % % % % % % % % % % % % % % % % % %
 
-        % Set and run spm batch
-        matlabbatch = setBatch3Dto4D(volumesList, outputNameImage, optSource.dataType, RT);
+        % Set and run spm batch, input all the volumes minus the dummies if > 0
+        matlabbatch = setBatch3Dto4D(volumesList(nbDummies + 1:end, :), ...
+                                     outputNameImage, ...
+                                     optSource.dataType, ...
+                                     RT);
 
         spm_jobman('run', matlabbatch);
 
@@ -116,10 +135,9 @@ function convert3Dto4D
 
         end
 
-        % Save one sidecar json file, it takes the first volume one and add subfix '_4D'
+        % Save one sidecar json file, it takes the file name of the 1st volume of the 4D file and
+        % add subfix
         if ~isempty(jsonList)
-            
-          
 
           copyfile(char(jsonList(1)), [sequencePath filesep strrep(outputNameJson, '.json', '_4D.json')]);
 
@@ -149,13 +167,10 @@ end
 function [fileList, outputName] = parseFiles(fileExstention, sequencePath, nbDummies)
 
   fileList = spm_select('list', sequencePath, fileExstention);
-          
-  % Take out dummies from the list of files
-  fileList = fileList(nbDummies+1:end, :);
 
   if size(fileList, 1) > 0
 
-    outputName = fileList(1, :);
+    outputName = fileList(nbDummies + 1, :);
 
     fileList = strcat(sequencePath, filesep, cellstr(fileList));
 
