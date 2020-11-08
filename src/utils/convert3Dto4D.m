@@ -25,6 +25,9 @@ function convert3Dto4D
   %      (https://stackoverflow.com/questions/8748976/list-the-subfolders-in-a-folder-matlab-only-subfolders-not-files)
   %    - generalize how to retrieve RT from sidecar json file
   %    - saveMatlabBatch(matlabbatch, ['3Dto4D_dataType-' num2str(dataType) '_RT-' num2str(RT)], opt, subID);
+  
+  % Add folder where some functions live
+  initEnv()
 
   % Set the folder where sequences folders exist
   optSource.sourceDir = '/Users/barilari/Desktop/DICOM_UCL_leuven/renamed/sub-pilot001/ses-002/MRI';
@@ -185,5 +188,13 @@ function [fileList, outputName] = parseFiles(fileExstention, sequencePath, nbDum
     newline;
 
   end
+
+end
+
+function initEnv()
+
+    pth = fileparts(mfilename('fullpath'));
+    addpath(fullfile(pth, '..', 'defaults'));
+    addpath(fullfile(pth, '..', 'batches'));
 
 end
