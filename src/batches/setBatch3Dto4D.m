@@ -16,7 +16,7 @@ function matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT)
   % :type dataType: integer
   % :param RT: Obligatory argument. It identifys the TR in secof the volumes to be written in the
   %            4D file header
-  % :type RT: number
+  % :type RT: float
   %
   % :returns: - :matlabbatch: (struct) The matlabbath ready to run the spm job
 
