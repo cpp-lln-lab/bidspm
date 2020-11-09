@@ -20,9 +20,9 @@ function bidsSpatialPrepro(opt)
   % If you do not want to:
   %
   % - to perform realign AND unwarp, make sure you set
-  %   ``opt.realign.useUnwarp`` to ``false``.
+  %   ``opt.realign.useUnwarp`` to ``true``.
   % - normalize the data to MNI space, make sure you set
-  %   ``opt.space`` to ``individual``.
+  %   ``opt.space`` to ``MNI``.
   %
   % If you want to:
   %
