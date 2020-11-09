@@ -23,6 +23,15 @@ function opt = loadAndCheckOptions(optionJsonFile)
   if nargin < 1 || isempty(optionJsonFile)
     optionJsonFile = spm_select('FPList', pwd, '^options_task-.*.json$');
   end
+  
+  if isstruct(optionJsonFile)
+    
+    opt = optionJsonFile;
+    opt = checkOptions(opt);
+    fprintf(1, '\nOptions are locked & loaded.\n\n');
+  
+    return
+  end
 
   % finds most recent option file
   if size(optionJsonFile, 1) > 1

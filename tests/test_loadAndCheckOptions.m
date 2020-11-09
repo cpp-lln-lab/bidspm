@@ -25,6 +25,21 @@ function test_loadAndCheckOptionsBasic()
 
 end
 
+function test_loadAndCheckOptionsStructure()
+
+  % create dummy json file
+  opt.taskName = 'vismotion';
+
+  % makes sure that it is picked up by default
+  opt = loadAndCheckOptions(opt);
+
+  expectedOptions = defaultOptions();
+  expectedOptions.taskName = 'vismotion';
+
+  assertEqual(opt, expectedOptions);
+
+end
+
 function test_loadAndCheckOptionsFromFile()
 
   delete('*.json');
