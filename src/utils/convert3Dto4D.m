@@ -168,7 +168,7 @@ function convert3Dto4D
 
 end
 
-function [fileList, outputName] = parseFiles(fileExstention, sequencePath, nbDummies)
+function [fileList, outputName] = parseFiles(fileExtention, sequencePath, nbDummies)
 
   fileList = spm_select('list', sequencePath, fileExstention);
 
