@@ -36,7 +36,7 @@ function optSource = checkOptionsSource(optSource)
 
   if isempty(optSource.sequenceToIgnore)
 
-    warning('No sequence to ingore provided, I will convert all the images that I can found');
+    warning('No sequence to ignore provided, I will convert all the images that I can found');
 
   end
 
