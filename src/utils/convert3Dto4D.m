@@ -139,7 +139,11 @@ function convert3Dto4D
         % Save one sidecar json file, it takes the file name of the 1st volume of the 4D file and
         % add subfix
         if ~isempty(jsonList)
-
+% TODO: cover the MoCo use case
+% - if the sequence is MoCo (motion corrected when the "scanner" reconstructs the images - an option on can tick
+% on Siemens scanner and that output an additional MoCo file with the regular sequence) then each JSON file of 
+% each volume contains the motion correction information for that volume.
+% So only taking the JSON of the first volume means we "lose" the realignment parameters that could be useful later.
           copyfile(jsonList{1}, [sequencePath filesep strrep(outputNameJson, '.json', '_4D.json')]);
 
         end
