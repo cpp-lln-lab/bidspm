@@ -2,9 +2,9 @@
 
 function checkDependencies()
   %
-  % Checks that that the right dependencies are installed: 
+  % Checks that that the right dependencies are installed:
   % - SPM
-  % - Nifti tools 
+  % - Nifti tools
   % Also loads the spm defaults.
   %
   % USAGE::
@@ -14,7 +14,7 @@ function checkDependencies()
   % .. TODO:
   %
   %    - need to check other dependencies (bids-matlab, spmup)
-  % 
+  %
 
   printCredits();
 

@@ -17,7 +17,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt)
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   printBatchName('segmentation anatomical image');
 
   % define SPM folder

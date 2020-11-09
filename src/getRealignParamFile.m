@@ -18,7 +18,7 @@ function realignParamFile = getRealignParamFile(fullpathBoldFileName, prefix)
   %
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
-  
+
   [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName);
 
   if nargin > 1

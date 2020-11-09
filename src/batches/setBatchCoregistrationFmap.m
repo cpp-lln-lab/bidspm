@@ -17,7 +17,7 @@ function matlabbatch = setBatchCoregistrationFmap(BIDS, opt, subID)
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   % TODO
   % assumes all the fieldmap relate to the current task
   % - use the "for" metadata field

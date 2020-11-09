@@ -21,7 +21,6 @@ function batch = setBatchSubjectLevelResults(varargin)
   %           - :argout2: (type) (dimension)
   %
 
-
   [batch, grp, funcFWHM, opt, iStep, iCon] = deal(varargin{:});
 
   for iGroup = 1:length(grp)

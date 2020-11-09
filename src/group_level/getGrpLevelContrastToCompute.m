@@ -11,10 +11,10 @@ function [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt)
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
-  % :returns: - :grpLvlCon: 
-  %           - :iStep: 
+  % :returns: - :grpLvlCon:
+  %           - :iStep:
   %
-  
+
   model = spm_jsonread(opt.model.file);
 
   for iStep = 1:length(model.Steps)

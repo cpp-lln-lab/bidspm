@@ -19,7 +19,7 @@ function matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outD
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   printBatchName('image calculation');
 
   matlabbatch{end + 1}.spm.util.imcalc.input = input;

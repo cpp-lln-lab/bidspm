@@ -19,7 +19,7 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow()
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   interactiveWindow = [];
   graphWindow = [];
   cmdLine = true;

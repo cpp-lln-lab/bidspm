@@ -16,7 +16,7 @@ function copyFigures(BIDS, opt, subID)
   % :type subID: string
   %
   %
-  
+
   imgNb = copyGraphWindownOutput(opt, subID, 'realign');
 
   % loop through the figures outputed for unwarp: one per run

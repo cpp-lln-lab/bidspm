@@ -8,18 +8,16 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subID)
   %
   %   saveMatlabBatch(matlabbatch, batchType, opt, [subID])
   %
-  % :param matlabbatch: 
+  % :param matlabbatch:
   % :type matlabbatch: structure
-  % :param batchType: 
+  % :param batchType:
   % :type batchType: string
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :param subID: 
+  % :param subID:
   % :type subID: string
   %
   %
-
-
 
   if nargin < 4 || isempty(subID)
     subID = 'group';

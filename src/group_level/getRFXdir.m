@@ -16,12 +16,11 @@ function rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName)
   % :param conFWHM: How much smoothing will be applied to the contrast
   %                 images.
   % :type conFWHM: scalar
-  % :param contrastName: 
+  % :param contrastName:
   % :type contrastName: string
   %
   % :returns: :rfxDir: (string) Fullpath of the group level directory
   %
-
 
   rfxDir = fullfile( ...
                     opt.derivativesDir, ...

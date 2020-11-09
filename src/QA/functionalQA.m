@@ -13,15 +13,14 @@ function functionalQA(opt)
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
-  % ASSUMPTIONS: 
+  % ASSUMPTIONS:
   % The previous step must have already been run:
-  % - the functional images have been realigned and resliced using etiher 
+  % - the functional images have been realigned and resliced using etiher
   %   ``bidsSpatialPrepro()``, ``bidsRealignUnwarp()``, ``bidsRealignReslice`()`
   % - the quality analysis of the anatomical data has been done with ``anatomicalQA()``
   % - the tissue probability maps have been generated in the "native" space of each subject
-  %   (using ``bidsSpatialPrepro()`` or ``bidsSegmentSkullStrip()``) and have been 
+  %   (using ``bidsSpatialPrepro()`` or ``bidsSegmentSkullStrip()``) and have been
   %   resliced to the dimension of the functional with ``bidsResliceTpmToFunc()``
-
 
   % if input has no opt, load the opt.mat file
   if nargin < 1
@@ -112,10 +111,10 @@ function functionalQA(opt)
 
           % create carpet plot
           spmup_timeseriesplot(funcImage, TPMs(1, :), TPMs(2, :), TPMs(3, :), ...
-            'motion', 'on', ...
-            'nuisances', 'on', ...
-            'correlation', 'on', ...
-            'makefig', 'on');
+                               'motion', 'on', ...
+                               'nuisances', 'on', ...
+                               'correlation', 'on', ...
+                               'makefig', 'on');
 
         end
 

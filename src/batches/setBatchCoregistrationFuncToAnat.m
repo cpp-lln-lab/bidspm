@@ -18,7 +18,7 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   printBatchName('coregister functional data to anatomical');
 
   matlabbatch{end + 1}.spm.spatial.coreg.estimate.ref(1) = ...

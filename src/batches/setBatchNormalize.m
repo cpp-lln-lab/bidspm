@@ -19,7 +19,7 @@ function matlabbatch = setBatchNormalize(matlabbatch, deformField, voxDim, imgTo
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   if nargin > 1 && ~isempty(deformField)
     matlabbatch{end + 1}.spm.spatial.normalise.write.subj.def(1) = deformField;
   end
