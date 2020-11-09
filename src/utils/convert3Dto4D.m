@@ -2,33 +2,29 @@
 
 function convert3Dto4D(optSource)
   %
-  % Short description of what the function does goes here.
+  % It converts single volumes of a sequence in a 4D file, remove the dummies (optional), zip the
+  % 4D file (optional) and delete the converted files. Recursevly loops through a folder in which a
+  % not-yet-BIDS dataset live and the nii files are sorted in each sequence folder.
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   convert3Dto4D(optSource)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
-  %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :param optSource: Obligatory argument. The structure that contains the options set by the user
+  %                   to run the batch workflow for source processing
   %
   % .. todo:
   %
   %    - expand to run through multiple subjs ans groups
-  %      (https://stackoverflow.com/questions/8748976/list-the-subfolders-in-a-folder-matlab-only-subfolders-not-files)
+  %      (https://stackoverflow.com/questions/8748976/
+  %      list-the-subfolders-in-a-folder-matlab-only-subfolders-not-files)
   %    - generalize how to retrieve RT from sidecar json file
-  %    - saveMatlabBatch(matlabbatch, ['3Dto4D_dataType-' num2str(dataType) '_RT-' num2str(RT)], opt, subID);
-  %    - Cover the MoCo use case: if the sequence is MoCo (motion corrected when the "scanner" 
-  %      reconstructs the images - an option on can tick on Siemens scanner and that output an 
-  %      additional MoCo file with the regular sequence) then each JSON file of each volume contains 
-  %      the motion correction information for that volume. So only taking the JSON of the first 
+  %    - saveMatlabBatch(matlabbatch, ...
+  %      ['3Dto4D_dataType-' num2str(dataType) '_RT-' num2str(RT)], opt, subID);
+  %    - Cover the MoCo use case: if the sequence is MoCo (motion corrected when the "scanner"
+  %      reconstructs the images - an option on can tick on Siemens scanner and that output an
+  %      additional MoCo file with the regular sequence) then each JSON file of each volume contains
+  %      the motion correction information for that volume. So only taking the JSON of the first
   %      volume means we "lose" the realignment parameters that could be useful later.
 
   % Get source folder content
@@ -154,4 +150,3 @@ function [fileList, outputName] = parseFiles(fileExtention, sequencePath, nbDumm
   end
 
 end
-

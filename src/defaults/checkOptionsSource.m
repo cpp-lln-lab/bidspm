@@ -2,27 +2,16 @@
 
 function optSource = checkOptionsSource(optSource)
   %
-  % Short description of what the function does goes here.
+  % Check the option inputs for source data and add any missing field with some defaults
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   optSource = checkOptionsSource(optSource)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param optSource: Obligatory argument. The structure that contains the options set by the user
+  %                   to run the batch workflow for source processing
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
-  %
-  % .. todo:
-  %
-  %    - item 1
-  %    - item 2
+  % :returns: - :optSource: (struc) The structure with any unset fields with the deaufalt values
 
   fieldsToSet = setDefaultOptionSource();
 
@@ -59,7 +48,7 @@ function fieldsToSet = setDefaultOptionSource()
 
   % Number of volumes to discard ad dummies
   fieldsToSet.nbDummies = 0;
-  
+
   % The list of sequence(s) where to discarding the dummies
   fieldsToSet.sequenceRmDummies = {};
 

@@ -16,4 +16,3 @@ optSource = getOptionSource();
 
 % Single volumes to 4D volumes conversion + remove n dummies
 convert3Dto4D(optSource);
-

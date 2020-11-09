@@ -2,27 +2,23 @@
 
 function matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT)
   %
-  % Short description of what the function does goes here.
+  % Set the batch for 3D to 4D conversion
   %
-  % USAGE::
+  % USAGE:: matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT)
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param volumesList: Obligatory argument. List of volumes to be converted in a single 4D brain
+  % :type volumesList: array
+  % :param outputName: Obligatory argument. The string that will be used to save the 4D brain
+  % :type outputName: string
+  % :param dataType: Obligatory argument. It identifys the data format conversion
+  % :type dataType: integer
+  % :param RT: Obligatory argument. It identifys the TR in secof the volumes to be written in the
+  %            4D file header
+  % :type RT: number
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
-  %
-  % .. todo:
-  %
-  %    - item 1
-  %    - item 2
+  % :returns: - :matlabbatch: (struct) The matlabbath ready to run the spm job
 
   fprintf(1, 'PREPARING: 3D to 4D conversion\n');
 
