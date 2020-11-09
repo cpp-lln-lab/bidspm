@@ -10,7 +10,7 @@ pth = fileparts(mfilename('fullpath'));
 addpath(genpath(fullfile(pth, '..', '..', 'src')));
 addpath(genpath(fullfile(pth, '..', '..', 'lib')));
 
-%%Run batches
+%% Run batches
 
 optSource = getOptionSource();
 
