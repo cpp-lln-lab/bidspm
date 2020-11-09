@@ -13,7 +13,7 @@ function mancoreg(targetimage, sourceimage)
   %   mancoreg([targetimage,] [sourceimage])
   %
   % :param targetimage: Filename or fullpath of the target image. If none is provided
-  %                     you will be asked by SPM to select one.  
+  %                     you will be asked by SPM to select one.
   % :type targetimage: type
   % :param sourceimage: Filename or fullpath of the source image. If none is provided
   %                     you will be asked by SPM to select one.

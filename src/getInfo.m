@@ -3,7 +3,7 @@
 function varargout = getInfo(BIDS, subID, opt, info, varargin)
   %
   % Wrapper function to fetch specific info in a BIDS structure returned by
-  % spm_bids. 
+  % spm_bids.
   %
   % USAGE::
   %

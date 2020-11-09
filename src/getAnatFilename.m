@@ -17,7 +17,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt)
   %
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
-  % 
+  %
   % [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt)
   %
   % Get the filename and the directory of an anat file for a given session /

@@ -6,17 +6,16 @@
 function mancoregCallbacks(operation)
   %
   % Callback routines for ``mancoreg()``: defines the different actions for the
-  % different buttons. 
+  % different buttons.
   %
   % USAGE::
   %
   %   mancoreg_callbacks(operation)
   %
-  % :param operation: Can be any of the following: ``move``, ``toggle_off``, ``toggle_on``, 
-  %                   ``reset``, ``apply``, ``plotmat``    
+  % :param operation: Can be any of the following: ``move``, ``toggle_off``, ``toggle_on``,
+  %                   ``reset``, ``apply``, ``plotmat``
   % :type operation: string
   %
-
 
   % Change LOG
   %

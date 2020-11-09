@@ -32,5 +32,5 @@ function matlabbatch = setBatchFmriEstimate(matlabbatch)
 
   matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;
   matlabbatch{2}.spm.stats.fmri_est.write_residuals = 1;
-  
+
 end

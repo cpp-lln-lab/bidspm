@@ -19,7 +19,7 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   printBatchName('saving coregistration matrix');
 
   % create name of the output file based on the name of the first image of the

@@ -19,7 +19,7 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, o
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   jobsToAdd = numel(matlabbatch) + 1;
 
   for iJob = jobsToAdd:(jobsToAdd + 4)

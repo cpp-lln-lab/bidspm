@@ -19,7 +19,7 @@ function deleteResidualImages(ffxDir)
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   delete(fullfile(ffxDir, 'Res_*.nii'));
 
 end

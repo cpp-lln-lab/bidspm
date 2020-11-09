@@ -11,7 +11,7 @@ function versionNumber = getVersion()
   %
   % :returns: :versionNumber: (string) Use semantic versioning format (like v0.1.0)
   %
-  
+
   try
     versionNumber = fileread(fullfile(fileparts(mfilename('fullpath')), ...
                                       '..', '..', 'version.txt'));

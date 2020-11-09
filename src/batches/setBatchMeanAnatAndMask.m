@@ -18,7 +18,7 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   [group, opt, BIDS] = getData(opt);
 
   matlabbatch = {};

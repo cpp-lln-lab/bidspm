@@ -12,7 +12,7 @@ function [OS, GeneratedBy] = getEnvInfo()
   % :returns: :OS: (structure) (dimension)
   %           :GeneratedBy: (structure) (dimension)
   %
-  
+
   GeneratedBy(1).name = 'cpp_spm';
   GeneratedBy(1).Version =  getVersion();
   GeneratedBy(1).Description = '';

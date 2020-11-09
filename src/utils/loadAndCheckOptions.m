@@ -13,23 +13,27 @@ function opt = loadAndCheckOptions(optionJsonFile)
   %
   %   opt = loadAndCheckOptions(optionJsonFile)
   %
-  % :param optionJsonFile: fullpath to the json file describing the options of an
-  %                        analysis.
+  % :param optionJsonFile: Fullpath to the json file describing the options of an
+  %                        analysis. It can also be an ``opt`` structure
+  %                        containing the options.
   % :type optionJsonFile: string
   %
   % :returns: :opt: (structure) Options chosen for the analysis. See ``checkOptions()``.
   %
+  % .. TODO
+  %
+  %    - add test for when the input is a structure.
 
   if nargin < 1 || isempty(optionJsonFile)
     optionJsonFile = spm_select('FPList', pwd, '^options_task-.*.json$');
   end
-  
+
   if isstruct(optionJsonFile)
-    
+
     opt = optionJsonFile;
     opt = checkOptions(opt);
     fprintf(1, '\nOptions are locked & loaded.\n\n');
-  
+
     return
   end
 

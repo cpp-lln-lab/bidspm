@@ -1,7 +1,7 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function batch = setBatchResults(batch, opt, iStep, iCon, results)
-   %
+  %
   % Short description of what the function does goes here.
   %
   % USAGE::

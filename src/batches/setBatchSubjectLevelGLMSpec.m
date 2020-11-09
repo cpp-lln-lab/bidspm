@@ -18,7 +18,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   [BIDS, opt, subID, funcFWHM] =  deal(varargin{:});
 
   printBatchName('specify subject level fmri model');

@@ -3,7 +3,7 @@
 function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmapMetadata)
   %
   % Gets metadata of the associated bold file:
-  % - finds the bold file a fmap is intended for, 
+  % - finds the bold file a fmap is intended for,
   % - parse its filename,
   % - get its metadata.
   %

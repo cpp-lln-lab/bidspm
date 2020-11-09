@@ -18,7 +18,7 @@ function matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM)
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  
+
   printBatchName('subject level contrasts specification');
 
   ffxDir = getFFXdir(subID, funcFWHM, opt);
