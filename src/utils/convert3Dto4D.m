@@ -76,7 +76,7 @@ function convert3Dto4D
   for iSeq = 1:size(optSource.sequenceList, 1)
 
     % Skip 'non' folders
-    if length(char(optSource.sequenceList(iSeq))) > 2
+    if length(optSource.sequenceList{iSeq}) > 2
 
       % Check if sequence to ignore or not
       if contains(optSource.sequenceList(iSeq), optSource.sequenceToIgnore)
@@ -100,7 +100,7 @@ function convert3Dto4D
         end
 
         % Get sequence folder path
-        sequencePath = char(fullfile(optSource.sourceDir, optSource.sequenceList(iSeq)));
+        sequencePath = fullfile(optSource.sourceDir, optSource.sequenceList{iSeq});
 
         % Retrieve volume files info
         [volumesList, outputNameImage] = parseFiles('nii', sequencePath, nbDummies);
@@ -111,7 +111,7 @@ function convert3Dto4D
         % Retrieve sidecar json files info
         [jsonList, outputNameJson] = parseFiles('json', sequencePath, nbDummies);
 
-        jsonFile = spm_jsonread(char(jsonList(1)));
+        jsonFile = spm_jsonread(jsonList{1});
 
         % % % % % % LIEGE  SPECIFIC % % % % % % %
         RT = jsonFile.acqpar.RepetitionTime / 1000;
@@ -140,7 +140,7 @@ function convert3Dto4D
         % add subfix
         if ~isempty(jsonList)
 
-          copyfile(char(jsonList(1)), [sequencePath filesep strrep(outputNameJson, '.json', '_4D.json')]);
+          copyfile(jsonList{1}, [sequencePath filesep strrep(outputNameJson, '.json', '_4D.json')]);
 
         end
 
@@ -149,8 +149,8 @@ function convert3Dto4D
 
         for iDel = 1:length(volumesList)
 
-          delete(char(volumesList(iDel)));
-          delete(char(jsonList(iDel)));
+          delete(volumesList{iDel});
+          delete(jsonList{iDel});
 
         end
 
