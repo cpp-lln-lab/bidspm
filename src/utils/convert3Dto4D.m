@@ -164,7 +164,6 @@ function convert3Dto4D
 
   end
 
-  newline;
   toc;
 
 end
