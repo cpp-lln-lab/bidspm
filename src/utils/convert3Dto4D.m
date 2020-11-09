@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function convert3Dto4D
+function convert3Dto4D(optSource)
   %
   % Short description of what the function does goes here.
   %
@@ -25,42 +25,11 @@ function convert3Dto4D
   %      (https://stackoverflow.com/questions/8748976/list-the-subfolders-in-a-folder-matlab-only-subfolders-not-files)
   %    - generalize how to retrieve RT from sidecar json file
   %    - saveMatlabBatch(matlabbatch, ['3Dto4D_dataType-' num2str(dataType) '_RT-' num2str(RT)], opt, subID);
-  
-  % Add folder where some functions live
-  initEnv()
-
-  % Set the folder where sequences folders exist
-  optSource.sourceDir = '/Users/barilari/Desktop/DICOM_UCL_leuven/renamed/sub-pilot001/ses-002/MRI';
-
-  % List of the sequences that you want to skip (folder name pattern)
-  optSource.sequenceToIgnore = {'AAHead_Scout', ...
-                                'b1map', ...
-                                't1', ...
-                                'gre_field'};
-
-  % Number of volumes to discard ad dummies, (0 is default)
-  optSource.nbDummies = 5;
-
-  % List of the sequences where you want to remove dummies (folder name pattern)
-  optSource.sequenceRmDummies = {'cmrr_mbep2d_p3_mb2_1.6iso_AABrain', ...
-                                 'cmrr_mbep2d_p4_mb2_750um_AAbrain'};
-
-  % Set data format conversion (0 is default)
-
-  % 0:  SAME
-  % 2:  UINT8   - unsigned char
-  % 4:  INT16   - signed short
-  % 8:  INT32   - signed int
-  % 16: FLOAT32 - single prec. float
-  % 64: FLOAT64 - double prec. float
-
-  optSource.dataType = 0;
-
-  % Boolean to enable gzip of the new 4D file (0 is default)
-  optSource.zip = 0;
-
-  % Check the options provided
-  optSource = checkOptionsSource(optSource);
+  %    - Cover the MoCo use case: if the sequence is MoCo (motion corrected when the "scanner" 
+  %      reconstructs the images - an option on can tick on Siemens scanner and that output an 
+  %      additional MoCo file with the regular sequence) then each JSON file of each volume contains 
+  %      the motion correction information for that volume. So only taking the JSON of the first 
+  %      volume means we "lose" the realignment parameters that could be useful later.
 
   % Get source folder content
   sourceDataStruc = dir(optSource.sourceDir);
@@ -139,11 +108,7 @@ function convert3Dto4D
         % Save one sidecar json file, it takes the file name of the 1st volume of the 4D file and
         % add subfix
         if ~isempty(jsonList)
-% TODO: cover the MoCo use case
-% - if the sequence is MoCo (motion corrected when the "scanner" reconstructs the images - an option on can tick
-% on Siemens scanner and that output an additional MoCo file with the regular sequence) then each JSON file of 
-% each volume contains the motion correction information for that volume.
-% So only taking the JSON of the first volume means we "lose" the realignment parameters that could be useful later.
+
           copyfile(jsonList{1}, [sequencePath filesep strrep(outputNameJson, '.json', '_4D.json')]);
 
         end
@@ -170,7 +135,7 @@ end
 
 function [fileList, outputName] = parseFiles(fileExtention, sequencePath, nbDummies)
 
-  fileList = spm_select('list', sequencePath, fileExstention);
+  fileList = spm_select('list', sequencePath, fileExtention);
 
   if size(fileList, 1) > 0
 
@@ -190,10 +155,3 @@ function [fileList, outputName] = parseFiles(fileExtention, sequencePath, nbDumm
 
 end
 
-function initEnv()
-
-    pth = fileparts(mfilename('fullpath'));
-    addpath(fullfile(pth, '..', 'defaults'));
-    addpath(fullfile(pth, '..', 'batches'));
-
-end
