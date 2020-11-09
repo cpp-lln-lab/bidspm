@@ -81,9 +81,7 @@ function convert3Dto4D
       % Check if sequence to ignore or not
       if contains(optSource.sequenceList(iSeq), optSource.sequenceToIgnore)
 
-        newline;
-        warning('IGNORING SEQUENCE: %s', string(optSource.sequenceList(iSeq)));
-        newline;
+        warning('\nIGNORING SEQUENCE: %s\n', string(optSource.sequenceList(iSeq)));
 
       else
 
