@@ -8,7 +8,7 @@ function matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT)
   %
   %   matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT)
   %
-  % :param volumesList: Obligatory argument. List of volumes to be converted in a single 4D brain
+  % :param volumesList: List of volumes to be converted in a single 4D brain
   % :type volumesList: array
   % :param outputName: Obligatory argument. The string that will be used to save the 4D brain
   % :type outputName: string
