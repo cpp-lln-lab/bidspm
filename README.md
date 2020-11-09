@@ -24,7 +24,7 @@
 
 <!-- lint enable -->
 
-# CPPL SPM12 Pipeline
+# CPP SPM
 
 This is a set of functions to fMRI analysis on a
 [BIDS data set](https://bids.neuroimaging.io/) using SPM12.
@@ -79,6 +79,17 @@ For instructions see the following links:
 | [spmup](https://github.com/CPernet/spmup)                                                 | NA           |
 
 <!-- lint enable -->
+
+## Contributing
+
+Feel free to open issues to report a bug and ask for improvements.
+
+If you want to contribute, have a look at our
+[contributing guidelines](https://github.com/cpp-lln-lab/.github/blob/main/CONTRIBUTING.md)
+that are meant to guide you and help you get started. If something is not clear
+or you get stuck: it is more likely we did not do good enough a job at
+explaining things. So do not hesitate to open an issue, just to ask for
+clarification.
 
 ## Contributors
 
