@@ -16,3 +16,9 @@ optSource = getOptionSource();
 
 % Single volumes to 4D volumes conversion + remove n dummies
 convert3Dto4D(optSource);
+
+% Deface anatomical volumes in a raw folder
+% defaceAnat(optSource); COMING SOON
+
+% GZip the volumes in a raw folder
+bidsGZipRawFolder(optSource, 0)

@@ -22,10 +22,16 @@ function optSource = checkOptionsSource(optSource)
     error('The source folder does not exist, try again.');
 
   end
+  
+  if isempty(optSource.dataDir) || ~isdir(optSource.dataDir)
+
+    error('The raw folder does not exist, try again.');
+
+  end
 
   if isempty(optSource.sequenceToIgnore)
 
-    warning('No sequence to ignore provided, I will convert all the images that I can found');
+    warning('No sequence-to-ignore provided, I will convert all the images that I can found');
 
   end
 
@@ -36,6 +42,9 @@ function fieldsToSet = setDefaultOptionSource()
 
   % The directory where the source data are located
   fieldsToSet.sourceDir = '';
+  
+  % The directory where the raw data to apply changes are located
+  fieldsToSet.dataDir = '';
 
   % The list of sequence(s) to ignore
   fieldsToSet.sequenceToIgnore = {};
