@@ -7,6 +7,8 @@ function test_suite = test_copyGraphWindownOutput %#ok<*STOUT>
 end
 
 function test_copyGraphWindownOutputBasic()
+  
+  delete('*.png')
 
   opt.derivativesDir = pwd;
   opt.taskName = 'testTask';
@@ -30,6 +32,32 @@ function test_copyGraphWindownOutputBasic()
   assertEqual(size(files, 1), 2);
 
   pause(1);
+  rmdir(fullfile(opt.derivativesDir, ['sub-' subID]), 's');
+
+end
+
+
+function test_copyGraphWindownOutputWarning()
+  
+  delete('*.png')
+
+  opt.derivativesDir = pwd;
+  opt.taskName = 'testTask';
+  subID = '01';
+  action = 'testStep';
+
+  system('touch spm_002.png');
+  system('touch spm_test_002.png');
+
+  copyGraphWindownOutput(opt, subID, action, 2)
+  
+  assertWarning(...
+    @()copyGraphWindownOutput(opt, subID, action, 2), ...
+    'copyGraphWindownOutput:tooManyFiles');
+  assertWarning(...
+    @()copyGraphWindownOutput(opt, subID, action, 3), ...
+    'copyGraphWindownOutput:noFile');
+  
   rmdir(fullfile(opt.derivativesDir, ['sub-' subID]), 's');
 
 end

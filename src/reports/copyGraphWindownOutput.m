@@ -38,10 +38,30 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
   end
 
   for iFile = imgNb
-
+    
+    % Using validationInputFile might be too agressive as it throws an error if
+    % it can't find a file. Let's use a work around and stick to warnings for now
+    
+    %     file = validationInputFile(pwd, sprintf('spm_.*%i.png', iFile));
     file = spm_select('FPList', pwd, sprintf('^spm_.*%i.png$', iFile));
-
-    if ~isempty(file)
+    
+    if isempty(file)
+      
+      warning(...
+        'copyGraphWindownOutput:noFile', ...
+        'No figure file to copy');
+      
+    elseif size(file, 1) > 1
+      
+      warning(...
+        'copyGraphWindownOutput:tooManyFiles', ...
+        sprintf('\n %s\n %s\n %s', ...
+        'Too many figure files to copy.', ...
+        'Not sure what to do.', ...
+        'Will skip this step.'));
+      disp(file)
+  
+    else
 
       targetFile = sprintf( ...
                            '%s_%i_sub-%s_task-%s_%s.png', ...
@@ -54,6 +74,11 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
       movefile( ...
                file, ...
                fullfile(figureDir, targetFile));
+             
+      fprintf(1, '\n%s\nwas moved to\n%s\n', ...
+        file, ...
+        fullfile(figureDir, targetFile));
+
 
     end
 

@@ -1,45 +1,59 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function files = validationInputFile(dir, fileName, prefix)
+function files = validationInputFile(dir, fileNamePattern, prefix)
   %
-  % Short description of what the function does goes here.
+  % Looks for file name pattern in a given directory and returns all the files
+  % that match that pattern but throws an error if it cannot find any.
+  %
+  % A prefix can be added to the filename.
+  %
+  % This function is mostly used that a file exists so
+  % that an error is thrown early when building a SPM job rather than at run
+  % time.
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   files = validationInputFile(dir, fileName[, prefix])
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param dir: Directory where the search will be conducted.
+  % :type dir: string
+  % :param fileName: file name pattern. Can be a regular expression except for
+  %                  the starting ``^`` and ending ``$``. For example: 
+  %                  ``'sub-.*_ses-.*_task-.*_bold.nii'``. 
+  % :type fileName: string
+  % :param prefix: prefix to be added to the filename pattern. This can also be
+  %                a regular expression (ish). For example ,f looking for the files that
+  %                start with ``c1`` or ``c2`` or ``c3``, the prefix can be
+  %                ``c[123]``.
+  % :type prefix: string
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: 
   %
-  % file = validationInputFile(dir, fileName, prefix)
+  %           :files: (string array) returns the fullpath file list of all the
+  %                   files matching the required pattern.
+  %           
+  % 
+  % See also: ``spm_select``.
   %
-  % Checks if files exist. A prefix can be added. The prefix allows for the
-  % use of regular expression.
   %
-  % TPMs = validationInputFile(anatDataDir, anatImage, 'c[12]');
+  % Example:
+  % % 
+  % % tissueProbaMaps = validationInputFile(anatDataDir, anatImage, 'c[12]');
   %
-  % If the filet(s) exist(s), it returns a char array containing list of fullpath.
+  % 
 
   if nargin < 3
     prefix = '';
   end
 
-  files = spm_select('FPList', dir, ['^' prefix fileName '$']);
+  files = spm_select('FPList', dir, ['^' prefix fileNamePattern '$']);
 
   if isempty(files)
 
     errorStruct.identifier = 'validationInputFile:nonExistentFile';
     errorStruct.message = sprintf( ...
                                   'This file does not exist: %s', ...
-                                  fullfile(dir, [prefix fileName '[.gz]']));
+                                  fullfile(dir, [prefix fileNamePattern '[.gz]']));
     error(errorStruct);
 
   end
