@@ -19,7 +19,6 @@ function bidsGZipRawFolder(optSource, keepUnzippedNii)
 
   %% input variables default values
   
-  optSource.dataDir = '/Users/barilari/Desktop/data_temp/raw_temp';
 
   if nargin < 2 || isempty(deleteUnzippedNii)
     % delete the original unzipped .nii
@@ -39,4 +38,3 @@ function bidsGZipRawFolder(optSource, keepUnzippedNii)
   spm_jobman('run', matlabbatch);
   
   toc;
-
