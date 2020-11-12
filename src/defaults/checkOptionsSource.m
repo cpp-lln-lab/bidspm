@@ -19,13 +19,13 @@ function optSource = checkOptionsSource(optSource)
 
   if isempty(optSource.sourceDir) || ~isdir(optSource.sourceDir)
 
-    error('The source folder does not exist, try again.');
+    warning('The source folder is not provided or does not exist.');
 
   end
   
   if isempty(optSource.dataDir) || ~isdir(optSource.dataDir)
 
-    error('The raw folder does not exist, try again.');
+    warning('The raw folder is not provided or does not exist.');
 
   end
 
