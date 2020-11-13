@@ -6,7 +6,7 @@ function matlabbatch = setBatchGZip(unzippedNiifiles, keepUnzippedNii)
   %
   % USAGE:: 
   %
-  %   matlabbatch = setGZip(unzippedNiifiles, deleteUnzippedNii)
+  %   matlabbatch = setBatchGZip(unzippedNiifiles, keepUnzippedNii)
   %
   % :param unzippedNiifiles: List of volumes to be gzipped
   % :type unzippedNiifiles: array
