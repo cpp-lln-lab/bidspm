@@ -10,7 +10,7 @@ function matlabbatch = setBatchGZip(unzippedNiifiles, keepUnzippedNii)
   %
   % :param unzippedNiifiles: List of volumes to be gzipped
   % :type unzippedNiifiles: array
-  % :param keepUnzippedNii: Obligatory argument. Boolean to decide to delete the unzipped files
+  % :param keepUnzippedNii: Boolean to decide to delete the unzipped files
   % :type keepUnzippedNii: boolean
   %
   % :returns: - :matlabbatch: (struct) The matlabbath ready to run the spm job
