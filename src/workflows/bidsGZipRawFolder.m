@@ -19,7 +19,7 @@ function bidsGZipRawFolder(optSource, keepUnzippedNii)
   %% input variables default values
   
 
-  if nargin < 2 || isempty(deleteUnzippedNii)
+  if nargin < 2 || isempty(keepUnzippedNii)
     % delete the original unzipped .nii
     keepUnzippedNii = false;
   end
