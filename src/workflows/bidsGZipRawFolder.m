@@ -7,9 +7,8 @@ function bidsGZipRawFolder(optSource, keepUnzippedNii)
   %
   % USAGE::
   %
-  %   bidsGZipRawFolder([opt,] ...
-  %                     [deleteUnzippedNii = true,] ...
-  %                     [modalitiesToZip = {'anat', 'func', 'fmap'}])
+  %   bidsGZipRawFolder(optSource ...
+  %                     [, keepUnzippedNii = false])
   %
   % :param optSource: The structure that contains the options set by the user to run the batch
   %                   workflow for source processing
