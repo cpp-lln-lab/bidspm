@@ -1,22 +1,25 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt)
   %
-  % Short description of what the function does goes here.
+  % Set the batch for corregistering the functional images to the
+  % anatomical image
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
+  % :param matlabbatch: list of SPM batches
+  % :type matlabbatch: structure
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param argin3: (dimension) optional argument
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  % :param subID: subject ID
+  % :type subID: string
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
 
   printBatchName('coregister functional data to anatomical');

@@ -2,28 +2,25 @@
 
 function matlabbatch = setBatchCoregistration(matlabbatch, ref, src, other)
   %
-  % Short description of what the function does goes here.
+  % Set the batch for corregistering the source images into the reference image???
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchCoregistration(matlabbatch, ref, src, other)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param matlabbatch: list of SPM batches
+  % :type matlabbatch: structure
+  % :param ref: Reference image
+  % :type ref: string
+  % :param src: Source image
+  % :type src: string
+  % :param other: ?
+  % :type other: cell string
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
   % matlabbatch = setBatchCoregistrationGeneral(matlabbatch, ref, src, other)
   %
-  % ref: string
-  % src: string
-  % other: cell string
 
   printBatchName('coregistration');
 
