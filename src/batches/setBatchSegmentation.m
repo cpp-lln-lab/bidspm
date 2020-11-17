@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function matlabbatch = setBatchSegmentation(matlabbatch, opt)
   %
