@@ -12,7 +12,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt)
   % :type matlabbatch: structure
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt: structure or json file
+  % :type opt: structure
   %
   % :returns: :matlabbatch: (structure)
   %
