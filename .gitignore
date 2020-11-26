@@ -13,9 +13,11 @@ options_task-*date*.json
 onsets*_events.mat
 
 # files in the demo folder related to running the demo analysis
-demos/MoAE/*.zip
+demos/*/*.zip
+demos/*/derivatives/*
 demos/MoAE/output/*
-demos/MoAE/derivatives/*
+demos/spm*/raw
+demos/spm*/source
 
 # test folder
 tests/sub-01/*
