@@ -145,7 +145,7 @@ function [fileList, outputName] = parseFiles(fileExtention, sequencePath, nbDumm
 
     outputName = [];
 
-    warning('\nI have found 0 files with extension ''.%s'' \n', fileExstention);
+    warning('\nI have found 0 files with extension ''.%s'' \n', fileExtention);
 
   end
 
