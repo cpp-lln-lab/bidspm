@@ -68,6 +68,8 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
       % the folder containing the subjects data
       subDir = ['sub-', subID];
 
+      fprintf('copying subject: %s \n', subDir);
+
       mkdir(fullfile(derivativesDir, subDir));
 
       % copy scans.tsv files
@@ -88,6 +90,8 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
           sessionDir = ['ses-' sessions{iSes}];
         end
 
+        fprintf(' copying session: %s \n', sessionDir);
+
         mkdir(fullfile(derivativesDir, subDir, sessionDir));
 
         % copy scans.tsv files
@@ -97,8 +101,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
         modalities = bids.query(BIDS, 'modalities', ...
                                 'sub', subID, ...
-                                'ses', sessions{iSes}, ...
-                                'task', opt.taskName);
+                                'ses', sessions{iSes});
         modalities = intersect(modalities, modalitiesToCopy);
 
         for iModality = 1:numel(modalities)
@@ -116,8 +119,6 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
           copyModalityDir(srcFolder, targetFolder);
 
         end
-
-        fprintf('folder copied: %s \n', subDir);
 
       end
     end
