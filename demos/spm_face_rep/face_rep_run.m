@@ -13,7 +13,7 @@ clc;
 % Smoothing to apply
 FWHM = 8;
 
-DownloadData = false;
+DownloadData = true;
 
 % URL of the data set to download
 % directory with this script becomes the current directory
@@ -42,23 +42,25 @@ end
 checkDependencies();
 
 %% Run batches
-% reportBIDS(opt);
-% bidsCopyRawFolder(opt, 1);
+reportBIDS(opt);
+bidsCopyRawFolder(opt, 1);
 
-% bidsSTC(opt);
+bidsSTC(opt);
 
-% bidsSpatialPrepro(opt);
+bidsSpatialPrepro(opt);
 
 % The following do not run on octave for now (because of spmup)
-% anatomicalQA(opt);
-% bidsResliceTpmToFunc(opt);
+anatomicalQA(opt);
+bidsResliceTpmToFunc(opt);
 
 % DEBUG
 % functionalQA(opt);
 
-% bidsSmoothing(FWHM, opt);
+bidsSmoothing(FWHM, opt);
 
 % The following crash on Travis CI
 bidsFFX('specifyAndEstimate', opt, FWHM);
-% bidsFFX('contrasts', opt, FWHM);
-% bidsResults(opt, FWHM);
+bidsFFX('contrasts', opt, FWHM);
+
+%TODO
+bidsResults(opt, FWHM);
