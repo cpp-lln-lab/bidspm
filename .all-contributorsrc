@@ -48,7 +48,8 @@
         "design",
         "review",
         "doc",
-        "test"
+        "test",
+        "bug"
       ]
     },
     {
