@@ -45,12 +45,7 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   conds = t.trial_type; 
 
   % identify where the conditions to include that are specificed 
-  % in the run step of the model file
-
-  if isempty(opt.model.file)
-    opt = createDefaultModel(BIDS, opt);
-  end
-  
+  % in the run step of the model file  
   model = spm_jsonread(opt.model.file);
 
   for runIdx = 1:numel(model.Steps)
