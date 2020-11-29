@@ -11,6 +11,10 @@ function anatomicalQA(opt)
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
+  
+  if isOctave()
+    warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.')
+  end
 
   % if input has no opt, load the opt.mat file
   if nargin < 1
