@@ -5,7 +5,7 @@ function face_rep_convert2BIDS()
   % downloads the fare repetition dataset from SPM and convert it to BIDS
   %
   % Adapted from its counterpart for MoAE
-  % https://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAE_convert2bids.m
+  % <https://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAE_convert2bids.m>
   %
 
   subject = 'sub-01';
@@ -53,7 +53,7 @@ function face_rep_convert2BIDS()
                   ['sub-01_task-' strrep(task_name, ' ', '') '_bold.mat']));
 
   %% And everything else
-  create_tsv_file(WD, task_name);
+  create_events_tsv_file(WD, task_name);
   create_readme(WD);
   create_changelog(WD);
   create_datasetdescription(WD, opt);
@@ -61,7 +61,11 @@ function face_rep_convert2BIDS()
 
 end
 
-function create_tsv_file(WD, task_name)
+function create_events_tsv_file(WD, task_name)
+    
+  % TODO
+  % add the lag between presentations of each item necessary for the parametric
+  % analysis.
 
   load(fullfile(WD, 'source', 'all_conditions.mat'), ...
        'names', 'onsets', 'durations');
@@ -144,6 +148,8 @@ function create_readme(WD)
          ''
          'A structural image was also acquired.'};
 
+  % TODO
+  % use spm_save to actually write this file?
   fid = fopen(fullfile(WD, 'raw', 'README'), 'wt');
   for i = 1:numel(rdm)
     fprintf(fid, '%s\n', rdm{i});

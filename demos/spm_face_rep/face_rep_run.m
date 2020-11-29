@@ -44,9 +44,9 @@ checkDependencies();
 %% Run batches
 % reportBIDS(opt);
 % bidsCopyRawFolder(opt, 1);
-%
+
 % bidsSTC(opt);
-%
+
 % bidsSpatialPrepro(opt);
 
 % The following do not run on octave for now (because of spmup)
