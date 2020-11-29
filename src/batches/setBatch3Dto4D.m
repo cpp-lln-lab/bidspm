@@ -4,7 +4,7 @@ function matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT)
   %
   % Set the batch for 3D to 4D conversion
   %
-  % USAGE:: 
+  % USAGE::
   %
   %   matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT)
   %

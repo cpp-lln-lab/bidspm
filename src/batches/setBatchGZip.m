@@ -4,7 +4,7 @@ function matlabbatch = setBatchGZip(unzippedNiifiles, keepUnzippedNii)
   %
   % Set the batch for GZip the 4D volumes
   %
-  % USAGE:: 
+  % USAGE::
   %
   %   matlabbatch = setBatchGZip(unzippedNiifiles, keepUnzippedNii)
   %
