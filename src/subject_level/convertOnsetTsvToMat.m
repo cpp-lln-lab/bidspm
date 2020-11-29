@@ -2,27 +2,23 @@
 
 function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   %
-  % Short description of what the function does goes here.
+  % Converts an  events.tsv file to an onset file suitable for SPM subject level
+  % analysis.
+  % The scripts extracts the trial type, onsets, and durations, and
+  % converts them and stores them in a mat file.
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param opt:
+  % :type opt: structure
+  % :param tsvFile:
+  % :type tsvFile: string
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :fullpathOnsetFileName: (string) name of the output `.mat` file.
   %
-  % Converts a tsv file to an onset file suitable for SPM ffx analysis
-  % The scripts extracts the conditions' names, onsets, and durations, and
-  % converts them to TRs (time unit) and saves the onset file to be used for
-  % SPM
+
   %
   [pth, file, ext] = spm_fileparts(tsvFile);
   tsvFile = validationInputFile(pth, [file, ext]);
@@ -58,7 +54,7 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   end
 
   isTrialType = strfind(step.Model.X, 'trial_type.');
-  
+
   % create empty cell to be filled in according to the conditions present in each run
   names = {};
   onsets = {};
@@ -78,12 +74,14 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
       idx = find(strcmp(conditionName, conds));
 
       if ~isempty(idx)
-      % Get the onset and duration of each condition
-      names{1, end+1} = conditionName;
-      onsets{1, end+1} = t.onset(idx)'; %#ok<*AGROW,*NASGU>
-      durations{1, end+1} = t.duration(idx)';
+        % Get the onset and duration of each condition
+        names{1, end + 1} = conditionName;
+        onsets{1, end + 1} = t.onset(idx)'; %#ok<*AGROW,*NASGU>
+        durations{1, end + 1} = t.duration(idx)';
+      else
+        warning('No trial found for trial type %s in \n%s', conditionName, tsvFile);
       end
-      
+
     end
   end
 
