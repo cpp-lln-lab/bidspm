@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function createDefaultModel(BIDS, opt)
+function opt = createDefaultModel(BIDS, opt)
   %
   % Creates a default model json file.
   % This model has 3 "steps" in that order:
@@ -15,6 +15,10 @@ function createDefaultModel(BIDS, opt)
   %     across runs
   %
   % - Run level:
+  %   - will create a GLM with a design matrix that includes all
+  %     all the possible type of trial_types that exist across
+  %     all subjects and runs for the task specified in ``opt``,
+  %     as well as the realignment parameters.
   %
   %   - use AutoContrasts to generate contrasts for each trial_type
   %     for each run. This can be useful to run MVPA analysis on the beta
@@ -58,6 +62,8 @@ function createDefaultModel(BIDS, opt)
 
   spm_jsonwrite(filename, content, jsonOptions);
 
+  opt.model.file = filename;
+
 end
 
 function trialTypeList = listAllTrialTypes(BIDS, opt)
@@ -88,7 +94,11 @@ function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
 
     trialTypeName = ['trial_type.' trialTypeList{iTrialType}];
 
+    % subject
     content.Steps{1}.Model.X{iTrialType} = trialTypeName;
+
+    % run
+    content.Steps{2}.Model.X{iTrialType} = trialTypeName;
 
     for iStep = 1:numel(content.Steps)
       content.Steps{iStep}.AutoContrasts{iTrialType} = trialTypeName;
@@ -99,6 +109,7 @@ function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
   % add realign parameters
   for iRealignParam = 1:numel(REALIGN_PARAMETERS_NAME)
     content.Steps{1}.Model.X{end + 1} = REALIGN_PARAMETERS_NAME{iRealignParam};
+    content.Steps{2}.Model.X{end + 1} = REALIGN_PARAMETERS_NAME{iRealignParam};
   end
 
 end

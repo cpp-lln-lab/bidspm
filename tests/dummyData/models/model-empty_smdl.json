@@ -34,6 +34,29 @@
     },
     {
       "Level": "run",
+      "Transformations": [
+        {
+          "Name": "Factor",
+          "Inputs": ["trial_type"]
+        },
+        {
+          "Name": "Convolve",
+          "Model": "spm",
+          "Inputs": [" "]
+        }
+      ],
+      "Model": {
+        "X": [" "],
+        "Options": {
+          "high_pass_filter_cutoff_secs": 128
+        },
+        "Software": {
+          "SPM": {
+            "whitening": "FAST"
+          }
+        },
+        "Mask": " "
+      },
       "AutoContrasts": [" "]
     },
     {
