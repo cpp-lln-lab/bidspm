@@ -17,7 +17,7 @@ function test_createDefaultModelBasic()
 
   [~, opt, BIDS] = getData(opt);
 
-  createDefaultModelBasic(BIDS, opt);
+  createDefaultModel(BIDS, opt);
 
   % make sure the file was created where expected
   expectedFileName = fullfile(pwd, 'models', 'model-defaultVislocalizer_smdl.json');

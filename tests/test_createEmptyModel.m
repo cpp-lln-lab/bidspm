@@ -1,4 +1,4 @@
-function test_suite = test_createEmptytModel %#ok<*STOUT>
+function test_suite = test_createEmptyModel %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -6,9 +6,9 @@ function test_suite = test_createEmptytModel %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_createEmptytModelBasic()
+function test_createEmptyModelBasic()
 
-  content = createEmptytModelBasic();
+  content = createEmptyModel();
 
   expectedContent = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), ...
                                           'dummyData', ...

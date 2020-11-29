@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function createDefaultModelBasic(BIDS, opt)
+function createDefaultModel(BIDS, opt)
   %
   % Creates a default model json file.
   % This model has 3 "steps" in that order:
@@ -27,7 +27,7 @@ function createDefaultModelBasic(BIDS, opt)
   %
   % USAGE::
   %
-  %   content = createDefaultModelBasic(BIDS, opt)
+  %   content = createDefaultModel(BIDS, opt)
   %
   % :output:
   %
@@ -43,7 +43,7 @@ function createDefaultModelBasic(BIDS, opt)
 
   trialTypeList = listAllTrialTypes(BIDS, opt);
 
-  content = createEmptytModelBasic();
+  content = createEmptyModel();
 
   content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList);
 
