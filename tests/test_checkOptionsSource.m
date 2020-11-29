@@ -35,7 +35,7 @@ end
 function expectedOptionsSource = defaultOptionsSource()
 
   expectedOptionsSource.sourceDir = '';
-  
+
   expectedOptionsSource.dataDir = '';
 
   expectedOptionsSource.sequenceToIgnore = {};
