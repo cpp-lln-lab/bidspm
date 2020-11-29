@@ -53,7 +53,7 @@ function face_rep_convert2BIDS()
                   ['sub-01_task-' strrep(task_name, ' ', '') '_bold.mat']));
 
   %% And everything else
-  create_events_tsv_file(WD, task_name);
+  create_events_tsv_file(WD, task_name, repetition_time)
   create_readme(WD);
   create_changelog(WD);
   create_datasetdescription(WD, opt);
@@ -61,7 +61,7 @@ function face_rep_convert2BIDS()
 
 end
 
-function create_events_tsv_file(WD, task_name)
+function create_events_tsv_file(WD, task_name, repetition_time)
     
   % TODO
   % add the lag between presentations of each item necessary for the parametric
@@ -85,7 +85,9 @@ function create_events_tsv_file(WD, task_name)
   % sort trials by their presentation time
   [onset_column, idx] = sort(onset_column);
   duration_column = duration_column(idx);
-  trial_type_column = trial_type_column(idx);
+  trial_type_column = trial_type_column(idx, :);
+  
+  onset_column = repetition_time * onset_column;
 
   tsv_content = struct( ...
                        'onset', onset_column, ...
