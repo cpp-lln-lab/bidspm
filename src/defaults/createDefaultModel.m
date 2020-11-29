@@ -31,7 +31,7 @@ function opt = createDefaultModel(BIDS, opt)
   %
   % USAGE::
   %
-  %   content = createDefaultModel(BIDS, opt)
+  %   opt = createDefaultModel(BIDS, opt)
   %
   % :output:
   %
@@ -39,9 +39,18 @@ function opt = createDefaultModel(BIDS, opt)
   %
   %     fullfile(pwd, 'models', ['model-default' opt.taskName '_smdl.json']);
   %
+  % EXAMPLE::
+  %
+  %   opt.taskName = 'myFascinatingTask';
+  %   opt.derivativesDir = fullfile(pwd, 'data', 'raw');
+  %   opt = checkOptions(opt);
+  %
+  %   [~, opt, BIDS] = getData(opt);
+  % 
+  %   createDefaultModel(BIDS, opt);
   %
 
-  % TODO deal with the Transformationa and Convolve fields
+  % TODO deal with the Transformations and Convolve fields
 
   jsonOptions.indent = '   ';
 

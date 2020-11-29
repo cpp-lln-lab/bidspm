@@ -6,6 +6,13 @@
 % Results might be a bit different from those in the manual as some
 % default options are slightly different in this pipeline (e.g use of FAST
 % instead of AR(1), motion regressors added)
+%
+% TODO
+% - add derivatives to the model
+% - compute the relevant contrasts
+% - compute motion effect
+% - run parametric model
+%
 
 clear;
 clc;

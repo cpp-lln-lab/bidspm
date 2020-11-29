@@ -8,8 +8,6 @@ end
 
 function test_createDefaultModelBasic()
 
-  subID = '01';
-
   opt.taskName = 'vislocalizer';
   opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
 

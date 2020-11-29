@@ -2,8 +2,9 @@
 
 function content = createEmptyModel()
   %
-  % Creates the content of a basic model.json file for GLM analysis with some default options
-  % like high pass filter cut-off and the type of autocorrelation correction
+  % Creates the content of a basic model.json file for GLM analysis with 
+  % some default options like high pass filter cut-off 
+  % and the type of autocorrelation correction.
   %
   % USAGE::
   %
@@ -12,7 +13,14 @@ function content = createEmptyModel()
   % :returns:
   %
   % - :content: structure containing the output that can be saved with
-  %             ``spm_jsonwrite()``
+  %             ``spm_jsonwrite()``. See below.
+  %
+  % EXAMPLE::
+  %
+  %   jsonOptions.indent = '   ';
+  %   content = createEmptytModelBasic()
+  %   filename = fullfile(pwd, 'models', 'model-empty_smdl.json')
+  %   spm_jsonwrite(filename, content, jsonOptions);
   %
 
   content.Name = ' ';
