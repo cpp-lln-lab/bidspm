@@ -14,8 +14,6 @@ function content = createEmptytModelBasic()
   % - :content: structure containing the output that can be saved with
   %             ``spm_jsonwrite()``
   %
-    
-    
 
   content.Name = ' ';
   content.Description = ' ';

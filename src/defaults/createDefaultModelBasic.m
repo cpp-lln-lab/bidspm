@@ -1,0 +1,104 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
+function createDefaultModelBasic(BIDS, opt)
+  %
+  % Creates a default model json file.
+  % This model has 3 "steps" in that order:
+  %
+  % - Subject level:
+  %   - will create a GLM with a design matrix that includes all
+  %     all the possible type of trial_types that exist across
+  %     all subjects and runs for the task specified in ``opt``,
+  %     as well as the realignment parameters.
+  %
+  %   - use AutoContrasts to generate contrasts for all each trial_type
+  %     across runs
+  %
+  % - Run level:
+  %
+  %   - use AutoContrasts to generate contrasts for each trial_type
+  %     for each run. This can be useful to run MVPA analysis on the beta
+  %     images of each run.
+  %
+  % - Dataset level:
+  %
+  %   - use AutoContrasts to generate contrasts for each trial_type
+  %     for at the group level.
+  %
+  % USAGE::
+  %
+  %   content = createDefaultModelBasic(BIDS, opt)
+  %
+  % :output:
+  %
+  % - a model file in the current directory::
+  %
+  %     fullfile(pwd, 'models', ['model-default' opt.taskName '_smdl.json']);
+  %
+  %
+
+  % TODO deal with the Transformationa and Convolve fields
+
+  jsonOptions.indent = '   ';
+
+  trialTypeList = listAllTrialTypes(BIDS, opt);
+
+  content = createEmptytModelBasic();
+
+  content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList);
+
+  content.Name = opt.taskName;
+  content.Description = ['default model for ' opt.taskName];
+  content.Input.task = opt.taskName;
+
+  % save the json file
+  [~, ~, ~] = mkdir(fullfile(pwd, 'models'));
+  filename = fullfile(pwd, 'models', ...
+                      ['model-default' upper(opt.taskName(1)) opt.taskName(2:end) '_smdl.json']);
+
+  spm_jsonwrite(filename, content, jsonOptions);
+
+end
+
+function trialTypeList = listAllTrialTypes(BIDS, opt)
+  % list all the *events.tsv files for that task and make a lis of all the
+  % trial_types
+  eventFiles = bids.query(BIDS, 'data', ...
+                          'type', 'events', ...
+                          'task', opt.taskName);
+
+  trialTypeList = {};
+
+  for iFile = 1:size(eventFiles, 1)
+    tmp = spm_load(eventFiles{iFile, 1});
+    for iTrialType = 1:numel(tmp.trial_type)
+      trialTypeList{end + 1, 1} = tmp.trial_type{iTrialType}; %#ok<*AGROW>
+    end
+  end
+  trialTypeList = unique(trialTypeList);
+end
+
+function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
+
+  REALIGN_PARAMETERS_NAME = { ...
+                             'trans_x', 'trans_y', 'trans_z', ...
+                             'rot_x', 'rot_y', 'rot_z'};
+
+  for iTrialType = 1:numel(trialTypeList)
+
+    trialTypeName = ['trial_type.' trialTypeList{iTrialType}];
+
+    content.Steps{1}.Model.X{iTrialType} = trialTypeName;
+
+    for iStep = 1:numel(content.Steps)
+      content.Steps{iStep}.AutoContrasts{iTrialType} = trialTypeName;
+    end
+
+  end
+
+  % add realign parameters
+  for iRealignParam = 1:numel(REALIGN_PARAMETERS_NAME)
+    content.Steps{1}.Model.X{end + 1} = REALIGN_PARAMETERS_NAME{iRealignParam};
+  end
+
+end
