@@ -6,6 +6,12 @@ function test_suite = test_getAnatFilename %#ok<*STOUT>
   initTestSuite;
 end
 
+%TODO
+% add tests to check:
+%  - errors when the requested file is not in the correct session
+%  - that the fucntion is smart enough to find an anat even when user has not
+%    specified a session
+
 function test_getAnatFilenameBasic()
 
   subID = '01';
