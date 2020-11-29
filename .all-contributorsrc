@@ -62,7 +62,8 @@
         "doc",
         "infra",
         "design",
-        "review"
+        "review",
+        "bug"
       ]
     },
     {
