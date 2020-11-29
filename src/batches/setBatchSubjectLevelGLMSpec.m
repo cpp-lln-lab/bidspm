@@ -35,8 +35,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     % to set the number of time bins we will use to upsample our model
     % during regression creation
     fileName = bids.query(BIDS, 'data', ...
-                        'sub', subID, ...
-                        'type', 'bold');
+                          'sub', subID, ...
+                          'type', 'bold');
     fileName = strrep(fileName{1}, '.gz', '');
     hdr = spm_vol(fileName);
     % we are assuming axial acquisition here

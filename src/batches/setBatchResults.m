@@ -1,61 +1,79 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function batch = setBatchResults(batch, opt, iStep, iCon, results)
+function matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
   %
-  % Short description of what the function does goes here.
+  % Outputs the typical matlabbatch to compute the results for a given contrast
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: Options chosen for the analysis. See ``checkOptions()``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  % :param opt:
+  % :type opt: structure
+  % :param iStep:
+  % :type iStep: positive integer
+  % :param iCon:
+  % :type iCon: positive integer
+  % :param results:
+  % :type results: structure
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  %   results.dir = ffxDir;
+  %   results.contrastNb = conNb;
+  %   results.label = subID;
+  %   results.nbSubj = 1;
   %
-  % outputs the typical matlabbatch to compute the results for a given
-  % contrast
+  % :returns: - :matlabbatch: (structure)
+  %
+  %
 
-  batch{end + 1}.spm.stats.results.spmmat = {fullfile(results.dir, 'SPM.mat')};
+  matlabbatch{end + 1}.spm.stats.results.spmmat = {fullfile(results.dir, 'SPM.mat')};
 
-  batch{end}.spm.stats.results.conspec.titlestr = ...
+  matlabbatch{end}.spm.stats.results.conspec.titlestr = ...
       opt.result.Steps(iStep).Contrasts(iCon).Name;
 
-  batch{end}.spm.stats.results.conspec.contrasts = results.contrastNb;
+  matlabbatch{end}.spm.stats.results.conspec.contrasts = results.contrastNb;
 
-  batch{end}.spm.stats.results.conspec.threshdesc = ...
+  matlabbatch{end}.spm.stats.results.conspec.threshdesc = ...
       opt.result.Steps(iStep).Contrasts(iCon).MC;
 
-  batch{end}.spm.stats.results.conspec.thresh = opt.result.Steps(iStep).Contrasts(iCon).p;
+  matlabbatch{end}.spm.stats.results.conspec.thresh = opt.result.Steps(iStep).Contrasts(iCon).p;
 
-  batch{end}.spm.stats.results.conspec.extent = opt.result.Steps(iStep).Contrasts(iCon).k;
+  matlabbatch{end}.spm.stats.results.conspec.extent = opt.result.Steps(iStep).Contrasts(iCon).k;
 
-  batch{end}.spm.stats.results.conspec.conjunction = 1;
+  matlabbatch{end}.spm.stats.results.conspec.conjunction = 1;
 
-  batch{end}.spm.stats.results.conspec.mask.none = ...
+  matlabbatch{end}.spm.stats.results.conspec.mask.none = ...
       ~opt.result.Steps(iStep).Contrasts(iCon).Mask;
 
-  batch{end}.spm.stats.results.units = 1;
+  matlabbatch{end}.spm.stats.results.units = 1;
 
-  batch{end}.spm.stats.results.export{1}.ps = true;
+  % TODO
+  % add flags to make those optional
+  matlabbatch{end}.spm.stats.results.export{1}.png = true;
+  matlabbatch{end}.spm.stats.results.export{2}.csv = true;
+  matlabbatch{end}.spm.stats.results.export{3}.tspm.basename = ...
+      opt.result.Steps(iStep).Contrasts(iCon).Name;
+
+  % TODO
+  % add the possibility to create a montage
+  %   matlabbatch{1}.spm.stats.results.export{3}.montage.background = '<UNDEFINED>';
+  %   matlabbatch{1}.spm.stats.results.export{3}.montage.orientation = '<UNDEFINED>';
+  %   matlabbatch{1}.spm.stats.results.export{3}.montage.slices = '<UNDEFINED>';
 
   if opt.result.Steps(1).Contrasts(iCon).NIDM
 
-    batch{end}.spm.stats.results.export{2}.nidm.modality = 'FMRI';
+    matlabbatch{end}.spm.stats.results.export{end + 1}.nidm.modality = 'FMRI';
 
-    batch{end}.spm.stats.results.export{2}.nidm.refspace = 'ixi';
+    matlabbatch{end}.spm.stats.results.export{end}.nidm.refspace = 'ixi';
     if strcmp(opt.space, 'T1w')
-      batch{end}.spm.stats.results.export{2}.nidm.refspace = 'subject';
+      matlabbatch{end}.spm.stats.results.export{end}.nidm.refspace = 'subject';
     end
 
-    batch{end}.spm.stats.results.export{2}.nidm.group.nsubj = results.nbSubj;
+    matlabbatch{end}.spm.stats.results.export{end}.nidm.group.nsubj = results.nbSubj;
 
-    batch{end}.spm.stats.results.export{2}.nidm.group.label = results.label;
+    matlabbatch{end}.spm.stats.results.export{end}.nidm.group.label = results.label;
 
   end
 

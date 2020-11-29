@@ -1,27 +1,30 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function batch = setBatchSubjectLevelResults(varargin)
+function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % Short description of what the function does goes here.
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchSubjectLevelResults(matlabbatch, grp, funcFWHM, opt, iStep, iCon)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
-  % Options chosen for the analysis. See ``checkOptions()``.
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  % :param grp:
+  % :type grp:
+  % :param funcFWHM:
+  % :type funcFWHM: float
+  % :param opt:
+  % :type opt: structure
+  % :param iStep:
+  % :type iStep: positive integer
+  % :param iCon:
+  % :type iCon: positive integer
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :matlabbatch: (structure)
   %
 
-  [batch, grp, funcFWHM, opt, iStep, iCon] = deal(varargin{:});
+  [matlabbatch, grp, funcFWHM, opt, iStep, iCon] = deal(varargin{:});
 
   for iGroup = 1:length(grp)
 
@@ -55,7 +58,7 @@ function batch = setBatchSubjectLevelResults(varargin)
       results.label = subID;
       results.nbSubj = 1;
 
-      batch = setBatchResults(batch, opt, iStep, iCon, results);
+      matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results);
 
     end
   end
