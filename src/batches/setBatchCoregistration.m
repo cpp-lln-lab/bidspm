@@ -2,7 +2,7 @@
 
 function matlabbatch = setBatchCoregistration(matlabbatch, ref, src, other)
   %
-  % Set the batch for corregistering the source images into the reference image???
+  % Set the batch for coregistering the source images into the reference image
   %
   % USAGE::
   %
