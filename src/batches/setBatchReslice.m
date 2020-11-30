@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchReslice(matlabbatch, ref, src)
+function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages)
   %
   % Set the batch for reslicing source images into the reference image???
   %
