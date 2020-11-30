@@ -2,7 +2,7 @@
 
 function matlabbatch = setBatchCoregistrationFmap(BIDS, opt, subID)
   %
-  % Set the batch for the coregistration of functional maps
+  % Set the batch for the coregistration of field maps
   %
   % USAGE::
   %
