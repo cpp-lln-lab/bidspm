@@ -12,8 +12,8 @@ function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages)
   % :type matlabbatch: structure
   % :param referenceImg: Reference image
   % :type referenceImg: string
-  % :param src: Source images
-  % :type src: cell
+  % :param sourceImages: Source images
+  % :type sourceImages: cell
   %
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
