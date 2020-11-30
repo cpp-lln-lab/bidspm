@@ -10,8 +10,8 @@ function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
-  % :param ref: Reference image
-  % :type ref: string
+  % :param referenceImg: Reference image
+  % :type referenceImg: string
   % :param src: Source images
   % :type src: cell
   %
