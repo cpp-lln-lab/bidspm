@@ -29,6 +29,10 @@ function bidsFFX(action, opt, funcFWHM)
   end
 
   [BIDS, opt, group] = setUpWorkflow(opt, 'subject level GLM');
+  
+  if isempty(opt.model.file)
+    opt = createDefaultModel(BIDS, opt);
+  end
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)

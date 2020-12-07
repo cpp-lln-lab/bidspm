@@ -37,10 +37,11 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
 
   end
 
-  conds = t.trial_type; % assign all the tsv information to a variable called conds.
+  % assign all the tsv information to a variable called conds.
+  conds = t.trial_type; 
 
-  % identify where the conditions to include that are specificed in the 'un' step of the
-  % model file
+  % identify where the conditions to include that are specificed 
+  % in the run step of the model file  
   model = spm_jsonread(opt.model.file);
 
   for runIdx = 1:numel(model.Steps)
