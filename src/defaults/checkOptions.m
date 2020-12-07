@@ -11,7 +11,7 @@ function opt = checkOptions(opt)
   %
   %   opt = checkOptions(opt)
   %
-  % :param opt: structure containing the options.
+  % :param opt: structure or json filename containing the options.
   % :type opt: structure
   %
   % :returns:

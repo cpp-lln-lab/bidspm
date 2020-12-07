@@ -9,9 +9,9 @@ function bidsCreateVDM(opt)
   %
   %   bidsCreateVDM([opt])
   %
-  % :param action: (string) ``specifyAndEstimate`` or ``contrasts``.
-  % :param opt: (scalar) structure or json filename containing the options. See
+  % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
   %
   % .. TODO:
   %

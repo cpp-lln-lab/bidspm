@@ -10,12 +10,13 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
   %
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param argin2: Options chosen for the analysis. See ``checkOptions()``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  % :param subID: subject ID
+  % :type subID: string
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
   % matlabbatch = setBatchSTC(BIDS, opt, subID)
   %

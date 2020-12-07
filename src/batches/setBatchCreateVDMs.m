@@ -10,11 +10,13 @@ function matlabbatch = setBatchCreateVDMs(BIDS, opt, subID)
   %
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param subID:
+  % :param subID: subject ID
+  % :type subID: string
   %
-  % :returns: - :matlabbatch: (structure) (dimension)
+  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
   % TODO
   % assumes all the fieldmap relate to the current task
