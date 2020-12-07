@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function bidsRFX(action, opt, funcFWHM, conFWHM)
   %
@@ -14,16 +14,16 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
   %
   %  bidsRFX(action, [opt,] [funcFWHM = 0,] [conFWHM = 0])
   %
-  % :param action: ``smoothContrasts`` or ``RFX``
+  % :param action: Action to be conducted: ``smoothContrasts`` or ``RFX``
   % :type action: string
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   % :param funcFWHM: How much smoothing was applied to the functional
-  %                  data in the preprocessing.
+  %                  data in the preprocessing (Gaussian kernel size).
   % :type funcFWHM: scalar
   % :param conFWHM: How much smoothing will be applied to the contrast
-  %                 images.
+  %                 images (Gaussian kernel size).
   % :type conFWHM: scalar
   %
   % - case ``smoothContrasts``: smooth con images

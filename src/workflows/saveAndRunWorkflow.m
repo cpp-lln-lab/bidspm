@@ -8,6 +8,15 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subID)
   %
   %   saveAndRunWorkflow(matlabbatch, batchName, opt, [subID])
   %
+  % :param matlabbatch: list of SPM batches
+  % :type matlabbatch: structure
+  % :param batchName: name of the batch
+  % :type batchName: string
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  % :type opt: structure
+  % :param subID: subject ID
+  % :type subID: string
 
   if nargin < 4
     subID = [];

@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function bidsFFX(action, opt, funcFWHM)
   %
@@ -12,10 +12,14 @@ function bidsFFX(action, opt, funcFWHM)
   %
   %  bidsFFX(action, funcFWHM, [opt])
   %
-  % :param action: (string) ``specifyAndEstimate`` or ``contrasts``.
-  % :param opt: (scalar) structure or json filename containing the options. See
+  % :param action: Action to be conducted:``specifyAndEstimate`` or ``contrasts``.
+  % :type action: string
+  % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :param funcFWHM: (scalar) Gaussian kernel size applied to the functional data.
+  % :type opt: structure
+  % :param funcFWHM: How much smoothing was applied to the functional
+  %                  data in the preprocessing (Gaussian kernel size).
+  % :type funcFWHM: scalar
   %
   % - ``specifyAndEstimate`` for fMRI design + estimate and
   % - ``contrasts`` to estimate contrasts.

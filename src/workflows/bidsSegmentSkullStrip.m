@@ -2,7 +2,7 @@
 
 function bidsSegmentSkullStrip(opt)
   %
-  % Segments and skullstrips the anat image.
+  % Segments and skullstrips the anatomical image.
   %
   % USAGE::
   %
