@@ -2,7 +2,7 @@
 
 function matlabbatch = setBatchCoregistrationFmap(BIDS, opt, subID)
   %
-  % Short description of what the function does goes here.
+  % Set the batch for the coregistration of field maps
   %
   % USAGE::
   %
@@ -10,12 +10,13 @@ function matlabbatch = setBatchCoregistrationFmap(BIDS, opt, subID)
   %
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param argin2: Options chosen for the analysis. See ``checkOptions()``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  % :param subID: subject ID
+  % :type subID: string
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
 
   % TODO
@@ -39,20 +40,20 @@ function matlabbatch = setBatchCoregistrationFmap(BIDS, opt, subID)
 
   for iSes = 1:nbSessions
 
-    runs = spm_BIDS(BIDS, 'runs', ...
-                    'modality', 'fmap', ...
-                    'sub', subID, ...
-                    'ses', sessions{iSes});
+    runs = bids.query(BIDS, 'runs', ...
+                      'modality', 'fmap', ...
+                      'sub', subID, ...
+                      'ses', sessions{iSes});
 
     for iRun = 1:numel(runs)
 
       % TODO
       % - Move to getInfo
-      fmapFiles = spm_BIDS(BIDS, 'data', ...
-                           'modality', 'fmap', ...
-                           'sub', subID, ...
-                           'ses', sessions{iSes}, ...
-                           'run', runs{iRun});
+      fmapFiles = bids.query(BIDS, 'data', ...
+                             'modality', 'fmap', ...
+                             'sub', subID, ...
+                             'ses', sessions{iSes}, ...
+                             'run', runs{iRun});
 
       srcImage = strrep(fmapFiles{1}, 'phasediff', 'magnitude1');
 

@@ -2,28 +2,23 @@
 
 function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages)
   %
-  % Short description of what the function does goes here.
+  % Set the batch for reslicing source images into the reference image???
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param matlabbatch: list of SPM batches
+  % :type matlabbatch: structure
+  % :param referenceImg: Reference image
+  % :type referenceImg: string
+  % :param sourceImages: Source images
+  % :type sourceImages: cell
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
   %
-  % matlabbatch = bidsSmoothing(referenceImg, sourceImages)
+  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
-  % referenceImg
-  %
-  % sourceImages: a cell
+
 
   printBatchName('reslicing');
 

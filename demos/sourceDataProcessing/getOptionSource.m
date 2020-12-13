@@ -17,6 +17,8 @@ function optSource = getOptionSource()
 
   % Set the folder where sequences folders exist
   optSource.sourceDir = '/Users/barilari/Desktop/DICOM_UCL_leuven/renamed/sub-pilot001/ses-002/MRI';
+  
+  optSource.dataDir = '/Users/barilari/Desktop/DICOM_UCL_leuven/raw';
 
   % List of the sequences that you want to skip (folder name pattern)
   optSource.sequenceToIgnore = {'AAHead_Scout', ...

@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function bidsResults(opt, funcFWHM, conFWHM)
   %
@@ -14,10 +14,10 @@ function bidsResults(opt, funcFWHM, conFWHM)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   % :param funcFWHM: How much smoothing was applied to the functional
-  %                  data in the preprocessing.
+  %                  data in the preprocessing (Gaussian kernel size).
   % :type funcFWHM: scalar
   % :param conFWHM: How much smoothing will be applied to the contrast
-  %                 images.
+  %                 images (Gaussian kernel size).
   % :type conFWHM: scalar
   %
 

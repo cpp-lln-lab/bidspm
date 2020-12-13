@@ -12,7 +12,7 @@ function test_setDerivativesDirBasic()
   opt.taskName = 'testTask';
   opt = setDerivativesDir(opt);
 
-  assertEqual(opt.derivativesDir, fullfile(pwd, '..', 'derivatives', 'cpp_spm'));
+  assertEqual(opt.derivativesDir, abspath(fullfile(pwd, '..', 'derivatives', 'cpp_spm')));
 
 end
 
@@ -22,7 +22,7 @@ function test_setDerivativesDirMissing()
   opt.taskName = 'testTask';
   opt = setDerivativesDir(opt);
 
-  assertEqual(opt.derivativesDir, fullfile(pwd, 'derivatives', 'cpp_spm'));
+  assertEqual(opt.derivativesDir, abspath(fullfile(pwd, 'derivatives', 'cpp_spm')));
 
 end
 
@@ -32,7 +32,7 @@ function test_setDerivativesDirPreset1()
   opt.taskName = 'testTask';
   opt = setDerivativesDir(opt);
 
-  assertEqual(opt.derivativesDir, fullfile(pwd, 'derivatives', 'cpp_spm'));
+  assertEqual(opt.derivativesDir, abspath(fullfile(pwd, 'derivatives', 'cpp_spm')));
 
 end
 
@@ -42,6 +42,6 @@ function test_setDerivativesDirPreset2()
   opt.taskName = 'testTask';
   opt = setDerivativesDir(opt);
 
-  assertEqual(opt.derivativesDir, fullfile(pwd, 'derivatives', 'default'));
+  assertEqual(opt.derivativesDir, abspath(fullfile(pwd, 'derivatives', 'default')));
 
 end

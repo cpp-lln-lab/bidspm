@@ -11,7 +11,7 @@ function opt = checkOptions(opt)
   %
   %   opt = checkOptions(opt)
   %
-  % :param opt: structure containing the options.
+  % :param opt: structure or json filename containing the options.
   % :type opt: structure
   %
   % :returns:
@@ -59,6 +59,10 @@ function opt = checkOptions(opt)
 
   checkFields(opt);
 
+  if ~isempty(opt.dataDir)
+    opt.dataDir = abspath(opt.dataDir);
+  end
+
   opt = orderfields(opt);
 
 end
@@ -74,7 +78,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.zeropad = 2;
 
   fieldsToSet.anatReference.type = 'T1w';
-  fieldsToSet.anatReference.session = 1;
+  fieldsToSet.anatReference.session = [];
 
   %% Options for slice time correction
   fieldsToSet.STC_referenceSlice = [];

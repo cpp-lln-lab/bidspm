@@ -53,9 +53,10 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
   %  - type: the data type you want to get the metadata of ;
   %     supported: bold (default) and T1w
   %
+  %  TODO: Check if the following is true? Ideally write a test to make sure.
   %  IMPORTANT NOTE: if you specify the type variable for T1w then you must
   %  make sure that the T1w.json is also present in the anat folder because
-  %  of the way the spm_BIDS function works at the moment
+  %  of the way the bids.query function works at the moment
 
   if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
     % The directory where the derivatives are located
@@ -71,12 +72,12 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
   fprintf(1, 'FOR TASK: %s\n', opt.taskName);
 
   % we let SPM figure out what is in this BIDS data set
-  BIDS = spm_BIDS(derivativesDir);
+  BIDS = bids.layout(derivativesDir);
 
   % make sure that the required tasks exist in the data set
-  if ~ismember(opt.taskName, spm_BIDS(BIDS, 'tasks'))
+  if ~ismember(opt.taskName, bids.query(BIDS, 'tasks'))
     fprintf('List of tasks present in this dataset:\n');
-    spm_BIDS(BIDS, 'tasks');
+    bids.query(BIDS, 'tasks');
 
     errorStruct.identifier = 'getData:noMatchingTask';
     errorStruct.message = sprintf( ...
@@ -86,7 +87,7 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
   end
 
   % get IDs of all subjects
-  subjects = spm_BIDS(BIDS, 'subjects');
+  subjects = bids.query(BIDS, 'subjects');
 
   % get metadata for bold runs for that task
   % we take those from the first run of the first subject assuming it can
@@ -133,12 +134,12 @@ function opt = getMetaData(BIDS, opt, subjects, type)
 
   switch type
     case 'bold'
-      metadata = spm_BIDS(BIDS, 'metadata', ...
+      metadata = bids.query(BIDS, 'metadata', ...
                           'task', opt.taskName, ...
                           'sub', subjects{1}, ...
                           'type', type);
     case 'T1w'
-      metadata = spm_BIDS(BIDS, 'metadata', ...
+      metadata = bids.query(BIDS, 'metadata', ...
                           'sub', subjects{1}, ...
                           'type', type);
   end

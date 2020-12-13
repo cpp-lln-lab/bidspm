@@ -9,9 +9,9 @@ function bidsCreateVDM(opt)
   %
   %   bidsCreateVDM([opt])
   %
-  % :param action: (string) ``specifyAndEstimate`` or ``contrasts``.
-  % :param opt: (scalar) structure or json filename containing the options. See
+  % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
   %
   % .. TODO:
   %
@@ -37,7 +37,7 @@ function bidsCreateVDM(opt)
       subID = group(iGroup).subNumber{iSub};
 
       % TODO Move to getInfo
-      types = spm_BIDS(BIDS, 'types', 'sub', subID);
+      types = bids.query(BIDS, 'types', 'sub', subID);
 
       if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
 

@@ -2,8 +2,8 @@
 
 function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
   %
-  % Creates a batch to computes a brain mask based on the tissue probability maps
-  % from the segmentaion.
+  % Creates a batch to compute a brain mask based on the tissue probability maps
+  % from the segmentation.
   %
   % USAGE::
   %
@@ -15,10 +15,11 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
   % :type BIDS: structure
   % :param subID: subject ID
   % :type subID: string
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % :returns: :matlabbatch: (structure)
+  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
   % This function will get its inputs from the segmentation batch by reading
   % the dependency from ``opt.orderBatches.segment``. If this field is not specified it will
@@ -27,9 +28,7 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
   %
   % The threshold for inclusion in the mask can be set by::
   %
-  %   opt.skullstrip.threshold
-  %
-  % The defaukt is ``0.75``.
+  %   opt.skullstrip.threshold (default = 0.75)
   %
   % Any voxel with p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold
   % will be included in the skull stripping mask.

@@ -8,6 +8,10 @@ end
 
 function test_copyGraphWindownOutputBasic()
 
+  delete('*.png');
+
+  pause(1);
+
   opt.derivativesDir = pwd;
   opt.taskName = 'testTask';
   subID = '01';
@@ -30,6 +34,43 @@ function test_copyGraphWindownOutputBasic()
   assertEqual(size(files, 1), 2);
 
   pause(1);
+
+  if isOctave()
+    confirm_recursive_rmdir (true, 'local');
+  end
+  rmdir(fullfile(opt.derivativesDir, ['sub-' subID]), 's');
+
+end
+
+function test_copyGraphWindownOutputWarning()
+
+  delete('*.png');
+
+  pause(1);
+
+  opt.derivativesDir = pwd;
+  opt.taskName = 'testTask';
+  subID = '01';
+  action = 'testStep';
+
+  system('touch spm_002.png');
+  system('touch spm_test_002.png');
+
+  copyGraphWindownOutput(opt, subID, action, 2);
+
+  if ~isOctave()
+    assertWarning( ...
+                  @()copyGraphWindownOutput(opt, subID, action, 2), ...
+                  'copyGraphWindownOutput:tooManyFiles');
+
+    assertWarning( ...
+                  @()copyGraphWindownOutput(opt, subID, action, 3), ...
+                  'copyGraphWindownOutput:noFile');
+  end
+
+  if isOctave()
+    confirm_recursive_rmdir (true, 'local');
+  end
   rmdir(fullfile(opt.derivativesDir, ['sub-' subID]), 's');
 
 end

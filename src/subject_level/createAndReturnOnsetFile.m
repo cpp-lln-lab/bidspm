@@ -2,28 +2,27 @@
 
 function onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM)
   %
-  % Short description of what the function does goes here.
+  % For a given events.tsv file it creates a .mat file that can directly be used
+  % for the GLM specification of a subject level model. The file is moved
+  % directly into the folder of the GLM.
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param opt:
+  % :type opt: structure
+  % :param subID:
+  % :type subID: string
+  % :param tsvFile: fullpath name of the tsv file.
+  % :type tsvFile: string
+  % :param funcFWHM: size of the FWHM gaussian kernel used to the subject level
+  %                  GLM. Necessary for the GLM directory.
+  % :type funcFWHM: float
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :onsetFileName: (string) fullpath name of the file created.
+  %                             Removes any prefix.
   %
-  % onsetFileName = createAndReturnOnsetFile(opt, boldFileName, prefix, isMVPA)
-  %
-  % gets the tsv onset file based on the bold file name (removes any prefix)
-  %
-  % convert the tsv files to a mat file to be used by SPM
 
   onsetFileName = convertOnsetTsvToMat(opt, tsvFile);
 
