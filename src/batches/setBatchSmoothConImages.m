@@ -6,19 +6,18 @@ function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
-  % Options chosen for the analysis. See ``checkOptions()``.
-  %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :param group: 
+  % :type group: 
+  % :param funcFWHM: 
+  % :type funcFWHM:
+  % :param conFWHM: 
+  % :type conFWHM:
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt:  
+  % 
+  % :returns: - :matlabbatch:
   %
 
   printBatchName('smoothing contrast images');
