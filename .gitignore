@@ -29,6 +29,7 @@ docs/build/*
 
 # ignore virtual env
 cpp_bids_spm/*
+cpp_spm/*
 
 # visual studio code stuff
 .vscode

@@ -6,18 +6,18 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
+  % :param matlabbatch: 
+  % :type matlabbatch: structure
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param argin3: (dimension) optional argument
-  % Options chosen for the analysis. See ``checkOptions()``.
-  %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :param subID: 
+  % :type subID:
+  % :param opt: 
+  % :type opt: Options chosen for the analysis. See ``checkOptions()``.
+  % 
+  % :returns: - :matlabbatch: 
   %
 
   printBatchName('saving coregistration matrix');

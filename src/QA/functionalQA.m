@@ -14,13 +14,15 @@ function functionalQA(opt)
   % :type opt: structure
   %
   % ASSUMPTIONS:
+  %
   % The previous step must have already been run:
-  % - the functional images have been realigned and resliced using etiher
-  %   ``bidsSpatialPrepro()``, ``bidsRealignUnwarp()``, ``bidsRealignReslice`()`
-  % - the quality analysis of the anatomical data has been done with ``anatomicalQA()``
-  % - the tissue probability maps have been generated in the "native" space of each subject
-  %   (using ``bidsSpatialPrepro()`` or ``bidsSegmentSkullStrip()``) and have been
-  %   resliced to the dimension of the functional with ``bidsResliceTpmToFunc()``
+  %
+  %   - the functional images have been realigned and resliced using etiher
+  %     ``bidsSpatialPrepro()``, ``bidsRealignUnwarp()``, ``bidsRealignReslice()``
+  %   - the quality analysis of the anatomical data has been done with ``anatomicalQA()``
+  %   - the tissue probability maps have been generated in the "native" space of each subject
+  %     (using ``bidsSpatialPrepro()`` or ``bidsSegmentSkullStrip()``) and have been
+  %     resliced to the dimension of the functional with ``bidsResliceTpmToFunc()``
 
   if isOctave()
     warning('\nfunctionalQA is not yet supported on Octave. This step will be skipped.')
