@@ -1,21 +1,24 @@
 [submodule "lib/bids-matlab"]
-	path = lib/bids-matlab
-	url = https://github.com/bids-standard/bids-matlab.git
+path = lib/bids-matlab
+url = https://github.com/bids-standard/bids-matlab.git
 [submodule "lib/spmup"]
-	path = lib/spmup
-	url = https://github.com/CPernet/spmup.git
+path = lib/spmup
+url = https://github.com/CPernet/spmup.git
 [submodule "lib/CPP_ROI"]
-	path = lib/CPP_ROI
-	url = https://github.com/cpp-lln-lab/CPP_ROI.git
+path = lib/CPP_ROI
+url = https://github.com/cpp-lln-lab/CPP_ROI.git
 [submodule "lib/slice_display"]
-	path = lib/slice_display
-	url = https://github.com/bramzandbelt/slice_display.git
+path = lib/slice_display
+url = https://github.com/bramzandbelt/slice_display.git
 [submodule "lib/brain_colours"]
-	path = lib/brain_colours
-	url = https://github.com/CPernet/brain_colours.git
+path = lib/brain_colours
+url = https://github.com/CPernet/brain_colours.git
 [submodule "lib/rsHRF"]
-	path = lib/rsHRF
-	url = https://github.com/compneuro-da/rsHRF.git
+path = lib/rsHRF
+url = https://github.com/compneuro-da/rsHRF.git
 [submodule "lib/spm_2_bids"]
-	path = lib/spm_2_bids
-	url = https://github.com/cpp-lln-lab/spm_2_bids.git
+path = lib/spm_2_bids
+url = https://github.com/cpp-lln-lab/spm_2_bids.git
+[submodule "lib/riksneurotools"]
+path = lib/riksneurotools
+url = https://github.com/MRC-CBU/riksneurotools.git
