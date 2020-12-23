@@ -1,5 +1,9 @@
 <!-- lint disable -->
 
+**Documentation**
+
+[![Documentation Status: stable](https://readthedocs.org/projects/cpp-bids-spm/badge/?version=stable)](https://cpp-bids-spm.readthedocs.io/en/stable/?badge=stable)
+
 **Code quality and style**
 
 [![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/actions)
