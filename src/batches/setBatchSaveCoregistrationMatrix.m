@@ -8,16 +8,16 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID
   %
   %   matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt)
   %
-  % :param matlabbatch: 
+  % :param matlabbatch:
   % :type matlabbatch: structure
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param subID: 
+  % :param subID:
   % :type subID:
-  % :param opt: 
+  % :param opt:
   % :type opt: Options chosen for the analysis. See ``checkOptions()``.
-  % 
-  % :returns: - :matlabbatch: 
+  %
+  % :returns: - :matlabbatch:
   %
 
   printBatchName('saving coregistration matrix');

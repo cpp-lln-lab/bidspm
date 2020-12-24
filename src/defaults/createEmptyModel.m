@@ -2,8 +2,8 @@
 
 function content = createEmptyModel()
   %
-  % Creates the content of a basic model.json file for GLM analysis with 
-  % some default options like high pass filter cut-off 
+  % Creates the content of a basic model.json file for GLM analysis with
+  % some default options like high pass filter cut-off
   % and the type of autocorrelation correction.
   %
   % USAGE::

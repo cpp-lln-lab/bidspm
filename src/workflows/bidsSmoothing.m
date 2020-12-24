@@ -16,8 +16,6 @@ function bidsSmoothing(funcFWHM, opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
 
-
-
   %
 
   if nargin < 2

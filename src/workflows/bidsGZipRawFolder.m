@@ -17,7 +17,6 @@ function bidsGZipRawFolder(optSource, keepUnzippedNii)
   % :type keepUnzippedNii: boolean
 
   %% input variables default values
-  
 
   if nargin < 2 || isempty(keepUnzippedNii)
     % delete the original unzipped .nii
@@ -25,15 +24,15 @@ function bidsGZipRawFolder(optSource, keepUnzippedNii)
   end
 
   tic;
-  
+
   printWorklowName('GZip data');
-  
+
   rawDir = optSource.dataDir;
 
   unzippedNiifiles = cellstr(spm_select('FPListRec', rawDir, '^.*.nii$'));
-  
+
   matlabbatch = setBatchGZip(unzippedNiifiles, keepUnzippedNii);
 
   spm_jobman('run', matlabbatch);
-  
+
   toc;

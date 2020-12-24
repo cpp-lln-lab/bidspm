@@ -19,7 +19,6 @@ function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages)
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
 
-
   printBatchName('reslicing');
 
   if ischar(referenceImg)

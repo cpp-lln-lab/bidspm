@@ -46,7 +46,7 @@ function opt = createDefaultModel(BIDS, opt)
   %   opt = checkOptions(opt);
   %
   %   [~, opt, BIDS] = getData(opt);
-  % 
+  %
   %   createDefaultModel(BIDS, opt);
   %
 
