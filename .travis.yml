@@ -81,21 +81,6 @@ jobs:
       #-------------------------------------------------------------------------
       # second job
       #-------------------------------------------------------------------------
-    - name: "Check markdown"
-
-      before_script:
-        # install node.js dependencies
-        - npm install `cat npm-requirements.txt`
-
-      script:
-        - remark *.md --frail
-        - remark ./demos/ --frail
-        - remark ./docs/ --frail
-        - remark ./tests/ --frail
-
-      #-------------------------------------------------------------------------
-      # third job
-      #-------------------------------------------------------------------------
     - name: "Run demo"
 
       if: branch = master
