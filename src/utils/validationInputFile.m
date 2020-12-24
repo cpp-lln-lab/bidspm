@@ -18,8 +18,8 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   % :param dir: Directory where the search will be conducted.
   % :type dir: string
   % :param fileName: file name pattern. Can be a regular expression except for
-  %                  the starting ``^`` and ending ``$``. For example: 
-  %                  ``'sub-.*_ses-.*_task-.*_bold.nii'``. 
+  %                  the starting ``^`` and ending ``$``. For example:
+  %                  ``'sub-.*_ses-.*_task-.*_bold.nii'``.
   % :type fileName: string
   % :param prefix: prefix to be added to the filename pattern. This can also be
   %                a regular expression (ish). For example ,f looking for the files that
@@ -27,20 +27,20 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   %                ``c[123]``.
   % :type prefix: string
   %
-  % :returns: 
+  % :returns:
   %
   %           :files: (string array) returns the fullpath file list of all the
   %                   files matching the required pattern.
-  %           
-  % 
+  %
+  %
   % See also: ``spm_select``.
   %
   %
   % Example:
-  % % 
+  % %
   % % tissueProbaMaps = validationInputFile(anatDataDir, anatImage, 'c[12]');
   %
-  % 
+  %
 
   if nargin < 3
     prefix = '';

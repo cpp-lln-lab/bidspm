@@ -25,9 +25,9 @@ function functionalQA(opt)
   %     resliced to the dimension of the functional with ``bidsResliceTpmToFunc()``
 
   if isOctave()
-    warning('\nfunctionalQA is not yet supported on Octave. This step will be skipped.')
+    warning('\nfunctionalQA is not yet supported on Octave. This step will be skipped.');
   end
-  
+
   % if input has no opt, load the opt.mat file
   if nargin < 1
     opt = [];
@@ -123,10 +123,10 @@ function functionalQA(opt)
           createDataDictionary(subFuncDataDir, fileName, size(confounds, 2));
 
           % create carpet plot
-          
-          % horrible hack to prevent the "abrupt" way spmup_volumecorr crashes 
+
+          % horrible hack to prevent the "abrupt" way spmup_volumecorr crashes
           % if nansum is not there
-          if exist('nansum','file') == 2 
+          if exist('nansum', 'file') == 2
             spmup_timeseriesplot(funcImage, TPMs(1, :), TPMs(2, :), TPMs(3, :), ...
                                  'motion', 'on', ...
                                  'nuisances', 'on', ...

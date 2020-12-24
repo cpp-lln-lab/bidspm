@@ -8,15 +8,15 @@ function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
   %
   %   matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
   %
-  % :param group: 
-  % :type group: 
-  % :param funcFWHM: 
+  % :param group:
+  % :type group:
+  % :param funcFWHM:
   % :type funcFWHM:
-  % :param conFWHM: 
+  % :param conFWHM:
   % :type conFWHM:
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt:  
-  % 
+  % :type opt:
+  %
   % :returns: - :matlabbatch:
   %
 

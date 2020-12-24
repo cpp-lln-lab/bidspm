@@ -21,4 +21,4 @@ convert3Dto4D(optSource);
 % defaceAnat(optSource); COMING SOON
 
 % GZip the volumes in a raw folder
-bidsGZipRawFolder(optSource, 0)
+bidsGZipRawFolder(optSource, 0);
