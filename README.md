@@ -12,7 +12,7 @@
 **Unit tests and coverage**
 
 [![Build Status](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline.svg?branch=master)](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline)
-[![codecov](https://codecov.io/gh/cpp-lln-lab/CPP_BIDS_SPM_pipeline/branch/master/graph/badge.svg)](https://codecov.io/gh/cpp-lln-lab/CPP_BIDS_SPM_pipeline)
+[![codecov](https://codecov.io/gh/Remi-Gau/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/Remi-Gau/CPP_SPM)
 
 **How to cite**
 
