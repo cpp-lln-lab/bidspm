@@ -26,9 +26,7 @@ jobs:
     - name: Install dependencies and check markdown
       run: |
         npm install `cat npm-requirements.txt`
-        npx remark . --frail  
-
-        - remark *.md --frail
-        - remark ./demos/ --frail
-        - remark ./docs/ --frail
-        - remark ./tests/ --frail
+        npx remark *.md --frail
+        npx remark ./docs/ --frail
+        npx remark ./demos/ --frail
+        npx remark ./tests/ --frail
