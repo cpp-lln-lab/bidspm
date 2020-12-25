@@ -38,12 +38,32 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
 
+  % bias corrected image
+  biasCorrectedAnatImage = validationInputFile(anatDataDir, anatImage, 'm');
+  % get the tissue probability maps in native space for that subject
+  TPMs = validationInputFile(anatDataDir, anatImage, 'c[123]');
+
+  input{1} = biasCorrectedAnatImage;
+  % grey matter
+  input{2} = TPMs(1, :);
+  % white matter
+  input{3} = TPMs(2, :);
+  % csf
+  input{4} = TPMs(3, :);
+  
+  output = ['m' strrep(anatImage, '.nii', '_skullstripped.nii')];
+  expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
+
+  matlabbatch = setBatchImageCalculation(matlabbatch, input, output, anatDataDir, expression);
+  
   % if this is part of a pipeline we get the segmentation dependency to get
   % the input from.
   % Otherwise the files to process are stored in a cell
   if isfield(opt, 'orderBatches') && isfield(opt.orderBatches, 'segment')
 
-    matlabbatch{end + 1}.spm.util.imcalc.input(1) = ...
+    matlabbatch{end}.spm.util.imcalc = rmfield(matlabbatch{end}.spm.util.imcalc, 'input');
+      
+    matlabbatch{end}.spm.util.imcalc.input(1) = ...
         cfg_dep( ...
                 'Segment: Bias Corrected (1)', ...
                 substruct( ...
@@ -83,32 +103,10 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
                 substruct( ...
                           '.', 'tiss', '()', {3}, ...
                           '.', 'c', '()', {':'}));
-  else
-
-    % bias corrected image
-    biasCorrectedAnatImage = validationInputFile(anatDataDir, anatImage, 'm');
-    matlabbatch{end + 1}.spm.util.imcalc.input(1) = biasCorrectedAnatImage;
-
-    % get the tissue probability maps in native space for that subject
-    TPMs = validationInputFile(anatDataDir, anatImage, 'c[123]');
-
-    % grey matter
-    matlabbatch{end}.spm.util.imcalc.input(2) = TPMs(1, :);
-    % white matter
-    matlabbatch{end}.spm.util.imcalc.input(3) = TPMs(2, :);
-    % csf
-    matlabbatch{end}.spm.util.imcalc.input(4) = TPMs(3, :);
 
   end
 
-  matlabbatch{end}.spm.util.imcalc.output = ['m' strrep(anatImage, '.nii', '_skullstripped.nii')];
-  matlabbatch{end}.spm.util.imcalc.outdir = {anatDataDir};
-
-  matlabbatch{end}.spm.util.imcalc.expression = sprintf( ...
-                                                        'i1.*((i2+i3+i4)>%f)', ...
-                                                        opt.skullstrip.threshold);
-
-  % add a batch to output the mask
+  %% Add a batch to output the mask
   matlabbatch{end + 1} = matlabbatch{end};
   matlabbatch{end}.spm.util.imcalc.expression = sprintf( ...
                                                         '(i2+i3+i4)>%f', ...

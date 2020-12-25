@@ -55,6 +55,10 @@ do
 		  mkdir $ThisDir/anat
 
 		  touch $ThisDir/anat/sub-$Subject\_ses-$Ses\_T1w.nii
+		  touch $ThisDir/anat/msub-$Subject\_ses-$Ses\_T1w.nii
+		  touch $ThisDir/anat/c1sub-$Subject\_ses-$Ses\_T1w.nii
+		  touch $ThisDir/anat/c2sub-$Subject\_ses-$Ses\_T1w.nii
+		  touch $ThisDir/anat/c3sub-$Subject\_ses-$Ses\_T1w.nii
 
 		done
 
