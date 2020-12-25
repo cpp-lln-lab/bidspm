@@ -1,7 +1,7 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function bidsGZipRawFolder(optSource, keepUnzippedNii)
-
+function bidsGZipRawFolder(opt, keepUnzippedNii)
+  %
   %
   % GZip the nii files in a ``raw`` bids folders from the. It will do it independently of the task.
   %
@@ -10,7 +10,7 @@ function bidsGZipRawFolder(optSource, keepUnzippedNii)
   %   bidsGZipRawFolder(optSource ...
   %                     [, keepUnzippedNii = false])
   %
-  % :param optSource: The structure that contains the options set by the user to run the batch
+  % :param opt: The structure that contains the options set by the user to run the batch
   %                   workflow for source processing
   % :type opt: structure
   % :param keepUnzippedNii: will keep the original ``.nii`` if set to ``true``. Default is false
@@ -27,12 +27,15 @@ function bidsGZipRawFolder(optSource, keepUnzippedNii)
 
   printWorklowName('GZip data');
 
-  rawDir = optSource.dataDir;
+  rawDir = opt.dataDir;
 
   unzippedNiifiles = cellstr(spm_select('FPListRec', rawDir, '^.*.nii$'));
 
-  matlabbatch = setBatchGZip(unzippedNiifiles, keepUnzippedNii);
+  matlabbatch = [];
+  matlabbatch = setBatchGZip(matlabbatch, unzippedNiifiles, keepUnzippedNii);
 
   spm_jobman('run', matlabbatch);
 
   toc;
+
+end
