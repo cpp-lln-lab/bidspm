@@ -8,14 +8,14 @@ function matlabbatch = setBatchTemplate(matlabbatch, BIDS, opt, subID, info, var
   %
   %   matlabbatch = setBatchTemplate(matlabbatch, BIDS, opt, subID, info, varargin)
   %
-  % :param matlabbatch: 
-  % :type matlabbatch: 
+  % :param matlabbatch:
+  % :type matlabbatch:
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
 
   printBatchName('name for this batch');
 
-  matlabbatch{end+1}.spm.something = BIDS;
+  matlabbatch{end + 1}.spm.something = BIDS;
   matlabbatch{end}.spm.else = opt;
   matlabbatch{end}.spm.other = subID;
   matlabbatch{end}.spm.thing = info;

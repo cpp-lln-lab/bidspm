@@ -1,30 +1,52 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT)
+function matlabbatch = setBatch3Dto4D(matlabbatch, volumesList, RT, outputName, dataType)
   %
   % Set the batch for 3D to 4D conversion
   %
   % USAGE::
   %
-  %   matlabbatch = setBatch3Dto4D(volumesList, outputName, dataType, RT)
+  %   matlabbatch = setBatch3Dto4D(matlabbatch, volumesList, RT, [outputName], [dataType])
   %
+  % :param matlabbatch:
+  % :type matlabbatch: structure
   % :param volumesList: List of volumes to be converted in a single 4D brain
   % :type volumesList: array
-  % :param outputName: Obligatory argument. The string that will be used to save the 4D brain
+  % :param outputName: The string that will be used to save the 4D brain
   % :type outputName: string
-  % :param dataType: Obligatory argument. It identifies the data format conversion
+  % :param dataType: It identifies the data format conversion
   % :type dataType: integer
-  % :param RT: Obligatory argument. It identifies the TR in secof the volumes to be written in the
-  %            4D file header
+  % :param RT: It identifies the TR in seconds of the volumes
+  %            to be written in the 4D file header
   % :type RT: float
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  %
+  % ``dataType``:
+  %
+  %   - 0:  SAME
+  %   - 2:  UINT8   - unsigned char
+  %   - 4:  INT16   - signed short
+  %   - 8:  INT32   - signed int
+  %   - 16: FLOAT32 - single prec. float
+  %   - 64: FLOAT64 - double prec. float
+  %
 
-  fprintf(1, 'PREPARING: 3D to 4D conversion\n');
+  if nargin < 5 || isempty(dataType)
+    dataType = 0;
+  end
 
-  matlabbatch{1}.spm.util.cat.vols = volumesList;
-  matlabbatch{1}.spm.util.cat.name = outputName;
-  matlabbatch{1}.spm.util.cat.dtype = dataType;
-  matlabbatch{1}.spm.util.cat.RT = RT;
+  if nargin < 4 || isempty(outputName)
+    outputName = deblank(volumesList(1, :));
+    [pth, filename, ext] = spm_fileparts(outputName);
+    outputName = fullfile(pth, [filename, '_4D', ext]);
+  end
+
+  printBatchName('3D to 4D conversion');
+
+  matlabbatch{end + 1}.spm.util.cat.vols = volumesList;
+  matlabbatch{end}.spm.util.cat.name = outputName;
+  matlabbatch{end}.spm.util.cat.dtype = dataType;
+  matlabbatch{end}.spm.util.cat.RT = RT;
 
 end
