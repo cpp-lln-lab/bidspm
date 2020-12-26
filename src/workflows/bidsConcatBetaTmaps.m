@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function concatBetaImgTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
+function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
   %
   % Make 4D images of beta and t-maps for the MVPA. ::
   %
@@ -22,8 +22,11 @@ function concatBetaImgTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
     deleteIndTmaps = 1;
   end
 
-  % load the subjects/Groups information and the task name
-  [group, opt, ~] = getData(opt);
+  [~, opt, group] = setUpWorkflow(opt, 'merge beta images and t-maps');
+
+  % clear previous matlabbatch and files
+  matlabbatch = [];
+  RT = 0;
 
   %% Loop through the groups, subjects
   for iGroup = 1:length(group)
@@ -32,11 +35,7 @@ function concatBetaImgTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
       subID = group(iGroup).subNumber{iSub};
 
-      fprintf(1, 'PREPARING: 4D maps: %s \n', subID);
-
       ffxDir = getFFXdir(subID, funcFWHM, opt);
-
-      load(fullfile(ffxDir, 'SPM.mat'));
 
       contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
@@ -56,22 +55,15 @@ function concatBetaImgTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
         t_maps{iContrast, 1} = [fileName, ',1'];
       end
 
-      % clear previous matlabbatch and files
-      matlabbatch = [];
+      % beta maps
+      outputName = ['4D_beta_', num2str(funcFWHM), '.nii'];
+      matlabbatch = setBatch3Dto4D(matlabbatch, beta_maps, RT, outputName);
 
-      % 4D beta maps
-      matlabbatch{1}.spm.util.cat.vols = beta_maps;
-      matlabbatch{1}.spm.util.cat.name = ['4D_beta_', num2str(funcFWHM), '.nii'];
-      matlabbatch{1}.spm.util.cat.dtype = 4;
+      % t-maps
+      outputName = ['4D_t_maps_', num2str(funcFWHM), '.nii'];
+      matlabbatch = setBatch3Dto4D(matlabbatch, t_maps, RT, outputName);
 
-      % 4D t-maps
-      matlabbatch{2}.spm.util.cat.vols = t_maps;
-      matlabbatch{2}.spm.util.cat.name = ['4D_t_maps_', num2str(funcFWHM), '.nii'];
-      matlabbatch{2}.spm.util.cat.dtype = 4;
-
-      saveMatlabBatch(matlabbatch, 'concatBetaImgTmaps', opt, subID);
-
-      spm_jobman('run', matlabbatch);
+      saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subID);
 
       removeBetaImgTmaps(beta_maps, t_maps, deleteIndBeta, deleteIndTmaps);
 
@@ -112,14 +104,6 @@ function removeBetaImgTmaps(beta_maps, t_maps, deleteIndBeta, deleteIndTmaps)
   end
 
   % delete mat files
+  delete(fullfile(ffxDir, ['4D_*', num2str(funcFWHM), '.mat']));
 
-  % This is refactorable
-  % ex: delete(fullfile(ffxDir, ['4D_*', num2str(funcFWHM), '.mat']));
-
-  if exist(fullfile(ffxDir, ['4D_beta_', num2str(funcFWHM), '.mat']), 'file')
-    delete(fullfile(ffxDir, ['4D_beta_', num2str(funcFWHM), '.mat']));
-  end
-  if exist(fullfile(ffxDir, ['4D_t_maps_', num2str(funcFWHM), '.mat']), 'file')
-    delete(fullfile(ffxDir, ['4D_t_maps_', num2str(funcFWHM), '.mat']));
-  end
 end

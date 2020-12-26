@@ -31,7 +31,6 @@ do
 			touch $ThisDir/asub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
 			touch $ThisDir/asub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
 
-
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/meanusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/s6wsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
@@ -68,7 +67,13 @@ do
 		# STATS
 		mkdir $StartDir/sub-$Subject/stats
 		mkdir $StartDir/sub-$Subject/stats/ffx_task-vismotion/
-		mkdir $StartDir/sub-$Subject/stats/ffx_task-vismotion/ffx_space-MNI_FWHM-6
-		touch $StartDir/sub-$Subject/stats/ffx_task-vismotion/ffx_space-MNI_FWHM-6/mask.nii
+		ThisDir=$StartDir/sub-$Subject/stats/ffx_task-vismotion/ffx_space-MNI_FWHM-6
+		mkdir $ThisDir
+
+		touch $ThisDir/mask.nii
+		touch $ThisDir/con_0001.nii
+		touch $ThisDir/spmT_0001.nii
+		touch $ThisDir/con_0002.nii
+		touch $ThisDir/spmT_0002.nii		
 
 done;

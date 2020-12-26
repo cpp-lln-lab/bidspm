@@ -37,7 +37,7 @@ function test_setBatchSTCForce()
   [~, opt, BIDS] = getData(opt);
 
   subID = '02';
-  
+
   matlabbatch = [];
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID);
 
@@ -69,7 +69,7 @@ function test_setBatchSTCBasic()
   [~, opt, BIDS] = getData(opt);
 
   subID = '02';
-  
+
   matlabbatch = [];
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID);
 

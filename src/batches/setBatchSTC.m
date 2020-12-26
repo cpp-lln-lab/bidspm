@@ -31,7 +31,6 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID)
   % to do the slice timing correction
   %
 
-
   % get slice order
   sliceOrder = getSliceOrder(opt, 1);
   if isempty(sliceOrder)
@@ -65,13 +64,12 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID)
           ['Reference slice time must be in milliseconds ' ...
            'or leave it empty to use mid-acquisition time as reference.']);
   end
-  
-  matlabbatch{end+1}.spm.temporal.st.nslices = nbSlices;
+
+  matlabbatch{end + 1}.spm.temporal.st.nslices = nbSlices;
   matlabbatch{end}.spm.temporal.st.tr = TR;
   matlabbatch{end}.spm.temporal.st.ta = TA;
   matlabbatch{end}.spm.temporal.st.so = sliceOrder;
   matlabbatch{end}.spm.temporal.st.refslice = referenceSlice;
-  
 
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 

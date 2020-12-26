@@ -1,21 +1,23 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchSmoothConImages(matlabbatch, group, funcFWHM, conFWHM, opt)
+function matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt, funcFWHM, conFWHM)
   %
-  % Short description of what the function does goes here.
+  % Creates a batch to smooth all the con images of all subjects
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
+  %   matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt, funcFWHM, conFWHM)
   %
+  % :param matlabbatch:
+  % :type matlabbatch:
   % :param group:
   % :type group:
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt:
   % :param funcFWHM:
   % :type funcFWHM:
   % :param conFWHM:
   % :type conFWHM:
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt:
   %
   % :returns: - :matlabbatch:
   %
@@ -36,14 +38,13 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, group, funcFWHM, con
       ffxDir = getFFXdir(subNumber, funcFWHM, opt);
 
       conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
-      matlabbatch{end + 1}.spm.spatial.smooth.data = cellstr(conImg); %#ok<*AGROW>
+      data = cellstr(conImg);
 
-      % Define how much smoothing is required
-      matlabbatch{end}.spm.spatial.smooth.fwhm = [conFWHM conFWHM conFWHM];
-      matlabbatch{end}.spm.spatial.smooth.dtype = 0;
-      matlabbatch{end}.spm.spatial.smooth.prefix = [ ...
-                                                    spm_get_defaults('smooth.prefix'), ...
-                                                    num2str(conFWHM)];
+      matlabbatch = setBatchSmoothing( ...
+                                      matlabbatch, ...
+                                      data, ...
+                                      conFWHM, ...
+                                      [spm_get_defaults('smooth.prefix'), num2str(conFWHM)]);
 
     end
 
