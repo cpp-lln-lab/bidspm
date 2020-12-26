@@ -24,7 +24,7 @@ function test_setBatchSkullStrippingBasic()
   opt.orderBatches.segment = 2;
 
   matlabbatch = [];
-  matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt);
+  matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subID);
 
   expectedBatch = returnExpectedBatch(opt);
 
