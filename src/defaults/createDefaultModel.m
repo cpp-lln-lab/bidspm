@@ -92,8 +92,10 @@ function trialTypeList = listAllTrialTypes(BIDS, opt)
   end
 
   trialTypeList = unique(trialTypeList);
-
-  trialTypeList{ismember(trialTypeList, 'trial_type')} = [];
+  idx = ismember(trialTypeList, 'trial_type');
+  if any(idx)
+    trialTypeList{idx} = [];
+  end
 
 end
 
