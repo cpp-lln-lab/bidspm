@@ -1,12 +1,12 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchSTC(BIDS, opt, subID)
+function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID)
   %
-  % Short description of what the function does goes here.
+  % Creates batch for slice timing correction
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID)
   %
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
@@ -17,8 +17,6 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
   % :type subID: string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
-  %
-  % matlabbatch = setBatchSTC(BIDS, opt, subID)
   %
   % Slice timing units is in milliseconds to be BIDS compliant and not in slice number
   % as is more traditionally the case with SPM.
@@ -32,9 +30,6 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
   % If not specified this function will take the mid-volume time point as reference
   % to do the slice timing correction
   %
-  % See README.md for more information about slice timing correction
-
-  matlabbatch = [];
 
   % get slice order
   sliceOrder = getSliceOrder(opt, 1);
@@ -70,6 +65,12 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
            'or leave it empty to use mid-acquisition time as reference.']);
   end
 
+  matlabbatch{end + 1}.spm.temporal.st.nslices = nbSlices;
+  matlabbatch{end}.spm.temporal.st.tr = TR;
+  matlabbatch{end}.spm.temporal.st.ta = TA;
+  matlabbatch{end}.spm.temporal.st.so = sliceOrder;
+  matlabbatch{end}.spm.temporal.st.refslice = referenceSlice;
+
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
   runCounter = 1;
@@ -90,7 +91,7 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
       file = validationInputFile(subFuncDataDir, fileName);
 
       % add the file to the list
-      matlabbatch{1}.spm.temporal.st.scans{runCounter} = {file};
+      matlabbatch{end}.spm.temporal.st.scans{runCounter} = {file};
 
       runCounter = runCounter + 1;
 
@@ -99,12 +100,6 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
     end
 
   end
-
-  matlabbatch{1}.spm.temporal.st.nslices = nbSlices;
-  matlabbatch{1}.spm.temporal.st.tr = TR;
-  matlabbatch{1}.spm.temporal.st.ta = TA;
-  matlabbatch{1}.spm.temporal.st.so = sliceOrder;
-  matlabbatch{1}.spm.temporal.st.refslice = referenceSlice;
 
   % The following lines are commented out because those parameters
   % can be set in the spm_my_defaults.m

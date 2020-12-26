@@ -6,7 +6,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subID, funcFWHM)
   %
   % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
   %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
@@ -19,7 +19,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   %           - :argout2: (type) (dimension)
   %
 
-  [BIDS, opt, subID, funcFWHM] =  deal(varargin{:});
+  [matlabbatch, BIDS, opt, subID, funcFWHM] =  deal(varargin{:});
 
   printBatchName('specify subject level fmri model');
 
@@ -43,21 +43,18 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     sliceOrder = 1:hdr(1).dim(3);
   end
 
-  %%
-  matlabbatch = [];
-
-  matlabbatch{1}.spm.stats.fmri_spec.timing.units = 'secs';
+  matlabbatch{end + 1}.spm.stats.fmri_spec.timing.units = 'secs';
 
   % get TR from metadata
   TR = opt.metadata.RepetitionTime;
-  matlabbatch{1}.spm.stats.fmri_spec.timing.RT = TR;
+  matlabbatch{end}.spm.stats.fmri_spec.timing.RT = TR;
 
   % number of times bins
   nbTimeBins = numel(unique(sliceOrder));
-  matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t = nbTimeBins;
+  matlabbatch{end}.spm.stats.fmri_spec.timing.fmri_t = nbTimeBins;
 
   refBin = floor(nbTimeBins / 2);
-  matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = refBin;
+  matlabbatch{end}.spm.stats.fmri_spec.timing.fmri_t0 = refBin;
 
   % Create ffxDir if it doesnt exist
   % If it exists, issue a warning that it has been overwritten
@@ -67,21 +64,21 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     rmdir(ffxDir, 's');
     mkdir(ffxDir);
   end
-  matlabbatch{1}.spm.stats.fmri_spec.dir = {ffxDir};
+  matlabbatch{end}.spm.stats.fmri_spec.dir = {ffxDir};
 
-  matlabbatch{1}.spm.stats.fmri_spec.fact = struct('name', {}, 'levels', {});
+  matlabbatch{end}.spm.stats.fmri_spec.fact = struct('name', {}, 'levels', {});
 
-  matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
+  matlabbatch{end}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
 
-  matlabbatch{1}.spm.stats.fmri_spec.volt = 1;
+  matlabbatch{end}.spm.stats.fmri_spec.volt = 1;
 
-  matlabbatch{1}.spm.stats.fmri_spec.global = 'None';
+  matlabbatch{end}.spm.stats.fmri_spec.global = 'None';
 
-  matlabbatch{1}.spm.stats.fmri_spec.mask = {''};
+  matlabbatch{end}.spm.stats.fmri_spec.mask = {''};
 
   % The following lines are commented out because those parameters
   % can be set in the spm_my_defaults.m
-  %                 matlabbatch{1}.spm.stats.fmri_spec.cvi = 'AR(1)';
+  %                 matlabbatch{end}.spm.stats.fmri_spec.cvi = 'AR(1)';
 
   % identify sessions for this subject
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
@@ -101,7 +98,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
       disp(fullpathBoldFileName);
 
-      matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).scans = ...
+      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).scans = ...
           {fullpathBoldFileName};
 
       % get stimuli onset time file
@@ -114,25 +111,25 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
                                                        tsvFile, ...
                                                        funcFWHM);
 
-      matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).multi = ...
+      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi = ...
           cellstr(fullpathOnsetFileName);
 
       % get realignment parameters
       realignParamFile = getRealignParamFile(fullpathBoldFileName, prefix);
-      matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).multi_reg = ...
+      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi_reg = ...
           cellstr(realignParamFile);
 
       % multiregressor selection
-      matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).regress = ...
+      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).regress = ...
           struct('name', {}, 'val', {});
 
       % multicondition selection
-      matlabbatch{1}.spm.stats.fmri_spec.sess(sesCounter).cond = ...
+      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).cond = ...
           struct('name', {}, 'onset', {}, 'duration', {});
 
       % The following lines are commented out because those parameters
       % can be set in the spm_my_defaults.m
-      %  matlabbatch{1}.spm.stats.fmri_spec.sess(ses_counter).hpf = 128;
+      %  matlabbatch{end}.spm.stats.fmri_spec.sess(ses_counter).hpf = 128;
 
       sesCounter = sesCounter + 1;
 

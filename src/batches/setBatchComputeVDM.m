@@ -6,7 +6,7 @@ function matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
@@ -28,7 +28,7 @@ function matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).data.presubphasemag.magnitude = '';
 
     case 'phase&mag'
-      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).data.phasemag.shortphase = '';
+      matlabbatch{end + 1}.spm.tools.fieldmap.calculatevdm.subj(1).data.phasemag.shortphase = '';
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).data.phasemag.shortmag = '';
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).data.phasemag.longphase = '';
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).data.phasemag.longmag = '';

@@ -6,18 +6,18 @@ function matlabbatch = setBatchNormalize(matlabbatch, deformField, voxDim, imgTo
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchNormalize(matlabbatch [, deformField] [, voxDim] [, imgToResample])
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  % :param deformField:
+  % :type deformField:
+  % :param voxDim:
+  % :param voxDim:
+  % :param imgToResample:
+  % :param imgToResample:
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :matlabbatch: (structure)
   %
 
   if nargin > 1 && ~isempty(deformField)

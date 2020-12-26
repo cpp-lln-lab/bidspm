@@ -12,10 +12,10 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   % :type matlabbatch: structure
   % :param grp:
   % :type grp:
-  % :param funcFWHM:
-  % :type funcFWHM: float
   % :param opt:
   % :type opt: structure
+  % :param funcFWHM:
+  % :type funcFWHM: float
   % :param iStep:
   % :type iStep: positive integer
   % :param iCon:
@@ -24,7 +24,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   % :returns: - :matlabbatch: (structure)
   %
 
-  [matlabbatch, grp, funcFWHM, opt, iStep, iCon] = deal(varargin{:});
+  [matlabbatch, grp, opt, funcFWHM, iStep, iCon] = deal(varargin{:});
 
   for iGroup = 1:length(grp)
 

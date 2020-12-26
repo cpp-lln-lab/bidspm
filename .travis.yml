@@ -69,7 +69,12 @@ jobs:
         - mkdir $output_folder
         - curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $output_folder'MoAEpilot.zip'
         - unzip $output_folder'MoAEpilot.zip' -d $output_folder
-        
+
+        # generate dummy data
+        - cd tests
+        - sh createDummyDataSet.sh
+        - cd ..
+
       script:
         - octave $OCTFLAGS --eval "runTests"
         - cat test_report.log | grep 0

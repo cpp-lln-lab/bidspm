@@ -67,31 +67,31 @@ function bidsSpatialPrepro(opt)
       if ~opt.realign.useUnwarp
         action = 'realign';
       end
-      [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action);
+      [matlabbatch, voxDim] = setBatchRealign(matlabbatch, action, BIDS, opt, subID);
       opt.orderBatches.realign = 2;
 
       % dependency from file selector ('Anatomical')
-      matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt);
+      matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID);
       opt.orderBatches.coregister = 3;
 
-      matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt);
+      matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subID);
 
       % dependency from file selector ('Anatomical')
       matlabbatch = setBatchSegmentation(matlabbatch, opt);
       opt.orderBatches.segment = 5;
 
-      matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt);
+      matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subID);
 
       if strcmp(opt.space, 'MNI')
         % dependency from segmentation
         % dependency from coregistration
-        matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt);
+        matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim);
       end
 
       % if no unwarping was done on func, we reslice the func, so we can use
       % them for the functionalQA
       if ~opt.realign.useUnwarp
-        matlabbatch = setBatchRealign(matlabbatch, BIDS, subID, opt, 'reslice');
+        matlabbatch = setBatchRealign(matlabbatch, 'reslice', BIDS, opt, subID);
       end
 
       batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];

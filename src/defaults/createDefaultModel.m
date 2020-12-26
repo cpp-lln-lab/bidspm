@@ -90,7 +90,13 @@ function trialTypeList = listAllTrialTypes(BIDS, opt)
       trialTypeList{end + 1, 1} = tmp.trial_type{iTrialType}; %#ok<*AGROW>
     end
   end
+
   trialTypeList = unique(trialTypeList);
+  idx = ismember(trialTypeList, 'trial_type');
+  if any(idx)
+    trialTypeList{idx} = [];
+  end
+
 end
 
 function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
@@ -101,16 +107,18 @@ function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
 
   for iTrialType = 1:numel(trialTypeList)
 
-    trialTypeName = ['trial_type.' trialTypeList{iTrialType}];
+    if  ~isempty(trialTypeList{iTrialType})
+      trialTypeName = ['trial_type.' trialTypeList{iTrialType}];
 
-    % subject
-    content.Steps{1}.Model.X{iTrialType} = trialTypeName;
+      % subject
+      content.Steps{1}.Model.X{iTrialType} = trialTypeName;
 
-    % run
-    content.Steps{2}.Model.X{iTrialType} = trialTypeName;
+      % run
+      content.Steps{2}.Model.X{iTrialType} = trialTypeName;
 
-    for iStep = 1:numel(content.Steps)
-      content.Steps{iStep}.AutoContrasts{iTrialType} = trialTypeName;
+      for iStep = 1:numel(content.Steps)
+        content.Steps{iStep}.AutoContrasts{iTrialType} = trialTypeName;
+      end
     end
 
   end
