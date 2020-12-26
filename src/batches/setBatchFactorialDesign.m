@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchFactorialDesign(matlabbatch, group, grpLvlCon, conFWHM, rfxDir)
+function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFWHM)
   %
   % Short description of what the function does goes here.
   %
@@ -29,8 +29,12 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, group, grpLvlCon, co
   if conFWHM > 0
     smoothPrefix = ['s', num2str(conFWHM)];
   end
+  
+  [group, opt] = getData(opt);
 
-  con = 0;
+  rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
+
+  grpLvlCon = getGrpLevelContrastToCompute(opt);
 
   % For each contrast
   for j = 1:size(grpLvlCon, 1)
@@ -39,25 +43,25 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, group, grpLvlCon, co
     % 'trial_type.' because contrasts against baseline are renamed
     % at the subject level
     conName = rmTrialTypeStr(grpLvlCon{j});
+    
+    fprintf(1, '\n\n  Group contrast: %s\n\n', conName);
+
+    directory = fullfile(rfxDir, conName);
 
     % If it exists, issue a warning that it has been overwritten
-    if exist(fullfile(rfxDir, conName), 'dir')
-      warning('overwriting directory: %s \n', fullfile(rfxDir, conName));
-      rmdir(fullfile(rfxDir, conName), 's');
+    if exist(directory, 'dir')
+      warning('overwriting directory: %s \n', directory);
+      rmdir(directory, 's');
     end
 
-    mkdir(fullfile(rfxDir, conName));
-    matlabbatch{end + 1}.spm.stats.factorial_design.dir = { fullfile(rfxDir, conName) };
-
-    con = con + 1;
+    mkdir(directory);
 
     % For each group
     for iGroup = 1:length(group)
 
       groupName = group(iGroup).name;
 
-      matlabbatch{end}.spm.stats.factorial_design.des.fd.icell(iGroup).levels = ...
-          iGroup; %#ok<*AGROW>
+      icell(iGroup).levels = iGroup; %#ok<*AGROW>
 
       for iSub = 1:group(iGroup).numSub
 
@@ -75,33 +79,43 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, group, grpLvlCon, co
         fileName = sprintf('con_%0.4d.nii', conIdx);
         file = validationInputFile(ffxDir, fileName, smoothPrefix);
 
-        matlabbatch{end}.spm.stats.factorial_design.des.fd.icell(iGroup).scans(iSub, :) = ...
-            {file};
+        icell(iGroup).scans(iSub, :) = {file};
+        
+        fprintf(1, ' %s\n\n', file);
 
       end
 
     end
-
-    % GROUP and the number of levels in the group. if 2 groups ,
-    % then number of levels = 2
-    matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.name = 'GROUP';
-    matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.levels = 1;
-    matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.dept = 0;
-
-    % 1: Assumes that the variance is not the same across groups
-    % 0: There is no difference in the variance between groups
-    matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.variance = 1;
-    matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.gmsca = 0;
-    matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.ancova = 0;
-    % matlabbatch{end}.spm.stats.factorial_design.cov = [];
-    matlabbatch{end}.spm.stats.factorial_design.masking.tm.tm_none = 1;
-    matlabbatch{end}.spm.stats.factorial_design.masking.im = 1;
-    matlabbatch{end}.spm.stats.factorial_design.masking.em = { ...
-                                                              fullfile(rfxDir, 'MeanMask.nii')};
-    matlabbatch{end}.spm.stats.factorial_design.globalc.g_omit = 1;
-    matlabbatch{end}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
-    matlabbatch{end}.spm.stats.factorial_design.globalm.glonorm = 1;
+    
+    matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell);
 
   end
+
+end
+
+function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell)
+
+  matlabbatch{end + 1}.spm.stats.factorial_design.dir = {directory};
+
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.icell = icell;
+
+  % GROUP and the number of levels in the group.
+  % If 2 groups, then number of levels = 2
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.name = 'GROUP';
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.levels = 1;
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.dept = 0;
+
+  % 1: Assumes that the variance is not the same across groups
+  % 0: There is no difference in the variance between groups
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.variance = 1;
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.gmsca = 0;
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.ancova = 0;
+  % matlabbatch{end}.spm.stats.factorial_design.cov = [];
+  matlabbatch{end}.spm.stats.factorial_design.masking.tm.tm_none = 1;
+  matlabbatch{end}.spm.stats.factorial_design.masking.im = 1;
+  matlabbatch{end}.spm.stats.factorial_design.masking.em = {''};
+  matlabbatch{end}.spm.stats.factorial_design.globalc.g_omit = 1;
+  matlabbatch{end}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
+  matlabbatch{end}.spm.stats.factorial_design.globalm.glonorm = 1;
 
 end

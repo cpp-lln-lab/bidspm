@@ -58,11 +58,6 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
 
     case 'RFX'
 
-      rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
-
-      % Load the list of contrasts of interest for the RFX
-      grpLvlCon = getGrpLevelContrastToCompute(opt);
-
       % ------
       % TODO
       % - need to rethink where to save the anat and mask
@@ -72,19 +67,26 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
       %   different analysis
       % ------
       matlabbatch = [];
-      matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, rfxDir);
+      matlabbatch = setBatchMeanAnatAndMask(matlabbatch, ...
+                                            opt, ...
+                                            funcFWHM, ...
+                                            fullfile(opt.derivativesDir, 'group'));
       saveAndRunWorkflow(matlabbatch, 'create_mean_struc_mask', opt);
 
       % TODO
-      % rfxDir should probably be set in setBatchFactorialDesign
       % saving needs to be improved (maybe??) as the name may vary with FXHM and contrast
       matlabbatch = [];
-      matlabbatch = setBatchFactorialDesign(matlabbatch, grpLvlCon, group, conFWHM, rfxDir);
+      matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFWHM);
+
+      % Load the list of contrasts of interest for the RFX
+      grpLvlCon = getGrpLevelContrastToCompute(opt);
       matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon);
+
       saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
 
       % TODO
       % saving needs to be improved (maybe??) as the name may vary with FXHM and contrast
+      rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
       matlabbatch = [];
       matlabbatch = setBatchGroupLevelContrasts(matlabbatch, grpLvlCon, rfxDir);
       saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);

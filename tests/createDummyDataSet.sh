@@ -70,10 +70,21 @@ do
 		ThisDir=$StartDir/sub-$Subject/stats/ffx_task-vismotion/ffx_space-MNI_FWHM-6
 		mkdir $ThisDir
 
+		cp $StartDir/sub-01/stats/ffx_task-vismotion/ffx_space-MNI_FWHM-6/SPM.mat $ThisDir
+
 		touch $ThisDir/mask.nii
-		touch $ThisDir/con_0001.nii
+
 		touch $ThisDir/spmT_0001.nii
-		touch $ThisDir/con_0002.nii
 		touch $ThisDir/spmT_0002.nii		
+
+		touch $ThisDir/con_0001.nii
+		touch $ThisDir/con_0002.nii
+		touch $ThisDir/con_0003.nii
+		touch $ThisDir/con_0004.nii
+				
+		touch $ThisDir/s6con_0001.nii
+		touch $ThisDir/s6con_0002.nii
+		touch $ThisDir/s6con_0003.nii
+		touch $ThisDir/s6con_0004.nii
 
 done;

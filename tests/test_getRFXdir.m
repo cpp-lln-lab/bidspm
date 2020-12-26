@@ -16,9 +16,7 @@ function test_getRFXdirBasic()
 
   opt = setDerivativesDir(opt);
 
-  contrastName = 'stim_gt_baseline';
-
-  rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
+  rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
 
   expectedOutput = fullfile( ...
                             fileparts(mfilename('fullpath')), ...
@@ -27,8 +25,7 @@ function test_getRFXdirBasic()
                             'cpp_spm', ...
                             'group', ...
                             'rfx_task-funcLocalizer', ...
-                            'rfx_funcFWHM-0_conFWHM-0', ...
-                            'stim_gt_baseline');
+                            'rfx_funcFWHM-0_conFWHM-0');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
