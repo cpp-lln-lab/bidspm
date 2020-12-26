@@ -27,7 +27,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
   if conFWHM > 0
     smoothPrefix = ['s', num2str(conFWHM)];
   end
-  
+
   [group, opt] = getData(opt);
 
   rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
@@ -41,7 +41,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
     % 'trial_type.' because contrasts against baseline are renamed
     % at the subject level
     conName = rmTrialTypeStr(grpLvlCon{j});
-    
+
     fprintf(1, '\n\n  Group contrast: %s\n\n', conName);
 
     directory = fullfile(rfxDir, conName);
@@ -78,13 +78,13 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
         file = validationInputFile(ffxDir, fileName, smoothPrefix);
 
         icell(iGroup).scans(iSub, :) = {file};
-        
+
         fprintf(1, ' %s\n\n', file);
 
       end
 
     end
-    
+
     matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell);
 
   end
