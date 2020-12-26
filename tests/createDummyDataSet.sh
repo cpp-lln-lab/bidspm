@@ -19,47 +19,56 @@ do
 		do
 
 			# create folder for each session and functional and fmap
-			ThisDir=$StartDir/sub-$Subject/ses-$Ses
+			mkdir $StartDir/sub-$Subject/ses-$Ses
+			ThisDir=$StartDir/sub-$Subject/ses-$Ses/func
 			mkdir $ThisDir
 
-			mkdir $ThisDir/func
-
+			# FUNC
 			rm $ThisDir/func/*
 
-			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
-			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
-			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
+			touch $ThisDir/asub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
+			touch $ThisDir/asub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
 
-			touch $ThisDir/func/asub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
-			touch $ThisDir/func/asub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
 
-			touch $ThisDir/func/meanusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
-			touch $ThisDir/func/s6wsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
-			touch $ThisDir/func/s6rsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
-			touch $ThisDir/func/s6usub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
-			touch $ThisDir/func/s6wusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
-			touch $ThisDir/func/rp_sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.txt
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/meanusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/s6wsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/s6rsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/s6usub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/s6wusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/rp_sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.txt
 
-			echo "onset\tduration\ttrial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
-			echo "2\t15\tVisMot" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
-			echo "25\t15\tVisStat" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
+			echo "onset\tduration\ttrial_type" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
+			echo "2\t15\tVisMot" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
+			echo "25\t15\tVisStat" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
 
-			echo "onset\tduration\ttrial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
-			echo "2\t2\tVisMotUp" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
-			echo "4\t2\tVisMotDown" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
+			echo "onset\tduration\ttrial_type" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
+			echo "2\t2\tVisMotUp" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
+			echo "4\t2\tVisMotDown" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
 
-			echo "onset\tduration\ttrial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
-			echo "3\t2\tVisMotDown" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
-			echo "6\t2\tVisMotUp" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
-
-		  mkdir $ThisDir/anat
-
-		  touch $ThisDir/anat/sub-$Subject\_ses-$Ses\_T1w.nii
-		  touch $ThisDir/anat/msub-$Subject\_ses-$Ses\_T1w.nii
-		  touch $ThisDir/anat/c1sub-$Subject\_ses-$Ses\_T1w.nii
-		  touch $ThisDir/anat/c2sub-$Subject\_ses-$Ses\_T1w.nii
-		  touch $ThisDir/anat/c3sub-$Subject\_ses-$Ses\_T1w.nii
+			echo "onset\tduration\ttrial_type" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
+			echo "3\t2\tVisMotDown" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
+			echo "6\t2\tVisMotUp" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
 
 		done
+
+		# ANAT
+		ThisDir=$StartDir/sub-$Subject/ses-01/anat
+		mkdir $ThisDir
+
+		touch $ThisDir/sub-$Subject\_ses-01_T1w.nii
+		touch $ThisDir/msub-$Subject\_ses-01_T1w.nii
+		touch $ThisDir/wmsub-$Subject\_ses-01_T1w.nii
+		touch $ThisDir/c1sub-$Subject\_ses-01_T1w.nii
+		touch $ThisDir/c2sub-$Subject\_ses-01_T1w.nii
+		touch $ThisDir/c3sub-$Subject\_ses-01_T1w.nii
+
+		# STATS
+		mkdir $StartDir/sub-$Subject/stats
+		mkdir $StartDir/sub-$Subject/stats/ffx_task-vismotion/
+		mkdir $StartDir/sub-$Subject/stats/ffx_task-vismotion/ffx_space-MNI_FWHM-6
+		touch $StartDir/sub-$Subject/stats/ffx_task-vismotion/ffx_space-MNI_FWHM-6/mask.nii
 
 done;

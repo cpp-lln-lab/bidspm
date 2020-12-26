@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
+function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outputDir)
   %
   % Short description of what the function does goes here.
   %
@@ -20,8 +20,6 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
   %
 
   [group, opt, BIDS] = getData(opt);
-
-  matlabbatch = {};
 
   printBatchName('create mean anatomical image and mask');
 
@@ -63,7 +61,7 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
   %% Generate the equation to get the mean of the mask and structural image
   % example : if we have 5 subjects, Average equation = '(i1+i2+i3+i4+i5)/5'
   nbImg = subCounter;
-  imgRange  = 1:subCounter;
+  imgRange = 1:subCounter;
 
   tmpImg = sprintf('+i%i', imgRange);
   tmpImg = tmpImg(2:end);
@@ -82,12 +80,12 @@ function matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir)
 
   %% The mean structural will be saved in the RFX folder
   matlabbatch{1}.spm.util.imcalc.output = 'meanAnat.nii';
-  matlabbatch{1}.spm.util.imcalc.outdir{:} = rfxDir;
+  matlabbatch{1}.spm.util.imcalc.outdir{:} = outputDir;
   matlabbatch{1}.spm.util.imcalc.expression = meanStruct_equation;
 
   %% The mean mask will be saved in the RFX folder
   matlabbatch{2}.spm.util.imcalc.output = 'meanMask.nii';
-  matlabbatch{2}.spm.util.imcalc.outdir{:} = rfxDir;
+  matlabbatch{2}.spm.util.imcalc.outdir{:} = outputDir;
   matlabbatch{2}.spm.util.imcalc.expression = meanMask_equation;
 
 end

@@ -14,9 +14,9 @@ function matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outD
   % :type input: cell
   % :param output: name of the output file
   % :type output: string
-  % :param outDir:
+  % :param outDir: output directory
   % :type outDir: string
-  % :param expression:
+  % :param expression: mathematical expression to apply (for example '(i1+i2)>3') 
   % :type expression: string
   %
   % :returns: - :matlabbatch:
