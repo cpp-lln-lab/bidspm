@@ -47,7 +47,8 @@ function bidsSTC(opt)
 
       printProcessingSubject(groupName, iSub, subID);
 
-      matlabbatch = setBatchSTC(BIDS, opt, subID);
+      matlabbatch = [];
+      matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID);
 
       saveAndRunWorkflow(matlabbatch, 'STC', opt, subID);
 

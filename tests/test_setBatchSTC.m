@@ -16,7 +16,8 @@ function test_setBatchSTCEmpty()
   [~, opt, BIDS] = getData(opt);
 
   subID = '02';
-  matlabbatch = setBatchSTC(BIDS, opt, subID);
+  matlabbatch = [];
+  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID);
 
   % no slice timing info for this run so nothing should be returned.
   assertEqual(matlabbatch, []);
@@ -36,7 +37,9 @@ function test_setBatchSTCForce()
   [~, opt, BIDS] = getData(opt);
 
   subID = '02';
-  matlabbatch = setBatchSTC(BIDS, opt, subID);
+  
+  matlabbatch = [];
+  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID);
 
   TR = 1.55;
   expectedBatch = returnExpectedBatch(opt.sliceOrder, opt.STC_referenceSlice, TR);
@@ -66,7 +69,9 @@ function test_setBatchSTCBasic()
   [~, opt, BIDS] = getData(opt);
 
   subID = '02';
-  matlabbatch = setBatchSTC(BIDS, opt, subID);
+  
+  matlabbatch = [];
+  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID);
 
   TR = 1.5;
   sliceOrder = repmat([ ...
