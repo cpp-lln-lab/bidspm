@@ -26,6 +26,7 @@ tests/models/*.json
 tests/dummyData/derivatives/cpp_spm/sub-*/*/*/*.nii
 tests/dummyData/derivatives/cpp_spm/sub-*/*/*/*.tsv
 tests/dummyData/derivatives/cpp_spm/sub-*/*/*/*.txt
+tests/dummyData/derivatives/cpp_spm/sub-*/*/*/*.json
 tests/dummyData/derivatives/cpp_spm/sub-*/stats/*/*/*.nii
 
 # ignore content of the build folder of the doc
