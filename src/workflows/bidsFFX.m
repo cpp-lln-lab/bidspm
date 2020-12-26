@@ -56,8 +56,7 @@ function bidsFFX(action, opt, funcFWHM)
         case 'specifyAndEstimate'
 
           matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subID, funcFWHM);
-
-          matlabbatch = setBatchFmriEstimate(matlabbatch);
+          matlabbatch = setBatchEstimateModel(matlabbatch);
 
           batchName = ...
             ['specify_estimate_ffx_task-', opt.taskName, ...

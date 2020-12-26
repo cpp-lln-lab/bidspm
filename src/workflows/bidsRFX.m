@@ -80,62 +80,15 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
       % saving needs to be improved (maybe??) as the name may vary with FXHM and contrast
       matlabbatch = [];
       matlabbatch = setBatchFactorialDesign(matlabbatch, grpLvlCon, group, conFWHM, rfxDir);
-      saveAndRunWorkflow(matlabbatch, 'group_level_specification', opt);
+      matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon);
+      saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
 
       % TODO
       % saving needs to be improved (maybe??) as the name may vary with FXHM and contrast
       matlabbatch = [];
-      matlabbatch = setBatchEstimateGroupLevel(matlabbatch, grpLvlCon);
-      saveAndRunWorkflow(matlabbatch, 'group_level_model_estimation', opt);
-
-      % TODO
-      % saving needs to be improved (maybe??) as the name may vary with FXHM and contrast
-      matlabbatch = [];
-      matlabbatch = setBatchContrastsGroupLevel(matlabbatch, grpLvlCon, rfxDir);
+      matlabbatch = setBatchGroupLevelContrasts(matlabbatch, grpLvlCon, rfxDir);
       saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);
 
-  end
-
-end
-
-function conName = rmTrialTypeStr(conName)
-  conName = strrep(conName, 'trial_type.', '');
-end
-
-function matlabbatch = setBatchEstimateGroupLevel(matlabbatch, grpLvlCon)
-
-  printBatchName('estimate group level fmri model');
-
-  for j = 1:size(grpLvlCon, 1)
-
-    conName = rmTrialTypeStr(grpLvlCon{j});
-
-    matlabbatch{end + 1}.spm.stats.fmri_est.spmmat = ...
-      { fullfile(rfxDir, conName, 'SPM.mat') }; %#ok<*AGROW>
-
-    matlabbatch{end}.spm.stats.fmri_est.method.Classical = 1;
-
-  end
-
-end
-
-function matlabbatch = setBatchContrastsGroupLevel(matlabbatch, grpLvlCon, rfxDir)
-
-  printBatchName('group level contrast estimation');
-
-  % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
-  for j = 1:size(grpLvlCon, 1)
-
-    conName = rmTrialTypeStr(grpLvlCon{j});
-
-    matlabbatch{end + 1}.spm.stats.con.spmmat = ...
-      {fullfile(rfxDir, conName, 'SPM.mat')};
-
-    matlabbatch{end}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
-    matlabbatch{end}.spm.stats.con.consess{1}.tcon.convec = 1;
-    matlabbatch{end}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
-
-    matlabbatch{end}.spm.stats.con.delete = 0;
   end
 
 end
