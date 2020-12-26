@@ -2,28 +2,29 @@
 
 function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outputDir)
   %
-  % Short description of what the function does goes here.
+  % Creates batxh to create mean anatomical image and a grop mask
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outputDir)
   %
-  % :param argin1: Options chosen for the analysis. See ``checkOptions()``.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :param funcFWHM:
+  % :param outputDir:
+  % :type outputDir: tring
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :matlabbatch: (structure)
   %
 
   [group, opt, BIDS] = getData(opt);
 
   printBatchName('create mean anatomical image and mask');
 
-  subCounter = 0;
+  inputAnat = {};
+  inputMask = {};
 
   for iGroup = 1:length(group)
 
@@ -31,13 +32,11 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
 
     for iSub = 1:group(iGroup).numSub
 
-      subCounter = subCounter + 1;
-
       subID = group(iGroup).subNumber{iSub};
 
       printProcessingSubject(groupName, iSub, subID);
 
-      %% STRUCTURAL
+      %% Anat
       [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
 
       anatImage = validationInputFile( ...
@@ -46,46 +45,50 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
                                       [spm_get_defaults('normalise.write.prefix'), ...
                                        spm_get_defaults('deformations.modulate.prefix')]);
 
-      matlabbatch{1}.spm.util.imcalc.input{subCounter, :} = anatImage;
+      inputAnat{end + 1, 1} = anatImage; %#ok<*AGROW>
 
       %% Mask
       ffxDir = getFFXdir(subID, funcFWHM, opt);
 
       files = validationInputFile(ffxDir, 'mask.nii');
 
-      matlabbatch{2}.spm.util.imcalc.input{subCounter, :} = files;
+      inputMask{end + 1, 1} = files;
 
     end
   end
 
   %% Generate the equation to get the mean of the mask and structural image
   % example : if we have 5 subjects, Average equation = '(i1+i2+i3+i4+i5)/5'
-  nbImg = subCounter;
-  imgRange = 1:subCounter;
+  nbImg = numel(inputAnat);
+  imgRange = 1:nbImg;
 
   tmpImg = sprintf('+i%i', imgRange);
   tmpImg = tmpImg(2:end);
   sumEquation = ['(', tmpImg, ')'];
 
-  % meanStruct_equation = '(i1+i2+i3+i4+i5)/5'
-  meanStruct_equation = ['(', tmpImg, ')/', num2str(nbImg)];
+  %% The mean structural will be saved in the group level folder
+  % meanStructEquation = '(i1+i2+i3+i4+i5)/5'
+  meanAnatEquation = [sumEquation, '/', num2str(nbImg)];
 
-  % ------
+  matlabbatch = setBatchImageCalculation(matlabbatch, ...
+                                         inputAnat, ...
+                                         'meanAnat.nii', ...
+                                         outputDir, ...
+                                         meanAnatEquation);
+
+  %% The mean mask will be saved in the group level folder
+
   % TODO
   % not sure this makes sense for the mask as voxels that have no data for one
   % subject are excluded anyway !!!!
 
-  % meanMask_equation = '(i1+i2+i3+i4+i5)>0.75*5'
-  meanMask_equation = strcat(sumEquation, '>0.75*', num2str(nbImg));
+  % meanMaskEquation = '(i1+i2+i3+i4+i5)>0.75*5'
+  meanMaskEquation = [sumEquation, '>0.75*', num2str(nbImg)];
 
-  %% The mean structural will be saved in the RFX folder
-  matlabbatch{1}.spm.util.imcalc.output = 'meanAnat.nii';
-  matlabbatch{1}.spm.util.imcalc.outdir{:} = outputDir;
-  matlabbatch{1}.spm.util.imcalc.expression = meanStruct_equation;
-
-  %% The mean mask will be saved in the RFX folder
-  matlabbatch{2}.spm.util.imcalc.output = 'meanMask.nii';
-  matlabbatch{2}.spm.util.imcalc.outdir{:} = outputDir;
-  matlabbatch{2}.spm.util.imcalc.expression = meanMask_equation;
+  matlabbatch = setBatchImageCalculation(matlabbatch, ...
+                                         inputMask, ...
+                                         'meanMask.nii', ...
+                                         outputDir, ...
+                                         meanMaskEquation);
 
 end
