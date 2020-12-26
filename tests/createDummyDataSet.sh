@@ -20,16 +20,17 @@ do
 
 			# create folder for each session and functional and fmap
 			mkdir $StartDir/sub-$Subject/ses-$Ses
-			ThisDir=$StartDir/sub-$Subject/ses-$Ses/func
-			mkdir $ThisDir
 
 			# FUNC
-			rm $ThisDir/func/*
+			ThisDir=$StartDir/sub-$Subject/ses-$Ses/func
+			mkdir $ThisDir
 
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
 			touch $ThisDir/asub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
 			touch $ThisDir/asub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
+
+			touch $ThisDir/mean_sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
 
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/meanusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
@@ -50,6 +51,29 @@ do
 			echo "onset\tduration\ttrial_type" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
 			echo "3\t2\tVisMotDown" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
 			echo "6\t2\tVisMotUp" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
+
+			# FMAP
+			ThisDir=$StartDir/sub-$Subject/ses-$Ses/fmap
+			mkdir $ThisDir
+
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-1_phasediff.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-1_magnitude1.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-1_magnitude2.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-2_phasediff.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-2_magnitude1.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-2_magnitude2.nii
+
+			EchoTime1=0.006
+			EchoTime2=0.00746
+			template='{"EchoTime1":%f, "EchoTime2":%f, "IntendedFor":"%s"}'
+
+			IntendedFor=`echo func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii`
+			json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
+			echo "$json_string" > $ThisDir/sub-$Subject\_ses-$Ses\_run-2_phasediff.json
+
+			IntendedFor=`echo func/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii`
+			json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
+			echo "$json_string" > $ThisDir/sub-$Subject\_ses-$Ses\_run-1_phasediff.json
 
 		done
 

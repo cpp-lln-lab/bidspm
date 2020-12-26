@@ -6,18 +6,16 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchFactorialDesign(matlabbatch, group, grpLvlCon, conFWHM, rfxDir)
+  %   matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFWHM)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
-  % :param group:
-  % :type group: structure
-  % :param grpLvlCon:
-  % :type grpLvlCon:
+  % :param opt:
+  % :type opt: structure
+  % :param funcFWHM:
+  % :type funcFWHM:
   % :param conFWHM:
   % :type conFWHM:
-  % :param rfxDir:
-  % :type rfxDir:
   %
   % :returns: - :matlabbatch: (structure)
   %
