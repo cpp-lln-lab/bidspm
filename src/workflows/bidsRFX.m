@@ -45,12 +45,11 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
 
   [~, opt, group] = setUpWorkflow(opt, 'group level GLM');
 
-  matlabbatch = [];
-
   switch action
 
     case 'smoothContrasts'
 
+      matlabbatch = [];
       matlabbatch = setBatchSmoothConImages(matlabbatch, group, funcFWHM, conFWHM, opt);
 
       saveAndRunWorkflow(matlabbatch, ...
@@ -70,42 +69,29 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
       % - need to smooth the anat
       % - create a masked version of the anat too
       % - needs to be improved (maybe??) as the structural and mask may vary for
-      % different analysis
+      %   different analysis
       % ------
-
+      matlabbatch = [];
       matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, rfxDir);
-
       saveAndRunWorkflow(matlabbatch, 'create_mean_struc_mask', opt);
 
-      % ------
       % TODO
       % rfxDir should probably be set in setBatchFactorialDesign
-      % needs to be improved (maybe??) as the name may vary with FXHM and
-      % contrast
-      % ------
-
-      matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir);
-
+      % saving needs to be improved (maybe??) as the name may vary with FXHM and contrast
+      matlabbatch = [];
+      matlabbatch = setBatchFactorialDesign(matlabbatch, grpLvlCon, group, conFWHM, rfxDir);
       saveAndRunWorkflow(matlabbatch, 'group_level_specification', opt);
 
-      matlabbatch = setBatchEstimateGroupLevel(grpLvlCon);
-
-      % ------
       % TODO
-      % needs to be improved (maybe??) as the name may vary with FXHM and
-      % contrast
-      % ------
-
+      % saving needs to be improved (maybe??) as the name may vary with FXHM and contrast
+      matlabbatch = [];
+      matlabbatch = setBatchEstimateGroupLevel(matlabbatch, grpLvlCon);
       saveAndRunWorkflow(matlabbatch, 'group_level_model_estimation', opt);
 
-      [matlabbatch] = setBatchContrastsGroupLevel(grpLvlCon, rfxDir);
-
-      % ------
       % TODO
-      % needs to be improved (maybe??) as the name may vary with FXHM and
-      % contrast
-      % ------
-
+      % saving needs to be improved (maybe??) as the name may vary with FXHM and contrast
+      matlabbatch = [];
+      matlabbatch = setBatchContrastsGroupLevel(matlabbatch, grpLvlCon, rfxDir);
       saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);
 
   end
@@ -116,44 +102,40 @@ function conName = rmTrialTypeStr(conName)
   conName = strrep(conName, 'trial_type.', '');
 end
 
-function matlabbatch = setBatchEstimateGroupLevel(grpLvlCon)
+function matlabbatch = setBatchEstimateGroupLevel(matlabbatch, grpLvlCon)
 
   printBatchName('estimate group level fmri model');
-
-  matlabbatch = {};
 
   for j = 1:size(grpLvlCon, 1)
 
     conName = rmTrialTypeStr(grpLvlCon{j});
 
-    matlabbatch{j}.spm.stats.fmri_est.spmmat = ...
+    matlabbatch{end + 1}.spm.stats.fmri_est.spmmat = ...
       { fullfile(rfxDir, conName, 'SPM.mat') }; %#ok<*AGROW>
 
-    matlabbatch{j}.spm.stats.fmri_est.method.Classical = 1;
+    matlabbatch{end}.spm.stats.fmri_est.method.Classical = 1;
 
   end
 
 end
 
-function [matlabbatch] = setBatchContrastsGroupLevel(grpLvlCon, rfxDir)
+function matlabbatch = setBatchContrastsGroupLevel(matlabbatch, grpLvlCon, rfxDir)
 
   printBatchName('group level contrast estimation');
-
-  matlabbatch = {};
 
   % ADD/REMOVE CONTRASTS DEPENDING ON YOUR EXPERIMENT AND YOUR GROUPS
   for j = 1:size(grpLvlCon, 1)
 
     conName = rmTrialTypeStr(grpLvlCon{j});
 
-    matlabbatch{j}.spm.stats.con.spmmat = ...
+    matlabbatch{end + 1}.spm.stats.con.spmmat = ...
       {fullfile(rfxDir, conName, 'SPM.mat')};
 
-    matlabbatch{j}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
-    matlabbatch{j}.spm.stats.con.consess{1}.tcon.convec = 1;
-    matlabbatch{j}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
+    matlabbatch{end}.spm.stats.con.consess{1}.tcon.name = 'GROUP';
+    matlabbatch{end}.spm.stats.con.consess{1}.tcon.convec = 1;
+    matlabbatch{end}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
 
-    matlabbatch{j}.spm.stats.con.delete = 0;
+    matlabbatch{end}.spm.stats.con.delete = 0;
   end
 
 end

@@ -49,12 +49,13 @@ function bidsFFX(action, opt, funcFWHM)
 
       printProcessingSubject(groupName, iSub, subID);
 
+      matlabbatch = [];
+
       switch action
 
         case 'specifyAndEstimate'
 
-          matlabbatch = setBatchSubjectLevelGLMSpec( ...
-                                                    BIDS, opt, subID, funcFWHM);
+          matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subID, funcFWHM);
 
           matlabbatch = setBatchFmriEstimate(matlabbatch);
 
@@ -65,7 +66,7 @@ function bidsFFX(action, opt, funcFWHM)
 
         case 'contrasts'
 
-          matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM);
+          matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subID, funcFWHM);
 
           batchName = ...
                           ['contrasts_ffx_task-', opt.taskName, ...

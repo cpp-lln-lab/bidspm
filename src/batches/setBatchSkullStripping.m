@@ -1,23 +1,23 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
+function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subID)
   %
   % Creates a batch to compute a brain mask based on the tissue probability maps
   % from the segmentation.
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
+  %   matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subID)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param subID: subject ID
-  % :type subID: string
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
+  % :param subID: subject ID
+  % :type subID: string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %

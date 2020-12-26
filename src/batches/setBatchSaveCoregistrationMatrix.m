@@ -1,21 +1,21 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt)
+function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subID)
   %
   % Short description of what the function does goes here.
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt)
+  %   matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subID)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param subID:
-  % :type subID:
   % :param opt:
   % :type opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :param subID:
+  % :type subID:
   %
   % :returns: - :matlabbatch:
   %
