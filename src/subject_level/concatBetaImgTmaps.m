@@ -1,34 +1,19 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function concatBetaImgTmaps(funcFWHM, opt, deleteIndBeta, deleteIndTmaps)
-  %
-  % Short description of what the function does goes here.
-  %
-  % USAGE::
-  %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
-  %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
-  %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+function concatBetaImgTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
   %
   % Make 4D images of beta and t-maps for the MVPA. ::
   %
   %   concatBetaImgTmaps(funcFWHM, opt, [deleteIndBeta = true,] [deleteIndTmaps = true])
   %
-  % :param funcFWHM: (scalar) smoothing (FWHM) applied to the the normalized EPI
-  % :param opt: (boolean) options structure
-  % :param deleteIndBeta: (boolean)
-  % :param deleteIndTmaps: (boolean) decide to delete t-maps, beta-maps
-  %
-  % If no ``opt`` input is given this function will attempt to load a json file.
+  % :param opt: options structure
+  % :type opt: structure
+  % :param funcFWHM: smoothing (FWHM) applied to the the normalized EPI
+  % :type funcFWHM: (scalar)
+  % :param deleteIndBeta: decide to delete beta-maps
+  % :type funcFWHM: (boolean)
+  % :param deleteIndTmaps: decide to delete t-maps
+  % :type funcFWHM: (boolean)
   %
 
   % delete individual Beta and tmaps
@@ -49,11 +34,11 @@ function concatBetaImgTmaps(funcFWHM, opt, deleteIndBeta, deleteIndTmaps)
 
       fprintf(1, 'PREPARING: 4D maps: %s \n', subID);
 
-      ffxDir = getFFXdir(subID, funcFWHM, opt, isMVPA);
+      ffxDir = getFFXdir(subID, funcFWHM, opt);
 
       load(fullfile(ffxDir, 'SPM.mat'));
 
-      contrasts = specifyContrasts(ffxDir, opt.taskName, opt, isMVPA);
+      contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
       beta_maps = cell(length(contrasts), 1);
       t_maps = cell(length(contrasts), 1);

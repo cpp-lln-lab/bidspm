@@ -2,27 +2,20 @@
 
 function ffxDir = getFFXdir(subID, funcFWFM, opt)
   %
-  % Short description of what the function does goes here.
+  % Sets the name the FFX directory and creates it if it does not exist
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   ffxDir = getFFXdir(subID, funcFWFM, opt)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param subID:
+  % :type subID: string
+  % :param funcFWFM:
+  % :type funcFWFM: scalar
+  % :param opt:
+  % :param opt: structure
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
-  %
-  % ffxDir = getFFXdir(subID, funcFWFM, opt)
-  %
-  % sets the name the FFX directory and creates it if it does not exist
-  %
+  % :returns: - :ffxDir: (string)
   %
 
   ffxDir = fullfile(opt.derivativesDir, ...
@@ -34,4 +27,5 @@ function ffxDir = getFFXdir(subID, funcFWFM, opt)
   if ~exist(ffxDir, 'dir')
     mkdir(ffxDir);
   end
+
 end

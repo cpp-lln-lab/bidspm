@@ -8,11 +8,11 @@ function contrasts = specifyContrasts(ffxDir, taskName, opt)
   %
   %   contrasts = specifyContrasts(ffxDir, taskName, opt)
   %
-  % :param argin1:
-  % :type argin1:
-  % :param argin2:
-  % :type argin2:
-  % :param argin3:
+  % :param ffxDir:
+  % :type ffxDir:
+  % :param taskName:
+  % :type taskName:
+  % :param opt:
   %
   % :returns: - :contrasts: (type) (dimension)
   %
