@@ -2,7 +2,7 @@
   "Name": "Motion localizer",
   "Description": "contrasts for the motion localizer dataset",
   "Input": {
-    "task": "visMotion"
+    "task": "vismotion"
   },
   "Steps": [
     {

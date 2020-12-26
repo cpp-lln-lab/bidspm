@@ -2,39 +2,34 @@
 
 function contrasts = specifyContrasts(ffxDir, taskName, opt)
   %
-  % Short description of what the function does goes here.
+  % Specifies the first level contrasts
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   contrasts = specifyContrasts(ffxDir, taskName, opt)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param argin1:
+  % :type argin1:
+  % :param argin2:
+  % :type argin2:
+  % :param argin3:
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
-  %
-  % Specifies the first level contrasts
+  % :returns: - :contrasts: (type) (dimension)
   %
   % To know the names of the columns of the design matrix, type :
-  % strvcat(SPM.xX.name)
+  % ``strvcat(SPM.xX.name)``
   %
   % EXAMPLE
-  % Sn(1) ins 1
-  % Sn(1) ins 2
-  % Sn(1) T1
-  % Sn(1) T2
-  % Sn(1) R1
-  % Sn(1) R2
-  % Sn(1) R3
-  % Sn(1) R4
-  % Sn(1) R5
-  % Sn(1) R6
+  %     Sn(1) ins 1
+  %     Sn(1) ins 2
+  %     Sn(1) T1
+  %     Sn(1) T2
+  %     Sn(1) R1
+  %     Sn(1) R2
+  %     Sn(1) R3
+  %     Sn(1) R4
+  %     Sn(1) R5
+  %     Sn(1) R6
 
   load(fullfile(ffxDir, 'SPM.mat'));
 
