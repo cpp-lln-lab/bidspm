@@ -20,8 +20,6 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subID)
     %
     
     % TODO
-    % assumes all the fieldmap relate to the current task
-    % - use the "for" metadata field
     % - implement for 'phase12', 'fieldmap', 'epi'
     
     printBatchName('coregister fieldmaps data to functional');
