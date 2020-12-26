@@ -22,10 +22,6 @@ function matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outD
   % :returns: - :matlabbatch:
   %
 
-  if ~iscell(input)
-    error('The list of images must be in a cell.');
-  end
-
   printBatchName('image calculation');
 
   matlabbatch{end + 1}.spm.util.imcalc.input = input;
