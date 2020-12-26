@@ -16,7 +16,7 @@ function matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outD
   % :type output: string
   % :param outDir: output directory
   % :type outDir: string
-  % :param expression: mathematical expression to apply (for example '(i1+i2)>3') 
+  % :param expression: mathematical expression to apply (for example '(i1+i2)>3')
   % :type expression: string
   %
   % :returns: - :matlabbatch:

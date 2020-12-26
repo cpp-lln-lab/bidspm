@@ -45,11 +45,13 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
 
   [~, opt, group] = setUpWorkflow(opt, 'group level GLM');
 
+  matlabbatch = [];
+
   switch action
 
     case 'smoothContrasts'
 
-      matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt);
+      matlabbatch = setBatchSmoothConImages(matlabbatch, group, funcFWHM, conFWHM, opt);
 
       saveAndRunWorkflow(matlabbatch, ...
                          ['smooth_con_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
@@ -71,7 +73,7 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
       % different analysis
       % ------
 
-      matlabbatch = setBatchMeanAnatAndMask(opt, funcFWHM, rfxDir);
+      matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, rfxDir);
 
       saveAndRunWorkflow(matlabbatch, 'create_mean_struc_mask', opt);
 

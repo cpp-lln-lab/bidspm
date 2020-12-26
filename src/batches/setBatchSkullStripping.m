@@ -50,19 +50,19 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt)
   input{3} = TPMs(2, :);
   % csf
   input{4} = TPMs(3, :);
-  
+
   output = ['m' strrep(anatImage, '.nii', '_skullstripped.nii')];
   expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
 
   matlabbatch = setBatchImageCalculation(matlabbatch, input, output, anatDataDir, expression);
-  
+
   % if this is part of a pipeline we get the segmentation dependency to get
   % the input from.
   % Otherwise the files to process are stored in a cell
   if isfield(opt, 'orderBatches') && isfield(opt.orderBatches, 'segment')
 
     matlabbatch{end}.spm.util.imcalc = rmfield(matlabbatch{end}.spm.util.imcalc, 'input');
-      
+
     matlabbatch{end}.spm.util.imcalc.input(1) = ...
         cfg_dep( ...
                 'Segment: Bias Corrected (1)', ...
