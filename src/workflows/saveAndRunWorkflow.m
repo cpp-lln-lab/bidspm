@@ -33,4 +33,6 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subID)
 
   end
 
+  manageWorkersPool('close', opt);
+
 end

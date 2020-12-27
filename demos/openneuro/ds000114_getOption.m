@@ -41,6 +41,10 @@ function opt = ds000114_getOption()
                                                    'k', 0, ...
                                                    'NIDM', true));
 
+  opt.parallelize.do = true;
+  opt.parallelize.nbWorkers = 2;
+  opt.parallelize.killOnExit = false;
+
   %% DO NOT TOUCH
   opt = checkOptions(opt);
   saveOptions(opt);
