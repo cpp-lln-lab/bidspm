@@ -16,9 +16,9 @@ function matlabbatch = setBatchPrintFigure(matlabbatch, figureName)
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
 
   printBatchName('print figure');
-  
-    matlabbatch{end+1}.spm.util.print.fname = figureName;
-    matlabbatch{1}.spm.util.print.fig.figname = 'Graphics';
-    matlabbatch{1}.spm.util.print.opts = 'png';
+
+  matlabbatch{end + 1}.spm.util.print.fname = figureName;
+  matlabbatch{1}.spm.util.print.fig.figname = 'Graphics';
+  matlabbatch{1}.spm.util.print.opts = 'png';
 
 end
