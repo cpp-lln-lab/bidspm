@@ -36,4 +36,6 @@ function [BIDS, opt, group] = setUpWorkflow(opt, workflowName)
 
   setGraphicWindow();
 
+  manageWorkersPool('open', opt);
+
 end

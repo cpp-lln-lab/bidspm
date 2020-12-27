@@ -115,6 +115,10 @@ function expectedOptions = defaultOptions()
                                                             'k', 0, ...
                                                             'NIDM', true));
 
+  expectedOptions.parallelize.do = false;
+  expectedOptions.parallelize.nbWorkers = 3;
+  expectedOptions.parallelize.killOnExit = true;
+
   expectedOptions = orderfields(expectedOptions);
 
 end

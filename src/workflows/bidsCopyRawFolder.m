@@ -46,6 +46,8 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
   printWorklowName('copy data');
 
+  manageWorkersPool('open', opt);
+
   %% All tasks in this experiment
   % raw directory and derivatives directory
   opt = setDerivativesDir(opt);
@@ -61,7 +63,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
   for iGroup = 1:length(group)
 
-    for iSub = 1:group(iGroup).numSub
+    parfor iSub = 1:group(iGroup).numSub
 
       subID = group(iGroup).subNumber{iSub};
 
@@ -127,6 +129,8 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
   unzipFiles(derivativesDir, deleteZippedNii, opt);
 
+  manageWorkersPool('close', opt);
+
 end
 
 function copyTsvJson(srcDir, targetDir)
@@ -177,7 +181,7 @@ function unzipFiles(derivativesDir, deleteZippedNii, opt)
 
   zippedNiifiles = spm_select('FPListRec', derivativesDir, '^.*.gz$');
 
-  for iFile = 1:size(zippedNiifiles, 1)
+  parfor iFile = 1:size(zippedNiifiles, 1)
 
     file = deblank(zippedNiifiles(iFile, :));
 

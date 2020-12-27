@@ -111,6 +111,10 @@ function fieldsToSet = setDefaultOption()
                                                         'k', 0, ...
                                                         'NIDM', true));
 
+  opt.parallelize.do = false;
+  opt.parallelize.nbWorkers = 3;
+  opt.parallelize.killOnExit = true;
+
 end
 
 function checkFields(opt)
