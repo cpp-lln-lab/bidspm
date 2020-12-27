@@ -120,6 +120,25 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
           copyModalityDir(srcFolder, targetFolder);
 
+          % for func we delete the files that are not of the task of interest
+          % ideally we would like not to copy in them in the first place but
+          % meh...
+          if strcmp(modalities{iModality}, 'func')
+
+            files = spm_select('FPListRec', ...
+                               fullfile(derivativesDir, subDir, sessionDir, 'func'), ...
+                               '^.*_task-.*$');
+
+            taskOfInterest = strfind(cellstr(files), opt.taskName);
+            notTaskOfInterest = ~cellfun('isempty', taskOfInterest);
+
+            files(notTaskOfInterest, :) = [];
+            for iFile = 1:size(files, 1)
+              delete(deblank(files(iFile, :)));
+            end
+
+          end
+
         end
 
       end
