@@ -74,10 +74,10 @@ function bidsResults(opt, funcFWHM, conFWHM)
           matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results);
 
           batchName = 'compute_group_level_results';
-          
-          otherwise 
-              
-              error('This BIDS model does not contain an analysis step I understand.')
+
+        otherwise
+
+          error('This BIDS model does not contain an analysis step I understand.');
 
       end
     end

@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon)
+function matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon, opt)
   %
   % Short description of what the function does goes here.
   %
@@ -32,7 +32,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon)
 
       matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile);
 
-    case 2
+    case 3
 
       printBatchName('estimate group level fmri model');
 
@@ -40,7 +40,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon)
 
         conName = rmTrialTypeStr(grpLvlCon{j});
 
-        spmMatFile = { fullfile(rfxDir, conName, 'SPM.mat') };
+        spmMatFile = { fullfile(opt.rfxDir, conName, 'SPM.mat') };
 
         matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile);
 
