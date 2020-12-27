@@ -103,6 +103,7 @@ function expectedOptions = defaultOptions()
 
   expectedOptions.contrastList = {};
   expectedOptions.model.file = '';
+  expectedOptions.model.hrfDerivatives = [0 0];
 
   expectedOptions.result.Steps = struct( ...
                                         'Level',  '', ...

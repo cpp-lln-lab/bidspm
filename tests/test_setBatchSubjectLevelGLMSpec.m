@@ -77,7 +77,7 @@ end
 %     end
 %
 %     % Things that may change
-%     matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
+%     matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = opt.model.hrfDerivatives;
 %
 %     matlabbatch{1}.spm.stats.fmri_spec.mthresh = 0.8;
 %

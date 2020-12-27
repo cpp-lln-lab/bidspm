@@ -68,7 +68,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   matlabbatch{end}.spm.stats.fmri_spec.fact = struct('name', {}, 'levels', {});
 
-  matlabbatch{end}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
+  matlabbatch{end}.spm.stats.fmri_spec.bases.hrf.derivs = opt.model.hrfDerivatives;
 
   matlabbatch{end}.spm.stats.fmri_spec.volt = 1;
 

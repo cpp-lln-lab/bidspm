@@ -97,6 +97,7 @@ function fieldsToSet = setDefaultOption()
 
   %% Options for model specification and results
   fieldsToSet.model.file = '';
+  fieldsToSet.model.hrfDerivatives = [0 0];
   fieldsToSet.contrastList = {};
 
   % specify the results to compute
