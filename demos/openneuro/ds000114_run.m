@@ -7,6 +7,7 @@ clc;
 
 % Smoothing to apply
 FWHM = 6;
+conFWHM = 6;
 
 % directory with this script becomes the current directory
 WD = fileparts(mfilename('fullpath'));
@@ -39,3 +40,9 @@ bidsSmoothing(FWHM, opt);
 bidsFFX('specifyAndEstimate', opt, FWHM);
 bidsFFX('contrasts', opt, FWHM);
 bidsResults(opt, FWHM);
+
+bidsRFX('smoothContrasts', opt, FWHM, conFWHM);
+bidsRFX('RFX', opt, FWHM, conFWHM);
+
+% WIP: group level results
+% bidsResults(opt, FWHM);
