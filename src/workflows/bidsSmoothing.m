@@ -35,7 +35,8 @@ function bidsSmoothing(funcFWHM, opt)
 
       printProcessingSubject(groupName, iSub, subID);
 
-      matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM);
+      matlabbatch = [];
+      matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, funcFWHM);
 
       saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subID);
 

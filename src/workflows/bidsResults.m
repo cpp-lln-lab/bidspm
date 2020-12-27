@@ -75,6 +75,10 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
           batchName = 'compute_group_level_results';
 
+        otherwise
+
+          error('This BIDS model does not contain an analysis step I understand.');
+
       end
     end
 

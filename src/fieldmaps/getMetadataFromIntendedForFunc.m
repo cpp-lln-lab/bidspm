@@ -37,9 +37,9 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
     filename = spm_file(filename, 'filename');
 
     fragments = bids.internal.parse_filename(filename);
-    
+
     if ~isfield(fragments, 'acq')
-        fragments.acq = '';
+      fragments.acq = '';
     end
 
     funcMetadata = bids.query(BIDS, 'metadata', ...

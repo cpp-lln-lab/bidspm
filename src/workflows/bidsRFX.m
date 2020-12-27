@@ -50,13 +50,15 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
     case 'smoothContrasts'
 
       matlabbatch = [];
-      matlabbatch = setBatchSmoothConImages(matlabbatch, group, funcFWHM, conFWHM, opt);
+      matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt, funcFWHM, conFWHM);
 
       saveAndRunWorkflow(matlabbatch, ...
                          ['smooth_con_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
-                         opt, subID);
+                         opt);
 
     case 'RFX'
+
+      opt.rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
 
       % ------
       % TODO
@@ -80,7 +82,7 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
 
       % Load the list of contrasts of interest for the RFX
       grpLvlCon = getGrpLevelContrastToCompute(opt);
-      matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon);
+      matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon, opt);
 
       saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
 
