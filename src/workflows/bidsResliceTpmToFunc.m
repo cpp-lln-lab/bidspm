@@ -52,6 +52,24 @@ function bidsResliceTpmToFunc(opt)
 
       saveAndRunWorkflow(matlabbatch, 'reslice_tpm', opt, subID);
 
+      %% Compute brain mask of functional
+      TPMs = validationInputFile(anatDataDir, anatImage, 'rc[123]');
+      % greay matter
+      input{1, 1} = TPMs(1, :);
+      % white matter
+      input{2, 1} = TPMs(2, :);
+      % csf
+      input{3, 1} = TPMs(3, :);
+
+      output = strrep(meanImage, '.nii', '_mask.nii');
+
+      expression = sprintf('(i1+i2+i3)>%f', opt.skullstrip.threshold);
+
+      matlabbatch = [];
+      matlabbatch = setBatchImageCalculation(matlabbatch, input, output, meanFuncDir, expression);
+
+      saveAndRunWorkflow(matlabbatch, 'create_functional_brain_mask', opt, subID);
+
     end
 
   end
