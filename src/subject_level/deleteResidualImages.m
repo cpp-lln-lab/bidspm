@@ -11,5 +11,6 @@ function deleteResidualImages(ffxDir)
   %
 
   delete(fullfile(ffxDir, 'Res_*.nii'));
+  delete(fullfile(ffxDir, 'res4d.nii*'));
 
 end
