@@ -46,20 +46,23 @@ function opt = MoAEpilot_getOption()
   %   opt.result.Steps(1).Contrasts(2).k = 0;
 
   % Specify how you want your output (all the following are on false by default)
-  %   opt.result.Steps(1).Output.png = true();
-  %
-  %   opt.result.Steps(1).Output.csv = true();
-  %
-  %   opt.result.Steps(1).Output.thresh_spm = true();
-  %
-  %   opt.result.Steps(1).Output.binary = true();
-  %
-  %   opt.result.Steps(1).Output.montage.do = true();
-  %   opt.result.Steps(1).Output.montage.slices = -8:3:15; % in mm
-  %   opt.result.Steps(1).Output.montage.orientation = 'axial';
-  %    % axial is default 'sagittal', 'coronal'
-  %   opt.result.Steps(1).Output.montage.background = ...
-  %         {fullfile(spm('dir'), 'canonical', 'avg152T1.nii,1')};
+  opt.result.Steps(1).Output.png = true();
+
+  opt.result.Steps(1).Output.csv = true();
+
+  opt.result.Steps(1).Output.thresh_spm = true();
+
+  opt.result.Steps(1).Output.binary = true();
+
+  opt.result.Steps(1).Output.montage.do = true();
+  opt.result.Steps(1).Output.montage.slices = -8:3:15; % in mm
+  % axial is default 'sagittal', 'coronal'
+  opt.result.Steps(1).Output.montage.orientation = 'axial';
+
+  % will use the MNI T1 template by default but the underlay image can be
+  % changed.
+  opt.result.Steps(1).Output.montage.background = ...
+      fullfile(spm('dir'), 'canonical', 'avg152T1.nii,1');
   %
   %   opt.result.Steps(1).Output.NIDM_results = true();
 
