@@ -105,7 +105,7 @@ function expectedOptions = defaultOptions()
   expectedOptions.model.file = '';
   expectedOptions.model.hrfDerivatives = [0 0];
 
-  expectedOptions.result.Steps = returnDefaultResultsStructureBasic();
+  expectedOptions.result.Steps = returnDefaultResultsStructure();
 
   expectedOptions.parallelize.do = false;
   expectedOptions.parallelize.nbWorkers = 3;

@@ -44,7 +44,10 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
 end
 
 function contrastNb = getContrastNb(result)
+    %
     % identify which contrast nb actually has the name the user asked    
+    %
+    
     load(fullfile(result.dir, 'SPM.mat'));
     
     if isempty(result.Contrasts.Name)
@@ -74,7 +77,6 @@ function contrastNb = getContrastNb(result)
     end
     
 end
-
 
 function printAvailabileContrasts(SPM)
     sprintf('List of contrast in this SPM file');

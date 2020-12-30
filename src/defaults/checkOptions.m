@@ -101,7 +101,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.contrastList = {};
 
   % specify the results to compute
-  fieldsToSet.result.Steps = returnDefaultResultsStructureBasic();
+  fieldsToSet.result.Steps = returnDefaultResultsStructure();
 
   fieldsToSet.parallelize.do = false;
   fieldsToSet.parallelize.nbWorkers = 3;

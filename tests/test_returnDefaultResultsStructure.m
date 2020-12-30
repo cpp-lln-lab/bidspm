@@ -10,12 +10,12 @@ end
 
 function test_returnDefaultResultsStructureBasic()
     
-    results  = returnDefaultResultsStructureBasic();
+    results  = returnDefaultResultsStructure();
     
     expected.Level=  ''; 
 
     expected.Contrasts.Name = '';
-    expected.Contrasts.Mask = false();
+    expected.Contrasts.useMask = false();
     expected.Contrasts.MC = 'FWE'; 
     expected.Contrasts.p = 0.05;
     expected.Contrasts.k = 0;

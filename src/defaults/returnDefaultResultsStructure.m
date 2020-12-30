@@ -1,7 +1,7 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 
-function results  = returnDefaultResultsStructureBasic()
+function results  = returnDefaultResultsStructure()
     
     Contrasts =  struct( ...
         'Name', '', ...
