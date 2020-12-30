@@ -20,14 +20,11 @@ function manageWorkersPool(action, opt)
   %    opt.parallelize.killOnExit = true;
   %
 
-  if ~isOctave()
+  if ~isOctave() && opt.parallelize.do
 
     matlabVer = version('-release');
 
     nbWorkers = opt.parallelize.nbWorkers;
-    if ~opt.parallelize.do
-      nbWorkers = 1;
-    end
 
     switch lower(action)
 
