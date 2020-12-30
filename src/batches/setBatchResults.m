@@ -62,7 +62,7 @@ function matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
   %   matlabbatch{1}.spm.stats.results.export{3}.montage.orientation = '<UNDEFINED>';
   %   matlabbatch{1}.spm.stats.results.export{3}.montage.slices = '<UNDEFINED>';
 
-  if opt.result.Steps(1).Contrasts(iCon).NIDM
+  if opt.result.Steps(1).Output.NIDM_results
 
     matlabbatch{end}.spm.stats.results.export{end + 1}.nidm.modality = 'FMRI';
 
