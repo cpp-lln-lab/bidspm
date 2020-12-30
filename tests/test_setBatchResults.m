@@ -11,15 +11,18 @@ function test_setBatchResultsBasic()
     iStep = 1;
     iCon = 1;
     
-    results.dir = pwd;
-    results.label = '01';
-    results.nbSubj = 1;
-    results.contrastNb = 1;
-    
     opt.result.Steps  = returnDefaultResultsStructureBasic();
     
+    result.Contrasts = opt.result.Steps(iStep).Contrasts(iCon);
+    result.Output =  opt.result.Steps(iStep).Output;
+    
+    result.dir = pwd;
+    result.label = '01';
+    result.nbSubj = 1;
+    result.contrastNb = 1;
+
     matlabbatch = [];
-    matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results);
+    matlabbatch = setBatchResults(matlabbatch, result);
 
     expectedBatch = returnBasicExpectedResultsBatch();
     
@@ -32,13 +35,8 @@ function test_setBatchResultsExport()
     iStep = 1;
     iCon = 1;
     
-    results.dir = pwd;
-    results.label = '01';
-    results.nbSubj = 1;
-    results.contrastNb = 1;
-    
     opt.result.Steps  = returnDefaultResultsStructureBasic();
-
+    
     opt.result.Steps.Output.png = true;
     opt.result.Steps.Output.csv = true;
     opt.result.Steps.Output.thresh_spm = true;
@@ -47,8 +45,17 @@ function test_setBatchResultsExport()
     
     opt.space = 'individual';
     
+    result.Contrasts = opt.result.Steps(iStep).Contrasts(iCon);
+    result.Output =  opt.result.Steps(iStep).Output;
+    result.space = opt.space;
+    
+    result.dir = pwd;
+    result.label = '01';
+    result.nbSubj = 1;
+    result.contrastNb = 1;
+    
     matlabbatch = [];
-    matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results);
+    matlabbatch = setBatchResults(matlabbatch, result);
 
     expectedBatch = returnBasicExpectedResultsBatch();
     
@@ -62,11 +69,9 @@ function test_setBatchResultsExport()
     expectedBatch{end}.spm.stats.results.export{end}.nidm.group.nsubj = 1;
     expectedBatch{end}.spm.stats.results.export{end}.nidm.group.label = '01';
       
-    assertEqual(matlabbatch{1}.spm.stats.results.export, expectedBatch{1}.spm.stats.results.export);
+    assertEqual(matlabbatch, expectedBatch);
     
 end
-
-
 
 function expectedBatch = returnBasicExpectedResultsBatch()
       

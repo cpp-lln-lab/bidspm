@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
+function matlabbatch = setBatchResults(matlabbatch, result)
   %
   % Outputs the typical matlabbatch to compute the results for a given contrast
   %
@@ -10,12 +10,6 @@ function matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
-  % :param opt:
-  % :type opt: structure
-  % :param iStep:
-  % :type iStep: positive integer
-  % :param iCon:
-  % :type iCon: positive integer
   % :param results:
   % :type results: structure
   %
@@ -28,41 +22,30 @@ function matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
   %
   %
 
-  matlabbatch{end + 1}.spm.stats.results.spmmat = {fullfile(results.dir, 'SPM.mat')};
+  matlabbatch{end + 1}.spm.stats.results.spmmat = {fullfile(result.dir, 'SPM.mat')};
 
-  matlabbatch{end}.spm.stats.results.conspec.titlestr = ...
-      opt.result.Steps(iStep).Contrasts(iCon).Name;
+  matlabbatch{end}.spm.stats.results.conspec.titlestr = result.Contrasts.Name;
 
-  matlabbatch{end}.spm.stats.results.conspec.contrasts = results.contrastNb;
-
-  matlabbatch{end}.spm.stats.results.conspec.threshdesc = ...
-      opt.result.Steps(iStep).Contrasts(iCon).MC;
-
-  matlabbatch{end}.spm.stats.results.conspec.thresh = opt.result.Steps(iStep).Contrasts(iCon).p;
-
-  matlabbatch{end}.spm.stats.results.conspec.extent = opt.result.Steps(iStep).Contrasts(iCon).k;
-
+  matlabbatch{end}.spm.stats.results.conspec.contrasts = result.contrastNb;
+  matlabbatch{end}.spm.stats.results.conspec.threshdesc = result.Contrasts.MC;
+  matlabbatch{end}.spm.stats.results.conspec.thresh = result.Contrasts.p;
+  matlabbatch{end}.spm.stats.results.conspec.extent = result.Contrasts.k;
   matlabbatch{end}.spm.stats.results.conspec.conjunction = 1;
-
-  matlabbatch{end}.spm.stats.results.conspec.mask.none = ...
-      ~opt.result.Steps(iStep).Contrasts(iCon).useMask;
+  matlabbatch{end}.spm.stats.results.conspec.mask.none = ~result.Contrasts.useMask;
 
   matlabbatch{end}.spm.stats.results.units = 1;
 
-  % TODO
-  % add flags to make those optional
   matlabbatch{end}.spm.stats.results.export = [];
-  if opt.result.Steps(1).Output.png
-  matlabbatch{end}.spm.stats.results.export{end+1}.png = true;
+  if result.Output.png
+    matlabbatch{end}.spm.stats.results.export{end+1}.png = true;
   end
   
-  if opt.result.Steps(1).Output.csv
-  matlabbatch{end}.spm.stats.results.export{end+1}.csv = true;
+  if result.Output.csv
+    matlabbatch{end}.spm.stats.results.export{end+1}.csv = true;
   end
   
-  if opt.result.Steps(1).Output.thresh_spm
-  matlabbatch{end}.spm.stats.results.export{end+1}.tspm.basename = ...
-      opt.result.Steps(iStep).Contrasts(iCon).Name;
+  if result.Output.thresh_spm
+    matlabbatch{end}.spm.stats.results.export{end+1}.tspm.basename = result.Contrasts.Name;
   end
 
   % TODO
@@ -71,18 +54,18 @@ function matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
   %   matlabbatch{1}.spm.stats.results.export{3}.montage.orientation = '<UNDEFINED>';
   %   matlabbatch{1}.spm.stats.results.export{3}.montage.slices = '<UNDEFINED>';
 
-  if opt.result.Steps(1).Output.NIDM_results
+  if result.Output.NIDM_results
 
     matlabbatch{end}.spm.stats.results.export{end + 1}.nidm.modality = 'FMRI';
 
     matlabbatch{end}.spm.stats.results.export{end}.nidm.refspace = 'ixi';
-    if strcmp(opt.space, 'individual')
+    if strcmp(result.space, 'individual')
       matlabbatch{end}.spm.stats.results.export{end}.nidm.refspace = 'subject';
     end
 
-    matlabbatch{end}.spm.stats.results.export{end}.nidm.group.nsubj = results.nbSubj;
+    matlabbatch{end}.spm.stats.results.export{end}.nidm.group.nsubj = result.nbSubj;
 
-    matlabbatch{end}.spm.stats.results.export{end}.nidm.group.label = results.label;
+    matlabbatch{end}.spm.stats.results.export{end}.nidm.group.label = result.label;
 
   end
 
