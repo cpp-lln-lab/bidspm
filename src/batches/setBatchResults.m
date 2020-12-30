@@ -24,6 +24,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   
   fieldsToSet = returnDefaultResultsStructure();
   result = setDefaultFields(result, fieldsToSet);
+  result.Contrasts = replaceEmptyFields(result.Contrasts, fieldsToSet.Contrasts);
 
   matlabbatch{end + 1}.spm.stats.results.spmmat = {fullfile(result.dir, 'SPM.mat')};
 
@@ -72,4 +73,17 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   end
 
+end
+
+
+function struct = replaceEmptyFields(struct, fieldsToCheck)
+   
+    fieldsList = fieldnames(fieldsToCheck);
+    
+   for  iField = 1 : numel(fieldsList)
+       if isfield(struct, fieldsList{iField}) && isempty(struct.(fieldsList{iField}))
+            struct.(fieldsList{iField}) = fieldsToCheck.(fieldsList{iField});
+       end
+   end
+   
 end

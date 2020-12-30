@@ -68,6 +68,9 @@ function test_setBatchResultsExport()
     expectedBatch{end}.spm.stats.results.export{end}.nidm.group.nsubj = 1;
     expectedBatch{end}.spm.stats.results.export{end}.nidm.group.label = '01';
     
+    expectedBatch{end}.spm.stats.results.export
+    matlabbatch{end}.spm.stats.results.export
+    
     assertEqual(matlabbatch, expectedBatch);
     
 end
