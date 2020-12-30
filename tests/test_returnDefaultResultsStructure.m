@@ -23,6 +23,7 @@ function test_returnDefaultResultsStructureBasic()
   expected.Output.png = false();
   expected.Output.csv = false();
   expected.Output.thresh_spm = false();
+  expected.Output.binary = false();
   expected.Output.montage = false();
   expected.Output.NIDM_results = false();
 

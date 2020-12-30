@@ -29,6 +29,9 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
   matlabbatch = [];
 
+  % TOD0
+  % if it does not exist create the default "result" field from the BIDS model file
+
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
   for iStep = 1:length(opt.result.Steps)

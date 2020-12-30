@@ -52,6 +52,11 @@ function matlabbatch = setBatchResults(matlabbatch, result)
     matlabbatch{end}.spm.stats.results.export{end + 1}.tspm.basename = result.Contrasts.Name;
   end
 
+  if result.Output.binary
+    matlabbatch{end}.spm.stats.results.export{end + 1}.binary.basename = [result.Contrasts.Name, ...
+                                                                          '_mask'];
+  end
+
   % TODO
   % add the possibility to create a montage
   %   matlabbatch{1}.spm.stats.results.export{3}.montage.background = '<UNDEFINED>';

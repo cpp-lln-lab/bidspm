@@ -36,6 +36,7 @@ function test_setBatchResultsExport()
   opt.result.Steps.Output.png = true;
   opt.result.Steps.Output.csv = true;
   opt.result.Steps.Output.thresh_spm = true;
+  opt.result.Steps.Output.binary = true;
   opt.result.Steps.Output.montage =  true;
   opt.result.Steps.Output.NIDM_results =  true;
 
@@ -61,6 +62,7 @@ function test_setBatchResultsExport()
   expectedBatch{end}.spm.stats.results.export{1}.png = true;
   expectedBatch{end}.spm.stats.results.export{2}.csv = true;
   expectedBatch{end}.spm.stats.results.export{3}.tspm.basename = 'test';
+  expectedBatch{end}.spm.stats.results.export{4}.binary.basename = 'test';
 
   expectedBatch{end}.spm.stats.results.export{end + 1}.nidm.modality = 'FMRI';
   expectedBatch{end}.spm.stats.results.export{end}.nidm.refspace = 'ixi';
