@@ -15,10 +15,10 @@ function test_setBatchResultsBasic()
     result.label = '01';
     result.nbSubj = 1;
     result.contrastNb = 1;
-
+    
     matlabbatch = [];
     matlabbatch = setBatchResults(matlabbatch, result);
-
+    
     expectedBatch = returnBasicExpectedResultsBatch();
     
     assertEqual(matlabbatch, expectedBatch);
@@ -30,6 +30,9 @@ function test_setBatchResultsExport()
     iStep = 1;
     iCon = 1;
     
+    opt.result.Steps.Contrasts.Name = 'test';
+    opt.result.Steps.Contrasts.MC = 'FDR';
+    
     opt.result.Steps.Output.png = true;
     opt.result.Steps.Output.csv = true;
     opt.result.Steps.Output.thresh_spm = true;
@@ -38,6 +41,7 @@ function test_setBatchResultsExport()
     
     opt.space = 'individual';
     
+    result.Contrasts =  opt.result.Steps(iStep).Contrasts;
     result.Output =  opt.result.Steps(iStep).Output;
     result.space = opt.space;
     
@@ -48,25 +52,28 @@ function test_setBatchResultsExport()
     
     matlabbatch = [];
     matlabbatch = setBatchResults(matlabbatch, result);
-
+    
     expectedBatch = returnBasicExpectedResultsBatch();
+    
+    expectedBatch{end}.spm.stats.results.conspec.titlestr = 'test';
+    expectedBatch{end}.spm.stats.results.conspec.threshdesc = 'FDR';
     
     expectedBatch{end}.spm.stats.results.export{1}.png = true;
     expectedBatch{end}.spm.stats.results.export{2}.csv = true;
-    expectedBatch{end}.spm.stats.results.export{3}.tspm.basename = '';
+    expectedBatch{end}.spm.stats.results.export{3}.tspm.basename = 'test';
     
     expectedBatch{end}.spm.stats.results.export{end + 1}.nidm.modality = 'FMRI';
     expectedBatch{end}.spm.stats.results.export{end}.nidm.refspace = 'ixi';
     expectedBatch{end}.spm.stats.results.export{end}.nidm.refspace = 'subject';
     expectedBatch{end}.spm.stats.results.export{end}.nidm.group.nsubj = 1;
     expectedBatch{end}.spm.stats.results.export{end}.nidm.group.label = '01';
-      
+    
     assertEqual(matlabbatch, expectedBatch);
     
 end
 
 function expectedBatch = returnBasicExpectedResultsBatch()
-      
+    
     expectedBatch = {};
     expectedBatch{end + 1}.spm.stats.results.spmmat = {fullfile(pwd, 'SPM.mat')};
     
@@ -81,5 +88,5 @@ function expectedBatch = returnBasicExpectedResultsBatch()
     expectedBatch{end}.spm.stats.results.units = 1;
     
     expectedBatch{end}.spm.stats.results.export = [];
-
+    
 end
