@@ -28,7 +28,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   matlabbatch{end + 1}.spm.stats.results.spmmat = {fullfile(result.dir, 'SPM.mat')};
 
-  matlabbatch{end}.spm.stats.results.conspec.titlestr = result.Contrasts.Name;
+  matlabbatch{end}.spm.stats.results.conspec.titlestr = returnName(result);
 
   matlabbatch{end}.spm.stats.results.conspec.contrasts = result.contrastNb;
   matlabbatch{end}.spm.stats.results.conspec.threshdesc = result.Contrasts.MC;
@@ -49,19 +49,13 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   end
 
   if result.Output.thresh_spm
-    matlabbatch{end}.spm.stats.results.export{end + 1}.tspm.basename = result.Contrasts.Name;
+    matlabbatch{end}.spm.stats.results.export{end + 1}.tspm.basename = returnName(result);
   end
 
   if result.Output.binary
-    matlabbatch{end}.spm.stats.results.export{end + 1}.binary.basename = [result.Contrasts.Name, ...
+    matlabbatch{end}.spm.stats.results.export{end + 1}.binary.basename = [returnName(result), ...
                                                                           '_mask'];
   end
-
-  % TODO
-  % add the possibility to create a montage
-  %   matlabbatch{1}.spm.stats.results.export{3}.montage.background = '<UNDEFINED>';
-  %   matlabbatch{1}.spm.stats.results.export{3}.montage.orientation = '<UNDEFINED>';
-  %   matlabbatch{1}.spm.stats.results.export{3}.montage.slices = '<UNDEFINED>';
 
   if result.Output.NIDM_results
 
@@ -75,6 +69,17 @@ function matlabbatch = setBatchResults(matlabbatch, result)
     matlabbatch{end}.spm.stats.results.export{end}.nidm.group.nsubj = result.nbSubj;
 
     matlabbatch{end}.spm.stats.results.export{end}.nidm.group.label = result.label;
+
+  end
+
+  if result.Output.montage.do
+
+    matlabbatch{end}.spm.stats.results.export{end + 1}.montage = setMontage(result);
+
+    % Not sure why the name of the figure does not come out right
+    matlabbatch{end + 1}.spm.util.print.fname = ['Montage' returnName(result)];
+    matlabbatch{end}.spm.util.print.fig.figname = 'SliceOverlay';
+    matlabbatch{end}.spm.util.print.opts = 'png';
 
   end
 

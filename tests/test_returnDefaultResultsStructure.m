@@ -24,7 +24,10 @@ function test_returnDefaultResultsStructureBasic()
   expected.Output.csv = false();
   expected.Output.thresh_spm = false();
   expected.Output.binary = false();
-  expected.Output.montage = false();
+  expected.Output.montage.do = false();
+  expected.Output.montage.slices = [];
+  expected.Output.montage.orientation = 'axial';
+  expected.Output.montage.background = fullfile(spm('dir'), 'canonical', 'avg152T1.nii,1');
   expected.Output.NIDM_results = false();
 
   assertEqual(results, expected);

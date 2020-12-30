@@ -73,6 +73,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
           batchName = sprintf('compute_sub-%s_level_results', subID);
 
           saveAndRunWorkflow(matlabbatch, batchName, opt);
+
         end
 
       case 'dataset'

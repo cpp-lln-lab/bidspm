@@ -35,7 +35,7 @@ function test_setBatchSubjectLevelResultsBasic()
                                                               'ffx_space-MNI_FWHM-6', ...
                                                               'SPM.mat')};
 
-  expectedBatch{end}.spm.stats.results.conspec.titlestr = 'VisMot';
+  expectedBatch{end}.spm.stats.results.conspec.titlestr = 'VisMot_p-0.050_k-0_MC-FWE';
   expectedBatch{end}.spm.stats.results.conspec.contrasts = 1;
   expectedBatch{end}.spm.stats.results.conspec.threshdesc = 'FWE';
   expectedBatch{end}.spm.stats.results.conspec.thresh = 0.05;

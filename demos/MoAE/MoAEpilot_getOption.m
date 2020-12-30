@@ -32,8 +32,6 @@ function opt = MoAEpilot_getOption()
 
   opt.result.Steps(1).Contrasts(1).Name = 'listening';
 
-  opt.result.Steps(1).Contrasts(2).Name = 'listening_inf_baseline';
-
   % For each contrats, you can adapt:
   %  - voxel level (p)
   %  - cluster (k) level threshold
@@ -41,17 +39,29 @@ function opt = MoAEpilot_getOption()
   %    - 'FWE' is the defaut
   %    - 'FDR'
   %    - 'none'
-  opt.result.Steps(1).Contrasts(2).MC =  'none';
-  opt.result.Steps(1).Contrasts(2).p = 0.01;
-  opt.result.Steps(1).Contrasts(2).k = 0;
+  %
+  %   opt.result.Steps(1).Contrasts(2).Name = 'listening_inf_baseline';
+  %   opt.result.Steps(1).Contrasts(2).MC =  'none';
+  %   opt.result.Steps(1).Contrasts(2).p = 0.01;
+  %   opt.result.Steps(1).Contrasts(2).k = 0;
 
   % Specify how you want your output (all the following are on false by default)
-  opt.result.Steps(1).Output.png = true();
-  opt.result.Steps(1).Output.csv = true();
-  opt.result.Steps(1).Output.thresh_spm = true();
-  opt.result.Steps(1).Output.binary = true();
-  opt.result.Steps(1).Output.montage = true();
-  opt.result.Steps(1).Output.NIDM_results = true();
+  %   opt.result.Steps(1).Output.png = true();
+  %
+  %   opt.result.Steps(1).Output.csv = true();
+  %
+  %   opt.result.Steps(1).Output.thresh_spm = true();
+  %
+  %   opt.result.Steps(1).Output.binary = true();
+  %
+  %   opt.result.Steps(1).Output.montage.do = true();
+  %   opt.result.Steps(1).Output.montage.slices = -8:3:15; % in mm
+  %   opt.result.Steps(1).Output.montage.orientation = 'axial';
+  %    % axial is default 'sagittal', 'coronal'
+  %   opt.result.Steps(1).Output.montage.background = ...
+  %         {fullfile(spm('dir'), 'canonical', 'avg152T1.nii,1')};
+  %
+  %   opt.result.Steps(1).Output.NIDM_results = true();
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);
