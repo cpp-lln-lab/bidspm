@@ -25,24 +25,32 @@ function opt = MoAEpilot_getOption()
   % to add the hrf temporal and dispersion derivative = [1 1]
   % opt.model.hrfDerivatives = [0 0];
 
-  % specify the result to compute
-  opt.result.Steps(1) = struct( ...
-                               'Level',  'subject', ...
-                               'Contrasts', struct( ...
-                                                   'Name', 'listening', ... % has to match
-                                                   'Mask', false, ...
-                                                   'MC', 'FWE', ... FWE, none, FDR
-                                                   'p', 0.05, ...
-                                                   'k', 0, ...
-                                                   'NIDM', true));
+  % Specify the result to compute
+  opt.result.Steps(1) = returnDefaultResultsStructure();
 
-  opt.result.Steps(1).Contrasts(2) = struct( ...
-                                            'Name', 'listening_inf_baseline', ...
-                                            'Mask', false, ...
-                                            'MC', 'none', ... FWE, none, FDR
-                                            'p', 0.01, ...
-                                            'k', 0, ...
-                                            'NIDM', true);
+  opt.result.Steps(1).Level = 'subject';
+
+  opt.result.Steps(1).Contrasts(1).Name = 'listening';
+
+  opt.result.Steps(1).Contrasts(2).Name = 'listening_inf_baseline';
+
+  % For each contrats, you can adapt:
+  %  - voxel level (p)
+  %  - cluster (k) level threshold
+  %  - type of multiple comparison:
+  %    - 'FWE' is the defaut
+  %    - 'FDR'
+  %    - 'none'
+  opt.result.Steps(1).Contrasts(2).MC =  'none';
+  opt.result.Steps(1).Contrasts(2).p = 0.05;
+  opt.result.Steps(1).Contrasts(2).k = 0;
+
+  % Specify how you want your output (all the following are on false by default)
+  %   opt.result.Steps(1).Output.png = true();
+  %   opt.result.Steps(1).Output.csv = true();
+  %   opt.result.Steps(1).Output.thresh_spm = true();
+  %   opt.result.Steps(1).Output.montage = true();
+  %   opt.result.Steps(1).Output.NIDM_results = true();
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);
