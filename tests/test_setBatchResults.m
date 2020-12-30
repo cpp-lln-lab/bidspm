@@ -20,7 +20,56 @@ function test_setBatchResultsBasic()
     
     matlabbatch = [];
     matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results);
+
+    expectedBatch = returnBasicExpectedResultsBatch();
     
+    assertEqual(matlabbatch, expectedBatch);
+    
+end
+
+function test_setBatchResultsExport()
+    
+    iStep = 1;
+    iCon = 1;
+    
+    results.dir = pwd;
+    results.label = '01';
+    results.nbSubj = 1;
+    results.contrastNb = 1;
+    
+    opt.result.Steps  = returnDefaultResultsStructureBasic();
+
+    opt.result.Steps.Output.png = true;
+    opt.result.Steps.Output.csv = true;
+    opt.result.Steps.Output.thresh_spm = true;
+    opt.result.Steps.Output.montage =  true;
+    opt.result.Steps.Output.NIDM_results =  true;
+    
+    opt.space = 'individual';
+    
+    matlabbatch = [];
+    matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results);
+
+    expectedBatch = returnBasicExpectedResultsBatch();
+    
+    expectedBatch{end}.spm.stats.results.export{1}.png = true;
+    expectedBatch{end}.spm.stats.results.export{2}.csv = true;
+    expectedBatch{end}.spm.stats.results.export{3}.tspm.basename = '';
+    
+    expectedBatch{end}.spm.stats.results.export{end + 1}.nidm.modality = 'FMRI';
+    expectedBatch{end}.spm.stats.results.export{end}.nidm.refspace = 'ixi';
+    expectedBatch{end}.spm.stats.results.export{end}.nidm.refspace = 'subject';
+    expectedBatch{end}.spm.stats.results.export{end}.nidm.group.nsubj = 1;
+    expectedBatch{end}.spm.stats.results.export{end}.nidm.group.label = '01';
+      
+    assertEqual(matlabbatch{1}.spm.stats.results.export, expectedBatch{1}.spm.stats.results.export);
+    
+end
+
+
+
+function expectedBatch = returnBasicExpectedResultsBatch()
+      
     expectedBatch = {};
     expectedBatch{end + 1}.spm.stats.results.spmmat = {fullfile(pwd, 'SPM.mat')};
     
@@ -34,10 +83,6 @@ function test_setBatchResultsBasic()
     
     expectedBatch{end}.spm.stats.results.units = 1;
     
-    expectedBatch{end}.spm.stats.results.export{1}.png = true;
-    expectedBatch{end}.spm.stats.results.export{2}.csv = true;
-    expectedBatch{end}.spm.stats.results.export{3}.tspm.basename = '';
-    
-    assertEqual(matlabbatch, expectedBatch);
-    
+    expectedBatch{end}.spm.stats.results.export = [];
+
 end

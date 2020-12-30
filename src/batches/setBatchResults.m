@@ -45,16 +45,25 @@ function matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
   matlabbatch{end}.spm.stats.results.conspec.conjunction = 1;
 
   matlabbatch{end}.spm.stats.results.conspec.mask.none = ...
-      ~opt.result.Steps(iStep).Contrasts(iCon).Mask;
+      ~opt.result.Steps(iStep).Contrasts(iCon).useMask;
 
   matlabbatch{end}.spm.stats.results.units = 1;
 
   % TODO
   % add flags to make those optional
-  matlabbatch{end}.spm.stats.results.export{1}.png = true;
-  matlabbatch{end}.spm.stats.results.export{2}.csv = true;
-  matlabbatch{end}.spm.stats.results.export{3}.tspm.basename = ...
+  matlabbatch{end}.spm.stats.results.export = [];
+  if opt.result.Steps(1).Output.png
+  matlabbatch{end}.spm.stats.results.export{end+1}.png = true;
+  end
+  
+  if opt.result.Steps(1).Output.csv
+  matlabbatch{end}.spm.stats.results.export{end+1}.csv = true;
+  end
+  
+  if opt.result.Steps(1).Output.thresh_spm
+  matlabbatch{end}.spm.stats.results.export{end+1}.tspm.basename = ...
       opt.result.Steps(iStep).Contrasts(iCon).Name;
+  end
 
   % TODO
   % add the possibility to create a montage
@@ -67,7 +76,7 @@ function matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
     matlabbatch{end}.spm.stats.results.export{end + 1}.nidm.modality = 'FMRI';
 
     matlabbatch{end}.spm.stats.results.export{end}.nidm.refspace = 'ixi';
-    if strcmp(opt.space, 'T1w')
+    if strcmp(opt.space, 'individual')
       matlabbatch{end}.spm.stats.results.export{end}.nidm.refspace = 'subject';
     end
 
