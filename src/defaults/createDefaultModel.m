@@ -56,7 +56,7 @@ function opt = createDefaultModel(BIDS, opt)
 
   trialTypeList = listAllTrialTypes(BIDS, opt);
 
-  content = createEmptyModel();
+  content = returnEmptyModel();
 
   content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList);
 
