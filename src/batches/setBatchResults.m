@@ -21,7 +21,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   % :returns: - :matlabbatch: (structure)
   %
   %
-  
+
   fieldsToSet = returnDefaultResultsStructure();
   result = setDefaultFields(result, fieldsToSet);
   result.Contrasts = replaceEmptyFields(result.Contrasts, fieldsToSet.Contrasts);
@@ -41,15 +41,15 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   matlabbatch{end}.spm.stats.results.export = [];
   if result.Output.png
-    matlabbatch{end}.spm.stats.results.export{end+1}.png = true;
+    matlabbatch{end}.spm.stats.results.export{end + 1}.png = true;
   end
-  
+
   if result.Output.csv
-    matlabbatch{end}.spm.stats.results.export{end+1}.csv = true;
+    matlabbatch{end}.spm.stats.results.export{end + 1}.csv = true;
   end
-  
+
   if result.Output.thresh_spm
-    matlabbatch{end}.spm.stats.results.export{end+1}.tspm.basename = result.Contrasts.Name;
+    matlabbatch{end}.spm.stats.results.export{end + 1}.tspm.basename = result.Contrasts.Name;
   end
 
   % TODO
@@ -75,15 +75,14 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
 end
 
-
 function struct = replaceEmptyFields(struct, fieldsToCheck)
-   
-    fieldsList = fieldnames(fieldsToCheck);
-    
-   for  iField = 1 : numel(fieldsList)
-       if isfield(struct, fieldsList{iField}) && isempty(struct.(fieldsList{iField}))
-            struct.(fieldsList{iField}) = fieldsToCheck.(fieldsList{iField});
-       end
-   end
-   
+
+  fieldsList = fieldnames(fieldsToCheck);
+
+  for  iField = 1:numel(fieldsList)
+    if isfield(struct, fieldsList{iField}) && isempty(struct.(fieldsList{iField}))
+      struct.(fieldsList{iField}) = fieldsToCheck.(fieldsList{iField});
+    end
+  end
+
 end

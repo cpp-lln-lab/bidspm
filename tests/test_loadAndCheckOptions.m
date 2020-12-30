@@ -138,7 +138,7 @@ function expectedOptions = defaultOptions()
   expectedOptions.model.hrfDerivatives = [0 0];
 
   expectedOptions.result.Steps = returnDefaultResultsStructure();
-  
+
   expectedOptions.parallelize.do = false;
   expectedOptions.parallelize.nbWorkers = 3;
   expectedOptions.parallelize.killOnExit = true;
