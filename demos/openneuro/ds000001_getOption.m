@@ -35,8 +35,7 @@ function opt = ds000001_getOption()
                                                    'Mask', false, ...
                                                    'MC', 'FWE', ... FWE, none, FDR
                                                    'p', 0.05, ...
-                                                   'k', 0, ...
-                                                   'NIDM', true));
+                                                   'k', 0));
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);

@@ -1,4 +1,6 @@
-function test_suite = test_createEmptyModel %#ok<*STOUT>
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+
+function test_suite = test_returnEmptyModel %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -6,9 +8,9 @@ function test_suite = test_createEmptyModel %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_createEmptyModelBasic()
+function test_returnEmptyModelBasic()
 
-  content = createEmptyModel();
+  content = returnEmptyModel();
 
   expectedContent = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), ...
                                           'dummyData', ...
