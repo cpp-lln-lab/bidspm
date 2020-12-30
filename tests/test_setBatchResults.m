@@ -11,11 +11,6 @@ function test_setBatchResultsBasic()
     iStep = 1;
     iCon = 1;
     
-    opt.result.Steps  = returnDefaultResultsStructureBasic();
-    
-    result.Contrasts = opt.result.Steps(iStep).Contrasts(iCon);
-    result.Output =  opt.result.Steps(iStep).Output;
-    
     result.dir = pwd;
     result.label = '01';
     result.nbSubj = 1;
@@ -35,8 +30,6 @@ function test_setBatchResultsExport()
     iStep = 1;
     iCon = 1;
     
-    opt.result.Steps  = returnDefaultResultsStructureBasic();
-    
     opt.result.Steps.Output.png = true;
     opt.result.Steps.Output.csv = true;
     opt.result.Steps.Output.thresh_spm = true;
@@ -45,7 +38,6 @@ function test_setBatchResultsExport()
     
     opt.space = 'individual';
     
-    result.Contrasts = opt.result.Steps(iStep).Contrasts(iCon);
     result.Output =  opt.result.Steps(iStep).Output;
     result.space = opt.space;
     

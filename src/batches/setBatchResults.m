@@ -21,6 +21,10 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   % :returns: - :matlabbatch: (structure)
   %
   %
+  
+  fieldsToSet = returnDefaultResultsStructureBasic();
+  
+  result = setDefaultFields(result, fieldsToSet);
 
   matlabbatch{end + 1}.spm.stats.results.spmmat = {fullfile(result.dir, 'SPM.mat')};
 
