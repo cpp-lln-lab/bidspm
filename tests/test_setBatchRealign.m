@@ -25,7 +25,7 @@ function test_setBatchRealignBasic()
   subID = '01';
 
   matlabbatch = [];
-  matlabbatch = setBatchRealign(matlabbatch, BIDS, subID, opt);
+  matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subID);
 
   expectedBatch{1}.spm.spatial.realignunwarp.eoptions.weight = {''};
   expectedBatch{end}.spm.spatial.realignunwarp.uwroptions.uwwhich = [2 1];

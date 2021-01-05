@@ -2,22 +2,24 @@
 
 function matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outDir, expression)
   %
-  % Short description of what the function does goes here.
+  % Set a batch for a image calculation
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outDir, expression)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  % :param input: list of images
+  % :type input: cell
+  % :param output: name of the output file
+  % :type output: string
+  % :param outDir: output directory
+  % :type outDir: string
+  % :param expression: mathematical expression to apply (for example '(i1+i2)>3')
+  % :type expression: string
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :matlabbatch:
   %
 
   printBatchName('image calculation');

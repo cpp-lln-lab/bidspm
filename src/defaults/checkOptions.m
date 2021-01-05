@@ -97,18 +97,15 @@ function fieldsToSet = setDefaultOption()
 
   %% Options for model specification and results
   fieldsToSet.model.file = '';
+  fieldsToSet.model.hrfDerivatives = [0 0];
   fieldsToSet.contrastList = {};
 
   % specify the results to compute
-  fieldsToSet.result.Steps = struct( ...
-                                    'Level',  '', ... % dataset, run, subject
-                                    'Contrasts', struct( ...
-                                                        'Name', '', ...
-                                                        'Mask', false, ...
-                                                        'MC', 'FWE', ... % FWE, none, FDR
-                                                        'p', 0.05, ...
-                                                        'k', 0, ...
-                                                        'NIDM', true));
+  fieldsToSet.result.Steps = returnDefaultResultsStructure();
+
+  fieldsToSet.parallelize.do = false;
+  fieldsToSet.parallelize.nbWorkers = 3;
+  fieldsToSet.parallelize.killOnExit = true;
 
 end
 

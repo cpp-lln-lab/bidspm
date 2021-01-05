@@ -46,6 +46,8 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
   printWorklowName('copy data');
 
+  manageWorkersPool('open', opt);
+
   %% All tasks in this experiment
   % raw directory and derivatives directory
   opt = setDerivativesDir(opt);
@@ -61,7 +63,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
   for iGroup = 1:length(group)
 
-    for iSub = 1:group(iGroup).numSub
+    parfor iSub = 1:group(iGroup).numSub
 
       subID = group(iGroup).subNumber{iSub};
 
@@ -118,6 +120,25 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
           copyModalityDir(srcFolder, targetFolder);
 
+          % for func we delete the files that are not of the task of interest
+          % ideally we would like not to copy in them in the first place but
+          % meh...
+          if strcmp(modalities{iModality}, 'func')
+
+            files = spm_select('FPListRec', ...
+                               fullfile(derivativesDir, subDir, sessionDir, 'func'), ...
+                               '^.*_task-.*$');
+
+            taskOfInterest = strfind(cellstr(files), opt.taskName);
+            notTaskOfInterest = ~cellfun('isempty', taskOfInterest);
+
+            files(notTaskOfInterest, :) = [];
+            for iFile = 1:size(files, 1)
+              delete(deblank(files(iFile, :)));
+            end
+
+          end
+
         end
 
       end
@@ -126,6 +147,8 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   end
 
   unzipFiles(derivativesDir, deleteZippedNii, opt);
+
+  manageWorkersPool('close', opt);
 
 end
 
@@ -177,7 +200,7 @@ function unzipFiles(derivativesDir, deleteZippedNii, opt)
 
   zippedNiifiles = spm_select('FPListRec', derivativesDir, '^.*.gz$');
 
-  for iFile = 1:size(zippedNiifiles, 1)
+  parfor iFile = 1:size(zippedNiifiles, 1)
 
     file = deblank(zippedNiifiles(iFile, :));
 

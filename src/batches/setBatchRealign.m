@@ -6,18 +6,18 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %
   % USAGE::
   %
-  %   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, [action = 'realign'])
+  %   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, [action = 'realign'], BIDS, opt, subID)
   %
   % :param matlabbatch: SPM batch
   % :type matlabbatch: structure
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param subID: subject label
-  % :type subID: string
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: structure
   % :param action: ``realign``, ``realignReslice``, ``realignUnwarp``
   % :type action: string
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :type subID: string
+  % :param subID: subject label
   %
   % :returns: - :matlabbatch: (structure) (dimension)
   %           - :voxDim: (array) (dimension)
@@ -26,10 +26,10 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   % make which image is resliced more consistent 'which = []'
 
   if numel(varargin) < 5
-    [matlabbatch, BIDS, subID, opt] = deal(varargin{:});
+    [matlabbatch, BIDS, opt, subID] = deal(varargin{:});
     action = '';
   else
-    [matlabbatch, BIDS, subID, opt, action] = deal(varargin{:});
+    [matlabbatch, action, BIDS, opt, subID] = deal(varargin{:});
   end
 
   if isempty(action)

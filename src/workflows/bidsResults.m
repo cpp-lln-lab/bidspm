@@ -29,58 +29,79 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
   matlabbatch = [];
 
+  % TOD0
+  % if it does not exist create the default "result" field from the BIDS model file
+
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
   for iStep = 1:length(opt.result.Steps)
 
-    for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
+    % Depending on the level step we migh have to define a matlabbatch
+    % for each subject or just on for the whole group
+    switch opt.result.Steps(iStep).Level
 
-      % Depending on the level step we migh have to define a matlabbatch
-      % for each subject or just on for the whole group
-      switch opt.result.Steps(iStep).Level
+      case 'run'
+        warning('run level not implemented yet');
 
-        case 'run'
-          warning('run level not implemented yet');
+        % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
 
-          % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
+      case 'subject'
 
-        case 'subject'
+        for iGroup = 1:length(group)
 
-          matlabbatch = ...
-              setBatchSubjectLevelResults( ...
-                                          matlabbatch, ...
-                                          group, ...
-                                          funcFWHM, ...
-                                          opt, ...
-                                          iStep, ...
-                                          iCon);
+          % For each subject
+          for iSub = 1:group(iGroup).numSub
 
-          % TODO
-          % Save this batch in for each subject and not once for all
+            for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
 
-          batchName = 'compute_subject_level_results';
+              % Get the Subject ID
+              subID = group(iGroup).subNumber{iSub};
 
-        case 'dataset'
+              matlabbatch = ...
+                  setBatchSubjectLevelResults( ...
+                                              matlabbatch, ...
+                                              opt, ...
+                                              subID, ...
+                                              funcFWHM, ...
+                                              iStep, ...
+                                              iCon);
 
-          rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
+            end
 
-          load(fullfile(rfxDir, 'SPM.mat'));
+          end
 
-          results.dir = rfxDir;
-          results.contrastNb = 1;
-          results.label = 'group level';
-          results.nbSubj = SPM.nscan;
+          batchName = sprintf('compute_sub-%s_results', subID);
+
+          saveAndRunWorkflow(matlabbatch, batchName, opt, subID);
+
+        end
+
+      case 'dataset'
+
+        results.dir = getRFXdir(opt, funcFWHM, conFWHM);
+        results.contrastNb = 1;
+        results.label = 'group level';
+
+        load(fullfile(results.dir, 'SPM.mat'));
+        results.nbSubj = SPM.nscan;
+
+        for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
 
           matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results);
 
-          batchName = 'compute_group_level_results';
+        end
 
-      end
+        batchName = 'compute_group_level_results';
+
+        saveAndRunWorkflow(matlabbatch, batchName, opt);
+
+      otherwise
+
+        error('This BIDS model does not contain an analysis step I understand.');
+
     end
 
   end
-
-  saveAndRunWorkflow(matlabbatch, batchName, opt);
 
   % move ps file
   % TODO

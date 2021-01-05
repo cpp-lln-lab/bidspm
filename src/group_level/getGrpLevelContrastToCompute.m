@@ -2,7 +2,7 @@
 
 function [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt)
   %
-  % Short description of what the function does goes here.
+  % Returns the autocontrast part of the dataset step of the BIDS model
   %
   % USAGE::
   %

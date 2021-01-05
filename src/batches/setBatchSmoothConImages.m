@@ -1,31 +1,28 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
+function matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt, funcFWHM, conFWHM)
   %
-  % Short description of what the function does goes here.
+  % Creates a batch to smooth all the con images of all subjects
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt, funcFWHM, conFWHM)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
-  % Options chosen for the analysis. See ``checkOptions()``.
+  % :param matlabbatch:
+  % :type matlabbatch:
+  % :param group:
+  % :type group:
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt:
+  % :param funcFWHM:
+  % :type funcFWHM:
+  % :param conFWHM:
+  % :type conFWHM:
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :matlabbatch:
   %
 
   printBatchName('smoothing contrast images');
-
-  counter = 0;
-
-  matlabbatch = {};
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)
@@ -34,8 +31,6 @@ function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
 
     for iSub = 1:group(iGroup).numSub
 
-      counter = counter + 1;
-
       subNumber = group(iGroup).subNumber{iSub};
 
       printProcessingSubject(groupName, iSub, subNumber);
@@ -43,17 +38,16 @@ function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
       ffxDir = getFFXdir(subNumber, funcFWHM, opt);
 
       conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
-      matlabbatch{counter}.spm.spatial.smooth.data = cellstr(conImg); %#ok<*AGROW>
+      data = cellstr(conImg);
 
-      % Define how much smoothing is required
-      matlabbatch{counter}.spm.spatial.smooth.fwhm = ...
-          [conFWHM conFWHM conFWHM];
-      matlabbatch{counter}.spm.spatial.smooth.dtype = 0;
-      matlabbatch{counter}.spm.spatial.smooth.prefix = [ ...
-                                                        spm_get_defaults('smooth.prefix'), ...
-                                                        num2str(conFWHM)];
+      matlabbatch = setBatchSmoothing( ...
+                                      matlabbatch, ...
+                                      data, ...
+                                      conFWHM, ...
+                                      [spm_get_defaults('smooth.prefix'), num2str(conFWHM)]);
 
     end
+
   end
 
 end

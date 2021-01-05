@@ -17,9 +17,9 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'CPP BIDS SPM'
-copyright = '2020, the CPP BIDS SPM pipeline dev team'
-author = 'the CPP BIDS SPM pipeline dev team'
+project = 'CPP SPM'
+copyright = '2020, the CPP SPM pipeline dev team'
+author = 'the CPP SPM pipeline dev team'
 
 # The full version, including alpha/beta/rc tags
 release = 'v0.1.0'

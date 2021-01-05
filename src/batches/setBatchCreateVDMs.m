@@ -1,13 +1,15 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchCreateVDMs(BIDS, opt, subID)
+function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
   %
   % Short description of what the function does goes here.
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchCreateVDMs(BIDS, opt, subID)
+  %   matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
   %
+  % :param matlabbatch:
+  % :type matlabbatch: structure
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
   % :param opt: structure or json filename containing the options. See
@@ -19,7 +21,6 @@ function matlabbatch = setBatchCreateVDMs(BIDS, opt, subID)
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
   % TODO
-  % assumes all the fieldmap relate to the current task
   % - implement for 'phase12', 'fieldmap', 'epi'
 
   printBatchName('create voxel displacement map');
@@ -30,7 +31,6 @@ function matlabbatch = setBatchCreateVDMs(BIDS, opt, subID)
   [fileName, subFuncDataDir] = getBoldFilename(BIDS, subID, sessions{1}, runs{1}, opt);
   refImage = validationInputFile(subFuncDataDir, fileName, 'mean_');
 
-  matlabbatch = [];
   for iSes = 1:nbSessions
 
     runs = bids.query(BIDS, 'runs', ...
@@ -40,33 +40,45 @@ function matlabbatch = setBatchCreateVDMs(BIDS, opt, subID)
 
     for iRun = 1:numel(runs)
 
-      matlabbatch = setBatchComputeVDM(matlabbatch, 'phasediff', refImage);
+      metadata = bids.query(BIDS, 'metadata', ...
+                            'modality', 'fmap', ...
+                            'sub', subID, ...
+                            'ses', sessions{iSes}, ...
+                            'run', runs{iRun});
 
-      % TODO
-      % Move to getInfo ?
-      fmapFiles = bids.query(BIDS, 'data', ...
-                             'modality', 'fmap', ...
-                             'sub', subID, ...
-                             'ses', sessions{iSes}, ...
-                             'run', runs{iRun});
+      if strfind(metadata.IntendedFor, opt.taskName)
 
-      phaseImage = fmapFiles{1};
-      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.phase = ...
-        {phaseImage};
+        matlabbatch = setBatchComputeVDM(matlabbatch, 'phasediff', refImage);
 
-      magnitudeImage = strrep(phaseImage, 'phasediff', 'magnitude1');
-      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.magnitude = ...
-        {magnitudeImage};
+        % TODO
+        % Move to getInfo ?
+        fmapFiles = bids.query(BIDS, 'data', ...
+                               'modality', 'fmap', ...
+                               'sub', subID, ...
+                               'ses', sessions{iSes}, ...
+                               'run', runs{iRun});
 
-      [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, ...
-                                                                   subID, ...
-                                                                   sessions{iSes}, ...
-                                                                   runs{iRun});
+        phaseImage = fmapFiles{1};
+        matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.phase = ...
+            {phaseImage};
 
-      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.et = echotimes;
-      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.tert = totReadTime;
-      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.blipdir = blipDir;
-      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval.epifm = isEPI;
+        magnitudeImage = strrep(phaseImage, 'phasediff', 'magnitude1');
+        matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.magnitude = ...
+            {magnitudeImage};
+
+        [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, ...
+                                                                     subID, ...
+                                                                     sessions{iSes}, ...
+                                                                     runs{iRun});
+
+        defaultsval = matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval;
+        defaultsval.et = echotimes;
+        defaultsval.tert = totReadTime;
+        defaultsval.blipdir = blipDir;
+        defaultsval.epifm = isEPI;
+        matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval = defaultsval;
+
+      end
 
     end
 
@@ -113,7 +125,7 @@ function isEPI = checkFmapPulseSequenceType(fmapMetadata)
   isEPI = 0;
 
   if isfield(fmapMetadata, 'PulseSequenceType') && ...
-     sum(strfind(fmapMetadata.PulseSequenceType, 'EPI')) ~= 0
+          sum(strfind(fmapMetadata.PulseSequenceType, 'EPI')) ~= 0
 
     isEPI = 1;
   end

@@ -22,7 +22,7 @@ function test_setBatchSaveCoregistrationMatrixBasic()
   opt.orderBatches.coregister = 1;
 
   matlabbatch = {};
-  matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt);
+  matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subID);
 
   expectedBatch = returnExpectedBatch();
   assertEqual(matlabbatch, expectedBatch);

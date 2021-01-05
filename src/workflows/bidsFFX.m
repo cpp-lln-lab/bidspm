@@ -33,7 +33,7 @@ function bidsFFX(action, opt, funcFWHM)
   end
 
   [BIDS, opt, group] = setUpWorkflow(opt, 'subject level GLM');
-  
+
   if isempty(opt.model.file)
     opt = createDefaultModel(BIDS, opt);
   end
@@ -49,32 +49,51 @@ function bidsFFX(action, opt, funcFWHM)
 
       printProcessingSubject(groupName, iSub, subID);
 
+      matlabbatch = [];
+
       switch action
 
         case 'specifyAndEstimate'
 
-          matlabbatch = setBatchSubjectLevelGLMSpec( ...
-                                                    BIDS, opt, subID, funcFWHM);
-
-          matlabbatch = setBatchFmriEstimate(matlabbatch);
+          matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subID, funcFWHM);
+          matlabbatch = setBatchPrintFigure(matlabbatch, [ ...
+                                                          'sub-', subID, ...
+                                                          '_task-', opt.taskName, ...
+                                                          '_design_before_estimation']);
+          matlabbatch = setBatchEstimateModel(matlabbatch);
+          matlabbatch = setBatchPrintFigure(matlabbatch, [ ...
+                                                          'sub-', subID, ...
+                                                          '_task-', opt.taskName, ...
+                                                          '_design_after_estimation']);
 
           batchName = ...
-            ['specify_estimate_ffx_task-', opt.taskName, ...
-             '_space-', opt.space, ...
-             '_FWHM-', num2str(funcFWHM)];
+              ['specify_estimate_ffx_task-', opt.taskName, ...
+               '_space-', opt.space, ...
+               '_FWHM-', num2str(funcFWHM)];
+
+          saveAndRunWorkflow(matlabbatch, batchName, opt, subID);
+
+          plot_power_spectra_of_GLM_residuals( ...
+                                              getFFXdir(subID, funcFWHM, opt), ...
+                                              opt.metadata.RepetitionTime);
+
+          deleteResidualImages(getFFXdir(subID, funcFWHM, opt));
+
+          movefile(['sub-', subID, '_task-', opt.taskName, 'design_*'], ...
+                   getFFXdir(subID, funcFWHM, opt));
 
         case 'contrasts'
 
-          matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM);
+          matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subID, funcFWHM);
 
           batchName = ...
-                          ['contrasts_ffx_task-', opt.taskName, ...
-                           '_space-', opt.space, ...
-                           '_FWHM-', num2str(funcFWHM)];
+              ['contrasts_ffx_task-', opt.taskName, ...
+               '_space-', opt.space, ...
+               '_FWHM-', num2str(funcFWHM)];
+
+          saveAndRunWorkflow(matlabbatch, batchName, opt, subID);
 
       end
-
-      saveAndRunWorkflow(matlabbatch, batchName, opt, subID);
 
     end
 

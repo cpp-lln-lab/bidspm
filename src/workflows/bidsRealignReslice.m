@@ -26,7 +26,7 @@ function bidsRealignReslice(opt)
 
     groupName = group(iGroup).name;
 
-    for iSub = 1:group(iGroup).numSub
+    parfor iSub = 1:group(iGroup).numSub
 
       % Get the ID of the subject
       % (i.e SubNumber doesnt have to match the iSub if one subject

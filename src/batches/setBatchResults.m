@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
+function matlabbatch = setBatchResults(matlabbatch, result)
   %
   % Outputs the typical matlabbatch to compute the results for a given contrast
   %
@@ -10,12 +10,6 @@ function matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
-  % :param opt:
-  % :type opt: structure
-  % :param iStep:
-  % :type iStep: positive integer
-  % :param iCon:
-  % :type iCon: positive integer
   % :param results:
   % :type results: structure
   %
@@ -28,53 +22,77 @@ function matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
   %
   %
 
-  matlabbatch{end + 1}.spm.stats.results.spmmat = {fullfile(results.dir, 'SPM.mat')};
+  fieldsToSet = returnDefaultResultsStructure();
+  result = setDefaultFields(result, fieldsToSet);
+  result.Contrasts = replaceEmptyFields(result.Contrasts, fieldsToSet.Contrasts);
 
-  matlabbatch{end}.spm.stats.results.conspec.titlestr = ...
-      opt.result.Steps(iStep).Contrasts(iCon).Name;
+  matlabbatch{end + 1}.spm.stats.results.spmmat = {fullfile(result.dir, 'SPM.mat')};
 
-  matlabbatch{end}.spm.stats.results.conspec.contrasts = results.contrastNb;
+  matlabbatch{end}.spm.stats.results.conspec.titlestr = returnName(result);
 
-  matlabbatch{end}.spm.stats.results.conspec.threshdesc = ...
-      opt.result.Steps(iStep).Contrasts(iCon).MC;
-
-  matlabbatch{end}.spm.stats.results.conspec.thresh = opt.result.Steps(iStep).Contrasts(iCon).p;
-
-  matlabbatch{end}.spm.stats.results.conspec.extent = opt.result.Steps(iStep).Contrasts(iCon).k;
-
+  matlabbatch{end}.spm.stats.results.conspec.contrasts = result.contrastNb;
+  matlabbatch{end}.spm.stats.results.conspec.threshdesc = result.Contrasts.MC;
+  matlabbatch{end}.spm.stats.results.conspec.thresh = result.Contrasts.p;
+  matlabbatch{end}.spm.stats.results.conspec.extent = result.Contrasts.k;
   matlabbatch{end}.spm.stats.results.conspec.conjunction = 1;
-
-  matlabbatch{end}.spm.stats.results.conspec.mask.none = ...
-      ~opt.result.Steps(iStep).Contrasts(iCon).Mask;
+  matlabbatch{end}.spm.stats.results.conspec.mask.none = ~result.Contrasts.useMask;
 
   matlabbatch{end}.spm.stats.results.units = 1;
 
-  % TODO
-  % add flags to make those optional
-  matlabbatch{end}.spm.stats.results.export{1}.png = true;
-  matlabbatch{end}.spm.stats.results.export{2}.csv = true;
-  matlabbatch{end}.spm.stats.results.export{3}.tspm.basename = ...
-      opt.result.Steps(iStep).Contrasts(iCon).Name;
+  matlabbatch{end}.spm.stats.results.export = [];
+  if result.Output.png
+    matlabbatch{end}.spm.stats.results.export{end + 1}.png = true;
+  end
 
-  % TODO
-  % add the possibility to create a montage
-  %   matlabbatch{1}.spm.stats.results.export{3}.montage.background = '<UNDEFINED>';
-  %   matlabbatch{1}.spm.stats.results.export{3}.montage.orientation = '<UNDEFINED>';
-  %   matlabbatch{1}.spm.stats.results.export{3}.montage.slices = '<UNDEFINED>';
+  if result.Output.csv
+    matlabbatch{end}.spm.stats.results.export{end + 1}.csv = true;
+  end
 
-  if opt.result.Steps(1).Contrasts(iCon).NIDM
+  if result.Output.thresh_spm
+    matlabbatch{end}.spm.stats.results.export{end + 1}.tspm.basename = returnName(result);
+  end
+
+  if result.Output.binary
+    matlabbatch{end}.spm.stats.results.export{end + 1}.binary.basename = [returnName(result), ...
+                                                                          '_mask'];
+  end
+
+  if result.Output.NIDM_results
 
     matlabbatch{end}.spm.stats.results.export{end + 1}.nidm.modality = 'FMRI';
 
     matlabbatch{end}.spm.stats.results.export{end}.nidm.refspace = 'ixi';
-    if strcmp(opt.space, 'T1w')
+    if strcmp(result.space, 'individual')
       matlabbatch{end}.spm.stats.results.export{end}.nidm.refspace = 'subject';
     end
 
-    matlabbatch{end}.spm.stats.results.export{end}.nidm.group.nsubj = results.nbSubj;
+    matlabbatch{end}.spm.stats.results.export{end}.nidm.group.nsubj = result.nbSubj;
 
-    matlabbatch{end}.spm.stats.results.export{end}.nidm.group.label = results.label;
+    matlabbatch{end}.spm.stats.results.export{end}.nidm.group.label = result.label;
 
+  end
+
+  if result.Output.montage.do
+
+    matlabbatch{end}.spm.stats.results.export{end + 1}.montage = setMontage(result);
+
+    % Not sure why the name of the figure does not come out right
+    matlabbatch{end + 1}.spm.util.print.fname = ['Montage' returnName(result)];
+    matlabbatch{end}.spm.util.print.fig.figname = 'SliceOverlay';
+    matlabbatch{end}.spm.util.print.opts = 'png';
+
+  end
+
+end
+
+function struct = replaceEmptyFields(struct, fieldsToCheck)
+
+  fieldsList = fieldnames(fieldsToCheck);
+
+  for  iField = 1:numel(fieldsList)
+    if isfield(struct, fieldsList{iField}) && isempty(struct.(fieldsList{iField}))
+      struct.(fieldsList{iField}) = fieldsToCheck.(fieldsList{iField});
+    end
   end
 
 end

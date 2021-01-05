@@ -32,7 +32,7 @@ function bidsCreateVDM(opt)
 
     groupName = group(iGroup).name;
 
-    for iSub = 1:group(iGroup).numSub
+    parfor iSub = 1:group(iGroup).numSub
 
       subID = group(iGroup).subNumber{iSub};
 
@@ -43,10 +43,19 @@ function bidsCreateVDM(opt)
 
         printProcessingSubject(groupName, iSub, subID);
 
-        matlabbatch = setBatchCoregistrationFmap(BIDS, opt, subID);
+        % Create rough mean of the 1rst run to improve SNR for coregistration
+        % TODO use the slice timed EPI if STC was used ?
+        sessions = getInfo(BIDS, subID, opt, 'Sessions');
+        runs = getInfo(BIDS, subID, opt, 'Runs', sessions{1});
+        [fileName, subFuncDataDir] = getBoldFilename(BIDS, subID, sessions{1}, runs{1}, opt);
+        spmup_basics(fullfile(subFuncDataDir, fileName), 'mean');
+
+        matlabbatch = [];
+        matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subID);
         saveAndRunWorkflow(matlabbatch, 'coregister_fmap', opt, subID);
 
-        matlabbatch = setBatchCreateVDMs(BIDS, opt, subID);
+        matlabbatch = [];
+        matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID);
         saveAndRunWorkflow(matlabbatch, 'create_vdm', opt, subID);
 
         % TODO

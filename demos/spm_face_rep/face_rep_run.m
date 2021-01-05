@@ -69,5 +69,5 @@ bidsSmoothing(FWHM, opt);
 bidsFFX('specifyAndEstimate', opt, FWHM);
 bidsFFX('contrasts', opt, FWHM);
 
-%TODO
+% TODO
 bidsResults(opt, FWHM);

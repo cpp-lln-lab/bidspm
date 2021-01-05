@@ -24,7 +24,7 @@ function test_setBatchCoregistrationFuncToAnatBasic()
   opt.orderBatches.realign = 2;
 
   matlabbatch = {};
-  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt);
+  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID);
 
   nbRuns = 4;
 
@@ -63,7 +63,7 @@ function test_setBatchCoregistrationFuncToAnatNoUnwarp()
   opt.orderBatches.realign = 2;
 
   matlabbatch = {};
-  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt);
+  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID);
 
   nbRuns = 4;
 

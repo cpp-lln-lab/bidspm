@@ -11,9 +11,9 @@ function anatomicalQA(opt)
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
-  
+
   if isOctave()
-    warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.')
+    warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.');
   end
 
   % if input has no opt, load the opt.mat file
@@ -31,7 +31,7 @@ function anatomicalQA(opt)
 
     groupName = group(iGroup).name;
 
-    for iSub = 1:group(iGroup).numSub
+    parfor iSub = 1:group(iGroup).numSub
 
       subID = group(iGroup).subNumber{iSub};
 

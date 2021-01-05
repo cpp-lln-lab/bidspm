@@ -28,6 +28,6 @@ function test_createDefaultModelBasic()
                                           'models', ...
                                           'model-default_smdl.json'));
 
-  assertEqual(content, expectedContent);
+  assertEqual(content.Steps, expectedContent.Steps);
 
 end

@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt)
+function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID)
   %
   % Set the batch for corregistering the functional images to the
   % anatomical image

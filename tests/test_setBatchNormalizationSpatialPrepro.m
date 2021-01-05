@@ -16,7 +16,7 @@ function test_setBatchNormalizationSpatialPreproBasic()
 
   matlabbatch = {};
   voxDim = [3 3 3];
-  matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt);
+  matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim);
 
   expectedBatch = returnExpectedBatch(voxDim);
 

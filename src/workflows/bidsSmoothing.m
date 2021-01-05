@@ -16,8 +16,6 @@ function bidsSmoothing(funcFWHM, opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
 
-
-
   %
 
   if nargin < 2
@@ -31,13 +29,14 @@ function bidsSmoothing(funcFWHM, opt)
 
     groupName = group(iGroup).name;
 
-    for iSub = 1:group(iGroup).numSub
+    parfor iSub = 1:group(iGroup).numSub
 
       subID = group(iGroup).subNumber{iSub};
 
       printProcessingSubject(groupName, iSub, subID);
 
-      matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM);
+      matlabbatch = [];
+      matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, funcFWHM);
 
       saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subID);
 

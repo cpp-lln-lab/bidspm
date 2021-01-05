@@ -41,13 +41,14 @@ function bidsSTC(opt)
 
     groupName = group(iGroup).name;
 
-    for iSub = 1:group(iGroup).numSub
+    parfor iSub = 1:group(iGroup).numSub
 
       subID = group(iGroup).subNumber{iSub};
 
       printProcessingSubject(groupName, iSub, subID);
 
-      matlabbatch = setBatchSTC(BIDS, opt, subID);
+      matlabbatch = [];
+      matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID);
 
       saveAndRunWorkflow(matlabbatch, 'STC', opt, subID);
 

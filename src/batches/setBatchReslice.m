@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages)
+function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages, interp)
   %
   % Set the batch for reslicing source images into the reference image???
   %
@@ -19,19 +19,26 @@ function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages)
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
 
-
   printBatchName('reslicing');
 
-  if ischar(referenceImg)
-    matlabbatch{end + 1}.spm.spatial.coreg.write.ref = {referenceImg};
+  if nargin < 4 || isempty(interp)
+    interp = 4;
+  end
 
-  elseif isstruct(referenceImg)
+  matlabbatch{end + 1}.spm.spatial.coreg.write.roptions.interp = interp;
+
+  if ischar(referenceImg)
+    matlabbatch{end}.spm.spatial.coreg.write.ref = {referenceImg};
+
+  else
+    matlabbatch{end}.spm.spatial.coreg.write.ref(1) = referenceImg;
   end
 
   if iscell(sourceImages)
-    matlabbatch{1}.spm.spatial.coreg.write.source = sourceImages;
+    matlabbatch{end}.spm.spatial.coreg.write.source = sourceImages;
 
-  elseif isstruct(sourceImages)
+  else
+    matlabbatch{end}.spm.spatial.coreg.write.source(1) = referenceImg;
   end
 
 end

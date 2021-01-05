@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName)
+function rfxDir = getRFXdir(opt, funcFWHM, conFWHM)
   %
   % Sets the name the group level analysis directory and creates it if it does not exist
   %
@@ -26,8 +26,7 @@ function rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName)
                     opt.derivativesDir, ...
                     'group', ...
                     ['rfx_task-', opt.taskName], ...
-                    ['rfx_funcFWHM-', num2str(funcFWHM), '_conFWHM-', num2str(conFWHM)], ...
-                    contrastName);
+                    ['rfx_funcFWHM-', num2str(funcFWHM), '_conFWHM-', num2str(conFWHM)]);
 
   if ~exist(rfxDir, 'dir')
     mkdir(rfxDir);

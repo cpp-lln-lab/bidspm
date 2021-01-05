@@ -6,16 +6,16 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSubjectLevelResults(matlabbatch, grp, funcFWHM, opt, iStep, iCon)
+  %   matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subID, funcFWHM, iStep, iCon)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
-  % :param grp:
-  % :type grp:
-  % :param funcFWHM:
-  % :type funcFWHM: float
   % :param opt:
   % :type opt: structure
+  % :param subID:
+  % :type subID: string
+  % :param funcFWHM:
+  % :type funcFWHM: float
   % :param iStep:
   % :type iStep: positive integer
   % :param iCon:
@@ -24,43 +24,61 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   % :returns: - :matlabbatch: (structure)
   %
 
-  [matlabbatch, grp, funcFWHM, opt, iStep, iCon] = deal(varargin{:});
+  [matlabbatch, opt, subID, funcFWHM, iStep, iCon] = deal(varargin{:});
 
-  for iGroup = 1:length(grp)
+  result.Contrasts = opt.result.Steps(iStep).Contrasts(iCon);
 
-    % For each subject
-    for iSub = 1:grp(iGroup).numSub
+  if isfield(opt.result.Steps(iStep), 'Output')
+    result.Output =  opt.result.Steps(iStep).Output;
+  end
+  result.space = opt.space;
 
-      % Get the Subject ID
-      subID = grp(iGroup).subNumber{iSub};
+  result.dir = getFFXdir(subID, funcFWHM, opt);
+  result.label = subID;
+  result.nbSubj = 1;
 
-      % FFX Directory
-      ffxDir = getFFXdir(subID, funcFWHM, opt);
+  result.contrastNb = getContrastNb(result);
 
-      load(fullfile(ffxDir, 'SPM.mat'));
+  matlabbatch = setBatchResults(matlabbatch, result);
 
-      % identify which contrast nb actually has the name the user asked
-      conNb = find( ...
-                   strcmp({SPM.xCon.name}', ...
-                          opt.result.Steps(iStep).Contrasts(iCon).Name));
+end
 
-      if isempty(conNb)
-        sprintf('List of contrast in this SPM file');
-        disp({SPM.xCon.name}');
-        error( ...
-              'This SPM file %s does not contain a contrast named %s', ...
-              fullfile(ffxDir, 'SPM.mat'), ...
-              opt.result.Steps(1).Contrasts(iCon).Name);
-      end
+function contrastNb = getContrastNb(result)
+  %
+  % identify which contrast nb actually has the name the user asked
+  %
 
-      results.dir = ffxDir;
-      results.contrastNb = conNb;
-      results.label = subID;
-      results.nbSubj = 1;
+  load(fullfile(result.dir, 'SPM.mat'));
 
-      matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results);
+  if isempty(result.Contrasts.Name)
 
-    end
+    printAvailabileContrasts(SPM);
+
+    errorStruct.identifier = 'setBatchSubjectLevelResults:missingContrastName';
+    errorStruct.message = 'No contrast name specified';
+    error(errorStruct);
+
   end
 
+  contrastNb = find(strcmp({SPM.xCon.name}', result.Contrasts.Name));
+
+  if isempty(contrastNb)
+
+    printAvailabileContrasts(SPM);
+
+    errorStruct.identifier = 'setBatchSubjectLevelResults:NoMatchingContrastName';
+    errorStruct.message = sprintf( ...
+                                  'This SPM file %s does not contain a contrast named %s', ...
+                                  fullfile(result.dir, 'SPM.mat'), ...
+                                  result.Contrasts.Name);
+
+    error(errorStruct);
+
+  end
+
+end
+
+function printAvailabileContrasts(SPM)
+  sprintf('List of contrast in this SPM file');
+  disp({SPM.xCon.name}');
 end
