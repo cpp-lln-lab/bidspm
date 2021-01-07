@@ -47,7 +47,10 @@ function bidsSpatialPrepro(opt)
   opt.orderBatches.selectAnat = 1;
   opt.orderBatches.realign = 2;
   opt.orderBatches.coregister = 3;
+  opt.orderBatches.saveCoregistrationMatrix = 4;
   opt.orderBatches.segment = 5;
+  opt.orderBatches.skullStripping = 6;
+  opt.orderBatches.skullStrippingMask = 7;
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)
