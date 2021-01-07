@@ -48,7 +48,7 @@ function bidsSpatialPrepro(opt)
   opt.orderBatches.realign = 2;
   opt.orderBatches.coregister = 3;
   opt.orderBatches.segment = 5;
-  
+
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)
 
@@ -65,7 +65,6 @@ function bidsSpatialPrepro(opt)
       printProcessingSubject(groupName, iSub, subID);
 
       matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
-      
 
       % if action is emtpy then only realign will be done
       action = [];
