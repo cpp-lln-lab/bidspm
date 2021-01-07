@@ -63,7 +63,8 @@
         "infra",
         "design",
         "review",
-        "bug"
+        "bug",
+        "test"
       ]
     },
     {
