@@ -17,6 +17,7 @@
         "doc"
       ]
     },
+    {
       "login": "anege",
       "name": "anege",
       "avatar_url": "https://avatars0.githubusercontent.com/u/50317099?v=4",
@@ -26,6 +27,7 @@
         "design"
       ]
     },
+    {
       "login": "mohmdrezk",
       "name": "Mohamed Rezk",
       "avatar_url": "https://avatars2.githubusercontent.com/u/9597815?v=4",
@@ -36,6 +38,7 @@
         "design"
       ]
     },
+    {
       "login": "marcobarilari",
       "name": "marcobarilari",
       "avatar_url": "https://avatars3.githubusercontent.com/u/38101692?v=4",
@@ -44,7 +47,9 @@
         "code",
         "design",
         "review",
-        "doc"
+        "doc",
+        "test",
+        "bug"
       ]
     },
     {
@@ -57,13 +62,35 @@
         "doc",
         "infra",
         "design",
-        "review"
+        "review",
+        "bug"
+      ]
+    },
+    {
+      "login": "fedefalag",
+      "name": "Fede F.",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/50373329?v=4",
+      "profile": "https://github.com/fedefalag",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "CerenB",
+      "name": "CerenB",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/10451654?v=4",
+      "profile": "https://github.com/CerenB",
+      "contributions": [
+        "bug",
+        "content",
+        "doc"
       ]
     }
   ],
   "contributorsPerLine": 7,
-  "projectName": "CPP_BIDS_SPM_pipeline",
+  "projectName": "CPP_SPM",
   "projectOwner": "cpp-lln-lab",
   "repoType": "github",
-  "repoHost": "https://github.com"
+  "repoHost": "https://github.com",
+  "skipCi": true
 }
