@@ -44,12 +44,17 @@ function bidsSpatialPrepro(opt)
 
   [BIDS, opt, group] = setUpWorkflow(opt, 'spatial preprocessing');
 
+  opt.orderBatches.selectAnat = 1;
+  opt.orderBatches.realign = 2;
+  opt.orderBatches.coregister = 3;
+  opt.orderBatches.segment = 5;
+  
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)
 
     groupName = group(iGroup).name;
 
-    for iSub = 1:group(iGroup).numSub
+    parfor iSub = 1:group(iGroup).numSub
 
       matlabbatch = [];
       % Get the ID of the subject
@@ -60,7 +65,7 @@ function bidsSpatialPrepro(opt)
       printProcessingSubject(groupName, iSub, subID);
 
       matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
-      opt.orderBatches.selectAnat = 1;
+      
 
       % if action is emtpy then only realign will be done
       action = [];
@@ -68,17 +73,14 @@ function bidsSpatialPrepro(opt)
         action = 'realign';
       end
       [matlabbatch, voxDim] = setBatchRealign(matlabbatch, action, BIDS, opt, subID);
-      opt.orderBatches.realign = 2;
 
       % dependency from file selector ('Anatomical')
       matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID);
-      opt.orderBatches.coregister = 3;
 
       matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subID);
 
       % dependency from file selector ('Anatomical')
       matlabbatch = setBatchSegmentation(matlabbatch, opt);
-      opt.orderBatches.segment = 5;
 
       matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subID);
 
