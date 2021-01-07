@@ -21,10 +21,10 @@ function manageWorkersPool(action, opt)
   %
 
   if ~opt.parallelize.do
-      opt.parallelize.nbWorkers = 1;
-      opt.parallelize.killOnExit = true;
+    opt.parallelize.nbWorkers = 1;
+    opt.parallelize.killOnExit = true;
   end
-  
+
   if ~isOctave()
 
     matlabVer = version('-release');
@@ -61,11 +61,11 @@ function manageWorkersPool(action, opt)
         if opt.parallelize.killOnExit
 
           if str2double(matlabVer(1:4)) > 2013
-              
-              pool = gcp('nocreate');
-              if ~isempty(pool) 
-                delete(gcp);
-              end
+
+            pool = gcp('nocreate');
+            if ~isempty(pool)
+              delete(gcp);
+            end
 
           else
             matlabpool close;
