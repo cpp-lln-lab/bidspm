@@ -83,7 +83,9 @@
       "contributions": [
         "bug",
         "content",
-        "doc"
+        "doc",
+        "code",
+        "review"
       ]
     }
   ],
