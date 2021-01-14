@@ -79,7 +79,7 @@ function bidsFFX(action, opt, funcFWHM)
 
           deleteResidualImages(getFFXdir(subID, funcFWHM, opt));
 
-          movefile(['sub-', subID, '_task-', opt.taskName, 'design_*'], ...
+          movefile(['sub-', subID, '_task-', opt.taskName, '_design_*'], ...
                    getFFXdir(subID, funcFWHM, opt));
 
         case 'contrasts'
