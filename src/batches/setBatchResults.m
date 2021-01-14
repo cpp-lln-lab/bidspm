@@ -77,7 +77,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
     matlabbatch{end}.spm.stats.results.export{end + 1}.montage = setMontage(result);
 
     % Not sure why the name of the figure does not come out right
-    matlabbatch{end + 1}.spm.util.print.fname = ['Montage' returnName(result)];
+    matlabbatch{end + 1}.spm.util.print.fname = ['Montage_' returnName(result)];
     matlabbatch{end}.spm.util.print.fig.figname = 'SliceOverlay';
     matlabbatch{end}.spm.util.print.opts = 'png';
 
