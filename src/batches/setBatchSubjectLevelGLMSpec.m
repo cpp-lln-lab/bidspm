@@ -31,9 +31,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   if isempty(sliceOrder)
     % no slice order defined here so we fall back on using the number of
-    % slice in the first bold imageBIDS, opt, subID, funcFWHM, iSes, iRun
-    % to set the number of time bins we will use to upsample our model
-    % during regression creation
+    % slice in the first bold image to set the number of time bins
+    % we will use to upsample our model during regression creation
     fileName = bids.query(BIDS, 'data', ...
                           'sub', subID, ...
                           'type', 'bold');
@@ -53,7 +52,14 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   nbTimeBins = numel(unique(sliceOrder));
   matlabbatch{end}.spm.stats.fmri_spec.timing.fmri_t = nbTimeBins;
 
-  refBin = floor(nbTimeBins / 2);
+  % If no reference slice is given for STC, then STC took the mid-volume
+  % time point to do the correction.
+  % When no STC was done, this is usually a good way to do it too.
+  if isempty(opt.STC_referenceSlice)
+    refBin = floor(nbTimeBins / 2);
+  else
+    refBin = opt.STC_referenceSlice / opt.metadata.RepetitionTime;
+  end
   matlabbatch{end}.spm.stats.fmri_spec.timing.fmri_t0 = refBin;
 
   % Create ffxDir if it doesnt exist
