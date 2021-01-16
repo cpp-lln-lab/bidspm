@@ -18,11 +18,11 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID)
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
-  % Slice timing units is in milliseconds to be BIDS compliant and not in slice number
+  % Slice timing units is in seconds to be BIDS compliant and not in slice number
   % as is more traditionally the case with SPM.
   %
   % In the case the slice timing information was not specified in the json FILES
-  % in the BIDS data set (e.g it couldnt be extracted from the trento old scanner),
+  % in the BIDS data set (e.g it couldn't be extracted from the trento old scanner),
   % then add this information manually in opt.sliceOrder field.
   %
   % If this is empty the slice timing correction will not be performed
@@ -57,19 +57,31 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID)
   else
     referenceSlice = opt.STC_referenceSlice;
   end
-  if referenceSlice > TA
-    error('%s (%f) %s (%f).\n%s', ...
-          'The reference slice time', referenceSlice, ...
-          'is greater than the acquisition time', TA, ...
-          ['Reference slice time must be in milliseconds ' ...
-           'or leave it empty to use mid-acquisition time as reference.']);
+  if TA >= TR || referenceSlice > TA || any(sliceOrder > TA)
+
+    pattern = repmat ('%.3f, ', 1, numel(sliceOrder));
+    pattern(end) = [];
+
+    msg = sprintf([ ...
+                   'Impossible values on slice timing input:\n\n', ...
+                   '  repetition time > acquisition time > reference slice.\n\n', ...
+                   'All STC values in the opt structure must be in seconds.\n', ...
+                   'Current values:', ...
+                   '\n- repetition time: %f', ...
+                   '\n- acquisition time: %f', ...
+                   '\n- reference slice: %f', ...
+                   '\n- slice order: ' pattern], TR, TA, referenceSlice, sliceOrder);
+
+    errorStruct.identifier = 'setBatchSTC:invalidInputTime';
+    errorStruct.message = msg;
+    error(errorStruct);
   end
 
   matlabbatch{end + 1}.spm.temporal.st.nslices = nbSlices;
   matlabbatch{end}.spm.temporal.st.tr = TR;
   matlabbatch{end}.spm.temporal.st.ta = TA;
-  matlabbatch{end}.spm.temporal.st.so = sliceOrder;
-  matlabbatch{end}.spm.temporal.st.refslice = referenceSlice;
+  matlabbatch{end}.spm.temporal.st.so = sliceOrder * 1000;
+  matlabbatch{end}.spm.temporal.st.refslice = referenceSlice * 1000;
 
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 

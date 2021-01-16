@@ -81,6 +81,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.anatReference.session = [];
 
   %% Options for slice time correction
+  % all in seconds
   fieldsToSet.STC_referenceSlice = [];
   fieldsToSet.sliceOrder = [];
 

@@ -29,8 +29,9 @@ function test_setBatchSTCForce()
   opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
   opt.taskName = 'vislocalizer';
   % we give it some slice timing value to force slice timing to happen
-  opt.sliceOrder = 1:5;
-  opt.STC_referenceSlice = 1.24 / 2;
+  opt.sliceOrder = linspace(0, 1.6, 10);
+  opt.sliceOrder(end - 1:end) = [];
+  opt.STC_referenceSlice = 1.6 / 2;
 
   opt = checkOptions(opt);
 
@@ -100,6 +101,29 @@ function test_setBatchSTCBasic()
 
 end
 
+function test_setBatchSTCErrorInvalidInputTime()
+
+  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+  opt.taskName = 'vislocalizer';
+
+  opt.sliceOrder = linspace(0, 1.6, 10);
+  opt.sliceOrder(end) = [];
+  opt.STC_referenceSlice = 2; % impossible reference value
+
+  opt = checkOptions(opt);
+
+  subID = '02';
+
+  [~, opt, BIDS] = getData(opt);
+
+  matlabbatch = [];
+
+  assertExceptionThrown( ...
+                        @()setBatchSTC(matlabbatch, BIDS, opt, subID), ...
+                        'setBatchSTC:invalidInputTime');
+
+end
+
 function expectedBatch = returnExpectedBatch(sliceOrder, referenceSlice, TR)
 
   nbSlices = length(sliceOrder);
@@ -108,7 +132,7 @@ function expectedBatch = returnExpectedBatch(sliceOrder, referenceSlice, TR)
   expectedBatch{1}.spm.temporal.st.nslices = nbSlices;
   expectedBatch{1}.spm.temporal.st.tr = TR;
   expectedBatch{1}.spm.temporal.st.ta = TA;
-  expectedBatch{1}.spm.temporal.st.so = sliceOrder;
-  expectedBatch{1}.spm.temporal.st.refslice = referenceSlice;
+  expectedBatch{1}.spm.temporal.st.so = sliceOrder * 1000;
+  expectedBatch{1}.spm.temporal.st.refslice = referenceSlice * 1000;
 
 end
