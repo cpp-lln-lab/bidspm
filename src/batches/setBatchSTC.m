@@ -22,7 +22,7 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID)
   % as is more traditionally the case with SPM.
   %
   % In the case the slice timing information was not specified in the json FILES
-  % in the BIDS data set (e.g it couldnt be extracted from the trento old scanner),
+  % in the BIDS data set (e.g it couldn't be extracted from the trento old scanner),
   % then add this information manually in opt.sliceOrder field.
   %
   % If this is empty the slice timing correction will not be performed
