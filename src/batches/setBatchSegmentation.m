@@ -34,9 +34,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
           '.', 'val', '{}', {1}), ...
           substruct('.', 'files', '{}', {1}));
   else
-      matlabbatch{end + 1}.spm.spatial.preproc.channel.vols = ...
-          {'/Users/battal/Cerens_files/fMRI/Processed/RhythmCateg/PitchFT/derivatives/cpp_spm/sub-011/ses-001/func/wmeanuasub-011_ses-001_task-PitchFT_run-001_bold.nii,1'};
-      %matlabbatch{end + 1}.spm.spatial.preproc.channel.vols = imageToSegment;
+      matlabbatch{end + 1}.spm.spatial.preproc.channel.vols = {imageToSegment};
   end
       
           
