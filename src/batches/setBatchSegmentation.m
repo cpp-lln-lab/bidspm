@@ -34,7 +34,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
           '.', 'val', '{}', {1}), ...
           substruct('.', 'files', '{}', {1}));
   else
-      matlabbatch{end + 1}.spm.spatial.preproc.channel.vols(1) = imageToSegment;
+      matlabbatch{end + 1}.spm.spatial.preproc.channel.vols = imageToSegment;
   end
       
           
