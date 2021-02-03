@@ -36,8 +36,19 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subID)
 
   printBatchName('skull stripping');
 
+  
   [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
   output = ['m' strrep(anatImage, '.nii', '_skullstripped.nii')];
+  dataDir = anatDataDir;
+  maskOutput = ['m' strrep(anatImage, '.nii', '_mask.nii')];
+  
+  if opt.skullStripMeanImg == 1
+      [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt);
+      output = ['m' strrep(meanImage, '.nii', '_skullstripped.nii')];
+      maskOutput = ['m' strrep(meanImage, '.nii', '_mask.nii')];
+      dataDir = meanFuncDir;
+  end
+  
   expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
 
   % if this is part of a pipeline we get the segmentation dependency to get
@@ -106,13 +117,13 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subID)
 
   end
 
-  matlabbatch = setBatchImageCalculation(matlabbatch, input, output, anatDataDir, expression);
+  matlabbatch = setBatchImageCalculation(matlabbatch, input, output, dataDir, expression);
 
   %% Add a batch to output the mask
   matlabbatch{end + 1} = matlabbatch{end};
   matlabbatch{end}.spm.util.imcalc.expression = sprintf( ...
                                                         '(i2+i3+i4)>%f', ...
                                                         opt.skullstrip.threshold);
-  matlabbatch{end}.spm.util.imcalc.output = ['m' strrep(anatImage, '.nii', '_mask.nii')];
+  matlabbatch{end}.spm.util.imcalc.output = maskOutput;
 
 end
