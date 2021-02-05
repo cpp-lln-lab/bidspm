@@ -42,6 +42,9 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subID)
   dataDir = anatDataDir;
   maskOutput = ['m' strrep(anatImage, '.nii', '_mask.nii')];
   
+  % best way would be in the dependencies of SPM, get the folder and file
+  % name and use those to save the output
+  
   % if the input image is mean func image instead of anatomical
   if opt.skullStripMeanImg == 1
       [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt);
