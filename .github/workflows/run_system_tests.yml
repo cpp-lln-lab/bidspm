@@ -1,4 +1,4 @@
-name: tests
+name: system tests
 
 # Uses the cron schedule for github actions
 # 
@@ -68,12 +68,6 @@ jobs:
         cd tests
         sh createDummyDataSet.sh
         cd ..
-
-    - name: Run tests
-      run: |
-        octave $OCTFLAGS --eval "runTests"
-        cat test_report.log | grep 0
-        bash <(curl -s https://codecov.io/bash) 
 
     - name: Run system tests
       run: |
