@@ -1,0 +1,29 @@
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: 'dev'
+
+jobs:
+  build:
+
+    language: ruby
+
+    services:
+      - docker
+
+    before_install:
+    - docker pull ferrarimarco/github-changelog-generator:latest
+    - docker run ferrarimarco/github-changelog-generator
+
+    script:
+    - if (git log -1 --pretty=%s | grep Merge*) && (! git log -1 --pretty=%b | grep REL:) ; then
+         github_changelog_generator --user cpp-lln-lab --project CPP-SPM --token ${CHANGE_TOKEN} --output ~/build/CHANGES.md --base ~/build/src/pregh-changes.md --header-label "# Changelog" --no-issues --no-issues-wo-labels --no-filter-by-milestone --no-compare-link --pr-label "" --release-branch master
+         cat ~/build/CHANGES.md
+         mv ~/build/CHANGES.md ~/build/doc/CHANGES.md
+       else
+         echo "Commit or Release, do nothing"
+       fi
+
+      
