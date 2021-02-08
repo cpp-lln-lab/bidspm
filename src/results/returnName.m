@@ -7,7 +7,7 @@ function name = returnName(result)
                  result.Contrasts.p, ...
                  result.Contrasts.k, ...
                  result.Contrasts.MC);
-             
+
   name = strrep(name, '.', '');
 
 end
