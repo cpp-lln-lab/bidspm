@@ -22,10 +22,14 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
   % define SPM folder
   spmLocation = spm('dir');
 
+  % save bias correction field = false
+  % save bias corrected image = true
+  matlabbatch{end + 1}.spm.spatial.preproc.channel.write = [false true];
+
   if isfield(opt, 'orderBatches') && isfield(opt.orderBatches, 'selectAnat')
 
     % SAVE BIAS CORRECTED IMAGE
-    matlabbatch{end + 1}.spm.spatial.preproc.channel.vols(1) = ...
+    matlabbatch{end}.spm.spatial.preproc.channel.vols(1) = ...
         cfg_dep('Named File Selector: Anatomical(1) - Files', ...
                 substruct( ...
                           '.', 'val', '{}', {opt.orderBatches.selectAnat}, ...
@@ -34,14 +38,22 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
                           '.', 'val', '{}', {1}), ...
                 substruct('.', 'files', '{}', {1}));
   else
-    matlabbatch{end + 1}.spm.spatial.preproc.channel.vols = {imageToSegment};
+
+    % in case a cell was given as input
+    if iscell(imageToSegment)
+      imageToSegment = char(imageToSegment);
+    end
+
+    % add all the images to segment
+    for iImg = 1:size(imageToSegment, 1)
+      file = validationInputFile([], deblank(imageToSegment(iImg, :)));
+      matlabbatch{end}.spm.spatial.preproc.channel.vols{iImg, 1} = file;
+    end
+
   end
 
   matlabbatch{end}.spm.spatial.preproc.channel.biasreg = 0.001;
   matlabbatch{end}.spm.spatial.preproc.channel.biasfwhm = 60;
-  % save bias correction field = false
-  % save bias corrected image = true
-  matlabbatch{end}.spm.spatial.preproc.channel.write = [false true];
 
   % CREATE SEGMENTS IN NATIVE SPACE OF GM,WM AND CSF
   matlabbatch{end}.spm.spatial.preproc.tissue(1).tpm = ...
