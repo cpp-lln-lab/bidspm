@@ -16,8 +16,9 @@ jobs:
       image: ferrarimarco/github-changelog-generator:1.14.3
 
     steps:
+      - uses: actions/checkout@v2
+
       - name: Run changelog builder
-        uses: actions/checkout@v2
         run: if (git log -1 --pretty=%s | grep Merge*) && (! git log -1 --pretty=%b | grep REL:) ; then
 
               github_changelog_generator --user cpp-lln-lab --project CPP-SPM --token ${CHANGE_TOKEN} \
