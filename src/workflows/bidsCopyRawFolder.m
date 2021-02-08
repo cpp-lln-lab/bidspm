@@ -51,8 +51,8 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   %% All tasks in this experiment
   % raw directory and derivatives directory
   opt = setDerivativesDir(opt);
-  rawDir = opt.dataDir;
-  derivativesDir = opt.derivativesDir;
+
+  [rawDir, derivativesDir] = returnRawAndDerivativeDir(opt);
 
   createDerivativeDir(opt);
 
@@ -63,12 +63,11 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
   for iGroup = 1:length(group)
 
-    parfor iSub = 1:group(iGroup).numSub
+    for iSub = 1:group(iGroup).numSub
 
       subID = group(iGroup).subNumber{iSub};
 
-      % the folder containing the subjects data
-      subDir = ['sub-', subID];
+      subDir = returnSubjectDir(subID);
 
       fprintf('copying subject: %s \n', subDir);
 
@@ -87,10 +86,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
       for iSes = 1:nbSessions
 
-        sessionDir = [];
-        if ~isempty(sessions{iSes})
-          sessionDir = ['ses-' sessions{iSes}];
-        end
+        sessionDir = returnSessionDir(sessions{iSes});
 
         fprintf(' copying session: %s \n', sessionDir);
 
@@ -106,37 +102,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
                                 'ses', sessions{iSes});
         modalities = intersect(modalities, modalitiesToCopy);
 
-        for iModality = 1:numel(modalities)
-
-          targetFolder = fullfile(derivativesDir, ...
-                                  subDir, ...
-                                  sessionDir);
-
-          [~, ~, ~] = mkdir(fullfile(targetFolder, modalities{iModality}));
-
-          srcFolder = fullfile(rawDir, ...
-                               subDir, ...
-                               sessionDir, ...
-                               modalities{iModality});
-
-          % for func we only copy the files of the task of interest
-          if strcmp(modalities{iModality}, 'func')
-
-            files = bids.query(BIDS, 'data', ...
-                               'sub', subID, ...
-                               'ses', sessions{iSes}, ...
-                               'task', opt.taskName);
-
-            for iFile = 1:size(files, 1)
-              copyToDerivative(files{iFile}, fullfile(targetFolder, 'func'));
-            end
-
-          else
-            copyToDerivative(srcFolder, targetFolder);
-
-          end
-
-        end
+        copyModalities(BIDS, opt, modalities, subID, sessions{iSes});
 
       end
     end
@@ -146,6 +112,28 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   unzipFiles(derivativesDir, deleteZippedNii, opt);
 
   manageWorkersPool('close', opt);
+
+end
+
+function [rawDir, derivativesDir] = returnRawAndDerivativeDir(opt)
+
+  rawDir = opt.dataDir;
+  derivativesDir = opt.derivativesDir;
+
+end
+
+function subDir = returnSubjectDir(subID)
+
+  subDir = ['sub-', subID];
+
+end
+
+function sessionDir = returnSessionDir(session)
+
+  sessionDir = [];
+  if ~isempty(session)
+    sessionDir = ['ses-' session];
+  end
 
 end
 
@@ -160,6 +148,48 @@ function copyTsvJson(srcDir, targetDir)
 
       copyfile(fullfile(srcDir, ['*.' ext{i}]), targetDir);
       fprintf(1, ' %s files copied\n', ext{i});
+
+    end
+
+  end
+
+end
+
+function copyModalities(BIDS, opt, modalities, subID, session)
+
+  [rawDir, derivativesDir] = returnRawAndDerivativeDir(opt);
+
+  subDir = returnSubjectDir(subID);
+
+  sessionDir = returnSessionDir(session);
+
+  for iModality = 1:numel(modalities)
+
+    targetFolder = fullfile(derivativesDir, ...
+                            subDir, ...
+                            sessionDir);
+
+    [~, ~, ~] = mkdir(fullfile(targetFolder, modalities{iModality}));
+
+    srcFolder = fullfile(rawDir, ...
+                         subDir, ...
+                         sessionDir, ...
+                         modalities{iModality});
+
+    % for func we only copy the files of the task of interest
+    if strcmp(modalities{iModality}, 'func')
+
+      files = bids.query(BIDS, 'data', ...
+                         'sub', subID, ...
+                         'ses', session, ...
+                         'task', opt.taskName);
+
+      for iFile = 1:size(files, 1)
+        copyToDerivative(files{iFile}, fullfile(targetFolder, 'func'));
+      end
+
+    else
+      copyToDerivative(srcFolder, targetFolder);
 
     end
 
