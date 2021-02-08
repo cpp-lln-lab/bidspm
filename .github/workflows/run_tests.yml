@@ -61,10 +61,10 @@ jobs:
         sh createDummyDataSet.sh
         cd ..
 
-    # - name: Run tests
-    #   run: |
-    #     octave $OCTFLAGS --eval "runTests"
-    #     cat test_report.log | grep 0
+    - name: Run tests
+      run: |
+        octave $OCTFLAGS --eval "runTests"
+        cat test_report.log | grep 0
 
 
     # - name: "Run demo"
