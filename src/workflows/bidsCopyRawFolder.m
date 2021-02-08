@@ -72,7 +72,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
       fprintf('copying subject: %s \n', subDir);
 
-      mkdir(fullfile(derivativesDir, subDir));
+      [~, ~, ~] =  mkdir(fullfile(derivativesDir, subDir));
 
       % copy scans.tsv files
       copyTsvJson( ...
@@ -94,7 +94,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
         fprintf(' copying session: %s \n', sessionDir);
 
-        mkdir(fullfile(derivativesDir, subDir, sessionDir));
+        [~, ~, ~] =  mkdir(fullfile(derivativesDir, subDir, sessionDir));
 
         % copy scans.tsv files
         copyTsvJson( ...
@@ -108,34 +108,31 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
         for iModality = 1:numel(modalities)
 
-          mkdir(fullfile(derivativesDir, subDir, sessionDir, modalities{iModality}));
+          targetFolder = fullfile(derivativesDir, ...
+                                  subDir, ...
+                                  sessionDir);
+
+          [~, ~, ~] = mkdir(fullfile(targetFolder, modalities{iModality}));
 
           srcFolder = fullfile(rawDir, ...
                                subDir, ...
                                sessionDir, ...
                                modalities{iModality});
-          targetFolder = fullfile(derivativesDir, ...
-                                  subDir, ...
-                                  sessionDir);
 
-          copyModalityDir(srcFolder, targetFolder);
-
-          % for func we delete the files that are not of the task of interest
-          % ideally we would like not to copy in them in the first place but
-          % meh...
+          % for func we only copy the files of the task of interest
           if strcmp(modalities{iModality}, 'func')
 
-            files = spm_select('FPListRec', ...
-                               fullfile(derivativesDir, subDir, sessionDir, 'func'), ...
-                               '^.*_task-.*$');
+            files = bids.query(BIDS, 'data', ...
+                               'sub', subID, ...
+                               'ses', sessions{iSes}, ...
+                               'task', opt.taskName);
 
-            taskOfInterest = strfind(cellstr(files), opt.taskName);
-            notTaskOfInterest = ~cellfun('isempty', taskOfInterest);
-
-            files(notTaskOfInterest, :) = [];
             for iFile = 1:size(files, 1)
-              delete(deblank(files(iFile, :)));
+              copyToDerivative(files{iFile}, fullfile(targetFolder, 'func'));
             end
+
+          else
+            copyToDerivative(srcFolder, targetFolder);
 
           end
 
@@ -170,12 +167,15 @@ function copyTsvJson(srcDir, targetDir)
 
 end
 
-function copyModalityDir(srcFolder, targetFolder)
+function copyToDerivative(src, targetFolder)
+
+  command = 'cp -R -L -f';
 
   try
     status = system( ...
-                    sprintf('cp -R -L -f %s %s', ...
-                            srcFolder, ...
+                    sprintf('%s %s %s', ...
+                            command, ...
+                            src, ...
                             targetFolder));
 
     if status > 0
@@ -190,7 +190,7 @@ function copyModalityDir(srcFolder, targetFolder)
 
   catch
     fprintf(1, 'Using octave/matlab to copy files.');
-    copyfile(srcFolder, targetFolder);
+    copyfile(src, targetFolder);
   end
 
 end
