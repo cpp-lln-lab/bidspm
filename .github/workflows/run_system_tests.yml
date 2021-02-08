@@ -20,7 +20,9 @@ on:
       - master
       - main
   pull_request:
-    branches: '*'
+    branches: 
+      - 'master'
+      - 'main'
   schedule:
     - cron: "* * 1 * *"
 
