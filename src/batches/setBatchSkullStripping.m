@@ -48,12 +48,6 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subID)
   % if the input image is mean func image instead of anatomical
   if opt.skullStripMeanImg == 1
       [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt);
-      
-      % atm getMeanFunc only gets the native space mean func
-      % adding the option to also get the mean MNI image
-      if strcmp(opt.space, 'MNI')
-        meanImage = ['w', meanImage];
-      end
   
       %name the output accordingto the input image
       output = ['m' strrep(meanImage, '.nii', '_skullstripped.nii')];
