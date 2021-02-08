@@ -25,6 +25,12 @@ jobs:
         sudo apt-get -y install octave liboctave-dev
         sudo apt-get -y install nodejs npm
 
+    - name: Clone cpp_spm         
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 2
+
     - name: Install SPM
       run: |
          git clone https://github.com/spm/spm12.git --depth 1
@@ -40,12 +46,6 @@ jobs:
         git clone https://github.com/MOcov/MOcov.git --depth 1
         make -C MOcov install    
         
-    - name: Clone cpp_spm         
-      uses: actions/checkout@v2
-      with:
-        submodules: true
-        fetch-depth: 2
-
     - name: Update octave path
       run: |
         octave $OCTFLAGS --eval "addpath(genpath(fullfile(pwd, 'lib'))); savepath();"
