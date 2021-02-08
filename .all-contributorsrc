@@ -48,7 +48,8 @@
         "design",
         "review",
         "doc",
-        "test"
+        "test",
+        "bug"
       ]
     },
     {
@@ -61,6 +62,30 @@
         "doc",
         "infra",
         "design",
+        "review",
+        "bug",
+        "test"
+      ]
+    },
+    {
+      "login": "fedefalag",
+      "name": "Fede F.",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/50373329?v=4",
+      "profile": "https://github.com/fedefalag",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "CerenB",
+      "name": "CerenB",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/10451654?v=4",
+      "profile": "https://github.com/CerenB",
+      "contributions": [
+        "bug",
+        "content",
+        "doc",
+        "code",
         "review"
       ]
     }
