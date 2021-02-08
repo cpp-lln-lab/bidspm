@@ -1,0 +1,67 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - dev
+  pull_request:
+    branches: '*'
+
+env:
+  OCTFLAGS: --no-gui --no-window-system --silent
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get -y -qq update
+        sudo apt-get -y install octave liboctave-dev
+        sudo apt-get -y install nodejs npm
+
+    - name: Clone cpp_spm         
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 2
+
+    - name: Install SPM
+      run: |
+         git clone https://github.com/spm/spm12.git --depth 1
+         make -C spm12/src PLATFORM=octave distclean
+         make -C spm12/src PLATFORM=octave
+         make -C spm12/src PLATFORM=octave install
+        
+    - name: MOxUnit Action
+      uses: joergbrech/moxunit-action@master
+      with:
+        tests: tests # files or directories containing the MOxUnit test cases
+        src: src # directories to be added to the Octave search path before running the tests. 
+        ext: lib spm12 # External resources to add to the search put (excluded from coverage)
+        # data: # Directory for test data  
+        with_coverage: true
+        cover_xml_file: coverage.xml
+
+    - name: Code coverage
+      uses: codecov/codecov-action@v1
+      with:
+       file:  coverage.xml # optional
+       flags: unittests # optional
+       name: codecov-umbrella # optional
+       fail_ci_if_error: true # optional (default = false)   
+
+
+    # - name: "Run demo"
+
+    #   if: branch = master
+
+    #   script:
+    #     - cd demos/MoAE
+    #     - octave $OCTFLAGS --eval "MoAEpilot_run"           
+
