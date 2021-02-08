@@ -25,12 +25,6 @@ jobs:
         sudo apt-get -y install octave liboctave-dev
         sudo apt-get -y install nodejs npm
 
-    - name: Clone cpp_spm         
-      uses: actions/checkout@v2
-      with:
-        submodules: true
-        fetch-depth: 2
-
     - name: Install SPM
       run: |
          git clone https://github.com/spm/spm12.git --depth 1
@@ -38,24 +32,33 @@ jobs:
          make -C spm12/src PLATFORM=octave
          make -C spm12/src PLATFORM=octave install
          octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
-        
-    - name: MOxUnit Action
-      uses: joergbrech/moxunit-action@master
-      with:
-        tests: tests # files or directories containing the MOxUnit test cases
-        src: src # directories to be added to the Octave search path before running the tests. 
-        ext: lib # External resources to add to the search put (excluded from coverage)
-        # data: # Directory for test data  
-        with_coverage: true
-        cover_xml_file: coverage.xml
 
-    - name: Code coverage
-      uses: codecov/codecov-action@v1
+    - name: Install Moxunit and MOcov
+      run: |
+        git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
+        cd MOxUnit
+        make install
+        cd ..
+        git clone https://github.com/MOcov/MOcov.git  --depth 1
+        cd MOcov
+        make install
+        cd ..      
+        
+    - name: Clone cpp_spm         
+      uses: actions/checkout@v2
       with:
-       file:  coverage.xml # optional
-       flags: unittests # optional
-       name: codecov-umbrella # optional
-       fail_ci_if_error: true # optional (default = false)   
+        submodules: true
+        fetch-depth: 2
+
+    - name: Prepare data
+      run: |
+        output_folder='demos/MoAE/output/'
+        mkdir $output_folder
+        curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $output_folder'MoAEpilot.zip'
+        unzip $output_folder'MoAEpilot.zip' -d $output_folder
+        cd tests
+        sh createDummyDataSet.sh
+        cd ..        
 
 
     # - name: "Run demo"
