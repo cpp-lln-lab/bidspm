@@ -42,6 +42,12 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   %
   %
 
+  % try to guess directory in case a fullpath filename was given
+  if isempty(dir)
+    [dir, fileNamePattern, ext] = spm_fileparts(fileNamePattern);
+    fileNamePattern = [fileNamePattern, ext];
+  end
+
   if nargin < 3
     prefix = '';
   end

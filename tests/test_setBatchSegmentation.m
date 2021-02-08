@@ -6,7 +6,7 @@ function test_suite = test_setBatchSegmentation %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchSegmentationBasic()
+function test_setBatchSegmentationPipeline()
 
   spmLocation = spm('dir');
 
@@ -19,16 +19,7 @@ function test_setBatchSegmentationBasic()
   matlabbatch = setBatchSegmentation(matlabbatch, opt);
 
   expectedBatch = returnExpectedBatch(spmLocation);
-
-  assertEqual(expectedBatch, matlabbatch);
-
-end
-
-function expectedBatch = returnExpectedBatch(spmLocation)
-
-  expectedBatch = [];
-
-  expectedBatch{end + 1}.spm.spatial.preproc.channel.vols(1) = ...
+  expectedBatch{end}.spm.spatial.preproc.channel.vols(1) = ...
       cfg_dep('Named File Selector: Anatomical(1) - Files', ...
               substruct( ...
                         '.', 'val', '{}', {1}, ...
@@ -36,7 +27,60 @@ function expectedBatch = returnExpectedBatch(spmLocation)
                         '.', 'val', '{}', {1}, ...
                         '.', 'val', '{}', {1}), ...
               substruct('.', 'files', '{}', {1}));
-  expectedBatch{end}.spm.spatial.preproc.channel.biasreg = 0.001;
+
+  assertEqual(expectedBatch, matlabbatch);
+
+end
+
+function test_setBatchSegmentationImages()
+
+  spmLocation = spm('dir');
+
+  opt = struct();
+
+  anatImage = returnLocalAnatFilename();
+
+  % check with one file
+  matlabbatch = [];
+  matlabbatch = setBatchSegmentation(matlabbatch, opt, anatImage);
+  expectedBatch = returnExpectedBatch(spmLocation);
+  expectedBatch{end}.spm.spatial.preproc.channel.vols{1} = anatImage;
+
+  assertEqual(expectedBatch, matlabbatch);
+
+  % check with several files passed as a cell
+  matlabbatch = [];
+  anatImage = {anatImage; anatImage};
+  matlabbatch = setBatchSegmentation(matlabbatch, opt, anatImage);
+  expectedBatch{end}.spm.spatial.preproc.channel.vols = anatImage;
+
+  assertEqual(expectedBatch, matlabbatch);
+
+end
+
+function anatImage = returnLocalAnatFilename()
+
+  subID = '01';
+
+  opt.taskName = 'vislocalizer';
+  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+  opt.subjects = {subID};
+
+  opt = checkOptions(opt);
+
+  [~, opt, BIDS] = getData(opt);
+
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+
+  anatImage = fullfile(anatDataDir, anatImage);
+
+end
+
+function expectedBatch = returnExpectedBatch(spmLocation)
+
+  expectedBatch = [];
+
+  expectedBatch{end + 1}.spm.spatial.preproc.channel.biasreg = 0.001;
   expectedBatch{end}.spm.spatial.preproc.channel.biasfwhm = 60;
   expectedBatch{end}.spm.spatial.preproc.channel.write = [0 1];
 
