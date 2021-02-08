@@ -60,7 +60,7 @@ function opt = checkOptions(opt)
   checkFields(opt);
 
   if ~isempty(opt.dataDir)
-    opt.dataDir = abspath(opt.dataDir);
+    opt.dataDir = spm_file(opt.dataDir, 'cpath');
   end
 
   opt = orderfields(opt);

@@ -74,7 +74,7 @@ function opt = setDerivativesDir(opt)
     opt.derivativesDir = strjoin(folders, filesep);
   end
 
-  opt.derivativesDir = abspath(opt.derivativesDir);
+  opt.derivativesDir = spm_file(opt.derivativesDir, 'cpath');
 
   % Suffix output directory for the saved jobs
   opt.jobsDir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
