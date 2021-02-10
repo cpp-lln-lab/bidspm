@@ -74,6 +74,9 @@ end
 
 function removeBetaImgTmaps(beta_maps, t_maps, deleteIndBeta, deleteIndTmaps)
 
+  % get ffx directory
+  ffxDir = getFFXdir(subID, funcFWHM, opt);
+  
   % delete maps
   if deleteIndBeta
 
