@@ -104,7 +104,5 @@ function removeBetaImgTmaps(beta_maps, t_maps, deleteIndBeta, ...
     fprintf('Done. \n\n\n ');
   end
 
-  % delete mat files
-  delete(fullfile(ffxDir, ['4D_*', num2str(funcFWHM), '.mat']));
 
 end
