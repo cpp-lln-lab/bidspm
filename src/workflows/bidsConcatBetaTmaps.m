@@ -65,17 +65,14 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
       saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subID);
 
-      removeBetaImgTmaps(beta_maps, t_maps, ...
-                         deleteIndBeta, deleteIndTmaps, ...
-                         ffxDir, funcFWHM);
+      removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir);
 
     end
   end
 
 end
 
-function removeBetaImgTmaps(beta_maps, t_maps, deleteIndBeta, ...
-                            deleteIndTmaps, ffxDir, funcFWHM)
+function removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir)
 
   % delete maps
   if deleteIndBeta
