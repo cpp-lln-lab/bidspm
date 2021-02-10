@@ -79,7 +79,7 @@ function removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir)
 
     % delete all individual beta maps
     fprintf('Deleting individual beta-maps ...  ');
-    delete(fullfile(ffxDir, ['beta_*','.nii']))
+    delete(fullfile(ffxDir, ['beta_*', '.nii']));
     fprintf('Done. \n\n\n ');
 
   end
@@ -100,6 +100,5 @@ function removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir)
     end
     fprintf('Done. \n\n\n ');
   end
-
 
 end
