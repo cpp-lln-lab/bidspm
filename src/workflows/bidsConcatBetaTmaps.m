@@ -65,23 +65,21 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
       saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subID);
 
-      removeBetaImgTmaps(beta_maps, t_maps, deleteIndBeta, deleteIndTmaps);
+      removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir);
 
     end
   end
 
 end
 
-function removeBetaImgTmaps(beta_maps, t_maps, deleteIndBeta, deleteIndTmaps)
+function removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir)
 
   % delete maps
   if deleteIndBeta
 
     % delete all individual beta maps
     fprintf('Deleting individual beta-maps ...  ');
-    for iBeta = 1:length(beta_maps)
-      delete(beta_maps{iBeta}(1:end - 2));
-    end
+    delete(fullfile(ffxDir, ['beta_*', '.nii']));
     fprintf('Done. \n\n\n ');
 
   end
@@ -102,8 +100,5 @@ function removeBetaImgTmaps(beta_maps, t_maps, deleteIndBeta, deleteIndTmaps)
     end
     fprintf('Done. \n\n\n ');
   end
-
-  % delete mat files
-  delete(fullfile(ffxDir, ['4D_*', num2str(funcFWHM), '.mat']));
 
 end
