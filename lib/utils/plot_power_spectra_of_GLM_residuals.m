@@ -2,21 +2,21 @@ function plot_power_spectra_of_GLM_residuals(path_to_results, TR, cutoff_freq, a
 
     % -By Wiktor Olszowy, University of Cambridge, olszowyw@gmail.com
     %
-    % -Written following study 
+    % -Written following study
     % 'Accurate autocorrelation modeling substantially improves fMRI reliability'
     % -https://www.nature.com/articles/s41467-019-09230-w.pdf
     % -May 2018
     %
-    % -Given fMRI task results in AFNI, FSL or SPM, 
+    % -Given fMRI task results in AFNI, FSL or SPM,
     % this script plots power spectra of GLM residuals.
-    % -If there is strong structure visible in the GLM residuals 
+    % -If there is strong structure visible in the GLM residuals
     % the power spectra are not flat), the first level results are likely confounded.
 
     % -tested on Linux
     % -you need on your path >= MATLAB 2017b, AFNI and FSL
 
     % -specify the default values for the cutoff frequency used by the high-pass filter,
-    % -for the assumed experimental design frequency 
+    % -for the assumed experimental design frequency
     %  and for the true experimental design frequency;
     % -10 chosen, as it is beyond the plotted frequencies
 
@@ -29,11 +29,11 @@ function plot_power_spectra_of_GLM_residuals(path_to_results, TR, cutoff_freq, a
     if ~exist('true_exper_freq', 'var')
         true_exper_freq = 10;
     end
-    
+
     Fontsize = 10;
 
-    % -Fast Fourier Transform (FFT) will pad the voxel-wise time series 
-    % to that length with trailing zeros (if no. of time points lower) 
+    % -Fast Fourier Transform (FFT) will pad the voxel-wise time series
+    % to that length with trailing zeros (if no. of time points lower)
     % or truncate to that length (if no. of time points higher)
     fft_n = 512;
 
@@ -49,13 +49,13 @@ function plot_power_spectra_of_GLM_residuals(path_to_results, TR, cutoff_freq, a
         system(['3dcalc -a ' AFNI_res4d_name ' -expr "a" -prefix res4d.nii']);
         res4d = niftiread('res4d.nii');
 
-    % -for FSL
+        % -for FSL
     elseif exist('stats/res4d.nii.gz', 'file') == 2
         res4d = niftiread('stats/res4d.nii.gz');
     elseif exist('stats/res4d.nii', 'file') == 2
         res4d = niftiread('stats/res4d.nii');
 
-    % -for SPM
+        % -for SPM
     elseif exist('Res_0001.nii', 'file') == 2
 
         SPM_res4d_name = dir('Res_*.nii');
@@ -73,15 +73,15 @@ function plot_power_spectra_of_GLM_residuals(path_to_results, TR, cutoff_freq, a
             end
             system(['fslmerge -t res4d ' SPM_res4d_all]);
             res4d = niftiread('res4d.nii.gz');
-            
+
         end
 
     else
 
         disp(['No GLM residuals found! ', ...
-            'If you run SPM, remember to put command ', ...
-            'VRes = spm_write_residuals(SPM, NaN) at the end of the SPM script. ', ...
-            'Otherwise, SPM by default deletes the GLM residuals.']);
+              'If you run SPM, remember to put command ', ...
+              'VRes = spm_write_residuals(SPM, NaN) at the end of the SPM script. ', ...
+              'Otherwise, SPM by default deletes the GLM residuals.']);
         return
 
     end
@@ -134,7 +134,7 @@ function plot_power_spectra_of_GLM_residuals(path_to_results, TR, cutoff_freq, a
 
     % -make the plot
     figure('rend', 'painters', 'pos', [0 0 600 400], 'Visible', 'on');
-    hold on
+    hold on;
 
     f = linspace(0, 0.5 / TR, 257);
     max_y = max(power_spectra_of_GLM_residuals);
@@ -160,28 +160,28 @@ function plot_power_spectra_of_GLM_residuals(path_to_results, TR, cutoff_freq, a
 
     location = 'southeast';
     if (power_spectra_of_GLM_residuals(257) < 0) || (max_y > 2)
-        location = 'northeast';    
+        location = 'northeast';
     end
-    
+
     to_plot = [h1 h10 h4 h6 h8];
-    legend_content = {...
-        'Actual power spectrum', ...
-        'Ideal power spectrum', ...
-        'High pass filter frequency cutoff', ...
-        'Assumed design frequency', ...
-        'True design frequency'};
-    
+    legend_content = { ...
+                      'Actual power spectrum', ...
+                      'Ideal power spectrum', ...
+                      'High pass filter frequency cutoff', ...
+                      'Assumed design frequency', ...
+                      'True design frequency'};
+
     if any([cutoff_freq, assumed_exper_freq, true_exper_freq] == 10)
         to_plot = [h1 h10];
-        legend_content = {...
-            'Actual power spectrum', ...
-            'Ideal power spectrum'};
+        legend_content = { ...
+                          'Actual power spectrum', ...
+                          'Ideal power spectrum'};
     end
 
     legend(to_plot, legend_content, ...
-        'box', 'off', ...
-        'FontSize', Fontsize, ...
-        'Location', location);
+           'box', 'off', ...
+           'FontSize', Fontsize, ...
+           'Location', location);
 
     figname = 'power_spectra_of_GLM_residuals';
     print (figname, '-dpng');
