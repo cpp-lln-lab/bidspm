@@ -13,11 +13,17 @@ function saveOptions(opt)
   %
 
   optionDir = fullfile(pwd, 'cfg');
-  [~, ~, ~] = mkdir(optionDir);
-  filename = fullfile(optionDir, ['options', ...
-                                  '_task-', opt.taskName, ...
-                                  '_date-' datestr(now, 'yyyymmddHHMM'), ...
-                                  '.json']);
+  [~, ~, ~] = mkdir(optionDir);  
+
+  taskString = '';
+  if isfield(opt, 'taskName')
+    taskString = ['_task-', opt.taskName];
+  end
+
+  filename = fullfile(pwd, ['options', ...
+                            taskString, ...
+                            '_date-' datestr(now, 'yyyymmddHHMM'), ...
+                            '.json']);
 
   jsonFormat.indent = '    ';
   spm_jsonwrite(filename, opt, jsonFormat);

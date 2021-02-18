@@ -19,6 +19,9 @@ demos/MoAE/output/*
 demos/spm*/raw
 demos/spm*/source
 
+# atlas data
+atlas/ProbAtlas_v4/*
+
 # test folder and dummy data
 tests/cfg/*.json
 tests/sub-01/*
