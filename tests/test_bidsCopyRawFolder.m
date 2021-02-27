@@ -18,6 +18,9 @@ function test_bidsCopyRawFolderBasic()
 
   bidsCopyRawFolder(opt, 1);
 
+  layoutRaw = bids.layout(opt.dataDir);
+  layoutDerivatives = bids.layout(fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm'));
+
   assertEqual(exist( ...
                     fullfile(opt.dataDir, '..', ...
                              'derivatives', 'cpp_spm', ...
@@ -53,10 +56,20 @@ function test_bidsCopyRawFolder2tasks()
 
   opt = checkOptions(opt);
 
-  bidsCopyRawFolder(opt, 1, {'func'});
+  unZip = false;
+  deleteZippedNii = false;
+  bidsCopyRawFolder(opt, deleteZippedNii, {'func'}, unZip);
+
+  assertEqual(exist( ...
+                    fullfile(opt.derivativesDir, 'derivatives', 'cpp_spm', ...
+                             'sub-01', ...
+                             'ses-01', ...
+                             'func', ...
+                             'sub-01_ses-01_task-vismotion_run-1_bold.json'), 'file'), ...
+              2);
 
   opt.taskName = 'vislocalizer';
-  bidsCopyRawFolder(opt, 1, {'func'});
+  bidsCopyRawFolder(opt, deleteZippedNii, {'func'}, unZip);
 
   BIDS = bids.layout(fullfile(opt.derivativesDir, 'derivatives', 'cpp_spm'));
 

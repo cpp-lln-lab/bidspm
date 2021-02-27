@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
+function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy, unZip)
   %
   % Copies the folders from the ``raw`` folder to the
   % ``derivatives`` folder, and will copy the dataset description and task json files
@@ -20,11 +20,18 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   % :type opt: structure
   % :param deleteZippedNii: will delete the original zipped ``.gz`` if set to ``true``
   % :type deleteZippedNii: boolean
-  % :param modalitiesToCopy:
+  % :param modalitiesToCopy: for example ``{'anat', 'func', 'fmap'}``
   % :type modalitiesToCopy: cell
+  % :param unZip:
+  % :type unZip: boolean
   %
 
   %% input variables default values
+
+  if nargin < 4 || isempty(unZip)
+    % Will only copy those modalities if they exist
+    unZip = true();
+  end
 
   if nargin < 3 || isempty(modalitiesToCopy)
     % Will only copy those modalities if they exist
@@ -109,7 +116,9 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
 
   end
 
-  unzipFiles(derivativesDir, deleteZippedNii, opt);
+  if unZip
+    unzipFiles(derivativesDir, deleteZippedNii, opt);
+  end
 
   manageWorkersPool('close', opt);
 
@@ -186,6 +195,12 @@ function copyModalities(BIDS, opt, modalities, subID, session)
 
       for iFile = 1:size(files, 1)
         copyToDerivative(files{iFile}, fullfile(targetFolder, 'func'));
+        p = bids.internal.parse_filename(files{iFile});
+        sidecar = strrep(p.filename, p.ext, '.json');
+        if exist(fullfile(fileparts(files{iFile}), sidecar), 'file')
+          copyToDerivative(fullfile(fileparts(files{iFile}), sidecar), ...
+                           fullfile(targetFolder, 'func'));
+        end
       end
 
     else
