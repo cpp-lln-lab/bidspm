@@ -56,6 +56,6 @@ functionalQA(opt);
 bidsSmoothing(FWHM, opt);
 
 % The following crash on Travis CI
-bidsFFX('specifyAndEstimate', opt, FWHM);
+% bidsFFX('specifyAndEstimate', opt, FWHM);
 % bidsFFX('contrasts', opt, FWHM);
 % bidsResults(opt, FWHM);
