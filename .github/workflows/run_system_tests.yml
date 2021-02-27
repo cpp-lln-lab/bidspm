@@ -1,0 +1,75 @@
+name: system tests
+
+# Uses the cron schedule for github actions
+# 
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows#scheduled-events
+# 
+# ┌───────────── minute (0 - 59)
+# │ ┌───────────── hour (0 - 23)
+# │ │ ┌───────────── day of the month (1 - 31)
+# │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+# │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+# │ │ │ │ │                                   
+# │ │ │ │ │
+# │ │ │ │ │
+# * * * * *
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches: 
+      - 'master'
+      - 'main'
+  schedule:
+    - cron: "* * 1 * *"
+
+env:
+  OCTFLAGS: --no-gui --no-window-system --silent
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get -y -qq update
+        sudo apt-get -y install octave liboctave-dev
+        sudo apt-get -y install nodejs npm
+
+    - name: Clone cpp_spm         
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 2
+
+    - name: Install SPM
+      run: |
+         git clone https://github.com/spm/spm12.git --depth 1
+         make -C spm12/src PLATFORM=octave distclean
+         make -C spm12/src PLATFORM=octave
+         make -C spm12/src PLATFORM=octave install
+         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
+        
+    - name: Update octave path
+      run: |
+        octave $OCTFLAGS --eval "addpath(genpath(fullfile(pwd, 'lib'))); savepath();"
+        octave $OCTFLAGS --eval "addpath(genpath(fullfile(pwd, 'src'))); savepath();"        
+
+    - name: Prepare data
+      run: |
+        output_folder='demos/MoAE/output/'
+        mkdir $output_folder
+        curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $output_folder'MoAEpilot.zip'
+        unzip $output_folder'MoAEpilot.zip' -d $output_folder
+
+    - name: Run system tests
+      run: |
+        cd demos/MoAE
+        octave $OCTFLAGS --eval "MoAEpilot_run"                  
+

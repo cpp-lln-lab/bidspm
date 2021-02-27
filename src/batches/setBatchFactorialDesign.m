@@ -1,8 +1,26 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir)
+function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFWHM)
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFWHM)
+  %
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  % :param opt:
+  % :type opt: structure
+  % :param funcFWHM:
+  % :type funcFWHM:
+  % :param conFWHM:
+  % :type conFWHM:
+  %
+  % :returns: - :matlabbatch: (structure)
+  %
 
-  fprintf(1, 'BUILDING JOB: Factorial Design Specification');
+  printBatchName('specify group level fmri model');
 
   % Check which level of CON smoothing is desired
   smoothPrefix = '';
@@ -10,7 +28,11 @@ function matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir
     smoothPrefix = ['s', num2str(conFWHM)];
   end
 
-  con = 0;
+  [group, opt] = getData(opt);
+
+  rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
+
+  grpLvlCon = getGrpLevelContrastToCompute(opt);
 
   % For each contrast
   for j = 1:size(grpLvlCon, 1)
@@ -20,15 +42,24 @@ function matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir
     % at the subject level
     conName = rmTrialTypeStr(grpLvlCon{j});
 
-    con = con + 1;
+    fprintf(1, '\n\n  Group contrast: %s\n\n', conName);
+
+    directory = fullfile(rfxDir, conName);
+
+    % If it exists, issue a warning that it has been overwritten
+    if exist(directory, 'dir')
+      warning('overwriting directory: %s \n', directory);
+      rmdir(directory, 's');
+    end
+
+    mkdir(directory);
 
     % For each group
     for iGroup = 1:length(group)
 
       groupName = group(iGroup).name;
 
-      matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).levels = ...
-          iGroup; %#ok<*AGROW>
+      icell(iGroup).levels = iGroup; %#ok<*AGROW>
 
       for iSub = 1:group(iGroup).numSub
 
@@ -46,42 +77,43 @@ function matlabbatch = setBatchFactorialDesign(grpLvlCon, group, conFWHM, rfxDir
         fileName = sprintf('con_%0.4d.nii', conIdx);
         file = validationInputFile(ffxDir, fileName, smoothPrefix);
 
-        matlabbatch{j}.spm.stats.factorial_design.des.fd.icell(iGroup).scans(iSub, :) = ...
-            {file};
+        icell(iGroup).scans(iSub, :) = {file};
+
+        fprintf(1, ' %s\n\n', file);
 
       end
 
     end
 
-    % GROUP and the number of levels in the group. if 2 groups ,
-    % then number of levels = 2
-    matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.name = 'GROUP';
-    matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.levels = 1;
-    matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.dept = 0;
-
-    % 1: Assumes that the variance is not the same across groups
-    % 0: There is no difference in the variance between groups
-    matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.variance = 1;
-    matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.gmsca = 0;
-    matlabbatch{j}.spm.stats.factorial_design.des.fd.fact.ancova = 0;
-    % matlabbatch{j}.spm.stats.factorial_design.cov = [];
-    matlabbatch{j}.spm.stats.factorial_design.masking.tm.tm_none = 1;
-    matlabbatch{j}.spm.stats.factorial_design.masking.im = 1;
-    matlabbatch{j}.spm.stats.factorial_design.masking.em = { ...
-                                                            fullfile(rfxDir, 'MeanMask.nii')};
-    matlabbatch{j}.spm.stats.factorial_design.globalc.g_omit = 1;
-    matlabbatch{j}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
-    matlabbatch{j}.spm.stats.factorial_design.globalm.glonorm = 1;
-
-    % If it exists, issue a warning that it has been overwritten
-    if exist(fullfile(rfxDir, conName), 'dir')
-      warning('overwriting directory: %s \n', fullfile(rfxDir, conName));
-      rmdir(fullfile(rfxDir, conName), 's');
-    end
-
-    mkdir(fullfile(rfxDir, conName));
-    matlabbatch{j}.spm.stats.factorial_design.dir = { fullfile(rfxDir, conName) };
+    matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell);
 
   end
+
+end
+
+function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell)
+
+  matlabbatch{end + 1}.spm.stats.factorial_design.dir = {directory};
+
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.icell = icell;
+
+  % GROUP and the number of levels in the group.
+  % If 2 groups, then number of levels = 2
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.name = 'GROUP';
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.levels = 1;
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.dept = 0;
+
+  % 1: Assumes that the variance is not the same across groups
+  % 0: There is no difference in the variance between groups
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.variance = 1;
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.gmsca = 0;
+  matlabbatch{end}.spm.stats.factorial_design.des.fd.fact.ancova = 0;
+  % matlabbatch{end}.spm.stats.factorial_design.cov = [];
+  matlabbatch{end}.spm.stats.factorial_design.masking.tm.tm_none = 1;
+  matlabbatch{end}.spm.stats.factorial_design.masking.im = 1;
+  matlabbatch{end}.spm.stats.factorial_design.masking.em = {''};
+  matlabbatch{end}.spm.stats.factorial_design.globalc.g_omit = 1;
+  matlabbatch{end}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
+  matlabbatch{end}.spm.stats.factorial_design.globalm.glonorm = 1;
 
 end

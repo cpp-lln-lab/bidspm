@@ -1,8 +1,22 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt)
-
-  fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE FUNCTIONALS\n');
+function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim)
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim)
+  %
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  % :param opt:
+  % :type opt: structure
+  % :param voxDim:
+  % :type opt: array
+  %
+  % :returns: - :matlabbatch: (structure)
+  %
 
   jobsToAdd = numel(matlabbatch) + 1;
 
@@ -22,7 +36,7 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, o
 
   end
 
-  fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE FUNCIONAL\n');
+  printBatchName('normalise functional images');
   matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = ...
       cfg_dep('Coregister: Estimate: Coregistered Images', ...
               substruct( ...
@@ -33,7 +47,7 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, o
               substruct('.', 'cfiles'));
 
   % NORMALIZE STRUCTURAL
-  fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE STRUCTURAL\n');
+  printBatchName('normalise anatomical images');
   matlabbatch{jobsToAdd + 1}.spm.spatial.normalise.write.subj.resample(1) = ...
       cfg_dep('Segment: Bias Corrected (1)', ...
               substruct( ...
@@ -47,7 +61,7 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, o
   matlabbatch{jobsToAdd + 1}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
 
   % NORMALIZE GREY MATTER
-  fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE GREY MATTER\n');
+  printBatchName('normalise grey matter tissue probability map');
   matlabbatch{jobsToAdd + 2}.spm.spatial.normalise.write.subj.resample(1) = ...
       cfg_dep('Segment: c1 Images', ...
               substruct( ...
@@ -59,7 +73,7 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, o
                         '.', 'c', '()', {':'}));
 
   % NORMALIZE WHITE MATTER
-  fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE WHITE MATTER\n');
+  printBatchName('normalise white matter tissue probability map');
   matlabbatch{jobsToAdd + 3}.spm.spatial.normalise.write.subj.resample(1) = ...
       cfg_dep('Segment: c2 Images', ...
               substruct( ...
@@ -71,7 +85,7 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, o
                         '.', 'c', '()', {':'}));
 
   % NORMALIZE CSF MATTER
-  fprintf(1, ' BUILDING SPATIAL JOB : NORMALIZE CSF\n');
+  printBatchName('normalise csf tissue probability map');
   matlabbatch{jobsToAdd + 4}.spm.spatial.normalise.write.subj.resample(1) = ...
       cfg_dep('Segment: c3 Images', ...
               substruct( ...

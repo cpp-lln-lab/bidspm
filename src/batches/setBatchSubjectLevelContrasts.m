@@ -1,25 +1,39 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchSubjectLevelContrasts(opt, subID, funcFWHM)
+function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subID, funcFWHM)
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subID, funcFWHM)
+  %
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  % :param opt:
+  % :type opt: structure
+  % :param subID:
+  % :type subID: string
+  % :param funcFWHM:
+  % :type funcFWHM:
+  %
+  % :returns: - :matlabbatch:
+  %
 
-  fprintf(1, 'BUILDING JOB : FMRI contrasts\n');
+  printBatchName('subject level contrasts specification');
 
   ffxDir = getFFXdir(subID, funcFWHM, opt);
 
+  spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
+
   % Create Contrasts
   contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
-
-  matlabbatch = [];
-
   for icon = 1:size(contrasts, 2)
-    matlabbatch{1}.spm.stats.con.consess{icon}.tcon.name = ...
-        contrasts(icon).name;
-    matlabbatch{1}.spm.stats.con.consess{icon}.tcon.convec = ...
-        contrasts(icon).C;
-    matlabbatch{1}.spm.stats.con.consess{icon}.tcon.sessrep = 'none';
+    consess{icon}.tcon.name = contrasts(icon).name; %#ok<*AGROW>
+    consess{icon}.tcon.convec = contrasts(icon).C;
+    consess{icon}.tcon.sessrep = 'none';
   end
 
-  matlabbatch{1}.spm.stats.con.spmmat = cellstr(fullfile(ffxDir, 'SPM.mat'));
-  matlabbatch{1}.spm.stats.con.delete = 1;
+  matlabbatch = setBatchContrasts(matlabbatch, spmMatFile, consess);
 
 end

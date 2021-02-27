@@ -1,28 +1,31 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmapMetadata)
-  % get metadata of the associated bold file
-  % find bold file this fmap is intended for, parse its filename and get its
-  % metadata
+  %
+  % Gets metadata of the associated bold file:
+  % - finds the bold file a fmap is intended for,
+  % - parse its filename,
+  % - get its metadata.
   %
   % USAGE::
   %
   %   [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmapMetadata)
   %
-  % :param BIDS:
+  % :param BIDS: BIDS layout returned by ``getData()``.
   % :type BIDS: structure
   % :param fmapMetadata:
   % :type fmapMetadata: structure
   %
-  % :returns: - :totalReadoutTime: (type) (dimension)
-  %           - :blipDir: (type) (dimension)
+  % :returns: :totalReadoutTime: (type) (dimension)
+  %           :blipDir: (type) (dimension)
   %
   % At the moment the VDM is created based on the characteristics of the last
   % func file in the IntendedFor field
   %
-  % TODO
-  % - if there are several func file for this fmap and they have different
-  % characteristic this may require creating a VDM for each
+  % .. TODO:
+  %
+  %    - if there are several func file for this fmap and they have different
+  %    characteristic this may require creating a VDM for each
 
   for  iFile = 1:size(fmapMetadata.IntendedFor)
 
@@ -35,13 +38,17 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
 
     fragments = bids.internal.parse_filename(filename);
 
-    funcMetadata = spm_BIDS(BIDS, 'metadata', ...
-                            'modality', 'func', ...
-                            'type', fragments.type, ...
-                            'sub', fragments.sub, ...
-                            'ses', fragments.ses, ...
-                            'run', fragments.run, ...
-                            'acq', fragments.acq);
+    if ~isfield(fragments, 'acq')
+      fragments.acq = '';
+    end
+
+    funcMetadata = bids.query(BIDS, 'metadata', ...
+                              'modality', 'func', ...
+                              'type', fragments.type, ...
+                              'sub', fragments.sub, ...
+                              'ses', fragments.ses, ...
+                              'run', fragments.run, ...
+                              'acq', fragments.acq);
 
   end
 

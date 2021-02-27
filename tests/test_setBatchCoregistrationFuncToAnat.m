@@ -24,12 +24,12 @@ function test_setBatchCoregistrationFuncToAnatBasic()
   opt.orderBatches.realign = 2;
 
   matlabbatch = {};
-  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt);
+  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID);
 
   nbRuns = 4;
 
-  meanImageToUse = 'rmean';
-  otherImageToUse = 'cfiles';
+  meanImageToUse = 'meanuwr';
+  otherImageToUse = 'uwrfiles';
 
   expectedBatch = returnExpectedBatch(nbRuns, meanImageToUse, otherImageToUse);
   assertEqual( ...
@@ -44,14 +44,14 @@ function test_setBatchCoregistrationFuncToAnatBasic()
 
 end
 
-function test_setBatchCoregistrationFuncToAnatNative()
+function test_setBatchCoregistrationFuncToAnatNoUnwarp()
 
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
   opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
   opt.taskName = 'vismotion';
-  opt.space = 'individual';
+  opt.realign.useUnwarp = false;
 
   opt = checkOptions(opt);
 
@@ -63,12 +63,12 @@ function test_setBatchCoregistrationFuncToAnatNative()
   opt.orderBatches.realign = 2;
 
   matlabbatch = {};
-  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt);
+  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID);
 
   nbRuns = 4;
 
-  meanImageToUse = 'meanuwr';
-  otherImageToUse = 'uwrfiles';
+  meanImageToUse = 'rmean';
+  otherImageToUse = 'cfiles';
 
   expectedBatch = returnExpectedBatch(nbRuns, meanImageToUse, otherImageToUse);
   assertEqual( ...

@@ -1,6 +1,6 @@
 [submodule "lib/bids-matlab"]
 	path = lib/bids-matlab
-	url = https://github.com/cpp-lln-lab/bids-matlab.git
+	url = https://github.com/bids-standard/bids-matlab.git
 [submodule "lib/spmup"]
 	path = lib/spmup
 	url = https://github.com/CPernet/spmup.git

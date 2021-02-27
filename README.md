@@ -1,5 +1,9 @@
 <!-- lint disable -->
 
+**Documentation**
+
+[![Documentation Status: stable](https://readthedocs.org/projects/cpp-bids-spm/badge/?version=stable)](https://cpp-bids-spm.readthedocs.io/en/stable/?badge=stable)
+
 **Code quality and style**
 
 [![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/actions)
@@ -8,7 +12,7 @@
 **Unit tests and coverage**
 
 [![Build Status](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline.svg?branch=master)](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline)
-[![codecov](https://codecov.io/gh/cpp-lln-lab/CPP_BIDS_SPM_pipeline/branch/master/graph/badge.svg)](https://codecov.io/gh/cpp-lln-lab/CPP_BIDS_SPM_pipeline)
+[![codecov](https://codecov.io/gh/Remi-Gau/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/Remi-Gau/CPP_SPM)
 
 **How to cite**
 
@@ -22,7 +26,7 @@
 
 <!-- lint enable -->
 
-# CPPL SPM12 Pipeline
+# CPP SPM
 
 This is a set of functions to fMRI analysis on a
 [BIDS data set](https://bids.neuroimaging.io/) using SPM12.
@@ -77,6 +81,17 @@ For instructions see the following links:
 | [spmup](https://github.com/CPernet/spmup)                                                 | NA           |
 
 <!-- lint enable -->
+
+## Contributing
+
+Feel free to open issues to report a bug and ask for improvements.
+
+If you want to contribute, have a look at our
+[contributing guidelines](https://github.com/cpp-lln-lab/.github/blob/main/CONTRIBUTING.md)
+that are meant to guide you and help you get started. If something is not clear
+or you get stuck: it is more likely we did not do good enough a job at
+explaining things. So do not hesitate to open an issue, just to ask for
+clarification.
 
 ## Contributors
 

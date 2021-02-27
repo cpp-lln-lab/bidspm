@@ -1,21 +1,15 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function varargout = getInfo(BIDS, subID, opt, info, varargin)
-  % wrapper function to fetch specific info in a BIDS structure returned by
-  % spm_bids. ::
+  %
+  % Wrapper function to fetch specific info in a BIDS structure returned by
+  % spm_bids.
+  %
+  % USAGE::
   %
   %   varargout = getInfo(BIDS, subID, opt, info, varargin)
   %
-  % for a given BIDS data set, subject identity, and info type,
-  %
-  % if info = Sessions, this returns name of the sessions and their number
-  %
-  % if info = Runs, this returns name of the runs and their number for an specified session.
-  %
-  % if info = Filename, this returns the name of the file for an specified
-  % session and run.
-  %
-  % :param BIDS: (structure) returned by spm_BIDS when exploring a BIDS data set.
+  % :param BIDS: (structure) returned by bids.query when exploring a BIDS data set.
   % :param subID: ID of the subject
   % :param opt: (structure) Mostly used to find the task name.
   % :param info: (strint) ``sessions``, ``runs``, ``filename``.
@@ -30,6 +24,15 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
   % - type - string ; modality type to look for. For example: ``bold``, ``events``,
   %   ``stim``, ``physio``
   %
+  % for a given BIDS data set, subject identity, and info type,
+  %
+  % if info = Sessions, this returns name of the sessions and their number
+  %
+  % if info = Runs, this returns name of the runs and their number for an specified session.
+  %
+  % if info = Filename, this returns the name of the file for an specified
+  % session and run.
+  %
 
   varargout = {}; %#ok<*NASGU>
 
@@ -37,9 +40,9 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
 
     case 'sessions'
 
-      sessions = spm_BIDS(BIDS, 'sessions', ...
-                          'sub', subID, ...
-                          'task', opt.taskName);
+      sessions = bids.query(BIDS, 'sessions', ...
+                            'sub', subID, ...
+                            'task', opt.taskName);
       nbSessions = size(sessions, 2);
       if nbSessions == 0
         nbSessions = 1;
@@ -52,11 +55,11 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
 
       session = varargin{1};
 
-      runs = spm_BIDS(BIDS, 'runs', ...
-                      'sub', subID, ...
-                      'task', opt.taskName, ...
-                      'ses', session, ...
-                      'type', 'bold');
+      runs = bids.query(BIDS, 'runs', ...
+                        'sub', subID, ...
+                        'task', opt.taskName, ...
+                        'ses', session, ...
+                        'type', 'bold');
       nbRuns = size(runs, 2);     % Get the number of runs
 
       if nbRuns == 0
@@ -70,12 +73,12 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
 
       [session, run, type] = deal(varargin{:});
 
-      varargout = spm_BIDS(BIDS, 'data', ...
-                           'sub', subID, ...
-                           'run', run, ...
-                           'ses', session, ...
-                           'task', opt.taskName, ...
-                           'type', type);
+      varargout = bids.query(BIDS, 'data', ...
+                             'sub', subID, ...
+                             'run', run, ...
+                             'ses', session, ...
+                             'task', opt.taskName, ...
+                             'type', type);
 
     otherwise
       error('Not sure what info you want me to get.');

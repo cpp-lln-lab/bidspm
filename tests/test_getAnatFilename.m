@@ -6,6 +6,12 @@ function test_suite = test_getAnatFilename %#ok<*STOUT>
   initTestSuite;
 end
 
+% TODO
+% add tests to check:
+%  - errors when the requested file is not in the correct session
+%  - that the fucntion is smart enough to find an anat even when user has not
+%    specified a session
+
 function test_getAnatFilenameBasic()
 
   subID = '01';
@@ -24,7 +30,7 @@ function test_getAnatFilenameBasic()
   expectedFileName = 'sub-01_ses-01_T1w.nii';
 
   expectedAnatDataDir = fullfile(fileparts(mfilename('fullpath')), ...
-                                 'dummyData', 'derivatives', 'SPM12_CPPL', ...
+                                 'dummyData', 'derivatives', 'cpp_spm', ...
                                  'sub-01', 'ses-01', 'anat');
 
   assertEqual(anatDataDir, expectedAnatDataDir);

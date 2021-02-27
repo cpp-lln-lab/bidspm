@@ -33,13 +33,14 @@ function test_setBatchSubjectLevelGLMSpecBasic()
                                                BIDS, ...
                                                subID, sessions{iSes}, runs{iRun}, opt);
   copyfile(fullfile(subFuncDataDir, fileName), ...
-           fullfile(subFuncDataDir, ['s6w', fileName]));
+           fullfile(subFuncDataDir, ['s6wu', fileName]));
 
   % create dummy realign parameter file
   system(sprintf('touch %s', ...
                  fullfile(subFuncDataDir, ['rp_', strrep(fileName, '.nii', '.txt')])));
 
-  matlabbatch = setBatchSubjectLevelGLMSpec(BIDS, opt, subID, funcFWHM);
+  matlabbatch = [];
+  matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subID, funcFWHM);
 
   % TODO add assert
   %     expectedBatch = returnExpectedBatch();
@@ -76,7 +77,7 @@ end
 %     end
 %
 %     % Things that may change
-%     matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
+%     matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = opt.model.hrfDerivatives;
 %
 %     matlabbatch{1}.spm.stats.fmri_spec.mthresh = 0.8;
 %

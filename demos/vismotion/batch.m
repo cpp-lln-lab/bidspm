@@ -39,10 +39,10 @@ bidsFFX('contrasts', opt, funcFWHM);
 
 % group level univariate
 conFWHM = 6;
-bidsRFX('smoothContrasts', funcFWHM, conFWHM, opt);
+bidsRFX('smoothContrasts', opt, funcFWHM, conFWHM);
 
 % Not implemented yet
-% bidsRFX('RFX', funcFWHM, conFWHM, opt);
+% bidsRFX(action, opt, funcFWHM, conFWHM);
 
 % Not implemented yet
 % subject level multivariate

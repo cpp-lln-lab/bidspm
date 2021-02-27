@@ -25,6 +25,21 @@ function test_loadAndCheckOptionsBasic()
 
 end
 
+function test_loadAndCheckOptionsStructure()
+
+  % create dummy json file
+  opt.taskName = 'vismotion';
+
+  % makes sure that it is picked up by default
+  opt = loadAndCheckOptions(opt);
+
+  expectedOptions = defaultOptions();
+  expectedOptions.taskName = 'vismotion';
+
+  assertEqual(opt, expectedOptions);
+
+end
+
 function test_loadAndCheckOptionsFromFile()
 
   delete('*.json');
@@ -32,6 +47,9 @@ function test_loadAndCheckOptionsFromFile()
   % create dummy json file
   jsonContent.taskName = 'vismotion';
   jsonContent.space = 'individual';
+  jsonContent.groups = {''};
+  jsonContent.subjects = {[]};
+
   filename = 'options_task-vismotion_space-T1w.json';
   spm_jsonwrite(filename, jsonContent);
 
@@ -104,11 +122,12 @@ function expectedOptions = defaultOptions()
   expectedOptions.space = 'MNI';
 
   expectedOptions.anatReference.type = 'T1w';
-  expectedOptions.anatReference.session = 1;
+  expectedOptions.anatReference.session = [];
 
   expectedOptions.skullstrip.threshold = 0.75;
 
-  expectedOptions.ignoreFieldmaps = false;
+  expectedOptions.realign.useUnwarp = true;
+  expectedOptions.useFieldmaps = true;
 
   expectedOptions.taskName = '';
 
@@ -116,16 +135,13 @@ function expectedOptions = defaultOptions()
 
   expectedOptions.contrastList = {};
   expectedOptions.model.file = '';
+  expectedOptions.model.hrfDerivatives = [0 0];
 
-  expectedOptions.result.Steps = struct( ...
-                                        'Level',  '', ...
-                                        'Contrasts', struct( ...
-                                                            'Name', '', ...
-                                                            'Mask', false, ...
-                                                            'MC', 'FWE', ...
-                                                            'p', 0.05, ...
-                                                            'k', 0, ...
-                                                            'NIDM', true));
+  expectedOptions.result.Steps = returnDefaultResultsStructure();
+
+  expectedOptions.parallelize.do = false;
+  expectedOptions.parallelize.nbWorkers = 3;
+  expectedOptions.parallelize.killOnExit = true;
 
   expectedOptions = orderfields(expectedOptions);
 

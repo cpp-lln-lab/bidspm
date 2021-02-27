@@ -1,44 +1,63 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function [group, opt, BIDS] = getData(opt, BIDSdir, type)
-  % [group, opt, BIDS] = getData(opt, BIDSdir, type)
   %
-  % getData checks that all the options specified by the user in getOptions
-  % and fills the blank for any that might have been missed out.
-  % It then reads the specified BIDS data set and gets the groups and
-  % subjects to analyze. This can be specified in the opt structure in
-  % different ways:
-  % Set the group of subjects to analyze.
-  % opt.groups = {'control', 'blind'};
+  % Short description of what the function does goes here.
   %
-  % If there are no groups (i.e subjects names are of the form `sub-01` for
-  % example) or if you want to run all subjects of all groups then use:
-  % opt.groups = {''};
-  % opt.subjects = {[]};
+  % USAGE::
   %
-  % If you have 2 groups (`cont` and `cat` for example) the following will
-  % run cont01, cont02, cat03, cat04.
-  % opt.groups = {'cont', 'cat'};
-  % opt.subjects = {[1 2], [3 4]};
+  %   [group, opt, BIDS] = getData(opt, [BIDSdir], [type = 'bold'])
+  %
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :param BIDSdir: the directory where the data is ; default is :
+  %                 ``fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm')``
+  % :type BIDSdir: string
+  % :param type: the data type you want to get the metadata of;
+  %              supported: ``'bold'`` (default) and ``T1w``
+  % :type type: string
+  %
+  % :returns: - :group: (structure)
+  %           - :opt: (structure)
+  %           - :BIDS: (structure)
+  %
+  % ``getData()`` reads the specified BIDS data set and gets the groups and
+  % subjects to analyze. This can be specified in the opt structure in different ways.
+  %
+  % Set the group of subjects to analyze::
+  %
+  %     opt.groups = {'control', 'blind'};
+  %
+  % If there are no groups (i.e subjects names are of the form ``sub-01`` for
+  % example) or if you want to run all subjects of all groups then use::
+  %
+  %   opt.groups = {''};
+  %   opt.subjects = {[]};
+  %
+  % If you have 2 groups (``cont`` and ``cat`` for example) the following will
+  % run ``cont01``, ``cont02``, ``cat03``, ``cat04``::
+  %
+  %     opt.groups = {'cont', 'cat'};
+  %     opt.subjects = {[1 2], [3 4]};
   %
   % If you have more than 2 groups but want to only run the subjects of 2
-  % groups then you can use.
-  % opt.groups = {'cont', 'cat'};
-  % opt.subjects = {[], []};
+  % groups then you can use::
   %
-  % You can also directly specify the subject label for the participants you want to run
-  % opt.groups = {''};
-  % opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
+  %     opt.groups = {'cont', 'cat'};
+  %     opt.subjects = {[], []};
   %
-  % You can also specify:
-  %  - BIDSdir: the directory where the data is ; default is :
-  %     fullfile(opt.dataDir, '..', 'derivatives', 'SPM12_CPPL')
-  %  - type: the data type you want to get the metadata of ;
-  %     supported: bold (default) and T1w
+  % You can also directly specify the subject label for the participants you
+  % want to run::
+  %
+  %     opt.groups = {''};
+  %     opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
+  %
+  % .. todo
+  %          Check if the following is true? Ideally write a test to make sure.
   %
   %  IMPORTANT NOTE: if you specify the type variable for T1w then you must
   %  make sure that the T1w.json is also present in the anat folder because
-  %  of the way the spm_BIDS function works at the moment
+  %  of the way the bids.query function works at the moment
 
   if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
     % The directory where the derivatives are located
@@ -54,12 +73,12 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
   fprintf(1, 'FOR TASK: %s\n', opt.taskName);
 
   % we let SPM figure out what is in this BIDS data set
-  BIDS = spm_BIDS(derivativesDir);
+  BIDS = bids.layout(derivativesDir);
 
   % make sure that the required tasks exist in the data set
-  if ~ismember(opt.taskName, spm_BIDS(BIDS, 'tasks'))
+  if ~ismember(opt.taskName, bids.query(BIDS, 'tasks'))
     fprintf('List of tasks present in this dataset:\n');
-    spm_BIDS(BIDS, 'tasks');
+    bids.query(BIDS, 'tasks');
 
     errorStruct.identifier = 'getData:noMatchingTask';
     errorStruct.message = sprintf( ...
@@ -69,7 +88,7 @@ function [group, opt, BIDS] = getData(opt, BIDSdir, type)
   end
 
   % get IDs of all subjects
-  subjects = spm_BIDS(BIDS, 'subjects');
+  subjects = bids.query(BIDS, 'subjects');
 
   % get metadata for bold runs for that task
   % we take those from the first run of the first subject assuming it can
@@ -111,19 +130,20 @@ end
 
 function opt = getMetaData(BIDS, opt, subjects, type)
 
+  % TODO
   % THIS NEEDS FIXING AS WE MIGHT WANT THE METADATA OF THE SUBJECTS SELECTED
   % RATHER THAN THE FIRST SUBJECT OF THE DATASET
 
   switch type
     case 'bold'
-      metadata = spm_BIDS(BIDS, 'metadata', ...
-                          'task', opt.taskName, ...
-                          'sub', subjects{1}, ...
-                          'type', type);
+      metadata = bids.query(BIDS, 'metadata', ...
+                            'task', opt.taskName, ...
+                            'sub', subjects{1}, ...
+                            'type', type);
     case 'T1w'
-      metadata = spm_BIDS(BIDS, 'metadata', ...
-                          'sub', subjects{1}, ...
-                          'type', type);
+      metadata = bids.query(BIDS, 'metadata', ...
+                            'sub', subjects{1}, ...
+                            'type', type);
   end
 
   if iscell(metadata)

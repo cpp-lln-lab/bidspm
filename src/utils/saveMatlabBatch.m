@@ -1,12 +1,21 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function saveMatlabBatch(matlabbatch, batchType, opt, subID)
-  % saveMatlabBatch(batch, batchType, opt, subID)
   %
-  % Also save some basic environnment info
+  % Also save some basic environnment info.
   %
-  % batch : matlabbatch
-  % batchType: (string) name to give to the batch file
+  % USAGE::
+  %
+  %   saveMatlabBatch(matlabbatch, batchType, opt, [subID])
+  %
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  % :param batchType:
+  % :type batchType: string
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :param subID:
+  % :type subID: string
   %
   %
 

@@ -1,29 +1,35 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function bidsRealignUnwarp(opt)
-  % bidsRealignReslice(opt)
   %
-  % The scripts realigns the functional
-  % Assumes that bidsSTC has already been run
+  % Realigns and unwarps the functional data of a given task.
+  %
+  % USAGE::
+  %
+  %   bidsRealignReslice(opt)
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
+  % Assumes that ``bidsSTC`` has already been run.
+  %
+  % If the ``bidsCreateVDM()`` workflow has been run before the voxel displacement
+  % maps will be used unless ``opt.useFieldmaps`` is set to ``false``.
+  %
 
-  %% TO DO
-  % find a way to paralelize this over subjects
-
-  % if input has no opt, load the opt.mat file
   if nargin < 1
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
 
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
+  [BIDS, opt, group] = setUpWorkflow(opt, 'realign and unwarp');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)
 
     groupName = group(iGroup).name;
 
-    for iSub = 1:group(iGroup).numSub
+    parfor iSub = 1:group(iGroup).numSub
 
       % Get the ID of the subject
       % (i.e SubNumber doesnt have to match the iSub if one subject
@@ -40,9 +46,9 @@ function bidsRealignUnwarp(opt)
                                          opt, ...
                                          'realignUnwarp');
 
-      saveMatlabBatch(matlabbatch, 'realign_unwarp', opt, subID);
+      saveAndRunWorkflow(matlabbatch, 'realign_unwarp', opt, subID);
 
-      spm_jobman('run', matlabbatch);
+      copyFigures(BIDS, opt, subID);
 
     end
   end

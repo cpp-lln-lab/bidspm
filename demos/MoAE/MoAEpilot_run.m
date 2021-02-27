@@ -25,15 +25,14 @@ addpath(genpath(fullfile(WD, '..', '..', 'lib')));
 %% Set options
 opt = MoAEpilot_getOption();
 
-% Uncomment the line below to run preprocessing in "native" space.
-% - use realign and unwarp
-% - don't do normalization
-opt.space = 'individual';
-
 %% Get data
-fprintf('%-40s:', 'Downloading dataset...');
+fprintf('%-10s:', 'Downloading dataset...');
 urlwrite(URL, 'MoAEpilot.zip');
+fprintf(1, ' Done\n\n');
+
+fprintf('%-10s:', 'Unzipping dataset...');
 unzip('MoAEpilot.zip', fullfile(WD, 'output'));
+fprintf(1, ' Done\n\n');
 
 checkDependencies();
 
@@ -50,9 +49,9 @@ bidsSTC(opt);
 bidsSpatialPrepro(opt);
 
 % The following do not run on octave for now (because of spmup)
-% anatomicalQA(opt);
-% bidsResliceTpmToFunc(opt);
-% functionalQA(opt);
+anatomicalQA(opt);
+bidsResliceTpmToFunc(opt);
+functionalQA(opt);
 
 bidsSmoothing(FWHM, opt);
 

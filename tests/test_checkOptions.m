@@ -90,11 +90,12 @@ function expectedOptions = defaultOptions()
   expectedOptions.space = 'MNI';
 
   expectedOptions.anatReference.type = 'T1w';
-  expectedOptions.anatReference.session = 1;
+  expectedOptions.anatReference.session = [];
 
   expectedOptions.skullstrip.threshold = 0.75;
 
-  expectedOptions.ignoreFieldmaps = false;
+  expectedOptions.realign.useUnwarp = true;
+  expectedOptions.useFieldmaps = true;
 
   expectedOptions.taskName = '';
 
@@ -102,16 +103,13 @@ function expectedOptions = defaultOptions()
 
   expectedOptions.contrastList = {};
   expectedOptions.model.file = '';
+  expectedOptions.model.hrfDerivatives = [0 0];
 
-  expectedOptions.result.Steps = struct( ...
-                                        'Level',  '', ...
-                                        'Contrasts', struct( ...
-                                                            'Name', '', ...
-                                                            'Mask', false, ...
-                                                            'MC', 'FWE', ...
-                                                            'p', 0.05, ...
-                                                            'k', 0, ...
-                                                            'NIDM', true));
+  expectedOptions.result.Steps = returnDefaultResultsStructure();
+
+  expectedOptions.parallelize.do = false;
+  expectedOptions.parallelize.nbWorkers = 3;
+  expectedOptions.parallelize.killOnExit = true;
 
   expectedOptions = orderfields(expectedOptions);
 

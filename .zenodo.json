@@ -1,0 +1,52 @@
+{
+  "title": "CPP_SPM: Octave/MATLAB tools for analyzing BIDS datasets with SPM",
+  "description": "CPP_SPM is a set pipelines and tools for Octave/MATLAB to process and analyze BIDS data sets using SPM.",
+  "creators": [
+    {
+      "affiliation": "Université Catholique de Louvain",
+      "name": "Gau, Rémi",
+      "orcid": "0000-0002-1535-9767"
+    },
+    {
+      "affiliation": "Université Catholique de Louvain",
+      "name": "Barilari, Marco",
+      "orcid": "0000-0002-3313-3120"
+    },
+    {
+      "affiliation": "Université Catholique de Louvain",
+      "name": "Battal, Ceren",
+      "orcid": "0000-0002-9844-7630"
+    },
+    {
+      "affiliation": "Université Catholique de Louvain",
+      "name": "Rezk, Mohamed",
+      "orcid": "0000-0002-1866-8645"
+    },
+    {
+      "affiliation": "Université Catholique de Louvain",
+      "name": "Collignon, Olivier",
+      "orcid": "0000-0003-1882-3550"
+    },
+    {
+      "affiliation": "Université Catholique de Louvain",
+      "name": "Gurtubay, Ane",
+      "orcid": "0000-0003-3824-2219"
+    },    
+    {
+      "affiliation": "Université Catholique de Louvain",
+      "name": "Falagiarda, Federica",
+      "orcid": "0000-0001-7844-1605"
+    }
+  ],
+  "keywords": [
+    "BIDS",
+    "brain imaging data structure",
+    "neuroscience",
+    "neuroimaging",
+    "MATLAB",
+    "Octave",
+    "SPM"
+  ],
+  "license": "GPL-3",
+  "upload_type": "software"
+}

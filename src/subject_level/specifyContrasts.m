@@ -1,22 +1,35 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
 function contrasts = specifyContrasts(ffxDir, taskName, opt)
+  %
   % Specifies the first level contrasts
   %
+  % USAGE::
+  %
+  %   contrasts = specifyContrasts(ffxDir, taskName, opt)
+  %
+  % :param ffxDir:
+  % :type ffxDir:
+  % :param taskName:
+  % :type taskName:
+  % :param opt:
+  %
+  % :returns: - :contrasts: (type) (dimension)
+  %
   % To know the names of the columns of the design matrix, type :
-  % strvcat(SPM.xX.name)
+  % ``strvcat(SPM.xX.name)``
   %
   % EXAMPLE
-  % Sn(1) ins 1
-  % Sn(1) ins 2
-  % Sn(1) T1
-  % Sn(1) T2
-  % Sn(1) R1
-  % Sn(1) R2
-  % Sn(1) R3
-  % Sn(1) R4
-  % Sn(1) R5
-  % Sn(1) R6
+  %     Sn(1) ins 1
+  %     Sn(1) ins 2
+  %     Sn(1) T1
+  %     Sn(1) T2
+  %     Sn(1) R1
+  %     Sn(1) R2
+  %     Sn(1) R3
+  %     Sn(1) R4
+  %     Sn(1) R5
+  %     Sn(1) R6
 
   load(fullfile(ffxDir, 'SPM.mat'));
 

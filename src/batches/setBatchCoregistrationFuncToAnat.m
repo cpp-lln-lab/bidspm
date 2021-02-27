@@ -1,8 +1,28 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt)
+function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID)
+  %
+  % Set the batch for corregistering the functional images to the
+  % anatomical image
+  %
+  % USAGE::
+  %
+  %   matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt)
+  %
+  % :param matlabbatch: list of SPM batches
+  % :type matlabbatch: structure
+  % :param BIDS: BIDS layout returned by ``getData``.
+  % :type BIDS: structure
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  % :param subID: subject ID
+  % :type subID: string
+  %
+  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  %
 
-  fprintf(1, ' BUILDING SPATIAL JOB : COREGISTER\n');
+  printBatchName('coregister functional data to anatomical');
 
   matlabbatch{end + 1}.spm.spatial.coreg.estimate.ref(1) = ...
       cfg_dep('Named File Selector: Anatomical(1) - Files', ...
@@ -15,12 +35,11 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID
 
   % SOURCE IMAGE : DEPENDENCY FROM REALIGNEMENT
   % Mean Image
-
-  meanImageToUse = 'rmean';
-  otherImageToUse = 'cfiles';
-  if strcmp(opt.space, 'individual')
-    meanImageToUse = 'meanuwr';
-    otherImageToUse = 'uwrfiles';
+  meanImageToUse = 'meanuwr';
+  otherImageToUse = 'uwrfiles';
+  if ~opt.realign.useUnwarp
+    meanImageToUse = 'rmean';
+    otherImageToUse = 'cfiles';
   end
 
   matlabbatch{end}.spm.spatial.coreg.estimate.source(1) = ...

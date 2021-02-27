@@ -6,53 +6,60 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %
   % USAGE::
   %
-  %   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, [action = 'realign'])
+  %   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, [action = 'realign'], BIDS, opt, subID)
   %
   % :param matlabbatch: SPM batch
   % :type matlabbatch: structure
-  % :param BIDS: BIDS layout returned by ``getData``
+  % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param subID: subject label
-  % :type subID: string
-  % :param opt: options
-  % :type opt: structure
   % :param action: ``realign``, ``realignReslice``, ``realignUnwarp``
   % :type action: string
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :type subID: string
+  % :param subID: subject label
   %
   % :returns: - :matlabbatch: (structure) (dimension)
   %           - :voxDim: (array) (dimension)
 
+  % TODO:
+  % make which image is resliced more consistent 'which = []'
+
   if numel(varargin) < 5
-    [matlabbatch, BIDS, subID, opt] = deal(varargin{:});
+    [matlabbatch, BIDS, opt, subID] = deal(varargin{:});
     action = '';
   else
-    [matlabbatch, BIDS, subID, opt, action] = deal(varargin{:});
+    [matlabbatch, action, BIDS, opt, subID] = deal(varargin{:});
   end
 
   if isempty(action)
-    action = 'realign';
+    action = 'realignUnwarp';
   end
 
   % TODO hide this wart in a subfunction ?
   switch action
     case 'realignUnwarp'
-      msg = ' & UNWARP';
+      msg = 'REALIGN & UNWARP';
       matlabbatch{end + 1}.spm.spatial.realignunwarp.eoptions.weight = {''};
       matlabbatch{end}.spm.spatial.realignunwarp.uwroptions.uwwhich = [2 1];
 
     case 'realignReslice'
-      msg = ' & RESLICE';
+      msg = 'REALIGN & RESLICE';
       matlabbatch{end + 1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
       matlabbatch{1}.spm.spatial.realign.estwrite.roptions.which = [2 1];
 
     case 'realign'
-      msg = [];
+      msg = 'REALIGN';
       matlabbatch{end + 1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
       matlabbatch{end}.spm.spatial.realign.estwrite.roptions.which = [0 1];
 
+    case 'reslice'
+      msg = 'RESLICE';
+      matlabbatch{end + 1}.spm.spatial.realign.write.roptions.which = [2 0];
+
   end
 
-  fprintf(1, ' BUILDING SPATIAL JOB : REALIGN%s\n', msg);
+  printBatchName(msg);
 
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
@@ -75,7 +82,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
       % check that the file with the right prefix exist and we get and
       % save its voxeldimension
-      prefix = getPrefix('preprocess', opt);
+      prefix = getPrefix('realign', opt);
       file = validationInputFile(subFuncDataDir, boldFilename, prefix);
       [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, boldFilename);
 
@@ -85,19 +92,36 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
         error(errorStruct);
       end
 
-      fprintf(1, ' %s\n', file);
+      switch action
 
-      if strcmp(action, 'realignUnwarp')
+        % we reslice images that come from a previous batch so we can return
+        % early
+        case 'reslice'
 
-        vdmFile = getVdmFile(BIDS, opt, boldFilename);
-        matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = { vdmFile };
-        matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = { file };
+          matlabbatch{end}.spm.spatial.realign.write.data(1) = ...
+            cfg_dep('Coregister: Estimate: Coregistered Images', ...
+                    substruct( ...
+                              '.', 'val', '{}', {opt.orderBatches.coregister}, ...
+                              '.', 'val', '{}', {1}, ...
+                              '.', 'val', '{}', {1}, ...
+                              '.', 'val', '{}', {1}), ...
+                    substruct('.', 'cfiles'));
 
-      else
+          return
 
-        matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = { file };
+        case 'realignUnwarp'
+
+          vdmFile = getVdmFile(BIDS, opt, boldFilename);
+          matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = { vdmFile };
+          matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = { file };
+
+        otherwise
+
+          matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = { file };
 
       end
+
+      fprintf(1, ' %s\n', file);
 
       runCounter = runCounter + 1;
     end

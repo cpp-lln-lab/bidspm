@@ -1,0 +1,13 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+
+function name = returnName(result)
+
+  name = sprintf('%s_p-%0.3f_k-%i_MC-%s', ...
+                 result.Contrasts.Name, ...
+                 result.Contrasts.p, ...
+                 result.Contrasts.k, ...
+                 result.Contrasts.MC);
+
+  name = strrep(name, '.', '');
+
+end

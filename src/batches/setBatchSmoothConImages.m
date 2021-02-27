@@ -1,12 +1,28 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
+function matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt, funcFWHM, conFWHM)
+  %
+  % Creates a batch to smooth all the con images of all subjects
+  %
+  % USAGE::
+  %
+  %   matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt, funcFWHM, conFWHM)
+  %
+  % :param matlabbatch:
+  % :type matlabbatch:
+  % :param group:
+  % :type group:
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt:
+  % :param funcFWHM:
+  % :type funcFWHM:
+  % :param conFWHM:
+  % :type conFWHM:
+  %
+  % :returns: - :matlabbatch:
+  %
 
-  fprintf(1, 'SMOOTHING CON IMAGES...');
-
-  counter = 0;
-
-  matlabbatch = {};
+  printBatchName('smoothing contrast images');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)
@@ -15,8 +31,6 @@ function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
 
     for iSub = 1:group(iGroup).numSub
 
-      counter = counter + 1;
-
       subNumber = group(iGroup).subNumber{iSub};
 
       printProcessingSubject(groupName, iSub, subNumber);
@@ -24,17 +38,16 @@ function matlabbatch = setBatchSmoothConImages(group, funcFWHM, conFWHM, opt)
       ffxDir = getFFXdir(subNumber, funcFWHM, opt);
 
       conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
-      matlabbatch{counter}.spm.spatial.smooth.data = cellstr(conImg); %#ok<*AGROW>
+      data = cellstr(conImg);
 
-      % Define how much smoothing is required
-      matlabbatch{counter}.spm.spatial.smooth.fwhm = ...
-          [conFWHM conFWHM conFWHM];
-      matlabbatch{counter}.spm.spatial.smooth.dtype = 0;
-      matlabbatch{counter}.spm.spatial.smooth.prefix = [ ...
-                                                        spm_get_defaults('smooth.prefix'), ...
-                                                        num2str(conFWHM)];
+      matlabbatch = setBatchSmoothing( ...
+                                      matlabbatch, ...
+                                      data, ...
+                                      conFWHM, ...
+                                      [spm_get_defaults('smooth.prefix'), num2str(conFWHM)]);
 
     end
+
   end
 
 end

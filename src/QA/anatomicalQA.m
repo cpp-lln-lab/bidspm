@@ -1,7 +1,21 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 function anatomicalQA(opt)
-  % anatomicalQA(opt)
+  %
+  % Computes several metrics for anatomical image.
+  %
+  % USAGE::
+  %
+  %   anatomicalQA(opt)
+  %
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  %
+
+  if isOctave()
+    warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.');
+    return
+  end
 
   % if input has no opt, load the opt.mat file
   if nargin < 1
@@ -18,7 +32,7 @@ function anatomicalQA(opt)
 
     groupName = group(iGroup).name;
 
-    for iSub = 1:group(iGroup).numSub
+    parfor iSub = 1:group(iGroup).numSub
 
       subID = group(iGroup).subNumber{iSub};
 
@@ -38,7 +52,7 @@ function anatomicalQA(opt)
       % This is useful to check coregistration worked fine
       anatQA = spmup_anatQA(anatImage, TPMs(1, :), TPMs(2, :)); %#ok<*NASGU>
 
-      anatQA.avgDistToSurf = spmup_comp_dist2surf(fullfile(anatDataDir, anatImage));
+      anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
 
       spm_jsonwrite( ...
                     strrep(anatImage, '.nii', '_qa.json'), ...

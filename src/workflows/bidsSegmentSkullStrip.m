@@ -2,25 +2,22 @@
 
 function bidsSegmentSkullStrip(opt)
   %
-  % Segments and skullstrips the anat image.
+  % Segments and skullstrips the anatomical image.
   %
   % USAGE::
   %
   %   bidsSegmentSkullStrip([opt])
   %
-  % :param opt: options
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
+  %
 
-  % if input has no opt, load the opt.mat file
   if nargin < 1
     opt = [];
   end
-  opt = loadAndCheckOptions(opt);
 
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
-
-  fprintf(1, 'SEGMENTING AND SKULL STRIPPING ANAT\n');
+  [BIDS, opt, group] = setUpWorkflow(opt, 'segmentation and skulltripping');
 
   %% Loop through the groups, subjects, and sessions
   for iGroup = 1:length(group)
@@ -29,14 +26,11 @@ function bidsSegmentSkullStrip(opt)
 
     for iSub = 1:group(iGroup).numSub
 
-      matlabbatch = [];
-      % Get the ID of the subject
-      % (i.e SubNumber doesnt have to match the iSub if one subject
-      % is exluded for any reason)
       subID = group(iGroup).subNumber{iSub};
 
       printProcessingSubject(groupName, iSub, subID);
 
+      matlabbatch = [];
       matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
       opt.orderBatches.selectAnat = 1;
 
@@ -46,9 +40,7 @@ function bidsSegmentSkullStrip(opt)
 
       matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt);
 
-      saveMatlabBatch(matlabbatch, 'segment_skullstrip', opt, subID);
-
-      spm_jobman('run', matlabbatch);
+      saveAndRunWorkflow(matlabbatch, 'segment_skullstrip', opt, subID);
 
     end
   end

@@ -24,7 +24,7 @@ function test_getRealignParamFileBasic()
   realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, boldFileName));
 
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
-                              'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', ...
+                              'dummyData', 'derivatives', 'cpp_spm', 'sub-01', ...
                               'ses-01', 'func', ...
                               'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
 
@@ -41,7 +41,7 @@ function test_getRealignParamFileNativeSpace()
   opt.taskName = 'vislocalizer';
   opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
   opt.subjects = {subID};
-  opt.space = 'T1w';
+  opt.space = 'individual';
 
   opt = checkOptions(opt);
 
@@ -51,7 +51,7 @@ function test_getRealignParamFileNativeSpace()
   realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, boldFileName));
 
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
-                              'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', ...
+                              'dummyData', 'derivatives', 'cpp_spm', 'sub-01', ...
                               'ses-01', 'func', ...
                               'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
 
@@ -69,7 +69,7 @@ function test_getRealignParamFileFFX()
   opt.taskName = 'vislocalizer';
   opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
   opt.subjects = {subID};
-  opt.space = 'T1w';
+  opt.space = 'MNI';
 
   opt = checkOptions(opt);
 
@@ -80,7 +80,7 @@ function test_getRealignParamFileFFX()
   realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, [boldFileName, ext]), prefix);
 
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
-                              'dummyData', 'derivatives', 'SPM12_CPPL', 'sub-01', ...
+                              'dummyData', 'derivatives', 'cpp_spm', 'sub-01', ...
                               'ses-01', 'func', ...
                               'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
 

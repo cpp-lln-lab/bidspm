@@ -4,7 +4,7 @@
 
 # defines where the BIDS data set will be created
 StartDir=`pwd` # relative to starting directory
-StartDir=$StartDir/dummyData/derivatives/SPM12_CPPL
+StartDir=$StartDir/dummyData/derivatives/cpp_spm
 mkdir $StartDir
 
 SubList='ctrl01 ctrl02 blind01 blind02 01 02' # subject list
@@ -19,42 +19,98 @@ do
 		do
 
 			# create folder for each session and functional and fmap
-			ThisDir=$StartDir/sub-$Subject/ses-$Ses
+			mkdir $StartDir/sub-$Subject/ses-$Ses
+
+			# FUNC
+			ThisDir=$StartDir/sub-$Subject/ses-$Ses/func
 			mkdir $ThisDir
 
-			mkdir $ThisDir/func
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
+			echo "{\"TaskName\": \"vislocalizer\"}" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.json
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
+			echo "{\"TaskName\": \"vislocalizer\"}" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.json
+			touch $ThisDir/asub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
+			touch $ThisDir/asub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
 
-			rm $ThisDir/func/*
+			touch $ThisDir/mean_sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
 
-			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
-			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
-			touch $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/meanusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/s6wsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/s6rsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/s6usub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/s6wusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/rp_sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.txt
 
-			touch $ThisDir/func/asub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
-			touch $ThisDir/func/asub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
+			echo "onset\tduration\ttrial_type" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
+			echo "2\t15\tVisMot" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
+			echo "25\t15\tVisStat" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
 
-			touch $ThisDir/func/meanusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
-			touch $ThisDir/func/s6wsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
-			touch $ThisDir/func/s6rsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
-			touch $ThisDir/func/s6usub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
-			touch $ThisDir/func/rp_sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.txt
+			echo "onset\tduration\ttrial_type" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
+			echo "2\t2\tVisMotUp" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
+			echo "4\t2\tVisMotDown" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
 
-			echo "onset\tduration\ttrial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
-			echo "2\t15\tVisMot" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
-			echo "25\t15\tVisStat" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
+			echo "onset\tduration\ttrial_type" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
+			echo "3\t2\tVisMotDown" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
+			echo "6\t2\tVisMotUp" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
 
-			echo "onset\tduration\ttrial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
-			echo "2\t2\tVisMotUp" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
-			echo "4\t2\tVisMotDown" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
+			# FMAP
+			ThisDir=$StartDir/sub-$Subject/ses-$Ses/fmap
+			mkdir $ThisDir
 
-			echo "onset\tduration\ttrial_type" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
-			echo "3\t2\tVisMotDown" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
-			echo "6\t2\tVisMotUp" >> $ThisDir/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-1_phasediff.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-1_magnitude1.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-1_magnitude2.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-2_phasediff.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-2_magnitude1.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-2_magnitude2.nii
 
-		  mkdir $ThisDir/anat
+			EchoTime1=0.006
+			EchoTime2=0.00746
+			template='{"EchoTime1":%f, "EchoTime2":%f, "IntendedFor":"%s"}'
 
-		  touch $ThisDir/anat/sub-$Subject\_ses-$Ses\_T1w.nii
+			IntendedFor=`echo func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii`
+			json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
+			echo "$json_string" > $ThisDir/sub-$Subject\_ses-$Ses\_run-2_phasediff.json
+
+			IntendedFor=`echo func/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii`
+			json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
+			echo "$json_string" > $ThisDir/sub-$Subject\_ses-$Ses\_run-1_phasediff.json
 
 		done
+
+		# ANAT
+		ThisDir=$StartDir/sub-$Subject/ses-01/anat
+		mkdir $ThisDir
+
+		touch $ThisDir/sub-$Subject\_ses-01_T1w.nii
+		touch $ThisDir/msub-$Subject\_ses-01_T1w.nii
+		touch $ThisDir/wmsub-$Subject\_ses-01_T1w.nii
+		touch $ThisDir/c1sub-$Subject\_ses-01_T1w.nii
+		touch $ThisDir/c2sub-$Subject\_ses-01_T1w.nii
+		touch $ThisDir/c3sub-$Subject\_ses-01_T1w.nii
+
+		# STATS
+		mkdir $StartDir/sub-$Subject/stats
+		mkdir $StartDir/sub-$Subject/stats/ffx_task-vismotion/
+		ThisDir=$StartDir/sub-$Subject/stats/ffx_task-vismotion/ffx_space-MNI_FWHM-6
+		mkdir $ThisDir
+
+		cp $StartDir/sub-01/stats/ffx_task-vismotion/ffx_space-MNI_FWHM-6/SPM.mat $ThisDir
+
+		touch $ThisDir/mask.nii
+
+		touch $ThisDir/spmT_0001.nii
+		touch $ThisDir/spmT_0002.nii		
+
+		touch $ThisDir/con_0001.nii
+		touch $ThisDir/con_0002.nii
+		touch $ThisDir/con_0003.nii
+		touch $ThisDir/con_0004.nii
+				
+		touch $ThisDir/s6con_0001.nii
+		touch $ThisDir/s6con_0002.nii
+		touch $ThisDir/s6con_0003.nii
+		touch $ThisDir/s6con_0004.nii
 
 done;

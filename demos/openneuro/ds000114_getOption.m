@@ -20,7 +20,11 @@ function opt = ds000114_getOption()
   opt.anatReference.type = 'T1w';
   opt.anatReference.session = 2;
 
-  opt.space = 'individual';
+  % Uncomment the lines below to run preprocessing
+  % - don't use realign and unwarp
+  %   opt.realign.useUnwarp = false;
+  % - in "native" space: don't do normalization
+  %   opt.space = 'individual';
 
   opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                             'models', ...
@@ -34,8 +38,11 @@ function opt = ds000114_getOption()
                                                    'Mask', false, ...
                                                    'MC', 'FWE', ... FWE, none, FDR
                                                    'p', 0.05, ...
-                                                   'k', 0, ...
-                                                   'NIDM', true));
+                                                   'k', 0));
+
+  opt.parallelize.do = true;
+  opt.parallelize.nbWorkers = 2;
+  opt.parallelize.killOnExit = false;
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);
