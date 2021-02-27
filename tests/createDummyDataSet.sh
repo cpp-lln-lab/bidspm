@@ -25,7 +25,7 @@ do
 			ThisDir=$StartDir/sub-$Subject/ses-$Ses/func
 			mkdir $ThisDir
 
-			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii.gz
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
 			echo "{\"TaskName\": \"vislocalizer\"}" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.json
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
 			echo "{\"TaskName\": \"vislocalizer\"}" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.json
