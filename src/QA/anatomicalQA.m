@@ -14,6 +14,7 @@ function anatomicalQA(opt)
 
   if isOctave()
     warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.');
+    return
   end
 
   % if input has no opt, load the opt.mat file
