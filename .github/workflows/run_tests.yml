@@ -79,14 +79,5 @@ jobs:
       run: |
         octave $OCTFLAGS --eval "runTests"
         cat test_report.log | grep 0
-        bash <(curl -s https://codecov.io/bash) 
-
-
-    # - name: "Run demo"
-
-    #   if: branch = master
-
-    #   script:
-    #     - cd demos/MoAE
-    #     - octave $OCTFLAGS --eval "MoAEpilot_run"           
+        bash <(curl -s https://codecov.io/bash)         
 
