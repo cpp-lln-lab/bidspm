@@ -26,7 +26,9 @@ do
 			mkdir $ThisDir
 
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
+			echo "{\"TaskName\": \"vislocalizer\"}" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.json
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
+			echo "{\"TaskName\": \"vislocalizer\"}" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.json
 			touch $ThisDir/asub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
 			touch $ThisDir/asub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
 
@@ -40,15 +42,15 @@ do
 			touch $ThisDir/s6wusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/rp_sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.txt
 
-			echo "onset\tduration\ttrial_type" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
+			echo "onset\tduration\ttrial_type" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
 			echo "2\t15\tVisMot" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
 			echo "25\t15\tVisStat" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_events.tsv
 
-			echo "onset\tduration\ttrial_type" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
+			echo "onset\tduration\ttrial_type" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
 			echo "2\t2\tVisMotUp" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
 			echo "4\t2\tVisMotDown" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_events.tsv
 
-			echo "onset\tduration\ttrial_type" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
+			echo "onset\tduration\ttrial_type" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
 			echo "3\t2\tVisMotDown" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
 			echo "6\t2\tVisMotUp" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
 
