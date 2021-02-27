@@ -67,9 +67,6 @@ jobs:
         mkdir $output_folder
         curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $output_folder'MoAEpilot.zip'
         unzip $output_folder'MoAEpilot.zip' -d $output_folder
-        cd tests
-        sh createDummyDataSet.sh
-        cd ..
 
     - name: Run system tests
       run: |

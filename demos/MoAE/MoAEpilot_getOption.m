@@ -54,17 +54,16 @@ function opt = MoAEpilot_getOption()
 
   opt.result.Steps(1).Output.binary = true();
 
+  % MONTAGE FIGURE OPTIONS
   opt.result.Steps(1).Output.montage.do = true();
   opt.result.Steps(1).Output.montage.slices = -8:3:15; % in mm
   % axial is default 'sagittal', 'coronal'
   opt.result.Steps(1).Output.montage.orientation = 'axial';
-
-  % will use the MNI T1 template by default but the underlay image can be
-  % changed.
+  % will use the MNI T1 template by default but the underlay image can be changed.
   opt.result.Steps(1).Output.montage.background = ...
       fullfile(spm('dir'), 'canonical', 'avg152T1.nii,1');
-  %
-  %   opt.result.Steps(1).Output.NIDM_results = true();
+
+  opt.result.Steps(1).Output.NIDM_results = true();
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);
