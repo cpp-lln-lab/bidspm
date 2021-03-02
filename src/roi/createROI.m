@@ -1,9 +1,7 @@
 function mask = createROI(globalRoiImage)
     
     % roiImage: fullpath of the roiImage
-    
 
-    
     %% % global roi
     mask.global.hdr = spm_vol(globalRoiImage);
     mask.global.img = logical(spm_read_vols(mask.global.hdr));

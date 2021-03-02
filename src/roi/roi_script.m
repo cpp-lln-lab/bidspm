@@ -33,13 +33,17 @@ dataImage = fullfile(pwd, 'TStatistic.nii');
 
 % If needed reslice probability map to have same resolution as the data image
 % resliceImg won't do anything if the 2 images have the same resolution
-reslicedProbabilityMap = resliceImg(dataImage, probabiliyMap);
+reslicedProbabilityMap = resliceImages(dataImage, probabiliyMap);
 
 % Threshold probability map into a binary mask 
 % to keep only values above a certain threshold
 threshold = 10;
 roiName = thresholdToMask(reslicedProbabilityMap, threshold);
 
-%% Get ROI voxel coordinates and extract dataz
+%% Get ROI voxel coordinates and extract data
 mask = createROI(roiName);
 data = getRoiData(dataImage, mask);
+
+%% Get data from a sphere at a specific location
+
+
