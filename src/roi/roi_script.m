@@ -7,74 +7,105 @@
 %   collection : https://neurovault.org/collections/5209/
 %   file: https://neurovault.org/media/images/5209/spm_0001_1.nidm/TStatistic.nii.gz
 
-clear
-clc
+clear;
+clc;
 
 %% ASSUMPTION
 
-% this assumes that the 2 immages are in the same space (MNI, individual)
+% This assumes that the 2 immages are in the same space (MNI, individual)
 % but they might not necessarily have the same resolution.
 %
 % In SPM lingo this means they are coregistered but not necessarily resliced.
 %
-% If they have different resolution we 
-%
-
-%% Preprare data and ROI
-
-% TODO: don't store the data locally
-% URL = 'https://neurovault.org/media/images/5209/spm_0001_1.nidm/TStatistic.nii.gz';
-% urlwrite(URL, fullfile(pwd, 'TStatistic.nii'));
-
-% gunzip('*.gz')
 
 probabilityMap = fullfile(pwd, 'visual motion_association-test_z_FDR_0.01.nii');
 dataImage = fullfile(pwd, 'TStatistic.nii');
 
-% If needed reslice probability map to have same resolution as the data image
-%
-% resliceImg won't do anything if the 2 images have the same resolution
-%
-% if you reed the data with spm_summarise, then the 2 images do not need the
-% same resolution.
+opt.reslice.do = true;
+opt.download.do = false;
+opt.unzip.do = false;
 
-% reslicedProbabilityMap = resliceImages(dataImage, probabilityMap);
+%% Preprare data and ROI
 
-% Threshold probability map into a binary mask 
+if opt.download.do
+% TODO: don't store the data locally
+% URL = 'https://neurovault.org/media/images/5209/spm_0001_1.nidm/TStatistic.nii.gz';
+% urlwrite(URL, fullfile(pwd, 'TStatistic.nii'));
+end
+
+if opt.unzip.do
+gunzip('*.gz')
+end
+
+
+if opt.reslice.do
+    % If needed reslice probability map to have same resolution as the data image
+    %
+    % resliceImg won't do anything if the 2 images have the same resolution
+    %
+    % if you read the data with spm_summarise, then the 2 images do not need the
+    % same resolution.
+    probabilityMap = resliceImages(dataImage, probabilityMap);
+end
+
+% Threshold probability map into a binary mask
 % to keep only values above a certain threshold
 threshold = 10;
-
 roiName = thresholdToMask(probabilityMap, threshold);
-% roiNameHighRes = thresholdToMask(reslicedProbabilityMap, threshold);
-
 
 %% Get ROI voxel coordinates and extract data
 expected = spm_summarise(dataImage, roiName);
 
-% mask = createROI('mask', roiNameHighRes);
-% data = getRoiData(dataImage, mask);
-% assertEqual(data, expected)
-  
-return
+if opt.reslice.do
+    % only to test home made code
+    mask = createROI('mask', roiName);
+    data = getRoiData(dataImage, mask);
+    assertEqual(data, expected)
+end
 
 %% Get data from a sphere at a specific location
-% X Y Z coordinates in millimeters
-% location = [21.33 -94.83 1.40];  
-location = [-7.46 -31.01 7.78]; 
+% X Y Z coordinates of right V5 in millimeters
+location = [44 -67 0];
 
 % radius in millimeters
-radius = 1;
+radius = 5;
 
 sphere.location = location;
 sphere.radius = radius;
-
-imageToSample = dataImage;
 sphere = createROI('sphere', sphere);
-% data = getRoiData(dataImage, mask);
-expected = spm_summarise(dataImage, sphere);
+
+expected_sphere = spm_summarise(dataImage, sphere);
+
+% equivalent to
+% b = spm_summarise('beta_0001.nii', ...
+%                   struct( ...
+%                          'def', 'sphere', ...
+%                          'spec', 1, ...
+%                          'xyz', [-7.46 -31.01 7.78]'));
 
 
+%% Get data from intersection of a ROI and a sphere
+clear sphere
+% X Y Z coordinates of right V5 in millimeters
+location = [44 -67 0];
+
+sphere.location = location;
+sphere.radius = 3;
+mask = createROI('intersection', roiName, sphere);
+
+expected_intersection = spm_summarise(dataImage, mask.roi.XYZmm);
 
 
-b = spm_summarise('beta_0001.nii',...
-      struct('def','sphere', 'spec',5, 'xyz',[10 20 30]'));
+%% Get data from a ROI grown within a mask till a certain size
+clear sphere
+% X Y Z coordinates of right V5 in millimeters
+location = [44 -67 0];
+
+sphere.location = location;
+sphere.radius = 1; % starting radius
+sphere.maxNbVoxels = 1090; % starting radius
+mask = createROI('expand', roiName, sphere);
+
+data = getRoiData(dataImage, mask);
+
+expected_growth = spm_summarise(dataImage, mask.roi.XYZmm);
