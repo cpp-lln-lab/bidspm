@@ -39,8 +39,8 @@ function opt = checkOptions(opt)
   % OTHER OPTIONS (with their defaults):
   %     - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
   %         subjects should be fetched by their number ``1`` and not their label ``O1'``.
-  %     - ``opt.query`` - a cell string used to specify other options to only run analysis on
-  %         certain files. ``{'dir', 'AP', 'acq' '3p00mm'}``. See ``bids.query``
+  %     - ``opt.query`` - a structure used to specify other options to only run analysis on
+  %         certain files. ``struct('dir', 'AP', 'acq' '3p00mm')``. See ``bids.query``
   %         to see how to specify.
   %     - ``opt.anatReference.type = 'T1w'`` -  type of the anatomical reference
   %     - ``opt.anatReference.session = ''`` - session label of the anatomical reference
