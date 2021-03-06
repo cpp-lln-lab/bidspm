@@ -8,16 +8,16 @@ function plot_power_spectra_of_GLM_residuals(path_to_results, TR, cutoff_freq, a
     % -May 2018
     %
     % -Given fMRI task results in AFNI, FSL or SPM,
-    % this script plots power spectra of GLM residuals.
+    %   this script plots power spectra of GLM residuals.
     % -If there is strong structure visible in the GLM residuals
-    % the power spectra are not flat), the first level results are likely confounded.
+    %   the power spectra are not flat), the first level results are likely confounded.
 
     % -tested on Linux
     % -you need on your path >= MATLAB 2017b, AFNI and FSL
 
     % -specify the default values for the cutoff frequency used by the high-pass filter,
     % -for the assumed experimental design frequency
-    %  and for the true experimental design frequency;
+    %   and for the true experimental design frequency;
     % -10 chosen, as it is beyond the plotted frequencies
 
     if ~exist('cutoff_freq', 'var')
