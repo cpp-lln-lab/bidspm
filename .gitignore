@@ -20,6 +20,7 @@ demos/spm*/raw
 demos/spm*/source
 
 # test folder and dummy data
+tests/cfg/*.json
 tests/sub-01/*
 tests/group/*
 tests/models/*.json
