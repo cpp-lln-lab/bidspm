@@ -9,30 +9,37 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
   %   varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
-  % :param BIDS: (structure) returned by bids.query when exploring a BIDS data set.
-  % :param subLabel: ID of the subject
-  % :param opt: (structure) Mostly used to find the task name.
-  % :param info: (strint) ``sessions``, ``runs``, ``filename``.
-  % :param varargin: see below
+  % If info = ``sessions`, this returns name of the sessions and their number::
   %
-  % - subLabel - ID of the subject ; in BIDS lingo that means that for a file name
-  %   ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
-  % - session - ID of the session of interes ; in BIDS lingo that means that for a file name
-  %   ``sub-02_ses-pretest_task-foo_bold.nii`` the sesssion will be the string
-  %   ``pretest``
-  % - run: ID of the run of interest
-  % - type - string ; modality type to look for. For example: ``bold``, ``events``,
-  %   ``stim``, ``physio``
+  %   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'sessions')  
   %
-  % for a given BIDS data set, subject identity, and info type,
+  % If info = ``runs``, this returns name of the runs and their number for a
+  % specified session::
   %
-  % if info = Sessions, this returns name of the sessions and their number
+  %   [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'runs', sessionID)
   %
-  % if info = Runs, this returns name of the runs and their number for an specified session.
+  % If info = ``filename``, this returns the name of the file for a specified
+  % session and run::
   %
-  % if info = Filename, this returns the name of the file for an specified
-  % session and run.
+  %   filenames = getInfo(BIDS, subLabel, opt, 'filename', sessionID, runID, type)
   %
+  % :param BIDS:        returned by bids.layout when exploring a BIDS data set.
+  % :type BIDS:         structure
+  % :param subLabel:       label of the subject ; in BIDS lingo that means that for a file name
+  %                     ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
+  % :type subLabel:        string  
+  % :param opt:         Mostly used to find the task name.
+  % :type opt:          structure  
+  % :param info:        ``sessions``, ``runs``, ``filename``.
+  % :type info:         string  
+  % :param sessionLabel:   session label (for `ses-001`, the label will be `001`)
+  % :type sessionLabel:    string
+  % :param runIdx:       run index label (for `run-001`, the label will be `001`)
+  % :type runIdx:        string
+  % :param type:        datatype (``bold``, ``events``, ``physio``)
+  % :type type:         string
+  %
+
 
   varargout = {}; %#ok<*NASGU>
 

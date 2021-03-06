@@ -2,30 +2,33 @@
 
 function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   %
-  % Short description of what the function does goes here.
+  % Get the filename and the directory of a bold file for a given session /
+  % run.
+  %
+  % Unzips the file if necessary.
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   [boldFileName, subFuncDataDir] = getBoldFilename(BIDS, subID, sessionID, runID, opt)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: structure
+  % :param BIDS:        returned by bids.layout when exploring a BIDS data set.
+  % :type BIDS:         structure
+  % :param subID:       label of the subject ; in BIDS lingo that means that for a file name
+  %                     ``sub-02_task-foo_bold.nii`` the subID will be the string ``02``
+  % :type subID:        string  
+  % :param sessionID:   session label (for `ses-001`, the label will be `001`)
+  % :type sessionID:    string
+  % :param runID:       run index label (for `run-001`, the label will be `001`)
+  % :type runID:        string
+  % :param opt:         Mostly used to find the task name.
+  % :type opt:          structure    
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
   %
-  % [fileName, subFuncDataDir] = getBoldFilename(BIDS, opt, subID, sessionID, runID)
+  % :returns: - :boldFileName: (string)
+  %           - :subFuncDataDir: (string)
   %
-  % Get the filename and the directory of a bold file for a given session /
-  % run.
-  % Unzips the file if necessary.
+  %
+
 
   [BIDS, subID, sessionID, runID, opt] = deal(varargin{:});
 
