@@ -21,6 +21,8 @@ function test_getBoldFilenameBasic()
 
   [BIDS, opt] = getData(opt);
 
+  opt.query = struct('acq', '');
+
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});

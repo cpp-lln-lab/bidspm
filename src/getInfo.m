@@ -100,9 +100,14 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
           'ses', session, ...
           'run', run, ...
           'type', type);
+      
+      % use the extra query options specified in the options
+      query = setDefaultFields(query, opt.query);
 
-      varargout = bids.query(BIDS, 'data', query);
+      filenames = bids.query(BIDS, 'data', query);
 
+      varargout = {char(filenames)};
+      
     otherwise
       error('Not sure what info you want me to get.');
 

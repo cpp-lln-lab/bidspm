@@ -37,27 +37,30 @@ function opt = checkOptions(opt)
   %     model to speficy and the contrasts to compute.
   %
   % OTHER OPTIONS (with their defaults):
-  %   - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
-  %     subjects should be fetched by their number ``1`` and not their label ``O1'``.
-  %   - ``opt.anatReference.type = 'T1w'`` -  type of the anatomical reference
-  %   - ``opt.anatReference.session = ''`` - session label of the anatomical reference
-  %   - ``opt.skullstrip.threshold = 0.75`` - Threshold used for the skull stripping.
-  %     Any voxel with ``p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold``
-  %     will be included in the mask.
-  %   - ``opt.funcVoxelDims = []`` - Voxel dimensions to use for resampling of functional data
-  %     at normalization.
-  %   - ``opt.STC_referenceSlice = []`` - reference slice for the slice timing correction.
-  %     If left emtpy the mid-volume acquisition time point will be selected at run time.
-  %   - ``opt.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED:
-  %     if you know the order in which slices were acquired, you should be able to recompute
-  %     slice timing and add it to the json files in your BIDS data set.
+  %     - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
+  %         subjects should be fetched by their number ``1`` and not their label ``O1'``.
+  %     - ``opt.query`` - a cell string used to specify other options to only run analysis on
+  %         certain files. ``{'dir', 'AP', 'acq' '3p00mm'}``. See ``bids.query``
+  %         to see how to specify.
+  %     - ``opt.anatReference.type = 'T1w'`` -  type of the anatomical reference
+  %     - ``opt.anatReference.session = ''`` - session label of the anatomical reference
+  %     - ``opt.skullstrip.threshold = 0.75`` - Threshold used for the skull stripping.
+  %         Any voxel with ``p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold``
+  %         will be included in the mask.
+  %     - ``opt.funcVoxelDims = []`` - Voxel dimensions to use for resampling of functional data
+  %         at normalization.
+  %     - ``opt.STC_referenceSlice = []`` - reference slice for the slice timing correction.
+  %         If left emtpy the mid-volume acquisition time point will be selected at run time.
+  %     - ``opt.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED:
+  %         if you know the order in which slices were acquired, you should be able to recompute
+  %         slice timing and add it to the json files in your BIDS data set.
   %   -  ``opt.glmQA.do = true;`` - If set to ``true```the residual images of a
-  %     GLM at the subject levels will be used to estimate if there is any remaining structure
-  %     in the GLM residuals (the power spectra are not flat) that could indicate
-  %     the subject level results are likely confounded (see
-  %     ``plot_power_spectra_of_GLM_residuals``) and 'Accurate autocorrelation modeling
-  %      substantially improves fMRI reliability'
-  %      _https://www.nature.com/articles/s41467-019-09230-w.pdf
+  %         GLM at the subject levels will be used to estimate if there is any remaining structure
+  %         in the GLM residuals (the power spectra are not flat) that could indicate
+  %         the subject level results are likely confounded (see
+  %         ``plot_power_spectra_of_GLM_residuals``) and 'Accurate autocorrelation modeling
+  %         substantially improves fMRI reliability'
+  %         _https://www.nature.com/articles/s41467-019-09230-w.pdf
   %
 
   fieldsToSet = setDefaultOption();
@@ -83,6 +86,8 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.groups = {''};
   fieldsToSet.subjects = {[]};
   fieldsToSet.zeropad = 2;
+  
+  fieldsToSet.query = struct([]);
 
   fieldsToSet.anatReference.type = 'T1w';
   fieldsToSet.anatReference.session = '';

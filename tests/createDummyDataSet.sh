@@ -32,6 +32,9 @@ do
 			touch $ThisDir/asub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
 			touch $ThisDir/asub-$Subject\_ses-$Ses\_task-vismotion_run-2_bold.nii
 
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_acq-1p60mm_run-1_bold.nii
+			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_acq-1p60mm_dir-PA_run-1_bold.nii
+
 			touch $ThisDir/mean_sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
 
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
