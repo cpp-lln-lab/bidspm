@@ -23,19 +23,27 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
   %   filenames = getInfo(BIDS, subLabel, opt, 'filename', sessionID, runID, type)
   %
+  %
   % :param BIDS:        returned by bids.layout when exploring a BIDS data set.
   % :type BIDS:         structure
+  %
   % :param subLabel:       label of the subject ; in BIDS lingo that means that for a file name
-  %                     ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
+  %                     ``sub-02_task-foo_bold.nii`` the subID will be the string ``02``
   % :type subLabel:        string  
-  % :param opt:         Mostly used to find the task name.
-  % :type opt:          structure  
+  %
+  % :param opt:         Used to find the task name and to pass extra ``query``
+  %                     options.
+  % :type opt:          structure
+  %
   % :param info:        ``sessions``, ``runs``, ``filename``.
   % :type info:         string  
+  %
   % :param sessionLabel:   session label (for `ses-001`, the label will be `001`)
   % :type sessionLabel:    string
+  %
   % :param runIdx:       run index label (for `run-001`, the label will be `001`)
   % :type runIdx:        string
+  %
   % :param type:        datatype (``bold``, ``events``, ``physio``)
   % :type type:         string
   %
@@ -46,10 +54,13 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   switch lower(info)
 
     case 'sessions'
+        
+      query = struct(...
+          'sub',  subLabel, ...
+          'task', opt.taskName);
 
-      sessions = bids.query(BIDS, 'sessions', ...
-                            'sub', subLabel, ...
-                            'task', opt.taskName);
+      sessions = bids.query(BIDS, 'sessions', query);
+      
       nbSessions = size(sessions, 2);
       if nbSessions == 0
         nbSessions = 1;
@@ -61,12 +72,15 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
     case 'runs'
 
       session = varargin{1};
+      
+      query = struct(...
+          'sub',  subLabel, ...
+          'task', opt.taskName, ...
+          'ses', session, ...
+          'type', 'bold');
 
-      runs = bids.query(BIDS, 'runs', ...
-                        'sub', subLabel, ...
-                        'task', opt.taskName, ...
-                        'ses', session, ...
-                        'type', 'bold');
+      runs = bids.query(BIDS, 'runs', query);
+
       nbRuns = size(runs, 2);     % Get the number of runs
 
       if nbRuns == 0
@@ -79,13 +93,15 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
     case 'filename'
 
       [session, run, type] = deal(varargin{:});
+      
+      query = struct(...
+          'sub',  subLabel, ...
+          'task', opt.taskName, ...
+          'ses', session, ...
+          'run', run, ...
+          'type', type);
 
-      varargout = bids.query(BIDS, 'data', ...
-                             'sub', subLabel, ...
-                             'run', run, ...
-                             'ses', session, ...
-                             'task', opt.taskName, ...
-                             'type', type);
+      varargout = bids.query(BIDS, 'data', query);
 
     otherwise
       error('Not sure what info you want me to get.');
