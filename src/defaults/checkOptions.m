@@ -51,6 +51,13 @@ function opt = checkOptions(opt)
   %   - ``opt.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED:
   %     if you know the order in which slices were acquired, you should be able to recompute
   %     slice timing and add it to the json files in your BIDS data set.
+  %   -  ``opt.glmQA.do = true;`` - If set to ``true```the residual images of a
+  %     GLM at the subject levels will be used to estimate if there is any remaining structure
+  %     in the GLM residuals (the power spectra are not flat) that could indicate
+  %     the subject level results are likely confounded (see
+  %     ``plot_power_spectra_of_GLM_residuals``) and 'Accurate autocorrelation modeling
+  %      substantially improves fMRI reliability'
+  %      _https://www.nature.com/articles/s41467-019-09230-w.pdf
   %
 
   fieldsToSet = setDefaultOption();
@@ -100,6 +107,8 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.model.file = '';
   fieldsToSet.model.hrfDerivatives = [0 0];
   fieldsToSet.contrastList = {};
+
+  fieldsToSet.glmQA.do = true;
 
   % specify the results to compute
   fieldsToSet.result.Steps = returnDefaultResultsStructure();

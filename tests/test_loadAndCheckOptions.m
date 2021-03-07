@@ -137,6 +137,8 @@ function expectedOptions = defaultOptions()
   expectedOptions.model.file = '';
   expectedOptions.model.hrfDerivatives = [0 0];
 
+  expectedOptions.glmQA.do = true;
+
   expectedOptions.result.Steps = returnDefaultResultsStructure();
 
   expectedOptions.parallelize.do = false;
