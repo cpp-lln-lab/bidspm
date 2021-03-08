@@ -65,7 +65,7 @@ function opt = checkOptions(opt)
 
   fieldsToSet = setDefaultOption();
 
-  opt = setDefaultFields(opt, fieldsToSet);
+  opt = setFields(opt, fieldsToSet);
 
   checkFields(opt);
 

@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function test_suite = test_setDefaultFields %#ok<*STOUT>
+function test_suite = test_setFields %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,14 +8,14 @@ function test_suite = test_setDefaultFields %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setDefaultFieldsWrite()
+function test_setFieldsWrite()
 
   %% set up
   structure = struct();
 
   fieldsToSet.field = 1;
 
-  structure = setDefaultFields(structure, fieldsToSet);
+  structure = setFields(structure, fieldsToSet);
 
   %% data to test against
   expectedStructure.field = 1;
@@ -25,7 +25,7 @@ function test_setDefaultFieldsWrite()
 
 end
 
-function test_setDefaultFieldsNoOverwrite()
+function test_setFieldsNoOverwrite()
 
   % set up
   structure.field.subfield_1 = 3;
@@ -33,7 +33,7 @@ function test_setDefaultFieldsNoOverwrite()
   fieldsToSet.field.subfield_1 = 1;
   fieldsToSet.field.subfield_2 = 1;
 
-  structure = setDefaultFields(structure, fieldsToSet);
+  structure = setFields(structure, fieldsToSet);
 
   % data to test against
   expectedStructure.field.subfield_1 = 3;
@@ -44,7 +44,7 @@ function test_setDefaultFieldsNoOverwrite()
 
 end
 
-function test_setDefaultFieldsCmplxStruct()
+function test_setFieldsCmplxStruct()
 
   % set up
   structure = struct();
@@ -55,7 +55,7 @@ function test_setDefaultFieldsCmplxStruct()
   fieldsToSet.field.subfield_2(2).name = 'b';
   fieldsToSet.field.subfield_2(2).value = 2;
 
-  structure = setDefaultFields(structure, fieldsToSet);
+  structure = setFields(structure, fieldsToSet);
 
   % data to test against
   expectedStructure.field.subfield_1 = 1;

@@ -102,7 +102,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
           'type', type);
       
       % use the extra query options specified in the options
-      query = setDefaultFields(query, opt.query);
+      query = setFields(query, opt.query);
 
       filenames = bids.query(BIDS, 'data', query);
 
