@@ -28,6 +28,9 @@ function expectedOptions = defaultOptions()
   expectedOptions.zeropad = 2;
 
   expectedOptions.contrastList = {};
+  
+  expectedOptions.glmQA.do = true;
+  
   expectedOptions.model.file = '';
   expectedOptions.model.hrfDerivatives = [0 0];
 
