@@ -40,7 +40,7 @@ function opt = checkOptions(opt)
   %   - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
   %     subjects should be fetched by their number ``1`` and not their label ``O1'``.
   %   - ``opt.anatReference.type = 'T1w'`` -  type of the anatomical reference
-  %   - ``opt.anatReference.session = '01'`` - session label of the anatomical reference
+  %   - ``opt.anatReference.session = ''`` - session label of the anatomical reference
   %   - ``opt.skullstrip.threshold = 0.75`` - Threshold used for the skull stripping.
   %     Any voxel with ``p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold``
   %     will be included in the mask.
