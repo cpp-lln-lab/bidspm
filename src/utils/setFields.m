@@ -1,18 +1,23 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function structure = setFields(structure, fieldsToSet)
+function structure = setFields(structure, fieldsToSet, overwrite)
   %
-  % Recursively loop through the fields of a ``structure`` and sets the values
+  % Recursively loop through the fields of a target ``structure`` and sets the values
   % as defined in the structure ``fieldsToSet`` if they don't exist.
+  %
+  % Content of the target structure can be overwritten by setting the
+  % ``overwrite```to ``true``.
   %
   % USAGE::
   %
-  %   structure = setFields(structure, fieldsToSet)
+  %   structure = setFields(structure, fieldsToSet, overwrite = false)
   %
   % :param structure:
   % :type structure:
   % :param fieldsToSet:
   % :type fieldsToSet: string
+  % :param overwrite:
+  % :type overwrite: boolean
   %
   % :returns: - :structure: (structure)
   %
@@ -20,6 +25,10 @@ function structure = setFields(structure, fieldsToSet)
 
   if isempty(fieldsToSet)
     return
+  end
+
+  if nargin < 3 || isempty(overwrite)
+    overwrite = false;
   end
 
   names = fieldnames(fieldsToSet);
@@ -33,14 +42,20 @@ function structure = setFields(structure, fieldsToSet)
       if isfield(structure(j), names{i}) && isstruct(structure(j).(names{i}))
 
         structure(j).(names{i}) = ...
-            setFields(structure(j).(names{i}), fieldsToSet.(names{i}));
+            setFields(structure(j).(names{i}), fieldsToSet.(names{i}), overwrite);
 
       else
 
-        structure = setFieldToIfNotPresent( ...
-                                           structure, ...
-                                           names{i}, ...
-                                           thisField);
+        if ~overwrite
+          structure = setFieldToIfNotPresent( ...
+                                             structure, ...
+                                             names{i}, ...
+                                             thisField);
+        else
+          structure.(names{i}) = thisField;
+
+        end
+
       end
 
     end

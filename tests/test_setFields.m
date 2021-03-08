@@ -44,6 +44,27 @@ function test_setFieldsNoOverwrite()
 
 end
 
+function test_setFieldsOverwrite()
+
+  overwrite = true();
+
+  % set up
+  structure.field.subfield_1 = 3;
+
+  fieldsToSet.field.subfield_1 = 1;
+  fieldsToSet.field.subfield_2 = 1;
+
+  structure = setFields(structure, fieldsToSet, overwrite);
+
+  % data to test against
+  expectedStructure.field.subfield_1 = 1;
+  expectedStructure.field.subfield_2 = 1;
+
+  % test
+  assert(isequal(expectedStructure, structure));
+
+end
+
 function test_setFieldsCmplxStruct()
 
   % set up
