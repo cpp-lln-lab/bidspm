@@ -4,7 +4,9 @@
 % cfg_basicio BasicIO - Unknown
 %-----------------------------------------------------------------------
 matlabbatch{1}.spm.tools.ali.unified_segmentation.step1data = '<UNDEFINED>';
-matlabbatch{1}.spm.tools.ali.unified_segmentation.step1prior = {'C:\Users\michm\spm12\toolbox\ALI\Priors_extraClass\wc4prior0.nii'};
+spmDir = spm('dir');
+lesionPriorMap = fullfile(spmDir, 'toolbox', 'ALI', 'Priors_extraClass', 'wc4prior0.nii)
+matlabbatch{1}.spm.tools.ali.unified_segmentation.step1prior = {lesionPriorMap};
 matlabbatch{1}.spm.tools.ali.unified_segmentation.step1niti = 2;
 matlabbatch{1}.spm.tools.ali.unified_segmentation.step1thr_prob = 0.333333333333333;
 matlabbatch{1}.spm.tools.ali.unified_segmentation.step1thr_size = 0.8;
