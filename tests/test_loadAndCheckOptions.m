@@ -130,7 +130,7 @@ function expectedOptions = defaultOptions()
   expectedOptions.space = 'MNI';
 
   expectedOptions.anatReference.type = 'T1w';
-  expectedOptions.anatReference.session = [];
+  expectedOptions.anatReference.session = '';
 
   expectedOptions.skullstrip.threshold = 0.75;
 

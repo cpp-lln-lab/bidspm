@@ -2,17 +2,21 @@
 
 function unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgName)
   %
-  % Short description of what the function does goes here.
+  % Unzips an image if necessary
   %
   % USAGE::
   %
   %   unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgName)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
+  % :param fullpathImgName:
+  % :type fullpathImgName: string
   %
-  % :returns: - :argout1: (type) (dimension)
+  % :returns: - :unzippedFullpathImgName: (string)
+  %
+  % TODO:
+  %
+  %   - make it work on several images
+  %
   %
 
   [directory, filename, ext] = spm_fileparts(fullpathImgName);

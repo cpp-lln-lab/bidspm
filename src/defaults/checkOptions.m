@@ -40,7 +40,7 @@ function opt = checkOptions(opt)
   %   - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
   %     subjects should be fetched by their number ``1`` and not their label ``O1'``.
   %   - ``opt.anatReference.type = 'T1w'`` -  type of the anatomical reference
-  %   - ``opt.anatReference.session = 1`` - session number of the anatomical reference
+  %   - ``opt.anatReference.session = '01'`` - session label of the anatomical reference
   %   - ``opt.skullstrip.threshold = 0.75`` - Threshold used for the skull stripping.
   %     Any voxel with ``p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold``
   %     will be included in the mask.
@@ -85,7 +85,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.zeropad = 2;
 
   fieldsToSet.anatReference.type = 'T1w';
-  fieldsToSet.anatReference.session = [];
+  fieldsToSet.anatReference.session = '';
 
   %% Options for slice time correction
   % all in seconds
@@ -132,11 +132,18 @@ function checkFields(opt)
 
   if ~all(cellfun(@ischar, opt.groups))
 
-    disp(opt.groups);
-
     errorStruct.identifier = 'checkOptions:groupNotString';
     errorStruct.message = sprintf( ...
                                   'All group names should be string.');
+    error(errorStruct);
+
+  end
+
+  if ~ischar(opt.anatReference.session)
+
+    errorStruct.identifier = 'checkOptions:sessionNotString';
+    errorStruct.message = sprintf( ...
+                                  'The session label should be string.');
     error(errorStruct);
 
   end
