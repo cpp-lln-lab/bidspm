@@ -15,20 +15,19 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   % :type BIDS:         structure
   % :param subID:       label of the subject ; in BIDS lingo that means that for a file name
   %                     ``sub-02_task-foo_bold.nii`` the subID will be the string ``02``
-  % :type subID:        string  
+  % :type subID:        string
   % :param sessionID:   session label (for `ses-001`, the label will be `001`)
   % :type sessionID:    string
   % :param runID:       run index label (for `run-001`, the label will be `001`)
   % :type runID:        string
   % :param opt:         Mostly used to find the task name.
-  % :type opt:          structure    
+  % :type opt:          structure
   %
   %
   % :returns: - :boldFileName: (string)
   %           - :subFuncDataDir: (string)
   %
   %
-
 
   [BIDS, subID, sessionID, runID, opt] = deal(varargin{:});
 

@@ -86,7 +86,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.groups = {''};
   fieldsToSet.subjects = {[]};
   fieldsToSet.zeropad = 2;
-  
+
   fieldsToSet.query = struct([]);
 
   fieldsToSet.anatReference.type = 'T1w';

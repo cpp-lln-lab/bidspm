@@ -11,7 +11,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
   % If info = ``sessions`, this returns name of the sessions and their number::
   %
-  %   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'sessions')  
+  %   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'sessions')
   %
   % If info = ``runs``, this returns name of the runs and their number for a
   % specified session::
@@ -29,14 +29,18 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
   % :param subLabel:       label of the subject ; in BIDS lingo that means that for a file name
   %                     ``sub-02_task-foo_bold.nii`` the subID will be the string ``02``
+<<<<<<< HEAD
   % :type subLabel:        string  
+=======
+  % :type subID:        string
+>>>>>>> update doc and lint
   %
   % :param opt:         Used to find the task name and to pass extra ``query``
   %                     options.
   % :type opt:          structure
   %
   % :param info:        ``sessions``, ``runs``, ``filename``.
-  % :type info:         string  
+  % :type info:         string
   %
   % :param sessionLabel:   session label (for `ses-001`, the label will be `001`)
   % :type sessionLabel:    string
@@ -48,16 +52,22 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   % :type type:         string
   %
 
-
   varargout = {}; %#ok<*NASGU>
 
   switch lower(info)
 
     case 'sessions'
+<<<<<<< HEAD
         
       query = struct(...
           'sub',  subLabel, ...
           'task', opt.taskName);
+=======
+
+      query = struct( ...
+                     'sub',  subID, ...
+                     'task', opt.taskName);
+>>>>>>> update doc and lint
 
       sessions = bids.query(BIDS, 'sessions', query);
       
@@ -72,7 +82,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
     case 'runs'
 
       session = varargin{1};
-      
+
       query = struct(...
           'sub',  subLabel, ...
           'task', opt.taskName, ...
@@ -93,6 +103,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
     case 'filename'
 
       [session, run, type] = deal(varargin{:});
+<<<<<<< HEAD
       
       query = struct(...
           'sub',  subLabel, ...
@@ -101,13 +112,23 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
           'run', run, ...
           'type', type);
       
+=======
+
+      query = struct( ...
+                     'sub',  subID, ...
+                     'task', opt.taskName, ...
+                     'ses', session, ...
+                     'run', run, ...
+                     'type', type);
+
+>>>>>>> update doc and lint
       % use the extra query options specified in the options
       query = setFields(query, opt.query);
 
       filenames = bids.query(BIDS, 'data', query);
 
       varargout = {char(filenames)};
-      
+
     otherwise
       error('Not sure what info you want me to get.');
 

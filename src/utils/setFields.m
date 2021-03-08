@@ -2,22 +2,21 @@
 
 function structure = setFields(structure, fieldsToSet)
   %
-  % recursively loop through the fields of a structure and sets a value if they don't exist
+  % Recursively loop through the fields of a ``structure`` and sets the values
+  % as defined in the structure ``fieldsToSet`` if they don't exist.
   %
   % USAGE::
   %
-  %   structure = setDefaultFields(structure, fieldsToSet)
+  %   structure = setFields(structure, fieldsToSet)
   %
-  % :param structure: 
-  % :type structure: 
-  % :param fieldsToSet: 
+  % :param structure:
+  % :type structure:
+  % :param fieldsToSet:
   % :type fieldsToSet: string
   %
   % :returns: - :structure: (structure)
   %
-  % 
   %
-
 
   if isempty(fieldsToSet)
     return
