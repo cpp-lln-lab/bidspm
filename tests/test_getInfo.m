@@ -98,6 +98,29 @@ function test_getInfoQuery()
 
 end
 
+function test_getInfoQueryWithSessionRestriction()
+
+  opt = setOptions();
+
+  opt.taskName = 'vismotion';
+
+  subID = 'ctrl01';
+
+  opt = checkOptions(opt);
+
+  [~, opt, BIDS] = getData(opt);
+
+  opt.query = struct('ses', {{'01', '02'}});
+  [~, nbSessions] = getInfo(BIDS, subID, opt, 'sessions');
+  assertEqual(nbSessions, numel(opt.query.ses));
+
+  opt.query = struct('ses', '02');
+  [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'sessions');
+  assertEqual(nbSessions, numel(opt.query));
+  assertEqual(sessions{1}, opt.query.ses);
+
+end
+
 function opt = setOptions()
   opt.derivativesDir = fullfile( ...
                                 fileparts(mfilename('fullpath')), ...

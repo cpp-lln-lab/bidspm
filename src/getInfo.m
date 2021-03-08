@@ -69,6 +69,12 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
                      'task', opt.taskName);
 >>>>>>> update doc and lint
 
+      % upate query with pre-specified options
+      % overwrite is set to true in this case because we might want to run
+      % analysis only on certain sessions
+      overwrite = true;
+      query = setFields(query, opt.query, overwrite);
+
       sessions = bids.query(BIDS, 'sessions', query);
       
       nbSessions = size(sessions, 2);
@@ -89,9 +95,11 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
           'ses', session, ...
           'type', 'bold');
 
+      query = setFields(query, opt.query);
+
       runs = bids.query(BIDS, 'runs', query);
 
-      nbRuns = size(runs, 2);     % Get the number of runs
+      nbRuns = size(runs, 2);
 
       if nbRuns == 0
         nbRuns = 1;
@@ -121,8 +129,11 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
                      'run', run, ...
                      'type', type);
 
+<<<<<<< HEAD
 >>>>>>> update doc and lint
       % use the extra query options specified in the options
+=======
+>>>>>>> allow getInfo to only select a pre-specified session
       query = setFields(query, opt.query);
 
       filenames = bids.query(BIDS, 'data', query);
