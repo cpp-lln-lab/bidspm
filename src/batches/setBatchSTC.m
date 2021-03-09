@@ -52,7 +52,7 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
   % round acquisition time to the upper millisecond
   % mostly to avoid having errors when checking:
   %     any(sliceOrder > TA)
-  TA = ceil(TA * 1000)/1000;
+  TA = ceil(TA * 1000) / 1000;
 
   maxSliceTime = max(sliceOrder);
   minSliceTime = min(sliceOrder);
