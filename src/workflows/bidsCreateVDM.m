@@ -25,45 +25,41 @@ function bidsCreateVDM(opt)
     opt = [];
   end
 
-  [BIDS, opt, group] = setUpWorkflow(opt, 'create voxel displacement map');
+  [BIDS, opt] = setUpWorkflow(opt, 'create voxel displacement map');
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+  parfor iSub = 1:numel(opt.subjects)
 
-    groupName = group(iGroup).name;
+    subLabel = opt.subjects{iSub};
 
-    parfor iSub = 1:group(iGroup).numSub
+    printProcessingSubject(iSub, subLabel);
 
-      subID = group(iGroup).subNumber{iSub};
+    % TODO Move to getInfo
+    types = bids.query(BIDS, 'types', 'sub', subLabel);
 
-      % TODO Move to getInfo
-      types = bids.query(BIDS, 'types', 'sub', subID);
+    if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
 
-      if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
+      printProcessingSubject(groupName, iSub, subLabel);
 
-        printProcessingSubject(groupName, iSub, subID);
+      % Create rough mean of the 1rst run to improve SNR for coregistration
+      % TODO use the slice timed EPI if STC was used ?
+      sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+      runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});
+      [fileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, sessions{1}, runs{1}, opt);
+      spmup_basics(fullfile(subFuncDataDir, fileName), 'mean');
 
-        % Create rough mean of the 1rst run to improve SNR for coregistration
-        % TODO use the slice timed EPI if STC was used ?
-        sessions = getInfo(BIDS, subID, opt, 'Sessions');
-        runs = getInfo(BIDS, subID, opt, 'Runs', sessions{1});
-        [fileName, subFuncDataDir] = getBoldFilename(BIDS, subID, sessions{1}, runs{1}, opt);
-        spmup_basics(fullfile(subFuncDataDir, fileName), 'mean');
+      matlabbatch = [];
+      matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLabel);
+      saveAndRunWorkflow(matlabbatch, 'coregister_fmap', opt, subLabel);
 
-        matlabbatch = [];
-        matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subID);
-        saveAndRunWorkflow(matlabbatch, 'coregister_fmap', opt, subID);
+      matlabbatch = [];
+      matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel);
+      saveAndRunWorkflow(matlabbatch, 'create_vdm', opt, subLabel);
 
-        matlabbatch = [];
-        matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID);
-        saveAndRunWorkflow(matlabbatch, 'create_vdm', opt, subID);
-
-        % TODO
-        % delete temporary mean images ??
-
-      end
+      % TODO
+      % delete temporary mean images ??
 
     end
 
   end
+
 end

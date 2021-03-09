@@ -2,7 +2,7 @@
 
 function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outputDir)
   %
-  % Creates batxh to create mean anatomical image and a grop mask
+  % Creates batxh to create mean anatomical image and a group mask
   %
   % USAGE::
   %
@@ -19,25 +19,21 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
   % :returns: - :matlabbatch: (structure)
   %
 
-  [group, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   printBatchName('create mean anatomical image and mask');
 
   inputAnat = {};
   inputMask = {};
 
-  for iGroup = 1:length(group)
+  for iSub = 1:numel(opt.subjects)
 
-    groupName = group(iGroup).name;
+      subLabel = opt.subjects{iSub};
 
-    for iSub = 1:group(iGroup).numSub
-
-      subID = group(iGroup).subNumber{iSub};
-
-      printProcessingSubject(groupName, iSub, subID);
+      printProcessingSubject(iSub, subLabel);
 
       %% Anat
-      [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+      [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
       anatImage = validationInputFile( ...
                                       anatDataDir, ...
@@ -48,13 +44,12 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
       inputAnat{end + 1, 1} = anatImage; %#ok<*AGROW>
 
       %% Mask
-      ffxDir = getFFXdir(subID, funcFWHM, opt);
+      ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
       files = validationInputFile(ffxDir, 'mask.nii');
 
       inputMask{end + 1, 1} = files;
 
-    end
   end
 
   %% Generate the equation to get the mean of the mask and structural image

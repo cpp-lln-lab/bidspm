@@ -43,14 +43,14 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
     conFWHM = 0;
   end
 
-  [~, opt, group] = setUpWorkflow(opt, 'group level GLM');
+  [~, opt] = setUpWorkflow(opt, 'group level GLM');
 
   switch action
 
     case 'smoothContrasts'
 
       matlabbatch = [];
-      matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt, funcFWHM, conFWHM);
+      matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFWHM);
 
       saveAndRunWorkflow(matlabbatch, ...
                          ['smooth_con_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...

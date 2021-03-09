@@ -34,25 +34,19 @@ function bidsSTC(opt)
     opt = [];
   end
 
-  [BIDS, opt, group] = setUpWorkflow(opt, 'slice timing correction');
+  [BIDS, opt] = setUpWorkflow(opt, 'slice timing correction');
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+  parfor iSub = 1:numel(opt.subjects)
 
-    groupName = group(iGroup).name;
+    subLabel = opt.subjects{iSub};
 
-    parfor iSub = 1:group(iGroup).numSub
+    printProcessingSubject(iSub, subLabel);
 
-      subID = group(iGroup).subNumber{iSub};
+    matlabbatch = [];
+    matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
-      printProcessingSubject(groupName, iSub, subID);
+    saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
 
-      matlabbatch = [];
-      matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID);
-
-      saveAndRunWorkflow(matlabbatch, 'STC', opt, subID);
-
-    end
   end
 
 end

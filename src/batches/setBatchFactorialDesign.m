@@ -28,7 +28,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
     smoothPrefix = ['s', num2str(conFWHM)];
   end
 
-  [group, opt] = getData(opt);
+  [~, opt] = getData(opt);
 
   rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
 
@@ -55,20 +55,18 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
     mkdir(directory);
 
     % For each group
-    for iGroup = 1:length(group)
-
-      groupName = group(iGroup).name;
+    for iGroup = 1:length(opt.groups)
 
       icell(iGroup).levels = iGroup; %#ok<*AGROW>
 
       for iSub = 1:group(iGroup).numSub
 
-        subID = group(iGroup).subNumber{iSub};
+        subLabel = group(iGroup).subNumber{iSub};
 
-        printProcessingSubject(groupName, iSub, subID);
+        printProcessingSubject(iSub, subLabel);
 
         % FFX directory and load SPM.mat of that subject
-        ffxDir = getFFXdir(subID, funcFWHM, opt);
+        ffxDir = getFFXdir(subLabel, funcFWHM, opt);
         load(fullfile(ffxDir, 'SPM.mat'));
 
         % find which contrast of that subject has the name of the contrast we
