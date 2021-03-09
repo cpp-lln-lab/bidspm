@@ -1,6 +1,43 @@
 % (C) Copyright 2021 CPP BIDS SPM-pipeline developers
 
 function opt = getSubjectList(BIDS, opt)
+  %
+  % Returns the subjects to analyze in ``opt.subjects``
+  %
+  % USAGE::
+  %
+  %   opt = getSubjectList(BIDS, opt)
+  %
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :param BIDSdir: the directory where the data is ; default is :
+  %                 ``fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm')``
+  % :type BIDSdir: string
+  %
+  % :returns:
+  %           - :opt: (structure)
+  %
+  % To set set the groups of subjects to analyze::
+  %
+  %     opt.groups = {'control', 'blind'};
+  %
+  % If there are no groups (i.e subjects names are of the form ``sub-01`` for
+  % example) or if you want to run all subjects of all groups then use::
+  %
+  %   opt.groups = {''};
+  %   opt.subjects = {[]};
+  %
+  % If you have more than 2 groups but want to only run the subjects of 2
+  % groups then you can use::
+  %
+  %     opt.groups = {'cont', 'cat'};
+  %     opt.subjects = {[], []};
+  %
+  % You can also directly specify the subject label for the participants you
+  % want to run::
+  %
+  %     opt.groups = {''};
+  %     opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
 
   allSubjects = bids.query(BIDS, 'subjects');
 
