@@ -249,7 +249,7 @@ function unzipFiles(derivativesDir, deleteZippedNii, opt)
 
     % for bold, physio and stim files, we only unzip the files of the task of
     % interest
-    if any(strcmp(fragments.type, {'bold', 'stim', 'physio'})) && ...
+    if any(strcmp(fragments.type, {'bold', 'stim'})) && ...
             isfield(fragments, 'task') && strcmp(fragments.task, opt.taskName)
 
       % load the nifti image and saves the functional data as unzipped nii
