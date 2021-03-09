@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID)
+function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel)
   %
   % Set the batch for corregistering the functional images to the
   % anatomical image
@@ -16,8 +16,8 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, 
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param subID: subject ID
-  % :type subID: string
+  % :param subLabel: subject ID
+  % :type subLabel: string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
@@ -53,14 +53,14 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, 
 
   % OTHER IMAGES : DEPENDENCY FROM REALIGNEMENT
 
-  [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   runCounter = 1;
 
   for iSes = 1:nbSessions
 
     % get all runs for that subject for this session
-    [~, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+    [~, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
     for iRun = 1:nbRuns
 
