@@ -75,8 +75,6 @@ function bidsFFX(action, opt, funcFWHM)
 
           deleteResidualImages(getFFXdir(subLabel, funcFWHM, opt));
 
-          movefile(['sub-', subLabel, '_task-', opt.taskName, '_design_*'], ...
-                   getFFXdir(subLabel, funcFWHM, opt));
         end
 
       case 'contrasts'
