@@ -54,32 +54,27 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
 
     mkdir(directory);
 
-    % For each group
-    for iGroup = 1:length(opt.groups)
+    icell(1).levels = 1; %#ok<*AGROW>
 
-      icell(iGroup).levels = iGroup; %#ok<*AGROW>
+    for iSub = 1:numel(opt.subjects)
 
-      for iSub = 1:group(iGroup).numSub
+      subLabel = opt.subjects{iSub};
 
-        subLabel = group(iGroup).subNumber{iSub};
+      printProcessingSubject(iSub, subLabel);
 
-        printProcessingSubject(iSub, subLabel);
+      % FFX directory and load SPM.mat of that subject
+      ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+      load(fullfile(ffxDir, 'SPM.mat'));
 
-        % FFX directory and load SPM.mat of that subject
-        ffxDir = getFFXdir(subLabel, funcFWHM, opt);
-        load(fullfile(ffxDir, 'SPM.mat'));
+      % find which contrast of that subject has the name of the contrast we
+      % want to bring to the group level
+      conIdx = find(strcmp({SPM.xCon.name}, conName));
+      fileName = sprintf('con_%0.4d.nii', conIdx);
+      file = validationInputFile(ffxDir, fileName, smoothPrefix);
 
-        % find which contrast of that subject has the name of the contrast we
-        % want to bring to the group level
-        conIdx = find(strcmp({SPM.xCon.name}, conName));
-        fileName = sprintf('con_%0.4d.nii', conIdx);
-        file = validationInputFile(ffxDir, fileName, smoothPrefix);
+      icell(1).scans(iSub, :) = {file};
 
-        icell(iGroup).scans(iSub, :) = {file};
-
-        fprintf(1, ' %s\n\n', file);
-
-      end
+      fprintf(1, ' %s\n\n', file);
 
     end
 

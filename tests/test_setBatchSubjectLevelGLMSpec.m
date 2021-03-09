@@ -16,6 +16,7 @@ function test_setBatchSubjectLevelGLMSpecBasic()
   iRun = 1;
 
   opt = setOptions('MoAE', subLabel);
+
   opt = checkOptions(opt);
 
   bidsCopyRawFolder(opt, 1);
