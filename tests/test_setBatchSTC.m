@@ -11,6 +11,7 @@ function test_setBatchSTCEmpty()
   subLabel = '02';
 
   opt = setOptions('vislocalizer', subLabel);
+  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
@@ -28,6 +29,8 @@ function test_setBatchSTCForce()
   subLabel = '02';
 
   opt = setOptions('vislocalizer', subLabel);
+  opt = setDerivativesDir(opt);
+
   % we give it some slice timing value to force slice timing to happen
   opt.sliceOrder = linspace(0, 1.6, 10);
   opt.sliceOrder(end - 1:end) = [];
@@ -63,7 +66,7 @@ function test_setBatchSTCBasic()
   subLabel = '02';
 
   opt = setOptions('vismotion', subLabel);
-
+  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
@@ -82,11 +85,11 @@ function test_setBatchSTCBasic()
 
   runCounter = 1;
   for iSes = 1:2
-    fileName = spm_BIDS(BIDS, 'data', ...
-                        'sub', subLabel, ...
-                        'ses', sprintf('0%i', iSes), ...
-                        'task', opt.taskName, ...
-                        'type', 'bold');
+    fileName = bids.query(BIDS, 'data', ...
+                          'sub', subLabel, ...
+                          'ses', sprintf('0%i', iSes), ...
+                          'task', opt.taskName, ...
+                          'type', 'bold');
     expectedBatch{1}.spm.temporal.st.scans{runCounter} = ...
         {fileName{1}};
     expectedBatch{1}.spm.temporal.st.scans{runCounter + 1} = ...
@@ -103,6 +106,7 @@ function test_setBatchSTCErrorInvalidInputTime()
   subLabel = '02';
 
   opt = setOptions('vislocalizer', subLabel);
+  opt = setDerivativesDir(opt);
 
   opt.sliceOrder = linspace(0, 1.6, 10);
   opt.sliceOrder(end) = [];

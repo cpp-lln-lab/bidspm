@@ -7,57 +7,58 @@ function test_suite = test_getInfo %#ok<*STOUT>
 end
 
 function test_getInfoBasic()
-  % Small test to ensure that getSliceOrder returns what we asked for
 
-  % write tests for when no session or only one run
-
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), ...
-                                'dummyData', 'derivatives', 'cpp_spm');
+  subLabel = 'ctrl01';
+  opt = setOptions('vismotion', subLabel);
+  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   %% Get sessions from BIDS
-  opt.taskName = 'vismotion';
-  subID = 'ctrl01';
   info = 'sessions';
+
   [BIDS, opt] = getData(opt);
-  sessions = getInfo(BIDS, subID, opt, info);
+  sessions = getInfo(BIDS, subLabel, opt, info);
   assert(all(strcmp(sessions, {'01' '02'})));
 
   %% Get runs from BIDS
-  opt.taskName = 'vismotion';
-  subID = 'ctrl01';
   info = 'runs';
+
   session =  '01';
+
   [BIDS, opt] = getData(opt);
-  runs = getInfo(BIDS, subID, opt, info, session);
+  runs = getInfo(BIDS, subLabel, opt, info, session);
   assert(all(strcmp(runs, {'1' '2'})));
 
-  %% Get runs from BIDS when no run in filename
-  opt.taskName = 'vislocalizer';
-  subID = 'ctrl01';
-  info = 'runs';
-  session =  '01';
-  [BIDS, opt] = getData(opt);
-  runs = getInfo(BIDS, subID, opt, info, session);
-  assert(strcmp(runs, {''}));
-
   %% Get filename from BIDS
-  opt.taskName = 'vismotion';
-  subID = 'ctrl01';
+  info = 'filename';
+
   session =  '01';
   run = '1';
-  info = 'filename';
+
   [BIDS, opt] = getData(opt);
-  filename = getInfo(BIDS, subID, opt, info, session, run, 'bold');
+  filename = getInfo(BIDS, subLabel, opt, info, session, run, 'bold');
   FileName = fullfile(fileparts(mfilename('fullpath')), 'dummyData',  ...
                       'derivatives', 'cpp_spm', ...
-                      ['sub-' subID], ['ses-' session], 'func', ...
-                      ['sub-' subID, ...
+                      ['sub-' subLabel], ['ses-' session], 'func', ...
+                      ['sub-' subLabel, ...
                        '_ses-' session, ...
                        '_task-' opt.taskName, ...
                        '_run-' run, ...
                        '_bold.nii']);
 
   assert(strcmp(filename, FileName));
+
+  %% Get runs from BIDS when no run in filename
+  subLabel = 'ctrl01';
+  opt = setOptions('vislocalizer', subLabel);
+  opt = checkOptions(opt);
+
+  info = 'runs';
+
+  session =  '01';
+
+  [BIDS, opt] = getData(opt);
+  runs = getInfo(BIDS, subLabel, opt, info, session);
+  assert(strcmp(runs, {''}));
 
 end
