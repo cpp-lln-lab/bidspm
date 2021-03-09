@@ -49,6 +49,10 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
   nbSlices = length(sliceOrder); % unique is necessary in case of multi echo
   TR = opt.metadata.RepetitionTime;
   TA = TR - (TR / nbSlices);
+  % round acquisition time to the upper millisecond
+  % mostly to avoid having errors when checking:
+  %     any(sliceOrder > TA)
+  TA = ceil(TA * 1000)/1000;
 
   maxSliceTime = max(sliceOrder);
   minSliceTime = min(sliceOrder);
