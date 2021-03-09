@@ -82,7 +82,7 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
 
       % Load the list of contrasts of interest for the RFX
       grpLvlCon = getGrpLevelContrastToCompute(opt);
-      matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon, opt);
+      matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon);
 
       saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
 
