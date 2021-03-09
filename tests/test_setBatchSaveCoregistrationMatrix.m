@@ -11,18 +11,18 @@ function test_setBatchSaveCoregistrationMatrixBasic()
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'vismotion';
+  subLabel = '02';
 
+  opt = setOptions('vismotion', subLabel);
+  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
-  subID = '02';
+  [BIDS, opt] = getData(opt);
 
   opt.orderBatches.coregister = 1;
 
   matlabbatch = {};
-  matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch = returnExpectedBatch();
   assertEqual(matlabbatch, expectedBatch);

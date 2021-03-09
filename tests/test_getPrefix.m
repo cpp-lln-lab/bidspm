@@ -10,6 +10,7 @@ function test_getPrefixSTC()
 
   step = 'realign';
   funcFWHM = 6;
+
   opt.metadata.SliceTiming = 1:0.2:1.8;
   opt.sliceOrder = 1:10;
 
@@ -26,6 +27,7 @@ end
 function test_getPrefixNoSTC()
 
   step = 'realign';
+
   opt.metadata = [];
   opt.sliceOrder = [];
 

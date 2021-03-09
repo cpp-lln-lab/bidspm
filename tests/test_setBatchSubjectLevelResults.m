@@ -11,20 +11,18 @@ function test_setBatchSubjectLevelResultsBasic()
   iStep = 1;
   iCon = 1;
 
-  subID = '01';
+  subLabel = '01';
   funcFWHM = 6;
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+  opt = setOptions('vismotion', subLabel);
   opt.space = 'MNI';
-  opt.taskName = 'vismotion';
-
   opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   opt.result.Steps.Contrasts.Name = 'VisMot';
 
   matlabbatch = [];
-  matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subID, funcFWHM, iStep, iCon);
+  matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subLabel, funcFWHM, iStep, iCon);
 
   expectedBatch = {};
 
@@ -56,13 +54,11 @@ function test_setBatchSubjectLevelResultsErrorMissingContrastName()
   iStep = 1;
   iCon = 1;
 
-  subID = '01';
+  subLabel = '01';
   funcFWHM = 6;
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+  opt = setOptions('vismotion', subLabel);
   opt.space = 'MNI';
-  opt.taskName = 'vismotion';
-
   opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
@@ -70,7 +66,7 @@ function test_setBatchSubjectLevelResultsErrorMissingContrastName()
   assertExceptionThrown( ...
                         @()setBatchSubjectLevelResults(matlabbatch, ...
                                                        opt, ...
-                                                       subID, ...
+                                                       subLabel, ...
                                                        funcFWHM, ...
                                                        iStep, ...
                                                        iCon), ...
@@ -83,23 +79,24 @@ function test_setBatchSubjectLevelResultsErrorNoMAtchingContrast()
   iStep = 1;
   iCon = 1;
 
-  subID = '01';
+  subLabel = '01';
   funcFWHM = 6;
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+  subLabel = '01';
+  funcFWHM = 6;
+
+  opt = setOptions('vismotion', subLabel);
   opt.space = 'MNI';
-  opt.taskName = 'vismotion';
-
-  opt.result.Steps.Contrasts.Name = 'NotAContrast';
-
   opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
+
+  opt.result.Steps.Contrasts.Name = 'NotAContrast';
 
   matlabbatch = [];
   assertExceptionThrown( ...
                         @()setBatchSubjectLevelResults(matlabbatch, ...
                                                        opt, ...
-                                                       subID, ...
+                                                       subLabel, ...
                                                        funcFWHM, ...
                                                        iStep, ...
                                                        iCon), ...

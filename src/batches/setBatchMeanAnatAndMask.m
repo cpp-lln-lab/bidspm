@@ -28,27 +28,27 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
 
   for iSub = 1:numel(opt.subjects)
 
-      subLabel = opt.subjects{iSub};
+    subLabel = opt.subjects{iSub};
 
-      printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel);
 
-      %% Anat
-      [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    %% Anat
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
-      anatImage = validationInputFile( ...
-                                      anatDataDir, ...
-                                      anatImage, ...
-                                      [spm_get_defaults('normalise.write.prefix'), ...
-                                       spm_get_defaults('deformations.modulate.prefix')]);
+    anatImage = validationInputFile( ...
+                                    anatDataDir, ...
+                                    anatImage, ...
+                                    [spm_get_defaults('normalise.write.prefix'), ...
+                                     spm_get_defaults('deformations.modulate.prefix')]);
 
-      inputAnat{end + 1, 1} = anatImage; %#ok<*AGROW>
+    inputAnat{end + 1, 1} = anatImage; %#ok<*AGROW>
 
-      %% Mask
-      ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+    %% Mask
+    ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
-      files = validationInputFile(ffxDir, 'mask.nii');
+    files = validationInputFile(ffxDir, 'mask.nii');
 
-      inputMask{end + 1, 1} = files;
+    inputMask{end + 1, 1} = files;
 
   end
 

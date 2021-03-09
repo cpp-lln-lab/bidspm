@@ -8,8 +8,8 @@ end
 
 function test_getSubjectListNone()
 
-  opt = setOptions();
-
+  opt = setOptions('vismotion');
+  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   BIDS = bids.layout(opt.derivativesDir);
@@ -24,8 +24,8 @@ end
 
 function test_getSubjectListGroup()
 
-  opt = setOptions();
-
+  opt = setOptions('vismotion');
+  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   BIDS = bids.layout(opt.derivativesDir);
@@ -43,8 +43,8 @@ end
 
 function test_getSubjectListBasic()
 
-  opt = setOptions();
-
+  opt = setOptions('vismotion');
+  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   BIDS = bids.layout(opt.derivativesDir);
@@ -61,10 +61,8 @@ end
 
 function test_getSubjectListErrorSubject()
 
-  opt = setOptions();
-
-  opt.subjects = {'03'};
-
+  opt = setOptions('vismotion', '03');
+  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   BIDS = bids.layout(opt.derivativesDir);
@@ -73,13 +71,4 @@ function test_getSubjectListErrorSubject()
                         @()getSubjectList(BIDS, opt), ...
                         'getSubjectList:noMatchingSubject');
 
-end
-
-function opt = setOptions()
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), ...
-                                'dummyData', ...
-                                'derivatives', ...
-                                'cpp_spm');
-  opt.taskName = 'vismotion';
-  opt.zeropad = 2;
 end

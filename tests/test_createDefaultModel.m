@@ -8,12 +8,11 @@ end
 
 function test_createDefaultModelBasic()
 
-  opt.taskName = 'vislocalizer';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+  opt = setOptions('vislocalizer');
 
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   createDefaultModel(BIDS, opt);
 

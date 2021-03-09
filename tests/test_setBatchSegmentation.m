@@ -60,17 +60,17 @@ end
 
 function anatImage = returnLocalAnatFilename()
 
-  subID = '01';
+  subLabel = '01';
 
   opt.taskName = 'vislocalizer';
   opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.subjects = {subID};
+  opt.subjects = {subLabel};
 
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
-  [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
   anatImage = fullfile(anatDataDir, anatImage);
 

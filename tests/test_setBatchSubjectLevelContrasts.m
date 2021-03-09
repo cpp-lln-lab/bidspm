@@ -8,23 +8,21 @@ end
 
 function test_setBatchSubjectLevelContrastsBasic()
 
-  subID = '01';
+  subLabel = '01';
   funcFWHM = 6;
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+  opt = setOptions('vismotion', subLabel);
   opt.space = 'MNI';
-  opt.taskName = 'vismotion';
   opt.model.file = ...
       fullfile(fileparts(mfilename('fullpath')), ...
                'dummyData', ...
                'models', ...
                'model-visMotionLoc_smdl.json');
-
   opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   matlabbatch = [];
-  matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subID, funcFWHM);
+  matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, funcFWHM);
 
   expectedBatch = [];
   expectedBatch{end + 1}.spm.stats.con.spmmat = {fullfile(opt.derivativesDir, ...

@@ -9,19 +9,18 @@ end
 function test_specifyContrastsBasic()
   % Small test to ensure that pmCon returns what we asked for
 
-  subID = '01';
+  subLabel = '01';
   funcFWFM = 6;
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.space = 'MNI';
-  opt.taskName = 'vismotion';
+  opt = setOptions('vismotion', subLabel);
+  opt = checkOptions(opt);
+  opt = setDerivativesDir(opt);
+
   opt.model.file = ...
       fullfile(fileparts(mfilename('fullpath')), ...
                'dummyData', 'models', 'model-visMotionLoc_smdl.json');
 
-  opt = setDerivativesDir(opt);
-
-  ffxDir = getFFXdir(subID, funcFWFM, opt);
+  ffxDir = getFFXdir(subLabel, funcFWFM, opt);
 
   contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 

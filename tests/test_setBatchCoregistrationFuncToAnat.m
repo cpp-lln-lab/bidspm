@@ -11,20 +11,18 @@ function test_setBatchCoregistrationFuncToAnatBasic()
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'vismotion';
+  subLabel = '02';
 
+  opt = setOptions('vismotion', subLabel);
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
-
-  subID = '02';
+  [BIDS, opt] = getData(opt);
 
   opt.orderBatches.selectAnat = 1;
   opt.orderBatches.realign = 2;
 
   matlabbatch = {};
-  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
 
   nbRuns = 4;
 
@@ -49,21 +47,20 @@ function test_setBatchCoregistrationFuncToAnatNoUnwarp()
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'vismotion';
-  opt.realign.useUnwarp = false;
+  subLabel = '02';
 
+  opt = setOptions('vismotion', subLabel);
+  opt = checkOptions(opt);
+  opt.realign.useUnwarp = false;
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
-
-  subID = '02';
+  [BIDS, opt] = getData(opt);
 
   opt.orderBatches.selectAnat = 1;
   opt.orderBatches.realign = 2;
 
   matlabbatch = {};
-  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
 
   nbRuns = 4;
 

@@ -8,11 +8,7 @@ end
 
 function test_bidsCopyRawFolderBasic()
 
-  opt.dataDir = fullfile( ...
-                         fileparts(mfilename('fullpath')), ...
-                         '..', 'demos',  'MoAE', 'output', 'MoAEpilot');
-
-  opt.taskName = 'auditory';
+  opt = setOptions('MoAE');
 
   opt = checkOptions(opt);
 

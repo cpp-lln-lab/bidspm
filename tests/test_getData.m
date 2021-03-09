@@ -6,15 +6,12 @@ function test_suite = test_getData %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getDataBasic()
+function test_getDataMetadata()
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'vismotion';
+  subLabel = '01';
 
-  %% Only get anat metadata
-  opt.groups = {''};
-
-  opt.subjects = {'01'};
+  opt = setOptions('vismotion', subLabel);
+  opt = checkOptions(opt);
 
   [~, opt] = getData(opt, [], 'T1w');
 
@@ -23,15 +20,9 @@ function test_getDataBasic()
 end
 
 function test_getDataErrorTask()
-  % Small test to ensure that getData returns what we asked for
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'testTask';
-  opt.zeropad = 2;
-
-  %% Get all groups all subjects
-  opt.groups = {''};
-  opt.subjects = {[]};
+  opt = setOptions('testTask');
+  opt = checkOptions(opt);
 
   assertExceptionThrown( ...
                         @()getData(opt), ...

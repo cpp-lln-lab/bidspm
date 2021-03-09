@@ -13,14 +13,13 @@ function test_getInfoBasic()
 
   opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), ...
                                 'dummyData', 'derivatives', 'cpp_spm');
-  opt.groups = {''};
-  opt.subjects = {[], []};
+  opt = checkOptions(opt);
 
   %% Get sessions from BIDS
   opt.taskName = 'vismotion';
   subID = 'ctrl01';
   info = 'sessions';
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
   sessions = getInfo(BIDS, subID, opt, info);
   assert(all(strcmp(sessions, {'01' '02'})));
 
@@ -29,7 +28,7 @@ function test_getInfoBasic()
   subID = 'ctrl01';
   info = 'runs';
   session =  '01';
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
   runs = getInfo(BIDS, subID, opt, info, session);
   assert(all(strcmp(runs, {'1' '2'})));
 
@@ -38,7 +37,7 @@ function test_getInfoBasic()
   subID = 'ctrl01';
   info = 'runs';
   session =  '01';
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
   runs = getInfo(BIDS, subID, opt, info, session);
   assert(strcmp(runs, {''}));
 
@@ -48,7 +47,7 @@ function test_getInfoBasic()
   session =  '01';
   run = '1';
   info = 'filename';
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
   filename = getInfo(BIDS, subID, opt, info, session, run, 'bold');
   FileName = fullfile(fileparts(mfilename('fullpath')), 'dummyData',  ...
                       'derivatives', 'cpp_spm', ...

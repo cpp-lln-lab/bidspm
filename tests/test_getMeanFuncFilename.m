@@ -8,18 +8,14 @@ end
 
 function test_getMeanFuncFilenameBasic()
 
-  subID = '01';
+  subLabel = '01';
 
-  opt.taskName = 'vislocalizer';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.groups = {''};
-  opt.subjects = {subID};
-
+  opt = setOptions('vislocalizer', subLabel);
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
-  [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt);
+  [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
 
   expectedMeanImage = 'meanusub-01_ses-01_task-vislocalizer_bold.nii';
 

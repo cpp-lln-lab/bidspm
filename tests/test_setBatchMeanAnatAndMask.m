@@ -10,14 +10,10 @@ function test_setBatchMeanAnatAndMaskBasic()
 
   funcFWHM = 6;
 
+  opt = setOptions('vismotion');
   opt.subjects = {'01', '02'};
-  opt.taskName = 'vismotion';
-  opt.space = 'MNI';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), ...
-                                'dummyData', ...
-                                'derivatives', ...
-                                'cpp_spm');
 
+  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   matlabbatch = [];

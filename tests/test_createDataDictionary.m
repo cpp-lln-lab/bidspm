@@ -8,24 +8,23 @@ end
 
 function test_createDataDictionaryBasic()
 
-  subID = '01';
+  subLabel = '01';
   iSes = 1;
   iRun = 1;
 
-  opt.taskName = 'vislocalizer';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.groups = {''};
-  opt.subjects = {'01'};
+  opt = setOptions('vislocalizer', subLabel);
 
-  [~, opt, BIDS] = getData(opt);
+  opt = checkOptions(opt);
 
-  sessions = getInfo(BIDS, subID, opt, 'Sessions');
+  [BIDS, opt] = getData(opt);
 
-  runs = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+
+  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
   [fileName, subFuncDataDir] = getBoldFilename( ...
                                                BIDS, ...
-                                               subID, sessions{iSes}, runs{iRun}, opt);
+                                               subLabel, sessions{iSes}, runs{iRun}, opt);
 
   createDataDictionary(subFuncDataDir, fileName, 3);
 
