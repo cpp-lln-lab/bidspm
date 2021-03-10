@@ -39,7 +39,7 @@ function test_getAnatFilenameBasic()
   opt.anatReference.session = '01';
   opt.anatReference.type = 'T1w';
 
-  [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
   assertEqual(anatDataDir, expectedAnatDataDir);
   assertEqual(anatImage, expectedFileName);
@@ -48,43 +48,36 @@ end
 
 function test_getAnatFilenameTypeError()
 
-  subID = '01';
-  opt = setOptions(subID);
+  subLabel = '01';
+
+  opt = setOptions('vislocalizer', subLabel);
 
   opt.anatReference.type = 'T2w';
 
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   assertExceptionThrown( ...
-                        @()getAnatFilename(BIDS, subID, opt), ...
+                        @()getAnatFilename(BIDS, subLabel, opt), ...
                         'getAnatFilename:requestedSuffixUnvailable');
 
 end
 
 function test_getAnatFilenameSEssionError()
 
-  subID = '01';
-  opt = setOptions(subID);
+  subLabel = '01';
+
+  opt = setOptions('vislocalizer', subLabel);
 
   opt.anatReference.session = '001';
 
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   assertExceptionThrown( ...
-                        @()getAnatFilename(BIDS, subID, opt), ...
+                        @()getAnatFilename(BIDS, subLabel, opt), ...
                         'getAnatFilename:requestedSessionUnvailable');
-
-end
-
-function opt = setOptions(subID)
-
-  opt.taskName = 'vislocalizer';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.groups = {''};
-  opt.subjects = {subID};
 
 end
