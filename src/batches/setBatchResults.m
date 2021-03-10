@@ -23,7 +23,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   %
 
   fieldsToSet = returnDefaultResultsStructure();
-  result = setDefaultFields(result, fieldsToSet);
+  result = setFields(result, fieldsToSet);
   result.Contrasts = replaceEmptyFields(result.Contrasts, fieldsToSet.Contrasts);
 
   matlabbatch{end + 1}.spm.stats.results.spmmat = {fullfile(result.dir, 'SPM.mat')};
