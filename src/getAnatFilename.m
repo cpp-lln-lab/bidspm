@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt)
+function [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
   %
   % Short description of what the function does goes here.
   %
@@ -18,7 +18,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt)
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
-  % [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt)
+  % [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
   %
   % Get the filename and the directory of an anat file for a given session /
   % run.
@@ -26,27 +26,27 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt)
 
   anatType = opt.anatReference.type;
 
-  sessions = getInfo(BIDS, subID, opt, 'Sessions');
+  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   % get all anat images for that subject fo that type
   % TODO allow for the session to be referenced by a string e.g ses-retest
   anat = bids.query(BIDS, 'data', ...
-                    'sub', subID, ...
+                    'sub', subLabel, ...
                     'type', anatType);
   if ~isempty(opt.anatReference.session)
     anatSession = opt.anatReference.session;
     anat = bids.query(BIDS, 'data', ...
-                      'sub', subID, ...
+                      'sub', subLabel, ...
                       'ses', sessions{anatSession}, ...
                       'type', anatType);
   end
 
   if isempty(anat)
     anat = bids.query(BIDS, 'data', ...
-                      'sub', subID, ...
+                      'sub', subLabel, ...
                       'type', anatType);
     error('No anat file for the subject %s. Here are all anat file:\n%s', ...
-          subID, ...
+          subLabel, ...
           char(anat));
   end
 

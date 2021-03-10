@@ -25,7 +25,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
     opt = [];
   end
 
-  [~, opt, group] = setUpWorkflow(opt, 'computing GLM results');
+  [~, opt] = setUpWorkflow(opt, 'computing GLM results');
 
   matlabbatch = [];
 
@@ -47,34 +47,29 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
       case 'subject'
 
-        for iGroup = 1:length(group)
+        % For each subject
+        for iSub = 1:numel(opt.subjects)
 
-          % For each subject
-          for iSub = 1:group(iGroup).numSub
+          subLabel = opt.subjects{iSub};
 
-            for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
+          for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
 
-              % Get the Subject ID
-              subID = group(iGroup).subNumber{iSub};
-
-              matlabbatch = ...
-                  setBatchSubjectLevelResults( ...
-                                              matlabbatch, ...
-                                              opt, ...
-                                              subID, ...
-                                              funcFWHM, ...
-                                              iStep, ...
-                                              iCon);
-
-            end
+            matlabbatch = ...
+                setBatchSubjectLevelResults( ...
+                                            matlabbatch, ...
+                                            opt, ...
+                                            subLabel, ...
+                                            funcFWHM, ...
+                                            iStep, ...
+                                            iCon);
 
           end
 
-          batchName = sprintf('compute_sub-%s_results', subID);
-
-          saveAndRunWorkflow(matlabbatch, batchName, opt, subID);
-
         end
+
+        batchName = sprintf('compute_sub-%s_results', subLabel);
+
+        saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
       case 'dataset'
 

@@ -19,35 +19,26 @@ function bidsRealignReslice(opt)
     opt = [];
   end
 
-  [BIDS, opt, group] = setUpWorkflow(opt, 'realign and reslice');
+  [BIDS, opt] = setUpWorkflow(opt, 'realign and reslice');
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+  parfor iSub = 1:numel(opt.subjects)
 
-    groupName = group(iGroup).name;
+    subLabel = opt.subjects{iSub};
 
-    parfor iSub = 1:group(iGroup).numSub
+    printProcessingSubject(iSub, subLabel);
 
-      % Get the ID of the subject
-      % (i.e SubNumber doesnt have to match the iSub if one subject
-      % is exluded for any reason)
-      subID = group(iGroup).subNumber{iSub}; % Get the subject ID
+    matlabbatch = [];
+    [matlabbatch, ~] = setBatchRealign( ...
+                                       matlabbatch, ...
+                                       BIDS, ...
+                                       subLabel, ...
+                                       opt, ...
+                                       'realignReslice');
 
-      printProcessingSubject(groupName, iSub, subID);
+    saveAndRunWorkflow(matlabbatch, 'realign_reslice', opt, subLabel);
 
-      matlabbatch = [];
-      [matlabbatch, ~] = setBatchRealign( ...
-                                         matlabbatch, ...
-                                         BIDS, ...
-                                         subID, ...
-                                         opt, ...
-                                         'realignReslice');
+    copyFigures(BIDS, opt, subLabel);
 
-      saveAndRunWorkflow(matlabbatch, 'realign_reslice', opt, subID);
-
-      copyFigures(BIDS, opt, subID);
-
-    end
   end
 
 end

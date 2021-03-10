@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_createAndReturnOnsetFile %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -8,28 +10,27 @@ end
 
 function test_createAndReturnOnsetFileBasic()
 
-  subID = '01';
+  subLabel = '01';
   funcFWHM = 6;
   iSes = 1;
   iRun = 1;
 
-  opt.taskName = 'vislocalizer';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.subjects = {'01'};
+  opt = setOptions('vislocalizer', subLabel);
+
   opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                             'dummyData', 'models', ...
                             'model-vislocalizer_smdl.json');
 
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
-  sessions = getInfo(BIDS, subID, opt, 'sessions');
-  runs = getInfo(BIDS, subID, opt, 'runs', sessions{iSes});
+  sessions = getInfo(BIDS, subLabel, opt, 'sessions');
+  runs = getInfo(BIDS, subLabel, opt, 'runs', sessions{iSes});
 
-  tsvFile = getInfo(BIDS, subID, opt, 'filename', sessions{iSes}, runs{iRun}, 'events');
+  tsvFile = getInfo(BIDS, subLabel, opt, 'filename', sessions{iSes}, runs{iRun}, 'events');
 
-  onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM);
+  onsetFileName = createAndReturnOnsetFile(opt, subLabel, tsvFile, funcFWHM);
 
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                               'dummyData', 'derivatives', 'cpp_spm', 'sub-01', 'stats', ...

@@ -1,22 +1,22 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function varargout = getInfo(BIDS, subID, opt, info, varargin)
+function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
   % Wrapper function to fetch specific info in a BIDS structure returned by
   % spm_bids.
   %
   % USAGE::
   %
-  %   varargout = getInfo(BIDS, subID, opt, info, varargin)
+  %   varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
   % :param BIDS: (structure) returned by bids.query when exploring a BIDS data set.
-  % :param subID: ID of the subject
+  % :param subLabel: ID of the subject
   % :param opt: (structure) Mostly used to find the task name.
   % :param info: (strint) ``sessions``, ``runs``, ``filename``.
   % :param varargin: see below
   %
-  % - subID - ID of the subject ; in BIDS lingo that means that for a file name
-  %   ``sub-02_task-foo_bold.nii`` the subID will be the string ``02``
+  % - subLabel - ID of the subject ; in BIDS lingo that means that for a file name
+  %   ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
   % - session - ID of the session of interes ; in BIDS lingo that means that for a file name
   %   ``sub-02_ses-pretest_task-foo_bold.nii`` the sesssion will be the string
   %   ``pretest``
@@ -41,7 +41,7 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
     case 'sessions'
 
       sessions = bids.query(BIDS, 'sessions', ...
-                            'sub', subID, ...
+                            'sub', subLabel, ...
                             'task', opt.taskName);
       nbSessions = size(sessions, 2);
       if nbSessions == 0
@@ -56,7 +56,7 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
       session = varargin{1};
 
       runs = bids.query(BIDS, 'runs', ...
-                        'sub', subID, ...
+                        'sub', subLabel, ...
                         'task', opt.taskName, ...
                         'ses', session, ...
                         'type', 'bold');
@@ -74,7 +74,7 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
       [session, run, type] = deal(varargin{:});
 
       varargout = bids.query(BIDS, 'data', ...
-                             'sub', subID, ...
+                             'sub', subLabel, ...
                              'run', run, ...
                              'ses', session, ...
                              'task', opt.taskName, ...

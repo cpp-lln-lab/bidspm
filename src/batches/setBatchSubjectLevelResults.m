@@ -12,8 +12,8 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   % :type matlabbatch: structure
   % :param opt:
   % :type opt: structure
-  % :param subID:
-  % :type subID: string
+  % :param subLabel:
+  % :type subLabel: string
   % :param funcFWHM:
   % :type funcFWHM: float
   % :param iStep:
@@ -24,7 +24,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   % :returns: - :matlabbatch: (structure)
   %
 
-  [matlabbatch, opt, subID, funcFWHM, iStep, iCon] = deal(varargin{:});
+  [matlabbatch, opt, subLabel, funcFWHM, iStep, iCon] = deal(varargin{:});
 
   result.Contrasts = opt.result.Steps(iStep).Contrasts(iCon);
 
@@ -33,8 +33,8 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   end
   result.space = opt.space;
 
-  result.dir = getFFXdir(subID, funcFWHM, opt);
-  result.label = subID;
+  result.dir = getFFXdir(subLabel, funcFWHM, opt);
+  result.label = subLabel;
   result.nbSubj = 1;
 
   result.contrastNb = getContrastNb(result);

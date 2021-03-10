@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_setBatchSelectAnat %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -12,18 +14,15 @@ function test_setBatchSelectAnatBasic()
   % add test to check if anat is not in first session
   % add test to check if anat is not a T1w
 
-  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', ...
-                         'MoAE', 'output', 'MoAEpilot');
-  opt.taskName = 'auditory';
+  subLabel = '01';
 
+  opt = setOptions('MoAE', subLabel);
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
-
-  subID = '01';
+  [BIDS, opt] = getData(opt);
 
   matlabbatch = [];
-  matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch{1}.cfg_basicio.cfg_named_file.name = 'Anatomical';
 

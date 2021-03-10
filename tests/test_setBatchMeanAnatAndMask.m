@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_setBatchMeanAnatAndMask %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -10,14 +12,10 @@ function test_setBatchMeanAnatAndMaskBasic()
 
   funcFWHM = 6;
 
+  opt = setOptions('vismotion');
   opt.subjects = {'01', '02'};
-  opt.taskName = 'vismotion';
-  opt.space = 'MNI';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), ...
-                                'dummyData', ...
-                                'derivatives', ...
-                                'cpp_spm');
 
+  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   matlabbatch = [];

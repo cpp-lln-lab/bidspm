@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_setBatchSTC %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -8,16 +10,16 @@ end
 
 function test_setBatchSTCEmpty()
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'vislocalizer';
+  subLabel = '02';
 
+  opt = setOptions('vislocalizer', subLabel);
+  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
-  subID = '02';
   matlabbatch = [];
-  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
   % no slice timing info for this run so nothing should be returned.
   assertEqual(matlabbatch, []);
@@ -26,8 +28,11 @@ end
 
 function test_setBatchSTCForce()
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'vislocalizer';
+  subLabel = '02';
+
+  opt = setOptions('vislocalizer', subLabel);
+  opt = setDerivativesDir(opt);
+
   % we give it some slice timing value to force slice timing to happen
   opt.sliceOrder = linspace(0, 1.6, 10);
   opt.sliceOrder(end - 1:end) = [];
@@ -35,12 +40,10 @@ function test_setBatchSTCForce()
 
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
-
-  subID = '02';
+  [BIDS, opt] = getData(opt);
 
   matlabbatch = [];
-  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
   TR = 1.55;
   expectedBatch = returnExpectedBatch(opt.sliceOrder, opt.STC_referenceSlice, TR);
@@ -48,7 +51,7 @@ function test_setBatchSTCForce()
   runCounter = 1;
   for iSes = 1:2
     fileName = spm_BIDS(BIDS, 'data', ...
-                        'sub', subID, ...
+                        'sub', subLabel, ...
                         'ses', sprintf('0%i', iSes), ...
                         'task', opt.taskName, ...
                         'type', 'bold');
@@ -62,17 +65,16 @@ end
 
 function test_setBatchSTCBasic()
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'vismotion';
+  subLabel = '02';
 
+  opt = setOptions('vismotion', subLabel);
+  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
-
-  subID = '02';
+  [BIDS, opt] = getData(opt);
 
   matlabbatch = [];
-  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
   TR = 1.5;
   sliceOrder = repmat([ ...
@@ -85,11 +87,11 @@ function test_setBatchSTCBasic()
 
   runCounter = 1;
   for iSes = 1:2
-    fileName = spm_BIDS(BIDS, 'data', ...
-                        'sub', subID, ...
-                        'ses', sprintf('0%i', iSes), ...
-                        'task', opt.taskName, ...
-                        'type', 'bold');
+    fileName = bids.query(BIDS, 'data', ...
+                          'sub', subLabel, ...
+                          'ses', sprintf('0%i', iSes), ...
+                          'task', opt.taskName, ...
+                          'type', 'bold');
     expectedBatch{1}.spm.temporal.st.scans{runCounter} = ...
         {fileName{1}};
     expectedBatch{1}.spm.temporal.st.scans{runCounter + 1} = ...
@@ -103,8 +105,10 @@ end
 
 function test_setBatchSTCErrorInvalidInputTime()
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'vislocalizer';
+  subLabel = '02';
+
+  opt = setOptions('vislocalizer', subLabel);
+  opt = setDerivativesDir(opt);
 
   opt.sliceOrder = linspace(0, 1.6, 10);
   opt.sliceOrder(end) = [];
@@ -112,14 +116,12 @@ function test_setBatchSTCErrorInvalidInputTime()
 
   opt = checkOptions(opt);
 
-  subID = '02';
-
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   matlabbatch = [];
 
   assertExceptionThrown( ...
-                        @()setBatchSTC(matlabbatch, BIDS, opt, subID), ...
+                        @()setBatchSTC(matlabbatch, BIDS, opt, subLabel), ...
                         'setBatchSTC:invalidInputTime');
 
 end
@@ -128,6 +130,7 @@ function expectedBatch = returnExpectedBatch(sliceOrder, referenceSlice, TR)
 
   nbSlices = length(sliceOrder);
   TA = TR - (TR / nbSlices);
+  TA = ceil(TA*1000)/1000;
 
   expectedBatch{1}.spm.temporal.st.nslices = nbSlices;
   expectedBatch{1}.spm.temporal.st.tr = TR;

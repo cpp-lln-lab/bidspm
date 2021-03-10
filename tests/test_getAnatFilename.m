@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_getAnatFilename %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -14,18 +16,15 @@ end
 
 function test_getAnatFilenameBasic()
 
-  subID = '01';
+  subLabel = '01';
 
-  opt.taskName = 'vislocalizer';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.groups = {''};
-  opt.subjects = {subID};
+  opt = setOptions('vislocalizer', subLabel);
 
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
-  [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
   expectedFileName = 'sub-01_ses-01_T1w.nii';
 

@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_setBatchSmoothingFunc %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -11,21 +13,18 @@ function test_setBatchSmoothingFuncBasic()
   % TODO
   % need a test with several sessions and runs
 
-  subID = '01';
+  subLabel = '01';
 
   funcFWHM = 6;
 
-  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', ...
-                         'MoAE', 'output', 'MoAEpilot');
-  opt.taskName = 'auditory';
-
+  opt = setOptions('MoAE', subLabel);
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   % create dummy normalized file
   fileName = spm_BIDS(BIDS, 'data', ...
-                      'sub', subID, ...
+                      'sub', subLabel, ...
                       'task', opt.taskName, ...
                       'type', 'bold');
   [filepath, filename, ext] = fileparts(fileName{1});
@@ -37,7 +36,7 @@ function test_setBatchSmoothingFuncBasic()
   system(sprintf('touch %s', fileName));
 
   matlabbatch = [];
-  matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, funcFWHM);
+  matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel, funcFWHM);
 
   expectedBatch{1}.spm.spatial.smooth.fwhm = [6 6 6];
   expectedBatch{1}.spm.spatial.smooth.dtype = 0;

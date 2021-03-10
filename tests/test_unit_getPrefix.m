@@ -1,4 +1,6 @@
-function test_suite = test_getPrefix %#ok<*STOUT>
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
+function test_suite = test_unit_getPrefix %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -10,6 +12,7 @@ function test_getPrefixSTC()
 
   step = 'realign';
   funcFWHM = 6;
+
   opt.metadata.SliceTiming = 1:0.2:1.8;
   opt.sliceOrder = 1:10;
 
@@ -26,6 +29,7 @@ end
 function test_getPrefixNoSTC()
 
   step = 'realign';
+
   opt.metadata = [];
   opt.sliceOrder = [];
 

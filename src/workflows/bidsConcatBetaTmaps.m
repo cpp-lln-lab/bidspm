@@ -22,55 +22,51 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
     deleteIndTmaps = 1;
   end
 
-  [~, opt, group] = setUpWorkflow(opt, 'merge beta images and t-maps');
+  [~, opt] = setUpWorkflow(opt, 'merge beta images and t-maps');
 
-  % clear previous matlabbatch and files
-  matlabbatch = [];
   RT = 0;
 
-  %% Loop through the groups, subjects
-  for iGroup = 1:length(group)
+  for iSub = 1:numel(opt.subjects)
 
-    for iSub = 1:group(iGroup).numSub
+    subLabel = opt.subjects{iSub};
 
-      subID = group(iGroup).subNumber{iSub};
+    printProcessingSubject(iSub, subLabel);
 
-      ffxDir = getFFXdir(subID, funcFWHM, opt);
+    ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
-      contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
+    contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
-      beta_maps = cell(length(contrasts), 1);
-      t_maps = cell(length(contrasts), 1);
+    beta_maps = cell(length(contrasts), 1);
+    t_maps = cell(length(contrasts), 1);
 
-      % path to beta and t-map files.
-      for iContrast = 1:length(beta_maps)
-        % Note that the betas are created from the idx (Beta_idx(iBeta))
-        fileName = sprintf('beta_%04d.nii', find(contrasts(iContrast).C));
-        fileName = validationInputFile(ffxDir, fileName);
-        beta_maps{iContrast, 1} = [fileName, ',1'];
+    % path to beta and t-map files.
+    for iContrast = 1:length(beta_maps)
+      % Note that the betas are created from the idx (Beta_idx(iBeta))
+      fileName = sprintf('beta_%04d.nii', find(contrasts(iContrast).C));
+      fileName = validationInputFile(ffxDir, fileName);
+      beta_maps{iContrast, 1} = [fileName, ',1'];
 
-        % while the contrastes (t-maps) are not from the index. They were created
-        fileName = sprintf('spmT_%04d.nii', iContrast);
-        fileName = validationInputFile(ffxDir, fileName);
-        t_maps{iContrast, 1} = [fileName, ',1'];
-      end
-
-      % beta maps
-      outputName = ['4D_beta_', num2str(funcFWHM), '.nii'];
-
-      matlabbatch = [];
-      matlabbatch = setBatch3Dto4D(matlabbatch, beta_maps, RT, outputName);
-
-      % t-maps
-      outputName = ['4D_t_maps_', num2str(funcFWHM), '.nii'];
-
-      matlabbatch = setBatch3Dto4D(matlabbatch, t_maps, RT, outputName);
-
-      saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subID);
-
-      removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir);
-
+      % while the contrastes (t-maps) are not from the index. They were created
+      fileName = sprintf('spmT_%04d.nii', iContrast);
+      fileName = validationInputFile(ffxDir, fileName);
+      t_maps{iContrast, 1} = [fileName, ',1'];
     end
+
+    % beta maps
+    outputName = ['4D_beta_', num2str(funcFWHM), '.nii'];
+
+    matlabbatch = [];
+    matlabbatch = setBatch3Dto4D(matlabbatch, beta_maps, RT, outputName);
+
+    % t-maps
+    outputName = ['4D_t_maps_', num2str(funcFWHM), '.nii'];
+
+    matlabbatch = setBatch3Dto4D(matlabbatch, t_maps, RT, outputName);
+
+    saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subLabel);
+
+    removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir);
+
   end
 
 end

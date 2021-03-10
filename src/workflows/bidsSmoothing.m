@@ -22,25 +22,19 @@ function bidsSmoothing(funcFWHM, opt)
     opt = [];
   end
 
-  [BIDS, opt, group] = setUpWorkflow(opt, 'smoothing functional data');
+  [BIDS, opt] = setUpWorkflow(opt, 'smoothing functional data');
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+  parfor iSub = 1:numel(opt.subjects)
 
-    groupName = group(iGroup).name;
+    subLabel = opt.subjects{iSub};
 
-    parfor iSub = 1:group(iGroup).numSub
+    printProcessingSubject(iSub, subLabel);
 
-      subID = group(iGroup).subNumber{iSub};
+    matlabbatch = [];
+    matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel, funcFWHM);
 
-      printProcessingSubject(groupName, iSub, subID);
+    saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subLabel);
 
-      matlabbatch = [];
-      matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, funcFWHM);
-
-      saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subID);
-
-    end
   end
 
 end

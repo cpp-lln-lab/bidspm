@@ -1,4 +1,6 @@
-function test_suite = test_createDataDictionary %#ok<*STOUT>
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
+function test_suite = test_unit_createDataDictionary %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,24 +10,23 @@ end
 
 function test_createDataDictionaryBasic()
 
-  subID = '01';
+  subLabel = '01';
   iSes = 1;
   iRun = 1;
 
-  opt.taskName = 'vislocalizer';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.groups = {''};
-  opt.subjects = {'01'};
+  opt = setOptions('vislocalizer', subLabel);
 
-  [~, opt, BIDS] = getData(opt);
+  opt = checkOptions(opt);
 
-  sessions = getInfo(BIDS, subID, opt, 'Sessions');
+  [BIDS, opt] = getData(opt);
 
-  runs = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+
+  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
   [fileName, subFuncDataDir] = getBoldFilename( ...
                                                BIDS, ...
-                                               subID, sessions{iSes}, runs{iRun}, opt);
+                                               subLabel, sessions{iSes}, runs{iRun}, opt);
 
   createDataDictionary(subFuncDataDir, fileName, 3);
 

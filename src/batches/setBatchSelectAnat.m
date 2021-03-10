@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID)
+function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch to set an anatomical image
   %
@@ -15,8 +15,8 @@ function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID)
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param subID: subject ID
-  % :type subID: string
+  % :param subLabel: subject label
+  % :type subLabel: string
   %
   % :returns: :matlabbatch: (structure)
   %
@@ -29,7 +29,7 @@ function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID)
 
   printBatchName('selecting anatomical image');
 
-  [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
   matlabbatch{end + 1}.cfg_basicio.cfg_named_file.name = 'Anatomical';
   matlabbatch{end}.cfg_basicio.cfg_named_file.files = { {fullfile(anatDataDir, anatImage)} };

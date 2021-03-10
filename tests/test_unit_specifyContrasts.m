@@ -1,4 +1,6 @@
-function test_suite = test_specifyContrasts %#ok<*STOUT>
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
+function test_suite = test_unit_specifyContrasts %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -9,19 +11,18 @@ end
 function test_specifyContrastsBasic()
   % Small test to ensure that pmCon returns what we asked for
 
-  subID = '01';
+  subLabel = '01';
   funcFWFM = 6;
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.space = 'MNI';
-  opt.taskName = 'vismotion';
+  opt = setOptions('vismotion', subLabel);
+  opt = checkOptions(opt);
+  opt = setDerivativesDir(opt);
+
   opt.model.file = ...
       fullfile(fileparts(mfilename('fullpath')), ...
                'dummyData', 'models', 'model-visMotionLoc_smdl.json');
 
-  opt = setDerivativesDir(opt);
-
-  ffxDir = getFFXdir(subID, funcFWFM, opt);
+  ffxDir = getFFXdir(subLabel, funcFWFM, opt);
 
   contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
