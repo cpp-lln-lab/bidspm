@@ -1,3 +1,5 @@
+% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
+
 function expectedOptions = defaultOptions()
 
   expectedOptions.sliceOrder = [];
@@ -28,9 +30,9 @@ function expectedOptions = defaultOptions()
   expectedOptions.zeropad = 2;
 
   expectedOptions.contrastList = {};
-  
+
   expectedOptions.glmQA.do = true;
-  
+
   expectedOptions.model.file = '';
   expectedOptions.model.hrfDerivatives = [0 0];
 

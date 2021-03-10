@@ -69,6 +69,7 @@ function test_setBatchSTCBasic()
 
   opt = setOptions('vismotion', subLabel);
   opt = setDerivativesDir(opt);
+  opt.query = struct('acq', '');
   opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
