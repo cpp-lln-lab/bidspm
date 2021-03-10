@@ -11,7 +11,7 @@ end
 % TODO
 % add tests to check:
 %  - errors when the requested file is not in the correct session
-%  - that the fucntion is smart enough to find an anat even when user has not
+%  - that the function is smart enough to find an anat even when user has not
 %    specified a session
 
 function test_getAnatFilenameBasic()
@@ -34,5 +34,50 @@ function test_getAnatFilenameBasic()
 
   assertEqual(anatDataDir, expectedAnatDataDir);
   assertEqual(anatImage, expectedFileName);
+
+  %%
+  opt.anatReference.session = '01';
+  opt.anatReference.type = 'T1w';
+
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+
+  assertEqual(anatDataDir, expectedAnatDataDir);
+  assertEqual(anatImage, expectedFileName);
+
+end
+
+function test_getAnatFilenameTypeError()
+
+  subLabel = '01';
+
+  opt = setOptions('vislocalizer', subLabel);
+
+  opt.anatReference.type = 'T2w';
+
+  opt = checkOptions(opt);
+
+  [BIDS, opt] = getData(opt);
+
+  assertExceptionThrown( ...
+                        @()getAnatFilename(BIDS, subLabel, opt), ...
+                        'getAnatFilename:requestedSuffixUnvailable');
+
+end
+
+function test_getAnatFilenameSEssionError()
+
+  subLabel = '01';
+
+  opt = setOptions('vislocalizer', subLabel);
+
+  opt.anatReference.session = '001';
+
+  opt = checkOptions(opt);
+
+  [BIDS, opt] = getData(opt);
+
+  assertExceptionThrown( ...
+                        @()getAnatFilename(BIDS, subLabel, opt), ...
+                        'getAnatFilename:requestedSessionUnvailable');
 
 end

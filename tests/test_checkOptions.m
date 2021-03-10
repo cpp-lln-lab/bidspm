@@ -76,6 +76,17 @@ function test_checkOptionsErrorVoxDim()
 
 end
 
+function test_checkOptionsSessionString()
+
+  opt.taskName = 'testTask';
+  opt.anatReference.session = 1;
+
+  assertExceptionThrown( ...
+                        @()checkOptions(opt), ...
+                        'checkOptions:sessionNotString');
+
+end
+
 function expectedOptions = defaultOptions()
 
   expectedOptions.sliceOrder = [];
@@ -92,7 +103,7 @@ function expectedOptions = defaultOptions()
   expectedOptions.space = 'MNI';
 
   expectedOptions.anatReference.type = 'T1w';
-  expectedOptions.anatReference.session = [];
+  expectedOptions.anatReference.session = '';
 
   expectedOptions.skullstrip.threshold = 0.75;
 
