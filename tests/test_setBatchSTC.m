@@ -130,7 +130,7 @@ function expectedBatch = returnExpectedBatch(sliceOrder, referenceSlice, TR)
 
   nbSlices = length(sliceOrder);
   TA = TR - (TR / nbSlices);
-  TA = ceil(TA*1000)/1000;
+  TA = ceil(TA * 1000) / 1000;
 
   expectedBatch{1}.spm.temporal.st.nslices = nbSlices;
   expectedBatch{1}.spm.temporal.st.tr = TR;
