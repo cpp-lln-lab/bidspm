@@ -10,11 +10,12 @@ end
 
 function test_loadAndCheckOptionsBasic()
 
-  delete('*.json');
+  mkdir cfg;
+  delete(fullfile(pwd, 'cfg', '*.json'));
 
   % create dummy json file
   jsonContent.taskName = 'vismotion';
-  filename = 'options_task-vismotion.json';
+  filename = fullfile(pwd, 'cfg', 'options_task-vismotion.json');
   spm_jsonwrite(filename, jsonContent);
 
   % makes sure that it is picked up by default
@@ -28,6 +29,9 @@ function test_loadAndCheckOptionsBasic()
 end
 
 function test_loadAndCheckOptionsStructure()
+
+  mkdir cfg;
+  delete(fullfile(pwd, 'cfg', '*.json'));
 
   % create dummy json file
   opt.taskName = 'vismotion';
@@ -44,7 +48,8 @@ end
 
 function test_loadAndCheckOptionsFromFile()
 
-  delete('*.json');
+  mkdir cfg;
+  delete(fullfile(pwd, 'cfg', '*.json'));
 
   % create dummy json file
   jsonContent.taskName = 'vismotion';
@@ -52,11 +57,11 @@ function test_loadAndCheckOptionsFromFile()
   jsonContent.groups = {''};
   jsonContent.subjects = {[]};
 
-  filename = 'options_task-vismotion_space-T1w.json';
+  filename = fullfile(pwd, 'cfg', 'options_task-vismotion_space-T1w.json');
   spm_jsonwrite(filename, jsonContent);
 
   % makes sure that it is read correctly from
-  opt = loadAndCheckOptions('options_task-vismotion_space-T1w.json');
+  opt = loadAndCheckOptions(filename);
 
   expectedOptions = defaultOptions();
   expectedOptions.taskName = 'vismotion';
@@ -70,30 +75,31 @@ end
 
 function test_loadAndCheckOptionsFromSeveralFiles()
 
-  delete('*.json');
+  mkdir cfg;
+  delete(fullfile(pwd, 'cfg', '*.json'));
 
   % create old dummy json file
   jsonContent.taskName = 'vismotion';
-  filename = fullfile(pwd, ['options', ...
-                            '_task-', jsonContent.taskName, ...
-                            '_date-151501011111', ...
-                            '.json']);
+  filename = fullfile(pwd, 'cfg', ['options', ...
+                                   '_task-', jsonContent.taskName, ...
+                                   '_date-151501011111', ...
+                                   '.json']);
   spm_jsonwrite(filename, jsonContent);
 
   % create dummy json file with no date
   jsonContent.taskName = 'vismotion';
   jsonContent.space = 'individual';
-  filename = 'options_task-vismotion_space-T1w.json';
+  filename = fullfile(pwd, 'cfg', 'options_task-vismotion_space-T1w.json');
   spm_jsonwrite(filename, jsonContent);
 
   % most recent option file that should be read from
   jsonContent.taskName = 'vismotion';
   jsonContent.space = 'individual';
   jsonContent.funcVoxelDims = [1 1 1];
-  filename = fullfile(pwd, ['options', ...
-                            '_task-', jsonContent.taskName, ...
-                            '_date-' datestr(now, 'yyyymmddHHMM'), ...
-                            '.json']);
+  filename = fullfile(pwd, 'cfg', ['options', ...
+                                   '_task-', jsonContent.taskName, ...
+                                   '_date-' datestr(now, 'yyyymmddHHMM'), ...
+                                   '.json']);
   spm_jsonwrite(filename, jsonContent);
 
   % makes sure that the right json is read
