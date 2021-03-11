@@ -7,3 +7,6 @@
 [submodule "lib/CPP_ROI"]
 	path = lib/CPP_ROI
 	url = https://github.com/cpp-lln-lab/CPP_ROI.git
+[submodule "lib/slice_display"]
+	path = lib/slice_display
+	url = https://github.com/bramzandbelt/slice_display.git
