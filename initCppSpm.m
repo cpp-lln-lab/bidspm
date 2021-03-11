@@ -17,6 +17,8 @@ function initCppSpm()
     addpath(genpath(fullfile(thisDirectory, 'lib', 'utils')));
 
     addpath(fullfile(thisDirectory, 'lib', 'bids-matlab'));
+    addpath(fullfile(thisDirectory, 'lib', 'slice_display'));
+    addpath(fullfile(thisDirectory, 'lib', 'panel-2.14'));
 
     checkDependencies();
 
