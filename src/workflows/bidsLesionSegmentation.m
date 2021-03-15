@@ -20,25 +20,20 @@ function bidsLesionSegmentation(opt)
     opt = [];
   end
 
-  [BIDS, opt, group] = setUpWorkflow(opt, 'lesion segmentation');
+  [BIDS, opt] = setUpWorkflow(opt, 'lesion segmentation');
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+  parfor iSub = 1:numel(opt.subjects)
 
-    groupName = group(iGroup).name;
+    subLabel = opt.subjects{iSub};
 
-    parfor iSub = 1:group(iGroup).numSub
+    printProcessingSubject(iSub, subLabel);
 
-      subID = group(iGroup).subNumber{iSub};
+    matlabbatch = [];
+    matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
-      printProcessingSubject(groupName, iSub, subID);
+    saveAndRunWorkflow(matlabbatch, 'LesionSegmentation', opt, subLabel);
 
-      matlabbatch = [];
-      matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subID);
-
-      saveAndRunWorkflow(matlabbatch, 'LesionSegmentation', opt, subID);
-
-    end
   end
 
-end
+end  
+  
