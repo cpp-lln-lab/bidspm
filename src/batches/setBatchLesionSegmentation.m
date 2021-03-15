@@ -1,6 +1,6 @@
 % (C) Copyright 2021 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subID)
+function matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch to segment the anatomical image for lesion detection
   %
@@ -16,7 +16,7 @@ function matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subID)
   printBatchName('Lesion segmentation');
 
 % find anatomical file
-[anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+[anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 matlabbatch{1}.spm.tools.ali.unified_segmentation.step1data = [anatImage, anatDataDir];
 
 % define SPM folder 
