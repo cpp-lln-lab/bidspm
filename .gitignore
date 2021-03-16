@@ -18,6 +18,7 @@ demos/*/derivatives/*
 demos/MoAE/output/*
 demos/spm*/raw
 demos/spm*/source
+demos/*/inputs
 
 # atlas data
 atlas/ProbAtlas_v4/*

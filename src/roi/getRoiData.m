@@ -9,4 +9,5 @@ function data = getRoiData(dataImage, mask)
   end
 
   data = spm_get_data(dataImage, mask.roi.XYZ);
+  
 end
