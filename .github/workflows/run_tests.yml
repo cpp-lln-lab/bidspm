@@ -54,6 +54,7 @@ jobs:
          octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
     - name: Install MarsBar
+      run: |
         wget https://sourceforge.net/projects/marsbar/files/marsbar/0.44/marsbar-0.44.zip/download
         mv download.1 lib/marsbar.zip
         unzip lib/marsbar.zip 

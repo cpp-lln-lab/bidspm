@@ -16,7 +16,7 @@ function checkDependencies(varargin)
   %   checkDependencies('marsbar')
   %
   % .. TODO:
-  %
+  %    - refactor in a several sub functions to cehck each dependency
   %    - need to check other dependencies (bids-matlab, spmup)
   %
 
