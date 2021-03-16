@@ -20,7 +20,7 @@ initCppSpm()
 opt.taskName = 'rest';
 
 %% Get Data
-opt.dataDir = **path_to_your_BIDS_data**;
+opt.dataDir = **path_to_your_BIDS_data**; %todo
 opt = checkOptions(opt);
 checkDependencies();
 
