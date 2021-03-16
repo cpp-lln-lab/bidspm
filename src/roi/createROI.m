@@ -26,6 +26,14 @@ function mask = createROI(type, varargin)
   %      mask.global.XYZ
   %      mask.global.XYZmm
 
+  if islogical(varargin{end})
+    saveImg = varargin{end};
+  else
+    saveImg = false;
+  end
+
+  volumeDefiningImage = varargin{1};
+
   switch type
 
     case 'sphere'
@@ -42,6 +50,10 @@ function mask = createROI(type, varargin)
 
       mask = spm_ROI(mask);
       mask.roi.XYZmm = [];
+
+      if saveImg
+        volumeDefiningImage = varargin{2};
+      end
 
     case 'mask'
 
@@ -63,6 +75,8 @@ function mask = createROI(type, varargin)
 
       mask.roi.XYZ = mask.global.XYZ(:, j);
 
+      mask = setRoiSizeAndType(mask, type);
+
     case 'intersection'
 
       roiImage = varargin{1};
@@ -74,6 +88,8 @@ function mask = createROI(type, varargin)
       locationsToSample = mask.global.XYZmm;
 
       [~, mask.XYZmm] = spm_ROI(mask2, locationsToSample);
+
+      mask = setRoiSizeAndType(mask, type);
 
     case 'expand'
 
@@ -91,10 +107,13 @@ function mask = createROI(type, varargin)
         specification.radius = specification.radius + radiusStep;
       end
 
+      mask = setRoiSizeAndType(mask, type);
+
   end
 
-  mask.def = type;
-  mask.roi.size = size(mask.roi.XYZmm, 2);
+  if saveImg
+    saveRoi(mask, volumeDefiningImage);
+  end
 
 end
 
@@ -114,4 +133,42 @@ end
 function XYZmm = returnXYZm(transformationMatrix, XYZ)
   % "voxel to world transformation"
   XYZmm = transformationMatrix(1:3, :) * [XYZ; ones(1, size(XYZ, 2))];
+end
+
+function saveRoi(mask, volumeDefiningImage)
+
+  switch mask.def
+
+    case 'sphere'
+
+      [~, mask.roi.XYZmm] = spm_ROI(mask, volumeDefiningImage);
+      mask = setRoiSizeAndType(mask, mask.def);
+
+      radius = mask.spec;
+      center = mask.xyz;
+
+      descrip = sprintf('%0.1fmm radius sphere at [%0.1f %0.1f %0.1f]', radius, center);
+      label = sprintf('sphere_%0.0f-%0.0f_%0.0f_%0.0f', radius, center);
+
+    otherwise
+
+      label = [mask.def '-roiMcRoiFace'];
+      descrip = [mask.def '-roiMcRoiFace'];
+
+  end
+
+  % use the marsbar toolbox
+  roiObject = maroi_pointlist(struct('XYZ', mask.roi.XYZmm, ...
+                                     'mat', spm_get_space(volumeDefiningImage), ...
+                                     'label', label, ...
+                                     'descrip', descrip));
+
+  roiName = sprintf('%s.nii', label);
+  save_as_image(roiObject, fullfile(pwd, roiName));
+
+end
+
+function mask = setRoiSizeAndType(mask, type)
+  mask.def = type;
+  mask.roi.size = size(mask.roi.XYZmm, 2);
 end
