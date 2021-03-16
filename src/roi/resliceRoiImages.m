@@ -1,4 +1,6 @@
-function reslicedImages = resliceImages(referenceImage, imagesToCheck)
+% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
+
+function reslicedImages = resliceRoiImages(referenceImage, imagesToCheck)
 
   % TODO
   % - make prefix more flexible
@@ -7,7 +9,7 @@ function reslicedImages = resliceImages(referenceImage, imagesToCheck)
 
   % check if files are in the same space
   % if not we reslice the ROI to have the same resolution as the data image
-  [sts, images] = checkOrientation(referenceImage, imagesToCheck);
+  [sts, images] = checkRoiOrientation(referenceImage, imagesToCheck);
   if sts == 1
     reslicedImages = imagesToCheck;
 

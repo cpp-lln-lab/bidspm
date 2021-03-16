@@ -1,4 +1,6 @@
-%% example to create ROI and extract data
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
+%% examples to create ROIs and extract data
 
 % ROI: use the probability map for visual motion from Neurosynth
 %   link: https://neurosynth.org/analyses/terms/visual%20motion/
@@ -18,33 +20,46 @@ clc;
 % In SPM lingo this means they are coregistered but not necessarily resliced.
 %
 
+%% IMPORTANT: for saving ROIs
+
+% http://marsbar.sourceforge.net/
+
+% If you want to save the ROI you are creating, you must make sure that the ROI
+% image you are using DOES have the same resolution as the image you will
+% sample.
+%
+% You can use the resliceImages for that.
+
+%%
 probabilityMap = fullfile(pwd, 'inputs', 'visual motion_association-test_z_FDR_0.01.nii');
 dataImage = fullfile(pwd, 'inputs', 'TStatistic.nii');
 
 opt.download.do = false;
-opt.unzip.do = false;
-opt.save.roi = false;
-opt.reslice.do = false;
+opt.unzip.do = true;
+opt.save.roi = true;
+if opt.save.roi
+  opt.reslice.do = true;
+else
+  opt.reslice.do = false;
+end
 
 [roiName, probabilityMap] = preprareDataAndROI(opt, dataImage, probabilityMap);
-expected_mask = getDataFromMask(opt, dataImage,  roiName);
-expected_sphere = getDataFromSphere(opt, dataImage);
-expected_intersection = getDataFromIntersection(opt, dataImage,  roiName);
-expected_expand = getDataFromExpansion(opt, dataImage,  roiName);
+data_mask = getDataFromMask(dataImage,  roiName);
+data_sphere = getDataFromSphere(opt, dataImage);
+data_intersection = getDataFromIntersection(opt, dataImage,  roiName);
+data_expand = getDataFromExpansion(opt, dataImage,  roiName);
 
 %% Mini functions
 
 % only to show how each case works
 
-function expected_mask = getDataFromMask(opt, dataImage, roiName)
+function data_mask = getDataFromMask(dataImage, roiName)
 
-  expected_mask = spm_summarise(dataImage, roiName);
-
-  mask = createROI('mask', roiName, dataImage, opt.save.roi);
+  data_mask = spm_summarise(dataImage, roiName);
 
 end
 
-function expected_sphere = getDataFromSphere(opt, dataImage)
+function data_sphere = getDataFromSphere(opt, dataImage)
 
   % X Y Z coordinates of right V5 in millimeters
   location = [44 -67 0];
@@ -55,9 +70,9 @@ function expected_sphere = getDataFromSphere(opt, dataImage)
   sphere.location = location;
   sphere.radius = radius;
 
-  mask = createROI('sphere', sphere, dataImage, opt.save.roi);
+  mask = createRoi('sphere', sphere, dataImage, opt.save.roi);
 
-  expected_sphere = spm_summarise(dataImage, mask);
+  data_sphere = spm_summarise(dataImage, mask);
 
   % equivalent to
   % b = spm_summarise('beta_0001.nii', ...
@@ -68,7 +83,7 @@ function expected_sphere = getDataFromSphere(opt, dataImage)
 
 end
 
-function expected_intersection = getDataFromIntersection(opt, dataImage,  roiName)
+function data_intersection = getDataFromIntersection(opt, dataImage,  roiName)
 
   % X Y Z coordinates of right V5 in millimeters
   location = [44 -67 0];
@@ -76,13 +91,13 @@ function expected_intersection = getDataFromIntersection(opt, dataImage,  roiNam
   sphere.location = location;
   sphere.radius = 5;
 
-  mask = createROI('intersection', roiName, sphere, dataImage, opt.save.roi);
+  mask = createRoi('intersection', roiName, sphere, dataImage, opt.save.roi);
 
-  expected_intersection = spm_summarise(dataImage, mask.roi.XYZmm);
+  data_intersection = spm_summarise(dataImage, mask.roi.XYZmm);
 
 end
 
-function expected_expand = getDataFromExpansion(opt, dataImage,  roiName)
+function data_expand = getDataFromExpansion(opt, dataImage,  roiName)
 
   % X Y Z coordinates of right V5 in millimeters
   location = [44 -67 0];
@@ -91,9 +106,9 @@ function expected_expand = getDataFromExpansion(opt, dataImage,  roiName)
   sphere.radius = 1; % starting radius
   sphere.maxNbVoxels = 200;
 
-  mask = createROI('expand', roiName, sphere, dataImage, opt.save.roi);
+  mask = createRoi('expand', roiName, sphere, dataImage, opt.save.roi);
 
-  expected_expand = spm_summarise(dataImage, mask.roi.XYZmm);
+  data_expand = spm_summarise(dataImage, mask.roi.XYZmm);
 
 end
 
@@ -104,7 +119,7 @@ function [roiName, probabilityMap] = preprareDataAndROI(opt, dataImage, probabil
   if opt.download.do
     % TODO: don't store the data locally
     % URL = 'https://neurovault.org/media/images/5209/spm_0001_1.nidm/TStatistic.nii.gz';
-    % urlwrite(URL, fullfile(pwd, 'TStatistic.nii'));
+    % urlwrite(URL, fullfile(pwd, 'inputs', 'TStatistic.nii'));
   end
 
   if opt.unzip.do
@@ -116,9 +131,9 @@ function [roiName, probabilityMap] = preprareDataAndROI(opt, dataImage, probabil
     %
     % resliceImg won't do anything if the 2 images have the same resolution
     %
-    % if you read the data with spm_summarise, 
+    % if you read the data with spm_summarise,
     % then the 2 images do not need the same resolution.
-    probabilityMap = resliceImages(dataImage, probabilityMap);
+    probabilityMap = resliceRoiImages(dataImage, probabilityMap);
   end
 
   % Threshold probability map into a binary mask

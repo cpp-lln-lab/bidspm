@@ -1,4 +1,6 @@
-function [sts, images] = checkOrientation(referenceImage, imagesToCheck)
+% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
+
+function [sts, images] = checkRoiOrientation(referenceImage, imagesToCheck)
 
   % referenceImage - better if fullfile path
   % imagesToCheck - better if fullfile path

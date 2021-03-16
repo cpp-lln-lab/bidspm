@@ -1,3 +1,5 @@
+% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
+
 function roiName = thresholdToMask(sourceImage, threshold)
 
   % TODO

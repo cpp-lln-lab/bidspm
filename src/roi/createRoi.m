@@ -1,32 +1,55 @@
-function mask = createROI(type, varargin)
+% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
+
+function mask = createRoi(type, varargin)
   %
-
-  %   mask = createROI('mask', roiName, dataImage, opt.save.roi);
-  %   mask = createROI('sphere', sphere, dataImage, opt.save.roi);
-  %   mask = createROI('intersection', roiName, sphere, dataImage, opt.save.roi);
-  %   mask = createROI('expand', roiName, sphere, dataImage, opt.save.roi);
-
+  % Returns a mask to be used as a ROI by ``spm_summarize``.
+  % Can also save the ROI as binary image.
   %
-  % type: 'mask', 'sphere', 'intersection', 'expand'
-  % roiImage:
-  %           - fullpath of the roi image
-  %           - structure with:
-  %               sphere.location = location; % X Y Z coordinates in millimeters
-  %               sphere.radius = radius; % radius in millimeters
-
-  %      mask     - VOI structure
-  %      mask.def      - VOI definition [sphere, box, mask, cluster, all]
-  %      mask.rej      - cell array of disabled VOI definition options
-  %      mask.xyz      - centre of VOI {mm}
-  %      mask.spec     - VOI definition parameters
-  %      mask.str      - description of the VOI
-  %      mask.roi.size
-  %      mask.roi.XYZ
-  %      mask.roi.XYZmm
-  %      mask.global.hdr
+  % USAGE::
+  %
+  %  mask = createROI(type, varargin);
+  %
+  %  mask = createROI('mask', roiImage, volumeDefiningImage, saveImg = false);
+  %  mask = createROI('sphere', sphere, volumeDefiningImage, saveImg = false);
+  %  mask = createROI('intersection', roiImage, sphere, volumeDefiningImage, saveImg = false);
+  %  mask = createROI('expand', roiImage, sphere, volumeDefiningImage, saveImg = false);
+  %
+  % See the ``demos/roi`` to see examples on how to use it.
+  %
+  % :param type: ``'mask'``, ``'sphere'``, ``'intersection'``, ``'expand'``
+  % :type type: string
+  % :param roiImage: fullpath of the roi image
+  % :type roiImage: string
+  % :param sphere:
+  %                ``sphere.location``: X Y Z coordinates in millimeters
+  %                ``sphere.radius``: radius in millimeters
+  % :type sphere: structure
+  % :param volumeDefiningImage: fullpath of the image that will define the space
+  %                             (resolution, ...) if the ROI is to be saved.
+  % :type volumeDefiningImage: string
+  % :param saveImg: Will save the resulting image as binary mask if set to
+  %                 ``true``
+  % :type saveImg: boolean
+  %
+  % :returns:
+  %
+  %      mask   - structure for the volume of interest adapted from ``spm_ROI``
+  %
+  %      mask.def           - VOI definition [sphere, mask]
+  %      mask.rej           - cell array of disabled VOI definition options
+  %      mask.xyz           - centre of VOI {mm} (for sphere)
+  %      mask.spec          - VOI definition parameters (radius for sphere)
+  %      mask.str           - description of the VOI
+  %      mask.roi.size      - number of voxel in ROI
+  %      mask.roi.XYZ       - voxel coordinates
+  %      mask.roi.XYZmm     - voxel world coordinates
+  %      mask.global.hdr    - header of the "search space" where the roi is
+  %                           defined
   %      mask.global.img
   %      mask.global.XYZ
   %      mask.global.XYZmm
+  %
+  %
 
   if islogical(varargin{end})
     saveImg = varargin{end};
@@ -85,10 +108,10 @@ function mask = createROI(type, varargin)
     case 'intersection'
 
       roiImage = varargin{1};
-      mask = createROI('mask', roiImage);
+      mask = createRoi('mask', roiImage);
 
       specification = varargin{2};
-      mask2 = createROI('sphere', specification);
+      mask2 = createRoi('sphere', specification);
 
       locationsToSample = mask.global.XYZmm;
 
@@ -107,7 +130,7 @@ function mask = createROI(type, varargin)
       radiusStep = min(abs(dim(1:3)));
 
       while  true
-        mask = createROI('intersection', roiImage, specification);
+        mask = createRoi('intersection', roiImage, specification);
         mask.roi.radius = specification.radius;
         if mask.roi.size > specification.maxNbVoxels
           break
@@ -144,6 +167,8 @@ function XYZmm = returnXYZm(transformationMatrix, XYZ)
 end
 
 function saveRoi(mask, volumeDefiningImage)
+
+  checkDependencies('marsbar');
 
   switch mask.def
 
