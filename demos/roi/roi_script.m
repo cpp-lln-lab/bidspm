@@ -1,19 +1,17 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
 %% examples to create ROIs and extract data
-
+%
 % ROI: use the probability map for visual motion from Neurosynth
 %   link: https://neurosynth.org/analyses/terms/visual%20motion/
 %
-% Data: tmap of visual-looming stim from Neurovault
-%   collection : https://neurovault.org/collections/5209/
-%   file: https://neurovault.org/media/images/5209/spm_0001_1.nidm/TStatistic.nii.gz
+% Data: tmap of Listening > Baseline from the MoAE demo
 
 clear;
 clc;
 
 %% ASSUMPTION
-
+%
 % This assumes that the 2 immages are in the same space (MNI, individual)
 % but they might not necessarily have the same resolution.
 %
@@ -21,20 +19,21 @@ clc;
 %
 
 %% IMPORTANT: for saving ROIs
-
-% http://marsbar.sourceforge.net/
-
+%
+% To save the ROIs, MarsBar must be installed: http://marsbar.sourceforge.net/
+%  - either in the "spm12/toolbox" folder
+%  - in the "cpp_spm/lib" folder
+%
 % If you want to save the ROI you are creating, you must make sure that the ROI
 % image you are using DOES have the same resolution as the image you will
 % sample.
 %
-% You can use the resliceImages for that.
+% You can use the resliceRoiImages for that.
 
 %%
 probabilityMap = fullfile(pwd, 'inputs', 'visual motion_association-test_z_FDR_0.01.nii');
 dataImage = fullfile(pwd, 'inputs', 'TStatistic.nii');
 
-opt.download.do = false;
 opt.unzip.do = true;
 opt.save.roi = true;
 if opt.save.roi
@@ -75,11 +74,11 @@ function data_sphere = getDataFromSphere(opt, dataImage)
   data_sphere = spm_summarise(dataImage, mask);
 
   % equivalent to
-  % b = spm_summarise('beta_0001.nii', ...
+  % b = spm_summarise(dataImage, ...
   %                   struct( ...
   %                          'def', 'sphere', ...
-  %                          'spec', 1, ...
-  %                          'xyz', [-7.46 -31.01 7.78]'));
+  %                          'spec', radius, ...
+  %                          'xyz', location'));
 
 end
 
@@ -104,7 +103,7 @@ function data_expand = getDataFromExpansion(opt, dataImage,  roiName)
 
   sphere.location = location;
   sphere.radius = 1; % starting radius
-  sphere.maxNbVoxels = 200;
+  sphere.maxNbVoxels = 50;
 
   mask = createRoi('expand', roiName, sphere, dataImage, opt.save.roi);
 
@@ -115,12 +114,6 @@ end
 %% HELPER FUNCTION
 
 function [roiName, probabilityMap] = preprareDataAndROI(opt, dataImage, probabilityMap)
-
-  if opt.download.do
-    % TODO: don't store the data locally
-    % URL = 'https://neurovault.org/media/images/5209/spm_0001_1.nidm/TStatistic.nii.gz';
-    % urlwrite(URL, fullfile(pwd, 'inputs', 'TStatistic.nii'));
-  end
 
   if opt.unzip.do
     gunzip(fullfile('inputs', '*.gz'));
