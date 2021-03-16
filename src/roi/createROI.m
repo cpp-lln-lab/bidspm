@@ -1,9 +1,11 @@
 function mask = createROI(type, varargin)
   %
-  % mask = createROI('mask', roiName);
-  % sphere = createROI('sphere', sphere);
-  % mask = createROI('intersection', roiName, sphere);
-  % mask = createROI('expand', roiName, sphere);
+
+  %   mask = createROI('mask', roiName, dataImage, opt.save.roi);
+  %   mask = createROI('sphere', sphere, dataImage, opt.save.roi);
+  %   mask = createROI('intersection', roiName, sphere, dataImage, opt.save.roi);
+  %   mask = createROI('expand', roiName, sphere, dataImage, opt.save.roi);
+
   %
   % type: 'mask', 'sphere', 'intersection', 'expand'
   % roiImage:
@@ -32,7 +34,14 @@ function mask = createROI(type, varargin)
     saveImg = false;
   end
 
-  volumeDefiningImage = varargin{1};
+  if saveImg
+    switch type
+      case {'sphere', 'mask'}
+        volumeDefiningImage = varargin{2};
+      case {'intersection', 'expand'}
+        volumeDefiningImage = varargin{3};
+    end
+  end
 
   switch type
 
@@ -50,10 +59,6 @@ function mask = createROI(type, varargin)
 
       mask = spm_ROI(mask);
       mask.roi.XYZmm = [];
-
-      if saveImg
-        volumeDefiningImage = varargin{2};
-      end
 
     case 'mask'
 
@@ -87,7 +92,7 @@ function mask = createROI(type, varargin)
 
       locationsToSample = mask.global.XYZmm;
 
-      [~, mask.XYZmm] = spm_ROI(mask2, locationsToSample);
+      [~, mask.roi.XYZmm] = spm_ROI(mask2, locationsToSample);
 
       mask = setRoiSizeAndType(mask, type);
 
@@ -96,7 +101,10 @@ function mask = createROI(type, varargin)
       roiImage = varargin{1};
       specification = varargin{2};
 
-      radiusStep = 0.25;
+      % take as radius step the smallest voxel dimension of the roi image
+      hdr = spm_vol(roiImage);
+      dim = diag(hdr.mat);
+      radiusStep = min(abs(dim(1:3)));
 
       while  true
         mask = createROI('intersection', roiImage, specification);
