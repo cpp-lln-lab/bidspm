@@ -24,85 +24,112 @@ dataImage = fullfile(pwd, 'inputs', 'TStatistic.nii');
 opt.reslice.do = true;
 opt.download.do = false;
 opt.unzip.do = false;
+opt.save.roi = true;
 
-%% Preprare data and ROI
+[roiName, probabilityMap] = preprareDataAndROI(opt, dataImage, probabilityMap)
+expected_mask = getDataFromMask(opt, dataImage,  roiName);
+expected_sphere = getDataFromSphere(opt, dataImage);
+expected_intersection = getDataFromIntersection(opt, dataImage,  roiName);
+expected_expand = getDataFromExpansion(opt, dataImage,  roiName);
 
-if opt.download.do
-  % TODO: don't store the data locally
-  % URL = 'https://neurovault.org/media/images/5209/spm_0001_1.nidm/TStatistic.nii.gz';
-  % urlwrite(URL, fullfile(pwd, 'TStatistic.nii'));
+%% Mini functions
+
+% only to show how each case works
+
+function expected_mask = getDataFromMask(opt, dataImage,  roiName)
+    
+    expected_mask = spm_summarise(dataImage, roiName);
+    
+    if opt.reslice.do
+        % to test home made code
+        mask = createROI('mask', roiName, opt.save.roi);
+        data = getRoiData(dataImage, mask);
+        assertEqual(data, expected_mask);
+    end
+    
 end
 
-if opt.unzip.do
-  gunzip(fullfile('inputs', '*.gz'));
+function expected_sphere = getDataFromSphere(opt, dataImage)
+    
+    % X Y Z coordinates of right V5 in millimeters
+    location = [44 -67 0];
+    
+    % radius in millimeters
+    radius = 3;
+    
+    mask.location = location;
+    mask.radius = radius;
+    mask = createROI('sphere', mask, dataImage, opt.save.roi);
+    
+    expected_sphere = spm_summarise(dataImage, mask);
+    
+    % equivalent to
+    % b = spm_summarise('beta_0001.nii', ...
+    %                   struct( ...
+    %                          'def', 'sphere', ...
+    %                          'spec', 1, ...
+    %                          'xyz', [-7.46 -31.01 7.78]'));
+    
 end
 
-if opt.reslice.do
-  % If needed reslice probability map to have same resolution as the data image
-  %
-  % resliceImg won't do anything if the 2 images have the same resolution
-  %
-  % if you read the data with spm_summarise, then the 2 images do not need the
-  % same resolution.
-  probabilityMap = resliceImages(dataImage, probabilityMap);
+function expected_intersection = getDataFromIntersection(opt, dataImage,  roiName)
+    
+    % X Y Z coordinates of right V5 in millimeters
+    location = [44 -67 0];
+    
+    sphere.location = location;
+    sphere.radius = 3;
+    mask = createROI('intersection', roiName, sphere, opt.save.roi);
+    
+    expected_intersection = spm_summarise(dataImage, mask.roi.XYZmm);
+    
 end
 
-% Threshold probability map into a binary mask
-% to keep only values above a certain threshold
-threshold = 10;
-roiName = thresholdToMask(probabilityMap, threshold);
-
-%% Get ROI voxel coordinates and extract data
-expected = spm_summarise(dataImage, roiName);
-
-if opt.reslice.do
-  % only to test home made code
-  mask = createROI('mask', roiName);
-  data = getRoiData(dataImage, mask);
-  assertEqual(data, expected);
+function expected_expand = getDataFromExpansion(opt, dataImage,  roiName)
+    
+    % X Y Z coordinates of right V5 in millimeters
+    location = [44 -67 0];
+    
+    sphere.location = location;
+    sphere.radius = 1; % starting radius
+    sphere.maxNbVoxels = 500;
+    mask = createROI('expand', roiName, sphere, opt.save.roi);
+    
+    data = getRoiData(dataImage, mask);
+    
+    expected_expand = spm_summarise(dataImage, mask.roi.XYZmm);
+    
+    assertEqual(data, expected_expand)
 end
 
-%% Get data from a sphere at a specific location
-% X Y Z coordinates of right V5 in millimeters
-location = [44 -67 0];
 
-% radius in millimeters
-radius = 5;
+%% HELPER FUNCTION
 
-mask.location = location;
-mask.radius = radius;
-mask = createROI('sphere', mask);
-
-expected_sphere = spm_summarise(dataImage, mask);
-
-% equivalent to
-% b = spm_summarise('beta_0001.nii', ...
-%                   struct( ...
-%                          'def', 'sphere', ...
-%                          'spec', 1, ...
-%                          'xyz', [-7.46 -31.01 7.78]'));
-
-%% Get data from intersection of a ROI and a sphere
-clear sphere;
-% X Y Z coordinates of right V5 in millimeters
-location = [44 -67 0];
-
-sphere.location = location;
-sphere.radius = 3;
-mask = createROI('intersection', roiName, sphere);
-
-expected_intersection = spm_summarise(dataImage, mask.roi.XYZmm);
-
-%% Get data from a ROI grown within a mask till a certain size
-clear sphere;
-% X Y Z coordinates of right V5 in millimeters
-location = [44 -67 0];
-
-sphere.location = location;
-sphere.radius = 1; % starting radius
-sphere.maxNbVoxels = 1090;
-mask = createROI('expand', roiName, sphere);
-
-data = getRoiData(dataImage, mask);
-
-expected_growth = spm_summarise(dataImage, mask.roi.XYZmm);
+function [roiName, probabilityMap] = preprareDataAndROI(opt, dataImage, probabilityMap)
+    
+    if opt.download.do
+        % TODO: don't store the data locally
+        % URL = 'https://neurovault.org/media/images/5209/spm_0001_1.nidm/TStatistic.nii.gz';
+        % urlwrite(URL, fullfile(pwd, 'TStatistic.nii'));
+    end
+    
+    if opt.unzip.do
+        gunzip(fullfile('inputs', '*.gz'));
+    end
+    
+    if opt.reslice.do
+        % If needed reslice probability map to have same resolution as the data image
+        %
+        % resliceImg won't do anything if the 2 images have the same resolution
+        %
+        % if you read the data with spm_summarise, then the 2 images do not need the
+        % same resolution.
+        probabilityMap = resliceImages(dataImage, probabilityMap);
+    end
+    
+    % Threshold probability map into a binary mask
+    % to keep only values above a certain threshold
+    threshold = 10;
+    roiName = thresholdToMask(probabilityMap, threshold);
+    
+end
