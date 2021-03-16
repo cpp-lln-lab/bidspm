@@ -17,21 +17,18 @@ function opt = Lesion_getOption()
 
   % task to analyze
   opt.taskName = 'rest';
-  
+
   % define group options
   opt.groups = {'control', 'blind'};
 
   % The directory where the data are located
   opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'output', '...');
   opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')));
-  
-  % specify the result to compute
 
+  % specify the result to compute
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);
   saveOptions(opt);
 
-
 end
-

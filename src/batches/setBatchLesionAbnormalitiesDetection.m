@@ -1,6 +1,5 @@
 % (C) Copyright 2021 CPP BIDS SPM-pipeline developers
 
-
 function matlabbatch = setBatchLesionAbnormalities(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch to detect lesion abnormalities
@@ -16,23 +15,27 @@ function matlabbatch = setBatchLesionAbnormalities(matlabbatch, BIDS, opt, subLa
 
   printBatchName('Lesion abnormalities');
 
+  % Defin smoothed segmented images of patients
+  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3patients = '<UNDEFINED>';
 
-matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3patients = '<UNDEFINED>';  % patients: volumes, smoothed segmented images of patients
-matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3controls = '<UNDEFINED>';  % controls: volumes, smoothed segmented images of neurotypical controls
-matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3Alpha = 0.5;               % alpha parameter
-matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3Lambda = -4;               % lambda parameter
+  % Defin smoothed segmented images of neurotypical controls
+  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3controls = '<UNDEFINED>';
 
-% define SPM folder 
-spmDir = spm('dir');
+  % Specify alpha parameter
+  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3Alpha = 0.5;
+  % Specify lambda parameter
+  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3Lambda = -4;
 
-% specify lesion mask
-lesionMask = fullfile(spmDir, 'toolbox', 'ALI', 'Mask_image', 'mask_controls_vox2mm.nii');
+  % define SPM folder
+  spmDir = spm('dir');
 
+  % specify lesion mask
+  lesionMask = fullfile(spmDir, 'toolbox', 'ALI', 'Mask_image', 'mask_controls_vox2mm.nii');
 
-outliers_detection.step3mask_thr = 0;                                                       % threshold for the mask
-outliers_detection.step3binary_thr = 0.3;                                                   % binary lesion: threshold U
-outliers_detection.step3binary_size = 0.8;                                                  % binary lesion: minimum size (in cm3)
+  outliers_detection.step3mask_thr = 0;           % threshold for the mask
+  outliers_detection.step3binary_thr = 0.3;       % binary lesion: threshold U
+  outliers_detection.step3binary_size = 0.8;      % binary lesion: minimum size (in cm3)
 
-matlabbatch{end+1}.spm.tools.ali.outliers_detection = outliers_detection;
+  matlabbatch{end + 1}.spm.tools.ali.outliers_detection = outliers_detection;
 
 end

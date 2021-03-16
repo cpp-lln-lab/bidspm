@@ -15,5 +15,5 @@ function matlabbatch = setBatchLesionOverlapMap(matlabbatch, BIDS, opt, subLabel
 
   printBatchName('Lesion overlap map');
 
-% Specify lesion overlap map
-matlabbatch{1}.spm.tools.ali.lesion_overlap.lom = '<UNDEFINED>';
+  % Specify lesion overlap map
+  matlabbatch{1}.spm.tools.ali.lesion_overlap.lom = '<UNDEFINED>';

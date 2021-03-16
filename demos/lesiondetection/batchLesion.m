@@ -4,8 +4,7 @@ clear;
 clc;
 
 % URL of the data set to download
-% https://gin.g-node.org/mwmaclean/CVI-Datalad/src/master/data
-% URL = 
+% URL = https://gin.g-node.org/mwmaclean/CVI-Datalad/src/master/data
 
 % Directory with this script becomes the current directory (CPP_SPM_dir)
 pth = fileparts(mfilename('fullpath'));
@@ -14,23 +13,15 @@ pth = fileparts(mfilename('fullpath'));
 addpath(genpath(fullfile(pth, '..', '..', 'src')));
 
 %
-initCppSpm()
+initCppSpm();
 
 %% Set options
 opt.taskName = 'rest';
 
 %% Get Data
-opt.dataDir = **path_to_your_BIDS_data**; %todo
+opt.dataDir = path_to_your_BIDS_data; % todo
 opt = checkOptions(opt);
 checkDependencies();
 
 %% Run batches
 bidsLesionSegmentation(opt);
-
-
-
-
-
-
-
-
