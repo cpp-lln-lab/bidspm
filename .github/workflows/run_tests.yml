@@ -53,6 +53,11 @@ jobs:
          make -C spm12/src PLATFORM=octave install
          octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
+    - name: Install MarsBar
+        wget https://sourceforge.net/projects/marsbar/files/marsbar/0.44/marsbar-0.44.zip/download
+        mv download.1 lib/marsbar.zip
+        unzip lib/marsbar.zip 
+
     - name: Install Moxunit and MOcov
       run: |
         git clone https://github.com/MOxUnit/MOxUnit.git --depth 1

@@ -24,6 +24,11 @@ clc;
 %  - either in the "spm12/toolbox" folder
 %  - in the "cpp_spm/lib" folder
 %
+% https://sourceforge.net/projects/marsbar/files/marsbar/0.44/marsbar-0.44.zip/download
+%
+% cp -r /home/myhome/marsbar-0.44/* \
+%       /usr/local/spm/spm12/toolbox/marsbar
+%
 % If you want to save the ROI you are creating, you must make sure that the ROI
 % image you are using DOES have the same resolution as the image you will
 % sample.
