@@ -1,6 +1,6 @@
 {
-  "Name": "Motion localizer",
-  "Description": "contrasts for the motion localizer dataset",
+  "Name": "motion",
+  "Description": "contrasts for the motion dataset",
   "Input": {
     "task": "vismotion"
   },

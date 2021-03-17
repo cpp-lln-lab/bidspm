@@ -17,6 +17,8 @@ function opt = setOptions(task, subLabel)
 
     opt.taskName = task;
     opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), '..', 'dummyData');
+    opt.model.file = fullfile(opt.derivativesDir,  'models', ...
+                              ['model-' task '_smdl.json']);
 
   end
 

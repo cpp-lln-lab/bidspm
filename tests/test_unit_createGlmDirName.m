@@ -9,11 +9,11 @@ function test_suite = test_unit_createGlmDirName %#ok<*STOUT>
 end
 
 function test_createGlmDirName()
-    
+
   FWHM = 6;
   opt.taskName = 'funcLocalizer';
   opt.space = 'MNI';
-  
+
   glmDirName = createGlmDirName(opt, FWHM);
 
   expectedOutput = 'task-funcLocalizer_space-MNI_FWHM-6';
