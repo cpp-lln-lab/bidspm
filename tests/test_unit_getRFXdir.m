@@ -13,7 +13,8 @@ function test_getRFXdirBasic()
   funcFWHM = 0;
   conFWHM = 0;
 
-  opt = setOptions('funcLocalizer');
+  opt = setOptions('vislocalizer');
+  opt = checkOptions(opt);
   opt = setDerivativesDir(opt);
 
   rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
@@ -24,7 +25,30 @@ function test_getRFXdirBasic()
                             'derivatives', ...
                             'cpp_spm', ...
                             'group', ...
-                            'task-funcLocalizer_funcFWHM-0_conFWHM-0');
+                            'task-vislocalizer_space-MNI_FWHM-0_conFWHM-0');
+
+  assertEqual(exist(expectedOutput, 'dir'), 7);
+
+end
+
+function test_getFFXdirUserSpecified()
+
+  conFWHM = 0;
+  funcFWHM = 6;
+
+  opt = setOptions('nback');
+  opt = checkOptions(opt);
+  opt = setDerivativesDir(opt);
+
+  rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
+
+  expectedOutput = fullfile( ...
+                            fileparts(mfilename('fullpath')), ...
+                            'dummyData', ...
+                            'derivatives', ...
+                            'cpp_spm', ...
+                            'group', ...
+                            'task-nback_space-MNI_FWHM-6_conFWHM-0_desc-nbackMVPA');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 

@@ -29,7 +29,7 @@ end
 
 function test_getFFXdirUserSpecified()
 
-  funcFWFM = 6;
+  funcFWHM = 6;
   subLabel = '02';
 
   opt = setOptions('nback', subLabel);
@@ -37,7 +37,7 @@ function test_getFFXdirUserSpecified()
   opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
-  ffxDir = getFFXdir(subLabel, funcFWFM, opt);
+  ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
   expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
                             'cpp_spm', 'sub-02', 'stats', ...

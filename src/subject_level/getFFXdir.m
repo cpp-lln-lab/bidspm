@@ -18,11 +18,9 @@ function ffxDir = getFFXdir(subLabel, funcFWFM, opt)
   % :returns: - :ffxDir: (string)
   %
 
-  % get model name
-  model = spm_jsonread(opt.model.file);
-
   glmDirName = createGlmDirName(opt, funcFWFM);
 
+  model = spm_jsonread(opt.model.file);
   if ~isempty(model.Name) && ~strcmpi(model.Name, opt.taskName)
     glmDirName = [glmDirName, '_desc-', strrep(model.Name, ' ', '')];
   end
