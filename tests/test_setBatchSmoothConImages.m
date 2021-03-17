@@ -15,7 +15,6 @@ function test_setBatchSmoothConImagesBasic()
 
   opt = setOptions('vismotion');
   opt.subjects = {'01', '02'};
-  opt.taskName = 'vismotion';
   opt = checkOptions(opt);
 
   [~, opt] = getData(opt);

@@ -11,7 +11,7 @@ end
 function test_getGrpLevelContrastToComputeBasic()
 
   opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
-                            'dummyData', 'models', 'model-visMotionLoc_smdl.json');
+                            'dummyData', 'models', 'model-vismotion_smdl.json');
 
   [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt);
 

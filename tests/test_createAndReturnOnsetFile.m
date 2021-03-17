@@ -16,11 +16,6 @@ function test_createAndReturnOnsetFileBasic()
   iRun = 1;
 
   opt = setOptions('vislocalizer', subLabel);
-
-  opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
-                            'dummyData', 'models', ...
-                            'model-vislocalizer_smdl.json');
-
   opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
@@ -34,7 +29,7 @@ function test_createAndReturnOnsetFileBasic()
 
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                               'dummyData', 'derivatives', 'cpp_spm', 'sub-01', 'stats', ...
-                              'ffx_task-vislocalizer', 'ffx_space-MNI_FWHM-6', ...
+                              'task-vislocalizer_space-MNI_FWHM-6', ...
                               'onsets_sub-01_ses-01_task-vislocalizer_events.mat');
 
   assertEqual(exist(onsetFileName, 'file'), 2);
