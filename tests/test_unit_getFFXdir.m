@@ -18,8 +18,8 @@ function test_getFFXdirBasic()
   opt = checkOptions(opt);
 
   expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
-                            'cpp_spm', 'sub-01', 'stats', 'ffx_task-funcLocalizer', ...
-                            'ffx_space-MNI_FWHM-0');
+                            'cpp_spm', 'sub-01', 'stats', ...
+                            'task-funcLocalizer_space-MNI_FWHM-0');
 
   ffxDir = getFFXdir(subLabel, funcFWFM, opt);
 
