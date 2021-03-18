@@ -1,15 +1,15 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function ffxDir = getFFXdir(subID, funcFWFM, opt)
+function ffxDir = getFFXdir(subLabel, funcFWFM, opt)
   %
   % Sets the name the FFX directory and creates it if it does not exist
   %
   % USAGE::
   %
-  %   ffxDir = getFFXdir(subID, funcFWFM, opt)
+  %   ffxDir = getFFXdir(subLabel, funcFWFM, opt)
   %
-  % :param subID:
-  % :type subID: string
+  % :param subLabel:
+  % :type subLabel: string
   % :param funcFWFM:
   % :type funcFWFM: scalar
   % :param opt:
@@ -18,14 +18,18 @@ function ffxDir = getFFXdir(subID, funcFWFM, opt)
   % :returns: - :ffxDir: (string)
   %
 
-  ffxDir = fullfile(opt.derivativesDir, ...
-                    ['sub-', subID], ...
-                    'stats', ...
-                    ['ffx_task-', opt.taskName], ...
-                    ['ffx_space-' opt.space '_FWHM-', num2str(funcFWFM)]);
+  glmDirName = createGlmDirName(opt, funcFWFM);
 
-  if ~exist(ffxDir, 'dir')
-    mkdir(ffxDir);
+  model = spm_jsonread(opt.model.file);
+  if ~isempty(model.Name) && ~strcmpi(model.Name, opt.taskName)
+    glmDirName = [glmDirName, '_desc-', converToValidCamelCase(model.Name)];
   end
+
+  ffxDir = fullfile(opt.derivativesDir, ...
+                    ['sub-', subLabel], ...
+                    'stats', ...
+                    glmDirName);
+
+  spm_mkdir(ffxDir);
 
 end

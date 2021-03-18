@@ -15,8 +15,6 @@ function test_setBatchFactorialDesignBasic()
 
   opt = setOptions('vismotion');
   opt.subjects = {'01' '02'};
-  opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
-                            'dummyData', 'models', 'model-visMotionLoc_smdl.json');
 
   opt = checkOptions(opt);
 

@@ -18,10 +18,6 @@ function test_specifyContrastsBasic()
   opt = checkOptions(opt);
   opt = setDerivativesDir(opt);
 
-  opt.model.file = ...
-      fullfile(fileparts(mfilename('fullpath')), ...
-               'dummyData', 'models', 'model-visMotionLoc_smdl.json');
-
   ffxDir = getFFXdir(subLabel, funcFWFM, opt);
 
   contrasts = specifyContrasts(ffxDir, opt.taskName, opt);

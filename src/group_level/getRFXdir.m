@@ -22,14 +22,20 @@ function rfxDir = getRFXdir(opt, funcFWHM, conFWHM)
   % :returns: :rfxDir: (string) Fullpath of the group level directory
   %
 
+  glmDirName = createGlmDirName(opt, funcFWHM);
+
+  glmDirName = [glmDirName, '_conFWHM-', num2str(conFWHM)];
+
+  model = spm_jsonread(opt.model.file);
+  if ~isempty(model.Name) && ~strcmpi(model.Name, opt.taskName)
+    glmDirName = [glmDirName, '_desc-', converToValidCamelCase(model.Name)];
+  end
+
   rfxDir = fullfile( ...
                     opt.derivativesDir, ...
                     'group', ...
-                    ['rfx_task-', opt.taskName], ...
-                    ['rfx_funcFWHM-', num2str(funcFWHM), '_conFWHM-', num2str(conFWHM)]);
+                    glmDirName);
 
-  if ~exist(rfxDir, 'dir')
-    mkdir(rfxDir);
-  end
+  spm_mkdir(rfxDir);
 
 end

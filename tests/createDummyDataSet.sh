@@ -95,11 +95,10 @@ do
 
 		# STATS
 		mkdir $StartDir/sub-$Subject/stats
-		mkdir $StartDir/sub-$Subject/stats/ffx_task-vismotion/
-		ThisDir=$StartDir/sub-$Subject/stats/ffx_task-vismotion/ffx_space-MNI_FWHM-6
+		ThisDir=$StartDir/sub-$Subject/stats/task-vismotion_space-MNI_FWHM-6
 		mkdir $ThisDir
 
-		cp $StartDir/sub-01/stats/ffx_task-vismotion/ffx_space-MNI_FWHM-6/SPM.mat $ThisDir
+		cp $StartDir/sub-01/stats/task-vismotion_space-MNI_FWHM-6/SPM.mat $ThisDir
 
 		touch $ThisDir/mask.nii
 

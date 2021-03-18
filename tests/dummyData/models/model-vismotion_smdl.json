@@ -1,29 +1,10 @@
 {
-  "Name": "vislocalizer",
-  "Description": "contrasts for the visual localizer",
+  "Name": "vismotion",
+  "Description": "contrasts for the motion dataset",
   "Input": {
-    "task": "vislocalizer"
+    "task": "vismotion"
   },
   "Steps": [
-    {
-      "Level": "run",
-      "Model": {
-        "X": [
-          "trial_type.VisMot",
-          "trial_type.VisStat",
-          "trial_type.missing_condition",
-          "trans_x",
-          "trans_y",
-          "trans_z",
-          "rot_x",
-          "rot_y",
-          "rot_z"
-        ]
-      },
-      "AutoContrasts": [
-        "trial_type.listening"
-      ]
-    },
     {
       "Level": "subject",
       "AutoContrasts": [
