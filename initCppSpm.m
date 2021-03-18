@@ -14,4 +14,8 @@ function initCppSpm()
 
   addpath(fullfile(WD, 'lib', 'bids-matlab'));
 
+  checkDependencies();
+
+  printCredits();
+
 end

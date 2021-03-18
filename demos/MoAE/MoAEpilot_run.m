@@ -32,8 +32,6 @@ fprintf('%-10s:', 'Unzipping dataset...');
 unzip('MoAEpilot.zip', fullfile(WD, 'output'));
 fprintf(1, ' Done\n\n');
 
-checkDependencies();
-
 %% Run batches
 reportBIDS(opt);
 bidsCopyRawFolder(opt, 1);
