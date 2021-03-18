@@ -13,8 +13,6 @@ initCppSpm();
 %% Set options
 opt = ds001168_getOption();
 
-checkDependencies();
-
 %% Run batches
 
 reportBIDS(opt);

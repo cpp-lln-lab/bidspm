@@ -20,51 +20,6 @@ function checkDependencies(varargin)
   %    - need to check other dependencies (bids-matlab, spmup)
   %
 
-  if ~isempty(varargin) && strcmpi(varargin{1}, 'marsbar')
-
-    toolbox = varargin{1};
-    url = 'http://marsbar.sourceforge.net/';
-
-    present = false;
-
-    a = which('maroi_pointlist');
-    if ~isempty(a)
-      return
-    end
-
-    if ~present
-
-      foldersToCheck = { ...
-                        fullfile(spm('dir'), 'toolbox'); ...
-                        fullfile(fileparts(mfilename('fullpath')), '..', '..', 'lib')};
-
-      for iFolder = 1:numel(foldersToCheck)
-        toolbox_folder = spm_select('FPList', foldersToCheck{iFolder}, 'dir', ['^' toolbox '.*$']);
-        fprintf(1, '\n\n%s: checking folder  %s\n', ...
-                toolbox, foldersToCheck{iFolder});
-        if ~isempty(toolbox_folder)
-          addpath(toolbox_folder);
-          fprintf(1, '\n\n%s added to path from folder:  %s\n\n', ...
-                  toolbox, foldersToCheck{iFolder});
-          return
-        end
-      end
-
-    end
-
-    if ~present
-
-      message = sprintf(['The %s toolbox was not found in any of the above folder.\n', ...
-                         'Download it from: %s'], toolbox, url);
-
-      errorStruct.identifier = 'checkDependencies:missingToolbox';
-      errorStruct.message = message;
-      error(errorStruct);
-
-    end
-
-  end
-
   fprintf('Checking dependencies\n');
 
   SPM_main = 'SPM12';
@@ -104,7 +59,5 @@ function checkDependencies(varargin)
   end
 
   fprintf(' We got all we need. Let''s get to work.\n');
-
-  printCredits();
 
 end

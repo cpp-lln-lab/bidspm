@@ -14,8 +14,6 @@ initCppSpm();
 %% Set options
 opt = ds000001_getOption();
 
-checkDependencies();
-
 reportBIDS(opt);
 
 bidsCopyRawFolder(opt, 1);

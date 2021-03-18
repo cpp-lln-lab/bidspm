@@ -43,9 +43,6 @@ if DownloadData
 
 end
 
-%%
-checkDependencies();
-
 %% Run batches
 reportBIDS(opt);
 bidsCopyRawFolder(opt, 1);
