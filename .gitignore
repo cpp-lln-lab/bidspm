@@ -19,15 +19,10 @@ demos/*/inputs/
 demos/*/cfg/*.json
 
 # test folder and dummy data
-tests/cfg/*.json
-tests/sub-01/*
+tests/*.png
 tests/group/*
-tests/models/*.json
-tests/dummyData/derivatives/cpp_spm/sub-*/*/*/*.nii*
-tests/dummyData/derivatives/cpp_spm/sub-*/*/*/*.tsv
-tests/dummyData/derivatives/cpp_spm/sub-*/*/*/*.txt
-tests/dummyData/derivatives/cpp_spm/sub-*/*/*/*.json
-tests/dummyData/derivatives/cpp_spm/sub-*/stats/*/*/*.nii*
+tests/*/*.json
+tests/dummyData/derivatives/cpp_spm/sub-*/
 
 # ignore content of the build folder of the doc
 docs/build/*
