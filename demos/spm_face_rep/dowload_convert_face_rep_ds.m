@@ -22,11 +22,11 @@ function dowload_convert_face_rep_ds()
   working_directory = fileparts(mfilename('fullpath'));
   input_dir = fullfile(working_directory, 'inputs', 'source');
   output_dir = fullfile(working_directory, 'outputs', 'raw');
-  
+
   % clean previous runs
   try
-      rmdir(input_dir, 's');
-      rmdir(output_dir, 's');
+    rmdir(input_dir, 's');
+    rmdir(output_dir, 's');
   catch
   end
   spm_mkdir(fullfile(working_directory, 'inputs'));
@@ -36,7 +36,7 @@ function dowload_convert_face_rep_ds()
   fprintf('%-10s:', 'Downloading dataset...');
   urlwrite(URL, 'face_rep.zip');
   fprintf(1, ' Done\n\n');
-  
+
   fprintf('%-10s:', 'Unzipping dataset...');
   unzip('face_rep.zip');
   movefile('face_rep', fullfile(working_directory, 'inputs', 'source'));

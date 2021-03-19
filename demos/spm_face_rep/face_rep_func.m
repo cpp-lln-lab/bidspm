@@ -21,7 +21,7 @@ FWHM = 6;
 
 downloadData = true;
 
-run ../../initCppSpm.m
+run ../../initCppSpm.m;
 
 %% Set options
 opt = FaceRep_getOption();

@@ -30,5 +30,4 @@ function bidsLesionSegmentation(opt)
 
   end
 
-end  
-  
+end

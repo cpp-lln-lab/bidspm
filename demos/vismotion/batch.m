@@ -6,7 +6,7 @@ clc;
 % directory with this script becomes the current directory
 WD = fileparts(mfilename('fullpath'));
 
-run ../../initCppSpm.m
+run ../../initCppSpm.m;
 
 %% Run batches
 opt = getOption();

@@ -11,7 +11,7 @@ clc;
 
 downloadData = false;
 
-run ../../initCppSpm.m
+run ../../initCppSpm.m;
 
 %% Set options
 opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
