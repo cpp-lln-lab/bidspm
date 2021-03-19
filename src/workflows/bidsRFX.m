@@ -31,10 +31,6 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
   %   estimation, Contrast estimation
   %
 
-  if nargin < 2
-    opt = [];
-  end
-
   if nargin < 4 || isempty(funcFWHM)
     funcFWHM = 0;
   end

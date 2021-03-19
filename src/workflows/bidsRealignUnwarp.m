@@ -18,10 +18,6 @@ function bidsRealignUnwarp(opt)
   % maps will be used unless ``opt.useFieldmaps`` is set to ``false``.
   %
 
-  if nargin < 1
-    opt = [];
-  end
-
   [BIDS, opt] = setUpWorkflow(opt, 'realign and unwarp');
 
   parfor iSub = 1:numel(opt.subjects)

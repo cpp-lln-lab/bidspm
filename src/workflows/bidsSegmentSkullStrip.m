@@ -13,11 +13,8 @@ function bidsSegmentSkullStrip(opt)
   % :type opt: structure
   %
 
-  if nargin < 1
-    opt = [];
-  end
-
-  [BIDS, opt] = setUpWorkflow(opt, 'segmentation and skulltripping');
+  data_suffix = opt.anatReference.type;
+  [BIDS, opt] = setUpWorkflow(opt, 'segmentation and skulltripping', data_suffix);
 
   opt.orderBatches.selectAnat = 1;
   opt.orderBatches.segment = 2;
@@ -34,7 +31,7 @@ function bidsSegmentSkullStrip(opt)
     % dependency from file selector ('Anatomical')
     matlabbatch = setBatchSegmentation(matlabbatch, opt);
 
-    matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subLabel, opt);
+    matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
 
     saveAndRunWorkflow(matlabbatch, 'segment_skullstrip', opt, subLabel);
 

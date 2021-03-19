@@ -15,10 +15,6 @@ function bidsRealignReslice(opt)
   % Assumes that ``bidsSTC()`` has already been run.
   %
 
-  if nargin < 1
-    opt = [];
-  end
-
   [BIDS, opt] = setUpWorkflow(opt, 'realign and reslice');
 
   parfor iSub = 1:numel(opt.subjects)

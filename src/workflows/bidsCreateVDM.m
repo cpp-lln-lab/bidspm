@@ -21,10 +21,6 @@ function bidsCreateVDM(opt)
   % (URL missing)
   %
 
-  if nargin < 1
-    opt = [];
-  end
-
   [BIDS, opt] = setUpWorkflow(opt, 'create voxel displacement map');
 
   parfor iSub = 1:numel(opt.subjects)

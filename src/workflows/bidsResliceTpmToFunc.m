@@ -21,10 +21,6 @@ function bidsResliceTpmToFunc(opt)
   % as the functional.
   %
 
-  if nargin < 1
-    opt = [];
-  end
-
   [BIDS, opt] = setUpWorkflow(opt, 'reslicing tissue probability maps to functional dimension');
 
   for iSub = 1:numel(opt.subjects)
