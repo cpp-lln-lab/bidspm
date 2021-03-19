@@ -10,8 +10,7 @@ function opt = FaceRep_getOption()
   opt.taskName = 'facerepetition';
 
   % The directory where the data are located
-  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'raw');
-
+  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
   opt.model.hrfDerivatives = [1 1];
 
   %% DO NOT TOUCH

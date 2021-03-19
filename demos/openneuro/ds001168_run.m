@@ -8,7 +8,7 @@ clc;
 % Smoothing to apply
 FWHM = 6;
 
-initCppSpm();
+run ../../initCppSpm.m
 
 %% Set options
 opt = ds001168_getOption();

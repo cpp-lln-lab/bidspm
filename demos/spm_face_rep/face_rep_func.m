@@ -17,34 +17,21 @@
 clear;
 clc;
 
-% Smoothing to apply
-FWHM = 8;
+FWHM = 6;
 
 DownloadData = true;
 
-% URL of the data set to download
-% directory with this script becomes the current directory
-WD = fileparts(mfilename('fullpath'));
-
-initCppSpm();
+run ../../initCppSpm.m
 
 %% Set options
 opt = FaceRep_getOption();
 
 %% Removes previous analysis, gets data and converts it to BIDS
 if DownloadData
-  try %#ok<*UNRCH>
-    rmdir('source', 's');
-    rmdir('raw', 's');
-  catch
-  end
 
-  face_rep_convert2BIDS();
+  dowloadAndConvertFaceRep();
 
 end
-
-%%
-checkDependencies();
 
 %% Run batches
 reportBIDS(opt);
@@ -68,4 +55,4 @@ bidsFFX('specifyAndEstimate', opt, FWHM);
 bidsFFX('contrasts', opt, FWHM);
 
 % TODO
-bidsResults(opt, FWHM);
+% bidsResults(opt, FWHM);

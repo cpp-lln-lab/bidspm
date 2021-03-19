@@ -9,7 +9,7 @@ clc;
 FWHM = 6;
 conFWHM = 6;
 
-initCppSpm();
+run ../../initCppSpm.m
 
 %% Set options
 opt = ds000114_getOption();
