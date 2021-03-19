@@ -15,11 +15,6 @@ function bidsLesionSegmentation(opt)
   % Segmentation will be performed using the information provided in the BIDS data set.
   %
 
-
-  if nargin < 1
-    opt = [];
-  end
-
   [BIDS, opt] = setUpWorkflow(opt, 'lesion segmentation');
 
   parfor iSub = 1:numel(opt.subjects)
@@ -35,5 +30,4 @@ function bidsLesionSegmentation(opt)
 
   end
 
-end  
-  
+end

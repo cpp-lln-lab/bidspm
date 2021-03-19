@@ -21,10 +21,6 @@ function bidsResults(opt, funcFWHM, conFWHM)
   % :type conFWHM: scalar
   %
 
-  if nargin < 1
-    opt = [];
-  end
-
   [~, opt] = setUpWorkflow(opt, 'computing GLM results');
 
   matlabbatch = [];

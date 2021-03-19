@@ -38,10 +38,6 @@ function bidsSpatialPrepro(opt)
   %  - average T1s across sessions if necessarry
   %
 
-  if nargin < 1
-    opt = [];
-  end
-
   [BIDS, opt] = setUpWorkflow(opt, 'spatial preprocessing');
 
   opt.orderBatches.selectAnat = 1;

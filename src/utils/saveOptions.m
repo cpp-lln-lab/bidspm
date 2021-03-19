@@ -14,8 +14,14 @@ function saveOptions(opt)
 
   optionDir = fullfile(pwd, 'cfg');
   [~, ~, ~] = mkdir(optionDir);
+
+  taskString = '';
+  if isfield(opt, 'taskName')
+    taskString = ['_task-', opt.taskName];
+  end
+
   filename = fullfile(optionDir, ['options', ...
-                                  '_task-', opt.taskName, ...
+                                  taskString, ...
                                   '_date-' datestr(now, 'yyyymmddHHMM'), ...
                                   '.json']);
 

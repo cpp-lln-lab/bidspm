@@ -28,10 +28,6 @@ function bidsFFX(action, opt, funcFWHM)
   % In this way we can make multiple ffx for different smoothing degrees.
   %
 
-  if nargin < 3
-    opt = [];
-  end
-
   [BIDS, opt] = setUpWorkflow(opt, 'subject level GLM');
 
   if isempty(opt.model.file)

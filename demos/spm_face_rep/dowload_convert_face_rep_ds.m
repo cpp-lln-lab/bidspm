@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function face_rep_convert2BIDS()
+function dowload_convert_face_rep_ds()
   %
   % downloads the fare repetition dataset from SPM and convert it to BIDS
   %
@@ -19,8 +19,18 @@ function face_rep_convert2BIDS()
   % URL of the data set to download
   URL = 'http://www.fil.ion.ucl.ac.uk/spm/download/data/face_rep/face_rep.zip';
 
-  % Working directory
-  WD = fileparts(mfilename('fullpath'));
+  working_directory = fileparts(mfilename('fullpath'));
+  input_dir = fullfile(working_directory, 'inputs', 'source');
+  output_dir = fullfile(working_directory, 'outputs', 'raw');
+
+  % clean previous runs
+  try
+    rmdir(input_dir, 's');
+    rmdir(output_dir, 's');
+  catch
+  end
+  spm_mkdir(fullfile(working_directory, 'inputs'));
+  spm_mkdir(output_dir);
 
   %% Get data
   fprintf('%-10s:', 'Downloading dataset...');
@@ -28,46 +38,46 @@ function face_rep_convert2BIDS()
   fprintf(1, ' Done\n\n');
 
   fprintf('%-10s:', 'Unzipping dataset...');
-  unzip('face_rep.zip', WD);
-  movefile('face_rep', 'source');
+  unzip('face_rep.zip');
+  movefile('face_rep', fullfile(working_directory, 'inputs', 'source'));
   fprintf(1, ' Done\n\n');
 
-  %% Create file structure hierarchy
-  spm_mkdir(WD, 'raw', subject, {'anat', 'func'});
+  %% Create ouput folder structure
+  spm_mkdir(output_dir, subject, {'anat', 'func'});
 
   %% Structural MRI
-  anat_hdr = spm_vol(fullfile(WD, 'source', 'Structural', 'sM03953_0007.img'));
+  anat_hdr = spm_vol(fullfile(input_dir, 'Structural', 'sM03953_0007.img'));
   anat_data  = spm_read_vols(anat_hdr);
-  anat_hdr.fname = fullfile(WD, 'raw', 'sub-01', 'anat', 'sub-01_T1w.nii');
+  anat_hdr.fname = fullfile(output_dir, 'sub-01', 'anat', 'sub-01_T1w.nii');
   spm_write_vol(anat_hdr, anat_data);
 
   %% Functional MRI
-  func_files = spm_select('FPList', fullfile(WD, 'source', 'RawEPI'), '^sM.*\.img$');
+  func_files = spm_select('FPList', fullfile(input_dir, 'RawEPI'), '^sM.*\.img$');
   spm_file_merge( ...
                  func_files, ...
-                 fullfile(WD, 'raw', 'sub-01', 'func', ...
+                 fullfile(output_dir, 'sub-01', 'func', ...
                           ['sub-01_task-' strrep(task_name, ' ', '') '_bold.nii']), ...
                  0, ...
                  repetition_time);
-  delete(fullfile(WD, 'raw', 'sub-01', 'func', ...
+  delete(fullfile(output_dir, 'sub-01', 'func', ...
                   ['sub-01_task-' strrep(task_name, ' ', '') '_bold.mat']));
 
   %% And everything else
-  create_events_tsv_file(WD, task_name, repetition_time);
-  create_readme(WD);
-  create_changelog(WD);
-  create_datasetdescription(WD, opt);
-  create_bold_json(WD, task_name, repetition_time, nb_slices, echo_time, opt);
+  create_events_tsv_file(input_dir, output_dir, task_name, repetition_time);
+  create_readme(output_dir);
+  create_changelog(output_dir);
+  create_datasetdescription(output_dir, opt);
+  create_bold_json(output_dir, task_name, repetition_time, nb_slices, echo_time, opt);
 
 end
 
-function create_events_tsv_file(WD, task_name, repetition_time)
+function create_events_tsv_file(input_dir, output_dir, task_name, repetition_time)
 
   % TODO
   % add the lag between presentations of each item necessary for the parametric
   % analysis.
 
-  load(fullfile(WD, 'source', 'all_conditions.mat'), ...
+  load(fullfile(input_dir, 'all_conditions.mat'), ...
        'names', 'onsets', 'durations');
 
   onset_column = [];
@@ -94,13 +104,13 @@ function create_events_tsv_file(WD, task_name, repetition_time)
                        'duration', duration_column, ...
                        'trial_type', {cellstr(trial_type_column)});
 
-  spm_save(fullfile(WD, 'raw', 'sub-01', 'func', ...
+  spm_save(fullfile(output_dir, 'sub-01', 'func', ...
                     ['sub-01_task-' strrep(task_name, ' ', '') '_events.tsv']), ...
            tsv_content);
 
 end
 
-function create_readme(WD)
+function create_readme(output_dir)
 
   rdm = {
          ' ___  ____  __  __'
@@ -152,7 +162,7 @@ function create_readme(WD)
 
   % TODO
   % use spm_save to actually write this file?
-  fid = fopen(fullfile(WD, 'raw', 'README'), 'wt');
+  fid = fopen(fullfile(output_dir, 'README'), 'wt');
   for i = 1:numel(rdm)
     fprintf(fid, '%s\n', rdm{i});
   end
@@ -160,12 +170,12 @@ function create_readme(WD)
 
 end
 
-function create_changelog(WD)
+function create_changelog(output_dir)
 
   cg = { ...
         '1.0.1 2020-11-26', ' - BIDS version.', ...
         '1.0.0 1999-05-13', ' - Initial release.'};
-  fid = fopen(fullfile(WD, 'raw', 'CHANGES'), 'wt');
+  fid = fopen(fullfile(output_dir, 'CHANGES'), 'wt');
 
   for i = 1:numel(cg)
     fprintf(fid, '%s\n', cg{i});
@@ -174,7 +184,7 @@ function create_changelog(WD)
 
 end
 
-function create_datasetdescription(WD, opt)
+function create_datasetdescription(output_dir, opt)
 
   descr = struct( ...
                  'BIDSVersion', '1.4.0', ...
@@ -193,13 +203,13 @@ function create_datasetdescription(WD, opt)
                    'doi:10.1093/cercor/12.2.178'}} ...
                 );
 
-  spm_save(fullfile(WD, 'raw', 'dataset_description.json'), ...
+  spm_save(fullfile(output_dir, 'dataset_description.json'), ...
            descr, ...
            opt);
 
 end
 
-function create_bold_json(WD, task_name, repetition_time, nb_slices, echo_time, opt)
+function create_bold_json(output_dir, task_name, repetition_time, nb_slices, echo_time, opt)
 
   acquisition_time = repetition_time - repetition_time / nb_slices;
   slice_timing = linspace(acquisition_time, 0, nb_slices);
@@ -219,9 +229,7 @@ function create_bold_json(WD, task_name, repetition_time, nb_slices, echo_time, 
                 'ManufacturersModelName', 'MAGNETOM Vision', ...
                 'MagneticFieldStrength', 2);
 
-  spm_save(fullfile( ...
-                    WD, ...
-                    'raw', ...
+  spm_save(fullfile(output_dir, ...
                     ['task-' strrep(task_name, ' ', '') '_bold.json']), ...
            task, ...
            opt);

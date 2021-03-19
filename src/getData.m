@@ -39,13 +39,17 @@ function [BIDS, opt] = getData(opt, BIDSdir, type)
     type = 'bold';
   end
 
-  fprintf(1, 'FOR TASK: %s\n', opt.taskName);
+  if isfield(opt, 'taskName')
+    fprintf(1, 'FOR TASK: %s\n', opt.taskName);
+  else
+    type = 'T1w';
+  end
 
   % we let SPM figure out what is in this BIDS data set
   BIDS = bids.layout(derivativesDir);
 
   % make sure that the required tasks exist in the data set
-  if ~ismember(opt.taskName, bids.query(BIDS, 'tasks'))
+  if isfield(opt, 'taskName') && ~ismember(opt.taskName, bids.query(BIDS, 'tasks'))
     fprintf('List of tasks present in this dataset:\n');
     bids.query(BIDS, 'tasks');
 

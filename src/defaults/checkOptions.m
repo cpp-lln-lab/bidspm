@@ -126,7 +126,7 @@ end
 
 function checkFields(opt)
 
-  if ~isfield(opt, 'taskName') || isempty(opt.taskName)
+  if isfield(opt, 'taskName') && isempty(opt.taskName)
 
     errorStruct.identifier = 'checkOptions:noTask';
     errorStruct.message = sprintf( ...

@@ -30,10 +30,6 @@ function bidsSTC(opt)
   % See the documentation for more information about slice timing correction.
   %
 
-  if nargin < 1
-    opt = [];
-  end
-
   [BIDS, opt] = setUpWorkflow(opt, 'slice timing correction');
 
   parfor iSub = 1:numel(opt.subjects)

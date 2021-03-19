@@ -66,7 +66,11 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy, unZip)
   copyTsvJson(rawDir, derivativesDir);
 
   %% Loop through the groups, subjects, sessions
-  [BIDS, opt] = getData(opt, rawDir);
+  if ismember(modalitiesToCopy, 'func')
+    [BIDS, opt] = getData(opt, rawDir);
+  else
+    [BIDS, opt] = getData(opt, rawDir, 'T1w');
+  end
 
   for iSub = 1:numel(opt.subjects)
 

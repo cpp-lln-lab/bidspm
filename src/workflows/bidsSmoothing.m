@@ -16,12 +16,6 @@ function bidsSmoothing(funcFWHM, opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
 
-  %
-
-  if nargin < 2
-    opt = [];
-  end
-
   [BIDS, opt] = setUpWorkflow(opt, 'smoothing functional data');
 
   parfor iSub = 1:numel(opt.subjects)

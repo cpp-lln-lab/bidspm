@@ -2,13 +2,13 @@
 
 function opt = setOptions(task, subLabel)
 
+  thisDir = fileparts(mfilename('fullpath'));
+
   if strcmp(task, 'MoAE')
 
-    opt.dataDir = fullfile( ...
-                           fileparts(mfilename('fullpath')), ...
-                           '..', '..', 'demos',  'MoAE', 'output', 'MoAEpilot');
-    opt.model.file = fullfile( ...
-                              fileparts(mfilename('fullpath')), ...
+    opt.dataDir = fullfile(thisDir, ...
+                           '..', '..', 'demos',  'MoAE', 'inputs', 'raw');
+    opt.model.file = fullfile(thisDir, ...
                               '..', '..', 'demos',  'MoAE', 'models', 'model-MoAE_smdl.json');
 
     opt.taskName = 'auditory';
@@ -16,7 +16,7 @@ function opt = setOptions(task, subLabel)
   else
 
     opt.taskName = task;
-    opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), '..', 'dummyData');
+    opt.derivativesDir = fullfile(thisDir, '..', 'dummyData');
     opt.model.file = fullfile(opt.derivativesDir,  'models', ...
                               ['model-' task '_smdl.json']);
 
