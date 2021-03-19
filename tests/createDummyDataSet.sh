@@ -98,7 +98,7 @@ do
 		ThisDir=$StartDir/sub-$Subject/stats/task-vismotion_space-MNI_FWHM-6
 		mkdir $ThisDir
 
-		cp $StartDir/sub-01/stats/task-vismotion_space-MNI_FWHM-6/SPM.mat $ThisDir
+		cp dummyData/SPM.mat $ThisDir
 
 		touch $ThisDir/mask.nii
 
