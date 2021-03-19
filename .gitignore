@@ -14,10 +14,9 @@ onsets*_events.mat
 
 # files in the demo folder related to running the demo analysis
 demos/*/*.zip
-demos/*/derivatives/*
-demos/MoAE/output/*
-demos/spm*/raw
-demos/spm*/source
+demos/*/outputs/
+demos/*/inputs/
+demos/*/cfg/*.json
 
 # test folder and dummy data
 tests/cfg/*.json
