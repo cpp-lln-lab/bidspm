@@ -54,10 +54,13 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
 
     case 'sessions'
 
-      query = struct( ...
-                     'sub',  subLabel, ...
-                     'task', opt.taskName);
-
+      if isfield(opt, 'taskName')
+        query = struct( ...
+                       'sub',  subLabel, ...
+                       'task', opt.taskName);
+      else
+        query = struct('sub',  subLabel);
+      end
       % upate query with pre-specified options
       % overwrite is set to true in this case because we might want to run
       % analysis only on certain sessions
