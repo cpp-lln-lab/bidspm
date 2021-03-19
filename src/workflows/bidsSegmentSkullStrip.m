@@ -13,8 +13,7 @@ function bidsSegmentSkullStrip(opt)
   % :type opt: structure
   %
 
-  data_suffix = opt.anatReference.type;
-  [BIDS, opt] = setUpWorkflow(opt, 'segmentation and skulltripping', data_suffix);
+  [BIDS, opt] = setUpWorkflow(opt, 'segmentation and skulltripping');
 
   opt.orderBatches.selectAnat = 1;
   opt.orderBatches.segment = 2;
