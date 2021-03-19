@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function dowloadAndConvertFaceRep()
+function dowload_convert_face_rep_ds()
   %
   % downloads the fare repetition dataset from SPM and convert it to BIDS
   %

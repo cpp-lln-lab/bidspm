@@ -9,7 +9,7 @@
 clear;
 clc;
 
-DownloadData = false;
+downloadData = false;
 
 run ../../initCppSpm.m
 
@@ -20,9 +20,9 @@ opt = checkOptions(opt);
 saveOptions(opt);
 
 %% Removes previous analysis, gets data and converts it to BIDS
-if DownloadData
+if downloadData
 
-  dowloadAndConvertFaceRep();
+  dowload_convert_face_rep_ds();
 
 end
 

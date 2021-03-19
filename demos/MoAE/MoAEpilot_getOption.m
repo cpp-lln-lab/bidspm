@@ -10,8 +10,7 @@ function opt = MoAEpilot_getOption()
   opt.taskName = 'auditory';
 
   % The directory where the data are located
-  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'output', 'MoAEpilot');
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')));
+  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
 
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp

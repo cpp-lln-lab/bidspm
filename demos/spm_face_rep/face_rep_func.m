@@ -19,7 +19,7 @@ clc;
 
 FWHM = 6;
 
-DownloadData = true;
+downloadData = true;
 
 run ../../initCppSpm.m
 
@@ -27,9 +27,9 @@ run ../../initCppSpm.m
 opt = FaceRep_getOption();
 
 %% Removes previous analysis, gets data and converts it to BIDS
-if DownloadData
+if downloadData
 
-  dowloadAndConvertFaceRep();
+  dowload_convert_face_rep_ds();
 
 end
 
