@@ -2,18 +2,18 @@
 
 function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages, interp)
   %
-  % Set the batch for reslicing source images into the reference image???
+  % Set the batch for reslicing source images to the reference image resolution
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages)
+  %   matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages, interp = 4)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
   % :param referenceImg: Reference image
-  % :type referenceImg: string
+  % :type referenceImg: string or cellstring
   % :param sourceImages: Source images
-  % :type sourceImages: cell
+  % :type sourceImages: string or cellstring
   %
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
