@@ -13,7 +13,6 @@ options_task-*date*.json
 onsets*_events.mat
 
 # files in the demo folder related to running the demo analysis
-demos/*/*.zip
 demos/*/outputs/
 demos/*/inputs/
 demos/*/cfg/*.json
