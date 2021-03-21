@@ -5,7 +5,6 @@
 # defines where the BIDS data set will be created
 StartDir=`pwd` # relative to starting directory
 StartDir=$StartDir/dummyData/derivatives/cpp_spm
-mkdir $StartDir
 
 SubList='ctrl01 ctrl02 blind01 blind02 01 02' # subject list
 SesList='01 02' # session list
@@ -98,7 +97,7 @@ do
 		ThisDir=$StartDir/sub-$Subject/stats/task-vismotion_space-MNI_FWHM-6
 		mkdir $ThisDir
 
-		cp dummyData/SPM.mat $ThisDir
+		cp dummyData/SPM.mat $ThisDir/SPM.mat
 
 		touch $ThisDir/mask.nii
 

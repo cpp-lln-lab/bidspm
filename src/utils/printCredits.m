@@ -17,7 +17,7 @@ function printCredits()
 
   DOI_URL = 'https://doi.org/10.5281/zenodo.3554331.';
 
-  repoURL = 'https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline';
+  repoURL = 'https://github.com/cpp-lln-lab/CPP_SPM';
 
   disp('___________________________________________________________________________');
   disp('___________________________________________________________________________');
@@ -28,7 +28,7 @@ function printCredits()
   disp('                \__)(__)  (__)     |___||_/ \_||__)');
   disp('                                                   ');
 
-  splash = 'Thank you for using the CPP lap pipeline - version %s. ';
+  splash = 'Thank you for using CPP SPM - version %s. ';
   fprintf(splash, versionNumber);
   fprintf('\n\n');
 
