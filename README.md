@@ -21,15 +21,68 @@
 **Contributors**
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <!-- lint enable -->
 
 # CPP SPM
 
-This is a set of functions to fMRI analysis on a
+This is a set of functions to MRI analysis on a
 [BIDS data set](https://bids.neuroimaging.io/) using SPM12.
+
+## Installation
+
+TODO
+
+We strongly recommend using the CPP fMRI analysis template repository (INSERT
+URL) to use CPP_SPM.
+
+Download this repository and unzip the content where you want to install it.
+
+Or clone the repo.
+
+```bash
+git clone https://github.com/cpp-lln-lab/CPP_SPM.git
+```
+
+Fire up Octave or Matlab and type
+
+```matlab
+
+cd CPP_SPM
+
+% Th following adds the relevant folders to your path.
+% This needs to be done once per session (your path will not be saved)
+
+initCppSpm
+
+```
+
+Please see our
+[documentation](https://cpp-bids-spm.readthedocs.io/en/latest/index.html) for
+more detailed instructions.
+
+### Dependencies
+
+Make sure that the following toolboxes are installed and added to the matlab
+path.
+
+For instructions see the following links:
+
+<!-- lint disable -->
+
+| Dependencies                                               | Used version |
+| ---------------------------------------------------------- | ------------ |
+| [Matlab](https://www.mathworks.com/products/matlab.html)   | 20???        |
+| or [octave](https://www.gnu.org/software/octave/)          | 4.?          |
+| [SPM12](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/) | v7487        |
+
+<!-- lint enable -->
+
+## Features
 
 This can perform:
 
@@ -55,32 +108,11 @@ This can perform:
 -   GLM at the group level à la SPM (meaning using a summary statistics
     approach).
 
+The core functions are in the `src` folder.
+
 Please see our
 [documentation](https://cpp-bids-spm.readthedocs.io/en/latest/index.html) for
 more info.
-
-The core functions are in the `src` folder.
-
-## Installation
-
-### Dependencies
-
-Make sure that the following toolboxes are installed and added to the matlab
-path.
-
-For instructions see the following links:
-
-<!-- lint disable -->
-
-| Dependencies                                                                              | Used version |
-| ----------------------------------------------------------------------------------------- | ------------ |
-| [Matlab](https://www.mathworks.com/products/matlab.html)                                  | 20???        |
-| or [octave](https://www.gnu.org/software/octave/)                                         | 4.?          |
-| [SPM12](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/)                                | v7487        |
-| [Tools for NIfTI and ANALYZE image toolbox](https://github.com/sergivalverde/nifti_tools) | NA           |
-| [spmup](https://github.com/CPernet/spmup)                                                 | NA           |
-
-<!-- lint enable -->
 
 ## Contributing
 
