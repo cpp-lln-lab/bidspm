@@ -17,7 +17,7 @@ function matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLab
 
   % find anatomical file
   [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
-  matlabbatch{1}.spm.tools.ali.unified_segmentation.step1data = [anatImage, anatDataDir];
+  unified_segmentation.step1data{1} = fullfile(anatDataDir, anatImage);
 
   % define SPM folder
   spmDir = spm('dir');

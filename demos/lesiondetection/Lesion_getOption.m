@@ -11,21 +11,8 @@ function opt = Lesion_getOption()
   %
   % :returns: - :optSource: (struct)
 
-  if nargin < 1
-    opt = [];
-  end
-
-  % task to analyze
-  opt.taskName = 'rest';
-
-  % define group options
-  opt.groups = {'control', 'blind'};
-
   % The directory where the data are located
-  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'output', '...');
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')));
-
-  % specify the result to compute
+  opt.dataDir = '/home/remi/gin/CVI-Datalad/data';
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);
