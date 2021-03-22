@@ -17,16 +17,18 @@ function bidsLesionSegmentation(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'lesion segmentation');
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 
     printProcessingSubject(iSub, subLabel);
 
     matlabbatch = [];
-    matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
+    matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLabel);
 
     saveAndRunWorkflow(matlabbatch, 'LesionSegmentation', opt, subLabel);
+
+    copyFigures(BIDS, opt, subLabel);
 
   end
 

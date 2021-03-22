@@ -19,10 +19,10 @@ function initCppSpm()
     addpath(fullfile(thisDirectory, 'lib', 'bids-matlab'));
 
     checkDependencies();
-    
+
     printCredits();
-    
-    run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'))
+
+    run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'));
 
     CPP_SPM_INITIALIZED = true();
 
