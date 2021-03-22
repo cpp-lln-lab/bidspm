@@ -15,7 +15,7 @@ function matlabbatch = setBatchPrintFigure(matlabbatch, figureName)
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
 
-  if ~spm('CmdLine', true)
+  if spm('CmdLine', true)
 
     printBatchName('print figure');
 
