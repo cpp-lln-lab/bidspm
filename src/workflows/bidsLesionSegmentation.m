@@ -28,6 +28,8 @@ function bidsLesionSegmentation(opt)
 
     saveAndRunWorkflow(matlabbatch, 'LesionSegmentation', opt, subLabel);
 
+    copyFigures(BIDS, opt, subLabel);
+
   end
 
 end
