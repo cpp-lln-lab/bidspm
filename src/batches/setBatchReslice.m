@@ -35,7 +35,7 @@ function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages, 
     sourceImages = {sourceImages};
   end
   write.source(1) = sourceImages;
-  
+
   matlabbatch{end + 1}.spm.spatial.coreg.write = write;
 
 end
