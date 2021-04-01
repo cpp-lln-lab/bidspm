@@ -32,9 +32,10 @@ function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages, 
   write.ref(1) = referenceImg;
 
   if ischar(sourceImages)
-    sourceImages = {sourceImages};
+    write.source = {sourceImages};
+  elseif iscell(sourceImages)
+    write.source = sourceImages;
   end
-  write.source(1) = sourceImages;
 
   matlabbatch{end + 1}.spm.spatial.coreg.write = write;
 

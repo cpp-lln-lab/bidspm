@@ -21,7 +21,11 @@ function bidsResults(opt, funcFWHM, conFWHM)
   % :type conFWHM: scalar
   %
 
-  [~, opt] = setUpWorkflow(opt, 'computing GLM results');
+  [BIDS, opt] = setUpWorkflow(opt, 'computing GLM results');
+
+  if isempty(opt.model.file)
+    opt = createDefaultModel(BIDS, opt);
+  end
 
   matlabbatch = [];
 
