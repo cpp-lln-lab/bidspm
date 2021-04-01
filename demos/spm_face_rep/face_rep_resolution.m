@@ -10,7 +10,7 @@ clc;
 
 FWHM = 6;
 
-downloadData = false;
+downloadData = true;
 
 run ../../initCppSpm.m;
 
