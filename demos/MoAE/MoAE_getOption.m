@@ -1,6 +1,6 @@
 % (C) Copyright 2019 Remi Gau
 
-function opt = MoAEpilot_getOption()
+function opt = MoAE_getOption()
   % returns a structure that contains the options chosen by the user to run
   % slice timing correction, pre-processing, FFX, RFX.
 
@@ -56,7 +56,7 @@ function opt = MoAEpilot_getOption()
 
   % MONTAGE FIGURE OPTIONS
   opt.result.Steps(1).Output.montage.do = true();
-  opt.result.Steps(1).Output.montage.slices = -8:3:15; % in mm
+  opt.result.Steps(1).Output.montage.slices = -0:2:16; % in mm
   % axial is default 'sagittal', 'coronal'
   opt.result.Steps(1).Output.montage.orientation = 'axial';
   % will use the MNI T1 template by default but the underlay image can be changed.
