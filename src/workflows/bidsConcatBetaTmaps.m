@@ -15,8 +15,14 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
   % :param deleteIndTmaps: decide to delete t-maps
   % :type funcFWHM: (boolean)
   %
+  % When concatenating betamaps:
+  %
+  % Ensures that there is only 1 image per "contrast".
+  % Creates a tsv that lists the content of the 4D image.
+  % This TSV is in the subject level GLM folder where the beta map came from.
+  % This TSV file is named ``sub-subLabel_task-taskName_space-space_labelfold.tsv``.
+  %
 
-  % delete individual Beta and tmaps
   if nargin < 3
     deleteIndBeta = 1;
     deleteIndTmaps = 1;
