@@ -19,7 +19,8 @@ function initCppSpm()
     addpath(fullfile(thisDirectory, 'lib', 'bids-matlab'));
     addpath(fullfile(thisDirectory, 'lib', 'slice_display'));
     addpath(fullfile(thisDirectory, 'lib', 'panel-2.14'));
-
+    addpath(fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
+    
     checkDependencies();
 
     printCredits();

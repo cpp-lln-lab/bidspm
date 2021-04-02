@@ -15,27 +15,30 @@ layers(1).color.range = [0 anatRange(2)];
 
 layers(1).color.map = gray(256);
 
-% % Layer 2: Dual-coded layer
+%% Layer 2: Dual-coded layer
 %
 %   - contrast estimates color-coded;
-%   - t-statistics opacity-coded
 
 layers(2).color.file = conImage;
 
-sd_dir = fileparts(which('sd_display'));
-load(fullfile(sd_dir, 'colormaps.mat'));
-layers(2).color.map = CyBuGyRdYl;
+color_map_folder = fullfile(fileparts(which('map_luminance')), '..', 'mat_maps');
+load(fullfile(color_map_folder, 'diverging_bwr_iso.mat'))
+layers(2).color.map = diverging_bwr;
 
-layers(2).color.range = [-6 6];
+layers(2).color.range = [-4 4];
 layers(2).color.label = '\beta_{listening} - \beta_{baseline} (a.u.)';
+
+%% Layer 2: Dual-coded layer
+%
+%   - t-statistics opacity-coded
 
 spmTImage = spm_select('FPList', ffxDir, ['^spmT_' p.label '.nii$']);
 layers(2).opacity.file = spmTImage;
 
+layers(2).opacity.range = [2 3];
 layers(2).opacity.label = '| t |';
-layers(2).opacity.range = [0 5];
 
-% % Layer 3 and 4: Contour of ROI
+%% Layer 3 and 4: Contour of ROI
 
 layers(3).color.file = rightRoiFile;
 layers(3).color.map = [0 0 0];
