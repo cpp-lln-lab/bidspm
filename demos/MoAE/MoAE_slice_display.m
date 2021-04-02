@@ -22,7 +22,7 @@ layers(1).color.map = gray(256);
 layers(2).color.file = conImage;
 
 color_map_folder = fullfile(fileparts(which('map_luminance')), '..', 'mat_maps');
-load(fullfile(color_map_folder, 'diverging_bwr_iso.mat'))
+load(fullfile(color_map_folder, 'diverging_bwr_iso.mat'));
 layers(2).color.map = diverging_bwr;
 
 layers(2).color.range = [-4 4];
