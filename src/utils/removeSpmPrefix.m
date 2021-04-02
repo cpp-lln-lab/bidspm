@@ -1,3 +1,5 @@
+% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+
 function image = removeSpmPrefix(image, prefix)
 
   basename = spm_file(image, 'basename');

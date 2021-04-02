@@ -21,7 +21,11 @@ function bidsResults(opt, funcFWHM, conFWHM)
   % :type conFWHM: scalar
   %
 
-  [~, opt] = setUpWorkflow(opt, 'computing GLM results');
+  [BIDS, opt] = setUpWorkflow(opt, 'computing GLM results');
+
+  if isempty(opt.model.file)
+    opt = createDefaultModel(BIDS, opt);
+  end
 
   % TOD0
   % if it does not exist create the default "result" field from the BIDS model file

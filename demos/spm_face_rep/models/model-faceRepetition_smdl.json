@@ -1,0 +1,130 @@
+{
+   "Name": "face repetition resampling",
+   "Description": "model for face repetition to check resampling effects",
+   "Input": {
+      "task": "facerepetition"
+   },
+   "Steps": [
+      {
+         "Level": "subject",
+         "Transformations": [
+            {
+               "Name": "Factor",
+               "Inputs": [
+                  "trial_type"
+               ]
+            },
+            {
+               "Name": "Convolve",
+               "Model": "spm",
+               "Inputs": [
+                  " "
+               ]
+            }
+         ],
+         "Model": {
+            "X": [
+               "trial_type.F1",
+               "trial_type.F2",
+               "trial_type.N1",
+               "trial_type.N2",
+               "trans_x",
+               "trans_y",
+               "trans_z",
+               "rot_x",
+               "rot_y",
+               "rot_z"
+            ],
+            "Options": {
+               "high_pass_filter_cutoff_secs": 128
+            },
+            "Software": {
+               "SPM": {
+                  "whitening": "FAST"
+               }
+            },
+            "Mask": " "
+         },
+         "AutoContrasts": [
+            "trial_type.F1",
+            "trial_type.F2",
+            "trial_type.N1",
+            "trial_type.N2"
+         ],
+         "Contrasts": [
+            {
+               "Name": "faces_gt_baseline",
+               "ConditionList": [
+                  "trial_type.F1",
+                  "trial_type.F2",
+                  "trial_type.N1",
+                  "trial_type.N2"
+               ],
+               "weights": [
+                  1,
+                  1,
+                  1,
+                  1
+               ],
+               "type": "t"
+            }
+         ]
+      },
+      {
+         "Level": "run",
+         "Transformations": [
+            {
+               "Name": "Factor",
+               "Inputs": [
+                  "trial_type"
+               ]
+            },
+            {
+               "Name": "Convolve",
+               "Model": "spm",
+               "Inputs": [
+                  " "
+               ]
+            }
+         ],
+         "Model": {
+            "X": [
+               "trial_type.F1",
+               "trial_type.F2",
+               "trial_type.N1",
+               "trial_type.N2",
+               "trans_x",
+               "trans_y",
+               "trans_z",
+               "rot_x",
+               "rot_y",
+               "rot_z"
+            ],
+            "Options": {
+               "high_pass_filter_cutoff_secs": 128
+            },
+            "Software": {
+               "SPM": {
+                  "whitening": "FAST"
+               }
+            },
+            "Mask": " "
+         },
+         "AutoContrasts": [
+            "trial_type.F1",
+            "trial_type.F2",
+            "trial_type.N1",
+            "trial_type.N2"
+         ]
+      },
+      {
+         "Level": "dataset",
+         "AutoContrasts": [
+            "trial_type.F1",
+            "trial_type.F2",
+            "trial_type.N1",
+            "trial_type.N2"
+         ]
+      }
+   ]
+}
