@@ -21,6 +21,11 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   % :returns: - :matlabbatch: (structure)
   %
   %
+  result.outputNameStructure.sub = result.label;
+  result.outputNameStructure.desc = result.Contrasts.Name;
+  result.outputNameStructure.p = num2str(result.Contrasts.p);
+  result.outputNameStructure.k = num2str(result.Contrasts.k);
+  result.outputNameStructure.MC = result.Contrasts.MC;
 
   fieldsToSet = returnDefaultResultsStructure();
   result = setFields(result, fieldsToSet);

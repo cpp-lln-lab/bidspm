@@ -80,7 +80,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
         results.dir = getRFXdir(opt, funcFWHM, conFWHM);
         results.contrastNb = 1;
-        results.label = 'group level';
+        results.label = 'group';
 
         load(fullfile(results.dir, 'SPM.mat'));
         results.nbSubj = SPM.nscan;
