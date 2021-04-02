@@ -1,4 +1,4 @@
-% (C) Copyright 2019 Remi Gau
+% (C) Copyright 2020 Remi Gau
 
 function opt = FaceRep_getOption()
   % returns a structure that contains the options chosen by the user to run
