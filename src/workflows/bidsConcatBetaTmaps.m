@@ -34,6 +34,8 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
     ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
+    load(fullfile(ffxDir, 'SPM.mat'));
+
     contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
     beta_maps = cell(length(contrasts), 1);
@@ -41,8 +43,25 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
     % path to beta and t-map files.
     for iContrast = 1:length(beta_maps)
-      % Note that the betas are created from the idx (Beta_idx(iBeta))
-      fileName = sprintf('beta_%04d.nii', find(contrasts(iContrast).C));
+
+      betasIndices = find(contrasts(iContrast).C);
+
+      if numel(betasIndices) > 1
+        error('Supposed to concatenate one beta image per contrast.');
+      end
+
+      % for this beta iamge we identify
+      % - which run it came from
+      % - the exact condition name stored in the SPM.mat
+      % so they can be saved in a tsv for for "label" and "fold" for MVPA
+      tmp = cat(1, SPM.Sess(:).col) == betasIndices;
+      runs(iContrast, 1) = find(any(tmp, 2));
+
+      tmp = SPM.xX.name{betasIndices};
+      parts = strsplit(tmp, ' ');
+      conditions{iContrast, 1} = strjoin(parts(2:end), ' ');
+
+      fileName = sprintf('beta_%04d.nii', betasIndices);
       fileName = validationInputFile(ffxDir, fileName);
       beta_maps{iContrast, 1} = [fileName, ',1'];
 
@@ -50,7 +69,21 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
       fileName = sprintf('spmT_%04d.nii', iContrast);
       fileName = validationInputFile(ffxDir, fileName);
       t_maps{iContrast, 1} = [fileName, ',1'];
+
     end
+
+    % tsv
+    nameStructure = struct( ...
+                           'ext', '.tsv', ...
+                           'type', 'labelfold', ...
+                           'sub', subLabel, ...
+                           'task', opt.taskName, ...
+                           'space', opt.space);
+    tsvName = createFilename(nameStructure);
+
+    tsvContent = struct('folds', runs, 'labels', {conditions});
+
+    spm_save(fullfile(ffxDir, tsvName), tsvContent);
 
     % beta maps
     outputName = ['4D_beta_', num2str(funcFWHM), '.nii'];
