@@ -23,8 +23,6 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
   [~, opt] = setUpWorkflow(opt, 'computing GLM results');
 
-  matlabbatch = [];
-
   % TOD0
   % if it does not exist create the default "result" field from the BIDS model file
 
@@ -39,6 +37,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
       case 'run'
         warning('run level not implemented yet');
 
+        matlabbatch = [];
         % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
 
       case 'subject'
@@ -46,7 +45,11 @@ function bidsResults(opt, funcFWHM, conFWHM)
         % For each subject
         for iSub = 1:numel(opt.subjects)
 
+          matlabbatch = [];
+
           subLabel = opt.subjects{iSub};
+
+          results.dir = getFFXdir(subLabel, funcFWHM, opt);
 
           for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
 
@@ -61,13 +64,19 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
           end
 
+          batchName = sprintf('compute_sub-%s_results', subLabel);
+
+          saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
+
+          renameOutputResults(results);
+
+          renamePng(results);
+
         end
 
-        batchName = sprintf('compute_sub-%s_results', subLabel);
-
-        saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
-
       case 'dataset'
+
+        matlabbatch = [];
 
         results.dir = getRFXdir(opt, funcFWHM, conFWHM);
         results.contrastNb = 1;
@@ -99,5 +108,43 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
   % rename NIDM file
   % TODO
+
+end
+
+function renameOutputResults(results)
+  % we create new name for the nifti oupput by removing the
+  % spmT_XXXX prefix and using the XXXX as label- for the file
+
+  outputFiles = spm_select('FPList', results.dir, '^spmT_[0-9].*_sub-.*.nii$');
+
+  for iFile = 1:size(outputFiles, 1)
+
+    source = deblank(outputFiles(iFile, :));
+
+    basename = spm_file(source, 'basename');
+    split = strfind(basename, '_sub');
+    p = bids.internal.parse_filename(basename(split + 1:end));
+    p.label = basename(split - 4:split - 1);
+    newName = createFilename(p);
+
+    target = spm_file(source, 'basename', newName);
+
+    movefile(source, target);
+  end
+
+end
+
+function renamePng(results)
+  %
+  % removes the _XXX suffix before the PNG extension.
+
+  pngFiles = spm_select('FPList', results.dir, '^sub-.*[0-9].png$');
+
+  for iFile = 1:size(pngFiles, 1)
+    source = deblank(pngFiles(iFile, :));
+    basename = spm_file(source, 'basename');
+    target = spm_file(source, 'basename', basename(1:end - 4));
+    movefile(source, target);
+  end
 
 end
