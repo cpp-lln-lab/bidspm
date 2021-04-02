@@ -18,6 +18,11 @@ function test_setBatchResultsBasic()
   result.nbSubj = 1;
   result.contrastNb = 1;
 
+  result.Contrasts.Name = '';
+  result.Contrasts.MC = 'FWE';
+  result.Contrasts.p = 0.05;
+  result.Contrasts.k = 0;
+
   matlabbatch = [];
   matlabbatch = setBatchResults(matlabbatch, result);
 
@@ -31,6 +36,8 @@ function test_setBatchResultsExport()
 
   iStep = 1;
   iCon = 1;
+
+  opt.taskName = 'test';
 
   opt.result.Steps.Contrasts.Name = 'test';
   opt.result.Steps.Contrasts.MC = 'FDR';
@@ -51,6 +58,18 @@ function test_setBatchResultsExport()
   result.contrastNb = 1;
 
   %%
+  result.outputNameStructure = struct( ...
+                                      'type', 'spmT', ...
+                                      'ext', '.nii', ...
+                                      'sub', '', ...
+                                      'task', opt.taskName, ...
+                                      'space', opt.space, ...
+                                      'desc', '', ...
+                                      'label', 'XXXX', ...
+                                      'p', '', ...
+                                      'k', '', ...
+                                      'MC', '');
+
   result.Contrasts =  opt.result.Steps(iStep).Contrasts;
   result.Output =  opt.result.Steps(iStep).Output;
   result.space = opt.space;
@@ -66,8 +85,10 @@ function test_setBatchResultsExport()
 
   expectedBatch{end}.spm.stats.results.export{1}.png = true;
   expectedBatch{end}.spm.stats.results.export{2}.csv = true;
-  expectedBatch{end}.spm.stats.results.export{3}.tspm.basename = returnName(result);
-  expectedBatch{end}.spm.stats.results.export{4}.binary.basename = [returnName(result) '_mask'];
+  expectedBatch{end}.spm.stats.results.export{3}.tspm.basename = ...
+      'sub-01_task-test_space-individual_desc-test_label-XXXX_p-005_k-0_MC-FDR_spmT';
+  expectedBatch{end}.spm.stats.results.export{4}.binary.basename = ...
+      'sub-01_task-test_space-individual_desc-test_label-XXXX_p-005_k-0_MC-FDR_mask';
 
   expectedBatch{end}.spm.stats.results.export{end + 1}.nidm.modality = 'FMRI';
   expectedBatch{end}.spm.stats.results.export{end}.nidm.refspace = 'ixi';
@@ -130,23 +151,24 @@ end
 function expectedBatch = returnBasicExpectedResultsBatch()
 
   result.Contrasts.Name = '';
+  result.Contrasts.MC = 'FWE';
   result.Contrasts.p = 0.05;
   result.Contrasts.k = 0;
-  result.Contrasts.MC = 'FWE';
+
+  stats.results.spmmat = {fullfile(pwd, 'SPM.mat')};
+
+  stats.results.conspec.titlestr = returnName(result);
+  stats.results.conspec.contrasts = 1;
+  stats.results.conspec.threshdesc = 'FWE';
+  stats.results.conspec.thresh = 0.05;
+  stats.results.conspec.extent = 0;
+  stats.results.conspec.conjunction = 1;
+  stats.results.conspec.mask.none = true();
+
+  stats.results.units = 1;
 
   expectedBatch = {};
-  expectedBatch{end + 1}.spm.stats.results.spmmat = {fullfile(pwd, 'SPM.mat')};
-
-  expectedBatch{end}.spm.stats.results.conspec.titlestr = returnName(result);
-  expectedBatch{end}.spm.stats.results.conspec.contrasts = 1;
-  expectedBatch{end}.spm.stats.results.conspec.threshdesc = 'FWE';
-  expectedBatch{end}.spm.stats.results.conspec.thresh = 0.05;
-  expectedBatch{end}.spm.stats.results.conspec.extent = 0;
-  expectedBatch{end}.spm.stats.results.conspec.conjunction = 1;
-  expectedBatch{end}.spm.stats.results.conspec.mask.none = true();
-
-  expectedBatch{end}.spm.stats.results.units = 1;
-
+  expectedBatch{end + 1}.spm.stats = stats;
   expectedBatch{end}.spm.stats.results.export = [];
 
 end
