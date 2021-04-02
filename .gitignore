@@ -15,6 +15,7 @@ onsets*_events.mat
 # files in the demo folder related to running the demo analysis
 demos/*/outputs/
 demos/*/inputs/
+demos/*/*.nii
 demos/*/cfg/*.json
 
 # test folder and dummy data
