@@ -33,14 +33,14 @@ dowload_MoAE_ds(downloadData);
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
 
 % bidsSTC(opt);
-% 
+
 % bidsSpatialPrepro(opt);
 
 % The following do not run on octave for now (because of spmup)
 % anatomicalQA(opt);
 % bidsResliceTpmToFunc(opt);
 % functionalQA(opt);
-% 
+%
 % bidsSmoothing(FWHM, opt);
 
 % The following crash on Travis CI

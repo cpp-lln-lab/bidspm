@@ -1,3 +1,5 @@
+% (C) Copyright 2021 Remi Gau
+
 %% Create ROI and extract data from it
 %
 % FYI: this is "double  dipping" as we use the same data to create the ROI
@@ -27,8 +29,8 @@ conImage = spm_select('FPList', ffxDir, ['^con_' p.label '.nii$']);
 sphere.location = [57 -22 11];
 
 specification  = struct( ...
-    'mask1', maskImage, ...
-    'mask2', sphere);
+                        'mask1', maskImage, ...
+                        'mask2', sphere);
 
 [~, roiFile] = createRoi('expand', specification, conImage, pwd, saveROI);
 
@@ -45,13 +47,13 @@ rightRoiFile = renameFile(roiFile, newname);
 sphere.location = [-57 -22 11];
 
 specification  = struct( ...
-    'mask1', maskImage, ...
-    'mask2', sphere);
+                        'mask1', maskImage, ...
+                        'mask2', sphere);
 
 [~, roiFile] = createRoi('expand', specification, conImage, pwd, saveROI);
 newname.desc = 'left auditory cortex';
 leftRoiFile = renameFile(roiFile, newname);
 
-%% 
+%%
 right_data = spm_summarise(conImage, rightRoiFile);
 left_data = spm_summarise(conImage, leftRoiFile);
