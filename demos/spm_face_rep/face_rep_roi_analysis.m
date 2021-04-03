@@ -11,6 +11,8 @@ opt.roi.atlas = 'wang';
 opt.roi.name = {'V1v', 'V1d'};
 opt.roi.space = {'MNI', 'individual'};
 
+opt.dir.stats = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm-stats');
+
 % bidsCreateROI(opt);
 
 opt.glm.roibased.do = true;

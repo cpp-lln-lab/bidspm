@@ -10,7 +10,6 @@ function opt = FaceRep_getOption()
 
   opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
   opt.dir.roi = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm-roi');
-  opt.dir.stats = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm-stats');
 
   opt.model.hrfDerivatives = [1 1];
 

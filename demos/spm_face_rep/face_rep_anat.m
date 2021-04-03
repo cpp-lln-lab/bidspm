@@ -27,10 +27,10 @@ if downloadData
 end
 
 %% Run batches
-reportBIDS(opt);
-bidsCopyRawFolder(opt, 1, 'anat');
+% reportBIDS(opt);
+% bidsCopyRawFolder(opt, 1, 'anat');
 
-bidsSegmentSkullStrip(opt);
+% bidsSegmentSkullStrip(opt);
 
 % The following do not run on octave for now (because of spmup)
-anatomicalQA(opt);
+% anatomicalQA(opt);
