@@ -13,7 +13,7 @@ clc;
 % Smoothing to apply
 FWHM = 6;
 
-downloadData = false;
+downloadData = true;
 
 run ../../initCppSpm.m;
 
@@ -23,27 +23,27 @@ opt = MoAE_getOption();
 dowload_MoAE_ds(downloadData);
 
 %% Run batches
-% reportBIDS(opt);
-% bidsCopyRawFolder(opt, 1);
+reportBIDS(opt);
+bidsCopyRawFolder(opt, 1);
 
 % In case you just want to run segmentation and skull stripping
-%
-% bidsSegmentSkullStrip(opt);
-%
+
+bidsSegmentSkullStrip(opt);
+
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
 
-% bidsSTC(opt);
+bidsSTC(opt);
 
-% bidsSpatialPrepro(opt);
+bidsSpatialPrepro(opt);
 
 % The following do not run on octave for now (because of spmup)
 % anatomicalQA(opt);
 % bidsResliceTpmToFunc(opt);
 % functionalQA(opt);
-%
-% bidsSmoothing(FWHM, opt);
+
+bidsSmoothing(FWHM, opt);
 
 % The following crash on Travis CI
-% bidsFFX('specifyAndEstimate', opt, FWHM);
-% bidsFFX('contrasts', opt, FWHM);
-% bidsResults(opt, FWHM);
+bidsFFX('specifyAndEstimate', opt, FWHM);
+bidsFFX('contrasts', opt, FWHM);
+bidsResults(opt, FWHM);

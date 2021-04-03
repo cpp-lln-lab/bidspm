@@ -19,7 +19,7 @@ clc;
 
 FWHM = 6;
 
-downloadData = false;
+downloadData = true;
 
 run ../../initCppSpm.m;
 
@@ -34,26 +34,24 @@ if downloadData
 end
 
 %% Run batches
-% reportBIDS(opt);
-% bidsCopyRawFolder(opt, 1);
-%
-% bidsSTC(opt);
-%
-% bidsSpatialPrepro(opt);
+reportBIDS(opt);
+bidsCopyRawFolder(opt, 1);
+
+bidsSTC(opt);
+
+bidsSpatialPrepro(opt);
 
 % The following do not run on octave for now (because of spmup)
-% anatomicalQA(opt);
-% bidsResliceTpmToFunc(opt);
+anatomicalQA(opt);
+bidsResliceTpmToFunc(opt);
 
 % DEBUG
 % functionalQA(opt);
 
-% bidsSmoothing(FWHM, opt);
+bidsSmoothing(FWHM, opt);
 
 % The following crash on Travis CI
-
 opt.dir.stats = opt.derivativesDir;
-
 bidsFFX('specifyAndEstimate', opt, FWHM);
 bidsFFX('contrasts', opt, FWHM);
 

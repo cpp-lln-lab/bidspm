@@ -13,7 +13,7 @@ opt.roi.space = {'MNI', 'individual'};
 
 opt.dir.stats = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm-stats');
 
-% bidsCreateROI(opt);
+bidsCreateROI(opt);
 
 opt.glm.roibased.do = true;
 

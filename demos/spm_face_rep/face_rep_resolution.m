@@ -11,7 +11,7 @@ close all;
 
 FWHM = 6;
 
-downloadData = false;
+downloadData = true;
 
 run ../../initCppSpm.m;
 
@@ -52,13 +52,13 @@ for iResolution = 1:0.5:3
 
   spm_jsonwrite(newModel, content, struct('indent', '   '));
 
-  %   bidsCopyRawFolder(opt, 1);
-  %
-  %   bidsSTC(opt);
-  %
-  %   bidsSpatialPrepro(opt);
-  %
-  %   bidsSmoothing(FWHM, opt);
+  bidsCopyRawFolder(opt, 1);
+
+  bidsSTC(opt);
+
+  bidsSpatialPrepro(opt);
+
+  bidsSmoothing(FWHM, opt);
 
   bidsFFX('specifyAndEstimate', opt, FWHM);
   bidsFFX('contrasts', opt, FWHM);
