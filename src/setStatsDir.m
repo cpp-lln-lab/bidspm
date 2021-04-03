@@ -8,4 +8,6 @@ function opt = setStatsDir(opt)
     opt.dir.stats = fullfile(opt.derivativesDir, '..', 'cpp_spm-stats');
   end
 
+  opt.dir.stats = spm_file(opt.dir.stats, 'cpath');
+
 end

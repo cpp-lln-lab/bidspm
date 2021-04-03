@@ -115,7 +115,8 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.model.hrfDerivatives = [0 0];
   fieldsToSet.contrastList = {};
 
-  fieldsToSet.glmQA.do = true;
+  fieldsToSet.glm.QA.do = true;
+  fieldsToSet.glm.roibased.do = false;
 
   % specify the results to compute
   fieldsToSet.result.Steps = returnDefaultResultsStructure();

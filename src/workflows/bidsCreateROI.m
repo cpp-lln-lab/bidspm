@@ -81,6 +81,7 @@ function bidsCreateROI(opt)
 
         movefile(roiImage, ...
                  fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', newName));
+
       end
 
     end

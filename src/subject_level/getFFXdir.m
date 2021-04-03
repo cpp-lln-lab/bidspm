@@ -30,6 +30,10 @@ function ffxDir = getFFXdir(subLabel, funcFWFM, opt)
                     'stats', ...
                     glmDirName);
 
+  if opt.glm.roibased.do
+    ffxDir = [ffxDir '_roi'];
+  end
+
   spm_mkdir(ffxDir);
 
 end

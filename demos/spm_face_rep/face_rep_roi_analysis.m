@@ -13,4 +13,6 @@ opt.roi.space = {'MNI', 'individual'};
 
 % bidsCreateROI(opt);
 
+opt.glm.roibased.do = true;
+
 bidsRoiBasedGLM(opt);

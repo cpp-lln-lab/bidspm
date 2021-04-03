@@ -76,7 +76,7 @@ function bidsFFX(action, opt, funcFWHM)
 
         saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-        if opt.glmQA.do
+        if opt.glm.QA.do
           plot_power_spectra_of_GLM_residuals( ...
                                               getFFXdir(subLabel, funcFWHM, opt), ...
                                               opt.metadata.RepetitionTime);
