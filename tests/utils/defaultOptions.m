@@ -7,6 +7,8 @@ function expectedOptions = defaultOptions()
 
   expectedOptions.dataDir = '';
   expectedOptions.derivativesDir = '';
+  expectedOptions.dir = struct('raw', '', ...
+                               'derivatives', '');
 
   expectedOptions.funcVoxelDims = [];
 
@@ -31,7 +33,8 @@ function expectedOptions = defaultOptions()
 
   expectedOptions.contrastList = {};
 
-  expectedOptions.glmQA.do = true;
+  expectedOptions.glm.QA.do = true;
+  expectedOptions.glm.roibased.do = false;
 
   expectedOptions.model.file = '';
   expectedOptions.model.hrfDerivatives = [0 0];

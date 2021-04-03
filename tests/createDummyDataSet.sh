@@ -4,24 +4,28 @@
 
 # defines where the BIDS data set will be created
 StartDir=`pwd` # relative to starting directory
-StartDir=$StartDir/dummyData/derivatives/cpp_spm
+PrerpoDir=$StartDir/dummyData/derivatives/cpp_spm
+StatsDir=$StartDir/dummyData/derivatives/cpp_spm-stats
+
+mkdir $StatsDir
 
 SubList='ctrl01 ctrl02 blind01 blind02 01 02' # subject list
 SesList='01 02' # session list
 
-for Subject in $SubList # loop through subjects
+for Subject in $SubList
 do
 
-		mkdir $StartDir/sub-$Subject # create folder for subject
+		mkdir $PrerpoDir/sub-$Subject
+		mkdir $StatsDir/sub-$Subject
 
-		for Ses in $SesList # loop through sessions
+		for Ses in $SesList
 		do
 
 			# create folder for each session and functional and fmap
-			mkdir $StartDir/sub-$Subject/ses-$Ses
+			mkdir $PrerpoDir/sub-$Subject/ses-$Ses
 
 			# FUNC
-			ThisDir=$StartDir/sub-$Subject/ses-$Ses/func
+			ThisDir=$PrerpoDir/sub-$Subject/ses-$Ses/func
 			mkdir $ThisDir
 
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
@@ -57,7 +61,7 @@ do
 			echo "6\t2\tVisMotUp" >> $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-2_events.tsv
 
 			# FMAP
-			ThisDir=$StartDir/sub-$Subject/ses-$Ses/fmap
+			ThisDir=$PrerpoDir/sub-$Subject/ses-$Ses/fmap
 			mkdir $ThisDir
 
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-1_phasediff.nii
@@ -82,7 +86,7 @@ do
 		done
 
 		# ANAT
-		ThisDir=$StartDir/sub-$Subject/ses-01/anat
+		ThisDir=$PrerpoDir/sub-$Subject/ses-01/anat
 		mkdir $ThisDir
 
 		touch $ThisDir/sub-$Subject\_ses-01_T1w.nii
@@ -93,8 +97,8 @@ do
 		touch $ThisDir/c3sub-$Subject\_ses-01_T1w.nii
 
 		# STATS
-		mkdir $StartDir/sub-$Subject/stats
-		ThisDir=$StartDir/sub-$Subject/stats/task-vismotion_space-MNI_FWHM-6
+		mkdir $StatsDir/sub-$Subject/stats
+		ThisDir=$StatsDir/sub-$Subject/stats/task-vismotion_space-MNI_FWHM-6
 		mkdir $ThisDir
 
 		cp dummyData/SPM.mat $ThisDir/SPM.mat

@@ -14,11 +14,10 @@ function test_getFFXdirBasic()
   subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel);
-  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
-                            'cpp_spm', 'sub-01', 'stats', ...
+                            'cpp_spm-stats', 'sub-01', 'stats', ...
                             'task-vislocalizer_space-MNI_FWHM-0');
 
   ffxDir = getFFXdir(subLabel, funcFWFM, opt);
@@ -34,13 +33,12 @@ function test_getFFXdirUserSpecified()
 
   opt = setOptions('nback', subLabel);
   opt.space = 'individual';
-  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
   expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
-                            'cpp_spm', 'sub-02', 'stats', ...
+                            'cpp_spm-stats', 'sub-02', 'stats', ...
                             'task-nback_space-individual_FWHM-6_desc-nbackMVPA');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);

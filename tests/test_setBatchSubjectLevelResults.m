@@ -18,7 +18,6 @@ function test_setBatchSubjectLevelResultsBasic()
 
   opt = setOptions('vismotion', subLabel);
   opt.space = 'MNI';
-  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   opt.result.Steps.Contrasts.Name = 'VisMot';
@@ -28,7 +27,7 @@ function test_setBatchSubjectLevelResultsBasic()
 
   expectedBatch = {};
 
-  expectedBatch{end + 1}.spm.stats.results.spmmat = {fullfile(opt.derivativesDir, ...
+  expectedBatch{end + 1}.spm.stats.results.spmmat = {fullfile(opt.dir.stats, ...
                                                               'sub-01', ...
                                                               'stats', ...
                                                               'task-vismotion_space-MNI_FWHM-6', ...
@@ -60,7 +59,6 @@ function test_setBatchSubjectLevelResultsErrorMissingContrastName()
 
   opt = setOptions('vismotion', subLabel);
   opt.space = 'MNI';
-  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   matlabbatch = [];
@@ -88,7 +86,6 @@ function test_setBatchSubjectLevelResultsErrorNoMAtchingContrast()
 
   opt = setOptions('vismotion', subLabel);
   opt.space = 'MNI';
-  opt = setDerivativesDir(opt);
   opt = checkOptions(opt);
 
   opt.result.Steps.Contrasts.Name = 'NotAContrast';
