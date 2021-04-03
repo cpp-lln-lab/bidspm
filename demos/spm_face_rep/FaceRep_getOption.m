@@ -12,6 +12,8 @@ function opt = FaceRep_getOption()
   % The directory where the data are located
   opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
 
+  opt.stats.dir = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm-stats');
+
   opt.model.hrfDerivatives = [1 1];
 
   %% DO NOT TOUCH

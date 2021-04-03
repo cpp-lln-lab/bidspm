@@ -82,6 +82,8 @@ function fieldsToSet = setDefaultOption()
 
   fieldsToSet.dataDir = '';
   fieldsToSet.derivativesDir = '';
+  fieldsToSet.dir = struct('raw', '', ...
+                           'derivatives', '');
 
   fieldsToSet.groups = {''};
   fieldsToSet.subjects = {[]};

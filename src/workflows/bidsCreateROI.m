@@ -8,8 +8,10 @@ function bidsCreateROI(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'create ROI');
 
-  opt.roiDir = [opt.derivativesDir '-roi'];
+  opt.dir.roi = [opt.derivativesDir '-roi'];
   spm_mkdir(fullfile(opt.roiDir, 'group'));
+
+  opt.jobsDir = fullfile(opt.dir.roi, 'JOBS', opt.taskName);
 
   hemi = {'lh', 'rh'};
 
@@ -17,7 +19,7 @@ function bidsCreateROI(opt)
 
     for iROI = 1:numel(opt.roi.name)
 
-      extractRoiFromAtlas(fullfile(opt.roiDir, 'group'), ...
+      extractRoiFromAtlas(fullfile(opt.dir.roi, 'group'), ...
                           opt.roi.atlas, ...
                           opt.roi.name{iROI}, ...
                           hemi{iHemi});
@@ -55,7 +57,7 @@ function bidsCreateROI(opt)
       saveAndRunWorkflow(matlabbatch, 'inverseNormalize', opt, subLabel);
 
       %% move and rename file
-      spm_mkdir(opt.roiDir, ['sub-' subLabel], 'roi');
+      spm_mkdir(opt.dir.roi, ['sub-' subLabel], 'roi');
 
       roiList = spm_select('FPlist', ...
                            fullfile(opt.roiDir, 'group'), ...
@@ -78,7 +80,7 @@ function bidsCreateROI(opt)
         newName = createFilename(nameStructure);
 
         movefile(roiImage, ...
-                 fullfile(opt.roiDir, ['sub-' subLabel], 'roi', newName));
+                 fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', newName));
       end
 
     end

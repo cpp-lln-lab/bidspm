@@ -11,4 +11,6 @@ opt.roi.atlas = 'wang';
 opt.roi.name = {'V1v', 'V1d'};
 opt.roi.space = {'MNI', 'individual'};
 
-bidsCreateROI(opt);
+% bidsCreateROI(opt);
+
+bidsRoiBasedGLM(opt);
