@@ -30,8 +30,27 @@ function bidsRoiBasedGLM(opt)
 
     saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-    SPM = load(fullfile(getFFXdir(subLabel, funcFWHM, opt), ...
-                        'SPM.mat'));
+    load(fullfile(getFFXdir(subLabel, funcFWHM, opt), 'SPM.mat'));
+
+    nbRuns = numel(SPM.Sess);
+
+    conditions = {};
+    runs = [];
+    durations = [];
+    for iRun = 1:nbRuns
+      tmp = cat(2, SPM.Sess(iRun).U(:).name);
+      conditions = cat(2, conditions,  tmp);
+      runs = [runs ones(size(tmp)) * iRun];
+      for iCdt = 1:numel(tmp)
+        durations = [durations mean(SPM.Sess(iRun).U(iCdt).dur)];
+      end
+    end
+
+    names = unique(conditions);
+    events = [];
+    for iEvent = 1:numel(conditions)
+      events(end + 1) = find(strcmp(conditions(iEvent), names));
+    end
 
     roiList = spm_select('FPList', ...
                          fullfile(opt.dir.roi, ['sub-' subLabel], 'roi'), ...
@@ -55,6 +74,20 @@ function bidsRoiBasedGLM(opt)
       data = get_marsy(roiObject, model, 'mean');
       estimation = estimate(model, data);
 
+      % -------------------- IMPROVE ------------------------ %
+
+      % currently this only computes this averages over all all events
+      % we will want to use the bids model to know which event to fit
+      % based on the contrasts.
+
+      % Fitted time courses
+      [tc, dt] = event_fitted(estimation, [runs; events], durations);
+
+      % Get percent signal change
+      psc = event_signal(estimation, [runs; events], durations, 'abs max');
+
+      % -------------------- IMPROVE ------------------------ %
+
       p = bids.internal.parse_filename(spm_file(roiImage, 'filename'));
       fields = {'hemi', 'desc', 'label'};
       for iField = 1:numel(fields)
@@ -64,6 +97,7 @@ function bidsRoiBasedGLM(opt)
       end
       nameStructure = struct( ...
                              'sub', subLabel, ...
+                             'task', opt.taskName, ...
                              'space', 'individual', ...
                              'hemi', p.hemi, ...
                              'desc', p.desc, ...
@@ -73,7 +107,7 @@ function bidsRoiBasedGLM(opt)
       newName = createFilename(nameStructure);
 
       save(fullfile(getFFXdir(subLabel, funcFWHM, opt), newName), ...
-           'estimation');
+           'estimation', 'tc', 'dt', 'psc');
 
     end
 
