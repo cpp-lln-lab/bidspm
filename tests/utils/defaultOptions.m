@@ -1,6 +1,6 @@
 % (C) Copyright 2021 CPP BIDS SPM-pipeline developers
 
-function expectedOptions = defaultOptions()
+function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.sliceOrder = [];
   expectedOptions.STC_referenceSlice = [];
@@ -45,6 +45,12 @@ function expectedOptions = defaultOptions()
   expectedOptions.parallelize.nbWorkers = 3;
   expectedOptions.parallelize.killOnExit = true;
 
+  if nargin > 0
+    expectedOptions.taskName = taskName;
+  end
+
   expectedOptions = orderfields(expectedOptions);
+
+  expectedOptions = setStatsDir(expectedOptions);
 
 end

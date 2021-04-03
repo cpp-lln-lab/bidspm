@@ -14,7 +14,6 @@ function test_getFFXdirBasic()
   subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel);
-  opt = checkOptions(opt);
 
   expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
                             'cpp_spm-stats', 'sub-01', 'stats', ...
@@ -33,7 +32,6 @@ function test_getFFXdirUserSpecified()
 
   opt = setOptions('nback', subLabel);
   opt.space = 'individual';
-  opt = checkOptions(opt);
 
   ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 

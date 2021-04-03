@@ -8,7 +8,6 @@ function bidsRoiBasedGLM(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'roi based glm');
 
-  opt = setStatsDir(opt);
   opt.space = 'individual';
   opt.jobsDir = fullfile(opt.dir.stats, 'JOBS', opt.taskName);
 

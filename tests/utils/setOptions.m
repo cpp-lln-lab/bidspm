@@ -24,7 +24,7 @@ function opt = setOptions(task, subLabel)
 
   end
 
-  opt = setStatsDir(opt);
+  opt = checkOptions(opt);
 
   if nargin > 1
     opt.subjects = {subLabel};

@@ -14,7 +14,6 @@ function test_getRFXdirBasic()
   conFWHM = 0;
 
   opt = setOptions('vislocalizer');
-  opt = checkOptions(opt);
 
   rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
 
@@ -36,7 +35,6 @@ function test_getFFXdirUserSpecified()
   funcFWHM = 6;
 
   opt = setOptions('nback');
-  opt = checkOptions(opt);
 
   rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
 

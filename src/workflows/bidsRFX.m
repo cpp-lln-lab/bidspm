@@ -41,6 +41,8 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
 
   [~, opt] = setUpWorkflow(opt, 'group level GLM');
 
+  opt.jobsDir = fullfile(opt.dir.stats, 'JOBS', opt.taskName);
+
   switch action
 
     case 'smoothContrasts'

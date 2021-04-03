@@ -14,7 +14,6 @@ function test_setBatchSubjectLevelContrastsBasic()
   funcFWHM = 6;
 
   opt = setOptions('vismotion', subLabel);
-  opt = checkOptions(opt);
 
   matlabbatch = [];
   matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, funcFWHM);

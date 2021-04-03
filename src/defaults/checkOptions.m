@@ -75,6 +75,8 @@ function opt = checkOptions(opt)
 
   opt = orderfields(opt);
 
+  opt = setStatsDir(opt);
+
 end
 
 function fieldsToSet = setDefaultOption()

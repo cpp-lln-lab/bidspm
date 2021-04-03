@@ -16,7 +16,6 @@ function test_createAndReturnOnsetFileBasic()
   iRun = 1;
 
   opt = setOptions('vislocalizer', subLabel);
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 
