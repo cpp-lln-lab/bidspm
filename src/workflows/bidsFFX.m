@@ -27,6 +27,14 @@ function bidsFFX(action, opt, funcFWHM)
   % For unsmoothed data ``funcFWHM = 0``, for smoothed data ``funcFWHM = ... mm``.
   % In this way we can make multiple ffx for different smoothing degrees.
   %
+  
+  if opt.glm.roibased.do
+      message = sprintf(...
+          ['The option opt.glm.roibased.do is set to true.\n', ...
+           ' Change the option to false to use this workflow or\n', ...
+           ' use the bidsRoiBasedGLM workflow to run roi based GLM.']);
+      error(message);
+  end  
 
   [BIDS, opt] = setUpWorkflow(opt, 'subject level GLM');
 

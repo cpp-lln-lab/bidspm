@@ -3,6 +3,14 @@
 function bidsRoiBasedGLM(opt)
   %
   %
+  
+  if ~opt.glm.roibased.do
+      message = sprintf(...
+          ['The option opt.glm.roibased.do is set to false.\n', ...
+           ' Change the option to true to use this workflow or\n', ...
+           ' use the bidsFFX workflow to run whole brain GLM.']);
+      error(message);
+  end
 
   funcFWHM = 0;
 
