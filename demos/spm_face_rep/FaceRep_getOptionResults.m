@@ -9,7 +9,7 @@ function opt =  FaceRep_getOptionResults()
                             'models', ...
                             'model-faceRepetition_smdl.json');
 
-  opt.glmQA.do = false;
+  opt.glm.QA.do = false;
 
   % Specify the result to compute
   opt.result.Steps(1) = returnDefaultResultsStructure();
@@ -24,17 +24,13 @@ function opt =  FaceRep_getOptionResults()
 
   % Specify how you want your output (all the following are on false by default)
   opt.result.Steps(1).Output.png = true();
-
   opt.result.Steps(1).Output.csv = true();
-
   opt.result.Steps(1).Output.thresh_spm = true();
-
   opt.result.Steps(1).Output.binary = true();
 
   % MONTAGE FIGURE OPTIONS
   opt.result.Steps(1).Output.montage.do = true();
   opt.result.Steps(1).Output.montage.slices = -26:3:6; % in mm
-  % axial is default 'sagittal', 'coronal'
   opt.result.Steps(1).Output.montage.orientation = 'axial';
 
 end

@@ -18,7 +18,6 @@ function test_setBatchSmoothingFuncBasic()
   funcFWHM = 6;
 
   opt = setOptions('MoAE', subLabel);
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 

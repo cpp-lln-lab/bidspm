@@ -1,12 +1,14 @@
 % (C) Copyright 2021 CPP BIDS SPM-pipeline developers
 
-function expectedOptions = defaultOptions()
+function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.sliceOrder = [];
   expectedOptions.STC_referenceSlice = [];
 
   expectedOptions.dataDir = '';
   expectedOptions.derivativesDir = '';
+  expectedOptions.dir = struct('raw', '', ...
+                               'derivatives', '');
 
   expectedOptions.funcVoxelDims = [];
 
@@ -31,7 +33,8 @@ function expectedOptions = defaultOptions()
 
   expectedOptions.contrastList = {};
 
-  expectedOptions.glmQA.do = true;
+  expectedOptions.glm.QA.do = true;
+  expectedOptions.glm.roibased.do = false;
 
   expectedOptions.model.file = '';
   expectedOptions.model.hrfDerivatives = [0 0];
@@ -42,6 +45,12 @@ function expectedOptions = defaultOptions()
   expectedOptions.parallelize.nbWorkers = 3;
   expectedOptions.parallelize.killOnExit = true;
 
+  if nargin > 0
+    expectedOptions.taskName = taskName;
+  end
+
   expectedOptions = orderfields(expectedOptions);
+
+  expectedOptions = setStatsDir(expectedOptions);
 
 end

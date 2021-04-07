@@ -13,8 +13,6 @@ function test_setBatchSTCEmpty()
   subLabel = '02';
 
   opt = setOptions('vislocalizer', subLabel);
-  opt = setDerivativesDir(opt);
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 
@@ -31,7 +29,6 @@ function test_setBatchSTCForce()
   subLabel = '02';
 
   opt = setOptions('vislocalizer', subLabel);
-  opt = setDerivativesDir(opt);
 
   % we give it some slice timing value to force slice timing to happen
   opt.sliceOrder = linspace(0, 1.6, 10);
@@ -68,9 +65,7 @@ function test_setBatchSTCBasic()
   subLabel = '02';
 
   opt = setOptions('vismotion', subLabel);
-  opt = setDerivativesDir(opt);
   opt.query = struct('acq', '');
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 
@@ -110,13 +105,10 @@ function test_setBatchSTCErrorInvalidInputTime()
   subLabel = '02';
 
   opt = setOptions('vislocalizer', subLabel);
-  opt = setDerivativesDir(opt);
 
   opt.sliceOrder = linspace(0, 1.6, 10);
   opt.sliceOrder(end) = [];
   opt.STC_referenceSlice = 2; % impossible reference value
-
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 

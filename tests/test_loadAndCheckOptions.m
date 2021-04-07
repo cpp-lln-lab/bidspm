@@ -21,8 +21,7 @@ function test_loadAndCheckOptionsBasic()
   % makes sure that it is picked up by default
   opt = loadAndCheckOptions();
 
-  expectedOptions = defaultOptions();
-  expectedOptions.taskName = 'vismotion';
+  expectedOptions = defaultOptions('vismotion');
 
   assertEqual(opt, expectedOptions);
 
@@ -39,8 +38,7 @@ function test_loadAndCheckOptionsStructure()
   % makes sure that it is picked up by default
   opt = loadAndCheckOptions(opt);
 
-  expectedOptions = defaultOptions();
-  expectedOptions.taskName = 'vismotion';
+  expectedOptions = defaultOptions('vismotion');
 
   assertEqual(opt, expectedOptions);
 
@@ -63,8 +61,7 @@ function test_loadAndCheckOptionsFromFile()
   % makes sure that it is read correctly from
   opt = loadAndCheckOptions(filename);
 
-  expectedOptions = defaultOptions();
-  expectedOptions.taskName = 'vismotion';
+  expectedOptions = defaultOptions('vismotion');
   expectedOptions.space = 'individual';
 
   assertEqual(opt, expectedOptions);
@@ -105,8 +102,7 @@ function test_loadAndCheckOptionsFromSeveralFiles()
   % makes sure that the right json is read
   opt = loadAndCheckOptions();
 
-  expectedOptions = defaultOptions();
-  expectedOptions.taskName = 'vismotion';
+  expectedOptions = defaultOptions('vismotion');
   expectedOptions.space = 'individual';
   expectedOptions.funcVoxelDims = [1 1 1]';
 

@@ -12,8 +12,6 @@ function test_bidsCopyRawFolderBasic()
 
   opt = setOptions('MoAE');
 
-  opt = checkOptions(opt);
-
   bidsCopyRawFolder(opt, 1);
 
   layoutRaw = bids.layout(opt.dataDir);
@@ -51,8 +49,6 @@ function test_bidsCopyRawFolder2tasks()
                                 'dummyData', 'copy');
 
   opt.taskName = 'vismotion';
-
-  opt = checkOptions(opt);
 
   unZip = false;
   deleteZippedNii = false;

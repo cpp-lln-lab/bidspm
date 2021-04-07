@@ -25,10 +25,14 @@ function ffxDir = getFFXdir(subLabel, funcFWFM, opt)
     glmDirName = [glmDirName, '_desc-', convertToValidCamelCase(model.Name)];
   end
 
-  ffxDir = fullfile(opt.derivativesDir, ...
+  ffxDir = fullfile(opt.dir.stats, ...
                     ['sub-', subLabel], ...
                     'stats', ...
                     glmDirName);
+
+  if opt.glm.roibased.do
+    ffxDir = [ffxDir '_roi'];
+  end
 
   spm_mkdir(ffxDir);
 

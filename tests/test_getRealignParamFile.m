@@ -15,7 +15,6 @@ function test_getRealignParamFileBasic()
   run = '';
 
   opt = setOptions('vislocalizer', subLabel);
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 
@@ -39,7 +38,6 @@ function test_getRealignParamFileNativeSpace()
 
   opt = setOptions('vislocalizer', subLabel);
   opt.space = 'individual';
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 
@@ -63,7 +61,6 @@ function test_getRealignParamFileFFX()
   iRun = 1;
 
   opt = setOptions('vislocalizer', subLabel);
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 

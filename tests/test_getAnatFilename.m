@@ -20,8 +20,6 @@ function test_getAnatFilenameBasic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  opt = checkOptions(opt);
-
   [BIDS, opt] = getData(opt);
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);

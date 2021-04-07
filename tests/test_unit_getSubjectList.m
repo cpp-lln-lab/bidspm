@@ -11,8 +11,6 @@ end
 function test_getSubjectListNone()
 
   opt = setOptions('vismotion');
-  opt = setDerivativesDir(opt);
-  opt = checkOptions(opt);
 
   BIDS = bids.layout(opt.derivativesDir);
 
@@ -27,8 +25,6 @@ end
 function test_getSubjectListGroup()
 
   opt = setOptions('vismotion');
-  opt = setDerivativesDir(opt);
-  opt = checkOptions(opt);
 
   BIDS = bids.layout(opt.derivativesDir);
 
@@ -46,8 +42,6 @@ end
 function test_getSubjectListBasic()
 
   opt = setOptions('vismotion');
-  opt = setDerivativesDir(opt);
-  opt = checkOptions(opt);
 
   BIDS = bids.layout(opt.derivativesDir);
 
@@ -64,8 +58,6 @@ end
 function test_getSubjectListErrorSubject()
 
   opt = setOptions('vismotion', '03');
-  opt = setDerivativesDir(opt);
-  opt = checkOptions(opt);
 
   BIDS = bids.layout(opt.derivativesDir);
 

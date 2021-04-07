@@ -75,6 +75,8 @@ function opt = checkOptions(opt)
 
   opt = orderfields(opt);
 
+  opt = setStatsDir(opt);
+
 end
 
 function fieldsToSet = setDefaultOption()
@@ -82,6 +84,8 @@ function fieldsToSet = setDefaultOption()
 
   fieldsToSet.dataDir = '';
   fieldsToSet.derivativesDir = '';
+  fieldsToSet.dir = struct('raw', '', ...
+                           'derivatives', '');
 
   fieldsToSet.groups = {''};
   fieldsToSet.subjects = {[]};
@@ -113,7 +117,8 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.model.hrfDerivatives = [0 0];
   fieldsToSet.contrastList = {};
 
-  fieldsToSet.glmQA.do = true;
+  fieldsToSet.glm.QA.do = true;
+  fieldsToSet.glm.roibased.do = false;
 
   % specify the results to compute
   fieldsToSet.result.Steps = returnDefaultResultsStructure();

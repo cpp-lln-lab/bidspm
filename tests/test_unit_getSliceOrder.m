@@ -11,7 +11,6 @@ end
 function test_getSliceOrderBasic()
 
   opt = setOptions('vismotion');
-  opt = checkOptions(opt);
 
   [~, opt] = getData(opt);
   BIDS_sliceOrder = getSliceOrder(opt, 0);
@@ -40,7 +39,6 @@ end
 function test_getSliceOrderEmpty()
 
   opt = setOptions('vislocalizer');
-  opt = checkOptions(opt);
 
   [~, opt] = getData(opt);
 
@@ -55,7 +53,6 @@ function test_getSliceOrderFromOptions()
   opt = setOptions('vislocalizer');
   opt.STC_referenceSlice = 1000;
   opt.sliceOrder = 0:250:2000;
-  opt = checkOptions(opt);
 
   [~, opt] = getData(opt);
   BIDS_sliceOrder = getSliceOrder(opt, 0);

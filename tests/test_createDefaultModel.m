@@ -12,8 +12,6 @@ function test_createDefaultModelBasic()
 
   opt = setOptions('vislocalizer');
 
-  opt = checkOptions(opt);
-
   [BIDS, opt] = getData(opt);
 
   createDefaultModel(BIDS, opt);

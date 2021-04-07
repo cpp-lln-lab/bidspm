@@ -16,7 +16,6 @@ function test_createAndReturnOnsetFileBasic()
   iRun = 1;
 
   opt = setOptions('vislocalizer', subLabel);
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 
@@ -28,7 +27,7 @@ function test_createAndReturnOnsetFileBasic()
   onsetFileName = createAndReturnOnsetFile(opt, subLabel, tsvFile, funcFWHM);
 
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
-                              'dummyData', 'derivatives', 'cpp_spm', 'sub-01', 'stats', ...
+                              'dummyData', 'derivatives', 'cpp_spm-stats', 'sub-01', 'stats', ...
                               'task-vislocalizer_space-MNI_FWHM-6', ...
                               'sub-01_ses-01_task-vislocalizer_space-MNI_onsets.mat');
 

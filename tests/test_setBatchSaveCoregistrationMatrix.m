@@ -16,9 +16,7 @@ function test_setBatchSaveCoregistrationMatrixBasic()
   subLabel = '02';
 
   opt = setOptions('vismotion', subLabel);
-  opt = setDerivativesDir(opt);
   opt.query = struct('acq', '');
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 
