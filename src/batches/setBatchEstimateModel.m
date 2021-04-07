@@ -60,7 +60,7 @@ function matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt)
   matlabbatch{end}.spm.stats.fmri_est.spmmat = spmMatFile;
 
   writeResiduals = true();
-  if ~opt.glmQA.do
+  if ~opt.glm.QA.do
     writeResiduals = false();
   end
   matlabbatch{end}.spm.stats.fmri_est.write_residuals = writeResiduals;

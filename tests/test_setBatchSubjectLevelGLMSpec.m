@@ -17,8 +17,6 @@ function test_setBatchSubjectLevelGLMSpecBasic()
 
   opt = setOptions('MoAE', subLabel);
 
-  opt = checkOptions(opt);
-
   bidsCopyRawFolder(opt, 1);
 
   [BIDS, opt] = getData(opt);

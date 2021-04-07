@@ -19,7 +19,6 @@ function test_setBatchRealignBasic()
   subLabel = '01';
 
   opt = setOptions('MoAE', subLabel);
-  opt = checkOptions(opt);
   [BIDS, opt] = getData(opt);
 
   matlabbatch = [];

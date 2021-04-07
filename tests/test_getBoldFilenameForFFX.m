@@ -17,8 +17,6 @@ function test_getBoldFilenameForFFXBasic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  opt = checkOptions(opt);
-
   [BIDS, opt] = getData(opt);
 
   [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);

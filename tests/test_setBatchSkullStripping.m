@@ -13,7 +13,6 @@ function test_setBatchSkullStrippingBasic()
   subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel);
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 

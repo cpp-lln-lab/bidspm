@@ -9,7 +9,7 @@
 clear;
 clc;
 
-downloadData = false;
+downloadData = true;
 
 run ../../initCppSpm.m;
 

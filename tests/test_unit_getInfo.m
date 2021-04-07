@@ -13,7 +13,6 @@ function test_getInfoBasic()
   subLabel = 'ctrl01';
 
   opt = setOptions('vismotion', subLabel);
-  opt = checkOptions(opt);
 
   info = 'sessions';
 
@@ -55,7 +54,6 @@ function test_getInfoQuery()
   info = 'filename';
 
   opt = setOptions('vismotion', subLabel);
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 
@@ -100,7 +98,6 @@ function test_getInfoQueryWithSessionRestriction()
   subLabel = 'ctrl01';
 
   opt = setOptions('vismotion', subLabel);
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 

@@ -17,7 +17,6 @@ function test_setBatchSelectAnatBasic()
   subLabel = '01';
 
   opt = setOptions('MoAE', subLabel);
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt);
 

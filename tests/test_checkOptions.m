@@ -13,8 +13,7 @@ function test_checkOptionsBasic()
   opt.taskName = 'testTask';
   opt = checkOptions(opt);
 
-  expectedOptions = defaultOptions();
-  expectedOptions.taskName = 'testTask';
+  expectedOptions = defaultOptions('testTask');
 
   assertEqual(opt, expectedOptions);
 

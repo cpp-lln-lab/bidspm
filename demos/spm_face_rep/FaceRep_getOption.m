@@ -6,11 +6,10 @@ function opt = FaceRep_getOption()
 
   opt = [];
 
-  % task to analyze
   opt.taskName = 'facerepetition';
 
-  % The directory where the data are located
   opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
+  opt.dir.roi = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm-roi');
 
   opt.model.hrfDerivatives = [1 1];
 

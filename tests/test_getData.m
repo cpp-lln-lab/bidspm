@@ -13,7 +13,6 @@ function test_getDataMetadata()
   subLabel = '01';
 
   opt = setOptions('vismotion', subLabel);
-  opt = checkOptions(opt);
 
   [~, opt] = getData(opt, [], 'T1w');
 
@@ -24,7 +23,6 @@ end
 function test_getDataErrorTask()
 
   opt = setOptions('testTask');
-  opt = checkOptions(opt);
 
   assertExceptionThrown( ...
                         @()getData(opt), ...
