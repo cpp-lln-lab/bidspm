@@ -4,10 +4,6 @@ function opt = ds000114_getOption()
   % returns a structure that contains the options chosen by the user to run
   % slice timing correction, pre-processing, FFX, RFX.
 
-  if nargin < 1
-    opt = [];
-  end
-
   % The directory where the data are located
   opt.dataDir = '/home/remi/openneuro/ds000114/raw';
 
@@ -18,7 +14,7 @@ function opt = ds000114_getOption()
   opt.taskName = 'linebisection';
 
   opt.anatReference.type = 'T1w';
-  opt.anatReference.session = 2;
+  opt.anatReference.session = 'test';
 
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp
@@ -28,11 +24,11 @@ function opt = ds000114_getOption()
 
   opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                             'models', ...
-                            'model-ds000114-linebisection_smdl.json');
+                            'model-ds000114-lineBisectionRunLevel_smdl.json');
 
   % specify the result to compute
   opt.result.Steps(1) = struct( ...
-                               'Level',  'subject', ...
+                               'Level',  'run', ...
                                'Contrasts', struct( ...
                                                    'Name', 'Correct_Task', ... % has to match
                                                    'Mask', false, ...
