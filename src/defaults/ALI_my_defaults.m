@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function ALE_my_defaults()
+function ALI_my_defaults()
 
   %
   % Short description of what the function does goes here.
