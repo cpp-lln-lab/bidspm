@@ -109,3 +109,23 @@ function test_loadAndCheckOptionsFromSeveralFiles()
   assertEqual(opt, expectedOptions);
 
 end
+
+function test_loadAndCheckOptionsMoAE()
+
+  WD = fullfile('..', 'demos', 'MoAE/');
+
+  optionsFilesList = { ...
+                      'options_task-auditory.json'; ...
+                      'options_task-auditory_unwarp-0.json'; ...
+                      'options_task-auditory_unwarp-0_space-individual.json'; ...
+                      'options_task-auditory_space-individual.json'};
+
+  for iOption = 1:size(optionsFilesList, 1)
+
+    fprintf(1, repmat('\n', 1, 5));
+
+    optionJsonFile = fullfile(WD, 'options', optionsFilesList{iOption});
+    opt = loadAndCheckOptions(optionJsonFile);
+  end
+
+end

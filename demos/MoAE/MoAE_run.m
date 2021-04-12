@@ -27,9 +27,8 @@ reportBIDS(opt);
 bidsCopyRawFolder(opt, 1);
 
 % In case you just want to run segmentation and skull stripping
-
-bidsSegmentSkullStrip(opt);
-
+% bidsSegmentSkullStrip(opt);
+%
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
 
 bidsSTC(opt);
@@ -43,7 +42,7 @@ bidsSpatialPrepro(opt);
 
 bidsSmoothing(FWHM, opt);
 
-% The following crash on Travis CI
+% The following crash on CI
 bidsFFX('specifyAndEstimate', opt, FWHM);
 bidsFFX('contrasts', opt, FWHM);
 bidsResults(opt, FWHM);

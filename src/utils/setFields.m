@@ -68,6 +68,8 @@ end
 
 function structure = setFieldToIfNotPresent(structure, fieldName, value)
   if ~isfield(structure, fieldName)
-    structure.(fieldName) = value;
+    for i = 1:numel(structure)
+      structure(i).(fieldName) = value;
+    end
   end
 end
