@@ -1,6 +1,6 @@
 % (C) Copyright 2021 Remi Gau
 
-function opt =  FaceRep_getOptionResults()
+function opt =  face_rep_get_option_results()
 
   opt = FaceRep_getOption();
 

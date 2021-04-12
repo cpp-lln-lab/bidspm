@@ -5,7 +5,7 @@
 
 run face_rep_anat.m;
 
-opt = FaceRep_getOption();
+opt = face_rep_get_option();
 
 opt.roi.atlas = 'wang';
 opt.roi.name = {'V1v', 'V1d'};

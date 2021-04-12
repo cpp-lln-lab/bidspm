@@ -24,7 +24,7 @@ downloadData = true;
 run ../../initCppSpm.m;
 
 %% Set options
-opt = FaceRep_getOption();
+opt = face_rep_get_option();
 
 %% Removes previous analysis, gets data and converts it to BIDS
 if downloadData

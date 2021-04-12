@@ -9,7 +9,7 @@ WD = fileparts(mfilename('fullpath'));
 run ../../initCppSpm.m;
 
 %% Run batches
-opt = getOption();
+opt = get_option();
 
 reportBIDS(opt);
 
