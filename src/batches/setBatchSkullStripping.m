@@ -37,26 +37,16 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subID)
   printBatchName('skull stripping');
 
   
-  [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
-  output = ['m' strrep(anatImage, '.nii', '_skullstripped.nii')];
-  dataDir = anatDataDir;
-  maskOutput = ['m' strrep(anatImage, '.nii', '_mask.nii')];
-  
-  % best way would be in the dependencies of SPM, get the folder and file
-  % name and use those to save the output
+  [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, subID, opt);
   
   % if the input image is mean func image instead of anatomical
   if opt.skullStripMeanImg == 1
-      [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt);
-  
-      %name the output accordingto the input image
-      output = ['m' strrep(meanImage, '.nii', '_skullstripped.nii')];
-      maskOutput = ['m' strrep(meanImage, '.nii', '_mask.nii')];
-      
-      %save things where the input image is
-      dataDir = meanFuncDir;
+      [imageToSkullStrip, dataDir] = getMeanFuncFilename(BIDS, subID, opt);
   end
   
+  output = ['m' strrep(imageToSkullStrip, '.nii', '_skullstripped.nii')];
+  maskOutput = ['m' strrep(imageToSkullStrip, '.nii', '_mask.nii')];
+ 
   expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
 
   % if this is part of a pipeline we get the segmentation dependency to get
