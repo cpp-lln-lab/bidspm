@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_setBatchSubjectLevelContrasts %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -8,30 +10,19 @@ end
 
 function test_setBatchSubjectLevelContrastsBasic()
 
-  subID = '01';
+  subLabel = '01';
   funcFWHM = 6;
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.space = 'MNI';
-  opt.taskName = 'vismotion';
-  opt.model.file = ...
-      fullfile(fileparts(mfilename('fullpath')), ...
-               'dummyData', ...
-               'models', ...
-               'model-visMotionLoc_smdl.json');
-
-  opt = setDerivativesDir(opt);
-  opt = checkOptions(opt);
+  opt = setOptions('vismotion', subLabel);
 
   matlabbatch = [];
-  matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subID, funcFWHM);
+  matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, funcFWHM);
 
   expectedBatch = [];
-  expectedBatch{end + 1}.spm.stats.con.spmmat = {fullfile(opt.derivativesDir, ...
+  expectedBatch{end + 1}.spm.stats.con.spmmat = {fullfile(opt.dir.stats, ...
                                                           'sub-01', ...
                                                           'stats', ...
-                                                          'ffx_task-vismotion', ...
-                                                          'ffx_space-MNI_FWHM-6', ...
+                                                          'task-vismotion_space-MNI_FWHM-6', ...
                                                           'SPM.mat')};
   expectedBatch{end}.spm.stats.con.delete = 1;
 

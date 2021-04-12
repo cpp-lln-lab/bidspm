@@ -1,61 +1,112 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt)
+function [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
   %
-  % Short description of what the function does goes here.
+  % Get the filename and the directory of an anat file for a given session and run.
+  % Unzips the file if necessary.
+  %
+  % It several images are available it will take the first one it finds.
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: structure
-  % :param argin3: (dimension) optional argument
+  % :param BIDS:
+  % :type BIDS:         structure
+  % :param subLabel:
+  % :param subLabel:    string
+  % :type opt:
+  % :param opt:         structure
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :anatImage: (string)
+  %           - :anatDataDir: (string)
   %
-  % [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt)
-  %
-  % Get the filename and the directory of an anat file for a given session /
-  % run.
-  % Unzips the file if necessary.
 
-  anatType = opt.anatReference.type;
+  anatSuffix = opt.anatReference.type;
+  anatSession = opt.anatReference.session;
 
-  sessions = getInfo(BIDS, subID, opt, 'Sessions');
+  checkAvailableSuffix(BIDS, subLabel, anatSuffix);
+  anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession);
 
   % get all anat images for that subject fo that type
-  % TODO allow for the session to be referenced by a string e.g ses-retest
   anat = bids.query(BIDS, 'data', ...
-                    'sub', subID, ...
-                    'type', anatType);
-  if ~isempty(opt.anatReference.session)
-    anatSession = opt.anatReference.session;
-    anat = bids.query(BIDS, 'data', ...
-                      'sub', subID, ...
-                      'ses', sessions{anatSession}, ...
-                      'type', anatType);
-  end
+                    'sub', subLabel, ...
+                    'ses', anatSession, ...
+                    'type', anatSuffix);
 
   if isempty(anat)
-    anat = bids.query(BIDS, 'data', ...
-                      'sub', subID, ...
-                      'type', anatType);
-    error('No anat file for the subject %s. Here are all anat file:\n%s', ...
-          subID, ...
-          char(anat));
+
+    msgID = 'noAnatFile';
+
+    msg = sprintf('No anat file for the subject: %s / session: %s/ type: %s.', ...
+                  subLabel, ...
+                  anatSession, ...
+                  anatSuffix);
+
+    getAnatError(msgID, msg);
+
   end
 
   % TODO
-  % We assume that the first anat of that type is the correct one
-  % could be an issue for dataset with more than one anatomical of the same type
+  % we take the first image of that suffix/session as the right one.
+  % it could be required to take another one, or several and mean them...
   anat = anat{1};
   anatImage = unzipImgAndReturnsFullpathName(anat);
 
   [anatDataDir, anatImage, ext] = spm_fileparts(anatImage);
   anatImage = [anatImage ext];
+end
+
+function checkAvailableSuffix(BIDS, subLabel, anatType)
+
+  availableSuffixes = bids.query(BIDS, 'types', ...
+                                 'sub', subLabel);
+
+  if ~strcmp(anatType, availableSuffixes)
+
+    disp(availableSuffixes);
+
+    msgID = 'requestedSuffixUnvailable';
+    msg = sprintf(['Requested anatomical suffix %s unavailable for subject %s.'...
+                   ' All available types listed above.'], anatType);
+
+    getAnatError(msgID, msg);
+
+  end
+
+end
+
+function anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession)
+
+  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+
+  if ~isempty(anatSession)
+
+    if all(~strcmp(anatSession, sessions))
+
+      disp(sessions);
+
+      msgID = 'requestedSessionUnvailable';
+      msg = sprintf(['Requested session %s for anatomical unavailable for subject %s.', ...
+                     ' All available sessions listed above.'], ...
+                    anatSession, ...
+                    subLabel);
+
+      getAnatError(msgID, msg);
+
+    end
+
+  else
+    anatSession = sessions;
+
+  end
+
+end
+
+function getAnatError(msgID, msg)
+
+  errorStruct.identifier = sprintf('getAnatFilename:%s', msgID);
+  errorStruct.message = msg;
+  error(errorStruct);
+
 end

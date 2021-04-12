@@ -21,13 +21,11 @@ function bidsResults(opt, funcFWHM, conFWHM)
   % :type conFWHM: scalar
   %
 
-  if nargin < 1
-    opt = [];
+  [BIDS, opt] = setUpWorkflow(opt, 'computing GLM results');
+
+  if isempty(opt.model.file)
+    opt = createDefaultModel(BIDS, opt);
   end
-
-  [~, opt, group] = setUpWorkflow(opt, 'computing GLM results');
-
-  matlabbatch = [];
 
   % TOD0
   % if it does not exist create the default "result" field from the BIDS model file
@@ -43,44 +41,50 @@ function bidsResults(opt, funcFWHM, conFWHM)
       case 'run'
         warning('run level not implemented yet');
 
+        matlabbatch = [];
         % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
 
       case 'subject'
 
-        for iGroup = 1:length(group)
+        % For each subject
+        for iSub = 1:numel(opt.subjects)
 
-          % For each subject
-          for iSub = 1:group(iGroup).numSub
+          matlabbatch = [];
 
-            for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
+          subLabel = opt.subjects{iSub};
 
-              % Get the Subject ID
-              subID = group(iGroup).subNumber{iSub};
+          results.dir = getFFXdir(subLabel, funcFWHM, opt);
 
-              matlabbatch = ...
-                  setBatchSubjectLevelResults( ...
-                                              matlabbatch, ...
-                                              opt, ...
-                                              subID, ...
-                                              funcFWHM, ...
-                                              iStep, ...
-                                              iCon);
+          for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
 
-            end
+            matlabbatch = ...
+                setBatchSubjectLevelResults( ...
+                                            matlabbatch, ...
+                                            opt, ...
+                                            subLabel, ...
+                                            funcFWHM, ...
+                                            iStep, ...
+                                            iCon);
 
           end
 
-          batchName = sprintf('compute_sub-%s_results', subID);
+          batchName = sprintf('compute_sub-%s_results', subLabel);
 
-          saveAndRunWorkflow(matlabbatch, batchName, opt, subID);
+          saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
+
+          renameOutputResults(results);
+
+          renamePng(results);
 
         end
 
       case 'dataset'
 
+        matlabbatch = [];
+
         results.dir = getRFXdir(opt, funcFWHM, conFWHM);
         results.contrastNb = 1;
-        results.label = 'group level';
+        results.label = 'group';
 
         load(fullfile(results.dir, 'SPM.mat'));
         results.nbSubj = SPM.nscan;
@@ -108,5 +112,43 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
   % rename NIDM file
   % TODO
+
+end
+
+function renameOutputResults(results)
+  % we create new name for the nifti oupput by removing the
+  % spmT_XXXX prefix and using the XXXX as label- for the file
+
+  outputFiles = spm_select('FPList', results.dir, '^spmT_[0-9].*_sub-.*.nii$');
+
+  for iFile = 1:size(outputFiles, 1)
+
+    source = deblank(outputFiles(iFile, :));
+
+    basename = spm_file(source, 'basename');
+    split = strfind(basename, '_sub');
+    p = bids.internal.parse_filename(basename(split + 1:end));
+    p.label = basename(split - 4:split - 1);
+    newName = createFilename(p);
+
+    target = spm_file(source, 'basename', newName);
+
+    movefile(source, target);
+  end
+
+end
+
+function renamePng(results)
+  %
+  % removes the _XXX suffix before the PNG extension.
+
+  pngFiles = spm_select('FPList', results.dir, '^sub-.*[0-9].png$');
+
+  for iFile = 1:size(pngFiles, 1)
+    source = deblank(pngFiles(iFile, :));
+    basename = spm_file(source, 'basename');
+    target = spm_file(source, 'basename', basename(1:end - 4));
+    movefile(source, target);
+  end
 
 end

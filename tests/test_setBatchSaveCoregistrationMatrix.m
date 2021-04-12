@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_setBatchSaveCoregistrationMatrix %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -11,18 +13,17 @@ function test_setBatchSaveCoregistrationMatrixBasic()
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'vismotion';
+  subLabel = '02';
 
-  opt = checkOptions(opt);
+  opt = setOptions('vismotion', subLabel);
+  opt.query = struct('acq', '');
 
-  [~, opt, BIDS] = getData(opt);
-  subID = '02';
+  [BIDS, opt] = getData(opt);
 
   opt.orderBatches.coregister = 1;
 
   matlabbatch = {};
-  matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch = returnExpectedBatch();
   assertEqual(matlabbatch, expectedBatch);

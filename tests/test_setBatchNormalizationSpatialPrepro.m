@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_setBatchNormalizationSpatialPrepro %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -13,6 +15,7 @@ function test_setBatchNormalizationSpatialPreproBasic()
 
   opt.orderBatches.coregister = 3;
   opt.orderBatches.segment = 5;
+  opt.orderBatches.skullStripping = 6;
 
   matlabbatch = {};
   voxDim = [3 3 3];
@@ -20,7 +23,10 @@ function test_setBatchNormalizationSpatialPreproBasic()
 
   expectedBatch = returnExpectedBatch(voxDim);
 
-  assertEqual(expectedBatch, matlabbatch);
+  %   assertEqual(matlabbatch{end}.spm.spatial.normalise.write.subj, ...
+  %               expectedBatch{end}.spm.spatial.normalise.write.subj);
+
+  assertEqual(matlabbatch, expectedBatch);
 
 end
 
@@ -30,7 +36,7 @@ function expectedBatch = returnExpectedBatch(voxDim)
 
   jobsToAdd = numel(expectedBatch) + 1;
 
-  for iJob = jobsToAdd:(jobsToAdd + 4)
+  for iJob = jobsToAdd:(jobsToAdd + 5)
     expectedBatch{iJob}.spm.spatial.normalise.write.subj.def(1) = ...
         cfg_dep('Segment: Forward Deformations', ...
                 substruct( ...
@@ -94,5 +100,14 @@ function expectedBatch = returnExpectedBatch(voxDim)
                         '.', 'tiss', '()', {3}, ...
                         '.', 'c', '()', {':'}));
   expectedBatch{jobsToAdd + 4}.spm.spatial.normalise.write.woptions.vox = voxDim;
+
+  expectedBatch{jobsToAdd + 5}.spm.spatial.normalise.write.subj.resample(1) = ...
+      cfg_dep('Image Calculator: skullstripped anatomical', ...
+              substruct( ...
+                        '.', 'val', '{}', {6}, ...
+                        '.', 'val', '{}', {1}, ...
+                        '.', 'val', '{}', {1}), ...
+              substruct('.', 'files'));
+  expectedBatch{jobsToAdd + 5}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
 
 end

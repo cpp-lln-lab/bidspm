@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_getBoldFilenameForFFX %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -8,20 +10,16 @@ end
 
 function test_getBoldFilenameForFFXBasic()
 
-  subID = '01';
+  subLabel = '01';
   funcFWHM = 6;
   iSes = 1;
   iRun = 1;
 
-  opt.taskName = 'vislocalizer';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.subjects = {'01'};
+  opt = setOptions('vislocalizer', subLabel);
 
-  opt = checkOptions(opt);
+  [BIDS, opt] = getData(opt);
 
-  [~, opt, BIDS] = getData(opt);
-
-  [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);
+  [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
 
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                               'dummyData', 'derivatives', 'cpp_spm', 'sub-01', ...
@@ -35,21 +33,19 @@ end
 
 function test_getBoldFilenameForFFXNativeSpace()
 
-  subID = '01';
+  subLabel = '01';
   funcFWHM = 6;
   iSes = 1;
   iRun = 1;
 
-  opt.taskName = 'vislocalizer';
-  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
-  opt.subjects = {'01'};
+  opt = setOptions('vislocalizer', subLabel);
   opt.space = 'individual';
 
   opt = checkOptions(opt);
 
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
-  [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);
+  [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
 
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                               'dummyData', 'derivatives', 'cpp_spm', 'sub-01', ...

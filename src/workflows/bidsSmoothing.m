@@ -16,31 +16,19 @@ function bidsSmoothing(funcFWHM, opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
 
-  %
+  [BIDS, opt] = setUpWorkflow(opt, 'smoothing functional data');
 
-  if nargin < 2
-    opt = [];
-  end
+  parfor iSub = 1:numel(opt.subjects)
 
-  [BIDS, opt, group] = setUpWorkflow(opt, 'smoothing functional data');
+    subLabel = opt.subjects{iSub};
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+    printProcessingSubject(iSub, subLabel);
 
-    groupName = group(iGroup).name;
+    matlabbatch = [];
+    matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel, funcFWHM);
 
-    parfor iSub = 1:group(iGroup).numSub
+    saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subLabel);
 
-      subID = group(iGroup).subNumber{iSub};
-
-      printProcessingSubject(groupName, iSub, subID);
-
-      matlabbatch = [];
-      matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, funcFWHM);
-
-      saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subID);
-
-    end
   end
 
 end

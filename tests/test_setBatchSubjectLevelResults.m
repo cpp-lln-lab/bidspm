@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_setBatchSubjectLevelResults %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -11,28 +13,23 @@ function test_setBatchSubjectLevelResultsBasic()
   iStep = 1;
   iCon = 1;
 
-  subID = '01';
+  subLabel = '01';
   funcFWHM = 6;
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+  opt = setOptions('vismotion', subLabel);
   opt.space = 'MNI';
-  opt.taskName = 'vismotion';
-
-  opt = setDerivativesDir(opt);
-  opt = checkOptions(opt);
 
   opt.result.Steps.Contrasts.Name = 'VisMot';
 
   matlabbatch = [];
-  matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subID, funcFWHM, iStep, iCon);
+  matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subLabel, funcFWHM, iStep, iCon);
 
   expectedBatch = {};
 
-  expectedBatch{end + 1}.spm.stats.results.spmmat = {fullfile(opt.derivativesDir, ...
+  expectedBatch{end + 1}.spm.stats.results.spmmat = {fullfile(opt.dir.stats, ...
                                                               'sub-01', ...
                                                               'stats', ...
-                                                              'ffx_task-vismotion', ...
-                                                              'ffx_space-MNI_FWHM-6', ...
+                                                              'task-vismotion_space-MNI_FWHM-6', ...
                                                               'SPM.mat')};
 
   expectedBatch{end}.spm.stats.results.conspec.titlestr = 'VisMot_p-0050_k-0_MC-FWE';
@@ -56,21 +53,17 @@ function test_setBatchSubjectLevelResultsErrorMissingContrastName()
   iStep = 1;
   iCon = 1;
 
-  subID = '01';
+  subLabel = '01';
   funcFWHM = 6;
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+  opt = setOptions('vismotion', subLabel);
   opt.space = 'MNI';
-  opt.taskName = 'vismotion';
-
-  opt = setDerivativesDir(opt);
-  opt = checkOptions(opt);
 
   matlabbatch = [];
   assertExceptionThrown( ...
                         @()setBatchSubjectLevelResults(matlabbatch, ...
                                                        opt, ...
-                                                       subID, ...
+                                                       subLabel, ...
                                                        funcFWHM, ...
                                                        iStep, ...
                                                        iCon), ...
@@ -83,23 +76,22 @@ function test_setBatchSubjectLevelResultsErrorNoMAtchingContrast()
   iStep = 1;
   iCon = 1;
 
-  subID = '01';
+  subLabel = '01';
   funcFWHM = 6;
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+  subLabel = '01';
+  funcFWHM = 6;
+
+  opt = setOptions('vismotion', subLabel);
   opt.space = 'MNI';
-  opt.taskName = 'vismotion';
 
   opt.result.Steps.Contrasts.Name = 'NotAContrast';
-
-  opt = setDerivativesDir(opt);
-  opt = checkOptions(opt);
 
   matlabbatch = [];
   assertExceptionThrown( ...
                         @()setBatchSubjectLevelResults(matlabbatch, ...
                                                        opt, ...
-                                                       subID, ...
+                                                       subLabel, ...
                                                        funcFWHM, ...
                                                        iStep, ...
                                                        iCon), ...

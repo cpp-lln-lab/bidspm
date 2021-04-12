@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+
 function test_suite = test_setBatchCoregistrationFuncToAnat %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -11,20 +13,17 @@ function test_setBatchCoregistrationFuncToAnatBasic()
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'vismotion';
+  subLabel = '02';
 
-  opt = checkOptions(opt);
+  opt = setOptions('vismotion', subLabel);
 
-  [~, opt, BIDS] = getData(opt);
-
-  subID = '02';
+  [BIDS, opt] = getData(opt);
 
   opt.orderBatches.selectAnat = 1;
   opt.orderBatches.realign = 2;
 
   matlabbatch = {};
-  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
 
   nbRuns = 4;
 
@@ -49,21 +48,18 @@ function test_setBatchCoregistrationFuncToAnatNoUnwarp()
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'vismotion';
+  subLabel = '02';
+
+  opt = setOptions('vismotion', subLabel);
   opt.realign.useUnwarp = false;
 
-  opt = checkOptions(opt);
-
-  [~, opt, BIDS] = getData(opt);
-
-  subID = '02';
+  [BIDS, opt] = getData(opt);
 
   opt.orderBatches.selectAnat = 1;
   opt.orderBatches.realign = 2;
 
   matlabbatch = {};
-  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
 
   nbRuns = 4;
 

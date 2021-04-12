@@ -2,18 +2,18 @@
 
 function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages, interp)
   %
-  % Set the batch for reslicing source images into the reference image???
+  % Set the batch for reslicing source images to the reference image resolution
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages)
+  %   matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages, interp = 4)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
   % :param referenceImg: Reference image
-  % :type referenceImg: string
+  % :type referenceImg: string or cellstring
   % :param sourceImages: Source images
-  % :type sourceImages: cell
+  % :type sourceImages: string or cellstring
   %
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
@@ -24,21 +24,19 @@ function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages, 
   if nargin < 4 || isempty(interp)
     interp = 4;
   end
-
-  matlabbatch{end + 1}.spm.spatial.coreg.write.roptions.interp = interp;
+  write.roptions.interp = interp;
 
   if ischar(referenceImg)
-    matlabbatch{end}.spm.spatial.coreg.write.ref = {referenceImg};
+    referenceImg = {referenceImg};
+  end
+  write.ref(1) = referenceImg;
 
-  else
-    matlabbatch{end}.spm.spatial.coreg.write.ref(1) = referenceImg;
+  if ischar(sourceImages)
+    write.source = {sourceImages};
+  elseif iscell(sourceImages)
+    write.source = sourceImages;
   end
 
-  if iscell(sourceImages)
-    matlabbatch{end}.spm.spatial.coreg.write.source = sourceImages;
-
-  else
-    matlabbatch{end}.spm.spatial.coreg.write.source(1) = referenceImg;
-  end
+  matlabbatch{end + 1}.spm.spatial.coreg.write = write;
 
 end

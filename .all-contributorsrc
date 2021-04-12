@@ -63,7 +63,8 @@
         "infra",
         "design",
         "review",
-        "bug"
+        "bug",
+        "test"
       ]
     },
     {
@@ -83,7 +84,9 @@
       "contributions": [
         "bug",
         "content",
-        "doc"
+        "doc",
+        "code",
+        "review"
       ]
     }
   ],

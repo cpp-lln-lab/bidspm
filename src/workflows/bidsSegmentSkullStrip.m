@@ -13,36 +13,27 @@ function bidsSegmentSkullStrip(opt)
   % :type opt: structure
   %
 
-  if nargin < 1
-    opt = [];
-  end
+  [BIDS, opt] = setUpWorkflow(opt, 'segmentation and skulltripping');
 
-  [BIDS, opt, group] = setUpWorkflow(opt, 'segmentation and skulltripping');
+  opt.orderBatches.selectAnat = 1;
+  opt.orderBatches.segment = 2;
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+  parfor iSub = 1:numel(opt.subjects)
 
-    groupName = group(iGroup).name;
+    subLabel = opt.subjects{iSub};
 
-    for iSub = 1:group(iGroup).numSub
+    printProcessingSubject(iSub, subLabel);
 
-      subID = group(iGroup).subNumber{iSub};
+    matlabbatch = [];
+    matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);
 
-      printProcessingSubject(groupName, iSub, subID);
+    % dependency from file selector ('Anatomical')
+    matlabbatch = setBatchSegmentation(matlabbatch, opt);
 
-      matlabbatch = [];
-      matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
-      opt.orderBatches.selectAnat = 1;
+    matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
 
-      % dependency from file selector ('Anatomical')
-      matlabbatch = setBatchSegmentation(matlabbatch, opt);
-      opt.orderBatches.segment = 2;
+    saveAndRunWorkflow(matlabbatch, 'segment_skullstrip', opt, subLabel);
 
-      matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt);
-
-      saveAndRunWorkflow(matlabbatch, 'segment_skullstrip', opt, subID);
-
-    end
   end
 
 end

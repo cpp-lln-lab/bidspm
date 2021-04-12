@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
-function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subID)
+function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel)
   %
   % Short description of what the function does goes here.
   %
@@ -14,8 +14,8 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   % :type BIDS: structure
   % :param opt:
   % :type opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :param subID:
-  % :type subID:
+  % :param subLabel:
+  % :type subLabel: string
   %
   % :returns: - :matlabbatch:
   %
@@ -24,11 +24,11 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
 
   % create name of the output file based on the name of the first image of the
   % first session
-  sessions = getInfo(BIDS, subID, opt, 'Sessions');
-  runs = getInfo(BIDS, subID, opt, 'Runs', sessions{1});
+  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});
   [fileName, subFuncDataDir] = getBoldFilename( ...
                                                BIDS, ...
-                                               subID, sessions{1}, runs{1}, opt);
+                                               subLabel, sessions{1}, runs{1}, opt);
 
   fileName = strrep(fileName, '_bold.nii', '_from-scanner_to-T1w_mode-image_xfm.mat');
 

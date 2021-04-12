@@ -1,4 +1,4 @@
-% (C) Copyright 2019 Remi Gau
+% (C) Copyright 2020 Remi Gau
 
 function opt = FaceRep_getOption()
   % returns a structure that contains the options chosen by the user to run
@@ -6,11 +6,10 @@ function opt = FaceRep_getOption()
 
   opt = [];
 
-  % task to analyze
   opt.taskName = 'facerepetition';
 
-  % The directory where the data are located
-  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'raw');
+  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
+  opt.dir.roi = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm-roi');
 
   opt.model.hrfDerivatives = [1 1];
 

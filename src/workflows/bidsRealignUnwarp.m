@@ -18,39 +18,26 @@ function bidsRealignUnwarp(opt)
   % maps will be used unless ``opt.useFieldmaps`` is set to ``false``.
   %
 
-  if nargin < 1
-    opt = [];
-  end
+  [BIDS, opt] = setUpWorkflow(opt, 'realign and unwarp');
 
-  [BIDS, opt, group] = setUpWorkflow(opt, 'realign and unwarp');
+  parfor iSub = 1:numel(opt.subjects)
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+    subLabel = opt.subjects{iSub};
 
-    groupName = group(iGroup).name;
+    printProcessingSubject(iSub, subLabel);
 
-    parfor iSub = 1:group(iGroup).numSub
+    matlabbatch = [];
+    [matlabbatch, ~] = setBatchRealign( ...
+                                       matlabbatch, ...
+                                       BIDS, ...
+                                       subLabel, ...
+                                       opt, ...
+                                       'realignUnwarp');
 
-      % Get the ID of the subject
-      % (i.e SubNumber doesnt have to match the iSub if one subject
-      % is exluded for any reason)
-      subID = group(iGroup).subNumber{iSub}; % Get the subject ID
+    saveAndRunWorkflow(matlabbatch, 'realign_unwarp', opt, subLabel);
 
-      printProcessingSubject(groupName, iSub, subID);
+    copyFigures(BIDS, opt, subLabel);
 
-      matlabbatch = [];
-      [matlabbatch, ~] = setBatchRealign( ...
-                                         matlabbatch, ...
-                                         BIDS, ...
-                                         subID, ...
-                                         opt, ...
-                                         'realignUnwarp');
-
-      saveAndRunWorkflow(matlabbatch, 'realign_unwarp', opt, subID);
-
-      copyFigures(BIDS, opt, subID);
-
-    end
   end
 
 end

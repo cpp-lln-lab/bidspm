@@ -15,73 +15,109 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
   % :param deleteIndTmaps: decide to delete t-maps
   % :type funcFWHM: (boolean)
   %
+  % When concatenating betamaps:
+  %
+  % Ensures that there is only 1 image per "contrast".
+  % Creates a tsv that lists the content of the 4D image.
+  % This TSV is in the subject level GLM folder where the beta map came from.
+  % This TSV file is named ``sub-subLabel_task-taskName_space-space_labelfold.tsv``.
+  %
 
-  % delete individual Beta and tmaps
   if nargin < 3
     deleteIndBeta = 1;
     deleteIndTmaps = 1;
   end
 
-  [~, opt, group] = setUpWorkflow(opt, 'merge beta images and t-maps');
+  [~, opt] = setUpWorkflow(opt, 'merge beta images and t-maps');
 
-  % clear previous matlabbatch and files
-  matlabbatch = [];
   RT = 0;
 
-  %% Loop through the groups, subjects
-  for iGroup = 1:length(group)
+  for iSub = 1:numel(opt.subjects)
 
-    for iSub = 1:group(iGroup).numSub
+    subLabel = opt.subjects{iSub};
 
-      subID = group(iGroup).subNumber{iSub};
+    printProcessingSubject(iSub, subLabel);
 
-      ffxDir = getFFXdir(subID, funcFWHM, opt);
+    ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
-      contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
+    load(fullfile(ffxDir, 'SPM.mat'));
 
-      beta_maps = cell(length(contrasts), 1);
-      t_maps = cell(length(contrasts), 1);
+    contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
-      % path to beta and t-map files.
-      for iContrast = 1:length(beta_maps)
-        % Note that the betas are created from the idx (Beta_idx(iBeta))
-        fileName = sprintf('beta_%04d.nii', find(contrasts(iContrast).C));
-        fileName = validationInputFile(ffxDir, fileName);
-        beta_maps{iContrast, 1} = [fileName, ',1'];
+    beta_maps = cell(length(contrasts), 1);
+    t_maps = cell(length(contrasts), 1);
 
-        % while the contrastes (t-maps) are not from the index. They were created
-        fileName = sprintf('spmT_%04d.nii', iContrast);
-        fileName = validationInputFile(ffxDir, fileName);
-        t_maps{iContrast, 1} = [fileName, ',1'];
+    % path to beta and t-map files.
+    for iContrast = 1:length(beta_maps)
+
+      betasIndices = find(contrasts(iContrast).C);
+
+      if numel(betasIndices) > 1
+        error('Supposed to concatenate one beta image per contrast.');
       end
 
-      % beta maps
-      outputName = ['4D_beta_', num2str(funcFWHM), '.nii'];
-      matlabbatch = setBatch3Dto4D(matlabbatch, beta_maps, RT, outputName);
+      % for this beta iamge we identify
+      % - which run it came from
+      % - the exact condition name stored in the SPM.mat
+      % so they can be saved in a tsv for for "label" and "fold" for MVPA
+      tmp = cat(1, SPM.Sess(:).col) == betasIndices;
+      runs(iContrast, 1) = find(any(tmp, 2));
 
-      % t-maps
-      outputName = ['4D_t_maps_', num2str(funcFWHM), '.nii'];
-      matlabbatch = setBatch3Dto4D(matlabbatch, t_maps, RT, outputName);
+      tmp = SPM.xX.name{betasIndices};
+      parts = strsplit(tmp, ' ');
+      conditions{iContrast, 1} = strjoin(parts(2:end), ' ');
 
-      saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subID);
+      fileName = sprintf('beta_%04d.nii', betasIndices);
+      fileName = validationInputFile(ffxDir, fileName);
+      beta_maps{iContrast, 1} = [fileName, ',1'];
 
-      removeBetaImgTmaps(beta_maps, t_maps, deleteIndBeta, deleteIndTmaps);
+      % while the contrastes (t-maps) are not from the index. They were created
+      fileName = sprintf('spmT_%04d.nii', iContrast);
+      fileName = validationInputFile(ffxDir, fileName);
+      t_maps{iContrast, 1} = [fileName, ',1'];
 
     end
+
+    % tsv
+    nameStructure = struct( ...
+                           'ext', '.tsv', ...
+                           'type', 'labelfold', ...
+                           'sub', subLabel, ...
+                           'task', opt.taskName, ...
+                           'space', opt.space);
+    tsvName = createFilename(nameStructure);
+
+    tsvContent = struct('folds', runs, 'labels', {conditions});
+
+    spm_save(fullfile(ffxDir, tsvName), tsvContent);
+
+    % beta maps
+    outputName = ['4D_beta_', num2str(funcFWHM), '.nii'];
+
+    matlabbatch = [];
+    matlabbatch = setBatch3Dto4D(matlabbatch, beta_maps, RT, outputName);
+
+    % t-maps
+    outputName = ['4D_t_maps_', num2str(funcFWHM), '.nii'];
+
+    matlabbatch = setBatch3Dto4D(matlabbatch, t_maps, RT, outputName);
+
+    saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subLabel);
+
+    removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir);
+
   end
 
 end
 
-function removeBetaImgTmaps(beta_maps, t_maps, deleteIndBeta, deleteIndTmaps)
+function removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir)
 
   % delete maps
   if deleteIndBeta
 
     % delete all individual beta maps
     fprintf('Deleting individual beta-maps ...  ');
-    for iBeta = 1:length(beta_maps)
-      delete(beta_maps{iBeta}(1:end - 2));
-    end
+    delete(fullfile(ffxDir, ['beta_*', '.nii']));
     fprintf('Done. \n\n\n ');
 
   end
@@ -102,8 +138,5 @@ function removeBetaImgTmaps(beta_maps, t_maps, deleteIndBeta, deleteIndTmaps)
     end
     fprintf('Done. \n\n\n ');
   end
-
-  % delete mat files
-  delete(fullfile(ffxDir, ['4D_*', num2str(funcFWHM), '.mat']));
 
 end

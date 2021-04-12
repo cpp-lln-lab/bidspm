@@ -8,17 +8,10 @@ clc;
 % Smoothing to apply
 FWHM = 6;
 
-% directory with this script becomes the current directory
-WD = fileparts(mfilename('fullpath'));
-
-% we add all the subfunctions that are in the sub directories
-addpath(genpath(fullfile(WD, '..', '..', 'src')));
-addpath(genpath(fullfile(WD, '..', '..', 'lib')));
+run ../../initCppSpm.m;
 
 %% Set options
 opt = ds001168_getOption();
-
-checkDependencies();
 
 %% Run batches
 

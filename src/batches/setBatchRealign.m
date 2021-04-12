@@ -6,7 +6,11 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %
   % USAGE::
   %
-  %   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, [action = 'realign'], BIDS, opt, subID)
+  %   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, ...
+  %                                           [action = 'realign'], ...
+  %                                           BIDS, ...
+  %                                           opt, ...
+  %                                           subLabel)
   %
   % :param matlabbatch: SPM batch
   % :type matlabbatch: structure
@@ -16,8 +20,8 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   % :type action: string
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :type subID: string
-  % :param subID: subject label
+  % :type subLabel: string
+  % :param subLabel: subject label
   %
   % :returns: - :matlabbatch: (structure) (dimension)
   %           - :voxDim: (array) (dimension)
@@ -26,10 +30,10 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   % make which image is resliced more consistent 'which = []'
 
   if numel(varargin) < 5
-    [matlabbatch, BIDS, opt, subID] = deal(varargin{:});
+    [matlabbatch, BIDS, opt, subLabel] = deal(varargin{:});
     action = '';
   else
-    [matlabbatch, action, BIDS, opt, subID] = deal(varargin{:});
+    [matlabbatch, action, BIDS, opt, subLabel] = deal(varargin{:});
   end
 
   if isempty(action)
@@ -61,21 +65,21 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
   printBatchName(msg);
 
-  [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   runCounter = 1;
 
   for iSes = 1:nbSessions
 
     % get all runs for that subject across all sessions
-    [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+    [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
     for iRun = 1:nbRuns
 
       % get the filename for this bold run for this task
       [boldFilename, subFuncDataDir] = getBoldFilename( ...
                                                        BIDS, ...
-                                                       subID, ...
+                                                       subLabel, ...
                                                        sessions{iSes}, ...
                                                        runs{iRun}, ...
                                                        opt);

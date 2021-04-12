@@ -25,7 +25,9 @@ function opt = loadAndCheckOptions(optionJsonFile)
   %    - add test for when the input is a structure.
 
   if nargin < 1 || isempty(optionJsonFile)
-    optionJsonFile = spm_select('FPList', pwd, '^options_task-.*.json$');
+    optionJsonFile = spm_select('FPList', ...
+                                fullfile(pwd, 'cfg'), ...
+                                '^options_task-.*.json$');
   end
 
   if isstruct(optionJsonFile)
