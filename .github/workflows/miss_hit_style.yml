@@ -1,8 +1,14 @@
 name: miss_hit_style
 
-on: push: branches: - master pull_request: branches: '\*'
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: '*'
 
-jobs: build:
+jobs:
+  build:
 
     runs-on: ubuntu-latest
 
@@ -26,3 +32,4 @@ jobs: build:
     - name: MISS_HIT Code style
       run: |
         mh_style
+
