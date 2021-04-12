@@ -14,7 +14,7 @@ function opt = setOptions(task, subLabel)
                               '..', '..', 'demos',  'MoAE', 'models', 'model-MoAE_smdl.json');
 
     opt.taskName = 'auditory';
-    
+
     opt.result.Steps.Contrasts(1).Name = 'listening';
     opt.result.Steps.Contrasts(2).Name = 'listening_inf_baseline';
 

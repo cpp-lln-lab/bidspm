@@ -113,11 +113,10 @@ end
 function test_loadAndCheckOptionsMoAE()
 
   jsonContent = setOptions('MoAE');
-    
+
   optionJsonFile = fullfile(pwd, 'cfg', 'options_task-auditory.json');
   spm_jsonwrite(optionJsonFile, jsonContent);
-  
-  opt = loadAndCheckOptions(optionJsonFile);
 
+  opt = loadAndCheckOptions(optionJsonFile);
 
 end
