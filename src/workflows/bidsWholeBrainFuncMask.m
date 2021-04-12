@@ -4,7 +4,7 @@ function mask = bidsWholeBrainFuncMask(opt)
 
   % create segmented-skull stripped mean functional image
   % read the dataset
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   for iSub = 1:numel(opt.subjects)
 
@@ -12,6 +12,7 @@ function mask = bidsWholeBrainFuncMask(opt)
 
     % call/create the mask name
     [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
+    meanFuncFileName = fullfile(meanFuncDir, meanImage);
 
     % name the output accordingto the input image
     maskFileName = ['m' strrep(meanImage, '.nii', '_mask.nii')];
@@ -24,12 +25,9 @@ function mask = bidsWholeBrainFuncMask(opt)
       opt.orderBatches.segment = 1;
       opt.orderBatches.skullStripping = 2;
 
-      % opt for running skull strip on the mean image
-      opt.skullStripMeanImg = 1;
-
       % make matlab batch for segment and skullstip
       matlabbatch = [];
-      matlabbatch = setBatchSegmentation(matlabbatch, opt, opt.funcMaskFileName);
+      matlabbatch = setBatchSegmentation(matlabbatch, opt, meanFuncFileName);
 
       matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
       % run spm
