@@ -18,9 +18,9 @@ downloadData = true;
 run ../../initCppSpm.m;
 
 %% Set options
-opt = MoAE_getOption();
+opt = moae_get_option();
 
-dowload_MoAE_ds(downloadData);
+dowload_moae_ds(downloadData);
 
 %% Run batches
 reportBIDS(opt);

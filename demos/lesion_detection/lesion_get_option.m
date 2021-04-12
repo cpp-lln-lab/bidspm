@@ -1,6 +1,6 @@
 % (C) Copyright 2021 CPP BIDS SPM-pipeline developers
 
-function opt = Lesion_getOption()
+function opt = lesion_get_option()
   %
   % Returns a structure that contains the options chosen by the user to run the source processing
   % batch workflow

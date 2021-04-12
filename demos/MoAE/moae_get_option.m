@@ -1,6 +1,6 @@
 % (C) Copyright 2019 Remi Gau
 
-function opt = MoAE_getOption()
+function opt = moae_get_option()
   % returns a structure that contains the options chosen by the user to run
   % slice timing correction, pre-processing, FFX, RFX.
 

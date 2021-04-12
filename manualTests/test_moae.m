@@ -28,7 +28,7 @@ cd(WD);
 
 run ../../initCppSpm.m;
 
-dowload_MoAE_ds(downloadData);
+dowload_moae_ds(downloadData);
 
 %% Set up
 optionsFilesList = { ...

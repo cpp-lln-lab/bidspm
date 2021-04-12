@@ -1,6 +1,6 @@
 % (C) Copyright 2021 Remi Gau
 
-function dowload_MoAE_ds(downloadData)
+function dowload_moae_ds(downloadData)
 
   if downloadData
 
