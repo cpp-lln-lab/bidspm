@@ -39,7 +39,7 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, subLabel, opt);
 
   % if the input image is mean func image instead of anatomical
-  if opt.skullStripMeanImg == 1
+  if opt.skullstrip.mean
     [imageToSkullStrip, dataDir] = getMeanFuncFilename(BIDS, subLabel, opt);
   end
 
