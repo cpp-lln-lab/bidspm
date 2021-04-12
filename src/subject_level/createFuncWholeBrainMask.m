@@ -1,5 +1,3 @@
-% (C) Copyright 2020 RnB FFT-analysis developers
-
 function mask = createFuncWholeBrainMask(opt)
 
     % create segmented-skull stripped mean functional image
