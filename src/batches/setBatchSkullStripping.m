@@ -35,18 +35,17 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   %
 
   printBatchName('skull stripping');
-  
-  
+
   [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, subLabel, opt);
-  
+
   % if the input image is mean func image instead of anatomical
   if opt.skullStripMeanImg == 1
-      [imageToSkullStrip, dataDir] = getMeanFuncFilename(BIDS, subLabel, opt);
+    [imageToSkullStrip, dataDir] = getMeanFuncFilename(BIDS, subLabel, opt);
   end
-  
+
   output = ['m' strrep(imageToSkullStrip, '.nii', '_skullstripped.nii')];
   maskOutput = ['m' strrep(imageToSkullStrip, '.nii', '_mask.nii')];
- 
+
   expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
 
   % if this is part of a pipeline we get the segmentation dependency to get
