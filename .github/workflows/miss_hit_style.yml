@@ -1,14 +1,8 @@
-name: miss_hit
+name: miss_hit_style
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches: '*'
+on: push: branches: - master pull_request: branches: '\*'
 
-jobs:
-  build:
+jobs: build:
 
     runs-on: ubuntu-latest
 
@@ -31,12 +25,4 @@ jobs:
 
     - name: MISS_HIT Code style
       run: |
-        mh_style --process-slx
-
-    - name: MISS_HIT Metrics
-      run: |
-        mh_metric --ci
-
-    - name: MISS_HIT Bug finder
-      run: |
-        mh_lint
+        mh_style
