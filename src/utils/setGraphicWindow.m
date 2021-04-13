@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow()
   %
   % Short description of what the function does goes here.
@@ -19,6 +17,7 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow()
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   interactiveWindow = [];
   graphWindow = [];

@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function saveMatlabBatch(matlabbatch, batchType, opt, subID)
   %
   % Also save some basic environnment info.
@@ -18,6 +16,7 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subID)
   % :type subID: string
   %
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   if nargin < 4 || isempty(subID)
     subID = 'group';

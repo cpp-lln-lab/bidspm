@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
   %
   % Creates a batch to segment the anatomical image
@@ -16,6 +14,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
   %
   % :returns: :matlabbatch: (structure)
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   printBatchName('Segmentation anatomical image');
 

@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFWHM)
   %
   % Creates a batch to smooth all the con images of all subjects
@@ -21,6 +19,7 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFW
   %
   % :returns: - :matlabbatch:
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('smoothing contrast images');
 

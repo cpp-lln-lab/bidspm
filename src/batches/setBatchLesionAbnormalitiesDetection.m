@@ -1,5 +1,3 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchLesionAbnormalities(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch to detect lesion abnormalities
@@ -12,6 +10,8 @@ function matlabbatch = setBatchLesionAbnormalities(matlabbatch, BIDS, opt, subLa
   % :type matlabbatch: structure
   %
   % :returns: - :matlabbatch: (structure)
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   printBatchName('Lesion abnormalities');
 

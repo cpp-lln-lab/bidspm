@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outDir, expression)
   %
   % Set a batch for a image calculation
@@ -21,6 +19,7 @@ function matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outD
   %
   % :returns: - :matlabbatch:
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   printBatchName('image calculation');
 

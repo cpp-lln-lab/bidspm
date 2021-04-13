@@ -66,6 +66,8 @@ for iOption = 1:size(optionsFilesList, 1)
 
   bidsSmoothing(FWHM, opt);
 
+  bidsSegmentSkullStrip(opt);
+
   % The following crash on Travis CI
   %   bidsFFX('specifyAndEstimate', opt, FWHM);
   %   bidsFFX('contrasts', opt, FWHM);

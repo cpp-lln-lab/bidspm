@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function cleanCrash()
   %
   % Removes any files left over from a previous unfinished run of the pipeline,
@@ -10,6 +8,7 @@ function cleanCrash()
   %   cleanCrash()
   %
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   files = {'spm.*.png'};
 

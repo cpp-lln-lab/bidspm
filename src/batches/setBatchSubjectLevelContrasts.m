@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, funcFWHM)
   %
   % Short description of what the function does goes here.
@@ -19,6 +17,7 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
   %
   % :returns: - :matlabbatch:
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('subject level contrasts specification');
 

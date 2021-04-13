@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch to set an anatomical image
@@ -26,6 +24,8 @@ function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel)
   % - session to select the anat from = opt.anatReference.session (default = 1)
   %
   % We assume that the first anat of that type is the "correct" one
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   printBatchName('selecting anatomical image');
 
