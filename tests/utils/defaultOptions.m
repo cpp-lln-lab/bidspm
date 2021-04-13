@@ -44,7 +44,7 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.parallelize.do = false;
   expectedOptions.parallelize.nbWorkers = 3;
-  expectedOptions.parallelize.killOnExit = true;
+  expectedOptions.parallelize.killOnExit = false;
 
   if nargin > 0
     expectedOptions.taskName = taskName;
