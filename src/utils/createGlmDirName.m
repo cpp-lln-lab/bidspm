@@ -1,6 +1,6 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function glmDirName = createGlmDirName(opt, FWHM)
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   glmDirName = ['task-', opt.taskName, ...
                 '_space-' opt.space, ...

@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [BIDS, opt] = getData(opt, BIDSdir, type)
   %
   % Reads the specified BIDS data set and updates the list of subjects to analyze.
@@ -27,6 +25,8 @@ function [BIDS, opt] = getData(opt, BIDSdir, type)
   %  IMPORTANT NOTE: if you specify the type variable for T1w then you must
   %  make sure that the T1w.json is also present in the anat folder because
   %  of the way the bids.query function works at the moment
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
     % The directory where the derivatives are located

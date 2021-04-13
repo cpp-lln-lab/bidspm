@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function contrasts = specifyContrasts(ffxDir, taskName, opt)
   %
   % Specifies the first level contrasts
@@ -30,6 +28,8 @@ function contrasts = specifyContrasts(ffxDir, taskName, opt)
   %     Sn(1) R4
   %     Sn(1) R5
   %     Sn(1) R6
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
   load(fullfile(ffxDir, 'SPM.mat'));
 

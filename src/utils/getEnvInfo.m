@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [OS, GeneratedBy] = getEnvInfo()
   %
   % Gets information about the environement and operating system to help generate
@@ -12,6 +10,7 @@ function [OS, GeneratedBy] = getEnvInfo()
   % :returns: :OS: (structure) (dimension)
   %           :GeneratedBy: (structure) (dimension)
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   GeneratedBy(1).name = 'cpp_spm';
   GeneratedBy(1).Version =  getVersion();

@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %
   % Set the batch for realign / realign and reslice / realign and unwarp
@@ -25,9 +23,12 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %
   % :returns: - :matlabbatch: (structure) (dimension)
   %           - :voxDim: (array) (dimension)
-
-  % TODO:
-  % make which image is resliced more consistent 'which = []'
+  %
+  % TODO::
+  %
+  %   make which image is resliced more consistent 'which = []'
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if numel(varargin) < 5
     [matlabbatch, BIDS, opt, subLabel] = deal(varargin{:});

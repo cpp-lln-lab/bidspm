@@ -1,6 +1,6 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function writeDatasetDescription(opt)
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   oldDatasetDescription = spm_jsonread(fullfile(opt.derivativesDir, 'dataset_description.json'));
 
@@ -8,7 +8,7 @@ function writeDatasetDescription(opt)
 
   if isfield(oldDatasetDescription, 'DatasetDOI')
     newDatasetDescription.SourceDatasets{1}.DOI = ...
-        oldDatasetDescription.DatasetDOI;
+     oldDatasetDescription.DatasetDOI;
   end
 
   spm_jsonwrite( ...

@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
   %
   % Short description of what the function does goes here.
@@ -22,6 +20,8 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
   %
   % TODO
   % - implement for 'phase12', 'fieldmap', 'epi'
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   printBatchName('create voxel displacement map');
 

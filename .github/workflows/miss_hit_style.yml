@@ -1,4 +1,4 @@
-name: miss_hit
+name: miss_hit_style
 
 on:
   push:
@@ -31,12 +31,5 @@ jobs:
 
     - name: MISS_HIT Code style
       run: |
-        mh_style --process-slx
+        mh_style
 
-    - name: MISS_HIT Metrics
-      run: |
-        mh_metric --ci
-
-    - name: MISS_HIT Bug finder
-      run: |
-        mh_lint

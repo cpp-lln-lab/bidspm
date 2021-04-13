@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates batch for slice timing correction
@@ -30,6 +28,7 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
   % If not specified this function will take the mid-volume time point as reference
   % to do the slice timing correction
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   % get slice order
   sliceOrder = getSliceOrder(opt, 1);

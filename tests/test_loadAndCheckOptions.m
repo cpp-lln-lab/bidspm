@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP_SPM developers
 
 function test_suite = test_loadAndCheckOptions %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
@@ -107,5 +107,16 @@ function test_loadAndCheckOptionsFromSeveralFiles()
   expectedOptions.funcVoxelDims = [1 1 1]';
 
   assertEqual(opt, expectedOptions);
+
+end
+
+function test_loadAndCheckOptionsMoAE()
+
+  jsonContent = setOptions('MoAE');
+
+  optionJsonFile = fullfile(pwd, 'cfg', 'options_task-auditory.json');
+  spm_jsonwrite(optionJsonFile, jsonContent);
+
+  opt = loadAndCheckOptions(optionJsonFile);
 
 end

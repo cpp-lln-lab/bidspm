@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function blipDir = getBlipDirection(metadata)
   %
   % Gets the total read out time of a sequence.
@@ -15,6 +13,7 @@ function blipDir = getBlipDirection(metadata)
   %
   % Used to create the voxel dsiplacement map (VDM) from the fieldmap
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   blipDir = 1;
 

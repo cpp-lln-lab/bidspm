@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchResults(matlabbatch, result)
   %
   % Outputs the typical matlabbatch to compute the results for a given contrast
@@ -21,6 +19,8 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   % :returns: - :matlabbatch: (structure)
   %
   %
+  % (C) Copyright 2019 CPP_SPM developers
+
   result.outputNameStructure.sub = result.label;
   result.outputNameStructure.desc = result.Contrasts.Name;
   result.outputNameStructure.p = num2str(result.Contrasts.p);

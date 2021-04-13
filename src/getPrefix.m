@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
   %
   % Generates prefix to append to file name to look for
@@ -19,6 +17,7 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
   %           - :motionRegressorPrefix:
   %
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 3
     funcFWHM = 0;

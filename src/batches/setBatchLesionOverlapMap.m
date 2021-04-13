@@ -1,5 +1,3 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchLesionOverlapMap(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch for the lesion overlap map
@@ -12,6 +10,8 @@ function matlabbatch = setBatchLesionOverlapMap(matlabbatch, BIDS, opt, subLabel
   % :type matlabbatch: structure
   %
   % :returns: - :matlabbatch: (structure)
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   printBatchName('Lesion overlap map');
 

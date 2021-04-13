@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function bidsSpatialPrepro(opt)
   %
   % Performs spatial preprocessing of the functional and structural data.
@@ -37,6 +35,7 @@ function bidsSpatialPrepro(opt)
   %
   %  - average T1s across sessions if necessarry
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'spatial preprocessing');
 

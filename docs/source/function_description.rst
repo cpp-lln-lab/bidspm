@@ -16,7 +16,6 @@ List of functions in the ``src`` folder.
 .. autofunction:: getPrefix
 .. autofunction:: getRealignParamFile
 .. autofunction:: getSliceOrder
-.. autofunction:: getSpecificSubjects
 .. autofunction:: setDerivativesDir
 .. autofunction:: unzipImgAndReturnsFullpathName
 
@@ -25,7 +24,6 @@ Subject level model
 
 .. automodule:: src.subject_level
 
-.. autofunction:: concatBetaImgTmaps
 .. autofunction:: convertOnsetTsvToMat
 .. autofunction:: createAndReturnOnsetFile
 .. autofunction:: deleteResidualImages
@@ -62,15 +60,26 @@ Utility functions
 .. automodule:: src.utils 
 
 .. autofunction:: checkDependencies
+.. autofunction:: cleanCrash
 .. autofunction:: createDataDictionary
+.. autofunction:: createDerivativeDir
+.. autofunction:: createGlmDirName
 .. autofunction:: getEnvInfo
+.. autofunction:: getSubjectList
 .. autofunction:: getVersion
 .. autofunction:: isOctave
 .. autofunction:: loadAndCheckOptions
+.. autofunction:: manageWorkersPool
+.. autofunction:: printBatchName
 .. autofunction:: printCredits
 .. autofunction:: printProcessingRun
 .. autofunction:: printProcessingSubject
+.. autofunction:: printWorklowName
+.. autofunction:: removeSpmPrefix
+.. autofunction:: rmTrialTypeStr
 .. autofunction:: saveMatlabBatch
 .. autofunction:: saveOptions
-.. autofunction:: setDefaultFields
+.. autofunction:: setFields
+.. autofunction:: setGraphicWindow
 .. autofunction:: validationInputFile
+.. autofunction:: writeDatasetDescription

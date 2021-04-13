@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function functionalQA(opt)
   %
   % For functional data, QA consists in getting temporal SNR and then
@@ -23,6 +21,8 @@ function functionalQA(opt)
   %   - the tissue probability maps have been generated in the "native" space of each subject
   %     (using ``bidsSpatialPrepro()`` or ``bidsSegmentSkullStrip()``) and have been
   %     resliced to the dimension of the functional with ``bidsResliceTpmToFunc()``
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if isOctave()
     warning('\nfunctionalQA is not yet supported on Octave. This step will be skipped.');

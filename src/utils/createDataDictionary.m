@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function createDataDictionary(subFuncDataDir, fileName, nbColums)
   %
   % Short description of what the function does goes here.
@@ -15,6 +13,7 @@ function createDataDictionary(subFuncDataDir, fileName, nbColums)
   % :param nbColums: Number of extra columns to add as censoring regressors.
   % :type nbColums: integer
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   namecColumns = { ...
                   'trans_x', ...

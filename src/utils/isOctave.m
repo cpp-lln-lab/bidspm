@@ -1,6 +1,3 @@
-% (C) Copyright 2020 Agah Karakuzu
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function retval = isOctave()
   %
   % Returns true if the environment is Octave.
@@ -11,6 +8,8 @@ function retval = isOctave()
   %
   % :returns: :retval: (boolean)
   %
+  % (C) Copyright 2020 Agah Karakuzu
+  % (C) Copyright 2020 CPP_SPM developers
 
   persistent cacheval   % speeds up repeated calls
 

@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function content = returnEmptyModel()
   %
   % Creates the content of a basic model.json file for GLM analysis with
@@ -22,6 +20,7 @@ function content = returnEmptyModel()
   %   filename = fullfile(pwd, 'models', 'model-empty_smdl.json')
   %   spm_jsonwrite(filename, content, jsonOptions);
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   content.Name = ' ';
   content.Description = ' ';

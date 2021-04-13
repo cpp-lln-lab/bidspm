@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch to compute a brain mask based on the tissue probability maps
@@ -33,6 +31,8 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   % Any voxel with p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold
   % will be included in the skull stripping mask.
   %
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   printBatchName('skull stripping');
 

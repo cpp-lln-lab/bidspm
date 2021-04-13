@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function opt = setDerivativesDir(opt)
   %
   % Sets the derivatives folder and the directory where to save the SPM jobs.
@@ -17,34 +15,36 @@ function opt = setDerivativesDir(opt)
   %   - :opt: structure or json filename containing the options. See
   %           ``checkOptions()`` and ``loadAndCheckOptions()``.
   %
-  % Examples:
-  %   % opt.dataDir = '/home/remi/data';
-  %   % opt.taskName = 'testTask';
-  %   % opt = setDerivativesDir(opt);
-  %   %
-  %   % disp(opt.derivativesDir)
-  %   %|| '/home/remi/data/../derivatives/cpp_spm'
-  %   %
-  %   % disp(opt.opt.jobsDir)
-  %   %|| '/home/remi/data/../derivatives/cpp_spm/JOBS/testTask
+  % Examples::
   %
-  %   % opt.dataDir = '/home/remi/data';
-  %   % opt.dataDir = '/home/remi/otherFolder';
-  %   % opt.taskName = 'testTask';
-  %   % opt = setDerivativesDir(opt);
-  %   %
-  %   % disp(opt.derivativesDir)
-  %   %|| '/home/remi/otherFolder/derivatives/cpp_spm'
+  %   opt.dataDir = '/home/remi/data';
+  %   opt.taskName = 'testTask';
+  %   opt = setDerivativesDir(opt);
   %
-  %   % opt.dataDir = '/home/remi/data';
-  %   % opt.dataDir = '/home/remi/derivatives/preprocessing';
-  %   % opt.taskName = 'testTask';
-  %   % opt = setDerivativesDir(opt);
-  %   %
-  %   % disp(opt.derivativesDir)
-  %   %|| '/home/remi/otherFolder/derivatives/preprocessing'
+  %   disp(opt.derivativesDir)
+  %   '/home/remi/data/../derivatives/cpp_spm'
+  %
+  %   disp(opt.opt.jobsDir)
+  %   '/home/remi/data/../derivatives/cpp_spm/JOBS/testTask
+  %
+  %   opt.dataDir = '/home/remi/data';
+  %   opt.dataDir = '/home/remi/otherFolder';
+  %   opt.taskName = 'testTask';
+  %   opt = setDerivativesDir(opt);
+  %
+  %   disp(opt.derivativesDir)
+  %   '/home/remi/otherFolder/derivatives/cpp_spm'
+  %
+  %   opt.dataDir = '/home/remi/data';
+  %   opt.dataDir = '/home/remi/derivatives/preprocessing';
+  %   opt.taskName = 'testTask';
+  %   opt = setDerivativesDir(opt);
+  %
+  %   disp(opt.derivativesDir)
+  %   '/home/remi/otherFolder/derivatives/preprocessing'
   %
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if ~isfield(opt, 'derivativesDir') || isempty(opt.derivativesDir)
     opt.derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm');

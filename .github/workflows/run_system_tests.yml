@@ -56,20 +56,9 @@ jobs:
          make -C spm12/src PLATFORM=octave install
          octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
         
-    - name: Update octave path
-      run: |
-        octave $OCTFLAGS --eval "initCppSpm; savepath();"       
-
-    - name: Prepare data
-      run: |
-        inputs_folder='demos/MoAE/inputs/'
-        mkdir $inputs_folder
-        curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $inputs_folder'MoAEpilot.zip'
-        unzip $inputs_folder'MoAEpilot.zip' -d $inputs_folder
-        mv $inputs_folder/MoAEpilot $inputs_folder/raw
-
+    
     - name: Run system tests
       run: |
-        cd demos/MoAE
-        octave $OCTFLAGS --eval "MoAEpilot_run"                  
+        cd manualTests/
+        octave $OCTFLAGS --eval "systemTestMoAE"                  
 

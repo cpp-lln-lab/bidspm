@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsSegmentSkullStrip(opt)
   %
   % Segments and skullstrips the anatomical image.
@@ -12,6 +10,7 @@ function bidsSegmentSkullStrip(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'segmentation and skulltripping');
 

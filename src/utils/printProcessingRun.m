@@ -1,6 +1,6 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function printProcessingRun(groupName, iSub, subID, iSes, iRun)
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
   fprintf(1, ...
           [ ...

@@ -78,7 +78,7 @@ jobs:
 
     - name: Run tests
       run: |
-        octave $OCTFLAGS --eval "runTests"
+        octave $OCTFLAGS --eval "run_tests"
         cat test_report.log | grep 0
         bash <(curl -s https://codecov.io/bash)         
 

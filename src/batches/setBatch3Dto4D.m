@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatch3Dto4D(matlabbatch, volumesList, RT, outputName, dataType)
   %
   % Set the batch for 3D to 4D conversion
@@ -31,6 +29,7 @@ function matlabbatch = setBatch3Dto4D(matlabbatch, volumesList, RT, outputName, 
   %   - 16: FLOAT32 - single prec. float
   %   - 64: FLOAT64 - double prec. float
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 5 || isempty(dataType)
     dataType = 0;

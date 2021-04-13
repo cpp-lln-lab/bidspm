@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmapMetadata)
   %
   % Gets metadata of the associated bold file:
@@ -26,6 +24,8 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
   %
   %    - if there are several func file for this fmap and they have different
   %    characteristic this may require creating a VDM for each
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   for  iFile = 1:size(fmapMetadata.IntendedFor)
 

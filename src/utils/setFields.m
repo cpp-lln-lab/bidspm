@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function structure = setFields(structure, fieldsToSet, overwrite)
   %
   % Recursively loop through the fields of a target ``structure`` and sets the values
@@ -22,6 +20,7 @@ function structure = setFields(structure, fieldsToSet, overwrite)
   % :returns: - :structure: (structure)
   %
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if isempty(fieldsToSet)
     return
@@ -68,6 +67,8 @@ end
 
 function structure = setFieldToIfNotPresent(structure, fieldName, value)
   if ~isfield(structure, fieldName)
-    structure.(fieldName) = value;
+    for i = 1:numel(structure)
+      structure(i).(fieldName) = value;
+    end
   end
 end

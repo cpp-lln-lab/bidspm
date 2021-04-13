@@ -1,6 +1,6 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function expectedOptions = defaultOptions(taskName)
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   expectedOptions.sliceOrder = [];
   expectedOptions.STC_referenceSlice = [];
