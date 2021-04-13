@@ -1,12 +1,11 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
-function dowload_convert_face_rep_ds()
+function download_convert_face_rep_ds()
   %
-  % downloads the fare repetition dataset from SPM and convert it to BIDS
+  % downloads the face repetition dataset from SPM and convert it to BIDS
   %
   % Adapted from its counterpart for MoAE
   % <https://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAE_convert2bids.m>
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   subject = 'sub-01';
   task_name = 'face repetition';

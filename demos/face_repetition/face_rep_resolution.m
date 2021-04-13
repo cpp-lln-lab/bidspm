@@ -1,6 +1,5 @@
 % (C) Copyright 2019 Remi Gau
-
-% adapted from face_rep_fun
+%
 %
 % runs preprocessing with different final spatial resolution in MNI space
 %

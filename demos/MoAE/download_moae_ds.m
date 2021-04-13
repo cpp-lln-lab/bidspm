@@ -1,6 +1,6 @@
-% (C) Copyright 2021 Remi Gau
-
-function dowload_moae_ds(downloadData)
+function download_moae_ds(downloadData)
+  %
+  % (C) Copyright 2021 Remi Gau
 
   if downloadData
 

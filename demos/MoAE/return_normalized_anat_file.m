@@ -1,6 +1,6 @@
-% (C) Copyright 2021 Remi Gau
-
 function [anat_normalized_file, anatRange] = return_normalized_anat_file(opt, subLabel)
+  %
+  % (C) Copyright 2021 Remi Gau
 
   [BIDS, opt] = getData(opt);
   [~, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);

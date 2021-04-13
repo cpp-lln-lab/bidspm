@@ -1,9 +1,11 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function opt = get_option()
-  % opt = getOption()
+  %
   % returns a structure that contains the options chosen by the user to run
   % slice timing correction, pre-processing, FFX, RFX.
+  %
+  % opt = get_option()
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
   if nargin < 1
     opt = [];

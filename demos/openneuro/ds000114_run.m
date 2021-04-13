@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP_SPM developers
 
 % runDs00014
 
