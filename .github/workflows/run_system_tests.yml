@@ -60,5 +60,5 @@ jobs:
     - name: Run system tests
       run: |
         cd manualTests/
-        octave $OCTFLAGS --eval "systemTestMoAE"                  
+        octave $OCTFLAGS --eval "test_moae"                  
 
