@@ -53,9 +53,9 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
       if opt.realign.useUnwarp
         prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
       end
-      
+
       prefix = ['mean' prefix];
-      
+
       if strcmp(opt.space, 'MNI')
         prefix = ['w', prefix];
       end
