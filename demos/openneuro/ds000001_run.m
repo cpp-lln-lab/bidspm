@@ -12,7 +12,7 @@ conFWHM = 6;
 run ../../initCppSpm.m;
 
 %% Set options
-opt = ds000001_getOption();
+opt = ds000001_get_option();
 
 reportBIDS(opt);
 

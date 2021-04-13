@@ -21,7 +21,7 @@ opt = face_rep_get_option_results();
 %% Removes previous analysis, gets data and converts it to BIDS
 if downloadData
 
-  dowload_convert_face_rep_ds();
+  download_convert_face_rep_ds();
 
 end
 
@@ -41,6 +41,10 @@ for iResolution = 1:0.5:3
                                          'derivatives', ...
                                          ['cpp_spm-res' num2str(iResolution)]), 'cpath');
 
+  % create a new BIDS model json file
+  % this way the GLM output will be store in a different directory for each
+  % resolution as the name of the GLM directory is based on the name of the
+  % model in the BIDS model
   content = spm_jsonread(opt.model.file);
   content.Name = [content.Name, ' resolution - ', num2str(iResolution)];
 
@@ -51,6 +55,7 @@ for iResolution = 1:0.5:3
 
   spm_jsonwrite(newModel, content, struct('indent', '   '));
 
+  % run analysis
   bidsCopyRawFolder(opt, 1);
 
   bidsSTC(opt);

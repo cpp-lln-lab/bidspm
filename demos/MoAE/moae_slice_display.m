@@ -1,6 +1,5 @@
 % (C) Copyright 2021 Remi Gau
 
-run moae_run.m;
 run moae_create_roi_extract_data.m;
 
 close all;

@@ -12,7 +12,7 @@ conFWHM = 6;
 run ../../initCppSpm.m;
 
 %% Set options
-opt = ds000114_getOption();
+opt = ds000114_get_option();
 
 %% Run batches
 

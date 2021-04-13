@@ -36,13 +36,17 @@ bidsSTC(opt);
 bidsSpatialPrepro(opt);
 
 % The following do not run on octave for now (because of spmup)
-% anatomicalQA(opt);
-% bidsResliceTpmToFunc(opt);
-% functionalQA(opt);
+anatomicalQA(opt);
+bidsResliceTpmToFunc(opt);
+functionalQA(opt);
 
 bidsSmoothing(FWHM, opt);
 
 % The following crash on CI
+WD = pwd;
 bidsFFX('specifyAndEstimate', opt, FWHM);
+cd(WD);
 bidsFFX('contrasts', opt, FWHM);
+cd(WD);
 bidsResults(opt, FWHM);
+cd(WD);
