@@ -1,8 +1,7 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function bidsTemplateWorkflow(opt)
   %
   %
+  % (C) Copyright 2021 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'workflow name');
 

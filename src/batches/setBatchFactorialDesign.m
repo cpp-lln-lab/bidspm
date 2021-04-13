@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFWHM)
   %
   % Short description of what the function does goes here.
@@ -19,6 +17,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
   %
   % :returns: - :matlabbatch: (structure)
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('specify group level fmri model');
 

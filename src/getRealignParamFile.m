@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function realignParamFile = getRealignParamFile(fullpathBoldFileName, prefix)
   %
   % Short description of what the function does goes here.
@@ -18,6 +16,8 @@ function realignParamFile = getRealignParamFile(fullpathBoldFileName, prefix)
   %
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   [funcDataDir, boldFileName] = spm_fileparts(fullpathBoldFileName);
 

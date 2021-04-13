@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages, interp)
   %
   % Set the batch for reslicing source images to the reference image resolution
@@ -18,6 +16,7 @@ function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages, 
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   printBatchName('reslicing');
 

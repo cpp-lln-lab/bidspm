@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   %
   % Converts an  events.tsv file to an onset file suitable for SPM subject level
@@ -16,8 +14,9 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   % :param tsvFile:
   % :type tsvFile: string
   %
-  % :returns: - :fullpathOnsetFileName: (string) name of the output `.mat` file.
+  % :returns: :fullpathOnsetFileName: (string) name of the output ``.mat`` file.
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   %
   [pth, file, ext] = spm_fileparts(tsvFile);

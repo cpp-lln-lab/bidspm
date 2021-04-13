@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchContrasts(matlabbatch, spmMatFile, consess)
   %
   % Short description of what the function does goes here.
@@ -17,6 +15,7 @@ function matlabbatch = setBatchContrasts(matlabbatch, spmMatFile, consess)
   %
   % :returns: - :matlabbatch: (structure)
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('contrasts specification');
 

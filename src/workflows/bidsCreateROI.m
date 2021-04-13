@@ -1,6 +1,6 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function bidsCreateROI(opt)
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   if nargin < 1
     opt = [];
@@ -9,7 +9,7 @@ function bidsCreateROI(opt)
   [BIDS, opt] = setUpWorkflow(opt, 'create ROI');
 
   opt.dir.roi = [opt.derivativesDir '-roi'];
-  spm_mkdir(fullfile(opt.roiDir, 'group'));
+  spm_mkdir(fullfile(opt.dir.roi, 'group'));
 
   opt.jobsDir = fullfile(opt.dir.roi, 'JOBS', opt.taskName);
 
@@ -31,7 +31,7 @@ function bidsCreateROI(opt)
   if any(strcmp(opt.roi.space, 'individual'))
 
     roiList = spm_select('FPlist', ...
-                         fullfile(opt.roiDir, 'group'), ...
+                         fullfile(opt.dir.roi, 'group'), ...
                          '^space-.*_mask.nii$');
 
     for iSub = 1:numel(opt.subjects)
@@ -60,7 +60,7 @@ function bidsCreateROI(opt)
       spm_mkdir(opt.dir.roi, ['sub-' subLabel], 'roi');
 
       roiList = spm_select('FPlist', ...
-                           fullfile(opt.roiDir, 'group'), ...
+                           fullfile(opt.dir.roi, 'group'), ...
                            '^wspace.*_mask.nii.*$');
 
       for iROI = 1:size(roiList, 1)

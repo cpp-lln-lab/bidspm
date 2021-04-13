@@ -1,10 +1,11 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function printCredits()
+  %
+  % TODO: use the .zenodo.json to load contributors
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
   versionNumber = getVersion();
 
-  % TODO: use the .zenodo.json to load contributors
   contributors = { ...
                   'Mohamed Rezk', ...
                   'Remi Gau', ...

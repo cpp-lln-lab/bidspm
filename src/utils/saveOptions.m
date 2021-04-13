@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function saveOptions(opt)
   %
   % Short description of what the function does goes here.
@@ -11,6 +9,7 @@ function saveOptions(opt)
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   optionDir = fullfile(pwd, 'cfg');
   [~, ~, ~] = mkdir(optionDir);

@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function manageWorkersPool(action, opt)
   %
   % Check matlab version and opens pool of workers for parallel work.
@@ -19,6 +17,7 @@ function manageWorkersPool(action, opt)
   %    opt.parallelize.nbWorkers = 3;
   %    opt.parallelize.killOnExit = true;
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if ~opt.parallelize.do
     opt.parallelize.nbWorkers = 1;

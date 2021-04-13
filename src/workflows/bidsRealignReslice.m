@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsRealignReslice(opt)
   %
   % Realigns and reslices the functional data of a given task.
@@ -14,6 +12,7 @@ function bidsRealignReslice(opt)
   %
   % Assumes that ``bidsSTC()`` has already been run.
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'realign and reslice');
 

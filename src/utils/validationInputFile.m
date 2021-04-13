@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function files = validationInputFile(dir, fileNamePattern, prefix)
   %
   % Looks for file name pattern in a given directory and returns all the files
@@ -41,6 +39,7 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   % % tissueProbaMaps = validationInputFile(anatDataDir, anatImage, 'c[12]');
   %
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   % try to guess directory in case a fullpath filename was given
   if isempty(dir)

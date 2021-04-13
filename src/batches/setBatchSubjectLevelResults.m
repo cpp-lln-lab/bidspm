@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % Short description of what the function does goes here.
@@ -23,6 +21,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % :returns: - :matlabbatch: (structure)
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   [matlabbatch, opt, subLabel, funcFWHM, iStep, iCon] = deal(varargin{:});
 

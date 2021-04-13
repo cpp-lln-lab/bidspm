@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM)
   %
   % For a given events.tsv file it creates a .mat file that can directly be used
@@ -20,9 +18,10 @@ function onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM)
   %                  GLM. Necessary for the GLM directory.
   % :type funcFWHM: float
   %
-  % :returns: - :onsetFileName: (string) fullpath name of the file created.
-  %                             Removes any prefix.
+  % :returns: :onsetFileName: (string) fullpath name of the file created.
   %
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
   onsetFileName = convertOnsetTsvToMat(opt, tsvFile);
 

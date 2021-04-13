@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt)
   %
   % Get the filename and the directory of an mean functional file.
@@ -18,6 +16,7 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt)
   % :returns: - :meanImage: (string)
   %           - :meanFuncDir: (string)
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
   runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});

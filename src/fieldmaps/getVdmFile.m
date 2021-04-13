@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   %
   % returns the voxel displacement map associated with a given bold file
@@ -17,6 +15,7 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   %
   % :returns: - :vdmFile: (string)
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   vdmFile = '';
 

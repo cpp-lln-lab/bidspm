@@ -35,7 +35,7 @@ This is a set of functions to MRI analysis on a
 
 ## Installation
 
-TODO
+<!-- TODO -->
 
 We strongly recommend using the CPP fMRI analysis template repository (INSERT
 URL) to use CPP_SPM.
@@ -114,6 +114,14 @@ Please see our
 [documentation](https://cpp-bids-spm.readthedocs.io/en/latest/index.html) for
 more info.
 
+## Octave compatibility
+
+The following features do not yet work with Octave:
+
+-   anatomicalQA
+-   functionalQA
+-   slice_display toolbox
+
 ## Contributing
 
 Feel free to open issues to report a bug and ask for improvements.
@@ -124,6 +132,18 @@ that are meant to guide you and help you get started. If something is not clear
 or you get stuck: it is more likely we did not do good enough a job at
 explaining things. So do not hesitate to open an issue, just to ask for
 clarification.
+
+### Style guidelines
+
+These are some of the guidelines we try to follow.
+
+We use `camelCase` to name functions and variables for the vast majority of the
+code in this repository.
+
+Scripts names in general and as well functions related to the demos use a
+`snake_case`.
+
+Constant are written in `UPPERCASE`.
 
 ## Contributors
 

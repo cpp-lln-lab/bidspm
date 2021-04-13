@@ -1,5 +1,3 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch to segment the anatomical image for lesion detection
@@ -12,6 +10,8 @@ function matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLab
   % :type matlabbatch: structure
   %
   % :returns: - :matlabbatch: (structure)
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   printBatchName('Lesion segmentation');
 

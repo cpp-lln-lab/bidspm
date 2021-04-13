@@ -1,8 +1,8 @@
-% (C) Copyright 2021 Remi Gau
+function opt =  face_rep_get_option_results()
+  %
+  % (C) Copyright 2021 Remi Gau
 
-function opt =  FaceRep_getOptionResults()
-
-  opt = FaceRep_getOption();
+  opt = face_rep_get_option();
 
   opt.model.file = fullfile( ...
                             fileparts(mfilename('fullpath')), ...

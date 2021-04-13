@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP_SPM developers
 
 % runDs001168
 
@@ -11,7 +11,7 @@ FWHM = 6;
 run ../../initCppSpm.m;
 
 %% Set options
-opt = ds001168_getOption();
+opt = ds001168_get_option();
 
 %% Run batches
 

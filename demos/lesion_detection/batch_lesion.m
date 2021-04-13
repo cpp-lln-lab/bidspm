@@ -1,4 +1,4 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2021 CPP_SPM developers
 
 clear;
 clc;

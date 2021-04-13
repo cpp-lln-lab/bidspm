@@ -29,6 +29,7 @@ docs/build/*
 
 # ignore virtual env
 cpp_spm/*
+env/*
 
 # visual studio code stuff
 .vscode

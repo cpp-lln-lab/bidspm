@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt)
   %
   % Returns the autocontrast part of the dataset step of the BIDS model
@@ -14,6 +12,7 @@ function [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt)
   % :returns: - :grpLvlCon:
   %           - :iStep:
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   model = spm_jsonread(opt.model.file);
 

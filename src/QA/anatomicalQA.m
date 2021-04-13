@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function anatomicalQA(opt)
   %
   % Computes several metrics for anatomical image.
@@ -11,6 +9,7 @@ function anatomicalQA(opt)
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if isOctave()
     warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.');
