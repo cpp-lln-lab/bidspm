@@ -5,7 +5,7 @@ function bidsSmoothing(funcFWHM, opt)
   %
   % USAGE::
   %
-  %  bidsSmoothing(funcFWHM, [opt])
+  %   bidsSmoothing(funcFWHM, [opt])
   %
   % :param funcFWHM: How much smoothing was applied to the functional
   %                  data in the preprocessing (Gaussian kernel size).
@@ -13,6 +13,7 @@ function bidsSmoothing(funcFWHM, opt)
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
+  %
   % (C) Copyright 2020 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'smoothing functional data');

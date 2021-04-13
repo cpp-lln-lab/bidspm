@@ -18,8 +18,8 @@ function onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM)
   %                  GLM. Necessary for the GLM directory.
   % :type funcFWHM: float
   %
-  % :returns: - :onsetFileName: (string) fullpath name of the file created.
-  %                             Removes any prefix.
+  % :returns: :onsetFileName: (string) fullpath name of the file created.
+  %
   %
   % (C) Copyright 2019 CPP_SPM developers
 

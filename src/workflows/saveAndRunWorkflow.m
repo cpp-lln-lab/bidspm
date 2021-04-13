@@ -15,6 +15,7 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   % :type opt: structure
   % :param subID: subject ID
   % :type subID: string
+  %
   % (C) Copyright 2019 CPP_SPM developers
 
   if nargin < 4

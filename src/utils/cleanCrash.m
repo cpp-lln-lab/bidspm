@@ -1,7 +1,7 @@
 function cleanCrash()
   %
   % Removes any files left over from a previous unfinished run of the pipeline,
-  % like any *.png imgages
+  % like any ``*.png`` imgages
   %
   % USAGE::
   %

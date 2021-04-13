@@ -1,10 +1,10 @@
-function matlabbatch = setBatchLesionAbnormalities(matlabbatch, BIDS, opt, subLabel)
+function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch to detect lesion abnormalities
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchLesionAbnormalities(matlabbatch, BIDS, opt, subLabel)
+  %   matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure

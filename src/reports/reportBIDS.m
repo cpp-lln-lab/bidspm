@@ -14,6 +14,7 @@ function reportBIDS(opt)
   %
   %     - save output in the derivatires folder
   %       derivativeDir = fullfile(rawDir, '..', 'derivatives', 'cpp_spm');
+  %
   % (C) Copyright 2020 CPP_SPM developers
 
   bids.report(opt.dataDir);

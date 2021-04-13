@@ -7,7 +7,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
   %   varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
-  % If info = ``sessions`, this returns name of the sessions and their number::
+  % If info = ``sessions``, this returns name of the sessions and their number::
   %
   %   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'sessions')
   %
