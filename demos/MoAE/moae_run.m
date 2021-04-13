@@ -18,17 +18,18 @@ downloadData = true;
 run ../../initCppSpm.m;
 
 %% Set options
-opt = moae_get_option();
+opt = MoAE_getOption();
 
-download_moae_ds(downloadData);
+dowload_MoAE_ds(downloadData);
 
 %% Run batches
 reportBIDS(opt);
 bidsCopyRawFolder(opt, 1);
 
 % In case you just want to run segmentation and skull stripping
-% bidsSegmentSkullStrip(opt);
-%
+
+bidsSegmentSkullStrip(opt);
+
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
 
 bidsSTC(opt);
@@ -36,17 +37,22 @@ bidsSTC(opt);
 bidsSpatialPrepro(opt);
 
 % The following do not run on octave for now (because of spmup)
-anatomicalQA(opt);
-bidsResliceTpmToFunc(opt);
-functionalQA(opt);
+% anatomicalQA(opt);
+% bidsResliceTpmToFunc(opt);
+% functionalQA(opt);
 
+% create a whole brain functional mean image mask
+% so the mask will be in the same resolution/space as the functional images
+% one may not need it if they are running bidsFFX since it creates a
+% mask.nii by default
+opt.skullstrip.mean = 1;
+mask = bidsWholeBrainFuncMask(opt);
+
+% smoooth the funcitional images
 bidsSmoothing(FWHM, opt);
 
-% The following crash on CI
-WD = pwd;
+
+% The following crash on Travis CI
 bidsFFX('specifyAndEstimate', opt, FWHM);
-cd(WD);
 bidsFFX('contrasts', opt, FWHM);
-cd(WD);
 bidsResults(opt, FWHM);
-cd(WD);
