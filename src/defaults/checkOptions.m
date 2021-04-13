@@ -131,7 +131,7 @@ function fieldsToSet = setDefaultOption()
 
   fieldsToSet.parallelize.do = false;
   fieldsToSet.parallelize.nbWorkers = 3;
-  fieldsToSet.parallelize.killOnExit = true;
+  fieldsToSet.parallelize.killOnExit = false;
 
 end
 
