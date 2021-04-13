@@ -1,6 +1,6 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function opt = setOptions(task, subLabel)
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   thisDir = fileparts(mfilename('fullpath'));
 
