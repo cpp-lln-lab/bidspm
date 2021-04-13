@@ -1,5 +1,5 @@
 % (C) Copyright 2019 Remi Gau
-
+%
 % Script to run to check that the whole pipeline works fine with different
 % options encoded in json files
 %

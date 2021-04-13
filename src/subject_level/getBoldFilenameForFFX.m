@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [boldFileName, prefix] = getBoldFilenameForFFX(varargin)
   %
   % Gets the filename for this bold run for this task for the FFX setup
@@ -26,6 +24,7 @@ function [boldFileName, prefix] = getBoldFilenameForFFX(varargin)
   %           - :prefix: (srting)
   %
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   [BIDS, opt, subID, funcFWHM, iSes, iRun] =  deal(varargin{:});
 

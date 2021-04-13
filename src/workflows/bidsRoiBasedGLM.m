@@ -1,8 +1,11 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function bidsRoiBasedGLM(opt)
   %
+  % Will run a GLM within a ROI using MarsBar.
   %
+  % Will compute the percent signal change and the time course of the events
+  % or blocks of contrast specified in the BIDS model.
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   if ~opt.glm.roibased.do
     message = sprintf( ...

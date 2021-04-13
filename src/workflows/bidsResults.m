@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsResults(opt, funcFWHM, conFWHM)
   %
   % Computes the results for a series of contrast that can be
@@ -20,6 +18,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
   %                 images (Gaussian kernel size).
   % :type conFWHM: scalar
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'computing GLM results');
 

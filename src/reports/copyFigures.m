@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function copyFigures(BIDS, opt, subLabel)
   %
   % Copy the figures from spatial preprocessing into a separate folder.
@@ -16,6 +14,7 @@ function copyFigures(BIDS, opt, subLabel)
   % :type subLabel: string
   %
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   imgNb = copyGraphWindownOutput(opt, subLabel, 'realign');
 

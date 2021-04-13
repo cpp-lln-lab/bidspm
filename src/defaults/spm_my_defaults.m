@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function spm_my_defaults()
   %
   % Short description of what the function does goes here.
@@ -15,6 +13,8 @@ function spm_my_defaults()
   % When "not enough" information is specified in the batch files, SPM falls
   % back on the defaults to fill in the blanks. This allows to make the
   % script simpler.
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
   global defaults
 

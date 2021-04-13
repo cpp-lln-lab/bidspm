@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsRealignUnwarp(opt)
   %
   % Realigns and unwarps the functional data of a given task.
@@ -17,6 +15,7 @@ function bidsRealignUnwarp(opt)
   % If the ``bidsCreateVDM()`` workflow has been run before the voxel displacement
   % maps will be used unless ``opt.useFieldmaps`` is set to ``false``.
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'realign and unwarp');
 

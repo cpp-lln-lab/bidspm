@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy, unZip)
   %
   % Copies the folders from the ``raw`` folder to the
@@ -25,6 +23,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy, unZip)
   % :param unZip:
   % :type unZip: boolean
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   %% input variables default values
 

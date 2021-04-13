@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function opt = createDefaultModel(BIDS, opt)
   %
   % Creates a default model json file.
@@ -49,6 +47,7 @@ function opt = createDefaultModel(BIDS, opt)
   %
   %   createDefaultModel(BIDS, opt);
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   % TODO deal with the Transformations and Convolve fields
 

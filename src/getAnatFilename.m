@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
   %
   % Get the filename and the directory of an anat file for a given session and run.
@@ -21,6 +19,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
   % :returns: - :anatImage: (string)
   %           - :anatDataDir: (string)
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   anatSuffix = opt.anatReference.type;
   anatSession = opt.anatReference.session;

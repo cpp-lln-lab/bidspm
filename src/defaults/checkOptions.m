@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function opt = checkOptions(opt)
   %
   % Check the option inputs and add any missing field with some defaults
@@ -62,6 +60,8 @@ function opt = checkOptions(opt)
   %         substantially improves fMRI reliability'
   %         _https://www.nature.com/articles/s41467-019-09230-w.pdf
   %
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
   fieldsToSet = setDefaultOption();
 

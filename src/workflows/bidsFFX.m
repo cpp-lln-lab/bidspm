@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsFFX(action, opt, funcFWHM)
   %
   % - builds the subject level fMRI model and estimates it.
@@ -27,6 +25,7 @@ function bidsFFX(action, opt, funcFWHM)
   % For unsmoothed data ``funcFWHM = 0``, for smoothed data ``funcFWHM = ... mm``.
   % In this way we can make multiple ffx for different smoothing degrees.
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if opt.glm.roibased.do
     message = sprintf( ...

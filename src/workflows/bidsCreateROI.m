@@ -1,6 +1,6 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function bidsCreateROI(opt)
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   if nargin < 1
     opt = [];

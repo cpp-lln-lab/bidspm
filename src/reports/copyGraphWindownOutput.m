@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
   %
   % Looks into the current directory for an ``spm_.*imgNb.png`` file and moves it into
@@ -23,6 +21,7 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
   %
   % :returns: :imgNb: (integer) number of the next image to get.
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   if nargin < 4 || isempty(imgNb)
     imgNb = 1;

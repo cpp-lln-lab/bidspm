@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
   % Wrapper function to fetch specific info in a BIDS structure returned by
@@ -47,6 +45,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   % :param type:            datatype (``bold``, ``events``, ``physio``)
   % :type type:             string
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   varargout = {}; %#ok<*NASGU>
 

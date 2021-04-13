@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsSmoothing(funcFWHM, opt)
   %
   % This performs smoothing to the functional data using a full width
@@ -15,6 +13,7 @@ function bidsSmoothing(funcFWHM, opt)
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
+  % (C) Copyright 2020 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'smoothing functional data');
 

@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
   %
   % Make 4D images of beta and t-maps for the MVPA. ::
@@ -15,6 +13,7 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
   % :param deleteIndTmaps: decide to delete t-maps
   % :type funcFWHM: (boolean)
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   % delete individual Beta and tmaps
   if nargin < 3

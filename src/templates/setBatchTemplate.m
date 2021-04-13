@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchTemplate(matlabbatch, BIDS, opt, subID, info, varargin)
   %
   % template to creae new setBatch functions
@@ -12,6 +10,8 @@ function matlabbatch = setBatchTemplate(matlabbatch, BIDS, opt, subID, info, var
   % :type matlabbatch:
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   printBatchName('name for this batch');
 

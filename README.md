@@ -114,6 +114,14 @@ Please see our
 [documentation](https://cpp-bids-spm.readthedocs.io/en/latest/index.html) for
 more info.
 
+## Octave compatibility
+
+The following features do not yet work with Octave:
+
+-   anatomicalQA
+-   functionalQA
+-   slice_display toolbox
+
 ## Contributing
 
 Feel free to open issues to report a bug and ask for improvements.

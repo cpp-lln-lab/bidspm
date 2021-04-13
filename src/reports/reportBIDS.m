@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function reportBIDS(opt)
   %
   % Prints out a human readable description of a BIDS data set.
@@ -16,6 +14,7 @@ function reportBIDS(opt)
   %
   %     - save output in the derivatires folder
   %       derivativeDir = fullfile(rawDir, '..', 'derivatives', 'cpp_spm');
+  % (C) Copyright 2020 CPP_SPM developers
 
   bids.report(opt.dataDir);
 

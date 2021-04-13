@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function sliceOrder = getSliceOrder(opt, verbose)
   %
   % Get the slice order information from the BIDS metadata or from the ``opt``
@@ -25,6 +23,7 @@ function sliceOrder = getSliceOrder(opt, verbose)
   %
   % See also: ``bidsSTC``
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 2
     verbose = false;
