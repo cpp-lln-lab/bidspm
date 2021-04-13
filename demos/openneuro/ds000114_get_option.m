@@ -20,7 +20,7 @@ function opt = ds000114_get_option()
   opt.taskName = 'linebisection';
 
   opt.anatReference.type = 'T1w';
-  opt.anatReference.session = 2;
+  opt.anatReference.session = 'retest';
 
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp
