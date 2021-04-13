@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchResults(matlabbatch, result)
   %
   % Outputs the typical matlabbatch to compute the results for a given contrast
@@ -21,63 +19,81 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   % :returns: - :matlabbatch: (structure)
   %
   %
+  % (C) Copyright 2019 CPP_SPM developers
+
+  result.outputNameStructure.sub = result.label;
+  result.outputNameStructure.desc = result.Contrasts.Name;
+  result.outputNameStructure.p = num2str(result.Contrasts.p);
+  result.outputNameStructure.k = num2str(result.Contrasts.k);
+  result.outputNameStructure.MC = result.Contrasts.MC;
 
   fieldsToSet = returnDefaultResultsStructure();
-  result = setDefaultFields(result, fieldsToSet);
+  result = setFields(result, fieldsToSet);
   result.Contrasts = replaceEmptyFields(result.Contrasts, fieldsToSet.Contrasts);
 
-  matlabbatch{end + 1}.spm.stats.results.spmmat = {fullfile(result.dir, 'SPM.mat')};
+  stats.results.spmmat = {fullfile(result.dir, 'SPM.mat')};
 
-  matlabbatch{end}.spm.stats.results.conspec.titlestr = returnName(result);
+  stats.results.conspec.titlestr = returnName(result);
 
-  matlabbatch{end}.spm.stats.results.conspec.contrasts = result.contrastNb;
-  matlabbatch{end}.spm.stats.results.conspec.threshdesc = result.Contrasts.MC;
-  matlabbatch{end}.spm.stats.results.conspec.thresh = result.Contrasts.p;
-  matlabbatch{end}.spm.stats.results.conspec.extent = result.Contrasts.k;
-  matlabbatch{end}.spm.stats.results.conspec.conjunction = 1;
-  matlabbatch{end}.spm.stats.results.conspec.mask.none = ~result.Contrasts.useMask;
+  stats.results.conspec.contrasts = result.contrastNb;
+  stats.results.conspec.threshdesc = result.Contrasts.MC;
+  stats.results.conspec.thresh = result.Contrasts.p;
+  stats.results.conspec.extent = result.Contrasts.k;
+  stats.results.conspec.conjunction = 1;
+  stats.results.conspec.mask.none = ~result.Contrasts.useMask;
 
-  matlabbatch{end}.spm.stats.results.units = 1;
+  stats.results.units = 1;
 
-  matlabbatch{end}.spm.stats.results.export = [];
+  matlabbatch{end + 1}.spm.stats = stats;
+
+  %% set up how to export the results
+  export = [];
   if result.Output.png
-    matlabbatch{end}.spm.stats.results.export{end + 1}.png = true;
+    export{end + 1}.png = true;
   end
 
   if result.Output.csv
-    matlabbatch{end}.spm.stats.results.export{end + 1}.csv = true;
+    export{end + 1}.csv = true;
   end
 
   if result.Output.thresh_spm
-    matlabbatch{end}.spm.stats.results.export{end + 1}.tspm.basename = returnName(result);
+    result.outputNameStructure.ext = '';
+    export{end + 1}.tspm.basename = createFilename(result.outputNameStructure);
   end
 
   if result.Output.binary
-    matlabbatch{end}.spm.stats.results.export{end + 1}.binary.basename = [returnName(result), ...
-                                                                          '_mask'];
+    result.outputNameStructure.ext = '';
+    result.outputNameStructure.type = 'mask';
+    export{end + 1}.binary.basename = createFilename(result.outputNameStructure);
   end
 
   if result.Output.NIDM_results
 
-    matlabbatch{end}.spm.stats.results.export{end + 1}.nidm.modality = 'FMRI';
+    nidm.modality = 'FMRI';
 
-    matlabbatch{end}.spm.stats.results.export{end}.nidm.refspace = 'ixi';
+    nidm.refspace = 'ixi';
     if strcmp(result.space, 'individual')
-      matlabbatch{end}.spm.stats.results.export{end}.nidm.refspace = 'subject';
+      nidm.refspace = 'subject';
     end
 
-    matlabbatch{end}.spm.stats.results.export{end}.nidm.group.nsubj = result.nbSubj;
+    nidm.group.nsubj = result.nbSubj;
 
-    matlabbatch{end}.spm.stats.results.export{end}.nidm.group.label = result.label;
+    nidm.group.label = result.label;
+
+    export{end + 1}.nidm = nidm;
 
   end
+
+  matlabbatch{end}.spm.stats.results.export = export;
 
   if result.Output.montage.do
 
     matlabbatch{end}.spm.stats.results.export{end + 1}.montage = setMontage(result);
 
     % Not sure why the name of the figure does not come out right
-    matlabbatch{end + 1}.spm.util.print.fname = ['Montage_' returnName(result)];
+    result.outputNameStructure.ext = '';
+    result.outputNameStructure.type = 'montage';
+    matlabbatch{end + 1}.spm.util.print.fname = createFilename(result.outputNameStructure);
     matlabbatch{end}.spm.util.print.fig.figname = 'SliceOverlay';
     matlabbatch{end}.spm.util.print.opts = 'png';
 

@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFWHM)
   %
   % Short description of what the function does goes here.
@@ -19,6 +17,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
   %
   % :returns: - :matlabbatch: (structure)
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('specify group level fmri model');
 
@@ -28,7 +27,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
     smoothPrefix = ['s', num2str(conFWHM)];
   end
 
-  [group, opt] = getData(opt);
+  [~, opt] = getData(opt);
 
   rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
 
@@ -54,34 +53,27 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
 
     mkdir(directory);
 
-    % For each group
-    for iGroup = 1:length(group)
+    icell(1).levels = 1; %#ok<*AGROW>
 
-      groupName = group(iGroup).name;
+    for iSub = 1:numel(opt.subjects)
 
-      icell(iGroup).levels = iGroup; %#ok<*AGROW>
+      subLabel = opt.subjects{iSub};
 
-      for iSub = 1:group(iGroup).numSub
+      printProcessingSubject(iSub, subLabel);
 
-        subID = group(iGroup).subNumber{iSub};
+      % FFX directory and load SPM.mat of that subject
+      ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+      load(fullfile(ffxDir, 'SPM.mat'));
 
-        printProcessingSubject(groupName, iSub, subID);
+      % find which contrast of that subject has the name of the contrast we
+      % want to bring to the group level
+      conIdx = find(strcmp({SPM.xCon.name}, conName));
+      fileName = sprintf('con_%0.4d.nii', conIdx);
+      file = validationInputFile(ffxDir, fileName, smoothPrefix);
 
-        % FFX directory and load SPM.mat of that subject
-        ffxDir = getFFXdir(subID, funcFWHM, opt);
-        load(fullfile(ffxDir, 'SPM.mat'));
+      icell(1).scans(iSub, :) = {file};
 
-        % find which contrast of that subject has the name of the contrast we
-        % want to bring to the group level
-        conIdx = find(strcmp({SPM.xCon.name}, conName));
-        fileName = sprintf('con_%0.4d.nii', conIdx);
-        file = validationInputFile(ffxDir, fileName, smoothPrefix);
-
-        icell(iGroup).scans(iSub, :) = {file};
-
-        fprintf(1, ' %s\n\n', file);
-
-      end
+      fprintf(1, ' %s\n\n', file);
 
     end
 

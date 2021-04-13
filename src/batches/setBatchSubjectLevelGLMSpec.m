@@ -1,12 +1,10 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   %
   % Short description of what the function does goes here.
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subID, funcFWHM)
+  %   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel, funcFWHM)
   %
   % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
   %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
@@ -18,8 +16,9 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % :returns: - :argout1: (type) (dimension)
   %           - :argout2: (type) (dimension)
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
-  [matlabbatch, BIDS, opt, subID, funcFWHM] =  deal(varargin{:});
+  [matlabbatch, BIDS, opt, subLabel, funcFWHM] =  deal(varargin{:});
 
   printBatchName('specify subject level fmri model');
 
@@ -34,7 +33,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     % slice in the first bold image to set the number of time bins
     % we will use to upsample our model during regression creation
     fileName = bids.query(BIDS, 'data', ...
-                          'sub', subID, ...
+                          'sub', subLabel, ...
                           'type', 'bold');
     fileName = strrep(fileName{1}, '.gz', '');
     hdr = spm_vol(fileName);
@@ -64,7 +63,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   % Create ffxDir if it doesnt exist
   % If it exists, issue a warning that it has been overwritten
-  ffxDir = getFFXdir(subID, funcFWHM, opt);
+  ffxDir = getFFXdir(subLabel, funcFWHM, opt);
   if exist(ffxDir, 'dir') %
     warning('overwriting directory: %s \n', ffxDir);
     rmdir(ffxDir, 's');
@@ -87,20 +86,20 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   %                 matlabbatch{end}.spm.stats.fmri_spec.cvi = 'AR(1)';
 
   % identify sessions for this subject
-  [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   sesCounter = 1;
   for iSes = 1:nbSessions
 
     % get all runs for that subject across all sessions
     [runs, nbRuns] = ...
-        getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+        getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
     for iRun = 1:nbRuns
 
       % get functional files
       [fullpathBoldFileName, prefix]  = ...
-          getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun);
+          getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
 
       disp(fullpathBoldFileName);
 
@@ -108,12 +107,12 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
           {fullpathBoldFileName};
 
       % get stimuli onset time file
-      tsvFile = getInfo(BIDS, subID, opt, 'filename', ...
+      tsvFile = getInfo(BIDS, subLabel, opt, 'filename', ...
                         sessions{iSes}, ...
                         runs{iRun}, ...
                         'events');
       fullpathOnsetFileName = createAndReturnOnsetFile(opt, ...
-                                                       subID, ...
+                                                       subLabel, ...
                                                        tsvFile, ...
                                                        funcFWHM);
 

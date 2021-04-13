@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function rfxDir = getRFXdir(opt, funcFWHM, conFWHM)
   %
   % Sets the name the group level analysis directory and creates it if it does not exist
@@ -21,15 +19,22 @@ function rfxDir = getRFXdir(opt, funcFWHM, conFWHM)
   %
   % :returns: :rfxDir: (string) Fullpath of the group level directory
   %
+  % (C) Copyright 2019 CPP_SPM developers
+
+  glmDirName = createGlmDirName(opt, funcFWHM);
+
+  glmDirName = [glmDirName, '_conFWHM-', num2str(conFWHM)];
+
+  model = spm_jsonread(opt.model.file);
+  if ~isempty(model.Name) && ~strcmpi(model.Name, opt.taskName)
+    glmDirName = [glmDirName, '_desc-', convertToValidCamelCase(model.Name)];
+  end
 
   rfxDir = fullfile( ...
-                    opt.derivativesDir, ...
+                    opt.dir.stats, ...
                     'group', ...
-                    ['rfx_task-', opt.taskName], ...
-                    ['rfx_funcFWHM-', num2str(funcFWHM), '_conFWHM-', num2str(conFWHM)]);
+                    glmDirName);
 
-  if ~exist(rfxDir, 'dir')
-    mkdir(rfxDir);
-  end
+  spm_mkdir(rfxDir);
 
 end

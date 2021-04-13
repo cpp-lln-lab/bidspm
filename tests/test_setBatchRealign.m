@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP_SPM developers
+
 function test_suite = test_setBatchRealign %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -14,18 +16,13 @@ function test_setBatchRealignBasic()
   % add test realign and unwarp
   % check it returns the right voxDim
 
-  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', ...
-                         'MoAE', 'output', 'MoAEpilot');
-  opt.taskName = 'auditory';
+  subLabel = '01';
 
-  opt = checkOptions(opt);
-
-  [~, opt, BIDS] = getData(opt);
-
-  subID = '01';
+  opt = setOptions('MoAE', subLabel);
+  [BIDS, opt] = getData(opt);
 
   matlabbatch = [];
-  matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch{1}.spm.spatial.realignunwarp.eoptions.weight = {''};
   expectedBatch{end}.spm.spatial.realignunwarp.uwroptions.uwwhich = [2 1];
@@ -33,7 +30,7 @@ function test_setBatchRealignBasic()
   runCounter = 1;
   for iSes = 1
     fileName = spm_BIDS(BIDS, 'data', ...
-                        'sub', subID, ...
+                        'sub', subLabel, ...
                         'task', opt.taskName, ...
                         'type', 'bold');
 

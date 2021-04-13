@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function bidsSTC(opt)
   %
   % Performs the slie timing correction of the functional data.
@@ -29,30 +27,21 @@ function bidsSTC(opt)
   %
   % See the documentation for more information about slice timing correction.
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
-  if nargin < 1
-    opt = [];
-  end
+  [BIDS, opt] = setUpWorkflow(opt, 'slice timing correction');
 
-  [BIDS, opt, group] = setUpWorkflow(opt, 'slice timing correction');
+  parfor iSub = 1:numel(opt.subjects)
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+    subLabel = opt.subjects{iSub};
 
-    groupName = group(iGroup).name;
+    printProcessingSubject(iSub, subLabel);
 
-    parfor iSub = 1:group(iGroup).numSub
+    matlabbatch = [];
+    matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
-      subID = group(iGroup).subNumber{iSub};
+    saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
 
-      printProcessingSubject(groupName, iSub, subID);
-
-      matlabbatch = [];
-      matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID);
-
-      saveAndRunWorkflow(matlabbatch, 'STC', opt, subID);
-
-    end
   end
 
 end

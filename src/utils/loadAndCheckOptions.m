@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function opt = loadAndCheckOptions(optionJsonFile)
   %
   % Loads the json file provided describing the options of an analysis. It then checks
@@ -23,9 +21,13 @@ function opt = loadAndCheckOptions(optionJsonFile)
   % .. TODO
   %
   %    - add test for when the input is a structure.
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 1 || isempty(optionJsonFile)
-    optionJsonFile = spm_select('FPList', pwd, '^options_task-.*.json$');
+    optionJsonFile = spm_select('FPList', ...
+                                fullfile(pwd, 'cfg'), ...
+                                '^options_task-.*.json$');
   end
 
   if isstruct(optionJsonFile)

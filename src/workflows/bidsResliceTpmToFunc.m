@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsResliceTpmToFunc(opt)
   %
   % Reslices the tissue probability map (TPMs) from the segmentation to the mean
@@ -20,57 +18,46 @@ function bidsResliceTpmToFunc(opt)
   % as the computation of the tSNR by ``spmup`` requires the TPMs to have the same dimension
   % as the functional.
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
-  if nargin < 1
-    opt = [];
-  end
+  [BIDS, opt] = setUpWorkflow(opt, 'reslicing tissue probability maps to functional dimension');
 
-  [BIDS, opt, group] = setUpWorkflow(opt, ...
-                                     'reslicing tissue probability maps to functional dimension');
+  for iSub = 1:numel(opt.subjects)
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+    subLabel = opt.subjects{iSub};
 
-    groupName = group(iGroup).name;
+    printProcessingSubject(iSub, subLabel);
 
-    for iSub = 1:group(iGroup).numSub
+    [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
 
-      subID = group(iGroup).subNumber{iSub};
+    % get grey and white matter and CSF tissue probability maps
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    TPMs = validationInputFile(anatDataDir, anatImage, 'c[123]');
 
-      printProcessingSubject(groupName, iSub, subID);
+    matlabbatch = [];
+    matlabbatch = setBatchReslice(matlabbatch, ...
+                                  fullfile(meanFuncDir, meanImage), ...
+                                  cellstr(TPMs));
 
-      [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt);
+    saveAndRunWorkflow(matlabbatch, 'reslice_tpm', opt, subLabel);
 
-      % get grey and white matter and CSF tissue probability maps
-      [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
-      TPMs = validationInputFile(anatDataDir, anatImage, 'c[123]');
+    %% Compute brain mask of functional
+    TPMs = validationInputFile(anatDataDir, anatImage, 'rc[123]');
+    % greay matter
+    input{1, 1} = TPMs(1, :);
+    % white matter
+    input{2, 1} = TPMs(2, :);
+    % csf
+    input{3, 1} = TPMs(3, :);
 
-      matlabbatch = [];
-      matlabbatch = setBatchReslice(matlabbatch, ...
-                                    fullfile(meanFuncDir, meanImage), ...
-                                    cellstr(TPMs));
+    output = strrep(meanImage, '.nii', '_mask.nii');
 
-      saveAndRunWorkflow(matlabbatch, 'reslice_tpm', opt, subID);
+    expression = sprintf('(i1+i2+i3)>%f', opt.skullstrip.threshold);
 
-      %% Compute brain mask of functional
-      TPMs = validationInputFile(anatDataDir, anatImage, 'rc[123]');
-      % greay matter
-      input{1, 1} = TPMs(1, :);
-      % white matter
-      input{2, 1} = TPMs(2, :);
-      % csf
-      input{3, 1} = TPMs(3, :);
+    matlabbatch = [];
+    matlabbatch = setBatchImageCalculation(matlabbatch, input, output, meanFuncDir, expression);
 
-      output = strrep(meanImage, '.nii', '_mask.nii');
-
-      expression = sprintf('(i1+i2+i3)>%f', opt.skullstrip.threshold);
-
-      matlabbatch = [];
-      matlabbatch = setBatchImageCalculation(matlabbatch, input, output, meanFuncDir, expression);
-
-      saveAndRunWorkflow(matlabbatch, 'create_functional_brain_mask', opt, subID);
-
-    end
+    saveAndRunWorkflow(matlabbatch, 'create_functional_brain_mask', opt, subLabel);
 
   end
 

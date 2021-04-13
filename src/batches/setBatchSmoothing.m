@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSmoothing(matlabbatch, images, FWHM, prefix)
   %
   % Small wrapper to create smoothing batch
@@ -20,6 +18,7 @@ function matlabbatch = setBatchSmoothing(matlabbatch, images, FWHM, prefix)
   % :returns: - :matlabbatch: (structure)
   %
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('smoothing images');
 

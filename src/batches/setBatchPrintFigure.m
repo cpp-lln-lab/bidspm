@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchPrintFigure(matlabbatch, figureName)
   %
   % template to creae new setBatch functions
@@ -14,8 +12,10 @@ function matlabbatch = setBatchPrintFigure(matlabbatch, figureName)
   % :type figureName:  string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
-  if ~spm('CmdLine', true)
+  if spm('CmdLine', true)
 
     printBatchName('print figure');
 

@@ -1,38 +1,51 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
-function varargout = getInfo(BIDS, subID, opt, info, varargin)
+function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
   % Wrapper function to fetch specific info in a BIDS structure returned by
   % spm_bids.
   %
   % USAGE::
   %
-  %   varargout = getInfo(BIDS, subID, opt, info, varargin)
+  %   varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
-  % :param BIDS: (structure) returned by bids.query when exploring a BIDS data set.
-  % :param subID: ID of the subject
-  % :param opt: (structure) Mostly used to find the task name.
-  % :param info: (strint) ``sessions``, ``runs``, ``filename``.
-  % :param varargin: see below
+  % If info = ``sessions``, this returns name of the sessions and their number::
   %
-  % - subID - ID of the subject ; in BIDS lingo that means that for a file name
-  %   ``sub-02_task-foo_bold.nii`` the subID will be the string ``02``
-  % - session - ID of the session of interes ; in BIDS lingo that means that for a file name
-  %   ``sub-02_ses-pretest_task-foo_bold.nii`` the sesssion will be the string
-  %   ``pretest``
-  % - run: ID of the run of interest
-  % - type - string ; modality type to look for. For example: ``bold``, ``events``,
-  %   ``stim``, ``physio``
+  %   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'sessions')
   %
-  % for a given BIDS data set, subject identity, and info type,
+  % If info = ``runs``, this returns name of the runs and their number for a
+  % specified session::
   %
-  % if info = Sessions, this returns name of the sessions and their number
+  %   [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'runs', sessionID)
   %
-  % if info = Runs, this returns name of the runs and their number for an specified session.
+  % If info = ``filename``, this returns the name of the file for a specified
+  % session and run::
   %
-  % if info = Filename, this returns the name of the file for an specified
-  % session and run.
+  %   filenames = getInfo(BIDS, subLabel, opt, 'filename', sessionID, runID, type)
   %
+  %
+  % :param BIDS:            returned by bids.layout when exploring a BIDS data set.
+  % :type BIDS:             structure
+  %
+  % :param subLabel:        label of the subject ; in BIDS lingo that means that for a file name
+  %                         ``sub-02_task-foo_bold.nii`` the subID will be the string ``02``
+  % :type subLabel:         string
+  %
+  % :param opt:             Used to find the task name and to pass extra ``query``
+  %                         options.
+  % :type opt:              structure
+  %
+  % :param info:            ``sessions``, ``runs``, ``filename``.
+  % :type info:             string
+  %
+  % :param sessionLabel:   session label (for `ses-001`, the label will be `001`)
+  % :type sessionLabel:    string
+  %
+  % :param runIdx:          run index label (for `run-001`, the label will be `001`)
+  % :type runIdx:           string
+  %
+  % :param type:            datatype (``bold``, ``events``, ``physio``)
+  % :type type:             string
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   varargout = {}; %#ok<*NASGU>
 
@@ -40,9 +53,21 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
 
     case 'sessions'
 
-      sessions = bids.query(BIDS, 'sessions', ...
-                            'sub', subID, ...
-                            'task', opt.taskName);
+      if isfield(opt, 'taskName')
+        query = struct( ...
+                       'sub',  subLabel, ...
+                       'task', opt.taskName);
+      else
+        query = struct('sub',  subLabel);
+      end
+      % upate query with pre-specified options
+      % overwrite is set to true in this case because we might want to run
+      % analysis only on certain sessions
+      overwrite = true;
+      query = setFields(query, opt.query, overwrite);
+
+      sessions = bids.query(BIDS, 'sessions', query);
+
       nbSessions = size(sessions, 2);
       if nbSessions == 0
         nbSessions = 1;
@@ -55,12 +80,17 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
 
       session = varargin{1};
 
-      runs = bids.query(BIDS, 'runs', ...
-                        'sub', subID, ...
-                        'task', opt.taskName, ...
-                        'ses', session, ...
-                        'type', 'bold');
-      nbRuns = size(runs, 2);     % Get the number of runs
+      query = struct( ...
+                     'sub',  subLabel, ...
+                     'task', opt.taskName, ...
+                     'ses', session, ...
+                     'type', 'bold');
+
+      query = setFields(query, opt.query);
+
+      runs = bids.query(BIDS, 'runs', query);
+
+      nbRuns = size(runs, 2);
 
       if nbRuns == 0
         nbRuns = 1;
@@ -73,12 +103,19 @@ function varargout = getInfo(BIDS, subID, opt, info, varargin)
 
       [session, run, type] = deal(varargin{:});
 
-      varargout = bids.query(BIDS, 'data', ...
-                             'sub', subID, ...
-                             'run', run, ...
-                             'ses', session, ...
-                             'task', opt.taskName, ...
-                             'type', type);
+      query = struct( ...
+                     'sub',  subLabel, ...
+                     'task', opt.taskName, ...
+                     'ses', session, ...
+                     'run', run, ...
+                     'type', type);
+
+      % use the extra query options specified in the options
+      query = setFields(query, opt.query);
+
+      filenames = bids.query(BIDS, 'data', query);
+
+      varargout = {char(filenames)};
 
     otherwise
       error('Not sure what info you want me to get.');

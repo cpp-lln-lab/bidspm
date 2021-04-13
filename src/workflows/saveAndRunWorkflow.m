@@ -1,6 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
-function saveAndRunWorkflow(matlabbatch, batchName, opt, subID)
+function saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   %
   % Saves the SPM matlabbatch and runs it
   %
@@ -17,14 +15,16 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subID)
   % :type opt: structure
   % :param subID: subject ID
   % :type subID: string
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
   if nargin < 4
-    subID = [];
+    subLabel = [];
   end
 
   if ~isempty(matlabbatch)
 
-    saveMatlabBatch(matlabbatch, batchName, opt, subID);
+    saveMatlabBatch(matlabbatch, batchName, opt, subLabel);
 
     spm_jobman('run', matlabbatch);
 

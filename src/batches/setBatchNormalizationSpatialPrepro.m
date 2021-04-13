@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim)
   %
   % Short description of what the function does goes here.
@@ -17,10 +15,11 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxD
   %
   % :returns: - :matlabbatch: (structure)
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   jobsToAdd = numel(matlabbatch) + 1;
 
-  for iJob = jobsToAdd:(jobsToAdd + 4)
+  for iJob = jobsToAdd:(jobsToAdd + 5)
 
     % set the deformation field for all the images we are about to normalize
     deformationField = ...
@@ -95,5 +94,17 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxD
               substruct( ...
                         '.', 'tiss', '()', {3}, ...
                         '.', 'c', '()', {':'}));
+
+  % NORMALIZE SKULSTRIPPED STRUCTURAL
+  printBatchName('normalise skullstripped anatomical images');
+  matlabbatch{jobsToAdd + 5}.spm.spatial.normalise.write.subj.resample(1) = ...
+      cfg_dep('Image Calculator: skullstripped anatomical', ...
+              substruct( ...
+                        '.', 'val', '{}', {opt.orderBatches.skullStripping}, ...
+                        '.', 'val', '{}', {1}, ...
+                        '.', 'val', '{}', {1}), ...
+              substruct('.', 'files'));
+  % size 3 allow to run RunQA / original voxel size at acquisition
+  matlabbatch{jobsToAdd + 5}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
 
 end

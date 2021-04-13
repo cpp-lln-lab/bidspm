@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2019 CPP_SPM developers
 
 function test_suite = test_setBatchSkullStripping %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
@@ -10,21 +10,16 @@ end
 
 function test_setBatchSkullStrippingBasic()
 
-  subID = '01';
+  subLabel = '01';
 
-  opt.taskName = 'vislocalizer';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.groups = {''};
-  opt.subjects = {subID};
+  opt = setOptions('vislocalizer', subLabel);
 
-  opt = checkOptions(opt);
-
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   opt.orderBatches.segment = 2;
 
   matlabbatch = [];
-  matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch = returnExpectedBatch(opt);
 

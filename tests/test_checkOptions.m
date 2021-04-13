@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP_SPM developers
+
 function test_suite = test_checkOptions %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -11,8 +13,7 @@ function test_checkOptionsBasic()
   opt.taskName = 'testTask';
   opt = checkOptions(opt);
 
-  expectedOptions = defaultOptions();
-  expectedOptions.taskName = 'testTask';
+  expectedOptions = defaultOptions('testTask');
 
   assertEqual(opt, expectedOptions);
 
@@ -74,43 +75,13 @@ function test_checkOptionsErrorVoxDim()
 
 end
 
-function expectedOptions = defaultOptions()
+function test_checkOptionsSessionString()
 
-  expectedOptions.sliceOrder = [];
-  expectedOptions.STC_referenceSlice = [];
+  opt.taskName = 'testTask';
+  opt.anatReference.session = 1;
 
-  expectedOptions.dataDir = '';
-  expectedOptions.derivativesDir = '';
-
-  expectedOptions.funcVoxelDims = [];
-
-  expectedOptions.groups = {''};
-  expectedOptions.subjects = {[]};
-
-  expectedOptions.space = 'MNI';
-
-  expectedOptions.anatReference.type = 'T1w';
-  expectedOptions.anatReference.session = [];
-
-  expectedOptions.skullstrip.threshold = 0.75;
-
-  expectedOptions.realign.useUnwarp = true;
-  expectedOptions.useFieldmaps = true;
-
-  expectedOptions.taskName = '';
-
-  expectedOptions.zeropad = 2;
-
-  expectedOptions.contrastList = {};
-  expectedOptions.model.file = '';
-  expectedOptions.model.hrfDerivatives = [0 0];
-
-  expectedOptions.result.Steps = returnDefaultResultsStructure();
-
-  expectedOptions.parallelize.do = false;
-  expectedOptions.parallelize.nbWorkers = 3;
-  expectedOptions.parallelize.killOnExit = true;
-
-  expectedOptions = orderfields(expectedOptions);
+  assertExceptionThrown( ...
+                        @()checkOptions(opt), ...
+                        'checkOptions:sessionNotString');
 
 end

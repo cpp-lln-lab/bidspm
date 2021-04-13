@@ -4,3 +4,12 @@
 [submodule "lib/spmup"]
 	path = lib/spmup
 	url = https://github.com/CPernet/spmup.git
+[submodule "lib/CPP_ROI"]
+	path = lib/CPP_ROI
+	url = https://github.com/cpp-lln-lab/CPP_ROI.git
+[submodule "lib/slice_display"]
+	path = lib/slice_display
+	url = https://github.com/bramzandbelt/slice_display.git
+[submodule "lib/brain_colours"]
+	path = lib/brain_colours
+	url = https://github.com/CPernet/brain_colours.git

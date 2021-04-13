@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP_SPM developers
+
 function test_suite = test_bidsCopyRawFolder %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -8,13 +10,7 @@ end
 
 function test_bidsCopyRawFolderBasic()
 
-  opt.dataDir = fullfile( ...
-                         fileparts(mfilename('fullpath')), ...
-                         '..', 'demos',  'MoAE', 'output', 'MoAEpilot');
-
-  opt.taskName = 'auditory';
-
-  opt = checkOptions(opt);
+  opt = setOptions('MoAE');
 
   bidsCopyRawFolder(opt, 1);
 
@@ -53,8 +49,6 @@ function test_bidsCopyRawFolder2tasks()
                                 'dummyData', 'copy');
 
   opt.taskName = 'vismotion';
-
-  opt = checkOptions(opt);
 
   unZip = false;
   deleteZippedNii = false;

@@ -1,0 +1,8 @@
+{
+  "Name": "nback MVPA",
+  "Description": "for folder naming",
+  "Input": {
+    "task": "nback"
+  }
+}
+  

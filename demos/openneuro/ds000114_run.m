@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP_SPM developers
 
 % runDs00014
 
@@ -9,17 +9,10 @@ clc;
 FWHM = 6;
 conFWHM = 6;
 
-% directory with this script becomes the current directory
-WD = fileparts(mfilename('fullpath'));
-
-% we add all the subfunctions that are in the sub directories
-addpath(genpath(fullfile(WD, '..', '..', 'src')));
-addpath(genpath(fullfile(WD, '..', '..', 'lib')));
+run ../../initCppSpm.m;
 
 %% Set options
-opt = ds000114_getOption();
-
-checkDependencies();
+opt = ds000114_get_option();
 
 %% Run batches
 

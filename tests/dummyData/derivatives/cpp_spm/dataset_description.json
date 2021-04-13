@@ -1,23 +1,29 @@
 {
-    "License": "",
-    "Authors": [
-        "John Doe",
-        "Charles Darwin",
-        "Freddy Krueger"
-    ],
-    "Acknowledgements": "Thanks to all to tests that failed courageously.",
-    "HowToAcknowledge": "",
-    "Funding": [
-        "",
-        "",
-        ""
-    ],
-    "ReferencesAndLinks": [
-        "",
-        "",
-        ""
-    ],
-    "DatasetDOI": "doi:10.18112/openneuro.ds000114.v1.0.1",
-    "Name": "dummyData",
-    "BIDSVersion": "1.1.0"
+   "Acknowledgements": "",
+   "Authors": [""],
+   "BIDSVersion": "1.4.1",
+   "DatasetDOI": "",
+   "DatasetType": "derivative",
+   "Funding": [""],
+   "GeneratedBy": [
+      {
+         "Name": "cpp_spm",
+         "Version": "v0.2.0",
+         "Container": {
+            "Type": "",
+            "Tag": ""
+         }
+      }
+   ],
+   "HowToAcknowledge": "",
+   "License": "",
+   "Name": "cpp_spm outputs",
+   "ReferencesAndLinks": [""],
+   "SourceDatasets": [
+      {
+         "DOI": "doi:10.18112/openneuro.ds000114.v1.0.1",
+         "URL": "",
+         "Version": ""
+      }
+   ]
 }

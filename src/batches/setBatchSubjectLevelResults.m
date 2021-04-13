@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % Short description of what the function does goes here.
@@ -12,8 +10,8 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   % :type matlabbatch: structure
   % :param opt:
   % :type opt: structure
-  % :param subID:
-  % :type subID: string
+  % :param subLabel:
+  % :type subLabel: string
   % :param funcFWHM:
   % :type funcFWHM: float
   % :param iStep:
@@ -23,8 +21,9 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % :returns: - :matlabbatch: (structure)
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
-  [matlabbatch, opt, subID, funcFWHM, iStep, iCon] = deal(varargin{:});
+  [matlabbatch, opt, subLabel, funcFWHM, iStep, iCon] = deal(varargin{:});
 
   result.Contrasts = opt.result.Steps(iStep).Contrasts(iCon);
 
@@ -33,11 +32,23 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   end
   result.space = opt.space;
 
-  result.dir = getFFXdir(subID, funcFWHM, opt);
-  result.label = subID;
+  result.dir = getFFXdir(subLabel, funcFWHM, opt);
+  result.label = subLabel;
   result.nbSubj = 1;
 
   result.contrastNb = getContrastNb(result);
+
+  result.outputNameStructure = struct( ...
+                                      'type', 'spmT', ...
+                                      'ext', '.nii', ...
+                                      'sub', '', ...
+                                      'task', opt.taskName, ...
+                                      'space', opt.space, ...
+                                      'desc', '', ...
+                                      'label', 'XXXX', ...
+                                      'p', '', ...
+                                      'k', '', ...
+                                      'MC', '');
 
   matlabbatch = setBatchResults(matlabbatch, result);
 

@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy, unZip)
   %
   % Copies the folders from the ``raw`` folder to the
@@ -25,6 +23,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy, unZip)
   % :param unZip:
   % :type unZip: boolean
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   %% input variables default values
 
@@ -66,54 +65,54 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy, unZip)
   copyTsvJson(rawDir, derivativesDir);
 
   %% Loop through the groups, subjects, sessions
-  [group, opt, BIDS] = getData(opt, rawDir);
+  if ismember(modalitiesToCopy, 'func')
+    [BIDS, opt] = getData(opt, rawDir);
+  else
+    [BIDS, opt] = getData(opt, rawDir, 'T1w');
+  end
 
-  for iGroup = 1:length(group)
+  for iSub = 1:numel(opt.subjects)
 
-    for iSub = 1:group(iGroup).numSub
+    subLabel = opt.subjects{iSub};
 
-      subID = group(iGroup).subNumber{iSub};
+    subDir = returnSubjectDir(subLabel);
 
-      subDir = returnSubjectDir(subID);
+    fprintf('copying subject: %s \n', subDir);
 
-      fprintf('copying subject: %s \n', subDir);
+    [~, ~, ~] =  mkdir(fullfile(derivativesDir, subDir));
 
-      [~, ~, ~] =  mkdir(fullfile(derivativesDir, subDir));
+    % copy scans.tsv files
+    copyTsvJson( ...
+                fullfile(rawDir, subDir), ...
+                fullfile(derivativesDir, subDir));
+
+    [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
+
+    %% copy the whole subject's folder
+    % use a call to system cp function to use the derefence option (-L)
+    % to get the data 'out' of an eventual datalad dataset
+
+    for iSes = 1:nbSessions
+
+      sessionDir = returnSessionDir(sessions{iSes});
+
+      fprintf(' copying session: %s \n', sessionDir);
+
+      [~, ~, ~] =  mkdir(fullfile(derivativesDir, subDir, sessionDir));
 
       % copy scans.tsv files
       copyTsvJson( ...
-                  fullfile(rawDir, subDir), ...
-                  fullfile(derivativesDir, subDir));
+                  fullfile(rawDir, subDir, sessionDir), ...
+                  fullfile(derivativesDir, subDir, sessionDir));
 
-      [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+      modalities = bids.query(BIDS, 'modalities', ...
+                              'sub', subLabel, ...
+                              'ses', sessions{iSes});
+      modalities = intersect(modalities, modalitiesToCopy);
 
-      %% copy the whole subject's folder
-      % use a call to system cp function to use the derefence option (-L)
-      % to get the data 'out' of an eventual datalad dataset
+      copyModalities(BIDS, opt, modalities, subLabel, sessions{iSes});
 
-      for iSes = 1:nbSessions
-
-        sessionDir = returnSessionDir(sessions{iSes});
-
-        fprintf(' copying session: %s \n', sessionDir);
-
-        [~, ~, ~] =  mkdir(fullfile(derivativesDir, subDir, sessionDir));
-
-        % copy scans.tsv files
-        copyTsvJson( ...
-                    fullfile(rawDir, subDir, sessionDir), ...
-                    fullfile(derivativesDir, subDir, sessionDir));
-
-        modalities = bids.query(BIDS, 'modalities', ...
-                                'sub', subID, ...
-                                'ses', sessions{iSes});
-        modalities = intersect(modalities, modalitiesToCopy);
-
-        copyModalities(BIDS, opt, modalities, subID, sessions{iSes});
-
-      end
     end
-
   end
 
   if unZip
@@ -131,9 +130,9 @@ function [rawDir, derivativesDir] = returnRawAndDerivativeDir(opt)
 
 end
 
-function subDir = returnSubjectDir(subID)
+function subDir = returnSubjectDir(subLabel)
 
-  subDir = ['sub-', subID];
+  subDir = ['sub-', subLabel];
 
 end
 
@@ -164,11 +163,11 @@ function copyTsvJson(srcDir, targetDir)
 
 end
 
-function copyModalities(BIDS, opt, modalities, subID, session)
+function copyModalities(BIDS, opt, modalities, subLabel, session)
 
   [rawDir, derivativesDir] = returnRawAndDerivativeDir(opt);
 
-  subDir = returnSubjectDir(subID);
+  subDir = returnSubjectDir(subLabel);
 
   sessionDir = returnSessionDir(session);
 
@@ -189,7 +188,7 @@ function copyModalities(BIDS, opt, modalities, subID, session)
     if strcmp(modalities{iModality}, 'func')
 
       files = bids.query(BIDS, 'data', ...
-                         'sub', subID, ...
+                         'sub', subLabel, ...
                          'ses', session, ...
                          'task', opt.taskName);
 
@@ -253,8 +252,8 @@ function unzipFiles(derivativesDir, deleteZippedNii, opt)
 
     % for bold, physio and stim files, we only unzip the files of the task of
     % interest
-    if any(strcmp(fragments.type, {'bold', 'stim', 'physio'})) && ...
-        isfield(fragments, 'task') && strcmp(fragments.task, opt.taskName)
+    if any(strcmp(fragments.type, {'bold', 'stim'})) && ...
+            isfield(fragments, 'task') && strcmp(fragments.task, opt.taskName)
 
       % load the nifti image and saves the functional data as unzipped nii
       n = load_untouch_nii(file);

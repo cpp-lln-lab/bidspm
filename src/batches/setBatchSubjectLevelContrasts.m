@@ -1,28 +1,27 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
-function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subID, funcFWHM)
+function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, funcFWHM)
   %
   % Short description of what the function does goes here.
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subID, funcFWHM)
+  %   matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, funcFWHM)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
   % :param opt:
   % :type opt: structure
-  % :param subID:
-  % :type subID: string
+  % :param subLabel:
+  % :type subLabel: string
   % :param funcFWHM:
   % :type funcFWHM:
   %
   % :returns: - :matlabbatch:
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('subject level contrasts specification');
 
-  ffxDir = getFFXdir(subID, funcFWHM, opt);
+  ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
   spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
 

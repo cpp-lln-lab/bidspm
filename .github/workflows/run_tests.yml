@@ -62,22 +62,23 @@ jobs:
         
     - name: Update octave path
       run: |
-        octave $OCTFLAGS --eval "addpath(genpath(fullfile(pwd, 'lib'))); savepath();"
-        octave $OCTFLAGS --eval "addpath(genpath(fullfile(pwd, 'src'))); savepath();"        
+        octave $OCTFLAGS --eval "initCppSpm; savepath();"
+        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"        
 
     - name: Prepare data
       run: |
-        output_folder='demos/MoAE/output/'
-        mkdir $output_folder
-        curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $output_folder'MoAEpilot.zip'
-        unzip $output_folder'MoAEpilot.zip' -d $output_folder
+        inputs_folder='demos/MoAE/inputs/'
+        mkdir $inputs_folder
+        curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $inputs_folder'MoAEpilot.zip'
+        unzip $inputs_folder'MoAEpilot.zip' -d $inputs_folder
+        mv $inputs_folder/MoAEpilot $inputs_folder/raw
         cd tests
         sh createDummyDataSet.sh
         cd ..
 
     - name: Run tests
       run: |
-        octave $OCTFLAGS --eval "runTests"
+        octave $OCTFLAGS --eval "run_tests"
         cat test_report.log | grep 0
         bash <(curl -s https://codecov.io/bash)         
 

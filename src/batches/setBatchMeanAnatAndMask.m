@@ -1,8 +1,6 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outputDir)
   %
-  % Creates batxh to create mean anatomical image and a grop mask
+  % Creates batxh to create mean anatomical image and a group mask
   %
   % USAGE::
   %
@@ -18,43 +16,39 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
   %
   % :returns: - :matlabbatch: (structure)
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
-  [group, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   printBatchName('create mean anatomical image and mask');
 
   inputAnat = {};
   inputMask = {};
 
-  for iGroup = 1:length(group)
+  for iSub = 1:numel(opt.subjects)
 
-    groupName = group(iGroup).name;
+    subLabel = opt.subjects{iSub};
 
-    for iSub = 1:group(iGroup).numSub
+    printProcessingSubject(iSub, subLabel);
 
-      subID = group(iGroup).subNumber{iSub};
+    %% Anat
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
-      printProcessingSubject(groupName, iSub, subID);
+    anatImage = validationInputFile( ...
+                                    anatDataDir, ...
+                                    anatImage, ...
+                                    [spm_get_defaults('normalise.write.prefix'), ...
+                                     spm_get_defaults('deformations.modulate.prefix')]);
 
-      %% Anat
-      [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+    inputAnat{end + 1, 1} = anatImage; %#ok<*AGROW>
 
-      anatImage = validationInputFile( ...
-                                      anatDataDir, ...
-                                      anatImage, ...
-                                      [spm_get_defaults('normalise.write.prefix'), ...
-                                       spm_get_defaults('deformations.modulate.prefix')]);
+    %% Mask
+    ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
-      inputAnat{end + 1, 1} = anatImage; %#ok<*AGROW>
+    files = validationInputFile(ffxDir, 'mask.nii');
 
-      %% Mask
-      ffxDir = getFFXdir(subID, funcFWHM, opt);
+    inputMask{end + 1, 1} = files;
 
-      files = validationInputFile(ffxDir, 'mask.nii');
-
-      inputMask{end + 1, 1} = files;
-
-    end
   end
 
   %% Generate the equation to get the mean of the mask and structural image

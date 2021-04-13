@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsCreateVDM(opt)
   %
   % Creates the voxel displacement maps from the fieldmaps of a BIDS
@@ -20,50 +18,41 @@ function bidsCreateVDM(opt)
   % Inspired from spmup ``spmup_BIDS_preprocess`` (@ commit 198c980d6d7520b1a99)
   % (URL missing)
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
-  if nargin < 1
-    opt = [];
-  end
+  [BIDS, opt] = setUpWorkflow(opt, 'create voxel displacement map');
 
-  [BIDS, opt, group] = setUpWorkflow(opt, 'create voxel displacement map');
+  parfor iSub = 1:numel(opt.subjects)
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+    subLabel = opt.subjects{iSub};
 
-    groupName = group(iGroup).name;
+    % TODO Move to getInfo
+    types = bids.query(BIDS, 'types', 'sub', subLabel);
 
-    parfor iSub = 1:group(iGroup).numSub
+    if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
 
-      subID = group(iGroup).subNumber{iSub};
+      printProcessingSubject(iSub, subLabel);
 
-      % TODO Move to getInfo
-      types = bids.query(BIDS, 'types', 'sub', subID);
+      % Create rough mean of the 1rst run to improve SNR for coregistration
+      % TODO use the slice timed EPI if STC was used ?
+      sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+      runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});
+      [fileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, sessions{1}, runs{1}, opt);
+      spmup_basics(fullfile(subFuncDataDir, fileName), 'mean');
 
-      if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
+      matlabbatch = [];
+      matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLabel);
+      saveAndRunWorkflow(matlabbatch, 'coregister_fmap', opt, subLabel);
 
-        printProcessingSubject(groupName, iSub, subID);
+      matlabbatch = [];
+      matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel);
+      saveAndRunWorkflow(matlabbatch, 'create_vdm', opt, subLabel);
 
-        % Create rough mean of the 1rst run to improve SNR for coregistration
-        % TODO use the slice timed EPI if STC was used ?
-        sessions = getInfo(BIDS, subID, opt, 'Sessions');
-        runs = getInfo(BIDS, subID, opt, 'Runs', sessions{1});
-        [fileName, subFuncDataDir] = getBoldFilename(BIDS, subID, sessions{1}, runs{1}, opt);
-        spmup_basics(fullfile(subFuncDataDir, fileName), 'mean');
-
-        matlabbatch = [];
-        matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subID);
-        saveAndRunWorkflow(matlabbatch, 'coregister_fmap', opt, subID);
-
-        matlabbatch = [];
-        matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID);
-        saveAndRunWorkflow(matlabbatch, 'create_vdm', opt, subID);
-
-        % TODO
-        % delete temporary mean images ??
-
-      end
+      % TODO
+      % delete temporary mean images ??
 
     end
 
   end
+
 end

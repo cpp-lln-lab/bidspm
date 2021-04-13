@@ -1,6 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
-function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID)
+function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates batch for slice timing correction
   %
@@ -30,6 +28,7 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID)
   % If not specified this function will take the mid-volume time point as reference
   % to do the slice timing correction
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   % get slice order
   sliceOrder = getSliceOrder(opt, 1);
@@ -49,6 +48,10 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID)
   nbSlices = length(sliceOrder); % unique is necessary in case of multi echo
   TR = opt.metadata.RepetitionTime;
   TA = TR - (TR / nbSlices);
+  % round acquisition time to the upper millisecond
+  % mostly to avoid having errors when checking:
+  %     any(sliceOrder > TA)
+  TA = ceil(TA * 1000) / 1000;
 
   maxSliceTime = max(sliceOrder);
   minSliceTime = min(sliceOrder);
@@ -83,21 +86,21 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID)
   matlabbatch{end}.spm.temporal.st.so = sliceOrder * 1000;
   matlabbatch{end}.spm.temporal.st.refslice = referenceSlice * 1000;
 
-  [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   runCounter = 1;
 
   for iSes = 1:nbSessions
 
     % get all runs for that subject for this session
-    [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+    [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
     for iRun = 1:nbRuns
 
       % get the filename for this bold run for this task
       [fileName, subFuncDataDir] = getBoldFilename( ...
                                                    BIDS, ...
-                                                   subID, sessions{iSes}, runs{iRun}, opt);
+                                                   subLabel, sessions{iSes}, runs{iRun}, opt);
 
       % check that the file with the right prefix exist
       file = validationInputFile(subFuncDataDir, fileName);

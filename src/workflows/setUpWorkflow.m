@@ -1,6 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
-function [BIDS, opt, group] = setUpWorkflow(opt, workflowName)
+function [BIDS, opt] = setUpWorkflow(opt, workflowName)
   %
   % Calls some common functions to:
   % - check the configuraton,
@@ -24,11 +22,12 @@ function [BIDS, opt, group] = setUpWorkflow(opt, workflowName)
   %           - :opt: options checked
   %           - :group:
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   opt = loadAndCheckOptions(opt);
 
   % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   cleanCrash();
 

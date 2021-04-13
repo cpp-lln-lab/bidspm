@@ -1,26 +1,23 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
   %
-  % Short description of what the function does goes here.
+  % Generates prefix to append to file name to look for
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
+  % :param step:
+  % :type step: string
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :param argin3: (dimension) optional argument
+  % :param funcFWHM:
+  % :type funcFWHM: scalar
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :prefix:
+  %           - :motionRegressorPrefix:
   %
-  % [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
   %
-  % generates prefix to append to file name to look for
+  % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 3
     funcFWHM = 0;

@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP_SPM developers
+
 function test_suite = test_getFFXdir %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -9,41 +11,33 @@ end
 function test_getFFXdirBasic()
 
   funcFWFM = 0;
-  subID = '01';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'funcLocalizer';
+  subLabel = '01';
 
-  opt = setDerivativesDir(opt);
-
-  opt = checkOptions(opt);
+  opt = setOptions('vislocalizer', subLabel);
 
   expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
-                            'cpp_spm', 'sub-01', 'stats', 'ffx_task-funcLocalizer', ...
-                            'ffx_space-MNI_FWHM-0');
+                            'cpp_spm-stats', 'sub-01', 'stats', ...
+                            'task-vislocalizer_space-MNI_FWHM-0');
 
-  ffxDir = getFFXdir(subID, funcFWFM, opt);
+  ffxDir = getFFXdir(subLabel, funcFWFM, opt);
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
 end
 
-function test_getFFXdirMvpa()
+function test_getFFXdirUserSpecified()
 
-  funcFWFM = 6;
-  subID = '02';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'nBack';
+  funcFWHM = 6;
+  subLabel = '02';
+
+  opt = setOptions('nback', subLabel);
   opt.space = 'individual';
 
-  opt = setDerivativesDir(opt);
-
-  opt = checkOptions(opt);
+  ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
   expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
-                            'cpp_spm', 'sub-02', 'stats', 'ffx_task-nBack', ...
-                            'ffx_space-individual_FWHM-6');
-
-  ffxDir = getFFXdir(subID, funcFWFM, opt);
+                            'cpp_spm-stats', 'sub-02', 'stats', ...
+                            'task-nback_space-individual_FWHM-6_desc-nbackMVPA');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 

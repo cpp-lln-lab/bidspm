@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchCoregistration(matlabbatch, ref, src, other)
   %
   % Set the batch for coregistering the source images into the reference image
@@ -21,6 +19,7 @@ function matlabbatch = setBatchCoregistration(matlabbatch, ref, src, other)
   %
   % matlabbatch = setBatchCoregistrationGeneral(matlabbatch, ref, src, other)
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   printBatchName('coregistration');
 

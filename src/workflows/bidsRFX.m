@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsRFX(action, opt, funcFWHM, conFWHM)
   %
   % - smooths all contrast images created at the subject level
@@ -30,10 +28,7 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
   % - case ``RFX``: Mean Struct, MeanMask, Factorial design specification and
   %   estimation, Contrast estimation
   %
-
-  if nargin < 2
-    opt = [];
-  end
+  % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 4 || isempty(funcFWHM)
     funcFWHM = 0;
@@ -43,14 +38,16 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
     conFWHM = 0;
   end
 
-  [~, opt, group] = setUpWorkflow(opt, 'group level GLM');
+  [~, opt] = setUpWorkflow(opt, 'group level GLM');
+
+  opt.jobsDir = fullfile(opt.dir.stats, 'JOBS', opt.taskName);
 
   switch action
 
     case 'smoothContrasts'
 
       matlabbatch = [];
-      matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt, funcFWHM, conFWHM);
+      matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFWHM);
 
       saveAndRunWorkflow(matlabbatch, ...
                          ['smooth_con_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
@@ -72,7 +69,7 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
       matlabbatch = setBatchMeanAnatAndMask(matlabbatch, ...
                                             opt, ...
                                             funcFWHM, ...
-                                            fullfile(opt.derivativesDir, 'group'));
+                                            fullfile(opt.dir.stats, 'group'));
       saveAndRunWorkflow(matlabbatch, 'create_mean_struc_mask', opt);
 
       % TODO
@@ -82,7 +79,7 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
 
       % Load the list of contrasts of interest for the RFX
       grpLvlCon = getGrpLevelContrastToCompute(opt);
-      matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon, opt);
+      matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon);
 
       saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
 

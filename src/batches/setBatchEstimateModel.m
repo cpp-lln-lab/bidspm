@@ -1,6 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
-function matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon, opt)
+function matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon)
   %
   % Short description of what the function does goes here.
   %
@@ -15,10 +13,11 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon, opt)
   %
   % :returns: - :matlabbatch: (structure)
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   switch nargin
 
-    case 1
+    case 2
 
       printBatchName('estimate subject level fmri model');
 
@@ -30,7 +29,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon, opt)
                                      '.', 'val', '{}', {1}), ...
                            substruct('.', 'spmmat'));
 
-      matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile);
+      matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
 
     case 3
 
@@ -42,7 +41,11 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon, opt)
 
         spmMatFile = { fullfile(opt.rfxDir, conName, 'SPM.mat') };
 
-        matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile);
+        % no QA at the group level GLM:
+        %   since there is no autocorrelation to check for
+        opt.glmQA.do = false();
+
+        matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
 
       end
 
@@ -50,10 +53,15 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon, opt)
 
 end
 
-function matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile)
+function matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt)
 
   matlabbatch{end + 1}.spm.stats.fmri_est.method.Classical = 1;
-  matlabbatch{end}.spm.stats.fmri_est.write_residuals = 1;
   matlabbatch{end}.spm.stats.fmri_est.spmmat = spmMatFile;
+
+  writeResiduals = true();
+  if ~opt.glm.QA.do
+    writeResiduals = false();
+  end
+  matlabbatch{end}.spm.stats.fmri_est.write_residuals = writeResiduals;
 
 end

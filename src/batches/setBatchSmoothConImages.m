@@ -1,6 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
-function matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt, funcFWHM, conFWHM)
+function matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFWHM)
   %
   % Creates a batch to smooth all the con images of all subjects
   %
@@ -21,32 +19,26 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt, funcFWHM
   %
   % :returns: - :matlabbatch:
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('smoothing contrast images');
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+  for iSub = 1:numel(opt.subjects)
 
-    groupName = group(iGroup).name;
+    subLabel = opt.subjects{iSub};
 
-    for iSub = 1:group(iGroup).numSub
+    printProcessingSubject(iSub, subLabel);
 
-      subNumber = group(iGroup).subNumber{iSub};
+    ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
-      printProcessingSubject(groupName, iSub, subNumber);
+    conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
+    data = cellstr(conImg);
 
-      ffxDir = getFFXdir(subNumber, funcFWHM, opt);
-
-      conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
-      data = cellstr(conImg);
-
-      matlabbatch = setBatchSmoothing( ...
-                                      matlabbatch, ...
-                                      data, ...
-                                      conFWHM, ...
-                                      [spm_get_defaults('smooth.prefix'), num2str(conFWHM)]);
-
-    end
+    matlabbatch = setBatchSmoothing( ...
+                                    matlabbatch, ...
+                                    data, ...
+                                    conFWHM, ...
+                                    [spm_get_defaults('smooth.prefix'), num2str(conFWHM)]);
 
   end
 

@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function totalReadoutTime = getTotalReadoutTime(metadata)
   %
   % Gets the total read out time of a sequence.
@@ -15,6 +13,7 @@ function totalReadoutTime = getTotalReadoutTime(metadata)
   %
   % Used to create the voxel dsiplacement map (VDM) from the fieldmap
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   totalReadoutTime = '';
 
