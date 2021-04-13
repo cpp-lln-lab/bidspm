@@ -42,6 +42,7 @@ do
 
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/meanusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
+			touch $ThisDir/wmeanusub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/s6wsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/s6rsub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii
 			touch $ThisDir/s6usub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii

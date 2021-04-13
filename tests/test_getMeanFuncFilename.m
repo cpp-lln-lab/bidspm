@@ -18,7 +18,7 @@ function test_getMeanFuncFilenameBasic()
 
   [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
 
-  expectedMeanImage = 'meanusub-01_ses-01_task-vislocalizer_bold.nii';
+  expectedMeanImage = 'wmeanusub-01_ses-01_task-vislocalizer_bold.nii';
 
   expectedmeanFuncDir = fullfile(fileparts(mfilename('fullpath')), ...
                                  'dummyData', 'derivatives', 'cpp_spm', ...

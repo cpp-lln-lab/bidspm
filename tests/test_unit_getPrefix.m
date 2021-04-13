@@ -52,7 +52,7 @@ function test_getPrefixMean()
 
   prefix = getPrefix(step, opt);
 
-  expectedPrefixOutput = ['mean' spm_get_defaults('unwarp.write.prefix')];
+  expectedPrefixOutput = ['wmean' spm_get_defaults('unwarp.write.prefix')];
 
   assertEqual(prefix, expectedPrefixOutput);
 
@@ -66,7 +66,7 @@ function test_getPrefixMean()
 
   prefix = getPrefix(step, opt);
 
-  expectedPrefixOutput = 'meana';
+  expectedPrefixOutput = 'wmeana';
 
   assertEqual(prefix, expectedPrefixOutput);
 
