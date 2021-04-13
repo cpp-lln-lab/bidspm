@@ -18,19 +18,17 @@ downloadData = true;
 run ../../initCppSpm.m;
 
 %% Set options
-opt = MoAE_getOption();
+opt = moae_get_option();
 
-dowload_MoAE_ds(downloadData);
+download_moae_ds(downloadData);
 
 %% Run batches
 reportBIDS(opt);
 bidsCopyRawFolder(opt, 1);
 
 % In case you just want to run segmentation and skull stripping
-
-bidsSegmentSkullStrip(opt);
-
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
+bidsSegmentSkullStrip(opt);
 
 bidsSTC(opt);
 
@@ -43,8 +41,8 @@ bidsSpatialPrepro(opt);
 
 % create a whole brain functional mean image mask
 % so the mask will be in the same resolution/space as the functional images
-% one may not need it if they are running bidsFFX since it creates a
-% mask.nii by default
+% one may not need it if they are running bidsFFX
+% since it creates a mask.nii by default
 opt.skullstrip.mean = 1;
 mask = bidsWholeBrainFuncMask(opt);
 

@@ -1,11 +1,10 @@
 function mask = bidsWholeBrainFuncMask(opt)
   %
+  % create segmented-skull stripped mean functional image
+  %
   % (C) Copyright 2020 CPP_SPM developers
 
-  % create segmented-skull stripped mean functional image
-  % read the dataset
-  
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = setUpWorkflow(opt, 'create brain mask from mean functional image');
 
   for iSub = 1:numel(opt.subjects)
 
