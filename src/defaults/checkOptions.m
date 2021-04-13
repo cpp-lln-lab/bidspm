@@ -112,6 +112,7 @@ function fieldsToSet = setDefaultOption()
 
   %% Options for segmentation
   fieldsToSet.skullstrip.threshold = 0.75;
+  fieldsToSet.skullstrip.mean = false;
 
   %% Options for normalize
   fieldsToSet.space = 'MNI';
