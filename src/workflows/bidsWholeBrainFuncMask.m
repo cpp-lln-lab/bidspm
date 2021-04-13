@@ -1,9 +1,10 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function mask = bidsWholeBrainFuncMask(opt)
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   % create segmented-skull stripped mean functional image
   % read the dataset
+  
   [BIDS, opt] = getData(opt);
 
   for iSub = 1:numel(opt.subjects)
