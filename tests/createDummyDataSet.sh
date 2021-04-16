@@ -76,11 +76,11 @@ do
 			EchoTime2=0.00746
 			template='{"EchoTime1":%f, "EchoTime2":%f, "IntendedFor":"%s"}'
 
-			IntendedFor=`echo func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii`
+			IntendedFor=`echo ses-$Ses/func/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii`
 			json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
 			echo "$json_string" > $ThisDir/sub-$Subject\_ses-$Ses\_run-2_phasediff.json
 
-			IntendedFor=`echo func/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii`
+			IntendedFor=`echo ses-$Ses/func/sub-$Subject\_ses-$Ses\_task-vislocalizer_bold.nii`
 			json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
 			echo "$json_string" > $ThisDir/sub-$Subject\_ses-$Ses\_run-1_phasediff.json
 

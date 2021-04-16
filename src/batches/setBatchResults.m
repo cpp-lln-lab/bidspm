@@ -21,11 +21,11 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  result.outputNameStructure.sub = result.label;
-  result.outputNameStructure.desc = result.Contrasts.Name;
-  result.outputNameStructure.p = num2str(result.Contrasts.p);
-  result.outputNameStructure.k = num2str(result.Contrasts.k);
-  result.outputNameStructure.MC = result.Contrasts.MC;
+  result.outputNameStructure.entities.sub = result.label;
+  result.outputNameStructure.entities.desc = result.Contrasts.Name;
+  result.outputNameStructure.entities.p = num2str(result.Contrasts.p);
+  result.outputNameStructure.entities.k = num2str(result.Contrasts.k);
+  result.outputNameStructure.entities.MC = result.Contrasts.MC;
 
   fieldsToSet = returnDefaultResultsStructure();
   result = setFields(result, fieldsToSet);
@@ -63,7 +63,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   if result.Output.binary
     result.outputNameStructure.ext = '';
-    result.outputNameStructure.type = 'mask';
+    result.outputNameStructure.suffix = 'mask';
     export{end + 1}.binary.basename = createFilename(result.outputNameStructure);
   end
 
@@ -92,7 +92,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
     % Not sure why the name of the figure does not come out right
     result.outputNameStructure.ext = '';
-    result.outputNameStructure.type = 'montage';
+    result.outputNameStructure.suffix = 'montage';
     matlabbatch{end + 1}.spm.util.print.fname = createFilename(result.outputNameStructure);
     matlabbatch{end}.spm.util.print.fig.figname = 'SliceOverlay';
     matlabbatch{end}.spm.util.print.opts = 'png';
