@@ -23,6 +23,10 @@ function onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  if iscell(tsvFile)
+    tsvFile = tsvFile{1};
+  end
+
   onsetFileName = convertOnsetTsvToMat(opt, tsvFile);
 
   % move file into the FFX directory

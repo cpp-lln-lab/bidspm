@@ -31,7 +31,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
   anat = bids.query(BIDS, 'data', ...
                     'sub', subLabel, ...
                     'ses', anatSession, ...
-                    'type', anatSuffix);
+                    'suffix', anatSuffix);
 
   if isempty(anat)
 
@@ -58,7 +58,7 @@ end
 
 function checkAvailableSuffix(BIDS, subLabel, anatType)
 
-  availableSuffixes = bids.query(BIDS, 'types', ...
+  availableSuffixes = bids.query(BIDS, 'suffixes', ...
                                  'sub', subLabel);
 
   if ~strcmp(anatType, availableSuffixes)
