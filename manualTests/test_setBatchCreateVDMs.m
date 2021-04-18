@@ -10,18 +10,16 @@ end
 
 function test_setBatchCreateVDMsBasic()
 
-  subID = '01';
+  subLabel = '01';
 
-  opt.taskName = 'vismotion';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'vismotion';
+  opt = setOptions('vismotion', subLabel);
 
-  opt = checkOptions(opt);
+  opt.query.acq = '';
 
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   matlabbatch = [];
-  matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel);
 
   %   matlabbatch{1}.spm.tools.fieldmap.calculatevdm.subj
 

@@ -32,34 +32,31 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
 
   for iSes = 1:nbSessions
 
-    runs = bids.query(BIDS, 'runs', ...
-                      'modality', 'fmap', ...
-                      'sub', subLabel, ...
-                      'ses', sessions{iSes});
+    filter = opt.query;
+    filter.modality =  'fmap';
+    filter.sub =  subLabel;
+    filter.ses =  sessions{iSes};
+
+    runs = bids.query(BIDS, 'runs', filter);
 
     for iRun = 1:numel(runs)
 
-      metadata = bids.query(BIDS, 'metadata', ...
-                            'modality', 'fmap', ...
-                            'sub', subLabel, ...
-                            'ses', sessions{iSes}, ...
-                            'run', runs{iRun});
+      filter.run = runs{iRun};
+      filter.suffix = 'phasediff';
+
+      metadata = bids.query(BIDS, 'metadata', filter);
 
       if strfind(metadata.IntendedFor, opt.taskName)
 
-        fmapFiles = bids.query(BIDS, 'data', ...
-                               'modality', 'fmap', ...
-                               'sub', subLabel, ...
-                               'ses', sessions{iSes}, ...
-                               'run', runs{iRun});
-
-        srcImage = strrep(fmapFiles{1}, 'phasediff', 'magnitude1');
-
         otherImages = cell(2, 1);
-        otherImages{1} = strrep(fmapFiles{1}, 'phasediff', 'magnitude2');
-        otherImages{2} = fmapFiles{1};
+        otherImages(2) = bids.query(BIDS, 'data', filter);
+        filter.suffix = 'magnitude2';
+        otherImages(1) = bids.query(BIDS, 'data', filter);
 
-        matlabbatch = setBatchCoregistration(matlabbatch, refImage, srcImage, otherImages);
+        filter.suffix = 'magnitude1';
+        srcImage = bids.query(BIDS, 'data', filter);
+
+        matlabbatch = setBatchCoregistration(matlabbatch, refImage, srcImage{1}, otherImages);
 
       end
 

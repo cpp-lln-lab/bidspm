@@ -28,10 +28,10 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  [BIDS, subID, sessionID, runID, opt] = deal(varargin{:});
+  [BIDS, subLabel, sessionID, runID, opt] = deal(varargin{:});
 
   % get the filename for this bold run for this task
-  boldFileName = getInfo(BIDS, subID, opt, 'Filename', sessionID, runID, 'bold');
+  boldFileName = getInfo(BIDS, subLabel, opt, 'Filename', sessionID, runID, 'bold');
 
   % get fullpath of the file
   % ASSUMPTION: the first file is the right one.

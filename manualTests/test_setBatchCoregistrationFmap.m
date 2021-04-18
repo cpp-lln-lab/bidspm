@@ -10,19 +10,18 @@ end
 
 function test_setBatchCoregistrationFmapBasic()
 
-  subID = '01';
+  subLabel = '01';
 
-  opt.taskName = 'vismotion';
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
+  opt = setOptions('vismotion', subLabel);
 
-  opt = checkOptions(opt);
+  opt.query.acq = '';
 
-  [~, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   matlabbatch = [];
-  matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subID);
+  matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLabel);
 
-  directory = fullfile(opt.derivativesDir, ...
+  directory = fullfile(opt.dir.derivatives, ...
                        'sub-01', ...
                        'ses-01');
   ref = fullfile(directory, ...
@@ -44,7 +43,7 @@ function test_setBatchCoregistrationFmapBasic()
   expectedbatch{end}.spm.spatial.coreg.estimate.source = { src };
   expectedbatch{end}.spm.spatial.coreg.estimate.other = other;
 
-  directory = fullfile(opt.derivativesDir, ...
+  directory = fullfile(opt.dir.derivatives, ...
                        'sub-01', ...
                        'ses-02');
   src = fullfile(directory, ...
