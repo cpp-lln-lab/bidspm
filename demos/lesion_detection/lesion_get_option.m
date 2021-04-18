@@ -12,7 +12,7 @@ function opt = lesion_get_option()
   % (C) Copyright 2021 CPP_SPM developers
 
   % The directory where the data are located
-  opt.dataDir = '/home/remi/gin/CVI-Datalad/data';
+  opt.dir.raw = '/home/remi/gin/CVI-Datalad/data';
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);

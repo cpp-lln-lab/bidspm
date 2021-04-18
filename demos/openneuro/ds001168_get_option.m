@@ -11,7 +11,7 @@ function opt = ds001168_get_option()
   end
 
   % The directory where the data are located
-  opt.dataDir = '/home/remi/openneuro/ds001168/raw';
+  opt.dir.raw = '/home/remi/openneuro/ds001168/raw';
 
   % suject to run in each group
   opt.subjects = {'01'};

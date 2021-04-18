@@ -17,7 +17,7 @@ opt = ds001168_get_option();
 
 reportBIDS(opt);
 
-bidsCopyRawFolder(opt, 1);
+bidsCopyInputFolder(opt, 1);
 
 bidsCreateVDM(opt);
 

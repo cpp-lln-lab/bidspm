@@ -13,7 +13,7 @@ opt = get_option();
 
 reportBIDS(opt);
 
-bidsCopyRawFolder(opt, 1);
+bidsCopyInputFolder(opt, 1);
 %
 % % preprocessing
 bidsSTC(opt);
@@ -21,10 +21,8 @@ bidsSpatialPrepro(opt);
 
 % Quality control
 anatomicalQA(opt);
-
-% Not implemented yet
-% bidsResliceTpmToFunc(opt);
-% functionalQA(opt);
+bidsResliceTpmToFunc(opt);
+functionalQA(opt);
 
 funcFWHM = 6;
 bidsSmoothing(funcFWHM, opt);

@@ -7,7 +7,7 @@ function opt = ds000114_get_option()
   % (C) Copyright 2020 CPP_SPM developers
 
   % The directory where the data are located
-  opt.dataDir = '/home/remi/openneuro/ds000114/raw';
+  opt.dir.raw = '/home/remi/openneuro/ds000114/raw';
 
   % suject to run in each group
   opt.subjects = {'01', '02'};

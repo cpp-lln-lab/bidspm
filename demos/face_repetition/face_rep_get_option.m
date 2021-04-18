@@ -9,8 +9,8 @@ function opt = face_rep_get_option()
 
   opt.taskName = 'facerepetition';
 
-  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
-  opt.dir.roi = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm-roi');
+  opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
+  opt.dir.roi = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm-roi');
 
   opt.model.hrfDerivatives = [1 1];
 

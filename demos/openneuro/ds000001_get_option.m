@@ -16,7 +16,7 @@ function opt = ds000001_get_option()
   opt.taskName = 'balloonanalogrisktask';
 
   % The directory where the data are located
-  opt.dataDir = '/home/remi/openneuro/ds000001/raw';
+  opt.dir.raw = '/home/remi/openneuro/ds000001/raw';
 
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp

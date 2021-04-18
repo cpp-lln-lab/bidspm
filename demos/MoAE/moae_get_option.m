@@ -11,8 +11,8 @@ function opt = moae_get_option()
   opt.taskName = 'auditory';
 
   % The directory where the data are located
-  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
-  opt.derivativesDir = fullfile(opt.dataDir, '..', '..', 'outputs');
+  opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
+  opt.dir.derivatives = fullfile(opt.dir.raw, '..', '..', 'outputs');
 
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp

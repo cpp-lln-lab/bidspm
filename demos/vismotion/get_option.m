@@ -15,8 +15,8 @@ function opt = get_option()
   opt.taskName = 'visMotion';
 
   % The directory where the data are located
-  opt.dataDir = '/home/remi/gin/CPP_visMotion/raw';
-  opt.derivativesDir = '/home/remi/Documents';
+  opt.dir.raw = '/home/remi/gin/CPP_visMotion/raw';
+  opt.dir.derivatives = '/home/remi/Documents';
 
   % specify the model file that contains the contrasts to compute
   opt.model.file = './vismotion/models/model-visMotionLoc_smdl.json';

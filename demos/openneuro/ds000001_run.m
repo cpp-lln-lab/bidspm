@@ -16,7 +16,7 @@ opt = ds000001_get_option();
 
 reportBIDS(opt);
 
-bidsCopyRawFolder(opt, 1);
+bidsCopyInputFolder(opt, 1);
 
 bidsSTC(opt);
 
