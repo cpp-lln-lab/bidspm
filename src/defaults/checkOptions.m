@@ -77,6 +77,11 @@ function opt = checkOptions(opt)
   if ~isempty(opt.dir.raw)
     opt.dir.raw = spm_file(opt.dir.raw, 'cpath');
   end
+
+  if ~iscell(opt.query.modality)
+    opt.query.modality{1} = opt.query.modality;
+  end
+
   opt = orderfields(opt);
 
   opt = setStatsDir(opt);
@@ -85,7 +90,8 @@ end
 
 function fieldsToSet = setDefaultOption()
   % this defines the missing fields
-  fieldsToSet.dir = struct('raw', '', ...
+  fieldsToSet.dir = struct('input', '', ...
+                           'raw', '', ...
                            'derivatives', '', ...
                            'preprocessed', '');
 
@@ -93,7 +99,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.subjects = {[]};
   fieldsToSet.zeropad = 2;
 
-  fieldsToSet.query = struct([]);
+  fieldsToSet.query.modality = {'anat', 'func', 'dwi'};
 
   fieldsToSet.anatReference.type = 'T1w';
   fieldsToSet.anatReference.session = '';

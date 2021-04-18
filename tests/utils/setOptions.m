@@ -10,6 +10,7 @@ function opt = setOptions(task, subLabel)
 
     opt.dir.raw = fullfile(thisDir, ...
                            '..', '..', 'demos',  'MoAE', 'inputs', 'raw');
+    opt.dir.input = opt.dir.raw;
     opt.model.file = fullfile(thisDir, ...
                               '..', '..', 'demos',  'MoAE', 'models', 'model-MoAE_smdl.json');
 

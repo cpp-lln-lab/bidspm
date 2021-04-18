@@ -5,7 +5,8 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.sliceOrder = [];
   expectedOptions.STC_referenceSlice = [];
 
-  expectedOptions.dir = struct('raw', '', ...
+  expectedOptions.dir = struct('input', '', ...
+                               'raw', '', ...
                                'derivatives', '', ...
                                'preprocessed', '');
 
@@ -14,7 +15,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.groups = {''};
   expectedOptions.subjects = {[]};
 
-  expectedOptions.query = struct([]);
+  expectedOptions.query.modality = {'anat', 'func', 'dwi'};
 
   expectedOptions.space = 'MNI';
 

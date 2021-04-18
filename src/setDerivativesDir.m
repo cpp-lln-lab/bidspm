@@ -1,4 +1,4 @@
-function opt = setDerivativesDir(opt)
+function opt = setDerivativesDir(opt, pipeline_name)
   %
   % Sets the derivatives folder and the directory where to save the SPM jobs.
   % The actual creation of the directory is done by
@@ -46,8 +46,12 @@ function opt = setDerivativesDir(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  if nargin < 2
+    pipeline_name = 'cpp_spm';
+  end
+
   if ~isfield(opt.dir, 'derivatives') || isempty(opt.dir.derivatives)
-    opt.dir.derivatives = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm');
+    opt.dir.derivatives = fullfile(opt.dir.input, '..', 'derivatives', pipeline_name);
   end
 
   try
@@ -58,12 +62,12 @@ function opt = setDerivativesDir(opt)
   end
 
   if strcmp(folders{end}, 'derivatives')
-    folders{end + 1} = 'cpp_spm';
+    folders{end + 1} = pipeline_name;
   end
 
-  if ~strcmp(folders{end - 1}, 'derivatives') && ~strcmp(folders{end}, 'cpp_spm')
+  if ~strcmp(folders{end - 1}, 'derivatives') && ~strcmp(folders{end}, pipeline_name)
     folders{end + 1} = 'derivatives';
-    folders{end + 1} = 'cpp_spm';
+    folders{end + 1} = pipeline_name;
   end
 
   try

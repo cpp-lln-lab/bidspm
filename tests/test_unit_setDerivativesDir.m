@@ -10,11 +10,11 @@ end
 
 function test_setDerivativesDirBasic()
 
-  opt.dir.raw = pwd;
+  opt.dir.input = pwd;
   opt.taskName = 'testTask';
   opt = setDerivativesDir(opt);
 
-  expected.raw = pwd;
+  expected.input = pwd;
   expected.derivatives = spm_file(fullfile(pwd, '..', 'derivatives', 'cpp_spm'), 'cpath');
   expected.jobs = fullfile(expected.derivatives, 'jobs', opt.taskName);
   assertEqual(opt.dir, expected);
@@ -25,9 +25,10 @@ function test_setDerivativesDirMissing()
 
   opt.dir.derivatives = pwd;
   opt.taskName = 'testTask';
-  opt = setDerivativesDir(opt);
+  pipeline_name = 'cpp_spm-preprocess';
+  opt = setDerivativesDir(opt, pipeline_name);
 
-  expected.derivatives = spm_file(fullfile(pwd, 'derivatives', 'cpp_spm'), 'cpath');
+  expected.derivatives = spm_file(fullfile(pwd, 'derivatives', 'cpp_spm-preprocess'), 'cpath');
   expected.jobs = fullfile(expected.derivatives, 'jobs', opt.taskName);
   assertEqual(opt.dir, expected);
 
@@ -37,9 +38,10 @@ function test_setDerivativesDirPreset1()
 
   opt.dir.derivatives = fullfile(pwd, 'derivatives');
   opt.taskName = 'testTask';
-  opt = setDerivativesDir(opt);
+  pipeline_name = 'cpp_spm-stats';
+  opt = setDerivativesDir(opt, pipeline_name);
 
-  expected = spm_file(fullfile(pwd, 'derivatives', 'cpp_spm'), 'cpath');
+  expected = spm_file(fullfile(pwd, 'derivatives', 'cpp_spm-stats'), 'cpath');
   assertEqual(opt.dir.derivatives, expected);
 
 end
