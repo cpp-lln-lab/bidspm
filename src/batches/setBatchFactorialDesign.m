@@ -51,7 +51,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
       rmdir(directory, 's');
     end
 
-    mkdir(directory);
+    spm_mkdir(directory);
 
     icell(1).levels = 1; %#ok<*AGROW>
 

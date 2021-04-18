@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_bidsCopyRawFolder %#ok<*STOUT>
+function test_suite = test_bidsCopyInputFolder %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,11 +8,11 @@ function test_suite = test_bidsCopyRawFolder %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsCopyRawFolderBasic()
+function test_bidsCopyInputFolderBasic()
 
   opt = setOptions('MoAE');
 
-  bidsCopyRawFolder(opt, [], true());
+  bidsCopyInputFolder(opt, [], true());
 
   layoutRaw = bids.layout(opt.dir.raw);
   layoutDerivatives = bids.layout(fullfile(opt.dir.derivatives));
@@ -36,7 +36,7 @@ function test_bidsCopyRawFolderBasic()
               2);
 end
 
-function test_bidsCopyRawFolder2tasks()
+function test_bidsCopyInputFolder2tasks()
 
   system('rm -Rf dummyData/copy');
 
@@ -53,7 +53,7 @@ function test_bidsCopyRawFolder2tasks()
   opt = checkOptions(opt);
 
   unzip = false;
-  derivatives = bidsCopyRawFolder(opt, 'cpp_spm', unzip);
+  derivatives = bidsCopyInputFolder(opt, 'cpp_spm', unzip);
 
   % make sure that anat, and func are there and that the fmap dependencies were
   % grabbed
@@ -72,7 +72,7 @@ function test_bidsCopyRawFolder2tasks()
               2);
 
   opt.taskName = 'vislocalizer';
-  derivatives = bidsCopyRawFolder(opt, 'cpp_spm', unzip);
+  derivatives = bidsCopyInputFolder(opt, 'cpp_spm', unzip);
 
   BIDS = bids.layout(fullfile(opt.dir.derivatives));
 

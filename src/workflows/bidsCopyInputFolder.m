@@ -1,4 +1,4 @@
-function derivatives = bidsCopyRawFolder(opt, pipeline_name, unzip)
+function derivatives = bidsCopyInputFolder(opt, pipeline_name, unzip)
   %
   % Copies the folders from the ``raw`` folder to the
   % ``derivatives`` folder, and will copy the dataset description and task json files

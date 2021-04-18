@@ -87,8 +87,4 @@ function opt = setDerivativesDir(opt, pipeline_name)
     opt.dir.jobs = fullfile(opt.dir.derivatives, 'jobs', opt.taskName);
   end
 
-  % for backward compatibility
-  opt.derivativesDir = opt.dir.derivatives;
-  opt.jobsDir = opt.dir.jobs;
-
 end
