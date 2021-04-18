@@ -5,10 +5,9 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.sliceOrder = [];
   expectedOptions.STC_referenceSlice = [];
 
-  expectedOptions.dataDir = '';
-  expectedOptions.derivativesDir = '';
   expectedOptions.dir = struct('raw', '', ...
-                               'derivatives', '');
+                               'derivatives', '', ...
+                               'preprocessed', '');
 
   expectedOptions.funcVoxelDims = [];
 

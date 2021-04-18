@@ -31,7 +31,7 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
     % The directory where the derivatives are located
     opt = setDerivativesDir(opt);
-    BIDSdir = opt.derivativesDir;
+    BIDSdir = opt.dir.derivatives;
   end
   derivativesDir = BIDSdir;
 

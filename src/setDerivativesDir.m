@@ -21,10 +21,10 @@ function opt = setDerivativesDir(opt)
   %   opt.taskName = 'testTask';
   %   opt = setDerivativesDir(opt);
   %
-  %   disp(opt.derivativesDir)
+  %   disp(opt.dir.derivatives)
   %   '/home/remi/data/../derivatives/cpp_spm'
   %
-  %   disp(opt.opt.jobsDir)
+  %   disp(opt.odr.jobs)
   %   '/home/remi/data/../derivatives/cpp_spm/JOBS/testTask
   %
   %   opt.dataDir = '/home/remi/data';
@@ -32,7 +32,7 @@ function opt = setDerivativesDir(opt)
   %   opt.taskName = 'testTask';
   %   opt = setDerivativesDir(opt);
   %
-  %   disp(opt.derivativesDir)
+  %   disp(opt.dir.derivatives)
   %   '/home/remi/otherFolder/derivatives/cpp_spm'
   %
   %   opt.dataDir = '/home/remi/data';
@@ -40,21 +40,21 @@ function opt = setDerivativesDir(opt)
   %   opt.taskName = 'testTask';
   %   opt = setDerivativesDir(opt);
   %
-  %   disp(opt.derivativesDir)
+  %   disp(opt.dir.derivatives)
   %   '/home/remi/otherFolder/derivatives/preprocessing'
   %
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  if ~isfield(opt, 'derivativesDir') || isempty(opt.derivativesDir)
-    opt.derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm');
+  if ~isfield(opt.dir, 'derivatives') || isempty(opt.dir.derivatives)
+    opt.dir.derivatives = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm');
   end
 
   try
-    folders = split(opt.derivativesDir, filesep);
+    folders = split(opt.dir.derivatives, filesep);
   catch
     % for octave
-    folders = strsplit(opt.derivativesDir, filesep);
+    folders = strsplit(opt.dir.derivatives, filesep);
   end
 
   if strcmp(folders{end}, 'derivatives')
@@ -68,18 +68,23 @@ function opt = setDerivativesDir(opt)
 
   try
     tmp = join(folders, filesep);
-    opt.derivativesDir = tmp{1};
+    opt.dir.derivatives = tmp{1};
+
   catch
     % for octave
-    opt.derivativesDir = strjoin(folders, filesep);
+    opt.dir.derivatives = strjoin(folders, filesep);
   end
 
-  opt.derivativesDir = spm_file(opt.derivativesDir, 'cpath');
+  opt.dir.derivatives = spm_file(opt.dir.derivatives, 'cpath');
 
   % Suffix output directory for the saved jobs
-  opt.jobsDir = fullfile(opt.derivativesDir, 'JOBS');
+  opt.dir.jobs = fullfile(opt.dir.derivatives, 'jobs');
   if isfield(opt, 'taskName')
-    opt.jobsDir = fullfile(opt.derivativesDir, 'JOBS', opt.taskName);
+    opt.dir.jobs = fullfile(opt.dir.derivatives, 'jobs', opt.taskName);
   end
+
+  % for backward compatibility
+  opt.derivativesDir = opt.dir.derivatives;
+  opt.jobsDir = opt.dir.jobs;
 
 end

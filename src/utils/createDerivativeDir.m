@@ -11,9 +11,9 @@ function  createDerivativeDir(opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  if ~exist(opt.derivativesDir, 'dir')
-    mkdir(opt.derivativesDir);
-    fprintf('derivatives directory created: %s \n', opt.derivativesDir);
+  if ~exist(opt.dir.derivatives, 'dir')
+    spm_mkdir(opt.dir.derivatives);
+    fprintf('derivatives directory created: %s \n', opt.dir.derivatives);
   else
     fprintf('derivatives directory already exists. \n');
   end

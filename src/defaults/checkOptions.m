@@ -19,7 +19,7 @@ function opt = checkOptions(opt)
   % REQUIRED FIELDS:
   %
   %   - ``opt.taskName``
-  %   - ``opt.dataDir``
+  %   - ``opt.dir.raw``
   %
   % IMPORTANT OPTIONS (with their defaults):
   %
@@ -74,10 +74,9 @@ function opt = checkOptions(opt)
 
   checkFields(opt);
 
-  if ~isempty(opt.dataDir)
-    opt.dataDir = spm_file(opt.dataDir, 'cpath');
+  if ~isempty(opt.dir.raw)
+    opt.dir.raw = spm_file(opt.dir.raw, 'cpath');
   end
-
   opt = orderfields(opt);
 
   opt = setStatsDir(opt);
@@ -86,11 +85,9 @@ end
 
 function fieldsToSet = setDefaultOption()
   % this defines the missing fields
-
-  fieldsToSet.dataDir = '';
-  fieldsToSet.derivativesDir = '';
   fieldsToSet.dir = struct('raw', '', ...
-                           'derivatives', '');
+                           'derivatives', '', ...
+                           'preprocessed', '');
 
   fieldsToSet.groups = {''};
   fieldsToSet.subjects = {[]};
