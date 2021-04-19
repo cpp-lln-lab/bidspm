@@ -22,11 +22,11 @@ function anatomicalQA(opt)
   end
   opt = loadAndCheckOptions(opt);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.derivatives);
 
   fprintf(1, ' ANATOMICAL: QUALITY CONTROL\n\n');
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subID = opt.subjects{iSub};
 
@@ -48,10 +48,24 @@ function anatomicalQA(opt)
 
     anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
 
+    %% rename output to make it BIDS friendly
+    p = bids.internal.parse_filename(anatImage);
+    p.entities.label = p.suffix;
+    p.suffix = 'qametrics';
+    p.ext = '.json';
     spm_jsonwrite( ...
-                  strrep(anatImage, '.nii', '_qa.json'), ...
+                  fullfile(anatDataDir, createFilename(p)), ...
                   anatQA, ...
                   struct('indent', '   '));
+
+    p = bids.internal.parse_filename(anatImage);
+    p.entities.label = p.suffix;
+    p.suffix = 'mask';
+    p.ext = '.pdf';
+    movefile(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_AnatQC.pdf']), ...
+             fullfile(anatDataDir, createFilename(p)));
+
+    delete(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
 
   end
 

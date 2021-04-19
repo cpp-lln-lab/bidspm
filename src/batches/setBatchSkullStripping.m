@@ -43,8 +43,13 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
     [imageToSkullStrip, dataDir] = getMeanFuncFilename(BIDS, subLabel, opt);
   end
 
-  output = ['m' strrep(imageToSkullStrip, '.nii', '_skullstripped.nii')];
-  maskOutput = ['m' strrep(imageToSkullStrip, '.nii', '_mask.nii')];
+  p = bids.internal.parse_filename(imageToSkullStrip);
+  p.entities.desc = 'skullstripped';
+  output = ['m' createFilename(p)];
+
+  p.suffix = 'mask';
+  p.entities.desc = 'brain';
+  maskOutput = ['m' createFilename(p)];
 
   expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
 

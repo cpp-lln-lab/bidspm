@@ -28,7 +28,7 @@ function bidsResliceTpmToFunc(opt)
 
     printProcessingSubject(iSub, subLabel);
 
-    [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
+    [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt, 'funcqa');
 
     % get grey and white matter and CSF tissue probability maps
     [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
@@ -50,7 +50,10 @@ function bidsResliceTpmToFunc(opt)
     % csf
     input{3, 1} = TPMs(3, :);
 
-    output = strrep(meanImage, '.nii', '_mask.nii');
+    p = bids.internal.parse_filename(meanImage);
+    p.entities.label = p.suffix;
+    p.suffix = 'mask';
+    output = createFilename(p);
 
     expression = sprintf('(i1+i2+i3)>%f', opt.skullstrip.threshold);
 

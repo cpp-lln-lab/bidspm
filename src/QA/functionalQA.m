@@ -35,7 +35,7 @@ function functionalQA(opt)
   end
   opt = loadAndCheckOptions(opt);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.derivatives);
 
   fprintf(1, ' FUNCTIONAL: QUALITY CONTROL\n\n');
 
@@ -50,10 +50,11 @@ function functionalQA(opt)
     TPMs = validationInputFile(anatDataDir, anatImage, 'rc[123]');
 
     % load metrics from anat QA
-    anatQA = spm_jsonread( ...
-                          fullfile( ...
-                                   anatDataDir,  ...
-                                   strrep(anatImage, '.nii', '_qa.json')));
+    p = bids.internal.parse_filename(anatImage);
+    p.entities.label = p.suffix;
+    p.suffix = 'qcmetrics';
+    p.ext = '.json';
+    anatQA = spm_jsonread(fullfile(anatDataDir, createFilename(p)));
 
     [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
@@ -100,18 +101,21 @@ function functionalQA(opt)
                                            'Voltera', 'on', ...
                                            'Radius', anatQA.avgDistToSurf);
 
+        p = bids.internal.parse_filename(funcImage);
+        p.entities.label = p.suffix;
+        p.suffix = 'qa';
+        p.ext = '.pdf';
         movefile( ...
                  fullfile(subFuncDataDir, 'spmup_QC.ps'), ...
-                 fullfile(subFuncDataDir, strrep(fileName, '.nii',  '_qa.ps')));
+                 spm_file(funcImage, 'filename', createFilename(p)));
 
         confounds = load(outputFiles.design);
 
-        spm_save( ...
-                 fullfile( ...
-                          subFuncDataDir, ...
-                          strrep(fileName, ...
-                                 '_bold.nii',  ...
-                                 '_desc-confounds_regressors.tsv')), ...
+        p = bids.internal.parse_filename(funcImage);
+        p.entities.desc = 'confounds';
+        p.suffix = 'regressors';
+        p.ext = '.tsv';
+        spm_save(spm_file(funcImage, 'filename', createFilename(p)), ...
                  confounds);
 
         delete(outputFiles.design);
