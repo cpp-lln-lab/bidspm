@@ -73,6 +73,7 @@ function bidsCopyInputFolder(opt, pipeline_name, unzip)
 
     filter = opt.query;
     filter.modality = opt.query.modality{iModality};
+    filter.sub = opt.subjects;
 
     if strcmp(filter.modality, 'func')
       filter.task = opt.taskName;
@@ -87,6 +88,8 @@ function bidsCopyInputFolder(opt, pipeline_name, unzip)
                             skip_dependencies, ...
                             use_schema, ...
                             verbose);
+
+    fprintf(1, '\n\n');
   end
 
 end
