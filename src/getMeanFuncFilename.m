@@ -19,7 +19,7 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt, ste
   % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 4
-    step = ' mean';
+    step = 'mean';
   end
 
   prefix = getPrefix(step, opt);

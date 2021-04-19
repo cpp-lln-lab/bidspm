@@ -52,7 +52,7 @@ function functionalQA(opt)
     % load metrics from anat QA
     p = bids.internal.parse_filename(anatImage);
     p.entities.label = p.suffix;
-    p.suffix = 'qcmetrics';
+    p.suffix = 'qametrics';
     p.ext = '.json';
     anatQA = spm_jsonread(fullfile(anatDataDir, createFilename(p)));
 

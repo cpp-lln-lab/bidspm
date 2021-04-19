@@ -15,7 +15,7 @@ function renameSegmentParameter(BIDS, subLabel, opt)
                                                     '_seg8.mat$']);
 
   p = bids.internal.parse_filename(anatImage);
-  p.entities.desc = 'brain';
+  p.entities.label = p.suffix;
   p.suffix = 'segparam';
   p.ext = '.mat';
   newName = spm_file(segmentParam, 'filename',  createFilename(p));

@@ -10,6 +10,10 @@ run moae_run.m;
 
 subLabel = '01';
 
+FWHM = 6;
+
+opt = moae_get_option();
+
 saveROI = true;
 
 sphere.radius = 3;
@@ -23,7 +27,7 @@ maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
 % we get the con image to extract data
 % we can do this by using the "label-XXXX" from the mask
 p = bids.internal.parse_filename(spm_file(maskImage, 'filename'));
-conImage = spm_select('FPList', ffxDir, ['^con_' p.label '.nii$']);
+conImage = spm_select('FPList', ffxDir, ['^con_' p.entities.label '.nii$']);
 
 %% Create ROI right auditory cortex
 sphere.location = [57 -22 11];

@@ -24,18 +24,16 @@ download_moae_ds(downloadData);
 
 %% Run batches
 reportBIDS(opt);
-bidsCopyRawFolder(opt, 1);
+bidsCopyInputFolder(opt);
 
 % In case you just want to run segmentation and skull stripping
-% bidsSegmentSkullStrip(opt);
-%
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
+bidsSegmentSkullStrip(opt);
 
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
-% The following do not run on octave for now (because of spmup)
 anatomicalQA(opt);
 bidsResliceTpmToFunc(opt);
 functionalQA(opt);
@@ -43,10 +41,6 @@ functionalQA(opt);
 bidsSmoothing(FWHM, opt);
 
 % The following crash on CI
-WD = pwd;
 bidsFFX('specifyAndEstimate', opt, FWHM);
-cd(WD);
 bidsFFX('contrasts', opt, FWHM);
-cd(WD);
 bidsResults(opt, FWHM);
-cd(WD);

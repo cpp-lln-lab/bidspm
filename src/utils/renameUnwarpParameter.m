@@ -18,7 +18,7 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
   % task-auditory_sub-01_desc-brain_unwarpparam.mat
 
   p = bids.internal.parse_filename(meanImage);
-  p.entities.desc = 'brain';
+  p.entities.label = p.suffix;
   p.suffix = 'unwarpparam';
   p.ext = '.mat';
   newName = spm_file(unwarpParam, 'filename',  createFilename(p));
