@@ -31,15 +31,18 @@ reportBIDS(opt);
 
 modelFile = opt.model.file;
 
-for iResolution = 1:0.5:3
+for iResolution = 1:1:3
+
+  pipeline_name = ['cpp_spm-res' num2str(iResolution)];
 
   opt.funcVoxelDims = repmat(iResolution, 1, 3);
 
-  opt.derivativesDir = spm_file( ...
-                                fullfile(opt.dataDir, ...
-                                         '..', ...
-                                         'derivatives', ...
-                                         ['cpp_spm-res' num2str(iResolution)]), 'cpath');
+  opt.dir.derivatives = spm_file( ...
+                                 fullfile(opt.dir.raw, ...
+                                          '..', ...
+                                          'derivatives', ...
+                                          pipeline_name), ...
+                                 'cpath');
 
   % create a new BIDS model json file
   % this way the GLM output will be store in a different directory for each
@@ -49,14 +52,14 @@ for iResolution = 1:0.5:3
   content.Name = [content.Name, ' resolution - ', num2str(iResolution)];
 
   p = bids.internal.parse_filename(modelFile);
-  p.model = [p.model, ' resolution', num2str(iResolution)];
+  p.entities.model = [p.entities.model, ' resolution', num2str(iResolution)];
   newModel = spm_file(opt.model.file, 'filename', createFilename(p));
   opt.model.file = newModel;
 
   spm_jsonwrite(newModel, content, struct('indent', '   '));
 
   % run analysis
-  bidsCopyRawFolder(opt, 1);
+  bidsCopyInputFolder(opt, pipeline_name);
 
   bidsSTC(opt);
 
@@ -69,11 +72,11 @@ for iResolution = 1:0.5:3
 
   % specify underlay image
   subLabel = '01';
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.derivatives);
   [~, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
   opt.result.Steps(1).Output.montage.background = spm_select('FPList', ...
                                                              anatDataDir, ...
-                                                             '^wm.*.nii$');
+                                                             '^wm.*desc-skullstripped.*.nii$');
 
   bidsResults(opt, FWHM);
 
