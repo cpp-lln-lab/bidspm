@@ -79,7 +79,9 @@ function opt = checkOptions(opt)
   end
 
   if ~iscell(opt.query.modality)
-    opt.query.modality{1} = opt.query.modality;
+    tmp = opt.query.modality;
+    opt.query = rmfield(opt.query, 'modality');
+    opt.query.modality{1} = tmp;
   end
 
   opt = orderfields(opt);

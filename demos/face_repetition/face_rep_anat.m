@@ -12,8 +12,9 @@ downloadData = true;
 run ../../initCppSpm.m;
 
 %% Set options
-opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
-opt.derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm-anat');
+opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
+opt.dir.derivatives = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm-anat');
+opt.query.modality = 'anat';
 opt = checkOptions(opt);
 saveOptions(opt);
 
@@ -26,7 +27,7 @@ end
 
 %% Run batches
 reportBIDS(opt);
-bidsCopyInputFolder(opt, 1, 'anat');
+bidsCopyInputFolder(opt, 'cpp_spm-anat', true());
 
 bidsSegmentSkullStrip(opt);
 
