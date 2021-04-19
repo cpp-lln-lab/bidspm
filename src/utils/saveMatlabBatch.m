@@ -24,7 +24,7 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subID)
     subID = ['sub-' subID];
   end
 
-  jobsDir = fullfile(opt.jobsDir, subID);
+  jobsDir = fullfile(opt.dir.jobs, subID);
   [~, ~, ~] = mkdir(jobsDir);
 
   filename = sprintf( ...

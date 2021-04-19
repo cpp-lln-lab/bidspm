@@ -31,9 +31,10 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
     % The directory where the derivatives are located
     opt = setDerivativesDir(opt);
-    BIDSdir = opt.dir.derivatives;
+    BIDSdir = opt.dir.raw;
   end
-  derivativesDir = BIDSdir;
+
+  BIDS = bids.layout(BIDSdir);
 
   if nargin < 3 || (exist('suffix', 'var') && isempty(suffix))
     suffix = 'bold';
@@ -44,9 +45,6 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   else
     suffix = 'T1w';
   end
-
-  % we let SPM figure out what is in this BIDS data set
-  BIDS = bids.layout(derivativesDir);
 
   % make sure that the required tasks exist in the data set
   if isfield(opt, 'taskName') && ~ismember(opt.taskName, bids.query(BIDS, 'tasks'))

@@ -47,6 +47,10 @@ function derivatives = bidsCopyInputFolder(opt, pipeline_name, unzip)
 
   createDerivativeDir(opt);
 
+  if isempty(opt.dir.input)
+    opt.dir.input = opt.dir.raw;
+  end
+
   copyTsvJson(opt.dir.input, opt.dir.derivatives);
 
   %% Loop through the groups, subjects, sessions

@@ -53,7 +53,9 @@ function test_bidsCopyInputFolder2tasks()
   opt = checkOptions(opt);
 
   unzip = false;
-  derivatives = bidsCopyInputFolder(opt, 'cpp_spm', unzip);
+  bidsCopyInputFolder(opt, 'cpp_spm', unzip);
+
+  derivatives = bids.layout(fullfile(opt.dir.derivatives));
 
   % make sure that anat, and func are there and that the fmap dependencies were
   % grabbed
