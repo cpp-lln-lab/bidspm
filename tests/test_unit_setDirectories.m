@@ -8,6 +8,27 @@ function test_suite = test_unit_setDirectories %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setDirectories_userSpecified()
+
+  %% user specified
+  opt.dir.input = pwd;
+  opt.dir.output = fullfile(pwd, 'output');
+
+  %
+  opt = checkOptions(opt);
+  opt = setDirectories(opt);
+
+  %
+  expected = defaultOptions();
+
+  expected.dir.input = pwd;
+  expected.dir.output = fullfile(pwd, 'output');
+  expected.dir.jobs = fullfile(opt.dir.output, 'jobs');
+
+  assertEqual(opt.dir, expected.dir);
+
+end
+
 function test_setDirectories_copyRaw2Preproc()
 
   opt.dir.raw = pwd;
@@ -115,24 +136,5 @@ function test_setDirectories_stats()
   expected.dir.jobs = fullfile(expected.dir.stats, 'jobs');
 
   assertEqual(opt.dir, expected.dir);
-
-end
-
-function foo
-
-  %% user specified
-  opt.dir.input;
-
-  expected.dir.derivatives;
-  expected.dir.ouput;
-  expected.dir.jobs;
-
-  %% user specified
-  opt.dir.input;
-  opt.dir.ouput;
-
-  expected.dir.input;
-  expected.dir.ouput;
-  expected.dir.jobs;
 
 end

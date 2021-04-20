@@ -7,6 +7,12 @@ function opt = setDirectories(opt)
   end
 
   if ~isempty(opt.dir.input)
+
+    if ~isempty(opt.dir.output)
+      opt.dir.jobs = setJobsDir(opt, opt.dir.output);
+      return
+    end
+
     opt.dir.derivatives = fullfile(opt.dir.input, '..');
   end
 
