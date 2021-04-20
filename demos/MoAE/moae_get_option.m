@@ -12,7 +12,10 @@ function opt = moae_get_option()
 
   % The directory where the data are located
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
-  opt.dir.derivatives = fullfile(opt.dir.raw, '..', '..', 'outputs');
+  opt.dir.preproc = fullfile(opt.dir.raw, '..', '..', 'outputs', 'derivatives');
+
+  opt.pipeline.type = 'preproc';
+  opt.pipeline.name = 'cpp_spm-preproc';
 
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp

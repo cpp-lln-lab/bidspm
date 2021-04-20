@@ -22,7 +22,7 @@ function anatomicalQA(opt)
   end
   opt = loadAndCheckOptions(opt);
 
-  [BIDS, opt] = getData(opt, opt.dir.derivatives);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   fprintf(1, ' ANATOMICAL: QUALITY CONTROL\n\n');
 

@@ -8,6 +8,27 @@ function test_suite = test_unit_setDirectories %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setDirectories_inputsOutputs()
+
+  opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
+  opt.dir.preproc = fullfile(opt.dir.raw, '..', '..', 'outputs', 'derivatives');
+
+  opt = checkOptions(opt);
+
+  %
+  expected = defaultOptions();
+
+  baseDir = fullfile(fileparts(mfilename('fullpath')));
+  expected.dir.raw = fullfile(baseDir, 'inputs', 'raw');
+  expected.dir.input = expected.dir.raw;
+  expected.dir.derivatives = fullfile(baseDir, 'outputs', 'derivatives');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm');
+  expected.dir.jobs = fullfile(expected.dir.preproc, 'jobs');
+
+  assertEqual(opt.dir, expected.dir);
+
+end
+
 function test_setDirectories_local()
 
   opt.dir.input = fullfile( ...
@@ -21,8 +42,7 @@ function test_setDirectories_local()
   %
   expected = defaultOptions();
 
-  baseDir = fullfile(fileparts(mfilename('fullpath')), ...
-                     'dummyData', 'derivatives');
+  baseDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
   expected.dir.input = fullfile(baseDir, 'fmriprep');
   expected.dir.derivatives = baseDir;
   expected.dir.preproc = fullfile(baseDir, 'copy');

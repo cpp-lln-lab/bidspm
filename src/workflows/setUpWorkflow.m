@@ -25,7 +25,7 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, BIDSdir)
   % (C) Copyright 2019 CPP_SPM developers
 
   if nargin < 3
-    BIDSdir = opt.dir.derivatives;
+    BIDSdir = opt.dir.preproc;
   end
 
   opt = loadAndCheckOptions(opt);

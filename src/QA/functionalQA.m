@@ -35,7 +35,7 @@ function functionalQA(opt)
   end
   opt = loadAndCheckOptions(opt);
 
-  [BIDS, opt] = getData(opt, opt.dir.derivatives);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   fprintf(1, ' FUNCTIONAL: QUALITY CONTROL\n\n');
 

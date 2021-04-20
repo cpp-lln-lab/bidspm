@@ -24,6 +24,9 @@ download_moae_ds(downloadData);
 
 %% Run batches
 reportBIDS(opt);
+
+opt.pipeline.type = 'preproc';
+
 bidsCopyInputFolder(opt);
 
 % In case you just want to run segmentation and skull stripping
@@ -41,6 +44,8 @@ functionalQA(opt);
 bidsSmoothing(FWHM, opt);
 
 % The following crash on CI
+opt.pipeline.type = 'stats';
+
 bidsFFX('specifyAndEstimate', opt, FWHM);
 bidsFFX('contrasts', opt, FWHM);
 bidsResults(opt, FWHM);
