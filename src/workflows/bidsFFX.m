@@ -37,7 +37,7 @@ function bidsFFX(action, opt, funcFWHM)
 
   [BIDS, opt] = setUpWorkflow(opt, 'subject level GLM');
 
-  opt.jobsDir = fullfile(opt.dir.stats, 'JOBS', opt.taskName);
+  opt.dir.jobs = fullfile(opt.dir.stats, 'JOBS', opt.taskName);
 
   if isempty(opt.model.file)
     opt = createDefaultModel(BIDS, opt);
