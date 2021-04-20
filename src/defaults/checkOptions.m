@@ -74,8 +74,9 @@ function opt = checkOptions(opt)
 
   checkFields(opt);
 
-  if ~isempty(opt.dir.raw)
-    opt.dir.raw = spm_file(opt.dir.raw, 'cpath');
+  if strcmp(opt.pipeline.type, 'stats') && ...
+          any(strcmp(opt.pipeline.name, {'cpp_spm', 'cpp_spm-preproc'}))
+    opt.pipeline.name = 'cpp_spm-stats';
   end
 
   if ~iscell(opt.query.modality)
@@ -86,16 +87,21 @@ function opt = checkOptions(opt)
 
   opt = orderfields(opt);
 
-  opt = setStatsDir(opt);
-
 end
 
 function fieldsToSet = setDefaultOption()
+
   % this defines the missing fields
+
+  fieldsToSet.pipeline.type = 'preproc';
+  fieldsToSet.pipeline.name = 'cpp_spm';
+
   fieldsToSet.dir = struct('input', '', ...
-                           'raw', '', ...
+                           'output', '', ...
                            'derivatives', '', ...
-                           'preprocessed', '');
+                           'raw', '', ...
+                           'preproc', '', ...
+                           'stats', '');
 
   fieldsToSet.groups = {''};
   fieldsToSet.subjects = {[]};

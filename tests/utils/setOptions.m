@@ -22,6 +22,7 @@ function opt = setOptions(task, subLabel)
   else
 
     opt.taskName = task;
+    opt.dir.raw = fullfile(thisDir, '..', 'dummyData');
     opt.dir.derivatives = fullfile(thisDir, '..', 'dummyData');
     opt.model.file = fullfile(opt.dir.derivatives,  'models', ...
                               ['model-' task '_smdl.json']);

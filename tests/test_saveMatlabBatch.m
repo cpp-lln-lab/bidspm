@@ -10,7 +10,7 @@ end
 
 function test_saveMatlabBatchBasic()
 
-  opt.jobsDir = pwd;
+  opt.dir.jobs = pwd;
   subID = '01';
   matlabbatch = struct('test', 1);
 
@@ -26,7 +26,7 @@ end
 
 function test_saveMatlabBatchGroup()
 
-  opt.jobsDir = pwd;
+  opt.dir.jobs = pwd;
   matlabbatch = struct('test', 1);
 
   expectedOutput = fullfile(pwd, 'group', ...
