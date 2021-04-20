@@ -12,14 +12,16 @@ subLabel = '01';
 
 FWHM = 6;
 
+saveROI = true;
+
 opt = moae_get_option();
 
-saveROI = true;
+opt.pipeline.type = 'stats';
+opt = checkOptions(opt);
 
 sphere.radius = 3;
 sphere.maxNbVoxels = 200;
 
-opt = setDerivativesDir(opt);
 ffxDir = getFFXdir(subLabel, FWHM, opt);
 
 maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
