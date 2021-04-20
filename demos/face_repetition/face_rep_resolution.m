@@ -31,18 +31,19 @@ reportBIDS(opt);
 
 modelFile = opt.model.file;
 
-for iResolution = 1:1:3
+for iResolution = 2:1:3
 
-  pipeline_name = ['cpp_spm-res' num2str(iResolution)];
+  opt.pipeline.type = 'preproc';
+  opt.pipeline.name = ['cpp_spm-preproc-res' num2str(iResolution)];
 
   opt.funcVoxelDims = repmat(iResolution, 1, 3);
 
-  opt.dir.derivatives = spm_file( ...
-                                 fullfile(opt.dir.raw, ...
-                                          '..', ...
-                                          'derivatives', ...
-                                          pipeline_name), ...
-                                 'cpath');
+  opt.dir.preproc = spm_file( ...
+                             fullfile(opt.dir.raw, ...
+                                      '..', ...
+                                      'derivatives', ...
+                                      opt.pipeline.name), ...
+                             'cpath');
 
   % create a new BIDS model json file
   % this way the GLM output will be store in a different directory for each
@@ -59,7 +60,7 @@ for iResolution = 1:1:3
   spm_jsonwrite(newModel, content, struct('indent', '   '));
 
   % run analysis
-  bidsCopyInputFolder(opt, pipeline_name);
+  bidsCopyInputFolder(opt);
 
   bidsSTC(opt);
 
@@ -67,12 +68,16 @@ for iResolution = 1:1:3
 
   bidsSmoothing(FWHM, opt);
 
+  opt.pipeline.type = 'stats';
+  opt.pipeline.name = ['cpp_spm-stats-res' num2str(iResolution)];
+  opt = checkOptions(opt);
+
   bidsFFX('specifyAndEstimate', opt, FWHM);
   bidsFFX('contrasts', opt, FWHM);
 
   % specify underlay image
   subLabel = '01';
-  [BIDS, opt] = getData(opt, opt.dir.derivatives);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
   [~, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
   opt.result.Steps(1).Output.montage.background = spm_select('FPList', ...
                                                              anatDataDir, ...

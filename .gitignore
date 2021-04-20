@@ -6,7 +6,7 @@
 *.zip
 *.html
 *.ps
-
+*.png
 *.mat
 
 # Project specific
@@ -20,6 +20,11 @@ venv/*
 
 ## visual studio code
 .vscode
+
+## from running tests in root dir
+cfg/*
+group/*
+models/*
 
 ## MATLAB / OCTAVE gitignore template
 

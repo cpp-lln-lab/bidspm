@@ -35,7 +35,7 @@ end
 
 %% Run batches
 reportBIDS(opt);
-bidsCopyInputFolder(opt, 'cpp_spm-preprocess', true());
+bidsCopyInputFolder(opt);
 
 bidsSTC(opt);
 
@@ -50,6 +50,8 @@ bidsResliceTpmToFunc(opt);
 bidsSmoothing(FWHM, opt);
 
 % The following crash on CI
+opt.pipeline.type = 'stats';
+
 bidsFFX('specifyAndEstimate', opt, FWHM);
 bidsFFX('contrasts', opt, FWHM);
 
