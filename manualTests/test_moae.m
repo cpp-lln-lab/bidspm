@@ -23,10 +23,10 @@ downloadData = true;
 URL = 'http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip';
 
 % directory with this script becomes the current directory
-WD = fullfile(fileparts(mfilename('fullpath')), '..', '..', 'demos', 'MoAE');
+WD = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'MoAE');
 cd(WD);
 
-run ../../../initCppSpm.m;
+run ../../initCppSpm.m;
 
 download_moae_ds(downloadData);
 

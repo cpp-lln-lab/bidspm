@@ -23,14 +23,7 @@ FWHM = 6;
 WD = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'openneuro');
 cd(WD);
 
-% we add all the subfunctions that are in the sub directories
-addpath(genpath(fullfile(WD, '..', '..', 'src')));
-addpath(genpath(fullfile(WD, '..', '..', 'lib')));
-
-checkDependencies();
-
-%% Set up
-delete(fullfile(pwd, 'options_task-*date-*.json'));
+run ../../initCppSpm.m;
 
 optionsFilesList = { ...
                     'options_task-linebisection.json'; ...
