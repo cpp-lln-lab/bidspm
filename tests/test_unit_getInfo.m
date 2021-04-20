@@ -18,7 +18,7 @@ function test_getInfoBasic()
 
   opt = checkOptions(opt);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   sessions = getInfo(BIDS, subLabel, opt, info);
   assert(all(strcmp(sessions, {'01' '02'})));
@@ -27,7 +27,7 @@ function test_getInfoBasic()
   session =  '01';
   info = 'runs';
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   runs = getInfo(BIDS, subLabel, opt, info, session);
   assert(all(strcmp(runs, {'1' '2'})));
@@ -38,7 +38,7 @@ function test_getInfoBasic()
   session =  '01';
   info = 'runs';
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   runs = getInfo(BIDS, subLabel, opt, info, session);
   assert(strcmp(runs, {''}));
@@ -55,7 +55,7 @@ function test_getInfoQuery()
 
   opt = setOptions('vismotion', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   filename = getInfo(BIDS, subLabel, opt, info, session, run, 'bold');
   assertEqual(size(filename, 1), 3);
@@ -99,7 +99,7 @@ function test_getInfoQueryWithSessionRestriction()
 
   opt = setOptions('vismotion', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   opt.query = struct('ses', {{'01', '02'}});
   [~, nbSessions] = getInfo(BIDS, subLabel, opt, 'sessions');

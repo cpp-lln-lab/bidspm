@@ -18,7 +18,7 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  [BIDS, opt] = getData(opt, opt.dir.derivatives);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   printBatchName('create mean anatomical image and mask');
 

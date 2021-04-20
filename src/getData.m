@@ -28,13 +28,13 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
-    % The directory where the derivatives are located
-    opt = setDerivativesDir(opt);
-    BIDSdir = opt.dir.raw;
-  end
+  if nargin < 2
+    errorStruct.identifier = 'getData:noBidsDirectory';
+    errorStruct.message = 'Provide a BIDS directory.';
+    error(errorStruct);
 
-  BIDS = bids.layout(BIDSdir);
+    error('Provide a BIDS directory.');
+  end
 
   if nargin < 3 || (exist('suffix', 'var') && isempty(suffix))
     suffix = 'bold';
@@ -45,6 +45,8 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   else
     suffix = 'T1w';
   end
+
+  BIDS = bids.layout(BIDSdir);
 
   % make sure that the required tasks exist in the data set
   if isfield(opt, 'taskName') && ~ismember(opt.taskName, bids.query(BIDS, 'tasks'))

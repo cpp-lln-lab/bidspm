@@ -18,7 +18,7 @@ function test_setBatchSelectAnatBasic()
 
   opt = setOptions('MoAE', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   matlabbatch = [];
   matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);

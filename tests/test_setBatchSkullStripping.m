@@ -14,7 +14,7 @@ function test_setBatchSkullStrippingBasic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   opt.orderBatches.segment = 2;
 
@@ -23,13 +23,13 @@ function test_setBatchSkullStrippingBasic()
 
   expectedBatch = returnExpectedBatch(opt);
 
+  assertEqual(matlabbatch{1}.spm.util.imcalc.output, expectedBatch{1}.spm.util.imcalc.output);
+  assertEqual(matlabbatch{end}.spm.util.imcalc.output, expectedBatch{end}.spm.util.imcalc.output);
   assertEqual(matlabbatch, expectedBatch);
 
 end
 
 function expectedBatch = returnExpectedBatch(opt)
-
-  expectedFileName = 'sub-01_ses-01_T1w.nii';
 
   expectedAnatDataDir = fullfile(fileparts(mfilename('fullpath')), ...
                                  'dummyData', 'derivatives', 'cpp_spm', ...
@@ -79,10 +79,8 @@ function expectedBatch = returnExpectedBatch(opt)
                       '.', 'tiss', '()', {3}, ...
                       '.', 'c', '()', {':'}));
 
-  expectedBatch{end}.spm.util.imcalc.output = ['m' strrep( ...
-                                                          expectedFileName, ...
-                                                          '.nii', ...
-                                                          '_skullstripped.nii')];
+  expectedFileName = 'sub-01_ses-01_desc-skullstripped_T1w.nii';
+  expectedBatch{end}.spm.util.imcalc.output = ['m' expectedFileName];
   expectedBatch{end}.spm.util.imcalc.outdir = {expectedAnatDataDir};
 
   expectedBatch{end}.spm.util.imcalc.expression = sprintf( ...
@@ -94,9 +92,7 @@ function expectedBatch = returnExpectedBatch(opt)
   expectedBatch{end}.spm.util.imcalc.expression = sprintf( ...
                                                           '(i2+i3+i4)>%f', ...
                                                           opt.skullstrip.threshold);
-  expectedBatch{end}.spm.util.imcalc.output = ['m' strrep( ...
-                                                          expectedFileName, ...
-                                                          '.nii', ...
-                                                          '_mask.nii')];
+  expectedFileName = 'sub-01_ses-01_label-T1w_mask.nii';
+  expectedBatch{end}.spm.util.imcalc.output = ['m' expectedFileName];
 
 end

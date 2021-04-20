@@ -14,7 +14,7 @@ function test_copyGraphWindownOutputBasic()
 
   pause(1);
 
-  opt.derivativesDir = pwd;
+  opt.dir.preproc = pwd;
   opt.taskName = 'testTask';
   subID = '01';
   imgNb = 1:2;
@@ -29,7 +29,7 @@ function test_copyGraphWindownOutputBasic()
 
   files = spm_select( ...
                      'List', ...
-                     fullfile(opt.derivativesDir, ['sub-' subID], 'figures'), ...
+                     fullfile(opt.dir.preproc, ['sub-' subID], 'figures'), ...
                      ['^' datestr(now, 'yyyymmddHH') '.*_[0-9]_sub-01_task-testTask_testStep.png']);
 
   assert(~isempty(files));
@@ -40,7 +40,7 @@ function test_copyGraphWindownOutputBasic()
   if isOctave()
     confirm_recursive_rmdir (true, 'local');
   end
-  rmdir(fullfile(opt.derivativesDir, ['sub-' subID]), 's');
+  rmdir(fullfile(opt.dir.preproc, ['sub-' subID]), 's');
 
 end
 
@@ -50,7 +50,7 @@ function test_copyGraphWindownOutputWarning()
 
   pause(1);
 
-  opt.derivativesDir = pwd;
+  opt.dir.preproc = pwd;
   opt.taskName = 'testTask';
   subID = '01';
   action = 'testStep';
@@ -73,6 +73,6 @@ function test_copyGraphWindownOutputWarning()
   if isOctave()
     confirm_recursive_rmdir (true, 'local');
   end
-  rmdir(fullfile(opt.derivativesDir, ['sub-' subID]), 's');
+  rmdir(fullfile(opt.dir.preproc, ['sub-' subID]), 's');
 
 end

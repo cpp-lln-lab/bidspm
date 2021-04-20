@@ -18,7 +18,7 @@ function test_setBatchSaveCoregistrationMatrixBasic()
   opt = setOptions('vismotion', subLabel);
   opt.query = struct('acq', '');
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   opt.orderBatches.coregister = 1;
 

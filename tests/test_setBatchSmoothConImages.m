@@ -16,7 +16,7 @@ function test_setBatchSmoothConImagesBasic()
   opt = setOptions('vismotion');
   opt.subjects = {'01', '02'};
 
-  [~, opt] = getData(opt);
+  [~, opt] = getData(opt, opt.dir.preproc);
 
   matlabbatch = [];
   matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFWHM);

@@ -16,11 +16,12 @@ function test_setDirectories_userSpecified()
 
   %
   opt = checkOptions(opt);
-  opt = setDirectories(opt);
 
   %
-  expected = defaultOptions();
-
+  expected.dir.raw = '';
+  expected.dir.preproc = '';
+  expected.dir.derivatives = '';
+  expected.dir.stats = '';
   expected.dir.input = pwd;
   expected.dir.output = fullfile(pwd, 'output');
   expected.dir.jobs = fullfile(opt.dir.output, 'jobs');
@@ -35,7 +36,6 @@ function test_setDirectories_copyRaw2Preproc()
 
   %
   opt = checkOptions(opt);
-  opt = setDirectories(opt);
 
   %
   expected = defaultOptions();
@@ -58,7 +58,6 @@ function test_setDirectories_copyRaw2Preproc_Named()
 
   %
   opt = checkOptions(opt);
-  opt = setDirectories(opt);
 
   %
   expected = defaultOptions();
@@ -79,7 +78,6 @@ function test_setDirectories_copyfMRIprep2Preproc()
 
   %
   opt = checkOptions(opt);
-  opt = setDirectories(opt);
 
   %
   expected = defaultOptions();
@@ -101,7 +99,6 @@ function test_setDirectories_preproc()
 
   %
   opt = checkOptions(opt);
-  opt = setDirectories(opt);
 
   %
   expected = defaultOptions();
@@ -123,7 +120,6 @@ function test_setDirectories_stats()
 
   %
   opt = checkOptions(opt);
-  opt = setDirectories(opt);
 
   %
   expected = defaultOptions();

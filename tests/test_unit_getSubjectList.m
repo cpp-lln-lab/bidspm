@@ -12,7 +12,7 @@ function test_getSubjectListNone()
 
   opt = setOptions('vismotion');
 
-  BIDS = bids.layout(opt.dir.derivatives);
+  BIDS = bids.layout(opt.dir.preproc);
 
   %% Get all groups all subjects
   opt = getSubjectList(BIDS, opt);
@@ -26,7 +26,7 @@ function test_getSubjectListGroup()
 
   opt = setOptions('vismotion');
 
-  BIDS = bids.layout(opt.dir.derivatives);
+  BIDS = bids.layout(opt.dir.preproc);
 
   %% Get all subjects of a group and a subject from another group
   opt.groups = {'blind'};
@@ -43,7 +43,7 @@ function test_getSubjectListBasic()
 
   opt = setOptions('vismotion');
 
-  BIDS = bids.layout(opt.dir.derivatives);
+  BIDS = bids.layout(opt.dir.preproc);
 
   %% Get some specified subjects
   opt.groups = {''};
@@ -59,7 +59,7 @@ function test_getSubjectListErrorSubject()
 
   opt = setOptions('vismotion', '03');
 
-  BIDS = bids.layout(opt.dir.derivatives);
+  BIDS = bids.layout(opt.dir.preproc);
 
   assertExceptionThrown( ...
                         @()getSubjectList(BIDS, opt), ...

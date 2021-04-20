@@ -16,7 +16,7 @@ function test_getRealignParamFileBasic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   [boldFileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, session, run, opt);
   realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, boldFileName));
@@ -39,7 +39,7 @@ function test_getRealignParamFileNativeSpace()
   opt = setOptions('vislocalizer', subLabel);
   opt.space = 'individual';
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   [boldFileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, session, run, opt);
   realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, boldFileName));
@@ -62,7 +62,7 @@ function test_getRealignParamFileFFX()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
   [subFuncDataDir, boldFileName, ext] = spm_fileparts(boldFileName);

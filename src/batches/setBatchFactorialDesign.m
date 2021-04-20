@@ -27,7 +27,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
     smoothPrefix = ['s', num2str(conFWHM)];
   end
 
-  [~, opt] = getData(opt);
+  [~, opt] = getData(opt, opt.dir.preproc);
 
   rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
 

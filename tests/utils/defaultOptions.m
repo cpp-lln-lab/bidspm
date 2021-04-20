@@ -57,4 +57,6 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions = orderfields(expectedOptions);
 
+  expectedOptions = setDirectories(expectedOptions);
+
 end
