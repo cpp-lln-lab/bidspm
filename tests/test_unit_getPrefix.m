@@ -148,7 +148,24 @@ function test_getPrefixSmooth()
 
   assertEqual(prefix, expectedPrefixOutput);
 
+  %% with STC
+  opt.metadata.SliceTiming = 1:0.2:1.8;
+  opt.sliceOrder = 1:10;
+  opt.realign.useUnwarp = true;
+  opt.space = 'MNI';
+
+  prefix = getPrefix(step, opt);
+
+  expectedPrefixOutput = [ ...
+                          spm_get_defaults('normalise.write.prefix'), ...
+                          spm_get_defaults('unwarp.write.prefix'), ...
+                          spm_get_defaults('slicetiming.prefix')];
+
+  assertEqual(prefix, expectedPrefixOutput);
+
   %% native space
+  opt.metadata = [];
+  opt.sliceOrder = [];
   opt.realign.useUnwarp = true;
   opt.space = 'individual';
 
