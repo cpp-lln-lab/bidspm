@@ -1,4 +1,4 @@
-function bidsCopyInputFolder(opt, pipeline_name, unzip)
+function bidsCopyInputFolder(opt, unzip)
   %
   % Copies the folders from the ``raw`` folder to the
   % ``derivatives`` folder, and will copy the dataset description and task json files
@@ -27,16 +27,8 @@ function bidsCopyInputFolder(opt, pipeline_name, unzip)
     opt = [];
   end
 
-  if nargin < 2 || isempty(pipeline_name)
-    pipeline_name = 'cpp_spm';
-  end
-
-  if nargin < 3 || isempty(unzip)
+  if nargin < 2 || isempty(unzip)
     unzip = true();
-  end
-
-  if ~ischar(pipeline_name)
-    error('Pipeline name must be a string');
   end
 
   opt = loadAndCheckOptions(opt);
@@ -47,15 +39,9 @@ function bidsCopyInputFolder(opt, pipeline_name, unzip)
 
   %% All tasks in this experiment
   % raw directory and derivatives directory
-  opt = setDerivativesDir(opt, pipeline_name);
-
   createDerivativeDir(opt);
 
-  if isempty(opt.dir.input)
-    opt.dir.input = opt.dir.raw;
-  end
-
-  copyTsvJson(opt.dir.input, opt.dir.derivatives);
+  copyTsvJson(opt.dir.input, opt.dir.preproc);
 
   %% Loop through the groups, subjects, sessions
   if any(ismember(opt.query.modality, 'func'))
@@ -80,8 +66,8 @@ function bidsCopyInputFolder(opt, pipeline_name, unzip)
     end
 
     bids.copy_to_derivative(BIDS, ...
-                            spm_file(fullfile(opt.dir.derivatives, '..'), 'cpath'), ...
-                            pipeline_name, ...
+                            fullfile(opt.dir.preproc, '..'), ...
+                            opt.pipeline.name, ...
                             filter, ...
                             unzip, ...
                             overwrite, ...

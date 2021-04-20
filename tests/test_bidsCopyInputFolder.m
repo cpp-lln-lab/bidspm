@@ -12,10 +12,10 @@ function test_bidsCopyInputFolderBasic()
 
   opt = setOptions('MoAE');
 
-  bidsCopyInputFolder(opt, [], true());
+  bidsCopyInputFolder(opt, true());
 
   layoutRaw = bids.layout(opt.dir.raw);
-  layoutDerivatives = bids.layout(fullfile(opt.dir.derivatives));
+  layoutDerivatives = bids.layout(fullfile(opt.dir.preproc));
 
   assertEqual(exist( ...
                     fullfile(opt.dir.raw, '..', ...
@@ -40,22 +40,20 @@ function test_bidsCopyInputFolder2tasks()
 
   system('rm -Rf dummyData/copy');
 
-  opt.dir.input = fullfile( ...
-                           fileparts(mfilename('fullpath')), ...
-                           'dummyData', 'derivatives', 'cpp_spm');
+  opt.dir.raw = fullfile( ...
+                         fileparts(mfilename('fullpath')), ...
+                         'dummyData', 'derivatives', 'cpp_spm');
 
-  opt.dir.derivatives = fullfile( ...
-                                 fileparts(mfilename('fullpath')), ...
-                                 'dummyData', 'copy');
+  opt.pipeline.name = 'copy';
 
   opt.taskName = 'vismotion';
   opt.query.modality = {'anat', 'func'};
   opt = checkOptions(opt);
 
   unzip = false;
-  bidsCopyInputFolder(opt, 'cpp_spm', unzip);
+  bidsCopyInputFolder(opt, unzip);
 
-  derivatives = bids.layout(fullfile(opt.dir.derivatives));
+  derivatives = bids.layout(fullfile(opt.dir.preproc));
 
   % make sure that anat, and func are there and that the fmap dependencies were
   % grabbed
@@ -66,7 +64,7 @@ function test_bidsCopyInputFolder2tasks()
   assertEqual(numel(tasks), 1);
 
   assertEqual(exist( ...
-                    fullfile(opt.dir.derivatives, ...
+                    fullfile(opt.dir.preproc, ...
                              'sub-01', ...
                              'ses-01', ...
                              'func', ...
@@ -74,9 +72,9 @@ function test_bidsCopyInputFolder2tasks()
               2);
 
   opt.taskName = 'vislocalizer';
-  derivatives = bidsCopyInputFolder(opt, 'cpp_spm', unzip);
+  bidsCopyInputFolder(opt, unzip);
 
-  BIDS = bids.layout(fullfile(opt.dir.derivatives));
+  BIDS = bids.layout(fullfile(opt.dir.preproc));
 
   tasks = bids.query(BIDS, 'tasks');
   assertEqual(numel(tasks), 2);
