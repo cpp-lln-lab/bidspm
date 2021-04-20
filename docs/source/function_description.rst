@@ -16,7 +16,6 @@ List of functions in the ``src`` folder.
 .. autofunction:: getPrefix
 .. autofunction:: getRealignParamFile
 .. autofunction:: getSliceOrder
-.. autofunction:: setDerivativesDir
 .. autofunction:: unzipImgAndReturnsFullpathName
 
 Subject level model

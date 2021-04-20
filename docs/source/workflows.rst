@@ -12,7 +12,7 @@ See the set up section.
 
 ----
 
-.. autofunction:: bidsCopyRawFolder  
+.. autofunction:: bidsCopyInputFolder  
 
 .. autofunction:: bidsResliceTpmToFunc  
 
