@@ -8,6 +8,30 @@ function test_suite = test_unit_setDirectories %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setDirectories_local()
+
+  opt.dir.input = fullfile( ...
+                           fileparts(mfilename('fullpath')), ...
+                           'dummyData', 'derivatives', 'fmriprep');
+
+  opt.pipeline.name = 'copy';
+
+  opt = checkOptions(opt);
+
+  %
+  expected = defaultOptions();
+
+  baseDir = fullfile(fileparts(mfilename('fullpath')), ...
+                     'dummyData', 'derivatives');
+  expected.dir.input = fullfile(baseDir, 'fmriprep');
+  expected.dir.derivatives = baseDir;
+  expected.dir.preproc = fullfile(baseDir, 'copy');
+  expected.dir.jobs = fullfile(expected.dir.preproc, 'jobs');
+
+  assertEqual(opt.dir, expected.dir);
+
+end
+
 function test_setDirectories_userSpecified()
 
   %% user specified

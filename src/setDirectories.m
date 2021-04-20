@@ -13,7 +13,7 @@ function opt = setDirectories(opt)
       return
     end
 
-    opt.dir.derivatives = fullfile(opt.dir.input, '..');
+    opt.dir.derivatives = spm_file(fullfile(opt.dir.input, '..'), 'cpath');
   end
 
   if ~isempty(opt.dir.preproc)
