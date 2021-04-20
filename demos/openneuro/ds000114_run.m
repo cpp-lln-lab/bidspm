@@ -20,8 +20,13 @@ opt = ds000114_get_option();
 
 reportBIDS(opt);
 
-bidsCopyInputFolder(opt, 1);
+opt.dir.derivatives = spm_file(fullfile(opt.dir.raw, ...
+                                        '..', ...
+                                        'derivatives', ...
+                                        pipeline_name), ...
+                               'cpath');
 
+bidsCopyInputFolder(opt, pipeline_name);
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
