@@ -9,6 +9,8 @@ clc;
 FWHM = 6;
 conFWHM = 6;
 
+pipeline_name = 'cpp_spm-preprocess';
+
 run ../../initCppSpm.m;
 
 %% Set options
@@ -16,17 +18,17 @@ opt = ds000001_get_option();
 
 reportBIDS(opt);
 
-bidsCopyInputFolder(opt, 1);
-
-bidsSTC(opt);
-
-bidsSpatialPrepro(opt);
-
-anatomicalQA(opt);
-bidsResliceTpmToFunc(opt);
-functionalQA(opt);
-
-bidsSmoothing(FWHM, opt);
+% bidsCopyInputFolder(opt, pipeline_name);
+%
+% bidsSTC(opt);
+%
+% bidsSpatialPrepro(opt);
+%
+% anatomicalQA(opt);
+% bidsResliceTpmToFunc(opt);
+% functionalQA(opt);
+%
+% bidsSmoothing(FWHM, opt);
 
 bidsFFX('specifyAndEstimate', opt, FWHM);
 bidsFFX('contrasts', opt, FWHM);

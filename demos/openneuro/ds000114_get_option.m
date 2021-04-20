@@ -15,6 +15,8 @@ function opt = ds000114_get_option()
   % task to analyze
   opt.taskName = 'linebisection';
 
+  opt.query.modality = {'anat', 'func'};
+
   opt.anatReference.type = 'T1w';
   opt.anatReference.session = 'retest';
   % Uncomment the lines below to run preprocessing

@@ -9,6 +9,8 @@ clc;
 FWHM = 6;
 conFWHM = 6;
 
+pipeline_name = 'cpp_spm-preprocess';
+
 run ../../initCppSpm.m;
 
 %% Set options
