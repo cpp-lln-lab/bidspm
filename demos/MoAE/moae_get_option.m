@@ -14,7 +14,6 @@ function opt = moae_get_option()
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
   opt.dir.preproc = fullfile(opt.dir.raw, '..', '..', 'outputs', 'derivatives');
 
-  opt.pipeline.type = 'preproc';
   opt.pipeline.name = 'cpp_spm-preproc';
 
   % Uncomment the lines below to run preprocessing

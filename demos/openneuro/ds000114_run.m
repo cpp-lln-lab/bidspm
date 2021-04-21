@@ -9,8 +9,6 @@ clc;
 FWHM = 6;
 conFWHM = 6;
 
-pipeline_name = 'cpp_spm-preprocess';
-
 run ../../initCppSpm.m;
 
 %% Set options
@@ -20,13 +18,7 @@ opt = ds000114_get_option();
 
 reportBIDS(opt);
 
-opt.dir.derivatives = spm_file(fullfile(opt.dir.raw, ...
-                                        '..', ...
-                                        'derivatives', ...
-                                        pipeline_name), ...
-                               'cpath');
-
-bidsCopyInputFolder(opt, pipeline_name);
+bidsCopyInputFolder(opt);
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
@@ -38,28 +30,19 @@ functionalQA(opt);
 bidsSmoothing(FWHM, opt);
 
 %% Run level analysis: as for MVPA
-
+opt.pipeline.type = 'stats';
 bidsFFX('specifyAndEstimate', opt, FWHM);
 bidsFFX('contrasts', opt, FWHM);
 
 bidsConcatBetaTmaps(opt, FWHM, false, false);
 
 %% Subject level analysis: for regular univariate
-
+opt.pipeline.type = 'stats';
 opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                           'models', ...
                           'model-ds000114-linebisection_smdl.json');
 
 bidsFFX('specifyAndEstimate', opt, FWHM);
-
-opt.result.Steps(1) = struct( ...
-                             'Level',  'subject', ...
-                             'Contrasts', struct( ...
-                                                 'Name', 'Correct_Task', ... % has to match
-                                                 'Mask', false, ...
-                                                 'MC', 'FWE', ... FWE, none, FDR
-                                                 'p', 0.05, ...
-                                                 'k', 0));
 
 bidsFFX('contrasts', opt, FWHM);
 bidsResults(opt, FWHM);
