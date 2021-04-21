@@ -8,6 +8,19 @@ function test_suite = test_unit_getInfo %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getInfo_fmriprep()
+
+  subLabel = 'ctrl01';
+
+  opt = setOptions('fmriprep');
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  sessions = getInfo(BIDS, subLabel, opt, 'sessions');
+  runs = getInfo(BIDS, subLabel, opt, 'runs', sessions{1});
+
+end
+
 function test_getInfoBasic()
 
   subLabel = 'ctrl01';
@@ -15,8 +28,6 @@ function test_getInfoBasic()
   opt = setOptions('vismotion', subLabel);
 
   info = 'sessions';
-
-  opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 

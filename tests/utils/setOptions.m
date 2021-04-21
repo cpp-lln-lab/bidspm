@@ -18,6 +18,12 @@ function opt = setOptions(task, subLabel)
     opt.result.Steps.Contrasts(1).Name = 'listening';
     opt.result.Steps.Contrasts(2).Name = 'listening_inf_baseline';
 
+  elseif strcmp(task, 'fmriprep')
+
+    opt.taskName = 'rest';
+    opt.dir.derivatives = spm_file(fullfile(thisDir, '..', 'dummyData', 'derivatives'), 'cpath');
+    opt.pipeline.name = 'fmriprep';
+
   else
 
     opt.taskName = task;

@@ -2,6 +2,10 @@ function download_moae_ds(downloadData)
   %
   % (C) Copyright 2021 Remi Gau
 
+  if nargin < 1
+    downloadData = true;
+  end
+
   if downloadData
 
     % URL of the data set to download
