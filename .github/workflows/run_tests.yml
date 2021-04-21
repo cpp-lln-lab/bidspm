@@ -74,6 +74,7 @@ jobs:
         mv $inputs_folder/MoAEpilot $inputs_folder/raw
         cd tests
         sh createDummyDataSet.sh
+        sh createDummyFmriprepDataSet.sh
         cd ..
 
     - name: Run tests
