@@ -1,4 +1,4 @@
-function [BIDS, opt] = setUpWorkflow(opt, workflowName)
+function [BIDS, opt] = setUpWorkflow(opt, workflowName, BIDSdir)
   %
   % Calls some common functions to:
   % - check the configuraton,
@@ -24,10 +24,14 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  if nargin < 3
+    BIDSdir = opt.dir.preproc;
+  end
+
   opt = loadAndCheckOptions(opt);
 
   % load the subjects/Groups information and the task name
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, BIDSdir);
 
   cleanCrash();
 

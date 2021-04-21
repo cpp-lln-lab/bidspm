@@ -34,9 +34,9 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     % we will use to upsample our model during regression creation
     fileName = bids.query(BIDS, 'data', ...
                           'sub', subLabel, ...
-                          'suffix', 'bold');
-    fileName = strrep(fileName{1}, '.gz', '');
-    hdr = spm_vol(fileName);
+                          'suffix', 'bold', ...
+                          'extension', '.nii');
+    hdr = spm_vol(fileName{1});
     % we are assuming axial acquisition here
     sliceOrder = 1:hdr(1).dim(3);
   end

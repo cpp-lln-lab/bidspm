@@ -12,7 +12,7 @@ function test_createDefaultModelBasic()
 
   opt = setOptions('vislocalizer');
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   createDefaultModel(BIDS, opt);
 

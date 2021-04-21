@@ -17,7 +17,7 @@ function test_getBoldFilenameForFFXBasic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
 
@@ -41,9 +41,7 @@ function test_getBoldFilenameForFFXNativeSpace()
   opt = setOptions('vislocalizer', subLabel);
   opt.space = 'individual';
 
-  opt = checkOptions(opt);
-
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
 

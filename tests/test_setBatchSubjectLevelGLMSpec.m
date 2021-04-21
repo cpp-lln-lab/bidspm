@@ -17,9 +17,9 @@ function test_setBatchSubjectLevelGLMSpecBasic()
 
   opt = setOptions('MoAE', subLabel);
 
-  bidsCopyRawFolder(opt, 1);
+  bidsCopyInputFolder(opt);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   % create dummy preprocessed data
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');

@@ -8,7 +8,7 @@ function opt = setOptions(task, subLabel)
 
   if strcmp(task, 'MoAE')
 
-    opt.dataDir = fullfile(thisDir, ...
+    opt.dir.raw = fullfile(thisDir, ...
                            '..', '..', 'demos',  'MoAE', 'inputs', 'raw');
     opt.model.file = fullfile(thisDir, ...
                               '..', '..', 'demos',  'MoAE', 'models', 'model-MoAE_smdl.json');
@@ -21,8 +21,10 @@ function opt = setOptions(task, subLabel)
   else
 
     opt.taskName = task;
-    opt.derivativesDir = fullfile(thisDir, '..', 'dummyData');
-    opt.model.file = fullfile(opt.derivativesDir,  'models', ...
+    opt.dir.derivatives = spm_file(fullfile(thisDir, '..', 'dummyData', 'derivatives'), 'cpath');
+    opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm');
+    opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
+    opt.model.file = fullfile(thisDir, '..', 'dummyData',  'models', ...
                               ['model-' task '_smdl.json']);
 
   end

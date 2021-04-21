@@ -2,20 +2,25 @@ function expectedOptions = defaultOptions(taskName)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  expectedOptions.pipeline.type =  'preproc';
+  expectedOptions.pipeline.name = 'cpp_spm';
+
   expectedOptions.sliceOrder = [];
   expectedOptions.STC_referenceSlice = [];
 
-  expectedOptions.dataDir = '';
-  expectedOptions.derivativesDir = '';
-  expectedOptions.dir = struct('raw', '', ...
-                               'derivatives', '');
+  expectedOptions.dir = struct('input', '', ...
+                               'output', '', ...
+                               'derivatives', '', ...
+                               'raw', '', ...
+                               'preproc', '', ...
+                               'stats', '');
 
   expectedOptions.funcVoxelDims = [];
 
   expectedOptions.groups = {''};
   expectedOptions.subjects = {[]};
 
-  expectedOptions.query = struct([]);
+  expectedOptions.query.modality = {'anat', 'func', 'dwi'};
 
   expectedOptions.space = 'MNI';
 
@@ -52,6 +57,6 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions = orderfields(expectedOptions);
 
-  expectedOptions = setStatsDir(expectedOptions);
+  expectedOptions = setDirectories(expectedOptions);
 
 end

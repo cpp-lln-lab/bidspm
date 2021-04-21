@@ -39,7 +39,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon)
 
         conName = rmTrialTypeStr(grpLvlCon{j});
 
-        spmMatFile = { fullfile(opt.rfxDir, conName, 'SPM.mat') };
+        spmMatFile = { fullfile(opt.dir.rfx, conName, 'SPM.mat') };
 
         % no QA at the group level GLM:
         %   since there is no autocorrelation to check for

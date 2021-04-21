@@ -9,12 +9,11 @@ clc;
 run ../../initCppSpm.m;
 
 %% Get Data
-opt = Lesion_getOption();
+opt = lesion_get_option();
 
 %% Run batches
 reportBIDS(opt);
 
-deleteZippedNii = true;
-bidsCopyRawFolder(opt, deleteZippedNii, {'anat'});
+bidsCopyInputFolder(opt);
 
 bidsLesionSegmentation(opt);

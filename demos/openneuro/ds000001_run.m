@@ -16,7 +16,9 @@ opt = ds000001_get_option();
 
 reportBIDS(opt);
 
-bidsCopyRawFolder(opt, 1);
+bidsCopyInputFolder(opt);
+
+bidsSegmentSkullStrip(opt);
 
 bidsSTC(opt);
 
@@ -27,6 +29,8 @@ bidsResliceTpmToFunc(opt);
 functionalQA(opt);
 
 bidsSmoothing(FWHM, opt);
+
+opt.pipeline.type = 'stats';
 
 bidsFFX('specifyAndEstimate', opt, FWHM);
 bidsFFX('contrasts', opt, FWHM);

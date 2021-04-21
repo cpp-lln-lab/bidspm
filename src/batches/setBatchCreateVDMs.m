@@ -1,4 +1,4 @@
-function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
+function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %
   % Short description of what the function does goes here.
   %
@@ -25,26 +25,27 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
 
   printBatchName('create voxel displacement map');
 
-  [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
-  runs = getInfo(BIDS, subID, opt, 'Runs', sessions{1});
-  [fileName, subFuncDataDir] = getBoldFilename(BIDS, subID, sessions{1}, runs{1}, opt);
+  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});
+  [fileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, sessions{1}, runs{1}, opt);
   refImage = validationInputFile(subFuncDataDir, fileName, 'mean_');
 
   for iSes = 1:nbSessions
 
-    runs = bids.query(BIDS, 'runs', ...
-                      'modality', 'fmap', ...
-                      'sub', subID, ...
-                      'ses', sessions{iSes});
+    filter = opt.query;
+    filter.modality =  'fmap';
+    filter.sub =  subLabel;
+    filter.ses =  sessions{iSes};
+
+    runs = bids.query(BIDS, 'runs', filter);
 
     for iRun = 1:numel(runs)
 
-      metadata = bids.query(BIDS, 'metadata', ...
-                            'modality', 'fmap', ...
-                            'sub', subID, ...
-                            'ses', sessions{iSes}, ...
-                            'run', runs{iRun});
+      filter.run = runs{iRun};
+      filter.suffix = 'phasediff';
+
+      metadata = bids.query(BIDS, 'metadata', filter);
 
       if strfind(metadata.IntendedFor, opt.taskName)
 
@@ -52,24 +53,14 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
 
         % TODO
         % Move to getInfo ?
-        fmapFiles = bids.query(BIDS, 'data', ...
-                               'modality', 'fmap', ...
-                               'sub', subID, ...
-                               'ses', sessions{iSes}, ...
-                               'run', runs{iRun});
-
-        phaseImage = fmapFiles{1};
         matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.phase = ...
-            {phaseImage};
+            bids.query(BIDS, 'data', filter);
 
-        magnitudeImage = strrep(phaseImage, 'phasediff', 'magnitude1');
+        [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, filter);
+
+        filter.suffix = 'magnitude1';
         matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.magnitude = ...
-            {magnitudeImage};
-
-        [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, ...
-                                                                     subID, ...
-                                                                     sessions{iSes}, ...
-                                                                     runs{iRun});
+            bids.query(BIDS, 'data', filter);
 
         defaultsval = matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval;
         defaultsval.et = echotimes;
@@ -86,14 +77,11 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
 
 end
 
-function varargout = getMetadataForVDM(BIDS, subID, sessionID, runID)
+function varargout = getMetadataForVDM(BIDS, filter)
 
   % get metadata fmap and its associated func files
-  fmapMetadata = bids.query(BIDS, 'metadata', ...
-                            'modality', 'fmap', ...
-                            'sub', subID, ...
-                            'ses', sessionID, ...
-                            'run', runID);
+  fmapMetadata = bids.query(BIDS, 'metadata', filter);
+
   if numel(fmapMetadata) > 1
     fmapMetadata = fmapMetadata{1};
   end

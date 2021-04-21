@@ -23,14 +23,7 @@ FWHM = 6;
 WD = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'openneuro');
 cd(WD);
 
-% we add all the subfunctions that are in the sub directories
-addpath(genpath(fullfile(WD, '..', '..', 'src')));
-addpath(genpath(fullfile(WD, '..', '..', 'lib')));
-
-checkDependencies();
-
-%% Set up
-delete(fullfile(pwd, 'options_task-*date-*.json'));
+run ../../initCppSpm.m;
 
 optionsFilesList = { ...
                     'options_task-linebisection.json'; ...
@@ -56,14 +49,13 @@ for iOption = 1:size(optionsFilesList, 1)
 
   bidsSpatialPrepro(opt);
 
-  % The following do not run on octave for now (because of spmup)
   anatomicalQA(opt);
   bidsResliceTpmToFunc(opt);
   functionalQA(opt);
 
   bidsSmoothing(FWHM, opt);
 
-  % The following crash on Travis CI
+  % The following crash on CI
   bidsFFX('specifyAndEstimate', opt, FWHM);
   bidsFFX('contrasts', opt, FWHM);
   bidsResults(opt, FWHM);

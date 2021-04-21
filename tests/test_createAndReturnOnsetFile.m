@@ -17,7 +17,7 @@ function test_createAndReturnOnsetFileBasic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   sessions = getInfo(BIDS, subLabel, opt, 'sessions');
   runs = getInfo(BIDS, subLabel, opt, 'runs', sessions{iSes});

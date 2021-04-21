@@ -55,20 +55,15 @@ for iOption = 1:size(optionsFilesList, 1)
 
   bidsSpatialPrepro(opt);
 
-  % Some of the following do not run on octave for now (because of spmup)
-  % Crashes in CI
-  %   anatomicalQA(opt);
-
+  anatomicalQA(opt);
   bidsResliceTpmToFunc(opt);
-
-  % Crashes in CI
-  %   functionalQA(opt);
+  functionalQA(opt);
 
   bidsSmoothing(FWHM, opt);
 
   bidsSegmentSkullStrip(opt);
 
-  % The following crash on Travis CI
+  % The following crash on CI
   %   bidsFFX('specifyAndEstimate', opt, FWHM);
   %   bidsFFX('contrasts', opt, FWHM);
   %   bidsResults(opt, FWHM);

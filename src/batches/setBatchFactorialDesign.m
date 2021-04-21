@@ -27,7 +27,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
     smoothPrefix = ['s', num2str(conFWHM)];
   end
 
-  [~, opt] = getData(opt);
+  [~, opt] = getData(opt, opt.dir.preproc);
 
   rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
 
@@ -51,7 +51,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
       rmdir(directory, 's');
     end
 
-    mkdir(directory);
+    spm_mkdir(directory);
 
     icell(1).levels = 1; %#ok<*AGROW>
 

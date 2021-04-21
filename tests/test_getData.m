@@ -14,7 +14,7 @@ function test_getDataMetadata()
 
   opt = setOptions('vismotion', subLabel);
 
-  [~, opt] = getData(opt, [], 'T1w');
+  [~, opt] = getData(opt, opt.dir.preproc, 'T1w');
 
   assert(isequal(opt.metadata.RepetitionTime, 2.3));
 
@@ -25,7 +25,7 @@ function test_getDataErrorTask()
   opt = setOptions('testTask');
 
   assertExceptionThrown( ...
-                        @()getData(opt), ...
+                        @()getData(opt, opt.dir.preproc), ...
                         'getData:noMatchingTask');
 
 end

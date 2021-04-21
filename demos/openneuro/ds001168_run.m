@@ -15,9 +15,9 @@ opt = ds001168_get_option();
 
 %% Run batches
 
-reportBIDS(opt);
+% reportBIDS(opt);
 
-bidsCopyRawFolder(opt, 1);
+bidsCopyInputFolder(opt);
 
 bidsCreateVDM(opt);
 

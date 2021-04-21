@@ -14,7 +14,7 @@ function test_setBatchSTCEmpty()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   matlabbatch = [];
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
@@ -37,7 +37,7 @@ function test_setBatchSTCForce()
 
   opt = checkOptions(opt);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   matlabbatch = [];
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
@@ -67,7 +67,7 @@ function test_setBatchSTCBasic()
   opt = setOptions('vismotion', subLabel);
   opt.query = struct('acq', '');
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   matlabbatch = [];
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
@@ -110,7 +110,7 @@ function test_setBatchSTCErrorInvalidInputTime()
   opt.sliceOrder(end) = [];
   opt.STC_referenceSlice = 2; % impossible reference value
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   matlabbatch = [];
 

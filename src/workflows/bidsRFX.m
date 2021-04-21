@@ -40,7 +40,7 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
 
   [~, opt] = setUpWorkflow(opt, 'group level GLM');
 
-  opt.jobsDir = fullfile(opt.dir.stats, 'JOBS', opt.taskName);
+  opt.dir.jobs = fullfile(opt.dir.stats, 'jobs', opt.taskName);
 
   switch action
 
@@ -55,7 +55,7 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
 
     case 'RFX'
 
-      opt.rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
+      opt.dir.rfx = getRFXdir(opt, funcFWHM, conFWHM);
 
       % ------
       % TODO

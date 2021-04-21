@@ -17,7 +17,7 @@ function test_getBoldFilenameBasic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   opt.query = struct('acq', '');
 

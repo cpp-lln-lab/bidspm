@@ -35,13 +35,12 @@ end
 
 %% Run batches
 reportBIDS(opt);
-bidsCopyRawFolder(opt, 1);
+bidsCopyInputFolder(opt);
 
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
-% The following do not run on octave for now (because of spmup)
 anatomicalQA(opt);
 bidsResliceTpmToFunc(opt);
 
@@ -50,8 +49,9 @@ bidsResliceTpmToFunc(opt);
 
 bidsSmoothing(FWHM, opt);
 
-% The following crash on Travis CI
-opt.dir.stats = opt.derivativesDir;
+% The following crash on CI
+opt.pipeline.type = 'stats';
+
 bidsFFX('specifyAndEstimate', opt, FWHM);
 bidsFFX('contrasts', opt, FWHM);
 

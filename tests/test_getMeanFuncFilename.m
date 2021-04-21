@@ -14,7 +14,7 @@ function test_getMeanFuncFilenameBasic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
 

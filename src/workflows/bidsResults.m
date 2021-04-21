@@ -121,7 +121,7 @@ function renameOutputResults(results)
   % we create new name for the nifti oupput by removing the
   % spmT_XXXX prefix and using the XXXX as label- for the file
 
-  outputFiles = spm_select('FPList', results.dir, '^spmT_[0-9].*_sub-.*.nii$');
+  outputFiles = spm_select('FPList', results.dir, '^spmT_[0-9].*_sub-.*$');
 
   for iFile = 1:size(outputFiles, 1)
 
@@ -130,7 +130,7 @@ function renameOutputResults(results)
     basename = spm_file(source, 'basename');
     split = strfind(basename, '_sub');
     p = bids.internal.parse_filename(basename(split + 1:end));
-    p.label = basename(split - 4:split - 1);
+    p.entities.label = basename(split - 4:split - 1);
     newName = createFilename(p);
 
     target = spm_file(source, 'basename', newName);

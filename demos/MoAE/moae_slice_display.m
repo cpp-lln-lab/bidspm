@@ -31,7 +31,7 @@ layers(2).color.label = '\beta_{listening} - \beta_{baseline} (a.u.)';
 %
 %   - t-statistics opacity-coded
 
-spmTImage = spm_select('FPList', ffxDir, ['^spmT_' p.label '.nii$']);
+spmTImage = spm_select('FPList', ffxDir, ['^spmT_' p.entities.label '.nii$']);
 layers(2).opacity.file = spmTImage;
 
 layers(2).opacity.range = [2 3];

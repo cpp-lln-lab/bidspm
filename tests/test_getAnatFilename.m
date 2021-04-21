@@ -20,7 +20,7 @@ function test_getAnatFilenameBasic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
@@ -52,9 +52,7 @@ function test_getAnatFilenameTypeError()
 
   opt.anatReference.type = 'T2w';
 
-  opt = checkOptions(opt);
-
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   assertExceptionThrown( ...
                         @()getAnatFilename(BIDS, subLabel, opt), ...
@@ -70,9 +68,7 @@ function test_getAnatFilenameSEssionError()
 
   opt.anatReference.session = '001';
 
-  opt = checkOptions(opt);
-
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   assertExceptionThrown( ...
                         @()getAnatFilename(BIDS, subLabel, opt), ...

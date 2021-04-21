@@ -31,7 +31,7 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
     action = '';
   end
 
-  figureDir = fullfile(opt.derivativesDir, strcat('sub-', subID), 'figures');
+  figureDir = fullfile(opt.dir.preproc, strcat('sub-', subID), 'figures');
   if ~exist(figureDir, 'dir')
     mkdir(figureDir);
   end

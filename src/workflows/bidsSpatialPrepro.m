@@ -92,6 +92,9 @@ function bidsSpatialPrepro(opt)
 
     copyFigures(BIDS, opt, subLabel);
 
+    renameSegmentParameter(BIDS, subLabel, opt);
+    renameUnwarpParameter(BIDS, subLabel, opt);
+
   end
 
 end

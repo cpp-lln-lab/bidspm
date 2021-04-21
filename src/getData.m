@@ -28,12 +28,13 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  if nargin < 2 || (exist('BIDSdir', 'var') && isempty(BIDSdir))
-    % The directory where the derivatives are located
-    opt = setDerivativesDir(opt);
-    BIDSdir = opt.derivativesDir;
+  if nargin < 2
+    errorStruct.identifier = 'getData:noBidsDirectory';
+    errorStruct.message = 'Provide a BIDS directory.';
+    error(errorStruct);
+
+    error('Provide a BIDS directory.');
   end
-  derivativesDir = BIDSdir;
 
   if nargin < 3 || (exist('suffix', 'var') && isempty(suffix))
     suffix = 'bold';
@@ -45,8 +46,7 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
     suffix = 'T1w';
   end
 
-  % we let SPM figure out what is in this BIDS data set
-  BIDS = bids.layout(derivativesDir);
+  BIDS = bids.layout(BIDSdir);
 
   % make sure that the required tasks exist in the data set
   if isfield(opt, 'taskName') && ~ismember(opt.taskName, bids.query(BIDS, 'tasks'))
@@ -84,7 +84,9 @@ function opt = getMetaData(BIDS, opt, subjects, suffix)
       metadata = bids.query(BIDS, 'metadata', ...
                             'task', opt.taskName, ...
                             'sub', subjects{1}, ...
-                            'suffix', suffix);
+                            'suffix', suffix, ...
+                            'extension', {'.nii', '.nii.gz'});
+
     case 'T1w'
       metadata = bids.query(BIDS, 'metadata', ...
                             'sub', subjects{1}, ...
