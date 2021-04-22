@@ -8,19 +8,23 @@ function initCppSpm()
 
   if isempty(CPP_SPM_INITIALIZED)
 
-    % directory with this script becomes the current directory
     thisDirectory = fileparts(mfilename('fullpath'));
 
-    % we add all the subfunctions that are in the sub directories
     addpath(genpath(fullfile(thisDirectory, 'src')));
-    addpath(genpath(fullfile(thisDirectory, 'lib', 'mancoreg')));
-    addpath(genpath(fullfile(thisDirectory, 'lib', 'NiftiTools')));
     addpath(genpath(fullfile(thisDirectory, 'lib', 'spmup')));
-    addpath(genpath(fullfile(thisDirectory, 'lib', 'utils')));
 
-    addpath(fullfile(thisDirectory, 'lib', 'bids-matlab'));
-    addpath(fullfile(thisDirectory, 'lib', 'slice_display'));
-    addpath(fullfile(thisDirectory, 'lib', 'panel-2.14'));
+    libList = { ...
+               'mancoreg', ...
+               'NiftiTools', ...
+               'bids-matlab', ...
+               'slice_display', ...
+               'panel-2.14', ...
+               'utils'};
+
+    for i = 1:numel(libList)
+      addpath(fullfile(thisDirectory, 'lib', libList{i}));
+    end
+
     addpath(fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
 
     checkDependencies();
