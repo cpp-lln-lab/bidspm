@@ -4,25 +4,18 @@ function matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, subLabel)
   %
   % USAGE::
   %
-  %   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, ...
-  %                                           [action = 'realign'], ...
-  %                                           BIDS, ...
-  %                                           opt, ...
-  %                                           subLabel)
+  %   matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch: SPM batch
   % :type matlabbatch: structure
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param action: ``realign``, ``realignReslice``, ``realignUnwarp``
-  % :type action: string
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   % :type subLabel: string
   % :param subLabel: subject label
   %
   % :returns: - :matlabbatch: (structure) (dimension)
-  %           - :voxDim: (array) (dimension)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
@@ -89,11 +82,11 @@ function matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, subLabel)
   vox_rsHRF.outdir = {outputDir};
 
   vox_rsHRF.savedata.deconv_save = 0;
-  vox_rsHRF.savedata.hrfmat_save = 0;
+  vox_rsHRF.savedata.hrfmat_save = 1;
   vox_rsHRF.savedata.hrfnii_save = 1;
   vox_rsHRF.savedata.job_save = 0;
 
-  vox_rsHRF.prefix = 'Deconv_';
+  vox_rsHRF.prefix = 'deconv_';
 
   matlabbatch{end + 1}.spm.tools.rsHRF.vox_rsHRF = vox_rsHRF;
 
