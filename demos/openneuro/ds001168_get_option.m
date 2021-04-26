@@ -20,7 +20,7 @@ function opt = ds001168_get_option()
   opt.taskName = 'rest';
 
   opt.anatReference.type = 'T1w';
-  opt.anatReference.session = 1;
+  opt.anatReference.session = '1';
 
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp

@@ -21,7 +21,7 @@ function manageWorkersPool(action, opt)
 
   if ~opt.parallelize.do
     opt.parallelize.nbWorkers = 1;
-    opt.parallelize.killOnExit = true;
+    opt.parallelize.killOnExit = false;
   end
 
   if ~isOctave()
