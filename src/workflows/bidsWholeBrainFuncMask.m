@@ -6,6 +6,8 @@ function mask = bidsWholeBrainFuncMask(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'create brain mask from mean functional image');
 
+  mask = cell(numel(opt.subjects),1);
+  
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
@@ -16,10 +18,10 @@ function mask = bidsWholeBrainFuncMask(opt)
 
     % name the output accordingto the input image
     maskFileName = ['m' strrep(meanImage, '.nii', '_mask.nii')];
-    mask = fullfile(meanFuncDir, maskFileName);
+    mask{iSub} = fullfile(meanFuncDir, maskFileName);
 
     % ask if mask exist, if not create it:
-    if ~exist(mask, 'file')
+    if ~exist(mask{iSub}, 'file')
 
       % set batch order since there is dependencies
       opt.orderBatches.segment = 1;
