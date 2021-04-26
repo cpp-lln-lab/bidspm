@@ -27,6 +27,7 @@ function matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outD
   matlabbatch{end}.spm.util.imcalc.output = output;
   matlabbatch{end}.spm.util.imcalc.outdir = { outDir };
   matlabbatch{end}.spm.util.imcalc.expression = expression;
+  matlabbatch{end}.spm.util.imcalc.options.dtype = 16;
 
   % matlabbatch{1}.spm.util.imcalc.var = struct('name', {}, 'value', {});
   % matlabbatch{1}.spm.util.imcalc.options.dmtx = 0;
