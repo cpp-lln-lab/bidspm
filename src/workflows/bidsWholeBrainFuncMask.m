@@ -6,8 +6,8 @@ function mask = bidsWholeBrainFuncMask(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'create brain mask from mean functional image');
 
-  mask = cell(numel(opt.subjects),1);
-  
+  mask = cell(numel(opt.subjects), 1);
+
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
