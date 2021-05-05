@@ -15,10 +15,12 @@ function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, BIDS, o
 
   printBatchName('Lesion abnormalities');
 
-  % Defin smoothed segmented images of patients
+
+
+  % 1. Define smoothed segmented images of patients
   matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3patients = '<UNDEFINED>';
 
-  % Defin smoothed segmented images of neurotypical controls
+  % 2. Define smoothed segmented images of neurotypical controls
   matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3controls = '<UNDEFINED>';
 
   % Specify alpha parameter
@@ -26,7 +28,7 @@ function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, BIDS, o
   % Specify lambda parameter
   matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3Lambda = -4;
 
-  % define SPM folder
+  % Define SPM folder
   spmDir = spm('dir');
 
   % specify lesion mask

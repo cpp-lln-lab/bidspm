@@ -28,6 +28,24 @@ bidsCopyRawFolder(opt, deleteZippedNii, {'anat'});
 % Step 1: segmentation
 bidsLesionSegmentation(opt);
 
+% get the anat  file for step 1:
+spm_select('FPListRec', pwd, '^sub.*T1w.nii$')
+
+% the output file from the segmentation will be called the same with a
+% prefix for segmentation (something like c6 is probably what we need, to
+% check):
+spm_select('FPListRec', pwd, '^c6sub-.*T1w.nii$')
+
+  % Create vector to identify if it's a patient or not, create the files accordingly and then pull from the lesion
+% abnormality section
+isPatient = [0 0 0 0 1];
+% if isPatient == 1
+%     mkdir 
+%       store segmented patient output file in location one
+%     esleif
+%         mkdir if not already
+%         store segmented output file in location 2
+
 % % Step 2: lesion abnormalities
 % bidsLesionAbnormalitiesDetection(opt)
 % 
