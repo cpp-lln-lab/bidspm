@@ -49,38 +49,6 @@ Template proposal
 
 ----
 
-Numpy template
---------------
-
-See more information `here 
-<https://www.sphinx-doc.org/en/master/usage/extensions/example_numpy.html#example-numpy>`_
-
-::
-
-   function [argout] = templateFunction(argin1, argin2, argin3)
-      %
-      % Short description of what the function does goes here.
-      %
-      %  y = templateFunction(argin1, argin2, argin3)
-      %
-      % Parameters:
-      %    argin1: The first input value
-      %
-      %    argin2: The second input value
-      %
-      %    argin3: The third input value 
-      %
-      % Returns:
-      %    The output value
-
-      % The code goes below
-
-   end
-
-.. autofunction:: templateFunctionNumpy
-
-----
-
 Google template
 ---------------
 

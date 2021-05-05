@@ -1,6 +1,7 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function datasetDescription = datasetDescriptionDefaults()
+  %
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   datasetDescription.Name = 'cpp_spm outputs';
   datasetDescription.BIDSVersion = '1.4.1';

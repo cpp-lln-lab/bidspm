@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   %
   % Get the filename and the directory of a bold file for a given session /
@@ -28,6 +26,7 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   %           - :subFuncDataDir: (string)
   %
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   [BIDS, subID, sessionID, runID, opt] = deal(varargin{:});
 

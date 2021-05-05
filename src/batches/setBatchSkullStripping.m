@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch to compute a brain mask based on the tissue probability maps
@@ -33,11 +31,21 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   % Any voxel with p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold
   % will be included in the skull stripping mask.
   %
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   printBatchName('skull stripping');
 
-  [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
-  output = ['m' strrep(anatImage, '.nii', '_skullstripped.nii')];
+  [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, subLabel, opt);
+
+  % if the input image is mean func image instead of anatomical
+  if opt.skullstrip.mean
+    [imageToSkullStrip, dataDir] = getMeanFuncFilename(BIDS, subLabel, opt);
+  end
+
+  output = ['m' strrep(imageToSkullStrip, '.nii', '_skullstripped.nii')];
+  maskOutput = ['m' strrep(imageToSkullStrip, '.nii', '_mask.nii')];
+
   expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
 
   % if this is part of a pipeline we get the segmentation dependency to get
@@ -106,13 +114,13 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
 
   end
 
-  matlabbatch = setBatchImageCalculation(matlabbatch, input, output, anatDataDir, expression);
+  matlabbatch = setBatchImageCalculation(matlabbatch, input, output, dataDir, expression);
 
   %% Add a batch to output the mask
   matlabbatch{end + 1} = matlabbatch{end};
   matlabbatch{end}.spm.util.imcalc.expression = sprintf( ...
                                                         '(i2+i3+i4)>%f', ...
                                                         opt.skullstrip.threshold);
-  matlabbatch{end}.spm.util.imcalc.output = ['m' strrep(anatImage, '.nii', '_mask.nii')];
+  matlabbatch{end}.spm.util.imcalc.output = maskOutput;
 
 end

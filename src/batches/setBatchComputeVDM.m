@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
   %
   % Short description of what the function does goes here.
@@ -21,6 +19,8 @@ function matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
   %
   % adapted from spmup get_FM_workflow.m (@ commit
   % 198c980d6d7520b1a996f0e56269e2ceab72cc83)
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   switch lower(fmapType)
     case 'phasediff'

@@ -1,0 +1,5 @@
+# files in the demo folder related to running the demo analysis
+*/outputs/
+*/inputs/
+*/*.nii
+*/cfg/*.json

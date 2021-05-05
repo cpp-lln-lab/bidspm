@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function opt = checkOptions(opt)
   %
   % Check the option inputs and add any missing field with some defaults
@@ -19,10 +17,12 @@ function opt = checkOptions(opt)
   % - :opt: the option structure with missing values filled in by the defaults.
   %
   % REQUIRED FIELDS:
+  %
   %   - ``opt.taskName``
   %   - ``opt.dataDir``
   %
   % IMPORTANT OPTIONS (with their defaults):
+  %
   %   - ``opt.groups = {''}`` - group of subjects to analyze
   %   - ``opt.subjects = {[]}`` - suject to run in each group
   %     space where we conduct the analysis
@@ -37,6 +37,7 @@ function opt = checkOptions(opt)
   %     model to speficy and the contrasts to compute.
   %
   % OTHER OPTIONS (with their defaults):
+  %
   %     - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
   %         subjects should be fetched by their number ``1`` and not their label ``O1'``.
   %     - ``opt.query`` - a structure used to specify other options to only run analysis on
@@ -51,17 +52,21 @@ function opt = checkOptions(opt)
   %         at normalization.
   %     - ``opt.STC_referenceSlice = []`` - reference slice for the slice timing correction.
   %         If left emtpy the mid-volume acquisition time point will be selected at run time.
-  %     - ``opt.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED:
+  %     - ``opt.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED,
   %         if you know the order in which slices were acquired, you should be able to recompute
   %         slice timing and add it to the json files in your BIDS data set.
-  %   -  ``opt.glmQA.do = true;`` - If set to ``true```the residual images of a
+  %     -  ``opt.glm.roibased.do``
+  %     -  ``opt.glm.QA.do = true`` - If set to ``true`` the residual images of a
   %         GLM at the subject levels will be used to estimate if there is any remaining structure
   %         in the GLM residuals (the power spectra are not flat) that could indicate
   %         the subject level results are likely confounded (see
-  %         ``plot_power_spectra_of_GLM_residuals``) and 'Accurate autocorrelation modeling
-  %         substantially improves fMRI reliability'
-  %         _https://www.nature.com/articles/s41467-019-09230-w.pdf
+  %         ``plot_power_spectra_of_GLM_residuals`` and `Accurate autocorrelation modeling
+  %         substantially improves fMRI reliability
+  %         <https://www.nature.com/articles/s41467-019-09230-w.pdf>`_ for more info.
   %
+  %
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
   fieldsToSet = setDefaultOption();
 
@@ -113,6 +118,7 @@ function fieldsToSet = setDefaultOption()
 
   %% Options for segmentation
   fieldsToSet.skullstrip.threshold = 0.75;
+  fieldsToSet.skullstrip.mean = false;
 
   %% Options for normalize
   fieldsToSet.space = 'MNI';
@@ -131,7 +137,7 @@ function fieldsToSet = setDefaultOption()
 
   fieldsToSet.parallelize.do = false;
   fieldsToSet.parallelize.nbWorkers = 3;
-  fieldsToSet.parallelize.killOnExit = true;
+  fieldsToSet.parallelize.killOnExit = false;
 
 end
 

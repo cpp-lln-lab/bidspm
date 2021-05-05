@@ -1,4 +1,4 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2021 CPP_SPM developers
 
 function test_suite = test_unit_createGlmDirName %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016

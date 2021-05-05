@@ -1,0 +1,5 @@
+# test folder and dummy data
+*.png
+*/*.json
+group/*
+dummyData/derivatives/cpp_spm*/sub-*/

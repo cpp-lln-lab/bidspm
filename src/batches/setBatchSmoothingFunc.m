@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, funcFWHM)
   %
   % Short description of what the function does goes here.
@@ -22,6 +20,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, func
   % :returns: - :matlabbatch: (structure)
   %
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('smoothing functional images');
 

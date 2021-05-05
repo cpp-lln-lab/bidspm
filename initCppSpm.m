@@ -1,6 +1,8 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function initCppSpm()
+  %
+  % adds the relevant folders to the path
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   global CPP_SPM_INITIALIZED
 

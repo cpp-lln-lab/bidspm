@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function rfxDir = getRFXdir(opt, funcFWHM, conFWHM)
   %
   % Sets the name the group level analysis directory and creates it if it does not exist
@@ -21,6 +19,7 @@ function rfxDir = getRFXdir(opt, funcFWHM, conFWHM)
   %
   % :returns: :rfxDir: (string) Fullpath of the group level directory
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   glmDirName = createGlmDirName(opt, funcFWHM);
 

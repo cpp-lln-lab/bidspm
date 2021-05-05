@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsResults(opt, funcFWHM, conFWHM)
   %
   % Computes the results for a series of contrast that can be
@@ -20,15 +18,23 @@ function bidsResults(opt, funcFWHM, conFWHM)
   %                 images (Gaussian kernel size).
   % :type conFWHM: scalar
   %
+  %
+  % TODO
+  %
+  %     move ps file
+  %     rename NIDM file
+  %     if it does not exist create the default "result" field from the BIDS model file
+  %
+  %
+  % (C) Copyright 2020 CPP_SPM developers
+
+  currentDirectory = pwd;
 
   [BIDS, opt] = setUpWorkflow(opt, 'computing GLM results');
 
   if isempty(opt.model.file)
     opt = createDefaultModel(BIDS, opt);
   end
-
-  % TOD0
-  % if it does not exist create the default "result" field from the BIDS model file
 
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
@@ -41,7 +47,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
       case 'run'
         warning('run level not implemented yet');
 
-        matlabbatch = [];
+        % matlabbatch = [];
         % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
 
       case 'subject'
@@ -107,11 +113,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
   end
 
-  % move ps file
-  % TODO
-
-  % rename NIDM file
-  % TODO
+  cd(currentDirectory);
 
 end
 

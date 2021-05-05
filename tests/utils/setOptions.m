@@ -1,6 +1,6 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function opt = setOptions(task, subLabel)
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   thisDir = fileparts(mfilename('fullpath'));
 
@@ -14,6 +14,9 @@ function opt = setOptions(task, subLabel)
                               '..', '..', 'demos',  'MoAE', 'models', 'model-MoAE_smdl.json');
 
     opt.taskName = 'auditory';
+
+    opt.result.Steps.Contrasts(1).Name = 'listening';
+    opt.result.Steps.Contrasts(2).Name = 'listening_inf_baseline';
 
   else
 

@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsRFX(action, opt, funcFWHM, conFWHM)
   %
   % - smooths all contrast images created at the subject level
@@ -30,6 +28,7 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
   % - case ``RFX``: Mean Struct, MeanMask, Factorial design specification and
   %   estimation, Contrast estimation
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 4 || isempty(funcFWHM)
     funcFWHM = 0;
@@ -70,7 +69,7 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
       matlabbatch = setBatchMeanAnatAndMask(matlabbatch, ...
                                             opt, ...
                                             funcFWHM, ...
-                                            fullfile(opt.derivativesDir, 'group'));
+                                            fullfile(opt.dir.stats, 'group'));
       saveAndRunWorkflow(matlabbatch, 'create_mean_struc_mask', opt);
 
       % TODO

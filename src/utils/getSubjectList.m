@@ -1,5 +1,3 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function opt = getSubjectList(BIDS, opt)
   %
   % Returns the subjects to analyze in ``opt.subjects``
@@ -38,6 +36,8 @@ function opt = getSubjectList(BIDS, opt)
   %
   %     opt.groups = {''};
   %     opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   allSubjects = bids.query(BIDS, 'subjects');
 

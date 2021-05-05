@@ -1,6 +1,6 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, grpLvlCon, rfxDir)
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('group level contrast estimation');
 

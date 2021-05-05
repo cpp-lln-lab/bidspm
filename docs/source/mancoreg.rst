@@ -5,7 +5,7 @@ Manual coregistration tools
 
 ----
 
-.. automodule:: src.mancoreg
+.. automodule:: lib.mancoreg
 
 .. autofunction:: mancoreg
 .. autofunction:: mancoregCallbacks

@@ -11,10 +11,11 @@ Welcome to CPP SPM BIDS pipeline documentation!
    :caption: Content
 
    set_up
-   workflows
-   QA
    defaults
+   demos
+   workflows
    batches
+   QA
    function_description
    method_section_boilerplate
    mancoreg
@@ -22,7 +23,7 @@ Welcome to CPP SPM BIDS pipeline documentation!
    contributing
 
 This pipeline contains a set of functions to run fMRI analysis on a
-[BIDS data set](https://bids.neuroimaging.io/) using SPM12.
+`BIDS data set <https://bids.neuroimaging.io/>`_ using SPM12.
 
 This can perform:
 

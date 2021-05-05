@@ -6,7 +6,7 @@
 % we are going to extract the value from.
 %
 
-run MoAE_run.m;
+run moae_run.m;
 
 subLabel = '01';
 

@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP_SPM developers
 
 function test_suite = test_unit_getPrefix %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
@@ -52,7 +52,7 @@ function test_getPrefixMean()
 
   prefix = getPrefix(step, opt);
 
-  expectedPrefixOutput = ['mean' spm_get_defaults('unwarp.write.prefix')];
+  expectedPrefixOutput = ['wmean' spm_get_defaults('unwarp.write.prefix')];
 
   assertEqual(prefix, expectedPrefixOutput);
 
@@ -66,7 +66,7 @@ function test_getPrefixMean()
 
   prefix = getPrefix(step, opt);
 
-  expectedPrefixOutput = 'meana';
+  expectedPrefixOutput = 'wmeana';
 
   assertEqual(prefix, expectedPrefixOutput);
 

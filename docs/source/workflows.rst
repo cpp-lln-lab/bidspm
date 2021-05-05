@@ -103,6 +103,13 @@ Compute results
 ===============
 
 .. autofunction:: bidsResults
+.. autofunction:: bidsConcatBetaTmaps    
+
+Region of interest analysis
+===========================
+
+.. autofunction::  bidsRoiBasedGLM
+.. autofunction::  bidsCreateROI
 
 Other
 =====

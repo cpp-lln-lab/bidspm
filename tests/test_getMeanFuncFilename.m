@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP_SPM developers
 
 function test_suite = test_getMeanFuncFilename %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
@@ -18,7 +18,7 @@ function test_getMeanFuncFilenameBasic()
 
   [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
 
-  expectedMeanImage = 'meanusub-01_ses-01_task-vislocalizer_bold.nii';
+  expectedMeanImage = 'wmeanusub-01_ses-01_task-vislocalizer_bold.nii';
 
   expectedmeanFuncDir = fullfile(fileparts(mfilename('fullpath')), ...
                                  'dummyData', 'derivatives', 'cpp_spm', ...

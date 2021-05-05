@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLabel)
   %
   % Set the batch for the coregistration of field maps
@@ -18,9 +16,10 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
-
   % TODO
   % - implement for 'phase12', 'fieldmap', 'epi'
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   printBatchName('coregister fieldmaps data to functional');
 

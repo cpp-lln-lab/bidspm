@@ -1,6 +1,6 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function expectedOptions = defaultOptions(taskName)
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   expectedOptions.sliceOrder = [];
   expectedOptions.STC_referenceSlice = [];
@@ -23,6 +23,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.anatReference.session = [];
 
   expectedOptions.skullstrip.threshold = 0.75;
+  expectedOptions.skullstrip.mean = false;
 
   expectedOptions.realign.useUnwarp = true;
   expectedOptions.useFieldmaps = true;
@@ -43,7 +44,7 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.parallelize.do = false;
   expectedOptions.parallelize.nbWorkers = 3;
-  expectedOptions.parallelize.killOnExit = true;
+  expectedOptions.parallelize.killOnExit = false;
 
   if nargin > 0
     expectedOptions.taskName = taskName;

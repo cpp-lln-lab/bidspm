@@ -1,8 +1,10 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
-function opt = ds001168_getOption()
+function opt = ds001168_get_option()
+  %
   % returns a structure that contains the options chosen by the user to run
   % slice timing correction, pre-processing, FFX, RFX.
+  %
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 1
     opt = [];
@@ -18,7 +20,7 @@ function opt = ds001168_getOption()
   opt.taskName = 'rest';
 
   opt.anatReference.type = 'T1w';
-  opt.anatReference.session = 1;
+  opt.anatReference.session = '1';
 
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp

@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2020 CPP_SPM developers
 
 % runDs00014
 
@@ -12,7 +12,7 @@ conFWHM = 6;
 run ../../initCppSpm.m;
 
 %% Set options
-opt = ds000001_getOption();
+opt = ds000001_get_option();
 
 reportBIDS(opt);
 

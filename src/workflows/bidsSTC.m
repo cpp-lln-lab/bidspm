@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function bidsSTC(opt)
   %
   % Performs the slie timing correction of the functional data.
@@ -29,6 +27,7 @@ function bidsSTC(opt)
   %
   % See the documentation for more information about slice timing correction.
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'slice timing correction');
 

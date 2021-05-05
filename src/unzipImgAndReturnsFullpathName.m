@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgName)
   %
   % Unzips an image if necessary
@@ -18,6 +16,7 @@ function unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgNam
   %   - make it work on several images
   %
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   [directory, filename, ext] = spm_fileparts(fullpathImgName);
 

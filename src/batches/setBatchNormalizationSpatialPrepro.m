@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim)
   %
   % Short description of what the function does goes here.
@@ -17,6 +15,7 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxD
   %
   % :returns: - :matlabbatch: (structure)
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   jobsToAdd = numel(matlabbatch) + 1;
 

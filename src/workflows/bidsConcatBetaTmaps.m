@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
   %
   % Make 4D images of beta and t-maps for the MVPA. ::
@@ -22,6 +20,7 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
   % This TSV is in the subject level GLM folder where the beta map came from.
   % This TSV file is named ``sub-subLabel_task-taskName_space-space_labelfold.tsv``.
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   if nargin < 3
     deleteIndBeta = 1;

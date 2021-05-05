@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel)
   %
   % Short description of what the function does goes here.
@@ -19,6 +17,7 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   %
   % :returns: - :matlabbatch:
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   printBatchName('saving coregistration matrix');
 

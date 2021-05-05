@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2019 CPP_SPM developers
 
 clear;
 clc;
@@ -9,7 +9,7 @@ WD = fileparts(mfilename('fullpath'));
 run ../../initCppSpm.m;
 
 %% Run batches
-opt = getOption();
+opt = get_option();
 
 reportBIDS(opt);
 

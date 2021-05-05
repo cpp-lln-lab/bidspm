@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsResliceTpmToFunc(opt)
   %
   % Reslices the tissue probability map (TPMs) from the segmentation to the mean
@@ -20,6 +18,7 @@ function bidsResliceTpmToFunc(opt)
   % as the computation of the tSNR by ``spmup`` requires the TPMs to have the same dimension
   % as the functional.
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'reslicing tissue probability maps to functional dimension');
 
