@@ -16,20 +16,44 @@ function bidsLesionAbnormalitiesDetection(opt)
   %
 
   [BIDS, opt] = setUpWorkflow(opt, 'abnormalities detection');
+  
+%   participants = spm_load(fullfile(BIDS.dir, 'participants.tsv'));
+% isPatient = [0 0 0 0 0 1]
+controlSegmentedImages = [];
+patientSegmentedImages = [];
+
 
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
-
+    
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
+    
+    prefix = 'rc4'
+    
+    files = validationInputFile(anatDataDir, anatImage, prefix);
+    
+    idx = strcmp(BIDS.participants.participant_id, ['sub-' subLabel]);
+    
+    temp = BIDS.participants.group(idx)
+    
+    if strcmp (temp, 'control');
+        controlSegmentedImages{end + 1, 1} = files;
+    else
+        patientSegmentedImages{end + 1, 1} = files; 
+    end
+   
+        
+    
     printProcessingSubject(iSub, subLabel);
 
+  end
+
     matlabbatch = [];
-    matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, BIDS, opt, subLabel);
+    matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, controlSegmentedImages, patientSegmentedImages);
 
     saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt, subLabel);
 
-    copyFigures(BIDS, opt, subLabel);
-
-  end
+%     copyFigures(BIDS, opt, subLabel);
 
 end
