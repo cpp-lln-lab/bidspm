@@ -52,7 +52,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy, unZip)
 
   printWorklowName('copy data');
 
-  manageWorkersPool('open', opt);
+%   manageWorkersPool('open', opt);
 
   %% All tasks in this experiment
   % raw directory and derivatives directory
@@ -203,7 +203,7 @@ function copyModalities(BIDS, opt, modalities, subLabel, session)
       end
 
     else
-      copyToDerivative(srcFolder, targetFolder);
+      copyToDerivative(srcFolder, fullfile(targetFolder, modalities{iModality}));
 
     end
 

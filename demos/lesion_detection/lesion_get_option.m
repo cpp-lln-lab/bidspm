@@ -12,7 +12,9 @@ function opt = lesion_get_option()
   % (C) Copyright 2021 CPP_SPM developers
 
   % The directory where the data are located
-  opt.dataDir = '/home/remi/gin/CVI-Datalad/data';
+  opt.dataDir = 'C:\Users\michm\Data\myphdproject\MRI\CVI-DataLad\data';
+  opt.derivativesDir = fullfile(opt.dataDir, '..', 'outputs');
+  
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);

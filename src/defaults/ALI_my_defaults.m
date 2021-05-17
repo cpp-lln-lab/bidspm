@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP BIDS SPM-pipeline developers
 
-function opt = ALI_my_defaults()
+function defaults = ALI_my_defaults()
 
   %
   % Short description of what the function does goes here.
@@ -22,10 +22,10 @@ function opt = ALI_my_defaults()
   % ==========================================================================
   
 %     % define SPM folder
-%   spmDir = spm('dir');
+   spmDir = spm('dir');
 % 
 %   % specify Prior EXTRA class (lesion prior map)
-%   lesionPriorMap = fullfile(spmDir, 'toolbox', 'ALI', 'Priors_extraClass', 'wc4prior0.nii');
+   lesionPriorMap = fullfile(spmDir, 'toolbox', 'ALI', 'Priors_extraClass', 'wc4prior0.nii');
 
   defaults.toolbox.ALI.unified_segmentation.step1prior = {lesionPriorMap};
 

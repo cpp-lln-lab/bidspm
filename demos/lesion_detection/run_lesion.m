@@ -13,12 +13,11 @@ clc;
 
 %downloadData = false;
 
-run ../../initCppSpm.m;
+% run ../../initCppSpm.m;
 
 
 %% Set options
-opt = Lesion_getOption();
-
+ 
 %% Run batches
 reportBIDS(opt);
 
@@ -36,15 +35,35 @@ spm_select('FPListRec', pwd, '^sub.*T1w.nii$')
 % check):
 spm_select('FPListRec', pwd, '^c6sub-.*T1w.nii$')
 
-  % Create vector to identify if it's a patient or not, create the files accordingly and then pull from the lesion
+
+acquire_tsv;
+  % Identify if it's a patient or not, create the files accordingly, save in segmented directory and then pull from the lesion
 % abnormality section
-isPatient = [0 0 0 0 1];
-% if isPatient == 1
-%     mkdir 
-%       store segmented patient output file in location one
-%     esleif
-%         mkdir if not already
-%         store segmented output file in location 2
+isPatient = participants.group=='blind'; % link to tsv file
+
+destdir = 'C:\Users\michm\Data\myphdproject\MRI\CVI-DataLad\processed_data\';
+
+    if ~exist([destdir, 'segmentedPatientData'])
+        mkdir([destdir, 'segmentedPatientData']);
+    end
+    if ~exist([destdir, 'segmentedControlData'])
+        mkdir([destdir, 'segmentedControlData']);
+    end
+    
+for p_i=1:length(isPatient)
+    
+if isPatient(p_i) == 1
+    % assuming that the output is a file
+%     copyfile(fullnames, [destdir, 'segmentedPatientData']);  % store segmented patient output file in directory 1
+       
+else 
+%     copyfile(fullnames, [destdir, 'segmentedControlData']);  %store segmented control output file in directory 2
+end
+
+    
+end
+
+      
 
 % % Step 2: lesion abnormalities
 % bidsLesionAbnormalitiesDetection(opt)
