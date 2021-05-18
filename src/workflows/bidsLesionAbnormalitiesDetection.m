@@ -18,10 +18,9 @@ function bidsLesionAbnormalitiesDetection(opt)
   [BIDS, opt] = setUpWorkflow(opt, 'abnormalities detection');
   
 %   participants = spm_load(fullfile(BIDS.dir, 'participants.tsv'));
-% isPatient = [0 0 0 0 0 1]
+
 controlSegmentedImages = [];
 patientSegmentedImages = [];
-
 
   for iSub = 1:numel(opt.subjects)
 
@@ -44,7 +43,6 @@ patientSegmentedImages = [];
     end
    
         
-    
     printProcessingSubject(iSub, subLabel);
 
   end
