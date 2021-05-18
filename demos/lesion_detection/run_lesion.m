@@ -25,7 +25,7 @@ clc;
 % bidsCopyRawFolder(opt, deleteZippedNii, {'anat'});
 
 % Step 1: segmentation
-% bidsLesionSegmentation(opt);
+ bidsLesionSegmentation(opt);
 
 % get the anat  file for step 1:
 spm_select('FPListRec', pwd, '^sub.*T1w.nii$')
@@ -35,37 +35,7 @@ spm_select('FPListRec', pwd, '^sub.*T1w.nii$')
 % check):
 spm_select('FPListRec', pwd, '^c6sub-.*T1w.nii$')
 
-
-% acquire_tsv;
-%   % Identify if it's a patient or not, create the files accordingly, save in segmented directory and then pull from the lesion
-% % abnormality section
-% % isPatient = [0 0 0 0 0 1]
-% isPatient = participants.group=='blind'; % link to tsv file
-% 
-% destdir = 'C:\Users\michm\Data\myphdproject\MRI\CVI-DataLad\processed_data\';
-% 
-%     if ~exist([destdir, 'segmentedPatientData'])
-%         mkdir([destdir, 'segmentedPatientData']);
-%     end
-%     if ~exist([destdir, 'segmentedControlData'])
-%         mkdir([destdir, 'segmentedControlData']);
-%     end
-%     
-% for p_i=1:length(isPatient)
-%     
-% if isPatient(p_i) == 1
-%     % assuming that the output is a file
-% %     copyfile(fullnames, [destdir, 'segmentedPatientData']);  % store segmented patient output file in directory 1
-%        
-% else 
-% %     copyfile(fullnames, [destdir, 'segmentedControlData']);  %store segmented control output file in directory 2
-% end
-% 
-%     
-% end
-
-      
-
+  
 % % Step 2: lesion abnormalities
  bidsLesionAbnormalitiesDetection(opt)
 % 
