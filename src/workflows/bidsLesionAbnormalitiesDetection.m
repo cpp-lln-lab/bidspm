@@ -26,17 +26,17 @@ patientSegmentedImages = [];
 
     subLabel = opt.subjects{iSub};
     
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
     
-    prefix = 'rc4'
+    prefix = ('rc[12]');
     
     files = validationInputFile(anatDataDir, anatImage, prefix);
     
     idx = strcmp(BIDS.participants.participant_id, ['sub-' subLabel]);
     
-    temp = BIDS.participants.group(idx)
+    temp = BIDS.participants.group(idx);
     
-    if strcmp (temp, 'control');
+    if strcmp (temp, 'control')
         controlSegmentedImages{end + 1, 1} = files;
     else
         patientSegmentedImages{end + 1, 1} = files; 
