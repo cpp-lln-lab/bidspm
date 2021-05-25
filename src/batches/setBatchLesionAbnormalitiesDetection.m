@@ -1,4 +1,4 @@
-function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, controlSegmentedImages, patientSegmentedImages)
+function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, controlSegmentedImagesGM, patientSegmentedImagesGM, controlSegmentedImagesWM, patientSegmentedImagesWM)
   %
   % Creates a batch to detect lesion abnormalities
   %
@@ -21,17 +21,27 @@ function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, control
   
   matlabbatch{end + 1}.spm.tools.ali.outliers_detection = outliers_detection; 
   
+% rc1 images
+  % 1. Define smoothed segmented tissue images of patients 
+  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue(1).step3patients = cellstr(char(patientSegmentedImagesGM));
 
-  % 1. Define smoothed segmented images of patients
-  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3patients = cellstr(char(patientSegmentedImages));
-
-  % 2. Define smoothed segmented images of neurotypical controls
-  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3controls = cellstr(char(controlSegmentedImages));
+  % 2. Define smoothed segmented tissue images of neurotypical controls 
+  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue(1).step3controls = cellstr(char(controlSegmentedImagesGM));
 
   % Specify alpha parameter
-  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3Alpha = 0.5;
+  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue(1).step3Alpha = 0.5;
   % Specify lambda parameter
-  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3Lambda = -4;
+  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue(1).step3Lambda = -4;
 
-  
+% rc2 images
+  % 1. Define smoothed segmented tissue images of patients 
+  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue(2).step3patients = cellstr(char(patientSegmentedImagesWM));
+
+  % 2. Define smoothed segmented tissue images of neurotypical controls 
+  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue(2).step3controls = cellstr(char(controlSegmentedImagesWM));
+
+  % Specify alpha parameter
+  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue(2).step3Alpha = 0.5;
+  % Specify lambda parameter
+  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue(2).step3Lambda = -4;
 end

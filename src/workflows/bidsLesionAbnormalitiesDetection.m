@@ -19,8 +19,8 @@ function bidsLesionAbnormalitiesDetection(opt)
   
 %   participants = spm_load(fullfile(BIDS.dir, 'participants.tsv'));
 
-controlSegmentedImages = [];
-patientSegmentedImages = [];
+controlSegmentedImagesGM = [];
+patientSegmentedImagesGM = [];
 
   for iSub = 1:numel(opt.subjects)
 
@@ -28,8 +28,9 @@ patientSegmentedImages = [];
     
     [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
     
-    prefix = ('rc[12]');
-    
+%     prefix = ('rc[12]'); runs both at the same time
+
+    prefix = 'rc1'; %tissue class 1: grey matter
     files = validationInputFile(anatDataDir, anatImage, prefix);
     
     idx = strcmp(BIDS.participants.participant_id, ['sub-' subLabel]);
@@ -37,9 +38,9 @@ patientSegmentedImages = [];
     temp = BIDS.participants.group(idx);
     
     if strcmp (temp, 'control')
-        controlSegmentedImages{end + 1, 1} = files;
+        controlSegmentedImagesGM{end + 1, 1} = files;
     else
-        patientSegmentedImages{end + 1, 1} = files; 
+        patientSegmentedImagesGM{end + 1, 1} = files; 
     end
    
         
@@ -47,8 +48,36 @@ patientSegmentedImages = [];
 
   end
 
+  
+controlSegmentedImagesWM = [];
+patientSegmentedImagesWM = [];
+
+  for iSub = 1:numel(opt.subjects)
+
+    subLabel = opt.subjects{iSub};
+    
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    
+    prefixWM = 'rc2'; %tissue class 1: white matter WM
+    files = validationInputFile(anatDataDir, anatImage, prefixWM);
+    
+    idx = strcmp(BIDS.participants.participant_id, ['sub-' subLabel]);
+    
+    temp = BIDS.participants.group(idx);
+    
+    if strcmp (temp, 'control')
+        controlSegmentedImagesWM{end + 1, 1} = files;
+    else
+        patientSegmentedImagesWM{end + 1, 1} = files; 
+    end
+   
+        
+    printProcessingSubject(iSub, subLabel);
+
+  end
+  
     matlabbatch = [];
-    matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, controlSegmentedImages, patientSegmentedImages);
+    matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, controlSegmentedImagesGM, patientSegmentedImagesGM, controlSegmentedImagesWM, patientSegmentedImagesWM);
 
     saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt, subLabel);
 
