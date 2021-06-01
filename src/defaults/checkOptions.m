@@ -69,12 +69,17 @@ function opt = checkOptions(opt)
   % (C) Copyright 2019 CPP_SPM developers
 
   fieldsToSet = setDefaultOption();
+  opt = setFields(opt, fieldsToSet);
 
   opt = setFields(opt, fieldsToSet);
 
   %  Options for toolboxes
-  % ALI toolbox default options
-  opt = setFields(opt, ALI_my_defaults);
+  global ALI_TOOLBOX_PRESENT
+
+  checkToolbox('ALI');
+  if ALI_TOOLBOX_PRESENT
+    opt = setFields(opt, ALI_my_defaults());
+  end
 
   checkFields(opt);
 

@@ -50,6 +50,14 @@ function expectedOptions = defaultOptions(taskName)
     expectedOptions.taskName = taskName;
   end
 
+  %  Options for toolboxes
+  global ALI_TOOLBOX_PRESENT
+
+  checkToolbox('ALI');
+  if ALI_TOOLBOX_PRESENT
+    expectedOptions = setFields(expectedOptions, ALI_my_defaults());
+  end
+
   expectedOptions = orderfields(expectedOptions);
 
   expectedOptions = setStatsDir(expectedOptions);
