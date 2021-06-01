@@ -10,8 +10,7 @@ function bidsCopyInputFolder(opt, unzip)
   % USAGE::
   %
   %   bidsCopyRawFolder([opt,] ...
-  %                     [deleteZippedNii = true,] ...
-  %                     [modalitiesToCopy = {'anat', 'func', 'fmap'}])
+  %                     [deleteZippedNii = true,])
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
@@ -41,8 +40,6 @@ function bidsCopyInputFolder(opt, unzip)
   % raw directory and derivatives directory
   createDerivativeDir(opt);
 
-  copyTsvJson(opt.dir.input, opt.dir.preproc);
-
   %% Loop through the groups, subjects, sessions
   if any(ismember(opt.query.modality, 'func'))
     [BIDS, opt] = getData(opt, opt.dir.input);
@@ -69,31 +66,13 @@ function bidsCopyInputFolder(opt, unzip)
                             fullfile(opt.dir.preproc, '..'), ...
                             opt.pipeline.name, ...
                             filter, ...
-                            unzip, ...
-                            overwrite, ...
-                            skip_dependencies, ...
-                            use_schema, ...
-                            verbose);
+                            'unzip', unzip, ...
+                            'force', overwrite, ...
+                            'skip_dep', skip_dependencies, ...
+                            'use_schema', use_schema, ...
+                            'verbose', verbose);
 
     fprintf(1, '\n\n');
-  end
-
-end
-
-function copyTsvJson(srcDir, targetDir)
-  % copy TSV and JSON file from raw folder
-
-  ext = {'tsv', 'json'};
-
-  for i = 1:numel(ext)
-
-    if ~isempty(spm_select('List', srcDir, ['^.*.' ext{i} '$']))
-
-      copyfile(fullfile(srcDir, ['*.' ext{i}]), targetDir);
-      fprintf(1, ' %s files copied\n', ext{i});
-
-    end
-
   end
 
 end
