@@ -1,5 +1,3 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function bidsLesionAbnormalitiesDetection(opt)
   %
   % Step 2. Detects lesion abnormalities in anatomical image after segmentation of the image.
@@ -12,75 +10,46 @@ function bidsLesionAbnormalitiesDetection(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % Lesion abnormalities detection will be performed using the information provided from the LesionSegmentation output in Bids format.
+  % Lesion abnormalities detection will be performed using the information provided
+  % from the lesion segmentation output in BIDS format.
   %
+  % (C) Copyright 2021 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'abnormalities detection');
-  
-%   participants = spm_load(fullfile(BIDS.dir, 'participants.tsv'));
 
-controlSegmentedImagesGM = [];
-patientSegmentedImagesGM = [];
+  prefixList = {'rc1', 'rc2'};
 
-  for iSub = 1:numel(opt.subjects)
-
-    subLabel = opt.subjects{iSub};
-    
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
-    
-%     prefix = ('rc[12]'); runs both at the same time
-
-    prefix = 'rc1'; %tissue class 1: grey matter
-    files = validationInputFile(anatDataDir, anatImage, prefix);
-    
-    idx = strcmp(BIDS.participants.participant_id, ['sub-' subLabel]);
-    
-    temp = BIDS.participants.group(idx);
-    
-    if strcmp (temp, 'control')
-        controlSegmentedImagesGM{end + 1, 1} = files;
-    else
-        patientSegmentedImagesGM{end + 1, 1} = files; 
-    end
-   
-        
-    printProcessingSubject(iSub, subLabel);
-
-  end
-
-  
-controlSegmentedImagesWM = [];
-patientSegmentedImagesWM = [];
+  images = struct('controls', [], 'patients', []);
 
   for iSub = 1:numel(opt.subjects)
 
-    subLabel = opt.subjects{iSub};
-    
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
-    
-    prefixWM = 'rc2'; %tissue class 1: white matter WM
-    files = validationInputFile(anatDataDir, anatImage, prefixWM);
-    
-    idx = strcmp(BIDS.participants.participant_id, ['sub-' subLabel]);
-    
-    temp = BIDS.participants.group(idx);
-    
-    if strcmp (temp, 'control')
-        controlSegmentedImagesWM{end + 1, 1} = files;
-    else
-        patientSegmentedImagesWM{end + 1, 1} = files; 
-    end
-   
-        
     printProcessingSubject(iSub, subLabel);
 
+    subLabel = opt.subjects{iSub};
+
+    idx = strcmp(BIDS.participants.participant_id, ['sub-' subLabel]);
+
+    temp = BIDS.participants.group(idx);
+
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+
+    for iPrefix = 1:numel(prefix)
+
+      prefix = prefixList{iPrefix};
+      files = validationInputFile(anatDataDir, anatImage, prefix);
+
+      if strcmp (temp, 'control')
+        images(iPrefix, 1).controls{end + 1, 1} = files;
+      else
+        images(iPrefix, 1).patients{end + 1, 1} = files;
+      end
+
+    end
   end
-  
-    matlabbatch = [];
-    matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, controlSegmentedImagesGM, patientSegmentedImagesGM, controlSegmentedImagesWM, patientSegmentedImagesWM);
 
-    saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt, subLabel);
+  matlabbatch = [];
+  matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, images);
 
-%     copyFigures(BIDS, opt, subLabel);
+  saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt, subLabel);
 
 end
