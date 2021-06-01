@@ -60,8 +60,10 @@ function expectedOptions = defaultOptions(taskName)
 
   checkToolbox('ALI');
   if ALI_TOOLBOX_PRESENT
-    expectedOptions = setFields(expectedOptions, ALI_my_defaults());
+    %     expectedOptions = setFields(expectedOptions, ALI_my_defaults());
   end
+
+  expectedOptions = setFields(expectedOptions, rsHRF_my_defaults());
 
   expectedOptions = orderfields(expectedOptions);
 

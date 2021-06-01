@@ -52,41 +52,12 @@ function matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, subLabel)
     end
   end
 
+  vox_rsHRF = opt.toolbox.rsHRF.vox_rsHRF;
+
   vox_rsHRF.images = boldImg;
-
-  vox_rsHRF.Denoising.generic = cell(1, 0);
-  vox_rsHRF.Denoising.Detrend = 0;
-  vox_rsHRF.Denoising.BPF = {};
-  vox_rsHRF.Denoising.Despiking = 0;
-  vox_rsHRF.Denoising.which1st = 3;
-
-  vox_rsHRF.HRFE.hrfm = 2;
   vox_rsHRF.HRFE.TR = metadata.RepetitionTime;
-  vox_rsHRF.HRFE.hrflen = 32;
-  vox_rsHRF.HRFE.num_basis = NaN;
-  vox_rsHRF.HRFE.mdelay = [4 8];
-  vox_rsHRF.HRFE.cvi = 0;
-  vox_rsHRF.HRFE.fmri_t = 1;
-  vox_rsHRF.HRFE.fmri_t0 = 1;
-  vox_rsHRF.HRFE.thr = 1;
-  vox_rsHRF.HRFE.localK = 2;
-  vox_rsHRF.HRFE.tmask = NaN;
-  vox_rsHRF.HRFE.hrfdeconv = 1;
-
-  vox_rsHRF.rmoutlier = 0;
-
   vox_rsHRF.mask = {maskImg};
-
-  vox_rsHRF.connectivity = cell(1, 0);
-
   vox_rsHRF.outdir = {outputDir};
-
-  vox_rsHRF.savedata.deconv_save = 0;
-  vox_rsHRF.savedata.hrfmat_save = 1;
-  vox_rsHRF.savedata.hrfnii_save = 1;
-  vox_rsHRF.savedata.job_save = 0;
-
-  vox_rsHRF.prefix = 'deconv_';
 
   matlabbatch{end + 1}.spm.tools.rsHRF.vox_rsHRF = vox_rsHRF;
 

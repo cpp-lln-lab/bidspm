@@ -71,16 +71,17 @@ function opt = checkOptions(opt)
   fieldsToSet = setDefaultOption();
   opt = setFields(opt, fieldsToSet);
 
-  opt = setFields(opt, fieldsToSet);
-
   %  Options for toolboxes
   global ALI_TOOLBOX_PRESENT
 
   checkToolbox('ALI');
   if ALI_TOOLBOX_PRESENT
-    opt = setFields(opt, ALI_my_defaults());
+    %     opt = setFields(opt, ALI_my_defaults());
   end
 
+  opt = setFields(opt, rsHRF_my_defaults());
+
+  %%
   checkFields(opt);
 
   if strcmp(opt.pipeline.type, 'stats') && ...
