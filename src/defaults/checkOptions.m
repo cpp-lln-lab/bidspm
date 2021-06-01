@@ -73,9 +73,9 @@ function opt = checkOptions(opt)
   opt = setFields(opt, fieldsToSet);
 
   %  Options for toolboxes
-% ALI toolbox default options
+  % ALI toolbox default options
   opt = setFields(opt, ALI_my_defaults);
-  
+
   checkFields(opt);
 
   if ~isempty(opt.dataDir)
@@ -87,8 +87,6 @@ function opt = checkOptions(opt)
   opt = setStatsDir(opt);
 
 end
-
-
 
 function fieldsToSet = setDefaultOption()
   % this defines the missing fields
@@ -123,7 +121,7 @@ function fieldsToSet = setDefaultOption()
   %% Options for normalize
   fieldsToSet.space = 'MNI';
   fieldsToSet.funcVoxelDims = [];
-  
+
   %% Options for model specification and results
   fieldsToSet.model.file = '';
   fieldsToSet.model.hrfDerivatives = [0 0];

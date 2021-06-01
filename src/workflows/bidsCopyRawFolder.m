@@ -52,7 +52,7 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy, unZip)
 
   printWorklowName('copy data');
 
-%   manageWorkersPool('open', opt);
+  %   manageWorkersPool('open', opt);
 
   %% All tasks in this experiment
   % raw directory and derivatives directory
