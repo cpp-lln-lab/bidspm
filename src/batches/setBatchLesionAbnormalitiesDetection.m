@@ -1,4 +1,4 @@
-function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, images)
+function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, images)
   %
   % Creates a batch to detect lesion abnormalities
   %

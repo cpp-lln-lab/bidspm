@@ -19,13 +19,16 @@ function bidsLesionAbnormalitiesDetection(opt)
 
   prefixList = {'rc1', 'rc2'};
 
-  images = struct('controls', [], 'patients', []);
+  % create a structure to collect image names
+  for iPrefix = 1:numel(prefixList)
+    images(iPrefix, 1) = struct('controls', [], 'patients', []);
+  end
 
   for iSub = 1:numel(opt.subjects)
 
-    printProcessingSubject(iSub, subLabel);
-
     subLabel = opt.subjects{iSub};
+
+    printProcessingSubject(iSub, subLabel);
 
     idx = strcmp(BIDS.participants.participant_id, ['sub-' subLabel]);
 
@@ -33,7 +36,7 @@ function bidsLesionAbnormalitiesDetection(opt)
 
     [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
-    for iPrefix = 1:numel(prefix)
+    for iPrefix = 1:numel(prefixList)
 
       prefix = prefixList{iPrefix};
       files = validationInputFile(anatDataDir, anatImage, prefix);
@@ -48,7 +51,7 @@ function bidsLesionAbnormalitiesDetection(opt)
   end
 
   matlabbatch = [];
-  matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, images);
+  matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, images);
 
   saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt, subLabel);
 
