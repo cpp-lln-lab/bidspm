@@ -13,3 +13,6 @@
 [submodule "lib/brain_colours"]
 	path = lib/brain_colours
 	url = https://github.com/CPernet/brain_colours.git
+[submodule "lib/rsHRF"]
+	path = lib/rsHRF
+	url = https://github.com/compneuro-da/rsHRF.git

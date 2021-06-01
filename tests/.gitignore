@@ -4,5 +4,5 @@
 */*.json
 
 group/*
-dummyData/derivatives/cpp_spm*/sub-*/
+dummyData/derivatives/*/sub-*/
 dummyData/derivatives/copy

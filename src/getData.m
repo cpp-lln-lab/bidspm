@@ -46,7 +46,16 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
     suffix = 'T1w';
   end
 
-  BIDS = bids.layout(BIDSdir);
+  opt.useBidsSchema = true;
+
+  description = spm_jsonread(fullfile(BIDSdir, 'dataset_description.json'));
+  if isfield(description, 'PipelineDescription') && ...
+          strcmpi(description.PipelineDescription.Name, 'fmriprep')
+    opt.isFmriprep = true;
+    opt.useBidsSchema = false;
+  end
+
+  BIDS = bids.layout(BIDSdir, opt.useBidsSchema);
 
   % make sure that the required tasks exist in the data set
   if isfield(opt, 'taskName') && ~ismember(opt.taskName, bids.query(BIDS, 'tasks'))
