@@ -69,13 +69,18 @@ function opt = checkOptions(opt)
   % (C) Copyright 2019 CPP_SPM developers
 
   fieldsToSet = setDefaultOption();
+  opt = setFields(opt, fieldsToSet);
 
   opt = setFields(opt, fieldsToSet);
 
   %  Options for toolboxes
-% ALI toolbox default options
-  opt = setFields(opt, ALI_my_defaults);
-  
+  global ALI_TOOLBOX_PRESENT
+
+  checkToolbox('ALI');
+  if ALI_TOOLBOX_PRESENT
+    opt = setFields(opt, ALI_my_defaults());
+  end
+
   checkFields(opt);
 
   if ~isempty(opt.dataDir)
@@ -87,8 +92,6 @@ function opt = checkOptions(opt)
   opt = setStatsDir(opt);
 
 end
-
-
 
 function fieldsToSet = setDefaultOption()
   % this defines the missing fields
@@ -123,7 +126,7 @@ function fieldsToSet = setDefaultOption()
   %% Options for normalize
   fieldsToSet.space = 'MNI';
   fieldsToSet.funcVoxelDims = [];
-  
+
   %% Options for model specification and results
   fieldsToSet.model.file = '';
   fieldsToSet.model.hrfDerivatives = [0 0];

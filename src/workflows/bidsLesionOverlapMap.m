@@ -1,8 +1,7 @@
-% (C) Copyright 2021 CPP BIDS SPM-pipeline developers
-
 function bidsLesionOverlapMap(opt)
   %
-  % Step 3. Creates lesion overlap map on the anatomical image after initial segmentation and lesion abnormality detection of the image.
+  % Step 3. Creates lesion overlap map on the anatomical image after initial segmentation
+  % and lesion abnormality detection of the image.
   %
   % USAGE::
   %
@@ -12,8 +11,10 @@ function bidsLesionOverlapMap(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % Lesion overlap map will be created using the information provided from the Lesion abnormalities detection output in Bids format.
+  % Lesion overlap map will be created using the information provided from the
+  % Lesion abnormalities detection output in BIDS format.
   %
+  % (C) Copyright 2021 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'lesion overlap map');
 
