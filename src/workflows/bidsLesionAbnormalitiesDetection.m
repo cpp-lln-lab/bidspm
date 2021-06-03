@@ -58,7 +58,7 @@ patientSegmentedImagesWM = [];
     
     [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
     
-    prefixWM = 'rc2'; %tissue class 1: white matter WM
+    prefixWM = 'rc2'; %tissue class 2: white matter WM
     files = validationInputFile(anatDataDir, anatImage, prefixWM);
     
     idx = strcmp(BIDS.participants.participant_id, ['sub-' subLabel]);
