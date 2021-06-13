@@ -28,7 +28,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
   anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession);
 
   % get all anat images for that subject fo that type
-  anat = bids.query(BIDS, 'data', ...
+  anat = bids.query(BIDS,'data', ...
                     'sub',subLabel, ...
                     'ses',anatSession, ...
                     'type',anatSuffix);
@@ -77,7 +77,7 @@ end
 
 function anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession)
 
-  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+  sessions = getInfo(BIDS,subLabel,opt,'Sessions');
 
   if ~isempty(anatSession)
 
