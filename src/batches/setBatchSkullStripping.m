@@ -122,6 +122,5 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
                                                         '(i2+i3+i4)>%f', ...
                                                         opt.skullstrip.threshold);
   matlabbatch{end}.spm.util.imcalc.output = maskOutput;
-  
 
 end
