@@ -343,11 +343,11 @@ function editvox
     init_val = sprintf('%7.4g %7.4g %7.4g', imgvalue);
   elseif nii_view.nii.hdr.dime.datatype == 511
     R = double(nii.img(sag, cor, axi, 1, nii_view.scanid)) * (nii_view.nii.hdr.dime.glmax - ...
-                                                          nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
+                                                              nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
     G = double(nii.img(sag, cor, axi, 2, nii_view.scanid)) * (nii_view.nii.hdr.dime.glmax - ...
-                                                          nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
+                                                              nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
     B = double(nii.img(sag, cor, axi, 3, nii_view.scanid)) * (nii_view.nii.hdr.dime.glmax - ...
-                                                          nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
+                                                              nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
     imgvalue = [R G B];
     init_val = sprintf('%7.4g %7.4g %7.4g', imgvalue);
   else
@@ -378,7 +378,7 @@ function editvox
     if ((nii_view.nii.hdr.dime.datatype == 128 | nii_view.nii.hdr.dime.datatype == 511) ...
         & length(imgvalue) ~= 3) | ...
        ((nii_view.nii.hdr.dime.datatype ~= 128 & nii_view.nii.hdr.dime.datatype ~= 511) ...
-      & length(imgvalue) ~= 1)
+        & length(imgvalue) ~= 1)
       % do nothing
     else
       repeat = 0;
