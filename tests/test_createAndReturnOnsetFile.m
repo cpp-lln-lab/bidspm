@@ -34,4 +34,13 @@ function test_createAndReturnOnsetFileBasic()
   assertEqual(exist(onsetFileName, 'file'), 2);
   assertEqual(exist(expectedFileName, 'file'), 2);
 
+  expected_content = load(fullfile(fileparts(mfilename('fullpath')), ...
+                                   'dummyData', ...
+                                   'mat_files', ...
+                                   'onsets.mat'));
+
+  actual_content = load(onsetFileName);
+
+  assertEqual(actual_content, expected_content);
+
 end

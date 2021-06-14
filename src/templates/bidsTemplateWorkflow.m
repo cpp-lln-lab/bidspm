@@ -13,7 +13,7 @@ function bidsTemplateWorkflow(opt)
 
     matlabbatch = [];
 
-    %     matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
+    matlabbatch = setBatchSomeBatch(matlabbatch, BIDS, opt, subLabel);
 
     saveAndRunWorkflow(matlabbatch, 'workflow name', opt, subLabel);
 

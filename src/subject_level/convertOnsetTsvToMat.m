@@ -1,9 +1,12 @@
 function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   %
-  % Converts an  events.tsv file to an onset file suitable for SPM subject level
+  % Converts an events.tsv file to an onset file suitable for SPM subject level
   % analysis.
-  % The scripts extracts the trial type, onsets, and durations, and
-  % converts them and stores them in a mat file.
+  %
+  % The function extracts from the events.tsv file the trials (with type, onsets, and durations)
+  % of th conditions of interest as requested in the model.json.
+  % It then stores them in a .mat file that can be fed directly in an SPM GLM
+  % batch.
   %
   % USAGE::
   %

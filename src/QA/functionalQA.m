@@ -41,12 +41,12 @@ function functionalQA(opt)
 
   for iSub = 1:numel(opt.subjects)
 
-    subID = opt.subjects{iSub};
+    subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subID);
+    printProcessingSubject(iSub, subLabel);
 
     % get grey and white matter and csf tissue probability maps
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
     TPMs = validationInputFile(anatDataDir, anatImage, 'rc[123]');
 
     % load metrics from anat QA
@@ -55,19 +55,19 @@ function functionalQA(opt)
                                    anatDataDir,  ...
                                    strrep(anatImage, '.nii', '_qa.json')));
 
-    [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+    [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
     for iSes = 1:nbSessions
 
       % get all runs for that subject across all sessions
-      [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+      [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
       for iRun = 1:nbRuns
 
         % get the filename for this bold run for this task
         [fileName, subFuncDataDir] = getBoldFilename( ...
                                                      BIDS, ...
-                                                     subID, ...
+                                                     subLabel, ...
                                                      sessions{iSes}, ...
                                                      runs{iRun}, ...
                                                      opt);

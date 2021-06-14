@@ -6,15 +6,18 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   %
   %   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel, funcFWHM)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: Options chosen for the analysis. See ``checkOptions()``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  % :param BIDS:
+  % :type BIDS: structure
+  % :param opt:
+  % :type opt: structure
+  % :param subLabel:
+  % :type subLabel: string
+  % :param funcFWHM:
+  % :type funcFWHM: float
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :argout1: (structure) (matlabbatch)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
