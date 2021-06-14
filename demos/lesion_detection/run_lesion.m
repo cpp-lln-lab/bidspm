@@ -3,14 +3,13 @@
 clear;
 clc;
 
-% This script will will run 
+% This script will will run
 % 1) lesion segmentation,
-% 2) lesion abnormalities detection and 
+% 2) lesion abnormalities detection and
 % 3) lesion overlapmap adapted from the ALI toolbox (SPM.)
 
 % URL of the data set to download
 % URL = https://gin.g-node.org/mwmaclean/CVI-Datalad/src/master/data
-
 
 run ../../initCppSpm.m;
 
