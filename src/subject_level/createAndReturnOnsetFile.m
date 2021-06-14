@@ -1,8 +1,12 @@
 function onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM)
   %
-  % For a given events.tsv file it creates a .mat file that can directly be used
-  % for the GLM specification of a subject level model. The file is moved
-  % directly into the folder of the GLM.
+  % Creates an ``_onset.mat`` in the subject level GLM folder.
+  %
+  % For a given ``_events.tsv`` file and ``_model.json``,
+  % it creates a  ``_onset.mat`` file that can directly be used
+  % for the GLM specification of a subject level model. 
+  % 
+  % The file is moved directly into the folder of the GLM.
   %
   % USAGE::
   %
