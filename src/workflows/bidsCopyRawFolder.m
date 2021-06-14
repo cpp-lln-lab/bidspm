@@ -177,7 +177,7 @@ function copyModalities(BIDS, opt, modalities, subLabel, session)
                             subDir, ...
                             sessionDir);
 
-    [~, ~, ~] = mkdir(fullfile(targetFolder));
+    spm_mkdir(targetFolder, modalities{iModality});
 
     srcFolder = fullfile(rawDir, ...
                          subDir, ...
@@ -193,17 +193,17 @@ function copyModalities(BIDS, opt, modalities, subLabel, session)
                          'task', opt.taskName);
 
       for iFile = 1:size(files, 1)
-        copyToDerivative(files{iFile}, fullfile(targetFolder, 'func'));
+        copyToDerivative(files{iFile}, fullfile(targetFolder, modalities{iModality}));
         p = bids.internal.parse_filename(files{iFile});
         sidecar = strrep(p.filename, p.ext, '.json');
         if exist(fullfile(fileparts(files{iFile}), sidecar), 'file')
           copyToDerivative(fullfile(fileparts(files{iFile}), sidecar), ...
-                           fullfile(targetFolder, 'func'));
+                           fullfile(targetFolder, modalities{iModality}));
         end
       end
 
     else
-      copyToDerivative(srcFolder, fullfile(targetFolder, modalities{iModality}));
+      copyToDerivative(srcFolder, targetFolder);
 
     end
 
@@ -253,7 +253,7 @@ function unzipFiles(derivativesDir, deleteZippedNii, opt)
     % for bold, physio and stim files, we only unzip the files of the task of
     % interest
     if any(strcmp(fragments.type, {'bold', 'stim'})) && ...
-            isfield(fragments, 'task') && strcmp(fragments.task, opt.taskName)
+            isfield(fragments, 'task') && strcmp(fragments.task, opt.taskName) %#ok<PFBNS>
 
       % load the nifti image and saves the functional data as unzipped nii
       n = load_untouch_nii(file);
