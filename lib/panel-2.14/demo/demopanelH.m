@@ -1,4 +1,3 @@
-
 % You can create an "inset" plot effect.
 %
 % 20/09/12 This example was inspired by the Matlab Central
@@ -9,11 +8,10 @@
 % (a) Create the layout.
 % (b) Display some data for illustration.
 
-
 %% (a)
 
 % create a row of 2 panels (packed relative and horizontal)
-clf
+clf;
 p = panel();
 p.pack('h', 2);
 
@@ -25,8 +23,6 @@ p(2).pack({[0.67 0.67 0.3 0.3]}); % inset plot (overlaid)
 % parent panel of p(2, 1) (the main plot) and p(2, 2) (the
 % inset).
 
-
-
 %% (b)
 
 % select sample data into all
@@ -34,5 +30,3 @@ p.select('data');
 
 % tidy up
 set(p(2, 2).axis, 'xtick', [], 'ytick', []);
-
-
