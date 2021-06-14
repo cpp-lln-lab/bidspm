@@ -1533,7 +1533,7 @@ classdef (Sealed = true) panel < handle
                   pars.smooth = 4;
                 otherwise
                   error('panel:InvalidArgument', ...
-                      ['invalid argument "' arg '", part after / must be "2" or "4"']);
+                        ['invalid argument "' arg '", part after / must be "2" or "4"']);
               end
               val = val(1:end - 2);
             end

@@ -1,4 +1,4 @@
-function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, BIDS, opt, subLabel)
+function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, images)
   %
   % Creates a batch to detect lesion abnormalities
   %
@@ -15,26 +15,17 @@ function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, BIDS, o
 
   printBatchName('Lesion abnormalities');
 
-  % Defin smoothed segmented images of patients
-  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3patients = '<UNDEFINED>';
+  outliers_detection = opt.toolbox.ALI.outliers_detection;
 
-  % Defin smoothed segmented images of neurotypical controls
-  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3controls = '<UNDEFINED>';
+  for i = 1:size(images, 1)
 
-  % Specify alpha parameter
-  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3Alpha = 0.5;
-  % Specify lambda parameter
-  matlabbatch{1}.spm.tools.ali.outliers_detection.step3tissue.step3Lambda = -4;
+    % 1. Define smoothed segmented tissue images of patients
+    outliers_detection.step3tissue(i).step3patients = cellstr(char(images(i, 1).patients));
 
-  % define SPM folder
-  spmDir = spm('dir');
+    % 2. Define smoothed segmented tissue images of neurotypical controls
+    outliers_detection.step3tissue(i).step3controls = cellstr(char(images(i, 1).controls));
 
-  % specify lesion mask
-  lesionMask = fullfile(spmDir, 'toolbox', 'ALI', 'Mask_image', 'mask_controls_vox2mm.nii');
-
-  outliers_detection.step3mask_thr = 0;           % threshold for the mask
-  outliers_detection.step3binary_thr = 0.3;       % binary lesion: threshold U
-  outliers_detection.step3binary_size = 0.8;      % binary lesion: minimum size (in cm3)
+  end
 
   matlabbatch{end + 1}.spm.tools.ali.outliers_detection = outliers_detection;
 
