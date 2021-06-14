@@ -1,7 +1,7 @@
 function anatomicalQALesion(opt)
   %
-  % Computes several metrics for anatomical image. 
-%   Modify this version for ALI toolbox TO DO
+  % Computes several metrics for anatomical image.
+  %   Modify this version for ALI toolbox TO DO
   %
   % USAGE::
   %
