@@ -166,7 +166,7 @@ function nii = load_untouch_nii(filename, img_idx, dim5_idx, dim6_idx, dim7_idx,
   %  Read the dataset body
   %
   [nii.img, nii.hdr] = load_untouch_nii_img(nii.hdr, nii.filetype, nii.fileprefix, ...
-                                           nii.machine, img_idx, dim5_idx, dim6_idx, dim7_idx, old_RGB, slice_idx);
+                                            nii.machine, img_idx, dim5_idx, dim6_idx, dim7_idx, old_RGB, slice_idx);
 
   %  Perform some of sform/qform transform
   %

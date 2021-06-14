@@ -2941,11 +2941,11 @@ function set_image_value(nii_view)
     set(nii_view.handles.imval, 'String', sprintf('%7.4g %7.4g %7.4g', imgvalue));
   elseif nii_view.nii.hdr.dime.datatype == 511
     R = double(img(sag, cor, axi, 1, nii_view.scanid)) * (nii_view.nii.hdr.dime.glmax - ...
-                                                      nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
+                                                          nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
     G = double(img(sag, cor, axi, 2, nii_view.scanid)) * (nii_view.nii.hdr.dime.glmax - ...
-                                                      nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
+                                                          nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
     B = double(img(sag, cor, axi, 3, nii_view.scanid)) * (nii_view.nii.hdr.dime.glmax - ...
-                                                      nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
+                                                          nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
     imgvalue = [double(img(sag, cor, axi, 1, nii_view.scanid)) double(img(sag, cor, axi, 2, nii_view.scanid)) double(img(sag, cor, axi, 3, nii_view.scanid))];
     set(nii_view.handles.imval, 'Value', imgvalue);
     imgvalue = [R G B];
@@ -3043,7 +3043,7 @@ function nii_view = get_slider_position(nii_view)
     if ishandle(nii_view.handles.coronal_slider)
       nii_view.slices.cor = ...
        round(nii_view.dims(2) - ...
-    get(nii_view.handles.coronal_slider, 'Value') + 1);
+             get(nii_view.handles.coronal_slider, 'Value') + 1);
     end
   end
 
@@ -4790,11 +4790,11 @@ function move_cursor(fig)
     set(nii_view.handles.imvalcur, 'String', sprintf('%7.4g %7.4g %7.4g', imgvalue));
   elseif nii_view.nii.hdr.dime.datatype == 511
     R = double(img(sag, cor, axi, 1, nii_view.scanid)) * (nii_view.nii.hdr.dime.glmax - ...
-                                                      nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
+                                                          nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
     G = double(img(sag, cor, axi, 2, nii_view.scanid)) * (nii_view.nii.hdr.dime.glmax - ...
-                                                      nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
+                                                          nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
     B = double(img(sag, cor, axi, 3, nii_view.scanid)) * (nii_view.nii.hdr.dime.glmax - ...
-                                                      nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
+                                                          nii_view.nii.hdr.dime.glmin) + nii_view.nii.hdr.dime.glmin;
     imgvalue = [R G B];
     set(nii_view.handles.imvalcur, 'String', sprintf('%7.4g %7.4g %7.4g', imgvalue));
   else

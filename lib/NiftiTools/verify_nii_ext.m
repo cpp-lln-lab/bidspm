@@ -37,7 +37,7 @@ function [ext, esize_total] = verify_nii_ext(ext)
     ext.section(i).esize = ceil((length(ext.section(i).edata) + 8) / 16) * 16;
     ext.section(i).edata = ...
      [ext.section(i).edata ...
-    zeros(1, ext.section(i).esize - length(ext.section(i).edata) - 8)];
+      zeros(1, ext.section(i).esize - length(ext.section(i).edata) - 8)];
     esize_total = esize_total + ext.section(i).esize;
   end
 
