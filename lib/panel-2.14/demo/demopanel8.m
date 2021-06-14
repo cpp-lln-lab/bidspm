@@ -1,10 +1,7 @@
-
 % You can repack Panels from the command line.
 %
 % (a) Create a grid of panels, and show something in them.
 % (b) Repack some of them, as if at the command line.
-
-
 
 %% (a)
 
@@ -14,12 +11,10 @@ p.pack(2, 2);
 
 % have a look at p - all the child panels are currently
 % uncommitted
-p
+p;
 
 % commit all the uncommitted panels as axis panels
 p.select('all');
-
-
 
 %% (b)
 
@@ -34,7 +29,4 @@ p(1, 1).repack(0.3);
 
 % remember, you can always get a summary of the layout by
 % looking at the root panel in the command window
-p
-
-
-
+p;
