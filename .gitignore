@@ -8,8 +8,6 @@
 *.ps
 *.png
 
-*.mat
-
 # Project specific
 options_task-*date*.json
 onsets*_events.mat
