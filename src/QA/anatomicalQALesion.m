@@ -5,12 +5,13 @@ function anatomicalQALesion(opt)
   %
   % USAGE::
   %
-  %   anatomicalQA(opt)
+  %   anatomicalQALesion(opt)
   %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % See `` lesion_get_option()``.
   % :type opt: structure
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2021 CPP_SPM developers
 
   if isOctave()
     warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.');
@@ -27,7 +28,7 @@ function anatomicalQALesion(opt)
 
   fprintf(1, ' ANATOMICAL: QUALITY CONTROL\n\n');
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 
@@ -36,10 +37,18 @@ function anatomicalQALesion(opt)
     [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
     % get grey and white matter tissue probability maps
-    TPMs = validationInputFile(anatDataDir, anatImage, 'c[12]');
-
+    TPMs = validationInputFile(anatDataDir, anatImage, 'rc[12]'); 
+        
     % sanity check that all images are in the same space.
-    anatImage = fullfile(anatDataDir, anatImage);
+    
+    % setbatchreslice
+    batchName = 'reslice_anat_lesion'; 
+    matlabbatch = [];
+    matlabbatch = setBatchReslice(matlabbatch, TPMs(1, :), fullfile(anatDataDir, anatImage));   
+    saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
+    prefix = [spm_get_defaults('realign.write.prefix')];
+    anatImage = fullfile(anatDataDir, [prefix, anatImage]); 
+    
     volumesToCheck = {anatImage; TPMs(1, :); TPMs(2, :)};
     spm_check_orientations(spm_vol(char(volumesToCheck)));
 
@@ -49,10 +58,10 @@ function anatomicalQALesion(opt)
 
     anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
 
-    spm_jsonwrite( ...
-                  strrep(anatImage, '.nii', '_qa.json'), ...
-                  anatQA, ...
-                  struct('indent', '   '));
+%     spm_jsonwrite( ...
+%                   strrep(anatImage, '.nii', '_qa.json'), ...
+%                   anatQA, ...
+%                   struct('indent', '   '));
 
   end
 
