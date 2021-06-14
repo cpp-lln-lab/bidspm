@@ -1,12 +1,9 @@
-
 % Packing is very flexible - it doesn't just do grids.
 %
 % (a) Pack a pair of columns.
 % (b) Pack a bit into one of them, and then pack some more.
 % (c) Pack into the other using absolute packing mode.
 % (d) Call select('all'), to show off the result.
-
-
 
 %% (a)
 
@@ -16,12 +13,10 @@
 p = panel();
 p.pack('h', 2);
 
-
-
 %% (b)
 
 % pack some stuff into the left column.
-p(1).pack({1/6 1/6 1/6});
+p(1).pack({1 / 6 1 / 6 1 / 6});
 
 % oops, we didn't fill the thing. let's finish that off with
 % a couple of panels that are streeeeeeeee-tchy...
@@ -38,8 +33,6 @@ p(1).pack();
 
 % see help panel/pack or doc panel for more information on
 % the packing possibilities.
-
-
 
 %% (c)
 
@@ -64,8 +57,6 @@ p(2).pack({[0.2 0.61 0.6 0.4]});
 % see help panel/pack or doc panel for more information on
 % the packing possibilities.
 
-
-
 %% (d)
 
 % use selectAll to quickly show the layout you've achieved.
@@ -73,10 +64,3 @@ p(2).pack({[0.2 0.61 0.6 0.4]});
 % they can't be parents anymore (i.e. they can't have more
 % children pack()ed into them).
 p.select('all');
-
-
-
-
-
-
-
