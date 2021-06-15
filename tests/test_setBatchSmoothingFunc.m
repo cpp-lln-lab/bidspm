@@ -19,7 +19,7 @@ function test_setBatchSmoothingFuncBasic()
 
   opt = setOptions('MoAE', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  [BIDS, opt] = getData(opt, opt.dir.raw);
 
   % create dummy normalized file
   fileName = bids.query(BIDS, 'data', ...

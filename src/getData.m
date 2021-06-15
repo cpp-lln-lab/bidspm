@@ -49,7 +49,8 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
 
   opt.useBidsSchema = true;
 
-  description = spm_jsonread(fullfile(BIDSdir, 'dataset_description.json'));
+  description_file = validationInputFile(BIDSdir, 'dataset_description.json');
+  description = spm_jsonread(description_file);
   if isfield(description, 'PipelineDescription') && ...
           strcmpi(description.PipelineDescription.Name, 'fmriprep')
     opt.isFmriprep = true;

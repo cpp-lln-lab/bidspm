@@ -19,7 +19,7 @@ function test_setBatchSubjectLevelGLMSpecBasic()
 
   bidsCopyInputFolder(opt);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  [BIDS, opt] = getData(opt, opt.dir.raw);
 
   % create dummy preprocessed data
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
