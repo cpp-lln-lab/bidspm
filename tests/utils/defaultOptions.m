@@ -3,6 +3,7 @@ function expectedOptions = defaultOptions(taskName)
   % (C) Copyright 2021 CPP_SPM developers
 
   expectedOptions.verbosity = 1;
+  expectedOptions.dryRun = false;
 
   expectedOptions.pipeline.type =  'preproc';
   expectedOptions.pipeline.name = 'cpp_spm';
