@@ -4,6 +4,8 @@ function initCppSpm()
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  opt.verbosity = 1;
+
   global CPP_SPM_INITIALIZED
 
   if isempty(CPP_SPM_INITIALIZED)
@@ -27,16 +29,15 @@ function initCppSpm()
 
     addpath(fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
 
-    checkDependencies();
-
-    printCredits();
+    checkDependencies(opt);
+    printCredits(opt);
 
     run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'));
 
     CPP_SPM_INITIALIZED = true();
 
   else
-    fprintf('\n\nCPP_SPM already initialized\n\n');
+    printToScreen('\n\nCPP_SPM already initialized\n\n', opt);
 
   end
 
