@@ -1,4 +1,3 @@
-
 % Panels can be any size.
 %
 % (a) Create an asymmetrical grid of panels.
@@ -6,17 +5,13 @@
 % (c) Use select('all') to load them all with axes
 % (d) Get handles to all the axes and modify them.
 
-
-
 %% (a)
 
 % create a 2x2 grid in gcf with different fractionally-sized
 % rows and columns. a row or column sized as "[]" will
 % stretch to fill the remaining unassigned space.
 p = panel();
-p.pack({1/3 []}, {1/3 []});
-
-
+p.pack({1 / 3 []}, {1 / 3 []});
 
 %% (b)
 
@@ -25,8 +20,6 @@ p.pack({1/3 []}, {1/3 []});
 % just based on the size of the numbers we pass in (1 to
 % 100 for percentage, or 0 to 1 for fraction).
 p(2, 2).pack({30 70}, {20 20 []});
-
-
 
 %% (c)
 
@@ -39,8 +32,6 @@ p(2, 2).pack({30 70}, {20 20 []});
 % the first three demos, which don't use it - but it may help
 % you to see what you're doing as you're starting out.
 p.select('all');
-
-
 
 %% (d)
 
@@ -56,4 +47,3 @@ h_axes = p.de.axis;
 set(h_axes, 'color', [0 0 0]);
 
 % yeah, real gothic.
-

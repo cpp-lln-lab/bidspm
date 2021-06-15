@@ -7,7 +7,9 @@
 *.html
 *.ps
 *.png
+
 *.mat
+
 
 # Project specific
 options_task-*date*.json
@@ -62,5 +64,3 @@ codegen/
 
 # Octave session info
 octave-workspace
-
-

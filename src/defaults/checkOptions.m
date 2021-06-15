@@ -76,12 +76,11 @@ function opt = checkOptions(opt)
 
   checkToolbox('ALI');
   if ALI_TOOLBOX_PRESENT
-    %     opt = setFields(opt, ALI_my_defaults());
+    opt = setFields(opt, ALI_my_defaults());
   end
 
   opt = setFields(opt, rsHRF_my_defaults());
 
-  %%
   checkFields(opt);
 
   if strcmp(opt.pipeline.type, 'stats') && ...

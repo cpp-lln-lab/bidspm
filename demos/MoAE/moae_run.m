@@ -41,11 +41,20 @@ anatomicalQA(opt);
 bidsResliceTpmToFunc(opt);
 functionalQA(opt);
 
+% create a whole brain functional mean image mask
+% so the mask will be in the same resolution/space as the functional images
+% one may not need it if they are running bidsFFX
+% since it creates a mask.nii by default
+opt.skullstrip.mean = 1;
+mask = bidsWholeBrainFuncMask(opt);
+
+% smoooth the funcitional images
 bidsSmoothing(FWHM, opt);
 
 % The following crash on CI
 opt.pipeline.type = 'stats';
 
+% The following crash on Travis CI
 bidsFFX('specifyAndEstimate', opt, FWHM);
 bidsFFX('contrasts', opt, FWHM);
 bidsResults(opt, FWHM);

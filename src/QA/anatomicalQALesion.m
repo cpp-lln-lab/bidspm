@@ -1,6 +1,7 @@
-function anatomicalQA(opt)
+function anatomicalQALesion(opt)
   %
   % Computes several metrics for anatomical image.
+  %   Modify this version for ALI toolbox TO DO
   %
   % USAGE::
   %
@@ -22,17 +23,17 @@ function anatomicalQA(opt)
   end
   opt = loadAndCheckOptions(opt);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  [BIDS, opt] = getData(opt);
 
   fprintf(1, ' ANATOMICAL: QUALITY CONTROL\n\n');
 
-  for iSub = 1:numel(opt.subjects)
+  parfor iSub = 1:numel(opt.subjects)
 
-    subLabel = opt.subjects{iSub}; %#ok<*PFBNS>
+    subID = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subID);
 
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
 
     % get grey and white matter tissue probability maps
     TPMs = validationInputFile(anatDataDir, anatImage, 'c[12]');
@@ -48,24 +49,10 @@ function anatomicalQA(opt)
 
     anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
 
-    %% rename output to make it BIDS friendly
-    p = bids.internal.parse_filename(anatImage);
-    p.entities.label = p.suffix;
-    p.suffix = 'qametrics';
-    p.ext = '.json';
     spm_jsonwrite( ...
-                  fullfile(anatDataDir, createFilename(p)), ...
+                  strrep(anatImage, '.nii', '_qa.json'), ...
                   anatQA, ...
                   struct('indent', '   '));
-
-    p = bids.internal.parse_filename(anatImage);
-    p.entities.label = p.suffix;
-    p.suffix = 'mask';
-    p.ext = '.pdf';
-    movefile(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_AnatQC.pdf']), ...
-             fullfile(anatDataDir, createFilename(p)));
-
-    delete(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
 
   end
 
