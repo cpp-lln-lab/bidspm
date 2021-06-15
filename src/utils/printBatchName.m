@@ -1,7 +1,8 @@
-function printBatchName(batchName)
+function printBatchName(batchName, opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  fprintf(1, '\n BUILDING JOB: %s\n', lower(batchName));
+  msg = sprintf('\n BUILDING JOB: %s\n', lower(batchName));
+  printToScreen(msg, opt);
 
 end

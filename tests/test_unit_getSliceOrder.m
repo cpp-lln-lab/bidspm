@@ -13,7 +13,7 @@ function test_getSliceOrderBasic()
   opt = setOptions('vismotion');
 
   [~, opt] = getData(opt, opt.dir.preproc);
-  BIDS_sliceOrder = getSliceOrder(opt, 0);
+  BIDS_sliceOrder = getSliceOrder(opt);
 
   %% Get slice order from BIDS
   sliceOrder = repmat( ...
@@ -42,7 +42,7 @@ function test_getSliceOrderEmpty()
 
   [~, opt] = getData(opt, opt.dir.preproc);
 
-  BIDS_sliceOrder = getSliceOrder(opt, 0);
+  BIDS_sliceOrder = getSliceOrder(opt);
 
   assert(isempty(BIDS_sliceOrder));
 
@@ -55,7 +55,7 @@ function test_getSliceOrderFromOptions()
   opt.sliceOrder = 0:250:2000;
 
   [~, opt] = getData(opt, opt.dir.preproc);
-  BIDS_sliceOrder = getSliceOrder(opt, 0);
+  BIDS_sliceOrder = getSliceOrder(opt);
   assert(isequal(BIDS_sliceOrder, opt.sliceOrder));
 
 end

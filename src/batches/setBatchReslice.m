@@ -1,4 +1,4 @@
-function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages, interp)
+function matlabbatch = setBatchReslice(matlabbatch, opt, referenceImg, sourceImages, interp)
   %
   % Set the batch for reslicing source images to the reference image resolution
   %
@@ -18,9 +18,9 @@ function matlabbatch = setBatchReslice(matlabbatch, referenceImg, sourceImages, 
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('reslicing');
+  printBatchName('reslicing', opt);
 
-  if nargin < 4 || isempty(interp)
+  if nargin < 5 || isempty(interp)
     interp = 4;
   end
   write.roptions.interp = interp;

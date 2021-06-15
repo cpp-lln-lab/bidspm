@@ -2,6 +2,9 @@ function expectedOptions = defaultOptions(taskName)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  expectedOptions.verbosity = 1;
+  expectedOptions.dryRun = false;
+
   expectedOptions.pipeline.type =  'preproc';
   expectedOptions.pipeline.name = 'cpp_spm';
 
@@ -60,7 +63,7 @@ function expectedOptions = defaultOptions(taskName)
 
   checkToolbox('ALI');
   if ALI_TOOLBOX_PRESENT
-    %     expectedOptions = setFields(expectedOptions, ALI_my_defaults());
+    expectedOptions = setFields(expectedOptions, ALI_my_defaults());
   end
 
   expectedOptions = setFields(expectedOptions, rsHRF_my_defaults());

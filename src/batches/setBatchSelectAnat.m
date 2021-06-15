@@ -27,9 +27,9 @@ function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('selecting anatomical image');
+  printBatchName('selecting anatomical image', opt);
 
-  [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
   matlabbatch{end + 1}.cfg_basicio.cfg_named_file.name = 'Anatomical';
   matlabbatch{end}.cfg_basicio.cfg_named_file.files = { {fullfile(anatDataDir, anatImage)} };

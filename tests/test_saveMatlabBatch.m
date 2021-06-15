@@ -10,15 +10,17 @@ end
 
 function test_saveMatlabBatchBasic()
 
+  subLabel = '01';
+  opt = setOptions('dummy', subLabel);
   opt.dir.jobs = pwd;
-  subID = '01';
+
   matlabbatch = struct('test', 1);
 
   expectedOutput = fullfile(pwd, 'sub-01', ...
                             [datestr(now, 'yyyymmdd_HHMM') ...
                              '_jobs_matlabbatch_SPM12_test.mat']);
 
-  saveMatlabBatch(matlabbatch, 'test', opt, subID);
+  saveMatlabBatch(matlabbatch, 'test', opt, subLabel);
 
   assertEqual(exist(expectedOutput, 'file'), 2);
 
@@ -26,7 +28,10 @@ end
 
 function test_saveMatlabBatchGroup()
 
+  subLabel = '01';
+  opt = setOptions('dummy', subLabel);
   opt.dir.jobs = pwd;
+
   matlabbatch = struct('test', 1);
 
   expectedOutput = fullfile(pwd, 'group', ...

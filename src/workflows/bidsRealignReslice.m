@@ -16,23 +16,25 @@ function bidsRealignReslice(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'realign and reslice');
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = [];
     [matlabbatch, ~] = setBatchRealign( ...
                                        matlabbatch, ...
                                        BIDS, ...
-                                       subLabel, ...
                                        opt, ...
+                                       subLabel, ...
                                        'realignReslice');
 
     saveAndRunWorkflow(matlabbatch, 'realign_reslice', opt, subLabel);
 
-    copyFigures(BIDS, opt, subLabel);
+    if ~opt.dryRun
+      copyFigures(BIDS, opt, subLabel);
+    end
 
   end
 

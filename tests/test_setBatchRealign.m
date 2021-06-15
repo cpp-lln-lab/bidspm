@@ -19,7 +19,7 @@ function test_setBatchRealignBasic()
   subLabel = '01';
 
   opt = setOptions('MoAE', subLabel);
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  [BIDS, opt] = getData(opt, opt.dir.raw);
 
   matlabbatch = [];
   matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subLabel);

@@ -10,13 +10,15 @@ end
 
 function test_setBatchImageCalculationBasic()
 
+  opt = setOptions('dummy');
+
   input = {'sub-01_ses-01_T1w.nii'};
   output = 'sub-01_ses-01_T1w_thres.nii';
   outDir = pwd;
   expression = 'i1 > 10';
 
   matlabbatch = [];
-  matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outDir, expression);
+  matlabbatch = setBatchImageCalculation(matlabbatch, opt, input, output, outDir, expression);
 
   expectedBatch{1}.spm.util.imcalc.input{1} = 'sub-01_ses-01_T1w.nii';
   expectedBatch{end}.spm.util.imcalc.output = 'sub-01_ses-01_T1w_thres.nii';

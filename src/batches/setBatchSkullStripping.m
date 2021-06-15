@@ -34,9 +34,9 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('skull stripping');
+  printBatchName('skull stripping', opt);
 
-  [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, subLabel, opt);
+  [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, opt, subLabel);
 
   % if the input image is mean func image instead of anatomical
   if opt.skullstrip.mean
@@ -45,12 +45,13 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
 
   p = bids.internal.parse_filename(imageToSkullStrip);
   p.entities.desc = 'skullstripped';
-  output = ['m' createFilename(p)];
+  output = ['m' bids.create_filename(p)];
 
   p = bids.internal.parse_filename(imageToSkullStrip);
-  p.entities.label = p.suffix;
+  p.entities.label = 'brain';
   p.suffix = 'mask';
-  maskOutput = ['m' createFilename(p)];
+  p.use_schema = false;
+  maskOutput = ['m' bids.create_filename(p)];
 
   expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
 
@@ -120,7 +121,7 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
 
   end
 
-  matlabbatch = setBatchImageCalculation(matlabbatch, input, output, dataDir, expression);
+  matlabbatch = setBatchImageCalculation(matlabbatch, opt, input, output, dataDir, expression);
 
   %% Add a batch to output the mask
   matlabbatch{end + 1} = matlabbatch{end};

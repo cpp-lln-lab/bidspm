@@ -47,13 +47,13 @@ function bidsSpatialPrepro(opt)
   opt.orderBatches.skullStripping = 6;
   opt.orderBatches.skullStrippingMask = 7;
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     matlabbatch = [];
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);
 
@@ -62,7 +62,7 @@ function bidsSpatialPrepro(opt)
     if ~opt.realign.useUnwarp
       action = 'realign';
     end
-    [matlabbatch, voxDim] = setBatchRealign(matlabbatch, action, BIDS, opt, subLabel);
+    [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel, action);
 
     % dependency from file selector ('Anatomical')
     matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
@@ -92,8 +92,10 @@ function bidsSpatialPrepro(opt)
 
     copyFigures(BIDS, opt, subLabel);
 
-    renameSegmentParameter(BIDS, subLabel, opt);
-    renameUnwarpParameter(BIDS, subLabel, opt);
+    if ~opt.dryRun
+      renameSegmentParameter(BIDS, subLabel, opt);
+      renameUnwarpParameter(BIDS, subLabel, opt);
+    end
 
   end
 

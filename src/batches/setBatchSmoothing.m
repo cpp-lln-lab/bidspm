@@ -1,4 +1,4 @@
-function matlabbatch = setBatchSmoothing(matlabbatch, images, FWHM, prefix)
+function matlabbatch = setBatchSmoothing(matlabbatch, opt, images, FWHM, prefix)
   %
   % Small wrapper to create smoothing batch
   %
@@ -20,7 +20,7 @@ function matlabbatch = setBatchSmoothing(matlabbatch, images, FWHM, prefix)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  printBatchName('smoothing images');
+  printBatchName('smoothing images', opt);
 
   matlabbatch{end + 1}.spm.spatial.smooth.data = images;
   matlabbatch{end}.spm.spatial.smooth.prefix = prefix;

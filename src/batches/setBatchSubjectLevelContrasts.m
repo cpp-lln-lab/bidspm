@@ -19,7 +19,7 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  printBatchName('subject level contrasts specification');
+  printBatchName('subject level contrasts specification', opt);
 
   ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
@@ -33,6 +33,6 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
     consess{icon}.tcon.sessrep = 'none';
   end
 
-  matlabbatch = setBatchContrasts(matlabbatch, spmMatFile, consess);
+  matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
 
 end

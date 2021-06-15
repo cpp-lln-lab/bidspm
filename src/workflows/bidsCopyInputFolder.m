@@ -10,8 +10,7 @@ function bidsCopyInputFolder(opt, unzip)
   % USAGE::
   %
   %   bidsCopyRawFolder([opt,] ...
-  %                     [deleteZippedNii = true,] ...
-  %                     [modalitiesToCopy = {'anat', 'func', 'fmap'}])
+  %                     [deleteZippedNii = true,])
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
@@ -35,13 +34,11 @@ function bidsCopyInputFolder(opt, unzip)
 
   cleanCrash();
 
-  printWorklowName('copy data');
+  printWorklowName('copy data', opt);
 
   %% All tasks in this experiment
   % raw directory and derivatives directory
   createDerivativeDir(opt);
-
-  copyTsvJson(opt.dir.input, opt.dir.preproc);
 
   %% Loop through the groups, subjects, sessions
   if any(ismember(opt.query.modality, 'func'))
@@ -53,7 +50,6 @@ function bidsCopyInputFolder(opt, unzip)
   use_schema = true;
   overwrite = true;
   skip_dependencies = false;
-  verbose = true;
 
   for iModality = 1:numel(opt.query.modality)
 
@@ -66,34 +62,16 @@ function bidsCopyInputFolder(opt, unzip)
     end
 
     bids.copy_to_derivative(BIDS, ...
-                            fullfile(opt.dir.preproc, '..'), ...
                             opt.pipeline.name, ...
+                            fullfile(opt.dir.preproc, '..'), ...
                             filter, ...
-                            unzip, ...
-                            overwrite, ...
-                            skip_dependencies, ...
-                            use_schema, ...
-                            verbose);
+                            'unzip', unzip, ...
+                            'force', overwrite, ...
+                            'skip_dep', skip_dependencies, ...
+                            'use_schema', use_schema, ...
+                            'verbose', opt.verbosity > 0);
 
     fprintf(1, '\n\n');
-  end
-
-end
-
-function copyTsvJson(srcDir, targetDir)
-  % copy TSV and JSON file from raw folder
-
-  ext = {'tsv', 'json'};
-
-  for i = 1:numel(ext)
-
-    if ~isempty(spm_select('List', srcDir, ['^.*.' ext{i} '$']))
-
-      copyfile(fullfile(srcDir, ['*.' ext{i}]), targetDir);
-      fprintf(1, ' %s files copied\n', ext{i});
-
-    end
-
   end
 
 end

@@ -26,10 +26,12 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
 
     saveMatlabBatch(matlabbatch, batchName, opt, subLabel);
 
-    spm_jobman('run', matlabbatch);
+    if ~opt.dryRun
+      spm_jobman('run', matlabbatch);
+    end
 
   else
-    warning('This batch is empty and will not be run.');
+    errorHandling(mfilename(), 'emptyBatch', 'This batch is empty & will not be run.', true, true);
 
   end
 

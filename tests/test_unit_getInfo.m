@@ -8,19 +8,6 @@ function test_suite = test_unit_getInfo %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getInfo_fmriprep()
-
-  subLabel = 'ctrl01';
-
-  opt = setOptions('fmriprep');
-
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
-
-  sessions = getInfo(BIDS, subLabel, opt, 'sessions');
-  runs = getInfo(BIDS, subLabel, opt, 'runs', sessions{1});
-
-end
-
 function test_getInfoBasic()
 
   subLabel = 'ctrl01';
@@ -120,5 +107,21 @@ function test_getInfoQueryWithSessionRestriction()
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'sessions');
   assertEqual(nbSessions, numel(opt.query));
   assertEqual(sessions{1}, opt.query.ses);
+
+end
+
+function test_getInfoError
+
+  subLabel = 'ctrl01';
+
+  opt = setOptions('vismotion', subLabel);
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  opt.query = struct('ses', {{'01', '02'}});
+
+  assertExceptionThrown( ...
+                        @()getInfo(BIDS, subLabel, opt, 'nothing'), ...
+                        'getInfo:unknownRequest');
 
 end

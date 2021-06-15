@@ -28,11 +28,11 @@ function anatomicalQA(opt)
 
   for iSub = 1:numel(opt.subjects)
 
-    subID = opt.subjects{iSub};
+    subLabel = opt.subjects{iSub}; %#ok<*PFBNS>
 
-    printProcessingSubject(iSub, subID);
+    printProcessingSubject(iSub, subLabel, opt);
 
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
     % get grey and white matter tissue probability maps
     TPMs = validationInputFile(anatDataDir, anatImage, 'c[12]');
@@ -53,8 +53,9 @@ function anatomicalQA(opt)
     p.entities.label = p.suffix;
     p.suffix = 'qametrics';
     p.ext = '.json';
+    p.use_schema = false;
     spm_jsonwrite( ...
-                  fullfile(anatDataDir, createFilename(p)), ...
+                  fullfile(anatDataDir, bids.create_filename(p)), ...
                   anatQA, ...
                   struct('indent', '   '));
 
@@ -62,8 +63,9 @@ function anatomicalQA(opt)
     p.entities.label = p.suffix;
     p.suffix = 'mask';
     p.ext = '.pdf';
+    p.use_schema = false;
     movefile(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_AnatQC.pdf']), ...
-             fullfile(anatDataDir, createFilename(p)));
+             fullfile(anatDataDir,  bids.create_filename(p)));
 
     delete(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
 

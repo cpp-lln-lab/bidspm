@@ -16,7 +16,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('Segmentation anatomical image');
+  printBatchName('Segmentation anatomical image', opt);
 
   % define SPM folder
   spmLocation = spm('dir');

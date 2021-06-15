@@ -36,7 +36,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   result.label = subLabel;
   result.nbSubj = 1;
 
-  result.contrastNb = getContrastNb(result);
+  result.contrastNb = getContrastNb(result, opt);
 
   result.outputNameStructure = struct( ...
                                       'suffix', 'spmT', ...
@@ -55,7 +55,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
 
 end
 
-function contrastNb = getContrastNb(result)
+function contrastNb = getContrastNb(result, opt)
   %
   % identify which contrast nb actually has the name the user asked
   %
@@ -64,11 +64,11 @@ function contrastNb = getContrastNb(result)
 
   if isempty(result.Contrasts.Name)
 
-    printAvailabileContrasts(SPM);
+    printAvailableContrasts(SPM, opt);
 
-    errorStruct.identifier = 'setBatchSubjectLevelResults:missingContrastName';
-    errorStruct.message = 'No contrast name specified';
-    error(errorStruct);
+    msg = 'No contrast name specified';
+
+    errorHandling(mfilename(), 'missingContrastName', msg, false, true);
 
   end
 
@@ -76,21 +76,20 @@ function contrastNb = getContrastNb(result)
 
   if isempty(contrastNb)
 
-    printAvailabileContrasts(SPM);
+    printAvailableContrasts(SPM, opt);
 
-    errorStruct.identifier = 'setBatchSubjectLevelResults:NoMatchingContrastName';
-    errorStruct.message = sprintf( ...
-                                  'This SPM file %s does not contain a contrast named %s', ...
-                                  fullfile(result.dir, 'SPM.mat'), ...
-                                  result.Contrasts.Name);
+    msg = sprintf( ...
+                  'This SPM file %s does not contain a contrast named %s', ...
+                  fullfile(result.dir, 'SPM.mat'), ...
+                  result.Contrasts.Name);
 
-    error(errorStruct);
+    errorHandling(mfilename(), 'noMatchingContrastName', msg, false, true);
 
   end
 
 end
 
-function printAvailabileContrasts(SPM)
-  sprintf('List of contrast in this SPM file');
-  disp({SPM.xCon.name}');
+function printAvailableContrasts(SPM, opt)
+  printToScreen('List of contrast in this SPM file', opt);
+  printToScreen(strjoin({SPM.xCon.name}, '\n'), opt);
 end

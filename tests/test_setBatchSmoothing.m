@@ -13,10 +13,12 @@ function test_setBatchSmoothingBasic()
   FWHM = 6;
   prefix = 's6_';
 
+  opt = setOptions('dummy');
+
   images = { fullfile(pwd, 'sub-01_T1w.nii') };
 
   matlabbatch = [];
-  matlabbatch = setBatchSmoothing(matlabbatch, images, FWHM, prefix);
+  matlabbatch = setBatchSmoothing(matlabbatch, opt,  images, FWHM, prefix);
 
   expectedBatch{1}.spm.spatial.smooth.fwhm = [6 6 6];
   expectedBatch{1}.spm.spatial.smooth.prefix = 's6_';

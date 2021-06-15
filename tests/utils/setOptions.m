@@ -4,6 +4,8 @@ function opt = setOptions(task, subLabel)
 
   thisDir = fileparts(mfilename('fullpath'));
 
+  opt = setTestCfg();
+
   opt.dir = [];
 
   if strcmp(task, 'MoAE')

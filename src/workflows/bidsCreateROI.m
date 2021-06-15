@@ -38,7 +38,7 @@ function bidsCreateROI(opt)
 
       subLabel = opt.subjects{iSub};
 
-      printProcessingSubject(iSub, subLabel);
+      printProcessingSubject(iSub, subLabel, opt);
 
       %% inverse normalize
       [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);

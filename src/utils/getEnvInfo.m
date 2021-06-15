@@ -1,4 +1,4 @@
-function [OS, GeneratedBy] = getEnvInfo()
+function [OS, GeneratedBy] = getEnvInfo(opt)
   %
   % Gets information about the environement and operating system to help generate
   % data descriptors for the derivatives.
@@ -25,6 +25,10 @@ function [OS, GeneratedBy] = getEnvInfo()
   OS.name = computer();
   OS.platform.name = runsOn;
   OS.platform.version = version();
+
+  if opt.dryRun
+    return
+  end
 
   [a, b] = spm('ver');
   OS.spmVersion = [a ' - ' b];

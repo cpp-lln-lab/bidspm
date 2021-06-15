@@ -41,14 +41,16 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   end
 
   if isfield(opt, 'taskName')
-    fprintf(1, 'FOR TASK: %s\n', opt.taskName);
+    msg = sprintf('FOR TASK: %s\n', opt.taskName);
+    printToScreen(msg, opt);
   else
     suffix = 'T1w';
   end
 
   opt.useBidsSchema = true;
 
-  description = spm_jsonread(fullfile(BIDSdir, 'dataset_description.json'));
+  description_file = validationInputFile(BIDSdir, 'dataset_description.json');
+  description = spm_jsonread(description_file);
   if isfield(description, 'PipelineDescription') && ...
           strcmpi(description.PipelineDescription.Name, 'fmriprep')
     opt.isFmriprep = true;
@@ -77,8 +79,8 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   % apply to all others.
   opt = getMetaData(BIDS, opt, opt.subjects, suffix);
 
-  fprintf(1, 'WILL WORK ON SUBJECTS\n');
-  disp(opt.subjects);
+  printToScreen('WILL WORK ON SUBJECTS\n', opt);
+  printToScreen(strjoin(opt.subjects), opt);
 
 end
 

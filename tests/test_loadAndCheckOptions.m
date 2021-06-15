@@ -10,7 +10,7 @@ end
 
 function test_loadAndCheckOptionsBasic()
 
-  mkdir cfg;
+  spm_mkdir cfg;
   delete(fullfile(pwd, 'cfg', '*.json'));
 
   % create dummy json file
@@ -29,16 +29,19 @@ end
 
 function test_loadAndCheckOptionsStructure()
 
-  mkdir cfg;
+  spm_mkdir cfg;
   delete(fullfile(pwd, 'cfg', '*.json'));
 
   % create dummy json file
+  opt = setTestCfg();
   opt.taskName = 'vismotion';
 
   % makes sure that it is picked up by default
   opt = loadAndCheckOptions(opt);
 
   expectedOptions = defaultOptions('vismotion');
+  expectedOptions.verbosity = 0;
+  expectedOptions.dryRun = 1;
 
   assertEqual(opt, expectedOptions);
 
@@ -46,12 +49,13 @@ end
 
 function test_loadAndCheckOptionsFromFile()
 
-  mkdir cfg;
+  spm_mkdir cfg;
   delete(fullfile(pwd, 'cfg', '*.json'));
 
   % create dummy json file
   jsonContent.taskName = 'vismotion';
   jsonContent.space = 'individual';
+  jsonContent.verbosity = 0;
   jsonContent.groups = {''};
   jsonContent.subjects = {[]};
 
@@ -63,6 +67,7 @@ function test_loadAndCheckOptionsFromFile()
 
   expectedOptions = defaultOptions('vismotion');
   expectedOptions.space = 'individual';
+  expectedOptions.verbosity = 0;
 
   assertEqual(opt, expectedOptions);
 
@@ -72,7 +77,7 @@ end
 
 function test_loadAndCheckOptionsFromSeveralFiles()
 
-  mkdir cfg;
+  spm_mkdir cfg;
   delete(fullfile(pwd, 'cfg', '*.json'));
 
   % create old dummy json file
@@ -92,6 +97,7 @@ function test_loadAndCheckOptionsFromSeveralFiles()
   % most recent option file that should be read from
   jsonContent.taskName = 'vismotion';
   jsonContent.space = 'individual';
+  jsonContent.verbosity = 0;
   jsonContent.funcVoxelDims = [1 1 1];
   filename = fullfile(pwd, 'cfg', ['options', ...
                                    '_task-', jsonContent.taskName, ...
@@ -105,6 +111,7 @@ function test_loadAndCheckOptionsFromSeveralFiles()
   expectedOptions = defaultOptions('vismotion');
   expectedOptions.space = 'individual';
   expectedOptions.funcVoxelDims = [1 1 1]';
+  expectedOptions.verbosity = 0;
 
   assertEqual(opt, expectedOptions);
 

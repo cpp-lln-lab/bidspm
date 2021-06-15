@@ -55,11 +55,10 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
 
   if isempty(files)
 
-    errorStruct.identifier = 'validationInputFile:nonExistentFile';
-    errorStruct.message = sprintf( ...
-                                  'This file does not exist: %s', ...
-                                  fullfile(dir, [prefix fileNamePattern '[.gz]']));
-    error(errorStruct);
+    msg = sprintf( ...
+                  'This file does not exist: %s', ...
+                  fullfile(dir, [prefix fileNamePattern '[.gz]']));
+    errorHandling(mfilename(), 'nonExistentFile', msg, false, true);
 
   end
 

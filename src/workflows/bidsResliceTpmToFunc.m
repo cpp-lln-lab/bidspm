@@ -26,16 +26,17 @@ function bidsResliceTpmToFunc(opt)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt, 'funcqa');
 
     % get grey and white matter and CSF tissue probability maps
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
     TPMs = validationInputFile(anatDataDir, anatImage, 'c[123]');
 
     matlabbatch = [];
     matlabbatch = setBatchReslice(matlabbatch, ...
+                                  opt, ...
                                   fullfile(meanFuncDir, meanImage), ...
                                   cellstr(TPMs));
 
@@ -53,12 +54,14 @@ function bidsResliceTpmToFunc(opt)
     p = bids.internal.parse_filename(meanImage);
     p.entities.label = p.suffix;
     p.suffix = 'mask';
-    output = createFilename(p);
+    p.use_schema = false;
+    output = bids.create_filename(p);
 
     expression = sprintf('(i1+i2+i3)>%f', opt.skullstrip.threshold);
 
     matlabbatch = [];
-    matlabbatch = setBatchImageCalculation(matlabbatch, input, output, meanFuncDir, expression);
+    matlabbatch = setBatchImageCalculation(matlabbatch, opt, ...
+                                           input, output, meanFuncDir, expression);
 
     saveAndRunWorkflow(matlabbatch, 'create_functional_brain_mask', opt, subLabel);
 

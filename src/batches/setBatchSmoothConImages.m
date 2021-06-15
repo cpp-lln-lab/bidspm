@@ -21,13 +21,13 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFW
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  printBatchName('smoothing contrast images');
+  printBatchName('smoothing contrast images', opt);
 
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
@@ -36,6 +36,7 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFW
 
     matlabbatch = setBatchSmoothing( ...
                                     matlabbatch, ...
+                                    opt, ...
                                     data, ...
                                     conFWHM, ...
                                     [spm_get_defaults('smooth.prefix'), num2str(conFWHM)]);
