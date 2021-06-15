@@ -107,13 +107,13 @@ do
 		touch $ThisDir/mask.nii
 
 		touch $ThisDir/spmT_0001.nii
-		touch $ThisDir/spmT_0002.nii		
+		touch $ThisDir/spmT_0002.nii
 
 		touch $ThisDir/con_0001.nii
 		touch $ThisDir/con_0002.nii
 		touch $ThisDir/con_0003.nii
 		touch $ThisDir/con_0004.nii
-				
+
 		touch $ThisDir/s6con_0001.nii
 		touch $ThisDir/s6con_0002.nii
 		touch $ThisDir/s6con_0003.nii

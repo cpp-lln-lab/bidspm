@@ -19,26 +19,26 @@
 %
 function [ext, esize_total] = verify_nii_ext(ext)
 
-  if ~isfield(ext, 'section')
-    error('Incorrect NIFTI header extension structure.');
-  elseif ~isfield(ext, 'num_ext')
-    ext.num_ext = length(ext.section);
-  elseif ~isfield(ext, 'extension')
-    ext.extension = [1 0 0 0];
-  end
-
-  esize_total = 0;
-
-  for i = 1:ext.num_ext
-    if ~isfield(ext.section(i), 'ecode') | ~isfield(ext.section(i), 'edata')
-      error('Incorrect NIFTI header extension structure.');
+    if ~isfield(ext, 'section')
+        error('Incorrect NIFTI header extension structure.');
+    elseif ~isfield(ext, 'num_ext')
+        ext.num_ext = length(ext.section);
+    elseif ~isfield(ext, 'extension')
+        ext.extension = [1 0 0 0];
     end
 
-    ext.section(i).esize = ceil((length(ext.section(i).edata) + 8) / 16) * 16;
-    ext.section(i).edata = ...
-     [ext.section(i).edata ...
-      zeros(1, ext.section(i).esize - length(ext.section(i).edata) - 8)];
-    esize_total = esize_total + ext.section(i).esize;
-  end
+    esize_total = 0;
 
-  return                                       % verify_nii_ext
+    for i = 1:ext.num_ext
+        if ~isfield(ext.section(i), 'ecode') | ~isfield(ext.section(i), 'edata')
+            error('Incorrect NIFTI header extension structure.');
+        end
+
+        ext.section(i).esize = ceil((length(ext.section(i).edata) + 8) / 16) * 16;
+        ext.section(i).edata = ...
+         [ext.section(i).edata ...
+              zeros(1, ext.section(i).esize - length(ext.section(i).edata) - 8)];
+        esize_total = esize_total + ext.section(i).esize;
+    end
+
+    return                                       % verify_nii_ext

@@ -24,5 +24,5 @@ q = panel.recover();
 % note that "p" and "q" now refer to the same thing - it's
 % not two root panels, it's two references to the same one.
 if p == q
-  disp('panels are identical');
+    disp('panels are identical');
 end

@@ -7,7 +7,7 @@ Configuration of the pipeline
 Options
 -------
 
-Most of the options you have chosen for your analysis will be set in a variable 
+Most of the options you have chosen for your analysis will be set in a variable
 ``opt`` an Octave/Matlab structure.
 
 The content of that structure can be defined:
@@ -15,7 +15,7 @@ The content of that structure can be defined:
 - "at run" time in a script or a function (that we often label ``getOption``)
 - in a separate json file that can be loaded with ``loadAndCheckOptions()``.
 
-You can find examples of both in the ``demos`` folder. You can also find a 
+You can find examples of both in the ``demos`` folder. You can also find a
 template function for ``getOption`` in the ``src/templates`` folder.
 
 Required options
@@ -26,7 +26,7 @@ Set the task to analyze in the BIDS data set ``opt.taskName = 'auditory'``
 Selecting groups and subjects
 +++++++++++++++++++++++++++++
 
-Set the group of subjects to analyze::  
+Set the group of subjects to analyze::
 
     opt.groups = {'control', 'blind'};
 

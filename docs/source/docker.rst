@@ -25,11 +25,10 @@ The following code would start the docker image and would map 2 folders one for
 To test it you can copy the ``MoAEpilot_run.m`` file in the ``demos/MoAE`` folder on
 your computer and then start running the docker and type::
 
-    # to change to the code folder inside the container 
-    # running the command 'ls' should show MoAEpilot_run.m and the content of 
+    # to change to the code folder inside the container
+    # running the command 'ls' should show MoAEpilot_run.m and the content of
     # the folder
-    cd demos/MoAE 
+    cd demos/MoAE
 
     # To run the batch_download_run script
-    octave --no-gui --eval MoAEpilot_run 
-
+    octave --no-gui --eval MoAEpilot_run

@@ -32,4 +32,3 @@ jobs:
     - name: MISS_HIT Code style
       run: |
         mh_style
-

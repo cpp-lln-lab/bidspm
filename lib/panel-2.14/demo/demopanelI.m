@@ -52,32 +52,32 @@ lw = 1.5;
 % for each
 for pind = 1:2
 
-  % plot
-  p(pind).select();
-  plot(x, y, 'k-');
-  hold on;
-  plot(x + 1, y, 'r--');
-  plot(x + 2, y, 'g-.');
-  plot(x + 3, y, 'b:');
-  plot(x, y + 1, ['k' mt '-'], 'markersize', ms);
-  plot(x + 1, y + 1, ['r' mt '--'], 'markersize', ms);
-  plot(x + 2, y + 1, ['g' mt '-.'], 'markersize', ms);
-  plot(x + 3, y + 1, ['b' mt ':'], 'markersize', ms);
+    % plot
+    p(pind).select();
+    plot(x, y, 'k-');
+    hold on;
+    plot(x + 1, y, 'r--');
+    plot(x + 2, y, 'g-.');
+    plot(x + 3, y, 'b:');
+    plot(x, y + 1, ['k' mt '-'], 'markersize', ms);
+    plot(x + 1, y + 1, ['r' mt '--'], 'markersize', ms);
+    plot(x + 2, y + 1, ['g' mt '-.'], 'markersize', ms);
+    plot(x + 3, y + 1, ['b' mt ':'], 'markersize', ms);
 
-  % finalise
-  set(allchild(gca), 'linewidth', lw);
-  axis([0 5 0 2]);
+    % finalise
+    set(allchild(gca), 'linewidth', lw);
+    axis([0 5 0 2]);
 
-  % legend
-  h_leg = legend('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h');
+    % legend
+    h_leg = legend('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h');
 
-  % finalise
-  if pind == 2
-    title('with fixdash()');
-    p.fixdash([allchild(gca); allchild(h_leg)]);
-  else
-    title('without fixdash()');
-  end
+    % finalise
+    if pind == 2
+        title('with fixdash()');
+        p.fixdash([allchild(gca); allchild(h_leg)]);
+    else
+        title('without fixdash()');
+    end
 
 end
 

@@ -83,7 +83,7 @@ temporal correlations in rapidly sampled fMRI time series. Hum. Brain Mapp. 39,
 
 Use the report function to get a print out of the content of a dataset.
 
-.. automodule:: src.reports 
+.. automodule:: src.reports
 
 .. autofunction:: reportBIDS
 .. autofunction:: copyGraphWindownOutput

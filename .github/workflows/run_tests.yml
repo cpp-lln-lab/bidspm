@@ -1,15 +1,15 @@
 name: tests and coverage
 
 # Uses the cron schedule for github actions
-# 
+#
 # https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows#scheduled-events
-# 
+#
 # ┌───────────── minute (0 - 59)
 # │ ┌───────────── hour (0 - 23)
 # │ │ ┌───────────── day of the month (1 - 31)
 # │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
 # │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
-# │ │ │ │ │                                   
+# │ │ │ │ │
 # │ │ │ │ │
 # │ │ │ │ │
 # * * * * *
@@ -39,7 +39,7 @@ jobs:
         sudo apt-get -y install octave liboctave-dev
         sudo apt-get -y install nodejs npm
 
-    - name: Clone cpp_spm         
+    - name: Clone cpp_spm
       uses: actions/checkout@v2
       with:
         submodules: true
@@ -58,12 +58,12 @@ jobs:
         git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
         make -C MOxUnit install
         git clone https://github.com/MOcov/MOcov.git --depth 1
-        make -C MOcov install    
-        
+        make -C MOcov install
+
     - name: Update octave path
       run: |
         octave $OCTFLAGS --eval "initCppSpm; savepath();"
-        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"        
+        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
 
     - name: Prepare data
       run: |
@@ -81,5 +81,4 @@ jobs:
       run: |
         octave $OCTFLAGS --eval "run_tests"
         cat test_report.log | grep 0
-        bash <(curl -s https://codecov.io/bash)         
-
+        bash <(curl -s https://codecov.io/bash)
