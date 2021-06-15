@@ -92,7 +92,7 @@ function expectedBatch = returnExpectedBatch(opt)
   expectedBatch{end}.spm.util.imcalc.expression = sprintf( ...
                                                           '(i2+i3+i4)>%f', ...
                                                           opt.skullstrip.threshold);
-  expectedFileName = 'sub-01_ses-01_label-T1w_mask.nii';
+  expectedFileName = 'sub-01_ses-01_label-brain_mask.nii';
   expectedBatch{end}.spm.util.imcalc.output = ['m' expectedFileName];
 
 end
