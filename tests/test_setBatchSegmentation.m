@@ -69,7 +69,7 @@ function anatImage = returnLocalAnatFilename()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
   anatImage = fullfile(anatDataDir, anatImage);
 

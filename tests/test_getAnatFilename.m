@@ -37,7 +37,7 @@ function test_getAnatFilenameBasic()
   opt.anatReference.session = '01';
   opt.anatReference.type = 'T1w';
 
-  [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
   assertEqual(anatDataDir, expectedAnatDataDir);
   assertEqual(anatImage, expectedFileName);

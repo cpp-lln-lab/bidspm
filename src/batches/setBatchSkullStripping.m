@@ -36,7 +36,7 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
 
   printBatchName('skull stripping', opt);
 
-  [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, subLabel, opt);
+  [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, opt, subLabel);
 
   % if the input image is mean func image instead of anatomical
   if opt.skullstrip.mean

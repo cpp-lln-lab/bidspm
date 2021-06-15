@@ -1,4 +1,4 @@
-function [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
+function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   %
   % Get the filename and the directory of an anat file for a given session and run.
   % Unzips the file if necessary.

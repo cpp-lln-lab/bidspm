@@ -32,7 +32,7 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
     printProcessingSubject(iSub, subLabel, opt);
 
     %% Anat
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
     anatImage = validationInputFile( ...
                                     anatDataDir, ...

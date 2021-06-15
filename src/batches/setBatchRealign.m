@@ -34,7 +34,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
     [matlabbatch, BIDS, opt, subLabel] = deal(varargin{:});
     action = '';
   else
-    [matlabbatch, action, BIDS, opt, subLabel] = deal(varargin{:});
+    [matlabbatch, BIDS, opt, subLabel, action] = deal(varargin{:});
   end
 
   if isempty(action)
@@ -42,6 +42,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   end
 
   % TODO hide this wart in a subfunction ?
+  msg = '';
   switch action
     case 'realignUnwarp'
       msg = 'REALIGN & UNWARP';

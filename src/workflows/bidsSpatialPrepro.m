@@ -62,7 +62,7 @@ function bidsSpatialPrepro(opt)
     if ~opt.realign.useUnwarp
       action = 'realign';
     end
-    [matlabbatch, voxDim] = setBatchRealign(matlabbatch, action, BIDS, opt, subLabel);
+    [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel, action);
 
     % dependency from file selector ('Anatomical')
     matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
