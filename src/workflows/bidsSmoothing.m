@@ -18,7 +18,7 @@ function bidsSmoothing(funcFWHM, opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'smoothing functional data');
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 

@@ -43,18 +43,19 @@ function functionalQA(opt)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     % get grey and white matter and csf tissue probability maps
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
     TPMs = validationInputFile(anatDataDir, anatImage, 'rc[123]');
 
     % load metrics from anat QA
     p = bids.internal.parse_filename(anatImage);
     p.entities.label = p.suffix;
+    p.use_schema = false;
     p.suffix = 'qametrics';
     p.ext = '.json';
-    anatQA = spm_jsonread(fullfile(anatDataDir, createFilename(p)));
+    anatQA = spm_jsonread(fullfile(anatDataDir, bids.create_filename(p)));
 
     [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
@@ -102,20 +103,22 @@ function functionalQA(opt)
                                            'Radius', anatQA.avgDistToSurf);
 
         p = bids.internal.parse_filename(funcImage);
+        p.use_schema = false;
         p.entities.label = p.suffix;
         p.suffix = 'qa';
         p.ext = '.pdf';
         movefile( ...
                  fullfile(subFuncDataDir, 'spmup_QC.ps'), ...
-                 spm_file(funcImage, 'filename', createFilename(p)));
+                 spm_file(funcImage, 'filename', bids.create_filename(p)));
 
         confounds = load(outputFiles.design);
 
         p = bids.internal.parse_filename(funcImage);
+        p.use_schema = false;
         p.entities.desc = 'confounds';
         p.suffix = 'regressors';
         p.ext = '.tsv';
-        spm_save(spm_file(funcImage, 'filename', createFilename(p)), ...
+        spm_save(spm_file(funcImage, 'filename', bids.create_filename(p)), ...
                  confounds);
 
         delete(outputFiles.design);

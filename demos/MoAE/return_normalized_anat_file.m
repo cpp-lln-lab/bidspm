@@ -3,7 +3,7 @@ function [anat_normalized_file, anatRange] = return_normalized_anat_file(opt, su
   % (C) Copyright 2021 Remi Gau
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
-  [~, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+  [~, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
   anat_normalized_file = spm_select('FPList', ...
                                     anatDataDir, ...
                                     '^wm.*desc-skullstripped.*.nii$');

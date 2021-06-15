@@ -20,7 +20,8 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
     p.entities.label = p.suffix;
     p.suffix = 'unwarpparam';
     p.ext = '.mat';
-    newName = spm_file(unwarpParam(iFile, :), 'filename',  createFilename(p));
+    p.use_schema = false;
+    newName = spm_file(unwarpParam(iFile, :), 'filename',  bids.create_filename(p));
 
     movefile(unwarpParam(iFile, :), newName);
 

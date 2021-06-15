@@ -19,7 +19,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon)
 
     case 2
 
-      printBatchName('estimate subject level fmri model');
+      printBatchName('estimate subject level fmri model', opt);
 
       spmMatFile = cfg_dep( ...
                            'fMRI model specification SPM file', ...
