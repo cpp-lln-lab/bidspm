@@ -22,7 +22,7 @@ function test_getAnatFilenameBasic()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
   expectedFileName = 'sub-01_ses-01_T1w.nii';
 
@@ -55,7 +55,7 @@ function test_getAnatFilenameTypeError()
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   assertExceptionThrown( ...
-                        @()getAnatFilename(BIDS, subLabel, opt), ...
+                        @()getAnatFilename(BIDS, opt, subLabel), ...
                         'getAnatFilename:requestedSuffixUnvailable');
 
 end
@@ -71,7 +71,7 @@ function test_getAnatFilenameSEssionError()
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   assertExceptionThrown( ...
-                        @()getAnatFilename(BIDS, subLabel, opt), ...
+                        @()getAnatFilename(BIDS, opt, subLabel), ...
                         'getAnatFilename:requestedSessionUnvailable');
 
 end

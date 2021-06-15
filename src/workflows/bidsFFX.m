@@ -28,11 +28,10 @@ function bidsFFX(action, opt, funcFWHM)
   % (C) Copyright 2020 CPP_SPM developers
 
   if opt.glm.roibased.do
-    message = sprintf( ...
-                      ['The option opt.glm.roibased.do is set to true.\n', ...
-                       ' Change the option to false to use this workflow or\n', ...
-                       ' use the bidsRoiBasedGLM workflow to run roi based GLM.']);
-    error(message);
+    msg = sprintf(['The option opt.glm.roibased.do is set to true.\n', ...
+                   ' Change the option to false to use this workflow or\n', ...
+                   ' use the bidsRoiBasedGLM workflow to run roi based GLM.']);
+    errorHandling(mfilename(), 'roiGLMTrue', msg, false, true);
   end
 
   [BIDS, opt] = setUpWorkflow(opt, 'subject level GLM');
@@ -45,7 +44,7 @@ function bidsFFX(action, opt, funcFWHM)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = [];
 

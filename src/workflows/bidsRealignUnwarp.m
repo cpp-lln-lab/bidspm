@@ -23,19 +23,21 @@ function bidsRealignUnwarp(opt)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = [];
     [matlabbatch, ~] = setBatchRealign( ...
                                        matlabbatch, ...
                                        BIDS, ...
-                                       subLabel, ...
                                        opt, ...
+                                       subLabel, ...
                                        'realignUnwarp');
 
     saveAndRunWorkflow(matlabbatch, 'realign_unwarp', opt, subLabel);
 
-    copyFigures(BIDS, opt, subLabel);
+    if ~opt.dryRun
+      copyFigures(BIDS, opt, subLabel);
+    end
 
   end
 

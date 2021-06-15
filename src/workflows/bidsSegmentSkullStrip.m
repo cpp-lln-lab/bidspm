@@ -33,7 +33,9 @@ function bidsSegmentSkullStrip(opt)
 
     saveAndRunWorkflow(matlabbatch, 'segment_skullstrip', opt, subLabel);
 
-    renameSegmentParameter(BIDS, subLabel, opt);
+    if ~opt.dryRun
+      renameSegmentParameter(BIDS, subLabel, opt);
+    end
 
   end
 

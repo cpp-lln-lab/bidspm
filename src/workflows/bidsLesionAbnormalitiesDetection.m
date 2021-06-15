@@ -28,13 +28,13 @@ function bidsLesionAbnormalitiesDetection(opt)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     idx = strcmp(BIDS.participants.participant_id, ['sub-' subLabel]);
 
     temp = BIDS.participants.group(idx);
 
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
     for iPrefix = 1:numel(prefixList)
 

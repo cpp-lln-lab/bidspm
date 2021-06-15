@@ -41,6 +41,7 @@ function test_loadAndCheckOptionsStructure()
 
   expectedOptions = defaultOptions('vismotion');
   expectedOptions.verbosity = 0;
+  expectedOptions.dryRun = 1;
 
   assertEqual(opt, expectedOptions);
 

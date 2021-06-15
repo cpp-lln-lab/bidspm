@@ -35,7 +35,7 @@ function bidsSTC(opt)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = [];
     matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);

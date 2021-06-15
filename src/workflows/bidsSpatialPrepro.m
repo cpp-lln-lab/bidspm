@@ -53,7 +53,7 @@ function bidsSpatialPrepro(opt)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);
 
@@ -92,8 +92,10 @@ function bidsSpatialPrepro(opt)
 
     copyFigures(BIDS, opt, subLabel);
 
-    renameSegmentParameter(BIDS, subLabel, opt);
-    renameUnwarpParameter(BIDS, subLabel, opt);
+    if ~opt.dryRun
+      renameSegmentParameter(BIDS, subLabel, opt);
+      renameUnwarpParameter(BIDS, subLabel, opt);
+    end
 
   end
 

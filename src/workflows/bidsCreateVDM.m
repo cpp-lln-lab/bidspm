@@ -31,7 +31,7 @@ function bidsCreateVDM(opt)
 
     if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
 
-      printProcessingSubject(iSub, subLabel);
+      printProcessingSubject(iSub, subLabel, opt);
 
       % Create rough mean of the 1rst run to improve SNR for coregistration
       % TODO use the slice timed EPI if STC was used ?

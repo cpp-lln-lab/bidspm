@@ -31,7 +31,7 @@ function bidsResliceTpmToFunc(opt)
     [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt, 'funcqa');
 
     % get grey and white matter and CSF tissue probability maps
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
     TPMs = validationInputFile(anatDataDir, anatImage, 'c[123]');
 
     matlabbatch = [];

@@ -20,7 +20,7 @@ function bidsLesionSegmentation(opt)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = [];
     matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLabel);

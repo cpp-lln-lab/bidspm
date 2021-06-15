@@ -22,7 +22,7 @@ function bidsLesionOverlapMap(opt)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = [];
     matlabbatch = setBatchLesionOverlapMap(matlabbatch, BIDS, opt, subLabel);
