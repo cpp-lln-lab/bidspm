@@ -35,7 +35,8 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxD
 
   end
 
-  printBatchName('normalise functional images');
+  printBatchName('normalise functional images', opt);
+
   matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = ...
       cfg_dep('Coregister: Estimate: Coregistered Images', ...
               substruct( ...
@@ -46,7 +47,8 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxD
               substruct('.', 'cfiles'));
 
   % NORMALIZE STRUCTURAL
-  printBatchName('normalise anatomical images');
+  printBatchName('normalise anatomical images', opt);
+
   matlabbatch{jobsToAdd + 1}.spm.spatial.normalise.write.subj.resample(1) = ...
       cfg_dep('Segment: Bias Corrected (1)', ...
               substruct( ...
@@ -60,7 +62,8 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxD
   matlabbatch{jobsToAdd + 1}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
 
   % NORMALIZE GREY MATTER
-  printBatchName('normalise grey matter tissue probability map');
+  printBatchName('normalise grey matter tissue probability map', opt);
+
   matlabbatch{jobsToAdd + 2}.spm.spatial.normalise.write.subj.resample(1) = ...
       cfg_dep('Segment: c1 Images', ...
               substruct( ...
@@ -72,7 +75,8 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxD
                         '.', 'c', '()', {':'}));
 
   % NORMALIZE WHITE MATTER
-  printBatchName('normalise white matter tissue probability map');
+  printBatchName('normalise white matter tissue probability map', opt);
+
   matlabbatch{jobsToAdd + 3}.spm.spatial.normalise.write.subj.resample(1) = ...
       cfg_dep('Segment: c2 Images', ...
               substruct( ...
@@ -84,7 +88,8 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxD
                         '.', 'c', '()', {':'}));
 
   % NORMALIZE CSF MATTER
-  printBatchName('normalise csf tissue probability map');
+  printBatchName('normalise csf tissue probability map', opt);
+
   matlabbatch{jobsToAdd + 4}.spm.spatial.normalise.write.subj.resample(1) = ...
       cfg_dep('Segment: c3 Images', ...
               substruct( ...
@@ -96,7 +101,8 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxD
                         '.', 'c', '()', {':'}));
 
   % NORMALIZE SKULSTRIPPED STRUCTURAL
-  printBatchName('normalise skullstripped anatomical images');
+  printBatchName('normalise skullstripped anatomical images', opt);
+
   matlabbatch{jobsToAdd + 5}.spm.spatial.normalise.write.subj.resample(1) = ...
       cfg_dep('Image Calculator: skullstripped anatomical', ...
               substruct( ...

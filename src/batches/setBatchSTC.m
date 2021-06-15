@@ -31,13 +31,15 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
   % (C) Copyright 2019 CPP_SPM developers
 
   % get slice order
-  sliceOrder = getSliceOrder(opt, 1);
+  sliceOrder = getSliceOrder(opt);
   if isempty(sliceOrder)
-    warning('No slice order dectected: skipping slice timing correction.');
+    errorHandling(mfilename(), 'noSliceOrder', ...
+                  'No slice order dectected: skipping slice timing correction.', ...
+                  true, opt.verbosity);
     return
   end
 
-  printBatchName('slice timing correction');
+  printBatchName('slice timing correction', opt);
 
   % get metadata for STC
   % Note that slice ordering is assumed to be from foot to head. If it is not, enter
@@ -75,9 +77,8 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
                    '\n- reference slice: %f', ...
                    '\n- slice order: ' pattern], TR, TA, referenceSlice, sliceOrder);
 
-    errorStruct.identifier = 'setBatchSTC:invalidInputTime';
-    errorStruct.message = msg;
-    error(errorStruct);
+    errorHandling(mfilename(), 'invalidInputTime', msg, ...
+                  false, opt.verbosity);
   end
 
   matlabbatch{end + 1}.spm.temporal.st.nslices = nbSlices;
@@ -110,7 +111,7 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
 
       runCounter = runCounter + 1;
 
-      disp(file);
+      printToScreen([file, '\n'], opt);
 
     end
 

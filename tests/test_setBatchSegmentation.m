@@ -15,6 +15,7 @@ function test_setBatchSegmentationPipeline()
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
+  opt = setOptions('dummy');
   opt.orderBatches.selectAnat = 1;
 
   matlabbatch = [];
@@ -38,7 +39,7 @@ function test_setBatchSegmentationImages()
 
   spmLocation = spm('dir');
 
-  opt = struct();
+  opt = setOptions('dummy');
 
   anatImage = returnLocalAnatFilename();
 

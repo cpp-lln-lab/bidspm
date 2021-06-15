@@ -22,7 +22,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, func
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  printBatchName('smoothing functional images');
+  printBatchName('smoothing functional images', opt);
 
   prefix = getPrefix('smooth', opt);
 
@@ -57,6 +57,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, func
 
   % Prefix = s+funcFWHM
   matlabbatch = setBatchSmoothing(matlabbatch, ...
+                                  opt, ...
                                   allFiles, ...
                                   funcFWHM, ...
                                   [spm_get_defaults('smooth.prefix'), num2str(funcFWHM)]);

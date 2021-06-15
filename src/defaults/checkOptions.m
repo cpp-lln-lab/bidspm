@@ -104,6 +104,8 @@ function fieldsToSet = setDefaultOption()
 
   % this defines the missing fields
 
+  fieldsToSet.verbosity = 1;
+
   fieldsToSet.pipeline.type = 'preproc';
   fieldsToSet.pipeline.name = 'cpp_spm';
 

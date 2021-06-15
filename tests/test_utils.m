@@ -10,8 +10,10 @@ end
 
 function test_utilsBasic()
 
-  printCredits();
+  opt = setTestCfg();
 
-  checkDependencies();
+  printCredits(opt);
+
+  checkDependencies(opt);
 
 end

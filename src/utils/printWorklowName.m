@@ -1,7 +1,9 @@
-function printWorklowName(workflowName)
+function printWorklowName(workflowName, opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  fprintf(1, '\n\n\nWORKFLOW: %s\n\n', upper(workflowName));
+  msg = sprintf('\n\n\nWORKFLOW: %s\n\n', upper(workflowName));
+
+  printToScreen(msg, opt);
 
 end

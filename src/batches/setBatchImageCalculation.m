@@ -1,4 +1,4 @@
-function matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outDir, expression)
+function matlabbatch = setBatchImageCalculation(matlabbatch, opt, input, output, outDir, expression)
   %
   % Set a batch for a image calculation
   %
@@ -21,7 +21,7 @@ function matlabbatch = setBatchImageCalculation(matlabbatch, input, output, outD
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('image calculation');
+  printBatchName('image calculation', opt);
 
   matlabbatch{end + 1}.spm.util.imcalc.input = input;
   matlabbatch{end}.spm.util.imcalc.output = output;

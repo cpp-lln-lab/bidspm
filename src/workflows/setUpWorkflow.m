@@ -35,7 +35,7 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, BIDSdir)
 
   cleanCrash();
 
-  printWorklowName(workflowName);
+  printWorklowName(workflowName, opt);
 
   setGraphicWindow();
 

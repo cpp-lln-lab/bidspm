@@ -13,6 +13,8 @@ function test_getPrefixSTC()
   step = 'realign';
   funcFWHM = 6;
 
+  opt = setOptions('dummy');
+
   opt.metadata.SliceTiming = 1:0.2:1.8;
   opt.sliceOrder = 1:10;
 
@@ -30,6 +32,8 @@ function test_getPrefixNoSTC()
 
   step = 'realign';
 
+  opt = setOptions('dummy');
+
   opt.metadata = [];
   opt.sliceOrder = [];
 
@@ -45,6 +49,9 @@ end
 function test_getPrefixMean()
 
   step = 'mean';
+
+  opt = setOptions('dummy');
+
   opt.metadata = [];
   opt.sliceOrder = [];
   opt.realign.useUnwarp = true;
@@ -59,6 +66,9 @@ function test_getPrefixMean()
   %% no unwarp
 
   step = 'mean';
+
+  opt = setOptions('dummy');
+
   opt.metadata.SliceTiming = 1:0.2:1.8;
   opt.sliceOrder = 1:10;
   opt.realign.useUnwarp = false;
@@ -75,6 +85,9 @@ end
 function test_getPrefixNormalise()
 
   step = 'normalise';
+
+  opt = setOptions('dummy');
+
   opt.metadata = [];
   opt.sliceOrder = [];
   opt.realign.useUnwarp = true;
@@ -89,6 +102,9 @@ function test_getPrefixNormalise()
   %% no unwarp
 
   step = 'normalise';
+
+  opt = setOptions('dummy');
+
   opt.metadata = [];
   opt.sliceOrder = [];
   opt.realign.useUnwarp = false;
@@ -105,6 +121,9 @@ end
 function test_getPrefixFuncQA()
 
   step = 'funcQA';
+
+  opt = setOptions('dummy');
+
   opt.metadata = [];
   opt.sliceOrder = [];
   opt.realign.useUnwarp = true;
@@ -119,6 +138,9 @@ function test_getPrefixFuncQA()
   %% no unwarp
 
   step = 'funcQA';
+
+  opt = setOptions('dummy');
+
   opt.metadata = [];
   opt.sliceOrder = [];
   opt.realign.useUnwarp = false;
@@ -135,6 +157,9 @@ end
 function test_getPrefixSmooth()
 
   step = 'smooth';
+
+  opt = setOptions('dummy');
+
   opt.metadata = [];
   opt.sliceOrder = [];
   opt.realign.useUnwarp = true;
@@ -201,6 +226,9 @@ function test_getPrefixFFX()
 
   step = 'FFX';
   funcFWHM = 6;
+
+  opt = setOptions('dummy');
+
   opt.metadata = [];
   opt.sliceOrder = [];
   opt.realign.useUnwarp = true;
@@ -273,6 +301,9 @@ function test_getPrefixError()
 
   step = 'error';
   funcFWHM = 6;
+
+  opt = setOptions('dummy');
+
   opt.metadata = [];
   opt.sliceOrder = [];
 

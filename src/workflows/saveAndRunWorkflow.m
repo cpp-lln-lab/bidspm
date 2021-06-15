@@ -29,7 +29,7 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
     spm_jobman('run', matlabbatch);
 
   else
-    warning('This batch is empty and will not be run.');
+    errorHandling(mfilename(), 'emptyBatch', 'This batch is empty & will not be run.', true, true);
 
   end
 

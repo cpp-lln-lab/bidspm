@@ -19,7 +19,7 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('saving coregistration matrix');
+  printBatchName('saving coregistration matrix', opt);
 
   % create name of the output file based on the name of the first image of the
   % first session

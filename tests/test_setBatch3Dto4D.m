@@ -10,6 +10,8 @@ end
 
 function test_setBatch3Dto4DBasic()
 
+  opt = setOptions('dummy');
+
   volumesList = [ ...
                  fullfile(pwd, 'sub-01_task-rest_bold.nii,1'); ...
                  fullfile(pwd, 'sub-01_task-rest_bold.nii,2')];
@@ -17,7 +19,7 @@ function test_setBatch3Dto4DBasic()
   RT = 2;
 
   matlabbatch = [];
-  matlabbatch = setBatch3Dto4D(matlabbatch, volumesList, RT);
+  matlabbatch = setBatch3Dto4D(matlabbatch, opt, volumesList, RT);
 
   expectedBatch{1}.spm.util.cat.vols = volumesList;
   expectedBatch{1}.spm.util.cat.name = fullfile(pwd, 'sub-01_task-rest_bold_4D.nii');

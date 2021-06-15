@@ -34,7 +34,7 @@ function bidsCopyInputFolder(opt, unzip)
 
   cleanCrash();
 
-  printWorklowName('copy data');
+  printWorklowName('copy data', opt);
 
   %% All tasks in this experiment
   % raw directory and derivatives directory
@@ -50,7 +50,6 @@ function bidsCopyInputFolder(opt, unzip)
   use_schema = true;
   overwrite = true;
   skip_dependencies = false;
-  verbose = true;
 
   for iModality = 1:numel(opt.query.modality)
 
@@ -70,7 +69,7 @@ function bidsCopyInputFolder(opt, unzip)
                             'force', overwrite, ...
                             'skip_dep', skip_dependencies, ...
                             'use_schema', use_schema, ...
-                            'verbose', verbose);
+                            'verbose', opt.verbosity > 0);
 
     fprintf(1, '\n\n');
   end

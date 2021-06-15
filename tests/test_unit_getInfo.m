@@ -109,3 +109,19 @@ function test_getInfoQueryWithSessionRestriction()
   assertEqual(sessions{1}, opt.query.ses);
 
 end
+
+function test_getInfoError
+
+  subLabel = 'ctrl01';
+
+  opt = setOptions('vismotion', subLabel);
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  opt.query = struct('ses', {{'01', '02'}});
+
+  assertExceptionThrown( ...
+                        @()getInfo(BIDS, subLabel, opt, 'nothing'), ...
+                        'getInfo:unknownRequest');
+
+end

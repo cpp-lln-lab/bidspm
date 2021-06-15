@@ -1,4 +1,4 @@
-function sliceOrder = getSliceOrder(opt, verbose)
+function sliceOrder = getSliceOrder(opt)
   %
   % Get the slice order information from the BIDS metadata or from the ``opt``
   % structure.
@@ -24,10 +24,6 @@ function sliceOrder = getSliceOrder(opt, verbose)
   % See also: ``bidsSTC``
   %
   % (C) Copyright 2020 CPP_SPM developers
-
-  if nargin < 2
-    verbose = false;
-  end
 
   msg = {};
   wng = {};
@@ -61,12 +57,12 @@ function sliceOrder = getSliceOrder(opt, verbose)
 
   end
 
-  if verbose
+  if opt.verbosity
     for iMsg = 1:numel(msg)
-      fprintf(1, msg{iMsg});
+      printToScreen(msg{iMsg});
     end
     for iWng = 1:numel(wng)
-      warning(wng{iWng});
+      errorHandling(mfilename(), 'sliceTimingInfo', wng{iWng}, true, opt.verbosity);
     end
   end
 

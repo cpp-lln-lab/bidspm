@@ -13,6 +13,8 @@ function test_setBatchNormalizationSpatialPreproBasic()
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
+  opt = setOptions('dummy');
+
   opt.orderBatches.coregister = 3;
   opt.orderBatches.segment = 5;
   opt.orderBatches.skullStripping = 6;

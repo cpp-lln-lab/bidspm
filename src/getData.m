@@ -41,7 +41,8 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   end
 
   if isfield(opt, 'taskName')
-    fprintf(1, 'FOR TASK: %s\n', opt.taskName);
+    msg = sprintf('FOR TASK: %s\n', opt.taskName);
+    printToScreen(msg, opt);
   else
     suffix = 'T1w';
   end
@@ -77,8 +78,8 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   % apply to all others.
   opt = getMetaData(BIDS, opt, opt.subjects, suffix);
 
-  fprintf(1, 'WILL WORK ON SUBJECTS\n');
-  disp(opt.subjects);
+  printToScreen('WILL WORK ON SUBJECTS\n', opt);
+  printToScreen(strjoin(opt.subjects), opt);
 
 end
 

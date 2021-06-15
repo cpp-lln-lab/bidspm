@@ -23,13 +23,13 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   [matlabbatch, BIDS, opt, subLabel, funcFWHM] =  deal(varargin{:});
 
-  printBatchName('specify subject level fmri model');
+  printBatchName('specify subject level fmri model', opt);
 
   % Check the slice timing information is not in the metadata and not added
   % manually in the opt variable.
   % Necessary to make sure that the reference slice used for slice time
   % correction is the one we center our model on
-  sliceOrder = getSliceOrder(opt, 0);
+  sliceOrder = getSliceOrder(opt);
 
   if isempty(sliceOrder)
     % no slice order defined here so we fall back on using the number of
@@ -68,9 +68,10 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % If it exists, issue a warning that it has been overwritten
   ffxDir = getFFXdir(subLabel, funcFWHM, opt);
   if exist(ffxDir, 'dir') %
-    warning('overwriting directory: %s \n', ffxDir);
+    msg = sprintf('overwriting directory: %s \n', ffxDir);
+    errorHandling(mfilename(), 'overWritingDir', msg, true, opt.verbosity);
     rmdir(ffxDir, 's');
-    mkdir(ffxDir);
+    spm_mkdir(ffxDir);
   end
   matlabbatch{end}.spm.stats.fmri_spec.dir = {ffxDir};
 

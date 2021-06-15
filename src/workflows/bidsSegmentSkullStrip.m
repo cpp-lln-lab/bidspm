@@ -21,7 +21,7 @@ function bidsSegmentSkullStrip(opt)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = [];
     matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);

@@ -20,7 +20,7 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  printBatchName('create mean anatomical image and mask');
+  printBatchName('create mean anatomical image and mask', opt);
 
   inputAnat = {};
   inputMask = {};
@@ -29,7 +29,7 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     %% Anat
     [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
@@ -65,6 +65,7 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
   meanAnatEquation = [sumEquation, '/', num2str(nbImg)];
 
   matlabbatch = setBatchImageCalculation(matlabbatch, ...
+                                         opt, ...
                                          inputAnat, ...
                                          'meanAnat.nii', ...
                                          outputDir, ...
@@ -80,6 +81,7 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
   meanMaskEquation = [sumEquation, '>0.75*', num2str(nbImg)];
 
   matlabbatch = setBatchImageCalculation(matlabbatch, ...
+                                         opt, ...
                                          inputMask, ...
                                          'meanMask.nii', ...
                                          outputDir, ...

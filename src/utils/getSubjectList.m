@@ -77,14 +77,17 @@ function opt = getSubjectList(BIDS, opt)
 
   % check that all the subjects asked for exist
   if any(~ismember(opt.subjects, allSubjects))
-    fprintf('subjects specified\n');
-    disp(opt.subjects);
-    fprintf('subjects present\n');
-    disp(allSubjects);
+    opt.verbosity = 1;
+    printToScreen('subjects specified: ', opt);
+    printToScreen(strjoin(opt.subjects), opt);
+    printToScreen('\n', opt);
 
-    errorStruct.identifier = 'getSubjectList:noMatchingSubject';
-    errorStruct.message = 'Some of the subjects specified do not exist in this data set.';
-    error(errorStruct);
+    printToScreen('\nsubjects present:', opt);
+    printToScreen(strjoin(allSubjects), opt);
+    printToScreen('\n', opt);
+
+    msg = 'Some of the subjects specified do not exist in this data set.';
+    errorHandling(mfilename(), 'noMatchingSubject', msg, false, opt.verbosity);
   end
 
 end

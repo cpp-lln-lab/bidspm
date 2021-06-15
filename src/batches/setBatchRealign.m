@@ -64,7 +64,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
   end
 
-  printBatchName(msg);
+  printBatchName(msg, opt);
 
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
@@ -92,9 +92,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
       [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, boldFilename);
 
       if size(file, 1) > 1
-        errorStruct.identifier = 'setBatchRealign:tooManyFiles';
-        errorStruct.message = 'This should only get on file.';
-        error(errorStruct);
+        errorHandling(mfilename(), 'tooManyFiles', 'This should only get on file.', false, true);
       end
 
       switch action
@@ -126,7 +124,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
       end
 
-      fprintf(1, ' %s\n', file);
+      printToScreen([' ' file '\n'], opt);
 
       runCounter = runCounter + 1;
     end
