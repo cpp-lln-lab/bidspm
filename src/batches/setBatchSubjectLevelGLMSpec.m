@@ -31,7 +31,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % correction is the one we center our model on
   sliceOrder = getSliceOrder(opt);
 
-  if isempty(sliceOrder)
+  if isempty(sliceOrder) && ~opt.dryRun
     % no slice order defined here so we fall back on using the number of
     % slice in the first bold image to set the number of time bins
     % we will use to upsample our model during regression creation
