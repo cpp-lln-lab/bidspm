@@ -121,7 +121,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.subjects = {[]};
   fieldsToSet.zeropad = 2;
 
-  fieldsToSet.query.modality = {'anat', 'func', 'dwi'};
+  fieldsToSet.query.modality = {'anat', 'func'};
 
   fieldsToSet.anatReference.type = 'T1w';
   fieldsToSet.anatReference.session = '';

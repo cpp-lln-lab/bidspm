@@ -23,7 +23,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.groups = {''};
   expectedOptions.subjects = {[]};
 
-  expectedOptions.query.modality = {'anat', 'func', 'dwi'};
+  expectedOptions.query.modality = {'anat', 'func'};
 
   expectedOptions.space = 'MNI';
 

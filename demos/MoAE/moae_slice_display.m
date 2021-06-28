@@ -39,11 +39,11 @@ layers(2).opacity.label = '| t |';
 
 %% Layer 3 and 4: Contour of ROI
 
-layers(3).color.file = rightRoiFile;
+layers(3).color.file = fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', rightRoiFile);
 layers(3).color.map = [0 0 0];
 layers(3).color.line_width = 2;
 
-layers(4).color.file = leftRoiFile;
+layers(4).color.file = fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', leftRoiFile);
 layers(4).color.map = [1 1 1];
 layers(4).color.line_width = 2;
 
