@@ -20,6 +20,20 @@ function opt = setOptions(task, subLabel)
     opt.result.Steps.Contrasts(1).Name = 'listening';
     opt.result.Steps.Contrasts(2).Name = 'listening_inf_baseline';
 
+  elseif strcmp(task, 'MoAE-preproc')
+
+    opt.dir.derivatives = spm_file(fullfile(thisDir, '..', 'dummyData', 'MoAE', 'derivatives'), ...
+                                   'cpath');
+    opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
+
+    opt.model.file = fullfile(thisDir, ...
+                              '..', '..', 'demos',  'MoAE', 'models', 'model-MoAE_smdl.json');
+
+    opt.taskName = 'auditory';
+
+    opt.result.Steps.Contrasts(1).Name = 'listening';
+    opt.result.Steps.Contrasts(2).Name = 'listening_inf_baseline';
+
   elseif strcmp(task, 'fmriprep')
 
     opt.taskName = 'rest';

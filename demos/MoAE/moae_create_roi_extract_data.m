@@ -16,6 +16,7 @@ saveROI = true;
 
 opt = moae_get_option();
 
+opt.dir.roi = fullfile(opt.dir.derivatives, 'cpp_spm-roi');
 opt.pipeline.type = 'stats';
 opt = checkOptions(opt);
 
@@ -38,15 +39,18 @@ specification  = struct( ...
                         'mask1', maskImage, ...
                         'mask2', sphere);
 
-[~, roiFile] = createRoi('expand', specification, conImage, pwd, saveROI);
+output_dir = fullfile(opt.dir.roi, ['sub-' subLabel], 'roi');
+spm_mkdir(output_dir);
+
+[~, roiFile] = createRoi('expand', specification, conImage, output_dir, saveROI);
 
 % rename mask image
-newname.desc = 'right auditory cortex';
-newname.task = '';
-newname.label = '';
-newname.p = '';
-newname.k = '';
-newname.MC = '';
+newname.entities.desc = 'right auditory cortex';
+newname.entities.task = '';
+newname.entities.label = '';
+newname.entities.p = '';
+newname.entities.k = '';
+newname.entities.MC = '';
 rightRoiFile = renameFile(roiFile, newname);
 
 %% same but with left hemisphere
@@ -56,10 +60,10 @@ specification  = struct( ...
                         'mask1', maskImage, ...
                         'mask2', sphere);
 
-[~, roiFile] = createRoi('expand', specification, conImage, pwd, saveROI);
-newname.desc = 'left auditory cortex';
+[~, roiFile] = createRoi('expand', specification, conImage, output_dir, saveROI);
+newname.entities.desc = 'left auditory cortex';
 leftRoiFile = renameFile(roiFile, newname);
 
 %%
-right_data = spm_summarise(conImage, rightRoiFile);
-left_data = spm_summarise(conImage, leftRoiFile);
+right_data = spm_summarise(conImage, fullfile(output_dir, rightRoiFile));
+left_data = spm_summarise(conImage, fullfile(output_dir, leftRoiFile));
