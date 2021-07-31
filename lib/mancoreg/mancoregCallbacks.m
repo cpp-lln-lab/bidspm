@@ -64,7 +64,7 @@ end
 
 function moveImage()
 
-  global st mancoregvar;
+  global st mancoregvar
 
   angl_pitch = get(mancoregvar.hpitch, 'Value');
   angl_roll = get(mancoregvar.hroll, 'Value');
@@ -96,7 +96,7 @@ end
 
 function toggleOff()
 
-  global st mancoregvar;
+  global st mancoregvar
 
   if get(mancoregvar.htoggle_off, 'value') == 0 % Source is to be displayed
 
@@ -114,7 +114,7 @@ end
 
 function toggleOn()
 
-  global st mancoregvar;
+  global st mancoregvar
 
   if get(mancoregvar.htoggle_on, 'value') == 0 % Source is to be displayed
 
@@ -135,7 +135,7 @@ end
 
 function resetTransformationMatrix()
 
-  global st mancoregvar;
+  global st mancoregvar
 
   set(mancoregvar.hpitch, 'Value', 0);
   set(mancoregvar.hroll, 'Value', 0);
@@ -165,7 +165,7 @@ end
 
 function applyTransformationMatrix()
 
-  global st mancoregvar;
+  global st mancoregvar
 
   angl_pitch = get(mancoregvar.hpitch, 'Value');
   angl_roll = get(mancoregvar.hroll, 'Value');
@@ -218,7 +218,7 @@ end
 
 function plotMat
 
-  global mancoregvar;
+  global mancoregvar
 
   angl_pitch = get(mancoregvar.hpitch, 'Value');
   angl_roll = get(mancoregvar.hroll, 'Value');
