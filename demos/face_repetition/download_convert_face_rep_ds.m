@@ -7,6 +7,12 @@ function download_convert_face_rep_ds()
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  % TODO
+  % recode the lag column so that the identity of each stimulus is captured
+  % in another column and lag can be recomputed
+
+  download = false;
+
   subject = 'sub-01';
   task_name = 'face repetition';
   nb_slices = 24;
@@ -24,22 +30,29 @@ function download_convert_face_rep_ds()
 
   % clean previous runs
   try
-    rmdir(input_dir, 's');
     rmdir(output_dir, 's');
   catch
   end
-  spm_mkdir(fullfile(working_directory, 'inputs'));
   spm_mkdir(output_dir);
 
-  %% Get data
-  fprintf('%-10s:', 'Downloading dataset...');
-  urlwrite(URL, 'face_rep.zip');
-  fprintf(1, ' Done\n\n');
+  if download
+    try
+      rmdir(input_dir, 's');
+    catch
+    end
 
-  fprintf('%-10s:', 'Unzipping dataset...');
-  unzip('face_rep.zip');
-  movefile('face_rep', fullfile(working_directory, 'inputs', 'source'));
-  fprintf(1, ' Done\n\n');
+    spm_mkdir(fullfile(working_directory, 'inputs'));
+
+    %% Get data
+    fprintf('%-10s:', 'Downloading dataset...');
+    urlwrite(URL, 'face_rep.zip');
+    fprintf(1, ' Done\n\n');
+
+    fprintf('%-10s:', 'Unzipping dataset...');
+    unzip('face_rep.zip');
+    movefile('face_rep', fullfile(working_directory, 'inputs', 'source'));
+    fprintf(1, ' Done\n\n');
+  end
 
   %% Create ouput folder structure
   spm_mkdir(output_dir, subject, {'anat', 'func'});
@@ -63,6 +76,7 @@ function download_convert_face_rep_ds()
 
   %% And everything else
   create_events_tsv_file(input_dir, output_dir, task_name, repetition_time);
+  create_events_json(output_dir, task_name, opt);
   create_readme(output_dir);
   create_changelog(output_dir);
   create_datasetdescription(output_dir, opt);
@@ -72,16 +86,20 @@ end
 
 function create_events_tsv_file(input_dir, output_dir, task_name, repetition_time)
 
-  % TODO
-  % add the lag between presentations of each item necessary for the parametric
-  % analysis.
-
   load(fullfile(input_dir, 'all_conditions.mat'), ...
        'names', 'onsets', 'durations');
+
+  load(fullfile(input_dir, 'sots.mat'), ...
+       'itemlag');
+
+  % fill in with zeros as we can't have empty cells in tsv files
+  itemlag{1} = nan(size(onsets{1}))';
+  itemlag{3} = nan(size(onsets{3}))';
 
   onset_column = [];
   duration_column = [];
   trial_type_column = [];
+  lag_column = [];
 
   for iCondition = 1:numel(names)
     onset_column = [onset_column; onsets{iCondition}]; %#ok<*USENS>
@@ -89,23 +107,181 @@ function create_events_tsv_file(input_dir, output_dir, task_name, repetition_tim
     trial_type_column = [trial_type_column; repmat( ...
                                                    names{iCondition}, ...
                                                    size(onsets{iCondition}, 1), 1)];
+    lag_column = [lag_column, itemlag{iCondition}];
+  end
+
+  lag_column = lag_column';
+
+  event_type_column = repmat('show_face', size(onset_column));
+
+  repetition_type_column = {};
+  face_type_column = {};
+
+  for i = 1:size(trial_type_column, 1)
+
+    if strcmp(trial_type_column(i, 2), '1')
+      repetition_type_column{i, 1} = 'first_show';
+    else
+      repetition_type_column{i, 1} = 'delayed_repeat';
+    end
+
+    if strcmp(trial_type_column(i, 1), 'N')
+      face_type_column{i, 1} = 'unfamiliar_face';
+    else
+      face_type_column{i, 1} = 'famous_face';
+    end
+
   end
 
   % sort trials by their presentation time
   [onset_column, idx] = sort(onset_column);
   duration_column = duration_column(idx);
   trial_type_column = trial_type_column(idx, :);
+  lag_column = lag_column(idx, :);
+  repetition_type_column = repetition_type_column(idx, :);
+  face_type_column = face_type_column(idx, :);
 
   onset_column = repetition_time * onset_column;
 
   tsv_content = struct( ...
                        'onset', onset_column, ...
                        'duration', duration_column, ...
-                       'trial_type', {cellstr(trial_type_column)});
+                       'trial_type', {cellstr(trial_type_column)}, ...
+                       'lag', lag_column, ...
+                       'event_type', {cellstr(event_type_column)}, ....
+                       'repetition_type', {cellstr(repetition_type_column)}, ...
+                       'face_type', {cellstr(face_type_column)});
 
-  spm_save(fullfile(output_dir, 'sub-01', 'func', ...
-                    ['sub-01_task-' strrep(task_name, ' ', '') '_events.tsv']), ...
-           tsv_content);
+  bids.util.tsvwrite(fullfile(output_dir, 'sub-01', 'func', ...
+                              ['sub-01_task-' strrep(task_name, ' ', '') '_events.tsv']), ...
+                     tsv_content);
+
+end
+
+function create_events_json(output_dir, task_name, opt)
+
+  onset_desc = ['Onset of the event measured from the beginning ' ...
+                'of the acquisition of the first volume ', ...
+                'in the corresponding task imaging data file.'];
+
+  lag_desc = ['the Lags code, for each second presentation of a face, ', ...
+              'the number of trials intervening between this (repeated) presentation ', ...
+              'and its previous (first) presentation.', ...
+              'A value of 0 means this is the first presentation.'];
+
+  repetition_type_desc = 'Factor indicating whether this image has been already seen.';
+  first_show_desc =  'indicates the first display of this face.';
+  delayed_repeat_desc = 'indicates face was seen X trials ago.';
+
+  face_type_desc = 'Factor indicating type of face image being displayed.';
+  famous_face_desc = 'A face that should be recognized by the participants.';
+  unfamiliar_face_desc = 'A face that should not be recognized by the participants.';
+
+  event_type_HED = struct('show_face', ...
+                          'Sensory-event, Experimental-stimulus, (Def/Face-image, Onset)');
+
+  repetition_type_levels = struct('first_show', first_show_desc, ...
+                                  'delayed_repeat', delayed_repeat_desc);
+  repetition_type_HED = struct('first_show', 'Def/First-show-cond', ...
+                               'delayed_repeat', 'Def/Delayed-repeat-cond');
+
+  face_type_levels = struct( ...
+                            'famous_face', famous_face_desc, ...
+                            'unfamiliar_face', unfamiliar_face_desc);
+  face_type_HED = struct( ...
+                         'famous_face', 'Def/Famous-face-cond', ...
+                         'unfamiliar_face', 'Def/Unfamiliar-face-cond');
+
+  hed_face_image_def =  ['(Definition/Face-image, ', ...
+                         '(Visual, (Foreground-view, ', ...
+                         '((Image, Face, Hair), Color/Grayscale), ', ...
+                         '((White, Cross), (Center-of, Screen))), ', ...
+                         '(Background-view, Black), ', ...
+                         'Description/', ...
+                         'A happy or neutral face in frontal or 3/4 frontal pose ', ...
+                         'with long hair ', ...
+                         'cropped presented as an achromatic foreground image ', ...
+                         'on a black background ', ...
+                         'with a white fixation cross superposed.)', ...
+                         ')'];
+  hed_def_sensory = struct( ...
+                           'Description', 'Dictionary for gathering sensory definitions', ...
+                           'HED', struct('Face_image_def', hed_face_image_def));
+
+  % pattern to use to create condition HED definitions
+  cdt_hed_def = '(Definition/%s, (Condition-variable, Label/%s, %s, Description/%s))';
+  create_def = @(x) sprintf(cdt_hed_def, x.def, x.label, x.tags, x.desc);
+
+  label = 'Face-type';
+
+  famous.def = 'Famous-face-cond';
+  famous.label = label;
+  famous.tags = '(Image, (Face, Famous))';
+  famous.desc = famous_face_desc;
+
+  unfamiliar.def = 'Unfamiliar-face-cond';
+  unfamiliar.label = label;
+  unfamiliar.tags = '(Image, (Face, Unfamiliar))';
+  unfamiliar.desc = unfamiliar_face_desc;
+
+  famous_def = create_def(famous);
+  unfamiliar_def = create_def(unfamiliar);
+
+  label = 'Repetition-type';
+
+  first_show.def = 'First-show-cond';
+  first_show.label = label;
+  first_show.tags = '(First-item, Repetition-number/1)';
+  first_show.desc = first_show_desc;
+
+  delayed_repeat.def = 'Delayed-repeat-cond';
+  delayed_repeat.label = label;
+  delayed_repeat.tags = '(Later-item, Repetition-number/2)';
+  delayed_repeat.desc = delayed_repeat_desc;
+
+  first_show_def = create_def(first_show);
+  delayed_repeat_def = create_def(delayed_repeat);
+
+  hed_def_conds = struct( ...
+                         'Description', ...
+                         'Dictionary for gathering experimental condition definitions', ...
+                         'HED', struct( ...
+                                       'Famous_face_cond_def', famous_def, ...
+                                       'Unfamiliar_face_cond_def', unfamiliar_def, ...
+                                       'First_show_cond_def', first_show_def, ...
+                                       'Delayed_repeat_cond_def', delayed_repeat_def));
+
+  content = struct( ...
+                   'onset', struct('Description', onset_desc), ...
+                   'duration', struct('Description', ...
+                                      'Duration of the event (measured from onset).', ...
+                                      'units', 'seconds'), ...
+                   'trial_type', struct('Description', ...
+                                        ['Primary categorisation of each trial to identify', ...
+                                         ' them as instances of the experimental conditions.']), ...
+                   'lag', struct('Description', lag_desc), ...
+                   'event_type', struct('LongName', 'Event category', ...
+                                        'Description', 'The main category of the event.', ...
+                                        'Levels', struct('show_face', ...
+                                                         ['Display a face to mark', ...
+                                                          ' end of pre-stimulus and' ...
+                                                          ' start of blink-inhibition.']), ...
+                                        'HED', event_type_HED), ...
+                   'repetition_type', struct( ...
+                                             'Description', repetition_type_desc, ...
+                                             'Levels', repetition_type_levels, ...
+                                             'HED',  repetition_type_HED), ...
+                   'face_type', struct( ...
+                                       'Description', face_type_desc, ...
+                                       'Levels', face_type_levels, ...
+                                       'HED',  face_type_HED), ...
+                   'hed_def_sensory', hed_def_sensory, ...
+                   'hed_def_conds', hed_def_conds ...
+                  );
+
+  spm_save(fullfile(output_dir, ['task-', strrep(task_name, ' ', ''), '_events.json']), ...
+           content, ...
+           opt);
 
 end
 
@@ -149,7 +325,7 @@ function create_readme(output_dir)
          '- 2x2 factorial event-related fMRI'
          '- One session (one subject)'
          '- (Famous vs. Nonfamous) x (1st vs 2nd presentation) of faces '
-         '  against baseline of chequerboard'
+         '  against baseline of checkerboard'
          '- 2 presentations of 26 Famous and 26 Nonfamous Greyscale photographs, '
          '  for 0.5s, randomly intermixed, for fame judgment task '
          '  (one of two right finger key presses).'
