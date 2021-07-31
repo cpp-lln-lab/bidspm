@@ -7,27 +7,67 @@
    "Steps": [
       {
          "Level": "subject",
-         "Transformations": [
-            {
-               "Name": "Factor",
-               "Inputs": [
-                  "trial_type"
-               ]
-            },
-            {
-               "Name": "Convolve",
-               "Model": "spm",
-               "Inputs": [
-                  " "
-               ]
-            }
-         ],
+         "Transformations": {
+            "Transformer": "cpp_spm",
+            "Instructions": [
+               {
+                  "Name": "AND",
+                  "Input": [
+                     "face_type==famous",
+                     "repetition_type==1"
+                  ],
+                  "Output": [
+                     "famous_1"
+                  ]
+               },
+               {
+                  "Name": "AND",
+                  "Input": [
+                     "face_type==famous",
+                     "repetition_type==2"
+                  ],
+                  "Output": [
+                     "famous_2"
+                  ]
+               },
+               {
+                  "Name": "AND",
+                  "Input": [
+                     "face_type==unfamiliar",
+                     "repetition_type==famous"
+                  ],
+                  "Output": [
+                     "unfamiliar_1"
+                  ]
+               },
+               {
+                  "Name": "AND",
+                  "Input": [
+                     "face_type==unfamiliar",
+                     "repetition_type==2"
+                  ],
+                  "Output": [
+                     "unfamiliar_2"
+                  ]
+               },
+               {
+                  "Name": "Convolve",
+                  "Model": "spm",
+                  "Input": [
+                     "famous_1",
+                     "unfamiliar_1",
+                     "famous_2",
+                     "unfamiliar_2"
+                  ]
+               }
+            ]
+         },
          "Model": {
             "X": [
-               "trial_type.F1",
-               "trial_type.F2",
-               "trial_type.N1",
-               "trial_type.N2",
+               "famous_1",
+               "unfamiliar_1",
+               "famous_2",
+               "unfamiliar_2",
                "trans_x",
                "trans_y",
                "trans_z",
@@ -46,19 +86,19 @@
             "Mask": " "
          },
          "AutoContrasts": [
-            "trial_type.F1",
-            "trial_type.F2",
-            "trial_type.N1",
-            "trial_type.N2"
+            "famous_1",
+            "unfamiliar_1",
+            "famous_2",
+            "unfamiliar_2"
          ],
          "Contrasts": [
             {
                "Name": "faces_gt_baseline",
                "ConditionList": [
-                  "trial_type.F1",
-                  "trial_type.F2",
-                  "trial_type.N1",
-                  "trial_type.N2"
+                  "famous_1",
+                  "unfamiliar_1",
+                  "famous_2",
+                  "unfamiliar_2"
                ],
                "weights": [
                   1,

@@ -2,6 +2,8 @@ function download_convert_face_rep_ds()
   %
   % downloads the face repetition dataset from SPM and convert it to BIDS
   %
+  % requires BIDS matlab
+  %
   % Adapted from its counterpart for MoAE
   % <https://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAE_convert2bids.m>
   %
@@ -114,21 +116,21 @@ function create_events_tsv_file(input_dir, output_dir, task_name, repetition_tim
 
   event_type_column = repmat('show_face', size(onset_column));
 
-  repetition_type_column = {};
+  repetition_type_column = [];
   face_type_column = {};
 
   for i = 1:size(trial_type_column, 1)
 
     if strcmp(trial_type_column(i, 2), '1')
-      repetition_type_column{i, 1} = 'first_show';
+      repetition_type_column(i, 1) = 1;
     else
-      repetition_type_column{i, 1} = 'delayed_repeat';
+      repetition_type_column(i, 1) = 2;
     end
 
     if strcmp(trial_type_column(i, 1), 'N')
-      face_type_column{i, 1} = 'unfamiliar_face';
+      face_type_column{i, 1} = 'unfamiliar';
     else
-      face_type_column{i, 1} = 'famous_face';
+      face_type_column{i, 1} = 'famous';
     end
 
   end
@@ -149,7 +151,7 @@ function create_events_tsv_file(input_dir, output_dir, task_name, repetition_tim
                        'trial_type', {cellstr(trial_type_column)}, ...
                        'lag', lag_column, ...
                        'event_type', {cellstr(event_type_column)}, ....
-                       'repetition_type', {cellstr(repetition_type_column)}, ...
+                       'repetition_type', repetition_type_column, ...
                        'face_type', {cellstr(face_type_column)});
 
   bids.util.tsvwrite(fullfile(output_dir, 'sub-01', 'func', ...
