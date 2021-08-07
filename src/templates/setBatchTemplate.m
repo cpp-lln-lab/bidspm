@@ -1,10 +1,10 @@
-function matlabbatch = setBatchTemplate(matlabbatch, BIDS, opt, subID, info, varargin)
+function matlabbatch = setBatchTemplate(matlabbatch, BIDS, opt, subID)
   %
   % template to creae new setBatch functions
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchTemplate(matlabbatch, BIDS, opt, subID, info, varargin)
+  %   matlabbatch = setBatchTemplate(matlabbatch, BIDS, opt, subID)
   %
   % :param matlabbatch:
   % :type matlabbatch:
@@ -18,6 +18,5 @@ function matlabbatch = setBatchTemplate(matlabbatch, BIDS, opt, subID, info, var
   matlabbatch{end + 1}.spm.something = BIDS;
   matlabbatch{end}.spm.else = opt;
   matlabbatch{end}.spm.other = subID;
-  matlabbatch{end}.spm.thing = info;
 
 end

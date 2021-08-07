@@ -1,12 +1,9 @@
-
 % Panel can incorporate an existing axis.
 %
 % (a) Create the root panel.
 % (b) Create an axis yourself.
 % (c) Pack an automatically created axis, and your own axis,
 %       into the root panel.
-
-
 
 %% (a)
 
@@ -19,10 +16,8 @@ p.pack('h', {95 []});
 h_axis = p(1).select();
 
 % and, hell, an image too
-[X,Y,Z] = peaks(50);
-surfc(X,Y,Z);
-
-
+[X, Y, Z] = peaks(50);
+surfc(X, Y, Z);
 
 %% (b)
 
@@ -31,12 +26,7 @@ surfc(X,Y,Z);
 % colorbar...
 h_colorbar_axis = colorbar('peer', h_axis);
 
-
-
 %% (c)
 
 % panel can manage the layout of these too
 p(2).select(h_colorbar_axis);
-
-
-

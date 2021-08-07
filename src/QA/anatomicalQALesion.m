@@ -1,6 +1,7 @@
-function anatomicalQA(opt)
+function anatomicalQALesion(opt)
   %
   % Computes several metrics for anatomical image.
+  %   Modify this version for ALI toolbox TO DO
   %
   % USAGE::
   %
@@ -28,11 +29,11 @@ function anatomicalQA(opt)
 
   parfor iSub = 1:numel(opt.subjects)
 
-    subLabel = opt.subjects{iSub}; %#ok<*PFBNS>
+    subID = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subID);
 
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
 
     % get grey and white matter tissue probability maps
     TPMs = validationInputFile(anatDataDir, anatImage, 'c[12]');
