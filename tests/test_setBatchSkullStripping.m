@@ -18,7 +18,7 @@ function test_setBatchSkullStrippingBasic()
 
   opt.orderBatches.segment = 2;
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch = returnExpectedBatch(opt);
@@ -89,6 +89,8 @@ function expectedBatch = returnExpectedBatch(opt)
                                                           'i1.*((i2+i3+i4)>%f)', ...
                                                           opt.skullstrip.threshold);
 
+  expectedBatch{end}.spm.util.imcalc.options.dtype = 4;
+
   % add a batch to output the mask
   expectedBatch{end + 1} = expectedBatch{end};
   expectedBatch{end}.spm.util.imcalc.expression = sprintf( ...
@@ -98,5 +100,6 @@ function expectedBatch = returnExpectedBatch(opt)
                                                           expectedFileName, ...
                                                           '.nii', ...
                                                           '_mask.nii')];
+  expectedBatch{end}.spm.util.imcalc.options.dtype = 4;
 
 end
