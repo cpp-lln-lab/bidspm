@@ -56,15 +56,16 @@ function opt = checkOptions(opt)
   %         if you know the order in which slices were acquired, you should be able to recompute
   %         slice timing and add it to the json files in your BIDS data set.
   %     -  ``opt.glm.roibased.do``
-  %     -  ``opt.QA.func.carpetPlot = true` to plot carpet plot when running ``functionaQA``
+  %     -  ``opt.QA.func.carpetPlot = true`` to plot carpet plot when running ``functionaQA``
   %     -  ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
   %         in ``functionaQA``
-  %     -  ``opt.QA.func.MotionParameters = 'on'`
-  %     -  ``opt.QA.func.FramewiseDisplacement = 'on'`
-  %     -  ``opt.QA.func.Voltera = 'on'`
-  %     -  ``opt.QA.func.Globals = 'on'`
-  %     -  ``opt.QA.func.Movie = 'on'`
-  %     -  ``opt.QA.func.Basics = 'on'`
+  %     -  ``opt.QA.func.MotionParameters = 'on'``
+  %     -  ``opt.QA.func.FramewiseDisplacement = 'on'``
+  %     -  ``opt.QA.func.Voltera = 'on'``
+  %     -  ``opt.QA.func.Globals = 'on'``
+  %     -  ``opt.QA.func.Movie = 'on'`` ; set it to ``off`` to skip generating movies
+  %         of the time series
+  %     -  ``opt.QA.func.Basics = 'on'``
   %     -  ``opt.QA.glm.do = true`` - If set to ``true`` the residual images of a
   %         GLM at the subject levels will be used to estimate if there is any remaining structure
   %         in the GLM residuals (the power spectra are not flat) that could indicate
