@@ -39,12 +39,6 @@ function matlabbatch = setBatchImageCalculation(varargin)
 
   printBatchName('image calculation');
 
-  [matlabbatch, input, output, outDir, expression, dataType] = deal(varargin{:});
-
-  if isempty(dataType)
-    dataType = 'int16';
-  end
-
   allowedDataType = {'uint8', ...
                      'int16', ...
                      'int32', ...
@@ -54,21 +48,38 @@ function matlabbatch = setBatchImageCalculation(varargin)
                      'uint16', ...
                      'uint32'};
 
-  if ~ismember(dataType, allowedDataType)
+  defaultDataType = 'int16';
+
+  p = inputParser;
+
+  addRequired(p, 'matlabbatch', @iscell);
+  addRequired(p, 'input');
+  addRequired(p, 'output', @ischar);
+  addRequired(p, 'outDir', @ischar);
+  addRequired(p, 'expression', @ischar);
+  addOptional(p, 'dataType', defaultDataType, @ischar);
+
+  parse(p, varargin{:});
+
+  if ~ismember(p.Results.dataType, allowedDataType)
     fprintf(1, '\t%s\n', string(allowedDataType));
-    error('dataType must be one of the type mentionned above.');
+    errorStruct.identifier = [mfilename ':invalidDatatype'];
+    errorStruct.message = 'dataType must be one of the type mentionned above.';
+    error(errorStruct);
   end
 
-  matlabbatch{end + 1}.spm.util.imcalc.input = input;
-  matlabbatch{end}.spm.util.imcalc.output = output;
-  matlabbatch{end}.spm.util.imcalc.outdir = { outDir };
-  matlabbatch{end}.spm.util.imcalc.expression = expression;
-  matlabbatch{end}.spm.util.imcalc.options.dtype = spm_type(dataType);
+  imcalc.input = p.Results.input;
+  imcalc.output = p.Results.output;
+  imcalc.outdir = { p.Results.outDir };
+  imcalc.expression = p.Results.expression;
+  imcalc.options.dtype = spm_type(p.Results.dataType);
 
-  % matlabbatch{1}.spm.util.imcalc.var = struct('name', {}, 'value', {});
-  % matlabbatch{1}.spm.util.imcalc.options.dmtx = 0;
-  % matlabbatch{1}.spm.util.imcalc.options.mask = 0;
-  % matlabbatch{1}.spm.util.imcalc.options.interp = 1;
-  % matlabbatch{1}.spm.util.imcalc.options.dtype = 4;
+  % imcalc.var = struct('name', {}, 'value', {});
+  % imcalc.options.dmtx = 0;
+  % imcalc.options.mask = 0;
+  % imcalc.options.interp = 1;
+
+  matlabbatch = p.Results.matlabbatch;
+  matlabbatch{end + 1}.spm.util.imcalc = imcalc;
 
 end
