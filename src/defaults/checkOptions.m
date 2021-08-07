@@ -56,7 +56,16 @@ function opt = checkOptions(opt)
   %         if you know the order in which slices were acquired, you should be able to recompute
   %         slice timing and add it to the json files in your BIDS data set.
   %     -  ``opt.glm.roibased.do``
-  %     -  ``opt.glm.QA.do = true`` - If set to ``true`` the residual images of a
+  %     -  ``opt.QA.func.carpetPlot = true` to plot carpet plot when running ``functionaQA``
+  %     -  ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
+  %         in ``functionaQA``
+  %     -  ``opt.QA.func.MotionParameters = 'on'`
+  %     -  ``opt.QA.func.FramewiseDisplacement = 'on'`
+  %     -  ``opt.QA.func.Voltera = 'on'`
+  %     -  ``opt.QA.func.Globals = 'on'`
+  %     -  ``opt.QA.func.Movie = 'on'`
+  %     -  ``opt.QA.func.Basics = 'on'`
+  %     -  ``opt.QA.glm.do = true`` - If set to ``true`` the residual images of a
   %         GLM at the subject levels will be used to estimate if there is any remaining structure
   %         in the GLM residuals (the power spectra are not flat) that could indicate
   %         the subject level results are likely confounded (see
@@ -132,7 +141,15 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.model.hrfDerivatives = [0 0];
   fieldsToSet.contrastList = {};
 
-  fieldsToSet.glm.QA.do = true;
+  fieldsToSet.QA.glm.do = true;
+  fieldsToSet.QA.func.carpetPlot = true;
+  fieldsToSet.QA.func.Motion = 'on';
+  fieldsToSet.QA.func.FD = 'on';
+  fieldsToSet.QA.func.Voltera = 'on';
+  fieldsToSet.QA.func.Globals = 'on';
+  fieldsToSet.QA.func.Movie = 'on';
+  fieldsToSet.QA.func.Basics = 'on';
+
   fieldsToSet.glm.roibased.do = false;
 
   % specify the results to compute

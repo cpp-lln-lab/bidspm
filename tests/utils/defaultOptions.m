@@ -34,7 +34,15 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.contrastList = {};
 
-  expectedOptions.glm.QA.do = true;
+  expectedOptions.QA.glm.do = true;
+  expectedOptions.QA.func.carpetPlot = true;
+  expectedOptions.QA.func.Motion = 'on';
+  expectedOptions.QA.func.FD = 'on';
+  expectedOptions.QA.func.Voltera = 'on';
+  expectedOptions.QA.func.Globals = 'on';
+  expectedOptions.QA.func.Movie = 'on';
+  expectedOptions.QA.func.Basics = 'on';
+
   expectedOptions.glm.roibased.do = false;
 
   expectedOptions.model.file = '';
