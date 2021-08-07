@@ -22,14 +22,18 @@ function opt = setDirectories(opt)
 
   opt.dir.derivatives = setDerivativesDir(opt.dir.derivatives);
 
-  switch opt.pipeline.type
-    case 'preproc'
-      opt.dir.preproc = fullfile(opt.dir.derivatives, opt.pipeline.name);
-      opt.dir.jobs = setJobsDir(opt, opt.dir.preproc);
-    case 'stats'
-      opt.dir.stats = fullfile(opt.dir.derivatives, opt.pipeline.name);
-      opt.dir.jobs = setJobsDir(opt, opt.dir.stats);
+  if endsWith(opt.dir.(opt.pipeline.type), opt.pipeline.type) || ...
+      endsWith(opt.pipeline.name, opt.pipeline.type)
+  elseif ~strcmp(opt.pipeline.name, opt.pipeline.type)
+    tmp = fullfile(opt.dir.derivatives, [opt.pipeline.name '-' opt.pipeline.type]);
+    opt.dir.(opt.pipeline.type) = tmp;
   end
+
+  if isempty(opt.dir.(opt.pipeline.type))
+    opt.dir.(opt.pipeline.type) = fullfile(opt.dir.derivatives, opt.pipeline.name);
+  end
+
+  opt.dir.jobs = setJobsDir(opt, opt.dir.(opt.pipeline.type));
 
 end
 

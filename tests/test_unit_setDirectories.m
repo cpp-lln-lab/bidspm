@@ -8,6 +8,52 @@ function test_suite = test_unit_setDirectories %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setDirectories_stats()
+
+  %% fmri stats
+  opt.pipeline.type = 'stats';
+  opt.dir.raw = fullfile(pwd, 'raw');
+  opt.dir.preproc = fullfile(pwd, 'derivatives', 'cpp_spm-preproc');
+
+  %
+  opt = checkOptions(opt);
+
+  %
+  expected = defaultOptions();
+
+  expected.dir.raw = fullfile(pwd, 'raw');
+  expected.dir.input = expected.dir.raw;
+  expected.dir.derivatives = fullfile(pwd, 'derivatives');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
+  expected.dir.stats = fullfile(expected.dir.derivatives, 'cpp_spm-stats');
+  expected.dir.jobs = fullfile(expected.dir.stats, 'jobs');
+
+  assertEqual(opt.dir, expected.dir);
+
+end
+
+function test_setDirectories_copyRaw2Preproc_Named()
+
+  %%
+  opt.dir.raw = pwd;
+  opt.pipeline.name = 'preproc';
+
+  %
+  opt = checkOptions(opt);
+
+  %
+  expected = defaultOptions();
+
+  expected.dir.raw =  pwd;
+  expected.dir.input = expected.dir.raw;
+  expected.dir.derivatives = spm_file(fullfile(expected.dir.raw, '..', 'derivatives'), 'cpath');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'preproc');
+  expected.dir.jobs = fullfile(expected.dir.preproc, 'jobs');
+
+  assertEqual(opt.dir, expected.dir);
+
+end
+
 function test_setDirectories_inputsOutputs()
 
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
@@ -22,7 +68,7 @@ function test_setDirectories_inputsOutputs()
   expected.dir.raw = fullfile(baseDir, 'inputs', 'raw');
   expected.dir.input = expected.dir.raw;
   expected.dir.derivatives = fullfile(baseDir, 'outputs', 'derivatives');
-  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
   expected.dir.jobs = fullfile(expected.dir.preproc, 'jobs');
 
   assertEqual(opt.dir, expected.dir);
@@ -45,7 +91,7 @@ function test_setDirectories_local()
   baseDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives');
   expected.dir.input = fullfile(baseDir, 'fmriprep');
   expected.dir.derivatives = baseDir;
-  expected.dir.preproc = fullfile(baseDir, 'copy');
+  expected.dir.preproc = fullfile(baseDir, 'copy-preproc');
   expected.dir.jobs = fullfile(expected.dir.preproc, 'jobs');
 
   assertEqual(opt.dir, expected.dir);
@@ -87,29 +133,7 @@ function test_setDirectories_copyRaw2Preproc()
   expected.dir.raw =  pwd;
   expected.dir.input = expected.dir.raw;
   expected.dir.derivatives = spm_file(fullfile(expected.dir.raw, '..', 'derivatives'), 'cpath');
-  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm');
-  expected.dir.jobs = fullfile(expected.dir.preproc, 'jobs');
-
-  assertEqual(opt.dir, expected.dir);
-
-end
-
-function test_setDirectories_copyRaw2Preproc_Named()
-
-  %%
-  opt.dir.raw = pwd;
-  opt.pipeline.name = 'preproc';
-
-  %
-  opt = checkOptions(opt);
-
-  %
-  expected = defaultOptions();
-
-  expected.dir.raw =  pwd;
-  expected.dir.input = expected.dir.raw;
-  expected.dir.derivatives = spm_file(fullfile(expected.dir.raw, '..', 'derivatives'), 'cpath');
-  expected.dir.preproc = fullfile(expected.dir.derivatives, 'preproc');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
   expected.dir.jobs = fullfile(expected.dir.preproc, 'jobs');
 
   assertEqual(opt.dir, expected.dir);
@@ -128,7 +152,7 @@ function test_setDirectories_copyfMRIprep2Preproc()
 
   expected.dir.input = pwd;
   expected.dir.derivatives = spm_file(fullfile(expected.dir.input, '..', 'derivatives'), 'cpath');
-  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
   expected.dir.jobs = fullfile(expected.dir.preproc, 'jobs');
 
   assertEqual(opt.dir, expected.dir);
@@ -148,32 +172,8 @@ function test_setDirectories_preproc()
   expected = defaultOptions();
 
   expected.dir.derivatives = spm_file(fullfile(pwd, '..', 'derivatives'), 'cpath');
-  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm');
-  expected.dir.jobs = fullfile(expected.dir.preproc, 'jobs', 'testTask');
-
-  assertEqual(opt.dir, expected.dir);
-
-end
-
-function test_setDirectories_stats()
-
-  %% fmri stats
-  opt.pipeline.type = 'stats';
-  opt.dir.raw = fullfile(pwd, 'raw');
-  opt.dir.preproc = fullfile(pwd, 'derivatives', 'cpp_spm-preproc');
-
-  %
-  opt = checkOptions(opt);
-
-  %
-  expected = defaultOptions();
-
-  expected.dir.raw = fullfile(pwd, 'raw');
-  expected.dir.input = expected.dir.raw;
-  expected.dir.derivatives = fullfile(pwd, 'derivatives');
   expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
-  expected.dir.stats = fullfile(expected.dir.derivatives, 'cpp_spm-stats');
-  expected.dir.jobs = fullfile(expected.dir.stats, 'jobs');
+  expected.dir.jobs = fullfile(expected.dir.preproc, 'jobs', 'testTask');
 
   assertEqual(opt.dir, expected.dir);
 
