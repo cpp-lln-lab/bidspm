@@ -1,10 +1,10 @@
-function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
+function matlabbatch = setBatchSTC(varargin)
   %
   % Creates batch for slice timing correction
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subID)
+  %   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
   %
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
@@ -29,6 +29,24 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
   % to do the slice timing correction
   %
   % (C) Copyright 2019 CPP_SPM developers
+
+  p = inputParser;
+
+  addRequired(p, 'matlabbatch', @iscell);
+  addRequired(p, 'BIDS', @isstruct);
+  addRequired(p, 'opt', @isstruct);
+  addRequired(p, 'subLabel', @ischar);
+
+  parse(p, varargin{:});
+
+  matlabbatch = p.Results.matlabbatch;
+  BIDS = p.Results.BIDS;
+  opt = p.Results.opt;
+  subLabel = p.Results.subLabel;
+
+  if opt.stc.skip
+    return
+  end
 
   % get slice order
   sliceOrder = getSliceOrder(opt, 1);
@@ -55,10 +73,10 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
 
   maxSliceTime = max(sliceOrder);
   minSliceTime = min(sliceOrder);
-  if isempty(opt.STC_referenceSlice)
+  if isempty(opt.stc.referenceSlice)
     referenceSlice = (maxSliceTime - minSliceTime) / 2;
   else
-    referenceSlice = opt.STC_referenceSlice;
+    referenceSlice = opt.stc.referenceSlice;
   end
   if TA >= TR || referenceSlice > TA || any(sliceOrder > TA)
 
@@ -80,11 +98,11 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
     error(errorStruct);
   end
 
-  matlabbatch{end + 1}.spm.temporal.st.nslices = nbSlices;
-  matlabbatch{end}.spm.temporal.st.tr = TR;
-  matlabbatch{end}.spm.temporal.st.ta = TA;
-  matlabbatch{end}.spm.temporal.st.so = sliceOrder * 1000;
-  matlabbatch{end}.spm.temporal.st.refslice = referenceSlice * 1000;
+  temporal.st.nslices = nbSlices;
+  temporal.st.tr = TR;
+  temporal.st.ta = TA;
+  temporal.st.so = sliceOrder * 1000;
+  temporal.st.refslice = referenceSlice * 1000;
 
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
@@ -106,7 +124,7 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
       file = validationInputFile(subFuncDataDir, fileName);
 
       % add the file to the list
-      matlabbatch{end}.spm.temporal.st.scans{runCounter} = {file};
+      temporal.st.scans{runCounter} = {file};
 
       runCounter = runCounter + 1;
 
@@ -115,6 +133,8 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
     end
 
   end
+
+  matlabbatch{end + 1}.spm.temporal = temporal;
 
   % The following lines are commented out because those parameters
   % can be set in the spm_my_defaults.m

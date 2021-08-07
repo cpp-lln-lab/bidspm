@@ -51,11 +51,11 @@ end
 function test_getSliceOrderFromOptions()
 
   opt = setOptions('vislocalizer');
-  opt.STC_referenceSlice = 1000;
-  opt.sliceOrder = 0:250:2000;
+  opt.stc.referenceSlice = 1000;
+  opt.stc.sliceOrder = 0:250:2000;
 
   [~, opt] = getData(opt);
   BIDS_sliceOrder = getSliceOrder(opt, 0);
-  assert(isequal(BIDS_sliceOrder, opt.sliceOrder));
+  assert(isequal(BIDS_sliceOrder, opt.stc.sliceOrder));
 
 end
