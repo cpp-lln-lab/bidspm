@@ -1,0 +1,7 @@
+participant_id	Sex	Group	Age	Educational level	Smoker	Medication	Handedness
+sub-01	1	n/a 	66	14	0	1	30
+sub-02	0	blind	28	16	1	0	12
+sub-ctrl01	1	ctrl	61	16	0	0	18
+sub-ctrl02	1	ctrl	45	16	0	0	18
+sub-blind01	1	blind	12	16	0	0	18
+sub-blind02	0	blind	61	16	0	0	18
