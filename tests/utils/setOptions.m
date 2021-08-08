@@ -24,6 +24,7 @@ function opt = setOptions(task, subLabel)
 
     opt.dir.derivatives = spm_file(fullfile(thisDir, '..', 'dummyData', 'MoAE', 'derivatives'), ...
                                    'cpath');
+    opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
     opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
 
     opt.model.file = fullfile(thisDir, ...
@@ -44,7 +45,7 @@ function opt = setOptions(task, subLabel)
 
     opt.taskName = task;
     opt.dir.derivatives = spm_file(fullfile(thisDir, '..', 'dummyData', 'derivatives'), 'cpath');
-    opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm');
+    opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
     opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
     opt.model.file = fullfile(thisDir, '..', 'dummyData',  'models', ...
                               ['model-' task '_smdl.json']);

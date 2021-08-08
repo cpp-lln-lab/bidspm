@@ -47,8 +47,6 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
     suffix = 'T1w';
   end
 
-  opt.useBidsSchema = true;
-
   description_file = validationInputFile(BIDSdir, 'dataset_description.json');
   description = spm_jsonread(description_file);
   if isfield(description, 'PipelineDescription') && ...

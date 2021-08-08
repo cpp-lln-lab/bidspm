@@ -83,9 +83,8 @@ function opt = checkOptions(opt)
 
   checkFields(opt);
 
-  if strcmp(opt.pipeline.type, 'stats') && ...
-          any(strcmp(opt.pipeline.name, {'cpp_spm', 'cpp_spm-preproc'}))
-    opt.pipeline.name = 'cpp_spm-stats';
+  if any(strcmp(opt.pipeline.name, {'cpp_spm-stats', 'cpp_spm-preproc'}))
+    opt.pipeline.name = 'cpp_spm';
   end
 
   if ~iscell(opt.query.modality)
@@ -110,12 +109,15 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.pipeline.type = 'preproc';
   fieldsToSet.pipeline.name = 'cpp_spm';
 
+  fieldsToSet.useBidsSchema = true;
+
   fieldsToSet.dir = struct('input', '', ...
                            'output', '', ...
                            'derivatives', '', ...
                            'raw', '', ...
                            'preproc', '', ...
-                           'stats', '');
+                           'stats', '', ...
+                           'jobs', '');
 
   fieldsToSet.groups = {''};
   fieldsToSet.subjects = {[]};

@@ -1,4 +1,4 @@
-function bidsSmoothing(funcFWHM, opt)
+function bidsSmoothing(opt, funcFWHM)
   %
   % This performs smoothing to the functional data using a full width
   % half maximum smoothing kernel of size "mm_smoothing".

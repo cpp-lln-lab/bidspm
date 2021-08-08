@@ -14,11 +14,12 @@ function test_bidsSmoothingBasic()
 
   opt = setOptions('MoAE-preproc');
 
+  opt.dir.input = opt.dir.preproc;
   opt.pipeline.type = 'preproc';
-  opt.pipeline.name = 'cpp_spm-preproc';
+  opt.pipeline.name = 'cpp_spm';
 
   opt = checkOptions(opt);
 
-  bidsSmoothing(FWHM, opt);
+  bidsSmoothing(opt, FWHM);
 
 end

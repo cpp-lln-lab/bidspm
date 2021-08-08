@@ -126,8 +126,9 @@ function opt = setJobsDir(opt, targetDir)
     if isfield(opt, 'taskName')
       jobDir = fullfile(targetDir, 'jobs', opt.taskName);
     end
+    opt.dir.jobs = jobDir;
   end
-  opt.dir.jobs = spm_file(jobDir, 'cpath');
+  opt.dir.jobs = spm_file(opt.dir.jobs, 'cpath');
 
 end
 

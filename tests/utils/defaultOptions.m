@@ -8,6 +8,8 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.pipeline.type =  'preproc';
   expectedOptions.pipeline.name = 'cpp_spm';
 
+  expectedOptions.useBidsSchema = true;
+
   expectedOptions.sliceOrder = [];
   expectedOptions.STC_referenceSlice = [];
 
@@ -16,7 +18,8 @@ function expectedOptions = defaultOptions(taskName)
                                'derivatives', '', ...
                                'raw', '', ...
                                'preproc', '', ...
-                               'stats', '');
+                               'stats', '', ...
+                               'jobs', '');
 
   expectedOptions.funcVoxelDims = [];
 

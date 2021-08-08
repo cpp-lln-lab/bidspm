@@ -21,12 +21,7 @@ function test_getRealignParamFileBasic()
   [boldFileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, session, run, opt);
   realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, boldFileName));
 
-  expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
-                              'dummyData', 'derivatives', 'cpp_spm', 'sub-01', ...
-                              'ses-01', 'func', ...
-                              'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
-
-  assertEqual(expectedFileName, realignParamFile);
+  assertEqual(realignParamFile, getExpectedFileName());
 
 end
 
@@ -44,12 +39,7 @@ function test_getRealignParamFileNativeSpace()
   [boldFileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, session, run, opt);
   realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, boldFileName));
 
-  expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
-                              'dummyData', 'derivatives', 'cpp_spm', 'sub-01', ...
-                              'ses-01', 'func', ...
-                              'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
-
-  assertEqual(expectedFileName, realignParamFile);
+  assertEqual(realignParamFile, getExpectedFileName());
 
 end
 
@@ -68,11 +58,13 @@ function test_getRealignParamFileFFX()
   [subFuncDataDir, boldFileName, ext] = spm_fileparts(boldFileName);
   realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, [boldFileName, ext]), prefix);
 
+  assertEqual(realignParamFile, getExpectedFileName());
+
+end
+
+function  expectedFileName = getExpectedFileName()
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
-                              'dummyData', 'derivatives', 'cpp_spm', 'sub-01', ...
+                              'dummyData', 'derivatives', 'cpp_spm-preproc', 'sub-01', ...
                               'ses-01', 'func', ...
                               'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
-
-  assertEqual(expectedFileName, realignParamFile);
-
 end
