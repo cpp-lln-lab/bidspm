@@ -23,7 +23,9 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
     p.use_schema = false;
     newName = spm_file(unwarpParam(iFile, :), 'filename',  bids.create_filename(p));
 
-    movefile(unwarpParam(iFile, :), newName);
+    if ~isempty(unwarpParam(iFile, :))
+      movefile(unwarpParam(iFile, :), newName);
+    end
 
   end
 

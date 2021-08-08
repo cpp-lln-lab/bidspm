@@ -21,6 +21,8 @@ function renameSegmentParameter(BIDS, subLabel, opt)
   p.ext = '.mat';
   newName = spm_file(segmentParam, 'filename',  bids.create_filename(p));
 
-  movefile(segmentParam, newName);
+  if ~isempty(segmentParam)
+    movefile(segmentParam, newName);
+  end
 
 end
