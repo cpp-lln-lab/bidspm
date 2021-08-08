@@ -27,7 +27,7 @@ function opt = setInputDir(opt)
   if isempty(inputDir)
     if ~isempty(opt.dir.raw) && strcmp(opt.pipeline.type, 'preproc')
       inputDir = fullfile(opt.dir.raw);
-    elseif ~isempty(opt.dir.preproc) && strcmp(opt.pipeline.type, 'stats')
+    elseif ~isempty(opt.dir.preproc)
       inputDir = fullfile(opt.dir.preproc);
     end
   end

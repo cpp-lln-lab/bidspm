@@ -16,7 +16,7 @@ function test_setBatchCreateVDMsBasic()
 
   opt.query.acq = '';
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.input);
 
   matlabbatch = [];
   matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel);

@@ -21,7 +21,7 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('coregister fieldmaps data to functional');
+  printBatchName('coregister fieldmaps data to functional', opt);
 
   % Use a rough mean of the 1rst run to improve SNR for coregistration
   % created by spmup
@@ -56,7 +56,7 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
         filter.suffix = 'magnitude1';
         srcImage = bids.query(BIDS, 'data', filter);
 
-        matlabbatch = setBatchCoregistration(matlabbatch, refImage, srcImage{1}, otherImages);
+        matlabbatch = setBatchCoregistration(matlabbatch, opt, refImage, srcImage{1}, otherImages);
 
       end
 

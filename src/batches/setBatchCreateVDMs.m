@@ -23,7 +23,7 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('create voxel displacement map');
+  printBatchName('create voxel displacement map', opt);
 
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
