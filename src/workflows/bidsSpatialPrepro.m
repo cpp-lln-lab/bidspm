@@ -85,7 +85,7 @@ function bidsSpatialPrepro(opt)
     % if no unwarping was done on func, we reslice the func, so we can use
     % them for the functionalQA
     if ~opt.realign.useUnwarp
-      matlabbatch = setBatchRealign(matlabbatch, 'reslice', BIDS, opt, subLabel);
+      matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subLabel, 'reslice');
     end
 
     batchName = ['spatial_preprocessing-' strjoin(opt.space, '-')];
