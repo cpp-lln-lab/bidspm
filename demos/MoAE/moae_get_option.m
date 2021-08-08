@@ -9,13 +9,11 @@ function opt = moae_get_option()
 
   % task to analyze
   opt.taskName = 'auditory';
-  opt.verbosity = 0;
+  opt.verbosity = 1;
 
   % The directory where the data are located
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
-  opt.dir.preproc = fullfile(opt.dir.raw, '..', '..', 'outputs', 'derivatives');
-
-  opt.pipeline.name = 'cpp_spm-preproc';
+  opt.dir.derivatives = fullfile(opt.dir.raw, '..', '..', 'outputs', 'derivatives');
 
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp

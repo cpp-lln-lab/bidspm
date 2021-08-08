@@ -6,8 +6,6 @@
 % we are going to extract the value from.
 %
 
-run moae_run.m;
-
 subLabel = '01';
 
 FWHM = 6;

@@ -13,14 +13,14 @@ clc;
 % Smoothing to apply
 FWHM = 6;
 
-downloadData = true;
+download_data = true;
 
 run ../../initCppSpm.m;
 
 %% Set options
 opt = moae_get_option();
 
-download_moae_ds(downloadData);
+download_moae_ds(download_data);
 
 %% Run batches
 % reportBIDS(opt);
@@ -31,11 +31,15 @@ bidsCopyInputFolder(opt);
 
 % In case you just want to run segmentation and skull stripping
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
-bidsSegmentSkullStrip(opt);
+% bidsSegmentSkullStrip(opt);
 
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
+
+renameToBids(opt);
+
+return
 
 anatomicalQA(opt);
 bidsResliceTpmToFunc(opt);
@@ -48,13 +52,4 @@ functionalQA(opt);
 opt.skullstrip.mean = 1;
 mask = bidsWholeBrainFuncMask(opt);
 
-% smoooth the funcitional images
 bidsSmoothing(FWHM, opt);
-
-% The following crash on CI
-opt.pipeline.type = 'stats';
-
-% The following crash on Travis CI
-bidsFFX('specifyAndEstimate', opt, FWHM);
-bidsFFX('contrasts', opt, FWHM);
-bidsResults(opt, FWHM);
