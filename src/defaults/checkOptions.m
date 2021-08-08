@@ -93,6 +93,10 @@ function opt = checkOptions(opt)
     opt.query.modality{1} = tmp;
   end
 
+  if ~iscell(opt.space)
+    opt.space = {opt.space};
+  end
+
   opt = orderfields(opt);
 
   opt = setDirectories(opt);
@@ -142,7 +146,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.skullstrip.mean = false;
 
   %% Options for normalize
-  fieldsToSet.space = 'MNI';
+  fieldsToSet.space = {'individual', 'MNI'};
   fieldsToSet.funcVoxelDims = [];
 
   %% Options for model specification and results

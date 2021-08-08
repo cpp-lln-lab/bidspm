@@ -37,6 +37,8 @@ function bidsSpatialPrepro(opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  opt.dir.input = opt.dir.preproc;
+
   [BIDS, opt] = setUpWorkflow(opt, 'spatial preprocessing');
 
   opt.orderBatches.selectAnat = 1;
@@ -74,7 +76,7 @@ function bidsSpatialPrepro(opt)
 
     matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
 
-    if strcmp(opt.space, 'MNI')
+    if ismember('MNI', opt.space)
       % dependency from segmentation
       % dependency from coregistration
       matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim);
@@ -86,7 +88,7 @@ function bidsSpatialPrepro(opt)
       matlabbatch = setBatchRealign(matlabbatch, 'reslice', BIDS, opt, subLabel);
     end
 
-    batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];
+    batchName = ['spatial_preprocessing-' strjoin(opt.space, '-')];
 
     saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
