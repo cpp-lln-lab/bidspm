@@ -16,6 +16,7 @@ function test_createAndReturnOnsetFileBasic()
   iRun = 1;
 
   opt = setOptions('vislocalizer', subLabel);
+  opt.space = 'MNI';
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 

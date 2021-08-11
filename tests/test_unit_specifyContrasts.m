@@ -15,6 +15,7 @@ function test_specifyContrastsBasic()
   funcFWFM = 6;
 
   opt = setOptions('vismotion', subLabel);
+  opt.space = 'MNI';
 
   ffxDir = getFFXdir(subLabel, funcFWFM, opt);
 

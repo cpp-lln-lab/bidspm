@@ -14,6 +14,7 @@ function test_setBatchMeanAnatAndMaskBasic()
 
   opt = setOptions('vismotion');
   opt.subjects = {'01', '02'};
+  opt.space = 'MNI';
 
   matlabbatch = [];
   matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, pwd);

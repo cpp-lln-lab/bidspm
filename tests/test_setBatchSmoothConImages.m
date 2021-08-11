@@ -15,6 +15,7 @@ function test_setBatchSmoothConImagesBasic()
 
   opt = setOptions('vismotion');
   opt.subjects = {'01', '02'};
+  opt.space = 'MNI';
 
   [~, opt] = getData(opt, opt.dir.preproc);
 
