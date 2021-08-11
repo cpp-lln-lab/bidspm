@@ -28,7 +28,9 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession);
 
   query =  struct('sub', subLabel, ...
-                  'suffix', anatSuffix);
+                  'suffix', anatSuffix, ...
+                  'extension', '.nii', ...
+                  'prefix', '');
   query.ses = anatSession;
   if cellfun('isempty', anatSession)
     query = rmfield(query, 'ses');

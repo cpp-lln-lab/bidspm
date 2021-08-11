@@ -21,8 +21,13 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
 
   printBatchName('saving coregistration matrix', opt);
 
-  % create name of the output file based on the name of the first image of the
-  % first session
+  % create name of the output file based on the name
+  % of the first image of the first session
+  if (isfield(opt.metadata, 'SliceTiming') && ...
+      ~isempty(opt.metadata.SliceTiming)) || ...
+          ~isempty(opt.sliceOrder)
+    opt.query.desc = 'stc';
+  end
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
   runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});
   [fileName, subFuncDataDir] = getBoldFilename( ...

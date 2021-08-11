@@ -21,10 +21,15 @@ function renameToBids(opt, FWHM)
 
   % TODO update entities normalization to reflect the resolution of each output image
 
+  % this conversion could be into desc-preproc
+  %   usub-01_task-facerepetition_space-individual_desc-stc_bold.nii -->
+  %     sub-01_task-facerepetition_space-individual_desc-realignUnwarp_bold.nii
+
   % TODO write and update json content
 
   % TODO refactor this:
-  %  use spm prefixes instead of hard coding
+  %  - use spm prefixes instead of hard coding
+  %  - probably need to turn mapping into an object with dedicated methods
 
   % add resolution entity when reslicing TPMs
   mapping(end + 1).prefix = {'rc1'};

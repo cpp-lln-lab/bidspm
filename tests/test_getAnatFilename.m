@@ -19,6 +19,7 @@ function test_getAnatFilenameBasic()
   subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel);
+  opt.useBidsSchema = false;
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -48,6 +49,7 @@ function test_getAnatFilenameNoSession()
 
   subLabel = '01';
   opt = setOptions('MoAE');
+  opt.useBidsSchema = false;
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);

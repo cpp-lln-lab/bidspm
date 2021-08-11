@@ -22,6 +22,12 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt, ste
     step = 'mean';
   end
 
+  if (isfield(opt.metadata, 'SliceTiming') && ...
+      ~isempty(opt.metadata.SliceTiming)) || ...
+          ~isempty(opt.sliceOrder)
+    opt.query.desc = 'stc';
+  end
+
   prefix = getPrefix(step, opt);
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
