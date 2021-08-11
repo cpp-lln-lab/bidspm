@@ -8,7 +8,7 @@ function test_suite = test_getBoldFilenameForFFX %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getBoldFilenameForFFXBasic()
+function test_getBoldFilenameForFFXMNI()
 
   subLabel = '01';
   funcFWHM = 6;
@@ -16,22 +16,24 @@ function test_getBoldFilenameForFFXBasic()
   iRun = 1;
 
   opt = setOptions('vislocalizer', subLabel);
+  opt.space = {'MNI'};
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
+  boldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
 
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                               'dummyData', 'derivatives', 'cpp_spm-preproc', 'sub-01', ...
                               'ses-01', 'func', ...
-                              's6wusub-01_ses-01_task-vislocalizer_bold.nii');
+                              ['sub-01_ses-01_task-vislocalizer', ...
+                               '_space-IXI549Space_desc-smth6_bold.nii']);
 
   assertEqual('s6wu', prefix);
   assertEqual(expectedFileName, boldFileName);
 
 end
 
-function test_getBoldFilenameForFFXNativeSpace()
+function test_getBoldFilenameForFFXIndividual()
 
   subLabel = '01';
   funcFWHM = 6;
@@ -39,18 +41,18 @@ function test_getBoldFilenameForFFXNativeSpace()
   iRun = 1;
 
   opt = setOptions('vislocalizer', subLabel);
-  opt.space = 'individual';
+  opt.space = {'individual'};
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
+  boldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
 
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                               'dummyData', 'derivatives', 'cpp_spm-preproc', 'sub-01', ...
                               'ses-01', 'func', ...
-                              's6usub-01_ses-01_task-vislocalizer_bold.nii');
+                              'sub-01_ses-01_task-vislocalizer', ...
+                              '_space-individual_desc-smth6_bold.nii');
 
-  assertEqual('s6u', prefix);
   assertEqual(expectedFileName, boldFileName);
 
 end

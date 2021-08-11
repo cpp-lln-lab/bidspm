@@ -128,6 +128,7 @@ function renameToBids(opt, FWHM)
 
     printProcessingSubject(iSub, subLabel, opt);
 
+    % TODO allow for posibility to only appply to certain files
     data = bids.query(BIDS, 'data', 'sub', subLabel);
 
     for iFile = 1:size(data, 1)

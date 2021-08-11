@@ -38,6 +38,7 @@ function bidsSpatialPrepro(opt)
   % (C) Copyright 2019 CPP_SPM developers
 
   opt.dir.input = opt.dir.preproc;
+  opt.useBidsSchema = false;
 
   [BIDS, opt] = setUpWorkflow(opt, 'spatial preprocessing');
 
@@ -93,6 +94,8 @@ function bidsSpatialPrepro(opt)
     saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
     copyFigures(BIDS, opt, subLabel);
+
+    % TODO convert rp_*.txt to tsv
 
     if ~opt.dryRun
       renameSegmentParameter(BIDS, subLabel, opt);

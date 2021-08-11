@@ -14,39 +14,28 @@ function test_getInfoBasic()
 
   opt = setOptions('vismotion', subLabel);
 
-  info = 'sessions';
-
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  sessions = getInfo(BIDS, subLabel, opt, info);
-  assert(all(strcmp(sessions, {'01' '02'})));
+  sessions = getInfo(BIDS, subLabel, opt, 'sessions');
+  assertEqual(sessions, {'01' '02'});
 
-  %% Get runs from BIDS
-  session =  '01';
-  info = 'runs';
+  runs = getInfo(BIDS, subLabel, opt, 'runs', sessions{1});
+  assertEqual(runs, {'1' '2'});
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  % same but exclude anything with the acquisition entitty
+  opt.query = struct('acq', '');
 
-  runs = getInfo(BIDS, subLabel, opt, info, session);
-  assert(all(strcmp(runs, {'1' '2'})));
+  sessions = getInfo(BIDS, subLabel, opt, 'sessions');
+  assertEqual(sessions, {'01' '02'});
 
-  %% Get runs from BIDS when no run in filename
-  opt.taskName = 'vislocalizer';
-  subLabel = 'ctrl01';
-  session =  '01';
-  info = 'runs';
-
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
-
-  runs = getInfo(BIDS, subLabel, opt, info, session);
-  assert(strcmp(runs, {''}));
+  runs = getInfo(BIDS, subLabel, opt, 'runs', sessions{1});
+  assertEqual(runs, {'1' '2'});
 
 end
 
 function test_getInfoQuery()
 
   subLabel = 'ctrl01';
-
   session =  '01';
   run = '1';
   info = 'filename';
@@ -55,39 +44,73 @@ function test_getInfoQuery()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  filename = getInfo(BIDS, subLabel, opt, info, session, run, 'bold');
-  assertEqual(size(filename, 1), 3);
+  filename = getInfo(BIDS, subLabel, opt, 'filename', session, run, 'bold');
+  if i == 0
+    assertEqual(size(filename, 1), 1);
+  else
+    assertEqual(size(filename, 1), 3);
+  end
 
   opt.query = struct('acq', '');
 
-  filename = getInfo(BIDS, subLabel, opt, info, session, run, 'bold');
-  FileName = fullfile(fileparts(mfilename('fullpath')), 'dummyData',  ...
-                      'derivatives', 'cpp_spm-preproc', ...
-                      ['sub-' subLabel], ['ses-' session], 'func', ...
-                      ['sub-' subLabel, ...
-                       '_ses-' session, ...
-                       '_task-' opt.taskName, ...
-                       '_run-' run, ...
-                       '_bold.nii']);
+  filename = getInfo(BIDS, subLabel, opt, 'filename', session, run, 'bold');
 
-  assert(strcmp(filename, FileName));
+  p.suffix = 'bold';
+  p.ext = '.nii';
+  p.entities = struct('sub', subLabel, ...
+                      'ses', session, ...
+                      'task', opt.taskName, ...
+                      'run', run);
+  p.use_schema = true;
+
+  FileName = returnFullpathExpectedFilename(p);
+
+  assertEqual(filename, FileName);
 
   %%
   opt.query = struct('acq', '1p60mm', 'dir', 'PA');
 
-  filename = getInfo(BIDS, subLabel, opt, info, session, run, 'bold');
-  FileName = fullfile(fileparts(mfilename('fullpath')), 'dummyData',  ...
-                      'derivatives', 'cpp_spm-preproc', ...
-                      ['sub-' subLabel], ['ses-' session], 'func', ...
-                      ['sub-' subLabel, ...
-                       '_ses-' session, ...
-                       '_task-' opt.taskName, ...
-                       '_acq-' '1p60mm', ...
-                       '_dir-' 'PA', ...
-                       '_run-' run, ...
-                       '_bold.nii']);
+  p.entities.acq = '1p60mm';
+  p.entities.dir = 'PA';
 
-  assert(strcmp(filename, FileName));
+  filename = getInfo(BIDS, subLabel, opt, 'filename', session, run, 'bold');
+
+  FileName = returnFullpathExpectedFilename(p);
+
+  assertEqual(filename, FileName);
+
+end
+
+function test_getInfoNoRun()
+
+  %% Get runs from BIDS when no run in filename
+  subLabel = 'ctrl01';
+
+  opt = setOptions('vislocalizer');
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  sessions = getInfo(BIDS, subLabel, opt, 'sessions');
+  assertEqual(sessions, {'01' '02'});
+
+  runs = getInfo(BIDS, subLabel, opt, 'runs', sessions{1});
+  assertEqual(runs, {''});
+
+end
+
+function test_getInfoNoSessionNoRun()
+
+  subLabel = '01';
+
+  opt = setOptions('MoAE', subLabel);
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  sessions = getInfo(BIDS, subLabel, opt, 'sessions');
+  assertEqual(sessions, {''});
+
+  runs = getInfo(BIDS, subLabel, opt, 'runs', sessions);
+  assertEqual(runs, {''});
 
 end
 
@@ -124,4 +147,11 @@ function test_getInfoError
                         @()getInfo(BIDS, subLabel, opt, 'nothing'), ...
                         'getInfo:unknownRequest');
 
+end
+
+function FileName = returnFullpathExpectedFilename(p)
+  FileName = fullfile(fileparts(mfilename('fullpath')), 'dummyData',  ...
+                      'derivatives', 'cpp_spm-preproc', ...
+                      bids.create_path(bids.create_filename(p)), ...
+                      bids.create_filename(p));
 end

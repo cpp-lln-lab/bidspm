@@ -18,6 +18,7 @@ function test_setBatchSmoothingFuncBasic()
   funcFWHM = 6;
 
   opt = setOptions('MoAE', subLabel);
+  opt.space = {'MNI'};
 
   [BIDS, opt] = getData(opt, opt.dir.raw);
 
@@ -26,13 +27,16 @@ function test_setBatchSmoothingFuncBasic()
                         'sub', subLabel, ...
                         'task', opt.taskName, ...
                         'suffix', 'bold');
+
   [filepath, filename, ext] = fileparts(fileName{1});
-  fileName = fullfile( ...
-                      filepath, ...
-                      [spm_get_defaults('normalise.write.prefix'), ...
-                       spm_get_defaults('unwarp.write.prefix'), ...
-                       filename ext]);
-  system(sprintf('touch %s', fileName));
+
+  p =  bids.internal.parse_filename([filename ext]);
+  p.entities.space = 'IXI549Space';
+  p.entities.desc = 'preproc';
+  p.use_schema = false;
+  fileName = bids.create_filename(p);
+
+  system(sprintf('touch %s', fullfile(filepath, fileName)));
 
   matlabbatch = [];
   matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel, funcFWHM);
