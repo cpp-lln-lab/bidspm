@@ -13,6 +13,7 @@ function test_bidsFFXBasic()
   FWHM = 6;
 
   opt = setOptions('MoAE-preproc');
+  opt.space = {'MNI'};
 
   opt.pipeline.type = 'stats';
   opt.pipeline.name = 'cpp_spm-stats';

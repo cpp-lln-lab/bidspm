@@ -17,7 +17,7 @@ function test_setBatchSubjectLevelResultsBasic()
   funcFWHM = 6;
 
   opt = setOptions('vismotion', subLabel);
-  opt.space = 'MNI';
+  opt.space = {'MNI'};
 
   opt.result.Steps.Contrasts.Name = 'VisMot';
 
@@ -57,7 +57,7 @@ function test_setBatchSubjectLevelResultsErrorMissingContrastName()
   funcFWHM = 6;
 
   opt = setOptions('vismotion', subLabel);
-  opt.space = 'MNI';
+  opt.space = {'MNI'};
 
   matlabbatch = [];
   assertExceptionThrown( ...
@@ -83,7 +83,7 @@ function test_setBatchSubjectLevelResultsErrorNoMAtchingContrast()
   funcFWHM = 6;
 
   opt = setOptions('vismotion', subLabel);
-  opt.space = 'MNI';
+  opt.space = {'MNI'};
 
   opt.result.Steps.Contrasts.Name = 'NotAContrast';
 

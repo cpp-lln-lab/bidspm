@@ -15,7 +15,7 @@ function test_setBatchFactorialDesignBasic()
 
   opt = setOptions('vismotion');
   opt.subjects = {'01' '02'};
-  opt.space = 'MNI';
+  opt.space = {'MNI'};
 
   matlabbatch = [];
   matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFWHM);

@@ -54,7 +54,7 @@ function test_loadAndCheckOptionsFromFile()
 
   % create dummy json file
   jsonContent.taskName = 'vismotion';
-  jsonContent.space = 'individual';
+  jsonContent.space = {'individual'};
   jsonContent.verbosity = 0;
   jsonContent.groups = {''};
   jsonContent.subjects = {[]};
@@ -66,7 +66,7 @@ function test_loadAndCheckOptionsFromFile()
   opt = loadAndCheckOptions(filename);
 
   expectedOptions = defaultOptions('vismotion');
-  expectedOptions.space = 'individual';
+  expectedOptions.space = {'individual'};
   expectedOptions.verbosity = 0;
 
   assertEqual(opt, expectedOptions);
@@ -90,13 +90,13 @@ function test_loadAndCheckOptionsFromSeveralFiles()
 
   % create dummy json file with no date
   jsonContent.taskName = 'vismotion';
-  jsonContent.space = 'individual';
+  jsonContent.space = {'individual'};
   filename = fullfile(pwd, 'cfg', 'options_task-vismotion_space-T1w.json');
   spm_jsonwrite(filename, jsonContent);
 
   % most recent option file that should be read from
   jsonContent.taskName = 'vismotion';
-  jsonContent.space = 'individual';
+  jsonContent.space = {'individual'};
   jsonContent.verbosity = 0;
   jsonContent.funcVoxelDims = [1 1 1];
   filename = fullfile(pwd, 'cfg', ['options', ...
@@ -109,7 +109,7 @@ function test_loadAndCheckOptionsFromSeveralFiles()
   opt = loadAndCheckOptions();
 
   expectedOptions = defaultOptions('vismotion');
-  expectedOptions.space = 'individual';
+  expectedOptions.space = {'individual'};
   expectedOptions.funcVoxelDims = [1 1 1]';
   expectedOptions.verbosity = 0;
 

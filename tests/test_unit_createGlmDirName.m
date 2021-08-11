@@ -22,7 +22,7 @@ function test_createGlmDirNameBasic()
   FWHM = 6;
 
   opt = setOptions('funcLocalizer');
-  opt.space = 'MNI';
+  opt.space = {'MNI'};
 
   glmDirName = createGlmDirName(opt, FWHM);
 

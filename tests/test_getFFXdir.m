@@ -14,7 +14,7 @@ function test_getFFXdirBasic()
   subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel);
-  opt.space = 'MNI';
+  opt.space = {'MNI'};
 
   expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
                             'cpp_spm-stats', 'sub-01', 'stats', ...

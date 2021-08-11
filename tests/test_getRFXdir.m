@@ -29,7 +29,7 @@ function test_getRFXdirBasic()
 
 end
 
-function test_getFFXdirUserSpecified()
+function test_getRFXdirUserSpecified()
 
   conFWHM = 0;
   funcFWHM = 6;

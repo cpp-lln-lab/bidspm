@@ -21,6 +21,8 @@ function rfxDir = getRFXdir(opt, funcFWHM, conFWHM)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  opt.space = 'MNI';
+
   glmDirName = createGlmDirName(opt, funcFWHM);
 
   glmDirName = [glmDirName, '_conFWHM-', num2str(conFWHM)];

@@ -27,17 +27,21 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   checkAvailableSuffix(BIDS, subLabel, anatSuffix);
   anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession);
 
+  query =  struct('sub', subLabel, ...
+                  'suffix', anatSuffix);
+  query.ses = anatSession;
+  if cellfun('isempty', anatSession)
+    query = rmfield(query, 'ses');
+  end
+
   % get all anat images for that subject fo that type
-  anat = bids.query(BIDS, 'data', ...
-                    'sub', subLabel, ...
-                    'ses', anatSession, ...
-                    'suffix', anatSuffix);
+  anat = bids.query(BIDS, 'data', query);
 
   if isempty(anat)
 
     msg = sprintf('No anat file for the subject: %s / session: %s/ type: %s.', ...
                   subLabel, ...
-                  anatSession, ...
+                  char(anatSession), ...
                   anatSuffix);
 
     errorHandling(mfilename(), 'noAnatFile', msg, false, false);
@@ -94,6 +98,10 @@ function anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession)
   else
     anatSession = sessions;
 
+  end
+
+  if  ~iscell(anatSession)
+    anatSession = {anatSession};
   end
 
 end

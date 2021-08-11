@@ -44,6 +44,22 @@ function test_getAnatFilenameBasic()
 
 end
 
+function test_getAnatFilenameNoSession()
+
+  subLabel = '01';
+  opt = setOptions('MoAE');
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
+
+  expectedFileName = 'sub-01_T1w.nii';
+  expectedAnatDataDir = fullfile(opt.dir.preproc, 'sub-01', 'anat');
+
+  assertEqual(anatDataDir, expectedAnatDataDir);
+  assertEqual(anatImage, expectedFileName);
+
+end
+
 function test_getAnatFilenameTypeError()
 
   subLabel = '01';
@@ -60,7 +76,7 @@ function test_getAnatFilenameTypeError()
 
 end
 
-function test_getAnatFilenameSEssionError()
+function test_getAnatFilenameSessionError()
 
   subLabel = '01';
 

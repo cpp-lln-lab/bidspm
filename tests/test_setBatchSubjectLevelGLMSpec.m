@@ -16,6 +16,7 @@ function test_setBatchSubjectLevelGLMSpecBasic()
   iRun = 1;
 
   opt = setOptions('MoAE', subLabel);
+  opt.space = {'MNI'};
 
   bidsCopyInputFolder(opt);
 
