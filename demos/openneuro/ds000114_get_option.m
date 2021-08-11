@@ -8,7 +8,7 @@ function opt = ds000114_get_option()
 
   % The directory where the data are located
   opt.dir.raw = '/home/remi/openneuro/ds000114/raw';
-  opt.pipeline.name = 'cpp_spm-preprocess';
+  opt.pipeline.name = 'cpp_spms';
 
   % suject to run in each group
   opt.subjects = {'01', '02'};

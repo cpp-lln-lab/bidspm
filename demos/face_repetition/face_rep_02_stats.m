@@ -1,7 +1,7 @@
 % (C) Copyright 2019 Remi Gau
 %
-% This script will download the face repetition dataset from the FIL
-% and will run the basic preprocessing, FFX and contrasts on it.
+% This script will run the FFX and contrasts
+% on the the face repetition dataset from the FIL.
 %
 % Results might be a bit different from those in the manual as some
 % default options are slightly different in this pipeline (e.g use of FAST
@@ -19,35 +19,9 @@ clc;
 
 FWHM = 6;
 
-downloadData = true;
-
 run ../../initCppSpm.m;
 
-%% Set options
-opt = face_rep_get_option();
-
-%% Removes previous analysis, gets data and converts it to BIDS
-if downloadData
-
-  download_convert_face_rep_ds();
-
-end
-
-%% Run batches
-reportBIDS(opt);
-bidsCopyInputFolder(opt);
-
-bidsSTC(opt);
-
-bidsSpatialPrepro(opt);
-
-anatomicalQA(opt);
-bidsResliceTpmToFunc(opt);
-
-% DEBUG
-% functionalQA(opt);
-
-bidsSmoothing(FWHM, opt);
+opt = face_rep_get_option_results();
 
 % The following crash on CI
 opt.pipeline.type = 'stats';

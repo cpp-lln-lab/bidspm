@@ -9,7 +9,7 @@
 clear;
 clc;
 
-download_data = false;
+FWHM = 6;
 
 run ../../initCppSpm.m;
 

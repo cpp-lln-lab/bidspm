@@ -13,7 +13,7 @@ clc;
 % Smoothing to apply
 FWHM = 6;
 
-download_data = true;
+download_data = false;
 
 run ../../initCppSpm.m;
 
@@ -37,7 +37,7 @@ bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
-renameToBids(opt);
+% renameToBids(opt);
 
 return
 

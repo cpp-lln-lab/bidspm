@@ -16,7 +16,7 @@ function opt = ds000001_get_option()
   opt.taskName = 'balloonanalogrisktask';
 
   opt.pipeline.type = 'preproc';
-  opt.pipeline.name = 'cpp_spm-preproc';
+  opt.pipeline.name = 'cpp_spm';
 
   % The directory where the data are located
   opt.dir.raw = '/home/remi/openneuro/ds000001/raw';

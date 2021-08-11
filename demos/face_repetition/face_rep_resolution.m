@@ -34,7 +34,7 @@ modelFile = opt.model.file;
 for iResolution = 2:1:3
 
   opt.pipeline.type = 'preproc';
-  opt.pipeline.name = ['cpp_spm-preproc-res' num2str(iResolution)];
+  opt.pipeline.name = ['cpp_spm-res' num2str(iResolution)];
 
   opt.funcVoxelDims = repmat(iResolution, 1, 3);
 
