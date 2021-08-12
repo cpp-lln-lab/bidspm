@@ -22,13 +22,14 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt, ste
     step = 'mean';
   end
 
-  if (isfield(opt.metadata, 'SliceTiming') && ...
-      ~isempty(opt.metadata.SliceTiming)) || ...
-          ~isempty(opt.sliceOrder)
-    opt.query.desc = 'stc';
+  if strcmp(step, 'funcqa')
+    opt.query.space = 'individual';
+    opt.query.desc = 'mean';
   end
 
-  prefix = getPrefix(step, opt);
+  if strcmp(opt.query.space, 'MNI')
+    opt.query.space = 'IXI549Space';
+  end
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
   runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});
@@ -38,8 +39,7 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt, ste
 
   meanImage = validationInputFile( ...
                                   subFuncDataDir, ...
-                                  boldFileName, ...
-                                  prefix);
+                                  boldFileName);
 
   [meanFuncDir, meanImage, ext] = spm_fileparts(meanImage);
   meanImage = [meanImage ext];

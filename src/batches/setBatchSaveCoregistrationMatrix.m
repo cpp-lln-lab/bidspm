@@ -33,8 +33,18 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   [fileName, subFuncDataDir] = getBoldFilename( ...
                                                BIDS, ...
                                                subLabel, sessions{1}, runs{1}, opt);
+  p = bids.internal.parse_filename(fileName);
+  p.use_schema = false;
+  p.suffix = 'xfm';
+  p.ext = '.mat';
+  p.entities.desc = '';
+  p.entities.space = '';
+  p.entities.run = '';
+  p.entities.from = 'scanner';
+  p.entities.to = opt.anatReference.type;
+  p.entities.mode = 'image';
 
-  fileName = strrep(fileName, '_bold.nii', '_from-scanner_to-T1w_mode-image_xfm.mat');
+  fileName = bids.create_filename(p);
 
   matlabbatch{end + 1}.cfg_basicio.var_ops.cfg_save_vars.name = fileName;
   matlabbatch{end}.cfg_basicio.var_ops.cfg_save_vars.outdir = {subFuncDataDir};

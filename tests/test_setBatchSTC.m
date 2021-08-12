@@ -51,12 +51,15 @@ function test_setBatchSTCForce()
                           'sub', subLabel, ...
                           'ses', sprintf('0%i', iSes), ...
                           'task', opt.taskName, ...
-                          'suffix', 'bold');
+                          'suffix', 'bold', ...
+                          'extension', '.nii', ...
+                          'prefix', '',  ...
+                          'space', '', 'desc', '');
     expectedBatch{1}.spm.temporal.st.scans{runCounter} = {fileName{1}};
     runCounter = runCounter + 1;
   end
 
-  assertEqual(matlabbatch, expectedBatch);
+  assertEqual(matlabbatch{1}.spm.temporal.st, expectedBatch{1}.spm.temporal.st);
 
 end
 
@@ -65,6 +68,7 @@ function test_setBatchSTCBasic()
   subLabel = '02';
 
   opt = setOptions('vismotion', subLabel);
+
   opt.query = struct('acq', '');
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
@@ -88,7 +92,10 @@ function test_setBatchSTCBasic()
                           'ses', sprintf('0%i', iSes), ...
                           'task', opt.taskName, ...
                           'suffix', 'bold', ...
-                          'acq', '');
+                          'extension', '.nii', ...
+                          'prefix', '',  ...
+                          'acq', '', ...
+                          'space', '', 'desc', '');
     expectedBatch{1}.spm.temporal.st.scans{runCounter} = ...
         {fileName{1}};
     expectedBatch{1}.spm.temporal.st.scans{runCounter + 1} = ...
@@ -96,7 +103,7 @@ function test_setBatchSTCBasic()
     runCounter = runCounter + 2;
   end
 
-  assertEqual(matlabbatch, expectedBatch);
+  assertEqual(matlabbatch{1}.spm.temporal.st, expectedBatch{1}.spm.temporal.st);
 
 end
 

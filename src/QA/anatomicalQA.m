@@ -17,7 +17,6 @@ function anatomicalQA(opt)
   end
 
   opt.dir.input = opt.dir.preproc;
-  opt.useBidsSchema = false;
 
   [BIDS, opt] = setUpWorkflow(opt, 'quality control: anatomical');
 
@@ -31,24 +30,15 @@ function anatomicalQA(opt)
     opt.query.desc = 'biascor';
     [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
-    % get grey and white matter tissue probability maps
-    query = rmfield(query, 'desc');
-    query.suffix = 'probseg';
-    query.space = 'individual';
-    query.label = 'GM';
-    query.res = '';
-    GM = bids.query(BIDS, 'data', query);
-
-    query.label = 'WM';
-    WM = bids.query(BIDS, 'data', query);
+    [gm, wm] = getTpmFilenames(BIDS, subLabel);
 
     % sanity check that all images are in the same space.
-    volumesToCheck = {anatImage; GM{1}; WM{1}};
+    volumesToCheck = {anatImage; gm; wm};
     spm_check_orientations(spm_vol(char(volumesToCheck)));
 
     % Basic QA for anatomical data is to get SNR, CNR, FBER and Entropy
     % This is useful to check coregistration worked fine
-    anatQA = spmup_anatQA(anatImage, GM{1},  WM{1}); %#ok<*NASGU>
+    anatQA = spmup_anatQA(anatImage, gm,  wm); %#ok<*NASGU>
 
     anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
 

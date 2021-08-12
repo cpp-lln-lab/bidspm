@@ -25,6 +25,8 @@ function renameToBids(opt, FWHM)
   %   usub-01_task-facerepetition_space-individual_desc-stc_bold.nii -->
   %     sub-01_task-facerepetition_space-individual_desc-realignUnwarp_bold.nii
 
+  % TODO stc might not be in individual space
+
   % TODO write and update json content
 
   % TODO refactor this:
@@ -99,7 +101,9 @@ function renameToBids(opt, FWHM)
   mapping(end).suffix = 'mask';
   mapping(end).ext = '.nii';
   mapping(end).entities = struct('label', 'brain');
-  mapping(end).name_spec.entities = struct('label', 'brain', 'desc', '');
+  mapping(end).name_spec = opt.spm_2_bids.segment.bias_corrected;
+  mapping(end).name_spec.entities = struct('label', 'brain', ...
+                                           'desc', '');
 
   mapping(end + 1).prefix = 'c1';
   mapping(end).ext = '.surf.gii';

@@ -29,15 +29,9 @@ function functionalQA(opt)
     return
   end
 
-  % if input has no opt, load the opt.mat file
-  if nargin < 1
-    opt = [];
-  end
-  opt = loadAndCheckOptions(opt);
+  opt.dir.input = opt.dir.preproc;
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
-
-  fprintf(1, ' FUNCTIONAL: QUALITY CONTROL\n\n');
+  [BIDS, opt] = setUpWorkflow(opt, 'quality control: anatomical');
 
   for iSub = 1:numel(opt.subjects)
 
@@ -46,16 +40,14 @@ function functionalQA(opt)
     printProcessingSubject(iSub, subLabel, opt);
 
     % get grey and white matter and csf tissue probability maps
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
-    TPMs = validationInputFile(anatDataDir, anatImage, 'rc[123]');
+    res = 'bold';
+    space = 'individual';
+    [greyMatter, whiteMatter, csf] = getTpmFilenames(BIDS, subLabel, res, space);
+    TPMs = char({greyMatter; whiteMatter; csf});
 
     % load metrics from anat QA
-    p = bids.internal.parse_filename(anatImage);
-    p.entities.label = p.suffix;
-    p.use_schema = false;
-    p.suffix = 'qametrics';
-    p.ext = '.json';
-    anatQA = spm_jsonread(fullfile(anatDataDir, bids.create_filename(p)));
+    anatQaMetrics = bids.query('data', query, 'suffix', 'qametrics');
+    anatQA = spm_jsonread(anatQaMetrics);
 
     [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
@@ -78,7 +70,7 @@ function functionalQA(opt)
         funcImage = validationInputFile(subFuncDataDir, fileName, prefix);
 
         % sanity check that all images are in the same space.
-        volumesToCheck = {funcImage; TPMs(1, :); TPMs(2, :); TPMs(3, :)};
+        volumesToCheck = {funcImage; greyMatter; whiteMatter; csf};
         spm_check_orientations(spm_vol(char(volumesToCheck)));
 
         fMRIQA = computeFuncQAMetrics(funcImage, TPMs, anatQA.avgDistToSurf, opt);
@@ -130,7 +122,7 @@ function functionalQA(opt)
         % horrible hack to prevent the "abrupt" way spmup_volumecorr crashes
         % if nansum is not there
         if exist('nansum', 'file') == 2
-          spmup_timeseriesplot(funcImage, TPMs(1, :), TPMs(2, :), TPMs(3, :), ...
+          spmup_timeseriesplot(funcImage, greyMatter, whiteMatter, csf, ...
                                'motion', 'on', ...
                                'nuisances', 'on', ...
                                'correlation', 'on', ...

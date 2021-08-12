@@ -20,25 +20,18 @@ do
 			this_dir=${preproc_dir}/sub-${subject}/ses-${ses}/func
 			mkdir -p ${this_dir}
 
-			# task: vismotion
+			## task: vismotion
 			suffix='_bold'
 			task_name='vismotion'
 
+			### raw
 			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1${suffix}.nii
 			echo "{\"TaskName\": \"vislocalizer\"}" > ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1${suffix}.json
 			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-2${suffix}.nii
-			echo "{\"TaskName\": \"vislocalizer\"}" > ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-2${suffix}.json
-
-			touch ${this_dir}/asub-${subject}\_ses-${ses}\_task-${task_name}_run-1${suffix}.nii
-			touch ${this_dir}/asub-${subject}\_ses-${ses}\_task-${task_name}_run-2${suffix}.nii
-
-			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1\_space-individual\_desc-stc${suffix}.nii
-			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-2\_space-individual\_desc-stc${suffix}.nii
+			echo "{\"TaskName\": \"vislocalizer\"}" > ${this_dir}/sub-${subject}\_ses-${ses}\
 
 			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_acq-1p60mm\_run-1${suffix}.nii
 			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_acq-1p60mm\_dir-PA_run-1${suffix}.nii
-
-			touch ${this_dir}/mean_sub-${subject}\_ses-${ses}\_task-${task_name}_run-1${suffix}.nii
 
 			filename=${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1_events.tsv
 			echo "onset\tduration\ttrial_type" > ${filename}
@@ -50,21 +43,52 @@ do
 			echo "3\t2\tVisMotDown" >> ${filename}
 			echo "6\t2\tVisMotUp" >> ${filename}
 
-			# task: vislocalizer
+			### derivatives
+			desc_label_list='stc preproc mean'
+			for desc in ${desc_label_list}
+			do
+				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1\_space-individual\_desc-${desc}${suffix}.nii
+				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-2\_space-individual\_desc-${desc}${suffix}.nii
+			done
+			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1\_space-IXI549Space\_desc-preproc${suffix}.nii
+			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-2\_space-IXI549Space\_desc-preproc${suffix}.nii
+
+			if [ ${ses} = '01' ]; then
+				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-individual\_desc-mean${suffix}.nii
+				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-IXI549Space\_desc-mean${suffix}.nii
+			fi
+
+			## task: vislocalizer
+			suffix='_bold'
 			task_name='vislocalizer'
+
+			### raw
 			touch ${this_dir}/rp_sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.txt
 			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.nii
-
-			func_prefix_list='meanu wmeanu s6w s6r s6u s6wu'
-			for prefix in ${func_prefix_list}
-			do
-				touch ${this_dir}/${prefix}sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.nii
-			done
 
 			filename=${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_events.tsv
 			echo "onset\tduration\ttrial_type" > ${filename}
 			echo "2\t15\tVisMot" >> ${filename}
 			echo "25\t15\tVisStat" >> ${filename}
+
+			### derivatives
+			func_prefix_list='s6w s6r s6u s6wu'
+			for prefix in ${func_prefix_list}
+			do
+				touch ${this_dir}/${prefix}sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.nii
+			done
+
+			desc_label_list='preproc mean'
+			for desc in ${desc_label_list}
+			do
+				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-individual\_desc-${desc}${suffix}.nii
+			done
+			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-IXI549Space\_desc-preproc${suffix}.nii
+
+			if [ ${ses} = '01' ]; then
+				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-individual\_desc-mean${suffix}.nii
+				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-IXI549Space\_desc-mean${suffix}.nii
+			fi
 
 
 			# FMAP
@@ -106,16 +130,11 @@ do
 
 		touch ${this_dir}/sub-${subject}\_ses-${ses}${suffix}.nii
 
-		anat_prefix_list='m wm c1 c2 c3'
-		for prefix in ${anat_prefix_list}
-		do
-			touch ${this_dir}/${prefix}sub-${subject}\_ses-${ses}${suffix}.nii
-		done
-
 		space='individual'
 
 		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_desc-biascor${suffix}.nii
 		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_desc-skullstripped${suffix}.nii
+		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_desc-preproc${suffix}.nii
 		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_label-brain\_mask.nii
 		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_label-CSF\_probseg.nii
 		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_label-GM\_probseg.nii

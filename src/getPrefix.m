@@ -23,26 +23,14 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
   motionRegressorPrefix = '';
 
   allowedPrefixCases = {
-                        'realign'; ...
                         'normalise'; ...
-                        'mean'; ...
-                        'funcQA'; ...
                         'smooth'; ...
                         'FFX'};
 
   switch lower(step)
 
-    case 'realign'
-      prefix = prefixForSTC(prefix, opt);
-
     case 'normalise'
       prefix = prefixForNormalize(opt);
-
-    case 'mean'
-      prefix = prefixForMean(opt);
-
-    case 'funcqa'
-      [prefix, motionRegressorPrefix] = prefixForFuncQA(opt);
 
     case 'smooth'
       prefix = prefixForSmooth(opt);
@@ -83,40 +71,14 @@ function prefix = prefixForSTC(prefix, opt)
 end
 
 function prefix = prefixForNormalize(opt)
-  prefix = getPrefix('realign', opt);
+
+  prefix = '';
 
   if ~opt.realign.useUnwarp && strcmp(opt.space, 'individual')
     prefix = [spm_get_defaults('realign.write.prefix') prefix];
   elseif opt.realign.useUnwarp
     prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
   end
-end
-
-function prefix = prefixForMean(opt)
-  prefix = getPrefix('realign', opt);
-
-  if opt.realign.useUnwarp
-    prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
-  end
-
-  prefix = ['mean' prefix];
-
-  if strcmp(opt.space, 'MNI')
-    prefix = ['w', prefix];
-  end
-end
-
-function [prefix, motionRegressorPrefix] = prefixForFuncQA(opt)
-
-  prefix = getPrefix('realign', opt);
-
-  if ~opt.realign.useUnwarp
-    prefix = [spm_get_defaults('realign.write.prefix') prefix];
-  elseif opt.realign.useUnwarp
-    prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
-  end
-
-  motionRegressorPrefix = prefixForSTC(prefix, opt);
 
 end
 

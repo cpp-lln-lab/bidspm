@@ -44,35 +44,25 @@ function test_getInfoQuery()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
+  opt.query.desc = 'preproc';
   filename = getInfo(BIDS, subLabel, opt, 'filename', session, run, 'bold');
-  if i == 0
-    assertEqual(size(filename, 1), 1);
-  else
-    assertEqual(size(filename, 1), 3);
-  end
+  assertEqual(size(filename, 1), 2);
 
   opt.query = struct('acq', '');
-
   filename = getInfo(BIDS, subLabel, opt, 'filename', session, run, 'bold');
+  assert(all(cellfun('isempty', strfind(cellstr(filename), '_acq-')))); %#ok<STRCL1>
 
   p.suffix = 'bold';
   p.ext = '.nii';
   p.entities = struct('sub', subLabel, ...
                       'ses', session, ...
                       'task', opt.taskName, ...
-                      'run', run);
+                      'run', run, ...
+                      'acq', '1p60mm', ...
+                      'dir', 'PA');
   p.use_schema = true;
 
-  FileName = returnFullpathExpectedFilename(p);
-
-  assertEqual(filename, FileName);
-
-  %%
   opt.query = struct('acq', '1p60mm', 'dir', 'PA');
-
-  p.entities.acq = '1p60mm';
-  p.entities.dir = 'PA';
-
   filename = getInfo(BIDS, subLabel, opt, 'filename', session, run, 'bold');
 
   FileName = returnFullpathExpectedFilename(p);

@@ -26,7 +26,8 @@ function test_setBatchSaveCoregistrationMatrixBasic()
   matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch = returnExpectedBatch();
-  assertEqual(matlabbatch, expectedBatch);
+  assertEqual(matlabbatch{1}.cfg_basicio.var_ops.cfg_save_vars, ...
+              expectedBatch{1}.cfg_basicio.var_ops.cfg_save_vars);
 
 end
 
@@ -43,7 +44,7 @@ function expectedBatch = returnExpectedBatch()
                             'ses-01', ...
                             'func');
 
-  fileName = 'sub-02_ses-01_task-vismotion_run-1_from-scanner_to-T1w_mode-image_xfm.mat';
+  fileName = 'sub-02_ses-01_task-vismotion_from-scanner_to-T1w_mode-image_xfm.mat';
 
   expectedBatch{end + 1}.cfg_basicio.var_ops.cfg_save_vars.name = fileName;
   expectedBatch{end}.cfg_basicio.var_ops.cfg_save_vars.outdir = {subFuncDataDir};

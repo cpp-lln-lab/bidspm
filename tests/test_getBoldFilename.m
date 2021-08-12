@@ -18,7 +18,8 @@ function test_getBoldFilenameBasic()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  opt.query = struct('acq', '');
+  opt.query = struct('acq', '', ... % to filter out raw data with acq entity
+                     'space', '', 'desc', ''); % to filter out derivatives data
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
 

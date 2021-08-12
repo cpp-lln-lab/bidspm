@@ -32,15 +32,11 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
     printProcessingSubject(iSub, subLabel, opt);
 
     %% Anat
+    opt.query.space = 'MNI';
+    opt.query.desc = 'preproc';
     [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
-    anatImage = validationInputFile( ...
-                                    anatDataDir, ...
-                                    anatImage, ...
-                                    [spm_get_defaults('normalise.write.prefix'), ...
-                                     spm_get_defaults('deformations.modulate.prefix')]);
-
-    inputAnat{end + 1, 1} = anatImage; %#ok<*AGROW>
+    inputAnat{end + 1, 1} = fullfile(anatDataDir, anatImage); %#ok<*AGROW>
 
     %% Mask
     ffxDir = getFFXdir(subLabel, funcFWHM, opt);
