@@ -1,4 +1,4 @@
-function printWorklowName(workflowName, opt)
+function printWorkflowName(workflowName, opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
