@@ -31,6 +31,9 @@ function renameToBids(opt, FWHM)
   %  - use spm prefixes instead of hard coding
   %  - probably need to turn mapping into an object with dedicated methods
 
+  % TODO should those image exist after spatial preprocessing
+  %     'cpp_spm-preproc/sub-01/anat/sub-01_space-individual_res-bold_label-GM_probseg.nii'
+
   % add resolution entity when reslicing TPMs
   mapping(end + 1).prefix = {'rc1'};
   mapping(end).name_spec = opt.spm_2_bids.segment.gm;

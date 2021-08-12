@@ -113,7 +113,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.pipeline.type = 'preproc';
   fieldsToSet.pipeline.name = 'cpp_spm';
 
-  fieldsToSet.useBidsSchema = true;
+  fieldsToSet.useBidsSchema = false;
 
   fieldsToSet.dir = struct('input', '', ...
                            'output', '', ...
