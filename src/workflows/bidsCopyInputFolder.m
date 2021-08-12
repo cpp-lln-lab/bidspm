@@ -71,7 +71,7 @@ function bidsCopyInputFolder(opt, unzip)
                             'use_schema', use_schema, ...
                             'verbose', opt.verbosity > 0);
 
-    fprintf(1, '\n\n');
+    printToScreen('\n\n', opt);
   end
 
 end

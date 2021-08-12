@@ -41,7 +41,7 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   end
 
   if isfield(opt, 'taskName')
-    msg = sprintf('FOR TASK: %s\n', opt.taskName);
+    msg = sprintf('\nFOR TASK: %s\n', opt.taskName);
     printToScreen(msg, opt);
   else
     suffix = 'T1w';
@@ -59,7 +59,7 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
 
   % make sure that the required tasks exist in the data set
   if isfield(opt, 'taskName') && ~ismember(opt.taskName, bids.query(BIDS, 'tasks'))
-    fprintf('List of tasks present in this dataset:\n');
+    printToScreen('List of tasks present in this dataset:\n', opt);
     bids.query(BIDS, 'tasks');
 
     errorStruct.identifier = 'getData:noMatchingTask';
@@ -77,8 +77,9 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   % apply to all others.
   opt = getMetaData(BIDS, opt, opt.subjects, suffix);
 
-  printToScreen('WILL WORK ON SUBJECTS\n', opt);
+  printToScreen('\nWILL WORK ON SUBJECTS\n', opt);
   printToScreen(strjoin(opt.subjects), opt);
+  printToScreen('\n', opt);
 
 end
 

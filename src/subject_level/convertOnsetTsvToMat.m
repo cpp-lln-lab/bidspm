@@ -26,16 +26,17 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   tsvFile = validationInputFile(pth, [file, ext]);
 
   % Read the tsv file
-  fprintf('reading the tsv file : %s \n', tsvFile);
+  msg = sprintf('reading the tsv file : %s \n', tsvFile);
+  printToScreen(msg, opt);
   t = spm_load(tsvFile);
 
   if ~isfield(t, 'trial_type')
 
-    errorStruct.identifier = 'convertOnsetTsvToMat:noTrialType';
-    errorStruct.message = sprintf('%s\n%s', ...
-                                  'There was no trial_type field in this file:', ...
-                                  tsvFile);
-    error(errorStruct);
+    msg = sprintf('%s\n%s', ...
+                  'There was no trial_type field in this file:', ...
+                  tsvFile);
+    id = 'noTrialType';
+    errorHandling(mfilename(), id, msg, false, opt.verbosity);
 
   end
 
@@ -82,7 +83,9 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
         onsets{1, end + 1} = t.onset(idx)'; %#ok<*AGROW,*NASGU>
         durations{1, end + 1} = t.duration(idx)';
       else
-        warning('No trial found for trial type %s in \n%s', conditionName, tsvFile);
+        msg = sprintf('No trial found for trial type %s in \n%s', conditionName, tsvFile);
+        id = 'emptyTrialType';
+        errorHandling(mfilename(), id, msg, true, opt.verbosity);
       end
 
     end
