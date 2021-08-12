@@ -63,7 +63,6 @@ do
 			task_name='vislocalizer'
 
 			### raw
-			touch ${this_dir}/rp_sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.txt
 			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.nii
 
 			filename=${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_events.tsv
@@ -72,6 +71,9 @@ do
 			echo "25\t15\tVisStat" >> ${filename}
 
 			### derivatives
+			filename=${this_dir}/rp_sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.txt
+			cp dummyData/rp.txt ${filename}
+
 			func_prefix_list='s6w s6r s6u s6wu'
 			for prefix in ${func_prefix_list}
 			do
