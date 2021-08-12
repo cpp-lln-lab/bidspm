@@ -80,6 +80,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
       % get the filename for this bold run for this task
       % in case we did slice timing we specify it in the file to query
+      opt.query.desc = '';
       if (isfield(opt.metadata, 'SliceTiming') && ...
           ~isempty(opt.metadata.SliceTiming)) || ...
               ~isempty(opt.sliceOrder)
