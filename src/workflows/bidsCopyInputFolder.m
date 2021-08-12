@@ -34,7 +34,7 @@ function bidsCopyInputFolder(opt, unzip)
 
   cleanCrash();
 
-  printWorklowName('copy data', opt);
+  printWorkflowName('copy data', opt);
 
   %% All tasks in this experiment
   % raw directory and derivatives directory

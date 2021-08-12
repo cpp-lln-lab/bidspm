@@ -37,15 +37,15 @@ function renameToBids(opt, FWHM)
   %     'cpp_spm-preproc/sub-01/anat/sub-01_space-individual_res-bold_label-GM_probseg.nii'
 
   % add resolution entity when reslicing TPMs
-  mapping(end + 1).prefix = {'rc1'};
+  mapping(end + 1).prefix = {[pfx.realign 'c1']};
   mapping(end).name_spec = opt.spm_2_bids.segment.gm;
   mapping(end).name_spec.entities.res = 'bold';
 
-  mapping(end + 1).prefix = {'rc2'};
+  mapping(end + 1).prefix = {[pfx.realign 'c2']};
   mapping(end).name_spec = opt.spm_2_bids.segment.wm;
   mapping(end).name_spec.entities.res = 'bold';
 
-  mapping(end + 1).prefix = {'rc3'};
+  mapping(end + 1).prefix = {[pfx.realign 'c3']};
   mapping(end).name_spec = opt.spm_2_bids.segment.csf;
   mapping(end).name_spec.entities.res = 'bold';
 
@@ -86,18 +86,19 @@ function renameToBids(opt, FWHM)
   mapping(end).name_spec = opt.spm_2_bids.smooth;
 
   % specifics for certain files
-  mapping(end + 1).prefix = {'std_u', 'std_ua'};
+  mapping(end + 1).prefix = {['std_' pfx.unwarp, pfx.stc], ...
+                             ['std_' pfx.unwarp]};
   mapping(end).name_spec = opt.spm_2_bids.mean;
   mapping(end).name_spec.entities.desc = 'std';
 
-  mapping(end + 1).prefix = 'm';
+  mapping(end + 1).prefix = pfx.bias_cor;
   mapping(end).suffix = 'T1w';
   mapping(end).ext = '.nii';
   mapping(end).entities = struct('desc', 'skullstripped');
   mapping(end).name_spec = opt.spm_2_bids.segment.bias_corrected;
   mapping(end).name_spec.entities.desc = 'skullstripped';
 
-  mapping(end + 1).prefix = 'm';
+  mapping(end + 1).prefix = pfx.bias_cor;
   mapping(end).suffix = 'mask';
   mapping(end).ext = '.nii';
   mapping(end).entities = struct('label', 'brain');
@@ -118,11 +119,16 @@ function renameToBids(opt, FWHM)
     mapping(idx).name_spec.entities.res = 'bold';
   end
 
-  idx = strcmp('wm', {mapping.prefix}');
+  idx = strcmp([pfx.norm pfx.bias_cor], {mapping.prefix}');
   mapping(idx).name_spec.entities.res = 'hi';
   mapping(idx).name_spec.entities.desc = '';
 
-  mapping(end + 1).prefix = 'wm';
+  idx = strcmp('rp_', {mapping.prefix}');
+  mapping(idx) = [];
+  idx = strcmp(['rp_' pfx.stc], {mapping.prefix}');
+  mapping(idx) = [];
+
+  mapping(end + 1).prefix = [pfx.norm pfx.bias_cor];
   mapping(end).suffix = 'T1w';
   mapping(end).ext = '.nii';
   mapping(end).entities = struct('desc', 'skullstripped');

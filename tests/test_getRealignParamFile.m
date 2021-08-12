@@ -18,45 +18,7 @@ function test_getRealignParamFileBasic()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  [boldFileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, session, run, opt);
-  realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, boldFileName));
-
-  assertEqual(realignParamFile, getExpectedFileName());
-
-end
-
-function test_getRealignParamFileNativeSpace()
-
-  subLabel = '01';
-  session = '01';
-  run = '';
-
-  opt = setOptions('vislocalizer', subLabel);
-  opt.space = 'individual';
-
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
-
-  [boldFileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, session, run, opt);
-  realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, boldFileName));
-
-  assertEqual(realignParamFile, getExpectedFileName());
-
-end
-
-function test_getRealignParamFileFFX()
-
-  subLabel = '01';
-  funcFWHM = 6;
-  iSes = 1;
-  iRun = 1;
-
-  opt = setOptions('vislocalizer', subLabel);
-
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
-
-  [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
-  [subFuncDataDir, boldFileName, ext] = spm_fileparts(boldFileName);
-  realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, [boldFileName, ext]), prefix);
+  realignParamFile = getRealignParamFile(BIDS, subLabel, session, run, opt);
 
   assertEqual(realignParamFile, getExpectedFileName());
 

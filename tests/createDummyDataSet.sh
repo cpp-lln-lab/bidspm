@@ -73,6 +73,7 @@ do
 			### derivatives
 			filename=${this_dir}/rp_sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.txt
 			cp dummyData/rp.txt ${filename}
+			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_desc-confounds\_regressors.tsv
 
 			func_prefix_list='s6w s6r s6u s6wu'
 			for prefix in ${func_prefix_list}

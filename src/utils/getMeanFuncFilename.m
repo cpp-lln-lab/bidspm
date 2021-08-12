@@ -1,4 +1,4 @@
-function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt, step)
+function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt)
   %
   % Get the filename and the directory of an mean functional file.
   %
@@ -18,14 +18,8 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt, ste
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  if nargin < 4
-    step = 'mean';
-  end
-
-  if strcmp(step, 'funcqa')
-    opt.query.space = 'individual';
-    opt.query.desc = 'mean';
-  end
+  opt.query.space = 'individual';
+  opt.query.desc = 'mean';
 
   if strcmp(opt.query.space, 'MNI')
     opt.query.space = 'IXI549Space';

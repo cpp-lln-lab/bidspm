@@ -16,10 +16,9 @@ function test_getMeanFuncFilenameBasic()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  opt.query.space = 'MNI';
   [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
 
-  expectedMeanImage = 'sub-01_ses-01_task-vislocalizer_space-IXI549Space_desc-mean_bold.nii';
+  expectedMeanImage = 'sub-01_ses-01_task-vislocalizer_space-individual_desc-mean_bold.nii';
 
   expectedmeanFuncDir = fullfile(fileparts(mfilename('fullpath')), ...
                                  'dummyData', 'derivatives', 'cpp_spm-preproc', ...
@@ -28,9 +27,9 @@ function test_getMeanFuncFilenameBasic()
   assertEqual(meanFuncDir, expectedmeanFuncDir);
   assertEqual(meanImage, expectedMeanImage);
 
-  opt.query.space = 'individual';
+  opt.query.space = 'MNI';
   meanImage = getMeanFuncFilename(BIDS, subLabel, opt);
 
-  expectedMeanImage = 'sub-01_ses-01_task-vislocalizer_space-individual_desc-mean_bold.nii';
+  expectedMeanImage = 'sub-01_ses-01_task-vislocalizer_space-IXI549Spacel_desc-mean_bold.nii';
 
 end
