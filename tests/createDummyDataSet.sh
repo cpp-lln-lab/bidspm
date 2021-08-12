@@ -10,10 +10,6 @@ stats_dir=${start_dir}/dummyData/derivatives/cpp_spm-stats
 subject_list='ctrl01 ctrl02 blind01 blind02 01 02' # subject list
 session_list='01 02' # session list
 
-func_prefix_list='meanu wmeanu s6w s6r s6u s6wu'
-fmap_suffix_list='_phasediff _magnitude1 _magnitude2'
-anat_prefix_list='m wm c1 c2 c3'
-
 for subject in ${subject_list}
 do
 
@@ -35,6 +31,7 @@ do
 
 			touch ${this_dir}/asub-${subject}\_ses-${ses}\_task-${task_name}_run-1${suffix}.nii
 			touch ${this_dir}/asub-${subject}\_ses-${ses}\_task-${task_name}_run-2${suffix}.nii
+
 			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1\_space-individual\_desc-stc${suffix}.nii
 			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-2\_space-individual\_desc-stc${suffix}.nii
 
@@ -43,7 +40,6 @@ do
 
 			touch ${this_dir}/mean_sub-${subject}\_ses-${ses}\_task-${task_name}_run-1${suffix}.nii
 
-			task_name='vismotion'
 			filename=${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1_events.tsv
 			echo "onset\tduration\ttrial_type" > ${filename}
 			echo "2\t2\tVisMotUp" >> ${filename}
@@ -58,6 +54,8 @@ do
 			task_name='vislocalizer'
 			touch ${this_dir}/rp_sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.txt
 			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.nii
+
+			func_prefix_list='meanu wmeanu s6w s6r s6u s6wu'
 			for prefix in ${func_prefix_list}
 			do
 				touch ${this_dir}/${prefix}sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.nii
@@ -69,11 +67,11 @@ do
 			echo "25\t15\tVisStat" >> ${filename}
 
 
-
 			# FMAP
 			this_dir=${preproc_dir}/sub-${subject}/ses-${ses}/fmap
 			mkdir -p ${this_dir}
 
+			fmap_suffix_list='_phasediff _magnitude1 _magnitude2'
 			for suffix in ${fmap_suffix_list}
 			do
 				touch ${this_dir}/sub-${subject}\_ses-${ses}\_run-1${suffix}.nii
@@ -98,15 +96,38 @@ do
 
 		done
 
+
 		# ANAT
 		this_dir=${preproc_dir}/sub-${subject}/ses-01/anat
 		mkdir -p ${this_dir}
 
-		touch ${this_dir}/sub-${subject}\_ses-01_T1w.nii
-		for preifx in ${anat_prefix_list}
+		ses='01'
+		suffix='_T1w'
+
+		touch ${this_dir}/sub-${subject}\_ses-${ses}${suffix}.nii
+
+		anat_prefix_list='m wm c1 c2 c3'
+		for prefix in ${anat_prefix_list}
 		do
-			touch ${this_dir}/${prefix}sub-${subject}\_ses-01_T1w.nii
+			touch ${this_dir}/${prefix}sub-${subject}\_ses-${ses}${suffix}.nii
 		done
+
+		space='individual'
+
+		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_desc-biascor${suffix}.nii
+		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_desc-skullstripped${suffix}.nii
+		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_label-brain\_mask.nii
+		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_label-CSF\_probseg.nii
+		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_label-GM\_probseg.nii
+		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_label-WM\_probseg.nii
+
+		space='IXI549Space'
+
+		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_res-bold\_label-CSF\_probseg.nii
+		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_res-bold\_label-GM\_probseg.nii
+		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_res-bold\_label-WM\_probseg.nii
+		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_res-hi\_desc-preproc${suffix}.nii
+
 
 		# STATS
 		task_name='vismotion'
