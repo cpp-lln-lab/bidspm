@@ -8,7 +8,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.pipeline.type =  'preproc';
   expectedOptions.pipeline.name = 'cpp_spm';
 
-  expectedOptions.useBidsSchema = true;
+  expectedOptions.useBidsSchema = false;
 
   expectedOptions.sliceOrder = [];
   expectedOptions.STC_referenceSlice = [];
