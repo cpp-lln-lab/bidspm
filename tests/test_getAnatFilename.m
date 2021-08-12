@@ -14,6 +14,30 @@ end
 %  - that the function is smart enough to find an anat even when user has not
 %    specified a session
 
+function test_getAnatFilenameDerivatives()
+
+  subLabel = '01';
+
+  opt = setOptions('vislocalizer', subLabel);
+  opt.useBidsSchema = false;
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  opt.query.desc = 'biascor';
+
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
+
+  expectedFileName = 'sub-01_ses-01_space-individual_desc-biascor_T1w.nii';
+
+  expectedAnatDataDir = fullfile(fileparts(mfilename('fullpath')), ...
+                                 'dummyData', 'derivatives', 'cpp_spm-preproc', ...
+                                 'sub-01', 'ses-01', 'anat');
+
+  assertEqual(anatDataDir, expectedAnatDataDir);
+  assertEqual(anatImage, expectedFileName);
+
+end
+
 function test_getAnatFilenameBasic()
 
   subLabel = '01';

@@ -24,16 +24,18 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   anatSuffix = opt.anatReference.type;
   anatSession = opt.anatReference.session;
 
-  checkAvailableSuffix(BIDS, subLabel, anatSuffix);
+  checkAvailableSuffix(BIDS, opt, subLabel, anatSuffix);
   anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession);
 
   query =  struct('sub', subLabel, ...
                   'suffix', anatSuffix, ...
                   'extension', '.nii', ...
                   'prefix', '');
-  query.ses = anatSession;
-  if cellfun('isempty', anatSession)
-    query = rmfield(query, 'ses');
+  if ~cellfun('isempty', anatSession)
+    query.ses = anatSession;
+  end
+  if isfield(opt.query, 'desc')
+    query.desc = opt.query.desc;
   end
 
   % get all anat images for that subject fo that type
@@ -41,7 +43,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
 
   if isempty(anat)
 
-    msg = sprintf('No anat file for the subject: %s / session: %s/ type: %s.', ...
+    msg = sprintf('No anat file for:\n- subject: %s\n- session: %s\n- type: %s.', ...
                   subLabel, ...
                   char(anatSession), ...
                   anatSuffix);
@@ -60,14 +62,14 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   anatImage = [anatImage ext];
 end
 
-function checkAvailableSuffix(BIDS, subLabel, anatType)
+function checkAvailableSuffix(BIDS, opt, subLabel, anatType)
 
   availableSuffixes = bids.query(BIDS, 'suffixes', ...
                                  'sub', subLabel);
 
   if ~strcmp(anatType, availableSuffixes)
 
-    disp(availableSuffixes);
+    printToScreen(strjoin(availableSuffixes, '; '), opt);
 
     msg = sprintf(['Requested anatomical suffix %s unavailable for subject %s.'...
                    ' All available types listed above.'], anatType);
@@ -86,7 +88,7 @@ function anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession)
 
     if all(~strcmp(anatSession, sessions))
 
-      disp(sessions);
+      printToScreen(strjoin(sessions, '; '), opt);
 
       msg = sprintf(['Requested session %s for anatomical unavailable for subject %s.', ...
                      ' All available sessions listed above.'], ...

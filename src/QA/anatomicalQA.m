@@ -28,16 +28,8 @@ function anatomicalQA(opt)
     printProcessingSubject(iSub, subLabel, opt);
 
     % get bias corrected image
-    query = struct('modality', 'anat', ...
-                   'suffix', opt.anatReference.type, ...
-                   'desc', 'biascor');
-
-    anatImage = bids.query(BIDS, 'data', query);
-    if numel(anatImage) > 1
-      error('too many anatomical images selected');
-    end
-    anatImage = anatImage{1};
-    anatDir = spm_fileparts(anatImage);
+    opt.query.desc = 'biascor';
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
     % get grey and white matter tissue probability maps
     query = rmfield(query, 'desc');
@@ -67,7 +59,7 @@ function anatomicalQA(opt)
     p.ext = '.json';
     p.use_schema = false;
     spm_jsonwrite( ...
-                  fullfile(anatDir, bids.create_filename(p)), ...
+                  fullfile(anatDataDir, bids.create_filename(p)), ...
                   anatQA, ...
                   struct('indent', '   '));
 
@@ -76,10 +68,10 @@ function anatomicalQA(opt)
     p.suffix = 'mask';
     p.ext = '.pdf';
     p.use_schema = false;
-    movefile(fullfile(anatDir, [spm_file(anatImage, 'basename') '_AnatQC.pdf']), ...
-             fullfile(anatDir,  bids.create_filename(p)));
+    movefile(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_AnatQC.pdf']), ...
+             fullfile(anatDataDir,  bids.create_filename(p)));
 
-    delete(fullfile(anatDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
+    delete(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
 
   end
 
