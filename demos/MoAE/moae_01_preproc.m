@@ -29,11 +29,11 @@ opt.pipeline.type = 'preproc';
 % In case you just want to run segmentation and skull stripping
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
 % bidsSegmentSkullStrip(opt);
-
+%
 % bidsSTC(opt);
-
+%
 % bidsSpatialPrepro(opt);
-
+%
 % anatomicalQA(opt);
 
 % NEEDS DEBUGGING
@@ -51,4 +51,4 @@ opt.skullstrip.mean = 1;
 % NEEDS DEBUGGING
 % mask = bidsWholeBrainFuncMask(opt);
 
-bidsSmoothing(opt, FWHM);
+bidsSmoothing(opt);

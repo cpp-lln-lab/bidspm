@@ -7,8 +7,7 @@ function bidsRename(opt)
   tmp = check_cfg();
   opt.spm_2_bids = tmp.spm_2_bids;
 
-  fwhm = '';
-  if nargin > 1
+  if ~isempty(opt.fwhm.func) && opt.fwhm.func > 0
     opt.spm_2_bids.fwhm = opt.fwhm.func;
     fwhm = sprintf('%i', opt.spm_2_bids.fwhm);
   end
@@ -75,13 +74,17 @@ function bidsRename(opt)
                              [pfx.smooth, fwhm, pfx.norm, pfx.unwarp], ...
                              [pfx.smooth, fwhm, pfx.norm, pfx.realign] };
   mapping(end).name_spec = opt.spm_2_bids.smooth_norm;
+  mapping(end).name_spec.entities.desc = ['smth' fwhm];
 
-  mapping(end + 1).prefix = {[pfx.smooth, fwhm], ...
-                             [pfx.smooth, fwhm, pfx.unwarp, pfx.stc], ...
+  mapping(end + 1).prefix = {[pfx.smooth, fwhm, pfx.unwarp, pfx.stc], ...
                              [pfx.smooth, fwhm, pfx.realign, pfx.stc], ...
                              [pfx.smooth, fwhm, pfx.unwarp], ...
                              [pfx.smooth, fwhm, pfx.realign] };
   mapping(end).name_spec = opt.spm_2_bids.smooth;
+  mapping(end).name_spec.entities.desc = ['smth' fwhm];
+
+  mapping(end + 1).prefix = {[pfx.smooth, fwhm] };
+  mapping(end).name_spec.entities.desc = ['smth' fwhm];
 
   % specifics for certain files
   mapping(end + 1).prefix = {['std_' pfx.unwarp, pfx.stc], ...

@@ -8,7 +8,7 @@
 clear;
 clc;
 
-downloadData = false;
+downloadData = true;
 
 run ../../initCppSpm.m;
 
@@ -24,13 +24,13 @@ end
 
 %% Run batches
 % reportBIDS(opt);
-% bidsCopyInputFolder(opt);
-%
-% bidsSTC(opt);
-%
-% bidsSpatialPrepro(opt);
-%
-% anatomicalQA(opt);
+bidsCopyInputFolder(opt);
+
+bidsSTC(opt);
+
+bidsSpatialPrepro(opt);
+
+anatomicalQA(opt);
 
 % DEBUG
 % bidsResliceTpmToFunc(opt);
@@ -38,4 +38,4 @@ end
 % DEBUG
 % functionalQA(opt);
 
-bidsSmoothing(opt, FWHM);
+bidsSmoothing(opt);
