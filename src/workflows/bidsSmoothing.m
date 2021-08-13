@@ -5,18 +5,20 @@ function bidsSmoothing(opt, funcFWHM)
   %
   % USAGE::
   %
-  %   bidsSmoothing(funcFWHM, [opt])
+  %   bidsSmoothing(opt, funcFWHM)
   %
-  % :param funcFWHM: How much smoothing was applied to the functional
-  %                  data in the preprocessing (Gaussian kernel size).
-  % :type funcFWHM: scalar
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
+  % :param funcFWHM: How much smoothing was applied to the functional
+  %                  data in the preprocessing (Gaussian kernel size).
+  % :type funcFWHM: scalar
+  %
   %
   % (C) Copyright 2020 CPP_SPM developers
 
   opt.dir.input = opt.dir.preproc;
+  opt.query.modality = 'func';
 
   [BIDS, opt] = setUpWorkflow(opt, 'smoothing functional data');
 
@@ -33,6 +35,8 @@ function bidsSmoothing(opt, funcFWHM)
 
   end
 
-  renameToBids(opt);
+  prefix = get_spm_prefix_list;
+  opt.query.prefix = [prefix.smooth, num2str(funcFWHM)];
+  bidsRename(opt, funcFWHM);
 
 end

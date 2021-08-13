@@ -68,6 +68,6 @@ function bidsResliceTpmToFunc(opt)
 
   end
 
-  renameToBids(opt);
+  bidsRename(opt);
 
 end

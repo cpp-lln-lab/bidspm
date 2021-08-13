@@ -13,11 +13,11 @@ function bidsSegmentSkullStrip(opt)
   % (C) Copyright 2020 CPP_SPM developers
 
   opt.dir.input = opt.dir.preproc;
-
-  [BIDS, opt] = setUpWorkflow(opt, 'segmentation and skulltripping');
-
+  opt.query.modality = 'anat';
   opt.orderBatches.selectAnat = 1;
   opt.orderBatches.segment = 2;
+
+  [BIDS, opt] = setUpWorkflow(opt, 'segmentation and skulltripping');
 
   for iSub = 1:numel(opt.subjects)
 
@@ -40,5 +40,10 @@ function bidsSegmentSkullStrip(opt)
     end
 
   end
+
+  opt.query.prefix = prefix.stc;
+  opt.query.prefix = {prefix.bias_cor, 'c1', 'c2', 'c3'};
+  opt.query.suffix = opt.anatReference.type;
+  bidsRename(opt);
 
 end

@@ -10,9 +10,11 @@ end
 
 function test_bidsRealignUnwarpBasic()
 
-  opt = setOptions('MoAE');
+  opt = setOptions('vislocalizer');
 
   opt.pipeline.type = 'preproc';
+  opt.funcVoxelDims = [2 2 2];
+  opt.useFieldmaps = false;
 
   bidsRealignUnwarp(opt);
 

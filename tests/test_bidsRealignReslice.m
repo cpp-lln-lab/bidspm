@@ -10,9 +10,10 @@ end
 
 function test_bidsRealignResliceBasic()
 
-  opt = setOptions('MoAE');
+  opt = setOptions('vislocalizer');
 
   opt.pipeline.type = 'preproc';
+  opt.funcVoxelDims = [2 2 2];
 
   bidsRealignReslice(opt);
 

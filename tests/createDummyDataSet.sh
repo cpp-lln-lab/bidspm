@@ -75,7 +75,7 @@ do
 			cp dummyData/rp.txt ${filename}
 			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_desc-confounds\_regressors.tsv
 
-			func_prefix_list='s6w s6r s6u s6wu'
+			func_prefix_list='a r u s6'
 			for prefix in ${func_prefix_list}
 			do
 				touch ${this_dir}/${prefix}sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.nii
@@ -132,6 +132,12 @@ do
 		suffix='_T1w'
 
 		touch ${this_dir}/sub-${subject}\_ses-${ses}${suffix}.nii
+
+		anat_prefix_list='m c1 c2 c3'
+		for prefix in ${anat_prefix_list}
+		do
+			touch ${this_dir}/${prefix}sub-${subject}\_ses-${ses}${suffix}.nii
+		done
 
 		space='individual'
 

@@ -15,6 +15,7 @@ function bidsRealignReslice(opt)
   % (C) Copyright 2020 CPP_SPM developers
 
   opt.dir.input = opt.dir.preproc;
+  opt.query.modality = 'func';
 
   [BIDS, opt] = setUpWorkflow(opt, 'realign and reslice');
 
@@ -39,5 +40,9 @@ function bidsRealignReslice(opt)
     end
 
   end
+
+  prefix = get_spm_prefix_list();
+  opt.query.prefix = prefix.realign;
+  bidsRename(opt);
 
 end

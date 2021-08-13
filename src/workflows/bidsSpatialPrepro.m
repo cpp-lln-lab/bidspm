@@ -110,6 +110,6 @@ function bidsSpatialPrepro(opt)
 
   end
 
-  renameToBids(opt);
+  bidsRename(opt);
 
 end
