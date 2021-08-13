@@ -80,7 +80,7 @@ function expectedBatch = returnExpectedBatch(opt)
                       '.', 'c', '()', {':'}));
 
   expectedFileName = 'sub-01_ses-01_desc-skullstripped_T1w.nii';
-  expectedBatch{end}.spm.util.imcalc.output = ['m' expectedFileName];
+  expectedBatch{end}.spm.util.imcalc.output = expectedFileName;
   expectedBatch{end}.spm.util.imcalc.outdir = {expectedAnatDataDir};
 
   expectedBatch{end}.spm.util.imcalc.expression = sprintf( ...
@@ -93,6 +93,6 @@ function expectedBatch = returnExpectedBatch(opt)
                                                           '(i2+i3+i4)>%f', ...
                                                           opt.skullstrip.threshold);
   expectedFileName = 'sub-01_ses-01_label-brain_mask.nii';
-  expectedBatch{end}.spm.util.imcalc.output = ['m' expectedFileName];
+  expectedBatch{end}.spm.util.imcalc.output = expectedFileName;
 
 end
