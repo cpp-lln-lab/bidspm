@@ -10,9 +10,7 @@ end
 
 function test_bidsSegmentSkullStripBasic()
 
-  opt = setOptions('MoAE');
-
-  bidsCopyInputFolder(opt, true());
+  opt = setOptions('vismotion');
 
   opt.pipeline.type = 'preproc';
 

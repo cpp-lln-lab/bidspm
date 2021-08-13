@@ -12,8 +12,6 @@ function test_bidsRealignResliceBasic()
 
   opt = setOptions('MoAE');
 
-  bidsCopyInputFolder(opt, true());
-
   opt.pipeline.type = 'preproc';
 
   bidsRealignReslice(opt);

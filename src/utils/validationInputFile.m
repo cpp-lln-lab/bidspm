@@ -51,15 +51,19 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
     prefix = '';
   end
 
+  if size(fileNamePattern, 1) > 1
+    disp(fileNamePattern);
+    msg = 'More than one file to select: %s';
+    errorHandling(mfilename(), 'tooManyFiles', msg, false, true);
+  end
+
   files = spm_select('FPList', dir, ['^' prefix fileNamePattern '$']);
 
   if isempty(files)
-
     msg = sprintf( ...
                   'This file does not exist: %s', ...
                   fullfile(dir, [prefix fileNamePattern '[.gz]']));
     errorHandling(mfilename(), 'nonExistentFile', msg, false, true);
-
   end
 
 end

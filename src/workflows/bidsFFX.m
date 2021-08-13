@@ -27,6 +27,8 @@ function bidsFFX(action, opt, funcFWHM)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  opt.dir.input = opt.dir.preproc;
+
   if opt.glm.roibased.do
     msg = sprintf(['The option opt.glm.roibased.do is set to true.\n', ...
                    ' Change the option to false to use this workflow or\n', ...

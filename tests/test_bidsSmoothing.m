@@ -12,11 +12,9 @@ function test_bidsSmoothingBasic()
 
   FWHM = 6;
 
-  opt = setOptions('MoAE-preproc');
+  opt = setOptions('vislocalizer');
 
-  opt.dir.input = opt.dir.preproc;
   opt.pipeline.type = 'preproc';
-  opt.pipeline.name = 'cpp_spm';
 
   opt = checkOptions(opt);
 

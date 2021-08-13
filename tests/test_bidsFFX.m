@@ -19,7 +19,6 @@ function test_bidsFFXBasic()
   opt.pipeline.name = 'cpp_spm-stats';
 
   opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
-  opt.dir.input = opt.dir.preproc;
 
   bidsFFX('specifyAndEstimate', opt, FWHM);
   %   bidsFFX('contrasts', opt, FWHM);

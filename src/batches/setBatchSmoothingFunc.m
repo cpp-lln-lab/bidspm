@@ -24,8 +24,6 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, func
 
   printBatchName('smoothing functional images', opt);
 
-  prefix = getPrefix('smooth', opt);
-
   % identify sessions for this subject
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
@@ -40,13 +38,17 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, func
     % numRuns = group(iGroup).numRuns(iSub);
     for iRun = 1:nbRuns
 
-      % get the filename for this bold run for this task
+      opt.query.desc = 'preproc';
+      opt.query.space = opt.space;
+      if strcmp(opt.query.space, 'MNI')
+        opt.query.space = 'IXI549Space';
+      end
       [fileName, subFuncDataDir] = getBoldFilename( ...
                                                    BIDS, ...
                                                    subID, sessions{iSes}, runs{iRun}, opt);
 
-      % check that the file with the right prefix exist
-      files = validationInputFile(subFuncDataDir, fileName, prefix);
+      % check input file
+      files = validationInputFile(subFuncDataDir, fileName);
 
       % add the files to list
       allFilesTemp = cellstr(files);

@@ -46,4 +46,6 @@ function bidsSTC(opt)
 
   end
 
+  renameToBids(opt);
+
 end

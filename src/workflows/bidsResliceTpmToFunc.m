@@ -32,7 +32,7 @@ function bidsResliceTpmToFunc(opt)
     printProcessingSubject(iSub, subLabel, opt);
 
     opt.query.space = 'individual';
-    [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt, 'funcqa');
+    [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
 
     % get grey and white matter and CSF tissue probability maps
     [greyMatter, whiteMatter, csf] = getTpmFilenames(BIDS, subLabel);
@@ -67,5 +67,7 @@ function bidsResliceTpmToFunc(opt)
     saveAndRunWorkflow(matlabbatch, 'create_functional_brain_mask', opt, subLabel);
 
   end
+
+  renameToBids(opt);
 
 end

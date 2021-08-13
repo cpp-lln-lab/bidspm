@@ -69,7 +69,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
 
       sessions = bids.query(BIDS, 'sessions', query);
 
-      nbSessions = size(sessions, 2);
+      nbSessions = numel(sessions);
       if nbSessions == 0
         nbSessions = 1;
         sessions = {''};

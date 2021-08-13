@@ -12,6 +12,8 @@ function bidsSegmentSkullStrip(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  opt.dir.input = opt.dir.preproc;
+
   [BIDS, opt] = setUpWorkflow(opt, 'segmentation and skulltripping');
 
   opt.orderBatches.selectAnat = 1;

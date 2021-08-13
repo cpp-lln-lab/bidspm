@@ -16,6 +16,8 @@ function bidsSmoothing(opt, funcFWHM)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  opt.dir.input = opt.dir.preproc;
+
   [BIDS, opt] = setUpWorkflow(opt, 'smoothing functional data');
 
   for iSub = 1:numel(opt.subjects)
@@ -30,5 +32,7 @@ function bidsSmoothing(opt, funcFWHM)
     saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subLabel);
 
   end
+
+  renameToBids(opt);
 
 end

@@ -29,8 +29,9 @@ function anatomicalQA(opt)
     % get bias corrected image
     opt.query.desc = 'biascor';
     [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
+    anatImage = fullfile(anatDataDir, anatImage);
 
-    [gm, wm] = getTpmFilenames(BIDS, subLabel);
+    [gm, wm] = getTpmFilename(BIDS, subLabel);
 
     % sanity check that all images are in the same space.
     volumesToCheck = {anatImage; gm; wm};

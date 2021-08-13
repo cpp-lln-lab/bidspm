@@ -10,11 +10,10 @@ end
 
 function test_bidsSpatialSTCBasic()
 
-  opt = setOptions('MoAE');
-
-  bidsCopyInputFolder(opt, true());
+  opt = setOptions('vismotion');
 
   opt.pipeline.type = 'preproc';
+  opt.query.acq = '';
 
   bidsSTC(opt);
 

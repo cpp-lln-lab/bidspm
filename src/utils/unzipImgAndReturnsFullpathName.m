@@ -18,6 +18,12 @@ function unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgNam
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  if size(fullpathImgName, 1) > 1
+    disp(fullpathImgName);
+    msg = 'More than one file to select: %s';
+    errorHandling(mfilename(), 'tooManyFiles', msg, false, true);
+  end
+
   [directory, filename, ext] = spm_fileparts(fullpathImgName);
 
   if strcmp(ext, '.gz')
