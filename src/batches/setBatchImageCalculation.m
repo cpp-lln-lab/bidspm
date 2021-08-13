@@ -48,7 +48,7 @@ function matlabbatch = setBatchImageCalculation(varargin)
                      'uint16', ...
                      'uint32'};
 
-  defaultDataType = 'int16';
+  defaultDataType = 'float32';
 
   p = inputParser;
 
