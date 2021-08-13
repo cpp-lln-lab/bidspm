@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_getRealignParamFile %#ok<*STOUT>
+function test_suite = test_getConfoundsRegressorFilename %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,7 +8,7 @@ function test_suite = test_getRealignParamFile %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getRealignParamFileBasic()
+function test_getConfoundRegressorFileBasic()
 
   subLabel = '01';
   session = '01';
@@ -18,7 +18,7 @@ function test_getRealignParamFileBasic()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  realignParamFile = getRealignParamFile(BIDS, subLabel, session, run, opt);
+  realignParamFile = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, run);
 
   assertEqual(realignParamFile, getExpectedFileName());
 
@@ -28,5 +28,5 @@ function  expectedFileName = getExpectedFileName()
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                               'dummyData', 'derivatives', 'cpp_spm-preproc', 'sub-01', ...
                               'ses-01', 'func', ...
-                              'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
+                              'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.tsv');
 end
