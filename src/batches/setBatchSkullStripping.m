@@ -44,10 +44,12 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   end
 
   p = bids.internal.parse_filename(imageToSkullStrip);
+  p.entities.space = 'individual';
   p.entities.desc = 'skullstripped';
   output = bids.create_filename(p);
 
   p = bids.internal.parse_filename(imageToSkullStrip);
+  p.entities.space = 'individual';
   p.entities.label = 'brain';
   p.suffix = 'mask';
   p.use_schema = false;

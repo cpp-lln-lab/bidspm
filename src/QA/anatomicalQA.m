@@ -66,4 +66,6 @@ function anatomicalQA(opt)
 
   end
 
+  bidsRename(opt);
+
 end

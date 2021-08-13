@@ -17,7 +17,6 @@ opt.dir.preproc = fullfile(opt.dir.raw, '..', 'derivatives');
 
 opt.pipeline.type = 'preproc';
 opt.pipeline.name = 'cpp_spm-anat';
-
 opt.query.modality = 'anat';
 
 opt = checkOptions(opt);
@@ -32,7 +31,7 @@ if downloadData
 end
 
 %% Run batches
-reportBIDS(opt);
+% reportBIDS(opt);
 bidsCopyInputFolder(opt);
 
 bidsSegmentSkullStrip(opt);

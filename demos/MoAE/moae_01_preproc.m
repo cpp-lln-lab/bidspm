@@ -20,36 +20,38 @@ run ../../initCppSpm.m;
 %% Set options
 opt = moae_get_option();
 
-download_moae_ds(download_data);
+% download_moae_ds(download_data);
 
 %% Run batches
 % reportBIDS(opt);
 
 opt.pipeline.type = 'preproc';
 
-bidsCopyInputFolder(opt);
+% bidsCopyInputFolder(opt);
 
 % In case you just want to run segmentation and skull stripping
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
 % bidsSegmentSkullStrip(opt);
 
-bidsSTC(opt);
+% bidsSTC(opt);
 
-bidsSpatialPrepro(opt);
+% bidsSpatialPrepro(opt);
 
-% renameToBids(opt);
+% anatomicalQA(opt);
 
-return
+% NEEDS DEBUGGING
+% bidsResliceTpmToFunc(opt);
 
-anatomicalQA(opt);
-bidsResliceTpmToFunc(opt);
-functionalQA(opt);
+% DOES NOT WORK
+% functionalQA(opt);
 
 % create a whole brain functional mean image mask
 % so the mask will be in the same resolution/space as the functional images
 % one may not need it if they are running bidsFFX
 % since it creates a mask.nii by default
 opt.skullstrip.mean = 1;
-mask = bidsWholeBrainFuncMask(opt);
 
-bidsSmoothing(FWHM, opt);
+% NEEDS DEBUGGING
+% mask = bidsWholeBrainFuncMask(opt);
+
+bidsSmoothing(opt, FWHM);

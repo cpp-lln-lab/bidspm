@@ -27,21 +27,19 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, func
   % identify sessions for this subject
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
-  % clear previous matlabbatch and files
   allFiles = [];
 
-  for iSes = 1:nbSessions        % For each session
+  for iSes = 1:nbSessions
 
-    % get all runs for that subject across all sessions
     [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
 
-    % numRuns = group(iGroup).numRuns(iSub);
     for iRun = 1:nbRuns
 
       opt.query.desc = 'preproc';
       opt.query.space = opt.space;
-      if strcmp(opt.query.space, 'MNI')
-        opt.query.space = 'IXI549Space';
+      if ismember('MNI', opt.query.space)
+        idx = strcmp(opt.query.space, 'MNI');
+        opt.query.space{idx} = 'IXI549Space';
       end
       [fileName, subFuncDataDir] = getBoldFilename( ...
                                                    BIDS, ...

@@ -114,6 +114,7 @@ function bidsRename(opt, FWHM)
   mapping(end).name_spec.entities = struct('desc', 'pialsurf');
 
   % modify defaults
+  findIdx = @(x) strcmp(x, {mapping.prefix}');
   for i = 1:3
     idx = strcmp(sprintf('wc%i', i), {mapping.prefix}');
     mapping(idx).name_spec.entities.res = 'bold';
@@ -127,6 +128,12 @@ function bidsRename(opt, FWHM)
   mapping(idx) = [];
   idx = strcmp(['rp_' pfx.stc], {mapping.prefix}');
   mapping(idx) = [];
+
+  idx = strcmp([pfx.unwarp], {mapping.prefix}');
+  mapping(idx).name_spec.entities.desc = 'preproc';
+
+  idx = strcmp([pfx.unwarp pfx.stc], {mapping.prefix}');
+  mapping(idx).name_spec.entities.desc = 'preproc';
 
   mapping(end + 1).prefix = [pfx.norm pfx.bias_cor];
   mapping(end).suffix = 'T1w';

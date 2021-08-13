@@ -41,6 +41,12 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  if isempty(fileNamePattern)
+    msg = sprintf(['The filename to validate cannot be empty.\n', ...
+                   'Check that your query did not come back empty']);
+    errorHandling(mfilename(), 'emptyInput', msg, false, true);
+  end
+
   % try to guess directory in case a fullpath filename was given
   if isempty(dir)
     [dir, fileNamePattern, ext] = spm_fileparts(fileNamePattern);

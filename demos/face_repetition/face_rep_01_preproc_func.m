@@ -26,20 +26,18 @@ end
 
 %% Run batches
 % reportBIDS(opt);
-bidsCopyInputFolder(opt);
+% bidsCopyInputFolder(opt);
+%
+% bidsSTC(opt);
+%
+% bidsSpatialPrepro(opt);
+%
+% anatomicalQA(opt);
 
-bidsSTC(opt);
-renameToBids(opt);
-
-bidsSpatialPrepro(opt);
-renameToBids(opt);
-
-return
-
-anatomicalQA(opt);
-bidsResliceTpmToFunc(opt);
+% DEBUG
+% bidsResliceTpmToFunc(opt);
 
 % DEBUG
 % functionalQA(opt);
 
-bidsSmoothing(FWHM, opt);
+bidsSmoothing(opt, FWHM);
