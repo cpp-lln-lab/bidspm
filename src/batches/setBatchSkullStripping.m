@@ -108,6 +108,9 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
 
   else
 
+    % TODO: using 'm' prefixes might not work and should probably be changed for
+    % a bids.query
+
     % bias corrected image
     biasCorrectedAnatImage = validationInputFile(anatDataDir, anatImage, 'm');
     % get the tissue probability maps in native space for that subject

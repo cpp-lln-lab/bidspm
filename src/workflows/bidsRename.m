@@ -22,16 +22,13 @@ function bidsRename(opt)
   %   usub-01_task-facerepetition_space-individual_desc-stc_bold.nii -->
   %     sub-01_task-facerepetition_space-individual_desc-realignUnwarp_bold.nii
 
-  % TODO stc might not be in individual space
+  % TODO stc might not be in individual space (as in not in T1w space)
 
   % TODO write and update json content
 
   % TODO refactor this:
   %  - use spm prefixes instead of hard coding
   %  - probably need to turn mapping into an object with dedicated methods
-
-  % TODO should those image exist after spatial preprocessing
-  %     'cpp_spm-preproc/sub-01/anat/sub-01_space-individual_res-bold_label-GM_probseg.nii'
 
   % add resolution entity when reslicing TPMs
   mapping(end + 1).prefix = {[pfx.realign 'c1']};
@@ -92,14 +89,14 @@ function bidsRename(opt)
   mapping(end).name_spec = opt.spm_2_bids.mean;
   mapping(end).name_spec.entities.desc = 'std';
 
-  mapping(end + 1).prefix = pfx.bias_cor;
+  mapping(end + 1).prefix = {'m', ''};
   mapping(end).suffix = 'T1w';
   mapping(end).ext = '.nii';
   mapping(end).entities = struct('desc', 'skullstripped');
   mapping(end).name_spec = opt.spm_2_bids.segment.bias_corrected;
-  mapping(end).name_spec.entities.desc = 'skullstripped';
+  mapping(end).name_spec.entities.desc = 'preproc';
 
-  mapping(end + 1).prefix = pfx.bias_cor;
+  mapping(end + 1).prefix = {'m', ''};
   mapping(end).suffix = 'mask';
   mapping(end).ext = '.nii';
   mapping(end).entities = struct('label', 'brain');
@@ -113,6 +110,14 @@ function bidsRename(opt)
   mapping(end).entities = '*';
   mapping(end).name_spec.ext = '.gii';
   mapping(end).name_spec.entities = struct('desc', 'pialsurf');
+
+  mapping(end + 1).prefix = {pfx.norm};
+  mapping(end).suffix = 'T1w';
+  mapping(end).ext = '.nii';
+  mapping(end).entities = struct('desc', 'skullstripped');
+  mapping(end).name_spec = opt.spm_2_bids.segment.bias_corrected;
+  mapping(end).name_spec.entities.res = 'hi';
+  mapping(end).name_spec.entities.desc = 'preproc';
 
   % modify defaults
   findIdx = @(x) strcmp(x, {mapping.prefix}');
