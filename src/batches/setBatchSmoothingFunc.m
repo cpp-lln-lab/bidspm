@@ -1,10 +1,10 @@
-function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, funcFWHM)
+function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID)
   %
   % Short description of what the function does goes here.
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, funcFWHM)
+  %   matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -14,8 +14,6 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, func
   % :type opt: string
   % :param subID:
   % :type subID:
-  % :param funcFWHM:
-  % :type funcFWHM:
   %
   % :returns: - :matlabbatch: (structure)
   %
@@ -46,10 +44,12 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, func
                                                    subID, sessions{iSes}, runs{iRun}, opt);
 
       % check input file
-      files = validationInputFile(subFuncDataDir, fileName);
+      for iFile = 1:size(fileName, 1)
+        files{iFile, 1} = validationInputFile(subFuncDataDir(iFile, :), fileName(iFile, :));
+      end
 
       % add the files to list
-      allFilesTemp = cellstr(files);
+      allFilesTemp = cellstr(char(files));
       allFiles = [allFiles; allFilesTemp]; %#ok<AGROW>
 
     end
@@ -59,7 +59,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, func
   matlabbatch = setBatchSmoothing(matlabbatch, ...
                                   opt, ...
                                   allFiles, ...
-                                  funcFWHM, ...
-                                  [spm_get_defaults('smooth.prefix'), num2str(funcFWHM)]);
+                                  opt.fwhm.func, ...
+                                  [spm_get_defaults('smooth.prefix'), num2str(opt.fwhm.func)]);
 
 end

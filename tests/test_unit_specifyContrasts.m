@@ -12,12 +12,11 @@ function test_specifyContrastsBasic()
   % Small test to ensure that pmCon returns what we asked for
 
   subLabel = '01';
-  funcFWFM = 6;
 
   opt = setOptions('vismotion', subLabel);
   opt.space = {'MNI'};
 
-  ffxDir = getFFXdir(subLabel, funcFWFM, opt);
+  ffxDir = getFFXdir(subLabel, opt);
 
   contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 

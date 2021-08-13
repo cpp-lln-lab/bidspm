@@ -1,4 +1,4 @@
-function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFWHM)
+function matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
   %
   % Short description of what the function does goes here.
   %
@@ -10,10 +10,6 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
   % :type matlabbatch: structure
   % :param opt:
   % :type opt: structure
-  % :param funcFWHM:
-  % :type funcFWHM:
-  % :param conFWHM:
-  % :type conFWHM:
   %
   % :returns: - :matlabbatch: (structure)
   %
@@ -23,13 +19,13 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
 
   % Check which level of CON smoothing is desired
   smoothPrefix = '';
-  if conFWHM > 0
-    smoothPrefix = ['s', num2str(conFWHM)];
+  if opt.fwhm.contrast > 0
+    smoothPrefix = ['s', num2str(opt.fwhm.contrast)];
   end
 
   [~, opt] = getData(opt, opt.dir.preproc);
 
-  rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
+  rfxDir = getRFXdir(opt);
 
   grpLvlCon = getGrpLevelContrastToCompute(opt);
 
@@ -64,7 +60,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFW
       printProcessingSubject(iSub, subLabel, opt);
 
       % FFX directory and load SPM.mat of that subject
-      ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+      ffxDir = getFFXdir(subLabel, opt);
       load(fullfile(ffxDir, 'SPM.mat'));
 
       % find which contrast of that subject has the name of the contrast we

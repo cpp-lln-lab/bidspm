@@ -10,21 +10,18 @@ end
 
 function test_createGlmDirName()
 
-  FWHM = 6;
   opt = setOptions('funcLocalizer');
 
-  assertExceptionThrown(@()createGlmDirName(opt, FWHM), 'createGlmDirName:tooManyMRISpaces');
+  assertExceptionThrown(@()createGlmDirName(opt), 'createGlmDirName:tooManyMRISpaces');
 
 end
 
 function test_createGlmDirNameBasic()
 
-  FWHM = 6;
-
   opt = setOptions('funcLocalizer');
   opt.space = {'MNI'};
 
-  glmDirName = createGlmDirName(opt, FWHM);
+  glmDirName = createGlmDirName(opt);
 
   expectedOutput = 'task-funcLocalizer_space-MNI_FWHM-6';
 

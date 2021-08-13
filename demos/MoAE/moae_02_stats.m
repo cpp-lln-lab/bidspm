@@ -9,8 +9,6 @@
 clear;
 clc;
 
-FWHM = 6;
-
 run ../../initCppSpm.m;
 
 %% Set options
@@ -20,6 +18,6 @@ opt = moae_get_option();
 opt.pipeline.type = 'stats';
 
 % The following crash on Travis CI
-bidsFFX('specifyAndEstimate', opt, FWHM);
-bidsFFX('contrasts', opt, FWHM);
-bidsResults(opt, FWHM);
+bidsFFX('specifyAndEstimate', opt);
+bidsFFX('contrasts', opt);
+bidsResults(opt);

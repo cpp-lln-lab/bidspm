@@ -35,8 +35,8 @@ function test_getBoldFilenameBasic()
                                     'dummyData', 'derivatives', 'cpp_spm-preproc', ...
                                     'sub-01', 'ses-01', 'func');
 
-  assertEqual(expectedSubFuncDataDir, subFuncDataDir);
-  assertEqual(expectedFileName, fileName);
+  assertEqual(subFuncDataDir, expectedSubFuncDataDir);
+  assertEqual(fileName, expectedFileName);
 
 end
 
@@ -67,7 +67,7 @@ function test_getBoldFilenameDerivatives()
                                     'dummyData', 'derivatives', 'cpp_spm-preproc', ...
                                     'sub-01', 'ses-01', 'func');
 
-  assertEqual(expectedSubFuncDataDir, subFuncDataDir);
-  assertEqual(expectedFileName, fileName);
+  assertEqual(subFuncDataDir, expectedSubFuncDataDir);
+  assertEqual(fileName, expectedFileName);
 
 end

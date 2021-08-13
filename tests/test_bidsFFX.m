@@ -10,18 +10,16 @@ end
 
 function test_bidsFFXBasic()
 
-  FWHM = 6;
-
   opt = setOptions('MoAE-preproc');
   opt.space = {'MNI'};
 
   opt.pipeline.type = 'stats';
-  opt.pipeline.name = 'cpp_spm-stats';
+  opt.pipeline.name = 'cpp_spm';
 
   opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
 
-  bidsFFX('specifyAndEstimate', opt, FWHM);
-  %   bidsFFX('contrasts', opt, FWHM);
-  %   bidsResults(opt, FWHM);
+  bidsFFX('specifyAndEstimate', opt);
+  %   bidsFFX('contrasts', opt);
+  %   bidsResults(opt);
 
 end

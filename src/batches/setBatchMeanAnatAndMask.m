@@ -1,4 +1,4 @@
-function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outputDir)
+function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, outputDir)
   %
   % Creates batxh to create mean anatomical image and a group mask
   %
@@ -10,7 +10,6 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
   % :type matlabbatch: structure
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :param funcFWHM:
   % :param outputDir:
   % :type outputDir: tring
   %
@@ -39,7 +38,7 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
     inputAnat{end + 1, 1} = fullfile(anatDataDir, anatImage); %#ok<*AGROW>
 
     %% Mask
-    ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+    ffxDir = getFFXdir(subLabel, opt);
 
     files = validationInputFile(ffxDir, 'mask.nii');
 

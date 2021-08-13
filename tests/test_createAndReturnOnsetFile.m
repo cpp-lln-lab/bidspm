@@ -11,7 +11,6 @@ end
 function test_createAndReturnOnsetFileBasic()
 
   subLabel = '01';
-  funcFWHM = 6;
   iSes = 1;
   iRun = 1;
 
@@ -32,7 +31,7 @@ function test_createAndReturnOnsetFileBasic()
                  'extension', '.tsv');
   tsvFile = bids.query(BIDS, 'data', query);
 
-  onsetFileName = createAndReturnOnsetFile(opt, subLabel, tsvFile, funcFWHM);
+  onsetFileName = createAndReturnOnsetFile(opt, subLabel, tsvFile);
 
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                               'dummyData', 'derivatives', 'cpp_spm-stats', 'sub-01', 'stats', ...

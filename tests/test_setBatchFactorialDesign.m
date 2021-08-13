@@ -10,15 +10,12 @@ end
 
 function test_setBatchFactorialDesignBasic()
 
-  funcFWHM = 6;
-  conFWHM = 6;
-
   opt = setOptions('vismotion');
   opt.subjects = {'01' '02'};
   opt.space = {'MNI'};
 
   matlabbatch = [];
-  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFWHM);
+  matlabbatch = setBatchFactorialDesign(matlabbatch, opt);
 
   % TODO
   % add assert

@@ -1,17 +1,15 @@
-function bidsRename(opt, FWHM)
+function bidsRename(opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
   createdFiles = {};
-
-  opt.useBidsSchema = false;
 
   tmp = check_cfg();
   opt.spm_2_bids = tmp.spm_2_bids;
 
   fwhm = '';
   if nargin > 1
-    opt.spm_2_bids.fwhm = FWHM;
+    opt.spm_2_bids.fwhm = opt.fwhm.func;
     fwhm = sprintf('%i', opt.spm_2_bids.fwhm);
   end
 

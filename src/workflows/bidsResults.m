@@ -1,4 +1,4 @@
-function bidsResults(opt, funcFWHM, conFWHM)
+function bidsResults(opt)
   %
   % Computes the results for a series of contrast that can be
   % specified at the run, subject or dataset step level (see contrast specification
@@ -11,12 +11,6 @@ function bidsResults(opt, funcFWHM, conFWHM)
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param funcFWHM: How much smoothing was applied to the functional
-  %                  data in the preprocessing (Gaussian kernel size).
-  % :type funcFWHM: scalar
-  % :param conFWHM: How much smoothing will be applied to the contrast
-  %                 images (Gaussian kernel size).
-  % :type conFWHM: scalar
   %
   %
   % TODO
@@ -59,7 +53,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
           subLabel = opt.subjects{iSub};
 
-          results.dir = getFFXdir(subLabel, funcFWHM, opt);
+          results.dir = getFFXdir(subLabel, opt);
 
           for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
 
@@ -68,7 +62,6 @@ function bidsResults(opt, funcFWHM, conFWHM)
                                             matlabbatch, ...
                                             opt, ...
                                             subLabel, ...
-                                            funcFWHM, ...
                                             iStep, ...
                                             iCon);
 
@@ -88,7 +81,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
         matlabbatch = [];
 
-        results.dir = getRFXdir(opt, funcFWHM, conFWHM);
+        results.dir = getRFXdir(opt);
         results.contrastNb = 1;
         results.label = 'group';
 

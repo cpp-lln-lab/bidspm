@@ -11,13 +11,12 @@ end
 function test_setBatchSubjectLevelContrastsBasic()
 
   subLabel = '01';
-  funcFWHM = 6;
 
   opt = setOptions('vismotion', subLabel);
   opt.space = {'MNI'};
 
   matlabbatch = [];
-  matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, funcFWHM);
+  matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);
 
   expectedBatch = [];
   expectedBatch{end + 1}.spm.stats.con.spmmat = {fullfile(opt.dir.stats, ...

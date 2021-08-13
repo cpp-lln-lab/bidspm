@@ -44,7 +44,7 @@ do
 			echo "6\t2\tVisMotUp" >> ${filename}
 
 			### derivatives
-			desc_label_list='stc preproc mean'
+			desc_label_list='stc preproc mean smth6'
 			for desc in ${desc_label_list}
 			do
 				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1\_space-individual\_desc-${desc}${suffix}.nii
@@ -81,12 +81,12 @@ do
 				touch ${this_dir}/${prefix}sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.nii
 			done
 
-			desc_label_list='preproc mean'
+			desc_label_list='preproc smth6'
 			for desc in ${desc_label_list}
 			do
 				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-individual\_desc-${desc}${suffix}.nii
+				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-IXI549Space\_desc-${desc}${suffix}.nii
 			done
-			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-IXI549Space\_desc-preproc${suffix}.nii
 
 			if [ ${ses} = '01' ]; then
 				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-individual\_desc-mean${suffix}.nii

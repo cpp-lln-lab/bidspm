@@ -14,7 +14,6 @@ function test_setBatchSmoothingFuncBasic()
   % need a test with several sessions and runs
 
   subLabel = '01';
-  funcFWHM = 6;
 
   opt = setOptions('vislocalizer', subLabel);
 
@@ -26,14 +25,15 @@ function test_setBatchSmoothingFuncBasic()
   fileName = bids.query(BIDS, 'data', ...
                         'sub', subLabel, ...
                         'task', opt.taskName, ...
+                        'extension', '.nii', ...
                         'desc', 'preproc', ...
                         'space', 'IXI549Space', ...
                         'suffix', 'bold');
 
   matlabbatch = {};
-  matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel, funcFWHM);
+  matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel);
 
-  expectedBatch{1}.spm.spatial.smooth.fwhm = [6 6 6];
+  expectedBatch{1}.spm.spatial.smooth.fwhm = repmat(opt.fwhm.func, [1, 3]);
   expectedBatch{1}.spm.spatial.smooth.dtype = 0;
   expectedBatch{1}.spm.spatial.smooth.im = 0;
   expectedBatch{1}.spm.spatial.smooth.prefix = ...

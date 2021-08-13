@@ -1,21 +1,13 @@
-function rfxDir = getRFXdir(opt, funcFWHM, conFWHM)
+function rfxDir = getRFXdir(opt)
   %
   % Sets the name the group level analysis directory and creates it if it does not exist
   %
   % USAGE::
   %
-  %   rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName)
+  %   rfxDir = getRFXdir(opt)
   %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :param funcFWHM: How much smoothing was applied to the functional
-  %                  data in the preprocessing.
-  % :type funcFWHM: scalar
-  % :param conFWHM: How much smoothing will be applied to the contrast
-  %                 images.
-  % :type conFWHM: scalar
-  % :param contrastName:
-  % :type contrastName: string
   %
   % :returns: :rfxDir: (string) Fullpath of the group level directory
   %
@@ -23,9 +15,9 @@ function rfxDir = getRFXdir(opt, funcFWHM, conFWHM)
 
   opt.space = 'MNI';
 
-  glmDirName = createGlmDirName(opt, funcFWHM);
+  glmDirName = createGlmDirName(opt);
 
-  glmDirName = [glmDirName, '_conFWHM-', num2str(conFWHM)];
+  glmDirName = [glmDirName, '_conFWHM-', num2str(opt.fwhm.contrast)];
 
   model = spm_jsonread(opt.model.file);
   if ~isempty(model.Name) && ~strcmpi(model.Name, opt.taskName)

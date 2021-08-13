@@ -33,11 +33,10 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   % get the filename for this bold run for this task
   boldFileName = getInfo(BIDS, subLabel, opt, 'Filename', sessionID, runID, 'bold');
 
-  % get fullpath of the file
-  % ASSUMPTION: the first file is the right one.
-  boldFileName = unzipImgAndReturnsFullpathName(boldFileName);
+  % in case files have been unzipped, we do it now
+  fullPathBoldFileName = unzipImgAndReturnsFullpathName(boldFileName);
 
-  [subFuncDataDir, boldFileName, ext] = spm_fileparts(boldFileName);
-  boldFileName = [boldFileName ext];
+  boldFileName = spm_file(fullPathBoldFileName, 'filename');
+  subFuncDataDir = spm_file(fullPathBoldFileName, 'path');
 
 end

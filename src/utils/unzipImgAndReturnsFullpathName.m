@@ -7,33 +7,35 @@ function unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgNam
   %   unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgName)
   %
   % :param fullpathImgName:
-  % :type fullpathImgName: string
+  % :type fullpathImgName: string array
   %
   % :returns: - :unzippedFullpathImgName: (string)
-  %
-  % TODO:
-  %
-  %   - make it work on several images
   %
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  if size(fullpathImgName, 1) > 1
-    disp(fullpathImgName);
-    msg = 'More than one file to select: %s';
-    errorHandling(mfilename(), 'tooManyFiles', msg, false, true);
+  if isempty(fullpathImgName)
+    msg = sprintf('Provide at least one file.\n');
+    errorHandling(mfilename(), 'emptyInput', msg, false, true);
   end
 
-  [directory, filename, ext] = spm_fileparts(fullpathImgName);
+  for iFile = 1:size(fullpathImgName)
 
-  if strcmp(ext, '.gz')
-    % unzip nii.gz structural file to be read by SPM
-    fullpathImgName = load_untouch_nii(fullpathImgName);
-    save_untouch_nii(fullpathImgName, fullfile(directory, filename));
-    [unzippedFullpathImgName] = fullfile(directory, filename);
+    [directory, filename, ext] = spm_fileparts(fullpathImgName(iFile, :));
 
-  else
-    [unzippedFullpathImgName] = fullfile(directory, [filename ext]);
+    if strcmp(ext, '.gz')
+      % unzip nii.gz structural file to be read by SPM
+      fullpathImgName(iFile, :) = load_untouch_nii(fullpathImgName(iFile, :));
+      save_untouch_nii(fullpathImgName(iFile, :), fullfile(directory, filename));
+      unzippedFullpathImgName{iFile, 1} = fullfile(directory, filename);
+
+    else
+      unzippedFullpathImgName{iFile, 1} = fullfile(directory, [filename ext]);
+
+    end
 
   end
+
+  unzippedFullpathImgName = char(unzippedFullpathImgName);
+
 end

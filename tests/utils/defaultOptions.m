@@ -10,6 +10,9 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.useBidsSchema = false;
 
+  expectedOptions.fwhm.func = 6;
+  expectedOptions.fwhm.contrast = 6;
+
   expectedOptions.sliceOrder = [];
   expectedOptions.STC_referenceSlice = [];
 

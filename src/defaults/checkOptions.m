@@ -16,33 +16,36 @@ function opt = checkOptions(opt)
   %
   % - :opt: the option structure with missing values filled in by the defaults.
   %
-  % REQUIRED FIELDS:
-  %
-  %   - ``opt.taskName``
-  %   - ``opt.dir.raw``
-  %
   % IMPORTANT OPTIONS (with their defaults):
   %
-  %   - ``opt.groups = {''}`` - group of subjects to analyze
-  %   - ``opt.subjects = {[]}`` - suject to run in each group
-  %     space where we conduct the analysis
-  %   - ``opt.derivativesDir = ''`` - directory where the raw and derivatives
-  %     are located. See ``setDerivativesDir()`` for more information.
-  %   - ``opt.space = 'MNI'`` - Space where we conduct the analysis
-  %   - ``opt.realign.useUnwarp = true``
-  %   - ``opt.useFieldmaps = true`` - when set to ``true`` the
-  %     preprocessing pipeline will look for the voxel displacement maps (created by
+  %     - ``opt.taskName``
+  %     - ``opt.dir``: EXPLAIN
+  %     - ``opt.groups = {''}`` - group of subjects to analyze
+  %     - ``opt.subjects = {[]}`` - suject to run in each group
+  %         space where we conduct the analysis
+  %         are located. See ``setDerivativesDir()`` for more information.
+  %     - ``opt.space = {'individual', 'MNI'}`` - Space where we conduct the analysis
+  %     - ``opt.realign.useUnwarp = true``
+  %     - ``opt.useFieldmaps = true`` - when set to ``true`` the
+  %         preprocessing pipeline will look for the voxel displacement maps (created by
   %     ``bidsCreateVDM()``) and will use them for realign and unwarp.
-  %   - ``opt.model.file = ''`` - path to the BIDS model file that contains the
-  %     model to speficy and the contrasts to compute.
-  %
-  % OTHER OPTIONS (with their defaults):
-  %
-  %     - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
-  %         subjects should be fetched by their number ``1`` and not their label ``O1'``.
+  %     - ``opt.model.file = ''`` - path to the BIDS model file that contains the
+  %         model to speficy and the contrasts to compute.
+  %     - ``opt.fwhm.func = 6`` - FWHM to apply to the preprocessed functional images.
+  %     - ``opt.fwhm.contrast = 6`` - FWHM to apply to the contrast images before bringing
+  %         them at the group level.
   %     - ``opt.query`` - a structure used to specify other options to only run analysis on
   %         certain files. ``struct('dir', 'AP', 'acq' '3p00mm')``. See ``bids.query``
   %         to see how to specify.
+  %
+  % OTHER OPTIONS (with their defaults):
+  %
+  %     - ``opt.verbosity = 1;`` - Set it to ``0`` if you want to see less output on the prompt.
+  %     - ``opt.dryRun = false`` - Set it to ``true`` in case you don't want to run the analysis.
+  %     - ``opt.pipeline.type = 'preproc'`` - Switch it to ``stats`` when running GLMs.
+  %     - ``opt.pipeline.name = 'cpp_spm'``
+  %     - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
+  %         subjects should be fetched by their number ``1`` and not their label ``O1'``.
   %     - ``opt.anatReference.type = 'T1w'`` -  type of the anatomical reference
   %     - ``opt.anatReference.session = ''`` - session label of the anatomical reference
   %     - ``opt.skullstrip.threshold = 0.75`` - Threshold used for the skull stripping.
@@ -114,6 +117,9 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.pipeline.name = 'cpp_spm';
 
   fieldsToSet.useBidsSchema = false;
+
+  fieldsToSet.fwhm.func = 6;
+  fieldsToSet.fwhm.contrast = 6;
 
   fieldsToSet.dir = struct('input', '', ...
                            'output', '', ...

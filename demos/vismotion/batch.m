@@ -24,19 +24,17 @@ anatomicalQA(opt);
 bidsResliceTpmToFunc(opt);
 functionalQA(opt);
 
-funcFWHM = 6;
-bidsSmoothing(funcFWHM, opt);
+bidsSmoothing(opt);
 
 % subject level Univariate
-bidsFFX('specifyAndEstimate', opt, funcFWHM);
-bidsFFX('contrasts', opt, funcFWHM);
+bidsFFX('specifyAndEstimate', opt);
+bidsFFX('contrasts', opt);
 
 % group level univariate
-conFWHM = 6;
-bidsRFX('smoothContrasts', opt, funcFWHM, conFWHM);
+bidsRFX('smoothContrasts', opt);
 
 % Not implemented yet
-% bidsRFX(action, opt, funcFWHM, conFWHM);
+% bidsRFX(action, opt;
 
 % Not implemented yet
 % subject level multivariate
@@ -44,6 +42,6 @@ bidsRFX('smoothContrasts', opt, funcFWHM, conFWHM);
 %                          'models', ...
 %                          'model-motionDecodingMultivariate_smdl.json');
 %
-% bidsFFX('specifyAndEstimate', opt, funcFWHM);
-% bidsFFX('contrasts', opt, funcFWHM);
-% concatBetaImgTmaps(funcFWHM, opt);
+% bidsFFX('specifyAndEstimate', opt);
+% bidsFFX('contrasts', opt);
+% concatBetaImgTmaps(opt);

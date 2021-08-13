@@ -1,4 +1,4 @@
-function bidsFFX(action, opt, funcFWHM)
+function bidsFFX(action, opt)
   %
   % - builds the subject level fMRI model and estimates it.
   %
@@ -27,6 +27,12 @@ function bidsFFX(action, opt, funcFWHM)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  if numel(opt.space) > 1
+    disp(opt.space);
+    msg = sprintf('GLMs can only be run in one space at a time.\n');
+    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+  end
+
   opt.dir.input = opt.dir.preproc;
 
   if opt.glm.roibased.do
@@ -54,7 +60,7 @@ function bidsFFX(action, opt, funcFWHM)
 
       case 'specifyAndEstimate'
 
-        matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel, funcFWHM);
+        matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
         p = struct( ...
                    'suffix', 'designmatrix', ...
@@ -66,43 +72,39 @@ function bidsFFX(action, opt, funcFWHM)
                                       'space', opt.space, ...
                                       'desc', 'before estimation'));
 
-        matlabbatch = setBatchPrintFigure(matlabbatch, opt, fullfile(getFFXdir(subLabel, ...
-                                                                               funcFWHM, ...
-                                                                               opt), ...
+        matlabbatch = setBatchPrintFigure(matlabbatch, opt, fullfile(getFFXdir(subLabel, opt), ...
                                                                      bids.create_filename(p)));
 
         matlabbatch = setBatchEstimateModel(matlabbatch, opt);
 
         p.entities.desc = 'after estimation';
-        matlabbatch = setBatchPrintFigure(matlabbatch, opt, fullfile(getFFXdir(subLabel, ...
-                                                                               funcFWHM, ...
-                                                                               opt), ...
+        matlabbatch = setBatchPrintFigure(matlabbatch, opt, fullfile(getFFXdir(subLabel, opt), ...
                                                                      bids.create_filename(p)));
 
         batchName = ...
             ['specify_estimate_ffx_task-', opt.taskName, ...
              '_space-', char(opt.space), ...
-             '_FWHM-', num2str(funcFWHM)];
+             '_FWHM-', num2str(opt.fwhm.func)];
 
         saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
         if opt.glm.QA.do
           plot_power_spectra_of_GLM_residuals( ...
-                                              getFFXdir(subLabel, funcFWHM, opt), ...
+                                              getFFXdir(subLabel, opt), ...
                                               opt.metadata.RepetitionTime);
 
-          deleteResidualImages(getFFXdir(subLabel, funcFWHM, opt));
+          deleteResidualImages(getFFXdir(subLabel, opt));
 
         end
 
       case 'contrasts'
 
-        matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, funcFWHM);
+        matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);
 
         batchName = ...
             ['contrasts_ffx_task-', opt.taskName, ...
              '_space-', char(opt.space), ...
-             '_FWHM-', num2str(funcFWHM)];
+             '_FWHM-', num2str(opt.fwhm.func)];
 
         saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 

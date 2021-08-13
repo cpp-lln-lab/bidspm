@@ -10,12 +10,9 @@ end
 
 function test_getRFXdirBasic()
 
-  funcFWHM = 0;
-  conFWHM = 0;
-
   opt = setOptions('vislocalizer');
 
-  rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
+  rfxDir = getRFXdir(opt);
 
   expectedOutput = fullfile( ...
                             fileparts(mfilename('fullpath')), ...
@@ -31,12 +28,9 @@ end
 
 function test_getRFXdirUserSpecified()
 
-  conFWHM = 0;
-  funcFWHM = 6;
-
   opt = setOptions('nback');
 
-  rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
+  rfxDir = getRFXdir(opt);
 
   expectedOutput = fullfile( ...
                             fileparts(mfilename('fullpath')), ...

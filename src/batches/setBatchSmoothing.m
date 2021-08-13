@@ -1,17 +1,17 @@
-function matlabbatch = setBatchSmoothing(matlabbatch, opt, images, FWHM, prefix)
+function matlabbatch = setBatchSmoothing(matlabbatch, opt, images, fwhm, prefix)
   %
   % Small wrapper to create smoothing batch
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSmoothing(matlabbatch, images, FWHM, prefix)
+  %   matlabbatch = setBatchSmoothing(matlabbatch, images, fwhm, prefix)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
   % :param images:
   % :type images:
-  % :param funcFWHM:
-  % :type funcFWHM:
+  % :param fwhm:
+  % :type fwhm:
   % :param prefix:
   % :type prefix:
   %
@@ -24,7 +24,7 @@ function matlabbatch = setBatchSmoothing(matlabbatch, opt, images, FWHM, prefix)
 
   matlabbatch{end + 1}.spm.spatial.smooth.data = images;
   matlabbatch{end}.spm.spatial.smooth.prefix = prefix;
-  matlabbatch{end}.spm.spatial.smooth.fwhm = [FWHM FWHM FWHM];
+  matlabbatch{end}.spm.spatial.smooth.fwhm = [fwhm fwhm fwhm];
 
   matlabbatch{end}.spm.spatial.smooth.dtype = 0;
   matlabbatch{end}.spm.spatial.smooth.im = 0;

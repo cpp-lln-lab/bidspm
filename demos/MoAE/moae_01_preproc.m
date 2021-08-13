@@ -10,9 +10,6 @@
 clear;
 clc;
 
-% Smoothing to apply
-FWHM = 6;
-
 download_data = false;
 
 run ../../initCppSpm.m;

@@ -10,14 +10,12 @@ end
 
 function test_bidsSmoothingBasic()
 
-  FWHM = 6;
-
   opt = setOptions('vislocalizer');
 
   opt.pipeline.type = 'preproc';
 
   opt = checkOptions(opt);
 
-  bidsSmoothing(opt, FWHM);
+  bidsSmoothing(opt);
 
 end

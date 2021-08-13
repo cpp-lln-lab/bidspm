@@ -8,8 +8,6 @@
 
 subLabel = '01';
 
-FWHM = 6;
-
 saveROI = true;
 
 opt = moae_get_option();

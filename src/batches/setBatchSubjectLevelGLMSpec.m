@@ -4,7 +4,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel, funcFWHM)
+  %   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -14,14 +14,12 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % :type opt: structure
   % :param subLabel:
   % :type subLabel: string
-  % :param funcFWHM:
-  % :type funcFWHM: float
   %
   % :returns: - :argout1: (structure) (matlabbatch)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  [matlabbatch, BIDS, opt, subLabel, funcFWHM] =  deal(varargin{:});
+  [matlabbatch, BIDS, opt, subLabel] =  deal(varargin{:});
 
   printBatchName('specify subject level fmri model', opt);
 
@@ -66,7 +64,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   % Create ffxDir if it doesnt exist
   % If it exists, issue a warning that it has been overwritten
-  ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+  ffxDir = getFFXdir(subLabel, opt);
   if exist(ffxDir, 'dir') %
     msg = sprintf('overwriting directory: %s \n', ffxDir);
     errorHandling(mfilename(), 'overWritingDir', msg, true, opt.verbosity);
@@ -102,8 +100,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     for iRun = 1:nbRuns
 
       % get functional files
-      [fullpathBoldFileName, prefix]  = ...
-          getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
+      fullpathBoldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
       disp(fullpathBoldFileName);
 
@@ -121,14 +118,13 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
       tsvFile = bids.query(BIDS, 'data', query);
       fullpathOnsetFileName = createAndReturnOnsetFile(opt, ...
                                                        subLabel, ...
-                                                       tsvFile, ...
-                                                       funcFWHM);
+                                                       tsvFile);
 
       matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi = ...
           cellstr(fullpathOnsetFileName);
 
       % get realignment parameters
-      realignParamFile = getRealignParamFile(fullpathBoldFileName, prefix);
+      realignParamFile = getRealignParamFile(BIDS, subLabel, sessions{iSes}, runs{iRun}, opt);
       matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi_reg = ...
           cellstr(realignParamFile);
 

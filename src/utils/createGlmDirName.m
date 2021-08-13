@@ -1,9 +1,8 @@
-function glmDirName = createGlmDirName(opt, FWHM)
+function glmDirName = createGlmDirName(opt)
   %
   % USAGE::
   %
-  %   glmDirName = createGlmDirName(opt, FWHM)
-  %
+  %   glmDirName = createGlmDirName(opt)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
@@ -16,6 +15,6 @@ function glmDirName = createGlmDirName(opt, FWHM)
 
   glmDirName = ['task-', opt.taskName, ...
                 '_space-' char(opt.space), ...
-                '_FWHM-', num2str(FWHM)];
+                '_FWHM-', num2str(opt.fwhm.func)];
 
 end

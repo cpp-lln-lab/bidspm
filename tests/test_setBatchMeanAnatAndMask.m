@@ -10,14 +10,12 @@ end
 
 function test_setBatchMeanAnatAndMaskBasic()
 
-  funcFWHM = 6;
-
   opt = setOptions('vismotion');
   opt.subjects = {'01', '02'};
   opt.space = {'MNI'};
 
   matlabbatch = [];
-  matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, pwd);
+  matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, pwd);
 
   %
   imcalc.input{1, 1} = fullfile(opt.dir.preproc, ...

@@ -11,8 +11,7 @@ end
 function test_bidsRenameBasic()
 
   opt = setOptions('MoAE-preproc');
-  FWHM = 6;
 
-  bidsRename(opt, FWHM);
+  bidsRename(opt);
 
 end

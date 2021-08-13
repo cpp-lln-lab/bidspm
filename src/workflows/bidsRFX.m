@@ -1,4 +1,4 @@
-function bidsRFX(action, opt, funcFWHM, conFWHM)
+function bidsRFX(action, opt)
   %
   % - smooths all contrast images created at the subject level
   %
@@ -30,14 +30,6 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  if nargin < 4 || isempty(funcFWHM)
-    funcFWHM = 0;
-  end
-
-  if nargin < 4 || isempty(conFWHM)
-    conFWHM = 0;
-  end
-
   [~, opt] = setUpWorkflow(opt, 'group level GLM');
 
   opt.dir.jobs = fullfile(opt.dir.stats, 'jobs', opt.taskName);
@@ -47,15 +39,16 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
     case 'smoothContrasts'
 
       matlabbatch = [];
-      matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFWHM);
+      matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
 
       saveAndRunWorkflow(matlabbatch, ...
-                         ['smooth_con_FWHM-', num2str(conFWHM), '_task-', opt.taskName], ...
+                         ['smooth_con_FWHM-', num2str(opt.fwhm.contrast), ...
+                          '_task-', opt.taskName], ...
                          opt);
 
     case 'RFX'
 
-      opt.dir.rfx = getRFXdir(opt, funcFWHM, conFWHM);
+      opt.dir.rfx = getRFXdir(opt);
 
       % ------
       % TODO
@@ -68,14 +61,13 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
       matlabbatch = [];
       matlabbatch = setBatchMeanAnatAndMask(matlabbatch, ...
                                             opt, ...
-                                            funcFWHM, ...
                                             fullfile(opt.dir.stats, 'group'));
       saveAndRunWorkflow(matlabbatch, 'create_mean_struc_mask', opt);
 
       % TODO
       % saving needs to be improved (maybe??) as the name may vary with FXHM and contrast
       matlabbatch = [];
-      matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFWHM);
+      matlabbatch = setBatchFactorialDesign(matlabbatch, opt);
 
       % Load the list of contrasts of interest for the RFX
       grpLvlCon = getGrpLevelContrastToCompute(opt);
@@ -84,8 +76,8 @@ function bidsRFX(action, opt, funcFWHM, conFWHM)
       saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
 
       % TODO
-      % saving needs to be improved (maybe??) as the name may vary with FXHM and contrast
-      rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
+      % saving needs to be improved (maybe??) as the name may vary with FwHM and contrast
+      rfxDir = getRFXdir(opt);
       matlabbatch = [];
       matlabbatch = setBatchGroupLevelContrasts(matlabbatch, grpLvlCon, rfxDir);
       saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);

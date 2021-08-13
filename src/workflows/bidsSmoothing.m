@@ -1,18 +1,15 @@
-function bidsSmoothing(opt, funcFWHM)
+function bidsSmoothing(opt)
   %
   % This performs smoothing to the functional data using a full width
   % half maximum smoothing kernel of size "mm_smoothing".
   %
   % USAGE::
   %
-  %   bidsSmoothing(opt, funcFWHM)
+  %   bidsSmoothing(opt)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param funcFWHM: How much smoothing was applied to the functional
-  %                  data in the preprocessing (Gaussian kernel size).
-  % :type funcFWHM: scalar
   %
   %
   % (C) Copyright 2020 CPP_SPM developers
@@ -29,14 +26,14 @@ function bidsSmoothing(opt, funcFWHM)
     printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = [];
-    matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel, funcFWHM);
+    matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel);
 
-    saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(funcFWHM)], opt, subLabel);
+    saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(opt.fwhm.func)], opt, subLabel);
 
   end
 
   prefix = get_spm_prefix_list;
-  opt.query.prefix = [prefix.smooth, num2str(funcFWHM)];
-  bidsRename(opt, funcFWHM);
+  opt.query.prefix = [prefix.smooth, num2str(opt.fwhm.func)];
+  bidsRename(opt);
 
 end

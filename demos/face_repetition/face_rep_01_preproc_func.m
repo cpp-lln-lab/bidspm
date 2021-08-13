@@ -8,8 +8,6 @@
 clear;
 clc;
 
-FWHM = 6;
-
 downloadData = false;
 
 run ../../initCppSpm.m;

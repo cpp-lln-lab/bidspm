@@ -14,7 +14,6 @@ function test_setBatchSubjectLevelResultsBasic()
   iCon = 1;
 
   subLabel = '01';
-  funcFWHM = 6;
 
   opt = setOptions('vismotion', subLabel);
   opt.space = {'MNI'};
@@ -22,7 +21,7 @@ function test_setBatchSubjectLevelResultsBasic()
   opt.result.Steps.Contrasts.Name = 'VisMot';
 
   matlabbatch = [];
-  matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subLabel, funcFWHM, iStep, iCon);
+  matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subLabel, iStep, iCon);
 
   expectedBatch = {};
 
@@ -54,7 +53,6 @@ function test_setBatchSubjectLevelResultsErrorMissingContrastName()
   iCon = 1;
 
   subLabel = '01';
-  funcFWHM = 6;
 
   opt = setOptions('vismotion', subLabel);
   opt.space = {'MNI'};
@@ -64,7 +62,6 @@ function test_setBatchSubjectLevelResultsErrorMissingContrastName()
                         @()setBatchSubjectLevelResults(matlabbatch, ...
                                                        opt, ...
                                                        subLabel, ...
-                                                       funcFWHM, ...
                                                        iStep, ...
                                                        iCon), ...
                         'setBatchSubjectLevelResults:missingContrastName');
@@ -77,10 +74,6 @@ function test_setBatchSubjectLevelResultsErrorNoMAtchingContrast()
   iCon = 1;
 
   subLabel = '01';
-  funcFWHM = 6;
-
-  subLabel = '01';
-  funcFWHM = 6;
 
   opt = setOptions('vismotion', subLabel);
   opt.space = {'MNI'};
@@ -92,7 +85,6 @@ function test_setBatchSubjectLevelResultsErrorNoMAtchingContrast()
                         @()setBatchSubjectLevelResults(matlabbatch, ...
                                                        opt, ...
                                                        subLabel, ...
-                                                       funcFWHM, ...
                                                        iStep, ...
                                                        iCon), ...
                         'setBatchSubjectLevelResults:noMatchingContrastName');
