@@ -8,18 +8,35 @@ function test_suite = test_bidsFFX %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsFFXBasic()
+function test_bidsFfxMni()
 
-  opt = setOptions('MoAE-preproc');
-  opt.space = {'MNI'};
+  task = {'vislocalizer'}; % 'vismotion'
 
-  opt.pipeline.type = 'stats';
-  opt.pipeline.name = 'cpp_spm';
+  for i = 1
 
-  opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+    opt = setOptions(task{i});
+    opt.space = {'MNI'};
 
-  bidsFFX('specifyAndEstimate', opt);
-  %   bidsFFX('contrasts', opt);
-  %   bidsResults(opt);
+    bidsFFX('specifyAndEstimate', opt);
+    %   bidsFFX('contrasts', opt);
+    %   bidsResults(opt);
 
+  end
+
+end
+
+function test_bidsFfxIndividual()
+
+  task = {'vislocalizer'}; % 'vismotion'
+
+  for i = 1
+
+    opt = setOptions(task{i});
+    opt.space = {'individual'};
+
+    bidsFFX('specifyAndEstimate', opt);
+    %   bidsFFX('contrasts', opt);
+    %   bidsResults(opt);
+
+  end
 end

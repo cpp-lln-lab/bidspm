@@ -24,17 +24,17 @@ opt = moae_get_option();
 
 opt.pipeline.type = 'preproc';
 
-% bidsCopyInputFolder(opt);
+bidsCopyInputFolder(opt);
 
 % In case you just want to run segmentation and skull stripping
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
 % bidsSegmentSkullStrip(opt);
-%
-% bidsSTC(opt);
-%
-% bidsSpatialPrepro(opt);
-%
-% anatomicalQA(opt);
+
+bidsSTC(opt);
+
+bidsSpatialPrepro(opt);
+
+anatomicalQA(opt);
 
 % NEEDS DEBUGGING
 % bidsResliceTpmToFunc(opt);

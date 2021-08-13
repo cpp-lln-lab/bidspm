@@ -8,22 +8,16 @@ function bidsFFX(action, opt)
   %
   % USAGE::
   %
-  %  bidsFFX(action, funcFWHM, [opt])
+  %  bidsFFX(action, [opt])
   %
   % :param action: Action to be conducted:``specifyAndEstimate`` or ``contrasts``.
   % :type action: string
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param funcFWHM: How much smoothing was applied to the functional
-  %                  data in the preprocessing (Gaussian kernel size).
-  % :type funcFWHM: scalar
   %
   % - ``specifyAndEstimate`` for fMRI design + estimate and
   % - ``contrasts`` to estimate contrasts.
-  %
-  % For unsmoothed data ``funcFWHM = 0``, for smoothed data ``funcFWHM = ... mm``.
-  % In this way we can make multiple ffx for different smoothing degrees.
   %
   % (C) Copyright 2020 CPP_SPM developers
 
@@ -33,14 +27,20 @@ function bidsFFX(action, opt)
     errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
   end
 
-  opt.dir.input = opt.dir.preproc;
-
   if opt.glm.roibased.do
     msg = sprintf(['The option opt.glm.roibased.do is set to true.\n', ...
                    ' Change the option to false to use this workflow or\n', ...
                    ' use the bidsRoiBasedGLM workflow to run roi based GLM.']);
-    errorHandling(mfilename(), 'roiGLMTrue', msg, false, true);
+    errorHandling(mfilename(), 'roiGLMTrue', msg, false, opt.verbosity);
   end
+
+  if ~ismember(action, {'specifyAndEstimate', 'contrasts'})
+    msg = sprintf('action must be *specifyAndEstimate* or *contrasts*.\n%s was given.', action);
+    errorHandling(mfilename(), 'unknownAction', msg, false, opt.verbosity);
+  end
+
+  opt.pipeline.type = 'stats';
+  opt.dir.input = opt.dir.preproc;
 
   [BIDS, opt] = setUpWorkflow(opt, 'subject level GLM');
 
@@ -88,7 +88,7 @@ function bidsFFX(action, opt)
 
         saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-        if opt.glm.QA.do
+        if ~opt.dryRun && opt.glm.QA.do
           plot_power_spectra_of_GLM_residuals( ...
                                               getFFXdir(subLabel, opt), ...
                                               opt.metadata.RepetitionTime);

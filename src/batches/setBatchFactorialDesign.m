@@ -66,6 +66,13 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
       % find which contrast of that subject has the name of the contrast we
       % want to bring to the group level
       conIdx = find(strcmp({SPM.xCon.name}, conName));
+      if isempty(conIdx)
+        disp({SPM.xCon.name}');
+        msg = sprintf('Could not find a contrast named %s\nin %s.\n', ...
+                      conName, ...
+                      fullfile(ffxDir, 'SPM.mat'));
+        errorHandling(mfilename(), 'missingContrast', msg, false, opt.verbosity);
+      end
       fileName = sprintf('con_%0.4d.nii', conIdx);
       file = validationInputFile(ffxDir, fileName, smoothPrefix);
 

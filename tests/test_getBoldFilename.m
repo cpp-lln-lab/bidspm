@@ -51,7 +51,7 @@ function test_getBoldFilenameDerivatives()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  opt.query = struct('desc', 'stc');
+  opt.query = struct('desc', 'stc', 'space', 'individual');
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
 

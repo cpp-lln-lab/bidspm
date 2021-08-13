@@ -44,14 +44,22 @@ do
 			echo "6\t2\tVisMotUp" >> ${filename}
 
 			### derivatives
-			desc_label_list='stc preproc mean smth6'
-			for desc in ${desc_label_list}
+			desc_label_list='preproc mean smth6'
+			for run in `seq 1 2`
 			do
-				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1\_space-individual\_desc-${desc}${suffix}.nii
-				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-2\_space-individual\_desc-${desc}${suffix}.nii
+
+				filename=${this_dir}/rp_sub-${subject}\_ses-${ses}\_task-${task_name}\_run-${run}${suffix}.txt
+				cp dummyData/rp.txt ${filename}
+				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_run-${run}\_desc-confounds\_regressors.tsv
+
+				for desc in ${desc_label_list}
+				do
+					touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_run-${run}\_space-individual\_desc-${desc}${suffix}.nii
+					touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_run-${run}\_space-IXI549Space\_desc-${desc}${suffix}.nii
+				done
+				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_run-${run}\_space-individual\_desc-stc${suffix}.nii
+
 			done
-			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1\_space-IXI549Space\_desc-preproc${suffix}.nii
-			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-2\_space-IXI549Space\_desc-preproc${suffix}.nii
 
 			if [ ${ses} = '01' ]; then
 				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-individual\_desc-mean${suffix}.nii

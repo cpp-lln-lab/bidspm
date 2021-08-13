@@ -57,6 +57,11 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
     end
   end
 
+  if ~isfield(step, 'Model')
+    msg = sprintf('Missing model specification from the model file:\n %s', opt.model.file);
+    errorHandling(mfilename(), 'missingModel', msg, false, opt.verbosity);
+  end
+
   isTrialType = strfind(step.Model.X, 'trial_type.');
 
   % create empty cell to be filled in according to the conditions present in each run

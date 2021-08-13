@@ -96,7 +96,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
       % check that the file exists
       % and we get and save its voxeldimension
       prefix = '';
-      file = validationInputFile(subFuncDataDir, boldFilename, prefix);
+      file = validationInputFile(subFuncDataDir, boldFilename);
       [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, boldFilename);
 
       if size(file, 1) > 1
