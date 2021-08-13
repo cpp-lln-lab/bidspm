@@ -53,9 +53,6 @@ function test_setBatchRealignAfterStc()
 
   opt = setOptions('vismotion', subLabel);
 
-  opt.useBidsSchema = false;
-  %   opt.query = struct('desc', 'stc');
-
   % some tweaks because we have dummy data
   opt.funcVoxelDims = 2;
   opt.useFieldmaps = false;
