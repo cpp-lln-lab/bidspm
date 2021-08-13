@@ -35,17 +35,17 @@ end
 function test_checkOptionsErrorTask()
 
   opt.taskName = [];
+  opt.verbosity = 1;
 
-  assertExceptionThrown( ...
-                        @()checkOptions(opt), ...
-                        'checkOptions:noTask');
+  assertWarning( ...
+                @()checkOptions(opt), ...
+                'checkOptions:noTask');
 
 end
 
 function test_checkOptionsErrorGroup()
 
   opt.groups = {1};
-  opt.taskName = 'testTask';
 
   assertExceptionThrown( ...
                         @()checkOptions(opt), ...
@@ -56,7 +56,6 @@ end
 function test_checkOptionsErrorRefSlice()
 
   opt.STC_referenceSlice = [1:10];
-  opt.taskName = 'testTask';
 
   assertExceptionThrown( ...
                         @()checkOptions(opt), ...
@@ -67,7 +66,6 @@ end
 function test_checkOptionsErrorVoxDim()
 
   opt.funcVoxelDims = [1:10];
-  opt.taskName = 'testTask';
 
   assertExceptionThrown( ...
                         @()checkOptions(opt), ...
@@ -77,7 +75,6 @@ end
 
 function test_checkOptionsSessionString()
 
-  opt.taskName = 'testTask';
   opt.anatReference.session = 1;
 
   assertExceptionThrown( ...

@@ -176,50 +176,42 @@ function checkFields(opt)
 
   if isfield(opt, 'taskName') && isempty(opt.taskName)
 
-    errorStruct.identifier = 'checkOptions:noTask';
-    errorStruct.message = sprintf( ...
-                                  'Provide the name of the task to analyze.');
-    error(errorStruct);
+    msg = 'You may need to provide the name of the task to analyze.';
+    errorHandling(mfilename(), 'noTask', msg, true, opt.verbosity);
 
   end
 
   if ~all(cellfun(@ischar, opt.groups))
 
-    errorStruct.identifier = 'checkOptions:groupNotString';
-    errorStruct.message = sprintf( ...
-                                  'All group names should be string.');
-    error(errorStruct);
+    msg = 'All group names should be string.';
+    errorHandling(mfilename(), 'groupNotString', msg, false, opt.verbosity);
 
   end
 
   if ~ischar(opt.anatReference.session)
 
-    errorStruct.identifier = 'checkOptions:sessionNotString';
-    errorStruct.message = sprintf( ...
-                                  'The session label should be string.');
-    error(errorStruct);
+    msg = 'The session label should be string.';
+    errorHandling(mfilename(), 'sessionNotString', msg, false, opt.verbosity);
 
   end
 
   if ~isempty (opt.STC_referenceSlice) && length(opt.STC_referenceSlice) > 1
 
-    errorStruct.identifier = 'checkOptions:refSliceNotScalar';
-    errorStruct.message = sprintf( ...
-                                  ['options.STC_referenceSlice should be a scalar.' ...
-                                   '\nCurrent value is: %d'], ...
-                                  opt.STC_referenceSlice);
-    error(errorStruct);
+    msg = sprintf( ...
+                  ['options.STC_referenceSlice should be a scalar.' ...
+                   '\nCurrent value is: %d'], ...
+                  opt.STC_referenceSlice);
+    errorHandling(mfilename(), 'refSliceNotScalar', msg, false, opt.verbosity);
 
   end
 
   if ~isempty (opt.funcVoxelDims) && length(opt.funcVoxelDims) ~= 3
 
-    errorStruct.identifier = 'checkOptions:voxDim';
-    errorStruct.message = sprintf( ...
-                                  ['opt.funcVoxelDims should be a vector of length 3. '...
-                                   '\nCurrent value is: %d'], ...
-                                  opt.funcVoxelDims);
-    error(errorStruct);
+    msg = sprintf( ...
+                  ['opt.funcVoxelDims should be a vector of length 3. '...
+                   '\nCurrent value is: %d'], ...
+                  opt.funcVoxelDims);
+    errorHandling(mfilename(), 'voxDim', msg, false, opt.verbosity);
 
   end
 
