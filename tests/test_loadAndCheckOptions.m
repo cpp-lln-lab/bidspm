@@ -10,8 +10,7 @@ end
 
 function test_loadAndCheckOptionsBasic()
 
-  spm_mkdir cfg;
-  delete(fullfile(pwd, 'cfg', '*.json'));
+  setUp();
 
   % create dummy json file
   jsonContent.taskName = 'vismotion';
@@ -25,12 +24,13 @@ function test_loadAndCheckOptionsBasic()
 
   assertEqual(opt, expectedOptions);
 
+  cleanUp();
+
 end
 
 function test_loadAndCheckOptionsStructure()
 
-  spm_mkdir cfg;
-  delete(fullfile(pwd, 'cfg', '*.json'));
+  setUp();
 
   % create dummy json file
   opt = setTestCfg();
@@ -45,12 +45,13 @@ function test_loadAndCheckOptionsStructure()
 
   assertEqual(opt, expectedOptions);
 
+  cleanUp();
+
 end
 
 function test_loadAndCheckOptionsFromFile()
 
-  spm_mkdir cfg;
-  delete(fullfile(pwd, 'cfg', '*.json'));
+  setUp();
 
   % create dummy json file
   jsonContent.taskName = 'vismotion';
@@ -71,14 +72,13 @@ function test_loadAndCheckOptionsFromFile()
 
   assertEqual(opt, expectedOptions);
 
-  delete('*.json');
+  cleanUp();
 
 end
 
 function test_loadAndCheckOptionsFromSeveralFiles()
 
-  spm_mkdir cfg;
-  delete(fullfile(pwd, 'cfg', '*.json'));
+  setUp();
 
   % create old dummy json file
   jsonContent.taskName = 'vismotion';
@@ -115,9 +115,13 @@ function test_loadAndCheckOptionsFromSeveralFiles()
 
   assertEqual(opt, expectedOptions);
 
+  cleanUp();
+
 end
 
 function test_loadAndCheckOptionsMoAE()
+
+  setUp();
 
   jsonContent = setOptions('MoAE');
 
@@ -125,5 +129,25 @@ function test_loadAndCheckOptionsMoAE()
   spm_jsonwrite(optionJsonFile, jsonContent);
 
   opt = loadAndCheckOptions(optionJsonFile);
+
+  cleanUp();
+
+end
+
+function setUp
+  spm_mkdir cfg;
+  delete(fullfile(pwd, 'cfg', '*.json'));
+end
+
+function cleanUp()
+
+  pause(1);
+
+  if isOctave()
+    confirm_recursive_rmdir (true, 'local');
+  end
+  rmdir(fullfile(pwd, 'cfg'), 's');
+
+  delete('*.json');
 
 end
