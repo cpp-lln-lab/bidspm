@@ -31,7 +31,12 @@ function test_setBatchSegmentationPipeline()
                         '.', 'val', '{}', {1}), ...
               substruct('.', 'files', '{}', {1}));
 
-  assertEqual(expectedBatch, matlabbatch);
+  assertEqual(matlabbatch{1}.spm.spatial.preproc.channel, ...
+              expectedBatch{1}.spm.spatial.preproc.channel);
+  assertEqual(matlabbatch{1}.spm.spatial.preproc.tissue, ...
+              expectedBatch{1}.spm.spatial.preproc.tissue);
+  assertEqual(matlabbatch{1}.spm.spatial.preproc.warp, ...
+              expectedBatch{1}.spm.spatial.preproc.warp);
 
 end
 
@@ -49,7 +54,7 @@ function test_setBatchSegmentationImages()
   expectedBatch = returnExpectedBatch(spmLocation);
   expectedBatch{end}.spm.spatial.preproc.channel.vols{1} = anatImage;
 
-  assertEqual(expectedBatch, matlabbatch);
+  assertEqual(matlabbatch{1}.spm.spatial.preproc, expectedBatch{1}.spm.spatial.preproc);
 
   % check with several files passed as a cell
   matlabbatch = [];
@@ -57,7 +62,12 @@ function test_setBatchSegmentationImages()
   matlabbatch = setBatchSegmentation(matlabbatch, opt, anatImage);
   expectedBatch{end}.spm.spatial.preproc.channel.vols = anatImage;
 
-  assertEqual(expectedBatch, matlabbatch);
+  assertEqual(matlabbatch{1}.spm.spatial.preproc.channel, ...
+              expectedBatch{1}.spm.spatial.preproc.channel);
+  assertEqual(matlabbatch{1}.spm.spatial.preproc.tissue, ...
+              expectedBatch{1}.spm.spatial.preproc.tissue);
+  assertEqual(matlabbatch{1}.spm.spatial.preproc.warp, ...
+              expectedBatch{1}.spm.spatial.preproc.warp);
 
 end
 
@@ -86,19 +96,19 @@ function expectedBatch = returnExpectedBatch(spmLocation)
   expectedBatch{end}.spm.spatial.preproc.tissue(1).tpm = ...
       {[fullfile(spmLocation, 'tpm', 'TPM.nii') ',1']};
   expectedBatch{end}.spm.spatial.preproc.tissue(1).ngaus = 1;
-  expectedBatch{end}.spm.spatial.preproc.tissue(1).native = [1 1];
+  expectedBatch{end}.spm.spatial.preproc.tissue(1).native = [1 0];
   expectedBatch{end}.spm.spatial.preproc.tissue(1).warped = [0 0];
 
   expectedBatch{end}.spm.spatial.preproc.tissue(2).tpm = ...
       {[fullfile(spmLocation, 'tpm', 'TPM.nii') ',2']};
   expectedBatch{end}.spm.spatial.preproc.tissue(2).ngaus = 1;
-  expectedBatch{end}.spm.spatial.preproc.tissue(2).native = [1 1];
+  expectedBatch{end}.spm.spatial.preproc.tissue(2).native = [1 0];
   expectedBatch{end}.spm.spatial.preproc.tissue(2).warped = [0 0];
 
   expectedBatch{end}.spm.spatial.preproc.tissue(3).tpm = ...
       {[fullfile(spmLocation, 'tpm', 'TPM.nii') ',3']};
   expectedBatch{end}.spm.spatial.preproc.tissue(3).ngaus = 2;
-  expectedBatch{end}.spm.spatial.preproc.tissue(3).native = [1 1];
+  expectedBatch{end}.spm.spatial.preproc.tissue(3).native = [1 0];
   expectedBatch{end}.spm.spatial.preproc.tissue(3).warped = [0 0];
 
   expectedBatch{end}.spm.spatial.preproc.tissue(4).tpm = ...
