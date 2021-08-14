@@ -23,7 +23,7 @@ function boldFileName = getBoldFilenameForFFX(varargin)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  [BIDS, opt, subID, iSes, iRun] =  deal(varargin{:});
+  [BIDS, opt, subLabel, iSes, iRun] =  deal(varargin{:});
 
   opt.query.modality = 'func';
 
@@ -39,13 +39,13 @@ function boldFileName = getBoldFilenameForFFX(varargin)
     opt.query.space{idx} = 'IXI549Space';
   end
 
-  sessions = getInfo(BIDS, subID, opt, 'Sessions');
+  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
 
-  runs = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
   [fileName, subFuncDataDir] = getBoldFilename( ...
                                                BIDS, ...
-                                               subID, sessions{iSes}, runs{iRun}, opt);
+                                               subLabel, sessions{iSes}, runs{iRun}, opt);
 
   boldFileName = validationInputFile(subFuncDataDir, fileName);
 
