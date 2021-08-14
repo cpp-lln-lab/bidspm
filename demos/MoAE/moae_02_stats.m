@@ -12,12 +12,9 @@ clc;
 run ../../initCppSpm.m;
 
 %% Set options
-opt = moae_get_option();
+opt = moae_get_option_stats();
 
-% The following crash on CI
-opt.pipeline.type = 'stats';
-
-% The following crash on Travis CI
+% The following crash on Travis I
 bidsFFX('specifyAndEstimate', opt);
 bidsFFX('contrasts', opt);
 bidsResults(opt);

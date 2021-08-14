@@ -102,7 +102,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
       % get functional files
       fullpathBoldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
-      printToScreen(fullpathBoldFileName, opt);
+      printToScreen(sprintf('%s\n', fullpathBoldFileName), opt);
 
       matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).scans = ...
           {fullpathBoldFileName};
@@ -123,14 +123,16 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
       matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi = ...
           cellstr(fullpathOnsetFileName);
 
-      % get realignment parameters
+      % get confounds
+      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi_reg = {''};
       confoundsRegFile = getConfoundsRegressorFilename(BIDS, ...
                                                        opt, ...
                                                        subLabel, ...
                                                        sessions{iSes}, ...
                                                        runs{iRun});
+      counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, confoundsRegFile);
       matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi_reg = ...
-          cellstr(confoundsRegFile);
+          cellstr(counfoundMatFile);
 
       % multiregressor selection
       matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).regress = ...

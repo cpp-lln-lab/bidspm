@@ -47,6 +47,9 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
     suffix = 'T1w';
   end
 
+  msg = sprintf('Getting data from:\n %s\n', BIDSdir);
+  printToScreen(msg, opt);
+
   description_file = validationInputFile(BIDSdir, 'dataset_description.json');
   description = spm_jsonread(description_file);
   if isfield(description, 'PipelineDescription') && ...

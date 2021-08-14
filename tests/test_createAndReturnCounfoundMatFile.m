@@ -1,6 +1,6 @@
-% (C) Copyright 2020 CPP_SPM developers
+% (C) Copyright 2021 CPP_SPM developers
 
-function test_suite = test_createAndReturnOnsetFile %#ok<*STOUT>
+function test_suite = test_createAndReturnCounfoundMatFile %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,7 +8,7 @@ function test_suite = test_createAndReturnOnsetFile %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_createAndReturnOnsetFileBasic()
+function test_createAndReturnCounfoundMatFileBasic()
 
   subLabel = '01';
   iSes = 1;
@@ -27,27 +27,31 @@ function test_createAndReturnOnsetFileBasic()
                  'task', opt.taskName, ...
                  'ses', sessions{iSes}, ...
                  'run', runs{iRun}, ...
-                 'suffix', 'events', ...
+                 'suffix', 'regressors', ...
                  'extension', '.tsv');
   tsvFile = bids.query(BIDS, 'data', query);
 
-  onsetFileName = createAndReturnOnsetFile(opt, subLabel, tsvFile);
+  counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFile);
 
   expectedFileName = fullfile(fileparts(mfilename('fullpath')), ...
                               'dummyData', 'derivatives', 'cpp_spm-stats', 'sub-01', 'stats', ...
                               'task-vislocalizer_space-MNI_FWHM-6', ...
-                              'sub-01_ses-01_task-vislocalizer_onsets.mat');
+                              'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.mat');
 
-  assertEqual(exist(onsetFileName, 'file'), 2);
+  assertEqual(exist(counfoundMatFile, 'file'), 2);
   assertEqual(exist(expectedFileName, 'file'), 2);
 
-  expected_content = load(fullfile(fileparts(mfilename('fullpath')), ...
-                                   'dummyData', ...
-                                   'mat_files', ...
-                                   'onsets.mat'));
+  expected_content = fullfile(fileparts(mfilename('fullpath')), ...
+                              'dummyData', ...
+                              'mat_files', ...
+                              'regressors.mat');
 
-  actual_content = load(onsetFileName);
+  expected_R = load(expected_content, 'R');
+  actual_R = load(counfoundMatFile, 'R');
+  assertEqual(actual_R, expected_R);
 
-  assertEqual(actual_content, expected_content);
+  expected_names = load(expected_content, 'names');
+  actual_names = load(counfoundMatFile, 'names');
+  assertEqual(actual_names, expected_names);
 
 end
