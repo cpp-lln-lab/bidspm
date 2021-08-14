@@ -1,7 +1,7 @@
 function bidsResliceTpmToFunc(opt)
   %
   % Reslices the tissue probability map (TPMs) from the segmentation to the mean
-  % functional.
+  % functional and creates a mask for the bold mean image
   %
   % USAGE::
   %
@@ -20,6 +20,9 @@ function bidsResliceTpmToFunc(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  % TODO consider renaming this function to highlight that it creates a mask as
+  % well, though this might get confusing with `bidsWholeBrainFuncMask`
+
   [BIDS, opt] = setUpWorkflow(opt, 'reslicing tissue probability maps to functional dimension');
 
   for iSub = 1:numel(opt.subjects)
@@ -28,11 +31,12 @@ function bidsResliceTpmToFunc(opt)
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt, 'funcqa');
+    opt.query.space = 'individual';
+    [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
 
     % get grey and white matter and CSF tissue probability maps
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
-    TPMs = validationInputFile(anatDataDir, anatImage, 'c[123]');
+    [greyMatter, whiteMatter, csf] = getTpmFilenames(BIDS, subLabel);
+    TPMs = cat(1, greyMatter, whiteMatter, csf);
 
     matlabbatch = [];
     matlabbatch = setBatchReslice(matlabbatch, ...
@@ -43,13 +47,10 @@ function bidsResliceTpmToFunc(opt)
     saveAndRunWorkflow(matlabbatch, 'reslice_tpm', opt, subLabel);
 
     %% Compute brain mask of functional
-    TPMs = validationInputFile(anatDataDir, anatImage, 'rc[123]');
-    % greay matter
-    input{1, 1} = TPMs(1, :);
-    % white matter
-    input{2, 1} = TPMs(2, :);
-    % csf
-    input{3, 1} = TPMs(3, :);
+    prefix = spm_get_defaults('realign.write.prefix');
+    input{1, 1} = spm_file(greyMatter, 'prefix', prefix);
+    input{2, 1} = spm_file(whiteMatter, 'prefix', prefix);
+    input{3, 1} = spm_file(csf, 'prefix', prefix);
 
     p = bids.internal.parse_filename(meanImage);
     p.entities.label = p.suffix;
@@ -66,5 +67,7 @@ function bidsResliceTpmToFunc(opt)
     saveAndRunWorkflow(matlabbatch, 'create_functional_brain_mask', opt, subLabel);
 
   end
+
+  bidsRename(opt);
 
 end

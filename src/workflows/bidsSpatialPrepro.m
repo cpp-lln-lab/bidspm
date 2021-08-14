@@ -19,8 +19,8 @@ function bidsSpatialPrepro(opt)
   %
   % - to perform realign AND unwarp, make sure you set
   %   ``opt.realign.useUnwarp`` to ``true``.
-  % - normalize the data to MNI space, make sure you set
-  %   ``opt.space`` to ``MNI``.
+  % - normalize the data to MNI space, make sure
+  %   ``opt.space`` includes ``MNI``.
   %
   % If you want to:
   %
@@ -36,6 +36,8 @@ function bidsSpatialPrepro(opt)
   %  - average T1s across sessions if necessarry
   %
   % (C) Copyright 2019 CPP_SPM developers
+
+  opt.dir.input = opt.dir.preproc;
 
   [BIDS, opt] = setUpWorkflow(opt, 'spatial preprocessing');
 
@@ -74,7 +76,7 @@ function bidsSpatialPrepro(opt)
 
     matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
 
-    if strcmp(opt.space, 'MNI')
+    if ismember('MNI', opt.space)
       % dependency from segmentation
       % dependency from coregistration
       matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim);
@@ -83,20 +85,31 @@ function bidsSpatialPrepro(opt)
     % if no unwarping was done on func, we reslice the func, so we can use
     % them for the functionalQA
     if ~opt.realign.useUnwarp
-      matlabbatch = setBatchRealign(matlabbatch, 'reslice', BIDS, opt, subLabel);
+      matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subLabel, 'reslice');
     end
 
-    batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];
+    batchName = ['spatial_preprocessing-' strjoin(opt.space, '-')];
 
     saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
     copyFigures(BIDS, opt, subLabel);
 
     if ~opt.dryRun
+      % convert realignment files to confounds.tsv
+      % and rename a few non-bidsy file
+      rpFiles = spm_select('FPListRec', ...
+                           fullfile(BIDS.pth, ['sub-' subLabel]), ...
+                           ['^rp_.*sub-' subLabel '.*_task-' opt.taskName '.*_bold.txt$']);
+      for iFile = 1:size(rpFiles, 1)
+        convertRealignParamToTsvBasic(rpFiles(iFile, :), opt);
+      end
+
       renameSegmentParameter(BIDS, subLabel, opt);
       renameUnwarpParameter(BIDS, subLabel, opt);
     end
 
   end
+
+  bidsRename(opt);
 
 end

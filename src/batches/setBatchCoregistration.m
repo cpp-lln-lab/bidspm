@@ -1,4 +1,4 @@
-function matlabbatch = setBatchCoregistration(matlabbatch, ref, src, other)
+function matlabbatch = setBatchCoregistration(matlabbatch, opt, ref, src, other)
   %
   % Set the batch for coregistering the source images into the reference image
   %
@@ -21,7 +21,7 @@ function matlabbatch = setBatchCoregistration(matlabbatch, ref, src, other)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('coregistration');
+  printBatchName('coregistration', opt);
 
   matlabbatch{end + 1}.spm.spatial.coreg.estimate.ref = { ref };
   matlabbatch{end}.spm.spatial.coreg.estimate.source = { src };

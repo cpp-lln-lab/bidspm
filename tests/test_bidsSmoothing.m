@@ -10,15 +10,12 @@ end
 
 function test_bidsSmoothingBasic()
 
-  FWHM = 6;
-
-  opt = setOptions('MoAE-preproc');
+  opt = setOptions('vislocalizer');
 
   opt.pipeline.type = 'preproc';
-  opt.pipeline.name = 'cpp_spm-preproc';
 
   opt = checkOptions(opt);
 
-  bidsSmoothing(FWHM, opt);
+  bidsSmoothing(opt);
 
 end

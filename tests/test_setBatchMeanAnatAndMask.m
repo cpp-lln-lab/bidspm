@@ -10,25 +10,24 @@ end
 
 function test_setBatchMeanAnatAndMaskBasic()
 
-  funcFWHM = 6;
-
   opt = setOptions('vismotion');
   opt.subjects = {'01', '02'};
+  opt.space = {'MNI'};
 
   matlabbatch = [];
-  matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, pwd);
+  matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, pwd);
 
   %
   imcalc.input{1, 1} = fullfile(opt.dir.preproc, ...
                                 'sub-01', ...
                                 'ses-01', ...
                                 'anat', ...
-                                'wmsub-01_ses-01_T1w.nii');
+                                'sub-01_ses-01_space-IXI549Space_res-hi_desc-preproc_T1w.nii');
   imcalc.input{2, 1} = fullfile(opt.dir.preproc, ...
                                 'sub-02', ...
                                 'ses-01', ...
                                 'anat', ...
-                                'wmsub-02_ses-01_T1w.nii');
+                                'sub-02_ses-01_space-IXI549Space_res-hi_desc-preproc_T1w.nii');
 
   imcalc.output = 'meanAnat.nii';
   imcalc.outdir{1} = pwd;
@@ -53,7 +52,8 @@ function test_setBatchMeanAnatAndMaskBasic()
 
   expectedBatch{2}.spm.util.imcalc = imcalc;
 
-  assertEqual(matlabbatch{1}.spm.util.imcalc, expectedBatch{1}.spm.util.imcalc);
+  assertEqual(matlabbatch{1}.spm.util.imcalc.input, expectedBatch{1}.spm.util.imcalc.input);
+  assertEqual(matlabbatch{1}.spm.util.imcalc.output, expectedBatch{1}.spm.util.imcalc.output);
   assertEqual(matlabbatch{2}.spm.util.imcalc, expectedBatch{2}.spm.util.imcalc);
 
 end

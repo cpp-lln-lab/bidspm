@@ -1,10 +1,10 @@
-function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, funcFWHM)
+function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID)
   %
   % Short description of what the function does goes here.
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, funcFWHM)
+  %   matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -14,8 +14,6 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, func
   % :type opt: string
   % :param subID:
   % :type subID:
-  % :param funcFWHM:
-  % :type funcFWHM:
   %
   % :returns: - :matlabbatch: (structure)
   %
@@ -24,32 +22,34 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, func
 
   printBatchName('smoothing functional images', opt);
 
-  prefix = getPrefix('smooth', opt);
-
   % identify sessions for this subject
   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
 
-  % clear previous matlabbatch and files
   allFiles = [];
 
-  for iSes = 1:nbSessions        % For each session
+  for iSes = 1:nbSessions
 
-    % get all runs for that subject across all sessions
     [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
 
-    % numRuns = group(iGroup).numRuns(iSub);
     for iRun = 1:nbRuns
 
-      % get the filename for this bold run for this task
+      opt.query.desc = 'preproc';
+      opt.query.space = opt.space;
+      if ismember('MNI', opt.query.space)
+        idx = strcmp(opt.query.space, 'MNI');
+        opt.query.space{idx} = 'IXI549Space';
+      end
       [fileName, subFuncDataDir] = getBoldFilename( ...
                                                    BIDS, ...
                                                    subID, sessions{iSes}, runs{iRun}, opt);
 
-      % check that the file with the right prefix exist
-      files = validationInputFile(subFuncDataDir, fileName, prefix);
+      % check input file
+      for iFile = 1:size(fileName, 1)
+        files{iFile, 1} = validationInputFile(subFuncDataDir(iFile, :), fileName(iFile, :));
+      end
 
       % add the files to list
-      allFilesTemp = cellstr(files);
+      allFilesTemp = cellstr(char(files));
       allFiles = [allFiles; allFilesTemp]; %#ok<AGROW>
 
     end
@@ -59,7 +59,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID, func
   matlabbatch = setBatchSmoothing(matlabbatch, ...
                                   opt, ...
                                   allFiles, ...
-                                  funcFWHM, ...
-                                  [spm_get_defaults('smooth.prefix'), num2str(funcFWHM)]);
+                                  opt.fwhm.func, ...
+                                  [spm_get_defaults('smooth.prefix'), num2str(opt.fwhm.func)]);
 
 end

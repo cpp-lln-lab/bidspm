@@ -2,32 +2,49 @@ function errorHandling(varargin)
   %
   % USAGE::
   %
-  %  error_handling(function_name, id, msg, tolerant, verbose)
+  %  errorHandling(functionName, id, msg, tolerant, verbose)
+  %
+  % :param functionName:
+  % :type functionName: string
+  % :param id: Error or warning id
+  % :type id: string
+  % :param msg: Message to print
+  % :type msg: string
+  % :param tolerant: If set to ``true`` errors are converted into warnings
+  % :type tolerant: boolean
+  % :param verbose: If set to ``0`` or ``false`` this will silence any warning
+  % :type verbose: boolean
+  %
+  % EXAMPLE::
+  %
+  %  msg = sprintf('this error happened with this file %s', filename)
+  %  id = 'thisError';
+  %  errorHandling(mfilename(), id, msg, true, opt.verbosity)
   %
   %
   % adapted from bids-matlab
   %
   % (C) Copyright 2018 CPP_SPM developers
 
-  default_function_name = 'cpp_spm';
-  default_id = 'unspecified';
-  default_msg = 'unspecified';
-  default_tolerant = true;
-  default_verbose = false;
+  defaultFunctionName = 'cpp_spm';
+  defaultId = 'unspecified';
+  defaultMsg = 'unspecified';
+  defaultTolerant = true;
+  defaultVerbose = false;
 
   p = inputParser;
 
-  addOptional(p, 'function_name', default_function_name, @ischar);
-  addOptional(p, 'id', default_id, @ischar);
-  addOptional(p, 'msg', default_msg, @ischar);
-  addOptional(p, 'tolerant', default_tolerant, @islogical);
-  addOptional(p, 'verbose', default_verbose, @(x) (islogical(x) || isnumeric(x)));
+  addOptional(p, 'functionName', defaultFunctionName, @ischar);
+  addOptional(p, 'id', defaultId, @ischar);
+  addOptional(p, 'msg', defaultMsg, @ischar);
+  addOptional(p, 'tolerant', defaultTolerant, @islogical);
+  addOptional(p, 'verbose', defaultVerbose, @(x) (islogical(x) || isnumeric(x)));
 
   parse(p, varargin{:});
 
-  function_name = spm_file(p.Results.function_name, 'basename');
+  functionName = spm_file(p.Results.functionName, 'basename');
 
-  id = [function_name, ':' p.Results.id];
+  id = [functionName, ':' p.Results.id];
 
   if ~p.Results.tolerant
     errorStruct.identifier = id;

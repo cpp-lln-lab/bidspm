@@ -12,8 +12,6 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   % :type opt: structure
   % :param subLabel:
   % :type subLabel: string
-  % :param funcFWHM:
-  % :type funcFWHM: float
   % :param iStep:
   % :type iStep: positive integer
   % :param iCon:
@@ -23,7 +21,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  [matlabbatch, opt, subLabel, funcFWHM, iStep, iCon] = deal(varargin{:});
+  [matlabbatch, opt, subLabel, iStep, iCon] = deal(varargin{:});
 
   result.Contrasts = opt.result.Steps(iStep).Contrasts(iCon);
 
@@ -32,7 +30,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   end
   result.space = opt.space;
 
-  result.dir = getFFXdir(subLabel, funcFWHM, opt);
+  result.dir = getFFXdir(subLabel, opt);
   result.label = subLabel;
   result.nbSubj = 1;
 

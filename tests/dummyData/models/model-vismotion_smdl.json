@@ -7,6 +7,18 @@
   "Steps": [
     {
       "Level": "subject",
+      "Model": {
+        "X": [
+          "trial_type.VisUp",
+          "trial_type.VisDown",
+          "trans_x",
+          "trans_y",
+          "trans_z",
+          "rot_x",
+          "rot_y",
+          "rot_z"
+        ]
+      },
       "AutoContrasts": [
         "trial_type.VisMot",
         "trial_type.VisStat"

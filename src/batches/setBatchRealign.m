@@ -79,6 +79,13 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
     for iRun = 1:nbRuns
 
       % get the filename for this bold run for this task
+      % in case we did slice timing we specify it in the file to query
+      opt.query.desc = '';
+      if (isfield(opt.metadata, 'SliceTiming') && ...
+          ~isempty(opt.metadata.SliceTiming)) || ...
+              ~isempty(opt.sliceOrder)
+        opt.query.desc = 'stc';
+      end
       [boldFilename, subFuncDataDir] = getBoldFilename( ...
                                                        BIDS, ...
                                                        subLabel, ...
@@ -86,10 +93,10 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
                                                        runs{iRun}, ...
                                                        opt);
 
-      % check that the file with the right prefix exist and we get and
-      % save its voxeldimension
-      prefix = getPrefix('realign', opt);
-      file = validationInputFile(subFuncDataDir, boldFilename, prefix);
+      % check that the file exists
+      % and we get and save its voxeldimension
+      prefix = '';
+      file = validationInputFile(subFuncDataDir, boldFilename);
       [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, boldFilename);
 
       if size(file, 1) > 1

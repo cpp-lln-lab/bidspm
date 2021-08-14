@@ -87,6 +87,10 @@ function matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
   matlabbatch{end}.spm.temporal.st.so = sliceOrder * 1000;
   matlabbatch{end}.spm.temporal.st.refslice = referenceSlice * 1000;
 
+  % only sitck to raw data
+  opt.query.space = '';
+  opt.query.desc = '';
+
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   runCounter = 1;

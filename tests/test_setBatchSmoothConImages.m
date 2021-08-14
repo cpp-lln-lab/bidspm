@@ -10,16 +10,14 @@ end
 
 function test_setBatchSmoothConImagesBasic()
 
-  funcFWHM = 6;
-  conFWHM = 6;
-
   opt = setOptions('vismotion');
   opt.subjects = {'01', '02'};
+  opt.space = {'MNI'};
 
   [~, opt] = getData(opt, opt.dir.preproc);
 
   matlabbatch = [];
-  matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFWHM);
+  matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
 
   statsFodler = fullfile(opt.dir.stats, 'sub-01', 'stats', ...
                          'task-vismotion_space-MNI_FWHM-6');

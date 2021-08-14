@@ -10,8 +10,7 @@ end
 
 function test_loadAndCheckOptionsBasic()
 
-  spm_mkdir cfg;
-  delete(fullfile(pwd, 'cfg', '*.json'));
+  setUp();
 
   % create dummy json file
   jsonContent.taskName = 'vismotion';
@@ -25,12 +24,13 @@ function test_loadAndCheckOptionsBasic()
 
   assertEqual(opt, expectedOptions);
 
+  cleanUp();
+
 end
 
 function test_loadAndCheckOptionsStructure()
 
-  spm_mkdir cfg;
-  delete(fullfile(pwd, 'cfg', '*.json'));
+  setUp();
 
   % create dummy json file
   opt = setTestCfg();
@@ -45,16 +45,17 @@ function test_loadAndCheckOptionsStructure()
 
   assertEqual(opt, expectedOptions);
 
+  cleanUp();
+
 end
 
 function test_loadAndCheckOptionsFromFile()
 
-  spm_mkdir cfg;
-  delete(fullfile(pwd, 'cfg', '*.json'));
+  setUp();
 
   % create dummy json file
   jsonContent.taskName = 'vismotion';
-  jsonContent.space = 'individual';
+  jsonContent.space = {'individual'};
   jsonContent.verbosity = 0;
   jsonContent.groups = {''};
   jsonContent.subjects = {[]};
@@ -66,19 +67,18 @@ function test_loadAndCheckOptionsFromFile()
   opt = loadAndCheckOptions(filename);
 
   expectedOptions = defaultOptions('vismotion');
-  expectedOptions.space = 'individual';
+  expectedOptions.space = {'individual'};
   expectedOptions.verbosity = 0;
 
   assertEqual(opt, expectedOptions);
 
-  delete('*.json');
+  cleanUp();
 
 end
 
 function test_loadAndCheckOptionsFromSeveralFiles()
 
-  spm_mkdir cfg;
-  delete(fullfile(pwd, 'cfg', '*.json'));
+  setUp();
 
   % create old dummy json file
   jsonContent.taskName = 'vismotion';
@@ -90,13 +90,13 @@ function test_loadAndCheckOptionsFromSeveralFiles()
 
   % create dummy json file with no date
   jsonContent.taskName = 'vismotion';
-  jsonContent.space = 'individual';
+  jsonContent.space = {'individual'};
   filename = fullfile(pwd, 'cfg', 'options_task-vismotion_space-T1w.json');
   spm_jsonwrite(filename, jsonContent);
 
   % most recent option file that should be read from
   jsonContent.taskName = 'vismotion';
-  jsonContent.space = 'individual';
+  jsonContent.space = {'individual'};
   jsonContent.verbosity = 0;
   jsonContent.funcVoxelDims = [1 1 1];
   filename = fullfile(pwd, 'cfg', ['options', ...
@@ -109,15 +109,19 @@ function test_loadAndCheckOptionsFromSeveralFiles()
   opt = loadAndCheckOptions();
 
   expectedOptions = defaultOptions('vismotion');
-  expectedOptions.space = 'individual';
+  expectedOptions.space = {'individual'};
   expectedOptions.funcVoxelDims = [1 1 1]';
   expectedOptions.verbosity = 0;
 
   assertEqual(opt, expectedOptions);
 
+  cleanUp();
+
 end
 
 function test_loadAndCheckOptionsMoAE()
+
+  setUp();
 
   jsonContent = setOptions('MoAE');
 
@@ -125,5 +129,25 @@ function test_loadAndCheckOptionsMoAE()
   spm_jsonwrite(optionJsonFile, jsonContent);
 
   opt = loadAndCheckOptions(optionJsonFile);
+
+  cleanUp();
+
+end
+
+function setUp
+  spm_mkdir cfg;
+  delete(fullfile(pwd, 'cfg', '*.json'));
+end
+
+function cleanUp()
+
+  pause(1);
+
+  if isOctave()
+    confirm_recursive_rmdir (true, 'local');
+  end
+  rmdir(fullfile(pwd, 'cfg'), 's');
+
+  delete('*.json');
 
 end

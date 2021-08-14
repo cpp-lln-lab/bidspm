@@ -2,7 +2,21 @@ function opt =  face_rep_get_option_results()
   %
   % (C) Copyright 2021 Remi Gau
 
-  opt = face_rep_get_option();
+  opt = [];
+
+  opt.taskName = 'facerepetition';
+  opt.verbosity = 1;
+
+  opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
+  opt.dir.derivatives = fullfile(opt.dir.raw, '..', 'derivatives');
+  opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+  opt.dir.roi = fullfile(opt.dir.derivatives, 'cpp_spm-roi');
+
+  opt.pipeline.type = 'stats';
+
+  opt.space = {'MNI'};
+
+  opt.model.hrfDerivatives = [1 1];
 
   opt.model.file = fullfile( ...
                             fileparts(mfilename('fullpath')), ...
@@ -32,5 +46,9 @@ function opt =  face_rep_get_option_results()
   opt.result.Steps(1).Output.montage.do = true();
   opt.result.Steps(1).Output.montage.slices = -26:3:6; % in mm
   opt.result.Steps(1).Output.montage.orientation = 'axial';
+
+  %% DO NOT TOUCH
+  opt = checkOptions(opt);
+  saveOptions(opt);
 
 end

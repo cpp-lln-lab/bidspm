@@ -11,7 +11,6 @@ end
 function test_getBoldFilenameBasic()
 
   subLabel = '01';
-  funcFWHM = 6;
   iSes = 1;
   iRun = 1;
 
@@ -19,7 +18,8 @@ function test_getBoldFilenameBasic()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  opt.query = struct('acq', '');
+  opt.query = struct('acq', '', ... % to filter out raw data with acq entity
+                     'space', '', 'desc', ''); % to filter out derivatives data
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
 
@@ -32,10 +32,42 @@ function test_getBoldFilenameBasic()
   expectedFileName = 'sub-01_ses-01_task-vislocalizer_bold.nii';
 
   expectedSubFuncDataDir = fullfile(fileparts(mfilename('fullpath')), ...
-                                    'dummyData', 'derivatives', 'cpp_spm', ...
+                                    'dummyData', 'derivatives', 'cpp_spm-preproc', ...
                                     'sub-01', 'ses-01', 'func');
 
-  assertEqual(expectedSubFuncDataDir, subFuncDataDir);
-  assertEqual(expectedFileName, fileName);
+  assertEqual(subFuncDataDir, expectedSubFuncDataDir);
+  assertEqual(fileName, expectedFileName);
+
+end
+
+function test_getBoldFilenameDerivatives()
+
+  subLabel = '01';
+  iSes = 1;
+  iRun = 1;
+
+  opt = setOptions('vismotion', subLabel);
+  opt.useBidsSchema = false;
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  opt.query = struct('desc', 'stc', 'space', 'individual');
+
+  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+
+  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
+
+  [fileName, subFuncDataDir] = getBoldFilename( ...
+                                               BIDS, ...
+                                               subLabel, sessions{iSes}, runs{iRun}, opt);
+
+  expectedFileName = 'sub-01_ses-01_task-vismotion_run-1_space-individual_desc-stc_bold.nii';
+
+  expectedSubFuncDataDir = fullfile(fileparts(mfilename('fullpath')), ...
+                                    'dummyData', 'derivatives', 'cpp_spm-preproc', ...
+                                    'sub-01', 'ses-01', 'func');
+
+  assertEqual(subFuncDataDir, expectedSubFuncDataDir);
+  assertEqual(fileName, expectedFileName);
 
 end

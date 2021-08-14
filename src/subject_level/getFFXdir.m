@@ -1,4 +1,4 @@
-function ffxDir = getFFXdir(subLabel, funcFWFM, opt)
+function ffxDir = getFFXdir(subLabel, opt)
   %
   % Sets the name the FFX directory and creates it if it does not exist
   %
@@ -8,8 +8,6 @@ function ffxDir = getFFXdir(subLabel, funcFWFM, opt)
   %
   % :param subLabel:
   % :type subLabel: string
-  % :param funcFWFM:
-  % :type funcFWFM: scalar
   % :param opt:
   % :param opt: structure
   %
@@ -17,7 +15,7 @@ function ffxDir = getFFXdir(subLabel, funcFWFM, opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  glmDirName = createGlmDirName(opt, funcFWFM);
+  glmDirName = createGlmDirName(opt);
 
   model = spm_jsonread(opt.model.file);
   if ~isempty(model.Name) && ~strcmpi(model.Name, opt.taskName)

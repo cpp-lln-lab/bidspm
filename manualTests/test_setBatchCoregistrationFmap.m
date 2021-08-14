@@ -16,12 +16,12 @@ function test_setBatchCoregistrationFmapBasic()
 
   opt.query.acq = '';
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.input);
 
   matlabbatch = [];
   matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLabel);
 
-  directory = fullfile(opt.dir.derivatives, ...
+  directory = fullfile(opt.dir.derivatives, 'cpp_spm-preproc', ...
                        'sub-01', ...
                        'ses-01');
   ref = fullfile(directory, ...
@@ -43,7 +43,7 @@ function test_setBatchCoregistrationFmapBasic()
   expectedbatch{end}.spm.spatial.coreg.estimate.source = { src };
   expectedbatch{end}.spm.spatial.coreg.estimate.other = other;
 
-  directory = fullfile(opt.dir.derivatives, ...
+  directory = fullfile(opt.dir.derivatives, 'cpp_spm-preproc', ...
                        'sub-01', ...
                        'ses-02');
   src = fullfile(directory, ...
@@ -59,6 +59,9 @@ function test_setBatchCoregistrationFmapBasic()
   expectedbatch{end}.spm.spatial.coreg.estimate.source = { src };
   expectedbatch{end}.spm.spatial.coreg.estimate.other = other;
 
-  assertEqual(matlabbatch, expectedbatch);
+  assertEqual(matlabbatch{1}.spm.spatial.coreg.estimate, ...
+              expectedbatch{1}.spm.spatial.coreg.estimate);
+  assertEqual(matlabbatch{2}.spm.spatial.coreg.estimate, ...
+              expectedbatch{2}.spm.spatial.coreg.estimate);
 
 end

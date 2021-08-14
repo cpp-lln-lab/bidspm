@@ -8,8 +8,6 @@ clear;
 clc;
 close all;
 
-FWHM = 6;
-
 downloadData = true;
 
 run ../../initCppSpm.m;
@@ -34,7 +32,7 @@ modelFile = opt.model.file;
 for iResolution = 2:1:3
 
   opt.pipeline.type = 'preproc';
-  opt.pipeline.name = ['cpp_spm-preproc-res' num2str(iResolution)];
+  opt.pipeline.name = ['cpp_spm-res' num2str(iResolution)];
 
   opt.funcVoxelDims = repmat(iResolution, 1, 3);
 
@@ -72,8 +70,8 @@ for iResolution = 2:1:3
   opt.pipeline.name = ['cpp_spm-stats-res' num2str(iResolution)];
   opt = checkOptions(opt);
 
-  bidsFFX('specifyAndEstimate', opt, FWHM);
-  bidsFFX('contrasts', opt, FWHM);
+  bidsFFX('specifyAndEstimate', opt);
+  bidsFFX('contrasts', opt);
 
   % specify underlay image
   subLabel = '01';
@@ -83,6 +81,6 @@ for iResolution = 2:1:3
                                                              anatDataDir, ...
                                                              '^wm.*desc-skullstripped.*.nii$');
 
-  bidsResults(opt, FWHM);
+  bidsResults(opt);
 
 end

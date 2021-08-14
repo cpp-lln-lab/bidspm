@@ -1,10 +1,10 @@
-function matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFWHM)
+function matlabbatch = setBatchSmoothConImages(matlabbatch, opt)
   %
   % Creates a batch to smooth all the con images of all subjects
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt, funcFWHM, conFWHM)
+  %   matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt)
   %
   % :param matlabbatch:
   % :type matlabbatch:
@@ -12,10 +12,6 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFW
   % :type group:
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt:
-  % :param funcFWHM:
-  % :type funcFWHM:
-  % :param conFWHM:
-  % :type conFWHM:
   %
   % :returns: - :matlabbatch:
   %
@@ -29,7 +25,7 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFW
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+    ffxDir = getFFXdir(subLabel, opt);
 
     conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
     data = cellstr(conImg);
@@ -38,8 +34,9 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFW
                                     matlabbatch, ...
                                     opt, ...
                                     data, ...
-                                    conFWHM, ...
-                                    [spm_get_defaults('smooth.prefix'), num2str(conFWHM)]);
+                                    opt.fwhm.contrast, ...
+                                    [spm_get_defaults('smooth.prefix'), ...
+                                     num2str(opt.fwhm.contrast)]);
 
   end
 

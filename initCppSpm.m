@@ -14,6 +14,7 @@ function initCppSpm()
 
     addpath(genpath(fullfile(thisDirectory, 'src')));
     addpath(genpath(fullfile(thisDirectory, 'lib', 'spmup')));
+    addpath(genpath(fullfile(thisDirectory, 'lib', 'spm_2_bids')));
 
     libList = { ...
                'mancoreg', ...

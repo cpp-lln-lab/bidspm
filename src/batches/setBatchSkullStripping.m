@@ -44,14 +44,16 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   end
 
   p = bids.internal.parse_filename(imageToSkullStrip);
+  p.entities.space = 'individual';
   p.entities.desc = 'skullstripped';
-  output = ['m' bids.create_filename(p)];
+  output = bids.create_filename(p);
 
   p = bids.internal.parse_filename(imageToSkullStrip);
+  p.entities.space = 'individual';
   p.entities.label = 'brain';
   p.suffix = 'mask';
   p.use_schema = false;
-  maskOutput = ['m' bids.create_filename(p)];
+  maskOutput = bids.create_filename(p);
 
   expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
 
@@ -105,6 +107,9 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
                           '.', 'c', '()', {':'}));
 
   else
+
+    % TODO: using 'm' prefixes might not work and should probably be changed for
+    % a bids.query
 
     % bias corrected image
     biasCorrectedAnatImage = validationInputFile(anatDataDir, anatImage, 'm');

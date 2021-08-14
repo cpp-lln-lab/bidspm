@@ -16,33 +16,36 @@ function opt = checkOptions(opt)
   %
   % - :opt: the option structure with missing values filled in by the defaults.
   %
-  % REQUIRED FIELDS:
-  %
-  %   - ``opt.taskName``
-  %   - ``opt.dir.raw``
-  %
   % IMPORTANT OPTIONS (with their defaults):
   %
-  %   - ``opt.groups = {''}`` - group of subjects to analyze
-  %   - ``opt.subjects = {[]}`` - suject to run in each group
-  %     space where we conduct the analysis
-  %   - ``opt.derivativesDir = ''`` - directory where the raw and derivatives
-  %     are located. See ``setDerivativesDir()`` for more information.
-  %   - ``opt.space = 'MNI'`` - Space where we conduct the analysis
-  %   - ``opt.realign.useUnwarp = true``
-  %   - ``opt.useFieldmaps = true`` - when set to ``true`` the
-  %     preprocessing pipeline will look for the voxel displacement maps (created by
+  %     - ``opt.taskName``
+  %     - ``opt.dir``: EXPLAIN
+  %     - ``opt.groups = {''}`` - group of subjects to analyze
+  %     - ``opt.subjects = {[]}`` - suject to run in each group
+  %         space where we conduct the analysis
+  %         are located. See ``setDerivativesDir()`` for more information.
+  %     - ``opt.space = {'individual', 'MNI'}`` - Space where we conduct the analysis
+  %     - ``opt.realign.useUnwarp = true``
+  %     - ``opt.useFieldmaps = true`` - when set to ``true`` the
+  %         preprocessing pipeline will look for the voxel displacement maps (created by
   %     ``bidsCreateVDM()``) and will use them for realign and unwarp.
-  %   - ``opt.model.file = ''`` - path to the BIDS model file that contains the
-  %     model to speficy and the contrasts to compute.
-  %
-  % OTHER OPTIONS (with their defaults):
-  %
-  %     - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
-  %         subjects should be fetched by their number ``1`` and not their label ``O1'``.
+  %     - ``opt.model.file = ''`` - path to the BIDS model file that contains the
+  %         model to speficy and the contrasts to compute.
+  %     - ``opt.fwhm.func = 6`` - FWHM to apply to the preprocessed functional images.
+  %     - ``opt.fwhm.contrast = 6`` - FWHM to apply to the contrast images before bringing
+  %         them at the group level.
   %     - ``opt.query`` - a structure used to specify other options to only run analysis on
   %         certain files. ``struct('dir', 'AP', 'acq' '3p00mm')``. See ``bids.query``
   %         to see how to specify.
+  %
+  % OTHER OPTIONS (with their defaults):
+  %
+  %     - ``opt.verbosity = 1;`` - Set it to ``0`` if you want to see less output on the prompt.
+  %     - ``opt.dryRun = false`` - Set it to ``true`` in case you don't want to run the analysis.
+  %     - ``opt.pipeline.type = 'preproc'`` - Switch it to ``stats`` when running GLMs.
+  %     - ``opt.pipeline.name = 'cpp_spm'``
+  %     - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
+  %         subjects should be fetched by their number ``1`` and not their label ``O1'``.
   %     - ``opt.anatReference.type = 'T1w'`` -  type of the anatomical reference
   %     - ``opt.anatReference.session = ''`` - session label of the anatomical reference
   %     - ``opt.skullstrip.threshold = 0.75`` - Threshold used for the skull stripping.
@@ -83,15 +86,18 @@ function opt = checkOptions(opt)
 
   checkFields(opt);
 
-  if strcmp(opt.pipeline.type, 'stats') && ...
-          any(strcmp(opt.pipeline.name, {'cpp_spm', 'cpp_spm-preproc'}))
-    opt.pipeline.name = 'cpp_spm-stats';
+  if any(strcmp(opt.pipeline.name, {'cpp_spm-stats', 'cpp_spm-preproc'}))
+    opt.pipeline.name = 'cpp_spm';
   end
 
   if ~iscell(opt.query.modality)
     tmp = opt.query.modality;
     opt.query = rmfield(opt.query, 'modality');
     opt.query.modality{1} = tmp;
+  end
+
+  if ~iscell(opt.space)
+    opt.space = {opt.space};
   end
 
   opt = orderfields(opt);
@@ -110,12 +116,18 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.pipeline.type = 'preproc';
   fieldsToSet.pipeline.name = 'cpp_spm';
 
+  fieldsToSet.useBidsSchema = false;
+
+  fieldsToSet.fwhm.func = 6;
+  fieldsToSet.fwhm.contrast = 6;
+
   fieldsToSet.dir = struct('input', '', ...
                            'output', '', ...
                            'derivatives', '', ...
                            'raw', '', ...
                            'preproc', '', ...
-                           'stats', '');
+                           'stats', '', ...
+                           'jobs', '');
 
   fieldsToSet.groups = {''};
   fieldsToSet.subjects = {[]};
@@ -140,7 +152,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.skullstrip.mean = false;
 
   %% Options for normalize
-  fieldsToSet.space = 'MNI';
+  fieldsToSet.space = {'individual', 'MNI'};
   fieldsToSet.funcVoxelDims = [];
 
   %% Options for model specification and results
@@ -164,50 +176,42 @@ function checkFields(opt)
 
   if isfield(opt, 'taskName') && isempty(opt.taskName)
 
-    errorStruct.identifier = 'checkOptions:noTask';
-    errorStruct.message = sprintf( ...
-                                  'Provide the name of the task to analyze.');
-    error(errorStruct);
+    msg = 'You may need to provide the name of the task to analyze.';
+    errorHandling(mfilename(), 'noTask', msg, true, opt.verbosity);
 
   end
 
   if ~all(cellfun(@ischar, opt.groups))
 
-    errorStruct.identifier = 'checkOptions:groupNotString';
-    errorStruct.message = sprintf( ...
-                                  'All group names should be string.');
-    error(errorStruct);
+    msg = 'All group names should be string.';
+    errorHandling(mfilename(), 'groupNotString', msg, false, opt.verbosity);
 
   end
 
   if ~ischar(opt.anatReference.session)
 
-    errorStruct.identifier = 'checkOptions:sessionNotString';
-    errorStruct.message = sprintf( ...
-                                  'The session label should be string.');
-    error(errorStruct);
+    msg = 'The session label should be string.';
+    errorHandling(mfilename(), 'sessionNotString', msg, false, opt.verbosity);
 
   end
 
   if ~isempty (opt.STC_referenceSlice) && length(opt.STC_referenceSlice) > 1
 
-    errorStruct.identifier = 'checkOptions:refSliceNotScalar';
-    errorStruct.message = sprintf( ...
-                                  ['options.STC_referenceSlice should be a scalar.' ...
-                                   '\nCurrent value is: %d'], ...
-                                  opt.STC_referenceSlice);
-    error(errorStruct);
+    msg = sprintf( ...
+                  ['options.STC_referenceSlice should be a scalar.' ...
+                   '\nCurrent value is: %d'], ...
+                  opt.STC_referenceSlice);
+    errorHandling(mfilename(), 'refSliceNotScalar', msg, false, opt.verbosity);
 
   end
 
   if ~isempty (opt.funcVoxelDims) && length(opt.funcVoxelDims) ~= 3
 
-    errorStruct.identifier = 'checkOptions:voxDim';
-    errorStruct.message = sprintf( ...
-                                  ['opt.funcVoxelDims should be a vector of length 3. '...
-                                   '\nCurrent value is: %d'], ...
-                                  opt.funcVoxelDims);
-    error(errorStruct);
+    msg = sprintf( ...
+                  ['opt.funcVoxelDims should be a vector of length 3. '...
+                   '\nCurrent value is: %d'], ...
+                  opt.funcVoxelDims);
+    errorHandling(mfilename(), 'voxDim', msg, false, opt.verbosity);
 
   end
 

@@ -17,6 +17,9 @@ function bidsRealignUnwarp(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  opt.dir.input = opt.dir.preproc;
+  opt.query.modality = 'func';
+
   [BIDS, opt] = setUpWorkflow(opt, 'realign and unwarp');
 
   for iSub = 1:numel(opt.subjects)
@@ -40,5 +43,9 @@ function bidsRealignUnwarp(opt)
     end
 
   end
+
+  prefix = get_spm_prefix_list();
+  opt.query.prefix = prefix.unwarp;
+  bidsRename(opt);
 
 end

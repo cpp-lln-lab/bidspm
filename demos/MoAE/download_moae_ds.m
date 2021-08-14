@@ -1,12 +1,12 @@
-function download_moae_ds(downloadData)
+function download_moae_ds(download_data)
   %
   % (C) Copyright 2021 Remi Gau
 
   if nargin < 1
-    downloadData = true;
+    download_data = true;
   end
 
-  if downloadData
+  if download_data
 
     % URL of the data set to download
     URL = 'http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip';

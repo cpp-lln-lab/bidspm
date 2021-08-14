@@ -15,35 +15,32 @@ function test_setBatchSmoothingFuncBasic()
 
   subLabel = '01';
 
-  funcFWHM = 6;
+  opt = setOptions('vislocalizer', subLabel);
 
-  opt = setOptions('MoAE', subLabel);
+  opt.space = {'MNI'};
 
-  [BIDS, opt] = getData(opt, opt.dir.raw);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   % create dummy normalized file
   fileName = bids.query(BIDS, 'data', ...
                         'sub', subLabel, ...
                         'task', opt.taskName, ...
+                        'extension', '.nii', ...
+                        'desc', 'preproc', ...
+                        'space', 'IXI549Space', ...
                         'suffix', 'bold');
-  [filepath, filename, ext] = fileparts(fileName{1});
-  fileName = fullfile( ...
-                      filepath, ...
-                      [spm_get_defaults('normalise.write.prefix'), ...
-                       spm_get_defaults('unwarp.write.prefix'), ...
-                       filename ext]);
-  system(sprintf('touch %s', fileName));
 
-  matlabbatch = [];
-  matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel, funcFWHM);
+  matlabbatch = {};
+  matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel);
 
-  expectedBatch{1}.spm.spatial.smooth.fwhm = [6 6 6];
+  expectedBatch{1}.spm.spatial.smooth.fwhm = repmat(opt.fwhm.func, [1, 3]);
   expectedBatch{1}.spm.spatial.smooth.dtype = 0;
   expectedBatch{1}.spm.spatial.smooth.im = 0;
   expectedBatch{1}.spm.spatial.smooth.prefix = ...
       [spm_get_defaults('smooth.prefix'), '6'];
-  expectedBatch{1}.spm.spatial.smooth.data{1} = fileName;
+  expectedBatch{1}.spm.spatial.smooth.data = fileName;
 
-  assertEqual(matlabbatch, expectedBatch);
+  assertEqual(matlabbatch{1}.spm.spatial.smooth.data, expectedBatch{1}.spm.spatial.smooth.data);
+  assertEqual(matlabbatch{1}.spm.spatial.smooth, expectedBatch{1}.spm.spatial.smooth);
 
 end

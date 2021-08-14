@@ -10,12 +10,11 @@ end
 
 function test_getRFXdirBasic()
 
-  funcFWHM = 0;
-  conFWHM = 0;
-
   opt = setOptions('vislocalizer');
+  opt.fwhm.func = 0;
+  opt.fwhm.contrast = 0;
 
-  rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
+  rfxDir = getRFXdir(opt);
 
   expectedOutput = fullfile( ...
                             fileparts(mfilename('fullpath')), ...
@@ -27,16 +26,16 @@ function test_getRFXdirBasic()
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
+  cleanUp();
+
 end
 
-function test_getFFXdirUserSpecified()
-
-  conFWHM = 0;
-  funcFWHM = 6;
+function test_getRFXdirUserSpecified()
 
   opt = setOptions('nback');
+  opt.fwhm.contrast = 0;
 
-  rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
+  rfxDir = getRFXdir(opt);
 
   expectedOutput = fullfile( ...
                             fileparts(mfilename('fullpath')), ...
@@ -47,5 +46,23 @@ function test_getFFXdirUserSpecified()
                             'task-nback_space-MNI_FWHM-6_conFWHM-0_desc-nbackMVPA');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
+
+  cleanUp();
+
+end
+
+function cleanUp()
+
+  pause(1);
+
+  if isOctave()
+    confirm_recursive_rmdir (true, 'local');
+  end
+  rmdir(fullfile(fileparts(mfilename('fullpath')), ...
+                 'dummyData', ...
+                 'derivatives', ...
+                 'cpp_spm-stats', ...
+                 'group'), ...
+        's');
 
 end

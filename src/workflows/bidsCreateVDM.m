@@ -55,4 +55,6 @@ function bidsCreateVDM(opt)
 
   end
 
+  bidsRename(opt);
+
 end

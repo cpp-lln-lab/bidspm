@@ -1,4 +1,4 @@
-function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow()
+function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
   %
   % Short description of what the function does goes here.
   %
@@ -23,7 +23,7 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow()
   graphWindow = [];
   cmdLine = true;
 
-  if ~spm('CmdLine') && ~isOctave
+  if ~opt.dryRun && ~spm('CmdLine') && ~isOctave
 
     try
       [interactiveWindow, graphWindow, cmdLine] = spm('FnUIsetup');

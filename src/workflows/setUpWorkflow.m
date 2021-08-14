@@ -8,7 +8,7 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, BIDSdir)
   %
   % USAGE::
   %
-  %   [BIDS, opt, group] =setUpWorkflow(opt, workflowName)
+  %   [BIDS, opt, group] = setUpWorkflow(opt, workflowName)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions`` and ``loadAndCheckOptions``.
@@ -25,7 +25,7 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, BIDSdir)
   % (C) Copyright 2019 CPP_SPM developers
 
   if nargin < 3
-    BIDSdir = opt.dir.preproc;
+    BIDSdir = opt.dir.input;
   end
 
   opt = loadAndCheckOptions(opt);
@@ -35,9 +35,9 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, BIDSdir)
 
   cleanCrash();
 
-  printWorklowName(workflowName, opt);
+  printWorkflowName(workflowName, opt);
 
-  setGraphicWindow();
+  setGraphicWindow(opt);
 
   manageWorkersPool('open', opt);
 

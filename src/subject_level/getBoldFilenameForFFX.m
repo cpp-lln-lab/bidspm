@@ -1,11 +1,11 @@
-function [boldFileName, prefix] = getBoldFilenameForFFX(varargin)
+function boldFileName = getBoldFilenameForFFX(varargin)
   %
   % Gets the filename for this bold run for this task for the FFX setup
   % and check that the file with the right prefix exist
   %
   % USAGE::
   %
-  %   [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun)
+  %   boldFileName = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun)
   %
   % :param BIDS:
   % :type BIDS: structure
@@ -13,34 +13,40 @@ function [boldFileName, prefix] = getBoldFilenameForFFX(varargin)
   % :type opt: structure
   % :param subID:
   % :type subID: string
-  % :param funcFWHM:
-  % :type funcFWHM: scalar
   % :param iSes:
   % :type iSes: integer
   % :param iRun:
   % :type iRun: integer
   %
   % :returns: - :boldFileName: (string)
-  %           - :prefix: (srting)
   %
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  [BIDS, opt, subID, funcFWHM, iSes, iRun] =  deal(varargin{:});
+  [BIDS, opt, subLabel, iSes, iRun] =  deal(varargin{:});
 
-  sessions = getInfo(BIDS, subID, opt, 'Sessions');
+  opt.query.modality = 'func';
 
-  runs = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+  if opt.fwhm.func > 0
+    opt.query.desc = ['smth' num2str(opt.fwhm.func)];
+  else
+    opt.query.desc = 'preproc';
+  end
 
-  prefix = getPrefix('FFX', opt, funcFWHM);
+  opt.query.space = opt.space;
+  if ismember('MNI', opt.query.space)
+    idx = strcmp(opt.query.space, 'MNI');
+    opt.query.space{idx} = 'IXI549Space';
+  end
+
+  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+
+  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
   [fileName, subFuncDataDir] = getBoldFilename( ...
                                                BIDS, ...
-                                               subID, sessions{iSes}, runs{iRun}, opt);
+                                               subLabel, sessions{iSes}, runs{iRun}, opt);
 
-  boldFileName = validationInputFile( ...
-                                     subFuncDataDir, ...
-                                     fileName, ...
-                                     prefix);
+  boldFileName = validationInputFile(subFuncDataDir, fileName);
 
 end

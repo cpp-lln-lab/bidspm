@@ -3,6 +3,6 @@
 
 */*.json
 
-group/*
-dummyData/derivatives/*/sub-*/
-dummyData/derivatives/copy
+dummyData/derivatives/cpp_spm-preproc/jobs
+dummyData/derivatives/cpp_spm-preproc/sub*
+dummyData/derivatives/cpp_spm-stats/sub*

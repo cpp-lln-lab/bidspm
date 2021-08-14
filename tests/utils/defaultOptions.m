@@ -8,6 +8,11 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.pipeline.type =  'preproc';
   expectedOptions.pipeline.name = 'cpp_spm';
 
+  expectedOptions.useBidsSchema = false;
+
+  expectedOptions.fwhm.func = 6;
+  expectedOptions.fwhm.contrast = 6;
+
   expectedOptions.sliceOrder = [];
   expectedOptions.STC_referenceSlice = [];
 
@@ -16,7 +21,8 @@ function expectedOptions = defaultOptions(taskName)
                                'derivatives', '', ...
                                'raw', '', ...
                                'preproc', '', ...
-                               'stats', '');
+                               'stats', '', ...
+                               'jobs', '');
 
   expectedOptions.funcVoxelDims = [];
 
@@ -25,7 +31,7 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.query.modality = {'anat', 'func'};
 
-  expectedOptions.space = 'MNI';
+  expectedOptions.space = {'individual', 'MNI'};
 
   expectedOptions.anatReference.type = 'T1w';
   expectedOptions.anatReference.session = [];

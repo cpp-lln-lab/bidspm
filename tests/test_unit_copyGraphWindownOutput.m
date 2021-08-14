@@ -73,6 +73,8 @@ end
 
 function cleanUp(opt, subLabel)
 
+  delete('*.png');
+
   pause(1);
 
   if isOctave()

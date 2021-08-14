@@ -1,4 +1,4 @@
-function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, funcFWHM)
+function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
   %
   % Short description of what the function does goes here.
   %
@@ -12,8 +12,6 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
   % :type opt: structure
   % :param subLabel:
   % :type subLabel: string
-  % :param funcFWHM:
-  % :type funcFWHM:
   %
   % :returns: - :matlabbatch:
   %
@@ -21,7 +19,7 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
 
   printBatchName('subject level contrasts specification', opt);
 
-  ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+  ffxDir = getFFXdir(subLabel, opt);
 
   spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
 

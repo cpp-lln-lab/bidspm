@@ -29,6 +29,8 @@ function bidsSTC(opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  opt.dir.input = opt.dir.preproc;
+
   [BIDS, opt] = setUpWorkflow(opt, 'slice timing correction');
 
   for iSub = 1:numel(opt.subjects)
@@ -43,5 +45,9 @@ function bidsSTC(opt)
     saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
 
   end
+
+  prefix = get_spm_prefix_list;
+  opt.query.prefix = prefix.stc;
+  bidsRename(opt);
 
 end

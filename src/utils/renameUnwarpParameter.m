@@ -8,9 +8,8 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  [~, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
-
-  unwarpParam = spm_select('FPList', meanFuncDir, '^.*bold_uw.mat$');
+  unwarpParam = spm_select('FPListRec', BIDS.pth, ...
+                           ['^.*sub-' subLabel '.*_task-' opt.taskName '.*_bold_uw.mat$']);
 
   for iFile = 1:size(unwarpParam, 1)
 
@@ -23,7 +22,9 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
     p.use_schema = false;
     newName = spm_file(unwarpParam(iFile, :), 'filename',  bids.create_filename(p));
 
-    movefile(unwarpParam(iFile, :), newName);
+    if ~isempty(unwarpParam(iFile, :))
+      movefile(unwarpParam(iFile, :), newName);
+    end
 
   end
 

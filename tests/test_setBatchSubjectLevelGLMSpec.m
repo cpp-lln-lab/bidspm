@@ -10,32 +10,15 @@ end
 
 function test_setBatchSubjectLevelGLMSpecBasic()
 
-  funcFWHM = 6;
   subLabel = '01';
-  iSes = 1;
-  iRun = 1;
 
-  opt = setOptions('MoAE', subLabel);
+  opt = setOptions('vislocalizer', subLabel);
+  opt.space = {'MNI'};
 
-  bidsCopyInputFolder(opt);
-
-  [BIDS, opt] = getData(opt, opt.dir.raw);
-
-  % create dummy preprocessed data
-  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
-  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
-  [fileName, subFuncDataDir] = getBoldFilename( ...
-                                               BIDS, ...
-                                               subLabel, sessions{iSes}, runs{iRun}, opt);
-  copyfile(fullfile(subFuncDataDir, fileName), ...
-           fullfile(subFuncDataDir, ['s6wu', fileName]));
-
-  % create dummy realign parameter file
-  system(sprintf('touch %s', ...
-                 fullfile(subFuncDataDir, ['rp_', strrep(fileName, '.nii', '.txt')])));
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   matlabbatch = [];
-  matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel, funcFWHM);
+  matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
   % TODO add assert
   %     expectedBatch = returnExpectedBatch();
