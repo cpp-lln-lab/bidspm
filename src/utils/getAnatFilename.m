@@ -37,6 +37,12 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   if isfield(opt.query, 'desc')
     query.desc = opt.query.desc;
   end
+  if isfield(opt.query, 'space')
+    query.space = opt.query.space;
+    if strcmp(query.space, 'MNI')
+      query.space = 'IXI549Space';
+    end
+  end
 
   % get all anat images for that subject fo that type
   anat = bids.query(BIDS, 'data', query);
