@@ -37,8 +37,8 @@ function sliceOrder = getSliceOrder(opt)
     % If slice timing information is not in the metadata, you have the option
     % to add the slice order manually in the "opt" in the "getOptions"
     % function
-    if ~isempty(opt.sliceOrder)
-      sliceOrder = opt.sliceOrder;
+    if ~isempty(opt.stc.sliceOrder)
+      sliceOrder = opt.stc.sliceOrder;
 
       msg{end + 1} = ' SLICE TIMING INFORMATION EXTRACTED FROM OPTIONS.\n\n';
 

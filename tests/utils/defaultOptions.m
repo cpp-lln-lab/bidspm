@@ -13,8 +13,9 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.fwhm.func = 6;
   expectedOptions.fwhm.contrast = 6;
 
-  expectedOptions.sliceOrder = [];
-  expectedOptions.STC_referenceSlice = [];
+  expectedOptions.stc.sliceOrder = [];
+  expectedOptions.stc.referenceSlice = [];
+  expectedOptions.stc.skip = false;
 
   expectedOptions.dir = struct('input', '', ...
                                'output', '', ...

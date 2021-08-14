@@ -53,9 +53,10 @@ function opt = checkOptions(opt)
   %         will be included in the mask.
   %     - ``opt.funcVoxelDims = []`` - Voxel dimensions to use for resampling of functional data
   %         at normalization.
-  %     - ``opt.STC_referenceSlice = []`` - reference slice for the slice timing correction.
+  %     - ``opt.stc.skip = false`` - boolean flag to skip slice time correction or not.
+  %     - ``opt.stc.referenceSlice = []`` - reference slice for the slice timing correction.
   %         If left emtpy the mid-volume acquisition time point will be selected at run time.
-  %     - ``opt.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED,
+  %     - ``opt.stc.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED,
   %         if you know the order in which slices were acquired, you should be able to recompute
   %         slice timing and add it to the json files in your BIDS data set.
   %     -  ``opt.glm.roibased.do``
@@ -140,8 +141,9 @@ function fieldsToSet = setDefaultOption()
 
   %% Options for slice time correction
   % all in seconds
-  fieldsToSet.STC_referenceSlice = [];
-  fieldsToSet.sliceOrder = [];
+  fieldsToSet.stc.referenceSlice = [];
+  fieldsToSet.stc.sliceOrder = [];
+  fieldsToSet.stc.skip = false;
 
   %% Options for realign
   fieldsToSet.realign.useUnwarp = true;
@@ -195,12 +197,12 @@ function checkFields(opt)
 
   end
 
-  if ~isempty (opt.STC_referenceSlice) && length(opt.STC_referenceSlice) > 1
+  if ~isempty (opt.stc.referenceSlice) && length(opt.stc.referenceSlice) > 1
 
     msg = sprintf( ...
-                  ['options.STC_referenceSlice should be a scalar.' ...
+                  ['options.stc.referenceSlice should be a scalar.' ...
                    '\nCurrent value is: %d'], ...
-                  opt.STC_referenceSlice);
+                  options.stc.referenceSlice);
     errorHandling(mfilename(), 'refSliceNotScalar', msg, false, opt.verbosity);
 
   end

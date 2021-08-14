@@ -8,6 +8,22 @@ function test_suite = test_setBatchSTC %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setBatchSTCSkip()
+
+  subLabel = '02';
+
+  opt = setOptions('vislocalizer', subLabel);
+
+  [BIDS, opt] = getData(opt);
+
+  opt.stc.skip = true;
+
+  matlabbatch = {};
+  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
+  assertEqual(matlabbatch, {});
+
+end
+
 function test_setBatchSTCEmpty()
 
   subLabel = '02';
@@ -16,11 +32,11 @@ function test_setBatchSTCEmpty()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
   % no slice timing info for this run so nothing should be returned.
-  assertEqual(matlabbatch, []);
+  assertEqual(matlabbatch, {});
 
 end
 
@@ -31,19 +47,19 @@ function test_setBatchSTCForce()
   opt = setOptions('vislocalizer', subLabel);
 
   % we give it some slice timing value to force slice timing to happen
-  opt.sliceOrder = linspace(0, 1.6, 10);
-  opt.sliceOrder(end - 1:end) = [];
-  opt.STC_referenceSlice = 1.6 / 2;
+  opt.stc.sliceOrder = linspace(0, 1.6, 10);
+  opt.stc.sliceOrder(end - 1:end) = [];
+  opt.stc.referenceSlice = 1.6 / 2;
 
   opt = checkOptions(opt);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
   TR = 1.55;
-  expectedBatch = returnExpectedBatch(opt.sliceOrder, opt.STC_referenceSlice, TR);
+  expectedBatch = returnExpectedBatch(opt.stc.sliceOrder, opt.stc.referenceSlice, TR);
 
   runCounter = 1;
   for iSes = 1:2
@@ -73,7 +89,7 @@ function test_setBatchSTCBasic()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
   TR = 1.5;
@@ -81,9 +97,9 @@ function test_setBatchSTCBasic()
                        0.5475, 0, 0.3825, 0.055, 0.4375, 0.11, 0.4925, 0.22, 0.6025, ...
                        0.275, 0.6575, ...
                        0.3275, 0.71, 0.165], 1, 3)';
-  STC_referenceSlice = 0.355;
+  referenceSlice = 0.355;
 
-  expectedBatch = returnExpectedBatch(sliceOrder, STC_referenceSlice, TR);
+  expectedBatch = returnExpectedBatch(sliceOrder, referenceSlice, TR);
 
   runCounter = 1;
   for iSes = 1:2
@@ -113,14 +129,13 @@ function test_setBatchSTCErrorInvalidInputTime()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  opt.sliceOrder = linspace(0, 1.6, 10);
-  opt.sliceOrder(end) = [];
-  opt.STC_referenceSlice = 2; % impossible reference value
+  opt.stc.sliceOrder = linspace(0, 1.6, 10);
+  opt.stc.sliceOrder(end) = [];
+  opt.stc.referenceSlice = 2; % impossible reference value
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  matlabbatch = [];
-
+  matlabbatch = {};
   assertExceptionThrown( ...
                         @()setBatchSTC(matlabbatch, BIDS, opt, subLabel), ...
                         'setBatchSTC:invalidInputTime');
@@ -133,10 +148,12 @@ function expectedBatch = returnExpectedBatch(sliceOrder, referenceSlice, TR)
   TA = TR - (TR / nbSlices);
   TA = ceil(TA * 1000) / 1000;
 
-  expectedBatch{1}.spm.temporal.st.nslices = nbSlices;
-  expectedBatch{1}.spm.temporal.st.tr = TR;
-  expectedBatch{1}.spm.temporal.st.ta = TA;
-  expectedBatch{1}.spm.temporal.st.so = sliceOrder * 1000;
-  expectedBatch{1}.spm.temporal.st.refslice = referenceSlice * 1000;
+  temporal.st.nslices = nbSlices;
+  temporal.st.tr = TR;
+  temporal.st.ta = TA;
+  temporal.st.so = sliceOrder * 1000;
+  temporal.st.refslice = referenceSlice * 1000;
+
+  expectedBatch{1}.spm.temporal = temporal;
 
 end
