@@ -2,8 +2,9 @@ function expectedOptions = defaultOptions(taskName)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  expectedOptions.sliceOrder = [];
-  expectedOptions.STC_referenceSlice = [];
+  expectedOptions.stc.sliceOrder = [];
+  expectedOptions.stc.referenceSlice = [];
+  expectedOptions.stc.skip = false;
 
   expectedOptions.dataDir = '';
   expectedOptions.derivativesDir = '';

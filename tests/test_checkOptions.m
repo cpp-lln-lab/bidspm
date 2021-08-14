@@ -55,7 +55,7 @@ end
 
 function test_checkOptionsErrorRefSlice()
 
-  opt.STC_referenceSlice = [1:10];
+  opt.stc.referenceSlice = [1:10];
   opt.taskName = 'testTask';
 
   assertExceptionThrown( ...
