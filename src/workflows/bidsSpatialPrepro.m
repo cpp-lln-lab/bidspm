@@ -101,7 +101,7 @@ function bidsSpatialPrepro(opt)
                            fullfile(BIDS.pth, ['sub-' subLabel]), ...
                            ['^rp_.*sub-' subLabel '.*_task-' opt.taskName '.*_bold.txt$']);
       for iFile = 1:size(rpFiles, 1)
-        convertRealignParamToTsvBasic(rpFiles(iFile, :), opt);
+        convertRealignParamToTsv(rpFiles(iFile, :), opt);
       end
 
       renameSegmentParameter(BIDS, subLabel, opt);

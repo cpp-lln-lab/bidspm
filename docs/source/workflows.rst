@@ -13,7 +13,6 @@ See the set up section.
 ----
 
 .. autofunction:: bidsCopyInputFolder
-
 .. autofunction:: bidsResliceTpmToFunc
 
 
@@ -66,9 +65,7 @@ Spatial Preprocessing
 Perform spatial preprocessing by running ``bidsSpatialPrepro``
 
 .. autofunction:: bidsSpatialPrepro
-
 .. autofunction:: bidsRealignReslice
-
 .. autofunction:: bidsRealignUnwarp
 
 Smoothing
@@ -91,6 +88,7 @@ convolve it with a canonical HRF. It will also add the 6 realignment parameters
 of every run as confound regressors.
 
 .. autofunction:: bidsFFX
+.. autofunction:: bidsConcatBetaTmaps
 
 Group level analysis
 ====================
@@ -114,9 +112,12 @@ Region of interest analysis
 Other
 =====
 
+.. autofunction:: bidsRename
 .. autofunction:: bidsCreateVDM
 .. autofunction:: bidsResliceTpmToFunc
 .. autofunction:: bidsSegmentSkullStrip
+.. autofunction:: bidsRsHrf
+.. autofunction:: bidsWholeBrainFuncMask
 
 Helper functions
 ================

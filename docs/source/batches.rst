@@ -28,6 +28,7 @@ List of functions to set SPM batches.
 .. autofunction:: setBatchRealign
 .. autofunction:: setBatchReslice
 .. autofunction:: setBatchResults
+.. autofunction:: setBatchRsHRF
 .. autofunction:: setBatchSaveCoregistrationMatrix
 .. autofunction:: setBatchSegmentation
 .. autofunction:: setBatchSelectAnat

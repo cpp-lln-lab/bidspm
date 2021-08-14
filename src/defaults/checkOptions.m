@@ -28,7 +28,7 @@ function opt = checkOptions(opt)
   %     - ``opt.realign.useUnwarp = true``
   %     - ``opt.useFieldmaps = true`` - when set to ``true`` the
   %         preprocessing pipeline will look for the voxel displacement maps (created by
-  %     ``bidsCreateVDM()``) and will use them for realign and unwarp.
+  %         ``bidsCreateVDM()``) and will use them for realign and unwarp.
   %     - ``opt.model.file = ''`` - path to the BIDS model file that contains the
   %         model to speficy and the contrasts to compute.
   %     - ``opt.fwhm.func = 6`` - FWHM to apply to the preprocessed functional images.

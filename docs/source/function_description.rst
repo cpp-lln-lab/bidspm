@@ -1,22 +1,6 @@
 Function description
 ********************
 
-List of functions in the ``src`` folder.
-
-----
-
-.. automodule:: src
-
-.. autofunction:: getAnatFilename
-.. autofunction:: getBoldFilename
-.. autofunction:: getData
-.. autofunction:: getFuncVoxelDims
-.. autofunction:: getInfo
-.. autofunction:: getMeanFuncFilename
-.. autofunction:: getPrefix
-.. autofunction:: getRealignParamFile
-.. autofunction:: getSliceOrder
-.. autofunction:: unzipImgAndReturnsFullpathName
 
 Subject level model
 ===================
@@ -24,6 +8,7 @@ Subject level model
 .. automodule:: src.subject_level
 
 .. autofunction:: convertOnsetTsvToMat
+.. autofunction:: createAndReturnCounfoundMatFile
 .. autofunction:: createAndReturnOnsetFile
 .. autofunction:: deleteResidualImages
 .. autofunction:: getBoldFilenameForFFX
@@ -59,12 +44,25 @@ Utility functions
 .. automodule:: src.utils
 
 .. autofunction:: checkDependencies
+.. autofunction:: checkToolbox
 .. autofunction:: cleanCrash
+.. autofunction:: convertRealignParamToTsv
 .. autofunction:: createDataDictionary
 .. autofunction:: createDerivativeDir
 .. autofunction:: createGlmDirName
+.. autofunction:: errorHandling
+.. autofunction:: getAnatFilename
+.. autofunction:: getBoldFilename
+.. autofunction:: getConfoundsRegressorFilename
+.. autofunction:: getData
 .. autofunction:: getEnvInfo
+.. autofunction:: getFuncVoxelDims
+.. autofunction:: getInfo
+.. autofunction:: getMeanFuncFilename
+.. autofunction:: getRealignParamFilename
+.. autofunction:: getSliceOrder
 .. autofunction:: getSubjectList
+.. autofunction:: getTpmFilename
 .. autofunction:: getVersion
 .. autofunction:: isOctave
 .. autofunction:: loadAndCheckOptions
@@ -73,11 +71,16 @@ Utility functions
 .. autofunction:: printCredits
 .. autofunction:: printProcessingRun
 .. autofunction:: printProcessingSubject
-.. autofunction:: printWorklowName
+.. autofunction:: printToScreen
+.. autofunction:: printWorkflowName
 .. autofunction:: removeSpmPrefix
+.. autofunction:: renameSegmentParameter
+.. autofunction:: renameUnwarpParameter
 .. autofunction:: rmTrialTypeStr
 .. autofunction:: saveMatlabBatch
 .. autofunction:: saveOptions
+.. autofunction:: setDirectories
 .. autofunction:: setFields
 .. autofunction:: setGraphicWindow
+.. autofunction:: unzipImgAndReturnsFullpathName
 .. autofunction:: validationInputFile

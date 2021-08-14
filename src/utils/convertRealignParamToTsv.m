@@ -1,4 +1,4 @@
-function rpTsvFile = convertRealignParamToTsvBasic(rpTxtFile, opt, rmInput)
+function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
   %
   %
   % (C) Copyright 2019 CPP_SPM developers
