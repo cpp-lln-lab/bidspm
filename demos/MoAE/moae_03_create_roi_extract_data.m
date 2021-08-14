@@ -6,20 +6,21 @@
 % we are going to extract the value from.
 %
 
+clear;
+clc;
+
+run ../../initCppSpm.m;
+
 subLabel = '01';
 
 saveROI = true;
 
-opt = moae_get_option();
-
-opt.dir.roi = fullfile(opt.dir.derivatives, 'cpp_spm-roi');
-opt.pipeline.type = 'stats';
-opt = checkOptions(opt);
+opt = moae_get_option_stats();
 
 sphere.radius = 3;
 sphere.maxNbVoxels = 200;
 
-ffxDir = getFFXdir(subLabel, FWHM, opt);
+ffxDir = getFFXdir(subLabel, opt);
 
 maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
 

@@ -1,6 +1,25 @@
 % (C) Copyright 2021 Remi Gau
 
-close all;
+clear;
+clc;
+
+run ../../initCppSpm.m;
+
+subLabel = '01';
+
+opt = moae_get_option_stats();
+
+use_schema = false;
+BIDS_ROI = bids.layout(opt.dir.roi, use_schema);
+rightRoiFile = bids.query(BIDS_ROI, 'data', 'sub', subLabel, 'desc', 'rightAuditoryCortex');
+leftRoiFile = bids.query(BIDS_ROI, 'data', 'sub', subLabel, 'desc', 'leftAuditoryCortex');
+
+% we get the con image to extract data
+% we can do this by using the "label-XXXX" from the mask we created before
+ffxDir = getFFXdir(subLabel, opt);
+maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
+p = bids.internal.parse_filename(spm_file(maskImage, 'filename'));
+conImage = spm_select('FPList', ffxDir, ['^con_' p.entities.label '.nii$']);
 
 %% Layers
 layers = sd_config_layers('init', {'truecolor', 'dual', 'contour', 'contour'});
@@ -37,11 +56,11 @@ layers(2).opacity.label = '| t |';
 
 %% Layer 3 and 4: Contour of ROI
 
-layers(3).color.file = fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', rightRoiFile);
+layers(3).color.file = rightRoiFile{1};
 layers(3).color.map = [0 0 0];
 layers(3).color.line_width = 2;
 
-layers(4).color.file = fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', leftRoiFile);
+layers(4).color.file = leftRoiFile{1};
 layers(4).color.map = [1 1 1];
 layers(4).color.line_width = 2;
 

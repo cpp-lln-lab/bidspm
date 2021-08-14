@@ -15,6 +15,11 @@ function opt = moae_get_option_stats()
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
   opt.dir.derivatives = fullfile(opt.dir.raw, '..', '..', 'outputs', 'derivatives');
   opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+  opt.dir.input = opt.dir.preproc;
+  opt.dir.roi = fullfile(opt.dir.derivatives, 'cpp_spm-roi');
+  opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
+
+  opt.pipeline.type = 'stats';
 
   opt.space = {'MNI'};
 
