@@ -36,7 +36,6 @@ function test_loadAndCheckOptionsStructure()
   opt = setTestCfg();
   opt.taskName = 'vismotion';
 
-  % makes sure that it is picked up by default
   opt = loadAndCheckOptions(opt);
 
   expectedOptions = defaultOptions('vismotion');
@@ -149,5 +148,12 @@ function cleanUp()
   rmdir(fullfile(pwd, 'cfg'), 's');
 
   delete('*.json');
+
+end
+
+function opt = setTestCfg()
+
+  opt.verbosity = 0;
+  opt.dryRun = true;
 
 end

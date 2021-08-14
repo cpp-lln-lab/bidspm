@@ -197,12 +197,12 @@ function checkFields(opt)
 
   end
 
-  if ~isempty (opt.stc.referenceSlice) && length(opt.stc.referenceSlice) > 1
+  if ~isempty(opt.stc.referenceSlice) && length(opt.stc.referenceSlice) > 1
 
     msg = sprintf( ...
                   ['options.stc.referenceSlice should be a scalar.' ...
                    '\nCurrent value is: %d'], ...
-                  options.stc.referenceSlice);
+                  opt.stc.referenceSlice);
     errorHandling(mfilename(), 'refSliceNotScalar', msg, false, opt.verbosity);
 
   end

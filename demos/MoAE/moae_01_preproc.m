@@ -30,11 +30,11 @@ bidsCopyInputFolder(opt);
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
 % bidsSegmentSkullStrip(opt);
 
-bidsSTC(opt);
+% bidsSTC(opt);
 
-bidsSpatialPrepro(opt);
+% bidsSpatialPrepro(opt);
 
-anatomicalQA(opt);
+% anatomicalQA(opt);
 
 % NEEDS DEBUGGING
 % bidsResliceTpmToFunc(opt);
@@ -49,6 +49,6 @@ anatomicalQA(opt);
 opt.skullstrip.mean = 1;
 
 % NEEDS DEBUGGING
-% mask = bidsWholeBrainFuncMask(opt);
+mask = bidsWholeBrainFuncMask(opt);
 
-bidsSmoothing(opt);
+% bidsSmoothing(opt);

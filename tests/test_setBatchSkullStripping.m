@@ -21,11 +21,10 @@ function test_setBatchSkullStrippingBasic()
   matlabbatch = {};
   matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
 
-  expected_batch = returnExpectedBatch(opt);
+  expectedBatch = returnExpectedBatch(opt);
 
-  assertEqual(matlabbatch{1}.spm.util.imcalc.output, expectedBatch{1}.spm.util.imcalc.output);
-  assertEqual(matlabbatch{end}.spm.util.imcalc.output, expectedBatch{end}.spm.util.imcalc.output);
-  assertEqual(matlabbatch, expectedBatch);
+  assertEqual(matlabbatch{1}.spm.util.imcalc, expectedBatch{1}.spm.util.imcalc);
+  assertEqual(matlabbatch{end}.spm.util.imcalc, expectedBatch{end}.spm.util.imcalc);
 
 end
 
@@ -36,7 +35,7 @@ function expected_batch = returnExpectedBatch(opt)
                                  'sub-01', 'ses-01', 'anat');
 
   expectedBatch = [];
-  expectedFileName = 'sub-01_ses-01_space-individual_desc-skullstripped_T1w.nii';
+
   imcalc.input(1) = cfg_dep( ...
                             'Segment: Bias Corrected (1)', ...
                             substruct( ...
@@ -76,17 +75,17 @@ function expected_batch = returnExpectedBatch(opt)
                                       '.', 'tiss', '()', {3}, ...
                                       '.', 'c', '()', {':'}));
 
-  imcalc.output = [strrep(expectedFileName, '.nii', '_skullstripped.nii')];
+  imcalc.output = 'sub-01_ses-01_space-individual_desc-skullstripped_T1w.nii';
   imcalc.outdir = {expectedAnatDataDir};
   imcalc.expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
-  imcalc.options.dtype = 4;
+  imcalc.options.dtype = 16;
 
   expected_batch = {};
   expected_batch{end + 1}.spm.util.imcalc = imcalc;
 
   % add a batch to output the mask
   imcalc.expression = sprintf('(i2+i3+i4)>%f', opt.skullstrip.threshold);
-  imcalc.output = [strrep(expectedFileName, '.nii', '_mask.nii')];
+  imcalc.output = 'sub-01_ses-01_space-individual_label-brain_mask.nii';
 
   expected_batch{end + 1}.spm.util.imcalc = imcalc;
 

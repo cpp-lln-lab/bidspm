@@ -14,7 +14,7 @@ function test_setBatchMeanAnatAndMaskBasic()
   opt.subjects = {'01', '02'};
   opt.space = {'MNI'};
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, pwd);
 
   imcalc.input{1, 1} = fullfile(opt.dir.preproc, ...
@@ -31,7 +31,7 @@ function test_setBatchMeanAnatAndMaskBasic()
   imcalc.output = 'meanAnat.nii';
   imcalc.outdir{1} = pwd;
   imcalc.expression = '(i1+i2)/2';
-  imcalc.options.dtype = 4;
+  imcalc.options.dtype = 16;
 
   expectedBatch{1}.spm.util.imcalc = imcalc;
 
@@ -49,7 +49,7 @@ function test_setBatchMeanAnatAndMaskBasic()
   imcalc.output = 'meanMask.nii';
   imcalc.outdir{1} = pwd;
   imcalc.expression = '(i1+i2)>0.75*2';
-  imcalc.options.dtype = 4;
+  imcalc.options.dtype = 16;
 
   expectedBatch{2}.spm.util.imcalc = imcalc;
 

@@ -14,7 +14,7 @@ function test_setBatchSTCSkip()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   opt.stc.skip = true;
 
