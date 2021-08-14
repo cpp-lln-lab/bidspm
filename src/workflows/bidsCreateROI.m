@@ -8,12 +8,12 @@ function bidsCreateROI(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'create ROI');
 
-  opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, '..', 'cpp_spm-roi'), 'cpath');
+  opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'cpp_spm-roi'), 'cpath');
   spm_mkdir(fullfile(opt.dir.roi, 'group'));
 
-  opt.jobsDir = fullfile(opt.dir.roi, 'JOBS', opt.taskName);
+  opt.dir.jobs = fullfile(opt.dir.roi, 'jobs', opt.taskName);
 
-  hemi = {'lh', 'rh'};
+  hemi = {'L', 'R'};
 
   for iHemi = 1:numel(hemi)
 
@@ -33,6 +33,7 @@ function bidsCreateROI(opt)
     roiList = spm_select('FPlist', ...
                          fullfile(opt.dir.roi, 'group'), ...
                          '^space-.*_mask.nii$');
+    roiList = cellstr(roiList);
 
     for iSub = 1:numel(opt.subjects)
 
@@ -41,16 +42,16 @@ function bidsCreateROI(opt)
       printProcessingSubject(iSub, subLabel, opt);
 
       %% inverse normalize
-      [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
-
-      deformation_field = spm_select('FPlist', anatDataDir, ['^iy_' anatImage '$']);
+      deformation_field = bids.query(BIDS, 'data', ...
+                                     'sub', subLabel, 'suffix', 'xfm', ...
+                                     'to', opt.anatReference.type, 'extension', '.nii');
 
       matlabbatch = {};
       for iROI = 1:size(roiList, 1)
         matlabbatch = setBatchNormalize(matlabbatch, ...
-                                        {deformation_field}, ...
+                                        deformation_field, ...
                                         nan(1, 3), ...
-                                        {roiList(iROI, :)});
+                                        roiList(iROI, :));
         matlabbatch{end}.spm.spatial.normalise.write.woptions.bb = nan(2, 3);
       end
 
@@ -62,24 +63,24 @@ function bidsCreateROI(opt)
       roiList = spm_select('FPlist', ...
                            fullfile(opt.dir.roi, 'group'), ...
                            '^wspace.*_mask.nii.*$');
+      roiList = cellstr(roiList);
 
       for iROI = 1:size(roiList, 1)
 
-        roiImage = deblank(roiList(iROI, :));
-
-        p = bids.internal.parse_filename(spm_file(roiImage, 'filename'));
+        p = bids.internal.parse_filename(roiList{iROI, 1});
 
         nameStructure = struct('entities', struct( ...
                                                   'sub', subLabel, ...
                                                   'space', 'individual', ...
                                                   'hemi', p.entities.hemi, ...
-                                                  'desc', p.entities.desc, ...
-                                                  'label', p.entities.label), ...
+                                                  'label', p.entities.label, ...
+                                                  'desc', p.entities.desc), ...
                                'suffix', 'mask', ...
-                               'ext', '.nii');
-        newName = createFilename(nameStructure);
+                               'ext', '.nii', ...
+                               'use_schema', false);
+        newName = bids.create_filename(nameStructure);
 
-        movefile(roiImage, ...
+        movefile(roiList{iROI, 1}, ...
                  fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', newName));
 
       end

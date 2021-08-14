@@ -4,9 +4,7 @@
 % creates its equivalent in subject space
 %
 
-run face_rep_func.m;
-
-opt = face_rep_get_option();
+opt = face_rep_get_option_results();
 
 opt.roi.atlas = 'wang';
 opt.roi.name = {'V1v', 'V1d'};

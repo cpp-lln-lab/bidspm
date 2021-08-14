@@ -21,9 +21,6 @@ run ../../initCppSpm.m;
 
 opt = face_rep_get_option_results();
 
-% The following crash on CI
-opt.pipeline.type = 'stats';
-
 bidsFFX('specifyAndEstimate', opt);
 bidsFFX('contrasts', opt);
 

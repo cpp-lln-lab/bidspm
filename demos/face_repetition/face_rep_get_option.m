@@ -11,11 +11,9 @@ function opt = face_rep_get_option()
   opt.verbosity = 1;
 
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
-  opt.dir.preproc = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm-preproc');
-  opt.dir.roi = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm-roi');
+  opt.dir.derivatives = fullfile(opt.dir.raw, '..', 'derivatives');
 
   opt.pipeline.type = 'preproc';
-  opt.pipeline.name = 'cpp_spm';
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);
