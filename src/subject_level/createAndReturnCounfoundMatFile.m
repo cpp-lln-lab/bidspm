@@ -30,6 +30,13 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFi
 
   content = bids.util.tsvread(tsvFile);
 
+  if isempty(content)
+    msg = sprintf('This confound file is empty:\n %s\n', tsvFile);
+    errorHandling(mfilename(), 'emptyConfoundFle', msg, true, opt.verbosity);
+    counfoundMatFile = '';
+    return
+  end
+
   % TODO filter based on model content
   names = fieldnames(content);
 
