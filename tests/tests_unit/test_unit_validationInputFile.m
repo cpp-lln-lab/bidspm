@@ -10,13 +10,12 @@ end
 
 function test_validationInputFileBasic()
 
-  directory = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
-                       'cpp_spm-preproc', 'sub-01', 'ses-01', 'func');
+  directory = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func');
   prefix = '';
   fileName = 'sub-01_ses-01_task-vislocalizer_bold.nii';
 
-  expectedOutput = fullfile(fileparts(mfilename('fullpath')), 'dummyData', 'derivatives', ...
-                            'cpp_spm-preproc', 'sub-01', 'ses-01', 'func', ...
+  expectedOutput = fullfile(getDummyDataDir('preproc'), ...
+                            'sub-01', 'ses-01', 'func', ...
                             'sub-01_ses-01_task-vislocalizer_bold.nii');
 
   file = validationInputFile(directory, fileName, prefix);

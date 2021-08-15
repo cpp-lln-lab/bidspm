@@ -10,8 +10,7 @@ end
 
 function test_getGrpLevelContrastToComputeBasic()
 
-  opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
-                            'dummyData', 'models', 'model-vismotion_smdl.json');
+  opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotion_smdl.json');
 
   [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt);
 
@@ -25,8 +24,7 @@ function test_getGrpLevelContrastToComputeBasic()
   assertEqual(grpLvlCon, AutoContrasts);
 
   %%
-  opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
-                            'dummyData', 'models', 'model-vislocalizer_smdl.json');
+  opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vislocalizer_smdl.json');
 
   [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt);
 

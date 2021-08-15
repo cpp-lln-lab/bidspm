@@ -27,19 +27,25 @@ You need to run a bash script to create some empty data files:
 From within the `tests` folder.
 
 ```
-sh createDummyDataSet.sh
+make data
 ```
+
+<!-- TODO add bids-examples to run sloke test on fmriprep data -->
 
 ### Run the tests
 
 From the root folder of the bids-matlab folder, you can run the test with one
 the following commands.
 
-```bash
+```matlab
 moxunit_runtests tests
 
-# Or if you want more feedback
+% Or if you want more feedback
 moxunit_runtests tests -verbose
+
+% Same but with all tests and coverage
+moxunit_runtests -verbose tests tests/unit_tests tests/batches tests/workflows -with_coverage -cover src -cover_html_dir coverage
+
 ```
 
 ## Adding tests

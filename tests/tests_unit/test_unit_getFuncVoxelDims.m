@@ -12,8 +12,7 @@ function test_getFuncVoxelDimsBasic()
 
   opt.funcVoxelDims = [];
 
-  subFuncDataDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', ...
-                            'MoAE', 'inputs', 'raw', 'sub-01', 'func');
+  subFuncDataDir = fullfile(getMoaeDir(), 'inputs', 'raw', 'sub-01', 'func');
 
   prefix = '';
 
@@ -33,8 +32,7 @@ function test_getFuncVoxelDimsForce()
 
   opt.funcVoxelDims = [1 1 1];
 
-  subFuncDataDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', ...
-                            'output', 'MoAEpilot', 'sub-01', 'func');
+  subFuncDataDir = 'could be anything';
 
   prefix = '';
 

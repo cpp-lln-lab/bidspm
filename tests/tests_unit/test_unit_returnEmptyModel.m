@@ -12,10 +12,7 @@ function test_returnEmptyModelBasic()
 
   content = returnEmptyModel();
 
-  expectedContent = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), ...
-                                          'dummyData', ...
-                                          'models', ...
-                                          'model-empty_smdl.json'));
+  expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-empty_smdl.json'));
 
   assertEqual(content, expectedContent);
 
