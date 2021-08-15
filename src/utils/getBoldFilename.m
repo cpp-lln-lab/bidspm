@@ -33,6 +33,12 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   % get the filename for this bold run for this task
   boldFileName = getInfo(BIDS, subLabel, opt, 'Filename', sessionID, runID, 'bold');
 
+  % TODO
+  % add assert to make sure we got a file and boldFileName is not empty
+  % better throw an error that says what query actually failed to return a file
+  % this might need some refacoring to be able to access the query from here even though
+  % some part of it is in getInfo
+
   % in case files have been unzipped, we do it now
   fullPathBoldFileName = unzipImgAndReturnsFullpathName(boldFileName);
 

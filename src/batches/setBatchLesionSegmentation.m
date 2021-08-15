@@ -13,6 +13,8 @@ function matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLab
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  % TODO add test
+
   printBatchName('Lesion segmentation');
 
   unified_segmentation = opt.toolbox.ALI.unified_segmentation;

@@ -21,6 +21,9 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  % TODO
+  %  try to channel this function via getInfo ?
+
   anatSuffix = opt.anatReference.type;
   anatSession = opt.anatReference.session;
 

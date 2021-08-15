@@ -33,6 +33,7 @@ function boldFileName = getBoldFilenameForFFX(varargin)
     opt.query.desc = 'preproc';
   end
 
+  % TODO refactor this acroos all functions
   opt.query.space = opt.space;
   if ismember('MNI', opt.query.space)
     idx = strcmp(opt.query.space, 'MNI');

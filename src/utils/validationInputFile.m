@@ -41,6 +41,9 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  % TODO use argparxse
+  % TODO clarify usage with respect to unzipImgAndReturnsFullpathName
+
   if isempty(fileNamePattern)
     msg = sprintf(['The filename to validate cannot be empty.\n', ...
                    'Check that your query did not come back empty']);

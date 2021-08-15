@@ -4,6 +4,8 @@ function mask = bidsWholeBrainFuncMask(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  % TODO add test
+
   [BIDS, opt] = setUpWorkflow(opt, 'create brain mask from mean functional image');
 
   mask = cell(numel(opt.subjects), 1);

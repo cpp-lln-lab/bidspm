@@ -47,6 +47,8 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  % TODO make it more flexible to fetch anat, confounds...
+
   varargout = {}; %#ok<*NASGU>
 
   switch lower(info)
@@ -107,6 +109,8 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
 
       [session, run, suffix] = deal(varargin{:});
 
+      % TODO add a way to deal with extension too
+      % should be able to query .nii and .nii.gz too
       query = struct( ...
                      'sub',  subLabel, ...
                      'task', opt.taskName, ...

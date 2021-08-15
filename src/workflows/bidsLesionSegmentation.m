@@ -14,6 +14,8 @@ function bidsLesionSegmentation(opt)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  % TODO add test
+
   [BIDS, opt] = setUpWorkflow(opt, 'lesion segmentation');
 
   for iSub = 1:numel(opt.subjects)
