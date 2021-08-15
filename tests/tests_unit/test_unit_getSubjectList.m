@@ -61,8 +61,6 @@ function test_getSubjectListErrorSubject()
 
   BIDS = bids.layout(opt.dir.preproc);
 
-  getSubjectList(BIDS, opt);
-
   assertExceptionThrown( ...
                         @()getSubjectList(BIDS, opt), ...
                         'getSubjectList:noMatchingSubject');
