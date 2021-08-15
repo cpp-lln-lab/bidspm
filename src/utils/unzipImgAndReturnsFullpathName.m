@@ -1,4 +1,4 @@
-function unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgName)
+function unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgName, opt)
   %
   % Unzips an image if necessary
   %
@@ -17,6 +17,10 @@ function unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgNam
   % TODO use argparse
   % TODO add tests
 
+  if nargin < 2
+    opt = struct('dryRun', true());
+  end
+
   if isempty(fullpathImgName)
     msg = sprintf('Provide at least one file.\n');
     errorHandling(mfilename(), 'emptyInput', msg, false, true);
@@ -29,8 +33,7 @@ function unzippedFullpathImgName = unzipImgAndReturnsFullpathName(fullpathImgNam
     % TODO get rid of the nifti tools here.
     % we could need this to unpack .tsv.gz files for physio
     % just make sure that the unzipping is the same for matlab and octave
-    if strcmp(ext, '.gz')
-      % unzip nii.gz structural file to be read by SPM
+    if strcmp(ext, '.gz') && ~opt.dryRun
       fullpathImgName(iFile, :) = load_untouch_nii(fullpathImgName(iFile, :));
       save_untouch_nii(fullpathImgName(iFile, :), fullfile(directory, filename));
       unzippedFullpathImgName{iFile, 1} = fullfile(directory, filename);

@@ -43,7 +43,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID)
                                                    BIDS, ...
                                                    subID, sessions{iSes}, runs{iRun}, opt);
 
-      % check input file
+      % TODO remove this extra check
       for iFile = 1:size(fileName, 1)
         files{iFile, 1} = validationInputFile(subFuncDataDir(iFile, :), fileName(iFile, :));
       end

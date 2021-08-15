@@ -6,5 +6,21 @@ function list = createUnorderedList(list)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  list = sprintf(['\n\t- ', strjoin(list, '\n\t- '), '\n']);
+  prefix = '\n\t- ';
+
+  if iscell(list)
+    list = sprintf([prefix, strjoin(list, prefix), '\n']);
+
+  elseif isstruct(list)
+    output = [];
+    fields = fieldnames(list);
+    for i = 1:numel(fields)
+      content = list.(fields{i});
+      if ~iscell(content)
+        content = {content};
+      end
+      output = [output prefix fields{i} ': {' strjoin(content, ', ') '}'];
+    end
+    list = sprintf(output);
+  end
 end

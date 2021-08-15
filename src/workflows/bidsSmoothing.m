@@ -16,6 +16,7 @@ function bidsSmoothing(opt)
 
   opt.dir.input = opt.dir.preproc;
   opt.query.modality = 'func';
+  opt.query.space = opt.space;
 
   [BIDS, opt] = setUpWorkflow(opt, 'smoothing functional data');
 

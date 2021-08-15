@@ -8,7 +8,7 @@ function test_suite = test_bidsCopyInputFolder %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsCopyInputFolderBasic()
+function test_bidsCopyInputFolder_basic()
 
   opt = setOptions('MoAE');
 
@@ -34,4 +34,34 @@ function test_bidsCopyInputFolderBasic()
                              'derivatives', 'cpp_spm-preproc', 'sub-01', 'anat', ...
                              'sub-01_T1w.nii'), 'file'), ...
               2);
+
+  cleanUp(opt.dir.preproc);
+
+end
+
+function test_bidsCopyInputFolder_fmriprep()
+
+  opt = setOptions('fmriprep');
+  opt.query.space = 'MNI152NLin2009cAsym';
+  opt.query.desc = 'preproc';
+
+  bidsCopyInputFolder(opt, false());
+
+  layoutDerivatives = bids.layout(fullfile(opt.dir.preproc), false());
+  data = bids.query(layoutDerivatives, 'data', 'extension', '.nii.gz');
+  assertEqual(size(data, 1), 16);
+
+  cleanUp(opt.dir.preproc);
+
+end
+
+function cleanUp(folder)
+
+  pause(1);
+
+  if isOctave()
+    confirm_recursive_rmdir (true, 'local');
+  end
+  rmdir(folder, 's');
+
 end

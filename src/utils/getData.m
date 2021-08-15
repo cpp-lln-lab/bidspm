@@ -50,13 +50,7 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   msg = sprintf('Getting data from:\n %s\n', BIDSdir);
   printToScreen(msg, opt);
 
-  description_file = validationInputFile(BIDSdir, 'dataset_description.json');
-  description = spm_jsonread(description_file);
-  if isfield(description, 'PipelineDescription') && ...
-          strcmpi(description.PipelineDescription.Name, 'fmriprep')
-    opt.isFmriprep = true;
-    opt.useBidsSchema = false;
-  end
+  validationInputFile(BIDSdir, 'dataset_description.json');
 
   BIDS = bids.layout(BIDSdir, opt.useBidsSchema);
 
@@ -81,7 +75,7 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   opt = getMetaData(BIDS, opt, opt.subjects, suffix);
 
   printToScreen('\nWILL WORK ON SUBJECTS\n', opt);
-  printToScreen(strjoin(opt.subjects), opt);
+  printToScreen(createUnorderedList(opt.subjects), opt);
   printToScreen('\n', opt);
 
 end

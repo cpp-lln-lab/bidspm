@@ -15,8 +15,6 @@ function bidsCopyInputFolder(opt, unzip)
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param modalitiesToCopy: for example ``{'anat', 'func', 'fmap'}``
-  % :type modalitiesToCopy: cell
   % :param unZip:
   % :type unZip: boolean
   %
@@ -44,6 +42,7 @@ function bidsCopyInputFolder(opt, unzip)
   if any(ismember(opt.query.modality, 'func'))
     [BIDS, opt] = getData(opt, opt.dir.input);
   else
+    % TODO make this less specific for T1w data
     [BIDS, opt] = getData(opt, opt.dir.input, 'T1w');
   end
 

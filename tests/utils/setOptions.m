@@ -31,9 +31,8 @@ function opt = setOptions(task, subLabel)
 
   elseif strcmp(task, 'fmriprep')
 
-    opt.taskName = 'rest';
-    opt.dir.derivatives = fullfile(getDummyDataDir(), 'derivatives');
-    opt.pipeline.name = 'fmriprep';
+    opt.taskName = 'balloonanalogrisktask';
+    opt.dir.input = getFmriprepDir();
 
   else
 

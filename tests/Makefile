@@ -6,3 +6,4 @@ clean:
 
 data:
 	sh createDummyDataSet.sh
+	git clone git://github.com/bids-standard/bids-examples.git --depth 1
