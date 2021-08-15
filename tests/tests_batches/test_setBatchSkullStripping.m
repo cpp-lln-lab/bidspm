@@ -30,9 +30,7 @@ end
 
 function expected_batch = returnExpectedBatch(opt)
 
-  expectedAnatDataDir = fullfile(fileparts(mfilename('fullpath')), ...
-                                 'dummyData', 'derivatives', 'cpp_spm-preproc', ...
-                                 'sub-01', 'ses-01', 'anat');
+  expectedAnatDataDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'anat');
 
   expectedBatch = [];
 
