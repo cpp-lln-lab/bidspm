@@ -77,16 +77,14 @@ function opt = getSubjectList(BIDS, opt)
 
   % check that all the subjects asked for exist
   if any(~ismember(opt.subjects, allSubjects))
-    opt.verbosity = 1;
-    printToScreen('subjects specified: ', opt);
-    printToScreen(strjoin(opt.subjects), opt);
-    printToScreen('\n', opt);
 
-    printToScreen('\nsubjects present:', opt);
-    printToScreen(strjoin(allSubjects), opt);
-    printToScreen('\n', opt);
+    subjectsSpecified = createUnorderedList(opt.subjects);
+    subjectsPresent = createUnorderedList(allSubjects);
 
-    msg = 'Some of the subjects specified do not exist in this data set.';
+    msg = sprintf(['Some of the subjects specified do not exist in this data set.\n', ...
+                   'subjects specified:%s \nsubjects present:%s'], ...
+                  subjectsSpecified, ...
+                  subjectsPresent);
     errorHandling(mfilename(), 'noMatchingSubject', msg, false, opt.verbosity);
   end
 
