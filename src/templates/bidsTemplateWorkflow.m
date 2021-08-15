@@ -19,4 +19,6 @@ function bidsTemplateWorkflow(opt)
 
   end
 
+  bidsRename(opt);
+
 end

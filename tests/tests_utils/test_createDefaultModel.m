@@ -23,7 +23,7 @@ function test_createDefaultModelBasic()
   % check it has the right content
   content = spm_jsonread(expectedFileName);
 
-  expectedContent = spm_jsonread(getDummyDataDir(), 'models', 'model-default_smdl.json');
+  expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-default_smdl.json'));
 
   assertEqual(content.Steps{1}, expectedContent.Steps{1});
   assertEqual(content.Steps{2}, expectedContent.Steps{2});
