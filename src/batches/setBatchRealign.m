@@ -89,7 +89,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
                                                        runs{iRun}, ...
                                                        opt);
 
-      % check that the file exists
+      % TODO remove this validation
       % and we get and save its voxeldimension
       prefix = '';
       file = validationInputFile(subFuncDataDir, boldFilename);

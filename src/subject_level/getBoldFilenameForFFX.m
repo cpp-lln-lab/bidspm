@@ -48,6 +48,7 @@ function boldFileName = getBoldFilenameForFFX(varargin)
                                                BIDS, ...
                                                subLabel, sessions{iSes}, runs{iRun}, opt);
 
+  % TODO remove this validation
   boldFileName = validationInputFile(subFuncDataDir, fileName);
 
 end

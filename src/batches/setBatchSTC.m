@@ -125,7 +125,7 @@ function matlabbatch = setBatchSTC(varargin)
                                                    BIDS, ...
                                                    subLabel, sessions{iSes}, runs{iRun}, opt);
 
-      % check that the file with the right prefix exist
+      % % TODO remove this validation
       file = validationInputFile(subFuncDataDir, fileName);
 
       % add the file to the list
