@@ -13,7 +13,7 @@ function test_setBatchComputeVDMBasic()
   fmapType = 'phasediff';
   refImage = fullfile(pwd, 'mean_sub-01-task-rest_bold.nii');
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage);
 
   expectedBatch = returnExpectedBatch(refImage);

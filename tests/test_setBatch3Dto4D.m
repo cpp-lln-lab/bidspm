@@ -16,7 +16,7 @@ function test_setBatch3Dto4DBasic()
 
   RT = 2;
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatch3Dto4D(matlabbatch, volumesList, RT);
 
   expectedBatch{1}.spm.util.cat.vols = volumesList;

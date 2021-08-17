@@ -40,11 +40,11 @@ function bidsCreateVDM(opt)
       [fileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, sessions{1}, runs{1}, opt);
       spmup_basics(fullfile(subFuncDataDir, fileName), 'mean');
 
-      matlabbatch = [];
+      matlabbatch = {};
       matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLabel);
       saveAndRunWorkflow(matlabbatch, 'coregister_fmap', opt, subLabel);
 
-      matlabbatch = [];
+      matlabbatch = {};
       matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel);
       saveAndRunWorkflow(matlabbatch, 'create_vdm', opt, subLabel);
 

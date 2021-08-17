@@ -19,7 +19,7 @@ function test_setBatchCoregistrationFmapBasic()
 
   [~, opt, BIDS] = getData(opt);
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subID);
 
   directory = fullfile(opt.derivativesDir, ...

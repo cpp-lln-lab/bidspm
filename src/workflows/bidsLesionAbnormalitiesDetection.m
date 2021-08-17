@@ -50,7 +50,7 @@ function bidsLesionAbnormalitiesDetection(opt)
     end
   end
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, images);
 
   saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt, subLabel);

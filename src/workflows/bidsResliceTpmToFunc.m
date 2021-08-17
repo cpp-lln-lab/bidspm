@@ -34,7 +34,7 @@ function bidsResliceTpmToFunc(opt)
     [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
     TPMs = validationInputFile(anatDataDir, anatImage, 'c[123]');
 
-    matlabbatch = [];
+    matlabbatch = {};
     matlabbatch = setBatchReslice(matlabbatch, ...
                                   fullfile(meanFuncDir, meanImage), ...
                                   cellstr(TPMs));
@@ -54,7 +54,7 @@ function bidsResliceTpmToFunc(opt)
 
     expression = sprintf('(i1+i2+i3)>%f', opt.skullstrip.threshold);
 
-    matlabbatch = [];
+    matlabbatch = {};
     matlabbatch = setBatchImageCalculation(matlabbatch, input, output, meanFuncDir, expression);
 
     saveAndRunWorkflow(matlabbatch, 'create_functional_brain_mask', opt, subLabel);

@@ -17,7 +17,7 @@ function test_setBatchSegmentationPipeline()
 
   opt.orderBatches.selectAnat = 1;
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSegmentation(matlabbatch, opt);
 
   expectedBatch = returnExpectedBatch(spmLocation);
@@ -43,7 +43,7 @@ function test_setBatchSegmentationImages()
   anatImage = returnLocalAnatFilename();
 
   % check with one file
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSegmentation(matlabbatch, opt, anatImage);
   expectedBatch = returnExpectedBatch(spmLocation);
   expectedBatch{end}.spm.spatial.preproc.channel.vols{1} = anatImage;
@@ -51,7 +51,7 @@ function test_setBatchSegmentationImages()
   assertEqual(expectedBatch, matlabbatch);
 
   % check with several files passed as a cell
-  matlabbatch = [];
+  matlabbatch = {};
   anatImage = {anatImage; anatImage};
   matlabbatch = setBatchSegmentation(matlabbatch, opt, anatImage);
   expectedBatch{end}.spm.spatial.preproc.channel.vols = anatImage;

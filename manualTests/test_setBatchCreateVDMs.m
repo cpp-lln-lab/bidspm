@@ -20,7 +20,7 @@ function test_setBatchCreateVDMsBasic()
 
   [~, opt, BIDS] = getData(opt);
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID);
 
   %   matlabbatch{1}.spm.tools.fieldmap.calculatevdm.subj

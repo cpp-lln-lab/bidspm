@@ -21,7 +21,7 @@ function test_setBatchRealignBasic()
   opt = setOptions('MoAE', subLabel);
   [BIDS, opt] = getData(opt);
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch{1}.spm.spatial.realignunwarp.eoptions.weight = {''};

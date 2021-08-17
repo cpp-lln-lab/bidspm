@@ -32,7 +32,7 @@ function bidsRoiBasedGLM(opt)
 
     printProcessingSubject(iSub, subLabel);
 
-    matlabbatch = [];
+    matlabbatch = {};
 
     matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel, funcFWHM);
 
