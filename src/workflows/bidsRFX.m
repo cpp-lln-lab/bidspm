@@ -38,7 +38,7 @@ function bidsRFX(action, opt)
 
     case 'smoothContrasts'
 
-      matlabbatch = [];
+      matlabbatch = {};
       matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
 
       saveAndRunWorkflow(matlabbatch, ...
@@ -58,7 +58,7 @@ function bidsRFX(action, opt)
       % - needs to be improved (maybe??) as the structural and mask may vary for
       %   different analysis
       % ------
-      matlabbatch = [];
+      matlabbatch = {};
       matlabbatch = setBatchMeanAnatAndMask(matlabbatch, ...
                                             opt, ...
                                             fullfile(opt.dir.stats, 'group'));
@@ -66,7 +66,7 @@ function bidsRFX(action, opt)
 
       % TODO
       % saving needs to be improved (maybe??) as the name may vary with FXHM and contrast
-      matlabbatch = [];
+      matlabbatch = {};
       matlabbatch = setBatchFactorialDesign(matlabbatch, opt);
 
       % Load the list of contrasts of interest for the RFX
@@ -78,7 +78,7 @@ function bidsRFX(action, opt)
       % TODO
       % saving needs to be improved (maybe??) as the name may vary with FwHM and contrast
       rfxDir = getRFXdir(opt);
-      matlabbatch = [];
+      matlabbatch = {};
       matlabbatch = setBatchGroupLevelContrasts(matlabbatch, grpLvlCon, rfxDir);
       saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);
 

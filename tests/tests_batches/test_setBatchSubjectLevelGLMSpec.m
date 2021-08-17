@@ -8,21 +8,60 @@ function test_suite = test_setBatchSubjectLevelGLMSpec %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchSubjectLevelGLMSpecBasic()
+function test_setBatchSubjectLevelGLMSpec_missing_raw_data()
+
+  subLabel = '01';
+  opt = setTestCfg();
+  BIDS.pth = pwd;
+  matlabbatch = {};
+
+  assertExceptionThrown(@() setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel), ...
+                        'setBatchSubjectLevelGLMSpec:missingRawDir');
+
+end
+
+function test_setBatchSubjectLevelGLMSpec_fmriprep()
+
+  subLabel = '01';
+
+  opt = setOptions('fmriprep-synthetic');
+
+  opt.space = 'MNI152NLin2009cAsym';
+  opt.query.space = opt.space;
+
+  opt.pipeline.type = 'stats';
+
+  opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
+
+  opt.fwhm.func = 0;
+
+  opt = checkOptions(opt);
+
+  % No proper valid bids file in derivatives of synthetic dataset
+
+  %   [BIDS, opt] = getData(opt, opt.dir.input);
+  %
+  %   matlabbatch = {};
+  %   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
+
+end
+
+function test_setBatchSubjectLevelGLMSpec_basic()
 
   subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel);
+
+  opt.pipeline.type = 'stats';
+  opt.dir.raw = opt.dir.preproc;
   opt.space = {'MNI'};
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
   % TODO add assert
-  %     expectedBatch = returnExpectedBatch();
-  %     assert(matlabbatch, returnExpectedBatch);
 
 end
 

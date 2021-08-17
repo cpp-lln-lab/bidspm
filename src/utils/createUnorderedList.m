@@ -8,6 +8,10 @@ function list = createUnorderedList(list)
 
   prefix = '\n\t- ';
 
+  if ischar(list)
+    list = cellstr(list);
+  end
+
   if iscell(list)
     list = sprintf([prefix, strjoin(list, prefix), '\n']);
 

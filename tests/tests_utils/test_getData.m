@@ -8,7 +8,7 @@ function test_suite = test_getData %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getDataMetadata()
+function test_getData_metadata()
 
   subLabel = '01';
 
@@ -20,12 +20,24 @@ function test_getDataMetadata()
 
 end
 
-function test_getDataErrorTask()
+function test_getData_error_no_matching_task()
 
   opt = setOptions('testTask');
 
   assertExceptionThrown( ...
                         @()getData(opt, opt.dir.preproc), ...
                         'getData:noMatchingTask');
+
+end
+
+function test_getData_get_also_raw_data_for_stats_pipeline()
+
+  opt = setOptions('fmriprep');
+  opt.pipeline.type = 'stats';
+
+  [BIDS, opt] = getData(opt, opt.dir.input);
+
+  assert(isfield(BIDS, 'raw'));
+  assert(~isempty(bids.query(BIDS.raw, 'data', 'suffix', 'events')));
 
 end

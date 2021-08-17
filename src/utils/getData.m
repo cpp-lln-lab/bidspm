@@ -50,9 +50,15 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   msg = sprintf('Getting data from:\n %s\n', BIDSdir);
   printToScreen(msg, opt);
 
+  % temporary silence error throwing until there is a dataset_description in
+  % synthetic derivatives
   validationInputFile(BIDSdir, 'dataset_description.json');
 
   BIDS = bids.layout(BIDSdir, opt.useBidsSchema);
+
+  if strcmp(opt.pipeline.type, 'stats')
+    BIDS.raw = bids.layout(opt.dir.raw);
+  end
 
   % make sure that the required tasks exist in the data set
   if isfield(opt, 'taskName') && ~ismember(opt.taskName, bids.query(BIDS, 'tasks'))
@@ -100,10 +106,18 @@ function opt = getMetaData(BIDS, opt, subjects, suffix)
                             'suffix', suffix);
   end
 
-  if iscell(metadata)
-    opt.metadata = metadata{1};
+  % try to get metadata from raw data set
+  if isempty(metadata)
+    warning('No metadata for %s data in dataset %s', suffix, BIDS.pth);
+    if isfield(BIDS, 'raw')
+      opt = getMetaData(BIDS.raw, opt, subjects, suffix);
+    end
   else
-    opt.metadata = metadata;
+    if iscell(metadata)
+      opt.metadata = metadata{1};
+    else
+      opt.metadata = metadata;
+    end
   end
 
 end

@@ -44,11 +44,14 @@ function boldFileName = getBoldFilenameForFFX(varargin)
 
   runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
-  [fileName, subFuncDataDir] = getBoldFilename( ...
-                                               BIDS, ...
-                                               subLabel, sessions{iSes}, runs{iRun}, opt);
+  [boldFilename, subFuncDataDir] = getBoldFilename( ...
+                                                   BIDS, ...
+                                                   subLabel, sessions{iSes}, runs{iRun}, opt);
 
-  % TODO remove this validation
-  boldFileName = validationInputFile(subFuncDataDir, fileName);
+  if size(boldFilename, 1) > 1
+    errorHandling(mfilename(), 'tooManyFiles', 'This should only get one file.', false, true);
+  end
+
+  boldFileName = fullfile(subFuncDataDir, boldFilename);
 
 end

@@ -162,7 +162,6 @@ function bidsRename(opt)
     query = opt.query;
     query.sub = subLabel;
 
-    % TODO allow for posibility to only appply to certain files
     data = bids.query(BIDS, 'data', query);
 
     for iFile = 1:size(data, 1)

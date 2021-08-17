@@ -41,7 +41,7 @@ function bidsResults(opt)
       case 'run'
         warning('run level not implemented yet');
 
-        % matlabbatch = [];
+        % matlabbatch = {};
         % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
 
       case 'subject'
@@ -49,7 +49,7 @@ function bidsResults(opt)
         % For each subject
         for iSub = 1:numel(opt.subjects)
 
-          matlabbatch = [];
+          matlabbatch = {};
 
           subLabel = opt.subjects{iSub};
 
@@ -79,7 +79,7 @@ function bidsResults(opt)
 
       case 'dataset'
 
-        matlabbatch = [];
+        matlabbatch = {};
 
         results.dir = getRFXdir(opt);
         results.contrastNb = 1;

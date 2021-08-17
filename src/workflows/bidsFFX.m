@@ -21,6 +21,11 @@ function bidsFFX(action, opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  % TODO: add a way to design model only with no data (see specific spm module
+  % model only
+
+  % TODO split model specification from model estimation
+
   if numel(opt.space) > 1
     disp(opt.space);
     msg = sprintf('GLMs can only be run in one space at a time.\n');

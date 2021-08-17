@@ -25,20 +25,20 @@ do
 			task_name='vismotion'
 
 			### raw
-			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1${suffix}.nii
-			echo "{\"TaskName\": \"vislocalizer\"}" > ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1${suffix}.json
-			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-2${suffix}.nii
-			echo "{\"TaskName\": \"vislocalizer\"}" > ${this_dir}/sub-${subject}\_ses-${ses}\
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-1${suffix}.nii
+			echo "{\"TaskName\": \"vislocalizer\"}" > ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-1${suffix}.json
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-2${suffix}.nii
+			echo "{\"TaskName\": \"vislocalizer\"}" > ${this_dir}/sub-${subject}_ses-${ses}\
 
-			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_acq-1p60mm\_run-1${suffix}.nii
-			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_acq-1p60mm\_dir-PA_run-1${suffix}.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_acq-1p60mm_run-1${suffix}.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_acq-1p60mm_dir-PA_run-1${suffix}.nii
 
-			filename=${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1_events.tsv
+			filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-1_events.tsv
 			echo "onset\tduration\ttrial_type" > ${filename}
 			echo "2\t2\tVisMotUp" >> ${filename}
 			echo "4\t2\tVisMotDown" >> ${filename}
 
-			filename=${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_run-2_events.tsv
+			filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-2_events.tsv
 			echo "onset\tduration\ttrial_type" > ${filename}
 			echo "3\t2\tVisMotDown" >> ${filename}
 			echo "6\t2\tVisMotUp" >> ${filename}
@@ -48,22 +48,22 @@ do
 			for run in `seq 1 2`
 			do
 
-				filename=${this_dir}/rp_sub-${subject}\_ses-${ses}\_task-${task_name}\_run-${run}${suffix}.txt
+				filename=${this_dir}/rp_sub-${subject}_ses-${ses}_task-${task_name}_run-${run}${suffix}.txt
 				cp dummyData/rp.txt ${filename}
-				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_run-${run}\_desc-confounds\_regressors.tsv
+				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_desc-confounds_regressors.tsv
 
 				for desc in ${desc_label_list}
 				do
-					touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_run-${run}\_space-individual\_desc-${desc}${suffix}.nii
-					touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_run-${run}\_space-IXI549Space\_desc-${desc}${suffix}.nii
+					touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_space-individual_desc-${desc}${suffix}.nii
+					touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_space-IXI549Space_desc-${desc}${suffix}.nii
 				done
-				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_run-${run}\_space-individual\_desc-stc${suffix}.nii
+				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_space-individual_desc-stc${suffix}.nii
 
 			done
 
 			if [ ${ses} = '01' ]; then
-				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-individual\_desc-mean${suffix}.nii
-				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-IXI549Space\_desc-mean${suffix}.nii
+				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-mean${suffix}.nii
+				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-mean${suffix}.nii
 			fi
 
 			## task: vislocalizer
@@ -71,34 +71,34 @@ do
 			task_name='vislocalizer'
 
 			### raw
-			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
 
-			filename=${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}_events.tsv
+			filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_events.tsv
 			echo "onset\tduration\ttrial_type" > ${filename}
 			echo "2\t15\tVisMot" >> ${filename}
 			echo "25\t15\tVisStat" >> ${filename}
 
 			### derivatives
-			filename=${this_dir}/rp_sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.txt
+			filename=${this_dir}/rp_sub-${subject}_ses-${ses}_task-${task_name}${suffix}.txt
 			cp dummyData/rp.txt ${filename}
-			touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_desc-confounds\_regressors.tsv
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_desc-confounds_regressors.tsv
 
 			func_prefix_list='a r u s6'
 			for prefix in ${func_prefix_list}
 			do
-				touch ${this_dir}/${prefix}sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.nii
+				touch ${this_dir}/${prefix}sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
 			done
 
 			desc_label_list='preproc smth6'
 			for desc in ${desc_label_list}
 			do
-				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-individual\_desc-${desc}${suffix}.nii
-				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-IXI549Space\_desc-${desc}${suffix}.nii
+				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-${desc}${suffix}.nii
+				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-${desc}${suffix}.nii
 			done
 
 			if [ ${ses} = '01' ]; then
-				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-individual\_desc-mean${suffix}.nii
-				touch ${this_dir}/sub-${subject}\_ses-${ses}\_task-${task_name}\_space-IXI549Space\_desc-mean${suffix}.nii
+				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-mean${suffix}.nii
+				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-mean${suffix}.nii
 			fi
 
 
@@ -109,8 +109,8 @@ do
 			fmap_suffix_list='_phasediff _magnitude1 _magnitude2'
 			for suffix in ${fmap_suffix_list}
 			do
-				touch ${this_dir}/sub-${subject}\_ses-${ses}\_run-1${suffix}.nii
-				touch ${this_dir}/sub-${subject}\_ses-${ses}\_run-2${suffix}.nii
+				touch ${this_dir}/sub-${subject}_ses-${ses}_run-1${suffix}.nii
+				touch ${this_dir}/sub-${subject}_ses-${ses}_run-2${suffix}.nii
 			done
 
 			EchoTime1=0.006
@@ -120,14 +120,14 @@ do
 			suffix='_bold'
 
 			task_name='vismotion'
-			IntendedFor=`echo ses-${ses}/func/sub-${subject}\_ses-${ses}\_task-${task_name}_run-1${suffix}.nii`
+			IntendedFor=`echo ses-${ses}/func/sub-${subject}_ses-${ses}_task-${task_name}_run-1${suffix}.nii`
 			json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
-			echo "$json_string" > ${this_dir}/sub-${subject}\_ses-${ses}\_run-2_phasediff.json
+			echo "$json_string" > ${this_dir}/sub-${subject}_ses-${ses}_run-2_phasediff.json
 
 			task_name='vislocalizer'
-			IntendedFor=`echo ses-${ses}/func/sub-${subject}\_ses-${ses}\_task-${task_name}${suffix}.nii`
+			IntendedFor=`echo ses-${ses}/func/sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii`
 			json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
-			echo "$json_string" > ${this_dir}/sub-${subject}\_ses-${ses}\_run-1_phasediff.json
+			echo "$json_string" > ${this_dir}/sub-${subject}_ses-${ses}_run-1_phasediff.json
 
 		done
 
@@ -139,30 +139,30 @@ do
 		ses='01'
 		suffix='_T1w'
 
-		touch ${this_dir}/sub-${subject}\_ses-${ses}${suffix}.nii
+		touch ${this_dir}/sub-${subject}_ses-${ses}${suffix}.nii
 
 		anat_prefix_list='m c1 c2 c3'
 		for prefix in ${anat_prefix_list}
 		do
-			touch ${this_dir}/${prefix}sub-${subject}\_ses-${ses}${suffix}.nii
+			touch ${this_dir}/${prefix}sub-${subject}_ses-${ses}${suffix}.nii
 		done
 
 		space='individual'
 
-		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_desc-biascor${suffix}.nii
-		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_desc-skullstripped${suffix}.nii
-		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_desc-preproc${suffix}.nii
-		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_label-brain\_mask.nii
-		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_label-CSF\_probseg.nii
-		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_label-GM\_probseg.nii
-		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_label-WM\_probseg.nii
+		touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_desc-biascor${suffix}.nii
+		touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_desc-skullstripped${suffix}.nii
+		touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_desc-preproc${suffix}.nii
+		touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_label-brain_mask.nii
+		touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_label-CSF_probseg.nii
+		touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_label-GM_probseg.nii
+		touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_label-WM_probseg.nii
 
 		space='IXI549Space'
 
-		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_res-bold\_label-CSF\_probseg.nii
-		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_res-bold\_label-GM\_probseg.nii
-		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_res-bold\_label-WM\_probseg.nii
-		touch ${this_dir}/sub-${subject}\_ses-${ses}\_space-${space}\_res-hi\_desc-preproc${suffix}.nii
+		touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_res-bold_label-CSF_probseg.nii
+		touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_res-bold_label-GM_probseg.nii
+		touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_res-bold_label-WM_probseg.nii
+		touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_res-hi_desc-preproc${suffix}.nii
 
 
 		# STATS

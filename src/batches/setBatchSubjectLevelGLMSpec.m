@@ -21,6 +21,12 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   [matlabbatch, BIDS, opt, subLabel] =  deal(varargin{:});
 
+  if ~isfield(BIDS, 'raw')
+    msg = sprintf(['Provide raw BIDS dataset path in opt.dir.raw .\n' ...
+                   'It is needed to load events.tsv files.\n']);
+    errorHandling(mfilename(), 'missingRawDir', msg, false, opt.verbosity);
+  end
+
   printBatchName('specify subject level fmri model', opt);
 
   % Check the slice timing information is not in the metadata and not added
@@ -102,12 +108,11 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
       % get functional files
       fullpathBoldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
-      printToScreen(sprintf('%s\n', fullpathBoldFileName), opt);
+      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).scans = {fullpathBoldFileName};
 
-      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).scans = ...
-          {fullpathBoldFileName};
-
-      % get stimuli onset time file
+      % TODO factor all the events stuff in a separate function.
+      % get events file from raw data set and convert it to a onsets.mat file
+      % store in the subject level GLM directory
       query = struct( ...
                      'sub',  subLabel, ...
                      'task', opt.taskName, ...
@@ -115,7 +120,16 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
                      'run', runs{iRun}, ...
                      'suffix', 'events', ...
                      'extension', '.tsv');
-      tsvFile = bids.query(BIDS, 'data', query);
+
+      tsvFile = bids.query(BIDS.raw, 'data', query);
+
+      if isempty(tsvFile)
+        msg = sprintf('No events.tsv file found in:\n\t%s\nfor query:%s\n', ...
+                      BIDS.raw.pth, ...
+                      createUnorderedList(query));
+        errorHandling(mfilename(), 'emptyInput', msg, false, true);
+      end
+
       fullpathOnsetFileName = createAndReturnOnsetFile(opt, ...
                                                        subLabel, ...
                                                        tsvFile);

@@ -38,7 +38,7 @@ function bidsResliceTpmToFunc(opt)
     [greyMatter, whiteMatter, csf] = getTpmFilenames(BIDS, subLabel);
     TPMs = cat(1, greyMatter, whiteMatter, csf);
 
-    matlabbatch = [];
+    matlabbatch = {};
     matlabbatch = setBatchReslice(matlabbatch, ...
                                   opt, ...
                                   fullfile(meanFuncDir, meanImage), ...
@@ -60,7 +60,7 @@ function bidsResliceTpmToFunc(opt)
 
     expression = sprintf('(i1+i2+i3)>%f', opt.skullstrip.threshold);
 
-    matlabbatch = [];
+    matlabbatch = {};
     matlabbatch = setBatchImageCalculation(matlabbatch, opt, ...
                                            input, output, meanFuncDir, expression);
 

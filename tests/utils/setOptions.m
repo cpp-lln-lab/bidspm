@@ -33,6 +33,20 @@ function opt = setOptions(task, subLabel)
 
     opt.taskName = 'balloonanalogrisktask';
     opt.dir.input = getFmriprepDir();
+    opt.dir.raw = fullfile(getFmriprepDir(), '..', 'ds001');
+
+    opt.model.file = fullfile(getDummyDataDir(),  'models', ...
+                              ['model-' opt.taskName '_smdl.json']);
+
+  elseif strcmp(task, 'fmriprep-synthetic')
+
+    opt.taskName = 'nback';
+    opt.dir.input = fullfile(getSyntheticDataDir(), 'derivatives', 'fmriprep');
+    opt.dir.preproc = fullfile(getSyntheticDataDir(), 'derivatives', 'fmriprep');
+    opt.dir.raw = getSyntheticDataDir();
+
+    opt.model.file = fullfile(getDummyDataDir(),  'models', ...
+                              ['model-' opt.taskName '_smdl.json']);
 
   else
 

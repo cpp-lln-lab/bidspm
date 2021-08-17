@@ -89,15 +89,14 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
                                                        runs{iRun}, ...
                                                        opt);
 
-      % TODO remove this validation
-      % and we get and save its voxeldimension
+      if size(boldFilename, 1) > 1
+        errorHandling(mfilename(), 'tooManyFiles', 'This should only get one file.', false, true);
+      end
+
       prefix = '';
-      file = validationInputFile(subFuncDataDir, boldFilename);
       [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, boldFilename);
 
-      if size(file, 1) > 1
-        errorHandling(mfilename(), 'tooManyFiles', 'This should only get on file.', false, true);
-      end
+      file = fullfile(subFuncDataDir, boldFilename);
 
       switch action
 
@@ -127,8 +126,6 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
           matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = { file };
 
       end
-
-      printToScreen([' ' file '\n'], opt);
 
       runCounter = runCounter + 1;
     end

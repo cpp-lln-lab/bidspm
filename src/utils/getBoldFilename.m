@@ -34,17 +34,21 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   boldFileName = getInfo(BIDS, subLabel, opt, 'Filename', sessionID, runID, 'bold');
 
   % TODO
-  % add assert to make sure we got a file and boldFileName is not empty
-  % better throw an error that says what query actually failed to return a file
+  % throw an error that says what query actually failed to return a file
   % this might need some refacoring to be able to access the query from here even though
   % some part of it is in getInfo
   if isempty(boldFileName)
-    msg = sprintf('No bold file found for query:%s\n', createUnorderedList(opt.query));
+    msg = sprintf('No bold file found in:\n\t%s\nfor query:%s\n', ...
+                  BIDS.pth, ...
+                  createUnorderedList(opt.query));
+
     errorHandling(mfilename(), 'emptyInput', msg, false, true);
   end
 
   % in case files have been unzipped, we do it now
   fullPathBoldFileName = unzipImgAndReturnsFullpathName(boldFileName, opt);
+
+  printToScreen(createUnorderedList(fullPathBoldFileName), opt);
 
   boldFileName = spm_file(fullPathBoldFileName, 'filename');
   subFuncDataDir = spm_file(fullPathBoldFileName, 'path');

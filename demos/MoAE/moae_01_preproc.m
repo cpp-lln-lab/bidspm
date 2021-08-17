@@ -17,23 +17,24 @@ run ../../initCppSpm.m;
 %% Set options
 opt = moae_get_option();
 
-% download_moae_ds(download_data);
+download_moae_ds(download_data);
 
 %% Run batches
 % reportBIDS(opt);
 
 opt.pipeline.type = 'preproc';
 
-bidsCopyInputFolder(opt);
+% bidsCopyInputFolder(opt);
 
 % In case you just want to run segmentation and skull stripping
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
+
 % bidsSegmentSkullStrip(opt);
-
+%
 % bidsSTC(opt);
-
+%
 % bidsSpatialPrepro(opt);
-
+%
 % anatomicalQA(opt);
 
 % NEEDS DEBUGGING
@@ -49,6 +50,6 @@ bidsCopyInputFolder(opt);
 opt.skullstrip.mean = 1;
 
 % NEEDS DEBUGGING
-mask = bidsWholeBrainFuncMask(opt);
+% mask = bidsWholeBrainFuncMask(opt);
 
-% bidsSmoothing(opt);
+bidsSmoothing(opt);
