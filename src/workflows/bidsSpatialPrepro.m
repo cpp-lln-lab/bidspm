@@ -51,7 +51,7 @@ function bidsSpatialPrepro(opt)
 
   for iSub = 1:numel(opt.subjects)
 
-    matlabbatch = [];
+    matlabbatch = {};
 
     subLabel = opt.subjects{iSub};
 

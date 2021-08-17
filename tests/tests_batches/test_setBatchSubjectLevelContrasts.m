@@ -15,7 +15,7 @@ function test_setBatchSubjectLevelContrastsBasic()
   opt = setOptions('vismotion', subLabel);
   opt.space = {'MNI'};
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);
 
   expectedBatch = [];

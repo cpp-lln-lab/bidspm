@@ -16,7 +16,7 @@ function test_setBatchSmoothConImagesBasic()
 
   [~, opt] = getData(opt, opt.dir.preproc);
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
 
   statsFodler = fullfile(opt.dir.stats, 'sub-01', 'stats', ...

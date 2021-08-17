@@ -25,7 +25,7 @@ function bidsSegmentSkullStrip(opt)
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    matlabbatch = [];
+    matlabbatch = {};
     matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);
 
     % dependency from file selector ('Anatomical')

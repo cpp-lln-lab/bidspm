@@ -24,7 +24,7 @@ function bidsLesionSegmentation(opt)
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    matlabbatch = [];
+    matlabbatch = {};
     matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLabel);
 
     saveAndRunWorkflow(matlabbatch, 'LesionSegmentation', opt, subLabel);

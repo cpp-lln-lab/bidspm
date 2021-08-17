@@ -54,7 +54,7 @@ function bidsFFX(action, opt)
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    matlabbatch = [];
+    matlabbatch = {};
 
     switch action
 

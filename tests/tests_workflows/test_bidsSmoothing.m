@@ -13,7 +13,6 @@ function test_bidsCopyInputFolder_fmriprep()
   opt = setOptions('fmriprep');
 
   opt.space = 'MNI152NLin2009cAsym';
-
   opt.query.space = opt.space; % for bidsCopy only
   opt.query.desc = 'preproc';
 

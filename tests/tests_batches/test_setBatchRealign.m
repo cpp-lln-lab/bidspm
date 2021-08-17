@@ -20,7 +20,7 @@ function test_setBatchRealignBasic()
   opt.useBidsSchema = false;
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch{1}.spm.spatial.realignunwarp.eoptions.weight = {''};
@@ -59,7 +59,7 @@ function test_setBatchRealignAfterStc()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  matlabbatch = [];
+  matlabbatch = {};
   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch{1}.spm.spatial.realignunwarp.eoptions.weight = {''};

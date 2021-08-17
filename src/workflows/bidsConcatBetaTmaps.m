@@ -93,7 +93,7 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
     % beta maps
     outputName = ['4D_beta_', num2str(funcFWHM), '.nii'];
 
-    matlabbatch = [];
+    matlabbatch = {};
     matlabbatch = setBatch3Dto4D(matlabbatch, beta_maps, RT, outputName);
 
     % t-maps

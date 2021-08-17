@@ -30,7 +30,7 @@ function mask = bidsWholeBrainFuncMask(opt)
       opt.orderBatches.skullStripping = 2;
 
       % make matlab batch for segment and skullstip
-      matlabbatch = [];
+      matlabbatch = {};
       matlabbatch = setBatchSegmentation(matlabbatch, opt, meanFuncFileName);
 
       matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);

@@ -20,7 +20,7 @@ function test_setBatchSelectAnatBasic()
 
   [BIDS, opt] = getData(opt, opt.dir.raw);
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch{1}.cfg_basicio.cfg_named_file.name = 'Anatomical';

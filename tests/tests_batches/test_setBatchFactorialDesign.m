@@ -14,7 +14,7 @@ function test_setBatchFactorialDesignBasic()
   opt.subjects = {'01' '02'};
   opt.space = {'MNI'};
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchFactorialDesign(matlabbatch, opt);
 
   % TODO

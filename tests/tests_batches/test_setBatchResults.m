@@ -23,7 +23,7 @@ function test_setBatchResultsBasic()
   result.Contrasts.p = 0.05;
   result.Contrasts.k = 0;
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchResults(matlabbatch, result);
 
   expectedBatch = returnBasicExpectedResultsBatch();
@@ -75,7 +75,7 @@ function test_setBatchResultsExport()
   result.Output =  opt.result.Steps(iStep).Output;
   result.space = opt.space;
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchResults(matlabbatch, result);
 
   expectedBatch = returnBasicExpectedResultsBatch();
@@ -125,7 +125,7 @@ function test_setBatchResultsMontage()
   result.Output =  opt.result.Steps(iStep).Output;
   result.space = opt.space;
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchResults(matlabbatch, result);
 
   expectedBatch = returnBasicExpectedResultsBatch();

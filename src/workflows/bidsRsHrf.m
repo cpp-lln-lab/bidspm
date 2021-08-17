@@ -15,7 +15,7 @@ function bidsRsHrf(opt)
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    matlabbatch = [];
+    matlabbatch = {};
 
     matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, subLabel);
 
