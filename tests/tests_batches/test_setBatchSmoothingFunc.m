@@ -34,6 +34,7 @@ function test_setBatchSmoothingFuncBasic()
   matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch{1}.spm.spatial.smooth.fwhm = repmat(opt.fwhm.func, [1, 3]);
+
   expectedBatch{1}.spm.spatial.smooth.dtype = 0;
   expectedBatch{1}.spm.spatial.smooth.im = 0;
   expectedBatch{1}.spm.spatial.smooth.prefix = ...

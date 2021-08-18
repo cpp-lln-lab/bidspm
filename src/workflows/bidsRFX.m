@@ -78,6 +78,7 @@ function bidsRFX(action, opt)
       % TODO
       % saving needs to be improved (maybe??) as the name may vary with FwHM and contrast
       rfxDir = getRFXdir(opt);
+
       matlabbatch = {};
       matlabbatch = setBatchGroupLevelContrasts(matlabbatch, grpLvlCon, rfxDir);
       saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);

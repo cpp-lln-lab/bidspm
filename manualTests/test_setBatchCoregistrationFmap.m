@@ -18,8 +18,8 @@ function test_setBatchCoregistrationFmapBasic()
 
   [BIDS, opt] = getData(opt, opt.dir.input);
 
-  matlabbatch = [];
-  matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLabel);
+  matlabbatch = {};
+  matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subID);
 
   directory = fullfile(opt.dir.derivatives, 'cpp_spm-preproc', ...
                        'sub-01', ...
