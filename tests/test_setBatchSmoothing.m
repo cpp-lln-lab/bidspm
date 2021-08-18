@@ -15,7 +15,7 @@ function test_setBatchSmoothingBasic()
 
   images = { fullfile(pwd, 'sub-01_T1w.nii') };
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSmoothing(matlabbatch, images, FWHM, prefix);
 
   expectedBatch{1}.spm.spatial.smooth.fwhm = [6 6 6];

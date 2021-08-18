@@ -18,7 +18,7 @@ function test_setBatchSmoothConImagesBasic()
 
   [~, opt] = getData(opt);
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSmoothConImages(matlabbatch, opt, funcFWHM, conFWHM);
 
   expectedBatch{1}.spm.spatial.smooth.fwhm = [6 6 6];

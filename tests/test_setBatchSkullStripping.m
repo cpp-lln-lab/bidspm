@@ -77,7 +77,7 @@ function expected_batch = returnExpectedBatch(opt)
   imcalc.output = ['m' strrep(expectedFileName, '.nii', '_skullstripped.nii')];
   imcalc.outdir = {expectedAnatDataDir};
   imcalc.expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
-  imcalc.options.dtype = 4;
+  imcalc.options.dtype = 16;
 
   expected_batch = {};
   expected_batch{end + 1}.spm.util.imcalc = imcalc;

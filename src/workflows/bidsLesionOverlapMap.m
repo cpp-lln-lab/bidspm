@@ -24,7 +24,7 @@ function bidsLesionOverlapMap(opt)
 
     printProcessingSubject(iSub, subLabel);
 
-    matlabbatch = [];
+    matlabbatch = {};
     matlabbatch = setBatchLesionOverlapMap(matlabbatch, BIDS, opt, subLabel);
 
     saveAndRunWorkflow(matlabbatch, 'LesionOverlapMap', opt, subLabel);

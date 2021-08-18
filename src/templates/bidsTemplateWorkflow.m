@@ -11,7 +11,7 @@ function bidsTemplateWorkflow(opt)
 
     printProcessingSubject(iSub, subLabel);
 
-    matlabbatch = [];
+    matlabbatch = {};
 
     matlabbatch = setBatchSomeBatch(matlabbatch, BIDS, opt, subLabel);
 
