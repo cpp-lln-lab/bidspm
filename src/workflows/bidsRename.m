@@ -120,11 +120,6 @@ function bidsRename(opt)
   mapping(end).name_spec.entities.desc = 'preproc';
 
   % modify defaults
-  findIdx = @(x) strcmp(x, {mapping.prefix}');
-  for i = 1:3
-    idx = strcmp(sprintf('wc%i', i), {mapping.prefix}');
-    mapping(idx).name_spec.entities.res = 'bold';
-  end
 
   idx = strcmp([pfx.norm pfx.bias_cor], {mapping.prefix}');
   mapping(idx).name_spec.entities.res = 'hi';
