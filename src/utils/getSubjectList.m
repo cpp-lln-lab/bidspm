@@ -6,36 +6,47 @@ function opt = getSubjectList(BIDS, opt)
   %
   %   opt = getSubjectList(BIDS, opt)
   %
+  % :param BIDS: output of bids.layout
+  % :type BIDS: structure
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :param BIDSdir: the directory where the data is ; default is :
-  %                 ``fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm')``
-  % :type BIDSdir: string
   %
   % :returns:
   %           - :opt: (structure)
   %
-  % To set set the groups of subjects to analyze::
   %
-  %     opt.groups = {'control', 'blind'};
-  %
-  % If there are no groups (i.e subjects names are of the form ``sub-01`` for
-  % example) or if you want to run all subjects of all groups then use::
+  % If no group or subject is speficied in ``opt`` then all subjects are included.
+  % This is equivalent to the default::
   %
   %   opt.groups = {''};
   %   opt.subjects = {[]};
   %
-  % If you have more than 2 groups but want to only run the subjects of 2
-  % groups then you can use::
+  % If you want to run the analysis of some subjects only based on the group they
+  % belong to **as defined in the ``participants.tsv``** file, you can do it like this::
+  %
+  %     opt.groups = {'control'};
+  %
+  % This will run the pipeline on all the control subjects.
+  %
+  % If your subject label is ``blnd02`` (as in``sub-blnd02``) but its group affiliation
+  % in the ``participants.tsv`` says ``control``, then this subject will NOT be included
+  % if you run the pipeline with ``opt.groups = {'blnd'}``.
+  %
+  % If you have more than 2 groups you can specify them like this::
   %
   %     opt.groups = {'cont', 'cat'};
-  %     opt.subjects = {[], []};
   %
   % You can also directly specify the subject label for the participants you
   % want to run::
   %
-  %     opt.groups = {''};
   %     opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
+  %
+  % And you can combine both methods::
+  %
+  %   opt.groups = {'blind'};
+  %   opt.subjects = {'ctrl01'};
+  %
+  % This will include all ``blind`` subjects and ``sub-ctrl01``.
   %
   % (C) Copyright 2021 CPP_SPM developers
 

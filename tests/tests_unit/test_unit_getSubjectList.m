@@ -8,7 +8,7 @@ function test_suite = test_unit_getSubjectList %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getSubjectListNone()
+function test_getSubject_no_suibject_specified()
 
   opt = setOptions('vismotion');
 
