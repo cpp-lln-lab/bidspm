@@ -4,7 +4,7 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
+  %   matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -13,8 +13,8 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param subID: subject ID
-  % :type subID: string
+  % :param subLabel: subject label
+  % :type subLabel: string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %

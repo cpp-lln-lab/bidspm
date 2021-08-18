@@ -29,11 +29,11 @@ function anatomicalQALesion(opt)
 
   parfor iSub = 1:numel(opt.subjects)
 
-    subID = opt.subjects{iSub};
+    subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subID);
+    printProcessingSubject(iSub, subLabel);
 
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
     % get grey and white matter tissue probability maps
     TPMs = validationInputFile(anatDataDir, anatImage, 'c[12]');

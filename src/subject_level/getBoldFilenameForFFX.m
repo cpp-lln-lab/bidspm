@@ -5,14 +5,14 @@ function boldFileName = getBoldFilenameForFFX(varargin)
   %
   % USAGE::
   %
-  %   boldFileName = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun)
+  %   boldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun)
   %
   % :param BIDS:
   % :type BIDS: structure
   % :param opt:
   % :type opt: structure
-  % :param subID:
-  % :type subID: string
+  % :param subLabel:
+  % :type subLabel: string
   % :param iSes:
   % :type iSes: integer
   % :param iRun:

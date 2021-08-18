@@ -1,4 +1,4 @@
-function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
+function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
   %
   % Looks into the current directory for an ``spm_.*imgNb.png`` file and moves it into
   % the output directory ``sub-label/figures``.
@@ -7,12 +7,12 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
   %
   % USAGE::
   %
-  %   imgNb = copyGraphWindownOutput(opt, subID, [action = '',] [imgNb = 1])
+  %   imgNb = copyGraphWindownOutput(opt, subLabel, [action = '',] [imgNb = 1])
   %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :param subID: Subject label (for example `'01'`).
-  % :type subID: string
+  % :param subLabel: Subject label (for example `'01'`).
+  % :type subLabel: string
   % :param action: Name to be given to the figure.
   % :type action: string
   % :param imgNb: Image numbers to look for. SPM increments them automatically when
@@ -31,7 +31,7 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
     action = '';
   end
 
-  figureDir = fullfile(opt.dir.preproc, strcat('sub-', subID), 'figures');
+  figureDir = fullfile(opt.dir.preproc, strcat('sub-', subLabel), 'figures');
   if ~exist(figureDir, 'dir')
     mkdir(figureDir);
   end
@@ -65,7 +65,7 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
                            '%s_%i_sub-%s_task-%s_%s.png', ...
                            datestr(now, 'yyyymmddHHMM'), ...
                            iFile, ...
-                           subID, ...
+                           subLabel, ...
                            opt.taskName, ...
                            action);
 

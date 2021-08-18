@@ -1,10 +1,10 @@
-function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID)
+function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
   %
   % Short description of what the function does goes here.
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID)
+  %   matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -12,8 +12,8 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID)
   % :type BIDS: structure
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: string
-  % :param subID:
-  % :type subID:
+  % :param subLabel:
+  % :type subLabel:
   %
   % :returns: - :matlabbatch: (structure)
   %
@@ -23,13 +23,13 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID)
   printBatchName('smoothing functional images', opt);
 
   % identify sessions for this subject
-  [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   allFiles = [];
 
   for iSes = 1:nbSessions
 
-    [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+    [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
     for iRun = 1:nbRuns
 
@@ -41,7 +41,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subID)
       end
       [fileName, subFuncDataDir] = getBoldFilename( ...
                                                    BIDS, ...
-                                                   subID, sessions{iSes}, runs{iRun}, opt);
+                                                   subLabel, sessions{iSes}, runs{iRun}, opt);
 
       % TODO remove this extra check
       for iFile = 1:size(fileName, 1)

@@ -10,7 +10,7 @@ function onsetFileName = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   %
   % USAGE::
   %
-  %   onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM)
+  %   onsetFileName = createAndReturnOnsetFile(opt, subLabel, tsvFile, funcFWHM)
   %
   % :param opt:
   % :type opt: structure

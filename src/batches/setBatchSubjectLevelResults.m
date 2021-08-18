@@ -4,7 +4,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subID, funcFWHM, iStep, iCon)
+  %   matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subLabel, funcFWHM, iStep, iCon)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure

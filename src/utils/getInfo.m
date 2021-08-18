@@ -9,7 +9,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
   % If info = ``sessions``, this returns name of the sessions and their number::
   %
-  %   [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'sessions')
+  %   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'sessions')
   %
   % If info = ``runs``, this returns name of the runs and their number for a
   % specified session::
@@ -26,7 +26,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   % :type BIDS:             structure
   %
   % :param subLabel:        label of the subject ; in BIDS lingo that means that for a file name
-  %                         ``sub-02_task-foo_bold.nii`` the subID will be the string ``02``
+  %                         ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
   % :type subLabel:         string
   %
   % :param opt:             Used to find the task name and to pass extra ``query``

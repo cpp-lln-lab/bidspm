@@ -4,7 +4,7 @@ function matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLab
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSegmentationDetectLesion(matlabbatch, BIDS, opt, subID)
+  %   matlabbatch = setBatchSegmentationDetectLesion(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure

@@ -13,7 +13,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   %
   %   results.dir = ffxDir;
   %   results.contrastNb = conNb;
-  %   results.label = subID;
+  %   results.label = subLabel;
   %   results.nbSubj = 1;
   %
   % :returns: - :matlabbatch: (structure)

@@ -8,9 +8,9 @@ function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, 
   %
   % :param BIDS:        returned by bids.layout when exploring a BIDS data set.
   % :type BIDS:         structure
-  % :param subID:       label of the subject ; in BIDS lingo that means that for a file name
-  %                     ``sub-02_task-foo_bold.nii`` the subID will be the string ``02``
-  % :type subID:        string
+  % :param subLabel:       label of the subject ; in BIDS lingo that means that for a file name
+  %                     ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
+  % :type subLabel:        string
   % :param sessionID:   session label (for `ses-001`, the label will be `001`)
   % :type sessionID:    string
   % :param runID:       run index label (for `run-001`, the label will be `001`)

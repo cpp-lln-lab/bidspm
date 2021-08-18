@@ -14,7 +14,7 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param subLabel: subject ID
+  % :param subLabel: subject label
   % :type subLabel: string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job

@@ -42,7 +42,7 @@ function bidsResults(opt)
         warning('run level not implemented yet');
 
         % matlabbatch = {};
-        % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
+        % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subLabel);
 
       case 'subject'
 

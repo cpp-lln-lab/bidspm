@@ -5,7 +5,7 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, 
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt)
+  %   matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subLabel, opt)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
@@ -14,7 +14,7 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, 
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param subLabel: subject ID
+  % :param subLabel: subject label
   % :type subLabel: string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job

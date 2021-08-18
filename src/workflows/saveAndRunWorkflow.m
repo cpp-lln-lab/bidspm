@@ -4,7 +4,7 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   %
   % USAGE::
   %
-  %   saveAndRunWorkflow(matlabbatch, batchName, opt, [subID])
+  %   saveAndRunWorkflow(matlabbatch, batchName, opt, [subLabel])
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
@@ -13,8 +13,8 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions`` and ``loadAndCheckOptions``.
   % :type opt: structure
-  % :param subID: subject ID
-  % :type subID: string
+  % :param subLabel: subject label
+  % :type subLabel: string
   %
   % (C) Copyright 2019 CPP_SPM developers
 
