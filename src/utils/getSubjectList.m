@@ -26,9 +26,9 @@ function opt = getSubjectList(BIDS, opt)
   %
   %     opt.groups = {'control'};
   %
-  % This will run the pipeline on all the control subjects.
+  % This will run the pipeline on all the ``control`` subjects.
   %
-  % If your subject label is ``blnd02`` (as in``sub-blnd02``) but its group affiliation
+  % If your subject label is ``blnd02`` (as in ``sub-blnd02``) but its group affiliation
   % in the ``participants.tsv`` says ``control``, then this subject will NOT be included
   % if you run the pipeline with ``opt.groups = {'blnd'}``.
   %
