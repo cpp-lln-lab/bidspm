@@ -9,6 +9,7 @@ function opt = setOptions(task, subLabel)
   if strcmp(task, 'MoAE')
 
     opt.dir.raw = fullfile(getMoaeDir(), 'inputs', 'raw');
+    opt.dir.preproc = fullfile(getMoaeDir(), 'outputs', 'cpp_spm-preproc');
     opt.model.file = fullfile(getMoaeDir(), 'models', 'model-MoAE_smdl.json');
 
     opt.taskName = 'auditory';

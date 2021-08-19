@@ -12,7 +12,7 @@ end
 % add test realign and reslice
 % check it returns the right voxDim
 
-function test_setBatchRealignBasic()
+function test_setBatchRealign_basic()
 
   subLabel = '01';
 
@@ -47,7 +47,7 @@ function test_setBatchRealignBasic()
               expectedBatch{1}.spm.spatial.realignunwarp.data);
 end
 
-function test_setBatchRealignAfterStc()
+function test_setBatchRealign_after_stc()
 
   subLabel = '01';
 

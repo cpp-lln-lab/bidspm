@@ -8,7 +8,7 @@ function test_suite = test_unit_getInfo %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getInfoBasic()
+function test_getInfo_basic()
 
   subLabel = 'ctrl01';
 
@@ -33,7 +33,7 @@ function test_getInfoBasic()
 
 end
 
-function test_getInfoQuery()
+function test_getInfo_query()
 
   subLabel = 'ctrl01';
   session =  '01';
@@ -71,7 +71,7 @@ function test_getInfoQuery()
 
 end
 
-function test_getInfoNoRun()
+function test_getInfo_no_run()
 
   %% Get runs from BIDS when no run in filename
   subLabel = 'ctrl01';
@@ -88,7 +88,7 @@ function test_getInfoNoRun()
 
 end
 
-function test_getInfoNoSessionNoRun()
+function test_getInfo_no_session_no_run()
 
   subLabel = '01';
 
@@ -105,7 +105,7 @@ function test_getInfoNoSessionNoRun()
 
 end
 
-function test_getInfoQueryWithSessionRestriction()
+function test_getInfoQuery_with_session_restriction()
 
   subLabel = 'ctrl01';
 
@@ -124,7 +124,7 @@ function test_getInfoQueryWithSessionRestriction()
 
 end
 
-function test_getInfoError
+function test_getInfo_error
 
   subLabel = 'ctrl01';
 

@@ -14,7 +14,7 @@ end
 %  - that the function is smart enough to find an anat even when user has not
 %    specified a session
 
-function test_getAnatFilenameDerivatives()
+function test_getAnatFilename_derivatives()
 
   subLabel = '01';
 
@@ -35,7 +35,7 @@ function test_getAnatFilenameDerivatives()
 
 end
 
-function test_getAnatFilenameBasic()
+function test_getAnatFilename_basic()
 
   subLabel = '01';
 
@@ -63,7 +63,7 @@ function test_getAnatFilenameBasic()
 
 end
 
-function test_getAnatFilenameNoSession()
+function test_getAnatFilename_no_session()
 
   subLabel = '01';
   opt = setOptions('MoAE');
@@ -79,7 +79,7 @@ function test_getAnatFilenameNoSession()
 
 end
 
-function test_getAnatFilenameTypeError()
+function test_getAnatFilename_type_error()
 
   subLabel = '01';
 
@@ -95,7 +95,7 @@ function test_getAnatFilenameTypeError()
 
 end
 
-function test_getAnatFilenameSessionError()
+function test_getAnatFilename_session_error()
 
   subLabel = '01';
 
