@@ -17,11 +17,9 @@ name: tests and coverage
 on:
   push:
     branches:
-      - dev
+      - master
   pull_request:
     branches: '*'
-  schedule:
-    - cron: "* * 1 * *"
 
 env:
   OCTFLAGS: --no-gui --no-window-system --silent
