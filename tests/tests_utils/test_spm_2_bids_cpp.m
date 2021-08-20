@@ -59,7 +59,7 @@ function test_spm_2_bids_cpp_spm_mapping()
 
       file = [prefixes{j} pfx_in_out{i, 2}];
 
-      filename = spm_2_bids(file, opt);
+      filename = spm_2_bids(file, opt.spm_2_bids);
 
       msg = sprintf('%s --> %s\n', file, filename);
       printToScreen(msg, opt);
