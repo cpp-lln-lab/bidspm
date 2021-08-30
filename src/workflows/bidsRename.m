@@ -22,7 +22,7 @@ function bidsRename(opt)
 
     for iFile = 1:size(data, 1)
 
-      [new_filename, ~, json] = spm_2_bids(data{iFile}, opt);
+      [new_filename, ~, json] = spm_2_bids(data{iFile}, opt.spm_2_bids);
 
       msg = sprintf('%s --> %s\n', spm_file(data{iFile}, 'filename'), new_filename);
       printToScreen(msg, opt);

@@ -6,6 +6,8 @@ function bidsCreateROI(opt)
     opt = [];
   end
 
+  opt.dir.input = opt.dir.preproc;
+
   [BIDS, opt] = setUpWorkflow(opt, 'create ROI');
 
   opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'cpp_spm-roi'), 'cpath');
@@ -45,6 +47,8 @@ function bidsCreateROI(opt)
       deformation_field = bids.query(BIDS, 'data', ...
                                      'sub', subLabel, 'suffix', 'xfm', ...
                                      'to', opt.anatReference.type, 'extension', '.nii');
+
+      assert(~isempty(deformation_field));
 
       matlabbatch = {};
       for iROI = 1:size(roiList, 1)
