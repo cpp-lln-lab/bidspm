@@ -33,4 +33,7 @@ function bidsLesionSegmentation(opt)
 
   end
 
+  %   opt.query.prefix = prefix.stc;
+  bidsRename(opt);
+
 end
