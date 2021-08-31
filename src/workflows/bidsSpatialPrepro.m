@@ -15,10 +15,10 @@ function bidsSpatialPrepro(opt)
   % The functional data are re-aligned (unwarped), coregistered with the structural,
   % the anatomical data is skull-stripped [and normalized to MNI space].
   %
-  % If you do not want to:
+  % If you want to:
   %
-  % - to perform realign AND unwarp, make sure you set
-  %   ``opt.realign.useUnwarp`` to ``true``.
+  % - only do realign and not realign AND unwarp, make sure you set
+  %   ``opt.realign.useUnwarp`` to ``false``.
   % - normalize the data to MNI space, make sure
   %   ``opt.space`` includes ``MNI``.
   %
@@ -94,14 +94,17 @@ function bidsSpatialPrepro(opt)
 
     copyFigures(BIDS, opt, subLabel);
 
+    opt = set_spm_2_bids_defaults(opt);
+
     if ~opt.dryRun
+
       % convert realignment files to confounds.tsv
       % and rename a few non-bidsy file
       rpFiles = spm_select('FPListRec', ...
                            fullfile(BIDS.pth, ['sub-' subLabel]), ...
                            ['^rp_.*sub-' subLabel '.*_task-' opt.taskName '.*_bold.txt$']);
       for iFile = 1:size(rpFiles, 1)
-        convertRealignParamToTsv(rpFiles(iFile, :), opt);
+        convertRealignParamToTsv(rpFiles(iFile, :), opt.spm_2_bids);
       end
 
       renameSegmentParameter(BIDS, subLabel, opt);
