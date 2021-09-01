@@ -1,5 +1,8 @@
 % (C) Copyright 2019 Remi Gau
 
+% example of how to run the spatial preprocessing on data with different
+% acquisition protocol
+
 clear;
 clc;
 
@@ -13,4 +16,8 @@ opt.pipeline.type = 'preproc';
 
 bidsCopyInputFolder(opt);
 
-bidsSpatialPrepro(opt);
+acq = {'2pt0', '2pt5', '3pt0'};
+for i = 1 % :numel(acq)
+  opt.query.acq = acq{i};
+  bidsSpatialPrepro(opt);
+end

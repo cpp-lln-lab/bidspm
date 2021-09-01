@@ -7,6 +7,6 @@ opt = tsnr_get_option();
 opt.pipeline.type = 'preproc';
 opt = checkOptions(opt);
 
-opt.roi.name = {'Left Thalamus Proper'};
+opt.roi.name = {'Thalamus Proper'};
 
 bidsCreateROI(opt);

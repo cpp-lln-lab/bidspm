@@ -15,10 +15,10 @@ function bidsSpatialPrepro(opt)
   % The functional data are re-aligned (unwarped), coregistered with the structural,
   % the anatomical data is skull-stripped [and normalized to MNI space].
   %
-  % If you do not want to:
+  % If you want to:
   %
-  % - to perform realign AND unwarp, make sure you set
-  %   ``opt.realign.useUnwarp`` to ``true``.
+  % - only do realign and not realign AND unwarp, make sure you set
+  %   ``opt.realign.useUnwarp`` to ``false``.
   % - normalize the data to MNI space, make sure
   %   ``opt.space`` includes ``MNI``.
   %
@@ -45,9 +45,6 @@ function bidsSpatialPrepro(opt)
   opt.orderBatches.realign = 2;
   opt.orderBatches.coregister = 3;
   opt.orderBatches.saveCoregistrationMatrix = 4;
-  opt.orderBatches.segment = 5;
-  opt.orderBatches.skullStripping = 6;
-  opt.orderBatches.skullStrippingMask = 7;
 
   for iSub = 1:numel(opt.subjects)
 
@@ -71,7 +68,12 @@ function bidsSpatialPrepro(opt)
 
     matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel);
 
+    % TODO Skip segmentation and skullstripping if done previously
+
     % dependency from file selector ('Anatomical')
+    opt.orderBatches.segment = 5;
+    opt.orderBatches.skullStripping = 6;
+    opt.orderBatches.skullStrippingMask = 7;
     matlabbatch = setBatchSegmentation(matlabbatch, opt);
 
     matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
@@ -82,8 +84,8 @@ function bidsSpatialPrepro(opt)
       matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim);
     end
 
-    % if no unwarping was done on func, we reslice the func, so we can use
-    % them for the functionalQA
+    % if no unwarping was done on func, we reslice the func,
+    % so we can use them later
     if ~opt.realign.useUnwarp
       matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subLabel, 'reslice');
     end
@@ -92,16 +94,20 @@ function bidsSpatialPrepro(opt)
 
     saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
+    % clean up and rename files
     copyFigures(BIDS, opt, subLabel);
 
+    opt = set_spm_2_bids_defaults(opt);
+
     if ~opt.dryRun
+
       % convert realignment files to confounds.tsv
       % and rename a few non-bidsy file
       rpFiles = spm_select('FPListRec', ...
                            fullfile(BIDS.pth, ['sub-' subLabel]), ...
                            ['^rp_.*sub-' subLabel '.*_task-' opt.taskName '.*_bold.txt$']);
       for iFile = 1:size(rpFiles, 1)
-        convertRealignParamToTsv(rpFiles(iFile, :), opt);
+        convertRealignParamToTsv(rpFiles(iFile, :), opt.spm_2_bids);
       end
 
       renameSegmentParameter(BIDS, subLabel, opt);
@@ -109,6 +115,11 @@ function bidsSpatialPrepro(opt)
     end
 
   end
+
+  % TODO adapt spm_2_bids map to rename eventual files that only have a "r" or
+  % "ra" prefix
+
+  opt.query =  struct('modalities', {{'anat', 'func'}});
 
   bidsRename(opt);
 
