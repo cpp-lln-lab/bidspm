@@ -19,9 +19,6 @@ function manageWorkersPool(action, opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  ver('distcomp');
-  license('test', 'Distrib_Computing_Toolbox');
-
   if isOctave() || ~license('test', 'Distrib_Computing_Toolbox')
     return
   end
