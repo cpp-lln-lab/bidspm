@@ -20,9 +20,8 @@ function opt = tsnr_get_option()
   opt.stc.skip = true;
   opt.space = 'individual';
   opt.subjects = {'CTL05'};
-  opt.taskName = 'dummy';
+  opt.taskName = 'midbrainTest';
   opt.realign.useUnwarp = false;
-  %   opt.query.acq = 'midbrainThick2';
 
   opt.roi.atlas = 'neuromorphometrics';
   opt.roi.space = {'individual'};
