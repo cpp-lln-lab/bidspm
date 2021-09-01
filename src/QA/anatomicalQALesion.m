@@ -37,18 +37,18 @@ function anatomicalQALesion(opt)
     [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
     % get grey and white matter tissue probability maps
-    TPMs = validationInputFile(anatDataDir, anatImage, 'rc[12]'); 
-        
+    TPMs = validationInputFile(anatDataDir, anatImage, 'rc[12]');
+
     % sanity check that all images are in the same space.
-    
+
     % setbatchreslice
-    batchName = 'reslice_anat_lesion'; 
+    batchName = 'reslice_anat_lesion';
     matlabbatch = [];
-    matlabbatch = setBatchReslice(matlabbatch, TPMs(1, :), fullfile(anatDataDir, anatImage));   
+    matlabbatch = setBatchReslice(matlabbatch, TPMs(1, :), fullfile(anatDataDir, anatImage));
     saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
     prefix = [spm_get_defaults('realign.write.prefix')];
-    anatImage = fullfile(anatDataDir, [prefix, anatImage]); 
-    
+    anatImage = fullfile(anatDataDir, [prefix, anatImage]);
+
     volumesToCheck = {anatImage; TPMs(1, :); TPMs(2, :)};
     spm_check_orientations(spm_vol(char(volumesToCheck)));
 
