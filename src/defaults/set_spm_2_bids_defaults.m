@@ -142,9 +142,6 @@ function opt = set_spm_2_bids_defaults(opt)
     map.mapping(idx).name_spec.entities.res = 'bold';
   end
 
-  map = map.rm_mapping(map.find_mapping('prefix', 'rp_'));
-  map = map.rm_mapping(map.find_mapping('prefix', ['rp_' map.stc]));
-
   idx = map.find_mapping('prefix', [map.norm map.bias_cor]);
   map.mapping(idx).name_spec.entities.res = 'hi';
   map.mapping(idx).name_spec.entities.desc = '';
