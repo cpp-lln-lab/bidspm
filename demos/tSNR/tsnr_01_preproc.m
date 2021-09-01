@@ -17,7 +17,7 @@ opt.pipeline.type = 'preproc';
 bidsCopyInputFolder(opt);
 
 acq = {'2pt0', '2pt5', '3pt0'};
-for i = 1 % :numel(acq)
+for i = 1:numel(acq)
   opt.query.acq = acq{i};
   bidsSpatialPrepro(opt);
 end
