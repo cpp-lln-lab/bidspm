@@ -13,6 +13,10 @@ function test_setBatchLesionSegmentation_basic()
   opt = setOptions('vismotion');
   subLabel = '02';
 
+  if not(isfield(opt.toolbox, 'ALI'))
+    return
+  end
+
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   matlabbatch = {};

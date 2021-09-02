@@ -12,6 +12,10 @@ function test_bidsLesionSegmentation_basic()
 
   opt = setOptions('vismotion');
 
+  if not(isfield(opt.toolbox, 'ALI'))
+    return
+  end
+
   bidsLesionSegmentation(opt);
 
 end
