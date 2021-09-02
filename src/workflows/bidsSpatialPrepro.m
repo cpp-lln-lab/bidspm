@@ -129,7 +129,6 @@ function matlabbatch = bidsSpatialPrepro(opt)
   opt.query =  struct('modality', {{'anat', 'func'}});
 
   if ~opt.realign.useUnwarp
-
     opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
                                                 'name_spec', opt.spm_2_bids.cfg.preproc);
 

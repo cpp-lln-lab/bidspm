@@ -8,7 +8,7 @@ function test_suite = test_bidsSegmentSkullStrip %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsSegmentSkullStripBasic()
+function test_bidsSegmentSkullStrip_basic()
 
   opt = setOptions('vismotion');
 
