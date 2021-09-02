@@ -8,12 +8,14 @@ function test_suite = test_setBatchNormalizationSpatialPrepro %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchNormalizationSpatialPreproBasic()
+function test_setBatchNormalizationSpatialPrepro_reuse_segment_output()
+
+  % TODO
 
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
-  opt = setOptions('dummy');
+  opt = setOptions('vismotion');
 
   opt.orderBatches.coregister = 3;
   opt.orderBatches.segment = 5;
@@ -21,14 +23,59 @@ function test_setBatchNormalizationSpatialPreproBasic()
 
   matlabbatch = {};
   voxDim = [3 3 3];
-  matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim);
+
+  [BIDS, opt] = getData(opt, opt.dir.input);
+
+  matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt, voxDim);
 
   expectedBatch = returnExpectedBatch(voxDim);
 
-  %   assertEqual(matlabbatch{end}.spm.spatial.normalise.write.subj, ...
-  %               expectedBatch{end}.spm.spatial.normalise.write.subj);
+  %   for i = 1:numel(expectedBatch)
+  %
+  %     assertEqual(matlabbatch{i}.spm.spatial.normalise.write.subj.def, ...
+  %                 expectedBatch{i}.spm.spatial.normalise.write.subj.def);
+  %     assertEqual(matlabbatch{i}.spm.spatial.normalise.write.subj.resample, ...
+  %                 expectedBatch{i}.spm.spatial.normalise.write.subj.resample);
+  %
+  %     assertEqual(matlabbatch{i}.spm.spatial.normalise.write.woptions, ...
+  %                 expectedBatch{i}.spm.spatial.normalise.write.woptions);
+  %
+  %   end
+end
 
-  assertEqual(matlabbatch, expectedBatch);
+function test_setBatchNormalizationSpatialPrepro_force_segment()
+
+  % necessarry to deal with SPM module dependencies
+  spm_jobman('initcfg');
+
+  opt = setOptions('vismotion');
+
+  opt.orderBatches.coregister = 3;
+  opt.orderBatches.segment = 5;
+  opt.orderBatches.skullStripping = 6;
+
+  opt.segment.force = true;
+
+  matlabbatch = {};
+  voxDim = [3 3 3];
+
+  [BIDS, opt] = getData(opt, opt.dir.input);
+
+  matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt, voxDim);
+
+  expectedBatch = returnExpectedBatch(voxDim);
+
+  for i = 1:numel(expectedBatch)
+
+    assertEqual(matlabbatch{i}.spm.spatial.normalise.write.subj.def, ...
+                expectedBatch{i}.spm.spatial.normalise.write.subj.def);
+    assertEqual(matlabbatch{i}.spm.spatial.normalise.write.subj.resample, ...
+                expectedBatch{i}.spm.spatial.normalise.write.subj.resample);
+
+    assertEqual(matlabbatch{i}.spm.spatial.normalise.write.woptions, ...
+                expectedBatch{i}.spm.spatial.normalise.write.woptions);
+
+  end
 
 end
 
@@ -60,7 +107,7 @@ function expectedBatch = returnExpectedBatch(voxDim)
   expectedBatch{jobsToAdd}.spm.spatial.normalise.write.woptions.vox = voxDim;
 
   expectedBatch{jobsToAdd + 1}.spm.spatial.normalise.write.subj.resample(1) = ...
-      cfg_dep('Segment: Bias Corrected (1)', ...
+      cfg_dep('Segment: bias corrected image', ...
               substruct( ...
                         '.', 'val', '{}', {5}, ...
                         '.', 'val', '{}', {1}, ...
@@ -71,7 +118,7 @@ function expectedBatch = returnExpectedBatch(voxDim)
   expectedBatch{jobsToAdd + 1}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
 
   expectedBatch{jobsToAdd + 2}.spm.spatial.normalise.write.subj.resample(1) = ...
-      cfg_dep('Segment: c1 Images', ...
+      cfg_dep('Segment: grey matter image', ...
               substruct( ...
                         '.', 'val', '{}', {5}, ...
                         '.', 'val', '{}', {1}, ...
@@ -82,7 +129,7 @@ function expectedBatch = returnExpectedBatch(voxDim)
   expectedBatch{jobsToAdd + 2}.spm.spatial.normalise.write.woptions.vox = voxDim;
 
   expectedBatch{jobsToAdd + 3}.spm.spatial.normalise.write.subj.resample(1) = ...
-      cfg_dep('Segment: c2 Images', ...
+      cfg_dep('Segment: white matter image', ...
               substruct( ...
                         '.', 'val', '{}', {5}, ...
                         '.', 'val', '{}', {1}, ...
@@ -93,7 +140,7 @@ function expectedBatch = returnExpectedBatch(voxDim)
   expectedBatch{jobsToAdd + 3}.spm.spatial.normalise.write.woptions.vox = voxDim;
 
   expectedBatch{jobsToAdd + 4}.spm.spatial.normalise.write.subj.resample(1) = ...
-      cfg_dep('Segment: c3 Images', ...
+      cfg_dep('Segment: csf matter image', ...
               substruct( ...
                         '.', 'val', '{}', {5}, ...
                         '.', 'val', '{}', {1}, ...

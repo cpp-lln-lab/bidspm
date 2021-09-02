@@ -31,3 +31,8 @@ pipeline.
 > https://doi.org/10.1038/s41467-019-09230-w
 
 .. autofunction:: spm_my_defaults
+
+spm to BIDS filename conversion
+===============================
+
+.. autofunction:: set_spm_2_bids_defaults

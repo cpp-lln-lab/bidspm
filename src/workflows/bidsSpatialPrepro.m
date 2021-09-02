@@ -1,4 +1,4 @@
-function bidsSpatialPrepro(opt)
+function matlabbatch = bidsSpatialPrepro(opt)
   %
   % Performs spatial preprocessing of the functional and structural data.
   %
@@ -68,20 +68,26 @@ function bidsSpatialPrepro(opt)
 
     matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel);
 
-    % TODO Skip segmentation and skullstripping if done previously
+    % Skip segmentation and skullstripping if done previously
+    anatFile = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1};
+    p = bids.internal.parse_filename(anatFile);
+    filter = p.entities;
+    filter.suffix = 'probseg';
+    tpm = bids.query(BIDS, 'data', filter);
+    doSegmentation = opt.segment.force || isempty(tpm);
 
-    % dependency from file selector ('Anatomical')
-    opt.orderBatches.segment = 5;
-    opt.orderBatches.skullStripping = 6;
-    opt.orderBatches.skullStrippingMask = 7;
-    matlabbatch = setBatchSegmentation(matlabbatch, opt);
-
-    matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
+    if doSegmentation
+      opt.orderBatches.segment = 5;
+      opt.orderBatches.skullStripping = 6;
+      opt.orderBatches.skullStrippingMask = 7;
+      matlabbatch = setBatchSegmentation(matlabbatch, opt);
+      matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
+    end
 
     if ismember('MNI', opt.space)
       % dependency from segmentation
       % dependency from coregistration
-      matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim);
+      matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt, voxDim);
     end
 
     % if no unwarping was done on func, we reslice the func,

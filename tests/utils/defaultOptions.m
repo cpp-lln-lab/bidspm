@@ -37,6 +37,8 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.anatReference.type = 'T1w';
   expectedOptions.anatReference.session = [];
 
+  expectedOptions.segment.force = false;
+
   expectedOptions.skullstrip.threshold = 0.75;
   expectedOptions.skullstrip.mean = false;
 

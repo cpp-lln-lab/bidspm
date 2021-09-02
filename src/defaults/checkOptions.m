@@ -19,64 +19,87 @@ function opt = checkOptions(opt)
   % IMPORTANT OPTIONS (with their defaults):
   %
   %     - ``opt.taskName``
-  %     - ``opt.dir``: EXPLAIN
+  %
+  %     - ``opt.dir``: TODO EXPLAIN
+  %
   %     - ``opt.groups = {''}`` - group of subjects to analyze
+  %
   %     - ``opt.subjects = {[]}`` - suject to run in each group
-  %         space where we conduct the analysis
-  %         are located. See ``setDerivativesDir()`` for more information.
+  %       space where we conduct the analysis
+  %       are located. See ``setDerivativesDir()`` for more information.
+  %
   %     - ``opt.space = {'individual', 'MNI'}`` - Space where we conduct the analysis
+  %
   %     - ``opt.realign.useUnwarp = true``
+  %
   %     - ``opt.useFieldmaps = true`` - when set to ``true`` the
-  %         preprocessing pipeline will look for the voxel displacement maps (created by
-  %         ``bidsCreateVDM()``) and will use them for realign and unwarp.
+  %       preprocessing pipeline will look for the voxel displacement maps (created by
+  %       ``bidsCreateVDM()``) and will use them for realign and unwarp.
+  %
   %     - ``opt.model.file = ''`` - path to the BIDS model file that contains the
-  %         model to speficy and the contrasts to compute.
+  %       model to speficy and the contrasts to compute.
+  %
   %     - ``opt.fwhm.func = 6`` - FWHM to apply to the preprocessed functional images.
   %     - ``opt.fwhm.contrast = 6`` - FWHM to apply to the contrast images before bringing
-  %         them at the group level.
+  %       them at the group level.
+  %
   %     - ``opt.query`` - a structure used to specify other options to only run analysis on
-  %         certain files. ``struct('dir', 'AP', 'acq' '3p00mm')``. See ``bids.query``
-  %         to see how to specify.
+  %       certain files. ``struct('dir', 'AP', 'acq' '3p00mm')``. See ``bids.query``
+  %       to see how to specify.
   %
   % OTHER OPTIONS (with their defaults):
   %
   %     - ``opt.verbosity = 1;`` - Set it to ``0`` if you want to see less output on the prompt.
+  %
   %     - ``opt.dryRun = false`` - Set it to ``true`` in case you don't want to run the analysis.
+  %
   %     - ``opt.pipeline.type = 'preproc'`` - Switch it to ``stats`` when running GLMs.
-  %     - ``opt.pipeline.name = 'cpp_spm'``
+  %     - ``opt.pipeline.name``
+  %
   %     - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
-  %         subjects should be fetched by their number ``1`` and not their label ``O1'``.
+  %       subjects should be fetched by their number ``1`` and not their label ``O1'``.
+  %
   %     - ``opt.anatReference.type = 'T1w'`` -  type of the anatomical reference
   %     - ``opt.anatReference.session = ''`` - session label of the anatomical reference
+  %
+  %     - ``opt.segment.force = false`` - set to ``true`` to ignore previous output
+  %       of the segmentation and force to run it again
+  %
+  %     - ``opt.skullstrip.mean = false`` - to skulstrip mean functional image
   %     - ``opt.skullstrip.threshold = 0.75`` - Threshold used for the skull stripping.
-  %         Any voxel with ``p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold``
-  %         will be included in the mask.
+  %       Any voxel with ``p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold``
+  %       will be included in the mask.
+  %
   %     - ``opt.funcVoxelDims = []`` - Voxel dimensions to use for resampling of functional data
-  %         at normalization.
+  %       at normalization.
+  %
   %     - ``opt.stc.skip = false`` - boolean flag to skip slice time correction or not.
   %     - ``opt.stc.referenceSlice = []`` - reference slice for the slice timing correction.
-  %         If left emtpy the mid-volume acquisition time point will be selected at run time.
+  %       If left emtpy the mid-volume acquisition time point will be selected at run time.
   %     - ``opt.stc.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED,
-  %         if you know the order in which slices were acquired, you should be able to recompute
-  %         slice timing and add it to the json files in your BIDS data set.
-  %     -  ``opt.glm.roibased.do``
-  %     -  ``opt.QA.func.carpetPlot = true`` to plot carpet plot when running ``functionaQA``
-  %     -  ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
-  %         in ``functionaQA``
-  %     -  ``opt.QA.func.MotionParameters = 'on'``
-  %     -  ``opt.QA.func.FramewiseDisplacement = 'on'``
-  %     -  ``opt.QA.func.Voltera = 'on'``
-  %     -  ``opt.QA.func.Globals = 'on'``
-  %     -  ``opt.QA.func.Movie = 'on'`` ; set it to ``off`` to skip generating movies
-  %         of the time series
-  %     -  ``opt.QA.func.Basics = 'on'``
-  %     -  ``opt.QA.glm.do = true`` - If set to ``true`` the residual images of a
-  %         GLM at the subject levels will be used to estimate if there is any remaining structure
-  %         in the GLM residuals (the power spectra are not flat) that could indicate
-  %         the subject level results are likely confounded (see
-  %         ``plot_power_spectra_of_GLM_residuals`` and `Accurate autocorrelation modeling
-  %         substantially improves fMRI reliability
-  %         <https://www.nature.com/articles/s41467-019-09230-w.pdf>`_ for more info.
+  %       if you know the order in which slices were acquired, you should be able to recompute
+  %       slice timing and add it to the json files in your BIDS data set.
+  %
+  %     - ``opt.glm.roibased.do``
+  %
+  %     - ``opt.QA.func.carpetPlot = true`` to plot carpet plot when running ``functionaQA``
+  %     - ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
+  %       in ``functionaQA``
+  %     - ``opt.QA.func.MotionParameters = 'on'``
+  %     - ``opt.QA.func.FramewiseDisplacement = 'on'``
+  %     - ``opt.QA.func.Voltera = 'on'``
+  %     - ``opt.QA.func.Globals = 'on'``
+  %     - ``opt.QA.func.Movie = 'on'`` ; set it to ``off`` to skip generating movies
+  %       of the time series
+  %     - ``opt.QA.func.Basics = 'on'``
+  %
+  %     - ``opt.QA.glm.do = true`` - If set to ``true`` the residual images of a
+  %       GLM at the subject levels will be used to estimate if there is any remaining structure
+  %       in the GLM residuals (the power spectra are not flat) that could indicate
+  %       the subject level results are likely confounded (see
+  %       ``plot_power_spectra_of_GLM_residuals`` and `Accurate autocorrelation modeling
+  %       substantially improves fMRI reliability
+  %       <https://www.nature.com/articles/s41467-019-09230-w.pdf>`_ for more info.
   %
   %
   %
@@ -160,6 +183,9 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.useFieldmaps = true;
 
   %% Options for segmentation
+  fieldsToSet.segment.force = false;
+
+  %% Options for skullstripping
   fieldsToSet.skullstrip.threshold = 0.75;
   fieldsToSet.skullstrip.mean = false;
 

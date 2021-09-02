@@ -8,7 +8,7 @@ function test_suite = test_bidsSpatialPrepro %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsSpatialPreproBasic()
+function test_bidsSpatialPrepro_basic()
 
   opt = setOptions('MoAE');
 
@@ -16,6 +16,40 @@ function test_bidsSpatialPreproBasic()
 
   opt.pipeline.type = 'preproc';
 
-  bidsSpatialPrepro(opt);
+  matlabbatch = bidsSpatialPrepro(opt);
+
+  assertEqual(numel(matlabbatch), 10);
+  assert(isfield(matlabbatch{1}, 'cfg_basicio'));
+  assert(isfield(matlabbatch{2}.spm.spatial, 'realignunwarp'));
+  assert(isfield(matlabbatch{3}.spm.spatial, 'coreg'));
+  assert(isfield(matlabbatch{4}, 'cfg_basicio'));
+  for i = 5:10
+    assert(isfield(matlabbatch{i}.spm.spatial, 'normalise'));
+  end
+
+end
+
+function test_bidsSpatialPrepro_force_segmentc()
+
+  opt = setOptions('MoAE');
+
+  bidsCopyInputFolder(opt, true());
+
+  opt.pipeline.type = 'preproc';
+  opt.segment.force = true;
+
+  matlabbatch = bidsSpatialPrepro(opt);
+
+  assertEqual(numel(matlabbatch), 13);
+  assert(isfield(matlabbatch{1}, 'cfg_basicio'));
+  assert(isfield(matlabbatch{2}.spm.spatial, 'realignunwarp'));
+  assert(isfield(matlabbatch{3}.spm.spatial, 'coreg'));
+  assert(isfield(matlabbatch{4}, 'cfg_basicio'));
+  assert(isfield(matlabbatch{5}.spm.spatial, 'preproc'));
+  assert(isfield(matlabbatch{6}.spm, 'util'));
+  assert(isfield(matlabbatch{7}.spm, 'util'));
+  for i = 8:13
+    assert(isfield(matlabbatch{i}.spm.spatial, 'normalise'));
+  end
 
 end
