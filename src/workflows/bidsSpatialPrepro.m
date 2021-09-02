@@ -70,13 +70,21 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
     % Skip segmentation and skullstripping if done previously
     anatFile = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1};
-    p = bids.internal.parse_filename(anatFile);
-    filter = p.entities;
-    filter.suffix = 'probseg';
-    tpm = bids.query(BIDS, 'data', filter);
-    doSegmentation = opt.segment.force || isempty(tpm);
+    anatFile = bids.internal.parse_filename(anatFile);
+    filter = anatFile.entities;
+    filter.modality = 'anat';
 
-    if doSegmentation
+    filter.suffix = anatFile.suffix;
+    filter.desc = 'biascor';
+    biasCorrectedImage = bids.query(BIDS, 'data', filter);
+
+    filter.suffix = 'probseg';
+    filter = rmfield(filter, 'desc');
+    tpm = bids.query(BIDS, 'data', filter);
+
+    doSegmentAndSkullstrip = opt.segment.force || isempty(tpm) || isempty(biasCorrectedImage);
+
+    if doSegmentAndSkullstrip
       opt.orderBatches.segment = 5;
       opt.orderBatches.skullStripping = 6;
       opt.orderBatches.skullStrippingMask = 7;
@@ -123,8 +131,8 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
   end
 
-  % TODO adapt spm_2_bids map to rename eventual files that only have a "r" or
-  % "ra" prefix
+  % TODO adapt spm_2_bids map to rename eventual files
+  % that only have a "r" or "ra" prefix
 
   opt.query =  struct('modality', {{'anat', 'func'}});
 

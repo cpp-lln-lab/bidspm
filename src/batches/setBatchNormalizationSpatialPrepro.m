@@ -77,6 +77,7 @@ function anatFile = getAnatFileFromBatch(matlabbatch)
     anatFile = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1};
     anatFile = bids.internal.parse_filename(anatFile);
   end
+
 end
 
 function deformationField = getDeformationField(matlabbatch, BIDS, opt)
