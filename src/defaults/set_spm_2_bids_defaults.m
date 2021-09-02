@@ -114,7 +114,7 @@ function opt = set_spm_2_bids_defaults(opt)
   ext = '.nii';
   entities = struct('desc', 'skullstripped');
   name_spec = map.cfg.segment.bias_corrected;
-  name_spec.entities.res = 'hi';
+  name_spec.entities.res = 'r1pt0';
   name_spec.entities.desc = 'preproc';
   map = map.add_mapping('prefix', prefix, ...
                         'suffix', suffix, ...
@@ -127,7 +127,7 @@ function opt = set_spm_2_bids_defaults(opt)
   ext = '.nii';
   entities = struct('desc', 'skullstripped');
   name_spec = map.cfg.preproc_norm;
-  name_spec.entities.res = 'hi';
+  name_spec.entities.res = 'r1pt0';
   map = map.add_mapping('prefix', prefix, ...
                         'suffix', suffix, ...
                         'ext', ext, ...
@@ -143,7 +143,7 @@ function opt = set_spm_2_bids_defaults(opt)
   end
 
   idx = map.find_mapping('prefix', [map.norm map.bias_cor]);
-  map.mapping(idx).name_spec.entities.res = 'hi';
+  map.mapping(idx).name_spec.entities.res = 'r1pt0';
   map.mapping(idx).name_spec.entities.desc = '';
 
   idx = map.find_mapping('prefix', map.unwarp);
