@@ -8,7 +8,23 @@ function test_suite = test_unit_getSubjectList %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getSubject_no_suibject_specified()
+function test_getSubject_convert_to_cell()
+
+  opt = setOptions('vismotion');
+
+  opt.subjects = 'ctrl01';
+
+  BIDS = bids.layout(opt.dir.preproc);
+
+  %% Get all groups all subjects
+  opt = getSubjectList(BIDS, opt);
+
+  assertEqual(opt.subjects, ...
+              {'ctrl01'});
+
+end
+
+function test_getSubject_no_subject_specified()
 
   opt = setOptions('vismotion');
 

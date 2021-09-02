@@ -53,6 +53,9 @@ function opt = getSubjectList(BIDS, opt)
   allSubjects = bids.query(BIDS, 'subjects');
 
   % Whatever subject entered must be returned "linearized"
+  if ischar(opt.subjects)
+    opt.subjects = {opt.subjects};
+  end
   tmp = opt.subjects;
   tmp = tmp(:);
 
