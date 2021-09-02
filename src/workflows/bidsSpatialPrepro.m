@@ -107,7 +107,8 @@ function bidsSpatialPrepro(opt)
                            fullfile(BIDS.pth, ['sub-' subLabel]), ...
                            ['^rp_.*sub-' subLabel '.*_task-' opt.taskName '.*_bold.txt$']);
       for iFile = 1:size(rpFiles, 1)
-        convertRealignParamToTsv(rpFiles(iFile, :), opt.spm_2_bids);
+        rmInput = true;
+        convertRealignParamToTsv(rpFiles(iFile, :), opt.spm_2_bids, rmInput);
       end
 
       renameSegmentParameter(BIDS, subLabel, opt);
@@ -119,7 +120,17 @@ function bidsSpatialPrepro(opt)
   % TODO adapt spm_2_bids map to rename eventual files that only have a "r" or
   % "ra" prefix
 
-  opt.query =  struct('modalities', {{'anat', 'func'}});
+  opt.query =  struct('modality', {{'anat', 'func'}});
+
+  if ~opt.realign.useUnwarp
+
+    opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
+                                                'name_spec', opt.spm_2_bids.cfg.preproc);
+
+    opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', [opt.spm_2_bids.realign 'mean'], ...
+                                                'name_spec', opt.spm_2_bids.cfg.preproc);
+    opt.spm_2_bids = opt.spm_2_bids.flatten_mapping();
+  end
 
   bidsRename(opt);
 

@@ -4,7 +4,9 @@ function bidsRename(opt)
 
   createdFiles = {};
 
-  opt = set_spm_2_bids_defaults(opt);
+  if not(isfield(opt, 'spm_2_bids'))
+    opt = set_spm_2_bids_defaults(opt);
+  end
 
   opt.dir.input = opt.dir.preproc;
   [BIDS, opt] = setUpWorkflow(opt, 'renaming to BIDS derivatives');
