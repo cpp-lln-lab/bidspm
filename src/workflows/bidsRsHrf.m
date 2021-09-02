@@ -9,7 +9,7 @@ function bidsRsHrf(opt)
 
   manageWorkersPool('close', opt);
 
-  for iSub = 8:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 

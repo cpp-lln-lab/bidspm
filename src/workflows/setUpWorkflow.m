@@ -37,6 +37,8 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, BIDSdir)
 
   printWorkflowName(workflowName, opt);
 
+  % TODO add workflow step to dataset description
+
   setGraphicWindow(opt);
 
   manageWorkersPool('open', opt);
