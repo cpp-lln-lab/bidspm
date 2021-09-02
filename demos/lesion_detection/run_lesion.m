@@ -19,14 +19,13 @@ opt = lesion_get_option();
 %% Run batches
 % reportBIDS(opt);
 
-% unzip = true;
-% bidsCopyInputFolder(opt);
+bidsCopyInputFolder(opt);
 
 % Step 1: segmentation
 bidsLesionSegmentation(opt);
 
 % % Step 2: lesion abnormalities
-% bidsLesionAbnormalitiesDetection(opt);
+bidsLesionAbnormalitiesDetection(opt);
 
 % % Step 3: overlap map
 % bidsLesionOverlapMap(opt)

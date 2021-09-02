@@ -15,13 +15,15 @@ function bidsLesionAbnormalitiesDetection(opt)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  opt.dir.input = opt.dir.preproc;
+
   [BIDS, opt] = setUpWorkflow(opt, 'abnormalities detection');
 
-  prefixList = {'rc1', 'rc2'};
+  labels = {'GM', 'WM'};
 
   % create a structure to collect image names
-  for iPrefix = 1:numel(prefixList)
-    images(iPrefix, 1) = struct('controls', [], 'patients', []);
+  for i = 1:numel(labels)
+    images(i, 1) = struct('controls', [], 'patients', []);
   end
 
   for iSub = 1:numel(opt.subjects)
@@ -30,24 +32,39 @@ function bidsLesionAbnormalitiesDetection(opt)
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    idx = strcmp(BIDS.participants.participant_id, ['sub-' subLabel]);
+    idx = strcmp(BIDS.participants.content.participant_id, ['sub-' subLabel]);
+    participantsGroup = BIDS.participants.content.group(idx);
 
-    participantsGroup = BIDS.participants.group(idx);
+    anatImage = getAnatFilename(BIDS, opt, subLabel);
+    anatImage = bids.internal.parse_filename(anatImage);
+    filter = anatImage.entities;
+    filter.modality = 'anat';
+    filter.suffix = 'probseg';
+    filter.desc = 'smth8';
 
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
+    for i = 1:numel(labels)
 
-    for iPrefix = 1:numel(prefixList)
+      filter.label = labels{i};
+      files = bids.query(BIDS, 'data', filter);
 
-      prefix = prefixList{iPrefix};
-      files = validationInputFile(anatDataDir, anatImage, prefix);
+      if numel(files) > 1
+        disp(files);
+        tolerant =  false;
+        msg = sprintf('Too many files for label %s for subject %s', labels{i}, subLabel);
+        id = 'tooManyTissueClassFiles';
+        errorHandling(mfilename(), id, msg, tolerant);
+      end
 
+      % TODO avoid the hard coding of 'control' :
+      % this should probably be in the opt
       if strcmp (participantsGroup, 'control')
-        images(iPrefix, 1).controls{end + 1, 1} = files;
+        images(i, 1).controls{end + 1, 1} = files{1};
       else
-        images(iPrefix, 1).patients{end + 1, 1} = files;
+        images(i, 1).patients{end + 1, 1} = files{1};
       end
 
     end
+
   end
 
   matlabbatch = {};

@@ -17,8 +17,6 @@ function opt = lesion_get_option()
 
   opt.dir.derivatives = fullfile(opt.dir.raw, '..', 'derivatives');
 
-  opt.subjects = 'CTL01';
-
   opt.query.modality = 'anat';
 
   %% DO NOT TOUCH
