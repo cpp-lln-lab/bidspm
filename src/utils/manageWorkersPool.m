@@ -32,49 +32,65 @@ function manageWorkersPool(action, opt)
 
   nbWorkers = opt.parallelize.nbWorkers;
 
-  switch lower(action)
+  try
+    switch lower(action)
 
-    case 'open'
+      case 'open'
 
-      if str2double(matlabVer(1:4)) > 2013
+        openPool(nbWorkers, matlabVer);
 
-        pool = gcp('nocreate');
+      case 'close'
 
-        if isempty(pool)
-          parpool(nbWorkers); %#ok<*DPOOL>
-        end
+        closePool(opt, matlabVer);
+    end
 
-      else
+  catch
 
-        if matlabpool('size') == 0 %#ok<*DPOOL>
-          matlabpool(nbWorkers);
-
-        elseif matlabpool('size') ~= nbWorkers
-          matlabpool close;
-          matlabpool(nbWorkers);
-
-        end
-
-      end
-
-    case 'close'
-
-      if opt.parallelize.killOnExit
-
-        if str2double(matlabVer(1:4)) > 2013
-
-          pool = gcp('nocreate');
-          if ~isempty(pool)
-            delete(gcp);
-          end
-
-        else
-          matlabpool close;
-
-        end
-
-      end
+    warning('could not initialize the parallelization. The parallel toolbox might be missing.');
 
   end
 
+end
+
+function openPool(nbWorkers, matlabVer)
+
+  if str2double(matlabVer(1:4)) > 2013
+
+    pool = gcp('nocreate');
+
+    if isempty(pool)
+      parpool(nbWorkers); %#ok<*DPOOL>
+    end
+
+  else
+
+    if matlabpool('size') == 0 %#ok<*DPOOL>
+      matlabpool(nbWorkers);
+
+    elseif matlabpool('size') ~= nbWorkers
+      matlabpool close;
+      matlabpool(nbWorkers);
+
+    end
+
+  end
+
+end
+
+function closePool(opt, matlabVer)
+  if opt.parallelize.killOnExit
+
+    if str2double(matlabVer(1:4)) > 2013
+
+      pool = gcp('nocreate');
+      if ~isempty(pool)
+        delete(gcp);
+      end
+
+    else
+      matlabpool close;
+
+    end
+
+  end
 end

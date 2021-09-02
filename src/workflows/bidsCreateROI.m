@@ -6,9 +6,13 @@ function bidsCreateROI(opt)
     opt = [];
   end
 
+  opt.dir.input = opt.dir.preproc;
+
   [BIDS, opt] = setUpWorkflow(opt, 'create ROI');
 
-  opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'cpp_spm-roi'), 'cpath');
+  if ~isfield(opt.dir, 'roi')
+    opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'cpp_spm-roi'), 'cpath');
+  end
   spm_mkdir(fullfile(opt.dir.roi, 'group'));
 
   opt.dir.jobs = fullfile(opt.dir.roi, 'jobs', opt.taskName);
@@ -46,6 +50,13 @@ function bidsCreateROI(opt)
                                      'sub', subLabel, 'suffix', 'xfm', ...
                                      'to', opt.anatReference.type, 'extension', '.nii');
 
+      if isempty(deformation_field)
+        tolerant = false;
+        msg = sprintf('No deformation field for subject %s', subLabel);
+        id = 'noDeformationField';
+        errorHandling(mfilename(), id, msg, tolerant);
+      end
+
       matlabbatch = {};
       for iROI = 1:size(roiList, 1)
         matlabbatch = setBatchNormalize(matlabbatch, ...
@@ -64,6 +75,22 @@ function bidsCreateROI(opt)
                            fullfile(opt.dir.roi, 'group'), ...
                            '^wspace.*_mask.nii.*$');
       roiList = cellstr(roiList);
+
+      if opt.dryRun
+        tolerant = false;
+        verbose = true;
+        msg = 'Renaming ROI in native space will not work on a dry run';
+        id = 'willNotRunOnDryRun';
+        errorHandling(mfilename(), id, msg, tolerant, verbose);
+        return
+      end
+
+      if isempty(roiList{1})
+        tolerant = false;
+        msg = sprintf('No ROI found in folder: %s', opt.dir.roi);
+        id = 'noRoiFile';
+        errorHandling(mfilename(), id, msg, tolerant);
+      end
 
       for iROI = 1:size(roiList, 1)
 
