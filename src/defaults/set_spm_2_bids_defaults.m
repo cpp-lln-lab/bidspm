@@ -4,7 +4,7 @@ function opt = set_spm_2_bids_defaults(opt)
   %
   % USAGE::
   %
-  %  opt = set_spm_2_bids_defaults(opt)
+  %   opt = set_spm_2_bids_defaults(opt)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
