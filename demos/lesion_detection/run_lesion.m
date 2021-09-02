@@ -17,16 +17,16 @@ run ../../initCppSpm.m;
 opt = lesion_get_option();
 
 %% Run batches
-reportBIDS(opt);
+% reportBIDS(opt);
 
-deleteZippedNii = true;
-bidsCopyRawFolder(opt, deleteZippedNii, {'anat'});
+% unzip = true;
+% bidsCopyInputFolder(opt);
 
 % Step 1: segmentation
 bidsLesionSegmentation(opt);
 
 % % Step 2: lesion abnormalities
-bidsLesionAbnormalitiesDetection(opt);
+% bidsLesionAbnormalitiesDetection(opt);
 
 % % Step 3: overlap map
 % bidsLesionOverlapMap(opt)

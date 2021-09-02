@@ -32,7 +32,7 @@ function bidsLesionAbnormalitiesDetection(opt)
 
     idx = strcmp(BIDS.participants.participant_id, ['sub-' subLabel]);
 
-    temp = BIDS.participants.group(idx);
+    participantsGroup = BIDS.participants.group(idx);
 
     [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
@@ -41,7 +41,7 @@ function bidsLesionAbnormalitiesDetection(opt)
       prefix = prefixList{iPrefix};
       files = validationInputFile(anatDataDir, anatImage, prefix);
 
-      if strcmp (temp, 'control')
+      if strcmp (participantsGroup, 'control')
         images(iPrefix, 1).controls{end + 1, 1} = files;
       else
         images(iPrefix, 1).patients{end + 1, 1} = files;
