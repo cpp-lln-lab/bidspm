@@ -73,7 +73,6 @@ Utility functions
 .. autofunction:: printProcessingSubject
 .. autofunction:: printToScreen
 .. autofunction:: printWorkflowName
-.. autofunction:: removeSpmPrefix
 .. autofunction:: renameSegmentParameter
 .. autofunction:: renameUnwarpParameter
 .. autofunction:: rmTrialTypeStr
