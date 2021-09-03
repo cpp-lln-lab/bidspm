@@ -21,7 +21,7 @@ function matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, subLabel)
 
   msg = 'estimate HRF';
 
-  printBatchName(msg);
+  printBatchName(msg, opt);
 
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
@@ -43,8 +43,12 @@ function matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, subLabel)
 
       if iSes == 1 && iRun == 1
         outputDir = subFuncDataDir;
-        maskImg = getInfo(BIDS, subLabel, opt, 'filename', sessions{iSes}, runs{iRun}, 'mask');
         metadata = getInfo(BIDS, subLabel, opt, 'metadata', sessions{iSes}, runs{iRun}, 'bold');
+
+        tmp = opt;
+        tmp.query = rmfield(tmp.query, 'desc');
+        maskImg = getInfo(BIDS, subLabel, tmp, 'filename', sessions{iSes}, runs{iRun}, 'mask');
+        assert(not(isempty(maskImg)));
       end
 
       boldImg{runCounter, 1} = fullfile(subFuncDataDir, boldFilename);

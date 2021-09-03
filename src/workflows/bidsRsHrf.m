@@ -1,9 +1,14 @@
-function bidsRsHrf(opt)
+function matlabbatch = bidsRsHrf(opt)
   %
   %
   % (C) Copyright 2021 CPP_SPM developers
 
   % TODO add test
+
+  opt.dir.input = opt.dir.preproc;
+
+  opt.query.desc = 'preproc';
+  opt.query.space = opt.space;
 
   [BIDS, opt] = setUpWorkflow(opt, 'estimate HRF from rest data');
 

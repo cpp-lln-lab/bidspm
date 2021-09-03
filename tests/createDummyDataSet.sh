@@ -64,6 +64,8 @@ do
 			if [ ${ses} = '01' ]; then
 				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-mean${suffix}.nii
 				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-mean${suffix}.nii
+
+				touch ${this_dir}/mean_sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
 			fi
 
 			## task: vislocalizer
@@ -100,6 +102,17 @@ do
 				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-mean${suffix}.nii
 				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-mean${suffix}.nii
 			fi
+
+			## task: rest
+			suffix='_bold'
+			task_name='rest'
+
+			### raw & derivatives
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-preproc${suffix}.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_label-brain_mask.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-preproc${suffix}.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_label-brain_mask.nii
 
 
 			# FMAP
