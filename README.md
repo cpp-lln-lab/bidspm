@@ -110,8 +110,8 @@ This can perform:
 The core functions are in the `src` folder.
 
 Please see our
-[documentation](https://cpp-bids-spm.readthedocs.io/en/latest/index.html) for
-more info.
+[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
+info.
 
 ## Octave compatibility
 
