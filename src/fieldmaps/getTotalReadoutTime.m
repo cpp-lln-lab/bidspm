@@ -24,17 +24,16 @@ function totalReadoutTime = getTotalReadoutTime(metadata)
     % TODO
     % double check this section
     % this was in spmup but I don't remember where I got this from
-    %
-    %   % from spmup: apparently this comes from the fmap metadata
-    %   %  but PixelBandwidth is not is not a valid BIDS term
-    %   elseif isfield(metadata, 'PixelBandwidth') && ~isempty(metadata.PixelBandwidth)
-    %     totalReadoutTime = 1 / fieldmap_param.PixelBandwidth * 1000;
-    %     warning('PixelBandwidth is not a valid BIDS term.');
-    %
+
+    % from spmup: apparently this comes from the fmap metadata
+    %  but PixelBandwidth is not is not a valid BIDS term
+  elseif isfield(metadata, 'PixelBandwidth') && ~isempty(metadata.PixelBandwidth)
+    totalReadoutTime = 1 / metadata.PixelBandwidth * 1000;
+
     %   % apparently this comes from the functional metadata ???
     %   elseif isfield(metadata, 'RepetitionTime') && ~isempty(metadata.RepetitionTime)
     %     totalReadoutTime = metadata.RepetitionTime;
-    %
+
     %   % apparently this comes from the functional metadata ???
     %   elseif isfield(metadata, 'EffectiveEchoSpacing') && ~isempty(metadata.NumberOfEchos)
     %     totalReadoutTime = (metadata.NumberOfEchos - 1) * ...

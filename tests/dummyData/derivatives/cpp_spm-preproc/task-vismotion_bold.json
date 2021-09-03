@@ -10,5 +10,6 @@
     "SliceThickness": 3,
     "FlipAngle": 54,
     "NumberOfVolumesDiscardedByUser": 8,
-    "TaskName": "vismotion"
+    "TaskName": "vismotion",
+    "PixelBandwidth": 15.8730
 }
