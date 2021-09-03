@@ -26,10 +26,10 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   printBatchName('create voxel displacement map', opt);
 
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
-
   runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});
+  opt.query.prefix = 'mean_';
   [fileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, sessions{1}, runs{1}, opt);
-  refImage = validationInputFile(subFuncDataDir, fileName, 'mean_');
+  refImage = fullfile(subFuncDataDir, fileName);
 
   for iSes = 1:nbSessions
 
