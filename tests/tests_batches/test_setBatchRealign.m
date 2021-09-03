@@ -96,7 +96,7 @@ function test_setBatchRealign_after_stc()
     end
   end
 
-  assertEqual(voxDim, 2);
+  assertEqual(voxDim, [2 2 2]);
   assertEqual(matlabbatch{1}.spm.spatial.realignunwarp.eoptions, ...
               expectedBatch{1}.spm.spatial.realignunwarp.eoptions);
   assertEqual(matlabbatch{1}.spm.spatial.realignunwarp.uwroptions, ...

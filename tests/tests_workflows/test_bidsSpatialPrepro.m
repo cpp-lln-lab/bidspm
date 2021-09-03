@@ -12,8 +12,6 @@ function test_bidsSpatialPrepro_basic()
 
   opt = setOptions('MoAE-preproc');
 
-  bidsCopyInputFolder(opt, true());
-
   opt.pipeline.type = 'preproc';
 
   % some tweaks because we have dummy data
@@ -34,9 +32,7 @@ end
 
 function test_bidsSpatialPrepro_force_segmentc()
 
-  opt = setOptions('MoAE');
-
-  bidsCopyInputFolder(opt, true());
+  opt = setOptions('MoAE-preproc');
 
   opt.pipeline.type = 'preproc';
   opt.segment.force = true;
