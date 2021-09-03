@@ -16,8 +16,12 @@ function test_setBatchRealign_basic()
 
   subLabel = '01';
 
-  opt = setOptions('MoAE', subLabel);
+  opt = setOptions('MoAE-preproc', subLabel);
+
+  % some tweaks because we have dummy data
+  opt.funcVoxelDims = [2 2 2];
   opt.useBidsSchema = false;
+
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   matlabbatch = {};
@@ -54,7 +58,7 @@ function test_setBatchRealign_after_stc()
   opt = setOptions('vismotion', subLabel);
 
   % some tweaks because we have dummy data
-  opt.funcVoxelDims = 2;
+  opt.funcVoxelDims = [2 2 2];
   opt.useFieldmaps = false;
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);

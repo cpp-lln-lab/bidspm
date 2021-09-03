@@ -92,7 +92,7 @@ function test_getInfo_no_session_no_run()
 
   subLabel = '01';
 
-  opt = setOptions('MoAE', subLabel);
+  opt = setOptions('MoAE-preproc', subLabel);
   opt.dir.input = opt.dir.preproc;
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);

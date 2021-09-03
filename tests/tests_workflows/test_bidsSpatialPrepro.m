@@ -10,11 +10,14 @@ end
 
 function test_bidsSpatialPrepro_basic()
 
-  opt = setOptions('MoAE');
+  opt = setOptions('MoAE-preproc');
 
   bidsCopyInputFolder(opt, true());
 
   opt.pipeline.type = 'preproc';
+
+  % some tweaks because we have dummy data
+  opt.funcVoxelDims = [2 2 2];
 
   matlabbatch = bidsSpatialPrepro(opt);
 
@@ -37,6 +40,9 @@ function test_bidsSpatialPrepro_force_segmentc()
 
   opt.pipeline.type = 'preproc';
   opt.segment.force = true;
+
+  % some tweaks because we have dummy data
+  opt.funcVoxelDims = [2 2 2];
 
   matlabbatch = bidsSpatialPrepro(opt);
 
