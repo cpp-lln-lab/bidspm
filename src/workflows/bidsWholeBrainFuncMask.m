@@ -6,6 +6,8 @@ function mask = bidsWholeBrainFuncMask(opt)
 
   % TODO add test
 
+  opt.dir.input = opt.dir.preproc;
+
   [BIDS, opt] = setUpWorkflow(opt, 'create brain mask from mean functional image');
 
   mask = cell(numel(opt.subjects), 1);
@@ -18,7 +20,7 @@ function mask = bidsWholeBrainFuncMask(opt)
     [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
     meanFuncFileName = fullfile(meanFuncDir, meanImage);
 
-    % name the output accordingto the input image
+    % name the output according to the input image
     maskFileName = ['m' strrep(meanImage, '.nii', '_mask.nii')];
     mask{iSub} = fullfile(meanFuncDir, maskFileName);
 
