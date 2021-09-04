@@ -15,8 +15,8 @@ Otherwise you can also get them by using the Datalad superdataset. For example:
 ```bash
 datalad clone ///
 cd datasets.datalad.org/
-datalad install openneuro datalad
-install openneuro/ds002790
+datalad install openneuro
+datalad install openneuro/ds002790
 cd openneuro/ds002790
 # get rest data first subject
 datalad get /derivatives/fmriprep/sub-0001/func/sub-0001*task-restingstate_acq-seq*\*
@@ -51,7 +51,6 @@ datalad get sub-0[12]/*/func/*linebisection*
  cd ds001168/
  datalad get sub-0[12]/ses*/anat/*
  datalad get sub-0[12]/ses*/func/*fullbrain*
-
 ```
 
 ## frmriprep output from ds002790

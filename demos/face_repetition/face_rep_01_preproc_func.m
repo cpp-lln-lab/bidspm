@@ -31,8 +31,7 @@ bidsSpatialPrepro(opt);
 
 anatomicalQA(opt);
 
-% DEBUG
-% bidsResliceTpmToFunc(opt);
+bidsResliceTpmToFunc(opt);
 
 % DEBUG
 % functionalQA(opt);
