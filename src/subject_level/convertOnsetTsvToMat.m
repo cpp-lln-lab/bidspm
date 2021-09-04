@@ -45,24 +45,9 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
 
   % identify where the conditions to include that are specificed
   % in the run step of the model file
-  model = spm_jsonread(opt.model.file);
+  X = getBidsDesignMatrix(opt.model.file, 'run');
 
-  for runIdx = 1:numel(model.Steps)
-    step = model.Steps(runIdx);
-    if iscell(step)
-      step = step{1};
-    end
-    if strcmp(step.Level, 'run')
-      break
-    end
-  end
-
-  if ~isfield(step, 'Model')
-    msg = sprintf('Missing model specification from the model file:\n %s', opt.model.file);
-    errorHandling(mfilename(), 'missingModel', msg, false, opt.verbosity);
-  end
-
-  isTrialType = strfind(step.Model.X, 'trial_type.');
+  isTrialType = strfind(X, 'trial_type.');
 
   % create empty cell to be filled in according to the conditions present in each run
   names = {};
@@ -74,7 +59,7 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
 
     if isTrialType{iCond}
 
-      conditionName = strrep(step.Model.X{iCond}, ...
+      conditionName = strrep(X{iCond}, ...
                              'trial_type.', ...
                              '');
 

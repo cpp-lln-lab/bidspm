@@ -11,14 +11,14 @@ clc;
 
 run ../../initCppSpm.m;
 
-% download_data = true;
-% download_moae_ds(download_data);
-%
-% opt = moae_get_option_fmriprep_preproc();
-%
-% bidsCopyInputFolder(opt);
-%
-% bidsSmoothing(opt);
+download_data = true;
+download_moae_ds(download_data);
+
+opt = moae_get_option_fmriprep_preproc();
+
+bidsCopyInputFolder(opt);
+
+bidsSmoothing(opt);
 
 opt = moae_get_option_fmriprep_stats();
 

@@ -111,6 +111,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
       matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).scans = {fullpathBoldFileName};
 
       % TODO factor all the events stuff in a separate function.
+
       % get events file from raw data set and convert it to a onsets.mat file
       % store in the subject level GLM directory
       query = struct( ...
@@ -127,7 +128,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         msg = sprintf('No events.tsv file found in:\n\t%s\nfor query:%s\n', ...
                       BIDS.raw.pth, ...
                       createUnorderedList(query));
-        errorHandling(mfilename(), 'emptyInput', msg, false, true);
+        errorHandling(mfilename(), 'emptyInput', msg, false);
       end
 
       fullpathOnsetFileName = createAndReturnOnsetFile(opt, ...

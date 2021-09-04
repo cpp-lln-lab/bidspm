@@ -24,6 +24,8 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFi
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  X = getBidsDesignMatrix(opt.model.file, 'run');
+
   if iscell(tsvFile)
     tsvFile = tsvFile{1};
   end
@@ -37,8 +39,9 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFi
     return
   end
 
-  % TODO filter based on model content
+  % filter based on model content
   names = fieldnames(content);
+  names = intersect(X, names);
 
   R = [];
   for col = 1:numel(names)
