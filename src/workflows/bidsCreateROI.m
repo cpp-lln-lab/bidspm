@@ -1,5 +1,24 @@
 function bidsCreateROI(opt)
   %
+  % Use CPP_ROI and marsbar to create a ROI in MNI space based on a given atlas
+  % and inverse normalize those ROIs in native space if requested.
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
+  % USAGE::
+  %
+  %  opt = get_option();
+  %  opt.roi.atlas = 'wang';
+  %  opt.roi.name = {'V1v', 'V1d'};
+  %  opt.roi.space = {'MNI', 'individual'};
+  %  opt.dir.stats = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm-stats');
+  %
+  %  bidsCreateROI(opt);
+  %
+  %
+  %
   % (C) Copyright 2021 CPP_SPM developers
 
   if nargin < 1

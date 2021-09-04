@@ -9,8 +9,8 @@ function bidsCopyInputFolder(opt, unzip)
   %
   % USAGE::
   %
-  %   bidsCopyRawFolder([opt,] ...
-  %                     [deleteZippedNii = true,])
+  %   bidsCopyRawFolder(opt, ...
+  %                     [deleteZippedNii = true])
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.

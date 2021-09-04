@@ -15,6 +15,9 @@ function matlabbatch = bidsSpatialPrepro(opt)
   % The functional data are re-aligned (unwarped), coregistered with the structural,
   % the anatomical data is skull-stripped [and normalized to MNI space].
   %
+  % Assumes that ``bidsSTC()`` has already been run if ``opt.stc.skip`` is not set
+  % to ``true``.
+  %
   % If you want to:
   %
   % - only do realign and not realign AND unwarp, make sure you set
@@ -31,11 +34,11 @@ function matlabbatch = bidsSpatialPrepro(opt)
   %     opt.anatReference.type = 'T1w';
   %     opt.anatReference.session = 1;
   %
-  % .. TODO:
-  %
-  %  - average T1s across sessions if necessarry
   %
   % (C) Copyright 2019 CPP_SPM developers
+
+  %  TODO:
+  %  - average T1s across sessions if necessarry
 
   opt.dir.input = opt.dir.preproc;
 

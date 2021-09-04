@@ -10,23 +10,17 @@ function bidsRFX(action, opt)
   %
   % USAGE::
   %
-  %  bidsRFX(action, [opt,] [funcFWHM = 0,] [conFWHM = 0])
+  %  bidsRFX(action, opt)
   %
   % :param action: Action to be conducted: ``smoothContrasts`` or ``RFX``
   % :type action: string
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param funcFWHM: How much smoothing was applied to the functional
-  %                  data in the preprocessing (Gaussian kernel size).
-  % :type funcFWHM: scalar
-  % :param conFWHM: How much smoothing will be applied to the contrast
-  %                 images (Gaussian kernel size).
-  % :type conFWHM: scalar
   %
-  % - case ``smoothContrasts``: smooth con images
-  % - case ``RFX``: Mean Struct, MeanMask, Factorial design specification and
-  %   estimation, Contrast estimation
+  %  - case ``smoothContrasts``: smooth con images
+  %  - case ``RFX``: Mean Struct, MeanMask, Factorial design specification and
+  %    estimation, Contrast estimation
   %
   % (C) Copyright 2020 CPP_SPM developers
 

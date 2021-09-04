@@ -5,7 +5,7 @@ function bidsResliceTpmToFunc(opt)
   %
   % USAGE::
   %
-  %   bidsResliceTpmToFunc([opt])
+  %   bidsResliceTpmToFunc(opt)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
@@ -17,6 +17,7 @@ function bidsResliceTpmToFunc(opt)
   % It is necessary to run this workflow before running the ``functionalQA`` pipeline
   % as the computation of the tSNR by ``spmup`` requires the TPMs to have the same dimension
   % as the functional.
+  %
   %
   % (C) Copyright 2020 CPP_SPM developers
 

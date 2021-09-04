@@ -1,5 +1,15 @@
 function matlabbatch = bidsRsHrf(opt)
   %
+  % Use the rsHRF to estimate the HRF from resting state data.
+  %
+  % USAGE::
+  %
+  %   bidsRsHrf(opt)
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
   %
   % (C) Copyright 2021 CPP_SPM developers
 

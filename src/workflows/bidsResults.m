@@ -6,21 +6,20 @@ function bidsResults(opt)
   %
   % USAGE::
   %
-  %  bidsResults([opt], funcFWHM, conFWHM)
+  %  bidsResults(opt)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
   %
+  % (C) Copyright 2020 CPP_SPM developers
+
   % TODO
   %
   %     move ps file
   %     rename NIDM file
   %     if it does not exist create the default "result" field from the BIDS model file
-  %
-  %
-  % (C) Copyright 2020 CPP_SPM developers
 
   currentDirectory = pwd;
 

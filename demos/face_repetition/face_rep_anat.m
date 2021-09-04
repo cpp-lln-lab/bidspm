@@ -1,8 +1,7 @@
+%
+% This show how an anat only pipeline would look like.
+%
 % (C) Copyright 2019 Remi Gau
-%
-%
-% This show how an anat only workflow would look like
-%
 
 clear;
 clc;

@@ -6,19 +6,19 @@ function opt = set_spm_2_bids_defaults(opt)
   %
   %   opt = set_spm_2_bids_defaults(opt)
   %
+  % Further renaming mapping can then be added, changed or removed
+  % through the ``opt.spm_2_bids object``.
+  %
   % (C) Copyright 2021 CPP_SPM developers
 
   % TODO update entities normalization to reflect the resolution of each output image
+  % TODO stc might not be in individual space (as in not in T1w space)
+  % TODO write and update json content
+  % TODO renaming of functional mask
 
   % this conversion could be into desc-preproc
   %   usub-01_task-facerepetition_space-individual_desc-stc_bold.nii -->
   %     sub-01_task-facerepetition_space-individual_desc-realignUnwarp_bold.nii
-
-  % TODO stc might not be in individual space (as in not in T1w space)
-
-  % TODO write and update json content
-
-  % TODO renaming of functional mask
 
   map = Mapping();
   map = map.default();

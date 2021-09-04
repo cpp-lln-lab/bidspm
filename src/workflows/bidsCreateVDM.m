@@ -5,7 +5,7 @@ function bidsCreateVDM(opt)
   %
   % USAGE::
   %
-  %   bidsCreateVDM([opt])
+  %   bidsCreateVDM(opt)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.

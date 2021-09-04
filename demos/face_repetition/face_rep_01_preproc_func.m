@@ -1,9 +1,9 @@
+%
+% This script will download the face repetition dataset from SPM
+% and will run the basic preprocessing.
+%
+%
 % (C) Copyright 2019 Remi Gau
-%
-% This script will download the face repetition dataset from the FIL
-% and will run the basic preprocessing, FFX and contrasts on it.
-%
-%
 
 clear;
 clc;
@@ -12,7 +12,6 @@ downloadData = true;
 
 run ../../initCppSpm.m;
 
-%% Set options
 opt = face_rep_get_option();
 
 %% Removes previous analysis, gets data and converts it to BIDS
@@ -22,8 +21,8 @@ if downloadData
 
 end
 
-%% Run batches
 % reportBIDS(opt);
+
 bidsCopyInputFolder(opt);
 
 bidsSTC(opt);

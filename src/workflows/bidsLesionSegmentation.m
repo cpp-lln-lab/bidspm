@@ -1,6 +1,6 @@
 function bidsLesionSegmentation(opt)
   %
-  % Performs segmentation to detect lesions of anatomical image.
+  % Use the ALI toolbox to perform segmentation to detect lesions of anatomical image.
   %
   % USAGE::
   %
@@ -11,6 +11,7 @@ function bidsLesionSegmentation(opt)
   % :type opt: structure
   %
   % Segmentation will be performed using the information provided in the BIDS data set.
+  %
   %
   % (C) Copyright 2021 CPP_SPM developers
 

@@ -3,10 +3,13 @@ Workflows
 
 .. automodule:: src.workflows
 
-List of the different workflows of the pipeline.
+Workflows typical run on all the subjects specified in the ``options`` structure.
 
-Each has to be run for each task independently. All parameters should
-be changed in the `opt` structure.
+Below is a list of the different workflows of the pipeline.
+
+Each has to be run for each task independently.
+
+All parameters should be changed in the ``options`` structure.
 
 See the set up section.
 
@@ -109,13 +112,19 @@ Region of interest analysis
 .. autofunction::  bidsRoiBasedGLM
 .. autofunction::  bidsCreateROI
 
+HRF estimation
+==============
+
+Relies on the resting-state HRF toolbox.
+
+.. autofunction:: bidsRsHrf
+
 Other
 =====
 
 .. autofunction:: bidsRename
 .. autofunction:: bidsResliceTpmToFunc
 .. autofunction:: bidsSegmentSkullStrip
-.. autofunction:: bidsRsHrf
 .. autofunction:: bidsWholeBrainFuncMask
 
 Helper functions
@@ -125,3 +134,4 @@ To be used if you want to create a new workflow.
 
 .. autofunction:: setUpWorkflow
 .. autofunction:: saveAndRunWorkflow
+.. autofunction:: returnDependency

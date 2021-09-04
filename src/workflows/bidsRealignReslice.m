@@ -10,7 +10,9 @@ function bidsRealignReslice(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % Assumes that ``bidsSTC()`` has already been run.
+  % Assumes that ``bidsSTC()`` has already been run if ``opt.stc.skip`` is not set
+  % to ``true``.
+  %
   %
   % (C) Copyright 2020 CPP_SPM developers
 

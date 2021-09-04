@@ -15,6 +15,7 @@ function bidsRealignUnwarp(opt)
   % If the ``bidsCreateVDM()`` workflow has been run before the voxel displacement
   % maps will be used unless ``opt.useFieldmaps`` is set to ``false``.
   %
+  %
   % (C) Copyright 2020 CPP_SPM developers
 
   opt.dir.input = opt.dir.preproc;

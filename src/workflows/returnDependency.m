@@ -1,5 +1,7 @@
 function dep = returnDependency(opt, type)
   %
+  % Use to create dependencies between batches in workflows.
+  %
   % USAGE::
   %
   %  dep = returnDependency(opt, type)

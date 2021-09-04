@@ -1,6 +1,7 @@
 function bidsLesionAbnormalitiesDetection(opt)
   %
-  % Step 2. Detects lesion abnormalities in anatomical image after segmentation of the image.
+  % Use the ALI toolbox to detect lesion abnormalities in anatomical image
+  % after segmentation of the image.
   %
   % USAGE::
   %
@@ -12,6 +13,7 @@ function bidsLesionAbnormalitiesDetection(opt)
   %
   % Lesion abnormalities detection will be performed using the information provided
   % from the lesion segmentation output in BIDS format.
+  %
   %
   % (C) Copyright 2021 CPP_SPM developers
 
