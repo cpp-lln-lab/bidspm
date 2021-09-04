@@ -125,7 +125,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
                            ['^rp_.*sub-' subLabel '.*_task-' opt.taskName '.*_bold.txt$']);
       for iFile = 1:size(rpFiles, 1)
         rmInput = true;
-        convertRealignParamToTsv(rpFiles(iFile, :), opt.spm_2_bids, rmInput);
+        convertRealignParamToTsv(rpFiles(iFile, :), opt, rmInput);
       end
 
       renameSegmentParameter(BIDS, subLabel, opt);

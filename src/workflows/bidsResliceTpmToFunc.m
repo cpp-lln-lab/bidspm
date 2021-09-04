@@ -24,6 +24,8 @@ function bidsResliceTpmToFunc(opt)
   % TODO consider renaming this function to highlight that it creates a mask as
   % well, though this might get confusing with `bidsWholeBrainFuncMask`
 
+  opt.dir.input = opt.dir.preproc;
+
   [BIDS, opt] = setUpWorkflow(opt, 'reslicing tissue probability maps to functional dimension');
 
   for iSub = 1:numel(opt.subjects)
@@ -36,8 +38,8 @@ function bidsResliceTpmToFunc(opt)
     [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
 
     % get grey and white matter and CSF tissue probability maps
-    [greyMatter, whiteMatter, csf] = getTpmFilenames(BIDS, subLabel);
-    TPMs = cat(1, greyMatter, whiteMatter, csf);
+    [gmTpm, wmTpm, csfTpm] = getTpms(BIDS, opt, subLabel);
+    TPMs = cat(1, gmTpm, wmTpm, csfTpm);
 
     matlabbatch = {};
     matlabbatch = setBatchReslice(matlabbatch, ...
@@ -49,9 +51,9 @@ function bidsResliceTpmToFunc(opt)
 
     %% Compute brain mask of functional
     prefix = spm_get_defaults('realign.write.prefix');
-    input{1, 1} = spm_file(greyMatter, 'prefix', prefix);
-    input{2, 1} = spm_file(whiteMatter, 'prefix', prefix);
-    input{3, 1} = spm_file(csf, 'prefix', prefix);
+    input = cat(1,  spm_file(gmTpm, 'prefix', prefix), ...
+                spm_file(wmTpm, 'prefix', prefix), ...
+                spm_file(csfTpm, 'prefix', prefix));
 
     p = bids.internal.parse_filename(meanImage);
     p.entities.label = p.suffix;
@@ -69,6 +71,52 @@ function bidsResliceTpmToFunc(opt)
 
   end
 
+  opt = set_spm_2_bids_defaults(opt);
+  name_spec.entities.res = 'bold';
+  opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
+                                              'name_spec', name_spec);
+  opt.spm_2_bids = opt.spm_2_bids.flatten_mapping();
+
   bidsRename(opt);
 
+end
+
+function [gmTpm, wmTpm, csfTpm] = getTpms(BIDS, opt, subLabel)
+
+  % TODO refactor with subfunction from setBatchNormalization
+
+  gmTpm = '';
+  wmTpm = '';
+  csfTpm = '';
+
+  anatFile = getAnatFilename(BIDS, opt, subLabel);
+
+  if not(isempty(anatFile))
+
+    anatFile = bids.internal.parse_filename(anatFile);
+
+    filter = anatFile.entities;
+    filter.modality = 'anat';
+    filter.suffix = 'probseg';
+    filter.space = 'individual';
+    filter.desc =  '';
+    filter.res =  '';
+    filter.prefix = '';
+    filter.extension = '.nii';
+
+    filter.label = 'GM';
+    gmTpm = bids.query(BIDS, 'data', filter);
+
+    filter.label = 'WM';
+    wmTpm = bids.query(BIDS, 'data', filter);
+
+    filter.label = 'CSF';
+    csfTpm = bids.query(BIDS, 'data', filter);
+
+  end
+
+  if any(isempty(cat(1, gmTpm, wmTpm, csfTpm)))
+    msg = sprintf('Missing tissue probability map for subject %s', subLabel);
+    errorHandling(mfilename(), 'missingTpms', msg, false);
+  end
 end
