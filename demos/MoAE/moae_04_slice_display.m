@@ -1,3 +1,10 @@
+% This script shows how to display the results of a GLM
+% by having on the same image:
+%
+%   - the beta estimates
+%   - the t statistics
+%   - ROI contours
+%
 % (C) Copyright 2021 Remi Gau
 
 clear;
@@ -15,13 +22,12 @@ rightRoiFile = bids.query(BIDS_ROI, 'data', 'sub', subLabel, 'desc', 'rightAudit
 leftRoiFile = bids.query(BIDS_ROI, 'data', 'sub', subLabel, 'desc', 'leftAuditoryCortex');
 
 % we get the con image to extract data
-% we can do this by using the "label-XXXX" from the mask we created before
 ffxDir = getFFXdir(subLabel, opt);
 maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
 p = bids.internal.parse_filename(spm_file(maskImage, 'filename'));
 conImage = spm_select('FPList', ffxDir, ['^con_' p.entities.label '.nii$']);
 
-%% Layers
+%% Layers to put on the figure
 layers = sd_config_layers('init', {'truecolor', 'dual', 'contour', 'contour'});
 
 % Layer 1: Anatomical map
