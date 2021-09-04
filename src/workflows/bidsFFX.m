@@ -93,7 +93,7 @@ function bidsFFX(action, opt)
 
         saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-        if ~opt.dryRun && opt.glm.QA.do
+        if ~opt.dryRun && opt.QA.glm.do
 
           plot_power_spectra_of_GLM_residuals( ...
                                               getFFXdir(subLabel, opt), ...

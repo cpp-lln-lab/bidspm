@@ -64,6 +64,8 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   if result.Output.binary
     result.outputNameStructure.ext = '';
+    result.outputNameStructure.entities.desc = '';
+    result.outputNameStructure.entities.label = result.Contrasts.Name;
     result.outputNameStructure.suffix = 'mask';
     export{end + 1}.binary.basename = bids.create_filename(result.outputNameStructure);
   end

@@ -95,7 +95,6 @@ function deformationField = getDeformationField(matlabbatch, BIDS, opt)
     filter.to = 'IXI549Space';
     filter.extension = '.nii';
     deformationField = bids.query(BIDS, 'data', filter);
-    assert(numel(deformationField) == 1);
   end
 
   if isempty(deformationField)
