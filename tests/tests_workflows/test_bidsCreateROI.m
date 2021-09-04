@@ -21,6 +21,11 @@ function test_bidsCreateROI_neuromorphometrics()
 
   cleanUp(opt.dir.roi);
 
+  % skip test in CI
+  if isOctave
+    return
+  end
+
   bidsCreateROI(opt);
 
   use_schema = false;
@@ -45,6 +50,11 @@ function test_bidsCreateROI_wang()
   opt.dryRun = false;
 
   cleanUp(opt.dir.roi);
+
+  % skip test in CI
+  if isOctave
+    return
+  end
 
   bidsCreateROI(opt);
 

@@ -96,7 +96,7 @@ function bidsCreateROI(opt)
       roiList = cellstr(roiList);
 
       if opt.dryRun
-        tolerant = false;
+        tolerant = true;
         verbose = true;
         msg = 'Renaming ROI in native space will not work on a dry run';
         id = 'willNotRunOnDryRun';

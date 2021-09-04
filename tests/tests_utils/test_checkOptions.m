@@ -37,6 +37,11 @@ function test_checkOptionsErrorTask()
   opt.taskName = [];
   opt.verbosity = 1;
 
+  % skip in CI
+  if isOctave
+    return
+  end
+
   assertWarning( ...
                 @()checkOptions(opt), ...
                 'checkOptions:noTask');
