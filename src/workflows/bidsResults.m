@@ -1,4 +1,4 @@
-function bidsResults(opt)
+function matlabbatch = bidsResults(opt)
   %
   % Computes the results for a series of contrast that can be
   % specified at the run, subject or dataset step level (see contrast specification
@@ -110,7 +110,7 @@ function bidsResults(opt)
 end
 
 function renameOutputResults(results)
-  % we create new name for the nifti oupput by removing the
+  % we create new name for the nifti output by removing the
   % spmT_XXXX prefix and using the XXXX as label- for the file
 
   outputFiles = spm_select('FPList', results.dir, '^spmT_[0-9].*_sub-.*$');

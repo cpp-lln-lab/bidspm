@@ -23,7 +23,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   result.outputNameStructure.entities.sub = result.label;
   result.outputNameStructure.entities.desc = result.Contrasts.Name;
-  result.outputNameStructure.entities.p = num2str(result.Contrasts.p);
+  result.outputNameStructure.entities.p = convertPvalueToString(result.Contrasts.p);
   result.outputNameStructure.entities.k = num2str(result.Contrasts.k);
   result.outputNameStructure.entities.MC = result.Contrasts.MC;
   result.outputNameStructure.use_schema = false;
@@ -64,8 +64,6 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   if result.Output.binary
     result.outputNameStructure.ext = '';
-    result.outputNameStructure.entities.desc = '';
-    result.outputNameStructure.entities.label = result.Contrasts.Name;
     result.outputNameStructure.suffix = 'mask';
     export{end + 1}.binary.basename = bids.create_filename(result.outputNameStructure);
   end

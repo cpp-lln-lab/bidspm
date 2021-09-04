@@ -31,7 +31,7 @@ function test_setBatchSubjectLevelResultsBasic()
                                                               'task-vismotion_space-MNI_FWHM-6', ...
                                                               'SPM.mat')};
 
-  expectedBatch{end}.spm.stats.results.conspec.titlestr = 'VisMot_p-0050_k-0_MC-FWE';
+  expectedBatch{end}.spm.stats.results.conspec.titlestr = 'VisMot_p-0pt050_k-0_MC-FWE';
   expectedBatch{end}.spm.stats.results.conspec.contrasts = 1;
   expectedBatch{end}.spm.stats.results.conspec.threshdesc = 'FWE';
   expectedBatch{end}.spm.stats.results.conspec.thresh = 0.05;
@@ -43,7 +43,14 @@ function test_setBatchSubjectLevelResultsBasic()
 
   expectedBatch{end}.spm.stats.results.export = [];
 
-  assertEqual(matlabbatch, expectedBatch);
+  assertEqual(matlabbatch{end}.spm.stats.results.conspec, ...
+              expectedBatch{end}.spm.stats.results.conspec);
+
+  assertEqual(matlabbatch{end}.spm.stats.results.units, ...
+              expectedBatch{end}.spm.stats.results.units);
+
+  assertEqual(matlabbatch{end}.spm.stats.results.export, ...
+              expectedBatch{end}.spm.stats.results.export);
 
 end
 

@@ -1,4 +1,4 @@
-function bidsFFX(action, opt)
+function matlabbatch = bidsFFX(action, opt)
   %
   % - builds the subject level fMRI model and estimates it.
   %

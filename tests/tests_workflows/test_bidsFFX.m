@@ -8,6 +8,20 @@ function test_suite = test_bidsFFX %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsFfx_contrasts()
+
+  opt = setOptions('vislocalizer');
+  opt.space = {'MNI'};
+
+  % required for the test
+  opt.dir.raw = opt.dir.preproc;
+
+  matlabbatch = bidsFFX('contrasts', opt);
+
+  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 4);
+
+end
+
 function test_bidsFfx_fmriprep_no_smoothing()
 
   opt = setOptions('fmriprep');
@@ -42,11 +56,11 @@ function test_bidsFfx_mni()
     opt = setOptions(task{i});
     opt.space = {'MNI'};
 
-    opt.dir.raw = opt.dir.preproc;
+    opt = dirFixture(opt);
 
     bidsFFX('specifyAndEstimate', opt);
-    %   bidsFFX('contrasts', opt);
-    %   bidsResults(opt);
+
+    cleanUp(fullfile(pwd, 'derivatives'));
 
   end
 
@@ -61,13 +75,22 @@ function test_bidsFfx_individual()
     opt = setOptions(task{i});
     opt.space = {'individual'};
 
-    opt.dir.raw = opt.dir.preproc;
+    opt = dirFixture(opt);
 
     bidsFFX('specifyAndEstimate', opt);
-    %   bidsFFX('contrasts', opt);
-    %   bidsResults(opt);
+
+    cleanUp(fullfile(pwd, 'derivatives'));
 
   end
+end
+
+function opt = dirFixture(opt)
+  % required for the test
+  opt.dir.raw = opt.dir.preproc;
+
+  opt.dir.derivatives = fullfile(pwd, 'derivatives');
+  opt.dir.stats = fullfile(pwd, 'derivatives', 'cpp_spm-stats');
+  opt = checkOptions(opt);
 end
 
 function cleanUp(folder)

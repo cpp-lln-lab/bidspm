@@ -179,21 +179,27 @@ do
 
 
 		# STATS
-		task_name='vismotion'
-		this_dir=${stats_dir}/sub-${subject}/stats/task-${task_name}_space-MNI_FWHM-6
-		mkdir -p ${this_dir}
-
-		cp dummyData/SPM.mat ${this_dir}/SPM.mat
-
-		touch ${this_dir}/mask.nii
-
-		touch ${this_dir}/spmT_0001.nii
-		touch ${this_dir}/spmT_0002.nii
-
-		for i in `seq 1 4`
+		task_list='vismotion vislocalizer'
+		for task in ${task_list}
 		do
-			touch ${this_dir}/con_000${i}.nii
-			touch ${this_dir}/s6con_000${i}.nii
+			this_dir=${stats_dir}/sub-${subject}/stats/task-${task}_space-MNI_FWHM-6
+			mkdir -p ${this_dir}
+
+			cp dummyData/SPM.mat ${this_dir}/SPM.mat
+
+			touch ${this_dir}/mask.nii
+
+			for i in `seq 1 9`
+			do
+				touch ${this_dir}/beta_000${i}.nii
+			done
+
+			for i in `seq 1 4`
+			do
+				touch ${this_dir}/spmT_000${i}.nii
+				touch ${this_dir}/con_000${i}.nii
+				touch ${this_dir}/s6con_000${i}.nii
+			done
 		done
 
 done;
