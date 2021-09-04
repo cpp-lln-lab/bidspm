@@ -11,7 +11,7 @@ function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
   end
 
   content = spm_load(rpTxtFile);
-  rpTsvFile = spm_2_bids(rpTxtFile, opt);
+  rpTsvFile = spm_2_bids(rpTxtFile, opt.spm_2_bids);
   rpTsvFile = spm_file(rpTsvFile, 'path', spm_fileparts(rpTxtFile));
 
   nameColumns = { ...
@@ -26,6 +26,12 @@ function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
     newContent.(nameColumns{i}) = content(:, i);
   end
 
+  if exist(rpTsvFile, 'file')
+    tolerant = true;
+    msg = sprintf('Overwriting confound file: %s', rpTsvFile);
+    errorHandling(mfilename(), 'deletingConfoundTsvFile', msg, tolerant, opt.verbosity);
+    delete(rpTsvFile);
+  end
   bids.util.tsvwrite(rpTsvFile, newContent);
 
   if rmInput
