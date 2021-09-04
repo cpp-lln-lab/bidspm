@@ -113,7 +113,6 @@ Other
 =====
 
 .. autofunction:: bidsRename
-.. autofunction:: bidsCreateVDM
 .. autofunction:: bidsResliceTpmToFunc
 .. autofunction:: bidsSegmentSkullStrip
 .. autofunction:: bidsRsHrf

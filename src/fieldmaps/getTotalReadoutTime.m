@@ -1,6 +1,7 @@
 function totalReadoutTime = getTotalReadoutTime(metadata)
   %
   % Gets the total read out time of a sequence.
+  % Used to create the voxel dsiplacement map (VDM) from the fieldmap
   %
   % USAGE::
   %
@@ -11,7 +12,11 @@ function totalReadoutTime = getTotalReadoutTime(metadata)
   %
   % :returns: - :totalReadoutTime: (float) in millisecond
   %
-  % Used to create the voxel dsiplacement map (VDM) from the fieldmap
+  % Currently this relies on the user adding extra metadata in the json of the
+  % functional files as the metadata queried are not "official" BIDS metadata
+  % but can usuall be found in the DICOM headers (for example:
+  % ``PixelBandwidth``)
+  %
   %
   % (C) Copyright 2020 CPP_SPM developers
 

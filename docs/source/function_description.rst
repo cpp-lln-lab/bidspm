@@ -24,16 +24,6 @@ Group level model
 .. autofunction:: getRFXdir
 
 
-fieldmaps
-=========
-
-.. automodule:: src.fieldmaps
-
-.. autofunction:: getBlipDirection
-.. autofunction:: getMetadataFromIntendedForFunc
-.. autofunction:: getTotalReadoutTime
-.. autofunction:: getVdmFile
-
 Utilities
 =========
 

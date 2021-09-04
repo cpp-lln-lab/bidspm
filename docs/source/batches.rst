@@ -10,10 +10,8 @@ List of functions to set SPM batches.
 .. autofunction:: setBatch3Dto4D
 .. autofunction:: setBatchComputeVDM
 .. autofunction:: setBatchContrasts
-.. autofunction:: setBatchCoregistrationFmap
 .. autofunction:: setBatchCoregistrationFuncToAnat
 .. autofunction:: setBatchCoregistration
-.. autofunction:: setBatchCreateVDMs
 .. autofunction:: setBatchEstimateModel
 .. autofunction:: setBatchFactorialDesign
 .. autofunction:: setBatchGroupLevelContrasts
