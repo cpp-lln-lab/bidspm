@@ -3,10 +3,18 @@
         "type": "T1w",
         "session": ""
     },
-    "dataDir": "./inputs/raw",
-    "derivativesDir": "./outputs/",
+    "dir": {
+        "raw": "./inputs/raw",
+        "derivatives": "./outputs/derivatives",
+        "preproc": "./outputs/derivatives/cpp_spm-preproc",
+        "stats": "./outputs/derivatives/cpp_spm-stats"
+    },
     "model": {
         "file": "./models/model-MoAE_smdl.json"
+    },
+    "fwhm": {
+        "func": 6,
+        "contrast": 6
     },
     "result": {
         "Steps": {
