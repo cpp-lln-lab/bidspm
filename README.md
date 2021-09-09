@@ -6,12 +6,25 @@
 
 **Code quality and style**
 
+<<<<<<< HEAD
+[![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_SPM/actions)
+=======
 [![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/actions)
+>>>>>>> fmriprep_input
 ![](https://github.com/cpp-lln-lab/CPP_SPM/workflows/CI/badge.svg)
 
 **Unit tests and coverage**
 
+<<<<<<< HEAD
+[![Build Status](https://travis-ci.com/cpp-lln-lab/CPP_SPM.svg?branch=master)](https://travis-ci.com/cpp-lln-lab/CPP_SPM)
+[![codecov](https://codecov.io/gh/cpp-lln-lab/CPP_SPM/branch/master/graph/badge.svg)](https://codecov.io/gh/cpp-lln-lab/CPP_SPM)
+
+**Documentation**
+
+[![Documentation Status](https://readthedocs.org/projects/cpp-bids-spm/badge/?version=latest)](https://cpp-bids-spm.readthedocs.io/en/latest/?badge=latest)
+=======
 [![codecov](https://codecov.io/gh/Remi-Gau/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/Remi-Gau/CPP_SPM)
+>>>>>>> fmriprep_input
 
 **How to cite**
 

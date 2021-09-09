@@ -29,10 +29,14 @@ cfg/*
 group/*
 models/*
 
+# ignore output data in notebook folder
+notebooks/output/*
+*checkpoint.ipynb
+
+
 ## MATLAB / OCTAVE gitignore template
 
 # From : https://github.com/github/gitignore/blob/master/Global/MATLAB.gitignore
-
 
 # Windows default autosave extension
 *.asv
