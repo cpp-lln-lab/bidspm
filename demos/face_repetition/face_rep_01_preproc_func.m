@@ -8,7 +8,7 @@
 clear;
 clc;
 
-downloadData = true;
+downloadData = false;
 
 run ../../initCppSpm.m;
 

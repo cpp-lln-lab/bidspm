@@ -29,10 +29,8 @@ cfg/*
 group/*
 models/*
 
-# ignore output data in notebook folder
-notebooks/output/*
-*checkpoint.ipynb
-
+# jupyter notebooks
+.ipynb_checkpoints
 
 ## MATLAB / OCTAVE gitignore template
 

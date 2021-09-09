@@ -15,12 +15,17 @@ clean:
 	rm -rf cfg
 	rm MoAEpilot.zip
 
-data:
-	datalad install git@gin.g-node.org:/RemiGau/spm_moae_fmriprep.git
-	datalad get spm_moae_fmriprep/*.json
-	datalad get spm_moae_fmriprep/sub*/*/*.nii.gz
-	datalad get spm_moae_fmriprep/sub*/*/*.tsv
-	datalad get spm_moae_fmriprep/sub*/*/*.json
+inputs/raw:
+	mkdir inputs/ -p
+	octave $(OCTFLAGS) --eval "run('download_moae_ds.m');exit;"
+
+inputs/fmriprep:
+	cd inputs && datalad install git@gin.g-node.org:/RemiGau/spm_moae_fmriprep.git
+	datalad get inputs/spm_moae_fmriprep/*.json
+	datalad get inputs/spm_moae_fmriprep/sub*/*/*.nii*
+	datalad get inputs/spm_moae_fmriprep/sub*/*/*.tsv
+	datalad get inputs/spm_moae_fmriprep/sub*/*/*.json
+	mv inputs/spm_moae_fmriprep inputs/fmriprep
 all: $(roi)
 
 $(preproc): moae_01_preproc.m

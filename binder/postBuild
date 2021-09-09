@@ -11,3 +11,7 @@ find . -name "file2mat*.*" -print0 | xargs -0 -I{} find '{}' \! -name "*.mex" -d
 
 cd ${HOME}
 octave --no-gui --eval "addpath (fullfile (getenv (\"HOME\"), \"spm12\")); savepath ();"
+
+cd ${HOME}/demos/MoAE
+make inputs/raw
+make inputs/fmriprep

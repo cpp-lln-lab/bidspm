@@ -19,7 +19,7 @@ function test_convertRealignParamToTsvBasic()
 
   opt = set_spm_2_bids_defaults(opt);
 
-  convertRealignParamToTsv(input, opt.spm_2_bids);
+  convertRealignParamToTsv(input, opt);
 
   output = fullfile(opt.dir.preproc, 'sub-01', 'ses-01', 'func', ...
                     'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.tsv');
