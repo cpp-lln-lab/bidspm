@@ -19,6 +19,9 @@ function opt = moae_get_option_fmriprep_preproc()
 
   opt.space = {'MNI152NLin2009cAsym'};
 
+  opt.query.desc = {'preproc', 'confounds'};
+  %   opt.query.space = opt.space;
+
   %% DO NOT TOUCH
   opt = checkOptions(opt);
   saveOptions(opt);
