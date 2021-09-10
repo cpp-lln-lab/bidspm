@@ -1,9 +1,19 @@
-# README
+# Running the jupyter notebooks with Octave and SPM
 
 1.  Make sure that you have Octave installed.
 
-1.  If you have Conda/Jupyter/pip installed, go to step 4. Check if Conda is
-    installed properly by typing `conda list` into your terminal
+1.  Make sure that SPM has been recompiled to be used with Octave
+
+    ```
+    SPM_path=???
+    cd ${SPM_path}/src
+    make PLATFORM=octave
+    make PLATFORM=octave install
+    ```
+
+1.  If you have Conda or pip installed jupyter notebook or jupyter lab, skipt
+    the next step. To check if Conda is installed properly: type `conda list`
+    into your terminal.
 
 1.  Download the
     [Anaconda Installer](https://www.anaconda.com/products/individual) and
@@ -11,7 +21,8 @@
     install the Jupyter Notebook package.
 
 1.  Install [Octave kernel](https://pypi.org/project/octave-kernel/):
-    `pip install octave_kernel`
+    `pip install octave_kernel`. If you have already run
+    `pip install -r requirements.txt`, you should be fine.
 
-1.  Run `jupyter notebook` in your terminal. `Octave` should appear on the list
-    for creating a new notebook.
+1.  Run `jupyter lab` or `jupyter notebook` in your terminal. `Octave` should
+    appear on the list of kernels available for creating a new notebook.
