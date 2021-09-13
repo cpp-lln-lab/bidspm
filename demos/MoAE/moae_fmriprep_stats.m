@@ -7,7 +7,10 @@
 clear;
 clc;
 
-run ../../initCppSpm.m;
+try
+  run ../../initCppSpm.m;
+catch
+end
 
 download_data = true;
 download_moae_ds(download_data);

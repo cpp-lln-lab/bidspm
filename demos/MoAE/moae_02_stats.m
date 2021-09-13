@@ -9,7 +9,10 @@
 clear;
 clc;
 
-run ../../initCppSpm.m;
+try
+  run ../../initCppSpm.m;
+catch
+end
 
 opt = moae_get_option_stats();
 

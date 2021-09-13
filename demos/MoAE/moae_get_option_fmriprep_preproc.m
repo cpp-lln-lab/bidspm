@@ -14,7 +14,7 @@ function opt = moae_get_option_fmriprep_preproc()
   % The directory where the data are located
   WD = fileparts(mfilename('fullpath'));
   opt.dir.raw = fullfile(WD, 'inputs', 'raw');
-  opt.dir.input = fullfile(WD, 'spm_moae_fmriprep');
+  opt.dir.input = fullfile(WD, 'inputs', 'fmriprep');
   opt.dir.derivatives = fullfile(WD, 'outputs', 'derivatives');
 
   opt.space = {'MNI152NLin2009cAsym'};

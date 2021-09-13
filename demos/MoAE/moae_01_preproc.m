@@ -9,7 +9,10 @@ clc;
 download_data = false;
 clean = false;
 
-run ../../initCppSpm.m;
+try
+  run ../../initCppSpm.m;
+catch
+end
 
 opt = moae_get_option();
 

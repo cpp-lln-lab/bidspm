@@ -40,11 +40,11 @@ $(roi): $(stats) moae_03_create_roi_extract_data.m
 # Octave related recipes
 octave_all: octave_roi
 
-octave_prepoc: moae_01_preproc.m
+octave_preproc: moae_01_preproc.m
 	octave $(OCTFLAGS) --eval "run('moae_01_preproc.m');exit;"
 
-octave_stats: $(preproc) moae_02_stats.m
+octave_stats: moae_02_stats.m
 	octave $(OCTFLAGS) --eval "run('moae_02_stats.m');exit;"
 
-octave_roi: $(stats) moae_03_create_roi_extract_data.m
+octave_roi: moae_03_create_roi_extract_data.m
 	octave $(OCTFLAGS) --eval "run('moae_03_create_roi_extract_data.m');exit;"

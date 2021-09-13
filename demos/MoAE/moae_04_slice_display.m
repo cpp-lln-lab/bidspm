@@ -10,7 +10,10 @@
 clear;
 clc;
 
-run ../../initCppSpm.m;
+try
+  run ../../initCppSpm.m;
+catch
+end
 
 subLabel = '01';
 

@@ -8,7 +8,10 @@ clc;
 
 downloadData = true;
 
-run ../../initCppSpm.m;
+try
+  run ../../initCppSpm.m;
+catch
+end
 
 %% Set options
 opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');

@@ -10,7 +10,10 @@ clc;
 
 downloadData = false;
 
-run ../../initCppSpm.m;
+try
+  run ../../initCppSpm.m;
+catch
+end
 
 opt = face_rep_get_option();
 
