@@ -1,3 +1,8 @@
+
+# Git set up: to keep datalad warnings away
+git config --global --add user.name "Ford Escort"
+git config --global --add user.email 42@H2G2.com
+
 mkdir ${HOME}/spm12 && curl -SL https://github.com/spm/spm12/archive/r7487.tar.gz | tar -xzC ${HOME}/spm12 --strip-components 1
 curl -SL https://raw.githubusercontent.com/spm/spm-docker/master/octave/spm12_r7487.patch | patch -d ${HOME}/spm12 -p3
 
