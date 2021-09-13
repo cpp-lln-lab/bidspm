@@ -11,7 +11,7 @@ USERNAME=cpplab
 IMAGE=cpp_spm
 VERSION=`cat version.txt | cut -c2-`
 
-docker build . -f Dockerfile -t $USERNAME/$IMAGE:stable
+docker build . --no-cache -f Dockerfile -t $USERNAME/$IMAGE:stable
 docker tag $USERNAME/$IMAGE:stable $USERNAME/$IMAGE:$VERSION
 
-docker build . -f Dockerfile_dev -t $USERNAME/$IMAGE:latest
+docker build . --no-cache -f Dockerfile_dev -t $USERNAME/$IMAGE:latest
