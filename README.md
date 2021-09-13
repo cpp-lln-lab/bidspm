@@ -10,8 +10,6 @@
 ![](https://github.com/cpp-lln-lab/CPP_SPM/workflows/CI/badge.svg)
 
 **Unit tests and coverage**
-
-[![Build Status](https://travis-ci.com/cpp-lln-lab/CPP_SPM.svg?branch=master)](https://travis-ci.com/cpp-lln-lab/CPP_SPM)
 [![codecov](https://codecov.io/gh/cpp-lln-lab/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/cpp-lln-lab/CPP_SPM)
 
 **How to cite**
