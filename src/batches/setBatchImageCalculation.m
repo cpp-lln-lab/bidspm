@@ -62,7 +62,7 @@ function matlabbatch = setBatchImageCalculation(varargin)
   parse(p, varargin{:});
 
   if ~ismember(p.Results.dataType, allowedDataType)
-    fprintf(1, '\t%s\n', string(allowedDataType));
+    fprintf(1, '\t%s\n', char(allowedDataType));
     errorStruct.identifier = [mfilename ':invalidDatatype'];
     errorStruct.message = 'dataType must be one of the type mentionned above.';
     error(errorStruct);
