@@ -20,7 +20,7 @@ hh = p.select('all');
 
 % create xlabels
 for h = hh
-  xlabel(h, 'this will render as Arial', 'fontname', 'times');
+    xlabel(h, 'this will render as Arial', 'fontname', 'times');
 end
 
 % manage fonts globally
@@ -37,7 +37,7 @@ hh = q.select('all');
 
 % create xlabels
 for h = hh
-  xlabel(h, 'this will render as Times', 'fontname', 'times');
+    xlabel(h, 'this will render as Times', 'fontname', 'times');
 end
 
 % attempt to manage fonts globally (no effect)

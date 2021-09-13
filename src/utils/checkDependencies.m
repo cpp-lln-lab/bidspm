@@ -1,4 +1,4 @@
-function checkDependencies()
+function checkDependencies(opt)
   %
   % Checks that that the right dependencies are installeda and
   % loads the spm defaults.
@@ -10,7 +10,7 @@ function checkDependencies()
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  fprintf('Checking dependencies\n');
+  printToScreen('Checking dependencies\n', opt);
 
   SPM_main = 'SPM12';
   SPM_sub = '7487';
@@ -18,15 +18,20 @@ function checkDependencies()
   %% check spm version
   try
     [a, b] = spm('ver');
-    fprintf(' Using %s %s\n', a, b);
+    msg = sprintf(' Using %s %s\n', a, b);
+    printToScreen(msg, opt);
     if any(~[strcmp(a, SPM_main) strcmp(b, SPM_sub)])
-      str = sprintf('%s %s %s.\n%s', ...
+      msg = sprintf('%s %s %s.\n%s', ...
                     'The current version SPM version is not', SPM_main, SPM_sub, ...
                     'In case of problems (e.g json file related) consider updating.');
-      warning(str); %#ok<*SPWRN>
+      warning(msg); %#ok<*SPWRN>
+      tolerant = true;
+      errorHandling(mfilename(), 'wrongSpmVersion', msg, tolerant, opt.verbosity);
     end
   catch
-    error('Failed to check the SPM version: Are you sure that SPM is in the matlab path?');
+    msg = 'Failed to check the SPM version: Are you sure that SPM is in the matlab path?';
+    tolerant = false;
+    errorHandling(mfilename(), 'noSpm', msg, tolerant, opt.verbosity);
   end
 
   spm('defaults', 'fmri');
@@ -38,16 +43,17 @@ function checkDependencies()
 
   a = which('load_untouch_nii');
   if isempty(a)
-    errorStruct.identifier = 'checkDependencies:missingDependency';
-    errorStruct.message = sprintf('%s \n%s', ...
-                                  ['Failed to find the Nifti tools: ' ...
-                                   'Are you sure they in the matlab path?'], ...
-                                  'You can download them here: %s', nifti_tools_url);
+    msg = sprintf('%s \n%s', ...
+                  ['Failed to find the Nifti tools: ' ...
+                   'Are you sure they in the matlab path?'], ...
+                  'You can download them here: %s', nifti_tools_url);
     error(errorStruct);
+    tolerant = false;
+    errorHandling(mfilename(), 'missingDependency', msg, tolerant, opt.verbosity);
   else
-    fprintf(' Nifti tools detected\n');
+    printToScreen(' Nifti tools detected\n', opt);
   end
 
-  fprintf(' We got all we need. Let''s get to work.\n');
+  printToScreen(' We got all we need. Let''s get to work.\n', opt);
 
 end

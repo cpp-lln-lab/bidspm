@@ -6,55 +6,71 @@ function opt = getSubjectList(BIDS, opt)
   %
   %   opt = getSubjectList(BIDS, opt)
   %
+  % :param BIDS: output of bids.layout
+  % :type BIDS: structure
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :param BIDSdir: the directory where the data is ; default is :
-  %                 ``fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm')``
-  % :type BIDSdir: string
   %
   % :returns:
   %           - :opt: (structure)
   %
-  % To set set the groups of subjects to analyze::
   %
-  %     opt.groups = {'control', 'blind'};
-  %
-  % If there are no groups (i.e subjects names are of the form ``sub-01`` for
-  % example) or if you want to run all subjects of all groups then use::
+  % If no group or subject is speficied in ``opt`` then all subjects are included.
+  % This is equivalent to the default::
   %
   %   opt.groups = {''};
   %   opt.subjects = {[]};
   %
-  % If you have more than 2 groups but want to only run the subjects of 2
-  % groups then you can use::
+  % If you want to run the analysis of some subjects only based on the group they
+  % belong to **as defined in the ``participants.tsv``** file, you can do it like this::
+  %
+  %     opt.groups = {'control'};
+  %
+  % This will run the pipeline on all the ``control`` subjects.
+  %
+  % If your subject label is ``blnd02`` (as in ``sub-blnd02``) but its group affiliation
+  % in the ``participants.tsv`` says ``control``, then this subject will NOT be included
+  % if you run the pipeline with ``opt.groups = {'blnd'}``.
+  %
+  % If you have more than 2 groups you can specify them like this::
   %
   %     opt.groups = {'cont', 'cat'};
-  %     opt.subjects = {[], []};
   %
   % You can also directly specify the subject label for the participants you
   % want to run::
   %
-  %     opt.groups = {''};
   %     opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
+  %
+  % And you can combine both methods::
+  %
+  %   opt.groups = {'blind'};
+  %   opt.subjects = {'ctrl01'};
+  %
+  % This will include all ``blind`` subjects and ``sub-ctrl01``.
   %
   % (C) Copyright 2021 CPP_SPM developers
 
   allSubjects = bids.query(BIDS, 'subjects');
 
   % Whatever subject entered must be returned "linearized"
+  if ischar(opt.subjects)
+    opt.subjects = {opt.subjects};
+  end
   tmp = opt.subjects;
   tmp = tmp(:);
 
   % if any group is mentioned
   if ~isempty(opt.groups{1}) && ...
-          any(strcmpi({'group'}, fieldnames(BIDS.participants)))
+          any(strcmpi({'group'}, fieldnames(BIDS.participants.content)))
 
-    fields = fieldnames(BIDS.participants);
+    participantsContent = BIDS.participants.content;
+
+    fields = fieldnames(participantsContent);
     fieldIdx = strcmpi({'group'}, fields);
 
-    subjectIdx = strcmp(BIDS.participants.(fields{fieldIdx}), opt.groups);
+    subjectIdx = strcmp(participantsContent.(fields{fieldIdx}), opt.groups);
 
-    subjects = char(BIDS.participants.participant_id);
+    subjects = char(participantsContent.participant_id);
     subjects = cellstr(subjects(subjectIdx, 5:end));
 
     tmp = cat(1, tmp, subjects);
@@ -75,14 +91,15 @@ function opt = getSubjectList(BIDS, opt)
 
   % check that all the subjects asked for exist
   if any(~ismember(opt.subjects, allSubjects))
-    fprintf('subjects specified\n');
-    disp(opt.subjects);
-    fprintf('subjects present\n');
-    disp(allSubjects);
 
-    errorStruct.identifier = 'getSubjectList:noMatchingSubject';
-    errorStruct.message = 'Some of the subjects specified do not exist in this data set.';
-    error(errorStruct);
+    subjectsSpecified = createUnorderedList(opt.subjects);
+    subjectsPresent = createUnorderedList(allSubjects);
+
+    msg = sprintf(['Some of the subjects specified do not exist in this data set.\n', ...
+                   'subjects specified:%s \nsubjects present:%s'], ...
+                  subjectsSpecified, ...
+                  subjectsPresent);
+    errorHandling(mfilename(), 'noMatchingSubject', msg, false, opt.verbosity);
   end
 
 end

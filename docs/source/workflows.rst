@@ -3,18 +3,20 @@ Workflows
 
 .. automodule:: src.workflows
 
-List of the different workflows of the pipeline.
+Workflows typical run on all the subjects specified in the ``options`` structure.
 
-Each has to be run for each task independently. All parameters should
-be changed in the `opt` structure.
+Below is a list of the different workflows of the pipeline.
+
+Each has to be run for each task independently.
+
+All parameters should be changed in the ``options`` structure.
 
 See the set up section.
 
 ----
 
-.. autofunction:: bidsCopyRawFolder  
-
-.. autofunction:: bidsResliceTpmToFunc  
+.. autofunction:: bidsCopyInputFolder
+.. autofunction:: bidsResliceTpmToFunc
 
 
 Slice Time Correction
@@ -60,25 +62,23 @@ slice timing first. That said, here's some articles from the SPM e-mail list
 that comment helpfully on this subject both ways, and there are even more if you
 do a search for "slice timing AND before" in the archives of the list.*
 
-Spatial Preprocessing 
+Spatial Preprocessing
 =====================
 
 Perform spatial preprocessing by running ``bidsSpatialPrepro``
-      
+
 .. autofunction:: bidsSpatialPrepro
-
 .. autofunction:: bidsRealignReslice
-
 .. autofunction:: bidsRealignUnwarp
 
-Smoothing 
+Smoothing
 =========
 
 Perform smoothing of the functional data by running ``bidsSmoothing``
 
-.. autofunction:: bidsSmoothing  
+.. autofunction:: bidsSmoothing
 
-Subject level analysis 
+Subject level analysis
 ======================
 
 Perform the subject level analysis by running the ffx script: ``bidsFFX``.
@@ -90,20 +90,21 @@ This will take each condition present in the ``events.tsv`` file of each run and
 convolve it with a canonical HRF. It will also add the 6 realignment parameters
 of every run as confound regressors.
 
-.. autofunction:: bidsFFX  
+.. autofunction:: bidsFFX
+.. autofunction:: bidsConcatBetaTmaps
 
 Group level analysis
 ====================
 
 Perform the group level analysis by running the RFX script: ``bidsRFX``.
 
-.. autofunction:: bidsRFX  
+.. autofunction:: bidsRFX
 
 Compute results
 ===============
 
 .. autofunction:: bidsResults
-.. autofunction:: bidsConcatBetaTmaps    
+.. autofunction:: bidsConcatBetaTmaps
 
 Region of interest analysis
 ===========================
@@ -111,12 +112,20 @@ Region of interest analysis
 .. autofunction::  bidsRoiBasedGLM
 .. autofunction::  bidsCreateROI
 
+HRF estimation
+==============
+
+Relies on the resting-state HRF toolbox.
+
+.. autofunction:: bidsRsHrf
+
 Other
 =====
 
-.. autofunction:: bidsCreateVDM
+.. autofunction:: bidsRename
 .. autofunction:: bidsResliceTpmToFunc
 .. autofunction:: bidsSegmentSkullStrip
+.. autofunction:: bidsWholeBrainFuncMask
 
 Helper functions
 ================
@@ -125,4 +134,4 @@ To be used if you want to create a new workflow.
 
 .. autofunction:: setUpWorkflow
 .. autofunction:: saveAndRunWorkflow
-
+.. autofunction:: returnDependency

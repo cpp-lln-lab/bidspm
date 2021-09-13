@@ -1,4 +1,4 @@
-function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outputDir)
+function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, outputDir)
   %
   % Creates batxh to create mean anatomical image and a group mask
   %
@@ -10,7 +10,6 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
   % :type matlabbatch: structure
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :param funcFWHM:
   % :param outputDir:
   % :type outputDir: tring
   %
@@ -18,9 +17,9 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  printBatchName('create mean anatomical image and mask');
+  printBatchName('create mean anatomical image and mask', opt);
 
   inputAnat = {};
   inputMask = {};
@@ -29,21 +28,17 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     %% Anat
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    opt.query.space = 'MNI';
+    opt.query.desc = 'preproc';
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
-    anatImage = validationInputFile( ...
-                                    anatDataDir, ...
-                                    anatImage, ...
-                                    [spm_get_defaults('normalise.write.prefix'), ...
-                                     spm_get_defaults('deformations.modulate.prefix')]);
-
-    inputAnat{end + 1, 1} = anatImage; %#ok<*AGROW>
+    inputAnat{end + 1, 1} = fullfile(anatDataDir, anatImage); %#ok<*AGROW>
 
     %% Mask
-    ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+    ffxDir = getFFXdir(subLabel, opt);
 
     files = validationInputFile(ffxDir, 'mask.nii');
 
@@ -65,6 +60,7 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
   meanAnatEquation = [sumEquation, '/', num2str(nbImg)];
 
   matlabbatch = setBatchImageCalculation(matlabbatch, ...
+                                         opt, ...
                                          inputAnat, ...
                                          'meanAnat.nii', ...
                                          outputDir, ...
@@ -80,6 +76,7 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outpu
   meanMaskEquation = [sumEquation, '>0.75*', num2str(nbImg)];
 
   matlabbatch = setBatchImageCalculation(matlabbatch, ...
+                                         opt, ...
                                          inputMask, ...
                                          'meanMask.nii', ...
                                          outputDir, ...

@@ -17,6 +17,6 @@ function reportBIDS(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  bids.report(opt.dataDir);
+  bids.report(opt.dir.raw);
 
 end

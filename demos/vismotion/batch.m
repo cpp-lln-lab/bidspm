@@ -3,49 +3,40 @@
 clear;
 clc;
 
-% directory with this script becomes the current directory
-WD = fileparts(mfilename('fullpath'));
-
 run ../../initCppSpm.m;
 
 %% Run batches
 opt = get_option();
 
-reportBIDS(opt);
+% reportBIDS(opt);
 
-bidsCopyRawFolder(opt, 1);
-%
-% % preprocessing
+bidsCopyInputFolder(opt, 1);
+
 bidsSTC(opt);
 bidsSpatialPrepro(opt);
 
-% Quality control
 anatomicalQA(opt);
+bidsResliceTpmToFunc(opt);
+functionalQA(opt);
 
-% Not implemented yet
-% bidsResliceTpmToFunc(opt);
-% functionalQA(opt);
-
-funcFWHM = 6;
-bidsSmoothing(funcFWHM, opt);
+bidsSmoothing(opt);
 
 % subject level Univariate
-bidsFFX('specifyAndEstimate', opt, funcFWHM);
-bidsFFX('contrasts', opt, funcFWHM);
+bidsFFX('specifyAndEstimate', opt);
+bidsFFX('contrasts', opt);
 
 % group level univariate
-conFWHM = 6;
-bidsRFX('smoothContrasts', opt, funcFWHM, conFWHM);
+bidsRFX('smoothContrasts', opt);
 
 % Not implemented yet
-% bidsRFX(action, opt, funcFWHM, conFWHM);
+% bidsRFX(action, opt;
 
 % Not implemented yet
 % subject level multivariate
-% opt.model.file = fuufile(WD, ...
+% opt.model.file = fullfile(pwd, ...
 %                          'models', ...
 %                          'model-motionDecodingMultivariate_smdl.json');
 %
-% bidsFFX('specifyAndEstimate', opt, funcFWHM);
-% bidsFFX('contrasts', opt, funcFWHM);
-% concatBetaImgTmaps(funcFWHM, opt);
+% bidsFFX('specifyAndEstimate', opt);
+% bidsFFX('contrasts', opt);
+% concatBetaImgTmaps(opt);

@@ -1,10 +1,10 @@
-function saveMatlabBatch(matlabbatch, batchType, opt, subID)
+function saveMatlabBatch(matlabbatch, batchType, opt, subLabel)
   %
   % Also save some basic environnment info.
   %
   % USAGE::
   %
-  %   saveMatlabBatch(matlabbatch, batchType, opt, [subID])
+  %   saveMatlabBatch(matlabbatch, batchType, opt, [subLabel])
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -12,19 +12,19 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subID)
   % :type batchType: string
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :param subID:
-  % :type subID: string
+  % :param subLabel:
+  % :type subLabel: string
   %
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  if nargin < 4 || isempty(subID)
-    subID = 'group';
+  if nargin < 4 || isempty(subLabel)
+    subLabel = 'group';
   else
-    subID = ['sub-' subID];
+    subLabel = ['sub-' subLabel];
   end
 
-  jobsDir = fullfile(opt.jobsDir, subID);
+  jobsDir = fullfile(opt.dir.jobs, subLabel);
   [~, ~, ~] = mkdir(jobsDir);
 
   filename = sprintf( ...
@@ -32,7 +32,7 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subID)
                      datestr(now, 'yyyymmdd_HHMM'), ...
                      batchType);
 
-  [OS, GeneratedBy] = getEnvInfo();
+  [OS, GeneratedBy] = getEnvInfo(opt);
   GeneratedBy(1).Description = batchType;
 
   save(fullfile(jobsDir, filename), 'matlabbatch', '-v7');

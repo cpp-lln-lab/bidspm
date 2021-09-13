@@ -11,8 +11,8 @@ function matlabbatch = setBatchSTC(varargin)
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param subID: subject ID
-  % :type subID: string
+  % :param subLabel: subject label
+  % :type subLabel: string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
@@ -49,13 +49,15 @@ function matlabbatch = setBatchSTC(varargin)
   end
 
   % get slice order
-  sliceOrder = getSliceOrder(opt, 1);
+  sliceOrder = getSliceOrder(opt);
   if isempty(sliceOrder)
-    warning('No slice order dectected: skipping slice timing correction.');
+    errorHandling(mfilename(), 'noSliceOrder', ...
+                  'No slice order dectected: skipping slice timing correction.', ...
+                  true, opt.verbosity);
     return
   end
 
-  printBatchName('slice timing correction');
+  printBatchName('slice timing correction', opt);
 
   % get metadata for STC
   % Note that slice ordering is assumed to be from foot to head. If it is not, enter
@@ -93,9 +95,8 @@ function matlabbatch = setBatchSTC(varargin)
                    '\n- reference slice: %f', ...
                    '\n- slice order: ' pattern], TR, TA, referenceSlice, sliceOrder);
 
-    errorStruct.identifier = 'setBatchSTC:invalidInputTime';
-    errorStruct.message = msg;
-    error(errorStruct);
+    errorHandling(mfilename(), 'invalidInputTime', msg, ...
+                  false, opt.verbosity);
   end
 
   temporal.st.nslices = nbSlices;
@@ -103,6 +104,10 @@ function matlabbatch = setBatchSTC(varargin)
   temporal.st.ta = TA;
   temporal.st.so = sliceOrder * 1000;
   temporal.st.refslice = referenceSlice * 1000;
+
+  % only sitck to raw data
+  opt.query.space = '';
+  opt.query.desc = '';
 
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
@@ -120,7 +125,7 @@ function matlabbatch = setBatchSTC(varargin)
                                                    BIDS, ...
                                                    subLabel, sessions{iSes}, runs{iRun}, opt);
 
-      % check that the file with the right prefix exist
+      % % TODO remove this validation
       file = validationInputFile(subFuncDataDir, fileName);
 
       % add the file to the list
@@ -128,7 +133,7 @@ function matlabbatch = setBatchSTC(varargin)
 
       runCounter = runCounter + 1;
 
-      disp(file);
+      printToScreen([file, '\n'], opt);
 
     end
 

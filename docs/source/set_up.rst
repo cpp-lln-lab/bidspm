@@ -7,7 +7,7 @@ Configuration of the pipeline
 Options
 -------
 
-Most of the options you have chosen for your analysis will be set in a variable 
+Most of the options you have chosen for your analysis will be set in a variable
 ``opt`` an Octave/Matlab structure.
 
 The content of that structure can be defined:
@@ -15,45 +15,21 @@ The content of that structure can be defined:
 - "at run" time in a script or a function (that we often label ``getOption``)
 - in a separate json file that can be loaded with ``loadAndCheckOptions()``.
 
-You can find examples of both in the ``demos`` folder. You can also find a 
+You can find examples of both in the ``demos`` folder. You can also find a
 template function for ``getOption`` in the ``src/templates`` folder.
-
-Required options
-++++++++++++++++
 
 Set the task to analyze in the BIDS data set ``opt.taskName = 'auditory'``
 
 Selecting groups and subjects
 +++++++++++++++++++++++++++++
 
-Set the group of subjects to analyze::  
+The way to select certain subjects is summarised in the documentation of the
+``getSubjectList`` function.
 
-    opt.groups = {'control', 'blind'};
+.. automodule:: src.utils
 
-If there are no groups (i.e subjects names are of the form ``sub-01`` for example)
-or if you want to run all subjects of all groups then use::
-
-    opt.groups = {''};
-    opt.subjects = {[]};
-
-If you have 2 groups (``cont`` and ``cat`` for example) the following will run
-cont01, cont02, cat03, cat04::
-
-    opt.groups = {'cont', 'cat'};
-    opt.subjects = {[1 2], [3 4]};
-
-If you have more than 2 groups but want to only run the subjects of 2 groups
-then you can use::
-
-    opt.groups = {'cont', 'cat'};
-    opt.subjects = {[], []};
-
-You can also directly specify the subject label for the participants you want to
-run::
-
-    opt.groups = {''};
-    opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
-
+.. autofunction:: getSubjectList
+    :noindex:
 
 
 

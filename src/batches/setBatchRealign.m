@@ -34,7 +34,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
     [matlabbatch, BIDS, opt, subLabel] = deal(varargin{:});
     action = '';
   else
-    [matlabbatch, action, BIDS, opt, subLabel] = deal(varargin{:});
+    [matlabbatch, BIDS, opt, subLabel, action] = deal(varargin{:});
   end
 
   if isempty(action)
@@ -42,6 +42,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   end
 
   % TODO hide this wart in a subfunction ?
+  msg = '';
   switch action
     case 'realignUnwarp'
       msg = 'REALIGN & UNWARP';
@@ -64,7 +65,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
   end
 
-  printBatchName(msg);
+  printBatchName(msg, opt);
 
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
@@ -78,6 +79,9 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
     for iRun = 1:nbRuns
 
       % get the filename for this bold run for this task
+      % in case we did slice timing we specify it in the file to query
+      opt.query.desc = '';
+      opt = addStcToQuery(opt);
       [boldFilename, subFuncDataDir] = getBoldFilename( ...
                                                        BIDS, ...
                                                        subLabel, ...
@@ -85,17 +89,14 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
                                                        runs{iRun}, ...
                                                        opt);
 
-      % check that the file with the right prefix exist and we get and
-      % save its voxeldimension
-      prefix = getPrefix('realign', opt);
-      file = validationInputFile(subFuncDataDir, boldFilename, prefix);
+      if size(boldFilename, 1) > 1
+        errorHandling(mfilename(), 'tooManyFiles', 'This should only get one file.', false, true);
+      end
+
+      prefix = '';
       [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, boldFilename);
 
-      if size(file, 1) > 1
-        errorStruct.identifier = 'setBatchRealign:tooManyFiles';
-        errorStruct.message = 'This should only get on file.';
-        error(errorStruct);
-      end
+      file = fullfile(subFuncDataDir, boldFilename);
 
       switch action
 
@@ -105,11 +106,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
           matlabbatch{end}.spm.spatial.realign.write.data(1) = ...
             cfg_dep('Coregister: Estimate: Coregistered Images', ...
-                    substruct( ...
-                              '.', 'val', '{}', {opt.orderBatches.coregister}, ...
-                              '.', 'val', '{}', {1}, ...
-                              '.', 'val', '{}', {1}, ...
-                              '.', 'val', '{}', {1}), ...
+                    returnDependency(opt, 'coregister'), ...
                     substruct('.', 'cfiles'));
 
           return
@@ -125,8 +122,6 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
           matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = { file };
 
       end
-
-      fprintf(1, ' %s\n', file);
 
       runCounter = runCounter + 1;
     end

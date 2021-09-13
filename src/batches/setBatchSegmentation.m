@@ -16,7 +16,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('Segmentation anatomical image');
+  printBatchName('Segmentation anatomical image', opt);
 
   % define SPM folder
   spmLocation = spm('dir');
@@ -30,11 +30,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
     % SAVE BIAS CORRECTED IMAGE
     matlabbatch{end}.spm.spatial.preproc.channel.vols(1) = ...
         cfg_dep('Named File Selector: Anatomical(1) - Files', ...
-                substruct( ...
-                          '.', 'val', '{}', {opt.orderBatches.selectAnat}, ...
-                          '.', 'val', '{}', {1}, ...
-                          '.', 'val', '{}', {1}, ...
-                          '.', 'val', '{}', {1}), ...
+                returnDependency(opt, 'selectAnat'), ...
                 substruct('.', 'files', '{}', {1}));
   else
 
@@ -55,22 +51,25 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
   matlabbatch{end}.spm.spatial.preproc.channel.biasfwhm = 60;
 
   % CREATE SEGMENTS IN NATIVE SPACE OF GM,WM AND CSF
+  nativeSpace = 1;
+  dartelSpace = 0;
+  native = [nativeSpace dartelSpace];
   matlabbatch{end}.spm.spatial.preproc.tissue(1).tpm = ...
       {[fullfile(spmLocation, 'tpm', 'TPM.nii') ',1']};
   matlabbatch{end}.spm.spatial.preproc.tissue(1).ngaus = 1;
-  matlabbatch{end}.spm.spatial.preproc.tissue(1).native = [1 1];
+  matlabbatch{end}.spm.spatial.preproc.tissue(1).native = native;
   matlabbatch{end}.spm.spatial.preproc.tissue(1).warped = [0 0];
 
   matlabbatch{end}.spm.spatial.preproc.tissue(2).tpm = ...
       {[fullfile(spmLocation, 'tpm', 'TPM.nii') ',2']};
   matlabbatch{end}.spm.spatial.preproc.tissue(2).ngaus = 1;
-  matlabbatch{end}.spm.spatial.preproc.tissue(2).native = [1 1];
+  matlabbatch{end}.spm.spatial.preproc.tissue(2).native = native;
   matlabbatch{end}.spm.spatial.preproc.tissue(2).warped = [0 0];
 
   matlabbatch{end}.spm.spatial.preproc.tissue(3).tpm = ...
       {[fullfile(spmLocation, 'tpm', 'TPM.nii') ',3']};
   matlabbatch{end}.spm.spatial.preproc.tissue(3).ngaus = 2;
-  matlabbatch{end}.spm.spatial.preproc.tissue(3).native = [1 1];
+  matlabbatch{end}.spm.spatial.preproc.tissue(3).native = native;
   matlabbatch{end}.spm.spatial.preproc.tissue(3).warped = [0 0];
 
   matlabbatch{end}.spm.spatial.preproc.tissue(4).tpm = ...

@@ -1,10 +1,10 @@
-function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
+function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %
   % Short description of what the function does goes here.
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
+  %   matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -13,8 +13,8 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param subID: subject ID
-  % :type subID: string
+  % :param subLabel: subject label
+  % :type subLabel: string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
@@ -23,28 +23,32 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('create voxel displacement map');
+  printBatchName('create voxel displacement map', opt);
 
-  [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
-
-  runs = getInfo(BIDS, subID, opt, 'Runs', sessions{1});
-  [fileName, subFuncDataDir] = getBoldFilename(BIDS, subID, sessions{1}, runs{1}, opt);
-  refImage = validationInputFile(subFuncDataDir, fileName, 'mean_');
+  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
+  filter = struct( ...
+                  'sub', subLabel, ...
+                  'task', opt.taskName, ...
+                  'suffix', 'bold', ...
+                  'prefix', 'mean_');
+  refImage = bids.query(BIDS, 'data', filter);
 
   for iSes = 1:nbSessions
 
-    runs = bids.query(BIDS, 'runs', ...
-                      'modality', 'fmap', ...
-                      'sub', subID, ...
-                      'ses', sessions{iSes});
+    filter = opt.query;
+    filter.modality =  'fmap';
+    filter.sub =  subLabel;
+    filter.ses =  sessions{iSes};
+
+    runs = bids.query(BIDS, 'runs', filter);
 
     for iRun = 1:numel(runs)
 
-      metadata = bids.query(BIDS, 'metadata', ...
-                            'modality', 'fmap', ...
-                            'sub', subID, ...
-                            'ses', sessions{iSes}, ...
-                            'run', runs{iRun});
+      filter.run = runs{iRun};
+      filter.suffix = 'phasediff';
+      filter.extension = '.nii';
+
+      metadata = bids.query(BIDS, 'metadata', filter);
 
       if strfind(metadata.IntendedFor, opt.taskName)
 
@@ -52,30 +56,22 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
 
         % TODO
         % Move to getInfo ?
-        fmapFiles = bids.query(BIDS, 'data', ...
-                               'modality', 'fmap', ...
-                               'sub', subID, ...
-                               'ses', sessions{iSes}, ...
-                               'run', runs{iRun});
-
-        phaseImage = fmapFiles{1};
         matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.phase = ...
-            {phaseImage};
+            bids.query(BIDS, 'data', filter);
 
-        magnitudeImage = strrep(phaseImage, 'phasediff', 'magnitude1');
+        [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, filter);
+
+        filter.suffix = 'magnitude1';
         matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.magnitude = ...
-            {magnitudeImage};
-
-        [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, ...
-                                                                     subID, ...
-                                                                     sessions{iSes}, ...
-                                                                     runs{iRun});
+            bids.query(BIDS, 'data', filter);
 
         defaultsval = matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval;
+
         defaultsval.et = echotimes;
         defaultsval.tert = totReadTime;
         defaultsval.blipdir = blipDir;
         defaultsval.epifm = isEPI;
+
         matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval = defaultsval;
 
       end
@@ -86,14 +82,11 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subID)
 
 end
 
-function varargout = getMetadataForVDM(BIDS, subID, sessionID, runID)
+function varargout = getMetadataForVDM(BIDS, filter)
 
   % get metadata fmap and its associated func files
-  fmapMetadata = bids.query(BIDS, 'metadata', ...
-                            'modality', 'fmap', ...
-                            'sub', subID, ...
-                            'ses', sessionID, ...
-                            'run', runID);
+  fmapMetadata = bids.query(BIDS, 'metadata', filter);
+
   if numel(fmapMetadata) > 1
     fmapMetadata = fmapMetadata{1};
   end

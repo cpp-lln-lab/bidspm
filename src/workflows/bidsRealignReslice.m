@@ -10,30 +10,41 @@ function bidsRealignReslice(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % Assumes that ``bidsSTC()`` has already been run.
+  % Assumes that ``bidsSTC()`` has already been run if ``opt.stc.skip`` is not set
+  % to ``true``.
+  %
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  opt.dir.input = opt.dir.preproc;
+  opt.query.modality = 'func';
+
   [BIDS, opt] = setUpWorkflow(opt, 'realign and reslice');
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = {};
     [matlabbatch, ~] = setBatchRealign( ...
                                        matlabbatch, ...
                                        BIDS, ...
-                                       subLabel, ...
                                        opt, ...
+                                       subLabel, ...
                                        'realignReslice');
 
     saveAndRunWorkflow(matlabbatch, 'realign_reslice', opt, subLabel);
 
-    copyFigures(BIDS, opt, subLabel);
+    if ~opt.dryRun
+      copyFigures(BIDS, opt, subLabel);
+    end
 
   end
+
+  prefix = get_spm_prefix_list();
+  opt.query.prefix = prefix.realign;
+  bidsRename(opt);
 
 end

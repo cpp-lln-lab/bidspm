@@ -20,4 +20,4 @@ help:
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 doc:
-	@$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)"	
+	@$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)"

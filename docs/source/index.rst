@@ -16,6 +16,7 @@ Welcome to CPP SPM BIDS pipeline documentation!
    workflows
    batches
    QA
+   fieldmaps
    function_description
    method_section_boilerplate
    mancoreg

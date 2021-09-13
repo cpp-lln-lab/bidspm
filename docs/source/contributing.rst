@@ -1,7 +1,7 @@
 Contributing
 ************
 
-How to contribute to this project. 
+How to contribute to this project.
 
 
 Function templates
@@ -44,7 +44,7 @@ Template proposal
 
    end
 
-.. autofunction:: templateFunction  
+.. autofunction:: templateFunction
 
 
 ----
@@ -52,7 +52,7 @@ Template proposal
 Google template
 ---------------
 
-See more information `there 
+See more information `there
 <https://www.sphinx-doc.org/en/master/usage/extensions/example_google.html>`_
 
 
@@ -65,9 +65,9 @@ Example code in the help section
 
    function templateFunctionExample()
       % This function illustrates a documentation test defined for MOdox.
-      % Other than that it does absolutely nothinghort description of what 
-      % the function does goes here. 
-      % 
+      % Other than that it does absolutely nothinghort description of what
+      % the function does goes here.
+      %
       % Examples:
       %   a=2;
       %   disp(a)
@@ -76,7 +76,7 @@ Example code in the help section
       %   %
       %   % The test continues because no interruption through whitespace,
       %   % as the previous line used a '%' comment character;
-      %   % thus the 'a' variable is still in the namespace and can be 
+      %   % thus the 'a' variable is still in the namespace and can be
       %   % accessed.
       %   b=3+a;
       %   disp(a+[3 4])
@@ -86,12 +86,12 @@ Example code in the help section
       %   % only. Thus the 'a' and 'b' variables are not present here anymore.
       %   % The following expression raises an error because the 'b' variable
       %   % is not defined (and does not carry over from the previous test).
-      %   % Because the expected output indicates an error as well, 
+      %   % Because the expected output indicates an error as well,
       %   % the test passes
       %   disp(b)
       %   %|| error('Some error')
       %
-      %   % A set of expressions is ignored if there is no expected output 
+      %   % A set of expressions is ignored if there is no expected output
       %   % (that is, no lines starting with '%||').
       %   % Thus, the following expression is not part of any test,
       %   % and therefore does not raise an error.
@@ -103,6 +103,3 @@ Example code in the help section
       % The code goes below
 
 .. autofunction:: templateFunctionExample
-
-
-

@@ -1,20 +1,28 @@
+%
+% This show how an anat only pipeline would look like.
+%
 % (C) Copyright 2019 Remi Gau
-%
-%
-% This show how an anat only workflow would look like
-%
 
 clear;
 clc;
 
 downloadData = true;
 
-run ../../initCppSpm.m;
+try
+  run ../../initCppSpm.m;
+catch
+end
 
 %% Set options
-opt.dataDir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
-opt.derivativesDir = fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm-anat');
+opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
+opt.dir.preproc = fullfile(opt.dir.raw, '..', 'derivatives');
+
+opt.pipeline.type = 'preproc';
+opt.pipeline.name = 'cpp_spm-anat';
+opt.query.modality = 'anat';
+
 opt = checkOptions(opt);
+
 saveOptions(opt);
 
 %% Removes previous analysis, gets data and converts it to BIDS
@@ -25,10 +33,9 @@ if downloadData
 end
 
 %% Run batches
-reportBIDS(opt);
-bidsCopyRawFolder(opt, 1, 'anat');
+% reportBIDS(opt);
+bidsCopyInputFolder(opt);
 
 bidsSegmentSkullStrip(opt);
 
-% The following do not run on octave for now (because of spmup)
 anatomicalQA(opt);

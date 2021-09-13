@@ -1,4 +1,4 @@
-function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
+function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
   %
   % Looks into the current directory for an ``spm_.*imgNb.png`` file and moves it into
   % the output directory ``sub-label/figures``.
@@ -7,12 +7,12 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
   %
   % USAGE::
   %
-  %   imgNb = copyGraphWindownOutput(opt, subID, [action = '',] [imgNb = 1])
+  %   imgNb = copyGraphWindownOutput(opt, subLabel, [action = '',] [imgNb = 1])
   %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :param subID: Subject label (for example `'01'`).
-  % :type subID: string
+  % :param subLabel: Subject label (for example `'01'`).
+  % :type subLabel: string
   % :param action: Name to be given to the figure.
   % :type action: string
   % :param imgNb: Image numbers to look for. SPM increments them automatically when
@@ -31,7 +31,7 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
     action = '';
   end
 
-  figureDir = fullfile(opt.derivativesDir, strcat('sub-', subID), 'figures');
+  figureDir = fullfile(opt.dir.preproc, strcat('sub-', subLabel), 'figures');
   if ~exist(figureDir, 'dir')
     mkdir(figureDir);
   end
@@ -46,19 +46,18 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
 
     if isempty(file)
 
-      warning( ...
-              'copyGraphWindownOutput:noFile', ...
-              'No figure file to copy');
+      errorHandling(mfilename(), 'noFile', 'No figure file to copy', true, opt.verbosity);
 
     elseif size(file, 1) > 1
 
-      warning( ...
-              'copyGraphWindownOutput:tooManyFiles', ...
-              sprintf('\n %s\n %s\n %s', ...
-                      'Too many figure files to copy.', ...
-                      'Not sure what to do.', ...
-                      'Will skip this step.'));
-      disp(file);
+      msg = sprintf('\n %s\n %s\n %s', ...
+                    'Too many figure files to copy.', ...
+                    'Not sure what to do.', ...
+                    'Will skip this step.');
+      errorHandling(mfilename(), 'tooManyFiles', msg, true, opt.verbosity);
+
+      msg = sprintf('%s\n', strjoin(cellstr(file), '\n'));
+      printToScreen(msg, opt);
 
     else
 
@@ -66,7 +65,7 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
                            '%s_%i_sub-%s_task-%s_%s.png', ...
                            datestr(now, 'yyyymmddHHMM'), ...
                            iFile, ...
-                           subID, ...
+                           subLabel, ...
                            opt.taskName, ...
                            action);
 
@@ -74,11 +73,18 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
                file, ...
                fullfile(figureDir, targetFile));
 
-      fprintf(1, '\n%s\nwas moved to\n%s\n', ...
-              file, ...
-              fullfile(figureDir, targetFile));
+      msg = sprintf('\n%s\nwas moved to\n%s\n', ...
+                    file, ...
+                    fullfile(figureDir, targetFile));
+      printToScreen(msg, opt);
 
     end
+
+    msg = [
+           'SPM were likely not created. Possible reasons:\n', ...
+           ' - running SPM from the matlab command line only,\n' ...
+           ' - running under octave.'];
+    warning(sprintf(msg));
 
   end
 

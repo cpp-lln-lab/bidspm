@@ -1,4 +1,4 @@
-function bidsFFX(action, opt, funcFWHM)
+function matlabbatch = bidsFFX(action, opt)
   %
   % - builds the subject level fMRI model and estimates it.
   %
@@ -8,36 +8,46 @@ function bidsFFX(action, opt, funcFWHM)
   %
   % USAGE::
   %
-  %  bidsFFX(action, funcFWHM, [opt])
+  %  bidsFFX(action, [opt])
   %
   % :param action: Action to be conducted:``specifyAndEstimate`` or ``contrasts``.
   % :type action: string
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param funcFWHM: How much smoothing was applied to the functional
-  %                  data in the preprocessing (Gaussian kernel size).
-  % :type funcFWHM: scalar
   %
   % - ``specifyAndEstimate`` for fMRI design + estimate and
   % - ``contrasts`` to estimate contrasts.
   %
-  % For unsmoothed data ``funcFWHM = 0``, for smoothed data ``funcFWHM = ... mm``.
-  % In this way we can make multiple ffx for different smoothing degrees.
-  %
   % (C) Copyright 2020 CPP_SPM developers
 
-  if opt.glm.roibased.do
-    message = sprintf( ...
-                      ['The option opt.glm.roibased.do is set to true.\n', ...
-                       ' Change the option to false to use this workflow or\n', ...
-                       ' use the bidsRoiBasedGLM workflow to run roi based GLM.']);
-    error(message);
+  % TODO: add a way to design model only with no data (see specific spm module
+  % model only
+
+  % TODO split model specification from model estimation
+
+  if numel(opt.space) > 1
+    disp(opt.space);
+    msg = sprintf('GLMs can only be run in one space at a time.\n');
+    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
   end
 
-  [BIDS, opt] = setUpWorkflow(opt, 'subject level GLM');
+  if opt.glm.roibased.do
+    msg = sprintf(['The option opt.glm.roibased.do is set to true.\n', ...
+                   ' Change the option to false to use this workflow or\n', ...
+                   ' use the bidsRoiBasedGLM workflow to run roi based GLM.']);
+    errorHandling(mfilename(), 'roiGLMTrue', msg, false, opt.verbosity);
+  end
 
-  opt.jobsDir = fullfile(opt.dir.stats, 'JOBS', opt.taskName);
+  if ~ismember(action, {'specifyAndEstimate', 'contrasts'})
+    msg = sprintf('action must be *specifyAndEstimate* or *contrasts*.\n%s was given.', action);
+    errorHandling(mfilename(), 'unknownAction', msg, false, opt.verbosity);
+  end
+
+  opt.pipeline.type = 'stats';
+  opt.dir.input = opt.dir.preproc;
+
+  [BIDS, opt] = setUpWorkflow(opt, 'subject level GLM');
 
   if isempty(opt.model.file)
     opt = createDefaultModel(BIDS, opt);
@@ -47,7 +57,7 @@ function bidsFFX(action, opt, funcFWHM)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = {};
 
@@ -55,53 +65,52 @@ function bidsFFX(action, opt, funcFWHM)
 
       case 'specifyAndEstimate'
 
-        matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel, funcFWHM);
+        matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
         p = struct( ...
-                   'type', 'designmatrix', ...
+                   'suffix', 'designmatrix', ...
                    'ext', '.png', ...
-                   'sub', subLabel, ...
-                   'task', opt.taskName, ...
-                   'space', opt.space, ...
-                   'desc', 'before estimation');
+                   'use_schema', false, ...
+                   'entities', struct( ...
+                                      'sub', subLabel, ...
+                                      'task', opt.taskName, ...
+                                      'space', opt.space, ...
+                                      'desc', 'before estimation'));
 
-        matlabbatch = setBatchPrintFigure(matlabbatch, fullfile(getFFXdir(subLabel, ...
-                                                                          funcFWHM, ...
-                                                                          opt), ...
-                                                                createFilename(p)));
+        matlabbatch = setBatchPrintFigure(matlabbatch, opt, fullfile(getFFXdir(subLabel, opt), ...
+                                                                     bids.create_filename(p)));
 
         matlabbatch = setBatchEstimateModel(matlabbatch, opt);
 
-        p.desc = 'after estimation';
-        matlabbatch = setBatchPrintFigure(matlabbatch, fullfile(getFFXdir(subLabel, ...
-                                                                          funcFWHM, ...
-                                                                          opt), ...
-                                                                createFilename(p)));
+        p.entities.desc = 'after estimation';
+        matlabbatch = setBatchPrintFigure(matlabbatch, opt, fullfile(getFFXdir(subLabel, opt), ...
+                                                                     bids.create_filename(p)));
 
         batchName = ...
             ['specify_estimate_ffx_task-', opt.taskName, ...
-             '_space-', opt.space, ...
-             '_FWHM-', num2str(funcFWHM)];
+             '_space-', char(opt.space), ...
+             '_FWHM-', num2str(opt.fwhm.func)];
 
         saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-        if opt.QA.glm.do
+        if ~opt.dryRun && opt.QA.glm.do
+
           plot_power_spectra_of_GLM_residuals( ...
-                                              getFFXdir(subLabel, funcFWHM, opt), ...
+                                              getFFXdir(subLabel, opt), ...
                                               opt.metadata.RepetitionTime);
 
-          deleteResidualImages(getFFXdir(subLabel, funcFWHM, opt));
+          deleteResidualImages(getFFXdir(subLabel, opt));
 
         end
 
       case 'contrasts'
 
-        matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, funcFWHM);
+        matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);
 
         batchName = ...
             ['contrasts_ffx_task-', opt.taskName, ...
-             '_space-', opt.space, ...
-             '_FWHM-', num2str(funcFWHM)];
+             '_space-', char(opt.space), ...
+             '_FWHM-', num2str(opt.fwhm.func)];
 
         saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 

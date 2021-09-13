@@ -1,5 +1,3 @@
-% (C) Copyright 2019 Remi Gau
-%
 % Script to run to check that the whole pipeline works fine with different
 % options encoded in json files
 %
@@ -10,6 +8,8 @@
 %
 % Rudimentary attempt of a "system-level" "smoke-test" of the "happy path"...
 %
+%
+% (C) Copyright 2019 Remi Gau
 
 clear;
 clc;
@@ -18,9 +18,6 @@ clc;
 FWHM = 6;
 
 downloadData = true;
-
-% URL of the data set to download
-URL = 'http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip';
 
 % directory with this script becomes the current directory
 WD = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'MoAE');
@@ -47,28 +44,21 @@ for iOption = 1:size(optionsFilesList, 1)
 
   %% Run batches
 
-  reportBIDS(opt);
+  % reportBIDS(opt);
 
   bidsCopyRawFolder(opt, 1);
 
   bidsSTC(opt);
-
+  bidsSegmentSkullStrip(opt);
   bidsSpatialPrepro(opt);
 
-  % Some of the following do not run on octave for now (because of spmup)
-  % Crashes in CI
-  %   anatomicalQA(opt);
-
-  bidsResliceTpmToFunc(opt);
-
-  % Crashes in CI
-  %   functionalQA(opt);
+  anatomicalQA(opt);
+  % bidsResliceTpmToFunc(opt);
+  % functionalQA(opt);
 
   bidsSmoothing(FWHM, opt);
 
-  bidsSegmentSkullStrip(opt);
-
-  % The following crash on Travis CI
+  % The following crash on CI
   %   bidsFFX('specifyAndEstimate', opt, FWHM);
   %   bidsFFX('contrasts', opt, FWHM);
   %   bidsResults(opt, FWHM);

@@ -2,26 +2,42 @@ function expectedOptions = defaultOptions(taskName)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  expectedOptions.verbosity = 1;
+  expectedOptions.dryRun = false;
+
+  expectedOptions.pipeline.type =  'preproc';
+  expectedOptions.pipeline.name = 'cpp_spm';
+
+  expectedOptions.useBidsSchema = false;
+
+  expectedOptions.fwhm.func = 6;
+  expectedOptions.fwhm.contrast = 6;
+
   expectedOptions.stc.sliceOrder = [];
   expectedOptions.stc.referenceSlice = [];
   expectedOptions.stc.skip = false;
 
-  expectedOptions.dataDir = '';
-  expectedOptions.derivativesDir = '';
-  expectedOptions.dir = struct('raw', '', ...
-                               'derivatives', '');
+  expectedOptions.dir = struct('input', '', ...
+                               'output', '', ...
+                               'derivatives', '', ...
+                               'raw', '', ...
+                               'preproc', '', ...
+                               'stats', '', ...
+                               'jobs', '');
 
   expectedOptions.funcVoxelDims = [];
 
   expectedOptions.groups = {''};
   expectedOptions.subjects = {[]};
 
-  expectedOptions.query = struct([]);
+  expectedOptions.query.modality = {'anat', 'func'};
 
-  expectedOptions.space = 'MNI';
+  expectedOptions.space = {'individual', 'MNI'};
 
   expectedOptions.anatReference.type = 'T1w';
   expectedOptions.anatReference.session = [];
+
+  expectedOptions.segment.force = false;
 
   expectedOptions.skullstrip.threshold = 0.75;
   expectedOptions.skullstrip.mean = false;
@@ -67,8 +83,10 @@ function expectedOptions = defaultOptions(taskName)
     expectedOptions = setFields(expectedOptions, ALI_my_defaults());
   end
 
+  expectedOptions = setFields(expectedOptions, rsHRF_my_defaults());
+
   expectedOptions = orderfields(expectedOptions);
 
-  expectedOptions = setStatsDir(expectedOptions);
+  expectedOptions = setDirectories(expectedOptions);
 
 end

@@ -1,4 +1,4 @@
-function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow()
+function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
   %
   % Short description of what the function does goes here.
   %
@@ -23,13 +23,21 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow()
   graphWindow = [];
   cmdLine = true;
 
-  if ~spm('CmdLine') && ~isOctave
+  if ~opt.dryRun && ~spm('CmdLine') && ~isOctave
 
     try
       [interactiveWindow, graphWindow, cmdLine] = spm('FnUIsetup');
     catch
       warning('Could not open a graphic window. No figure will be created.');
     end
+
+  else
+
+    msg = [
+           'Could not open a graphic window. Possible reasons:\n', ...
+           ' - running SPM from the matlab command line only,\n' ...
+           ' - running under octave.'];
+    warning(sprintf(msg));
 
   end
 

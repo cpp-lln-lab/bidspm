@@ -19,7 +19,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon)
 
     case 2
 
-      printBatchName('estimate subject level fmri model');
+      printBatchName('estimate subject level fmri model', opt);
 
       spmMatFile = cfg_dep( ...
                            'fMRI model specification SPM file', ...
@@ -39,7 +39,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon)
 
         conName = rmTrialTypeStr(grpLvlCon{j});
 
-        spmMatFile = { fullfile(opt.rfxDir, conName, 'SPM.mat') };
+        spmMatFile = { fullfile(opt.dir.rfx, conName, 'SPM.mat') };
 
         % no QA at the group level GLM:
         %   since there is no autocorrelation to check for
@@ -59,7 +59,7 @@ function matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt)
   matlabbatch{end}.spm.stats.fmri_est.spmmat = spmMatFile;
 
   writeResiduals = true();
-  if ~opt.glm.QA.do
+  if ~opt.QA.glm.do
     writeResiduals = false();
   end
   matlabbatch{end}.spm.stats.fmri_est.write_residuals = writeResiduals;

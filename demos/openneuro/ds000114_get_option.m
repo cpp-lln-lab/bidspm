@@ -7,13 +7,16 @@ function opt = ds000114_get_option()
   % (C) Copyright 2020 CPP_SPM developers
 
   % The directory where the data are located
-  opt.dataDir = '/home/remi/openneuro/ds000114/raw';
+  opt.dir.raw = '/home/remi/openneuro/ds000114/raw';
+  opt.pipeline.name = 'cpp_spms';
 
   % suject to run in each group
   opt.subjects = {'01', '02'};
 
   % task to analyze
   opt.taskName = 'linebisection';
+
+  opt.query.modality = {'anat', 'func'};
 
   opt.anatReference.type = 'T1w';
   opt.anatReference.session = 'retest';

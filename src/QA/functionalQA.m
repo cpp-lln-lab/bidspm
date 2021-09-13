@@ -29,31 +29,25 @@ function functionalQA(opt)
     return
   end
 
-  % if input has no opt, load the opt.mat file
-  if nargin < 1
-    opt = [];
-  end
-  opt = loadAndCheckOptions(opt);
+  opt.dir.input = opt.dir.preproc;
 
-  [BIDS, opt] = getData(opt);
-
-  fprintf(1, ' FUNCTIONAL: QUALITY CONTROL\n\n');
+  [BIDS, opt] = setUpWorkflow(opt, 'quality control: anatomical');
 
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     % get grey and white matter and csf tissue probability maps
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
-    TPMs = validationInputFile(anatDataDir, anatImage, 'rc[123]');
+    res = 'bold';
+    space = 'individual';
+    [greyMatter, whiteMatter, csf] = getTpmFilenames(BIDS, subLabel, res, space);
+    TPMs = char({greyMatter; whiteMatter; csf});
 
     % load metrics from anat QA
-    anatQA = spm_jsonread( ...
-                          fullfile( ...
-                                   anatDataDir,  ...
-                                   strrep(anatImage, '.nii', '_qa.json')));
+    anatQaMetrics = bids.query('data', query, 'suffix', 'qametrics');
+    anatQA = spm_jsonread(anatQaMetrics);
 
     [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
@@ -72,11 +66,10 @@ function functionalQA(opt)
                                                      runs{iRun}, ...
                                                      opt);
 
-        prefix = getPrefix('funcQA', opt);
         funcImage = validationInputFile(subFuncDataDir, fileName, prefix);
 
         % sanity check that all images are in the same space.
-        volumesToCheck = {funcImage; TPMs(1, :); TPMs(2, :); TPMs(3, :)};
+        volumesToCheck = {funcImage; greyMatter; whiteMatter; csf};
         spm_check_orientations(spm_vol(char(volumesToCheck)));
 
         fMRIQA = computeFuncQAMetrics(funcImage, TPMs, anatQA.avgDistToSurf, opt);
@@ -105,18 +98,23 @@ function functionalQA(opt)
                                            'Voltera', opt.QA.func.Voltera, ...
                                            'Radius', anatQA.avgDistToSurf);
 
+        p = bids.internal.parse_filename(funcImage);
+        p.use_schema = false;
+        p.entities.label = p.suffix;
+        p.suffix = 'qa';
+        p.ext = '.pdf';
         movefile( ...
                  fullfile(subFuncDataDir, 'spmup_QC.ps'), ...
-                 fullfile(subFuncDataDir, strrep(fileName, '.nii',  '_qa.ps')));
+                 spm_file(funcImage, 'filename', bids.create_filename(p)));
 
         confounds = load(outputFiles.design);
 
-        spm_save( ...
-                 fullfile( ...
-                          subFuncDataDir, ...
-                          strrep(fileName, ...
-                                 '_bold.nii',  ...
-                                 '_desc-confounds_regressors.tsv')), ...
+        p = bids.internal.parse_filename(funcImage);
+        p.use_schema = false;
+        p.entities.desc = 'confounds';
+        p.suffix = 'regressors';
+        p.ext = '.tsv';
+        spm_save(spm_file(funcImage, 'filename', bids.create_filename(p)), ...
                  confounds);
 
         delete(outputFiles.design);
@@ -128,7 +126,7 @@ function functionalQA(opt)
         % horrible hack to prevent the "abrupt" way spmup_volumecorr crashes
         % if nansum is not there
         if opt.QA.func.carpetPlot && exist('nansum', 'file') == 2
-          spmup_timeseriesplot(funcImage, TPMs(1, :), TPMs(2, :), TPMs(3, :), ...
+          spmup_timeseriesplot(funcImage, greyMatter, whiteMatter, csf, ...
                                'motion', 'on', ...
                                'nuisances', 'on', ...
                                'correlation', 'on', ...
@@ -147,14 +145,12 @@ function fMRIQA = computeFuncQAMetrics(funcImage, TPMs, avgDistToSurf, opt)
 
   [subFuncDataDir, fileName, ext] = spm_fileparts(funcImage);
 
-  prefix = getPrefix('funcQA', opt);
-
   fMRIQA.tSNR = spmup_temporalSNR( ...
                                   funcImage, ...
                                   {TPMs(1, :); TPMs(2, :); TPMs(3, :)}, ...
                                   'save');
 
-  realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, [fileName, ext]), prefix);
+  realignParamFile = getRealignParamFilename(fullfile(subFuncDataDir, [fileName, ext]), prefix);
   fMRIQA.meanFD = mean(spmup_FD(realignParamFile, avgDistToSurf));
 
 end

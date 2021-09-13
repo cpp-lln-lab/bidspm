@@ -6,9 +6,9 @@
 		nii = load_nii(NIFTI_file_name, [img_idx], [old_RGB24]);
 
 	img_idx is a numerical array of image indices along the temporal
-	axis, which is only available in NIFTI data. After you specify 
+	axis, which is only available in NIFTI data. After you specify
 	img_idx, only those images indexed by img_idx will be loaded. If
-	there is no img_idx or img_idx is empty, all available images 
+	there is no img_idx or img_idx is empty, all available images
 	will be loaded.
 
 	For RGB image, most people use RGB triple sequentially for each
@@ -127,4 +127,3 @@
 - Required files:
 
 	All files in this package.
-

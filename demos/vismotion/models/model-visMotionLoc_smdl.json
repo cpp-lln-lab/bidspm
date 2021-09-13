@@ -47,9 +47,9 @@
     {
       "Level": "dataset",
       "AutoContrasts": [
-        "trial_type.VisMot", 
-        "trial_type.VisStat", 
-        "VisMot_gt_VisStat", 
+        "trial_type.VisMot",
+        "trial_type.VisStat",
+        "VisMot_gt_VisStat",
         "VisStat_gt_VisMot"]
     }
   ]

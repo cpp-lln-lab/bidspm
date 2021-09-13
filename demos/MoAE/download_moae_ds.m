@@ -1,8 +1,16 @@
-function download_moae_ds(downloadData)
+function download_moae_ds(download_data, clean)
   %
   % (C) Copyright 2021 Remi Gau
 
-  if downloadData
+  if nargin < 1
+    download_data = true;
+  end
+
+  if nargin < 2
+    clean = false;
+  end
+
+  if download_data
 
     % URL of the data set to download
     URL = 'http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip';
@@ -10,7 +18,7 @@ function download_moae_ds(downloadData)
     working_directory = fileparts(mfilename('fullpath'));
 
     % clean previous runs
-    if exist(fullfile(working_directory, 'inputs'), 'dir')
+    if clean && exist(fullfile(working_directory, 'inputs'), 'dir')
       rmdir(fullfile(working_directory, 'inputs'), 's');
     end
 

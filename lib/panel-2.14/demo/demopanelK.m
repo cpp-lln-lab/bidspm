@@ -27,57 +27,57 @@ optional = true;
 
 for approach = [1 2]
 
-  % select figure
-  figure(approach);
+    % select figure
+    figure(approach);
 
-  % performance
-  ti(approach) = toc;
+    % performance
+    ti(approach) = toc;
 
-  %% (i)
+    %% (i)
 
-  % create a NxN grid in gcf. this is only necessary for
-  % panel - it is done implicitly when using subplot.
-  if approach == 1
-    p = panel();
-    p.pack(N, N);
-  end
-
-  %% (ii)
-
-  % plot into each panel in turn
-
-  for m = 1:N
-    for n = 1:N
-
-      % select one of the NxN grid of sub-panels
-      if approach == 1
-        p(m, n).select();
-      else
-        subplot(N, N, m + (n - 1) * N);
-      end
-
-      % optional, do some stuff
-      if optional
-
-        % plot some data
-        plot(randn(100, 1));
-
-        % you can use all the usual calls
-        xlabel('sample number');
-        ylabel('data');
-
-        % and so on - generally, you can treat the axis panel
-        % like any other axis
-        axis([0 100 -3 3]);
-
-      end
-
+    % create a NxN grid in gcf. this is only necessary for
+    % panel - it is done implicitly when using subplot.
+    if approach == 1
+        p = panel();
+        p.pack(N, N);
     end
-  end
 
-  % performance
-  drawnow;
-  tf(approach) = toc;
+    %% (ii)
+
+    % plot into each panel in turn
+
+    for m = 1:N
+        for n = 1:N
+
+            % select one of the NxN grid of sub-panels
+            if approach == 1
+                p(m, n).select();
+            else
+                subplot(N, N, m + (n - 1) * N);
+            end
+
+            % optional, do some stuff
+            if optional
+
+                % plot some data
+                plot(randn(100, 1));
+
+                % you can use all the usual calls
+                xlabel('sample number');
+                ylabel('data');
+
+                % and so on - generally, you can treat the axis panel
+                % like any other axis
+                axis([0 100 -3 3]);
+
+            end
+
+        end
+    end
+
+    % performance
+    drawnow;
+    tf(approach) = toc;
 
 end
 

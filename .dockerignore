@@ -1,0 +1,13 @@
+.vscode
+.git
+.github
+env
+demos/*/outputs/
+demos/*/inputs/
+demos/*/cfg/
+tests
+
+# ignoring this might speed up build
+# by preventing passing extra content to the docker daemon
+
+# lib

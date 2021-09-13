@@ -4,7 +4,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel, funcFWHM)
+  %   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -14,32 +14,36 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % :type opt: structure
   % :param subLabel:
   % :type subLabel: string
-  % :param funcFWHM:
-  % :type funcFWHM: float
   %
   % :returns: - :argout1: (structure) (matlabbatch)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  [matlabbatch, BIDS, opt, subLabel, funcFWHM] =  deal(varargin{:});
+  [matlabbatch, BIDS, opt, subLabel] =  deal(varargin{:});
 
-  printBatchName('specify subject level fmri model');
+  if ~isfield(BIDS, 'raw')
+    msg = sprintf(['Provide raw BIDS dataset path in opt.dir.raw .\n' ...
+                   'It is needed to load events.tsv files.\n']);
+    errorHandling(mfilename(), 'missingRawDir', msg, false, opt.verbosity);
+  end
+
+  printBatchName('specify subject level fmri model', opt);
 
   % Check the slice timing information is not in the metadata and not added
   % manually in the opt variable.
   % Necessary to make sure that the reference slice used for slice time
   % correction is the one we center our model on
-  sliceOrder = getSliceOrder(opt, 0);
+  sliceOrder = getSliceOrder(opt);
 
-  if isempty(sliceOrder)
+  if isempty(sliceOrder) && ~opt.dryRun
     % no slice order defined here so we fall back on using the number of
     % slice in the first bold image to set the number of time bins
     % we will use to upsample our model during regression creation
     fileName = bids.query(BIDS, 'data', ...
                           'sub', subLabel, ...
-                          'type', 'bold');
-    fileName = strrep(fileName{1}, '.gz', '');
-    hdr = spm_vol(fileName);
+                          'suffix', 'bold', ...
+                          'extension', '.nii');
+    hdr = spm_vol(fileName{1});
     % we are assuming axial acquisition here
     sliceOrder = 1:hdr(1).dim(3);
   end
@@ -66,11 +70,12 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   % Create ffxDir if it doesnt exist
   % If it exists, issue a warning that it has been overwritten
-  ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+  ffxDir = getFFXdir(subLabel, opt);
   if exist(ffxDir, 'dir') %
-    warning('overwriting directory: %s \n', ffxDir);
+    msg = sprintf('overwriting directory: %s \n', ffxDir);
+    errorHandling(mfilename(), 'overWritingDir', msg, true, opt.verbosity);
     rmdir(ffxDir, 's');
-    mkdir(ffxDir);
+    spm_mkdir(ffxDir);
   end
   matlabbatch{end}.spm.stats.fmri_spec.dir = {ffxDir};
 
@@ -101,31 +106,50 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     for iRun = 1:nbRuns
 
       % get functional files
-      [fullpathBoldFileName, prefix]  = ...
-          getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun);
+      fullpathBoldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
-      disp(fullpathBoldFileName);
+      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).scans = {fullpathBoldFileName};
 
-      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).scans = ...
-          {fullpathBoldFileName};
+      % TODO factor all the events stuff in a separate function.
 
-      % get stimuli onset time file
-      tsvFile = getInfo(BIDS, subLabel, opt, 'filename', ...
-                        sessions{iSes}, ...
-                        runs{iRun}, ...
-                        'events');
+      % get events file from raw data set and convert it to a onsets.mat file
+      % store in the subject level GLM directory
+      query = struct( ...
+                     'sub',  subLabel, ...
+                     'task', opt.taskName, ...
+                     'ses', sessions{iSes}, ...
+                     'run', runs{iRun}, ...
+                     'suffix', 'events', ...
+                     'extension', '.tsv');
+
+      tsvFile = bids.query(BIDS.raw, 'data', query);
+
+      if isempty(tsvFile)
+        msg = sprintf('No events.tsv file found in:\n\t%s\nfor query:%s\n', ...
+                      BIDS.raw.pth, ...
+                      createUnorderedList(query));
+        errorHandling(mfilename(), 'emptyInput', msg, false);
+      end
+
       fullpathOnsetFileName = createAndReturnOnsetFile(opt, ...
                                                        subLabel, ...
-                                                       tsvFile, ...
-                                                       funcFWHM);
+                                                       tsvFile);
 
       matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi = ...
           cellstr(fullpathOnsetFileName);
 
-      % get realignment parameters
-      realignParamFile = getRealignParamFile(fullpathBoldFileName, prefix);
-      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi_reg = ...
-          cellstr(realignParamFile);
+      % get confounds
+      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi_reg = {''};
+      confoundsRegFile = getConfoundsRegressorFilename(BIDS, ...
+                                                       opt, ...
+                                                       subLabel, ...
+                                                       sessions{iSes}, ...
+                                                       runs{iRun});
+      if ~isempty(confoundsRegFile)
+        counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, confoundsRegFile);
+        matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi_reg = ...
+            cellstr(counfoundMatFile);
+      end
 
       % multiregressor selection
       matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).regress = ...

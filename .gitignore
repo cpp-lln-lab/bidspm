@@ -8,6 +8,10 @@
 *.ps
 *.png
 
+*.mat
+
+.zenodo.json
+
 # Project specific
 options_task-*date*.json
 onsets*_events.mat
@@ -20,10 +24,17 @@ venv/*
 ## visual studio code
 .vscode
 
+## from running tests in root dir
+cfg/*
+group/*
+models/*
+
+# jupyter notebooks
+.ipynb_checkpoints
+
 ## MATLAB / OCTAVE gitignore template
 
 # From : https://github.com/github/gitignore/blob/master/Global/MATLAB.gitignore
-
 
 # Windows default autosave extension
 *.asv
@@ -56,5 +67,3 @@ codegen/
 
 # Octave session info
 octave-workspace
-
-

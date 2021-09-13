@@ -4,7 +4,7 @@ function saveOptions(opt)
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   saveOptions(opt)
   %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure

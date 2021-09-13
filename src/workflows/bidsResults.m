@@ -1,4 +1,4 @@
-function bidsResults(opt, funcFWHM, conFWHM)
+function matlabbatch = bidsResults(opt)
   %
   % Computes the results for a series of contrast that can be
   % specified at the run, subject or dataset step level (see contrast specification
@@ -6,27 +6,20 @@ function bidsResults(opt, funcFWHM, conFWHM)
   %
   % USAGE::
   %
-  %  bidsResults([opt], funcFWHM, conFWHM)
+  %  bidsResults(opt)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param funcFWHM: How much smoothing was applied to the functional
-  %                  data in the preprocessing (Gaussian kernel size).
-  % :type funcFWHM: scalar
-  % :param conFWHM: How much smoothing will be applied to the contrast
-  %                 images (Gaussian kernel size).
-  % :type conFWHM: scalar
   %
   %
+  % (C) Copyright 2020 CPP_SPM developers
+
   % TODO
   %
   %     move ps file
   %     rename NIDM file
   %     if it does not exist create the default "result" field from the BIDS model file
-  %
-  %
-  % (C) Copyright 2020 CPP_SPM developers
 
   currentDirectory = pwd;
 
@@ -48,7 +41,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
         warning('run level not implemented yet');
 
         % matlabbatch = {};
-        % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
+        % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subLabel);
 
       case 'subject'
 
@@ -59,7 +52,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
           subLabel = opt.subjects{iSub};
 
-          results.dir = getFFXdir(subLabel, funcFWHM, opt);
+          results.dir = getFFXdir(subLabel, opt);
 
           for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
 
@@ -68,7 +61,6 @@ function bidsResults(opt, funcFWHM, conFWHM)
                                             matlabbatch, ...
                                             opt, ...
                                             subLabel, ...
-                                            funcFWHM, ...
                                             iStep, ...
                                             iCon);
 
@@ -88,7 +80,7 @@ function bidsResults(opt, funcFWHM, conFWHM)
 
         matlabbatch = {};
 
-        results.dir = getRFXdir(opt, funcFWHM, conFWHM);
+        results.dir = getRFXdir(opt);
         results.contrastNb = 1;
         results.label = 'group';
 
@@ -118,10 +110,10 @@ function bidsResults(opt, funcFWHM, conFWHM)
 end
 
 function renameOutputResults(results)
-  % we create new name for the nifti oupput by removing the
+  % we create new name for the nifti output by removing the
   % spmT_XXXX prefix and using the XXXX as label- for the file
 
-  outputFiles = spm_select('FPList', results.dir, '^spmT_[0-9].*_sub-.*.nii$');
+  outputFiles = spm_select('FPList', results.dir, '^spmT_[0-9].*_sub-.*$');
 
   for iFile = 1:size(outputFiles, 1)
 
@@ -130,8 +122,9 @@ function renameOutputResults(results)
     basename = spm_file(source, 'basename');
     split = strfind(basename, '_sub');
     p = bids.internal.parse_filename(basename(split + 1:end));
-    p.label = basename(split - 4:split - 1);
-    newName = createFilename(p);
+    p.entities.label = basename(split - 4:split - 1);
+    p.use_schema = false;
+    newName = bids.create_filename(p);
 
     target = spm_file(source, 'basename', newName);
 

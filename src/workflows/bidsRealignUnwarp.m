@@ -15,28 +15,38 @@ function bidsRealignUnwarp(opt)
   % If the ``bidsCreateVDM()`` workflow has been run before the voxel displacement
   % maps will be used unless ``opt.useFieldmaps`` is set to ``false``.
   %
+  %
   % (C) Copyright 2020 CPP_SPM developers
+
+  opt.dir.input = opt.dir.preproc;
+  opt.query.modality = 'func';
 
   [BIDS, opt] = setUpWorkflow(opt, 'realign and unwarp');
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = {};
     [matlabbatch, ~] = setBatchRealign( ...
                                        matlabbatch, ...
                                        BIDS, ...
-                                       subLabel, ...
                                        opt, ...
+                                       subLabel, ...
                                        'realignUnwarp');
 
     saveAndRunWorkflow(matlabbatch, 'realign_unwarp', opt, subLabel);
 
-    copyFigures(BIDS, opt, subLabel);
+    if ~opt.dryRun
+      copyFigures(BIDS, opt, subLabel);
+    end
 
   end
+
+  prefix = get_spm_prefix_list();
+  opt.query.prefix = prefix.unwarp;
+  bidsRename(opt);
 
 end

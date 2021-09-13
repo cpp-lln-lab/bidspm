@@ -5,10 +5,6 @@
 clear;
 clc;
 
-% Smoothing to apply
-FWHM = 6;
-conFWHM = 6;
-
 run ../../initCppSpm.m;
 
 %% Set options
@@ -16,7 +12,9 @@ opt = ds000001_get_option();
 
 reportBIDS(opt);
 
-bidsCopyRawFolder(opt, 1);
+bidsCopyInputFolder(opt);
+
+bidsSegmentSkullStrip(opt);
 
 bidsSTC(opt);
 
@@ -26,14 +24,16 @@ anatomicalQA(opt);
 bidsResliceTpmToFunc(opt);
 functionalQA(opt);
 
-bidsSmoothing(FWHM, opt);
+bidsSmoothing(opt);
 
-bidsFFX('specifyAndEstimate', opt, FWHM);
-bidsFFX('contrasts', opt, FWHM);
-bidsResults(opt, FWHM);
+opt.pipeline.type = 'stats';
 
-bidsRFX('smoothContrasts', opt, FWHM, conFWHM);
-bidsRFX('RFX', opt, FWHM, conFWHM);
+bidsFFX('specifyAndEstimate', opt);
+bidsFFX('contrasts', opt);
+bidsResults(opt);
+
+bidsRFX('smoothContrasts', opt);
+bidsRFX('RFX', opt);
 
 % WIP: group level results
-% bidsResults(opt, FWHM);
+% bidsResults(opt);

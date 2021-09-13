@@ -1,46 +1,57 @@
-function [boldFileName, prefix] = getBoldFilenameForFFX(varargin)
+function boldFileName = getBoldFilenameForFFX(varargin)
   %
   % Gets the filename for this bold run for this task for the FFX setup
   % and check that the file with the right prefix exist
   %
   % USAGE::
   %
-  %   [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun)
+  %   boldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun)
   %
   % :param BIDS:
   % :type BIDS: structure
   % :param opt:
   % :type opt: structure
-  % :param subID:
-  % :type subID: string
-  % :param funcFWHM:
-  % :type funcFWHM: scalar
+  % :param subLabel:
+  % :type subLabel: string
   % :param iSes:
   % :type iSes: integer
   % :param iRun:
   % :type iRun: integer
   %
   % :returns: - :boldFileName: (string)
-  %           - :prefix: (srting)
   %
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  [BIDS, opt, subID, funcFWHM, iSes, iRun] =  deal(varargin{:});
+  [BIDS, opt, subLabel, iSes, iRun] =  deal(varargin{:});
 
-  sessions = getInfo(BIDS, subID, opt, 'Sessions');
+  opt.query.modality = 'func';
 
-  runs = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+  if opt.fwhm.func > 0
+    opt.query.desc = ['smth' num2str(opt.fwhm.func)];
+  else
+    opt.query.desc = 'preproc';
+  end
 
-  prefix = getPrefix('FFX', opt, funcFWHM);
+  % TODO refactor this acroos all functions
+  opt.query.space = opt.space;
+  if ismember('MNI', opt.query.space)
+    idx = strcmp(opt.query.space, 'MNI');
+    opt.query.space{idx} = 'IXI549Space';
+  end
 
-  [fileName, subFuncDataDir] = getBoldFilename( ...
-                                               BIDS, ...
-                                               subID, sessions{iSes}, runs{iRun}, opt);
+  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
 
-  boldFileName = validationInputFile( ...
-                                     subFuncDataDir, ...
-                                     fileName, ...
-                                     prefix);
+  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
+
+  [boldFilename, subFuncDataDir] = getBoldFilename( ...
+                                                   BIDS, ...
+                                                   subLabel, sessions{iSes}, runs{iRun}, opt);
+
+  if size(boldFilename, 1) > 1
+    errorHandling(mfilename(), 'tooManyFiles', 'This should only get one file.', false, true);
+  end
+
+  boldFileName = fullfile(subFuncDataDir, boldFilename);
 
 end

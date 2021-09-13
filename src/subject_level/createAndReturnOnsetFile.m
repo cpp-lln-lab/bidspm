@@ -1,4 +1,4 @@
-function onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM)
+function onsetFileName = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   %
   % Creates an ``_onset.mat`` in the subject level GLM folder.
   %
@@ -10,29 +10,30 @@ function onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM)
   %
   % USAGE::
   %
-  %   onsetFileName = createAndReturnOnsetFile(opt, subID, tsvFile, funcFWHM)
+  %   onsetFileName = createAndReturnOnsetFile(opt, subLabel, tsvFile, funcFWHM)
   %
   % :param opt:
   % :type opt: structure
-  % :param subID:
-  % :type subID: string
+  % :param subLabel:
+  % :type subLabel: string
   % :param tsvFile: fullpath name of the tsv file.
   % :type tsvFile: string
-  % :param funcFWHM: size of the FWHM gaussian kernel used to the subject level
-  %                  GLM. Necessary for the GLM directory.
-  % :type funcFWHM: float
   %
   % :returns: :onsetFileName: (string) fullpath name of the file created.
   %
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  if iscell(tsvFile)
+    tsvFile = tsvFile{1};
+  end
+
   onsetFileName = convertOnsetTsvToMat(opt, tsvFile);
 
   % move file into the FFX directory
   [~, filename, ext] = spm_fileparts(onsetFileName);
-  ffxDir = getFFXdir(subID, funcFWHM, opt);
-  copyfile(onsetFileName, ffxDir);
+  ffxDir = getFFXdir(subLabel, opt);
+  movefile(onsetFileName, ffxDir);
 
   onsetFileName = fullfile(ffxDir, [filename ext]);
 

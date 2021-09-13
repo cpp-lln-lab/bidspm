@@ -5,7 +5,7 @@ Manual coregistration
 
 ----
 
-.. automodule:: src.QA 
+.. automodule:: src.QA
 
 .. autofunction:: anatomicalQA
 .. autofunction:: functionalQA

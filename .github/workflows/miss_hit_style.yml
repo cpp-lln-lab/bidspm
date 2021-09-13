@@ -28,8 +28,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip setuptools
         pip3 install -r requirements.txt
+        cd tests
+        make data
 
     - name: MISS_HIT Code style
       run: |
         mh_style
-

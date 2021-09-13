@@ -1,14 +1,13 @@
+% This script runs preprocessing with different final spatial resolution in MNI space
+% It then runs the subject level GLMs
+%
+% This can show how to script several analysis within the CPP_SPM framework
+%
 % (C) Copyright 2019 Remi Gau
-%
-%
-% runs preprocessing with different final spatial resolution in MNI space
-%
 
 clear;
 clc;
 close all;
-
-FWHM = 6;
 
 downloadData = true;
 
@@ -26,22 +25,26 @@ if downloadData
 end
 
 %% Run batches
-
-reportBIDS(opt);
+% reportBIDS(opt);
 
 modelFile = opt.model.file;
 
-for iResolution = 1:0.5:3
+for iResolution = 1:1:3
 
+  opt.pipeline.type = 'preproc';
+  opt.pipeline.name = ['cpp_spm-res' num2str(iResolution)];
+
+  % set the final output resolution
   opt.funcVoxelDims = repmat(iResolution, 1, 3);
 
-  opt.derivativesDir = spm_file( ...
-                                fullfile(opt.dataDir, ...
-                                         '..', ...
-                                         'derivatives', ...
-                                         ['cpp_spm-res' num2str(iResolution)]), 'cpath');
+  opt.dir.preproc = spm_file( ...
+                             fullfile(opt.dir.raw, ...
+                                      '..', ...
+                                      'derivatives', ...
+                                      opt.pipeline.name), ...
+                             'cpath');
 
-  % create a new BIDS model json file
+  %% create a new BIDS model json file
   % this way the GLM output will be store in a different directory for each
   % resolution as the name of the GLM directory is based on the name of the
   % model in the BIDS model
@@ -49,14 +52,14 @@ for iResolution = 1:0.5:3
   content.Name = [content.Name, ' resolution - ', num2str(iResolution)];
 
   p = bids.internal.parse_filename(modelFile);
-  p.model = [p.model, ' resolution', num2str(iResolution)];
+  p.entities.model = [p.entities.model, ' resolution', num2str(iResolution)];
   newModel = spm_file(opt.model.file, 'filename', createFilename(p));
   opt.model.file = newModel;
 
   spm_jsonwrite(newModel, content, struct('indent', '   '));
 
   % run analysis
-  bidsCopyRawFolder(opt, 1);
+  bidsCopyInputFolder(opt);
 
   bidsSTC(opt);
 
@@ -64,17 +67,21 @@ for iResolution = 1:0.5:3
 
   bidsSmoothing(FWHM, opt);
 
-  bidsFFX('specifyAndEstimate', opt, FWHM);
-  bidsFFX('contrasts', opt, FWHM);
+  opt.pipeline.type = 'stats';
+  opt.pipeline.name = ['cpp_spm-stats-res' num2str(iResolution)];
+  opt = checkOptions(opt);
+
+  bidsFFX('specifyAndEstimate', opt);
+  bidsFFX('contrasts', opt);
 
   % specify underlay image
   subLabel = '01';
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
   [~, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
   opt.result.Steps(1).Output.montage.background = spm_select('FPList', ...
                                                              anatDataDir, ...
-                                                             '^wm.*.nii$');
+                                                             '^wm.*desc-skullstripped.*.nii$');
 
-  bidsResults(opt, FWHM);
+  bidsResults(opt);
 
 end

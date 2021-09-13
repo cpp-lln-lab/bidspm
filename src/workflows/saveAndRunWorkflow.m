@@ -4,7 +4,7 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   %
   % USAGE::
   %
-  %   saveAndRunWorkflow(matlabbatch, batchName, opt, [subID])
+  %   saveAndRunWorkflow(matlabbatch, batchName, opt, [subLabel])
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
@@ -13,8 +13,8 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions`` and ``loadAndCheckOptions``.
   % :type opt: structure
-  % :param subID: subject ID
-  % :type subID: string
+  % :param subLabel: subject label
+  % :type subLabel: string
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -26,10 +26,16 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
 
     saveMatlabBatch(matlabbatch, batchName, opt, subLabel);
 
-    spm_jobman('run', matlabbatch);
+    if ~opt.dryRun
+      spm_jobman('run', matlabbatch);
+    end
 
   else
-    warning('This batch is empty and will not be run.');
+    errorHandling(mfilename(), ...
+                  'emptyBatch', ...
+                  'This batch is empty & will not be run.', ...
+                  true, ...
+                  opt.verbosity);
 
   end
 

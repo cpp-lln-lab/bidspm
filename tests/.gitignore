@@ -1,5 +1,13 @@
 # test folder and dummy data
+
+bids-examples
+openneuro
+
 *.png
+
 */*.json
-group/*
-dummyData/derivatives/cpp_spm*/sub-*/
+
+dummyData/derivatives/cpp_spm-preproc/jobs
+dummyData/derivatives/cpp_spm-preproc/sub*
+dummyData/derivatives/cpp_spm-stats/sub*
+dummyData/derivatives/cpp_spm-roi

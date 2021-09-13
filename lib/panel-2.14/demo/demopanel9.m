@@ -30,61 +30,61 @@ p(2).pack(6, 2);
 
 % data set 1
 for m = 1:3
-  for n = 1:2
+    for n = 1:2
 
-    % prepare sample data
-    t = (0:99) / 100;
-    s1 = sin(t * 2 * pi * m);
-    s2 = sin(t * 2 * pi * n * 2);
+        % prepare sample data
+        t = (0:99) / 100;
+        s1 = sin(t * 2 * pi * m);
+        s2 = sin(t * 2 * pi * n * 2);
 
-    % select axis
-    p(1, 1, m, n).select();
+        % select axis
+        p(1, 1, m, n).select();
 
-    % NB: an alternative way of accessing
-    % q = p(1, 1);
-    % q(m, n).select();
+        % NB: an alternative way of accessing
+        % q = p(1, 1);
+        % q(m, n).select();
 
-    % plot
-    plot(t, s1, 'r', 'linewidth', 1);
-    hold on;
-    plot(t, s2, 'b', 'linewidth', 1);
-    plot(t, s1 + s2, 'k', 'linewidth', 1);
+        % plot
+        plot(t, s1, 'r', 'linewidth', 1);
+        hold on;
+        plot(t, s2, 'b', 'linewidth', 1);
+        plot(t, s1 + s2, 'k', 'linewidth', 1);
 
-    % finalise axis
-    axis([0 1 -2.2 2.2]);
-    set(gca, 'xtick', [], 'ytick', []);
+        % finalise axis
+        axis([0 1 -2.2 2.2]);
+        set(gca, 'xtick', [], 'ytick', []);
 
-  end
+    end
 end
 
 % data set 2
 source = 'XYZXYZ';
 
 for m = 1:6
-  for n = 1:2
+    for n = 1:2
 
-    % select axis
-    p(2, m, n).select();
+        % select axis
+        p(2, m, n).select();
 
-    % prepare sample data
-    data = randn(100, 1) * 0.4;
+        % prepare sample data
+        data = randn(100, 1) * 0.4;
 
-    % do stats
-    stats = [];
-    stats.source = source(m);
-    stats.binrange = [-1 1];
-    stats.xtick = [-0.8:0.4:0.8];
-    stats.ytick = [0 20 40];
-    stats.bincens = -0.9:0.2:0.9;
-    stats.values = data;
-    stats.freq = hist(data, stats.bincens);
-    stats.percfreq = stats.freq / length(data) * 100;
-    stats.percpeak = 30;
+        % do stats
+        stats = [];
+        stats.source = source(m);
+        stats.binrange = [-1 1];
+        stats.xtick = [-0.8:0.4:0.8];
+        stats.ytick = [0 20 40];
+        stats.bincens = -0.9:0.2:0.9;
+        stats.values = data;
+        stats.freq = hist(data, stats.bincens);
+        stats.percfreq = stats.freq / length(data) * 100;
+        stats.percpeak = 30;
 
-    % plot
-    demopanel_minihist(stats, m == 6, n == 1);
+        % plot
+        demopanel_minihist(stats, m == 6, n == 1);
 
-  end
+    end
 end
 
 % data set 3

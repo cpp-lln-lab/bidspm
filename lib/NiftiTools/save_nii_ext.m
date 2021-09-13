@@ -10,27 +10,27 @@
 %
 function save_nii_ext(ext, fid)
 
-  if ~exist('ext', 'var') || ~exist('fid', 'var')
-    error('Usage: save_nii_ext(ext, fid)');
-  end
+    if ~exist('ext', 'var') || ~exist('fid', 'var')
+        error('Usage: save_nii_ext(ext, fid)');
+    end
 
-  if ~isfield(ext, 'extension') || ~isfield(ext, 'section') || ~isfield(ext, 'num_ext')
-    error('Wrong header extension');
-  end
+    if ~isfield(ext, 'extension') || ~isfield(ext, 'section') || ~isfield(ext, 'num_ext')
+        error('Wrong header extension');
+    end
 
-  write_ext(ext, fid);
+    write_ext(ext, fid);
 
-  return                                       % save_nii_ext
+    return                                       % save_nii_ext
 
-  % ---------------------------------------------------------------------
+    % ---------------------------------------------------------------------
 function write_ext(ext, fid)
 
-  fwrite(fid, ext.extension, 'uchar');
+    fwrite(fid, ext.extension, 'uchar');
 
-  for i = 1:ext.num_ext
-    fwrite(fid, ext.section(i).esize, 'int32');
-    fwrite(fid, ext.section(i).ecode, 'int32');
-    fwrite(fid, ext.section(i).edata, 'uchar');
-  end
+    for i = 1:ext.num_ext
+        fwrite(fid, ext.section(i).esize, 'int32');
+        fwrite(fid, ext.section(i).ecode, 'int32');
+        fwrite(fid, ext.section(i).edata, 'uchar');
+    end
 
-  return                                       % write_ext
+    return                                       % write_ext

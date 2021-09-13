@@ -1,4 +1,4 @@
-function bidsSpatialPrepro(opt)
+function matlabbatch = bidsSpatialPrepro(opt)
   %
   % Performs spatial preprocessing of the functional and structural data.
   %
@@ -15,12 +15,15 @@ function bidsSpatialPrepro(opt)
   % The functional data are re-aligned (unwarped), coregistered with the structural,
   % the anatomical data is skull-stripped [and normalized to MNI space].
   %
-  % If you do not want to:
+  % Assumes that ``bidsSTC()`` has already been run if ``opt.stc.skip`` is not set
+  % to ``true``.
   %
-  % - to perform realign AND unwarp, make sure you set
-  %   ``opt.realign.useUnwarp`` to ``true``.
-  % - normalize the data to MNI space, make sure you set
-  %   ``opt.space`` to ``MNI``.
+  % If you want to:
+  %
+  % - only do realign and not realign AND unwarp, make sure you set
+  %   ``opt.realign.useUnwarp`` to ``false``.
+  % - normalize the data to MNI space, make sure
+  %   ``opt.space`` includes ``MNI``.
   %
   % If you want to:
   %
@@ -31,11 +34,13 @@ function bidsSpatialPrepro(opt)
   %     opt.anatReference.type = 'T1w';
   %     opt.anatReference.session = 1;
   %
-  % .. TODO:
-  %
-  %  - average T1s across sessions if necessarry
   %
   % (C) Copyright 2019 CPP_SPM developers
+
+  %  TODO:
+  %  - average T1s across sessions if necessarry
+
+  opt.dir.input = opt.dir.preproc;
 
   [BIDS, opt] = setUpWorkflow(opt, 'spatial preprocessing');
 
@@ -43,9 +48,6 @@ function bidsSpatialPrepro(opt)
   opt.orderBatches.realign = 2;
   opt.orderBatches.coregister = 3;
   opt.orderBatches.saveCoregistrationMatrix = 4;
-  opt.orderBatches.segment = 5;
-  opt.orderBatches.skullStripping = 6;
-  opt.orderBatches.skullStrippingMask = 7;
 
   for iSub = 1:numel(opt.subjects)
 
@@ -53,7 +55,7 @@ function bidsSpatialPrepro(opt)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);
 
@@ -62,36 +64,90 @@ function bidsSpatialPrepro(opt)
     if ~opt.realign.useUnwarp
       action = 'realign';
     end
-    [matlabbatch, voxDim] = setBatchRealign(matlabbatch, action, BIDS, opt, subLabel);
+    [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel, action);
 
     % dependency from file selector ('Anatomical')
     matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
 
     matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel);
 
-    % dependency from file selector ('Anatomical')
-    matlabbatch = setBatchSegmentation(matlabbatch, opt);
+    % Skip segmentation and skullstripping if done previously
+    anatFile = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1};
+    anatFile = bids.internal.parse_filename(anatFile);
+    filter = anatFile.entities;
+    filter.modality = 'anat';
 
-    matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
+    filter.suffix = anatFile.suffix;
+    filter.desc = 'biascor';
+    biasCorrectedImage = bids.query(BIDS, 'data', filter);
 
-    if strcmp(opt.space, 'MNI')
+    filter.suffix = 'probseg';
+    filter = rmfield(filter, 'desc');
+    tpm = bids.query(BIDS, 'data', filter);
+
+    doSegmentAndSkullstrip = opt.segment.force || isempty(tpm) || isempty(biasCorrectedImage);
+
+    if doSegmentAndSkullstrip
+      opt.orderBatches.segment = 5;
+      opt.orderBatches.skullStripping = 6;
+      opt.orderBatches.skullStrippingMask = 7;
+      matlabbatch = setBatchSegmentation(matlabbatch, opt);
+      matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
+    end
+
+    if ismember('MNI', opt.space)
       % dependency from segmentation
       % dependency from coregistration
-      matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim);
+      matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt, voxDim);
     end
 
-    % if no unwarping was done on func, we reslice the func, so we can use
-    % them for the functionalQA
+    % if no unwarping was done on func, we reslice the func,
+    % so we can use them later
     if ~opt.realign.useUnwarp
-      matlabbatch = setBatchRealign(matlabbatch, 'reslice', BIDS, opt, subLabel);
+      matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subLabel, 'reslice');
     end
 
-    batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];
+    batchName = ['spatial_preprocessing-' strjoin(opt.space, '-')];
 
     saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
+    % clean up and rename files
     copyFigures(BIDS, opt, subLabel);
 
+    opt = set_spm_2_bids_defaults(opt);
+
+    if ~opt.dryRun
+
+      % convert realignment files to confounds.tsv
+      % and rename a few non-bidsy file
+      rpFiles = spm_select('FPListRec', ...
+                           fullfile(BIDS.pth, ['sub-' subLabel]), ...
+                           ['^rp_.*sub-' subLabel '.*_task-' opt.taskName '.*_bold.txt$']);
+      for iFile = 1:size(rpFiles, 1)
+        rmInput = true;
+        convertRealignParamToTsv(rpFiles(iFile, :), opt, rmInput);
+      end
+
+      renameSegmentParameter(BIDS, subLabel, opt);
+      renameUnwarpParameter(BIDS, subLabel, opt);
+    end
+
   end
+
+  % TODO adapt spm_2_bids map to rename eventual files
+  % that only have a "r" or "ra" prefix
+
+  opt.query =  struct('modality', {{'anat', 'func'}});
+
+  if ~opt.realign.useUnwarp
+    opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
+                                                'name_spec', opt.spm_2_bids.cfg.preproc);
+
+    opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', [opt.spm_2_bids.realign 'mean'], ...
+                                                'name_spec', opt.spm_2_bids.cfg.preproc);
+    opt.spm_2_bids = opt.spm_2_bids.flatten_mapping();
+  end
+
+  bidsRename(opt);
 
 end

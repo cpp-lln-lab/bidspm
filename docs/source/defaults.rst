@@ -5,7 +5,7 @@ Defaults of the pipeline.
 
 ----
 
-.. automodule:: src.defaults 
+.. automodule:: src.defaults
 
 checkOptions
 ============
@@ -32,4 +32,7 @@ pipeline.
 
 .. autofunction:: spm_my_defaults
 
+spm to BIDS filename conversion
+===============================
 
+.. autofunction:: set_spm_2_bids_defaults

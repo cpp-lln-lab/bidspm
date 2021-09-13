@@ -4,7 +4,7 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subID)
+  %   matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -19,17 +19,31 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('saving coregistration matrix');
+  printBatchName('saving coregistration matrix', opt);
 
-  % create name of the output file based on the name of the first image of the
-  % first session
+  % create name of the output file based on the name
+  % of the first image of the first session
+  opt.query.desc = '';
+  opt = addStcToQuery(opt);
+
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
   runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});
+
   [fileName, subFuncDataDir] = getBoldFilename( ...
                                                BIDS, ...
                                                subLabel, sessions{1}, runs{1}, opt);
+  p = bids.internal.parse_filename(fileName);
+  p.use_schema = false;
+  p.suffix = 'xfm';
+  p.ext = '.mat';
+  p.entities.desc = '';
+  p.entities.space = '';
+  p.entities.run = '';
+  p.entities.from = 'scanner';
+  p.entities.to = opt.anatReference.type;
+  p.entities.mode = 'image';
 
-  fileName = strrep(fileName, '_bold.nii', '_from-scanner_to-T1w_mode-image_xfm.mat');
+  fileName = bids.create_filename(p);
 
   matlabbatch{end + 1}.cfg_basicio.var_ops.cfg_save_vars.name = fileName;
   matlabbatch{end}.cfg_basicio.var_ops.cfg_save_vars.outdir = {subFuncDataDir};
@@ -38,11 +52,7 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   matlabbatch{end}.cfg_basicio.var_ops.cfg_save_vars.vars.vcont(1) = ...
       cfg_dep( ...
               'Coregister: Estimate: Coregistration Matrix', ...
-              substruct( ...
-                        '.', 'val', '{}', {opt.orderBatches.coregister}, ...
-                        '.', 'val', '{}', {opt.orderBatches.coregister}, ...
-                        '.', 'val', '{}', {opt.orderBatches.coregister}, ...
-                        '.', 'val', '{}', {opt.orderBatches.coregister}), ...
+              returnDependency(opt, 'coregister'), ...
               substruct('.', 'M'));
 
   matlabbatch{end}.cfg_basicio.var_ops.cfg_save_vars.saveasstruct = false;

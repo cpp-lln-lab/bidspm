@@ -26,16 +26,17 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   tsvFile = validationInputFile(pth, [file, ext]);
 
   % Read the tsv file
-  fprintf('reading the tsv file : %s \n', tsvFile);
+  msg = sprintf('reading the tsv file : %s \n', tsvFile);
+  printToScreen(msg, opt);
   t = spm_load(tsvFile);
 
   if ~isfield(t, 'trial_type')
 
-    errorStruct.identifier = 'convertOnsetTsvToMat:noTrialType';
-    errorStruct.message = sprintf('%s\n%s', ...
-                                  'There was no trial_type field in this file:', ...
-                                  tsvFile);
-    error(errorStruct);
+    msg = sprintf('%s\n%s', ...
+                  'There was no trial_type field in this file:', ...
+                  tsvFile);
+    id = 'noTrialType';
+    errorHandling(mfilename(), id, msg, false, opt.verbosity);
 
   end
 
@@ -44,19 +45,9 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
 
   % identify where the conditions to include that are specificed
   % in the run step of the model file
-  model = spm_jsonread(opt.model.file);
+  X = getBidsDesignMatrix(opt.model.file, 'run');
 
-  for runIdx = 1:numel(model.Steps)
-    step = model.Steps(runIdx);
-    if iscell(step)
-      step = step{1};
-    end
-    if strcmp(step.Level, 'run')
-      break
-    end
-  end
-
-  isTrialType = strfind(step.Model.X, 'trial_type.');
+  isTrialType = strfind(X, 'trial_type.');
 
   % create empty cell to be filled in according to the conditions present in each run
   names = {};
@@ -68,7 +59,7 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
 
     if isTrialType{iCond}
 
-      conditionName = strrep(step.Model.X{iCond}, ...
+      conditionName = strrep(X{iCond}, ...
                              'trial_type.', ...
                              '');
 
@@ -82,7 +73,9 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
         onsets{1, end + 1} = t.onset(idx)'; %#ok<*AGROW,*NASGU>
         durations{1, end + 1} = t.duration(idx)';
       else
-        warning('No trial found for trial type %s in \n%s', conditionName, tsvFile);
+        msg = sprintf('No trial found for trial type %s in \n%s', conditionName, tsvFile);
+        id = 'emptyTrialType';
+        errorHandling(mfilename(), id, msg, true, opt.verbosity);
       end
 
     end
@@ -92,11 +85,11 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   [pth, file] = spm_fileparts(tsvFile);
 
   p = bids.internal.parse_filename(file);
-  p.space = opt.space;
-  p.type = 'onsets';
+  p.suffix = 'onsets';
   p.ext = '.mat';
+  p.use_schema = false;
 
-  fullpathOnsetFileName = fullfile(pth, createFilename(p));
+  fullpathOnsetFileName = fullfile(pth, bids.create_filename(p));
 
   save(fullpathOnsetFileName, ...
        'names', 'onsets', 'durations', ...

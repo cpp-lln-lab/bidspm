@@ -16,43 +16,56 @@ function anatomicalQA(opt)
     return
   end
 
-  % if input has no opt, load the opt.mat file
-  if nargin < 1
-    opt = [];
-  end
-  opt = loadAndCheckOptions(opt);
+  opt.dir.input = opt.dir.preproc;
 
-  [BIDS, opt] = getData(opt);
+  [BIDS, opt] = setUpWorkflow(opt, 'quality control: anatomical');
 
-  fprintf(1, ' ANATOMICAL: QUALITY CONTROL\n\n');
-
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub}; %#ok<*PFBNS>
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    % get bias corrected image
+    opt.query.desc = 'biascor';
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
+    anatImage = fullfile(anatDataDir, anatImage);
 
-    % get grey and white matter tissue probability maps
-    TPMs = validationInputFile(anatDataDir, anatImage, 'c[12]');
+    [gm, wm] = getTpmFilename(BIDS, subLabel);
 
     % sanity check that all images are in the same space.
-    anatImage = fullfile(anatDataDir, anatImage);
-    volumesToCheck = {anatImage; TPMs(1, :); TPMs(2, :)};
+    volumesToCheck = {anatImage; gm; wm};
     spm_check_orientations(spm_vol(char(volumesToCheck)));
 
     % Basic QA for anatomical data is to get SNR, CNR, FBER and Entropy
     % This is useful to check coregistration worked fine
-    anatQA = spmup_anatQA(anatImage, TPMs(1, :), TPMs(2, :)); %#ok<*NASGU>
+    anatQA = spmup_anatQA(anatImage, gm,  wm); %#ok<*NASGU>
 
     anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
 
+    %% rename output to make it BIDS friendly
+    p = bids.internal.parse_filename(anatImage);
+    p.entities.label = p.suffix;
+    p.suffix = 'qametrics';
+    p.ext = '.json';
+    p.use_schema = false;
     spm_jsonwrite( ...
-                  strrep(anatImage, '.nii', '_qa.json'), ...
+                  fullfile(anatDataDir, bids.create_filename(p)), ...
                   anatQA, ...
                   struct('indent', '   '));
 
+    p = bids.internal.parse_filename(anatImage);
+    p.entities.label = p.suffix;
+    p.suffix = 'mask';
+    p.ext = '.pdf';
+    p.use_schema = false;
+    movefile(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_AnatQC.pdf']), ...
+             fullfile(anatDataDir,  bids.create_filename(p)));
+
+    delete(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
+
   end
+
+  bidsRename(opt);
 
 end

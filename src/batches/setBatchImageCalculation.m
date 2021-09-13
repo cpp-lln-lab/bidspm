@@ -1,5 +1,5 @@
 function matlabbatch = setBatchImageCalculation(varargin)
-  %
+
   % Set a batch for a image calculation
   %
   % USAGE::
@@ -37,8 +37,6 @@ function matlabbatch = setBatchImageCalculation(varargin)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  printBatchName('image calculation');
-
   allowedDataType = {'uint8', ...
                      'int16', ...
                      'int32', ...
@@ -53,6 +51,7 @@ function matlabbatch = setBatchImageCalculation(varargin)
   p = inputParser;
 
   addRequired(p, 'matlabbatch', @iscell);
+  addRequired(p, 'opt', @isstruct);
   addRequired(p, 'input');
   addRequired(p, 'output', @ischar);
   addRequired(p, 'outDir', @ischar);
@@ -62,11 +61,13 @@ function matlabbatch = setBatchImageCalculation(varargin)
   parse(p, varargin{:});
 
   if ~ismember(p.Results.dataType, allowedDataType)
-    fprintf(1, '\t%s\n', string(allowedDataType));
+    list = createUnorderedList(allowedDataType);
     errorStruct.identifier = [mfilename ':invalidDatatype'];
-    errorStruct.message = 'dataType must be one of the type mentionned above.';
+    errorStruct.message = sprintf('dataType must be one of the those types:%s', list);
     error(errorStruct);
   end
+
+  printBatchName('image calculation', p.Results.opt);
 
   imcalc.input = p.Results.input;
   imcalc.output = p.Results.output;
