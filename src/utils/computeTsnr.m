@@ -1,15 +1,19 @@
-function volTsnr = computeTsnr(boldImage)
+function [tsnrImage, volTsnr] = computeTsnr(boldImage)
   %
   % calculate temporal SNR from single run of fMRI timeseries data
   %
   % USAGE::
   %
-  %   function stats = computeTsnr(boldImage)
+  %   [tsnrImage, volTsnr] = computeTsnr(boldImage)
   %
   % Adapted from fmrwhy:
   % https://github.com/jsheunis/fMRwhy/blob/master/fmrwhy/qc/fmrwhy_qc_calculateStats.m
   %
   % Copyright 2019 Stephan Heunis
+
+  if iscell(boldImage)
+    boldImage =  char(boldImage);
+  end
 
   % First access and reshape the functional data: 4D to 2D
   hdr = spm_vol(boldImage);
@@ -32,6 +36,19 @@ function volTsnr = computeTsnr(boldImage)
 
   % Prepare 3D and 4D images
   volTsnr = reshape(tSNR_2D, Nx, Ny, Nz);
+
+  pth = spm_fileparts(boldImage);
+  tsnrImage = bids.internal.parse_filename(boldImage);
+  tsnrImage.entities.desc = 'tsnr';
+  tsnrImage = bids.create_filename(tsnrImage);
+  tsnrImage = fullfile(pth, tsnrImage);
+
+  hdr = hdr(1);
+  hdr.fname = tsnrImage;
+  hdr.size = size(volTsnr);
+  hdr.descrip = 'tSNR';
+
+  spm_write_vol(hdr, volTsnr);
 
 end
 
