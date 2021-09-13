@@ -52,6 +52,7 @@ function outData = rmLowFreq(data, order)
 
   % Define variables
   [r, c] = size(data);
+
   % Create design matrix with model regressors
   if order == 1
     X = (1:r)';
@@ -60,10 +61,13 @@ function outData = rmLowFreq(data, order)
   end
   % Remove mean from design matrix
   X = X - repmat(mean(X, 1), r, 1);
+
   % Add constant regressor
   X = [ones(r, 1) X];
+
   % Solve system of linear equations
   b = pinv(X) * data;
+
   % Detrend data
   outData = data - X(:, 2:end) * b(2:end, :);
 
