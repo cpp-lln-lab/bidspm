@@ -5,11 +5,12 @@
 [![Documentation Status: stable](https://readthedocs.org/projects/cpp_spm/badge/?version=stable)](https://cpp_spm.readthedocs.io/en/stable/?badge=stable)
 
 **Code quality and style**
-[![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/actions)
+
+[![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_SPM/actions)
 ![](https://github.com/cpp-lln-lab/CPP_SPM/workflows/CI/badge.svg)
 
 **Unit tests and coverage**
-[![codecov](https://codecov.io/gh/Remi-Gau/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/Remi-Gau/CPP_SPM)
+[![codecov](https://codecov.io/gh/cpp-lln-lab/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/cpp-lln-lab/CPP_SPM)
 
 **How to cite**
 
@@ -57,8 +58,8 @@ initCppSpm()
 ```
 
 Please see our
-[documentation](https://cpp-spm.readthedocs.io/en/latest/index.html) for more
-detailed instructions.
+[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for
+more detailed instructions.
 
 ### Dependencies
 
@@ -106,8 +107,8 @@ This can perform:
 The core functions are in the `src` folder.
 
 Please see our
-[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
-info.
+[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for
+more info.
 
 ## Octave compatibility
 
