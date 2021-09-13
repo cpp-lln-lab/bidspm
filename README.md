@@ -32,8 +32,6 @@ This is a set of functions to MRI analysis on a
 
 ## Installation
 
-<!-- TODO -->
-
 We strongly recommend using the CPP fMRI analysis template repository (INSERT
 URL) to use CPP_SPM.
 
@@ -42,7 +40,7 @@ Download this repository and unzip the content where you want to install it.
 Or clone the repo.
 
 ```bash
-git clone https://github.com/cpp-lln-lab/CPP_SPM.git
+git clone --recurse-submodule https://github.com/cpp-lln-lab/CPP_SPM.git
 ```
 
 Fire up Octave or Matlab and type
@@ -51,10 +49,10 @@ Fire up Octave or Matlab and type
 
 cd CPP_SPM
 
-% Th following adds the relevant folders to your path.
+% The following adds the relevant folders to your path.
 % This needs to be done once per session (your path will not be saved)
 
-initCppSpm
+initCppSpm()
 
 ```
 
