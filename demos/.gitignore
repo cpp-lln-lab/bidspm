@@ -2,7 +2,4 @@
 */outputs/
 */inputs/
 */*.nii
-*/cfg/*.json
-
-
-MoAE/spm_moae_fmriprep
+*/cfg
