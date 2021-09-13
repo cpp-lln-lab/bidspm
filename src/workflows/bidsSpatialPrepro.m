@@ -47,9 +47,9 @@ function bidsSpatialPrepro(opt)
   opt.orderBatches.skullStripping = 6;
   opt.orderBatches.skullStrippingMask = 7;
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
-    matlabbatch = [];
+    matlabbatch = {};
 
     subLabel = opt.subjects{iSub};
 

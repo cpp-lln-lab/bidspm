@@ -2,17 +2,15 @@
 
 **Documentation**
 
-[![Documentation Status: stable](https://readthedocs.org/projects/cpp-bids-spm/badge/?version=stable)](https://cpp-bids-spm.readthedocs.io/en/stable/?badge=stable)
+[![Documentation Status: stable](https://readthedocs.org/projects/cpp_spm/badge/?version=stable)](https://cpp_spm.readthedocs.io/en/stable/?badge=stable)
 
 **Code quality and style**
 
-[![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/actions)
-![](https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/workflows/CI/badge.svg)
+[![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_SPM/actions)
+![](https://github.com/cpp-lln-lab/CPP_SPM/workflows/CI/badge.svg)
 
 **Unit tests and coverage**
-
-[![Build Status](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline.svg?branch=master)](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline)
-[![codecov](https://codecov.io/gh/Remi-Gau/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/Remi-Gau/CPP_SPM)
+[![codecov](https://codecov.io/gh/cpp-lln-lab/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/cpp-lln-lab/CPP_SPM)
 
 **How to cite**
 
@@ -62,7 +60,7 @@ initCppSpm
 ```
 
 Please see our
-[documentation](https://cpp-bids-spm.readthedocs.io/en/latest/index.html) for
+[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for
 more detailed instructions.
 
 ### Dependencies
@@ -111,7 +109,7 @@ This can perform:
 The core functions are in the `src` folder.
 
 Please see our
-[documentation](https://cpp-bids-spm.readthedocs.io/en/latest/index.html) for
+[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for
 more info.
 
 ## Octave compatibility
@@ -144,6 +142,23 @@ Scripts names in general and as well functions related to the demos use a
 `snake_case`.
 
 Constant are written in `UPPERCASE`.
+
+#### Pre-commit
+
+There is a [pre-commit hook](https://pre-commit.com/) that you can use to
+reformat files as you commit them.
+
+Install pre-commit by using our `requirements.txt` file 
+```bash
+pip install -r requirements.txt
+```
+
+Install the hook
+```bash
+pre-commit install
+```
+
+You're done. `mh_style --fix` will now be run every time you commit.
 
 ## Contributors
 

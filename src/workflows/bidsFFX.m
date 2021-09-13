@@ -49,7 +49,7 @@ function bidsFFX(action, opt, funcFWHM)
 
     printProcessingSubject(iSub, subLabel);
 
-    matlabbatch = [];
+    matlabbatch = {};
 
     switch action
 
@@ -85,7 +85,7 @@ function bidsFFX(action, opt, funcFWHM)
 
         saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-        if opt.glm.QA.do
+        if opt.QA.glm.do
           plot_power_spectra_of_GLM_residuals( ...
                                               getFFXdir(subLabel, funcFWHM, opt), ...
                                               opt.metadata.RepetitionTime);

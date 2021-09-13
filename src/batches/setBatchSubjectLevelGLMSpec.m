@@ -6,15 +6,18 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   %
   %   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel, funcFWHM)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: Options chosen for the analysis. See ``checkOptions()``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  % :param BIDS:
+  % :type BIDS: structure
+  % :param opt:
+  % :type opt: structure
+  % :param subLabel:
+  % :type subLabel: string
+  % :param funcFWHM:
+  % :type funcFWHM: float
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :argout1: (structure) (matlabbatch)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -54,10 +57,10 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % If no reference slice is given for STC, then STC took the mid-volume
   % time point to do the correction.
   % When no STC was done, this is usually a good way to do it too.
-  if isempty(opt.STC_referenceSlice)
+  if isempty(opt.stc.referenceSlice)
     refBin = floor(nbTimeBins / 2);
   else
-    refBin = opt.STC_referenceSlice / opt.metadata.RepetitionTime;
+    refBin = opt.stc.referenceSlice / opt.metadata.RepetitionTime;
   end
   matlabbatch{end}.spm.stats.fmri_spec.timing.fmri_t0 = refBin;
 

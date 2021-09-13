@@ -1,10 +1,7 @@
-
 % Panel gives you figure-wide control over text properties.
 %
 % (a) Create a grid of panels.
 % (b) Change some text properties.
-
-
 
 %% (a)
 
@@ -14,10 +11,6 @@ p.pack(2, 2);
 
 % select all
 p.select('all');
-
-
-
-
 
 %% (b)
 
@@ -29,7 +22,4 @@ p.fontweight = 'normal'; % this is the default, anyway
 
 % however, any child can override them, and the changes
 % affect just that child (and its descendants).
-p(2,2).fontsize = 14;
-
-
-
+p(2, 2).fontsize = 14;

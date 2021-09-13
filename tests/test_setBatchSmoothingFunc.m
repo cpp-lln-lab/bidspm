@@ -34,7 +34,7 @@ function test_setBatchSmoothingFuncBasic()
                        filename ext]);
   system(sprintf('touch %s', fileName));
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel, funcFWHM);
 
   expectedBatch{1}.spm.spatial.smooth.fwhm = [6 6 6];

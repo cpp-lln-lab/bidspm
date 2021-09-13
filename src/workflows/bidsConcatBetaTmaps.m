@@ -13,9 +13,15 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
   % :param deleteIndTmaps: decide to delete t-maps
   % :type funcFWHM: (boolean)
   %
+  % When concatenating betamaps:
+  %
+  % Ensures that there is only 1 image per "contrast".
+  % Creates a tsv that lists the content of the 4D image.
+  % This TSV is in the subject level GLM folder where the beta map came from.
+  % This TSV file is named ``sub-subLabel_task-taskName_space-space_labelfold.tsv``.
+  %
   % (C) Copyright 2019 CPP_SPM developers
 
-  % delete individual Beta and tmaps
   if nargin < 3
     deleteIndBeta = 1;
     deleteIndTmaps = 1;
@@ -33,6 +39,8 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
     ffxDir = getFFXdir(subLabel, funcFWHM, opt);
 
+    load(fullfile(ffxDir, 'SPM.mat'));
+
     contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
     beta_maps = cell(length(contrasts), 1);
@@ -40,8 +48,25 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
     % path to beta and t-map files.
     for iContrast = 1:length(beta_maps)
-      % Note that the betas are created from the idx (Beta_idx(iBeta))
-      fileName = sprintf('beta_%04d.nii', find(contrasts(iContrast).C));
+
+      betasIndices = find(contrasts(iContrast).C);
+
+      if numel(betasIndices) > 1
+        error('Supposed to concatenate one beta image per contrast.');
+      end
+
+      % for this beta iamge we identify
+      % - which run it came from
+      % - the exact condition name stored in the SPM.mat
+      % so they can be saved in a tsv for for "label" and "fold" for MVPA
+      tmp = cat(1, SPM.Sess(:).col) == betasIndices;
+      runs(iContrast, 1) = find(any(tmp, 2));
+
+      tmp = SPM.xX.name{betasIndices};
+      parts = strsplit(tmp, ' ');
+      conditions{iContrast, 1} = strjoin(parts(2:end), ' ');
+
+      fileName = sprintf('beta_%04d.nii', betasIndices);
       fileName = validationInputFile(ffxDir, fileName);
       beta_maps{iContrast, 1} = [fileName, ',1'];
 
@@ -49,12 +74,26 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
       fileName = sprintf('spmT_%04d.nii', iContrast);
       fileName = validationInputFile(ffxDir, fileName);
       t_maps{iContrast, 1} = [fileName, ',1'];
+
     end
+
+    % tsv
+    nameStructure = struct( ...
+                           'ext', '.tsv', ...
+                           'type', 'labelfold', ...
+                           'sub', subLabel, ...
+                           'task', opt.taskName, ...
+                           'space', opt.space);
+    tsvName = createFilename(nameStructure);
+
+    tsvContent = struct('folds', runs, 'labels', {conditions});
+
+    spm_save(fullfile(ffxDir, tsvName), tsvContent);
 
     % beta maps
     outputName = ['4D_beta_', num2str(funcFWHM), '.nii'];
 
-    matlabbatch = [];
+    matlabbatch = {};
     matlabbatch = setBatch3Dto4D(matlabbatch, beta_maps, RT, outputName);
 
     % t-maps

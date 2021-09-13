@@ -14,79 +14,78 @@
 
 function xhair = rri_xhair(varargin)
 
-   if nargin == 0
-      error('Please enter a point position as first argument');
-      return;
-   end
+  if nargin == 0
+    error('Please enter a point position as first argument');
+    return
+  end
 
-   if nargin > 0
-      p = varargin{1};
+  if nargin > 0
+    p = varargin{1};
 
-      if ~isnumeric(p) | length(p) ~= 2
-         error('Invalid point position');
-         return;
-      else
-         xhair = [];
+    if ~isnumeric(p) | length(p) ~= 2
+      error('Invalid point position');
+      return
+    else
+      xhair = [];
+    end
+  end
+
+  if nargin > 1
+    xhair = varargin{2};
+
+    if ~isempty(xhair)
+      if ~isstruct(xhair)
+        error('Invalid xhair struct');
+        return
+      elseif ~isfield(xhair, 'lx') | ~isfield(xhair, 'ly')
+        error('Invalid xhair struct');
+        return
+      elseif ~ishandle(xhair.lx) | ~ishandle(xhair.ly)
+        error('Invalid xhair struct');
+        return
       end
-   end
 
-   if nargin > 1
-      xhair = varargin{2};
+      lx = xhair.lx;
+      ly = xhair.ly;
+    else
+      lx = [];
+      ly = [];
+    end
+  end
 
-      if ~isempty(xhair)
-         if ~isstruct(xhair)
-            error('Invalid xhair struct');
-            return;
-         elseif ~isfield(xhair,'lx') | ~isfield(xhair,'ly')
-            error('Invalid xhair struct');
-            return;
-         elseif ~ishandle(xhair.lx) | ~ishandle(xhair.ly)
-            error('Invalid xhair struct');
-            return;
-         end
+  if nargin > 2
+    h_ax = varargin{3};
 
-         lx = xhair.lx;
-         ly = xhair.ly;
-      else
-         lx = [];
-         ly = [];
-      end
-   end
+    if ~ishandle(h_ax)
+      error('Invalid axes handle');
+      return
+    elseif ~strcmp(lower(get(h_ax, 'type')), 'axes')
+      error('Invalid axes handle');
+      return
+    end
+  else
+    h_ax = gca;
+  end
 
-   if nargin > 2
-      h_ax = varargin{3};
+  x_range = get(h_ax, 'xlim');
+  y_range = get(h_ax, 'ylim');
 
-      if ~ishandle(h_ax)
-         error('Invalid axes handle');
-         return;
-      elseif ~strcmp(lower(get(h_ax,'type')), 'axes')
-         error('Invalid axes handle');
-         return;
-      end
-   else
-      h_ax = gca;
-   end
+  if ~isempty(xhair)
+    set(lx, 'ydata', [p(2) p(2)]);
+    set(ly, 'xdata', [p(1) p(1)]);
+    set(h_ax, 'selected', 'on');
+    set(h_ax, 'selected', 'off');
+  else
+    figure(get(h_ax, 'parent'));
+    axes(h_ax);
 
-   x_range = get(h_ax,'xlim');
-   y_range = get(h_ax,'ylim');
+    xhair.lx = line('xdata', x_range, 'ydata', [p(2) p(2)], ...
+                    'zdata', [11 11], 'color', [1 0 0], 'hittest', 'off');
+    xhair.ly = line('xdata', [p(1) p(1)], 'ydata', y_range, ...
+                    'zdata', [11 11], 'color', [1 0 0], 'hittest', 'off');
+  end
 
-   if ~isempty(xhair)
-      set(lx, 'ydata', [p(2) p(2)]);
-      set(ly, 'xdata', [p(1) p(1)]);
-      set(h_ax, 'selected', 'on');
-      set(h_ax, 'selected', 'off');
-   else
-      figure(get(h_ax,'parent'));
-      axes(h_ax);
+  set(h_ax, 'xlim', x_range);
+  set(h_ax, 'ylim', y_range);
 
-      xhair.lx = line('xdata', x_range, 'ydata', [p(2) p(2)], ...
-	'zdata', [11 11], 'color', [1 0 0], 'hittest', 'off');
-      xhair.ly = line('xdata', [p(1) p(1)], 'ydata', y_range, ...
-	'zdata', [11 11], 'color', [1 0 0], 'hittest', 'off');
-   end
-
-   set(h_ax,'xlim',x_range);
-   set(h_ax,'ylim',y_range);
-
-   return;
-
+  return

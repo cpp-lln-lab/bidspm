@@ -50,13 +50,24 @@ function opt = checkOptions(opt)
   %         will be included in the mask.
   %     - ``opt.funcVoxelDims = []`` - Voxel dimensions to use for resampling of functional data
   %         at normalization.
-  %     - ``opt.STC_referenceSlice = []`` - reference slice for the slice timing correction.
+  %     - ``opt.stc.skip = false`` - boolean flag to skip slice time correction or not.
+  %     - ``opt.stc.referenceSlice = []`` - reference slice for the slice timing correction.
   %         If left emtpy the mid-volume acquisition time point will be selected at run time.
-  %     - ``opt.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED,
+  %     - ``opt.stc.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED,
   %         if you know the order in which slices were acquired, you should be able to recompute
   %         slice timing and add it to the json files in your BIDS data set.
   %     -  ``opt.glm.roibased.do``
-  %     -  ``opt.glm.QA.do = true`` - If set to ``true`` the residual images of a
+  %     -  ``opt.QA.func.carpetPlot = true`` to plot carpet plot when running ``functionaQA``
+  %     -  ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
+  %         in ``functionaQA``
+  %     -  ``opt.QA.func.MotionParameters = 'on'``
+  %     -  ``opt.QA.func.FramewiseDisplacement = 'on'``
+  %     -  ``opt.QA.func.Voltera = 'on'``
+  %     -  ``opt.QA.func.Globals = 'on'``
+  %     -  ``opt.QA.func.Movie = 'on'`` ; set it to ``off`` to skip generating movies
+  %         of the time series
+  %     -  ``opt.QA.func.Basics = 'on'``
+  %     -  ``opt.QA.glm.do = true`` - If set to ``true`` the residual images of a
   %         GLM at the subject levels will be used to estimate if there is any remaining structure
   %         in the GLM residuals (the power spectra are not flat) that could indicate
   %         the subject level results are likely confounded (see
@@ -69,8 +80,17 @@ function opt = checkOptions(opt)
   % (C) Copyright 2019 CPP_SPM developers
 
   fieldsToSet = setDefaultOption();
+  opt = setFields(opt, fieldsToSet);
 
   opt = setFields(opt, fieldsToSet);
+
+  %  Options for toolboxes
+  global ALI_TOOLBOX_PRESENT
+
+  checkToolbox('ALI');
+  if ALI_TOOLBOX_PRESENT
+    opt = setFields(opt, ALI_my_defaults());
+  end
 
   checkFields(opt);
 
@@ -103,8 +123,9 @@ function fieldsToSet = setDefaultOption()
 
   %% Options for slice time correction
   % all in seconds
-  fieldsToSet.STC_referenceSlice = [];
-  fieldsToSet.sliceOrder = [];
+  fieldsToSet.stc.referenceSlice = [];
+  fieldsToSet.stc.sliceOrder = [];
+  fieldsToSet.stc.skip = false;
 
   %% Options for realign
   fieldsToSet.realign.useUnwarp = true;
@@ -112,6 +133,7 @@ function fieldsToSet = setDefaultOption()
 
   %% Options for segmentation
   fieldsToSet.skullstrip.threshold = 0.75;
+  fieldsToSet.skullstrip.mean = false;
 
   %% Options for normalize
   fieldsToSet.space = 'MNI';
@@ -122,7 +144,15 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.model.hrfDerivatives = [0 0];
   fieldsToSet.contrastList = {};
 
-  fieldsToSet.glm.QA.do = true;
+  fieldsToSet.QA.glm.do = true;
+  fieldsToSet.QA.func.carpetPlot = true;
+  fieldsToSet.QA.func.Motion = 'on';
+  fieldsToSet.QA.func.FD = 'on';
+  fieldsToSet.QA.func.Voltera = 'on';
+  fieldsToSet.QA.func.Globals = 'on';
+  fieldsToSet.QA.func.Movie = 'on';
+  fieldsToSet.QA.func.Basics = 'on';
+
   fieldsToSet.glm.roibased.do = false;
 
   % specify the results to compute
@@ -130,7 +160,7 @@ function fieldsToSet = setDefaultOption()
 
   fieldsToSet.parallelize.do = false;
   fieldsToSet.parallelize.nbWorkers = 3;
-  fieldsToSet.parallelize.killOnExit = true;
+  fieldsToSet.parallelize.killOnExit = false;
 
 end
 
@@ -163,13 +193,13 @@ function checkFields(opt)
 
   end
 
-  if ~isempty (opt.STC_referenceSlice) && length(opt.STC_referenceSlice) > 1
+  if ~isempty (opt.stc.referenceSlice) && length(opt.stc.referenceSlice) > 1
 
     errorStruct.identifier = 'checkOptions:refSliceNotScalar';
     errorStruct.message = sprintf( ...
-                                  ['options.STC_referenceSlice should be a scalar.' ...
+                                  ['options.stc.referenceSlice should be a scalar.' ...
                                    '\nCurrent value is: %d'], ...
-                                  opt.STC_referenceSlice);
+                                  opt.stc.referenceSlice);
     error(errorStruct);
 
   end

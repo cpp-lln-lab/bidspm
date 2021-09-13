@@ -34,7 +34,7 @@ function test_setBatchSubjectLevelGLMSpecBasic()
   system(sprintf('touch %s', ...
                  fullfile(subFuncDataDir, ['rp_', strrep(fileName, '.nii', '.txt')])));
 
-  matlabbatch = [];
+  matlabbatch = {};
   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel, funcFWHM);
 
   % TODO add assert

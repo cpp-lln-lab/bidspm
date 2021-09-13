@@ -1,4 +1,3 @@
-
 % Panel builds image files, not just on-screen figures.
 %
 % (a) Use demopanel1 to create a layout.
@@ -9,16 +8,12 @@
 % (f) Export using smoothing.
 % (g) Export to EPS, rather than PNG.
 
-
-
 %% (a)
 
 % delegate
-demopanel1
+demopanel1;
 
 % see "help panel/export" for the full range of options.
-
-
 
 %% (b)
 
@@ -36,8 +31,6 @@ p.export('export_b');
 % that is probably fine for laying out your document. note
 % that we did not supply a file extension, so PNG format is
 % assumed.
-
-
 
 %% (c)
 
@@ -60,8 +53,6 @@ p.export('export_c_c2', '-a1.4', '-c2');
 % specify width and height directly. see "help
 % panel/export".
 
-
-
 %% (d)
 
 % when you're done drafting your document, you can bring up
@@ -69,15 +60,13 @@ p.export('export_c_c2', '-a1.4', '-c2');
 % means "publication resolution" (600DPI).
 p.export('export_d', '-a1.4', '-rp');
 
-
-
 %% (e)
 
 % once exported at final resolution, i can't help
 % noticing the margins are a little generous. let's pull
 % them in as tight as we dare to reduce the whitespace.
 p.de.margin = 1;
-p(1,1).marginbottom = 9;
+p(1, 1).marginbottom = 9;
 p(2).marginleft = 12;
 p.margin = [10 8 0.5 0.5];
 p.export('export_e', '-a1.4', '-rp');
@@ -86,8 +75,6 @@ p.export('export_e', '-a1.4', '-rp');
 % resolution this high, you may notice small differences in
 % layout between the on-screen renderer, the PNG renderer,
 % and the EPS renderer.
-
-
 
 %% (f)
 
@@ -110,8 +97,6 @@ p.export('export_f', '-a1.4', '-rp/2');
 % anti-aliasing. nonetheless, i find the results can be
 % useful.
 
-
-
 %% (g)
 
 % export by default is to PNG format - other formats are
@@ -123,6 +108,3 @@ p.export('export_g.pdf', '-a1.4', '-rp');
 % NB: if you try to export to "svg" format, panel will use
 % plot2svg() if it is present. if not, you can find it at
 % file exchange (http://goo.gl/VzHIR at time of writing).
-
-
-
