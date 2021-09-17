@@ -19,3 +19,4 @@ octave --no-gui --eval "addpath (fullfile (getenv (\"HOME\"), \"spm12\")); savep
 
 cd ${HOME}/demos/MoAE
 make inputs/raw
+make inputs/fmriprep
