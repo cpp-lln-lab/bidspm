@@ -13,7 +13,7 @@ function checkDependencies()
   fprintf('Checking dependencies\n');
 
   SPM_main = 'SPM12';
-  SPM_sub = '7487';
+  SPM_sub = 7219;
 
   %% check spm version
   try
@@ -24,7 +24,7 @@ function checkDependencies()
 
   fprintf(' Using %s %s\n', a, b);
 
-  if ~strcmp(a, SPM_main) || str2num(SPM_sub) < 7219
+  if ~strcmp(a, SPM_main) || str2num(b) < 7219
     str = sprintf('%s %s %s.\n%s', ...
                   'The current version SPM version is less than', SPM_main, SPM_sub, ...
                   'Update with: spm_update update');
