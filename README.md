@@ -60,8 +60,8 @@ initCppSpm
 ```
 
 Please see our
-[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for
-more detailed instructions.
+[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
+detailed instructions.
 
 ### Dependencies
 
@@ -76,7 +76,7 @@ For instructions see the following links:
 | ---------------------------------------------------------- | ------------ |
 | [Matlab](https://www.mathworks.com/products/matlab.html)   | 20???        |
 | or [octave](https://www.gnu.org/software/octave/)          | 4.?          |
-| [SPM12](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/) | v7487        |
+| [SPM12](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/) | >7219        |
 
 <!-- lint enable -->
 
@@ -109,8 +109,8 @@ This can perform:
 The core functions are in the `src` folder.
 
 Please see our
-[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for
-more info.
+[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
+info.
 
 ## Octave compatibility
 
@@ -148,12 +148,14 @@ Constant are written in `UPPERCASE`.
 There is a [pre-commit hook](https://pre-commit.com/) that you can use to
 reformat files as you commit them.
 
-Install pre-commit by using our `requirements.txt` file 
+Install pre-commit by using our `requirements.txt` file
+
 ```bash
 pip install -r requirements.txt
 ```
 
 Install the hook
+
 ```bash
 pre-commit install
 ```

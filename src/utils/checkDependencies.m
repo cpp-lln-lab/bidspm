@@ -13,20 +13,22 @@ function checkDependencies()
   fprintf('Checking dependencies\n');
 
   SPM_main = 'SPM12';
-  SPM_sub = '7487';
+  SPM_sub = 7219;
 
   %% check spm version
   try
     [a, b] = spm('ver');
-    fprintf(' Using %s %s\n', a, b);
-    if any(~[strcmp(a, SPM_main) strcmp(b, SPM_sub)])
-      str = sprintf('%s %s %s.\n%s', ...
-                    'The current version SPM version is not', SPM_main, SPM_sub, ...
-                    'In case of problems (e.g json file related) consider updating.');
-      warning(str); %#ok<*SPWRN>
-    end
   catch
     error('Failed to check the SPM version: Are you sure that SPM is in the matlab path?');
+  end
+
+  fprintf(' Using %s %s\n', a, b);
+
+  if ~strcmp(a, SPM_main) || str2num(b) < 7219
+    str = sprintf('%s %s %s.\n%s', ...
+                  'The current version SPM version is less than', SPM_main, SPM_sub, ...
+                  'Update with: spm_update update');
+    warning(str); %#ok<*SPWRN>
   end
 
   spm('defaults', 'fmri');
