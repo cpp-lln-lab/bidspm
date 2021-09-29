@@ -102,6 +102,8 @@ function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con
       % get regressors index corresponding to the HRF of that condition
       [cdt_name, regIdx] = getRegIdx(Step.AutoContrasts, iCon, SPM);
 
+      checkRegressorFound(regIdx, cdt_name);
+
       % give them a value of 1
       C(end, regIdx) = 1;
 
@@ -126,7 +128,9 @@ function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con
       for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
 
         % get regressors index corresponding to the HRF of that condition
-        [~, regIdx] = getRegIdx(Step.Contrasts, iCon, SPM, iCdt);
+        [cdt_name, regIdx] = getRegIdx(Step.Contrasts, iCon, SPM, iCdt);
+
+        checkRegressorFound(regIdx, cdt_name);
 
         % give them a value of 1
         C(end, regIdx) = Step.Contrasts(iCon).weights(iCdt);
@@ -154,6 +158,8 @@ function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con
       % get regressors index corresponding to the HRF of that condition
       [cdt_name, regIdx] = getRegIdx(Step.AutoContrasts, iCon, SPM);
 
+      checkRegressorFound(regIdx, cdt_name);
+
       regIdx = find(regIdx);
 
       % For each event of each condition, create a seperate
@@ -175,4 +181,11 @@ function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con
 
   end
 
+end
+
+function checkRegressorFound(regIdx, cdt_name)
+  regIdx = find(regIdx);
+  if all(~regIdx)
+    warning('No regressor found for condition "%s"', cdt_name);
+  end
 end
