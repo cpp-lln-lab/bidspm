@@ -31,6 +31,12 @@ function contrasts = specifyContrasts(ffxDir, taskName, opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  % TODO refactor code duplication between run level and subject level
+
+  % TODO what is the expected behavior if a condition is not present ?
+  % - create a contrast with the name dummy ?
+  % - do not create the contrast ?
+
   load(fullfile(ffxDir, 'SPM.mat'));
 
   model = spm_jsonread(opt.model.file);
@@ -111,6 +117,8 @@ function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con
       contrasts(con_counter).C = C; %#ok<*AGROW>
       contrasts(con_counter).name = cdt_name;
 
+      clear regIdx;
+
     end
 
   end
@@ -132,10 +140,15 @@ function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con
 
         checkRegressorFound(regIdx, cdt_name);
 
-        % give them a value of 1
+        % give them the value specified in the model
         C(end, regIdx) = Step.Contrasts(iCon).weights(iCdt);
 
+        clear regIdx;
+
       end
+
+      % TODO if one of the condition is not found, this contrast should
+      % probably not be created ?
 
       % stores the specification
       contrasts(con_counter).C = C;
@@ -177,6 +190,54 @@ function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con
         contrasts(con_counter).name =  [cdt_name, '_', num2str(iReg)];
 
       end
+
+      clear regIdx;
+
+    end
+
+  end
+
+  if isfield(Step, 'Contrasts')
+
+    % then the contrasts that involve contrasting conditions
+    % amongst themselves or something inferior to baseline
+    for iCon = 1:length(Step.Contrasts)
+
+      C = zeros(1, size(SPM.xX.X, 2));
+
+      for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
+
+        % get regressors index corresponding to the HRF of that condition
+        [cdt_name, regIdx{iCdt}] = getRegIdx(Step.Contrasts, iCon, SPM, iCdt);
+        checkRegressorFound(regIdx{iCdt}, cdt_name);
+
+      end
+
+      nbRuns = unique(cellfun(@sum, regIdx));
+
+      if length(nbRuns) > 1
+        disp(Step.Contrasts(iCon).ConditionList);
+        warning('Skipping contrast: some runs are missing a condition for the contrast "%s"', ...
+                Step.Contrasts(iCon).Name);
+        continue
+      end
+
+      % give them the value specified in the model
+      for iRun = 1:nbRuns
+
+        con_counter = con_counter + 1;
+
+        for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
+          C(end, regIdx{iCdt}) = Step.Contrasts(iCon).weights(iCdt);
+        end
+
+        % stores the specification
+        contrasts(con_counter).C = C;
+        contrasts(con_counter).name = [Step.Contrasts(iCon).Name, '_', num2str(iRun)];
+
+      end
+      clear regIdx;
+
     end
 
   end

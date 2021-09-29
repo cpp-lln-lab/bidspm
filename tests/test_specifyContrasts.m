@@ -58,17 +58,23 @@ function test_specifyContrastsVislocalizer()
   contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
   % THEN
-  expected.name = 'VisMot'; %#ok<*AGROW>
+  expected.name = 'VisMot_1';
   expected.C = [1 0 0 0 0 0 0 0 0];
 
-  expected(2).name = 'VisStat';
-  expected(2).C = [0 1 0 0 0 0 0 0 0];
+  expected(end + 1).name = 'VisMot_&_VisStat_1';
+  expected(end).C = [1 1 0 0 0 0 0 0 0];
 
-  expected(3).name = 'VisMot_gt_VisStat';
-  expected(3).C = [1 -1 0 0 0 0 0 0 0];
+  expected(end + 1).name = 'VisMot';
+  expected(end).C = [1 0 0 0 0 0 0 0 0];
 
-  expected(4).name = 'VisStat_gt_VisMot';
-  expected(4).C = [-1 1 0 0 0 0 0 0 0];
+  expected(end + 1).name = 'VisStat';
+  expected(end).C = [0 1 0 0 0 0 0 0 0];
+
+  expected(end + 1).name = 'VisMot_gt_VisStat';
+  expected(end).C = [1 -1 0 0 0 0 0 0 0];
+
+  expected(end + 1).name = 'VisStat_gt_VisMot';
+  expected(end).C = [-1 1 0 0 0 0 0 0 0];
 
   assertEqual(contrasts, expected);
 

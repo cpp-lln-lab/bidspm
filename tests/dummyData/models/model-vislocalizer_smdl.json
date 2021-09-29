@@ -21,7 +21,22 @@
         ]
       },
       "AutoContrasts": [
-        "trial_type.listening"
+        "trial_type.listening",
+        "trial_type.VisMot"
+      ],
+      "Contrasts": [
+        {
+          "Name": "VisMot_&_VisStat",
+          "ConditionList": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "type": "t"
+        }
       ]
     },
     {
