@@ -64,6 +64,9 @@ function test_specifyContrastsVislocalizer()
   expected(end + 1).name = 'VisMot_&_VisStat_1';
   expected(end).C = [1 1 0 0 0 0 0 0 0];
 
+  expected(end + 1).name =  'VisMot_&_VisStat_lt_baseline_1';
+  expected(end).C = [-1 -1 0 0 0 0 0 0 0];
+
   expected(end + 1).name = 'VisMot';
   expected(end).C = [1 0 0 0 0 0 0 0 0];
 

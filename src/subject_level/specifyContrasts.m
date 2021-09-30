@@ -17,17 +17,6 @@ function contrasts = specifyContrasts(ffxDir, taskName, opt)
   % To know the names of the columns of the design matrix, type :
   % ``strvcat(SPM.xX.name)``
   %
-  % EXAMPLE
-  %     Sn(1) ins 1
-  %     Sn(1) ins 2
-  %     Sn(1) T1
-  %     Sn(1) T2
-  %     Sn(1) R1
-  %     Sn(1) R2
-  %     Sn(1) R3
-  %     Sn(1) R4
-  %     Sn(1) R5
-  %     Sn(1) R6
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -46,6 +35,7 @@ function contrasts = specifyContrasts(ffxDir, taskName, opt)
 
   % for the task of interest
   if ~strcmp(model.Input.task, taskName)
+    warning('task ''%s'' not listed as input in the model', taskName);
     return
   end
 
@@ -92,6 +82,8 @@ function  [cdt_name, regIdx] = getRegIdx(conList, iCon, SPM, iCdt)
   regIdx = strfind(SPM.xX.name', [' ' cdt_name '*bf(1)']);
   regIdx = ~cellfun('isempty', regIdx);  %#ok<*STRCL1>
 
+  checkRegressorFound(regIdx, cdt_name);
+
 end
 
 function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con_counter, SPM)
@@ -101,19 +93,16 @@ function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con
     % first the contrasts to compute automatically against baseline
     for iCon = 1:length(Step.AutoContrasts)
 
-      con_counter = con_counter + 1;
-
       C = zeros(1, size(SPM.xX.X, 2));
 
       % get regressors index corresponding to the HRF of that condition
       [cdt_name, regIdx] = getRegIdx(Step.AutoContrasts, iCon, SPM);
 
-      checkRegressorFound(regIdx, cdt_name);
-
       % give them a value of 1
       C(end, regIdx) = 1;
 
       % stores the specification
+      con_counter = con_counter + 1;
       contrasts(con_counter).C = C; %#ok<*AGROW>
       contrasts(con_counter).name = cdt_name;
 
@@ -129,16 +118,12 @@ function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con
     % amongst themselves or something inferior to baseline
     for iCon = 1:length(Step.Contrasts)
 
-      con_counter = con_counter + 1;
-
       C = zeros(1, size(SPM.xX.X, 2));
 
       for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
 
         % get regressors index corresponding to the HRF of that condition
-        [cdt_name, regIdx] = getRegIdx(Step.Contrasts, iCon, SPM, iCdt);
-
-        checkRegressorFound(regIdx, cdt_name);
+        [~, regIdx] = getRegIdx(Step.Contrasts, iCon, SPM, iCdt);
 
         % give them the value specified in the model
         C(end, regIdx) = Step.Contrasts(iCon).weights(iCdt);
@@ -151,9 +136,9 @@ function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con
       % probably not be created ?
 
       % stores the specification
+      con_counter = con_counter + 1;
       contrasts(con_counter).C = C;
-      contrasts(con_counter).name =  ...
-          Step.Contrasts(iCon).Name;
+      contrasts(con_counter).name =  Step.Contrasts(iCon).Name;
 
     end
 
@@ -171,21 +156,16 @@ function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con
       % get regressors index corresponding to the HRF of that condition
       [cdt_name, regIdx] = getRegIdx(Step.AutoContrasts, iCon, SPM);
 
-      checkRegressorFound(regIdx, cdt_name);
-
+      % For each event of each condition, create a seperate contrast
       regIdx = find(regIdx);
-
-      % For each event of each condition, create a seperate
-      % contrast
       for iReg = 1:length(regIdx)
 
+        % give each event a value of 1
         C = zeros(1, size(SPM.xX.X, 2));
-
-        % add a new line for a new contrast
-        con_counter = con_counter + 1;
-        C(end, regIdx(iReg)) = 1;   % give each event a value of 1
+        C(end, regIdx(iReg)) = 1;
 
         % stores the specification
+        con_counter = con_counter + 1;
         contrasts(con_counter).C = C;
         contrasts(con_counter).name =  [cdt_name, '_', num2str(iReg)];
 
@@ -203,14 +183,9 @@ function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con
     % amongst themselves or something inferior to baseline
     for iCon = 1:length(Step.Contrasts)
 
-      C = zeros(1, size(SPM.xX.X, 2));
-
+      % get regressors index corresponding to the HRF of that condition
       for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
-
-        % get regressors index corresponding to the HRF of that condition
-        [cdt_name, regIdx{iCdt}] = getRegIdx(Step.Contrasts, iCon, SPM, iCdt);
-        checkRegressorFound(regIdx{iCdt}, cdt_name);
-
+        [~, regIdx{iCdt}] = getRegIdx(Step.Contrasts, iCon, SPM, iCdt);
       end
 
       nbRuns = unique(cellfun(@sum, regIdx));
@@ -225,13 +200,14 @@ function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con
       % give them the value specified in the model
       for iRun = 1:nbRuns
 
-        con_counter = con_counter + 1;
+        C = zeros(1, size(SPM.xX.X, 2));
 
         for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
           C(end, regIdx{iCdt}) = Step.Contrasts(iCon).weights(iCdt);
         end
 
         % stores the specification
+        con_counter = con_counter + 1;
         contrasts(con_counter).C = C;
         contrasts(con_counter).name = [Step.Contrasts(iCon).Name, '_', num2str(iRun)];
 

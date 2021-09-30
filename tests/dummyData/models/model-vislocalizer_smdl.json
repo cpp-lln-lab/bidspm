@@ -36,6 +36,18 @@
             1
           ],
           "type": "t"
+        },
+        {
+          "Name": "VisMot_&_VisStat_lt_baseline",
+          "ConditionList": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "weights": [
+            -1,
+            -1
+          ],
+          "type": "t"
         }
       ]
     },
