@@ -21,13 +21,15 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
 
   fragments = bids.internal.parse_filename(boldFilename);
 
-  if ~isfield(fragments, 'ses')
-    fragments.ses = '';
+  entities = fragments.entities;
+
+  if ~isfield(entities, 'ses')
+    entities.ses = '';
   end
 
   modalities = bids.query(BIDS, 'modalities', ...
-                          'sub', fragments.sub, ...
-                          'ses', fragments.ses);
+                          'sub', entities.sub, ...
+                          'ses', entities.ses);
 
   if opt.useFieldmaps && any(ismember('fmap', modalities))
     % We loop through the field maps and find the one that is intended for this
@@ -37,13 +39,13 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
 
     fmapFiles = bids.query(BIDS, 'data', ...
                            'modality', 'fmap', ...
-                           'sub', fragments.sub, ...
-                           'ses', fragments.ses);
+                           'sub', entities.sub, ...
+                           'ses', entities.ses);
 
     fmapMetadata = bids.query(BIDS, 'metadata', ...
                               'modality', 'fmap', ...
-                              'sub', fragments.sub, ...
-                              'ses', fragments.ses);
+                              'sub', entities.sub, ...
+                              'ses', entities.ses);
 
     for  iFile = 1:size(fmapFiles, 1)
 

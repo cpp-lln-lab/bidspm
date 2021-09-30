@@ -84,7 +84,7 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
                            'sub', subLabel, ...
                            'task', opt.taskName, ...
                            'space', opt.space);
-    tsvName = createFilename(nameStructure);
+    tsvName = bids.create_filename(nameStructure);
 
     tsvContent = struct('folds', runs, 'labels', {conditions});
 

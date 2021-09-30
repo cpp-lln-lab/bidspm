@@ -27,7 +27,7 @@ function bidsCreateVDM(opt)
     subLabel = opt.subjects{iSub};
 
     % TODO Move to getInfo
-    types = bids.query(BIDS, 'types', 'sub', subLabel);
+    suffixes = bids.query(BIDS, 'suffixes', 'sub', subLabel);
 
     if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
 

@@ -1,4 +1,4 @@
-function [BIDS, opt] = getData(opt, BIDSdir, type)
+function [BIDS, opt] = getData(opt, BIDSdir, suffix)
   %
   % Reads the specified BIDS data set and updates the list of subjects to analyze.
   %
@@ -35,14 +35,14 @@ function [BIDS, opt] = getData(opt, BIDSdir, type)
   end
   derivativesDir = BIDSdir;
 
-  if nargin < 3 || (exist('type', 'var') && isempty(type))
-    type = 'bold';
+  if nargin < 3 || (exist('type', 'var') && isempty(suffix))
+    suffix = 'bold';
   end
 
   if isfield(opt, 'taskName')
     fprintf(1, 'FOR TASK: %s\n', opt.taskName);
   else
-    type = 'T1w';
+    suffix = 'T1w';
   end
 
   % we let SPM figure out what is in this BIDS data set
@@ -66,29 +66,29 @@ function [BIDS, opt] = getData(opt, BIDSdir, type)
   % get metadata for bold runs for that task
   % we take those from the first run of the first subject assuming it can
   % apply to all others.
-  opt = getMetaData(BIDS, opt, opt.subjects, type);
+  opt = getMetaData(BIDS, opt, opt.subjects, suffix);
 
   fprintf(1, 'WILL WORK ON SUBJECTS\n');
   disp(opt.subjects);
 
 end
 
-function opt = getMetaData(BIDS, opt, subjects, type)
+function opt = getMetaData(BIDS, opt, subjects, suffix)
 
   % TODO
   % THIS NEEDS FIXING AS WE MIGHT WANT THE METADATA OF THE SUBJECTS SELECTED
   % RATHER THAN THE FIRST SUBJECT OF THE DATASET
 
-  switch type
+  switch suffix
     case 'bold'
       metadata = bids.query(BIDS, 'metadata', ...
                             'task', opt.taskName, ...
                             'sub', subjects{1}, ...
-                            'type', type);
+                            'suffix', suffix);
     case 'T1w'
       metadata = bids.query(BIDS, 'metadata', ...
                             'sub', subjects{1}, ...
-                            'type', type);
+                            'suffix', suffix);
   end
 
   if iscell(metadata)

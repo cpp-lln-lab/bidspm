@@ -92,11 +92,12 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   [pth, file] = spm_fileparts(tsvFile);
 
   p = bids.internal.parse_filename(file);
-  p.space = opt.space;
-  p.type = 'onsets';
+  p.entities.space = opt.space;
+  p.use_schema = false;
+  p.suffix = 'onsets';
   p.ext = '.mat';
 
-  fullpathOnsetFileName = fullfile(pth, createFilename(p));
+  fullpathOnsetFileName = fullfile(pth, bids.create_filename(p));
 
   save(fullpathOnsetFileName, ...
        'names', 'onsets', 'durations', ...
