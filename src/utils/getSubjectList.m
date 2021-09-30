@@ -47,14 +47,14 @@ function opt = getSubjectList(BIDS, opt)
 
   % if any group is mentioned
   if ~isempty(opt.groups{1}) && ...
-          any(strcmpi({'group'}, fieldnames(BIDS.participants)))
+          any(strcmpi({'group'}, fieldnames(BIDS.participants.content)))
 
-    fields = fieldnames(BIDS.participants);
+    fields = fieldnames(BIDS.participants.content);
     fieldIdx = strcmpi({'group'}, fields);
 
-    subjectIdx = strcmp(BIDS.participants.(fields{fieldIdx}), opt.groups);
+    subjectIdx = strcmp(BIDS.participants.content.(fields{fieldIdx}), opt.groups);
 
-    subjects = char(BIDS.participants.participant_id);
+    subjects = char(BIDS.participants.content.participant_id);
     subjects = cellstr(subjects(subjectIdx, 5:end));
 
     tmp = cat(1, tmp, subjects);
