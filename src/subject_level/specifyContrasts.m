@@ -1,4 +1,4 @@
-function contrasts = specifyContrasts(ffxDir, taskName, opt)
+function contrasts = specifyContrasts(SPM, taskName, model)
   %
   % Specifies the first level contrasts
   %
@@ -25,10 +25,6 @@ function contrasts = specifyContrasts(ffxDir, taskName, opt)
   % TODO what is the expected behavior if a condition is not present ?
   % - create a contrast with the name dummy ?
   % - do not create the contrast ?
-
-  load(fullfile(ffxDir, 'SPM.mat'));
-
-  model = spm_jsonread(opt.model.file);
 
   contrasts = struct('C', [], 'name', []);
   con_counter = 0;
@@ -186,9 +182,10 @@ function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con
       % get regressors index corresponding to the HRF of that condition
       for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
         [~, regIdx{iCdt}] = getRegIdx(Step.Contrasts, iCon, SPM, iCdt);
+        regIdx{iCdt} = find(regIdx{iCdt});
       end
 
-      nbRuns = unique(cellfun(@sum, regIdx));
+      nbRuns = unique(cellfun(@numel, regIdx));
 
       if length(nbRuns) > 1
         disp(Step.Contrasts(iCon).ConditionList);
@@ -203,7 +200,7 @@ function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con
         C = zeros(1, size(SPM.xX.X, 2));
 
         for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
-          C(end, regIdx{iCdt}) = Step.Contrasts(iCon).weights(iCdt);
+          C(end, regIdx{iCdt}(iRun)) = Step.Contrasts(iCon).weights(iCdt);
         end
 
         % stores the specification
