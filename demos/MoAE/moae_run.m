@@ -23,7 +23,7 @@ opt = moae_get_option();
 download_moae_ds(downloadData);
 
 %% Run batches
-reportBIDS(opt);
+% reportBIDS(opt);
 bidsCopyRawFolder(opt, 1);
 
 % In case you just want to run segmentation and skull stripping
