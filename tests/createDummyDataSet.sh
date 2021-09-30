@@ -98,12 +98,12 @@ do
 		touch $ThisDir/c3sub-$Subject\_ses-01_T1w.nii
 
 		# STATS
-		mkdir $StatsDir/sub-$Subject/stats -p
-		ThisDir=$StatsDir/sub-$Subject/stats/task-vismotion_space-MNI_FWHM-6
+		ThisDir=$StatsDir/sub-$Subject/stats/task-vislocalizer_space-MNI_FWHM-6
 		mkdir $ThisDir -p
 		cp dummyData/mat_files/SPM.mat $ThisDir/SPM.mat
 
-		ThisDir=$StatsDir/sub-$Subject/stats/task-vislocalizer_space-MNI_FWHM-6
+		mkdir $StatsDir/sub-$Subject/stats -p
+		ThisDir=$StatsDir/sub-$Subject/stats/task-vismotion_space-MNI_FWHM-6
 		mkdir $ThisDir -p
 		cp dummyData/mat_files/SPM.mat $ThisDir/SPM.mat
 
