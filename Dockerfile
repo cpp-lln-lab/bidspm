@@ -4,7 +4,7 @@
 FROM ubuntu:focal
 
 #TODO how to update this with the content of the current version
-LABEL version="1.0.0"
+LABEL version="1.1.2"
 
 # basic OS tools install and also octave
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
