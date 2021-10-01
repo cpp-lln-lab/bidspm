@@ -4,7 +4,7 @@
 FROM ubuntu:focal
 
 #TODO how to update this with the content of the current version
-LABEL version="1.0.0"
+LABEL version="1.1.2dev"
 
 # basic OS tools install and also octave
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
@@ -36,14 +36,13 @@ RUN octave --no-gui --eval "addpath(\"/opt/spm12\"); savepath ();"
 
 # gets the dev branch CPP BIDS pipeline code
 
-# RUN git clone --depth 1 --recurse-submodule https://github.com/cpp-lln-lab/CPP_SPM.git \
-#     && cd CPP_SPM \
-#     && git checkout -b dev \
-#     && git pull origin dev
+RUN git clone --depth 1 --recurse-submodule https://github.com/cpp-lln-lab/CPP_SPM.git \
+    && cd CPP_SPM \
+    && git checkout -b dev \
+    && git pull origin dev
 
 # or get the local code base
-
-COPY . CPP_SPM
+# COPY . CPP_SPM
 
 RUN mkdir code output
 

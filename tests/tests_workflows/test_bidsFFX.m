@@ -8,7 +8,7 @@ function test_suite = test_bidsFFX %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsFfx_contrasts()
+function test_bidsFFX_contrasts()
 
   opt = setOptions('vislocalizer');
   opt.space = {'MNI'};
@@ -18,11 +18,11 @@ function test_bidsFfx_contrasts()
 
   matlabbatch = bidsFFX('contrasts', opt);
 
-  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 4);
+  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 7);
 
 end
 
-function test_bidsFfx_fmriprep_no_smoothing()
+function test_bidsFFX_fmriprep_no_smoothing()
 
   opt = setOptions('fmriprep');
 
@@ -47,7 +47,7 @@ function test_bidsFfx_fmriprep_no_smoothing()
 
 end
 
-function test_bidsFfx_mni()
+function test_bidsFFX_mni()
 
   task = {'vislocalizer'}; % 'vismotion'
 
@@ -66,7 +66,7 @@ function test_bidsFfx_mni()
 
 end
 
-function test_bidsFfx_individual()
+function test_bidsFFX_individual()
 
   task = {'vislocalizer'}; % 'vismotion'
 

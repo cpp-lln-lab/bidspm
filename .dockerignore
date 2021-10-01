@@ -1,10 +1,12 @@
 .vscode
 .git
 .github
-env
+binder
+coverage_html
 demos/*/outputs/
 demos/*/inputs/
 demos/*/cfg/
+env
 tests
 
 # ignoring this might speed up build
