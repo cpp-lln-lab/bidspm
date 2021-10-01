@@ -19,8 +19,10 @@ inputs/raw:
 	mkdir inputs/ -p
 	octave $(OCTFLAGS) --eval "run('download_moae_ds.m');exit;"
 
+# cd inputs && datalad install https://gin.g-node.org/RemiGau/spm_moae_fmriprep.git
+# cd inputs && datalad install git@gin.g-node.org:/RemiGau/spm_moae_fmriprep.git
 inputs/fmriprep:
-	cd inputs && datalad install git@gin.g-node.org:/RemiGau/spm_moae_fmriprep.git
+	cd inputs && datalad install https://gin.g-node.org/RemiGau/spm_moae_fmriprep.git
 	datalad get inputs/spm_moae_fmriprep/*.json
 	datalad get inputs/spm_moae_fmriprep/sub*/*/*.nii*
 	datalad get inputs/spm_moae_fmriprep/sub*/*/*.tsv

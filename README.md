@@ -3,6 +3,7 @@
 **Documentation**
 
 [![Documentation Status: stable](https://readthedocs.org/projects/cpp_spm/badge/?version=stable)](https://cpp_spm.readthedocs.io/en/stable/?badge=stable)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/CPP_SPM/dev)
 
 **Code quality and style**
 
@@ -25,8 +26,6 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <!-- lint enable -->
-
-test
 
 # CPP SPM
 
