@@ -47,6 +47,9 @@ function bidsResults(opt, funcFWHM, conFWHM)
       case 'run'
         warning('run level not implemented yet');
 
+        % TODO check what happens for models with a run level specified but no
+        %      subject level
+
         % matlabbatch = {};
         % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
 
@@ -131,6 +134,7 @@ function renameOutputResults(results)
     split = strfind(basename, '_sub');
     p = bids.internal.parse_filename(basename(split + 1:end));
     p.label = basename(split - 4:split - 1);
+    p.use_schema = false;
     newName = bids.create_filename(p);
 
     target = spm_file(source, 'basename', newName);
