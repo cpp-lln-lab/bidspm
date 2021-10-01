@@ -19,7 +19,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   % If info = ``filename``, this returns the name of the file for a specified
   % session and run::
   %
-  %   filenames = getInfo(BIDS, subLabel, opt, 'filename', sessionID, runID, type)
+  %   filenames = getInfo(BIDS, subLabel, opt, 'filename', sessionID, runID, suffix)
   %
   %
   % :param BIDS:            returned by bids.layout when exploring a BIDS data set.
@@ -42,8 +42,8 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   % :param runIdx:          run index label (for `run-001`, the label will be `001`)
   % :type runIdx:           string
   %
-  % :param type:            datatype (``bold``, ``events``, ``physio``)
-  % :type type:             string
+  % :param suffix:            datatype (``bold``, ``events``, ``physio``)
+  % :type suffix:             string
   %
   % (C) Copyright 2020 CPP_SPM developers
 
@@ -84,13 +84,13 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
                      'sub',  subLabel, ...
                      'task', opt.taskName, ...
                      'ses', session, ...
-                     'type', 'bold');
+                     'suffix', 'bold');
 
       query = setFields(query, opt.query);
 
       runs = bids.query(BIDS, 'runs', query);
 
-      nbRuns = size(runs, 2);
+      nbRuns = numel(runs);
 
       if nbRuns == 0
         nbRuns = 1;
@@ -101,14 +101,14 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
 
     case 'filename'
 
-      [session, run, type] = deal(varargin{:});
+      [session, run, suffix] = deal(varargin{:});
 
       query = struct( ...
                      'sub',  subLabel, ...
                      'task', opt.taskName, ...
                      'ses', session, ...
                      'run', run, ...
-                     'type', type);
+                     'suffix', suffix);
 
       % use the extra query options specified in the options
       query = setFields(query, opt.query);

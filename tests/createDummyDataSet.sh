@@ -7,7 +7,7 @@ StartDir=`pwd` # relative to starting directory
 PrerpoDir=$StartDir/dummyData/derivatives/cpp_spm
 StatsDir=$StartDir/dummyData/derivatives/cpp_spm-stats
 
-mkdir $StatsDir
+mkdir $StatsDir -p
 
 SubList='ctrl01 ctrl02 blind01 blind02 01 02' # subject list
 SesList='01 02' # session list
@@ -15,18 +15,18 @@ SesList='01 02' # session list
 for Subject in $SubList
 do
 
-		mkdir $PrerpoDir/sub-$Subject
-		mkdir $StatsDir/sub-$Subject
+		mkdir $PrerpoDir/sub-$Subject -p
+		mkdir $StatsDir/sub-$Subject -p
 
 		for Ses in $SesList
 		do
 
 			# create folder for each session and functional and fmap
-			mkdir $PrerpoDir/sub-$Subject/ses-$Ses
+			mkdir $PrerpoDir/sub-$Subject/ses-$Ses -p
 
 			# FUNC
 			ThisDir=$PrerpoDir/sub-$Subject/ses-$Ses/func
-			mkdir $ThisDir
+			mkdir $ThisDir -p
 
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.nii
 			echo "{\"TaskName\": \"vislocalizer\"}" > $ThisDir/sub-$Subject\_ses-$Ses\_task-vismotion_run-1_bold.json
@@ -63,7 +63,7 @@ do
 
 			# FMAP
 			ThisDir=$PrerpoDir/sub-$Subject/ses-$Ses/fmap
-			mkdir $ThisDir
+			mkdir $ThisDir -p
 
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-1_phasediff.nii
 			touch $ThisDir/sub-$Subject\_ses-$Ses\_run-1_magnitude1.nii
@@ -88,7 +88,7 @@ do
 
 		# ANAT
 		ThisDir=$PrerpoDir/sub-$Subject/ses-01/anat
-		mkdir $ThisDir
+		mkdir $ThisDir -p
 
 		touch $ThisDir/sub-$Subject\_ses-01_T1w.nii
 		touch $ThisDir/msub-$Subject\_ses-01_T1w.nii
@@ -98,11 +98,14 @@ do
 		touch $ThisDir/c3sub-$Subject\_ses-01_T1w.nii
 
 		# STATS
-		mkdir $StatsDir/sub-$Subject/stats
-		ThisDir=$StatsDir/sub-$Subject/stats/task-vismotion_space-MNI_FWHM-6
-		mkdir $ThisDir
+		ThisDir=$StatsDir/sub-$Subject/stats/task-vislocalizer_space-MNI_FWHM-6
+		mkdir $ThisDir -p
+		cp dummyData/mat_files/SPM.mat $ThisDir/SPM.mat
 
-		cp dummyData/SPM.mat $ThisDir/SPM.mat
+		mkdir $StatsDir/sub-$Subject/stats -p
+		ThisDir=$StatsDir/sub-$Subject/stats/task-vismotion_space-MNI_FWHM-6
+		mkdir $ThisDir -p
+		cp dummyData/mat_files/SPM.mat $ThisDir/SPM.mat
 
 		touch $ThisDir/mask.nii
 

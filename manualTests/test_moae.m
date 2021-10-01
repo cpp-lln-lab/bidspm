@@ -47,7 +47,7 @@ for iOption = 1:size(optionsFilesList, 1)
 
   %% Run batches
 
-  reportBIDS(opt);
+  % reportBIDS(opt);
 
   bidsCopyRawFolder(opt, 1);
 

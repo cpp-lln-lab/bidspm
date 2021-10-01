@@ -23,7 +23,7 @@ maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
 % we get the con image to extract data
 % we can do this by using the "label-XXXX" from the mask
 p = bids.internal.parse_filename(spm_file(maskImage, 'filename'));
-conImage = spm_select('FPList', ffxDir, ['^con_' p.label '.nii$']);
+conImage = spm_select('FPList', ffxDir, ['^con_' p.entities.label '.nii$']);
 
 %% Create ROI right auditory cortex
 sphere.location = [57 -22 11];
@@ -35,12 +35,12 @@ specification  = struct( ...
 [~, roiFile] = createRoi('expand', specification, conImage, pwd, saveROI);
 
 % rename mask image
-newname.desc = 'right auditory cortex';
-newname.task = '';
-newname.label = '';
-newname.p = '';
-newname.k = '';
-newname.MC = '';
+newname.entities.desc = 'right auditory cortex';
+newname.entities.task = '';
+newname.entities.label = '';
+newname.entities.p = '';
+newname.entities.k = '';
+newname.entities.MC = '';
 rightRoiFile = renameFile(roiFile, newname);
 
 %% same but with left hemisphere

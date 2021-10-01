@@ -30,6 +30,12 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
 
   [BIDS, subID, sessionID, runID, opt] = deal(varargin{:});
 
+  if isempty(opt.query)
+    opt.query = struct('extension', '.nii');
+  else
+    opt.query.extension = '.nii';
+  end
+
   % get the filename for this bold run for this task
   boldFileName = getInfo(BIDS, subID, opt, 'Filename', sessionID, runID, 'bold');
 
