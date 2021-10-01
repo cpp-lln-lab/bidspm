@@ -143,6 +143,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
     opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
                                                 'name_spec', opt.spm_2_bids.cfg.preproc);
 
+    % TODO is this one really needed?
     opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', [opt.spm_2_bids.realign 'mean'], ...
                                                 'name_spec', opt.spm_2_bids.cfg.preproc);
     opt.spm_2_bids = opt.spm_2_bids.flatten_mapping();
