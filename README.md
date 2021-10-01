@@ -27,8 +27,6 @@
 
 <!-- lint enable -->
 
-test
-
 # CPP SPM
 
 This is a set of functions to MRI analysis on a
