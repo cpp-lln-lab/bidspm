@@ -1,6 +1,6 @@
 % (C) Copyright 2021 CPP_SPM developers
 
-function test_suite = test_spm_2_bids_cpp %#ok<*STOUT>
+function test_suite = test_spm2bidsCPP %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,7 +8,7 @@ function test_suite = test_spm_2_bids_cpp %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_spm_2_bids_cpp_spm_mapping()
+function test_spm2bidsCPP_mapping()
 
   opt = setOptions('vismotion');
 
@@ -53,7 +53,7 @@ function test_spm_2_bids_cpp_spm_mapping()
 
   for i = 1:size(pfx_in_out, 1)
 
-    prefixes = get_prefixes(pfx_in_out, i);
+    prefixes = getPrefixes(pfx_in_out, i);
 
     for j = 1:numel(prefixes)
 
@@ -72,8 +72,8 @@ function test_spm_2_bids_cpp_spm_mapping()
 
 end
 
-function prefixes = get_prefixes(prefix_and_output, row)
-  prefixes = prefix_and_output{row, 1};
+function prefixes = getPrefixes(prefixAndOutput, row)
+  prefixes = prefixAndOutput{row, 1};
   if ~iscell(prefixes)
     prefixes = {prefixes};
   end

@@ -8,7 +8,7 @@ function test_suite = test_setBatchSegmentation %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchSegmentationPipeline()
+function test_setBatchSegmentation_pipeline()
 
   spmLocation = spm('dir');
 
@@ -40,7 +40,7 @@ function test_setBatchSegmentationPipeline()
 
 end
 
-function test_setBatchSegmentationImages()
+function test_setBatchSegmentation_images()
 
   spmLocation = spm('dir');
 

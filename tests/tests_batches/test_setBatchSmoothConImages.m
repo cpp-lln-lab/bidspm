@@ -8,7 +8,7 @@ function test_suite = test_setBatchSmoothConImages %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchSmoothConImagesBasic()
+function test_setBatchSmoothConImages_basic()
 
   opt = setOptions('vismotion');
   opt.subjects = {'01', '02'};

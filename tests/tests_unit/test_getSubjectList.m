@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_unit_getSubjectList %#ok<*STOUT>
+function test_suite = test_getSubjectList %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -38,7 +38,7 @@ function test_getSubject_no_subject_specified()
 
 end
 
-function test_getSubjectListGroup()
+function test_getSubjectList_group()
 
   opt = setOptions('vismotion');
 
@@ -55,7 +55,7 @@ function test_getSubjectListGroup()
 
 end
 
-function test_getSubjectListBasic()
+function test_getSubjectList_basic()
 
   opt = setOptions('vismotion');
 
@@ -71,7 +71,7 @@ function test_getSubjectListBasic()
 
 end
 
-function test_getSubjectListErrorSubject()
+function test_getSubjectList_error_subject()
 
   opt = setOptions('vismotion', '03');
 

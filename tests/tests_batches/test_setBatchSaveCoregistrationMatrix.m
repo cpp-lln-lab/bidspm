@@ -8,7 +8,7 @@ function test_suite = test_setBatchSaveCoregistrationMatrix %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchSaveCoregistrationMatrixBasic()
+function test_setBatchSaveCoregistrationMatrix_basic()
 
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');

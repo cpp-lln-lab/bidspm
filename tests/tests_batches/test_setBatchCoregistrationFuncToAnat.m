@@ -8,7 +8,7 @@ function test_suite = test_setBatchCoregistrationFuncToAnat %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchCoregistrationFuncToAnatBasic()
+function test_setBatchCoregistrationFuncToAnat_basic()
 
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
@@ -43,7 +43,7 @@ function test_setBatchCoregistrationFuncToAnatBasic()
 
 end
 
-function test_setBatchCoregistrationFuncToAnatNoUnwarp()
+function test_setBatchCoregistrationFuncToAnat_no_unwarp()
 
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');

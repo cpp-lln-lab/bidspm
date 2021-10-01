@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_unit_returnEmptyModel %#ok<*STOUT>
+function test_suite = test_returnEmptyModel %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,7 +8,7 @@ function test_suite = test_unit_returnEmptyModel %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_returnEmptyModelBasic()
+function test_returnEmptyModel_basic()
 
   content = returnEmptyModel();
 

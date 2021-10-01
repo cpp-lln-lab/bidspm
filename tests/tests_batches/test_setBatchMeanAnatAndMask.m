@@ -8,7 +8,7 @@ function test_suite = test_setBatchMeanAnatAndMask %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchMeanAnatAndMaskBasic()
+function test_setBatchMeanAnatAndMask_basic()
 
   opt = setOptions('vismotion');
   opt.subjects = {'01', '02'};

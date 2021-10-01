@@ -8,7 +8,7 @@ function test_suite = test_getRFXdir %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getRFXdirBasic()
+function test_getRFXdir_basic()
 
   opt = setOptions('vislocalizer');
   opt.fwhm.func = 0;
@@ -26,7 +26,7 @@ function test_getRFXdirBasic()
 
 end
 
-function test_getRFXdirUserSpecified()
+function test_getRFXdir_user_specified()
 
   opt = setOptions('nback');
   opt.fwhm.contrast = 0;

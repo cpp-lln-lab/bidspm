@@ -18,7 +18,7 @@ function test_bidsFfx_contrasts()
 
   matlabbatch = bidsFFX('contrasts', opt);
 
-  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 4);
+  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 7);
 
 end
 
@@ -95,7 +95,7 @@ end
 
 function cleanUp(folder)
 
-  pause(1);
+  pause(0.3);
 
   if isOctave()
     confirm_recursive_rmdir (true, 'local');

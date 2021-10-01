@@ -8,7 +8,7 @@ function test_suite = test_createDefaultModel %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_createDefaultModelBasic()
+function test_createDefaultModel_basic()
 
   opt = setOptions('vislocalizer');
 

@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_unit_copyGraphWindownOutput %#ok<*STOUT>
+function test_suite = test_copyGraphWindownOutput %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,7 +8,7 @@ function test_suite = test_unit_copyGraphWindownOutput %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_copyGraphWindownOutputBasic()
+function test_copyGraphWindownOutput_basic()
 
   [opt, subLabel, action] = setUp();
 
@@ -33,7 +33,7 @@ function test_copyGraphWindownOutputBasic()
 
 end
 
-function test_copyGraphWindownOutputWarning1()
+function test_copyGraphWindownOutput_warning()
 
   [opt, subLabel, action] = setUp();
   opt.verbosity = 1;

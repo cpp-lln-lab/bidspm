@@ -14,7 +14,7 @@ end
 %  - that the function is smart enough to find an anat even when user has not
 %    specified a session
 
-function test_getTpmFilenameBasic()
+function test_getTpmFilename_basic()
 
   subLabel = '01';
 
@@ -30,7 +30,7 @@ function test_getTpmFilenameBasic()
 
 end
 
-function test_getTpmFilenameMNI()
+function test_getTpmFilename_mni()
 
   subLabel = '01';
 

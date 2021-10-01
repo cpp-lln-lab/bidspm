@@ -8,7 +8,7 @@ function test_suite = test_setBatchFactorialDesign %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchFactorialDesignBasic()
+function test_setBatchFactorialDesign_basic()
 
   opt = setOptions('vismotion');
   opt.subjects = {'01' '02'};

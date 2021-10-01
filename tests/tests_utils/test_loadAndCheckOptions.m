@@ -8,7 +8,7 @@ function test_suite = test_loadAndCheckOptions %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_loadAndCheckOptionsBasic()
+function test_loadAndCheckOptions_basic()
 
   setUp();
 
@@ -28,7 +28,7 @@ function test_loadAndCheckOptionsBasic()
 
 end
 
-function test_loadAndCheckOptionsStructure()
+function test_loadAndCheckOptions_structure()
 
   setUp();
 
@@ -48,7 +48,7 @@ function test_loadAndCheckOptionsStructure()
 
 end
 
-function test_loadAndCheckOptionsFromFile()
+function test_loadAndCheckOptions_from_file()
 
   setUp();
 
@@ -75,7 +75,7 @@ function test_loadAndCheckOptionsFromFile()
 
 end
 
-function test_loadAndCheckOptionsFromSeveralFiles()
+function test_loadAndCheckOptions_from_several_files()
 
   setUp();
 
@@ -118,7 +118,7 @@ function test_loadAndCheckOptionsFromSeveralFiles()
 
 end
 
-function test_loadAndCheckOptionsMoAE()
+function test_loadAndCheckOptions_moae()
 
   setUp();
 

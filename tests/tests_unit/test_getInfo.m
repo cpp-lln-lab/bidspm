@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_unit_getInfo %#ok<*STOUT>
+function test_suite = test_getInfo %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -105,7 +105,7 @@ function test_getInfo_no_session_no_run()
 
 end
 
-function test_getInfoQuery_with_session_restriction()
+function test_getInfo_query_with_session_restriction()
 
   subLabel = 'ctrl01';
 
@@ -140,8 +140,8 @@ function test_getInfo_error
 
 end
 
-function FileName = returnFullpathExpectedFilename(p)
-  FileName = fullfile(getDummyDataDir(), 'derivatives', 'cpp_spm-preproc', ...
+function fileName = returnFullpathExpectedFilename(p)
+  fileName = fullfile(getDummyDataDir(), 'derivatives', 'cpp_spm-preproc', ...
                       bids.create_path(bids.create_filename(p)), ...
                       bids.create_filename(p));
 end

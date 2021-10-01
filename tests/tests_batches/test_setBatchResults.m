@@ -8,7 +8,7 @@ function test_suite = test_setBatchResults %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchResultsBasic()
+function test_setBatchResults_basic()
 
   %% GIVEN
   result.dir = pwd;
@@ -31,7 +31,7 @@ function test_setBatchResultsBasic()
 
 end
 
-function test_setBatchResultsExport()
+function test_setBatchResults_export()
 
   %% GIVEN
   opt.taskName = 'test';
@@ -51,7 +51,7 @@ function test_setBatchResultsExport()
 
   opt.space = 'individual';
 
-  result = setBatchSubjectLevelResults_mock(opt);
+  result = setBatchSubjectLevelResultsMock(opt);
 
   %% WHEN
   matlabbatch = {};
@@ -85,7 +85,7 @@ function test_setBatchResultsExport()
 
 end
 
-function test_setBatchResultsMontage()
+function test_setBatchResults_montage()
 
   %% GIVEN
   opt.taskName = 'test';
@@ -99,7 +99,7 @@ function test_setBatchResultsMontage()
 
   opt.space = 'MNI';
 
-  result = setBatchSubjectLevelResults_mock(opt);
+  result = setBatchSubjectLevelResultsMock(opt);
 
   %% WHEN
   matlabbatch = {};
@@ -152,7 +152,7 @@ function expectedBatch = returnBasicExpectedResultsBatch()
 
 end
 
-function result = setBatchSubjectLevelResults_mock(opt)
+function result = setBatchSubjectLevelResultsMock(opt)
 
   iStep = 1;
 

@@ -79,7 +79,7 @@ function test_getAnatFilename_no_session()
 
 end
 
-function test_getAnatFilename_type_error()
+function test_getAnatFilename_error_type()
 
   subLabel = '01';
 
@@ -95,7 +95,7 @@ function test_getAnatFilename_type_error()
 
 end
 
-function test_getAnatFilename_session_error()
+function test_getAnatFilename_error_session()
 
   subLabel = '01';
 

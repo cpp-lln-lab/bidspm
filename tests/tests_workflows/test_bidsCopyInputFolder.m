@@ -55,7 +55,7 @@ end
 
 function cleanUp(folder)
 
-  pause(1);
+  pause(0.3);
 
   if isOctave()
     confirm_recursive_rmdir (true, 'local');

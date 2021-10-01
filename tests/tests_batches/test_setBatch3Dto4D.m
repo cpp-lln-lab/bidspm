@@ -8,7 +8,7 @@ function test_suite = test_setBatch3Dto4D %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatch3Dto4DBasic()
+function test_setBatch3Dto4D_basic()
 
   opt = setOptions('dummy');
 

@@ -10,7 +10,7 @@ end
 
 % temporary silence till we have standard way to deal with those files
 
-function test_convertRealignParamToTsvBasic()
+function test_convertRealignParamToTsv_basic()
 
   opt = setOptions('vislocalizer');
 

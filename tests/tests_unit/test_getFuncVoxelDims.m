@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_unit_getFuncVoxelDims %#ok<*STOUT>
+function test_suite = test_getFuncVoxelDims %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,7 +8,7 @@ function test_suite = test_unit_getFuncVoxelDims %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getFuncVoxelDimsBasic()
+function test_getFuncVoxelDims_basic()
 
   opt.funcVoxelDims = [];
 
@@ -28,7 +28,7 @@ function test_getFuncVoxelDimsBasic()
 
 end
 
-function test_getFuncVoxelDimsForce()
+function test_getFuncVoxelDims_force()
 
   opt.funcVoxelDims = [1 1 1];
 

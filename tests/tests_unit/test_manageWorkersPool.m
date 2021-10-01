@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_unit_manageWorkersPool %#ok<*STOUT>
+function test_suite = test_manageWorkersPool %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,7 +8,7 @@ function test_suite = test_unit_manageWorkersPool %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_manageWorkersPoolBasic()
+function test_manageWorkersPool_basic()
 
   opt.parallelize.do = true;
   opt.parallelize.nbWorkers = 3;
@@ -39,7 +39,7 @@ function test_manageWorkersPoolBasic()
 
 end
 
-function test_manageWorkersPoolNoParallel()
+function test_manageWorkersPool_no_parallel()
 
   opt.parallelize.do = false;
   opt.parallelize.nbWorkers = 3;

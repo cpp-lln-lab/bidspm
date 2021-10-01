@@ -8,7 +8,7 @@ function test_suite = test_setBatchSubjectLevelResults %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchSubjectLevelResultsBasic()
+function test_setBatchSubjectLevelResults_basic()
 
   iStep = 1;
   iCon = 1;
@@ -54,7 +54,7 @@ function test_setBatchSubjectLevelResultsBasic()
 
 end
 
-function test_setBatchSubjectLevelResultsErrorMissingContrastName()
+function test_setBatchSubjectLevelResults_error_missing_contrast_name()
 
   iStep = 1;
   iCon = 1;
@@ -75,7 +75,7 @@ function test_setBatchSubjectLevelResultsErrorMissingContrastName()
 
 end
 
-function test_setBatchSubjectLevelResultsErrorNoMAtchingContrast()
+function test_setBatchSubjectLevelResults_error_no_matching_contrast()
 
   iStep = 1;
   iCon = 1;

@@ -8,7 +8,7 @@ function test_suite = test_saveMatlabBatch %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_saveMatlabBatchBasic()
+function test_saveMatlabBatch_basic()
 
   subLabel = '01';
   opt = setOptions('dummy', subLabel);
@@ -28,7 +28,7 @@ function test_saveMatlabBatchBasic()
 
 end
 
-function test_saveMatlabBatchGroup()
+function test_saveMatlabBatch_group()
 
   subLabel = '01';
   opt = setOptions('dummy', subLabel);
