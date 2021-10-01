@@ -40,6 +40,9 @@ function matlabbatch = bidsResults(opt)
       case 'run'
         warning('run level not implemented yet');
 
+        % TODO check what happens for models with a run level specified but no
+        %      subject level
+
         % matlabbatch = {};
         % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subLabel);
 

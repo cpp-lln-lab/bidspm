@@ -44,6 +44,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
                           'suffix', 'bold', ...
                           'extension', '.nii');
     hdr = spm_vol(fileName{1});
+
     % we are assuming axial acquisition here
     sliceOrder = 1:hdr(1).dim(3);
   end

@@ -42,8 +42,8 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   % :param runIdx:          run index label (for `run-001`, the label will be `001`)
   % :type runIdx:           string
   %
-  % :param type:            datatype (``bold``, ``events``, ``physio``)
-  % :type type:             string
+  % :param suffix:            datatype (``bold``, ``events``, ``physio``)
+  % :type suffix:             string
   %
   % (C) Copyright 2020 CPP_SPM developers
 
@@ -96,7 +96,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
 
       runs = bids.query(BIDS, 'runs', query);
 
-      nbRuns = size(runs, 2);
+      nbRuns = numel(runs);
 
       if isempty(runs)
         nbRuns = 1;

@@ -71,6 +71,7 @@ function opt = getSubjectList(BIDS, opt)
     subjectIdx = strcmp(participantsContent.(fields{fieldIdx}), opt.groups);
 
     subjects = char(participantsContent.participant_id);
+
     subjects = cellstr(subjects(subjectIdx, 5:end));
 
     tmp = cat(1, tmp, subjects);
