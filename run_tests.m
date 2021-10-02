@@ -1,6 +1,6 @@
 % (C) Copyright 2019 CPP_SPM developers
 
-% Elapsed time is 286.588784 seconds.
+% Elapsed time is 284 seconds.
 
 tic;
 

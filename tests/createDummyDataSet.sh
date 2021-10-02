@@ -201,11 +201,11 @@ do
 		cp dummyData/rp.txt ${filename}
 		touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_desc-confounds_regressors.tsv
 
-		func_prefix_list='a r u s6'
-		for prefix in ${func_prefix_list}
-		do
-			touch ${this_dir}/${prefix}sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
-		done
+		# func_prefix_list='a r u s6'
+		# for prefix in ${func_prefix_list}
+		# do
+		# 	touch ${this_dir}/${prefix}sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
+		# done
 
 		desc_label_list='preproc smth6'
 		for desc in ${desc_label_list}
