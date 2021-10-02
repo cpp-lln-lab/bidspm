@@ -1,17 +1,17 @@
-function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
+function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
   %
-  % Make 4D images of beta and t-maps for the MVPA. ::
+  % Make 4D images of beta and t-maps for the MVPA.
   %
-  %   concatBetaImgTmaps(funcFWHM, opt, [deleteIndBeta = true,] [deleteIndTmaps = true])
+  % USAGE::
+  %
+  %   concatBetaImgTmaps(opt, [deleteIndBeta = true,] [deleteIndTmaps = true])
   %
   % :param opt: options structure
   % :type opt: structure
-  % :param funcFWHM: smoothing (FWHM) applied to the the normalized EPI
-  % :type funcFWHM: (scalar)
   % :param deleteIndBeta: decide to delete beta-maps
-  % :type funcFWHM: (boolean)
+  % :type deleteIndBeta: (boolean)
   % :param deleteIndTmaps: decide to delete t-maps
-  % :type funcFWHM: (boolean)
+  % :type deleteIndTmaps: (boolean)
   %
   % When concatenating betamaps:
   %
@@ -23,8 +23,8 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
   % (C) Copyright 2019 CPP_SPM developers
 
   if nargin < 3
-    deleteIndBeta = 1;
-    deleteIndTmaps = 1;
+    deleteIndBeta = true;
+    deleteIndTmaps = true;
   end
 
   [~, opt] = setUpWorkflow(opt, 'merge beta images and t-maps');
@@ -37,17 +37,17 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+    ffxDir = getFFXdir(subLabel, opt);
 
     load(fullfile(ffxDir, 'SPM.mat'));
 
     contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
 
-    beta_maps = cell(length(contrasts), 1);
-    t_maps = cell(length(contrasts), 1);
+    betaMaps = cell(length(contrasts), 1);
+    tMaps = cell(length(contrasts), 1);
 
     % path to beta and t-map files.
-    for iContrast = 1:length(beta_maps)
+    for iContrast = 1:length(betaMaps)
 
       betasIndices = find(contrasts(iContrast).C);
 
@@ -68,12 +68,12 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
       fileName = sprintf('beta_%04d.nii', betasIndices);
       fileName = validationInputFile(ffxDir, fileName);
-      beta_maps{iContrast, 1} = [fileName, ',1'];
+      betaMaps{iContrast, 1} = [fileName, ',1'];
 
       % while the contrastes (t-maps) are not from the index. They were created
       fileName = sprintf('spmT_%04d.nii', iContrast);
       fileName = validationInputFile(ffxDir, fileName);
-      t_maps{iContrast, 1} = [fileName, ',1'];
+      tMaps{iContrast, 1} = [fileName, ',1'];
 
     end
 
@@ -92,25 +92,25 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
     spm_save(fullfile(ffxDir, tsvName), tsvContent);
 
     % beta maps
-    outputName = ['4D_beta_', num2str(funcFWHM), '.nii'];
+    outputName = ['4D_beta_', num2str(opt.fwhm.func), '.nii'];
 
     matlabbatch = {};
-    matlabbatch = setBatch3Dto4D(matlabbatch, beta_maps, RT, outputName);
+    matlabbatch = setBatch3Dto4D(matlabbatch, betaMaps, RT, outputName);
 
     % t-maps
-    outputName = ['4D_t_maps_', num2str(funcFWHM), '.nii'];
+    outputName = ['4D_tMaps_', num2str(opt.fwhm.func), '.nii'];
 
-    matlabbatch = setBatch3Dto4D(matlabbatch, t_maps, RT, outputName);
+    matlabbatch = setBatch3Dto4D(matlabbatch, tMaps, RT, outputName);
 
     saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subLabel);
 
-    removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir);
+    removeBetaImgTmaps(tMaps, deleteIndBeta, deleteIndTmaps, ffxDir);
 
   end
 
 end
 
-function removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir)
+function removeBetaImgTmaps(tMaps, deleteIndBeta, deleteIndTmaps, ffxDir)
 
   % delete maps
   if deleteIndBeta
@@ -126,15 +126,15 @@ function removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir)
 
     % delete all individual con maps
     fprintf('Deleting individual con maps ...  ');
-    for iCon = 1:length(t_maps)
+    for iCon = 1:length(tMaps)
       delete(fullfile(ffxDir, ['con_', sprintf('%04d', iCon), '.nii']));
     end
     fprintf('Done. \n\n\n ');
 
     % delete all individual t-maps
     fprintf('Deleting individual t-maps ...  ');
-    for iTmap = 1:length(t_maps)
-      delete(t_maps{iTmap}(1:end - 2));
+    for iTmap = 1:length(tMaps)
+      delete(tMaps{iTmap}(1:end - 2));
     end
     fprintf('Done. \n\n\n ');
   end

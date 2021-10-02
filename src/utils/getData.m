@@ -1,16 +1,16 @@
-function [BIDS, opt] = getData(opt, BIDSdir, suffix)
+function [BIDS, opt] = getData(opt, bidsDir, suffix)
   %
   % Reads the specified BIDS data set and updates the list of subjects to analyze.
   %
   % USAGE::
   %
-  %   [BIDS, opt] = getData(opt, [BIDSdir], [type = 'bold'])
+  %   [BIDS, opt] = getData(opt, [bidsDir], [type = 'bold'])
   %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :param BIDSdir: the directory where the data is ; default is :
+  % :param bidsDir: the directory where the data is ; default is :
   %                 ``fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm')``
-  % :type BIDSdir: string
+  % :type bidsDir: string
   % :param type: the data type you want to get the metadata of;
   %              supported: ``'bold'`` (default) and ``T1w``
   % :type type: string
@@ -47,14 +47,14 @@ function [BIDS, opt] = getData(opt, BIDSdir, suffix)
     suffix = 'T1w';
   end
 
-  msg = sprintf('Getting data from:\n %s\n', BIDSdir);
+  msg = sprintf('Getting data from:\n %s\n', bidsDir);
   printToScreen(msg, opt);
 
   % temporary silence error throwing until there is a dataset_description in
   % synthetic derivatives
-  validationInputFile(BIDSdir, 'dataset_description.json');
+  validationInputFile(bidsDir, 'dataset_description.json');
 
-  BIDS = bids.layout(BIDSdir, opt.useBidsSchema);
+  BIDS = bids.layout(bidsDir, opt.useBidsSchema);
 
   if strcmp(opt.pipeline.type, 'stats')
     BIDS.raw = bids.layout(opt.dir.raw);

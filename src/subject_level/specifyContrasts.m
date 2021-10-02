@@ -27,7 +27,7 @@ function contrasts = specifyContrasts(SPM, taskName, model)
   % - do not create the contrast ?
 
   contrasts = struct('C', [], 'name', []);
-  con_counter = 0;
+  counter = 0;
 
   % for the task of interest
   if ~strcmp(model.Input.task, taskName)
@@ -48,13 +48,13 @@ function contrasts = specifyContrasts(SPM, taskName, model)
 
       case 'run'
 
-        [contrasts,  con_counter] = ...
-            specifyRunLvlContrasts(contrasts, step, con_counter, SPM);
+        [contrasts,  counter] = ...
+            specifyRunLvlContrasts(contrasts, step, counter, SPM);
 
       case 'subject'
 
-        [contrasts,  con_counter] = ...
-            specifySubLvlContrasts(contrasts, step, con_counter, SPM);
+        [contrasts,  counter] = ...
+            specifySubLvlContrasts(contrasts, step, counter, SPM);
 
     end
 
@@ -62,45 +62,45 @@ function contrasts = specifyContrasts(SPM, taskName, model)
 
 end
 
-function  [cdt_name, regIdx] = getRegIdx(conList, iCon, SPM, iCdt)
+function  [cdtName, regIdx] = getRegIdx(conList, iCon, SPM, iCdt)
   % get regressors index corresponding to the HRF of of a condition
 
   if iscell(conList)
-    cdt_name = conList{iCon};
+    cdtName = conList{iCon};
   elseif isstruct(conList)
-    cdt_name = conList(iCon).ConditionList{iCdt};
+    cdtName = conList(iCon).ConditionList{iCdt};
   end
 
   % get condition name
-  cdt_name = strrep(cdt_name, 'trial_type.', '');
+  cdtName = strrep(cdtName, 'trial_type.', '');
 
   % get regressors index corresponding to the HRF of that condition
-  regIdx = strfind(SPM.xX.name', [' ' cdt_name '*bf(1)']);
+  regIdx = strfind(SPM.xX.name', [' ' cdtName '*bf(1)']);
   regIdx = ~cellfun('isempty', regIdx);  %#ok<*STRCL1>
 
-  checkRegressorFound(regIdx, cdt_name);
+  checkRegressorFound(regIdx, cdtName);
 
 end
 
-function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con_counter, SPM)
+function [contrasts,  counter] = specifySubLvlContrasts(contrasts, step, counter, SPM)
 
-  if isfield(Step, 'AutoContrasts')
+  if isfield(step, 'AutoContrasts')
 
     % first the contrasts to compute automatically against baseline
-    for iCon = 1:length(Step.AutoContrasts)
+    for iCon = 1:length(step.AutoContrasts)
 
       C = zeros(1, size(SPM.xX.X, 2));
 
       % get regressors index corresponding to the HRF of that condition
-      [cdt_name, regIdx] = getRegIdx(Step.AutoContrasts, iCon, SPM);
+      [cdtName, regIdx] = getRegIdx(step.AutoContrasts, iCon, SPM);
 
       % give them a value of 1
       C(end, regIdx) = 1;
 
       % stores the specification
-      con_counter = con_counter + 1;
-      contrasts(con_counter).C = C; %#ok<*AGROW>
-      contrasts(con_counter).name = cdt_name;
+      counter = counter + 1;
+      contrasts(counter).C = C; %#ok<*AGROW>
+      contrasts(counter).name = cdtName;
 
       clear regIdx;
 
@@ -108,21 +108,21 @@ function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con
 
   end
 
-  if isfield(Step, 'Contrasts')
+  if isfield(step, 'Contrasts')
 
     % then the contrasts that involve contrasting conditions
     % amongst themselves or something inferior to baseline
-    for iCon = 1:length(Step.Contrasts)
+    for iCon = 1:length(step.Contrasts)
 
       C = zeros(1, size(SPM.xX.X, 2));
 
-      for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
+      for iCdt = 1:length(step.Contrasts(iCon).ConditionList)
 
         % get regressors index corresponding to the HRF of that condition
-        [~, regIdx] = getRegIdx(Step.Contrasts, iCon, SPM, iCdt);
+        [~, regIdx] = getRegIdx(step.Contrasts, iCon, SPM, iCdt);
 
         % give them the value specified in the model
-        C(end, regIdx) = Step.Contrasts(iCon).weights(iCdt);
+        C(end, regIdx) = step.Contrasts(iCon).weights(iCdt);
 
         clear regIdx;
 
@@ -132,9 +132,9 @@ function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con
       % probably not be created ?
 
       % stores the specification
-      con_counter = con_counter + 1;
-      contrasts(con_counter).C = C;
-      contrasts(con_counter).name =  Step.Contrasts(iCon).Name;
+      counter = counter + 1;
+      contrasts(counter).C = C;
+      contrasts(counter).name =  step.Contrasts(iCon).Name;
 
     end
 
@@ -142,15 +142,15 @@ function [contrasts,  con_counter] = specifySubLvlContrasts(contrasts, Step, con
 
 end
 
-function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con_counter, SPM)
+function [contrasts,  counter] = specifyRunLvlContrasts(contrasts, step, counter, SPM)
 
-  if isfield(Step, 'AutoContrasts')
+  if isfield(step, 'AutoContrasts')
 
     % first the contrasts to compute automatically against baseline
-    for iCon = 1:length(Step.AutoContrasts)
+    for iCon = 1:length(step.AutoContrasts)
 
       % get regressors index corresponding to the HRF of that condition
-      [cdt_name, regIdx] = getRegIdx(Step.AutoContrasts, iCon, SPM);
+      [cdtName, regIdx] = getRegIdx(step.AutoContrasts, iCon, SPM);
 
       % For each event of each condition, create a seperate contrast
       regIdx = find(regIdx);
@@ -161,9 +161,9 @@ function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con
         C(end, regIdx(iReg)) = 1;
 
         % stores the specification
-        con_counter = con_counter + 1;
-        contrasts(con_counter).C = C;
-        contrasts(con_counter).name =  [cdt_name, '_', num2str(iReg)];
+        counter = counter + 1;
+        contrasts(counter).C = C;
+        contrasts(counter).name =  [cdtName, '_', num2str(iReg)];
 
       end
 
@@ -173,24 +173,24 @@ function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con
 
   end
 
-  if isfield(Step, 'Contrasts')
+  if isfield(step, 'Contrasts')
 
     % then the contrasts that involve contrasting conditions
     % amongst themselves or something inferior to baseline
-    for iCon = 1:length(Step.Contrasts)
+    for iCon = 1:length(step.Contrasts)
 
       % get regressors index corresponding to the HRF of that condition
-      for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
-        [~, regIdx{iCdt}] = getRegIdx(Step.Contrasts, iCon, SPM, iCdt);
+      for iCdt = 1:length(step.Contrasts(iCon).ConditionList)
+        [~, regIdx{iCdt}] = getRegIdx(step.Contrasts, iCon, SPM, iCdt);
         regIdx{iCdt} = find(regIdx{iCdt});
       end
 
       nbRuns = unique(cellfun(@numel, regIdx));
 
       if length(nbRuns) > 1
-        disp(Step.Contrasts(iCon).ConditionList);
+        disp(step.Contrasts(iCon).ConditionList);
         warning('Skipping contrast: some runs are missing a condition for the contrast "%s"', ...
-                Step.Contrasts(iCon).Name);
+                step.Contrasts(iCon).Name);
         continue
       end
 
@@ -199,14 +199,14 @@ function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con
 
         C = zeros(1, size(SPM.xX.X, 2));
 
-        for iCdt = 1:length(Step.Contrasts(iCon).ConditionList)
-          C(end, regIdx{iCdt}(iRun)) = Step.Contrasts(iCon).weights(iCdt);
+        for iCdt = 1:length(step.Contrasts(iCon).ConditionList)
+          C(end, regIdx{iCdt}(iRun)) = step.Contrasts(iCon).weights(iCdt);
         end
 
         % stores the specification
-        con_counter = con_counter + 1;
-        contrasts(con_counter).C = C;
-        contrasts(con_counter).name = [Step.Contrasts(iCon).Name, '_', num2str(iRun)];
+        counter = counter + 1;
+        contrasts(counter).C = C;
+        contrasts(counter).name = [step.Contrasts(iCon).Name, '_', num2str(iRun)];
 
       end
       clear regIdx;
@@ -217,9 +217,9 @@ function [contrasts,  con_counter] = specifyRunLvlContrasts(contrasts, Step, con
 
 end
 
-function checkRegressorFound(regIdx, cdt_name)
+function checkRegressorFound(regIdx, cdtName)
   regIdx = find(regIdx);
   if all(~regIdx)
-    warning('No regressor found for condition "%s"', cdt_name);
+    warning('No regressor found for condition "%s"', cdtName);
   end
 end

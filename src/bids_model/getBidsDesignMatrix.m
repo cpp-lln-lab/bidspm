@@ -1,4 +1,4 @@
-function X = getBidsDesignMatrix(modelFile, nodeType)
+function designMAtrix = getBidsDesignMatrix(modelFile, nodeType)
   %
   % returns the design matrix of a node of a BIDS statistical model
   %
@@ -21,6 +21,6 @@ function X = getBidsDesignMatrix(modelFile, nodeType)
     errorHandling(mfilename(), 'missingModel', msg, false);
   end
 
-  X = step.Model.X;
+  designMAtrix = step.Model.X;
 
 end

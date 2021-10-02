@@ -1,21 +1,21 @@
-function [OS, GeneratedBy] = getEnvInfo(opt)
+function [OS, generatedBy] = getEnvInfo(opt)
   %
   % Gets information about the environement and operating system to help generate
   % data descriptors for the derivatives.
   %
   % USAGE::
   %
-  %   [OS, GeneratedBy] = getEnvInfo()
+  %   [OS, generatedBy] = getEnvInfo()
   %
   % :returns: :OS: (structure) (dimension)
-  %           :GeneratedBy: (structure) (dimension)
+  %           :generatedBy: (structure) (dimension)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  GeneratedBy(1).name = 'cpp_spm';
-  GeneratedBy(1).Version =  getVersion();
-  GeneratedBy(1).Description = '';
-  GeneratedBy(1).CodeURL = '';
+  generatedBy(1).name = 'cpp_spm';
+  generatedBy(1).Version =  getVersion();
+  generatedBy(1).Description = '';
+  generatedBy(1).CodeURL = '';
 
   runsOn = 'Matlab';
   if isOctave
