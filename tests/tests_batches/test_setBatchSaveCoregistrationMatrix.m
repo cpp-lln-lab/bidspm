@@ -13,7 +13,7 @@ function test_setBatchSaveCoregistrationMatrix_basic()
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
-  subLabel = '02';
+  subLabel = '01';
 
   opt = setOptions('vismotion', subLabel);
   opt.query = struct('acq', '');
@@ -35,9 +35,9 @@ function expectedBatch = returnExpectedBatch()
 
   expectedBatch = {};
 
-  subFuncDataDir = fullfile(getDummyDataDir('preproc'), 'sub-02', 'ses-01', 'func');
+  subFuncDataDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func');
 
-  fileName = 'sub-02_ses-01_task-vismotion_from-scanner_to-T1w_mode-image_xfm.mat';
+  fileName = 'sub-01_ses-01_task-vismotion_from-scanner_to-T1w_mode-image_xfm.mat';
 
   expectedBatch{end + 1}.cfg_basicio.var_ops.cfg_save_vars.name = fileName;
   expectedBatch{end}.cfg_basicio.var_ops.cfg_save_vars.outdir = {subFuncDataDir};

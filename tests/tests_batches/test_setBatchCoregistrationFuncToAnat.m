@@ -13,7 +13,7 @@ function test_setBatchCoregistrationFuncToAnat_basic()
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
-  subLabel = '02';
+  subLabel = '01';
 
   opt = setOptions('vismotion', subLabel);
 
@@ -48,7 +48,7 @@ function test_setBatchCoregistrationFuncToAnat_no_unwarp()
   % necessarry to deal with SPM module dependencies
   spm_jobman('initcfg');
 
-  subLabel = '02';
+  subLabel = '01';
 
   opt = setOptions('vismotion', subLabel);
   opt.realign.useUnwarp = false;

@@ -11,7 +11,7 @@ end
 function test_setBatchFactorialDesign_basic()
 
   opt = setOptions('vismotion');
-  opt.subjects = {'01' '02'};
+  opt.subjects = {'01' 'ctrl01'};
   opt.space = {'MNI'};
 
   matlabbatch = {};

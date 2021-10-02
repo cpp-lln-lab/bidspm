@@ -11,7 +11,7 @@ end
 function test_setBatchSmoothConImages_basic()
 
   opt = setOptions('vismotion');
-  opt.subjects = {'01', '02'};
+  opt.subjects = {'01', 'blind01'};
   opt.space = {'MNI'};
 
   [~, opt] = getData(opt, opt.dir.preproc);
@@ -34,7 +34,7 @@ function test_setBatchSmoothConImages_basic()
   expectedBatch{1}.spm.spatial.smooth.dtype = 0;
   expectedBatch{1}.spm.spatial.smooth.im = 0;
 
-  statsFodler = fullfile(opt.dir.stats, 'sub-01', 'stats', ...
+  statsFodler = fullfile(opt.dir.stats, 'sub-blind01', 'stats', ...
                          'task-vismotion_space-MNI_FWHM-6');
   expectedBatch{2}.spm.spatial.smooth.fwhm = [6 6 6];
   expectedBatch{2}.spm.spatial.smooth.prefix = 's6';
@@ -49,6 +49,6 @@ function test_setBatchSmoothConImages_basic()
   expectedBatch{2}.spm.spatial.smooth.dtype = 0;
   expectedBatch{2}.spm.spatial.smooth.im = 0;
 
-  assertEqual(matlabbatch{1}.spm.spatial.smooth.data, expectedBatch{1}.spm.spatial.smooth.data);
+  assertEqual(matlabbatch, expectedBatch);
 
 end

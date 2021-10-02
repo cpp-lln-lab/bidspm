@@ -10,9 +10,9 @@ end
 
 function test_setBatchSTC_skip()
 
-  subLabel = '02';
+  subLabel = '01';
 
-  opt = setOptions('vislocalizer', subLabel);
+  opt = setOptions('vismotion', subLabel);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -26,7 +26,7 @@ end
 
 function test_setBatchSTC_empty()
 
-  subLabel = '02';
+  subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel);
 
@@ -42,7 +42,7 @@ end
 
 function test_setBatchSTC_force()
 
-  subLabel = '02';
+  subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel);
 
@@ -66,6 +66,7 @@ function test_setBatchSTC_force()
     fileName = bids.query(BIDS, 'data', ...
                           'sub', subLabel, ...
                           'ses', sprintf('0%i', iSes), ...
+                          'task', opt.taskName, ...
                           'suffix', 'bold', ...
                           'extension', '.nii', ...
                           'prefix', '',  ...
@@ -80,7 +81,7 @@ end
 
 function test_setBatchSTC_basic()
 
-  subLabel = '02';
+  subLabel = '01';
 
   opt = setOptions('vismotion', subLabel);
 
@@ -124,7 +125,7 @@ end
 
 function test_setBatchSTC_error_invalid_input_time()
 
-  subLabel = '02';
+  subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel);
 

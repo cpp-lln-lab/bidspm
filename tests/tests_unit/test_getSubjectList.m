@@ -8,66 +8,27 @@ function test_suite = test_getSubjectList %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getSubject_convert_to_cell()
-
-  opt = setOptions('vismotion');
-
-  opt.subjects = 'ctrl01';
-
-  BIDS = bids.layout(opt.dir.preproc);
-
-  %% Get all groups all subjects
-  opt = getSubjectList(BIDS, opt);
-
-  assertEqual(opt.subjects, ...
-              {'ctrl01'});
-
-end
-
-function test_getSubject_no_subject_specified()
+function test_getSubject()
 
   opt = setOptions('vismotion');
 
   BIDS = bids.layout(opt.dir.preproc);
 
-  %% Get all groups all subjects
-  opt = getSubjectList(BIDS, opt);
+  group_subject_expected = {
+                            {''},      {'blind01', 'ctrl01'}, {'blind01', 'ctrl01'}  % basic
+                            {''},      'ctrl01',              {'ctrl01'}  % convert_to_cell
+                            {''},      [],                    {'01' 'blind01' 'ctrl01'}  % default
+                            {'blind'}, 'ctrl01',              {'01', 'blind01', 'ctrl01'}
+                           };
 
-  assertEqual(opt.subjects, ...
-              {'01' '02' 'blind01' 'blind02' 'ctrl01' 'ctrl02'}');
+  for i = 1:size(group_subject_expected, 1)
+    opt.groups = group_subject_expected{i, 1};
+    opt.subjects = group_subject_expected{i, 2};
 
-end
+    opt = getSubjectList(BIDS, opt);
 
-function test_getSubjectList_group()
-
-  opt = setOptions('vismotion');
-
-  BIDS = bids.layout(opt.dir.preproc);
-
-  %% Get all subjects of a group and a subject from another group
-  opt.groups = {'blind'};
-  opt.subjects = {'ctrl01'};
-
-  opt = getSubjectList(BIDS, opt);
-
-  % 'sub-02' is defined a blind in the participants.tsv
-  assertEqual(opt.subjects, {'02', 'blind01', 'blind02', 'ctrl01'}');
-
-end
-
-function test_getSubjectList_basic()
-
-  opt = setOptions('vismotion');
-
-  BIDS = bids.layout(opt.dir.preproc);
-
-  %% Get some specified subjects
-  opt.groups = {''};
-  opt.subjects = {'01', '02'; 'ctrl02', 'blind02'};
-
-  opt = getSubjectList(BIDS, opt);
-
-  assertEqual(opt.subjects, {'01', '02', 'blind02', 'ctrl02'}');
+    assertEqual(opt.subjects, group_subject_expected{i, 3}');
+  end
 
 end
 

@@ -10,7 +10,7 @@ end
 
 function test_setBatchCoregistrationFmap_basic()
 
-  subLabel = '02';
+  subLabel = '01';
 
   opt = setOptions('vismotion', subLabel);
 
