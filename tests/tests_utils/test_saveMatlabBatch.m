@@ -47,14 +47,3 @@ function test_saveMatlabBatch_group()
   cleanUp(fullfile(pwd, 'group'));
 
 end
-
-function cleanUp(folder)
-
-  pause(1);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(folder, 's');
-
-end

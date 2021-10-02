@@ -24,7 +24,7 @@ function test_loadAndCheckOptions_basic()
 
   assertEqual(opt, expectedOptions);
 
-  cleanUp();
+  cleanUp(fullfile(pwd, 'cfg'));
 
 end
 
@@ -44,7 +44,7 @@ function test_loadAndCheckOptions_structure()
 
   assertEqual(opt, expectedOptions);
 
-  cleanUp();
+  cleanUp(fullfile(pwd, 'cfg'));
 
 end
 
@@ -71,7 +71,7 @@ function test_loadAndCheckOptions_from_file()
 
   assertEqual(opt, expectedOptions);
 
-  cleanUp();
+  cleanUp(fullfile(pwd, 'cfg'));
 
 end
 
@@ -114,7 +114,7 @@ function test_loadAndCheckOptions_from_several_files()
 
   assertEqual(opt, expectedOptions);
 
-  cleanUp();
+  cleanUp(fullfile(pwd, 'cfg'));
 
 end
 
@@ -129,26 +129,13 @@ function test_loadAndCheckOptions_moae()
 
   opt = loadAndCheckOptions(optionJsonFile);
 
-  cleanUp();
+  cleanUp(fullfile(pwd, 'cfg'));
 
 end
 
 function setUp
   spm_mkdir cfg;
   delete(fullfile(pwd, 'cfg', '*.json'));
-end
-
-function cleanUp()
-
-  pause(1);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(fullfile(pwd, 'cfg'), 's');
-
-  delete('*.json');
-
 end
 
 function opt = setTestCfg()

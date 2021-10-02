@@ -23,14 +23,3 @@ function test_saveOptions_basic()
   cleanUp(fullfile(pwd, 'cfg'));
 
 end
-
-function cleanUp(folder)
-
-  pause(0.3);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(folder, 's');
-
-end

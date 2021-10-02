@@ -29,17 +29,6 @@ function test_createDefaultModel_basic()
   assertEqual(content.Steps{2}, expectedContent.Steps{2});
   assertEqual(content.Steps{3}, expectedContent.Steps{3});
 
-  cleanUp();
-
-end
-
-function cleanUp()
-
-  pause(1);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(fullfile(pwd, 'models'), 's');
+  cleanUp(fullfile(pwd, 'models'));
 
 end

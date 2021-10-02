@@ -29,7 +29,7 @@ function test_copyGraphWindownOutput_basic()
   assert(~isempty(files));
   assertEqual(size(files, 1), 2);
 
-  cleanUp(opt, subLabel);
+  cleanUp(fullfile(opt.dir.preproc, ['sub-' subLabel]));
 
 end
 
@@ -51,7 +51,7 @@ function test_copyGraphWindownOutput_warning()
                   'copyGraphWindownOutput:noFile');
   end
 
-  cleanUp(opt, subLabel);
+  cleanUp(fullfile(opt.dir.preproc, ['sub-' subLabel]));
 
 end
 
@@ -68,18 +68,5 @@ function [opt, subLabel, action] = setUp()
   opt.dir.preproc = pwd;
 
   action = 'testStep';
-
-end
-
-function cleanUp(opt, subLabel)
-
-  delete('*.png');
-
-  pause(1);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(fullfile(opt.dir.preproc, ['sub-' subLabel]), 's');
 
 end

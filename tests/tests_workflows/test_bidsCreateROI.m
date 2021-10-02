@@ -67,18 +67,3 @@ function test_bidsCreateROI_wang()
   cleanUp(opt.dir.roi);
 
 end
-
-function cleanUp(folder)
-
-  pause(.3);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-
-  try
-    rmdir(folder, 's');
-  catch
-  end
-
-end

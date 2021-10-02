@@ -22,7 +22,7 @@ function test_getRFXdir_basic()
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
-  cleanUp();
+  cleanUp(fullfile(getDummyDataDir('stats'), 'group'));
 
 end
 
@@ -39,19 +39,6 @@ function test_getRFXdir_user_specified()
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
-  cleanUp();
-
-end
-
-function cleanUp()
-
-  pause(1);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(fullfile(getDummyDataDir('stats'), ...
-                 'group'), ...
-        's');
+  cleanUp(fullfile(getDummyDataDir('stats'), 'group'));
 
 end

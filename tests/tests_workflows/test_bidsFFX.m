@@ -92,14 +92,3 @@ function opt = dirFixture(opt)
   opt.dir.stats = fullfile(pwd, 'derivatives', 'cpp_spm-stats');
   opt = checkOptions(opt);
 end
-
-function cleanUp(folder)
-
-  pause(0.3);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(folder, 's');
-
-end
