@@ -14,6 +14,9 @@ function test_getData_metadata()
 
   opt = setOptions('vismotion', subLabel);
 
+  % to speed up testing we use the raw dummy data
+  opt.dir.preproc = getDummyDataDir('raw');
+
   [~, opt] = getData(opt, opt.dir.preproc, 'T1w');
 
   assert(isequal(opt.metadata.RepetitionTime, 2.3));
@@ -23,6 +26,9 @@ end
 function test_getData_error_no_matching_task()
 
   opt = setOptions('testTask');
+
+  % to speed up testing we use the raw dummy data
+  opt.dir.preproc = getDummyDataDir('raw');
 
   assertExceptionThrown( ...
                         @()getData(opt, opt.dir.preproc), ...

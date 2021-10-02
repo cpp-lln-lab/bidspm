@@ -8,6 +8,8 @@ function dummyDataDir = getDummyDataDir(arg)
 
   if nargin == 0 || isempty(arg)
     return
+  elseif strcmpi(arg, 'raw')
+    dummyDataDir = fullfile(getDummyDataDir(), ['cpp_spm-' arg]);
   else
     dummyDataDir = fullfile(getDummyDataDir(), 'derivatives', ['cpp_spm-' arg]);
   end

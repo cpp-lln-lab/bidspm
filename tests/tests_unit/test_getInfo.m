@@ -11,8 +11,8 @@ end
 function test_getInfo_basic()
 
   subLabel = 'ctrl01';
-
-  opt = setOptions('vismotion', subLabel);
+  useRaw = true;
+  opt = setOptions('vismotion', subLabel, useRaw);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -73,10 +73,9 @@ end
 
 function test_getInfo_no_run()
 
-  %% Get runs from BIDS when no run in filename
   subLabel = 'ctrl01';
-
-  opt = setOptions('vislocalizer');
+  useRaw = true;
+  opt = setOptions('vislocalizer', subLabel, useRaw);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -108,8 +107,8 @@ end
 function test_getInfo_query_with_session_restriction()
 
   subLabel = 'ctrl01';
-
-  opt = setOptions('vismotion', subLabel);
+  useRaw = true;
+  opt = setOptions('vismotion', subLabel, useRaw);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -127,8 +126,8 @@ end
 function test_getInfo_error
 
   subLabel = 'ctrl01';
-
-  opt = setOptions('vismotion', subLabel);
+  useRaw = true;
+  opt = setOptions('vismotion', subLabel, useRaw);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 

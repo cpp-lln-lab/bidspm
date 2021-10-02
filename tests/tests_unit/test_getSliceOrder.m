@@ -10,7 +10,8 @@ end
 
 function test_getSliceOrder_basic()
 
-  opt = setOptions('vismotion');
+  useRaw = true;
+  opt = setOptions('vismotion', '', useRaw);
 
   [~, opt] = getData(opt, opt.dir.preproc);
   BIDS_sliceOrder = getSliceOrder(opt);
@@ -38,7 +39,8 @@ end
 
 function test_getSliceOrder_empty()
 
-  opt = setOptions('vislocalizer');
+  useRaw = true;
+  opt = setOptions('vislocalizer', '', useRaw);
 
   [~, opt] = getData(opt, opt.dir.preproc);
 
@@ -50,7 +52,9 @@ end
 
 function test_getSliceOrder_from_options()
 
-  opt = setOptions('vislocalizer');
+  useRaw = true;
+  opt = setOptions('vislocalizer', '', useRaw);
+
   opt.stc.referenceSlice = 1000;
   opt.stc.sliceOrder = 0:250:2000;
 

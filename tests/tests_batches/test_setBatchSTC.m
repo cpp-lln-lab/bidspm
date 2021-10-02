@@ -11,8 +11,8 @@ end
 function test_setBatchSTC_skip()
 
   subLabel = '01';
-
-  opt = setOptions('vismotion', subLabel);
+  useRaw = true;
+  opt = setOptions('vismotion', subLabel, useRaw);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -27,8 +27,8 @@ end
 function test_setBatchSTC_empty()
 
   subLabel = '01';
-
-  opt = setOptions('vislocalizer', subLabel);
+  useRaw = true;
+  opt = setOptions('vislocalizer', subLabel, useRaw);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -43,8 +43,8 @@ end
 function test_setBatchSTC_force()
 
   subLabel = '01';
-
-  opt = setOptions('vislocalizer', subLabel);
+  useRaw = true;
+  opt = setOptions('vislocalizer', subLabel, useRaw);
 
   % we give it some slice timing value to force slice timing to happen
   opt.stc.sliceOrder = linspace(0, 1.6, 10);
@@ -82,8 +82,8 @@ end
 function test_setBatchSTC_basic()
 
   subLabel = '01';
-
-  opt = setOptions('vismotion', subLabel);
+  useRaw = true;
+  opt = setOptions('vismotion', subLabel, useRaw);
 
   opt.query = struct('acq', '');
 
@@ -126,8 +126,8 @@ end
 function test_setBatchSTC_error_invalid_input_time()
 
   subLabel = '01';
-
-  opt = setOptions('vislocalizer', subLabel);
+  useRaw = true;
+  opt = setOptions('vislocalizer', subLabel, useRaw);
 
   opt.stc.sliceOrder = linspace(0, 1.6, 10);
   opt.stc.sliceOrder(end) = [];

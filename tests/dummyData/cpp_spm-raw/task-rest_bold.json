@@ -1,0 +1,14 @@
+{
+    "ImageType": "ORIGINAL\\PRIMARY\\M\\ND\\MOSAIC",
+    "Modality": "MR",
+    "TotalReadoutTime": 1.0035123,
+    "SliceTiming": [0.5475,0,0.3825,0.055,0.4375,0.11,0.4925,0.22,0.6025,0.275,0.6575,0.3275,0.71,0.165,0.5475,0,0.3825,0.055,0.4375,0.11,0.4925,0.22,0.6025,0.275,0.6575,0.3275,0.71,0.165,0.5475,0,0.3825,0.055,0.4375,0.11,0.4925,0.22,0.6025,0.275,0.6575,0.3275,0.71,0.165],
+    "RepetitionTime": 1.5,
+    "PhaseEncodingDirection": "j-",
+    "EffectiveEchoSpacing": 0.00024499812,
+    "EchoTime": 0.03,
+    "SliceThickness": 3,
+    "FlipAngle": 54,
+    "NumberOfVolumesDiscardedByUser": 8,
+    "TaskName": "vismotion"
+}

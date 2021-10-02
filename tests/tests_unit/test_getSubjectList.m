@@ -10,7 +10,8 @@ end
 
 function test_getSubject()
 
-  opt = setOptions('vismotion');
+  useRaw = true;
+  opt = setOptions('vismotion', '', useRaw);
 
   BIDS = bids.layout(opt.dir.preproc);
 
@@ -34,7 +35,8 @@ end
 
 function test_getSubjectList_error_subject()
 
-  opt = setOptions('vismotion', '03');
+  useRaw = true;
+  opt = setOptions('vismotion', '03', useRaw);
 
   BIDS = bids.layout(opt.dir.preproc);
 

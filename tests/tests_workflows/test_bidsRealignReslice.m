@@ -10,7 +10,8 @@ end
 
 function test_bidsRealignReslice_basic()
 
-  opt = setOptions('vislocalizer');
+  useRaw = true;
+  opt = setOptions('vislocalizer', '', useRaw);
 
   opt.pipeline.type = 'preproc';
   opt.funcVoxelDims = [2 2 2];
