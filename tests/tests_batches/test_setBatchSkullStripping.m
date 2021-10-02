@@ -8,7 +8,7 @@ function test_suite = test_setBatchSkullStripping %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchSkullStrippingBasic()
+function test_setBatchSkullStripping_basic()
 
   subLabel = '01';
 
@@ -28,7 +28,7 @@ function test_setBatchSkullStrippingBasic()
 
 end
 
-function expected_batch = returnExpectedBatch(opt)
+function expectedBatch = returnExpectedBatch(opt)
 
   expectedAnatDataDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'anat');
 
@@ -78,13 +78,13 @@ function expected_batch = returnExpectedBatch(opt)
   imcalc.expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
   imcalc.options.dtype = 16;
 
-  expected_batch = {};
-  expected_batch{end + 1}.spm.util.imcalc = imcalc;
+  expectedBatch = {};
+  expectedBatch{end + 1}.spm.util.imcalc = imcalc;
 
   % add a batch to output the mask
   imcalc.expression = sprintf('(i2+i3+i4)>%f', opt.skullstrip.threshold);
   imcalc.output = 'sub-01_ses-01_space-individual_label-brain_mask.nii';
 
-  expected_batch{end + 1}.spm.util.imcalc = imcalc;
+  expectedBatch{end + 1}.spm.util.imcalc = imcalc;
 
 end

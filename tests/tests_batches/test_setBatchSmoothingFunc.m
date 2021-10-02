@@ -8,7 +8,7 @@ function test_suite = test_setBatchSmoothingFunc %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchSmoothingFuncBasic()
+function test_setBatchSmoothingFunc_basic()
 
   % TODO
   % need a test with several sessions and runs

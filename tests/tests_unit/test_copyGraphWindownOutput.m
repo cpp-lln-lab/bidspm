@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_unit_copyGraphWindownOutput %#ok<*STOUT>
+function test_suite = test_copyGraphWindownOutput %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,7 +8,7 @@ function test_suite = test_unit_copyGraphWindownOutput %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_copyGraphWindownOutputBasic()
+function test_copyGraphWindownOutput_basic()
 
   [opt, subLabel, action] = setUp();
 
@@ -29,11 +29,11 @@ function test_copyGraphWindownOutputBasic()
   assert(~isempty(files));
   assertEqual(size(files, 1), 2);
 
-  cleanUp(opt, subLabel);
+  cleanUp(fullfile(opt.dir.preproc, ['sub-' subLabel]));
 
 end
 
-function test_copyGraphWindownOutputWarning1()
+function test_copyGraphWindownOutput_warning()
 
   [opt, subLabel, action] = setUp();
   opt.verbosity = 1;
@@ -51,7 +51,7 @@ function test_copyGraphWindownOutputWarning1()
                   'copyGraphWindownOutput:noFile');
   end
 
-  cleanUp(opt, subLabel);
+  cleanUp(fullfile(opt.dir.preproc, ['sub-' subLabel]));
 
 end
 
@@ -68,18 +68,5 @@ function [opt, subLabel, action] = setUp()
   opt.dir.preproc = pwd;
 
   action = 'testStep';
-
-end
-
-function cleanUp(opt, subLabel)
-
-  delete('*.png');
-
-  pause(1);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(fullfile(opt.dir.preproc, ['sub-' subLabel]), 's');
 
 end

@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_unit_validationInputFile %#ok<*STOUT>
+function test_suite = test_validationInputFile %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,7 +8,7 @@ function test_suite = test_unit_validationInputFile %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_validationInputFileBasic()
+function test_validationInputFil_basic()
 
   directory = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func');
   prefix = '';
@@ -24,7 +24,7 @@ function test_validationInputFileBasic()
 
 end
 
-function test_validationInputFileError()
+function test_validationInputFile_error()
 
   directory = pwd;
   prefix = 'swa';

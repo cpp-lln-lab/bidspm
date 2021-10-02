@@ -8,7 +8,7 @@ function test_suite = test_setBatchSubjectLevelContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchSubjectLevelContrastsBasic()
+function test_setBatchSubjectLevelContrasts_basic()
 
   subLabel = '01';
 

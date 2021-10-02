@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_unit_specifyContrasts %#ok<*STOUT>
+function test_suite = test_specifyContrasts %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,7 +8,7 @@ function test_suite = test_unit_specifyContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_specifyContrastsComplex()
+function test_specifyContrasts_complex()
   %
   % to test the generation of contrasts when there are several runs
   %
@@ -68,18 +68,19 @@ function test_specifyContrastsComplex()
 
 end
 
-function test_specifyContrastsVismotion()
+function test_specifyContrasts_vismotion()
   %
   % Note requires an SPM.mat to run
   %
 
   % GIVEN
   subLabel = '01';
-  funcFWHM = 6;
 
   opt = setOptions('vismotion', subLabel);
 
-  ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+  opt.space = {'MNI'};
+
+  ffxDir = getFFXdir(subLabel, opt);
   spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
   load(spmMatFile{1}, 'SPM');
 
@@ -105,18 +106,19 @@ function test_specifyContrastsVismotion()
 
 end
 
-function test_specifyContrastsVislocalizer()
+function test_specifyContrasts_vislocalizer()
   %
   % Note requires an SPM.mat to run
   %
 
   % GIVEN
   subLabel = '01';
-  funcFWHM = 6;
 
   opt = setOptions('vislocalizer', subLabel);
 
-  ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+  opt.space = {'MNI'};
+
+  ffxDir = getFFXdir(subLabel, opt);
   spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
   load(spmMatFile{1}, 'SPM');
 

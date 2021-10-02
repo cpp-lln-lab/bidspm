@@ -8,7 +8,7 @@ function test_suite = test_getRealignParamFilename %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getRealignParamFilenameBasic()
+function test_getRealignParamFilename_basic()
 
   subLabel = '01';
   session = '01';

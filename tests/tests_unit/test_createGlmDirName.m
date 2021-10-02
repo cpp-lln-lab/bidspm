@@ -1,6 +1,6 @@
 % (C) Copyright 2021 CPP_SPM developers
 
-function test_suite = test_unit_createGlmDirName %#ok<*STOUT>
+function test_suite = test_createGlmDirName %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,7 +8,7 @@ function test_suite = test_unit_createGlmDirName %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_createGlmDirName()
+function test_createGlmDirName_error()
 
   opt = setOptions('funcLocalizer');
 
@@ -16,7 +16,7 @@ function test_createGlmDirName()
 
 end
 
-function test_createGlmDirNameBasic()
+function test_createGlmDirName_basic()
 
   opt = setOptions('funcLocalizer');
   opt.space = {'MNI'};

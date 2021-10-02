@@ -8,6 +8,7 @@ preproc_dir=${start_dir}/dummyData/derivatives/cpp_spm-preproc
 stats_dir=${start_dir}/dummyData/derivatives/cpp_spm-stats
 
 subject_list='ctrl01 ctrl02 blind01 blind02 01 02' # subject list
+subject_list='ctrl01 blind01 01' # subject list
 session_list='01 02' # session list
 
 
@@ -186,7 +187,7 @@ do
 		this_dir=${stats_dir}/sub-${subject}/stats/task-${task}_space-MNI_FWHM-6
 		mkdir -p ${this_dir}
 
-		cp dummyData/SPM.mat ${this_dir}/SPM.mat
+		cp dummyData/mat_files/SPM.mat ${this_dir}/SPM.mat
 
 		touch ${this_dir}/mask.nii
 

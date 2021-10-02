@@ -8,7 +8,7 @@ function test_suite = test_getMeanFuncFilename %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getMeanFuncFilenameBasic()
+function test_getMeanFuncFilename_basic()
 
   subLabel = '01';
 

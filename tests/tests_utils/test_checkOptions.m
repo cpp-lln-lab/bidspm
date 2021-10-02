@@ -8,7 +8,7 @@ function test_suite = test_checkOptions %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_checkOptionsBasic()
+function test_checkOptions_basic()
 
   opt.taskName = 'testTask';
   opt = checkOptions(opt);
@@ -19,7 +19,7 @@ function test_checkOptionsBasic()
 
 end
 
-function test_checkOptionsDoNotOverwrite()
+function test_checkOptions_do_not_overwrite()
 
   opt.funcVoxelDims = [1 1 1];
   opt.someExtraField = 'test';
@@ -32,7 +32,7 @@ function test_checkOptionsDoNotOverwrite()
 
 end
 
-function test_checkOptionsErrorTask()
+function test_checkOptions_error_task()
 
   opt.taskName = [];
   opt.verbosity = 1;
@@ -48,7 +48,7 @@ function test_checkOptionsErrorTask()
 
 end
 
-function test_checkOptionsErrorGroup()
+function test_checkOptions_error_group()
 
   opt.groups = {1};
 
@@ -58,7 +58,7 @@ function test_checkOptionsErrorGroup()
 
 end
 
-function test_checkOptionsErrorRefSlice()
+function test_checkOptions_error_ref_slice()
 
   opt.stc.referenceSlice = [1:10];
   opt.taskName = 'testTask';
@@ -69,7 +69,7 @@ function test_checkOptionsErrorRefSlice()
 
 end
 
-function test_checkOptionsErrorVoxDim()
+function test_checkOptions_error_vox_dim()
 
   opt.funcVoxelDims = [1:10];
 
@@ -79,7 +79,7 @@ function test_checkOptionsErrorVoxDim()
 
 end
 
-function test_checkOptionsSessionString()
+function test_checkOptions_session_string()
 
   opt.anatReference.session = 1;
 

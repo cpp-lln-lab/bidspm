@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_unit_createDataDictionary %#ok<*STOUT>
+function test_suite = test_createDataDictionary %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -10,7 +10,7 @@ end
 
 % silence until functional QA has been updated to take BIDS as input
 
-function test_createDataDictionaryBasic()
+function test_createDataDictionary_basic()
 
   subLabel = '01';
   iSes = 1;

@@ -8,7 +8,7 @@ function test_suite = test_setBatchSmoothing %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchSmoothingBasic()
+function test_setBatchSmoothing_basic()
 
   FWHM = 6;
   prefix = 's6_';

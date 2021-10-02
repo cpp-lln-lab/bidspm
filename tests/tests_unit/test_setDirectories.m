@@ -1,6 +1,6 @@
 % (C) Copyright 2021 CPP_SPM developers
 
-function test_suite = test_unit_setDirectories %#ok<*STOUT>
+function test_suite = test_setDirectories %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -30,7 +30,7 @@ function test_setDirectories_stats()
 
 end
 
-function test_setDirectories_inputsOutputs()
+function test_setDirectories_inputs_outputs()
 
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
   opt.dir.preproc = fullfile(opt.dir.raw, '..', '..', 'outputs', 'derivatives');
@@ -52,7 +52,7 @@ function test_setDirectories_inputsOutputs()
 
 end
 
-function test_setDirectories_copyRaw2Preproc_Named()
+function test_setDirectories_copy_raw_to_preproc_named()
 
   %%
   opt.dir.raw = pwd;
@@ -141,7 +141,7 @@ function test_setDirectories_copy_raw_to_preproc()
 
 end
 
-function test_setDirectories_copyfMRIprep2Preproc()
+function test_setDirectories_copy_fmriprep_to_preproc()
 
   opt.dir.input = pwd;
 

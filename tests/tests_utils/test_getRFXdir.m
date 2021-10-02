@@ -8,7 +8,7 @@ function test_suite = test_getRFXdir %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getRFXdirBasic()
+function test_getRFXdir_basic()
 
   opt = setOptions('vislocalizer');
   opt.fwhm.func = 0;
@@ -22,11 +22,11 @@ function test_getRFXdirBasic()
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
-  cleanUp();
+  cleanUp(fullfile(getDummyDataDir('stats'), 'group'));
 
 end
 
-function test_getRFXdirUserSpecified()
+function test_getRFXdir_user_specified()
 
   opt = setOptions('nback');
   opt.fwhm.contrast = 0;
@@ -39,19 +39,6 @@ function test_getRFXdirUserSpecified()
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
-  cleanUp();
-
-end
-
-function cleanUp()
-
-  pause(1);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(fullfile(getDummyDataDir('stats'), ...
-                 'group'), ...
-        's');
+  cleanUp(fullfile(getDummyDataDir('stats'), 'group'));
 
 end

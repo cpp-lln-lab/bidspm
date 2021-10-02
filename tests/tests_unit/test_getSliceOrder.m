@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_unit_getSliceOrder %#ok<*STOUT>
+function test_suite = test_getSliceOrder %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,7 +8,7 @@ function test_suite = test_unit_getSliceOrder %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getSliceOrderBasic()
+function test_getSliceOrder_basic()
 
   opt = setOptions('vismotion');
 
@@ -36,7 +36,7 @@ function test_getSliceOrderBasic()
 
 end
 
-function test_getSliceOrderEmpty()
+function test_getSliceOrder_empty()
 
   opt = setOptions('vislocalizer');
 
@@ -48,7 +48,7 @@ function test_getSliceOrderEmpty()
 
 end
 
-function test_getSliceOrderFromOptions()
+function test_getSliceOrder_from_options()
 
   opt = setOptions('vislocalizer');
   opt.stc.referenceSlice = 1000;

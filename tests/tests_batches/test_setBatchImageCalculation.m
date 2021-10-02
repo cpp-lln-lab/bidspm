@@ -8,7 +8,7 @@ function test_suite = test_setBatchImageCalculation %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchImageCalculationBasic()
+function test_setBatchImageCalculation_basic()
 
   opt = setOptions('dummy');
 

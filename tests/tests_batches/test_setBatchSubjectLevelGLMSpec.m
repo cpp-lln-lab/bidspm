@@ -90,17 +90,6 @@ function opt = dirFixture(opt)
   opt = checkOptions(opt);
 end
 
-function cleanUp(folder)
-
-  pause(1);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(folder, 's');
-
-end
-
 % function expectedBatch = returnExpectedBatch()
 %
 %     matlabbatch{1}.spm.stats.fmri_spec.dir = { outputDir};

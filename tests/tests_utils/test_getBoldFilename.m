@@ -8,7 +8,7 @@ function test_suite = test_getBoldFilename %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getBoldFilenameBasic()
+function test_getBoldFilename_basic()
 
   subLabel = '01';
   iSes = 1;
@@ -37,7 +37,7 @@ function test_getBoldFilenameBasic()
 
 end
 
-function test_getBoldFilenameDerivatives()
+function test_getBoldFilename_derivatives()
 
   subLabel = '01';
   iSes = 1;

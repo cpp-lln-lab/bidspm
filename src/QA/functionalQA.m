@@ -43,7 +43,7 @@ function functionalQA(opt)
     res = 'bold';
     space = 'individual';
     [greyMatter, whiteMatter, csf] = getTpmFilenames(BIDS, subLabel, res, space);
-    TPMs = char({greyMatter; whiteMatter; csf});
+    tpms = char({greyMatter; whiteMatter; csf});
 
     % load metrics from anat QA
     anatQaMetrics = bids.query('data', query, 'suffix', 'qametrics');
@@ -72,7 +72,7 @@ function functionalQA(opt)
         volumesToCheck = {funcImage; greyMatter; whiteMatter; csf};
         spm_check_orientations(spm_vol(char(volumesToCheck)));
 
-        fMRIQA = computeFuncQAMetrics(funcImage, TPMs, anatQA.avgDistToSurf, opt);
+        funcQA = computeFuncQAMetrics(funcImage, tpms, anatQA.avgDistToSurf, opt);
 
         % TODO
         % find an ouput format that is leaner than a 3 Gb json file!!!
@@ -80,13 +80,13 @@ function functionalQA(opt)
         %                         fullfile( ...
         %                                  subFuncDataDir, ...
         %                                  strrep(fileName, '.nii',  '_qa.json')), ...
-        %                         fMRIQA, ...
+        %                         funcQA, ...
         %                         struct('indent', '   '));
         %           save( ...
         %                fullfile( ...
         %                         subFuncDataDir, ...
         %                         strrep(fileName, '.nii',  '_qa.mat')), ...
-        %                'fMRIQA');
+        %                'funcQA');
 
         outputFiles = spmup_first_level_qa( ...
                                            funcImage, ...
@@ -141,16 +141,16 @@ function functionalQA(opt)
 
 end
 
-function fMRIQA = computeFuncQAMetrics(funcImage, TPMs, avgDistToSurf, opt)
+function funcQA = computeFuncQAMetrics(funcImage, tpms, avgDistToSurf, opt)
 
   [subFuncDataDir, fileName, ext] = spm_fileparts(funcImage);
 
-  fMRIQA.tSNR = spmup_temporalSNR( ...
+  funcQA.tSNR = spmup_temporalSNR( ...
                                   funcImage, ...
-                                  {TPMs(1, :); TPMs(2, :); TPMs(3, :)}, ...
+                                  {tpms(1, :); tpms(2, :); tpms(3, :)}, ...
                                   'save');
 
   realignParamFile = getRealignParamFilename(fullfile(subFuncDataDir, [fileName, ext]), prefix);
-  fMRIQA.meanFD = mean(spmup_FD(realignParamFile, avgDistToSurf));
+  funcQA.meanFD = mean(spmup_FD(realignParamFile, avgDistToSurf));
 
 end

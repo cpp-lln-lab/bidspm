@@ -8,7 +8,7 @@ function test_suite = test_setBatchSelectAnat %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchSelectAnatBasic()
+function test_setBatchSelectAnat_basic()
 
   % TODO
   % add test to check if anat is not in first session
