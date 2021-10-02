@@ -34,7 +34,7 @@ create_raw_func_vismotion () {
 	echo "onset\tduration\ttrial_type" > ${filename}
 	echo "2\t2\tVisMotUp" >> ${filename}
 	echo "4\t2\tVisMotDown" >> ${filename}
-	
+
 	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-2_events.tsv
 	echo "onset\tduration\ttrial_type" > ${filename}
 	echo "3\t2\tVisMotDown" >> ${filename}
@@ -291,5 +291,3 @@ do
 	done
 
 done
-
-
