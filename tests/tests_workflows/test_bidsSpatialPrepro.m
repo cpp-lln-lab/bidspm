@@ -30,7 +30,7 @@ function test_bidsSpatialPrepro_basic()
 
 end
 
-function test_bidsSpatialPrepro_force_segmentc()
+function test_bidsSpatialPrepro_force_segment()
 
   opt = setOptions('MoAE-preproc');
 

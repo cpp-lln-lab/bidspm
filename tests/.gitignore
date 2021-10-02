@@ -10,4 +10,5 @@ openneuro
 dummyData/derivatives/cpp_spm-preproc/jobs
 dummyData/derivatives/cpp_spm-preproc/sub*
 dummyData/derivatives/cpp_spm-stats/sub*
+dummyData/cpp_spm-raw/sub*
 dummyData/derivatives/cpp_spm-roi

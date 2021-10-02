@@ -1,5 +1,7 @@
 % (C) Copyright 2019 CPP_SPM developers
 
+% Elapsed time is 284 seconds.
+
 tic;
 
 warning('OFF');

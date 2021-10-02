@@ -1,8 +1,16 @@
-function opt = setOptions(task, subLabel)
+function opt = setOptions(task, subLabel, useRaw)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
   opt = setTestCfg();
+
+  if nargin > 1 && ~isempty(subLabel)
+    opt.subjects = {subLabel};
+  end
+
+  if nargin < 3 || isempty(useRaw)
+    useRaw = false;
+  end
 
   opt.dir = [];
 
@@ -62,8 +70,8 @@ function opt = setOptions(task, subLabel)
 
   opt = checkOptions(opt);
 
-  if nargin > 1
-    opt.subjects = {subLabel};
+  if useRaw
+    opt.dir.preproc = getDummyDataDir('raw');
   end
 
 end
