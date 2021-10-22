@@ -42,7 +42,7 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
     load(fullfile(ffxDir, 'SPM.mat'));
 
     model = spm_jsonread(opt.model.file);
-    
+
     contrasts = specifyContrasts(SPM, opt.taskName, model);
 
     beta_maps = cell(length(contrasts), 1);
@@ -84,8 +84,8 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
                            'ext', '.tsv', ...
                            'suffix', 'labelfold', ...
                            'entities', struct('sub', subLabel, ...
-                                             'task', opt.taskName, ...
-                                             'space', opt.space));
+                                              'task', opt.taskName, ...
+                                              'space', opt.space));
     nameStructure.use_schema = false;
     tsvName = bids.create_filename(nameStructure);
 
