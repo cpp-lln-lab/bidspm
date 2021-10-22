@@ -41,7 +41,9 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
     load(fullfile(ffxDir, 'SPM.mat'));
 
-    contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
+    model = spm_jsonread(opt.model.file);
+    
+    contrasts = specifyContrasts(SPM, opt.taskName, model);
 
     beta_maps = cell(length(contrasts), 1);
     t_maps = cell(length(contrasts), 1);
