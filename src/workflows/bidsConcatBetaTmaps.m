@@ -9,9 +9,9 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
   % :param funcFWHM: smoothing (FWHM) applied to the the normalized EPI
   % :type funcFWHM: (scalar)
   % :param deleteIndBeta: decide to delete beta-maps
-  % :type funcFWHM: (boolean)
+  % :type deleteIndBeta: (boolean)
   % :param deleteIndTmaps: decide to delete t-maps
-  % :type funcFWHM: (boolean)
+  % :type deleteIndTmaps: (boolean)
   %
   % When concatenating betamaps:
   %
@@ -22,12 +22,16 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  if nargin < 3
-    deleteIndBeta = 1;
-    deleteIndTmaps = 1;
-  end
-
   [~, opt] = setUpWorkflow(opt, 'merge beta images and t-maps');
+
+  if nargin < 3
+    deleteIndBeta = true;
+    deleteIndTmaps = true;
+  end
+  if opt.dryRun
+    deleteIndBeta = false;
+    deleteIndTmaps = false;
+  end
 
   RT = 0;
 
@@ -49,15 +53,17 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
     t_maps = cell(length(contrasts), 1);
 
     % path to beta and t-map files.
+    fprintf(1, '\nConcatenating the following contrasts:');
     for iContrast = 1:length(beta_maps)
 
+      fprintf(1, '\n\t%s', contrasts(iContrast).name);
       betasIndices = find(contrasts(iContrast).C);
 
       if numel(betasIndices) > 1
         error('Supposed to concatenate one beta image per contrast.');
       end
 
-      % for this beta iamge we identify
+      % for this beta image we identify
       % - which run it came from
       % - the exact condition name stored in the SPM.mat
       % so they can be saved in a tsv for for "label" and "fold" for MVPA
@@ -72,7 +78,6 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
       fileName = validationInputFile(ffxDir, fileName);
       beta_maps{iContrast, 1} = [fileName, ',1'];
 
-      % while the contrastes (t-maps) are not from the index. They were created
       fileName = sprintf('spmT_%04d.nii', iContrast);
       fileName = validationInputFile(ffxDir, fileName);
       t_maps{iContrast, 1} = [fileName, ',1'];
@@ -93,6 +98,7 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
     spm_save(fullfile(ffxDir, tsvName), tsvContent);
 
+    % TODO in the dev branch make those output filenames "BIDS derivatives" compliant
     % beta maps
     outputName = ['4D_beta_', num2str(funcFWHM), '.nii'];
 
@@ -104,7 +110,9 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
     matlabbatch = setBatch3Dto4D(matlabbatch, t_maps, RT, outputName);
 
-    saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subLabel);
+    if ~opt.dryRun
+      saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subLabel);
+    end
 
     removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir);
 
@@ -139,6 +147,7 @@ function removeBetaImgTmaps(t_maps, deleteIndBeta, deleteIndTmaps, ffxDir)
       delete(t_maps{iTmap}(1:end - 2));
     end
     fprintf('Done. \n\n\n ');
+
   end
 
 end
