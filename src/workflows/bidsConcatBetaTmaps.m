@@ -24,6 +24,11 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
   [~, opt] = setUpWorkflow(opt, 'merge beta images and t-maps');
 
+  % TODO temporary check: will be removed on the dev branch
+  if ~isfield(opt, 'dryRun')
+      opt.dryRun = false;
+  end
+  
   if nargin < 3
     deleteIndBeta = true;
     deleteIndTmaps = true;
@@ -110,6 +115,7 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
     matlabbatch = setBatch3Dto4D(matlabbatch, t_maps, RT, outputName);
 
+    % TODO temporary: remove on dev branch
     if ~opt.dryRun
       saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subLabel);
     end
