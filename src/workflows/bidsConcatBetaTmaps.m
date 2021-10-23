@@ -26,9 +26,9 @@ function bidsConcatBetaTmaps(opt, funcFWHM, deleteIndBeta, deleteIndTmaps)
 
   % TODO temporary check: will be removed on the dev branch
   if ~isfield(opt, 'dryRun')
-      opt.dryRun = false;
+    opt.dryRun = false;
   end
-  
+
   if nargin < 3
     deleteIndBeta = true;
     deleteIndTmaps = true;
