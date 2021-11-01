@@ -16,11 +16,13 @@ function test_bidsConcatBetaTmapsBasic()
   opt = setOptions('vismotion', subLabel);
   opt.dryRun = true;
 
+  opt.space = 'MNI';
+
   opt.model.file = spm_file(opt.model.file, 'filename', 'model-vismotionMVPA_smdl.json');
 
-  bidsConcatBetaTmaps(opt, funcFWHM);
+  bidsConcatBetaTmaps(opt);
 
-  ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+  ffxDir = getFFXdir(subLabel, opt);
   content = bids.util.tsvread(fullfile(ffxDir, ...
                                        'sub-01_task-vismotion_space-MNI_labelfold.tsv'));
 

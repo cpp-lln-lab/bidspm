@@ -58,14 +58,14 @@ function bidsResliceTpmToFunc(opt)
     p = bids.internal.parse_filename(meanImage);
     p.entities.label = p.suffix;
     p.suffix = 'mask';
-    p.use_schema = false;
-    output = bids.create_filename(p);
+
+    bidsFile = bids.File(p);
 
     expression = sprintf('(i1+i2+i3)>%f', opt.skullstrip.threshold);
 
     matlabbatch = {};
     matlabbatch = setBatchImageCalculation(matlabbatch, opt, ...
-                                           input, output, meanFuncDir, expression);
+                                           input, bidsFile.filename, meanFuncDir, expression);
 
     saveAndRunWorkflow(matlabbatch, 'create_functional_brain_mask', opt, subLabel);
 

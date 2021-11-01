@@ -16,10 +16,13 @@ function renameSegmentParameter(BIDS, subLabel, opt)
 
   p = bids.internal.parse_filename(anatImage);
   p.entities.label = p.suffix;
-  p.use_schema = false;
+
   p.suffix = 'segparam';
   p.ext = '.mat';
-  newName = spm_file(segmentParam, 'filename',  bids.create_filename(p));
+
+  bidsFile = bids.File(p);
+
+  newName = spm_file(segmentParam, 'filename',  bidsFile.filename);
 
   if ~isempty(segmentParam)
     movefile(segmentParam, newName);

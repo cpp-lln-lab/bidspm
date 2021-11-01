@@ -48,9 +48,10 @@ function anatomicalQA(opt)
     p.entities.label = p.suffix;
     p.suffix = 'qametrics';
     p.ext = '.json';
-    p.use_schema = false;
+
+    bidsFile = bids.File(p);
     spm_jsonwrite( ...
-                  fullfile(anatDataDir, bids.create_filename(p)), ...
+                  fullfile(anatDataDir, bidsFile.filename), ...
                   anatQA, ...
                   struct('indent', '   '));
 
@@ -58,9 +59,10 @@ function anatomicalQA(opt)
     p.entities.label = p.suffix;
     p.suffix = 'mask';
     p.ext = '.pdf';
-    p.use_schema = false;
+
+    bidsFile = bids.File(p);
     movefile(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_AnatQC.pdf']), ...
-             fullfile(anatDataDir,  bids.create_filename(p)));
+             fullfile(anatDataDir,  bidsFile.filename));
 
     delete(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
 

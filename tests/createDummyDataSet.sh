@@ -174,7 +174,7 @@ do
 
 			filename=${this_dir}/rp_sub-${subject}_ses-${ses}_task-${task_name}_run-${run}${suffix}.txt
 			cp dummyData/rp.txt ${filename}
-			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_desc-confounds_regressors.tsv
+			cp dummyData/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_desc-confounds_regressors.tsv
 
 			for desc in ${desc_label_list}
 			do
@@ -199,7 +199,7 @@ do
 		### derivatives
 		filename=${this_dir}/rp_sub-${subject}_ses-${ses}_task-${task_name}${suffix}.txt
 		cp dummyData/rp.txt ${filename}
-		touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_desc-confounds_regressors.tsv
+		cp dummyData/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_desc-confounds_regressors.tsv
 
 		# func_prefix_list='a r u s6'
 		# for prefix in ${func_prefix_list}

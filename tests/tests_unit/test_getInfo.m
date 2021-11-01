@@ -60,7 +60,6 @@ function test_getInfo_query()
                       'run', run, ...
                       'acq', '1p60mm', ...
                       'dir', 'PA');
-  p.use_schema = true;
 
   opt.query = struct('acq', '1p60mm', 'dir', 'PA');
   filename = getInfo(BIDS, subLabel, opt, 'filename', session, run, 'bold');
@@ -140,7 +139,7 @@ function test_getInfo_error
 end
 
 function fileName = returnFullpathExpectedFilename(p)
+  bidsFile = bids.File(p, true);
   fileName = fullfile(getDummyDataDir(), 'derivatives', 'cpp_spm-preproc', ...
-                      bids.create_path(bids.create_filename(p)), ...
-                      bids.create_filename(p));
+                      bidsFile.relative_pth, bidsFile.filename);
 end

@@ -126,10 +126,10 @@ function renameOutputResults(results)
     split = strfind(basename, '_sub');
     p = bids.internal.parse_filename(basename(split + 1:end));
     p.entities.label = basename(split - 4:split - 1);
-    p.use_schema = false;
-    newName = bids.create_filename(p);
 
-    target = spm_file(source, 'basename', newName);
+    bidsFile = bids.File(p);
+
+    target = spm_file(source, 'basename', bidsFile.filename);
 
     movefile(source, target);
   end

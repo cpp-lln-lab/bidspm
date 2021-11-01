@@ -121,13 +121,12 @@ function bidsCreateROI(opt)
                                                   'label', p.entities.label, ...
                                                   'desc', p.entities.desc), ...
                                'suffix', 'mask', ...
-                               'ext', '.nii', ...
-                               'use_schema', false);
+                               'ext', '.nii');
 
-        newName = bids.create_filename(nameStructure);
+        bidsFile = bids.File(nameStructure);
 
         movefile(roiList{iROI, 1}, ...
-                 fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', newName));
+                 fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', bidsFile.filename));
 
       end
 

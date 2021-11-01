@@ -55,7 +55,7 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
     % path to beta and t-map files.
 
     fprintf(1, '\nConcatenating the following contrasts:');
-    for iContrast = 1:length(beta_maps)
+    for iContrast = 1:length(betaMaps)
 
       fprintf(1, '\n\t%s', contrasts(iContrast).name);
       betasIndices = find(contrasts(iContrast).C);
@@ -89,28 +89,27 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
     nameStructure = struct( ...
                            'ext', '.tsv', ...
                            'suffix', 'labelfold', ...
-                           'use_schema', false, ...
-                           'entities' struct('sub', subLabel, ...
-                                             'task', opt.taskName, ...
-                                             'space', opt.space));
+                           'entities', struct('sub', subLabel, ...
+                                              'task', opt.taskName, ...
+                                              'space', opt.space));
 
-    tsvName = bids.create_filename(nameStructure);
+    bidsFile = bids.File(nameStructure);
 
     tsvContent = struct('folds', runs, 'labels', {conditions});
 
-    spm_save(fullfile(ffxDir, tsvName), tsvContent);
+    spm_save(fullfile(ffxDir, bidsFile.filename), tsvContent);
 
     % TODO in the dev branch make those output filenames "BIDS derivatives" compliant
     % beta maps
     outputName = ['4D_beta_', num2str(opt.fwhm.func), '.nii'];
 
     matlabbatch = {};
-    matlabbatch = setBatch3Dto4D(matlabbatch, betaMaps, RT, outputName);
+    matlabbatch = setBatch3Dto4D(matlabbatch, opt, betaMaps, RT, outputName);
 
     % t-maps
     outputName = ['4D_tMaps_', num2str(opt.fwhm.func), '.nii'];
 
-    matlabbatch = setBatch3Dto4D(matlabbatch, tMaps, RT, outputName);
+    matlabbatch = setBatch3Dto4D(matlabbatch, opt, tMaps, RT, outputName);
 
     % TODO temporary: remove on dev branch
     if ~opt.dryRun

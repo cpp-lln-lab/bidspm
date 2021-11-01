@@ -51,10 +51,11 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFi
   % save the confounds as a matfile
   p = bids.internal.parse_filename(tsvFile);
   p.ext = '.mat';
-  p.use_schema = false;
+
+  bidsFile = bids.File(p);
 
   ffxDir = getFFXdir(subLabel, opt);
-  counfoundMatFile = fullfile(ffxDir, bids.create_filename(p));
+  counfoundMatFile = fullfile(ffxDir, bidsFile.filename);
 
   save(counfoundMatFile, ...
        'names', 'R', ...

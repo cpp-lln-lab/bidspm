@@ -26,7 +26,6 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   result.outputNameStructure.entities.p = convertPvalueToString(result.Contrasts.p);
   result.outputNameStructure.entities.k = num2str(result.Contrasts.k);
   result.outputNameStructure.entities.MC = result.Contrasts.MC;
-  result.outputNameStructure.use_schema = false;
 
   fieldsToSet = returnDefaultResultsStructure();
   result = setFields(result, fieldsToSet);
@@ -59,13 +58,15 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   if result.Output.thresh_spm
     result.outputNameStructure.ext = '';
-    export{end + 1}.tspm.basename = bids.create_filename(result.outputNameStructure);
+    bidsFile = bids.File(result.outputNameStructure);
+    export{end + 1}.tspm.basename = bidsFile.filename;
   end
 
   if result.Output.binary
     result.outputNameStructure.ext = '';
     result.outputNameStructure.suffix = 'mask';
-    export{end + 1}.binary.basename = bids.create_filename(result.outputNameStructure);
+    bidsFile = bids.File(result.outputNameStructure);
+    export{end + 1}.binary.basename = bidsFile.filename;
   end
 
   if result.Output.NIDM_results
@@ -94,7 +95,8 @@ function matlabbatch = setBatchResults(matlabbatch, result)
     % Not sure why the name of the figure does not come out right
     result.outputNameStructure.ext = '';
     result.outputNameStructure.suffix = 'montage';
-    matlabbatch{end + 1}.spm.util.print.fname = bids.create_filename(result.outputNameStructure);
+    bidsFile = bids.File(result.outputNameStructure);
+    matlabbatch{end + 1}.spm.util.print.fname = bidsFile.filename;
     matlabbatch{end}.spm.util.print.fig.figname = 'SliceOverlay';
     matlabbatch{end}.spm.util.print.opts = 'png';
 

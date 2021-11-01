@@ -99,22 +99,24 @@ function functionalQA(opt)
                                            'Radius', anatQA.avgDistToSurf);
 
         p = bids.internal.parse_filename(funcImage);
-        p.use_schema = false;
         p.entities.label = p.suffix;
         p.suffix = 'qa';
         p.ext = '.pdf';
+        bidsFile = bids.File(p);
+
         movefile( ...
                  fullfile(subFuncDataDir, 'spmup_QC.ps'), ...
-                 spm_file(funcImage, 'filename', bids.create_filename(p)));
+                 spm_file(funcImage, 'filename', bidsFile.filename));
 
         confounds = load(outputFiles.design);
 
         p = bids.internal.parse_filename(funcImage);
-        p.use_schema = false;
         p.entities.desc = 'confounds';
         p.suffix = 'regressors';
         p.ext = '.tsv';
-        spm_save(spm_file(funcImage, 'filename', bids.create_filename(p)), ...
+        bidsFile = bids.File(p);
+
+        spm_save(spm_file(funcImage, 'filename', bidsFile.filename), ...
                  confounds);
 
         delete(outputFiles.design);
