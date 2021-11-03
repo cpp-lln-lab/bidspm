@@ -1,71 +1,104 @@
 {
-  "Name": "vislocalizer",
-  "Description": "default model for vislocalizer",
-  "Input": {
-    "task": "vislocalizer"
-  },
-  "Steps": [
-    {
-      "Level": "subject",
-      "Transformations": [
-        {
-          "Name": "Factor",
-          "Inputs": ["trial_type"]
-        },
-        {
-          "Name": "Convolve",
-          "Model": "spm",
-          "Inputs": [" "]
-        }
-      ],
-      "Model": {
-        "X": ["trial_type.VisMot", "trial_type.VisStat",
-              "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
-             ],
-        "Options": {
-          "high_pass_filter_cutoff_secs": 128
-        },
-        "Software": {
-          "SPM": {
-            "whitening": "FAST"
-          }
-        },
-        "Mask": " "
+   "Name": "vislocalizer",
+   "Description": "default model for vislocalizer",
+   "Input": {
+      "task": "vislocalizer"
+   },
+   "Steps": [
+      {
+         "Level": "run",
+         "Transformations": [
+            {
+               "Name": "Factor",
+               "Inputs": ["trial_type"]
+            },
+            {
+               "Name": "Convolve",
+               "Model": "spm",
+               "Inputs": [" "]
+            }
+         ],
+         "Model": {
+            "X": [
+               "trial_type.VisMot",
+               "trial_type.VisStat",
+               "trans_x",
+               "trans_y",
+               "trans_z",
+               "rot_x",
+               "rot_y",
+               "rot_z"
+            ],
+            "Options": {
+               "high_pass_filter_cutoff_secs": 128
+            },
+            "Software": {
+               "SPM": {
+                  "whitening": "FAST"
+               }
+            },
+            "Mask": " "
+         },
+         "AutoContrasts": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+         ]
       },
-      "AutoContrasts": ["trial_type.VisMot", "trial_type.VisStat"]
-    },
-    {
-      "Level": "run",
-      "Transformations": [
-        {
-          "Name": "Factor",
-          "Inputs": ["trial_type"]
-        },
-        {
-          "Name": "Convolve",
-          "Model": "spm",
-          "Inputs": [" "]
-        }
-      ],
-      "Model": {
-        "X": ["trial_type.VisMot", "trial_type.VisStat",
-              "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
-             ],
-        "Options": {
-          "high_pass_filter_cutoff_secs": 128
-        },
-        "Software": {
-          "SPM": {
-            "whitening": "FAST"
-          }
-        },
-        "Mask": " "
+      {
+         "Level": "subject",
+         "Transformations": [
+            {
+               "Name": "Factor",
+               "Inputs": ["trial_type"]
+            },
+            {
+               "Name": "Convolve",
+               "Model": "spm",
+               "Inputs": [" "]
+            }
+         ],
+         "Model": {
+            "X": [
+               "trial_type.VisMot",
+               "trial_type.VisStat",
+               "trans_x",
+               "trans_y",
+               "trans_z",
+               "rot_x",
+               "rot_y",
+               "rot_z"
+            ],
+            "Options": {
+               "high_pass_filter_cutoff_secs": 128
+            },
+            "Software": {
+               "SPM": {
+                  "whitening": "FAST"
+               }
+            },
+            "Mask": " "
+         },
+         "AutoContrasts": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+         ]
       },
-      "AutoContrasts": ["trial_type.VisMot", "trial_type.VisStat"]
-    },
-    {
-      "Level": "dataset",
-      "AutoContrasts": ["trial_type.VisMot", "trial_type.VisStat"]
-    }
-  ]
+      {
+         "Level": "dataset",
+         "Model": {
+            "X": [" "],
+            "Options": {
+            },
+            "Software": {
+               "SPM": {
+               }
+            },
+            "Mask": " "
+         },
+         "AutoContrasts": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+         ]
+      }
+   ]
 }

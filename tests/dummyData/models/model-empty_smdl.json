@@ -6,33 +6,6 @@
   },
   "Steps": [
     {
-      "Level": "subject",
-      "Transformations": [
-        {
-          "Name": "Factor",
-          "Inputs": ["trial_type"]
-        },
-        {
-          "Name": "Convolve",
-          "Model": "spm",
-          "Inputs": [" "]
-        }
-      ],
-      "Model": {
-        "X": [" "],
-        "Options": {
-          "high_pass_filter_cutoff_secs": 128
-        },
-        "Software": {
-          "SPM": {
-            "whitening": "FAST"
-          }
-        },
-        "Mask": " "
-      },
-      "AutoContrasts": [" "]
-    },
-    {
       "Level": "run",
       "Transformations": [
         {
@@ -60,7 +33,44 @@
       "AutoContrasts": [" "]
     },
     {
+      "Level": "subject",
+      "Transformations": [
+        {
+          "Name": "Factor",
+          "Inputs": ["trial_type"]
+        },
+        {
+          "Name": "Convolve",
+          "Model": "spm",
+          "Inputs": [" "]
+        }
+      ],
+      "Model": {
+        "X": [" "],
+        "Options": {
+          "high_pass_filter_cutoff_secs": 128
+        },
+        "Software": {
+          "SPM": {
+            "whitening": "FAST"
+          }
+        },
+        "Mask": " "
+      },
+      "AutoContrasts": [" "]
+    },
+    {
       "Level": "dataset",
+      "Model": {
+        "X": [" "],
+        "Options": {
+        },
+        "Software": {
+          "SPM": {
+          }
+        },
+        "Mask": " "
+      },
       "AutoContrasts": [" "]
     }
   ]

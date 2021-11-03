@@ -8,6 +8,17 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_returnModelStep()
+  content = createEmptyStatsModel();
+  content.Steps{4} = createEmptyNode('dataset');
+  [~, iStep] = returnModelStep(content, 'run');
+  assertEqual(iStep, 1);
+  [~, iStep] = returnModelStep(content, 'foo');
+  assertEqual(iStep, nan);
+  [~, iStep] = returnModelStep(content, 'dataset');
+  assertEqual(iStep, [3; 4]);
+end
+
 function test_getHighPassFilter()
 
   opt = setOptions('vislocalizer', '01');

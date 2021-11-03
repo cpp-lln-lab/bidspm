@@ -1,18 +1,15 @@
-function step = returnModelStep(model, nodeType)
+function [step, iStep] = returnModelStep(model, nodeType)
+  %
   % (C) Copyright 2021 Remi Gau
-  for i = 1:numel(model.Steps)
-    step = model.Steps(i);
-    if iscell(step)
-      step = step{1};
-    end
-    if strcmp(step.Level, nodeType)
-      break
-    end
-  end
 
-  if ~isfield(step, 'Model')
-    msg = sprintf('Missing model specification from the model file:\n %s', modelFile);
-    errorHandling(mfilename(), 'missingModel', msg, false);
+  iStep = nan;
+  step = {};
+
+  levels = cellfun(@(x) x.Level, model.Steps, 'UniformOutput', false);
+  idx = ismember(levels, nodeType);
+  if any(idx)
+    step = model.Steps{idx};
+    iStep = find(idx);
   end
 
 end
