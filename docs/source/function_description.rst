@@ -19,8 +19,6 @@ Group level model
 =================
 
 .. automodule:: src.group_level
-
-.. autofunction:: getGrpLevelContrast
 .. autofunction:: getRFXdir
 
 
