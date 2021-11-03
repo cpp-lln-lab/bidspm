@@ -36,8 +36,8 @@ end
 function test_computeDesignEfficiency_block_design
 
   %% create stats model JSON
-  json = returnEmptyModel();
-  runStepIdx = 2;
+  json = createEmptyStatsModel();
+  runStepIdx = 1;
   json.Steps{runStepIdx}.Model.X = {'trial_type.cdt_A', 'trial_type.cdt_B'};
   json.Steps{runStepIdx}.AutoContrasts = {'trial_type.cdt_A', 'trial_type.cdt_B'};
 
@@ -80,6 +80,7 @@ function test_computeDesignEfficiency_block_design
 
   bids.util.tsvwrite('events.tsv', tsv);
 
+  opt = setTestCfg();
   opt.TR = 2;
 
   opt.model.file = fullfile(pwd, 'smdl.json');

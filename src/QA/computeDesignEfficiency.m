@@ -47,8 +47,8 @@ function e = computeDesignEfficiency(tsvFile, opt)
   % .. code-block:: guess
   %
   %       %% create stats model JSON
-  %       json = returnEmptyModel();
-  %       runStepIdx = 2;
+  %       json = createEmptyStatsModel();
+  %       runStepIdx = 1;
   %       json.Steps{runStepIdx}.Model.X = {'trial_type.cdt_A', 'trial_type.cdt_B'};
   %       json.Steps{runStepIdx}.AutoContrasts = {'trial_type.cdt_A', 'trial_type.cdt_B'};
   %

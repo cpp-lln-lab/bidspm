@@ -23,7 +23,7 @@ function test_specifyContrasts_complex()
   Contrasts.ConditionList = {'motion', 'static'};
   Contrasts.weights = [1, -1];
 
-  model = returnEmptyModel;
+  model = createEmptyStatsModel;
   model.Input.task = taskName;
   model.Steps{1}.AutoContrasts = AutoContrasts;
   model.Steps{1}.Contrasts = Contrasts;
@@ -46,9 +46,6 @@ function test_specifyContrasts_complex()
 
   % THEN
   names_contrast = { ...
-                    'motion', [1 0 1 0 1 0]
-                    'static', [0 1 0 1 0 1]
-                    'motion_gt_static', [1 -1 1 -1 1 -1]
                     'motion_1', [1 0 0 0 0 0]
                     'motion_2', [0 0 1 0 0 0]
                     'motion_3', [0 0 0 0 1 0]
@@ -58,6 +55,10 @@ function test_specifyContrasts_complex()
                     'motion_gt_static_1', [1 -1 0 0 0 0]
                     'motion_gt_static_2', [0 0 1 -1 0 0]
                     'motion_gt_static_3', [0 0 0 0 1 -1]
+                    'motion', [1 0 1 0 1 0]
+                    'static', [0 1 0 1 0 1]
+                    'motion_gt_static', [1 -1 1 -1 1 -1]
+
                    };
 
   for i = 1:size(names_contrast, 1)
