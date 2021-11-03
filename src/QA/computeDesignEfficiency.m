@@ -1,27 +1,121 @@
 function e = computeDesignEfficiency(tsvFile, opt)
   %
-  %    opt.modem.file : bids stats model file
+  % Calculate efficiency for fMRI GLMs. Relies on Rik Henson's fMRI_GLM_efficiency function.
   %
-  %    opt.Ns = Number of scans
-  %    opt.TR = inter-scan interval (s) (DEFAULTS TO 2)
-  %    opt.t0 = initial transient (s) to ignore (DEFAULTS TO 30)
+  % For more information on design efficiency, see `Jeanette Mumford excellent
+  % videos <https://www.youtube.com/watch?v=FD4ztsoYvSY&list=PLB2iAtgpI4YEnBdb_jDGmMcdGoIBwhCCY>`_
+  % and the dedicated videos from the `Principles of fMRI Part 2, Module 7-9
+  % <https://www.youtube.com/watch?v=A5KazMd_Bck&list=PLfXA4opIOVrEFBitfTGRPppQmgKp7OO-F&index=8>`_.
   %
-  %    opt.sots    = cell array of onset times for each condition in units of scans
-  %    opt.durs    = cell array of durations for each condition in units of scans
-  %    opt.CM = Cell array of T or F contrast matrices
+  % .. warning::
   %
-  %    NOTE THAT THE L1 NORM OF CONTRASTS SHOULD
-  %    MATCH IN ORDER TO COMPARE THEIR EFFICIENCIES, e.g CM{1}=[1 -1 1 -1]/2 CAN BE
-  %    COMPARED WITH CM{2}=[1 -1 0 0] BECAUSE NORM(Cm{i},1)==2 IN BOTH CASES
+  %   This function should NOT be used for proper design efficiency optimization as there are
+  %   better tools for this.
   %
-  % (C) Copyright 2020 Remi Gau
+  %   In general see the `BrainPower doc <https://brainpower.readthedocs.io/en/latest/index.html>`_
+  %   but more specifically the tools below:
+  %
+  %     - `neuropower <http://neuropowertools.org/neuropower/neuropowerstart/>`_
+  %     - `some of the Canlab tools <https://github.com/canlab/CanlabCore/tree/master/CanlabCore/OptimizeDesign11>`_
+  %
+  % USAGE::
+  %
+  %     e = computeDesignEfficiency(tsvFile, opt)
+  %
+  % :param tsvFile: Path to a bids _events.tsv file.
+  % :type tsvFile: string
+  % :param opt: Options chosen for the analysis with the content below.
+  % :type opt: structure
+  %
+  %
+  % Required:
+  %
+  % - ``opt.modem.file``: path to bids stats model file
+  % -  ``opt.TR``: inter-scan interval (s) - can be read from the ``_bold.json``
+  %
+  % Optional:
+  %
+  % - ``opt.t0``: initial transient (s) to ignore (default = 1)
+  % - ``opt.Ns``: number of scans
+  %
+  % See also fMRI_GLM_efficiency
+  %
+  % ---
+  %
+  % EXAMPLE:
+  %
+  % .. code-block:: guess
+  %
+  %       %% create stats model JSON
+  %       json = returnEmptyModel();
+  %       runStepIdx = 2;
+  %       json.Steps{runStepIdx}.Model.X = {'trial_type.cdt_A', 'trial_type.cdt_B'};
+  %       json.Steps{runStepIdx}.AutoContrasts = {'trial_type.cdt_A', 'trial_type.cdt_B'};
+  %
+  %       contrast = struct('type', 't', ...
+  %                         'Name', 'A_gt_B', ...
+  %                         'weights', [1, -1], ...
+  %                         'ConditionList', {{'trial_type.cdt_A', 'trial_type.cdt_B'}});
+  %
+  %       json.Steps{runStepIdx}.Contrasts = contrast;
+  %
+  %       bids.util.jsonwrite('smdl.json', json);
+  %
+  %       %% create events TSV file
+  %       conditions = {'cdt_A', 'cdt_B'};
+  %       IBI = 5;
+  %       ISI = 0.1;
+  %       stimDuration = 1.5;
+  %       stimPerBlock = 12;
+  %       nbBlocks = 10;
+  %
+  %       trial_type = {};
+  %       onset = [];
+  %       duration = [];
+  %
+  %       time = 0;
+  %
+  %       for iBlock = 1:nbBlocks
+  %         for cdt = 1:numel(conditions)
+  %           for iTrial = 1:stimPerBlock
+  %             trial_type{end + 1} = conditions{cdt};
+  %             onset(end + 1) = time;
+  %             duration(end + 1) = stimDuration;
+  %             time = time + stimDuration + ISI;
+  %           end
+  %           time = time + IBI;
+  %         end
+  %       end
+  %
+  %       tsv = struct('trial_type',  {trial_type}, 'onset', onset, 'duration', duration');
+  %
+  %       bids.util.tsvwrite('events.tsv', tsv);
+  %
+  %       opt.TR = 2;
+  %
+  %       opt.model.file = fullfile(pwd, 'smdl.json');
+  %
+  %       e = computeDesignEfficiency(fullfile(pwd, 'events.tsv'), opt);
+  %
+  %
+  % (C) Copyright 2021 Remi Gau
+
+  if ~isfield(opt, 't0') || isempty(opt.t0)
+    opt.t0 = 1;
+  end
 
   plotEvents(tsvFile);
 
   data = getEventsData(tsvFile, opt.model.file);
 
-  opt.sots = data.onset;
-  opt.durs = data.duration;
+  maxTime = getMaxTime(data);
+  if ~isfield(opt, 'Ns') || isempty(opt.Ns)
+    opt.Ns = ceil(maxTime / opt.TR);
+    warning('Setting opt.Ns (number of scans) to: %i', opt.Ns);
+  end
+
+  opt.sots = convertSecondsToScans(data.onset, opt.TR);
+  opt.durs = convertSecondsToScans(data.duration, opt.TR);
 
   opt.HC = getHighPassFilter(opt.model.file);
 
@@ -31,7 +125,7 @@ function e = computeDesignEfficiency(tsvFile, opt)
   %%
   autoContrastsList = getAutoContrastsList(opt.model.file);
   for i = 1:numel(autoContrastsList)
-      contrast = filterTrialtypes(data.conditions, autoContrastsList{i});
+    contrast = filterTrialtypes(data.conditions, autoContrastsList{i});
     opt.CM{i} = contrast';
     opt.contrast_name{i} = autoContrastsList{i};
   end
@@ -58,6 +152,8 @@ function e = computeDesignEfficiency(tsvFile, opt)
 
   figure('name', 'design matrix', 'position', [50 50 1000 1000]);
 
+  % TODO add a second axis with scale in seconds
+
   subplot(2, 3, [1 4]);
   colormap('gray');
   imagesc(X);
@@ -76,28 +172,28 @@ function e = computeDesignEfficiency(tsvFile, opt)
 
 end
 
+function values = convertSecondsToScans(values, TR)
+  for i = 1:numel(values)
+    values{i} = values{i} / TR;
+  end
+end
+
+function maxTime = getMaxTime(data)
+  for i = 1:numel(data.onset)
+    offset{i} = data.onset{i} + data.duration{i};
+  end
+  % add 16 seconds because HRF is sluggish AF
+  maxTime =  max(cellfun(@max, offset)) + 32;
+end
+
 function logicalIdx = filterTrialtypes(trialTypesList, conditionList)
-    
-    logicalIdx = ismember(cellfun(@(x) ['trial_type.' x], ...
+
+  logicalIdx = ismember(cellfun(@(x) ['trial_type.' x], ...
                                 trialTypesList, ...
                                 'UniformOutput', false), ...
                         conditionList);
-    
-end
 
-% Examples:
-%
-%   0. Simple user-specified blocked design
-%
-% S=[];
-% S.TR = 1;
-% S.Ns = 1000;
-% S.sots{1} = [0:48:1000];   % Condition 1 onsets
-% S.sots{2} = [16:48:1000];  % Condition 2 onsets
-% S.durs{1} = 16; S.durs{2} = 16;  % Both 16s epochs
-% S.CM{1} = [1 -1]; S.CM{2} = [1 -1]; % Contrast conditions, and conditions vs baseline
-%
-% [e,sots,stim,X,df] = fMRI_GLM_efficiency(S);
+end
 
 function plotFft(signal, rt, HPF)
   % USAGE fft_gui(signal, rt, HPF)
@@ -128,4 +224,5 @@ function plotFft(signal, rt, HPF)
          ' {\bf', num2str(HPF), '}', ' second High-pass filter'], 'Interpreter', 'Tex');
   grid on;
   axis tight;
+
 end
