@@ -1,4 +1,4 @@
-function computeDesignEfficiency(tsvFile, opt)
+function e = computeDesignEfficiency(tsvFile, opt)
   %
   %    opt.modem.file : bids stats model file
   %
@@ -31,10 +31,7 @@ function computeDesignEfficiency(tsvFile, opt)
   %%
   autoContrastsList = getAutoContrastsList(opt.model.file);
   for i = 1:numel(autoContrastsList)
-    contrast = ismember(cellfun(@(x) ['trial_type.' x], ...
-                                data.conditions, ...
-                                'UniformOutput', false), ...
-                        autoContrastsList{i});
+      contrast = filterTrialtypes(data.conditions, autoContrastsList{i});
     opt.CM{i} = contrast';
     opt.contrast_name{i} = autoContrastsList{i};
   end
@@ -45,10 +42,7 @@ function computeDesignEfficiency(tsvFile, opt)
   for i = 1:numel(contrastsList)
     contrast = zeros(size(opt.CM{end}));
     for cdt = 1:numel(contrastsList(i).ConditionList)
-      idx = ismember(cellfun(@(x) ['trial_type.' x], ...
-                             data.conditions, ...
-                             'UniformOutput', false), ...
-                     contrastsList(i).ConditionList{cdt});
+      idx = filterTrialtypes(data.conditions, contrastsList(i).ConditionList{cdt});
       contrast(idx) = contrastsList(i).weights(cdt);
     end
     opt.CM{end + 1} = contrast;
@@ -82,6 +76,15 @@ function computeDesignEfficiency(tsvFile, opt)
 
 end
 
+function logicalIdx = filterTrialtypes(trialTypesList, conditionList)
+    
+    logicalIdx = ismember(cellfun(@(x) ['trial_type.' x], ...
+                                trialTypesList, ...
+                                'UniformOutput', false), ...
+                        conditionList);
+    
+end
+
 % Examples:
 %
 %   0. Simple user-specified blocked design
@@ -101,6 +104,9 @@ function plotFft(signal, rt, HPF)
   % signal
   % rt = repetition time in seconds
   % HPF = high pass filter in seconds
+  %
+  % TODO add credit because I don't remember where I got this from. Cyril's
+  % tuto?
 
   gX = abs(fft(signal)).^2;
 

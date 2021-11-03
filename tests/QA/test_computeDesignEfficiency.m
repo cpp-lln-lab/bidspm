@@ -30,6 +30,6 @@ function test_computeDesignEfficiency_vislocalizer()
                           'task', opt.taskName, ...
                           'suffix', 'events');
 
-  computeDesignEfficiency(eventsFile{1}, opt);
+  e = computeDesignEfficiency(eventsFile{1}, opt);
 
 end

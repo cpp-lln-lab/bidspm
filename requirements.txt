@@ -2,7 +2,7 @@ Sphinx
 sphinxcontrib-matlabdomain
 sphinxcontrib-napoleon
 sphinx_rtd_theme
-miss_hit==0.9.28
+miss_hit==0.9.30
 pre-commit
 jupyterlab
 octave_kernel

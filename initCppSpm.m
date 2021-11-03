@@ -34,6 +34,7 @@ function initCppSpm()
     end
 
     addpath(fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
+    addpath(fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
 
     checkDependencies(opt);
     printCredits(opt);
