@@ -14,7 +14,7 @@ function test_bidsCreateROI_neuromorphometrics()
   if isGithubCi
     return
   end
-    
+
   opt = setOptions('MoAE');
 
   opt.roi.atlas = 'neuromorphometrics';
@@ -39,11 +39,11 @@ function test_bidsCreateROI_neuromorphometrics()
 end
 
 function test_bidsCreateROI_wang()
-    
+
   % skip test in CI
   if isGithubCi
     return
-  end    
+  end
 
   opt = setOptions('MoAE');
 
