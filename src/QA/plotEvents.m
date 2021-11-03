@@ -22,6 +22,10 @@ function plotEvents(eventsFile, modelFile)
   yMin = 0;
   yMax = 1;
 
+  if isGithubCi()
+    return
+  end
+
   figure('name', figName, 'position', [50 50 1000 200 * numel(conditions)]);
 
   for iCdt = 1:numel(conditions)
@@ -58,6 +62,8 @@ function plotEvents(eventsFile, modelFile)
     subplot(numel(conditions), 1, iCdt);
 
     axis([xMin  xMax yMin yMax]);
+
+    xlabel('seconds');
 
     subplot(numel(conditions), 1, 1);
 

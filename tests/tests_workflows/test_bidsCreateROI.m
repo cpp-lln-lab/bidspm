@@ -22,7 +22,7 @@ function test_bidsCreateROI_neuromorphometrics()
   cleanUp(opt.dir.roi);
 
   % skip test in CI
-  if isOctave
+  if isGithubCi
     return
   end
 
@@ -52,7 +52,7 @@ function test_bidsCreateROI_wang()
   cleanUp(opt.dir.roi);
 
   % skip test in CI
-  if isOctave
+  if isGithubCi
     return
   end
 

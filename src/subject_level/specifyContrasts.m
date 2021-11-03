@@ -4,13 +4,14 @@ function contrasts = specifyContrasts(SPM, taskName, model)
   %
   % USAGE::
   %
-  %   contrasts = specifyContrasts(ffxDir, taskName, opt)
+  %   contrasts = specifyContrasts(SPM, taskName, model)
   %
-  % :param ffxDir:
-  % :type ffxDir:
+  % :param SPM: content of SPM.mat
+  % :type SPM: structure
   % :param taskName:
-  % :type taskName:
+  % :type taskName: string
   % :param opt:
+  % :type opt: structure
   %
   % :returns: - :contrasts: (type) (dimension)
   %
@@ -22,7 +23,7 @@ function contrasts = specifyContrasts(SPM, taskName, model)
 
   % TODO refactor code duplication between run level and subject level
 
-  % TODO refactor with some of the functions from the bids-model folder
+  % TODO refactor with some of the functions from the bids-model folder ?
 
   % TODO what is the expected behavior if a condition is not present ?
   % - create a contrast with the name dummy ?

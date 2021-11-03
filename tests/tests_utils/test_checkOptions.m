@@ -38,7 +38,7 @@ function test_checkOptions_error_task()
   opt.verbosity = 1;
 
   % skip in CI
-  if isOctave
+  if isGithubCi
     return
   end
 

@@ -100,11 +100,11 @@ function e = computeDesignEfficiency(tsvFile, opt)
   %
   % (C) Copyright 2021 Remi Gau
 
+  opt = checkOptions(opt);
+
   if ~isfield(opt, 't0') || isempty(opt.t0)
     opt.t0 = 1;
   end
-
-  plotEvents(tsvFile);
 
   data = getEventsData(tsvFile, opt.model.file);
 
@@ -146,29 +146,37 @@ function e = computeDesignEfficiency(tsvFile, opt)
   %%
   [e, ~, ~, X] = fMRI_GLM_efficiency(opt);
 
-  for i = 1:numel(opt.CM)
-    fprintf('Contrast %s: Efficiency = %f\n', opt.contrast_name{i}, e(1, i));
+  if opt.verbosity
+    for i = 1:numel(opt.CM)
+      fprintf('Contrast %s: Efficiency = %f\n', opt.contrast_name{i}, e(1, i));
+    end
   end
 
-  figure('name', 'design matrix', 'position', [50 50 1000 1000]);
+  if opt.verbosity && ~isGithubCi()
 
-  % TODO add a second axis with scale in seconds
+    plotEvents(tsvFile);
 
-  subplot(2, 3, [1 4]);
-  colormap('gray');
-  imagesc(X);
-  title('design matrix');
-  ylabel('scans');
-  set(gca, 'xtick', 1:numel(data.conditions), 'xticklabel', data.conditions);
+    figure('name', 'design matrix', 'position', [50 50 1000 1000]);
 
-  subplot(2, 3, [2 3]);
-  plot(X);
-  title('temporal profile');
-  xlabel('scans');
-  legend(data.conditions);
+    % TODO add a second axis with scale in seconds
 
-  subplot(2, 3, [5 6]);
-  plotFft(X, opt.TR, opt.HC);
+    subplot(2, 3, [1 4]);
+    colormap('gray');
+    imagesc(X);
+    title('design matrix');
+    ylabel('scans');
+    set(gca, 'xtick', 1:numel(data.conditions), 'xticklabel', data.conditions);
+
+    subplot(2, 3, [2 3]);
+    plot(X);
+    title('temporal profile');
+    xlabel('scans');
+    legend(data.conditions);
+
+    subplot(2, 3, [5 6]);
+    plotFft(X, opt.TR, opt.HC);
+
+  end
 
 end
 
