@@ -1,12 +1,12 @@
 function contrastsList = getAutoContrastsList(modelFile, nodeType)
-    
+
   contrastsList = '';
-  
+
   if isempty(modelFile)
-      return
+    return
   end
-  if nargin<2 || isempty(nodeType)
-      nodeType = 'run';
+  if nargin < 2 || isempty(nodeType)
+    nodeType = 'run';
   end
 
   model = bids.util.jsondecode(modelFile);
@@ -14,5 +14,5 @@ function contrastsList = getAutoContrastsList(modelFile, nodeType)
   step = returnModelStep(model, nodeType);
 
   contrastsList = step.AutoContrasts;
-    
+
 end

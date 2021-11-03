@@ -45,9 +45,9 @@ function test_getContrastsList()
   contrastsList = getContrastsList(opt.model.file);
 
   assertEqual(fieldnames(contrastsList), {'Name'
-                                                    'ConditionList'
-                                                    'weights'
-                                                    'type'});
+                                          'ConditionList'
+                                          'weights'
+                                          'type'});
 
   assertEqual(numel(contrastsList), 2);
 
@@ -57,11 +57,11 @@ function test_getAutoContrastsList()
 
   opt = setOptions('vislocalizer', '01');
 
-  contrastsList = getAutoContrastsList(opt.model.file);
+  autoContrastsList = getAutoContrastsList(opt.model.file);
 
   expected = {'trial_type.listening'
               'trial_type.VisMot'};
 
-  assertEqual(contrastsList, expected);
+  assertEqual(autoContrastsList, expected);
 
 end

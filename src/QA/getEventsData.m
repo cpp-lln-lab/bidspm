@@ -1,30 +1,37 @@
 function data = getEventsData(tsvFile, modelFile, nodeType)
   % (C) Copyright 2020 Remi Gau
-  
+
   % TODO: refactor with convertOnsetTsvToMat
-  
+
   if nargin < 2
-      modelFile = '';
+    modelFile = '';
   end
-  
+
   if nargin < 3
-      nodeType = 'run';
+    nodeType = 'run';
   end
-  
-    designMatrix = getBidsDesignMatrix(modelFile, nodeType);
-  
-    content = bids.util.tsvread(tsvFile);
 
-    conditions = unique(content.trial_type);
+  content = bids.util.tsvread(tsvFile);
 
-    data.conditions = conditions;
+  conditions = unique(content.trial_type);
 
-    for iCdt = 1:numel(conditions)
+  designMatrix = getBidsDesignMatrix(modelFile, nodeType);
 
-      idx = strcmp(content.trial_type, conditions{iCdt});
-      data.onsets{iCdt} = content.onset(idx); %#ok<*AGROW>
-      data.duration{iCdt} = content.duration(idx);
+  if ~isempty(designMatrix)
+    tmp = conditions;
+    tmp = cellfun(@(x) ['trial_type.' x], tmp, 'UniformOutput', false);
+    tmp = intersect(tmp, designMatrix);
+    conditions = cellfun(@(x) strrep(x, 'trial_type.', ''), tmp, 'UniformOutput', false);
+  end
 
-    end
+  data.conditions = conditions;
+
+  for iCdt = 1:numel(conditions)
+
+    idx = strcmp(content.trial_type, conditions{iCdt});
+    data.onset{iCdt} = content.onset(idx); %#ok<*AGROW>
+    data.duration{iCdt} = content.duration(idx);
+
+  end
 
 end

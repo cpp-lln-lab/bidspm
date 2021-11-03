@@ -45,6 +45,7 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
 
   % identify where the conditions to include that are specificed
   % in the run step of the model file
+
   X = getBidsDesignMatrix(opt.model.file, 'run');
 
   isTrialType = strfind(X, 'trial_type.');
