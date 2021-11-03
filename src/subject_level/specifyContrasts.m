@@ -22,6 +22,8 @@ function contrasts = specifyContrasts(SPM, taskName, model)
 
   % TODO refactor code duplication between run level and subject level
 
+  % TODO refactor with some of the functions from the bids-model folder
+
   % TODO what is the expected behavior if a condition is not present ?
   % - create a contrast with the name dummy ?
   % - do not create the contrast ?

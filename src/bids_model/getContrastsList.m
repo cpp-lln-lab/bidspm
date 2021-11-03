@@ -1,5 +1,5 @@
 function contrastsList = getContrastsList(modelFile, nodeType)
-
+  % (C) Copyright 2021 Remi Gau
   contrastsList = '';
 
   if isempty(modelFile)

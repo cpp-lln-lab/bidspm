@@ -1,5 +1,5 @@
 function step = returnModelStep(model, nodeType)
-
+  % (C) Copyright 2021 Remi Gau
   for i = 1:numel(model.Steps)
     step = model.Steps(i);
     if iscell(step)

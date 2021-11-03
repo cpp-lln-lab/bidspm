@@ -22,25 +22,25 @@ create_raw_func_vismotion() {
 
 	this_dir=${target_dir}/sub-${subject}/ses-${ses}/func
 
-	mkdir -p ${this_dir}
+	mkdir -p "${this_dir}"
 
 	for run in $(seq 1 2); do
 		filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}${suffix}.nii
-		touch ${filename}
+		touch "${filename}"
 	done
 
 	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-1_events.tsv
-	echo "onset\tduration\ttrial_type" >${filename}
-	echo "2\t2\tVisMotUp" >>${filename}
-	echo "4\t2\tVisMotDown" >>${filename}
+	echo "onset\tduration\ttrial_type" >"${filename}"
+	echo "2\t2\tVisMotUp" >>"${filename}"
+	echo "4\t2\tVisMotDown" >>"${filename}"
 
 	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-2_events.tsv
-	echo "onset\tduration\ttrial_type" >${filename}
-	echo "3\t2\tVisMotDown" >>${filename}
-	echo "6\t2\tVisMotUp" >>${filename}
+	echo "onset\tduration\ttrial_type" >"${filename}"
+	echo "3\t2\tVisMotDown" >>"${filename}"
+	echo "6\t2\tVisMotUp" >>"${filename}"
 
-	touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_acq-1p60mm_run-1${suffix}.nii
-	touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_acq-1p60mm_dir-PA_run-1${suffix}.nii
+	touch "${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_acq-1p60mm_run-1${suffix}.nii"
+	touch "${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_acq-1p60mm_dir-PA_run-1${suffix}.nii"
 }
 
 create_raw_func_vislocalizer() {
@@ -57,12 +57,12 @@ create_raw_func_vislocalizer() {
 	mkdir -p ${this_dir}
 
 	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
-	touch ${filename}
+	touch "${filename}"
 
 	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_events.tsv
-	echo "onset\tduration\ttrial_type" >${filename}
-	echo "2\t15\tVisMot" >>${filename}
-	echo "25\t15\tVisStat" >>${filename}
+	echo "onset\tduration\ttrial_type" >"${filename}"
+	echo "2\t15\tVisMot" >>"${filename}"
+	echo "25\t15\tVisStat" >>"${filename}"
 
 }
 
@@ -77,9 +77,9 @@ create_raw_func_rest() {
 
 	this_dir=${target_dir}/sub-${subject}/ses-${ses}/func
 
-	mkdir -p ${this_dir}
+	mkdir -p "${this_dir}"
 
-	touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
+	touch "${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii"
 
 }
 
@@ -91,12 +91,12 @@ create_raw_fmap() {
 
 	this_dir=${target_dir}/sub-${subject}/ses-${ses}/fmap
 
-	mkdir -p ${this_dir}
+	mkdir -p "${this_dir}"
 
 	fmap_suffix_list='_phasediff _magnitude1 _magnitude2'
 	for suffix in ${fmap_suffix_list}; do
-		touch ${this_dir}/sub-${subject}_ses-${ses}_run-1${suffix}.nii
-		touch ${this_dir}/sub-${subject}_ses-${ses}_run-2${suffix}.nii
+		touch "${this_dir}/sub-${subject}_ses-${ses}_run-1${suffix}.nii"
+		touch "${this_dir}/sub-${subject}_ses-${ses}_run-2${suffix}.nii"
 	done
 
 	EchoTime1=0.006
@@ -113,7 +113,7 @@ create_raw_fmap() {
 	task_name='vismotion'
 	IntendedFor=$(echo ses-${ses}/func/sub-${subject}_ses-${ses}_task-${task_name}_run-1${suffix}.nii)
 	json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
-	echo "$json_string" >${this_dir}/sub-${subject}_ses-${ses}_run-2_phasediff.json
+	echo "$json_string" >"${this_dir}/sub-${subject}_ses-${ses}_run-2_phasediff.json"
 
 }
 
@@ -165,7 +165,7 @@ for subject in ${subject_list}; do
 		for run in $(seq 1 2); do
 
 			filename=${this_dir}/rp_sub-${subject}_ses-${ses}_task-${task_name}_run-${run}${suffix}.txt
-			cp dummyData/rp.txt ${filename}
+			cp dummyData/rp.txt "${filename}"
 			cp dummyData/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_desc-confounds_regressors.tsv
 
 			for desc in ${desc_label_list}; do
@@ -189,7 +189,7 @@ for subject in ${subject_list}; do
 
 		### derivatives
 		filename=${this_dir}/rp_sub-${subject}_ses-${ses}_task-${task_name}${suffix}.txt
-		cp dummyData/rp.txt ${filename}
+		cp dummyData/rp.txt "${filename}"
 		cp dummyData/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_desc-confounds_regressors.tsv
 
 		# func_prefix_list='a r u s6'
