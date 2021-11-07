@@ -51,7 +51,12 @@ jobs:
       - name: Run commands
         uses: matlab-actions/run-command@v1.0.1
         with:
-          command: run MOxUnit/MOxUnit/moxunit_set_path(); addpath(fullfile(pwd, 'MOcov', 'MOcov')); addpath(getenv('GITHUB_WORKSPACE')); success = run_tests(); assert(success);
+          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run matlab_workflow_script;
+
+      - name: Run tests
+        run: |
+          cat test_report.log | grep 0
+          bash <(curl -s https://codecov.io/bash)
 
       - name: Upload coverage
         uses: actions/upload-artifact@v1

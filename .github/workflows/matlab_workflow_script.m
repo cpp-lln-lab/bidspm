@@ -1,16 +1,13 @@
-pwd
 
-getenv('GITHUB_WORKSPACE')
+root_dir = getenv('GITHUB_WORKSPACE');
 
-ls
+addpath(fullfile(root_dir, 'spm12'));
+addpath(fullfile(root_dir, 'MOcov', 'MOcov'));
+addpath(fullfile(root_dir, 'cpp_spm'));
 
-addpath(fullfile(pwd, 'spm12'))
-addpath(fullfile(pwd, 'MOcov', 'MOcov'));
-addpath(fullfile(pwd, 'cpp_spm'))
+cd(fullfile(root_dir, 'MOxUnit', 'MOxUnit'));
+run moxunit_set_path(); 
 
-addpath(getenv('GITHUB_WORKSPACE'));
-
-run MOxUnit/MOxUnit/moxunit_set_path(); 
-
+cd(fullfile(root_dir, 'CPP_SPM'));
 initCppSpm()
-run run_tests
+run run_tests()
