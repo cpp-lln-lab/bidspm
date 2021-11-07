@@ -4,22 +4,26 @@
   "Input": {
     "task": "auditory"
   },
-  "Steps": [
+  "Nodes": [
     {
       "Level": "dataset",
-      "AutoContrasts": []
+      "DummyContrasts": []
     },
     {
       "Level": "subject",
-      "AutoContrasts": ["trial_type.listening"],
+      "DummyContrasts": [
+        "trial_type.listening"
+      ],
       "Contrasts": [
         {
           "Name": "listening_inf_baseline",
           "ConditionList": [
             "trial_type.listening"
           ],
-          "weights": [-1],
-          "type": "t"
+          "Weights": [
+            -1
+          ],
+          "Test": "t"
         }
       ]
     },
@@ -28,18 +32,27 @@
       "Transformations": [
         {
           "Name": "Factor",
-          "Inputs": ["trial_type"]
+          "Inputs": [
+            "trial_type"
+          ]
         },
         {
           "Name": "Convolve",
           "Model": "spm",
-          "Inputs": ["trial_type.listening"]
+          "Inputs": [
+            "trial_type.listening"
+          ]
         }
       ],
       "Model": {
         "X": [
           "trial_type.listening",
-          "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
+          "trans_x",
+          "trans_y",
+          "trans_z",
+          "rot_x",
+          "rot_y",
+          "rot_z"
         ],
         "Options": {
           "high_pass_filter_cutoff_secs": 128
@@ -51,7 +64,9 @@
         },
         "Mask": ""
       },
-      "AutoContrasts": ["trial_type.listening"]
+      "DummyContrasts": [
+        "trial_type.listening"
+      ]
     }
   ]
 }

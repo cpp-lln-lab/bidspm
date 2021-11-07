@@ -4,18 +4,22 @@
    "Input": {
       "task": "balloonanalogrisktask"
    },
-   "Steps": [
+   "Nodes": [
       {
          "Level": "subject",
          "Transformations": [
             {
                "Name": "Factor",
-               "Inputs": ["trial_type"]
+               "Inputs": [
+                  "trial_type"
+               ]
             },
             {
                "Name": "Convolve",
                "Model": "spm",
-               "Inputs": [" "]
+               "Inputs": [
+                  " "
+               ]
             }
          ],
          "Model": {
@@ -41,7 +45,7 @@
             },
             "Mask": " "
          },
-         "AutoContrasts": [
+         "DummyContrasts": [
             "trial_type.cash_demean",
             "trial_type.control_pumps_demean",
             "trial_type.explode_demean",
@@ -53,12 +57,16 @@
          "Transformations": [
             {
                "Name": "Factor",
-               "Inputs": ["trial_type"]
+               "Inputs": [
+                  "trial_type"
+               ]
             },
             {
                "Name": "Convolve",
                "Model": "spm",
-               "Inputs": [" "]
+               "Inputs": [
+                  " "
+               ]
             }
          ],
          "Model": {
@@ -84,7 +92,7 @@
             },
             "Mask": " "
          },
-         "AutoContrasts": [
+         "DummyContrasts": [
             "trial_type.cash_demean",
             "trial_type.control_pumps_demean",
             "trial_type.explode_demean",
@@ -93,7 +101,7 @@
       },
       {
          "Level": "dataset",
-         "AutoContrasts": [
+         "DummyContrasts": [
             "trial_type.cash_demean",
             "trial_type.control_pumps_demean",
             "trial_type.explode_demean",

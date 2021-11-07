@@ -1,4 +1,4 @@
-function contrastsList = getAutoContrastsList(modelFile, nodeType)
+function contrastsList = getDummyContrastsList(modelFile, nodeType)
   %
   % (C) Copyright 2021 Remi Gau
 
@@ -15,6 +15,6 @@ function contrastsList = getAutoContrastsList(modelFile, nodeType)
 
   step = returnModelStep(model, nodeType);
 
-  contrastsList = step.AutoContrasts;
+  contrastsList = step.DummyContrasts;
 
 end

@@ -4,10 +4,10 @@
   "Input": {
     "task": "motionDecoding"
   },
-  "Steps": [
+  "Nodes": [
     {
       "Level": "subject",
-      "AutoContrasts": [],
+      "DummyContrasts": [],
       "Contrasts": []
     },
     {
@@ -22,10 +22,15 @@
           "trial_type.Aud_D",
           "trial_type.Aud_L",
           "trial_type.Aud_R",
-          "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
+          "trans_x",
+          "trans_y",
+          "trans_z",
+          "rot_x",
+          "rot_y",
+          "rot_z"
         ]
       },
-      "AutoContrasts": [
+      "DummyContrasts": [
         "trial_type.Vis_U",
         "trial_type.Vis_D",
         "trial_type.Vis_R",
@@ -33,11 +38,12 @@
         "trial_type.Aud_U",
         "trial_type.Aud_D",
         "trial_type.Aud_R",
-        "trial_type.Aud_L"]
+        "trial_type.Aud_L"
+      ]
     },
     {
       "Level": "dataset",
-      "AutoContrasts": []
+      "DummyContrasts": []
     }
   ]
 }

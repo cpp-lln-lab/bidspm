@@ -87,15 +87,15 @@ end
 
 function [contrasts,  counter] = specifySubLvlContrasts(contrasts, step, counter, SPM)
 
-  if isfield(step, 'AutoContrasts')
+  if isfield(step, 'DummyContrasts')
 
     % first the contrasts to compute automatically against baseline
-    for iCon = 1:length(step.AutoContrasts)
+    for iCon = 1:length(step.DummyContrasts)
 
       C = zeros(1, size(SPM.xX.X, 2));
 
       % get regressors index corresponding to the HRF of that condition
-      [cdtName, regIdx] = getRegIdx(step.AutoContrasts, iCon, SPM);
+      [cdtName, regIdx] = getRegIdx(step.DummyContrasts, iCon, SPM);
 
       % give them a value of 1
       C(end, regIdx) = 1;
@@ -147,13 +147,13 @@ end
 
 function [contrasts,  counter] = specifyRunLvlContrasts(contrasts, step, counter, SPM)
 
-  if isfield(step, 'AutoContrasts')
+  if isfield(step, 'DummyContrasts')
 
     % first the contrasts to compute automatically against baseline
-    for iCon = 1:length(step.AutoContrasts)
+    for iCon = 1:length(step.DummyContrasts)
 
       % get regressors index corresponding to the HRF of that condition
-      [cdtName, regIdx] = getRegIdx(step.AutoContrasts, iCon, SPM);
+      [cdtName, regIdx] = getRegIdx(step.DummyContrasts, iCon, SPM);
 
       % For each event of each condition, create a seperate contrast
       regIdx = find(regIdx);

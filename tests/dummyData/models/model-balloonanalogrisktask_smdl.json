@@ -1,55 +1,27 @@
 {
    "Name": "balloonanalogrisktask",
+   "BIDSModelVersion": "1.0.0",
    "Description": "default model for balloonanalogrisktask",
    "Input": {
       "task": "balloonanalogrisktask"
    },
-   "Steps": [
-      {
-         "Level": "subject",
-         "Transformations": [
-            {
-               "Name": "Factor",
-               "Inputs": ["trial_type"]
-            },
-            {
-               "Name": "Convolve",
-               "Model": "spm",
-               "Inputs": [" "]
-            }
-         ],
-         "Model": {
-            "X": [
-               "trans_x",
-               "trans_y",
-               "trans_z",
-               "rot_x",
-               "rot_y",
-               "rot_z"
-            ],
-            "Options": {
-               "high_pass_filter_cutoff_secs": 128
-            },
-            "Software": {
-               "SPM": {
-                  "whitening": "FAST"
-               }
-            },
-            "Mask": " "
-         },
-         "AutoContrasts": [" "]
-      },
+   "Nodes": [
       {
          "Level": "run",
+         "Name": "run_level",
          "Transformations": [
             {
                "Name": "Factor",
-               "Inputs": ["trial_type"]
+               "Inputs": [
+                  "trial_type"
+               ]
             },
             {
                "Name": "Convolve",
                "Model": "spm",
-               "Inputs": [" "]
+               "Inputs": [
+                  " "
+               ]
             }
          ],
          "Model": {
@@ -61,21 +33,106 @@
                "rot_y",
                "rot_z"
             ],
+            "HRF": {
+               "Variables": [],
+               "Model": "DoubleGamma"
+            },
             "Options": {
-               "high_pass_filter_cutoff_secs": 128
+               "HighPassFilterCutoffHz": 0.008,
+               "Mask": " "
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST"
+                  "whitening": "FAST",
+                  "HrfDerivatives": [
+                     0,
+                     0
+                  ]
                }
-            },
-            "Mask": " "
+            }
          },
-         "AutoContrasts": [" "]
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               " "
+            ]
+         }
+      },
+      {
+         "Level": "subject",
+         "Name": "subject_level",
+         "Transformations": [
+            {
+               "Name": "Factor",
+               "Inputs": [
+                  "trial_type"
+               ]
+            },
+            {
+               "Name": "Convolve",
+               "Model": "spm",
+               "Inputs": [
+                  " "
+               ]
+            }
+         ],
+         "Model": {
+            "X": [
+               "trans_x",
+               "trans_y",
+               "trans_z",
+               "rot_x",
+               "rot_y",
+               "rot_z"
+            ],
+            "HRF": {
+               "Variables": [],
+               "Model": "DoubleGamma"
+            },
+            "Options": {
+               "HighPassFilterCutoffHz": 0.008,
+               "Mask": " "
+            },
+            "Software": {
+               "SPM": {
+                  "whitening": "FAST",
+                  "HrfDerivatives": [
+                     0,
+                     0
+                  ]
+               }
+            }
+         },
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               " "
+            ]
+         }
       },
       {
          "Level": "dataset",
-         "AutoContrasts": [" "]
+         "Name": "dataset_level",
+         "Model": {
+            "X": [
+               "trial_type.VisMot",
+               "trial_type.VisStat",
+               "VisMot_gt_VisStat",
+               "VisStat_gt_VisMot"
+            ],
+            "Options": {
+               "Mask": " "
+            },
+            "Software": {
+               "SPM": {}
+            }
+         },
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               " "
+            ]
+         }
       }
    ]
 }

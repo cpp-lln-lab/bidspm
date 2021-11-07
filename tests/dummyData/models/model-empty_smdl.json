@@ -1,77 +1,121 @@
 {
   "Name": " ",
+  "BIDSModelVersion": "1.0.0",
   "Description": " ",
   "Input": {
     "task": " "
   },
-  "Steps": [
+  "Nodes": [
     {
       "Level": "run",
+      "Name": "run_level",
       "Transformations": [
         {
           "Name": "Factor",
-          "Inputs": ["trial_type"]
+          "Inputs": [
+            "trial_type"
+          ]
         },
         {
           "Name": "Convolve",
           "Model": "spm",
-          "Inputs": [" "]
+          "Inputs": [
+            " "
+          ]
         }
       ],
       "Model": {
-        "X": [" "],
+        "X": [
+          " "
+        ],
+        "HRF": {
+          "Variables": [],
+          "Model": "DoubleGamma"
+        },
         "Options": {
-          "high_pass_filter_cutoff_secs": 128
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": " "
         },
         "Software": {
           "SPM": {
-            "whitening": "FAST"
+            "Whitening": "FAST",
+            "HrfDerivatives": [
+              0,
+              0
+            ]
           }
-        },
-        "Mask": " "
+        }
       },
-      "AutoContrasts": [" "]
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": []
+      }
     },
     {
       "Level": "subject",
+      "Name": "subject_level",
       "Transformations": [
         {
           "Name": "Factor",
-          "Inputs": ["trial_type"]
+          "Inputs": [
+            "trial_type"
+          ]
         },
         {
           "Name": "Convolve",
           "Model": "spm",
-          "Inputs": [" "]
+          "Inputs": [
+            " "
+          ]
         }
       ],
       "Model": {
-        "X": [" "],
+        "X": [
+          " "
+        ],
+        "HRF": {
+          "Variables": [],
+          "Model": "DoubleGamma"
+        },
         "Options": {
-          "high_pass_filter_cutoff_secs": 128
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": " "
         },
         "Software": {
           "SPM": {
-            "whitening": "FAST"
+            "whitening": "FAST",
+            "HrfDerivatives": [
+              0,
+              0
+            ]
           }
-        },
-        "Mask": " "
+        }
       },
-      "AutoContrasts": [" "]
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": []
+      }
     },
     {
       "Level": "dataset",
+      "Name": "dataset_level",
       "Model": {
-        "X": [" "],
+        "X": [
+          " "
+        ],
         "Options": {
+          "Mask": " "
         },
         "Software": {
-          "SPM": {
-          }
-        },
-        "Mask": " "
+          "SPM": {}
+        }
       },
-      "AutoContrasts": [" "]
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          " "
+        ]
+      }
     }
   ]
 }

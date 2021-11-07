@@ -4,7 +4,7 @@
   "Input": {
     "task": "linebisection"
   },
-  "Steps": [
+  "Nodes": [
     {
       "Level": "run",
       "Model": {
@@ -22,7 +22,7 @@
           "rot_z"
         ]
       },
-      "AutoContrasts": [
+      "DummyContrasts": [
         "trial_type.Correct_Task",
         "trial_type.Incorrect_Task"
       ]

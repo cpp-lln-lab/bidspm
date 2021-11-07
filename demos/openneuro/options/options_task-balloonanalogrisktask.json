@@ -8,7 +8,9 @@
     "dataDir": "/home/remi/openneuro/ds000001/raw",
     "derivativesDir": "/home/remi/openneuro/ds000001/derivatives/default",
     "funcVoxelDims": [],
-    "groups": [""],
+    "groups": [
+        ""
+    ],
     "model": {
         "file": ""
     },
@@ -16,7 +18,7 @@
         "useUnwarp": true
     },
     "result": {
-        "Steps": {
+        "Nodes": {
             "Level": "",
             "Contrasts": {
                 "Name": "",

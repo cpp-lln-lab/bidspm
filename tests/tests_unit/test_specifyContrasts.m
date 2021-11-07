@@ -16,8 +16,8 @@ function test_specifyContrasts_complex()
   taskName = 'motion';
 
   % GIVEN
-  AutoContrasts{1} = 'motion';
-  AutoContrasts{2} = 'static';
+  DummyContrasts{1} = 'motion';
+  DummyContrasts{2} = 'static';
 
   Contrasts.Name = 'motion_gt_static';
   Contrasts.ConditionList = {'motion', 'static'};
@@ -25,9 +25,9 @@ function test_specifyContrasts_complex()
 
   model = createEmptyStatsModel;
   model.Input.task = taskName;
-  model.Steps{1}.AutoContrasts = AutoContrasts;
+  model.Steps{1}.DummyContrasts = DummyContrasts;
   model.Steps{1}.Contrasts = Contrasts;
-  model.Steps{2}.AutoContrasts = AutoContrasts;
+  model.Steps{2}.DummyContrasts = DummyContrasts;
   model.Steps{2}.Contrasts = Contrasts;
 
   SPM.xX.name = { ...

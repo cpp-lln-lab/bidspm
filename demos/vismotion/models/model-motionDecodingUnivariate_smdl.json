@@ -4,7 +4,7 @@
   "Input": {
     "task": "motionDecoding"
   },
-  "Steps": [
+  "Nodes": [
     {
       "Level": "subject",
       "Model": {
@@ -17,10 +17,15 @@
           "trial_type.Aud_D",
           "trial_type.Aud_L",
           "trial_type.Aud_R",
-          "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
+          "trans_x",
+          "trans_y",
+          "trans_z",
+          "rot_x",
+          "rot_y",
+          "rot_z"
         ]
       },
-      "AutoContrasts": [
+      "DummyContrasts": [
         "trial_type.Vis_U",
         "trial_type.Vis_D",
         "trial_type.Vis_R",
@@ -28,7 +33,8 @@
         "trial_type.Aud_U",
         "trial_type.Aud_D",
         "trial_type.Aud_R",
-        "trial_type.Aud_L"],
+        "trial_type.Aud_L"
+      ],
       "Contrasts": [
         {
           "Name": "Vis",
@@ -38,8 +44,13 @@
             "trial_type.Vis_R",
             "trial_type.Vis_L"
           ],
-          "weights": [0.25, 0.25, 0.25, 0.25],
-          "type": "t"
+          "Weights": [
+            0.25,
+            0.25,
+            0.25,
+            0.25
+          ],
+          "Test": "t"
         },
         {
           "Name": "Aud",
@@ -49,8 +60,13 @@
             "trial_type.Aud_R",
             "trial_type.Aud_L"
           ],
-          "weights": [0.25, 0.25, 0.25, 0.25],
-          "type": "t"
+          "Weights": [
+            0.25,
+            0.25,
+            0.25,
+            0.25
+          ],
+          "Test": "t"
         },
         {
           "Name": "Vis_gt_Aud",
@@ -64,7 +80,7 @@
             "trial_type.Aud_R",
             "trial_type.Aud_L"
           ],
-          "weights": [
+          "Weights": [
             0.25,
             0.25,
             0.25,
@@ -72,8 +88,9 @@
             -0.25,
             -0.25,
             -0.25,
-            -0.25],
-          "type": "t"
+            -0.25
+          ],
+          "Test": "t"
         },
         {
           "Name": "Aud_gt_Vis",
@@ -87,7 +104,7 @@
             "trial_type.Aud_R",
             "trial_type.Aud_L"
           ],
-          "weights": [
+          "Weights": [
             -0.25,
             -0.25,
             -0.25,
@@ -95,14 +112,15 @@
             0.25,
             0.25,
             0.25,
-            0.25],
-          "type": "t"
+            0.25
+          ],
+          "Test": "t"
         }
       ]
     },
     {
       "Level": "dataset",
-      "AutoContrasts": [
+      "DummyContrasts": [
         "Vis_U",
         "Vis_D",
         "Vis_R",
@@ -110,7 +128,8 @@
         "Aud_U",
         "Aud_D",
         "Aud_R",
-        "Aud_L"]
+        "Aud_L"
+      ]
     }
   ]
 }

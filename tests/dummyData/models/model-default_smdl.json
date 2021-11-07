@@ -1,21 +1,27 @@
 {
    "Name": "vislocalizer",
+   "BIDSModelVersion": "1.0.0",
    "Description": "default model for vislocalizer",
    "Input": {
       "task": "vislocalizer"
    },
-   "Steps": [
+   "Nodes": [
       {
          "Level": "run",
+         "Name": "run_level",
          "Transformations": [
             {
                "Name": "Factor",
-               "Inputs": ["trial_type"]
+               "Inputs": [
+                  "trial_type"
+               ]
             },
             {
                "Name": "Convolve",
                "Model": "spm",
-               "Inputs": [" "]
+               "Inputs": [
+                  " "
+               ]
             }
          ],
          "Model": {
@@ -29,32 +35,48 @@
                "rot_y",
                "rot_z"
             ],
+            "HRF": {
+               "Variables": [],
+               "Model": "DoubleGamma"
+            },
             "Options": {
-               "high_pass_filter_cutoff_secs": 128
+               "HighPassFilterCutoffHz": 0.008,
+               "Mask": " "
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST"
+                  "whitening": "FAST",
+                  "HrfDerivatives": [
+                     0,
+                     0
+                  ]
                }
-            },
-            "Mask": " "
+            }
          },
-         "AutoContrasts": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-         ]
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               "trial_type.VisMot",
+               "trial_type.VisStat"
+            ]
+         }
       },
       {
          "Level": "subject",
+         "Name": "subject_level",
          "Transformations": [
             {
                "Name": "Factor",
-               "Inputs": ["trial_type"]
+               "Inputs": [
+                  "trial_type"
+               ]
             },
             {
                "Name": "Convolve",
                "Model": "spm",
-               "Inputs": [" "]
+               "Inputs": [
+                  " "
+               ]
             }
          ],
          "Model": {
@@ -68,37 +90,53 @@
                "rot_y",
                "rot_z"
             ],
+            "HRF": {
+               "Variables": [],
+               "Model": "DoubleGamma"
+            },
             "Options": {
-               "high_pass_filter_cutoff_secs": 128
+               "HighPassFilterCutoffHz": 0.008,
+               "Mask": " "
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST"
+                  "whitening": "FAST",
+                  "HrfDerivatives": [
+                     0,
+                     0
+                  ]
                }
-            },
-            "Mask": " "
+            }
          },
-         "AutoContrasts": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-         ]
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               "trial_type.VisMot",
+               "trial_type.VisStat"
+            ]
+         }
       },
       {
          "Level": "dataset",
+         "Name": "dataset_level",
          "Model": {
-            "X": [" "],
+            "X": [
+               " "
+            ],
             "Options": {
+               "Mask": " "
             },
             "Software": {
-               "SPM": {
-               }
-            },
-            "Mask": " "
+               "SPM": {}
+            }
          },
-         "AutoContrasts": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-         ]
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               "trial_type.VisMot",
+               "trial_type.VisStat"
+            ]
+         }
       }
    ]
 }

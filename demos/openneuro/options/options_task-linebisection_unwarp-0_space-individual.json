@@ -8,7 +8,9 @@
     "dataDir": "/home/remi/openneuro/ds000114/raw",
     "derivativesDir": "/home/remi/openneuro/ds000114/derivatives/unwarpt-0_native",
     "funcVoxelDims": [],
-    "groups": [""],
+    "groups": [
+        ""
+    ],
     "model": {
         "file": "/home/remi/github/CPP_SPM/demos/openneuro/models/model-ds000114-linebisection_smdl.json"
     },
@@ -16,7 +18,7 @@
         "useUnwarp": false
     },
     "result": {
-        "Steps": {
+        "Nodes": {
             "Contrasts": {
                 "MC": "FWE",
                 "Mask": false,

@@ -9,7 +9,7 @@ function opt = createDefaultStatsModel(BIDS, opt)
   %     all subjects and runs for the task specified in ``opt``,
   %     as well as the realignment parameters.
   %
-  %   - use AutoContrasts to generate contrasts for each trial_type
+  %   - use DummyContrasts to generate contrasts for each trial_type
   %     for each run. This can be useful to run MVPA analysis on the beta
   %     images of each run.
   %
@@ -19,12 +19,12 @@ function opt = createDefaultStatsModel(BIDS, opt)
   %     all subjects and runs for the task specified in ``opt``,
   %     as well as the realignment parameters.
   %
-  %   - use AutoContrasts to generate contrasts for all each trial_type
+  %   - use DummyContrasts to generate contrasts for all each trial_type
   %     across runs
   %
   % - Dataset level:
   %
-  %   - use AutoContrasts to generate contrasts for each trial_type
+  %   - use DummyContrasts to generate contrasts for each trial_type
   %     for at the group level.
   %
   % USAGE::
@@ -115,7 +115,7 @@ function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
       content.Steps{2}.Model.X{iTrialType} = trialTypeName;
 
       for iStep = 1:numel(content.Steps)
-        content.Steps{iStep}.AutoContrasts{iTrialType} = trialTypeName;
+        content.Steps{iStep}.DummyContrasts{iTrialType} = trialTypeName;
       end
     end
 

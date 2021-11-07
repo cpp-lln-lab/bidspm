@@ -1,12 +1,14 @@
 {
   "Name": "vislocalizer",
+  "BIDSModelVersion": "1.0.0",
   "Description": "contrasts for the visual localizer",
   "Input": {
     "task": "vislocalizer"
   },
-  "Steps": [
+  "Nodes": [
     {
       "Level": "run",
+      "Name": "run_level",
       "Model": {
         "X": [
           "trial_type.VisMot",
@@ -19,14 +21,31 @@
           "rot_y",
           "rot_z"
         ],
+        "HRF": {
+          "Variables": [],
+          "Model": "DoubleGamma"
+        },
         "Options": {
-          "high_pass_filter_cutoff_secs": 128
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": " "
+        },
+        "Software": {
+          "SPM": {
+            "whitening": "FAST",
+            "HrfDerivatives": [
+              0,
+              0
+            ]
+          }
         }
       },
-      "AutoContrasts": [
-        "trial_type.listening",
-        "trial_type.VisMot"
-      ],
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.listening",
+          "trial_type.VisMot"
+        ]
+      },
       "Contrasts": [
         {
           "Name": "VisMot_&_VisStat",
@@ -34,11 +53,11 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "weights": [
+          "Weights": [
             1,
             1
           ],
-          "type": "t"
+          "Test": "t"
         },
         {
           "Name": "VisMot_&_VisStat_lt_baseline",
@@ -46,16 +65,17 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "weights": [
+          "Weights": [
             -1,
             -1
           ],
-          "type": "t"
+          "Test": "t"
         }
       ]
     },
     {
       "Level": "subject",
+      "Name": "subject_level",
       "Model": {
         "X": [
           "trial_type.VisMot",
@@ -68,14 +88,31 @@
           "rot_y",
           "rot_z"
         ],
+        "HRF": {
+          "Variables": [],
+          "Model": "DoubleGamma"
+        },
         "Options": {
-          "high_pass_filter_cutoff_secs": 128
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": " "
+        },
+        "Software": {
+          "SPM": {
+            "whitening": "FAST",
+            "HrfDerivatives": [
+              0,
+              0
+            ]
+          }
         }
       },
-      "AutoContrasts": [
-        "trial_type.VisMot",
-        "trial_type.VisStat"
-      ],
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.VisMot",
+          "trial_type.VisStat"
+        ]
+      },
       "Contrasts": [
         {
           "Name": "VisMot_gt_VisStat",
@@ -83,11 +120,11 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "weights": [
+          "Weights": [
             1,
             -1
           ],
-          "type": "t"
+          "Test": "t"
         },
         {
           "Name": "VisStat_gt_VisMot",
@@ -95,16 +132,17 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "weights": [
+          "Weights": [
             -1,
             1
           ],
-          "type": "t"
+          "Test": "t"
         }
       ]
     },
     {
       "Level": "dataset",
+      "Name": "dataset_level",
       "Model": {
         "X": [
           "trial_type.VisMot",
@@ -113,15 +151,21 @@
           "VisStat_gt_VisMot"
         ],
         "Options": {
-          "high_pass_filter_cutoff_secs": 128
+          "Mask": " "
+        },
+        "Software": {
+          "SPM": {}
         }
       },
-      "AutoContrasts": [
-        "trial_type.VisMot",
-        "trial_type.VisStat",
-        "VisMot_gt_VisStat",
-        "VisStat_gt_VisMot"
-      ]
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.VisMot",
+          "trial_type.VisStat",
+          "VisMot_gt_VisStat",
+          "VisStat_gt_VisMot"
+        ]
+      }
     }
   ]
 }

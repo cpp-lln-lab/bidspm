@@ -64,15 +64,15 @@ function test_getContrastsList()
 
 end
 
-function test_getAutoContrastsList()
+function test_getDummyContrastsList()
 
   opt = setOptions('vislocalizer', '01');
 
-  autoContrastsList = getAutoContrastsList(opt.model.file);
+  DummyContrastsList = getDummyContrastsList(opt.model.file);
 
   expected = {'trial_type.listening'
               'trial_type.VisMot'};
 
-  assertEqual(autoContrastsList, expected);
+  assertEqual(DummyContrastsList, expected);
 
 end

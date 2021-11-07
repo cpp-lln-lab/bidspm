@@ -18,6 +18,6 @@ function [grpLvlCon, iStep] = getGrpLevelContrast(opt)
 
   [step, iStep] = returnModelStep(model, 'dataset');
 
-  grpLvlCon = step.AutoContrasts;
+  grpLvlCon = step.DummyContrasts;
 
 end

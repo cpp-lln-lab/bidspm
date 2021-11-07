@@ -39,7 +39,7 @@ function test_computeDesignEfficiency_block_design
   json = createEmptyStatsModel();
   runStepIdx = 1;
   json.Steps{runStepIdx}.Model.X = {'trial_type.cdt_A', 'trial_type.cdt_B'};
-  json.Steps{runStepIdx}.AutoContrasts = {'trial_type.cdt_A', 'trial_type.cdt_B'};
+  json.Steps{runStepIdx}.DummyContrasts = {'trial_type.cdt_A', 'trial_type.cdt_B'};
 
   contrast = struct('type', 't', ...
                     'Name', 'A_gt_B', ...
