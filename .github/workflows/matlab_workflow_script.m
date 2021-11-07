@@ -13,4 +13,4 @@ addpath(getenv('GITHUB_WORKSPACE'));
 run MOxUnit/MOxUnit/moxunit_set_path(); 
 
 initCppSpm()
-run_tests
+run run_tests
