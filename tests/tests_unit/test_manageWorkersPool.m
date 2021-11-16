@@ -16,6 +16,10 @@ function test_manageWorkersPool_basic()
 
   matlabVer = version('-release');
 
+  if isGithubCi()
+    return
+  end
+
   manageWorkersPool('close', opt);
 
   manageWorkersPool('open', opt);
@@ -46,6 +50,10 @@ function test_manageWorkersPool_no_parallel()
   opt.parallelize.killOnExit = true;
 
   matlabVer = version('-release');
+
+  if isGithubCi()
+    return
+  end
 
   manageWorkersPool('close', opt);
 
