@@ -16,15 +16,23 @@ function initCppSpm()
 
   installlist = {'io', 'statistics', 'image'};
 
+  thisDirectory = fileparts(mfilename('fullpath'));
+
   global CPP_SPM_INITIALIZED
+  global CPP_SPM_PATHS
 
   if isempty(CPP_SPM_INITIALIZED)
 
-    thisDirectory = fileparts(mfilename('fullpath'));
+    CPP_SPM_PATHS = genpath(fullfile(thisDirectory, 'src'));
 
-    addpath(genpath(fullfile(thisDirectory, 'src')));
-    addpath(genpath(fullfile(thisDirectory, 'lib', 'spmup')));
-    addpath(genpath(fullfile(thisDirectory, 'lib', 'spm_2_bids')));
+    libList = { ...
+               'spmup', ...
+               'spm_2_bids'};
+
+    for i = 1:numel(libList)
+      CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ...
+                          genpath(fullfile(thisDirectory, 'lib', libList{i})));
+    end
 
     libList = { ...
                'mancoreg', ...
@@ -35,11 +43,16 @@ function initCppSpm()
                'utils'};
 
     for i = 1:numel(libList)
-      addpath(fullfile(thisDirectory, 'lib', libList{i}));
+      CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ':', ...
+                          fullfile(thisDirectory, 'lib', libList{i}));
     end
 
-    addpath(fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
-    addpath(fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
+    CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ':', ...
+                        fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
+    CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ':', ...
+                        fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
+
+    addpath(CPP_SPM_PATHS, '-begin');
 
     checkDependencies(opt);
     printCredits(opt);
@@ -80,29 +93,30 @@ function initCppSpm()
 
     CPP_SPM_INITIALIZED = true();
 
+    detectCppSpm();
+
   else
-    printToScreen('\n\nCPP_SPM already initialized\n\n', opt);
+    fprintf(1, '\n\nCPP_SPM already initialized\n\n');
 
   end
 
-  %   %-Detect SPM directory
-  % %--------------------------------------------------------------------------
-  % SPMdir = cellstr(which('spm.m','-ALL'));
-  % if isempty(SPMdir)
-  %     fprintf('SPM is not in your %s path.\n',software);
-  %     return;
-  % elseif numel(SPMdir) > 1
-  %     fprintf('SPM seems to appear in several different folders:\n');
-  %     for i=1:numel(SPMdir)
-  %         fprintf('  * %s\n',SPMdir{i});
-  %     end
-  %     fprintf('Remove all but one with ''pathtool'' or ''spm_rmpath''.\n');
-  %     return;
-  % else
-  %     fprintf('SPM is installed in: %s\n',fileparts(SPMdir{1}));
-  % end
-  % SPMdir = fileparts(SPMdir{1});
+end
 
+function detectCppSpm()
+
+  workflowsDir = cellstr(which('bidsSpatialPrepro.m', '-ALL'));
+
+  if isempty(workflowsDir)
+    error('CPP_SPM is not in your MATLAB / Octave path.\n');
+
+  elseif numel(workflowsDir) > 1
+    fprintf('CPP_SPM seems to appear in several different folders:\n');
+    for i = 1:numel(workflowsDir)
+      fprintf('  * %s\n', fullfile(workflowsDir{i}, '..', '..'));
+    end
+    error('Remove all but one with ''pathtool''' .\ n'); % or ''spm_rmpath
+
+  end
 end
 
 function tryInstallFromForge(packageName)
