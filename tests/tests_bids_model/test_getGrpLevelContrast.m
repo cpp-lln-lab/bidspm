@@ -1,6 +1,6 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-function test_suite = test_getGrpLevelContrastToCompute %#ok<*STOUT>
+function test_suite = test_getGrpLevelContrast %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,11 +8,11 @@ function test_suite = test_getGrpLevelContrastToCompute %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getGrpLevelContrastToCompute_basic()
+function test_getGrpLevelContrast_basic()
 
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotion_smdl.json');
 
-  [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt);
+  [grpLvlCon, iStep] = getGrpLevelContrast(opt);
 
   AutoContrasts = {
                    'trial_type.VisMot'; ...
@@ -20,13 +20,13 @@ function test_getGrpLevelContrastToCompute_basic()
                    'VisMot_gt_VisStat'; ...
                    'VisStat_gt_VisMot'};
 
-  assertEqual(iStep, 2);
+  assertEqual(iStep, 3);
   assertEqual(grpLvlCon, AutoContrasts);
 
   %%
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vislocalizer_smdl.json');
 
-  [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt);
+  [grpLvlCon, iStep] = getGrpLevelContrast(opt);
 
   AutoContrasts = {
                    'trial_type.VisMot'; ...

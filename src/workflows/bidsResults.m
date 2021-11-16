@@ -26,7 +26,7 @@ function matlabbatch = bidsResults(opt)
   [BIDS, opt] = setUpWorkflow(opt, 'computing GLM results');
 
   if isempty(opt.model.file)
-    opt = createDefaultModel(BIDS, opt);
+    opt = createDefaultStatsModel(BIDS, opt);
   end
 
   % loop trough the steps and more results to compute for each contrast

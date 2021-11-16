@@ -29,6 +29,8 @@ function bidsCreateROI(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'create ROI');
 
+  % TODO
+  % add dataset decription if it is not here
   if ~isfield(opt.dir, 'roi')
     opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'cpp_spm-roi'), 'cpath');
   end

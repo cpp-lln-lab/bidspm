@@ -14,7 +14,6 @@ function [IS_GITHUB, pth] = isGithubCi()
   else
       
     fprintf(1, '\n WE ARE NOT RUNNING IN GITHUB CI\n')
-      
 
   end
 

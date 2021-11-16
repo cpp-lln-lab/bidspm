@@ -1,10 +1,10 @@
-function designMatrix = getBidsDesignMatrix(modelFile, nodeType)
+function HPF = getHighPassFilter(modelFile, nodeType)
   %
   % returns the design matrix of a node of a BIDS statistical model
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  designMatrix = '';
+  HPF = '';
 
   if isempty(modelFile)
     return
@@ -17,6 +17,6 @@ function designMatrix = getBidsDesignMatrix(modelFile, nodeType)
 
   step = returnModelStep(model, nodeType);
 
-  designMatrix = step.Model.X;
+  HPF = step.Model.Options.high_pass_filter_cutoff_secs;
 
 end
