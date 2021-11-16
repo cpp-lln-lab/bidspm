@@ -1,4 +1,4 @@
-name: tests_matlab
+name: tests and coverage with matlab
 
 on:
   push:

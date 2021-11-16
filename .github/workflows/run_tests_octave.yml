@@ -1,4 +1,4 @@
-name: tests and coverage
+name: tests with octave
 
 # Uses the cron schedule for github actions
 #
@@ -78,4 +78,3 @@ jobs:
       run: |
         octave $OCTFLAGS --eval "run_tests"
         cat test_report.log | grep 0
-        bash <(curl -s https://codecov.io/bash)
