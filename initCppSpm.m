@@ -1,139 +1,138 @@
 function initCppSpm()
-    %
-    % Adds the relevant folders to the path for a given session.
-    % Has to be run to be able to use CPP_SPM.
-    %
-    % USAGE::
-    %
-    %   initCppSpm()
-    %
-    % (C) Copyright 2021 CPP_SPM developers
+  %
+  % Adds the relevant folders to the path for a given session.
+  % Has to be run to be able to use CPP_SPM.
+  %
+  % USAGE::
+  %
+  %   initCppSpm()
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
-    opt.verbosity = 1;
+  opt.verbosity = 1;
 
-    octaveVersion = '4.0.3';
-    matlabVersion = '8.6.0';
+  octaveVersion = '4.0.3';
+  matlabVersion = '8.6.0';
 
-    installlist = {'io', 'statistics', 'image'};
-    
-    thisDirectory = fileparts(mfilename('fullpath'));
-    
-    global CPP_SPM_INITIALIZED
-    global CPP_SPM_PATHS
+  installlist = {'io', 'statistics', 'image'};
 
-    if isempty(CPP_SPM_INITIALIZED)
+  thisDirectory = fileparts(mfilename('fullpath'));
 
-        CPP_SPM_PATHS = genpath(fullfile(thisDirectory, 'src'));
-        
-        libList = { ...
-            'spmup', ...
-            'spm_2_bids'};
-        
-        for i = 1:numel(libList)
-            CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ...
-                genpath(fullfile(thisDirectory, 'lib', libList{i})));
-        end
+  global CPP_SPM_INITIALIZED
+  global CPP_SPM_PATHS
 
-        libList = { ...
-            'mancoreg', ...
-            'NiftiTools', ...
-            'bids-matlab', ...
-            'slice_display', ...
-            'panel-2.14', ...
-            'utils'};
+  if isempty(CPP_SPM_INITIALIZED)
 
-        for i = 1:numel(libList)
-            CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ':', ...
-                fullfile(thisDirectory, 'lib', libList{i}));
-        end
-        
-        CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ':', ...
-                fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));           
-        CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ':', ...
-                fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));        
-            
-        addpath(CPP_SPM_PATHS, '-begin');            
+    CPP_SPM_PATHS = genpath(fullfile(thisDirectory, 'src'));
 
-        checkDependencies(opt);
-        printCredits(opt);
+    libList = { ...
+               'spmup', ...
+               'spm_2_bids'};
 
-        run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'));
+    for i = 1:numel(libList)
+      CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ...
+                          genpath(fullfile(thisDirectory, 'lib', libList{i})));
+    end
 
-        %%
-        if isOctave
+    libList = { ...
+               'mancoreg', ...
+               'NiftiTools', ...
+               'bids-matlab', ...
+               'slice_display', ...
+               'panel-2.14', ...
+               'utils'};
 
-            % Exit if min version is not satisfied
-            if ~compare_versions(OCTAVE_VERSION, octaveVersion, '>=')
-                error('Minimum required Octave version: %s', octaveVersion);
-            end
+    for i = 1:numel(libList)
+      CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ':', ...
+                          fullfile(thisDirectory, 'lib', libList{i}));
+    end
 
-            for ii = 1:length(installlist)
+    CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ':', ...
+                        fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
+    CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ':', ...
+                        fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
 
-                packageName = installlist{ii};
+    addpath(CPP_SPM_PATHS, '-begin');
 
-                try
-                    % Try loading Octave packages
-                    disp(['loading ' packageName]);
-                    pkg('load', packageName);
+    checkDependencies(opt);
+    printCredits(opt);
 
-                catch
+    run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'));
 
-                    tryInstallFromForge(packageName);
+    %%
+    if isOctave
 
-                end
-            end
+      % Exit if min version is not satisfied
+      if ~compare_versions(OCTAVE_VERSION, octaveVersion, '>=')
+        error('Minimum required Octave version: %s', octaveVersion);
+      end
 
-        else % MATLAB ----------------------------
+      for ii = 1:length(installlist)
 
-            if verLessThan('matlab', matlabVersion)
-                error('Sorry, minimum required MATLAB version is R2015b. :(');
-            end
+        packageName = installlist{ii};
 
+        try
+          % Try loading Octave packages
+          disp(['loading ' packageName]);
+          pkg('load', packageName);
+
+        catch
+
+          tryInstallFromForge(packageName);
 
         end
+      end
 
-        CPP_SPM_INITIALIZED = true();
+    else % MATLAB ----------------------------
 
-    else
-        fprintf(1, '\n\nCPP_SPM already initialized\n\n');
+      if verLessThan('matlab', matlabVersion)
+        error('Sorry, minimum required MATLAB version is R2015b. :(');
+      end
 
     end
 
-    %   %-Detect SPM directory
-    % %--------------------------------------------------------------------------
-    % SPMdir = cellstr(which('spm.m','-ALL'));
-    % if isempty(SPMdir)
-    %     fprintf('SPM is not in your %s path.\n',software);
-    %     return;
-    % elseif numel(SPMdir) > 1
-    %     fprintf('SPM seems to appear in several different folders:\n');
-    %     for i=1:numel(SPMdir)
-    %         fprintf('  * %s\n',SPMdir{i});
-    %     end
-    %     fprintf('Remove all but one with ''pathtool'' or ''spm_rmpath''.\n');
-    %     return;
-    % else
-    %     fprintf('SPM is installed in: %s\n',fileparts(SPMdir{1}));
-    % end
-    % SPMdir = fileparts(SPMdir{1});
+    CPP_SPM_INITIALIZED = true();
+
+    detectCppSpm();
+
+  else
+    fprintf(1, '\n\nCPP_SPM already initialized\n\n');
+
+  end
 
 end
 
+function detectCppSpm()
+
+  workflowsDir = cellstr(which('bidsSpatialPrepro.m', '-ALL'));
+
+  if isempty(workflowsDir)
+    error('CPP_SPM is not in your MATLAB / Octave path.\n');
+
+  elseif numel(workflowsDir) > 1
+    fprintf('CPP_SPM seems to appear in several different folders:\n');
+    for i = 1:numel(workflowsDir)
+      fprintf('  * %s\n', fullfile(workflowsDir{i}, '..', '..'));
+    end
+    error('Remove all but one with ''pathtool''' .\ n'); % or ''spm_rmpath
+
+  end
+end
 
 function tryInstallFromForge(packageName)
 
-    errorcount = 1;
-    while errorcount % Attempt twice in case installation fails
-        try
-            pkg('install', '-forge', packageName);
-            pkg('load', packageName);
-            errorcount = 0;
-        catch err
-            errorcount = errorcount + 1;
-            if errorcount > 2
-                error(err.message);
-            end
-        end
+  errorcount = 1;
+  while errorcount % Attempt twice in case installation fails
+    try
+      pkg('install', '-forge', packageName);
+      pkg('load', packageName);
+      errorcount = 0;
+    catch err
+      errorcount = errorcount + 1;
+      if errorcount > 2
+        error(err.message);
+      end
     end
+  end
 
 end
