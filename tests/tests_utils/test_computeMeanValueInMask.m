@@ -10,14 +10,15 @@ end
 
 function test_computeMeanValueInMask_basic()
 
-  opt = setOptions('MoAE');
-
-  BIDS = bids.layout(opt.dir.preproc);
-
-  boldImage = bids.query(BIDS, 'data', 'suffix', 'T1w');
-
-  value = computeMeanValueInMask(boldImage, mask);
-
-  assertEqual(size(volTsnr), [64, 64, 64]);
+    % TODO
+%   opt = setOptions('MoAE');
+% 
+%   BIDS = bids.layout(opt.dir.preproc);
+% 
+%   boldImage = bids.query(BIDS, 'data', 'suffix', 'T1w');
+% 
+%   value = computeMeanValueInMask(boldImage, mask);
+% 
+%   assertEqual(size(volTsnr), [64, 64, 64]);
 
 end
