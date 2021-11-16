@@ -1,8 +1,9 @@
+% This script runs preprocessing with different final spatial resolution in MNI space
+% It then runs the subject level GLMs
+%
+% This can show how to script several analysis within the CPP_SPM framework
+%
 % (C) Copyright 2019 Remi Gau
-%
-%
-% runs preprocessing with different final spatial resolution in MNI space
-%
 
 clear;
 clc;
@@ -24,16 +25,16 @@ if downloadData
 end
 
 %% Run batches
-
-reportBIDS(opt);
+% reportBIDS(opt);
 
 modelFile = opt.model.file;
 
-for iResolution = 2:1:3
+for iResolution = 1:1:3
 
   opt.pipeline.type = 'preproc';
   opt.pipeline.name = ['cpp_spm-res' num2str(iResolution)];
 
+  % set the final output resolution
   opt.funcVoxelDims = repmat(iResolution, 1, 3);
 
   opt.dir.preproc = spm_file( ...
@@ -43,7 +44,7 @@ for iResolution = 2:1:3
                                       opt.pipeline.name), ...
                              'cpath');
 
-  % create a new BIDS model json file
+  %% create a new BIDS model json file
   % this way the GLM output will be store in a different directory for each
   % resolution as the name of the GLM directory is based on the name of the
   % model in the BIDS model

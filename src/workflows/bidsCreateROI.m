@@ -1,5 +1,24 @@
 function bidsCreateROI(opt)
   %
+  % Use CPP_ROI and marsbar to create a ROI in MNI space based on a given atlas
+  % and inverse normalize those ROIs in native space if requested.
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
+  % USAGE::
+  %
+  %  opt = get_option();
+  %  opt.roi.atlas = 'wang';
+  %  opt.roi.name = {'V1v', 'V1d'};
+  %  opt.roi.space = {'MNI', 'individual'};
+  %  opt.dir.stats = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm-stats');
+  %
+  %  bidsCreateROI(opt);
+  %
+  %
+  %
   % (C) Copyright 2021 CPP_SPM developers
 
   if nargin < 1
@@ -79,7 +98,7 @@ function bidsCreateROI(opt)
       roiList = cellstr(roiList);
 
       if opt.dryRun
-        tolerant = false;
+        tolerant = true;
         verbose = true;
         msg = 'Renaming ROI in native space will not work on a dry run';
         id = 'willNotRunOnDryRun';
@@ -97,7 +116,6 @@ function bidsCreateROI(opt)
       for iROI = 1:size(roiList, 1)
 
         p = bids.internal.parse_filename(roiList{iROI, 1});
-
         nameStructure = struct('entities', struct( ...
                                                   'sub', subLabel, ...
                                                   'space', 'individual', ...
@@ -105,12 +123,12 @@ function bidsCreateROI(opt)
                                                   'label', p.entities.label, ...
                                                   'desc', p.entities.desc), ...
                                'suffix', 'mask', ...
-                               'ext', '.nii', ...
-                               'use_schema', false);
-        newName = bids.create_filename(nameStructure);
+                               'ext', '.nii');
+
+        bidsFile = bids.File(nameStructure);
 
         movefile(roiList{iROI, 1}, ...
-                 fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', newName));
+                 fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', bidsFile.filename));
 
       end
 

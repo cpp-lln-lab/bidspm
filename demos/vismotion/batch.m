@@ -3,23 +3,18 @@
 clear;
 clc;
 
-% directory with this script becomes the current directory
-WD = fileparts(mfilename('fullpath'));
-
 run ../../initCppSpm.m;
 
 %% Run batches
 opt = get_option();
 
-reportBIDS(opt);
+% reportBIDS(opt);
 
 bidsCopyInputFolder(opt, 1);
-%
-% % preprocessing
+
 bidsSTC(opt);
 bidsSpatialPrepro(opt);
 
-% Quality control
 anatomicalQA(opt);
 bidsResliceTpmToFunc(opt);
 functionalQA(opt);
@@ -38,7 +33,7 @@ bidsRFX('smoothContrasts', opt);
 
 % Not implemented yet
 % subject level multivariate
-% opt.model.file = fuufile(WD, ...
+% opt.model.file = fullfile(pwd, ...
 %                          'models', ...
 %                          'model-motionDecodingMultivariate_smdl.json');
 %

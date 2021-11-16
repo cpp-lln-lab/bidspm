@@ -2,8 +2,17 @@ function bidsRoiBasedGLM(opt)
   %
   % Will run a GLM within a ROI using MarsBar.
   %
+  % USAGE::
+  %
+  %   bidsRoiBasedGLM(opt)
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
   % Will compute the percent signal change and the time course of the events
   % or blocks of contrast specified in the BIDS model.
+  %
   %
   % (C) Copyright 2021 CPP_SPM developers
 
@@ -115,11 +124,10 @@ function bidsRoiBasedGLM(opt)
                                                 'label', p.entities.label, ...
                                                 'desc', p.entities.desc), ...
                              'suffix', 'estimates', ...
-                             'ext', '.mat', ...
-                             'use_schema', false);
-      newName = bids.create_filename(nameStructure);
+                             'ext', '.mat');
+      bidsFile = bids.File(nameStructure);
 
-      save(fullfile(getFFXdir(subLabel, opt), newName), ...
+      save(fullfile(getFFXdir(subLabel, opt), bidsFile.filename), ...
            'estimation', 'tc', 'dt', 'psc');
 
     end

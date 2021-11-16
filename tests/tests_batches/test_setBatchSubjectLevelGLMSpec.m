@@ -48,21 +48,46 @@ end
 
 function test_setBatchSubjectLevelGLMSpec_basic()
 
+  %% GIVEN
   subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel);
 
   opt.pipeline.type = 'stats';
-  opt.dir.raw = opt.dir.preproc;
   opt.space = {'MNI'};
+
+  opt = dirFixture(opt);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
+  %% WHEN
   matlabbatch = {};
   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
-  % TODO add assert
+  %% THEN
+  expectedContent = {'timing'
+                     'dir'
+                     'fact'
+                     'bases'
+                     'volt'
+                     'global'
+                     'mask'
+                     'sess'};
 
+  assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_spec), expectedContent);
+  assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 2);
+
+  cleanUp(fullfile(pwd, 'derivatives'));
+
+end
+
+function opt = dirFixture(opt)
+  % required for the test
+  opt.dir.raw = opt.dir.preproc;
+
+  opt.dir.derivatives = fullfile(pwd, 'derivatives');
+  opt.dir.stats = fullfile(pwd, 'derivatives', 'cpp_spm-stats');
+  opt = checkOptions(opt);
 end
 
 % function expectedBatch = returnExpectedBatch()

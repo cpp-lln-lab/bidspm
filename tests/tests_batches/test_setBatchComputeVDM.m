@@ -8,7 +8,7 @@ function test_suite = test_setBatchComputeVDM %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchComputeVDMBasic()
+function test_setBatchComputeVDM_basic()
 
   fmapType = 'phasediff';
   refImage = fullfile(pwd, 'mean_sub-01-task-rest_bold.nii');

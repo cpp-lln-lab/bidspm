@@ -17,10 +17,9 @@ run ../../initCppSpm.m;
 opt = lesion_get_option();
 
 %% Run batches
-reportBIDS(opt);
+% reportBIDS(opt);
 
-deleteZippedNii = true;
-bidsCopyRawFolder(opt, deleteZippedNii, {'anat'});
+bidsCopyInputFolder(opt);
 
 % Step 1: segmentation
 bidsLesionSegmentation(opt);

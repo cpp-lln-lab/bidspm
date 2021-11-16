@@ -8,7 +8,7 @@ function test_suite = test_saveMatlabBatch %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_saveMatlabBatchBasic()
+function test_saveMatlabBatch_basic()
 
   subLabel = '01';
   opt = setOptions('dummy', subLabel);
@@ -28,7 +28,7 @@ function test_saveMatlabBatchBasic()
 
 end
 
-function test_saveMatlabBatchGroup()
+function test_saveMatlabBatch_group()
 
   subLabel = '01';
   opt = setOptions('dummy', subLabel);
@@ -45,16 +45,5 @@ function test_saveMatlabBatchGroup()
   assertEqual(exist(expectedOutput, 'file'), 2);
 
   cleanUp(fullfile(pwd, 'group'));
-
-end
-
-function cleanUp(folder)
-
-  pause(1);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(folder, 's');
 
 end

@@ -8,9 +8,10 @@ function test_suite = test_bidsSTC %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsSpatialSTCBasic()
+function test_bidsStc_basic()
 
-  opt = setOptions('vismotion');
+  useRaw = true;
+  opt = setOptions('vismotion', '', useRaw);
 
   opt.pipeline.type = 'preproc';
   opt.query.acq = '';

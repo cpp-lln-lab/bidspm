@@ -26,10 +26,12 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   printBatchName('create voxel displacement map', opt);
 
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
-
-  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});
-  [fileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, sessions{1}, runs{1}, opt);
-  refImage = validationInputFile(subFuncDataDir, fileName, 'mean_');
+  filter = struct( ...
+                  'sub', subLabel, ...
+                  'task', opt.taskName, ...
+                  'suffix', 'bold', ...
+                  'prefix', 'mean_');
+  refImage = bids.query(BIDS, 'data', filter);
 
   for iSes = 1:nbSessions
 
@@ -44,6 +46,7 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
 
       filter.run = runs{iRun};
       filter.suffix = 'phasediff';
+      filter.extension = '.nii';
 
       metadata = bids.query(BIDS, 'metadata', filter);
 
@@ -63,10 +66,12 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
             bids.query(BIDS, 'data', filter);
 
         defaultsval = matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval;
+
         defaultsval.et = echotimes;
         defaultsval.tert = totReadTime;
         defaultsval.blipdir = blipDir;
         defaultsval.epifm = isEPI;
+
         matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.defaults.defaultsval = defaultsval;
 
       end

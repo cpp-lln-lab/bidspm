@@ -8,7 +8,7 @@ function test_suite = test_utils %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_utilsBasic()
+function test_utils_basic()
 
   opt = setTestCfg();
 

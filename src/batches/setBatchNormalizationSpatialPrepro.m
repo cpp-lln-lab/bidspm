@@ -77,6 +77,7 @@ function anatFile = getAnatFileFromBatch(matlabbatch)
     anatFile = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1};
     anatFile = bids.internal.parse_filename(anatFile);
   end
+
 end
 
 function deformationField = getDeformationField(matlabbatch, BIDS, opt)
@@ -89,8 +90,10 @@ function deformationField = getDeformationField(matlabbatch, BIDS, opt)
     filter = anatFile.entities;
     filter.modality = 'anat';
     filter.suffix = 'xfm';
+    filter.prefix = '';
     filter.from = anatFile.suffix;
     filter.to = 'IXI549Space';
+    filter.extension = '.nii';
     deformationField = bids.query(BIDS, 'data', filter);
   end
 
@@ -113,6 +116,8 @@ function biasCorrectedImage = getBiasCorrectedImage(matlabbatch, BIDS, opt)
     filter.modality = 'anat';
     filter.suffix = anatFile.suffix;
     filter.desc = 'biascor';
+    filter.prefix = '';
+    filter.extension = '.nii';
     biasCorrectedImage = bids.query(BIDS, 'data', filter);
   end
 
@@ -139,6 +144,9 @@ function [gmTpm, wmTpm, csfTpm] = getTpms(matlabbatch, BIDS, opt)
     filter.modality = 'anat';
     filter.suffix = 'probseg';
     filter.space = 'individual';
+    filter.res =  '';
+    filter.prefix = '';
+    filter.extension = '.nii';
 
     filter.label = 'GM';
     gmTpm = bids.query(BIDS, 'data', filter);
@@ -179,8 +187,10 @@ function skullstrippedImage = getSkullstrippedImage(matlabbatch, BIDS, opt)
   if not(isempty(anatFile))
     filter = anatFile.entities;
     filter.modality = 'anat';
+    filter.prefix = '';
     filter.suffix = anatFile.suffix;
     filter.desc = 'skullstripped';
+    filter.extension = '.nii';
     skullstrippedImage = bids.query(BIDS, 'data', filter);
   end
 

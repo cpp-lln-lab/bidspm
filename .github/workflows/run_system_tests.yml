@@ -17,14 +17,12 @@ name: system tests
 on:
   push:
     branches:
-      - master
       - main
   pull_request:
     branches:
-      - 'master'
       - 'main'
   schedule:
-    - cron: "* * 1 * *"
+    - cron: "0 0 1 * *"
 
 env:
   OCTFLAGS: --no-gui --no-window-system --silent

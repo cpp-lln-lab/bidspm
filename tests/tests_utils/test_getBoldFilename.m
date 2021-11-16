@@ -8,13 +8,14 @@ function test_suite = test_getBoldFilename %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getBoldFilenameBasic()
+function test_getBoldFilename_basic()
 
   subLabel = '01';
+  useRaw = true;
+  opt = setOptions('vislocalizer', subLabel, useRaw);
+
   iSes = 1;
   iRun = 1;
-
-  opt = setOptions('vislocalizer', subLabel);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -30,14 +31,14 @@ function test_getBoldFilenameBasic()
                                                subLabel, sessions{iSes}, runs{iRun}, opt);
 
   expectedFileName = 'sub-01_ses-01_task-vislocalizer_bold.nii';
-  expectedSubFuncDataDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func');
+  expectedSubFuncDataDir = fullfile(getDummyDataDir('raw'), 'sub-01', 'ses-01', 'func');
 
   assertEqual(subFuncDataDir, expectedSubFuncDataDir);
   assertEqual(fileName, expectedFileName);
 
 end
 
-function test_getBoldFilenameDerivatives()
+function test_getBoldFilename_derivatives()
 
   subLabel = '01';
   iSes = 1;

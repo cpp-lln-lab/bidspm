@@ -8,7 +8,7 @@ function test_suite = test_setFields %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setFieldsWrite()
+function test_setFields_write()
 
   %% set up
   structure = struct();
@@ -25,7 +25,7 @@ function test_setFieldsWrite()
 
 end
 
-function test_setFieldsNoOverwrite()
+function test_setFields_no_overwrite()
 
   % set up
   structure.field.subfield_1 = 3;
@@ -44,7 +44,7 @@ function test_setFieldsNoOverwrite()
 
 end
 
-function test_setFieldsOverwrite()
+function test_setFields_overwrite()
 
   overwrite = true();
 
@@ -65,7 +65,7 @@ function test_setFieldsOverwrite()
 
 end
 
-function test_setFieldsCmplxStruct()
+function test_setFields_cmplx_struct()
 
   % set up
   structure = struct();

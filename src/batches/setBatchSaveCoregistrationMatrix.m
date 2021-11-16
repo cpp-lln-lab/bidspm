@@ -33,7 +33,7 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
                                                BIDS, ...
                                                subLabel, sessions{1}, runs{1}, opt);
   p = bids.internal.parse_filename(fileName);
-  p.use_schema = false;
+
   p.suffix = 'xfm';
   p.ext = '.mat';
   p.entities.desc = '';
@@ -43,9 +43,9 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   p.entities.to = opt.anatReference.type;
   p.entities.mode = 'image';
 
-  fileName = bids.create_filename(p);
+  bidsFile = bids.File(p);
 
-  matlabbatch{end + 1}.cfg_basicio.var_ops.cfg_save_vars.name = fileName;
+  matlabbatch{end + 1}.cfg_basicio.var_ops.cfg_save_vars.name = bidsFile.filename;
   matlabbatch{end}.cfg_basicio.var_ops.cfg_save_vars.outdir = {subFuncDataDir};
   matlabbatch{end}.cfg_basicio.var_ops.cfg_save_vars.vars.vname = 'transformationMatrix';
 

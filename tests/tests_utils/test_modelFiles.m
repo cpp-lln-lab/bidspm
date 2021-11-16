@@ -8,7 +8,7 @@ function test_suite = test_modelFiles %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_modelFilesBasic()
+function test_modelFiles_basic()
   % vague attempt at validating our model files
 
   demoDir = fullfile(fileparts(mfilename('fullpath')), '..', '..', 'demos');

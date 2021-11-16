@@ -1,10 +1,12 @@
 function mask = bidsWholeBrainFuncMask(opt)
   %
-  % create segmented-skull stripped mean functional image
+  % Create segmented-skull stripped mean functional image
   %
   % (C) Copyright 2020 CPP_SPM developers
 
   % TODO add test
+
+  opt.dir.input = opt.dir.preproc;
 
   [BIDS, opt] = setUpWorkflow(opt, 'create brain mask from mean functional image');
 
@@ -18,7 +20,7 @@ function mask = bidsWholeBrainFuncMask(opt)
     [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
     meanFuncFileName = fullfile(meanFuncDir, meanImage);
 
-    % name the output accordingto the input image
+    % name the output according to the input image
     maskFileName = ['m' strrep(meanImage, '.nii', '_mask.nii')];
     mask{iSub} = fullfile(meanFuncDir, maskFileName);
 

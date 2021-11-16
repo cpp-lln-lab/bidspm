@@ -1,4 +1,3 @@
-% (C) Copyright 2019 Remi Gau
 %
 % Script to run to check that the whole pipeline works fine with different
 % options encoded in json files
@@ -8,16 +7,12 @@
 % - realign only
 % - indidivual space + realign only
 %
+% Anoither rudimentary attempt of a "system-level" "smoke-test" of the "happy path"...
 %
-%
-% Rudimentary attempt of a "system-level" "smoke-test" of the "happy path"...
-%
+% (C) Copyright 2019 Remi Gau
 
 clear;
 clc;
-
-% Smoothing to apply
-FWHM = 6;
 
 % directory with this script becomes the current directory
 WD = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'openneuro');
@@ -41,7 +36,7 @@ for iOption = 1:size(optionsFilesList, 1)
 
   %% Run batches
 
-  reportBIDS(opt);
+  % reportBIDS(opt);
 
   bidsCopyRawFolder(opt, 1);
 
@@ -50,15 +45,15 @@ for iOption = 1:size(optionsFilesList, 1)
   bidsSpatialPrepro(opt);
 
   anatomicalQA(opt);
-  bidsResliceTpmToFunc(opt);
-  functionalQA(opt);
+  % bidsResliceTpmToFunc(opt);
+  % functionalQA(opt);
 
   bidsSmoothing(FWHM, opt);
 
   % The following crash on CI
-  bidsFFX('specifyAndEstimate', opt, FWHM);
-  bidsFFX('contrasts', opt, FWHM);
-  bidsResults(opt, FWHM);
+  %   bidsFFX('specifyAndEstimate', opt, FWHM);
+  %   bidsFFX('contrasts', opt, FWHM);
+  %   bidsResults(opt, FWHM);
 
   cd(WD);
 

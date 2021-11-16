@@ -24,16 +24,6 @@ Group level model
 .. autofunction:: getRFXdir
 
 
-fieldmaps
-=========
-
-.. automodule:: src.fieldmaps
-
-.. autofunction:: getBlipDirection
-.. autofunction:: getMetadataFromIntendedForFunc
-.. autofunction:: getTotalReadoutTime
-.. autofunction:: getVdmFile
-
 Utilities
 =========
 
@@ -73,7 +63,6 @@ Utility functions
 .. autofunction:: printProcessingSubject
 .. autofunction:: printToScreen
 .. autofunction:: printWorkflowName
-.. autofunction:: removeSpmPrefix
 .. autofunction:: renameSegmentParameter
 .. autofunction:: renameUnwarpParameter
 .. autofunction:: rmTrialTypeStr

@@ -2,17 +2,18 @@
 
 **Documentation**
 
-[![Documentation Status: stable](https://readthedocs.org/projects/cpp-bids-spm/badge/?version=stable)](https://cpp-bids-spm.readthedocs.io/en/stable/?badge=stable)
+[![Documentation Status: stable](https://readthedocs.org/projects/cpp_spm/badge/?version=stable)](https://cpp_spm.readthedocs.io/en/stable/?badge=stable)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/CPP_SPM/dev)
 
 **Code quality and style**
 
-[![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/actions)
-![](https://github.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline/workflows/CI/badge.svg)
+[![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_SPM/actions)
+![](https://github.com/cpp-lln-lab/CPP_SPM/workflows/CI/badge.svg)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+
 
 **Unit tests and coverage**
-
-[![Build Status](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline.svg?branch=master)](https://travis-ci.com/cpp-lln-lab/CPP_BIDS_SPM_pipeline)
-[![codecov](https://codecov.io/gh/Remi-Gau/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/Remi-Gau/CPP_SPM)
+[![codecov](https://codecov.io/gh/cpp-lln-lab/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/cpp-lln-lab/CPP_SPM)
 
 **How to cite**
 
@@ -35,8 +36,6 @@ This is a set of functions to MRI analysis on a
 
 ## Installation
 
-<!-- TODO -->
-
 We strongly recommend using the CPP fMRI analysis template repository (INSERT
 URL) to use CPP_SPM.
 
@@ -45,7 +44,7 @@ Download this repository and unzip the content where you want to install it.
 Or clone the repo.
 
 ```bash
-git clone https://github.com/cpp-lln-lab/CPP_SPM.git
+git clone --recurse-submodule https://github.com/cpp-lln-lab/CPP_SPM.git
 ```
 
 Fire up Octave or Matlab and type
@@ -54,16 +53,16 @@ Fire up Octave or Matlab and type
 
 cd CPP_SPM
 
-% Th following adds the relevant folders to your path.
+% The following adds the relevant folders to your path.
 % This needs to be done once per session (your path will not be saved)
 
-initCppSpm
+initCppSpm()
 
 ```
 
 Please see our
-[documentation](https://cpp-bids-spm.readthedocs.io/en/latest/index.html) for
-more detailed instructions.
+[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
+detailed instructions.
 
 ### Dependencies
 
@@ -78,7 +77,7 @@ For instructions see the following links:
 | ---------------------------------------------------------- | ------------ |
 | [Matlab](https://www.mathworks.com/products/matlab.html)   | 20???        |
 | or [octave](https://www.gnu.org/software/octave/)          | 4.?          |
-| [SPM12](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/) | v7487        |
+| [SPM12](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/) | >7219        |
 
 <!-- lint enable -->
 
@@ -111,8 +110,8 @@ This can perform:
 The core functions are in the `src` folder.
 
 Please see our
-[documentation](https://cpp-bids-spm.readthedocs.io/en/latest/index.html) for
-more info.
+[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
+info.
 
 ## Octave compatibility
 
@@ -151,11 +150,13 @@ There is a [pre-commit hook](https://pre-commit.com/) that you can use to
 reformat files as you commit them.
 
 Install pre-commit by using our `requirements.txt` file
+
 ```bash
 pip install -r requirements.txt
 ```
 
 Install the hook
+
 ```bash
 pre-commit install
 ```

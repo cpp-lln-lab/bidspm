@@ -8,7 +8,7 @@ function test_suite = test_getBoldFilenameForFFX %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getBoldFilenameForFFXMNI()
+function test_getBoldFilenameForFFX_mni()
 
   subLabel = '01';
   iSes = 1;
@@ -28,7 +28,7 @@ function test_getBoldFilenameForFFXMNI()
   assertEqual(boldFileName, expectedFileName);
 end
 
-function test_getBoldFilenameForFFXIndividual()
+function test_getBoldFilenameForFFX_individual()
 
   subLabel = '01';
   iSes = 1;
@@ -49,7 +49,7 @@ function test_getBoldFilenameForFFXIndividual()
 
 end
 
-function test_getBoldFilenameForFFXNoSmoothing()
+function test_getBoldFilenameForFFX_no_smoothing()
 
   subLabel = '01';
   iSes = 1;

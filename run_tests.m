@@ -1,5 +1,9 @@
 % (C) Copyright 2019 CPP_SPM developers
 
+% Elapsed time is 284 seconds.
+
+tic;
+
 warning('OFF');
 
 spm('defaults', 'fMRI');
@@ -19,3 +23,5 @@ if success
 else
   system('echo 1 > test_report.log');
 end
+
+toc;

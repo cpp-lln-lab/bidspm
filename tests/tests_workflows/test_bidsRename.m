@@ -8,7 +8,7 @@ function test_suite = test_bidsRename %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsRenameBasic()
+function test_bidsRename_basic()
 
   opt = setOptions('MoAE-preproc');
 

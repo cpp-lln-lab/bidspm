@@ -26,9 +26,12 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
   % Use a rough mean of the 1rst run to improve SNR for coregistration
   % created by spmup
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
-  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});
-  [fileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, sessions{1}, runs{1}, opt);
-  refImage = validationInputFile(subFuncDataDir, fileName, 'mean_');
+  filter = struct( ...
+                  'sub', subLabel, ...
+                  'task', opt.taskName, ...
+                  'suffix', 'bold', ...
+                  'prefix', 'mean_');
+  refImage = bids.query(BIDS, 'data', filter);
 
   for iSes = 1:nbSessions
 
@@ -43,6 +46,7 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
 
       filter.run = runs{iRun};
       filter.suffix = 'phasediff';
+      filter.extension = '.nii';
 
       metadata = bids.query(BIDS, 'metadata', filter);
 

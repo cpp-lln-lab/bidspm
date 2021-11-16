@@ -1,5 +1,19 @@
 function bidsRename(opt)
   %
+  % Renames SPM output into BIDS compatible files.
+  %
+  % USAGE::
+  %
+  %   bidsRename(opt)
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
+  % See the spm_2_bis submodule and ``defaults.set_spm_2_bids_defaults``
+  % for more info.
+  %
+  %
   % (C) Copyright 2019 CPP_SPM developers
 
   createdFiles = {};

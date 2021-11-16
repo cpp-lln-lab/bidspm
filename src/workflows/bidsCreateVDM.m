@@ -5,7 +5,7 @@ function bidsCreateVDM(opt)
   %
   % USAGE::
   %
-  %   bidsCreateVDM([opt])
+  %   bidsCreateVDM(opt)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
@@ -27,9 +27,9 @@ function bidsCreateVDM(opt)
     subLabel = opt.subjects{iSub};
 
     % TODO Move to getInfo
-    types = bids.query(BIDS, 'suffixes', 'sub', subLabel);
+    suffixes = bids.query(BIDS, 'suffixes', 'sub', subLabel);
 
-    if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
+    if any(ismember(suffixes, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
 
       printProcessingSubject(iSub, subLabel, opt);
 

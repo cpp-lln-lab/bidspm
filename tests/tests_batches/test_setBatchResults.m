@@ -8,11 +8,9 @@ function test_suite = test_setBatchResults %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchResultsBasic()
+function test_setBatchResults_basic()
 
-  iStep = 1;
-  iCon = 1;
-
+  %% GIVEN
   result.dir = pwd;
   result.label = '01';
   result.nbSubj = 1;
@@ -23,88 +21,74 @@ function test_setBatchResultsBasic()
   result.Contrasts.p = 0.05;
   result.Contrasts.k = 0;
 
+  %% WHEN
   matlabbatch = {};
   matlabbatch = setBatchResults(matlabbatch, result);
 
+  %% THEN
   expectedBatch = returnBasicExpectedResultsBatch();
-
   assertEqual(matlabbatch, expectedBatch);
 
 end
 
-function test_setBatchResultsExport()
+function test_setBatchResults_export()
 
-  iStep = 1;
-  iCon = 1;
-
+  %% GIVEN
   opt.taskName = 'test';
 
-  opt.result.Steps.Contrasts.Name = 'test';
-  opt.result.Steps.Contrasts.MC = 'FDR';
-  opt.result.Steps.Contrasts.p = 0.05;
-  opt.result.Steps.Contrasts.k = 0;
+  Contrasts.Name = 'test';
+  Contrasts.MC = 'FDR';
+  Contrasts.p = 0.05;
+  Contrasts.k = 0;
+  opt.result.Steps.Contrasts = Contrasts;
 
-  opt.result.Steps.Output.png = true;
-  opt.result.Steps.Output.csv = true;
-  opt.result.Steps.Output.thresh_spm = true;
-  opt.result.Steps.Output.binary = true;
-  opt.result.Steps.Output.NIDM_results =  true;
+  Output.png = true;
+  Output.csv = true;
+  Output.thresh_spm = true;
+  Output.binary = true;
+  Output.NIDM_results =  true;
+  opt.result.Steps.Output = Output;
 
   opt.space = 'individual';
 
-  result.dir = pwd;
-  result.label = '01';
-  result.nbSubj = 1;
-  result.contrastNb = 1;
+  result = setBatchSubjectLevelResultsMock(opt);
 
-  %%
-  entities = struct('sub', '', ...
-                    'task', opt.taskName, ...
-                    'space', opt.space, ...
-                    'desc', '', ...
-                    'label', 'XXXX');
-  result.outputNameStructure = struct( ...
-                                      'suffix', 'spmT', ...
-                                      'ext', '.nii', ...
-                                      'entities', entities, ...
-                                      'p', '', ...
-                                      'k', '', ...
-                                      'MC', '');
-
-  result.Contrasts =  opt.result.Steps(iStep).Contrasts;
-  result.Output =  opt.result.Steps(iStep).Output;
-  result.space = opt.space;
-
+  %% WHEN
   matlabbatch = {};
   matlabbatch = setBatchResults(matlabbatch, result);
 
-  expectedBatch = returnBasicExpectedResultsBatch();
+  %% THEN
+  export{1}.png = true;
+  export{2}.csv = true;
+  export{3}.tspm.basename = ...
+      'sub-01_task-test_space-individual_desc-test_label-XXXX_p-0pt050_k-0_MC-FDR_spmT';
+  export{4}.binary.basename = ...
+      'sub-01_task-test_space-individual_desc-test_label-XXXX_p-0pt050_k-0_MC-FDR_mask';
 
-  %%
+  export{5}.nidm.modality = 'FMRI';
+  export{end}.nidm.refspace = 'ixi';
+  export{end}.nidm.refspace = 'subject';
+  export{end}.nidm.group.nsubj = 1;
+  export{end}.nidm.group.label = '01';
+
+  assertEqual(matlabbatch{1}.spm.stats.results.export{1}, export{1});
+  assertEqual(matlabbatch{1}.spm.stats.results.export{2}, export{2});
+  assertEqual(matlabbatch{1}.spm.stats.results.export{3}.tspm, export{3}.tspm);
+  assertEqual(matlabbatch{1}.spm.stats.results.export{4}.binary, export{4}.binary);
+  assertEqual(matlabbatch{1}.spm.stats.results.export{5}, export{5});
+
+  expectedBatch = returnBasicExpectedResultsBatch();
   expectedBatch{end}.spm.stats.results.conspec.titlestr = returnName(result);
   expectedBatch{end}.spm.stats.results.conspec.threshdesc = 'FDR';
-
-  expectedBatch{end}.spm.stats.results.export{1}.png = true;
-  expectedBatch{end}.spm.stats.results.export{2}.csv = true;
-  expectedBatch{end}.spm.stats.results.export{3}.tspm.basename = ...
-      'sub-01_task-test_space-individual_desc-test_label-XXXX_p-005_k-0_MC-FDR_spmT';
-  expectedBatch{end}.spm.stats.results.export{4}.binary.basename = ...
-      'sub-01_task-test_space-individual_desc-test_label-XXXX_p-005_k-0_MC-FDR_mask';
-
-  expectedBatch{end}.spm.stats.results.export{end + 1}.nidm.modality = 'FMRI';
-  expectedBatch{end}.spm.stats.results.export{end}.nidm.refspace = 'ixi';
-  expectedBatch{end}.spm.stats.results.export{end}.nidm.refspace = 'subject';
-  expectedBatch{end}.spm.stats.results.export{end}.nidm.group.nsubj = 1;
-  expectedBatch{end}.spm.stats.results.export{end}.nidm.group.label = '01';
-
-  assertEqual(matlabbatch{end}.spm.stats.results, expectedBatch{end}.spm.stats.results);
+  expectedBatch{end}.spm.stats.results.export = export;
+  assertEqual(matlabbatch, expectedBatch);
 
 end
 
-function test_setBatchResultsMontage()
+function test_setBatchResults_montage()
 
-  iStep = 1;
-  iCon = 1;
+  %% GIVEN
+  opt.taskName = 'test';
 
   opt.result.Steps.Contrasts.Name = '';
   opt.result.Steps.Contrasts.MC = 'FWE';
@@ -115,19 +99,13 @@ function test_setBatchResultsMontage()
 
   opt.space = 'MNI';
 
-  result.dir = pwd;
-  result.label = '01';
-  result.nbSubj = 1;
-  result.contrastNb = 1;
+  result = setBatchSubjectLevelResultsMock(opt);
 
-  %%
-  result.Contrasts =  opt.result.Steps(iStep).Contrasts;
-  result.Output =  opt.result.Steps(iStep).Output;
-  result.space = opt.space;
-
+  %% WHEN
   matlabbatch = {};
   matlabbatch = setBatchResults(matlabbatch, result);
 
+  %% THEN
   expectedBatch = returnBasicExpectedResultsBatch();
 
   expectedBatch{end}.spm.stats.results.conspec.titlestr = returnName(result);
@@ -171,5 +149,33 @@ function expectedBatch = returnBasicExpectedResultsBatch()
   expectedBatch = {};
   expectedBatch{end + 1}.spm.stats = stats;
   expectedBatch{end}.spm.stats.results.export = [];
+
+end
+
+function result = setBatchSubjectLevelResultsMock(opt)
+
+  iStep = 1;
+
+  result.dir = pwd;
+  result.label = '01';
+  result.nbSubj = 1;
+  result.contrastNb = 1;
+
+  entities = struct('sub', '', ...
+                    'task', opt.taskName, ...
+                    'space', opt.space, ...
+                    'desc', '', ...
+                    'label', 'XXXX');
+  result.outputNameStructure = struct( ...
+                                      'suffix', 'spmT', ...
+                                      'ext', '.nii', ...
+                                      'entities', entities, ...
+                                      'p', '', ...
+                                      'k', '', ...
+                                      'MC', '');
+
+  result.Contrasts =  opt.result.Steps(iStep).Contrasts;
+  result.Output =  opt.result.Steps(iStep).Output;
+  result.space = opt.space;
 
 end

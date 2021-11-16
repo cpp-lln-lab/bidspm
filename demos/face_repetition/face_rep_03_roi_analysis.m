@@ -1,8 +1,19 @@
+%
+% Creates a ROI in MNI space from the retinotopic probablistic atlas.
+%
+% Creates its equivalent in subject space (inverse normalization).
+%
+% Then uses marsbar to run a ROI based GLM
+%
 % (C) Copyright 2019 Remi Gau
-%
-% creates a ROI in MNI space from the proba atlas
-% creates its equivalent in subject space
-%
+
+clear;
+clc;
+
+try
+  run ../../initCppSpm.m;
+catch
+end
 
 opt = face_rep_get_option_results();
 

@@ -15,6 +15,9 @@ function matlabbatch = bidsSpatialPrepro(opt)
   % The functional data are re-aligned (unwarped), coregistered with the structural,
   % the anatomical data is skull-stripped [and normalized to MNI space].
   %
+  % Assumes that ``bidsSTC()`` has already been run if ``opt.stc.skip`` is not set
+  % to ``true``.
+  %
   % If you want to:
   %
   % - only do realign and not realign AND unwarp, make sure you set
@@ -31,11 +34,11 @@ function matlabbatch = bidsSpatialPrepro(opt)
   %     opt.anatReference.type = 'T1w';
   %     opt.anatReference.session = 1;
   %
-  % .. TODO:
-  %
-  %  - average T1s across sessions if necessarry
   %
   % (C) Copyright 2019 CPP_SPM developers
+
+  %  TODO:
+  %  - average T1s across sessions if necessarry
 
   opt.dir.input = opt.dir.preproc;
 
@@ -70,13 +73,21 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
     % Skip segmentation and skullstripping if done previously
     anatFile = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1};
-    p = bids.internal.parse_filename(anatFile);
-    filter = p.entities;
-    filter.suffix = 'probseg';
-    tpm = bids.query(BIDS, 'data', filter);
-    doSegmentation = opt.segment.force || isempty(tpm);
+    anatFile = bids.internal.parse_filename(anatFile);
+    filter = anatFile.entities;
+    filter.modality = 'anat';
 
-    if doSegmentation
+    filter.suffix = anatFile.suffix;
+    filter.desc = 'biascor';
+    biasCorrectedImage = bids.query(BIDS, 'data', filter);
+
+    filter.suffix = 'probseg';
+    filter = rmfield(filter, 'desc');
+    tpm = bids.query(BIDS, 'data', filter);
+
+    doSegmentAndSkullstrip = opt.segment.force || isempty(tpm) || isempty(biasCorrectedImage);
+
+    if doSegmentAndSkullstrip
       opt.orderBatches.segment = 5;
       opt.orderBatches.skullStripping = 6;
       opt.orderBatches.skullStrippingMask = 7;
@@ -114,7 +125,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
                            ['^rp_.*sub-' subLabel '.*_task-' opt.taskName '.*_bold.txt$']);
       for iFile = 1:size(rpFiles, 1)
         rmInput = true;
-        convertRealignParamToTsv(rpFiles(iFile, :), opt.spm_2_bids, rmInput);
+        convertRealignParamToTsv(rpFiles(iFile, :), opt, rmInput);
       end
 
       renameSegmentParameter(BIDS, subLabel, opt);
@@ -123,16 +134,16 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
   end
 
-  % TODO adapt spm_2_bids map to rename eventual files that only have a "r" or
-  % "ra" prefix
+  % TODO adapt spm_2_bids map to rename eventual files
+  % that only have a "r" or "ra" prefix
 
   opt.query =  struct('modality', {{'anat', 'func'}});
 
   if ~opt.realign.useUnwarp
-
     opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
                                                 'name_spec', opt.spm_2_bids.cfg.preproc);
 
+    % TODO is this one really needed?
     opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', [opt.spm_2_bids.realign 'mean'], ...
                                                 'name_spec', opt.spm_2_bids.cfg.preproc);
     opt.spm_2_bids = opt.spm_2_bids.flatten_mapping();

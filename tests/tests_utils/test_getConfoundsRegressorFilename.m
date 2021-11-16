@@ -8,7 +8,7 @@ function test_suite = test_getConfoundsRegressorFilename %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getConfoundRegressorFileBasic()
+function test_getConfoundRegressorFile_basic()
 
   subLabel = '01';
   session = '01';

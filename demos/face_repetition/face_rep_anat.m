@@ -1,15 +1,17 @@
+%
+% This show how an anat only pipeline would look like.
+%
 % (C) Copyright 2019 Remi Gau
-%
-%
-% This show how an anat only workflow would look like
-%
 
 clear;
 clc;
 
 downloadData = true;
 
-run ../../initCppSpm.m;
+try
+  run ../../initCppSpm.m;
+catch
+end
 
 %% Set options
 opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');

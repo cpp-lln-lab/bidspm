@@ -4,11 +4,12 @@ function bidsSegmentSkullStrip(opt)
   %
   % USAGE::
   %
-  %   bidsSegmentSkullStrip([opt])
+  %   bidsSegmentSkullStrip(opt)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
+  %
   %
   % (C) Copyright 2020 CPP_SPM developers
 

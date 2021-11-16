@@ -8,7 +8,7 @@ function test_suite = test_createAndReturnCounfoundMatFile %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_createAndReturnCounfoundMatFileBasic()
+function test_createAndReturnCounfoundMatFile_basic()
 
   subLabel = '01';
   iSes = 1;

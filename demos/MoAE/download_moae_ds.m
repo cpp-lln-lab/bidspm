@@ -1,9 +1,13 @@
-function download_moae_ds(download_data)
+function download_moae_ds(download_data, clean)
   %
   % (C) Copyright 2021 Remi Gau
 
   if nargin < 1
     download_data = true;
+  end
+
+  if nargin < 2
+    clean = false;
   end
 
   if download_data
@@ -14,7 +18,7 @@ function download_moae_ds(download_data)
     working_directory = fileparts(mfilename('fullpath'));
 
     % clean previous runs
-    if exist(fullfile(working_directory, 'inputs'), 'dir')
+    if clean && exist(fullfile(working_directory, 'inputs'), 'dir')
       rmdir(fullfile(working_directory, 'inputs'), 's');
     end
 

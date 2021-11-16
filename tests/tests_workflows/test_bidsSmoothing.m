@@ -8,7 +8,21 @@ function test_suite = test_bidsSmoothing %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsCopyInputFolder_fmriprep()
+function test_bidsSmoothing_basic()
+
+  opt = setOptions('vislocalizer');
+
+  opt.pipeline.type = 'preproc';
+
+  opt.space = 'MNI';
+
+  opt = checkOptions(opt);
+
+  bidsSmoothing(opt);
+
+end
+
+function test_bidsSmoothing_fmriprep()
 
   opt = setOptions('fmriprep');
 
@@ -21,28 +35,5 @@ function test_bidsCopyInputFolder_fmriprep()
   bidsSmoothing(opt);
 
   cleanUp(opt.dir.preproc);
-
-end
-
-function test_bidsSmoothingBasic()
-
-  opt = setOptions('vislocalizer');
-
-  opt.pipeline.type = 'preproc';
-
-  opt = checkOptions(opt);
-
-  bidsSmoothing(opt);
-
-end
-
-function cleanUp(folder)
-
-  pause(1);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(folder, 's');
 
 end

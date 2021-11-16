@@ -8,7 +8,21 @@ function test_suite = test_bidsFFX %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsFfx_fmriprep_no_smoothing()
+function test_bidsFFX_contrasts()
+
+  opt = setOptions('vislocalizer');
+  opt.space = {'MNI'};
+
+  % required for the test
+  opt.dir.raw = opt.dir.preproc;
+
+  matlabbatch = bidsFFX('contrasts', opt);
+
+  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 7);
+
+end
+
+function test_bidsFFX_fmriprep_no_smoothing()
 
   opt = setOptions('fmriprep');
 
@@ -33,7 +47,7 @@ function test_bidsFfx_fmriprep_no_smoothing()
 
 end
 
-function test_bidsFfx_mni()
+function test_bidsFFX_mni()
 
   task = {'vislocalizer'}; % 'vismotion'
 
@@ -42,17 +56,17 @@ function test_bidsFfx_mni()
     opt = setOptions(task{i});
     opt.space = {'MNI'};
 
-    opt.dir.raw = opt.dir.preproc;
+    opt = dirFixture(opt);
 
     bidsFFX('specifyAndEstimate', opt);
-    %   bidsFFX('contrasts', opt);
-    %   bidsResults(opt);
+
+    cleanUp(fullfile(pwd, 'derivatives'));
 
   end
 
 end
 
-function test_bidsFfx_individual()
+function test_bidsFFX_individual()
 
   task = {'vislocalizer'}; % 'vismotion'
 
@@ -61,22 +75,20 @@ function test_bidsFfx_individual()
     opt = setOptions(task{i});
     opt.space = {'individual'};
 
-    opt.dir.raw = opt.dir.preproc;
+    opt = dirFixture(opt);
 
     bidsFFX('specifyAndEstimate', opt);
-    %   bidsFFX('contrasts', opt);
-    %   bidsResults(opt);
+
+    cleanUp(fullfile(pwd, 'derivatives'));
 
   end
 end
 
-function cleanUp(folder)
+function opt = dirFixture(opt)
+  % required for the test
+  opt.dir.raw = opt.dir.preproc;
 
-  pause(1);
-
-  if isOctave()
-    confirm_recursive_rmdir (true, 'local');
-  end
-  rmdir(folder, 's');
-
+  opt.dir.derivatives = fullfile(pwd, 'derivatives');
+  opt.dir.stats = fullfile(pwd, 'derivatives', 'cpp_spm-stats');
+  opt = checkOptions(opt);
 end

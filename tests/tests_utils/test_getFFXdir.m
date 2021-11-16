@@ -8,7 +8,7 @@ function test_suite = test_getFFXdir %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getFFXdirBasic()
+function test_getFFXdir_basic()
 
   subLabel = '01';
 
@@ -25,7 +25,7 @@ function test_getFFXdirBasic()
 
 end
 
-function test_getFFXdirUserSpecified()
+function test_getFFXdir_user_specified()
 
   subLabel = '02';
 

@@ -1,44 +1,40 @@
-% (C) Copyright 2019 Remi Gau
-
 % This script will download the dataset from the FIL for the block design SPM tutorial
-% and will run the basic preprocessing, FFX and contrasts on it.
+% and will run the basic preprocessing.
 %
-% Results might be a bit different from those in the manual as some
-% default options are slightly different in this pipeline
-% (e.g use of FAST instead of AR(1), motion regressors added)
+% (C) Copyright 2019 Remi Gau
 
 clear;
 clc;
 
 download_data = false;
+clean = false;
 
-run ../../initCppSpm.m;
+try
+  run ../../initCppSpm.m;
+catch
+end
 
-%% Set options
 opt = moae_get_option();
 
-download_moae_ds(download_data);
+% download_moae_ds(download_data, clean);
 
-%% Run batches
 % reportBIDS(opt);
 
 opt.pipeline.type = 'preproc';
 
-% bidsCopyInputFolder(opt);
+bidsCopyInputFolder(opt);
 
 % In case you just want to run segmentation and skull stripping
 % NOTE: skull stripping is also included in 'bidsSpatialPrepro'
+bidsSegmentSkullStrip(opt);
 
-% bidsSegmentSkullStrip(opt);
-%
-% bidsSTC(opt);
-%
-% bidsSpatialPrepro(opt);
-%
-% anatomicalQA(opt);
+bidsSTC(opt);
 
-% NEEDS DEBUGGING
-% bidsResliceTpmToFunc(opt);
+bidsSpatialPrepro(opt);
+
+anatomicalQA(opt);
+
+bidsResliceTpmToFunc(opt);
 
 % DOES NOT WORK
 % functionalQA(opt);
@@ -47,9 +43,8 @@ opt.pipeline.type = 'preproc';
 % so the mask will be in the same resolution/space as the functional images
 % one may not need it if they are running bidsFFX
 % since it creates a mask.nii by default
-opt.skullstrip.mean = 1;
-
 % NEEDS DEBUGGING
-% mask = bidsWholeBrainFuncMask(opt);
+opt.skullstrip.mean = 1;
+mask = bidsWholeBrainFuncMask(opt);
 
 bidsSmoothing(opt);

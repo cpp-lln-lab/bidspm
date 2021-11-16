@@ -1,0 +1,16 @@
+{
+  "Name": "vismotion",
+  "Description": "This model only has simple contrasts for MVPA",
+  "Input": {
+    "task": "vismotion"
+  },
+  "Steps": [
+    {
+      "Level": "subject",
+      "AutoContrasts": [
+        "trial_type.VisMot",
+        "trial_type.VisStat"
+      ]
+    }
+  ]
+}

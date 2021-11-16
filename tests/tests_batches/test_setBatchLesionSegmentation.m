@@ -10,18 +10,23 @@ end
 
 function test_setBatchLesionSegmentation_basic()
 
-  opt = setOptions('vismotion');
-  subLabel = '02';
+  subLabel = '01';
+  useRaw = true;
+  opt = setOptions('vismotion', subLabel, useRaw);
+
+  if not(isfield(opt.toolbox, 'ALI'))
+    return
+  end
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   matlabbatch = {};
   matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLabel);
 
-  unified_segmentation.step1data{1} = fullfile(getDummyDataDir('preproc'), ...
+  unified_segmentation.step1data{1} = fullfile(getDummyDataDir('raw'), ...
                                                ['sub-' subLabel], ...
                                                'ses-01', 'anat', ...
-                                               'sub-02_ses-01_T1w.nii');
+                                               'sub-01_ses-01_T1w.nii');
   unified_segmentation.step1prior = {fullfile(spm('dir'), ...
                                               'toolbox', 'ALI', ...
                                               'Priors_extraClass', ...

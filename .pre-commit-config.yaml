@@ -4,6 +4,14 @@ repos:
 
     hooks:
 
+    - id: mh_version
+      name: mh_version
+      entry: mh_style
+      args: [-v]
+      verbose: true
+      language: python
+      additional_dependencies: [miss_hit_core]
+
     - id: mh_style
       name: mh_style
       entry: mh_style

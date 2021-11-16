@@ -8,7 +8,7 @@ function test_suite = test_createAndReturnOnsetFile %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_createAndReturnOnsetFileBasic()
+function test_createAndReturnOnsetFile_basic()
 
   subLabel = '01';
   iSes = 1;
