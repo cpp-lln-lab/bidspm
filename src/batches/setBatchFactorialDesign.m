@@ -27,7 +27,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
 
   rfxDir = getRFXdir(opt);
 
-  grpLvlCon = getGrpLevelContrastToCompute(opt);
+  grpLvlCon = getGrpLevelContrast(opt);
 
   % For each contrast
   for j = 1:size(grpLvlCon, 1)

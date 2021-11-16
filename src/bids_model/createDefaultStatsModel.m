@@ -1,16 +1,7 @@
-function opt = createDefaultModel(BIDS, opt)
+function opt = createDefaultStatsModel(BIDS, opt)
   %
   % Creates a default model json file.
   % This model has 3 "steps" in that order:
-  %
-  % - Subject level:
-  %   - will create a GLM with a design matrix that includes all
-  %     all the possible type of trial_types that exist across
-  %     all subjects and runs for the task specified in ``opt``,
-  %     as well as the realignment parameters.
-  %
-  %   - use AutoContrasts to generate contrasts for all each trial_type
-  %     across runs
   %
   % - Run level:
   %   - will create a GLM with a design matrix that includes all
@@ -22,6 +13,15 @@ function opt = createDefaultModel(BIDS, opt)
   %     for each run. This can be useful to run MVPA analysis on the beta
   %     images of each run.
   %
+  % - Subject level:
+  %   - will create a GLM with a design matrix that includes all
+  %     all the possible type of trial_types that exist across
+  %     all subjects and runs for the task specified in ``opt``,
+  %     as well as the realignment parameters.
+  %
+  %   - use AutoContrasts to generate contrasts for all each trial_type
+  %     across runs
+  %
   % - Dataset level:
   %
   %   - use AutoContrasts to generate contrasts for each trial_type
@@ -29,7 +29,7 @@ function opt = createDefaultModel(BIDS, opt)
   %
   % USAGE::
   %
-  %   opt = createDefaultModel(BIDS, opt)
+  %   opt = createDefaultStatsModel(BIDS, opt)
   %
   % :output:
   %
@@ -45,17 +45,15 @@ function opt = createDefaultModel(BIDS, opt)
   %
   %   [~, opt, BIDS] = getData(opt);
   %
-  %   createDefaultModel(BIDS, opt);
+  %   createDefaultStatsModel(BIDS, opt);
   %
   % (C) Copyright 2020 CPP_SPM developers
 
   % TODO deal with the Transformations and Convolve fields
 
-  jsonOptions.indent = '   ';
-
   trialTypeList = listAllTrialTypes(BIDS, opt);
 
-  content = returnEmptyModel();
+  content = createEmptyStatsModel();
 
   content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList);
 
@@ -68,7 +66,7 @@ function opt = createDefaultModel(BIDS, opt)
   filename = fullfile(pwd, 'models', ...
                       ['model-default' upper(opt.taskName(1)) opt.taskName(2:end) '_smdl.json']);
 
-  spm_jsonwrite(filename, content, jsonOptions);
+  bids.util.jsonwrite(filename, content);
 
   opt.model.file = filename;
 
