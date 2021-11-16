@@ -15,16 +15,24 @@ function initCppSpm()
     matlabVersion = '8.6.0';
 
     installlist = {'io', 'statistics', 'image'};
-
+    
+    thisDirectory = fileparts(mfilename('fullpath'));
+    
     global CPP_SPM_INITIALIZED
+    global CPP_SPM_PATHS
 
     if isempty(CPP_SPM_INITIALIZED)
 
-        thisDirectory = fileparts(mfilename('fullpath'));
-
-        addpath(genpath(fullfile(thisDirectory, 'src')));
-        addpath(genpath(fullfile(thisDirectory, 'lib', 'spmup')));
-        addpath(genpath(fullfile(thisDirectory, 'lib', 'spm_2_bids')));
+        CPP_SPM_PATHS = genpath(fullfile(thisDirectory, 'src'));
+        
+        libList = { ...
+            'spmup', ...
+            'spm_2_bids'};
+        
+        for i = 1:numel(libList)
+            CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ...
+                genpath(fullfile(thisDirectory, 'lib', libList{i})));
+        end
 
         libList = { ...
             'mancoreg', ...
@@ -35,11 +43,16 @@ function initCppSpm()
             'utils'};
 
         for i = 1:numel(libList)
-            addpath(fullfile(thisDirectory, 'lib', libList{i}));
+            CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ':', ...
+                fullfile(thisDirectory, 'lib', libList{i}));
         end
-
-        addpath(fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
-        addpath(fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
+        
+        CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ':', ...
+                fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));           
+        CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ':', ...
+                fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));        
+            
+        addpath(CPP_SPM_PATHS, '-begin');            
 
         checkDependencies(opt);
         printCredits(opt);
@@ -82,7 +95,7 @@ function initCppSpm()
         CPP_SPM_INITIALIZED = true();
 
     else
-        printToScreen('\n\nCPP_SPM already initialized\n\n', opt);
+        fprintf(1, '\n\nCPP_SPM already initialized\n\n');
 
     end
 
