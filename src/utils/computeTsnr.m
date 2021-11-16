@@ -6,6 +6,9 @@ function [tsnrImage, volTsnr] = computeTsnr(boldImage)
   %
   %   [tsnrImage, volTsnr] = computeTsnr(boldImage)
   %
+  % :param boldImage: path to the 4D nifti image
+  % :type boldImage: path
+  %
   % Adapted from fmrwhy:
   % https://github.com/jsheunis/fMRwhy/blob/master/fmrwhy/qc/fmrwhy_qc_calculateStats.m
   %
@@ -40,8 +43,8 @@ function [tsnrImage, volTsnr] = computeTsnr(boldImage)
   pth = spm_fileparts(boldImage);
   tsnrImage = bids.internal.parse_filename(boldImage);
   tsnrImage.entities.desc = 'tsnr';
-  tsnrImage = bids.create_filename(tsnrImage);
-  tsnrImage = fullfile(pth, tsnrImage);
+  tsnrImage = bids.File(tsnrImage);
+  tsnrImage = fullfile(pth, tsnrImage.filename);
 
   hdr = hdr(1);
   hdr.fname = tsnrImage;
