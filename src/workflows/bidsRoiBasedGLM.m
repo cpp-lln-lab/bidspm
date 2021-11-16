@@ -36,7 +36,7 @@ function bidsRoiBasedGLM(opt)
   [BIDS, opt] = setUpWorkflow(opt, 'roi based glm');
 
   if isempty(opt.model.file)
-    opt = createDefaultModel(BIDS, opt);
+    opt = createDefaultStatsModel(BIDS, opt);
   end
 
   for iSub = 1:numel(opt.subjects)

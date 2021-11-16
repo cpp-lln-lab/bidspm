@@ -50,7 +50,7 @@ function matlabbatch = bidsFFX(action, opt)
   [BIDS, opt] = setUpWorkflow(opt, 'subject level GLM');
 
   if isempty(opt.model.file)
-    opt = createDefaultModel(BIDS, opt);
+    opt = createDefaultStatsModel(BIDS, opt);
   end
 
   for iSub = 1:numel(opt.subjects)

@@ -1,10 +1,10 @@
-function [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt)
+function [grpLvlCon, iStep] = getGrpLevelContrast(opt)
   %
   % Returns the autocontrast part of the dataset step of the BIDS model
   %
   % USAGE::
   %
-  %   function [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt)
+  %   function [grpLvlCon, iStep] = getGrpLevelContrast(opt)
   %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
@@ -16,11 +16,8 @@ function [grpLvlCon, iStep] = getGrpLevelContrastToCompute(opt)
 
   model = spm_jsonread(opt.model.file);
 
-  for iStep = 1:length(model.Steps)
-    if strcmp(model.Steps{iStep}.Level, 'dataset')
-      grpLvlCon = model.Steps{iStep}.AutoContrasts;
-      break
-    end
-  end
+  [step, iStep] = returnModelStep(model, 'dataset');
+
+  grpLvlCon = step.AutoContrasts;
 
 end
