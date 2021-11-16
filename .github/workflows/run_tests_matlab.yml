@@ -1,0 +1,73 @@
+name: tests and coverage with matlab
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - dev
+  pull_request:
+    branches: ["*"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Install MATLAB
+        uses: matlab-actions/setup-matlab@v1.0.1
+        with:
+          # MATLAB release to set up R2020a
+          release: R2020a
+
+      - name: Clone cpp_spm
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 2
+
+      - name: Install SPM
+        run: |
+          git clone https://github.com/spm/spm12.git --depth 1
+
+      - name: Install Moxunit and MOcov
+        run: |
+          git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
+          git clone https://github.com/MOcov/MOcov.git --depth 1
+
+      - name: Prepare data
+        run: |
+          inputs_folder='demos/MoAE/inputs/'
+          mkdir $inputs_folder
+          curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $inputs_folder'MoAEpilot.zip'
+          unzip $inputs_folder'MoAEpilot.zip' -d $inputs_folder
+          mv $inputs_folder/MoAEpilot $inputs_folder/raw
+          cd tests
+          make data          
+
+      - name: Run commands
+        uses: matlab-actions/run-command@v1.0.1
+        with:
+          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run matlab_workflow_script;
+
+      - name: Run tests
+        run: |
+          cat test_report.log | grep 0
+          bash <(curl -s https://codecov.io/bash)
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v1
+        with:
+          name: coverage_file
+          path: coverage.xml
+
+      - name: Code coverage
+        uses: codecov/codecov-action@v1
+        with:
+          file: coverage.xml # optional
+          flags: unittests # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true # optional (default = false)
