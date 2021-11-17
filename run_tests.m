@@ -12,6 +12,8 @@ fprintf('\nHome is %s\n', getenv('HOME'));
 
 warning('OFF');
 
+initCppSpm()
+
 spm('defaults', 'fMRI');
 
 folderToCover = fullfile(pwd, 'src');

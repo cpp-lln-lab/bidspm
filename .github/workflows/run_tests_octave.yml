@@ -60,7 +60,6 @@ jobs:
 
     - name: Update octave path
       run: |
-        octave $OCTFLAGS --eval "initCppSpm; savepath();"
         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
 
     - name: Prepare data
