@@ -4,6 +4,8 @@
 
 tic;
 
+initCppSpm()
+
 if isGithubCi
   fprintf(1, '\nThis is github CI\n');
 end
@@ -12,7 +14,6 @@ fprintf('\nHome is %s\n', getenv('HOME'));
 
 warning('OFF');
 
-initCppSpm()
 
 spm('defaults', 'fMRI');
 
