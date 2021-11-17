@@ -5,9 +5,10 @@ name: Check Markdown links
 on:
   push:
     branches:
-      - master
+      - main
+      - dev
   pull_request:
-    branches: '*'
+    branches: ['*']
 
 jobs:
   markdown-link-check:

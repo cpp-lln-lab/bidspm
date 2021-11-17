@@ -23,7 +23,7 @@ function test_bidsFFX_contrasts()
 end
 
 function test_bidsFFX_fmriprep_no_smoothing()
-    
+
   if isGithubCi()
     return
   end
