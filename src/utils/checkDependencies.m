@@ -46,7 +46,6 @@ function checkDependencies(opt)
                   ['Failed to find the Nifti tools: ' ...
                    'Are you sure they in the matlab path?'], ...
                   'You can download them here: %s', nifti_tools_url);
-    error(errorStruct);
     tolerant = false;
     errorHandling(mfilename(), 'missingDependency', msg, tolerant, opt.verbosity);
   else
