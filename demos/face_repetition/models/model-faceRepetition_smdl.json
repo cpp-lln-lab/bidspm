@@ -6,7 +6,7 @@
    },
    "Steps": [
       {
-         "Level": "subject",
+         "Level": "run",
          "Transformations": [
             {
                "Name": "Factor",
@@ -69,6 +69,27 @@
                "type": "t"
             }
          ]
-      }
+      },
+    {
+      "Level": "subject",
+      "Contrasts": [
+            {
+               "Name": "faces_gt_baseline",
+               "ConditionList": [
+                  "trial_type.F1",
+                  "trial_type.F2",
+                  "trial_type.N1",
+                  "trial_type.N2"
+               ],
+               "weights": [
+                  1,
+                  1,
+                  1,
+                  1
+               ],
+               "type": "t"
+            }
+      ]
+    }
    ]
 }

@@ -43,8 +43,8 @@ function checkDependencies(opt)
   a = which('load_untouch_nii');
   if isempty(a)
     msg = sprintf(['Failed to find the Nifti tools: ' ...
-                  'Are you sure they in the matlab path?\n', ...
-                  'You can download them here: %s'], nifti_tools_url);
+                   'Are you sure they in the matlab path?\n', ...
+                   'You can download them here: %s'], nifti_tools_url);
     tolerant = false;
     errorHandling(mfilename(), 'missingDependency', msg, tolerant, opt.verbosity);
   else

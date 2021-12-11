@@ -6,7 +6,7 @@
 clear;
 clc;
 
-download_data = false;
+download_data = true;
 clean = false;
 
 try
@@ -16,7 +16,7 @@ end
 
 opt = moae_get_option();
 
-% download_moae_ds(download_data, clean);
+download_moae_ds(download_data, clean);
 
 % reportBIDS(opt);
 
@@ -44,7 +44,7 @@ bidsResliceTpmToFunc(opt);
 % one may not need it if they are running bidsFFX
 % since it creates a mask.nii by default
 % NEEDS DEBUGGING
-opt.skullstrip.mean = 1;
-mask = bidsWholeBrainFuncMask(opt);
+% opt.skullstrip.mean = 0;
+% mask = bidsWholeBrainFuncMask(opt);
 
 bidsSmoothing(opt);
