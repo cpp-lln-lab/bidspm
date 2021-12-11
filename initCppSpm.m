@@ -41,10 +41,10 @@ function initCppSpm()
                'slice_display', ...
                'panel-2.14', ...
                'utils'};
-           
+
     pathSep = ':';
     if ~isunix
-        pathSep = ';';
+      pathSep = ';';
     end
     for i = 1:numel(libList)
       CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...

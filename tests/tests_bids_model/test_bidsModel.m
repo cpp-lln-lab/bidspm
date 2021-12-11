@@ -9,7 +9,7 @@ function test_suite = test_bidsModel %#ok<*STOUT>
 end
 
 function test_returnModelStep()
-  
+
   content = createEmptyStatsModel();
   content.Steps{4} = createEmptyNode('dataset');
 
@@ -18,11 +18,11 @@ function test_returnModelStep()
 
   [~, iStep] = returnModelStep(content, 'dataset');
   assertEqual(iStep, [3; 4]);
-  
+
   assertExceptionThrown( ...
                         @()returnModelStep(content, 'foo'), ...
                         'returnModelStep:missingModelStep');
-  
+
 end
 
 function test_getHighPassFilter()
