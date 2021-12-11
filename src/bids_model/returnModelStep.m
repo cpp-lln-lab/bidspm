@@ -18,7 +18,8 @@ function [step, iStep] = returnModelStep(model, nodeType)
     step = model.Steps{idx};
     iStep = find(idx);
   else
-    error("could not find a model step of type %s", nodeType)
+    msg = sprintf('could not find a model step of type %s', nodeType);
+    errorHandling(mfilename(), 'missingModelStep', msg, false, true)
   end
 
 end
