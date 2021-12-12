@@ -43,15 +43,39 @@ function boldFileName = getBoldFilenameForFFX(varargin)
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
+  
+    query = struct( ...
+             'sub',  subLabel, ...
+             'ses', sessions{iSes}, ...
+             'run', runs{iRun}, ...
+             'suffix', 'bold', ...
+             'prefix', '', ...
+             'extension', {{'.nii', '.nii.gz'}});
 
-  [boldFilename, subFuncDataDir] = getBoldFilename( ...
-                                                   BIDS, ...
-                                                   subLabel, sessions{iSes}, runs{iRun}, opt);
+    % use the extra query options specified in the options
+    query = setFields(query, opt.query);
+    query = removeEmptyQueryFields(query);
 
-  if size(boldFilename, 1) > 1
+    boldFileName = bids.query(BIDS, 'data', query);
+  
+
+  if numel(boldFileName) > 1
     errorHandling(mfilename(), 'tooManyFiles', 'This should only get one file.', false, true);
+  elseif isempty(boldFileName)
+    msg = sprintf('No bold file found in:\n\t%s\nfor query:%s\n', ...
+          BIDS.pth, ...
+          createUnorderedList(opt.query));
+    errorHandling(mfilename(), 'emptyInput', msg, false, true);  
   end
+  
+  % in case files have been unzipped, we do it now
+  fullPathBoldFileName = unzipImgAndReturnsFullpathName(boldFileName{1}, opt);
+  
+  printToScreen(createUnorderedList(fullPathBoldFileName), opt);
 
-  boldFileName = fullfile(subFuncDataDir, boldFilename);
+  boldFileName = spm_file(fullPathBoldFileName, 'filename');
+  subFuncDataDir = spm_file(fullPathBoldFileName, 'path');
+
+  boldFileName = fullfile(subFuncDataDir, boldFileName);
 
 end
