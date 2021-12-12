@@ -16,7 +16,7 @@ function saveOptions(opt)
 
   taskString = '';
   if isfield(opt, 'taskName')
-    taskString = ['_task-', strjoin(opt.taskName, '-')];
+    taskString = ['_task-', strjoin(opt.taskName, '')];
   end
 
   filename = fullfile(optionDir, ['options', ...

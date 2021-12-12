@@ -130,8 +130,8 @@ function opt = checkOptions(opt)
     opt.query.modality{1} = tmp;
   end
 
-  if ~iscell(opt.taskName)
-    opt.space = {opt.taskName};
+  if isfield(opt, 'taskName') && ~iscell(opt.taskName)
+    opt.taskName = {opt.taskName};
   end
 
   if ~iscell(opt.space)

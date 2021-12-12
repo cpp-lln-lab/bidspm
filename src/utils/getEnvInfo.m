@@ -40,9 +40,14 @@ function [OS, generatedBy] = getEnvInfo(opt)
   %     end
   %     [~, OS.environmentVariables] = system(cmd);
 
-  [keys, vals] = getenvall('system');
-  OS.environmentVariables.keys = keys;
-  OS.environmentVariables.values = vals;
+  try
+    [keys, vals] = getenvall('system');
+    OS.environmentVariables.keys = keys;
+    OS.environmentVariables.values = vals;
+  catch
+      errorHandling
+      errorHandling(mfilename(), 'envUnknown', 'Could not get env info.', true, opt.verbosity)
+  end
 
 end
 

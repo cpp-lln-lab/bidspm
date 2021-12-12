@@ -12,11 +12,7 @@ function [IS_GITHUB, pth] = isGithubCi()
 
     IS_GITHUB = true;
     pth = GITHUB_WORKSPACE;
-
-  else
-
-    fprintf(1, '\n WE ARE NOT RUNNING IN GITHUB CI\n');
-
+    
   end
 
 end

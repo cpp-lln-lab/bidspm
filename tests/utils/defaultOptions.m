@@ -45,7 +45,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.realign.useUnwarp = true;
   expectedOptions.useFieldmaps = true;
 
-  expectedOptions.taskName = '';
+  expectedOptions.taskName = {''};
 
   expectedOptions.zeropad = 2;
 
@@ -73,6 +73,9 @@ function expectedOptions = defaultOptions(taskName)
 
   if nargin > 0
     expectedOptions.taskName = taskName;
+  end
+  if ~iscell(expectedOptions.taskName)
+    expectedOptions.taskName = {expectedOptions.taskName};
   end
 
   %  Options for toolboxes

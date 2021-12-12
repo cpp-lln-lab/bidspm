@@ -68,7 +68,7 @@ function [BIDS, opt] = getData(opt, bidsDir, suffix)
     errorStruct.identifier = 'getData:noMatchingTask';
     errorStruct.message = sprintf( ...
                                   ['The task %s that you have asked for ', ...
-                                   'does not exist in this data set.'], opt.taskName);
+                                   'does not exist in this data set.'], strjoin(opt.taskName));
     error(errorStruct);
   end
 
