@@ -10,7 +10,7 @@ end
 
 function test_setBatchSubjectLevelGLMSpec_missing_raw_data()
 
-  subLabel = '01';
+  subLabel = '^01';
   opt = setTestCfg();
   BIDS.pth = pwd;
   matlabbatch = {};
@@ -22,7 +22,7 @@ end
 
 function test_setBatchSubjectLevelGLMSpec_fmriprep()
 
-  subLabel = '01';
+  subLabel = '^01';
 
   opt = setOptions('fmriprep-synthetic');
 
@@ -49,7 +49,7 @@ end
 function test_setBatchSubjectLevelGLMSpec_basic()
 
   %% GIVEN
-  subLabel = '01';
+  subLabel = '^01';
 
   opt = setOptions('vislocalizer', subLabel);
 
@@ -65,13 +65,13 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
   %% THEN
-  expectedContent = {'timing'
+  expectedContent = {'volt'
+                     'global'
+                     'mask'
+                     'timing'
                      'dir'
                      'fact'
                      'bases'
-                     'volt'
-                     'global'
-                     'mask'
                      'sess'};
 
   assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_spec), expectedContent);

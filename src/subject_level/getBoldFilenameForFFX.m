@@ -60,7 +60,7 @@ function boldFilename = getBoldFilenameForFFX(varargin)
   boldFilename = bids.query(BIDS, 'data', query);
 
   if numel(boldFilename) > 1
-    disp(filename);
+    disp(boldFilename);
     errorHandling(mfilename(), 'tooManyFiles', 'This should only get one file.', false, true);
   elseif isempty(boldFilename)
     msg = sprintf('No bold file found in:\n\t%s\nfor query:%s\n', ...
