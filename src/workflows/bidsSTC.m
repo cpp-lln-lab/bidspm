@@ -40,7 +40,7 @@ function bidsSTC(opt)
     printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = {};
-    matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
+    matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, regexify(subLabel));
 
     saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
 

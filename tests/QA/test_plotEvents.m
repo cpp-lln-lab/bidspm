@@ -17,10 +17,14 @@ function test_plotEvents_synth()
   eventsFile = bids.query(BIDS, 'data', 'task', 'nback', 'suffix', 'events');
 
   plotEvents(eventsFile{1});
+  
+  close all;
 
 end
 
 function test_plotEvents_vislocalizer()
+    
+    close all;
 
   opt = setOptions('vislocalizer', '01');
 
@@ -30,10 +34,14 @@ function test_plotEvents_vislocalizer()
                           'suffix', 'events');
 
   plotEvents(eventsFile{1});
+  
+    close all;
 
 end
 
 function test_plotEvents_vismotion()
+    
+      close all;
 
   opt = setOptions('vismotion', '01');
 
@@ -43,10 +51,14 @@ function test_plotEvents_vismotion()
                           'suffix', 'events');
 
   plotEvents(eventsFile{1});
+  
+    close all;
 
 end
 
 function test_plotEvents_ds001()
+    
+      close all;
 
   dataDir = getBidsExample('ds001');
 
@@ -56,5 +68,6 @@ function test_plotEvents_ds001()
                           'suffix', 'events');
 
   plotEvents(eventsFile{1});
-
+  
+    close all;
 end

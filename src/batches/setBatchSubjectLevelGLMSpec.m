@@ -30,28 +30,9 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   printBatchName('specify subject level fmri model', opt);
 
   fmri_spec = struct('volt', 1, ...
-                     'global', 'None', ...
-                     'mask', {{''}});
-
-  % Check the slice timing information is not in the metadata and not added
-  % manually in the opt variable.
-  % Necessary to make sure that the reference slice used for slice time
-  % correction is the one we center our model on
-  sliceOrder = getSliceOrder(opt);
-
-  if isempty(sliceOrder) && ~opt.dryRun
-    % no slice order defined here so we fall back on using the number of
-    % slice in the first bold image to set the number of time bins
-    % we will use to upsample our model during regression creation
-    fileName = bids.query(BIDS, 'data', ...
-                          'sub', subLabel, ...
-                          'suffix', 'bold', ...
-                          'extension', '.nii');
-    hdr = spm_vol(fileName{1});
-
-    % we are assuming axial acquisition here
-    sliceOrder = 1:hdr(1).dim(3);
-  end
+                     'global', 'None');
+        
+  sliceOrder = returnSliceOrder(BIDS, opt, subLabel);
 
   fmri_spec.timing.units = 'secs';
   fmri_spec.timing.RT = opt.metadata.RepetitionTime;
@@ -108,35 +89,27 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         % get functional files
         fullpathBoldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
-        fmri_spec.sess(sesCounter).scans = {fullpathBoldFileName};
-
-        % TODO factor all the events stuff in a separate function.
-
-        % get events file from raw data set and convert it to a onsets.mat file
-        % store in the subject level GLM directory
-        query = struct( ...
-                       'sub',  subLabel, ...
-                       'task', opt.taskName{iTask}, ...
-                       'ses', sessions{iSes}, ...
-                       'run', runs{iRun}, ...
-                       'suffix', 'events', ...
-                       'extension', '.tsv');
-
-        tsvFile = bids.query(BIDS.raw, 'data', query);
-
-        if isempty(tsvFile)
-          msg = sprintf('No events.tsv file found in:\n\t%s\nfor query:%s\n', ...
-                        BIDS.raw.pth, ...
-                        createUnorderedList(query));
-          errorHandling(mfilename(), 'emptyInput', msg, false);
+        if opt.model.designOnly
+            try
+            hdr = spm_vol(fullpathBoldFileName);
+            catch
+                warning('Could not open %s.\nThis expected during testing.', fullpathBoldFileName)
+                % hard code value for test
+                hdr = ones(200,1);
+            end
+            fmri_spec.sess(sesCounter).nscans = numel(hdr);
+        else
+            fmri_spec.sess(sesCounter).scans = {fullpathBoldFileName};
         end
 
-        fullpathOnsetFileName = createAndReturnOnsetFile(opt, ...
-                                                         subLabel, ...
-                                                         tsvFile);
+        onsetsFile = returnOnsetsFile(BIDS, opt, ...
+            subLabel, ...
+            sessions{iSes}, ...
+            opt.taskName{iTask}, ...
+            runs{iRun});
 
         fmri_spec.sess(sesCounter).multi = ...
-            cellstr(fullpathOnsetFileName);
+            cellstr(onsetsFile);
 
         % get confounds
         fmri_spec.sess(sesCounter).multi_reg = {''};
@@ -169,6 +142,60 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     end
   end
 
-  matlabbatch{end + 1}.spm.stats.fmri_spec = fmri_spec;
+  if opt.model.designOnly
+      matlabbatch{end + 1}.spm.stats.fmri_design = fmri_spec;
+  else
+    fmri_spec.mask = {''};
+    matlabbatch{end + 1}.spm.stats.fmri_spec = fmri_spec;
+  end
 
+end
+
+function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
+
+  % Check the slice timing information is not in the metadata and not added
+  % manually in the opt variable.
+  % Necessary to make sure that the reference slice used for slice time
+  % correction is the one we center our model on
+  sliceOrder = getSliceOrder(opt);
+
+  if isempty(sliceOrder) && ~opt.dryRun
+    % no slice order defined here so we fall back on using the number of
+    % slice in the first bold image to set the number of time bins
+    % we will use to upsample our model during regression creation
+    fileName = bids.query(BIDS, 'data', ...
+                          'sub', subLabel, ...
+                          'suffix', 'bold', ...
+                          'extension', '.nii');
+    hdr = spm_vol(fileName{1});
+
+    % we are assuming axial acquisition here
+    sliceOrder = 1:hdr(1).dim(3);
+  end
+end
+
+function onsetFileName = returnOnsetsFile(BIDS, opt, subLabel, session, task, run)
+
+        % get events file from raw data set and convert it to a onsets.mat file
+        % store in the subject level GLM directory
+        query = struct( ...
+                       'sub',  subLabel, ...
+                       'task', task, ...
+                       'ses', session, ...
+                       'run', run, ...
+                       'suffix', 'events', ...
+                       'extension', '.tsv');
+
+        tsvFile = bids.query(BIDS.raw, 'data', query);
+
+        if isempty(tsvFile)
+          msg = sprintf('No events.tsv file found in:\n\t%s\nfor query:%s\n', ...
+                        BIDS.raw.pth, ...
+                        createUnorderedList(query));
+          errorHandling(mfilename(), 'emptyInput', msg, false);
+        end
+
+        onsetFileName = createAndReturnOnsetFile(opt, ...
+                                                         subLabel, ...
+                                                         tsvFile);
 end

@@ -32,7 +32,7 @@ function matlabbatch = bidsRsHrf(opt)
 
     matlabbatch = {};
 
-    matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, subLabel);
+    matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, regexify(subLabel));
 
     batchName = 'estimate_hrf';
 

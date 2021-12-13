@@ -65,16 +65,56 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
   %% THEN
-  expectedContent = {'volt'
-                     'global'
-                     'mask'
-                     'timing'
-                     'dir'
-                     'fact'
-                     'bases'
-                     'sess'};
+  expectedContent = {    'volt'
+    'global'
+    'timing'
+    'dir'
+    'fact'
+    'bases'
+    'sess'
+    'mask'};
 
   assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_spec), expectedContent);
+  assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 2);
+
+  cleanUp(fullfile(pwd, 'derivatives'));
+
+end
+
+function test_setBatchSubjectLevelGLMSpec_design_only()
+    
+  return
+  % silence as this requires real data to estimate number of scans to model
+
+  %% GIVEN
+  subLabel = '^01';
+
+  opt = setOptions('vislocalizer', subLabel);
+
+  opt.pipeline.type = 'stats';
+  opt.space = {'MNI'};
+  opt.model.designOnly = true;
+
+  opt = dirFixture(opt);
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  %% WHEN
+  matlabbatch = {};
+  matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
+
+  %% THEN
+  expectedContent = {
+     'volt'
+    'global'
+    'timing'
+    'dir'
+    'fact'
+    'bases'
+    'sess'
+    'mask'};
+
+  assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_design), expectedContent);
   assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 2);
 
   cleanUp(fullfile(pwd, 'derivatives'));
