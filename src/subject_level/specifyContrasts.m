@@ -33,10 +33,11 @@ function contrasts = specifyContrasts(SPM, taskName, model)
   counter = 0;
 
   % for the task of interest
-  if ~strcmp(model.Input.task, taskName)
-    warning('task ''%s'' not listed as input in the model', taskName);
-    return
-  end
+  % The task of interest should probably be captured in the model.json
+    %   if ~strcmp(model.Input.task, taskName)
+    %     warning('task ''%s'' not listed as input in the model', taskName);
+    %     return
+    %   end
 
   % check all the steps specified in the model
   for iStep = 1:length(model.Steps)
