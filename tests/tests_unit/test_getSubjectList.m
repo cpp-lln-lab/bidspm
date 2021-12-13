@@ -16,9 +16,9 @@ function test_getSubject_regex()
   BIDS = bids.layout(opt.dir.preproc);
 
   group_subject_expected = {
-                            {''}, {'.*01'}, {'01', 'blind01', 'ctrl01'} 
-                            {''}, {'01'}, {'01', 'blind01', 'ctrl01'} 
-                            {''}, {'^01'}, {'01'} 
+                            {''}, {'.*01'}, {'01', 'blind01', 'ctrl01'}
+                            {''}, {'01'}, {'01', 'blind01', 'ctrl01'}
+                            {''}, {'^01'}, {'01'}
                            };
 
   for i = 1:size(group_subject_expected, 1)

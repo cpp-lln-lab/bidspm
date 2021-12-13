@@ -49,8 +49,6 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.zeropad = 2;
 
-  expectedOptions.contrastList = {};
-
   expectedOptions.QA.glm.do = true;
   expectedOptions.QA.func.carpetPlot = true;
   expectedOptions.QA.func.Motion = 'on';
@@ -64,6 +62,8 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.model.file = '';
   expectedOptions.model.hrfDerivatives = [0 0];
+  expectedOptions.model.designOnly = false;
+  expectedOptions.contrastList = {};
 
   expectedOptions.result.Steps = returnDefaultResultsStructure();
 

@@ -31,18 +31,18 @@ function test_createAndReturnOnsetFile_basic()
                  'extension', '.tsv');
   tsvFile = bids.query(BIDS, 'data', query);
 
-  onsetFileName = createAndReturnOnsetFile(opt, subLabel, tsvFile);
+  onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile);
 
-  expectedFileName = fullfile(getDummyDataDir('stats'), 'sub-01', 'stats', ...
+  expectedFilename = fullfile(getDummyDataDir('stats'), 'sub-01', 'stats', ...
                               'task-vislocalizer_space-MNI_FWHM-6', ...
                               'sub-01_ses-01_task-vislocalizer_onsets.mat');
 
-  assertEqual(exist(onsetFileName, 'file'), 2);
-  assertEqual(exist(expectedFileName, 'file'), 2);
+  assertEqual(exist(onsetFilename, 'file'), 2);
+  assertEqual(exist(expectedFilename, 'file'), 2);
 
   expected_content = load(fullfile(getDummyDataDir(), 'mat_files', 'onsets.mat'));
 
-  actual_content = load(onsetFileName);
+  actual_content = load(onsetFilename);
 
   assertEqual(actual_content, expected_content);
 

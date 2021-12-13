@@ -10,7 +10,7 @@ end
 
 function test_getBoldFilenameForFFX_mni()
 
-  subLabel = '01';
+  subLabel = '^01';
   iSes = 1;
   iRun = 1;
 
@@ -19,18 +19,18 @@ function test_getBoldFilenameForFFX_mni()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  boldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
+  boldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
-  expectedFileName = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func', ...
+  expectedFilename = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func', ...
                               ['sub-01_ses-01_task-vislocalizer', ...
                                '_space-IXI549Space_desc-smth6_bold.nii']);
 
-  assertEqual(boldFileName, expectedFileName);
+  assertEqual(boldFilename, expectedFilename);
 end
 
 function test_getBoldFilenameForFFX_individual()
 
-  subLabel = '01';
+  subLabel = '^01';
   iSes = 1;
   iRun = 1;
 
@@ -39,19 +39,19 @@ function test_getBoldFilenameForFFX_individual()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  boldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
+  boldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
-  expectedFileName = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func', ...
+  expectedFilename = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func', ...
                               ['sub-01_ses-01_task-vislocalizer', ...
                                '_space-individual_desc-smth6_bold.nii']);
 
-  assertEqual(boldFileName, expectedFileName);
+  assertEqual(boldFilename, expectedFilename);
 
 end
 
 function test_getBoldFilenameForFFX_no_smoothing()
 
-  subLabel = '01';
+  subLabel = '^01';
   iSes = 1;
   iRun = 1;
 
@@ -61,12 +61,12 @@ function test_getBoldFilenameForFFX_no_smoothing()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  boldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
+  boldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
-  expectedFileName = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func', ...
+  expectedFilename = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func', ...
                               ['sub-01_ses-01_task-vislocalizer', ...
                                '_space-individual_desc-preproc_bold.nii']);
 
-  assertEqual(boldFileName, expectedFileName);
+  assertEqual(boldFilename, expectedFilename);
 
 end

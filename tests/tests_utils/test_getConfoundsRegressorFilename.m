@@ -10,7 +10,7 @@ end
 
 function test_getConfoundRegressorFile_basic()
 
-  subLabel = '01';
+  subLabel = '^01';
   session = '01';
   run = '';
 
@@ -20,11 +20,11 @@ function test_getConfoundRegressorFile_basic()
 
   realignParamFile = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, run);
 
-  assertEqual(realignParamFile, getExpectedFileName());
+  assertEqual(realignParamFile, getExpectedFilename());
 
 end
 
-function  expectedFileName = getExpectedFileName()
-  expectedFileName = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func', ...
+function  expectedFilename = getExpectedFilename()
+  expectedFilename = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func', ...
                               'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.tsv');
 end

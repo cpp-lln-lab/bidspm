@@ -33,12 +33,12 @@ function test_createAndReturnCounfoundMatFile_basic()
 
   counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFile);
 
-  expectedFileName = fullfile(getDummyDataDir('stats'), 'sub-01', 'stats', ...
+  expectedFilename = fullfile(getDummyDataDir('stats'), 'sub-01', 'stats', ...
                               'task-vislocalizer_space-MNI_FWHM-6', ...
                               'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.mat');
 
   assertEqual(exist(counfoundMatFile, 'file'), 2);
-  assertEqual(exist(expectedFileName, 'file'), 2);
+  assertEqual(exist(expectedFilename, 'file'), 2);
 
   expected_content = fullfile(getDummyDataDir(), 'mat_files', 'regressors.mat');
 

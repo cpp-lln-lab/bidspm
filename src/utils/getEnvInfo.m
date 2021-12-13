@@ -45,8 +45,8 @@ function [OS, generatedBy] = getEnvInfo(opt)
     OS.environmentVariables.keys = keys;
     OS.environmentVariables.values = vals;
   catch
-      errorHandling
-      errorHandling(mfilename(), 'envUnknown', 'Could not get env info.', true, opt.verbosity)
+    errorHandling;
+    errorHandling(mfilename(), 'envUnknown', 'Could not get env info.', true, opt.verbosity);
   end
 
 end
