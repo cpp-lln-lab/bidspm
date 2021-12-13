@@ -68,6 +68,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % The following lines are commented out because those parameters
   % can be set in the spm_my_defaults.m
   %  fmri_spec.cvi = 'AR(1)';
+  
+  subLabel = regexify(subLabel);
 
   % identify sessions for this subject
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
@@ -94,10 +96,11 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
             hdr = spm_vol(fullpathBoldFilename);
             catch
                 warning('Could not open %s.\nThis expected during testing.', fullpathBoldFilename)
-                % hard code value for test
+                % TODO a value should be passed by user for this
+                % hard coded value for test
                 hdr = ones(200,1);
             end
-            fmri_spec.sess(sesCounter).nscans = numel(hdr);
+            fmri_spec.sess(sesCounter).nscan = numel(hdr);
         else
             fmri_spec.sess(sesCounter).scans = {fullpathBoldFilename};
         end

@@ -23,7 +23,7 @@ function ffxDir = getFFXdir(subLabel, opt)
   end
 
   ffxDir = fullfile(opt.dir.stats, ...
-                    ['sub-', subLabel], ...
+                    ['sub-', deregexify(subLabel)], ...
                     'stats', ...
                     glmDirName);
 
@@ -33,4 +33,9 @@ function ffxDir = getFFXdir(subLabel, opt)
 
   spm_mkdir(ffxDir);
 
+end
+
+function string = deregexify(string)
+    % remove any non alphanumeric characters
+    string = regexprep(string, '[^a-zA-Z0-9]+', '');
 end

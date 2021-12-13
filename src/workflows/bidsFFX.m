@@ -1,10 +1,15 @@
 function matlabbatch = bidsFFX(action, opt)
     %
-    % - builds the subject level fMRI model and estimates it.
+    % - specify the subject level fMRI model 
+    % - estimates it
+    % - do both in one go
+    % - or compute the contrasts at the subject level.
     %
-    % OR
+    % For the model specification, if ``opt.model.designOnly`` is set to
+    % ``true``, then it is possible to specify a model with no data.
     %
-    % - compute the contrasts at the subject level.
+    % For the model estimation, it is possible to do some rough QA, by setting
+    % ``opt.QA.glm.do = true``.
     %
     % USAGE::
     %
@@ -20,11 +25,6 @@ function matlabbatch = bidsFFX(action, opt)
     % - ``contrasts`` to estimate contrasts.
     %
     % (C) Copyright 2020 CPP_SPM developers
-
-    % TODO: add a way to design model only with no data (see specific spm module
-    % model only
-
-    % TODO split model specification from model estimation
 
     if numel(opt.space) > 1
         disp(opt.space);
@@ -119,7 +119,7 @@ function filename = figureName(subLabel, opt, desc)
         'ext', '.png', ...
         'entities', struct( ...
         'sub', subLabel, ...
-        'task', opt.taskName, ...
+        'task', strjoin(opt.taskName, ''), ...
         'space', opt.space));
     p.entities.desc = desc;
     bidsFile = bids.File(p);
@@ -129,7 +129,7 @@ end
 function matlabbatch = setAction(action, matlabbatch, BIDS, opt, subLabel)
     switch action
         case 'specify'
-            matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, regexify(subLabel));
+            matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
             matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
             fullfile(getFFXdir(subLabel, opt), ...
                 figureName(subLabel, opt, 'before estimation')));
