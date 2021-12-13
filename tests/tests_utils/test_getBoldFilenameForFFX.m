@@ -18,6 +18,8 @@ function test_getBoldFilenameForFFX_mni()
   opt.space = {'MNI'};
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
+  
+  opt.query.task = 'vislocalizer';
 
   boldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
@@ -38,6 +40,8 @@ function test_getBoldFilenameForFFX_individual()
   opt.space = {'individual'};
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
+  
+   opt.query.task = 'vislocalizer';
 
   boldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
@@ -60,6 +64,8 @@ function test_getBoldFilenameForFFX_no_smoothing()
   opt.fwhm.func = 0;
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
+  
+   opt.query.task = 'vislocalizer';
 
   boldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
