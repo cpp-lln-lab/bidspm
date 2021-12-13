@@ -18,11 +18,11 @@ function mask = bidsWholeBrainFuncMask(opt)
 
     % call/create the mask name
     [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
-    meanFuncFileName = fullfile(meanFuncDir, meanImage);
+    meanFuncFilename = fullfile(meanFuncDir, meanImage);
 
     % name the output according to the input image
-    maskFileName = ['m' strrep(meanImage, '.nii', '_mask.nii')];
-    mask{iSub} = fullfile(meanFuncDir, maskFileName);
+    maskFilename = ['m' strrep(meanImage, '.nii', '_mask.nii')];
+    mask{iSub} = fullfile(meanFuncDir, maskFilename);
 
     % ask if mask exist, if not create it:
     if ~exist(mask{iSub}, 'file')
@@ -33,7 +33,7 @@ function mask = bidsWholeBrainFuncMask(opt)
 
       % make matlab batch for segment and skullstip
       matlabbatch = {};
-      matlabbatch = setBatchSegmentation(matlabbatch, opt, meanFuncFileName);
+      matlabbatch = setBatchSegmentation(matlabbatch, opt, meanFuncFilename);
 
       matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
       % run spm

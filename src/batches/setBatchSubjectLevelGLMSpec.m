@@ -87,19 +87,19 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
       for iRun = 1:nbRuns
 
         % get functional files
-        fullpathBoldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
+        fullpathBoldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
         if opt.model.designOnly
             try
-            hdr = spm_vol(fullpathBoldFileName);
+            hdr = spm_vol(fullpathBoldFilename);
             catch
-                warning('Could not open %s.\nThis expected during testing.', fullpathBoldFileName)
+                warning('Could not open %s.\nThis expected during testing.', fullpathBoldFilename)
                 % hard code value for test
                 hdr = ones(200,1);
             end
             fmri_spec.sess(sesCounter).nscans = numel(hdr);
         else
-            fmri_spec.sess(sesCounter).scans = {fullpathBoldFileName};
+            fmri_spec.sess(sesCounter).scans = {fullpathBoldFilename};
         end
 
         onsetsFile = returnOnsetsFile(BIDS, opt, ...
@@ -174,7 +174,7 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
   end
 end
 
-function onsetFileName = returnOnsetsFile(BIDS, opt, subLabel, session, task, run)
+function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, run)
 
         % get events file from raw data set and convert it to a onsets.mat file
         % store in the subject level GLM directory
@@ -195,7 +195,7 @@ function onsetFileName = returnOnsetsFile(BIDS, opt, subLabel, session, task, ru
           errorHandling(mfilename(), 'emptyInput', msg, false);
         end
 
-        onsetFileName = createAndReturnOnsetFile(opt, ...
+        onsetFilename = createAndReturnOnsetFile(opt, ...
                                                          subLabel, ...
                                                          tsvFile);
 end
