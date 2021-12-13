@@ -45,7 +45,7 @@ jobs:
           unzip $inputs_folder'MoAEpilot.zip' -d $inputs_folder
           mv $inputs_folder/MoAEpilot $inputs_folder/raw
           cd tests
-          make data          
+          make data
 
       - name: Run commands
         uses: matlab-actions/run-command@v1.0.1

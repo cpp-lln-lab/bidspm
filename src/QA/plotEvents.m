@@ -1,5 +1,6 @@
 function plotEvents(eventsFile, modelFile)
-  % (C) Copyright 2020 Remi Gau
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 2
     modelFile = '';

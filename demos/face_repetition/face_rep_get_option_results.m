@@ -23,7 +23,7 @@ function opt =  face_rep_get_option_results()
                             'models', ...
                             'model-faceRepetition_smdl.json');
 
-  opt.glm.QA.do = false;
+  opt.QA.glm.do = false;
 
   % Specify the result to compute
   opt.result.Steps(1) = returnDefaultResultsStructure();

@@ -38,6 +38,9 @@ function opt = checkOptions(opt)
   %
   %     - ``opt.model.file = ''`` - path to the BIDS model file that contains the
   %       model to speficy and the contrasts to compute.
+  %     - ``'opt.model.designOnly'`` = if set to ``true``, the GLM will be set
+  %       up without associating any data to it. Can be useful for quick design matrix
+  %       inspection before running estimation.
   %
   %     - ``opt.fwhm.func = 6`` - FWHM to apply to the preprocessed functional images.
   %     - ``opt.fwhm.contrast = 6`` - FWHM to apply to the contrast images before bringing
@@ -130,6 +133,10 @@ function opt = checkOptions(opt)
     opt.query.modality{1} = tmp;
   end
 
+  if isfield(opt, 'taskName') && ~iscell(opt.taskName)
+    opt.taskName = {opt.taskName};
+  end
+
   if ~iscell(opt.space)
     opt.space = {opt.space};
   end
@@ -195,6 +202,7 @@ function fieldsToSet = setDefaultOption()
 
   %% Options for model specification and results
   fieldsToSet.model.file = '';
+  fieldsToSet.model.designOnly = false;
   fieldsToSet.model.hrfDerivatives = [0 0];
   fieldsToSet.contrastList = {};
 

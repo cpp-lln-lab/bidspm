@@ -57,14 +57,16 @@ function opt = createDefaultStatsModel(BIDS, opt)
 
   content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList);
 
-  content.Name = opt.taskName;
-  content.Description = ['default model for ' opt.taskName];
+  content.Name = strjoin(opt.taskName, ' ');
+  content.Description = ['default model for ' strjoin(opt.taskName, '')];
   content.Input.task = opt.taskName;
 
   % save the json file
   [~, ~, ~] = mkdir(fullfile(pwd, 'models'));
   filename = fullfile(pwd, 'models', ...
-                      ['model-default' upper(opt.taskName(1)) opt.taskName(2:end) '_smdl.json']);
+                      ['model-', ...
+                       bids.internal.camel_case(['default ' strjoin(opt.taskName)]), ...
+                       '_smdl.json']);
 
   bids.util.jsonwrite(filename, content);
 

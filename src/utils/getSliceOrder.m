@@ -32,7 +32,7 @@ function sliceOrder = getSliceOrder(opt)
   if ~isfield(opt.metadata, 'SliceTiming') || isempty(opt.metadata.SliceTiming)
 
     msg{end + 1} = ' SLICE TIMING INFORMATION COULD NOT BE EXTRACTED FROM METADATA.\n';
-    msg{end + 1} = ' CHECKING IF SPECIFIED IN opt IN THE "opt" STRUCTURE.\n\n';
+    msg{end + 1} = ' CHECKING IF SPECIFIED IN THE OPTIONS.\n\n';
 
     % If slice timing information is not in the metadata, you have the option
     % to add the slice order manually in the "opt" in the "getOptions"
@@ -45,7 +45,7 @@ function sliceOrder = getSliceOrder(opt)
     else
 
       msg{end + 1} = ' SLICE TIMING INFORMATION COULD NOT BE EXTRACTED.\n';
-      wng{end + 1} = 'SKIPPING SLICE TIME CORRECTION: no slice timing specified.\n\n';
+      wng{end + 1} = 'no slice timing found.\n\n';
 
       sliceOrder = [];
     end

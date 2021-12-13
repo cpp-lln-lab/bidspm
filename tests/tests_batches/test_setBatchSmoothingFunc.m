@@ -13,7 +13,7 @@ function test_setBatchSmoothingFunc_basic()
   % TODO
   % need a test with several sessions and runs
 
-  subLabel = '01';
+  subLabel = '^01';
 
   opt = setOptions('vislocalizer', subLabel);
 

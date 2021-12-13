@@ -6,7 +6,7 @@ addpath(fullfile(root_dir, 'MOcov', 'MOcov'));
 addpath(fullfile(root_dir, 'tests', 'utils'));
 
 cd(fullfile(root_dir, 'MOxUnit', 'MOxUnit'));
-run moxunit_set_path(); 
+run moxunit_set_path();
 
 cd(fullfile(root_dir));
 initCppSpm()

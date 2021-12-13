@@ -1,4 +1,4 @@
-function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
+function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
   %
   % Get the filename and the directory of a bold file for a given session /
   % run.
@@ -7,7 +7,7 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   %
   % USAGE::
   %
-  %   [boldFileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, sessionID, runID, opt)
+  %   [boldFilename, subFuncDataDir] = getBoldFilename(BIDS, subLabel, sessionID, runID, opt)
   %
   % :param BIDS:        returned by bids.layout when exploring a BIDS data set.
   % :type BIDS:         structure
@@ -22,7 +22,7 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   % :type opt:          structure
   %
   %
-  % :returns: - :boldFileName: (string)
+  % :returns: - :boldFilename: (string)
   %           - :subFuncDataDir: (string)
   %
   %
@@ -31,13 +31,13 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   [BIDS, subLabel, sessionID, runID, opt] = deal(varargin{:});
 
   % get the filename for this bold run for this task
-  boldFileName = getInfo(BIDS, subLabel, opt, 'Filename', sessionID, runID, 'bold');
+  boldFilename = getInfo(BIDS, subLabel, opt, 'Filename', sessionID, runID, 'bold');
 
   % TODO
   % throw an error that says what query actually failed to return a file
   % this might need some refacoring to be able to access the query from here even though
   % some part of it is in getInfo
-  if isempty(boldFileName)
+  if isempty(boldFilename)
     msg = sprintf('No bold file found in:\n\t%s\nfor query:%s\n', ...
                   BIDS.pth, ...
                   createUnorderedList(opt.query));
@@ -46,11 +46,11 @@ function [boldFileName, subFuncDataDir] = getBoldFilename(varargin)
   end
 
   % in case files have been unzipped, we do it now
-  fullPathBoldFileName = unzipImgAndReturnsFullpathName(boldFileName, opt);
+  fullPathBoldFilename = unzipImgAndReturnsFullpathName(boldFilename, opt);
 
-  printToScreen(createUnorderedList(fullPathBoldFileName), opt);
+  printToScreen(createUnorderedList(fullPathBoldFilename), opt);
 
-  boldFileName = spm_file(fullPathBoldFileName, 'filename');
-  subFuncDataDir = spm_file(fullPathBoldFileName, 'path');
+  boldFilename = spm_file(fullPathBoldFilename, 'filename');
+  subFuncDataDir = spm_file(fullPathBoldFilename, 'path');
 
 end

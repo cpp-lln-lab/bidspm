@@ -14,7 +14,7 @@ end
 
 function test_setBatchRealign_basic()
 
-  subLabel = '01';
+  subLabel = '^01';
 
   opt = setOptions('MoAE-preproc', subLabel);
 
@@ -53,7 +53,7 @@ end
 
 function test_setBatchRealign_after_stc()
 
-  subLabel = '01';
+  subLabel = '^01';
 
   opt = setOptions('vismotion', subLabel);
 

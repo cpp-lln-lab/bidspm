@@ -10,7 +10,7 @@ end
 
 function test_getMeanFuncFilename_basic()
 
-  subLabel = '01';
+  subLabel = '^01';
 
   opt = setOptions('vislocalizer', subLabel);
 

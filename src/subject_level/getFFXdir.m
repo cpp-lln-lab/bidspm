@@ -18,12 +18,12 @@ function ffxDir = getFFXdir(subLabel, opt)
   glmDirName = createGlmDirName(opt);
 
   model = spm_jsonread(opt.model.file);
-  if ~isempty(model.Name) && ~strcmpi(model.Name, opt.taskName)
+  if ~isempty(model.Name) && ~strcmpi(model.Name, strjoin(opt.taskName, ' '))
     glmDirName = [glmDirName, '_desc-', bids.internal.camel_case(model.Name)];
   end
 
   ffxDir = fullfile(opt.dir.stats, ...
-                    ['sub-', subLabel], ...
+                    ['sub-', deregexify(subLabel)], ...
                     'stats', ...
                     glmDirName);
 
@@ -33,4 +33,9 @@ function ffxDir = getFFXdir(subLabel, opt)
 
   spm_mkdir(ffxDir);
 
+end
+
+function string = deregexify(string)
+    % remove any non alphanumeric characters
+    string = regexprep(string, '[^a-zA-Z0-9]+', '');
 end

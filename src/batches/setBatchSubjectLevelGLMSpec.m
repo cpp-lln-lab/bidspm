@@ -29,6 +29,133 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   printBatchName('specify subject level fmri model', opt);
 
+  fmri_spec = struct('volt', 1, ...
+                     'global', 'None');
+
+  sliceOrder = returnSliceOrder(BIDS, opt, subLabel);
+
+  fmri_spec.timing.units = 'secs';
+  fmri_spec.timing.RT = opt.metadata.RepetitionTime;
+
+  nbTimeBins = numel(unique(sliceOrder));
+  fmri_spec.timing.fmri_t = nbTimeBins;
+
+  % If no reference slice is given for STC,
+  % then STC took the mid-volume as reference time point for the GLM.
+  % When no STC was done, this is usually a good way to do it too.
+  if isempty(opt.stc.referenceSlice)
+    refBin = floor(nbTimeBins / 2);
+  else
+    refBin = opt.stc.referenceSlice / opt.metadata.RepetitionTime;
+  end
+  fmri_spec.timing.fmri_t0 = refBin;
+
+  % Create ffxDir if it doesnt exist
+  % If it exists, issue a warning that it has been overwritten
+  ffxDir = getFFXdir(subLabel, opt);
+  if exist(ffxDir, 'dir') %
+    msg = sprintf('overwriting directory: %s \n', ffxDir);
+    errorHandling(mfilename(), 'overWritingDir', msg, true, opt.verbosity);
+    rmdir(ffxDir, 's');
+    spm_mkdir(ffxDir);
+  end
+  fmri_spec.dir = {ffxDir};
+
+  fmri_spec.fact = struct('name', {}, 'levels', {});
+
+  fmri_spec.bases.hrf.derivs = opt.model.hrfDerivatives;
+
+  % The following lines are commented out because those parameters
+  % can be set in the spm_my_defaults.m
+  %  fmri_spec.cvi = 'AR(1)';
+
+  subLabel = regexify(subLabel);
+
+  % identify sessions for this subject
+  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
+
+  sesCounter = 1;
+
+  for iTask = 1:numel(opt.taskName)
+
+    opt.query.task = opt.taskName{iTask};
+
+    for iSes = 1:nbSessions
+
+      % get all runs for that subject across all sessions
+      [runs, nbRuns] = ...
+          getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
+
+      for iRun = 1:nbRuns
+
+        % get functional files
+        fullpathBoldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
+
+        if opt.model.designOnly
+            try
+            hdr = spm_vol(fullpathBoldFilename);
+            catch
+                warning('Could not open %s.\nThis expected during testing.', fullpathBoldFilename)
+                % TODO a value should be passed by user for this
+                % hard coded value for test
+                hdr = ones(200,1);
+            end
+            fmri_spec.sess(sesCounter).nscan = numel(hdr);
+        else
+            fmri_spec.sess(sesCounter).scans = {fullpathBoldFilename};
+        end
+
+        onsetsFile = returnOnsetsFile(BIDS, opt, ...
+            subLabel, ...
+            sessions{iSes}, ...
+            opt.taskName{iTask}, ...
+            runs{iRun});
+
+        fmri_spec.sess(sesCounter).multi = ...
+            cellstr(onsetsFile);
+
+        % get confounds
+        fmri_spec.sess(sesCounter).multi_reg = {''};
+        confoundsRegFile = getConfoundsRegressorFilename(BIDS, ...
+                                                         opt, ...
+                                                         subLabel, ...
+                                                         sessions{iSes}, ...
+                                                         runs{iRun});
+        if ~isempty(confoundsRegFile)
+          counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, confoundsRegFile);
+          fmri_spec.sess(sesCounter).multi_reg = ...
+              cellstr(counfoundMatFile);
+        end
+
+        % multiregressor selection
+        fmri_spec.sess(sesCounter).regress = ...
+            struct('name', {}, 'val', {});
+
+        % multicondition selection
+        fmri_spec.sess(sesCounter).cond = ...
+            struct('name', {}, 'onset', {}, 'duration', {});
+
+        % The following lines are commented out because those parameters
+        % can be set in the spm_my_defaults.m
+        %  fmri_spec.sess(ses_counter).hpf = 128;
+
+        sesCounter = sesCounter + 1;
+
+      end
+    end
+  end
+
+  if opt.model.designOnly
+      matlabbatch{end + 1}.spm.stats.fmri_design = fmri_spec;
+  else
+    fmri_spec.mask = {''};
+    matlabbatch{end + 1}.spm.stats.fmri_spec = fmri_spec;
+  end
+
+end
+
+function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
+
   % Check the slice timing information is not in the metadata and not added
   % manually in the opt variable.
   % Necessary to make sure that the reference slice used for slice time
@@ -48,125 +175,30 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     % we are assuming axial acquisition here
     sliceOrder = 1:hdr(1).dim(3);
   end
+end
 
-  matlabbatch{end + 1}.spm.stats.fmri_spec.timing.units = 'secs';
+function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, run)
 
-  % get TR from metadata
-  TR = opt.metadata.RepetitionTime;
-  matlabbatch{end}.spm.stats.fmri_spec.timing.RT = TR;
+        % get events file from raw data set and convert it to a onsets.mat file
+        % store in the subject level GLM directory
+        query = struct( ...
+                       'sub',  subLabel, ...
+                       'task', task, ...
+                       'ses', session, ...
+                       'run', run, ...
+                       'suffix', 'events', ...
+                       'extension', '.tsv');
 
-  % number of times bins
-  nbTimeBins = numel(unique(sliceOrder));
-  matlabbatch{end}.spm.stats.fmri_spec.timing.fmri_t = nbTimeBins;
+        tsvFile = bids.query(BIDS.raw, 'data', query);
 
-  % If no reference slice is given for STC, then STC took the mid-volume
-  % time point to do the correction.
-  % When no STC was done, this is usually a good way to do it too.
-  if isempty(opt.stc.referenceSlice)
-    refBin = floor(nbTimeBins / 2);
-  else
-    refBin = opt.stc.referenceSlice / opt.metadata.RepetitionTime;
-  end
-  matlabbatch{end}.spm.stats.fmri_spec.timing.fmri_t0 = refBin;
+        if isempty(tsvFile)
+          msg = sprintf('No events.tsv file found in:\n\t%s\nfor query:%s\n', ...
+                        BIDS.raw.pth, ...
+                        createUnorderedList(query));
+          errorHandling(mfilename(), 'emptyInput', msg, false);
+        end
 
-  % Create ffxDir if it doesnt exist
-  % If it exists, issue a warning that it has been overwritten
-  ffxDir = getFFXdir(subLabel, opt);
-  if exist(ffxDir, 'dir') %
-    msg = sprintf('overwriting directory: %s \n', ffxDir);
-    errorHandling(mfilename(), 'overWritingDir', msg, true, opt.verbosity);
-    rmdir(ffxDir, 's');
-    spm_mkdir(ffxDir);
-  end
-  matlabbatch{end}.spm.stats.fmri_spec.dir = {ffxDir};
-
-  matlabbatch{end}.spm.stats.fmri_spec.fact = struct('name', {}, 'levels', {});
-
-  matlabbatch{end}.spm.stats.fmri_spec.bases.hrf.derivs = opt.model.hrfDerivatives;
-
-  matlabbatch{end}.spm.stats.fmri_spec.volt = 1;
-
-  matlabbatch{end}.spm.stats.fmri_spec.global = 'None';
-
-  matlabbatch{end}.spm.stats.fmri_spec.mask = {''};
-
-  % The following lines are commented out because those parameters
-  % can be set in the spm_my_defaults.m
-  %                 matlabbatch{end}.spm.stats.fmri_spec.cvi = 'AR(1)';
-
-  % identify sessions for this subject
-  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
-
-  sesCounter = 1;
-  for iSes = 1:nbSessions
-
-    % get all runs for that subject across all sessions
-    [runs, nbRuns] = ...
-        getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
-
-    for iRun = 1:nbRuns
-
-      % get functional files
-      fullpathBoldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
-
-      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).scans = {fullpathBoldFileName};
-
-      % TODO factor all the events stuff in a separate function.
-
-      % get events file from raw data set and convert it to a onsets.mat file
-      % store in the subject level GLM directory
-      query = struct( ...
-                     'sub',  subLabel, ...
-                     'task', opt.taskName, ...
-                     'ses', sessions{iSes}, ...
-                     'run', runs{iRun}, ...
-                     'suffix', 'events', ...
-                     'extension', '.tsv');
-
-      tsvFile = bids.query(BIDS.raw, 'data', query);
-
-      if isempty(tsvFile)
-        msg = sprintf('No events.tsv file found in:\n\t%s\nfor query:%s\n', ...
-                      BIDS.raw.pth, ...
-                      createUnorderedList(query));
-        errorHandling(mfilename(), 'emptyInput', msg, false);
-      end
-
-      fullpathOnsetFileName = createAndReturnOnsetFile(opt, ...
-                                                       subLabel, ...
-                                                       tsvFile);
-
-      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi = ...
-          cellstr(fullpathOnsetFileName);
-
-      % get confounds
-      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi_reg = {''};
-      confoundsRegFile = getConfoundsRegressorFilename(BIDS, ...
-                                                       opt, ...
-                                                       subLabel, ...
-                                                       sessions{iSes}, ...
-                                                       runs{iRun});
-      if ~isempty(confoundsRegFile)
-        counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, confoundsRegFile);
-        matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).multi_reg = ...
-            cellstr(counfoundMatFile);
-      end
-
-      % multiregressor selection
-      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).regress = ...
-          struct('name', {}, 'val', {});
-
-      % multicondition selection
-      matlabbatch{end}.spm.stats.fmri_spec.sess(sesCounter).cond = ...
-          struct('name', {}, 'onset', {}, 'duration', {});
-
-      % The following lines are commented out because those parameters
-      % can be set in the spm_my_defaults.m
-      %  matlabbatch{end}.spm.stats.fmri_spec.sess(ses_counter).hpf = 128;
-
-      sesCounter = sesCounter + 1;
-
-    end
-  end
-
+        onsetFilename = createAndReturnOnsetFile(opt, ...
+                                                         subLabel, ...
+                                                         tsvFile);
 end

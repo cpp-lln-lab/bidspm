@@ -10,7 +10,7 @@ end
 
 function test_setBatchSTC_skip()
 
-  subLabel = '01';
+  subLabel = '^01';
   useRaw = true;
   opt = setOptions('vismotion', subLabel, useRaw);
 
@@ -26,7 +26,7 @@ end
 
 function test_setBatchSTC_empty()
 
-  subLabel = '01';
+  subLabel = '^01';
   useRaw = true;
   opt = setOptions('vislocalizer', subLabel, useRaw);
 
@@ -42,7 +42,7 @@ end
 
 function test_setBatchSTC_force()
 
-  subLabel = '01';
+  subLabel = '^01';
   useRaw = true;
   opt = setOptions('vislocalizer', subLabel, useRaw);
 
@@ -81,7 +81,7 @@ end
 
 function test_setBatchSTC_basic()
 
-  subLabel = '01';
+  subLabel = '^01';
   useRaw = true;
   opt = setOptions('vismotion', subLabel, useRaw);
 

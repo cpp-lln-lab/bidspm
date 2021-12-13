@@ -18,11 +18,11 @@ function test_createDefaultStatsModel_basic()
   createDefaultStatsModel(BIDS, opt);
 
   % make sure the file was created where expected
-  expectedFileName = fullfile(pwd, 'models', 'model-defaultVislocalizer_smdl.json');
-  assertEqual(exist(expectedFileName, 'file'), 2);
+  expectedFilename = fullfile(pwd, 'models', 'model-defaultVislocalizer_smdl.json');
+  assertEqual(exist(expectedFilename, 'file'), 2);
 
   % check it has the right content
-  content = spm_jsonread(expectedFileName);
+  content = spm_jsonread(expectedFilename);
 
   expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-default_smdl.json'));
 

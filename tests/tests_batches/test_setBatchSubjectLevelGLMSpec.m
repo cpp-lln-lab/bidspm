@@ -10,7 +10,7 @@ end
 
 function test_setBatchSubjectLevelGLMSpec_missing_raw_data()
 
-  subLabel = '01';
+  subLabel = '^01';
   opt = setTestCfg();
   BIDS.pth = pwd;
   matlabbatch = {};
@@ -22,7 +22,7 @@ end
 
 function test_setBatchSubjectLevelGLMSpec_fmriprep()
 
-  subLabel = '01';
+  subLabel = '^01';
 
   opt = setOptions('fmriprep-synthetic');
 
@@ -49,7 +49,7 @@ end
 function test_setBatchSubjectLevelGLMSpec_basic()
 
   %% GIVEN
-  subLabel = '01';
+  subLabel = '^01';
 
   opt = setOptions('vislocalizer', subLabel);
 
@@ -65,16 +65,56 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
   %% THEN
-  expectedContent = {'timing'
-                     'dir'
-                     'fact'
-                     'bases'
-                     'volt'
-                     'global'
-                     'mask'
-                     'sess'};
+  expectedContent = {    'volt'
+    'global'
+    'timing'
+    'dir'
+    'fact'
+    'bases'
+    'sess'
+    'mask'};
 
   assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_spec), expectedContent);
+  assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 2);
+
+  cleanUp(fullfile(pwd, 'derivatives'));
+
+end
+
+function test_setBatchSubjectLevelGLMSpec_design_only()
+
+  return
+  % silence as this requires real data to estimate number of scans to model
+
+  %% GIVEN
+  subLabel = '^01';
+
+  opt = setOptions('vislocalizer', subLabel);
+
+  opt.pipeline.type = 'stats';
+  opt.space = {'MNI'};
+  opt.model.designOnly = true;
+
+  opt = dirFixture(opt);
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  %% WHEN
+  matlabbatch = {};
+  matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
+
+  %% THEN
+  expectedContent = {
+     'volt'
+    'global'
+    'timing'
+    'dir'
+    'fact'
+    'bases'
+    'sess'
+    'mask'};
+
+  assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_design), expectedContent);
   assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 2);
 
   cleanUp(fullfile(pwd, 'derivatives'));

@@ -39,7 +39,7 @@ function mriqcQA(opt, suffix)
     name_flip_unilateral = getAnatMetricsToFilter();
   end
 
-  outliers = identify_outliers(data, name_flip_unilateral);
+  outliers = identifyOutliers(data, name_flip_unilateral);
 
   % print subjects' list that are outlier for at least 1 metric
   LS = data.bids_name(sum(outliers, 2) > 0);
@@ -52,9 +52,9 @@ function mriqcQA(opt, suffix)
 
 end
 
-function outliers = identify_outliers(data, name_flip_unilateral)
+function outliers = identifyOutliers(data, name_flip_unilateral)
 
-  % The iqr_method sub-function indentifies outliers that are higher than a
+  % The iqrMethod sub-function indentifies outliers that are higher than a
   % certain value (unilateral) or within a certain range (bilateral).
   % Each metric of interest can be "switched" (if higher values mean
   % better quality like for SNR) and can be thresholded unilateraly or not.
@@ -77,7 +77,7 @@ function outliers = identify_outliers(data, name_flip_unilateral)
     end
 
     % identifies outliers.
-    [outliers(:, i_field)] = iqr_method(tmp, unilat); %#ok<SAGROW>
+    [outliers(:, i_field)] = iqrMethod(tmp, unilat); %#ok<SAGROW>
 
   end
 
@@ -166,7 +166,7 @@ function name_flip_unilateral = getFuncMetricsToFilter()
 
 end
 
-function [I] = iqr_method(a, out)
+function [I] = iqrMethod(a, out)
   %
   % Returns a logical vector that flags outliers as 1s based
   % on the IQR (interquantile range) methods described in Wilcox 2012 p 96-97.

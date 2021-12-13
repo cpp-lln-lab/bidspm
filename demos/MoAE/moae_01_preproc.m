@@ -7,7 +7,7 @@ clear;
 clc;
 
 download_data = true;
-clean = false;
+clean = true;
 
 try
   run ../../initCppSpm.m;

@@ -1,4 +1,4 @@
-function initCppSpm()
+function initCppSpm(dev)
   %
   % Adds the relevant folders to the path for a given session.
   % Has to be run to be able to use CPP_SPM.
@@ -8,6 +8,10 @@ function initCppSpm()
   %   initCppSpm()
   %
   % (C) Copyright 2021 CPP_SPM developers
+
+  if nargin < 1
+    dev = false;
+  end
 
   opt.verbosity = 1;
 
@@ -55,6 +59,11 @@ function initCppSpm()
                         fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
     CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...
                         fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
+
+    if dev
+      CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...
+                          fullfile(thisDirectory, 'tests', 'utils'));
+    end
 
     addpath(CPP_SPM_PATHS, '-begin');
 
