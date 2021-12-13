@@ -17,7 +17,7 @@ function test_getConfoundRegressorFile_basic()
   opt = setOptions('vislocalizer', subLabel);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
-  
+
    opt.query.task = 'vislocalizer';
 
   realignParamFile = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, run);

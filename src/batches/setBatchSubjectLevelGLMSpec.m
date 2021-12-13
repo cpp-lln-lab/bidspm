@@ -68,7 +68,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % The following lines are commented out because those parameters
   % can be set in the spm_my_defaults.m
   %  fmri_spec.cvi = 'AR(1)';
-  
+
   subLabel = regexify(subLabel);
 
   % identify sessions for this subject

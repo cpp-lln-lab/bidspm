@@ -1,6 +1,6 @@
 function matlabbatch = bidsFFX(action, opt)
     %
-    % - specify the subject level fMRI model 
+    % - specify the subject level fMRI model
     % - estimates it
     % - do both in one go
     % - or compute the contrasts at the subject level.
