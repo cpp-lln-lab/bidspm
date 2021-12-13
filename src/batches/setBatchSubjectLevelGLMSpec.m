@@ -18,27 +18,27 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     % :returns: - :argout1: (structure) (matlabbatch)
     %
     % (C) Copyright 2019 CPP_SPM developers
-    
+
     [matlabbatch, BIDS, opt, subLabel] =  deal(varargin{:});
-    
+
     if ~isfield(BIDS, 'raw')
         msg = sprintf(['Provide raw BIDS dataset path in opt.dir.raw .\n' ...
             'It is needed to load events.tsv files.\n']);
         errorHandling(mfilename(), 'missingRawDir', msg, false, opt.verbosity);
     end
-    
+
     printBatchName('specify subject level fmri model', opt);
 
     fmri_spec = struct('volt', 1, ...
                        'global', 'None', ...
                        'mask', {{''}});
-    
+
     % Check the slice timing information is not in the metadata and not added
     % manually in the opt variable.
     % Necessary to make sure that the reference slice used for slice time
     % correction is the one we center our model on
     sliceOrder = getSliceOrder(opt);
-    
+
     if isempty(sliceOrder) && ~opt.dryRun
         % no slice order defined here so we fall back on using the number of
         % slice in the first bold image to set the number of time bins
@@ -48,18 +48,18 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
             'suffix', 'bold', ...
             'extension', '.nii');
         hdr = spm_vol(fileName{1});
-        
+
         % we are assuming axial acquisition here
         sliceOrder = 1:hdr(1).dim(3);
     end
-    
+
     fmri_spec.timing.units = 'secs';
     fmri_spec.timing.RT = opt.metadata.RepetitionTime;
 
     nbTimeBins = numel(unique(sliceOrder));
     fmri_spec.timing.fmri_t = nbTimeBins;
-    
-    % If no reference slice is given for STC, 
+
+    % If no reference slice is given for STC,
     % then STC took the mid-volume as reference time point for the GLM.
     % When no STC was done, this is usually a good way to do it too.
     if isempty(opt.stc.referenceSlice)
@@ -68,7 +68,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         refBin = opt.stc.referenceSlice / opt.metadata.RepetitionTime;
     end
     fmri_spec.timing.fmri_t0 = refBin;
-    
+
     % Create ffxDir if it doesnt exist
     % If it exists, issue a warning that it has been overwritten
     ffxDir = getFFXdir(subLabel, opt);
@@ -79,39 +79,39 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         spm_mkdir(ffxDir);
     end
     fmri_spec.dir = {ffxDir};
-    
+
     fmri_spec.fact = struct('name', {}, 'levels', {});
-    
+
     fmri_spec.bases.hrf.derivs = opt.model.hrfDerivatives;
-    
+
     % The following lines are commented out because those parameters
     % can be set in the spm_my_defaults.m
     %  fmri_spec.cvi = 'AR(1)';
-    
+
     % identify sessions for this subject
     [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
-    
+
     sesCounter = 1;
-    
+
     for iTask = 1:numel(opt.taskName)
-        
+
         opt.query.task = opt.taskName{iTask};
-        
+
         for iSes = 1:nbSessions
-            
+
             % get all runs for that subject across all sessions
             [runs, nbRuns] = ...
                 getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
-            
+
             for iRun = 1:nbRuns
-                
+
                 % get functional files
                 fullpathBoldFileName = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
-                
+
                 fmri_spec.sess(sesCounter).scans = {fullpathBoldFileName};
-                
+
                 % TODO factor all the events stuff in a separate function.
-                
+
                 % get events file from raw data set and convert it to a onsets.mat file
                 % store in the subject level GLM directory
                 query = struct( ...
@@ -121,23 +121,23 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
                     'run', runs{iRun}, ...
                     'suffix', 'events', ...
                     'extension', '.tsv');
-                
+
                 tsvFile = bids.query(BIDS.raw, 'data', query);
-                
+
                 if isempty(tsvFile)
                     msg = sprintf('No events.tsv file found in:\n\t%s\nfor query:%s\n', ...
                         BIDS.raw.pth, ...
                         createUnorderedList(query));
                     errorHandling(mfilename(), 'emptyInput', msg, false);
                 end
-                
+
                 fullpathOnsetFileName = createAndReturnOnsetFile(opt, ...
                     subLabel, ...
                     tsvFile);
-                
+
                 fmri_spec.sess(sesCounter).multi = ...
                     cellstr(fullpathOnsetFileName);
-                
+
                 % get confounds
                 fmri_spec.sess(sesCounter).multi_reg = {''};
                 confoundsRegFile = getConfoundsRegressorFilename(BIDS, ...
@@ -150,25 +150,25 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
                     fmri_spec.sess(sesCounter).multi_reg = ...
                         cellstr(counfoundMatFile);
                 end
-                
+
                 % multiregressor selection
                 fmri_spec.sess(sesCounter).regress = ...
                     struct('name', {}, 'val', {});
-                
+
                 % multicondition selection
                 fmri_spec.sess(sesCounter).cond = ...
                     struct('name', {}, 'onset', {}, 'duration', {});
-                
+
                 % The following lines are commented out because those parameters
                 % can be set in the spm_my_defaults.m
                 %  fmri_spec.sess(ses_counter).hpf = 128;
-                
+
                 sesCounter = sesCounter + 1;
-                
+
             end
         end
     end
 
     matlabbatch{end + 1}.spm.stats.fmri_spec = fmri_spec;
-    
+
 end
