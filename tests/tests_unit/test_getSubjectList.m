@@ -8,6 +8,30 @@ function test_suite = test_getSubjectList %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getSubject_regex()
+
+  useRaw = true;
+  opt = setOptions('vismotion', '', useRaw);
+
+  BIDS = bids.layout(opt.dir.preproc);
+
+  group_subject_expected = {
+                            {''}, {'.*01'}, {'01', 'blind01', 'ctrl01'} 
+                            {''}, {'01'}, {'01', 'blind01', 'ctrl01'} 
+                            {''}, {'^01'}, {'01'} 
+                           };
+
+  for i = 1:size(group_subject_expected, 1)
+    opt.groups = group_subject_expected{i, 1};
+    opt.subjects = group_subject_expected{i, 2};
+
+    opt = getSubjectList(BIDS, opt);
+
+    assertEqual(opt.subjects, group_subject_expected{i, 3}');
+  end
+
+end
+
 function test_getSubject()
 
   useRaw = true;
