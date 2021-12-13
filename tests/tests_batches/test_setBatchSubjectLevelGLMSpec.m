@@ -82,7 +82,7 @@ function test_setBatchSubjectLevelGLMSpec_basic()
 end
 
 function test_setBatchSubjectLevelGLMSpec_design_only()
-    
+
   return
   % silence as this requires real data to estimate number of scans to model
 

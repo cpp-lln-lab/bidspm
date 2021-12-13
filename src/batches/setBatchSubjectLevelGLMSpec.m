@@ -31,7 +31,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   fmri_spec = struct('volt', 1, ...
                      'global', 'None');
-        
+
   sliceOrder = returnSliceOrder(BIDS, opt, subLabel);
 
   fmri_spec.timing.units = 'secs';
