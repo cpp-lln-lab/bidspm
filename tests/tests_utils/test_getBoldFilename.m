@@ -10,7 +10,7 @@ end
 
 function test_getBoldFilename_basic()
 
-  subLabel = '01';
+  subLabel = '^01';
   useRaw = true;
   opt = setOptions('vislocalizer', subLabel, useRaw);
 
@@ -30,17 +30,17 @@ function test_getBoldFilename_basic()
                                                BIDS, ...
                                                subLabel, sessions{iSes}, runs{iRun}, opt);
 
-  expectedFileName = 'sub-01_ses-01_task-vislocalizer_bold.nii';
+  expectedFilename = 'sub-01_ses-01_task-vislocalizer_bold.nii';
   expectedSubFuncDataDir = fullfile(getDummyDataDir('raw'), 'sub-01', 'ses-01', 'func');
 
   assertEqual(subFuncDataDir, expectedSubFuncDataDir);
-  assertEqual(fileName, expectedFileName);
+  assertEqual(fileName, expectedFilename);
 
 end
 
 function test_getBoldFilename_derivatives()
 
-  subLabel = '01';
+  subLabel = '^01';
   iSes = 1;
   iRun = 1;
 
@@ -59,10 +59,10 @@ function test_getBoldFilename_derivatives()
                                                BIDS, ...
                                                subLabel, sessions{iSes}, runs{iRun}, opt);
 
-  expectedFileName = 'sub-01_ses-01_task-vismotion_run-1_space-individual_desc-stc_bold.nii';
+  expectedFilename = 'sub-01_ses-01_task-vismotion_run-1_space-individual_desc-stc_bold.nii';
   expectedSubFuncDataDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func');
 
   assertEqual(subFuncDataDir, expectedSubFuncDataDir);
-  assertEqual(fileName, expectedFileName);
+  assertEqual(fileName, expectedFilename);
 
 end

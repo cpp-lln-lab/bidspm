@@ -43,7 +43,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon)
 
         % no QA at the group level GLM:
         %   since there is no autocorrelation to check for
-        opt.glmQA.do = false();
+        opt.QA.glm.do = false();
 
         matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
 

@@ -41,7 +41,7 @@ function [BIDS, opt] = getData(opt, bidsDir, suffix)
   end
 
   if isfield(opt, 'taskName')
-    msg = sprintf('\nFOR TASK: %s\n', opt.taskName);
+    msg = sprintf('\nFOR TASK(s): %s\n', strjoin(opt.taskName, ' '));
     printToScreen(msg, opt);
   else
     suffix = 'T1w';
@@ -61,14 +61,14 @@ function [BIDS, opt] = getData(opt, bidsDir, suffix)
   end
 
   % make sure that the required tasks exist in the data set
-  if isfield(opt, 'taskName') && ~ismember(opt.taskName, bids.query(BIDS, 'tasks'))
+  if isfield(opt, 'taskName') && ~any(ismember(opt.taskName, bids.query(BIDS, 'tasks')))
     printToScreen('List of tasks present in this dataset:\n', opt);
     bids.query(BIDS, 'tasks');
 
     errorStruct.identifier = 'getData:noMatchingTask';
     errorStruct.message = sprintf( ...
                                   ['The task %s that you have asked for ', ...
-                                   'does not exist in this data set.'], opt.taskName);
+                                   'does not exist in this data set.'], strjoin(opt.taskName));
     error(errorStruct);
   end
 

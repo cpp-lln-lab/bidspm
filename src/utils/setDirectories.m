@@ -122,8 +122,8 @@ end
 function opt = setJobsDir(opt, targetDir)
 
   jobDir = fullfile(targetDir, 'jobs');
-  if isfield(opt, 'taskName')
-    jobDir = fullfile(targetDir, 'jobs', opt.taskName);
+  if isfield(opt, 'taskName') && ~isempty(opt.taskName) && ~isempty(opt.taskName{1})
+    jobDir = fullfile(targetDir, 'jobs',  strjoin(opt.taskName, ''));
   end
   opt.dir.jobs = jobDir;
 

@@ -27,4 +27,4 @@ bidsFFX('specifyAndEstimate', opt);
 bidsFFX('contrasts', opt);
 
 % TODO
-% bidsResults(opt);
+bidsResults(opt);

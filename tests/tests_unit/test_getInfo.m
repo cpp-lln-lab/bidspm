@@ -64,9 +64,9 @@ function test_getInfo_query()
   opt.query = struct('acq', '1p60mm', 'dir', 'PA');
   filename = getInfo(BIDS, subLabel, opt, 'filename', session, run, 'bold');
 
-  FileName = returnFullpathExpectedFilename(p);
+  Filename = returnFullpathExpectedFilename(p);
 
-  assertEqual(filename, FileName);
+  assertEqual(filename, Filename);
 
 end
 

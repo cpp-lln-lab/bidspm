@@ -24,9 +24,9 @@ function test_getTpmFilename_basic()
 
   gm = getTpmFilename(BIDS, subLabel);
 
-  expectedFileName = 'sub-01_ses-01_space-individual_label-GM_probseg.nii';
+  expectedFilename = 'sub-01_ses-01_space-individual_label-GM_probseg.nii';
 
-  assertEqual(spm_file(gm, 'filename'), expectedFileName);
+  assertEqual(spm_file(gm, 'filename'), expectedFilename);
 
 end
 
@@ -42,8 +42,8 @@ function test_getTpmFilename_mni()
   space = 'MNI';
   gm = getTpmFilename(BIDS, subLabel, res, space);
 
-  expectedFileName = 'sub-01_ses-01_space-IXI549Space_res-bold_label-GM_probseg.nii';
+  expectedFilename = 'sub-01_ses-01_space-IXI549Space_res-bold_label-GM_probseg.nii';
 
-  assertEqual(spm_file(gm, 'filename'), expectedFileName);
+  assertEqual(spm_file(gm, 'filename'), expectedFilename);
 
 end

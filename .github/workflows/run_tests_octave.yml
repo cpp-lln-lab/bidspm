@@ -1,4 +1,4 @@
-name: tests and coverage
+name: tests with octave
 
 # Uses the cron schedule for github actions
 #
@@ -20,7 +20,7 @@ on:
       - main
       - dev
   pull_request:
-    branches: '*'
+    branches: ['*']
 
 env:
   OCTFLAGS: --no-gui --no-window-system --silent
@@ -28,7 +28,7 @@ env:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
 
@@ -36,8 +36,6 @@ jobs:
       run: |
         sudo apt-get -y -qq update
         sudo apt-get -y install octave liboctave-dev
-        sudo apt-get -y install nodejs npm
-        pip install datalad
 
     - name: Clone cpp_spm
       uses: actions/checkout@v2
@@ -62,7 +60,6 @@ jobs:
 
     - name: Update octave path
       run: |
-        octave $OCTFLAGS --eval "initCppSpm; savepath();"
         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
 
     - name: Prepare data
@@ -80,4 +77,3 @@ jobs:
       run: |
         octave $OCTFLAGS --eval "run_tests"
         cat test_report.log | grep 0
-        bash <(curl -s https://codecov.io/bash)

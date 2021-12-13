@@ -34,11 +34,10 @@ end
 
 function test_checkOptions_error_task()
 
-  opt.taskName = [];
+  opt.taskName = '';
   opt.verbosity = 1;
 
   % skip in CI
-  isGithubCi();
   if isGithubCi()
     return
   end

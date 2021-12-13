@@ -32,11 +32,11 @@ function test_createDataDictionary_basic()
   %
   %   createDataDictionary(subFuncDataDir, fileName, 3);
   %
-  %   expectedFileName = fullfile( ...
+  %   expectedFilename = fullfile( ...
   %                               subFuncDataDir, ...
   %                               'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.json');
   %
-  %   content = spm_jsonread(expectedFileName);
+  %   content = spm_jsonread(expectedFilename);
   %
   %   expectedNbColumns = 27;
   %   expectedHeaderCol = 'censoring_regressor_3';

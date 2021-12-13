@@ -10,7 +10,7 @@ end
 
 function test_setBatchCreateVDMs_smoke_test()
 
-  subLabel = '01';
+  subLabel = '^01';
 
   opt = setOptions('vismotion', subLabel);
 

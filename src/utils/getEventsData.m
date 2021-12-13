@@ -1,4 +1,5 @@
 function data = getEventsData(tsvFile, modelFile, nodeType)
+  %
   % (C) Copyright 2020 Remi Gau
 
   % TODO: refactor with convertOnsetTsvToMat

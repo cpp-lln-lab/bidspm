@@ -86,21 +86,53 @@ function opt = getSubjectList(BIDS, opt)
   % remove duplicates
   opt.subjects = unique(tmp);
 
+  % If one subject only we use regex
+  if numel(opt.subjects) == 1
+    tokens = regexp(allSubjects, opt.subjects, 'match');
+    subjectPresent = ~cellfun('isempty', tokens);
+
+    if ~any(subjectPresent)
+      errorMissingSubject(opt, allSubjects);
+    else
+      opt.subjects = allSubjects(subjectPresent);
+    end
+
+  else
+    % check that all the subjects asked for exist
+    anySubjectMissing = any(~ismember(opt.subjects, allSubjects));
+
+    if anySubjectMissing
+      errorMissingSubject(opt, allSubjects);
+    end
+
+  end
+
   if size(opt.subjects, 1) == 1
     opt.subjects = opt.subjects';
   end
 
-  % check that all the subjects asked for exist
-  if any(~ismember(opt.subjects, allSubjects))
+end
 
-    subjectsSpecified = createUnorderedList(opt.subjects);
-    subjectsPresent = createUnorderedList(allSubjects);
+function errorMissingSubject(opt, allSubjects)
+  subjectsSpecified = createUnorderedList(opt.subjects);
+  subjectsPresent = createUnorderedList(allSubjects);
 
-    msg = sprintf(['Some of the subjects specified do not exist in this data set.\n', ...
-                   'subjects specified:%s \nsubjects present:%s'], ...
-                  subjectsSpecified, ...
-                  subjectsPresent);
-    errorHandling(mfilename(), 'noMatchingSubject', msg, false, opt.verbosity);
+  msg = sprintf(['Some of the subjects specified do not exist in this data set.\n', ...
+                 'subjects specified:%s \nsubjects present:%s'], ...
+                subjectsSpecified, ...
+                subjectsPresent);
+  errorHandling(mfilename(), 'noMatchingSubject', msg, false, opt.verbosity);
+end
+
+function option = prepare_regex(option)
+  option = option{1};
+  if strcmp(option, '')
+    return
   end
-
+  if ~strcmp(option(1), '^')
+    option = ['^' option];
+  end
+  if ~strcmp(option(end), '$')
+    option = [option '$'];
+  end
 end

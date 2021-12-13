@@ -1,5 +1,6 @@
 function test_suite = test_plotEvents %#ok<*STOUT>
-  % (C) Copyright 2021 CPP_SPM developers
+  %
+  % (C) Copyright 2020 CPP_SPM developers
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -17,9 +18,13 @@ function test_plotEvents_synth()
 
   plotEvents(eventsFile{1});
 
+  close all;
+
 end
 
 function test_plotEvents_vislocalizer()
+
+    close all;
 
   opt = setOptions('vislocalizer', '01');
 
@@ -30,9 +35,13 @@ function test_plotEvents_vislocalizer()
 
   plotEvents(eventsFile{1});
 
+    close all;
+
 end
 
 function test_plotEvents_vismotion()
+
+      close all;
 
   opt = setOptions('vismotion', '01');
 
@@ -43,9 +52,13 @@ function test_plotEvents_vismotion()
 
   plotEvents(eventsFile{1});
 
+    close all;
+
 end
 
 function test_plotEvents_ds001()
+
+      close all;
 
   dataDir = getBidsExample('ds001');
 
@@ -56,4 +69,5 @@ function test_plotEvents_ds001()
 
   plotEvents(eventsFile{1});
 
+    close all;
 end

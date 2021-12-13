@@ -10,7 +10,7 @@ end
 
 function test_getRealignParamFilename_basic()
 
-  subLabel = '01';
+  subLabel = '^01';
   session = '01';
   run = '';
 
@@ -20,12 +20,12 @@ function test_getRealignParamFilename_basic()
 
   realignParamFile = getRealignParamFilename(BIDS, subLabel, session, run, opt);
 
-  assertEqual(realignParamFile, getExpectedFileName());
+  assertEqual(realignParamFile, getExpectedFilename());
 
 end
 
-function  expectedFileName = getExpectedFileName()
-  expectedFileName = fullfile(getDummyDataDir('preproc'), 'sub-01', ...
+function  expectedFilename = getExpectedFilename()
+  expectedFilename = fullfile(getDummyDataDir('preproc'), 'sub-01', ...
                               'ses-01', 'func', ...
                               'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
 end

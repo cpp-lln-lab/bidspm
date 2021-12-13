@@ -179,7 +179,7 @@ function test_setDirectories_preproc()
   expected.dir.stats = fullfile(expected.dir.derivatives, 'cpp_spm-stats');
   expected.dir.input = pwd;
   expected.dir.output = expected.dir.stats;
-  expected.dir.jobs = fullfile(expected.dir.output, 'jobs', opt.taskName);
+  expected.dir.jobs = fullfile(expected.dir.output, 'jobs', opt.taskName{1});
 
   assertEqual(opt.dir, expected.dir);
 

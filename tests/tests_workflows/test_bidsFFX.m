@@ -24,6 +24,10 @@ end
 
 function test_bidsFFX_fmriprep_no_smoothing()
 
+  if isGithubCi()
+    return
+  end
+
   opt = setOptions('fmriprep');
 
   opt.space = 'MNI152NLin2009cAsym';
