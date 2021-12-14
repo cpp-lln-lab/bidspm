@@ -8,7 +8,7 @@ function test_suite = test_specifyContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_specifyContrasts_warning_no_condition()
+function test_specifyContrasts_missing_condition()
   %
   % to test the generation of contrasts when there are several runs
   %
@@ -45,7 +45,7 @@ function test_specifyContrasts_warning_no_condition()
 
 end
 
-function test_specifyContrasts_warning_no_condition_dummy()
+function test_specifyContrasts_missing_condition_for_dummy_contrasts()
   %
   % to test the generation of contrasts when there are several runs
   %
