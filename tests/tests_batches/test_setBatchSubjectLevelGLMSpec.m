@@ -83,9 +83,6 @@ end
 
 function test_setBatchSubjectLevelGLMSpec_design_only()
 
-  return
-  % silence as this requires real data to estimate number of scans to model
-
   %% GIVEN
   subLabel = '^01';
 
@@ -104,18 +101,16 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
   %% THEN
-  expectedContent = {
-                     'volt'
+  expectedContent = {    'volt'
                      'global'
                      'timing'
                      'dir'
                      'fact'
                      'bases'
-                     'sess'
-                     'mask'};
+                     'sess'};
 
   assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_design), expectedContent);
-  assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 2);
+  assertEqual(numel(matlabbatch{1}.spm.stats.fmri_design.sess), 2);
 
   cleanUp(fullfile(pwd, 'derivatives'));
 

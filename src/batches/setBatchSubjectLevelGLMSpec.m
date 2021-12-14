@@ -88,19 +88,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         % get functional files
         fullpathBoldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
-        if opt.model.designOnly
-          try
-            hdr = spm_vol(fullpathBoldFilename);
-          catch
-            warning('Could not open %s.\nThis expected during testing.', fullpathBoldFilename);
-            % TODO a value should be passed by user for this
-            % hard coded value for test
-            hdr = ones(200, 1);
-          end
-          fmri_spec.sess(sesCounter).nscan = numel(hdr);
-        else
-          fmri_spec.sess(sesCounter).scans = {fullpathBoldFilename};
-        end
+        fmri_spec = setScans(opt, fullpathBoldFilename, fmri_spec, sesCounter);
 
         onsetsFile = returnOnsetsFile(BIDS, opt, ...
                                       subLabel, ...
@@ -171,6 +159,22 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
 
     % we are assuming axial acquisition here
     sliceOrder = 1:hdr(1).dim(3);
+  end
+end
+
+function fmriSpec = setScans(opt, fullpathBoldFilename, fmriSpec, sesCounter)
+  if opt.model.designOnly
+    try
+      hdr = spm_vol(fullpathBoldFilename);
+    catch
+      warning('Could not open %s.\nThis expected during testing.', fullpathBoldFilename);
+      % TODO a value should be passed by user for this
+      % hard coded value for test
+      hdr = ones(200, 1);
+    end
+    fmriSpec.sess(sesCounter).nscan = numel(hdr);
+  else
+    fmriSpec.sess(sesCounter).scans = {fullpathBoldFilename};
   end
 end
 

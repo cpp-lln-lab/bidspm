@@ -26,25 +26,7 @@ function matlabbatch = bidsFFX(action, opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  if numel(opt.space) > 1
-    disp(opt.space);
-    msg = sprintf('GLMs can only be run in one space at a time.\n');
-    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
-  end
-
-  if opt.glm.roibased.do
-    msg = sprintf(['The option opt.glm.roibased.do is set to true.\n', ...
-                   ' Change the option to false to use this workflow or\n', ...
-                   ' use the bidsRoiBasedGLM workflow to run roi based GLM.']);
-    errorHandling(mfilename(), 'roiGLMTrue', msg, false, opt.verbosity);
-  end
-
-  allowedActions = {'specify', 'specifyAndEstimate', 'contrasts'};
-  if ~ismember(action, allowedActions)
-    msg = sprintf('action must be: %s.\n%s was given.', createUnorderedList(allowedActions), ...
-                  action);
-    errorHandling(mfilename(), 'unknownAction', msg, false, opt.verbosity);
-  end
+  checks(opt, action);
 
   opt.pipeline.type = 'stats';
   opt.dir.input = opt.dir.preproc;
@@ -102,6 +84,30 @@ function matlabbatch = bidsFFX(action, opt)
 
     end
 
+  end
+
+end
+
+function checks(opt, action)
+
+  if numel(opt.space) > 1
+    disp(opt.space);
+    msg = sprintf('GLMs can only be run in one space at a time.\n');
+    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+  end
+
+  if opt.glm.roibased.do
+    msg = sprintf(['The option opt.glm.roibased.do is set to true.\n', ...
+                   ' Change the option to false to use this workflow or\n', ...
+                   ' use the bidsRoiBasedGLM workflow to run roi based GLM.']);
+    errorHandling(mfilename(), 'roiGLMTrue', msg, false, opt.verbosity);
+  end
+
+  allowedActions = {'specify', 'specifyAndEstimate', 'contrasts'};
+  if ~ismember(action, allowedActions)
+    msg = sprintf('action must be: %s.\n%s was given.', createUnorderedList(allowedActions), ...
+                  action);
+    errorHandling(mfilename(), 'unknownAction', msg, false, opt.verbosity);
   end
 
 end
