@@ -11,9 +11,9 @@ function [step, iStep] = returnModelNode(model, nodeType)
     model.Nodes = {model.Nodes};
   end
 
-  levels = cellfun(@(x) x.Level, model.Nodes, 'UniformOutput', false);
+  levels = cellfun(@(x) lower(x.Level), model.Nodes, 'UniformOutput', false);
 
-  idx = ismember(levels, nodeType);
+  idx = ismember(levels, lower(nodeType));
   if any(idx)
     step = model.Nodes{idx};
     iStep = find(idx);
