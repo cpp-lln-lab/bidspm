@@ -52,7 +52,7 @@
             "Test": ""
          },
          "DummyContrasts": {
-            "Test": "",
+            "Test": "t",
             "Contrasts": [
                "trial_type.VisMot",
                "trial_type.VisStat"
@@ -103,7 +103,7 @@
             "Test": ""
          },
          "DummyContrasts": {
-            "Test": "",
+            "Test": "t",
             "Contrasts": [
                "trial_type.VisMot",
                "trial_type.VisStat"
@@ -133,7 +133,7 @@
             "Test": ""
          },
          "DummyContrasts": {
-            "Test": "",
+            "Test": "t",
             "Contrasts": [
                "trial_type.VisMot",
                "trial_type.VisStat"
