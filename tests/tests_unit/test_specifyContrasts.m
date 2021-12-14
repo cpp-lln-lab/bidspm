@@ -8,6 +8,41 @@ function test_suite = test_specifyContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_specifyContrasts_warning_no_condition()
+  %
+  % to test the generation of contrasts when there are several runs
+  %
+
+  taskName = 'motion';
+
+  % GIVEN
+  DummyContrasts{1} = 'foo';
+
+  model = createEmptyStatsModel;
+  model.Input.task = taskName;
+  model.Nodes{1}.DummyContrasts.Contrasts = DummyContrasts;
+  model.Nodes{1}.DummyContrasts.Test = 't';
+  model.Nodes = model.Nodes{1};
+
+  model.Nodes = rmfield(model.Nodes, 'Contrasts');
+
+  SPM.xX.name = { ...
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                };
+
+  SPM.xX.X = ones(1, numel(SPM.xX.name));
+
+  % WHEN
+  assertWarning(@()specifyContrasts(SPM, model), ...
+                'specifyContrasts:noRegressorFound');
+
+  assertExceptionThrown( ...
+                        @()specifyContrasts(SPM, model), ...
+                        'specifyContrasts:noContrast');
+
+end
+
 function test_specifyContrasts_complex()
   %
   % to test the generation of contrasts when there are several runs

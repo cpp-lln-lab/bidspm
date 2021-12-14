@@ -59,6 +59,11 @@ function contrasts = specifyContrasts(SPM, model)
 
   end
 
+  if numel(contrasts) == 1 && isempty(contrasts.C)
+    msg = 'No contrast to build';
+    errorHandling(mfilename(), 'noContrast', msg, false, true);
+  end
+
 end
 
 function [contrasts, counter] = specifylDummyContrasts(contrasts, node, counter, SPM, level)
@@ -67,8 +72,11 @@ function [contrasts, counter] = specifylDummyContrasts(contrasts, node, counter,
     return
   end
 
-  if isfield(node, 'DummyContrasts') && ...
-          isfield(node.DummyContrasts, 'Contrasts') && ...
+  if ~isfield(node, 'DummyContrasts')
+    return
+  end
+
+  if isfield(node.DummyContrasts, 'Contrasts') && ...
           isTtest(node.DummyContrasts)
 
     % first the contrasts to compute automatically against baseline
@@ -114,99 +122,100 @@ end
 
 function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM)
 
-  if isfield(node, 'Contrasts')
+  if ~isfield(node, 'Contrasts')
+    return
+  end
 
-    % then the contrasts that involve contrasting conditions
-    % amongst themselves or something inferior to baseline
-    for iCon = 1:length(node.Contrasts)
+  % then the contrasts that involve contrasting conditions
+  % amongst themselves or something inferior to baseline
+  for iCon = 1:length(node.Contrasts)
 
-      if ~isTtest(node.Contrasts(iCon))
-        continue
-      end
+    if ~isTtest(node.Contrasts(iCon))
+      continue
+    end
 
-      if ~isfield(node.Contrasts(iCon), 'Weights')
-        msg = 'weightless contrasts not supported yet';
-        errorHandling(mfilename(), 'notImplemented', msg, true, true);
-        continue
-      end
+    if ~isfield(node.Contrasts(iCon), 'Weights')
+      msg = 'weightless contrasts not supported yet';
+      errorHandling(mfilename(), 'notImplemented', msg, true, true);
+      continue
+    end
 
-      C = newContrast(SPM, node.Contrasts(iCon).Name);
+    C = newContrast(SPM, node.Contrasts(iCon).Name);
 
-      for iCdt = 1:length(node.Contrasts(iCon).ConditionList)
+    for iCdt = 1:length(node.Contrasts(iCon).ConditionList)
 
-        % get regressors index corresponding to the HRF of that condition
-        cdtName = node.Contrasts(iCon).ConditionList{iCdt};
-        [~, regIdx] = getRegressorIdx(cdtName, SPM);
+      % get regressors index corresponding to the HRF of that condition
+      cdtName = node.Contrasts(iCon).ConditionList{iCdt};
+      [~, regIdx] = getRegressorIdx(cdtName, SPM);
 
-        % give them the value specified in the model
+      % give them the value specified in the model
 
-        C.C(end, regIdx) = node.Contrasts(iCon).Weights(iCdt);
+      C.C(end, regIdx) = node.Contrasts(iCon).Weights(iCdt);
 
-        clear regIdx;
-
-      end
-
-      % TODO if one of the condition is not found, this contrast should
-      % probably not be created ?
-
-      [contrasts, counter] = appendContrast(contrasts, C, counter);
+      clear regIdx;
 
     end
 
+    % TODO if one of the condition is not found, this contrast should
+    % probably not be created ?
+
+    [contrasts, counter] = appendContrast(contrasts, C, counter);
+
   end
+
 end
 
 function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
 
-  if isfield(node, 'Contrasts')
+  if ~isfield(node, 'Contrasts')
+    return
+  end
 
-    % then the contrasts that involve contrasting conditions
-    % amongst themselves or something inferior to baseline
-    for iCon = 1:length(node.Contrasts)
+  % then the contrasts that involve contrasting conditions
+  % amongst themselves or something inferior to baseline
+  for iCon = 1:length(node.Contrasts)
 
-      if ~isTtest(node.Contrasts(iCon))
-        continue
-      end
+    if ~isTtest(node.Contrasts(iCon))
+      continue
+    end
 
-      if ~isfield(node.Contrasts(iCon), 'Weights')
-        msg = 'weightless contrasts not supported yet';
-        errorHandling(mfilename(), 'notImplemented', msg, true, true);
-        continue
-      end
+    if ~isfield(node.Contrasts(iCon), 'Weights')
+      msg = 'weightless contrasts not supported yet';
+      errorHandling(mfilename(), 'notImplemented', msg, true, true);
+      continue
+    end
 
-      % get regressors index corresponding to the HRF of that condition
+    % get regressors index corresponding to the HRF of that condition
+    for iCdt = 1:length(node.Contrasts(iCon).ConditionList)
+      cdtName = node.Contrasts(iCon).ConditionList{iCdt};
+      [~, regIdx{iCdt}] = getRegressorIdx(cdtName, SPM);
+      regIdx{iCdt} = find(regIdx{iCdt});
+    end
+
+    nbRuns = unique(cellfun(@numel, regIdx));
+
+    if length(nbRuns) > 1
+      disp(node.Contrasts(iCon).ConditionList);
+      msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
+                    node.Contrasts(iCon).Name, cdtName);
+      errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
+
+      continue
+    end
+
+    % give them the value specified in the model
+    for iRun = 1:nbRuns
+
+      C = newContrast(SPM, [node.Contrasts(iCon).Name, '_', num2str(iRun)]);
+
       for iCdt = 1:length(node.Contrasts(iCon).ConditionList)
-        cdtName = node.Contrasts(iCon).ConditionList{iCdt};
-        [~, regIdx{iCdt}] = getRegressorIdx(cdtName, SPM);
-        regIdx{iCdt} = find(regIdx{iCdt});
+        C.C(end, regIdx{iCdt}(iRun)) = node.Contrasts(iCon).Weights(iCdt);
       end
 
-      nbRuns = unique(cellfun(@numel, regIdx));
-
-      if length(nbRuns) > 1
-        disp(node.Contrasts(iCon).ConditionList);
-        msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
-                      node.Contrasts(iCon).Name, cdtName);
-        errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
-
-        continue
-      end
-
-      % give them the value specified in the model
-      for iRun = 1:nbRuns
-
-        C = newContrast(SPM, [node.Contrasts(iCon).Name, '_', num2str(iRun)]);
-
-        for iCdt = 1:length(node.Contrasts(iCon).ConditionList)
-          C.C(end, regIdx{iCdt}(iRun)) = node.Contrasts(iCon).Weights(iCdt);
-        end
-
-        [contrasts, counter] = appendContrast(contrasts, C, counter);
-
-      end
-      clear regIdx;
+      [contrasts, counter] = appendContrast(contrasts, C, counter);
 
     end
+    clear regIdx;
 
   end
 
