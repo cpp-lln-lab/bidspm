@@ -1,4 +1,4 @@
-function [grpLvlCon, iStep] = getGrpLevelContrast(opt)
+function [grpLvlCon, iNode] = getGrpLevelContrast(opt)
   %
   % Returns the autocontrast part of the dataset step of the BIDS model
   %
@@ -16,8 +16,8 @@ function [grpLvlCon, iStep] = getGrpLevelContrast(opt)
 
   model = spm_jsonread(opt.model.file);
 
-  [step, iStep] = returnModelStep(model, 'dataset');
+  [node, iNode] = returnModelNode(model, 'dataset');
 
-  grpLvlCon = step.AutoContrasts;
+  grpLvlCon = node.DummyContrasts;
 
 end

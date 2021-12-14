@@ -27,6 +27,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     errorHandling(mfilename(), 'missingRawDir', msg, false, opt.verbosity);
   end
 
+  getModelType(opt.model.file);
+
   printBatchName('specify subject level fmri model', opt);
 
   fmri_spec = struct('volt', 1, ...
@@ -53,21 +55,16 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % Create ffxDir if it doesnt exist
   % If it exists, issue a warning that it has been overwritten
   ffxDir = getFFXdir(subLabel, opt);
-  if exist(ffxDir, 'dir') %
-    msg = sprintf('overwriting directory: %s \n', ffxDir);
-    errorHandling(mfilename(), 'overWritingDir', msg, true, opt.verbosity);
-    rmdir(ffxDir, 's');
-    spm_mkdir(ffxDir);
-  end
+
+  overwriteDir(ffxDir, opt);
+
   fmri_spec.dir = {ffxDir};
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
 
-  fmri_spec.bases.hrf.derivs = opt.model.hrfDerivatives;
+  fmri_spec.bases.hrf.derivs = getHRFderivatives(opt.model.file);
 
-  % The following lines are commented out because those parameters
-  % can be set in the spm_my_defaults.m
-  %  fmri_spec.cvi = 'AR(1)';
+  fmri_spec.cvi = getSerialCorrelationCorrection(opt.model.file);
 
   subLabel = regexify(subLabel);
 
@@ -91,25 +88,13 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         % get functional files
         fullpathBoldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
-        if opt.model.designOnly
-            try
-            hdr = spm_vol(fullpathBoldFilename);
-            catch
-                warning('Could not open %s.\nThis expected during testing.', fullpathBoldFilename)
-                % TODO a value should be passed by user for this
-                % hard coded value for test
-                hdr = ones(200,1);
-            end
-            fmri_spec.sess(sesCounter).nscan = numel(hdr);
-        else
-            fmri_spec.sess(sesCounter).scans = {fullpathBoldFilename};
-        end
+        fmri_spec = setScans(opt, fullpathBoldFilename, fmri_spec, sesCounter);
 
         onsetsFile = returnOnsetsFile(BIDS, opt, ...
-            subLabel, ...
-            sessions{iSes}, ...
-            opt.taskName{iTask}, ...
-            runs{iRun});
+                                      subLabel, ...
+                                      sessions{iSes}, ...
+                                      opt.taskName{iTask}, ...
+                                      runs{iRun});
 
         fmri_spec.sess(sesCounter).multi = ...
             cellstr(onsetsFile);
@@ -135,9 +120,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         fmri_spec.sess(sesCounter).cond = ...
             struct('name', {}, 'onset', {}, 'duration', {});
 
-        % The following lines are commented out because those parameters
-        % can be set in the spm_my_defaults.m
-        %  fmri_spec.sess(ses_counter).hpf = 128;
+        fmri_spec.sess(sesCounter).hpf = getHighPassFilter(opt.model.file);
 
         sesCounter = sesCounter + 1;
 
@@ -146,7 +129,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   end
 
   if opt.model.designOnly
-      matlabbatch{end + 1}.spm.stats.fmri_design = fmri_spec;
+    matlabbatch{end + 1}.spm.stats.fmri_design = fmri_spec;
   else
     fmri_spec.mask = {''};
     matlabbatch{end + 1}.spm.stats.fmri_spec = fmri_spec;
@@ -177,28 +160,44 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
   end
 end
 
+function fmriSpec = setScans(opt, fullpathBoldFilename, fmriSpec, sesCounter)
+  if opt.model.designOnly
+    try
+      hdr = spm_vol(fullpathBoldFilename);
+    catch
+      warning('Could not open %s.\nThis expected during testing.', fullpathBoldFilename);
+      % TODO a value should be passed by user for this
+      % hard coded value for test
+      hdr = ones(200, 1);
+    end
+    fmriSpec.sess(sesCounter).nscan = numel(hdr);
+  else
+    fmriSpec.sess(sesCounter).scans = {fullpathBoldFilename};
+  end
+end
+
 function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, run)
 
-        % get events file from raw data set and convert it to a onsets.mat file
-        % store in the subject level GLM directory
-        query = struct( ...
-                       'sub',  subLabel, ...
-                       'task', task, ...
-                       'ses', session, ...
-                       'run', run, ...
-                       'suffix', 'events', ...
-                       'extension', '.tsv');
+  % get events file from raw data set and convert it to a onsets.mat file
+  % store in the subject level GLM directory
+  query = struct( ...
+                 'sub',  subLabel, ...
+                 'task', task, ...
+                 'ses', session, ...
+                 'run', run, ...
+                 'suffix', 'events', ...
+                 'extension', '.tsv');
 
-        tsvFile = bids.query(BIDS.raw, 'data', query);
+  tsvFile = bids.query(BIDS.raw, 'data', query);
 
-        if isempty(tsvFile)
-          msg = sprintf('No events.tsv file found in:\n\t%s\nfor query:%s\n', ...
-                        BIDS.raw.pth, ...
-                        createUnorderedList(query));
-          errorHandling(mfilename(), 'emptyInput', msg, false);
-        end
+  if isempty(tsvFile)
+    msg = sprintf('No events.tsv file found in:\n\t%s\nfor query:%s\n', ...
+                  BIDS.raw.pth, ...
+                  createUnorderedList(query));
+    errorHandling(mfilename(), 'emptyInput', msg, false);
+  end
 
-        onsetFilename = createAndReturnOnsetFile(opt, ...
-                                                         subLabel, ...
-                                                         tsvFile);
+  onsetFilename = createAndReturnOnsetFile(opt, ...
+                                           subLabel, ...
+                                           tsvFile);
 end

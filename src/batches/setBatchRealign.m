@@ -46,87 +46,95 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   switch action
     case 'realignUnwarp'
       msg = 'REALIGN & UNWARP';
-      matlabbatch{end + 1}.spm.spatial.realignunwarp.eoptions.weight = {''};
-      matlabbatch{end}.spm.spatial.realignunwarp.uwroptions.uwwhich = [2 1];
+      spatial.realignunwarp.eoptions.weight = {''};
+      spatial.realignunwarp.uwroptions.uwwhich = [2 1];
 
     case 'realignReslice'
       msg = 'REALIGN & RESLICE';
-      matlabbatch{end + 1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
-      matlabbatch{1}.spm.spatial.realign.estwrite.roptions.which = [2 1];
+      spatial.realign.estwrite.eoptions.weight = {''};
+      spatial.realign.estwrite.roptions.which = [2 1];
 
     case 'realign'
       msg = 'REALIGN';
-      matlabbatch{end + 1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
-      matlabbatch{end}.spm.spatial.realign.estwrite.roptions.which = [0 1];
+      spatial.realign.estwrite.eoptions.weight = {''};
+      spatial.realign.estwrite.roptions.which = [0 1];
 
     case 'reslice'
       msg = 'RESLICE';
-      matlabbatch{end + 1}.spm.spatial.realign.write.roptions.which = [2 0];
+      spatial.realign.write.roptions.which = [2 0];
 
   end
 
   printBatchName(msg, opt);
 
-  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
-
   runCounter = 1;
 
-  for iSes = 1:nbSessions
+  for iTask = 1:numel(opt.taskName)
 
-    % get all runs for that subject across all sessions
-    [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
+    opt.query.task = opt.taskName{iTask};
 
-    for iRun = 1:nbRuns
+    [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
-      % get the filename for this bold run for this task
-      % in case we did slice timing we specify it in the file to query
-      opt.query.desc = '';
-      opt = addStcToQuery(opt);
-      [boldFilename, subFuncDataDir] = getBoldFilename( ...
-                                                       BIDS, ...
-                                                       subLabel, ...
-                                                       sessions{iSes}, ...
-                                                       runs{iRun}, ...
-                                                       opt);
+    for iSes = 1:nbSessions
 
-      if size(boldFilename, 1) > 1
-        errorHandling(mfilename(), 'tooManyFiles', 'This should only get one file.', false, true);
+      % get all runs for that subject across all sessions
+      [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
+
+      for iRun = 1:nbRuns
+
+        % get the filename for this bold run for this task
+        % in case we did slice timing we specify it in the file to query
+        opt.query.desc = '';
+        opt = addStcToQuery(opt);
+        [boldFilename, subFuncDataDir] = getBoldFilename( ...
+                                                         BIDS, ...
+                                                         subLabel, ...
+                                                         sessions{iSes}, ...
+                                                         runs{iRun}, ...
+                                                         opt);
+
+        if size(boldFilename, 1) > 1
+          errorHandling(mfilename(), ...
+                        'tooManyFiles', ...
+                        'This should only get one file.', ...
+                        false, ...
+                        true);
+        end
+
+        [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, boldFilename);
+
+        file = fullfile(subFuncDataDir, boldFilename);
+
+        switch action
+
+          % we reslice images that come from a previous batch
+          % so we can return early
+          case 'reslice'
+            spatial.realign.write.data(1) = ...
+                cfg_dep('Coregister: Estimate: Coregistered Images', ...
+                        returnDependency(opt, 'coregister'), ...
+                        substruct('.', 'cfiles'));
+            matlabbatch{end + 1}.spm.spatial = spatial;
+            return
+
+          case 'realignUnwarp'
+            vdmFile = getVdmFile(BIDS, opt, boldFilename);
+            spatial.realignunwarp.data(1, runCounter).pmscan = { vdmFile };
+            spatial.realignunwarp.data(1, runCounter).scans = { file };
+
+          otherwise
+            spatial.realign.estwrite.data{1, runCounter} = { file };
+
+        end
+
+        runCounter = runCounter + 1;
       end
 
-      prefix = '';
-      [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, boldFilename);
-
-      file = fullfile(subFuncDataDir, boldFilename);
-
-      switch action
-
-        % we reslice images that come from a previous batch so we can return
-        % early
-        case 'reslice'
-
-          matlabbatch{end}.spm.spatial.realign.write.data(1) = ...
-            cfg_dep('Coregister: Estimate: Coregistered Images', ...
-                    returnDependency(opt, 'coregister'), ...
-                    substruct('.', 'cfiles'));
-
-          return
-
-        case 'realignUnwarp'
-
-          vdmFile = getVdmFile(BIDS, opt, boldFilename);
-          matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = { vdmFile };
-          matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = { file };
-
-        otherwise
-
-          matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = { file };
-
-      end
-
-      runCounter = runCounter + 1;
     end
 
   end
+
+  matlabbatch{end + 1}.spm.spatial = spatial;
 
   %% defaults
   % The following lines are commented out because those parameters

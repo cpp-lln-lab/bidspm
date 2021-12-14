@@ -8,6 +8,78 @@ function test_suite = test_specifyContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_specifyContrasts_missing_condition()
+  %
+  % to test the generation of contrasts when there are several runs
+  %
+
+  taskName = 'motion';
+
+  % GIVEN
+  Contrasts.Name = 'motion_gt_foo';
+  Contrasts.ConditionList = {'motion', 'foo'};
+  Contrasts.Weights = [1, -1];
+  Contrasts.Test = 't';
+
+  model = createEmptyStatsModel;
+  model.Input.task = taskName;
+  model.Nodes{1}.Contrasts = Contrasts;
+  model.Nodes = model.Nodes{1};
+
+  model.Nodes = rmfield(model.Nodes, 'DummyContrasts');
+
+  SPM.xX.name = { ...
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                };
+
+  SPM.xX.X = ones(1, numel(SPM.xX.name));
+
+  % WHEN
+  assertWarning(@()specifyContrasts(SPM, model), ...
+                'specifyContrasts:noRegressorFound');
+
+  assertExceptionThrown( ...
+                        @()specifyContrasts(SPM, model), ...
+                        'specifyContrasts:noContrast');
+
+end
+
+function test_specifyContrasts_missing_condition_for_dummy_contrasts()
+  %
+  % to test the generation of contrasts when there are several runs
+  %
+
+  taskName = 'motion';
+
+  % GIVEN
+  DummyContrasts{1} = 'foo';
+
+  model = createEmptyStatsModel;
+  model.Input.task = taskName;
+  model.Nodes{1}.DummyContrasts.Contrasts = DummyContrasts;
+  model.Nodes{1}.DummyContrasts.Test = 't';
+  model.Nodes = model.Nodes{1};
+
+  model.Nodes = rmfield(model.Nodes, 'Contrasts');
+
+  SPM.xX.name = { ...
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                };
+
+  SPM.xX.X = ones(1, numel(SPM.xX.name));
+
+  % WHEN
+  assertWarning(@()specifyContrasts(SPM, model), ...
+                'specifyContrasts:noRegressorFound');
+
+  assertExceptionThrown( ...
+                        @()specifyContrasts(SPM, model), ...
+                        'specifyContrasts:noContrast');
+
+end
+
 function test_specifyContrasts_complex()
   %
   % to test the generation of contrasts when there are several runs
@@ -16,19 +88,20 @@ function test_specifyContrasts_complex()
   taskName = 'motion';
 
   % GIVEN
-  AutoContrasts{1} = 'motion';
-  AutoContrasts{2} = 'static';
+  DummyContrasts{1} = 'motion';
+  DummyContrasts{2} = 'static';
 
   Contrasts.Name = 'motion_gt_static';
   Contrasts.ConditionList = {'motion', 'static'};
-  Contrasts.weights = [1, -1];
+  Contrasts.Weights = [1, -1];
+  Contrasts.Test = 't';
 
   model = createEmptyStatsModel;
   model.Input.task = taskName;
-  model.Steps{1}.AutoContrasts = AutoContrasts;
-  model.Steps{1}.Contrasts = Contrasts;
-  model.Steps{2}.AutoContrasts = AutoContrasts;
-  model.Steps{2}.Contrasts = Contrasts;
+  model.Nodes{1}.DummyContrasts.Contrasts = DummyContrasts;
+  model.Nodes{1}.Contrasts = Contrasts;
+  model.Nodes{2}.DummyContrasts.Contrasts = DummyContrasts;
+  model.Nodes{2}.Contrasts = Contrasts;
 
   SPM.xX.name = { ...
                  ' motion*bf(1)'
@@ -42,7 +115,7 @@ function test_specifyContrasts_complex()
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
   % WHEN
-  contrasts = specifyContrasts(SPM, taskName, model);
+  contrasts = specifyContrasts(SPM, model);
 
   % THEN
   names_contrast = { ...
@@ -88,22 +161,35 @@ function test_specifyContrasts_vismotion()
   model = spm_jsonread(opt.model.file);
 
   % WHEN
-  contrasts = specifyContrasts(SPM, opt.taskName, model);
+  contrasts = specifyContrasts(SPM, model);
 
   % THEN
-  expected.name = 'VisMot'; %#ok<*AGROW>
+  expected.name = 'VisMot_1'; %#ok<*AGROW>
   expected.C = [1 0 0 0 0 0 0 0 0];
 
-  expected(2).name = 'VisStat';
-  expected(2).C = [0 1 0 0 0 0 0 0 0];
+  expected(end + 1).name = 'VisStat_1';
+  expected(end).C = [0 1 0 0 0 0 0 0 0];
 
-  expected(3).name = 'VisMot_gt_VisStat';
-  expected(3).C = [1 -1 0 0 0 0 0 0 0];
+  expected(end + 1).name = 'VisMot_gt_VisStat_1';
+  expected(end).C = [1 -1 0 0 0 0 0 0 0];
 
-  expected(4).name = 'VisStat_gt_VisMot';
-  expected(4).C = [-1 1 0 0 0 0 0 0 0];
+  expected(end + 1).name = 'VisStat_gt_VisMot_1';
+  expected(end).C = [-1 1 0 0 0 0 0 0 0];
 
-  assertEqual(contrasts, expected);
+  expected(end + 1).name = 'VisMot'; %#ok<*AGROW>
+  expected(end).C = [1 0 0 0 0 0 0 0 0];
+
+  expected(end + 1).name = 'VisStat';
+  expected(end).C = [0 1 0 0 0 0 0 0 0];
+
+  expected(end + 1).name = 'VisMot_gt_VisStat';
+  expected(end).C = [1 -1 0 0 0 0 0 0 0];
+
+  expected(end + 1).name = 'VisStat_gt_VisMot';
+  expected(end).C = [-1 1 0 0 0 0 0 0 0];
+
+  assertEqual({contrasts.name}', {expected.name}');
+  assertEqual({contrasts.C}', {expected.C}');
 
 end
 
@@ -126,11 +212,14 @@ function test_specifyContrasts_vislocalizer()
   model = spm_jsonread(opt.model.file);
 
   % WHEN
-  contrasts = specifyContrasts(SPM, opt.taskName, model);
+  contrasts = specifyContrasts(SPM, model);
 
   % THEN
   expected.name = 'VisMot_1';
   expected.C = [1 0 0 0 0 0 0 0 0];
+
+  expected(end + 1).name = 'VisStat_1';
+  expected(end).C = [0 1 0 0 0 0 0 0 0];
 
   expected(end + 1).name = 'VisMot_&_VisStat_1';
   expected(end).C = [1 1 0 0 0 0 0 0 0];
@@ -150,6 +239,7 @@ function test_specifyContrasts_vislocalizer()
   expected(end + 1).name = 'VisStat_gt_VisMot';
   expected(end).C = [-1 1 0 0 0 0 0 0 0];
 
-  assertEqual(contrasts, expected);
+  assertEqual({contrasts.name}', {expected.name}');
+  assertEqual({contrasts.C}', {expected.C}');
 
 end

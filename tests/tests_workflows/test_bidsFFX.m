@@ -18,7 +18,7 @@ function test_bidsFFX_contrasts()
 
   matlabbatch = bidsFFX('contrasts', opt);
 
-  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 7);
+  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 8);
 
 end
 

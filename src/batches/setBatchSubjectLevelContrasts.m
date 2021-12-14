@@ -28,7 +28,7 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
   model = spm_jsonread(opt.model.file);
 
   % Create Contrasts
-  contrasts = specifyContrasts(SPM, opt.taskName, model);
+  contrasts = specifyContrasts(SPM, model);
   for icon = 1:size(contrasts, 2)
     consess{icon}.tcon.name = contrasts(icon).name; %#ok<*AGROW>
     consess{icon}.tcon.convec = contrasts(icon).C;

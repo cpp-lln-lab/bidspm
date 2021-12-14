@@ -15,25 +15,25 @@ function test_bidsResults_basic()
   opt.space = {'MNI'};
 
   % Specify what ouput we want
-  opt.result.Steps(1) = returnDefaultResultsStructure();
+  opt.result.Nodes(1) = returnDefaultResultsStructure();
 
-  opt.result.Steps(1).Level = 'subject';
+  opt.result.Nodes(1).Level = 'subject';
 
-  opt.result.Steps(1).Contrasts(1).Name = 'VisMot_gt_VisStat';
+  opt.result.Nodes(1).Contrasts(1).Name = 'VisMot_gt_VisStat';
 
-  opt.result.Steps(1).Contrasts(1).MC =  'FWE';
-  opt.result.Steps(1).Contrasts(1).p = 0.05;
-  opt.result.Steps(1).Contrasts(1).k = 5;
+  opt.result.Nodes(1).Contrasts(1).MC =  'FWE';
+  opt.result.Nodes(1).Contrasts(1).p = 0.05;
+  opt.result.Nodes(1).Contrasts(1).k = 5;
 
-  opt.result.Steps(1).Output.png = true();
+  opt.result.Nodes(1).Output.png = true();
 
-  opt.result.Steps(1).Output.csv = true();
+  opt.result.Nodes(1).Output.csv = true();
 
-  opt.result.Steps(1).Output.thresh_spm = true();
+  opt.result.Nodes(1).Output.thresh_spm = true();
 
-  opt.result.Steps(1).Output.binary = true();
+  opt.result.Nodes(1).Output.binary = true();
 
-  opt.result.Steps(1).Output.NIDM_results = true();
+  opt.result.Nodes(1).Output.NIDM_results = true();
 
   %% WHEN
   matlabbatch = bidsResults(opt);

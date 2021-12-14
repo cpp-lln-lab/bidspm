@@ -31,13 +31,13 @@ create_raw_func_vismotion() {
 
 	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-1_events.tsv
 	echo "onset\tduration\ttrial_type" >"${filename}"
-	echo "2\t2\tVisMotUp" >>"${filename}"
-	echo "4\t2\tVisMotDown" >>"${filename}"
+	echo "2\t2\tVisMot" >>"${filename}"
+	echo "4\t2\tVisStat" >>"${filename}"
 
 	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-2_events.tsv
 	echo "onset\tduration\ttrial_type" >"${filename}"
-	echo "3\t2\tVisMotDown" >>"${filename}"
-	echo "6\t2\tVisMotUp" >>"${filename}"
+	echo "3\t2\tVisStat" >>"${filename}"
+	echo "6\t2\tVisMot" >>"${filename}"
 
 	touch "${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_acq-1p60mm_run-1${suffix}.nii"
 	touch "${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_acq-1p60mm_dir-PA_run-1${suffix}.nii"

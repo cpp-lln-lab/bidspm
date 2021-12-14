@@ -13,8 +13,8 @@ function contrastsList = getContrastsList(modelFile, nodeType)
 
   model = bids.util.jsondecode(modelFile);
 
-  step = returnModelStep(model, nodeType);
+  node = returnModelNode(model, nodeType);
 
-  contrastsList = step.Contrasts;
+  contrastsList = node.Contrasts;
 
 end

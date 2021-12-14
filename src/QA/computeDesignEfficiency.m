@@ -50,7 +50,7 @@ function e = computeDesignEfficiency(tsvFile, opt)
   %       json = createEmptyStatsModel();
   %       runStepIdx = 1;
   %       json.Steps{runStepIdx}.Model.X = {'trial_type.cdt_A', 'trial_type.cdt_B'};
-  %       json.Steps{runStepIdx}.AutoContrasts = {'trial_type.cdt_A', 'trial_type.cdt_B'};
+  %       json.Steps{runStepIdx}.DummyContrasts = {'trial_type.cdt_A', 'trial_type.cdt_B'};
   %
   %       contrast = struct('type', 't', ...
   %                         'Name', 'A_gt_B', ...
@@ -123,11 +123,11 @@ function e = computeDesignEfficiency(tsvFile, opt)
   opt.CM = {};
 
   %%
-  autoContrastsList = getAutoContrastsList(opt.model.file);
-  for i = 1:numel(autoContrastsList)
-    contrast = filterTrialtypes(data.conditions, autoContrastsList{i});
+  DummyContrastsList = getDummyContrastsList(opt.model.file);
+  for i = 1:numel(DummyContrastsList.Contrasts)
+    contrast = filterTrialtypes(data.conditions, DummyContrastsList.Contrasts{i});
     opt.CM{i} = contrast';
-    opt.contrast_name{i} = autoContrastsList{i};
+    opt.contrast_name{i} = DummyContrastsList.Contrasts{i};
   end
 
   %%
@@ -137,7 +137,7 @@ function e = computeDesignEfficiency(tsvFile, opt)
     contrast = zeros(size(opt.CM{end}));
     for cdt = 1:numel(contrastsList(i).ConditionList)
       idx = filterTrialtypes(data.conditions, contrastsList(i).ConditionList{cdt});
-      contrast(idx) = contrastsList(i).weights(cdt);
+      contrast(idx) = contrastsList(i).Weights(cdt);
     end
     opt.CM{end + 1} = contrast;
     opt.contrast_name{end + 1} = contrastsList(i).Name;

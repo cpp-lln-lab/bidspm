@@ -1,7 +1,7 @@
 function opt = createDefaultStatsModel(BIDS, opt)
   %
   % Creates a default model json file.
-  % This model has 3 "steps" in that order:
+  % This model has 3 "Nodes" in that order:
   %
   % - Run level:
   %   - will create a GLM with a design matrix that includes all
@@ -9,7 +9,7 @@ function opt = createDefaultStatsModel(BIDS, opt)
   %     all subjects and runs for the task specified in ``opt``,
   %     as well as the realignment parameters.
   %
-  %   - use AutoContrasts to generate contrasts for each trial_type
+  %   - use DummyContrasts to generate contrasts for each trial_type
   %     for each run. This can be useful to run MVPA analysis on the beta
   %     images of each run.
   %
@@ -19,12 +19,12 @@ function opt = createDefaultStatsModel(BIDS, opt)
   %     all subjects and runs for the task specified in ``opt``,
   %     as well as the realignment parameters.
   %
-  %   - use AutoContrasts to generate contrasts for all each trial_type
+  %   - use DummyContrasts to generate contrasts for all each trial_type
   %     across runs
   %
   % - Dataset level:
   %
-  %   - use AutoContrasts to generate contrasts for each trial_type
+  %   - use DummyContrasts to generate contrasts for each trial_type
   %     for at the group level.
   %
   % USAGE::
@@ -54,6 +54,9 @@ function opt = createDefaultStatsModel(BIDS, opt)
   trialTypeList = listAllTrialTypes(BIDS, opt);
 
   content = createEmptyStatsModel();
+
+  content.Nodes{1} = rmfield(content.Nodes{1}, {'Transformations'});
+  content.Nodes{2} = rmfield(content.Nodes{2}, {'Transformations'});
 
   content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList);
 
@@ -111,13 +114,15 @@ function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
       trialTypeName = ['trial_type.' trialTypeList{iTrialType}];
 
       % subject
-      content.Steps{1}.Model.X{iTrialType} = trialTypeName;
+      content.Nodes{1}.Model.X{iTrialType} = trialTypeName;
+      content.Nodes{1}.Model.HRF.Variables{iTrialType} = trialTypeName;
 
       % run
-      content.Steps{2}.Model.X{iTrialType} = trialTypeName;
+      content.Nodes{2}.Model.X{iTrialType} = trialTypeName;
+      content.Nodes{2}.Model.HRF.Variables{iTrialType} = trialTypeName;
 
-      for iStep = 1:numel(content.Steps)
-        content.Steps{iStep}.AutoContrasts{iTrialType} = trialTypeName;
+      for iNode = 1:numel(content.Nodes)
+        content.Nodes{iNode}.DummyContrasts.Contrasts{iTrialType} = trialTypeName;
       end
     end
 
@@ -125,8 +130,8 @@ function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
 
   % add realign parameters
   for iRealignParam = 1:numel(REALIGN_PARAMETERS_NAME)
-    content.Steps{1}.Model.X{end + 1} = REALIGN_PARAMETERS_NAME{iRealignParam};
-    content.Steps{2}.Model.X{end + 1} = REALIGN_PARAMETERS_NAME{iRealignParam};
+    content.Nodes{1}.Model.X{end + 1} = REALIGN_PARAMETERS_NAME{iRealignParam};
+    content.Nodes{2}.Model.X{end + 1} = REALIGN_PARAMETERS_NAME{iRealignParam};
   end
 
 end

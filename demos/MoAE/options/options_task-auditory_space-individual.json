@@ -20,7 +20,7 @@
         "useUnwarp": true
     },
     "result": {
-        "Steps": {
+        "Nodes": {
             "Contrasts": [
                 {
                     "MC": "FWE",

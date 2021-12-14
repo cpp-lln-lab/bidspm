@@ -1,13 +1,16 @@
 {
   "Name": "vislocalizer",
+  "BIDSModelVersion": "1.0.0",
   "Description": "contrasts for the visual localizer",
   "Input": {
     "task": "vislocalizer"
   },
-  "Steps": [
+  "Nodes": [
     {
-      "Level": "run",
+      "Level": "Run",
+      "Name": "run_level",
       "Model": {
+        "Type": "glm",
         "X": [
           "trial_type.VisMot",
           "trial_type.VisStat",
@@ -19,14 +22,28 @@
           "rot_y",
           "rot_z"
         ],
+        "HRF": {
+          "Variables": [],
+          "Model": "DoubleGamma"
+        },
         "Options": {
-          "high_pass_filter_cutoff_secs": 128
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": " "
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "HRFderivatives": "Temporal"
+          }
         }
       },
-      "AutoContrasts": [
-        "trial_type.listening",
-        "trial_type.VisMot"
-      ],
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.VisMot",
+          "trial_type.VisStat"
+        ]
+      },
       "Contrasts": [
         {
           "Name": "VisMot_&_VisStat",
@@ -34,11 +51,11 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "weights": [
+          "Weights": [
             1,
             1
           ],
-          "type": "t"
+          "Test": "t"
         },
         {
           "Name": "VisMot_&_VisStat_lt_baseline",
@@ -46,17 +63,19 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "weights": [
+          "Weights": [
             -1,
             -1
           ],
-          "type": "t"
+          "Test": "t"
         }
       ]
     },
     {
-      "Level": "subject",
+      "Level": "Subject",
+      "Name": "subject_level",
       "Model": {
+        "Type": "glm",
         "X": [
           "trial_type.VisMot",
           "trial_type.VisStat",
@@ -68,14 +87,28 @@
           "rot_y",
           "rot_z"
         ],
+        "HRF": {
+          "Variables": [],
+          "Model": "DoubleGamma"
+        },
         "Options": {
-          "high_pass_filter_cutoff_secs": 128
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": " "
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "HRFderivatives": "Temporal"
+          }
         }
       },
-      "AutoContrasts": [
-        "trial_type.VisMot",
-        "trial_type.VisStat"
-      ],
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.VisMot",
+          "trial_type.VisStat"
+        ]
+      },
       "Contrasts": [
         {
           "Name": "VisMot_gt_VisStat",
@@ -83,11 +116,11 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "weights": [
+          "Weights": [
             1,
             -1
           ],
-          "type": "t"
+          "Test": "t"
         },
         {
           "Name": "VisStat_gt_VisMot",
@@ -95,17 +128,19 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "weights": [
+          "Weights": [
             -1,
             1
           ],
-          "type": "t"
+          "Test": "t"
         }
       ]
     },
     {
-      "Level": "dataset",
+      "Level": "Dataset",
+      "Name": "dataset_level",
       "Model": {
+        "Type": "glm",
         "X": [
           "trial_type.VisMot",
           "trial_type.VisStat",
@@ -113,15 +148,21 @@
           "VisStat_gt_VisMot"
         ],
         "Options": {
-          "high_pass_filter_cutoff_secs": 128
+          "Mask": " "
+        },
+        "Software": {
+          "SPM": {}
         }
       },
-      "AutoContrasts": [
-        "trial_type.VisMot",
-        "trial_type.VisStat",
-        "VisMot_gt_VisStat",
-        "VisStat_gt_VisMot"
-      ]
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.VisMot",
+          "trial_type.VisStat",
+          "VisMot_gt_VisStat",
+          "VisStat_gt_VisMot"
+        ]
+      }
     }
   ]
 }

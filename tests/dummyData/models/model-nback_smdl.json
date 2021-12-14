@@ -1,5 +1,6 @@
 {
   "Name": "nback MVPA",
+  "BIDSModelVersion": "1.0.0",
   "Description": "for folder naming",
   "Input": {
     "task": "nback"

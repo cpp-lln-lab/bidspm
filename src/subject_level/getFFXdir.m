@@ -36,6 +36,6 @@ function ffxDir = getFFXdir(subLabel, opt)
 end
 
 function string = deregexify(string)
-    % remove any non alphanumeric characters
-    string = regexprep(string, '[^a-zA-Z0-9]+', '');
+  % remove any non alphanumeric characters
+  string = regexprep(string, '[^a-zA-Z0-9]+', '');
 end

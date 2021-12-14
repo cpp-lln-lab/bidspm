@@ -30,7 +30,7 @@ function test_computeDesignEfficiency_vislocalizer()
 
   e = computeDesignEfficiency(eventsFile{1}, opt);
 
-  assertElementsAlmostEqual(e, [0.005 0.005 0.001], 'absolute', 1e-3);
+  assertElementsAlmostEqual(e, [0.005 0.005 0.001 0.001], 'absolute', 1e-3);
 
 end
 
@@ -38,16 +38,16 @@ function test_computeDesignEfficiency_block_design
 
   %% create stats model JSON
   json = createEmptyStatsModel();
-  runStepIdx = 1;
-  json.Steps{runStepIdx}.Model.X = {'trial_type.cdt_A', 'trial_type.cdt_B'};
-  json.Steps{runStepIdx}.AutoContrasts = {'trial_type.cdt_A', 'trial_type.cdt_B'};
+  runNodeIdx = 1;
+  json.Nodes{runNodeIdx}.Model.X = {'trial_type.cdt_A', 'trial_type.cdt_B'};
+  json.Nodes{runNodeIdx}.DummyContrasts.Contrasts = {'trial_type.cdt_A', 'trial_type.cdt_B'};
 
-  contrast = struct('type', 't', ...
+  contrast = struct('Type', 't', ...
                     'Name', 'A_gt_B', ...
-                    'weights', [1, -1], ...
+                    'Weights', [1, -1], ...
                     'ConditionList', {{'trial_type.cdt_A', 'trial_type.cdt_B'}});
 
-  json.Steps{runStepIdx}.Contrasts = contrast;
+  json.Nodes{runNodeIdx}.Contrasts = contrast;
 
   bids.util.jsonwrite('smdl.json', json);
 

@@ -1,23 +1,16 @@
 {
    "Name": "vislocalizer",
+   "BIDSModelVersion": "1.0.0",
    "Description": "default model for vislocalizer",
    "Input": {
-      "task": "vislocalizer"
+      "task": [
+         "vislocalizer"
+      ]
    },
-   "Steps": [
+   "Nodes": [
       {
-         "Level": "run",
-         "Transformations": [
-            {
-               "Name": "Factor",
-               "Inputs": ["trial_type"]
-            },
-            {
-               "Name": "Convolve",
-               "Model": "spm",
-               "Inputs": [" "]
-            }
-         ],
+         "Level": "Run",
+         "Name": "run_level",
          "Model": {
             "X": [
                "trial_type.VisMot",
@@ -29,34 +22,46 @@
                "rot_y",
                "rot_z"
             ],
+            "HRF": {
+               "Variables": [
+                  "trial_type.VisMot",
+                  "trial_type.VisStat"
+               ],
+               "Model": "DoubleGamma"
+            },
+            "Type": "glm",
             "Options": {
-               "high_pass_filter_cutoff_secs": 128
+               "HighPassFilterCutoffHz": 0.0078,
+               "Mask": " "
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST"
+                  "SerialCorrelation": "FAST",
+                  "HRFderivatives": "Temporal"
                }
-            },
-            "Mask": " "
+            }
          },
-         "AutoContrasts": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-         ]
+         "Contrasts": {
+            "Name": "",
+            "ConditionList": [
+               ""
+            ],
+            "Weights": [
+               ""
+            ],
+            "Test": ""
+         },
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               "trial_type.VisMot",
+               "trial_type.VisStat"
+            ]
+         }
       },
       {
-         "Level": "subject",
-         "Transformations": [
-            {
-               "Name": "Factor",
-               "Inputs": ["trial_type"]
-            },
-            {
-               "Name": "Convolve",
-               "Model": "spm",
-               "Inputs": [" "]
-            }
-         ],
+         "Level": "Subject",
+         "Name": "subject_level",
          "Model": {
             "X": [
                "trial_type.VisMot",
@@ -68,37 +73,72 @@
                "rot_y",
                "rot_z"
             ],
+            "HRF": {
+               "Variables": [
+                  "trial_type.VisMot",
+                  "trial_type.VisStat"
+               ],
+               "Model": "DoubleGamma"
+            },
+            "Type": "glm",
             "Options": {
-               "high_pass_filter_cutoff_secs": 128
+               "HighPassFilterCutoffHz": 0.0078,
+               "Mask": " "
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST"
+                  "SerialCorrelation": "FAST",
+                  "HRFderivatives": "Temporal"
                }
-            },
-            "Mask": " "
+            }
          },
-         "AutoContrasts": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-         ]
+         "Contrasts": {
+            "Name": "",
+            "ConditionList": [
+               ""
+            ],
+            "Weights": [
+               ""
+            ],
+            "Test": ""
+         },
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               "trial_type.VisMot",
+               "trial_type.VisStat"
+            ]
+         }
       },
       {
-         "Level": "dataset",
+         "Level": "Dataset",
+         "Name": "dataset_level",
          "Model": {
-            "X": [" "],
+            "X": [
+               " "
+            ],
+            "Type": "glm",
             "Options": {
-            },
-            "Software": {
-               "SPM": {
-               }
-            },
-            "Mask": " "
+               "Mask": " "
+            }
          },
-         "AutoContrasts": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-         ]
+         "Contrasts": {
+            "Name": "",
+            "ConditionList": [
+               ""
+            ],
+            "Weights": [
+               ""
+            ],
+            "Test": ""
+         },
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               "trial_type.VisMot",
+               "trial_type.VisStat"
+            ]
+         }
       }
    ]
 }

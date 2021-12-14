@@ -8,24 +8,28 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  unwarpParam = spm_select('FPListRec', BIDS.pth, ...
-                           ['^.*sub-' subLabel '.*_task-' opt.taskName '.*_bold_uw.mat$']);
+  for iTask = 1:numel(opt.taskName)
 
-  for iFile = 1:size(unwarpParam, 1)
+    unwarpParam = spm_select('FPListRec', BIDS.pth, ...
+                             ['^.*sub-' subLabel '.*_task-' opt.taskName{iTask} '.*_bold_uw.mat$']);
 
-    inputFilename = strrep(unwarpParam(iFile, :), '_uw.', '.');
+    for iFile = 1:size(unwarpParam, 1)
 
-    p = bids.internal.parse_filename(inputFilename);
-    p.entities.label = p.suffix;
-    p.suffix = 'unwarpparam';
-    p.ext = '.mat';
+      inputFilename = strrep(unwarpParam(iFile, :), '_uw.', '.');
 
-    bidsFile = bids.File(p);
+      p = bids.internal.parse_filename(inputFilename);
+      p.entities.label = p.suffix;
+      p.suffix = 'unwarpparam';
+      p.ext = '.mat';
 
-    newName = spm_file(unwarpParam(iFile, :), 'filename',  bidsFile.filename);
+      bidsFile = bids.File(p);
 
-    if ~isempty(unwarpParam(iFile, :))
-      movefile(unwarpParam(iFile, :), newName);
+      newName = spm_file(unwarpParam(iFile, :), 'filename',  bidsFile.filename);
+
+      if ~isempty(unwarpParam(iFile, :))
+        movefile(unwarpParam(iFile, :), newName);
+      end
+
     end
 
   end

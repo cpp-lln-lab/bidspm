@@ -36,7 +36,7 @@ function bidsCreateROI(opt)
   end
   spm_mkdir(fullfile(opt.dir.roi, 'group'));
 
-  opt.dir.jobs = fullfile(opt.dir.roi, 'jobs', opt.taskName);
+  opt.dir.jobs = fullfile(opt.dir.roi, 'jobs', strjoin(opt.taskName, ''));
 
   hemi = {'L', 'R'};
 

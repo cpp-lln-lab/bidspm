@@ -10,10 +10,28 @@ end
 
 function test_createEmptyStatsModel_basic()
 
+  % skip test in CI
+  if isGithubCi
+    return
+  end
+
   content = createEmptyStatsModel();
+
+  %   bids.util.jsonencode(fullfile(pwd, 'model-empty_smdl.json'), content);
 
   expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-empty_smdl.json'));
 
+  assertEqual(fieldnames(content), fieldnames(expectedContent));
+  assertEqual(content.Nodes{3}.Model, expectedContent.Nodes{3}.Model);
+  assertEqual(content.Nodes{2}.Model, expectedContent.Nodes{2}.Model);
+  assertEqual(content.Nodes{1}.Model, expectedContent.Nodes{1}.Model);
+
+  fields = fieldnames(expectedContent);
+  for i = 1:numel(fields)
+    disp(expectedContent.(fields{i}));
+    disp(content.(fields{i}));
+    assertEqual(content.(fields{i}), expectedContent.(fields{i}));
+  end
   assertEqual(content, expectedContent);
 
 end

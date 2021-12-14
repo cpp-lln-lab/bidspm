@@ -31,11 +31,11 @@ function matlabbatch = bidsResults(opt)
 
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
-  for iStep = 1:length(opt.result.Steps)
+  for iStep = 1:length(opt.result.Nodes)
 
     % Depending on the level step we migh have to define a matlabbatch
     % for each subject or just on for the whole group
-    switch opt.result.Steps(iStep).Level
+    switch opt.result.Nodes(iStep).Level
 
       case 'run'
         warning('run level not implemented yet');
@@ -57,7 +57,7 @@ function matlabbatch = bidsResults(opt)
 
           results.dir = getFFXdir(subLabel, opt);
 
-          for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
+          for iCon = 1:length(opt.result.Nodes(iStep).Contrasts)
 
             matlabbatch = ...
                 setBatchSubjectLevelResults( ...
@@ -90,7 +90,7 @@ function matlabbatch = bidsResults(opt)
         load(fullfile(results.dir, 'SPM.mat'));
         results.nbSubj = SPM.nscan;
 
-        for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
+        for iCon = 1:length(opt.result.Nodes(iStep).Contrasts)
 
           matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results);
 

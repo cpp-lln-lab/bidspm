@@ -47,21 +47,23 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
 
     model = spm_jsonread(opt.model.file);
 
-    contrasts = specifyContrasts(SPM, opt.taskName, model);
+    contrasts = specifyContrasts(SPM, model);
 
     betaMaps = cell(length(contrasts), 1);
     tMaps = cell(length(contrasts), 1);
 
     % path to beta and t-map files.
 
-    fprintf(1, '\nConcatenating the following contrasts:');
+    printToScreen('\nConcatenating the following contrasts:', opt);
     for iContrast = 1:length(betaMaps)
 
-      fprintf(1, '\n\t%s', contrasts(iContrast).name);
+      msg = sprintf('\n\t%s', contrasts(iContrast).name);
+      printToScreen(msg, opt);
       betasIndices = find(contrasts(iContrast).C);
 
       if numel(betasIndices) > 1
-        error('Supposed to concatenate one beta image per contrast.');
+        msg = 'Supposed to concatenate one beta image per contrast.';
+        errorHandling(mfilename(), 'concatOneImgOnly', msg, true, opt.verbosity);
       end
 
       % for this beta image we identify
@@ -128,27 +130,27 @@ function removeBetaImgTmaps(tMaps, deleteIndBeta, deleteIndTmaps, ffxDir)
   if deleteIndBeta
 
     % delete all individual beta maps
-    fprintf('Deleting individual beta-maps ...  ');
+    printToScreen('Deleting individual beta-maps ...  ', opt);
     delete(fullfile(ffxDir, ['beta_*', '.nii']));
-    fprintf('Done. \n\n\n ');
+    printToScreen('Done. \n', opt);
 
   end
 
   if  deleteIndTmaps
 
     % delete all individual con maps
-    fprintf('Deleting individual con maps ...  ');
+    printToScreen('Deleting individual con maps ...  ', opt);
     for iCon = 1:length(tMaps)
       delete(fullfile(ffxDir, ['con_', sprintf('%04d', iCon), '.nii']));
     end
-    fprintf('Done. \n\n\n ');
+    printToScreen('Done. \n', opt);
 
     % delete all individual t-maps
-    fprintf('Deleting individual t-maps ...  ');
+    printToScreen('Deleting individual t-maps ...  ', opt);
     for iTmap = 1:length(tMaps)
       delete(tMaps{iTmap}(1:end - 2));
     end
-    fprintf('Done. \n\n\n ');
+    printToScreen('Done. \n', opt);
 
   end
 

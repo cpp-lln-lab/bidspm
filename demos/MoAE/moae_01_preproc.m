@@ -18,7 +18,7 @@ opt = moae_get_option();
 
 download_moae_ds(download_data, clean);
 
-% reportBIDS(opt);
+reportBIDS(opt);
 
 opt.pipeline.type = 'preproc';
 

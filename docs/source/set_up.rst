@@ -64,7 +64,7 @@ An example of json file could look something like that::
         "Steps": [
             {
                 "Level": "subject",
-                "AutoContrasts": ["stim_type.motion", "stim_type.static"],
+                "DummyContrasts": ["stim_type.motion", "stim_type.static"],
                 "Contrasts": [
                     {
                         "Name": "motion_vs_static",
@@ -76,7 +76,7 @@ An example of json file could look something like that::
             },
             {
                 "Level": "dataset",
-                "AutoContrasts": [
+                "DummyContrasts": [
                     "stim_type.motion",
                     "stim_type.static",
                     "motion_vs_static"

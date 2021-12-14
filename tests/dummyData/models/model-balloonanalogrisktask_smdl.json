@@ -1,24 +1,31 @@
 {
    "Name": "balloonanalogrisktask",
+   "BIDSModelVersion": "1.0.0",
    "Description": "default model for balloonanalogrisktask",
    "Input": {
       "task": "balloonanalogrisktask"
    },
-   "Steps": [
+   "Nodes": [
       {
-         "Level": "subject",
+         "Level": "Run",
+         "Name": "run_level",
          "Transformations": [
             {
                "Name": "Factor",
-               "Inputs": ["trial_type"]
+               "Inputs": [
+                  "trial_type"
+               ]
             },
             {
                "Name": "Convolve",
                "Model": "spm",
-               "Inputs": [" "]
+               "Inputs": [
+                  " "
+               ]
             }
          ],
          "Model": {
+            "Type": "glm",
             "X": [
                "trans_x",
                "trans_y",
@@ -27,32 +34,48 @@
                "rot_y",
                "rot_z"
             ],
+            "HRF": {
+               "Variables": [],
+               "Model": "DoubleGamma"
+            },
             "Options": {
-               "high_pass_filter_cutoff_secs": 128
+               "HighPassFilterCutoffHz": 0.008,
+               "Mask": " "
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST"
+                  "SerialCorrelation": "FAST",
+                  "HRFderivatives": "Temporal"
                }
-            },
-            "Mask": " "
+            }
          },
-         "AutoContrasts": [" "]
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               " "
+            ]
+         }
       },
       {
-         "Level": "run",
+         "Level": "Subject",
+         "Name": "subject_level",
          "Transformations": [
             {
                "Name": "Factor",
-               "Inputs": ["trial_type"]
+               "Inputs": [
+                  "trial_type"
+               ]
             },
             {
                "Name": "Convolve",
                "Model": "spm",
-               "Inputs": [" "]
+               "Inputs": [
+                  " "
+               ]
             }
          ],
          "Model": {
+            "Type": "glm",
             "X": [
                "trans_x",
                "trans_y",
@@ -61,21 +84,51 @@
                "rot_y",
                "rot_z"
             ],
+            "HRF": {
+               "Variables": [],
+               "Model": "DoubleGamma"
+            },
             "Options": {
-               "high_pass_filter_cutoff_secs": 128
+               "HighPassFilterCutoffHz": 0.008,
+               "Mask": " "
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST"
+                  "SerialCorrelation": "FAST",
+                  "HRFderivatives": "Temporal"
                }
-            },
-            "Mask": " "
+            }
          },
-         "AutoContrasts": [" "]
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               " "
+            ]
+         }
       },
       {
-         "Level": "dataset",
-         "AutoContrasts": [" "]
+         "Level": "Dataset",
+         "Name": "dataset_level",
+         "Model": {
+            "X": [
+               "trial_type.VisMot",
+               "trial_type.VisStat",
+               "VisMot_gt_VisStat",
+               "VisStat_gt_VisMot"
+            ],
+            "Options": {
+               "Mask": " "
+            },
+            "Software": {
+               "SPM": {}
+            }
+         },
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               " "
+            ]
+         }
       }
    ]
 }

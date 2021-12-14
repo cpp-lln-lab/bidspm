@@ -1,6 +1,6 @@
 function HPF = getHighPassFilter(modelFile, nodeType)
   %
-  % returns the design matrix of a node of a BIDS statistical model
+  % returns the HPF of a node of a BIDS statistical model
   %
   % (C) Copyright 2021 CPP_SPM developers
 
@@ -15,8 +15,15 @@ function HPF = getHighPassFilter(modelFile, nodeType)
 
   model = bids.util.jsondecode(modelFile);
 
-  step = returnModelStep(model, nodeType);
+  node = returnModelNode(model, nodeType);
 
-  HPF = step.Model.Options.high_pass_filter_cutoff_secs;
+  if ~isfield(node.Model.Options, 'HighPassFilterCutoffHz') || ...
+          isempty(node.Model.Options.HighPassFilterCutoffHz)
+    msg = sprintf('No high-pass filter mentioned for node %s in BIDS model file\%s', ...
+                  nodeType, modelFile);
+    errorHandling(mfilename(), 'noHighPassFilter', msg, false, true);
+  else
+    HPF = 1 / node.Model.Options.HighPassFilterCutoffHz;
+  end
 
 end

@@ -66,25 +66,26 @@ function test_setBatchSubjectLevelGLMSpec_basic()
 
   %% THEN
   expectedContent = {    'volt'
-    'global'
-    'timing'
-    'dir'
-    'fact'
-    'bases'
-    'sess'
-    'mask'};
+                     'global'
+                     'timing'
+                     'dir'
+                     'fact'
+                     'bases'
+                     'cvi'
+                     'sess'
+                     'mask'};
 
   assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_spec), expectedContent);
   assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 2);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.sess(1).hpf, 125);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.cvi, 'FAST');
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs, [1 0]);
 
   cleanUp(fullfile(pwd, 'derivatives'));
 
 end
 
 function test_setBatchSubjectLevelGLMSpec_design_only()
-
-  return
-  % silence as this requires real data to estimate number of scans to model
 
   %% GIVEN
   subLabel = '^01';
@@ -104,18 +105,20 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
   %% THEN
-  expectedContent = {
-     'volt'
-    'global'
-    'timing'
-    'dir'
-    'fact'
-    'bases'
-    'sess'
-    'mask'};
+  expectedContent = {    'volt'
+                     'global'
+                     'timing'
+                     'dir'
+                     'fact'
+                     'bases'
+                     'cvi'
+                     'sess'};
 
   assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_design), expectedContent);
-  assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 2);
+  assertEqual(numel(matlabbatch{1}.spm.stats.fmri_design.sess), 2);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_design.sess(1).hpf, 125);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_design.cvi, 'FAST');
+  assertEqual(matlabbatch{1}.spm.stats.fmri_design.bases.hrf.derivs, [1 0]);
 
   cleanUp(fullfile(pwd, 'derivatives'));
 

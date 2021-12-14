@@ -1,4 +1,4 @@
-function contrastsList = getAutoContrastsList(modelFile, nodeType)
+function contrastsList = getDummyContrastsList(modelFile, nodeType)
   %
   % (C) Copyright 2021 Remi Gau
 
@@ -13,8 +13,8 @@ function contrastsList = getAutoContrastsList(modelFile, nodeType)
 
   model = bids.util.jsondecode(modelFile);
 
-  step = returnModelStep(model, nodeType);
+  node = returnModelNode(model, nodeType);
 
-  contrastsList = step.AutoContrasts;
+  contrastsList = node.DummyContrasts;
 
 end

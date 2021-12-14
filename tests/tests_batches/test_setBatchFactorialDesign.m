@@ -17,7 +17,6 @@ function test_setBatchFactorialDesign_basic()
   matlabbatch = {};
   matlabbatch = setBatchFactorialDesign(matlabbatch, opt);
 
-  % TODO
-  % add assert
+  assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.fd.icell.scans), 2);
 
 end

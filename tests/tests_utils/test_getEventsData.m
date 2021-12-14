@@ -25,5 +25,5 @@ function test_getEventsData_basic()
 
   data = getEventsData(eventsFile{1}, opt.model.file);
 
-  assertEqual(data.conditions, {'VisMotDown'; 'VisMotUp'});
+  assertEqual(data.conditions, {'VisMot'; 'VisStat'});
 end

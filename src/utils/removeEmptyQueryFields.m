@@ -1,4 +1,6 @@
 function query = removeEmptyQueryFields(query)
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
   names = {'ses', 'run'};
 

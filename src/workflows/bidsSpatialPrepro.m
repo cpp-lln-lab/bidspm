@@ -120,12 +120,14 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
       % convert realignment files to confounds.tsv
       % and rename a few non-bidsy file
-      rpFiles = spm_select('FPListRec', ...
-                           fullfile(BIDS.pth, ['sub-' subLabel]), ...
-                           ['^rp_.*sub-' subLabel '.*_task-' opt.taskName '.*_bold.txt$']);
-      for iFile = 1:size(rpFiles, 1)
-        rmInput = true;
-        convertRealignParamToTsv(rpFiles(iFile, :), opt, rmInput);
+      for iTask = 1:numel(opt.taskName)
+        rpFiles = spm_select('FPListRec', ...
+                             fullfile(BIDS.pth, ['sub-' subLabel]), ...
+                             ['^rp_.*sub-' subLabel '.*_task-' opt.taskName{iTask} '.*_bold.txt$']);
+        for iFile = 1:size(rpFiles, 1)
+          rmInput = true;
+          convertRealignParamToTsv(rpFiles(iFile, :), opt, rmInput);
+        end
       end
 
       renameSegmentParameter(BIDS, subLabel, opt);

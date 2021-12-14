@@ -18,32 +18,47 @@ function test_setBatchSubjectLevelContrasts_basic()
   matlabbatch = {};
   matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);
 
-  expectedBatch = [];
-  expectedBatch{end + 1}.spm.stats.con.spmmat = {fullfile(opt.dir.stats, ...
-                                                          'sub-01', ...
-                                                          'stats', ...
-                                                          'task-vismotion_space-MNI_FWHM-6', ...
-                                                          'SPM.mat')};
-  expectedBatch{end}.spm.stats.con.delete = 1;
+  con.spmmat = {fullfile(opt.dir.stats, ...
+                         'sub-01', ...
+                         'stats', ...
+                         'task-vismotion_space-MNI_FWHM-6', ...
+                         'SPM.mat')};
+  con.delete = 1;
 
-  consess{1}.tcon.name = 'VisMot'; %#ok<*AGROW>
-  consess{1}.tcon.convec = [1 0 0 0 0 0 0 0 0];
-  consess{1}.tcon.sessrep = 'none';
+  consess{1}.tcon.name = 'VisMot_1'; %#ok<*AGROW>
+  consess{end}.tcon.convec = [1 0 0 0 0 0 0 0 0];
+  consess{end}.tcon.sessrep = 'none';
 
-  consess{2}.tcon.name = 'VisStat'; %#ok<*AGROW>
-  consess{2}.tcon.convec = [0 1 0 0 0 0 0 0 0];
-  consess{2}.tcon.sessrep = 'none';
+  consess{end + 1}.tcon.name = 'VisStat_1'; %#ok<*AGROW>
+  consess{end}.tcon.convec = [0 1 0 0 0 0 0 0 0];
+  consess{end}.tcon.sessrep = 'none';
 
-  consess{3}.tcon.name = 'VisMot_gt_VisStat'; %#ok<*AGROW>
-  consess{3}.tcon.convec = [1 -1 0 0 0 0 0 0 0];
-  consess{3}.tcon.sessrep = 'none';
+  consess{end + 1}.tcon.name = 'VisMot_gt_VisStat_1'; %#ok<*AGROW>
+  consess{end}.tcon.convec = [1 -1 0 0 0 0 0 0 0];
+  consess{end}.tcon.sessrep = 'none';
 
-  consess{4}.tcon.name = 'VisStat_gt_VisMot'; %#ok<*AGROW>
-  consess{4}.tcon.convec = [-1 1 0 0 0 0 0 0 0];
-  consess{4}.tcon.sessrep = 'none';
+  consess{end + 1}.tcon.name = 'VisStat_gt_VisMot_1'; %#ok<*AGROW>
+  consess{end}.tcon.convec = [-1 1 0 0 0 0 0 0 0];
+  consess{end}.tcon.sessrep = 'none';
 
-  expectedBatch{end}.spm.stats.con.consess = consess;
+  consess{end + 1}.tcon.name = 'VisMot'; %#ok<*AGROW>
+  consess{end}.tcon.convec = [1 0 0 0 0 0 0 0 0];
+  consess{end}.tcon.sessrep = 'none';
 
-  assertEqual(matlabbatch{1}.spm.stats.con, expectedBatch{1}.spm.stats.con);
+  consess{end + 1}.tcon.name = 'VisStat'; %#ok<*AGROW>
+  consess{end}.tcon.convec = [0 1 0 0 0 0 0 0 0];
+  consess{end}.tcon.sessrep = 'none';
+
+  consess{end + 1}.tcon.name = 'VisMot_gt_VisStat'; %#ok<*AGROW>
+  consess{end}.tcon.convec = [1 -1 0 0 0 0 0 0 0];
+  consess{end}.tcon.sessrep = 'none';
+
+  consess{end + 1}.tcon.name = 'VisStat_gt_VisMot'; %#ok<*AGROW>
+  consess{end}.tcon.convec = [-1 1 0 0 0 0 0 0 0];
+  consess{end}.tcon.sessrep = 'none';
+
+  con.consess = consess;
+
+  assertEqual(matlabbatch{1}.spm.stats.con, con);
 
 end
