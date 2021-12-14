@@ -37,10 +37,13 @@
           }
         }
       },
-      "DummyContrasts": [
-        "trial_type.VisMot",
-        "trial_type.VisStat"
-      ]
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.VisMot",
+          "trial_type.VisStat"
+        ]
+      }
     }
   ]
 }
