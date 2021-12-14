@@ -14,11 +14,9 @@ function test_getFuncVoxelDims_basic()
 
   subFuncDataDir = fullfile(getMoaeDir(), 'inputs', 'raw', 'sub-01', 'func');
 
-  prefix = '';
-
   fileName = 'sub-01_task-auditory_bold.nii';
 
-  [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName);
+  [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, fileName);
 
   expectedVoxDim = [3 3 3];
   assertEqual(voxDim, expectedVoxDim);
@@ -34,11 +32,9 @@ function test_getFuncVoxelDims_force()
 
   subFuncDataDir = 'could be anything';
 
-  prefix = '';
-
   fileName = 'sub-01_task-auditory_bold.nii';
 
-  voxDim = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName);
+  voxDim = getFuncVoxelDims(opt, subFuncDataDir, fileName);
 
   expectedVoxDim = [1 1 1];
   assertEqual(voxDim, expectedVoxDim);
