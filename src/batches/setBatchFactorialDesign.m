@@ -35,21 +35,14 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
     % the strrep(Session{j}, 'trial_type.', '') is there to remove
     % 'trial_type.' because contrasts against baseline are renamed
     % at the subject level
-    conName = rmTrialTypeStr(grpLvlCon{j});
+    conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
 
     msg = sprintf('\n\n  Group contrast: %s\n\n', conName);
     printToScreen(msg, opt);
 
     directory = fullfile(rfxDir, conName);
 
-    % If it exists, issue a warning that it has been overwritten
-    if exist(directory, 'dir')
-      msg = sprintf('overwriting directory: %s \n', directory);
-      errorHandling(mfilename(), 'wrongSpmVersion', msg, true, opt.verbosity);
-      rmdir(directory, 's');
-    end
-
-    spm_mkdir(directory);
+    overwriteDir(directory, opt);
 
     icell(1).levels = 1; %#ok<*AGROW>
 

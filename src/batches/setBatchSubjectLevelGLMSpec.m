@@ -53,12 +53,9 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % Create ffxDir if it doesnt exist
   % If it exists, issue a warning that it has been overwritten
   ffxDir = getFFXdir(subLabel, opt);
-  if exist(ffxDir, 'dir') %
-    msg = sprintf('overwriting directory: %s \n', ffxDir);
-    errorHandling(mfilename(), 'overWritingDir', msg, true, opt.verbosity);
-    rmdir(ffxDir, 's');
-    spm_mkdir(ffxDir);
-  end
+
+  overwriteDir(ffxDir, opt);
+
   fmri_spec.dir = {ffxDir};
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
