@@ -43,17 +43,17 @@ function contrasts = specifyContrasts(SPM, model)
       node = node{1};
     end
 
+    [contrasts, counter] = specifylDummyContrasts(contrasts, node, counter, SPM, node.Level);
+
     switch lower(node.Level)
 
       case 'run'
 
-        [contrasts,  counter] = ...
-            specifyRunLvlContrasts(contrasts, node, counter, SPM);
+        [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM);
 
       case 'subject'
 
-        [contrasts,  counter] = ...
-            specifySubLvlContrasts(contrasts, node, counter, SPM);
+        [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM);
 
     end
 
@@ -61,45 +61,58 @@ function contrasts = specifyContrasts(SPM, model)
 
 end
 
-function  [cdtName, regIdx] = getRegressorIdx(cdtName, SPM)
-  % get regressors index corresponding to the HRF of of a condition
+function [contrasts, counter] = specifylDummyContrasts(contrasts, node, counter, SPM, level)
 
-  % get condition name
-  cdtName = strrep(cdtName, 'trial_type.', '');
-
-  % get regressors index corresponding to the HRF of that condition
-  regIdx = strfind(SPM.xX.name', [' ' cdtName '*bf(1)']);
-  regIdx = ~cellfun('isempty', regIdx);  %#ok<*STRCL1>
-
-  checkRegressorFound(regIdx, cdtName);
-
-end
-
-function [contrasts,  counter] = specifySubLvlContrasts(contrasts, node, counter, SPM)
+  if strcmpi(level, 'dataset')
+    return
+  end
 
   if isfield(node, 'DummyContrasts') && ...
-      isfield(node.DummyContrasts, 'Contrasts') && ...
-      isTtest(node.DummyContrasts)
+          isfield(node.DummyContrasts, 'Contrasts') && ...
+          isTtest(node.DummyContrasts)
 
     % first the contrasts to compute automatically against baseline
     for iCon = 1:length(node.DummyContrasts.Contrasts)
 
-      % get regressors index corresponding to the HRF of that condition
       cdtName = node.DummyContrasts.Contrasts{iCon};
-
       [cdtName, regIdx] = getRegressorIdx(cdtName, SPM);
-      C = newContrast(SPM, cdtName);
 
-      % give them a value of 1
-      C.C(end, regIdx) = 1;
+      switch lower(level)
 
-      [contrasts, counter] = appendContrast(contrasts, C, counter);
+        case 'subject'
 
-      clear regIdx;
+          C = newContrast(SPM, cdtName);
+          C.C(end, regIdx) = 1;
+          [contrasts, counter] = appendContrast(contrasts, C, counter);
+          clear regIdx;
+
+        case 'run'
+
+          % For each run of each condition, create a seperate contrast
+          regIdx = find(regIdx);
+          for iReg = 1:length(regIdx)
+
+            C = newContrast(SPM, [cdtName, '_', num2str(iReg)]);
+
+            % give each event a value of 1
+            C.C(end, regIdx(iReg)) = 1;
+            [contrasts, counter] = appendContrast(contrasts, C, counter);
+
+          end
+
+          clear regIdx;
+
+        otherwise
+          warning('only Run and Subject node level supported');
+      end
 
     end
 
   end
+
+end
+
+function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM)
 
   if isfield(node, 'Contrasts')
 
@@ -141,39 +154,9 @@ function [contrasts,  counter] = specifySubLvlContrasts(contrasts, node, counter
     end
 
   end
-
 end
 
-function [contrasts,  counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
-
-  if isfield(node, 'DummyContrasts') && ...
-     isfield(node.DummyContrasts, 'Contrasts') && ...
-     isTtest(node.DummyContrasts)
-
-    % first the contrasts to compute automatically against baseline
-    for iCon = 1:length(node.DummyContrasts.Contrasts)
-
-      % get regressors index corresponding to the HRF of that condition
-      cdtName = node.DummyContrasts.Contrasts{iCon};
-      [cdtName, regIdx] = getRegressorIdx(cdtName, SPM);
-
-      % For each run of each condition, create a seperate contrast
-      regIdx = find(regIdx);
-      for iReg = 1:length(regIdx)
-
-        C = newContrast(SPM, [cdtName, '_', num2str(iReg)]);
-
-        % give each event a value of 1
-        C.C(end, regIdx(iReg)) = 1;
-        [contrasts, counter] = appendContrast(contrasts, C, counter);
-
-      end
-
-      clear regIdx;
-
-    end
-
-  end
+function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
 
   if isfield(node, 'Contrasts')
 
@@ -238,21 +221,35 @@ function status = isTtest(structure)
   end
 end
 
+function C = newContrast(SPM, conName)
+  C.C = zeros(1, size(SPM.xX.X, 2));
+  C.name = conName;
+end
+
 function [contrasts, counter] = appendContrast(contrasts, C, counter)
   counter = counter + 1;
   contrasts(counter).C = C.C;
   contrasts(counter).name = C.name;
 end
 
-function C = newContrast(SPM, conName)
-  C.C = zeros(1, size(SPM.xX.X, 2));
-  C.name = conName;
+function  [cdtName, regIdx] = getRegressorIdx(cdtName, SPM)
+  % get regressors index corresponding to the HRF of of a condition
+
+  % get condition name
+  cdtName = strrep(cdtName, 'trial_type.', '');
+
+  % get regressors index corresponding to the HRF of that condition
+  regIdx = strfind(SPM.xX.name', [' ' cdtName '*bf(1)']);
+  regIdx = ~cellfun('isempty', regIdx);  %#ok<*STRCL1>
+
+  checkRegressorFound(regIdx, cdtName);
+
 end
 
 function checkRegressorFound(regIdx, cdtName)
   regIdx = find(regIdx);
   if all(~regIdx)
-    msg = sprint('No regressor found for condition "%s"', cdtName);
+    msg = sprintf('No regressor found for condition "%s"', cdtName);
     errorHandling(mfilename(), 'noRegressorFound', msg, true, true);
   end
 end
