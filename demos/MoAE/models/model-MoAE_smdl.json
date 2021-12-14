@@ -7,7 +7,7 @@
   },
   "Nodes": [
     {
-      "Level": "run",
+      "Level": "Run",
       "Name": "run_level",
       "Model": {
         "X": [
@@ -34,8 +34,7 @@
           "SPM": {
             "SerialCorrelation": "AR(1)"
           }
-        },
-        "Mask": ""
+        }
       },
       "DummyContrasts": {
         "Test": "t",

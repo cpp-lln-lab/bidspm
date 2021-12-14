@@ -1,12 +1,13 @@
 {
    "Name": "resampling",
+   "BIDSModelVersion": "1.0.0",
    "Description": "model for face repetition to check resampling effects",
    "Input": {
       "task": "facerepetition"
    },
    "Nodes": [
       {
-         "Level": "run",
+         "Level": "Run",
          "Transformations": [
             {
                "Name": "Factor",
@@ -35,22 +36,26 @@
                "rot_y",
                "rot_z"
             ],
+            "Type": "glm",
             "Options": {
-               "high_pass_filter_cutoff_secs": 128
+               "HighPassFilterCutoffHz": 0.0078,
+               "Mask": " "
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST"
+                  "SerialCorrelation": "AR(1)"
                }
-            },
-            "Mask": " "
+            }
          },
-         "DummyContrasts": [
-            "trial_type.F1",
-            "trial_type.F2",
-            "trial_type.N1",
-            "trial_type.N2"
-         ],
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               "trial_type.F1",
+               "trial_type.F2",
+               "trial_type.N1",
+               "trial_type.N2"
+            ]
+         },
          "Contrasts": [
             {
                "Name": "faces_gt_baseline",
@@ -69,27 +74,6 @@
                "Test": "t"
             }
          ]
-      },
-    {
-      "Level": "subject",
-      "Contrasts": [
-            {
-               "Name": "faces_gt_baseline",
-               "ConditionList": [
-                  "trial_type.F1",
-                  "trial_type.F2",
-                  "trial_type.N1",
-                  "trial_type.N2"
-               ],
-               "weights": [
-                  1,
-                  1,
-                  1,
-                  1
-               ],
-               "type": "t"
-            }
-      ]
-    }
+      }
    ]
 }

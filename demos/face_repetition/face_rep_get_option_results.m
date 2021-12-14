@@ -16,8 +16,6 @@ function opt =  face_rep_get_option_results()
 
   opt.space = {'MNI'};
 
-  opt.model.hrfDerivatives = [1 1];
-
   opt.model.file = fullfile( ...
                             fileparts(mfilename('fullpath')), ...
                             'models', ...
@@ -30,7 +28,7 @@ function opt =  face_rep_get_option_results()
 
   opt.result.Nodes(1).Level = 'subject';
 
-  opt.result.Nodes(1).Contrasts(1).Name = 'faces_gt_baseline';
+  opt.result.Nodes(1).Contrasts(1).Name = 'faces_gt_baseline_1';
 
   opt.result.Nodes(1).Contrasts(1).MC =  'FWE';
   opt.result.Nodes(1).Contrasts(1).p = 0.05;

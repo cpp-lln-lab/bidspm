@@ -33,7 +33,7 @@ if downloadData
 end
 
 %% Run batches
-% reportBIDS(opt);
+reportBIDS(opt);
 bidsCopyInputFolder(opt);
 
 bidsSegmentSkullStrip(opt);

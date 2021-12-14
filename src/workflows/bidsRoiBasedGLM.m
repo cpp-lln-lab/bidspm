@@ -49,7 +49,7 @@ function bidsRoiBasedGLM(opt)
 
     matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
-    batchName = ['specify_roi_based_GLM_task-', opt.taskName];
+    batchName = ['specify_roi_based_GLM_task-', strjoin(opt.taskName, '')];
 
     saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 

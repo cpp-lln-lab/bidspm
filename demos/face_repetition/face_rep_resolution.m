@@ -25,11 +25,11 @@ if downloadData
 end
 
 %% Run batches
-% reportBIDS(opt);
+reportBIDS(opt);
 
 modelFile = opt.model.file;
 
-for iResolution = 1:1:3
+for iResolution = 2:1:3
 
   opt.pipeline.type = 'preproc';
   opt.pipeline.name = ['cpp_spm-res' num2str(iResolution)];
@@ -44,6 +44,8 @@ for iResolution = 1:1:3
                                       opt.pipeline.name), ...
                              'cpath');
 
+  opt.dir.input = opt.dir.raw;
+
   %% create a new BIDS model json file
   % this way the GLM output will be store in a different directory for each
   % resolution as the name of the GLM directory is based on the name of the
@@ -53,10 +55,11 @@ for iResolution = 1:1:3
 
   p = bids.internal.parse_filename(modelFile);
   p.entities.model = [p.entities.model, ' resolution', num2str(iResolution)];
-  newModel = spm_file(opt.model.file, 'filename', createFilename(p));
+  bf = bids.File(p);
+  newModel = spm_file(opt.model.file, 'filename', bf.filename);
   opt.model.file = newModel;
 
-  spm_jsonwrite(newModel, content, struct('indent', '   '));
+  bids.util.jsonencode(newModel, content);
 
   % run analysis
   bidsCopyInputFolder(opt);
@@ -78,7 +81,7 @@ for iResolution = 1:1:3
   subLabel = '01';
   [BIDS, opt] = getData(opt, opt.dir.preproc);
   [~, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
-  opt.result.Steps(1).Output.montage.background = spm_select('FPList', ...
+  opt.result.Nodes(1).Output.montage.background = spm_select('FPList', ...
                                                              anatDataDir, ...
                                                              '^wm.*desc-skullstripped.*.nii$');
 

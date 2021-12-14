@@ -24,7 +24,7 @@ if downloadData
 
 end
 
-% reportBIDS(opt);
+reportBIDS(opt);
 
 bidsCopyInputFolder(opt);
 
