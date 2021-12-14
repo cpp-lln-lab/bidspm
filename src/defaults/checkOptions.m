@@ -267,8 +267,8 @@ function checkFields(opt)
     errorHandling(mfilename(), 'voxDim', msg, false, opt.verbosity);
 
   end
-  
-  if isfield(opt.model, 'hrfDerivatives') 
+
+  if isfield(opt.model, 'hrfDerivatives')
 
     msg = ('HRF derivatives should be set in the BIDS stats model file, not in the options.');
     errorHandling(mfilename(), 'voxDim', msg, true, opt.verbosity);

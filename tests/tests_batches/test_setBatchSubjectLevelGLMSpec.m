@@ -71,11 +71,15 @@ function test_setBatchSubjectLevelGLMSpec_basic()
                      'dir'
                      'fact'
                      'bases'
+                     'cvi'
                      'sess'
                      'mask'};
 
   assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_spec), expectedContent);
   assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 2);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.sess(1).hpf, 125);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.cvi, 'FAST');
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs, [1 0]);
 
   cleanUp(fullfile(pwd, 'derivatives'));
 
@@ -107,10 +111,14 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
                      'dir'
                      'fact'
                      'bases'
+                     'cvi'
                      'sess'};
 
   assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_design), expectedContent);
   assertEqual(numel(matlabbatch{1}.spm.stats.fmri_design.sess), 2);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_design.sess(1).hpf, 125);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_design.cvi, 'FAST');
+  assertEqual(matlabbatch{1}.spm.stats.fmri_design.bases.hrf.derivs, [1 0]);
 
   cleanUp(fullfile(pwd, 'derivatives'));
 

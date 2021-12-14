@@ -18,8 +18,11 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % :returns: - :argout1: (structure) (matlabbatch)
   %
   % (C) Copyright 2019 CPP_SPM developers
+  
 
   [matlabbatch, BIDS, opt, subLabel] =  deal(varargin{:});
+  
+  getModelType(opt.model.file)
 
   if ~isfield(BIDS, 'raw')
     msg = sprintf(['Provide raw BIDS dataset path in opt.dir.raw .\n' ...
@@ -60,11 +63,9 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
 
-  fmri_spec.bases.hrf.derivs = opt.model.hrfDerivatives;
+  fmri_spec.bases.hrf.derivs = getHRFderivatives(opt.model.file);
 
-  % The following lines are commented out because those parameters
-  % can be set in the spm_my_defaults.m
-  %  fmri_spec.cvi = 'AR(1)';
+  fmri_spec.cvi = getSerialCorrelationCorrection(opt.model.file);
 
   subLabel = regexify(subLabel);
 
@@ -120,9 +121,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         fmri_spec.sess(sesCounter).cond = ...
             struct('name', {}, 'onset', {}, 'duration', {});
 
-        % The following lines are commented out because those parameters
-        % can be set in the spm_my_defaults.m
-        %  fmri_spec.sess(ses_counter).hpf = 128;
+        fmri_spec.sess(sesCounter).hpf = getHighPassFilter(opt.model.file);
 
         sesCounter = sesCounter + 1;
 

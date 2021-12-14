@@ -44,11 +44,8 @@
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST",
-                  "HrfDerivatives": [
-                     0,
-                     0
-                  ]
+                  "SerialCorrelation": "FAST",
+                  "HRFderivatives": "Temporal"
                }
             }
          },
@@ -97,11 +94,8 @@
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST",
-                  "HrfDerivatives": [
-                     0,
-                     0
-                  ]
+                  "SerialCorrelation": "FAST",
+                  "HRFderivatives": "Temporal"
                }
             }
          },

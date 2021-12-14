@@ -4,7 +4,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subLabel, funcFWHM, iStep, iCon)
+  %   matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subLabel, funcFWHM, iNode, iCon)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -12,8 +12,8 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   % :type opt: structure
   % :param subLabel:
   % :type subLabel: string
-  % :param iStep:
-  % :type iStep: positive integer
+  % :param iNode:
+  % :type iNode: positive integer
   % :param iCon:
   % :type iCon: positive integer
   %
@@ -21,12 +21,12 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  [matlabbatch, opt, subLabel, iStep, iCon] = deal(varargin{:});
+  [matlabbatch, opt, subLabel, iNode, iCon] = deal(varargin{:});
 
-  result.Contrasts = opt.result.Steps(iStep).Contrasts(iCon);
+  result.Contrasts = opt.result.Nodes(iNode).Contrasts(iCon);
 
-  if isfield(opt.result.Steps(iStep), 'Output')
-    result.Output =  opt.result.Steps(iStep).Output;
+  if isfield(opt.result.Nodes(iNode), 'Output')
+    result.Output =  opt.result.Nodes(iNode).Output;
   end
   result.space = opt.space;
 
