@@ -42,8 +42,8 @@
       "DummyContrasts": {
         "Test": "t",
         "Contrasts": [
-          "trial_type.listening",
-          "trial_type.VisMot"
+          "trial_type.VisMot",
+          "trial_type.VisStat"
         ]
       },
       "Contrasts": [

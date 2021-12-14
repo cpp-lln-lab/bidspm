@@ -3,7 +3,9 @@
    "BIDSModelVersion": "1.0.0",
    "Description": "default model for vislocalizer",
    "Input": {
-      "task": "vislocalizer"
+      "task": [
+         "vislocalizer"
+      ]
    },
    "Nodes": [
       {
@@ -26,38 +28,32 @@
          ],
          "Model": {
             "X": [
-               "trial_type.VisMot",
-               "trial_type.VisStat",
-               "trans_x",
-               "trans_y",
-               "trans_z",
-               "rot_x",
-               "rot_y",
-               "rot_z"
+               " "
             ],
-            "HRF": {
-               "Variables": [],
-               "Model": "DoubleGamma"
-            },
             "Options": {
-               "HighPassFilterCutoffHz": 0.008,
-               "Mask": " "
+               "HighPassFilterCutoffHz": 0.0078
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST",
-                  "HrfDerivatives": [
-                     0,
-                     0
-                  ]
+                  "whitening": "FAST"
                }
-            }
+            },
+            "Mask": " "
+         },
+         "Contrasts": {
+            "Name": "",
+            "ConditionList": [
+               ""
+            ],
+            "Weights": [
+               ""
+            ],
+            "Test": ""
          },
          "DummyContrasts": {
-            "Test": "t",
+            "Test": "",
             "Contrasts": [
-               "trial_type.VisMot",
-               "trial_type.VisStat"
+               ""
             ]
          }
       },
@@ -81,38 +77,32 @@
          ],
          "Model": {
             "X": [
-               "trial_type.VisMot",
-               "trial_type.VisStat",
-               "trans_x",
-               "trans_y",
-               "trans_z",
-               "rot_x",
-               "rot_y",
-               "rot_z"
+               " "
             ],
-            "HRF": {
-               "Variables": [],
-               "Model": "DoubleGamma"
-            },
             "Options": {
-               "HighPassFilterCutoffHz": 0.008,
-               "Mask": " "
+               "HighPassFilterCutoffHz": 0.0078
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST",
-                  "HrfDerivatives": [
-                     0,
-                     0
-                  ]
+                  "whitening": "FAST"
                }
-            }
+            },
+            "Mask": " "
+         },
+         "Contrasts": {
+            "Name": "",
+            "ConditionList": [
+               ""
+            ],
+            "Weights": [
+               ""
+            ],
+            "Test": ""
          },
          "DummyContrasts": {
-            "Test": "t",
+            "Test": "",
             "Contrasts": [
-               "trial_type.VisMot",
-               "trial_type.VisStat"
+               ""
             ]
          }
       },
@@ -123,20 +113,66 @@
             "X": [
                " "
             ],
-            "Options": {
-               "Mask": " "
-            },
+            "Options": {},
             "Software": {
                "SPM": {}
-            }
+            },
+            "Mask": " "
+         },
+         "Contrasts": {
+            "Name": "",
+            "ConditionList": [
+               ""
+            ],
+            "Weights": [
+               ""
+            ],
+            "Test": ""
          },
          "DummyContrasts": {
-            "Test": "t",
+            "Test": "",
             "Contrasts": [
-               "trial_type.VisMot",
-               "trial_type.VisStat"
+               ""
             ]
          }
+      }
+   ],
+   "Steps": [
+      {
+         "Model": {
+            "X": [
+               "trial_type.VisMot",
+               "trial_type.VisStat",
+               "trans_x",
+               "trans_y",
+               "trans_z",
+               "rot_x",
+               "rot_y",
+               "rot_z"
+            ]
+         },
+         "DummyContrasts": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+         ]
+      },
+      {
+         "Model": {
+            "X": [
+               "trial_type.VisMot",
+               "trial_type.VisStat",
+               "trans_x",
+               "trans_y",
+               "trans_z",
+               "rot_x",
+               "rot_y",
+               "rot_z"
+            ]
+         },
+         "DummyContrasts": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+         ]
       }
    ]
 }

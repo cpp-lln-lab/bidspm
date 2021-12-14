@@ -28,27 +28,31 @@
         "X": [
           " "
         ],
-        "HRF": {
-          "Variables": [],
-          "Model": "DoubleGamma"
-        },
         "Options": {
-          "HighPassFilterCutoffHz": 0.008,
-          "Mask": " "
+          "HighPassFilterCutoffHz": 0.0078
         },
         "Software": {
           "SPM": {
-            "Whitening": "FAST",
-            "HrfDerivatives": [
-              0,
-              0
-            ]
+            "whitening": "FAST"
           }
-        }
+        },
+        "Mask": " "
+      },
+      "Contrasts": {
+        "Name": "",
+        "ConditionList": [
+          ""
+        ],
+        "Weights": [
+          ""
+        ],
+        "Test": ""
       },
       "DummyContrasts": {
-        "Test": "t",
-        "Contrasts": []
+        "Test": "",
+        "Contrasts": [
+          ""
+        ]
       }
     },
     {
@@ -73,27 +77,31 @@
         "X": [
           " "
         ],
-        "HRF": {
-          "Variables": [],
-          "Model": "DoubleGamma"
-        },
         "Options": {
-          "HighPassFilterCutoffHz": 0.008,
-          "Mask": " "
+          "HighPassFilterCutoffHz": 0.0078
         },
         "Software": {
           "SPM": {
-            "whitening": "FAST",
-            "HrfDerivatives": [
-              0,
-              0
-            ]
+            "whitening": "FAST"
           }
-        }
+        },
+        "Mask": " "
+      },
+      "Contrasts": {
+        "Name": "",
+        "ConditionList": [
+          ""
+        ],
+        "Weights": [
+          ""
+        ],
+        "Test": ""
       },
       "DummyContrasts": {
-        "Test": "t",
-        "Contrasts": []
+        "Test": "",
+        "Contrasts": [
+          ""
+        ]
       }
     },
     {
@@ -103,17 +111,26 @@
         "X": [
           " "
         ],
-        "Options": {
-          "Mask": " "
-        },
+        "Options": {},
         "Software": {
           "SPM": {}
-        }
+        },
+        "Mask": " "
+      },
+      "Contrasts": {
+        "Name": "",
+        "ConditionList": [
+          ""
+        ],
+        "Weights": [
+          ""
+        ],
+        "Test": ""
       },
       "DummyContrasts": {
-        "Test": "t",
+        "Test": "",
         "Contrasts": [
-          " "
+          ""
         ]
       }
     }

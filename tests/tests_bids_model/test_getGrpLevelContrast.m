@@ -12,29 +12,31 @@ function test_getGrpLevelContrast_basic()
 
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotion_smdl.json');
 
-  [grpLvlCon, iStep] = getGrpLevelContrast(opt);
+  [grpLvlCon, iNode] = getGrpLevelContrast(opt);
 
-  DummyContrasts = {
+  DummyContrasts = struct('Test', 't', ...
+                    'Contrasts', {{
                    'trial_type.VisMot'; ...
                    'trial_type.VisStat'; ...
                    'VisMot_gt_VisStat'; ...
-                   'VisStat_gt_VisMot'};
+                   'VisStat_gt_VisMot'}});
 
-  assertEqual(iStep, 3);
+  assertEqual(iNode, 3);
   assertEqual(grpLvlCon, DummyContrasts);
 
   %%
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vislocalizer_smdl.json');
 
-  [grpLvlCon, iStep] = getGrpLevelContrast(opt);
+  [grpLvlCon, iNode] = getGrpLevelContrast(opt);
 
-  DummyContrasts = {
+  DummyContrasts = struct('Test', 't', ...
+                    'Contrasts', {{
                    'trial_type.VisMot'; ...
                    'trial_type.VisStat'; ...
                    'VisMot_gt_VisStat'; ...
-                   'VisStat_gt_VisMot'};
+                   'VisStat_gt_VisMot'}});
 
-  assertEqual(iStep, 3);
+  assertEqual(iNode, 3);
   assertEqual(grpLvlCon, DummyContrasts);
 
 end

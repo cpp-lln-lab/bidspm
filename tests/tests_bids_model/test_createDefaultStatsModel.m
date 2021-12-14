@@ -26,9 +26,10 @@ function test_createDefaultStatsModel_basic()
 
   expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-default_smdl.json'));
 
-  assertEqual(content.Steps{1}, expectedContent.Steps{1});
-  assertEqual(content.Steps{2}, expectedContent.Steps{2});
-  assertEqual(content.Steps{3}, expectedContent.Steps{3});
+  assertEqual(content.Nodes{1}, expectedContent.Nodes{1})
+  assertEqual(content.Nodes{1}, expectedContent.Nodes{1});
+  assertEqual(content.Nodes{2}, expectedContent.Nodes{2});
+  assertEqual(content.Nodes{3}, expectedContent.Nodes{3});
 
   cleanUp(fullfile(pwd, 'models'));
 

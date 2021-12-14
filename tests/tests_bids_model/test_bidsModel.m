@@ -8,20 +8,26 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_returnModelStep()
+function test_returnModelNode()
 
   content = createEmptyStatsModel();
-  content.Steps{4} = createEmptyNode('dataset');
+  content.Nodes{4} = createEmptyNode('dataset');
 
-  [~, iStep] = returnModelStep(content, 'run');
+  [~, iStep] = returnModelNode(content, 'run');
   assertEqual(iStep, 1);
 
-  [~, iStep] = returnModelStep(content, 'dataset');
+  [~, iStep] = returnModelNode(content, 'dataset');
   assertEqual(iStep, [3; 4]);
-
+  
   assertExceptionThrown( ...
-                        @()returnModelStep(content, 'foo'), ...
-                        'returnModelStep:missingModelStep');
+                        @()returnModelNode(content, 'foo'), ...
+                        'returnModelNode:missingModelNode');
+
+  modelFile = fullfile(pwd, 'model.json');
+  bids.util.jsonencode(modelFile, content)
+  HPF = getHighPassFilter(modelFile);
+  designMatrix = getBidsDesignMatrix(modelFile);
+  dummyContrastsList = getDummyContrastsList(modelFile);
 
 end
 
@@ -31,7 +37,7 @@ function test_getHighPassFilter()
 
   HPF = getHighPassFilter(opt.model.file);
 
-  assertEqual(HPF, 128);
+  assertEqual(HPF, 125);
 
 end
 
@@ -63,8 +69,8 @@ function test_getContrastsList()
 
   assertEqual(fieldnames(contrastsList), {'Name'
                                           'ConditionList'
-                                          'weights'
-                                          'type'});
+                                          'Weights'
+                                          'Test'});
 
   assertEqual(numel(contrastsList), 2);
 
@@ -74,11 +80,13 @@ function test_getDummyContrastsList()
 
   opt = setOptions('vislocalizer', '01');
 
-  DummyContrastsList = getDummyContrastsList(opt.model.file);
+  dummyContrastsList = getDummyContrastsList(opt.model.file);
 
-  expected = {'trial_type.listening'
-              'trial_type.VisMot'};
+  expected = struct('Test', 't', ...
+                     'Contrasts', {{'trial_type.VisMot';
+                                    'trial_type.VisStat'}});
 
-  assertEqual(DummyContrastsList, expected);
+  assertEqual(dummyContrastsList.Contrasts, expected.Contrasts);
+  assertEqual(dummyContrastsList, expected);
 
 end

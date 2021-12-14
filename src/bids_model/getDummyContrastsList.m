@@ -1,4 +1,4 @@
-function contrastsList = getContrastsList(modelFile, nodeType)
+function contrastsList = getDummyContrastsList(modelFile, nodeType)
   %
   % (C) Copyright 2021 Remi Gau
 
@@ -15,6 +15,6 @@ function contrastsList = getContrastsList(modelFile, nodeType)
 
   node = returnModelNode(model, nodeType);
 
-  contrastsList = node.Contrasts;
+  contrastsList = node.DummyContrasts;
 
 end

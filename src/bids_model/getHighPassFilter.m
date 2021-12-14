@@ -15,8 +15,8 @@ function HPF = getHighPassFilter(modelFile, nodeType)
 
   model = bids.util.jsondecode(modelFile);
 
-  step = returnModelStep(model, nodeType);
+  node = returnModelNode(model, nodeType);
 
-  HPF = step.Model.Options.high_pass_filter_cutoff_secs;
+  HPF = 1/node.Model.Options.HighPassFilterCutoffHz;
 
 end
