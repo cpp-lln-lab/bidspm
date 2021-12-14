@@ -78,32 +78,26 @@ end
 
 function [contrasts,  counter] = specifySubLvlContrasts(contrasts, node, counter, SPM)
     
-    if isfield(node, 'DummyContrasts') && isfield(node.DummyContrasts, 'Contrasts')
-        
-        if isfield(node.DummyContrasts, 'Test') && node.DummyContrasts.Test ~= 't'
-            msg = 'Only t test supported for contrasts';
-            errorHandling(mfilename(), 'notImplemented', msg, true, true)
-            
-        else
-            
-            % first the contrasts to compute automatically against baseline
-            for iCon = 1:length(node.DummyContrasts.Contrasts)
-                
-                % get regressors index corresponding to the HRF of that condition
-                cdtName = node.DummyContrasts.Contrasts{iCon};
+    if isfield(node, 'DummyContrasts') && ...
+        isfield(node.DummyContrasts, 'Contrasts') && ...
+        isTtest(node.DummyContrasts)
 
-                [cdtName, regIdx] = getRegIdx(cdtName, SPM);
-                C = newContrast(SPM, cdtName);
-                
-                % give them a value of 1
-                C.C(end, regIdx) = 1;
-                
-                [contrasts, counter] = appendContrast(contrasts, C, counter);
-                
-                clear regIdx;
-                
-            end
-            
+        % first the contrasts to compute automatically against baseline
+        for iCon = 1:length(node.DummyContrasts.Contrasts)
+
+            % get regressors index corresponding to the HRF of that condition
+            cdtName = node.DummyContrasts.Contrasts{iCon};
+
+            [cdtName, regIdx] = getRegIdx(cdtName, SPM);
+            C = newContrast(SPM, cdtName);
+
+            % give them a value of 1
+            C.C(end, regIdx) = 1;
+
+            [contrasts, counter] = appendContrast(contrasts, C, counter);
+
+            clear regIdx;
+
         end
         
     end
@@ -114,6 +108,10 @@ function [contrasts,  counter] = specifySubLvlContrasts(contrasts, node, counter
         % amongst themselves or something inferior to baseline
         for iCon = 1:length(node.Contrasts)
             
+            if ~isTtest(node.Contrasts(iCon))
+                continue
+            end
+            
             C = newContrast(SPM, node.Contrasts(iCon).Name);
             
             for iCdt = 1:length(node.Contrasts(iCon).ConditionList)
@@ -123,7 +121,9 @@ function [contrasts,  counter] = specifySubLvlContrasts(contrasts, node, counter
                 [~, regIdx] = getRegIdx(cdtName, SPM);                
                 
                 % give them the value specified in the model
-                C.C(end, regIdx) = node.Contrasts(iCon).Weights(iCdt);
+                if isfield(node.Contrasts(iCon), 'Weights')
+                    C.C(end, regIdx) = node.Contrasts(iCon).Weights(iCdt);
+                end
                 
                 clear regIdx;
                 
@@ -142,37 +142,31 @@ end
 
 function [contrasts,  counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
     
-    if isfield(node, 'DummyContrasts') && isfield(node.DummyContrasts, 'Contrasts')
-        
-        if isfield(node.DummyContrasts, 'Test') && node.DummyContrasts.Test ~= 't'
-            msg = 'Only t test supported for contrasts';
-            errorHandling(mfilename(), 'notImplemented', msg, true, true)
-            
-        else
-            
-            % first the contrasts to compute automatically against baseline
-            for iCon = 1:length(node.DummyContrasts.Contrasts)
-                
-                % get regressors index corresponding to the HRF of that condition
-                cdtName = node.DummyContrasts.Contrasts{iCon};
-                [cdtName, regIdx] = getRegIdx(cdtName, SPM);
-                
-                % For each run of each condition, create a seperate contrast
-                regIdx = find(regIdx);
-                for iReg = 1:length(regIdx)
-                    
-                    C = newContrast(SPM, [cdtName, '_', num2str(iReg)]);
+    if isfield(node, 'DummyContrasts') && ...
+       isfield(node.DummyContrasts, 'Contrasts') && ...
+       isTtest(node.DummyContrasts)
+         
+        % first the contrasts to compute automatically against baseline
+        for iCon = 1:length(node.DummyContrasts.Contrasts)
 
-                    % give each event a value of 1
-                    C.C(end, regIdx(iReg)) = 1;
-                    [contrasts, counter] = appendContrast(contrasts, C, counter);
+            % get regressors index corresponding to the HRF of that condition
+            cdtName = node.DummyContrasts.Contrasts{iCon};
+            [cdtName, regIdx] = getRegIdx(cdtName, SPM);
 
-                end
-                
-                clear regIdx;
-                
+            % For each run of each condition, create a seperate contrast
+            regIdx = find(regIdx);
+            for iReg = 1:length(regIdx)
+
+                C = newContrast(SPM, [cdtName, '_', num2str(iReg)]);
+
+                % give each event a value of 1
+                C.C(end, regIdx(iReg)) = 1;
+                [contrasts, counter] = appendContrast(contrasts, C, counter);
+
             end
-            
+
+            clear regIdx;
+
         end
         
     end
@@ -185,9 +179,8 @@ function [contrasts,  counter] = specifyRunLvlContrasts(contrasts, node, counter
         % amongst themselves or something inferior to baseline
         for iCon = 1:length(node.Contrasts)
             
-            if isfield(node.Contrasts(iCon), 'Test') && ~strcmp(node.Contrasts(iCon).Test, 't')
-                msg = 'Only t test supported for contrasts';
-                errorHandling(mfilename(), 'notImplemented', msg, true, true)
+            if ~isTtest(node.Contrasts(iCon))
+                continue
             end
             
             % get regressors index corresponding to the HRF of that condition
@@ -226,6 +219,15 @@ function [contrasts,  counter] = specifyRunLvlContrasts(contrasts, node, counter
         
     end
     
+end
+
+function status = isTtest(structure)
+    status = true;
+    if isfield(structure, 'Test') && ~strcmp(structure.Test, 't')
+        status = false;
+        msg = 'Only t test supported for contrasts';
+        errorHandling(mfilename(), 'notImplemented', msg, true, true)
+    end
 end
 
 function [contrasts, counter] = appendContrast(contrasts, C, counter)
