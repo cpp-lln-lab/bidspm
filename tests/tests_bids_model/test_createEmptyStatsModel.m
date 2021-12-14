@@ -9,6 +9,11 @@ function test_suite = test_createEmptyStatsModel %#ok<*STOUT>
 end
 
 function test_createEmptyStatsModel_basic()
+    
+  % skip test in CI
+  if isGithubCi
+    return
+  end
 
   content = createEmptyStatsModel();
 
