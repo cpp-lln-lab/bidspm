@@ -146,19 +146,27 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
 
       % get regressors index corresponding to the HRF of that condition
       cdtName = node.Contrasts(iCon).ConditionList{iCdt};
-      [~, regIdx] = getRegressorIdx(cdtName, SPM);
+      [~, regIdx, status] = getRegressorIdx(cdtName, SPM);
+
+      if ~status
+        break
+      end
 
       % give them the value specified in the model
-
       C.C(end, regIdx) = node.Contrasts(iCon).Weights(iCdt);
 
       clear regIdx;
 
     end
 
-    % TODO if one of the condition is not found, this contrast should
-    % probably not be created ?
-
+    % do not create this contrast if a condition is missing
+    if ~status
+      disp(node.Contrasts(iCon).ConditionList);
+      msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
+                    node.Contrasts(iCon).Name, cdtName);
+      errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
+      continue
+    end
     [contrasts, counter] = appendContrast(contrasts, C, counter);
 
   end
@@ -241,7 +249,7 @@ function [contrasts, counter] = appendContrast(contrasts, C, counter)
   contrasts(counter).name = C.name;
 end
 
-function  [cdtName, regIdx] = getRegressorIdx(cdtName, SPM)
+function  [cdtName, regIdx, status] = getRegressorIdx(cdtName, SPM)
   % get regressors index corresponding to the HRF of of a condition
 
   % get condition name
@@ -251,13 +259,15 @@ function  [cdtName, regIdx] = getRegressorIdx(cdtName, SPM)
   regIdx = strfind(SPM.xX.name', [' ' cdtName '*bf(1)']);
   regIdx = ~cellfun('isempty', regIdx);  %#ok<*STRCL1>
 
-  checkRegressorFound(regIdx, cdtName);
+  status = checkRegressorFound(regIdx, cdtName);
 
 end
 
-function checkRegressorFound(regIdx, cdtName)
+function status = checkRegressorFound(regIdx, cdtName)
+  status = true;
   regIdx = find(regIdx);
   if all(~regIdx)
+    status = false;
     msg = sprintf('No regressor found for condition "%s"', cdtName);
     errorHandling(mfilename(), 'noRegressorFound', msg, true, true);
   end

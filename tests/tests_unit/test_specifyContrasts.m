@@ -16,6 +16,43 @@ function test_specifyContrasts_warning_no_condition()
   taskName = 'motion';
 
   % GIVEN
+  Contrasts.Name = 'motion_gt_foo';
+  Contrasts.ConditionList = {'motion', 'foo'};
+  Contrasts.Weights = [1, -1];
+  Contrasts.Test = 't';
+
+  model = createEmptyStatsModel;
+  model.Input.task = taskName;
+  model.Nodes{1}.Contrasts = Contrasts;
+  model.Nodes = model.Nodes{1};
+
+  model.Nodes = rmfield(model.Nodes, 'DummyContrasts');
+
+  SPM.xX.name = { ...
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                };
+
+  SPM.xX.X = ones(1, numel(SPM.xX.name));
+
+  % WHEN
+  assertWarning(@()specifyContrasts(SPM, model), ...
+                'specifyContrasts:noRegressorFound');
+
+  assertExceptionThrown( ...
+                        @()specifyContrasts(SPM, model), ...
+                        'specifyContrasts:noContrast');
+
+end
+
+function test_specifyContrasts_warning_no_condition_dummy()
+  %
+  % to test the generation of contrasts when there are several runs
+  %
+
+  taskName = 'motion';
+
+  % GIVEN
   DummyContrasts{1} = 'foo';
 
   model = createEmptyStatsModel;

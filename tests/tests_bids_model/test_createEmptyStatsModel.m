@@ -27,10 +27,10 @@ function test_createEmptyStatsModel_basic()
   assertEqual(content.Nodes{1}.Model, expectedContent.Nodes{1}.Model);
 
   fields = fieldnames(expectedContent);
-  for i=1:numel(fields)
-      disp(expectedContent.(fields{i}))
-      disp(content.(fields{i}))
-      assertEqual(content.(fields{i}), expectedContent.(fields{i}));
+  for i = 1:numel(fields)
+    disp(expectedContent.(fields{i}));
+    disp(content.(fields{i}));
+    assertEqual(content.(fields{i}), expectedContent.(fields{i}));
   end
   assertEqual(content, expectedContent);
 
