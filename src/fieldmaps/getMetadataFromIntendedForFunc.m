@@ -40,7 +40,7 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
 
     filter.modality = 'func';
     filter.suffix = funcFile.suffix;
-    filter.sub = funcFile.entities.sub;
+    filter.sub = regexify(funcFile.entities.sub);
     filter.ses = funcFile.entities.ses;
     filter.run = funcFile.entities.run;
     filter.extension = '.nii';
