@@ -34,12 +34,12 @@ function mriqcQA(opt, suffix)
 
   % TO improve based on suffix from BIDS schema
   if ismember(suffix, {'bold'})
-    name_flip_unilateral = getFuncMetricsToFilter();
+    nameFlipUnilateral = getFuncMetricsToFilter();
   elseif ismember(suffix, {'T1w'})
-    name_flip_unilateral = getAnatMetricsToFilter();
+    nameFlipUnilateral = getAnatMetricsToFilter();
   end
 
-  outliers = identifyOutliers(data, name_flip_unilateral);
+  outliers = identifyOutliers(data, nameFlipUnilateral);
 
   % print subjects' list that are outlier for at least 1 metric
   LS = data.bids_name(sum(outliers, 2) > 0);
@@ -52,25 +52,25 @@ function mriqcQA(opt, suffix)
 
 end
 
-function outliers = identifyOutliers(data, name_flip_unilateral)
+function outliers = identifyOutliers(data, nameFlipUnilateral)
 
   % The iqrMethod sub-function indentifies outliers that are higher than a
   % certain value (unilateral) or within a certain range (bilateral).
   % Each metric of interest can be "switched" (if higher values mean
   % better quality like for SNR) and can be thresholded unilateraly or not.
 
-  for i_field = 1:size(name_flip_unilateral, 1)
+  for i_field = 1:size(nameFlipUnilateral, 1)
 
     % get the values for each metric of interest
-    tmp = data.(name_flip_unilateral{i_field, 1});
+    tmp = data.(nameFlipUnilateral{i_field, 1});
 
     % flips it if higher values mean better
-    if name_flip_unilateral{i_field, 2}
+    if nameFlipUnilateral{i_field, 2}
       tmp = tmp * -1;
     end
 
     % determines if threshold is unilateral or bilateral
-    if name_flip_unilateral{i_field, 3}
+    if nameFlipUnilateral{i_field, 3}
       unilat = 2;
     else
       unilat = 1;
@@ -83,7 +83,7 @@ function outliers = identifyOutliers(data, name_flip_unilateral)
 
 end
 
-function name_flip_unilateral = getAnatMetricsToFilter()
+function nameFlipUnilateral = getAnatMetricsToFilter()
   %
   % What follows is a list of the different metric used for T1
   % (mostly copy pasta from the MRIQC docs)
@@ -114,23 +114,23 @@ function name_flip_unilateral = getAnatMetricsToFilter()
   %               due to hyper-intensity of the carotid vessels and fat.
   %           Values should be around the interval [0.6, 0.8].
 
-  name_flip_unilateral = {
-                          'cjv',      false,  true
-                          'cnr',      true,   true
-                          'snr_gm',   true,   true
-                          'snr_wm',   true,   true
-                          'snrd_gm',  true,   true
-                          'snrd_wm',  true,   true
-                          'efc',      false,  true
-                          'fber',     true,   true
-                          'qi_1',     false,  true
-                          'inu_med',  false,  true
-                          'wm2max',   false,  false
-                         };
+  nameFlipUnilateral = {
+                        'cjv',      false,  true
+                        'cnr',      true,   true
+                        'snr_gm',   true,   true
+                        'snr_wm',   true,   true
+                        'snrd_gm',  true,   true
+                        'snrd_wm',  true,   true
+                        'efc',      false,  true
+                        'fber',     true,   true
+                        'qi_1',     false,  true
+                        'inu_med',  false,  true
+                        'wm2max',   false,  false
+                       };
 
 end
 
-function name_flip_unilateral = getFuncMetricsToFilter()
+function nameFlipUnilateral = getFuncMetricsToFilter()
   %
   % What follows is a list of the different metric used for BOLD
   % (mostly copy pasta from the MRIQC docs)
@@ -149,20 +149,20 @@ function name_flip_unilateral = getFuncMetricsToFilter()
   % snr =     signal to noise ratio
   % tsnr =    Temporal SNR
 
-  name_flip_unilateral = {
-                          'aor',        false,  true
-                          'dvars_nstd', false,  true
-                          'dvars_std',  false,  true
-                          'dvars_vstd', false,  true
-                          'efc',        false,  true
-                          'fber',       true,   true
-                          'fd_mean',    false,  true
-                          'fd_perc',    false,  true
-                          'gsr_x',      true,   true
-                          'gsr_y',      true,   true
-                          'snr',        true,   true
-                          'tsnr',       true,   true
-                         };
+  nameFlipUnilateral = {
+                        'aor',        false,  true
+                        'dvars_nstd', false,  true
+                        'dvars_std',  false,  true
+                        'dvars_vstd', false,  true
+                        'efc',        false,  true
+                        'fber',       true,   true
+                        'fd_mean',    false,  true
+                        'fd_perc',    false,  true
+                        'gsr_x',      true,   true
+                        'gsr_y',      true,   true
+                        'snr',        true,   true
+                        'tsnr',       true,   true
+                       };
 
 end
 

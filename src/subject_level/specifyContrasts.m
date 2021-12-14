@@ -112,13 +112,13 @@ function [contrasts,  counter] = specifySubLvlContrasts(contrasts, node, counter
       end
 
       if ~isfield(node.Contrasts(iCon), 'Weights')
-          msg = 'weightless contrasts not supported yet';
-          errorHandling(mfilename(), 'notImplemented', msg, true, true);
-          continue
+        msg = 'weightless contrasts not supported yet';
+        errorHandling(mfilename(), 'notImplemented', msg, true, true);
+        continue
       end
-      
+
       C = newContrast(SPM, node.Contrasts(iCon).Name);
-      
+
       for iCdt = 1:length(node.Contrasts(iCon).ConditionList)
 
         % get regressors index corresponding to the HRF of that condition
@@ -126,9 +126,9 @@ function [contrasts,  counter] = specifySubLvlContrasts(contrasts, node, counter
         [~, regIdx] = getRegressorIdx(cdtName, SPM);
 
         % give them the value specified in the model
-        
+
         C.C(end, regIdx) = node.Contrasts(iCon).Weights(iCdt);
-          
+
         clear regIdx;
 
       end
@@ -184,12 +184,12 @@ function [contrasts,  counter] = specifyRunLvlContrasts(contrasts, node, counter
       if ~isTtest(node.Contrasts(iCon))
         continue
       end
-      
+
       if ~isfield(node.Contrasts(iCon), 'Weights')
-          msg = 'weightless contrasts not supported yet';
-          errorHandling(mfilename(), 'notImplemented', msg, true, true);
-          continue
-      end      
+        msg = 'weightless contrasts not supported yet';
+        errorHandling(mfilename(), 'notImplemented', msg, true, true);
+        continue
+      end
 
       % get regressors index corresponding to the HRF of that condition
       for iCdt = 1:length(node.Contrasts(iCon).ConditionList)

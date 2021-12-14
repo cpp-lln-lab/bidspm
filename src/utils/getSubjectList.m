@@ -124,7 +124,7 @@ function errorMissingSubject(opt, allSubjects)
   errorHandling(mfilename(), 'noMatchingSubject', msg, false, opt.verbosity);
 end
 
-function option = prepare_regex(option)
+function option = prepareRegex(option)
   option = option{1};
   if strcmp(option, '')
     return
