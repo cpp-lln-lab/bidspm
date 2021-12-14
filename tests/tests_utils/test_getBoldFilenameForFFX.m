@@ -41,7 +41,7 @@ function test_getBoldFilenameForFFX_individual()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-   opt.query.task = 'vislocalizer';
+  opt.query.task = 'vislocalizer';
 
   boldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
@@ -65,7 +65,7 @@ function test_getBoldFilenameForFFX_no_smoothing()
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-   opt.query.task = 'vislocalizer';
+  opt.query.task = 'vislocalizer';
 
   boldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 

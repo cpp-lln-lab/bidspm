@@ -24,7 +24,7 @@ end
 
 function test_plotEvents_vislocalizer()
 
-    close all;
+  close all;
 
   opt = setOptions('vislocalizer', '01');
 
@@ -35,13 +35,13 @@ function test_plotEvents_vislocalizer()
 
   plotEvents(eventsFile{1});
 
-    close all;
+  close all;
 
 end
 
 function test_plotEvents_vismotion()
 
-      close all;
+  close all;
 
   opt = setOptions('vismotion', '01');
 
@@ -52,13 +52,13 @@ function test_plotEvents_vismotion()
 
   plotEvents(eventsFile{1});
 
-    close all;
+  close all;
 
 end
 
 function test_plotEvents_ds001()
 
-      close all;
+  close all;
 
   dataDir = getBidsExample('ds001');
 
@@ -69,5 +69,5 @@ function test_plotEvents_ds001()
 
   plotEvents(eventsFile{1});
 
-    close all;
+  close all;
 end

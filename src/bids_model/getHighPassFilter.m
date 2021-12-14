@@ -17,6 +17,6 @@ function HPF = getHighPassFilter(modelFile, nodeType)
 
   node = returnModelNode(model, nodeType);
 
-  HPF = 1/node.Model.Options.HighPassFilterCutoffHz;
+  HPF = 1 / node.Model.Options.HighPassFilterCutoffHz;
 
 end

@@ -24,7 +24,7 @@ function test_returnModelNode()
                         'returnModelNode:missingModelNode');
 
   modelFile = fullfile(pwd, 'model.json');
-  bids.util.jsonencode(modelFile, content)
+  bids.util.jsonencode(modelFile, content);
   HPF = getHighPassFilter(modelFile);
   designMatrix = getBidsDesignMatrix(modelFile);
   dummyContrastsList = getDummyContrastsList(modelFile);
@@ -83,8 +83,8 @@ function test_getDummyContrastsList()
   dummyContrastsList = getDummyContrastsList(opt.model.file);
 
   expected = struct('Test', 't', ...
-                     'Contrasts', {{'trial_type.VisMot';
-                                    'trial_type.VisStat'}});
+                    'Contrasts', {{'trial_type.VisMot'
+                                   'trial_type.VisStat'}});
 
   assertEqual(dummyContrastsList.Contrasts, expected.Contrasts);
   assertEqual(dummyContrastsList, expected);

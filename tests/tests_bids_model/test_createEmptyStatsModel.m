@@ -12,14 +12,14 @@ function test_createEmptyStatsModel_basic()
 
   content = createEmptyStatsModel();
 
-%   bids.util.jsonencode(fullfile(pwd, 'model-empty_smdl.json'), content);
+  %   bids.util.jsonencode(fullfile(pwd, 'model-empty_smdl.json'), content);
 
   expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-empty_smdl.json'));
 
   assertEqual(fieldnames(content), fieldnames(expectedContent));
-  assertEqual(content.Nodes{3}.Model, expectedContent.Nodes{3}.Model)
-  assertEqual(content.Nodes{2}.Model, expectedContent.Nodes{2}.Model)
-  assertEqual(content.Nodes{1}.Model, expectedContent.Nodes{1}.Model)
+  assertEqual(content.Nodes{3}.Model, expectedContent.Nodes{3}.Model);
+  assertEqual(content.Nodes{2}.Model, expectedContent.Nodes{2}.Model);
+  assertEqual(content.Nodes{1}.Model, expectedContent.Nodes{1}.Model);
   assertEqual(content, expectedContent);
 
 end

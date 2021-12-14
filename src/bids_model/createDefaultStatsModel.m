@@ -54,9 +54,9 @@ function opt = createDefaultStatsModel(BIDS, opt)
   trialTypeList = listAllTrialTypes(BIDS, opt);
 
   content = createEmptyStatsModel();
-  
-  content.Nodes{1} = rmfield(content.Nodes{1}, {'Transformations'}); 
-  content.Nodes{2} = rmfield(content.Nodes{2}, {'Transformations'});   
+
+  content.Nodes{1} = rmfield(content.Nodes{1}, {'Transformations'});
+  content.Nodes{2} = rmfield(content.Nodes{2}, {'Transformations'});
 
   content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList);
 

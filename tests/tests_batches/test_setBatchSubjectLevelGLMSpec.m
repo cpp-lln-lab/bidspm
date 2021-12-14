@@ -66,13 +66,13 @@ function test_setBatchSubjectLevelGLMSpec_basic()
 
   %% THEN
   expectedContent = {    'volt'
-    'global'
-    'timing'
-    'dir'
-    'fact'
-    'bases'
-    'sess'
-    'mask'};
+                     'global'
+                     'timing'
+                     'dir'
+                     'fact'
+                     'bases'
+                     'sess'
+                     'mask'};
 
   assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_spec), expectedContent);
   assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 2);
@@ -105,14 +105,14 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
 
   %% THEN
   expectedContent = {
-     'volt'
-    'global'
-    'timing'
-    'dir'
-    'fact'
-    'bases'
-    'sess'
-    'mask'};
+                     'volt'
+                     'global'
+                     'timing'
+                     'dir'
+                     'fact'
+                     'bases'
+                     'sess'
+                     'mask'};
 
   assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_design), expectedContent);
   assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 2);
