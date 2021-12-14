@@ -1,17 +1,15 @@
-function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName)
+function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, fileName)
   %
   % Short description of what the function does goes here.
   %
   % USAGE::
   %
-  %   [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName)
+  %   [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, fileName)
   %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   % :param subFuncDataDir:
   % :type subFuncDataDir:
-  % :param prefix:
-  % :type prefix:
   % :param fileName:
   % :type fileName:
   %
@@ -27,9 +25,7 @@ function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName)
     voxDim = opt.funcVoxelDims; % Get the dimension values
     return
   else
-    % SPM Doesnt deal with nii.gz and all our nii should be unzipped
-    % at this stage
-    hdr = spm_vol(fullfile(subFuncDataDir, [prefix, fileName]));
+    hdr = spm_vol(fullfile(subFuncDataDir, fileName));
     voxDim = diag(hdr(1).mat);
     % Voxel dimensions are not pure integers before reslicing, therefore
     % round the dimensions of the functional files to the 1st decimal point

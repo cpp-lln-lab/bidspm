@@ -17,10 +17,11 @@ function reportBIDS(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  warning('bidsReport is broken and waiting for a fix on the bids-matlab side.');
-
-  return
-
   bids.report(opt.dir.raw);
+  
+        bids.report(opt.dir.raw, ...
+                  'output_path', pwd, ...
+                  'read_nifti', true, ...
+                  'verbose', true)
 
 end

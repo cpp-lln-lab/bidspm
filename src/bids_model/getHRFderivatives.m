@@ -17,6 +17,7 @@ function derivatives = getHRFderivatives(modelFile, nodeType)
 
   node = returnModelNode(model, nodeType);
 
+  HRFderivatives = '';
   try
     HRFderivatives = node.Model.Software.SPM.HRFderivatives;
   catch
@@ -25,7 +26,7 @@ function derivatives = getHRFderivatives(modelFile, nodeType)
     errorHandling(mfilename(), 'noHRFderivatives', msg, true, true);
   end
 
-  if isempty(HRFderivatives)
+  if isempty(HRFderivatives) || strcmpi(HRFderivatives, 'none')
     return
   elseif strcmpi(HRFderivatives, 'temporal')
     derivatives =  [1 0];

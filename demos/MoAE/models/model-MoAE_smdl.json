@@ -1,19 +1,48 @@
 {
   "Name": "auditory",
+  "BIDSModelVersion": "1.0.0",
   "Description": "contrasts to compute for the FIL MoAE dataset",
   "Input": {
     "task": "auditory"
   },
   "Nodes": [
     {
-      "Level": "dataset",
-      "DummyContrasts": []
-    },
-    {
-      "Level": "subject",
-      "DummyContrasts": [
-        "trial_type.listening"
-      ],
+      "Level": "run",
+      "Name": "run_level",
+      "Model": {
+        "X": [
+          "trial_type.listening",
+          "trans_x",
+          "trans_y",
+          "trans_z",
+          "rot_x",
+          "rot_y",
+          "rot_z"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.listening"
+          ],
+          "Model": "DoubleGamma"
+        },
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": " "
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "AR(1)"
+          }
+        },
+        "Mask": ""
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.listening"
+        ]
+      },
       "Contrasts": [
         {
           "Name": "listening_inf_baseline",
@@ -25,47 +54,6 @@
           ],
           "Test": "t"
         }
-      ]
-    },
-    {
-      "Level": "run",
-      "Transformations": [
-        {
-          "Name": "Factor",
-          "Inputs": [
-            "trial_type"
-          ]
-        },
-        {
-          "Name": "Convolve",
-          "Model": "spm",
-          "Inputs": [
-            "trial_type.listening"
-          ]
-        }
-      ],
-      "Model": {
-        "X": [
-          "trial_type.listening",
-          "trans_x",
-          "trans_y",
-          "trans_z",
-          "rot_x",
-          "rot_y",
-          "rot_z"
-        ],
-        "Options": {
-          "high_pass_filter_cutoff_secs": 128
-        },
-        "Software": {
-          "SPM": {
-            "whitening": "AR(1)"
-          }
-        },
-        "Mask": ""
-      },
-      "DummyContrasts": [
-        "trial_type.listening"
       ]
     }
   ]

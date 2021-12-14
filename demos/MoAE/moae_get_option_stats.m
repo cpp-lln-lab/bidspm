@@ -34,7 +34,7 @@ function opt = moae_get_option_stats()
 
   opt.result.Nodes(1).Level = 'subject';
 
-  opt.result.Nodes(1).Contrasts(1).Name = 'listening';
+  opt.result.Nodes(1).Contrasts(1).Name = 'listening_1';
 
   % For each contrats, you can adapt:
   %  - voxel level (p)
