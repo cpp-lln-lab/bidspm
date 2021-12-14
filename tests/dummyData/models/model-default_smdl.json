@@ -24,7 +24,8 @@
             ],
             "HRF": {
                "Variables": [
-                  ""
+                  "trial_type.VisMot",
+                  "trial_type.VisStat"
                ],
                "Model": "DoubleGamma"
             },
@@ -74,7 +75,8 @@
             ],
             "HRF": {
                "Variables": [
-                  ""
+                  "trial_type.VisMot",
+                  "trial_type.VisStat"
                ],
                "Model": "DoubleGamma"
             },

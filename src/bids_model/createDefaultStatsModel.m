@@ -115,9 +115,11 @@ function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
 
       % subject
       content.Nodes{1}.Model.X{iTrialType} = trialTypeName;
+      content.Nodes{1}.Model.HRF.Variables{iTrialType} = trialTypeName;
 
       % run
       content.Nodes{2}.Model.X{iTrialType} = trialTypeName;
+      content.Nodes{2}.Model.HRF.Variables{iTrialType} = trialTypeName;
 
       for iNode = 1:numel(content.Nodes)
         content.Nodes{iNode}.DummyContrasts.Contrasts{iTrialType} = trialTypeName;
