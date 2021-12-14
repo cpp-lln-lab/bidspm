@@ -18,7 +18,7 @@ function test_returnModelNode()
 
   [~, iStep] = returnModelNode(content, 'dataset');
   assertEqual(iStep, [3; 4]);
-  
+
   assertExceptionThrown( ...
                         @()returnModelNode(content, 'foo'), ...
                         'returnModelNode:missingModelNode');
