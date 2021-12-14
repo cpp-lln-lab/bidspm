@@ -30,8 +30,9 @@ function content = createEmptyStatsModel()
                    createEmptyNode('subject'); ...
                    createEmptyNode('dataset')};
 
-  content.Nodes{3} = rmfield(content.Nodes{3}, {'Transformations'});
-  content.Nodes{3}.Model.Software.SPM = rmfield(content.Nodes{3}.Model.Software.SPM, 'whitening');
+  content.Nodes{3}.Model = rmfield(content.Nodes{3}.Model, 'HRF'); 
+  content.Nodes{3}.Model = rmfield(content.Nodes{3}.Model, 'Software'); 
+  content.Nodes{3} = rmfield(content.Nodes{3}, {'Transformations'});                                         
   content.Nodes{3}.Model.Options = rmfield(content.Nodes{3}.Model.Options, ...
                                            'HighPassFilterCutoffHz');
 

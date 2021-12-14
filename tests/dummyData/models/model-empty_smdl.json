@@ -9,34 +9,42 @@
     {
       "Level": "Run",
       "Name": "run_level",
-      "Transformations": [
-        {
-          "Name": "Factor",
-          "Inputs": [
-            "trial_type"
-          ]
-        },
-        {
-          "Name": "Convolve",
-          "Model": "spm",
-          "Inputs": [
-            " "
-          ]
-        }
-      ],
+      "Transformations": {
+        "Transformer": "cpp_spm",
+        "Instructions": [
+          {
+            "Name": "Factor",
+            "Inputs": [
+              "trial_type"
+            ]
+          },
+          {
+            "Name": "Convolve",
+            "Model": "spm",
+            "Inputs": [
+              " "
+            ]
+          }
+        ]
+      },
       "Model": {
+        "Type": "glm",
         "X": [
           " "
         ],
+        "HRF": {"Variables": [""],
+          "Model": "DoubleGamma"
+        },
         "Options": {
-          "HighPassFilterCutoffHz": 0.0078
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": " "
         },
         "Software": {
           "SPM": {
-            "whitening": "FAST"
+            "HRFderivatives": "Temporal",
+            "SerialCorrelation": "FAST"
           }
-        },
-        "Mask": " "
+        }
       },
       "Contrasts": {
         "Name": "",
@@ -58,34 +66,42 @@
     {
       "Level": "Subject",
       "Name": "subject_level",
-      "Transformations": [
-        {
-          "Name": "Factor",
-          "Inputs": [
-            "trial_type"
-          ]
-        },
-        {
-          "Name": "Convolve",
-          "Model": "spm",
-          "Inputs": [
-            " "
-          ]
-        }
-      ],
+      "Transformations": {
+        "Transformer": "cpp_spm",
+        "Instructions": [
+          {
+            "Name": "Factor",
+            "Inputs": [
+              "trial_type"
+            ]
+          },
+          {
+            "Name": "Convolve",
+            "Model": "spm",
+            "Inputs": [
+              " "
+            ]
+          }
+        ]
+      },
       "Model": {
+        "Type": "glm",
         "X": [
           " "
         ],
+        "HRF": {"Variables": [""],
+          "Model": "DoubleGamma"
+        },        
         "Options": {
-          "HighPassFilterCutoffHz": 0.0078
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": " "
         },
         "Software": {
           "SPM": {
-            "whitening": "FAST"
+            "HRFderivatives": "Temporal",
+            "SerialCorrelation": "FAST"
           }
-        },
-        "Mask": " "
+        }
       },
       "Contrasts": {
         "Name": "",
@@ -108,14 +124,13 @@
       "Level": "Dataset",
       "Name": "dataset_level",
       "Model": {
+        "Type": "glm",
         "X": [
           " "
         ],
-        "Options": {},
-        "Software": {
-          "SPM": {}
-        },
-        "Mask": " "
+        "Options": {
+          "Mask": " "
+        }
       },
       "Contrasts": {
         "Name": "",
