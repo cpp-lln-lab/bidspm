@@ -7,7 +7,7 @@
   },
   "Nodes": [
     {
-      "Level": "run",
+      "Level": "Run",
       "Name": "run_level",
       "Model": {
         "Type": "glm",
@@ -75,7 +75,7 @@
       ]
     },
     {
-      "Level": "subject",
+      "Level": "Subject",
       "Name": "subject_level",
       "Model": {
         "Type": "glm",
@@ -143,7 +143,7 @@
       ]
     },
     {
-      "Level": "dataset",
+      "Level": "Dataset",
       "Name": "dataset_level",
       "Model": {
         "Type": "glm",

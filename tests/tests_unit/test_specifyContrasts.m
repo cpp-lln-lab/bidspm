@@ -21,14 +21,15 @@ function test_specifyContrasts_complex()
 
   Contrasts.Name = 'motion_gt_static';
   Contrasts.ConditionList = {'motion', 'static'};
-  Contrasts.weights = [1, -1];
+  Contrasts.Weights = [1, -1];
+  Contrasts.Test = 't';
 
   model = createEmptyStatsModel;
   model.Input.task = taskName;
-  model.Steps{1}.DummyContrasts = DummyContrasts;
-  model.Steps{1}.Contrasts = Contrasts;
-  model.Steps{2}.DummyContrasts = DummyContrasts;
-  model.Steps{2}.Contrasts = Contrasts;
+  model.Nodes{1}.DummyContrasts.Contrasts = DummyContrasts;
+  model.Nodes{1}.Contrasts = Contrasts;
+  model.Nodes{2}.DummyContrasts.Contrasts = DummyContrasts;
+  model.Nodes{2}.Contrasts = Contrasts;
 
   SPM.xX.name = { ...
                  ' motion*bf(1)'
@@ -42,7 +43,7 @@ function test_specifyContrasts_complex()
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
   % WHEN
-  contrasts = specifyContrasts(SPM, taskName, model);
+  contrasts = specifyContrasts(SPM, model);
 
   % THEN
   names_contrast = { ...
@@ -88,7 +89,7 @@ function test_specifyContrasts_vismotion()
   model = spm_jsonread(opt.model.file);
 
   % WHEN
-  contrasts = specifyContrasts(SPM, opt.taskName, model);
+  contrasts = specifyContrasts(SPM, model);
 
   % THEN
   expected.name = 'VisMot'; %#ok<*AGROW>
@@ -126,7 +127,7 @@ function test_specifyContrasts_vislocalizer()
   model = spm_jsonread(opt.model.file);
 
   % WHEN
-  contrasts = specifyContrasts(SPM, opt.taskName, model);
+  contrasts = specifyContrasts(SPM, model);
 
   % THEN
   expected.name = 'VisMot_1';
