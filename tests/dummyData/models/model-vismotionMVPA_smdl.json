@@ -7,9 +7,10 @@
   },
   "Nodes": [
     {
-      "Level": "subject",
-      "Name": "subject_level",
+      "Level": "Run",
+      "Name": "run_level",
       "Model": {
+        "Type": "glm",
         "X": [
           "trans_x",
           "trans_y",

@@ -10,6 +10,7 @@
       "Level": "run",
       "Name": "run_level",
       "Model": {
+        "Type": "glm",
         "X": [
           "trial_type.VisMotUp",
           "trial_type.VisMotDown",
@@ -64,6 +65,7 @@
       "Level": "subject",
       "Name": "subject_level",
       "Model": {
+        "Type": "glm",
         "X": [
           "trial_type.VisUp",
           "trial_type.VisDown",
@@ -130,6 +132,7 @@
       "Level": "dataset",
       "Name": "dataset_level",
       "Model": {
+        "Type": "glm",
         "X": [
           "trial_type.VisMot",
           "trial_type.VisStat",

@@ -25,6 +25,7 @@
             }
          ],
          "Model": {
+            "Type": "glm",
             "X": [
                "trans_x",
                "trans_y",
@@ -77,6 +78,7 @@
             }
          ],
          "Model": {
+            "Type": "glm",
             "X": [
                "trans_x",
                "trans_y",
