@@ -18,17 +18,16 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % :returns: - :argout1: (structure) (matlabbatch)
   %
   % (C) Copyright 2019 CPP_SPM developers
-  
 
   [matlabbatch, BIDS, opt, subLabel] =  deal(varargin{:});
-  
-  getModelType(opt.model.file)
 
   if ~isfield(BIDS, 'raw')
     msg = sprintf(['Provide raw BIDS dataset path in opt.dir.raw .\n' ...
                    'It is needed to load events.tsv files.\n']);
     errorHandling(mfilename(), 'missingRawDir', msg, false, opt.verbosity);
   end
+
+  getModelType(opt.model.file);
 
   printBatchName('specify subject level fmri model', opt);
 
