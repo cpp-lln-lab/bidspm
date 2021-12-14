@@ -18,7 +18,7 @@ function test_modelFiles_basic()
 
   model = spm_jsonread(file);
 
-  model.Steps{1};
+  model.Nodes{1};
 
   %%
   file = fullfile(demoDir, 'vismotion', 'models', ...
@@ -26,7 +26,7 @@ function test_modelFiles_basic()
 
   model = spm_jsonread(file);
 
-  model.Steps{1};
+  model.Nodes{1};
 
   %%
   file = fullfile(demoDir, 'vismotion', 'models', ...
@@ -34,7 +34,7 @@ function test_modelFiles_basic()
 
   model = spm_jsonread(file);
 
-  model.Steps{1};
+  model.Nodes{1};
 
   %%
   file = fullfile(demoDir, 'vismotion', 'models', ...
@@ -42,6 +42,6 @@ function test_modelFiles_basic()
 
   model = spm_jsonread(file);
 
-  model.Steps{1};
+  model.Nodes{1};
 
 end

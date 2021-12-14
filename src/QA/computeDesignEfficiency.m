@@ -124,10 +124,10 @@ function e = computeDesignEfficiency(tsvFile, opt)
 
   %%
   DummyContrastsList = getDummyContrastsList(opt.model.file);
-  for i = 1:numel(DummyContrastsList)
-    contrast = filterTrialtypes(data.conditions, DummyContrastsList{i});
+  for i = 1:numel(DummyContrastsList.Contrasts)
+    contrast = filterTrialtypes(data.conditions, DummyContrastsList.Contrasts{i});
     opt.CM{i} = contrast';
-    opt.contrast_name{i} = DummyContrastsList{i};
+    opt.contrast_name{i} = DummyContrastsList.Contrasts{i};
   end
 
   %%
@@ -137,7 +137,7 @@ function e = computeDesignEfficiency(tsvFile, opt)
     contrast = zeros(size(opt.CM{end}));
     for cdt = 1:numel(contrastsList(i).ConditionList)
       idx = filterTrialtypes(data.conditions, contrastsList(i).ConditionList{cdt});
-      contrast(idx) = contrastsList(i).weights(cdt);
+      contrast(idx) = contrastsList(i).Weights(cdt);
     end
     opt.CM{end + 1} = contrast;
     opt.contrast_name{end + 1} = contrastsList(i).Name;
