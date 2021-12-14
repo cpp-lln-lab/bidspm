@@ -47,7 +47,7 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
 
     model = spm_jsonread(opt.model.file);
 
-    contrasts = specifyContrasts(SPM, opt.taskName, model);
+    contrasts = specifyContrasts(SPM, model);
 
     betaMaps = cell(length(contrasts), 1);
     tMaps = cell(length(contrasts), 1);

@@ -32,7 +32,7 @@ function contrasts = specifyContrasts(SPM, model)
     
     
     if numel(model.Nodes) < 1
-        error('No node in the model');
+        errorHandling(mfilename(), 'wrongStatsModel', 'No node in the model', true, true)
     end
     
     % check all the nodes specified in the model
@@ -81,7 +81,8 @@ function [contrasts,  counter] = specifySubLvlContrasts(contrasts, node, counter
     if isfield(node, 'DummyContrasts') && isfield(node.DummyContrasts, 'Contrasts')
         
         if isfield(node.DummyContrasts, 'Test') && node.DummyContrasts.Test ~= 't'
-            warning('Only t test supported for dummy contrasts');
+            msg = 'Only t test supported for contrasts';
+            errorHandling(mfilename(), 'notImplemented', msg, true, true)
             
         else
             
@@ -144,7 +145,8 @@ function [contrasts,  counter] = specifyRunLvlContrasts(contrasts, node, counter
     if isfield(node, 'DummyContrasts') && isfield(node.DummyContrasts, 'Contrasts')
         
         if isfield(node.DummyContrasts, 'Test') && node.DummyContrasts.Test ~= 't'
-            warning('Only t test supported for dummy contrasts');
+            msg = 'Only t test supported for contrasts';
+            errorHandling(mfilename(), 'notImplemented', msg, true, true)
             
         else
             
@@ -184,7 +186,8 @@ function [contrasts,  counter] = specifyRunLvlContrasts(contrasts, node, counter
         for iCon = 1:length(node.Contrasts)
             
             if isfield(node.Contrasts(iCon), 'Test') && ~strcmp(node.Contrasts(iCon).Test, 't')
-                warning('Only t test supported for contrasts');
+                msg = 'Only t test supported for contrasts';
+                errorHandling(mfilename(), 'notImplemented', msg, true, true)
             end
             
             % get regressors index corresponding to the HRF of that condition
@@ -198,8 +201,10 @@ function [contrasts,  counter] = specifyRunLvlContrasts(contrasts, node, counter
             
             if length(nbRuns) > 1
                 disp(node.Contrasts(iCon).ConditionList);
-                warning('Skipping contrast: some runs are missing a condition for the contrast "%s"', ...
-                    node.Contrasts(iCon).Name);
+                msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
+                               node.Contrasts(iCon).Name, cdtName);
+                errorHandling(mfilename(), 'runMissingCondition', msg, true, true)
+                
                 continue
             end
             
@@ -237,6 +242,7 @@ end
 function checkRegressorFound(regIdx, cdtName)
     regIdx = find(regIdx);
     if all(~regIdx)
-        warning('No regressor found for condition "%s"', cdtName);
+        msg = sprint('No regressor found for condition "%s"', cdtName);
+        errorHandling(mfilename(), 'noRegressorFound', msg, true, true)
     end
 end
