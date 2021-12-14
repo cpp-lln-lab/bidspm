@@ -26,26 +26,26 @@ function opt =  face_rep_get_option_results()
   opt.QA.glm.do = false;
 
   % Specify the result to compute
-  opt.result.Steps(1) = returnDefaultResultsStructure();
+  opt.result.Nodes(1) = returnDefaultResultsStructure();
 
-  opt.result.Steps(1).Level = 'subject';
+  opt.result.Nodes(1).Level = 'subject';
 
-  opt.result.Steps(1).Contrasts(1).Name = 'faces_gt_baseline';
+  opt.result.Nodes(1).Contrasts(1).Name = 'faces_gt_baseline';
 
-  opt.result.Steps(1).Contrasts(1).MC =  'FWE';
-  opt.result.Steps(1).Contrasts(1).p = 0.05;
-  opt.result.Steps(1).Contrasts(1).k = 5;
+  opt.result.Nodes(1).Contrasts(1).MC =  'FWE';
+  opt.result.Nodes(1).Contrasts(1).p = 0.05;
+  opt.result.Nodes(1).Contrasts(1).k = 5;
 
   % Specify how you want your output (all the following are on false by default)
-  opt.result.Steps(1).Output.png = true();
-  opt.result.Steps(1).Output.csv = true();
-  opt.result.Steps(1).Output.thresh_spm = true();
-  opt.result.Steps(1).Output.binary = true();
+  opt.result.Nodes(1).Output.png = true();
+  opt.result.Nodes(1).Output.csv = true();
+  opt.result.Nodes(1).Output.thresh_spm = true();
+  opt.result.Nodes(1).Output.binary = true();
 
   % MONTAGE FIGURE OPTIONS
-  opt.result.Steps(1).Output.montage.do = true();
-  opt.result.Steps(1).Output.montage.slices = -26:3:6; % in mm
-  opt.result.Steps(1).Output.montage.orientation = 'axial';
+  opt.result.Nodes(1).Output.montage.do = true();
+  opt.result.Nodes(1).Output.montage.slices = -26:3:6; % in mm
+  opt.result.Nodes(1).Output.montage.orientation = 'axial';
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);
