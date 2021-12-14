@@ -203,7 +203,6 @@ function fieldsToSet = setDefaultOption()
   %% Options for model specification and results
   fieldsToSet.model.file = '';
   fieldsToSet.model.designOnly = false;
-  fieldsToSet.model.hrfDerivatives = [0 0];
   fieldsToSet.contrastList = {};
 
   fieldsToSet.QA.glm.do = true;
@@ -218,7 +217,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.glm.roibased.do = false;
 
   % specify the results to compute
-  fieldsToSet.result.Steps = returnDefaultResultsStructure();
+  fieldsToSet.result.Nodes = returnDefaultResultsStructure();
 
   fieldsToSet.parallelize.do = false;
   fieldsToSet.parallelize.nbWorkers = 3;
@@ -266,6 +265,13 @@ function checkFields(opt)
                    '\nCurrent value is: %d'], ...
                   opt.funcVoxelDims);
     errorHandling(mfilename(), 'voxDim', msg, false, opt.verbosity);
+
+  end
+  
+  if isfield(opt.model, 'hrfDerivatives') 
+
+    msg = ('HRF derivatives should be set in the BIDS stats model file, not in the options.');
+    errorHandling(mfilename(), 'voxDim', msg, true, opt.verbosity);
 
   end
 

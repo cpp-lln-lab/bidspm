@@ -61,11 +61,10 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.glm.roibased.do = false;
 
   expectedOptions.model.file = '';
-  expectedOptions.model.hrfDerivatives = [0 0];
   expectedOptions.model.designOnly = false;
   expectedOptions.contrastList = {};
 
-  expectedOptions.result.Steps = returnDefaultResultsStructure();
+  expectedOptions.result.Nodes = returnDefaultResultsStructure();
 
   expectedOptions.parallelize.do = false;
   expectedOptions.parallelize.nbWorkers = 3;
