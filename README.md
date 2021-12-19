@@ -1,30 +1,14 @@
 <!-- lint disable -->
 
-**Documentation**
-
 [![Documentation Status: stable](https://readthedocs.org/projects/cpp_spm/badge/?version=stable)](https://cpp_spm.readthedocs.io/en/stable/?badge=stable)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/CPP_SPM/dev)
-
-**Code quality and style**
-
 [![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_SPM/actions)
 ![](https://github.com/cpp-lln-lab/CPP_SPM/workflows/CI/badge.svg)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-
-
-**Unit tests and coverage**
 [![codecov](https://codecov.io/gh/cpp-lln-lab/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/cpp-lln-lab/CPP_SPM)
-
-**How to cite**
-
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3556173.svg)](https://doi.org/10.5281/zenodo.3556173)
-
-**Contributors**
-
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-
 [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
-
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <!-- lint enable -->
@@ -44,7 +28,9 @@ Download this repository and unzip the content where you want to install it.
 Or clone the repo.
 
 ```bash
-git clone --recurse-submodule https://github.com/cpp-lln-lab/CPP_SPM.git
+git clone \
+    --recurse-submodules \
+    https://github.com/cpp-lln-lab/CPP_SPM.git \
 ```
 
 Fire up Octave or Matlab and type
