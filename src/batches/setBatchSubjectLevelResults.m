@@ -24,17 +24,24 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   [matlabbatch, opt, subLabel, iNode, iCon] = deal(varargin{:});
 
   result.Contrasts = opt.result.Nodes(iNode).Contrasts(iCon);
+  result.dir = getFFXdir(subLabel, opt);
+  
+  result.contrastNb = getContrastNb(result, opt);
+  if isempty(result.contrastNb)
+     msg = sprintf('Skipping contrast named %s', result.Contrasts.Name);
+     errorHandling(mfilename(), 'skippingContrastResults', msg, true, true);
+     return
+  end
 
   if isfield(opt.result.Nodes(iNode), 'Output')
     result.Output =  opt.result.Nodes(iNode).Output;
   end
+  
   result.space = opt.space;
 
-  result.dir = getFFXdir(subLabel, opt);
   result.label = subLabel;
+  
   result.nbSubj = 1;
-
-  result.contrastNb = getContrastNb(result, opt);
 
   result.outputNameStructure = struct( ...
                                       'suffix', 'spmT', ...
@@ -78,17 +85,18 @@ function contrastNb = getContrastNb(result, opt)
     printAvailableContrasts(SPM, opt);
 
     msg = sprintf( ...
-                  'This SPM file %s does not contain a contrast named %s', ...
+                  '\nThis SPM file %s does not contain a contrast named %s', ...
                   fullfile(result.dir, 'SPM.mat'), ...
                   result.Contrasts.Name);
 
-    errorHandling(mfilename(), 'noMatchingContrastName', msg, false, true);
+    errorHandling(mfilename(), 'noMatchingContrastName', msg, true, true);
 
   end
 
 end
 
 function printAvailableContrasts(SPM, opt)
-  printToScreen('List of contrast in this SPM file', opt);
+  printToScreen('List of contrast in this SPM file\n', opt);
   printToScreen(strjoin({SPM.xCon.name}, '\n'), opt);
+  printToScreen('\n', opt);
 end
