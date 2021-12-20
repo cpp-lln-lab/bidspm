@@ -25,22 +25,22 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
 
   result.Contrasts = opt.result.Nodes(iNode).Contrasts(iCon);
   result.dir = getFFXdir(subLabel, opt);
-  
+
   result.contrastNb = getContrastNb(result, opt);
   if isempty(result.contrastNb)
-     msg = sprintf('Skipping contrast named %s', result.Contrasts.Name);
-     errorHandling(mfilename(), 'skippingContrastResults', msg, true, true);
-     return
+    msg = sprintf('Skipping contrast named %s', result.Contrasts.Name);
+    errorHandling(mfilename(), 'skippingContrastResults', msg, true, true);
+    return
   end
 
   if isfield(opt.result.Nodes(iNode), 'Output')
     result.Output =  opt.result.Nodes(iNode).Output;
   end
-  
+
   result.space = opt.space;
 
   result.label = subLabel;
-  
+
   result.nbSubj = 1;
 
   result.outputNameStructure = struct( ...
@@ -48,8 +48,8 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
                                       'ext', '.nii', ...
                                       'use_schema', 'false', ...
                                       'entities', struct('sub', '', ...
-                                                         'task', strjoin(opt.taskName,''), ...
-                                                         'space', opt.space, ...
+                                                         'task', strjoin(opt.taskName, ''), ...
+                                                         'space', result.space, ...
                                                          'desc', '', ...
                                                          'label', sprintf('%04.0f', ...
                                                                           result.contrastNb), ...

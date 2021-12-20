@@ -166,7 +166,7 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
                     node.Contrasts(iCon).Name, cdtName);
       errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
     else
-        [contrasts, counter] = appendContrast(contrasts, C, counter);
+      [contrasts, counter] = appendContrast(contrasts, C, counter);
     end
 
   end

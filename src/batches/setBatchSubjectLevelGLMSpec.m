@@ -131,11 +131,11 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   if opt.model.designOnly
     matlabbatch{end + 1}.spm.stats.fmri_design = fmri_spec;
   else
-      
+
     fmri_spec.mask = {getInclusiveMask(opt)};
-    
+
     matlabbatch{end + 1}.spm.stats.fmri_spec = fmri_spec;
-    
+
   end
 
 end
@@ -205,24 +205,23 @@ function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, ru
                                            tsvFile);
 end
 
-
 function mask = getInclusiveMask(opt)
-    %
-    % use the mask specified in the BIDS stats model
-    %
-    % if none is specified and we are in MNI space
-    % we use the Intra Cerebal Volume SPM mask
-    %
-    
-    mask = getModelMask(opt.model.file);
-    
-    if isempty(mask) && ...
-            (strfind(opt.space{1}, 'MNI') || strcmp(opt.space, 'IXI549Space'))
-        mask = spm_select('FPList', fullfile(spm('dir'), 'tpm'), 'mask_ICV.nii');
-    end
-    
-    if ~isempty(mask)
-        validationInputFile([], mask);
-    end
-    
+  %
+  % use the mask specified in the BIDS stats model
+  %
+  % if none is specified and we are in MNI space
+  % we use the Intra Cerebal Volume SPM mask
+  %
+
+  mask = getModelMask(opt.model.file);
+
+  if isempty(mask) && ...
+          (strfind(opt.space{1}, 'MNI') || strcmp(opt.space, 'IXI549Space'))
+    mask = spm_select('FPList', fullfile(spm('dir'), 'tpm'), 'mask_ICV.nii');
+  end
+
+  if ~isempty(mask)
+    validationInputFile([], mask);
+  end
+
 end

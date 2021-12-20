@@ -31,7 +31,7 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   %                   files matching the required pattern.
   %
   %
-  % See also: ``spm_select``.
+  % See also: spm_select
   %
   %
   % Example:

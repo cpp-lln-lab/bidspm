@@ -4,7 +4,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results)
+  %   matlabbatch = setBatchResults(matlabbatch, opt, results)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure

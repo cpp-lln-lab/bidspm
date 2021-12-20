@@ -26,6 +26,8 @@ function matlabbatch = bidsFFX(action, opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  % TODO: get the space to run analysis in from the BIDS stats model input
+
   checks(opt, action);
 
   opt.pipeline.type = 'stats';

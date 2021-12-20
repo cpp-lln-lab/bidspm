@@ -97,7 +97,7 @@ function bidsRoiBasedGLM(opt)
 
       % -------------------- IMPROVE ------------------------ %
 
-      % currently this only computes this averages over all all events
+      % currently this only computes this averages over all events
       % we will want to use the bids model to know which event to fit
       % based on the contrasts.
 
