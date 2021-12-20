@@ -1,12 +1,12 @@
-function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, grpLvlCon, rfxDir)
+function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  printBatchName('group level contrast estimation');
+  printBatchName('group level contrast estimation', opt);
 
-  for j = 1:size(grpLvlCon, 1)
+  for j = 1:size(grpLvlCon.Contrasts, 1)
 
-    conName = rmTrialTypeStr(grpLvlCon{j});
+    conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
 
     spmMatFile = {fullfile(rfxDir, conName, 'SPM.mat')};
 
@@ -14,7 +14,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, grpLvlCon, rfxDi
     consess{1}.tcon.convec = 1;
     consess{1}.tcon.sessrep = 'none';
 
-    matlabbatch = setBatchContrasts(matlabbatch, spmMatFile, consess);
+    matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
 
   end
 

@@ -31,11 +31,11 @@ function matlabbatch = bidsResults(opt)
 
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
-  for iStep = 1:length(opt.result.Nodes)
+  for iNode = 1:length(opt.result.Nodes)
 
     % Depending on the level step we migh have to define a matlabbatch
     % for each subject or just on for the whole group
-    switch lower(opt.result.Nodes(iStep).Level)
+    switch lower(opt.result.Nodes(iNode).Level)
 
       case 'run'
         warning('run level not implemented yet');
@@ -55,16 +55,16 @@ function matlabbatch = bidsResults(opt)
 
           subLabel = opt.subjects{iSub};
 
-          results.dir = getFFXdir(subLabel, opt);
+          result.dir = getFFXdir(subLabel, opt);
 
-          for iCon = 1:length(opt.result.Nodes(iStep).Contrasts)
+          for iCon = 1:length(opt.result.Nodes(iNode).Contrasts)
 
             matlabbatch = ...
                 setBatchSubjectLevelResults( ...
                                             matlabbatch, ...
                                             opt, ...
                                             subLabel, ...
-                                            iStep, ...
+                                            iNode, ...
                                             iCon);
 
           end
@@ -73,26 +73,48 @@ function matlabbatch = bidsResults(opt)
 
           saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-          renameOutputResults(results);
+          renameOutputResults(result);
 
-          renamePng(results);
+          renamePng(result);
 
         end
 
       case 'dataset'
 
+        % TODO refactor some of this with setBatchSubjectLevelResults ?
+
         matlabbatch = {};
 
-        results.dir = getRFXdir(opt);
-        results.contrastNb = 1;
-        results.label = 'group';
+        result.contrastNb = 1;
+        result.label = 'group';
+        result.space = opt.space;
 
-        load(fullfile(results.dir, 'SPM.mat'));
-        results.nbSubj = SPM.nscan;
+        entities = struct('sub', '', ...
+                          'task', strjoin(opt.taskName, ''), ...
+                          'space', result.space, ...
+                          'desc', '', ...
+                          'label', sprintf('%04.0f', ...
+                                           result.contrastNb), ...
+                          'p', '', ...
+                          'k', '', ...
+                          'MC', '');
 
-        for iCon = 1:length(opt.result.Nodes(iStep).Contrasts)
+        for iCon = 1:length(opt.result.Nodes(iNode).Contrasts)
 
-          matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results);
+          result.Contrasts = opt.result.Nodes(iNode).Contrasts(iCon);
+
+          result.dir = fullfile(getRFXdir(opt), result.Contrasts.Name);
+
+          load(fullfile(result.dir, 'SPM.mat'));
+          result.nbSubj = SPM.nscan;
+
+          result.outputNameStructure = struct( ...
+                                              'suffix', 'spmT', ...
+                                              'ext', '.nii', ...
+                                              'use_schema', 'false', ...
+                                              'entities', entities);
+
+          matlabbatch = setBatchResults(matlabbatch, result);
 
         end
 

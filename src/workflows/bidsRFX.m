@@ -24,15 +24,22 @@ function bidsRFX(action, opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  checks(opt, action);
+
+  % TODO: default opt.space = {'MNI'} to standard SPM space
+  %   if ismember('MNI', opt.query.space)
+  %     idx = strcmp(opt.query.space, 'MNI');
+  %     opt.query.space{idx} = 'IXI549Space';
+  %   end
+
   [~, opt] = setUpWorkflow(opt, 'group level GLM');
 
-  opt.dir.jobs = fullfile(opt.dir.stats, 'jobs', opt.taskName);
+  matlabbatch = {};
 
   switch action
 
     case 'smoothContrasts'
 
-      matlabbatch = {};
       matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
 
       saveAndRunWorkflow(matlabbatch, ...
@@ -40,43 +47,54 @@ function bidsRFX(action, opt)
                           '_task-', opt.taskName], ...
                          opt);
 
-    case 'RFX'
+    case 'MeanAnatAndMask'
 
       opt.dir.rfx = getRFXdir(opt);
 
-      % ------
       % TODO
       % - need to rethink where to save the anat and mask
       % - need to smooth the anat
       % - create a masked version of the anat too
-      % - needs to be improved (maybe??) as the structural and mask may vary for
-      %   different analysis
-      % ------
-      matlabbatch = {};
+
       matlabbatch = setBatchMeanAnatAndMask(matlabbatch, ...
                                             opt, ...
                                             fullfile(opt.dir.stats, 'group'));
       saveAndRunWorkflow(matlabbatch, 'create_mean_struc_mask', opt);
 
+    case 'RFX'
+
       % TODO
-      % saving needs to be improved (maybe??) as the name may vary with FXHM and contrast
-      matlabbatch = {};
+      % saving needs to be improved (maybe??) as the name may vary with FWHM and contrast
+
       matlabbatch = setBatchFactorialDesign(matlabbatch, opt);
 
-      % Load the list of contrasts of interest for the RFX
       grpLvlCon = getGrpLevelContrast(opt);
       matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon);
-
       saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
 
-      % TODO
-      % saving needs to be improved (maybe??) as the name may vary with FwHM and contrast
       rfxDir = getRFXdir(opt);
 
       matlabbatch = {};
-      matlabbatch = setBatchGroupLevelContrasts(matlabbatch, grpLvlCon, rfxDir);
+      matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir);
       saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);
 
+  end
+
+end
+
+function checks(opt, action)
+
+  if numel(opt.space) > 1
+    disp(opt.space);
+    msg = sprintf('GLMs can only be run in one space at a time.\n');
+    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+  end
+
+  allowedActions = {'smoothContrasts', 'MeanAnatAndMask', 'RFX'};
+  if ~ismember(action, allowedActions)
+    msg = sprintf('action must be: %s.\n%s was given.', createUnorderedList(allowedActions), ...
+                  action);
+    errorHandling(mfilename(), 'unknownAction', msg, false, opt.verbosity);
   end
 
 end

@@ -33,13 +33,13 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon)
 
     case 3
 
-      printBatchName('estimate group level fmri model');
+      printBatchName('estimate group level fmri model', opt);
 
-      for j = 1:size(grpLvlCon, 1)
+      for j = 1:size(grpLvlCon.Contrasts, 1)
 
-        conName = rmTrialTypeStr(grpLvlCon{j});
+        conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
 
-        spmMatFile = { fullfile(opt.dir.rfx, conName, 'SPM.mat') };
+        spmMatFile = { fullfile(getRFXdir(opt), conName, 'SPM.mat') };
 
         % no QA at the group level GLM:
         %   since there is no autocorrelation to check for

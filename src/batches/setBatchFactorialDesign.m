@@ -4,7 +4,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchFactorialDesign(matlabbatch, opt, funcFWHM, conFWHM)
+  %   matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -30,7 +30,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
   grpLvlCon = getGrpLevelContrast(opt);
 
   % For each contrast
-  for j = 1:size(grpLvlCon, 1)
+  for j = 1:size(grpLvlCon.Contrasts, 1)
 
     % the strrep(Session{j}, 'trial_type.', '') is there to remove
     % 'trial_type.' because contrasts against baseline are renamed
@@ -61,10 +61,12 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
       conIdx = find(strcmp({SPM.xCon.name}, conName));
       if isempty(conIdx)
         disp({SPM.xCon.name}');
-        msg = sprintf('Could not find a contrast named %s\nin %s.\n', ...
+        msg = sprintf('Skipping subject %s as we could not find a contrast named %s\nin %s.\n', ...
+                      subLabel, ...
                       conName, ...
                       fullfile(ffxDir, 'SPM.mat'));
-        errorHandling(mfilename(), 'missingContrast', msg, false, opt.verbosity);
+        errorHandling(mfilename(), 'missingContrast', msg, true, opt.verbosity);
+        continue
       end
       fileName = sprintf('con_%0.4d.nii', conIdx);
       file = validationInputFile(ffxDir, fileName, smoothPrefix);
