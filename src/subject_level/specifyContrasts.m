@@ -165,8 +165,9 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
       msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
                     node.Contrasts(iCon).Name, cdtName);
       errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
+    else
+        [contrasts, counter] = appendContrast(contrasts, C, counter);
     end
-    [contrasts, counter] = appendContrast(contrasts, C, counter);
 
   end
 
