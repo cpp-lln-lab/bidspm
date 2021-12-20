@@ -35,7 +35,7 @@ function matlabbatch = bidsResults(opt)
 
     % Depending on the level step we migh have to define a matlabbatch
     % for each subject or just on for the whole group
-    switch opt.result.Nodes(iStep).Level
+    switch lower(opt.result.Nodes(iStep).Level)
 
       case 'run'
         warning('run level not implemented yet');
