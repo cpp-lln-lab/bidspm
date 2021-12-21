@@ -13,7 +13,7 @@ function matlabbatch = bidsFFX(action, opt)
   %
   % USAGE::
   %
-  %  bidsFFX(action, [opt])
+  %  bidsFFX(action, opt)
   %
   % :param action: Action to be conducted:``specifyAndEstimate`` or ``contrasts``.
   % :type action: string
@@ -23,6 +23,8 @@ function matlabbatch = bidsFFX(action, opt)
   %
   % - ``specifyAndEstimate`` for fMRI design + estimate and
   % - ``contrasts`` to estimate contrasts.
+  %
+  % See also: setBatchSubjectLevelGLMSpec, setBatchSubjectLevelContrasts
   %
   % (C) Copyright 2020 CPP_SPM developers
 

@@ -77,7 +77,9 @@ function bidsRoiBasedGLM(opt)
 
     use_schema = false;
     BIDS_ROI = bids.layout(opt.dir.roi, use_schema);
-    roiList = bids.query(BIDS_ROI, 'data', 'sub', subLabel);
+    roiList = bids.query(BIDS_ROI, 'data', ...
+                         'sub', subLabel, ...
+                         'space', opt.space);
 
     model = mardo(SPM);
 

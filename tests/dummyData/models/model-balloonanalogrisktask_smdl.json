@@ -40,7 +40,7 @@
             },
             "Options": {
                "HighPassFilterCutoffHz": 0.008,
-               "Mask": " "
+               "Mask": ""
             },
             "Software": {
                "SPM": {
@@ -90,7 +90,7 @@
             },
             "Options": {
                "HighPassFilterCutoffHz": 0.008,
-               "Mask": " "
+               "Mask": ""
             },
             "Software": {
                "SPM": {
@@ -117,7 +117,7 @@
                "VisStat_gt_VisMot"
             ],
             "Options": {
-               "Mask": " "
+               "Mask": ""
             },
             "Software": {
                "SPM": {}

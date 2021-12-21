@@ -32,12 +32,15 @@
         "X": [
           " "
         ],
-        "HRF": {"Variables": [""],
+        "HRF": {
+          "Variables": [
+            ""
+          ],
           "Model": "DoubleGamma"
         },
         "Options": {
           "HighPassFilterCutoffHz": 0.0078,
-          "Mask": " "
+          "Mask": ""
         },
         "Software": {
           "SPM": {
@@ -89,12 +92,15 @@
         "X": [
           " "
         ],
-        "HRF": {"Variables": [""],
+        "HRF": {
+          "Variables": [
+            ""
+          ],
           "Model": "DoubleGamma"
         },
         "Options": {
           "HighPassFilterCutoffHz": 0.0078,
-          "Mask": " "
+          "Mask": ""
         },
         "Software": {
           "SPM": {
@@ -129,7 +135,7 @@
           " "
         ],
         "Options": {
-          "Mask": " "
+          "Mask": ""
         }
       },
       "Contrasts": {

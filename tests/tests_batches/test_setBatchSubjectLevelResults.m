@@ -10,19 +10,16 @@ end
 
 function test_setBatchSubjectLevelResults_basic()
 
-  iStep = 1;
-  iCon = 1;
-
-  subLabel = '01';
-
-  opt = setOptions('vismotion', subLabel);
-  opt.space = {'MNI'};
-
-  opt.result.Nodes.Contrasts.Name = 'VisMot';
+  % IF
+  contrast_name = 'VisMot';
+  [subLabel, opt, result] = setUp('vismotion', contrast_name);
 
   matlabbatch = {};
-  matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subLabel, iStep, iCon);
 
+  % WHEN
+  matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subLabel, result);
+
+  % THEN
   expectedBatch = {};
 
   expectedBatch{end + 1}.spm.stats.results.spmmat = {fullfile(opt.dir.stats, ...
@@ -45,10 +42,8 @@ function test_setBatchSubjectLevelResults_basic()
 
   assertEqual(matlabbatch{end}.spm.stats.results.conspec, ...
               expectedBatch{end}.spm.stats.results.conspec);
-
   assertEqual(matlabbatch{end}.spm.stats.results.units, ...
               expectedBatch{end}.spm.stats.results.units);
-
   assertEqual(matlabbatch{end}.spm.stats.results.export, ...
               expectedBatch{end}.spm.stats.results.export);
 
@@ -56,44 +51,55 @@ end
 
 function test_setBatchSubjectLevelResults_error_missing_contrast_name()
 
-  iStep = 1;
-  iCon = 1;
-
-  subLabel = '01';
-
-  opt = setOptions('vismotion', subLabel);
-  opt.space = {'MNI'};
+  [subLabel, opt, result] = setUp('vismotion');
 
   matlabbatch = {};
   assertExceptionThrown( ...
                         @()setBatchSubjectLevelResults(matlabbatch, ...
                                                        opt, ...
                                                        subLabel, ...
-                                                       iStep, ...
-                                                       iCon), ...
+                                                       result), ...
                         'setBatchSubjectLevelResults:missingContrastName');
 
 end
 
 function test_setBatchSubjectLevelResults_error_no_matching_contrast()
 
-  iStep = 1;
+  contrast_name = 'NotAContrast';
+  [subLabel, opt, result] = setUp('vismotion', contrast_name);
+
+  matlabbatch = {};
+  assertWarning( ...
+                @()setBatchSubjectLevelResults(matlabbatch, ...
+                                               opt, ...
+                                               subLabel, ...
+                                               result), ...
+                'setBatchSubjectLevelResults:noMatchingContrastName');
+
+end
+
+function [subLabel, opt, result] = setUp(task, contrastName)
+
+  iNode = 1;
   iCon = 1;
 
   subLabel = '01';
 
-  opt = setOptions('vismotion', subLabel);
+  opt = setOptions(task, subLabel);
+
   opt.space = {'MNI'};
 
-  opt.result.Nodes.Contrasts.Name = 'NotAContrast';
+  if nargin > 1
+    opt.result.Nodes.Contrasts.Name = contrastName;
+  end
 
-  matlabbatch = {};
-  assertExceptionThrown( ...
-                        @()setBatchSubjectLevelResults(matlabbatch, ...
-                                                       opt, ...
-                                                       subLabel, ...
-                                                       iStep, ...
-                                                       iCon), ...
-                        'setBatchSubjectLevelResults:noMatchingContrastName');
+  result.dir = getFFXdir(subLabel, opt);
+
+  result.space = opt.space;
+
+  result.Contrasts = opt.result.Nodes(iNode).Contrasts(iCon);
+  if isfield(opt.result.Nodes(iNode), 'Output')
+    result.Output =  opt.result.Nodes(iNode).Output;
+  end
 
 end

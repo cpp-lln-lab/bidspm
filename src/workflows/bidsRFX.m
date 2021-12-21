@@ -4,7 +4,10 @@ function bidsRFX(action, opt)
   %
   % OR
   %
-  % - creates a mean structural image and mean mask over the sample,
+  % - creates a mean structural image and mean mask over the sample
+  %
+  % OR
+  %
   % - specifies and estimates the group level model,
   % - computes the group level contrasts.
   %
@@ -12,15 +15,13 @@ function bidsRFX(action, opt)
   %
   %  bidsRFX(action, opt)
   %
-  % :param action: Action to be conducted: ``smoothContrasts`` or ``RFX``
+  % :param action: Action to be conducted: ``'smoothContrasts'`` or ``'RFX'`` or
+  %                ``'meanAnatAndMask'``
   % :type action: string
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  %  - case ``smoothContrasts``: smooth con images
-  %  - case ``RFX``: Mean Struct, MeanMask, Factorial design specification and
-  %    estimation, Contrast estimation
   %
   % (C) Copyright 2020 CPP_SPM developers
 
@@ -36,9 +37,9 @@ function bidsRFX(action, opt)
 
   matlabbatch = {};
 
-  switch action
+  switch lower(action)
 
-    case 'smoothContrasts'
+    case 'smoothcontrasts'
 
       matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
 
@@ -47,7 +48,7 @@ function bidsRFX(action, opt)
                           '_task-', opt.taskName], ...
                          opt);
 
-    case 'MeanAnatAndMask'
+    case 'meananatandmask'
 
       opt.dir.rfx = getRFXdir(opt);
 
@@ -61,10 +62,7 @@ function bidsRFX(action, opt)
                                             fullfile(opt.dir.stats, 'group'));
       saveAndRunWorkflow(matlabbatch, 'create_mean_struc_mask', opt);
 
-    case 'RFX'
-
-      % TODO
-      % saving needs to be improved (maybe??) as the name may vary with FWHM and contrast
+    case 'rfx'
 
       matlabbatch = setBatchFactorialDesign(matlabbatch, opt);
 
@@ -90,7 +88,7 @@ function checks(opt, action)
     errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
   end
 
-  allowedActions = {'smoothContrasts', 'MeanAnatAndMask', 'RFX'};
+  allowedActions = {'smoothContrasts', 'meanAnatAndMask', 'RFX'};
   if ~ismember(action, allowedActions)
     msg = sprintf('action must be: %s.\n%s was given.', createUnorderedList(allowedActions), ...
                   action);
