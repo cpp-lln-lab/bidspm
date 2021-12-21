@@ -19,7 +19,6 @@ function matlabbatch = bidsResults(opt)
   %
   %     move ps file
   %     rename NIDM file
-  %     if it does not exist create the default "result" field from the BIDS model file
 
   currentDirectory = pwd;
 
@@ -39,35 +38,18 @@ function matlabbatch = bidsResults(opt)
 
       case 'run'
         warning('run level not implemented yet');
+        continue
 
         % TODO check what happens for models with a run level specified but no
         %      subject level
 
-        % matlabbatch = {};
-        % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subLabel);
-
       case 'subject'
 
-        % For each subject
         for iSub = 1:numel(opt.subjects)
-
-          matlabbatch = {};
 
           subLabel = opt.subjects{iSub};
 
-          result.dir = getFFXdir(subLabel, opt);
-
-          for iCon = 1:length(opt.result.Nodes(iNode).Contrasts)
-
-            matlabbatch = ...
-                setBatchSubjectLevelResults( ...
-                                            matlabbatch, ...
-                                            opt, ...
-                                            subLabel, ...
-                                            iNode, ...
-                                            iCon);
-
-          end
+          [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iNode);
 
           batchName = sprintf('compute_sub-%s_results', subLabel);
 
@@ -81,46 +63,15 @@ function matlabbatch = bidsResults(opt)
 
       case 'dataset'
 
-        % TODO refactor some of this with setBatchSubjectLevelResults ?
-
-        matlabbatch = {};
-
-        result.contrastNb = 1;
-        result.label = 'group';
-        result.space = opt.space;
-
-        entities = struct('sub', '', ...
-                          'task', strjoin(opt.taskName, ''), ...
-                          'space', result.space, ...
-                          'desc', '', ...
-                          'label', sprintf('%04.0f', ...
-                                           result.contrastNb), ...
-                          'p', '', ...
-                          'k', '', ...
-                          'MC', '');
-
-        for iCon = 1:length(opt.result.Nodes(iNode).Contrasts)
-
-          result.Contrasts = opt.result.Nodes(iNode).Contrasts(iCon);
-
-          result.dir = fullfile(getRFXdir(opt), result.Contrasts.Name);
-
-          load(fullfile(result.dir, 'SPM.mat'));
-          result.nbSubj = SPM.nscan;
-
-          result.outputNameStructure = struct( ...
-                                              'suffix', 'spmT', ...
-                                              'ext', '.nii', ...
-                                              'use_schema', 'false', ...
-                                              'entities', entities);
-
-          matlabbatch = setBatchResults(matlabbatch, result);
-
-        end
+        [matlabbatch, result] = bidsResultsdataset(opt, iNode);
 
         batchName = 'compute_group_level_results';
 
         saveAndRunWorkflow(matlabbatch, batchName, opt);
+
+        renameOutputResults(result);
+
+        renamePng(result);
 
       otherwise
 
@@ -131,6 +82,57 @@ function matlabbatch = bidsResults(opt)
   end
 
   cd(currentDirectory);
+
+end
+
+function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iNode)
+
+  matlabbatch = {};
+
+  result.space = opt.space;
+
+  result.dir = getFFXdir(subLabel, opt);
+
+  for iCon = 1:length(opt.result.Nodes(iNode).Contrasts)
+
+    result.Contrasts = opt.result.Nodes(iNode).Contrasts(iCon);
+    if isfield(opt.result.Nodes(iNode), 'Output')
+      result.Output =  opt.result.Nodes(iNode).Output;
+    end
+
+    matlabbatch = setBatchSubjectLevelResults(matlabbatch, ...
+                                              opt, ...
+                                              subLabel, ...
+                                              result);
+
+  end
+
+end
+
+function [matlabbatch, result] = bidsResultsdataset(opt, iNode)
+
+  matlabbatch = {};
+
+  result.space = opt.space;
+
+  for iCon = 1:length(opt.result.Nodes(iNode).Contrasts)
+
+    result.Contrasts = opt.result.Nodes(iNode).Contrasts(iCon);
+    if isfield(opt.result.Nodes(iNode), 'Output')
+      result.Output =  opt.result.Nodes(iNode).Output;
+    end
+
+    result.dir = fullfile(getRFXdir(opt), result.Contrasts.Name);
+
+    matlabbatch = setBatchGroupLevelResults(matlabbatch, ...
+                                            opt, ...
+                                            result);
+
+    matlabbatch = setBatchPrintFigure(matlabbatch, ...
+                                      opt, ...
+                                      fullfile(result.dir, figureName(opt)));
+
+  end
 
 end
 
@@ -171,4 +173,15 @@ function renamePng(results)
     movefile(source, target);
   end
 
+end
+
+function filename = figureName(opt)
+  p = struct( ...
+             'suffix', 'designmatrix', ...
+             'ext', '.png', ...
+             'entities', struct( ...
+                                'task', strjoin(opt.taskName, ''), ...
+                                'space', opt.space));
+  bidsFile = bids.File(p, false);
+  filename = bidsFile.filename;
 end

@@ -12,19 +12,14 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   % :type opt: structure
   % :param subLabel:
   % :type subLabel: string
-  % :param iNode:
-  % :type iNode: positive integer
-  % :param iCon:
-  % :type iCon: positive integer
   %
   % :returns: - :matlabbatch: (structure)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  [matlabbatch, opt, subLabel, iNode, iCon] = deal(varargin{:});
+  [matlabbatch, opt, subLabel, result] = deal(varargin{:});
 
-  result.Contrasts = opt.result.Nodes(iNode).Contrasts(iCon);
-  result.dir = getFFXdir(subLabel, opt);
+  result.nbSubj = 1;
 
   result.contrastNb = getContrastNb(result, opt);
   if isempty(result.contrastNb)
@@ -33,29 +28,9 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
     return
   end
 
-  if isfield(opt.result.Nodes(iNode), 'Output')
-    result.Output =  opt.result.Nodes(iNode).Output;
-  end
-
-  result.space = opt.space;
-
   result.label = subLabel;
 
-  result.nbSubj = 1;
-
-  result.outputNameStructure = struct( ...
-                                      'suffix', 'spmT', ...
-                                      'ext', '.nii', ...
-                                      'use_schema', 'false', ...
-                                      'entities', struct('sub', '', ...
-                                                         'task', strjoin(opt.taskName, ''), ...
-                                                         'space', result.space, ...
-                                                         'desc', '', ...
-                                                         'label', sprintf('%04.0f', ...
-                                                                          result.contrastNb), ...
-                                                         'p', '', ...
-                                                         'k', '', ...
-                                                         'MC', ''));
+  result.outputNameStructure = defaultOuputNameStruct(opt, result);
 
   matlabbatch = setBatchResults(matlabbatch, result);
 
