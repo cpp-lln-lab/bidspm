@@ -1,6 +1,6 @@
 function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   %
-  % Short description of what the function does goes here.
+  % Sets up the subject level GLM
   %
   % USAGE::
   %
@@ -15,7 +15,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % :param subLabel:
   % :type subLabel: string
   %
-  % :returns: - :argout1: (structure) (matlabbatch)
+  % :returns: - :matlabbatch: (structure)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -55,7 +55,6 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % Create ffxDir if it doesnt exist
   % If it exists, issue a warning that it has been overwritten
   ffxDir = getFFXdir(subLabel, opt);
-
   overwriteDir(ffxDir, opt);
 
   fmri_spec.dir = {ffxDir};
@@ -226,7 +225,7 @@ function mask = getInclusiveMask(opt)
   mask = getModelMask(opt.model.file);
 
   if isempty(mask) && ...
-          (strfind(opt.space{1}, 'MNI') || strcmp(opt.space, 'IXI549Space'))
+          (~isempty(strfind(opt.space{1}, 'MNI')) || strcmp(opt.space, 'IXI549Space'))
     mask = spm_select('FPList', fullfile(spm('dir'), 'tpm'), 'mask_ICV.nii');
   end
 

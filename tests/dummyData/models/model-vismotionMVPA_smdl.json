@@ -25,7 +25,7 @@
         },
         "Options": {
           "HighPassFilterCutoffHz": 0.008,
-          "Mask": " "
+          "Mask": ""
         },
         "Software": {
           "SPM": {

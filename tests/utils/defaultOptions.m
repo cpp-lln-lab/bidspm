@@ -59,6 +59,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.QA.func.Basics = 'on';
 
   expectedOptions.glm.roibased.do = false;
+  expectedOptions.glm.maxNbVols = Inf;
 
   expectedOptions.model.file = '';
   expectedOptions.model.designOnly = false;

@@ -65,11 +65,12 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
   %% THEN
-  expectedContent = {    'volt'
+  expectedContent = {'volt'
                      'global'
                      'timing'
                      'dir'
                      'fact'
+                     'mthresh'
                      'bases'
                      'cvi'
                      'sess'
@@ -80,6 +81,9 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.sess(1).hpf, 125);
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.cvi, 'FAST');
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs, [1 0]);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.mthresh, 0.8);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.mask, ...
+              {fullfile(spm('dir'), 'tpm', 'mask_ICV.nii')});
 
   cleanUp(fullfile(pwd, 'derivatives'));
 
@@ -105,11 +109,12 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
   %% THEN
-  expectedContent = {    'volt'
+  expectedContent = {'volt'
                      'global'
                      'timing'
                      'dir'
                      'fact'
+                     'mthresh'
                      'bases'
                      'cvi'
                      'sess'};

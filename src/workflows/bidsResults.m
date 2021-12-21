@@ -49,6 +49,8 @@ function matlabbatch = bidsResults(opt)
 
           subLabel = opt.subjects{iSub};
 
+          printProcessingSubject(iSub, subLabel, opt);
+
           [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iNode);
 
           batchName = sprintf('compute_sub-%s_results', subLabel);

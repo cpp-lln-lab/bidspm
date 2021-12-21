@@ -83,7 +83,11 @@ function opt = checkOptions(opt)
   %       if you know the order in which slices were acquired, you should be able to recompute
   %       slice timing and add it to the json files in your BIDS data set.
   %
-  %     - ``opt.glm.roibased.do``
+  %     - ``opt.glm.roibased.do = false`` must be set to ``true`` to use the
+  %       ``bidsRoiBasedGLM`` workflow
+  %     - ``opt.glm.maxNbVols = Inf`` sets the maximum number of volumes to
+  %       include in a run in a subject level GLM. This can be useful if some
+  %       time series have more volumes than necessary.
   %
   %     - ``opt.QA.func.carpetPlot = true`` to plot carpet plot when running ``functionaQA``
   %     - ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
