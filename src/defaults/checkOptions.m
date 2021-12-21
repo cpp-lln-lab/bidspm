@@ -215,6 +215,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.QA.func.Basics = 'on';
 
   fieldsToSet.glm.roibased.do = false;
+  fieldsToSet.glm.maxNbVols = Inf;
 
   % specify the results to compute
   fieldsToSet.result.Nodes = returnDefaultResultsStructure();
