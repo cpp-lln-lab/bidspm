@@ -62,6 +62,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
 
+  fmri_spec.mthresh = getInclusiveMaskThreshold(opt.model.file);
+
   fmri_spec.bases.hrf.derivs = getHRFderivatives(opt.model.file);
 
   fmri_spec.cvi = getSerialCorrelationCorrection(opt.model.file);
