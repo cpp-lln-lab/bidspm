@@ -1,4 +1,11 @@
-function [start, runTime] = elapsedTime(input, startTime, runTime, nbIteration)
+function [startTime, runTime] = elapsedTime(input, startTime, runTime, nbIteration)
+    %
+    % USAGE::
+    %
+    %   [start, runTime] = elapsedTime(input, startTime, runTime, nbIteration)
+    %
+    %
+    % (C) Copyright 2021 CPP_SPM developers
     
     if nargin < 3
         runTime = [];
@@ -8,11 +15,9 @@ function [start, runTime] = elapsedTime(input, startTime, runTime, nbIteration)
         
         case 'start'
             
-            start = tic;
+            startTime = tic;
             
         case 'stop'
-            
-            start = nan;
             
             fprintf('\n\n********* Done :) *********\n\n');
             
@@ -29,7 +34,7 @@ function [start, runTime] = elapsedTime(input, startTime, runTime, nbIteration)
             
         case 'globalStart'
             
-            start = tic;
+            startTime = tic;
             
         case 'globalStop'
             
