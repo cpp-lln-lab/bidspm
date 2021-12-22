@@ -6,7 +6,7 @@ function printToScreen(msg, opt)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  if nargin < 2 || opt.verbosity
+  if nargin < 2 || ~isfield(opt, 'verbosity') || opt.verbosity
 
     fprintf(1, msg);
 

@@ -12,7 +12,11 @@ function mask = bidsWholeBrainFuncMask(opt)
 
   mask = cell(numel(opt.subjects), 1);
 
+  runTime = [];
+
   for iSub = 1:numel(opt.subjects)
+
+    subjectStart = elapsedTime(opt, 'start');
 
     subLabel = opt.subjects{iSub};
 
@@ -38,6 +42,11 @@ function mask = bidsWholeBrainFuncMask(opt)
       matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
       % run spm
       saveAndRunWorkflow(matlabbatch, 'meanImage_segment_skullstrip', opt, subLabel);
+
+      [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
+
     end
+
+    cleanUpWorkflow(opt);
 
   end

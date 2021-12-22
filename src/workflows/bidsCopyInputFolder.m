@@ -74,4 +74,6 @@ function bidsCopyInputFolder(opt, unzip)
     printToScreen('\n\n', opt);
   end
 
+  cleanUpWorkflow(opt);
+
 end
