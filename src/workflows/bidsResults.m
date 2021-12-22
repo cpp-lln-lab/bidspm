@@ -83,6 +83,8 @@ function matlabbatch = bidsResults(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
   cd(currentDirectory);
 
 end

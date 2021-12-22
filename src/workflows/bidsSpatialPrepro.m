@@ -49,7 +49,11 @@ function matlabbatch = bidsSpatialPrepro(opt)
   opt.orderBatches.coregister = 3;
   opt.orderBatches.saveCoregistrationMatrix = 4;
 
+  runTime = [];
+
   for iSub = 1:numel(opt.subjects)
+
+    subjectStart = elapsedTime(opt, 'start');
 
     matlabbatch = {};
 
@@ -132,7 +136,12 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
       renameSegmentParameter(BIDS, subLabel, opt);
       renameUnwarpParameter(BIDS, subLabel, opt);
+
+      [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
+
     end
+
+    cleanUpWorkflow(opt);
 
   end
 

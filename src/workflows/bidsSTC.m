@@ -33,7 +33,11 @@ function bidsSTC(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'slice timing correction');
 
+  runTime = [];
+
   for iSub = 1:numel(opt.subjects)
+
+    subjectStart = elapsedTime(opt, 'start');
 
     subLabel = opt.subjects{iSub};
 
@@ -44,7 +48,11 @@ function bidsSTC(opt)
 
     saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
 
+    [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
+
   end
+
+  cleanUpWorkflow(opt);
 
   prefix = get_spm_prefix_list;
   opt.query.prefix = prefix.stc;

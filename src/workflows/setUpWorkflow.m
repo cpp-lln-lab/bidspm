@@ -30,7 +30,7 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir)
     bidsDir = opt.dir.input;
   end
 
-  opt.globalStart = elapsedTime('globalStart');
+  opt.globalStart = elapsedTime(opt, 'globalStart');
 
   opt = loadAndCheckOptions(opt);
 

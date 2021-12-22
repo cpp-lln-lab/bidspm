@@ -1,47 +1,63 @@
-function [startTime, runTime] = elapsedTime(input, startTime, runTime, nbIteration)
-    %
-    % USAGE::
-    %
-    %   [start, runTime] = elapsedTime(input, startTime, runTime, nbIteration)
-    %
-    %
-    % (C) Copyright 2021 CPP_SPM developers
+function [startTime, runTime] = elapsedTime(opt, action, startTime, runTime, nbIteration)
+  %
+  % USAGE::
+  %
+  %   [start, runTime] = elapsedTime(input, startTime, runTime, nbIteration)
+  %
+  %
+  % (C) Copyright 2021 CPP_SPM developers
 
-    if nargin < 3
-        runTime = [];
-    end
+  if nargin < 4
+    runTime = [];
+  end
 
-    switch input
+  switch action
 
-        case 'start'
+    case 'start'
 
-            startTime = tic;
+      startTime = tic;
 
-        case 'stop'
+    case 'stop'
 
-            fprintf('\n\n********* Done :) *********\n\n');
+      printDone(opt);
 
-            fprintf(' elapsed time is: ')
-            t=toc(startTime(end));
-            disp(datestr(datenum(0,0,0,0,0,t),'HH:MM:SS'));
+      t = toc(startTime(end));
+      msg = sprintf(' elapsed time: %s', formatDuration(t));
+      printToScreen(msg, opt);
 
-            runTime(end+1) = t;
-            ETA = mean(runTime) * (nbIteration - numel(runTime));
-            fprintf('\n ETA: ')
-            disp(datestr(datenum(0,0,0,0,0,ETA),'HH:MM:SS'));
+      runTime(end + 1) = t;
+      ETA = mean(runTime) * (nbIteration - numel(runTime));
+      msg = sprintf('\n ETA: %s', formatDuration(ETA));
+      printToScreen(msg, opt);
 
-            fprintf('\n***************************\n\n');
+      printHorizontalLine(opt, 27);
 
-        case 'globalStart'
+    case 'globalStart'
 
-            startTime = tic;
+      startTime = tic;
 
-        case 'globalStop'
+    case 'globalStop'
 
-            fprintf('\n\n********* Pipeline done :) *********\n\n');
-            fprintf('  global elapsed time is: ')
-            t=toc(startTime);
-            disp(datestr(datenum(0,0,0,0,0,t),'HH:MM:SS'));
-            fprintf('\n************************************\n\n');
+      printToScreen('\n\n********* Pipeline done :) *********\n', opt);
 
-    end
+      t = toc(opt.globalStart);
+      msg = sprintf('  global elapsed time: %s', formatDuration(t));
+      printToScreen(msg, opt);
+
+      printHorizontalLine(opt, 36);
+
+  end
+
+end
+
+function printDone(opt)
+  printToScreen('\n\n********* Done :) *********\n', opt);
+end
+
+function printHorizontalLine(opt, length)
+  printToScreen(['\n' repmat('*', 1, length) '\n\n'], opt);
+end
+
+function string = formatDuration(duration)
+  string = datestr(datenum(0, 0, 0, 0, 0, duration), 'HH:MM:SS');
+end

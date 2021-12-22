@@ -21,7 +21,11 @@ function bidsRealignReslice(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'realign and reslice');
 
+  runTime = [];
+
   for iSub = 1:numel(opt.subjects)
+
+    subjectStart = elapsedTime(opt, 'start');
 
     subLabel = opt.subjects{iSub};
 
@@ -41,7 +45,11 @@ function bidsRealignReslice(opt)
       copyFigures(BIDS, opt, subLabel);
     end
 
+    [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
+
   end
+
+  cleanUpWorkflow(opt);
 
   prefix = get_spm_prefix_list();
   opt.query.prefix = prefix.realign;

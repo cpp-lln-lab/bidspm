@@ -133,6 +133,9 @@ function bidsCreateROI(opt)
       end
 
     end
+
   end
+
+  cleanUpWorkflow(opt);
 
 end

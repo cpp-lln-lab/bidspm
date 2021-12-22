@@ -40,4 +40,6 @@ function matlabbatch = bidsRsHrf(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
 end
