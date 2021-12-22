@@ -1,10 +1,12 @@
-function globalStart = elapsedTime(input, varargin)
+function start = elapsedTime(input, varargin)
 
+global GLOBAL_START
+    
 switch input
 
     case 'start'
 
-        tic;
+        start = tic;
 
     case 'stop'
 
@@ -16,15 +18,13 @@ switch input
 
     case 'globalStart'
 
-        globalStart = tic;
+        GLOBAL_START = tic;
 
     case 'globalStop'
-
-        globalStart = varargin{1};
         
         fprintf('\n\n\n********* Pipeline done :) *********\n\n');
         fprintf('  global elapsed time is: ')
-        t=toc(globalStart);
+        t=toc(GLOBAL_START);
         disp(datestr(datenum(0,0,0,0,0,t),'HH:MM:SS'));
         fprintf('\n************************************\n\n');
 
