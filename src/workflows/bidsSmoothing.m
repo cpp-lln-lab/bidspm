@@ -20,7 +20,11 @@ function bidsSmoothing(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'smoothing functional data');
 
+  runTime = [];
+
   for iSub = 1:numel(opt.subjects)
+
+    subjectStart = elapsedTime(opt, 'start');
 
     subLabel = opt.subjects{iSub};
 
@@ -30,6 +34,8 @@ function bidsSmoothing(opt)
     matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel);
 
     saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(opt.fwhm.func)], opt, subLabel);
+
+    [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
 
   end
 

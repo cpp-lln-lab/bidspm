@@ -33,7 +33,11 @@ function bidsSTC(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'slice timing correction');
 
+  runTime = [];
+
   for iSub = 1:numel(opt.subjects)
+
+    subjectStart = elapsedTime(opt, 'start');
 
     subLabel = opt.subjects{iSub};
 
@@ -43,6 +47,8 @@ function bidsSTC(opt)
     matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, regexify(subLabel));
 
     saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
+
+    [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
 
   end
 

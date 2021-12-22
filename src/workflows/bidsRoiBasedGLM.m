@@ -39,7 +39,11 @@ function bidsRoiBasedGLM(opt)
     opt = createDefaultStatsModel(BIDS, opt);
   end
 
+  runTime = [];
+
   for iSub = 1:numel(opt.subjects)
+
+    subjectStart = elapsedTime(opt, 'start');
 
     subLabel = opt.subjects{iSub};
 
@@ -133,6 +137,8 @@ function bidsRoiBasedGLM(opt)
            'estimation', 'tc', 'dt', 'psc');
 
     end
+
+    [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
 
   end
 

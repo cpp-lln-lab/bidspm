@@ -20,7 +20,11 @@ function bidsSegmentSkullStrip(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'segmentation and skulltripping');
 
+  runTime = [];
+
   for iSub = 1:numel(opt.subjects)
+
+    subjectStart = elapsedTime(opt, 'start');
 
     subLabel = opt.subjects{iSub};
 
@@ -39,6 +43,8 @@ function bidsSegmentSkullStrip(opt)
     if ~opt.dryRun
       renameSegmentParameter(BIDS, subLabel, opt);
     end
+
+    [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
 
   end
 

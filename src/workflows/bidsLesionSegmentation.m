@@ -19,7 +19,11 @@ function bidsLesionSegmentation(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'lesion segmentation');
 
+  runTime = [];
+
   for iSub = 1:numel(opt.subjects)
+
+    subjectStart = elapsedTime(opt, 'start');
 
     subLabel = opt.subjects{iSub};
 
@@ -31,6 +35,8 @@ function bidsLesionSegmentation(opt)
     saveAndRunWorkflow(matlabbatch, 'LesionSegmentation', opt, subLabel);
 
     % copyFigures(BIDS, opt, subLabel);
+
+    [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
 
   end
 

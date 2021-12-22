@@ -35,7 +35,11 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
 
   RT = 0;
 
+  runTime = [];
+
   for iSub = 1:numel(opt.subjects)
+
+    subjectStart = elapsedTime(opt, 'start');
 
     subLabel = opt.subjects{iSub};
 
@@ -119,6 +123,8 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
     end
 
     removeBetaImgTmaps(tMaps, deleteIndBeta, deleteIndTmaps, ffxDir);
+
+    [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
 
   end
 
