@@ -61,9 +61,9 @@ An example of json file could look something like that::
         "Input": {
             "task": "motionloc"
         },
-        "Steps": [
+        "Nodes": [
             {
-                "Level": "subject",
+                "Level": "Subject",
                 "DummyContrasts": ["stim_type.motion", "stim_type.static"],
                 "Contrasts": [
                     {
@@ -75,7 +75,7 @@ An example of json file could look something like that::
                 ]
             },
             {
-                "Level": "dataset",
+                "Level": "Dataset",
                 "DummyContrasts": [
                     "stim_type.motion",
                     "stim_type.static",

@@ -1,6 +1,6 @@
 function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, run)
   %
-  % Short description of what the function does goes here.
+  % Gets the ``_confounds.tsv`` for a given subject, session, run
   %
   % USAGE::
   %
@@ -11,10 +11,10 @@ function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, 
   % :param subLabel:       label of the subject ; in BIDS lingo that means that for a file name
   %                     ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
   % :type subLabel:        string
-  % :param sessionID:   session label (for `ses-001`, the label will be `001`)
-  % :type sessionID:    string
-  % :param runID:       run index label (for `run-001`, the label will be `001`)
-  % :type runID:        string
+  % :param session:   session label (for `ses-001`, the label will be `001`)
+  % :type session:    string
+  % :param run:       run index label (for `run-001`, the label will be `001`)
+  % :type run:        string
   % :param opt:         Mostly used to find the task name.
   % :type opt:          structure
   %

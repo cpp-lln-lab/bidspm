@@ -36,14 +36,14 @@
                "rot_z"
             ],
             "Options": {
-               "high_pass_filter_cutoff_secs": 128
+               "HighPassFilterCutoffHz": 0.0078,
+               "Mask": ""
             },
             "Software": {
                "SPM": {
                   "whitening": "FAST"
                }
-            },
-            "Mask": " "
+            }
          },
          "DummyContrasts": [
             "trial_type.cash_demean",
@@ -83,14 +83,14 @@
                "rot_z"
             ],
             "Options": {
-               "high_pass_filter_cutoff_secs": 128
+               "HighPassFilterCutoffHz": 0.0078,
+               "Mask": ""
             },
             "Software": {
                "SPM": {
                   "whitening": "FAST"
                }
-            },
-            "Mask": " "
+            }
          },
          "DummyContrasts": [
             "trial_type.cash_demean",

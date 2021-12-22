@@ -19,5 +19,4 @@ help:
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-doc:
-	@$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)"
+		

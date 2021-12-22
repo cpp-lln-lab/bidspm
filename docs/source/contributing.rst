@@ -49,12 +49,6 @@ Template proposal
 
 ----
 
-Google template
----------------
-
-See more information `there
-<https://www.sphinx-doc.org/en/master/usage/extensions/example_google.html>`_
-
 
 Example code in the help section
 --------------------------------
