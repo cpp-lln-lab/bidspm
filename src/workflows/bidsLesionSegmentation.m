@@ -34,7 +34,10 @@ function bidsLesionSegmentation(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
   opt = setRenamingConfig(opt);
+
   bidsRename(opt);
 
 end

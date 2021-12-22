@@ -45,6 +45,8 @@ function bidsRealignUnwarp(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
   prefix = get_spm_prefix_list();
   opt.query.prefix = prefix.unwarp;
   bidsRename(opt);

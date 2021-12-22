@@ -65,4 +65,6 @@ function bidsRename(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
 end

@@ -46,6 +46,8 @@ function bidsSTC(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
   prefix = get_spm_prefix_list;
   opt.query.prefix = prefix.stc;
   bidsRename(opt);

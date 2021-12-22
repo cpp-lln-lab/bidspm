@@ -134,6 +134,8 @@ function matlabbatch = bidsSpatialPrepro(opt)
       renameUnwarpParameter(BIDS, subLabel, opt);
     end
 
+    cleanUpWorkflow(opt);
+
   end
 
   % TODO adapt spm_2_bids map to rename eventual files

@@ -6,6 +6,8 @@ function cleanUpWorkflow(opt)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  elapsedTime(opt, 'globalStop');
+  if isfield(opt, 'globalStart')
+    elapsedTime(opt, 'globalStop');
+  end
 
 end

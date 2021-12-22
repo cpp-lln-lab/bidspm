@@ -90,6 +90,8 @@ function matlabbatch = bidsFFX(action, opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
 end
 
 function checks(opt, action)

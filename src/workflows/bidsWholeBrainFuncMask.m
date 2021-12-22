@@ -40,4 +40,6 @@ function mask = bidsWholeBrainFuncMask(opt)
       saveAndRunWorkflow(matlabbatch, 'meanImage_segment_skullstrip', opt, subLabel);
     end
 
+    cleanUpWorkflow(opt);
+
   end

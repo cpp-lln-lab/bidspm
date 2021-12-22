@@ -71,6 +71,8 @@ function bidsResliceTpmToFunc(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
   opt = set_spm_2_bids_defaults(opt);
   name_spec.entities.res = 'bold';
   opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...

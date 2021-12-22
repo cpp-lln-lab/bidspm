@@ -136,4 +136,6 @@ function bidsRoiBasedGLM(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
 end
