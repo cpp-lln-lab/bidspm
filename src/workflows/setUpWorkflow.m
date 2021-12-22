@@ -25,6 +25,8 @@ function [BIDS, opt, group] = setUpWorkflow(opt, workflowName)
   %           - :group:
   %
 
+  opt.globalStart = elapsedTime('globalStart');
+  
   opt = loadAndCheckOptions(opt);
 
   % load the subjects/Groups information and the task name
