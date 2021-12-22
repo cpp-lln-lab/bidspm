@@ -7,20 +7,20 @@ function test_suite = test_elapsedTime %#ok<*STOUT>
 end
 
 function test_elapsedTime_basic()
-    
+
     opt.globalStart = elapsedTime('globalStart');
-    
+
     nbIteration = 5;
     runTime = [];
-    
+
     for i=1:nbIteration
         subjectStart = elapsedTime('start');
         pause(2);
         [~, runTime] = elapsedTime('stop', subjectStart, runTime, nbIteration);
     end
-    
+
     pause(1);
-    
+
     cleanUpWorkflow(opt)
-    
+
 end
