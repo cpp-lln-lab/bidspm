@@ -30,6 +30,8 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir)
     bidsDir = opt.dir.input;
   end
 
+  opt.globalStart = elapsedTime('globalStart');
+
   opt = loadAndCheckOptions(opt);
 
   % load the subjects/Groups information and the task name
