@@ -1,6 +1,6 @@
 function bidsSTC(opt)
   %
-  % Performs the slie timing correction of the functional data.
+  % Performs the slice timing correction of the functional data.
   %
   % USAGE::
   %
@@ -23,7 +23,7 @@ function bidsSTC(opt)
   % If no slice timing information is available from the file metadata or from
   % the ``opt`` strcuture this step will be skipped.
   %
-  % See also ``getSliceOrder()``.
+  % See also: getSliceOrder()
   %
   % See the documentation for more information about slice timing correction.
   %

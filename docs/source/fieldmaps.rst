@@ -20,14 +20,15 @@ Things that are yet unclear:
 Things to keep an eye on: the code from this `repo <https://github.com/nipreps/sdcflows>`_
 from the fMRIprep team could have answers for us.
 
-.. automodule:: src.workflows
+.. automodule:: src.workflows.preproc
 
 .. autofunction:: bidsCreateVDM
 
-.. automodule:: src.batches
+.. automodule:: src.batches.preproc
 
 .. autofunction:: setBatchCoregistrationFmap
 .. autofunction:: setBatchCreateVDMs
+.. autofunction:: setBatchComputeVDM
 
 .. automodule:: src.fieldmaps
 

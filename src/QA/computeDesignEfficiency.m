@@ -38,7 +38,7 @@ function e = computeDesignEfficiency(tsvFile, opt)
   % - ``opt.t0``: initial transient (s) to ignore (default = 1)
   % - ``opt.Ns``: number of scans
   %
-  % See also fMRI_GLM_efficiency
+  % See also: fMRI_GLM_efficiency
   %
   % ---
   %

@@ -1,6 +1,6 @@
 function matlabbatch = bidsSpatialPrepro(opt)
   %
-  % Performs spatial preprocessing of the functional and structural data.
+  % Performs spatial preprocessing of the functional and anatomical data.
   %
   % USAGE::
   %
@@ -12,8 +12,8 @@ function matlabbatch = bidsSpatialPrepro(opt)
   %
   % The anatomical data are segmented, skulls-stripped [and normalized to MNI space].
   %
-  % The functional data are re-aligned (unwarped), coregistered with the structural,
-  % the anatomical data is skull-stripped [and normalized to MNI space].
+  % The functional data are re-aligned (unwarped), coregistered with the anatomical,
+  % [and normalized to MNI space].
   %
   % Assumes that ``bidsSTC()`` has already been run if ``opt.stc.skip`` is not set
   % to ``true``.

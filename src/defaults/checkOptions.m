@@ -2,9 +2,6 @@ function opt = checkOptions(opt)
   %
   % Check the option inputs and add any missing field with some defaults
   %
-  % Then it will search the derivatives directory for any zipped ``*.gz`` image
-  % and uncompress the files for the task of interest.
-  %
   % USAGE::
   %
   %   opt = checkOptions(opt)

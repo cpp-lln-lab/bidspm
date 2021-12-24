@@ -21,7 +21,7 @@ function sliceOrder = getSliceOrder(opt)
   % structure for any relevant information.
   % If this comes out empty then slice timing correction will be skipped.
   %
-  % See also: ``bidsSTC``
+  % See also: bidsSTC
   %
   % (C) Copyright 2020 CPP_SPM developers
 

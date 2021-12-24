@@ -3,38 +3,45 @@ SPM batches
 
 List of functions to set SPM batches.
 
-----
+.. automodule:: src.batches.preproc
+
+.. autofunction:: setBatchSmoothConImages
+.. autofunction:: setBatchReslice
+.. autofunction:: setBatchSkullStripping
+.. autofunction:: setBatchNormalize
+.. autofunction:: setBatchSegmentation
+.. autofunction:: setBatchNormalizationSpatialPrepro
+.. autofunction:: setBatchCoregistration
+.. autofunction:: setBatchSTC
+.. autofunction:: setBatchSaveCoregistrationMatrix
+.. autofunction:: setBatchCoregistrationFuncToAnat
+.. autofunction:: setBatchRealign
+.. autofunction:: setBatchSmoothingFunc
+.. autofunction:: setBatchSmoothing
+
+.. automodule:: src.batches.stats
+
+.. autofunction:: setBatchContrasts
+.. autofunction:: setBatchSubjectLevelContrasts
+.. autofunction:: setBatchGroupLevelContrasts
+.. autofunction:: setBatchEstimateModel
+.. autofunction:: setBatchSubjectLevelResults
+.. autofunction:: setBatchFactorialDesign
+.. autofunction:: setBatchResults
+.. autofunction:: setBatchGroupLevelResults
+.. autofunction:: setBatchSubjectLevelGLMSpec
 
 .. automodule:: src.batches
 
-.. autofunction:: setBatch3Dto4D
-.. autofunction:: setBatchComputeVDM
-.. autofunction:: setBatchContrasts
-.. autofunction:: setBatchCoregistrationFuncToAnat
-.. autofunction:: setBatchCoregistration
-.. autofunction:: setBatchEstimateModel
-.. autofunction:: setBatchFactorialDesign
-.. autofunction:: setBatchGroupLevelContrasts
+.. autofunction:: setBatchSelectAnat
+.. autofunction:: setBatchPrintFigure
+.. autofunction:: setBatchMeanAnatAndMask
+.. autofunction:: setBatchRsHRF
 .. autofunction:: setBatchImageCalculation
-.. autofunction:: setBatchLesionAbnormalitiesDetection
+.. autofunction:: setBatch3Dto4D
+
+.. automodule:: src.batches.lesion
+
 .. autofunction:: setBatchLesionOverlapMap
 .. autofunction:: setBatchLesionSegmentation
-.. autofunction:: setBatchMeanAnatAndMask
-.. autofunction:: setBatchNormalizationSpatialPrepro
-.. autofunction:: setBatchNormalize
-.. autofunction:: setBatchPrintFigure
-.. autofunction:: setBatchRealign
-.. autofunction:: setBatchReslice
-.. autofunction:: setBatchResults
-.. autofunction:: setBatchRsHRF
-.. autofunction:: setBatchSaveCoregistrationMatrix
-.. autofunction:: setBatchSegmentation
-.. autofunction:: setBatchSelectAnat
-.. autofunction:: setBatchSkullStripping
-.. autofunction:: setBatchSmoothConImages
-.. autofunction:: setBatchSmoothingFunc
-.. autofunction:: setBatchSmoothing
-.. autofunction:: setBatchSTC
-.. autofunction:: setBatchSubjectLevelContrasts
-.. autofunction:: setBatchSubjectLevelGLMSpec
-.. autofunction:: setBatchSubjectLevelResults
+.. autofunction:: setBatchLesionAbnormalitiesDetection
