@@ -37,8 +37,7 @@ BIDS model JSON files
 ---------------------
 
 This files allow you to specify the GLM to run and which contrasts to run.
-It follows the BIDS statistical model extension and as implemented by
-`fitlins <https://fitlins.readthedocs.io/en/latest/model.html>`_
+It follows `BIDS statistical model <https://docs.google.com/document/d/1bq5eNDHTb6Nkx3WUiOBgKvLNnaa5OMcGtD0AZ9yms2M/edit?usp=sharing)>`_
 
 The model json file that describes:
 
@@ -61,9 +60,9 @@ An example of json file could look something like that::
         "Input": {
             "task": "motionloc"
         },
-        "Steps": [
+        "Nodes": [
             {
-                "Level": "subject",
+                "Level": "Subject",
                 "DummyContrasts": ["stim_type.motion", "stim_type.static"],
                 "Contrasts": [
                     {
@@ -75,7 +74,7 @@ An example of json file could look something like that::
                 ]
             },
             {
-                "Level": "dataset",
+                "Level": "Dataset",
                 "DummyContrasts": [
                     "stim_type.motion",
                     "stim_type.static",
@@ -96,5 +95,5 @@ In brief this means:
 
 We are currently using this to run different subject level GLM models for our
 univariate and multivariate analysis where in the first one we compute a con
-image that averages the beta image of all the runs where as in the latter case
+image that averages the beta images of all the runs where as in the latter case
 we get one con image for each run.

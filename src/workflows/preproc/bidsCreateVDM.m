@@ -55,8 +55,6 @@ function bidsCreateVDM(opt)
 
   end
 
-  cleanUpWorkflow(opt);
-
   bidsRename(opt);
 
 end

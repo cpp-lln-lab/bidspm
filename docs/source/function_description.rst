@@ -1,19 +1,24 @@
 Function description
 ********************
 
-
 Subject level model
 ===================
 
 .. automodule:: src.subject_level
 
-.. autofunction:: convertOnsetTsvToMat
-.. autofunction:: createAndReturnCounfoundMatFile
 .. autofunction:: createAndReturnOnsetFile
 .. autofunction:: deleteResidualImages
 .. autofunction:: getBoldFilenameForFFX
 .. autofunction:: getFFXdir
 .. autofunction:: specifyContrasts
+
+Functions to deal with onsets files and confounds regressors.
+
+.. autofunction:: convertOnsetTsvToMat
+.. autofunction:: convertRealignParamToTsv
+.. autofunction:: createAndReturnCounfoundMatFile
+.. autofunction:: getConfoundsRegressorFilename
+.. autofunction:: getRealignParamFilename
 
 Group level model
 =================
@@ -22,45 +27,25 @@ Group level model
 .. autofunction:: getRFXdir
 
 
-Utilities
-=========
-
 Utility functions
-
-----
+=================
 
 .. automodule:: src.utils
 
-.. autofunction:: checkDependencies
-.. autofunction:: checkToolbox
 .. autofunction:: cleanCrash
-.. autofunction:: convertRealignParamToTsv
 .. autofunction:: createDataDictionary
 .. autofunction:: createDerivativeDir
 .. autofunction:: createGlmDirName
-.. autofunction:: errorHandling
 .. autofunction:: getAnatFilename
 .. autofunction:: getBoldFilename
-.. autofunction:: getConfoundsRegressorFilename
 .. autofunction:: getData
-.. autofunction:: getEnvInfo
 .. autofunction:: getFuncVoxelDims
 .. autofunction:: getInfo
 .. autofunction:: getMeanFuncFilename
-.. autofunction:: getRealignParamFilename
 .. autofunction:: getSliceOrder
 .. autofunction:: getSubjectList
 .. autofunction:: getTpmFilename
-.. autofunction:: getVersion
-.. autofunction:: isOctave
 .. autofunction:: loadAndCheckOptions
-.. autofunction:: manageWorkersPool
-.. autofunction:: printBatchName
-.. autofunction:: printCredits
-.. autofunction:: printProcessingRun
-.. autofunction:: printProcessingSubject
-.. autofunction:: printToScreen
-.. autofunction:: printWorkflowName
 .. autofunction:: renameSegmentParameter
 .. autofunction:: renameUnwarpParameter
 .. autofunction:: rmTrialTypeStr
@@ -68,6 +53,33 @@ Utility functions
 .. autofunction:: saveOptions
 .. autofunction:: setDirectories
 .. autofunction:: setFields
-.. autofunction:: setGraphicWindow
 .. autofunction:: unzipImgAndReturnsFullpathName
 .. autofunction:: validationInputFile
+
+
+Print and error handling
+========================
+
+.. automodule:: src.messages
+
+.. autofunction:: errorHandling
+.. autofunction:: printBatchName
+.. autofunction:: printCredits
+.. autofunction:: printProcessingRun
+.. autofunction:: printProcessingSubject
+.. autofunction:: printToScreen
+.. autofunction:: printWorkflowName
+
+
+Infrastructure related functions
+================================
+
+.. automodule:: src.infra
+
+.. autofunction:: checkDependencies
+.. autofunction:: checkToolbox
+.. autofunction:: getEnvInfo
+.. autofunction:: getVersion
+.. autofunction:: isOctave
+.. autofunction:: manageWorkersPool
+.. autofunction:: setGraphicWindow

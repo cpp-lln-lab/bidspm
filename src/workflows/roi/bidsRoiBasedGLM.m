@@ -39,11 +39,7 @@ function bidsRoiBasedGLM(opt)
     opt = createDefaultStatsModel(BIDS, opt);
   end
 
-  runTime = [];
-
   for iSub = 1:numel(opt.subjects)
-
-    subjectStart = elapsedTime(opt, 'start');
 
     subLabel = opt.subjects{iSub};
 
@@ -138,10 +134,6 @@ function bidsRoiBasedGLM(opt)
 
     end
 
-    [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
-
   end
-
-  cleanUpWorkflow(opt);
 
 end

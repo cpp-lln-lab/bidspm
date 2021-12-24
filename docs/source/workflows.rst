@@ -1,26 +1,22 @@
 Workflows
 *********
 
-.. automodule:: src.workflows
-
 Workflows typical run on all the subjects specified in the ``options`` structure.
 
 Below is a list of the different workflows of the pipeline.
-
-Each has to be run for each task independently.
 
 All parameters should be changed in the ``options`` structure.
 
 See the set up section.
 
-----
 
-.. autofunction:: bidsCopyInputFolder
-.. autofunction:: bidsResliceTpmToFunc
+Preprocessing
+=============
 
+.. automodule:: src.workflows.preproc
 
 Slice Time Correction
-=====================
+---------------------
 
 .. autofunction:: bidsSTC
 
@@ -29,7 +25,7 @@ More info available on this page of the
 
 ----
 
-Some comments from `here <http://mindhive.mit.edu/node/109>`_ on STC, when
+Some comments from `here <http://mindhiveit.edu/node/109>`_ on STC, when
 it should be applied
 
 *At what point in the processing stream should you use it?*
@@ -63,7 +59,7 @@ that comment helpfully on this subject both ways, and there are even more if you
 do a search for "slice timing AND before" in the archives of the list.*
 
 Spatial Preprocessing
-=====================
+---------------------
 
 Perform spatial preprocessing by running ``bidsSpatialPrepro``
 
@@ -72,60 +68,64 @@ Perform spatial preprocessing by running ``bidsSpatialPrepro``
 .. autofunction:: bidsRealignUnwarp
 
 Smoothing
-=========
+---------
 
 Perform smoothing of the functional data by running ``bidsSmoothing``
 
 .. autofunction:: bidsSmoothing
 
+Others
+------
+
+.. autofunction:: bidsResliceTpmToFunc
+.. autofunction:: bidsSegmentSkullStrip
+.. autofunction:: bidsWholeBrainFuncMask
+
+Statistics
+==========
+
+.. automodule:: src.workflows.stats
+
 Subject level analysis
-======================
-
-Perform the subject level analysis by running the ffx script: ``bidsFFX``.
-
-This will run twice, once for model specification and another time for model
-estimation. See the function for more details.
-
-This will take each condition present in the ``events.tsv`` file of each run and
-convolve it with a canonical HRF. It will also add the 6 realignment parameters
-of every run as confound regressors.
+----------------------
 
 .. autofunction:: bidsFFX
 .. autofunction:: bidsConcatBetaTmaps
 
 Group level analysis
-====================
-
-Perform the group level analysis by running the RFX script: ``bidsRFX``.
+--------------------
 
 .. autofunction:: bidsRFX
 
 Compute results
-===============
+---------------
 
 .. autofunction:: bidsResults
-.. autofunction:: bidsConcatBetaTmaps
 
 Region of interest analysis
 ===========================
 
-.. autofunction::  bidsRoiBasedGLM
+.. automodule:: src.workflows.roi
+
 .. autofunction::  bidsCreateROI
+.. autofunction::  bidsRoiBasedGLM
+
 
 HRF estimation
 ==============
 
 Relies on the resting-state HRF toolbox.
 
+.. automodule:: src.workflows
+
 .. autofunction:: bidsRsHrf
 
 Other
 =====
 
+.. autofunction:: bidsCopyInputFolder
 .. autofunction:: bidsRename
-.. autofunction:: bidsResliceTpmToFunc
-.. autofunction:: bidsSegmentSkullStrip
-.. autofunction:: bidsWholeBrainFuncMask
+
 
 Helper functions
 ================
@@ -134,4 +134,5 @@ To be used if you want to create a new workflow.
 
 .. autofunction:: setUpWorkflow
 .. autofunction:: saveAndRunWorkflow
+.. autofunction:: cleanUpWorkflow
 .. autofunction:: returnDependency

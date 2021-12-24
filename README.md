@@ -1,5 +1,3 @@
-<!-- lint disable -->
-
 [![Documentation Status: stable](https://readthedocs.org/projects/cpp_spm/badge/?version=stable)](https://cpp_spm.readthedocs.io/en/stable/?badge=stable)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/CPP_SPM/dev)
 [![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_SPM/actions)
@@ -7,105 +5,71 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![codecov](https://codecov.io/gh/cpp-lln-lab/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/cpp-lln-lab/CPP_SPM)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3556173.svg)](https://doi.org/10.5281/zenodo.3556173)
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-<!-- lint enable -->
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 # CPP SPM
 
-This is a set of functions to MRI analysis on a
+This is a Matlab / Octave toolbox to perform MRI data analysis on a
 [BIDS data set](https://bids.neuroimaging.io/) using SPM12.
 
 ## Installation
-
-We strongly recommend using the CPP fMRI analysis template repository (INSERT
-URL) to use CPP_SPM.
-
-Download this repository and unzip the content where you want to install it.
-
-Or clone the repo.
-
-```bash
-git clone \
-    --recurse-submodules \
-    https://github.com/cpp-lln-lab/CPP_SPM.git \
-```
-
-Fire up Octave or Matlab and type
-
-```matlab
-
-cd CPP_SPM
-
-% The following adds the relevant folders to your path.
-% This needs to be done once per session (your path will not be saved)
-
-initCppSpm()
-
-```
-
-Please see our
-[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
-detailed instructions.
-
-### Dependencies
-
-Make sure that the following toolboxes are installed and added to the matlab
-path.
-
-For instructions see the following links:
-
-<!-- lint disable -->
-
-| Dependencies                                               | Used version |
-| ---------------------------------------------------------- | ------------ |
-| [Matlab](https://www.mathworks.com/products/matlab.html)   | 20???        |
-| or [octave](https://www.gnu.org/software/octave/)          | 4.?          |
-| [SPM12](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/) | >7219        |
-
-<!-- lint enable -->
-
-## Features
-
-This can perform:
-
--   slice timing correction,
-
--   spatial preprocessing:
-
-    -   realignment, coregistration `func` to `anat`, `anat` segmentation,
-        normalization to MNI space
-
-    -   realignm and unwarp, coregistration `func` to `anat`, `anat`
-        segmentation
-
--   smoothing,
-
--   Quality analysis:
-
-    -   for anatomical data
-    -   for functional data
-
--   GLM at the subject level
-
--   GLM at the group level à la SPM (meaning using a summary statistics
-    approach).
-
-The core functions are in the `src` folder.
 
 Please see our
 [documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
 info.
 
-## Octave compatibility
+## Features
 
-The following features do not yet work with Octave:
+### Preprocessing
 
--   anatomicalQA
--   functionalQA
--   slice_display toolbox
+If your data is fairly "typical" (for example whole brain coverage functonal
+data with one associated anatomical scan for each subject), you might be better
+off running [fmriprep](https://fmriprep.org/en/stable/) on your data.
+
+If you have more exotic data that can't be handled well by fmriprep then CPP_SPM
+has some automated workflows to perform amongst other things:
+
+-   slice timing correction
+
+-   fieldmaps processing and voxel displacement map creation (work in progress)
+
+-   spatial preprocessing:
+
+    -   realignment OR realignm and unwarp
+    -   coregistration `func` to `anat`,
+    -   `anat` segmentation and skull stripping
+    -   (optional) normalization to SPM's MNI space
+
+-   smoothing
+
+All preprocessed outputs are saved as BIDS derivatives with BIDS compliant
+filenames.
+
+### Statistics
+
+The model specification are done via the
+[BIDS stats model](https://docs.google.com/document/d/1bq5eNDHTb6Nkx3WUiOBgKvLNnaa5OMcGtD0AZ9yms2M/edit?usp=sharing)
+and can be used to perform:
+
+-   whole GLM at the subject level
+-   whole brain GLM at the group level à la SPM (meaning using a summary
+    statistics approach).
+-   ROI based GLM
+
+### Quality control:
+
+-   anatomical data (work in progress to make it BIDS compatible)
+-   functional data (work in progress to make it BIDS compatible)
+-   GLM auto-correlation check
+
+Please see our
+[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
+info.
 
 ## Contributing
 
@@ -120,7 +84,9 @@ clarification.
 
 ### Style guidelines
 
-These are some of the guidelines we try to follow.
+These are some of the guidelines we try to follow. Several of them are described
+in our our
+[contributing guidelines](https://github.com/cpp-lln-lab/.github/blob/main/CONTRIBUTING.md).
 
 We use `camelCase` to name functions and variables for the vast majority of the
 code in this repository.
@@ -129,25 +95,6 @@ Scripts names in general and as well functions related to the demos use a
 `snake_case`.
 
 Constant are written in `UPPERCASE`.
-
-#### Pre-commit
-
-There is a [pre-commit hook](https://pre-commit.com/) that you can use to
-reformat files as you commit them.
-
-Install pre-commit by using our `requirements.txt` file
-
-```bash
-pip install -r requirements.txt
-```
-
-Install the hook
-
-```bash
-pre-commit install
-```
-
-You're done. `mh_style --fix` will now be run every time you commit.
 
 ## Contributors
 

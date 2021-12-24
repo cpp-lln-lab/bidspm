@@ -1,6 +1,6 @@
 function matlabbatch = bidsSpatialPrepro(opt)
   %
-  % Performs spatial preprocessing of the functional and structural data.
+  % Performs spatial preprocessing of the functional and anatomical data.
   %
   % USAGE::
   %
@@ -12,8 +12,8 @@ function matlabbatch = bidsSpatialPrepro(opt)
   %
   % The anatomical data are segmented, skulls-stripped [and normalized to MNI space].
   %
-  % The functional data are re-aligned (unwarped), coregistered with the structural,
-  % the anatomical data is skull-stripped [and normalized to MNI space].
+  % The functional data are re-aligned (unwarped), coregistered with the anatomical,
+  % [and normalized to MNI space].
   %
   % Assumes that ``bidsSTC()`` has already been run if ``opt.stc.skip`` is not set
   % to ``true``.
@@ -49,11 +49,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
   opt.orderBatches.coregister = 3;
   opt.orderBatches.saveCoregistrationMatrix = 4;
 
-  runTime = [];
-
   for iSub = 1:numel(opt.subjects)
-
-    subjectStart = elapsedTime(opt, 'start');
 
     matlabbatch = {};
 
@@ -136,12 +132,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
       renameSegmentParameter(BIDS, subLabel, opt);
       renameUnwarpParameter(BIDS, subLabel, opt);
-
-      [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
-
     end
-
-    cleanUpWorkflow(opt);
 
   end
 

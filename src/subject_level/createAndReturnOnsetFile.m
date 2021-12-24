@@ -21,6 +21,7 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   %
   % :returns: :onsetFilename: (string) fullpath name of the file created.
   %
+  % See also: convertOnsetTsvToMat
   %
   % (C) Copyright 2019 CPP_SPM developers
 

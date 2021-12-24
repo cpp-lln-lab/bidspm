@@ -36,6 +36,4 @@ function bidsLesionOverlapMap(opt)
 
   end
 
-  cleanUpWorkflow(opt);
-
 end

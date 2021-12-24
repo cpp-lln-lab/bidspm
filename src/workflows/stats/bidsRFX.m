@@ -78,8 +78,6 @@ function bidsRFX(action, opt)
 
   end
 
-  cleanUpWorkflow(opt);
-
 end
 
 function checks(opt, action)

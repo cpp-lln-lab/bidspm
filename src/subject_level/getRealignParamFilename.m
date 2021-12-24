@@ -1,6 +1,7 @@
 function realignParamFile = getRealignParamFilename(BIDS, subLabel, session, run, opt)
   %
-  % Short description of what the function does goes here.
+  % Gets the realignement parameter file produced by SPM (rp_*.txt) for a given
+  % subject, session, run
   %
   % USAGE::
   %
@@ -11,10 +12,10 @@ function realignParamFile = getRealignParamFilename(BIDS, subLabel, session, run
   % :param subLabel:       label of the subject ; in BIDS lingo that means that for a file name
   %                     ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
   % :type subLabel:        string
-  % :param sessionID:   session label (for `ses-001`, the label will be `001`)
-  % :type sessionID:    string
-  % :param runID:       run index label (for `run-001`, the label will be `001`)
-  % :type runID:        string
+  % :param session:   session label (for `ses-001`, the label will be `001`)
+  % :type session:    string
+  % :param run:       run index label (for `run-001`, the label will be `001`)
+  % :type run:        string
   % :param opt:         Mostly used to find the task name.
   % :type opt:          structure
   %

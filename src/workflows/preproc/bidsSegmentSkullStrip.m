@@ -20,11 +20,7 @@ function bidsSegmentSkullStrip(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'segmentation and skulltripping');
 
-  runTime = [];
-
   for iSub = 1:numel(opt.subjects)
-
-    subjectStart = elapsedTime(opt, 'start');
 
     subLabel = opt.subjects{iSub};
 
@@ -44,11 +40,7 @@ function bidsSegmentSkullStrip(opt)
       renameSegmentParameter(BIDS, subLabel, opt);
     end
 
-    [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, numel(opt.subjects));
-
   end
-
-  cleanUpWorkflow(opt);
 
   prefix = get_spm_prefix_list;
   opt.query.prefix = prefix.stc;

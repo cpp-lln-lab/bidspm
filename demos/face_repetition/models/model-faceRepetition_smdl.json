@@ -39,11 +39,12 @@
             "Type": "glm",
             "Options": {
                "HighPassFilterCutoffHz": 0.0078,
-               "Mask": " "
+               "Mask": ""
             },
             "Software": {
                "SPM": {
-                  "SerialCorrelation": "AR(1)"
+                  "SerialCorrelation": "AR(1)",
+                  "HRFderivatives": "TemporalDispersion"
                }
             }
          },
