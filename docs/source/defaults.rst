@@ -26,12 +26,12 @@ Using FAST does not seem to affect results on time series with "normal" TRs but
 improves results when using sequences: it is therefore used by default in this
 pipeline.
 
-    | Olszowy, W., Aston, J., Rua, C. et al. 
-    | Accurate autocorrelation modeling substantially improves fMRI reliability. 
+    | Olszowy, W., Aston, J., Rua, C. et al.
+    | Accurate autocorrelation modeling substantially improves fMRI reliability.
     | Nat Commun 10, 1220 (2019).
     | https://doi.org/10.1038/s41467-019-09230-w
 
-Note that if you wanted to change this setting you could do so 
+Note that if you wanted to change this setting you could do so
 via ``Software`` object of the BIDS stats model::
 
     {

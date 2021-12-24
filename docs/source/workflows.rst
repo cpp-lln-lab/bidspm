@@ -136,4 +136,3 @@ To be used if you want to create a new workflow.
 .. autofunction:: saveAndRunWorkflow
 .. autofunction:: cleanUpWorkflow
 .. autofunction:: returnDependency
-
