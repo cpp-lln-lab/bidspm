@@ -1,6 +1,7 @@
 function reportBIDS(opt)
   %
-  % Prints out a human readable description of a BIDS data set.
+  % Prints out a human readable description of a BIDS data set for every subject
+  % in ``opt.subjects``
   %
   % USAGE::
   %
@@ -10,18 +11,34 @@ function reportBIDS(opt)
   % :type opt: structure
   %
   %
-  % .. TODO:
-  %
-  %     - save output in the derivatires folder
-  %       derivativeDir = fullfile(rawDir, '..', 'derivatives', 'cpp_spm');
-  %
   % (C) Copyright 2020 CPP_SPM developers
 
-  bids.report(opt.dir.raw);
+  [BIDS, opt] = setUpWorkflow(opt, 'BIDS report');
 
-  bids.report(opt.dir.raw, ...
-              'output_path', pwd, ...
-              'read_nifti', true, ...
-              'verbose', true);
+  for iSub = 1:numel(opt.subjects)
+
+    subLabel = opt.subjects{iSub};
+
+    outputDir = fullfile(opt.dir.output, ['sub-' subLabel], 'reports');
+
+    bids.util.mkdir(outputDir);
+
+    try
+      bids.report(BIDS, ...
+                  'filter', struct('sub', subLabel), ...
+                  'output_path', outputDir, ...
+                  'read_nifti', true, ...
+                  'verbose', opt.verbosity);
+    catch
+      % in case we are dealing with empty files (à la bids-examples, or with
+      % datalad datasets symlinks)
+      bids.report(BIDS, ...
+                  'filter', struct('sub', subLabel), ...
+                  'output_path', outputDir, ...
+                  'read_nifti', false, ...
+                  'verbose', opt.verbosity);
+    end
+
+  end
 
 end
