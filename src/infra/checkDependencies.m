@@ -35,22 +35,6 @@ function checkDependencies(opt)
 
   spm('defaults', 'fmri');
 
-  %% Check the Nifti tools are indeed there.
-  nifti_tools_url = ...
-      ['https://www.mathworks.com/matlabcentral/fileexchange/' ...
-       '8797-tools-for-nifti-and-analyze-image'];
-
-  a = which('load_untouch_nii');
-  if isempty(a)
-    msg = sprintf(['Failed to find the Nifti tools: ' ...
-                   'Are you sure they in the matlab path?\n', ...
-                   'You can download them here: %s'], nifti_tools_url);
-    tolerant = false;
-    errorHandling(mfilename(), 'missingDependency', msg, tolerant, opt.verbosity);
-  else
-    printToScreen(' Nifti tools detected\n', opt);
-  end
-
   printToScreen(' We got all we need. Let''s get to work.\n', opt);
 
 end
