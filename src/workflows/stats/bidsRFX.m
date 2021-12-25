@@ -45,7 +45,7 @@ function bidsRFX(action, opt)
 
       saveAndRunWorkflow(matlabbatch, ...
                          ['smooth_con_FWHM-', num2str(opt.fwhm.contrast), ...
-                          '_task-', opt.taskName], ...
+                          '_task-', strjoin(opt.taskName, '')], ...
                          opt);
 
     case 'meananatandmask'
@@ -88,8 +88,8 @@ function checks(opt, action)
     errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
   end
 
-  allowedActions = {'smoothContrasts', 'meanAnatAndMask', 'RFX'};
-  if ~ismember(action, allowedActions)
+  allowedActions = {'smoothcontrasts', 'meananatandmask', 'rfx'};
+  if ~ismember(lower(action), allowedActions)
     msg = sprintf('action must be: %s.\n%s was given.', createUnorderedList(allowedActions), ...
                   action);
     errorHandling(mfilename(), 'unknownAction', msg, false, opt.verbosity);
