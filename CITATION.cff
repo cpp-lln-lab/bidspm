@@ -30,37 +30,37 @@ authors:
 - family-names: "Barilari"
   given-names: "Marco"
   orcid: "https://orcid.org/0000-0002-3313-3120"
-  affiliation: "Université catholique de Louvain"  
+  affiliation: "Université catholique de Louvain"
 
 - family-names: "Battal"
   given-names: "Ceren"
-  orcid: "https://orcid.org/0000-0002-9844-7630" 
-  affiliation: "Université catholique de Louvain"  
+  orcid: "https://orcid.org/0000-0002-9844-7630"
+  affiliation: "Université catholique de Louvain"
 
 - family-names: "Rezk"
   given-names: "Mohamed"
-  orcid: "https://orcid.org/0000-0002-1866-8645"  
-  affiliation: "Université catholique de Louvain"    
+  orcid: "https://orcid.org/0000-0002-1866-8645"
+  affiliation: "Université catholique de Louvain"
 
 - family-names: "Collignon"
   given-names: "Olivier"
-  orcid: "https://orcid.org/0000-0003-1882-3550" 
-  affiliation: "Université catholique de Louvain"  
+  orcid: "https://orcid.org/0000-0003-1882-3550"
+  affiliation: "Université catholique de Louvain"
 
 - family-names: "Gurtubay"
   given-names: "Ane"
-  orcid: "https://orcid.org/0000-0003-3824-2219" 
-  affiliation: "Université catholique de Louvain"  
+  orcid: "https://orcid.org/0000-0003-3824-2219"
+  affiliation: "Université catholique de Louvain"
 
 - family-names: "Falagiarda"
   given-names: "Federica"
-  orcid: "https://orcid.org/0000-0001-7844-1605" 
-  affiliation: "Université catholique de Louvain"  
+  orcid: "https://orcid.org/0000-0001-7844-1605"
+  affiliation: "Université catholique de Louvain"
 
 - family-names: "MacLean"
   given-names: "Michèle"
   orcid: "https://orcid.org/0000-0002-0174-9326"
-  affiliation: "Université de Montréal"   
+  affiliation: "Université de Montréal"
 
 license: GPL-3.0
 
