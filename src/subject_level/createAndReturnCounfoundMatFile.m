@@ -44,8 +44,13 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFi
   names = intersect(X, names);
 
   R = [];
+  
   for col = 1:numel(names)
-    R(:, col) = content.(names{col});
+    if opt.glm.maxNbVols ~= Inf && numel(content.(names{col})) > opt.glm.maxNbVols
+        R(:, col) = content.(names{col})(1:opt.glm.maxNbVols);
+    else
+        R(:, col) = content.(names{col});
+    end
   end
 
   % save the confounds as a matfile
