@@ -10,6 +10,61 @@ end
 
 function test_createAndReturnCounfoundMatFile_basic()
 
+  [opt, subLabel, tsvFile] = setUp();
+
+  counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFile);
+
+  expectedFilename = fullfile(getDummyDataDir('stats'), 'sub-01', 'stats', ...
+                              'task-vislocalizer_space-MNI_FWHM-6', ...
+                              'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.mat');
+
+  assertEqual(exist(counfoundMatFile, 'file'), 2);
+  assertEqual(exist(expectedFilename, 'file'), 2);
+
+  expected_content = fullfile(getDummyDataDir(), 'mat_files', 'regressors.mat');
+
+  expected_R = load(expected_content, 'R');
+  actual_R = load(counfoundMatFile, 'R');
+  assertEqual(actual_R, expected_R);
+
+  expected_names = load(expected_content, 'names');
+  actual_names = load(counfoundMatFile, 'names');
+  assertEqual(actual_names, expected_names);
+
+  delete(counfoundMatFile);
+
+end
+
+function test_createAndReturnCounfoundMatFile_maxNbVols()
+
+  [opt, subLabel, tsvFile] = setUp();
+
+  opt.glm.maxNbVols = 50;
+
+  counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFile);
+
+  R = load(counfoundMatFile, 'R');
+
+  assertEqual(size(R.R, 1), opt.glm.maxNbVols);
+
+end
+
+function test_createAndReturnCounfoundMatFile_maxNbVols_gt_actualNbVols()
+
+  [opt, subLabel, tsvFile] = setUp();
+
+  opt.glm.maxNbVols = 400;
+
+  counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFile);
+
+  R = load(counfoundMatFile, 'R');
+
+  assertEqual(size(R.R, 1), 351);
+
+end
+
+function [opt, subLabel, tsvFile] = setUp()
+
   subLabel = '01';
   iSes = 1;
   iRun = 1;
@@ -30,24 +85,5 @@ function test_createAndReturnCounfoundMatFile_basic()
                  'suffix', 'regressors', ...
                  'extension', '.tsv');
   tsvFile = bids.query(BIDS, 'data', query);
-
-  counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFile);
-
-  expectedFilename = fullfile(getDummyDataDir('stats'), 'sub-01', 'stats', ...
-                              'task-vislocalizer_space-MNI_FWHM-6', ...
-                              'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.mat');
-
-  assertEqual(exist(counfoundMatFile, 'file'), 2);
-  assertEqual(exist(expectedFilename, 'file'), 2);
-
-  expected_content = fullfile(getDummyDataDir(), 'mat_files', 'regressors.mat');
-
-  expected_R = load(expected_content, 'R');
-  actual_R = load(counfoundMatFile, 'R');
-  assertEqual(actual_R, expected_R);
-
-  expected_names = load(expected_content, 'names');
-  actual_names = load(counfoundMatFile, 'names');
-  assertEqual(actual_names, expected_names);
 
 end
