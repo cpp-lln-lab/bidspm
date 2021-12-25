@@ -41,9 +41,9 @@ It follows `BIDS statistical model <https://docs.google.com/document/d/1bq5eNDHT
 
 The model json file that describes:
 
--   out to prepare the regressors for the GLM: `Transformation`
--   the design matrix: `X`
--   the contrasts to compute: `contrasts`
+-   out to prepare the regressors for the GLM: ``Transformation``
+-   the design matrix: ``X``
+-   the contrasts to compute: ``contrasts``
 
 It also allows to specify those for different levels of the analysis:
 
