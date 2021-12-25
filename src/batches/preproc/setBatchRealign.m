@@ -101,6 +101,8 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
                         true);
         end
 
+        % TODO voxDim might be different for different tasks 
+        % could be important to keep track off for the normalization step later
         [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, boldFilename);
 
         file = fullfile(subFuncDataDir, boldFilename);
@@ -110,6 +112,10 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
           % we reslice images that come from a previous batch
           % so we can return early
           case 'reslice'
+
+            % TODO voxDim might be different for different tasks 
+            % reslicing might change the voxel dimension for some tasks.
+
             spatial.realign.write.data(1) = ...
                 cfg_dep('Coregister: Estimate: Coregistered Images', ...
                         returnDependency(opt, 'coregister'), ...
