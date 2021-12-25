@@ -22,6 +22,25 @@ with no actual assertions.
 
 <!-- TODO add assertion by using the output of those tests to lock the output in place. -->
 
+current lists of files with no assert:
+
+```bash
+╰─⠠⠵ grep -riL "assert" tests_*/
+
+tests_batches/test_setBatchCoregistrationFmap.m
+tests_batches/test_setBatchCreateVDMs.m
+tests_unit/test_utils.m
+tests_utils/test_elapsedTime.m
+tests_workflows/test_bidsSegmentSkullStrip.m
+tests_workflows/test_bidsLesionSegmentation.m
+tests_workflows/test_bidsRename.m
+tests_workflows/test_bidsSTC.m
+tests_workflows/test_bidsRFX.m
+tests_workflows/test_bidsSmoothing.m
+tests_workflows/test_bidsRealignUnwarp.m
+tests_workflows/test_bidsRealignReslice.m
+```
+
 ## Add helper functions to the path
 
 There are a some help functions you need to add to the Matlab / Octave path to
@@ -40,8 +59,6 @@ From within the `tests` folder.
 ```
 make data
 ```
-
-<!-- TODO add bids-examples to run smoke test on fmriprep data -->
 
 ### Run the tests
 
@@ -69,11 +86,3 @@ moxunit_runtests -verbose tests/tests_unit
 See
 [HERE](https://github.com/cpp-lln-lab/.github/blob/main/CONTRIBUTING.md#adding-more-tests)
 to add more tests
-
-### Style guidelines
-
-#### Filenames
-
--   unit tests names: test*unit*\*
-
--   other tests names: test\_\*
