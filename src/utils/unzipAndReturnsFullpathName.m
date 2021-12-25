@@ -1,6 +1,6 @@
 function unzippedFullpathName = unzipAndReturnsFullpathName(fullpathName, opt)
   %
-  % Unzips an image if necessary
+  % Unzips a file if necessary
   %
   % USAGE::
   %

@@ -1,0 +1,75 @@
+cff-version: 1.2.0
+
+title: "CPP SPM"
+
+version: 1.1.3dev
+
+abstract: CPP_SPM is a set pipelines and tools for Octave/MATLAB to process and analyze BIDS data sets using SPM.
+
+message: "If you use this software, please cite it as below."
+
+repository-code: "https://github.com/cpp-lln-lab/CPP_SPM"
+
+identifiers:
+  - description: This is the collection of archived snapshots of all releases of CPP SPM
+    type: doi
+    value: "10.5281/zenodo.3554331"
+
+contact:
+  - affiliation: "Université catholique de Louvain"
+    email: remi.gau@uclouvain.be
+    family-names: Gau
+    given-names: Rémi
+
+authors:
+- family-names: "Gau"
+  given-names: "Rémi"
+  orcid: "https://orcid.org/0000-0002-1535-9767"
+  affiliation: "Université catholique de Louvain"
+
+- family-names: "Barilari"
+  given-names: "Marco"
+  orcid: "https://orcid.org/0000-0002-3313-3120"
+  affiliation: "Université catholique de Louvain"
+
+- family-names: "Battal"
+  given-names: "Ceren"
+  orcid: "https://orcid.org/0000-0002-9844-7630"
+  affiliation: "Université catholique de Louvain"
+
+- family-names: "Rezk"
+  given-names: "Mohamed"
+  orcid: "https://orcid.org/0000-0002-1866-8645"
+  affiliation: "Université catholique de Louvain"
+
+- family-names: "Collignon"
+  given-names: "Olivier"
+  orcid: "https://orcid.org/0000-0003-1882-3550"
+  affiliation: "Université catholique de Louvain"
+
+- family-names: "Gurtubay"
+  given-names: "Ane"
+  orcid: "https://orcid.org/0000-0003-3824-2219"
+  affiliation: "Université catholique de Louvain"
+
+- family-names: "Falagiarda"
+  given-names: "Federica"
+  orcid: "https://orcid.org/0000-0001-7844-1605"
+  affiliation: "Université catholique de Louvain"
+
+- family-names: "MacLean"
+  given-names: "Michèle"
+  orcid: "https://orcid.org/0000-0002-0174-9326"
+  affiliation: "Université de Montréal"
+
+license: GPL-3.0
+
+keywords:
+  - BIDS
+  - brain imaging data structure
+  - neuroimaging
+  - automated pipeline
+  - MRI
+  - MATLAB
+  - Octave
+  - SPM
