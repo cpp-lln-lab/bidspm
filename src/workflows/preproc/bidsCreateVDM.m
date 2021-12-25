@@ -22,7 +22,7 @@ function bidsCreateVDM(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'create voxel displacement map');
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 
