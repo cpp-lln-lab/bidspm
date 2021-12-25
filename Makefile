@@ -1,16 +1,12 @@
-.PHONY: clean clean_docker
+.PHONY: clean
 clean:
-	rm Dockerfile*
 	rm version.txt
 
-clean_docker:
-	rm Dockerfile*
-
-Dockerfile:
+docker_images: Dockerfile Dockerfile_dev
 	bash build_image.sh
 
-Dockerfile_dev:
-	bash build_image.sh
-
-version.txt:
+version.txt: CITATION.cff
 	grep -w "^version" CITATION.cff | sed "s/version: /v/g" > version.txt
+
+validate_cff: CITATION.cff
+	cffconvert --validate
