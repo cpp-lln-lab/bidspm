@@ -81,5 +81,4 @@ Infrastructure related functions
 .. autofunction:: getEnvInfo
 .. autofunction:: getVersion
 .. autofunction:: isOctave
-.. autofunction:: manageWorkersPool
 .. autofunction:: setGraphicWindow
