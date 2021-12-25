@@ -70,7 +70,7 @@ function boldFilename = getBoldFilenameForFFX(varargin)
   end
 
   % in case files have been unzipped, we do it now
-  fullPathBoldFilename = unzipImgAndReturnsFullpathName(boldFilename{1}, opt);
+  fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename{1}, opt);
 
   printToScreen(createUnorderedList(fullPathBoldFilename), opt);
 

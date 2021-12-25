@@ -53,7 +53,7 @@ Utility functions
 .. autofunction:: saveOptions
 .. autofunction:: setDirectories
 .. autofunction:: setFields
-.. autofunction:: unzipImgAndReturnsFullpathName
+.. autofunction:: unzipAndReturnsFullpathName
 .. autofunction:: validationInputFile
 
 

@@ -65,7 +65,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   % we take the first image of that suffix/session as the right one.
   % it could be required to take another one, or several and mean them...
   anat = anat{1};
-  anatImage = unzipImgAndReturnsFullpathName(anat);
+  anatImage = unzipAndReturnsFullpathName(anat);
 
   [anatDataDir, anatImage, ext] = spm_fileparts(anatImage);
   anatImage = [anatImage ext];
