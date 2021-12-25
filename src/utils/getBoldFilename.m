@@ -46,7 +46,7 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
   end
 
   % in case files have been unzipped, we do it now
-  fullPathBoldFilename = unzipImgAndReturnsFullpathName(boldFilename, opt);
+  fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename, opt);
 
   printToScreen(createUnorderedList(fullPathBoldFilename), opt);
 
