@@ -19,21 +19,21 @@
 %
 function outblock = unxform_nii(nii, inblock)
 
-    if isempty(nii.hdr.hist.rot_orient)
-        outblock = inblock;
-    else
-        [dummy unrotate_orient] = sort(nii.hdr.hist.rot_orient);
-        outblock = permute(inblock, unrotate_orient);
+  if isempty(nii.hdr.hist.rot_orient)
+    outblock = inblock;
+  else
+    [dummy unrotate_orient] = sort(nii.hdr.hist.rot_orient);
+    outblock = permute(inblock, unrotate_orient);
+  end
+
+  if ~isempty(nii.hdr.hist.flip_orient)
+    flip_orient = nii.hdr.hist.flip_orient(unrotate_orient);
+
+    for i = 1:3
+      if flip_orient(i)
+        outblock = flipdim(outblock, i);
+      end
     end
+  end
 
-    if ~isempty(nii.hdr.hist.flip_orient)
-        flip_orient = nii.hdr.hist.flip_orient(unrotate_orient);
-
-        for i = 1:3
-            if flip_orient(i)
-                outblock = flipdim(outblock, i);
-            end
-        end
-    end
-
-    return
+  return

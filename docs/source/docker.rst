@@ -8,7 +8,7 @@ If you want to build the docker image locally and not pull it from the docker hu
 
     docker build . -f docker/Dockerfile -t cpplab/cpp_spm:stable
 
-This will create an image with the tag name `cpp_spm:stable`
+This will create an image with the tag name ``cpp_spm:stable``
 
 Running ``make docker_img`` will also build the ``stable`` version
 and a ``latest`` version.

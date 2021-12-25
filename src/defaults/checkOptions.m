@@ -221,10 +221,6 @@ function fieldsToSet = setDefaultOption()
   % specify the results to compute
   fieldsToSet.result.Nodes = returnDefaultResultsStructure();
 
-  fieldsToSet.parallelize.do = false;
-  fieldsToSet.parallelize.nbWorkers = 3;
-  fieldsToSet.parallelize.killOnExit = false;
-
 end
 
 function checkFields(opt)

@@ -22,8 +22,6 @@ function matlabbatch = bidsRsHrf(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'estimate HRF from rest data');
 
-  manageWorkersPool('close', opt);
-
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};

@@ -5,9 +5,11 @@ clean:
 	rm -rf dummyData/derivatives/cpp_spm-stats/group
 	rm -rf dummyData/derivatives/cpp_spm-*/jobs
 	rm -rf bids-examples
+	mkdir bids-examples && touch bids-examples/.gitkeep
 
 data:
 	sh createDummyDataSet.sh
+	rm bids-examples/.gitkeep
 	git clone git://github.com/bids-standard/bids-examples.git --depth 1
 	cp bids-examples/synthetic/dataset_description.json bids-examples/synthetic/derivatives/fmriprep
 

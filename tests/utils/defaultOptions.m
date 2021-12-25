@@ -67,10 +67,6 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.result.Nodes = returnDefaultResultsStructure();
 
-  expectedOptions.parallelize.do = false;
-  expectedOptions.parallelize.nbWorkers = 3;
-  expectedOptions.parallelize.killOnExit = false;
-
   if nargin > 0
     expectedOptions.taskName = taskName;
   end

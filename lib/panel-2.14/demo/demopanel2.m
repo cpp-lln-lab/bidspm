@@ -23,8 +23,8 @@ clf;
 
 % PREPARE
 if use_panel
-    p = panel();
-    p.pack(N, N);
+  p = panel();
+  p.pack(N, N);
 end
 
 %% (b)
@@ -32,25 +32,25 @@ end
 % plot into each panel in turn
 
 for m = 1:N
-    for n = 1:N
+  for n = 1:N
 
-        % select one of the NxN grid of sub-panels
-        if use_panel
-            p(m, n).select();
-        else
-            subplot(N, N, m + (n - 1) * N);
-        end
-
-        % plot some data
-        plot(randn(100, 1));
-
-        % you can use all the usual calls
-        xlabel('sample number');
-        ylabel('data');
-
-        % and so on - generally, you can treat the axis panel
-        % like any other axis
-        axis([0 100 -3 3]);
-
+    % select one of the NxN grid of sub-panels
+    if use_panel
+      p(m, n).select();
+    else
+      subplot(N, N, m + (n - 1) * N);
     end
+
+    % plot some data
+    plot(randn(100, 1));
+
+    % you can use all the usual calls
+    xlabel('sample number');
+    ylabel('data');
+
+    % and so on - generally, you can treat the axis panel
+    % like any other axis
+    axis([0 100 -3 3]);
+
+  end
 end

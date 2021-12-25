@@ -6,3 +6,4 @@ miss_hit==0.9.30
 pre-commit
 jupyterlab
 octave_kernel
+rstcheck
