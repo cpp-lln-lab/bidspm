@@ -13,6 +13,9 @@ function matlabbatch = bidsResults(opt)
   % :type opt: structure
   %
   %
+  % See also: setBatchSubjectLevelResults, setBatchGroupLevelResults
+  %
+  %
   % (C) Copyright 2020 CPP_SPM developers
 
   % TODO

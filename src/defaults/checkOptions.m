@@ -146,6 +146,10 @@ function opt = checkOptions(opt)
 
   opt = setDirectories(opt);
 
+  % TODO
+  % add some checks on the content of
+  % opt.result.Nodes().Output
+
 end
 
 function fieldsToSet = setDefaultOption()

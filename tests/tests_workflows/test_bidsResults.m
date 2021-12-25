@@ -74,3 +74,27 @@ function test_bidsResults_basic()
               expected{4}.binary.basename);
 
 end
+
+function test_bidsResults_no_background_for_montage()
+
+  %% GIVEN
+  opt = setOptions('vislocalizer');
+  opt.space = {'MNI'};
+
+  % Specify what ouput we want
+  opt.result.Nodes(1) = returnDefaultResultsStructure();
+
+  opt.result.Nodes(1).Level = 'subject';
+
+  opt.result.Nodes(1).Contrasts(1).Name = 'VisMot_gt_VisStat';
+
+  opt.result.Nodes(1).Contrasts(1).MC =  'FWE';
+  opt.result.Nodes(1).Contrasts(1).p = 0.05;
+  opt.result.Nodes(1).Contrasts(1).k = 5;
+
+  opt.result.Nodes(1).Output.montage.do = true;
+  opt.result.Nodes(1).Output.montage.background = 'aFileThatDoesNotExist.nii';
+
+  assertExceptionThrown(@()bidsResults(opt), 'setMontage:backgroundImageNotFound');
+
+end
