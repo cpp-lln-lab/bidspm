@@ -112,7 +112,7 @@ function test_setBatchResults_montage()
   expectedBatch{end}.spm.stats.results.conspec.threshdesc = 'FWE';
 
   expectedBatch{end}.spm.stats.results.export{1}.montage.background = ...
-      {fullfile(spm('dir'), 'canonical', 'avg152T1.nii,1')};
+      {fullfile(spm('dir'), 'canonical', 'avg152T1.nii')};
   expectedBatch{end}.spm.stats.results.export{end}.montage.orientation = 'axial';
   expectedBatch{end}.spm.stats.results.export{end}.montage.slices = [];
 

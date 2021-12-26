@@ -18,6 +18,8 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   %
   % :returns: - :matlabbatch: (structure)
   %
+  % See also: setBatchSubjectLevelResults, setBatchGroupLevelResults
+  %
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -86,11 +88,13 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   end
 
+  if result.Output.montage.do
+    export{end + 1}.montage = setMontage(result);
+  end
+
   matlabbatch{end}.spm.stats.results.export = export;
 
   if result.Output.montage.do
-
-    matlabbatch{end}.spm.stats.results.export{end + 1}.montage = setMontage(result);
 
     % Not sure why the name of the figure does not come out right
     result.outputNameStructure.ext = '';

@@ -4,7 +4,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subLabel, funcFWHM, iNode, iCon)
+  %   matlabbatch = setBatchSubjectLevelResults(matlabbatch, opt, subLabel, result)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -14,6 +14,8 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   % :type subLabel: string
   %
   % :returns: - :matlabbatch: (structure)
+  %
+  % See also: bidsResults, setBatchResults
   %
   % (C) Copyright 2019 CPP_SPM developers
 
