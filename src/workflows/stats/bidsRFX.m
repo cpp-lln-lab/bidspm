@@ -50,25 +50,32 @@ function bidsRFX(action, opt)
 
     case 'meananatandmask'
 
-      opt.dir.rfx = getRFXdir(opt);
-
       % TODO
       % - need to rethink where to save the anat and mask
       % - need to smooth the anat
       % - create a masked version of the anat too
 
+      opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
+      opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
+
       matlabbatch = setBatchMeanAnatAndMask(matlabbatch, ...
                                             opt, ...
-                                            fullfile(opt.dir.stats, 'group'));
+                                            opt.dir.output);
       saveAndRunWorkflow(matlabbatch, 'create_mean_struc_mask', opt);
 
     case 'rfx'
+
+      opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
+      opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
 
       matlabbatch = setBatchFactorialDesign(matlabbatch, opt);
 
       grpLvlCon = getGrpLevelContrast(opt);
       matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon);
       saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
+
+      % add basic BIDS dataset info
+      initBIDS(opt);
 
       rfxDir = getRFXdir(opt);
 
@@ -93,6 +100,22 @@ function checks(opt, action)
     msg = sprintf('action must be: %s.\n%s was given.', createUnorderedList(allowedActions), ...
                   action);
     errorHandling(mfilename(), 'unknownAction', msg, false, opt.verbosity);
+  end
+
+end
+
+function initBIDS(opt)
+
+  descr_file = fullfile(opt.dir.output, 'dataset_description.json');
+  if ~exist(descr_file, 'file')
+    isDerivative = true;
+    bids.init(opt.dir.output, struct(), isDerivative);
+    ds_desc = bids.Description('cpp_spm-groupStats');
+    ds_desc.content.BIDSVersion = '1.6.0';
+    ds_desc.content.GeneratedBy{1}.Version = getVersion();
+    ds_desc.content.GeneratedBy{1}.CodeURL = getRepoURL();
+    ds_desc.content.GeneratedBy{1}.Description = 'group level statistics';
+    ds_desc.write(opt.dir.output);
   end
 
 end
