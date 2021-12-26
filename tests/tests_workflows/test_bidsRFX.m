@@ -8,7 +8,7 @@ function test_suite = test_bidsRFX %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsSmoothing_smoke_test()
+function test_bidsRFX_smoke_test()
 
   opt = setOptions('vislocalizer');
 
