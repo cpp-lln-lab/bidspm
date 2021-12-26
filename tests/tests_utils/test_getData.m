@@ -25,7 +25,7 @@ end
 
 function test_getData_error_no_matching_task()
 
-  opt = setOptions('testTask');
+  opt = setOptions('dummy');
 
   % to speed up testing we use the raw dummy data
   opt.dir.preproc = getDummyDataDir('raw');

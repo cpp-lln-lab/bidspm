@@ -67,6 +67,10 @@ function opt = setOptions(task, subLabel, useRaw)
                               ['model-' task '_smdl.json']);
 
   end
+  
+  if strcmp(task, 'rest')
+      opt.model.file = '';
+  end
 
   opt = checkOptions(opt);
 
