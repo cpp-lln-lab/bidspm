@@ -74,11 +74,11 @@ function bidsCopyInputFolder(opt, unzip)
   end
 
   % update dataset description
-  ds_desc = bids.Description([opt.pipeline.name '-' opt.pipeline.type], ...
-                             fullfile(opt.dir.output, '..'));
-  ds_desc.content.GeneratedBy{1}.Version = getVersion();
-  ds_desc.content.GeneratedBy{1}.CodeURL = getRepoURL();
-  ds_desc.write(fullfile(opt.dir.output, '..'));
+  % TODO refactor once bids.Description has been upgraded
+%   ds_desc = bids.util.jsondecode(fullfile(opt.dir.output, 'dataset_description.json'));
+%   ds_desc.GeneratedBy{1}.Version = getVersion();
+%   ds_desc.GeneratedBy{1}.CodeURL = getRepoURL();
+%   bids.util.jsonwrite(fullfile(opt.dir.output, '..', 'dataset_description.json'), ds_desc);
 
   cleanUpWorkflow(opt);
 
