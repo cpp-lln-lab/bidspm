@@ -146,6 +146,10 @@ function opt = checkOptions(opt)
 
   opt = setDirectories(opt);
 
+  if ~isempty(opt.model.file) && exist(opt.model.file, 'file') ~= 2
+    error('model file does not exist:\n %s', opt.model.file);
+  end
+
   % TODO
   % add some checks on the content of
   % opt.result.Nodes().Output

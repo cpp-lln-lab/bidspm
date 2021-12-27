@@ -17,12 +17,12 @@ function test_getRFXdir_basic()
   rfxDir = getRFXdir(opt);
 
   expectedOutput = fullfile(getDummyDataDir('stats'), ...
-                            'group', ...
+                            'derivatives', 'cpp_spm-groupStats', ...
                             'task-vislocalizer_space-MNI_FWHM-0_conFWHM-0');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
-  cleanUp(fullfile(getDummyDataDir('stats'), 'group'));
+  cleanUp(fullfile(getDummyDataDir('stats'), 'derivatives', 'cpp_spm-groupStats'));
 
 end
 
@@ -34,11 +34,11 @@ function test_getRFXdir_user_specified()
   rfxDir = getRFXdir(opt);
 
   expectedOutput = fullfile(getDummyDataDir('stats'), ...
-                            'group', ...
+                            'derivatives', 'cpp_spm-groupStats', ...
                             'task-nback_space-MNI_FWHM-6_conFWHM-0_desc-nbackMVPA');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
-  cleanUp(fullfile(getDummyDataDir('stats'), 'group'));
+  cleanUp(fullfile(getDummyDataDir('stats'), 'derivatives', 'cpp_spm-groupStats'));
 
 end

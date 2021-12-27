@@ -24,7 +24,7 @@ function test_copyGraphWindownOutput_basic()
   files = spm_select( ...
                      'List', ...
                      fullfile(opt.dir.preproc, ['sub-' subLabel], 'figures'), ...
-                     ['^' datestr(now, 'yyyymmddHH') '.*_[0-9]_sub-01_task-testTask_testStep.png']);
+                     ['^' datestr(now, 'yyyymmddHH') '.*_[0-9]_sub-01_task-dummy_testStep.png']);
 
   assert(~isempty(files));
   assertEqual(size(files, 1), 2);
@@ -63,7 +63,7 @@ function [opt, subLabel, action] = setUp()
 
   subLabel = '01';
 
-  opt = setOptions('testTask', subLabel);
+  opt = setOptions('dummy', subLabel);
   opt.verbosity = 0;
   opt.dir.preproc = pwd;
 

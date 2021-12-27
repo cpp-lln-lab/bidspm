@@ -10,11 +10,11 @@ end
 
 function test_saveOptions_basic()
 
-  opt = setOptions('funcLocalizer');
+  opt = setOptions('dummy');
 
   saveOptions(opt);
 
-  expected = fullfile(pwd, 'cfg', ['options_task-funcLocalizer_date-', ...
+  expected = fullfile(pwd, 'cfg', ['options_task-dummy_date-', ...
                                    datestr(now, 'yyyymmddHHMM'), ...
                                    '.json']);
 

@@ -18,8 +18,6 @@ function printCredits(opt)
 
   DOI_URL = 'https://doi.org/10.5281/zenodo.3554331.';
 
-  repoURL = 'https://github.com/cpp-lln-lab/CPP_SPM';
-
   if opt.verbosity
 
     disp('___________________________________________________________________________');
@@ -43,7 +41,7 @@ function printCredits(opt)
 
     fprintf('Please cite using the following DOI: \n %s\n\n', DOI_URL);
 
-    fprintf('For bug report & suggestions see our github repo: \n %s\n\n', repoURL);
+    fprintf('For bug report & suggestions see our github repo: \n %s\n\n', getRepoURL());
 
     disp('___________________________________________________________________________');
     disp('___________________________________________________________________________');

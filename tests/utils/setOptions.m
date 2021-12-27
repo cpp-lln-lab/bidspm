@@ -68,6 +68,10 @@ function opt = setOptions(task, subLabel, useRaw)
 
   end
 
+  if strcmp(task, 'rest')
+    opt.model.file = '';
+  end
+
   opt = checkOptions(opt);
 
   if useRaw

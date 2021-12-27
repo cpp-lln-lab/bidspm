@@ -60,7 +60,6 @@ function bidsCopyInputFolder(opt, unzip)
       filter.task = opt.taskName;
     end
 
-    % TODO add pipeline version with getVersion()
     bids.copy_to_derivative(BIDS, ...
                             [opt.pipeline.name '-' opt.pipeline.type], ...
                             fullfile(opt.dir.output, '..'), ...
@@ -73,6 +72,13 @@ function bidsCopyInputFolder(opt, unzip)
 
     printToScreen('\n\n', opt);
   end
+
+  % update dataset description
+  % TODO refactor once bids.Description has been upgraded
+  %   ds_desc = bids.util.jsondecode(fullfile(opt.dir.output, 'dataset_description.json'));
+  %   ds_desc.GeneratedBy{1}.Version = getVersion();
+  %   ds_desc.GeneratedBy{1}.CodeURL = getRepoURL();
+  %   bids.util.jsonwrite(fullfile(opt.dir.output, '..', 'dataset_description.json'), ds_desc);
 
   cleanUpWorkflow(opt);
 
