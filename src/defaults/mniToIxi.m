@@ -1,6 +1,6 @@
 function opt_out = mniToIxi(varargin)
   %
-  % Short description of what the function does goes here.
+  % Convert mention of MNI space to the SPM default space IXI549Space
   %
   % USAGE::
   %
