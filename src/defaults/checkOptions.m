@@ -142,13 +142,7 @@ function opt = checkOptions(opt)
     opt.space = {opt.space};
   end
   
-  if ismember('MNI', opt.space)
-    idx = strcmp(opt.space, 'MNI');
-    opt.space{idx} = 'IXI549Space';
-    msg = sprintf('Converting reference to MNI space tp SPM IXI549Space');
-    id = 'mniToIXI549Space';
-    errorHandling(mfilename(), id, msg, true, opt.verbosity)
-  end
+  opt = mniToIxi(opt);
 
   opt = orderfields(opt);
 

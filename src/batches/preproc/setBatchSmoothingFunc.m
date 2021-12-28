@@ -24,10 +24,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
 
   opt.query.desc = 'preproc';
   opt.query.space = opt.space;
-  if ismember('MNI', opt.query.space)
-    idx = strcmp(opt.query.space, 'MNI');
-    opt.query.space{idx} = 'IXI549Space';
-  end
+  opt = mniToIxi(opt);
 
   % identify sessions for this subject
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');

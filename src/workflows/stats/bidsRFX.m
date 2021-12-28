@@ -27,10 +27,7 @@ function bidsRFX(action, opt)
 
   checks(opt, action);
 
-  if ismember('MNI', opt.query.space)
-       idx = strcmp(opt.query.space, 'MNI');
-       opt.query.space{idx} = 'IXI549Space';
-  end
+  opt = mniToIxi(opt);
 
   [~, opt] = setUpWorkflow(opt, 'group level GLM');
 
