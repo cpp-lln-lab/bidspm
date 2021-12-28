@@ -1,5 +1,14 @@
-function bidsTemplateWorkflow(opt)
+function workflow(opt)
   %
+  % Brief workflow description
+  %
+  % USAGE::
+  %
+  %  workflow(opt)
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
   %
   % (C) Copyright 2021 CPP_SPM developers
 
