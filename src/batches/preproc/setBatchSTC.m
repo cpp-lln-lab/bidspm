@@ -30,6 +30,10 @@ function matlabbatch = setBatchSTC(varargin)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  % TODO with multitask support it is even more needed to check
+  % that all files have the same slice timing and that might not be the case
+  % reflected in opt.metadata
+
   p = inputParser;
 
   addRequired(p, 'matlabbatch', @iscell);
@@ -60,12 +64,10 @@ function matlabbatch = setBatchSTC(varargin)
   printBatchName('slice timing correction', opt);
 
   % get metadata for STC
-  % Note that slice ordering is assumed to be from foot to head. If it is not, enter
-  % instead: TR - INTRASCAN_TIME - SLICE_TIMING_VECTOR
 
-  % SPM accepts slice time acquisition as inputs for slice order (simplifies
-  % things when dealing with multiecho data)
-  nbSlices = length(sliceOrder); % unique is necessary in case of multi echo
+  % SPM accepts slice time acquisition as inputs for slice order
+  % (simplifies things when dealing with multiecho data)
+  nbSlices = length(sliceOrder);
   TR = opt.metadata.RepetitionTime;
   TA = TR - (TR / nbSlices);
   % round acquisition time to the upper millisecond
@@ -125,7 +127,6 @@ function matlabbatch = setBatchSTC(varargin)
                                                    BIDS, ...
                                                    subLabel, sessions{iSes}, runs{iRun}, opt);
 
-      % % TODO remove this validation
       file = validationInputFile(subFuncDataDir, fileName);
 
       % add the file to the list
@@ -140,9 +141,5 @@ function matlabbatch = setBatchSTC(varargin)
   end
 
   matlabbatch{end + 1}.spm.temporal = temporal;
-
-  % The following lines are commented out because those parameters
-  % can be set in the spm_my_defaults.m
-  % matlabbatch{1}.spm.temporal.st.prefix = spm_get_defaults('slicetiming.prefix');
 
 end

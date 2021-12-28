@@ -11,7 +11,6 @@ end
 function test_bidsConcatBetaTmapsBasic()
 
   subLabel = '01';
-  funcFWHM = 6;
 
   opt = setOptions('vismotion', subLabel);
   opt.dryRun = true;
