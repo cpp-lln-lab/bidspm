@@ -10,9 +10,9 @@ end
 
 function test_createAndReturnCounfoundMatFile_basic()
 
-  [opt, subLabel, tsvFile] = setUp();
+  [opt, tsvFile] = setUp();
 
-  counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFile);
+  counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile);
 
   expectedFilename = fullfile(getDummyDataDir('stats'), 'sub-01', 'stats', ...
                               'task-vislocalizer_space-MNI_FWHM-6', ...
@@ -35,35 +35,7 @@ function test_createAndReturnCounfoundMatFile_basic()
 
 end
 
-function test_createAndReturnCounfoundMatFile_maxNbVols()
-
-  [opt, subLabel, tsvFile] = setUp();
-
-  opt.glm.maxNbVols = 50;
-
-  counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFile);
-
-  R = load(counfoundMatFile, 'R');
-
-  assertEqual(size(R.R, 1), opt.glm.maxNbVols);
-
-end
-
-function test_createAndReturnCounfoundMatFile_maxNbVols_gt_actualNbVols()
-
-  [opt, subLabel, tsvFile] = setUp();
-
-  opt.glm.maxNbVols = 400;
-
-  counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFile);
-
-  R = load(counfoundMatFile, 'R');
-
-  assertEqual(size(R.R, 1), 351);
-
-end
-
-function [opt, subLabel, tsvFile] = setUp()
+function [opt, tsvFile] = setUp()
 
   subLabel = '01';
   iSes = 1;

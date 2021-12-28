@@ -105,8 +105,7 @@ end
 function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
 
   REALIGN_PARAMETERS_NAME = { ...
-                             'trans_x', 'trans_y', 'trans_z', ...
-                             'rot_x', 'rot_y', 'rot_z'};
+                             'trans_?', 'rot_?'};
 
   for iTrialType = 1:numel(trialTypeList)
 

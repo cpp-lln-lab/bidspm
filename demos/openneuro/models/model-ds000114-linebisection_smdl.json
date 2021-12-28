@@ -14,12 +14,8 @@
           "trial_type.No_Response_Task",
           "trial_type.Response_Control",
           "trial_type.No_Response_Control",
-          "trans_x",
-          "trans_y",
-          "trans_z",
-          "rot_x",
-          "rot_y",
-          "rot_z"
+          "trans_?",
+          "rot_?"
         ]
       },
       "DummyContrasts": [
@@ -36,12 +32,8 @@
           "trial_type.No_Response_Task",
           "trial_type.Response_Control",
           "trial_type.No_Response_Control",
-          "trans_x",
-          "trans_y",
-          "trans_z",
-          "rot_x",
-          "rot_y",
-          "rot_z"
+          "trans_?",
+          "rot_?"
         ]
       },
       "DummyContrasts": [

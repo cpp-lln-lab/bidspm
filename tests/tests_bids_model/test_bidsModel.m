@@ -41,6 +41,46 @@ function test_getHighPassFilter()
 
 end
 
+function test_getHRFderivatives()
+
+  opt = setOptions('vislocalizer', '01');
+
+  HRF = getHRFderivatives(opt.model.file);
+
+  assertEqual(HRF, [1 0]);
+
+end
+
+function test_getModelType()
+
+  opt = setOptions('vislocalizer', '01');
+
+  modelType = getModelType(opt.model.file, 'subject');
+
+  assertEqual(modelType, 'glm');
+
+end
+
+function test_getModelMask()
+
+  opt = setOptions('vislocalizer', '01');
+
+  mask = getModelMask(opt.model.file, 'subject');
+
+  assertEqual(mask, '');
+
+end
+
+function test_getInclusiveMaskThreshold()
+
+  opt = setOptions('vislocalizer', '01');
+
+  inclusiveMaskThreshold = getInclusiveMaskThreshold(opt.model.file, 'subject');
+
+  assertEqual(inclusiveMaskThreshold, 0.8);
+
+end
+
 function test_getBidsDesignMatrix()
 
   opt = setOptions('vislocalizer', '01');

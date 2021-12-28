@@ -27,12 +27,8 @@
          "Model": {
             "Type": "glm",
             "X": [
-               "trans_x",
-               "trans_y",
-               "trans_z",
-               "rot_x",
-               "rot_y",
-               "rot_z"
+               "trans_?",
+               "rot_?"
             ],
             "HRF": {
                "Variables": [],
@@ -77,12 +73,8 @@
          "Model": {
             "Type": "glm",
             "X": [
-               "trans_x",
-               "trans_y",
-               "trans_z",
-               "rot_x",
-               "rot_y",
-               "rot_z"
+               "trans_?",
+               "rot_?"
             ],
             "HRF": {
                "Variables": [],
