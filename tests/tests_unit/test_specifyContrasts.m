@@ -152,7 +152,7 @@ function test_specifyContrasts_vismotion()
 
   opt = setOptions('vismotion', subLabel);
 
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   ffxDir = getFFXdir(subLabel, opt);
   spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
@@ -203,7 +203,7 @@ function test_specifyContrasts_vislocalizer()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   ffxDir = getFFXdir(subLabel, opt);
   spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));

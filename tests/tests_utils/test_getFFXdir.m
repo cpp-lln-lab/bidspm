@@ -13,11 +13,11 @@ function test_getFFXdir_basic()
   subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel);
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
   opt.fwhm.func = 0;
 
   expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-01', 'stats', ...
-                            'task-vislocalizer_space-MNI_FWHM-0');
+                            'task-vislocalizer_space-IXI549Space_FWHM-0');
 
   ffxDir = getFFXdir(subLabel, opt);
 

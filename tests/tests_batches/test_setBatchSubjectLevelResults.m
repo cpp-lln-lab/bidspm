@@ -87,7 +87,7 @@ function [subLabel, opt, result] = setUp(task, contrastName)
 
   opt = setOptions(task, subLabel);
 
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   if nargin > 1
     opt.result.Nodes.Contrasts.Name = contrastName;

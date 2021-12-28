@@ -26,9 +26,9 @@ function test_getMeanFuncFilename_basic()
   assertEqual(meanFuncDir, expectedmeanFuncDir);
   assertEqual(meanImage, expectedMeanImage);
 
-  opt.query.space = 'MNI';
+  opt.query.space = 'IXI549Space';
   meanImage = getMeanFuncFilename(BIDS, subLabel, opt);
 
-  expectedMeanImage = 'sub-01_ses-01_task-vislocalizer_space-IXI549Spacel_desc-mean_bold.nii';
+  expectedMeanImage = 'sub-01_ses-01_task-vislocalizer_space-IXI549Space_desc-mean_bold.nii';
 
 end

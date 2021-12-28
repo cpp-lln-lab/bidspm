@@ -14,7 +14,7 @@ function test_bidsSmoothing_basic()
 
   opt.pipeline.type = 'preproc';
 
-  opt.space = 'MNI';
+  opt.space = 'IXI549Space';
 
   opt = checkOptions(opt);
 

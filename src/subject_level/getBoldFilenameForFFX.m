@@ -35,10 +35,7 @@ function boldFilename = getBoldFilenameForFFX(varargin)
 
   % TODO refactor this acroos all functions
   opt.query.space = opt.space;
-  if ismember('MNI', opt.query.space)
-    idx = strcmp(opt.query.space, 'MNI');
-    opt.query.space{idx} = 'IXI549Space';
-  end
+  opt = mniToIxi(opt);
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
 

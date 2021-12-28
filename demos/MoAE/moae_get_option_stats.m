@@ -21,7 +21,7 @@ function opt = moae_get_option_stats()
 
   opt.pipeline.type = 'stats';
 
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                             'models', 'model-MoAE_smdl.json');

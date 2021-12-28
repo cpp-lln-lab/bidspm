@@ -35,7 +35,7 @@ function opt = getOption()
   % opt.skullstrip.threshold = 0.75;
 
   % space where we conduct the analysis
-  % opt.space = 'MNI';
+  % opt.space = 'IXI549Space';
 
   % Options for normalize
   % Voxel dimensions for resampling at normalization of functional data or leave empty [ ].

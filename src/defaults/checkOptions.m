@@ -25,7 +25,7 @@ function opt = checkOptions(opt)
   %       space where we conduct the analysis
   %       are located. See ``setDerivativesDir()`` for more information.
   %
-  %     - ``opt.space = {'individual', 'MNI'}`` - Space where we conduct the analysis
+  %     - ``opt.space = {'individual', 'IXI549Space'}`` - Space where we conduct the analysis
   %
   %     - ``opt.realign.useUnwarp = true``
   %
@@ -142,6 +142,8 @@ function opt = checkOptions(opt)
     opt.space = {opt.space};
   end
 
+  opt = mniToIxi(opt);
+
   opt = orderfields(opt);
 
   opt = setDirectories(opt);
@@ -206,7 +208,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.skullstrip.mean = false;
 
   %% Options for normalize
-  fieldsToSet.space = {'individual', 'MNI'};
+  fieldsToSet.space = {'individual', 'IXI549Space'};
   fieldsToSet.funcVoxelDims = [];
 
   %% Options for model specification and results

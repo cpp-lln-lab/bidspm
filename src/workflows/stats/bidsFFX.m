@@ -38,6 +38,7 @@ function matlabbatch = bidsFFX(action, opt)
   [BIDS, opt] = setUpWorkflow(opt, 'subject level GLM');
 
   if isempty(opt.model.file)
+    % TODO: check that GLM will run with this default model
     opt = createDefaultStatsModel(BIDS, opt);
   end
 

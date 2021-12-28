@@ -54,7 +54,7 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   opt = setOptions('vislocalizer', subLabel);
 
   opt.pipeline.type = 'stats';
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   opt = dirFixture(opt);
 
@@ -97,7 +97,7 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
   opt = setOptions('vislocalizer', subLabel);
 
   opt.pipeline.type = 'stats';
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
   opt.model.designOnly = true;
 
   opt = dirFixture(opt);

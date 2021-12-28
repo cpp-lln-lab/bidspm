@@ -17,7 +17,7 @@ function test_setBatchSmoothingFunc_basic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
