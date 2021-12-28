@@ -1,7 +1,7 @@
 function opt = getOption()
   %
   % returns a structure that contains the options chosen for preprocessing
-  % 
+  %
   %
   % (C) Copyright 2021 CPP_SPM developers
 
@@ -40,6 +40,5 @@ function opt = getOption()
   % Options for normalize
   % Voxel dimensions for resampling at normalization of functional data or leave empty [ ].
   % opt.funcVoxelDims = [];
-
 
 end
