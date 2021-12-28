@@ -25,7 +25,7 @@ function opt = checkOptions(opt)
   %       space where we conduct the analysis
   %       are located. See ``setDerivativesDir()`` for more information.
   %
-  %     - ``opt.space = {'individual', 'MNI'}`` - Space where we conduct the analysis
+  %     - ``opt.space = {'individual', 'IXI549Space'}`` - Space where we conduct the analysis
   %
   %     - ``opt.realign.useUnwarp = true``
   %
@@ -141,6 +141,14 @@ function opt = checkOptions(opt)
   if ~iscell(opt.space)
     opt.space = {opt.space};
   end
+  
+  if ismember('MNI', opt.space)
+    idx = strcmp(opt.space, 'MNI');
+    opt.space{idx} = 'IXI549Space';
+    msg = sprintf('Converting reference to MNI space tp SPM IXI549Space');
+    id = 'mniToIXI549Space';
+    errorHandling(mfilename(), id, msg, true, opt.verbosity)
+  end
 
   opt = orderfields(opt);
 
@@ -206,7 +214,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.skullstrip.mean = false;
 
   %% Options for normalize
-  fieldsToSet.space = {'individual', 'MNI'};
+  fieldsToSet.space = {'individual', 'IXI549Space'};
   fieldsToSet.funcVoxelDims = [];
 
   %% Options for model specification and results

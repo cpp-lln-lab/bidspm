@@ -12,7 +12,7 @@ function test_bidsResults_basic()
 
   %% GIVEN
   opt = setOptions('vislocalizer');
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   % Specify what ouput we want
   opt.result.Nodes(1) = returnDefaultResultsStructure();
@@ -49,7 +49,7 @@ function test_bidsResults_basic()
 
   assertEqual(matlabbatch{1}.spm.stats.results.conspec, expected);
 
-  rootBasename = ['sub-ctrl01_task-vislocalizer_space-MNI', ...
+  rootBasename = ['sub-ctrl01_task-vislocalizer_space-IXI549Space', ...
                   '_desc-VisMotGtVisStat_label-0003', ...
                   '_p-0pt050_k-5_MC-FWE'];
   expected = {struct('png', true), ...
@@ -79,7 +79,7 @@ function test_bidsResults_no_background_for_montage()
 
   %% GIVEN
   opt = setOptions('vislocalizer');
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   % Specify what ouput we want
   opt.result.Nodes(1) = returnDefaultResultsStructure();

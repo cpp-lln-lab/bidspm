@@ -19,11 +19,11 @@ end
 function test_createGlmDirName_basic()
 
   opt = setOptions('dummy');
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   glmDirName = createGlmDirName(opt);
 
-  expectedOutput = 'task-dummy_space-MNI_FWHM-6';
+  expectedOutput = 'task-dummy_space-IXI549Space_FWHM-6';
 
   assertEqual(glmDirName, expectedOutput);
 

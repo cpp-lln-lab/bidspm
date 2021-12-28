@@ -23,7 +23,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
   % - only do realign and not realign AND unwarp, make sure you set
   %   ``opt.realign.useUnwarp`` to ``false``.
   % - normalize the data to MNI space, make sure
-  %   ``opt.space`` includes ``MNI``.
+  %   ``opt.space`` includes ``IXI549Space``.
   %
   % If you want to:
   %
@@ -95,7 +95,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
       matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
     end
 
-    if ismember('MNI', opt.space)
+    if ismember('IXI549Space', opt.space)
       % dependency from segmentation
       % dependency from coregistration
       matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt, voxDim);

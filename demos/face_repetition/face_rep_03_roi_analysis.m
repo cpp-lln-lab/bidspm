@@ -19,7 +19,7 @@ opt = face_rep_get_option_results();
 
 opt.roi.atlas = 'wang';
 opt.roi.name = {'V1v', 'V1d'};
-opt.roi.space = {'MNI', 'individual'};
+opt.roi.space = {'IXI549Space', 'individual'};
 
 opt.dir.stats = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm-stats');
 

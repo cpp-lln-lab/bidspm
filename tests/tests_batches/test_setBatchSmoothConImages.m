@@ -12,7 +12,7 @@ function test_setBatchSmoothConImages_basic()
 
   opt = setOptions('vismotion');
   opt.subjects = {'01', 'blind01'};
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   [~, opt] = getData(opt, opt.dir.preproc);
 
@@ -20,7 +20,7 @@ function test_setBatchSmoothConImages_basic()
   matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
 
   statsFodler = fullfile(opt.dir.stats, 'sub-01', 'stats', ...
-                         'task-vismotion_space-MNI_FWHM-6');
+                         'task-vismotion_space-IXI549Space_FWHM-6');
   expectedBatch{1}.spm.spatial.smooth.fwhm = [6 6 6];
   expectedBatch{1}.spm.spatial.smooth.prefix = 's6';
   expectedBatch{1}.spm.spatial.smooth.data = {fullfile(statsFodler, ...
@@ -35,7 +35,7 @@ function test_setBatchSmoothConImages_basic()
   expectedBatch{1}.spm.spatial.smooth.im = 0;
 
   statsFodler = fullfile(opt.dir.stats, 'sub-blind01', 'stats', ...
-                         'task-vismotion_space-MNI_FWHM-6');
+                         'task-vismotion_space-IXI549Space_FWHM-6');
   expectedBatch{2}.spm.spatial.smooth.fwhm = [6 6 6];
   expectedBatch{2}.spm.spatial.smooth.prefix = 's6';
   expectedBatch{2}.spm.spatial.smooth.data = {fullfile(statsFodler, ...

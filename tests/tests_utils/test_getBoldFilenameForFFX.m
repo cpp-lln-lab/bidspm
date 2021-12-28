@@ -15,7 +15,7 @@ function test_getBoldFilenameForFFX_mni()
   iRun = 1;
 
   opt = setOptions('vislocalizer', subLabel);
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 

@@ -15,7 +15,7 @@ function test_createAndReturnOnsetFile_basic()
   iRun = 1;
 
   opt = setOptions('vislocalizer', subLabel);
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -34,7 +34,7 @@ function test_createAndReturnOnsetFile_basic()
   onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile);
 
   expectedFilename = fullfile(getDummyDataDir('stats'), 'sub-01', 'stats', ...
-                              'task-vislocalizer_space-MNI_FWHM-6', ...
+                              'task-vislocalizer_space-IXI549Space_FWHM-6', ...
                               'sub-01_ses-01_task-vislocalizer_onsets.mat');
 
   assertEqual(exist(onsetFilename, 'file'), 2);

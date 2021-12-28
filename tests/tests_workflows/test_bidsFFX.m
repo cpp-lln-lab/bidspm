@@ -11,7 +11,7 @@ end
 function test_bidsFFX_contrasts()
 
   opt = setOptions('vislocalizer');
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   % required for the test
   opt.dir.raw = opt.dir.preproc;
@@ -58,7 +58,7 @@ function test_bidsFFX_mni()
   for i = 1
 
     opt = setOptions(task{i});
-    opt.space = {'MNI'};
+    opt.space = {'IXI549Space'};
 
     opt = dirFixture(opt);
 

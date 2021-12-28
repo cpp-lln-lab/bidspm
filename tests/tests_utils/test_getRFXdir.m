@@ -13,12 +13,13 @@ function test_getRFXdir_basic()
   opt = setOptions('vislocalizer');
   opt.fwhm.func = 0;
   opt.fwhm.contrast = 0;
+  opt.space = 'IXI549Space';
 
   rfxDir = getRFXdir(opt);
 
   expectedOutput = fullfile(getDummyDataDir('stats'), ...
                             'derivatives', 'cpp_spm-groupStats', ...
-                            'task-vislocalizer_space-MNI_FWHM-0_conFWHM-0');
+                            'task-vislocalizer_space-IXI549Space_FWHM-0_conFWHM-0');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
@@ -30,12 +31,13 @@ function test_getRFXdir_user_specified()
 
   opt = setOptions('nback');
   opt.fwhm.contrast = 0;
+  opt.space = 'IXI549Space';
 
   rfxDir = getRFXdir(opt);
 
   expectedOutput = fullfile(getDummyDataDir('stats'), ...
                             'derivatives', 'cpp_spm-groupStats', ...
-                            'task-nback_space-MNI_FWHM-6_conFWHM-0_desc-nbackMVPA');
+                            'task-nback_space-IXI549Space_FWHM-6_conFWHM-0_desc-nbackMVPA');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 

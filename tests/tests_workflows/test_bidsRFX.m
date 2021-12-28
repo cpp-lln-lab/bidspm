@@ -15,7 +15,8 @@ function test_bidsRFX_smoke_test()
   opt.dir.raw = getDummyDataDir('raw');
   opt.pipeline.type = 'stats';
 
-  opt.space = 'MNI';
+  opt.space = 'IXI549Space';
+  opt.query.space = 'IXI549Space';
 
   opt = checkOptions(opt);
 

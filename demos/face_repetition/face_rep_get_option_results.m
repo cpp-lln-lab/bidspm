@@ -14,7 +14,7 @@ function opt =  face_rep_get_option_results()
 
   opt.pipeline.type = 'stats';
 
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   opt.model.file = fullfile( ...
                             fileparts(mfilename('fullpath')), ...

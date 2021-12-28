@@ -19,7 +19,7 @@ function test_bidsCreateROI_neuromorphometrics()
 
   opt.roi.atlas = 'neuromorphometrics';
   opt.roi.name = {'Amygdala'};
-  opt.roi.space = {'MNI', 'individual'};
+  opt.roi.space = {'IXI549Space', 'individual'};
   opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'cpp_spm-roi'), 'cpath');
 
   opt.dryRun = false;
@@ -49,7 +49,7 @@ function test_bidsCreateROI_wang()
 
   opt.roi.atlas = 'wang';
   opt.roi.name = {'V1v', 'V1d'};
-  opt.roi.space = {'MNI', 'individual'};
+  opt.roi.space = {'IXI549Space', 'individual'};
   opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'cpp_spm-roi'), 'cpath');
 
   opt.dryRun = false;

@@ -13,7 +13,7 @@ function test_setBatchSubjectLevelContrasts_basic()
   subLabel = '01';
 
   opt = setOptions('vismotion', subLabel);
-  opt.space = {'MNI'};
+  opt.space = {'IXI549Space'};
 
   matlabbatch = {};
   matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);
@@ -21,7 +21,7 @@ function test_setBatchSubjectLevelContrasts_basic()
   con.spmmat = {fullfile(opt.dir.stats, ...
                          'sub-01', ...
                          'stats', ...
-                         'task-vismotion_space-MNI_FWHM-6', ...
+                         'task-vismotion_space-IXI549Space_FWHM-6', ...
                          'SPM.mat')};
   con.delete = 1;
 

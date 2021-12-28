@@ -27,11 +27,10 @@ function bidsRFX(action, opt)
 
   checks(opt, action);
 
-  % TODO: default opt.space = {'MNI'} to standard SPM space
-  %   if ismember('MNI', opt.query.space)
-  %     idx = strcmp(opt.query.space, 'MNI');
-  %     opt.query.space{idx} = 'IXI549Space';
-  %   end
+  if ismember('MNI', opt.query.space)
+       idx = strcmp(opt.query.space, 'MNI');
+       opt.query.space{idx} = 'IXI549Space';
+  end
 
   [~, opt] = setUpWorkflow(opt, 'group level GLM');
 

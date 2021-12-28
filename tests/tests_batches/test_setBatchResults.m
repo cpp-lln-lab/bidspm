@@ -97,7 +97,7 @@ function test_setBatchResults_montage()
 
   opt.result.Steps.Output.montage.do =  true;
 
-  opt.space = 'MNI';
+  opt.space = 'IXI549Space';
 
   result = setBatchSubjectLevelResultsMock(opt);
 

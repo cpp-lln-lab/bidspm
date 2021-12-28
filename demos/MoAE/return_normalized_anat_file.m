@@ -3,7 +3,7 @@ function [anat_normalized_file, anat_range] = return_normalized_anat_file(opt, s
   % (C) Copyright 2021 Remi Gau
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
-  opt.query.space = 'MNI';
+  opt.query.space = 'IXI549Space';
   [anat_normalized_file, anatDataDir] = getAnatFilename(BIDS, opt, sub_label);
   anat_normalized_file = fullfile(anatDataDir, anat_normalized_file);
   hdr = spm_vol(anat_normalized_file);
