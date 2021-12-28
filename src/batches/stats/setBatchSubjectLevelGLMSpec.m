@@ -108,7 +108,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
                                                          sessions{iSes}, ...
                                                          runs{iRun});
         if ~isempty(confoundsRegFile)
-          counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, confoundsRegFile);
+          counfoundMatFile = createAndReturnCounfoundMatFile(opt, confoundsRegFile);
           fmri_spec.sess(sesCounter).multi_reg = ...
               cellstr(counfoundMatFile);
         end

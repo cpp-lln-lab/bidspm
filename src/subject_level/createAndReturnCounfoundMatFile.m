@@ -1,4 +1,4 @@
-function counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFile)
+function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   %
   % Creates an ``_regressors.mat`` in the subject level GLM folder.
   %
@@ -10,21 +10,18 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFi
   %
   % USAGE::
   %
-  %   counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFile)
+  %   counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   %
   % :param opt:
   % :type opt: structure
-  % :param subLabel:
-  % :type subLabel: string
   % :param tsvFile: fullpath name of the tsv file.
   % :type tsvFile: string
   %
   % :returns: :counfoundMatFile: (string) fullpath name of the file created.
   %
+  % See also: setBatchSubjectLevelGLMSpec, createConfounds
   %
   % (C) Copyright 2019 CPP_SPM developers
-
-  X = getBidsDesignMatrix(opt.model.file, 'run');
 
   if iscell(tsvFile)
     tsvFile = tsvFile{1};
@@ -39,19 +36,9 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFi
     return
   end
 
-  % filter based on model content
-  names = fieldnames(content);
-  names = intersect(X, names);
+  X = getBidsDesignMatrix(opt.model.file, 'run');
 
-  R = [];
-
-  for col = 1:numel(names)
-    if opt.glm.maxNbVols ~= Inf && numel(content.(names{col})) > opt.glm.maxNbVols
-      R(:, col) = content.(names{col})(1:opt.glm.maxNbVols);
-    else
-      R(:, col) = content.(names{col});
-    end
-  end
+  [names, R] = createConfounds(content, X, opt.glm.maxNbVols); %#ok<*ASGLU>
 
   % save the confounds as a matfile
   p = bids.internal.parse_filename(tsvFile);
@@ -59,7 +46,7 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, subLabel, tsvFi
 
   bidsFile = bids.File(p);
 
-  ffxDir = getFFXdir(subLabel, opt);
+  ffxDir = getFFXdir(p.entities.sub, opt);
   counfoundMatFile = fullfile(ffxDir, bidsFile.filename);
 
   save(counfoundMatFile, ...
