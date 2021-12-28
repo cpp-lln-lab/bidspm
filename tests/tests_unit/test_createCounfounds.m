@@ -13,7 +13,7 @@ function test_createAndReturnCounfoundMatFile_maxNbVols()
   tsvFile = fullfile(getDummyDataDir, 'sub-01_task-test_desc-confounds_regressors.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
 
-  designMatrix = { 'trial_type.VisMot'
+  designMatrix = {'trial_type.VisMot'
                   'trial_type.VisStat'
                   'trial_type.missing_condition'
                   'trans_x'
@@ -34,7 +34,7 @@ function test_createAndReturnCounfoundMatFile_maxNbVols_gt_actualNbVols()
   tsvFile = fullfile(getDummyDataDir, 'sub-01_task-test_desc-confounds_regressors.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
 
-  designMatrix = { 'trial_type.VisMot'
+  designMatrix = {'trial_type.VisMot'
                   'trial_type.VisStat'
                   'trial_type.missing_condition'
                   'trans_x'
@@ -55,7 +55,7 @@ function test_createAndReturnCounfoundMatFile_outlier_regressors()
   tsvFile = fullfile(getDummyDataDir, 'sub-01_task-test_desc-confounds_regressors.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
 
-  designMatrix = { 'trial_type.VisMot'
+  designMatrix = {'trial_type.VisMot'
                   'trial_type.VisStat'
                   'trial_type.missing_condition'
                   'rot_x'
@@ -69,7 +69,7 @@ function test_createAndReturnCounfoundMatFile_outlier_regressors()
 
   names = createConfounds(tsvContent, designMatrix, Inf);
 
-  expectedNames = {        'rot_x'
+  expectedNames = {'rot_x'
                    'rot_y'
                    'rot_z'
                    'trans_x'
@@ -89,17 +89,17 @@ function test_createAndReturnCounfoundMatFile_regex()
   tsvFile = fullfile(getDummyDataDir, 'sub-01_task-test_desc-confounds_regressors.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
 
-  designMatrix = { 'trial_type.VisMot'
+  designMatrix = {'trial_type.VisMot'
                   'trial_type.VisStat'
                   'trial_type.missing_condition'
                   'trans_?'
-                  'rot_?'
+                  'rot_*'
                   'non_steady_state_outlier*'
                   'motion_outlier*'};
 
   names = createConfounds(tsvContent, designMatrix, Inf);
 
-  expectedNames = {                   'trans_x'
+  expectedNames = {'trans_x'
                    'trans_y'
                    'trans_z'
                    'rot_x'
@@ -112,4 +112,5 @@ function test_createAndReturnCounfoundMatFile_regex()
                    'motion_outlier01'};
 
   assertEqual(names, expectedNames);
+
 end
