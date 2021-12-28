@@ -14,12 +14,8 @@
         "X": [
           "trial_type.VisMot",
           "trial_type.VisStat",
-          "trans_x",
-          "trans_y",
-          "trans_z",
-          "rot_x",
-          "rot_y",
-          "rot_z"
+          "trans_?",
+          "rot_?"
         ],
         "HRF": {
           "Variables": [],
@@ -78,12 +74,8 @@
         "X": [
           "trial_type.VisUp",
           "trial_type.VisDown",
-          "trans_x",
-          "trans_y",
-          "trans_z",
-          "rot_x",
-          "rot_y",
-          "rot_z"
+          "trans_?",
+          "rot_?"
         ],
         "HRF": {
           "Variables": [],

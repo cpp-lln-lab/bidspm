@@ -29,12 +29,8 @@
                "trial_type.F2",
                "trial_type.N1",
                "trial_type.N2",
-               "trans_x",
-               "trans_y",
-               "trans_z",
-               "rot_x",
-               "rot_y",
-               "rot_z"
+               "trans_?",
+               "rot_?"
             ],
             "Type": "glm",
             "Options": {

@@ -28,12 +28,8 @@
                "trial_type.control_pumps_demean",
                "trial_type.explode_demean",
                "trial_type.pumps_demean",
-               "trans_x",
-               "trans_y",
-               "trans_z",
-               "rot_x",
-               "rot_y",
-               "rot_z"
+               "trans_?",
+               "rot_?"
             ],
             "Options": {
                "HighPassFilterCutoffHz": 0.0078,
@@ -75,12 +71,8 @@
                "trial_type.control_pumps_demean",
                "trial_type.explode_demean",
                "trial_type.pumps_demean",
-               "trans_x",
-               "trans_y",
-               "trans_z",
-               "rot_x",
-               "rot_y",
-               "rot_z"
+               "trans_?",
+               "rot_?"
             ],
             "Options": {
                "HighPassFilterCutoffHz": 0.0078,
