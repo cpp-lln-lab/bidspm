@@ -23,7 +23,7 @@ function bidsSTC(opt)
   % If no slice timing information is available from the file metadata or from
   % the ``opt`` strcuture this step will be skipped.
   %
-  % See also: getSliceOrder()
+  % See also: setBatchSTC, getSliceOrder
   %
   % See the documentation for more information about slice timing correction.
   %
