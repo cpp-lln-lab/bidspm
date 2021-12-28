@@ -18,9 +18,9 @@ function opt_out = mniToIxi(varargin)
   addRequired(p, 'opt', @isstruct);
   parse(p, varargin{:});
   opt = p.Results.opt;
-  
+
   throwWarning = false;
-  
+
   if ismember('MNI', opt.space)
     idx = strcmp(opt.space, 'MNI');
     opt.space{idx} = 'IXI549Space';
@@ -32,13 +32,13 @@ function opt_out = mniToIxi(varargin)
     opt.query.space{idx} = 'IXI549Space';
     throwWarning = true;
   end
-  
+
   if throwWarning
     msg = sprintf('Converting reference to MNI space tp SPM IXI549Space');
     id = 'mniToIXI549Space';
     errorHandling(mfilename(), id, msg, true, opt.verbosity);
   end
-  
+
   opt_out = opt;
 
 end

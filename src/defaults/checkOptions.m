@@ -141,7 +141,7 @@ function opt = checkOptions(opt)
   if ~iscell(opt.space)
     opt.space = {opt.space};
   end
-  
+
   opt = mniToIxi(opt);
 
   opt = orderfields(opt);
