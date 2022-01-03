@@ -16,6 +16,35 @@ function test_bidsStc_basic()
   opt.pipeline.type = 'preproc';
   opt.query.acq = '';
 
-  bidsSTC(opt);
+  matlabbatch = bidsSTC(opt);
+
+  assertEqual(numel(matlabbatch), 1);
+
+end
+
+function test_bidsStc_dual_task()
+
+  useRaw = true;
+  opt = setOptions({'vismotion', 'rest'}, '', useRaw);
+
+  opt.pipeline.type = 'preproc';
+  opt.query.acq = '';
+
+  matlabbatch = bidsSTC(opt);
+
+  assertEqual(numel(matlabbatch), 2);
+
+end
+
+function test_bidsStc_skip()
+
+  useRaw = true;
+  opt = setOptions('vislocalizer', '', useRaw);
+
+  opt.pipeline.type = 'preproc';
+
+  matlabbatch = bidsSTC(opt);
+
+  assertEqual(numel(matlabbatch), 0);
 
 end

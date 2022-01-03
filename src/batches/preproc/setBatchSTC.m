@@ -52,23 +52,38 @@ function matlabbatch = setBatchSTC(varargin)
     return
   end
 
+  % get metadata for STC
+
+  % only stick to raw data
+  opt.query.space = '';
+  opt.query.desc = '';
+
+  filter = opt.query;
+  filter.sub =  subLabel;
+  filter.suffix = 'bold';
+  filter.extension = {'.nii', '.nii.gz'};
+  filter.prefix = '';
+  % in case task was not passed through opt.query
+  if ~isfield(filter, 'task')
+    filter.task = opt.taskName;
+  end
+
+  TR = getAndCheckRepetitionTime(BIDS, filter);
+
   % get slice order
-  sliceOrder = getSliceOrder(opt);
+  sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter);
   if isempty(sliceOrder)
     errorHandling(mfilename(), 'noSliceOrder', ...
-                  'No slice order dectected: skipping slice timing correction.', ...
+                  'skipping slice timing correction.', ...
                   true, opt.verbosity);
     return
   end
 
   printBatchName('slice timing correction', opt);
 
-  % get metadata for STC
-
   % SPM accepts slice time acquisition as inputs for slice order
   % (simplifies things when dealing with multiecho data)
   nbSlices = length(sliceOrder);
-  TR = opt.metadata.RepetitionTime;
   TA = TR - (TR / nbSlices);
   % round acquisition time to the upper millisecond
   % mostly to avoid having errors when checking:
@@ -77,11 +92,13 @@ function matlabbatch = setBatchSTC(varargin)
 
   maxSliceTime = max(sliceOrder);
   minSliceTime = min(sliceOrder);
+
   if isempty(opt.stc.referenceSlice)
     referenceSlice = (maxSliceTime - minSliceTime) / 2;
   else
     referenceSlice = opt.stc.referenceSlice;
   end
+
   if TA >= TR || referenceSlice > TA || any(sliceOrder > TA)
 
     pattern = repmat ('%.3f, ', 1, numel(sliceOrder));
@@ -107,14 +124,12 @@ function matlabbatch = setBatchSTC(varargin)
   temporal.st.so = sliceOrder * 1000;
   temporal.st.refslice = referenceSlice * 1000;
 
-  % only sitck to raw data
-  opt.query.space = '';
-  opt.query.desc = '';
-
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   runCounter = 1;
 
+  % TODO refactor by using a single bids.query and unzip anything that needs to
+  % to be unzipped
   for iSes = 1:nbSessions
 
     % get all runs for that subject for this session
