@@ -75,11 +75,6 @@ function [BIDS, opt] = getData(opt, bidsDir, suffix)
   % get IDs of all subjects
   opt = getSubjectList(BIDS, opt);
 
-  % get metadata for bold runs for that task
-  % we take those from the first run of the first subject assuming it can
-  % apply to all others.
-  opt = getMetaData(BIDS, opt, opt.subjects, suffix);
-
   printToScreen('\nWILL WORK ON SUBJECTS\n', opt);
   printToScreen(createUnorderedList(opt.subjects), opt);
   printToScreen('\n', opt);
