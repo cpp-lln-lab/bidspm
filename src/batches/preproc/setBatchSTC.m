@@ -30,10 +30,6 @@ function matlabbatch = setBatchSTC(varargin)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  % TODO with multitask support it is even more needed to check
-  % that all files have the same slice timing and that might not be the case
-  % reflected in opt.metadata
-
   p = inputParser;
 
   addRequired(p, 'matlabbatch', @iscell);
