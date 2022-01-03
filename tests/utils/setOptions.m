@@ -59,16 +59,20 @@ function opt = setOptions(task, subLabel, useRaw)
 
   else
 
+    if ~iscell(task)
+      task = {task};
+    end
+
     opt.taskName = task;
     opt.dir.derivatives = fullfile(getDummyDataDir(), 'derivatives');
     opt.dir.preproc = getDummyDataDir('preproc');
     opt.dir.stats = getDummyDataDir('stats');
     opt.model.file = fullfile(getDummyDataDir(),  'models', ...
-                              ['model-' task '_smdl.json']);
+                              ['model-' strjoin(task, '') '_smdl.json']);
 
   end
 
-  if strcmp(task, 'rest')
+  if any(ismember(task, 'rest'))
     opt.model.file = '';
   end
 
