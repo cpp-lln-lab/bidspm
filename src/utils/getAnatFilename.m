@@ -51,7 +51,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
                   char(anatSession), ...
                   anatSuffix);
 
-    errorHandling(mfilename(), 'noAnatFile', msg, false, false);
+    errorHandling(mfilename(), 'noAnatFile', msg, false, opt.verbosity);
 
   end
 
@@ -60,7 +60,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   % it could be required to take another one, or several and mean them...
   if numel(anat) > 1
     msg = 'More than one anat file found: taking the first one.';
-    errorHandling(mfilename(), 'severalAnatFile', msg, true, opt);
+    errorHandling(mfilename(), 'severalAnatFile', msg, true, opt.verbosity);
   end
   anat = anat{1};
   anatImage = unzipAndReturnsFullpathName(anat);
