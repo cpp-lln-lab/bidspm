@@ -30,7 +30,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   checkAvailableSuffix(BIDS, opt, subLabel, anatSuffix);
   anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession);
 
-  query =  struct('sub', subLabel, ...
+  filter =  struct('sub', subLabel, ...
                   'suffix', anatSuffix, ...
                   'extension', '.nii', ...
                   'prefix', '');
@@ -43,7 +43,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   opt = mniToIxi(opt);
 
   % get all anat images for that subject fo that type
-  anat = bids.query(BIDS, 'data', query);
+  anat = bids.query(BIDS, 'data', filter);
 
   if isempty(anat)
 

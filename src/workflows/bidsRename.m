@@ -31,10 +31,10 @@ function bidsRename(opt)
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    query = opt.query;
-    query.sub = subLabel;
+    filter = opt.query;
+    filter.sub = subLabel;
 
-    data = bids.query(BIDS, 'data', query);
+    data = bids.query(BIDS, 'data', filter);
 
     for iFile = 1:size(data, 1)
 

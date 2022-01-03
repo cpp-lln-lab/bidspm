@@ -23,7 +23,7 @@ function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, 
   % (C) Copyright 2021 CPP_SPM developers
 
   % task details are passed in opt.query
-  query = struct( ...
+  filter = struct( ...
                  'sub',  subLabel, ...
                  'ses', session, ...
                  'run', run, ...
@@ -32,10 +32,10 @@ function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, 
                  'extension', '.tsv');
 
   % use the extra query options specified in the options
-  query = setFields(query, opt.query);
-  query = removeEmptyQueryFields(query);
+  filter = setFields(filter, opt.query);
+  filter = removeEmptyQueryFields(filter);
 
-  filename = bids.query(BIDS, 'data', query);
+  filename = bids.query(BIDS, 'data', filter);
 
   if numel(filename) > 1
     disp(filename);

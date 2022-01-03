@@ -56,19 +56,19 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
     case 'sessions'
 
       if isfield(opt, 'taskName')
-        query = struct('sub',  subLabel, ...
+        filter = struct('sub',  subLabel, ...
                        'task', {opt.taskName}, ...
                        'modality', 'func');
       else
-        query = struct('sub',  subLabel);
+        filter = struct('sub',  subLabel);
       end
       % update query with pre-specified options
       % overwrite is set to true in this case because we might want to run
       % analysis only on certain sessions
       overwrite = true;
-      query = setFields(query, opt.query, overwrite);
+      filter = setFields(filter, opt.query, overwrite);
 
-      sessions = bids.query(BIDS, 'sessions', query);
+      sessions = bids.query(BIDS, 'sessions', filter);
 
       nbSessions = numel(sessions);
       if nbSessions == 0
@@ -82,7 +82,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
 
       session = varargin{1};
 
-      query = struct( ...
+      filter = struct( ...
                      'sub',  subLabel, ...
                      'task', {opt.taskName}, ...
                      'ses', session, ...
@@ -90,10 +90,10 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
                      'suffix', 'bold');
 
       % use the extra query options specified in the options
-      query = setFields(query, opt.query);
-      query = removeEmptyQueryFields(query);
+      filter = setFields(filter, opt.query);
+      filter = removeEmptyQueryFields(filter);
 
-      runs = bids.query(BIDS, 'runs', query);
+      runs = bids.query(BIDS, 'runs', filter);
 
       nbRuns = numel(runs);
 
@@ -108,9 +108,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
 
       [session, run, suffix] = deal(varargin{:});
 
-      % TODO add a way to deal with extension too
-      % should be able to query .nii and .nii.gz too
-      query = struct( ...
+      filter = struct( ...
                      'sub',  subLabel, ...
                      'task', {opt.taskName}, ...
                      'ses', session, ...
@@ -120,16 +118,16 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
                      'prefix', '');
 
       % use the extra query options specified in the options
-      query = setFields(query, opt.query);
-      query = removeEmptyQueryFields(query);
+      filter = setFields(filter, opt.query);
+      filter = removeEmptyQueryFields(filter);
 
       if strcmpi(info, 'filename')
-        filenames = bids.query(BIDS, 'data', query);
+        filenames = bids.query(BIDS, 'data', filter);
 
         varargout = {char(filenames)};
 
       elseif strcmpi(info, 'metadata')
-        metadata = bids.query(BIDS, 'metadata', query);
+        metadata = bids.query(BIDS, 'metadata', filter);
         varargout = {metadata};
       end
 

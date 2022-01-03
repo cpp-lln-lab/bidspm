@@ -32,23 +32,23 @@ function [gm, wm, csf] = getTpmFilename(BIDS, subLabel, res, space)
     space = 'IXI549Space';
   end
 
-  query = struct('sub', subLabel, ...
+  filter = struct('sub', subLabel, ...
                  'extension', '.nii', ...
                  'prefix', '', ...
                  'suffix', 'probseg', ...
                  'space', space, ...
                  'res', res);
 
-  query.label = 'GM';
-  gm = bids.query(BIDS, 'data', query);
+  filter.label = 'GM';
+  gm = bids.query(BIDS, 'data', filter);
   gm = gm{1};
 
-  query.label = 'WM';
-  wm = bids.query(BIDS, 'data', query);
+  filter.label = 'WM';
+  wm = bids.query(BIDS, 'data', filter);
   wm = wm{1};
 
-  query.label = 'CSF';
-  csf = bids.query(BIDS, 'data', query);
+  filter.label = 'CSF';
+  csf = bids.query(BIDS, 'data', filter);
   csf = csf{1};
 
 end
