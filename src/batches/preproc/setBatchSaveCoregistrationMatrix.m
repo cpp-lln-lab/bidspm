@@ -24,7 +24,7 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   % create name of the output file based on the name
   % of the first image of the first session
   opt.query.desc = '';
-  opt = addStcToQuery(opt);
+  opt = addStcToQuery(BIDS, opt, subLabel);
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
   runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});

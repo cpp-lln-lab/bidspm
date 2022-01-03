@@ -1,4 +1,4 @@
-function opt_out = mniToIxi(varargin)
+function optOut = mniToIxi(varargin)
   %
   % Convert mention of MNI space to the SPM default space IXI549Space
   %
@@ -46,6 +46,6 @@ function opt_out = mniToIxi(varargin)
     errorHandling(mfilename(), id, msg, true, opt.verbosity);
   end
 
-  opt_out = opt;
+  optOut = opt;
 
 end

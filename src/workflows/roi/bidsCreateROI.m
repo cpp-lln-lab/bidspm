@@ -57,7 +57,8 @@ function bidsCreateROI(opt)
 
     roiList = spm_select('FPlist', ...
                          fullfile(opt.dir.roi, 'group'), ...
-                         '^space-.*_mask.nii$');
+                         '^[^w].*space-.*_mask.nii$');
+
     roiList = cellstr(roiList);
 
     for iSub = 1:numel(opt.subjects)
@@ -94,7 +95,7 @@ function bidsCreateROI(opt)
 
       roiList = spm_select('FPlist', ...
                            fullfile(opt.dir.roi, 'group'), ...
-                           '^wspace.*_mask.nii.*$');
+                           '^w.*space.*_mask.nii.*$');
       roiList = cellstr(roiList);
 
       if opt.dryRun
@@ -116,6 +117,9 @@ function bidsCreateROI(opt)
       for iROI = 1:size(roiList, 1)
 
         p = bids.internal.parse_filename(roiList{iROI, 1});
+        if isfield(p.entities, 'whemi')
+          p.entities = renameStructField(p.entities, 'whemi', 'hemi');
+        end
         nameStructure = struct('entities', struct( ...
                                                   'sub', subLabel, ...
                                                   'space', 'individual', ...

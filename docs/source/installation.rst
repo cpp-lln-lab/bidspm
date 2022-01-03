@@ -41,6 +41,13 @@ with the following git command::
       --recurse-submodules \
       https://github.com/cpp-lln-lab/CPP_SPM.git
 
+If you need the latest development, then you must clone from the ``dev`` branch::
+
+  git clone \
+      -b dev \
+      --recurse-submodules \
+      https://github.com/cpp-lln-lab/CPP_SPM.git
+
 If you just need the code without the commit history download and unzip,
 you can fin the latest version from `HERE <https://github.com/cpp-lln-lab/CPP_SPM/releases>`_.
 

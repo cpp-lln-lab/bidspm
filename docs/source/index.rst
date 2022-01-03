@@ -87,8 +87,6 @@ At the moment this pipeline makes some assumptions:
 
 -   it assumes that the dummy scans have been removed from the BIDS data set and
     it can jump straight into pre-processing,
--   it assumes the metadata for a given task are the same as those the first run
-    of the first subject this pipeline is being run on,
 
 
 Indices and tables

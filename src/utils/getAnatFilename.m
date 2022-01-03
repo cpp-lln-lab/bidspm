@@ -30,20 +30,19 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   checkAvailableSuffix(BIDS, opt, subLabel, anatSuffix);
   anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession);
 
-  query =  struct('sub', subLabel, ...
-                  'suffix', anatSuffix, ...
-                  'extension', '.nii', ...
-                  'prefix', '');
+  filter =  struct('sub', subLabel, ...
+                   'suffix', anatSuffix, ...
+                   'extension', '.nii', ...
+                   'prefix', '');
   if ~cellfun('isempty', anatSession)
-    query.ses = anatSession;
+    filter.ses = anatSession;
   end
   if isfield(opt.query, 'desc')
-    query.desc = opt.query.desc;
+    filter.desc = opt.query.desc;
   end
-  opt = mniToIxi(opt);
 
   % get all anat images for that subject fo that type
-  anat = bids.query(BIDS, 'data', query);
+  anat = bids.query(BIDS, 'data', filter);
 
   if isempty(anat)
 
@@ -52,13 +51,17 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
                   char(anatSession), ...
                   anatSuffix);
 
-    errorHandling(mfilename(), 'noAnatFile', msg, false, false);
+    errorHandling(mfilename(), 'noAnatFile', msg, false, opt.verbosity);
 
   end
 
   % TODO
   % we take the first image of that suffix/session as the right one.
   % it could be required to take another one, or several and mean them...
+  if numel(anat) > 1
+    msg = 'More than one anat file found: taking the first one.';
+    errorHandling(mfilename(), 'severalAnatFile', msg, true, opt.verbosity);
+  end
   anat = anat{1};
   anatImage = unzipAndReturnsFullpathName(anat);
 

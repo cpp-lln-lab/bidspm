@@ -1,4 +1,4 @@
-function bidsSTC(opt)
+function matlabbatch = bidsSTC(opt)
   %
   % Performs the slice timing correction of the functional data.
   %
@@ -10,20 +10,16 @@ function bidsSTC(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % STC will be performed using the information provided in the BIDS data set. It
-  % will use the mid-volume acquisition time point as as reference.
-  %
-  % The fields of the ``opt`` structure related to STC can still be used to do some slice
-  % timing correction even if no information can be found in the BIDS data set.
+  % STC will be performed using the information provided in the BIDS data set.
+  % It will use the mid-volume acquisition time point as as reference.
   %
   % In general slice order and reference slice is entered in time unit (ms) (this is
   % the BIDS way of doing things) instead of the slice index of the reference slice
   % (the "SPM" way of doing things).
   %
-  % If no slice timing information is available from the file metadata or from
-  % the ``opt`` strcuture this step will be skipped.
+  % If no slice timing information is available from the file metadata this step will be skipped.
   %
-  % See also: setBatchSTC, getSliceOrder
+  % See also: setBatchSTC, getAndCheckSliceOrder
   %
   % See the documentation for more information about slice timing correction.
   %
@@ -40,7 +36,14 @@ function bidsSTC(opt)
     printProcessingSubject(iSub, subLabel, opt);
 
     matlabbatch = {};
-    matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, regexify(subLabel));
+
+    for iTask = 1:numel(opt.taskName)
+
+      opt.query.task = opt.taskName{iTask};
+
+      matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, regexify(subLabel));
+
+    end
 
     saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
 

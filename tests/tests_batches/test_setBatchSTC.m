@@ -8,6 +8,41 @@ function test_suite = test_setBatchSTC %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setBatchSTC_dual_task()
+
+  subLabel = '^01';
+  useRaw = true;
+  opt = setOptions({'vismotion', 'rest'}, subLabel, useRaw);
+
+  opt.query.acq = '';
+
+  BIDS = bids.layout(opt.dir.preproc);
+  matlabbatch = {};
+  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
+
+  nbRunsVismotion = 4;
+  nbRunsRest = 2;
+  assertEqual(numel(matlabbatch{1}.spm.temporal.st.scans), nbRunsVismotion + nbRunsRest);
+
+end
+
+function test_setBatchSTC_error_different_repetition_time()
+
+  subLabel = '^01';
+  useRaw = true;
+  opt = setOptions({'vismotion', 'vislocalizer'}, subLabel, useRaw);
+
+  opt.query.acq = '';
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  matlabbatch = {};
+  assertExceptionThrown( ...
+                        @()setBatchSTC(matlabbatch, BIDS, opt, subLabel), ...
+                        'getAndCheckRepetitionTime:differentRepetitionTime');
+
+end
+
 function test_setBatchSTC_skip()
 
   subLabel = '^01';
@@ -113,9 +148,9 @@ function test_setBatchSTC_basic()
                           'acq', '', ...
                           'space', '', 'desc', '');
     expectedBatch{1}.spm.temporal.st.scans{runCounter} = ...
-        {fileName{1}};
+      {fileName{1}};
     expectedBatch{1}.spm.temporal.st.scans{runCounter + 1} = ...
-        {fileName{2}};
+      {fileName{2}};
     runCounter = runCounter + 2;
   end
 

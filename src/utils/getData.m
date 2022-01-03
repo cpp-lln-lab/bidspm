@@ -75,49 +75,8 @@ function [BIDS, opt] = getData(opt, bidsDir, suffix)
   % get IDs of all subjects
   opt = getSubjectList(BIDS, opt);
 
-  % get metadata for bold runs for that task
-  % we take those from the first run of the first subject assuming it can
-  % apply to all others.
-  opt = getMetaData(BIDS, opt, opt.subjects, suffix);
-
   printToScreen('\nWILL WORK ON SUBJECTS\n', opt);
   printToScreen(createUnorderedList(opt.subjects), opt);
   printToScreen('\n', opt);
-
-end
-
-function opt = getMetaData(BIDS, opt, subjects, suffix)
-
-  % TODO
-  % THIS NEEDS FIXING AS WE MIGHT WANT THE METADATA OF THE SUBJECTS SELECTED
-  % RATHER THAN THE FIRST SUBJECT OF THE DATASET
-
-  switch suffix
-    case 'bold'
-      metadata = bids.query(BIDS, 'metadata', ...
-                            'task', opt.taskName, ...
-                            'sub', subjects{1}, ...
-                            'suffix', suffix, ...
-                            'extension', {'.nii', '.nii.gz'});
-
-    case 'T1w'
-      metadata = bids.query(BIDS, 'metadata', ...
-                            'sub', subjects{1}, ...
-                            'suffix', suffix);
-  end
-
-  % try to get metadata from raw data set
-  if isempty(metadata)
-    warning('No metadata for %s data in dataset %s', suffix, BIDS.pth);
-    if isfield(BIDS, 'raw')
-      opt = getMetaData(BIDS.raw, opt, subjects, suffix);
-    end
-  else
-    if iscell(metadata)
-      opt.metadata = metadata{1};
-    else
-      opt.metadata = metadata;
-    end
-  end
 
 end
