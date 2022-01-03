@@ -46,6 +46,10 @@ function repetitionTime = getAndCheckRepetitionTime(varargin)
     errorHandling(mfilename(), 'noRepetitionTimeFound', msg, false, true);
   end
 
+  if ~iscell(repetitionTime)
+    repetitionTime = {repetitionTime};
+  end
+
   repetitionTime = unique(cat(1, repetitionTime{:}));
 
   if length(repetitionTime) > 1

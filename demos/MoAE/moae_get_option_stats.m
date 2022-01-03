@@ -65,7 +65,7 @@ function opt = moae_get_option_stats()
   opt.result.Nodes(1).Output.montage.orientation = 'axial';
   % will use the MNI T1 template by default but the underlay image can be changed.
   opt.result.Nodes(1).Output.montage.background = ...
-      fullfile(spm('dir'), 'canonical', 'avg152T1.nii,1');
+      fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
 
   opt.result.Nodes(1).Output.NIDM_results = true();
 
