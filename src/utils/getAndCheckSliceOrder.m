@@ -1,7 +1,7 @@
 function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
   %
   % Get the slice order information from the BIDS metadata.
-  % If inconsistent slice timing is found across files it retunrs empty and
+  % If inconsistent slice timing is found across files it returns empty and
   % throws a warning.
   %
   % USAGE::
@@ -45,6 +45,10 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
 
   filter.target = 'SliceTiming';
   sliceTiming = bids.query(BIDS, 'metadata', filter);
+
+  if ~iscell(sliceTiming)
+    sliceTiming = {sliceTiming};
+  end
 
   if all(cellfun('isempty', sliceTiming))
 
