@@ -31,14 +31,14 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession);
 
   filter =  struct('sub', subLabel, ...
-                  'suffix', anatSuffix, ...
-                  'extension', '.nii', ...
-                  'prefix', '');
+                   'suffix', anatSuffix, ...
+                   'extension', '.nii', ...
+                   'prefix', '');
   if ~cellfun('isempty', anatSession)
-    query.ses = anatSession;
+    filter.ses = anatSession;
   end
   if isfield(opt.query, 'desc')
-    query.desc = opt.query.desc;
+    filter.desc = opt.query.desc;
   end
   opt = mniToIxi(opt);
 
