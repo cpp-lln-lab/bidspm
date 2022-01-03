@@ -127,7 +127,8 @@ function matlabbatch = setBatchSTC(varargin)
   for iFile = 1:size(files, 1)
 
     % TODO check for eventually zipped files
-    temporal.st.scans{runCounter} = files(iFile);
+    file = unzipAndReturnsFullpathName(files{iFile}, opt);
+    temporal.st.scans{runCounter} = {file};
 
     runCounter = runCounter + 1;
 
