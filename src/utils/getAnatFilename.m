@@ -58,6 +58,10 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   % TODO
   % we take the first image of that suffix/session as the right one.
   % it could be required to take another one, or several and mean them...
+  if numel(anat) > 1
+    msg = 'More than one anat file found: taking the first one.';
+    errorHandling(mfilename(), 'severalAnatFile', msg, true, opt);
+  end
   anat = anat{1};
   anatImage = unzipAndReturnsFullpathName(anat);
 
