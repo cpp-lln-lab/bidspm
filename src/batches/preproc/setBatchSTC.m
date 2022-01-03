@@ -124,34 +124,18 @@ function matlabbatch = setBatchSTC(varargin)
   temporal.st.so = sliceOrder * 1000;
   temporal.st.refslice = referenceSlice * 1000;
 
-  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
+  files = bids.query(BIDS, 'data', filter);
 
   runCounter = 1;
 
-  % TODO refactor by using a single bids.query and unzip anything that needs to
-  % to be unzipped
-  for iSes = 1:nbSessions
+  for iFile = 1:size(files, 1)
 
-    % get all runs for that subject for this session
-    [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
+    % TODO check for eventually zipped files
+    temporal.st.scans{runCounter} = files(iFile);
 
-    for iRun = 1:nbRuns
+    runCounter = runCounter + 1;
 
-      % get the filename for this bold run for this task
-      [fileName, subFuncDataDir] = getBoldFilename( ...
-                                                   BIDS, ...
-                                                   subLabel, sessions{iSes}, runs{iRun}, opt);
-
-      file = validationInputFile(subFuncDataDir, fileName);
-
-      % add the file to the list
-      temporal.st.scans{runCounter} = {file};
-
-      runCounter = runCounter + 1;
-
-      printToScreen([file, '\n'], opt);
-
-    end
+    printToScreen([files{iFile}, '\n'], opt);
 
   end
 

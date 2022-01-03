@@ -34,6 +34,12 @@ function test_bidsStc_dual_task()
 
   assertEqual(numel(matlabbatch), 2);
 
+  nbRunsVismotion = 4;
+  assertEqual(numel(matlabbatch{1}.spm.temporal.st.scans), nbRunsVismotion);
+
+  nbRunsRest = 2;
+  assertEqual(numel(matlabbatch{2}.spm.temporal.st.scans), nbRunsRest);
+
 end
 
 function test_bidsStc_skip()
