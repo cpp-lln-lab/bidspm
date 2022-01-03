@@ -93,31 +93,26 @@ function opt = getMetaData(BIDS, opt, subjects, suffix)
   % RATHER THAN THE FIRST SUBJECT OF THE DATASET
 
   switch suffix
-    case 'bold'
-      metadata = bids.query(BIDS, 'metadata', ...
-                            'task', opt.taskName, ...
-                            'sub', subjects{1}, ...
-                            'suffix', suffix, ...
-                            'extension', {'.nii', '.nii.gz'});
 
     case 'T1w'
       metadata = bids.query(BIDS, 'metadata', ...
                             'sub', subjects{1}, ...
                             'suffix', suffix);
-  end
-
-  % try to get metadata from raw data set
-  if isempty(metadata)
-    warning('No metadata for %s data in dataset %s', suffix, BIDS.pth);
-    if isfield(BIDS, 'raw')
-      opt = getMetaData(BIDS.raw, opt, subjects, suffix);
-    end
-  else
-    if iscell(metadata)
-      opt.metadata = metadata{1};
+  
+    % try to get metadata from raw data set
+    if isempty(metadata)
+      warning('No metadata for %s data in dataset %s', suffix, BIDS.pth);
+      if isfield(BIDS, 'raw')
+        opt = getMetaData(BIDS.raw, opt, subjects, suffix);
+      end
     else
-      opt.metadata = metadata;
+      if iscell(metadata)
+        opt.metadata = metadata{1};
+      else
+        opt.metadata = metadata;
+      end
     end
+  
   end
 
 end
