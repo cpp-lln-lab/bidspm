@@ -85,7 +85,61 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.mask, ...
               {fullfile(spm('dir'), 'tpm', 'mask_ICV.nii')});
 
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.units, 'secs');
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.RT, 1.55);
+
   cleanUp(fullfile(pwd, 'derivatives'));
+
+end
+
+function test_setBatchSubjectLevelGLMSpec_slicetiming_metadata()
+
+  %% GIVEN
+  subLabel = '^01';
+
+  opt = setOptions('vismotion', subLabel);
+
+  opt.query.acq = '';
+
+  opt.pipeline.type = 'stats';
+  opt.space = {'IXI549Space'};
+
+  opt = dirFixture(opt);
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  %% WHEN
+  matlabbatch = {};
+  matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
+
+  %% THEN
+  assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 4);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t,  14);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0, 7);
+
+  cleanUp(fullfile(pwd, 'derivatives'));
+
+end
+
+function test_setBatchSubjectLevelGLMSpec_inconsistent_metadata()
+
+  %% GIVEN
+  subLabel = '^01';
+
+  opt = setOptions({'vismotion', 'vislocalizer'}, subLabel);
+
+  opt.pipeline.type = 'stats';
+  opt.space = {'IXI549Space'};
+
+  opt = dirFixture(opt);
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  %% WHEN
+  matlabbatch = {};
+  assertExceptionThrown( ...
+                        @()setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel), ...
+                        'getAndCheckRepetitionTime:differentRepetitionTime');
 
 end
 

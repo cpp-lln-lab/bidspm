@@ -36,8 +36,10 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   sliceOrder = returnSliceOrder(BIDS, opt, subLabel);
 
+  TR = getAndCheckRepetitionTime(BIDS, queryFilter(opt, subLabel));
+
   fmri_spec.timing.units = 'secs';
-  fmri_spec.timing.RT = opt.metadata.RepetitionTime;
+  fmri_spec.timing.RT = TR;
 
   nbTimeBins = numel(unique(sliceOrder));
   fmri_spec.timing.fmri_t = nbTimeBins;
@@ -48,7 +50,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   if isempty(opt.stc.referenceSlice)
     refBin = floor(nbTimeBins / 2);
   else
-    refBin = opt.stc.referenceSlice / opt.metadata.RepetitionTime;
+    refBin = opt.stc.referenceSlice / TR;
   end
   fmri_spec.timing.fmri_t0 = refBin;
 
@@ -141,27 +143,39 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
 end
 
+function filter = queryFilter(opt, subLabel)
+  filter = opt.query;
+  filter.sub =  subLabel;
+  filter.suffix = 'bold';
+  filter.extension = '.nii';
+  filter.prefix = '';
+  % in case task was not passed through opt.query
+  if ~isfield(filter, 'task')
+    filter.task = opt.taskName;
+  end
+end
+
 function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
 
-  % Check the slice timing information is not in the metadata and not added
-  % manually in the opt variable.
+  filter = queryFilter(opt, subLabel);
+
+  % Get slice timing information.
   % Necessary to make sure that the reference slice used for slice time
-  % correction is the one we center our model on
-  sliceOrder = getSliceOrder(opt);
+  % correction is the one we center our model on;
+  sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter);
 
   if isempty(sliceOrder) && ~opt.dryRun
-    % no slice order defined here so we fall back on using the number of
+    % no slice order defined here (or different across tasks)
+    % so we fall back on using the number of
     % slice in the first bold image to set the number of time bins
     % we will use to upsample our model during regression creation
-    fileName = bids.query(BIDS, 'data', ...
-                          'sub', subLabel, ...
-                          'suffix', 'bold', ...
-                          'extension', '.nii');
+    fileName = bids.query(BIDS, 'data', filter);
     hdr = spm_vol(fileName{1});
 
     % we are assuming axial acquisition here
     sliceOrder = 1:hdr(1).dim(3);
   end
+
 end
 
 function fmriSpec = setScans(opt, fullpathBoldFilename, fmriSpec, sesCounter)
