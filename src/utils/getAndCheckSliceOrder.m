@@ -1,7 +1,8 @@
 function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
   %
-  % Get the slice order information from the BIDS metadata or from the ``opt``
-  % structure.
+  % Get the slice order information from the BIDS metadata.
+  % If inconsistent slice timing is found across files it retunrs empty and
+  % throws a warning.
   %
   % USAGE::
   %

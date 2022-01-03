@@ -1,7 +1,14 @@
 function list = createUnorderedList(list)
   %
-  % turns a cell string into a string that is an unordered list to print to
-  % the screen
+  % turns a cell string or a structure into a string
+  % that is an unordered list to print to the screen
+  %
+  % USAGE::
+  %
+  %  list = createUnorderedList(list)
+  %
+  % :param list: obligatory argument.
+  % :type list: cell string or structure
   %
   %
   % (C) Copyright 2021 CPP_SPM developers

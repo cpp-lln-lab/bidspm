@@ -22,7 +22,7 @@ function test_setBatchSTC_dual_task()
 
 end
 
-function test_setBatchSTC_error_dfferent_repetition_time()
+function test_setBatchSTC_error_different_repetition_time()
 
   subLabel = '^01';
   useRaw = true;

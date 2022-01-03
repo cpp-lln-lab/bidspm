@@ -42,7 +42,7 @@ Utility functions
 .. autofunction:: getFuncVoxelDims
 .. autofunction:: getInfo
 .. autofunction:: getMeanFuncFilename
-.. autofunction:: getSliceOrder
+.. autofunction:: getAndCheckSliceOrder
 .. autofunction:: getSubjectList
 .. autofunction:: getTpmFilename
 .. autofunction:: loadAndCheckOptions
