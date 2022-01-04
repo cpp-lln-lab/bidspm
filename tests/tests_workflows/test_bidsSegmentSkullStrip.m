@@ -10,10 +10,7 @@ end
 
 function test_bidsSegmentSkullStrip_basic()
 
-  useRaw = true;
-  opt = setOptions('vismotion', '', useRaw);
-
-  opt.pipeline.type = 'preproc';
+  opt = setOptions('vismotion', '');
 
   bidsSegmentSkullStrip(opt);
 

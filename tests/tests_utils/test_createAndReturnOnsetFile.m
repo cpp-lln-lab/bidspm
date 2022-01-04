@@ -14,8 +14,7 @@ function test_createAndReturnOnsetFile_basic()
   iSes = 1;
   iRun = 1;
 
-  opt = setOptions('vislocalizer', subLabel);
-  opt.space = {'IXI549Space'};
+  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 

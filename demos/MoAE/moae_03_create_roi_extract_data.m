@@ -16,6 +16,8 @@ end
 subLabel = '01';
 
 opt = moae_get_option_stats();
+opt.pipeline.type = 'stats';
+opt = checkOptions(opt);
 
 %% Get the con image to extract data
 % we can do this by using the "label-XXXX"

@@ -10,10 +10,8 @@ end
 
 function test_bidsRealignUnwarp_basic()
 
-  useRaw = true;
-  opt = setOptions('vislocalizer', '', useRaw);
+  opt = setOptions('vislocalizer', '');
 
-  opt.pipeline.type = 'preproc';
   opt.funcVoxelDims = [2 2 2];
   opt.useFieldmaps = false;
 

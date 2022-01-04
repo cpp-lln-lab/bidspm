@@ -30,15 +30,14 @@ function matlabbatch = bidsFFX(action, opt)
 
   % TODO: get the space to run analysis in from the BIDS stats model input
 
-  checks(opt, action);
-
   opt.pipeline.type = 'stats';
   opt.dir.input = opt.dir.preproc;
 
   [BIDS, opt] = setUpWorkflow(opt, 'subject level GLM');
 
+  checks(opt, action);
+
   if isempty(opt.model.file)
-    % TODO: check that GLM will run with this default model
     opt = createDefaultStatsModel(BIDS, opt);
   end
 
@@ -57,6 +56,10 @@ function matlabbatch = bidsFFX(action, opt)
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
+
+    if ~subjectHasData(BIDS, opt, subLabel)
+      continue
+    end
 
     printProcessingSubject(iSub, subLabel, opt);
 
@@ -126,6 +129,40 @@ function checks(opt, action)
     msg = sprintf('action must be: %s.\n%s was given.', createUnorderedList(allowedActions), ...
                   action);
     errorHandling(mfilename(), 'unknownAction', msg, false, opt.verbosity);
+  end
+
+end
+
+function status = subjectHasData(BIDS, opt, subLabel)
+
+  status = true;
+
+  filter = fileFilterForGlm(opt, subLabel);
+  filter.task =  opt.taskName;
+  fileToProcess = bids.query(BIDS, 'data', filter);
+
+  if isempty(fileToProcess)
+
+    status = false;
+
+    filter = rmfield(filter, 'space');
+    filter = rmfield(filter, 'task');
+
+    % spaces = bids.query(BIDS, 'space', filter);
+    spaces = {'???'};
+
+    tasks = bids.query(BIDS, 'tasks', filter);
+
+    msg = sprintf(['No data found for subject %s for filter:\n%s', ...
+                   '\n\nAvailable spaces are:\n%s', ...
+                   '\nAvailable tasks are:\n%s'], ...
+                  subLabel, ...
+                  createUnorderedList(filter), ...
+                  createUnorderedList(spaces), ...
+                  createUnorderedList(tasks));
+
+    errorHandling(mfilename(), 'noDataForSubjectGLM', msg, true, opt.verbosity);
+
   end
 
 end

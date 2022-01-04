@@ -150,9 +150,7 @@ function test_specifyContrasts_vismotion()
   % GIVEN
   subLabel = '01';
 
-  opt = setOptions('vismotion', subLabel);
-
-  opt.space = {'IXI549Space'};
+  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
 
   ffxDir = getFFXdir(subLabel, opt);
   spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
@@ -201,9 +199,7 @@ function test_specifyContrasts_vislocalizer()
   % GIVEN
   subLabel = '01';
 
-  opt = setOptions('vislocalizer', subLabel);
-
-  opt.space = {'IXI549Space'};
+  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
 
   ffxDir = getFFXdir(subLabel, opt);
   spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));

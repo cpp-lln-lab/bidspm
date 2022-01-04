@@ -25,34 +25,13 @@ function boldFilename = getBoldFilenameForFFX(varargin)
 
   [BIDS, opt, subLabel, iSes, iRun] =  deal(varargin{:});
 
-  opt.query.modality = 'func';
-
-  if opt.fwhm.func > 0
-    opt.query.desc = ['smth' num2str(opt.fwhm.func)];
-  else
-    opt.query.desc = 'preproc';
-  end
-
-  % TODO refactor this acroos all functions
-  opt.query.space = opt.space;
-  opt = mniToIxi(opt);
+  [filter, opt] = fileFilterForGlm(opt, subLabel);
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+  filter.ses = sessions{iSes};
 
   runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
-
-  % task details are passed in opt.query
-  filter = struct( ...
-                  'prefix', '', ...
-                  'sub',  subLabel, ...
-                  'ses', sessions{iSes}, ...
-                  'run', runs{iRun}, ...
-                  'suffix', 'bold', ...
-                  'extension', {{'.nii.*'}});
-
-  % use the extra query options specified in the options
-  filter = setFields(filter, opt.query);
-  filter = removeEmptyQueryFields(filter);
+  filter.run = runs{iRun};
 
   boldFilename = bids.query(BIDS, 'data', filter);
 

@@ -3,7 +3,8 @@
   "BIDSModelVersion": "1.0.0",
   "Description": "contrasts for the visual localizer",
   "Input": {
-    "task": "vislocalizer"
+    "task": "vislocalizer",
+    "space": "IXI549Space"
   },
   "Nodes": [
     {

@@ -10,14 +10,7 @@ end
 
 function test_setBatchGroupLevelContrasts_smoke_test()
 
-  opt = setOptions('vislocalizer');
-
-  opt.dir.raw = getDummyDataDir('raw');
-  opt.pipeline.type = 'stats';
-
-  opt.space = 'IXI549Space';
-
-  opt = checkOptions(opt);
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   rfxDir = getRFXdir(opt);
 

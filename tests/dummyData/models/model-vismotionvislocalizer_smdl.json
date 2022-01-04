@@ -3,7 +3,11 @@
   "BIDSModelVersion": "1.0.0",
   "Description": "contrasts for the motion dataset",
   "Input": {
-    "task": "vismotion"
+    "task": [
+      "vismotion",
+      "vislocalizer"
+    ],
+    "space": "IXI549Space"
   },
   "Nodes": [
     {

@@ -10,8 +10,7 @@ end
 
 function test_bidsLesionSegmentation_basic()
 
-  useRaw = true;
-  opt = setOptions('vismotion', '', useRaw);
+  opt = setOptions('vismotion', '', 'useRaw', true);
 
   if not(isfield(opt.toolbox, 'ALI'))
     return

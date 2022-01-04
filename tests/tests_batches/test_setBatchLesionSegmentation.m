@@ -11,8 +11,8 @@ end
 function test_setBatchLesionSegmentation_basic()
 
   subLabel = '01';
-  useRaw = true;
-  opt = setOptions('vismotion', subLabel, useRaw);
+
+  opt = setOptions('vismotion', subLabel, 'useRaw', true);
 
   if not(isfield(opt.toolbox, 'ALI'))
     return

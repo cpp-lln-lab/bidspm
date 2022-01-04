@@ -12,8 +12,7 @@ function test_setBatchSubjectLevelContrasts_basic()
 
   subLabel = '01';
 
-  opt = setOptions('vismotion', subLabel);
-  opt.space = {'IXI549Space'};
+  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
 
   matlabbatch = {};
   matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);

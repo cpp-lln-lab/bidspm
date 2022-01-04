@@ -25,9 +25,9 @@ function bidsRFX(action, opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  checks(opt, action);
+  opt.pipeline.type = 'stats';
 
-  opt = mniToIxi(opt);
+  checks(opt, action);
 
   [~, opt] = setUpWorkflow(opt, 'group level GLM');
 

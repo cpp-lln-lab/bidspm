@@ -8,13 +8,23 @@ function test_suite = test_bidsFFX %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsFFX_skip_subject_no_data()
+
+  opt = setOptions('vislocalizer', '^01');
+  opt.model.file = '';
+  opt.space = {'MNI152NLin2009cAsym'};
+
+  opt.verbosity = 1;
+
+  assertWarning(@()bidsFFX('specifyAndEstimate', opt), 'bidsFFX:noDataForSubjectGLM');
+
+end
+
 function test_bidsFFX_contrasts()
 
-  opt = setOptions('vislocalizer');
-  opt.space = {'IXI549Space'};
+  createDummyData();
 
-  % required for the test
-  opt.dir.raw = opt.dir.preproc;
+  opt = setOptions('vislocalizer');
 
   matlabbatch = bidsFFX('contrasts', opt);
 
@@ -28,7 +38,7 @@ function test_bidsFFX_fmriprep_no_smoothing()
     return
   end
 
-  opt = setOptions('fmriprep');
+  opt = setOptions('fmriprep', '', 'pipelineType', 'stats');
 
   opt.space = 'MNI152NLin2009cAsym';
   opt.query.space = opt.space; % for bidsCopy only
@@ -44,8 +54,8 @@ function test_bidsFFX_fmriprep_no_smoothing()
   % No proper valid bids file in derivatives of bids-example
 
   % bidsFFX('specifyAndEstimate', opt);
-  %   bidsFFX('contrasts', opt);
-  %   bidsResults(opt);
+  % bidsFFX('contrasts', opt);
+  % bidsResults(opt);
 
   cleanUp(opt.dir.preproc);
 
@@ -57,10 +67,7 @@ function test_bidsFFX_mni()
 
   for i = 1
 
-    opt = setOptions(task{i});
-    opt.space = {'IXI549Space'};
-
-    opt = dirFixture(opt);
+    opt = setOptions(task{i}, '', 'pipelineType', 'stats');
 
     bidsFFX('specifyAndEstimate', opt);
 
@@ -76,23 +83,12 @@ function test_bidsFFX_individual()
 
   for i = 1
 
-    opt = setOptions(task{i});
+    opt = setOptions(task{i}, '', 'pipelineType', 'stats');
     opt.space = {'individual'};
-
-    opt = dirFixture(opt);
 
     bidsFFX('specifyAndEstimate', opt);
 
     cleanUp(fullfile(pwd, 'derivatives'));
 
   end
-end
-
-function opt = dirFixture(opt)
-  % required for the test
-  opt.dir.raw = opt.dir.preproc;
-
-  opt.dir.derivatives = fullfile(pwd, 'derivatives');
-  opt.dir.stats = fullfile(pwd, 'derivatives', 'cpp_spm-stats');
-  opt = checkOptions(opt);
 end

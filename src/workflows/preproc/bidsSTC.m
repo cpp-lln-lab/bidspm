@@ -4,7 +4,7 @@ function matlabbatch = bidsSTC(opt)
   %
   % USAGE::
   %
-  %  bidsSTC([opt])
+  %  bidsSTC(opt)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
@@ -24,6 +24,8 @@ function matlabbatch = bidsSTC(opt)
   % See the documentation for more information about slice timing correction.
   %
   % (C) Copyright 2019 CPP_SPM developers
+
+  opt.pipeline.type = 'preproc';
 
   opt.dir.input = opt.dir.preproc;
 

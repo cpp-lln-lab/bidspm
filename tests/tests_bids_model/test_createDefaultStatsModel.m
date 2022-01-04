@@ -10,8 +10,7 @@ end
 
 function test_createDefaultStatsModel_basic()
 
-  useRaw = true;
-  opt = setOptions('vislocalizer', '', useRaw);
+  opt = setOptions('vislocalizer', '');
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 

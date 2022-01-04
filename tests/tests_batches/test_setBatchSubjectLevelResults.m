@@ -80,14 +80,14 @@ end
 
 function [subLabel, opt, result] = setUp(task, contrastName)
 
+  createDummyData();
+
   iNode = 1;
   iCon = 1;
 
   subLabel = '01';
 
-  opt = setOptions(task, subLabel);
-
-  opt.space = {'IXI549Space'};
+  opt = setOptions(task, subLabel, 'pipelineType', 'stats');
 
   if nargin > 1
     opt.result.Nodes.Contrasts.Name = contrastName;

@@ -15,6 +15,8 @@ function bidsLesionSegmentation(opt)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  opt.pipeline.type = 'preproc';
+
   opt.dir.input = opt.dir.preproc;
 
   [BIDS, opt] = setUpWorkflow(opt, 'lesion segmentation');

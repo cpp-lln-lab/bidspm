@@ -10,9 +10,9 @@ end
 
 function test_setBatchMeanAnatAndMask_basic()
 
-  opt = setOptions('vismotion');
-  opt.subjects = {'01', 'ctrl01'};
-  opt.space = {'IXI549Space'};
+  createDummyData();
+
+  opt = setOptions('vismotion', {'01', 'ctrl01'}, 'pipelinetype', 'stats');
 
   matlabbatch = {};
   matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, pwd);

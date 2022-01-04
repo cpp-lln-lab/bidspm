@@ -8,9 +8,19 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getBidsModelInputs()
+
+  opt = setOptions('vislocalizer');
+
+  input = getBidsModelInput(opt.model.file);
+
+  assertEqual(input.task, 'vislocalizer');
+
+end
+
 function test_getVariablesToConvolve()
 
-  opt = setOptions('vislocalizer', '01');
+  opt = setOptions('vislocalizer');
 
   variablesToConvolve = getVariablesToConvolve(opt.model.file);
 
@@ -43,7 +53,7 @@ end
 
 function test_getHighPassFilter()
 
-  opt = setOptions('vislocalizer', '01');
+  opt = setOptions('vislocalizer');
 
   HPF = getHighPassFilter(opt.model.file);
 
@@ -53,7 +63,7 @@ end
 
 function test_getHRFderivatives()
 
-  opt = setOptions('vislocalizer', '01');
+  opt = setOptions('vislocalizer');
 
   HRF = getHRFderivatives(opt.model.file);
 
@@ -63,7 +73,7 @@ end
 
 function test_getModelType()
 
-  opt = setOptions('vislocalizer', '01');
+  opt = setOptions('vislocalizer');
 
   modelType = getModelType(opt.model.file, 'subject');
 
@@ -73,7 +83,7 @@ end
 
 function test_getModelMask()
 
-  opt = setOptions('vislocalizer', '01');
+  opt = setOptions('vislocalizer');
 
   mask = getModelMask(opt.model.file, 'subject');
 
@@ -83,7 +93,7 @@ end
 
 function test_getInclusiveMaskThreshold()
 
-  opt = setOptions('vislocalizer', '01');
+  opt = setOptions('vislocalizer');
 
   inclusiveMaskThreshold = getInclusiveMaskThreshold(opt.model.file, 'subject');
 
@@ -93,7 +103,7 @@ end
 
 function test_getBidsDesignMatrix()
 
-  opt = setOptions('vislocalizer', '01');
+  opt = setOptions('vislocalizer');
 
   designMatrix = getBidsDesignMatrix(opt.model.file);
 
@@ -113,7 +123,7 @@ end
 
 function test_getContrastsList()
 
-  opt = setOptions('vislocalizer', '01');
+  opt = setOptions('vislocalizer');
 
   contrastsList = getContrastsList(opt.model.file);
 
@@ -128,7 +138,7 @@ end
 
 function test_getDummyContrastsList()
 
-  opt = setOptions('vislocalizer', '01');
+  opt = setOptions('vislocalizer');
 
   dummyContrastsList = getDummyContrastsList(opt.model.file);
 

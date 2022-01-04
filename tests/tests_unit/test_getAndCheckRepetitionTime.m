@@ -58,8 +58,8 @@ end
 function [BIDS, filter] = setUp(task)
 
   subLabel = '^01';
-  useRaw = true;
-  opt = setOptions(task, subLabel, useRaw);
+
+  opt = setOptions(task, subLabel);
 
   opt.query.acq = '';
 

@@ -10,9 +10,7 @@ end
 
 function test_setBatchSmoothConImages_basic()
 
-  opt = setOptions('vismotion');
-  opt.subjects = {'01', 'blind01'};
-  opt.space = {'IXI549Space'};
+  opt = setOptions('vismotion', {'01', 'blind01'}, 'pipelineType', 'stats');
 
   [~, opt] = getData(opt, opt.dir.preproc);
 

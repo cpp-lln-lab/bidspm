@@ -31,7 +31,6 @@ modelFile = opt.model.file;
 
 for iResolution = 2:1:3
 
-  opt.pipeline.type = 'preproc';
   opt.pipeline.name = ['cpp_spm-res' num2str(iResolution)];
 
   % set the final output resolution
@@ -70,7 +69,6 @@ for iResolution = 2:1:3
 
   bidsSmoothing(FWHM, opt);
 
-  opt.pipeline.type = 'stats';
   opt.pipeline.name = ['cpp_spm-stats-res' num2str(iResolution)];
   opt = checkOptions(opt);
 

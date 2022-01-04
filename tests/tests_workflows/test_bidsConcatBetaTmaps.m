@@ -12,10 +12,8 @@ function test_bidsConcatBetaTmapsBasic()
 
   subLabel = '01';
 
-  opt = setOptions('vismotion', subLabel);
+  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
   opt.dryRun = true;
-
-  opt.space = 'IXI549Space';
 
   opt.model.file = spm_file(opt.model.file, 'filename', 'model-vismotionMVPA_smdl.json');
 

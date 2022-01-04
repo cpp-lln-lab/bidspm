@@ -15,6 +15,10 @@ function test_reportBIDS_smoke_test()
 
   reportBIDS(opt);
 
+  if isGithubCi
+    return
+  end
+
   assertEqual(exist(fullfile(opt.dir.preproc, ...
                              'sub-ctrl01', ...
                              'reports', ...

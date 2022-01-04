@@ -38,8 +38,8 @@ end
 function test_getAnatFilename_basic()
 
   subLabel = '01';
-  useRaw = true;
-  opt = setOptions('vislocalizer', subLabel, useRaw);
+
+  opt = setOptions('vislocalizer', subLabel, 'useRaw', true);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -82,8 +82,8 @@ end
 function test_getAnatFilename_error_type()
 
   subLabel = '01';
-  useRaw = true;
-  opt = setOptions('vislocalizer', subLabel, useRaw);
+
+  opt = setOptions('vislocalizer', subLabel);
 
   opt.anatReference.type = 'T2w';
 
@@ -97,8 +97,8 @@ end
 function test_getAnatFilename_error_session()
 
   subLabel = '01';
-  useRaw = true;
-  opt = setOptions('vislocalizer', subLabel, useRaw);
+
+  opt = setOptions('vislocalizer', subLabel);
 
   opt.anatReference.session = '001';
 
