@@ -51,10 +51,7 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions('vislocalizer', subLabel);
-
-  opt.pipeline.type = 'stats';
-  opt.space = {'IXI549Space'};
+  opt = setOptions('vislocalizer', subLabel, [], 'stats');
 
   opt = dirFixture(opt);
 
@@ -97,12 +94,9 @@ function test_setBatchSubjectLevelGLMSpec_slicetiming_metadata()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions('vismotion', subLabel);
+  opt = setOptions('vismotion', subLabel, [], 'stats');
 
   opt.query.acq = '';
-
-  opt.pipeline.type = 'stats';
-  opt.space = {'IXI549Space'};
 
   opt = dirFixture(opt);
 
@@ -126,10 +120,7 @@ function test_setBatchSubjectLevelGLMSpec_inconsistent_metadata()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions({'vismotion', 'vislocalizer'}, subLabel);
-
-  opt.pipeline.type = 'stats';
-  opt.space = {'IXI549Space'};
+  opt = setOptions({'vismotion', 'vislocalizer'}, subLabel, [], 'stats');
 
   opt = dirFixture(opt);
 
@@ -148,10 +139,8 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions('vislocalizer', subLabel);
+  opt = setOptions('vislocalizer', subLabel, [], 'stats');
 
-  opt.pipeline.type = 'stats';
-  opt.space = {'IXI549Space'};
   opt.model.designOnly = true;
 
   opt = dirFixture(opt);

@@ -25,7 +25,7 @@ function matlabbatch = bidsResults(opt)
 
   currentDirectory = pwd;
 
-  [BIDS, opt] = setUpWorkflow(opt, 'computing GLM results');
+  opt.pipeline.type = 'stats';
 
   [~, opt] = setUpWorkflow(opt, 'computing GLM results');
 

@@ -6,7 +6,8 @@
     "task": [
       "vismotion",
       "vislocalizer"
-    ]
+    ],
+    "space": "IXI549Space"
   },
   "Nodes": [
     {

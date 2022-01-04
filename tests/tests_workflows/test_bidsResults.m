@@ -11,8 +11,7 @@ end
 function test_bidsResults_basic()
 
   %% GIVEN
-  opt = setOptions('vislocalizer');
-  opt.space = {'IXI549Space'};
+  opt = setOptions('vislocalizer', [], [], 'stats');
 
   % Specify what ouput we want
   opt.result.Nodes(1) = returnDefaultResultsStructure();
@@ -78,8 +77,7 @@ end
 function test_bidsResults_no_background_for_montage()
 
   %% GIVEN
-  opt = setOptions('vislocalizer');
-  opt.space = {'IXI549Space'};
+  opt = setOptions('vislocalizer', [], [], 'stats');
 
   % Specify what ouput we want
   opt.result.Nodes(1) = returnDefaultResultsStructure();

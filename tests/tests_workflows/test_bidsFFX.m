@@ -10,7 +10,8 @@ end
 
 function test_bidsFFX_skip_subject_no_data()
 
-  opt = setOptions('vislocalizer');
+  opt = setOptions('vislocalizer', '^01');
+  opt.model.file = '';
   opt.space = {'MNI152NLin2009cAsym'};
 
   opt.verbosity = 1;
@@ -19,6 +20,9 @@ function test_bidsFFX_skip_subject_no_data()
   opt.dir.raw = opt.dir.preproc;
 
   assertWarning(@()bidsFFX('specifyAndEstimate', opt), 'bidsFFX:noDataForSubjectGLM');
+
+  % replace data that was eventually deleted
+  createDumyData();
 
 end
 
