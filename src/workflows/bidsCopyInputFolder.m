@@ -39,12 +39,7 @@ function bidsCopyInputFolder(opt, unzip)
   createDerivativeDir(opt);
 
   %% Loop through the groups, subjects, sessions
-  if any(ismember(opt.query.modality, 'func'))
-    [BIDS, opt] = getData(opt, opt.dir.input);
-  else
-    % TODO make this less specific for T1w data
-    [BIDS, opt] = getData(opt, opt.dir.input, 'T1w');
-  end
+  [BIDS, opt] = getData(opt, opt.dir.input);
 
   use_schema = true;
   overwrite = true;
