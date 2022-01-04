@@ -4,18 +4,14 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
   %
   % USAGE::
   %
-  %   [argout1, argout2] = templateFunction(argin1, [argin2 == default,] [argin3])
+  %   [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
   %
-  % :param argin1: (dimension) obligatory argument. Lorem ipsum dolor sit amet,
-  %                consectetur adipiscing elit. Ut congue nec est ac lacinia.
-  % :type argin1: type
-  % :param argin2: optional argument and its default value. And some of the
-  %               options can be shown in litteral like ``this`` or ``that``.
-  % :type argin2: string
-  % :param argin3: (dimension) optional argument
+  % :param opt:
+  % :type opt: structure
   %
-  % :returns: - :argout1: (type) (dimension)
-  %           - :argout2: (type) (dimension)
+  % :returns: - :interactiveWindow:
+  %           - :graphWindow:
+  %           - :cmdLine: (boolean)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -28,16 +24,17 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
     try
       [interactiveWindow, graphWindow, cmdLine] = spm('FnUIsetup');
     catch
-      warning('Could not open a graphic window. No figure will be created.');
+      msg = 'Could not open a graphic window. No figure will be created.';
+      errorHandling(mfilename(), 'noGraphicWindow', msg, true, opt.verbosity);
     end
 
   else
 
-    msg = [
-           'Could not open a graphic window. Possible reasons:\n', ...
+    msg = ['Could not open a graphic window. Possible reasons:\n', ...
+           ' - running in dry run mode,\n' ...
            ' - running SPM from the matlab command line only,\n' ...
            ' - running under octave.'];
-    warning(sprintf(msg));
+    errorHandling(mfilename(), 'noGraphicWindow', msg, true, opt.verbosity);
 
   end
 
