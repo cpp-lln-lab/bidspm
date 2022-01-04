@@ -23,15 +23,14 @@ sub-01_space-individual_label-brain_mask.nii: setBatSkullstripping.m msub-01_T1w
 # Segmentation
 msub-01_T1w.nii: setBatchSegmentation.m sub-01_T1w.nii
 
-c1sub-01_T1w.nii: setBatchSegmentation.m sub-01_T1w.nii 
+c1sub-01_T1w.nii: setBatchSegmentation.m sub-01_T1w.nii
 
-c2sub-01_T1w.nii: setBatchSegmentation.m sub-01_T1w.nii 
+c2sub-01_T1w.nii: setBatchSegmentation.m sub-01_T1w.nii
 
-c3sub-01_T1w.nii: setBatchSegmentation.m sub-01_T1w.nii 
+c3sub-01_T1w.nii: setBatchSegmentation.m sub-01_T1w.nii
 
-sub-01_label-T1w_segparam: setBatchSegmentation.m sub-01_T1w.nii 
+sub-01_label-T1w_segparam: setBatchSegmentation.m sub-01_T1w.nii
 
-ysub-01_T1w.nii: setBatchSegmentation.m sub-01_T1w.nii 
+ysub-01_T1w.nii: setBatchSegmentation.m sub-01_T1w.nii
 
-iysub-01_T1w.nii: setBatchSegmentation.m sub-01_T1w.nii 
-
+iysub-01_T1w.nii: setBatchSegmentation.m sub-01_T1w.nii
