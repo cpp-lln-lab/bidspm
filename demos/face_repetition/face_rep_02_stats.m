@@ -8,7 +8,6 @@
 % (C) Copyright 2019 Remi Gau
 
 % TODO
-% - add derivatives to the model
 % - compute the relevant contrasts
 % - compute motion effect
 % - run parametric model
