@@ -6,8 +6,8 @@
 clear;
 clc;
 
-download_data = true;
-clean = true;
+download_data = false;
+clean = false;
 
 try
   run ../../initCppSpm.m;
@@ -20,11 +20,7 @@ download_moae_ds(download_data, clean);
 
 reportBIDS(opt);
 
-opt.pipeline.type = 'preproc';
-
 bidsCopyInputFolder(opt);
-
-bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 

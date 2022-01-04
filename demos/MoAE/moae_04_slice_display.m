@@ -18,6 +18,8 @@ end
 subLabel = '01';
 
 opt = moae_get_option_stats();
+opt.pipeline.type = 'stats';
+opt = checkOptions(opt);
 
 use_schema = false;
 BIDS_ROI = bids.layout(opt.dir.roi, use_schema);
@@ -78,8 +80,8 @@ settings = sd_config_settings('init');
 
 % we reuse the details for the SPM montage
 settings.slice.orientation = opt.result.Nodes(1).Output.montage.orientation;
-settings.slice.disp_slices = -15:3:30;
-settings.fig_specs.n.slice_column = 5;
+settings.slice.disp_slices = -15:3:18;
+settings.fig_specs.n.slice_column = 4;
 settings.fig_specs.title = opt.result.Nodes(1).Contrasts(1).Name;
 
 %% Display the layers
