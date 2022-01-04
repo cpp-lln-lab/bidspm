@@ -134,6 +134,16 @@ function opt = checkOptions(opt)
     opt.query.modality{1} = tmp;
   end
 
+  if ~isempty(opt.model.file)
+    if exist(opt.model.file, 'file') ~= 2
+      msg = sprintf('model file does not exist:\n %s', opt.model.file);
+      errorHandling(mfilename(), 'modelFileMissing', msg, false, opt.verbosity);
+    end
+    if strcmpi(opt.pipeline.type, 'stats')
+      opt = overRideWithBidsModelContent(opt);
+    end
+  end
+
   if isfield(opt, 'taskName') && ~iscell(opt.taskName)
     opt.taskName = {opt.taskName};
   end
@@ -148,13 +158,43 @@ function opt = checkOptions(opt)
 
   opt = setDirectories(opt);
 
-  if ~isempty(opt.model.file) && exist(opt.model.file, 'file') ~= 2
-    error('model file does not exist:\n %s', opt.model.file);
-  end
-
   % TODO
   % add some checks on the content of
   % opt.result.Nodes().Output
+
+end
+
+function opt = overRideWithBidsModelContent(opt)
+
+  input = getBidsModelInput(opt.model.file);
+
+  inputTypes = fieldnames(input);
+
+  if ~any(ismember(inputTypes, {'task', 'subject', 'run', 'session'}))
+    return
+
+  else
+
+    msg = 'Input speficied in BIDS model will overide those in the options.';
+    errorHandling(mfilename(), 'bidsModelOverridesOptions', msg, true, opt.verbosity);
+
+    if isfield(input, 'task')
+      opt.taskName = input.task;
+    end
+    if isfield(input, 'subject')
+      opt.subjects = input.subject;
+    end
+    if isfield(input, 'run')
+      opt.query.run = input.run;
+    end
+    if isfield(input, 'session')
+      opt.query.ses = input.session;
+    end
+    if isfield(input, 'space')
+      opt.space = input.space;
+    end
+
+  end
 
 end
 

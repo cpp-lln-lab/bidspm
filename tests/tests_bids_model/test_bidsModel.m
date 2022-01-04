@@ -8,6 +8,16 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getBidsModelInputs()
+
+  opt = setOptions('vislocalizer', '01');
+
+  input = getBidsModelInput(opt.model.file);
+
+  assertEqual(input.task, 'vislocalizer');
+
+end
+
 function test_getVariablesToConvolve()
 
   opt = setOptions('vislocalizer', '01');
