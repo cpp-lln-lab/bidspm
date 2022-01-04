@@ -1,6 +1,6 @@
 function bidsSegmentSkullStrip(opt)
   %
-  % Segments and skullstrips the anatomical image. 
+  % Segments and skullstrips the anatomical image.
   % This workflow is already included in the bidsSpatialPrepro workflow.
   %
   % USAGE::

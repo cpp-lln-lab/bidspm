@@ -16,7 +16,7 @@ function test_createEmptyStatsModel_basic()
   end
 
   content = createEmptyStatsModel();
-  
+
   referenceFile = fullfile(getDummyDataDir(), 'models', 'model-empty_smdl.json');
 
   expectedContent = spm_jsonread(referenceFile);
@@ -36,7 +36,7 @@ function test_createEmptyStatsModel_basic()
     assertEqual(content.(fields{i}), expectedContent.(fields{i}));
   end
   assertEqual(content, expectedContent);
-  
+
   % smoke tests: make sure other bids model functions work on the output
   modelType = getModelType(referenceFile);
   HPF = getHighPassFilter(referenceFile);

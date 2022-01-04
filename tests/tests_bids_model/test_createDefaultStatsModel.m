@@ -9,18 +9,18 @@ function test_suite = test_createDefaultStatsModel %#ok<*STOUT>
 end
 
 function test_createDefaultStatsModel_basic()
-  
+
   useRaw = true;
   opt = setOptions('vislocalizer', '', useRaw);
-  
+
   [BIDS, opt] = getData(opt, opt.dir.preproc);
-  
+
   createDefaultStatsModel(BIDS, opt);
-  
+
   % make sure the file was created where expected
   expectedFilename = fullfile(pwd, 'models', 'model-defaultVislocalizer_smdl.json');
   assertEqual(exist(expectedFilename, 'file'), 2);
-  
+
   % smoke tests: make sure other bids model functions work on the output
   modelType = getModelType(expectedFilename);
   HPF = getHighPassFilter(expectedFilename);
@@ -30,14 +30,14 @@ function test_createDefaultStatsModel_basic()
   inclusiveMaskThreshold = getInclusiveMaskThreshold(expectedFilename);
   contrastsList = getContrastsList(expectedFilename);
   dummyContrastsList = getDummyContrastsList(expectedFilename);
-  
+
   % check it has the right content
   content = spm_jsonread(expectedFilename);
-  
+
   expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-default_smdl.json'));
-  
+
   assertEqual(content, expectedContent);
-  
+
   cleanUp(fullfile(pwd, 'models'));
-  
+
 end
