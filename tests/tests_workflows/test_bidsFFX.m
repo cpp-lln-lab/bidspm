@@ -8,6 +8,20 @@ function test_suite = test_bidsFFX %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsFFX_skip_subject_no_data()
+
+  opt = setOptions('vislocalizer');
+  opt.space = {'MNI152NLin2009cAsym'};
+
+  opt.verbosity = 1;
+
+  % required for the test
+  opt.dir.raw = opt.dir.preproc;
+
+  assertWarning(@()bidsFFX('specifyAndEstimate', opt), 'bidsFFX:noDataForSubjectGLM');
+
+end
+
 function test_bidsFFX_contrasts()
 
   opt = setOptions('vislocalizer');
