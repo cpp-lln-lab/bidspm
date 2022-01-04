@@ -14,6 +14,8 @@ function bidsSegmentSkullStrip(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  opt.pipeline.type = 'preproc';
+
   opt.dir.input = opt.dir.preproc;
   opt.query.modality = 'anat';
   opt.orderBatches.selectAnat = 1;

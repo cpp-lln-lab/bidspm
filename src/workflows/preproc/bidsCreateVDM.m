@@ -20,6 +20,8 @@ function bidsCreateVDM(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  opt.pipeline.type = 'preproc';
+
   [BIDS, opt] = setUpWorkflow(opt, 'create voxel displacement map');
 
   for iSub = 1:numel(opt.subjects)

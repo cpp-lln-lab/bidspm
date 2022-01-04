@@ -40,6 +40,8 @@ function matlabbatch = bidsSpatialPrepro(opt)
   %  TODO:
   %  - average T1s across sessions if necessarry
 
+  opt.pipeline.type = 'preproc';
+
   opt.dir.input = opt.dir.preproc;
 
   [BIDS, opt] = setUpWorkflow(opt, 'spatial preprocessing');

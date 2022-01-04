@@ -24,6 +24,8 @@ function bidsResliceTpmToFunc(opt)
   % TODO consider renaming this function to highlight that it creates a mask as
   % well, though this might get confusing with `bidsWholeBrainFuncMask`
 
+  opt.pipeline.type = 'preproc';
+
   opt.dir.input = opt.dir.preproc;
 
   [BIDS, opt] = setUpWorkflow(opt, 'reslicing tissue probability maps to functional dimension');

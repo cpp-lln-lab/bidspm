@@ -6,6 +6,8 @@ function mask = bidsWholeBrainFuncMask(opt)
 
   % TODO add test
 
+  opt.pipeline.type = 'preproc';
+
   opt.dir.input = opt.dir.preproc;
 
   [BIDS, opt] = setUpWorkflow(opt, 'create brain mask from mean functional image');
