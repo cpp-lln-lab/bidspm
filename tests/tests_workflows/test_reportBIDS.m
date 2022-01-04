@@ -14,6 +14,10 @@ function test_reportBIDS_smoke_test()
   opt = setOptions('vismotion');
 
   reportBIDS(opt);
+  
+  if isGithubCi
+    return
+  end
 
   assertEqual(exist(fullfile(opt.dir.preproc, ...
                              'sub-ctrl01', ...
