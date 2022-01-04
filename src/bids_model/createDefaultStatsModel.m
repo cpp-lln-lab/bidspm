@@ -60,6 +60,8 @@ function opt = createDefaultStatsModel(BIDS, opt)
 
   content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList);
 
+  content.Nodes{3} = rmfield(content.Nodes{3}, {'Contrasts'});
+
   content.Name = strjoin(opt.taskName, ' ');
   content.Description = ['default model for ' strjoin(opt.taskName, '')];
   content.Input.task = opt.taskName;
