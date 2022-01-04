@@ -98,6 +98,16 @@
         "code",
         "ideas"
       ]
+    },
+    {
+      "login": "fcerpe",
+      "name": "Filippo Cerpelloni",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73432853?v=4",
+      "profile": "https://github.com/fcerpe",
+      "contributions": [
+        "bug",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
