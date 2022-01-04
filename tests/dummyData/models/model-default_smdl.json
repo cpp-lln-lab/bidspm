@@ -118,18 +118,6 @@
                "Mask": ""
             }
          },
-         "Contrasts": [
-            {
-               "Name": "",
-               "ConditionList": [
-                  ""
-               ],
-               "Weights": [
-                  ""
-               ],
-               "Test": ""
-            }
-         ],
          "DummyContrasts": {
             "Test": "t",
             "Contrasts": [
