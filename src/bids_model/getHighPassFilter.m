@@ -19,11 +19,14 @@ function HPF = getHighPassFilter(modelFile, nodeType)
 
   if ~isfield(node.Model.Options, 'HighPassFilterCutoffHz') || ...
           isempty(node.Model.Options.HighPassFilterCutoffHz)
+
     msg = sprintf('No high-pass filter mentioned for node %s in BIDS model file\%s', ...
                   nodeType, modelFile);
     errorHandling(mfilename(), 'noHighPassFilter', msg, false, true);
+
   else
     HPF = 1 / node.Model.Options.HighPassFilterCutoffHz;
+
   end
 
 end

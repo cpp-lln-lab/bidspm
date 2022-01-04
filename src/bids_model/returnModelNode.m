@@ -11,6 +11,7 @@ function [step, iStep] = returnModelNode(model, nodeType)
     model.Nodes = {model.Nodes};
   end
 
+  % TODO should probably be made more robust in case model.Nodes is a structure
   levels = cellfun(@(x) lower(x.Level), model.Nodes, 'UniformOutput', false);
 
   idx = ismember(levels, lower(nodeType));
