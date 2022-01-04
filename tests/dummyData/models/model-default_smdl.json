@@ -37,16 +37,18 @@
                }
             }
          },
-         "Contrasts": {
-            "Name": "",
-            "ConditionList": [
-               ""
-            ],
-            "Weights": [
-               ""
-            ],
-            "Test": ""
-         },
+         "Contrasts": [
+            {
+               "Name": "",
+               "ConditionList": [
+                  ""
+               ],
+               "Weights": [
+                  ""
+               ],
+               "Test": ""
+            }
+         ],
          "DummyContrasts": {
             "Test": "t",
             "Contrasts": [
@@ -84,16 +86,18 @@
                }
             }
          },
-         "Contrasts": {
-            "Name": "",
-            "ConditionList": [
-               ""
-            ],
-            "Weights": [
-               ""
-            ],
-            "Test": ""
-         },
+         "Contrasts": [
+            {
+               "Name": "",
+               "ConditionList": [
+                  ""
+               ],
+               "Weights": [
+                  ""
+               ],
+               "Test": ""
+            }
+         ],
          "DummyContrasts": {
             "Test": "t",
             "Contrasts": [
@@ -114,16 +118,18 @@
                "Mask": ""
             }
          },
-         "Contrasts": {
-            "Name": "",
-            "ConditionList": [
-               ""
-            ],
-            "Weights": [
-               ""
-            ],
-            "Test": ""
-         },
+         "Contrasts": [
+            {
+               "Name": "",
+               "ConditionList": [
+                  ""
+               ],
+               "Weights": [
+                  ""
+               ],
+               "Test": ""
+            }
+         ],
          "DummyContrasts": {
             "Test": "t",
             "Contrasts": [

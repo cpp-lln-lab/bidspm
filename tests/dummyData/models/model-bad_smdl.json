@@ -1,0 +1,223 @@
+{
+    "Name": "visualLocalizer",
+    "BIDSModelVersion": "1.0.0",
+    "Description": "default model for visualLocalizer",
+    "Input": {
+        "task": [
+            "visualLocalizer"
+        ]
+    },
+    "Nodes": [
+        {
+            "Level": "Run",
+            "Name": "run_level",
+            "Model": {
+                "Type": "glm",
+                "X": [
+                    "trial_type.bw",
+                    "trial_type.fw",
+                    "trial_type.ld",
+                    "trial_type.response",
+                    "trial_type.sbw",
+                    "trial_type.sfw",
+                    "trial_type.sld",
+                    "trans_x",
+                    "trans_y",
+                    "trans_z",
+                    "rot_x",
+                    "rot_y",
+                    "rot_z"
+                ],
+                "HRF": {
+                    "Variables": [
+                        "trial_type.bw",
+                        "trial_type.fw",
+                        "trial_type.ld",
+                        "trial_type.response",
+                        "trial_type.sbw",
+                        "trial_type.sfw",
+                        "trial_type.sld"
+                    ],
+                    "Model": "DoubleGamma"
+                },
+                "Options": {
+                    "HighPassFilterCutoffHz": 0.0078,
+                    "Mask": ""
+                },
+                "Software": {
+                    "SPM": {
+                        "SerialCorrelation": "FAST",
+                        "HRFderivatives": "Temporal"
+                    }
+                }
+            },
+            "Contrasts": [
+                {
+                    "Name": "",
+                    "ConditionList": [
+                        ""
+                    ],
+                    "Weights": [
+                        ""
+                    ],
+                    "Test": ""
+                }
+            ],
+            "DummyContrasts": {
+                "Test": "t",
+                "Contrasts": [
+                    "trial_type.bw",
+                    "trial_type.fw",
+                    "trial_type.ld",
+                    "trial_type.response",
+                    "trial_type.sbw",
+                    "trial_type.sfw",
+                    "trial_type.sld"
+                ]
+            }
+        },
+        {
+            "Level": "Subject",
+            "Name": "subject_level",
+            "Model": {
+                "X": [
+                    "trial_type.bw",
+                    "trial_type.fw",
+                    "trial_type.ld",
+                    "trial_type.response",
+                    "trial_type.sbw",
+                    "trial_type.sfw",
+                    "trial_type.sld",
+                    "trans_x",
+                    "trans_y",
+                    "trans_z",
+                    "rot_x",
+                    "rot_y",
+                    "rot_z"
+                ],
+                "HRF": {
+                    "Variables": [
+                        "trial_type.bw",
+                        "trial_type.fw",
+                        "trial_type.ld",
+                        "trial_type.response",
+                        "trial_type.sbw",
+                        "trial_type.sfw",
+                        "trial_type.sld"
+                    ],
+                    "Model": "DoubleGamma"
+                },
+                "Type": "glm",
+                "Options": {
+                    "HighPassFilterCutoffHz": 0.0078,
+                    "Mask": ""
+                },
+                "Software": {
+                    "SPM": {
+                        "SerialCorrelation": "FAST",
+                        "HRFderivatives": "Temporal"
+                    }
+                }
+            },
+            "Contrasts": [
+                {
+                    "Name": "french_gt_scrambled",
+                    "ConditionList": [
+                        "trial_type.fw",
+                        "trial_type.sfw"
+                    ],
+                    "weights": [
+                        1,
+                        -1
+                    ],
+                    "type": "t"
+                },
+                {
+                    "Name": "braille_gt_scrambled",
+                    "ConditionList": [
+                        "trial_type.bw",
+                        "trial_type.sbw"
+                    ],
+                    "weights": [
+                        1,
+                        -1
+                    ],
+                    "type": "t"
+                },
+                {
+                    "Name": "drawing_gt_scrambled",
+                    "ConditionList": [
+                        "trial_type.ld",
+                        "trial_type.sld"
+                    ],
+                    "weights": [
+                        1,
+                        -1
+                    ],
+                    "type": "t"
+                },
+                {
+                    "Name": "allFrench",
+                    "ConditionList": [
+                        "trial_type.fw",
+                        "trial_type.sfw"
+                    ],
+                    "weights": [
+                        0.5,
+                        0.5
+                    ],
+                    "type": "t"
+                }
+            ],
+            "DummyContrasts": {
+                "Test": "t",
+                "Contrasts": [
+                    "trial_type.bw",
+                    "trial_type.fw",
+                    "trial_type.ld",
+                    "trial_type.response",
+                    "trial_type.sbw",
+                    "trial_type.sfw",
+                    "trial_type.sld"
+                ]
+            }
+        },
+        {
+            "Level": "Dataset",
+            "Name": "dataset_level",
+            "Model": {
+                "X": [
+                    " "
+                ],
+                "Type": "glm",
+                "Options": {
+                    "Mask": ""
+                }
+            },
+            "Contrasts": [
+                {
+                    "Name": "",
+                    "ConditionList": [
+                        ""
+                    ],
+                    "Weights": [
+                        ""
+                    ],
+                    "Test": ""
+                }
+            ],
+            "DummyContrasts": {
+                "Test": "t",
+                "Contrasts": [
+                    "trial_type.bw",
+                    "trial_type.fw",
+                    "trial_type.ld",
+                    "trial_type.response",
+                    "trial_type.sbw",
+                    "trial_type.sfw",
+                    "trial_type.sld"
+                ]
+            }
+        }
+    ]
+}

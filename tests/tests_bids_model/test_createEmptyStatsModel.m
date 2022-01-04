@@ -16,10 +16,10 @@ function test_createEmptyStatsModel_basic()
   end
 
   content = createEmptyStatsModel();
+  
+  referenceFile = fullfile(getDummyDataDir(), 'models', 'model-empty_smdl.json');
 
-  %   bids.util.jsonencode(fullfile(pwd, 'model-empty_smdl.json'), content);
-
-  expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-empty_smdl.json'));
+  expectedContent = spm_jsonread(referenceFile);
 
   assertEqual(fieldnames(content), fieldnames(expectedContent));
   assertEqual(content.Nodes{3}.Model, expectedContent.Nodes{3}.Model);
@@ -36,5 +36,15 @@ function test_createEmptyStatsModel_basic()
     assertEqual(content.(fields{i}), expectedContent.(fields{i}));
   end
   assertEqual(content, expectedContent);
+  
+  % smoke tests: make sure other bids model functions work on the output
+  modelType = getModelType(referenceFile);
+  HPF = getHighPassFilter(referenceFile);
+  designMatrix = getBidsDesignMatrix(referenceFile);
+  HRF = getHRFderivatives(referenceFile);
+  mask = getModelMask(referenceFile);
+  inclusiveMaskThreshold = getInclusiveMaskThreshold(referenceFile);
+  contrastsList = getContrastsList(referenceFile);
+  dummyContrastsList = getDummyContrastsList(referenceFile);
 
 end
