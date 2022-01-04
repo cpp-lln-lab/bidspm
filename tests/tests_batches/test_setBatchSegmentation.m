@@ -75,7 +75,7 @@ function anatImage = returnLocalAnatFilename()
 
   subLabel = '01';
 
-  opt = setOptions('vismotion', subLabel, 'useRaw', true);
+  opt = setOptions('vismotion', subLabel);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 

@@ -12,7 +12,7 @@ function test_getInfo_basic()
 
   subLabel = 'ctrl01';
 
-  opt = setOptions('vismotion', subLabel, 'useRaw', true);
+  opt = setOptions('vismotion', subLabel);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -74,7 +74,7 @@ function test_getInfo_no_run()
 
   subLabel = 'ctrl01';
 
-  opt = setOptions('vislocalizer', subLabel, 'useRaw', true);
+  opt = setOptions('vislocalizer', subLabel);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -107,7 +107,7 @@ function test_getInfo_query_with_session_restriction()
 
   subLabel = 'ctrl01';
 
-  opt = setOptions('vismotion', subLabel, 'useRaw', true);
+  opt = setOptions('vismotion', subLabel);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -125,7 +125,7 @@ end
 function test_getInfo_error
 
   subLabel = 'ctrl01';
-  opt = setOptions('vismotion', subLabel, 'useRaw', true);
+  opt = setOptions('vismotion', subLabel);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 

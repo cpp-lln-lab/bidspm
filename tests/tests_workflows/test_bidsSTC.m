@@ -10,7 +10,7 @@ end
 
 function test_bidsStc_basic()
 
-  opt = setOptions('vismotion', '', 'useRaw', true);
+  opt = setOptions('vismotion', '');
 
   opt.query.acq = '';
 
@@ -22,7 +22,7 @@ end
 
 function test_bidsStc_dual_task()
 
-  opt = setOptions({'vismotion', 'rest'}, '', 'useRaw', true);
+  opt = setOptions({'vismotion', 'rest'}, '');
 
   opt.query.acq = '';
 
@@ -40,7 +40,7 @@ end
 
 function test_bidsStc_skip()
 
-  opt = setOptions('vislocalizer', '', 'useRaw', true);
+  opt = setOptions('vislocalizer', '');
 
   matlabbatch = bidsSTC(opt);
 

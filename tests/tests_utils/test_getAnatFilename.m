@@ -83,7 +83,7 @@ function test_getAnatFilename_error_type()
 
   subLabel = '01';
 
-  opt = setOptions('vislocalizer', subLabel, 'useRaw', true);
+  opt = setOptions('vislocalizer', subLabel);
 
   opt.anatReference.type = 'T2w';
 
@@ -98,7 +98,7 @@ function test_getAnatFilename_error_session()
 
   subLabel = '01';
 
-  opt = setOptions('vislocalizer', subLabel, 'useRaw', true);
+  opt = setOptions('vislocalizer', subLabel);
 
   opt.anatReference.session = '001';
 

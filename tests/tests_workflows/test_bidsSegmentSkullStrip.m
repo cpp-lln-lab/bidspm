@@ -10,7 +10,7 @@ end
 
 function test_bidsSegmentSkullStrip_basic()
 
-  opt = setOptions('vismotion', '', 'useRaw', true);
+  opt = setOptions('vismotion', '');
 
   bidsSegmentSkullStrip(opt);
 

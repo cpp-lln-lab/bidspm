@@ -10,7 +10,7 @@ end
 
 function test_setBatchGroupLevelContrasts_smoke_test()
 
-  opt = setOptions('vislocalizer', '', 'useRaw', true, 'pipelineType', 'stats');
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   rfxDir = getRFXdir(opt);
 
