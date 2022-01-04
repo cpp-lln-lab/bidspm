@@ -16,6 +16,7 @@ catch
 end
 
 opt = face_rep_get_option_results();
+opt.taskName = {'facerepetition'};
 
 opt.roi.atlas = 'wang';
 opt.roi.name = {'V1v', 'V1d'};

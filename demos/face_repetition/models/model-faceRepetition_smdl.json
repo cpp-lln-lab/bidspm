@@ -3,7 +3,8 @@
    "BIDSModelVersion": "1.0.0",
    "Description": "model for face repetition to check resampling effects",
    "Input": {
-      "task": "facerepetition"
+      "task": "facerepetition",
+      "space": "IXI549Space"
    },
    "Nodes": [
       {

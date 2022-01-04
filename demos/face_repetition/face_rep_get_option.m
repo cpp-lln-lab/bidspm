@@ -13,8 +13,6 @@ function opt = face_rep_get_option()
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
   opt.dir.derivatives = fullfile(opt.dir.raw, '..', 'derivatives');
 
-  opt.pipeline.type = 'preproc';
-
   %% DO NOT TOUCH
   opt = checkOptions(opt);
   saveOptions(opt);
