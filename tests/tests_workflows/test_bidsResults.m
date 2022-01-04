@@ -11,7 +11,7 @@ end
 function test_bidsResults_basic()
 
   %% GIVEN
-  opt = setOptions('vislocalizer', [], [], 'stats');
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   % Specify what ouput we want
   opt.result.Nodes(1) = returnDefaultResultsStructure();
@@ -77,7 +77,7 @@ end
 function test_bidsResults_no_background_for_montage()
 
   %% GIVEN
-  opt = setOptions('vislocalizer', [], [], 'stats');
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   % Specify what ouput we want
   opt.result.Nodes(1) = returnDefaultResultsStructure();

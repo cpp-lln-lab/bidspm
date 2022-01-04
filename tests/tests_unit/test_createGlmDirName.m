@@ -19,7 +19,7 @@ end
 function test_createGlmDirName_basic()
 
   opt = setOptions('dummy');
-  opt.space = {'IXI549Space'};
+  opt.space = 'IXI549Space';
 
   glmDirName = createGlmDirName(opt);
 

@@ -12,8 +12,6 @@ function test_bidsSpatialPrepro_basic()
 
   opt = setOptions('MoAE-preproc');
 
-  opt.pipeline.type = 'preproc';
-
   % some tweaks because we have dummy data
   opt.funcVoxelDims = [2 2 2];
 
@@ -34,7 +32,6 @@ function test_bidsSpatialPrepro_force_segment()
 
   opt = setOptions('MoAE-preproc');
 
-  opt.pipeline.type = 'preproc';
   opt.segment.force = true;
 
   % some tweaks because we have dummy data

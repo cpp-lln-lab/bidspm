@@ -24,12 +24,10 @@ function test_setBatchSubjectLevelGLMSpec_fmriprep()
 
   subLabel = '^01';
 
-  opt = setOptions('fmriprep-synthetic');
+  opt = setOptions('fmriprep-synthetic', subLabel, 'pipelineType', 'stats');
 
   opt.space = 'MNI152NLin2009cAsym';
   opt.query.space = opt.space;
-
-  opt.pipeline.type = 'stats';
 
   opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
 
@@ -51,9 +49,7 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions('vislocalizer', subLabel, [], 'stats');
-
-  opt = dirFixture(opt);
+  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -94,11 +90,9 @@ function test_setBatchSubjectLevelGLMSpec_slicetiming_metadata()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions('vismotion', subLabel, [], 'stats');
+  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
 
   opt.query.acq = '';
-
-  opt = dirFixture(opt);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -120,9 +114,8 @@ function test_setBatchSubjectLevelGLMSpec_inconsistent_metadata()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions({'vismotion', 'vislocalizer'}, subLabel, [], 'stats');
-
-  opt = dirFixture(opt);
+  opt = setOptions({'vismotion', 'vislocalizer'}, subLabel, ...
+                   'pipelineType', 'stats');
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -139,11 +132,9 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions('vislocalizer', subLabel, [], 'stats');
+  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
 
   opt.model.designOnly = true;
-
-  opt = dirFixture(opt);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -170,15 +161,6 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
 
   cleanUp(fullfile(pwd, 'derivatives'));
 
-end
-
-function opt = dirFixture(opt)
-  % required for the test
-  opt.dir.raw = opt.dir.preproc;
-
-  opt.dir.derivatives = fullfile(pwd, 'derivatives');
-  opt.dir.stats = fullfile(pwd, 'derivatives', 'cpp_spm-stats');
-  opt = checkOptions(opt);
 end
 
 % function expectedBatch = returnExpectedBatch()

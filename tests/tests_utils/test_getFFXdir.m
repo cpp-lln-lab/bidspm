@@ -12,8 +12,8 @@ function test_getFFXdir_basic()
 
   subLabel = '01';
 
-  opt = setOptions('vislocalizer', subLabel);
-  opt.space = {'IXI549Space'};
+  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
+
   opt.fwhm.func = 0;
 
   expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-01', 'stats', ...

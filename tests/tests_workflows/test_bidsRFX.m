@@ -10,7 +10,9 @@ end
 
 function test_bidsRFX_smoke_test()
 
-  opt = setOptions('vislocalizer',  [], [], 'stats');
+  createDummyData();
+
+  opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
   bidsRFX('smoothContrasts', opt);
   bidsRFX('meanAnatAndMask', opt);

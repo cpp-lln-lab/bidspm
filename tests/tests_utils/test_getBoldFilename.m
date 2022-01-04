@@ -11,8 +11,8 @@ end
 function test_getBoldFilename_basic()
 
   subLabel = '^01';
-  useRaw = true;
-  opt = setOptions('vislocalizer', subLabel, useRaw);
+
+  opt = setOptions('vislocalizer', subLabel, 'useRaw', true);
 
   iSes = 1;
   iRun = 1;
