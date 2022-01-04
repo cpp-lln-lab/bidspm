@@ -8,6 +8,16 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getVariablesToConvolve()
+
+  opt = setOptions('vislocalizer', '01');
+
+  variablesToConvolve = getVariablesToConvolve(opt.model.file);
+
+  assertEqual(variablesToConvolve, {'trial_type.VisMot'; 'trial_type.VisStat'});
+
+end
+
 function test_returnModelNode()
 
   content = createEmptyStatsModel();

@@ -1,12 +1,10 @@
 function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
-  % Converts an events.tsv file to an onset file suitable for SPM subject level
-  % analysis.
+  % Converts an events.tsv file to an onset file suitable for SPM subject level analysis.
   %
   % The function extracts from the events.tsv file the trials (with type, onsets, and durations)
-  % of th conditions of interest as requested in the model.json.
-  % It then stores them in a .mat file that can be fed directly in an SPM GLM
-  % batch.
+  % of the conditions of interest as requested in the model.json.
+  % It then stores them in a .mat file that can be fed directly in an SPM GLM batch.
   %
   % USAGE::
   %
@@ -40,15 +38,11 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   end
 
-  % assign all the tsv information to a variable called conds.
   conds = t.trial_type;
 
-  % identify where the conditions to include that are specificed
-  % in the run step of the model file
-
-  X = getBidsDesignMatrix(opt.model.file, 'run');
-
-  isTrialType = strfind(X, 'trial_type.');
+  % identify the conditions to convolve in the BIDS model
+  variablesToConvolve = getVariablesToConvolve(opt.model.file, 'run');
+  isTrialType = strfind(variablesToConvolve, 'trial_type.');
 
   % create empty cell to be filled in according to the conditions present in each run
   names = {};
@@ -60,7 +54,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
     if isTrialType{iCond}
 
-      conditionName = strrep(X{iCond}, ...
+      conditionName = strrep(variablesToConvolve{iCond}, ...
                              'trial_type.', ...
                              '');
 
