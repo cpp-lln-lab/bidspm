@@ -6,7 +6,7 @@
   },
   "Nodes": [
     {
-      "Level": "subject",
+      "Level": "run",
       "Model": {
         "X": [
           "trial_type.Correct_Task",
@@ -16,7 +16,17 @@
           "trial_type.No_Response_Control",
           "trans_?",
           "rot_?"
-        ]
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.Correct_Task",
+            "trial_type.Incorrect_Task",
+            "trial_type.No_Response_Task",
+            "trial_type.Response_Control",
+            "trial_type.No_Response_Control"
+          ],
+          "Model": "DoubleGamma"
+        }
       },
       "DummyContrasts": [
         "trial_type.Correct_Task",
@@ -24,7 +34,7 @@
       ]
     },
     {
-      "Level": "run",
+      "Level": "subject",
       "Model": {
         "X": [
           "trial_type.Correct_Task",

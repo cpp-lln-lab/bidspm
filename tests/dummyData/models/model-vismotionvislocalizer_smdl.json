@@ -18,7 +18,10 @@
           "rot_?"
         ],
         "HRF": {
-          "Variables": [],
+          "Variables": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
           "Model": "DoubleGamma"
         },
         "Options": {
@@ -78,7 +81,10 @@
           "rot_?"
         ],
         "HRF": {
-          "Variables": [],
+          "Variables": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
           "Model": "DoubleGamma"
         },
         "Options": {

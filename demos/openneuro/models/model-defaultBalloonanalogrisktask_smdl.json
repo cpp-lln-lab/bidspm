@@ -6,7 +6,7 @@
    },
    "Nodes": [
       {
-         "Level": "subject",
+         "Level": "run",
          "Transformations": [
             {
                "Name": "Factor",
@@ -41,6 +41,15 @@
                }
             }
          },
+         "HRF": {
+            "Variables": [
+               "trial_type.cash_demean",
+               "trial_type.control_pumps_demean",
+               "trial_type.explode_demean",
+               "trial_type.pumps_demean"
+            ],
+            "Model": "DoubleGamma"
+         },
          "DummyContrasts": [
             "trial_type.cash_demean",
             "trial_type.control_pumps_demean",
@@ -49,7 +58,7 @@
          ]
       },
       {
-         "Level": "run",
+         "Level": "subject",
          "Transformations": [
             {
                "Name": "Factor",
@@ -74,6 +83,15 @@
                "trans_?",
                "rot_?"
             ],
+            "HRF": {
+               "Variables": [
+                  "trial_type.cash_demean",
+                  "trial_type.control_pumps_demean",
+                  "trial_type.explode_demean",
+                  "trial_type.pumps_demean"
+               ],
+               "Model": "DoubleGamma"
+            },
             "Options": {
                "HighPassFilterCutoffHz": 0.0078,
                "Mask": ""

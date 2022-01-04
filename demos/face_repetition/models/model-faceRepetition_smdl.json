@@ -32,6 +32,15 @@
                "trans_?",
                "rot_?"
             ],
+            "HRF": {
+               "Variables": [
+                  "trial_type.F1",
+                  "trial_type.F2",
+                  "trial_type.N1",
+                  "trial_type.N2"
+               ],
+               "Model": "DoubleGamma"
+            },
             "Type": "glm",
             "Options": {
                "HighPassFilterCutoffHz": 0.0078,
