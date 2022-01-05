@@ -136,10 +136,10 @@ for subject in ${subject_list}; do
 	for ses in ${session_list}; do
 		create_raw_func_vismotion ${raw_dir} ${subject} ${ses}
 		create_raw_func_vislocalizer ${raw_dir} ${subject} ${ses}
-		create_raw_func_rest ${raw_dir} ${subject} ${ses}
 		create_raw_fmap ${raw_dir} ${subject} ${ses}
 	done
 
+	create_raw_func_rest ${raw_dir} ${subject} '02'
 	create_raw_anat ${raw_dir} ${subject}
 done
 
@@ -151,7 +151,6 @@ for subject in ${subject_list}; do
 		# FUNC
 		create_raw_func_vismotion ${preproc_dir} ${subject} ${ses}
 		create_raw_func_vislocalizer ${preproc_dir} ${subject} ${ses}
-		create_raw_func_rest ${raw_dir} ${subject} ${ses}
 		create_raw_fmap ${preproc_dir} ${subject} ${ses}
 
 		this_dir=${preproc_dir}/sub-${subject}/ses-${ses}/func
@@ -209,18 +208,19 @@ for subject in ${subject_list}; do
 			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-mean${suffix}.nii
 		fi
 
-		## task: rest
-		suffix='_bold'
-		task_name='rest'
-
-		### raw & derivatives
-		touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
-		touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-preproc${suffix}.nii
-		touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_label-brain_mask.nii
-		touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-preproc${suffix}.nii
-		touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_label-brain_mask.nii
-
 	done
+
+	## task: rest
+	ses='02'
+	suffix='_bold'
+	task_name='rest'
+
+	### raw & derivatives
+	create_raw_func_rest ${preproc_dir} ${subject} '02'
+	touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-preproc${suffix}.nii
+	touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_label-brain_mask.nii
+	touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-preproc${suffix}.nii
+	touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_label-brain_mask.nii
 
 	# ANAT
 	create_raw_anat ${preproc_dir} ${subject}
