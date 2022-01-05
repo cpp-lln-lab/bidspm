@@ -1,4 +1,4 @@
-# .PHONY: sub-01_T1w.nii bidsSegmentSkullstrip.m 
+# .PHONY: sub-01_T1w.nii bidsSegmentSkullstrip.m
 
 # Final output
 cpp_spm-preproc/sub-01/anat/: sub-01_space-individual_label-GM_probseg.nii sub-01_space-individual_label-WM_probseg.nii sub-01_space-individual_label-CSF_probseg.nii sub-01_from-IXI549Space_to-T1w_mode-image_xfm.nii sub-01_space-individual_label-brain_mask.nii sub-01_space-individual_desc-skullstripped_T1w.nii sub-01_space-individual_desc-biascor_T1w.nii
@@ -6,7 +6,7 @@ cpp_spm-preproc/sub-01/anat/: sub-01_space-individual_label-GM_probseg.nii sub-0
 # Workflows and batches
 setBatchSegmentation.m: bidsSegmentSkullstrip.m
 
-setBatSkullstripping.m: bidsSegmentSkullstrip.m 
+setBatSkullstripping.m: bidsSegmentSkullstrip.m
 
 bidsRename.m: bidsSegmentSkullstrip.m
 
