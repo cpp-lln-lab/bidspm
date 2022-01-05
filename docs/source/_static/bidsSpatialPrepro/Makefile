@@ -27,7 +27,7 @@ setBatchCoregistrationFuncToAnat.m: bidsSpatialPrepro.m
 
 setBatchSegmentation.m: bidsSpatialPrepro.m
 
-setBatSkullstripping.m: bidsSpatialPrepro.m 
+setBatSkullstripping.m: bidsSpatialPrepro.m
 
 setBatchNormalizationSpatialPrepro.m: bidsSpatialPrepro.m
 
@@ -80,7 +80,7 @@ usub-01_task-audio_space-T1w_desc-stc_bold.nii: meansub-01_task-audio_desc-stc_b
 												setBatchCoregistrationFuncToAnat.m
 
 meansub-01_task-audio_space-T1w_desc-stc_bold.nii: 	meansub-01_task-audio_desc-stc_bold.nii msub-01_T1w.nii \
-													setBatchCoregistrationFuncToAnat.m	
+													setBatchCoregistrationFuncToAnat.m
 
 sub-01_task-audio_desc-stc_bold.mat: 	meansub-01_task-audio_desc-stc_bold.nii msub-01_T1w.nii \
 										setBatchCoregistrationFuncToAnat.m
