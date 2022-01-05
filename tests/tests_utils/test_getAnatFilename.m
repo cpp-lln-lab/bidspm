@@ -10,17 +10,17 @@ end
 
 % TODO
 % add tests to check:
-%  - errors when the requested file is not in the correct session
 %  - that the function is smart enough to find an anat even when user has not
 %    specified a session
 
-function test_getAnatFilename_different_session_from_func()
+function test_getAnatFilename_forced_session()
 
   subLabel = '01';
 
-  opt = setOptions('vislocalizer', subLabel, 'useRaw', true);
-  
+  opt = setOptions('rest', subLabel, 'useRaw', true);
+
   opt.query.ses = '02';
+
   opt.anatReference.type = 'T1w';
   opt.anatReference.session = '01';
 
@@ -29,7 +29,28 @@ function test_getAnatFilename_different_session_from_func()
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
   expectedFilename = 'sub-01_ses-01_T1w.nii';
-  expectedAnatDataDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'anat');
+  expectedAnatDataDir = fullfile(getDummyDataDir('raw'), 'sub-01', 'ses-01', 'anat');
+
+  assertEqual(anatDataDir, expectedAnatDataDir);
+  assertEqual(anatImage, expectedFilename);
+
+end
+
+function test_getAnatFilename_different_session_from_func()
+
+  subLabel = '01';
+
+  opt = setOptions('rest', subLabel, 'useRaw', true);
+
+  opt.anatReference.type = 'T1w';
+  opt.anatReference.session = '01';
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
+
+  expectedFilename = 'sub-01_ses-01_T1w.nii';
+  expectedAnatDataDir = fullfile(getDummyDataDir('raw'), 'sub-01', 'ses-01', 'anat');
 
   assertEqual(anatDataDir, expectedAnatDataDir);
   assertEqual(anatImage, expectedFilename);

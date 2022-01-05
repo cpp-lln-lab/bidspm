@@ -56,7 +56,7 @@ function mancoreg(varargin)
   global st mancoregvar
 
   p = inputParser;
-  
+
   is_file = @(x) exist(x, 'file')==2;
 
   default_sliderStep = '0.01';
@@ -70,7 +70,7 @@ function mancoreg(varargin)
 
 
   %% Options
-  
+
   opt.smallFontSize = 8;
   opt.largeFontSize = 10;
 
@@ -91,7 +91,7 @@ function mancoreg(varargin)
   %% Make sure we have both image filenames and map images
   targetimage = p.Results.targetimage;
   sourceimage = p.Results.sourceimage;
-  
+
   if isempty(targetimage)
     targetimage = spm_select(1, 'image', 'Please select target image');
   end

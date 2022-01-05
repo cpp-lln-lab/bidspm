@@ -33,7 +33,7 @@ function test_bidsStc_dual_task()
   nbRunsVismotion = 4;
   assertEqual(numel(matlabbatch{1}.spm.temporal.st.scans), nbRunsVismotion);
 
-  nbRunsRest = 2;
+  nbRunsRest = 1;
   assertEqual(numel(matlabbatch{2}.spm.temporal.st.scans), nbRunsRest);
 
 end

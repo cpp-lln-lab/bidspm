@@ -24,10 +24,20 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   % TODO
   %  try to channel this function via getInfo ?
 
+  if isfield(opt, 'taskName')
+    opt = rmfield(opt, 'taskName');
+  end
+
+  opt.query.modality = 'anat';
+
+  if isfield(opt.query, 'ses')
+    opt.query = rmfield(opt.query, 'ses');
+  end
+
   anatSuffix = opt.anatReference.type;
   anatSession = opt.anatReference.session;
 
-  checkAvailableSuffix(BIDS, opt, subLabel, anatSuffix);
+  checkAvailableSuffix(BIDS, subLabel, anatSuffix);
   anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession);
 
   filter =  struct('sub', subLabel, ...
@@ -69,17 +79,17 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   anatImage = [anatImage ext];
 end
 
-function checkAvailableSuffix(BIDS, opt, subLabel, anatType)
+function checkAvailableSuffix(BIDS, subLabel, anatType)
 
   availableSuffixes = bids.query(BIDS, 'suffixes', ...
                                  'sub', subLabel);
 
   if ~strcmp(anatType, availableSuffixes)
 
-    printToScreen(strjoin(availableSuffixes, '; '), opt);
-
     msg = sprintf(['Requested anatomical suffix %s unavailable for subject %s.'...
-                   ' All available types listed above.'], anatType);
+                   ' All available types:\n%s'], ...
+                  anatType, ...
+                  createUnorderedList(availableSuffixes));
 
     errorHandling(mfilename(), 'requestedSuffixUnvailable', msg, false, false);
 
@@ -95,12 +105,11 @@ function anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession)
 
     if all(~strcmp(anatSession, sessions))
 
-      printToScreen(strjoin(sessions, '; '), opt);
-
       msg = sprintf(['Requested session %s for anatomical unavailable for subject %s.', ...
-                     ' All available sessions listed above.'], ...
+                     ' All available sessions:\n%s.'], ...
                     anatSession, ...
-                    subLabel);
+                    subLabel, ...
+                    createUnorderedList(sessions));
 
       errorHandling(mfilename(), 'requestedSessionUnvailable', msg, false, false);
 
