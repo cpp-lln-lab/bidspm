@@ -23,6 +23,12 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
 
   % TODO
   %  try to channel this function via getInfo ?
+  
+  if isfield(opt, 'taskName')
+    opt = rmfield(opt, 'taskName');
+  end
+  
+  opt.query.modality = 'anat';
 
   anatSuffix = opt.anatReference.type;
   anatSession = opt.anatReference.session;

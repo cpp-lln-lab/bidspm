@@ -18,9 +18,8 @@ function test_getAnatFilename_different_session_from_func()
 
   subLabel = '01';
 
-  opt = setOptions('vislocalizer', subLabel, 'useRaw', true);
+  opt = setOptions('rest', subLabel, 'useRaw', true);
 
-  opt.query.ses = '02';
   opt.anatReference.type = 'T1w';
   opt.anatReference.session = '01';
 
@@ -29,7 +28,7 @@ function test_getAnatFilename_different_session_from_func()
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
   expectedFilename = 'sub-01_ses-01_T1w.nii';
-  expectedAnatDataDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'anat');
+  expectedAnatDataDir = fullfile(getDummyDataDir('raw'), 'sub-01', 'ses-01', 'anat');
 
   assertEqual(anatDataDir, expectedAnatDataDir);
   assertEqual(anatImage, expectedFilename);
