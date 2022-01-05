@@ -7,7 +7,9 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3556173.svg)](https://doi.org/10.5281/zenodo.3556173)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 # CPP SPM
@@ -93,6 +95,51 @@ Scripts names in general and as well functions related to the demos use a
 `snake_case`.
 
 Constant are written in `UPPERCASE`.
+
+#### Input arguments ordering
+
+From more general to more specific
+
+`BIDS` > `opt` > `subject` > `session` > `run`
+
+-   `BIDS` (output from `getData` or `bids.layout`) restrict the set of possible
+    analysis one can run to this BIDS data set
+-   `opt` restricts this set even further
+-   `subject` / `session` / `run` even more
+
+```matlab
+% OK
+varargout = getInfo(BIDS, opt, subLabel, info, varargin)
+
+% not OK
+varargout = getInfo(subLabel, BIDS, opt, info, varargin)
+```
+
+#### Output arguments ordering
+
+Try to return them in order of importance first and in order of appearance
+otherwise.
+
+#### Exceptions
+
+If function creates or modifies a batch then `matlabbatch` is the first `argin`
+and first `argout`.
+
+If a function performs an "action" to be chosen from a one of several strings
+(with a switch statement), this string comes as first `argin` or second if
+`matlabbatch` is first.
+
+```matlab
+% OK
+varargout = getInfo('filename', BIDS, opt, subID, varargin)
+[matlabbatch, voxDim] = setBatchRealign(matlabbatch, [action = 'realign',] BIDS, opt, subID)
+
+% not OK
+% 'filename' is the name of the "action" or the info to get in this case
+% batch and action should go first
+varargout = getInfo(BIDS, opt, subID, 'filename', varargin)
+[matlabbatch, voxDim] = setBatchRealign(BIDS, opt, subID, matlabbatch, [action = 'realign'])
+```
 
 ## Contributors
 
