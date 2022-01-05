@@ -21,7 +21,7 @@ function test_setBatchSTC_dual_task()
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
   nbRunsVismotion = 4;
-  nbRunsRest = 2;
+  nbRunsRest = 1;
   assertEqual(numel(matlabbatch{1}.spm.temporal.st.scans), nbRunsVismotion + nbRunsRest);
 
 end

@@ -11,6 +11,7 @@ end
 function test_createGlmDirName_error()
 
   opt = setOptions('dummy');
+  opt.space = {'individual', 'MNI'};
 
   assertExceptionThrown(@()createGlmDirName(opt), 'createGlmDirName:tooManyMRISpaces');
 
