@@ -1,23 +1,20 @@
-% (C) Copyright 2004-2009 JH
-% (C) Copyright 2009_2012 DSS
-% (C) Copyright 2012_2019 Remi Gau
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
-function mancoreg(targetimage, sourceimage)
+function mancoreg(varargin)
   %
   % This function displays 2 SPM ortho-views of a ``targetimage`` and
   % a ``sourceimage`` image that can be manually coregistered.
   %
   % USAGE::
   %
-  %   mancoreg([targetimage,] [sourceimage])
+  %   mancoreg('targetimage', [], 'sourceimage', [], 'stepsize', 0.01)
   %
   % :param targetimage: Filename or fullpath of the target image. If none is provided
   %                     you will be asked by SPM to select one.
-  % :type targetimage: type
+  % :type targetimage: string
   % :param sourceimage: Filename or fullpath of the source image. If none is provided
   %                     you will be asked by SPM to select one.
   % :type sourceimage: string
+  % :param stepsize: step size for each rotation and translation
+  % :type stepsize: positive float
   %
   % Manual coregistration tool
   %
@@ -34,6 +31,11 @@ function mancoreg(targetimage, sourceimage)
   % The code is loosely based on ``spm_image()`` and ``spm_orthoviews()``
   % It requires the m-file with the callback functions for the user
   % controls (``mancoregCallbacks()``).
+  %
+  % (C) Copyright 2004-2009 JH
+  % (C) Copyright 2009_2012 DSS
+  % (C) Copyright 2012_2019 Remi Gau
+  % (C) Copyright 2020 CPP BIDS SPM-pipeline developers
 
   % JH 10.01.2004
   % modified DSS 10/02/2009
@@ -53,6 +55,22 @@ function mancoreg(targetimage, sourceimage)
 
   global st mancoregvar
 
+  p = inputParser;
+  
+  is_file = @(x) exist(x, 'file')==2;
+
+  default_sliderStep = '0.01';
+  default_file = [];
+
+  addParameter(p, 'targetimage', default_file, is_file);
+  addParameter(p, 'sourceimage', default_file, is_file);
+  addParameter(p, 'sliderStep', default_sliderStep, @isnumeric);
+
+  parse(p, varargin{:});
+
+
+  %% Options
+  
   opt.smallFontSize = 8;
   opt.largeFontSize = 10;
 
@@ -68,15 +86,17 @@ function mancoreg(targetimage, sourceimage)
   opt.rotationSliderMin = -pi;
   opt.rotationSliderMax = pi;
 
-  opt.sliderStep = [0.01 0.01];
+  opt.sliderStep = [p.Results.sliderStep p.Results.sliderStep];
 
   %% Make sure we have both image filenames and map images
-
-  if ~exist('targetimage', 'var')
+  targetimage = p.Results.targetimage;
+  sourceimage = p.Results.sourceimage;
+  
+  if isempty(targetimage)
     targetimage = spm_select(1, 'image', 'Please select target image');
   end
 
-  if ~exist('sourceimage', 'var')
+  if isempty(sourceimage)
     sourceimage = spm_select(1, 'image', 'Please select source image');
   end
 
