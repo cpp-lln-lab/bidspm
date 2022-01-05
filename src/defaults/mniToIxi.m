@@ -21,7 +21,7 @@ function optOut = mniToIxi(varargin)
 
   throwWarning = false;
 
-  if ismember('MNI', opt.space)
+  if isfield(opt, 'space') && ismember('MNI', opt.space)
     idx = strcmp(opt.space, 'MNI');
     opt.space{idx} = 'IXI549Space';
     throwWarning = true;
@@ -38,6 +38,7 @@ function optOut = mniToIxi(varargin)
       opt.query.space{idx} = 'IXI549Space';
       throwWarning = true;
     end
+    
   end
 
   if throwWarning

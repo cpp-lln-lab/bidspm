@@ -148,10 +148,14 @@ function opt = checkOptions(opt)
     opt.taskName = {opt.taskName};
   end
 
-  if ~iscell(opt.space)
+  % deal with space
+  if strcmpi(opt.pipeline.type, 'stats')
+    fieldsToSet = struct('space', {'individual', 'IXI549Space'});
+    opt = setFields(opt, fieldsToSet);
+  end
+  if isfield(opt, 'space') && ~iscell(opt.space)
     opt.space = {opt.space};
   end
-
   opt = mniToIxi(opt);
 
   opt = orderfields(opt);
@@ -169,14 +173,22 @@ function opt = overRideWithBidsModelContent(opt)
   input = getBidsModelInput(opt.model.file);
 
   inputTypes = fieldnames(input);
+  
+  inputPresent = ismember({'task', 'subject', 'space', 'run', 'session'}, inputTypes);
 
-  if ~any(ismember(inputTypes, {'task', 'subject', 'run', 'session'}))
+  if ~any(inputPresent)
     return
 
   else
-
-    msg = 'Input speficied in BIDS model will overide those in the options.';
-    errorHandling(mfilename(), 'bidsModelOverridesOptions', msg, true, opt.verbosity);
+    
+    optionsPresent = ismember({'taskName', 'subjects', 'space'}, fieldnames(opt));
+    queryPresent = ismember({'ses', 'run'}, fieldnames(opt.query));
+    optionsPresent = [optionsPresent queryPresent];
+    
+    if any(sum([inputPresent; optionsPresent])>1)
+      msg = 'Input speficied in BIDS model will overide those in the options.';
+      errorHandling(mfilename(), 'bidsModelOverridesOptions', msg, true, opt.verbosity);
+    end
 
     if isfield(input, 'task')
       opt.taskName = input.task;
@@ -184,14 +196,14 @@ function opt = overRideWithBidsModelContent(opt)
     if isfield(input, 'subject')
       opt.subjects = input.subject;
     end
+    if isfield(input, 'space')
+      opt.space = input.space;
+    end
     if isfield(input, 'run')
       opt.query.run = input.run;
     end
     if isfield(input, 'session')
       opt.query.ses = input.session;
-    end
-    if isfield(input, 'space')
-      opt.space = input.space;
     end
 
   end
@@ -248,7 +260,6 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.skullstrip.mean = false;
 
   %% Options for normalize
-  fieldsToSet.space = {'individual', 'IXI549Space'};
   fieldsToSet.funcVoxelDims = [];
 
   %% Options for model specification and results

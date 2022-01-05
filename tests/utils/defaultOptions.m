@@ -32,8 +32,6 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.query.modality = {'anat', 'func'};
 
-  expectedOptions.space = {'individual', 'IXI549Space'};
-
   expectedOptions.anatReference.type = 'T1w';
   expectedOptions.anatReference.session = [];
 
