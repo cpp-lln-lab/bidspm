@@ -1,0 +1,44 @@
+{
+  "Name": "grating bimodal axes of motion",
+  "Description": "contrasts to compute layer decoding experiment",
+  "Input": {
+    "task": "gratingBimodalMotion"
+  },
+  "Steps": [
+    {
+      "Level": "subject",
+      "Transformations": [
+        {
+          "Name": "Factor",
+          "Inputs": ["trial_type"]
+        },
+        {
+          "Name": "Convolve",
+          "Model": "spm",
+          "Inputs": ["trial_type.listening"]
+        }
+      ],
+      "Model": {
+        "X": [
+          "trial_type.auditory",
+          "trial_type.visual",
+          "trial_type.bimodal",
+          "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
+        ],
+        "Options": {
+          "high_pass_filter_cutoff_secs": 128
+        },
+        "Software": {
+          "SPM": {
+            "whitening": "AR(1)"
+          }
+        },
+        "Mask": ""
+      },
+      "AutoContrasts": [
+        "trial_type.auditory",
+        "trial_type.visual",
+        "trial_type.bimodal"]
+    }
+  ]
+}
