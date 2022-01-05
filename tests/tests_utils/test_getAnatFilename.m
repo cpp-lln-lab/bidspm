@@ -19,7 +19,7 @@ function test_getAnatFilename_different_session_from_func()
   subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel, 'useRaw', true);
-  
+
   opt.query.ses = '02';
   opt.anatReference.type = 'T1w';
   opt.anatReference.session = '01';

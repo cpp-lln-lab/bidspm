@@ -173,19 +173,19 @@ function opt = overRideWithBidsModelContent(opt)
   input = getBidsModelInput(opt.model.file);
 
   inputTypes = fieldnames(input);
-  
+
   inputPresent = ismember({'task', 'subject', 'space', 'run', 'session'}, inputTypes);
 
   if ~any(inputPresent)
     return
 
   else
-    
+
     optionsPresent = ismember({'taskName', 'subjects', 'space'}, fieldnames(opt));
     queryPresent = ismember({'ses', 'run'}, fieldnames(opt.query));
     optionsPresent = [optionsPresent queryPresent];
-    
-    if any(sum([inputPresent; optionsPresent])>1)
+
+    if any(sum([inputPresent; optionsPresent]) > 1)
       msg = 'Input speficied in BIDS model will overide those in the options.';
       errorHandling(mfilename(), 'bidsModelOverridesOptions', msg, true, opt.verbosity);
     end

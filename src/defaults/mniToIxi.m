@@ -38,7 +38,7 @@ function optOut = mniToIxi(varargin)
       opt.query.space{idx} = 'IXI549Space';
       throwWarning = true;
     end
-    
+
   end
 
   if throwWarning
