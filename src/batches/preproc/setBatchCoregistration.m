@@ -21,7 +21,7 @@ function matlabbatch = setBatchCoregistration(varargin)
 
   default_other = {''};
 
-  isFile = @(x) exist(x, 'file')==2;
+  isFile = @(x) exist(x, 'file') == 2;
 
   p = inputParser;
 

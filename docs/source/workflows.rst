@@ -23,6 +23,12 @@ Slice Time Correction
 More info available on this page of the
 `SPM wikibook <https://en.wikibooks.org/wiki/SPM/Slice_Timing>`_.
 
+.. _dag_stc:
+.. figure::  _static/bidsSTC/out.png
+   :align:   center
+
+   Slice timing correction workflow
+
 ----
 
 Some comments from `here <http://mindhiveit.edu/node/109>`_ on STC, when
@@ -74,11 +80,24 @@ Perform smoothing of the functional data by running ``bidsSmoothing``
 
 .. autofunction:: bidsSmoothing
 
+.. _dag_smoothing:
+.. figure::  _static/bidsSmoothing/out.png
+   :align:   center
+
+   Smoothing workflow
+
 Others
 ------
 
 .. autofunction:: bidsResliceTpmToFunc
 .. autofunction:: bidsSegmentSkullStrip
+
+.. _dag_segmentSkullstrip:
+.. figure::  _static/bidsSegmentSkullstrip/out.png
+   :align:   center
+
+   Segment and skullstrip workflow
+
 .. autofunction:: bidsWholeBrainFuncMask
 
 Statistics
@@ -90,6 +109,13 @@ Subject level analysis
 ----------------------
 
 .. autofunction:: bidsFFX
+
+.. _dag_FFX-specification:
+.. figure::  _static/bidsFFX/out.png
+   :align:   center
+
+   Subject level GLM specification workflow
+
 .. autofunction:: bidsConcatBetaTmaps
 
 Group level analysis
