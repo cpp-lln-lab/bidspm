@@ -4,7 +4,8 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   % The function extracts from the events.tsv file the trials (with type, onsets, and durations)
   % of the conditions of interest as requested in the model.json.
-  % It then stores them in a .mat file that can be fed directly in an SPM GLM batch.
+  % It then stores them in the GLM folder in a .mat file 
+  % that can be fed directly in an SPM GLM batch.
   %
   % USAGE::
   %
