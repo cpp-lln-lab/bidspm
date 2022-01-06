@@ -22,6 +22,7 @@ Welcome to CPP SPM documentation!
    method_section_boilerplate
    mancoreg
    docker
+   links_and_references
 
 
 This is a Matlab / Octave toolbox to perform MRI data analysis on a
