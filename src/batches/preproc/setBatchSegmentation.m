@@ -50,7 +50,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
   matlabbatch{end}.spm.spatial.preproc.channel.biasreg = 0.001;
   matlabbatch{end}.spm.spatial.preproc.channel.biasfwhm = 60;
 
-  % CREATE SEGMENTS IN NATIVE SPACE OF GM,WM AND CSF
+  % CREATE SEGMENTS IN NATIVE SPACE OF GM, WM AND CSF
   nativeSpace = 1;
   dartelSpace = 0;
   native = [nativeSpace dartelSpace];

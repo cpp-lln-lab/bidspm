@@ -7,7 +7,14 @@ Below is a list of the different workflows of the pipeline.
 
 All parameters should be changed in the ``options`` structure.
 
-See the set up section.
+See the :ref:`set-up` section.
+
+.. Note::
+
+   The illustrations in this section mix what the files created by each workflow
+   and the functions and are called by it.
+   In this sense they are not pure DAGs (directed acyclic graphs) as the ``*.m`` files
+   mentioned in them already exist.
 
 
 Preprocessing
@@ -22,6 +29,12 @@ Slice Time Correction
 
 More info available on this page of the
 `SPM wikibook <https://en.wikibooks.org/wiki/SPM/Slice_Timing>`_.
+
+.. _fig_stc:
+.. figure::  _static/bidsSTC/out.png
+   :align:   center
+
+   Slice timing correction workflow
 
 ----
 
@@ -64,6 +77,22 @@ Spatial Preprocessing
 Perform spatial preprocessing by running ``bidsSpatialPrepro``
 
 .. autofunction:: bidsSpatialPrepro
+
+The figures below show the ``bidsSpatialPrepro`` workflow as it would run using
+realign and unwarp (default) and with normalization to SPM MNI space (``IXI549Space``).
+
+.. _fig_spatialPrepro-anat:
+.. figure::  _static/bidsSpatialPrepro/out_anat.png
+   :align:   center
+
+   Anatomical component of the spatial preprocessing workflow
+
+.. _fig_spatialPrepro-func:
+.. figure::  _static/bidsSpatialPrepro/out_func.png
+   :align:   center
+
+   Functional component of the spatial preprocessing workflow
+
 .. autofunction:: bidsRealignReslice
 .. autofunction:: bidsRealignUnwarp
 
@@ -74,11 +103,24 @@ Perform smoothing of the functional data by running ``bidsSmoothing``
 
 .. autofunction:: bidsSmoothing
 
+.. _fig_smoothing:
+.. figure::  _static/bidsSmoothing/out.png
+   :align:   center
+
+   Smoothing workflow
+
 Others
 ------
 
 .. autofunction:: bidsResliceTpmToFunc
 .. autofunction:: bidsSegmentSkullStrip
+
+.. _fig_segmentSkullstrip:
+.. figure::  _static/bidsSegmentSkullstrip/out.png
+   :align:   center
+
+   Segment and skullstrip workflow
+
 .. autofunction:: bidsWholeBrainFuncMask
 
 Statistics
@@ -90,6 +132,13 @@ Subject level analysis
 ----------------------
 
 .. autofunction:: bidsFFX
+
+.. _fig_FFX-specification:
+.. figure::  _static/bidsFFX/out.png
+   :align:   center
+
+   Subject level GLM specification workflow
+
 .. autofunction:: bidsConcatBetaTmaps
 
 Group level analysis
