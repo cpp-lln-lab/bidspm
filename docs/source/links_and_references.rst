@@ -30,7 +30,7 @@ From John Ashburner on Tom Nichols blog: https://blogs.warwick.ac.uk/nichols/tag
 
 From Rik Henson: http://www.mrc-cbu.cam.ac.uk/people/rik.henson/personal/analysis/
 
-Some follow along tutorials written a long time ago, 
+Some follow along tutorials written a long time ago,
 and that probably should be turned into notebooks and updated.
 
 Basic file / image manipulation with SPM: https://github.com/Remi-Gau/advanced_fMRI_course/blob/master/Practical%231/practical_1.m
@@ -43,8 +43,8 @@ Design efficiency: https://github.com/Remi-Gau/advanced_fMRI_course/blob/master/
 Content of SPM.mat
 ==================
 
-This is here because SPM has the sad tradition of using variable names that have often attempted to replicate the notation in the papers, 
-rather then the ``TypicalLongVariableNames`` that many programmers and new comers would prefer to see. 
+This is here because SPM has the sad tradition of using variable names that have often attempted to replicate the notation in the papers,
+rather then the ``TypicalLongVariableNames`` that many programmers and new comers would prefer to see.
 
 Adapted from: http://andysbrainblog.blogspot.com/2013/10/whats-in-spmmat-file.html
 
@@ -54,15 +54,15 @@ details on experiment
 - ``SPM.xY.RT``                - TR length (RT ="repeat time")
 - ``SPM.xY.P``                 - matrix of file names
 - ``SPM.xY.VY``                - # of runs x 1 struct array of mapped image volumes (.nii file info)
-  
+
 - ``SPM.modality``             - the data you're using (PET, FMRI, EEG)
-  
+
 - ``SPM.stats.[modality].UFp`` - critical F-threshold for selecting voxels over which the non-sphericity is estimated (if required) [default: ``0.001``]
 - ``SPM.stats.maxres``         - maximum number of residual images for smoothness estimation
 - ``SPM.stats.maxmem``         - maximum amount of data processed at a time (in bytes)
-  
+
 - ``SPM.SPMid``                - version of SPM used
-  
+
 - ``SPM.swd``                  - directory for SPM.mat and nii files. default is ``pwd``
 
 basis function
@@ -81,7 +81,7 @@ basis function
 Session structure
 -----------------
 
-user-specified covariates/regressors 
+user-specified covariates/regressors
 ++++++++++++++++++++++++++++++++++++
 
 e.g. motion
@@ -89,7 +89,7 @@ e.g. motion
 - ``SPM.Sess([sesssion]).C.C``    - [nxc double] regressor (c is #covariates, n is #sessions)
 - ``SPM.Sess([sesssion]).C.name`` - names of covariates
 
-conditions & modulators specified 
+conditions & modulators specified
 +++++++++++++++++++++++++++++++++
 
 i.e. input structure array
@@ -113,7 +113,7 @@ parameters/modulators specified
 scan indices for sessions
 +++++++++++++++++++++++++
 
-- ``SPM.Sess([sesssion]).row`` 
+- ``SPM.Sess([sesssion]).row``
 
 effect indices for sessions
 +++++++++++++++++++++++++++
@@ -123,7 +123,7 @@ effect indices for sessions
 F Contrast information for input-specific effects
 +++++++++++++++++++++++++++++++++++++++++++++++++
 
-- ``SPM.Sess([sesssion]).Fc`` 
+- ``SPM.Sess([sesssion]).Fc``
 - ``SPM.Sess([sesssion]).Fc.i``    - F Contrast columns for input-specific effects
 - ``SPM.Sess([sesssion]).Fc.name`` - F Contrast names for input-specific effects
 
@@ -132,9 +132,9 @@ F Contrast information for input-specific effects
 global variate/normalization details
 ------------------------------------
 
-- ``SPM.xGX.iGXcalc`` - either ``none`` or ``scaling`` 
+- ``SPM.xGX.iGXcalc`` - either ``none`` or ``scaling``
 
-For fMRI usually is ``none`` (no global normalization). 
+For fMRI usually is ``none`` (no global normalization).
 If global normalization is ``scaling``, see ``spm_fmri_spm_ui`` for parameters that will then appear under ``SPM.xGX``.
 
 design matrix information
@@ -142,7 +142,7 @@ design matrix information
 
 - ``SPM.xX.X``        - design matrix (raw, not temporally smoothed)
 - ``SPM.xX.name``     - cellstr of parameter names corresponding to columns of design matrix
-- ``SPM.xX.I``        - nScan x 4 matrix of factor level indicators. first column is the replication number. other columns are the levels of each experimental factor. 
+- ``SPM.xX.I``        - nScan x 4 matrix of factor level indicators. first column is the replication number. other columns are the levels of each experimental factor.
 - ``SPM.xX.iH``       - vector of H partition (indicator variables) indices
 - ``SPM.xX.iC``       - vector of C partition (covariates) indices
 - ``SPM.xX.iB``       - vector of B partition (block effects) indices
@@ -152,7 +152,7 @@ design matrix information
 - ``SPM.xX.K.HParam`` - low frequency cutoff value
 - ``SPM.xX.K.X0``     - cosines (high-pass filter)
 
-- ``SPM.xX.W``        - Optional whitening/weighting matrix used to give weighted least squares estimates (WLS). 
+- ``SPM.xX.W``        - Optional whitening/weighting matrix used to give weighted least squares estimates (WLS).
   If not specified ``spm_spm`` will set this to whiten the data and render the OLS estimates maximum likelihood i.e. ``W*W' inv(xVi.V)``.
 
 - ``SPM.xX.xKXs``     - space structure for K*W*X, the 'filtered and whitened' design matrix
@@ -173,10 +173,10 @@ design matrix information
 - ``SPM.xX.trRV``     - trace of R*V
 - ``SPM.xX.trRVRV``   - trace of RVRV
 - ``SPM.xX.erdf``     - effective residual degrees of freedom (``trRV^2/trRVRV``)
-- ``SPM.xX.nKX``      - design matrix (``xX.xKXs.X``) scaled for display (see ``spm_DesMtx('sca',...`` for details) 
-- ``SPM.xX.sF``       - cellstr of factor names (columns in ``SPM.xX.I``, i think) 
-- ``SPM.xX.D``        - struct, design definition 
-- ``SPM.xX.xVi``      - correlation constraints (see non-sphericity below) 
+- ``SPM.xX.nKX``      - design matrix (``xX.xKXs.X``) scaled for display (see ``spm_DesMtx('sca',...`` for details)
+- ``SPM.xX.sF``       - cellstr of factor names (columns in ``SPM.xX.I``, i think)
+- ``SPM.xX.D``        - struct, design definition
+- ``SPM.xX.xVi``      - correlation constraints (see non-sphericity below)
 
 - ``SPM.xC``          - struct. array of covariate info
 
@@ -212,7 +212,7 @@ structure describing intrinsic temporal non-sphericity
 - ``SPM.xVi.form`` - form of non-sphericity (either ``none`` or ``AR(1)`` or ``FAST``)
 
 - ``SPM.xX.V``     - Optional non-sphericity matrix. ``CCov(e)sigma^2*V``.
-  If not specified ``spm_spm`` will compute this using a 1st pass to identify signifcant voxels over which to estimate V. 
+  If not specified ``spm_spm`` will compute this using a 1st pass to identify signifcant voxels over which to estimate V.
   A 2nd pass is then used to re-estimate the parameters with WLS and save the ML estimates (unless xX.W is already specified).
 
 filtering information
@@ -238,7 +238,7 @@ masking information
 - ``SPM.xM.VM``  - struct array of mapped explicit mask image volumes
 - ``SPM.xM.xs``  - [1x1 struct] cellstr description
 
-design information 
+design information
 ------------------
 
 self-explanatory names, for once
@@ -307,12 +307,12 @@ added after running contrasts
   - ``SPM.xCon.iX0`` - Indicates how contrast was specified:
 
     - If by columns for reduced design matrix then iX0 contains the column indices.
-    - Otherwise, it's a string containing the ``spm_FcUtil`` 'Set' action: 
+    - Otherwise, it's a string containing the ``spm_FcUtil`` 'Set' action:
       Usually one of {'c','c+','X0'} defines the indices of the columns that will not be tested. Can be empty.
 
   - ``SPM.xCon.X1o`` - Remaining design space data (X1o is orthogonal to X0)
 
-    - Stored as coordinates in the orthogonal basis of xX.X from ``spm_sp`` (Matrix in SPM99b) 
+    - Stored as coordinates in the orthogonal basis of xX.X from ``spm_sp`` (Matrix in SPM99b)
     - Extract using X1o ``spm_FcUtil('X1o', ...``
 
   - ``SPM.xCon.eidf`` - Effective interest degrees of freedom (numerator df)
@@ -320,4 +320,4 @@ added after running contrasts
     - Or effect-size threshold for Posterior probability
 
   - ``SPM.xCon.Vcon`` - Name of contrast (for 'T's) or ESS (for 'F's) image
-  - ``SPM.xCon.Vspm`` - Name of SPM image 
+  - ``SPM.xCon.Vspm`` - Name of SPM image
