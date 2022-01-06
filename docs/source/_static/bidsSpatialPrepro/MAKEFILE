@@ -1,3 +1,5 @@
+# Pure DAG: no scripts / code included: only files
+
 # Final output
 cpp_spm-preproc/sub-01/func/: 	sub-01_task-auditory_desc-confounds_regressors.tsv \
 								sub-01_task-audio_desc-stc_bold.mat \

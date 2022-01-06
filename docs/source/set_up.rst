@@ -1,3 +1,5 @@
+.. _set-up:
+
 Set up
 ******
 
@@ -52,7 +54,9 @@ It also allows to specify those for different levels of the analysis:
 -   subject
 -   dataset
 
-An example of json file could look something like that::
+An example of json file could look something like that:
+
+.. code-block:: json
 
     {
         "Name": "Basic",
@@ -97,3 +101,15 @@ We are currently using this to run different subject level GLM models for our
 univariate and multivariate analysis where in the first one we compute a con
 image that averages the beta images of all the runs where as in the latter case
 we get one con image for each run.
+
+
+To create a default model for a given BIDS dataset you can do this:
+
+.. code-block:: matlab
+
+    path_to_dataset = fullfile(pwd, 'data', 'raw');
+    BIDS = bids.layout(path_to_dataset);
+
+    opt.taskName = 'myFascinatingTask';
+
+    createDefaultStatsModel(BIDS, opt);
