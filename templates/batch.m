@@ -23,7 +23,7 @@ function matlabbatch = batch(varargin)
   % Example::
   %
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2022 CPP_SPM developers
 
   p = inputParser;
 

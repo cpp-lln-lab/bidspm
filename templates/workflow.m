@@ -10,7 +10,7 @@ function workflow(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2022 CPP_SPM developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'workflow name');
 
