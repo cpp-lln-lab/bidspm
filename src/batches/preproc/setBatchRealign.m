@@ -24,12 +24,13 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   % :returns: - :matlabbatch: (structure) (dimension)
   %           - :voxDim: (array) (dimension)
   %
+  %
+  % (C) Copyright 2020 CPP_SPM developers
+  
   % TODO::
   %
   %   make which image is resliced more consistent 'which = []'
-  %
-  % (C) Copyright 2020 CPP_SPM developers
-
+  
   if numel(varargin) < 5
     [matlabbatch, BIDS, opt, subLabel] = deal(varargin{:});
     action = '';

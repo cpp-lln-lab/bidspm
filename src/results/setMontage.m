@@ -1,11 +1,16 @@
 function montage = setMontage(result)
   %
+  % USAGE::
+  %
+  %   montage = setMontage(result)
+  %
+  %
+  % (C) Copyright 2019 CPP_SPM developers
+
   % TO DO
   % - adapt so that the background image is in MNI only if opt.space is IXI549Space
   % - add possibility to easily select mean functional or the anatomical:
   %   - at the group level or subject level
-  %
-  % (C) Copyright 2019 CPP_SPM developers
 
   if exist(result.Output.montage.background, 'file') ~= 2
     errorHandling(mfilename(), 'backgroundImageNotFound', ...

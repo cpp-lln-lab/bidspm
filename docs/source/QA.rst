@@ -1,9 +1,5 @@
 Quality control workflows
-=========================
-
-Manual coregistration
-
-----
+*************************
 
 .. automodule:: src.QA
 

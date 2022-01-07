@@ -1,5 +1,5 @@
 Manual coregistration
-=====================
+*********************
 
 Manual coregistration tools
 

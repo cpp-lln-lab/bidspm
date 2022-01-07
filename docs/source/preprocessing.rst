@@ -1,26 +1,19 @@
-Workflows
-*********
+.. _preprocessing:
 
-Workflows typical run on all the subjects specified in the ``options`` structure.
+Preprocessing
+*************
 
-Below is a list of the different workflows of the pipeline.
+Preprocessing workflows
+=======================
 
-All parameters should be changed in the ``options`` structure.
-
-See the :ref:`set-up` section.
+.. automodule:: src.workflows.preproc
 
 .. Note::
 
    The illustrations in this section mix what the files created by each workflow
    and the functions and are called by it.
    In this sense they are not pure DAGs (directed acyclic graphs) as the ``*.m`` files
-   mentioned in them already exist.
-
-
-Preprocessing
-=============
-
-.. automodule:: src.workflows.preproc
+   mentioned in them already exist.    
 
 Slice Time Correction
 ---------------------
@@ -36,7 +29,6 @@ More info available on this page of the
 
    Slice timing correction workflow
 
-----
 
 Some comments from `here <http://mindhiveit.edu/node/109>`_ on STC, when
 it should be applied
@@ -123,65 +115,32 @@ Others
 
 .. autofunction:: bidsWholeBrainFuncMask
 
-Statistics
-==========
+Preprocessing batches
+=====================
 
-.. automodule:: src.workflows.stats
+.. automodule:: src.batches.preproc
 
-Subject level analysis
-----------------------
+Slice Time Correction
+---------------------
 
-.. autofunction:: bidsFFX
+.. autofunction:: setBatchSTC
 
-.. _fig_FFX-specification:
-.. figure::  _static/bidsFFX/out.png
-   :align:   center
+Spatial Preprocessing
+---------------------
 
-   Subject level GLM specification workflow
+.. autofunction:: setBatchRealign
+.. autofunction:: setBatchReslice
+.. autofunction:: setBatchSegmentation
+.. autofunction:: setBatchSkullStripping
+.. autofunction:: setBatchNormalize
+.. autofunction:: setBatchNormalizationSpatialPrepro
+.. autofunction:: setBatchCoregistrationFuncToAnat
+.. autofunction:: setBatchCoregistration
+.. autofunction:: setBatchSaveCoregistrationMatrix
 
-.. autofunction:: bidsConcatBetaTmaps
+Smoothing
+---------
 
-Group level analysis
---------------------
-
-.. autofunction:: bidsRFX
-
-Compute results
----------------
-
-.. autofunction:: bidsResults
-
-Region of interest analysis
-===========================
-
-.. automodule:: src.workflows.roi
-
-.. autofunction::  bidsCreateROI
-.. autofunction::  bidsRoiBasedGLM
-
-
-HRF estimation
-==============
-
-Relies on the resting-state HRF toolbox.
-
-.. automodule:: src.workflows
-
-.. autofunction:: bidsRsHrf
-
-Other
-=====
-
-.. autofunction:: bidsCopyInputFolder
-.. autofunction:: bidsRename
-
-
-Helper functions
-================
-
-To be used if you want to create a new workflow.
-
-.. autofunction:: setUpWorkflow
-.. autofunction:: saveAndRunWorkflow
-.. autofunction:: cleanUpWorkflow
-.. autofunction:: returnDependency
+.. autofunction:: setBatchSmoothConImages
+.. autofunction:: setBatchSmoothingFunc
+.. autofunction:: setBatchSmoothing

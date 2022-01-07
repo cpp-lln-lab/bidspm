@@ -14,11 +14,11 @@ Welcome to CPP SPM documentation!
    set_up
    defaults
    demos
-   workflows
-   batches
-   QA
+   architecture
+   preprocessing
    fieldmaps
-   function_description
+   statistics
+   QA
    method_section_boilerplate
    mancoreg
    docker

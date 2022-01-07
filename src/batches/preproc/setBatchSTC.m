@@ -19,14 +19,10 @@ function matlabbatch = setBatchSTC(varargin)
   % Slice timing units is in seconds to be BIDS compliant and not in slice number
   % as is more traditionally the case with SPM.
   %
-  % In the case the slice timing information was not specified in the json FILES
-  % in the BIDS data set (e.g it couldn't be extracted from the trento old scanner),
-  % then add this information manually in opt.sliceOrder field.
-  %
-  % If this is empty the slice timing correction will not be performed
+  % If no slice order can be found, the slice timing correction will not be performed.
   %
   % If not specified this function will take the mid-volume time point as reference
-  % to do the slice timing correction
+  % to do the slice timing correction.
   %
   % (C) Copyright 2019 CPP_SPM developers
 
