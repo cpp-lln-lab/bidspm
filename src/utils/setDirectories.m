@@ -111,7 +111,7 @@ function opt = setOutputDir(opt)
       case {'preproc', 'stats'}
         outputDir = opt.dir.(opt.pipeline.type);
       otherwise
-        error('unknown pipeline type');
+        outputDir = opt.dir.preproc;
     end
   end
 

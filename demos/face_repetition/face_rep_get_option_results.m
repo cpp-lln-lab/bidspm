@@ -4,6 +4,8 @@ function opt =  face_rep_get_option_results()
 
   opt = [];
 
+  opt.pipeline.type = 'stats';
+
   opt.verbosity = 1;
 
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
@@ -41,7 +43,6 @@ function opt =  face_rep_get_option_results()
   opt.result.Nodes(1).Output.montage.orientation = 'axial';
 
   %% DO NOT TOUCH
-  opt = checkOptions(opt);
   saveOptions(opt);
 
 end

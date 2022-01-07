@@ -229,15 +229,6 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
 
 end
 
-function status = isTtest(structure)
-  status = true;
-  if isfield(structure, 'Test') && ~strcmp(structure.Test, 't')
-    status = false;
-    msg = 'Only t test supported for contrasts';
-    errorHandling(mfilename(), 'notImplemented', msg, true, true);
-  end
-end
-
 function C = newContrast(SPM, conName)
   C.C = zeros(1, size(SPM.xX.X, 2));
   C.name = conName;

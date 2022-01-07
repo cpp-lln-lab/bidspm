@@ -4,8 +4,6 @@ function moaeDir = getMoaeDir()
 
   thisDir = fileparts(mfilename('fullpath'));
 
-  fullfile(thisDir, '..', '..', 'demos', 'MoAE');
-
   moaeDir = spm_file(fullfile(thisDir, '..', '..', 'demos', 'MoAE'), 'cpath');
 
 end

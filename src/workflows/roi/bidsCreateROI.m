@@ -18,7 +18,6 @@ function bidsCreateROI(opt)
   %  bidsCreateROI(opt);
   %
   %
-  %
   % (C) Copyright 2021 CPP_SPM developers
 
   if nargin < 1
@@ -47,9 +46,12 @@ function bidsCreateROI(opt)
 
   end
 
+  % if SPM MNI space copy to subject folder with symlink if possible or copy
+  % file otherwise?
+
   if any(strcmp(opt.roi.space, 'individual'))
 
-    opt.dir.jobs = fullfile(opt.dir.roi, 'jobs', strjoin(opt.taskName, ''));
+    opt.dir.jobs = fullfile(opt.dir.roi, 'jobs');
 
     opt.dir.input = opt.dir.preproc;
 

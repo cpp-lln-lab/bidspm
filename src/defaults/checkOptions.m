@@ -149,8 +149,8 @@ function opt = checkOptions(opt)
   end
 
   % deal with space
-  if strcmpi(opt.pipeline.type, 'stats')
-    fieldsToSet = struct('space', {'individual', 'IXI549Space'});
+  if ~strcmpi(opt.pipeline.type, 'stats')
+    fieldsToSet = struct('space', {{'individual', 'IXI549Space'}});
     opt = setFields(opt, fieldsToSet);
   end
   if isfield(opt, 'space') && ~iscell(opt.space)
@@ -217,7 +217,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.verbosity = 1;
   fieldsToSet.dryRun = false;
 
-  fieldsToSet.pipeline.type = 'preproc';
+  fieldsToSet.pipeline.type = '';
   fieldsToSet.pipeline.name = 'cpp_spm';
 
   fieldsToSet.useBidsSchema = false;

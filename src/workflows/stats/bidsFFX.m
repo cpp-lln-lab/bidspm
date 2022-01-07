@@ -39,19 +39,10 @@ function matlabbatch = bidsFFX(action, opt)
 
   if isempty(opt.model.file)
     opt = createDefaultStatsModel(BIDS, opt);
+    opt = overRideWithBidsModelContent(opt);
   end
 
-  descr_file = fullfile(opt.dir.output, 'dataset_description.json');
-  if ~exist(descr_file, 'file')
-    isDerivative = true;
-    bids.init(opt.dir.output, struct(), isDerivative);
-    ds_desc = bids.Description('cpp_spm-stats', bids.layout(opt.dir.output));
-    ds_desc.content.BIDSVersion = '1.6.0';
-    ds_desc.content.GeneratedBy{1}.Version = getVersion();
-    ds_desc.content.GeneratedBy{1}.CodeURL = getRepoURL();
-    ds_desc.content.GeneratedBy{1}.Description = 'subject level statistics';
-    ds_desc.write(opt.dir.output);
-  end
+  addStatsDatasetDescription(opt);
 
   for iSub = 1:numel(opt.subjects)
 
