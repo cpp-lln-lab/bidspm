@@ -90,6 +90,11 @@ function bidsCreateROI(opt)
         matlabbatch{end}.spm.spatial.normalise.write.woptions.bb = nan(2, 3);
       end
 
+      % skip test in CI
+      if isGithubCi
+        return
+      end
+
       saveAndRunWorkflow(matlabbatch, 'inverseNormalize', opt, subLabel);
 
       %% move and rename file

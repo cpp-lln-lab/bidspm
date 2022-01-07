@@ -17,11 +17,9 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   % event_specification(1).event_spec [1;1]
   % event_specification(1).duration 0
   %
-  % Example::
+  % See also: event_fitted, event_signal
   %
   % (C) Copyright 2022 CPP_SPM developers
-
-  % The code goes below
 
   p = inputParser;
 

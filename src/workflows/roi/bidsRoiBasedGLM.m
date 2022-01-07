@@ -10,7 +10,7 @@ function bidsRoiBasedGLM(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % Will compute the percent signal change and the time course of the events
+  % Will compute the absolute maximum percent signal change and the time course of the events
   % or blocks of contrast specified in the BIDS model and save and plot the results
   % in tsv / json / jpeg files.
   %
@@ -51,7 +51,6 @@ function bidsRoiBasedGLM(opt)
     %% Specify Model
 
     matlabbatch = {};
-
     matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
     batchName = ['specify_roi_based_GLM_task-', strjoin(opt.taskName, '')];
