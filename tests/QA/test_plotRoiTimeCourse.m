@@ -12,15 +12,15 @@ function test_suite = test_plotRoiTimeCourse %#ok<*STOUT>
 end
 
 function test_plotRoiTimeCourse_basic()
-  
-  close all
+
+  close all;
 
   % GIVEN
   timeCourseFile = fullfile(getDummyDataDir(), 'mat_files', 'hemi-L_label-V1d_timecourse.tsv');
 
   % WHEN
   plotRoiTimeCourse(timeCourseFile);
-  
+
   close all;
 
 end

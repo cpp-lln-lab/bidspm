@@ -1,4 +1,4 @@
-function plotRoiTimeCourse(varargin)
+function figureFile = plotRoiTimeCourse(varargin)
   %
   % Plots the peristimulus histogram from a ROI based GLM
   %
@@ -36,36 +36,38 @@ function plotRoiTimeCourse(varargin)
   secs = [0:size(timeCourse, 1) - 1] * content.SamplingFrequency;
 
   bf = bids.File(tsvFile);
-  
+
   if isGithubCi()
     return
   end
 
-  fig = figure('name', ['ROI: ' bf.entities.label ' - ' bf.entities.hemi], ...
-               'position', [50 50 750 750]);
+  spm_figure('Create', 'Tag', ['ROI: ' bf.entities.label ' - ' bf.entities.hemi], 'on');
 
   hold on;
 
   plot(secs, timeCourse, 'linewidth', 2);
   plot([0 secs(end)], [0 0], '--k');
 
-  title(['Time courses for ' get(fig, 'name')], ...
+  title(['Time courses for ROI: ' bf.entities.label ' - ' bf.entities.hemi], ...
         'Interpreter', 'none');
 
   xlabel('Seconds');
   ylabel('Percent signal change');
-  
+
   legend(conditionNames);
 
   axis tight;
 
-  position = [20 max(timeCourse(:))/2];
-  text(position(1), position(2), 'Max percent signal change')
+  position = [20 max(timeCourse(:)) / 2];
+  text(position(1), position(2), 'Max percent signal change');
   for i = 1:numel(conditionNames)
     text(position(1), position(2) - i * 0.015,  ...
-      sprintf('%s = %f', ...
-      conditionNames{i}, ...
-      content.(conditionNames{i}).percentSignalChange))
+         sprintf('%s = %f', ...
+                 conditionNames{i}, ...
+                 content.(conditionNames{i}).percentSignalChange));
   end
+
+  figureFile = bids.internal.file_utils(tsvFile, 'ext', '.png');
+  print(gcf, figureFile, '-dpng');
 
 end

@@ -11,10 +11,19 @@ function bidsRoiBasedGLM(opt)
   % :type opt: structure
   %
   % Will compute the percent signal change and the time course of the events
-  % or blocks of contrast specified in the BIDS model.
+  % or blocks of contrast specified in the BIDS model and save and plot the results
+  % in tsv / json / jpeg files.
+  %
+  % ..warning::
+  %
+  %   If your blocks are modelled as series of fast paced "short" events,
+  %   the results of this workflow might be misleading.
+  %   It might be better to make sure that the each block has a single event
+  %   with a "long" duration.
   %
   % Adapted from the MarsBar tutorial: lib/CPP_ROI/lib/marsbar-0.44/examples/batch
   %
+  % See also: bidsCreateRoi, plotRoiTimeCourse, getEventSpecificationRoiGlm
   %
   % (C) Copyright 2021 CPP_SPM developers
 
@@ -49,7 +58,6 @@ function bidsRoiBasedGLM(opt)
 
     saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-    %% Do ROI based GLM
     spmFile = fullfile(getFFXdir(subLabel, opt), 'SPM.mat');
     load(spmFile);
 
@@ -65,6 +73,7 @@ function bidsRoiBasedGLM(opt)
 
     for iROI = 1:size(roiList, 1)
 
+      %% Do ROI based GLM
       % create ROI object for Marsbar
       % and convert to mat format to avoid delicacies of image format
       roiObject = maroi_image(struct( ...
@@ -104,7 +113,7 @@ function bidsRoiBasedGLM(opt)
       % Make fitted time course into ~% signal change
       timeCourse = timeCourse / mean(block_means(estimation)) * 100;
 
-      % Save to TSV and JSON
+      %% Save to TSV and JSON
       jsonContent = struct('SamplingFrequency', []);
       if unique(dt) > 1
         error('temporal resolution different across conditions');
