@@ -15,7 +15,9 @@ checkOptions
 spm_my_defaults
 ===============
 
-Some more SPM options can be set in the ``spm_my_defaults.m``.
+Some more SPM options can be set in the :func:`src.defaults.spm_my_defaults.m`.
+
+.. autofunction:: spm_my_defaults
 
 auto-correlation modelisation
 -----------------------------
@@ -32,7 +34,9 @@ pipeline.
     | https://doi.org/10.1038/s41467-019-09230-w
 
 Note that if you wanted to change this setting you could do so
-via ``Software`` object of the BIDS stats model::
+via the ``Software`` object of the BIDS stats model:
+
+.. code-block:: json    
 
     {
     "Name": "auditory",
@@ -60,9 +64,6 @@ via ``Software`` object of the BIDS stats model::
         }
     ]
     }
-
-
-.. autofunction:: spm_my_defaults
 
 spm to BIDS filename conversion
 ===============================

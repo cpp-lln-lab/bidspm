@@ -88,13 +88,17 @@ Assumes that you have set things up properly. For the UCLouvain see the document
 (which has some good info about using HPC in general).
 
 If you have everything set up it should be almost as easy as opening a terminal
-and typing::
+and typing:
+
+.. code-block:: bash
 
   ssh lemaitre3
 
 2. Get SPM
 
-You can simply clone the latest version of SPM from github with::
+You can simply clone the latest version of SPM from github with:
+
+.. code-block:: bash
 
   git clone https://github.com/spm/spm12.git --depth 1
 
@@ -104,7 +108,9 @@ This first step might be different on your HPC,
 so you might have to figure out what the equivalent modules are called on your HPC
 (in the UCLouvain case you can find the relevant module by typing ``module spider octave``)
 
-Once you have found the modules load them::
+Once you have found the modules load them:
+
+.. code-block:: bash
 
   module load releases/2018b
   module load Octave/4.4.1-foss-2018b
@@ -112,7 +118,9 @@ Once you have found the modules load them::
 4. Recompile SPM for Octave
 
 You need to recompile SPM to make sure it works with Octave.
-This relies on running the following Make commands::
+This relies on running the following Make commands:
+
+.. code-block:: bash
 
   make -C spm12/src PLATFORM=octave distclean
   make -C spm12/src PLATFORM=octave
@@ -123,7 +131,9 @@ This relies on running the following Make commands::
 In the example below ``$`` shows when you are in the bash terminal and
 ``octave:1>`` shows when you are in the Octave terminal.
 
-Launch Octave::
+Launch Octave:
+
+.. code-block:: bash
 
   $ octave
 
@@ -143,7 +153,9 @@ Launch Octave::
   Read https://www.octave.org/bugs.html to learn how to submit bug reports.
   For information about changes from previous versions, type 'news'.
 
-Add the SPM12 folder to the path and save the path::
+Add the SPM12 folder to the path and save the path:
+
+.. code-block:: matlab
 
   octave:1> addpath(fullfile(pwd, 'spm12'))
   octave:2> savepath
@@ -151,7 +163,9 @@ Add the SPM12 folder to the path and save the path::
 
 5. Install CPP SPM
 
-As before install and run an initialization::
+As before install and run an initialization:
+
+.. code-block:: bash
 
   git clone \
     -b dev \
@@ -164,11 +178,9 @@ As before install and run an initialization::
 
     octave:1> initCppSpm
     warning: addpath: /home/users/r/g/rgau/CPP_SPM/lib/spmup/utlilities/home/users/r/g/rgau/CPP_SPM/lib/spm_2_bids: No such file or directory
-    warning: called from
-        initCppSpm at line 67 column 5
+    warning: called from initCppSpm at line 67 column 5
     warning: function /home/users/r/g/rgau/CPP_SPM/lib/spmup/external/cubehelix.m shadows a core library function
-    warning: called from
-        initCppSpm at line 67 column 5
+    warning: called from initCppSpm at line 67 column 5
     warning: addpath: /home/users/r/g/rgau/CPP_SPM/src/workflows/stats/home/users/r/g/rgau/CPP_SPM/lib/spmup: No such file or directory
 
   As well as many warnings of the type::

@@ -15,10 +15,10 @@ Most of the options you have chosen for your analysis will be set in a variable
 The content of that structure can be defined:
 
 - "at run" time in a script or a function (that we often label ``getOption``)
-- in a separate json file that can be loaded with ``loadAndCheckOptions()``.
+- in a separate json file that can be loaded with :func:`src/utils/loadAndCheckOptions.m`.
 
 You can find examples of both in the ``demos`` folder. You can also find a
-template function for ``getOption`` in the ``src/templates`` folder.
+template function for ``getOption`` in the ``templates`` folder.
 
 Set the task to analyze in the BIDS data set ``opt.taskName = 'auditory'``
 
@@ -26,7 +26,7 @@ Selecting groups and subjects
 +++++++++++++++++++++++++++++
 
 The way to select certain subjects is summarised in the documentation of the
-``getSubjectList`` function.
+:func:`src/utils/getSubjectList` function.
 
 .. automodule:: src.utils
 

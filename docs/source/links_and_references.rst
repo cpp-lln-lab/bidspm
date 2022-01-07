@@ -48,12 +48,13 @@ rather then the ``TypicalLongVariableNames`` that many programmers and new comer
 
 Adapted from: http://andysbrainblog.blogspot.com/2013/10/whats-in-spmmat-file.html
 
+
 details on experiment
 ---------------------
 
 - ``SPM.xY.RT``                - TR length (RT ="repeat time")
 - ``SPM.xY.P``                 - matrix of file names
-- ``SPM.xY.VY``                - # of runs x 1 struct array of mapped image volumes (.nii file info)
+- ``SPM.xY.VY``                - (# of runs x 1) struct array of mapped image volumes (.nii file info)
 
 - ``SPM.modality``             - the data you're using (PET, FMRI, EEG)
 
@@ -65,6 +66,7 @@ details on experiment
 
 - ``SPM.swd``                  - directory for SPM.mat and nii files. default is ``pwd``
 
+
 basis function
 --------------
 
@@ -73,20 +75,23 @@ basis function
 - ``SPM.xBF.order``    - order of basis set
 - ``SPM.xBF.T``        - number of subdivisions of TR
 - ``SPM.xBF.T0``       - first time bin (see slice timing)
-- ``SPM.xBF.UNITS``    - options: ``scans`` | ``secs`` for onsets
+- ``SPM.xBF.UNITS``    - options: ``'scans'`` or ``'secs'`` for onsets
 - ``SPM.xBF.Volterra`` - order of convolution
 - ``SPM.xBF.dt``       - length of time bin in seconds
 - ``SPM.xBF.bf``       - basis set matrix
 
+
 Session structure
 -----------------
+
+Note that in SPM lingo sessions are equivalent to a runs in BIDS.
 
 user-specified covariates/regressors
 ++++++++++++++++++++++++++++++++++++
 
 e.g. motion
 
-- ``SPM.Sess([sesssion]).C.C``    - [nxc double] regressor (c is #covariates, n is #sessions)
+- ``SPM.Sess([sesssion]).C.C``    - (n x c) double regressor (c is #covariates, n is #sessions)
 - ``SPM.Sess([sesssion]).C.name`` - names of covariates
 
 conditions & modulators specified
@@ -129,20 +134,23 @@ F Contrast information for input-specific effects
 
 - ``SPM.nscan([session])`` - number of scans per session (or if e.g. a t-test, total number of con*.nii files)
 
+
 global variate/normalization details
 ------------------------------------
 
-- ``SPM.xGX.iGXcalc`` - either ``none`` or ``scaling``
+- ``SPM.xGX.iGXcalc`` - either ``'none'`` or ``'scaling'``
 
 For fMRI usually is ``none`` (no global normalization).
 If global normalization is ``scaling``, see ``spm_fmri_spm_ui`` for parameters that will then appear under ``SPM.xGX``.
+
 
 design matrix information
 -------------------------
 
 - ``SPM.xX.X``        - design matrix (raw, not temporally smoothed)
 - ``SPM.xX.name``     - cellstr of parameter names corresponding to columns of design matrix
-- ``SPM.xX.I``        - nScan x 4 matrix of factor level indicators. first column is the replication number. other columns are the levels of each experimental factor.
+- ``SPM.xX.I``        - (nScan x 4) matrix of factor level indicators. first column is the replication number. 
+                        Other columns are the levels of each experimental factor.
 - ``SPM.xX.iH``       - vector of H partition (indicator variables) indices
 - ``SPM.xX.iC``       - vector of C partition (covariates) indices
 - ``SPM.xX.iB``       - vector of B partition (block effects) indices
@@ -157,7 +165,7 @@ design matrix information
 
 - ``SPM.xX.xKXs``     - space structure for K*W*X, the 'filtered and whitened' design matrix
 
-  - ``SPM.xX.xKXs.X``   - Mtx - matrix of trials and betas (columns) in each trial
+  - ``SPM.xX.xKXs.X``   - matrix of trials and betas (columns) in each trial
   - ``SPM.xX.xKXs.tol`` - tolerance
   - ``SPM.xX.xKXs.ds``  - vectors of singular values
   - ``SPM.xX.xKXs.u``   - u as in X u*diag(ds)*v'
@@ -168,8 +176,9 @@ design matrix information
   - ``SPM.xX.xKXs.ups`` - space in which this one is embedded
   - ``SPM.xX.xKXs.sus`` - subspace
 
-- ``SPM.xX.pKX``      - pseudoinverse of K*W*X, computed by spm_sp
-- ``SPM.xX.Bcov``     - xX.pKX*xX.V*xX.pKX - variance-covariance matrix of parameter estimates (when multiplied by the voxel-specific hyperparameter ResMS of the parameter estimates (ResSS/xX.trRV ResMS) )
+- ``SPM.xX.pKX``      - pseudoinverse of K*W*X, computed by ``spm_sp``
+- ``SPM.xX.Bcov``     - xX.pKX*xX.V*xX.pKX - variance-covariance matrix of parameter estimates 
+                        (when multiplied by the voxel-specific hyperparameter ResMS of the parameter estimates (ResSS/xX.trRV ResMS) )
 - ``SPM.xX.trRV``     - trace of R*V
 - ``SPM.xX.trRVRV``   - trace of RVRV
 - ``SPM.xX.erdf``     - effective residual degrees of freedom (``trRV^2/trRVRV``)
@@ -180,20 +189,23 @@ design matrix information
 
 - ``SPM.xC``          - struct. array of covariate info
 
+
 header info
 -----------
 
 - ``SPM.P`` - a matrix of filenames
 
 - ``SPM.V`` - a vector of structures containing image volume information.
+
   - ``SPM.V.fname``      - the filename of the image.
   - ``SPM.V.dim``        - the x, y and z dimensions of the volume
-  - ``SPM.V.dt``         - A 1x2 array. First element is datatype (see ``spm_type``). The second is 1 or 0 depending on the endian-ness.
-  - ``SPM.V.mat``        - a 4x4 affine transformation matrix mapping from voxel coordinates to real world coordinates.
+  - ``SPM.V.dt``         - a (1 x 2) array. First element is datatype (see ``spm_type``). The second is 1 or 0 depending on the endian-ness.
+  - ``SPM.V.mat``        - a (4 x 4) affine transformation matrix mapping from voxel coordinates to real world coordinates.
   - ``SPM.V.pinfo``      - plane info for each plane of the volume.
   - ``SPM.V.pinfo(1,:)`` - scale for each plane
-  - ``SPM.V.pinfo(2,:)`` - offset for each plane The true voxel intensities of the jth image are given by: ``val*V.pinfo(1,j) + V.pinfo(2,j``)
+  - ``SPM.V.pinfo(2,:)`` - offset for each plane The true voxel intensities of the j:sup:`th` image are given by: ``val*V.pinfo(1,j) + V.pinfo(2,j``)
   - ``SPM.V.pinfo(3,:)`` - offset into image (in bytes). If the size of pinfo is 3x1, then the volume is assumed to be contiguous and each plane has the same scale factor and offset.
+
 
 structure describing intrinsic temporal non-sphericity
 ------------------------------------------------------
@@ -209,11 +221,12 @@ structure describing intrinsic temporal non-sphericity
     - specifying a cell array of contraints ((Qi)
     - These contraints invoke ``spm_reml`` to estimate hyperparameters assuming V is constant over voxels that provide a high precise estimate of xX.V
 
-- ``SPM.xVi.form`` - form of non-sphericity (either ``none`` or ``AR(1)`` or ``FAST``)
+- ``SPM.xVi.form`` - form of non-sphericity (either ``'none'`` or ``'AR(1)'`` or ``'FAST'``)
 
 - ``SPM.xX.V``     - Optional non-sphericity matrix. ``CCov(e)sigma^2*V``.
   If not specified ``spm_spm`` will compute this using a 1st pass to identify signifcant voxels over which to estimate V.
   A 2nd pass is then used to re-estimate the parameters with WLS and save the ML estimates (unless xX.W is already specified).
+
 
 filtering information
 ---------------------
@@ -228,15 +241,17 @@ filtering information
 
 - ``SPM.Y`` - filtered data matrix
 
+
 masking information
 -------------------
 
 - ``SPM.xM``     - Structure containing masking information, or a simple column vector of thresholds corresponding to the images in VY.
-- ``SPM.xM.T``   - [n x 1 double] - Masking index
-- ``SPM.xM.TH``  - nVar x nScan matrix of analysis thresholds, one per image
+- ``SPM.xM.T``   - (n x 1) double - Masking index
+- ``SPM.xM.TH``  - (nVar x nScan) matrix of analysis thresholds, one per image
 - ``SPM.xM.I``   - Implicit masking (``0`` --> none; ``1`` --> implicit zero/NaN mask)
 - ``SPM.xM.VM``  - struct array of mapped explicit mask image volumes
-- ``SPM.xM.xs``  - [1x1 struct] cellstr description
+- ``SPM.xM.xs``  - (1 x 1) struct ; cellstr description
+
 
 design information
 ------------------
@@ -252,6 +267,7 @@ self-explanatory names, for once
 - ``SPM.xsDes.Grand_mean_scaling``
 - ``SPM.xsDes.Global_normalisation``
 
+
 details on scanner data
 -----------------------
 
@@ -259,13 +275,14 @@ e.g. smoothness
 
 - ``SPM.xVol`` - structure containing details of volume analyzed
 
-  - ``SPM.xVol.M``    - 4x4 voxel --> mm transformation matrix
-  - ``SPM.xVol.iM``   - 4x4 mm --> voxel transformation matrix
+  - ``SPM.xVol.M``    - (4 x 4) voxel --> mm transformation matrix
+  - ``SPM.xVol.iM``   - (4 x 4) mm --> voxel transformation matrix
   - ``SPM.xVol.DIM``  - image dimensions - column vector (in voxels)
-  - ``SPM.xVol.XYZ``  - 3 x S vector of in-mask voxel coordinates
+  - ``SPM.xVol.XYZ``  - (3 x S) vector of in-mask voxel coordinates
   - ``SPM.xVol.S``    - Lebesgue measure or volume (in voxels)
   - ``SPM.xVol.R``    - vector of resel counts (in resels)
   - ``SPM.xVol.FWHM`` - Smoothness of components - FWHM, (in voxels)
+
 
 info on beta files
 ------------------
@@ -274,6 +291,7 @@ info on beta files
 
   - ``SPM.Vbeta.fname``   - beta nii file names
   - ``SPM.Vbeta.descrip`` - names for each beta file
+
 
 info on variance of the error
 -----------------------------
@@ -289,6 +307,7 @@ info on mask
 
   - ``PM.VM.fname`` - name of mask nii file
 
+
 contrast details
 ----------------
 
@@ -297,7 +316,7 @@ added after running contrasts
 - ``SPM.xCon`` - Contrast definitions structure array. See also ``spm_FcUtil.m`` for structure, rules & handling.
 
   - ``SPM.xCon.name`` - Contrast name
-  - ``SPM.xCon.STAT`` - Statistic indicator character ('T', 'F' or 'P')
+  - ``SPM.xCon.STAT`` - Statistic indicator character (``'T'``, ``'F'`` or ``'P'``)
   - ``SPM.xCon.c``    - Contrast weights (column vector contrasts)
   - ``SPM.xCon.X0``   - Reduced design matrix data (spans design space under Ho)
 

@@ -4,7 +4,9 @@ Docker
 Build docker image locally
 ==========================
 
-If you want to build the docker image locally and not pull it from the docker hub::
+If you want to build the docker image locally and not pull it from the docker hub:
+
+.. code-block:: bash
 
     docker build . -f docker/Dockerfile -t cpplab/cpp_spm:stable
 
@@ -26,7 +28,9 @@ The image is set up to start Octave in the ``/code`` folder.
 
 The following command would do do the same,
 but it would also map 2 folders from your computer
-to the ``output`` and ``code`` folder inside the container image::
+to the ``output`` and ``code`` folder inside the container image:
+
+.. code-block:: bash
 
     code_folder=fullpath_to_your_code
     output_folder=fullpath_to_your_output_folder
@@ -36,7 +40,9 @@ to the ``output`` and ``code`` folder inside the container image::
         -v $code_folder:/code \
         cpplab/cpp_spm:latest
 
-For example, you could run the demos by doing this::
+For example, you could run the demos by doing this:
+
+.. code-block:: bash
 
     code_folder=/home/remi/github/CPP_SPM/demos/MoAE
 
