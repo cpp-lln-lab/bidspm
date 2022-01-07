@@ -1,13 +1,13 @@
 Architecture
 ************
 
-At the highest levels CPP SPM is organized in workflows: 
+At the highest levels CPP SPM is organized in workflows:
 they all start with the prefix `bids` (for example ``bidsRealignReslice``) and are in the folder :mod:`src.workflows`
-Workflows typical run on all the subjects specified in the ``options`` structure 
+Workflows typical run on all the subjects specified in the ``options`` structure
 (see the :ref:`set-up` section).
 
 Workflows run by creating matlab batches that are then passed to SPM to run.
-To do this they call "bacth creating functions" 
+To do this they call "bacth creating functions"
 that all start with the prefix ``setBatch`` (for example ``setBatchCoregistration``).
 and are in the folder :mod:`src.batches`.
 

@@ -36,7 +36,7 @@ pipeline.
 Note that if you wanted to change this setting you could do so
 via the ``Software`` object of the BIDS stats model:
 
-.. code-block:: json    
+.. code-block:: json
 
     {
     "Name": "auditory",

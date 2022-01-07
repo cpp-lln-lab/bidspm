@@ -149,7 +149,7 @@ design matrix information
 
 - ``SPM.xX.X``        - design matrix (raw, not temporally smoothed)
 - ``SPM.xX.name``     - cellstr of parameter names corresponding to columns of design matrix
-- ``SPM.xX.I``        - (nScan x 4) matrix of factor level indicators. first column is the replication number. 
+- ``SPM.xX.I``        - (nScan x 4) matrix of factor level indicators. first column is the replication number.
                         Other columns are the levels of each experimental factor.
 - ``SPM.xX.iH``       - vector of H partition (indicator variables) indices
 - ``SPM.xX.iC``       - vector of C partition (covariates) indices
@@ -177,7 +177,7 @@ design matrix information
   - ``SPM.xX.xKXs.sus`` - subspace
 
 - ``SPM.xX.pKX``      - pseudoinverse of K*W*X, computed by ``spm_sp``
-- ``SPM.xX.Bcov``     - xX.pKX*xX.V*xX.pKX - variance-covariance matrix of parameter estimates 
+- ``SPM.xX.Bcov``     - xX.pKX*xX.V*xX.pKX - variance-covariance matrix of parameter estimates
                         (when multiplied by the voxel-specific hyperparameter ResMS of the parameter estimates (ResSS/xX.trRV ResMS) )
 - ``SPM.xX.trRV``     - trace of R*V
 - ``SPM.xX.trRVRV``   - trace of RVRV
