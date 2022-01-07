@@ -9,8 +9,6 @@
 *.ps
 
 
-*.mat
-
 .zenodo.json
 
 # Project specific
