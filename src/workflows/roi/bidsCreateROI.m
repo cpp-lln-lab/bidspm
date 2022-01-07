@@ -54,6 +54,10 @@ function bidsCreateROI(opt)
     opt.dir.jobs = fullfile(opt.dir.roi, 'jobs');
 
     opt.dir.input = opt.dir.preproc;
+    
+    if isGithubCi
+      return
+    end
 
     [BIDS, opt] = setUpWorkflow(opt, 'create ROI');
 
@@ -74,7 +78,7 @@ function bidsCreateROI(opt)
                                      'sub', subLabel, 'suffix', 'xfm', ...
                                      'to', opt.anatReference.type, 'extension', '.nii');
 
-      if isempty(deformation_field)
+      if isempty(deformation_field) && ~isGithubCi
         tolerant = false;
         msg = sprintf('No deformation field for subject %s', subLabel);
         id = 'noDeformationField';
