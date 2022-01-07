@@ -1,7 +1,7 @@
 function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel)
   %
-  % Set the batch for corregistering the functional images to the
-  % anatomical image
+  % Set the batch for coregistering the functional images
+  % to the anatomical image.
   %
   % USAGE::
   %

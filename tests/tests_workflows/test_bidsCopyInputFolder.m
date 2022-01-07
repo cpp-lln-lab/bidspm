@@ -12,6 +12,7 @@ function test_bidsCopyInputFolder_basic()
 
   opt.dir.raw = fullfile(getMoaeDir(), 'inputs', 'raw');
   opt.taskName = 'auditory';
+  opt.pipeline.type = 'preproc';
 
   opt = checkOptions(opt);
 

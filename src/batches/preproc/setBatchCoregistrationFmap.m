@@ -60,7 +60,10 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
         filter.suffix = 'magnitude1';
         srcImage = bids.query(BIDS, 'data', filter);
 
-        matlabbatch = setBatchCoregistration(matlabbatch, opt, refImage, srcImage{1}, otherImages);
+        matlabbatch = setBatchCoregistration(matlabbatch, opt, ...
+                                             refImage{1}, ...
+                                             srcImage{1}, ...
+                                             otherImages);
 
       end
 

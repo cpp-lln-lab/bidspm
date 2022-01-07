@@ -5,8 +5,10 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.verbosity = 1;
   expectedOptions.dryRun = false;
 
-  expectedOptions.pipeline.type =  'preproc';
+  expectedOptions.pipeline.type =  '';
   expectedOptions.pipeline.name = 'cpp_spm';
+
+  expectedOptions.space = {'individual'    'IXI549Space'};
 
   expectedOptions.useBidsSchema = false;
 
