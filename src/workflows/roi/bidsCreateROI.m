@@ -54,7 +54,7 @@ function bidsCreateROI(opt)
     opt.dir.jobs = fullfile(opt.dir.roi, 'jobs');
 
     opt.dir.input = opt.dir.preproc;
-    
+
     if isGithubCi
       return
     end
