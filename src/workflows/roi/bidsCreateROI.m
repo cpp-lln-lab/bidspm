@@ -66,6 +66,9 @@ function bidsCreateROI(opt)
                          '^[^w].*space-.*_mask.nii$');
 
     roiList = cellstr(roiList);
+    if noRoiFound(opt, roiList, fullfile(opt.dir.roi, 'group'))
+      return
+    end
 
     for iSub = 1:numel(opt.subjects)
 
@@ -109,6 +112,9 @@ function bidsCreateROI(opt)
                            '^w.*space.*_mask.nii.*$');
       roiList = cellstr(roiList);
 
+      if noRoiFound(opt, roiList, fullfile(opt.dir.roi, 'group'))
+        continue
+      end
       if opt.dryRun
         tolerant = true;
         verbose = true;

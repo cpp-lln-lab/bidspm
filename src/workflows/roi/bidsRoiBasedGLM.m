@@ -69,6 +69,9 @@ function bidsRoiBasedGLM(opt)
     roiList = bids.query(BIDS_ROI, 'data', ...
                          'sub', subLabel, ...
                          'space', opt.space);
+    if noRoiFound(opt, roiList, fullfile(BIDS_ROI.pth, ['sub-' subLabel], 'roi'))
+      continue
+    end
 
     model = mardo(SPM);
 
