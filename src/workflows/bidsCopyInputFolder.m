@@ -34,7 +34,6 @@ function bidsCopyInputFolder(opt, unzip)
 
   printWorkflowName('copy data', opt);
 
-  %% All tasks in this experiment
   % raw directory and derivatives directory
   createDerivativeDir(opt);
 
@@ -70,10 +69,8 @@ function bidsCopyInputFolder(opt, unzip)
 
   % update dataset description
   % TODO refactor once bids.Description has been upgraded
-  %   ds_desc = bids.util.jsondecode(fullfile(opt.dir.output, 'dataset_description.json'));
-  %   ds_desc.GeneratedBy{1}.Version = getVersion();
-  %   ds_desc.GeneratedBy{1}.CodeURL = getRepoURL();
-  %   bids.util.jsonwrite(fullfile(opt.dir.output, '..', 'dataset_description.json'), ds_desc);
+  opt.dir.output = opt.dir.preproc;
+  initBids(opt, 'force', true);
 
   cleanUpWorkflow(opt);
 

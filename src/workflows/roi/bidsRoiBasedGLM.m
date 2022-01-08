@@ -14,12 +14,12 @@ function bidsRoiBasedGLM(opt)
   % or blocks of contrast specified in the BIDS model and save and plot the results
   % in tsv / json / jpeg files.
   %
-  % ..warning::
+  % .. warning::
   %
-  %   If your blocks are modelled as series of fast paced "short" events,
-  %   the results of this workflow might be misleading.
-  %   It might be better to make sure that the each block has a single event
-  %   with a "long" duration.
+  %     If your blocks are modelled as series of fast paced "short" events,
+  %     the results of this workflow might be misleading.
+  %     It might be better to make sure that the each block has a single event
+  %     with a "long" duration.
   %
   % Adapted from the MarsBar tutorial: lib/CPP_ROI/lib/marsbar-0.44/examples/batch
   %
@@ -31,7 +31,9 @@ function bidsRoiBasedGLM(opt)
   opt.dir.input = opt.dir.preproc;
   opt.fwhm.func = 0;
 
-  [BIDS, opt] = setUpWorkflow(opt, 'roi based glm');
+  description = 'ROI based GLMs';
+
+  [BIDS, opt] = setUpWorkflow(opt, description);
 
   checks(opt);
 
@@ -40,7 +42,7 @@ function bidsRoiBasedGLM(opt)
     opt = overRideWithBidsModelContent(opt);
   end
 
-  addStatsDatasetDescription(opt);
+  initBids(opt, 'description', description, 'force', false);
 
   for iSub = 1:numel(opt.subjects)
 

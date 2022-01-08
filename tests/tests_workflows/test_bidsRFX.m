@@ -18,4 +18,6 @@ function test_bidsRFX_smoke_test()
   bidsRFX('meanAnatAndMask', opt);
   bidsRFX('RFX', opt);
 
+  cleanUp(fullfile(opt.dir.output, 'derivatives'));
+
 end

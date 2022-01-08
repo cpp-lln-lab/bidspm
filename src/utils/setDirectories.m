@@ -1,5 +1,9 @@
 function opt = setDirectories(opt)
   %
+  % USAGE::
+  %
+  %   opt = setDirectories(opt)
+  %
   % (C) Copyright 2021 CPP_SPM developers
 
   if ~isempty(opt.dir.input) && ~isempty(opt.dir.output)

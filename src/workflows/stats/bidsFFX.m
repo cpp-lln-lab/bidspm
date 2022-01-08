@@ -33,7 +33,9 @@ function matlabbatch = bidsFFX(action, opt)
   opt.pipeline.type = 'stats';
   opt.dir.input = opt.dir.preproc;
 
-  [BIDS, opt] = setUpWorkflow(opt, 'subject level GLM');
+  description = 'subject level GLM';
+
+  [BIDS, opt] = setUpWorkflow(opt, description);
 
   checks(opt, action);
 
@@ -42,7 +44,7 @@ function matlabbatch = bidsFFX(action, opt)
     opt = overRideWithBidsModelContent(opt);
   end
 
-  addStatsDatasetDescription(opt);
+  initBids(opt, 'description', description, 'force', false);
 
   for iSub = 1:numel(opt.subjects)
 
