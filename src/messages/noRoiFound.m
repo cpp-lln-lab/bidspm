@@ -27,7 +27,7 @@ function status = noRoiFound(varargin)
 
   status = false;
 
-  if isempty(p.Results.roiList{1})
+  if isempty(p.Results.roiList) || isempty(p.Results.roiList{1})
 
     status = true;
 

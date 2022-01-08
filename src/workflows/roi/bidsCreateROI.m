@@ -24,8 +24,6 @@ function bidsCreateROI(opt)
     opt = [];
   end
 
-  % TODO
-  % add dataset decription if it is not here
   if ~isfield(opt.dir, 'roi')
     opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'cpp_spm-roi'), 'cpath');
   end
@@ -46,29 +44,20 @@ function bidsCreateROI(opt)
 
   end
 
-  % if SPM MNI space copy to subject folder with symlink if possible or copy
-  % file otherwise?
-
   if any(strcmp(opt.roi.space, 'individual'))
-
-    opt.dir.jobs = fullfile(opt.dir.roi, 'jobs');
-
-    opt.dir.input = opt.dir.preproc;
-
-    if isGithubCi
-      return
-    end
-
-    [BIDS, opt] = setUpWorkflow(opt, 'create ROI');
 
     roiList = spm_select('FPlist', ...
                          fullfile(opt.dir.roi, 'group'), ...
                          '^[^w].*space-.*_mask.nii$');
-
     roiList = cellstr(roiList);
-    if noRoiFound(opt, roiList, fullfile(opt.dir.roi, 'group'))
+    if noRoiFound(opt, roiList, 'folder', fullfile(opt.dir.roi, 'group'))
       return
     end
+
+    opt.dir.jobs = fullfile(opt.dir.roi, 'jobs');
+    opt.dir.input = opt.dir.preproc;
+
+    [BIDS, opt] = setUpWorkflow(opt, 'create ROI');
 
     for iSub = 1:numel(opt.subjects)
 
@@ -81,11 +70,12 @@ function bidsCreateROI(opt)
                                      'sub', subLabel, 'suffix', 'xfm', ...
                                      'to', opt.anatReference.type, 'extension', '.nii');
 
-      if isempty(deformation_field) && ~isGithubCi
-        tolerant = false;
+      if isempty(deformation_field)
+        tolerant = true;
         msg = sprintf('No deformation field for subject %s', subLabel);
         id = 'noDeformationField';
-        errorHandling(mfilename(), id, msg, tolerant);
+        errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
+        continue
       end
 
       matlabbatch = {};
@@ -95,11 +85,6 @@ function bidsCreateROI(opt)
                                         nan(1, 3), ...
                                         roiList(iROI, :));
         matlabbatch{end}.spm.spatial.normalise.write.woptions.bb = nan(2, 3);
-      end
-
-      % skip test in CI
-      if isGithubCi
-        return
       end
 
       saveAndRunWorkflow(matlabbatch, 'inverseNormalize', opt, subLabel);
@@ -112,41 +97,21 @@ function bidsCreateROI(opt)
                            '^w.*space.*_mask.nii.*$');
       roiList = cellstr(roiList);
 
-      if noRoiFound(opt, roiList, fullfile(opt.dir.roi, 'group'))
+      if noRoiFound(opt, roiList, 'folder', fullfile(opt.dir.roi, 'group'))
         continue
       end
+
       if opt.dryRun
         tolerant = true;
-        verbose = true;
         msg = 'Renaming ROI in native space will not work on a dry run';
         id = 'willNotRunOnDryRun';
-        errorHandling(mfilename(), id, msg, tolerant, verbose);
-        return
-      end
-
-      if isempty(roiList{1})
-        tolerant = false;
-        msg = sprintf('No ROI found in folder: %s', opt.dir.roi);
-        id = 'noRoiFile';
-        errorHandling(mfilename(), id, msg, tolerant);
+        errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
+        continue
       end
 
       for iROI = 1:size(roiList, 1)
 
-        p = bids.internal.parse_filename(roiList{iROI, 1});
-        if isfield(p.entities, 'whemi')
-          p.entities = renameStructField(p.entities, 'whemi', 'hemi');
-        end
-        nameStructure = struct('entities', struct( ...
-                                                  'sub', subLabel, ...
-                                                  'space', 'individual', ...
-                                                  'hemi', p.entities.hemi, ...
-                                                  'label', p.entities.label, ...
-                                                  'desc', p.entities.desc), ...
-                               'suffix', 'mask', ...
-                               'ext', '.nii');
-
-        bidsFile = bids.File(nameStructure);
+        bidsFile = bids.File(outputNameStructure(subLabel, roiList{iROI, 1}));
 
         movefile(roiList{iROI, 1}, ...
                  fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', bidsFile.filename));
@@ -157,6 +122,27 @@ function bidsCreateROI(opt)
 
   end
 
+  opt.dir.output = opt.dir.roi;
+  opt.pipeine.type = 'roi';
+  initBids(opt, 'description', 'group and subject ROIs');
+
   cleanUpWorkflow(opt);
+
+end
+
+function nameStructure = outputNameStructure(subLabel, roiFilename)
+
+  p = bids.internal.parse_filename(roiFilename);
+  if isfield(p.entities, 'whemi')
+    p.entities = renameStructField(p.entities, 'whemi', 'hemi');
+  end
+  nameStructure = struct('entities', struct( ...
+                                            'sub', subLabel, ...
+                                            'space', 'individual', ...
+                                            'hemi', p.entities.hemi, ...
+                                            'label', p.entities.label, ...
+                                            'desc', p.entities.desc), ...
+                         'suffix', 'mask', ...
+                         'ext', '.nii');
 
 end

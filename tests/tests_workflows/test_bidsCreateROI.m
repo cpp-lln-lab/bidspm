@@ -21,12 +21,12 @@ function test_bidsCreateROI_neuromorphometrics()
 
   cleanUp(opt.dir.roi);
 
-  bidsCreateROI(opt);
-
   % skip test in CI
   if isGithubCi
     return
   end
+
+  bidsCreateROI(opt);
 
   use_schema = false;
   BIDS = bids.layout(opt.dir.roi, use_schema);
@@ -51,12 +51,12 @@ function test_bidsCreateROI_wang()
 
   cleanUp(opt.dir.roi);
 
-  bidsCreateROI(opt);
-
   % skip test in CI
   if isGithubCi
     return
   end
+
+  bidsCreateROI(opt);
 
   use_schema = false;
   BIDS = bids.layout(opt.dir.roi, use_schema);

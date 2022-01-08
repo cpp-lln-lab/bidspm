@@ -64,12 +64,8 @@ function bidsRoiBasedGLM(opt)
 
     eventSpec = getEventSpecificationRoiGlm(spmFile, opt.model.file);
 
-    use_schema = false;
-    BIDS_ROI = bids.layout(opt.dir.roi, use_schema);
-    roiList = bids.query(BIDS_ROI, 'data', ...
-                         'sub', subLabel, ...
-                         'space', opt.space);
-    if noRoiFound(opt, roiList, fullfile(BIDS_ROI.pth, ['sub-' subLabel], 'roi'))
+    [roiList, roiFolder] = getROIs(opt, subLabel);
+    if noRoiFound(opt, roiList, 'folder', roiFolder)
       continue
     end
 
@@ -151,6 +147,30 @@ function bidsRoiBasedGLM(opt)
       plotRoiTimeCourse(fullfile(getFFXdir(subLabel, opt), bidsFile.filename));
 
     end
+
+  end
+
+end
+
+function [roiList, roiFolder] = getROIs(opt, subLabel)
+
+  roiList = {};
+  roiFolder = '';
+
+  if ismember('MNI', opt.space) || ismember('IXI549Space', opt.space)
+
+    roiFolder = fullfile(opt.dir.roi, 'group');
+    roiList = spm_select('FPlist', roiFolder, '^.*_mask.nii$');
+    roiList = cellstr(roiList);
+
+  elseif strcmp(opt.space, 'individual')
+
+    use_schema = false;
+    BIDS_ROI = bids.layout(opt.dir.roi, use_schema);
+    roiList = bids.query(BIDS_ROI, 'data', ...
+                         'sub', subLabel, ...
+                         'space', opt.space);
+    roiFolder = fullfile(BIDS_ROI.pth, ['sub-' subLabel], 'roi');
 
   end
 
