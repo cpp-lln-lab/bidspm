@@ -21,14 +21,14 @@ function test_noSPMmat()
   status = noSPMmat(opt, subLabel, spmMatFile);
   % THEN
   assertEqual(status, true);
-  
+
   opt.verbosity = 1;
   assertWarning(@()noSPMmat(opt, subLabel, spmMatFile), 'noSPMmat:noSpecifiedModel');
-  
+
   % GIVEN
   spmMatFile = fullfile(getDummyDataDir(), 'mat_files', 'SPM.mat');
   % WHEN
-  status = noSPMmat(opt, subLabel, spmMatFile); 
+  status = noSPMmat(opt, subLabel, spmMatFile);
   % THEN
   assertEqual(status, false);
 

@@ -20,7 +20,7 @@ function test_designMatrixFigureName_basic()
   filename = designMatrixFigureName(opt);
   % THEN
   assertEqual(filename, 'task-audio_space-individual_designmatrix.png');
- 
+
 end
 
 function test_designMatrixFigureName_all_arg()
@@ -34,5 +34,5 @@ function test_designMatrixFigureName_all_arg()
   filename = designMatrixFigureName(opt, desc, subLabel);
   % THEN
   assertEqual(filename, 'sub-01_task-audio_space-individual_desc-foo_designmatrix.png');
- 
+
 end
