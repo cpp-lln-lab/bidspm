@@ -1,4 +1,4 @@
-function bidsRFX(action, opt)
+function matlabbatch = bidsRFX(action, opt)
   %
   % - smooths all contrast images created at the subject level
   %
@@ -27,17 +27,20 @@ function bidsRFX(action, opt)
 
   opt.pipeline.type = 'stats';
 
-  checks(opt, action);
-
   description = 'group level GLM';
 
   [~, opt] = setUpWorkflow(opt, description);
+  
+  checks(opt, action);
 
   matlabbatch = {};
 
   switch lower(action)
 
     case 'smoothcontrasts'
+
+      % TODO
+      % split this in a different workflow
 
       matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
 
@@ -74,10 +77,13 @@ function bidsRFX(action, opt)
 
       grpLvlCon = getGrpLevelContrast(opt);
       matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon);
+
       saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
 
       rfxDir = getRFXdir(opt);
 
+      % TODO
+      % split this in a different action
       matlabbatch = {};
       matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir);
       saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);

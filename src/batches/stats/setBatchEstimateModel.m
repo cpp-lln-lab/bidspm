@@ -46,6 +46,10 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon)
         opt.QA.glm.do = false();
 
         matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
+        matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
+                                          fullfile(spm_fileparts(spmMatFile{1}), ...
+                                                   designMatrixFigureName(opt, ...
+                                                                          'after estimation')));
 
       end
 

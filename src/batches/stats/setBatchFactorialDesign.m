@@ -79,6 +79,10 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
     end
 
     matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell);
+    matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
+                                      fullfile(directory, ...
+                                               designMatrixFigureName(opt, ...
+                                                                      'before estimation')));
 
   end
 
