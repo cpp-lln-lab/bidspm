@@ -18,8 +18,14 @@ function figureFile = plotRoiTimeCourse(varargin)
   isFile = @(x) exist(x, 'file') == 2;
 
   addRequired(p, 'tsvFile', isFile);
+  addOptional(p, 'verbose', true, @islogical);
 
   parse(p, varargin{:});
+
+  visible = 'off';
+  if p.Results.verbose
+    visible = 'on';
+  end
 
   tsvFile = p.Results.tsvFile;
   timeCourse = bids.util.tsvread(tsvFile);
@@ -41,31 +47,34 @@ function figureFile = plotRoiTimeCourse(varargin)
     return
   end
 
-  spm_figure('Create', 'Tag', ['ROI: ' bf.entities.label ' - ' bf.entities.hemi], 'on');
+  figName = ['ROI: ' bf.entities.label];
+  if isfield(bf.entities, 'hemi')
+    figName = [figName ' - ' bf.entities.hemi];
+  end
+  spm_figure('Create', 'Tag', figName, visible);
 
   hold on;
 
   plot(secs, timeCourse, 'linewidth', 2);
   plot([0 secs(end)], [0 0], '--k');
 
-  title(['Time courses for ROI: ' bf.entities.label ' - ' bf.entities.hemi], ...
+  title(['Time courses for ' figName], ...
         'Interpreter', 'none');
 
   xlabel('Seconds');
   ylabel('Percent signal change');
 
-  legend(conditionNames);
+  legend_content = regexprep(conditionNames, '_', ' ');
 
   axis tight;
 
-  position = [20 max(timeCourse(:)) / 2];
-  text(position(1), position(2), 'Max percent signal change');
   for i = 1:numel(conditionNames)
-    text(position(1), position(2) - i * 0.015,  ...
-         sprintf('%s = %f', ...
-                 conditionNames{i}, ...
-                 content.(conditionNames{i}).percentSignalChange));
+    legend_content{i} = sprintf('%s ; max(PSC)= %0.2f', ...
+                                legend_content{i}, ...
+                                content.(conditionNames{i}).percentSignalChange.max);
   end
+
+  legend(legend_content);
 
   figureFile = bids.internal.file_utils(tsvFile, 'ext', '.png');
   print(gcf, figureFile, '-dpng');
