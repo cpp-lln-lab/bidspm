@@ -32,7 +32,7 @@ function matlabbatch = bidsFFX(action, opt)
 
   opt.pipeline.type = 'stats';
   opt.dir.input = opt.dir.preproc;
-  
+
   description = 'subject level GLM';
 
   [BIDS, opt] = setUpWorkflow(opt, description);

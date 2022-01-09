@@ -43,10 +43,10 @@ Design efficiency: https://github.com/Remi-Gau/advanced_fMRI_course/blob/master/
 Content of SPM.mat
 ==================
 
-This is here because SPM has the sad (and bad) Matlabic tradition of using variable names 
-that have often attempted to replicate the notation in the papers to make engineers 
+This is here because SPM has the sad (and bad) Matlabic tradition of using variable names
+that have often attempted to replicate the notation in the papers to make engineers
 and the generally math enclined happy,
-rather then the ``TypicalLongVariableNames`` that many programmers and new comers 
+rather then the ``TypicalLongVariableNames`` that many programmers and new comers
 would prefer to see to help with code readibility.
 
 Adapted from: http://andysbrainblog.blogspot.com/2013/10/whats-in-spmmat-file.html

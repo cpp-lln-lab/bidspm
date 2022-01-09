@@ -30,7 +30,7 @@ function matlabbatch = bidsRFX(action, opt)
   description = 'group level GLM';
 
   [~, opt] = setUpWorkflow(opt, description);
-  
+
   checks(opt, action);
 
   matlabbatch = {};
