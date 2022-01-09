@@ -8,7 +8,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, 
 
     conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
 
-    spmMatFile = {fullfile(rfxDir, conName, 'SPM.mat')};
+    spmMatFile = fullfile(rfxDir, conName, 'SPM.mat');
 
     consess{1}.tcon.name = 'GROUP';
     consess{1}.tcon.convec = 1;

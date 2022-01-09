@@ -4,10 +4,12 @@ function matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchContrasts(matlabbatch, spmMatFile, consess)
+  %   matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess)
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
+  % :type matlabbatch: cell
+  % :param opt:
+  % :type opt: structure
   % :param spmMatFile:
   % :type spmMatFile: string
   % :param consess:
@@ -19,7 +21,7 @@ function matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess)
 
   printBatchName('contrasts specification', opt);
 
-  matlabbatch{end + 1}.spm.stats.con.spmmat = spmMatFile;
+  matlabbatch{end + 1}.spm.stats.con.spmmat = {spmMatFile};
   matlabbatch{end}.spm.stats.con.consess = consess;
   matlabbatch{end}.spm.stats.con.delete = 1;
 

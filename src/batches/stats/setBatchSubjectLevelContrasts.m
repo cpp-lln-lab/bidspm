@@ -18,12 +18,13 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
   % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('subject level contrasts specification', opt);
+  
+  spmMatFile = fullfile(getFFXdir(subLabel, opt), 'SPM.mat');
+  if noSPMmat(opt, subLabel, spmMatFile)
+    return
+  end
 
-  ffxDir = getFFXdir(subLabel, opt);
-
-  spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
-
-  load(spmMatFile{1}, 'SPM');
+  load(spmMatFile, 'SPM');
 
   model = spm_jsonread(opt.model.file);
 
