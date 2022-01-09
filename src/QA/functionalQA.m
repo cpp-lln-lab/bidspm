@@ -74,8 +74,7 @@ function functionalQA(opt)
 
         funcQA = computeFuncQAMetrics(funcImage, tpms, anatQA.avgDistToSurf, opt);
 
-        % TODO
-        % find an ouput format that is leaner than a 3 Gb json file!!!
+        % TODO find an ouput format that is leaner than a 3 Gb json file!!!
         %           spm_jsonwrite( ...
         %                         fullfile( ...
         %                                  subFuncDataDir, ...

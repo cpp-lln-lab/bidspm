@@ -209,8 +209,8 @@ function plotFft(signal, rt, HPF)
   % rt = repetition time in seconds
   % HPF = high pass filter in seconds
   %
-  % TODO add credit because I don't remember where I got this from. Cyril's
-  % tuto?
+  % TODO add credit because I don't remember where I got this from. 
+  % Cyril's tuto?
 
   gX = abs(fft(signal)).^2;
 

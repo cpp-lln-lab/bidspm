@@ -16,8 +16,7 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
-  % TODO
-  % - implement for 'phase12', 'fieldmap', 'epi'
+  % TODO implement for 'phase12', 'fieldmap', 'epi'
   %
   % (C) Copyright 2020 CPP_SPM developers
 

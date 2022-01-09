@@ -18,10 +18,8 @@ function matlabbatch = bidsResults(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  % TODO
-  %
-  %     move ps file
-  %     rename NIDM file
+  % TODO move ps file
+  % TODO rename NIDM file
 
   currentDirectory = pwd;
 

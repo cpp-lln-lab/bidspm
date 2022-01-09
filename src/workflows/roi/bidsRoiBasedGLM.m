@@ -112,7 +112,7 @@ function skipped = bidsRoiBasedGLM(opt)
                                                           eventSpec(iCon).eventSpec, ...
                                                           eventSpec(iCon).duration);
 
-        % TODO
+        % TODO Add contrast
         % Add contrast, return model, and contrast index
         %       [E Ic] = add_contrasts(E, 'stim_hrf', 'T', [1 0 0]);
         %

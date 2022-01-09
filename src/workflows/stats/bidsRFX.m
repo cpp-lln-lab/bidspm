@@ -39,8 +39,7 @@ function matlabbatch = bidsRFX(action, opt)
 
     case 'smoothcontrasts'
 
-      % TODO
-      % split this in a different workflow
+      % TODO split this in a different workflow
 
       matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
 
@@ -51,10 +50,9 @@ function matlabbatch = bidsRFX(action, opt)
 
     case 'meananatandmask'
 
-      % TODO
-      % - need to rethink where to save the anat and mask
-      % - need to smooth the anat
-      % - create a masked version of the anat too
+      % TODO need to rethink where to save the anat and mask
+      % TODO need to smooth the anat
+      % TODO create a masked version of the anat too
 
       opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
       opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
@@ -82,8 +80,7 @@ function matlabbatch = bidsRFX(action, opt)
 
       rfxDir = getRFXdir(opt);
 
-      % TODO
-      % split this in a different action
+      % TODO split this in a different action
       matlabbatch = {};
       matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir);
       saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);

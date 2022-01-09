@@ -41,7 +41,7 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  % TODO use argparxse
+  % TODO use argparse
   % TODO clarify usage with respect to unzipAndReturnsFullpathName
 
   if isempty(fileNamePattern)

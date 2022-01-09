@@ -20,9 +20,7 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
   % At the moment the VDM is created based on the characteristics of the last
   % func file in the IntendedFor field
   %
-  % .. TODO:
-  %
-  %    - if there are several func file for this fmap and they have different
+  % .. TODO if there are several func file for this fmap and they have different
   %    characteristic this may require creating a VDM for each
   %
   % (C) Copyright 2020 CPP_SPM developers

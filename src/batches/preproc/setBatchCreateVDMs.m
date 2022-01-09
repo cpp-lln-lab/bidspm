@@ -18,8 +18,7 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
-  % TODO
-  % - implement for 'phase12', 'fieldmap', 'epi'
+  % TODO implement for 'phase12', 'fieldmap', 'epi'
   %
   % (C) Copyright 2020 CPP_SPM developers
 
@@ -54,8 +53,7 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
 
         matlabbatch = setBatchComputeVDM(matlabbatch, 'phasediff', refImage);
 
-        % TODO
-        % Move to getInfo ?
+        % TODO Move to getInfo ?
         matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.phase = ...
             bids.query(BIDS, 'data', filter);
 

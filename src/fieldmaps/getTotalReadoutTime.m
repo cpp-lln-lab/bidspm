@@ -26,8 +26,7 @@ function totalReadoutTime = getTotalReadoutTime(metadata)
   if isfield(metadata, 'TotalReadoutTime') && ~isempty(metadata.TotalReadoutTime)
     totalReadoutTime = metadata.TotalReadoutTime;
 
-    % TODO
-    % double check this section
+    % TODO double check this section
     % this was in spmup but I don't remember where I got this from
 
     % from spmup: apparently this comes from the fmap metadata

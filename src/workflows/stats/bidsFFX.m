@@ -73,7 +73,7 @@ function matlabbatch = bidsFFX(action, opt)
 
       case 'estimate'
 
-        % TODO: implement as currently subject level estimation
+        % TODO implement as currently subject level estimation
         % only works with batch dependencies
         if noSPMmat(opt, subLabel, fullfile(outputDir, 'SPM.mat'))
           continue
@@ -143,8 +143,7 @@ function status = subjectHasData(BIDS, opt, subLabel)
     filter = rmfield(filter, 'space');
     filter = rmfield(filter, 'task');
 
-    % TODO
-    % implement in bids.matlab
+    % TODO implement in bids.matlab
     % spaces = bids.query(BIDS, 'space', filter);
     spaces = {'???'};
 

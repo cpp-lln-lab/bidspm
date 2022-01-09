@@ -33,8 +33,7 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
   % get the filename for this bold run for this task
   boldFilename = getInfo(BIDS, subLabel, opt, 'Filename', sessionID, runID, 'bold');
 
-  % TODO
-  % throw an error that says what query actually failed to return a file
+  % TODO throw an error that says what query actually failed to return a file
   % this might need some refacoring to be able to access the query from here even though
   % some part of it is in getInfo
   if isempty(boldFilename)
