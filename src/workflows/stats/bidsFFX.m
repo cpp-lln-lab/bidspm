@@ -5,8 +5,13 @@ function matlabbatch = bidsFFX(action, opt)
   % - do both in one go
   % - or compute the contrasts at the subject level.
   %
-  % For the model specification, if ``opt.model.designOnly`` is set to
-  % ``true``, then it is possible to specify a model with no data.
+  % To run this workflows get the BOLD input images from derivatives BIDS dataset
+  % that contains the preprocessed data and get the condition, onsets, durations
+  % from the events files in the raw BIDS dataset.
+  %
+  % For the model specification, if ``opt.model.designOnly`` is set to ``true``,
+  % then it is possible to specify a model with no data:
+  % this can useful for debugging or to quickly inspect designs specification.
   %
   % For the model estimation, it is possible to do some rough QA, by setting
   % ``opt.QA.glm.do = true``.
@@ -21,14 +26,14 @@ function matlabbatch = bidsFFX(action, opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % - ``specifyAndEstimate`` for fMRI design + estimate and
+  % - ``specify`` to specify the fMRI GLM
+  % - ``specifyAndEstimate`` for fMRI design + estimate
   % - ``contrasts`` to estimate contrasts.
   %
   % See also: setBatchSubjectLevelGLMSpec, setBatchSubjectLevelContrasts
   %
+  %
   % (C) Copyright 2020 CPP_SPM developers
-
-  % TODO: get the space to run analysis in from the BIDS stats model input
 
   opt.pipeline.type = 'stats';
   opt.dir.input = opt.dir.preproc;
