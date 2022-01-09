@@ -19,11 +19,12 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
 
   printBatchName('subject level contrasts specification', opt);
 
-  ffxDir = getFFXdir(subLabel, opt);
+  spmMatFile = fullfile(getFFXdir(subLabel, opt), 'SPM.mat');
+  if noSPMmat(opt, subLabel, spmMatFile)
+    return
+  end
 
-  spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
-
-  load(spmMatFile{1}, 'SPM');
+  load(spmMatFile, 'SPM');
 
   model = spm_jsonread(opt.model.file);
 

@@ -8,6 +8,8 @@ function matlabbatch = setBatchCoregistration(varargin)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
+  % :param opt: Other images to apply the coregistration to
+  % :type opt: cell string
   % :param ref: Reference image
   % :type ref: string
   % :param src: Source image
@@ -26,6 +28,7 @@ function matlabbatch = setBatchCoregistration(varargin)
   p = inputParser;
 
   addRequired(p, 'matlabbatch', @iscell);
+  addRequired(p, 'opt', @isstruct);
   addRequired(p, 'ref', isFile);
   addRequired(p, 'src', isFile);
   addOptional(p, 'other', default_other, @iscell);
@@ -37,7 +40,7 @@ function matlabbatch = setBatchCoregistration(varargin)
   src = p.Results.src;
   other = p.Results.other;
 
-  printBatchName('coregistration', opt);
+  printBatchName('coregistration', p.Results.opt);
 
   matlabbatch{end + 1}.spm.spatial.coreg.estimate.ref = { ref };
   matlabbatch{end}.spm.spatial.coreg.estimate.source = { src };

@@ -71,8 +71,6 @@ function test_bidsFFX_mni()
 
     bidsFFX('specifyAndEstimate', opt);
 
-    cleanUp(fullfile(pwd, 'derivatives'));
-
   end
 
 end
@@ -87,8 +85,6 @@ function test_bidsFFX_individual()
     opt.space = {'individual'};
 
     bidsFFX('specifyAndEstimate', opt);
-
-    cleanUp(fullfile(pwd, 'derivatives'));
 
   end
 end

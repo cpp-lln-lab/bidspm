@@ -1,4 +1,4 @@
-function bidsRoiBasedGLM(opt)
+function skipped = bidsRoiBasedGLM(opt)
   %
   % Will run a GLM within a ROI using MarsBar.
   %
@@ -10,34 +10,41 @@ function bidsRoiBasedGLM(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % Will compute the percent signal change and the time course of the events
-  % or blocks of contrast specified in the BIDS model.
+  % Will compute the absolute maximum percent signal change and the time course of the events
+  % or blocks of contrast specified in the BIDS model and save and plot the results
+  % in tsv / json / jpeg files.
   %
+  % .. warning::
+  %
+  %     If your blocks are modelled as series of fast paced "short" events,
+  %     the results of this workflow might be misleading.
+  %     It might be better to make sure that the each block has a single event
+  %     with a "long" duration.
+  %
+  % Adapted from the MarsBar tutorial: lib/CPP_ROI/lib/marsbar-0.44/examples/batch
+  %
+  % See also: bidsCreateRoi, plotRoiTimeCourse, getEventSpecificationRoiGlm
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  if ~opt.glm.roibased.do
-    msg = sprintf( ...
-                  ['The option opt.glm.roibased.do is set to false.\n', ...
-                   ' Change the option to true to use this workflow or\n', ...
-                   ' use the bidsFFX workflow to run whole brain GLM.']);
-    errorHandling(mfilename(), 'roiGLMFalse', msg, false, true);
-  end
-
+  opt.pipeline.type = 'stats';
+  opt.dir.input = opt.dir.preproc;
   opt.fwhm.func = 0;
 
-  opt.pipeline.type = 'stats';
+  description = 'ROI based GLMs';
 
-  opt.space = 'individual';
+  [BIDS, opt] = setUpWorkflow(opt, description);
 
-  opt.dir.input = opt.dir.preproc;
-  opt.dir.jobs = fullfile(opt.dir.stats, 'jobs', opt.taskName);
-
-  [BIDS, opt] = setUpWorkflow(opt, 'roi based glm');
+  checks(opt);
 
   if isempty(opt.model.file)
     opt = createDefaultStatsModel(BIDS, opt);
+    opt = overRideWithBidsModelContent(opt);
   end
+
+  initBids(opt, 'description', description, 'force', false);
+
+  skipped = struct('subject', {{}}, 'roi', {{}});
 
   for iSub = 1:numel(opt.subjects)
 
@@ -45,95 +52,188 @@ function bidsRoiBasedGLM(opt)
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    matlabbatch = {};
+    [roiList, roiFolder] = getROIs(opt, subLabel);
+    if noRoiFound(opt, roiList, 'folder', roiFolder)
+      continue
+    end
 
-    matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
+    outputDir = getFFXdir(subLabel, opt);
 
-    batchName = ['specify_roi_based_GLM_task-', strjoin(opt.taskName, '')];
+    spmFile = fullfile(outputDir, 'SPM.mat');
 
-    saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
+    if noSPMmat(opt, subLabel, spmFile)
+      continue
+    end
+    load(spmFile);
+    model = mardo(SPM);
 
-    load(fullfile(getFFXdir(subLabel, opt), 'SPM.mat'));
+    eventSpec = getEventSpecificationRoiGlm(spmFile, opt.model.file);
 
-    nbRuns = numel(SPM.Sess);
+    for iROI = 1:size(roiList, 1)
 
-    conditions = {};
-    runs = [];
-    durations = [];
-    for iRun = 1:nbRuns
-      tmp = cat(2, SPM.Sess(iRun).U(:).name);
-      conditions = cat(2, conditions,  tmp);
-      runs = [runs ones(size(tmp)) * iRun];
-      for iCdt = 1:numel(tmp)
-        durations = [durations mean(SPM.Sess(iRun).U(iCdt).dur)];
+      roiHeader = spm_vol(roiList{iROI, 1});
+      roiVolume = spm_read_vols(roiHeader);
+
+      % if there is a way to extrat those info from marsbar object
+      % I have yet to find it.
+      roiSize.voxels = sum(roiVolume(:) > 0);
+      voxelVolume = prod(abs(diag(roiHeader.mat)));
+      roiSize.volume = roiSize.voxels * voxelVolume;
+
+      %% Do ROI based GLM
+      % create ROI object for Marsbar
+      % and convert to mat format to avoid delicacies of image format
+      roiObject = maroi_image(struct( ...
+                                     'vol', roiHeader, ...
+                                     'binarize', true, ...
+                                     'func', []));
+      roiObject = maroi_matrix(roiObject);
+
+      % Extract data and do MarsBaR estimation
+      try
+        data = get_marsy(roiObject, model, 'mean', 'v');
+        estimation = estimate(model, data);
+      catch
+        warning('Skipping:\n- subject: %s \n- ROI: %s\n', ...
+                subLabel,  ...
+                spm_file(roiList{iROI, 1}, 'filename'));
+        skipped.subject{end + 1} = subLabel;
+        skipped.roi{end + 1} = spm_file(roiList{iROI, 1}, 'filename');
+        continue
       end
+
+      timeCourse = {};
+      dt = [];
+      percentSignalChange = [];
+
+      for iCon = 1:numel(eventSpec)
+
+        [timeCourse{1, iCon}, dt(:, iCon)] = event_fitted(estimation, ...
+                                                          eventSpec(iCon).eventSpec, ...
+                                                          eventSpec(iCon).duration);
+
+        % TODO
+        % Add contrast, return model, and contrast index
+        %       [E Ic] = add_contrasts(E, 'stim_hrf', 'T', [1 0 0]);
+        %
+        % Get, store statistics
+        %       stat_struct(ss) = compute_contrasts(E, Ic);
+
+        percentSignalChange(:, iCon).absMax = event_signal(estimation, ...
+                                                           eventSpec(iCon).eventSpec, ...
+                                                           eventSpec(iCon).duration, ...
+                                                           'abs max');
+
+        percentSignalChange(:, iCon).max = event_signal(estimation, ...
+                                                        eventSpec(iCon).eventSpec, ...
+                                                        eventSpec(iCon).duration, ...
+                                                        'max');
+
+      end
+
+      % Make fitted time course into percent signal change
+      timeCourse = cellfun(@(x) x / mean(block_means(estimation)) * 100, ...
+                           timeCourse, ...
+                           'UniformOutput', false);
+
+      nbTimePoints = max(cellfun('length', timeCourse));
+
+      %% Save to TSV and JSON
+      jsonContent = struct('SamplingFrequency', [], 'size', roiSize);
+      if unique(dt) > 1
+        error('temporal resolution different across conditions');
+      else
+        dt = dt(1);
+      end
+      jsonContent.SamplingFrequency = dt;
+
+      for iCon = 1:numel(eventSpec)
+
+        tsvContent.(eventSpec(iCon).name) = nan(nbTimePoints, 1);
+        tsvContent.(eventSpec(iCon).name)(1:numel(timeCourse{1, iCon})) = timeCourse{1, iCon};
+
+        jsonContent.(eventSpec(iCon).name) = struct('percentSignalChange', ...
+                                                    percentSignalChange(:, iCon));
+      end
+
+      nameStructure = outputName(opt, subLabel, roiList{iROI, 1});
+
+      nameStructure.suffix = 'timecourse';
+      nameStructure.ext = '.json';
+      bidsFile = bids.File(nameStructure);
+      bids.util.jsonwrite(fullfile(outputDir, bidsFile.filename), jsonContent);
+
+      nameStructure.ext = '.tsv';
+      bidsFile = bids.File(nameStructure);
+      bids.util.tsvwrite(fullfile(outputDir, bidsFile.filename), tsvContent);
+
+      plotRoiTimeCourse(fullfile(outputDir, bidsFile.filename), opt.verbosity > 0);
+
     end
 
-    names = unique(conditions);
-    events = [];
-    for iEvent = 1:numel(conditions)
-      events(end + 1) = find(strcmp(conditions(iEvent), names));
-    end
+    close all;
+
+  end
+
+end
+
+function [roiList, roiFolder] = getROIs(opt, subLabel)
+  %
+  % get the rois from the group folder when running analysis in MNI space
+  % and from the sub-*/roi/ folder when in individual space
+
+  roiList = {};
+  roiFolder = '';
+
+  if any(~cellfun('isempty', regexp(opt.space, 'MNI'))) || ismember('IXI549Space', opt.space)
+
+    roiFolder = fullfile(opt.dir.roi, 'group');
+    roiList = spm_select('FPlist', roiFolder, '^.*_mask.nii$');
+    roiList = cellstr(roiList);
+
+  elseif strcmp(opt.space, 'individual')
 
     use_schema = false;
     BIDS_ROI = bids.layout(opt.dir.roi, use_schema);
     roiList = bids.query(BIDS_ROI, 'data', ...
                          'sub', subLabel, ...
                          'space', opt.space);
+    roiFolder = fullfile(BIDS_ROI.pth, ['sub-' subLabel], 'roi');
 
-    model = mardo(SPM);
+  else
 
-    for iROI = 1:size(roiList, 1)
-
-      % create ROI object for Marsbar
-      % and convert to matrix format to avoid delicacies of image format
-      roiObject = maroi_image(struct( ...
-                                     'vol', spm_vol(roiList{iROI, 1}), ...
-                                     'binarize', true, ...
-                                     'func', []));
-      roiObject = maroi_matrix(roiObject);
-
-      % Extract data and do MarsBaR estimation
-      data = get_marsy(roiObject, model, 'mean');
-      estimation = estimate(model, data);
-
-      % -------------------- IMPROVE ------------------------ %
-
-      % currently this only computes this averages over all events
-      % we will want to use the bids model to know which event to fit
-      % based on the contrasts.
-
-      % Fitted time courses
-      [tc, dt] = event_fitted(estimation, [runs; events], durations);
-
-      % Get percent signal change
-      psc = event_signal(estimation, [runs; events], durations, 'abs max');
-
-      % -------------------- IMPROVE ------------------------ %
-
-      p = bids.internal.parse_filename(roiList{iROI, 1});
-      fields = {'hemi', 'desc', 'label'};
-      for iField = 1:numel(fields)
-        if ~isfield(p, fields{iField})
-          p.(fields{iField}) = '';
-        end
-      end
-      nameStructure = struct('entities', struct( ...
-                                                'sub', subLabel, ...
-                                                'task', opt.taskName, ...
-                                                'space', 'individual', ...
-                                                'hemi', p.entities.hemi, ...
-                                                'label', p.entities.label, ...
-                                                'desc', p.entities.desc), ...
-                             'suffix', 'estimates', ...
-                             'ext', '.mat');
-      bidsFile = bids.File(nameStructure);
-
-      save(fullfile(getFFXdir(subLabel, opt), bidsFile.filename), ...
-           'estimation', 'tc', 'dt', 'psc');
-
-    end
+    msg = sprintf('unknwon space:\n%s', createUnorderedList(opt.space));
+    errorHandling(mfilename(), 'unknownSpace', msg, true, opt.verbosity > 0);
 
   end
+
+end
+
+function checks(opt)
+
+  if numel(opt.space) > 1
+    disp(opt.space);
+    msg = sprintf('GLMs can only be run in one space at a time.\n');
+    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+  end
+
+end
+
+function outputNameSpec = outputName(opt, subLabel, roiFileName)
+
+  p = bids.internal.parse_filename(roiFileName);
+  fields = {'hemi', 'desc', 'label'};
+  for iField = 1:numel(fields)
+    if ~isfield(p.entities, fields{iField})
+      p.entities.(fields{iField}) = '';
+    end
+  end
+  outputNameSpec = struct('entities', struct( ...
+                                             'sub', subLabel, ...
+                                             'task', strjoin(opt.taskName, ''), ...
+                                             'hemi', p.entities.hemi, ...
+                                             'space', p.entities.space, ...
+                                             'label', p.entities.label, ...
+                                             'desc', p.entities.desc));
 
 end

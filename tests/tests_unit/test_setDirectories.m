@@ -34,7 +34,7 @@ function test_setDirectories_inputs_outputs()
 
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
   opt.dir.preproc = fullfile(opt.dir.raw, '..', '..', 'outputs', 'derivatives');
-
+  opt.pipeline.type = 'preproc';
   opt = checkOptions(opt);
 
   %
@@ -57,6 +57,7 @@ function test_setDirectories_copy_raw_to_preproc_named()
   %%
   opt.dir.raw = pwd;
   opt.pipeline.name = 'preproc';
+  opt.pipeline.type = 'preproc';
 
   %
   opt = checkOptions(opt);
@@ -79,6 +80,7 @@ function test_setDirectories_raw_derivatives()
 
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
   opt.dir.derivatives = fullfile(opt.dir.raw, '..', '..', 'outputs', 'derivatives');
+  opt.pipeline.type = 'preproc';
   opt = checkOptions(opt);
 
   %
@@ -101,6 +103,7 @@ function test_setDirectories_input_output()
   %% user specified
   opt.dir.input = pwd;
   opt.dir.output = fullfile(pwd, 'output');
+  opt.pipeline.type = 'preproc';
 
   %
   opt = checkOptions(opt);
@@ -123,6 +126,7 @@ end
 function test_setDirectories_copy_raw_to_preproc()
 
   opt.dir.raw = pwd;
+  opt.pipeline.type = 'preproc';
 
   %
   opt = checkOptions(opt);
@@ -144,6 +148,7 @@ end
 function test_setDirectories_copy_fmriprep_to_preproc()
 
   opt.dir.input = pwd;
+  opt.pipeline.type = 'preproc';
 
   %
   opt = checkOptions(opt);

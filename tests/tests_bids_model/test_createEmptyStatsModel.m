@@ -10,12 +10,12 @@ end
 
 function test_createEmptyStatsModel_basic()
 
+  content = createEmptyStatsModel();
+
   % skip test in CI
   if isGithubCi
     return
   end
-
-  content = createEmptyStatsModel();
 
   referenceFile = fullfile(getDummyDataDir(), 'models', 'model-empty_smdl.json');
 

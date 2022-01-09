@@ -38,7 +38,9 @@ function matlabbatch = bidsResults(opt)
     switch lower(opt.result.Nodes(iNode).Level)
 
       case 'run'
-        warning('run level not implemented yet');
+
+        notImplemented(mfilename, 'run level not implemented yet', opt.verbosity);
+
         continue
 
         % TODO check what happens for models with a run level specified but no

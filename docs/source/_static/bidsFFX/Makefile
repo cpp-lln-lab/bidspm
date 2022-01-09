@@ -6,9 +6,14 @@
 
 # Final output
 # beta_XXXX.nii: mask.nii
-# mask.nii: cpp_spm-stats/sub-01/stats/task-auditory_space-IXI549Space_FWHM-6
+# mask.nii: cpp_spm-stats/sub-01/stats/task-audio_space-IXI549Space_FWHM-6
 
-cpp_spm-stats/sub-01/stats/task-auditory_space-IXI549Space_FWHM-6: SPM.mat sub-01_task-auditory_desc-confounds_regressors.mat sub-01_task-auditory_onsets.mat
+cpp_spm-stats/sub-01/stats/task-audio_space-IXI549Space_FWHM-6: SPM.mat \
+																sub-01_task-audio_regressors.mat \
+																sub-01_task-audio_onsets.mat \
+																sub-01_task-audio_regressors.tsv \
+																sub-01_task-audio_onsets.tsv \
+																sub-01_task-audio_desc-beforeEstimation_designmatrix.png
 
 # Workflows and batches
 setBatchSubjectLevelGLMSpec.m: bidsFFX.m
@@ -23,16 +28,29 @@ convertOnsetTsvToMat.m: createAndReturnOnsetFile.m
 
 # Files
 
-model-auditory_smdl.json: models/
+model-audio_smdl.json: models/
 
-sub-01_task-auditory_desc-confounds_regressors.tsv: preproc/sub-01/func/
+sub-01_task-audio_desc-confounds_regressors.tsv: preproc/sub-01/func/
 
 sub-01_task-audio_space-IXI549Space_desc-smth6_bold.nii: preproc/sub-01/func/
 
 sub-01_task-audio_events.tsv: raw/sub-01/func/
 
-sub-01_task-auditory_desc-confounds_regressors.mat: sub-01_task-auditory_desc-confounds_regressors.tsv model-auditory_smdl.json createAndReturnCounfoundMatFile.m
+sub-01_task-audio_regressors.mat: sub-01_task-audio_desc-confounds_regressors.tsv \
+									model-audio_smdl.json \
+									createAndReturnCounfoundMatFile.m
 
-sub-01_task-auditory_onsets.mat: sub-01_task-audio_events.tsv model-auditory_smdl.json convertOnsetTsvToMat.m
+sub-01_task-audio_regressors.tsv: sub-01_task-audio_regressors.mat
 
-SPM.mat: sub-01_task-audio_space-IXI549Space_desc-smth6_bold.nii sub-01_task-auditory_onsets.mat sub-01_task-auditory_desc-confounds_regressors.mat model-auditory_smdl.json setBatchSubjectLevelGLMSpec.m
+sub-01_task-audio_onsets.mat: sub-01_task-audio_events.tsv \
+									model-audio_smdl.json \
+									convertOnsetTsvToMat.m
+
+sub-01_task-audio_onsets.tsv: sub-01_task-audio_onsets.mat
+
+SPM.mat: sub-01_task-audio_space-IXI549Space_desc-smth6_bold.nii \
+		sub-01_task-audio_onsets.mat \
+		sub-01_task-audio_regressors.mat \
+		model-audio_smdl.json setBatchSubjectLevelGLMSpec.m
+
+sub-01_task-audio_desc-beforeEstimation_designmatrix.png: SPM.mat

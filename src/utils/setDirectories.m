@@ -1,5 +1,9 @@
 function opt = setDirectories(opt)
   %
+  % USAGE::
+  %
+  %   opt = setDirectories(opt)
+  %
   % (C) Copyright 2021 CPP_SPM developers
 
   if ~isempty(opt.dir.input) && ~isempty(opt.dir.output)
@@ -111,7 +115,7 @@ function opt = setOutputDir(opt)
       case {'preproc', 'stats'}
         outputDir = opt.dir.(opt.pipeline.type);
       otherwise
-        error('unknown pipeline type');
+        outputDir = opt.dir.preproc;
     end
   end
 

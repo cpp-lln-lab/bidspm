@@ -111,7 +111,9 @@ function [contrasts, counter] = specifylDummyContrasts(contrasts, node, counter,
           clear regIdx;
 
         otherwise
-          warning('only Run and Subject node level supported');
+
+          notImplemented(mfilename, 'only Run and Subject node level supported', opt.verbosity);
+
       end
 
     end
@@ -135,8 +137,7 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
     end
 
     if ~isfield(node.Contrasts(iCon), 'Weights')
-      msg = 'weightless contrasts not supported yet';
-      errorHandling(mfilename(), 'notImplemented', msg, true, true);
+      notImplemented(mfilename, 'weightless contrasts not supported', opt.verbosity);
       continue
     end
 
@@ -188,8 +189,7 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
     end
 
     if ~isfield(node.Contrasts(iCon), 'Weights')
-      msg = 'weightless contrasts not supported yet';
-      errorHandling(mfilename(), 'notImplemented', msg, true, true);
+      notImplemented(mfilename, 'weightless contrasts not supported', opt.verbosity);
       continue
     end
 
@@ -227,15 +227,6 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
 
   end
 
-end
-
-function status = isTtest(structure)
-  status = true;
-  if isfield(structure, 'Test') && ~strcmp(structure.Test, 't')
-    status = false;
-    msg = 'Only t test supported for contrasts';
-    errorHandling(mfilename(), 'notImplemented', msg, true, true);
-  end
 end
 
 function C = newContrast(SPM, conName)

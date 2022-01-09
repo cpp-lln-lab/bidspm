@@ -8,6 +8,7 @@
 % (C) Copyright 2019 Remi Gau
 
 clear;
+close all;
 clc;
 
 try
@@ -16,16 +17,14 @@ catch
 end
 
 opt = face_rep_get_option_results();
-opt.taskName = {'facerepetition'};
 
 opt.roi.atlas = 'wang';
 opt.roi.name = {'V1v', 'V1d'};
-opt.roi.space = {'IXI549Space', 'individual'};
+opt.roi.space = {'individual'};
 
-opt.dir.stats = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm-stats');
-
-bidsCreateROI(opt);
+% bidsCreateROI(opt);
 
 opt.glm.roibased.do = true;
+opt.space = 'individual';
 
 bidsRoiBasedGLM(opt);

@@ -8,10 +8,9 @@
 *.html
 *.ps
 
-
-*.mat
-
-.zenodo.json
+# created by tests
+CHANGES
+README
 
 # Project specific
 options_task-*date*.json

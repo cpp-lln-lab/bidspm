@@ -43,8 +43,11 @@ Design efficiency: https://github.com/Remi-Gau/advanced_fMRI_course/blob/master/
 Content of SPM.mat
 ==================
 
-This is here because SPM has the sad tradition of using variable names that have often attempted to replicate the notation in the papers,
-rather then the ``TypicalLongVariableNames`` that many programmers and new comers would prefer to see.
+This is here because SPM has the sad (and bad) Matlabic tradition of using variable names
+that have often attempted to replicate the notation in the papers to make engineers
+and the generally math enclined happy,
+rather then the ``TypicalLongVariableNames`` that many programmers and new comers
+would prefer to see to help with code readibility.
 
 Adapted from: http://andysbrainblog.blogspot.com/2013/10/whats-in-spmmat-file.html
 
@@ -54,7 +57,7 @@ details on experiment
 
 - ``SPM.xY.RT``                - TR length (RT ="repeat time")
 - ``SPM.xY.P``                 - matrix of file names
-- ``SPM.xY.VY``                - (# of runs x 1) struct array of mapped image volumes (.nii file info)
+- ``SPM.xY.VY``                - (number of runs x 1) struct array of mapped image volumes (.nii file info)
 
 - ``SPM.modality``             - the data you're using (PET, FMRI, EEG)
 
@@ -91,7 +94,7 @@ user-specified covariates/regressors
 
 e.g. motion
 
-- ``SPM.Sess([sesssion]).C.C``    - (n x c) double regressor (c is #covariates, n is #sessions)
+- ``SPM.Sess([sesssion]).C.C``    - (n x c) double regressor (``c`` is number of covariates, ``n`` is number of sessions)
 - ``SPM.Sess([sesssion]).C.name`` - names of covariates
 
 conditions & modulators specified
@@ -99,7 +102,7 @@ conditions & modulators specified
 
 i.e. input structure array
 
-- ``SPM.Sess([sesssion]).U(condition).dt``:  - time bin length {seconds}
+- ``SPM.Sess([sesssion]).U(condition).dt``:  - time bin length (seconds)
 - ``SPM.Sess([sesssion]).U(condition).name`` - names of conditions
 - ``SPM.Sess([sesssion]).U(condition).ons``  - onset for condition's trials
 - ``SPM.Sess([sesssion]).U(condition).dur``  - duration for condition's trials
@@ -113,7 +116,7 @@ parameters/modulators specified
 - ``SPM.Sess([sesssion]).U(condition).P.name`` - names of modulators/parameters
 - ``SPM.Sess([sesssion]).U(condition).P.h``    - polynomial order of modulating parameter (order of polynomial expansion where 0 is none)
 - ``SPM.Sess([sesssion]).U(condition).P.P``    - vector of modulating values
-- ``SPM.Sess([sesssion]).U(condition).P.P.i``  - sub-indices of U(i).u for plotting
+- ``SPM.Sess([sesssion]).U(condition).P.P.i``  - sub-indices of ``U(i).u`` for plotting
 
 scan indices for sessions
 +++++++++++++++++++++++++
@@ -156,7 +159,7 @@ design matrix information
 - ``SPM.xX.iB``       - vector of B partition (block effects) indices
 - ``SPM.xX.iG``       - vector of G partition (nuisance variables) indices
 
-- ``SPM.xX.K``        - cell. low frequency confound: high-pass cutoff (secs)
+- ``SPM.xX.K``        - cell. low frequency confound: high-pass cutoff (seconds)
 - ``SPM.xX.K.HParam`` - low frequency cutoff value
 - ``SPM.xX.K.X0``     - cosines (high-pass filter)
 
@@ -327,7 +330,7 @@ added after running contrasts
 
     - If by columns for reduced design matrix then iX0 contains the column indices.
     - Otherwise, it's a string containing the ``spm_FcUtil`` 'Set' action:
-      Usually one of {'c','c+','X0'} defines the indices of the columns that will not be tested. Can be empty.
+      Usually one of ``{'c','c+','X0'}`` defines the indices of the columns that will not be tested. Can be empty.
 
   - ``SPM.xCon.X1o`` - Remaining design space data (X1o is orthogonal to X0)
 

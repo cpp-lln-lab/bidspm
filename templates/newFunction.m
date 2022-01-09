@@ -19,7 +19,7 @@ function vargarout = newFunction(varargin)
   %
   % Example::
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2022 CPP_SPM developers
 
   % The code goes below
 

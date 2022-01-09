@@ -27,7 +27,7 @@ function plotEvents(eventsFile, modelFile)
     return
   end
 
-  figure('name', figName, 'position', [50 50 1000 200 * numel(conditions)]);
+  spm_figure('Create', 'Tag', figName, 'on');
 
   for iCdt = 1:numel(conditions)
 
