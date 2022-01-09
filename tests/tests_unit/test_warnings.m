@@ -11,6 +11,29 @@ function test_suite = test_warnings %#ok<*STOUT>
 
 end
 
+function test_noSPMmat()
+
+  % GIVEN
+  opt.verbosity = 0;
+  subLabel = '01';
+  spmMatFile = fullfile(pwd, 'sub-01', 'stats', 'foo', 'SPM.mat');
+  % WHEN
+  status = noSPMmat(opt, subLabel, spmMatFile);
+  % THEN
+  assertEqual(status, true);
+  
+  opt.verbosity = 1;
+  assertWarning(@()noSPMmat(opt, subLabel, spmMatFile), 'noSPMmat:noSpecifiedModel');
+  
+  % GIVEN
+  spmMatFile = fullfile(getDummyDataDir(), 'mat_files', 'SPM.mat');
+  % WHEN
+  status = noSPMmat(opt, subLabel, spmMatFile); 
+  % THEN
+  assertEqual(status, false);
+
+end
+
 function test_noRoiFound()
 
   % GIVEN
