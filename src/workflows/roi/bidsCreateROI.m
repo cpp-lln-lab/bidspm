@@ -136,6 +136,12 @@ function nameStructure = outputNameStructure(subLabel, roiFilename)
   if isfield(p.entities, 'whemi')
     p.entities = renameStructField(p.entities, 'whemi', 'hemi');
   end
+  fields = {'hemi', 'desc', 'label'};
+  for iField = 1:numel(fields)
+    if ~isfield(p.entities, fields{iField})
+      p.entities.(fields{iField}) = '';
+    end
+  end
   nameStructure = struct('entities', struct( ...
                                             'sub', subLabel, ...
                                             'space', 'individual', ...

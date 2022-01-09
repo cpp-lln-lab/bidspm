@@ -39,12 +39,14 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   getModelType(modelFile);
   model = bids.util.jsondecode(modelFile);
   node = returnModelNode(model, 'run');
-
-  eventSpecification = struct('name', '', 'eventSpec', [], 'durations', []);
-
   if ~isfield(node, 'DummyContrasts')
-    return
+    node = returnModelNode(model, 'subject');
+    if ~isfield(node, 'DummyContrasts')
+      return
+    end
   end
+
+  eventSpecification = struct('name', '', 'eventSpec', [], 'duration', []);
 
   if isfield(node.DummyContrasts, 'Contrasts') && ...
       isTtest(node.DummyContrasts)
