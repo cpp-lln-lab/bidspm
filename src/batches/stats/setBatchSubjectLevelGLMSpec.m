@@ -115,6 +115,11 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
               cellstr(counfoundMatFile);
         end
 
+        % convert mat files to tsv for quicker inspection
+        % and interoperability
+        onsetsMatToTsv(onsetsFile);
+        regressorsMatToTsv(counfoundMatFile);
+
         % multiregressor selection
         fmri_spec.sess(sesCounter).regress = ...
             struct('name', {}, 'val', {});
