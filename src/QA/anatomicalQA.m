@@ -15,6 +15,10 @@ function anatomicalQA(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  if ~opt.QA.anat.do
+    return
+  end
+
   if isOctave()
     warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.');
     return

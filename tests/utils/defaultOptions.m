@@ -49,7 +49,10 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.zeropad = 2;
 
+  expectedOptions.rename = true;
+
   expectedOptions.QA.glm.do = true;
+  expectedOptions.QA.anat.do = true;
   expectedOptions.QA.func.carpetPlot = true;
   expectedOptions.QA.func.Motion = 'on';
   expectedOptions.QA.func.FD = 'on';

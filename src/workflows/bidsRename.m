@@ -16,6 +16,10 @@ function bidsRename(opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  if ~opt.rename
+    return
+  end
+
   createdFiles = {};
 
   if not(isfield(opt, 'spm_2_bids'))

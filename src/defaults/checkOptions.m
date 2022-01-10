@@ -218,12 +218,15 @@ function fieldsToSet = setDefaultOption()
   %% Options for normalize
   fieldsToSet.funcVoxelDims = [];
 
+  fieldsToSet.rename = true;
+
   %% Options for model specification and results
   fieldsToSet.model.file = '';
   fieldsToSet.model.designOnly = false;
   fieldsToSet.contrastList = {};
 
   fieldsToSet.QA.glm.do = true;
+  fieldsToSet.QA.anat.do = true;
   fieldsToSet.QA.func.carpetPlot = true;
   fieldsToSet.QA.func.Motion = 'on';
   fieldsToSet.QA.func.FD = 'on';
