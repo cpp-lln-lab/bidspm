@@ -34,19 +34,13 @@ for iOption = 1:size(optionsFilesList, 1)
   optionJsonFile = fullfile(WD, 'options', optionsFilesList{iOption});
   opt = loadAndCheckOptions(optionJsonFile);
 
-  %% Run batches
+  reportBIDS(opt);
 
-  % reportBIDS(opt);
-
-  bidsCopyRawFolder(opt, 1);
+  bidsCopyInputFolder(opt);
 
   bidsSTC(opt);
 
   bidsSpatialPrepro(opt);
-
-  anatomicalQA(opt);
-  % bidsResliceTpmToFunc(opt);
-  % functionalQA(opt);
 
   bidsSmoothing(FWHM, opt);
 

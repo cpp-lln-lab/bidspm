@@ -14,10 +14,8 @@
 clear;
 clc;
 
-% Smoothing to apply
-FWHM = 6;
-
-downloadData = true;
+download_data = true;
+clean = true;
 
 % directory with this script becomes the current directory
 WD = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'MoAE');
@@ -25,7 +23,7 @@ cd(WD);
 
 run ../../initCppSpm.m;
 
-download_moae_ds(downloadData);
+download_moae_ds(download_data, clean);
 
 %% Set up
 optionsFilesList = { ...
@@ -42,20 +40,12 @@ for iOption = 1:size(optionsFilesList, 1)
   optionJsonFile = fullfile(WD, 'options', optionsFilesList{iOption});
   opt = loadAndCheckOptions(optionJsonFile);
 
-  %% Run batches
+  reportBIDS(opt);
 
-  % reportBIDS(opt);
+  bidsCopyInputFolder(opt);
 
-  bidsCopyRawFolder(opt, 1);
-
-  bidsSTC(opt);
-  bidsSegmentSkullStrip(opt);
   bidsSpatialPrepro(opt);
-
-  anatomicalQA(opt);
-  % bidsResliceTpmToFunc(opt);
-  % functionalQA(opt);
-
+  
   bidsSmoothing(FWHM, opt);
 
   % The following crash on CI
