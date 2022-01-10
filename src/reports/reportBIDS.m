@@ -13,6 +13,8 @@ function reportBIDS(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  opt.pipeline.type = 'preproc';
+
   [BIDS, opt] = setUpWorkflow(opt, 'BIDS report');
 
   for iSub = 1:numel(opt.subjects)
@@ -32,6 +34,10 @@ function reportBIDS(opt)
     catch
       % in case we are dealing with empty files (a la bids-examples, or with
       % datalad datasets symlinks)
+
+      msg = sprintf('Could not read data to write report for dataset:\n%s\n\n', BIDS.pth);
+      errorHandling(mfilename(), 'unspecifiedError', msg, true, opt.verbosity);
+
       bids.report(BIDS, ...
                   'filter', struct('sub', subLabel), ...
                   'output_path', outputDir, ...
