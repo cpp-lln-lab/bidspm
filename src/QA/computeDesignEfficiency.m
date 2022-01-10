@@ -30,7 +30,7 @@ function e = computeDesignEfficiency(tsvFile, opt)
   %
   % Required:
   %
-  % - ``opt.modem.file``: path to bids stats model file
+  % - ``opt.model.file``: path to bids stats model file
   % -  ``opt.TR``: inter-scan interval (s) - can be read from the ``_bold.json``
   %
   % Optional:
