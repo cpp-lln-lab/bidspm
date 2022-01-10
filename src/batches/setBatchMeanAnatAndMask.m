@@ -68,8 +68,7 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, outputDir)
 
   %% The mean mask will be saved in the group level folder
 
-  % TODO
-  % not sure this makes sense for the mask as voxels that have no data for one
+  % TODO not sure this makes sense for the mask as voxels that have no data for one
   % subject are excluded anyway !!!!
 
   % meanMaskEquation = '(i1+i2+i3+i4+i5)>0.75*5'

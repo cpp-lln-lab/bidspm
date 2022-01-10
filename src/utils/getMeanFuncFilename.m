@@ -21,8 +21,7 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt)
   opt.query.space = 'individual';
   opt.query.desc = 'mean';
 
-  % TODO
-  % This seems like dead code that should be removed
+  % TODO dead code that should be removed?
   % unless we want for this function to return the mean image in whatever space
   opt = mniToIxi(opt);
 

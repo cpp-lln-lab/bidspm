@@ -27,9 +27,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  % TODO::
-  %
-  %   make which image is resliced more consistent 'which = []'
+  % TODO  make which image is resliced more consistent 'which = []'
 
   if numel(varargin) < 5
     [matlabbatch, BIDS, opt, subLabel] = deal(varargin{:});
@@ -42,7 +40,6 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
     action = 'realignUnwarp';
   end
 
-  % TODO hide this wart in a subfunction ?
   msg = '';
   switch action
     case 'realignUnwarp'

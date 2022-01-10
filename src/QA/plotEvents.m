@@ -1,5 +1,27 @@
 function plotEvents(eventsFile, modelFile)
   %
+  % USAGE::
+  %
+  %   plotEvents(eventsFile, modelFile)
+  %
+  % :param eventsFile: Path to a bids _events.tsv file.
+  % :type eventsFile: string
+  % :param modelFile: Optional. Path to a bids statistical model file to filter
+  %                   what events to plot.
+  % :type modelFile: structure
+  %
+  % EXAMPLE::
+  %
+  %     dataDir = fullpath('bids-examples', 'ds001');
+  %
+  %     eventsFile = bids.query(dataDir, ...
+  %                             'data', ...
+  %                             'sub', '01', ...
+  %                             'task', 'balloonanalogrisktask', ...
+  %                             'suffix', 'events');
+  %
+  %     plotEvents(eventsFile{1});
+  %
   % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 2

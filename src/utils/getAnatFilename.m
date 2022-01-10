@@ -21,8 +21,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  % TODO
-  %  try to channel this function via getInfo ?
+  % TODO try to channel this function via getInfo ?
 
   if isfield(opt, 'taskName')
     opt = rmfield(opt, 'taskName');
@@ -65,8 +64,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
 
   end
 
-  % TODO
-  % we take the first image of that suffix/session as the right one.
+  % TODO we take the first image of that suffix/session as the right one.
   % it could be required to take another one, or several and mean them...
   if numel(anat) > 1
     msg = 'More than one anat file found: taking the first one.';

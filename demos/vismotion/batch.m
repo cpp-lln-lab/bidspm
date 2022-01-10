@@ -5,19 +5,15 @@ clc;
 
 run ../../initCppSpm.m;
 
-%% Run batches
 opt = get_option();
 
-% reportBIDS(opt);
+reportBIDS(opt);
 
 bidsCopyInputFolder(opt, 1);
 
 bidsSTC(opt);
-bidsSpatialPrepro(opt);
 
-anatomicalQA(opt);
-bidsResliceTpmToFunc(opt);
-functionalQA(opt);
+bidsSpatialPrepro(opt);
 
 bidsSmoothing(opt);
 

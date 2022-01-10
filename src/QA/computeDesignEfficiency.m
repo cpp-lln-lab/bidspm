@@ -30,7 +30,7 @@ function e = computeDesignEfficiency(tsvFile, opt)
   %
   % Required:
   %
-  % - ``opt.modem.file``: path to bids stats model file
+  % - ``opt.model.file``: path to bids stats model file
   % -  ``opt.TR``: inter-scan interval (s) - can be read from the ``_bold.json``
   %
   % Optional:
@@ -209,8 +209,8 @@ function plotFft(signal, rt, HPF)
   % rt = repetition time in seconds
   % HPF = high pass filter in seconds
   %
-  % TODO add credit because I don't remember where I got this from. Cyril's
-  % tuto?
+  % TODO add credit because I don't remember where I got this from.
+  % Cyril's tuto?
 
   gX = abs(fft(signal)).^2;
 

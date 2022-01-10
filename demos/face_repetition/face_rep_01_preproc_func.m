@@ -32,11 +32,4 @@ bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
-anatomicalQA(opt);
-
-bidsResliceTpmToFunc(opt);
-
-% DEBUG
-% functionalQA(opt);
-
 bidsSmoothing(opt);

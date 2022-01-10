@@ -50,8 +50,7 @@ function bidsCreateVDM(opt)
       matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel);
       saveAndRunWorkflow(matlabbatch, 'create_vdm', opt, subLabel);
 
-      % TODO
-      % delete temporary mean images ??
+      % TODO delete temporary mean images ??
 
     end
 

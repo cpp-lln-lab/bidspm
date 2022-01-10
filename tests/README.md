@@ -34,8 +34,6 @@ tests_utils/test_elapsedTime.m
 tests_workflows/test_bidsSegmentSkullStrip.m
 tests_workflows/test_bidsLesionSegmentation.m
 tests_workflows/test_bidsRename.m
-tests_workflows/test_bidsSTC.m
-tests_workflows/test_bidsRFX.m
 tests_workflows/test_bidsSmoothing.m
 tests_workflows/test_bidsRealignUnwarp.m
 tests_workflows/test_bidsRealignReslice.m

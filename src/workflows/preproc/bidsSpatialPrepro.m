@@ -37,8 +37,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  %  TODO:
-  %  - average T1s across sessions if necessarry
+  %  TODO average T1s across sessions if necessarry
 
   opt.pipeline.type = 'preproc';
 
@@ -113,19 +112,49 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
     saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-    % clean up and rename files
+    %% clean up and rename files
     copyFigures(BIDS, opt, subLabel);
 
-    opt = set_spm_2_bids_defaults(opt);
+    if ~opt.dryRun
+      spmup_comp_dist2surf(matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1});
+    end
+
+  end
+
+  if ~opt.dryRun
+    functionalQA(opt);
+  end
+
+  renameFile(BIDS, opt);
+
+  if ~opt.dryRun
+    anatomicalQA(opt);
+  end
+
+end
+
+function renameFile(BIDS, opt)
+
+  if ~opt.rename
+    return
+  end
+
+  opt = set_spm_2_bids_defaults(opt);
+
+  for iSub = 1:numel(opt.subjects)
+
+    subLabel = opt.subjects{iSub};
 
     if ~opt.dryRun
 
-      % convert realignment files to confounds.tsv
-      % and rename a few non-bidsy file
+      % this is only necessary if the rp_ files have not already been converted
+      % and deleted by functionalQA
       for iTask = 1:numel(opt.taskName)
         rpFiles = spm_select('FPListRec', ...
                              fullfile(BIDS.pth, ['sub-' subLabel]), ...
-                             ['^rp_.*sub-' subLabel '.*_task-' opt.taskName{iTask} '.*_bold.txt$']);
+                             ['^rp_.*sub-', subLabel, ...
+                              '.*_task-', opt.taskName{iTask}, ...
+                              '.*_bold.txt$']);
         for iFile = 1:size(rpFiles, 1)
           rmInput = true;
           convertRealignParamToTsv(rpFiles(iFile, :), opt, rmInput);
@@ -134,13 +163,13 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
       renameSegmentParameter(BIDS, subLabel, opt);
       renameUnwarpParameter(BIDS, subLabel, opt);
+
     end
 
   end
 
   % TODO adapt spm_2_bids map to rename eventual files
   % that only have a "r" or "ra" prefix
-
   opt.query =  struct('modality', {{'anat', 'func'}});
 
   if ~opt.realign.useUnwarp

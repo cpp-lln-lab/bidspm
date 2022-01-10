@@ -2,6 +2,10 @@ function anatomicalQA(opt)
   %
   % Computes several metrics for anatomical image.
   %
+  % Is run as part of:
+  %
+  % - ``bidsSpatialPrepro``
+  %
   % USAGE::
   %
   %   anatomicalQA(opt)
@@ -10,6 +14,10 @@ function anatomicalQA(opt)
   % :type opt: structure
   %
   % (C) Copyright 2020 CPP_SPM developers
+
+  if ~opt.QA.anat.do
+    return
+  end
 
   if isOctave()
     warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.');
@@ -26,8 +34,7 @@ function anatomicalQA(opt)
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    % get bias corrected image
-    opt.query.desc = 'biascor';
+    % TODO get bias corrected image ?
     [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
     anatImage = fullfile(anatDataDir, anatImage);
 
@@ -41,33 +48,28 @@ function anatomicalQA(opt)
     % This is useful to check coregistration worked fine
     anatQA = spmup_anatQA(anatImage, gm,  wm); %#ok<*NASGU>
 
-    anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
+    anatQA.avgDistToSurf = getDist2surf(anatImage, opt);
 
     %% rename output to make it BIDS friendly
+    outputDir = fullfile(anatDataDir, '..', 'reports');
+    spm_mkdir(outputDir);
+
     p = bids.internal.parse_filename(anatImage);
     p.entities.label = p.suffix;
+
     p.suffix = 'qametrics';
     p.ext = '.json';
-
     bidsFile = bids.File(p);
-    spm_jsonwrite( ...
-                  fullfile(anatDataDir, bidsFile.filename), ...
-                  anatQA, ...
-                  struct('indent', '   '));
+    bids.util.jsonwrite(fullfile(outputDir, bidsFile.filename), anatQA);
 
-    p = bids.internal.parse_filename(anatImage);
-    p.entities.label = p.suffix;
-    p.suffix = 'mask';
+    p.suffix = 'qa';
     p.ext = '.pdf';
-
     bidsFile = bids.File(p);
     movefile(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_AnatQC.pdf']), ...
-             fullfile(anatDataDir,  bidsFile.filename));
+             fullfile(outputDir,  bidsFile.filename));
 
     delete(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
 
   end
-
-  bidsRename(opt);
 
 end

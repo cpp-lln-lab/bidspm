@@ -17,6 +17,7 @@ function opt = ds001168_get_option()
   opt.subjects = {'01'};
 
   % task to analyze
+  opt.pipeline.type = 'preproc';
   opt.taskName = 'rest';
 
   opt.query.modality = {'anat', 'func', 'fmap'};

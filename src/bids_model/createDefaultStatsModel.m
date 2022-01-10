@@ -106,8 +106,11 @@ end
 
 function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
 
-  REALIGN_PARAMETERS_NAME = { ...
-                             'trans_?', 'rot_?'};
+  DEFAULT_CONFOUNDS = { ...
+                       'trans_?'
+                       'rot_?'
+                       'non_steady_state_outlier*'
+                       'motion_outlier*'};
 
   for iTrialType = 1:numel(trialTypeList)
 
@@ -130,9 +133,9 @@ function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
   end
 
   % add realign parameters
-  for iRealignParam = 1:numel(REALIGN_PARAMETERS_NAME)
-    content.Nodes{1}.Model.X{end + 1} = REALIGN_PARAMETERS_NAME{iRealignParam};
-    content.Nodes{2}.Model.X{end + 1} = REALIGN_PARAMETERS_NAME{iRealignParam};
+  for iRealignParam = 1:numel(DEFAULT_CONFOUNDS)
+    content.Nodes{1}.Model.X{end + 1} = DEFAULT_CONFOUNDS{iRealignParam};
+    content.Nodes{2}.Model.X{end + 1} = DEFAULT_CONFOUNDS{iRealignParam};
   end
 
 end

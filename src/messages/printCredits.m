@@ -1,6 +1,6 @@
 function printCredits(opt)
   %
-  % TODO: use the .CFF to load contributors
+  % TODO use the .CFF to load contributors
   %
   % (C) Copyright 2019 CPP_SPM developers
 

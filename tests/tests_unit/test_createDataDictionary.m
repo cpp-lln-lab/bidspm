@@ -12,36 +12,10 @@ end
 
 function test_createDataDictionary_basic()
 
-  subLabel = '01';
-  iSes = 1;
-  iRun = 1;
-  %
-  %   opt = setOptions('vislocalizer', subLabel);
-  %
-  %   [BIDS, opt] = getData(opt, opt.dir.preproc);
-  %
-  %   opt.query = struct('acq', '');
-  %
-  %   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
-  %
-  %   runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
-  %
-  %   [fileName, subFuncDataDir] = getBoldFilename( ...
-  %                                                BIDS, ...
-  %                                                subLabel, sessions{iSes}, runs{iRun}, opt);
-  %
-  %   createDataDictionary(subFuncDataDir, fileName, 3);
-  %
-  %   expectedFilename = fullfile( ...
-  %                               subFuncDataDir, ...
-  %                               'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.json');
-  %
-  %   content = spm_jsonread(expectedFilename);
-  %
-  %   expectedNbColumns = 27;
-  %   expectedHeaderCol = 'censoring_regressor_3';
-  %
-  %   assertEqual(numel(content.Columns), expectedNbColumns);
-  %   assertEqual(content.Columns{expectedNbColumns}, 'censoring_regressor_3');
-  %
+  tsvContent.foo = [1 2];
+
+  jsonContent = createDataDictionary(tsvContent);
+
+  assertEqual(jsonContent, struct('foo', ''));
+
 end
