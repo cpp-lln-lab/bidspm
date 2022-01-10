@@ -13,13 +13,13 @@ function plotEvents(eventsFile, modelFile)
   % EXAMPLE::
   %
   %     dataDir = fullpath('bids-examples', 'ds001');
-  % 
+  %
   %     eventsFile = bids.query(dataDir, ...
   %                             'data', ...
   %                             'sub', '01', ...
   %                             'task', 'balloonanalogrisktask', ...
   %                             'suffix', 'events');
-  % 
+  %
   %     plotEvents(eventsFile{1});
   %
   % (C) Copyright 2020 CPP_SPM developers
