@@ -1,13 +1,17 @@
 function functionalQA(opt)
   %
+  % Is run as part of:
+  %
+  % - ``bidsSpatialPrepro``
+  %
   % USAGE::
   %
   %   functionalQA(opt)
   %
-  % For functional data, QA for each run works on the realigned (and unwarped) data:
+  % For  each run works on the realigned (and unwarped) data:
   %
   % - plots motion, global signal, framewise displacement
-  % - make a movie for of the realigned time series
+  % - make a movie of the realigned time series
   % - computes additional confounds regressors depending on the options asked
   % - gets temporal SNR (TODO)
   % - creates a carpet plot of the data (TODO) ; warning this is slow
@@ -28,7 +32,7 @@ function functionalQA(opt)
   %
   % .. warning::
   %
-  %    Because of a bug in spm_up, if Voltera = 'on', then the confound
+  %    Because of a bug in spm_up, if ``Voltera = 'on'``, then the confound
   %    regressors of framewise displacement, RMS and global signal
   %    will not be saved.
   %
