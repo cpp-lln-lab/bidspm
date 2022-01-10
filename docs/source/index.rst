@@ -72,8 +72,8 @@ and can be used to perform:
 Quality control
 ---------------
 
--   anatomical data (work in progress to make it BIDS compatible)
--   functional data (work in progress to make it BIDS compatible)
+-   anatomical data
+-   functional data (work in progress)
 -   GLM auto-correlation check
 
 It can also prepare the data to run an MVPA analysis by running a GLM for each

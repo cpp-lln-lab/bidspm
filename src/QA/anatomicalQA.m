@@ -34,8 +34,7 @@ function anatomicalQA(opt)
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    % get bias corrected image
-    opt.query.desc = 'biascor';
+    % TODO get bias corrected image ?
     [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
     anatImage = fullfile(anatDataDir, anatImage);
 
@@ -61,12 +60,9 @@ function anatomicalQA(opt)
     p.suffix = 'qametrics';
     p.ext = '.json';
     bidsFile = bids.File(p);
-    spm_jsonwrite( ...
-                  fullfile(outputDir, bidsFile.filename), ...
-                  anatQA, ...
-                  struct('indent', '   '));
+    bids.util.jsonwrite(fullfile(outputDir, bidsFile.filename), anatQA);
 
-    p.suffix = 'mask';
+    p.suffix = 'qa';
     p.ext = '.pdf';
     bidsFile = bids.File(p);
     movefile(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_AnatQC.pdf']), ...

@@ -116,18 +116,45 @@ function matlabbatch = bidsSpatialPrepro(opt)
     copyFigures(BIDS, opt, subLabel);
 
     if ~opt.dryRun
-
       spmup_comp_dist2surf(matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1});
+    end
 
-      % rename
-      opt = set_spm_2_bids_defaults(opt);
+  end
 
-      % convert realignment files to confounds.tsv
-      % and rename a few non-bidsy file
+  if ~opt.dryRun
+    functionalQA(opt);
+  end
+
+  renameFile(BIDS, opt);
+
+  if ~opt.dryRun
+    anatomicalQA(opt);
+  end
+
+end
+
+function renameFile(BIDS, opt)
+
+  if ~opt.rename
+    return
+  end
+
+  opt = set_spm_2_bids_defaults(opt);
+
+  for iSub = 1:numel(opt.subjects)
+
+    subLabel = opt.subjects{iSub};
+
+    if ~opt.dryRun
+
+      % this is only necessary if the rp_ files have not already been converted
+      % and deleted by functionalQA
       for iTask = 1:numel(opt.taskName)
         rpFiles = spm_select('FPListRec', ...
                              fullfile(BIDS.pth, ['sub-' subLabel]), ...
-                             ['^rp_.*sub-' subLabel '.*_task-' opt.taskName{iTask} '.*_bold.txt$']);
+                             ['^rp_.*sub-', subLabel, ...
+                              '.*_task-', opt.taskName{iTask}, ...
+                              '.*_bold.txt$']);
         for iFile = 1:size(rpFiles, 1)
           rmInput = true;
           convertRealignParamToTsv(rpFiles(iFile, :), opt, rmInput);
@@ -143,7 +170,6 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
   % TODO adapt spm_2_bids map to rename eventual files
   % that only have a "r" or "ra" prefix
-
   opt.query =  struct('modality', {{'anat', 'func'}});
 
   if ~opt.realign.useUnwarp
@@ -157,9 +183,5 @@ function matlabbatch = bidsSpatialPrepro(opt)
   end
 
   bidsRename(opt);
-
-  if ~opt.dryRun
-    anatomicalQA(opt);
-  end
 
 end
