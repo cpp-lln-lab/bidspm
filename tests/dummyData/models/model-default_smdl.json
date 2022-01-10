@@ -16,7 +16,9 @@
                "trial_type.VisMot",
                "trial_type.VisStat",
                "trans_?",
-               "rot_?"
+               "rot_?",
+               "non_steady_state_outlier*",
+               "motion_outlier*"
             ],
             "HRF": {
                "Variables": [
@@ -65,7 +67,9 @@
                "trial_type.VisMot",
                "trial_type.VisStat",
                "trans_?",
-               "rot_?"
+               "rot_?",
+               "non_steady_state_outlier*",
+               "motion_outlier*"
             ],
             "HRF": {
                "Variables": [
