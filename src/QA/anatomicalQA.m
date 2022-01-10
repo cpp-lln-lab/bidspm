@@ -82,7 +82,7 @@ function davg = getDist2surf(anatImage, opt)
 
   bf = bids.File(anatImage);
 
-  surface_file = spm_select('FPList', path, ['^sub-' bf.entities.sub '.*_' bf.suffix '\.gii$']);
+  surface_file = spm_select('FPList', path, ['^.*sub-' bf.entities.sub '.*_' bf.suffix '\.gii$']);
 
   if ~isempty(surface_file)
 
