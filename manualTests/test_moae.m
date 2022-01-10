@@ -45,7 +45,7 @@ for iOption = 1:size(optionsFilesList, 1)
   bidsCopyInputFolder(opt);
 
   bidsSpatialPrepro(opt);
-  
+
   bidsSmoothing(FWHM, opt);
 
   % The following crash on CI
