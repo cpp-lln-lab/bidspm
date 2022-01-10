@@ -21,4 +21,3 @@ Quality control
 
 .. autofunction:: computeDesignEfficiency
 .. autofunction:: plotEvents
-
