@@ -112,12 +112,15 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
     saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-    % clean up and rename files
+    %% clean up and rename files
     copyFigures(BIDS, opt, subLabel);
 
-    opt = set_spm_2_bids_defaults(opt);
-
     if ~opt.dryRun
+
+      spmup_comp_dist2surf(matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1});
+
+      % rename
+      opt = set_spm_2_bids_defaults(opt);
 
       % convert realignment files to confounds.tsv
       % and rename a few non-bidsy file
@@ -133,6 +136,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
       renameSegmentParameter(BIDS, subLabel, opt);
       renameUnwarpParameter(BIDS, subLabel, opt);
+
     end
 
   end
@@ -153,5 +157,9 @@ function matlabbatch = bidsSpatialPrepro(opt)
   end
 
   bidsRename(opt);
+
+  if ~opt.dryRun
+    anatomicalQA(opt);
+  end
 
 end

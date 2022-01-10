@@ -17,7 +17,7 @@ function opt = ds000114_get_option()
   opt.taskName = 'linebisection';
 
   opt.query.modality = {'anat', 'func'};
-
+  opt.pipeline.type = 'preproc';
   opt.anatReference.type = 'T1w';
   opt.anatReference.session = 'retest';
   % Uncomment the lines below to run preprocessing

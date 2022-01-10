@@ -13,6 +13,7 @@ function opt = get_option()
 
   % task to analyze
   opt.taskName = 'visMotion';
+  opt.pipeline.type = 'preproc';
 
   % The directory where the data are located
   opt.dir.raw = '/home/remi/gin/CPP_visMotion/raw';

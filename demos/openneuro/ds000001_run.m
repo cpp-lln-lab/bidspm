@@ -20,7 +20,6 @@ bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
-anatomicalQA(opt);
 bidsResliceTpmToFunc(opt);
 functionalQA(opt);
 
