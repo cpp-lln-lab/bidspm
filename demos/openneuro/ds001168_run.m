@@ -7,12 +7,9 @@ clc;
 
 run ../../initCppSpm.m;
 
-%% Set options
 opt = ds001168_get_option();
 
-%% Run batches
-
-% reportBIDS(opt);
+reportBIDS(opt);
 
 bidsCopyInputFolder(opt);
 
@@ -21,9 +18,6 @@ bidsCreateVDM(opt);
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
-
-bidsResliceTpmToFunc(opt);
-functionalQA(opt);
 
 bidsSmoothing(FWHM, opt);
 

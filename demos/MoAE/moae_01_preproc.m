@@ -24,10 +24,7 @@ bidsCopyInputFolder(opt);
 
 bidsSpatialPrepro(opt);
 
-bidsResliceTpmToFunc(opt);
-
-% DOES NOT WORK
-% functionalQA(opt);
+% bidsResliceTpmToFunc(opt);
 
 % create a whole brain functional mean image mask
 % so the mask will be in the same resolution/space as the functional images

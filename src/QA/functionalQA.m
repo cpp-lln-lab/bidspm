@@ -82,8 +82,6 @@ function functionalQA(opt)
 
       for iSes = 1:nbSessions
 
-        % get all runs for that subject across all sessions
-
         [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
         for iRun = 1:nbRuns

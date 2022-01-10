@@ -7,7 +7,6 @@ clc;
 
 run ../../initCppSpm.m;
 
-%% Set options
 opt = ds000001_get_option();
 
 reportBIDS(opt);
@@ -19,9 +18,6 @@ bidsSegmentSkullStrip(opt);
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
-
-bidsResliceTpmToFunc(opt);
-functionalQA(opt);
 
 bidsSmoothing(opt);
 
