@@ -17,7 +17,9 @@ function matlabbatch = bidsResults(opt)
   %
   %
   % Below is an example of how specify the option structure
-  % to show the results related to a certain contrasts.
+  % to getsome speific results outputs for certain contrasts.
+  %
+  % See the online documentation for example of those outputs.
   %
   % The field ``opt.result.Nodes`` allows you to get results from several Nodes
   % from the BIDS stats model. So you could run ``bidsResults`` once to view
