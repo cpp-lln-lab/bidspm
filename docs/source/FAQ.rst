@@ -13,7 +13,7 @@ How can I change which slices are shown in a montage?
 | How can I change which slices are shown?
 
 When you define your options the range of slices that are to be shown can be
-changed like this (see ``bidsResults`` help section for more information): 
+changed like this (see ``bidsResults`` help section for more information):
 
 .. code-block:: matlab
 
