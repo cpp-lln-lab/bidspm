@@ -92,7 +92,7 @@ same figure:
 - cluster boundaries
 - ROI boundaries
 
-An example of how to use it is available in the ``moae_04_slice_display.m`` 
+An example of how to use it is available in the ``moae_04_slice_display.m``
 script in the MoAE demo.
 
 .. _MoAE_slice_display_figure:
