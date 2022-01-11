@@ -5,21 +5,21 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   % USAGE::
   %
   %   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, ...
-  %                                           [action = 'realign'], ...
   %                                           BIDS, ...
   %                                           opt, ...
-  %                                           subLabel)
+  %                                           subLabel, ...
+  %                                           [action = 'realign'])
   %
   % :param matlabbatch: SPM batch
-  % :type matlabbatch: structure
+  % :type matlabbatch: cell
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param action: ``realign``, ``realignReslice``, ``realignUnwarp``
-  % :type action: string
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :type subLabel: string
   % :param subLabel: subject label
+  % :type subLabel: string
+  % :param action: ``realign``, ``realignReslice``, ``realignUnwarp``, ``'reslice'``
+  % :type action: string
   %
   % :returns: - :matlabbatch: (structure) (dimension)
   %           - :voxDim: (array) (dimension)
@@ -29,15 +29,33 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
   % TODO  make which image is resliced more consistent 'which = []'
 
-  if numel(varargin) < 5
-    [matlabbatch, BIDS, opt, subLabel] = deal(varargin{:});
-    action = '';
-  else
-    [matlabbatch, BIDS, opt, subLabel, action] = deal(varargin{:});
-  end
+  p = inputParser;
 
-  if isempty(action)
-    action = 'realignUnwarp';
+  default_action = 'realignUnwarp';
+  allowedActions = @(x) ischar(x) && ...
+                        ismember(lower(x), ...
+                                 {'realignunwarp', ...
+                                  'realignreslice', ...
+                                  'realign', ...
+                                  'reslice'});
+
+  addRequired(p, 'matlabbatch', @iscell);
+  addRequired(p, 'BIDS', @isstruct);
+  addRequired(p, 'opt', @isstruct);
+  addRequired(p, 'subLabel', @ischar);
+  addOptional(p, 'action', default_action, allowedActions);
+
+  parse(p, varargin{:});
+
+  matlabbatch = p.Results.matlabbatch;
+  BIDS = p.Results.BIDS;
+  opt = p.Results.opt;
+  subLabel = p.Results.subLabel;
+  action = p.Results.action;
+
+  if opt.anatOnly
+    voxDim = [];
+    return
   end
 
   msg = '';

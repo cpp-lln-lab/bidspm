@@ -8,6 +8,22 @@ function test_suite = test_setBatchCoregistrationFuncToAnat %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setBatchCoregistrationFuncToAnat_anat_only()
+
+  subLabel = '^01';
+
+  opt = setOptions('vismotion', subLabel);
+  opt.anatOnly = true;
+
+  BIDS = cell(1);
+
+  matlabbatch = {};
+  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
+
+  assertEqual(matlabbatch, {});
+
+end
+
 function test_setBatchCoregistrationFuncToAnat_basic()
 
   % necessarry to deal with SPM module dependencies
