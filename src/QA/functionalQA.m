@@ -48,6 +48,10 @@ function functionalQA(opt)
   % TODO: - the tissue probability maps are in the "native" space of each subject
   %         and are resliced to the dimension of the functional
 
+  if opt.anatOnly
+    return
+  end
+
   if isOctave()
     warning('\nfunctionalQA is not yet supported on Octave. This step will be skipped.');
     return
