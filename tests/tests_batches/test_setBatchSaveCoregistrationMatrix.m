@@ -8,6 +8,22 @@ function test_suite = test_setBatchSaveCoregistrationMatrix %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setBatchSaveCoregistrationMatrix_anat_only()
+
+  subLabel = '^01';
+
+  opt = setOptions('vismotion', subLabel);
+  opt.anatOnly = true;
+
+  BIDS = struct([]);
+
+  matlabbatch = {};
+  matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel);
+
+  assertEqual(matlabbatch, {});
+
+end
+
 function test_setBatchSaveCoregistrationMatrix_basic()
 
   % necessarry to deal with SPM module dependencies

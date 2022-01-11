@@ -19,54 +19,60 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt
 
   jobsToAdd = numel(matlabbatch) + 1;
 
+  if opt.anatOnly
+    maxJobsToAdd = 4;
+  else
+    maxJobsToAdd = 5;
+  end
+
   % set the deformation field for all the images we are about to normalize
   % we reuse a previously created deformation field if it is there
   % otherwise we link to a segmentation module by using a dependency
   deformationField = getDeformationField(matlabbatch, BIDS, opt);
 
-  for iJob = jobsToAdd:(jobsToAdd + 5)
-
+  for iJob = jobsToAdd:(jobsToAdd + maxJobsToAdd)
     % we set images to be resampled at the voxel size we had at acquisition
     matlabbatch = setBatchNormalize(matlabbatch, deformationField, voxDim);
-
   end
 
-  printBatchName('normalise functional images', opt);
-
-  matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = ...
-      cfg_dep('Coregister: Estimate: Coregistered Images', ...
-              returnDependency(opt, 'coregister'), ...
-              substruct('.', 'cfiles'));
+  if ~opt.anatOnly
+    printBatchName('normalise functional images', opt);
+    matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = ...
+        cfg_dep('Coregister: Estimate: Coregistered Images', ...
+                returnDependency(opt, 'coregister'), ...
+                substruct('.', 'cfiles'));
+    jobsToAdd = jobsToAdd + 1;
+  end
 
   % NORMALIZE STRUCTURAL
   biasCorrectedImage = getBiasCorrectedImage(matlabbatch, BIDS, opt);
-
   printBatchName('normalise anatomical images', opt);
-  matlabbatch{jobsToAdd + 1}.spm.spatial.normalise.write.subj.resample(1) = biasCorrectedImage;
-
-  % size 3 allow to run RunQA / original voxel size at acquisition
-  matlabbatch{jobsToAdd + 1}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
+  matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = biasCorrectedImage;
+  % TODO why do we choose this resolution for this normalization?
+  matlabbatch{jobsToAdd}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
+  jobsToAdd = jobsToAdd + 1;
 
   % NORMALIZE TISSUE PROBABILITY MAPS
   [gmTpm, wmTpm, csfTpm] = getTpms(matlabbatch, BIDS, opt);
 
   printBatchName('normalise grey matter tissue probability map', opt);
-  matlabbatch{jobsToAdd + 2}.spm.spatial.normalise.write.subj.resample(1) = gmTpm;
+  matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = gmTpm;
+  jobsToAdd = jobsToAdd + 1;
 
   printBatchName('normalise white matter tissue probability map', opt);
-  matlabbatch{jobsToAdd + 3}.spm.spatial.normalise.write.subj.resample(1) = wmTpm;
+  matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = wmTpm;
+  jobsToAdd = jobsToAdd + 1;
 
   printBatchName('normalise csf tissue probability map', opt);
-  matlabbatch{jobsToAdd + 4}.spm.spatial.normalise.write.subj.resample(1) = csfTpm;
+  matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = csfTpm;
+  jobsToAdd = jobsToAdd + 1;
 
   % NORMALIZE SKULSTRIPPED STRUCTURAL
   skullstrippedImage = getSkullstrippedImage(matlabbatch, BIDS, opt);
-
   printBatchName('normalise skullstripped anatomical images', opt);
-  matlabbatch{jobsToAdd + 5}.spm.spatial.normalise.write.subj.resample(1) = skullstrippedImage;
-
-  % size 3 allow to run RunQA / original voxel size at acquisition
-  matlabbatch{jobsToAdd + 5}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
+  matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = skullstrippedImage;
+  % TODO why do we choose this resolution for this normalization?
+  matlabbatch{jobsToAdd}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
 
 end
 

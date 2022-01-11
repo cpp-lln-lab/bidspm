@@ -12,6 +12,23 @@ end
 % add test realign and reslice
 % check it returns the right voxDim
 
+function test_setBatchRealign_anat_only()
+
+  subLabel = '^01';
+
+  opt = setOptions('vismotion', subLabel);
+  opt.anatOnly = true;
+
+  BIDS = struct([]);
+
+  matlabbatch = {};
+  [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
+
+  assertEqual(matlabbatch, {});
+  assertEqual(voxDim, []);
+
+end
+
 function test_setBatchRealign_basic()
 
   subLabel = '^01';

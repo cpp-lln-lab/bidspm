@@ -176,6 +176,8 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.pipeline.type = '';
   fieldsToSet.pipeline.name = 'cpp_spm';
 
+  fieldsToSet.anatOnly = false;
+
   fieldsToSet.useBidsSchema = false;
 
   fieldsToSet.fwhm.func = 6;

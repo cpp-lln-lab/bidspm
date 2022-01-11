@@ -21,6 +21,10 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, 
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  if opt.anatOnly
+    return
+  end
+
   printBatchName('coregister functional data to anatomical', opt);
 
   matlabbatch{end + 1}.spm.spatial.coreg.estimate.ref(1) = ...

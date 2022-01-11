@@ -8,6 +8,10 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  if opt.anatOnly
+    return
+  end
+
   for iTask = 1:numel(opt.taskName)
 
     unwarpParam = spm_select('FPListRec', BIDS.pth, ...

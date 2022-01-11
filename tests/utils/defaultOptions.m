@@ -8,6 +8,8 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.pipeline.type =  '';
   expectedOptions.pipeline.name = 'cpp_spm';
 
+  expectedOptions.anatOnly = false;
+
   expectedOptions.space = {'individual'    'IXI549Space'};
 
   expectedOptions.useBidsSchema = false;

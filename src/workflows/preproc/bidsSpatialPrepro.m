@@ -46,9 +46,13 @@ function matlabbatch = bidsSpatialPrepro(opt)
   [BIDS, opt] = setUpWorkflow(opt, 'spatial preprocessing');
 
   opt.orderBatches.selectAnat = 1;
-  opt.orderBatches.realign = 2;
-  opt.orderBatches.coregister = 3;
-  opt.orderBatches.saveCoregistrationMatrix = 4;
+  lastBatch = 1;
+  if ~opt.anatOnly
+    opt.orderBatches.realign = 2;
+    opt.orderBatches.coregister = 3;
+    opt.orderBatches.saveCoregistrationMatrix = 4;
+    lastBatch = 4;
+  end
 
   for iSub = 1:numel(opt.subjects)
 
@@ -60,12 +64,11 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
     matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);
 
-    % if action is emtpy then only realign will be done
-    action = [];
     if ~opt.realign.useUnwarp
-      action = 'realign';
+      [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel, 'realign');
+    else
+      [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
     end
-    [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel, action);
 
     % dependency from file selector ('Anatomical')
     matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
@@ -89,9 +92,9 @@ function matlabbatch = bidsSpatialPrepro(opt)
     doSegmentAndSkullstrip = opt.segment.force || isempty(tpm) || isempty(biasCorrectedImage);
 
     if doSegmentAndSkullstrip
-      opt.orderBatches.segment = 5;
-      opt.orderBatches.skullStripping = 6;
-      opt.orderBatches.skullStrippingMask = 7;
+      opt.orderBatches.segment = lastBatch + 1;
+      opt.orderBatches.skullStripping = lastBatch + 2;
+      opt.orderBatches.skullStrippingMask = lastBatch + 3;
       matlabbatch = setBatchSegmentation(matlabbatch, opt);
       matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
     end
@@ -145,7 +148,7 @@ function renameFile(BIDS, opt)
 
     subLabel = opt.subjects{iSub};
 
-    if ~opt.dryRun
+    if ~opt.dryRun && ~opt.anatOnly
 
       % this is only necessary if the rp_ files have not already been converted
       % and deleted by functionalQA
@@ -167,6 +170,8 @@ function renameFile(BIDS, opt)
     end
 
   end
+
+  % TODO: when anatOnly update the res label for TPMs
 
   % TODO adapt spm_2_bids map to rename eventual files
   % that only have a "r" or "ra" prefix
