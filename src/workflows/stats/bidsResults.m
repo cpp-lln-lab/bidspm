@@ -19,7 +19,8 @@ function matlabbatch = bidsResults(opt)
   % Below is an example of how specify the option structure
   % to getsome speific results outputs for certain contrasts.
   %
-  % See the online documentation for example of those outputs.
+  % See the `online documentation <https://cpp-spm.readthedocs.io/en/dev>`_
+  % for example of those outputs.
   %
   % The field ``opt.result.Nodes`` allows you to get results from several Nodes
   % from the BIDS stats model. So you could run ``bidsResults`` once to view
@@ -101,8 +102,9 @@ function matlabbatch = bidsResults(opt)
   % to share your group results on `neurovault <https://neurovault.org/>`_
   % (which you should systematically do).
   %
-  %   - `NIDM paper <https://www.hal.inserm.fr/view/index/identifiant/inserm-01570626>`_
-  %   - `NIDM specification <http://nidm.nidash.org/specs/nidm-results_130.html>`_
+  % - `NIDM paper <https://www.hal.inserm.fr/view/index/identifiant/inserm-01570626>`_
+  % - `NIDM specification <http://nidm.nidash.org/specs/nidm-results_130.html>`_
+  % - `NIDM results viewer for SPM <https://github.com/incf-nidash/nidmresults-spmhtml>`
   %
   % To generate NIDM results zip file for a given contrats simply::
   %

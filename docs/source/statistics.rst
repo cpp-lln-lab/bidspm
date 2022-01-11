@@ -72,6 +72,8 @@ Compute results
 
 .. autofunction:: bidsResults
 
+:download:`CSV output example <_static/results_fig/output.csv>`
+
 .. _MoAE_output_figure:
 .. figure::  _static/results_fig/output.png
    :align:   center

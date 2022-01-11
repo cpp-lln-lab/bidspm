@@ -18,7 +18,8 @@ Welcome to CPP SPM documentation!
    preprocessing
    fieldmaps
    statistics
-   QA
+   quality_analysis
+   FAQ
    method_section_boilerplate
    mancoreg
    docker
