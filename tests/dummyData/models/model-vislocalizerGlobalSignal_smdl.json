@@ -1,7 +1,7 @@
 {
-  "Name": "vislocalizer",
+  "Name": "global signal",
   "BIDSModelVersion": "1.0.0",
-  "Description": "contrasts for the visual localizer",
+  "Description": "model for the visual localizer including global signal as a regressor",
   "Input": {
     "task": "vislocalizer",
     "space": "IXI549Space"
@@ -15,9 +15,9 @@
         "X": [
           "trial_type.VisMot",
           "trial_type.VisStat",
-          "trial_type.missing_condition",
           "trans_?",
-          "rot_?"
+          "rot_?",
+          "global_signal"
         ],
         "HRF": {
           "Variables": [
@@ -79,9 +79,9 @@
         "X": [
           "trial_type.VisMot",
           "trial_type.VisStat",
-          "trial_type.missing_condition",
           "trans_?",
-          "rot_?"
+          "rot_?",
+          "global_signal"
         ],
         "HRF": {
           "Variables": [

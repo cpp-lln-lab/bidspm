@@ -15,11 +15,12 @@ function dep = returnDependency(opt, type)
                       '.', 'val', '{}', {1}, ...
                       '.', 'val', '{}', {1});
 
-    case {'coregister', 'selectAnat', 'realign'}
+    case {'coregister', 'selectAnat', 'realign', 'MACS_model_space', 'MACS_BMS_group_auto'}
       dep = substruct('.', 'val', '{}', {opt.orderBatches.(type)}, ...
                       '.', 'val', '{}', {1}, ...
                       '.', 'val', '{}', {1}, ...
                       '.', 'val', '{}', {1});
+
     otherwise
       dep = '';
 
