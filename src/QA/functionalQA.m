@@ -45,7 +45,7 @@ function functionalQA(opt)
   %      - ``realign and unwarp``,
   %      - ``realign and reslice``,
   %
-  % TODO: - the tissue probability maps are in the "native" space of each subject
+  % TODO - the tissue probability maps are in the "native" space of each subject
   %         and are resliced to the dimension of the functional
 
   if opt.anatOnly
@@ -70,7 +70,7 @@ function functionalQA(opt)
     % get grey and white matter and csf tissue probability maps
     % res = 'bold';
     % space = 'individual';
-    % TODO: need to reslice TPMs as part of spatial prepro first
+    % TODO need to reslice TPMs as part of spatial prepro first
     % [greyMatter, whiteMatter, csf] = getTpmFilenames(BIDS, subLabel, res, space);
     % tpms = char({greyMatter; whiteMatter; csf});
 
