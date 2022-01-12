@@ -57,6 +57,8 @@ Batches
 .. autofunction:: setBatchImageCalculation
 .. autofunction:: setBatch3Dto4D
 
+.. autofunction:: saveMatlabBatch
+
 .. automodule:: src.batches.lesion
 
 .. autofunction:: setBatchLesionOverlapMap
@@ -89,7 +91,6 @@ Utility functions
 .. autofunction:: getMeanFuncFilename
 .. autofunction:: getTpmFilename
 
-
 .. autofunction:: getFuncVoxelDims
 .. autofunction:: getAndCheckSliceOrder
 .. autofunction:: getSubjectList
@@ -99,8 +100,6 @@ Utility functions
 
 .. autofunction:: rmTrialTypeStr
 .. autofunction:: setFields
-
-.. autofunction:: saveMatlabBatch
 
 .. autofunction:: unzipAndReturnsFullpathName
 .. autofunction:: validationInputFile
