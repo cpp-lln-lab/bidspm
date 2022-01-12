@@ -17,8 +17,7 @@ function test_convertOnsetTsvToMat_dummy_regressor()
   tsvFile = fullfile(getDummyDataDir(), 'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionMVPA_smdl.json');
-  opt.glm.useDummyRegressor = true;
-  
+  opt.glm.useDummyRegressor = true;  
   
   % WHEN
   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
@@ -31,8 +30,8 @@ function test_convertOnsetTsvToMat_dummy_regressor()
   load(fullpathOnsetFilename);
   
   assertEqual(names, {'dummyRegressor'});
-  assertEqual(onsets, {[]});
-  assertEqual(durations, {[]});
+  assertEqual(onsets, {nan});
+  assertEqual(durations, {nan});
 
   cleanUp(fullpathOnsetFilename);
 
@@ -48,7 +47,7 @@ function test_convertOnsetTsvToMat_missing_trial_type()
   opt.glm.useDummyRegressor = false;
 
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
-    'convertOnsetTsvToMat:emptyTrialType')
+    'convertOnsetTsvToMat:noTrialType')
 
 end
 

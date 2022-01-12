@@ -73,13 +73,13 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
         
       else
         
-        msg = sprintf('No trial found for trial type %s in %s', conditionName, tsvFile);
+        msg = sprintf('No trial found for trial type %s in \n %s', conditionName, tsvFile);
         
         if opt.glm.useDummyRegressor
           
           names{1, end + 1} = 'dummyRegressor';
-          onsets{1, end + 1} = []; 
-          durations{1, end + 1} = [];
+          onsets{1, end + 1} = nan; 
+          durations{1, end + 1} = nan;
           
           msg = sprintf('No trial found for trial type %s in \n %s\n%s', ...
             conditionName, ...
@@ -89,6 +89,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
         end
         
         id = 'emptyTrialType';
+        id = 'noTrialType';
         errorHandling(mfilename(), id, msg, true, opt.verbosity);
         
       end
