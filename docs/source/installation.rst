@@ -25,6 +25,12 @@ The following features do not yet work with Octave:
 -   anatomicalQA
 -   functionalQA
 -   slice_display toolbox
+-   rsHRF workflow
+
+Not (yet) tested with Octave:
+
+- MACS toolbox workflow for model selection
+- ALI toolbox workflow for model selection
 
 Installation
 ============

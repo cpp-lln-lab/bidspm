@@ -59,7 +59,8 @@ and can be used to perform:
 -   whole GLM at the subject level
 -   whole brain GLM at the group level à la SPM (meaning using a summary
     statistics approach).
--   ROI based GLM
+-   ROI based GLM (using marsbar)
+-   model selection (with the MACS toolbox)
 
 ### Quality control:
 

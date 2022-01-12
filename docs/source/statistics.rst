@@ -72,6 +72,11 @@ Compute results
 
 .. autofunction:: bidsResults
 
+Model selection
+---------------
+
+.. autofunction::  bidsModelSelection
+
 Region of interest analysis
 ---------------------------
 
@@ -79,7 +84,6 @@ Region of interest analysis
 
 .. autofunction::  bidsCreateROI
 .. autofunction::  bidsRoiBasedGLM
-
 
 Statistics batches
 ==================
@@ -106,7 +110,6 @@ Compute results
 .. autofunction:: setBatchResults
 .. autofunction:: setBatchSubjectLevelResults
 .. autofunction:: setBatchGroupLevelResults
-
 
 Statistics functions
 ====================
