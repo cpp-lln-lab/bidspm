@@ -113,10 +113,7 @@ function opt = checkOptions(opt)
   opt = setFields(opt, fieldsToSet);
 
   %  Options for toolboxes
-  global ALI_TOOLBOX_PRESENT
-
-  checkToolbox('ALI');
-  if ALI_TOOLBOX_PRESENT
+  if checkToolbox('ALI', 'verbose', opt.verbosity > 0)
     opt = setFields(opt, ALI_my_defaults());
   end
 
