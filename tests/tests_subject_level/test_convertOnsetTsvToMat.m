@@ -17,18 +17,18 @@ function test_convertOnsetTsvToMat_dummy_regressor()
   tsvFile = fullfile(getDummyDataDir(), 'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionMVPA_smdl.json');
-  opt.glm.useDummyRegressor = true;  
-  
+  opt.glm.useDummyRegressor = true;
+
   % WHEN
   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
 
   % THEN
   assertEqual(fullfile(getDummyDataDir(), 'sub-01_task-vismotion_onsets.mat'), ...
               fullpathOnsetFilename);
-  assertEqual(exist(fullpathOnsetFilename, 'file'), 2)
-  
+  assertEqual(exist(fullpathOnsetFilename, 'file'), 2);
+
   load(fullpathOnsetFilename);
-  
+
   assertEqual(names, {'dummyRegressor'});
   assertEqual(onsets, {nan});
   assertEqual(durations, {nan});
@@ -47,7 +47,7 @@ function test_convertOnsetTsvToMat_missing_trial_type()
   opt.glm.useDummyRegressor = false;
 
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
-    'convertOnsetTsvToMat:noTrialType')
+                'convertOnsetTsvToMat:noTrialType');
 
 end
 
@@ -57,9 +57,8 @@ function test_convertOnsetTsvToMat_no_trial_type_column()
   tsvFile = fullfile(getDummyDataDir(), 'sub-01_task-vismotion_desc-noTrialType_events.tsv');
   opt = setOptions('vismotion');
 
-
   assertExceptionThrown(@() convertOnsetTsvToMat(opt, tsvFile), ...
-    'convertOnsetTsvToMat:noTrialType')
+                        'convertOnsetTsvToMat:noTrialType');
 
 end
 
@@ -71,14 +70,14 @@ function test_convertOnsetTsvToMat_basic()
 
   % WHEN
   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
-  
+
   % THEN
   assertEqual(fullfile(getDummyDataDir(), 'sub-01_task-vismotion_onsets.mat'), ...
               fullpathOnsetFilename);
-  assertEqual(exist(fullpathOnsetFilename, 'file'), 2)
-  
+  assertEqual(exist(fullpathOnsetFilename, 'file'), 2);
+
   load(fullpathOnsetFilename);
-  
+
   assertEqual(names, {'VisMot', 'VisStat'});
   assertEqual(onsets, {2, 4});
   assertEqual(durations, {2, 2});
@@ -92,5 +91,5 @@ function setUp()
 end
 
 function cleanUp(inputFile)
- delete(inputFile)
+  delete(inputFile);
 end
