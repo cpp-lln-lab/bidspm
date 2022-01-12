@@ -125,6 +125,10 @@ function matlabbatch = bidsResults(opt)
   % mentioned for each step
   for iNode = 1:length(opt.result.Nodes)
 
+    % TODO: add a check to make sure that the request Node level exists
+    % in this bids stats model: we might request dataset level, 
+    % but it may not be present.
+
     % Depending on the level step we migh have to define a matlabbatch
     % for each subject or just on for the whole group
     switch lower(opt.result.Nodes(iNode).Level)
