@@ -18,6 +18,9 @@ function matlabbatch = bidsModelSelection(opt)
 
   [~, opt] = setUpWorkflow(opt, workflowName);
 
+  opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-modelSelection');
+  opt.dir.jobs = fullfile(opt.dir.output, 'jobs');
+
   opt.orderBatches.MACS_model_space = 1;
   opt.orderBatches.MACS_BMS_group_auto = 4;
 
@@ -25,7 +28,9 @@ function matlabbatch = bidsModelSelection(opt)
 
   matlabbatch{1}.spm.tools.MACS.MA_model_space.names = names;
   matlabbatch{1}.spm.tools.MACS.MA_model_space.model_files = opt.toolbox.MACS.model.files;
-  %   matlabbatch{1}.spm.tools.MACS.MA_model_space.dir = {output_dir};
+  matlabbatch{1}.spm.tools.MACS.MA_model_space.dir = {fullfile(opt.dir.output, 'group')};
+
+  spm_mkdir(fullfile(opt.dir.output, 'group'));
 
   for iSub = 1:numel(opt.subjects)
 
@@ -36,6 +41,10 @@ function matlabbatch = bidsModelSelection(opt)
       opt.model.file = opt.toolbox.MACS.model.files{iModel};
       inputs = getBidsModelInput(opt.model.file);
       opt.space = {inputs.space};
+      opt.taskName = inputs.task;
+      if ~iscell(opt.taskName)
+        opt.taskName = {opt.taskName};
+      end
 
       ffxDir = getFFXdir(subLabel, opt);
 
@@ -47,7 +56,13 @@ function matlabbatch = bidsModelSelection(opt)
         errorHandling(mfilename(), id, msg, false);
       end
 
-      matlabbatch{1}.spm.tools.MACS.MA_model_space.models{1, iSub}{1, iModel} = spmMatFile;
+      msg.Subject = subLabel;
+      msg.Model = names{iModel};
+      msg.Task = opt.taskName;
+      msg.Space = opt.space;
+      printToScreen(['\n' createUnorderedList(msg) '\n\n' spmMatFile '\n'], opt);
+
+      matlabbatch{1}.spm.tools.MACS.MA_model_space.models{1, iSub}{1, iModel} = {spmMatFile};
 
     end
 
@@ -95,6 +110,18 @@ function checks(opt)
     inputs{iModel, 1} = getBidsModelInput(modelFiles{iModel});
   end
 
+  if any(~cellfun(@(x) isfield(x, 'space'), inputs))
+    msg = sprintf('All models must have a space input defined.');
+    id = 'missingModelInputSpace';
+    errorHandling(mfilename(), id, msg, false);
+  end
+
+  if any(~cellfun(@(x) isfield(x, 'task'), inputs))
+    msg = sprintf('All models must have a task input defined.');
+    id = 'missingModelInputTask';
+    errorHandling(mfilename(), id, msg, false);
+  end
+
   space = cellfun(@(x) x.space, inputs, 'UniformOutput', false);
   if numel(unique(space)) > 1
     msg = sprintf('All models must have same space inputs.');
@@ -102,7 +129,20 @@ function checks(opt)
     errorHandling(mfilename(), id, msg, false);
   end
 
-  task = cellfun(@(x) x.task, inputs, 'UniformOutput', false);
+  % if some models have more than one task, then class(inputs.task) will be a cell
+  % and a char otherwise
+  tmp = cellfun(@(x) class(x.task), inputs, 'UniformOutput', false);
+  moreThanOneTask = numel(unique(tmp)) > 1;
+  if moreThanOneTask
+    msg = sprintf('All models must have same task inputs.');
+    id = 'differentModelTasks';
+    errorHandling(mfilename(), id, msg, false);
+  end
+  if all(ismember(tmp, 'cell'))
+    task = cellfun(@(x) strjoin(x.task, ' '), inputs, 'UniformOutput', false);
+  else
+    task = cellfun(@(x) x.task, inputs, 'UniformOutput', false);
+  end
   if numel(unique(task)) > 1
     msg = sprintf('All models must have same task inputs.');
     id = 'differentModelTasks';

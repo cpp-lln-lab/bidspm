@@ -22,6 +22,7 @@ function test_bidsModelSelection_basic()
 
   % GIVEN
   opt = setOptions('vislocalizer');
+  opt = rmfield(opt, 'taskName');
   opt.toolbox.MACS.model.files = {fullfile(getDummyDataDir(), ...
                                            'models', ...
                                            'model-vislocalizer_smdl.json')
