@@ -118,6 +118,7 @@ function opt = checkOptions(opt)
   end
 
   opt = setFields(opt, rsHRF_my_defaults());
+  opt = setFields(opt, MACS_my_defaults());
 
   checkFields(opt);
 
