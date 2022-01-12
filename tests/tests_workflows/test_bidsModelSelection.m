@@ -11,6 +11,13 @@ function test_suite = test_bidsModelSelection %#ok<*STOUT>
 
 end
 
+function test_bidsModelSelection_error_no_model_list()
+  opt = setOptions('vislocalizer');
+  assertExceptionThrown(@()bidsModelSelection(opt), ...
+                        'bidsModelSelection:noModelList');
+
+end
+
 function test_bidsModelSelection_basic()
 
   % GIVEN
@@ -28,6 +35,12 @@ function test_bidsModelSelection_basic()
   % THEN
   expectedContent = {'vislocalizer'; 'global signal'};
   assertEqual(matlabbatch{1}.spm.tools.MACS.MA_model_space.names, expectedContent);
+
+  nbSubjects = 3;
+  assertEqual(size(matlabbatch{1}.spm.tools.MACS.MA_model_space.models, 2), nbSubjects);
+
+  nbModels = 2;
+  assertEqual(size(matlabbatch{1}.spm.tools.MACS.MA_model_space.models{1}, 2), nbModels);
 
   cleanUp();
 
