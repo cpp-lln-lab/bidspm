@@ -11,5 +11,4 @@ run moxunit_set_path();
 
 cd(fullfile(root_dir));
 initCppSpm(true);
-checkToolbox('MACS', 'install', true, 'verbose', true);
 run run_tests();
