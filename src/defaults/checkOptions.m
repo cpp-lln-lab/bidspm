@@ -237,6 +237,7 @@ function fieldsToSet = setDefaultOption()
 
   fieldsToSet.glm.roibased.do = false;
   fieldsToSet.glm.maxNbVols = Inf;
+  fieldsToSet.glm.useDummyRegressor = false;
 
   % specify the results to compute
   fieldsToSet.result.Nodes = returnDefaultResultsStructure();
