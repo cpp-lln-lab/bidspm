@@ -22,11 +22,11 @@ function test_createAndReturnCounfoundMatFile_basic()
   assertEqual(exist(expectedFilename, 'file'), 2);
 
   expected_content = fullfile(getDummyDataDir(), 'mat_files', 'regressors.mat');
-  
+
   expected_R = load(expected_content, 'R');
   actual_R = load(counfoundMatFile, 'R');
   assertEqual(actual_R, expected_R);
-  
+
   expected_names = load(expected_content, 'names');
   actual_names = load(counfoundMatFile, 'names');
   assertEqual(actual_names.names, expected_names.names);

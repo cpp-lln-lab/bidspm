@@ -19,7 +19,7 @@ function test_bidsModelSelection_error_no_model_list()
 end
 
 function test_bidsModelSelection_basic()
-  
+
   createDummyData();
 
   % GIVEN
