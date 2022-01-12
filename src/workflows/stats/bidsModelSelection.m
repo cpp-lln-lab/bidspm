@@ -20,6 +20,8 @@ function matlabbatch = bidsModelSelection(opt)
 
   opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-modelSelection');
   opt.dir.jobs = fullfile(opt.dir.output, 'jobs');
+  
+  initBids(opt, 'description', 'perform model selection', 'force', false);
 
   opt.orderBatches.MACS_model_space = 1;
   opt.orderBatches.MACS_BMS_group_auto = 4;
