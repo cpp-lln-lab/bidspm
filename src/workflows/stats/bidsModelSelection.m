@@ -1,14 +1,84 @@
 function matlabbatch = bidsModelSelection(opt)
   %
-  % Brief workflow description
+  % Uses the MACS toolbox to perform model selection.
+  %
+  % 1. MA_model_space:    defines a model space
+  % 2. MA_cvLME_auto:     computes cross-validated log model evidence
+  % 3. MS_PPs_group_auto: calculate posterior probabilities from cvLMEs
+  % 4. MS_BMS_group_auto: perform cross-validated Bayesian model selection
+  % 5. MS_SMM_BMS:        generate selected models maps from BMS
   %
   % USAGE::
   %
-  %  bidsModelSelection(opt)
+  %   bidsModelSelection(opt)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
+  %
+  % Requirements:
+  %
+  % - define the list of BIDS stats models in a cell string of fullpaths ::
+  %
+  %     opt.toolbox.MACS.model.files
+  %
+  % - all models must have the same ``space`` and ``task`` defined in their inputs
+  % - specify each model for each subject::
+  %
+  %     opt = opt_stats_subject_level();
+  %
+  %     for i = 1:numel(models)
+  %       opt.model.file = opt.toolbox.MACS.model.files{i};
+  %       bidsFFX('specifyAndEstimate', opt);
+  %     end
+  %
+  % - for a given subject / model, all runs must have the same numbers of regressors
+  %   (so this requires to create dummy regressors in case some subjects are missing
+  %   a condition or a confound).
+  %
+  % For more information see the toolbox manual in the folder
+  % ``lib/MACS/MACS_Manual``.
+  %
+  % Links:
+  %
+  % - `MACS toolbox repo <https://github.com/JoramSoch/MACS>`_
+  %
+  % If you use this workflow, please cite the following paper:
+  %
+  % .. code-block:: bibtex
+  %
+  %    @article{soch2018jnm,
+  %      title={MACS - a new SPM toolbox for model assessment, comparison and selection.},
+  %      author={Soch J, Allefeld C},
+  %      journal={Journal of Neuroscience Methods},
+  %      year={2018},
+  %      volume={306},
+  %      doi={https://doi.org/10.1016/j.jneumeth.2018.05.017}
+  %    }
+  %
+  % If you use cvBMS or cvBMA, please also cite the respective method:
+  %
+  % .. code-block:: bibtex
+  %
+  %    @article{soch2016nimg,
+  %      title={How to avoid mismodelling in GLM-based fMRI data analysis:
+  %             cross-validated Bayesian model selection.},
+  %      author={Soch J, Haynes JD, Allefeld C},
+  %      journal={NeuroImage},
+  %      year={2016},
+  %      volume={141},
+  %      doi={https://doi.org/10.1016/j.neuroimage.2016.07.047}
+  %    }
+  %
+  %    @article{soch2017nimg,
+  %      title={How to improve parameter estimates in GLM-based fMRI data analysis:
+  %             cross-validated Bayesian model averaging.},
+  %      author={Soch J, Meyer AP, Haynes JD, Allefeld C},
+  %      journal={NeuroImage},
+  %      year={2017},
+  %      volume={158},
+  %      doi={https://doi.org/10.1016/j.neuroimage.2017.06.056}
+  %    }
   %
   % (C) Copyright 2022 CPP_SPM developers
 
@@ -109,6 +179,11 @@ function checks(opt)
   modelFiles = opt.toolbox.MACS.model.files;
 
   for iModel = 1:numel(modelFiles)
+    if ~(exist(modelFiles{iModel}, 'file') == 2)
+      msg = sprintf('This model file does not exist:\n%s\n\n', modelFiles{iModel});
+      id = 'noModelFile';
+      errorHandling(mfilename(), id, msg, false);
+    end
     inputs{iModel, 1} = getBidsModelInput(modelFiles{iModel});
   end
 
