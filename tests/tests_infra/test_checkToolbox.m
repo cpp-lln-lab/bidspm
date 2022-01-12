@@ -25,12 +25,16 @@ end
 
 function test_checkToolbox_macs()
 
-  if exist(fullfile(spm('dir'), 'toolbox', 'MACS'), 'dir')
-    rmdir(fullfile(spm('dir'), 'toolbox', 'MACS'), 's');
-  end
+  if ~isGithubCi
 
-  status = checkToolbox('MACS');
-  assertEqual(status, false);
+    if exist(fullfile(spm('dir'), 'toolbox', 'MACS'), 'dir')
+      rmdir(fullfile(spm('dir'), 'toolbox', 'MACS'), 's');
+    end
+
+    status = checkToolbox('MACS');
+    assertEqual(status, false);
+
+  end
 
   status = checkToolbox('MACS', 'install', true);
   assertEqual(status, true);
