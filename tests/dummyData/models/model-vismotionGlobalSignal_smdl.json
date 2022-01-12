@@ -1,9 +1,9 @@
 {
   "Name": "global signal",
   "BIDSModelVersion": "1.0.0",
-  "Description": "model for the visual localizer including global signal as a regressor",
+  "Description": "model for the visual motion including global signal as a regressor",
   "Input": {
-    "task": "vislocalizer",
+    "task": "vismotion",
     "space": "IXI549Space"
   },
   "Nodes": [

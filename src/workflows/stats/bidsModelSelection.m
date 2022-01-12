@@ -23,13 +23,14 @@ function matlabbatch = bidsModelSelection(opt)
   %     opt.toolbox.MACS.model.files
   %
   % - all models must have the same ``space`` and ``task`` defined in their inputs
+  %
   % - specify each model for each subject::
   %
   %     opt = opt_stats_subject_level();
-  %
+  %     models = opt.toolbox.MACS.model.files
   %     for i = 1:numel(models)
-  %       opt.model.file = opt.toolbox.MACS.model.files{i};
-  %       bidsFFX('specifyAndEstimate', opt);
+  %       opt.model.file = models{i};
+  %       bidsFFX('specify', opt);
   %     end
   %
   % - for a given subject / model, all runs must have the same numbers of regressors
@@ -88,21 +89,21 @@ function matlabbatch = bidsModelSelection(opt)
 
   [~, opt] = setUpWorkflow(opt, workflowName);
 
+  opt.orderBatches.MACS_model_space = 1;
+  opt.orderBatches.MACS_BMS_group_auto = 4;
+
   opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-modelSelection');
   opt.dir.jobs = fullfile(opt.dir.output, 'jobs');
 
-  initBids(opt, 'description', 'perform model selection', 'force', false);
+  spm_mkdir(fullfile(opt.dir.output, 'group'));
 
-  opt.orderBatches.MACS_model_space = 1;
-  opt.orderBatches.MACS_BMS_group_auto = 4;
+  initBids(opt, 'description', 'perform model selection', 'force', false);
 
   names = getMacsModelNames(opt);
 
   matlabbatch{1}.spm.tools.MACS.MA_model_space.names = names;
   matlabbatch{1}.spm.tools.MACS.MA_model_space.model_files = opt.toolbox.MACS.model.files;
   matlabbatch{1}.spm.tools.MACS.MA_model_space.dir = {fullfile(opt.dir.output, 'group')};
-
-  spm_mkdir(fullfile(opt.dir.output, 'group'));
 
   for iSub = 1:numel(opt.subjects)
 
@@ -135,6 +136,8 @@ function matlabbatch = bidsModelSelection(opt)
       printToScreen(['\n' createUnorderedList(msg) '\n\n' spmMatFile '\n'], opt);
 
       matlabbatch{1}.spm.tools.MACS.MA_model_space.models{1, iSub}{1, iModel} = {spmMatFile};
+
+      checkAllSessionsHaveSameNbRegressors(spmMatFile);
 
     end
 

@@ -58,7 +58,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % If it exists, issue a warning that it has been overwritten
   ffxDir = getFFXdir(subLabel, opt);
   overwriteDir(ffxDir, opt);
-
+  printToScreen(' output dir: %s\n', ffxDir);
   fmri_spec.dir = {ffxDir};
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
