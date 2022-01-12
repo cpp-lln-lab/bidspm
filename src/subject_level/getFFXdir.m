@@ -17,9 +17,10 @@ function ffxDir = getFFXdir(subLabel, opt)
 
   glmDirName = createGlmDirName(opt);
 
-  model = spm_jsonread(opt.model.file);
-  if ~isempty(model.Name) && ~strcmpi(model.Name, strjoin(opt.taskName, ' '))
-    glmDirName = [glmDirName, '_desc-', bids.internal.camel_case(model.Name)];
+  name = getModelName(opt.model.file);
+
+  if ~isempty(name) && ~strcmpi(name, strjoin(opt.taskName, ' '))
+    glmDirName = [glmDirName, '_desc-', bids.internal.camel_case(name)];
   end
 
   ffxDir = fullfile(opt.dir.stats, ...
