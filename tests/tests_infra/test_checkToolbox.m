@@ -12,35 +12,34 @@ function test_suite = test_checkToolbox %#ok<*STOUT>
 end
 
 function test_checkToolbox_ali()
-  
+
   if isGithubCi
 
     status = checkToolbox('ALI');
 
     assertEqual(status, false);
-  
+
   end
 
 end
 
 function test_checkToolbox_macs()
-  
-    if exist(fullfile(spm('dir'), 'toolbox', 'MACS'), 'dir')
-      rmdir(fullfile(spm('dir'), 'toolbox', 'MACS'), 's');
-    end
-  
-    status = checkToolbox('MACS');
-    assertEqual(status, false);
-    
-    status = checkToolbox('MACS', 'install', true);
-    assertEqual(status, true);
+
+  if exist(fullfile(spm('dir'), 'toolbox', 'MACS'), 'dir')
+    rmdir(fullfile(spm('dir'), 'toolbox', 'MACS'), 's');
+  end
+
+  status = checkToolbox('MACS');
+  assertEqual(status, false);
+
+  status = checkToolbox('MACS', 'install', true);
+  assertEqual(status, true);
 
 end
 
 function test_checkToolbox_unknow()
-  
-    assertWarning(@()checkToolbox('foo', 'verbose', true), ...
-      'checkToolbox:unknownToolbox');
 
+  assertWarning(@()checkToolbox('foo', 'verbose', true), ...
+                'checkToolbox:unknownToolbox');
 
 end
