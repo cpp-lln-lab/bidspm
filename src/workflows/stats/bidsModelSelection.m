@@ -24,18 +24,29 @@ function matlabbatch = bidsModelSelection(opt)
   %
   % - all models must have the same ``space`` and ``task`` defined in their inputs
   %
+  % - for a given subject / model, all runs must have the same numbers of regressors
+  %   This requires to create dummy regressors in case some subjects are missing
+  %   a condition or a confound. This can be done by using the `bidsFFX(opt)` with
+  %   the option `opt.glm.useDummyRegressor` set to `true`.
+  %
+  % .. note::
+  %
+  %    Adding dummy (empty) regressors will make your model non-estimable by
+  %    SPM, where as the MACS toolbox can deal with this.
+  %
   % - specify each model for each subject::
   %
   %     opt = opt_stats_subject_level();
+  %
+  %     opt.glm.useDummyRegressor = true;
+  %
   %     models = opt.toolbox.MACS.model.files
+  %
   %     for i = 1:numel(models)
   %       opt.model.file = models{i};
   %       bidsFFX('specify', opt);
   %     end
   %
-  % - for a given subject / model, all runs must have the same numbers of regressors
-  %   (so this requires to create dummy regressors in case some subjects are missing
-  %   a condition or a confound).
   %
   % For more information see the toolbox manual in the folder
   % ``lib/MACS/MACS_Manual``.
