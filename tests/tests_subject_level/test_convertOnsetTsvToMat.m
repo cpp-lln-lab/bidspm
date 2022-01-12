@@ -44,7 +44,6 @@ function test_convertOnsetTsvToMat_missing_trial_type()
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionMVPA_smdl.json');
   opt.verbosity = 1;
-  opt.glm.useDummyRegressor = false;
 
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
                 'convertOnsetTsvToMat:noTrialType');
