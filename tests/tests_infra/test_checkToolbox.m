@@ -34,10 +34,15 @@ function test_checkToolbox_macs()
     status = checkToolbox('MACS');
     assertEqual(status, false);
 
-  end
+    status = checkToolbox('MACS', 'install', true);
+    assertEqual(status, true);
 
-  status = checkToolbox('MACS', 'install', true);
-  assertEqual(status, true);
+  else 
+
+    status = checkToolbox('MACS');
+    assertEqual(status, true);
+
+  end
 
 end
 
