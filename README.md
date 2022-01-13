@@ -141,6 +141,18 @@ varargout = getInfo(BIDS, opt, subID, 'filename', varargin)
 [matlabbatch, voxDim] = setBatchRealign(BIDS, opt, subID, matlabbatch, [action = 'realign'])
 ```
 
+## Citation
+
+```bibtex
+    @software{CPP_SPM,
+        author = {Gau, Rémi; Barilari, Marco; Battal, Ceren; Rezk, Mohamed; Collignon, Olivier; Gurtubay, Ane; Falagiarda, Federica; MacLean, Michèle; Cerpelloni, Filippo},
+        license = {GPL-3.0},
+        title = {{CPP SPM}},
+        url = {https://github.com/cpp-lln-lab/CPP_SPM},
+        version = {1.1.3dev}
+    }
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people

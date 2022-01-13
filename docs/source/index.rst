@@ -90,6 +90,18 @@ At the moment this pipeline makes some assumptions:
 -   it assumes that the dummy scans have been removed from the BIDS data set and
     it can jump straight into pre-processing,
 
+Citation
+========
+
+.. code-block:: bibtex
+
+    @software{CPP_SPM,
+        author = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo},
+        license = {GPL-3.0},
+        title = {{CPP SPM}},
+        url = {https://github.com/cpp-lln-lab/CPP_SPM},
+        version = {1.1.3dev}
+    }
 
 Indices and tables
 ==================
