@@ -191,15 +191,6 @@ end
 %                                                                    'orth', {});
 %     end
 %
-%     % Things that may change
-%     matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = opt.model.hrfDerivatives;
-%
-%     matlabbatch{1}.spm.stats.fmri_spec.mthresh = 0.8;
-%
-%     matlabbatch{1}.spm.stats.fmri_spec.mask = {''};
-%
-%     matlabbatch{1}.spm.stats.fmri_spec.cvi = 'FAST';
-%
 %     % Things that are unlikely to change
 %     matlabbatch{1}.spm.stats.fmri_spec.timing.units = 'secs';
 %
