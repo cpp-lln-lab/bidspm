@@ -200,7 +200,7 @@ function matlabbatch = bidsModelSelection(varargin)
   matlabbatch = seBatchPosteriorProba(matlabbatch, opt, action);
 
   matlabbatch = seBatchBMS(matlabbatch, opt, action);
-  
+
   saveAndRunWorkflow(matlabbatch, workflowName, opt);
 
 end
