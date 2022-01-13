@@ -1,6 +1,19 @@
-function matlabbatch = bidsModelSelection(opt)
+function matlabbatch = bidsModelSelection(varargin)
   %
   % Uses the MACS toolbox to perform model selection.
+  %
+  % USAGE::
+  %
+  %   bidsModelSelection(opt, 'action', 'all')
+  %
+  % :param opt: structure or json filename containing the options.
+  %             See ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  % :param action: any of ``'all'``, ``'modelSpace'``, ``'cvLME'``,
+  %                ``'posterior'``, ``'BMS'``
+  % :type action: string
+  %
+  % Steps are performed in that order:
   %
   % 1. MA_model_space:    defines a model space
   % 2. MA_cvLME_auto:     computes cross-validated log model evidence
@@ -8,13 +21,21 @@ function matlabbatch = bidsModelSelection(opt)
   % 4. MS_BMS_group_auto: perform cross-validated Bayesian model selection
   % 5. MS_SMM_BMS:        generate selected models maps from BMS
   %
-  % USAGE::
+  % - ``'all'``  : performs 1 to 5
+  % - ``'modelSpace'``: : performs step 1
+  % - ``'cvLME'``: performs steps 1 and 2
+  % - ``'posterior'``: performs steps 1 and 3, assuming step 2 has already been run
+  % - ``'BMS'``: performs 1, 4 and 5, assuming step 2 and 3 have already been run
   %
-  %   bidsModelSelection(opt)
+  % This way you can run all steps at once::
   %
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt: structure
+  %   bidsModelSelection(opt, 'action', 'all');
+  %
+  % Or in sequence (can be useful to split running cvLME in several batches of subjects)
+  %
+  %   bidsModelSelection(opt, 'action', 'cvLME');
+  %   bidsModelSelection(opt, 'action', 'posterior');
+  %   bidsModelSelection(opt, 'action', 'BMS');
   %
   % Requirements:
   %
@@ -94,6 +115,21 @@ function matlabbatch = bidsModelSelection(opt)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
+  allowedActions = @(x) ischar(x) && ismember(lower(x), {'all', ...
+                                                         'cvlme', ...
+                                                         'modelspace', ...
+                                                         'posterior', ...
+                                                         'bms'});
+
+  p = inputParser;
+  default_action = 'all';
+  addRequired(p, 'opt', @isstruct);
+  addOptional(p, 'action', default_action, allowedActions);
+  parse(p, varargin{:});
+
+  opt = p.Results.opt;
+  action = p.Results.action;
+
   checks(opt);
 
   workflowName = 'macs model selection';
@@ -101,7 +137,12 @@ function matlabbatch = bidsModelSelection(opt)
   [~, opt] = setUpWorkflow(opt, workflowName);
 
   opt.orderBatches.MACS_model_space = 1;
-  opt.orderBatches.MACS_BMS_group_auto = 4;
+  switch lower(action)
+    case 'all'
+      opt.orderBatches.MACS_BMS_group_auto = 4;
+    case 'bms'
+      opt.orderBatches.MACS_BMS_group_auto = 2;
+  end
 
   opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-modelSelection');
   opt.dir.jobs = fullfile(opt.dir.output, 'jobs');
@@ -154,25 +195,59 @@ function matlabbatch = bidsModelSelection(opt)
 
   end
 
-  matlabbatch{2}.spm.tools.MACS.MA_cvLME_auto.MS_mat(1) = returnDefineModelSpaceDependency(opt);
-  matlabbatch{2}.spm.tools.MACS.MA_cvLME_auto.AnC = 0;
+  matlabbatch = seBatchCvLme(matlabbatch, opt, action);
 
-  matlabbatch{3}.spm.tools.MACS.MS_PPs_group_auto.MS_mat(1) = returnDefineModelSpaceDependency(opt);
-  matlabbatch{3}.spm.tools.MACS.MS_PPs_group_auto.LME_map = 'cvLME';
+  matlabbatch = seBatchPosteriorProba(matlabbatch, opt, action);
 
-  matlabbatch{4}.spm.tools.MACS.MS_BMS_group_auto.MS_mat(1) = returnDefineModelSpaceDependency(opt);
-  matlabbatch{4}.spm.tools.MACS.MS_BMS_group_auto.LME_map = 'cvLME';
-  matlabbatch{4}.spm.tools.MACS.MS_BMS_group_auto.inf_meth = 'RFX-VB';
-  matlabbatch{4}.spm.tools.MACS.MS_BMS_group_auto.EPs = 0;
+  matlabbatch = seBatchBMS(matlabbatch, opt, action);
 
-  matlabbatch{5}.spm.tools.MACS.MS_SMM_BMS.BMS_mat(1) = ...
-    cfg_dep('MS: perform BMS (automatic): BMS results (BMS.mat file)', ...
-            returnDependency(opt, 'MACS_BMS_group_auto'), ...
-            substruct('.', 'BMS_mat'));
-  matlabbatch{5}.spm.tools.MACS.MS_SMM_BMS.extent = 10;
+end
 
-  saveAndRunWorkflow(matlabbatch, workflowName, opt);
+function matlabbatch = seBatchCvLme(matlabbatch, opt, action)
 
+  if ~ismember(lower(action), {'all', 'cvlme'})
+    return
+  end
+
+  MA_cvLME_auto.MS_mat(1) = returnDefineModelSpaceDependency(opt);
+  MA_cvLME_auto.AnC = 0;
+
+  matlabbatch{end + 1}.spm.tools.MACS.MA_cvLME_auto = MA_cvLME_auto;
+
+end
+
+function matlabbatch = seBatchPosteriorProba(matlabbatch, opt, action)
+
+  if ~ismember(lower(action), {'all', 'posterior'})
+    return
+  end
+
+  MS_PPs_group_auto.MS_mat(1) = returnDefineModelSpaceDependency(opt);
+  MS_PPs_group_auto.LME_map = 'cvLME';
+
+  matlabbatch{end + 1}.spm.tools.MACS.MS_PPs_group_auto = MS_PPs_group_auto;
+
+end
+
+function matlabbatch = seBatchBMS(matlabbatch, opt, action)
+
+  if ~ismember(lower(action), {'all', 'bms'})
+    return
+  end
+
+  MS_BMS_group_auto.MS_mat(1) = returnDefineModelSpaceDependency(opt);
+  MS_BMS_group_auto.LME_map = 'cvLME';
+  MS_BMS_group_auto.inf_meth = 'RFX-VB';
+  MS_BMS_group_auto.EPs = 0;
+
+  matlabbatch{end + 1}.spm.tools.MACS.MS_BMS_group_auto = MS_BMS_group_auto;
+
+  MS_SMM_BMS.BMS_mat(1) = cfg_dep('MS: perform BMS (automatic): BMS results (BMS.mat file)', ...
+                                  returnDependency(opt, 'MACS_BMS_group_auto'), ...
+                                  substruct('.', 'BMS_mat'));
+  MS_SMM_BMS.extent = 10;
+
+  matlabbatch{end + 1}.spm.tools.MACS.MS_SMM_BMS = MS_SMM_BMS;
 end
 
 function checks(opt)

@@ -29,6 +29,8 @@ function test_bidsModelSelection_basic()
   matlabbatch = bidsModelSelection(opt);
 
   % THEN
+  assertEqual(numel(matlabbatch), 5);
+
   expectedContent = {'vismotion'; 'global signal'};
   assertEqual(matlabbatch{1}.spm.tools.MACS.MA_model_space.names, expectedContent);
 
@@ -38,7 +40,45 @@ function test_bidsModelSelection_basic()
   nbModels = 2;
   assertEqual(size(matlabbatch{1}.spm.tools.MACS.MA_model_space.models{1}, 2), nbModels);
 
-  cleanUp();
+end
+
+function test_bidsModelSelection_actions()
+
+  createDummyData();
+
+  % GIVEN
+  opt = setOptions('vislocalizer');
+  opt = rmfield(opt, 'taskName');
+  opt.toolbox.MACS.model.files = {fullfile(getDummyDataDir(), ...
+                                           'models', ...
+                                           'model-vismotion_smdl.json')
+                                  fullfile(getDummyDataDir(), ...
+                                           'models', ...
+                                           'model-vismotionGlobalSignal_smdl.json')};
+
+  % WHEN
+  matlabbatch = bidsModelSelection(opt, 'modelSpace');
+  % THEN
+  assertEqual(numel(matlabbatch), 1);
+
+  % WHEN
+  matlabbatch = bidsModelSelection(opt, 'cvLME');
+  % THEN
+  assertEqual(numel(matlabbatch), 2);
+  assert(isfield(matlabbatch{end}.spm.tools.MACS, 'MA_cvLME_auto'));
+
+  % WHEN
+  matlabbatch = bidsModelSelection(opt, 'posterior');
+  % THEN
+  assertEqual(numel(matlabbatch), 2);
+  assert(isfield(matlabbatch{end}.spm.tools.MACS, 'MS_PPs_group_auto'));
+
+  % WHEN
+  matlabbatch = bidsModelSelection(opt, 'BMS');
+  % THEN
+  assertEqual(numel(matlabbatch), 3);
+  assert(isfield(matlabbatch{2}.spm.tools.MACS, 'MS_BMS_group_auto'));
+  assert(isfield(matlabbatch{3}.spm.tools.MACS, 'MS_SMM_BMS'));
 
 end
 
@@ -117,13 +157,5 @@ function test_bidsModelSelection_missing_space()
   % WHEN
   assertExceptionThrown(@()bidsModelSelection(opt), ...
                         'bidsModelSelection:missingModelInputSpace');
-
-end
-
-function setUp()
-
-end
-
-function cleanUp()
 
 end
