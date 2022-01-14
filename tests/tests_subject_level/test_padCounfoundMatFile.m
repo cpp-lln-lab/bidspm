@@ -49,6 +49,8 @@ function test_padCounfoundMatFile_different_nb_confounds()
   assertLessThan(numel(in.names), numel(out.names));
   assertEqual(numel(out.names), size(out.R, 2));
 
+  delete(spmSessOut(2).counfoundMatFile);
+  
 end
 
 function test_allRunsHaveSameNbConfounds_one_session()
