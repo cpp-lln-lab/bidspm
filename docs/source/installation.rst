@@ -76,8 +76,8 @@ Installation on a computing cluster
 ===================================
 
 
-.. 
-  
+..
+
   For stand alone download
   https://www.fil.ion.ucl.ac.uk/spm/download/restricted/utopia/
 
