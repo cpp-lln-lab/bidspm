@@ -93,9 +93,8 @@ function test_createAndReturnCounfoundMatFile_regex()
                   'trial_type.VisStat'
                   'trial_type.missing_condition'
                   'trans_?'
-                  'rot_*'
-                  'non_steady_state_outlier*'
-                  'motion_outlier*'};
+                  'rot_?'
+                  '*outlier*'};
 
   names = createConfounds(tsvContent, designMatrix, Inf);
 
