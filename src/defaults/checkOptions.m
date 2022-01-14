@@ -15,7 +15,7 @@ function opt = checkOptions(opt)
   %
   % IMPORTANT OPTIONS (with their defaults):
   %
-  %     - ``opt.taskName``
+  %  - generic
   %
   %     - ``opt.dir``: TODO EXPLAIN
   %
@@ -27,27 +27,38 @@ function opt = checkOptions(opt)
   %
   %     - ``opt.space = {'individual', 'IXI549Space'}`` - Space where we conduct the analysis
   %
+  %     - ``opt.taskName``
+  %
+  %     - ``opt.query = struct('modality', {{'anat', 'func'}})`` - a structure used to specify
+  %       subset of files to only run analysis on.
+  %       Default = ``struct('modality', {{'anat', 'func'}})``
+  %       See ``bids.query`` to see how to specify.
+  %
+  %  - preprocessing
+  %
   %     - ``opt.realign.useUnwarp = true``
   %
   %     - ``opt.useFieldmaps = true`` - when set to ``true`` the
   %       preprocessing pipeline will look for the voxel displacement maps (created by
   %       ``bidsCreateVDM()``) and will use them for realign and unwarp.
   %
+  %     - ``opt.fwhm.func = 6`` - FWHM to apply to the preprocessed functional images.
+  %
+  %  - statistics
+  %
   %     - ``opt.model.file = ''`` - path to the BIDS model file that contains the
   %       model to speficy and the contrasts to compute.
+  %
+  %     - ``opt.fwhm.contrast = 6`` - FWHM to apply to the contrast images before bringing
+  %       them at the group level.
+  %
   %     - ``'opt.model.designOnly'`` = if set to ``true``, the GLM will be set
   %       up without associating any data to it. Can be useful for quick design matrix
   %       inspection before running estimation.
   %
-  %     - ``opt.fwhm.func = 6`` - FWHM to apply to the preprocessed functional images.
-  %     - ``opt.fwhm.contrast = 6`` - FWHM to apply to the contrast images before bringing
-  %       them at the group level.
-  %
-  %     - ``opt.query`` - a structure used to specify other options to only run analysis on
-  %       certain files. ``struct('dir', 'AP', 'acq' '3p00mm')``. See ``bids.query``
-  %       to see how to specify.
-  %
   % OTHER OPTIONS (with their defaults):
+  %
+  %  - generic
   %
   %     - ``opt.verbosity = 1;`` - Set it to ``0`` if you want to see less output on the prompt.
   %
@@ -58,6 +69,14 @@ function opt = checkOptions(opt)
   %
   %     - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
   %       subjects should be fetched by their number ``1`` and not their label ``O1'``.
+  %
+  %    - ``opt.rename = true`` - to skip renaming files with ``bidsRename()``.
+  %                     Mostly for debugging as the ouput files won't be usable by any of the stats
+  %                     workflows.
+  %
+  %  - preprocessing
+  %
+  %     - ``opt.anatOnly = false`` - to only preprocess the anatomical file
   %
   %     - ``opt.anatReference.type = 'T1w'`` -  type of the anatomical reference
   %     - ``opt.anatReference.session = ''`` - session label of the anatomical reference
@@ -70,9 +89,6 @@ function opt = checkOptions(opt)
   %       Any voxel with ``p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold``
   %       will be included in the mask.
   %
-  %     - ``opt.funcVoxelDims = []`` - Voxel dimensions to use for resampling of functional data
-  %       at normalization.
-  %
   %     - ``opt.stc.skip = false`` - boolean flag to skip slice time correction or not.
   %     - ``opt.stc.referenceSlice = []`` - reference slice for the slice timing correction.
   %       If left emtpy the mid-volume acquisition time point will be selected at run time.
@@ -80,15 +96,14 @@ function opt = checkOptions(opt)
   %       if you know the order in which slices were acquired, you should be able to recompute
   %       slice timing and add it to the json files in your BIDS data set.
   %
-  %     - ``opt.glm.roibased.do = false`` must be set to ``true`` to use the
-  %       ``bidsRoiBasedGLM`` workflow
-  %     - ``opt.glm.maxNbVols = Inf`` sets the maximum number of volumes to
-  %       include in a run in a subject level GLM. This can be useful if some
-  %       time series have more volumes than necessary.
+  %     - ``opt.funcVoxelDims = []`` - Voxel dimensions to use for resampling of functional data
+  %       at normalization.
   %
-  %     - ``opt.QA.func.carpetPlot = true`` to plot carpet plot when running ``functionaQA``
+  %  - preprocessing QA (see ``functionalQA``)
+  %
   %     - ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
-  %       in ``functionaQA``
+  %
+  %     - ``opt.QA.func.carpetPlot = true`` to plot carpet plot
   %     - ``opt.QA.func.MotionParameters = 'on'``
   %     - ``opt.QA.func.FramewiseDisplacement = 'on'``
   %     - ``opt.QA.func.Voltera = 'on'``
@@ -97,11 +112,21 @@ function opt = checkOptions(opt)
   %       of the time series
   %     - ``opt.QA.func.Basics = 'on'``
   %
+  %
+  %  - stats
+  %
+  %     - ``opt.glm.roibased.do = false`` must be set to ``true`` to use the
+  %       ``bidsRoiBasedGLM`` workflow
+  %
+  %     - ``opt.glm.maxNbVols = Inf`` sets the maximum number of volumes to
+  %       include in a run in a subject level GLM. This can be useful if some
+  %       time series have more volumes than necessary.
+  %
   %     - ``opt.QA.glm.do = true`` - If set to ``true`` the residual images of a
   %       GLM at the subject levels will be used to estimate if there is any remaining structure
   %       in the GLM residuals (the power spectra are not flat) that could indicate
-  %       the subject level results are likely confounded (see
-  %       ``plot_power_spectra_of_GLM_residuals`` and `Accurate autocorrelation modeling
+  %       the subject level results are likely confounded.
+  %       See ``plot_power_spectra_of_GLM_residuals.m`` and `Accurate autocorrelation modeling
   %       substantially improves fMRI reliability
   %       <https://www.nature.com/articles/s41467-019-09230-w.pdf>`_ for more info.
   %
