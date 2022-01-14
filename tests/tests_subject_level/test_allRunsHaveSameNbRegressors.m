@@ -1,4 +1,4 @@
-function test_suite = test_checkAllSessionsHaveSameNbRegressors %#ok<*STOUT>
+function test_suite = test_allRunsHaveSameNbRegressors %#ok<*STOUT>
   %
   % (C) Copyright 2022 CPP_SPM developers
 
@@ -11,14 +11,14 @@ function test_suite = test_checkAllSessionsHaveSameNbRegressors %#ok<*STOUT>
 
 end
 
-function test_checkAllSessionsHaveSameNbRegressors_basic()
+function test_allRunsHaveSameNbRegressors_basic()
 
   spmMatFile = fullfile(getDummyDataDir(), ...
                         'mat_files', ...
                         'SPM_with_different_nb_regressor_per_run.mat');
 
   % WHEN
-  assertExceptionThrown(@()checkAllSessionsHaveSameNbRegressors(spmMatFile), ...
-                        'checkAllSessionsHaveSameNbRegressors:differentNbRegressor');
+  assertExceptionThrown(@()allRunsHaveSameNbRegressors(spmMatFile), ...
+                        'allRunsHaveSameNbRegressors:differentNbRegressor');
 
 end

@@ -1,8 +1,8 @@
-function checkAllSessionsHaveSameNbRegressors(spmMatFile)
+function allRunsHaveSameNbRegressors(spmMatFile)
   %
   % USAGE::
   %
-  %    checkAllSessionsHaveSameNbRegressors(spmMatFile)
+  %    allRunsHaveSameNbRegressors(spmMatFile)
   %
   % (C) Copyright 2022 CPP_SPM developers
 

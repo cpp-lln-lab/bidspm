@@ -189,7 +189,7 @@ function matlabbatch = bidsModelSelection(varargin)
 
       matlabbatch{1}.spm.tools.MACS.MA_model_space.models{1, iSub}{1, iModel} = {spmMatFile};
 
-      checkAllSessionsHaveSameNbRegressors(spmMatFile);
+      allRunsHaveSameNbRegressors(spmMatFile);
 
     end
 
