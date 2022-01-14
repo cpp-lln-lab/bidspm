@@ -57,10 +57,10 @@ function bidsRename(opt)
           msg = sprintf('This file already exists. Will not overwrite.\n\t%s\n', ...
                         new_filename);
           error_handling(mfilename(), 'fileAlreadyExist', msg, true, opt.verbosity);
-          
+
         else
-            movefile(data{iFile}, spm_file(data{iFile}, 'filename', new_filename));
-          
+          movefile(data{iFile}, spm_file(data{iFile}, 'filename', new_filename));
+
         end
 
       end
