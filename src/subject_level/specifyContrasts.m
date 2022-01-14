@@ -23,10 +23,6 @@ function contrasts = specifyContrasts(SPM, model)
 
   % TODO refactor with some of the functions from the bids-model folder ?
 
-  % TODO what is the expected behavior if a condition is not present ?
-  % - create a contrast with the name dummy ?
-  % - do not create the contrast ?
-
   contrasts = struct('C', [], 'name', []);
   counter = 0;
 

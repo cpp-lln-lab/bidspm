@@ -72,10 +72,42 @@ Compute results
 
 .. autofunction:: bidsResults
 
+:download:`CSV output example <_static/results_fig/output.csv>`
+
+.. _MoAE_output_figure:
+.. figure::  _static/results_fig/output.png
+   :align:   center
+
+   Example of subject level results from the MoAE demo
+
+.. _MoAE_montage_figure:
+.. figure::  _static/results_fig/montage.png
+   :align:   center
+
+   Example of subject level montage from the MoAE demo
+
+CPP SPM also includes the ``slice_display`` code that allows you to plot on the
+same figure:
+
+- beta values
+- t values
+- cluster boundaries
+- ROI boundaries
+
+An example of how to use it is available in the ``moae_04_slice_display.m``
+script in the MoAE demo.
+
+.. _MoAE_slice_display_figure:
+.. figure::  _static/results_fig/slice_display.png
+   :align:   center
+
+   Example of subject level slice display from the MoAE demo
+
 Model selection
 ---------------
 
 .. autofunction::  bidsModelSelection
+
 
 Region of interest analysis
 ---------------------------

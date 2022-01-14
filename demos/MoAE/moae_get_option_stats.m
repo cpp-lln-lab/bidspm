@@ -55,7 +55,7 @@ function opt = moae_get_option_stats()
 
   % MONTAGE FIGURE OPTIONS
   opt.result.Nodes(1).Output.montage.do = true();
-  opt.result.Nodes(1).Output.montage.slices = -0:2:16; % in mm
+  opt.result.Nodes(1).Output.montage.slices = -4:2:16; % in mm
   % axial is default 'sagittal', 'coronal'
   opt.result.Nodes(1).Output.montage.orientation = 'axial';
   % will use the MNI T1 template by default but the underlay image can be changed.

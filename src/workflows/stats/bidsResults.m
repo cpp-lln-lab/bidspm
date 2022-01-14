@@ -16,6 +16,100 @@ function matlabbatch = bidsResults(opt)
   % See also: setBatchSubjectLevelResults, setBatchGroupLevelResults
   %
   %
+  % Below is an example of how specify the option structure
+  % to getsome speific results outputs for certain contrasts.
+  %
+  % See the `online documentation <https://cpp-spm.readthedocs.io/en/dev>`_
+  % for example of those outputs.
+  %
+  % The field ``opt.result.Nodes`` allows you to get results from several Nodes
+  % from the BIDS stats model. So you could run ``bidsResults`` once to view
+  % results from the subject and the dataset level.
+  %
+  % Specify a default structure result for this node::
+  %
+  %   opt.result.Nodes(1) = returnDefaultResultsStructure();
+  %
+  % Specify the Node level type (run, subject or dataset)::
+  %
+  %   opt.result.Nodes(1).Level = 'subject';
+  %
+  % Specify the name of the contrast whose resul we want to see.
+  % This must match one of the existing contrats (dummy contrast or contrast)
+  % in the BIDS stats model for that Node::
+  %
+  %   opt.result.Nodes(1).Contrasts(1).Name = 'listening_1';
+  %
+  % For each contrat, you can adapt:
+  %
+  %  - voxel level threshold (``p``) [between 0 and 1]
+  %  - cluster level threshold (``k``) [positive integer]
+  %  - type of multiple comparison (``MC``):
+  %
+  %    - ``'FWE'`` is the defaut
+  %    - ``'FDR'``
+  %    - ``'none'``
+  %
+  % You can thus specify something different for a second contrast::
+  %
+  %   opt.result.Nodes(1).Contrasts(2).Name = 'listening_lt_baseline';
+  %   opt.result.Nodes(1).Contrasts(2).MC =  'none';
+  %   opt.result.Nodes(1).Contrasts(2).p = 0.01;
+  %   opt.result.Nodes(1).Contrasts(2).k = 0;
+  %
+  % Specify how you want your output
+  % (all the following are on ``false`` by default):
+  %
+  % .. code-block:: matlab
+  %
+  %   % simple figure with glass brain view and result table
+  %   opt.result.Nodes(1).Output.png = true();
+  %
+  %   % result table as a .csv: very convenient when comes the time to write papers
+  %   opt.result.Nodes(1).Output.csv = true();
+  %
+  %   % thresholded statistical map
+  %   opt.result.Nodes(1).Output.thresh_spm = true();
+  %
+  %   % binarised thresholded statistical map (useful to create ROIs)
+  %   opt.result.Nodes(1).Output.binary = true();
+  %
+  % You can also create a montage to view the results
+  % on several slices at once:
+  %
+  % .. code-block:: matlab
+  %
+  %   opt.result.Nodes(1).Output.montage.do = true();
+  %
+  %   % slices position in mm [a scalar or a vector]
+  %   opt.result.Nodes(1).Output.montage.slices = -0:2:16;
+  %
+  %   % slices orientation: can be 'axial' 'sagittal' or 'coronal'
+  %   % axial is default
+  %   opt.result.Nodes(1).Output.montage.orientation = 'axial';
+  %
+  %   % path to the image to use as underlay
+  %   % Will use the SPM MNI T1 template by default
+  %   opt.result.Nodes(1).Output.montage.background = ...
+  %        fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
+  %
+  % Finally you can export as a NIDM results zip files.
+  %
+  % NIDM results is a standardized results format that is readable
+  % by the main neuroimaging softwares (SPM, FSL, AFNI).
+  % Think of NIDM as BIDS for your statistical maps.
+  % One of the main other advantage is that it makes it VERY easy
+  % to share your group results on `neurovault <https://neurovault.org/>`_
+  % (which you should systematically do).
+  %
+  % - `NIDM paper <https://www.hal.inserm.fr/view/index/identifiant/inserm-01570626>`_
+  % - `NIDM specification <http://nidm.nidash.org/specs/nidm-results_130.html>`_
+  % - `NIDM results viewer for SPM <https://github.com/incf-nidash/nidmresults-spmhtml>`
+  %
+  % To generate NIDM results zip file for a given contrats simply::
+  %
+  %   opt.result.Nodes(1).Output.NIDM_results = true();
+  %
   % (C) Copyright 2020 CPP_SPM developers
 
   % TODO move ps file
@@ -30,6 +124,10 @@ function matlabbatch = bidsResults(opt)
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
   for iNode = 1:length(opt.result.Nodes)
+
+    % TODO: add a check to make sure that the request Node level exists
+    % in this bids stats model: we might request dataset level,
+    % but it may not be present.
 
     % Depending on the level step we migh have to define a matlabbatch
     % for each subject or just on for the whole group

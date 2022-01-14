@@ -1,6 +1,5 @@
 function matlabbatch = setBatchGroupLevelResults(varargin)
   %
-  % Short description of what the function does goes here.
   %
   % USAGE::
   %
