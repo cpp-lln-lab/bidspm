@@ -1,4 +1,4 @@
-function test_suite = test_allRunsHaveSameNbConfounds %#ok<*STOUT>
+function test_suite = test_padCounfoundMatFile %#ok<*STOUT>
   %
   % (C) Copyright 2022 CPP_SPM developers
 
@@ -11,7 +11,7 @@ function test_suite = test_allRunsHaveSameNbConfounds %#ok<*STOUT>
 
 end
 
-function test_allRunsHaveSameNbConfounds_basic()
+function test_padCounfoundMatFile_basic()
 
   % GIVEN
   spmSess(1).counfoundMatFile = fullfile(getDummyDataDir, ...
@@ -21,14 +21,14 @@ function test_allRunsHaveSameNbConfounds_basic()
   opt.glm.useDummyRegressor = true;
 
   % WHEN
-  status = allRunsHaveSameNbConfounds(spmSess, opt);
+  spmSessOut = padCounfoundMatFile(spmSess, opt);
 
   % THEN
-  assertEqual(status, true);
+  assertEqual(spmSessOut, spmSess);
 
 end
 
-function test_allRunsHaveSameNbConfounds_different_nb_confounds()
+function test_padCounfoundMatFile_different_nb_confounds()
 
   % GIVEN
   spmSess(1).counfoundMatFile = fullfile(getDummyDataDir, ...
@@ -40,10 +40,14 @@ function test_allRunsHaveSameNbConfounds_different_nb_confounds()
   opt.glm.useDummyRegressor = true;
 
   % WHEN
-  status = allRunsHaveSameNbConfounds(spmSess, opt);
+  spmSessOut = padCounfoundMatFile(spmSess, opt);
 
   % THEN
-  assertEqual(status, false);
+  assert(~strcmp(spmSessOut(2).counfoundMatFile, spmSess(2).counfoundMatFile));
+  in = load(spmSess(2).counfoundMatFile);
+  out = load(spmSessOut(2).counfoundMatFile);
+  assertLessThan(numel(in.names), numel(out.names));
+  assertEqual(numel(out.names), size(out.R, 2));
 
 end
 
@@ -56,10 +60,10 @@ function test_allRunsHaveSameNbConfounds_one_session()
   opt.glm.useDummyRegressor = true;
 
   % WHEN
-  status = allRunsHaveSameNbConfounds(spmSess, opt);
+  spmSessOut = padCounfoundMatFile(spmSess, opt);
 
   % THEN
-  assertEqual(status, true);
+  assertEqual(spmSessOut, spmSess);
 
 end
 
@@ -70,10 +74,10 @@ function test_allRunsHaveSameNbConfounds_no_dummy_required()
   opt.glm.useDummyRegressor = false;
 
   % WHEN
-  status = allRunsHaveSameNbConfounds(spmSess, opt);
+  spmSessOut = padCounfoundMatFile(spmSess, opt);
 
   % THEN
-  assertEqual(status, true);
+  assertEqual(spmSessOut, spmSess);
 
 end
 

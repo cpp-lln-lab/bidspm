@@ -116,16 +116,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   % When doing model comparison all runs must have same number of confound regressors
   % so we pad them with zeros if necessary
-  if opt.glm.useDummyRegressor
-
-    if ~allRunsHaveSameNbConfounds(spmSess, opt)
-    end
-
-    % check that all confounds mat files have same number of regressors
-
-    % if not we pad those that don't and resave them
-
-  end
+  spmSess = padCounfoundMatFile(spmSess, opt);
 
   %% Add scans, onsets, confounds to the model specification batch
   for iSpmSess = 1:(spmSessCounter - 1)
