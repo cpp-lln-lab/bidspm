@@ -12,8 +12,6 @@ function test_bidsRename_basic()
 
   opt = setOptions('MoAE-preproc');
 
-  opt.verbosity = 1;
-
   bidsRename(opt);
 
 end

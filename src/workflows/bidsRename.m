@@ -42,26 +42,25 @@ function bidsRename(opt)
 
     for iFile = 1:size(data, 1)
 
+      % TODO: take care of metadata in json
       [new_filename, ~, json] = spm_2_bids(data{iFile}, opt.spm_2_bids);
 
       msg = sprintf('%s --> %s\n', spm_file(data{iFile}, 'filename'), new_filename);
       printToScreen(msg, opt);
-
-      if ismember(new_filename, createdFiles)
-        warning('file already created');
-      end
 
       createdFiles{end + 1, 1} = new_filename;
 
       if ~opt.dryRun && ~strcmp(new_filename, spm_file(data{iFile}, 'filename'))
 
         % TODO write test for this
-        if ~exist(new_filename, 'file')
-          movefile(data{iFile}, spm_file(data{iFile}, 'filename', new_filename));
-        else
+        if exist(new_filename, 'file') || ismember(new_filename, createdFiles)
           msg = sprintf('This file already exists. Will not overwrite.\n\t%s\n', ...
                         new_filename);
           error_handling(mfilename(), 'fileAlreadyExist', msg, true, opt.verbosity);
+          
+        else
+            movefile(data{iFile}, spm_file(data{iFile}, 'filename', new_filename));
+          
         end
 
       end
