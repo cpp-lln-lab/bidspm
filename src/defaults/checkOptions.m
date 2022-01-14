@@ -13,9 +13,9 @@ function opt = checkOptions(opt)
   %
   % - :opt: the option structure with missing values filled in by the defaults.
   %
-  % IMPORTANT OPTIONS (with their defaults):
+  % **IMPORTANT OPTIONS (with their defaults):**
   %
-  %  - generic
+  %  - **generic**
   %
   %     - ``opt.dir``: TODO EXPLAIN
   %
@@ -34,7 +34,7 @@ function opt = checkOptions(opt)
   %       Default = ``struct('modality', {{'anat', 'func'}})``
   %       See ``bids.query`` to see how to specify.
   %
-  %  - preprocessing
+  %  - **preprocessing**
   %
   %     - ``opt.realign.useUnwarp = true``
   %
@@ -44,7 +44,7 @@ function opt = checkOptions(opt)
   %
   %     - ``opt.fwhm.func = 6`` - FWHM to apply to the preprocessed functional images.
   %
-  %  - statistics
+  %  - **statistics**
   %
   %     - ``opt.model.file = ''`` - path to the BIDS model file that contains the
   %       model to speficy and the contrasts to compute.
@@ -56,9 +56,9 @@ function opt = checkOptions(opt)
   %       up without associating any data to it. Can be useful for quick design matrix
   %       inspection before running estimation.
   %
-  % OTHER OPTIONS (with their defaults):
+  % **OTHER OPTIONS (with their defaults):**
   %
-  %  - generic
+  %  - **generic**
   %
   %     - ``opt.verbosity = 1;`` - Set it to ``0`` if you want to see less output on the prompt.
   %
@@ -70,11 +70,11 @@ function opt = checkOptions(opt)
   %     - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
   %       subjects should be fetched by their number ``1`` and not their label ``O1'``.
   %
-  %    - ``opt.rename = true`` - to skip renaming files with ``bidsRename()``.
-  %                     Mostly for debugging as the ouput files won't be usable by any of the stats
-  %                     workflows.
+  %     - ``opt.rename = true`` - to skip renaming files with ``bidsRename()``.
+  %       Mostly for debugging as the ouput files won't be usable by any of the stats
+  %       workflows.
   %
-  %  - preprocessing
+  %  - **preprocessing**
   %
   %     - ``opt.anatOnly = false`` - to only preprocess the anatomical file
   %
@@ -99,7 +99,7 @@ function opt = checkOptions(opt)
   %     - ``opt.funcVoxelDims = []`` - Voxel dimensions to use for resampling of functional data
   %       at normalization.
   %
-  %  - preprocessing QA (see ``functionalQA``)
+  %  - **preprocessing QA** (see ``functionalQA``)
   %
   %     - ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
   %
@@ -112,11 +112,13 @@ function opt = checkOptions(opt)
   %       of the time series
   %     - ``opt.QA.func.Basics = 'on'``
   %
-  %
-  %  - stats
+  %  - **statistics**
   %
   %     - ``opt.glm.roibased.do = false`` must be set to ``true`` to use the
   %       ``bidsRoiBasedGLM`` workflow
+  %
+  %     - ``opt.glm.useDummyRegressor = false`` to add dummy regressors when a condition is missing
+  %       from a run. See ``bidsModelSelection()`` for more information.
   %
   %     - ``opt.glm.maxNbVols = Inf`` sets the maximum number of volumes to
   %       include in a run in a subject level GLM. This can be useful if some
@@ -129,7 +131,6 @@ function opt = checkOptions(opt)
   %       See ``plot_power_spectra_of_GLM_residuals.m`` and `Accurate autocorrelation modeling
   %       substantially improves fMRI reliability
   %       <https://www.nature.com/articles/s41467-019-09230-w.pdf>`_ for more info.
-  %
   %
   %
   % (C) Copyright 2019 CPP_SPM developers
