@@ -173,6 +173,9 @@ function renameFile(BIDS, opt)
 
   % TODO: when anatOnly update the res label for TPMs
 
+  % TODO: when the voxDim is specified in opt, 
+  % it should probably be mentioned in the output BIDS name
+
   % TODO adapt spm_2_bids map to rename eventual files
   % that only have a "r" or "ra" prefix
   opt.query =  struct('modality', {{'anat', 'func'}});
