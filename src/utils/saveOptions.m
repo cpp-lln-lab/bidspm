@@ -1,6 +1,6 @@
 function saveOptions(opt)
   %
-  % Short description of what the function does goes here.
+  % Saves options in a JSON file in a ``cfg`` folder.
   %
   % USAGE::
   %

@@ -1,8 +1,8 @@
 function saveMatlabBatch(matlabbatch, batchType, opt, subLabel)
   %
-  % Also save some basic environnment info.
+  % Saves the matlabbatch job in a .mat and a .json file.
   %
-  % USAGE::
+  %  % USAGE::
   %
   %   saveMatlabBatch(matlabbatch, batchType, opt, [subLabel])
   %
@@ -14,6 +14,23 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subLabel)
   % :type opt: structure
   % :param subLabel:
   % :type subLabel: string
+  %
+  % The .mat file can directly be loaded with the SPM batch or run directly
+  % by SPM standalone or SPM docker.
+  %
+  % The .json file also contains heaps of info about the "environment" used
+  % to set up that batch including the version of:
+  %
+  % - OS,
+  % - MATLAB or Octave,
+  % - SPM,
+  % - CPP_SPM
+  %
+  % This can be useful for methods writing though if the the batch is generated
+  % in one environment and run in another (for example set up the batch with Octave
+  % on Mac OS and run the batch with Docker SPM),
+  % then this information will be of little value
+  % in terms of computational reproducibility.
   %
   %
   % (C) Copyright 2019 CPP_SPM developers
