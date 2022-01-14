@@ -44,7 +44,7 @@ repos:
     - id: check-added-large-files
 
 -   repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.9.0 
+    rev: v1.9.0
     hooks:
     -   id: rst-backticks # Detect common mistake of using single backticks when writing rst
     -   id: rst-inline-touching-normal # Detect mistake of inline code touching normal text in rst

@@ -2,7 +2,7 @@ Architecture
 ************
 
 At the highest levels CPP SPM is organized in workflows:
-they all start with the prefix `bids` (for example ``bidsRealignReslice``) 
+they all start with the prefix `bids` (for example ``bidsRealignReslice``)
 and are in the folder :mod:`src.workflows`
 Workflows typical run on all the subjects specified in the ``options`` structure
 (see the :ref:`set-up` section).
@@ -13,7 +13,7 @@ To do this the workflows call "bacth creating functions"
 that all start with the prefix ``setBatch`` (for example ``setBatchCoregistration``).
 and are in the folder :mod:`src.batches`.
 
-Many workflows include some post-processing steps (like file renaming) after the execution of the batch, 
+Many workflows include some post-processing steps (like file renaming) after the execution of the batch,
 so in many cases the output of running just the batch and running the whole workflow
 will be different.
 
