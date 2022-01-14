@@ -17,7 +17,9 @@
           "rot_?"
         ],
         "HRF": {
-          "Variables": [],
+          "Variables": [
+            "trial_type.foo"
+          ],
           "Model": "DoubleGamma"
         },
         "Options": {

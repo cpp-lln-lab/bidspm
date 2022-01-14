@@ -103,6 +103,12 @@ script in the MoAE demo.
 
    Example of subject level slice display from the MoAE demo
 
+Model selection
+---------------
+
+.. autofunction::  bidsModelSelection
+
+
 Region of interest analysis
 ---------------------------
 
@@ -110,7 +116,6 @@ Region of interest analysis
 
 .. autofunction::  bidsCreateROI
 .. autofunction::  bidsRoiBasedGLM
-
 
 Statistics batches
 ==================
@@ -137,7 +142,6 @@ Compute results
 .. autofunction:: setBatchResults
 .. autofunction:: setBatchSubjectLevelResults
 .. autofunction:: setBatchGroupLevelResults
-
 
 Statistics functions
 ====================

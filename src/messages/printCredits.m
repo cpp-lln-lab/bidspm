@@ -42,7 +42,7 @@ function printCredits(opt)
 
     fprintf('Please cite using the following DOI: \n %s\n\n', DOI_URL);
 
-    fprintf('For bug report & suggestions see our github repo: \n %s\n\n', getRepoURL());
+    fprintf('For bug report & suggestions see our github repo: \n %s\n\n', returnRepoURL());
 
     disp('___________________________________________________________________________');
     disp('___________________________________________________________________________');

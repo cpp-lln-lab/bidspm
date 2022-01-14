@@ -22,3 +22,6 @@ url = https://github.com/cpp-lln-lab/spm_2_bids.git
 [submodule "lib/riksneurotools"]
 path = lib/riksneurotools
 url = https://github.com/MRC-CBU/riksneurotools.git
+[submodule "lib/MACS"]
+	path = lib/MACS
+	url = https://github.com/cpp-lln-lab/MACS.git

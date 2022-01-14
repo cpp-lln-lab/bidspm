@@ -29,7 +29,7 @@ function test_createAndReturnCounfoundMatFile_basic()
 
   expected_names = load(expected_content, 'names');
   actual_names = load(counfoundMatFile, 'names');
-  assertEqual(actual_names, expected_names);
+  assertEqual(actual_names.names, expected_names.names);
 
   delete(counfoundMatFile);
 

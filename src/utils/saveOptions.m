@@ -19,14 +19,13 @@ function saveOptions(opt)
     taskString = ['_task-', strjoin(opt.taskName, '')];
   end
 
-  filename = fullfile(optionDir, ['options', ...
+  filename = fullfile(optionDir, [timeStamp(), '_options', ...
                                   taskString, ...
-                                  '_date-' datestr(now, 'yyyymmddHHMM'), ...
                                   '.json']);
 
   jsonFormat.indent = '    ';
   spm_jsonwrite(filename, opt, jsonFormat);
 
-  fprintf('Options saved in: %s\n\n', filename);
+  printToScreen(sprintf('Options saved in: %s\n\n', filename), opt);
 
 end

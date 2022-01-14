@@ -274,4 +274,24 @@ for subject in ${subject_list}; do
 		done
 	done
 
+	# different model for model comparison
+	task_list='vismotion vislocalizer'
+	for task in ${task_list}; do
+		this_dir=${stats_dir}/sub-${subject}/stats/task-${task}_space-IXI549Space_FWHM-6_desc-globalSignal
+		mkdir -p ${this_dir}
+
+		cp dummyData/mat_files/SPM.mat ${this_dir}/SPM.mat
+
+		touch ${this_dir}/mask.nii
+
+		for i in $(seq 1 10); do
+			touch ${this_dir}/beta_000${i}.nii
+		done
+
+		for i in $(seq 1 2); do
+			touch ${this_dir}/spmT_000${i}.nii
+			touch ${this_dir}/con_000${i}.nii
+		done
+	done
+
 done

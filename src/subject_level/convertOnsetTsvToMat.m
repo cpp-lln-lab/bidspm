@@ -18,6 +18,8 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   % :returns: :fullpathOnsetFilename: (string) name of the output ``.mat`` file.
   %
+  % See also: createAndReturnOnsetFile
+  %
   % (C) Copyright 2019 CPP_SPM developers
 
   %
@@ -27,7 +29,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   % Read the tsv file
   msg = sprintf('reading the tsv file : %s \n', tsvFile);
   printToScreen(msg, opt);
-  t = spm_load(tsvFile);
+  t = bids.util.tsvread(tsvFile);
 
   if ~isfield(t, 'trial_type')
 
@@ -68,10 +70,28 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
         names{1, end + 1} = conditionName;
         onsets{1, end + 1} = t.onset(idx)'; %#ok<*AGROW,*NASGU>
         durations{1, end + 1} = t.duration(idx)';
+
       else
-        msg = sprintf('No trial found for trial type %s in \n%s', conditionName, tsvFile);
+
+        msg = sprintf('No trial found for trial type %s in \n %s', conditionName, tsvFile);
+
+        if opt.glm.useDummyRegressor
+
+          names{1, end + 1} = 'dummyRegressor';
+          onsets{1, end + 1} = nan;
+          durations{1, end + 1} = nan;
+
+          msg = sprintf('No trial found for trial type %s in \n %s\n%s', ...
+                        conditionName, ...
+                        tsvFile, ...
+                        'Adding dummy regressor instead.');
+
+        end
+
         id = 'emptyTrialType';
+        id = 'noTrialType';
         errorHandling(mfilename(), id, msg, true, opt.verbosity);
+
       end
 
     end
