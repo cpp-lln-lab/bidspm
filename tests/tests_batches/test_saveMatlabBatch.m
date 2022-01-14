@@ -17,8 +17,8 @@ function test_saveMatlabBatch_basic()
   matlabbatch = struct('test', 1);
 
   expectedOutput = fullfile(pwd, ['sub-' subLabel], ...
-                            [datestr(now, 'yyyymmdd_HHMM') ...
-                             '_jobs_matlabbatch_SPM12_test.mat']);
+                            [datestr(now, 'yyyy-mm-ddTHH-MM') ...
+                             '_batch_test.mat']);
 
   saveMatlabBatch(matlabbatch, 'test', opt, subLabel);
 
@@ -37,8 +37,8 @@ function test_saveMatlabBatch_group()
   matlabbatch = struct('test', 1);
 
   expectedOutput = fullfile(pwd, 'group', ...
-                            [datestr(now, 'yyyymmdd_HHMM') ...
-                             '_jobs_matlabbatch_SPM12_groupTest.mat']);
+                            [datestr(now, 'yyyy-mm-ddTHH-MM') ...
+                             '_batch_groupTest.mat']);
 
   saveMatlabBatch(matlabbatch, 'groupTest', opt);
 
