@@ -59,7 +59,8 @@ and can be used to perform:
 -   whole GLM at the subject level
 -   whole brain GLM at the group level à la SPM (meaning using a summary
     statistics approach).
--   ROI based GLM
+-   ROI based GLM (using marsbar)
+-   model selection (with the MACS toolbox)
 
 ### Quality control:
 
@@ -138,6 +139,18 @@ varargout = getInfo('filename', BIDS, opt, subID, varargin)
 % batch and action should go first
 varargout = getInfo(BIDS, opt, subID, 'filename', varargin)
 [matlabbatch, voxDim] = setBatchRealign(BIDS, opt, subID, matlabbatch, [action = 'realign'])
+```
+
+## Citation
+
+```bibtex
+    @software{CPP_SPM,
+        author = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo},
+        license = {GPL-3.0},
+        title = {{CPP SPM}},
+        url = {https://github.com/cpp-lln-lab/CPP_SPM},
+        version = {1.1.3dev}
+    }
 ```
 
 ## Contributors

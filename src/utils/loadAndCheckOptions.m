@@ -27,7 +27,7 @@ function opt = loadAndCheckOptions(optionJsonFile)
   if nargin < 1 || isempty(optionJsonFile)
     optionJsonFile = spm_select('FPList', ...
                                 fullfile(pwd, 'cfg'), ...
-                                '^options_task-.*.json$');
+                                '^.*\.json$');
   end
 
   if isstruct(optionJsonFile)
@@ -41,7 +41,8 @@ function opt = loadAndCheckOptions(optionJsonFile)
 
   % finds most recent option file
   if size(optionJsonFile, 1) > 1
-    containsDate = cellfun(@any, strfind(cellstr(optionJsonFile), '_date-'));
+    containsDate = cellfun(@any, regexp(cellstr(optionJsonFile), ...
+                                        '^.*/[0-9]{4}-[0-9]{2}-[0-9]{2}T.*\.json'));
     if any(containsDate)
       optionJsonFile = optionJsonFile(containsDate, :);
       optionJsonFile = sortrows(optionJsonFile);

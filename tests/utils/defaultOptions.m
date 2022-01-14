@@ -65,6 +65,7 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.glm.roibased.do = false;
   expectedOptions.glm.maxNbVols = Inf;
+  expectedOptions.glm.useDummyRegressor = false;
 
   expectedOptions.model.file = '';
   expectedOptions.model.designOnly = false;
@@ -79,15 +80,11 @@ function expectedOptions = defaultOptions(taskName)
     expectedOptions.taskName = {expectedOptions.taskName};
   end
 
-  %  Options for toolboxes
-  global ALI_TOOLBOX_PRESENT
-
-  checkToolbox('ALI');
-  if ALI_TOOLBOX_PRESENT
+  if  checkToolbox('ALI', 'verbose', expectedOptions.verbosity > 0)
     expectedOptions = setFields(expectedOptions, ALI_my_defaults());
   end
-
   expectedOptions = setFields(expectedOptions, rsHRF_my_defaults());
+  expectedOptions = setFields(expectedOptions, MACS_my_defaults());
 
   expectedOptions = orderfields(expectedOptions);
 

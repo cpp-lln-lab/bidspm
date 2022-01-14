@@ -31,6 +31,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   printBatchName('specify subject level fmri model', opt);
 
+  %% Specify GLM aspects that are the same across runs
   fmri_spec = struct('volt', 1, ...
                      'global', 'None');
 
@@ -58,7 +59,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % If it exists, issue a warning that it has been overwritten
   ffxDir = getFFXdir(subLabel, opt);
   overwriteDir(ffxDir, opt);
-
+  printToScreen(sprintf(' output dir: %s\n', ffxDir), opt);
   fmri_spec.dir = {ffxDir};
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
@@ -69,12 +70,13 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   fmri_spec.cvi = getSerialCorrelationCorrection(opt.model.file);
 
+  %% List scans, onsets, confounds for each task / session / run
   subLabel = regexify(subLabel);
 
-  % identify sessions for this subject
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
-  sesCounter = 1;
+  spmSess = struct('scans', '', 'onsetsFile', '', 'counfoundMatFile', '');
+  spmSessCounter = 1;
 
   for iTask = 1:numel(opt.taskName)
 
@@ -82,66 +84,70 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
     for iSes = 1:nbSessions
 
-      % get all runs for that subject across all sessions
-      [runs, nbRuns] = ...
-          getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
+      [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
       for iRun = 1:nbRuns
 
-        % get functional files
-        fullpathBoldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
+        spmSess(spmSessCounter).scans = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
-        fmri_spec = setScans(opt, fullpathBoldFilename, fmri_spec, sesCounter);
-
-        onsetsFile = returnOnsetsFile(BIDS, opt, ...
-                                      subLabel, ...
-                                      sessions{iSes}, ...
-                                      opt.taskName{iTask}, ...
-                                      runs{iRun});
-
-        fmri_spec.sess(sesCounter).multi = ...
-            cellstr(onsetsFile);
+        spmSess(spmSessCounter).onsetsFile = returnOnsetsFile(BIDS, opt, ...
+                                                              subLabel, ...
+                                                              sessions{iSes}, ...
+                                                              opt.taskName{iTask}, ...
+                                                              runs{iRun});
 
         % get confounds
-        fmri_spec.sess(sesCounter).multi_reg = {''};
         confoundsRegFile = getConfoundsRegressorFilename(BIDS, ...
                                                          opt, ...
                                                          subLabel, ...
                                                          sessions{iSes}, ...
                                                          runs{iRun});
+        spmSess(spmSessCounter).counfoundMatFile = '';
         if ~isempty(confoundsRegFile)
-          counfoundMatFile = createAndReturnCounfoundMatFile(opt, confoundsRegFile);
-          fmri_spec.sess(sesCounter).multi_reg = ...
-              cellstr(counfoundMatFile);
+          spmSess(spmSessCounter).counfoundMatFile = ...
+           createAndReturnCounfoundMatFile(opt, confoundsRegFile);
         end
 
-        % convert mat files to tsv for quicker inspection
-        % and interoperability
-        onsetsMatToTsv(onsetsFile);
-        regressorsMatToTsv(counfoundMatFile);
-
-        % multiregressor selection
-        fmri_spec.sess(sesCounter).regress = ...
-            struct('name', {}, 'val', {});
-
-        % multicondition selection
-        fmri_spec.sess(sesCounter).cond = ...
-            struct('name', {}, 'onset', {}, 'duration', {});
-
-        fmri_spec.sess(sesCounter).hpf = getHighPassFilter(opt.model.file);
-
-        sesCounter = sesCounter + 1;
+        spmSessCounter = spmSessCounter + 1;
 
       end
     end
   end
 
+  % When doing model comparison all runs must have same number of confound regressors
+  % so we pad them with zeros if necessary
+  spmSess = padCounfoundMatFile(spmSess, opt);
+
+  %% Add scans, onsets, confounds to the model specification batch
+  for iSpmSess = 1:(spmSessCounter - 1)
+
+    fmri_spec = setScans(opt, spmSess(iSpmSess).scans, fmri_spec, iSpmSess);
+
+    fmri_spec.sess(iSpmSess).multi = cellstr(spmSess(iSpmSess).onsetsFile);
+
+    fmri_spec.sess(iSpmSess).multi_reg = cellstr(spmSess(iSpmSess).counfoundMatFile);
+
+    % multiregressor selection
+    fmri_spec.sess(iSpmSess).regress = struct('name', {}, 'val', {});
+
+    % multicondition selection
+    fmri_spec.sess(iSpmSess).cond = struct('name', {}, 'onset', {}, 'duration', {});
+
+    fmri_spec.sess(iSpmSess).hpf = getHighPassFilter(opt.model.file);
+
+  end
+
+  %%  convert mat files to tsv for quicker inspection and interoperability
+  for iSpmSess = 1:(spmSessCounter - 1)
+    onsetsMatToTsv(spmSess(iSpmSess).onsetsFile);
+    regressorsMatToTsv(spmSess(iSpmSess).counfoundMatFile);
+  end
+
   if opt.model.designOnly
     matlabbatch{end + 1}.spm.stats.fmri_design = fmri_spec;
+
   else
-
     fmri_spec.mask = {getInclusiveMask(opt)};
-
     matlabbatch{end + 1}.spm.stats.fmri_spec = fmri_spec;
 
   end
@@ -183,8 +189,10 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
 
 end
 
-function fmriSpec = setScans(opt, fullpathBoldFilename, fmriSpec, sesCounter)
+function fmriSpec = setScans(opt, fullpathBoldFilename, fmriSpec, spmSessCounter)
+
   if opt.model.designOnly
+
     try
       hdr = spm_vol(fullpathBoldFilename);
     catch
@@ -193,8 +201,11 @@ function fmriSpec = setScans(opt, fullpathBoldFilename, fmriSpec, sesCounter)
       % hard coded value for test
       hdr = ones(200, 1);
     end
-    fmriSpec.sess(sesCounter).nscan = numel(hdr);
+
+    fmriSpec.sess(spmSessCounter).nscan = numel(hdr);
+
   else
+
     if opt.glm.maxNbVols == Inf
       scans = {fullpathBoldFilename};
     else
@@ -203,8 +214,11 @@ function fmriSpec = setScans(opt, fullpathBoldFilename, fmriSpec, sesCounter)
                                  spm_file(fullpathBoldFilename, 'filename'), ...
                                  1:opt.glm.maxNbVols));
     end
-    fmriSpec.sess(sesCounter).scans = scans;
+
+    fmriSpec.sess(spmSessCounter).scans = scans;
+
   end
+
 end
 
 function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, run)

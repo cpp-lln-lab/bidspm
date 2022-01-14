@@ -22,7 +22,10 @@ function uninitCppSpm()
     rmpath(CPP_SPM_PATHS);
     spm('Clean');
     spm('Quit');
-    clearvars -GLOBAL;
+
+    if ~isOctave()
+      clearvars -GLOBAL;
+    end
 
   end
 

@@ -27,7 +27,18 @@ function initCppSpm(dev)
 
   if isempty(CPP_SPM_INITIALIZED)
 
+    pathSep = ':';
+    if ~isunix
+      pathSep = ';';
+    end
+
     CPP_SPM_PATHS = genpath(fullfile(thisDirectory, 'src'));
+
+    % for some reasons this folder was otherwise not added to the path in
+    % Octave
+    CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ...
+                        pathSep, ...
+                        genpath(fullfile(thisDirectory, 'src', 'workflows', 'stats')));
 
     libList = { ...
                'spmup', ...
@@ -44,11 +55,6 @@ function initCppSpm(dev)
                'slice_display', ...
                'panel-2.14', ...
                'utils'};
-
-    pathSep = ':';
-    if ~isunix
-      pathSep = ';';
-    end
     for i = 1:numel(libList)
       CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...
                           fullfile(thisDirectory, 'lib', libList{i}));
@@ -56,6 +62,7 @@ function initCppSpm(dev)
 
     CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...
                         fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
+
     CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...
                         fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
 

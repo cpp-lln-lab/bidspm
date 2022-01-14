@@ -2,14 +2,20 @@ Architecture
 ************
 
 At the highest levels CPP SPM is organized in workflows:
-they all start with the prefix `bids` (for example ``bidsRealignReslice``) and are in the folder :mod:`src.workflows`
+they all start with the prefix ``bids`` (for example ``bidsRealignReslice``)
+and are in the folder :mod:`src.workflows`
 Workflows typical run on all the subjects specified in the ``options`` structure
 (see the :ref:`set-up` section).
 
-Workflows run by creating matlab batches that are then passed to SPM to run.
-To do this they call "bacth creating functions"
+Most workflows run by creating matlab batches that are saved as ``.mat`` files in a ``jobs``
+then passed to the SPM jobman to run.
+To do this the workflows call "bacth creating functions"
 that all start with the prefix ``setBatch`` (for example ``setBatchCoregistration``).
 and are in the folder :mod:`src.batches`.
+
+Many workflows include some post-processing steps (like file renaming) after the execution of the batch,
+so in many cases the output of running just the batch and running the whole workflow
+will be different.
 
 :ref:`preprocessing`, :ref:`statistics` and :ref:`fieldmaps` handling have their own document pages.
 
@@ -57,6 +63,8 @@ Batches
 .. autofunction:: setBatchImageCalculation
 .. autofunction:: setBatch3Dto4D
 
+.. autofunction:: saveMatlabBatch
+
 .. automodule:: src.batches.lesion
 
 .. autofunction:: setBatchLesionOverlapMap
@@ -89,7 +97,6 @@ Utility functions
 .. autofunction:: getMeanFuncFilename
 .. autofunction:: getTpmFilename
 
-
 .. autofunction:: getFuncVoxelDims
 .. autofunction:: getAndCheckSliceOrder
 .. autofunction:: getSubjectList
@@ -99,8 +106,6 @@ Utility functions
 
 .. autofunction:: rmTrialTypeStr
 .. autofunction:: setFields
-
-.. autofunction:: saveMatlabBatch
 
 .. autofunction:: unzipAndReturnsFullpathName
 .. autofunction:: validationInputFile

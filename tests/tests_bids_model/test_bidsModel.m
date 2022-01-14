@@ -110,12 +110,8 @@ function test_getBidsDesignMatrix()
   expected = {'trial_type.VisMot'
               'trial_type.VisStat'
               'trial_type.missing_condition'
-              'trans_x'
-              'trans_y'
-              'trans_z'
-              'rot_x'
-              'rot_y'
-              'rot_z'};
+              'trans_?'
+              'rot_?'};
 
   assertEqual(designMatrix, expected);
 

@@ -1,7 +1,7 @@
 {
-  "Name": "vismotion",
+  "Name": "global signal",
   "BIDSModelVersion": "1.0.0",
-  "Description": "contrasts for the motion dataset",
+  "Description": "model for the visual motion including global signal as a regressor",
   "Input": {
     "task": "vismotion",
     "space": "IXI549Space"
@@ -16,7 +16,8 @@
           "trial_type.VisMot",
           "trial_type.VisStat",
           "trans_?",
-          "rot_?"
+          "rot_?",
+          "global_signal"
         ],
         "HRF": {
           "Variables": [
@@ -45,26 +46,26 @@
       },
       "Contrasts": [
         {
-          "Name": "VisMot_gt_VisStat",
+          "Name": "VisMot_&_VisStat",
           "ConditionList": [
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
           "Weights": [
             1,
-            -1
+            1
           ],
           "Test": "t"
         },
         {
-          "Name": "VisStat_gt_VisMot",
+          "Name": "VisMot_&_VisStat_lt_baseline",
           "ConditionList": [
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
           "Weights": [
             -1,
-            1
+            -1
           ],
           "Test": "t"
         }
@@ -76,10 +77,11 @@
       "Model": {
         "Type": "glm",
         "X": [
-          "trial_type.VisUp",
-          "trial_type.VisDown",
+          "trial_type.VisMot",
+          "trial_type.VisStat",
           "trans_?",
-          "rot_?"
+          "rot_?",
+          "global_signal"
         ],
         "HRF": {
           "Variables": [
