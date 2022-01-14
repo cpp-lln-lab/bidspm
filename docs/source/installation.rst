@@ -75,6 +75,18 @@ You can also remove CPP_SPM from the path with::
 Installation on a computing cluster
 ===================================
 
+
+.. 
+  
+  For stand alone download
+  https://www.fil.ion.ucl.ac.uk/spm/download/restricted/utopia/
+
+  To use SPM docker
+  https://github.com/spm/spm-docker
+
+  See FAQ:
+  https://en.wikibooks.org/wiki/SPM/Standalone#Frequently_Asked_Questions
+
 This relies on the fact that SPM and CPM SPM are Octave compatible,
 so you will be able to run most of CPP SPM on a high performance cluster (HPC)
 without having to worry about MATLAB licenses.

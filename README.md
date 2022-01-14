@@ -145,7 +145,7 @@ varargout = getInfo(BIDS, opt, subID, 'filename', varargin)
 
 ```bibtex
     @software{CPP_SPM,
-        author = {Gau, Rémi; Barilari, Marco; Battal, Ceren; Rezk, Mohamed; Collignon, Olivier; Gurtubay, Ane; Falagiarda, Federica; MacLean, Michèle; Cerpelloni, Filippo},
+        author = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo},
         license = {GPL-3.0},
         title = {{CPP SPM}},
         url = {https://github.com/cpp-lln-lab/CPP_SPM},
