@@ -1,6 +1,5 @@
 function eventSpecification = getEventSpecificationRoiGlm(varargin)
   %
-  % Short description of what the function does goes here.
   %
   % USAGE::
   %
@@ -16,6 +15,14 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   % event_specification(1).name 'F1'
   % event_specification(1).event_spec [1;1]
   % event_specification(1).duration 0
+  %
+  % Will use the run level contrasts but falls back on the subject level,
+  % if we do not find any contrasts at the run level.
+  %
+  % ASSUMPTION:
+  %
+  % That all events that are "pooled" together have more or less the same duration.
+  % No check in place to warn if that is not the case.
   %
   % See also: event_fitted, event_signal
   %
@@ -34,46 +41,137 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   modelFile = p.Results.modelFile;
 
   load(SPM);
-  nbRuns = numel(SPM.Sess);
 
   getModelType(modelFile);
   model = bids.util.jsondecode(modelFile);
+
+  % We focus on the run level but fall back on the subject level
+  % if we do not find any contrasts at the run level
   node = returnModelNode(model, 'run');
-  if ~isfield(node, 'DummyContrasts')
+  if ~isfield(node, 'DummyContrasts') || ~isfield(node, 'Contrasts')
     node = returnModelNode(model, 'subject');
-    if ~isfield(node, 'DummyContrasts')
-      return
-    end
   end
 
   eventSpecification = struct('name', '', 'eventSpec', [], 'duration', []);
 
-  if isfield(node.DummyContrasts, 'Contrasts') && ...
-      isTtest(node.DummyContrasts)
+  eventSpecification = getEventSpecForDummyContrasts(eventSpecification, node, SPM);
 
-    % first the contrasts to compute automatically against baseline
-    for iCon = 1:length(node.DummyContrasts.Contrasts)
+  eventSpecification = getEventSpecForContrasts(eventSpecification, node, SPM);
 
-      cdtName = node.DummyContrasts.Contrasts{iCon};
-      cdtName = rmTrialTypeStr(cdtName);
+end
 
-      for iRun = 1:nbRuns
+function eventSpec = getEventSpecForDummyContrasts(eventSpec, node, SPM)
 
-        tmp = cat(2, SPM.Sess(iRun).U(:).name);
+  if ~isfield(node, 'DummyContrasts') || ~isTtest(node.DummyContrasts)
+    return
+  end
 
-        conditionPresent = ismember(tmp, cdtName);
+  specCounter = numel(eventSpec);
 
-        if any(conditionPresent)
+  % contrasts to compute automatically against baseline
+  for iCon = 1:length(node.DummyContrasts.Contrasts)
 
-          eventSpecification(iCon).name = cdtName;
-          eventSpecification(iCon).eventSpec(:, end + 1) = [iRun; find(conditionPresent)];
-          eventSpecification(iCon).duration = mean(SPM.Sess(iRun).U(conditionPresent).dur);
+    cdtName = node.DummyContrasts.Contrasts{iCon};
 
-        end
+    thisContrastEventSpec = returnThisContrastEventSpec(cdtName, SPM);
+
+    if ~isempty(thisContrastEventSpec.eventSpec)
+
+      eventSpec(specCounter).name = rmTrialTypeStr(cdtName);
+      eventSpec(specCounter).eventSpec = thisContrastEventSpec.eventSpec;
+      eventSpec(specCounter).duration = mean(thisContrastEventSpec.duration);
+
+      specCounter = specCounter + 1;
+
+    end
+
+  end
+
+end
+
+function eventSpec = getEventSpecForContrasts(eventSpec, node, SPM)
+
+  if ~isfield(node, 'Contrasts')
+    return
+  end
+
+  specCounter = numel(eventSpec) + 1;
+
+  for iCon = 1:length(node.Contrasts)
+
+    % only check contrasts against baseline
+    % (no comparing condtions - YET)
+    if isTtest(node.Contrasts(iCon)) && isContrastAgainstBaseline(node.Contrasts(iCon))
+
+      conditionList = node.Contrasts(iCon).ConditionList;
+
+      thisContrastEventSpec = returnThisContrastEventSpec(conditionList, SPM);
+
+      if ~isempty(thisContrastEventSpec.eventSpec)
+
+        eventSpec(specCounter).name = node.Contrasts(iCon).Name;
+        eventSpec(specCounter).eventSpec = thisContrastEventSpec.eventSpec;
+        eventSpec(specCounter).duration = mean(thisContrastEventSpec.duration);
+
+        specCounter = specCounter + 1;
 
       end
 
     end
+
+  end
+
+end
+
+function thisContrastEventSpec = returnThisContrastEventSpec(conditionList, SPM)
+
+  if ischar(conditionList)
+    conditionList = {conditionList};
+  end
+
+  nbRuns = numel(SPM.Sess);
+
+  thisContrastEventSpec = struct('eventSpec', [], 'duration', []);
+
+  for iCdt = 1:numel(conditionList)
+
+    cdtName = rmTrialTypeStr(conditionList{iCdt});
+
+    for iRun = 1:nbRuns
+
+      tmp = cat(2, SPM.Sess(iRun).U(:).name);
+
+      conditionPresent = ismember(tmp, cdtName);
+
+      if any(conditionPresent)
+
+        thisContrastEventSpec.eventSpec(:, end + 1) = [iRun; find(conditionPresent)];
+
+        meanDuration = mean(SPM.Sess(iRun).U(conditionPresent).dur);
+        thisContrastEventSpec.duration(:, end + 1) = meanDuration;
+
+      end
+
+    end
+
+  end
+
+end
+
+function status = isContrastAgainstBaseline(contrast)
+  %
+  %  only includes contrast with all weights > 0 and all equal to each other
+  %
+  % (C) Copyright 2022 Remi Gau
+
+  status = true;
+
+  if any(contrast.Weights < 0) || ~(numel(unique(contrast.Weights)) == 1)
+
+    status = false;
+    verbose = true;
+    msg = 'Only contrasts against baseline supported';
+    notImplemented(mfilename(), msg, verbose);
 
   end
 

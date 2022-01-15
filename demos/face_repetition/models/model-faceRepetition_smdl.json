@@ -78,6 +78,22 @@
                   1
                ],
                "Test": "t"
+            },
+            {
+               "Name": "faces_lt_baseline",
+               "ConditionList": [
+                  "trial_type.F1",
+                  "trial_type.F2",
+                  "trial_type.N1",
+                  "trial_type.N2"
+               ],
+               "Weights": [
+                  -1,
+                  -1,
+                  -1,
+                  -1
+               ],
+               "Test": "t"
             }
          ]
       }

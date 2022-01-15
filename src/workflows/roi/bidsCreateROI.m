@@ -48,7 +48,7 @@ function bidsCreateROI(opt)
 
     roiList = spm_select('FPlist', ...
                          fullfile(opt.dir.roi, 'group'), ...
-                         '^[^w].*space-.*_mask.nii$');
+                         '^[^w].*_mask.nii$');
     roiList = cellstr(roiList);
     if noRoiFound(opt, roiList, 'folder', fullfile(opt.dir.roi, 'group'))
       return

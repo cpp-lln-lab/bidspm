@@ -55,7 +55,12 @@ function figureFile = plotRoiTimeCourse(varargin)
 
   hold on;
 
-  plot(secs, timeCourse, 'linewidth', 2);
+  l = plot(secs, timeCourse, 'linewidth', 2);
+  colors = repmat(twelveClassesColorMap(), 2, 1);
+  for i = 1:numel(l)
+    set(l(i), 'color', colors(i, :));
+  end
+
   plot([0 secs(end)], [0 0], '--k');
 
   title(['Time courses for ' figName], ...
@@ -78,5 +83,26 @@ function figureFile = plotRoiTimeCourse(varargin)
 
   figureFile = bids.internal.file_utils(tsvFile, 'ext', '.png');
   print(gcf, figureFile, '-dpng');
+
+end
+
+function colors = twelveClassesColorMap()
+
+  % from color brewer
+  % https://colorbrewer2.org/#type=qualitative&scheme=Paired&n=12
+
+  colors = [
+            166, 206, 227
+            31, 120, 180
+            178, 223, 138
+            51, 160, 44
+            251, 154, 153
+            227, 26, 28
+            253, 191, 111
+            255, 127, 0
+            202, 178, 214
+            106, 61, 154
+            255, 255, 153
+            177, 89, 40] / 256;
 
 end

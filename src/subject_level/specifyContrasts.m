@@ -158,7 +158,6 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
 
     % do not create this contrast if a condition is missing
     if ~status
-      disp(node.Contrasts(iCon).ConditionList);
       msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
                     node.Contrasts(iCon).Name, cdtName);
       errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
@@ -199,7 +198,6 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
     nbRuns = unique(cellfun(@numel, regIdx));
 
     if length(nbRuns) > 1
-      disp(node.Contrasts(iCon).ConditionList);
       msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
                     node.Contrasts(iCon).Name, cdtName);
       errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
