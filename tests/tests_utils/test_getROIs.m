@@ -41,7 +41,7 @@ function test_getROIs_no_roi()
 
   opt.roi.name = {''};
 
-  opt.space = 'MNI';
+  opt.space = 'IXI549Space';
   [roiList, roiFolder] = getROIs(opt);
 
   assertEqual(roiFolder, '');
@@ -59,7 +59,7 @@ function test_getROIs_mni()
 
   opt = setTestCfg();
   opt.dir.roi = getDummyDataDir('roi');
-  opt.space = 'MNI';
+  opt.space = 'IXI549Space';
   opt = checkOptions(opt);
 
   [roiList, roiFolder] = getROIs(opt);
@@ -77,7 +77,7 @@ function test_getROIs_mni_subselect()
 
   opt = setTestCfg();
   opt.dir.roi = getDummyDataDir('roi');
-  opt.space = 'MNI';
+  opt.space = 'IXI549Space';
   opt = checkOptions(opt);
 
   opt.roi.name = {'V1'};
@@ -169,5 +169,32 @@ function test_getROIs_individual_subselect()
   opt.roi.name = {'A', 'V'};
   roiList = getROIs(opt, subLabel);
   assertEqual(roiList, expectedRoiLists);
+
+end
+
+function test_getROIs_individual_subselect_filter()
+
+  opt = setTestCfg();
+  subLabel = '01';
+  opt.dir.roi = getDummyDataDir('roi');
+  opt.space = 'individual';
+  opt = checkOptions(opt);
+
+  opt.roi.name = struct('label', 'V1', 'hemi', 'L');
+
+  [roiList, roiFolder] = getROIs(opt, subLabel);
+
+  expectedRoiLists = {fullfile(roiFolder, 'sub-01_hemi-L_space-individual_label-V1_mask.nii')};
+  assertEqual(roiList, expectedRoiLists);
+
+  opt.roi.name = struct('hemi', 'L');
+  roiList = getROIs(opt, subLabel);
+  expectedRoiLists = {fullfile(roiFolder, 'sub-01_hemi-L_space-individual_label-A1_mask.nii'); ...
+                      fullfile(roiFolder, 'sub-01_hemi-L_space-individual_label-V1_mask.nii')};
+  assertEqual(roiList, expectedRoiLists);
+
+  opt.roi.name = struct('hemi', '');
+  roiList = getROIs(opt, subLabel);
+  assertEqual(roiList, {});
 
 end

@@ -73,7 +73,12 @@ function [roiList, roiFolder] = getROIs(varargin)
     if ~isempty(roiNames)
       if iscell(roiNames) && (numel(roiNames) == 1 && ~strcmp(roiNames{1}, ''))
         filter.label = ['(' strjoin(opt.roi.name, '|') '){1}'];
+
+      elseif isstruct(roiNames)
+        filter = setFields(filter, opt.roi.name);
+
       end
+
     end
 
     roiList = bids.query(BIDS_ROI, 'data', filter);
