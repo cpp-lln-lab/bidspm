@@ -11,6 +11,9 @@ function test_suite = test_getEventSpecificationRoiGlm %#ok<*STOUT>
 
 end
 
+% TODO
+% when contrast but no dummy contrasts
+
 function test_getEventSpecificationRoiGlm_basic()
 
   % GIVEN
@@ -20,6 +23,8 @@ function test_getEventSpecificationRoiGlm_basic()
   event_specification = getEventSpecificationRoiGlm(spmFile, modelFile);
 
   % THEN
+  assertEqual(numel(event_specification), 5);
+
   assertEqual(event_specification(1).name, 'F1');
   assertEqual(event_specification(1).eventSpec, [1; 1]);
   assertEqual(event_specification(1).duration, 0);
@@ -36,7 +41,22 @@ function test_getEventSpecificationRoiGlm_basic()
   assertEqual(event_specification(4).eventSpec, [1; 4]);
   assertEqual(event_specification(4).duration, 0);
 
+  assertEqual(event_specification(5).name, 'faces_gt_baseline');
+  assertEqual(event_specification(5).eventSpec, [1 1 1 1; 1 2 3 4]);
+  assertEqual(event_specification(5).duration, 0);
+
   cleanUp();
+
+end
+
+function test_getEventSpecificationRoiGlm_warning_complex_contrasts()
+
+  % GIVEN
+  [modelFile, spmFile] = setUp();
+
+  % WHEN
+  assertWarning(@()getEventSpecificationRoiGlm(spmFile, modelFile), ...
+                'getEventSpecificationRoiGlm:notImplemented');
 
 end
 
