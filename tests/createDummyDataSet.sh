@@ -7,9 +7,12 @@ start_dir=$(pwd) # relative to starting directory
 raw_dir=${start_dir}/dummyData/cpp_spm-raw
 preproc_dir=${start_dir}/dummyData/derivatives/cpp_spm-preproc
 stats_dir=${start_dir}/dummyData/derivatives/cpp_spm-stats
+roi_dir=${start_dir}/dummyData/derivatives/cpp_spm-roi
 
-subject_list='ctrl01 blind01 01' # subject list
-session_list='01 02'             # session list
+subject_list='ctrl01 blind01 01'
+session_list='01 02'
+roi_list='V1 A1'
+hemispheres='L R'
 
 create_raw_func_vismotion() {
 
@@ -128,7 +131,7 @@ create_raw_anat() {
 	this_dir=${target_dir}/sub-${subject}/ses-01/anat
 	mkdir -p ${this_dir}
 
-	touch ${this_dir}/sub-${subject}_ses-${ses}${suffix}.nii
+	touch "${this_dir}/sub-${subject}_ses-${ses}${suffix}.nii"
 }
 
 # RAW DATASET
@@ -141,6 +144,22 @@ for subject in ${subject_list}; do
 
 	create_raw_func_rest ${raw_dir} ${subject} '02'
 	create_raw_anat ${raw_dir} ${subject}
+done
+
+# ROIs
+mkdir -p ${roi_dir}/group
+for roi in ${roi_list}; do
+	touch "${roi_dir}/group/${roi}_mask.nii"
+done
+
+for subject in ${subject_list}; do
+	this_dir=${roi_dir}/sub-${subject}/roi
+	mkdir -p "${this_dir}"
+	for roi in ${roi_list}; do
+		for hemi in ${hemispheres}; do
+			touch "${this_dir}/sub-${subject}_hemi-${hemi}_space-individual_label-${roi}_mask.nii"
+		done
+	done
 done
 
 # DERIVATIVES DATASET

@@ -177,38 +177,6 @@ function skipped = bidsRoiBasedGLM(opt)
 
 end
 
-function [roiList, roiFolder] = getROIs(opt, subLabel)
-  %
-  % get the rois from the group folder when running analysis in MNI space
-  % and from the sub-*/roi/ folder when in individual space
-
-  roiList = {};
-  roiFolder = '';
-
-  if any(~cellfun('isempty', regexp(opt.space, 'MNI'))) || ismember('IXI549Space', opt.space)
-
-    roiFolder = fullfile(opt.dir.roi, 'group');
-    roiList = spm_select('FPlist', roiFolder, '^.*_mask.nii$');
-    roiList = cellstr(roiList);
-
-  elseif strcmp(opt.space, 'individual')
-
-    use_schema = false;
-    BIDS_ROI = bids.layout(opt.dir.roi, use_schema);
-    roiList = bids.query(BIDS_ROI, 'data', ...
-                         'sub', subLabel, ...
-                         'space', opt.space);
-    roiFolder = fullfile(BIDS_ROI.pth, ['sub-' subLabel], 'roi');
-
-  else
-
-    msg = sprintf('unknwon space:\n%s', createUnorderedList(opt.space));
-    errorHandling(mfilename(), 'unknownSpace', msg, true, opt.verbosity > 0);
-
-  end
-
-end
-
 function checks(opt)
 
   if numel(opt.space) > 1
