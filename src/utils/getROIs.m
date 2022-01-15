@@ -50,7 +50,9 @@ function [roiList, roiFolder] = getROIs(varargin)
     if ~isempty(roiNames)
       pattern = ['(' strjoin(roiNames, '|') '){1}'];
     end
-    roiList = spm_select('FPlist', roiFolder, ['^.*' pattern '.*_mask.nii$']);
+    pattern = ['.*' pattern '.*_mask.nii'];
+    pattern = regexify(pattern);
+    roiList = spm_select('FPlist', roiFolder, pattern);
     roiList = cellstr(roiList);
 
   elseif strcmp(space, 'individual')
