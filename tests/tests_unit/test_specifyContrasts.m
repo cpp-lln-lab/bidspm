@@ -9,9 +9,6 @@ function test_suite = test_specifyContrasts %#ok<*STOUT>
 end
 
 function test_specifyContrasts_missing_condition()
-  %
-  % to test the generation of contrasts when there are several runs
-  %
 
   taskName = 'motion';
 
@@ -39,16 +36,12 @@ function test_specifyContrasts_missing_condition()
   assertWarning(@()specifyContrasts(SPM, model), ...
                 'specifyContrasts:noRegressorFound');
 
-  assertExceptionThrown( ...
-                        @()specifyContrasts(SPM, model), ...
+  assertExceptionThrown(@()specifyContrasts(SPM, model), ...
                         'specifyContrasts:noContrast');
 
 end
 
 function test_specifyContrasts_missing_condition_for_dummy_contrasts()
-  %
-  % to test the generation of contrasts when there are several runs
-  %
 
   taskName = 'motion';
 
