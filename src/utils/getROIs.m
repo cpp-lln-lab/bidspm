@@ -48,7 +48,7 @@ function [roiList, roiFolder] = getROIs(varargin)
 
     pattern = '';
     if ~isempty(roiNames)
-      if numel(roiNames)>1
+      if numel(roiNames) > 1
         pattern = ['(' strjoin(roiNames, '|') '){1}'];
       else
         pattern = roiNames{1};
