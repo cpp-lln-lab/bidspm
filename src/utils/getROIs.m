@@ -1,9 +1,9 @@
 function [roiList, roiFolder] = getROIs(varargin)
   %
-  % get the rois from :
+  % Get the rois from :
   %
   % - the group folder when running analysis in MNI space
-  % - the sub-*/roi/ folder when in individual space
+  % - the sub-*/roi/sub-subLabel folder when in individual space
   %
   % USAGE::
   %
@@ -48,9 +48,13 @@ function [roiList, roiFolder] = getROIs(varargin)
 
     pattern = '';
     if ~isempty(roiNames)
-      pattern = ['(' strjoin(roiNames, '|') '){1}'];
+      if numel(roiNames)>1
+        pattern = ['(' strjoin(roiNames, '|') '){1}'];
+      else
+        pattern = roiNames{1};
+      end
     end
-    pattern = ['.*' pattern '.*_mask.nii'];
+    pattern = [pattern '.*_mask.nii'];
     pattern = regexify(pattern);
     roiList = spm_select('FPlist', roiFolder, pattern);
     roiList = cellstr(roiList);
