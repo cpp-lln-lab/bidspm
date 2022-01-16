@@ -23,16 +23,16 @@ function test_setBachRename_basic()
   patternReplace(1).repl = 'label-T1w';
   patternReplace(2).pattern = 'seg8';
   patternReplace(2).repl = 'segparam';
-                        
+
   % WHEN
   matlabbatch = {};
   matlabbatch = setBachRename(matlabbatch, files, moveTo, patternReplace);
-  
+
   spm_jobman('run', matlabbatch);
 
   % THEN
   expectedFile = 'sub-01_label-T1w_segparam.mat';
-  assert(exist(fullfile(pwd, expectedFile), 'file')==2);
+  assert(exist(fullfile(pwd, expectedFile), 'file') == 2);
 
   cleanUp(expectedFile);
 

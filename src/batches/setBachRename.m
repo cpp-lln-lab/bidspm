@@ -11,17 +11,17 @@ function matlabbatch = setBachRename(varargin)
   % (C) Copyright 2022 CPP_SPM developers
 
   p = inputParser;
-  
+
   isPatternReplaceStruct = @(x) isstruct(x) && all(ismember({'pattern', 'repl'}, fieldnames(x)));
 
   addRequired(p, 'matlabbatch', @iscell);
   addRequired(p, 'files', @iscell);
   addRequired(p, 'moveTo', @iscell);
   addRequired(p, 'patternReplace', isPatternReplaceStruct);
-  addOptional(p, 'overwriteDuplicate', false, @islogical)
+  addOptional(p, 'overwriteDuplicate', false, @islogical);
 
   parse(p, varargin{:});
-  
+
   matlabbatch = p.Results.matlabbatch;
   files = p.Results.files;
   moveTo = p.Results.moveTo;
@@ -29,7 +29,7 @@ function matlabbatch = setBachRename(varargin)
   overwriteDuplicate = p.Results.overwriteDuplicate;
 
   file_move.files = files;
-  
+
   file_move.action.moveren.moveto = moveTo;
 
   file_move.action.moveren.patrep = patternReplace;
