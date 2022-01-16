@@ -52,7 +52,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.result.Steps = returnDefaultResultsStructure();
 
   expectedOptions.parallelize.do = false;
-  expectedOptions.parallelize.nbWorkers = 3;
+  expectedOptions.parallelize.nbWorkers = 2;
   expectedOptions.parallelize.killOnExit = false;
 
   if nargin > 0

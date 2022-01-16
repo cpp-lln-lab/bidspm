@@ -159,7 +159,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.result.Steps = returnDefaultResultsStructure();
 
   fieldsToSet.parallelize.do = false;
-  fieldsToSet.parallelize.nbWorkers = 3;
+  fieldsToSet.parallelize.nbWorkers = 2;
   fieldsToSet.parallelize.killOnExit = false;
 
 end

@@ -69,7 +69,6 @@ Utility functions
 .. autofunction:: getVersion
 .. autofunction:: isOctave
 .. autofunction:: loadAndCheckOptions
-.. autofunction:: manageWorkersPool
 .. autofunction:: printBatchName
 .. autofunction:: printCredits
 .. autofunction:: printProcessingRun

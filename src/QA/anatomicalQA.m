@@ -26,7 +26,7 @@ function anatomicalQA(opt)
 
   fprintf(1, ' ANATOMICAL: QUALITY CONTROL\n\n');
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub}; %#ok<*PFBNS>
 
