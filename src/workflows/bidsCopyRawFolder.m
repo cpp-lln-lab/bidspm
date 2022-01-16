@@ -52,8 +52,6 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy, unZip)
 
   printWorklowName('copy data');
 
-  manageWorkersPool('open', opt);
-
   %% All tasks in this experiment
   % raw directory and derivatives directory
   opt = setDerivativesDir(opt);
@@ -118,8 +116,6 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy, unZip)
   if unZip
     unzipFiles(derivativesDir, deleteZippedNii, opt);
   end
-
-  manageWorkersPool('close', opt);
 
 end
 
