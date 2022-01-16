@@ -8,9 +8,31 @@ function test_suite = test_bidsFFX %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsFFX_individual()
+
+  task = {'vislocalizer'}; % 'vismotion'
+
+  for i = 1
+
+    opt = setOptions(task{i}, '', 'pipelineType', 'stats');
+    opt.model.file =  fullfile(getDummyDataDir(),  'models', ...
+                               ['model-' strjoin(task, '') 'SpaceIndividual_smdl.json']);
+    opt.fwhm.func = 0;
+
+    [matlabbatch, opt] = bidsFFX('specifyAndEstimate', opt);
+
+    bf = bids.File(matlabbatch{1}.spm.stats.fmri_spec.sess(1).scans{1});
+    assertEqual(bf.entities.space, 'individual');
+    assertEqual(bf.entities.desc, 'preproc');
+
+    assertEqual(opt.dir.jobs, fullfile(opt.dir.stats, 'jobs', 'vislocalizer'));
+
+  end
+end
+
 function test_bidsFFX_skip_subject_no_data()
 
-  opt = setOptions('vislocalizer', '^01');
+  opt = setOptions('vislocalizer', '^01', 'pipelineType', 'stats');
   opt.model.file = '';
   opt.space = {'MNI152NLin2009cAsym'};
 
@@ -24,11 +46,13 @@ function test_bidsFFX_contrasts()
 
   createDummyData();
 
-  opt = setOptions('vislocalizer');
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
-  matlabbatch = bidsFFX('contrasts', opt);
+  [matlabbatch, opt] = bidsFFX('contrasts', opt);
 
   assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 8);
+
+  assertEqual(opt.dir.jobs, fullfile(opt.dir.stats, 'jobs', 'vislocalizer'));
 
 end
 
@@ -63,28 +87,23 @@ end
 
 function test_bidsFFX_mni()
 
-  task = {'vislocalizer'}; % 'vismotion'
-
-  for i = 1
-
-    opt = setOptions(task{i}, '', 'pipelineType', 'stats');
-
-    bidsFFX('specifyAndEstimate', opt);
-
-  end
-
-end
-
-function test_bidsFFX_individual()
+  % checks that we read the correct space from the model and get the
+  % corresponding data
 
   task = {'vislocalizer'}; % 'vismotion'
 
   for i = 1
 
     opt = setOptions(task{i}, '', 'pipelineType', 'stats');
-    opt.space = {'individual'};
 
-    bidsFFX('specifyAndEstimate', opt);
+    [matlabbatch, opt] = bidsFFX('specifyAndEstimate', opt);
+
+    bf = bids.File(matlabbatch{1}.spm.stats.fmri_spec.sess(1).scans{1});
+    assertEqual(bf.entities.space, 'IXI549Space');
+    assertEqual(bf.entities.desc, 'smth6');
+
+    assertEqual(opt.dir.jobs, fullfile(opt.dir.stats, 'jobs', 'vislocalizer'));
 
   end
+
 end

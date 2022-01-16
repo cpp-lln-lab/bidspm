@@ -1,4 +1,4 @@
-function matlabbatch = bidsFFX(action, opt)
+function [matlabbatch, opt] = bidsFFX(action, opt)
   %
   % - specify the subject level fMRI model
   % - estimates it
@@ -164,10 +164,9 @@ function status = subjectHasData(BIDS, opt, subLabel)
 end
 
 function batchName = createBatchName(opt, action)
-  batchName = ...
-      [action '_ffx_task-', strjoin(opt.taskName, ''), ...
-       '_space-', char(opt.space), ...
-       '_FWHM-', num2str(opt.fwhm.func)];
+  batchName = [action '_ffx_task-', strjoin(opt.taskName, ''), ...
+               '_space-', char(opt.space), ...
+               '_FWHM-', num2str(opt.fwhm.func)];
 end
 
 function matlabbatch = setAction(action, matlabbatch, BIDS, opt, subLabel)
