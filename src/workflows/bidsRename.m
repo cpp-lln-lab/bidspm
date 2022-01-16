@@ -62,9 +62,9 @@ function bidsRename(opt)
         end
 
       end
-      
+
       createdFiles{end + 1, 1} = new_filename;
-      
+
     end
 
   end

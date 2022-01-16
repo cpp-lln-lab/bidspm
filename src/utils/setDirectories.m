@@ -36,7 +36,7 @@ function opt = setInputDir(opt)
       inputDir = fullfile(opt.dir.preproc);
     end
   end
-  
+
   opt.dir.input = inputDir;
 
 end
@@ -80,7 +80,7 @@ function opt = setDir(opt, step)
     return
 
   else
-    
+
     % check that the pth ends with the pipeline type (preproc or stats) or
     % is just derivatives
     if ~isempty(opt.dir.(step)) && ( ...
@@ -89,7 +89,7 @@ function opt = setDir(opt, step)
                                     ~bids.internal.ends_with(opt.dir.(step), opt.pipeline.type))
       opt.dir.(step) = '';
     end
-    
+
     if isempty(opt.dir.(step))
       % try to avoid creating folders called "preproc-preproc"
       if strcmp(opt.pipeline.name, opt.pipeline.type)
@@ -101,7 +101,7 @@ function opt = setDir(opt, step)
       return
 
     end
-    
+
   end
 
 end
@@ -118,7 +118,7 @@ function opt = setOutputDir(opt)
         outputDir = opt.dir.preproc;
     end
   end
-  
+
   opt.dir.output = outputDir;
 
 end
@@ -126,11 +126,11 @@ end
 function opt = setJobsDir(opt, targetDir)
 
   jobDir = fullfile(targetDir, 'jobs');
-  
+
   if isfield(opt, 'taskName') && ~isempty(opt.taskName) && ~isempty(opt.taskName{1})
     jobDir = fullfile(targetDir, 'jobs',  strjoin(opt.taskName, ''));
   end
-  
+
   opt.dir.jobs = jobDir;
 
 end
