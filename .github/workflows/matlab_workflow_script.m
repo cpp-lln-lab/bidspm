@@ -10,5 +10,6 @@ cd(fullfile(root_dir, 'MOxUnit', 'MOxUnit'));
 run moxunit_set_path();
 
 cd(fullfile(root_dir));
-initCppSpm(true);
+initCppSpm();
+addpath(fullfile(root_dir, 'tests', 'utils'));
 run run_tests();
