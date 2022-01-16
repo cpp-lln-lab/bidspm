@@ -1,4 +1,4 @@
-function matlabbatch = bidsFFX(action, opt)
+function [matlabbatch, opt] = bidsFFX(action, opt)
   %
   % - specify the subject level fMRI model
   % - estimates it
@@ -36,7 +36,9 @@ function matlabbatch = bidsFFX(action, opt)
   % (C) Copyright 2020 CPP_SPM developers
 
   opt.pipeline.type = 'stats';
+
   opt.dir.input = opt.dir.preproc;
+  opt.dir.output = opt.dir.stats;
 
   description = 'subject level GLM';
 
@@ -164,10 +166,9 @@ function status = subjectHasData(BIDS, opt, subLabel)
 end
 
 function batchName = createBatchName(opt, action)
-  batchName = ...
-      [action '_ffx_task-', strjoin(opt.taskName, ''), ...
-       '_space-', char(opt.space), ...
-       '_FWHM-', num2str(opt.fwhm.func)];
+  batchName = [action '_ffx_task-', strjoin(opt.taskName, ''), ...
+               '_space-', char(opt.space), ...
+               '_FWHM-', num2str(opt.fwhm.func)];
 end
 
 function matlabbatch = setAction(action, matlabbatch, BIDS, opt, subLabel)

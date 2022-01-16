@@ -11,16 +11,17 @@ function opt = setDirectories(opt)
     return
   end
 
-  fields = fieldnames(opt.dir);
-  for i = 1:numel(fields)
-    opt.dir.(fields{i}) = canonicalizeIfNonEmpty(opt.dir.(fields{i}));
-  end
-
   opt = setDerivativesDir(opt);
   opt = setDir(opt, 'preproc');
   opt = setDir(opt, 'stats');
   opt = setInputDir(opt);
   opt = setOutputDir(opt);
+  opt = setJobsDir(opt, opt.dir.output);
+
+  fields = fieldnames(opt.dir);
+  for i = 1:numel(fields)
+    opt.dir.(fields{i}) = canonicalizeIfNonEmpty(opt.dir.(fields{i}));
+  end
 
 end
 
@@ -36,7 +37,7 @@ function opt = setInputDir(opt)
     end
   end
 
-  opt.dir.input = spm_file(inputDir, 'cpath');
+  opt.dir.input = inputDir;
 
 end
 
@@ -75,12 +76,11 @@ function opt = setDir(opt, step)
   % to set preproc and stats directory
   %
 
-  opt.dir.(step) = opt.dir.(step);
-
   if ~strcmp(opt.pipeline.type, step)
     return
 
   else
+
     % check that the pth ends with the pipeline type (preproc or stats) or
     % is just derivatives
     if ~isempty(opt.dir.(step)) && ( ...
@@ -89,6 +89,7 @@ function opt = setDir(opt, step)
                                     ~bids.internal.ends_with(opt.dir.(step), opt.pipeline.type))
       opt.dir.(step) = '';
     end
+
     if isempty(opt.dir.(step))
       % try to avoid creating folders called "preproc-preproc"
       if strcmp(opt.pipeline.name, opt.pipeline.type)
@@ -100,9 +101,8 @@ function opt = setDir(opt, step)
       return
 
     end
-  end
 
-  opt.dir.(step) = spm_file(opt.dir.(step), 'cpath');
+  end
 
 end
 
@@ -119,19 +119,19 @@ function opt = setOutputDir(opt)
     end
   end
 
-  opt.dir.output = spm_file(outputDir, 'cpath');
-  opt = setJobsDir(opt, outputDir);
+  opt.dir.output = outputDir;
+
 end
 
 function opt = setJobsDir(opt, targetDir)
 
   jobDir = fullfile(targetDir, 'jobs');
+
   if isfield(opt, 'taskName') && ~isempty(opt.taskName) && ~isempty(opt.taskName{1})
     jobDir = fullfile(targetDir, 'jobs',  strjoin(opt.taskName, ''));
   end
-  opt.dir.jobs = jobDir;
 
-  opt.dir.jobs = spm_file(jobDir, 'cpath');
+  opt.dir.jobs = jobDir;
 
 end
 

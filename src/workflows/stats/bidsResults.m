@@ -119,6 +119,8 @@ function matlabbatch = bidsResults(opt)
 
   opt.pipeline.type = 'stats';
 
+  opt.dir.output = opt.dir.stats;
+
   [~, opt] = setUpWorkflow(opt, 'computing GLM results');
 
   % loop trough the steps and more results to compute for each contrast

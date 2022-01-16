@@ -29,6 +29,8 @@ function matlabbatch = bidsRFX(action, opt)
 
   description = 'group level GLM';
 
+  opt.dir.output = opt.dir.stats;
+
   [~, opt] = setUpWorkflow(opt, description);
 
   checks(opt, action);

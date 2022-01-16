@@ -48,15 +48,13 @@ function bidsRename(opt)
       msg = sprintf('%s --> %s\n', spm_file(data{iFile}, 'filename'), new_filename);
       printToScreen(msg, opt);
 
-      createdFiles{end + 1, 1} = new_filename;
-
       if ~opt.dryRun && ~strcmp(new_filename, spm_file(data{iFile}, 'filename'))
 
         % TODO write test for this
         if exist(new_filename, 'file') || ismember(new_filename, createdFiles)
           msg = sprintf('This file already exists. Will not overwrite.\n\t%s\n', ...
                         new_filename);
-          error_handling(mfilename(), 'fileAlreadyExist', msg, true, opt.verbosity);
+          errorHandling(mfilename(), 'fileAlreadyExist', msg, true, opt.verbosity);
 
         else
           movefile(data{iFile}, spm_file(data{iFile}, 'filename', new_filename));
@@ -64,6 +62,9 @@ function bidsRename(opt)
         end
 
       end
+
+      createdFiles{end + 1, 1} = new_filename;
+
     end
 
   end
