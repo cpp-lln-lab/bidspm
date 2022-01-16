@@ -50,6 +50,6 @@ function matlabbatch = setBachRenameSegmentParameter(varargin)
   file_move.action.moveren.patrep.repl = '_label-T1w_segparam.mat';
   file_move.action.moveren.unique = false;
 
-  matlabbatch{end+1}.cfg_basicio.file_dir.file_ops.file_move = file_move;
+  matlabbatch{end + 1}.cfg_basicio.file_dir.file_ops.file_move = file_move;
 
 end
