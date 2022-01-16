@@ -244,7 +244,7 @@ function unzipFiles(derivativesDir, deleteZippedNii, opt)
 
   zippedNiifiles = spm_select('FPListRec', derivativesDir, '^.*.gz$');
 
-  parfor iFile = 1:size(zippedNiifiles, 1)
+  for iFile = 1:size(zippedNiifiles, 1)
 
     file = deblank(zippedNiifiles(iFile, :));
 

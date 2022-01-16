@@ -16,7 +16,7 @@ function bidsRealignReslice(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'realign and reslice');
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 

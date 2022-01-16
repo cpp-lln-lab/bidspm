@@ -17,7 +17,7 @@ function bidsSegmentSkullStrip(opt)
   opt.orderBatches.selectAnat = 1;
   opt.orderBatches.segment = 2;
 
-  parfor iSub = 1:numel(opt.subjects)
+  for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 
