@@ -1,4 +1,4 @@
-.PHONY: clean manual
+ .PHONY: clean manual
 clean:
 	rm version.txt
 
@@ -13,3 +13,4 @@ validate_cff: CITATION.cff
 
 manual:
 	cd docs && sh create_manual.sh
+

@@ -15,7 +15,9 @@ function versionNumber = getVersion()
     versionNumber = fileread(fullfile(fileparts(mfilename('fullpath')), ...
                                       '..', '..', 'version.txt'));
   catch
-    versionNumber = 'v0.1.0 ';
+
+    versionNumber = 'v1.1.4dev ';
+
   end
 
   % dirty hack to get rid of line return
