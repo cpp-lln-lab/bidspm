@@ -17,11 +17,11 @@ function status = noRoiFound(varargin)
 
   p = inputParser;
 
-  default_folder = '';
+  defaultFolder = '';
 
   addRequired(p, 'opt', @isstruct);
   addOptional(p, 'roiList', @isstruct);
-  addParameter(p, 'folder', default_folder, @isdir);
+  addParameter(p, 'folder', defaultFolder, @isdir);
 
   parse(p, varargin{:});
 

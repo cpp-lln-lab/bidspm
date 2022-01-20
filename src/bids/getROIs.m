@@ -14,11 +14,11 @@ function [roiList, roiFolder] = getROIs(varargin)
 
   p = inputParser;
 
-  default_subLabel = '';
+  defaultSubLabel = '';
   charOrCell = @(x) ischar(x) || iscell(x);
 
   addRequired(p, 'opt');
-  addOptional(p, 'subLabel', default_subLabel, charOrCell);
+  addOptional(p, 'subLabel', defaultSubLabel, charOrCell);
 
   parse(p, varargin{:});
 

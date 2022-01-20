@@ -21,7 +21,7 @@ function matlabbatch = setBatchCoregistration(varargin)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  default_other = {''};
+  defaultOther = {''};
 
   isFile = @(x) exist(x, 'file') == 2;
 
@@ -31,7 +31,7 @@ function matlabbatch = setBatchCoregistration(varargin)
   addRequired(p, 'opt', @isstruct);
   addRequired(p, 'ref', isFile);
   addRequired(p, 'src', isFile);
-  addOptional(p, 'other', default_other, @iscell);
+  addOptional(p, 'other', defaultOther, @iscell);
 
   parse(p, varargin{:});
 
