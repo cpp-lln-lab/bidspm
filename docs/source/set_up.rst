@@ -39,7 +39,7 @@ Setting directories
 Below are some example on how to specify input and output directories.
 
 .. note::
-    It will be easier and make your code more portable, if you use relative path 
+    It will be easier and make your code more portable, if you use relative path
     for your directory setting.
 
 **For preprocessing**
@@ -67,7 +67,7 @@ Example content of ``getOptionPreproc`` file:
 **For statistics**
 
 To run a GLM, CPP SPM gets the images and confound time series from a preprocessed
-derivatives BIDS dataset (from fMRIprep or CPP SPM) and the ``events.tsv`` files 
+derivatives BIDS dataset (from fMRIprep or CPP SPM) and the ``events.tsv`` files
 from a raw BIDS dataset.
 
 For a given folder structure::
@@ -86,13 +86,13 @@ Example content of ``getOptionStats`` file:
 
   opt.pipeline.type = 'stats';
 
-  this_dir = fileparts(mfilename('fullpath'));    
+  this_dir = fileparts(mfilename('fullpath'));
 
   opt.dir.raw = fullfile(this_dir, '..', 'inputs', 'raw');
   opt.dir.preproc = fullfile(this_dir, '..', 'inputs', 'fmriprep');
   opt.dir.derivatives = fullfile(this_dir, '..', 'outputs', 'derivatives');
 
-The actual `opt.dir.input` and `opt.dir.output` folders 
+The actual `opt.dir.input` and `opt.dir.output` folders
 will usually be set automatically when running::
 
     opt = checkOptions(opt)
