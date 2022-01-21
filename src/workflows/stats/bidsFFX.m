@@ -44,12 +44,12 @@ function [matlabbatch, opt] = bidsFFX(action, opt)
 
   [BIDS, opt] = setUpWorkflow(opt, description);
 
-  checks(opt, action);
-
   if isempty(opt.model.file)
     opt = createDefaultStatsModel(BIDS, opt);
     opt = overRideWithBidsModelContent(opt);
   end
+  
+  checks(opt, action);
 
   initBids(opt, 'description', description, 'force', false);
 

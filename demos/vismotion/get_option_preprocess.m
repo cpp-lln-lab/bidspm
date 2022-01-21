@@ -32,8 +32,8 @@ function opt = get_option_preprocess()
   %         └── sub-con15
 
   this_dir = fileparts(mfilename('fullpath'));
-  root_dir = fullfile(this_dir, '..', '..', '..');
-  opt.dir.raw = fullfile(root_dir, inputs', 'raw');
+  root_dir = fullfile(this_dir, '..', '..', '..', '..');
+  opt.dir.raw = fullfile(root_dir, 'inputs', 'raw');
   opt.dir.derivatives = fullfile(root_dir, 'outputs', 'derivatives');
 
   %% DO NOT TOUCH

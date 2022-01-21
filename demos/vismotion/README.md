@@ -45,7 +45,8 @@ The data from the CPP lab is openly available on GIN:
 
 https://gin.g-node.org/cpp-lln-lab/CPP_visMotion-raw
 
-Note that to install it you will need to have set up datalad to play nice with GIN:
+Note that to install it you will need to have set up datalad to play nice with
+GIN:
 
 http://handbook.datalad.org/en/latest/basics/101-139-gin.html
 
@@ -84,3 +85,10 @@ To finish the setup you need to download the data:
 cd inputs/raw
 datalad get .
 ```
+
+<!-- create a script to do all this ? -->
+<!-- TODO set up output datasets -->
+
+## Running the analysis
+
+Start matlab and run the `step_1_preprocess.m` and `step_2_stats.m` scripts.

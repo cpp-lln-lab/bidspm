@@ -5,25 +5,14 @@ clc;
 
 run ../../initCppSpm.m;
 
-opt = get_option_preprocess();
-
-reportBIDS(opt);
-
-unzip = true;
-bidsCopyInputFolder(opt, unzip);
-
-bidsSTC(opt);
-
-bidsSpatialPrepro(opt);
-
-bidsSmoothing(opt);
+opt = get_option_stats();
 
 % subject level Univariate
 bidsFFX('specifyAndEstimate', opt);
 bidsFFX('contrasts', opt);
 
 % group level univariate
-bidsRFX('smoothContrasts', opt);
+% bidsRFX('smoothContrasts', opt);
 
 % Not implemented yet
 % bidsRFX(action, opt;
