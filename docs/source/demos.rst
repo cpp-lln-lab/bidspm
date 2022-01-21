@@ -48,3 +48,10 @@ This is based on the event related design dataset of SPM.
 .. autoscript:: face_rep_03_roi_analysis
 .. autoscript:: face_rep_anat
 .. autoscript:: face_rep_resolution
+
+
+vismotion
+=========
+
+Small demo using the data from a visual motion localizer 
+to show how to set up an analysis with CPP SPM from scratch with datalad.
