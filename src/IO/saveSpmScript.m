@@ -37,6 +37,7 @@ function outputFilename = saveSpmScript(varargin)
 
   outputFilename = p.Results.outputFilename;
   if strcmp(outputFilename, '')
+    outputFilename = returnBatchFileName('', '.m');
   end
 
   try
