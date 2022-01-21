@@ -50,6 +50,7 @@ function opt = createDefaultStatsModel(BIDS, opt)
   % (C) Copyright 2020 CPP_SPM developers
 
   % TODO deal with the Transformations and Convolve fields
+  % TODO get MNI space from model
 
   trialTypeList = listAllTrialTypes(BIDS, opt);
 

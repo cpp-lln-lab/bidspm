@@ -23,8 +23,10 @@ function uninitCppSpm()
     spm('Clean');
     spm('Quit');
 
-    if ~isOctave()
+    try
+      % this might not worl on octave
       clearvars -GLOBAL;
+    catch
     end
 
   end

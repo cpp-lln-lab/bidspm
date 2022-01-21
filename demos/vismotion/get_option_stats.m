@@ -1,9 +1,8 @@
-function opt = get_option()
+function opt = get_option_stats()
   %
-  % returns a structure that contains the options chosen by the user to run
-  % slice timing correction, pre-processing, FFX, RFX.
+  % returns options chosen to run statistical analysis
   %
-  % opt = get_option()
+  % opt = get_option_preprocess()
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -13,14 +12,19 @@ function opt = get_option()
 
   % task to analyze
   opt.taskName = 'visMotion';
-  opt.pipeline.type = 'preproc';
+  opt.pipeline.type = 'stats';
 
-  % The directory where the data are located
-  opt.dir.raw = '/home/remi/gin/CPP_visMotion/raw';
-  opt.dir.derivatives = '/home/remi/Documents';
+  this_dir = fileparts(mfilename('fullpath'));
+  root_dir = fullfile(this_dir, '..', '..', '..', '..');
+  opt.dir.raw = fullfile(root_dir, 'inputs', 'raw');
+  opt.dir.preproc = fullfile(root_dir, 'outputs', 'derivatives', 'cpp_spm-preproc');
+  opt.dir.stats = fullfile(root_dir, 'outputs', 'derivatives', 'cpp_spm-stats');
 
-  % specify the model file that contains the contrasts to compute
-  opt.model.file = './vismotion/models/model-visMotionLoc_smdl.json';
+  opt.space = 'IXI549Space';
+
+  % don't specify a stats model will let cpp spm run and try to figure out a
+  % default model
+  % opt.model.file = '';
 
   % specify the result to compute
   % Contrasts.Name has to match one of the contrast defined in the model json file

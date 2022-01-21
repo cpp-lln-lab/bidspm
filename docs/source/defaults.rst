@@ -1,9 +1,9 @@
+.. _defaults:
+
 Pipeline defaults
 *****************
 
 Defaults of the pipeline.
-
-----
 
 .. automodule:: src.defaults
 

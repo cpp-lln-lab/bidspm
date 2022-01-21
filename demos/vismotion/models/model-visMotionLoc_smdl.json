@@ -2,7 +2,8 @@
   "Name": "Motion localizer",
   "Description": "contrasts for the motion localizer dataset",
   "Input": {
-    "task": "visMotion"
+    "task": "visMotion",
+    "space": "IXI549Space"
   },
   "Nodes": [
     {
