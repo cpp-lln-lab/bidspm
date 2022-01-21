@@ -1,11 +1,11 @@
 Function description
 ********************
-  
-List of functions in the ``src`` folder.  
+
+List of functions in the ``src`` folder.
 
 ----
 
-.. automodule:: src 
+.. automodule:: src
 
 .. autofunction:: getAnatFilename
 .. autofunction:: getBoldFilename
@@ -57,7 +57,7 @@ Utility functions
 
 ----
 
-.. automodule:: src.utils 
+.. automodule:: src.utils
 
 .. autofunction:: checkDependencies
 .. autofunction:: cleanCrash

@@ -44,9 +44,9 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subLabel)
   jobsDir = fullfile(opt.dir.jobs, subLabel);
   [~, ~, ~] = mkdir(jobsDir);
 
-  batchFileName = returnBatchFileName(batchType, '.mat');    
+  batchFileName = returnBatchFileName(batchType, '.mat');
   batchFileName = fullfile(jobsDir, batchFileName);
-  
+
   save(batchFileName, 'matlabbatch', '-v7');
 
   [OS, GeneratedBy] = getEnvInfo(opt);

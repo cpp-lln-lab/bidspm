@@ -20,8 +20,8 @@ function outputFilename = saveSpmScript(varargin)
   defaultOutputFilename = '';
 
   isCellOrMatFile = @(x) iscell(x) || ...
-                         ( exist('file', x) == 2 && ...
-                           strcmp(spm_file(x, 'ext'), '.mat') );
+                         (exist('file', x) == 2 && ...
+                          strcmp(spm_file(x, 'ext'), '.mat'));
 
   addRequired(p, 'input', isCellOrMatFile);
   addOptional(p, 'outputFilename', defaultOutputFilename, @ischar);
@@ -32,7 +32,7 @@ function outputFilename = saveSpmScript(varargin)
     matlabbatch = p.Results.input;
   else
     % assumes the job was saved in a matlabbatch variable
-     matlabbatch = load(p.Results.input, 'matlabbatch');
+    matlabbatch = load(p.Results.input, 'matlabbatch');
   end
 
   outputFilename = p.Results.outputFilename;
@@ -47,7 +47,7 @@ function outputFilename = saveSpmScript(varargin)
     spm_jobman('initcfg');
     str = gencode(matlabbatch);
   end
-  
+
   [fid, msg] = fopen(outputFilename, 'w');
   if fid == -1
     cfg_message('matlabbatch:fopen', ...
