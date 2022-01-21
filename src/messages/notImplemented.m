@@ -17,12 +17,12 @@ function notImplemented(varargin)
 
   p = inputParser;
 
-  default_msg = '';
-  default_verbose = true;
+  defaultMsg = '';
+  defaultVerbose = true;
 
   addRequired(p, 'functionName', @ischar);
-  addOptional(p, 'msg', default_msg, @ischar);
-  addOptional(p, 'verbose', default_verbose, @islogical);
+  addOptional(p, 'msg', defaultMsg, @ischar);
+  addOptional(p, 'verbose', defaultVerbose, @islogical);
 
   parse(p, varargin{:});
 

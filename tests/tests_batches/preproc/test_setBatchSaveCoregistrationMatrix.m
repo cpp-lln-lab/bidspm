@@ -26,9 +26,6 @@ end
 
 function test_setBatchSaveCoregistrationMatrix_basic()
 
-  % necessarry to deal with SPM module dependencies
-  spm_jobman('initcfg');
-
   subLabel = '^01';
 
   opt = setOptions('vismotion', subLabel);

@@ -122,9 +122,9 @@ function matlabbatch = bidsModelSelection(varargin)
                                                          'bms'});
 
   p = inputParser;
-  default_action = 'all';
+  defaultAction = 'all';
   addRequired(p, 'opt', @isstruct);
-  addOptional(p, 'action', default_action, allowedActions);
+  addOptional(p, 'action', defaultAction, allowedActions);
   parse(p, varargin{:});
 
   opt = p.Results.opt;

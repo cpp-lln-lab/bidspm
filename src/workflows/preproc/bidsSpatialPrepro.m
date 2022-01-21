@@ -130,7 +130,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
   renameFile(BIDS, opt);
 
-  if ~opt.dryRun
+  if ~opt.dryRun && opt.rename
     anatomicalQA(opt);
   end
 

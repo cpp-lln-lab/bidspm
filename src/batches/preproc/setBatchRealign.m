@@ -31,7 +31,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
   p = inputParser;
 
-  default_action = 'realignUnwarp';
+  defaultAction = 'realignUnwarp';
   allowedActions = @(x) ischar(x) && ...
                         ismember(lower(x), ...
                                  {'realignunwarp', ...
@@ -43,7 +43,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   addRequired(p, 'BIDS', @isstruct);
   addRequired(p, 'opt', @isstruct);
   addRequired(p, 'subLabel', @ischar);
-  addOptional(p, 'action', default_action, allowedActions);
+  addOptional(p, 'action', defaultAction, allowedActions);
 
   parse(p, varargin{:});
 

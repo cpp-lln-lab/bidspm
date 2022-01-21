@@ -18,12 +18,12 @@ function status = checkToolbox(varargin)
 
   p = inputParser;
 
-  default_verbose = false;
-  default_install = false;
+  defaultVerbose = false;
+  defaultInstall = false;
 
   addRequired(p, 'toolboxName', @ischar);
-  addParameter(p, 'verbose', default_verbose, @islogical);
-  addParameter(p, 'install', default_install, @islogical);
+  addParameter(p, 'verbose', defaultVerbose, @islogical);
+  addParameter(p, 'install', defaultInstall, @islogical);
 
   parse(p, varargin{:});
 

@@ -15,7 +15,7 @@ function [OS, generatedBy] = getEnvInfo(opt)
   generatedBy(1).name = 'cpp_spm';
   generatedBy(1).Version =  getVersion();
   generatedBy(1).Description = '';
-  generatedBy(1).CodeURL = '';
+  generatedBy(1).CodeURL = returnRepoURL();
 
   runsOn = 'Matlab';
   if isOctave
@@ -42,8 +42,13 @@ function [OS, generatedBy] = getEnvInfo(opt)
 
   try
     [keys, vals] = getenvall('system');
-    OS.environmentVariables.keys = keys;
-    OS.environmentVariables.values = vals;
+    for i = 1:numel(keys)
+      keyname = regexprep(keys{i}, '[=:;@]', '_');
+      keyname = regexprep(keyname, '^_*', '');
+      if ~ismember(keyname, {'_', ''})
+        OS.environmentVariables.(keyname) = vals{i};
+      end
+    end
   catch
     errorHandling;
     errorHandling(mfilename(), 'envUnknown', 'Could not get env info.', true, opt.verbosity);

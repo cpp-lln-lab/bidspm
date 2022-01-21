@@ -13,12 +13,12 @@ function initBids(varargin)
 
   p = inputParser;
 
-  default_desc = '';
-  default_force = false;
+  defaultDesc = '';
+  defaultForce = false;
 
   addRequired(p, 'opt', @isstruct);
-  addParameter(p, 'description', default_desc, @ischar);
-  addParameter(p, 'force', default_force, @islogical);
+  addParameter(p, 'description', defaultDesc, @ischar);
+  addParameter(p, 'force', defaultForce, @islogical);
 
   parse(p, varargin{:});
 

@@ -20,12 +20,12 @@ function filename = designMatrixFigureName(varargin)
 
   p = inputParser;
 
-  default_desc = '';
-  default_subLabel = '';
+  defaultDesc = '';
+  defaultSubLabel = '';
 
   addRequired(p, 'opt', @isstruct);
-  addOptional(p, 'desc', default_desc, @ischar);
-  addOptional(p, 'subLabel', default_subLabel, @ischar);
+  addOptional(p, 'desc', defaultDesc, @ischar);
+  addOptional(p, 'subLabel', defaultSubLabel, @ischar);
 
   parse(p, varargin{:});
 
