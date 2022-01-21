@@ -12,6 +12,7 @@ function test_saveMatlabBatch_basic()
 
   subLabel = '01';
   opt = setOptions('dummy', subLabel);
+  opt.dryRun = false;
   opt.dir.jobs = pwd;
 
   matlabbatch = struct('test', 1);
@@ -23,6 +24,7 @@ function test_saveMatlabBatch_basic()
 
   assertEqual(exist(expectedOutput, 'file'), 2);
   assertEqual(exist(spm_file(expectedOutput, 'ext', '.m'), 'file'), 2);
+  assertEqual(exist(spm_file(expectedOutput, 'ext', '.json'), 'file'), 2);
 
   cleanUp(fullfile(pwd, ['sub-' subLabel]));
 
@@ -32,6 +34,7 @@ function test_saveMatlabBatch_group()
 
   subLabel = '01';
   opt = setOptions('dummy', subLabel);
+  opt.dryRun = false;
   opt.dir.jobs = pwd;
 
   matlabbatch = struct('test', 1);

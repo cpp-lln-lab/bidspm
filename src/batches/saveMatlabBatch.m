@@ -1,6 +1,7 @@
-function saveMatlabBatch(matlabbatch, batchType, opt, subLabel)
+function saveMatlabBatch(matlabbatch, batchType, opt, subLabel) %#ok<INUSL>
   %
-  % Saves the matlabbatch job in a .mat and a .json file.
+  % Saves the matlabbatch job in a .mat and a .m file.
+  % Environment information are saved in a .json file.
   %
   %  % USAGE::
   %
@@ -54,17 +55,8 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subLabel)
   [OS, GeneratedBy] = getEnvInfo(opt);
   GeneratedBy(1).Description = batchType;
 
-  json.matlabbach = matlabbatch;
   json.GeneratedBy = GeneratedBy;
   json.OS = OS;
-  try
-    bids.util.jsonwrite(strrep(batchFileName, '.mat', '.json'), json);
-  catch
-    % if we have a dependency object in the batch
-    % then we can't save the batch structure as a json
-    % so we remove the batch
-    json = rmfield(json, 'matlabbach');
-    bids.util.jsonwrite(strrep(batchFileName, '.mat', '.json'), json);
-  end
+  bids.util.jsonwrite(strrep(batchFileName, '.mat', '.json'), json);
 
 end
