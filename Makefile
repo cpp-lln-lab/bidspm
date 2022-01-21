@@ -13,4 +13,3 @@ validate_cff: CITATION.cff
 
 manual:
 	cd docs && sh create_manual.sh
-

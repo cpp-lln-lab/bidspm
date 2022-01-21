@@ -20,20 +20,20 @@ function test_saveSpmScript_basic()
 
   % WHEN
   outputFilename = saveSpmScript(matlabbatch);
-  
+
   % THEN
   expectedFile = fullfile(pwd, returnBatchFileName('', '.m'));
   assertEqual(exist(expectedFile, 'file'), 2);
-  
+
   expectedContent = fullfile(getDummyDataDir(), 'dummy_batch.m');
   fid1 = fopen(expectedContent, 'r');
   expectedContent = fscanf(fid1, '%s');
   fclose(fid1);
-  
+
   fid2 = fopen(outputFilename, 'r');
   actualContent = fscanf(fid2, '%s');
   fclose(fid2);
-  
+
   assertEqual(actualContent, expectedContent);
 
   cleanUp();
@@ -45,9 +45,7 @@ function setUp()
 end
 
 function cleanUp()
-  
-  delete batch*.m
+
+  delete batch*.m;
 
 end
-
-

@@ -13,21 +13,21 @@ function batchFileName = returnBatchFileName(batchType, ext)
   %
   %
   % (C) Copyright 2022 CPP_SPM developers
-  
+
   if nargin < 1
     batchType = '';
   end
-  
+
   if nargin < 2
     ext = '.mat';
   end
-  
+
   if ~strcmp(batchType, '')
     batchType = ['_' batchType];
   end
 
   batchFileName = sprintf('batch%s_%s%s', batchType, timeStamp(), ext);
-  
+
   % matlab scripts cannot have hyphens
   if strcmp(ext, '.m')
     batchFileName = strrep(batchFileName, '-', '_');
