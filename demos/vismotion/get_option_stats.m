@@ -36,13 +36,13 @@ function opt = get_option_stats()
   %         ├── sub-con07
   %         ├── sub-con08
   %         └── sub-con15
-  
+
   this_dir = fileparts(mfilename('fullpath'));
   root_dir = fullfile(this_dir, '..', '..', '..', '..');
   opt.dir.raw = fullfile(root_dir, 'inputs', 'raw');
   opt.dir.preproc = fullfile(root_dir, 'outputs', 'derivatives', 'cpp_spm-preproc');
   opt.dir.stats = fullfile(root_dir, 'outputs', 'derivatives', 'cpp_spm-stats');
-  
+
   opt.space = 'IXI549Space';
 
   % don't specify a stats model will let cpp spm run and try to figure out a

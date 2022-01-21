@@ -48,7 +48,7 @@ function [matlabbatch, opt] = bidsFFX(action, opt)
     opt = createDefaultStatsModel(BIDS, opt);
     opt = overRideWithBidsModelContent(opt);
   end
-  
+
   checks(opt, action);
 
   initBids(opt, 'description', description, 'force', false);
