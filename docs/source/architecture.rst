@@ -74,40 +74,66 @@ Batches
 Low level functions description
 ===============================
 
+BIDS related functions
+----------------------
+
+.. automodule:: src.bids
+
+.. autofunction:: initBids
+
+.. autofunction:: addStcToQuery
+.. autofunction:: removeEmptyQueryFields
+
+.. autofunction:: getROIs
+
+.. autofunction:: getData
+
+.. autofunction:: getInfo
+.. autofunction:: getSubjectList
+.. autofunction:: getAndCheckRepetitionTime
+.. autofunction:: getAndCheckSliceOrder
+
+.. autofunction:: getTpmFilename
+.. autofunction:: getMeanFuncFilename
+.. autofunction:: getBoldFilename
+.. autofunction:: getAnatFilename
+
+Input / Output
+--------------
+
+.. automodule:: src.IO
+
+.. autofunction:: saveOptions
+.. autofunction:: loadAndCheckOptions
+
+.. autofunction:: overwriteDir
+.. autofunction:: createDerivativeDir
+
+.. autofunction:: saveSpmScript
+
+.. autofunction:: unzipAndReturnsFullpathName
+
+.. autofunction:: onsetsMatToTsv
+.. autofunction:: regressorsMatToTsv
+
+.. autofunction:: renameUnwarpParameter
+.. autofunction:: renameSegmentParameter
+
+.. autofunction:: cleanCrash
+
 Utility functions
 -----------------
 
 .. automodule:: src.utils
 
-.. autofunction:: cleanCrash
-
-.. autofunction:: saveOptions
-.. autofunction:: loadAndCheckOptions
-
-.. autofunction:: getInfo
-.. autofunction:: getData
-
-.. autofunction:: setDirectories
 .. autofunction:: createDataDictionary
-.. autofunction:: createDerivativeDir
 .. autofunction:: createGlmDirName
 
-.. autofunction:: getAnatFilename
-.. autofunction:: getBoldFilename
-.. autofunction:: getMeanFuncFilename
-.. autofunction:: getTpmFilename
-
 .. autofunction:: getFuncVoxelDims
-.. autofunction:: getAndCheckSliceOrder
-.. autofunction:: getSubjectList
-
-.. autofunction:: renameSegmentParameter
-.. autofunction:: renameUnwarpParameter
 
 .. autofunction:: rmTrialTypeStr
 .. autofunction:: setFields
 
-.. autofunction:: unzipAndReturnsFullpathName
 .. autofunction:: validationInputFile
 
 

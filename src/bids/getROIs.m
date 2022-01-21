@@ -3,11 +3,11 @@ function [roiList, roiFolder] = getROIs(varargin)
   % Get the rois from :
   %
   % - the group folder when running analysis in MNI space
-  % - the sub-*/roi/sub-subLabel folder when in individual space
+  % - the ``sub-*/roi/sub-subLabel`` folder when in individual space
   %
   % USAGE::
   %
-  % [roiList, roiFolder] = getROIs(opt, subLabel)
+  %   [roiList, roiFolder] = getROIs(opt, subLabel)
   %
   %
   % (C) Copyright 2021 CPP_SPM developers

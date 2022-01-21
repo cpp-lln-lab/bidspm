@@ -11,6 +11,7 @@ checkOptions
 ============
 
 .. autofunction:: checkOptions
+.. autofunction:: setDirectories
 
 spm_my_defaults
 ===============
