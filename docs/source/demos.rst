@@ -35,6 +35,8 @@ In the ``models`` shows the BIDS statistical model used to run the GLM of this d
 .. autoscript:: moae_03_create_roi_extract_data
 .. autoscript:: moae_04_slice_display
 
+.. _face repetition demo:
+
 Face repetition
 ===============
 
