@@ -87,7 +87,8 @@
         "content",
         "doc",
         "code",
-        "review"
+        "review",
+        "userTesting"
       ]
     },
     {
