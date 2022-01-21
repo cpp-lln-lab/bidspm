@@ -41,13 +41,17 @@ function [OS, generatedBy] = getEnvInfo(opt)
   %     [~, OS.environmentVariables] = system(cmd);
 
   try
-  [keys, vals] = getenvall('system');
-  for i = 1:numel(keys)
-    keyname = regexprep(keys{i}, '[=:;@]', '_');
-    keyname = regexprep(keyname, '^_*', '');
-    if ~ismember(keyname, {'_', ''})
-      OS.environmentVariables.(keyname) = vals{i};
+    [keys, vals] = getenvall('system');
+    for i = 1:numel(keys)
+      keyname = regexprep(keys{i}, '[=:;@]', '_');
+      keyname = regexprep(keyname, '^_*', '');
+      if ~ismember(keyname, {'_', ''})
+        OS.environmentVariables.(keyname) = vals{i};
+      end
     end
+  catch
+    errorHandling;
+    errorHandling(mfilename(), 'envUnknown', 'Could not get env info.', true, opt.verbosity);
   end
 
 end
