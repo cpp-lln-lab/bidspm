@@ -17,4 +17,3 @@ bidsSTC(opt);
 bidsSpatialPrepro(opt);
 
 bidsSmoothing(opt);
-
