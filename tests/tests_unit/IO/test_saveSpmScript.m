@@ -62,7 +62,7 @@ function test_saveSpmScript_output_name()
 end
 
 function test_saveSpmScript_from_file()
-  
+
   % TODO add tests to overwrite output filename
 
   % GIVEN
