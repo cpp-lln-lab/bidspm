@@ -11,10 +11,6 @@ clarification.
 
 ### Style guidelines
 
-These are some of the guidelines we try to follow. Several of them are described
-in our our
-[contributing guidelines](https://github.com/cpp-lln-lab/.github/blob/main/CONTRIBUTING.md).
-
 We use `camelCase` to name functions and variables for the vast majority of the
 code in this repository.
 
