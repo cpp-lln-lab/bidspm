@@ -34,6 +34,7 @@ function checkDependencies(opt)
   end
 
   spm('defaults', 'fmri');
+  spm_jobman('initcfg');
 
   printToScreen(' We got all we need. Let''s get to work.\n', opt);
 

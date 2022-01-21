@@ -27,7 +27,7 @@ end
 function test_setBatchCoregistrationFuncToAnat_basic()
 
   % necessarry to deal with SPM module dependencies
-  spm_jobman('initcfg');
+  % spm_jobman('initcfg');
 
   subLabel = '01';
 
@@ -62,7 +62,7 @@ end
 function test_setBatchCoregistrationFuncToAnat_no_unwarp()
 
   % necessarry to deal with SPM module dependencies
-  spm_jobman('initcfg');
+  % spm_jobman('initcfg');
 
   subLabel = '01';
 
