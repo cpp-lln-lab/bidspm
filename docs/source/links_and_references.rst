@@ -28,7 +28,7 @@ From `Rik Henson <http://www.mrc-cbu.cam.ac.uk/people/rik.henson/personal/analys
 Some follow along tutorials written a long time ago,
 and that probably should be turned into notebooks and updated.
 
-- `Basic file / image manipulation with SPM <https://github.com/Remi-Gau/advanced_fMRI_course/blob/master/Practical%231/practical_1.m>`_ 
+- `Basic file / image manipulation with SPM <https://github.com/Remi-Gau/advanced_fMRI_course/blob/master/Practical%231/practical_1.m>`_
 - `HRF, convolution and GLM ("by hand") <https://github.com/Remi-Gau/advanced_fMRI_course/blob/master/Practical%232/practical_2.m>`_
 - `Design efficiency <https://github.com/Remi-Gau/advanced_fMRI_course/blob/master/Practical%233/practical_3.m>`_
 
