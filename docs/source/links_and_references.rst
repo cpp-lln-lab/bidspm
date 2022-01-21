@@ -23,7 +23,7 @@ SPM code snippets
 
 From John Ashburner on `Tom Nichols blog <https://blogs.warwick.ac.uk/nichols/tag/johns-gems/>`_
 
-From `Rik Henson <http://www.mrc-cbu.cam.ac.uk/people/rik.henson/personal/analysis/>`
+From `Rik Henson <http://www.mrc-cbu.cam.ac.uk/people/rik.henson/personal/analysis/>`_
 
 Some follow along tutorials written a long time ago,
 and that probably should be turned into notebooks and updated.

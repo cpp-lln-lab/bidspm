@@ -92,7 +92,7 @@ Example content of ``getOptionStats`` file:
   opt.dir.preproc = fullfile(this_dir, '..', 'inputs', 'fmriprep');
   opt.dir.derivatives = fullfile(this_dir, '..', 'outputs', 'derivatives');
 
-The actual `opt.dir.input` and `opt.dir.output` folders
+The actual ``opt.dir.input`` and ``opt.dir.output`` folders
 will usually be set automatically when running::
 
     opt = checkOptions(opt)
