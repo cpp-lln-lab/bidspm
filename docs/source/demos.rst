@@ -53,5 +53,5 @@ This is based on the event related design dataset of SPM.
 vismotion
 =========
 
-Small demo using the data from a visual motion localizer 
+Small demo using the data from a visual motion localizer
 to show how to set up an analysis with CPP SPM from scratch with datalad.

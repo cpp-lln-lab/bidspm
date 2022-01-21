@@ -13,7 +13,7 @@ function opt = get_option_stats()
   % task to analyze
   opt.taskName = 'visMotion';
   opt.pipeline.type = 'stats';
-  
+
   % The directory where the data are located
   % assumes the following set up
 
@@ -21,7 +21,7 @@ function opt = get_option_stats()
   % │   └── CPP_SPM
   % │       ├── demos
   % │       │   └── vismotion
-  % │       │       └── models  
+  % │       │       └── models
   % |       ...
   % │       ├── docs
   % │       ├── src
@@ -35,7 +35,7 @@ function opt = get_option_stats()
   %     └── cpp_spm-preproc
   %         ├── sub-con07
   %         ├── sub-con08
-  %         └── sub-con15  
+  %         └── sub-con15
 
   this_dir = fileparts(mfilename('fullpath'));
   root_dir = fullfile(this_dir, '..', '..', '..');
