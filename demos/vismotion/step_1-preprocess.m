@@ -5,11 +5,12 @@ clc;
 
 run ../../initCppSpm.m;
 
-opt = get_option();
+opt = get_option_preprocess();
 
 reportBIDS(opt);
 
-bidsCopyInputFolder(opt, 1);
+unzip = true;
+bidsCopyInputFolder(opt, unzip);
 
 bidsSTC(opt);
 
