@@ -19,9 +19,7 @@ function saveOptions(opt)
     taskString = ['_task-', strjoin(opt.taskName, '')];
   end
 
-  filename = fullfile(optionDir, [timeStamp(), '_options', ...
-                                  taskString, ...
-                                  '.json']);
+  filename = fullfile(optionDir, ['options', taskString, '_', timeStamp(),'.json']);
 
   jsonFormat.indent = '    ';
   spm_jsonwrite(filename, opt, jsonFormat);
