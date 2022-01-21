@@ -14,7 +14,7 @@ function outputFilename = saveSpmScript(varargin)
   % :returns: - :outputFilename: (path)
   %
   % (C) Copyright 2022 CPP_SPM developers
-  
+
   % TODO add header to output .m file
 
   p = inputParser;
