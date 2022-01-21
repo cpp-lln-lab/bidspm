@@ -10,9 +10,6 @@ end
 
 function test_setBatchNormalizationSpatialPrepro_anat_only()
 
-  % necessarry to deal with SPM module dependencies
-  % spm_jobman('initcfg');
-
   opt = setOptions('vismotion');
   opt.anatOnly = true;
   opt.orderBatches.coregister = 999; % dummy value
@@ -37,9 +34,6 @@ function test_setBatchNormalizationSpatialPrepro_anat_only()
 end
 
 function test_setBatchNormalizationSpatialPrepro_reuse_segment_output()
-
-  % necessarry to deal with SPM module dependencies
-  % spm_jobman('initcfg');
 
   opt = setOptions('vismotion');
 
@@ -70,9 +64,6 @@ function test_setBatchNormalizationSpatialPrepro_reuse_segment_output()
 end
 
 function test_setBatchNormalizationSpatialPrepro_force_segment()
-
-  % necessarry to deal with SPM module dependencies
-  % spm_jobman('initcfg');
 
   opt = setOptions('vismotion');
 

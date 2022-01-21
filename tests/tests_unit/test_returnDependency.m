@@ -9,9 +9,7 @@ function test_suite = test_returnDependency %#ok<*STOUT>
 end
 
 function test_returnDependency_basic()
-
-  % spm_jobman('initcfg');
-
+  
   opt.orderBatches.selectAnat = 1;
   opt.orderBatches.segment = 5;
   opt.orderBatches.skullStripping = 6;

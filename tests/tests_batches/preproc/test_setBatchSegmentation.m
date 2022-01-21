@@ -12,9 +12,6 @@ function test_setBatchSegmentation_pipeline()
 
   spmLocation = spm('dir');
 
-  % necessarry to deal with SPM module dependencies
-  % spm_jobman('initcfg');
-
   opt = setOptions('dummy');
   opt.orderBatches.selectAnat = 1;
 
