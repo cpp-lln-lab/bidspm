@@ -14,23 +14,6 @@ function opt = get_option_preprocess()
   opt.taskName = 'visMotion';
   opt.pipeline.type = 'preproc';
 
-  % The directory where the data are located
-  % assumes the following set up
-
-  % ├── code
-  % │   └── CPP_SPM
-  % │       ├── demos
-  % │       │   └── vismotion
-  % |       ...
-  % │       ├── docs
-  % │       ├── src
-  % │       └── tests
-  % └── inputs
-  %     └── raw
-  %         ├── sub-con07
-  %         ├── sub-con08
-  %         └── sub-con15
-
   this_dir = fileparts(mfilename('fullpath'));
   root_dir = fullfile(this_dir, '..', '..', '..', '..');
   opt.dir.raw = fullfile(root_dir, 'inputs', 'raw');
