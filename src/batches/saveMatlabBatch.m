@@ -49,6 +49,8 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subLabel)
 
   save(batchFileName, 'matlabbatch', '-v7');
 
+  saveSpmScript(batchFileName);
+
   [OS, GeneratedBy] = getEnvInfo(opt);
   GeneratedBy(1).Description = batchType;
 

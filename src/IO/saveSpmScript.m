@@ -20,22 +20,29 @@ function outputFilename = saveSpmScript(varargin)
   defaultOutputFilename = '';
 
   isCellOrMatFile = @(x) iscell(x) || ...
-                         (exist('file', x) == 2 && ...
-                          strcmp(spm_file(x, 'ext'), '.mat'));
+                         (exist(x, 'file') == 2 && ...
+                          strcmp(spm_file(x, 'ext'), 'mat'));
 
   addRequired(p, 'input', isCellOrMatFile);
   addOptional(p, 'outputFilename', defaultOutputFilename, @ischar);
 
   parse(p, varargin{:});
 
+  outputFilename = p.Results.outputFilename;
+
   if iscell(p.Results.input)
     matlabbatch = p.Results.input;
+
   else
     % assumes the job was saved in a matlabbatch variable
-    matlabbatch = load(p.Results.input, 'matlabbatch');
+    load(p.Results.input, 'matlabbatch');
+
+    if strcmp(outputFilename, '')
+      outputFilename = spm_file(p.Results.input, 'ext', '.m');
+    end
+
   end
 
-  outputFilename = p.Results.outputFilename;
   if strcmp(outputFilename, '')
     outputFilename = returnBatchFileName('', '.m');
   end

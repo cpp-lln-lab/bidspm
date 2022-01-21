@@ -22,6 +22,7 @@ function test_saveMatlabBatch_basic()
   saveMatlabBatch(matlabbatch, 'test', opt, subLabel);
 
   assertEqual(exist(expectedOutput, 'file'), 2);
+  assertEqual(exist(spm_file(expectedOutput, 'ext', '.m'), 'file'), 2);
 
   cleanUp(fullfile(pwd, ['sub-' subLabel]));
 
@@ -41,6 +42,7 @@ function test_saveMatlabBatch_group()
   saveMatlabBatch(matlabbatch, 'groupTest', opt);
 
   assertEqual(exist(expectedOutput, 'file'), 2);
+  assertEqual(exist(spm_file(expectedOutput, 'ext', '.m'), 'file'), 2);
 
   cleanUp(fullfile(pwd, 'group'));
 
