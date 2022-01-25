@@ -206,16 +206,7 @@ function fmriSpec = setScans(opt, fullpathBoldFilename, fmriSpec, spmSessCounter
 
   else
 
-    if opt.glm.maxNbVols == Inf
-      scans = {fullpathBoldFilename};
-    else
-      scans = cellstr(spm_select('ExtFPList', ...
-                                 spm_fileparts(fullpathBoldFilename), ...
-                                 spm_file(fullpathBoldFilename, 'filename'), ...
-                                 1:opt.glm.maxNbVols));
-    end
-
-    fmriSpec.sess(spmSessCounter).scans = scans;
+    fmriSpec.sess(spmSessCounter).scans = returnVolumeList(opt, fullpathBoldFilename);
 
   end
 

@@ -8,6 +8,8 @@ function test_suite = test_setBatchSubjectLevelGLMSpec %#ok<*STOUT>
   initTestSuite;
 end
 
+% TODO add test to better cover setScans
+
 function test_setBatchSubjectLevelGLMSpec_missing_raw_data()
 
   subLabel = '^01';

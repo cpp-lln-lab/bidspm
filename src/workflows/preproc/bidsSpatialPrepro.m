@@ -10,7 +10,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % The anatomical data are segmented, skulls-stripped [and normalized to MNI space].
+  % The anatomical data are segmented, skull-stripped [and normalized to MNI space].
   %
   % The functional data are re-aligned (unwarped), coregistered with the anatomical,
   % [and normalized to MNI space].
