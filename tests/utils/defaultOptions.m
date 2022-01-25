@@ -38,6 +38,8 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.funcVoxelDims = [];
 
+  expectedOptions.funcVolToSelect = [];
+
   expectedOptions.groups = {''};
   expectedOptions.subjects = {[]};
 
