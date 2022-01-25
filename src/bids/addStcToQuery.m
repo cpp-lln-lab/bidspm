@@ -13,7 +13,7 @@ function opt = addStcToQuery(BIDS, opt, subLabel)
 
     filter = opt.query;
     filter.sub =  subLabel;
-    filter.suffix = 'bold';
+    filter.suffix = opt.bidsFilterFile.bold.suffix;
     filter.extension = {'.nii', '.nii.gz'};
     filter.prefix = '';
     % in case task was not passed through opt.query
