@@ -122,6 +122,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
         [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, boldFilename);
 
         file = fullfile(subFuncDataDir, boldFilename);
+        volumes = returnVolumeList(opt, file);
 
         switch action
 
@@ -142,10 +143,10 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
           case 'realignUnwarp'
             vdmFile = getVdmFile(BIDS, opt, boldFilename);
             spatial.realignunwarp.data(1, runCounter).pmscan = { vdmFile };
-            spatial.realignunwarp.data(1, runCounter).scans = { file };
+            spatial.realignunwarp.data(1, runCounter).scans = volumes;
 
           otherwise
-            spatial.realign.estwrite.data{1, runCounter} = { file };
+            spatial.realign.estwrite.data{1, runCounter} = volumes;
 
         end
 

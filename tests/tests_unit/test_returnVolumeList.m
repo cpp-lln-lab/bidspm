@@ -68,3 +68,23 @@ function test_returnVolumeList_volumes_to_select()
   assertEqual(size(volumes, 1), numel(opt.funcVolToSelect));
 
 end
+
+function test_returnVolumeList_select_more_volumes_than_possible()
+
+  % GIVEN
+  subLabel = '^01';
+  opt = setOptions('MoAE', subLabel);
+
+  opt.funcVolToSelect = 1:2:500;
+
+  BIDS = bids.layout(opt.dir.raw);
+
+  boldFile = bids.query(BIDS, 'data', 'sub', '01', 'suffix', 'bold', 'extension', '.nii');
+
+  % WHEN
+  volumes = returnVolumeList(opt, boldFile{1});
+
+  % THEN
+  assertEqual(size(volumes, 1), 42);
+
+end
