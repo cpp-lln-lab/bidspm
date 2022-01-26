@@ -26,9 +26,6 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   [pth, file, ext] = spm_fileparts(tsvFile);
   tsvFile = validationInputFile(pth, [file, ext]);
 
-  % Read the tsv file
-  msg = sprintf('reading the tsv file : %s \n', tsvFile);
-  printToScreen(msg, opt);
   tsvContent = bids.util.tsvread(tsvFile);
 
   if ~isfield(tsvContent, 'trial_type')
@@ -41,16 +38,17 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   end
 
-  trialTypes = tsvContent.trial_type;
-
   % identify the conditions to convolve in the BIDS model
   variablesToConvolve = getVariablesToConvolve(opt.model.file, 'run');
-  isTrialType = strfind(variablesToConvolve, 'trial_type.');
 
   % create empty cell to be filled in according to the conditions present in each run
   names = {};
   onsets = {};
   durations = {};
+
+  %% EASY: trial types
+  isTrialType = strfind(variablesToConvolve, 'trial_type.');
+  trialTypes = tsvContent.trial_type;
 
   % for each condition
   for iCond = 1:numel(isTrialType)
@@ -86,16 +84,55 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
         end
 
-        id = 'emptyTrialType';
         id = 'noTrialType';
         errorHandling(mfilename(), id, msg, true, opt.verbosity);
 
       end
 
     end
+
   end
 
-  % save the onsets as a matfile
+  %% MORE COMPLICATED: transformed values
+  transformers = getBidsTransformers(opt.model.file);
+  transformedConditions = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  for iCond = 1:numel(variablesToConvolve)
+
+    if bids.internal.starts_with(variablesToConvolve{iCond}, 'trial_type.')
+      continue
+    end
+
+    if ismember(variablesToConvolve{iCond}, fieldnames(transformedConditions))
+
+      names{1, end + 1} = variablesToConvolve{iCond};
+      onsets{1, end + 1} = transformedConditions.(variablesToConvolve{iCond}).onset;
+      durations{1, end + 1} = transformedConditions.(variablesToConvolve{iCond}).duration;
+
+    else
+
+      msg = sprintf('No transformed variable %s found.', variablesToConvolve{iCond});
+
+      if opt.glm.useDummyRegressor
+
+        names{1, end + 1} = 'dummyRegressor';
+        onsets{1, end + 1} = nan;
+        durations{1, end + 1} = nan;
+
+        msg = sprintf('No transformed variable %s found. \n%s', ...
+                      variablesToConvolve{iCond}, ...
+                      'Adding dummy regressor instead.');
+
+      end
+
+      id = 'transformedVariableNotFound';
+      errorHandling(mfilename(), id, msg, true, opt.verbosity);
+
+    end
+
+  end
+
+  %% save the onsets as a matfile
   [pth, file] = spm_fileparts(tsvFile);
 
   p = bids.internal.parse_filename(file);

@@ -46,7 +46,8 @@
         "HRF": {
           "Variables": [
             "VisMot",
-            "VisStat"
+            "VisStat",
+            "SomeMissingVariables"
           ],
           "Model": "DoubleGamma"
         },
