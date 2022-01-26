@@ -110,6 +110,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
                     extra);
 
       errorHandling(mfilename(), errorID, msg, true, opt.verbosity);
+
     end
 
   end
