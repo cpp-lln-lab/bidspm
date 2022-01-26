@@ -2,7 +2,7 @@ function transformers = getBidsTransformers(modelFile, nodeType)
   %
   % (C) Copyright 2022 Remi Gau
 
-  transformers = '';
+  transformers = struct([]);
 
   if isempty(modelFile)
     return
@@ -15,6 +15,8 @@ function transformers = getBidsTransformers(modelFile, nodeType)
 
   node = returnModelNode(model, nodeType);
 
-  transformers = node.Transformations.Instructions;
+  if isfield(node, 'Transformations') &&  isfield(node.Transformations, 'Instructions')
+    transformers = node.Transformations.Instructions;
+  end
 
 end

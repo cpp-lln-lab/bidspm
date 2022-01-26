@@ -29,9 +29,9 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   % Read the tsv file
   msg = sprintf('reading the tsv file : %s \n', tsvFile);
   printToScreen(msg, opt);
-  t = bids.util.tsvread(tsvFile);
+  tsvContent = bids.util.tsvread(tsvFile);
 
-  if ~isfield(t, 'trial_type')
+  if ~isfield(tsvContent, 'trial_type')
 
     msg = sprintf('%s\n%s', ...
                   'There was no trial_type field in this file:', ...
@@ -41,7 +41,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   end
 
-  conds = t.trial_type;
+  trialTypes = tsvContent.trial_type;
 
   % identify the conditions to convolve in the BIDS model
   variablesToConvolve = getVariablesToConvolve(opt.model.file, 'run');
@@ -57,19 +57,17 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
     if isTrialType{iCond}
 
-      conditionName = strrep(variablesToConvolve{iCond}, ...
-                             'trial_type.', ...
-                             '');
+      conditionName =  rmTrialTypeStr(variablesToConvolve{iCond});
 
       % Get the index of each condition by comparing the unique names and
       % each line in the tsv files
-      idx = find(strcmp(conditionName, conds));
+      idx = find(strcmp(conditionName, trialTypes));
 
       if ~isempty(idx)
         % Get the onset and duration of each condition
         names{1, end + 1} = conditionName;
-        onsets{1, end + 1} = t.onset(idx)'; %#ok<*AGROW,*NASGU>
-        durations{1, end + 1} = t.duration(idx)';
+        onsets{1, end + 1} = tsvContent.onset(idx)'; %#ok<*AGROW,*NASGU>
+        durations{1, end + 1} = tsvContent.duration(idx)';
 
       else
 
