@@ -33,8 +33,8 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
     msg = sprintf('%s\n%s', ...
                   'There was no trial_type field in this file:', ...
                   tsvFile);
-    id = 'noTrialType';
-    errorHandling(mfilename(), id, msg, false, opt.verbosity);
+    errorID = 'noTrialType';
+    errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
 
   end
 
@@ -46,22 +46,29 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   onsets = {};
   durations = {};
 
-  %% EASY: trial types
+  % trial types from events.tsv
   isTrialType = strfind(variablesToConvolve, 'trial_type.');
   trialTypes = tsvContent.trial_type;
 
-  % for each condition
-  for iCond = 1:numel(isTrialType)
+  % transformed values
+  transformers = getBidsTransformers(opt.model.file);
+  transformedConditions = applyTransformersToEventsTsv(tsvContent, transformers);
 
-    if isTrialType{iCond}
+  for iCond = 1:numel(variablesToConvolve)
 
-      conditionName =  rmTrialTypeStr(variablesToConvolve{iCond});
+    trialTypeNotFound = false;
+    variableNotFound = false;
+    extra = '';
 
-      % Get the index of each condition by comparing the unique names and
-      % each line in the tsv files
+    if bids.internal.starts_with(variablesToConvolve{iCond}, 'trial_type.')
+
+      conditionName = rmTrialTypeStr(variablesToConvolve{iCond});
+
+      % Get the index of each condition by comparing the list of names of trial types
       idx = find(strcmp(conditionName, trialTypes));
 
       if ~isempty(idx)
+
         % Get the onset and duration of each condition
         names{1, end + 1} = conditionName;
         onsets{1, end + 1} = tsvContent.onset(idx)'; %#ok<*AGROW,*NASGU>
@@ -69,41 +76,13 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
       else
 
-        msg = sprintf('No trial found for trial type %s in \n %s', conditionName, tsvFile);
-
-        if opt.glm.useDummyRegressor
-
-          names{1, end + 1} = 'dummyRegressor';
-          onsets{1, end + 1} = nan;
-          durations{1, end + 1} = nan;
-
-          msg = sprintf('No trial found for trial type %s in \n %s\n%s', ...
-                        conditionName, ...
-                        tsvFile, ...
-                        'Adding dummy regressor instead.');
-
-        end
-
-        id = 'noTrialType';
-        errorHandling(mfilename(), id, msg, true, opt.verbosity);
+        trialTypeNotFound = true;
+        errorID = 'trialTypeNotFound';
+        input1 = 'Trial type';
 
       end
 
-    end
-
-  end
-
-  %% MORE COMPLICATED: transformed values
-  transformers = getBidsTransformers(opt.model.file);
-  transformedConditions = applyTransformersToEventsTsv(tsvContent, transformers);
-
-  for iCond = 1:numel(variablesToConvolve)
-
-    if bids.internal.starts_with(variablesToConvolve{iCond}, 'trial_type.')
-      continue
-    end
-
-    if ismember(variablesToConvolve{iCond}, fieldnames(transformedConditions))
+    elseif ismember(variablesToConvolve{iCond}, fieldnames(transformedConditions))
 
       names{1, end + 1} = variablesToConvolve{iCond};
       onsets{1, end + 1} = transformedConditions.(variablesToConvolve{iCond}).onset;
@@ -111,23 +90,26 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
     else
 
-      msg = sprintf('No transformed variable %s found.', variablesToConvolve{iCond});
+      variableNotFound = true;
+      errorID = 'variableNotFound';
+      input1 = 'Variable';
+
+    end
+
+    if variableNotFound || trialTypeNotFound
 
       if opt.glm.useDummyRegressor
-
-        names{1, end + 1} = 'dummyRegressor';
-        onsets{1, end + 1} = nan;
-        durations{1, end + 1} = nan;
-
-        msg = sprintf('No transformed variable %s found. \n%s', ...
-                      variablesToConvolve{iCond}, ...
-                      'Adding dummy regressor instead.');
-
+        [names, onsets, durations] = addDummyRegressor(names, onsets, durations);
+        extra = 'Adding dummy regressor instead.';
       end
 
-      id = 'transformedVariableNotFound';
-      errorHandling(mfilename(), id, msg, true, opt.verbosity);
+      msg = sprintf('%s %s not found in \n %s\n %s', ...
+                    input1, ...
+                    rmTrialTypeStr(variablesToConvolve{iCond}), ...
+                    tsvFile, ...
+                    extra);
 
+      errorHandling(mfilename(), errorID, msg, true, opt.verbosity);
     end
 
   end
@@ -146,5 +128,13 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   save(fullpathOnsetFilename, ...
        'names', 'onsets', 'durations', ...
        '-v7');
+
+end
+
+function [names, onsets, durations] = addDummyRegressor(names, onsets, durations)
+
+  names{1, end + 1} = 'dummyRegressor';
+  onsets{1, end + 1} = nan;
+  durations{1, end + 1} = nan;
 
 end

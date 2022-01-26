@@ -71,7 +71,7 @@ function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
 
   % WHEN
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
-                'convertOnsetTsvToMat:transformedVariableNotFound');
+                'convertOnsetTsvToMat:variableNotFound');
 
 end
 
@@ -110,7 +110,7 @@ function test_convertOnsetTsvToMat_missing_trial_type()
   opt.verbosity = 1;
 
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
-                'convertOnsetTsvToMat:noTrialType');
+                'convertOnsetTsvToMat:trialTypeNotFound');
 
 end
 
