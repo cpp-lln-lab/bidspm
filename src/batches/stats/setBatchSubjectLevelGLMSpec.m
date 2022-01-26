@@ -157,7 +157,7 @@ end
 function filter = queryFilter(opt, subLabel)
   filter = opt.query;
   filter.sub =  subLabel;
-  filter.suffix = 'bold';
+  filter.suffix = opt.bidsFilterFile.bold.suffix;
   filter.extension = '.nii';
   filter.prefix = '';
   % in case task was not passed through opt.query
