@@ -34,6 +34,23 @@ function opt = checkOptions(opt)
   %       Default = ``struct('modality', {{'anat', 'func'}})``
   %       See ``bids.query`` to see how to specify.
   %
+  %       .. warning::
+  %
+  %         ``opt.query`` might be progressively deprecated in favor of ``opt.bidsFilterFile``
+  %         that allows using different filters for T1w and bold data.
+  %
+  %     - ``opt.bidsFilterFile`` - Sets how to define a typical images "bold", "T1w"...
+  %       in terms of their bids entities. The default value is:
+  %
+  %     .. code-block:: matlab
+  %
+  %           struct( ...
+  %               'fmap', struct('modality', 'fmap'), ...
+  %               'bold', struct('modality', 'func', 'suffix', 'bold'), ...
+  %               't2w',  struct('modality', 'anat', 'suffix', 'T2w'), ...
+  %               't1w',  struct('modality', 'anat', 'suffix', 'T1w'), ...
+  %               'roi',  struct('modality', 'roi', 'suffix', 'roi'));
+  %
   %  - **preprocessing**
   %
   %     - ``opt.realign.useUnwarp = true``

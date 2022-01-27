@@ -144,6 +144,31 @@ You can use bids matlab to help you create bids valid filenames.
      hemi-R_space-MNI_label-V1v_desc-wang_mask.nii
 
 
+How can run my script only only certain files, like just the session ``02`` for example?
+----------------------------------------------------------------------------------------
+
+So in general you can select a subset of your data by using the ``opt.query``.
+
+This will create a "filter" that bids matlab will use to only "query" 
+and retrieve the subset of files that match the requirement of that filter
+
+In "pure" bids matlab it would look like
+
+.. code-block:: matlab
+
+  BIDS = bids.layout(path_to_my_dataset)
+  bids.query(BIDS, 'data', opt.query)
+
+So if you wanted to run your analysis on say run ``02`` and ``05`` of session ``02``, 
+you would define your filter like this:
+
+.. code-block:: matlab
+
+  opt.query.ses = '02'
+  opt.query.run = {'02', '05'}
+
+.. TODO add info about bidsFilterFile
+
 Preprocessing
 =============
 
