@@ -27,6 +27,9 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
     tsvFile = tsvFile{1};
   end
 
+  msg = sprintf('reading the tsv file : %s \n', tsvFile);
+  printToScreen(msg, opt);
+
   onsetFilename = convertOnsetTsvToMat(opt, tsvFile);
 
   % move file into the FFX directory

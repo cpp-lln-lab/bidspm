@@ -26,78 +26,96 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   [pth, file, ext] = spm_fileparts(tsvFile);
   tsvFile = validationInputFile(pth, [file, ext]);
 
-  % Read the tsv file
-  msg = sprintf('reading the tsv file : %s \n', tsvFile);
-  printToScreen(msg, opt);
-  t = bids.util.tsvread(tsvFile);
+  tsvContent = bids.util.tsvread(tsvFile);
 
-  if ~isfield(t, 'trial_type')
+  if ~isfield(tsvContent, 'trial_type')
 
     msg = sprintf('%s\n%s', ...
                   'There was no trial_type field in this file:', ...
                   tsvFile);
-    id = 'noTrialType';
-    errorHandling(mfilename(), id, msg, false, opt.verbosity);
+    errorID = 'noTrialType';
+    errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
 
   end
 
-  conds = t.trial_type;
-
   % identify the conditions to convolve in the BIDS model
   variablesToConvolve = getVariablesToConvolve(opt.model.file, 'run');
-  isTrialType = strfind(variablesToConvolve, 'trial_type.');
 
   % create empty cell to be filled in according to the conditions present in each run
   names = {};
   onsets = {};
   durations = {};
 
-  % for each condition
-  for iCond = 1:numel(isTrialType)
+  % trial types from events.tsv
+  isTrialType = strfind(variablesToConvolve, 'trial_type.');
+  trialTypes = tsvContent.trial_type;
 
-    if isTrialType{iCond}
+  % transformed values
+  transformers = getBidsTransformers(opt.model.file);
+  transformedConditions = applyTransformersToEventsTsv(tsvContent, transformers);
 
-      conditionName = strrep(variablesToConvolve{iCond}, ...
-                             'trial_type.', ...
-                             '');
+  for iCond = 1:numel(variablesToConvolve)
 
-      % Get the index of each condition by comparing the unique names and
-      % each line in the tsv files
-      idx = find(strcmp(conditionName, conds));
+    trialTypeNotFound = false;
+    variableNotFound = false;
+    extra = '';
+
+    if bids.internal.starts_with(variablesToConvolve{iCond}, 'trial_type.')
+
+      conditionName = rmTrialTypeStr(variablesToConvolve{iCond});
+
+      % Get the index of each condition by comparing the list of names of trial types
+      idx = find(strcmp(conditionName, trialTypes));
 
       if ~isempty(idx)
+
         % Get the onset and duration of each condition
         names{1, end + 1} = conditionName;
-        onsets{1, end + 1} = t.onset(idx)'; %#ok<*AGROW,*NASGU>
-        durations{1, end + 1} = t.duration(idx)';
+        onsets{1, end + 1} = tsvContent.onset(idx)'; %#ok<*AGROW,*NASGU>
+        durations{1, end + 1} = tsvContent.duration(idx)';
 
       else
 
-        msg = sprintf('No trial found for trial type %s in \n %s', conditionName, tsvFile);
-
-        if opt.glm.useDummyRegressor
-
-          names{1, end + 1} = 'dummyRegressor';
-          onsets{1, end + 1} = nan;
-          durations{1, end + 1} = nan;
-
-          msg = sprintf('No trial found for trial type %s in \n %s\n%s', ...
-                        conditionName, ...
-                        tsvFile, ...
-                        'Adding dummy regressor instead.');
-
-        end
-
-        id = 'emptyTrialType';
-        id = 'noTrialType';
-        errorHandling(mfilename(), id, msg, true, opt.verbosity);
+        trialTypeNotFound = true;
+        errorID = 'trialTypeNotFound';
+        input1 = 'Trial type';
 
       end
 
+    elseif ismember(variablesToConvolve{iCond}, fieldnames(transformedConditions))
+
+      names{1, end + 1} = variablesToConvolve{iCond};
+      onsets{1, end + 1} = transformedConditions.(variablesToConvolve{iCond}).onset;
+      durations{1, end + 1} = transformedConditions.(variablesToConvolve{iCond}).duration;
+
+    else
+
+      variableNotFound = true;
+      errorID = 'variableNotFound';
+      input1 = 'Variable';
+
     end
+
+    if variableNotFound || trialTypeNotFound
+
+      if opt.glm.useDummyRegressor
+        [names, onsets, durations] = addDummyRegressor(names, onsets, durations);
+        extra = 'Adding dummy regressor instead.';
+      end
+
+      msg = sprintf('%s %s not found in \n %s\n %s', ...
+                    input1, ...
+                    rmTrialTypeStr(variablesToConvolve{iCond}), ...
+                    tsvFile, ...
+                    extra);
+
+      errorHandling(mfilename(), errorID, msg, true, opt.verbosity);
+
+    end
+
   end
 
-  % save the onsets as a matfile
+  %% save the onsets as a matfile
   [pth, file] = spm_fileparts(tsvFile);
 
   p = bids.internal.parse_filename(file);
@@ -111,5 +129,13 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   save(fullpathOnsetFilename, ...
        'names', 'onsets', 'durations', ...
        '-v7');
+
+end
+
+function [names, onsets, durations] = addDummyRegressor(names, onsets, durations)
+
+  names{1, end + 1} = 'dummyRegressor';
+  onsets{1, end + 1} = nan;
+  durations{1, end + 1} = nan;
 
 end
