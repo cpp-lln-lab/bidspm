@@ -42,8 +42,7 @@ function newContent = applyTransformersToEventsTsv(varargin)
   for iTrans = 1:numel(transformers)
 
     % TODO make transformers more general
-    % - assumes only trial types can be input
-    % - assumes a single input and output
+    % - assumes only trial types can be input (therefore means that transformations cannot be "chained")
     % - assumes transformations are only on onsets
     name = transformers(iTrans).Name;
     value = transformers(iTrans).Value;
