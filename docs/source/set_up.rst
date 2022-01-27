@@ -215,7 +215,7 @@ This allows you to specify input images you want to include based
 on the BIDS entities in their name, like the task (can be more than one) or the
 MNI space your images are in (here ``IXI549Space`` is for SPM 12 typical MNI space.
 
-Then the model has a ``Nodes`` array where each objectin defines 
+Then the model has a ``Nodes`` array where each objectin defines
 what is to be done at a given ``Level`` (``Run``, ``Subject``, ``Dataset``)
 
 .. code-block:: json
@@ -227,7 +227,7 @@ what is to be done at a given ``Level`` (``Run``, ``Subject``, ``Dataset``)
 
 The ``Transformations`` object allows you to define what you want to do to some variables,
 before you put them in the design matrix. Here this shows how to subtract 3 seconds
-from the event onsets of the conditions listed in the ``trial_type`` columns of the 
+from the event onsets of the conditions listed in the ``trial_type`` columns of the
 ``events.tsv`` file, and put the output in a variable called ``motion`` and ``static``.
 
 .. code-block:: json
@@ -250,10 +250,10 @@ from the event onsets of the conditions listed in the ``trial_type`` columns of 
                     ]
                 }
 
-Then comes the model object, 
+Then comes the model object,
 
-``X`` defines the variables that have to be put in 
-the design matrix. Here ``trans_?`` means any of the translation parameters 
+``X`` defines the variables that have to be put in
+the design matrix. Here ``trans_?`` means any of the translation parameters
 (in this case ``trans_x``, ``trans_y``, ``trans_z``) from the realignment
 that are stored in ``_confounds.tsv`` files. Similarly ``*outlier*`` means that any
 "scrubbing" regressors created by fMRIprep or CPP SPM to detect motion outlier or potential
@@ -261,8 +261,8 @@ dummy scans will be included (those regressors are also in the ``_confounds.tsv`
 
 .. note::
 
-    Following standard Unix-style glob rules, 
-    “*” is interpreted to match 0 or more alphanumeric characters, 
+    Following standard Unix-style glob rules,
+    “*” is interpreted to match 0 or more alphanumeric characters,
     and “?” is interpreted to match exactly one alphanumeric character.
 
 ``HRF`` specifies which variables of X have to be convolved and what HRF model to
@@ -286,11 +286,11 @@ use to do so.
                         ],
                         "Model": "DoubleGamma"
                     }
-                
 
-Then we have the contrasts definition where ``DummyContrasts`` 
-compute the contrasts against baseline for the condition ``motion`` and ``static`` 
-and where ``Contrasts`` compute the t-contrats for "motion greater than static" 
+
+Then we have the contrasts definition where ``DummyContrasts``
+compute the contrasts against baseline for the condition ``motion`` and ``static``
+and where ``Contrasts`` compute the t-contrats for "motion greater than static"
 with these given weights.
 
 .. code-block:: json
