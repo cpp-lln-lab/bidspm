@@ -149,7 +149,7 @@ How can run my script only only certain files, like just the session ``02`` for 
 
 So in general you can select a subset of your data by using the ``opt.query``.
 
-This will create a "filter" that bids matlab will use to only "query" 
+This will create a "filter" that bids matlab will use to only "query"
 and retrieve the subset of files that match the requirement of that filter
 
 In "pure" bids matlab it would look like
@@ -159,7 +159,7 @@ In "pure" bids matlab it would look like
   BIDS = bids.layout(path_to_my_dataset)
   bids.query(BIDS, 'data', opt.query)
 
-So if you wanted to run your analysis on say run ``02`` and ``05`` of session ``02``, 
+So if you wanted to run your analysis on say run ``02`` and ``05`` of session ``02``,
 you would define your filter like this:
 
 .. code-block:: matlab
@@ -180,19 +180,19 @@ What images are resampled during preprocessing and to what resolution?
 
 In the spatial preprocessing workflow (``bidsSpatialPrepro``):
 
-1. When no normalization is requested 
+1. When no normalization is requested
 
-This is the case when ``opt.space = 'individual'``, functional images resolution is not changed. 
+This is the case when ``opt.space = 'individual'``, functional images resolution is not changed.
 This cannot be overridden.
 
-2. During normalization to MNI 
+2. During normalization to MNI
 
-By default, functional images resolution is not changed. 
+By default, functional images resolution is not changed.
 Override possible by setting ``opt.funcVoxelDims`` to the desired resolution.
 
 The anatomical images are resampled at 1 mm.
 
-Tissue probability maps downsampled at resolution of functional images 
+Tissue probability maps downsampled at resolution of functional images
 mostly to help with potential with creation of tissue-based mask and also quality control pipelines.
 
 For several files, you can guess their resolution if they have ``res`` entity in their filename:
@@ -219,10 +219,10 @@ For several files, you can guess their resolution if they have ``res`` entity in
       ├── sub-01_task-auditory_space-individual_desc-mean_bold.nii       # native res
       ├── sub-01_task-auditory_space-individual_desc-preproc_bold.nii    # native res
       ├── sub-01_task-auditory_space-individual_desc-std_bold.nii        # native res
-      ├── sub-01_task-auditory_space-IXI549Space_desc-mean_bold.nii      # native res 
+      ├── sub-01_task-auditory_space-IXI549Space_desc-mean_bold.nii      # native res
       └── sub-01_task-auditory_space-IXI549Space_desc-preproc_bold.nii   # native res
 
-See those `slides <https://docs.google.com/presentation/d/1bAAzvXpQ_4vcSO1yqOD3Uq_d70b-uu0h9xoIx0sx3es/edit?usp=sharing>`_ 
+See those `slides <https://docs.google.com/presentation/d/1bAAzvXpQ_4vcSO1yqOD3Uq_d70b-uu0h9xoIx0sx3es/edit?usp=sharing>`_
 for some pointers on how to make choices for the resolution to choose for your analysis.
 
 Results
