@@ -46,7 +46,7 @@ function test_bidsCopyInputFolder_fmriprep()
 
   bidsCopyInputFolder(opt, false());
 
-  layoutDerivatives = bids.layout(fullfile(opt.dir.preproc), false());
+  layoutDerivatives = bids.layout(fullfile(opt.dir.preproc), 'use_schema', false);
   data = bids.query(layoutDerivatives, 'data', 'extension', '.nii.gz');
   assertEqual(size(data, 1), 16);
 

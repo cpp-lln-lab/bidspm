@@ -15,13 +15,13 @@ function spmSessOut = padCounfoundMatFile(varargin)
 
   isSpmSessStruct = @(x) isstruct(x) && isfield(x, 'counfoundMatFile');
 
-  p = inputParser;
-  addRequired(p, 'spmSess', isSpmSessStruct);
-  addRequired(p, 'opt', @isstruct);
-  parse(p, varargin{:});
+  args = inputParser;
+  addRequired(args, 'spmSess', isSpmSessStruct);
+  addRequired(args, 'opt', @isstruct);
+  parse(args, varargin{:});
 
-  spmSess = p.Results.spmSess;
-  opt = p.Results.opt;
+  spmSess = args.Results.spmSess;
+  opt = args.Results.opt;
 
   spmSessOut = spmSess;
 
@@ -58,8 +58,7 @@ function spmSessOut = padCounfoundMatFile(varargin)
     bf = bids.File(fileToLoad);
     bf.entities.desc = 'confoundsPadded';
     bf.suffix = 'regressors';
-    bf = bf.create_filename;
-    outputFilename = fullfile(bf.pth, bf.filename);
+    outputFilename = fullfile(fileparts(fileToLoad), bf.filename);
 
     save(outputFilename, 'names', 'R');
     spmSessOut(idxFilesToPad(i)).counfoundMatFile = outputFilename;
