@@ -10,6 +10,8 @@ end
 
 function test_bidsResults_basic()
 
+  createDummyData();
+
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
@@ -75,6 +77,8 @@ function test_bidsResults_basic()
 end
 
 function test_bidsResults_no_background_for_montage()
+
+  createDummyData();
 
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');

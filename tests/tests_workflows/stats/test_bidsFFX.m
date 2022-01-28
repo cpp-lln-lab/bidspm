@@ -68,14 +68,18 @@ function test_bidsFFX_fmriprep_no_smoothing()
   opt.query.space = opt.space; % for bidsCopy only
   opt.fwhm.func = 0;
 
-  opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
-  opt.dir.output = opt.dir.stats;
+  opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
 
   opt = checkOptions(opt);
 
   bidsCopyInputFolder(opt, false());
 
   % No proper valid bids file in derivatives of bids-example
+
+  opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
+  opt.dir.output = opt.dir.stats;
+
+  opt = checkOptions(opt);
 
   % bidsFFX('specifyAndEstimate', opt);
   % bidsFFX('contrasts', opt);
