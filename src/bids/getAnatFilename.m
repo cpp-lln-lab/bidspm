@@ -33,7 +33,6 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
     opt.query = rmfield(opt.query, 'ses');
   end
 
-
   checkAvailableSuffix(BIDS, subLabel, opt.bidsFilterFile.t1w.suffix);
   anatSession = checkAvailableSessions(BIDS, subLabel, opt, opt.bidsFilterFile.t1w.ses);
 
@@ -68,7 +67,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   end
   anat = anat{1};
   anatImage = unzipAndReturnsFullpathName(anat);
-  
+
   msg = sprintf('selecting anat file: %s\n', anat);
   printToScreen(msg, opt);
 

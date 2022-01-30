@@ -1,4 +1,3 @@
-
 function [gm, wm, csf] = getTpmFilename(BIDS, anatImage, res, space)
   %
   % Gets the fullpath filenames of the tissue probability maps (TPM)
@@ -32,9 +31,9 @@ function [gm, wm, csf] = getTpmFilename(BIDS, anatImage, res, space)
   if strcmp(space, 'MNI')
     space = 'IXI549Space';
   end
-  
+
   bf = bids.File(anatImage);
-  
+
   filter = bf.entities;
   filter.extension = bf.ext;
   filter.prefix = '';
