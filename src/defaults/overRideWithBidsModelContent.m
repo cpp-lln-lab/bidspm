@@ -22,6 +22,8 @@ function opt = overRideWithBidsModelContent(opt)
     optionsPresent = [optionsPresent queryPresent];
 
     if any(sum([inputPresent; optionsPresent]) > 1)
+      %TODO check if override is not actually the same value
+      % those warnings can be worrying to a new user
       msg = 'Input speficied in BIDS model will overide those in the options.';
       errorHandling(mfilename(), 'bidsModelOverridesOptions', msg, true, opt.verbosity);
     end
