@@ -28,8 +28,7 @@ function test_bidsCreateROI_neuromorphometrics()
 
   bidsCreateROI(opt);
 
-  use_schema = false;
-  BIDS = bids.layout(opt.dir.roi, use_schema);
+  BIDS = bids.layout(opt.dir.roi, 'use_schema', false);
   roiImages = bids.query(BIDS, 'data', 'sub', '^01', 'suffix', 'mask');
 
   assertEqual(size(roiImages, 1), 2);
@@ -58,8 +57,7 @@ function test_bidsCreateROI_wang()
 
   bidsCreateROI(opt);
 
-  use_schema = false;
-  BIDS = bids.layout(opt.dir.roi, use_schema);
+  BIDS = bids.layout(opt.dir.roi, 'use_schema', false);
   roiImages = bids.query(BIDS, 'data', 'sub', '^01', 'suffix', 'mask');
 
   assertEqual(size(roiImages, 1), 4);

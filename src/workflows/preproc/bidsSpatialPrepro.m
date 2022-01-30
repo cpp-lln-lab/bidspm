@@ -121,7 +121,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
     %% clean up and rename files
     copyFigures(BIDS, opt, subLabel);
 
-    if ~opt.dryRun
+    if doSegmentAndSkullstrip && ~opt.dryRun
       spmup_comp_dist2surf(matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1});
     end
 
@@ -160,7 +160,7 @@ function renameFile(BIDS, opt)
                              fullfile(BIDS.pth, ['sub-' subLabel]), ...
                              ['^rp_.*sub-', subLabel, ...
                               '.*_task-', opt.taskName{iTask}, ...
-                              '.*_bold.txt$']);
+                              '.*_' opt.bidsFilterFile.bold.suffix '.txt$']);
         for iFile = 1:size(rpFiles, 1)
           rmInput = true;
           convertRealignParamToTsv(rpFiles(iFile, :), opt, rmInput);
@@ -187,7 +187,6 @@ function renameFile(BIDS, opt)
     opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
                                                 'name_spec', opt.spm_2_bids.cfg.preproc);
 
-    % TODO is this one really needed?
     opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', [opt.spm_2_bids.realign 'mean'], ...
                                                 'name_spec', opt.spm_2_bids.cfg.preproc);
     opt.spm_2_bids = opt.spm_2_bids.flatten_mapping();

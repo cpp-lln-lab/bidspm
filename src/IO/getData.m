@@ -38,7 +38,7 @@ function [BIDS, opt] = getData(varargin)
 
   validationInputFile(bidsDir, 'dataset_description.json');
 
-  BIDS = bids.layout(bidsDir, opt.useBidsSchema);
+  BIDS = bids.layout(bidsDir, 'use_schema', opt.useBidsSchema);
 
   if strcmp(opt.pipeline.type, 'stats')
     BIDS.raw = bids.layout(opt.dir.raw);

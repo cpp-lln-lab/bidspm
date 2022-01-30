@@ -29,6 +29,12 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   result.outputNameStructure.entities.k = num2str(result.Contrasts.k);
   result.outputNameStructure.entities.MC = result.Contrasts.MC;
 
+  fields = fieldnames(result.outputNameStructure.entities);
+  for i = 1:numel(fields)
+    value = result.outputNameStructure.entities.(fields{i});
+    result.outputNameStructure.entities.(fields{i}) = bids.internal.camel_case(value);
+  end
+
   fieldsToSet = returnDefaultResultsStructure();
   result = setFields(result, fieldsToSet);
   result.Contrasts = replaceEmptyFields(result.Contrasts, fieldsToSet.Contrasts);

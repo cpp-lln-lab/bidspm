@@ -39,14 +39,38 @@ function bidsRealignReslice(opt)
 
     saveAndRunWorkflow(matlabbatch, 'realign_reslice', opt, subLabel);
 
-    if ~opt.dryRun
+    if ~opt.dryRun && opt.rename
+
+      opt = set_spm_2_bids_defaults(opt);
+
       copyFigures(BIDS, opt, subLabel);
+
+      for iTask = 1:numel(opt.taskName)
+        rpFiles = spm_select('FPListRec', ...
+                             fullfile(BIDS.pth, ['sub-' subLabel]), ...
+                             ['^rp_.*sub-', subLabel, ...
+                              '.*_task-', opt.taskName{iTask}, ...
+                              '.*_' opt.bidsFilterFile.bold.suffix '.txt$']);
+        for iFile = 1:size(rpFiles, 1)
+          rmInput = true;
+          convertRealignParamToTsv(rpFiles(iFile, :), opt, rmInput);
+        end
+      end
+
     end
 
-  end
+    prefix = get_spm_prefix_list();
+    opt.query.prefix = prefix.realign;
 
-  prefix = get_spm_prefix_list();
-  opt.query.prefix = prefix.realign;
-  bidsRename(opt);
+    opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
+                                                'name_spec', opt.spm_2_bids.cfg.preproc);
+
+    opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', [opt.spm_2_bids.realign 'mean'], ...
+                                                'name_spec', opt.spm_2_bids.cfg.preproc);
+    opt.spm_2_bids = opt.spm_2_bids.flatten_mapping();
+
+    bidsRename(opt);
+
+  end
 
 end
