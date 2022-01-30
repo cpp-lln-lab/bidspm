@@ -78,13 +78,3 @@ function test_checkOptions_error_vox_dim()
                         'checkOptions:voxDim');
 
 end
-
-function test_checkOptions_session_string()
-
-  opt.anatReference.session = 1;
-
-  assertExceptionThrown( ...
-                        @()checkOptions(opt), ...
-                        'checkOptions:sessionNotString');
-
-end

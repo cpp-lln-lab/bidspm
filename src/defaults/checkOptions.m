@@ -95,9 +95,6 @@ function opt = checkOptions(opt)
   %
   %     - ``opt.anatOnly = false`` - to only preprocess the anatomical file
   %
-  %     - ``opt.anatReference.type = 'T1w'`` -  type of the anatomical reference
-  %     - ``opt.anatReference.session = ''`` - session label of the anatomical reference
-  %
   %     - ``opt.segment.force = false`` - set to ``true`` to ignore previous output
   %       of the segmentation and force to run it again
   %
@@ -219,7 +216,8 @@ function fieldsToSet = setDefaultOption()
                                       'fmap', struct('modality', 'fmap'), ...
                                       'bold', struct('modality', 'func', 'suffix', 'bold'), ...
                                       't2w',  struct('modality', 'anat', 'suffix', 'T2w'), ...
-                                      't1w',  struct('modality', 'anat', 'suffix', 'T1w'), ...
+                                      't1w',  struct('modality', 'anat', ...
+                                                     'suffix', 'T1w'), ...
                                       'roi',  struct('modality', 'roi', 'suffix', 'roi'));
 
   fieldsToSet.pipeline.type = '';
@@ -245,8 +243,6 @@ function fieldsToSet = setDefaultOption()
 
   %% General options for anatomical data
   fieldsToSet.anatOnly = false;
-  fieldsToSet.anatReference.type = 'T1w';
-  fieldsToSet.anatReference.session = '';
 
   %% General options for functional data
   fieldsToSet.funcVolToSelect = [];
@@ -313,13 +309,6 @@ function checkFields(opt)
 
     msg = 'All group names should be string.';
     errorHandling(mfilename(), 'groupNotString', msg, false, opt.verbosity);
-
-  end
-
-  if ~ischar(opt.anatReference.session)
-
-    msg = 'The session label should be string.';
-    errorHandling(mfilename(), 'sessionNotString', msg, false, opt.verbosity);
 
   end
 

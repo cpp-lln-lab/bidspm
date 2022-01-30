@@ -4,7 +4,7 @@
 
 tic;
 
-initCppSpm();
+initCppSpm(true);
 
 if isGithubCi
   fprintf(1, '\nThis is github CI\n');

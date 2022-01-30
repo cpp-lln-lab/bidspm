@@ -20,8 +20,8 @@ function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel)
   %
   % matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel)
   %
-  % - image type = opt.anatReference.type (default = T1w)
-  % - session to select the anat from = opt.anatReference.session (default = 1)
+  % - image type = opt.bidsFilterFiler.t1w.suffix (default = T1w)
+  % - session to select the anat from = opt.bidsFilterFiler.t1w.ses (default = 1)
   %
   % We assume that the first anat of that type is the "correct" one
   %

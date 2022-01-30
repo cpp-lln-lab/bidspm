@@ -1,9 +1,17 @@
- .PHONY: clean manual
+# TODO make more general to use the local matlab version
+MATLAB = /usr/local/MATLAB/R2017a/bin/matlab
+ARG    = -nodisplay -nosplash -nodesktop
+
+.PHONY: clean manual
 clean:
 	rm version.txt
 
+test: run_tests.m initCppSpm.m src tests
+	$(MATLAB) $(ARG) -r "run_tests; exit()"
+
 docker_images: Dockerfile Dockerfile_dev
 	bash build_image.sh
+
 
 version.txt: CITATION.cff
 	grep -w "^version" CITATION.cff | sed "s/version: /v/g" > version.txt

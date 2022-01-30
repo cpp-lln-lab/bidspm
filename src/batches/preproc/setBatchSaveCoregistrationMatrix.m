@@ -44,7 +44,7 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   p.entities.space = '';
   p.entities.run = '';
   p.entities.from = 'scanner';
-  p.entities.to = opt.anatReference.type;
+  p.entities.to = opt.bidsFilterFile.t1w.suffix;
   p.entities.mode = 'image';
 
   bidsFile = bids.File(p);

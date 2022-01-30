@@ -27,8 +27,8 @@ function opt = getOption()
   % opt.ignoreFieldmaps = false;
 
   % session number and type of the anatomical reference
-  % opt.anatReference.type = 'T1w';
-  % opt.anatReference.session = 1;
+  % opt.bidsFilterFiler.t1w.suffix = 'T1w';
+  % opt.bidsFilterFiler.t1w.ses = 1;
 
   % any voxel with p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold
   % will be included in the skull stripping mask
