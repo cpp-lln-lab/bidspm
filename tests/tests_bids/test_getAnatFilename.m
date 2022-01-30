@@ -19,41 +19,17 @@ function test_getAnatFilename_forced_session()
 
   opt = setOptions('rest', subLabel, 'useRaw', true);
 
-  opt.query.ses = '02';
-
-  opt.anatReference.type = 'T1w';
-  opt.anatReference.session = '01';
+  opt.bidsFilterFile.t1w.suffix = 'T1w';
+  opt.bidsFilterFile.t1w.ses = '01';
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
-  expectedFilename = 'sub-01_ses-01_T1w.nii';
   expectedAnatDataDir = fullfile(getDummyDataDir('raw'), 'sub-01', 'ses-01', 'anat');
 
   assertEqual(anatDataDir, expectedAnatDataDir);
-  assertEqual(anatImage, expectedFilename);
-
-end
-
-function test_getAnatFilename_different_session_from_func()
-
-  subLabel = '01';
-
-  opt = setOptions('rest', subLabel, 'useRaw', true);
-
-  opt.anatReference.type = 'T1w';
-  opt.anatReference.session = '01';
-
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
-
-  [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
-
-  expectedFilename = 'sub-01_ses-01_T1w.nii';
-  expectedAnatDataDir = fullfile(getDummyDataDir('raw'), 'sub-01', 'ses-01', 'anat');
-
-  assertEqual(anatDataDir, expectedAnatDataDir);
-  assertEqual(anatImage, expectedFilename);
+  assertEqual(anatImage, 'sub-01_ses-01_T1w.nii');
 
 end
 
@@ -63,9 +39,9 @@ function test_getAnatFilename_derivatives()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  opt.bidsFilterFile.t1w.desc = 'biascor';
 
-  opt.query.desc = 'biascor';
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
@@ -88,21 +64,25 @@ function test_getAnatFilename_basic()
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
-  expectedFilename = 'sub-01_ses-01_T1w.nii';
+  assertEqual(anatImage, 'sub-01_ses-01_T1w.nii');
 
   expectedAnatDataDir = fullfile(getDummyDataDir('raw'), 'sub-01', 'ses-01', 'anat');
-
   assertEqual(anatDataDir, expectedAnatDataDir);
-  assertEqual(anatImage, expectedFilename);
 
   %%
-  opt.anatReference.session = '01';
-  opt.anatReference.type = 'T1w';
+  opt.bidsFilterFile.t1w.suffix = 'T1w';
+  opt.bidsFilterFile.t1w.ses = '01';
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
   assertEqual(anatDataDir, expectedAnatDataDir);
   assertEqual(anatImage, expectedFilename);
+
+  %% different subject
+  subLabel = 'ctrl01';
+
+  anatImage = getAnatFilename(BIDS, opt, subLabel);
+  assertEqual(anatImage, 'sub-ctrl01_ses-01_T1w.nii');
 
 end
 
@@ -128,7 +108,7 @@ function test_getAnatFilename_error_type()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  opt.anatReference.type = 'T2w';
+  opt.bidsFilterFile.t1w.suffix = 'T2w';
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
@@ -143,7 +123,7 @@ function test_getAnatFilename_error_session()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  opt.anatReference.session = '001';
+  opt.bidsFilterFile.t1w.ses = '001';
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 

@@ -32,10 +32,10 @@ function matlabbatch = bidsSpatialPrepro(opt)
   %
   % - use another type of anatomical data than ``T1w`` as a reference or want to specify
   %   which anatomical session is to be used as a reference, you can set this in
-  %   ``opt.anatReference``::
+  %   ``opt.bidsFilterFiler.t1w``::
   %
-  %     opt.anatReference.type = 'T1w';
-  %     opt.anatReference.session = 1;
+  %     opt.bidsFilterFiler.t1w.suffix = 'T1w';
+  %     opt.bidsFilterFiler.t1w.ses = 1;
   %
   %
   % (C) Copyright 2019 CPP_SPM developers

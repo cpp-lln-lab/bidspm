@@ -45,6 +45,10 @@ function [OS, generatedBy] = getEnvInfo(opt)
     for i = 1:numel(keys)
       keyname = regexprep(keys{i}, '[=:;@]', '_');
       keyname = regexprep(keyname, '^_*', '');
+      if bids.internal.starts_with(keyname, 'LS_COLORS')
+        % to prevent annoying warnign when field names are too long.
+        OS.environmentVariables.LS_COLORS = vals{i};
+      end
       if ~ismember(keyname, {'_', ''})
         OS.environmentVariables.(keyname) = vals{i};
       end

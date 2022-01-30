@@ -22,7 +22,7 @@ function test_getTpmFilename_basic()
 
   BIDS = getData(opt, opt.dir.preproc);
 
-  gm = getTpmFilename(BIDS, subLabel);
+  gm = getTpmFilename(BIDS, getAnatFilename(BIDS, opt, subLabel));
 
   expectedFilename = 'sub-01_ses-01_space-individual_label-GM_probseg.nii';
 
@@ -40,7 +40,7 @@ function test_getTpmFilename_mni()
 
   res = 'bold';
   space = 'MNI';
-  gm = getTpmFilename(BIDS, subLabel, res, space);
+  gm = getTpmFilename(BIDS, getAnatFilename(BIDS, opt, subLabel), res, space);
 
   expectedFilename = 'sub-01_ses-01_space-IXI549Space_res-bold_label-GM_probseg.nii';
 

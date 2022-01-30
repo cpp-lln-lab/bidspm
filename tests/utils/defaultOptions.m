@@ -9,7 +9,8 @@ function expectedOptions = defaultOptions(taskName)
                                           'fmap', struct('modality', 'fmap'), ...
                                           'bold', struct('modality', 'func', 'suffix', 'bold'), ...
                                           't2w',  struct('modality', 'anat', 'suffix', 'T2w'), ...
-                                          't1w',  struct('modality', 'anat', 'suffix', 'T1w'), ...
+                                          't1w',  struct('modality', 'anat', ...
+                                                         'suffix', 'T1w'), ...
                                           'roi',  struct('modality', 'roi', 'suffix', 'roi'));
 
   expectedOptions.pipeline.type =  '';
@@ -44,9 +45,6 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.subjects = {[]};
 
   expectedOptions.query.modality = {'anat', 'func'};
-
-  expectedOptions.anatReference.type = 'T1w';
-  expectedOptions.anatReference.session = [];
 
   expectedOptions.segment.force = false;
 

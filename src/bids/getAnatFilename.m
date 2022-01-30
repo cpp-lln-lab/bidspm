@@ -34,7 +34,9 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   end
 
   checkAvailableSuffix(BIDS, subLabel, opt.bidsFilterFile.t1w.suffix);
-  anatSession = checkAvailableSessions(BIDS, subLabel, opt, opt.bidsFilterFile.t1w.ses);
+  if isfield(opt.bidsFilterFile.t1w, 'ses')
+    checkAvailableSessions(BIDS, subLabel, opt, opt.bidsFilterFile.t1w.ses);
+  end
 
   filter = opt.bidsFilterFile.t1w;
   filter.extension = '.nii';
@@ -42,16 +44,14 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   if isfield(opt.query, 'desc')
     filter.desc = opt.query.desc;
   end
+  filter.sub = subLabel;
 
   % get all anat images for that subject fo that type
   anat = bids.query(BIDS, 'data', filter);
 
   if isempty(anat)
 
-    msg = sprintf('No anat file for:\n- subject: %s\n- session: %s\n- type: %s.', ...
-                  subLabel, ...
-                  char(anatSession), ...
-                  opt.bidsFilterFile.t1w.suffix);
+    msg = sprintf('No anat file for:\n%s\n\n', createUnorderedList(filter));
 
     errorHandling(mfilename(), 'noAnatFile', msg, false, opt.verbosity);
 
@@ -75,16 +75,16 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   anatImage = [anatImage ext];
 end
 
-function checkAvailableSuffix(BIDS, subLabel, anatType)
+function checkAvailableSuffix(BIDS, subLabel, anatSuffixes)
 
   availableSuffixes = bids.query(BIDS, 'suffixes', ...
                                  'sub', subLabel);
 
-  if ~strcmp(anatType, availableSuffixes)
+  if ~strcmp(anatSuffixes, availableSuffixes)
 
     msg = sprintf(['Requested anatomical suffix %s unavailable for subject %s.'...
-                   ' All available types:\n%s'], ...
-                  anatType, ...
+                   ' All available suffixes:\n%s'], ...
+                  anatSuffixes, ...
                   subLabel, ...
                   createUnorderedList(availableSuffixes));
 

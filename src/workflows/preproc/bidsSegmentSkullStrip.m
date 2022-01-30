@@ -48,7 +48,7 @@ function bidsSegmentSkullStrip(opt)
   prefix = get_spm_prefix_list;
   opt.query.prefix = prefix.stc;
   opt.query.prefix = {prefix.bias_cor, 'c1', 'c2', 'c3', 'y_', 'iy_'};
-  opt.query.suffix = opt.anatReference.type;
+  opt.query.suffix = opt.bidsFilterFile.t1w.suffix;
   bidsRename(opt);
 
 end
