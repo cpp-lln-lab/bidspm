@@ -38,7 +38,7 @@ function anatomicalQA(opt)
     [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
     anatImage = fullfile(anatDataDir, anatImage);
 
-    [gm, wm] = getTpmFilename(BIDS, subLabel);
+    [gm, wm] = getTpmFilename(BIDS, anatImage);
 
     % sanity check that all images are in the same space.
     volumesToCheck = {anatImage; gm; wm};
