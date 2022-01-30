@@ -62,8 +62,7 @@ function [roiList, roiFolder] = getROIs(varargin)
   elseif strcmp(space, 'individual')
 
     % we expect ROI files to have BIDS valid names
-    use_schema = false;
-    BIDS_ROI = bids.layout(opt.dir.roi, use_schema);
+    BIDS_ROI = bids.layout(opt.dir.roi, 'use_schema', false);
 
     if strcmp(subLabel, '')
       msg = sprintf('Provide a subject label amongst those:\n%s\n\n', ...

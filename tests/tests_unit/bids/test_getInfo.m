@@ -138,7 +138,7 @@ function test_getInfo_error
 end
 
 function fileName = returnFullpathExpectedFilename(p)
-  bidsFile = bids.File(p, true);
+  bidsFile = bids.File(p, 'use_schema', true);
   fileName = fullfile(getDummyDataDir(), 'derivatives', 'cpp_spm-preproc', ...
-                      bidsFile.relative_pth, bidsFile.filename);
+                      bidsFile.bids_path, bidsFile.filename);
 end

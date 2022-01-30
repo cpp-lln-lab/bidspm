@@ -28,15 +28,10 @@ function initBids(varargin)
 
   if ~exist(descr_file, 'file') || p.Results.force
 
-    isDerivative = true;
+    bids.init(opt.dir.output, 'folders', struct(), 'is_derivative', true);
 
-    bids.init(opt.dir.output, struct(), isDerivative);
-
-    use_schema = false;
-    index_derivatives = false;
-    tolerant = true;
-    verbose = opt.verbosity > 0;
-    BIDS = bids.layout(opt.dir.output, use_schema, index_derivatives, tolerant, verbose);
+    BIDS = bids.layout(opt.dir.output, 'use_schema', false, ...
+                       'index_derivatives', false, 'tolerant', true, 'verbose', opt.verbosity > 0);
 
     pipeline = opt.pipeline.name;
     if ~strcmp(opt.pipeline.type, '')
