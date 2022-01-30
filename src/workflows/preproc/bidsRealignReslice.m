@@ -41,6 +41,8 @@ function bidsRealignReslice(opt)
 
     if ~opt.dryRun && opt.rename
 
+      opt = set_spm_2_bids_defaults(opt);
+
       copyFigures(BIDS, opt, subLabel);
 
       for iTask = 1:numel(opt.taskName)
@@ -48,7 +50,7 @@ function bidsRealignReslice(opt)
                              fullfile(BIDS.pth, ['sub-' subLabel]), ...
                              ['^rp_.*sub-', subLabel, ...
                               '.*_task-', opt.taskName{iTask}, ...
-                              '.*_bold.txt$']);
+                              '.*_' opt.bidsFilterFile.bold.suffix '.txt$']);
         for iFile = 1:size(rpFiles, 1)
           rmInput = true;
           convertRealignParamToTsv(rpFiles(iFile, :), opt, rmInput);
@@ -56,8 +58,6 @@ function bidsRealignReslice(opt)
       end
 
     end
-
-    opt = set_spm_2_bids_defaults(opt);
 
     prefix = get_spm_prefix_list();
     opt.query.prefix = prefix.realign;
