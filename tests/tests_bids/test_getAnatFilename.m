@@ -76,7 +76,7 @@ function test_getAnatFilename_basic()
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
   assertEqual(anatDataDir, expectedAnatDataDir);
-  assertEqual(anatImage, expectedFilename);
+  assertEqual(anatImage, 'sub-01_ses-01_T1w.nii');
 
   %% different subject
   subLabel = 'ctrl01';

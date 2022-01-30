@@ -35,7 +35,7 @@ function [gm, wm, csf] = getTpmFilename(BIDS, anatImage, res, space)
   bf = bids.File(anatImage);
 
   filter = bf.entities;
-  filter.extension = bf.ext;
+  filter.extension = bf.extension;
   filter.prefix = '';
   filter.suffix = 'probseg';
   filter.space = space;
