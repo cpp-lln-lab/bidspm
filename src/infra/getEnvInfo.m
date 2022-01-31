@@ -49,7 +49,7 @@ function [OS, generatedBy] = getEnvInfo(opt)
         if bids.internal.starts_with(keyname, 'LS_COLORS')
           % to prevent annoying warnign when field names are too long.
           OS.environmentVariables.LS_COLORS = vals{i};
-        end        
+        end
       end
     end
   catch
