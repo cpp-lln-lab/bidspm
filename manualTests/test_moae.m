@@ -26,8 +26,7 @@ run ../../initCppSpm.m;
 download_moae_ds(download_data, clean);
 
 %% Set up
-optionsFilesList = { ...
-                    'options_task-auditory.json'; ...
+optionsFilesList = {'options_task-auditory.json'; ...
                     'options_task-auditory_unwarp-0.json'; ...
                     'options_task-auditory_unwarp-0_space-individual.json'; ...
                     'options_task-auditory_space-individual.json'};
@@ -46,12 +45,11 @@ for iOption = 1:size(optionsFilesList, 1)
 
   bidsSpatialPrepro(opt);
 
-  bidsSmoothing(FWHM, opt);
+  bidsSmoothing(opt);
 
-  % The following crash on CI
-  %   bidsFFX('specifyAndEstimate', opt, FWHM);
-  %   bidsFFX('contrasts', opt, FWHM);
-  %   bidsResults(opt, FWHM);
+  bidsFFX('specifyAndEstimate', opt);
+  bidsFFX('contrasts', opt);
+  bidsResults(opt);
 
   cd(WD);
 
