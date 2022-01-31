@@ -54,7 +54,7 @@ jobs:
       - name: Run commands
         uses: matlab-actions/run-command@v1.0.1
         with:
-          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run matlab_workflow_script;
+          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
 
       - name: Run tests
         run: |

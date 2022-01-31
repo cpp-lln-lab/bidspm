@@ -1,4 +1,4 @@
-name: system tests
+name: system tests with octave
 
 # Uses the cron schedule for github actions
 #
