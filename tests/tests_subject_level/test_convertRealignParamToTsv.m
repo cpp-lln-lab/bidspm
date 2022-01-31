@@ -8,8 +8,6 @@ function test_suite = test_convertRealignParamToTsv %#ok<*STOUT>
   initTestSuite;
 end
 
-% temporary silence till we have standard way to deal with those files
-
 function test_convertRealignParamToTsv_basic()
 
   opt = setOptions('vislocalizer');
@@ -25,5 +23,31 @@ function test_convertRealignParamToTsv_basic()
                     'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.tsv');
 
   assertEqual(exist(output, 'file'), 2);
+
+end
+
+function test_convertRealignParamToTsv_non_bold_data()
+
+  opt = setOptions('vislocalizer');
+
+  opt.bidsFilterFile.bold.suffix = 'vaso';
+
+  input = fullfile(opt.dir.preproc, 'sub-01', 'ses-01', 'func', ...
+                   'rp_sub-01_ses-01_task-vislocalizer_vaso.txt');
+
+  copyfile(fullfile(opt.dir.preproc, 'sub-01', 'ses-01', 'func', ...
+                    'rp_sub-01_ses-01_task-vislocalizer_bold.txt'), ...
+           input);
+
+  opt = set_spm_2_bids_defaults(opt);
+
+  convertRealignParamToTsv(input, opt);
+
+  output = fullfile(opt.dir.preproc, 'sub-01', 'ses-01', 'func', ...
+                    'sub-01_ses-01_task-vislocalizer_desc-vasoConfounds_regressors.tsv');
+
+  assertEqual(exist(output, 'file'), 2);
+
+  delete(input);
 
 end

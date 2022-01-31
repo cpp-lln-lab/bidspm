@@ -11,7 +11,7 @@ roi      = outputs/derivatives/cpp_spm-roi/sub-%/roi/sub-%_space-MNI_desc-%_mask
 
 clean:
 	rm -rf inputs
-	rm -rf outputs
+	rm -rf outputs/derivatives
 	rm -rf cfg
 	rm MoAEpilot.zip
 

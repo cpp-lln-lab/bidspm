@@ -157,7 +157,7 @@ end
 function filter = queryFilter(opt, subLabel)
   filter = opt.query;
   filter.sub =  subLabel;
-  filter.suffix = 'bold';
+  filter.suffix = opt.bidsFilterFile.bold.suffix;
   filter.extension = '.nii';
   filter.prefix = '';
   % in case task was not passed through opt.query
@@ -206,16 +206,7 @@ function fmriSpec = setScans(opt, fullpathBoldFilename, fmriSpec, spmSessCounter
 
   else
 
-    if opt.glm.maxNbVols == Inf
-      scans = {fullpathBoldFilename};
-    else
-      scans = cellstr(spm_select('ExtFPList', ...
-                                 spm_fileparts(fullpathBoldFilename), ...
-                                 spm_file(fullpathBoldFilename, 'filename'), ...
-                                 1:opt.glm.maxNbVols));
-    end
-
-    fmriSpec.sess(spmSessCounter).scans = scans;
+    fmriSpec.sess(spmSessCounter).scans = returnVolumeList(opt, fullpathBoldFilename);
 
   end
 

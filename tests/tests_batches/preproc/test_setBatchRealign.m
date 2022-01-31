@@ -29,6 +29,24 @@ function test_setBatchRealign_anat_only()
 
 end
 
+function test_setBatchRealign_select_volumes()
+
+  subLabel = '^01';
+
+  opt = setOptions('MoAE', subLabel);
+
+  opt.funcVolToSelect = 1:2:70;
+
+  [BIDS, opt] = getData(opt, opt.dir.raw);
+
+  matlabbatch = {};
+  matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
+
+  assertEqual(size(matlabbatch{1}.spm.spatial.realignunwarp.data(1).scans, 1), ...
+              numel(opt.funcVolToSelect));
+
+end
+
 function test_setBatchRealign_basic()
 
   subLabel = '^01';

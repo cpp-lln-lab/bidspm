@@ -33,32 +33,25 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
     opt.query = rmfield(opt.query, 'ses');
   end
 
-  anatSuffix = opt.anatReference.type;
-  anatSession = opt.anatReference.session;
-
-  checkAvailableSuffix(BIDS, subLabel, anatSuffix);
-  anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession);
-
-  filter =  struct('sub', subLabel, ...
-                   'suffix', anatSuffix, ...
-                   'extension', '.nii', ...
-                   'prefix', '');
-  if ~cellfun('isempty', anatSession)
-    filter.ses = anatSession;
+  checkAvailableSuffix(BIDS, subLabel, opt.bidsFilterFile.t1w.suffix);
+  if isfield(opt.bidsFilterFile.t1w, 'ses')
+    checkAvailableSessions(BIDS, subLabel, opt, opt.bidsFilterFile.t1w.ses);
   end
+
+  filter = opt.bidsFilterFile.t1w;
+  filter.extension = '.nii';
+  filter.prefix = '';
   if isfield(opt.query, 'desc')
     filter.desc = opt.query.desc;
   end
+  filter.sub = subLabel;
 
   % get all anat images for that subject fo that type
   anat = bids.query(BIDS, 'data', filter);
 
   if isempty(anat)
 
-    msg = sprintf('No anat file for:\n- subject: %s\n- session: %s\n- type: %s.', ...
-                  subLabel, ...
-                  char(anatSession), ...
-                  anatSuffix);
+    msg = sprintf('No anat file for:\n%s\n\n', createUnorderedList(filter));
 
     errorHandling(mfilename(), 'noAnatFile', msg, false, opt.verbosity);
 
@@ -67,26 +60,32 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   % TODO we take the first image of that suffix/session as the right one.
   % it could be required to take another one, or several and mean them...
   if numel(anat) > 1
-    msg = 'More than one anat file found: taking the first one.';
+    msg = sprintf('More than one anat file found:%s\n\nTaking the first one:\n\n %s', ...
+                  createUnorderedList(anat), ...
+                  anat{1});
     errorHandling(mfilename(), 'severalAnatFile', msg, true, opt.verbosity);
   end
   anat = anat{1};
   anatImage = unzipAndReturnsFullpathName(anat);
 
+  msg = sprintf('selecting anat file: %s\n', anat);
+  printToScreen(msg, opt);
+
   [anatDataDir, anatImage, ext] = spm_fileparts(anatImage);
   anatImage = [anatImage ext];
 end
 
-function checkAvailableSuffix(BIDS, subLabel, anatType)
+function checkAvailableSuffix(BIDS, subLabel, anatSuffixes)
 
   availableSuffixes = bids.query(BIDS, 'suffixes', ...
                                  'sub', subLabel);
 
-  if ~strcmp(anatType, availableSuffixes)
+  if ~strcmp(anatSuffixes, availableSuffixes)
 
     msg = sprintf(['Requested anatomical suffix %s unavailable for subject %s.'...
-                   ' All available types:\n%s'], ...
-                  anatType, ...
+                   ' All available suffixes:\n%s'], ...
+                  anatSuffixes, ...
+                  subLabel, ...
                   createUnorderedList(availableSuffixes));
 
     errorHandling(mfilename(), 'requestedSuffixUnvailable', msg, false, false);

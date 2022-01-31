@@ -10,7 +10,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % The anatomical data are segmented, skulls-stripped [and normalized to MNI space].
+  % The anatomical data are segmented, skull-stripped [and normalized to MNI space].
   %
   % The functional data are re-aligned (unwarped), coregistered with the anatomical,
   % [and normalized to MNI space].
@@ -25,14 +25,17 @@ function matlabbatch = bidsSpatialPrepro(opt)
   % - normalize the data to MNI space, make sure
   %   ``opt.space`` includes ``IXI549Space``.
   %
+  % See the :ref:`preprocessing resampling` section of the FAQ to know
+  % at what resolution files are resampled during normalization.
+  %
   % If you want to:
   %
   % - use another type of anatomical data than ``T1w`` as a reference or want to specify
   %   which anatomical session is to be used as a reference, you can set this in
-  %   ``opt.anatReference``::
+  %   ``opt.bidsFilterFiler.t1w``::
   %
-  %     opt.anatReference.type = 'T1w';
-  %     opt.anatReference.session = 1;
+  %     opt.bidsFilterFiler.t1w.suffix = 'T1w';
+  %     opt.bidsFilterFiler.t1w.ses = 1;
   %
   %
   % (C) Copyright 2019 CPP_SPM developers
@@ -118,7 +121,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
     %% clean up and rename files
     copyFigures(BIDS, opt, subLabel);
 
-    if ~opt.dryRun
+    if doSegmentAndSkullstrip && ~opt.dryRun
       spmup_comp_dist2surf(matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1});
     end
 
@@ -157,7 +160,7 @@ function renameFile(BIDS, opt)
                              fullfile(BIDS.pth, ['sub-' subLabel]), ...
                              ['^rp_.*sub-', subLabel, ...
                               '.*_task-', opt.taskName{iTask}, ...
-                              '.*_bold.txt$']);
+                              '.*_' opt.bidsFilterFile.bold.suffix '.txt$']);
         for iFile = 1:size(rpFiles, 1)
           rmInput = true;
           convertRealignParamToTsv(rpFiles(iFile, :), opt, rmInput);
@@ -184,7 +187,6 @@ function renameFile(BIDS, opt)
     opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
                                                 'name_spec', opt.spm_2_bids.cfg.preproc);
 
-    % TODO is this one really needed?
     opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', [opt.spm_2_bids.realign 'mean'], ...
                                                 'name_spec', opt.spm_2_bids.cfg.preproc);
     opt.spm_2_bids = opt.spm_2_bids.flatten_mapping();

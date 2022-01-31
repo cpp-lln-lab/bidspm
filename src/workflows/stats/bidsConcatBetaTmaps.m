@@ -13,12 +13,17 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
   % :param deleteIndTmaps: decide to delete t-maps
   % :type deleteIndTmaps: (boolean)
   %
+  % A valid BIDS stats model is required for this workflow:
+  % this is because the beta images to concatenate
+  % are those of the conditions mentioned in the ``DummyContrasts``
+  % of the RUN level of the BIDS stats model.
+  %
   % When concatenating betamaps:
   %
-  % Ensures that there is only 1 image per "contrast".
-  % Creates a tsv that lists the content of the 4D image.
-  % This TSV is in the subject level GLM folder where the beta map came from.
-  % This TSV file is named ``sub-subLabel_task-taskName_space-space_labelfold.tsv``.
+  % - Ensures that there is only 1 image per "contrast".
+  % - Creates a tsv that lists the content of the 4D image.
+  % - This TSV is in the subject level GLM folder where the beta map came from.
+  % - This TSV file is named ``sub-subLabel_task-taskName_space-space_labelfold.tsv``.
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -47,7 +52,12 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
 
     model = spm_jsonread(opt.model.file);
 
-    contrasts = specifyContrasts(SPM, model);
+    try
+      contrasts = specifyContrasts(SPM, model);
+    catch
+      msg = 'Could not find dummy contrasts in the BIDS stats model.';
+      errorHandling(mfilename(), 'noDummyContrast', msg, false, opt.verbosity);
+    end
 
     betaMaps = cell(length(contrasts), 1);
     tMaps = cell(length(contrasts), 1);

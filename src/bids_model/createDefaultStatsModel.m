@@ -43,7 +43,7 @@ function opt = createDefaultStatsModel(BIDS, opt)
   %   opt.derivativesDir = fullfile(pwd, 'data', 'raw');
   %   opt = checkOptions(opt);
   %
-  %   [~, opt, BIDS] = getData(opt);
+  %   [BIDS, opt] = getData(opt, opt.dir.raw);
   %
   %   createDefaultStatsModel(BIDS, opt);
   %

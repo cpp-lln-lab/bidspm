@@ -11,6 +11,15 @@ function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
   end
 
   content = spm_load(rpTxtFile);
+
+  if ~strcmp(opt.bidsFilterFile.bold.suffix, 'bold')
+    idx = opt.spm_2_bids.find_mapping('prefix', 'rp_');
+    renamingSpec = opt.spm_2_bids.mapping(idx).name_spec;
+    renamingSpec.entities.desc = bids.internal.camel_case([opt.bidsFilterFile.bold.suffix ...
+                                                           ' confounds']);
+    opt.spm_2_bids.mapping(idx).name_spec = renamingSpec;
+  end
+
   rpTsvFile = spm_2_bids(rpTxtFile, opt.spm_2_bids);
   rpTsvFile = spm_file(rpTsvFile, 'path', spm_fileparts(rpTxtFile));
 

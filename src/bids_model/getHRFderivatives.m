@@ -21,7 +21,7 @@ function derivatives = getHRFderivatives(modelFile, nodeType)
   try
     HRFderivatives = node.Model.Software.SPM.HRFderivatives;
   catch
-    msg = sprintf('No HRF derivatives mentioned for node %s in BIDS model file\%s', ...
+    msg = sprintf('No HRF derivatives mentioned for node %s in BIDS model file: %s', ...
                   nodeType, modelFile);
     errorHandling(mfilename(), 'noHRFderivatives', msg, true, true);
   end

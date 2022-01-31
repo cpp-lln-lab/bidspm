@@ -45,12 +45,14 @@ spm_mkdir(output_dir);
 % rename mask image:
 % add a description and remove a whole bunch of entities
 % from the original name
-newname.entities.desc = 'right auditory cortex';
+newname.entities.hemi = 'R';
+newname.entities.desc = 'auditory cortex';
 newname.entities.task = '';
 newname.entities.label = '';
 newname.entities.p = '';
 newname.entities.k = '';
 newname.entities.MC = '';
+newname.entity_order = {'sub', 'hemi', 'space', 'desc'};
 rightRoiFile = renameFile(roiFile, newname);
 
 %% same but with left hemisphere
@@ -61,7 +63,7 @@ specification  = struct( ...
                         'mask2', sphere);
 
 [~, roiFile] = createRoi('expand', specification, conImage, output_dir, saveROI);
-newname.entities.desc = 'left auditory cortex';
+newname.entities.hemi = 'L';
 leftRoiFile = renameFile(roiFile, newname);
 
 %%

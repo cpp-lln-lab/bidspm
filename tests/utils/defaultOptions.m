@@ -5,6 +5,14 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.verbosity = 1;
   expectedOptions.dryRun = false;
 
+  expectedOptions.bidsFilterFile = struct( ...
+                                          'fmap', struct('modality', 'fmap'), ...
+                                          'bold', struct('modality', 'func', 'suffix', 'bold'), ...
+                                          't2w',  struct('modality', 'anat', 'suffix', 'T2w'), ...
+                                          't1w',  struct('modality', 'anat', ...
+                                                         'suffix', 'T1w'), ...
+                                          'roi',  struct('modality', 'roi', 'suffix', 'roi'));
+
   expectedOptions.pipeline.type =  '';
   expectedOptions.pipeline.name = 'cpp_spm';
 
@@ -31,13 +39,12 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.funcVoxelDims = [];
 
+  expectedOptions.funcVolToSelect = [];
+
   expectedOptions.groups = {''};
   expectedOptions.subjects = {[]};
 
   expectedOptions.query.modality = {'anat', 'func'};
-
-  expectedOptions.anatReference.type = 'T1w';
-  expectedOptions.anatReference.session = [];
 
   expectedOptions.segment.force = false;
 

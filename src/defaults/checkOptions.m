@@ -34,6 +34,23 @@ function opt = checkOptions(opt)
   %       Default = ``struct('modality', {{'anat', 'func'}})``
   %       See ``bids.query`` to see how to specify.
   %
+  %       .. warning::
+  %
+  %         ``opt.query`` might be progressively deprecated in favor of ``opt.bidsFilterFile``
+  %         that allows using different filters for T1w and bold data.
+  %
+  %     - ``opt.bidsFilterFile`` - Sets how to define a typical images "bold", "T1w"...
+  %       in terms of their bids entities. The default value is:
+  %
+  %     .. code-block:: matlab
+  %
+  %           struct( ...
+  %               'fmap', struct('modality', 'fmap'), ...
+  %               'bold', struct('modality', 'func', 'suffix', 'bold'), ...
+  %               't2w',  struct('modality', 'anat', 'suffix', 'T2w'), ...
+  %               't1w',  struct('modality', 'anat', 'suffix', 'T1w'), ...
+  %               'roi',  struct('modality', 'roi', 'suffix', 'roi'));
+  %
   %  - **preprocessing**
   %
   %     - ``opt.realign.useUnwarp = true``
@@ -77,9 +94,6 @@ function opt = checkOptions(opt)
   %  - **preprocessing**
   %
   %     - ``opt.anatOnly = false`` - to only preprocess the anatomical file
-  %
-  %     - ``opt.anatReference.type = 'T1w'`` -  type of the anatomical reference
-  %     - ``opt.anatReference.session = ''`` - session label of the anatomical reference
   %
   %     - ``opt.segment.force = false`` - set to ``true`` to ignore previous output
   %       of the segmentation and force to run it again
@@ -197,15 +211,19 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.verbosity = 1;
   fieldsToSet.dryRun = false;
 
+  %% defines what counts as BOLD, T1W...
+  fieldsToSet.bidsFilterFile = struct( ...
+                                      'fmap', struct('modality', 'fmap'), ...
+                                      'bold', struct('modality', 'func', 'suffix', 'bold'), ...
+                                      't2w',  struct('modality', 'anat', 'suffix', 'T2w'), ...
+                                      't1w',  struct('modality', 'anat', ...
+                                                     'suffix', 'T1w'), ...
+                                      'roi',  struct('modality', 'roi', 'suffix', 'roi'));
+
   fieldsToSet.pipeline.type = '';
   fieldsToSet.pipeline.name = 'cpp_spm';
 
-  fieldsToSet.anatOnly = false;
-
   fieldsToSet.useBidsSchema = false;
-
-  fieldsToSet.fwhm.func = 6;
-  fieldsToSet.fwhm.contrast = 6;
 
   fieldsToSet.dir = struct('input', '', ...
                            'output', '', ...
@@ -219,10 +237,15 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.subjects = {[]};
   fieldsToSet.zeropad = 2;
 
+  fieldsToSet.rename = true;
+
   fieldsToSet.query.modality = {'anat', 'func'};
 
-  fieldsToSet.anatReference.type = 'T1w';
-  fieldsToSet.anatReference.session = '';
+  %% General options for anatomical data
+  fieldsToSet.anatOnly = false;
+
+  %% General options for functional data
+  fieldsToSet.funcVolToSelect = [];
 
   %% Options for slice time correction
   % all in seconds
@@ -244,13 +267,20 @@ function fieldsToSet = setDefaultOption()
   %% Options for normalize
   fieldsToSet.funcVoxelDims = [];
 
-  fieldsToSet.rename = true;
+  %% Options for smoothing
+  fieldsToSet.fwhm.func = 6;
+  fieldsToSet.fwhm.contrast = 6;
 
   %% Options for model specification and results
   fieldsToSet.model.file = '';
   fieldsToSet.model.designOnly = false;
   fieldsToSet.contrastList = {};
 
+  fieldsToSet.glm.roibased.do = false;
+  fieldsToSet.glm.maxNbVols = Inf;
+  fieldsToSet.glm.useDummyRegressor = false;
+
+  %% Options for QA
   fieldsToSet.QA.glm.do = true;
   fieldsToSet.QA.anat.do = true;
   fieldsToSet.QA.func.carpetPlot = true;
@@ -260,10 +290,6 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.QA.func.Globals = 'on';
   fieldsToSet.QA.func.Movie = 'on';
   fieldsToSet.QA.func.Basics = 'on';
-
-  fieldsToSet.glm.roibased.do = false;
-  fieldsToSet.glm.maxNbVols = Inf;
-  fieldsToSet.glm.useDummyRegressor = false;
 
   % specify the results to compute
   fieldsToSet.result.Nodes = returnDefaultResultsStructure();
@@ -283,13 +309,6 @@ function checkFields(opt)
 
     msg = 'All group names should be string.';
     errorHandling(mfilename(), 'groupNotString', msg, false, opt.verbosity);
-
-  end
-
-  if ~ischar(opt.anatReference.session)
-
-    msg = 'The session label should be string.';
-    errorHandling(mfilename(), 'sessionNotString', msg, false, opt.verbosity);
 
   end
 
