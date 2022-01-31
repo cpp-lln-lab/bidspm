@@ -152,7 +152,7 @@ function e = computeDesignEfficiency(tsvFile, opt)
     end
   end
 
-  if opt.verbosity && ~isGithubCi()
+  if opt.verbosity&& ~isGithubCi()
 
     plotEvents(tsvFile);
 

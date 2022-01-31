@@ -6,6 +6,9 @@ ARG    = -nodisplay -nosplash -nodesktop
 clean:
 	rm version.txt
 
+system_test: manualTests/test_moae.m initCppSpm.m src tests
+	$(MATLAB) $(ARG) -r "cd manualTests; test_moae; exit()"
+
 test: run_tests.m initCppSpm.m src tests
 	$(MATLAB) $(ARG) -r "run_tests; exit()"
 

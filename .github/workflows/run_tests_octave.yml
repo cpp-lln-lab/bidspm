@@ -1,4 +1,4 @@
-name: tests with octave
+name: "tests with octave: : failure expected"
 
 # Uses the cron schedule for github actions
 #
