@@ -47,8 +47,11 @@ function bidsRealignUnwarp(opt)
 
   end
 
-  prefix = get_spm_prefix_list();
-  opt.query.prefix = prefix.unwarp;
-  bidsRename(opt);
+  if ~opt.dryRun && opt.rename
+    opt = set_spm_2_bids_defaults(opt);
+    prefix = get_spm_prefix_list();
+    opt.query.prefix = prefix.unwarp;
+    bidsRename(opt);
+  end
 
 end
