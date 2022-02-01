@@ -7,13 +7,13 @@ function [tsnrImage, volTsnr] = computeTsnr(boldImage)
   %   [tsnrImage, volTsnr] = computeTsnr(boldImage)
   %
   % :param boldImage: path to the 4D nifti image. The file must have a BIDS like
-  % name (example: ``key1_label1_key2-label2_suffic.nii``)
+  %  name (example: ``key1_label1_key2-label2_suffic.nii``)
   % :type boldImage: path
   %
   % Output:
   %
-  % tsnrImage: fullpath filename of the tSNR output image
-  % volTsnr: 3D volume of the tSNR image
+  % - tsnrImage: fullpath filename of the tSNR output image
+  % - volTsnr: 3D volume of the tSNR image
   %
   % Adapted from fmrwhy:
   % https://github.com/jsheunis/fMRwhy/blob/master/fmrwhy/qc/fmrwhy_qc_calculateStats.m
