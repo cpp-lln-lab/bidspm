@@ -32,7 +32,7 @@ if ~isGithubCi
   download_moae_ds(download_data, clean);
 end
 
-for iOption = size(optionsFilesList, 1)
+for iOption = 1:size(optionsFilesList, 1)
 
   fprintf(1, repmat('\n', 1, 5));
 
