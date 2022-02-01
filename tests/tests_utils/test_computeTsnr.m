@@ -19,5 +19,6 @@ function test_computeTsnr_basic()
   [tsnrImage, volTsnr] = computeTsnr(boldImage);
 
   assertEqual(size(volTsnr), [64, 64, 64]);
+  assertEqual(spm_file(tsnrImage, 'filename'), 'sub-01_task-auditory_desc-tsnr_bold.nii');
 
 end

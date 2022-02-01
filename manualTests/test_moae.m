@@ -1,5 +1,5 @@
-% Script to run to check that the whole pipeline works fine with different
-% options encoded in json files
+% Script to run to check that the whole pipeline works fine
+% with different options encoded in json files
 %
 % - default options (that is realign & unwarp + space = MNI)
 % - indidivual space
@@ -14,16 +14,11 @@
 clear;
 clc;
 
-download_data = true;
-clean = true;
-
 % directory with this script becomes the current directory
 WD = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'MoAE');
 cd(WD);
 
 run ../../initCppSpm.m;
-
-download_moae_ds(download_data, clean);
 
 %% Set up
 optionsFilesList = {'options_task-auditory.json'; ...
@@ -31,26 +26,33 @@ optionsFilesList = {'options_task-auditory.json'; ...
                     'options_task-auditory_unwarp-0_space-individual.json'; ...
                     'options_task-auditory_space-individual.json'};
 
-% run the pipeline with different options
-for iOption = 1:size(optionsFilesList, 1)
+if ~isGithubCi
+  download_data = false;
+  clean = false;
+  download_moae_ds(download_data, clean);
+end
+
+for iOption = 3:size(optionsFilesList, 1)
 
   fprintf(1, repmat('\n', 1, 5));
 
   optionJsonFile = fullfile(WD, 'options', optionsFilesList{iOption});
   opt = loadAndCheckOptions(optionJsonFile);
 
-  reportBIDS(opt);
+  %   reportBIDS(opt);
 
-  bidsCopyInputFolder(opt);
-
-  bidsSpatialPrepro(opt);
-
-  bidsSmoothing(opt);
+  %   bidsCopyInputFolder(opt);
+  %
+  %   bidsSpatialPrepro(opt);
+  %
+  %   bidsSmoothing(opt);
 
   bidsFFX('specifyAndEstimate', opt);
   bidsFFX('contrasts', opt);
   bidsResults(opt);
 
   cd(WD);
+
+  rmdir(fullfile(WD, 'outputs', 'derivatives'), 's');
 
 end

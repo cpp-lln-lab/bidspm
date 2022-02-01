@@ -34,15 +34,11 @@ function davg = getDist2surf(varargin)
 
   bf = bids.File(anatImage);
 
-  % TODO improve regex to properly cover renamed files:
-  % - desc-pial_T1w.gii
-  % or not
-  % - c1sub-01_T1w.surf.gii
   surface_file = spm_select('FPList', ...
                             path, ...
-                            ['^.*sub-' bf.entities.sub '.*_' bf.suffix '.*\.gii$']);
+                            ['^.*sub-' bf.entities.sub '.*_desc-.*' bf.suffix '.*\.gii$']);
 
-  if ~isempty(surface_file)
+  if size(surface_file, 1) == 1
 
     FV = gifti(surface_file);
     center = FV.vertices(FV.faces(:, :), :);

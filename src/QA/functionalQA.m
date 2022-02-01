@@ -112,7 +112,7 @@ function functionalQA(opt)
           funcImage = spm_select('FPListRec', fullfile(BIDS.pth, ['sub-' subLabel]), pattern);
 
           if size(funcImage, 1) ~= 1
-            msg = sprintf('too many files found:\n%s\n\n', funcImage);
+            msg = sprintf('too many files found:\n%s\n\n', createUnorderedList(funcImage));
             errorHandling(mfilename(), 'tooManyFiles', msg, true, opt.verbosity);
             continue
           end

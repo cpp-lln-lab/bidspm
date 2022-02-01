@@ -41,6 +41,9 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   filter = opt.bidsFilterFile.t1w;
   filter.extension = '.nii';
   filter.prefix = '';
+  if isfield(opt.query, 'space')
+    filter.desc = opt.query.desc;
+  end
   if isfield(opt.query, 'desc')
     filter.desc = opt.query.desc;
   end
@@ -60,7 +63,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   % TODO we take the first image of that suffix/session as the right one.
   % it could be required to take another one, or several and mean them...
   if numel(anat) > 1
-    msg = sprintf('More than one anat file found:%s\n\nTaking the first one:\n\n %s', ...
+    msg = sprintf('More than one anat file found:%s\n\nTaking the first one:\n\n %s\n', ...
                   createUnorderedList(anat), ...
                   anat{1});
     errorHandling(mfilename(), 'severalAnatFile', msg, true, opt.verbosity);

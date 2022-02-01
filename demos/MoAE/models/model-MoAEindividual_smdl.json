@@ -1,10 +1,10 @@
 {
   "Name": "auditory",
   "BIDSModelVersion": "1.0.0",
-  "Description": "GLM and contrasts to compute for the FIL MoAE dataset",
+  "Description": "GLM and contrasts the FIL MoAE dataset in subject space",
   "Input": {
     "task": "auditory",
-    "space": "IXI549Space"
+    "space": "individual"
   },
   "Nodes": [
     {
