@@ -39,9 +39,10 @@ function test_getAnatFilename_derivatives()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  opt.bidsFilterFile.t1w.desc = 'biascor';
-
   [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  opt.bidsFilterFile.t1w.space = opt.space;
+  opt.bidsFilterFile.t1w.desc = 'biascor';
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 

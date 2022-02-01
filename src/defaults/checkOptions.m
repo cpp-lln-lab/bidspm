@@ -289,7 +289,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.QA.func.FD = 'on';
   fieldsToSet.QA.func.Voltera = 'on';
   fieldsToSet.QA.func.Globals = 'on';
-  fieldsToSet.QA.func.Movie = 'on';
+  fieldsToSet.QA.func.Movie = 'off';
   fieldsToSet.QA.func.Basics = 'on';
 
   % specify the results to compute

@@ -68,7 +68,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.QA.func.FD = 'on';
   expectedOptions.QA.func.Voltera = 'on';
   expectedOptions.QA.func.Globals = 'on';
-  expectedOptions.QA.func.Movie = 'on';
+  expectedOptions.QA.func.Movie = 'off';
   expectedOptions.QA.func.Basics = 'on';
 
   expectedOptions.glm.roibased.do = false;

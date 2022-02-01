@@ -23,30 +23,14 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
 
   % TODO try to channel this function via getInfo ?
 
-  if isfield(opt, 'taskName')
-    opt = rmfield(opt, 'taskName');
-  end
-
-  opt.query.modality = 'anat';
-
-  if isfield(opt.query, 'ses')
-    opt.query = rmfield(opt.query, 'ses');
-  end
-
-  checkAvailableSuffix(BIDS, subLabel, opt.bidsFilterFile.t1w.suffix);
+  checkAvailableSuffix(BIDS, subLabel, opt.bidsFilterFile.t1w);
   if isfield(opt.bidsFilterFile.t1w, 'ses')
-    checkAvailableSessions(BIDS, subLabel, opt, opt.bidsFilterFile.t1w.ses);
+    checkAvailableSessions(BIDS, subLabel, opt.bidsFilterFile.t1w);
   end
 
   filter = opt.bidsFilterFile.t1w;
   filter.extension = '.nii';
   filter.prefix = '';
-  if isfield(opt.query, 'space')
-    filter.desc = opt.query.desc;
-  end
-  if isfield(opt.query, 'desc')
-    filter.desc = opt.query.desc;
-  end
   filter.sub = subLabel;
 
   % get all anat images for that subject fo that type
@@ -78,10 +62,13 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   anatImage = [anatImage ext];
 end
 
-function checkAvailableSuffix(BIDS, subLabel, anatSuffixes)
+function checkAvailableSuffix(BIDS, subLabel, filter)
 
-  availableSuffixes = bids.query(BIDS, 'suffixes', ...
-                                 'sub', subLabel);
+  anatSuffixes = filter.suffix;
+
+  filter = rmfield(filter, 'suffix');
+  filter.sub = subLabel;
+  availableSuffixes = bids.query(BIDS, 'suffixes', filter);
 
   if ~strcmp(anatSuffixes, availableSuffixes)
 
@@ -97,9 +84,16 @@ function checkAvailableSuffix(BIDS, subLabel, anatSuffixes)
 
 end
 
-function anatSession = checkAvailableSessions(BIDS, subLabel, opt, anatSession)
+function anatSession = checkAvailableSessions(BIDS, subLabel, filter)
 
-  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+  anatSession = filter.ses;
+
+  filter = rmfield(filter, 'ses');
+  filter.sub = subLabel;
+  sessions = bids.query(BIDS, 'sessions', filter);
+  if numel(sessions) == 0
+    sessions = {''};
+  end
 
   if ~isempty(anatSession)
 

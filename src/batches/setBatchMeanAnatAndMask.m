@@ -31,8 +31,9 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, outputDir)
     printProcessingSubject(iSub, subLabel, opt);
 
     %% Anat
-    opt.query.space = opt.space;
-    opt.query.desc = 'preproc';
+    opt.bidsFilterFile.t1w.space = opt.space;
+    opt.bidsFilterFile.t1w.desc = 'preproc';
+
     [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
     inputAnat{end + 1, 1} = fullfile(anatDataDir, anatImage); %#ok<*AGROW>
