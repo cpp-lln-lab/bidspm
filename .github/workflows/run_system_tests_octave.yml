@@ -55,7 +55,6 @@ jobs:
          make -C spm12/src PLATFORM=octave install
          octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
-
     - name: Run system tests
       run: |
         cd manualTests/

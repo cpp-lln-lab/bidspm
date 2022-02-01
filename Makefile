@@ -6,6 +6,11 @@ ARG    = -nodisplay -nosplash -nodesktop
 clean:
 	rm version.txt
 
+clean_demos:
+	rm -rf demos/*/cfg
+	rm -rf demos/*/outputs/derivatives
+	rm -rf demos/*/inputs
+
 system_test: manualTests/test_moae.m initCppSpm.m src tests
 	$(MATLAB) $(ARG) -r "cd manualTests; test_moae; exit()"
 

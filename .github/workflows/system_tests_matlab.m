@@ -8,3 +8,7 @@ addpath(fullfile(root_dir, 'spm12'));
 cd(fullfile(root_dir, 'manualTests'));
 
 run test_moae;
+
+cd(fullfile(root_dir, 'demos', 'face_repetition'));
+
+run face_rep_resolution;
