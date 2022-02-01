@@ -131,6 +131,8 @@ Utility functions
 
 .. autofunction:: getFuncVoxelDims
 
+.. autofunction:: computeTsnr
+
 .. autofunction:: rmTrialTypeStr
 .. autofunction:: setFields
 
@@ -149,7 +151,6 @@ Print and error handling
 .. autofunction:: printBatchName
 
 .. autofunction:: printCredits
-.. autofunction:: printProcessingRun
 .. autofunction:: printProcessingSubject
 
 

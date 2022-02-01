@@ -10,6 +10,7 @@ function expectedOptions = defaultOptions(taskName)
                                           'bold', struct('modality', 'func', 'suffix', 'bold'), ...
                                           't2w',  struct('modality', 'anat', 'suffix', 'T2w'), ...
                                           't1w',  struct('modality', 'anat', ...
+                                                         'space', '', ...
                                                          'suffix', 'T1w'), ...
                                           'roi',  struct('modality', 'roi', 'suffix', 'roi'));
 
@@ -67,7 +68,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.QA.func.FD = 'on';
   expectedOptions.QA.func.Voltera = 'on';
   expectedOptions.QA.func.Globals = 'on';
-  expectedOptions.QA.func.Movie = 'on';
+  expectedOptions.QA.func.Movie = 'off';
   expectedOptions.QA.func.Basics = 'on';
 
   expectedOptions.glm.roibased.do = false;

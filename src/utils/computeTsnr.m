@@ -6,8 +6,14 @@ function [tsnrImage, volTsnr] = computeTsnr(boldImage)
   %
   %   [tsnrImage, volTsnr] = computeTsnr(boldImage)
   %
-  % :param boldImage: path to the 4D nifti image
+  % :param boldImage: path to the 4D nifti image. The file must have a BIDS like
+  %  name (example: ``key1_label1_key2-label2_suffic.nii``)
   % :type boldImage: path
+  %
+  % Output:
+  %
+  % - tsnrImage: fullpath filename of the tSNR output image
+  % - volTsnr: 3D volume of the tSNR image
   %
   % Adapted from fmrwhy:
   % https://github.com/jsheunis/fMRwhy/blob/master/fmrwhy/qc/fmrwhy_qc_calculateStats.m
@@ -20,6 +26,10 @@ function [tsnrImage, volTsnr] = computeTsnr(boldImage)
 
   % First access and reshape the functional data: 4D to 2D
   hdr = spm_vol(boldImage);
+  if numel(hdr) < 10
+    warning(['Very low number of times points.\n', ...
+             'Check that the input image is a BOLD time series.']);
+  end
   vol = spm_read_vols(hdr);
   [Nx, Ny, Nz, Nt] = size(vol);
   data2D = reshape(vol, Nx * Ny * Nz, Nt); % [voxels, time]
@@ -40,18 +50,24 @@ function [tsnrImage, volTsnr] = computeTsnr(boldImage)
   % Prepare 3D and 4D images
   volTsnr = reshape(tSNR_2D, Nx, Ny, Nz);
 
-  pth = spm_fileparts(boldImage);
-  tsnrImage = bids.internal.parse_filename(boldImage);
-  tsnrImage.entities.desc = 'tsnr';
-  tsnrImage = bids.File(tsnrImage);
-  tsnrImage = fullfile(pth, tsnrImage.filename);
+  try
+    pth = spm_fileparts(boldImage);
+    tsnrImage = bids.File(boldImage);
+    tsnrImage.entities.desc = 'tsnr';
+    tsnrImage = fullfile(pth, tsnrImage.filename);
 
-  hdr = hdr(1);
-  hdr.fname = tsnrImage;
-  hdr.size = size(volTsnr);
-  hdr.descrip = 'tSNR';
+    hdr = hdr(1);
+    hdr.fname = tsnrImage;
+    hdr.size = size(volTsnr);
+    hdr.descrip = 'tSNR';
 
-  spm_write_vol(hdr, volTsnr);
+    spm_write_vol(hdr, volTsnr);
+
+  catch
+    warning(['Could not save the output tSNR image\n', ...
+             'Make sure the input image has a BIDS like name.']);
+
+  end
 
 end
 

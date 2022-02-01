@@ -1,52 +1,66 @@
 {
-    "anatReference": {
-        "type": "T1w",
-        "session": ""
-    },
     "dir": {
         "raw": "./inputs/raw",
         "derivatives": "./outputs/derivatives",
         "preproc": "./outputs/derivatives/cpp_spm-preproc",
         "stats": "./outputs/derivatives/cpp_spm-stats"
     },
-    "model": {
-        "file": "./models/model-MoAE_smdl.json"
+    "dryRun": false,
+    "pipeline": {
+        "name": "cpp_spm",
+        "type": "preproc"
     },
-    "fwhm": {
-        "func": 6,
-        "contrast": 6
+    "rename": true,
+    "segment": {
+        "force": true
     },
+    "taskName": [
+        "auditory"
+    ],
+    "space": [
+        "individual"
+    ],
     "realign": {
         "useUnwarp": false
     },
+    "model": {
+        "designOnly": false,
+        "file": "./models/model-MoAEindividual_smdl.json"
+    },
     "result": {
         "Nodes": {
-            "Contrasts": [
-                {
-                    "MC": "FWE",
-                    "Mask": false,
-                    "NIDM": true,
-                    "Name": "listening",
-                    "k": 0,
-                    "p": 0.05
+            "Contrasts": {
+                "MC": "FWE",
+                "Name": "listening_1",
+                "k": 0,
+                "p": 0.05,
+                "useMask": false
+            },
+            "Level": "subject",
+            "Output": {
+                "NIDM_results": true,
+                "binary": true,
+                "csv": true,
+                "montage": {
+                    "do": true,
+                    "orientation": "axial",
+                    "slices": [
+                        -4,
+                        -2,
+                        0,
+                        2,
+                        4,
+                        6,
+                        8,
+                        10,
+                        12,
+                        14,
+                        16
+                    ]
                 },
-                {
-                    "MC": "none",
-                    "Mask": false,
-                    "NIDM": true,
-                    "Name": "listening_inf_baseline",
-                    "k": 0,
-                    "p": 0.01
-                }
-            ],
-            "Level": "subject"
+                "png": true,
+                "thresh_spm": true
+            }
         }
-    },
-    "skullstrip": {
-        "threshold": 0.75
-    },
-    "space": "individual",
-    "taskName": "auditory",
-    "useFieldmaps": true,
-    "zeropad": 2
+    }
 }

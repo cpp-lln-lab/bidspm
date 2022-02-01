@@ -1,4 +1,4 @@
-name: tests with octave
+name: "tests with octave: : failure expected"
 
 # Uses the cron schedule for github actions
 #
@@ -21,6 +21,9 @@ on:
       - dev
   pull_request:
     branches: ['*']
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 env:
   OCTFLAGS: --no-gui --no-window-system --silent
@@ -57,10 +60,6 @@ jobs:
         make -C MOxUnit install
         git clone https://github.com/MOcov/MOcov.git --depth 1
         make -C MOcov install
-
-    - name: Update octave path
-      run: |
-        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
 
     - name: Prepare data
       run: |

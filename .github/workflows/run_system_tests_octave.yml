@@ -1,4 +1,4 @@
-name: system tests
+name: "system tests with octave: failure expected"
 
 # Uses the cron schedule for github actions
 #
@@ -54,7 +54,6 @@ jobs:
          make -C spm12/src PLATFORM=octave
          make -C spm12/src PLATFORM=octave install
          octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
-
 
     - name: Run system tests
       run: |

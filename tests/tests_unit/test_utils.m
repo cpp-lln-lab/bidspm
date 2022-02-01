@@ -11,9 +11,10 @@ end
 function test_utils_basic()
 
   opt = setTestCfg();
-
   printCredits(opt);
-
   checkDependencies(opt);
+
+  opt.verbosity = true;
+  printCredits(opt);
 
 end
