@@ -20,9 +20,6 @@ function opt = moae_get_option_stats()
 
   opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                             'models', 'model-MoAE_smdl.json');
-  % to add the hrf temporal derivative = [1 0]
-  % to add the hrf temporal and dispersion derivative = [1 1]
-  % opt.model.hrfDerivatives = [0 0];
 
   % Specify the result to compute
   opt.result.Nodes(1) = returnDefaultResultsStructure();

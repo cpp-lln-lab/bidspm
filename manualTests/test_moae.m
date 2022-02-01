@@ -27,25 +27,25 @@ optionsFilesList = {'options_task-auditory.json'; ...
                     'options_task-auditory_space-individual.json'};
 
 if ~isGithubCi
-  download_data = false;
-  clean = false;
+  download_data = true;
+  clean = true;
   download_moae_ds(download_data, clean);
 end
 
-for iOption = 3:size(optionsFilesList, 1)
+for iOption = size(optionsFilesList, 1)
 
   fprintf(1, repmat('\n', 1, 5));
 
   optionJsonFile = fullfile(WD, 'options', optionsFilesList{iOption});
   opt = loadAndCheckOptions(optionJsonFile);
 
-  %   reportBIDS(opt);
+  reportBIDS(opt);
 
-  %   bidsCopyInputFolder(opt);
-  %
-  %   bidsSpatialPrepro(opt);
-  %
-  %   bidsSmoothing(opt);
+  bidsCopyInputFolder(opt);
+
+  bidsSpatialPrepro(opt);
+
+  bidsSmoothing(opt);
 
   bidsFFX('specifyAndEstimate', opt);
   bidsFFX('contrasts', opt);
