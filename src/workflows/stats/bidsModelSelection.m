@@ -132,6 +132,7 @@ function matlabbatch = bidsModelSelection(varargin)
 
   checks(opt);
 
+  checkHasMacsField = false;
   if ismember(action, {'posterior', 'bms'})
     checkHasMacsField = true;
   end
