@@ -132,6 +132,10 @@ function matlabbatch = bidsModelSelection(varargin)
 
   checks(opt);
 
+  if ismember(action, {'posterior', 'bms'})
+    checkHasMacsField = true;
+  end
+
   workflowName = 'macs model selection';
 
   [~, opt] = setUpWorkflow(opt, workflowName);
@@ -189,7 +193,17 @@ function matlabbatch = bidsModelSelection(varargin)
 
       matlabbatch{1}.spm.tools.MACS.MA_model_space.models{1, iSub}{1, iModel} = {spmMatFile};
 
-      allRunsHaveSameNbRegressors(spmMatFile);
+      load(spmMatFile, 'SPM');
+      allRunsHaveSameNbRegressors(SPM);
+
+      if checkHasMacsField && ~isfield(SPM, 'MACS')
+        errorHandling;
+        tolerant = true;
+        errorMsg = sprintf('No cvLME for sub %s model %s. Might lead to an error.', ...
+                           subLabel, ...
+                           names{iModel});
+        errorHandling(mfilename(), 'missingMACSField', errorMsg, tolerant, opt.verbosity);
+      end
 
     end
 

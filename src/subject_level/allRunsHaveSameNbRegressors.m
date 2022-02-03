@@ -1,12 +1,15 @@
-function allRunsHaveSameNbRegressors(spmMatFile)
+function allRunsHaveSameNbRegressors(spmMat)
   %
   % USAGE::
   %
   %    allRunsHaveSameNbRegressors(spmMatFile)
   %
   % (C) Copyright 2022 CPP_SPM developers
-
-  load(spmMatFile, 'SPM');
+  if isstruct(spmMat)
+    SPM = spmMat;
+  elseif exist(spmMat, 'file')
+    load(spmMat, 'SPM');
+  end
 
   nbRuns = numel(SPM.Sess);
 
@@ -16,7 +19,7 @@ function allRunsHaveSameNbRegressors(spmMatFile)
   end
 
   if numel(unique(nbRegressorPerRun)) > 1
-    msg = sprintf('Runs have different number of regressors in SPM.mat:\n%s\n\n.', spmMatFile);
+    msg = sprintf('Runs have different number of regressors in SPM.mat:\n%s\n\n.', spmMat);
     id = 'differentNbRegressor';
     errorHandling(mfilename(), id, msg, false);
   end
