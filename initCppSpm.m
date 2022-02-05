@@ -11,8 +11,12 @@ function initCppSpm(dev)
 
   warning('DEPRECATED: use `cpp_spm(''init'')` instead');
 
+  if nargin < 1
+    dev = false;
+  end
+
   if dev
-    cpp_spm('dec');
+    cpp_spm('dev');
   else
     cpp_spm('init');
   end
