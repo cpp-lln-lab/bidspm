@@ -22,8 +22,7 @@ function opt = ds001168_get_option()
 
   opt.query.modality = {'anat', 'func', 'fmap'};
 
-  opt.anatReference.type = 'T1w';
-  opt.anatReference.session = '1';
+  opt.bidsFilterFile.t1w.ses = '1';
 
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp

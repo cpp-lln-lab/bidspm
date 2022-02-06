@@ -8,7 +8,6 @@ function opt = ds000114_get_option()
 
   % The directory where the data are located
   opt.dir.raw = '/home/remi/openneuro/ds000114/raw';
-  opt.pipeline.name = 'cpp_spms';
 
   % suject to run in each group
   opt.subjects = {'01', '02'};
@@ -17,9 +16,9 @@ function opt = ds000114_get_option()
   opt.taskName = 'linebisection';
 
   opt.query.modality = {'anat', 'func'};
-  opt.pipeline.type = 'preproc';
-  opt.anatReference.type = 'T1w';
-  opt.anatReference.session = 'retest';
+
+  opt.bidsFilterFile.t1w.ses = 'retest';
+
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp
   %   opt.realign.useUnwarp = false;
@@ -39,10 +38,6 @@ function opt = ds000114_get_option()
                                                    'MC', 'FWE', ... FWE, none, FDR
                                                    'p', 0.05, ...
                                                    'k', 0));
-
-  opt.parallelize.do = true;
-  opt.parallelize.nbWorkers = 2;
-  opt.parallelize.killOnExit = false;
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);

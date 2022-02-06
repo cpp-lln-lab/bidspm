@@ -10,7 +10,6 @@ function opt = moae_get_option()
   % task to analyze
   opt.pipeline.type = 'preproc';
   opt.taskName = {'auditory'};
-  opt.verbosity = 1;
 
   % The directory where the data are located
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
