@@ -11,6 +11,6 @@ run moxunit_set_path();
 
 cd(fullfile(root_dir));
 
-cpp_spm('init');
+cpp_spm('dev');
 
 run run_tests();
