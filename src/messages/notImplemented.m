@@ -4,12 +4,12 @@ function notImplemented(varargin)
   %
   %   notImplemented(functionName, msg, verbose)
   %
-  % :param opt: obligatory argument.
-  % :type opt: structure
-  % :param roiList: obligatory argument.
-  % :type roiList: cell
-  % :param folder: optional argument. default: ``''``
-  % :type folder: path
+  % :param functionName: obligatory argument.
+  % :type functionName: path
+  % :param msg: optional
+  % :type msg: char
+  % :param verbose: default ``true``
+  % :type verbose: boolean
   %
   % :returns: - :status: (boolean)
   %

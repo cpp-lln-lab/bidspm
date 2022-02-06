@@ -17,7 +17,7 @@ function newContent = applyTransformersToEventsTsv(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  SUPPORTED_TRANSFORMERS = {'Add', 'Subtract', 'Multiply', 'Divide'};
+  SUPPORTED_TRANSFORMERS = {'Add', 'Subtract', 'Multiply', 'Divide', 'Filter'};
 
   p = inputParser;
 
@@ -31,7 +31,7 @@ function newContent = applyTransformersToEventsTsv(varargin)
   tsvContent = p.Results.tsvContent;
   transformers = p.Results.transformers;
 
-  if isempty(transformers) || isempty(transformers)
+  if isempty(transformers) || isempty(tsvContent)
     newContent = struct([]);
     return
   end
@@ -46,46 +46,71 @@ function newContent = applyTransformersToEventsTsv(varargin)
     %   (therefore means that transformations cannot be "chained")
     % - assumes transformations are only on onsets
     name = transformers(iTrans).Name;
-    value = transformers(iTrans).Value;
+    if ~ismember(name, SUPPORTED_TRANSFORMERS)
+      notImplemented(mfilename(), sprintf('Transformer %s not implemented', name), true);
+      newContent = struct([]);
+      return
+    end
 
     input = transformers(iTrans).Input;
-    output = transformers(iTrans).Output;
+    if ~iscell(input)
+      input = {input};
+    end
+
+    if isfield(transformers(iTrans), 'Output') && ~isempty(transformers(iTrans).Output)
+      output = transformers(iTrans).Output;
+    end
 
     for i = 1:numel(input)
 
-      if ismember(name, SUPPORTED_TRANSFORMERS) && ...
-          ismember(rmTrialTypeStr(input{i}), trialTypesList)
+      % assume that we are dealing with column header if there is a "." in input
+      if isColumnHeader(input{i})
 
-        idx = find(strcmp(rmTrialTypeStr(input{i}), trialTypes));
+        tokens = regexp(input{i}, '\.', 'split');
 
-        onsets = tsvContent.onset(idx);
-
-        switch lower(name)
-
-          case 'add'
-            onsets = onsets + value;
-
-          case 'subtract'
-            onsets = onsets - value;
-
-          case 'multiply'
-            onsets = onsets * value;
-
-          case 'divide'
-            onsets = onsets / value;
-
-          otherwise
-
-            notImplemented(mfilename(), sprintf('Transformer %s not implemented', name), true);
-
+        if strcmp(tokens{1}, 'trial_type') && ismember(tokens{2}, trialTypesList)
+          idx = find(strcmp(rmTrialTypeStr(input{i}), trialTypes));
+          onsets = tsvContent.onset(idx);
         end
 
-        newContent.(output{i}) = struct('onset', onsets, 'duration', tsvContent.duration(idx));
+      end
+
+      switch lower(name)
+
+        case 'add'
+          value = transformers(iTrans).Value;
+          onsets = onsets + value;
+
+        case 'subtract'
+          value = transformers(iTrans).Value;
+          onsets = onsets - value;
+
+        case 'multiply'
+          value = transformers(iTrans).Value;
+          onsets = onsets * value;
+
+        case 'divide'
+          value = transformers(iTrans).Value;
+          onsets = onsets / value;
+
+        otherwise
+          notImplemented(mfilename(), sprintf('Transformer %s not implemented', name), true);
 
       end
+
+      newContent.(output{i}) = struct('onset', onsets, 'duration', tsvContent.duration(idx));
 
     end
 
   end
+
+end
+
+function status = isColumnHeader(someString)
+  %
+  % rough guess that we are dealing with something that comes from a TSV
+  %
+
+  status = ismember('.', someString);
 
 end
