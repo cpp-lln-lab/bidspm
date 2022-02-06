@@ -261,7 +261,7 @@ function run_tests()
   tic;
 
   cpp_spm('init');
-  
+
   cd(fileparts(mfilename('fullpath')));
 
   if isGithubCi

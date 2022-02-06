@@ -21,7 +21,7 @@ function notImplemented(varargin)
   defaultVerbose = true;
 
   logicalOrNumeric = @(x) islogical(x) || isnumeric(x);
-  
+
   addRequired(p, 'functionName', @ischar);
   addOptional(p, 'msg', defaultMsg, @ischar);
   addOptional(p, 'verbose', defaultVerbose, logicalOrNumeric);
