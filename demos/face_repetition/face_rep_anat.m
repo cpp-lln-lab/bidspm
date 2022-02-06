@@ -8,10 +8,8 @@ clc;
 
 downloadData = false;
 
-try
-  run ../../initCppSpm.m;
-catch
-end
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm('init');
 
 %% Set options
 opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');

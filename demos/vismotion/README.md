@@ -1,12 +1,22 @@
 # Using CPP SPM and datalad
 
-**WORK IN PROGRESS**
-
 Small demo using visual motion localizer data to show how to set up an analysis
 with CPP SPM from scratch with datalad.
 
 Ideally better to use the datalad fMRI template we have set up, this shows a set
 by step approach.
+
+**Note**
+
+The bash script `vismotion_demo.sh` will run all the steps described here in one fell swoop.
+
+You can run it by typing the following from within the CPP_SPM/demos/vismotion
+
+```bash
+bash vismotion_demo.sh
+```
+
+This can sho
 
 ## Set up
 
@@ -24,7 +34,7 @@ all submodules.
 datalad install \
         -d . \
         -s https://github.com/cpp-lln-lab/CPP_SPM.git \
-        - r
+        -r
         code/CPP_SPM
 ```
 
@@ -81,13 +91,19 @@ After this your datalad dataset should look something like this:
 
 To finish the setup you need to download the data:
 
-```
+```bash
 cd inputs/raw
 datalad get .
 ```
 
-<!-- create a script to do all this ? -->
-<!-- TODO set up output datasets -->
+Note that you could have installed the dataset and got the data in one command:
+
+```bash
+datalad install -d . \
+    --get-data \
+    -s git@gin.g-node.org:/cpp-lln-lab/CPP_visMotion-raw.git \
+    inputs/raw
+```    
 
 ## Running the analysis
 

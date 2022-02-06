@@ -5,7 +5,8 @@
 clear;
 clc;
 
-run ../../initCppSpm.m;
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm('init');
 
 opt = ds000001_get_option();
 
