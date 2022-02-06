@@ -8,7 +8,8 @@ clc;
 
 download_data = false;
 
-run ../../initCppSpm.m;
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm('init');
 
 opt = tsnr_get_option();
 

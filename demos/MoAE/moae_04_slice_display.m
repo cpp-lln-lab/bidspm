@@ -10,10 +10,8 @@
 clear;
 clc;
 
-try
-  run ../../initCppSpm.m;
-catch
-end
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm('init');
 
 subLabel = '01';
 

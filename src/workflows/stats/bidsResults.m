@@ -121,7 +121,12 @@ function matlabbatch = bidsResults(opt)
 
   opt.dir.output = opt.dir.stats;
 
-  [~, opt] = setUpWorkflow(opt, 'computing GLM results');
+  [BIDS, opt] = setUpWorkflow(opt, 'computing GLM results');
+
+  if isempty(opt.model.file)
+    opt = createDefaultStatsModel(BIDS, opt);
+    opt = overRideWithBidsModelContent(opt);
+  end
 
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
@@ -285,6 +290,6 @@ function filename = figureName(opt)
              'entities', struct( ...
                                 'task', strjoin(opt.taskName, ''), ...
                                 'space', opt.space));
-  bidsFile = bids.File(p, false);
+  bidsFile = bids.File(p, 'use_schema', false);
   filename = bidsFile.filename;
 end
