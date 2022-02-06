@@ -1,5 +1,8 @@
 #! /user/bin/bash
 
+# fail whenever something is fishy, use -x to get verbose logfiles
+set -e -u
+
 # IMPORTANT
 #
 # For this to work on your system you will need
