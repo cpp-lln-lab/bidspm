@@ -41,4 +41,4 @@ datalad save -m 'preprocessing done' -r
     -nodisplay -nosplash -nodesktop \
     -r "run('step_2_stats.m');exit;"
 
-datalad save -m 'stats done' -r    
+datalad save -m 'stats done' -r

@@ -103,7 +103,7 @@ datalad install -d . \
     --get-data \
     -s git@gin.g-node.org:/cpp-lln-lab/CPP_visMotion-raw.git \
     inputs/raw
-```    
+```
 
 ## Running the analysis
 
