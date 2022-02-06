@@ -18,7 +18,8 @@ clc;
 WD = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'openneuro');
 cd(WD);
 
-run ../../initCppSpm.m;
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm('init');
 
 optionsFilesList = { ...
                     'options_task-linebisection.json'; ...

@@ -1,4 +1,5 @@
 *_report.md
+
 # General
 .DS_Store
 
@@ -17,9 +18,9 @@ options_task-*date*.json
 onsets*_events.mat
 
 ## virtual env
-cpp_spm/*
-env/*
-venv/*
+cpp_spm
+env
+venv
 
 ## visual studio code
 .vscode
