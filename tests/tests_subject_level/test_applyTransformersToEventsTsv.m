@@ -29,6 +29,7 @@ function test_applyTransformersToEventsTsv_filter()
 
   % TH
   assertEqual(fieldnames(newContent), {'Famous_1'});
+  assertEqual(numel(newContent.Famous_1.onset), 26);
 
   cleanUp();
 
