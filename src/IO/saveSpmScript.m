@@ -50,7 +50,8 @@ function outputFilename = saveSpmScript(varargin)
   end
 
   % matlab scripts cannot have hyphens
-  outputFilename = strrep(outputFilename, '-', '_');
+  filename = spm_file(outputFilename, 'filename');
+  outputFilename = spm_file(outputFilename, 'filename', strrep(filename, '-', '_'));
 
   try
     str = gencode(matlabbatch);
