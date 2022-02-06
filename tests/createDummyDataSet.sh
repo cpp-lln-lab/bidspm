@@ -183,8 +183,8 @@ for subject in ${subject_list}; do
 		for run in $(seq 1 2); do
 
 			filename=${this_dir}/rp_sub-${subject}_ses-${ses}_task-${task_name}_run-${run}${suffix}.txt
-			cp dummyData/rp.txt "${filename}"
-			cp dummyData/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_desc-confounds_regressors.tsv
+			cp dummyData/tsv_files/rp.txt "${filename}"
+			cp dummyData/tsv_files/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_desc-confounds_regressors.tsv
 
 			for desc in ${desc_label_list}; do
 				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_space-individual_desc-${desc}${suffix}.nii
@@ -207,8 +207,8 @@ for subject in ${subject_list}; do
 
 		### derivatives
 		filename=${this_dir}/rp_sub-${subject}_ses-${ses}_task-${task_name}${suffix}.txt
-		cp dummyData/rp.txt "${filename}"
-		cp dummyData/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_desc-confounds_regressors.tsv
+		cp dummyData/tsv_files/rp.txt "${filename}"
+		cp dummyData/tsv_files/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_desc-confounds_regressors.tsv
 
 		# func_prefix_list='a r u s6'
 		# for prefix in ${func_prefix_list}
