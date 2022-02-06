@@ -16,15 +16,18 @@ function test_saveMatlabBatch_basic()
   opt.dir.jobs = pwd;
 
   matlabbatch = struct('test', 1);
+  saveMatlabBatch(matlabbatch, 'test', opt, subLabel);
 
   expectedOutput = fullfile(pwd, ['sub-' subLabel], ...
                             ['batch_test_' datestr(now, 'yyyy-mm-ddTHH-MM') '.mat']);
 
-  saveMatlabBatch(matlabbatch, 'test', opt, subLabel);
+  assertEqual(exist(expectedOutput, 'file'), 2);
+  assertEqual(exist(spm_file(expectedOutput, 'ext', '.json'), 'file'), 2);
+
+  expectedOutput = fullfile(pwd, ['sub-' subLabel], ...
+                            ['batch_test_' datestr(now, 'yyyy_mm_ddTHH_MM') '.m']);
 
   assertEqual(exist(expectedOutput, 'file'), 2);
-  assertEqual(exist(spm_file(expectedOutput, 'ext', '.m'), 'file'), 2);
-  assertEqual(exist(spm_file(expectedOutput, 'ext', '.json'), 'file'), 2);
 
   cleanUp(fullfile(pwd, ['sub-' subLabel]));
 
@@ -45,7 +48,7 @@ function test_saveMatlabBatch_group()
   saveMatlabBatch(matlabbatch, 'groupTest', opt);
 
   assertEqual(exist(expectedOutput, 'file'), 2);
-  assertEqual(exist(spm_file(expectedOutput, 'ext', '.m'), 'file'), 2);
+  assertEqual(exist(spm_file(strrep(expectedOutput, '-', '_'), 'ext', '.m'), 'file'), 2);
 
   cleanUp(fullfile(pwd, 'group'));
 

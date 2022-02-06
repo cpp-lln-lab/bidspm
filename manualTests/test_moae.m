@@ -18,7 +18,8 @@ clc;
 WD = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'MoAE');
 cd(WD);
 
-run ../../initCppSpm.m;
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm('init');
 
 %% Set up
 optionsFilesList = {'options_task-auditory.json'; ...

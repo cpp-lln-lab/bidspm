@@ -3,26 +3,28 @@
 clear;
 clc;
 
-run ../../initCppSpm.m;
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm('init');
 
-opt = get_option_stats();
+%% Using default model
+% This part let CPP SPM create a default BIDS stats model
+% and we will compute the group results using this.
 
-% subject level Univariate
+% FYI: not ideal so you can also see in "get_option_stats"
+%      how to use a better one
+
+opt = get_option_stats('subject');
+
+%% Subject level Univariate
 bidsFFX('specifyAndEstimate', opt);
 bidsFFX('contrasts', opt);
 
-% group level univariate
-% bidsRFX('smoothContrasts', opt);
+bidsResults(opt);
 
-% Not implemented yet
-% bidsRFX(action, opt;
+%% Group level univariate
+bidsRFX('smoothContrasts', opt);
+bidsRFX('meananatandmask', opt);
 
-% Not implemented yet
-% subject level multivariate
-% opt.model.file = fullfile(pwd, ...
-%                          'models', ...
-%                          'model-motionDecodingMultivariate_smdl.json');
-%
-% bidsFFX('specifyAndEstimate', opt);
-% bidsFFX('contrasts', opt);
-% concatBetaImgTmaps(opt);
+opt = get_option_stats('dataset');
+bidsRFX('rfx', opt);
+bidsResults(opt);

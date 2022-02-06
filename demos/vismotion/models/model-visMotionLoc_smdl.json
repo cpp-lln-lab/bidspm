@@ -8,13 +8,34 @@
   "Nodes": [
     {
       "Level": "run",
+      "Name": "run_level",
       "Model": {
         "X": [
           "trial_type.VisMot",
           "trial_type.VisStat",
           "trans_?",
-          "rot_?"
-        ]
+          "rot_?",
+          "non_steady_state_outlier*",
+          "motion_outlier*"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Model": "DoubleGamma"
+        },
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": ""
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "HRFderivatives": "Temporal"
+          }
+        }
       }
     },
     {
@@ -24,13 +45,36 @@
           "trial_type.VisMot",
           "trial_type.VisStat",
           "trans_?",
-          "rot_?"
+          "rot_?",
+          "non_steady_state_outlier*",
+          "motion_outlier*"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Model": "DoubleGamma"
+        },
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": ""
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "HRFderivatives": "Temporal"
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.VisMot",
+          "trial_type.VisStat"
         ]
       },
-      "DummyContrasts": [
-        "trial_type.VisMot",
-        "trial_type.VisStat"
-      ],
       "Contrasts": [
         {
           "Name": "VisMot_gt_VisStat",
@@ -59,13 +103,26 @@
       ]
     },
     {
-      "Level": "dataset",
-      "DummyContrasts": [
-        "trial_type.VisMot",
-        "trial_type.VisStat",
-        "VisMot_gt_VisStat",
-        "VisStat_gt_VisMot"
-      ]
+      "Level": "Dataset",
+      "Name": "dataset_level",
+      "Model": {
+        "X": [
+          " "
+        ],
+        "Type": "glm",
+        "Options": {
+          "Mask": ""
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.VisMot",
+          "trial_type.VisStat",
+          "VisMot_gt_VisStat",
+          "VisStat_gt_VisMot"
+        ]
+      }
     }
   ]
 }

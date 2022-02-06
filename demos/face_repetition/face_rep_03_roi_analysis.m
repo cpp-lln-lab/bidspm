@@ -11,10 +11,8 @@ clear;
 close all;
 clc;
 
-try
-  run ../../initCppSpm.m;
-catch
-end
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm('init');
 
 opt = face_rep_get_option_results();
 
