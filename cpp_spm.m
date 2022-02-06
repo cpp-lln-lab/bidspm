@@ -261,6 +261,8 @@ function run_tests()
   tic;
 
   cpp_spm('init');
+  
+  cd(fileparts(mfilename('fullpath')));
 
   if isGithubCi
     fprintf(1, '\nThis is github CI\n');
@@ -289,8 +291,6 @@ function run_tests()
   else
     system('echo 1 > test_report.log');
   end
-
-  cpp_spm('uninit');
 
   toc;
 
