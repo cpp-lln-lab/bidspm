@@ -1,4 +1,4 @@
-function opt = get_option_stats()
+function opt = get_option_stats(level)
   %
   % returns options chosen to run statistical analysis
   %
@@ -7,7 +7,7 @@ function opt = get_option_stats()
   % (C) Copyright 2019 CPP_SPM developers
 
   if nargin < 1
-    opt = [];
+    level = 'subject';
   end
 
   % task to analyze
@@ -22,21 +22,42 @@ function opt = get_option_stats()
 
   opt.space = 'IXI549Space';
 
-  % don't specify a stats model will let cpp spm run and try to figure out a
-  % default model
-  % opt.model.file = '';
+  % don't specify a stats model will let cpp spm run
+  % and try to figure out a default model
+  %
+  % You can also uncomment the following lines to try a better model
+  %
+  %   opt.model.file = fullfile(pwd, ...
+  %                             'models', ...
+  %                             'model-visMotionLoc_smdl.json');
 
   % specify the result to compute
+
   % Contrasts.Name has to match one of the contrast defined in the model json file
-  opt.result.Nodes(1) = struct( ...
-                               'Level',  'dataset', ...
-                               'Contrasts', struct( ...
-                                                   'Name', 'VisMot_gt_VisStat', ... %
-                                                   'Mask', false, ...
-                                                   'MC', 'FWE', ... FWE, none, FDR
-                                                   'p', 0.05, ...
-                                                   'k', 0, ...
-                                                   'NIDM', true));
+  if strcmp(level, 'subject')
+    
+    opt.result.Nodes(1) = returnDefaultResultsStructure();
+    opt.result.Nodes(1).Level = 'subject';
+    opt.result.Nodes(1).Contrasts(1).Name = 'VisMot';
+    opt.result.Nodes(1).Contrasts(2) = opt.result.Nodes(1).Contrasts(1);
+    opt.result.Nodes(1).Contrasts(2).Name = 'VisStat';
+    opt.result.Nodes(1).Output.png = true();
+    opt.result.Nodes(1).Output.montage.do = true();
+    opt.result.Nodes(1).Output.montage.slices = -4:2:16;
+    opt.result.Nodes(1).Output.montage.orientation = 'axial';
+    opt.result.Nodes(1).Output.montage.background = ...
+        fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
+
+  elseif strcmp(level, 'dataset')
+    opt.result.Nodes(1) = struct('Level',  'dataset', ...
+                                 'Contrasts', struct( ...
+                                                     'Name', 'VisMot', ...
+                                                     'Mask', false, ...
+                                                     'MC', 'FWE', ...
+                                                     'p', 0.05, ...
+                                                     'k', 0, ...
+                                                     'NIDM', true));
+  end
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);
