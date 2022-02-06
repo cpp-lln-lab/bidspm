@@ -20,9 +20,11 @@ function notImplemented(varargin)
   defaultMsg = '';
   defaultVerbose = true;
 
+  logicalOrNumeric = @(x) islogical(x) || isnumeric(x);
+  
   addRequired(p, 'functionName', @ischar);
   addOptional(p, 'msg', defaultMsg, @ischar);
-  addOptional(p, 'verbose', defaultVerbose, @islogical);
+  addOptional(p, 'verbose', defaultVerbose, logicalOrNumeric);
 
   parse(p, varargin{:});
 

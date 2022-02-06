@@ -208,7 +208,7 @@ function fieldsToSet = setDefaultOption()
 
   % this defines the missing fields
 
-  fieldsToSet.verbosity = 1;
+  fieldsToSet.verbosity = 2;
   fieldsToSet.dryRun = false;
 
   %% defines what counts as BOLD, T1W...

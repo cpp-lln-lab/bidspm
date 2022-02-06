@@ -52,7 +52,7 @@ function errorHandling(varargin)
     error(errorStruct);
   end
 
-  if p.Results.verbose
+  if p.Results.verbose > 0
     warning(id, p.Results.msg);
   end
 

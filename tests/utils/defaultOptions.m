@@ -2,7 +2,7 @@ function expectedOptions = defaultOptions(taskName)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  expectedOptions.verbosity = 1;
+  expectedOptions.verbosity = 2;
   expectedOptions.dryRun = false;
 
   expectedOptions.bidsFilterFile = struct( ...

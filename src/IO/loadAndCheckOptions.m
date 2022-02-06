@@ -53,8 +53,8 @@ function opt = loadAndCheckOptions(optionJsonFile)
   if ischar(optionJsonFile) && size(optionJsonFile, 1) == 1
     if exist(optionJsonFile, 'file')
       msg = sprintf('\nReading option from: %s.\n', optionJsonFile);
-      printToScreen(msg);
       opt = spm_jsonread(optionJsonFile);
+      printToScreen(msg, opt);
     else
       msg = sprintf('the requested file does not exist: %s', optionJsonFile);
       errorHandling(mfilename(), 'missingOptionFile', msg, false, true);
