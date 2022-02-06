@@ -35,7 +35,7 @@ function opt = get_option_stats(level)
 
   % Contrasts.Name has to match one of the contrast defined in the model json file
   if strcmp(level, 'subject')
-    
+
     opt.result.Nodes(1) = returnDefaultResultsStructure();
     opt.result.Nodes(1).Level = 'subject';
     opt.result.Nodes(1).Contrasts(1).Name = 'VisMot';
