@@ -10,6 +10,8 @@ end
 
 function test_setBatchSubjectLevelResults_basic()
 
+  createDummyData();
+
   % IF
   contrast_name = 'VisMot';
   [subLabel, opt, result] = setUp('vismotion', contrast_name);

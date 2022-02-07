@@ -2,7 +2,7 @@
 MATLAB = /usr/local/MATLAB/R2017a/bin/matlab
 ARG    = -nodisplay -nosplash -nodesktop
 
-.PHONY: clean manual clean_demos
+.PHONY: clean manual clean_demos fix_submodule
 clean: clean_demos
 	rm -rf version.txt
 
@@ -12,6 +12,9 @@ clean_demos:
 	rm -rf demos/*/inputs
 	rm -rf demos/*/*.zip
 	rm -rf demos/*/*_report.md
+
+fix_submodule:
+	git submodule update --init --recursive && git submodule update --recursive
 
 lint:
 	mh_style --fix && mh_metric --ci && mh_lint

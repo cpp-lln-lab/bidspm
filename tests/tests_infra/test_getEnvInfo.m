@@ -11,7 +11,7 @@ end
 function test_getEnvInfo_basic()
 
   opt.dryRun = false;
-  opt.versbosity = false;
+  opt.verbosity = 0;
 
   [OS, generatedBy] = getEnvInfo(opt);
 

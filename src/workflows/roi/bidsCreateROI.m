@@ -68,7 +68,7 @@ function bidsCreateROI(opt)
       %% inverse normalize
       deformation_field = bids.query(BIDS, 'data', ...
                                      'sub', subLabel, 'suffix', 'xfm', ...
-                                     'to', opt.anatReference.type, 'extension', '.nii');
+                                     'to', opt.bidsFilterFile.t1w.suffix, 'extension', '.nii');
 
       if isempty(deformation_field)
         tolerant = true;
