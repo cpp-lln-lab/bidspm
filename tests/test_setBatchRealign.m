@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP_SPM developers
+
 function test_suite = test_setBatchRealign %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -14,30 +16,27 @@ function test_setBatchRealignBasic()
   % add test realign and unwarp
   % check it returns the right voxDim
 
-  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', ...
-                         'MoAE', 'output', 'MoAEpilot');
-  opt.taskName = 'auditory';
+  subLabel = '01';
 
-  opt = checkOptions(opt);
+  opt = setOptions('MoAE', subLabel);
+  [BIDS, opt] = getData(opt);
 
-  [~, opt, BIDS] = getData(opt);
+  matlabbatch = {};
+  matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
 
-  subID = '01';
-
-  matlabbatch = [];
-  matlabbatch = setBatchRealign(matlabbatch, BIDS, subID, opt);
-
-  expectedBatch{1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
-  expectedBatch{end}.spm.spatial.realign.estwrite.roptions.which = [0 1];
+  expectedBatch{1}.spm.spatial.realignunwarp.eoptions.weight = {''};
+  expectedBatch{end}.spm.spatial.realignunwarp.uwroptions.uwwhich = [2 1];
 
   runCounter = 1;
   for iSes = 1
-    fileName = spm_BIDS(BIDS, 'data', ...
-                        'sub', subID, ...
-                        'task', opt.taskName, ...
-                        'type', 'bold');
+    fileName = bids.query(BIDS, 'data', ...
+                          'sub', subLabel, ...
+                          'task', opt.taskName, ...
+                          'suffix', 'bold', ...
+                          'extension', '.nii');
 
-    expectedBatch{1}.spm.spatial.realign.estwrite.data{iSes} = cellstr(fileName);
+    expectedBatch{end}.spm.spatial.realignunwarp.data(1, iSes).pmscan = { '' };
+    expectedBatch{end}.spm.spatial.realignunwarp.data(1, iSes).scans = cellstr(fileName);
   end
 
   assertEqual(matlabbatch, expectedBatch);

@@ -23,23 +23,23 @@
 %  flipped_fn  -  filename of the L-R flipped NIfTI file
 %
 %  old_RGB (optional)  -  a scale number to tell difference of new RGB24
-%	from old RGB24. New RGB24 uses RGB triple sequentially for each
-%	voxel, like [R1 G1 B1 R2 G2 B2 ...]. Analyze 6.0 from AnalyzeDirect
-%	uses old RGB24, in a way like [R1 R2 ... G1 G2 ... B1 B2 ...] for
-%	each slices. If the image that you view is garbled, try to set 
-%	old_RGB variable to 1 and try again, because it could be in
-%	old RGB24. It will be set to 0, if it is default or empty.
+% from old RGB24. New RGB24 uses RGB triple sequentially for each
+% voxel, like [R1 G1 B1 R2 G2 B2 ...]. Analyze 6.0 from AnalyzeDirect
+% uses old RGB24, in a way like [R1 R2 ... G1 G2 ... B1 B2 ...] for
+% each slices. If the image that you view is garbled, try to set
+% old_RGB variable to 1 and try again, because it could be in
+% old RGB24. It will be set to 0, if it is default or empty.
 %
 %  tolerance (optional) - distortion allowed for non-orthogonal rotation
-%	or shearing in NIfTI affine matrix. It will be set to 0.1 (10%),
-%	if it is default or empty.
+% or shearing in NIfTI affine matrix. It will be set to 0.1 (10%),
+% if it is default or empty.
 %
 %  preferredForm (optional)  -  selects which transformation from voxels
-%	to RAS coordinates; values are s,q,S,Q.  Lower case s,q indicate
-%	"prefer sform or qform, but use others if preferred not present". 
-%	Upper case indicate the program is forced to use the specificied
-%	tranform or fail loading.  'preferredForm' will be 's', if it is
-%	default or empty.	- Jeff Gunter
+% to RAS coordinates; values are s,q,S,Q.  Lower case s,q indicate
+% "prefer sform or qform, but use others if preferred not present".
+% Upper case indicate the program is forced to use the specificied
+% tranform or fail loading.  'preferredForm' will be 's', if it is
+% default or empty. - Jeff Gunter
 %
 %  Example: flip_lr('avg152T1_LR_nifti.nii', 'flipped_lr.nii');
 %           flip_lr('avg152T1_RL_nifti.nii', 'flipped_rl.nii');
@@ -54,31 +54,30 @@
 %
 function flip_lr(original_fn, flipped_fn, old_RGB, tolerance, preferredForm)
 
-   if ~exist('original_fn','var') | ~exist('flipped_fn','var')
-      error('Usage: flip_lr(original_fn, flipped_fn, [old_RGB],[tolerance])');
-   end
+  if ~exist('original_fn', 'var') | ~exist('flipped_fn', 'var')
+    error('Usage: flip_lr(original_fn, flipped_fn, [old_RGB],[tolerance])');
+  end
 
-   if ~exist('old_RGB','var') | isempty(old_RGB)
-      old_RGB = 0;
-   end
+  if ~exist('old_RGB', 'var') | isempty(old_RGB)
+    old_RGB = 0;
+  end
 
-   if ~exist('tolerance','var') | isempty(tolerance)
-      tolerance = 0.1;
-   end
+  if ~exist('tolerance', 'var') | isempty(tolerance)
+    tolerance = 0.1;
+  end
 
-   if ~exist('preferredForm','var') | isempty(preferredForm)
-      preferredForm= 's';				% Jeff
-   end
+  if ~exist('preferredForm', 'var') | isempty(preferredForm)
+    preferredForm = 's';       % Jeff
+  end
 
-   nii = load_nii(original_fn, [], [], [], [], old_RGB, tolerance, preferredForm);
-   M = diag(nii.hdr.dime.pixdim(2:5));
-   M(1:3,4) = -M(1:3,1:3)*(nii.hdr.hist.originator(1:3)-1)';
-   M(1,:) = -1*M(1,:);
-   nii.hdr.hist.sform_code = 1;
-   nii.hdr.hist.srow_x = M(1,:);
-   nii.hdr.hist.srow_y = M(2,:);
-   nii.hdr.hist.srow_z = M(3,:);
-   save_nii(nii, flipped_fn);
+  nii = load_nii(original_fn, [], [], [], [], old_RGB, tolerance, preferredForm);
+  M = diag(nii.hdr.dime.pixdim(2:5));
+  M(1:3, 4) = -M(1:3, 1:3) * (nii.hdr.hist.originator(1:3) - 1)';
+  M(1, :) = -1 * M(1, :);
+  nii.hdr.hist.sform_code = 1;
+  nii.hdr.hist.srow_x = M(1, :);
+  nii.hdr.hist.srow_y = M(2, :);
+  nii.hdr.hist.srow_z = M(3, :);
+  save_nii(nii, flipped_fn);
 
-   return;					% flip_lr
-
+  return           % flip_lr

@@ -1,12 +1,11 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
-function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
+function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy, unZip)
   %
-  % This function will copy the subject's folders from the ``raw`` folder to the
+  % Copies the folders from the ``raw`` folder to the
   % ``derivatives`` folder, and will copy the dataset description and task json files
   % to the derivatives directory.
-  % Then it will search the derivatives directory for any zipped nii.gz image
-  % and uncompress it to .nii images.
+  %
+  % Then it will search the derivatives directory for any zipped ``*.gz`` image
+  % and uncompress the files for the task of interest.
   %
   % USAGE::
   %
@@ -14,15 +13,24 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   %                     [deleteZippedNii = true,] ...
   %                     [modalitiesToCopy = {'anat', 'func', 'fmap'}])
   %
-  % :param opt:
-  % :type opt: type
-  % :param deleteZippedNii:
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  % :param deleteZippedNii: will delete the original zipped ``.gz`` if set to ``true``
   % :type deleteZippedNii: boolean
-  % :param modalitiesToCopy:
+  % :param modalitiesToCopy: for example ``{'anat', 'func', 'fmap'}``
   % :type modalitiesToCopy: cell
+  % :param unZip:
+  % :type unZip: boolean
   %
+  % (C) Copyright 2019 CPP_SPM developers
 
   %% input variables default values
+
+  if nargin < 4 || isempty(unZip)
+    % Will only copy those modalities if they exist
+    unZip = true();
+  end
 
   if nargin < 3 || isempty(modalitiesToCopy)
     % Will only copy those modalities if they exist
@@ -40,110 +48,174 @@ function bidsCopyRawFolder(opt, deleteZippedNii, modalitiesToCopy)
   end
   opt = loadAndCheckOptions(opt);
 
+  cleanCrash();
+
+  printWorklowName('copy data');
+
   %% All tasks in this experiment
   % raw directory and derivatives directory
   opt = setDerivativesDir(opt);
-  rawDir = opt.dataDir;
-  derivativesDir = opt.derivativesDir;
 
-  createDerivativeDir(derivativesDir);
+  [rawDir, derivativesDir] = returnRawAndDerivativeDir(opt);
+
+  createDerivativeDir(opt);
 
   copyTsvJson(rawDir, derivativesDir);
 
   %% Loop through the groups, subjects, sessions
-  [group, opt, BIDS] = getData(opt, rawDir);
+  if ismember(modalitiesToCopy, 'func')
+    [BIDS, opt] = getData(opt, rawDir);
+  else
+    [BIDS, opt] = getData(opt, rawDir, 'T1w');
+  end
 
-  for iGroup = 1:length(group)
+  for iSub = 1:numel(opt.subjects)
 
-    for iSub = 1:group(iGroup).numSub
+    subLabel = opt.subjects{iSub};
 
-      subID = group(iGroup).subNumber{iSub};
+    subDir = returnSubjectDir(subLabel);
 
-      % the folder containing the subjects data
-      subDir = ['sub-', subID];
+    fprintf('copying subject: %s \n', subDir);
 
-      mkdir(fullfile(derivativesDir, subDir));
+    [~, ~, ~] =  mkdir(fullfile(derivativesDir, subDir));
 
-      [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+    % copy scans.tsv files
+    copyTsvJson( ...
+                fullfile(rawDir, subDir), ...
+                fullfile(derivativesDir, subDir));
 
-      %% copy the whole subject's folder
-      % use a call to system cp function to use the derefence option (-L)
-      % to get the data 'out' of an eventual datalad dataset
+    [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
-      for iSes = 1:nbSessions
+    %% copy the whole subject's folder
+    % use a call to system cp function to use the derefence option (-L)
+    % to get the data 'out' of an eventual datalad dataset
 
-        sessionDir = [];
-        if ~isempty(sessions{iSes})
-          sessionDir = ['ses-' sessions{iSes}];
-        end
+    for iSes = 1:nbSessions
 
-        mkdir(fullfile(derivativesDir, subDir, sessionDir));
+      sessionDir = returnSessionDir(sessions{iSes});
 
-        modalities = bids.query(BIDS, 'modalities', ...
-                                'sub', subID, ...
-                                'ses', sessions{iSes}, ...
-                                'task', opt.taskName);
-        modalities = intersect(modalities, modalitiesToCopy);
+      fprintf(' copying session: %s \n', sessionDir);
 
-        for iModality = 1:numel(modalities)
+      [~, ~, ~] =  mkdir(fullfile(derivativesDir, subDir, sessionDir));
 
-          mkdir(fullfile(derivativesDir, subDir, sessionDir, modalities{iModality}));
+      % copy scans.tsv files
+      copyTsvJson( ...
+                  fullfile(rawDir, subDir, sessionDir), ...
+                  fullfile(derivativesDir, subDir, sessionDir));
 
-          srcFolder = fullfile(rawDir, ...
-                               subDir, ...
-                               sessionDir, ...
-                               modalities{iModality});
-          targetFolder = fullfile(derivativesDir, ...
-                                  subDir, ...
-                                  sessionDir);
+      modalities = bids.query(BIDS, 'modalities', ...
+                              'sub', subLabel, ...
+                              'ses', sessions{iSes});
+      modalities = intersect(modalities, modalitiesToCopy);
 
-          copyModalityDir(srcFolder, targetFolder);
+      copyModalities(BIDS, opt, modalities, subLabel, sessions{iSes});
 
-        end
+    end
+  end
 
-        fprintf('folder copied: %s \n', subDir);
+  if unZip
+    unzipFiles(derivativesDir, deleteZippedNii, opt);
+  end
 
-      end
+end
+
+function [rawDir, derivativesDir] = returnRawAndDerivativeDir(opt)
+
+  rawDir = opt.dataDir;
+  derivativesDir = opt.derivativesDir;
+
+end
+
+function subDir = returnSubjectDir(subLabel)
+
+  subDir = ['sub-', subLabel];
+
+end
+
+function sessionDir = returnSessionDir(session)
+
+  sessionDir = [];
+  if ~isempty(session)
+    sessionDir = ['ses-' session];
+  end
+
+end
+
+function copyTsvJson(srcDir, targetDir)
+  % copy TSV and JSON file from raw folder
+
+  ext = {'tsv', 'json'};
+
+  for i = 1:numel(ext)
+
+    if ~isempty(spm_select('List', srcDir, ['^.*.' ext{i} '$']))
+
+      copyfile(fullfile(srcDir, ['*.' ext{i}]), targetDir);
+      fprintf(1, ' %s files copied\n', ext{i});
+
     end
 
   end
 
-  unzipFiles(derivativesDir, deleteZippedNii);
-
 end
 
-function  createDerivativeDir(derivativesDir)
-  % make derivatives folder if it doesnt exist
+function copyModalities(BIDS, opt, modalities, subLabel, session)
 
-  if ~exist(derivativesDir, 'dir')
-    mkdir(derivativesDir);
-    fprintf('derivatives directory created: %s \n', derivativesDir);
-  else
-    fprintf('derivatives directory already exists. \n');
+  [rawDir, derivativesDir] = returnRawAndDerivativeDir(opt);
+
+  subDir = returnSubjectDir(subLabel);
+
+  sessionDir = returnSessionDir(session);
+
+  for iModality = 1:numel(modalities)
+
+    targetFolder = fullfile(derivativesDir, ...
+                            subDir, ...
+                            sessionDir);
+
+    spm_mkdir(targetFolder, modalities{iModality});
+
+    srcFolder = fullfile(rawDir, ...
+                         subDir, ...
+                         sessionDir, ...
+                         modalities{iModality});
+
+    % for func we only copy the files of the task of interest
+    if strcmp(modalities{iModality}, 'func')
+
+      files = bids.query(BIDS, 'data', ...
+                         'sub', subLabel, ...
+                         'ses', session, ...
+                         'task', opt.taskName);
+
+      for iFile = 1:size(files, 1)
+        copyToDerivative(files{iFile}, fullfile(targetFolder, modalities{iModality}));
+        p = bids.internal.parse_filename(files{iFile});
+        sidecar = strrep(p.filename, p.ext, '.json');
+        if exist(fullfile(fileparts(files{iFile}), sidecar), 'file')
+          copyToDerivative(fullfile(fileparts(files{iFile}), sidecar), ...
+                           fullfile(targetFolder, modalities{iModality}));
+        end
+      end
+
+    else
+      copyToDerivative(srcFolder, targetFolder);
+
+    end
+
   end
 
 end
 
-function copyTsvJson(rawDir, derivativesDir)
-  % copy TSV and JSON file from raw folder
+function copyToDerivative(src, targetFolder)
 
-  copyfile(fullfile(rawDir, '*.json'), derivativesDir);
-  fprintf(' json files copied to derivatives directory \n');
-
-  try
-    copyfile(fullfile(rawDir, '*.tsv'), derivativesDir);
-    fprintf(' tsv files copied to derivatives directory \n');
-  catch
-  end
-
-end
-
-function copyModalityDir(srcFolder, targetFolder)
+  command = 'cp -R -L -f';
 
   try
     status = system( ...
-                    sprintf('cp -R -L -f %s %s', ...
-                            srcFolder, ...
+                    sprintf('%s %s %s', ...
+                            command, ...
+                            src, ...
                             targetFolder));
 
     if status > 0
@@ -158,25 +230,38 @@ function copyModalityDir(srcFolder, targetFolder)
 
   catch
     fprintf(1, 'Using octave/matlab to copy files.');
-    copyfile(srcFolder, targetFolder);
+    copyfile(src, targetFolder);
   end
 
 end
 
-function unzipFiles(derivativesDir, deleteZippedNii)
+function unzipFiles(derivativesDir, deleteZippedNii, opt)
   %% search for nifti files in a compressed nii.gz format
-  zippedNiifiles = spm_select('FPListRec', derivativesDir, '^.*.nii.gz$');
+
+  zippedNiifiles = spm_select('FPListRec', derivativesDir, '^.*.gz$');
 
   for iFile = 1:size(zippedNiifiles, 1)
 
     file = deblank(zippedNiifiles(iFile, :));
 
-    n = load_untouch_nii(file);  % load the nifti image
-    save_untouch_nii(n, file(1:end - 4)); % Save the functional data as unzipped nii
-    fprintf('unzipped: %s \n', file);
+    fragments = bids.internal.parse_filename(file);
 
-    if deleteZippedNii
-      delete(file);  % delete original zipped file
+    % for bold, physio and stim files, we only unzip the files of the task of
+    % interest
+    if any(strcmp(fragments.suffix, {'bold', 'stim'})) && ...
+            isfield(fragments.entities, 'task') && ...
+            strcmp(fragments.entities.task, opt.taskName) %#ok<PFBNS>
+
+      % load the nifti image and saves the functional data as unzipped nii
+      n = load_untouch_nii(file);
+      save_untouch_nii(n, file(1:end - 4));
+      fprintf('unzipped: %s \n', file);
+
+      % delete original zipped file
+      if deleteZippedNii
+        delete(file);
+      end
+
     end
 
   end

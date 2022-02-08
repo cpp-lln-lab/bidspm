@@ -1,5 +1,3 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
   %
   % Looks into the current directory for an ``spm_.*imgNb.png`` file and moves it into
@@ -11,18 +9,19 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
   %
   %   imgNb = copyGraphWindownOutput(opt, subID, [action = '',] [imgNb = 1])
   %
-  % :param opt: options
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
-  % :param subID:
+  % :param subID: Subject label (for example `'01'`).
   % :type subID: string
-  % :param action:
+  % :param action: Name to be given to the figure.
   % :type action: string
-  % :param imgNb: image number to look for. SPM increments them automatically.
-  % :type imgNb: integer
+  % :param imgNb: Image numbers to look for. SPM increments them automatically when
+  %               adding a new figure a folder.
+  % :type imgNb: vector of integer
   %
-  % :returns: - :imgNb: (integer) number of the next image to get.
+  % :returns: :imgNb: (integer) number of the next image to get.
   %
-  % assumes that no file was generated if SPM is running in command line mode
+  % (C) Copyright 2019 CPP_SPM developers
 
   if nargin < 4 || isempty(imgNb)
     imgNb = 1;
@@ -32,30 +31,57 @@ function imgNb = copyGraphWindownOutput(opt, subID, action, imgNb)
     action = '';
   end
 
-  if ~spm('CmdLine') && ~isOctave
+  figureDir = fullfile(opt.derivativesDir, strcat('sub-', subID), 'figures');
+  if ~exist(figureDir, 'dir')
+    mkdir(figureDir);
+  end
 
-    figureDir = fullfile(opt.derivativesDir, ['sub-' subID], 'figures');
-    if ~exist(figureDir, 'dir')
-      mkdir(figureDir);
-    end
+  for iFile = imgNb
 
-    file = spm_select('FPList', pwd, sprintf('^spm_.*%i.png$', imgNb));
+    % Using validationInputFile might be too agressive as it throws an error if
+    % it can't find a file. Let's use a work around and stick to warnings for now
 
-    if ~isempty(file)
+    %     file = validationInputFile(pwd, sprintf('spm_.*%i.png', iFile));
+    file = spm_select('FPList', pwd, sprintf('^spm_.*%i.png$', iFile));
 
-      targetFile = [datestr(now, 'yyyymmddHHMM') ...
-                    '_sub-', subID, ...
-                    '_task-',   opt.taskName, ...
-                    '_' action '.png'];
+    if isempty(file)
+
+      warning( ...
+              'copyGraphWindownOutput:noFile', ...
+              'No figure file to copy');
+
+    elseif size(file, 1) > 1
+
+      warning( ...
+              'copyGraphWindownOutput:tooManyFiles', ...
+              sprintf('\n %s\n %s\n %s', ...
+                      'Too many figure files to copy.', ...
+                      'Not sure what to do.', ...
+                      'Will skip this step.'));
+      disp(file);
+
+    else
+
+      targetFile = sprintf( ...
+                           '%s_%i_sub-%s_task-%s_%s.png', ...
+                           datestr(now, 'yyyymmddHHMM'), ...
+                           iFile, ...
+                           subID, ...
+                           opt.taskName, ...
+                           action);
 
       movefile( ...
                file, ...
                fullfile(figureDir, targetFile));
 
-      imgNb = imgNb + 1;
+      fprintf(1, '\n%s\nwas moved to\n%s\n', ...
+              file, ...
+              fullfile(figureDir, targetFile));
 
     end
 
   end
+
+  imgNb = imgNb(end) + 1;
 
 end

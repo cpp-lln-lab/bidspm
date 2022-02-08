@@ -1,6 +1,23 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchNormalize(matlabbatch, deformField, voxDim, imgToResample)
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   matlabbatch = setBatchNormalize(matlabbatch [, deformField] [, voxDim] [, imgToResample])
+  %
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  % :param deformField:
+  % :type deformField:
+  % :param voxDim:
+  % :param voxDim:
+  % :param imgToResample:
+  % :param imgToResample:
+  %
+  % :returns: - :matlabbatch: (structure)
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
   if nargin > 1 && ~isempty(deformField)
     matlabbatch{end + 1}.spm.spatial.normalise.write.subj.def(1) = deformField;

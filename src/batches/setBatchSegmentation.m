@@ -1,27 +1,58 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
+  %
+  % Creates a batch to segment the anatomical image
+  %
+  % USAGE::
+  %
+  %   matlabbatch = setBatchSegmentation(matlabbatch, opt)
+  %
+  % :param matlabbatch: list of SPM batches
+  % :type matlabbatch: structure
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
+  % :returns: :matlabbatch: (structure)
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
-function matlabbatch = setBatchSegmentation(matlabbatch, opt)
-
-  fprintf(1, ' BUILDING SPATIAL JOB : SEGMENT ANATOMICAL\n');
+  printBatchName('Segmentation anatomical image');
 
   % define SPM folder
   spmLocation = spm('dir');
 
-  % SAVE BIAS CORRECTED IMAGE
-  matlabbatch{end + 1}.spm.spatial.preproc.channel.vols(1) = ...
-      cfg_dep('Named File Selector: Anatomical(1) - Files', ...
-              substruct( ...
-                        '.', 'val', '{}', {opt.orderBatches.selectAnat}, ...
-                        '.', 'val', '{}', {1}, ...
-                        '.', 'val', '{}', {1}, ...
-                        '.', 'val', '{}', {1}), ...
-              substruct('.', 'files', '{}', {1}));
+  % save bias correction field = false
+  % save bias corrected image = true
+  matlabbatch{end + 1}.spm.spatial.preproc.channel.write = [false true];
+
+  if isfield(opt, 'orderBatches') && isfield(opt.orderBatches, 'selectAnat')
+
+    % SAVE BIAS CORRECTED IMAGE
+    matlabbatch{end}.spm.spatial.preproc.channel.vols(1) = ...
+        cfg_dep('Named File Selector: Anatomical(1) - Files', ...
+                substruct( ...
+                          '.', 'val', '{}', {opt.orderBatches.selectAnat}, ...
+                          '.', 'val', '{}', {1}, ...
+                          '.', 'val', '{}', {1}, ...
+                          '.', 'val', '{}', {1}), ...
+                substruct('.', 'files', '{}', {1}));
+  else
+
+    % in case a cell was given as input
+    if iscell(imageToSegment)
+      imageToSegment = char(imageToSegment);
+    end
+
+    % add all the images to segment
+    for iImg = 1:size(imageToSegment, 1)
+      file = validationInputFile([], deblank(imageToSegment(iImg, :)));
+      matlabbatch{end}.spm.spatial.preproc.channel.vols{iImg, 1} = file;
+    end
+
+  end
 
   matlabbatch{end}.spm.spatial.preproc.channel.biasreg = 0.001;
   matlabbatch{end}.spm.spatial.preproc.channel.biasfwhm = 60;
-  % save bias correction field = false
-  % save bias corrected image = true
-  matlabbatch{end}.spm.spatial.preproc.channel.write = [false true];
 
   % CREATE SEGMENTS IN NATIVE SPACE OF GM,WM AND CSF
   matlabbatch{end}.spm.spatial.preproc.tissue(1).tpm = ...

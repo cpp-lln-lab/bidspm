@@ -1,5 +1,3 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   %
   % returns the voxel displacement map associated with a given bold file
@@ -10,41 +8,44 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   %
   % :param BIDS:
   % :type BIDS: structure
-  % :param opt: options
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   % :param boldFilename:
   % :type opt: string
   %
   % :returns: - :vdmFile: (string)
   %
+  % (C) Copyright 2020 CPP_SPM developers
 
   vdmFile = '';
 
   fragments = bids.internal.parse_filename(boldFilename);
 
-  if ~isfield(fragments, 'ses')
-    fragments.ses = '';
+  entities = fragments.entities;
+
+  if ~isfield(entities, 'ses')
+    entities.ses = '';
   end
 
-  modalities = spm_BIDS(BIDS, 'modalities', ...
-                        'sub', fragments.sub, ...
-                        'ses', fragments.ses);
+  modalities = bids.query(BIDS, 'modalities', ...
+                          'sub', entities.sub, ...
+                          'ses', entities.ses);
 
-  if ~opt.ignoreFieldmaps && any(ismember('fmap', modalities))
+  if opt.useFieldmaps && any(ismember('fmap', modalities))
     % We loop through the field maps and find the one that is intended for this
     % bold file by reading from the metadata
     %
     % We break the loop when the file has been found
 
-    fmapFiles = spm_BIDS(BIDS, 'data', ...
-                         'modality', 'fmap', ...
-                         'sub', fragments.sub, ...
-                         'ses', fragments.ses);
+    fmapFiles = bids.query(BIDS, 'data', ...
+                           'modality', 'fmap', ...
+                           'sub', entities.sub, ...
+                           'ses', entities.ses);
 
-    fmapMetadata = spm_BIDS(BIDS, 'metadata', ...
-                            'modality', 'fmap', ...
-                            'sub', fragments.sub, ...
-                            'ses', fragments.ses);
+    fmapMetadata = bids.query(BIDS, 'metadata', ...
+                              'modality', 'fmap', ...
+                              'sub', entities.sub, ...
+                              'ses', entities.ses);
 
     for  iFile = 1:size(fmapFiles, 1)
 

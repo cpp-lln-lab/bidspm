@@ -1,6 +1,19 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function createDataDictionary(subFuncDataDir, fileName, nbColums)
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   [createDataDictionary(subFuncDataDir, fileName, nbColums)
+  %
+  % :param subFuncDataDir: Full path of the directory where the functional file is.
+  % :type subFuncDataDir: type
+  % :param fileName: Name of the boldfile.
+  % :type fileName: string
+  % :param nbColums: Number of extra columns to add as censoring regressors.
+  % :type nbColums: integer
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   namecColumns = { ...
                   'trans_x', ...

@@ -49,7 +49,8 @@
         "review",
         "doc",
         "test",
-        "bug"
+        "bug",
+        "userTesting"
       ]
     },
     {
@@ -73,7 +74,8 @@
       "avatar_url": "https://avatars2.githubusercontent.com/u/50373329?v=4",
       "profile": "https://github.com/fedefalag",
       "contributions": [
-        "bug"
+        "bug",
+        "userTesting"
       ]
     },
     {
@@ -86,7 +88,43 @@
         "content",
         "doc",
         "code",
-        "review"
+        "review",
+        "userTesting"
+      ]
+    },
+    {
+      "login": "mwmaclean",
+      "name": "Michèle MacLean",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54547865?v=4",
+      "profile": "https://github.com/mwmaclean",
+      "contributions": [
+        "code",
+        "ideas",
+        "userTesting"
+      ]
+    },
+    {
+      "login": "fcerpe",
+      "name": "Filippo Cerpelloni",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73432853?v=4",
+      "profile": "https://github.com/fcerpe",
+      "contributions": [
+        "bug",
+        "test",
+        "userTesting"
+      ]
+    },
+    {
+      "login": "iqrashahzad14",
+      "name": "Iqra Shahzad",
+      "avatar_url": "https://avatars.githubusercontent.com/u/75671348?v=4",
+      "profile": "https://github.com/iqrashahzad14",
+      "contributions": [
+        "bug",
+        "doc",
+        "question",
+        "review",
+        "userTesting"
       ]
     }
   ],

@@ -1,51 +1,58 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsCreateVDM(opt)
-  % bidsCreateVDM(opt)
   %
-  % inspired from spmup spmup_BIDS_preprocess (@ commit
-  % 198c980d6d7520b1a996f0e56269e2ceab72cc83)
+  % Creates the voxel displacement maps from the fieldmaps of a BIDS
+  % dataset.
+  %
+  % USAGE::
+  %
+  %   bidsCreateVDM([opt])
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
+  % .. TODO:
+  %
+  %    - take care of all types of fieldmaps
+  %
+  % Inspired from spmup ``spmup_BIDS_preprocess`` (@ commit 198c980d6d7520b1a99)
+  % (URL missing)
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
-  if nargin < 1
-    opt = [];
-  end
-  opt = loadAndCheckOptions(opt);
+  [BIDS, opt] = setUpWorkflow(opt, 'create voxel displacement map');
 
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
+  for iSub = 1:numel(opt.subjects)
 
-  fprintf(1, ' FIELDMAP WORKFLOW\n');
+    subLabel = opt.subjects{iSub};
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+    % TODO Move to getInfo
+    suffixes = bids.query(BIDS, 'suffixes', 'sub', subLabel);
 
-    groupName = group(iGroup).name;
+    if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
 
-    for iSub = 1:group(iGroup).numSub
+      printProcessingSubject(iSub, subLabel);
 
-      subID = group(iGroup).subNumber{iSub};
+      % Create rough mean of the 1rst run to improve SNR for coregistration
+      % TODO use the slice timed EPI if STC was used ?
+      sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+      runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});
+      [fileName, subFuncDataDir] = getBoldFilename(BIDS, subLabel, sessions{1}, runs{1}, opt);
+      spmup_basics(fullfile(subFuncDataDir, fileName), 'mean');
 
-      % TODO Move to getInfo
-      types = spm_BIDS(BIDS, 'types', 'sub', subID);
+      matlabbatch = {};
+      matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLabel);
+      saveAndRunWorkflow(matlabbatch, 'coregister_fmap', opt, subLabel);
 
-      if any(ismember(types, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
+      matlabbatch = {};
+      matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel);
+      saveAndRunWorkflow(matlabbatch, 'create_vdm', opt, subLabel);
 
-        printProcessingSubject(groupName, iSub, subID);
-
-        matlabbatch = setBatchCoregistrationFmap(BIDS, opt, subID);
-        saveMatlabBatch(matlabbatch, 'coregister_fmap', opt, subID);
-        spm_jobman('run', matlabbatch);
-
-        matlabbatch = setBatchCreateVDMs(BIDS, opt, subID);
-        saveMatlabBatch(matlabbatch, 'create_vdm', opt, subID);
-        spm_jobman('run', matlabbatch);
-
-        % TODO
-        % delete temporary mean images ??
-
-      end
+      % TODO
+      % delete temporary mean images ??
 
     end
 
   end
+
 end

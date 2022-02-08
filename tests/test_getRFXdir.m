@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP_SPM developers
+
 function test_suite = test_getRFXdir %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -11,24 +13,38 @@ function test_getRFXdirBasic()
   funcFWHM = 0;
   conFWHM = 0;
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'funcLocalizer';
+  opt = setOptions('vislocalizer');
 
-  opt = setDerivativesDir(opt);
-
-  contrastName = 'stim_gt_baseline';
-
-  rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
+  rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
 
   expectedOutput = fullfile( ...
                             fileparts(mfilename('fullpath')), ...
                             'dummyData', ...
                             'derivatives', ...
-                            'SPM12_CPPL', ...
+                            'cpp_spm-stats', ...
                             'group', ...
-                            'rfx_task-funcLocalizer', ...
-                            'rfx_funcFWHM-0_conFWHM-0', ...
-                            'stim_gt_baseline');
+                            'task-vislocalizer_space-MNI_FWHM-0_conFWHM-0');
+
+  assertEqual(exist(expectedOutput, 'dir'), 7);
+
+end
+
+function test_getFFXdirUserSpecified()
+
+  conFWHM = 0;
+  funcFWHM = 6;
+
+  opt = setOptions('nback');
+
+  rfxDir = getRFXdir(opt, funcFWHM, conFWHM);
+
+  expectedOutput = fullfile( ...
+                            fileparts(mfilename('fullpath')), ...
+                            'dummyData', ...
+                            'derivatives', ...
+                            'cpp_spm-stats', ...
+                            'group', ...
+                            'task-nback_space-MNI_FWHM-6_conFWHM-0_desc-nbackMVPA');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 

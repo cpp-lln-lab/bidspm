@@ -1,9 +1,0 @@
-{
-    "Modality": "MR",
-    "RepetitionTime": 2.3,
-    "PhaseEncodingDirection": "j-",
-    "EchoTime": 0.00226,
-    "InversionTime": 0.9,
-    "SliceThickness": 1,
-    "FlipAngle": 8
-}

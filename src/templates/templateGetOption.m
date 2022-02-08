@@ -1,8 +1,9 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function opt = templateGetOption()
+  %
   % returns a structure that contains the options chosen by the user to return
   % the different workflows
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 1
     opt = [];

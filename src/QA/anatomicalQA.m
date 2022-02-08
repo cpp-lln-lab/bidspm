@@ -1,7 +1,20 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function anatomicalQA(opt)
-  % anatomicalQA(opt)
+  %
+  % Computes several metrics for anatomical image.
+  %
+  % USAGE::
+  %
+  %   anatomicalQA(opt)
+  %
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  %
+  % (C) Copyright 2020 CPP_SPM developers
+
+  if isOctave()
+    warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.');
+    return
+  end
 
   % if input has no opt, load the opt.mat file
   if nargin < 1
@@ -9,43 +22,37 @@ function anatomicalQA(opt)
   end
   opt = loadAndCheckOptions(opt);
 
-  [group, opt, BIDS] = getData(opt);
+  [BIDS, opt] = getData(opt);
 
   fprintf(1, ' ANATOMICAL: QUALITY CONTROL\n\n');
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+  for iSub = 1:numel(opt.subjects)
 
-    groupName = group(iGroup).name;
+    subLabel = opt.subjects{iSub}; %#ok<*PFBNS>
 
-    for iSub = 1:group(iGroup).numSub
+    printProcessingSubject(iSub, subLabel);
 
-      subID = group(iGroup).subNumber{iSub};
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
 
-      printProcessingSubject(groupName, iSub, subID);
+    % get grey and white matter tissue probability maps
+    TPMs = validationInputFile(anatDataDir, anatImage, 'c[12]');
 
-      [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt);
+    % sanity check that all images are in the same space.
+    anatImage = fullfile(anatDataDir, anatImage);
+    volumesToCheck = {anatImage; TPMs(1, :); TPMs(2, :)};
+    spm_check_orientations(spm_vol(char(volumesToCheck)));
 
-      % get grey and white matter tissue probability maps
-      TPMs = validationInputFile(anatDataDir, anatImage, 'c[12]');
+    % Basic QA for anatomical data is to get SNR, CNR, FBER and Entropy
+    % This is useful to check coregistration worked fine
+    anatQA = spmup_anatQA(anatImage, TPMs(1, :), TPMs(2, :)); %#ok<*NASGU>
 
-      % sanity check that all images are in the same space.
-      anatImage = fullfile(anatDataDir, anatImage);
-      volumesToCheck = {anatImage; TPMs(1, :); TPMs(2, :)};
-      spm_check_orientations(spm_vol(char(volumesToCheck)));
+    anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
 
-      % Basic QA for anatomical data is to get SNR, CNR, FBER and Entropy
-      % This is useful to check coregistration worked fine
-      anatQA = spmup_anatQA(anatImage, TPMs(1, :), TPMs(2, :)); %#ok<*NASGU>
+    spm_jsonwrite( ...
+                  strrep(anatImage, '.nii', '_qa.json'), ...
+                  anatQA, ...
+                  struct('indent', '   '));
 
-      anatQA.avgDistToSurf = spmup_comp_dist2surf(fullfile(anatDataDir, anatImage));
-
-      spm_jsonwrite( ...
-                    strrep(anatImage, '.nii', '_qa.json'), ...
-                    anatQA, ...
-                    struct('indent', '   '));
-
-    end
   end
 
 end

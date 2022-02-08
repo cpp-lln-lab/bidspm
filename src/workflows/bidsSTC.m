@@ -1,62 +1,47 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function bidsSTC(opt)
-  % Performs SLICE TIMING CORRECTION of the functional data. The
-  % script for each subject and can handle multiple sessions and multiple
-  % runs.
   %
-  % Slice timing units is in milliseconds to be BIDS compliant and not in slice number
-  % as is more traditionally the case with SPM.
+  % Performs the slie timing correction of the functional data.
   %
-  % In the case the slice timing information was not specified in the json FILES
-  % in the BIDS data set (e.g it couldnt be extracted from the trento old scanner),
-  % then add this information manually in opt.sliceOrder field.
+  % USAGE::
   %
-  % If this is empty the slice timing correction will not be performed
+  %  bidsSTC([opt])
   %
-  % If not specified this function will take the mid-volume time point as reference
-  % to do the slice timing correction
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
   %
-  % See README.md for more information about slice timing correction
+  % STC will be performed using the information provided in the BIDS data set. It
+  % will use the mid-volume acquisition time point as as reference.
   %
-  % INPUT:
-  % opt - options structure defined by the getOption function. If no inout is given
-  % this function will attempt to load a opt.mat file in the same directory
-  % to try to get some options
+  % The fields of the ``opt`` structure related to STC can still be used to do some slice
+  % timing correction even if no information can be found in the BIDS data set.
+  %
+  % In general slice order and reference slice is entered in time unit (ms) (this is
+  % the BIDS way of doing things) instead of the slice index of the reference slice
+  % (the "SPM" way of doing things).
+  %
+  % If no slice timing information is available from the file metadata or from
+  % the ``opt`` strcuture this step will be skipped.
+  %
+  % See also ``getSliceOrder()``.
+  %
+  % See the documentation for more information about slice timing correction.
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
-  % if input has no opt, load the opt.mat file
-  if nargin < 1
-    opt = [];
-  end
-  opt = loadAndCheckOptions(opt);
+  [BIDS, opt] = setUpWorkflow(opt, 'slice timing correction');
 
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
+  for iSub = 1:numel(opt.subjects)
 
-  fprintf(1, 'DOING SLICE TIME CORRECTION\n');
+    subLabel = opt.subjects{iSub};
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+    printProcessingSubject(iSub, subLabel);
 
-    groupName = group(iGroup).name;
+    matlabbatch = {};
+    matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
-    for iSub = 1:group(iGroup).numSub
+    saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
 
-      % Get the ID of the subject
-      % (i.e SubNumber doesnt have to match the iSub if one subject is exluded)
-      subID = group(iGroup).subNumber{iSub};
-
-      printProcessingSubject(groupName, iSub, subID);
-
-      matlabbatch = setBatchSTC(BIDS, opt, subID);
-
-      if ~isempty(matlabbatch)
-        saveMatlabBatch(matlabbatch, 'STC', opt, subID);
-
-        spm_jobman('run', matlabbatch);
-      end
-
-    end
   end
 
 end

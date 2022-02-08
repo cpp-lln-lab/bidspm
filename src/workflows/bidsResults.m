@@ -1,173 +1,160 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function bidsResults(opt, funcFWHM, conFWHM)
-  % This scripts computes the results for a series of contrast that can be
-  % specified at the run, subject or dataset step level (see contrast specification
-  % following the BIDS stats model specification)
   %
-  % funcFWHM is the number of the mm smoothing used on the normalized functional files.
-  % for unsmoothied data  FFXSmoothing = 0
+  % Computes the results for a series of contrast that can be
+  % specified at the run, subject or dataset step level (see contrast specification
+  % following the BIDS stats model specification).
+  %
+  % USAGE::
+  %
+  %  bidsResults([opt], funcFWHM, conFWHM)
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  % :param funcFWHM: How much smoothing was applied to the functional
+  %                  data in the preprocessing (Gaussian kernel size).
+  % :type funcFWHM: scalar
+  % :param conFWHM: How much smoothing will be applied to the contrast
+  %                 images (Gaussian kernel size).
+  % :type conFWHM: scalar
+  %
+  %
+  % TODO
+  %
+  %     move ps file
+  %     rename NIDM file
+  %     if it does not exist create the default "result" field from the BIDS model file
+  %
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
-  % if input has no opt, load the opt.mat file
-  if nargin < 1
-    opt = [];
+  currentDirectory = pwd;
+
+  [BIDS, opt] = setUpWorkflow(opt, 'computing GLM results');
+
+  if isempty(opt.model.file)
+    opt = createDefaultModel(BIDS, opt);
   end
-  opt = loadAndCheckOptions(opt);
-
-  % load the subjects/Groups information and the task name
-  [group, opt] = getData(opt);
-
-  matlabbatch = [];
 
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
   for iStep = 1:length(opt.result.Steps)
 
-    for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
+    % Depending on the level step we migh have to define a matlabbatch
+    % for each subject or just on for the whole group
+    switch opt.result.Steps(iStep).Level
 
-      % Depending on the level step we migh have to define a matlabbatch
-      % for each subject or just on for the whole group
-      switch opt.result.Steps(iStep).Level
+      case 'run'
+        warning('run level not implemented yet');
 
-        case 'run'
-          warning('run level not implemented yet');
+        % TODO check what happens for models with a run level specified but no
+        %      subject level
 
-          % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
+        % matlabbatch = {};
+        % saveMatlabBatch(matlabbatch, 'computeFfxResults', opt, subID);
 
-        case 'subject'
+      case 'subject'
 
-          matlabbatch = ...
-              setBatchSubjectLevelResults( ...
-                                          matlabbatch, ...
-                                          group, ...
-                                          funcFWHM, ...
-                                          opt, ...
-                                          iStep, ...
-                                          iCon);
+        % For each subject
+        for iSub = 1:numel(opt.subjects)
 
-          % TODO
-          % Save this batch in for each subject and not once for all
+          matlabbatch = {};
 
-          saveMatlabBatch(matlabbatch, 'compute_ffx_results', opt);
+          subLabel = opt.subjects{iSub};
 
-        case 'dataset'
+          results.dir = getFFXdir(subLabel, funcFWHM, opt);
 
-          rfxDir = getRFXdir(opt, funcFWHM, conFWHM, contrastName);
+          for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
 
-          load(fullfile(rfxDir, 'SPM.mat'));
+            matlabbatch = ...
+                setBatchSubjectLevelResults( ...
+                                            matlabbatch, ...
+                                            opt, ...
+                                            subLabel, ...
+                                            funcFWHM, ...
+                                            iStep, ...
+                                            iCon);
 
-          results.dir = rfxDir;
-          results.contrastNb = 1;
-          results.label = 'group level';
-          results.nbSubj = SPM.nscan;
+          end
 
-          matlabbatch = resultsMatlabbatch( ...
-                                           matlabbatch, opt, iStep, iCon, results);
+          batchName = sprintf('compute_sub-%s_results', subLabel);
 
-          saveMatlabBatch(matlabbatch, 'compute_rfx_results', opt);
+          saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-      end
+          renameOutputResults(results);
+
+          renamePng(results);
+
+        end
+
+      case 'dataset'
+
+        matlabbatch = {};
+
+        results.dir = getRFXdir(opt, funcFWHM, conFWHM);
+        results.contrastNb = 1;
+        results.label = 'group';
+
+        load(fullfile(results.dir, 'SPM.mat'));
+        results.nbSubj = SPM.nscan;
+
+        for iCon = 1:length(opt.result.Steps(iStep).Contrasts)
+
+          matlabbatch = setBatchResults(matlabbatch, opt, iStep, iCon, results);
+
+        end
+
+        batchName = 'compute_group_level_results';
+
+        saveAndRunWorkflow(matlabbatch, batchName, opt);
+
+      otherwise
+
+        error('This BIDS model does not contain an analysis step I understand.');
+
     end
 
   end
 
-  if ~isempty(matlabbatch)
+  cd(currentDirectory);
 
-    spm_jobman('run', matlabbatch);
+end
 
-    % move ps file
-    % TODO
+function renameOutputResults(results)
+  % we create new name for the nifti oupput by removing the
+  % spmT_XXXX prefix and using the XXXX as label- for the file
 
-    % rename NIDM file
-    % TODO
+  outputFiles = spm_select('FPList', results.dir, '^spmT_[0-9].*_sub-.*.nii$');
+
+  for iFile = 1:size(outputFiles, 1)
+
+    source = deblank(outputFiles(iFile, :));
+
+    basename = spm_file(source, 'basename');
+    split = strfind(basename, '_sub');
+    p = bids.internal.parse_filename(basename(split + 1:end));
+    p.label = basename(split - 4:split - 1);
+    p.use_schema = false;
+    newName = bids.create_filename(p);
+
+    target = spm_file(source, 'basename', newName);
+
+    movefile(source, target);
   end
 
 end
 
-function batch = resultsMatlabbatch(batch, opt, iStep, iCon, results)
-  % outputs the typical matlabbatch to compute the results for a given
-  % contrast
+function renamePng(results)
+  %
+  % removes the _XXX suffix before the PNG extension.
 
-  batch{end + 1}.spm.stats.results.spmmat = {fullfile(results.dir, 'SPM.mat')};
+  pngFiles = spm_select('FPList', results.dir, '^sub-.*[0-9].png$');
 
-  batch{end}.spm.stats.results.conspec.titlestr = ...
-      opt.result.Steps(iStep).Contrasts(iCon).Name;
-
-  batch{end}.spm.stats.results.conspec.contrasts = results.contrastNb;
-
-  batch{end}.spm.stats.results.conspec.threshdesc = ...
-      opt.result.Steps(iStep).Contrasts(iCon).MC;
-
-  batch{end}.spm.stats.results.conspec.thresh = opt.result.Steps(iStep).Contrasts(iCon).p;
-
-  batch{end}.spm.stats.results.conspec.extent = opt.result.Steps(iStep).Contrasts(iCon).k;
-
-  batch{end}.spm.stats.results.conspec.conjunction = 1;
-
-  batch{end}.spm.stats.results.conspec.mask.none = ...
-      ~opt.result.Steps(iStep).Contrasts(iCon).Mask;
-
-  batch{end}.spm.stats.results.units = 1;
-
-  batch{end}.spm.stats.results.export{1}.ps = true;
-
-  if opt.result.Steps(1).Contrasts(iCon).NIDM
-
-    batch{end}.spm.stats.results.export{2}.nidm.modality = 'FMRI';
-
-    batch{end}.spm.stats.results.export{2}.nidm.refspace = 'ixi';
-    if strcmp(opt.space, 'T1w')
-      batch{end}.spm.stats.results.export{2}.nidm.refspace = 'subject';
-    end
-
-    batch{end}.spm.stats.results.export{2}.nidm.group.nsubj = results.nbSubj;
-
-    batch{end}.spm.stats.results.export{2}.nidm.group.label = results.label;
-
-  end
-
-end
-
-function batch = setBatchSubjectLevelResults(varargin)
-
-  [batch, grp, funcFWHM, opt, iStep, iCon] = deal(varargin{:});
-
-  for iGroup = 1:length(grp)
-
-    % For each subject
-    for iSub = 1:grp(iGroup).numSub
-
-      % Get the Subject ID
-      subID = grp(iGroup).subNumber{iSub};
-
-      % FFX Directory
-      ffxDir = getFFXdir(subID, funcFWHM, opt);
-
-      load(fullfile(ffxDir, 'SPM.mat'));
-
-      % identify which contrast nb actually has the name the user asked
-      conNb = find( ...
-                   strcmp({SPM.xCon.name}', ...
-                          opt.result.Steps(iStep).Contrasts(iCon).Name));
-
-      if isempty(conNb)
-        sprintf('List of contrast in this SPM file');
-        disp({SPM.xCon.name}');
-        error( ...
-              'This SPM file %s does not contain a contrast named %s', ...
-              fullfile(ffxDir, 'SPM.mat'), ...
-              opt.result.Steps(1).Contrasts(iCon).Name);
-      end
-
-      results.dir = ffxDir;
-      results.contrastNb = conNb;
-      results.label = subID;
-      results.nbSubj = 1;
-
-      batch = resultsMatlabbatch( ...
-                                 batch, opt, iStep, iCon, results);
-
-    end
+  for iFile = 1:size(pngFiles, 1)
+    source = deblank(pngFiles(iFile, :));
+    basename = spm_file(source, 'basename');
+    target = spm_file(source, 'basename', basename(1:end - 4));
+    movefile(source, target);
   end
 
 end

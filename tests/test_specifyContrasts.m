@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP_SPM developers
+
 function test_suite = test_specifyContrasts %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -6,32 +8,145 @@ function test_suite = test_specifyContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_specifyContrastsBasic()
-  % Small test to ensure that pmCon returns what we asked for
+function test_specifyContrastsComplex()
+  %
+  % to test the generation of contrasts when there are several runs
+  %
 
-  opt.derivativesDir = fullfile(fileparts(mfilename('fullpath')), 'dummyData');
-  opt.taskName = 'visMotion';
-  opt.model.file = ...
-      fullfile(fileparts(mfilename('fullpath')), ...
-               'dummyData', 'models', 'model-visMotionLoc_smdl.json');
+  taskName = 'motion';
 
-  opt = setDerivativesDir(opt);
+  % GIVEN
+  AutoContrasts{1} = 'motion';
+  AutoContrasts{2} = 'static';
 
-  ffxDir = fullfile(opt.derivativesDir, 'sub-01', 'stats', 'ffx_visMotion', ...
-                    'ffx_space-MNI_FWHM-6');
+  Contrasts.Name = 'motion_gt_static';
+  Contrasts.ConditionList = {'motion', 'static'};
+  Contrasts.weights = [1, -1];
 
-  contrasts = specifyContrasts(ffxDir, opt.taskName, opt);
+  model = returnEmptyModel;
+  model.Input.task = taskName;
+  model.Steps{1}.AutoContrasts = AutoContrasts;
+  model.Steps{1}.Contrasts = Contrasts;
+  model.Steps{2}.AutoContrasts = AutoContrasts;
+  model.Steps{2}.Contrasts = Contrasts;
 
-  assert(strcmp(contrasts(1).name, 'VisMot'));
-  assert(isequal(contrasts(1).C, [1 0 0 0 0 0 0 0 0]));
+  SPM.xX.name = { ...
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                };
 
-  assert(strcmp(contrasts(2).name, 'VisStat'));
-  assert(isequal(contrasts(2).C, [0 1 0 0 0 0 0 0 0]));
+  SPM.xX.X = ones(1, numel(SPM.xX.name));
 
-  assert(strcmp(contrasts(3).name, 'VisMot_gt_VisStat'));
-  assert(isequal(contrasts(3).C, [1 -1 0 0 0 0 0 0 0]));
+  % WHEN
+  contrasts = specifyContrasts(SPM, taskName, model);
 
-  assert(strcmp(contrasts(4).name, 'VisStat_gt_VisMot'));
-  assert(isequal(contrasts(4).C, [-1 1 0 0 0 0 0 0 0]));
+  % THEN
+  names_contrast = { ...
+                    'motion', [1 0 1 0 1 0]
+                    'static', [0 1 0 1 0 1]
+                    'motion_gt_static', [1 -1 1 -1 1 -1]
+                    'motion_1', [1 0 0 0 0 0]
+                    'motion_2', [0 0 1 0 0 0]
+                    'motion_3', [0 0 0 0 1 0]
+                    'static_1', [0 1 0 0 0 0]
+                    'static_2', [0 0 0 1 0 0]
+                    'static_3', [0 0 0 0 0 1]
+                    'motion_gt_static_1', [1 -1 0 0 0 0]
+                    'motion_gt_static_2', [0 0 1 -1 0 0]
+                    'motion_gt_static_3', [0 0 0 0 1 -1]
+                   };
+
+  for i = 1:size(names_contrast, 1)
+    expected(i).name = names_contrast{i, 1};
+    expected(i).C = names_contrast{i, 2};
+    assertEqual(contrasts(i), expected(i));
+  end
+
+end
+
+function test_specifyContrastsVismotion()
+  %
+  % Note requires an SPM.mat to run
+  %
+
+  % GIVEN
+  subLabel = '01';
+  funcFWHM = 6;
+
+  opt = setOptions('vismotion', subLabel);
+
+  ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+  spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
+  load(spmMatFile{1}, 'SPM');
+
+  model = spm_jsonread(opt.model.file);
+
+  % WHEN
+  contrasts = specifyContrasts(SPM, opt.taskName, model);
+
+  % THEN
+  expected.name = 'VisMot'; %#ok<*AGROW>
+  expected.C = [1 0 0 0 0 0 0 0 0];
+
+  expected(2).name = 'VisStat';
+  expected(2).C = [0 1 0 0 0 0 0 0 0];
+
+  expected(3).name = 'VisMot_gt_VisStat';
+  expected(3).C = [1 -1 0 0 0 0 0 0 0];
+
+  expected(4).name = 'VisStat_gt_VisMot';
+  expected(4).C = [-1 1 0 0 0 0 0 0 0];
+
+  assertEqual(contrasts, expected);
+
+end
+
+function test_specifyContrastsVislocalizer()
+  %
+  % Note requires an SPM.mat to run
+  %
+
+  % GIVEN
+  subLabel = '01';
+  funcFWHM = 6;
+
+  opt = setOptions('vislocalizer', subLabel);
+
+  ffxDir = getFFXdir(subLabel, funcFWHM, opt);
+  spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
+  load(spmMatFile{1}, 'SPM');
+
+  model = spm_jsonread(opt.model.file);
+
+  % WHEN
+  contrasts = specifyContrasts(SPM, opt.taskName, model);
+
+  % THEN
+  expected.name = 'VisMot_1';
+  expected.C = [1 0 0 0 0 0 0 0 0];
+
+  expected(end + 1).name = 'VisMot_&_VisStat_1';
+  expected(end).C = [1 1 0 0 0 0 0 0 0];
+
+  expected(end + 1).name =  'VisMot_&_VisStat_lt_baseline_1';
+  expected(end).C = [-1 -1 0 0 0 0 0 0 0];
+
+  expected(end + 1).name = 'VisMot';
+  expected(end).C = [1 0 0 0 0 0 0 0 0];
+
+  expected(end + 1).name = 'VisStat';
+  expected(end).C = [0 1 0 0 0 0 0 0 0];
+
+  expected(end + 1).name = 'VisMot_gt_VisStat';
+  expected(end).C = [1 -1 0 0 0 0 0 0 0];
+
+  expected(end + 1).name = 'VisStat_gt_VisMot';
+  expected(end).C = [-1 1 0 0 0 0 0 0 0];
+
+  assertEqual(contrasts, expected);
 
 end

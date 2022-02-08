@@ -1,90 +1,97 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
 function bidsSpatialPrepro(opt)
-  % bidsSpatialPrepro(opt)
   %
   % Performs spatial preprocessing of the functional and structural data.
   %
-  % TODO update description
-  % The structural data are segmented and normalized to MNI space.
-  % The functional data are re-aligned, coregistered with the structural and
-  % normalized to MNI space.
+  % USAGE::
   %
-  % Assumptions:
-  % - the batch is build using dependencies across the different batch modules
+  %   bidsSpatialPrepro([opt])
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
+  % The anatomical data are segmented, skulls-stripped [and normalized to MNI space].
+  %
+  % The functional data are re-aligned (unwarped), coregistered with the structural,
+  % the anatomical data is skull-stripped [and normalized to MNI space].
+  %
+  % If you do not want to:
+  %
+  % - to perform realign AND unwarp, make sure you set
+  %   ``opt.realign.useUnwarp`` to ``true``.
+  % - normalize the data to MNI space, make sure you set
+  %   ``opt.space`` to ``MNI``.
+  %
+  % If you want to:
+  %
+  % - use another type of anatomical data than ``T1w`` as a reference or want to specify
+  %   which anatomical session is to be used as a reference, you can set this in
+  %   ``opt.anatReference``::
+  %
+  %     opt.anatReference.type = 'T1w';
+  %     opt.anatReference.session = 1;
+  %
+  % .. TODO:
+  %
+  %  - average T1s across sessions if necessarry
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
-  % TO DO
-  % - find a way to paralelize this over subjects
-  % - average T1s across sessions if necessarry
+  [BIDS, opt] = setUpWorkflow(opt, 'spatial preprocessing');
 
-  % if input has no opt, load the opt.mat file
-  if nargin < 1
-    opt = [];
-  end
-  opt = loadAndCheckOptions(opt);
+  opt.orderBatches.selectAnat = 1;
+  opt.orderBatches.realign = 2;
+  opt.orderBatches.coregister = 3;
+  opt.orderBatches.saveCoregistrationMatrix = 4;
+  opt.orderBatches.segment = 5;
+  opt.orderBatches.skullStripping = 6;
+  opt.orderBatches.skullStrippingMask = 7;
 
-  setGraphicWindow();
+  for iSub = 1:numel(opt.subjects)
 
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
+    matlabbatch = {};
 
-  fprintf(1, 'DOING SPATIAL PREPROCESSING\n');
+    subLabel = opt.subjects{iSub};
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+    printProcessingSubject(iSub, subLabel);
 
-    groupName = group(iGroup).name;
+    matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);
 
-    for iSub = 1:group(iGroup).numSub
-
-      matlabbatch = [];
-      % Get the ID of the subject
-      % (i.e SubNumber doesnt have to match the iSub if one subject
-      % is exluded for any reason)
-      subID = group(iGroup).subNumber{iSub};
-
-      printProcessingSubject(groupName, iSub, subID);
-
-      matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subID);
-      opt.orderBatches.selectAnat = 1;
-
-      action = [];
-      if strcmp(opt.space, 'individual')
-        action = 'realignUnwarp';
-      end
-      [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, action);
-      opt.orderBatches.realign = 2;
-
-      % dependency from file selector ('Anatomical')
-      matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, subID, opt);
-      opt.orderBatches.coregister = 3;
-
-      matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, subID, opt);
-
-      % dependency from file selector ('Anatomical')
-      matlabbatch = setBatchSegmentation(matlabbatch, opt);
-      opt.orderBatches.segment = 5;
-
-      matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, subID, opt);
-
-      if strcmp(opt.space, 'MNI')
-        % dependency from segmentation
-        % dependency from coregistration
-        matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, voxDim, opt);
-      end
-
-      batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];
-      saveMatlabBatch(matlabbatch, batchName, opt, subID);
-
-      spm_jobman('run', matlabbatch);
-
-      imgNb = copyGraphWindownOutput(opt, subID, 'realign');
-      if  strcmp(opt.space, 'individual')
-        imgNb = copyGraphWindownOutput(opt, subID, 'unwarp', imgNb);
-      end
-      imgNb = copyGraphWindownOutput(opt, subID, 'func2anatCoreg', imgNb);
-
+    % if action is emtpy then only realign will be done
+    action = [];
+    if ~opt.realign.useUnwarp
+      action = 'realign';
     end
+    [matlabbatch, voxDim] = setBatchRealign(matlabbatch, action, BIDS, opt, subLabel);
+
+    % dependency from file selector ('Anatomical')
+    matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
+
+    matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel);
+
+    % dependency from file selector ('Anatomical')
+    matlabbatch = setBatchSegmentation(matlabbatch, opt);
+
+    matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
+
+    if strcmp(opt.space, 'MNI')
+      % dependency from segmentation
+      % dependency from coregistration
+      matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, opt, voxDim);
+    end
+
+    % if no unwarping was done on func, we reslice the func, so we can use
+    % them for the functionalQA
+    if ~opt.realign.useUnwarp
+      matlabbatch = setBatchRealign(matlabbatch, 'reslice', BIDS, opt, subLabel);
+    end
+
+    batchName = ['spatial_preprocessing-' upper(opt.space(1)) opt.space(2:end)];
+
+    saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
+
+    copyFigures(BIDS, opt, subLabel);
+
   end
 
 end

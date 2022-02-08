@@ -1,13 +1,26 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
-function matlabbatch = setBatchSTC(BIDS, opt, subID)
-  % matlabbatch = setBatchSTC(BIDS, opt, subID)
+function matlabbatch = setBatchSTC(varargin)
   %
-  % Slice timing units is in milliseconds to be BIDS compliant and not in slice number
+  % Creates batch for slice timing correction
+  %
+  % USAGE::
+  %
+  %   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
+  %
+  % :param BIDS: BIDS layout returned by ``getData``.
+  % :type BIDS: structure
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  % :param subID: subject ID
+  % :type subID: string
+  %
+  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  %
+  % Slice timing units is in seconds to be BIDS compliant and not in slice number
   % as is more traditionally the case with SPM.
   %
   % In the case the slice timing information was not specified in the json FILES
-  % in the BIDS data set (e.g it couldnt be extracted from the trento old scanner),
+  % in the BIDS data set (e.g it couldn't be extracted from the trento old scanner),
   % then add this information manually in opt.sliceOrder field.
   %
   % If this is empty the slice timing correction will not be performed
@@ -15,9 +28,25 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
   % If not specified this function will take the mid-volume time point as reference
   % to do the slice timing correction
   %
-  % See README.md for more information about slice timing correction
+  % (C) Copyright 2019 CPP_SPM developers
 
-  matlabbatch = [];
+  p = inputParser;
+
+  addRequired(p, 'matlabbatch', @iscell);
+  addRequired(p, 'BIDS', @isstruct);
+  addRequired(p, 'opt', @isstruct);
+  addRequired(p, 'subLabel', @ischar);
+
+  parse(p, varargin{:});
+
+  matlabbatch = p.Results.matlabbatch;
+  BIDS = p.Results.BIDS;
+  opt = p.Results.opt;
+  subLabel = p.Results.subLabel;
+
+  if opt.stc.skip
+    return
+  end
 
   % get slice order
   sliceOrder = getSliceOrder(opt, 1);
@@ -26,7 +55,7 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
     return
   end
 
-  fprintf(1, ' BUILDING STC JOB : STC\n');
+  printBatchName('slice timing correction');
 
   % get metadata for STC
   % Note that slice ordering is assumed to be from foot to head. If it is not, enter
@@ -37,46 +66,65 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
   nbSlices = length(sliceOrder); % unique is necessary in case of multi echo
   TR = opt.metadata.RepetitionTime;
   TA = TR - (TR / nbSlices);
+  % round acquisition time to the upper millisecond
+  % mostly to avoid having errors when checking:
+  %     any(sliceOrder > TA)
+  TA = ceil(TA * 1000) / 1000;
 
   maxSliceTime = max(sliceOrder);
   minSliceTime = min(sliceOrder);
-  if isempty(opt.STC_referenceSlice)
+  if isempty(opt.stc.referenceSlice)
     referenceSlice = (maxSliceTime - minSliceTime) / 2;
   else
-    referenceSlice = opt.STC_referenceSlice;
+    referenceSlice = opt.stc.referenceSlice;
   end
-  if referenceSlice > TA
-    error('%s (%f) %s (%f).\n%s', ...
-          'The reference slice time', referenceSlice, ...
-          'is greater than the acquisition time', TA, ...
-          ['Reference slice time must be in milliseconds ' ...
-           'or leave it empty to use mid-acquisition time as reference.']);
+  if TA >= TR || referenceSlice > TA || any(sliceOrder > TA)
+
+    pattern = repmat ('%.3f, ', 1, numel(sliceOrder));
+    pattern(end) = [];
+
+    msg = sprintf([ ...
+                   'Impossible values on slice timing input:\n\n', ...
+                   '  repetition time > acquisition time > reference slice.\n\n', ...
+                   'All STC values in the opt structure must be in seconds.\n', ...
+                   'Current values:', ...
+                   '\n- repetition time: %f', ...
+                   '\n- acquisition time: %f', ...
+                   '\n- reference slice: %f', ...
+                   '\n- slice order: ' pattern], TR, TA, referenceSlice, sliceOrder);
+
+    errorStruct.identifier = 'setBatchSTC:invalidInputTime';
+    errorStruct.message = msg;
+    error(errorStruct);
   end
 
-  % prefix of the files to look for
-  prefix = getPrefix('STC', opt);
+  temporal.st.nslices = nbSlices;
+  temporal.st.tr = TR;
+  temporal.st.ta = TA;
+  temporal.st.so = sliceOrder * 1000;
+  temporal.st.refslice = referenceSlice * 1000;
 
-  [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   runCounter = 1;
 
   for iSes = 1:nbSessions
 
     % get all runs for that subject for this session
-    [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+    [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
     for iRun = 1:nbRuns
 
       % get the filename for this bold run for this task
       [fileName, subFuncDataDir] = getBoldFilename( ...
                                                    BIDS, ...
-                                                   subID, sessions{iSes}, runs{iRun}, opt);
+                                                   subLabel, sessions{iSes}, runs{iRun}, opt);
 
       % check that the file with the right prefix exist
-      file = validationInputFile(subFuncDataDir, prefix, fileName);
+      file = validationInputFile(subFuncDataDir, fileName);
 
       % add the file to the list
-      matlabbatch{1}.spm.temporal.st.scans{runCounter} = {file};
+      temporal.st.scans{runCounter} = {file};
 
       runCounter = runCounter + 1;
 
@@ -86,11 +134,7 @@ function matlabbatch = setBatchSTC(BIDS, opt, subID)
 
   end
 
-  matlabbatch{1}.spm.temporal.st.nslices = nbSlices;
-  matlabbatch{1}.spm.temporal.st.tr = TR;
-  matlabbatch{1}.spm.temporal.st.ta = TA;
-  matlabbatch{1}.spm.temporal.st.so = sliceOrder;
-  matlabbatch{1}.spm.temporal.st.refslice = referenceSlice;
+  matlabbatch{end + 1}.spm.temporal = temporal;
 
   % The following lines are commented out because those parameters
   % can be set in the spm_my_defaults.m

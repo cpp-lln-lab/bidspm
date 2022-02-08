@@ -3,8 +3,8 @@
 ## Set up virtual environment
 
 ```bash
-virtualenv -p python3 cpp_bids_spm
-source cpp_bids_spm/bin/activate
+virtualenv -p /usr/bin/python3 env
+source env/bin/activate
 
 pip install -r requirements.txt
 ```

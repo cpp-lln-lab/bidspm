@@ -1,9 +1,26 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName)
-  % [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName)
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, fileName)
+  %
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :param subFuncDataDir:
+  % :type subFuncDataDir:
+  % :param prefix:
+  % :type prefix:
+  % :param fileName:
+  % :type fileName:
+  %
+  % :returns: - :voxDim:
+  %           - :opt:
   %
   %
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   % get native resolution to reuse it at normalisation;
   if ~isempty(opt.funcVoxelDims) % If voxel dimensions is defined in the opt

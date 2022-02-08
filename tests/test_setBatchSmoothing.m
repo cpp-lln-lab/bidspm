@@ -1,3 +1,5 @@
+% (C) Copyright 2020 CPP_SPM developers
+
 function test_suite = test_setBatchSmoothing %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -8,44 +10,21 @@ end
 
 function test_setBatchSmoothingBasic()
 
-  % TODO
-  % need a test with several sessions and runs
+  FWHM = 6;
+  prefix = 's6_';
 
-  subID = '01';
+  images = { fullfile(pwd, 'sub-01_T1w.nii') };
 
-  funcFWHM = 6;
-
-  opt.dataDir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', ...
-                         'MoAE', 'output', 'MoAEpilot');
-  opt.taskName = 'auditory';
-
-  opt = checkOptions(opt);
-
-  [~, opt, BIDS] = getData(opt);
-
-  % create dummy normalized file
-  fileName = spm_BIDS(BIDS, 'data', ...
-                      'sub', subID, ...
-                      'task', opt.taskName, ...
-                      'type', 'bold');
-  [filepath, filename, ext] = fileparts(fileName{1});
-  fileName = fullfile( ...
-                      filepath, ...
-                      [spm_get_defaults('normalise.write.prefix') filename ext]);
-  system(sprintf('touch %s', fileName));
-
-  matlabbatch = [];
-  matlabbatch = setBatchSmoothing(BIDS, opt, subID, funcFWHM);
+  matlabbatch = {};
+  matlabbatch = setBatchSmoothing(matlabbatch, images, FWHM, prefix);
 
   expectedBatch{1}.spm.spatial.smooth.fwhm = [6 6 6];
+  expectedBatch{1}.spm.spatial.smooth.prefix = 's6_';
+  expectedBatch{1}.spm.spatial.smooth.data = {fullfile(pwd, 'sub-01_T1w.nii')};
+
   expectedBatch{1}.spm.spatial.smooth.dtype = 0;
   expectedBatch{1}.spm.spatial.smooth.im = 0;
-  expectedBatch{1}.spm.spatial.smooth.prefix = ...
-      [spm_get_defaults('smooth.prefix'), '6'];
-  expectedBatch{1}.spm.spatial.smooth.data{1} = fileName;
 
-  assertEqual( ...
-              matlabbatch{1}.spm.spatial.smooth, ...
-              expectedBatch{1}.spm.spatial.smooth);
+  assertEqual(matlabbatch, expectedBatch);
 
 end

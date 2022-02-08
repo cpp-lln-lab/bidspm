@@ -1,35 +1,60 @@
-
+# General
 .DS_Store
-*.asv
-*.m~
-*.mat
+
 *.xml
 *.log
-*.html
 *.zip
+*.html
 *.ps
+*.png
 
-options_task-*.json
+# Project specific
+options_task-*date*.json
 onsets*_events.mat
 
-# files in the demo folder related to running the demo analysis
-demos/MoAE/*.zip
-demos/MoAE/output/*
-demos/MoAE/derivatives/*
+## virtual env
+cpp_spm/*
+env/*
+venv/*
 
-# test folder
-tests/sub-01/*
-tests/group/*
-
-# ignore content of the build folder of the doc
-docs/build/*
-
-# ignore virtual env
-cpp_bids_spm/*
-
-# visual studio code stuff
+## visual studio code
 .vscode
 
+## MATLAB / OCTAVE gitignore template
 
+# From : https://github.com/github/gitignore/blob/master/Global/MATLAB.gitignore
+
+
+# Windows default autosave extension
+*.asv
+
+# OSX / *nix default autosave extension
+*.m~
+
+# Compiled MEX binaries (all platforms)
+*.mex*
+
+# Packaged app and toolbox files
+*.mlappinstall
+*.mltbx
+
+# Generated helpsearch folders
+helpsearch*/
+
+# Simulink code generation folders
+slprj/
+sccprj/
+
+# Matlab code generation folders
+codegen/
+
+# Simulink autosave extension
+*.autosave
+
+# Simulink cache files
+*.slxc
+
+# Octave session info
+octave-workspace
 
 

@@ -1,19 +1,38 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
-
-function ffxDir = getFFXdir(subID, funcFWFM, opt)
-  % ffxDir = getFFXdir(subID, funcFWFM, opt)
+function ffxDir = getFFXdir(subLabel, funcFWFM, opt)
   %
-  % sets the name the FFX directory and creates it if it does not exist
+  % Sets the name the FFX directory and creates it if it does not exist
   %
+  % USAGE::
   %
+  %   ffxDir = getFFXdir(subLabel, funcFWFM, opt)
+  %
+  % :param subLabel:
+  % :type subLabel: string
+  % :param funcFWFM:
+  % :type funcFWFM: scalar
+  % :param opt:
+  % :param opt: structure
+  %
+  % :returns: - :ffxDir: (string)
+  %
+  % (C) Copyright 2019 CPP_SPM developers
 
-  ffxDir = fullfile(opt.derivativesDir, ...
-                    ['sub-', subID], ...
-                    'stats', ...
-                    ['ffx_task-', opt.taskName], ...
-                    ['ffx_space-' opt.space '_FWHM-', num2str(funcFWFM)]);
+  glmDirName = createGlmDirName(opt, funcFWFM);
 
-  if ~exist(ffxDir, 'dir')
-    mkdir(ffxDir);
+  model = spm_jsonread(opt.model.file);
+  if ~isempty(model.Name) && ~strcmpi(model.Name, opt.taskName)
+    glmDirName = [glmDirName, '_desc-', bids.internal.camel_case(model.Name)];
   end
+
+  ffxDir = fullfile(opt.dir.stats, ...
+                    ['sub-', subLabel], ...
+                    'stats', ...
+                    glmDirName);
+
+  if opt.glm.roibased.do
+    ffxDir = [ffxDir '_roi'];
+  end
+
+  spm_mkdir(ffxDir);
+
 end

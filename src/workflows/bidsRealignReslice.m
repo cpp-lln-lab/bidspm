@@ -1,50 +1,39 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function bidsRealignReslice(opt)
-  % bidsRealignReslice(opt)
   %
-  % The scripts realigns the functional
-  % Assumes that bidsSTC has already been run
+  % Realigns and reslices the functional data of a given task.
+  %
+  % USAGE::
+  %
+  %   bidsRealignReslice(opt)
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
+  % Assumes that ``bidsSTC()`` has already been run.
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
-  %% TO DO
-  % find a way to paralelize this over subjects
+  [BIDS, opt] = setUpWorkflow(opt, 'realign and reslice');
 
-  % if input has no opt, load the opt.mat file
-  if nargin < 1
-    opt = [];
-  end
-  opt = loadAndCheckOptions(opt);
+  for iSub = 1:numel(opt.subjects)
 
-  % load the subjects/Groups information and the task name
-  [group, opt, BIDS] = getData(opt);
+    subLabel = opt.subjects{iSub};
 
-  %% Loop through the groups, subjects, and sessions
-  for iGroup = 1:length(group)
+    printProcessingSubject(iSub, subLabel);
 
-    groupName = group(iGroup).name;
+    matlabbatch = {};
+    [matlabbatch, ~] = setBatchRealign( ...
+                                       matlabbatch, ...
+                                       BIDS, ...
+                                       subLabel, ...
+                                       opt, ...
+                                       'realignReslice');
 
-    for iSub = 1:group(iGroup).numSub
+    saveAndRunWorkflow(matlabbatch, 'realign_reslice', opt, subLabel);
 
-      % Get the ID of the subject
-      % (i.e SubNumber doesnt have to match the iSub if one subject
-      % is exluded for any reason)
-      subID = group(iGroup).subNumber{iSub}; % Get the subject ID
+    copyFigures(BIDS, opt, subLabel);
 
-      printProcessingSubject(groupName, iSub, subID);
-
-      matlabbatch = [];
-      [matlabbatch, ~] = setBatchRealign( ...
-                                         matlabbatch, ...
-                                         BIDS, ...
-                                         subID, ...
-                                         opt, ...
-                                         'realignReslice');
-
-      saveMatlabBatch(matlabbatch, 'realign_reslice', opt, subID);
-
-      spm_jobman('run', matlabbatch);
-
-    end
   end
 
 end

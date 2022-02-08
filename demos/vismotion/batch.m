@@ -1,4 +1,4 @@
-% (C) Copyright 2019 CPP BIDS SPM-pipeline developers
+% (C) Copyright 2019 CPP_SPM developers
 
 clear;
 clc;
@@ -6,14 +6,10 @@ clc;
 % directory with this script becomes the current directory
 WD = fileparts(mfilename('fullpath'));
 
-% we add all the subfunctions that are in the sub directories
-addpath(genpath(fullfile(WD, '..', '..', 'src')));
-addpath(genpath(fullfile(WD, '..', '..', 'lib')));
+run ../../initCppSpm.m;
 
 %% Run batches
-opt = getOption();
-
-checkDependencies();
+opt = get_option();
 
 reportBIDS(opt);
 
@@ -39,10 +35,10 @@ bidsFFX('contrasts', opt, funcFWHM);
 
 % group level univariate
 conFWHM = 6;
-bidsRFX('smoothContrasts', funcFWHM, conFWHM, opt);
+bidsRFX('smoothContrasts', opt, funcFWHM, conFWHM);
 
 % Not implemented yet
-% bidsRFX('RFX', funcFWHM, conFWHM, opt);
+% bidsRFX(action, opt, funcFWHM, conFWHM);
 
 % Not implemented yet
 % subject level multivariate

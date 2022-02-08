@@ -1,81 +1,93 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %
   % Set the batch for realign / realign and reslice / realign and unwarp
   %
   % USAGE::
   %
-  %   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, subID, opt, [action = 'realign'])
+  %   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, ...
+  %                                           [action = 'realign'], ...
+  %                                           BIDS, ...
+  %                                           opt, ...
+  %                                           subLabel)
   %
   % :param matlabbatch: SPM batch
   % :type matlabbatch: structure
-  % :param BIDS: BIDS layout returned by ``getData``
+  % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
-  % :param subID: subject label
-  % :type subID: string
-  % :param opt: options
-  % :type opt: structure
   % :param action: ``realign``, ``realignReslice``, ``realignUnwarp``
   % :type action: string
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :type subLabel: string
+  % :param subLabel: subject label
   %
   % :returns: - :matlabbatch: (structure) (dimension)
   %           - :voxDim: (array) (dimension)
+  %
+  % TODO::
+  %
+  %   make which image is resliced more consistent 'which = []'
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if numel(varargin) < 5
-    [matlabbatch, BIDS, subID, opt] = deal(varargin{:});
+    [matlabbatch, BIDS, opt, subLabel] = deal(varargin{:});
     action = '';
   else
-    [matlabbatch, BIDS, subID, opt, action] = deal(varargin{:});
+    [matlabbatch, action, BIDS, opt, subLabel] = deal(varargin{:});
   end
 
   if isempty(action)
-    action = 'realign';
+    action = 'realignUnwarp';
   end
 
   % TODO hide this wart in a subfunction ?
   switch action
     case 'realignUnwarp'
-      msg = ' & UNWARP';
+      msg = 'REALIGN & UNWARP';
       matlabbatch{end + 1}.spm.spatial.realignunwarp.eoptions.weight = {''};
       matlabbatch{end}.spm.spatial.realignunwarp.uwroptions.uwwhich = [2 1];
 
     case 'realignReslice'
-      msg = ' & RESLICE';
+      msg = 'REALIGN & RESLICE';
       matlabbatch{end + 1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
       matlabbatch{1}.spm.spatial.realign.estwrite.roptions.which = [2 1];
 
     case 'realign'
-      msg = [];
+      msg = 'REALIGN';
       matlabbatch{end + 1}.spm.spatial.realign.estwrite.eoptions.weight = {''};
       matlabbatch{end}.spm.spatial.realign.estwrite.roptions.which = [0 1];
 
+    case 'reslice'
+      msg = 'RESLICE';
+      matlabbatch{end + 1}.spm.spatial.realign.write.roptions.which = [2 0];
+
   end
 
-  fprintf(1, ' BUILDING SPATIAL JOB : REALIGN%s\n', msg);
+  printBatchName(msg);
 
-  [sessions, nbSessions] = getInfo(BIDS, subID, opt, 'Sessions');
+  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   runCounter = 1;
 
   for iSes = 1:nbSessions
 
     % get all runs for that subject across all sessions
-    [runs, nbRuns] = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+    [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
     for iRun = 1:nbRuns
 
       % get the filename for this bold run for this task
       [boldFilename, subFuncDataDir] = getBoldFilename( ...
                                                        BIDS, ...
-                                                       subID, ...
+                                                       subLabel, ...
                                                        sessions{iSes}, ...
                                                        runs{iRun}, ...
                                                        opt);
 
       % check that the file with the right prefix exist and we get and
       % save its voxeldimension
-      prefix = getPrefix('preprocess', opt);
+      prefix = getPrefix('realign', opt);
       file = validationInputFile(subFuncDataDir, boldFilename, prefix);
       [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, prefix, boldFilename);
 
@@ -85,19 +97,36 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
         error(errorStruct);
       end
 
-      fprintf(1, ' %s\n', file);
+      switch action
 
-      if strcmp(action, 'realignUnwarp')
+        % we reslice images that come from a previous batch so we can return
+        % early
+        case 'reslice'
 
-        vdmFile = getVdmFile(BIDS, opt, boldFilename);
-        matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = { vdmFile };
-        matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = { file };
+          matlabbatch{end}.spm.spatial.realign.write.data(1) = ...
+            cfg_dep('Coregister: Estimate: Coregistered Images', ...
+                    substruct( ...
+                              '.', 'val', '{}', {opt.orderBatches.coregister}, ...
+                              '.', 'val', '{}', {1}, ...
+                              '.', 'val', '{}', {1}, ...
+                              '.', 'val', '{}', {1}), ...
+                    substruct('.', 'cfiles'));
 
-      else
+          return
 
-        matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = { file };
+        case 'realignUnwarp'
+
+          vdmFile = getVdmFile(BIDS, opt, boldFilename);
+          matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = { vdmFile };
+          matlabbatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = { file };
+
+        otherwise
+
+          matlabbatch{end}.spm.spatial.realign.estwrite.data{1, runCounter} = { file };
 
       end
+
+      fprintf(1, ' %s\n', file);
 
       runCounter = runCounter + 1;
     end

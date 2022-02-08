@@ -1,10 +1,26 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
+  %
+  % Short description of what the function does goes here.
+  %
+  % USAGE::
+  %
+  %   matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
+  %
+  % :param matlabbatch: list of SPM batches
+  % :type matlabbatch: structure
+  % :param fmapType:
+  % :type fmapType:
+  % :param refImage: Reference image
+  % :type refImage:
+  %
+  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  %
   % matlabbatch = setBatchComputeVDM(type)
   %
   % adapted from spmup get_FM_workflow.m (@ commit
   % 198c980d6d7520b1a996f0e56269e2ceab72cc83)
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   switch lower(fmapType)
     case 'phasediff'
@@ -12,7 +28,7 @@ function matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).data.presubphasemag.magnitude = '';
 
     case 'phase&mag'
-      matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).data.phasemag.shortphase = '';
+      matlabbatch{end + 1}.spm.tools.fieldmap.calculatevdm.subj(1).data.phasemag.shortphase = '';
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).data.phasemag.shortmag = '';
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).data.phasemag.longphase = '';
       matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).data.phasemag.longmag = '';

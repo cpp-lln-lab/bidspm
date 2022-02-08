@@ -4,11 +4,27 @@ Set up
 Configuration of the pipeline
 =============================
 
-All the details specific to your analysis should be set in the `getOptions.m`.
+Options
+-------
 
-There is a getOption_template file that shows you would set up the getOption
-file if one wanted to analyse the
-`ds001 data set from OpenNeuro <https://openneuro.org/datasets/ds000001/versions/57fecb0ccce88d000ac17538>`_.
+Most of the options you have chosen for your analysis will be set in a variable 
+``opt`` an Octave/Matlab structure.
+
+The content of that structure can be defined:
+
+- "at run" time in a script or a function (that we often label ``getOption``)
+- in a separate json file that can be loaded with ``loadAndCheckOptions()``.
+
+You can find examples of both in the ``demos`` folder. You can also find a 
+template function for ``getOption`` in the ``src/templates`` folder.
+
+Required options
+++++++++++++++++
+
+Set the task to analyze in the BIDS data set ``opt.taskName = 'auditory'``
+
+Selecting groups and subjects
++++++++++++++++++++++++++++++
 
 Set the group of subjects to analyze::  
 
@@ -38,11 +54,11 @@ run::
     opt.groups = {''};
     opt.subjects = {'01', 'cont01', 'cat02', 'ctrl02', 'blind01'};
 
-Set the task to analyze in the BIDS data set ``opt.taskName = 'auditory'``
+
 
 
 BIDS model JSON files
-=====================
+---------------------
 
 This files allow you to specify the GLM to run and which contrasts to run.
 It follows the BIDS statistical model extension and as implemented by

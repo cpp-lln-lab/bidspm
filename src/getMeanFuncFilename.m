@@ -1,24 +1,35 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
-function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subID, opt)
-  % [anatImage, anatDataDir] = getAnatFilename(BIDS, subID, opt)
+function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt)
   %
-  % Get the filename and the directory of an anat file for a given session /
-  % run.
-  % Unzips the file if necessary.
+  % Get the filename and the directory of an mean functional file.
+  %
+  % USAGE::
+  %
+  %   [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt)
+  %
+  % :param BIDS:
+  % :type BIDS: structure
+  % :param subLabel:
+  % :type subLabel: string
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  %
+  % :returns: - :meanImage: (string)
+  %           - :meanFuncDir: (string)
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
-  sessions = getInfo(BIDS, subID, opt, 'Sessions');
-  runs = getInfo(BIDS, subID, opt, 'Runs', sessions{1});
+  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{1});
   [boldFileName, subFuncDataDir] = getBoldFilename( ...
                                                    BIDS, ...
-                                                   subID, sessions{1}, runs{1}, opt);
+                                                   subLabel, sessions{1}, runs{1}, opt);
 
-  prefix = getPrefix('smoothing_space-individual', opt);
+  prefix = getPrefix('mean', opt);
 
   meanImage = validationInputFile( ...
                                   subFuncDataDir, ...
                                   boldFileName, ...
-                                  ['mean' prefix]);
+                                  prefix);
 
   [meanFuncDir, meanImage, ext] = spm_fileparts(meanImage);
   meanImage = [meanImage ext];

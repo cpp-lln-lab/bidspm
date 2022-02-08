@@ -1,9 +1,23 @@
-% (C) Copyright 2020 CPP BIDS SPM-pipeline developers
-
 function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
-  % [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
   %
-  % generates prefix to append to file name to look for
+  % Generates prefix to append to file name to look for
+  %
+  % USAGE::
+  %
+  %   [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
+  %
+  % :param step:
+  % :type step: string
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
+  % :param funcFWHM:
+  % :type funcFWHM: scalar
+  %
+  % :returns: - :prefix:
+  %           - :motionRegressorPrefix:
+  %
+  %
+  % (C) Copyright 2020 CPP_SPM developers
 
   if nargin < 3
     funcFWHM = 0;
@@ -13,47 +27,67 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
   motionRegressorPrefix = '';
 
   allowedPrefixCases = {
-                        'STC'; ...
-                        'preprocess'; ...
-                        'smoothing_space-individual'; ...
-                        'smoothing'; ...
-                        'FFX_space-individual'; ...
+                        'realign'; ...
+                        'normalise'; ...
+                        'funcQA'; ...
+                        'smooth'; ...
                         'FFX'};
 
-  switch step
+  switch lower(step)
 
-    case 'STC'
-
-    case 'preprocess'
+    case 'realign'
       prefix = prefixForSTC(prefix, opt);
 
-      % when smoothing is done on non-normalized data (in the space of T1w)
-    case 'smoothing_space-individual'
-      prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
+    case 'normalise'
+      prefix = getPrefix('realign', opt);
 
-    case 'smoothing'
-      prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('normalise.write.prefix') prefix];
-
-    case 'FFX_space-individual'
-      prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
-
-      % Check which level of smoothing is applied
-      if funcFWHM > 0 % else, take the smoothed files
-        prefix = [spm_get_defaults('smooth.prefix') num2str(funcFWHM) prefix];
+      if ~opt.realign.useUnwarp && strcmp(opt.space, 'individual')
+        prefix = [spm_get_defaults('realign.write.prefix') prefix];
+      elseif opt.realign.useUnwarp
+        prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
       end
 
-    case 'FFX'
-      prefix = prefixForSTC(prefix, opt);
-      prefix = [spm_get_defaults('normalise.write.prefix') prefix];
+    case 'mean'
+      prefix = getPrefix('realign', opt);
 
-      % Check which level of smoothing is applied
+      if opt.realign.useUnwarp
+        prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
+      end
+
+      prefix = ['mean' prefix];
+
+      if strcmp(opt.space, 'MNI')
+        prefix = ['w', prefix];
+      end
+
+    case 'funcqa'
+      prefix = getPrefix('realign', opt);
+
+      if ~opt.realign.useUnwarp
+        prefix = [spm_get_defaults('realign.write.prefix') prefix];
+      elseif opt.realign.useUnwarp
+        prefix = [spm_get_defaults('unwarp.write.prefix') prefix];
+      end
+
+      motionRegressorPrefix = prefixForSTC(prefix, opt);
+
+    case 'smooth'
+      prefix = getPrefix('normalise', opt);
+
+      if strcmp(opt.space, 'MNI')
+        prefix = [spm_get_defaults('normalise.write.prefix') prefix];
+      end
+
+    case 'ffx'
+      motionRegressorPrefix = prefixForSTC(prefix, opt);
+
+      prefix = getPrefix('smooth', opt);
+
       if funcFWHM > 0
         prefix = [spm_get_defaults('smooth.prefix') num2str(funcFWHM) prefix];
       end
 
+      %%
     otherwise
 
       fprintf(1, '\nAllowed prefix cases:\n');
@@ -62,10 +96,10 @@ function [prefix, motionRegressorPrefix] = getPrefix(step, opt, funcFWHM)
       end
 
       errorStruct.identifier = 'getPrefix:unknownPrefixCase';
-      errorStruct.message = sprintf('%s\n%s', ...
+      errorStruct.message = sprintf('%s%s\n%s', ...
                                     ['This prefix case you have requested ' ...
-                                     'does not exist: %s.'], ...
-                                    'See allowed cases above', step);
+                                     'does not exist: '], step, ...
+                                    'See allowed cases above');
       error(errorStruct);
 
   end
@@ -75,9 +109,10 @@ end
 function prefix = prefixForSTC(prefix, opt)
   % Check the slice timing information is not in the metadata and not added
   % manually in the opt variable.
-  if (isfield(opt.metadata, 'SliceTiming') && ...
-      ~isempty(opt.metadata.SliceTiming)) || ...
-          ~isempty(opt.sliceOrder)
+  if ~opt.stc.skip && ...
+     ((isfield(opt.metadata, 'SliceTiming') && ...
+       ~isempty(opt.metadata.SliceTiming)) || ...
+      ~isempty(opt.stc.sliceOrder))
     prefix = [spm_get_defaults('slicetiming.prefix') prefix];
   end
 end

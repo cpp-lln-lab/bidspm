@@ -1,5 +1,5 @@
 {
-  "Name": "Listening",
+  "Name": "auditory",
   "Description": "contrasts to compute for the FIL MoAE dataset",
   "Input": {
     "task": "auditory"

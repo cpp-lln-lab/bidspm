@@ -1,45 +1,97 @@
 {
-  "Name": "Motion localizer",
-  "Description": "contrasts for the motion localizer dataset",
+  "Name": "vislocalizer",
+  "Description": "contrasts for the visual localizer",
   "Input": {
-    "task": "visMotion"
+    "task": "vislocalizer"
   },
   "Steps": [
     {
       "Level": "run",
       "Model": {
         "X": [
-          "trial_type.VisMot", "trial_type.VisStat",
-          "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
+          "trial_type.VisMot",
+          "trial_type.VisStat",
+          "trial_type.missing_condition",
+          "trans_x",
+          "trans_y",
+          "trans_z",
+          "rot_x",
+          "rot_y",
+          "rot_z"
         ]
       },
-      "AutoContrasts": ["trial_type.listening"]
+      "AutoContrasts": [
+        "trial_type.listening",
+        "trial_type.VisMot"
+      ],
+      "Contrasts": [
+        {
+          "Name": "VisMot_&_VisStat",
+          "ConditionList": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "type": "t"
+        },
+        {
+          "Name": "VisMot_&_VisStat_lt_baseline",
+          "ConditionList": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "weights": [
+            -1,
+            -1
+          ],
+          "type": "t"
+        }
+      ]
     },
     {
       "Level": "subject",
-      "AutoContrasts": ["trial_type.VisMot", "trial_type.VisStat" ],
+      "AutoContrasts": [
+        "trial_type.VisMot",
+        "trial_type.VisStat"
+      ],
       "Contrasts": [
         {
           "Name": "VisMot_gt_VisStat",
           "ConditionList": [
-            "trial_type.VisMot", "trial_type.VisStat"
+            "trial_type.VisMot",
+            "trial_type.VisStat"
           ],
-          "weights": [1, -1],
+          "weights": [
+            1,
+            -1
+          ],
           "type": "t"
         },
         {
           "Name": "VisStat_gt_VisMot",
           "ConditionList": [
-            "trial_type.VisMot", "trial_type.VisStat"
+            "trial_type.VisMot",
+            "trial_type.VisStat"
           ],
-          "weights": [-1, 1],
+          "weights": [
+            -1,
+            1
+          ],
           "type": "t"
         }
       ]
     },
     {
       "Level": "dataset",
-      "AutoContrasts": ["trial_type.VisMot", "trial_type.VisStat", "VisMot_gt_VisStat", "VisStat_gt_VisMot"]
+      "AutoContrasts": [
+        "trial_type.VisMot",
+        "trial_type.VisStat",
+        "VisMot_gt_VisStat",
+        "VisStat_gt_VisMot"
+      ]
     }
   ]
 }
