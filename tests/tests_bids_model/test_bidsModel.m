@@ -50,6 +50,15 @@ function test_getVariablesToConvolve()
 
 end
 
+function test_getVariablesToConvolve_warning()
+
+  opt = setOptions('vislocalizer');
+
+  assertWarning(@()getVariablesToConvolve(opt.model.file, 'dataset'), ...
+                'getVariablesToConvolve:noVariablesToConvolve');
+
+end
+
 function test_returnModelNode()
 
   content = createEmptyStatsModel();
@@ -61,8 +70,7 @@ function test_returnModelNode()
   [~, iStep] = returnModelNode(content, 'dataset');
   assertEqual(iStep, [3; 4]);
 
-  assertExceptionThrown( ...
-                        @()returnModelNode(content, 'foo'), ...
+  assertExceptionThrown(@()returnModelNode(content, 'foo'), ...
                         'returnModelNode:missingModelNode');
 
   modelFile = fullfile(pwd, 'model.json');

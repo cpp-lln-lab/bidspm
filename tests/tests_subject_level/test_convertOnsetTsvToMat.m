@@ -61,6 +61,30 @@ function test_convertOnsetTsvToMat_transformers_with_dummy_regressors
 
 end
 
+function test_convertOnsetTsvToMat_no_condition_in_design_matrix
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
+
+  opt = setOptions('vismotion');
+  opt.model.file = fullfile(getDummyDataDir(),  'models', ...
+                            'model-vismotionNoCondition_smdl.json');
+
+  opt.verbosity = 1;
+
+  % WHEN
+  fullpathOnsetFilename =  convertOnsetTsvToMat(opt, tsvFile);
+
+  load(fullpathOnsetFilename);
+
+  assertEqual(names, {});
+  assertEqual(onsets, {});
+  assertEqual(durations, {});
+
+end
+
 function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
 
   % GIVEN
