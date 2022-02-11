@@ -67,6 +67,11 @@ authors:
   orcid: "https://orcid.org/0000-0001-8070-5753"
   affiliation: "Université catholique de Louvain"
 
+- family-names: "Shahzad"
+  given-names: "Iqra"
+  orcid: "https://orcid.org/0000-0002-8724-7668"
+  affiliation: "Université catholique de Louvain"
+
 license: GPL-3.0
 
 keywords:
