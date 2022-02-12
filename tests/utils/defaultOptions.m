@@ -74,6 +74,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.glm.roibased.do = false;
   expectedOptions.glm.maxNbVols = Inf;
   expectedOptions.glm.useDummyRegressor = false;
+  expectedOptions.glm.keepResiduals = false;
 
   expectedOptions.model.file = '';
   expectedOptions.model.designOnly = false;

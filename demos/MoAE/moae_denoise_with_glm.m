@@ -13,6 +13,6 @@ cpp_spm('init');
 
 opt = moae_get_option_stats();
 opt.model.file = fullfile(pwd, 'models', 'model-denoiseOnly_smdl.json');
-opt.QA.glm.do = 1; % to keep residuals
+opt.glm.keepResiduals = true;
 
 bidsFFX('specifyAndEstimate', opt);
