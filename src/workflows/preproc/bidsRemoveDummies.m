@@ -17,6 +17,13 @@ function bidsRemoveDummies(varargin)
   % they have already been removed
   % :type force: boolean
   %
+  % EXAMPLE::
+  %
+  %     opt.taskName = 'auditory';
+  %     opt.dir.input = fullfile(pwd, 'inputs', 'raw');
+  %     bidsRemoveDummies(opt, 'dummyScans', 4, 'force', false);
+  %
+  %
   % (C) Copyright 2022 CPP_SPM developers
 
   p = inputParser;
@@ -67,46 +74,7 @@ function bidsRemoveDummies(varargin)
 
       printToScreen(sprintf('\n%s\n', files{iFile}), opt);
 
-      NumberOfVolumesDiscardedByUser = 0;
-      if isfield(metadata{iFile}, 'NumberOfVolumesDiscardedByUser')
-        NumberOfVolumesDiscardedByUser = metadata{iFile}.NumberOfVolumesDiscardedByUser;
-      end
-
-      if NumberOfVolumesDiscardedByUser < dummyScans
-        numberOfVolumeToDiscard = dummyScans - NumberOfVolumesDiscardedByUser;
-        NumberOfVolumesDiscardedByUser = dummyScans;
-
-      elseif NumberOfVolumesDiscardedByUser >= dummyScans
-
-        if ~force
-          msg = sprintf(['NumberOfVolumesDiscardedByUser = %i for file\n%s.\n', ...
-                         'Will not remove additional volumes, ', ...
-                         'unless the ''force'' parameter is used.'], ...
-                        metadata{iFile}.NumberOfVolumesDiscardedByUser, ...
-                        files{iFile});
-          errorHandling(mfilename(), 'dummiesAlreadyRemoved', msg, true, true);
-
-          continue
-
-        else
-          numberOfVolumeToDiscard = dummyScans;
-          NumberOfVolumesDiscardedByUser = NumberOfVolumesDiscardedByUser + dummyScans;
-
-        end
-
-      end
-
-      threeDimFiles = spm_file_split(files{iFile});
-      V = threeDimFiles;
-      V(1:numberOfVolumeToDiscard) = [];
-      spm_file_merge(V, files{iFile});
-      spm_unlink(threeDimFiles.fname);
-
-      jsonFile = spm_file(files{iFile}, 'ext', 'json');
-
-      metadata{iFile}.NumberOfVolumesDiscardedByUser = NumberOfVolumesDiscardedByUser;
-
-      bids.util.jsonwrite(jsonFile, metadata{iFile});
+      removeDummies(files{iFile}, dummyScans, metadata{iFile}, 'force', force);
 
     end
 
