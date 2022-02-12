@@ -4,22 +4,23 @@ function removeDummies(varargin)
   %
   % USAGE::
   %
-  %   removeDummies(inputFile, dummyScans, metadata, 'force', false)
+  %   removeDummies(inputFile, dummyScans, metadata, 'force', false, 'verbose', true)
   %
-  % :param foo: obligatory argument. Lorem ipsum dolor sit amet,
-  % :type foo: cell
+  % :param inputFile:
+  % :type inputFile: structure
   %
-  % :param faa: optional argument. Lorem ipsum dolor sit amet,
-  % :type faa: structure
+  % :param dummyScans: number of dummy scans to remove
+  % :type dummyScans: positive integer
   %
-  % :param fii: parameter. default: ``boo``
-  % :type fii: string
+  % :param metadata:
+  % :type metadata: structure
   %
-  % :returns: - :foo: (type) (dimension)
-  %           - :faa: (type) (dimension)
-  %           - :fii: (type) (dimension)
+  % :param force:
+  % :type force: boolean
   %
-  % Example::
+  % :param verbose:
+  % :type verbose: boolean
+  %
   %
   % (C) Copyright 2022 CPP_SPM developers
 
@@ -28,6 +29,7 @@ function removeDummies(varargin)
 
   default_metadata = struct('NumberOfVolumesDiscardedByUser', 0);
   default_force = false;
+  default_verbose = true;
 
   p = inputParser;
 
@@ -35,6 +37,7 @@ function removeDummies(varargin)
   addRequired(p, 'dummyScans', isPositive);
   addOptional(p, 'metadata', default_metadata, @isstruct);
   addParameter(p, 'force', default_force, @islogical);
+  addParameter(p, 'verbose', default_verbose, @islogical);
 
   parse(p, varargin{:});
 
@@ -42,6 +45,7 @@ function removeDummies(varargin)
   dummyScans = p.Results.dummyScans;
   metadata = p.Results.metadata;
   force = p.Results.force;
+  verbose = p.Results.verbose;
 
   isZipped = strcmp(spm_file(inputFile, 'ext'), 'gz');
   if isZipped
@@ -67,7 +71,7 @@ function removeDummies(varargin)
                      'unless the ''force'' parameter is used.'], ...
                     metadata.NumberOfVolumesDiscardedByUser, ...
                     inputFile);
-      errorHandling(mfilename(), 'dummiesAlreadyRemoved', msg, true, true);
+      errorHandling(mfilename(), 'dummiesAlreadyRemoved', msg, true, verbose);
 
       return
 

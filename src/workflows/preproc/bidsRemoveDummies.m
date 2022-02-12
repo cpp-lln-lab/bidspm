@@ -74,7 +74,9 @@ function bidsRemoveDummies(varargin)
 
       printToScreen(sprintf('\n%s\n', files{iFile}), opt);
 
-      removeDummies(files{iFile}, dummyScans, metadata{iFile}, 'force', force);
+      removeDummies(files{iFile}, dummyScans, metadata{iFile}, ...
+                    'force', force, ...
+                    'verbose', opt.verbosity > 0);
 
     end
 
