@@ -105,7 +105,9 @@ function [matlabbatch, opt] = bidsFFX(action, opt)
       repetitionTime = matlabbatch{1}.spm.stats.fmri_spec.timing.RT;
       plot_power_spectra_of_GLM_residuals(outputDir, repetitionTime);
 
-      deleteResidualImages(getFFXdir(subLabel, opt));
+      if ~opt.glm.keepResiduals
+        deleteResidualImages(getFFXdir(subLabel, opt));
+      end
 
     end
 
