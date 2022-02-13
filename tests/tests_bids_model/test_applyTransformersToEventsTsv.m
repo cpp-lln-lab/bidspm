@@ -11,6 +11,43 @@ function test_suite = test_applyTransformersToEventsTsv %#ok<*STOUT>
 
 end
 
+function test_applyTransformersToEventsTsv_delete_select()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers = struct('Name', 'Delete', ...
+                        'Input', {{'face_type'}});
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assert(~(ismember({'face_type'}, fieldnames(newContent))));
+
+  transformers = struct('Name', 'Select', ...
+                        'Input', {{'face_type'}});
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assertEqual({'face_type'}, fieldnames(newContent));
+
+end
+
+function test_applyTransformersToEventsTsv_rename()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers = struct('Name', 'Rename', ...
+                        'Input', {{'face_type', 'repetition_type'}}, ...
+                        'Output', {{'foo', 'bar'}});
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assert(all(ismember({'foo'; 'bar'}, fieldnames(newContent))));
+  assertEqual(newContent.foo, newContent.face_type);
+  assertEqual(newContent.bar, newContent.repetition_type);
+
+end
+
 function test_applyTransformersToEventsTsv_complex_filter_with_and()
 
   % GIVEN

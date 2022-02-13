@@ -17,7 +17,11 @@ function newContent = applyTransformersToEventsTsv(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  SUPPORTED_TRANSFORMERS = {'Add', 'Subtract', 'Multiply', 'Divide', 'Filter', 'And'};
+  SUPPORTED_TRANSFORMERS = {'Add', 'Subtract', 'Multiply', 'Divide', ...
+                            'Filter', ...
+                            'And', ...
+                            'Rename', ...
+                            'Delete', 'Select'};
 
   p = inputParser;
 
@@ -58,20 +62,30 @@ function newContent = applyTransformersToEventsTsv(varargin)
 
     if ismember(lower(this_transformer.Name), {'add', 'subtract', 'multiply', 'divide'})
       for i = 1:numel(inputs)
-        [onset, duration] = applyTransformer(this_transformer, inputs{i}, tsvContent);
+        [onset, duration] = applyTransformer(this_transformer, tsvContent,  inputs{i});
         newContent.(output{i}) = struct('onset', onset, 'duration', duration);
       end
 
-    elseif ismember(lower(this_transformer.Name), {'filter', 'and', 'or'})
-      tsvContent = applyTransformer(this_transformer, inputs, tsvContent);
+    elseif ismember(lower(this_transformer.Name), {'rename', ...
+                                                   'filter', ...
+                                                   'and', ...
+                                                   'or', ...
+                                                   'delete', ...
+                                                   'select'})
+      tsvContent = applyTransformer(this_transformer, tsvContent);
       newContent = tsvContent;
+
     end
 
   end
 
 end
 
-function varargout = applyTransformer(transformer, inputs, tsvContent)
+function varargout = applyTransformer(transformer, tsvContent, inputs)
+
+  if nargin < 3
+    inputs = [];
+  end
 
   if iscell(inputs) && numel(inputs) == 1
     input = inputs{1};
@@ -81,9 +95,9 @@ function varargout = applyTransformer(transformer, inputs, tsvContent)
 
   transformerName = lower(transformer.Name);
 
-  tokens = regexp(input, '\.', 'split');
-
   if ismember(transformerName, {'add', 'subtract', 'multiply', 'divide'})
+
+    tokens = regexp(input, '\.', 'split');
 
     % TODO assumes transformations are only on onsets
     % TODO assumes we are dealing with inputs from events TSV
@@ -124,50 +138,82 @@ function varargout = applyTransformer(transformer, inputs, tsvContent)
 
   end
 
-  output = getOutput(transformer);
+  %%
+  inputs = getInput(transformer);
+  outputs = getOutput(transformer);
 
   switch transformerName
 
     case 'filter'
 
-      query = transformer.Query;
-      if ~regexp(query, tokens{1})
-        return
-      end
+      for i = 1:numel(inputs)
 
-      queryTokens = regexp(query, '==', 'split');
-      if numel(queryTokens) > 1
+        tokens = regexp(inputs{i}, '\.', 'split');
 
-        tsvContent.(output{1}) = zeros(size(tsvContent.onset));
-
-        if iscellstr(tsvContent.(tokens{1}))
-          idx = strcmp(queryTokens{2}, tsvContent.(tokens{1}));
+        query = transformer.Query;
+        if ~regexp(query, tokens{1})
+          return
         end
 
-        if isnumeric(tsvContent.(tokens{1}))
-          idx = tsvContent.(tokens{1}) == str2num(queryTokens{2});
-        end
+        queryTokens = regexp(query, '==', 'split');
+        if numel(queryTokens) > 1
 
-        tsvContent.(output{1})(idx) = 1;
+          tsvContent.(outputs{i}) = zeros(size(tsvContent.onset));
+
+          if iscellstr(tsvContent.(tokens{1}))
+            idx = strcmp(queryTokens{2}, tsvContent.(tokens{1}));
+          end
+
+          if isnumeric(tsvContent.(tokens{1}))
+            idx = tsvContent.(tokens{1}) == str2num(queryTokens{2});
+          end
+
+          tsvContent.(outputs{i})(idx) = 1;
+
+        end
 
       end
 
       varargout = {tsvContent};
 
+    case 'rename'
+
+      for i = 1:numel(inputs)
+        tsvContent.(outputs{i}) = tsvContent.(inputs{i});
+      end
+
+      varargout = {tsvContent};
+
+    case 'delete'
+
+      for i = 1:numel(inputs)
+        tsvContent = rmfield(tsvContent, inputs{i});
+      end
+
+      varargout = {tsvContent};
+
+    case 'select'
+
+      for i = 1:numel(inputs)
+        tmp.(inputs{i}) = tsvContent.(inputs{i});
+      end
+
+      varargout = {tmp};
+
     case {'and', 'or'}
 
-      for i = 1:numel(input)
-        if iscellstr(tsvContent.(input{i}))
-          tmp(:, i) = cellfun('isempty', tsvContent.(input{i}));
+      for i = 1:numel(inputs)
+        if iscellstr(tsvContent.(inputs{i}))
+          tmp(:, i) = cellfun('isempty', tsvContent.(inputs{i}));
         else
-          tmp(:, i) = logical(tsvContent.(input{i}));
+          tmp(:, i) = logical(tsvContent.(inputs{i}));
         end
       end
 
       if strcmp(transformerName, 'and')
-        tsvContent.(output{1}) = all(tmp, 2);
+        tsvContent.(outputs{1}) = all(tmp, 2);
       elseif strcmp(transformerName, 'or')
-        tsvContent.(output{1}) = any(tmp, 2);
+        tsvContent.(outputs{1}) = any(tmp, 2);
       end
 
       varargout = {tsvContent};
@@ -187,11 +233,13 @@ function input = getInput(transformer)
 end
 
 function output = getOutput(transformer)
-  output = {};
   if isfield(transformer, 'Output') && ~isempty(transformer.Output)
     output = transformer.Output;
     if ~iscell(output)
       output = {output};
     end
+  else
+    % will overwrite input columns
+    output = getInput(transformer);
   end
 end
