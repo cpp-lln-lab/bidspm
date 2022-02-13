@@ -41,11 +41,9 @@ function newContent = applyTransformersToEventsTsv(varargin)
   transformers = p.Results.transformers;
 
   if isempty(transformers) || isempty(tsvContent)
-    newContent = struct([]);
+    newContent = tsvContent;
     return
   end
-
-  printToScreen('\n');
 
   for iTrans = 1:numel(transformers)
 
@@ -72,8 +70,6 @@ end
 function varargout = applyTransformer(transformer, tsvContent)
 
   transformerName = lower(transformer.Name);
-
-  printToScreen(sprintf('Applying transformer ''%s''\n', transformerName));
 
   inputs = getInput(transformer);
   outputs = getOutput(transformer);
@@ -165,6 +161,10 @@ function tsvContent = replaceTransformers(transformer, tsvContent)
   replace = transformer.Replace;
 
   for i = 1:numel(inputs)
+
+    if ~isfield(tsvContent, inputs{i})
+      continue
+    end
 
     for ii = 1:numel(attributes)
 
@@ -271,6 +271,10 @@ function tsvContent = basicTransformers(transformer, tsvContent)
 
   for i = 1:numel(inputs)
 
+    if ~isfield(tsvContent, inputs{i})
+      continue
+    end
+
     value = transformer.Value;
 
     switch transformerName
@@ -345,6 +349,10 @@ function tsvContent = andOrTransformer(transformer, tsvContent)
 
   for i = 1:numel(inputs)
 
+    if ~isfield(tsvContent, inputs{i})
+      return
+    end
+
     if iscellstr(tsvContent.(inputs{i}))
       tmp(:, i) = cellfun('isempty', tsvContent.(inputs{i}));
 
@@ -393,6 +401,10 @@ function tsvContent = thresholdTransformer(transformer, tsvContent)
   end
 
   for i = 1:numel(inputs)
+
+    if ~isfield(tsvContent, inputs{i})
+      continue
+    end
 
     valuesToThreshold = tsvContent.(inputs{i});
 

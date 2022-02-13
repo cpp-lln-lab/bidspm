@@ -37,9 +37,8 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   onsets = {};
   durations = {};
 
-  % transformed values
   transformers = getBidsTransformers(opt.model.file);
-  transformedConditions = applyTransformersToEventsTsv(tsvContent, transformers);
+  tsvContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
   for iCond = 1:numel(variablesToConvolve)
 
@@ -74,16 +73,6 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
         input1 = 'Trial type';
 
       end
-
-    elseif ismember(variablesToConvolve{iCond}, fieldnames(transformedConditions))
-
-      if ~ismember(variablesToConvolve{iCond}, designMatrx)
-        continue
-      end
-
-      names{1, end + 1} = variablesToConvolve{iCond};
-      onsets{1, end + 1} = transformedConditions.(variablesToConvolve{iCond}).onset;
-      durations{1, end + 1} = transformedConditions.(variablesToConvolve{iCond}).duration;
 
     else
 

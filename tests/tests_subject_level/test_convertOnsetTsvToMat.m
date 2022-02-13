@@ -11,32 +11,12 @@ function test_suite = test_convertOnsetTsvToMat %#ok<*STOUT>
 
 end
 
-function test_convertOnsetTsvToMat_input_from_non_trial_type_column
-
-  % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
-  opt = setOptions('vismotion');
-  opt.model.file = fullfile(getDummyDataDir(),  'models', ...
-                            'model-faceRepetitionNoTrialType_smdl.json');
-
-  % WHEN
-  fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
-
-  % THEN
-  load(fullpathOnsetFilename);
-
-  assertEqual(names, {'famous', 'unfamiliar'});
-  assertEqual(numel(onsets{1}), 52);
-  assertEqual(durations, {zeros(1, 52), zeros(1, 52)});
-
-  cleanUp(fullpathOnsetFilename);
-
-end
-
 function test_convertOnsetTsvToMat_transformers
 
   % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-vismotion_events.tsv');
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(),  'models', ...
                             'model-vismotionWithTransformation_smdl.json');
@@ -45,7 +25,9 @@ function test_convertOnsetTsvToMat_transformers
   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
 
   % THEN
-  assertEqual(fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-vismotion_onsets.mat'), ...
+  assertEqual(fullfile(getDummyDataDir(), ...
+                       'tsv_files', ...
+                       'sub-01_task-vismotion_onsets.mat'), ...
               fullpathOnsetFilename);
   assertEqual(exist(fullpathOnsetFilename, 'file'), 2);
 
@@ -56,6 +38,24 @@ function test_convertOnsetTsvToMat_transformers
   assertEqual(durations, {2, 2});
 
   cleanUp(fullpathOnsetFilename);
+
+end
+
+function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
+  opt = setOptions('vismotion');
+  opt.model.file = fullfile(getDummyDataDir(),  'models', ...
+                            'model-vismotionWithTransformation_smdl.json');
+
+  opt.verbosity = 1;
+
+  % WHEN
+  assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
+                'convertOnsetTsvToMat:variableNotFound');
 
 end
 
@@ -77,7 +77,57 @@ function test_convertOnsetTsvToMat_transformers_with_dummy_regressors
   % THEN
   load(fullpathOnsetFilename);
 
-  assertEqual(names, {'VisMot'    'VisStat'    'dummyRegressor'});
+  assertEqual(names, {'VisMot', 'VisStat', 'dummyRegressor'});
+
+  cleanUp(fullpathOnsetFilename);
+
+end
+
+function test_convertOnsetTsvToMat_basic()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
+  opt = setOptions('vismotion');
+
+  % WHEN
+  fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
+
+  % THEN
+  assertEqual(fullfile(getDummyDataDir(), ...
+                       'tsv_files', ...
+                       'sub-01_task-vismotion_onsets.mat'), ...
+              fullpathOnsetFilename);
+  assertEqual(exist(fullpathOnsetFilename, 'file'), 2);
+
+  load(fullpathOnsetFilename);
+
+  assertEqual(names, {'VisMot', 'VisStat'});
+  assertEqual(onsets, {2, 4});
+  assertEqual(durations, {2, 2});
+
+  cleanUp(fullpathOnsetFilename);
+
+end
+
+function test_convertOnsetTsvToMat_input_from_non_trial_type_column
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
+  opt = setOptions('vismotion');
+  opt.model.file = fullfile(getDummyDataDir(),  'models', ...
+                            'model-faceRepetitionNoTrialType_smdl.json');
+
+  % WHEN
+  fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
+
+  % THEN
+  load(fullpathOnsetFilename);
+
+  assertEqual(names, {'famous', 'unfamiliar'});
+  assertEqual(numel(onsets{1}), 52);
+  assertEqual(durations, {zeros(1, 52), zeros(1, 52)});
 
   cleanUp(fullpathOnsetFilename);
 
@@ -104,24 +154,6 @@ function test_convertOnsetTsvToMat_no_condition_in_design_matrix
   assertEqual(names, {});
   assertEqual(onsets, {});
   assertEqual(durations, {});
-
-end
-
-function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
-
-  % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), ...
-                     'tsv_files', ...
-                     'sub-01_task-vismotion_events.tsv');
-  opt = setOptions('vismotion');
-  opt.model.file = fullfile(getDummyDataDir(),  'models', ...
-                            'model-vismotionWithTransformation_smdl.json');
-
-  opt.verbosity = 1;
-
-  % WHEN
-  assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
-                'convertOnsetTsvToMat:variableNotFound');
 
 end
 
@@ -167,34 +199,6 @@ function test_convertOnsetTsvToMat_missing_trial_type()
 
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
                 'convertOnsetTsvToMat:trialTypeNotFound');
-
-end
-
-function test_convertOnsetTsvToMat_basic()
-
-  % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), ...
-                     'tsv_files', ...
-                     'sub-01_task-vismotion_events.tsv');
-  opt = setOptions('vismotion');
-
-  % WHEN
-  fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
-
-  % THEN
-  assertEqual(fullfile(getDummyDataDir(), ...
-                       'tsv_files', ...
-                       'sub-01_task-vismotion_onsets.mat'), ...
-              fullpathOnsetFilename);
-  assertEqual(exist(fullpathOnsetFilename, 'file'), 2);
-
-  load(fullpathOnsetFilename);
-
-  assertEqual(names, {'VisMot', 'VisStat'});
-  assertEqual(onsets, {2, 4});
-  assertEqual(durations, {2, 2});
-
-  cleanUp(fullpathOnsetFilename);
 
 end
 
