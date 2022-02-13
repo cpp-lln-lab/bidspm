@@ -11,6 +11,38 @@ function test_suite = test_applyTransformersToEventsTsv %#ok<*STOUT>
 
 end
 
+function test_applyTransformersToEventsTsv_complex_filter()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  % Filter(Input, Query, By=None, Output=None):
+
+  transformers(1) = struct('Name', 'Filter', ...
+                           'Input', {{'face_type'}}, ...
+                           'Query', 'face_type==famous', ...
+                           'Output', 'Famous');
+  transformers(2) = struct('Name', 'Filter', ...
+                           'Input', {{'repetition_type'}}, ...
+                           'Query', 'repetition_type==1', ...
+                           'Output', 'FirstRep');
+  %   transformers(3) = struct('Name', 'And', ...
+  %                         'Input', {{'Famous', 'FirstRep'}}, ...
+  %                         'Output', 'FamousFirstRep');
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  % TH
+  assertEqual(fieldnames(newContent), {'Famous'; 'FirstRep'});
+  assertEqual(numel(newContent.Famous.onset), 104);
+  assertEqual(numel(newContent.FirstRep.onset), 104);
+
+  cleanUp();
+
+end
+
 function test_applyTransformersToEventsTsv_filter()
 
   % GIVEN
@@ -29,31 +61,7 @@ function test_applyTransformersToEventsTsv_filter()
 
   % TH
   assertEqual(fieldnames(newContent), {'Famous_1'});
-  assertEqual(numel(newContent.Famous_1.onset), 26);
-
-  cleanUp();
-
-end
-
-function test_applyTransformersToEventsTsv_complex_filter()
-
-  % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
-  tsvContent = bids.util.tsvread(tsvFile);
-
-  % Filter(Input, Query, By=None, Output=None):
-
-  transformers = struct('Name', 'Filter', ...
-                        'Input', 'trial_type', ...
-                        'Query', 'face_type==famous && repetition_type==1', ...
-                        'Output', 'Famous_1');
-
-  % WHEN
-  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
-
-  % TH
-  assertEqual(fieldnames(newContent), {'Famous_1'});
-  assertEqual(numel(newContent.Famous_1.onset), 26);
+  assertEqual(numel(newContent.Famous_1.onset), 104);
 
   cleanUp();
 

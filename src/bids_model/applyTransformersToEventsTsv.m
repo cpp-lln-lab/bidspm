@@ -50,35 +50,36 @@ function newContent = applyTransformersToEventsTsv(varargin)
       return
     end
 
-    input = getInput(transformers(iTrans));
+    inputs = getInput(transformers(iTrans));
     output = getOutput(transformers(iTrans));
 
-    for i = 1:numel(input)
-
-      [onset, duration] = applyTransformer(transformers(iTrans), input{i}, tsvContent);
-
+    for i = 1:numel(inputs)
+      [onset, duration] = applyTransformer(transformers(iTrans), inputs{i}, tsvContent);
       newContent.(output{i}) = struct('onset', onset, 'duration', duration);
-
     end
 
   end
 
 end
 
-function [onset, duration] = applyTransformer(transformer, input, tsvContent)
+function [onset, duration] = applyTransformer(transformer, inputs, tsvContent)
 
-  if isColumnHeader(input, tsvContent)
+  if iscell(inputs) && numel(inputs) == 1
+    input = inputs{1};
+  elseif ischar(inputs)
+    input = inputs;
+  end
 
-    % if we are dealing with column header and there is a "." in input
-    tokens = regexp(input, '\.', 'split');
+  tokens = regexp(input, '\.', 'split');
 
-    if strcmp(tokens{1}, 'trial_type')
+  % mostly assuming we are dealing with inputs from events TSV
+  if numel(tokens) > 1 && ...
+      ismember(tokens{1}, fieldnames(tsvContent)) && ...
+      ismember(tokens{2}, unique(tsvContent.(tokens{1})))
 
-      if numel(tokens) > 1 &&  ismember(tokens{2}, unique(tsvContent.trial_type))
-        idx = find(strcmp(tokens{2}, tsvContent.trial_type));
-        onset = tsvContent.onset(idx);
-      end
-    end
+    idx = find(strcmp(tokens{2}, tsvContent.(tokens{1})));
+    onset = tsvContent.onset(idx);
+    duration = tsvContent.duration(idx);
 
   end
 
@@ -101,22 +102,34 @@ function [onset, duration] = applyTransformer(transformer, input, tsvContent)
       onset = onset / value;
 
     case 'filter'
+
+      onset = zeros(size(tsvContent.onset));
+      duration = [];
+
       query = transformer.Query;
       if ~regexp(query, tokens{1})
         return
       end
-      if ~isempty(regexp(query, '==', 'match')) && iscellstr(tsvContent.(tokens{1}))
-        queryTokens = regexp(query, '==', 'split');
-        idx = strcmp(queryTokens{2}, tsvContent.(tokens{1}));
-        onset = tsvContent.onset(idx);
+
+      queryTokens = regexp(query, '==', 'split');
+      if numel(queryTokens) > 1
+
+        if iscellstr(tsvContent.(tokens{1}))
+          idx = strcmp(queryTokens{2}, tsvContent.(tokens{1}));
+          onset(idx) = 1;
+        end
+
+        if isnumeric(tsvContent.(tokens{1}))
+          idx = tsvContent.(tokens{1}) == str2num(queryTokens{2});
+          onset(idx) = 1;
+        end
+
       end
 
     otherwise
       notImplemented(mfilename(), sprintf('Transformer %s not implemented', name), true);
 
   end
-
-  duration = tsvContent.duration(idx);
 
 end
 
@@ -135,13 +148,4 @@ function output = getOutput(transformer)
       output = {output};
     end
   end
-end
-
-function status = isColumnHeader(someString, tsvContent)
-  %
-  % rough guess that we are dealing with something that comes from a TSV
-  %
-
-  status = ismember('.', someString) || ismember(someString, fieldnames(tsvContent));
-
 end
