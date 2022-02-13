@@ -200,7 +200,7 @@ function tsvContent = filterTransformer(transformer, tsvContent)
     tokens = regexp(inputs{i}, '\.', 'split');
 
     query = transformer.Query;
-    if ~regexp(query, tokens{1})
+    if isempty(regexp(query, tokens{1}, 'ONCE'))
       return
     end
 
@@ -209,14 +209,17 @@ function tsvContent = filterTransformer(transformer, tsvContent)
 
       if iscellstr(tsvContent.(tokens{1}))
         idx = strcmp(queryTokens{2}, tsvContent.(tokens{1}));
+        tmp(idx, 1) = tsvContent.(tokens{1})(idx);
+        tmp(~idx, 1) = repmat({''}, sum(~idx), 1);
       end
 
       if isnumeric(tsvContent.(tokens{1}))
         idx = tsvContent.(tokens{1}) == str2num(queryTokens{2});
+        tmp(idx, 1) = tsvContent.(tokens{1})(idx);
+        tmp(~idx, 1) = nan;
       end
 
-      tmp = zeros(size(tsvContent.onset));
-      tmp(idx) = 1;
+      tmp(idx, 1) = tsvContent.(tokens{1})(idx);
       tsvContent.(outputs{i}) = tmp;
 
     end
@@ -231,11 +234,17 @@ function tsvContent = andOrTransformer(transformer, tsvContent)
   outputs = getOutput(transformer);
 
   for i = 1:numel(inputs)
+
     if iscellstr(tsvContent.(inputs{i}))
       tmp(:, i) = cellfun('isempty', tsvContent.(inputs{i}));
+
     else
-      tmp(:, i) = logical(tsvContent.(inputs{i}));
+      tmp2 = tsvContent.(inputs{i});
+      tmp2(isnan(tmp2)) = 0;
+      tmp(:, i) = logical(tmp2);
+
     end
+
   end
 
   switch lower(transformer.Name)

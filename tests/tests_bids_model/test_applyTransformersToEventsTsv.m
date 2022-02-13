@@ -11,6 +11,22 @@ function test_suite = test_applyTransformersToEventsTsv %#ok<*STOUT>
 
 end
 
+function test_applyTransformersToEventsTsv_replace()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-FaceRepetitionBefore_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers(1).Name = 'Replace';
+  transformers(1).Input = {'onset'};
+  transformers(1).Replace = struct('famous', 'foo');
+
+  % Replace(Input, Replace, Attribute='value', Output=None)
+
+end
+
 function test_applyTransformersToEventsTsv_add_subtract
 
   % GIVEN
@@ -80,18 +96,6 @@ function test_applyTransformersToEventsTsv_constant()
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
   assertEqual(newContent.cst, ones(4, 1) * 2);
-
-end
-
-function test_applyTransformersToEventsTsv_replace()
-
-  % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), ...
-                     'tsv_files', ...
-                     'sub-01_task-vismotionForThreshold_events.tsv');
-  tsvContent = bids.util.tsvread(tsvFile);
-
-  % Replace(Input, Replace, Attribute='value', Output=None)
 
 end
 
@@ -217,6 +221,17 @@ function test_applyTransformersToEventsTsv_complex_filter_with_and()
                            'Input', {{'repetition_type'}}, ...
                            'Query', 'repetition_type==1', ...
                            'Output', 'FirstRep');
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  % THEN
+  assert(all(ismember({'Famous'; 'FirstRep'}, fieldnames(newContent))));
+  assertEqual(sum(strcmp(newContent.Famous, 'famous')), 52);
+  assertEqual(unique(newContent.Famous), {''; 'famous'});
+  assertEqual(nansum(newContent.FirstRep), 52);
+
+  % GIVEN
   transformers{3} = struct('Name', 'And', ...
                            'Input', {{'Famous', 'FirstRep'}}, ...
                            'Output', 'FamousFirstRep');
@@ -225,9 +240,6 @@ function test_applyTransformersToEventsTsv_complex_filter_with_and()
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
   % THEN
-  assert(all(ismember({'Famous'; 'FirstRep'}, fieldnames(newContent))));
-  assertEqual(sum(newContent.Famous), 52);
-  assertEqual(sum(newContent.FirstRep), 52);
   assertEqual(sum(newContent.FamousFirstRep), 26);
 
   cleanUp();
@@ -251,6 +263,7 @@ function test_applyTransformersToEventsTsv_filter()
   % THEN
   assert(all(ismember({'Famous_1'}, fieldnames(newContent))));
   assertEqual(numel(newContent.Famous_1), 104);
+  assertEqual(unique(newContent.Famous_1), {''; 'F1'});
 
   cleanUp();
 
