@@ -21,7 +21,8 @@ function newContent = applyTransformersToEventsTsv(varargin)
                             'Filter', ...
                             'And', ...
                             'Rename', ...
-                            'Delete', 'Select'};
+                            'Delete', 'Select', ...
+                            'Threshold'};
 
   p = inputParser;
 
@@ -68,10 +69,9 @@ function newContent = applyTransformersToEventsTsv(varargin)
 
     elseif ismember(lower(this_transformer.Name), {'rename', ...
                                                    'filter', ...
-                                                   'and', ...
-                                                   'or', ...
-                                                   'delete', ...
-                                                   'select'})
+                                                   'and', 'or', ...
+                                                   'delete', 'select', ...
+                                                   'threshold'})
       tsvContent = applyTransformer(this_transformer, tsvContent);
       newContent = tsvContent;
 
@@ -87,17 +87,15 @@ function varargout = applyTransformer(transformer, tsvContent, inputs)
     inputs = [];
   end
 
-  if iscell(inputs) && numel(inputs) == 1
-    input = inputs{1};
-  else
-    input = inputs;
-  end
-
   transformerName = lower(transformer.Name);
 
   if ismember(transformerName, {'add', 'subtract', 'multiply', 'divide'})
 
-    tokens = regexp(input, '\.', 'split');
+    if iscell(inputs) && numel(inputs) == 1
+      inputs = inputs{1};
+    end
+
+    tokens = regexp(inputs, '\.', 'split');
 
     % TODO assumes transformations are only on onsets
     % TODO assumes we are dealing with inputs from events TSV
@@ -158,8 +156,6 @@ function varargout = applyTransformer(transformer, tsvContent, inputs)
         queryTokens = regexp(query, '==', 'split');
         if numel(queryTokens) > 1
 
-          tsvContent.(outputs{i}) = zeros(size(tsvContent.onset));
-
           if iscellstr(tsvContent.(tokens{1}))
             idx = strcmp(queryTokens{2}, tsvContent.(tokens{1}));
           end
@@ -168,13 +164,19 @@ function varargout = applyTransformer(transformer, tsvContent, inputs)
             idx = tsvContent.(tokens{1}) == str2num(queryTokens{2});
           end
 
-          tsvContent.(outputs{i})(idx) = 1;
+          tmp = zeros(size(tsvContent.onset));
+          tmp(idx) = 1;
+          tsvContent.(outputs{i}) = tmp;
 
         end
 
       end
 
       varargout = {tsvContent};
+
+    case 'threshold'
+
+      varargout = {threshold(transformer, tsvContent)};
 
     case 'rename'
 
@@ -221,6 +223,58 @@ function varargout = applyTransformer(transformer, tsvContent, inputs)
     otherwise
       notImplemented(mfilename(), sprintf('Transformer %s not implemented', name), true);
 
+  end
+
+end
+
+function tsvContent = threshold(transformer, tsvContent)
+
+  inputs = getInput(transformer);
+  outputs = getOutput(transformer);
+
+  threshold = 0;
+  binarize = false;
+  above = true;
+  signed = true;
+
+  if isfield(transformer, 'Threshold')
+    threshold = transformer.Threshold;
+  end
+
+  if isfield(transformer, 'Binarize')
+    binarize = transformer.Binarize;
+  end
+
+  if isfield(transformer, 'Above')
+    above = transformer.Above;
+  end
+
+  if isfield(transformer, 'Signed')
+    signed = transformer.Signed;
+  end
+
+  for i = 1:numel(inputs)
+
+    valuesToThreshold = tsvContent.(inputs{i});
+
+    if ~signed
+      valuesToThreshold = abs(valuesToThreshold);
+    end
+
+    if above
+      idx = valuesToThreshold > threshold;
+    else
+      idx = valuesToThreshold < threshold;
+    end
+
+    tmp = zeros(size(tsvContent.(inputs{i})));
+    tmp(idx) = tsvContent.(inputs{i})(idx);
+
+    if binarize
+      tmp(idx) = 1;
+    end
+
+    tsvContent.(outputs{i}) = tmp;
   end
 
 end

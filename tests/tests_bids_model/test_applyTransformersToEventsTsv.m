@@ -11,6 +11,56 @@ function test_suite = test_applyTransformersToEventsTsv %#ok<*STOUT>
 
 end
 
+function test_applyTransformersToEventsTsv_threshold()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotionForThreshold_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  % Threshold(Input, Threshold=0, Binarize=False, Above=True, Signed=True, Output=None)
+
+  transformers = struct('Name', 'Threshold', ...
+                        'Input', {{'to_threshold'}});
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assertEqual(newContent.to_threshold, [1; 2; 0; 0]);
+
+  transformers = struct('Name', 'Threshold', ...
+                        'Input', {{'to_threshold'}}, ...
+                        'Threshold', 1);
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assertEqual(newContent.to_threshold, [0; 2; 0; 0]);
+
+  transformers = struct('Name', 'Threshold', ...
+                        'Input', {{'to_threshold'}}, ...
+                        'Binarize', true);
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assertEqual(newContent.to_threshold, [1; 1; 0; 0]);
+
+  transformers = struct('Name', 'Threshold', ...
+                        'Input', {{'to_threshold'}}, ...
+                        'Binarize', true, ...
+                        'Above', false);
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assertEqual(newContent.to_threshold, [0; 0; 1; 1]);
+
+  transformers = struct('Name', 'Threshold', ...
+                        'Input', {{'to_threshold'}}, ...
+                        'Threshold', 1, ...
+                        'Binarize', true, ...
+                        'Above', true, ...
+                        'Signed', false);
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assertEqual(newContent.to_threshold, [0; 1; 0; 1]);
+
+end
+
 function test_applyTransformersToEventsTsv_delete_select()
 
   % GIVEN
