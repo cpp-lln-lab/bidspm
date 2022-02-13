@@ -18,11 +18,11 @@ function test_applyTransformersToEventsTsv_combine_columns()
   tsvContent = bids.util.tsvread(tsvFile);
 
   transformers{1} = struct('Name', 'Filter', ...
-                           'Input', {{'face_type'}}, ...
+                           'Input', 'face_type', ...
                            'Query', 'face_type==famous', ...
                            'Output', 'Famous');
   transformers{2} = struct('Name', 'Filter', ...
-                           'Input', {{'repetition_type'}}, ...
+                           'Input', 'repetition_type', ...
                            'Query', 'repetition_type==1', ...
                            'Output', 'FirstRep');
   transformers{3} = struct('Name', 'And', ...
@@ -46,16 +46,68 @@ function test_applyTransformersToEventsTsv_combine_columns()
 
 end
 
-function test_applyTransformersToEventsTsv_replace()
+function test_applyTransformersToEventsTsv_replace_with_output()
 
-  % GIVEN
+  %% GIVEN
   tsvFile = fullfile(getDummyDataDir(), ...
                      'tsv_files', ...
                      'sub-01_task-FaceRepetitionBefore_events.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
 
   transformers(1).Name = 'Replace';
-  transformers(1).Input = {'face_type'};
+  transformers(1).Input = 'face_type';
+  transformers(1).Output = 'tmp';
+  transformers(1).Replace = struct('duration_0', 1);
+  transformers(1).Attribute = 'duration';
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  % THEN
+  assertEqual(unique(newContent.tmp), 1);
+
+end
+
+function test_applyTransformersToEventsTsv_touch()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-TouchBefore_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers{1} = struct('Name', 'Threshold', ...
+                           'Input', 'duration', ...
+                           'Binarize', true, ...
+                           'Output', 'tmp');
+  transformers{2} = struct('Name', 'Replace', ...
+                           'Input', 'tmp', ...
+                           'Output', 'duration', ...
+                           'Attribute', 'duration', ...
+                           'Replace', struct('duration_1', 1));
+  %   transformers{3} = struct('Name', 'Delete', ...
+  %                            'Input', {{'tmp', 'Famous', 'FirstRep'}});
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  newContent.duration;
+  % THEN
+  %   assertEqual(fieldnames(tsvContent), fieldnames(newContent));
+  %   assertEqual(unique(newContent.trial_type), {'FamousFirstRep'; 'face'});
+
+  cleanUp();
+
+end
+
+function test_applyTransformersToEventsTsv_replace()
+
+  %% GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-FaceRepetitionBefore_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers(1).Name = 'Replace';
+  transformers(1).Input = 'face_type';
   transformers(1).Replace = struct('famous', 'foo');
 
   % WHEN
@@ -64,9 +116,9 @@ function test_applyTransformersToEventsTsv_replace()
   % THEN
   assertEqual(unique(newContent.face_type), {'foo'; 'unfamiliar'});
 
-  % GIVEN
+  %% GIVEN
   transformers(1).Name = 'Replace';
-  transformers(1).Input = {'face_type'};
+  transformers(1).Input = 'face_type';
   transformers(1).Replace = struct('duration_0', 1);
   transformers(1).Attribute = 'duration';
 
@@ -85,14 +137,14 @@ function test_applyTransformersToEventsTsv_add_subtract
   tsvContent = bids.util.tsvread(tsvFile);
 
   transformers(1).Name = 'Subtract';
-  transformers(1).Input = {'onset'};
+  transformers(1).Input = 'onset';
   transformers(1).Value = 3;
-  transformers(1).Output = {'onset_minus_3'};
+  transformers(1).Output = 'onset_minus_3';
 
   transformers(2).Name = 'Add';
-  transformers(2).Input = {'onset'};
+  transformers(2).Input = 'onset';
   transformers(2).Value  = 1;
-  transformers(2).Output  = {'onset_plus_1'};
+  transformers(2).Output  = 'onset_plus_1';
 
   % WHEN
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
@@ -157,7 +209,7 @@ function test_applyTransformersToEventsTsv_filter_by()
   tsvContent = bids.util.tsvread(tsvFile);
 
   transformers{1} = struct('Name', 'Filter', ...
-                           'Input', {{'face_type'}}, ...
+                           'Input', 'face_type', ...
                            'Query', 'repetition_type==1', ...
                            'By', 'repetition_type', ...
                            'Output', 'face_type_repetition_1');
@@ -181,27 +233,27 @@ function test_applyTransformersToEventsTsv_threshold()
   % Threshold(Input, Threshold=0, Binarize=False, Above=True, Signed=True, Output=None)
 
   transformers = struct('Name', 'Threshold', ...
-                        'Input', {{'to_threshold'}});
+                        'Input', 'to_threshold');
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
   assertEqual(newContent.to_threshold, [1; 2; 0; 0]);
 
   transformers = struct('Name', 'Threshold', ...
-                        'Input', {{'to_threshold'}}, ...
+                        'Input', 'to_threshold', ...
                         'Threshold', 1);
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
   assertEqual(newContent.to_threshold, [0; 2; 0; 0]);
 
   transformers = struct('Name', 'Threshold', ...
-                        'Input', {{'to_threshold'}}, ...
+                        'Input', 'to_threshold', ...
                         'Binarize', true);
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
   assertEqual(newContent.to_threshold, [1; 1; 0; 0]);
 
   transformers = struct('Name', 'Threshold', ...
-                        'Input', {{'to_threshold'}}, ...
+                        'Input', 'to_threshold', ...
                         'Binarize', true, ...
                         'Above', false);
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
@@ -209,7 +261,7 @@ function test_applyTransformersToEventsTsv_threshold()
   assertEqual(newContent.to_threshold, [0; 0; 1; 1]);
 
   transformers = struct('Name', 'Threshold', ...
-                        'Input', {{'to_threshold'}}, ...
+                        'Input', 'to_threshold', ...
                         'Threshold', 1, ...
                         'Binarize', true, ...
                         'Above', true, ...
@@ -227,13 +279,13 @@ function test_applyTransformersToEventsTsv_delete_select()
   tsvContent = bids.util.tsvread(tsvFile);
 
   transformers = struct('Name', 'Delete', ...
-                        'Input', {{'face_type'}});
+                        'Input', 'face_type');
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
   assert(~(ismember({'face_type'}, fieldnames(newContent))));
 
   transformers = struct('Name', 'Select', ...
-                        'Input', {{'face_type'}});
+                        'Input', 'face_type');
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
   assertEqual({'face_type'}, fieldnames(newContent));
@@ -265,11 +317,11 @@ function test_applyTransformersToEventsTsv_complex_filter_with_and()
   tsvContent = bids.util.tsvread(tsvFile);
 
   transformers{1} = struct('Name', 'Filter', ...
-                           'Input', {{'face_type'}}, ...
+                           'Input', 'face_type', ...
                            'Query', 'face_type==famous', ...
                            'Output', 'Famous');
   transformers{2} = struct('Name', 'Filter', ...
-                           'Input', {{'repetition_type'}}, ...
+                           'Input', 'repetition_type', ...
                            'Query', 'repetition_type==1', ...
                            'Output', 'FirstRep');
 

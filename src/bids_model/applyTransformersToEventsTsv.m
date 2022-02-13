@@ -127,7 +127,9 @@ function varargout = applyTransformer(transformer, tsvContent)
     case 'delete'
 
       for i = 1:numel(inputs)
-        tsvContent = rmfield(tsvContent, inputs{i});
+        if isfield(tsvContent, inputs{i})
+          tsvContent = rmfield(tsvContent, inputs{i});
+        end
       end
 
       varargout = {tsvContent};
@@ -158,16 +160,7 @@ function tsvContent = replaceTransformers(transformer, tsvContent)
   inputs = getInput(transformer);
   outputs = getOutput(transformer);
 
-  attributes = {'value'};
-  if isfield(transformer, 'Attribute')
-    attributes = transformer.Attribute;
-  end
-  if ~iscell(attributes)
-    attributes = {attributes};
-  end
-  if strcmp(attributes, 'all')
-    attributes =  {'values', 'onset', 'duration'};
-  end
+  attributes =  getAttributesToReplace(transformer);
 
   replace = transformer.Replace;
 
@@ -175,18 +168,26 @@ function tsvContent = replaceTransformers(transformer, tsvContent)
 
     for ii = 1:numel(attributes)
 
-      toReplace = fieldnames(replace);
-
-      % to make sure that replacement are done in the original columns
-      % for onset and duration
-      if strcmp(inputs{i}, outputs{i}) && ...
-         ismember(lower(attributes{ii}), {'onset', 'duration'})
-
-        outputs{i} = lower(attributes{ii});
-
+      switch lower(attributes{ii})
+        case 'value'
+          if strcmp(inputs{i}, outputs{i})
+            this_output = tsvContent.(inputs{i});
+          else
+            this_output = tsvContent.(outputs{i});
+          end
+        case 'onset'
+          this_output = tsvContent.onset;
+          if strcmp(inputs{i}, outputs{i})
+            outputs{i} = 'onset';
+          end
+        case 'duration'
+          this_output = tsvContent.duration;
+          if strcmp(inputs{i}, outputs{i})
+            outputs{i} = 'duration';
+          end
       end
 
-      this_output = tsvContent.(outputs{i});
+      toReplace = fieldnames(replace);
 
       for iii = 1:numel(toReplace)
 
@@ -199,20 +200,7 @@ function tsvContent = replaceTransformers(transformer, tsvContent)
             this_input = tsvContent.duration;
         end
 
-        % because matlab keys in structure cannot be numbers
-        % it won't be easily possible to replace
-        % when the value to replace is a number,
-        % but it could be sort of OK for onset and duration
-        key = toReplace{iii};
-        if ismember(lower(attributes{ii}), {'onset', 'duration'})
-          key = strrep(key, [lower(attributes{ii}) '_'], '');
-          key = str2num(key);
-        end
-        if bids.internal.starts_with(key, [inputs{i} '_'])
-          key = strrep(key, [inputs{i} '_'], '');
-          key = str2num(key);
-        end
-
+        key = getKeyToReplace(inputs{i}, attributes{ii}, toReplace{iii});
         value = replace.(toReplace{iii});
 
         if ischar(key)
@@ -227,7 +215,7 @@ function tsvContent = replaceTransformers(transformer, tsvContent)
           end
           this_output(idx) = value;
 
-        elseif ischar(this_output) || iscellstr(this_output)
+        elseif iscellstr(this_output)
           if isnumeric(value)
             value = num2str(value);
           end
@@ -238,11 +226,40 @@ function tsvContent = replaceTransformers(transformer, tsvContent)
       end
 
       tsvContent.(outputs{i}) = this_output;
-
     end
 
   end
 
+end
+
+function key = getKeyToReplace(input, attribute, toReplace)
+  % because matlab keys in structure cannot be numbers
+  % it won't be easily possible to replace
+  % when the value to replace is a number,
+  % but it could be sort of OK for onset and duration
+  key = toReplace;
+  if ismember(lower(attribute), {'onset', 'duration'})
+    key = strrep(key, [lower(attribute) '_'], '');
+    key = str2num(key);
+  end
+  if bids.internal.starts_with(key, [input '_'])
+    key = strrep(key, [input '_'], '');
+    key = str2num(key);
+  end
+
+end
+
+function attributes =  getAttributesToReplace(transformer)
+  attributes = {'value'};
+  if isfield(transformer, 'Attribute')
+    attributes = transformer.Attribute;
+  end
+  if ~iscell(attributes)
+    attributes = {attributes};
+  end
+  if strcmp(attributes, 'all')
+    attributes =  {'values', 'onset', 'duration'};
+  end
 end
 
 function tsvContent = basicTransformers(transformer, tsvContent)
