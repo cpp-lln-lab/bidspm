@@ -79,9 +79,11 @@ function varargout = applyTransformer(transformer, inputs, tsvContent)
     input = inputs;
   end
 
+  transformerName = lower(transformer.Name);
+
   tokens = regexp(input, '\.', 'split');
 
-  if ismember(lower(transformer.Name), {'add', 'subtract', 'multiply', 'divide'})
+  if ismember(transformerName, {'add', 'subtract', 'multiply', 'divide'})
 
     % TODO assumes transformations are only on onsets
     % TODO assumes we are dealing with inputs from events TSV
@@ -101,7 +103,7 @@ function varargout = applyTransformer(transformer, inputs, tsvContent)
 
     value = transformer.Value;
 
-    switch lower(transformer.Name)
+    switch transformerName
 
       case 'add'
         onset = onset + value;
@@ -124,7 +126,7 @@ function varargout = applyTransformer(transformer, inputs, tsvContent)
 
   output = getOutput(transformer);
 
-  switch lower(transformer.Name)
+  switch transformerName
 
     case 'filter'
 
@@ -152,8 +154,23 @@ function varargout = applyTransformer(transformer, inputs, tsvContent)
 
       varargout = {tsvContent};
 
-      %     case 'and'
-      %       tokens
+    case {'and', 'or'}
+
+      for i = 1:numel(input)
+        if iscellstr(tsvContent.(input{i}))
+          tmp(:, i) = cellfun('isempty', tsvContent.(input{i}));
+        else
+          tmp(:, i) = logical(tsvContent.(input{i}));
+        end
+      end
+
+      if strcmp(transformerName, 'and')
+        tsvContent.(output{1}) = all(tmp, 2);
+      elseif strcmp(transformerName, 'or')
+        tsvContent.(output{1}) = any(tmp, 2);
+      end
+
+      varargout = {tsvContent};
 
     otherwise
       notImplemented(mfilename(), sprintf('Transformer %s not implemented', name), true);

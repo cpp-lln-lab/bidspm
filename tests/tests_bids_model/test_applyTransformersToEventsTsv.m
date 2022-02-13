@@ -11,7 +11,7 @@ function test_suite = test_applyTransformersToEventsTsv %#ok<*STOUT>
 
 end
 
-function test_applyTransformersToEventsTsv_complex_filter()
+function test_applyTransformersToEventsTsv_complex_filter_with_and()
 
   % GIVEN
   tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
@@ -27,17 +27,18 @@ function test_applyTransformersToEventsTsv_complex_filter()
                            'Input', {{'repetition_type'}}, ...
                            'Query', 'repetition_type==1', ...
                            'Output', 'FirstRep');
-  %   transformers{3} = struct('Name', 'And', ...
-  %                         'Input', {{'Famous', 'FirstRep'}}, ...
-  %                         'Output', 'FamousFirstRep');
+  transformers{3} = struct('Name', 'And', ...
+                           'Input', {{'Famous', 'FirstRep'}}, ...
+                           'Output', 'FamousFirstRep');
 
   % WHEN
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
   % THEN
   assert(all(ismember({'Famous'; 'FirstRep'}, fieldnames(newContent))));
-  assertEqual(numel(newContent.Famous), 104);
-  assertEqual(numel(newContent.FirstRep), 104);
+  assertEqual(sum(newContent.Famous), 52);
+  assertEqual(sum(newContent.FirstRep), 52);
+  assertEqual(sum(newContent.FamousFirstRep), 26);
 
   cleanUp();
 
