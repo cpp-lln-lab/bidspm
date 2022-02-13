@@ -8,6 +8,20 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_returnModelNode_errors()
+
+  content = createEmptyStatsModel();
+
+  assertExceptionThrown(@()returnModelNode(content, 'foo'), ...
+                        'returnModelNode:wrongNodeType');
+
+  content = createEmptyStatsModel();
+  content.Nodes{3}  = [];
+  assertExceptionThrown(@()returnModelNode(content, 'missingModelNode'), ...
+                        'returnModelNode:wrongNodeType');
+
+end
+
 function test_getBidsTransformers_basic()
 
   opt = setOptions('vismotionWithTransformation');
@@ -50,6 +64,19 @@ function test_getVariablesToConvolve()
 
 end
 
+function test_returnModelNode_struct()
+
+  content.Nodes = struct('Level', 'Run');
+  content.Nodes(2).Level = 'Subject';
+
+  [~, iStep] = returnModelNode(content, 'run');
+  assertEqual(iStep, 1);
+
+  [~, iStep] = returnModelNode(content, 'Subject');
+  assertEqual(iStep, 2);
+
+end
+
 function test_returnModelNode()
 
   content = createEmptyStatsModel();
@@ -60,10 +87,6 @@ function test_returnModelNode()
 
   [~, iStep] = returnModelNode(content, 'dataset');
   assertEqual(iStep, [3; 4]);
-
-  assertExceptionThrown( ...
-                        @()returnModelNode(content, 'foo'), ...
-                        'returnModelNode:missingModelNode');
 
   modelFile = fullfile(pwd, 'model.json');
   bids.util.jsonencode(modelFile, content);
