@@ -84,7 +84,7 @@ function bidsChangeSuffix(varargin)
         bf = bids.File(outputFile);
         json_file = fullfile(fileparts(data{iFile}), bf.json_filename);
         bids.util.jsonencode(json_file, metadata{iFile});
-        
+
       end
 
     elseif ~opt.dryRun
@@ -92,7 +92,7 @@ function bidsChangeSuffix(varargin)
       bf = bids.File(outputFile);
       json_file = fullfile(fileparts(data{iFile}), bf.json_filename);
       bids.util.jsonencode(json_file, metadata{iFile});
-      
+
     end
 
     createdFiles{end + 1, 1} = newName;
@@ -100,7 +100,7 @@ function bidsChangeSuffix(varargin)
   end
 
   cleanUpWorkflow(opt);
-  
+
   % remove old side car JSON files
   if ~opt.dryRun
     for i = 1:numel(metafiles)
