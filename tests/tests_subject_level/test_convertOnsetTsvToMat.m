@@ -11,6 +11,28 @@ function test_suite = test_convertOnsetTsvToMat %#ok<*STOUT>
 
 end
 
+function test_convertOnsetTsvToMat_input_from_non_trial_type_column
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
+  opt = setOptions('vismotion');
+  opt.model.file = fullfile(getDummyDataDir(),  'models', ...
+                            'model-faceRepetitionNoTrialType_smdl.json');
+
+  % WHEN
+  fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
+
+  % THEN
+  load(fullpathOnsetFilename);
+
+  assertEqual(names, {'famous', 'unfamiliar'});
+  assertEqual(numel(onsets{1}), 52);
+  assertEqual(durations, {zeros(1, 52), zeros(1, 52)});
+
+  cleanUp(fullpathOnsetFilename);
+
+end
+
 function test_convertOnsetTsvToMat_transformers
 
   % GIVEN
@@ -145,19 +167,6 @@ function test_convertOnsetTsvToMat_missing_trial_type()
 
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
                 'convertOnsetTsvToMat:trialTypeNotFound');
-
-end
-
-function test_convertOnsetTsvToMat_no_trial_type_column()
-
-  % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), ...
-                     'tsv_files', ...
-                     'sub-01_task-vismotion_desc-noTrialType_events.tsv');
-  opt = setOptions('vismotion');
-
-  assertExceptionThrown(@() convertOnsetTsvToMat(opt, tsvFile), ...
-                        'convertOnsetTsvToMat:noTrialType');
 
 end
 

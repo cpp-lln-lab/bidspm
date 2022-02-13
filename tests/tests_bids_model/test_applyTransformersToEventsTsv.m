@@ -35,6 +35,30 @@ function test_applyTransformersToEventsTsv_filter()
 
 end
 
+function test_applyTransformersToEventsTsv_complex_filter()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  % Filter(Input, Query, By=None, Output=None):
+
+  transformers = struct('Name', 'Filter', ...
+                        'Input', 'trial_type', ...
+                        'Query', 'face_type==famous && repetition_type==1', ...
+                        'Output', 'Famous_1');
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  % TH
+  assertEqual(fieldnames(newContent), {'Famous_1'});
+  assertEqual(numel(newContent.Famous_1.onset), 26);
+
+  cleanUp();
+
+end
+
 function test_applyTransformersToEventsTsv_several_inputs_outputs()
 
   % GIVEN

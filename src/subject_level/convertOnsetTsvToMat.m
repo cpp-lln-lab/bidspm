@@ -28,16 +28,6 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   tsvContent = bids.util.tsvread(tsvFile);
 
-  if ~isfield(tsvContent, 'trial_type')
-
-    msg = sprintf('%s\n%s', ...
-                  'There was no trial_type field in this file:', ...
-                  tsvFile);
-    errorID = 'noTrialType';
-    errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
-
-  end
-
   variablesToConvolve = getVariablesToConvolve(opt.model.file, 'run');
 
   designMatrx = getBidsDesignMatrix(opt.model.file, 'run');
@@ -46,10 +36,6 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   names = {};
   onsets = {};
   durations = {};
-
-  % trial types from events.tsv
-  isTrialType = strfind(variablesToConvolve, 'trial_type.');
-  trialTypes = tsvContent.trial_type;
 
   % transformed values
   transformers = getBidsTransformers(opt.model.file);
@@ -61,9 +47,13 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
     variableNotFound = false;
     extra = '';
 
-    if bids.internal.starts_with(variablesToConvolve{iCond}, 'trial_type.')
+    % first assume the input is from events.tsv
+    tokens = regexp(variablesToConvolve{iCond}, '\.', 'split');
 
-      conditionName = rmTrialTypeStr(variablesToConvolve{iCond});
+    if ismember(tokens{1}, fieldnames(tsvContent))
+
+      trialTypes = tsvContent.(tokens{1});
+      conditionName = strjoin(tokens(2:end), '.');
 
       idx = find(strcmp(conditionName, trialTypes));
 
