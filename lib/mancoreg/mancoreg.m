@@ -59,7 +59,7 @@ function mancoreg(varargin)
 
   is_file = @(x) exist(x, 'file')==2;
 
-  default_sliderStep = '0.01';
+  default_sliderStep = 0.01;
   default_file = [];
 
   addParameter(p, 'targetimage', default_file, is_file);
