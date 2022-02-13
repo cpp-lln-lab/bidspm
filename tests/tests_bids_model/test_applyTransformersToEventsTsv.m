@@ -20,10 +20,26 @@ function test_applyTransformersToEventsTsv_replace()
   tsvContent = bids.util.tsvread(tsvFile);
 
   transformers(1).Name = 'Replace';
-  transformers(1).Input = {'onset'};
+  transformers(1).Input = {'face_type'};
   transformers(1).Replace = struct('famous', 'foo');
 
-  % Replace(Input, Replace, Attribute='value', Output=None)
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  % THEN
+  assertEqual(unique(newContent.face_type), {'foo'; 'unfamiliar'});
+
+  % GIVEN
+  transformers(1).Name = 'Replace';
+  transformers(1).Input = {'face_type'};
+  transformers(1).Replace = struct('duration_0', 1);
+  transformers(1).Attribute = 'duration';
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  % THEN
+  assertEqual(unique(newContent.duration), 1);
 
 end
 

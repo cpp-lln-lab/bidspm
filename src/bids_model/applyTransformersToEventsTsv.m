@@ -8,6 +8,7 @@ function newContent = applyTransformersToEventsTsv(varargin)
   %
   % :param tsvContent:
   % :type tsvContent: structure
+  %
   % :param transformers:
   % :type transformers: structure
   %
@@ -22,6 +23,7 @@ function newContent = applyTransformersToEventsTsv(varargin)
                             'And', 'Or', ...
                             'Rename', ...
                             'Delete', 'Select', 'Constant', 'Copy', ...
+                            'Replace', ...
                             'Threshold'};
 
   p = inputParser;
@@ -58,17 +60,8 @@ function newContent = applyTransformersToEventsTsv(varargin)
       return
     end
 
-    if ismember(lower(this_transformer.Name), {'add', 'subtract', 'multiply', 'divide'})
-
-      tsvContent = applyTransformer(this_transformer, tsvContent);
-      newContent = tsvContent;
-
-    else
-
-      tsvContent = applyTransformer(this_transformer, tsvContent);
-      newContent = tsvContent;
-
-    end
+    tsvContent = applyTransformer(this_transformer, tsvContent);
+    newContent = tsvContent;
 
   end
 
@@ -103,6 +96,10 @@ function varargout = applyTransformer(transformer, tsvContent)
       end
 
       varargout = {tsvContent};
+
+    case 'replace'
+
+      varargout = {replaceTransformers(transformer, tsvContent)};
 
     case 'constant'
 
@@ -147,6 +144,77 @@ function varargout = applyTransformer(transformer, tsvContent)
       notImplemented(mfilename(), ...
                      sprintf('Transformer %s not implemented', transformer.Name), ...
                      true);
+
+  end
+
+end
+
+function tsvContent = replaceTransformers(transformer, tsvContent)
+
+  inputs = getInput(transformer);
+  outputs = getOutput(transformer);
+
+  attributes = {'value'};
+  if isfield(transformer, 'Attribute')
+    attributes = transformer.Attribute;
+  end
+  if ~iscell(attributes)
+    attributes = {attributes};
+  end
+  if strcmp(attributes, 'all')
+    attributes =  {'values', 'onset', 'duration'};
+  end
+
+  replace = transformer.Replace;
+
+  for i = 1:numel(inputs)
+
+    for ii = 1:numel(attributes)
+
+      switch lower(attributes{ii})
+        case 'value'
+          this_input = tsvContent.(inputs{i});
+        case 'onset'
+          this_input = tsvContent.onset;
+        case 'duration'
+          this_input = tsvContent.duration;
+      end
+
+      tmp = this_input;
+
+      toReplace = fieldnames(replace);
+      for iii = 1:numel(toReplace)
+
+        % because matlab keys in structure cannot be numbers
+        % it won't be easily possible to replace
+        % when the value to replace is a number,
+        % but it could be sort of OK for onset and duration
+        key = toReplace{iii};
+        if ismember(lower(attributes{ii}), {'onset', 'duration'})
+          key = strrep(key, [lower(attributes{ii}) '_'], '');
+          key = str2num(key);
+        end
+
+        value = replace.(toReplace{iii});
+
+        if ischar(key)
+          idx = strcmp(key, this_input);
+          tmp(idx) = repmat({value}, sum(idx), 1);
+        elseif isnumeric(key)
+          idx = this_input == key;
+          tmp(idx) = value;
+        end
+
+      end
+
+      % to make sure that replacement are done in the original columns
+      % when necessary
+      if strcmp(inputs{i}, outputs{i}) && ismember(lower(attributes{ii}), {'onset', 'duration'})
+        outputs{i} = lower(attributes{ii});
+      end
+      tsvContent.(outputs{i}) = tmp;
+
+    end
 
   end
 
