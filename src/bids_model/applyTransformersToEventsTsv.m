@@ -45,6 +45,8 @@ function newContent = applyTransformersToEventsTsv(varargin)
     return
   end
 
+  printToScreen('\n');
+
   for iTrans = 1:numel(transformers)
 
     if iscell(transformers)
@@ -70,6 +72,8 @@ end
 function varargout = applyTransformer(transformer, tsvContent)
 
   transformerName = lower(transformer.Name);
+
+  printToScreen(sprintf('Applying transformer ''%s''\n', transformerName));
 
   inputs = getInput(transformer);
   outputs = getOutput(transformer);
@@ -171,19 +175,29 @@ function tsvContent = replaceTransformers(transformer, tsvContent)
 
     for ii = 1:numel(attributes)
 
-      switch lower(attributes{ii})
-        case 'value'
-          this_input = tsvContent.(inputs{i});
-        case 'onset'
-          this_input = tsvContent.onset;
-        case 'duration'
-          this_input = tsvContent.duration;
+      toReplace = fieldnames(replace);
+
+      % to make sure that replacement are done in the original columns
+      % for onset and duration
+      if strcmp(inputs{i}, outputs{i}) && ...
+         ismember(lower(attributes{ii}), {'onset', 'duration'})
+
+        outputs{i} = lower(attributes{ii});
+
       end
 
-      tmp = this_input;
+      this_output = tsvContent.(outputs{i});
 
-      toReplace = fieldnames(replace);
       for iii = 1:numel(toReplace)
+
+        switch lower(attributes{ii})
+          case 'value'
+            this_input = tsvContent.(inputs{i});
+          case 'onset'
+            this_input = tsvContent.onset;
+          case 'duration'
+            this_input = tsvContent.duration;
+        end
 
         % because matlab keys in structure cannot be numbers
         % it won't be easily possible to replace
@@ -194,25 +208,36 @@ function tsvContent = replaceTransformers(transformer, tsvContent)
           key = strrep(key, [lower(attributes{ii}) '_'], '');
           key = str2num(key);
         end
+        if bids.internal.starts_with(key, [inputs{i} '_'])
+          key = strrep(key, [inputs{i} '_'], '');
+          key = str2num(key);
+        end
 
         value = replace.(toReplace{iii});
 
         if ischar(key)
           idx = strcmp(key, this_input);
-          tmp(idx) = repmat({value}, sum(idx), 1);
         elseif isnumeric(key)
           idx = this_input == key;
-          tmp(idx) = value;
+        end
+
+        if isnumeric(this_output)
+          if ischar(value)
+            this_output = num2cell(this_output);
+          end
+          this_output(idx) = value;
+
+        elseif ischar(this_output) || iscellstr(this_output)
+          if isnumeric(value)
+            value = num2str(value);
+          end
+          this_output(idx) = repmat({value}, sum(idx), 1);
+
         end
 
       end
 
-      % to make sure that replacement are done in the original columns
-      % when necessary
-      if strcmp(inputs{i}, outputs{i}) && ismember(lower(attributes{ii}), {'onset', 'duration'})
-        outputs{i} = lower(attributes{ii});
-      end
-      tsvContent.(outputs{i}) = tmp;
+      tsvContent.(outputs{i}) = this_output;
 
     end
 

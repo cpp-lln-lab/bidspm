@@ -11,6 +11,41 @@ function test_suite = test_applyTransformersToEventsTsv %#ok<*STOUT>
 
 end
 
+function test_applyTransformersToEventsTsv_combine_columns()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers{1} = struct('Name', 'Filter', ...
+                           'Input', {{'face_type'}}, ...
+                           'Query', 'face_type==famous', ...
+                           'Output', 'Famous');
+  transformers{2} = struct('Name', 'Filter', ...
+                           'Input', {{'repetition_type'}}, ...
+                           'Query', 'repetition_type==1', ...
+                           'Output', 'FirstRep');
+  transformers{3} = struct('Name', 'And', ...
+                           'Input', {{'Famous', 'FirstRep'}}, ...
+                           'Output', 'tmp');
+  transformers{4} = struct('Name', 'Replace', ...
+                           'Input', 'tmp', ...
+                           'Output', 'trial_type', ...
+                           'Replace', struct('tmp_1', 'FamousFirstRep'));
+  transformers{5} = struct('Name', 'Delete', ...
+                           'Input', {{'tmp', 'Famous', 'FirstRep'}});
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  % THEN
+  assertEqual(fieldnames(tsvContent), fieldnames(newContent));
+  assertEqual(unique(newContent.trial_type), {'FamousFirstRep'; 'face'});
+
+  cleanUp();
+
+end
+
 function test_applyTransformersToEventsTsv_replace()
 
   % GIVEN
