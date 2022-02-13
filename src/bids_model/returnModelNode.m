@@ -11,12 +11,19 @@ function [node, iNode] = returnModelNode(model, nodeType)
     model.Nodes = {model.Nodes};
   end
 
-  % TODO should probably be made more robust in case model.Nodes is a structure
-  levels = cellfun(@(x) lower(x.Level), model.Nodes, 'UniformOutput', false);
+  if iscell(model.Nodes)
+    levels = cellfun(@(x) lower(x.Level), model.Nodes, 'UniformOutput', false);
+  elseif isstruct(model.Nodes)
+    levels = lower({model.Nodes.Level}');
+  end
 
   idx = ismember(levels, lower(nodeType));
   if any(idx)
-    node = model.Nodes{idx};
+    if iscell(model.Nodes)
+      node = model.Nodes{idx};
+    elseif isstruct(model.Nodes)
+      node = model.Nodes(idx);
+    end
     iNode = find(idx);
   else
     msg = sprintf('could not find a model node of type %s', nodeType);
