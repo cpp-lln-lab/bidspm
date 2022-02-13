@@ -25,7 +25,11 @@ function data = getEventsData(tsvFile, modelFile, nodeType)
     conditions = cellfun(@(x) strrep(x, 'trial_type.', ''), tmp, 'UniformOutput', false);
   end
 
-  data.conditions = conditions;
+  if numel(conditions) == 0
+    data = [];
+  else
+    data.conditions = conditions;
+  end
 
   for iCdt = 1:numel(conditions)
 

@@ -25,6 +25,10 @@ function onsetsTsvFile = onsetsMatToTsv(varargin)
 
   tsvContent = struct('onset', [], 'duration', [], 'trial_type', {{}});
 
+  if numel(names) == 0
+    return
+  end
+
   for iCond = 1:numel(names)
     tsvContent.trial_type = cat(1, tsvContent.trial_type, ...
                                 repmat(names(iCond), numel(durations{iCond}), 1)); %#ok<*USENS>

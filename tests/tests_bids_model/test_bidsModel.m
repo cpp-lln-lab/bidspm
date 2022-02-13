@@ -77,6 +77,15 @@ function test_returnModelNode_struct()
 
 end
 
+function test_getVariablesToConvolve_warning()
+
+  opt = setOptions('vislocalizer');
+
+  assertWarning(@()getVariablesToConvolve(opt.model.file, 'dataset'), ...
+                'getVariablesToConvolve:noVariablesToConvolve');
+
+end
+
 function test_returnModelNode()
 
   content = createEmptyStatsModel();
