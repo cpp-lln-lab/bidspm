@@ -11,6 +11,110 @@ function test_suite = test_applyTransformersToEventsTsv %#ok<*STOUT>
 
 end
 
+function test_applyTransformersToEventsTsv_add_subtract
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-vismotion_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers(1).Name = 'Subtract';
+  transformers(1).Input = {'onset'};
+  transformers(1).Value = 3;
+  transformers(1).Output = {'onset_minus_3'};
+
+  transformers(2).Name = 'Add';
+  transformers(2).Input = {'onset'};
+  transformers(2).Value  = 1;
+  transformers(2).Output  = {'onset_plus_1'};
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  % THEN
+  assert(all(ismember({'onset_plus_1'; 'onset_minus_3'}, fieldnames(newContent))));
+  assertEqual(newContent.onset_plus_1, [3; 5]);
+  assertEqual(newContent.onset_minus_3, [-1; 1]);
+
+  cleanUp();
+
+end
+
+function test_applyTransformersToEventsTsv_copy()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers = struct('Name', 'Copy', ...
+                        'Input', {{'face_type', 'repetition_type'}}, ...
+                        'Output', {{'foo', 'bar'}});
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assert(all(ismember({'foo'; 'bar'}, fieldnames(newContent))));
+  assertEqual(newContent.foo, newContent.face_type);
+  assertEqual(newContent.bar, newContent.repetition_type);
+
+end
+
+function test_applyTransformersToEventsTsv_constant()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotionForThreshold_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers{1} = struct('Name', 'Constant', ...
+                           'Output', 'cst');
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assertEqual(newContent.cst, ones(4, 1));
+
+  transformers{1} = struct('Name', 'Constant', ...
+                           'Value', 2, ...
+                           'Output', 'cst');
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assertEqual(newContent.cst, ones(4, 1) * 2);
+
+end
+
+function test_applyTransformersToEventsTsv_replace()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotionForThreshold_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  % Replace(Input, Replace, Attribute='value', Output=None)
+
+end
+
+function test_applyTransformersToEventsTsv_filter_by()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers{1} = struct('Name', 'Filter', ...
+                           'Input', {{'face_type'}}, ...
+                           'Query', 'repetition_type==1', ...
+                           'By', 'repetition_type', ...
+                           'Output', 'face_type_repetition_1');
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  % THEN
+  % TODO
+
+end
+
 function test_applyTransformersToEventsTsv_threshold()
 
   % GIVEN
@@ -93,8 +197,9 @@ function test_applyTransformersToEventsTsv_rename()
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
   assert(all(ismember({'foo'; 'bar'}, fieldnames(newContent))));
-  assertEqual(newContent.foo, newContent.face_type);
-  assertEqual(newContent.bar, newContent.repetition_type);
+  assert(all(~ismember({'face_type'; 'repetition_type'}, fieldnames(newContent))));
+  assertEqual(newContent.foo, tsvContent.face_type);
+  assertEqual(newContent.bar, tsvContent.repetition_type);
 
 end
 
@@ -103,8 +208,6 @@ function test_applyTransformersToEventsTsv_complex_filter_with_and()
   % GIVEN
   tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionBefore_events.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
-
-  % Filter(Input, Query, By=None, Output=None):
 
   transformers{1} = struct('Name', 'Filter', ...
                            'Input', {{'face_type'}}, ...
@@ -137,8 +240,6 @@ function test_applyTransformersToEventsTsv_filter()
   tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-FaceRepetitionAfter_events.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
 
-  % Filter(Input, Query, By=None, Output=None):
-
   transformers = struct('Name', 'Filter', ...
                         'Input', 'trial_type', ...
                         'Query', 'trial_type==F1', ...
@@ -150,27 +251,6 @@ function test_applyTransformersToEventsTsv_filter()
   % THEN
   assert(all(ismember({'Famous_1'}, fieldnames(newContent))));
   assertEqual(numel(newContent.Famous_1), 104);
-
-  cleanUp();
-
-end
-
-function test_applyTransformersToEventsTsv_several_inputs_outputs()
-
-  % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-vismotion_events.tsv');
-  tsvContent = bids.util.tsvread(tsvFile);
-
-  transformers = struct('Name', 'Subtract', ...
-                        'Input', {{'trial_type.VisMot', 'trial_type.VisStat'}}, ...
-                        'Value', 3, ...
-                        'Output', {{'VisMot', 'VisStat'}});
-
-  % WHEN
-  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
-
-  % TH
-  assertEqual(fieldnames(newContent), {'VisMot'; 'VisStat'});
 
   cleanUp();
 
@@ -190,28 +270,6 @@ function test_applyTransformersToEventsTsv_no_transformation()
 
   % THEN
   assertEqual(newContent, struct([]));
-
-  cleanUp();
-
-end
-
-function test_applyTransformersToEventsTsv_basic
-
-  % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-vismotion_events.tsv');
-  tsvContent = bids.util.tsvread(tsvFile);
-
-  opt.model.file = fullfile(getDummyDataDir(),  'models', ...
-                            'model-vismotionWithTransformation_smdl.json');
-  transformers = getBidsTransformers(opt.model.file);
-
-  % WHEN
-  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
-
-  % THEN
-  assertEqual(fieldnames(newContent), {'VisMot'; 'VisStat'});
-  assertEqual(newContent.VisMot, struct('onset', -1, 'duration', 2));
-  assertEqual(newContent.VisStat, struct('onset', 5, 'duration', 2));
 
   cleanUp();
 
