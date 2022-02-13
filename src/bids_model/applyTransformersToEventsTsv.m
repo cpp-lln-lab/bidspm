@@ -17,14 +17,16 @@ function newContent = applyTransformersToEventsTsv(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  SUPPORTED_TRANSFORMERS = {'Add', 'Subtract', 'Multiply', 'Divide', 'Filter'};
+  SUPPORTED_TRANSFORMERS = {'Add', 'Subtract', 'Multiply', 'Divide', 'Filter', 'And'};
 
   p = inputParser;
 
   default_transformers = 'transformers';
 
+  isStructOrCell = @(x) isstruct(x) || iscell(x);
+
   addRequired(p, 'tsvContent', @isstruct);
-  addOptional(p, 'transformers', default_transformers, @isstruct);
+  addOptional(p, 'transformers', default_transformers, isStructOrCell);
 
   parse(p, varargin{:});
 
@@ -38,73 +40,93 @@ function newContent = applyTransformersToEventsTsv(varargin)
 
   for iTrans = 1:numel(transformers)
 
-    % TODO make transformers more general
-    % - assumes inputs can only be from TSV?
-    %   (therefore means that transformations cannot be "chained")
-    % - assumes transformations are only on onsets
-    if ~ismember(transformers(iTrans).Name, SUPPORTED_TRANSFORMERS)
+    if iscell(transformers)
+      this_transformer = transformers{iTrans};
+    elseif isstruct(transformers)
+      this_transformer = transformers(iTrans);
+    end
+
+    if ~ismember(this_transformer.Name, SUPPORTED_TRANSFORMERS)
       notImplemented(mfilename(), ...
-                     sprintf('Transformer %s not implemented', transformers(iTrans).Name), ...
+                     sprintf('Transformer %s not implemented', this_transformer.Name), ...
                      true);
-      newContent = struct([]);
       return
     end
 
-    inputs = getInput(transformers(iTrans));
-    output = getOutput(transformers(iTrans));
+    inputs = getInput(this_transformer);
+    output = getOutput(this_transformer);
 
-    for i = 1:numel(inputs)
-      [onset, duration] = applyTransformer(transformers(iTrans), inputs{i}, tsvContent);
-      newContent.(output{i}) = struct('onset', onset, 'duration', duration);
+    if ismember(lower(this_transformer.Name), {'add', 'subtract', 'multiply', 'divide'})
+      for i = 1:numel(inputs)
+        [onset, duration] = applyTransformer(this_transformer, inputs{i}, tsvContent);
+        newContent.(output{i}) = struct('onset', onset, 'duration', duration);
+      end
+
+    elseif ismember(lower(this_transformer.Name), {'filter', 'and', 'or'})
+      tsvContent = applyTransformer(this_transformer, inputs, tsvContent);
+      newContent = tsvContent;
     end
 
   end
 
 end
 
-function [onset, duration] = applyTransformer(transformer, inputs, tsvContent)
+function varargout = applyTransformer(transformer, inputs, tsvContent)
 
   if iscell(inputs) && numel(inputs) == 1
     input = inputs{1};
-  elseif ischar(inputs)
+  else
     input = inputs;
   end
 
   tokens = regexp(input, '\.', 'split');
 
-  % mostly assuming we are dealing with inputs from events TSV
-  if numel(tokens) > 1 && ...
-      ismember(tokens{1}, fieldnames(tsvContent)) && ...
-      ismember(tokens{2}, unique(tsvContent.(tokens{1})))
+  if ismember(lower(transformer.Name), {'add', 'subtract', 'multiply', 'divide'})
 
-    idx = find(strcmp(tokens{2}, tsvContent.(tokens{1})));
+    % TODO assumes transformations are only on onsets
+    % TODO assumes we are dealing with inputs from events TSV
+    if numel(tokens) > 1 && ...
+        ismember(tokens{1}, fieldnames(tsvContent)) && ...
+        ismember(tokens{2}, unique(tsvContent.(tokens{1})))
+
+      idx = find(strcmp(tokens{2}, tsvContent.(tokens{1})));
+
+    else
+      return
+
+    end
+
     onset = tsvContent.onset(idx);
     duration = tsvContent.duration(idx);
 
+    value = transformer.Value;
+
+    switch lower(transformer.Name)
+
+      case 'add'
+        onset = onset + value;
+
+      case 'subtract'
+        onset = onset - value;
+
+      case 'multiply'
+        onset = onset * value;
+
+      case 'divide'
+        onset = onset / value;
+
+    end
+
+    varargout = {onset, duration};
+    return
+
   end
+
+  output = getOutput(transformer);
 
   switch lower(transformer.Name)
 
-    case 'add'
-      value = transformer.Value;
-      onset = onset + value;
-
-    case 'subtract'
-      value = transformer.Value;
-      onset = onset - value;
-
-    case 'multiply'
-      value = transformer.Value;
-      onset = onset * value;
-
-    case 'divide'
-      value = transformer.Value;
-      onset = onset / value;
-
     case 'filter'
-
-      onset = zeros(size(tsvContent.onset));
-      duration = [];
 
       query = transformer.Query;
       if ~regexp(query, tokens{1})
@@ -114,17 +136,24 @@ function [onset, duration] = applyTransformer(transformer, inputs, tsvContent)
       queryTokens = regexp(query, '==', 'split');
       if numel(queryTokens) > 1
 
+        tsvContent.(output{1}) = zeros(size(tsvContent.onset));
+
         if iscellstr(tsvContent.(tokens{1}))
           idx = strcmp(queryTokens{2}, tsvContent.(tokens{1}));
-          onset(idx) = 1;
         end
 
         if isnumeric(tsvContent.(tokens{1}))
           idx = tsvContent.(tokens{1}) == str2num(queryTokens{2});
-          onset(idx) = 1;
         end
 
+        tsvContent.(output{1})(idx) = 1;
+
       end
+
+      varargout = {tsvContent};
+
+      %     case 'and'
+      %       tokens
 
     otherwise
       notImplemented(mfilename(), sprintf('Transformer %s not implemented', name), true);

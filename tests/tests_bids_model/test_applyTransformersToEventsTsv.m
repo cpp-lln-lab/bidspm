@@ -19,25 +19,25 @@ function test_applyTransformersToEventsTsv_complex_filter()
 
   % Filter(Input, Query, By=None, Output=None):
 
-  transformers(1) = struct('Name', 'Filter', ...
+  transformers{1} = struct('Name', 'Filter', ...
                            'Input', {{'face_type'}}, ...
                            'Query', 'face_type==famous', ...
                            'Output', 'Famous');
-  transformers(2) = struct('Name', 'Filter', ...
+  transformers{2} = struct('Name', 'Filter', ...
                            'Input', {{'repetition_type'}}, ...
                            'Query', 'repetition_type==1', ...
                            'Output', 'FirstRep');
-  %   transformers(3) = struct('Name', 'And', ...
+  %   transformers{3} = struct('Name', 'And', ...
   %                         'Input', {{'Famous', 'FirstRep'}}, ...
   %                         'Output', 'FamousFirstRep');
 
   % WHEN
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
-  % TH
-  assertEqual(fieldnames(newContent), {'Famous'; 'FirstRep'});
-  assertEqual(numel(newContent.Famous.onset), 104);
-  assertEqual(numel(newContent.FirstRep.onset), 104);
+  % THEN
+  assert(all(ismember({'Famous'; 'FirstRep'}, fieldnames(newContent))));
+  assertEqual(numel(newContent.Famous), 104);
+  assertEqual(numel(newContent.FirstRep), 104);
 
   cleanUp();
 
@@ -59,9 +59,9 @@ function test_applyTransformersToEventsTsv_filter()
   % WHEN
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
-  % TH
-  assertEqual(fieldnames(newContent), {'Famous_1'});
-  assertEqual(numel(newContent.Famous_1.onset), 104);
+  % THEN
+  assert(all(ismember({'Famous_1'}, fieldnames(newContent))));
+  assertEqual(numel(newContent.Famous_1), 104);
 
   cleanUp();
 
