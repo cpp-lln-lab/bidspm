@@ -46,6 +46,34 @@ function test_applyTransformersToEventsTsv_combine_columns()
 
 end
 
+function test_applyTransformersToEventsTsv_touch()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-TouchBefore_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers{1} = struct('Name', 'Threshold', ...
+                           'Input', 'duration', ...
+                           'Binarize', true, ...
+                           'Output', 'tmp');
+  transformers{2} = struct('Name', 'Replace', ...
+                           'Input', 'tmp', ...
+                           'Output', 'duration', ...
+                           'Attribute', 'duration', ...
+                           'Replace', struct('duration_1', 1));
+  transformers{3} = struct('Name', 'Delete', ...
+                           'Input', {{'tmp', 'Famous', 'FirstRep'}});
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  % THEN
+  assertEqual(fieldnames(tsvContent), fieldnames(newContent));
+
+  cleanUp();
+
+end
+
 function test_applyTransformersToEventsTsv_replace_with_output()
 
   %% GIVEN
@@ -65,36 +93,6 @@ function test_applyTransformersToEventsTsv_replace_with_output()
 
   % THEN
   assertEqual(unique(newContent.tmp), 1);
-
-end
-
-function test_applyTransformersToEventsTsv_touch()
-
-  % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-TouchBefore_events.tsv');
-  tsvContent = bids.util.tsvread(tsvFile);
-
-  transformers{1} = struct('Name', 'Threshold', ...
-                           'Input', 'duration', ...
-                           'Binarize', true, ...
-                           'Output', 'tmp');
-  transformers{2} = struct('Name', 'Replace', ...
-                           'Input', 'tmp', ...
-                           'Output', 'duration', ...
-                           'Attribute', 'duration', ...
-                           'Replace', struct('duration_1', 1));
-  %   transformers{3} = struct('Name', 'Delete', ...
-  %                            'Input', {{'tmp', 'Famous', 'FirstRep'}});
-
-  % WHEN
-  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
-
-  newContent.duration;
-  % THEN
-  %   assertEqual(fieldnames(tsvContent), fieldnames(newContent));
-  %   assertEqual(unique(newContent.trial_type), {'FamousFirstRep'; 'face'});
-
-  cleanUp();
 
 end
 
@@ -131,6 +129,26 @@ function test_applyTransformersToEventsTsv_replace()
 end
 
 function test_applyTransformersToEventsTsv_add_subtract
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-vismotion_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers(1).Name = 'Subtract';
+  transformers(1).Input = 'onset';
+  transformers(1).Value = 3;
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  % THEN
+  assertEqual(newContent.onset, [-1; 1]);
+
+  cleanUp();
+
+end
+
+function test_applyTransformersToEventsTsv_add_subtract_with_output
 
   % GIVEN
   tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-vismotion_events.tsv');
@@ -222,6 +240,23 @@ function test_applyTransformersToEventsTsv_filter_by()
 
 end
 
+function test_applyTransformersToEventsTsv_threshold_output()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotionForThreshold_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers = struct('Name', 'Threshold', ...
+                        'Input', 'to_threshold', ...
+                        'Output', 'tmp');
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assertEqual(newContent.tmp, [1; 2; 0; 0]);
+
+end
+
 function test_applyTransformersToEventsTsv_threshold()
 
   % GIVEN
@@ -230,36 +265,43 @@ function test_applyTransformersToEventsTsv_threshold()
                      'sub-01_task-vismotionForThreshold_events.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
 
-  % Threshold(Input, Threshold=0, Binarize=False, Above=True, Signed=True, Output=None)
-
+  % WHEN
   transformers = struct('Name', 'Threshold', ...
                         'Input', 'to_threshold');
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
+  % THEN
   assertEqual(newContent.to_threshold, [1; 2; 0; 0]);
 
+  % WHEN
   transformers = struct('Name', 'Threshold', ...
                         'Input', 'to_threshold', ...
                         'Threshold', 1);
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
+  % THEN
   assertEqual(newContent.to_threshold, [0; 2; 0; 0]);
 
+  % WHEN
   transformers = struct('Name', 'Threshold', ...
                         'Input', 'to_threshold', ...
                         'Binarize', true);
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
+  % THEN
   assertEqual(newContent.to_threshold, [1; 1; 0; 0]);
 
+  % WHEN
   transformers = struct('Name', 'Threshold', ...
                         'Input', 'to_threshold', ...
                         'Binarize', true, ...
                         'Above', false);
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
+  % THEN
   assertEqual(newContent.to_threshold, [0; 0; 1; 1]);
 
+  % WHEN
   transformers = struct('Name', 'Threshold', ...
                         'Input', 'to_threshold', ...
                         'Threshold', 1, ...
@@ -268,6 +310,7 @@ function test_applyTransformersToEventsTsv_threshold()
                         'Signed', false);
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
+  % THEN
   assertEqual(newContent.to_threshold, [0; 1; 0; 1]);
 
 end
