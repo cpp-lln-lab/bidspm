@@ -14,7 +14,7 @@ end
 function test_convertOnsetTsvToMat_transformers
 
   % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'sub-01_task-vismotion_events.tsv');
+  tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(),  'models', ...
                             'model-vismotionWithTransformation_smdl.json');
@@ -23,7 +23,7 @@ function test_convertOnsetTsvToMat_transformers
   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
 
   % THEN
-  assertEqual(fullfile(getDummyDataDir(), 'sub-01_task-vismotion_onsets.mat'), ...
+  assertEqual(fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-vismotion_onsets.mat'), ...
               fullpathOnsetFilename);
   assertEqual(exist(fullpathOnsetFilename, 'file'), 2);
 
@@ -40,7 +40,9 @@ end
 function test_convertOnsetTsvToMat_transformers_with_dummy_regressors
 
   % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'sub-01_task-vismotion_events.tsv');
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(),  'models', ...
                             'model-vismotionWithTransformation_smdl.json');
@@ -59,10 +61,36 @@ function test_convertOnsetTsvToMat_transformers_with_dummy_regressors
 
 end
 
+function test_convertOnsetTsvToMat_no_condition_in_design_matrix
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
+
+  opt = setOptions('vismotion');
+  opt.model.file = fullfile(getDummyDataDir(),  'models', ...
+                            'model-vismotionNoCondition_smdl.json');
+
+  opt.verbosity = 1;
+
+  % WHEN
+  fullpathOnsetFilename =  convertOnsetTsvToMat(opt, tsvFile);
+
+  load(fullpathOnsetFilename);
+
+  assertEqual(names, {});
+  assertEqual(onsets, {});
+  assertEqual(durations, {});
+
+end
+
 function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
 
   % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'sub-01_task-vismotion_events.tsv');
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(),  'models', ...
                             'model-vismotionWithTransformation_smdl.json');
@@ -78,7 +106,9 @@ end
 function test_convertOnsetTsvToMat_dummy_regressor()
 
   % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'sub-01_task-vismotion_events.tsv');
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionMVPA_smdl.json');
   opt.glm.useDummyRegressor = true;
@@ -87,7 +117,9 @@ function test_convertOnsetTsvToMat_dummy_regressor()
   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
 
   % THEN
-  assertEqual(fullfile(getDummyDataDir(), 'sub-01_task-vismotion_onsets.mat'), ...
+  assertEqual(fullfile(getDummyDataDir(), ...
+                       'tsv_files', ...
+                       'sub-01_task-vismotion_onsets.mat'), ...
               fullpathOnsetFilename);
   assertEqual(exist(fullpathOnsetFilename, 'file'), 2);
 
@@ -104,7 +136,9 @@ end
 function test_convertOnsetTsvToMat_missing_trial_type()
 
   % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'sub-01_task-vismotion_events.tsv');
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionMVPA_smdl.json');
   opt.verbosity = 1;
@@ -117,7 +151,9 @@ end
 function test_convertOnsetTsvToMat_no_trial_type_column()
 
   % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'sub-01_task-vismotion_desc-noTrialType_events.tsv');
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_desc-noTrialType_events.tsv');
   opt = setOptions('vismotion');
 
   assertExceptionThrown(@() convertOnsetTsvToMat(opt, tsvFile), ...
@@ -128,14 +164,18 @@ end
 function test_convertOnsetTsvToMat_basic()
 
   % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), 'sub-01_task-vismotion_events.tsv');
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
 
   % WHEN
   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
 
   % THEN
-  assertEqual(fullfile(getDummyDataDir(), 'sub-01_task-vismotion_onsets.mat'), ...
+  assertEqual(fullfile(getDummyDataDir(), ...
+                       'tsv_files', ...
+                       'sub-01_task-vismotion_onsets.mat'), ...
               fullpathOnsetFilename);
   assertEqual(exist(fullpathOnsetFilename, 'file'), 2);
 

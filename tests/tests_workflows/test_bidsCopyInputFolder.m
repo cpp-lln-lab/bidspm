@@ -13,6 +13,7 @@ function test_bidsCopyInputFolder_basic()
   opt.dir.raw = fullfile(getMoaeDir(), 'inputs', 'raw');
   opt.taskName = 'auditory';
   opt.pipeline.type = 'preproc';
+  opt.verbosity = 0;
 
   opt = checkOptions(opt);
 
@@ -43,6 +44,7 @@ function test_bidsCopyInputFolder_fmriprep()
   opt = setOptions('fmriprep');
   opt.query.space = 'MNI152NLin2009cAsym';
   opt.query.desc = 'preproc';
+  opt.verbosity = 0;
 
   bidsCopyInputFolder(opt, false());
 

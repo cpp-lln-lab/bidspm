@@ -14,6 +14,7 @@ function test_loadAndCheckOptions_basic()
 
   % create dummy json file
   jsonContent.taskName = 'vismotion';
+  jsonContent.verbosity = 0;
   filename = fullfile(pwd, 'cfg', 'options_task-vismotion.json');
   spm_jsonwrite(filename, jsonContent);
 
@@ -21,7 +22,7 @@ function test_loadAndCheckOptions_basic()
   opt = loadAndCheckOptions();
 
   expectedOptions = defaultOptions('vismotion');
-
+  expectedOptions.verbosity = 0;
   assertEqual(opt, expectedOptions);
 
   cleanUp(fullfile(pwd, 'cfg'));
@@ -121,6 +122,7 @@ function test_loadAndCheckOptions_moae()
   setUp();
 
   jsonContent = setOptions('MoAE');
+  jsonContent.verbosity = 0;
 
   optionJsonFile = fullfile(pwd, 'cfg', 'options_task-auditory.json');
   spm_jsonwrite(optionJsonFile, jsonContent);

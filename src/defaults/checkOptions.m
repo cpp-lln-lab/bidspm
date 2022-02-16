@@ -138,6 +138,9 @@ function opt = checkOptions(opt)
   %       include in a run in a subject level GLM. This can be useful if some
   %       time series have more volumes than necessary.
   %
+  %     - ``opt.glm.keepResiduals = false`` keeps the subject level GLM
+  %       residuals
+  %
   %     - ``opt.QA.glm.do = true`` - If set to ``true`` the residual images of a
   %       GLM at the subject levels will be used to estimate if there is any remaining structure
   %       in the GLM residuals (the power spectra are not flat) that could indicate
@@ -208,7 +211,7 @@ function fieldsToSet = setDefaultOption()
 
   % this defines the missing fields
 
-  fieldsToSet.verbosity = 1;
+  fieldsToSet.verbosity = 2;
   fieldsToSet.dryRun = false;
 
   %% defines what counts as BOLD, T1W...
@@ -280,6 +283,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.glm.roibased.do = false;
   fieldsToSet.glm.maxNbVols = Inf;
   fieldsToSet.glm.useDummyRegressor = false;
+  fieldsToSet.glm.keepResiduals = false;
 
   %% Options for QA
   fieldsToSet.QA.glm.do = true;

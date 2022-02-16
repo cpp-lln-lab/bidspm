@@ -31,7 +31,12 @@ function matlabbatch = bidsRFX(action, opt)
 
   opt.dir.output = opt.dir.stats;
 
-  [~, opt] = setUpWorkflow(opt, description);
+  [BIDS, opt] = setUpWorkflow(opt, description);
+
+  if isempty(opt.model.file)
+    opt = createDefaultStatsModel(BIDS, opt);
+    opt = overRideWithBidsModelContent(opt);
+  end
 
   checks(opt, action);
 

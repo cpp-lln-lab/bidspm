@@ -9,7 +9,6 @@ function opt = moae_get_option_fmriprep_preproc()
 
   % task to analyze
   opt.taskName = 'auditory';
-  opt.verbosity = 1;
 
   % The directory where the data are located
   WD = fileparts(mfilename('fullpath'));

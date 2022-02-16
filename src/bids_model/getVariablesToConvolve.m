@@ -15,12 +15,13 @@ function variablesToConvolve = getVariablesToConvolve(modelFile, nodeType)
 
   node = returnModelNode(model, nodeType);
 
+  variablesToConvolve = [];
   if ~isfield(node.Model, 'HRF') || ...
       ~isfield(node.Model.HRF, 'Variables')
 
-    msg = sprintf('No variables to convolve mentioned for node %s in BIDS model file\%s', ...
+    msg = sprintf('No variables to convolve mentioned for node %s in BIDS model file\n%s', ...
                   nodeType, modelFile);
-    errorHandling(mfilename(), 'noVariablesToConvolve', msg, false, true);
+    errorHandling(mfilename(), 'noVariablesToConvolve', msg, true, true);
 
   else
     variablesToConvolve = node.Model.HRF.Variables;

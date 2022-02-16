@@ -11,7 +11,8 @@ close all;
 
 downloadData = true;
 
-run ../../initCppSpm.m;
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm('init');
 
 %% Set options
 

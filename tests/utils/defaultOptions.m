@@ -2,7 +2,7 @@ function expectedOptions = defaultOptions(taskName)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  expectedOptions.verbosity = 1;
+  expectedOptions.verbosity = 2;
   expectedOptions.dryRun = false;
 
   expectedOptions.bidsFilterFile = struct( ...
@@ -74,6 +74,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.glm.roibased.do = false;
   expectedOptions.glm.maxNbVols = Inf;
   expectedOptions.glm.useDummyRegressor = false;
+  expectedOptions.glm.keepResiduals = false;
 
   expectedOptions.model.file = '';
   expectedOptions.model.designOnly = false;

@@ -38,8 +38,9 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   end
 
-  % identify the conditions to convolve in the BIDS model
   variablesToConvolve = getVariablesToConvolve(opt.model.file, 'run');
+
+  designMatrx = getBidsDesignMatrix(opt.model.file, 'run');
 
   % create empty cell to be filled in according to the conditions present in each run
   names = {};
@@ -64,12 +65,14 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
       conditionName = rmTrialTypeStr(variablesToConvolve{iCond});
 
-      % Get the index of each condition by comparing the list of names of trial types
       idx = find(strcmp(conditionName, trialTypes));
 
       if ~isempty(idx)
 
-        % Get the onset and duration of each condition
+        if ~ismember(variablesToConvolve{iCond}, designMatrx)
+          continue
+        end
+
         names{1, end + 1} = conditionName;
         onsets{1, end + 1} = tsvContent.onset(idx)'; %#ok<*AGROW,*NASGU>
         durations{1, end + 1} = tsvContent.duration(idx)';
@@ -83,6 +86,10 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
       end
 
     elseif ismember(variablesToConvolve{iCond}, fieldnames(transformedConditions))
+
+      if ~ismember(variablesToConvolve{iCond}, designMatrx)
+        continue
+      end
 
       names{1, end + 1} = variablesToConvolve{iCond};
       onsets{1, end + 1} = transformedConditions.(variablesToConvolve{iCond}).onset;

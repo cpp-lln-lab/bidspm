@@ -11,7 +11,8 @@ clc;
 % URL of the data set to download
 % URL = https://gin.g-node.org/mwmaclean/CVI-Datalad/src/master/data
 
-run ../../initCppSpm.m;
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm('init');
 
 %% Set options
 opt = lesion_get_option();

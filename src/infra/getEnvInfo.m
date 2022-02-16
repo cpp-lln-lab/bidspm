@@ -49,11 +49,12 @@ function [OS, generatedBy] = getEnvInfo(opt)
         if bids.internal.starts_with(keyname, 'LS_COLORS')
           % to prevent annoying warnign when field names are too long.
           OS.environmentVariables.LS_COLORS = vals{i};
+        else
+          OS.environmentVariables.(keyname) = vals{i};
         end
       end
     end
   catch
-    errorHandling;
     errorHandling(mfilename(), 'envUnknown', 'Could not get env info.', true, opt.verbosity);
   end
 

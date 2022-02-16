@@ -6,8 +6,6 @@ function opt =  face_rep_get_option_results()
 
   opt.pipeline.type = 'stats';
 
-  opt.verbosity = 1;
-
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
   opt.dir.derivatives = fullfile(opt.dir.raw, '..', 'derivatives');
   opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');

@@ -9,10 +9,8 @@ clc;
 download_data = false;
 clean = false;
 
-try
-  run ../../initCppSpm.m;
-catch
-end
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm('init');
 
 opt = moae_get_option();
 

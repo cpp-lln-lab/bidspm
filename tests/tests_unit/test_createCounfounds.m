@@ -10,7 +10,9 @@ end
 
 function test_createAndReturnCounfoundMatFile_maxNbVols()
 
-  tsvFile = fullfile(getDummyDataDir, 'sub-01_task-test_desc-confounds_regressors.tsv');
+  tsvFile = fullfile(getDummyDataDir, ...
+                     'tsv_files', ...
+                     'sub-01_task-test_desc-confounds_regressors.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
 
   designMatrix = {'trial_type.VisMot'
@@ -31,7 +33,9 @@ end
 
 function test_createAndReturnCounfoundMatFile_maxNbVols_gt_actualNbVols()
 
-  tsvFile = fullfile(getDummyDataDir, 'sub-01_task-test_desc-confounds_regressors.tsv');
+  tsvFile = fullfile(getDummyDataDir, ...
+                     'tsv_files', ...
+                     'sub-01_task-test_desc-confounds_regressors.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
 
   designMatrix = {'trial_type.VisMot'
@@ -52,7 +56,9 @@ end
 
 function test_createAndReturnCounfoundMatFile_outlier_regressors()
 
-  tsvFile = fullfile(getDummyDataDir, 'sub-01_task-test_desc-confounds_regressors.tsv');
+  tsvFile = fullfile(getDummyDataDir, ...
+                     'tsv_files', ...
+                     'sub-01_task-test_desc-confounds_regressors.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
 
   designMatrix = {'trial_type.VisMot'
@@ -86,7 +92,9 @@ end
 
 function test_createAndReturnCounfoundMatFile_regex()
 
-  tsvFile = fullfile(getDummyDataDir, 'sub-01_task-test_desc-confounds_regressors.tsv');
+  tsvFile = fullfile(getDummyDataDir, ...
+                     'tsv_files', ...
+                     'sub-01_task-test_desc-confounds_regressors.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
 
   designMatrix = {'trial_type.VisMot'

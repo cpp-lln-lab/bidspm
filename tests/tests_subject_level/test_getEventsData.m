@@ -27,3 +27,25 @@ function test_getEventsData_basic()
 
   assertEqual(data.conditions, {'VisMot'; 'VisStat'});
 end
+
+function test_getEventsData_no_condition_in_matrix()
+
+  opt = setOptions('vismotion', '01');
+  opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionNoCondition_smdl.json');
+
+  BIDS = bids.layout(opt.dir.input);
+
+  metadata = bids.query(BIDS, 'metadata', ...
+                        'sub', opt.subjects, ...
+                        'task', opt.taskName, ...
+                        'suffix', 'bold');
+
+  eventsFile = bids.query(BIDS, 'data', ...
+                          'sub', opt.subjects, ...
+                          'task', opt.taskName, ...
+                          'suffix', 'events');
+
+  data = getEventsData(eventsFile{1}, opt.model.file);
+
+  assertEqual(data, []);
+end

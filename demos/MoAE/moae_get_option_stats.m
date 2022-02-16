@@ -7,9 +7,6 @@ function opt = moae_get_option_stats()
 
   opt = [];
 
-  % task to analyze
-  opt.verbosity = 1;
-
   % The directory where the data are located
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
   opt.dir.derivatives = fullfile(opt.dir.raw, '..', '..', 'outputs', 'derivatives');

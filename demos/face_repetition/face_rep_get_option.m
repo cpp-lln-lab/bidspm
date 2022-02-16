@@ -9,7 +9,6 @@ function opt = face_rep_get_option()
 
   opt.taskName = 'facerepetition';
   opt.pipeline.type = 'preproc';
-  opt.verbosity = 1;
 
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
   opt.dir.derivatives = fullfile(opt.dir.raw, '..', 'derivatives');

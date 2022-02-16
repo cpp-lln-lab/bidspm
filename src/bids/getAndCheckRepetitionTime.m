@@ -41,11 +41,6 @@ function repetitionTime = getAndCheckRepetitionTime(varargin)
   filter.target = 'RepetitionTime';
   repetitionTime = bids.query(BIDS, 'metadata', filter);
 
-  if isempty(repetitionTime)
-    msg = sprintf('No repetition time found for filter:\n%s', createUnorderedList(filter));
-    errorHandling(mfilename(), 'noRepetitionTimeFound', msg, false, true);
-  end
-
   if ~iscell(repetitionTime)
     repetitionTime = {repetitionTime};
   end
@@ -56,6 +51,11 @@ function repetitionTime = getAndCheckRepetitionTime(varargin)
     errorHandling(mfilename(), 'differentRepetitionTime', ...
                   'Input files have different repetition time.', ...
                   false, true);
+  end
+
+  if isempty(repetitionTime)
+    msg = sprintf('No repetition time found for filter:\n%s', createUnorderedList(filter));
+    errorHandling(mfilename(), 'noRepetitionTimeFound', msg, false, true);
   end
 
 end

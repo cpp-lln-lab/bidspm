@@ -9,7 +9,6 @@ function opt = moae_get_option_fmriprep_stats()
 
   % task to analyze
   opt.taskName = 'auditory';
-  opt.verbosity = 1;
 
   opt.pipeline.type = 'stats';
 

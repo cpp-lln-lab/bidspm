@@ -16,7 +16,7 @@ function test_plotRoiTimeCourse_basic()
   close all;
 
   % GIVEN
-  timeCourseFile = fullfile(getDummyDataDir(), 'mat_files', 'hemi-L_label-V1d_timecourse.tsv');
+  timeCourseFile = fullfile(getDummyDataDir(), 'tsv_files', 'hemi-L_label-V1d_timecourse.tsv');
 
   % WHEN
   plotRoiTimeCourse(timeCourseFile);
