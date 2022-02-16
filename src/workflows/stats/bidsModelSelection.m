@@ -196,6 +196,7 @@ function matlabbatch = bidsModelSelection(varargin)
 
       load(spmMatFile, 'SPM');
       allRunsHaveSameNbRegressors(SPM);
+      checkRegressorName(SPM);
 
       if checkHasMacsField && ~isfield(SPM, 'MACS')
         errorHandling;
