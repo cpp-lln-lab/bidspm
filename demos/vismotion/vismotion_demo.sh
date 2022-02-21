@@ -1,4 +1,4 @@
-#! /user/bin/bash
+#!/usr/bin/env bash
 
 # fail whenever something is fishy, use -x to get verbose logfiles
 set -e -u
@@ -37,20 +37,20 @@ datalad install -d . \
 
 datalad save -m 'set up done'
 
-datlad create -d . outputs/derivatives/cpp_spm-preproc
-datlad create -d . outputs/derivatives/cpp_spm-stats
+datalad create -d . outputs/derivatives/cpp_spm-preproc
+datalad create -d . outputs/derivatives/cpp_spm-stats
 
 cd code/CPP_SPM/demos/vismotion
 
 # FIX ME
-/usr/local/MATLAB/R2017a/bin/matlab \
+/Applications/MATLAB_R2017b.app/bin/matlab \
     -nodisplay -nosplash -nodesktop \
     -r "run('step_1_preprocess.m');exit;"
 
 datalad save -m 'preprocessing done' -r
 
 # FIX ME
-/usr/local/MATLAB/R2017a/bin/matlab \
+/Applications/MATLAB_R2017b.app/bin/matlab \
     -nodisplay -nosplash -nodesktop \
     -r "run('step_2_stats.m');exit;"
 
