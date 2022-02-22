@@ -78,6 +78,9 @@ function removeDummies(varargin)
 
   volumeSplicing(inputFile, 1:numberOfVolumeToDiscard);
 
+  if isZipped(inputFile)
+    inputFile = spm_file(inputFile, 'ext', '');
+  end
   jsonFile = spm_file(inputFile, 'ext', 'json');
 
   metadata.NumberOfVolumesDiscardedByUser = NumberOfVolumesDiscardedByUser;

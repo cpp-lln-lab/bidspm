@@ -8,8 +8,10 @@ function outputFile = volumeSplicing(varargin)
   %
   % :param inputFile:
   % :type inputFile: path
+  %
   % :param volumesToRemove:
   % :type volumesToRemove: 1xn or nX1 array
+  %
   % :param outputFile: optional parameter. default: will overwrite
   % ``inputFile``. If only a filename is given, the file will be created in the
   % same folder as the input file.
@@ -89,8 +91,4 @@ function outputFile = volumeSplicing(varargin)
 
   end
 
-end
-
-function status = isZipped(file)
-  status = strcmp(spm_file(file, 'ext'), 'gz');
 end
