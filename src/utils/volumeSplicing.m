@@ -40,6 +40,12 @@ function outputFile = volumeSplicing(varargin)
   %% Wrangle inputs
 
   inputFile = p.Results.inputFile;
+  volumesToRemove = p.Results.volumesToRemove;
+  outputFile = p.Results.outputFile;
+  if strcmp(outputFile, '')
+    outputFile = inputFile;
+  end
+
   isInputZipped = isZipped(inputFile);
   if isInputZipped
     % TODO fix for octave as unzipping will delete original
@@ -47,13 +53,8 @@ function outputFile = volumeSplicing(varargin)
     inputFile = spm_file(inputFile, 'ext', '');
   end
 
-  volumesToRemove = p.Results.volumesToRemove;
   volumesToRemove = unique(volumesToRemove);
 
-  outputFile = p.Results.outputFile;
-  if strcmp(outputFile, '')
-    outputFile = inputFile;
-  end
   isOutputZipped = isZipped(outputFile);
   if isOutputZipped
     outputFile = spm_file(outputFile, 'ext', '');
@@ -74,10 +75,18 @@ function outputFile = volumeSplicing(varargin)
     gzip(inputFile);
     delete(inputFile);
   end
-  if isOutputZipped
-    gzip(outputFile);
-    delete(outputFile);
-    outputFile = spm_file(outputFile, 'ext', '.nii.gz');
+
+  if strcmp(p.Results.outputFile, '')
+    outputFile = p.Results.inputFile;
+    return
+
+  else
+    if isOutputZipped
+      gzip(outputFile);
+      delete(outputFile);
+      outputFile = spm_file(outputFile, 'ext', '.nii.gz');
+    end
+
   end
 
 end

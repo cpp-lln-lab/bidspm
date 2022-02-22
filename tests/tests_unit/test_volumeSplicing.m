@@ -8,12 +8,28 @@ function test_suite = test_volumeSplicing %#ok<*STOUT>
   initTestSuite;
 end
 
+% TODO add content checks
+
 function test_volumeSplicing_remove_dummies()
 
   inputFile = setUp();
   outputFile = volumeSplicing(inputFile, 1:4, 'outputFile', 'foo.nii.gz');
 
   hdr = spm_vol(outputFile);
+  assertEqual(numel(hdr), 5);
+
+  teardown(outputFile);
+
+end
+
+function test_volumeSplicing_overwrite_input()
+
+  inputFile = setUp();
+  outputFile = volumeSplicing(inputFile, 1:4);
+
+  assertEqual(outputFile, inputFile);
+
+  hdr = spm_vol(inputFile);
   assertEqual(numel(hdr), 5);
 
   teardown(outputFile);
@@ -41,7 +57,7 @@ end
 
 function teardown(file)
   delete(fullfile(getDummyDataDir(), 'nifti_files', 'tmp*'));
-  if nargin > 0
+  if nargin > 0 && exist(file, 'file')
     delete(file);
   end
 end

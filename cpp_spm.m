@@ -40,14 +40,14 @@ function cpp_spm(varargin)
     case 'init'
 
       initCppSpm();
-      
+
     case 'version'
 
       try
-          versionNumber = getVersion();
+        versionNumber = getVersion();
       catch
-          versionNumber = fileread(fullfile(fileparts(mfilename('fullpath')), 'version.txt'));
-          versionNumber = versionNumber(1:end - 1);
+        versionNumber = fileread(fullfile(fileparts(mfilename('fullpath')), 'version.txt'));
+        versionNumber = versionNumber(1:end - 1);
       end
       fprintf(1, '%s\n', versionNumber);
 
