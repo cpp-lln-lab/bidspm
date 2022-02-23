@@ -61,7 +61,7 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.rename = true;
 
-  expectedOptions.QA.glm.do = true;
+  expectedOptions.QA.glm.do = false;
   expectedOptions.QA.anat.do = true;
   expectedOptions.QA.func.carpetPlot = true;
   expectedOptions.QA.func.Motion = 'on';
