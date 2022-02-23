@@ -99,7 +99,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
     for iRun = 1:nbRuns
-      
+
       fprintf(1, 'Processing run %s\n', runs{iRun});
 
       % get functional files
