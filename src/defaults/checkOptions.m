@@ -67,7 +67,7 @@ function opt = checkOptions(opt)
   %     -  ``opt.QA.func.Movie = 'on'`` ; set it to ``off`` to skip generating movies
   %         of the time series
   %     -  ``opt.QA.func.Basics = 'on'``
-  %     -  ``opt.QA.glm.do = true`` - If set to ``true`` the residual images of a
+  %     -  ``opt.QA.glm.do = false`` - If set to ``true`` the residual images of a
   %         GLM at the subject levels will be used to estimate if there is any remaining structure
   %         in the GLM residuals (the power spectra are not flat) that could indicate
   %         the subject level results are likely confounded (see
@@ -144,7 +144,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.model.hrfDerivatives = [0 0];
   fieldsToSet.contrastList = {};
 
-  fieldsToSet.QA.glm.do = true;
+  fieldsToSet.QA.glm.do = false;
   fieldsToSet.QA.func.carpetPlot = true;
   fieldsToSet.QA.func.Motion = 'on';
   fieldsToSet.QA.func.FD = 'on';
