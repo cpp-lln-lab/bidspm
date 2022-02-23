@@ -24,23 +24,18 @@ end
 
 function test_getBidsTransformers_basic()
 
-  opt = setOptions('vismotionWithTransformation');
+  opt = setOptions('balloonanalogrisktask');
 
   transformers = getBidsTransformers(opt.model.file);
 
-  assert(isstruct(transformers));
+  expected{1, 1}.Name = 'Factor';
+  expected{1}.Inputs = {'trial_type'};
+  expected{2, 1}.Name = 'Convolve';
+  expected{2}.Model = 'spm';
+  expected{2}.Inputs = {' '};
 
-  expected(1, 1).Name = 'Subtract';
-  expected(1).Input = {'trial_type.VisMot'};
-  expected(1).Value = 3;
-  expected(1).Output = {'VisMot'};
-  expected(2, 1).Name = 'Add';
-  expected(2).Input = {'trial_type.VisStat'};
-  expected(2).Value = 1;
-  expected(2).Output = {'VisStat'};
-
-  assertEqual(transformers(1), expected(1));
-  assertEqual(transformers(2), expected(2));
+  assertEqual(transformers{1}, expected{1});
+  assertEqual(transformers{2}, expected{2});
 
 end
 
