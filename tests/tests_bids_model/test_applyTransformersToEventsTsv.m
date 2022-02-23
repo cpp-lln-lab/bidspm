@@ -428,7 +428,7 @@ function test_applyTransformersToEventsTsv_no_transformation()
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
   % THEN
-  assertEqual(newContent, struct([]));
+  assertEqual(newContent, tsvContent);
 
   cleanUp();
 
