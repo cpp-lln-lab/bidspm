@@ -18,7 +18,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   % :returns: :fullpathOnsetFilename: (string) name of the output ``.mat`` file.
   %
-  % See also: createAndReturnOnsetFile
+  % See also: createAndReturnOnsetFile, applyTransformersToEventsTsv
   %
   % (C) Copyright 2019 CPP_SPM developers
 

@@ -14,6 +14,21 @@ function newContent = applyTransformersToEventsTsv(varargin)
   %
   % :returns: - :newContent: (structure)
   %
+  % EXAMPLE::
+  %
+  %     tsvFile = fullfile(path_to_tsv);
+  %     tsvContent = bids.util.tsvread(tsvFile);
+  %
+  %     % load transformation instruction from a model file
+  %     opt = setOptions();
+  %     transformers = getBidsTransformers(opt.model.file, 'run');
+  %
+  %     newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+  %     bids.util.tsvwrite(path_to_new_tsv, newContent)
+  %
+  %
+  % See also: getBidsTransformers, convertOnsetTsvToMat
+  %
   %
   % (C) Copyright 2022 CPP_SPM developers
 
