@@ -26,7 +26,7 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   tsvFile = validationInputFile(pth, [file, ext]);
 
   % Read the tsv file
-  fprintf('reading the tsv file : %s \n', tsvFile);
+  fprintf(' Reading the tsv file : %s \n', tsvFile);
   t = spm_load(tsvFile);
   
   if ~all(isnumeric(t.onset))
@@ -95,14 +95,18 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
       % Get the index of each condition by comparing the unique names and
       % each line in the tsv files
       idx = find(strcmp(conditionName, conds));
+      
+      fprintf('  Condition %s: %i trials found.\n', conditionName, numel(idx));
 
       if ~isempty(idx)
         % Get the onset and duration of each condition
         names{1, end + 1} = conditionName;
         onsets{1, end + 1} = t.onset(idx)'; %#ok<*AGROW,*NASGU>
         durations{1, end + 1} = t.duration(idx)';
+        
       else
         warning('No trial found for trial type %s in \n%s', conditionName, tsvFile);
+        
       end
 
     end
