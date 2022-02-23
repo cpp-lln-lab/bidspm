@@ -13,6 +13,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   % :param opt:
   % :type opt: structure
+  %
   % :param tsvFile:
   % :type tsvFile: string
   %
@@ -76,8 +77,6 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
                             conditionName, ...
                             numel(idx)), ...
                     opt);
-
-      fprintf('  Condition %s: %i trials found.\n', conditionName, numel(idx));
 
       if ~isempty(idx)
 
