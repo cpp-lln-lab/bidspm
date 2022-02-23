@@ -8,8 +8,6 @@
 % instead of AR(1), motion regressors added)
 %
 % TODO
-% - add derivatives to the model
-% - compute the relevant contrasts
 % - compute motion effect
 % - run parametric model
 %
@@ -46,7 +44,7 @@ anatomicalQA(opt);
 bidsResliceTpmToFunc(opt);
 
 % DEBUG
-% functionalQA(opt);
+functionalQA(opt);
 
 bidsSmoothing(FWHM, opt);
 

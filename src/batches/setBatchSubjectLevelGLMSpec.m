@@ -100,7 +100,9 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
     for iRun = 1:nbRuns
       
-      fprintf(1, 'Processing run %s\n', runs{iRun});
+      if ~strcmp(runs{iRun}, '')
+        fprintf(1, 'Processing run %s\n', runs{iRun});
+      end
 
       % get functional files
       [fullpathBoldFileName, prefix]  = ...
