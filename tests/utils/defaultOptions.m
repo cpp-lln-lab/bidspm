@@ -35,7 +35,7 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.contrastList = {};
 
-  expectedOptions.QA.glm.do = true;
+  expectedOptions.QA.glm.do = false;
   expectedOptions.QA.func.carpetPlot = true;
   expectedOptions.QA.func.Motion = 'on';
   expectedOptions.QA.func.FD = 'on';
