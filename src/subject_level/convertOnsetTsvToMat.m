@@ -28,6 +28,22 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   tsvContent = bids.util.tsvread(tsvFile);
 
+  if ~all(isnumeric(tsvContent.onset))
+
+    errorID = 'onsetsNotNumeric';
+    msg = sprintf('%s\n%s', 'Onset column contains non numeric values in file:', tsvFile);
+    errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
+
+  end
+
+  if ~all(isnumeric(tsvContent.duration))
+
+    errorID = 'durationsNotNumeric';
+    msg = sprintf('%s\n%s', 'Duration column contains non numeric values in file:', tsvFile);
+    errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
+
+  end
+
   variablesToConvolve = getVariablesToConvolve(opt.model.file, 'run');
 
   designMatrx = getBidsDesignMatrix(opt.model.file, 'run');
@@ -55,6 +71,11 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
       conditionName = strjoin(tokens(2:end), '.');
 
       idx = find(strcmp(conditionName, trialTypes));
+
+      printToScreen(sprintf('  Condition %s: %i trials found.\n', ...
+                            conditionName, ...
+                            numel(idx)), ...
+                    opt);
 
       if ~isempty(idx)
 

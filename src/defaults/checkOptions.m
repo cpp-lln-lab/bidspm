@@ -141,7 +141,7 @@ function opt = checkOptions(opt)
   %     - ``opt.glm.keepResiduals = false`` keeps the subject level GLM
   %       residuals
   %
-  %     - ``opt.QA.glm.do = true`` - If set to ``true`` the residual images of a
+  %     - ``opt.QA.glm.do = false`` - If set to ``true`` the residual images of a
   %       GLM at the subject levels will be used to estimate if there is any remaining structure
   %       in the GLM residuals (the power spectra are not flat) that could indicate
   %       the subject level results are likely confounded.
@@ -286,7 +286,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.glm.keepResiduals = false;
 
   %% Options for QA
-  fieldsToSet.QA.glm.do = true;
+  fieldsToSet.QA.glm.do = false;
   fieldsToSet.QA.anat.do = true;
   fieldsToSet.QA.func.carpetPlot = true;
   fieldsToSet.QA.func.Motion = 'on';
