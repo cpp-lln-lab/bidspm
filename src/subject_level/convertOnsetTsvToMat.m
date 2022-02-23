@@ -77,6 +77,8 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
                             numel(idx)), ...
                     opt);
 
+      fprintf('  Condition %s: %i trials found.\n', conditionName, numel(idx));
+
       if ~isempty(idx)
 
         if ~ismember(variablesToConvolve{iCond}, designMatrx)
