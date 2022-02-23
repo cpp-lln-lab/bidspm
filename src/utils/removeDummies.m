@@ -47,13 +47,6 @@ function removeDummies(varargin)
   force = p.Results.force;
   verbose = p.Results.verbose;
 
-  isZipped = strcmp(spm_file(inputFile, 'ext'), 'gz');
-  if isZipped
-    % TODO fix for octave as unzipping will delete original
-    gunzip(inputFile);
-    inputFile = spm_file(inputFile, 'ext', '');
-  end
-
   NumberOfVolumesDiscardedByUser = 0;
   if isfield(metadata, 'NumberOfVolumesDiscardedByUser')
     NumberOfVolumesDiscardedByUser = metadata.NumberOfVolumesDiscardedByUser;
@@ -83,17 +76,11 @@ function removeDummies(varargin)
 
   end
 
-  threeDimFiles = spm_file_split(inputFile);
-  V = threeDimFiles;
-  V(1:numberOfVolumeToDiscard) = [];
-  spm_file_merge(V, inputFile);
-  spm_unlink(threeDimFiles.fname);
+  volumeSplicing(inputFile, 1:numberOfVolumeToDiscard);
 
-  if isZipped
-    gzip(inputFile);
-    delete(inputFile);
+  if isZipped(inputFile)
+    inputFile = spm_file(inputFile, 'ext', '');
   end
-
   jsonFile = spm_file(inputFile, 'ext', 'json');
 
   metadata.NumberOfVolumesDiscardedByUser = NumberOfVolumesDiscardedByUser;
