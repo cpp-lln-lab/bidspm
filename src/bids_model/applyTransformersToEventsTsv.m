@@ -14,15 +14,14 @@ function newContent = applyTransformersToEventsTsv(varargin)
   %
   % :returns: - :newContent: (structure)
   %
-  % Example::
   %
   % (C) Copyright 2022 CPP_SPM developers
 
   SUPPORTED_TRANSFORMERS = {'Add', 'Subtract', 'Multiply', 'Divide', ...
                             'Filter', ...
                             'And', 'Or', ...
-                            'Rename', ...
-                            'Delete', 'Select', 'Constant', 'Copy', ...
+                            'Rename', 'Concatenate', 'Delete', 'Select', 'Copy', ...
+                            'Constant', ...
                             'Replace', ...
                             'Threshold'};
 
@@ -97,6 +96,12 @@ function varargout = applyTransformer(transformer, tsvContent)
 
       varargout = {tsvContent};
 
+    case 'concatenate'
+
+      tsvContent = concatenateColumns(transformer, tsvContent);
+
+      varargout = {tsvContent};
+
     case 'replace'
 
       varargout = {replaceTransformers(transformer, tsvContent)};
@@ -148,6 +153,27 @@ function varargout = applyTransformer(transformer, tsvContent)
                      true);
 
   end
+
+end
+
+function tsvContent = concatenateColumns(transformer, tsvContent)
+
+  inputs = getInput(transformer);
+  outputs = getOutput(transformer);
+
+  for row = 1:numel(tsvContent.onset)
+    tmp1 = {};
+    for i = 1:numel(inputs)
+      if isnumeric(tsvContent.(inputs{i}))
+        tmp1{1, i} = num2str(tsvContent.(inputs{i})(row));
+      elseif iscellstr(tsvContent.(inputs{i}))
+        tmp1{1, i} = tsvContent.(inputs{i}){row};
+      end
+    end
+    tmp2{row, 1} = strjoin(tmp1, '_');
+  end
+
+  tsvContent.(outputs{1}) = tmp2;
 
 end
 

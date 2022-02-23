@@ -11,6 +11,26 @@ function test_suite = test_applyTransformersToEventsTsv %#ok<*STOUT>
 
 end
 
+function test_applyTransformersToEventsTsv_concatenate()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-FaceRepetitionBefore_events.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  transformers{1} = struct('Name', 'Concatenate', ...
+                           'Input', {{'face_type', 'repetition_type'}}, ...
+                           'Output', 'trial_type');
+
+  % WHEN
+  newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+
+  assertEqual(unique(newContent.trial_type), ...
+              {'famous_1'; 'famous_2';  'unfamiliar_1'; 'unfamiliar_2'});
+
+end
+
 function test_applyTransformersToEventsTsv_combine_columns()
 
   % GIVEN
