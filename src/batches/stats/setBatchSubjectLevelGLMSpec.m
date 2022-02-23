@@ -88,6 +88,10 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
       for iRun = 1:nbRuns
 
+        if ~strcmp(runs{iRun}, '')
+          printToScreen(sprintf(1, 'Processing run %s\n', runs{iRun}), opt);
+        end
+
         spmSess(spmSessCounter).scans = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
         spmSess(spmSessCounter).onsetsFile = returnOnsetsFile(BIDS, opt, ...

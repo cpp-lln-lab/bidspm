@@ -28,6 +28,22 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   tsvContent = bids.util.tsvread(tsvFile);
 
+  if ~all(isnumeric(tsvContent.onset))
+
+    errorID = 'onsetsNotNumeric';
+    msg = sprintf('%s\n%s', 'Onset column contains non numeric values in file:', tsvFile);
+    errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
+
+  end
+
+  if ~all(isnumeric(tsvContent.duration))
+
+    errorID = 'durationsNotNumeric';
+    msg = sprintf('%s\n%s', 'Duration column contains non numeric values in file:', tsvFile);
+    errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
+
+  end
+
   if ~isfield(tsvContent, 'trial_type')
 
     msg = sprintf('%s\n%s', ...
@@ -67,6 +83,11 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
       idx = find(strcmp(conditionName, trialTypes));
 
+      printToScreen(sprintf('  Condition %s: %i trials found.\n', ...
+                            conditionName, ...
+                            numel(idx)), ...
+                    opt);
+
       if ~isempty(idx)
 
         if ~ismember(variablesToConvolve{iCond}, designMatrx)
@@ -90,6 +111,11 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
       if ~ismember(variablesToConvolve{iCond}, designMatrx)
         continue
       end
+
+      printToScreen(sprintf('  Condition %s: %i trials found.\n', ...
+                            variablesToConvolve{iCond}, ...
+                            numel(transformedConditions.(variablesToConvolve{iCond}).onset)), ...
+                    opt);
 
       names{1, end + 1} = variablesToConvolve{iCond};
       onsets{1, end + 1} = transformedConditions.(variablesToConvolve{iCond}).onset;
