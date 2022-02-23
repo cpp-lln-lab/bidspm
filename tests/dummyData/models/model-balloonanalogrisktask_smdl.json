@@ -9,21 +9,24 @@
       {
          "Level": "Run",
          "Name": "run_level",
-         "Transformations": [
-            {
-               "Name": "Factor",
-               "Inputs": [
-                  "trial_type"
-               ]
-            },
-            {
-               "Name": "Convolve",
-               "Model": "spm",
-               "Inputs": [
-                  " "
-               ]
-            }
-         ],
+         "Transformations": {
+            "Transformer": "cpp_spm",
+            "Instructions": [
+               {
+                  "Name": "Factor",
+                  "Inputs": [
+                     "trial_type"
+                  ]
+               },
+               {
+                  "Name": "Convolve",
+                  "Model": "spm",
+                  "Inputs": [
+                     " "
+                  ]
+               }
+            ]
+         },
          "Model": {
             "Type": "glm",
             "X": [

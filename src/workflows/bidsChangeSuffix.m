@@ -53,8 +53,12 @@ function bidsChangeSuffix(varargin)
 
   if isempty(filter)
     data = bids.query(BIDS, 'data');
+    metadata = bids.query(BIDS, 'metadata');
+    metafiles = bids.query(BIDS, 'metafiles');
   else
     data = bids.query(BIDS, 'data', filter);
+    metadata = bids.query(BIDS, 'metadata', filter);
+    metafiles = bids.query(BIDS, 'metafiles', filter);
   end
 
   createdFiles = {};
@@ -75,11 +79,19 @@ function bidsChangeSuffix(varargin)
       errorHandling(mfilename(), 'fileAlreadyExist', msg, true, opt.verbosity);
 
       if ~opt.dryRun && force
+        % actually rename file and createa JSON side car
         movefile(data{iFile}, outputFile);
+        bf = bids.File(outputFile);
+        json_file = fullfile(fileparts(data{iFile}), bf.json_filename);
+        bids.util.jsonencode(json_file, metadata{iFile});
+
       end
 
     elseif ~opt.dryRun
       movefile(data{iFile}, outputFile);
+      bf = bids.File(outputFile);
+      json_file = fullfile(fileparts(data{iFile}), bf.json_filename);
+      bids.util.jsonencode(json_file, metadata{iFile});
 
     end
 
@@ -88,6 +100,21 @@ function bidsChangeSuffix(varargin)
   end
 
   cleanUpWorkflow(opt);
+
+  % remove old side car JSON files
+  if ~opt.dryRun
+    for i = 1:numel(metafiles)
+      if ischar(metafiles{i})
+        metafiles{i} = cellstr(metafiles{i});
+      end
+      for meta = 1:numel(metafiles{i})
+        if exist(metafiles{i}{meta}, 'file')
+          printToScreen(sprintf('Deleting %s\n', metafiles{i}{meta}), opt);
+          delete(metafiles{i}{meta});
+        end
+      end
+    end
+  end
 
 end
 

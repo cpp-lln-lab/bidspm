@@ -62,7 +62,10 @@ function bidsRemoveDummies(varargin)
     printProcessingSubject(iSub, subLabel, opt);
 
     filter = opt.bidsFilterFile.bold;
+    filter.ext = '\.nii.*$';
     filter.task = opt.taskName;
+    filter.desc = '';
+    filter.space = '';
 
     files = bids.query(BIDS, 'data', filter);
     metadata = bids.query(BIDS, 'metadata', filter);

@@ -27,7 +27,7 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
     tsvFile = tsvFile{1};
   end
 
-  msg = sprintf('reading the tsv file : %s \n', tsvFile);
+  msg = sprintf('\n  Reading the tsv file : %s \n', tsvFile);
   printToScreen(msg, opt);
 
   onsetFilename = convertOnsetTsvToMat(opt, tsvFile);

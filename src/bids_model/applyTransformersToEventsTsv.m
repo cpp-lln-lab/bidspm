@@ -8,23 +8,46 @@ function newContent = applyTransformersToEventsTsv(varargin)
   %
   % :param tsvContent:
   % :type tsvContent: structure
+  %
   % :param transformers:
   % :type transformers: structure
   %
   % :returns: - :newContent: (structure)
   %
-  % Example::
+  % EXAMPLE::
+  %
+  %     tsvFile = fullfile(path_to_tsv);
+  %     tsvContent = bids.util.tsvread(tsvFile);
+  %
+  %     % load transformation instruction from a model file
+  %     opt = setOptions();
+  %     transformers = getBidsTransformers(opt.model.file, 'run');
+  %
+  %     newContent = applyTransformersToEventsTsv(tsvContent, transformers);
+  %     bids.util.tsvwrite(path_to_new_tsv, newContent)
+  %
+  %
+  % See also: getBidsTransformers, convertOnsetTsvToMat
+  %
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  SUPPORTED_TRANSFORMERS = {'Add', 'Subtract', 'Multiply', 'Divide', 'Filter'};
+  SUPPORTED_TRANSFORMERS = {'Add', 'Subtract', 'Multiply', 'Divide', ...
+                            'Filter', ...
+                            'And', 'Or', ...
+                            'Rename', 'Concatenate', 'Delete', 'Select', 'Copy', ...
+                            'Constant', ...
+                            'Replace', ...
+                            'Threshold'};
 
   p = inputParser;
 
   default_transformers = 'transformers';
 
+  isStructOrCell = @(x) isstruct(x) || iscell(x);
+
   addRequired(p, 'tsvContent', @isstruct);
-  addOptional(p, 'transformers', default_transformers, @isstruct);
+  addOptional(p, 'transformers', default_transformers, isStructOrCell);
 
   parse(p, varargin{:});
 
@@ -32,32 +55,327 @@ function newContent = applyTransformersToEventsTsv(varargin)
   transformers = p.Results.transformers;
 
   if isempty(transformers) || isempty(tsvContent)
-    newContent = struct([]);
+    newContent = tsvContent;
     return
   end
 
   for iTrans = 1:numel(transformers)
 
-    % TODO make transformers more general
-    % - assumes inputs can only be from TSV?
-    %   (therefore means that transformations cannot be "chained")
-    % - assumes transformations are only on onsets
-    if ~ismember(transformers(iTrans).Name, SUPPORTED_TRANSFORMERS)
+    if iscell(transformers)
+      this_transformer = transformers{iTrans};
+    elseif isstruct(transformers)
+      this_transformer = transformers(iTrans);
+    end
+
+    if ~ismember(this_transformer.Name, SUPPORTED_TRANSFORMERS)
       notImplemented(mfilename(), ...
-                     sprintf('Transformer %s not implemented', transformers(iTrans).Name), ...
+                     sprintf('Transformer %s not implemented', this_transformer.Name), ...
                      true);
-      newContent = struct([]);
       return
     end
 
-    input = getInput(transformers(iTrans));
-    output = getOutput(transformers(iTrans));
+    tsvContent = applyTransformer(this_transformer, tsvContent);
+    newContent = tsvContent;
 
-    for i = 1:numel(input)
+  end
 
-      [onset, duration] = applyTransformer(transformers(iTrans), input{i}, tsvContent);
+end
 
-      newContent.(output{i}) = struct('onset', onset, 'duration', duration);
+function varargout = applyTransformer(transformer, tsvContent)
+
+  transformerName = lower(transformer.Name);
+
+  inputs = getInput(transformer);
+  outputs = getOutput(transformer);
+
+  switch transformerName
+
+    case {'add', 'subtract', 'multiply', 'divide'}
+
+      varargout = {basicTransformers(transformer, tsvContent)};
+
+    case 'filter'
+
+      varargout = {filterTransformer(transformer, tsvContent)};
+
+    case 'threshold'
+
+      varargout = {thresholdTransformer(transformer, tsvContent)};
+
+    case 'rename'
+
+      for i = 1:numel(inputs)
+        tsvContent.(outputs{i}) = tsvContent.(inputs{i});
+        tsvContent = rmfield(tsvContent, inputs{i});
+      end
+
+      varargout = {tsvContent};
+
+    case 'concatenate'
+
+      tsvContent = concatenateColumns(transformer, tsvContent);
+
+      varargout = {tsvContent};
+
+    case 'replace'
+
+      varargout = {replaceTransformers(transformer, tsvContent)};
+
+    case 'constant'
+
+      value = 1;
+      if isfield(transformer, 'Value')
+        value = transformer.Value;
+      end
+
+      tsvContent.(outputs{1}) = ones(size(tsvContent.onset)) * value;
+
+      varargout = {tsvContent};
+
+    case 'copy'
+
+      for i = 1:numel(inputs)
+        tsvContent.(outputs{i}) = tsvContent.(inputs{i});
+      end
+
+      varargout = {tsvContent};
+
+    case 'delete'
+
+      for i = 1:numel(inputs)
+        if isfield(tsvContent, inputs{i})
+          tsvContent = rmfield(tsvContent, inputs{i});
+        end
+      end
+
+      varargout = {tsvContent};
+
+    case 'select'
+
+      for i = 1:numel(inputs)
+        tmp.(inputs{i}) = tsvContent.(inputs{i});
+      end
+
+      varargout = {tmp};
+
+    case {'and', 'or'}
+
+      varargout = {andOrTransformer(transformer, tsvContent)};
+
+    otherwise
+      notImplemented(mfilename(), ...
+                     sprintf('Transformer %s not implemented', transformer.Name), ...
+                     true);
+
+  end
+
+end
+
+function tsvContent = concatenateColumns(transformer, tsvContent)
+
+  inputs = getInput(transformer);
+  outputs = getOutput(transformer);
+
+  for row = 1:numel(tsvContent.onset)
+    tmp1 = {};
+    for i = 1:numel(inputs)
+      if isnumeric(tsvContent.(inputs{i}))
+        tmp1{1, i} = num2str(tsvContent.(inputs{i})(row));
+      elseif iscellstr(tsvContent.(inputs{i}))
+        tmp1{1, i} = tsvContent.(inputs{i}){row};
+      end
+    end
+    tmp2{row, 1} = strjoin(tmp1, '_');
+  end
+
+  tsvContent.(outputs{1}) = tmp2;
+
+end
+
+function tsvContent = replaceTransformers(transformer, tsvContent)
+
+  inputs = getInput(transformer);
+  outputs = getOutput(transformer);
+
+  attributes =  getAttributesToReplace(transformer);
+
+  replace = transformer.Replace;
+
+  for i = 1:numel(inputs)
+
+    if ~isfield(tsvContent, inputs{i})
+      continue
+    end
+
+    for ii = 1:numel(attributes)
+
+      switch lower(attributes{ii})
+        case 'value'
+          if strcmp(inputs{i}, outputs{i})
+            this_output = tsvContent.(inputs{i});
+          else
+            this_output = tsvContent.(outputs{i});
+          end
+        case 'onset'
+          this_output = tsvContent.onset;
+          if strcmp(inputs{i}, outputs{i})
+            outputs{i} = 'onset';
+          end
+        case 'duration'
+          this_output = tsvContent.duration;
+          if strcmp(inputs{i}, outputs{i})
+            outputs{i} = 'duration';
+          end
+      end
+
+      toReplace = fieldnames(replace);
+
+      for iii = 1:numel(toReplace)
+
+        switch lower(attributes{ii})
+          case 'value'
+            this_input = tsvContent.(inputs{i});
+          case 'onset'
+            this_input = tsvContent.onset;
+          case 'duration'
+            this_input = tsvContent.duration;
+        end
+
+        key = getKeyToReplace(inputs{i}, attributes{ii}, toReplace{iii});
+        value = replace.(toReplace{iii});
+
+        if ischar(key)
+          idx = strcmp(key, this_input);
+        elseif isnumeric(key)
+          idx = this_input == key;
+        end
+
+        if isnumeric(this_output)
+          if ischar(value)
+            this_output = num2cell(this_output);
+          end
+          this_output(idx) = value;
+
+        elseif iscellstr(this_output)
+          if isnumeric(value)
+            value = num2str(value);
+          end
+          this_output(idx) = repmat({value}, sum(idx), 1);
+
+        end
+
+      end
+
+      tsvContent.(outputs{i}) = this_output;
+    end
+
+  end
+
+end
+
+function key = getKeyToReplace(input, attribute, toReplace)
+  % because matlab keys in structure cannot be numbers
+  % it won't be easily possible to replace
+  % when the value to replace is a number,
+  % but it could be sort of OK for onset and duration
+  key = toReplace;
+  if ismember(lower(attribute), {'onset', 'duration'})
+    key = strrep(key, [lower(attribute) '_'], '');
+    key = str2num(key);
+  end
+  if bids.internal.starts_with(key, [input '_'])
+    key = strrep(key, [input '_'], '');
+    key = str2num(key);
+  end
+
+end
+
+function attributes =  getAttributesToReplace(transformer)
+  attributes = {'value'};
+  if isfield(transformer, 'Attribute')
+    attributes = transformer.Attribute;
+  end
+  if ~iscell(attributes)
+    attributes = {attributes};
+  end
+  if strcmp(attributes, 'all')
+    attributes =  {'values', 'onset', 'duration'};
+  end
+end
+
+function tsvContent = basicTransformers(transformer, tsvContent)
+
+  inputs = getInput(transformer);
+  outputs = getOutput(transformer);
+
+  transformerName = lower(transformer.Name);
+
+  for i = 1:numel(inputs)
+
+    if ~isfield(tsvContent, inputs{i})
+      continue
+    end
+
+    value = transformer.Value;
+
+    switch transformerName
+
+      case 'add'
+        tmp = tsvContent.(inputs{i}) + value;
+
+      case 'subtract'
+        tmp = tsvContent.(inputs{i}) - value;
+
+      case 'multiply'
+        tmp = tsvContent.(inputs{i}) * value;
+
+      case 'divide'
+        tmp = tsvContent.(inputs{i}) / value;
+
+    end
+
+    tsvContent.(outputs{i}) = tmp;
+
+  end
+
+end
+
+function tsvContent = filterTransformer(transformer, tsvContent)
+
+  inputs = getInput(transformer);
+  outputs = getOutput(transformer);
+
+  if isfield(transformer, 'By')
+    % TODO
+    by = transformer.By;
+  end
+
+  for i = 1:numel(inputs)
+
+    tokens = regexp(inputs{i}, '\.', 'split');
+
+    query = transformer.Query;
+    if isempty(regexp(query, tokens{1}, 'ONCE'))
+      return
+    end
+
+    queryTokens = regexp(query, '==', 'split');
+    if numel(queryTokens) > 1
+
+      if iscellstr(tsvContent.(tokens{1}))
+        idx = strcmp(queryTokens{2}, tsvContent.(tokens{1}));
+        tmp(idx, 1) = tsvContent.(tokens{1})(idx);
+        tmp(~idx, 1) = repmat({''}, sum(~idx), 1);
+      end
+
+      if isnumeric(tsvContent.(tokens{1}))
+        idx = tsvContent.(tokens{1}) == str2num(queryTokens{2});
+        tmp(idx, 1) = tsvContent.(tokens{1})(idx);
+        tmp(~idx, 1) = nan;
+      end
+
+      tmp(idx, 1) = tsvContent.(tokens{1})(idx);
+      tsvContent.(outputs{i}) = tmp;
 
     end
 
@@ -65,83 +383,116 @@ function newContent = applyTransformersToEventsTsv(varargin)
 
 end
 
-function [onset, duration] = applyTransformer(transformer, input, tsvContent)
+function tsvContent = andOrTransformer(transformer, tsvContent)
 
-  if isColumnHeader(input, tsvContent)
+  inputs = getInput(transformer);
+  outputs = getOutput(transformer);
 
-    % if we are dealing with column header and there is a "." in input
-    tokens = regexp(input, '\.', 'split');
+  for i = 1:numel(inputs)
 
-    if strcmp(tokens{1}, 'trial_type')
+    if ~isfield(tsvContent, inputs{i})
+      return
+    end
 
-      if numel(tokens) > 1 &&  ismember(tokens{2}, unique(tsvContent.trial_type))
-        idx = find(strcmp(tokens{2}, tsvContent.trial_type));
-        onset = tsvContent.onset(idx);
-      end
+    if iscellstr(tsvContent.(inputs{i}))
+      tmp(:, i) = cellfun('isempty', tsvContent.(inputs{i}));
+
+    else
+      tmp2 = tsvContent.(inputs{i});
+      tmp2(isnan(tmp2)) = 0;
+      tmp(:, i) = logical(tmp2);
+
     end
 
   end
 
   switch lower(transformer.Name)
-
-    case 'add'
-      value = transformer.Value;
-      onset = onset + value;
-
-    case 'subtract'
-      value = transformer.Value;
-      onset = onset - value;
-
-    case 'multiply'
-      value = transformer.Value;
-      onset = onset * value;
-
-    case 'divide'
-      value = transformer.Value;
-      onset = onset / value;
-
-    case 'filter'
-      query = transformer.Query;
-      if ~regexp(query, tokens{1})
-        return
-      end
-      if ~isempty(regexp(query, '==', 'match')) && iscellstr(tsvContent.(tokens{1}))
-        queryTokens = regexp(query, '==', 'split');
-        idx = strcmp(queryTokens{2}, tsvContent.(tokens{1}));
-        onset = tsvContent.onset(idx);
-      end
-
-    otherwise
-      notImplemented(mfilename(), sprintf('Transformer %s not implemented', name), true);
-
+    case 'and'
+      tsvContent.(outputs{1}) = all(tmp, 2);
+    case 'or'
+      tsvContent.(outputs{1}) = any(tmp, 2);
   end
 
-  duration = tsvContent.duration(idx);
+end
+
+function tsvContent = thresholdTransformer(transformer, tsvContent)
+
+  inputs = getInput(transformer);
+  outputs = getOutput(transformer);
+
+  threshold = 0;
+  binarize = false;
+  above = true;
+  signed = true;
+
+  if isfield(transformer, 'Threshold')
+    threshold = transformer.Threshold;
+  end
+
+  if isfield(transformer, 'Binarize')
+    binarize = transformer.Binarize;
+  end
+
+  if isfield(transformer, 'Above')
+    above = transformer.Above;
+  end
+
+  if isfield(transformer, 'Signed')
+    signed = transformer.Signed;
+  end
+
+  for i = 1:numel(inputs)
+
+    if ~isfield(tsvContent, inputs{i})
+      continue
+    end
+
+    valuesToThreshold = tsvContent.(inputs{i});
+
+    if ~signed
+      valuesToThreshold = abs(valuesToThreshold);
+    end
+
+    if above
+      idx = valuesToThreshold > threshold;
+    else
+      idx = valuesToThreshold < threshold;
+    end
+
+    tmp = zeros(size(tsvContent.(inputs{i})));
+    tmp(idx) = tsvContent.(inputs{i})(idx);
+
+    if binarize
+      tmp(idx) = 1;
+    end
+
+    tsvContent.(outputs{i}) = tmp;
+  end
 
 end
 
 function input = getInput(transformer)
-  input = transformer.Input;
+
+  if isfield(transformer, 'Input') && ~isempty(transformer.Input)
+    input = transformer.Input;
+  else
+    input = {};
+  end
+
   if ~iscell(input)
     input = {input};
   end
+
 end
 
 function output = getOutput(transformer)
-  output = {};
   if isfield(transformer, 'Output') && ~isempty(transformer.Output)
     output = transformer.Output;
     if ~iscell(output)
       output = {output};
     end
+  else
+    % will overwrite input columns
+    output = getInput(transformer);
   end
-end
-
-function status = isColumnHeader(someString, tsvContent)
-  %
-  % rough guess that we are dealing with something that comes from a TSV
-  %
-
-  status = ismember('.', someString) || ismember(someString, fieldnames(tsvContent));
-
 end
