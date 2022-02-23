@@ -28,25 +28,25 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   % Read the tsv file
   fprintf('reading the tsv file : %s \n', tsvFile);
   t = spm_load(tsvFile);
-  
+
   if ~all(isnumeric(t.onset))
-    
+
     errorStruct.identifier = 'convertOnsetTsvToMat:onsetsNotNumeric';
     errorStruct.message = sprintf('%s\n%s', ...
                                   'Onset column contains non numeric values in this file:', ...
                                   tsvFile);
     error(errorStruct);
-    
+
   end
-  
+
   if ~all(isnumeric(t.duration))
-    
+
     errorStruct.identifier = 'convertOnsetTsvToMat:durationsNotNumeric';
     errorStruct.message = sprintf('%s\n%s', ...
                                   'Duration column contains non numeric values in this file:', ...
                                   tsvFile);
     error(errorStruct);
-    
+
   end
 
   if ~isfield(t, 'trial_type')
