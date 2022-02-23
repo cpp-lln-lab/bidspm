@@ -99,7 +99,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
         getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
     for iRun = 1:nbRuns
-      
+
       if ~strcmp(runs{iRun}, '')
         fprintf(1, 'Processing run %s\n', runs{iRun});
       end
