@@ -1,7 +1,7 @@
 {
   "Name": "vismotion",
   "BIDSModelVersion": "1.0.0",
-  "Description": "contrasts for the motion dataset",
+  "Description": "with an extravariable to test skipping it",
   "Input": {
     "task": "vismotion",
     "space": "IXI549Space"
@@ -10,43 +10,18 @@
     {
       "Level": "Run",
       "Name": "run_level",
-      "Transformations": {
-        "Transformer": "cpp_spm",
-        "Instructions": [
-          {
-            "Name": "Subtract",
-            "Input": [
-              "trial_type.VisMot"
-            ],
-            "Value": 3,
-            "Output": [
-              "VisMot"
-            ]
-          },
-          {
-            "Name": "Add",
-            "Input": [
-              "trial_type.VisStat"
-            ],
-            "Value": 1,
-            "Output": [
-              "VisStat"
-            ]
-          }
-        ]
-      },
       "Model": {
         "Type": "glm",
         "X": [
-          "VisMot",
-          "VisStat",
+          "trial_type.VisMot",
+          "trial_type.VisStat",
           "trans_?",
           "rot_?"
         ],
         "HRF": {
           "Variables": [
-            "VisMot",
-            "VisStat",
+            "trial_type.VisMot",
+            "trial_type.VisStat",
             "SomeMissingVariables"
           ],
           "Model": "DoubleGamma"
@@ -65,16 +40,16 @@
       "DummyContrasts": {
         "Test": "t",
         "Contrasts": [
-          "VisMot",
-          "VisStat"
+          "trial_type.VisMot",
+          "trial_type.VisStat"
         ]
       },
       "Contrasts": [
         {
           "Name": "VisMot_gt_VisStat",
           "ConditionList": [
-            "VisMot",
-            "VisStat"
+            "trial_type.VisMot",
+            "trial_type.VisStat"
           ],
           "Weights": [
             1,
@@ -85,8 +60,8 @@
         {
           "Name": "VisStat_gt_VisMot",
           "ConditionList": [
-            "VisMot",
-            "VisStat"
+            "trial_type.VisMot",
+            "trial_type.VisStat"
           ],
           "Weights": [
             -1,
