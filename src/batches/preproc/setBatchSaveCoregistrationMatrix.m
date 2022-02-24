@@ -8,10 +8,13 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
+  %
   % :param opt:
   % :type opt: Options chosen for the analysis. See ``checkOptions()``.
+  %
   % :param subLabel:
   % :type subLabel: string
   %
@@ -43,6 +46,8 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   p.entities.desc = '';
   p.entities.space = '';
   p.entities.run = '';
+  % TODO make more general
+  % this assumes we are doing a func to T1 coregistration
   p.entities.from = 'scanner';
   p.entities.to = opt.bidsFilterFile.t1w.suffix;
   p.entities.mode = 'image';
