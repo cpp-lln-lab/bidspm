@@ -16,7 +16,7 @@ function opt = ds000001_stats_option()
   opt.taskName = 'balloonanalogrisktask';
 
   opt.pipeline.type = 'stats';
-  
+
   opt.space = 'IXI549Space';
 
   % The directory where the data are located
@@ -24,7 +24,7 @@ function opt = ds000001_stats_option()
   opt.dir.raw = fullfile(root_dir, 'inputs', 'ds000001');
   opt.dir.derivatives = fullfile(root_dir, 'outputs', 'ds000001', 'derivatives');
   opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
-  
+
   opt.model.file = fullfile(root_dir, 'models', 'model-defaultBalloonanalogrisktask_smdl.json');
 
   opt.result.Nodes(1).Level = 'subject';
