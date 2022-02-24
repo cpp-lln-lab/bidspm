@@ -64,9 +64,18 @@ function opt = set_spm_2_bids_defaults(opt)
   name_spec.entities.desc = ['smth' fwhm];
   map = map.add_mapping('prefix', prefix, 'name_spec', name_spec);
 
-  prefix = {['std_' map.unwarp, map.stc], ...
-            ['std_' map.unwarp]};
+  prefix = {['mean_' map.unwarp, map.stc], ...
+            ['mean_' map.unwarp], ...
+             'mean_'};
   name_spec = map.cfg.mean;
+  name_spec.entities = rmfield(name_spec.entities, 'run');
+  map = map.add_mapping('prefix', prefix, 'name_spec', name_spec);
+  
+  prefix = {['std_' map.unwarp, map.stc], ...
+            ['std_' map.unwarp], ...
+             'std_'};
+  name_spec = map.cfg.mean;
+  name_spec.entities = rmfield(name_spec.entities, 'run');
   name_spec.entities.desc = 'std';
   map = map.add_mapping('prefix', prefix, 'name_spec', name_spec);
 
