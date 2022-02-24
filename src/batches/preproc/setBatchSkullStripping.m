@@ -9,11 +9,14 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
+  %
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
+  %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
+  %
   % :param subLabel: subject label
   % :type subLabel: string
   %
@@ -31,6 +34,8 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   % Any voxel with p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold
   % will be included in the skull stripping mask.
   %
+  % It is also possible to segment a functional image by setting
+  % ``opt.skullstrip.mean`` to ``true``
   %
   % (C) Copyright 2020 CPP_SPM developers
 
