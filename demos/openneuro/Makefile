@@ -1,3 +1,5 @@
+.PHONY: clean data data_ds000001
+
 # the path to matlab on your machine might need to be changed
 # for this to work on your machine
 MATLAB = /usr/local/MATLAB/R2017a/bin/matlab
@@ -10,16 +12,21 @@ stats    = outputs/derivatives/cpp_spm-stats/sub-%/stats/task-%_space-MNI%/con_%
 roi      = outputs/derivatives/cpp_spm-roi/sub-%/roi/sub-%_space-MNI_desc-%_mask.nii
 
 clean:
-	rm -rf inputs
-	rm -rf outputs
+	rm -rf inputs/ds*
+	rm -rf outputs/derivatives
 	rm -rf cfg
 
 data:
-	mkdir inputs
+	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds000001
 	cd inputs && datalad install ///openneuro/ds000114
 	cd inputs && datalad install ///openneuro/ds000168
 	datalad get inputs/ds000*/sub-0[12]
+
+data_ds000001:
+	mkdir -p inputs
+	cd inputs && datalad install ///openneuro/ds000001
+	datalad get inputs/ds000001/sub-0[12]
 
 # all: $(roi)
 
