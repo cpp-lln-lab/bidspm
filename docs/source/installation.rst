@@ -64,13 +64,13 @@ In general DO NOT ADD CPP SPM PERMANENTLY to your MATLAB / Octave path.
 
 You just need to initialize for a given session with::
 
-  initCppSpm()
+  cpp_spm('init')
 
 This will add all the required folders to the path.
 
 You can also remove CPP_SPM from the path with::
 
-  uninitCppSpm()
+  cpp_spm('uninit')
 
 Installation on a computing cluster
 ===================================
