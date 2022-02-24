@@ -17,7 +17,7 @@ function test_spm2bidsCPP_mapping()
   anatFile = 'sub-01_T1w.nii';
 
   funcFile = 'sub-01_task-auditory_bold.nii';
-  
+
   funcFileRun1 = 'sub-01_task-auditory_run-1_bold.nii';
 
   pfx_in_out = {'mean_', funcFileRun1, 'sub-01_task-auditory_run-1_space-individual_desc-mean_bold.nii'; ...
