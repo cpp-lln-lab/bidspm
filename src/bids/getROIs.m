@@ -70,13 +70,12 @@ function [roiList, roiFolder] = getROIs(varargin)
       errorHandling(mfilename(), 'noSubject', msg, false, opt.verbosity > 0);
     end
 
-    roiFolder = fullfile(BIDS_ROI.pth, ['sub-' subLabel], 'roi');
-
     filter = struct('sub', regexify(subLabel), ...
-                    'space', opt.space);
+                    'space', opt.space, ...
+                    'suffix', 'mask');
 
     if ~isempty(roiNames)
-      if iscell(roiNames) && (numel(roiNames) == 1 && ~strcmp(roiNames{1}, ''))
+      if iscell(roiNames) && ~(numel(roiNames) == 1 && ~strcmp(roiNames{1}, ''))
         filter.label = ['(' strjoin(opt.roi.name, '|') '){1}'];
 
       elseif isstruct(roiNames)
@@ -87,6 +86,9 @@ function [roiList, roiFolder] = getROIs(varargin)
     end
 
     roiList = bids.query(BIDS_ROI, 'data', filter);
+
+    % assuming all ROIs are in the same folder
+    roiFolder = fileparts(roiList{1});
 
   end
 

@@ -87,7 +87,7 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
         tmp(iSess) = ismember(betasIndices, SPM.Sess(iSess).col);
       end
       runs(iContrast, 1) = find(any(tmp, 2));
-      clear tmp
+      clear tmp;
 
       parts = strsplit(SPM.xX.name{betasIndices}, ' ');
       conditions{iContrast, 1} = strjoin(parts(2:end), ' ');
