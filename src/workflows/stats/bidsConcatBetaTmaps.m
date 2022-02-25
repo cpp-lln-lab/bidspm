@@ -59,32 +59,37 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
       errorHandling(mfilename(), 'noDummyContrast', msg, false, opt.verbosity);
     end
 
-    betaMaps = cell(length(contrasts), 1);
-    tMaps = cell(length(contrasts), 1);
+    betaMaps = {};
+    tMaps = {};
 
     % path to beta and t-map files.
 
     printToScreen('\nConcatenating the following contrasts:', opt);
-    for iContrast = 1:length(betaMaps)
+    for iContrast = 1:length(contrasts)
 
       msg = sprintf('\n\t%s', contrasts(iContrast).name);
       printToScreen(msg, opt);
       betasIndices = find(contrasts(iContrast).C);
 
       if numel(betasIndices) > 1
-        msg = 'Supposed to concatenate one beta image per contrast.';
+        printToScreen('\n', opt);
+        msg = sprintf(['Supposed to concatenate one beta image per contrast.' ...
+                       '\nSkipping: %s'], contrasts(iContrast).name);
         errorHandling(mfilename(), 'concatOneImgOnly', msg, true, opt.verbosity);
+        continue
       end
 
       % for this beta image we identify
       % - which run it came from
       % - the exact condition name stored in the SPM.mat
       % so they can be saved in a tsv for for "label" and "fold" for MVPA
-      tmp = cat(1, SPM.Sess(:).col) == betasIndices;
+      for iSess = 1:numel(SPM.Sess)
+        tmp(iSess) = ismember(betasIndices, SPM.Sess(iSess).col);
+      end
       runs(iContrast, 1) = find(any(tmp, 2));
+      clear tmp
 
-      tmp = SPM.xX.name{betasIndices};
-      parts = strsplit(tmp, ' ');
+      parts = strsplit(SPM.xX.name{betasIndices}, ' ');
       conditions{iContrast, 1} = strjoin(parts(2:end), ' ');
 
       fileName = sprintf('beta_%04d.nii', betasIndices);
