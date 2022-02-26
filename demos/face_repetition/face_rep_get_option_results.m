@@ -41,6 +41,7 @@ function opt =  face_rep_get_option_results()
   opt.result.Nodes(1).Output.montage.orientation = 'axial';
 
   %% DO NOT TOUCH
+  opt = checkOptions(opt);
   saveOptions(opt);
 
 end
