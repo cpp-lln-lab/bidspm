@@ -175,6 +175,46 @@ classdef Model
       end
     end
 
+    %% Node level methods
+    % assumes that only one node is being queried
+    function value = get_transformations(obj, varargin)
+      value = [];
+      node = get_nodes(obj, varargin{:});
+      assert(numel(node) == 1);
+      if isfield(node{1}, 'Transformations')
+        value = node{1}.Transformations;
+      end
+    end
+
+    function value = get_dummy_contrasts(obj, varargin)
+      value = [];
+      node = get_nodes(obj, varargin{:});
+      assert(numel(node) == 1);
+      if isfield(node{1}, 'DummyContrasts')
+        value = node{1}.DummyContrasts;
+      end
+    end
+
+    function value = get_contrasts(obj, varargin)
+      value = [];
+      node = get_nodes(obj, varargin{:});
+      assert(numel(node) == 1);
+      if isfield(node{1}, 'Contrasts')
+        value = node{1}.Contrasts;
+      end
+    end
+
+    function value = get_model(obj, varargin)
+      node = get_nodes(obj, varargin{:});
+      assert(numel(node) == 1);
+      value = node{1}.Model;
+    end
+
+    function value = get_design_matrix(obj, varargin)
+      model = get_model(obj, varargin{:});
+      value = model.X;
+    end
+
     %% Write
     function write(obj, filename)
       bids.util.mkdir(fileparts(filename));

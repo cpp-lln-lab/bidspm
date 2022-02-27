@@ -53,3 +53,36 @@ function test_model_get_nodes()
   assertWarning(@()bm.get_nodes('Name', 'foo'), 'Model:missingNode');
 
 end
+
+function test_model_get_design_matrix()
+
+  opt = setOptions('narps');
+
+  bm = Model('file', opt.model.file);
+
+  assertEqual(bm.get_design_matrix('Name', 'run'), ...
+              {'trials'
+               'gain'
+               'loss'
+               'demeaned_RT'
+               1});
+
+end
+
+function test_model_node_level_getters()
+
+  opt = setOptions('narps');
+
+  bm = Model('file', opt.model.file);
+
+  assertEqual(bm.get_dummy_contrasts('Name', 'run'), ...
+              struct('Conditions', {{'gain'; 'loss'}}, ...
+                     'Test', 't'));
+
+  assertEqual(fieldnames(bm.get_transformations('Name', 'run')), ...
+              {'Transformer';  'Instructions'});
+
+  assertEqual(bm.get_contrasts('Name', 'positive'), ...
+              struct('Name', 'positive', 'ConditionList', 1, 'Weights', 1, 'Test', 't'));
+
+end
