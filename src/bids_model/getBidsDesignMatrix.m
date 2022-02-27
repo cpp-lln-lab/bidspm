@@ -13,10 +13,7 @@ function designMatrix = getBidsDesignMatrix(modelFile, nodeType)
     nodeType = 'run';
   end
 
-  model = bids.util.jsondecode(modelFile);
-
-  node = returnModelNode(model, nodeType);
-
-  designMatrix = node.Model.X;
+  bm = bids.Model('file', modelFile);
+  designMatrix = bm.get_design_matrix('Level', nodeType)
 
 end

@@ -13,9 +13,8 @@ function modelType = getModelType(modelFile, nodeType)
     nodeType = 'run';
   end
 
-  model = bids.util.jsondecode(modelFile);
-
-  node = returnModelNode(model, nodeType);
+  bm = bids.Model('file', modelFile);
+  node = bm.get_nodes('Level', nodeType);
 
   try
     modelType = node.Model.Type;

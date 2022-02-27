@@ -8,20 +8,6 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_returnModelNode_errors()
-
-  content = createEmptyStatsModel();
-
-  assertExceptionThrown(@()returnModelNode(content, 'foo'), ...
-                        'returnModelNode:wrongNodeType');
-
-  content = createEmptyStatsModel();
-  content.Nodes{3}  = [];
-  assertExceptionThrown(@()returnModelNode(content, 'missingModelNode'), ...
-                        'returnModelNode:wrongNodeType');
-
-end
-
 function test_getBidsTransformers_basic()
 
   opt = setOptions('balloonanalogrisktask');
@@ -59,44 +45,12 @@ function test_getVariablesToConvolve()
 
 end
 
-function test_returnModelNode_struct()
-
-  content.Nodes = struct('Level', 'Run');
-  content.Nodes(2).Level = 'Subject';
-
-  [~, iStep] = returnModelNode(content, 'run');
-  assertEqual(iStep, 1);
-
-  [~, iStep] = returnModelNode(content, 'Subject');
-  assertEqual(iStep, 2);
-
-end
-
 function test_getVariablesToConvolve_warning()
 
   opt = setOptions('vislocalizer');
 
   assertWarning(@()getVariablesToConvolve(opt.model.file, 'dataset'), ...
                 'getVariablesToConvolve:noVariablesToConvolve');
-
-end
-
-function test_returnModelNode()
-
-  content = createEmptyStatsModel();
-  content.Nodes{4} = createEmptyNode('dataset');
-
-  [~, iStep] = returnModelNode(content, 'run');
-  assertEqual(iStep, 1);
-
-  [~, iStep] = returnModelNode(content, 'dataset');
-  assertEqual(iStep, [3; 4]);
-
-  modelFile = fullfile(pwd, 'model.json');
-  bids.util.jsonencode(modelFile, content);
-  HPF = getHighPassFilter(modelFile);
-  designMatrix = getBidsDesignMatrix(modelFile);
-  dummyContrastsList = getDummyContrastsList(modelFile);
 
 end
 

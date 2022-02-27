@@ -15,9 +15,8 @@ function threshold = getInclusiveMaskThreshold(modelFile, nodeType)
     return
   end
 
-  model = bids.util.jsondecode(modelFile);
-
-  node = returnModelNode(model, nodeType);
+  bm = bids.Model('file', modelFile);
+  node = bm.get_nodes('Level', nodeType);
 
   try
     threshold = node.Model.Software.SPM.InclusiveMaskingThreshold;

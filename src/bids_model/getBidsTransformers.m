@@ -11,12 +11,10 @@ function transformers = getBidsTransformers(modelFile, nodeType)
     nodeType = 'run';
   end
 
-  model = bids.util.jsondecode(modelFile);
-
-  node = returnModelNode(model, nodeType);
-
-  if isfield(node, 'Transformations') &&  isfield(node.Transformations, 'Instructions')
-    transformers = node.Transformations.Instructions;
+  bm = bids.Model('file', modelFile);
+  transformers = bm.get_transformations('Level', nodeType)
+  if ~isempty(transformers)
+    transformers = transformers.Instructions;
   end
 
 end
