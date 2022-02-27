@@ -18,7 +18,7 @@ classdef Model
 
   properties (SetAccess = private)
     tolerant = true
-    verbose = false
+    verbose = true
 
   end
 
@@ -121,7 +121,7 @@ classdef Model
       value = obj.Nodes;
     end
 
-    function value = get_nodes(obj, varargin)
+    function [value, idx] = get_nodes(obj, varargin)
       if isempty(varargin)
         value = obj.Nodes;
       else
@@ -140,7 +140,12 @@ classdef Model
           if ischar(Level)
             Level = {Level};
           end
-          idx = cellfun(@(x) ismember(Level, lower(x.Level)), obj.Nodes, 'UniformOutput', false);
+          if iscell(obj.Nodes)
+            levels = cellfun(@(x) lower(x.Level), obj.Nodes, 'UniformOutput', false);
+          elseif isstruct(obj.Nodes)
+            levels = lower({obj.Nodes.Level}');
+          end
+          idx = ismember(levels, Level);
         end
 
         Name = lower(args.Results.Name);
@@ -148,13 +153,23 @@ classdef Model
           if ischar(Name)
             Name = {Name};
           end
-          idx = cellfun(@(x) ismember(Name, lower(x.Name)), obj.Nodes, 'UniformOutput', false);
+          if iscell(obj.Nodes)
+            names = cellfun(@(x) lower(x.Name), obj.Nodes, 'UniformOutput', false);
+          elseif isstruct(obj.Nodes)
+            levels = lower({obj.Nodes.Name}');
+          end
+          idx = ismember(names, Name);
         end
 
         % TODO merge idx when both Level and Name are passed as parameters
-        idx = find(cellfun(@(x) x == 1, idx));
-        for i = 1:numel(idx)
-          value{end + 1} = obj.Nodes{idx};
+        if any(idx)
+          idx = find(idx);
+          for i = 1:numel(idx)
+            value{end + 1} = obj.Nodes{idx};
+          end
+        else
+          msg = sprintf('Could not find a corresponding Node.');
+          errorHandling(mfilename(), 'missingNode', msg, obj.tolerant, obj.verbose);
         end
 
       end

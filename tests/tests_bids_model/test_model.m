@@ -50,4 +50,6 @@ function test_model_get_nodes()
   assertEqual(numel(bm.get_nodes('Level', 'Dataset')), 3);
   assertEqual(numel(bm.get_nodes('Name', 'negative')), 1);
 
+  assertWarning(@()bm.get_nodes('Name', 'foo'), 'Model:missingNode');
+
 end
