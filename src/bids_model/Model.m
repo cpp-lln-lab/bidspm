@@ -77,6 +77,7 @@ classdef Model
 
         if isfield(obj.content, 'Edges')
           obj.Edges = obj.content.Edges;
+          % TODO when no Edges assume all Nodes follow each other
         end
       end
 
@@ -103,10 +104,9 @@ classdef Model
       obj.Nodes = nodes;
     end
 
-    % function obj = set.Edges(obj, edges)
-    %   edges
-    %   obj.Edges = edges;
-    % end
+    function obj = set.Edges(obj, edges)
+      obj.Edges = edges;
+    end
 
     %% Getters
     function value = get.Name(obj)
@@ -121,9 +121,50 @@ classdef Model
       value = obj.Nodes;
     end
 
-    % function obj = get.Edges(obj)
-    %   value = obj.Edges;
-    % end
+    function value = get_nodes(obj, varargin)
+      if isempty(varargin)
+        value = obj.Nodes;
+      else
+
+        value = {};
+
+        allowed_levels = @(x) all(ismember(lower(x), {'run', 'session', 'subject', 'dataset'}));
+
+        args = inputParser;
+        args.addParameter('Level', '', allowed_levels);
+        args.addParameter('Name', '');
+        args.parse(varargin{:});
+
+        Level = lower(args.Results.Level);
+        if ~strcmp(Level, '')
+          if ischar(Level)
+            Level = {Level};
+          end
+          idx = cellfun(@(x) ismember(Level, lower(x.Level)), obj.Nodes, 'UniformOutput', false);
+        end
+
+        Name = lower(args.Results.Name);
+        if ~strcmp(Name, '')
+          if ischar(Name)
+            Name = {Name};
+          end
+          idx = cellfun(@(x) ismember(Name, lower(x.Name)), obj.Nodes, 'UniformOutput', false);
+        end
+
+        % TODO merge idx when both Level and Name are passed as parameters
+        idx = find(cellfun(@(x) x == 1, idx));
+        for i = 1:numel(idx)
+          value{end + 1} = obj.Nodes{idx};
+        end
+
+      end
+    end
+
+    %% Write
+    function write(obj, filename)
+      bids.util.mkdir(fileparts(filename));
+      bids.util.jsonencode(filename, obj.content);
+    end
 
   end
 
