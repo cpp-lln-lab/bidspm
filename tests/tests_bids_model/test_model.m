@@ -86,3 +86,14 @@ function test_model_node_level_getters()
               struct('Name', 'positive', 'ConditionList', 1, 'Weights', 1, 'Test', 't'));
 
 end
+
+function test_model_empty_model()
+
+  bm = Model('init', true);
+
+  assertEqual(bm.Name, 'empty_model');
+  assertEqual(bm.BIDSModelVersion, '1.0.0');
+  assertEqual(bm.Description, 'This is an empty BIDS stats model.');
+  assertEqual(bm.Input, struct('task', ''));
+
+end

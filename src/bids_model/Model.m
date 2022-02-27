@@ -9,7 +9,7 @@ classdef Model
 
     Name = 'REQUIRED'
     Description = 'RECOMMENDED'
-    BIDSModelVersion = 'REQUIRED'
+    BIDSModelVersion = '1.0.0'
     Input = 'REQUIRED'
     Nodes = 'REQUIRED'
     Edges = 'RECOMMENDED'
@@ -30,6 +30,7 @@ classdef Model
 
       is_file = @(x) exist(x, 'file');
 
+      args.addParameter('init', false, @islogical);
       args.addParameter('file', false, is_file);
       args.addParameter('tolerant', obj.tolerant, @islogical);
       args.addParameter('verbose', obj.verbose, @islogical);
@@ -39,9 +40,20 @@ classdef Model
       obj.tolerant = args.Results.tolerant;
       obj.verbose = args.Results.verbose;
 
-      if ~isempty(args.Results.file)
+      if args.Results.init
+        obj.Name = 'empty_model';
+        obj.Description = 'This is an empty BIDS stats model.';
+        obj.Input = struct('task', '');
+        obj.content.Name = obj.Name;
+        obj.content.BIDSModelVersion = obj.BIDSModelVersion;
+        obj.content.Description = obj.Description;
+        obj.content.Input = obj.Input;
+        obj.content.Nodes = obj.Nodes;
 
-        obj;
+        return
+      end
+
+      if ~isempty(args.Results.file)
 
         obj.content = bids.util.jsondecode(args.Results.file);
 
