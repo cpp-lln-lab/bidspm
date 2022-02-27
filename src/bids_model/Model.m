@@ -11,8 +11,8 @@ classdef Model
     Description = 'RECOMMENDED'
     BIDSModelVersion = '1.0.0'
     Input = 'REQUIRED'
-    Nodes = 'REQUIRED'
-    Edges = 'RECOMMENDED'
+    Nodes =  {'REQUIRED'}
+    Edges = {'RECOMMENDED'}
 
   end
 
@@ -41,14 +41,13 @@ classdef Model
       obj.verbose = args.Results.verbose;
 
       if args.Results.init
+
         obj.Name = 'empty_model';
         obj.Description = 'This is an empty BIDS stats model.';
         obj.Input = struct('task', '');
-        obj.content.Name = obj.Name;
-        obj.content.BIDSModelVersion = obj.BIDSModelVersion;
-        obj.content.Description = obj.Description;
-        obj.content.Input = obj.Input;
-        obj.content.Nodes = obj.Nodes;
+        obj.Nodes{1} = Model.empty_node('run');
+
+        obj = update(obj);
 
         return
       end
@@ -227,12 +226,66 @@ classdef Model
       value = model.X;
     end
 
-    %% Write
+    %% Update content and write
+
+    function obj = update(obj)
+      obj.content.Name = obj.Name;
+      obj.content.BIDSModelVersion = obj.BIDSModelVersion;
+      obj.content.Description = obj.Description;
+      obj.content.Input = obj.Input;
+      obj.content.Nodes = obj.Nodes;
+      obj.content.Edges = obj.Edges;
+    end
+
     function write(obj, filename)
       bids.util.mkdir(fileparts(filename));
       bids.util.jsonencode(filename, obj.content);
     end
 
   end
+
+  methods(Static)
+    function node = empty_node(level)
+
+      node =  struct('Level', [upper(level(1)) level(2:end)], ...
+                     'Name', [level], ...
+                     'Transformations', {Model.empty_transformations()}, ...
+                     'Model', Model.empty_model(), ...
+                     'Contrasts', struct('Name', '', ...
+                                         'ConditionList', {{''}}, ...
+                                         'Weights', {{''}}, ...
+                                         'Test', ''), ...
+                     'DummyContrasts',  struct('Test', 't', ...
+                                               'Contrasts', {{''}}));
+    
+    end
+
+    function transformations = empty_transformations()
+
+      transformations = struct('Transformer', '', ...
+                              'Instructions', {{
+                                                struct('Name', '', ...
+                                                       'Inputs', {{''}})
+                                               }});
+    
+    end
+
+    function model = empty_model()
+
+      model = struct('X', {{''}}, ...
+                     'Type', 'glm', ...
+                     'HRF', struct('Variables', {{''}}, ...
+                                   'Model', 'DoubleGamma'), ...
+                     'Options', struct('HighPassFilterCutoffHz', 0.008, ...
+                                       'LowPassFilterCutoffHz', nan, ...
+                                       'Mask', struct('desc', 'brain', ...
+                                                      'suffix', 'mask')), ...
+                     'Software', '');
+
+    end
+
+
+  end
+
 
 end
