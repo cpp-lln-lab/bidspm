@@ -8,22 +8,7 @@
    "Nodes": [
       {
          "Level": "Run",
-         "Name": "run_level",
-         "Transformations": [
-            {
-               "Name": "Factor",
-               "Inputs": [
-                  "trial_type"
-               ]
-            },
-            {
-               "Name": "Convolve",
-               "Model": "spm",
-               "Inputs": [
-                  " "
-               ]
-            }
-         ],
+         "Name": "run",
          "Model": {
             "X": [
                "trial_type.F1",
