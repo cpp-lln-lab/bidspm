@@ -13,7 +13,7 @@ function mask = getModelMask(modelFile, nodeType)
     nodeType = 'run';
   end
 
-    bm = bids.Model('file', modelFile);
+  bm = bids.Model('file', modelFile);
   node = bm.get_nodes('Level', nodeType);
 
   try

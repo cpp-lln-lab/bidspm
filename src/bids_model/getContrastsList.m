@@ -12,6 +12,6 @@ function contrastsList = getContrastsList(modelFile, nodeType)
   end
 
   bm = bids.Model('file', modelFile);
-  contrastsList = bm.get_contrasts('Level', nodeType)
+  contrastsList = bm.get_contrasts('Level', nodeType);
 
 end

@@ -53,20 +53,20 @@ function opt = createDefaultStatsModel(BIDS, opt)
   % TODO get MNI space from model
 
   DEFAULT_CONFOUNDS = {'trans_?'
-  'rot_?'
-  'non_steady_state_outlier*'
-  'motion_outlier*'};
+                       'rot_?'
+                       'non_steady_state_outlier*'
+                       'motion_outlier*'};
 
   bm = bids.Model();
 
   bm = bm.default(BIDS);
 
-% add realign parameters
+  % add realign parameters
   for iRealignParam = 1:numel(DEFAULT_CONFOUNDS)
     bm.Nodes{1}.Model.X{end + 1} = DEFAULT_CONFOUNDS{iRealignParam};
   end
 
-  bm = bm.update()
+  bm = bm.update();
 
   filename = fullfile(pwd, 'models', ...
                       ['model-', ...

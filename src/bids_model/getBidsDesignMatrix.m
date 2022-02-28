@@ -14,6 +14,6 @@ function designMatrix = getBidsDesignMatrix(modelFile, nodeType)
   end
 
   bm = bids.Model('file', modelFile);
-  designMatrix = bm.get_design_matrix('Level', nodeType)
+  designMatrix = bm.get_design_matrix('Level', nodeType);
 
 end

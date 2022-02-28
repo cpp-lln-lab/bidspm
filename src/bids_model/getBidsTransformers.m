@@ -12,9 +12,11 @@ function transformers = getBidsTransformers(modelFile, nodeType)
   end
 
   bm = bids.Model('file', modelFile);
-  transformers = bm.get_transformations('Level', nodeType)
+  transformers = bm.get_transformations('Level', nodeType);
   if ~isempty(transformers)
     transformers = transformers.Instructions;
+  else
+    transformers = struct([]);
   end
 
 end
