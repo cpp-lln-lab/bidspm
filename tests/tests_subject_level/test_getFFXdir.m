@@ -31,7 +31,7 @@ function test_getFFXdir_user_specified()
 
   opt = setOptions('vismotionGlobalSignal', subLabel);
   opt.space = 'individual';
-  
+
   ffxDir = getFFXdir(subLabel, opt);
 
   expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-02', 'stats', ...

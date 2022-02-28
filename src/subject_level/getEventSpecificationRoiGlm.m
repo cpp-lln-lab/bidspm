@@ -44,7 +44,7 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
 
   getModelType(modelFile);
   bm = bids.Model('file', modelFile);
-  
+
   % We focus on the run level but fall back on the subject level
   % if we do not find any contrasts at the run level
   node = bm.get_nodes('Level', 'run');
