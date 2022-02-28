@@ -8,6 +8,16 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getModelType()
+
+  opt = setOptions('vislocalizer');
+
+  modelType = getModelType(opt.model.file, 'subject');
+
+  assertEqual(modelType, 'glm');
+
+end
+
 function test_getBidsTransformers_basic()
 
   opt = setOptions('balloonanalogrisktask');
@@ -71,16 +81,6 @@ function test_getHRFderivatives()
   HRF = getHRFderivatives(opt.model.file);
 
   assertEqual(HRF, [1 0]);
-
-end
-
-function test_getModelType()
-
-  opt = setOptions('vislocalizer');
-
-  modelType = getModelType(opt.model.file, 'subject');
-
-  assertEqual(modelType, 'glm');
 
 end
 

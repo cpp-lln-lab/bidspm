@@ -65,6 +65,8 @@ function opt = createDefaultStatsModel(BIDS, opt)
   for iRealignParam = 1:numel(DEFAULT_CONFOUNDS)
     bm.Nodes{1}.Model.X{end + 1} = DEFAULT_CONFOUNDS{iRealignParam};
   end
+  bm.Nodes{1}.Model.Software = struct('SPM', struct('SerialCorrelation', 'FAST', ...
+                                                    'HRFderivatives', 'Temporal'));
 
   bm = bm.update();
 

@@ -15,6 +15,6 @@ function [grpLvlCon, iNode] = getGrpLevelContrast(opt)
   % (C) Copyright 2019 CPP_SPM developers
 
   bm = bids.Model('file', opt.model.file);
-  [grpLvlCon, iStep] = bm.get_contrasts('Level', 'dataset');
+  [grpLvlCon, iNode] = bm.get_dummy_contrasts('Level', 'dataset');
 
 end

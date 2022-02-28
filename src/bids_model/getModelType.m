@@ -16,6 +16,10 @@ function modelType = getModelType(modelFile, nodeType)
   bm = bids.Model('file', modelFile);
   node = bm.get_nodes('Level', nodeType);
 
+  if iscell(node)
+    node = node{1};
+  end
+
   try
     modelType = node.Model.Type;
   catch
