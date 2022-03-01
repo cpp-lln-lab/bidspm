@@ -29,13 +29,13 @@ function test_getFFXdir_user_specified()
 
   subLabel = '02';
 
-  opt = setOptions('nback', subLabel);
+  opt = setOptions('vismotionGlobalSignal', subLabel);
   opt.space = 'individual';
 
   ffxDir = getFFXdir(subLabel, opt);
 
   expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-02', 'stats', ...
-                            'task-nback_space-individual_FWHM-6_desc-nbackMVPA');
+                            'task-vismotionGlobalSignal_space-individual_FWHM-6_desc-globalSignal');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 

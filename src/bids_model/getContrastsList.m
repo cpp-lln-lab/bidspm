@@ -11,10 +11,7 @@ function contrastsList = getContrastsList(modelFile, nodeType)
     nodeType = 'run';
   end
 
-  model = bids.util.jsondecode(modelFile);
-
-  node = returnModelNode(model, nodeType);
-
-  contrastsList = node.Contrasts;
+  bm = bids.Model('file', modelFile);
+  contrastsList = bm.get_contrasts('Level', nodeType);
 
 end

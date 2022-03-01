@@ -13,14 +13,17 @@ function mask = getModelMask(modelFile, nodeType)
     nodeType = 'run';
   end
 
-  model = bids.util.jsondecode(modelFile);
+  bm = bids.Model('file', modelFile);
+  node = bm.get_nodes('Level', nodeType);
 
-  node = returnModelNode(model, nodeType);
+  if iscell(node)
+    node = node{1};
+  end
 
   try
     mask = node.Model.Options.Mask;
   catch
-    msg = sprintf('No mask for node %s in BIDS model file\%s', ...
+    msg = sprintf('No mask for node %s in BIDS model file\n%s', ...
                   nodeType, modelFile);
     errorHandling(mfilename(), 'noHRFderivatives', msg, true, true);
   end

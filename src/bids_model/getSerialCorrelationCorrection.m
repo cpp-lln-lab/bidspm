@@ -13,9 +13,12 @@ function autoCorCorrection = getSerialCorrelationCorrection(modelFile, nodeType)
     nodeType = 'run';
   end
 
-  model = bids.util.jsondecode(modelFile);
+  bm = bids.Model('file', modelFile);
+  node = bm.get_nodes('Level', nodeType);
 
-  node = returnModelNode(model, nodeType);
+  if iscell(node)
+    node = node{1};
+  end
 
   try
     autoCorCorrection = node.Model.Software.SPM.SerialCorrelation;

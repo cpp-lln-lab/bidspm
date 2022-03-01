@@ -18,7 +18,7 @@ function test_specifyContrasts_missing_condition()
   Contrasts.Weights = [1, -1];
   Contrasts.Test = 't';
 
-  model = createEmptyStatsModel;
+  model = bids.Model('init', true);
   model.Input.task = taskName;
   model.Nodes{1}.Contrasts = Contrasts;
   model.Nodes = model.Nodes{1};
@@ -48,7 +48,7 @@ function test_specifyContrasts_missing_condition_for_dummy_contrasts()
   % GIVEN
   DummyContrasts{1} = 'foo';
 
-  model = createEmptyStatsModel;
+  model = bids.Model('init', true);
   model.Input.task = taskName;
   model.Nodes{1}.DummyContrasts.Contrasts = DummyContrasts;
   model.Nodes{1}.DummyContrasts.Test = 't';
@@ -89,7 +89,8 @@ function test_specifyContrasts_complex()
   Contrasts.Weights = [1, -1];
   Contrasts.Test = 't';
 
-  model = createEmptyStatsModel;
+  model = bids.Model('init', true);
+  model.Nodes{2} = bids.Model.empty_node('subject');
   model.Input.task = taskName;
   model.Nodes{1}.DummyContrasts.Contrasts = DummyContrasts;
   model.Nodes{1}.Contrasts = Contrasts;

@@ -75,8 +75,11 @@ function [roiList, roiFolder] = getROIs(varargin)
                     'suffix', 'mask');
 
     if ~isempty(roiNames)
-      if iscell(roiNames) && ~(numel(roiNames) == 1 && ~strcmp(roiNames{1}, ''))
-        filter.label = ['(' strjoin(opt.roi.name, '|') '){1}'];
+      if iscell(roiNames)
+        if ~(numel(roiNames) == 1 && ~strcmp(roiNames{1}, ''))
+        else
+          filter.label = ['(' strjoin(opt.roi.name, '|') '){1}'];
+        end
 
       elseif isstruct(roiNames)
         filter = setFields(filter, opt.roi.name);
@@ -88,7 +91,11 @@ function [roiList, roiFolder] = getROIs(varargin)
     roiList = bids.query(BIDS_ROI, 'data', filter);
 
     % assuming all ROIs are in the same folder
-    roiFolder = fileparts(roiList{1});
+    if ~isempty(roiList)
+      roiFolder = fileparts(roiList{1});
+    else
+      roiFolder = [];
+    end
 
   end
 

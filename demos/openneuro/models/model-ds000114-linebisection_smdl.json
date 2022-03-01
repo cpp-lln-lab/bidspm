@@ -7,6 +7,7 @@
   "Nodes": [
     {
       "Level": "run",
+      "Name": "run_level",
       "Model": {
         "X": [
           "trial_type.Correct_Task",
@@ -35,6 +36,7 @@
     },
     {
       "Level": "subject",
+      "Name": "subject_level",
       "Model": {
         "X": [
           "trial_type.Correct_Task",
@@ -53,6 +55,7 @@
     },
     {
       "Level": "dataset",
+      "Name": "dataset_level",
       "DummyContrasts": [
         "trial_type.Correct_Task",
         "trial_type.Incorrect_Task"

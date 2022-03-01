@@ -1,134 +1,206 @@
 {
-   "Name": "vislocalizer",
+   "Name": "default_rest_vislocalizer_vismotion_model",
    "BIDSModelVersion": "1.0.0",
-   "Description": "default model for vislocalizer",
+   "Description": "default BIDS stats model for rest/vislocalizer/vismotion task",
    "Input": {
-      "task": [
-         "vislocalizer"
-      ]
+     "task": [
+       "rest",
+       "vislocalizer",
+       "vismotion"
+     ]
    },
    "Nodes": [
-      {
-         "Level": "Run",
-         "Name": "run_level",
-         "Model": {
-            "X": [
-               "trial_type.VisMot",
-               "trial_type.VisStat",
-               "trans_?",
-               "rot_?",
-               "non_steady_state_outlier*",
-               "motion_outlier*"
-            ],
-            "HRF": {
-               "Variables": [
-                  "trial_type.VisMot",
-                  "trial_type.VisStat"
-               ],
-               "Model": "DoubleGamma"
-            },
-            "Type": "glm",
-            "Options": {
-               "HighPassFilterCutoffHz": 0.0078,
-               "Mask": ""
-            },
-            "Software": {
-               "SPM": {
-                  "SerialCorrelation": "FAST",
-                  "HRFderivatives": "Temporal"
-               }
-            }
-         },
-         "Contrasts": [
-            {
-               "Name": "",
-               "ConditionList": [
-                  ""
-               ],
-               "Weights": [
-                  ""
-               ],
-               "Test": ""
-            }
+     {
+       "Level": "Run",
+       "Name": "run",
+       "Transformations": {
+         "Transformer": "",
+         "Instructions": [
+           {
+             "Name": "",
+             "Inputs": [""]
+           }
+         ]
+       },
+       "Model": {
+         "X": [
+           "trial_type.VisMot",
+           "trial_type.VisStat",
+           "trans_?",
+           "rot_?",
+           "non_steady_state_outlier*",
+           "motion_outlier*"
          ],
-         "DummyContrasts": {
-            "Test": "t",
-            "Contrasts": [
-               "trial_type.VisMot",
-               "trial_type.VisStat"
-            ]
-         }
-      },
-      {
-         "Level": "Subject",
-         "Name": "subject_level",
-         "Model": {
-            "X": [
-               "trial_type.VisMot",
-               "trial_type.VisStat",
-               "trans_?",
-               "rot_?",
-               "non_steady_state_outlier*",
-               "motion_outlier*"
-            ],
-            "HRF": {
-               "Variables": [
-                  "trial_type.VisMot",
-                  "trial_type.VisStat"
-               ],
-               "Model": "DoubleGamma"
-            },
-            "Type": "glm",
-            "Options": {
-               "HighPassFilterCutoffHz": 0.0078,
-               "Mask": ""
-            },
-            "Software": {
-               "SPM": {
-                  "SerialCorrelation": "FAST",
-                  "HRFderivatives": "Temporal"
-               }
-            }
+         "Type": "glm",
+         "HRF": {
+           "Variables": [
+             "trial_type.VisMot",
+             "trial_type.VisStat"
+           ],
+           "Model": "DoubleGamma"
          },
+         "Options": {
+           "HighPassFilterCutoffHz": 0.008,
+           "LowPassFilterCutoffHz": null,
+           "Mask": {
+             "desc": "brain",
+             "suffix": "mask"
+           }
+         },
+         "Software": {
+           "SPM": {
+             "SerialCorrelation": "FAST",
+             "HRFderivatives": "Temporal"
+           }
+         }
+       },
+       "Contrasts": {
+         "Name": "",
+         "ConditionList": [""],
+         "Weights": [""],
+         "Test": ""
+       },
+       "DummyContrasts": {
+         "Test": "t",
          "Contrasts": [
-            {
-               "Name": "",
-               "ConditionList": [
-                  ""
-               ],
-               "Weights": [
-                  ""
-               ],
-               "Test": ""
-            }
-         ],
-         "DummyContrasts": {
-            "Test": "t",
-            "Contrasts": [
-               "trial_type.VisMot",
-               "trial_type.VisStat"
-            ]
-         }
-      },
-      {
-         "Level": "Dataset",
-         "Name": "dataset_level",
-         "Model": {
-            "X": [
-               " "
-            ],
-            "Type": "glm",
-            "Options": {
-               "Mask": ""
-            }
+           "trial_type.VisMot",
+           "trial_type.VisStat"
+         ]
+       }
+     },
+     {
+       "Level": "Session",
+       "Name": "session",
+       "Transformations": {
+         "Transformer": "",
+         "Instructions": [
+           {
+             "Name": "",
+             "Inputs": [""]
+           }
+         ]
+       },
+       "Model": {
+         "X": [""],
+         "Type": "glm",
+         "HRF": {
+           "Variables": [""],
+           "Model": "DoubleGamma"
          },
-         "DummyContrasts": {
-            "Test": "t",
-            "Contrasts": [
-               "trial_type.VisMot",
-               "trial_type.VisStat"
-            ]
-         }
-      }
+         "Options": {
+           "HighPassFilterCutoffHz": 0.008,
+           "LowPassFilterCutoffHz": null,
+           "Mask": {
+             "desc": "brain",
+             "suffix": "mask"
+           }
+         },
+         "Software": ""
+       },
+       "Contrasts": {
+         "Name": "",
+         "ConditionList": [""],
+         "Weights": [""],
+         "Test": ""
+       },
+       "DummyContrasts": {
+         "Test": "t",
+         "Contrasts": [""]
+       }
+     },
+     {
+       "Level": "Subject",
+       "Name": "subject",
+       "Transformations": {
+         "Transformer": "",
+         "Instructions": [
+           {
+             "Name": "",
+             "Inputs": [""]
+           }
+         ]
+       },
+       "Model": {
+         "X": [""],
+         "Type": "glm",
+         "HRF": {
+           "Variables": [""],
+           "Model": "DoubleGamma"
+         },
+         "Options": {
+           "HighPassFilterCutoffHz": 0.008,
+           "LowPassFilterCutoffHz": null,
+           "Mask": {
+             "desc": "brain",
+             "suffix": "mask"
+           }
+         },
+         "Software": ""
+       },
+       "Contrasts": {
+         "Name": "",
+         "ConditionList": [""],
+         "Weights": [""],
+         "Test": ""
+       },
+       "DummyContrasts": {
+         "Test": "t",
+         "Contrasts": [""]
+       }
+     },
+     {
+       "Level": "Dataset",
+       "Name": "dataset",
+       "Transformations": {
+         "Transformer": "",
+         "Instructions": [
+           {
+             "Name": "",
+             "Inputs": [""]
+           }
+         ]
+       },
+       "Model": {
+         "X": [""],
+         "Type": "glm",
+         "HRF": {
+           "Variables": [""],
+           "Model": "DoubleGamma"
+         },
+         "Options": {
+           "HighPassFilterCutoffHz": 0.008,
+           "LowPassFilterCutoffHz": null,
+           "Mask": {
+             "desc": "brain",
+             "suffix": "mask"
+           }
+         },
+         "Software": ""
+       },
+       "Contrasts": {
+         "Name": "",
+         "ConditionList": [""],
+         "Weights": [""],
+         "Test": ""
+       },
+       "DummyContrasts": {
+         "Test": "t",
+         "Contrasts": [""]
+       }
+     }
+   ],
+   "Edges": [
+     {
+       "Source": "run",
+       "Destination": "session"
+     },
+     {
+       "Source": "session",
+       "Destination": "subject"
+     },
+     {
+       "Source": "subject",
+       "Destination": "dataset"
+     }
    ]
-}
+ }

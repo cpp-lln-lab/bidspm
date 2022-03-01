@@ -43,20 +43,20 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   load(SPM);
 
   getModelType(modelFile);
-  model = bids.util.jsondecode(modelFile);
+  bm = bids.Model('file', modelFile);
 
   % We focus on the run level but fall back on the subject level
   % if we do not find any contrasts at the run level
-  node = returnModelNode(model, 'run');
-  if ~isfield(node, 'DummyContrasts') || ~isfield(node, 'Contrasts')
-    node = returnModelNode(model, 'subject');
+  node = bm.get_nodes('Level', 'run');
+  if ~isfield(node{1}, 'DummyContrasts') || ~isfield(node{1}, 'Contrasts')
+    node = bm.get_nodes('Level', 'subject');
   end
 
   eventSpecification = struct('name', '', 'eventSpec', [], 'duration', []);
 
-  eventSpecification = getEventSpecForDummyContrasts(eventSpecification, node, SPM);
+  eventSpecification = getEventSpecForDummyContrasts(eventSpecification, node{1}, SPM);
 
-  eventSpecification = getEventSpecForContrasts(eventSpecification, node, SPM);
+  eventSpecification = getEventSpecForContrasts(eventSpecification, node{1}, SPM);
 
 end
 

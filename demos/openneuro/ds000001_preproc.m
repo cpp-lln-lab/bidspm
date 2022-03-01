@@ -8,10 +8,10 @@ cpp_spm('init');
 
 opt = ds000001_preproc_option();
 
-reportBIDS(opt);
+% reportBIDS(opt);
 
-bidsCopyInputFolder(opt);
+% bidsCopyInputFolder(opt);
 
 bidsSpatialPrepro(opt);
 
-bidsSmoothing(opt);
+% bidsSmoothing(opt);

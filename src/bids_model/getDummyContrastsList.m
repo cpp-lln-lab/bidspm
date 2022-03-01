@@ -11,10 +11,7 @@ function contrastsList = getDummyContrastsList(modelFile, nodeType)
     nodeType = 'run';
   end
 
-  model = bids.util.jsondecode(modelFile);
-
-  node = returnModelNode(model, nodeType);
-
-  contrastsList = node.DummyContrasts;
+  bm = bids.Model('file', modelFile);
+  contrastsList = bm.get_dummy_contrasts('Level', nodeType);
 
 end

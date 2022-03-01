@@ -8,17 +8,13 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_returnModelNode_errors()
+function test_getModelType()
 
-  content = createEmptyStatsModel();
+  opt = setOptions('vislocalizer');
 
-  assertExceptionThrown(@()returnModelNode(content, 'foo'), ...
-                        'returnModelNode:wrongNodeType');
+  modelType = getModelType(opt.model.file, 'subject');
 
-  content = createEmptyStatsModel();
-  content.Nodes{3}  = [];
-  assertExceptionThrown(@()returnModelNode(content, 'missingModelNode'), ...
-                        'returnModelNode:wrongNodeType');
+  assertEqual(modelType, 'glm');
 
 end
 
@@ -59,44 +55,12 @@ function test_getVariablesToConvolve()
 
 end
 
-function test_returnModelNode_struct()
-
-  content.Nodes = struct('Level', 'Run');
-  content.Nodes(2).Level = 'Subject';
-
-  [~, iStep] = returnModelNode(content, 'run');
-  assertEqual(iStep, 1);
-
-  [~, iStep] = returnModelNode(content, 'Subject');
-  assertEqual(iStep, 2);
-
-end
-
 function test_getVariablesToConvolve_warning()
 
   opt = setOptions('vislocalizer');
 
   assertWarning(@()getVariablesToConvolve(opt.model.file, 'dataset'), ...
                 'getVariablesToConvolve:noVariablesToConvolve');
-
-end
-
-function test_returnModelNode()
-
-  content = createEmptyStatsModel();
-  content.Nodes{4} = createEmptyNode('dataset');
-
-  [~, iStep] = returnModelNode(content, 'run');
-  assertEqual(iStep, 1);
-
-  [~, iStep] = returnModelNode(content, 'dataset');
-  assertEqual(iStep, [3; 4]);
-
-  modelFile = fullfile(pwd, 'model.json');
-  bids.util.jsonencode(modelFile, content);
-  HPF = getHighPassFilter(modelFile);
-  designMatrix = getBidsDesignMatrix(modelFile);
-  dummyContrastsList = getDummyContrastsList(modelFile);
 
 end
 
@@ -117,16 +81,6 @@ function test_getHRFderivatives()
   HRF = getHRFderivatives(opt.model.file);
 
   assertEqual(HRF, [1 0]);
-
-end
-
-function test_getModelType()
-
-  opt = setOptions('vislocalizer');
-
-  modelType = getModelType(opt.model.file, 'subject');
-
-  assertEqual(modelType, 'glm');
 
 end
 

@@ -6,8 +6,8 @@ function inputs = getBidsModelInput(modelFile)
     return
   end
 
-  model = bids.util.jsondecode(modelFile);
+  bm = bids.Model('file', modelFile);
 
-  inputs = model.Input;
+  inputs = bm.Input;
 
 end

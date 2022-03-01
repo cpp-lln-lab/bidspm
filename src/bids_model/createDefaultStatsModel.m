@@ -52,91 +52,31 @@ function opt = createDefaultStatsModel(BIDS, opt)
   % TODO deal with the Transformations and Convolve fields
   % TODO get MNI space from model
 
-  trialTypeList = listAllTrialTypes(BIDS, opt);
+  DEFAULT_CONFOUNDS = {'trans_?'
+                       'rot_?'
+                       'non_steady_state_outlier*'
+                       'motion_outlier*'};
 
-  content = createEmptyStatsModel();
+  bm = bids.Model();
 
-  content.Nodes{1} = rmfield(content.Nodes{1}, {'Transformations'});
-  content.Nodes{2} = rmfield(content.Nodes{2}, {'Transformations'});
+  bm = bm.default(BIDS);
 
-  content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList);
+  % add realign parameters
+  for iRealignParam = 1:numel(DEFAULT_CONFOUNDS)
+    bm.Nodes{1}.Model.X{end + 1} = DEFAULT_CONFOUNDS{iRealignParam};
+  end
+  bm.Nodes{1}.Model.Software = struct('SPM', struct('SerialCorrelation', 'FAST', ...
+                                                    'HRFderivatives', 'Temporal'));
 
-  content.Nodes{3} = rmfield(content.Nodes{3}, {'Contrasts'});
+  bm = bm.update();
 
-  content.Name = strjoin(opt.taskName, ' ');
-  content.Description = ['default model for ' strjoin(opt.taskName, '')];
-  content.Input.task = opt.taskName;
-
-  % save the json file
-  [~, ~, ~] = mkdir(fullfile(pwd, 'models'));
   filename = fullfile(pwd, 'models', ...
                       ['model-', ...
                        bids.internal.camel_case(['default ' strjoin(opt.taskName)]), ...
                        '_smdl.json']);
 
-  bids.util.jsonwrite(filename, content);
+  bm.write(filename);
 
   opt.model.file = filename;
-
-end
-
-function trialTypeList = listAllTrialTypes(BIDS, opt)
-  % list all the *events.tsv files for that task and make a lis of all the
-  % trial_types
-  eventFiles = bids.query(BIDS, 'data', ...
-                          'suffix', 'events', ...
-                          'extension', '.tsv', ...
-                          'task', opt.taskName);
-
-  trialTypeList = {};
-
-  for iFile = 1:size(eventFiles, 1)
-    tmp = spm_load(eventFiles{iFile, 1});
-    for iTrialType = 1:numel(tmp.trial_type)
-      trialTypeList{end + 1, 1} = tmp.trial_type{iTrialType}; %#ok<*AGROW>
-    end
-  end
-
-  trialTypeList = unique(trialTypeList);
-  idx = ismember(trialTypeList, 'trial_type');
-  if any(idx)
-    trialTypeList{idx} = [];
-  end
-
-end
-
-function content = fillDefaultDesginMatrixAndContrasts(content, trialTypeList)
-
-  DEFAULT_CONFOUNDS = { ...
-                       'trans_?'
-                       'rot_?'
-                       'non_steady_state_outlier*'
-                       'motion_outlier*'};
-
-  for iTrialType = 1:numel(trialTypeList)
-
-    if  ~isempty(trialTypeList{iTrialType})
-      trialTypeName = ['trial_type.' trialTypeList{iTrialType}];
-
-      % subject
-      content.Nodes{1}.Model.X{iTrialType} = trialTypeName;
-      content.Nodes{1}.Model.HRF.Variables{iTrialType} = trialTypeName;
-
-      % run
-      content.Nodes{2}.Model.X{iTrialType} = trialTypeName;
-      content.Nodes{2}.Model.HRF.Variables{iTrialType} = trialTypeName;
-
-      for iNode = 1:numel(content.Nodes)
-        content.Nodes{iNode}.DummyContrasts.Contrasts{iTrialType} = trialTypeName;
-      end
-    end
-
-  end
-
-  % add realign parameters
-  for iRealignParam = 1:numel(DEFAULT_CONFOUNDS)
-    content.Nodes{1}.Model.X{end + 1} = DEFAULT_CONFOUNDS{iRealignParam};
-    content.Nodes{2}.Model.X{end + 1} = DEFAULT_CONFOUNDS{iRealignParam};
-  end
 
 end
