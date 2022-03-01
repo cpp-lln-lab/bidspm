@@ -12,9 +12,6 @@ function opt = ds000001_stats_option()
   % suject to run in each group
   opt.subjects = {'01', '02'};
 
-  % task to analyze
-  opt.taskName = 'balloonanalogrisktask';
-
   opt.pipeline.type = 'stats';
 
   opt.space = 'IXI549Space';
