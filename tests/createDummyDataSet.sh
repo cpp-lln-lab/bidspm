@@ -275,7 +275,7 @@ for subject in ${subject_list}; do
 	# STATS
 	task_list='vismotion vislocalizer'
 	for task in ${task_list}; do
-		this_dir=${stats_dir}/sub-${subject}/stats/task-${task}_space-IXI549Space_FWHM-6
+		this_dir=${stats_dir}/sub-${subject}/task-${task}_space-IXI549Space_FWHM-6
 		mkdir -p ${this_dir}
 
 		cp dummyData/mat_files/SPM.mat ${this_dir}/SPM.mat
@@ -296,7 +296,7 @@ for subject in ${subject_list}; do
 	# different model for model comparison
 	task_list='vismotion vislocalizer'
 	for task in ${task_list}; do
-		this_dir=${stats_dir}/sub-${subject}/stats/task-${task}_space-IXI549Space_FWHM-6_desc-globalSignal
+		this_dir=${stats_dir}/sub-${subject}/task-${task}_space-IXI549Space_FWHM-6_desc-globalSignal
 		mkdir -p ${this_dir}
 
 		cp dummyData/mat_files/SPM.mat ${this_dir}/SPM.mat
