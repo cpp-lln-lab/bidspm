@@ -178,6 +178,7 @@ function skipped = bidsRoiBasedGLM(opt)
     
     close all;
     
+    %% Save summary table for all rois and conditions as tidy data
     psc = {'max', 'absMax'};
     row = 1;
     for i = 1:numel(dataToCompile)
@@ -196,9 +197,7 @@ function skipped = bidsRoiBasedGLM(opt)
         
         tsvContent.voxels(row) = jsonContent.size.voxels;
         tsvContent.volume(row) = jsonContent.size.volume;
-        
-%         tsvContent.value_type{row} = psc{j};
-        
+
         conName = eventSpec(iCon).name;
         tsvContent.contrast_name{row} = conName;
         
