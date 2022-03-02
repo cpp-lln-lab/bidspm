@@ -135,6 +135,8 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
 
     removeBetaImgTmaps(tMaps, deleteIndBeta, deleteIndTmaps, ffxDir);
 
+    % TODO GunZip 4D image
+
   end
 
 end

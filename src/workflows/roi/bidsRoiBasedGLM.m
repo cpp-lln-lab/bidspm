@@ -187,24 +187,27 @@ function skipped = bidsRoiBasedGLM(opt)
 
       for j = 1:numel(psc)
 
-        tsvContent.label{row} = bidsFile.entities.label;
-        if isfield(bidsFile.entities, 'hemi')
-          tsvContent.hemi{row} = bidsFile.entities.hemi;
-        else
-          tsvContent.hemi{row} = nan;
-        end
-
-        tsvContent.voxels(row) = jsonContent.size.voxels;
-        tsvContent.volume(row) = jsonContent.size.volume;
-
-        tsvContent.percent_signal_change_value{row} = psc{j};
-
         for iCon = 1:numel(eventSpec)
-          conName = eventSpec(iCon).name;
-          tsvContent.(conName)(row) = jsonContent.(conName).percentSignalChange.(psc{j});
-        end
 
-        row = row + 1;
+          tsvContent.label{row} = bidsFile.entities.label;
+          if isfield(bidsFile.entities, 'hemi')
+            tsvContent.hemi{row} = bidsFile.entities.hemi;
+          else
+            tsvContent.hemi{row} = nan;
+          end
+
+          tsvContent.voxels(row) = jsonContent.size.voxels;
+          tsvContent.volume(row) = jsonContent.size.volume;
+
+          tsvContent.value_type{row} = psc{j};
+
+          conName = eventSpec(iCon).name;
+          tsvContent.contrast_name{row} = conName;
+          tsvContent.percent_signal_change(row) = jsonContent.(conName).percentSignalChange.(psc{j});
+
+          row = row + 1;
+
+        end
 
       end
 
