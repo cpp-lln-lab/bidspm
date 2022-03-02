@@ -69,6 +69,8 @@ function skipped = bidsRoiBasedGLM(opt)
 
     eventSpec = getEventSpecificationRoiGlm(spmFile, opt.model.file);
 
+    dataToCompile = {};
+
     for iROI = 1:size(roiList, 1)
 
       roiHeader = spm_vol(roiList{iROI, 1});
@@ -83,8 +85,7 @@ function skipped = bidsRoiBasedGLM(opt)
       %% Do ROI based GLM
       % create ROI object for Marsbar
       % and convert to mat format to avoid delicacies of image format
-      roiObject = maroi_image(struct( ...
-                                     'vol', roiHeader, ...
+      roiObject = maroi_image(struct('vol', roiHeader, ...
                                      'binarize', true, ...
                                      'func', []));
       roiObject = maroi_matrix(roiObject);
@@ -94,6 +95,7 @@ function skipped = bidsRoiBasedGLM(opt)
         data = get_marsy(roiObject, model, 'mean', 'v');
         estimation = estimate(model, data);
       catch
+        fprintf('\n');
         warning('Skipping:\n- subject: %s \n- ROI: %s\n', ...
                 subLabel,  ...
                 spm_file(roiList{iROI, 1}, 'filename'));
@@ -161,6 +163,7 @@ function skipped = bidsRoiBasedGLM(opt)
       nameStructure.suffix = 'timecourse';
       nameStructure.ext = '.json';
       bidsFile = bids.File(nameStructure);
+      dataToCompile{end + 1, 1} = fullfile(outputDir, bidsFile.filename);
       bids.util.jsonwrite(fullfile(outputDir, bidsFile.filename), jsonContent);
 
       nameStructure.ext = '.tsv';
@@ -169,9 +172,48 @@ function skipped = bidsRoiBasedGLM(opt)
 
       plotRoiTimeCourse(fullfile(outputDir, bidsFile.filename), opt.verbosity > 0);
 
+      clear tsvContent;
+
     end
 
     close all;
+
+    psc = {'max', 'absMax'};
+    row = 1;
+    for i = 1:numel(dataToCompile)
+
+      bidsFile = bids.File(dataToCompile{i});
+      jsonContent = bids.util.jsondecode(dataToCompile{i});
+
+      for j = 1:numel(psc)
+
+        tsvContent.label{row} = bidsFile.entities.label;
+        if isfield(bidsFile.entities, 'hemi')
+          tsvContent.hemi{row} = bidsFile.entities.hemi;
+        else
+          tsvContent.hemi{row} = nan;
+        end
+
+        tsvContent.voxels(row) = jsonContent.size.voxels;
+        tsvContent.volume(row) = jsonContent.size.volume;
+
+        tsvContent.percent_signal_change_value{row} = psc{j};
+
+        for iCon = 1:numel(eventSpec)
+          conName = eventSpec(iCon).name;
+          tsvContent.(conName)(row) = jsonContent.(conName).percentSignalChange.(psc{j});
+        end
+
+        row = row + 1;
+
+      end
+
+    end
+
+    bidsFile = bids.File(outputDir);
+    bidsFile.suffix = 'summary';
+    bidsFile.extension = '.tsv';
+    bids.util.tsvwrite(fullfile(outputDir, bidsFile.filename), tsvContent);
 
   end
 
