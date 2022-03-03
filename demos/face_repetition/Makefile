@@ -13,7 +13,7 @@ resolution = outputs/derivatives/cpp_spm-res%
 
 clean:
 	rm -rf inputs
-	rm -rf outputs
+	rm -rf outputs/derivatives outputs/raw
 	rm -rf cfg
 	rm face_rep.zip
 
@@ -45,3 +45,4 @@ octave_stats: octave_prepoc face_rep_02_stats.m
 
 octave_roi: octave_stats face_rep_03_roi_analysis.m
 	octave $(OCTFLAGS) --eval "run('face_rep_03_roi_analysis.m');exit;"
+
