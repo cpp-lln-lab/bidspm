@@ -6,21 +6,21 @@ function figureFile = plotRoiTimeCourse(varargin)
   %
   %   plotRoiTimeCourse(tsvFile, versbose, 'colors', colors)
   %
-  % :param tsvFile: obligatory argument. 
-  % Content of TSV is organized in a "BIDS" way. 
-  % Must be ``(t + 1) X c`` with t = time points and c = condtions. 
-  % The + 1 for the row dimension is because of the headers giving the name of the condition. 
+  % :param tsvFile: obligatory argument.
+  % Content of TSV is organized in a "BIDS" way.
+  % Must be ``(t + 1) X c`` with t = time points and c = condtions.
+  % The + 1 for the row dimension is because of the headers giving the name of the condition.
   % A side car JSON is expected to contain a ``SamplingFrequency`` field for the
   % temporal resolution.
   % :type tsvFile: path
-  %  
+  %
   % :param verbose: to show figure or not
   % :type verbose: boolean
   %
-  % :param colors: 
+  % :param colors:
   % :type colors: ``n X 3`` array
   %
-  % :param title: 
+  % :param title:
   % :type title: char
   %
   %
@@ -38,7 +38,7 @@ function figureFile = plotRoiTimeCourse(varargin)
   addParameter(p, 'roiName', '', @ischar);
 
   parse(p, varargin{:});
-  
+
   tsvFile = p.Results.tsvFile;
   timeCourse = bids.util.tsvread(tsvFile);
   conditionNames = fieldnames(timeCourse);
@@ -64,10 +64,10 @@ function figureFile = plotRoiTimeCourse(varargin)
   timeCourse = tmp;
 
   jsonFile = bids.internal.file_utils(tsvFile, 'ext', '.json');
-  content = bids.util.jsondecode(jsonFile);
+  jsonContent = bids.util.jsondecode(jsonFile);
 
-  secs = [0:size(timeCourse, 1) - 1] * content.SamplingFrequency;
-  
+  secs = [0:size(timeCourse, 1) - 1] * jsonContent.SamplingFrequency;
+
   colors = p.Results.colors;
   if size(timeCourse, 2) > size(colors, 1)
     colors = repmat(colors, 2, 1);
@@ -76,7 +76,7 @@ function figureFile = plotRoiTimeCourse(varargin)
   if isGithubCi()
     return
   end
-  
+
   spm_figure('Create', 'Tag', figName, visible);
 
   hold on;
@@ -99,9 +99,11 @@ function figureFile = plotRoiTimeCourse(varargin)
   axis tight;
 
   for i = 1:numel(conditionNames)
-    legend_content{i} = sprintf('%s ; max(PSC)= %0.2f', ...
-                                legend_content{i}, ...
-                                content.(conditionNames{i}).percentSignalChange.max);
+    if isfield(jsonContent, conditionNames{i})
+      legend_content{i} = sprintf('%s ; max(PSC)= %0.2f', ...
+                                  legend_content{i}, ...
+                                  jsonContent.(conditionNames{i}).percentSignalChange.max);
+    end
   end
 
   legend(legend_content);
