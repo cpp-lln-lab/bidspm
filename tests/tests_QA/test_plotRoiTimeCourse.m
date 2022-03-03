@@ -20,7 +20,9 @@ function test_plotRoiTimeCourse_basic()
 
   % WHEN
   plotRoiTimeCourse(timeCourseFile);
+  plotRoiTimeCourse(timeCourseFile, true, 'roiName', 'foo');
+  plotRoiTimeCourse(timeCourseFile, true, 'colors', zeros(4,3));
 
-  close all;
+%   close all;
 
 end

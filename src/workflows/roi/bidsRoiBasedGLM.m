@@ -57,6 +57,8 @@ function skipped = bidsRoiBasedGLM(opt)
       continue
     end
     
+    printToScreen(['\n Using ROIs:' createUnorderedList(roiList)], opt);
+    
     outputDir = getFFXdir(subLabel, opt);
     
     spmFile = fullfile(outputDir, 'SPM.mat');
