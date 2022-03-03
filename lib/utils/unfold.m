@@ -127,9 +127,9 @@ function unfold(input, varargin)
             printValueToScreen(input);
         end
     end
-    
+
    fprintf('\n');
-    
+
 end
 
 function printKeyToScreen(input)
