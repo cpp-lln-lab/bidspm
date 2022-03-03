@@ -1,14 +1,37 @@
-function printToScreen(msg, opt)
+function printToScreen(varargin)
   %
   % USAGE::
   %
-  %   printToScreen(msg, opt)
+  %   printToScreen(msg, opt, 'format', 'blue')
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  if nargin < 2 || ~isfield(opt, 'verbosity') || opt.verbosity > 1
+  p = inputParser;
 
-    fprintf(1, msg);
+  default_opt = struct('verbosity', 2);
+  default_format = 'blue';
+
+  addRequired(p, 'msg', @ischar);
+  addOptional(p, 'opt', default_opt, @isstruct);
+  addParameter(p, 'format', default_format, @ischar);
+
+  parse(p, varargin{:});
+
+  msg = p.Results.msg;
+  opt = p.Results.opt;
+  format = p.Results.format;
+
+  if opt.verbosity > 1
+
+    if isOctave()
+      fprintf(1, msg);
+    else
+      try
+        cprintf(format, msg);
+      catch
+        fprintf(1, msg);
+      end
+    end
 
   end
 
