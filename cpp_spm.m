@@ -1,6 +1,6 @@
 function cpp_spm(varargin)
   %
-  % Short description of what the function does goes here.
+  % General intro function for CPP SPM
   %
   % USAGE::
   %

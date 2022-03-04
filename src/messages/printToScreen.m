@@ -21,6 +21,10 @@ function printToScreen(varargin)
   opt = p.Results.opt;
   format = p.Results.format;
 
+  if ~strcmp(opt.msg.color, '')
+    format = opt.msg.color;
+  end
+
   if opt.verbosity > 1
 
     if isOctave()

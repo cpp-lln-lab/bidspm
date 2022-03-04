@@ -24,7 +24,7 @@ function checkDependencies(opt)
     errorHandling(mfilename(), 'noSpm', msg, tolerant, opt.verbosity);
   end
 
-  fprintf(' Using %s %s\n', a, b);
+  printToScreen(sprintf(' Using %s %s\n', a, b), opt);
 
   if ~strcmp(a, SPM_main) || str2num(b) < 7219
     str = sprintf('%s %s %s.\n%s', ...

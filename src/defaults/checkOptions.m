@@ -91,6 +91,8 @@ function opt = checkOptions(opt)
   %       Mostly for debugging as the ouput files won't be usable by any of the stats
   %       workflows.
   %
+  %     - ``opt.msg.color = blue`` - default font color of the prompt messages.
+  %
   %  - **preprocessing**
   %
   %     - ``opt.anatOnly = false`` - to only preprocess the anatomical file
@@ -295,6 +297,9 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.QA.func.Globals = 'on';
   fieldsToSet.QA.func.Movie = 'off';
   fieldsToSet.QA.func.Basics = 'on';
+
+  %% Options for interface
+  fieldsToSet.msg.color = '';
 
   % specify the results to compute
   fieldsToSet.result.Nodes = returnDefaultResultsStructure();
