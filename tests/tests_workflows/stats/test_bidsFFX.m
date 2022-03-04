@@ -19,9 +19,9 @@ function test_bidsFFX_individual()
                                ['model-' strjoin(task, '') 'SpaceIndividual_smdl.json']);
     opt.fwhm.func = 0;
     opt.stc.skip = 1;
-    
+
     if exist(opt.dir.stats, 'dir')
-        rmdir(opt.dir.stats, 's');
+      rmdir(opt.dir.stats, 's');
     end
 
     [matlabbatch, opt] = bidsFFX('specifyAndEstimate', opt);
@@ -33,9 +33,9 @@ function test_bidsFFX_individual()
     assertEqual(opt.dir.jobs, fullfile(opt.dir.stats, 'jobs', 'vislocalizer'));
 
   end
-  
+
   createDummyData();
-  
+
 end
 
 function test_bidsFFX_skip_subject_no_data()
@@ -73,7 +73,6 @@ function test_bidsFFX_fmriprep_no_smoothing()
   end
 
   opt = setOptions('fmriprep', '', 'pipelineType', 'stats');
-  
 
   opt.space = 'MNI152NLin2009cAsym';
   opt.query.space = opt.space; % for bidsCopy only
@@ -111,9 +110,9 @@ function test_bidsFFX_mni()
 
     opt = setOptions(task{i}, '', 'pipelineType', 'stats');
     opt.stc.skip = 1;
-    
+
     if exist(opt.dir.stats, 'dir')
-        rmdir(opt.dir.stats, 's');
+      rmdir(opt.dir.stats, 's');
     end
 
     [matlabbatch, opt] = bidsFFX('specifyAndEstimate', opt);
@@ -125,7 +124,7 @@ function test_bidsFFX_mni()
     assertEqual(opt.dir.jobs, fullfile(opt.dir.stats, 'jobs', 'vislocalizer'));
 
   end
-  
+
   createDummyData();
 
 end
