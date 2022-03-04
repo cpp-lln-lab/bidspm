@@ -280,7 +280,7 @@ function run_tests()
     printToScreen('\nThis is not github CI\n');
   end
 
-  printToScreen('\nHome is %s\n', getenv('HOME'));
+  printToScreen(sprintf('\nHome is %s\n', getenv('HOME')));
 
   warning('OFF');
 
