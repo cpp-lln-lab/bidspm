@@ -16,7 +16,7 @@ function test_getFFXdir_basic()
 
   opt.fwhm.func = 0;
 
-  expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-01', 'stats', ...
+  expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-01', ...
                             'task-vislocalizer_space-IXI549Space_FWHM-0');
 
   ffxDir = getFFXdir(subLabel, opt);
@@ -34,7 +34,7 @@ function test_getFFXdir_user_specified()
 
   ffxDir = getFFXdir(subLabel, opt);
 
-  expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-02', 'stats', ...
+  expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-02', ...
                             'task-vismotionGlobalSignal_space-individual_FWHM-6_desc-globalSignal');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);

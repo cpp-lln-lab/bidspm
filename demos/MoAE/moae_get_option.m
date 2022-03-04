@@ -15,6 +15,8 @@ function opt = moae_get_option()
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
   opt.dir.derivatives = fullfile(opt.dir.raw, '..', '..', 'outputs', 'derivatives');
 
+  opt.stc.skip = 1;
+
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp
   % opt.realign.useUnwarp = false;

@@ -174,10 +174,14 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
 
   filter = queryFilter(opt, subLabel);
 
-  % Get slice timing information.
-  % Necessary to make sure that the reference slice used for slice time
-  % correction is the one we center our model on;
-  sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter);
+  if ~opt.stc.skip
+    % Get slice timing information.
+    % Necessary to make sure that the reference slice used for slice time
+    % correction is the one we center our model on;
+    sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter);
+  else
+    sliceOrder = [];
+  end
 
   if isempty(sliceOrder) && ~opt.dryRun
     % no slice order defined here (or different across tasks)

@@ -95,6 +95,8 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions = setFields(expectedOptions, rsHRF_my_defaults());
   expectedOptions = setFields(expectedOptions, MACS_my_defaults());
 
+  expectedOptions.msg.color = '';
+
   expectedOptions = orderfields(expectedOptions);
 
   expectedOptions = setDirectories(expectedOptions);

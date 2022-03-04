@@ -18,6 +18,11 @@ function test_bidsFFX_individual()
     opt.model.file =  fullfile(getDummyDataDir(),  'models', ...
                                ['model-' strjoin(task, '') 'SpaceIndividual_smdl.json']);
     opt.fwhm.func = 0;
+    opt.stc.skip = 1;
+
+    if exist(opt.dir.stats, 'dir')
+      rmdir(opt.dir.stats, 's');
+    end
 
     [matlabbatch, opt] = bidsFFX('specifyAndEstimate', opt);
 
@@ -28,6 +33,9 @@ function test_bidsFFX_individual()
     assertEqual(opt.dir.jobs, fullfile(opt.dir.stats, 'jobs', 'vislocalizer'));
 
   end
+
+  createDummyData();
+
 end
 
 function test_bidsFFX_skip_subject_no_data()
@@ -35,6 +43,7 @@ function test_bidsFFX_skip_subject_no_data()
   opt = setOptions('vislocalizer', '^01', 'pipelineType', 'stats');
   opt.model.file = '';
   opt.space = {'MNI152NLin2009cAsym'};
+  opt.stc.skip = 1;
 
   opt.verbosity = 1;
 
@@ -47,6 +56,7 @@ function test_bidsFFX_contrasts()
   createDummyData();
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+  opt.stc.skip = 1;
 
   [matlabbatch, opt] = bidsFFX('contrasts', opt);
 
@@ -99,6 +109,11 @@ function test_bidsFFX_mni()
   for i = 1
 
     opt = setOptions(task{i}, '', 'pipelineType', 'stats');
+    opt.stc.skip = 1;
+
+    if exist(opt.dir.stats, 'dir')
+      rmdir(opt.dir.stats, 's');
+    end
 
     [matlabbatch, opt] = bidsFFX('specifyAndEstimate', opt);
 
@@ -109,5 +124,7 @@ function test_bidsFFX_mni()
     assertEqual(opt.dir.jobs, fullfile(opt.dir.stats, 'jobs', 'vislocalizer'));
 
   end
+
+  createDummyData();
 
 end

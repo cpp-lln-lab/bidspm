@@ -17,6 +17,8 @@ function test_checkOptions_basic()
 
   assertEqual(opt, expectedOptions);
 
+  % unfoldStruct(opt);
+
 end
 
 function test_checkOptions_do_not_overwrite()
@@ -37,14 +39,7 @@ function test_checkOptions_error_task()
   opt.taskName = '';
   opt.verbosity = 1;
 
-  % skip in CI
-  if isGithubCi()
-    return
-  end
-
-  assertWarning( ...
-                @()checkOptions(opt), ...
-                'checkOptions:noTask');
+  assertWarning(@()checkOptions(opt), 'checkOptions:noTask');
 
 end
 
@@ -52,9 +47,7 @@ function test_checkOptions_error_group()
 
   opt.groups = {1};
 
-  assertExceptionThrown( ...
-                        @()checkOptions(opt), ...
-                        'checkOptions:groupNotString');
+  assertExceptionThrown(@()checkOptions(opt), 'checkOptions:groupNotString');
 
 end
 
@@ -63,9 +56,7 @@ function test_checkOptions_error_ref_slice()
   opt.stc.referenceSlice = [1:10];
   opt.taskName = 'testTask';
 
-  assertExceptionThrown( ...
-                        @()checkOptions(opt), ...
-                        'checkOptions:refSliceNotScalar');
+  assertExceptionThrown(@()checkOptions(opt), 'checkOptions:refSliceNotScalar');
 
 end
 
@@ -73,8 +64,6 @@ function test_checkOptions_error_vox_dim()
 
   opt.funcVoxelDims = [1:10];
 
-  assertExceptionThrown( ...
-                        @()checkOptions(opt), ...
-                        'checkOptions:voxDim');
+  assertExceptionThrown(@()checkOptions(opt), 'checkOptions:voxDim');
 
 end

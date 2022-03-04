@@ -4,6 +4,6 @@ function printWorkflowName(workflowName, opt)
 
   msg = sprintf('\n\n\nWORKFLOW: %s\n\n', upper(workflowName));
 
-  printToScreen(msg, opt);
+  printToScreen(msg, opt, 'format', '*blue');
 
 end

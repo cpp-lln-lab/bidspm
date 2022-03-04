@@ -13,7 +13,7 @@ resolution = outputs/derivatives/cpp_spm-res%
 
 clean:
 	rm -rf inputs
-	rm -rf outputs
+	rm -rf outputs/derivatives outputs/raw
 	rm -rf cfg
 	rm face_rep.zip
 

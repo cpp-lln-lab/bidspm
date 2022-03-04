@@ -63,9 +63,9 @@ function anatomicalQA(opt)
     bids.util.jsonwrite(fullfile(outputDir, bidsFile.filename), anatQA);
 
     p.suffix = 'qa';
-    p.ext = '.pdf';
+    p.ext = '.png';
     bidsFile = bids.File(p);
-    movefile(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_AnatQC.pdf']), ...
+    movefile(fullfile(pwd, 'spmup_QC-Brain Mask_001.png'), ...
              fullfile(outputDir,  bidsFile.filename));
 
     delete(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
