@@ -182,6 +182,8 @@ function opt = checkOptions(opt)
       msg = sprintf('model file does not exist:\n %s', opt.model.file);
       errorHandling(mfilename(), 'modelFileMissing', msg, false, opt.verbosity);
     end
+    bm = bids.Model('file', opt.model.file);
+    bm.validate();
     if strcmpi(opt.pipeline.type, 'stats')
       opt = overRideWithBidsModelContent(opt);
     end
@@ -223,7 +225,7 @@ function opt = checkOptions(opt)
       end
       assert(thisNode.Contrasts(iCon).p >= 0 && thisNode.Contrasts(iCon).p <= 1);
 
-      if ~isempty(thisNode.Contrasts(iCon).k)
+      if isempty(thisNode.Contrasts(iCon).k)
         thisNode.Contrasts(iCon).k = Contrasts.k;
       end
       assert(thisNode.Contrasts(iCon).k >= 0);

@@ -14,6 +14,8 @@ function test_returnDefaultResultsStructure_basic()
 
   expected.Level =  '';
 
+  expected.Name =  '';
+
   expected.Contrasts.Name = '';
   expected.Contrasts.useMask = false();
   expected.Contrasts.MC = 'FWE';
