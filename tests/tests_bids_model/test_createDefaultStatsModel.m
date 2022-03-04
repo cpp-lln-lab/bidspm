@@ -35,6 +35,8 @@ function test_createDefaultStatsModel_basic()
 
   expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-default_smdl.json'));
 
+  unfoldStruct(content);
+  unfoldStruct(expectedContent);
   assertEqual(content, expectedContent);
 
   cleanUp(fullfile(pwd, 'models'));

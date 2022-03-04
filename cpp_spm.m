@@ -83,6 +83,7 @@ function initCppSpm(dev)
   end
 
   opt.verbosity = 2;
+  opt.msg.color = '';
 
   octaveVersion = '4.0.3';
   matlabVersion = '8.6.0';
@@ -162,7 +163,7 @@ function initCppSpm(dev)
 
         try
           % Try loading Octave packages
-          disp(['loading ' packageName]);
+          printToScreen(['loading ' packageName]);
           pkg('load', packageName);
 
         catch
@@ -185,7 +186,7 @@ function initCppSpm(dev)
     detectCppSpm();
 
   else
-    fprintf(1, '\n\nCPP_SPM already initialized\n\n');
+    printToScreen('\n\nCPP_SPM already initialized\n\n');
 
   end
 
@@ -199,7 +200,7 @@ function detectCppSpm()
     error('CPP_SPM is not in your MATLAB / Octave path.\n');
 
   elseif numel(workflowsDir) > 1
-    fprintf('CPP_SPM seems to appear in several different folders:\n');
+    printToScreen('CPP_SPM seems to appear in several different folders:\n');
     for i = 1:numel(workflowsDir)
       fprintf('  * %s\n', fullfile(workflowsDir{i}, '..', '..'));
     end
@@ -274,12 +275,12 @@ function run_tests()
   cd(fileparts(mfilename('fullpath')));
 
   if isGithubCi
-    fprintf(1, '\nThis is github CI\n');
+    printToScreen('\nThis is github CI\n');
   else
-    fprintf(1, '\nThis is not github CI\n');
+    printToScreen('\nThis is not github CI\n');
   end
 
-  fprintf('\nHome is %s\n', getenv('HOME'));
+  printToScreen('\nHome is %s\n', getenv('HOME'));
 
   warning('OFF');
 

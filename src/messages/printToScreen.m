@@ -21,7 +21,7 @@ function printToScreen(varargin)
   opt = p.Results.opt;
   format = p.Results.format;
 
-  if ~strcmp(opt.msg.color, '')
+  if isfield(opt, 'msg') && ~strcmp(opt.msg.color, '')
     format = opt.msg.color;
   end
 
