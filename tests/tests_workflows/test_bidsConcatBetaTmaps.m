@@ -16,6 +16,7 @@ function test_bidsConcatBetaTmapsBasic()
   opt.dryRun = true;
 
   opt.model.file = spm_file(opt.model.file, 'filename', 'model-vismotionMVPA_smdl.json');
+  opt.model.bm = BidsModel('file', opt.model.file);
 
   bidsConcatBetaTmaps(opt);
 

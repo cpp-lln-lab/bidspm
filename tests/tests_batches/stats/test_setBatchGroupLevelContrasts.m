@@ -14,7 +14,7 @@ function test_setBatchGroupLevelContrasts_smoke_test()
 
   rfxDir = getRFXdir(opt);
 
-  grpLvlCon = getGrpLevelContrast(opt);
+  grpLvlCon = opt.model.bm.get_dummy_contrasts('Level', 'dataset');
 
   matlabbatch = {};
   matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir);

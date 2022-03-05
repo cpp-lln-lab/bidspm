@@ -20,6 +20,7 @@ function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(),  'models', ...
                             'model-vismotionWithExtraVariable_smdl.json');
+  opt.model.bm = BidsModel('file', opt.model.file);
 
   opt.verbosity = 1;
 
@@ -38,6 +39,7 @@ function test_convertOnsetTsvToMat_transformers_with_dummy_regressors
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(),  'models', ...
                             'model-vismotionWithExtraVariable_smdl.json');
+  opt.model.bm = BidsModel('file', opt.model.file);
 
   opt.glm.useDummyRegressor = true;
 
@@ -60,6 +62,7 @@ function test_convertOnsetTsvToMat_basic()
                      'tsv_files', ...
                      'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
+  opt.model.bm = BidsModel('file', opt.model.file);
 
   % WHEN
   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
@@ -88,6 +91,7 @@ function test_convertOnsetTsvToMat_input_from_non_trial_type_column
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(),  'models', ...
                             'model-faceRepetitionNoTrialType_smdl.json');
+  opt.model.bm = BidsModel('file', opt.model.file);
 
   % WHEN
   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
@@ -113,6 +117,7 @@ function test_convertOnsetTsvToMat_no_condition_in_design_matrix
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(),  'models', ...
                             'model-vismotionNoCondition_smdl.json');
+  opt.model.bm = BidsModel('file', opt.model.file);
 
   opt.verbosity = 1;
 
@@ -135,6 +140,7 @@ function test_convertOnsetTsvToMat_dummy_regressor()
                      'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionMVPA_smdl.json');
+  opt.model.bm = BidsModel('file', opt.model.file);
   opt.glm.useDummyRegressor = true;
 
   % WHEN
@@ -165,6 +171,7 @@ function test_convertOnsetTsvToMat_missing_trial_type()
                      'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionMVPA_smdl.json');
+  opt.model.bm = BidsModel('file', opt.model.file);
   opt.verbosity = 1;
 
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
@@ -172,8 +179,8 @@ function test_convertOnsetTsvToMat_missing_trial_type()
 
 end
 
-function setUp()
-
+function opt = setUp(opt)
+  opt.model.bm = BidsModel('file', opt.model.file);
 end
 
 function cleanUp(inputFile)

@@ -21,7 +21,8 @@ function newContent = applyTransformersToEventsTsv(varargin)
   %
   %     % load transformation instruction from a model file
   %     opt = setOptions();
-  %     transformers = getBidsTransformers(opt.model.file, 'run');
+  %     bm = BidsModel('file', opt.model.file);
+  %     transformers = bm.getBidsTransformers('Level', 'Run');
   %
   %     newContent = applyTransformersToEventsTsv(tsvContent, transformers);
   %     bids.util.tsvwrite(path_to_new_tsv, newContent)

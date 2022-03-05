@@ -441,8 +441,9 @@ function test_applyTransformersToEventsTsv_no_transformation()
   tsvFile = fullfile(getDummyDataDir(), 'tsv_files', 'sub-01_task-vismotion_events.tsv');
   tsvContent = bids.util.tsvread(tsvFile);
 
-  opt = setOptions('vislocalizer');
-  transformers = getBidsTransformers(opt.model.file);
+  subLabel = '01';
+  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
+  transformers = opt.model.bm.getBidsTransformers();
 
   % WHEN
   newContent = applyTransformersToEventsTsv(tsvContent, transformers);

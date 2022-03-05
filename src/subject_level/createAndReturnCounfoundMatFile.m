@@ -36,9 +36,9 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
     return
   end
 
-  X = getBidsDesignMatrix(opt.model.file, 'run');
+  designMatrix = opt.model.bm.getBidsDesignMatrix();
 
-  [names, R] = createConfounds(content, X, opt.glm.maxNbVols); %#ok<*ASGLU>
+  [names, R] = createConfounds(content, designMatrix, opt.glm.maxNbVols); %#ok<*ASGLU>
 
   % save the confounds as a matfile
   p = bids.internal.parse_filename(tsvFile);

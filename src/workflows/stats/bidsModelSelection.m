@@ -164,9 +164,10 @@ function matlabbatch = bidsModelSelection(varargin)
     for iModel = 1:size(names, 1)
 
       opt.model.file = opt.toolbox.MACS.model.files{iModel};
-      inputs = getBidsModelInput(opt.model.file);
-      opt.space = {inputs.space};
-      opt.taskName = inputs.task;
+      opt.model.bm = BidsModel('file', opt.model.file);
+      input = opt.model.bm.Input;
+      opt.space = {input.space};
+      opt.taskName = input.task;
       if ~iscell(opt.taskName)
         opt.taskName = {opt.taskName};
       end
@@ -275,7 +276,8 @@ function checks(opt)
       id = 'noModelFile';
       errorHandling(mfilename(), id, msg, false);
     end
-    inputs{iModel, 1} = getBidsModelInput(modelFiles{iModel});
+    bm = BidsModel('file', modelFiles{iModel});
+    inputs{iModel, 1} = bm.Input;
   end
 
   if any(~cellfun(@(x) isfield(x, 'space'), inputs))
@@ -332,7 +334,8 @@ function names = getMacsModelNames(opt)
   modelFiles = opt.toolbox.MACS.model.files;
 
   for iModel = 1:numel(modelFiles)
-    names{iModel, 1} = getModelName(modelFiles{iModel});
+    bm = BidsModel('file', modelFiles{iModel});
+    names{iModel, 1} = bm.Name;
   end
 
 end

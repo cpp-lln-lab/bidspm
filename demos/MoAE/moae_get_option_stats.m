@@ -21,8 +21,6 @@ function opt = moae_get_option_stats()
                             'models', 'model-MoAE_smdl.json');
 
   % Specify the result to compute
-  opt.result.Nodes(1) = returnDefaultResultsStructure();
-
   opt.result.Nodes(1).Level = 'subject';
 
   opt.result.Nodes(1).Contrasts(1).Name = 'listening_1';

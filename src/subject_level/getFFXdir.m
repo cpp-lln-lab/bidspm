@@ -17,8 +17,7 @@ function ffxDir = getFFXdir(subLabel, opt)
 
   glmDirName = createGlmDirName(opt);
 
-  name = getModelName(opt.model.file);
-
+  name = opt.model.bm.Name;
   if ~isempty(name) && ~strcmpi(name, strjoin(opt.taskName, ' '))
     glmDirName = [glmDirName, '_desc-', bids.internal.camel_case(name)];
   end

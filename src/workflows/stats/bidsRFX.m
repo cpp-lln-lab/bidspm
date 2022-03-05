@@ -33,11 +33,6 @@ function matlabbatch = bidsRFX(action, opt)
 
   [BIDS, opt] = setUpWorkflow(opt, description);
 
-  if isempty(opt.model.file)
-    opt = createDefaultStatsModel(BIDS, opt);
-    opt = overRideWithBidsModelContent(opt);
-  end
-
   checks(opt, action);
 
   matlabbatch = {};
@@ -80,7 +75,7 @@ function matlabbatch = bidsRFX(action, opt)
 
       matlabbatch = setBatchFactorialDesign(matlabbatch, opt);
 
-      grpLvlCon = getGrpLevelContrast(opt);
+      grpLvlCon = opt.model.bm.get_dummy_contrasts('Level', 'dataset');
       matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon);
 
       saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);

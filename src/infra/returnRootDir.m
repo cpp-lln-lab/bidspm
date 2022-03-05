@@ -6,7 +6,7 @@ function rootDir = returnRootDir()
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  Mfile = 'bidsSpatialPrepro.m';
+  Mfile = 'cpp_spm.m';
   rootDir = cellstr(which(Mfile, '-ALL'));
 
   if isempty(rootDir)
@@ -21,6 +21,6 @@ function rootDir = returnRootDir()
 
   end
 
-  rootDir = spm_file(fullfile(fileparts(rootDir{1}), '..', '..', '..'), 'cpath');
+  rootDir = spm_file(fullfile(fileparts(rootDir{1})), 'cpath');
 
 end

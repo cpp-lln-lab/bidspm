@@ -38,6 +38,19 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir)
   % load the subjects/Groups information and the task name
   [BIDS, opt] = getData(opt, bidsDir);
 
+  if strcmp(opt.pipeline.type, 'stats')
+
+    if isempty(opt.model.file)
+      opt = createDefaultStatsModel(BIDS, opt);
+      opt = overRideWithBidsModelContent(opt);
+    end
+
+    if ~isfield(opt.model, 'bm') || isempty(opt.model.bm)
+      opt.model.bm = BidsModel('file', opt.model.file);
+    end
+
+  end
+
   cleanCrash();
 
   printWorkflowName(workflowName, opt);

@@ -4,7 +4,7 @@
   "Description": "contrasts for the visual localizer",
   "Input": {
     "task": "vislocalizer",
-    "space": "IXI549Space"
+    "space": "MNI152NLin2009cAsym"
   },
   "Nodes": [
     {

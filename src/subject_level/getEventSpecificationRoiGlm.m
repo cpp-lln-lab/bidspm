@@ -7,6 +7,7 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   %
   % :param SPM_file: obligatory argument. fullpath to SPM.mat
   % :type SPM_file: path
+  %
   % :param model_file: obligatory argument. fullpath to BIDS stats model
   % :type model_file: fullpath
   %
@@ -42,8 +43,8 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
 
   load(SPM);
 
-  getModelType(modelFile);
-  bm = bids.Model('file', modelFile);
+  bm = BidsModel('file', modelFile);
+  bm.getModelType();
 
   % We focus on the run level but fall back on the subject level
   % if we do not find any contrasts at the run level

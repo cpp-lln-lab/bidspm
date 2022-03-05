@@ -21,6 +21,24 @@ function test_checkOptions_basic()
 
 end
 
+function test_checkOptions_results_structure()
+
+  opt.taskName = 'testTask';
+  opt.result.Nodes(1).Level = 'run';
+  opt.result.Nodes(1).Contrasts(1).Name = 'listening_1';
+  opt.result.Nodes(1).Contrasts(1).MC = 'none';
+  opt.result.Nodes(1).Contrasts(1).p = 0.001;
+  opt.result.Nodes(1).Contrasts(2).Name = 'not_listening_1';
+  opt.result.Nodes(2).Level = 'subject';
+  opt.result.Nodes(2).Contrasts(1).Name = 'listening_1';
+  opt = checkOptions(opt);
+
+  opt = checkOptions(opt);
+
+  assertEqual(opt.result.Nodes(1).Contrasts(2).MC, 'FWE');
+
+end
+
 function test_checkOptions_do_not_overwrite()
 
   opt.funcVoxelDims = [1 1 1];

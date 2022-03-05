@@ -53,6 +53,7 @@ function [inputFile, inputData] = setUp()
   inputFile = fullfile(getDummyDataDir(), 'nifti_files', 'tmp.nii.gz');
   copyfile(fullfile(getDummyDataDir(), 'nifti_files', 'sub-01_task-auditory_bold.nii.gz'), ...
            inputFile);
+  pause(0.005);
   inputData = spm_read_vols(spm_vol(inputFile));
 end
 

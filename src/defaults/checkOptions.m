@@ -172,9 +172,9 @@ function opt = checkOptions(opt)
   end
 
   if ~iscell(opt.query.modality)
-    tmp = opt.query.modality;
+    Results = opt.query.modality;
     opt.query = rmfield(opt.query, 'modality');
-    opt.query.modality{1} = tmp;
+    opt.query.modality{1} = Results;
   end
 
   if ~isempty(opt.model.file)
@@ -182,6 +182,8 @@ function opt = checkOptions(opt)
       msg = sprintf('model file does not exist:\n %s', opt.model.file);
       errorHandling(mfilename(), 'modelFileMissing', msg, false, opt.verbosity);
     end
+    bm = bids.Model('file', opt.model.file);
+    bm.validate();
     if strcmpi(opt.pipeline.type, 'stats')
       opt = overRideWithBidsModelContent(opt);
     end
@@ -205,7 +207,43 @@ function opt = checkOptions(opt)
 
   opt = setDirectories(opt);
 
-  % TODO add some checks on the content of opt.result.Nodes().Output
+  % Checks on the content of opt.result.Nodes().Output
+  Results = returnDefaultResultsStructure();
+  Contrasts = returnDefaultContrastsStructure();
+
+  for iNode = 1:numel(opt.result.Nodes)
+    thisNode = opt.result.Nodes(iNode);
+    thisNode =  setFields(thisNode, Results);
+
+    % validate values for contrast
+    for iCon = 1:numel(thisNode.Contrasts)
+
+      assert(ischar(thisNode.Contrasts(iCon).Name));
+
+      if isempty(thisNode.Contrasts(iCon).p)
+        thisNode.Contrasts(iCon).p = Contrasts.p;
+      end
+      assert(thisNode.Contrasts(iCon).p >= 0 && thisNode.Contrasts(iCon).p <= 1);
+
+      if isempty(thisNode.Contrasts(iCon).k)
+        thisNode.Contrasts(iCon).k = Contrasts.k;
+      end
+      assert(thisNode.Contrasts(iCon).k >= 0);
+
+      if ~islogical(thisNode.Contrasts(iCon).useMask)
+        thisNode.Contrasts(iCon).useMask = Contrasts.useMask;
+      end
+
+      if isempty(thisNode.Contrasts(iCon).MC) || ...
+         ~ismember(thisNode.Contrasts(iCon).MC, {'FWE', 'FDR', 'none'})
+        thisNode.Contrasts(iCon).MC = Contrasts.MC;
+      end
+
+    end
+
+    opt.result.Nodes(iNode) = thisNode;
+
+  end
 
 end
 
@@ -298,11 +336,10 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.QA.func.Movie = 'off';
   fieldsToSet.QA.func.Basics = 'on';
 
+  fieldsToSet.result.Nodes = returnDefaultResultsStructure();
+
   %% Options for interface
   fieldsToSet.msg.color = '';
-
-  % specify the results to compute
-  fieldsToSet.result.Nodes = returnDefaultResultsStructure();
 
 end
 

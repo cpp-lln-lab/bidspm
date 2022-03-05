@@ -98,6 +98,7 @@ function opt = setOptions(varargin)
     if isfield(opt, 'space')
       opt =  rmfield(opt, 'space');
     end
+    opt.model.bm = BidsModel('file', opt.model.file);
   end
 
   if any(ismember(task, 'rest'))

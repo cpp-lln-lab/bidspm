@@ -21,6 +21,7 @@ function test_createGlmDirName_basic()
 
   opt = setOptions('dummy');
   opt.space = 'IXI549Space';
+  opt.model.bm = BidsModel('file', opt.model.file);
 
   glmDirName = createGlmDirName(opt);
 

@@ -5,12 +5,16 @@
         "preproc": "./outputs/derivatives/cpp_spm-preproc",
         "stats": "./outputs/derivatives/cpp_spm-stats"
     },
+    "verbosity": 0,
     "dryRun": false,
     "pipeline": {
         "name": "cpp_spm",
         "type": "preproc"
     },
     "rename": true,
+    "stc":{
+        "skip": true
+    },
     "segment": {
         "force": true
     },
@@ -30,8 +34,7 @@
                 "MC": "FWE",
                 "Name": "listening_1",
                 "k": 0,
-                "p": 0.05,
-                "useMask": false
+                "p": 0.05
             },
             "Level": "subject",
             "Output": {

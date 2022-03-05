@@ -8,14 +8,18 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param BIDS:
   % :type BIDS: structure
+  %
   % :param opt:
   % :type opt: structure
+  %
   % :param subLabel:
   % :type subLabel: string
   %
   % :returns: - :matlabbatch: (structure)
+  %
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -27,7 +31,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     errorHandling(mfilename(), 'missingRawDir', msg, false);
   end
 
-  getModelType(opt.model.file);
+  opt.model.bm.getModelType();
 
   printBatchName('specify subject level fmri model', opt);
 
@@ -64,11 +68,11 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
 
-  fmri_spec.mthresh = getInclusiveMaskThreshold(opt.model.file);
+  fmri_spec.mthresh = opt.model.bm.getInclusiveMaskThreshold();
 
-  fmri_spec.bases.hrf.derivs = getHRFderivatives(opt.model.file);
+  fmri_spec.bases.hrf.derivs = opt.model.bm.getHRFderivatives();
 
-  fmri_spec.cvi = getSerialCorrelationCorrection(opt.model.file);
+  fmri_spec.cvi = opt.model.bm.getSerialCorrelationCorrection();
 
   %% List scans, onsets, confounds for each task / session / run
   subLabel = regexify(subLabel);
@@ -137,7 +141,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     % multicondition selection
     fmri_spec.sess(iSpmSess).cond = struct('name', {}, 'onset', {}, 'duration', {});
 
-    fmri_spec.sess(iSpmSess).hpf = getHighPassFilter(opt.model.file);
+    fmri_spec.sess(iSpmSess).hpf = opt.model.bm.getHighPassFilter();
 
   end
 
@@ -254,7 +258,7 @@ function mask = getInclusiveMask(opt)
   % we use the Intra Cerebal Volume SPM mask
   %
 
-  mask = getModelMask(opt.model.file);
+  mask = opt.model.bm.getModelMask();
 
   if isempty(mask) && ...
           (~isempty(strfind(opt.space{1}, 'MNI')) || strcmp(opt.space, 'IXI549Space'))

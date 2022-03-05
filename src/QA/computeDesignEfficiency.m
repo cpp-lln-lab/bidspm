@@ -117,13 +117,13 @@ function e = computeDesignEfficiency(tsvFile, opt)
   opt.sots = convertSecondsToScans(data.onset, opt.TR);
   opt.durs = convertSecondsToScans(data.duration, opt.TR);
 
-  opt.HC = getHighPassFilter(opt.model.file);
-
   opt.contrast_name = {};
   opt.CM = {};
 
-  %%
-  DummyContrastsList = getDummyContrastsList(opt.model.file);
+  bm = BidsModel('file', opt.model.file);
+  opt.HC = bm.getHighPassFilter();
+
+  DummyContrastsList = bm.get_dummy_contrasts('Level', 'Run');
   for i = 1:numel(DummyContrastsList.Contrasts)
     contrast = filterTrialtypes(data.conditions, DummyContrastsList.Contrasts{i});
     opt.CM{i} = contrast';
@@ -132,7 +132,7 @@ function e = computeDesignEfficiency(tsvFile, opt)
 
   %%
   % TODO deal with F contrasts
-  contrastsList = getContrastsList(opt.model.file);
+  contrastsList = bm.get_contrasts('Level', 'Run');
   for i = 1:numel(contrastsList)
     contrast = zeros(size(opt.CM{end}));
     for cdt = 1:numel(contrastsList(i).ConditionList)

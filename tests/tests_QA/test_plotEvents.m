@@ -26,7 +26,7 @@ function test_plotEvents_vislocalizer()
 
   close all;
 
-  opt = setOptions('vislocalizer', '01');
+  opt = setOptions('vislocalizer', '01', 'pipeline', 'stats');
 
   eventsFile = bids.query(opt.dir.input, 'data', ...
                           'sub', opt.subjects, ...
@@ -43,7 +43,7 @@ function test_plotEvents_vismotion()
 
   close all;
 
-  opt = setOptions('vismotion', '01');
+  opt = setOptions('vismotion', '01', 'pipeline', 'stats');
 
   eventsFile = bids.query(opt.dir.input, 'data', ...
                           'sub', opt.subjects, ...
