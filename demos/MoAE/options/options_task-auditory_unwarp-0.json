@@ -14,7 +14,7 @@
     "rename": true,
     "stc":{
         "skip": true
-    },    
+    },
     "segment": {
         "force": true
     },
