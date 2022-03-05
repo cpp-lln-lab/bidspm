@@ -1,8 +1,65 @@
 {
   "Name": "nback MVPA",
   "BIDSModelVersion": "1.0.0",
-  "Description": "for folder naming",
+  "Description": "For folder naming.",
   "Input": {
     "task": "nback"
-  }
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run",
+      "Transformations": {
+        "Transformer": "",
+        "Instructions": [
+          {
+            "Name": "",
+            "Inputs": [
+              ""
+            ]
+          }
+        ]
+      },
+      "Model": {
+        "X": [
+          ""
+        ],
+        "Type": "glm",
+        "HRF": {
+          "Variables": [
+            ""
+          ],
+          "Model": "DoubleGamma"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008,
+          "LowPassFilterCutoffHz": null,
+          "Mask": {
+            "desc": "brain",
+            "suffix": "mask"
+          }
+        },
+        "Software": ""
+      },
+      "Contrasts": {
+        "Name": "",
+        "ConditionList": [
+          ""
+        ],
+        "Weights": [
+          ""
+        ],
+        "Test": ""
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          ""
+        ]
+      }
+    }
+  ],
+  "Edges": [
+    "RECOMMENDED"
+  ]
 }

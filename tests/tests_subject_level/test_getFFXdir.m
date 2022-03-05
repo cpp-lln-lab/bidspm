@@ -29,14 +29,15 @@ function test_getFFXdir_user_specified()
 
   subLabel = '02';
 
-  opt = setOptions('vismotionGlobalSignal', subLabel);
+  opt = setOptions('vismotionGlobalSignal', subLabel, 'pipelineType', 'stats');
   opt.space = 'individual';
 
   ffxDir = getFFXdir(subLabel, opt);
 
   expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-02', ...
-                            'task-vismotionGlobalSignal_space-individual_FWHM-6_desc-globalSignal');
+                            'task-vismotion_space-individual_FWHM-6_desc-globalSignal');
 
+  assertEqual(ffxDir, expectedOutput);
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
 end

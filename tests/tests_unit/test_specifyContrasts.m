@@ -194,6 +194,7 @@ function test_specifyContrasts_vislocalizer()
   subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
+  opt.model.bm = BidsModel('file', opt.model.file);
 
   ffxDir = getFFXdir(subLabel, opt);
   spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));

@@ -10,7 +10,7 @@ end
 
 function test_getRFXdir_basic()
 
-  opt = setOptions('vislocalizer');
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
   opt.fwhm.func = 0;
   opt.fwhm.contrast = 0;
   opt.space = 'IXI549Space';
@@ -29,7 +29,7 @@ end
 
 function test_getRFXdir_user_specified()
 
-  opt = setOptions('nback');
+  opt = setOptions('nback', '', 'pipelineType', 'stats');
   opt.fwhm.contrast = 0;
   opt.space = 'IXI549Space';
 

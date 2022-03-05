@@ -1,4 +1,4 @@
-function data = getEventsData(tsvFile, modelFile, nodeType)
+function data = getEventsData(tsvFile, modelFile)
   %
   % (C) Copyright 2020 Remi Gau
 
@@ -8,15 +8,16 @@ function data = getEventsData(tsvFile, modelFile, nodeType)
     modelFile = '';
   end
 
-  if nargin < 3
-    nodeType = 'run';
-  end
-
   content = bids.util.tsvread(tsvFile);
 
   conditions = unique(content.trial_type);
 
-  designMatrix = getBidsDesignMatrix(modelFile, nodeType);
+  if ~isempty(modelFile)
+    bm = BidsModel('file', modelFile);
+    designMatrix = bm.getBidsDesignMatrix();
+  else
+    designMatrix = [];
+  end
 
   if ~isempty(designMatrix)
     tmp = conditions;

@@ -45,16 +45,18 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   end
 
-  variablesToConvolve = getVariablesToConvolve(opt.model.file, 'run');
-
-  designMatrx = getBidsDesignMatrix(opt.model.file, 'run');
+  variablesToConvolve = opt.model.bm.getVariablesToConvolve();
+  designMatrix = opt.model.bm.getBidsDesignMatrix();
 
   % create empty cell to be filled in according to the conditions present in each run
   names = {};
   onsets = {};
   durations = {};
 
-  transformers = getBidsTransformers(opt.model.file);
+  if ~isfield(opt.model, 'bm')
+    opt.model.bm = BidsModel('file', opt.model.file);
+  end
+  transformers = opt.model.bm.getBidsTransformers();
   tsvContent = applyTransformersToEventsTsv(tsvContent, transformers);
 
   for iCond = 1:numel(variablesToConvolve)
@@ -80,7 +82,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
       if ~isempty(idx)
 
-        if ~ismember(variablesToConvolve{iCond}, designMatrx)
+        if ~ismember(variablesToConvolve{iCond}, designMatrix)
           continue
         end
 

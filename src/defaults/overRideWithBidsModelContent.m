@@ -6,7 +6,8 @@ function opt = overRideWithBidsModelContent(opt)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  input = getBidsModelInput(opt.model.file);
+  bm = BidsModel('file', opt.model.file);
+  input = bm.Input;
 
   inputTypes = fieldnames(input);
 

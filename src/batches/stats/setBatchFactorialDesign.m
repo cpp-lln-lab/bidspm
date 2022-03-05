@@ -27,7 +27,7 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
 
   rfxDir = getRFXdir(opt);
 
-  grpLvlCon = getGrpLevelContrast(opt);
+  grpLvlCon = opt.model.bm.get_dummy_contrasts('Level', 'dataset');
 
   % For each contrast
   for j = 1:size(grpLvlCon.Contrasts, 1)

@@ -37,11 +37,6 @@ function skipped = bidsRoiBasedGLM(opt)
 
   checks(opt);
 
-  if isempty(opt.model.file)
-    opt = createDefaultStatsModel(BIDS, opt);
-    opt = overRideWithBidsModelContent(opt);
-  end
-
   initBids(opt, 'description', description, 'force', false);
 
   skipped = struct('subject', {{}}, 'roi', {{}});

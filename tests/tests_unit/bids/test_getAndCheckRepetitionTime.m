@@ -26,8 +26,7 @@ function test_getAndCheckRepetitionTime_no_repetition_time()
   [BIDS, filter] = setUp({'dummy'});
 
   % THEN
-  assertExceptionThrown( ...
-                        @()getAndCheckRepetitionTime(BIDS, filter), ...
+  assertExceptionThrown(@()getAndCheckRepetitionTime(BIDS, filter), ...
                         'getAndCheckRepetitionTime:noRepetitionTimeFound');
 
 end

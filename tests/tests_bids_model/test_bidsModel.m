@@ -8,21 +8,67 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getModelType()
+function test_getRootNode()
 
   opt = setOptions('vislocalizer');
 
-  modelType = getModelType(opt.model.file, 'subject');
+  bm = BidsModel('file', opt.model.file);
+  [rootNode, rootNodeName] = bm.getRootNode;
 
-  assertEqual(modelType, 'glm');
+  assertEqual(rootNode.Level, 'Run');
+  assertEqual(rootNodeName, 'run_level');
 
 end
 
-function test_getBidsTransformers_basic()
+function test_getModelType()
+
+  opt = setOptions('vislocalizer');
+  bm = BidsModel('file', opt.model.file);
+
+  modelType1 = bm.getModelType('Level', 'Subject');
+  assertEqual(modelType1, 'glm');
+
+  modelType2 = bm.getModelType('Name', 'run_level');
+  assertEqual(modelType2, 'glm');
+
+  modelType3 = bm.getModelType();
+  assertEqual(modelType3, 'glm');
+
+end
+
+function test_getBidsDesignMatrix()
+
+  opt = setOptions('vislocalizer');
+  bm = BidsModel('file', opt.model.file);
+
+  designMatrix = bm.getBidsDesignMatrix();
+
+  expected = {'trial_type.VisMot'
+              'trial_type.VisStat'
+              'trial_type.missing_condition'
+              'trans_?'
+              'rot_?'};
+
+  assertEqual(designMatrix, expected);
+
+  designMatrix = bm.getBidsDesignMatrix('Name', 'run_level');
+  assertEqual(designMatrix, expected);
+
+  designMatrix = bm.getBidsDesignMatrix('Name', 'dataset_level');
+  expected = {'trial_type.VisMot'
+              'trial_type.VisStat'
+              'VisMot_gt_VisStat'
+              'VisStat_gt_VisMot'};
+  assertEqual(designMatrix, expected);
+
+end
+
+function test_getBidsTransformers()
 
   opt = setOptions('balloonanalogrisktask');
+  bm = BidsModel('file', opt.model.file);
 
-  transformers = getBidsTransformers(opt.model.file);
+  transformers = bm.getBidsTransformers();
 
   expected{1, 1}.Name = 'Factor';
   expected{1}.Inputs = {'trial_type'};
@@ -33,24 +79,29 @@ function test_getBidsTransformers_basic()
   assertEqual(transformers{1}, expected{1});
   assertEqual(transformers{2}, expected{2});
 
-end
+  transformers = bm.getBidsTransformers('Name', 'dataset_level');
 
-function test_getBidsModelInputs()
-
-  opt = setOptions('vislocalizer');
-
-  input = getBidsModelInput(opt.model.file);
-
-  assertEqual(input.task, 'vislocalizer');
+  assert(isempty(transformers));
 
 end
 
-function test_getVariablesToConvolve()
+function test_getHighPassFilter()
 
   opt = setOptions('vislocalizer');
+  bm = BidsModel('file', opt.model.file);
 
-  variablesToConvolve = getVariablesToConvolve(opt.model.file);
+  HPF = bm.getHighPassFilter();
 
+  assertEqual(HPF, 125);
+
+end
+
+function test_getVariablesToConvolve_method()
+
+  opt = setOptions('vislocalizer');
+  bm = BidsModel('file', opt.model.file);
+
+  variablesToConvolve = bm.getVariablesToConvolve();
   assertEqual(variablesToConvolve, {'trial_type.VisMot'; 'trial_type.VisStat'});
 
 end
@@ -58,94 +109,114 @@ end
 function test_getVariablesToConvolve_warning()
 
   opt = setOptions('vislocalizer');
+  bm = BidsModel('file', opt.model.file);
 
-  assertWarning(@()getVariablesToConvolve(opt.model.file, 'dataset'), ...
-                'getVariablesToConvolve:noVariablesToConvolve');
-
-end
-
-function test_getHighPassFilter()
-
-  opt = setOptions('vislocalizer');
-
-  HPF = getHighPassFilter(opt.model.file);
-
-  assertEqual(HPF, 125);
+  assertWarning(@()bm.getVariablesToConvolve('Name', 'dataset_level'), ...
+                'BidsModel:noVariablesToConvolve');
 
 end
 
 function test_getHRFderivatives()
 
   opt = setOptions('vislocalizer');
+  bm = BidsModel('file', opt.model.file);
 
-  HRF = getHRFderivatives(opt.model.file);
+  HRF = bm.getHRFderivatives();
 
   assertEqual(HRF, [1 0]);
 
 end
 
-function test_getModelMask()
+function test_getModelMask_method()
 
   opt = setOptions('vislocalizer');
+  bm = BidsModel('file', opt.model.file);
 
-  mask = getModelMask(opt.model.file, 'subject');
-
+  mask = bm.getModelMask('Name', 'subject_level');
   assertEqual(mask, '');
+
+  bm.Nodes{1}.Model.Options.Mask = 'mask.nii';
+  mask = bm.getModelMask('Name', 'run_level');
+  assertEqual(mask, 'mask.nii');
+
+  bm.Nodes{1}.Model.Options = rmfield(bm.Nodes{1}.Model.Options, 'Mask');
+  assertWarning(@()bm.getModelMask('Name', 'run_level'), ...
+                'BidsModel:noMask');
 
 end
 
 function test_getInclusiveMaskThreshold()
 
   opt = setOptions('vislocalizer');
+  bm = BidsModel('file', opt.model.file, 'verbose', false);
 
-  inclusiveMaskThreshold = getInclusiveMaskThreshold(opt.model.file, 'subject');
-
+  inclusiveMaskThreshold = bm.getInclusiveMaskThreshold('Name', 'subject_level');
   assertEqual(inclusiveMaskThreshold, 0.8);
 
-end
+  inclusiveMaskThreshold = bm.getInclusiveMaskThreshold('Name', 'run_level');
+  assertEqual(inclusiveMaskThreshold, 0);
 
-function test_getBidsDesignMatrix()
-
-  opt = setOptions('vislocalizer');
-
-  designMatrix = getBidsDesignMatrix(opt.model.file);
-
-  expected = {'trial_type.VisMot'
-              'trial_type.VisStat'
-              'trial_type.missing_condition'
-              'trans_?'
-              'rot_?'};
-
-  assertEqual(designMatrix, expected);
+  inclusiveMaskThreshold = bm.getInclusiveMaskThreshold();
+  assertEqual(inclusiveMaskThreshold, 0);
 
 end
 
-function test_getContrastsList()
+function test_getSerialCorrelationCorrection()
 
   opt = setOptions('vislocalizer');
+  bm = BidsModel('file', opt.model.file, 'verbose', false);
 
-  contrastsList = getContrastsList(opt.model.file);
+  serialCorrelationCorrection = bm.getSerialCorrelationCorrection('Name', 'subject_level');
+  assertEqual(serialCorrelationCorrection, 'AR1');
 
-  assertEqual(fieldnames(contrastsList), {'Name'
-                                          'ConditionList'
-                                          'Weights'
-                                          'Test'});
+  serialCorrelationCorrection = bm.getSerialCorrelationCorrection('Name', 'run_level');
+  assertEqual(serialCorrelationCorrection, 'FAST');
 
-  assertEqual(numel(contrastsList), 2);
+  serialCorrelationCorrection = bm.getSerialCorrelationCorrection();
+  assertEqual(serialCorrelationCorrection, 'FAST');
 
 end
 
-function test_getDummyContrastsList()
+function test_getInclusiveMaskThreshold_method()
 
   opt = setOptions('vislocalizer');
+  bm = BidsModel('file', opt.model.file, 'verbose', true);
 
-  dummyContrastsList = getDummyContrastsList(opt.model.file);
+  assertWarning(@()bm.getInclusiveMaskThreshold('Name', 'subject_level'), ...
+                'BidsModel:noInclMaskThresh');
 
-  expected = struct('Test', 't', ...
-                    'Contrasts', {{'trial_type.VisMot'
-                                   'trial_type.VisStat'}});
+end
 
-  assertEqual(dummyContrastsList.Contrasts, expected.Contrasts);
-  assertEqual(dummyContrastsList, expected);
+function test_getGrpLevelContrast_basic()
+
+  opt = setOptions('vismotion');
+
+  bm = bids.Model('file', opt.model.file);
+  [grpLvlCon, iNode] = bm.get_dummy_contrasts('Level', 'dataset');
+
+  DummyContrasts = struct('Test', 't', ...
+                          'Contrasts', {{
+                                         'trial_type.VisMot'; ...
+                                         'trial_type.VisStat'; ...
+                                         'VisMot_gt_VisStat'; ...
+                                         'VisStat_gt_VisMot'}});
+
+  assertEqual(iNode, 3);
+  assertEqual(grpLvlCon, DummyContrasts);
+
+  %%
+  opt = setOptions('vislocalizer');
+  bm = bids.Model('file', opt.model.file);
+  [grpLvlCon, iNode] = bm.get_dummy_contrasts('Level', 'dataset');
+
+  DummyContrasts = struct('Test', 't', ...
+                          'Contrasts', {{
+                                         'trial_type.VisMot'; ...
+                                         'trial_type.VisStat'; ...
+                                         'VisMot_gt_VisStat'; ...
+                                         'VisStat_gt_VisMot'}});
+
+  assertEqual(iNode, 3);
+  assertEqual(grpLvlCon, DummyContrasts);
 
 end

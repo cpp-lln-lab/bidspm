@@ -8,6 +8,21 @@ function test_suite = test_bidsFFX %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsFFX_skip_subject_no_data()
+
+  opt = setOptions('vislocalizer', '^01', 'pipelineType', 'stats');
+  opt.model.file =  fullfile(getDummyDataDir(),  'models', ...
+                             'model-vislocalizerWrongSpace_smdl.json');
+  opt.model.bm = BidsModel('file', opt.model.file);
+  opt.stc.skip = 1;
+  opt.model.bm.verbose = false;
+
+  opt.verbosity = 1;
+
+  assertWarning(@()bidsFFX('specifyAndEstimate', opt), 'bidsFFX:noDataForSubjectGLM');
+
+end
+
 function test_bidsFFX_individual()
 
   task = {'vislocalizer'}; % 'vismotion'
@@ -17,6 +32,7 @@ function test_bidsFFX_individual()
     opt = setOptions(task{i}, '', 'pipelineType', 'stats');
     opt.model.file =  fullfile(getDummyDataDir(),  'models', ...
                                ['model-' strjoin(task, '') 'SpaceIndividual_smdl.json']);
+    opt.model.bm = BidsModel('file', opt.model.file);
     opt.fwhm.func = 0;
     opt.stc.skip = 1;
 
@@ -35,19 +51,6 @@ function test_bidsFFX_individual()
   end
 
   createDummyData();
-
-end
-
-function test_bidsFFX_skip_subject_no_data()
-
-  opt = setOptions('vislocalizer', '^01', 'pipelineType', 'stats');
-  opt.model.file = '';
-  opt.space = {'MNI152NLin2009cAsym'};
-  opt.stc.skip = 1;
-
-  opt.verbosity = 1;
-
-  assertWarning(@()bidsFFX('specifyAndEstimate', opt), 'bidsFFX:noDataForSubjectGLM');
 
 end
 
@@ -88,6 +91,7 @@ function test_bidsFFX_fmriprep_no_smoothing()
 
   opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
   opt.dir.output = opt.dir.stats;
+  opt.model.bm = BidsModel('file', opt.model.file);
 
   opt = checkOptions(opt);
 

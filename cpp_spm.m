@@ -270,7 +270,7 @@ function run_tests()
 
   tic;
 
-  cpp_spm('init');
+  cpp_spm('dev');
 
   cd(fileparts(mfilename('fullpath')));
 

@@ -1,3 +1,65 @@
 {
-    "thisIsJust": "A placehoder"
+  "Name": "empty_model",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "This is a dummy BIDS stats model.",
+  "Input": {
+    "task": "dummy"
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run",
+      "Transformations": {
+        "Transformer": "",
+        "Instructions": [
+          {
+            "Name": "",
+            "Inputs": [
+              ""
+            ]
+          }
+        ]
+      },
+      "Model": {
+        "X": [
+          ""
+        ],
+        "Type": "glm",
+        "HRF": {
+          "Variables": [
+            ""
+          ],
+          "Model": "DoubleGamma"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008,
+          "LowPassFilterCutoffHz": null,
+          "Mask": {
+            "desc": "brain",
+            "suffix": "mask"
+          }
+        },
+        "Software": ""
+      },
+      "Contrasts": {
+        "Name": "",
+        "ConditionList": [
+          ""
+        ],
+        "Weights": [
+          ""
+        ],
+        "Test": ""
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          ""
+        ]
+      }
+    }
+  ],
+  "Edges": [
+    "RECOMMENDED"
+  ]
 }

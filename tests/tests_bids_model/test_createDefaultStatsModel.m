@@ -20,16 +20,6 @@ function test_createDefaultStatsModel_basic()
   expectedFilename = fullfile(pwd, 'models', 'model-defaultVislocalizer_smdl.json');
   assertEqual(exist(expectedFilename, 'file'), 2);
 
-  % smoke tests: make sure other bids model functions work on the output
-  modelType = getModelType(expectedFilename);
-  HPF = getHighPassFilter(expectedFilename);
-  designMatrix = getBidsDesignMatrix(expectedFilename);
-  HRF = getHRFderivatives(expectedFilename);
-  mask = getModelMask(expectedFilename);
-  inclusiveMaskThreshold = getInclusiveMaskThreshold(expectedFilename);
-  contrastsList = getContrastsList(expectedFilename);
-  dummyContrastsList = getDummyContrastsList(expectedFilename);
-
   % check it has the right content
   content = spm_jsonread(expectedFilename);
 

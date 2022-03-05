@@ -44,11 +44,6 @@ function [matlabbatch, opt] = bidsFFX(action, opt)
 
   [BIDS, opt] = setUpWorkflow(opt, description);
 
-  if isempty(opt.model.file)
-    opt = createDefaultStatsModel(BIDS, opt);
-    opt = overRideWithBidsModelContent(opt);
-  end
-
   checks(opt, action);
 
   initBids(opt, 'description', description, 'force', false);
@@ -147,19 +142,13 @@ function status = subjectHasData(BIDS, opt, subLabel)
     filter = rmfield(filter, 'space');
     filter = rmfield(filter, 'task');
 
-    % TODO implement in bids.matlab
-    % spaces = bids.query(BIDS, 'space', filter);
-    spaces = {'???'};
-
-    tasks = bids.query(BIDS, 'tasks', filter);
-
     msg = sprintf(['No data found for subject %s for filter:\n%s', ...
                    '\n\nAvailable spaces are:\n%s', ...
                    '\nAvailable tasks are:\n%s'], ...
                   subLabel, ...
                   createUnorderedList(filter), ...
-                  createUnorderedList(spaces), ...
-                  createUnorderedList(tasks));
+                  createUnorderedList(bids.query(BIDS, 'spaces')), ...
+                  createUnorderedList(bids.query(BIDS, 'tasks', filter)));
 
     errorHandling(mfilename(), 'noDataForSubjectGLM', msg, true, opt.verbosity);
 
