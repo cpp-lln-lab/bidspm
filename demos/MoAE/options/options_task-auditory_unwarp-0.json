@@ -5,12 +5,16 @@
         "preproc": "./outputs/derivatives/cpp_spm-preproc",
         "stats": "./outputs/derivatives/cpp_spm-stats"
     },
+    "verbosity": 0,
     "dryRun": false,
     "pipeline": {
         "name": "cpp_spm",
         "type": "preproc"
     },
     "rename": true,
+    "stc":{
+        "skip": true
+    },    
     "segment": {
         "force": true
     },
