@@ -39,7 +39,7 @@ function matlabbatch = batch(varargin)
   opt = p.Results.opt;
   subLabel = p.Results.subLabel;
 
-  printBatchName('name for this batch');
+  printBatchName('name for this batch', opt);
 
   for iTask = 1:numel(opt.taskName)
 
