@@ -4,6 +4,7 @@ function cpp_spm(varargin)
   %
   % USAGE::
   %
+  %   cpp_spm
   %   cpp_spm('init')
   %   cpp_spm('uninit')
   %   cpp_spm('dev')
@@ -29,7 +30,9 @@ function cpp_spm(varargin)
 
   p = inputParser;
 
-  addRequired(p, 'action', @ischar);
+  defaultAction = 'init';
+
+  addOptional(p, 'action', defaultAction, @ischar);
 
   parse(p, varargin{:});
 
