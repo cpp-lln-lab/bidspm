@@ -31,27 +31,24 @@ function status = checkToolbox(varargin)
   verbose = p.Results.verbose;
   install = p.Results.install;
 
-  status = false;
+  knownToolboxes = {'ALI', 'MACS', 'mp2rage'};
 
-  knownToolboxes = {'ALI', 'MACS'};
+  if ~ismember(toolboxName, knownToolboxes)
+    msg = sprintf('Unknown toolbox: %s.\nKwnon toolboxes:\n%s\n\n', ...
+                  toolboxName, ...
+                  createUnorderedList(knownToolboxes));
+    id = 'unknownToolbox';
+    errorHandling(mfilename(), id, msg, true, verbose);
+  end
+
+  status = isdir(fullfile(spm('dir'), 'toolbox', toolboxName));
+  if status
+    return
+  end
 
   switch lower(toolboxName)
 
-    case 'ali'
-
-      % ALI toolbox
-      if exist(fullfile(spm('dir'), 'toolbox', 'ALI'), 'dir')
-        status =  true;
-        return
-      end
-
     case 'macs'
-
-      % MACS toolbox
-      if exist(fullfile(spm('dir'), 'toolbox', 'MACS'), 'dir')
-        status =  true;
-        return
-      end
 
       if ~status && install
 
@@ -67,13 +64,12 @@ function status = checkToolbox(varargin)
 
       end
 
-    otherwise
+    case 'mp2rage'
 
-      msg = sprintf('Unknown toolbox: %s.\nKwnon toolboxes:\n%s\n\n', ...
+      msg = sprintf('The toolbox %s should be installed from:\n %s\n\n', ...
                     toolboxName, ...
-                    createUnorderedList(knownToolboxes));
-      id = 'unknownToolbox';
-      errorHandling(mfilename(), id, msg, true, verbose);
+                    'https://github.com/benoitberanger/mp2rage');
+      errorHandling(mfilename(), 'missingToolbox', msg, true, verbose);
 
   end
 
