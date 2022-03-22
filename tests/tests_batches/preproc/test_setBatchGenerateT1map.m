@@ -13,7 +13,6 @@ function test_setBatchGenerateT1map_basic()
   subLabel = '^01';
 
   opt = setOptions('vismotion', subLabel);
-  opt.verbosity = 1;
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
