@@ -66,6 +66,7 @@ function bidsRemoveDummies(varargin)
     filter.task = opt.taskName;
     filter.desc = '';
     filter.space = '';
+    filter.sub = subLabel;
 
     files = bids.query(BIDS, 'data', filter);
     metadata = bids.query(BIDS, 'metadata', filter);

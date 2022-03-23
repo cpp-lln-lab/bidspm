@@ -11,6 +11,19 @@ function test_suite = test_checkToolbox %#ok<*STOUT>
 
 end
 
+function test_checkToolbox_mp2rage()
+
+  status = checkToolbox('mp2rage');
+
+  assertEqual(status, isdir(fullfile(spm('dir'), 'toolbox', 'mp2rage')));
+
+  if ~isdir(fullfile(spm('dir'), 'toolbox', 'mp2rage'))
+    assertWarning(@()checkToolbox('mp2rage', 'verbose', true), ...
+                  'checkToolbox:missingToolbox');
+  end
+
+end
+
 function test_checkToolbox_ali()
 
   if isGithubCi
