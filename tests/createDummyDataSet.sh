@@ -139,7 +139,7 @@ create_raw_anat() {
 	touch "${this_dir}/sub-${subject}_ses-${ses}_inv-2_MP2RAGE.nii"
 
 	template='{"MagneticFieldStrength":%f, "RepetitionTimePreparation":%f, "InversionTime":%f, "FlipAngle":%f, "FatSat":"%s", "EchoSpacing":%f, "PartialFourierInSlice":%f}'
-	
+
 	FlipAngle=4
 	MagneticFieldStrength=7
 	RepetitionTimePreparation=4.3
