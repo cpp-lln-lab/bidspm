@@ -94,6 +94,13 @@ function matlabbatch = setBatchGenerateT1map(varargin)
         continue
       end
 
+      if numel(uniT1) > 1
+        msg = sprintf('Too many UNIT1 image found for %s', createUnorderedList(filter));
+        id = 'tooManyUniT1';
+        errorHandling(mfilename(), id, msg, true, opt.verbosity);
+        continue
+      end
+
       filter.suffix = 'MP2RAGE';
       filter.inv = '1';
       metadataInv1 = bids.query(BIDS, 'metadata', filter);
