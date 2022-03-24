@@ -11,6 +11,14 @@ classdef BidsModel < bids.Model
 
     function [rootNode, rootNodeName] = getRootNode(obj)
       edges = obj.Edges;
+
+      % TODO deal with case where edges is a struct
+      %
+      % if isstruct(edges)
+      %   rootNodeName = edges(1).Source;
+      % else iscell(edges)
+      %   rootNodeName = edges{1}.Source
+      % end
       if isstruct(edges{1})
         rootNodeName = edges{1}.Source;
         rootNode = obj.get_nodes('Name', rootNodeName);
