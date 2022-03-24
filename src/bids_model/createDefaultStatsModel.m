@@ -1,6 +1,11 @@
 function opt = createDefaultStatsModel(BIDS, opt)
   %
-  % Creates a default model json file.
+  % Creates a default model json file for a BIDS dataset
+  %
+  % USAGE::
+  %
+  %   opt = createDefaultStatsModel(BIDS, opt)
+  %
   % This model has 3 "Nodes" in that order:
   %
   % - Run level:
@@ -27,9 +32,6 @@ function opt = createDefaultStatsModel(BIDS, opt)
   %   - use DummyContrasts to generate contrasts for each trial_type
   %     for at the group level.
   %
-  % USAGE::
-  %
-  %   opt = createDefaultStatsModel(BIDS, opt)
   %
   % :output:
   %
@@ -40,7 +42,7 @@ function opt = createDefaultStatsModel(BIDS, opt)
   % EXAMPLE::
   %
   %   opt.taskName = 'myFascinatingTask';
-  %   opt.derivativesDir = fullfile(pwd, 'data', 'raw');
+  %   opt.dir.raw = fullfile(pwd, 'data', 'raw');
   %   opt = checkOptions(opt);
   %
   %   [BIDS, opt] = getData(opt, opt.dir.raw);
