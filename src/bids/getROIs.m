@@ -59,7 +59,7 @@ function [roiList, roiFolder] = getROIs(varargin)
     roiList = spm_select('FPlist', roiFolder, pattern);
     roiList = cellstr(roiList);
 
-  elseif strcmp(space, 'individual')
+  else
 
     % we expect ROI files to have BIDS valid names
     BIDS_ROI = bids.layout(opt.dir.roi, 'use_schema', false);
@@ -71,7 +71,7 @@ function [roiList, roiFolder] = getROIs(varargin)
     end
 
     filter = struct('sub', regexify(subLabel), ...
-                    'space', opt.space, ...
+                    'space', space, ...
                     'suffix', 'mask');
 
     if ~isempty(roiNames)
@@ -110,18 +110,14 @@ end
 
 function space = getSpace(opt)
 
-  space = opt.space;
+  space = opt.bidsFilterFile.roi.space;
+
+  if ~iscell(space)
+    space = {space};
+  end
 
   if any(~cellfun('isempty', regexp(space, 'MNI'))) || ismember('IXI549Space', space)
     space = 'MNI';
-
-  elseif strcmp(opt.space, 'individual')
-    space = 'individual';
-
-  else
-    msg = sprintf('unknwon space:\n%s', createUnorderedList(space));
-    errorHandling(mfilename(), 'unknownSpace', msg, false, opt.verbosity > 0);
-
   end
 
 end
