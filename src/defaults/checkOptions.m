@@ -306,6 +306,8 @@ function fieldsToSet = setDefaultOption()
 
   %% Options for segmentation
   fieldsToSet.segment.force = false;
+  fieldsToSet.segment.biasfwhm = 60;
+  fieldsToSet.segment.samplingDistance = 3;
 
   %% Options for skullstripping
   fieldsToSet.skullstrip.threshold = 0.75;
