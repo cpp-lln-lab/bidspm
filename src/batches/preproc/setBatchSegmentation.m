@@ -48,7 +48,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
   end
 
   matlabbatch{end}.spm.spatial.preproc.channel.biasreg = 0.001;
-  matlabbatch{end}.spm.spatial.preproc.channel.biasfwhm = 60;
+  matlabbatch{end}.spm.spatial.preproc.channel.biasfwhm = opt.segment.biasfwhm;
 
   % CREATE SEGMENTS IN NATIVE SPACE OF GM, WM AND CSF
   nativeSpace = 1;
@@ -96,6 +96,6 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
   matlabbatch{end}.spm.spatial.preproc.warp.reg = [0 0.001 0.5 0.05 0.2];
   matlabbatch{end}.spm.spatial.preproc.warp.affreg = 'mni';
   matlabbatch{end}.spm.spatial.preproc.warp.fwhm = 0;
-  matlabbatch{end}.spm.spatial.preproc.warp.samp = 3;
+  matlabbatch{end}.spm.spatial.preproc.warp.samp = opt.segment.samplingDistance;
   matlabbatch{end}.spm.spatial.preproc.warp.write = [1 1];
 end

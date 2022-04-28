@@ -52,6 +52,10 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.segment.force = false;
 
+  expectedOptions.segment.biasfwhm = 60;
+
+  expectedOptions.segment.samplingDistance = 3;
+
   expectedOptions.skullstrip.threshold = 0.75;
   expectedOptions.skullstrip.mean = false;
 
