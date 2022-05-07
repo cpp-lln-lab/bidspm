@@ -17,6 +17,7 @@ name: tests and coverage
 on:
   push:
     branches:
+      - main
       - dev
   pull_request:
     branches: '*'
