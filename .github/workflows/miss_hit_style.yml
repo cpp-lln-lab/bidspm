@@ -3,7 +3,8 @@ name: miss_hit_style
 on:
   push:
     branches:
-      - master
+      - main
+      - dev
   pull_request:
     branches: '*'
 
