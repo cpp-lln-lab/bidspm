@@ -1,15 +1,20 @@
 [submodule "lib/bids-matlab"]
 	path = lib/bids-matlab
 	url = https://github.com/bids-standard/bids-matlab.git
+	branch = master
 [submodule "lib/spmup"]
 	path = lib/spmup
 	url = https://github.com/CPernet/spmup.git
+	branch = master
 [submodule "lib/CPP_ROI"]
 	path = lib/CPP_ROI
 	url = https://github.com/cpp-lln-lab/CPP_ROI.git
+	branch = main
 [submodule "lib/slice_display"]
 	path = lib/slice_display
 	url = https://github.com/bramzandbelt/slice_display.git
+	branch = master
 [submodule "lib/brain_colours"]
 	path = lib/brain_colours
 	url = https://github.com/CPernet/brain_colours.git
+	branch = master
