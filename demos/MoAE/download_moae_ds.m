@@ -17,13 +17,12 @@ function download_moae_ds(downloadData)
     spm_mkdir(fullfile(working_directory, 'inputs'));
 
     %% Get data
-    fprintf('%-10s:', 'Downloading dataset...');
-    urlwrite(URL, 'MoAEpilot.zip');
-    fprintf(1, ' Done\n\n');
+    filename = download(URL, fullfile(working_directory, 'inputs'), true);
 
     fprintf('%-10s:', 'Unzipping dataset...');
-    unzip('MoAEpilot.zip');
+    unzip(filename);
     movefile('MoAEpilot', fullfile(working_directory, 'inputs', 'raw'));
+    delete(filename)
     fprintf(1, ' Done\n\n');
 
   end
