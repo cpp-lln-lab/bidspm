@@ -59,12 +59,12 @@ jobs:
         git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
         make -C MOxUnit install
         git clone https://github.com/MOcov/MOcov.git --depth 1
-        make -C MOcov install   
-        
+        make -C MOcov install
+
     - name: Update octave path
       run: |
         octave $OCTFLAGS --eval "initCppSpm; savepath(); exit;"
-        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath(); exit;"        
+        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath(); exit;"
 
     - name: Prepare data
       run: |
