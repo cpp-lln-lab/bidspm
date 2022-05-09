@@ -30,8 +30,6 @@ name: update submodules
 on:
   push:
     branches:
-      - main
-      - master
       - dev
   schedule:
     - cron: "0 0 1 * *"

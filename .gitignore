@@ -20,6 +20,9 @@ venv/*
 ## visual studio code
 .vscode
 
+cfg
+group
+
 ## MATLAB / OCTAVE gitignore template
 
 # From : https://github.com/github/gitignore/blob/master/Global/MATLAB.gitignore
