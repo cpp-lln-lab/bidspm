@@ -21,8 +21,14 @@ function download_moae_ds(downloadData)
 
     fprintf('%-10s:', 'Unzipping dataset...');
     unzip(filename);
-    movefile('MoAEpilot', fullfile(working_directory, 'inputs', 'raw'));
-    delete(filename);
+    if isOctave()
+      movefile(fullfile(working_directory, 'inputs', 'MoAEpilot'), ...
+               fullfile(working_directory, 'inputs', 'raw'));
+      delete(filename);
+    else
+      movefile('MoAEpilot', fullfile(working_directory, 'inputs', 'raw'));
+      delete(filename);
+    end
     fprintf(1, ' Done\n\n');
 
   end
