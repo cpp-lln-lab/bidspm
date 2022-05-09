@@ -42,13 +42,7 @@ jobs:
         run: cp -rv lib/MACS spm12/toolbox/MACS
 
       - name: Prepare data
-        run: | # download MoAE from OSF (see this for API: https://github.com/CenterForOpenScience/osf.io/issues/8256)
-          URL=https://files.de-1.osf.io/v1/resources/3vufp/providers/osfstorage/6239d943938b48080c97b6d4/?zip=
-          inputs_folder='demos/MoAE/inputs/'
-          mkdir -p $inputs_folder
-          curl $URL --output $inputs_folder'MoAEpilot.zip'
-          unzip $inputs_folder'MoAEpilot.zip' -d $inputs_folder/MoAEpilot
-          mv $inputs_folder/MoAEpilot $inputs_folder/raw
+        run: |
           cd tests
           make data
 

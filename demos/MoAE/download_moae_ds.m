@@ -25,13 +25,18 @@ function download_moae_ds(download_data, clean)
     spm_mkdir(fullfile(working_directory, 'inputs'));
 
     %% Get data
-    fprintf('%-10s:', 'Downloading dataset...');
-    urlwrite(URL, 'MoAEpilot.zip');
-    fprintf(1, ' Done\n\n');
+    filename = download(URL, fullfile(working_directory, 'inputs'), true);
 
     fprintf('%-10s:', 'Unzipping dataset...');
-    unzip('MoAEpilot.zip');
-    movefile('MoAEpilot', fullfile(working_directory, 'inputs', 'raw'));
+    unzip(filename);
+    if isOctave()
+      movefile(fullfile(working_directory, 'inputs', 'MoAEpilot'), ...
+               fullfile(working_directory, 'inputs', 'raw'));
+      delete(filename);
+    else
+      movefile('MoAEpilot', fullfile(working_directory, 'inputs', 'raw'));
+      delete(filename);
+    end
     fprintf(1, ' Done\n\n');
 
   end
