@@ -22,7 +22,7 @@ function download_moae_ds(downloadData)
     fprintf('%-10s:', 'Unzipping dataset...');
     unzip(filename);
     movefile('MoAEpilot', fullfile(working_directory, 'inputs', 'raw'));
-    delete(filename)
+    delete(filename);
     fprintf(1, ' Done\n\n');
 
   end

@@ -10,7 +10,7 @@ function filename = download(URL, output_dir, verbose)
   end
 
   msg = sprintf('Downloading dataset from:\n %s\n\n', URL);
-  printToScreen(msg, verbose);
+  print_to_screen(msg, verbose);
 
   tokens = regexp(URL, '/', 'split');
   protocol = tokens{1};
@@ -35,7 +35,7 @@ function filename = download(URL, output_dir, verbose)
 
     % move file in case it was not downloaded in the root dir
     if ~exist(fullfile(output_dir, filename), 'file')
-      printToScreen([filename ' --> ' output_dir], verbose);
+      print_to_screen([filename ' --> ' output_dir], verbose);
       movefile(filename, fullfile(output_dir, filename));
     end
     filename = fullfile(output_dir, filename);
@@ -54,11 +54,11 @@ function filename = download(URL, output_dir, verbose)
     filename = filename{1};
   end
 
-  printToScreen(' Done\n\n', verbose);
+  print_to_screen(' Done\n\n', verbose);
 
 end
 
-function printToScreen(msg, verbose)
+function print_to_screen(msg, verbose)
   if verbose
     fprintf(1, msg);
   end
