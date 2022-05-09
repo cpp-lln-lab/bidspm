@@ -1,18 +1,18 @@
-function filename = download(URL, output_dir, verbose)
+function filename = download(url, output_dir, verbose)
   %
   % USAGE::
   %
-  %   filename = download(URL, output_dir, verbose)
+  %   filename = download(url, output_dir, verbose)
   %
   % (C) Copyright 2021 Remi Gau
   if nargin < 2
     output_dir = pwd;
   end
 
-  msg = sprintf('Downloading dataset from:\n %s\n\n', URL);
+  msg = sprintf('Downloading dataset from:\n %s\n\n', url);
   print_to_screen(msg, verbose);
 
-  tokens = regexp(URL, '/', 'split');
+  tokens = regexp(url, '/', 'split');
   protocol = tokens{1};
 
   filename = tokens{end};
@@ -25,12 +25,12 @@ function filename = download(URL, output_dir, verbose)
 
     if isunix()
       if verbose
-        system(sprintf('wget %s', URL));
+        system(sprintf('wget %s', url));
       else
-        system(sprintf('wget -q %s', URL));
+        system(sprintf('wget -q %s', url));
       end
     else
-      urlwrite(URL, filename);
+      urlwrite(url, filename);
     end
 
     % move file in case it was not downloaded in the root dir
