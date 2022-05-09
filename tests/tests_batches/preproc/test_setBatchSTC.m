@@ -16,7 +16,7 @@ function test_setBatchSTC_dual_task()
 
   opt.query.acq = '';
 
-  BIDS = bids.layout(opt.dir.preproc);
+  BIDS = bids.layout(opt.dir.preproc, 'use_schema', false);
   matlabbatch = {};
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 

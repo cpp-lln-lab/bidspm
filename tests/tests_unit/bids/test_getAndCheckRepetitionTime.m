@@ -62,7 +62,7 @@ function [BIDS, filter] = setUp(task)
 
   opt.query.acq = '';
 
-  BIDS = bids.layout(opt.dir.preproc);
+  BIDS = bids.layout(opt.dir.preproc, 'use_schema', false);
 
   filter = opt.query;
   filter.sub =  subLabel;
