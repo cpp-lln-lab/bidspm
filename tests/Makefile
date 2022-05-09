@@ -12,6 +12,7 @@ data:
 	rm -f bids-examples/.gitkeep
 	git clone https://github.com/bids-standard/bids-examples.git --depth 1
 	cp bids-examples/synthetic/dataset_description.json bids-examples/synthetic/derivatives/fmriprep
+	touch bids-examples/.gitkeep
 
 clean_openneuro:
 	rm -rf openneuro/*
