@@ -11,22 +11,11 @@ function test_suite = test_getROIs %#ok<*STOUT>
 
 end
 
-function test_getROIs_unknown_space()
-
-  opt = setTestCfg();
-  opt.dir.roi = getDummyDataDir('roi');
-  opt.space = 'foo';
-  opt = checkOptions(opt);
-
-  assertExceptionThrown(@()getROIs(opt), 'getROIs:unknownSpace');
-
-end
-
 function test_getROIs_individual_space_no_subject()
 
   opt = setTestCfg();
   opt.dir.roi = getDummyDataDir('roi');
-  opt.space = 'individual';
+  opt.bidsFilterFile.roi.space = 'individual';
   opt = checkOptions(opt);
 
   assertExceptionThrown(@()getROIs(opt), 'getROIs:noSubject');
@@ -41,13 +30,13 @@ function test_getROIs_no_roi()
 
   opt.roi.name = {''};
 
-  opt.space = 'IXI549Space';
+  opt.bidsFilterFile.roi.space = 'IXI549Space';
   [roiList, roiFolder] = getROIs(opt);
 
   assertEqual(roiFolder, '');
   assertEqual(roiList, {});
 
-  opt.space = 'individual';
+  opt.bidsFilterFile.roi.space = 'individual';
   [roiList, roiFolder] = getROIs(opt);
 
   assertEqual(roiFolder, '');
@@ -59,7 +48,7 @@ function test_getROIs_mni()
 
   opt = setTestCfg();
   opt.dir.roi = getDummyDataDir('roi');
-  opt.space = 'IXI549Space';
+  opt.bidsFilterFile.roi.space = 'IXI549Space';
   opt = checkOptions(opt);
 
   [roiList, roiFolder] = getROIs(opt);
@@ -77,7 +66,7 @@ function test_getROIs_mni_subselect()
 
   opt = setTestCfg();
   opt.dir.roi = getDummyDataDir('roi');
-  opt.space = 'IXI549Space';
+  opt.bidsFilterFile.roi.space = 'IXI549Space';
   opt = checkOptions(opt);
 
   opt.roi.name = {'V1'};
@@ -113,7 +102,7 @@ function test_getROIs_individual()
   opt = setTestCfg();
   subLabel = '01';
   opt.dir.roi = getDummyDataDir('roi');
-  opt.space = 'individual';
+  opt.bidsFilterFile.roi.space = 'individual';
   opt = checkOptions(opt);
 
   [roiList, roiFolder] = getROIs(opt, subLabel);
@@ -134,7 +123,7 @@ function test_getROIs_individual_subselect()
   opt = setTestCfg();
   subLabel = '01';
   opt.dir.roi = getDummyDataDir('roi');
-  opt.space = 'individual';
+  opt.bidsFilterFile.roi.space = 'individual';
   opt = checkOptions(opt);
 
   opt.roi.name = {'V1'};
@@ -177,7 +166,7 @@ function test_getROIs_individual_subselect_filter()
   opt = setTestCfg();
   subLabel = '01';
   opt.dir.roi = getDummyDataDir('roi');
-  opt.space = 'individual';
+  opt.bidsFilterFile.roi.space = 'individual';
   opt = checkOptions(opt);
 
   opt.roi.name = struct('label', 'V1', 'hemi', 'L');

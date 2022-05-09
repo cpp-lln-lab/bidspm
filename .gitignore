@@ -26,8 +26,8 @@ venv
 .vscode
 
 ## from running tests in root dir
-cfg/*
-group/*
+*/cfg/*
+*/group/*
 models/*
 
 # jupyter notebooks
