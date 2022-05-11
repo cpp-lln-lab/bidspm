@@ -66,11 +66,19 @@ function bidsCreateROI(opt)
       printProcessingSubject(iSub, subLabel, opt);
 
       %% inverse normalize
-      deformation_field = bids.query(BIDS, 'data', ...
-                                     'sub', subLabel, 'suffix', 'xfm', ...
-                                     'to', opt.bidsFilterFile.t1w.suffix, 'extension', '.nii');
 
-      if isempty(deformation_field)
+      % locate 1 deformation field
+      filter = struct('sub', subLabel, ...
+                      'suffix', 'xfm', ...
+                      'to', opt.bidsFilterFile.t1w.suffix, ...
+                      'extension', '.nii');
+      if isfield(opt.bidsFilterFile.t1w, 'ses')
+        filter.ses = opt.bidsFilterFile.t1w.ses;
+      end
+
+      deformationField = bids.query(BIDS, 'data', filter);
+
+      if isempty(deformationField)
         tolerant = true;
         msg = sprintf('No deformation field for subject %s', subLabel);
         id = 'noDeformationField';
@@ -78,10 +86,22 @@ function bidsCreateROI(opt)
         continue
       end
 
+      if numel(deformationField) > 1
+        tolerant = false;
+        msg = sprintf(['Too deformation field for subject %s:', ...
+                       '\n%s', ...
+                       '\n\nSpecify the target session in "opt.bidsFilterFile.t1w.ses"'], ...
+                      subLabel, ...
+                      createUnorderedList(deformationField));
+        id = 'tooManyDeformationField';
+        errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
+      end
+
+      % set batch
       matlabbatch = {};
       for iROI = 1:size(roiList, 1)
         matlabbatch = setBatchNormalize(matlabbatch, ...
-                                        deformation_field, ...
+                                        deformationField, ...
                                         nan(1, 3), ...
                                         roiList(iROI, :));
         matlabbatch{end}.spm.spatial.normalise.write.woptions.bb = nan(2, 3);
@@ -90,8 +110,6 @@ function bidsCreateROI(opt)
       saveAndRunWorkflow(matlabbatch, 'inverseNormalize', opt, subLabel);
 
       %% move and rename file
-      spm_mkdir(opt.dir.roi, ['sub-' subLabel], 'roi');
-
       roiList = spm_select('FPlist', ...
                            fullfile(opt.dir.roi, 'group'), ...
                            '^w.*space.*_mask.nii.*$');
@@ -111,10 +129,12 @@ function bidsCreateROI(opt)
 
       for iROI = 1:size(roiList, 1)
 
-        bidsFile = bids.File(outputNameStructure(subLabel, roiList{iROI, 1}));
+        roiBidsFile = buildIndividualSpaceRoiFilename(deformationField{1}, roiList{iROI, 1});
+
+        spm_mkdir(fullfile(opt.dir.roi, roiBidsFile.bids_path, 'roi'));
 
         movefile(roiList{iROI, 1}, ...
-                 fullfile(opt.dir.roi, ['sub-' subLabel], 'roi', bidsFile.filename));
+                 fullfile(opt.dir.roi, roiBidsFile.bids_path, 'roi', roiBidsFile.filename));
 
       end
 
@@ -123,32 +143,9 @@ function bidsCreateROI(opt)
   end
 
   opt.dir.output = opt.dir.roi;
-  opt.pipeine.type = 'roi';
+  opt.pipeline.type = 'roi';
   initBids(opt, 'description', 'group and subject ROIs');
 
   cleanUpWorkflow(opt);
-
-end
-
-function nameStructure = outputNameStructure(subLabel, roiFilename)
-
-  p = bids.internal.parse_filename(roiFilename);
-  if isfield(p.entities, 'whemi')
-    p.entities = renameStructField(p.entities, 'whemi', 'hemi');
-  end
-  fields = {'hemi', 'desc', 'label'};
-  for iField = 1:numel(fields)
-    if ~isfield(p.entities, fields{iField})
-      p.entities.(fields{iField}) = '';
-    end
-  end
-  nameStructure = struct('entities', struct( ...
-                                            'sub', subLabel, ...
-                                            'space', 'individual', ...
-                                            'hemi', p.entities.hemi, ...
-                                            'label', p.entities.label, ...
-                                            'desc', p.entities.desc), ...
-                         'suffix', 'mask', ...
-                         'ext', '.nii');
 
 end
