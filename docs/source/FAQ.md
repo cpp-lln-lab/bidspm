@@ -75,7 +75,6 @@ And this code to set things up
 Here is the expected output folder name
 
 ```matlab
-
   expectedOutput = fullfile(opt.dir.stats, 'sub-02', 'stats', ...
                             'task-nback_space-individual_FWHM-6_desc-nbackMVPA');
 ```
