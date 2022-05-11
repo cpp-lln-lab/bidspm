@@ -1,6 +1,6 @@
 function saveMatlabBatch(matlabbatch, batchType, opt, subLabel) %#ok<INUSL>
   %
-  % Saves the matlabbatch job in a .mat and a .m file.
+  % Saves the matlabbatch job in a .m file.
   % Environment information are saved in a .json file.
   %
   %  % USAGE::
@@ -9,14 +9,17 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subLabel) %#ok<INUSL>
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param batchType:
   % :type batchType: string
+  %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
+  %
   % :param subLabel:
   % :type subLabel: string
   %
-  % The .mat file can directly be loaded with the SPM batch or run directly
+  % The .m file can directly be loaded with the SPM batch or run directly
   % by SPM standalone or SPM docker.
   %
   % The .json file also contains heaps of info about the "environment" used
@@ -51,6 +54,8 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subLabel) %#ok<INUSL>
   save(batchFileName, 'matlabbatch', '-v7');
 
   saveSpmScript(batchFileName);
+
+  delete(batchFileName);
 
   [OS, GeneratedBy] = getEnvInfo(opt);
   GeneratedBy(1).Description = batchType;
