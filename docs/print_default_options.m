@@ -1,4 +1,5 @@
 % prints the default options to a file to be easily added to the doc
+% (C) Copyright 2022 Remi Gau
 
 run ../cpp_spm;
 opt = struct();
