@@ -1,23 +1,28 @@
 function unfold(input, varargin)
     %
-    % Unfolds a structure.
+    % Displays the content of a variable.
     %
     % USAGE::
     %
-    %   unfold(SC, varargin)
+    %   unfold(SC, name, show, file_id)
     %
-    %   UNFOLD(SC) displays the content of a variable.
     %
-    %   If SC is a structure it recursively shows the name of SC and the fieldnames of SC and their
-    %   contents.
+    % :param SC: vairable to show the content of.
+    % :type SC: structure or cell
     %
-    %   If SC is a cell array the contents of each cell are displayed.
+    % If SC is a structure it recursively shows the name of SC and
+    % the fieldnames of SC and their contents.
     %
-    %   It uses the caller's workspace variable name as the name of SC.
-    %   UNFOLD(SC,NAME) uses NAME as the name of SC.
+    % If SC is a cell array the contents of each cell are displayed.
     %
-    %   UNFOLD(SC,SHOW) If SHOW is false only the fieldnames and their sizes
-    %   are  shown, if SHOW is true the contents are shown also.
+    % It uses the caller's workspace variable name as the name of SC.
+    %
+    % :param name: can be used isntead of the name of SC.
+    % :type name: string
+    %
+    % :param show: if ``false`` only the fieldnames and their sizes are  shown,
+    %              if ``true`` the contents are shown also.
+    % :type show: boolean
     %
     % (C) Copyright 2022 Remi Gau
     % (C) Copyright 2005-2006 R.F. Tap
@@ -30,23 +35,40 @@ function unfold(input, varargin)
     % check input
     switch nargin
         case 1
-            Name = inputname(1);
+            name = inputname(1);
             show = true;
+            file_id = 1;
         case 2
             if islogical(varargin{1})
-                Name = inputname(1);
+                name = inputname(1);
                 show = varargin{1};
+                file_id = 1;
             elseif ischar(varargin{1})
-                Name = varargin{1};
+                name = varargin{1};
                 show = true;
+                file_id = 1;
             else
                 error('Second input argument must be a string or a logical');
             end
         case 3
             if ischar(varargin{1})
                 if islogical(varargin{2})
-                    Name = varargin{1};
+                    name = varargin{1};
                     show = varargin{2};
+                    file_id = 1;
+                else
+                    error('Third input argument must be a logical');
+                end
+            else
+                error('Second input argument must be a string');
+            end
+
+        case 4
+            if ischar(varargin{1})
+                if islogical(varargin{2})
+                    name = varargin{1};
+                    show = varargin{2};
+                    file_id = varargin{3};
                 else
                     error('Third input argument must be a logical');
                 end
@@ -77,22 +99,22 @@ function unfold(input, varargin)
                 if NS > 1
                     siz = size(input);
                     if show
-                        Namei = [Name '(' indToStr(siz, h) ').' F{i}];
+                        name_i = [name '(' indToStr(siz, h) ').' F{i}];
                     else
-                        Namei = [Name '(' indToStr(siz, NS) ').'  F{i}];
+                        name_i = [name '(' indToStr(siz, NS) ').'  F{i}];
                     end
                 else
-                    Namei = [Name '.' F{i}];
+                    name_i = [name '.' F{i}];
                 end
 
                 if isstruct(input(h).(F{i}))
-                    unfold(input(h).(F{i}), Namei, show);
+                    unfold(input(h).(F{i}), name_i, show, file_id);
                 else
 
                     if iscell(input(h).(F{i}))
                         if numel(input(h).(F{i})) == 0
-                            printKeyToScreen(Namei);
-                            fprintf(' =\t{};');
+                            printKeyToScreen(name_i, file_id);
+                            fprintf(file_id, ' =\t{};');
                         else
                             siz = size(input(h).(F{i}));
                             NC = numel(input(h).(F{i}));
@@ -103,21 +125,21 @@ function unfold(input, varargin)
                             end
                             for j = 1:jmax
                                 if show
-                                    Namej = [Namei '{' indToStr(siz, j) '}'];
+                                    name_j = [name_i '{' indToStr(siz, j) '}'];
                                 else
-                                    Namej = [Namei '{' indToStr(siz, NC) '}'];
+                                    name_j = [name_i '{' indToStr(siz, NC) '}'];
                                 end
-                                printKeyToScreen(Namej);
+                                printKeyToScreen(name_j, file_id);
                                 if show
-                                    printValueToScreen(input(h).(F{i}){j});
+                                    printValueToScreen(input(h).(F{i}){j}, file_id);
                                 end
                             end
                         end
 
                     else
-                        printKeyToScreen(Namei);
+                        printKeyToScreen(name_i, file_id);
                         if show
-                            printValueToScreen(input(h).(F{i}));
+                            printValueToScreen(input(h).(F{i}), file_id);
                         end
                     end
 
@@ -128,39 +150,40 @@ function unfold(input, varargin)
     elseif iscell(input)
 
         if numel(input) == 0
-            fprintf(' =\t{};');
+            fprintf(file_id, ' =\t{};');
         else
             % recursively display cell
             siz = size(input);
             for i = 1:numel(input)
-                Namei = [Name '{' indToStr(siz, i) '}'];
-                unfold(input{i}, Namei, show);
+                name_i = [name '{' indToStr(siz, i) '}'];
+                unfold(input{i}, name_i, show, file_id);
             end
         end
 
     else
 
-        printKeyToScreen(Name);
+        printKeyToScreen(name);
         if show
-            printValueToScreen(input);
+            printValueToScreen(input, file_id);
         end
 
     end
 
     callStack = dbstack();
     if numel(callStack) > 1 && ~strcmp(callStack(2).name, mfilename())
-        fprintf('\n');
+        fprintf(file_id, '\n');
     elseif numel(callStack) == 1 && strcmp(callStack(1).name, mfilename())
-        fprintf('\n');
+        fprintf(file_id, '\n');
     end
 
 end
 
-function printKeyToScreen(input)
-    fprintf(sprintf('\n%s', input));
+function printKeyToScreen(input, file_id)
+    fprintf(file_id, sprintf('\n%s', input));
 end
 
-function printValueToScreen(input)
+function printValueToScreen(input, file_id)
+
     base_string = ' =\t';
     msg = '';
     if ischar(input)
@@ -176,12 +199,12 @@ function printValueToScreen(input)
         if isempty(input)
             msg = ' =\t[]  ';
         else
-            pattern = repmat('%f, ', 1, numel(input));
+            pattern = repmat('%0.3f, ', 1, numel(input));
             msg = sprintf(['%s' pattern], base_string, input);
         end
     end
-    fprintf(msg);
-    fprintf('\b\b;');
+    fprintf(file_id, msg);
+    fprintf(file_id, '\b\b;');
 end
 
 % local functions
