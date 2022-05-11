@@ -33,7 +33,8 @@ release = 'v1.1.3dev'
 extensions = [
     'sphinxcontrib.matlab',
     'sphinx.ext.autodoc',
-    'sphinx_copybutton']
+    'sphinx_copybutton',
+    "myst_parser",]
 matlab_src_dir = os.path.dirname(os.path.abspath('../../src'))
 primary_domain = 'mat'
 
