@@ -43,7 +43,7 @@ function test_bidsChangeSuffix_basic()
   assertEqual(numel(data), 0);
 
   % same metadata
-  metadata = bids.query(BIDS_before, 'metadata', 'suffix', 'vaso');
+  metadata = bids.query(BIDS_after, 'metadata', 'suffix', 'vaso');
   assertEqual(metadata, expected_metadata);
 
   rmdir(dataset_dir, 's');
