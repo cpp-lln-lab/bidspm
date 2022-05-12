@@ -1,21 +1,14 @@
 name: miss_hit_quality
 
-on:
-  push:
-    branches:
-      - main
-      - dev
-  pull_request:
-    branches: ['*']
+on: push: branches: - main - dev pull_request: branches: ['*']
 
-jobs:
-  build:
+jobs: build:
 
     runs-on: ubuntu-latest
 
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: true
         fetch-depth: 1
