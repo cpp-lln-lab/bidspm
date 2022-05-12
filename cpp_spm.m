@@ -75,6 +75,10 @@ function cpp_spm(varargin)
 
       uninitCppSpm();
 
+    case 'update'
+
+      system('make update');
+
     case 'run_tests'
 
       run_tests();
@@ -99,6 +103,10 @@ function cpp_spm(varargin)
       opt = checkOptions(opt);
 
       stats(opt);
+
+    case 'meaning_of_life'
+
+      fprintf('\n42\n\n');
 
     otherwise
 
@@ -445,7 +453,8 @@ function value = low_level_actions()
            'uninit'; ...
            'dev'
            'version'; ...
-           'run_tests'};
+           'run_tests'; ...
+           'update'};
 
 end
 

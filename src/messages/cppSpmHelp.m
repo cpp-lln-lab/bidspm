@@ -138,11 +138,12 @@ function cppSpmHelp()
   %   % also adds folder for testing to the path
   %   cpp_spm('action', 'dev')
   %
+  %   % tried to update the current branch from the upstream repository
+  %   cpp_spm('action', 'update')
+  %
   %   % misc
   %   cpp_spm('action', 'version')
   %   cpp_spm('action', 'run_tests')
   %
   %
   % (C) Copyright 2022 CPP_SPM developers
-
-  %   cpp_spm('action', 'update')
