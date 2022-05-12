@@ -1,100 +1,10 @@
 function cpp_spm(varargin)
   %
-  % General intro function for CPP SPM
-  %
-  % Most invalid calls simply initialize CPP SPM.
-  %
-  %
-  % **bids apps calls**
-  %
-  % generic call::
-  %
-  %   cpp_spm(bids_dir, output_dir, analysis_level, ...
-  %           'action', 'some_action')
-  %
-  %
-  % _Obligatory parameters_
-  %
-  % :param bids_dir: path to a raw BIDS dataset
-  % :type bids_dir: path
-  %
-  % :param output_dir: path where to output data
-  % :type output_dir: path
-  %
-  % :param analysis_level: can either be ``'participants'`` or ``'group'``
-  % :type analysis_level: string
-  %
-  %
-  % :param action: defines the pipeline to run; can be any of:
-  %                - ``'preprocess'``
-  %                - ``'stats'``
-  % :type action: string
-  %
-  %
-  % _Optional arameters common to all actions_
-  %
-  % :param participant_label: cell of participants labels. For example: ``{'01', '03', '08'}``
-  % :type cellstr:
-  %
-  % :param :
-  % :type :
-  %
-  %
-  % :param :
-  % :type :
-  %
-  %
-  % :param :
-  % :type :
-  %
-  %
-  % :param :
-  % :type :
-  %
-  %
-  % :param :
-  % :type :
-  %
-  %
-  %   addParameter(args, 'task', {}, @iscellstr);
-  %   addParameter(args, 'dry_run', false, @islogical);
-  %   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
-  %   addParameter(args, 'options', struct([]), isFileOrStruct);
-  %   addParameter(args, 'verbosity', 2, isFileOrStruct);
-  %
-  %   addParameter(args, 'fwhm', 6, isPositiveScalar);
-  %   addParameter(args, 'space', {'individual', 'IXI549Space'}, @iscellstr);
-  %
-  % PREPROCESSING::
-  %
-  %   cpp_spm(bids_dir, output_dir, 'participant', ...
-  %           'action', 'preprocess', ...
-  %           'task', {...})
-  %
-  %
-  %
-  % **low level calls**
-  %
-  % USAGE::
-  %
-  %   % initialise (add relevant folders to path)
-  %   cpp_spm
-  %   cpp_spm('action', 'init')
-  %
-  %   % uninitialise (remove relevant folders to path)
-  %   cpp_spm('action', 'uninit')
-  %
-  %   % also adds folder for testing to the path
-  %   cpp_spm('action', 'dev')
-  %
-  %   % misc
-  %   cpp_spm('action', 'version')
-  %   cpp_spm('action', 'run_tests')
-  %
+  % Type cpp_spm('action', 'help') for more information.
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  %   cpp_spm('action', 'update')
+  % TODO  cpp_spm('action', 'update')
 
   args = inputParser;
 
@@ -113,7 +23,7 @@ function cpp_spm(varargin)
   addParameter(args, 'dry_run', false, @islogical);
   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
   addParameter(args, 'options', struct([]), isFileOrStruct);
-  addParameter(args, 'verbosity', 2, isFileOrStruct);
+  addParameter(args, 'verbosity', 2, isPositiveScalar);
 
   addParameter(args, 'fwhm', 6, isPositiveScalar);
   addParameter(args, 'space', {'individual', 'IXI549Space'}, @iscellstr);
@@ -121,7 +31,7 @@ function cpp_spm(varargin)
   % preproc only
   addParameter(args, 'dummy_scans', 0, isPositiveScalar);
   addParameter(args, 'anat_only', false, @islogical);
-  addParameter(args, 'ignore', {}, @iscellstr); % {'fieldmaps', 'slicetiming', 'unwarp'}
+  addParameter(args, 'ignore', {}, @iscellstr);
 
   % stats only
   addParameter(args, 'preproc_dir', pwd, @isdir);
@@ -141,6 +51,10 @@ function cpp_spm(varargin)
     case 'init'
 
       initCppSpm();
+
+    case 'help'
+
+      help(fullfile(fileparts(mfilename('fullpath')), 'src', 'messages', 'cppSpmHelp.m'));
 
     case 'version'
 
@@ -177,6 +91,13 @@ function cpp_spm(varargin)
       opt = checkOptions(opt);
 
       preprocess(opt);
+
+    case 'stats'
+
+      opt.pipeline.type = 'stats';
+      opt = checkOptions(opt);
+
+      stats(opt);
 
     otherwise
 
@@ -217,6 +138,21 @@ function preprocess(opt)
   bidsSpatialPrepro(opt);
   if opt.fwhm.func > 0 && ~opt.anatOnly
     bidsSmoothing(opt);
+  end
+
+  cpp_spm('action', 'uninit');
+
+end
+
+function stats(opt)
+
+  if opt.glm.roibased.do
+    bidsFFX('specify', opt);
+    bidsRoiBasedGLM(opt);
+  else
+    bidsFFX('specifyAndEstimate', opt);
+    bidsFFX('contrasts', opt);
+    bidsResults(opt);
   end
 
   cpp_spm('action', 'uninit');
