@@ -26,12 +26,26 @@ name: "system tests with octave: failure expected"
 
 # \* \* \* \* \*
 
-on: push: branches: - main - dev pull_request: branches: - 'main' schedule: -
-cron: "0 0 1,15 \* \*"
+on:
 
-env: OCTFLAGS: --no-gui --no-window-system --silent
+  push:
+    branches:
+      - main
+      - dev
 
-jobs: build:
+  pull_request:
+    branches:
+      - 'main'
+
+  schedule:
+    -cron: "0 0 1,15 * *"
+
+env:
+  OCTFLAGS: --no-gui --no-window-system --silent
+
+jobs:
+
+  build:
 
     runs-on: ubuntu-latest
 
