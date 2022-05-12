@@ -1,40 +1,35 @@
 name: "tests with octave: failure expected"
 
 # Uses the cron schedule for github actions
-
 #
-
 # https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows#scheduled-events
-
 #
-
 # ┌───────────── minute (0 - 59)
-
 # │ ┌───────────── hour (0 - 23)
-
 # │ │ ┌───────────── day of the month (1 - 31)
-
 # │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
-
 # │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
-
 # │ │ │ │ │
-
 # │ │ │ │ │
-
 # │ │ │ │ │
+# * * * * *
 
-# \* \* \* \* \*
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches: ['*']
 
-on: push: branches: - main - dev pull_request: branches: ['*']
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
-# Allows you to run this workflow manually from the Actions tab
+env:
+  OCTFLAGS: --no-gui --no-window-system --silent
 
-workflow_dispatch:
-
-env: OCTFLAGS: --no-gui --no-window-system --silent
-
-jobs: build:
+jobs:
+  build:
 
     runs-on: ubuntu-20.04
 
@@ -57,7 +52,7 @@ jobs: build:
          make -C spm12/src PLATFORM=octave distclean
          make -C spm12/src PLATFORM=octave
          make -C spm12/src PLATFORM=octave install
-         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
+         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath(); exit;"
 
     - name: Install Moxunit and MOcov
       run: |
@@ -68,12 +63,11 @@ jobs: build:
 
     - name: Update octave path
       run: |
-        octave $OCTFLAGS --eval "initCppSpm; savepath(); exit;"
-        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath(); exit;"
+        octave $OCTFLAGS --eval "initCppSpm(dev); savepath(); exit;"
 
     - name: Prepare data
       run: |
-        octave $OCTFLAGS --eval "initCppSpm; cd demos/MoAE; download_moae_ds(true); exit;"
+        octave $OCTFLAGS --eval "cd demos/MoAE; download_moae_ds(true); exit;"
         cd tests
         make data
 
