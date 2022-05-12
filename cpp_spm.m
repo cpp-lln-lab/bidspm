@@ -1,48 +1,61 @@
 function cpp_spm(varargin)
   %
-  % General intro function for CPP SPM
-  %
-  % USAGE::
-  %
-  %   cpp_spm
-  %   cpp_spm('init')
-  %   cpp_spm('uninit')
-  %   cpp_spm('dev')
-  %
-  % :param action:
-  % :type action: string
-  %
-  % :returns: - :action: (type) (dimension)
-  %
-  % Example::
+  % Type cpp_spm('action', 'help') for more information.
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  % TODO
-  %     input_datasets
-  %     output_location
-  %     analysis_level
-  %     participant_label
-  %     action
-  %     bids_filter_file
-  %     dry_run
-  %     option
+  % TODO  cpp_spm('action', 'update')
+  % TODO  where to save the options?
 
-  p = inputParser;
+  args = inputParser;
 
   defaultAction = 'init';
 
-  addOptional(p, 'action', defaultAction, @ischar);
+  isFileOrStruct = @(x) exist(x, 'file') == 2 || isstruct(x);
+  isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
 
-  parse(p, varargin{:});
+  addOptional(args, 'bids_dir', pwd, @isdir);
+  addOptional(args, 'output_dir', '', @ischar);
+  addOptional(args, 'analysis_level', '', @ischar);
 
-  action = p.Results.action;
+  addParameter(args, 'action', defaultAction, @ischar);
+  addParameter(args, 'participant_label', {}, @iscellstr);
+  addParameter(args, 'task', {}, @iscellstr);
+  addParameter(args, 'dry_run', false, @islogical);
+  addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
+  addParameter(args, 'options', struct([]));
+  addParameter(args, 'verbosity', 2, isPositiveScalar);
+
+  addParameter(args, 'fwhm', 6, isPositiveScalar);
+  addParameter(args, 'space', {'individual', 'IXI549Space'}, @iscellstr);
+
+  % preproc only
+  addParameter(args, 'dummy_scans', 0, isPositiveScalar);
+  addParameter(args, 'anat_only', false, @islogical);
+  addParameter(args, 'ignore', {}, @iscellstr);
+
+  % stats only
+  addParameter(args, 'preproc_dir', pwd, @isdir);
+  addParameter(args, 'model_file', struct([]), isFileOrStruct);
+  addParameter(args, 'roi_based', false, @islogical);
+
+  parse(args, varargin{:});
+
+  action = args.Results.action;
+
+  % TODO make sure that options defined in JSON or passed as a structure
+  % overrides any other arguments
+  opt = get_options_from_argument(args);
 
   switch lower(action)
 
     case 'init'
 
       initCppSpm();
+
+    case 'help'
+
+      help(fullfile(fileparts(mfilename('fullpath')), 'src', 'messages', 'cppSpmHelp.m'));
 
     case 'version'
 
@@ -62,13 +75,166 @@ function cpp_spm(varargin)
 
       uninitCppSpm();
 
+    case 'update'
+
+      system('make update');
+
     case 'run_tests'
 
       run_tests();
 
+    case 'preprocess'
+
+      if ~strcmp(args.Results.analysis_level, 'subject')
+        errorHandling(mfilename(), ...
+                      'noGroupLevelPreproc', ...
+                      '"analysis_level" must be "subject" for preprocessing', ...
+                      false);
+      end
+
+      opt.pipeline.type = 'preproc';
+      opt = checkOptions(opt);
+
+      preprocess(opt);
+
+    case 'stats'
+
+      opt.pipeline.type = 'stats';
+      opt = checkOptions(opt);
+
+      stats(opt);
+
+    case 'meaning_of_life'
+
+      fprintf('\n42\n\n');
+
+    otherwise
+
+      errorStruct.identifier = 'cpp_spm:unknownAction';
+      errorStruct.message = sprintf('action %s is not among the known actions:\n\t- %s', ...
+                                    action, ...
+                                    strjoin(allowed_actions(), '\n\t- '));
+      error(errorStruct);
+
   end
 
 end
+
+%% "getter"
+
+function opt = get_options_from_argument(args)
+
+  action = args.Results.action;
+
+  opt = args.Results.options;
+
+  if ismember(lower(action), bids_apps_actions)
+
+    cpp_spm('action', 'init');
+
+    if isempty(opt)
+      % set defaults
+      opt = checkOptions(struct());
+    end
+
+    opt.dir.raw = args.Results.bids_dir;
+    opt.dir.derivatives = args.Results.output_dir;
+
+    opt.dryRun = args.Results.dry_run;
+
+    if ~isempty(args.Results.participant_label)
+      opt.subjects = args.Results.participant_label;
+    end
+
+    if ~isempty(args.Results.task)
+      opt.taskName = args.Results.task;
+    end
+
+    if ~isempty(args.Results.bids_filter_file)
+      % TODO read from JSON if necessary
+      % TODO validate
+      opt.bidsFilterFile = args.Results.bids_filter_file;
+    end
+
+    opt.fwhm.func = args.Results.fwhm;
+
+    if ~isempty(args.Results.space)
+      opt.space = args.Results.space;
+    end
+
+    % preproc
+    if ismember('slicetiming', args.Results.ignore)
+      opt.stc.skip = true;
+    end
+    if ismember('unwarp', args.Results.ignore)
+      opt.realign.useUnwarp = false;
+    end
+    if ismember('fieldmaps', args.Results.ignore)
+      opt.useFieldmaps = false;
+    end
+
+    opt.dummy_scans = args.Results.dummy_scans;
+
+    opt.anatOnly = args.Results.anat_only;
+
+    % stats
+    opt.dir.preproc = args.Results.preproc_dir;
+    opt.model.file = args.Results.model_file;
+    opt.glm.roibased.do = args.Results.roi_based;
+
+  end
+
+end
+
+%% high level actions
+
+function preprocess(opt)
+
+  if isempty(opt.taskName) || numel(opt.taskName) > 1
+    errorHandling(mfilename(), ...
+                  'onlyOneTaskForPreproc', ...
+                  'A single task must be specified for preprocessing', ...
+                  false);
+  end
+
+  reportBIDS(opt);
+  bidsCopyInputFolder(opt);
+  if opt.dummy_scans > 0
+    bidsRemoveDummies(opt, ...
+                      'dummyScans', opt.dummy_scans, ...
+                      'force', false);
+  end
+  if opt.useFieldmaps && ~opt.anatOnly
+    bidsCreateVDM(opt);
+  end
+  if ~opt.stc.skip && ~opt.anatOnly
+    bidsSTC(opt);
+  end
+  bidsSpatialPrepro(opt);
+  if opt.fwhm.func > 0 && ~opt.anatOnly
+    bidsSmoothing(opt);
+  end
+
+  cpp_spm('action', 'uninit');
+
+end
+
+function stats(opt)
+
+  if opt.glm.roibased.do
+    bidsFFX('specify', opt);
+    bidsRoiBasedGLM(opt);
+  else
+    bidsFFX('specifyAndEstimate', opt);
+    bidsFFX('contrasts', opt);
+    bidsResults(opt);
+  end
+
+  cpp_spm('action', 'uninit');
+
+end
+
+%% low level actions
 
 function initCppSpm(dev)
   %
@@ -91,6 +257,7 @@ function initCppSpm(dev)
   octaveVersion = '4.0.3';
   matlabVersion = '8.6.0';
 
+  % octave packages
   installlist = {'io', 'statistics', 'image'};
 
   thisDirectory = fileparts(mfilename('fullpath'));
@@ -115,8 +282,7 @@ function initCppSpm(dev)
                         pathSep, ...
                         genpath(fullfile(thisDirectory, 'src', 'workflows', 'stats')));
 
-    libList = { ...
-               'spmup', ...
+    libList = {'spmup', ...
                'spm_2_bids'};
 
     for i = 1:numel(libList)
@@ -195,41 +361,6 @@ function initCppSpm(dev)
 
 end
 
-function detectCppSpm()
-
-  workflowsDir = cellstr(which('bidsSpatialPrepro.m', '-ALL'));
-
-  if isempty(workflowsDir)
-    error('CPP_SPM is not in your MATLAB / Octave path.\n');
-
-  elseif numel(workflowsDir) > 1
-    printToScreen('CPP_SPM seems to appear in several different folders:\n');
-    for i = 1:numel(workflowsDir)
-      fprintf('  * %s\n', fullfile(workflowsDir{i}, '..', '..'));
-    end
-    error('Remove all but one with ''pathtool''' .\ n'); % or ''spm_rmpath
-
-  end
-end
-
-function tryInstallFromForge(packageName)
-
-  errorcount = 1;
-  while errorcount % Attempt twice in case installation fails
-    try
-      pkg('install', '-forge', packageName);
-      pkg('load', packageName);
-      errorcount = 0;
-    catch err
-      errorcount = errorcount + 1;
-      if errorcount > 2
-        error(err.message);
-      end
-    end
-  end
-
-end
-
 function uninitCppSpm()
   %
   % Removes the added folders fromthe path for a given session.
@@ -273,7 +404,7 @@ function run_tests()
 
   tic;
 
-  cpp_spm('dev');
+  cpp_spm('action', 'dev');
 
   cd(fileparts(mfilename('fullpath')));
 
@@ -306,5 +437,66 @@ function run_tests()
   end
 
   toc;
+
+end
+
+%% contsants
+
+function value = bids_apps_actions()
+
+  value = {'preprocess', 'stats'};
+
+end
+
+function value = low_level_actions()
+  value = {'init'; ...
+           'uninit'; ...
+           'dev'
+           'version'; ...
+           'run_tests'; ...
+           'update'};
+
+end
+
+function value = allowed_actions()
+
+  value = cat(1, bids_apps_actions(), low_level_actions());
+
+end
+
+%% helpers functions
+
+function detectCppSpm()
+
+  workflowsDir = cellstr(which('bidsSpatialPrepro.m', '-ALL'));
+
+  if isempty(workflowsDir)
+    error('CPP_SPM is not in your MATLAB / Octave path.\n');
+
+  elseif numel(workflowsDir) > 1
+    printToScreen('CPP_SPM seems to appear in several different folders:\n');
+    for i = 1:numel(workflowsDir)
+      fprintf('  * %s\n', fullfile(workflowsDir{i}, '..', '..'));
+    end
+    error('Remove all but one with ''pathtool''' .\ n'); % or ''spm_rmpath
+
+  end
+end
+
+function tryInstallFromForge(packageName)
+
+  errorcount = 1;
+  while errorcount % Attempt twice in case installation fails
+    try
+      pkg('install', '-forge', packageName);
+      pkg('load', packageName);
+      errorcount = 0;
+    catch err
+      errorcount = errorcount + 1;
+      if errorcount > 2
+        error(err.message);
+      end
+    end
+  end
 
 end

@@ -10,3 +10,7 @@ BIDS app and an example of invocation.
 * Run the example: `bosh ./bids-app-example.json -i ./invocation.json -e -d`
   (assumes `ds001` is a valid dataset in the current working
   directory.)
+
+See the BIDS execution BEP fore more info:
+
+https://docs.google.com/document/d/104HLZedFtx0TaXEUwd7eyWvJUlc0CcSUtCzwjNgmGxE/edit

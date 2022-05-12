@@ -12,7 +12,7 @@ close all;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 opt = face_rep_get_option_results();
 

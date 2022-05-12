@@ -4,7 +4,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 %% Using default model
 % This part let CPP SPM create a default BIDS stats model

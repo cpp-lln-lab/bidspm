@@ -10,7 +10,7 @@ download_data = true;
 clean = true;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 opt = moae_get_option();
 

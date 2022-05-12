@@ -22,9 +22,6 @@ cpp_spm
 env
 venv
 
-## visual studio code
-.vscode
-
 ## from running tests in root dir
 */cfg/*
 */group/*

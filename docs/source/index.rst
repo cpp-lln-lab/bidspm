@@ -12,6 +12,7 @@ Welcome to CPP SPM documentation!
    :caption: Content
 
    installation
+   bids_app_api
    set_up
    defaults
    demos

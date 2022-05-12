@@ -10,7 +10,7 @@ cd(fullfile(root_dir, 'MOxUnit', 'MOxUnit'));
 run moxunit_set_path();
 
 cd(root_dir);
-cpp_spm('dev');
+cpp_spm('action', 'dev');
 
 cd demos/MoAE;
 download_moae_ds(true);
