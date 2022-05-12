@@ -10,7 +10,7 @@ addpath(fullfile(pwd, '..', '..'));
 
 bids_dir = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
 
-output_dir = fullfile(bids_dir, '..', 'derivatives');
+output_dir = fullfile(bids_dir, '..', '..', 'outputs', 'derivatives');
 
 cpp_spm(bids_dir, output_dir, 'participant', ...
         'action', 'preprocess', ...
