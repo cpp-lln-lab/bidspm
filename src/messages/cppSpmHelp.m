@@ -57,7 +57,7 @@ function cppSpmHelp()
   % :param verbosity: can be ``0``, ``1`` or ``2``. Defaults to ``2``
   % :type verbosity: positive scalar
   %
-  % :param space: defaults to ``{'individual', 'IXI549Space'}``
+  % :param space: Defaults to ``{'individual', 'IXI549Space'}``
   % :type space: cell string
   %
   %
