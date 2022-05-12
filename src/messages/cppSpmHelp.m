@@ -97,7 +97,8 @@ function cppSpmHelp()
   %
   %   cpp_spm(bids_dir, output_dir, 'participant', ...
   %           'action', 'preprocess', ...
-  %           'task', {...})
+  %           'preproc_dir', preproc_dir, ...
+  %           'model_file', model_file)
   %
   %
   % *Obligatory parameters*

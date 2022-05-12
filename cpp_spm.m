@@ -22,7 +22,7 @@ function cpp_spm(varargin)
   addParameter(args, 'task', {}, @iscellstr);
   addParameter(args, 'dry_run', false, @islogical);
   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
-  addParameter(args, 'options', struct([]), isFileOrStruct);
+  addParameter(args, 'options', struct([]));
   addParameter(args, 'verbosity', 2, isPositiveScalar);
 
   addParameter(args, 'fwhm', 6, isPositiveScalar);
@@ -106,6 +106,72 @@ function cpp_spm(varargin)
                                     action, ...
                                     strjoin(allowed_actions(), '\n\t- '));
       error(errorStruct);
+
+  end
+
+end
+
+%% "getter"
+
+function opt = get_options_from_argument(args)
+
+  action = args.Results.action;
+
+  opt = args.Results.options;
+
+  if ismember(lower(action), bids_apps_actions)
+
+    cpp_spm('action', 'init');
+
+    if isempty(opt)
+      % set defaults
+      opt = checkOptions(struct());
+    end
+
+    opt.dir.raw = args.Results.bids_dir;
+    opt.dir.derivatives = args.Results.output_dir;
+
+    opt.dryRun = args.Results.dry_run;
+
+    if ~isempty(args.Results.participant_label)
+      opt.subjects = args.Results.participant_label;
+    end
+
+    if ~isempty(args.Results.task)
+      opt.taskName = args.Results.task;
+    end
+
+    if ~isempty(args.Results.bids_filter_file)
+      % TODO read from JSON if necessary
+      % TODO validate
+      opt.bidsFilterFile = args.Results.bids_filter_file;
+    end
+
+    opt.fwhm.func = args.Results.fwhm;
+
+    if ~isempty(args.Results.space)
+      opt.space = args.Results.space;
+    end
+
+    % preproc
+    if ismember('slicetiming', args.Results.ignore)
+      opt.stc.skip = true;
+    end
+    if ismember('unwarp', args.Results.ignore)
+      opt.realign.useUnwarp = false;
+    end
+    if ismember('fieldmaps', args.Results.ignore)
+      opt.useFieldmaps = false;
+    end
+
+    opt.dummy_scans = args.Results.dummy_scans;
+
+    opt.anatOnly = args.Results.anat_only;
+
+    % stats
+    opt.dir.preproc = args.Results.preproc_dir;
+    opt.model.file = args.Results.model_file;
+    opt.glm.roibased.do = args.Results.roi_based;
 
   end
 
@@ -365,9 +431,11 @@ function run_tests()
 
 end
 
+%% contsants
+
 function value = bids_apps_actions()
 
-  value = {'preprocess'};
+  value = {'preprocess', 'stats'};
 
 end
 
@@ -387,69 +455,6 @@ function value = allowed_actions()
 end
 
 %% helpers functions
-
-function opt = get_options_from_argument(args)
-
-  action = args.Results.action;
-
-  opt = args.Results.options;
-
-  if ismember(lower(action), bids_apps_actions)
-
-    cpp_spm('action', 'init');
-
-    if isempty(opt)
-      % set defaults
-      opt = checkOptions(struct());
-    end
-
-    opt.dir.input = args.Results.bids_dir;
-    opt.dir.derivatives = args.Results.output_dir;
-
-    opt.dryRun = args.Results.dry_run;
-
-    if ~isempty(args.Results.participant_label)
-      opt.subjects = args.Results.participant_label;
-    end
-
-    if ~isempty(args.Results.task)
-      opt.taskName = args.Results.task;
-    end
-
-    if ~isempty(args.Results.bids_filter_file)
-      % TODO read from JSON if necessary
-      % TODO validate
-      opt.bidsFilterFile = args.Results.bids_filter_file;
-    end
-
-    opt.fwhm.func = args.Results.fwhm;
-
-    if ~isempty(args.Results.space)
-      opt.space = args.Results.space;
-    end
-
-    % preproc
-    if ismember('slicetiming', args.Results.ignore)
-      opt.stc.skip = true;
-    end
-    if ismember('unwarp', args.Results.ignore)
-      opt.realign.useUnwarp = false;
-    end
-    if ismember('fieldmaps', args.Results.ignore)
-      opt.useFieldmaps = false;
-    end
-
-    opt.dummy_scans = args.Results.dummy_scans;
-
-    opt.anatOnly = args.Results.anat_only;
-
-    % stats
-    opt.model.file = args.Results.model_file;
-    opt.glm.roibased.do = args.Results.roi_based;
-
-  end
-
-end
 
 function detectCppSpm()
 
