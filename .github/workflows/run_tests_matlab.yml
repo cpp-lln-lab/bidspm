@@ -6,7 +6,9 @@ on: push: branches: - main - dev pull_request: branches: ["*"]
 
 workflow_dispatch:
 
-jobs: build: runs-on: ubuntu-20.04
+jobs: 
+  build: 
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Install MATLAB
