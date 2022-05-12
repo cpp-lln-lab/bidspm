@@ -28,7 +28,7 @@ function cppSpmHelp()
   % :param output_dir: path where to output data
   % :type output_dir: path
   %
-  % :param analysis_level: can either be ``'participants'`` or ``'group'``
+  % :param analysis_level: can either be ``'subject'`` or ``'dataset'``
   % :type analysis_level: string
   %
   %
