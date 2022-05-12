@@ -5,7 +5,7 @@ function cpp_spm(varargin)
   % (C) Copyright 2022 CPP_SPM developers
 
   % TODO  cpp_spm('action', 'update')
-  % TODO  where to save the options?  
+  % TODO  where to save the options?
 
   args = inputParser;
 
