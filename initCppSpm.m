@@ -16,9 +16,9 @@ function initCppSpm(dev)
   end
 
   if dev
-    cpp_spm('dev');
+    cpp_spm('action', 'dev');
   else
-    cpp_spm('init');
+    cpp_spm();
   end
 
 end

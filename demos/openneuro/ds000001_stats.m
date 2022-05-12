@@ -4,7 +4,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 opt = ds000001_stats_option();
 

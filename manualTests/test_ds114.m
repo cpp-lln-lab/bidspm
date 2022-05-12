@@ -19,7 +19,7 @@ WD = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'openneuro');
 cd(WD);
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 optionsFilesList = { ...
                     'options_task-linebisection.json'; ...

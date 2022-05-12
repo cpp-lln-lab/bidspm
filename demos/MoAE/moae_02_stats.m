@@ -10,7 +10,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 opt = moae_get_option_stats();
 

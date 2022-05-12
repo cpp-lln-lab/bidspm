@@ -12,7 +12,7 @@ close all;
 downloadData = true;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 %% Set options
 

@@ -8,7 +8,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 download_data = true;
 download_moae_ds(download_data);
