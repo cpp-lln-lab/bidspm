@@ -32,28 +32,28 @@ function errorHandling(varargin)
   defaultTolerant = true;
   defaultVerbose = false;
 
-  p = inputParser;
+  args = inputParser;
 
-  addOptional(p, 'functionName', defaultFunctionName, @ischar);
-  addOptional(p, 'id', defaultId, @ischar);
-  addOptional(p, 'msg', defaultMsg, @ischar);
-  addOptional(p, 'tolerant', defaultTolerant, @islogical);
-  addOptional(p, 'verbose', defaultVerbose, @(x) (islogical(x) || isnumeric(x)));
+  addOptional(args, 'functionName', defaultFunctionName, @ischar);
+  addOptional(args, 'id', defaultId, @ischar);
+  addOptional(args, 'msg', defaultMsg, @ischar);
+  addOptional(args, 'tolerant', defaultTolerant, @islogical);
+  addOptional(args, 'verbose', defaultVerbose, @(x) (islogical(x) || isnumeric(x)));
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  functionName = spm_file(p.Results.functionName, 'basename');
+  functionName = spm_file(args.Results.functionName, 'basename');
 
-  id = [functionName, ':' p.Results.id];
+  id = [functionName, ':' args.Results.id];
 
-  if ~p.Results.tolerant
+  if ~args.Results.tolerant
     errorStruct.identifier = id;
-    errorStruct.message = p.Results.msg;
+    errorStruct.message = args.Results.msg;
     error(errorStruct);
   end
 
-  if p.Results.verbose > 0
-    warning(id, p.Results.msg);
+  if args.Results.verbose > 0
+    warning(id, args.Results.msg);
   end
 
 end

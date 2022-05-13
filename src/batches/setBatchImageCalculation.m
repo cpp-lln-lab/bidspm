@@ -48,39 +48,39 @@ function matlabbatch = setBatchImageCalculation(varargin)
 
   defaultDataType = 'float32';
 
-  p = inputParser;
+  args = inputParser;
 
-  addRequired(p, 'matlabbatch', @iscell);
-  addRequired(p, 'opt', @isstruct);
-  addRequired(p, 'input');
-  addRequired(p, 'output', @ischar);
-  addRequired(p, 'outDir', @ischar);
-  addRequired(p, 'expression', @ischar);
-  addOptional(p, 'dataType', defaultDataType, @ischar);
+  addRequired(args, 'matlabbatch', @iscell);
+  addRequired(args, 'opt', @isstruct);
+  addRequired(args, 'input');
+  addRequired(args, 'output', @ischar);
+  addRequired(args, 'outDir', @ischar);
+  addRequired(args, 'expression', @ischar);
+  addOptional(args, 'dataType', defaultDataType, @ischar);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  if ~ismember(p.Results.dataType, allowedDataType)
+  if ~ismember(args.Results.dataType, allowedDataType)
     list = createUnorderedList(allowedDataType);
     errorStruct.identifier = [mfilename ':invalidDatatype'];
     errorStruct.message = sprintf('dataType must be one of the those types:%s', list);
     error(errorStruct);
   end
 
-  printBatchName('image calculation', p.Results.opt);
+  printBatchName('image calculation', args.Results.opt);
 
-  imcalc.input = p.Results.input;
-  imcalc.output = p.Results.output;
-  imcalc.outdir = { p.Results.outDir };
-  imcalc.expression = p.Results.expression;
-  imcalc.options.dtype = spm_type(p.Results.dataType);
+  imcalc.input = args.Results.input;
+  imcalc.output = args.Results.output;
+  imcalc.outdir = { args.Results.outDir };
+  imcalc.expression = args.Results.expression;
+  imcalc.options.dtype = spm_type(args.Results.dataType);
 
   % imcalc.var = struct('name', {}, 'value', {});
   % imcalc.options.dmtx = 0;
   % imcalc.options.mask = 0;
   % imcalc.options.interp = 1;
 
-  matlabbatch = p.Results.matlabbatch;
+  matlabbatch = args.Results.matlabbatch;
   matlabbatch{end + 1}.spm.util.imcalc = imcalc;
 
 end

@@ -6,20 +6,20 @@ function printToScreen(varargin)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   default_opt = struct('verbosity', 2);
   default_format = 'blue';
 
-  addRequired(p, 'msg', @ischar);
-  addOptional(p, 'opt', default_opt, @isstruct);
-  addParameter(p, 'format', default_format, @ischar);
+  addRequired(args, 'msg', @ischar);
+  addOptional(args, 'opt', default_opt, @isstruct);
+  addParameter(args, 'format', default_format, @ischar);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  msg = p.Results.msg;
-  opt = p.Results.opt;
-  format = p.Results.format;
+  msg = args.Results.msg;
+  opt = args.Results.opt;
+  format = args.Results.format;
 
   if isfield(opt, 'msg') && ~strcmp(opt.msg.color, '')
     format = opt.msg.color;

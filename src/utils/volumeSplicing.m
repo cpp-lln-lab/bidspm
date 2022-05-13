@@ -26,24 +26,24 @@ function outputFile = volumeSplicing(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   default_outputFile = '';
 
   isFile = @(x) (exist(x, 'file') == 2);
   isArrayPositive = @(x) (isnumeric(x) && all(x > 0));
 
-  addRequired(p, 'inputFile', isFile);
-  addRequired(p, 'volumesToRemove', isArrayPositive);
-  addParameter(p, 'outputFile', default_outputFile, @ischar);
+  addRequired(args, 'inputFile', isFile);
+  addRequired(args, 'volumesToRemove', isArrayPositive);
+  addParameter(args, 'outputFile', default_outputFile, @ischar);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
   %% Wrangle inputs
 
-  inputFile = p.Results.inputFile;
-  volumesToRemove = p.Results.volumesToRemove;
-  outputFile = p.Results.outputFile;
+  inputFile = args.Results.inputFile;
+  volumesToRemove = args.Results.volumesToRemove;
+  outputFile = args.Results.outputFile;
   if strcmp(outputFile, '')
     outputFile = inputFile;
   end
@@ -78,8 +78,8 @@ function outputFile = volumeSplicing(varargin)
     delete(inputFile);
   end
 
-  if strcmp(p.Results.outputFile, '')
-    outputFile = p.Results.inputFile;
+  if strcmp(args.Results.outputFile, '')
+    outputFile = args.Results.inputFile;
     return
 
   else

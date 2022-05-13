@@ -27,24 +27,24 @@ function matlabbatch = setBatchReorient(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   transformationMatrixOrMatFile = @(x) (isnumeric(x)     &&  all(size(x) == [4, 4])) || ...
     (exist(x, 'file') &&  strcmp(spm_file(x, 'ext'), 'mat'));
 
-  addRequired(p, 'matlabbatch', @iscell);
-  addRequired(p, 'opt', @isstruct);
-  addRequired(p, 'images', @iscellstr);
-  addRequired(p, 'reorientMatrix', transformationMatrixOrMatFile);
-  addParameter(p, 'prefix', '', @ischar);
+  addRequired(args, 'matlabbatch', @iscell);
+  addRequired(args, 'opt', @isstruct);
+  addRequired(args, 'images', @iscellstr);
+  addRequired(args, 'reorientMatrix', transformationMatrixOrMatFile);
+  addParameter(args, 'prefix', '', @ischar);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  matlabbatch = p.Results.matlabbatch;
-  opt = p.Results.opt;
-  images = p.Results.images;
-  reorientMatrix = p.Results.reorientMatrix;
-  prefix = p.Results.prefix;
+  matlabbatch = args.Results.matlabbatch;
+  opt = args.Results.opt;
+  images = args.Results.images;
+  reorientMatrix = args.Results.reorientMatrix;
+  prefix = args.Results.prefix;
 
   printBatchName('reorient images', opt);
 

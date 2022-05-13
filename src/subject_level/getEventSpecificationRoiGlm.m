@@ -29,17 +29,17 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   isFile = @(x) exist(x, 'file') == 2;
 
-  addRequired(p, 'SPM', isFile);
-  addRequired(p, 'modelFile', isFile);
+  addRequired(args, 'SPM', isFile);
+  addRequired(args, 'modelFile', isFile);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  SPM = p.Results.SPM;
-  modelFile = p.Results.modelFile;
+  SPM = args.Results.SPM;
+  modelFile = args.Results.modelFile;
 
   load(SPM);
 

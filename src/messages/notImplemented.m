@@ -15,24 +15,24 @@ function notImplemented(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   defaultMsg = '';
   defaultVerbose = true;
 
   logicalOrNumeric = @(x) islogical(x) || isnumeric(x);
 
-  addRequired(p, 'functionName', @ischar);
-  addOptional(p, 'msg', defaultMsg, @ischar);
-  addOptional(p, 'verbose', defaultVerbose, logicalOrNumeric);
+  addRequired(args, 'functionName', @ischar);
+  addOptional(args, 'msg', defaultMsg, @ischar);
+  addOptional(args, 'verbose', defaultVerbose, logicalOrNumeric);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
   tolerant = true;
 
-  errorHandling(p.Results.functionName, 'notImplemented', ...
-                p.Results.msg, ...
+  errorHandling(args.Results.functionName, 'notImplemented', ...
+                args.Results.msg, ...
                 tolerant, ...
-                p.Results.verbose);
+                args.Results.verbose);
 
 end

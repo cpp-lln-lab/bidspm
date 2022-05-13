@@ -121,14 +121,14 @@ function matlabbatch = bidsModelSelection(varargin)
                                                          'posterior', ...
                                                          'bms'});
 
-  p = inputParser;
+  args = inputParser;
   defaultAction = 'all';
-  addRequired(p, 'opt', @isstruct);
-  addOptional(p, 'action', defaultAction, allowedActions);
-  parse(p, varargin{:});
+  addRequired(args, 'opt', @isstruct);
+  addOptional(args, 'action', defaultAction, allowedActions);
+  parse(args, varargin{:});
 
-  opt = p.Results.opt;
-  action = p.Results.action;
+  opt = args.Results.opt;
+  action = args.Results.action;
 
   checks(opt);
 

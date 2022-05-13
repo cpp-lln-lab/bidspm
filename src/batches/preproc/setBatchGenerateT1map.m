@@ -40,19 +40,19 @@ function matlabbatch = setBatchGenerateT1map(varargin)
   defaultT1Prefix = 'qT1';
   defaultR1Prefix = 'qR1';
 
-  p = inputParser;
+  args = inputParser;
 
-  addRequired(p, 'matlabbatch', @iscell);
-  addRequired(p, 'BIDS', @isstruct);
-  addRequired(p, 'opt', @isstruct);
-  addRequired(p, 'subLabel', @ischar);
+  addRequired(args, 'matlabbatch', @iscell);
+  addRequired(args, 'BIDS', @isstruct);
+  addRequired(args, 'opt', @isstruct);
+  addRequired(args, 'subLabel', @ischar);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  matlabbatch = p.Results.matlabbatch;
-  BIDS = p.Results.BIDS;
-  opt = p.Results.opt;
-  subLabel = p.Results.subLabel;
+  matlabbatch = args.Results.matlabbatch;
+  BIDS = args.Results.BIDS;
+  opt = args.Results.opt;
+  subLabel = args.Results.subLabel;
 
   filter = opt.bidsFilterFile.mp2rage;
   filter.sub = subLabel;
