@@ -57,11 +57,11 @@ function bidsResliceTpmToFunc(opt)
                 spm_file(wmTpm, 'prefix', prefix), ...
                 spm_file(csfTpm, 'prefix', prefix));
 
-    p = bids.File(meanImage);
-    p.entities.label = p.suffix;
-    p.suffix = 'mask';
+    bf = bids.File(meanImage);
+    bf.entities.label = bf.suffix;
+    bf.suffix = 'mask';
 
-    bidsFile = bids.File(p);
+    bidsFile = bids.File(bf);
 
     expression = sprintf('(i1+i2+i3)>%f', opt.skullstrip.threshold);
 

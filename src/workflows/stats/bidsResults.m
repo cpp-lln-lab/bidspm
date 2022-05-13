@@ -251,12 +251,10 @@ function renameOutputResults(results)
 
     basename = spm_file(source, 'basename');
     split = strfind(basename, '_sub');
-    p = bids.File(basename(split + 1:end));
-    p.entities.label = basename(split - 4:split - 1);
+    bf = bids.File(basename(split + 1:end));
+    bf.entities.label = basename(split - 4:split - 1);
 
-    bidsFile = bids.File(p);
-
-    target = spm_file(source, 'basename', bidsFile.filename);
+    target = spm_file(source, 'basename', bf.filename);
 
     movefile(source, target);
   end
@@ -279,12 +277,12 @@ function renamePng(results)
 end
 
 function filename = figureName(opt)
-  p = struct( ...
-             'suffix', 'designmatrix', ...
-             'ext', '.png', ...
-             'entities', struct( ...
-                                'task', strjoin(opt.taskName, ''), ...
-                                'space', opt.space));
-  bidsFile = bids.File(p, 'use_schema', false);
-  filename = bidsFile.filename;
+  spec = struct( ...
+                'suffix', 'designmatrix', ...
+                'ext', '.png', ...
+                'entities', struct( ...
+                                   'task', strjoin(opt.taskName, ''), ...
+                                   'space', opt.space));
+  bf = bids.File(spec, 'use_schema', false);
+  filename = bf.filename;
 end

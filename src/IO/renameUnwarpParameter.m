@@ -21,12 +21,12 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
 
       inputFilename = strrep(unwarpParam(iFile, :), '_uw.', '.');
 
-      p = bids.File(inputFilename);
-      p.entities.label = p.suffix;
-      p.suffix = 'unwarpparam';
-      p.extension = '.mat';
+      bf = bids.File(inputFilename);
+      bf.entities.label = bf.suffix;
+      bf.suffix = 'unwarpparam';
+      bf.extension = '.mat';
 
-      bidsFile = bids.File(p);
+      bidsFile = bids.File(bf);
 
       newName = spm_file(unwarpParam(iFile, :), 'filename',  bidsFile.filename);
 
