@@ -251,7 +251,7 @@ function renameOutputResults(results)
 
     basename = spm_file(source, 'basename');
     split = strfind(basename, '_sub');
-    p = bids.internal.parse_filename(basename(split + 1:end));
+    p = bids.File(basename(split + 1:end));
     p.entities.label = basename(split - 4:split - 1);
 
     bidsFile = bids.File(p);

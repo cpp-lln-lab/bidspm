@@ -57,7 +57,7 @@ function bidsResliceTpmToFunc(opt)
                 spm_file(wmTpm, 'prefix', prefix), ...
                 spm_file(csfTpm, 'prefix', prefix));
 
-    p = bids.internal.parse_filename(meanImage);
+    p = bids.File(meanImage);
     p.entities.label = p.suffix;
     p.suffix = 'mask';
 
@@ -95,7 +95,7 @@ function [gmTpm, wmTpm, csfTpm] = getTpms(BIDS, opt, subLabel)
 
   if not(isempty(anatFile))
 
-    anatFile = bids.internal.parse_filename(anatFile);
+    anatFile = bids.File(anatFile);
 
     filter = anatFile.entities;
     filter.modality = 'anat';

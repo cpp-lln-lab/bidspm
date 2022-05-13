@@ -41,13 +41,11 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   [names, R] = createConfounds(content, designMatrix, opt.glm.maxNbVols); %#ok<*ASGLU>
 
   % save the confounds as a matfile
-  p = bids.internal.parse_filename(tsvFile);
-  p.ext = '.mat';
+  bf = bids.File(tsvFile);
+  bf.extension = '.mat';
 
-  bidsFile = bids.File(p);
-
-  ffxDir = getFFXdir(p.entities.sub, opt);
-  counfoundMatFile = fullfile(ffxDir, bidsFile.filename);
+  ffxDir = getFFXdir(bf.entities.sub, opt);
+  counfoundMatFile = fullfile(ffxDir, bf.filename);
 
   save(counfoundMatFile, ...
        'names', 'R', ...

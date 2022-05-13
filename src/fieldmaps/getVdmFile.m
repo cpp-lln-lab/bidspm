@@ -19,7 +19,7 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
 
   vdmFile = '';
 
-  p = bids.internal.parse_filename(boldFilename);
+  p = bids.File(boldFilename);
   entities = p.entities;
 
   if ~isfield(entities, 'ses')

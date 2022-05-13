@@ -128,13 +128,11 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %% save the onsets as a matfile
   [pth, file] = spm_fileparts(tsvFile);
 
-  p = bids.internal.parse_filename(file);
-  p.suffix = 'onsets';
-  p.ext = '.mat';
+  bf = bids.File(file);
+  bf.suffix = 'onsets';
+  bf.extension = '.mat';
 
-  bidsFile = bids.File(p);
-
-  fullpathOnsetFilename = fullfile(pth, bidsFile.filename);
+  fullpathOnsetFilename = fullfile(pth, bf.filename);
 
   save(fullpathOnsetFilename, ...
        'names', 'onsets', 'durations', ...

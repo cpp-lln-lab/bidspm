@@ -230,7 +230,7 @@ end
 
 function outputNameSpec = outputName(opt, subLabel, roiFileName)
 
-  p = bids.internal.parse_filename(roiFileName);
+  p = bids.File(roiFileName);
   fields = {'hemi', 'desc', 'label'};
   for iField = 1:numel(fields)
     if ~isfield(p.entities, fields{iField})

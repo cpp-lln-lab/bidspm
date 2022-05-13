@@ -21,10 +21,10 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
 
       inputFilename = strrep(unwarpParam(iFile, :), '_uw.', '.');
 
-      p = bids.internal.parse_filename(inputFilename);
+      p = bids.File(inputFilename);
       p.entities.label = p.suffix;
       p.suffix = 'unwarpparam';
-      p.ext = '.mat';
+      p.extension = '.mat';
 
       bidsFile = bids.File(p);
 
