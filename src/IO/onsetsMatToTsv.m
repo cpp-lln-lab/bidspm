@@ -16,12 +16,12 @@ function onsetsTsvFile = onsetsMatToTsv(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
   isFile = @(x) exist(x, 'file') == 2;
-  addRequired(p, 'onsetsMatFile', isFile);
-  parse(p, varargin{:});
+  addRequired(args, 'onsetsMatFile', isFile);
+  parse(args, varargin{:});
 
-  load(p.Results.onsetsMatFile, 'names', 'onsets', 'durations');
+  load(args.Results.onsetsMatFile, 'names', 'onsets', 'durations');
 
   tsvContent = struct('onset', [], 'duration', [], 'trial_type', {{}});
 
@@ -42,7 +42,7 @@ function onsetsTsvFile = onsetsMatToTsv(varargin)
   tsvContent.trial_type = tsvContent.trial_type(idx);
   tsvContent.duration = tsvContent.duration(idx);
 
-  onsetsTsvFile = spm_file(p.Results.onsetsMatFile, 'ext', '.tsv');
+  onsetsTsvFile = spm_file(args.Results.onsetsMatFile, 'ext', '.tsv');
 
   bids.util.tsvwrite(onsetsTsvFile, tsvContent);
 

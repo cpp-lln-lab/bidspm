@@ -22,8 +22,8 @@ opt = checkOptions(opt);
 % from the mask created by the contrast estimation in the previous step
 ffxDir = getFFXdir(subLabel, opt);
 maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
-p = bids.internal.parse_filename(spm_file(maskImage, 'filename'));
-conImage = spm_select('FPList', ffxDir, ['^con_' p.entities.label '.nii$']);
+bf = bids.File(spm_file(maskImage, 'filename'));
+conImage = spm_select('FPList', ffxDir, ['^con_' bf.entities.label '.nii$']);
 
 %% Create ROI right auditory cortex
 saveROI = true;

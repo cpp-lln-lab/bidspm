@@ -52,19 +52,19 @@ function test_getInfo_query()
   filename = getInfo(BIDS, subLabel, opt, 'filename', session, run, 'bold');
   assert(all(cellfun('isempty', strfind(cellstr(filename), '_acq-')))); %#ok<STRCL1>
 
-  p.suffix = 'bold';
-  p.ext = '.nii';
-  p.entities = struct('sub', subLabel, ...
-                      'ses', session, ...
-                      'task', opt.taskName, ...
-                      'run', run, ...
-                      'acq', '1p60mm', ...
-                      'dir', 'PA');
+  spec.suffix = 'bold';
+  spec.ext = '.nii';
+  spec.entities = struct('sub', subLabel, ...
+                         'ses', session, ...
+                         'task', opt.taskName, ...
+                         'run', run, ...
+                         'acq', '1p60mm', ...
+                         'dir', 'PA');
 
   opt.query = struct('acq', '1p60mm', 'dir', 'PA');
   filename = getInfo(BIDS, subLabel, opt, 'filename', session, run, 'bold');
 
-  Filename = returnFullpathExpectedFilename(p);
+  Filename = returnFullpathExpectedFilename(spec);
 
   assertEqual(filename, Filename);
 
@@ -137,8 +137,8 @@ function test_getInfo_error
 
 end
 
-function fileName = returnFullpathExpectedFilename(p)
-  bidsFile = bids.File(p, 'use_schema', true);
+function fileName = returnFullpathExpectedFilename(spec)
+  bidsFile = bids.File(spec, 'use_schema', true);
   fileName = fullfile(getDummyDataDir(), 'derivatives', 'cpp_spm-preproc', ...
                       bidsFile.bids_path, bidsFile.filename);
 end

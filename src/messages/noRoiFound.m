@@ -15,26 +15,26 @@ function status = noRoiFound(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   defaultFolder = '';
 
-  addRequired(p, 'opt', @isstruct);
-  addOptional(p, 'roiList', @isstruct);
-  addParameter(p, 'folder', defaultFolder, @isdir);
+  addRequired(args, 'opt', @isstruct);
+  addOptional(args, 'roiList', @isstruct);
+  addParameter(args, 'folder', defaultFolder, @isdir);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
   status = false;
 
-  if isempty(p.Results.roiList) || isempty(p.Results.roiList{1})
+  if isempty(args.Results.roiList) || isempty(args.Results.roiList{1})
 
     status = true;
 
     tolerant = true;
-    msg = sprintf('No ROI found in folder: %s', p.Results.folder);
+    msg = sprintf('No ROI found in folder: %s', args.Results.folder);
     id = 'noRoiFile';
-    errorHandling(mfilename(), id, msg, tolerant, p.Results.opt.verbosity);
+    errorHandling(mfilename(), id, msg, tolerant, args.Results.opt.verbosity);
 
   end
 

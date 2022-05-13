@@ -20,13 +20,13 @@ function davg = getDist2surf(varargin)
 
   isFile = @(x) exist(x, 'file') == 2;
 
-  p = inputParser;
-  addRequired(p, 'anatImage', isFile);
-  addRequired(p, 'opt', @isstruct);
-  parse(p, varargin{:});
+  args = inputParser;
+  addRequired(args, 'anatImage', isFile);
+  addRequired(args, 'opt', @isstruct);
+  parse(args, varargin{:});
 
-  anatImage = p.Results.anatImage;
-  opt = p.Results.opt;
+  anatImage = args.Results.anatImage;
+  opt = args.Results.opt;
 
   davg = 50;
 

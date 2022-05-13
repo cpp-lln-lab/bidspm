@@ -35,19 +35,19 @@ function bidsChangeSuffix(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
-  addRequired(p, 'opt', @isstruct);
-  addRequired(p, 'newSuffix', @ischar);
-  addParameter(p, 'filter', struct([]), @isstruct);
-  addParameter(p, 'force', false, @islogical);
+  addRequired(args, 'opt', @isstruct);
+  addRequired(args, 'newSuffix', @ischar);
+  addParameter(args, 'filter', struct([]), @isstruct);
+  addParameter(args, 'force', false, @islogical);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  opt = p.Results.opt;
-  newSuffix = p.Results.newSuffix;
-  filter = p.Results.filter;
-  force = p.Results.force;
+  opt = args.Results.opt;
+  newSuffix = args.Results.newSuffix;
+  filter = args.Results.filter;
+  force = args.Results.force;
 
   [BIDS, opt] = setUpWorkflow(opt, 'changing suffix', opt.dir.input);
 

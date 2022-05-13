@@ -39,22 +39,20 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   [fileName, subFuncDataDir] = getBoldFilename( ...
                                                BIDS, ...
                                                subLabel, sessions{1}, runs{1}, opt);
-  p = bids.internal.parse_filename(fileName);
+  bf = bids.File(fileName);
 
-  p.suffix = 'xfm';
-  p.ext = '.mat';
-  p.entities.desc = '';
-  p.entities.space = '';
-  p.entities.run = '';
+  bf.suffix = 'xfm';
+  bf.extension = '.mat';
+  bf.entities.desc = '';
+  bf.entities.space = '';
+  bf.entities.run = '';
   % TODO make more general
   % this assumes we are doing a func to T1 coregistration
-  p.entities.from = 'scanner';
-  p.entities.to = opt.bidsFilterFile.t1w.suffix;
-  p.entities.mode = 'image';
+  bf.entities.from = 'scanner';
+  bf.entities.to = opt.bidsFilterFile.t1w.suffix;
+  bf.entities.mode = 'image';
 
-  bidsFile = bids.File(p);
-
-  matlabbatch{end + 1}.cfg_basicio.var_ops.cfg_save_vars.name = bidsFile.filename;
+  matlabbatch{end + 1}.cfg_basicio.var_ops.cfg_save_vars.name = bf.filename;
   matlabbatch{end}.cfg_basicio.var_ops.cfg_save_vars.outdir = {subFuncDataDir};
   matlabbatch{end}.cfg_basicio.var_ops.cfg_save_vars.vars.vname = 'transformationMatrix';
 

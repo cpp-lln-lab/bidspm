@@ -54,19 +54,19 @@ function anatomicalQA(opt)
     outputDir = fullfile(anatDataDir, '..', 'reports');
     spm_mkdir(outputDir);
 
-    p = bids.internal.parse_filename(anatImage);
-    p.entities.label = p.suffix;
+    bf = bids.File(anatImage);
+    bf.entities.label = bf.suffix;
 
-    p.suffix = 'qametrics';
-    p.ext = '.json';
-    bidsFile = bids.File(p);
-    bids.util.jsonwrite(fullfile(outputDir, bidsFile.filename), anatQA);
+    bf.suffix = 'qametrics';
+    bf.extension = '.json';
 
-    p.suffix = 'qa';
-    p.ext = '.png';
-    bidsFile = bids.File(p);
+    bids.util.jsonwrite(fullfile(outputDir, bf.filename), anatQA);
+
+    bf.suffix = 'qa';
+    bf.extension = '.png';
+
     movefile(fullfile(pwd, 'spmup_QC-Brain Mask_001.png'), ...
-             fullfile(outputDir,  bidsFile.filename));
+             fullfile(outputDir,  bf.filename));
 
     delete(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
 

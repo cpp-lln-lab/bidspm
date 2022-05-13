@@ -15,12 +15,12 @@ function regressorsTsvFile = regressorsMatToTsv(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
   isFile = @(x) exist(x, 'file') == 2;
-  addRequired(p, 'regressorsMatFile', isFile);
-  parse(p, varargin{:});
+  addRequired(args, 'regressorsMatFile', isFile);
+  parse(args, varargin{:});
 
-  load(p.Results.regressorsMatFile, 'names', 'R');
+  load(args.Results.regressorsMatFile, 'names', 'R');
 
   tsvContent = struct();
 
@@ -28,7 +28,7 @@ function regressorsTsvFile = regressorsMatToTsv(varargin)
     tsvContent.(names{iReg}) = R(:, iReg); %#ok<*NODEF>
   end
 
-  regressorsTsvFile = spm_file(p.Results.regressorsMatFile, 'ext', '.tsv');
+  regressorsTsvFile = spm_file(args.Results.regressorsMatFile, 'ext', '.tsv');
 
   bids.util.tsvwrite(regressorsTsvFile, tsvContent);
 

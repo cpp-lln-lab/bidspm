@@ -13,17 +13,17 @@ function volumes = returnVolumeList(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   isFile = @(x) exist(x, 'file');
 
-  addRequired(p, 'opt', @isstruct);
-  addRequired(p, 'boldFile', isFile);
+  addRequired(args, 'opt', @isstruct);
+  addRequired(args, 'boldFile', isFile);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  opt = p.Results.opt;
-  boldFile = p.Results.boldFile;
+  opt = args.Results.opt;
+  boldFile = args.Results.boldFile;
 
   if opt.glm.maxNbVols == Inf && isempty(opt.funcVolToSelect)
 

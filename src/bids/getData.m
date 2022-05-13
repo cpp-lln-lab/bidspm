@@ -18,15 +18,15 @@ function [BIDS, opt] = getData(varargin)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
-  addRequired(p, 'opt', @isstruct);
-  addRequired(p, 'bidsDir', @isdir);
+  addRequired(args, 'opt', @isstruct);
+  addRequired(args, 'bidsDir', @isdir);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  opt = p.Results.opt;
-  bidsDir = p.Results.bidsDir;
+  opt = args.Results.opt;
+  bidsDir = args.Results.bidsDir;
 
   if isfield(opt, 'taskName')
     msg = sprintf('\nFOR TASK(s): %s\n', strjoin(opt.taskName, ' '));

@@ -167,33 +167,33 @@ function functionalQA(opt)
           outputDir = fullfile(subFuncDataDir, '..', 'reports');
           spm_mkdir(outputDir);
 
-          p = bids.internal.parse_filename(funcImage);
-          p.entities.label = p.suffix;
-          p.prefix = '';
+          bf = bids.File(funcImage);
+          bf.entities.label = bf.suffix;
+          bf.prefix = '';
 
           % TODO find an ouput format that is leaner than a 3 Gb json file!!!
-          p.suffix = 'qametrics';
-          p.ext = '.json';
-          bidsFile = bids.File(p);
-          bids.util.jsonwrite(fullfile(outputDir, bidsFile.filename), jsonContent);
+          bf.suffix = 'qametrics';
+          bf.extension = '.json';
 
-          p.suffix = 'qa';
-          p.ext = '.pdf';
-          bidsFile = bids.File(p);
+          bids.util.jsonwrite(fullfile(outputDir, bf.filename), jsonContent);
+
+          bf.suffix = 'qa';
+          bf.extension = '.pdf';
+
           movefile(fullfile(subFuncDataDir, 'spmup_QC.ps'), ...
-                   fullfile(outputDir, bidsFile.filename));
+                   fullfile(outputDir, bf.filename));
 
-          p.entities.desc = 'confounds';
-          p.entities.label = '';
-          p.suffix = 'regressors';
-          p.ext = '.tsv';
-          bidsFile = bids.File(p);
-          bids.util.tsvwrite(spm_file(funcImage, 'filename', bidsFile.filename), tsvContent);
+          bf.entities.desc = 'confounds';
+          bf.entities.label = '';
+          bf.suffix = 'regressors';
+          bf.extension = '.tsv';
+
+          bids.util.tsvwrite(spm_file(funcImage, 'filename', bf.filename), tsvContent);
 
           jsonContent = createDataDictionary(tsvContent);
-          p.ext = '.json';
-          bidsFile = bids.File(p);
-          bids.util.jsonwrite(spm_file(funcImage, 'filename', bidsFile.filename), jsonContent);
+          bf.extension = '.json';
+
+          bids.util.jsonwrite(spm_file(funcImage, 'filename', bf.filename), jsonContent);
 
           delete(outputFiles.design);
           delete(realignParamFile);

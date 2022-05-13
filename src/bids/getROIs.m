@@ -12,18 +12,18 @@ function [roiList, roiFolder] = getROIs(varargin)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   defaultSubLabel = '';
   charOrCell = @(x) ischar(x) || iscell(x);
 
-  addRequired(p, 'opt');
-  addOptional(p, 'subLabel', defaultSubLabel, charOrCell);
+  addRequired(args, 'opt');
+  addOptional(args, 'subLabel', defaultSubLabel, charOrCell);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  opt = p.Results.opt;
-  subLabel = p.Results.subLabel;
+  opt = args.Results.opt;
+  subLabel = args.Results.subLabel;
 
   % outputs
   roiList = {};

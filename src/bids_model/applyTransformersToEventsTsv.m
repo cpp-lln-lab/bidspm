@@ -41,19 +41,19 @@ function newContent = applyTransformersToEventsTsv(varargin)
                             'Replace', ...
                             'Threshold'};
 
-  p = inputParser;
+  args = inputParser;
 
   default_transformers = 'transformers';
 
   isStructOrCell = @(x) isstruct(x) || iscell(x);
 
-  addRequired(p, 'tsvContent', @isstruct);
-  addOptional(p, 'transformers', default_transformers, isStructOrCell);
+  addRequired(args, 'tsvContent', @isstruct);
+  addOptional(args, 'transformers', default_transformers, isStructOrCell);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  tsvContent = p.Results.tsvContent;
-  transformers = p.Results.transformers;
+  tsvContent = args.Results.tsvContent;
+  transformers = args.Results.transformers;
 
   if isempty(transformers) || isempty(tsvContent)
     newContent = tsvContent;

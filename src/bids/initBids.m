@@ -11,22 +11,22 @@ function initBids(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   defaultDesc = '';
   defaultForce = false;
 
-  addRequired(p, 'opt', @isstruct);
-  addParameter(p, 'description', defaultDesc, @ischar);
-  addParameter(p, 'force', defaultForce, @islogical);
+  addRequired(args, 'opt', @isstruct);
+  addParameter(args, 'description', defaultDesc, @ischar);
+  addParameter(args, 'force', defaultForce, @islogical);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  opt = p.Results.opt;
+  opt = args.Results.opt;
 
   descr_file = fullfile(opt.dir.output, 'dataset_description.json');
 
-  if ~exist(descr_file, 'file') || p.Results.force
+  if ~exist(descr_file, 'file') || args.Results.force
 
     bids.init(opt.dir.output, 'folders', struct(), 'is_derivative', true);
 
@@ -43,9 +43,9 @@ function initBids(varargin)
 
     ds_desc.content.GeneratedBy{1}.Version = getVersion();
     ds_desc.content.GeneratedBy{1}.CodeURL = returnRepoURL();
-    ds_desc.content.GeneratedBy{1}.Description = p.Results.description;
+    ds_desc.content.GeneratedBy{1}.Description = args.Results.description;
 
-    ds_desc.content.Name = p.Results.description;
+    ds_desc.content.Name = args.Results.description;
 
     ds_desc.write(opt.dir.output);
 

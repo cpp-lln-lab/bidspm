@@ -14,15 +14,13 @@ function renameSegmentParameter(BIDS, subLabel, opt)
                                                     spm_file(anatImage, 'basename'), ...
                                                     '_seg8.mat$']);
 
-  p = bids.internal.parse_filename(anatImage);
-  p.entities.label = p.suffix;
+  bf = bids.File(anatImage);
+  bf.entities.label = bf.suffix;
 
-  p.suffix = 'segparam';
-  p.ext = '.mat';
+  bf.suffix = 'segparam';
+  bf.extension = '.mat';
 
-  bidsFile = bids.File(p);
-
-  newName = spm_file(segmentParam, 'filename',  bidsFile.filename);
+  newName = spm_file(segmentParam, 'filename',  bf.filename);
 
   if ~isempty(segmentParam)
     movefile(segmentParam, newName);

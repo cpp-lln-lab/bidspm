@@ -28,34 +28,34 @@ function figureFile = plotRoiTimeCourse(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   isFile = @(x) exist(x, 'file') == 2;
 
-  addRequired(p, 'tsvFile', isFile);
-  addOptional(p, 'verbose', true, @islogical);
-  addParameter(p, 'colors', twelveClassesColorMap(), @isnumeric);
-  addParameter(p, 'roiName', '', @ischar);
+  addRequired(args, 'tsvFile', isFile);
+  addOptional(args, 'verbose', true, @islogical);
+  addParameter(args, 'colors', twelveClassesColorMap(), @isnumeric);
+  addParameter(args, 'roiName', '', @ischar);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  tsvFile = p.Results.tsvFile;
+  tsvFile = args.Results.tsvFile;
   timeCourse = bids.util.tsvread(tsvFile);
   conditionNames = fieldnames(timeCourse);
 
   visible = 'off';
-  if p.Results.verbose
+  if args.Results.verbose
     visible = 'on';
   end
 
-  if strcmp(p.Results.roiName, '')
+  if strcmp(args.Results.roiName, '')
     bf = bids.File(tsvFile);
     figName = ['ROI: ' bf.entities.label];
     if isfield(bf.entities, 'hemi')
       figName = [figName ' - ' bf.entities.hemi];
     end
   else
-    figName = ['ROI: ' p.Results.roiName];
+    figName = ['ROI: ' args.Results.roiName];
   end
 
   for i = 1:numel(conditionNames)
@@ -68,7 +68,7 @@ function figureFile = plotRoiTimeCourse(varargin)
 
   secs = [0:size(timeCourse, 1) - 1] * jsonContent.SamplingFrequency;
 
-  colors = p.Results.colors;
+  colors = args.Results.colors;
   if size(timeCourse, 2) > size(colors, 1)
     colors = repmat(colors, 2, 1);
   end

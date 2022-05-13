@@ -38,7 +38,7 @@ function bidsLesionAbnormalitiesDetection(opt)
     participantsGroup = BIDS.participants.content.group(idx);
 
     anatImage = getAnatFilename(BIDS, opt, subLabel);
-    anatImage = bids.internal.parse_filename(anatImage);
+    anatImage = bids.File(anatImage);
     filter = anatImage.entities;
     filter.modality = 'anat';
     filter.suffix = 'probseg';

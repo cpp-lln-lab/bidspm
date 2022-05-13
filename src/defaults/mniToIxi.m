@@ -14,10 +14,10 @@ function optOut = mniToIxi(varargin)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  p = inputParser;
-  addRequired(p, 'opt', @isstruct);
-  parse(p, varargin{:});
-  opt = p.Results.opt;
+  args = inputParser;
+  addRequired(args, 'opt', @isstruct);
+  parse(args, varargin{:});
+  opt = args.Results.opt;
 
   throwWarning = false;
 

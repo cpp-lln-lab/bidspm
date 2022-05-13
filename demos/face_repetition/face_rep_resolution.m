@@ -53,9 +53,9 @@ for iResolution = 2:1:3
   content = spm_jsonread(opt.model.file);
   content.Name = [content.Name, ' resolution - ', num2str(iResolution)];
 
-  p = bids.internal.parse_filename(modelFile);
-  p.entities.model = [p.entities.model, ' resolution', num2str(iResolution)];
-  bf = bids.File(p);
+  bf = bids.File(modelFile);
+  bf.entities.model = [bf.entities.model, ' resolution', num2str(iResolution)];
+
   newModel = spm_file(opt.model.file, 'filename', bf.filename);
   opt.model.file = newModel;
 

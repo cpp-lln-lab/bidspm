@@ -2,7 +2,7 @@ function opt = setOptions(varargin)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   default_subLabel = '';
   default_useRaw = false;
@@ -10,18 +10,18 @@ function opt = setOptions(varargin)
 
   charOrCell = @(x) ischar(x) || iscell(x);
 
-  addRequired(p, 'task');
-  addOptional(p, 'subLabel', default_subLabel, charOrCell);
-  addParameter(p, 'useRaw', default_useRaw, @islogical);
-  addParameter(p, 'pipelineType', default_pipelineType);
+  addRequired(args, 'task');
+  addOptional(args, 'subLabel', default_subLabel, charOrCell);
+  addParameter(args, 'useRaw', default_useRaw, @islogical);
+  addParameter(args, 'pipelineType', default_pipelineType);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  task = p.Results.task;
-  subLabel = p.Results.subLabel;
+  task = args.Results.task;
+  subLabel = args.Results.subLabel;
 
   opt = setTestCfg();
-  opt.pipeline.type = p.Results.pipelineType;
+  opt.pipeline.type = args.Results.pipelineType;
   opt.dir = [];
 
   if ~iscell(subLabel)
@@ -107,7 +107,7 @@ function opt = setOptions(varargin)
 
   opt = checkOptions(opt);
 
-  useRaw = p.Results.useRaw;
+  useRaw = args.Results.useRaw;
   if useRaw
     opt.dir.preproc = getDummyDataDir('raw');
   end
