@@ -8,6 +8,18 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getRootNode_2()
+
+  opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionNoCondition_smdl.json');
+
+  bm = BidsModel('file', opt.model.file);
+  [rootNode, rootNodeName] = bm.getRootNode;
+
+  assertEqual(rootNode.Level, 'Run');
+  assertEqual(rootNodeName, 'run_level');
+
+end
+
 function test_getRootNode()
 
   opt = setOptions('vislocalizer');
@@ -55,10 +67,7 @@ function test_getBidsDesignMatrix()
   assertEqual(designMatrix, expected);
 
   designMatrix = bm.getBidsDesignMatrix('Name', 'dataset_level');
-  expected = {'trial_type.VisMot'
-              'trial_type.VisStat'
-              'VisMot_gt_VisStat'
-              'VisStat_gt_VisMot'};
+  expected = 1;
   assertEqual(designMatrix, expected);
 
 end
@@ -150,9 +159,6 @@ function test_getInclusiveMaskThreshold()
   opt = setOptions('vislocalizer');
   bm = BidsModel('file', opt.model.file, 'verbose', false);
 
-  inclusiveMaskThreshold = bm.getInclusiveMaskThreshold('Name', 'subject_level');
-  assertEqual(inclusiveMaskThreshold, 0.8);
-
   inclusiveMaskThreshold = bm.getInclusiveMaskThreshold('Name', 'run_level');
   assertEqual(inclusiveMaskThreshold, 0);
 
@@ -165,9 +171,6 @@ function test_getSerialCorrelationCorrection()
 
   opt = setOptions('vislocalizer');
   bm = BidsModel('file', opt.model.file, 'verbose', false);
-
-  serialCorrelationCorrection = bm.getSerialCorrelationCorrection('Name', 'subject_level');
-  assertEqual(serialCorrelationCorrection, 'AR1');
 
   serialCorrelationCorrection = bm.getSerialCorrelationCorrection('Name', 'run_level');
   assertEqual(serialCorrelationCorrection, 'FAST');
@@ -194,12 +197,7 @@ function test_getGrpLevelContrast_basic()
   bm = bids.Model('file', opt.model.file);
   [grpLvlCon, iNode] = bm.get_dummy_contrasts('Level', 'dataset');
 
-  DummyContrasts = struct('Test', 't', ...
-                          'Contrasts', {{
-                                         'trial_type.VisMot'; ...
-                                         'trial_type.VisStat'; ...
-                                         'VisMot_gt_VisStat'; ...
-                                         'VisStat_gt_VisMot'}});
+  DummyContrasts = struct('Test', 't');
 
   assertEqual(iNode, 3);
   assertEqual(grpLvlCon, DummyContrasts);
@@ -209,12 +207,7 @@ function test_getGrpLevelContrast_basic()
   bm = bids.Model('file', opt.model.file);
   [grpLvlCon, iNode] = bm.get_dummy_contrasts('Level', 'dataset');
 
-  DummyContrasts = struct('Test', 't', ...
-                          'Contrasts', {{
-                                         'trial_type.VisMot'; ...
-                                         'trial_type.VisStat'; ...
-                                         'VisMot_gt_VisStat'; ...
-                                         'VisStat_gt_VisMot'}});
+  DummyContrasts = struct('Test', 't');
 
   assertEqual(iNode, 3);
   assertEqual(grpLvlCon, DummyContrasts);

@@ -168,18 +168,6 @@ function test_specifyContrasts_vismotion()
   expected(end + 1).name = 'VisStat_gt_VisMot_1';
   expected(end).C = [-1 1 0 0 0 0 0 0 0];
 
-  expected(end + 1).name = 'VisMot'; %#ok<*AGROW>
-  expected(end).C = [1 0 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisStat';
-  expected(end).C = [0 1 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisMot_gt_VisStat';
-  expected(end).C = [1 -1 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisStat_gt_VisMot';
-  expected(end).C = [-1 1 0 0 0 0 0 0 0];
-
   assertEqual({contrasts.name}', {expected.name}');
   assertEqual({contrasts.C}', {expected.C}');
 
@@ -217,18 +205,6 @@ function test_specifyContrasts_vislocalizer()
 
   expected(end + 1).name =  'VisMot_&_VisStat_lt_baseline_1';
   expected(end).C = [-1 -1 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisMot';
-  expected(end).C = [1 0 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisStat';
-  expected(end).C = [0 1 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisMot_gt_VisStat';
-  expected(end).C = [1 -1 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisStat_gt_VisMot';
-  expected(end).C = [-1 1 0 0 0 0 0 0 0];
 
   assertEqual({contrasts.name}', {expected.name}');
   assertEqual({contrasts.C}', {expected.C}');
