@@ -2,7 +2,7 @@
     "json.schemas": [
         {
         "fileMatch": ["model-*_smdl.json"],
-        "url": "https://raw.githubusercontent.com/bids-standard/stats-models/gh-pages/BIDSStatsModel.json"
+        "url": "https://bids-standard.github.io/stats-models/BIDSStatsModel.json"
         }
     ]
 }

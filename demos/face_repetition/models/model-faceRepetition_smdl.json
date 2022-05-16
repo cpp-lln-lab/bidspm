@@ -37,14 +37,12 @@
             "Options": {
                "HighPassFilterCutoffHz": 0.0078
             },
-            "Software": [
-               {
-                  "SPM": {
-                     "SerialCorrelation": "AR(1)",
-                     "HRFderivatives": "TemporalDispersion"
-                  }
+            "Software": {
+               "SPM": {
+                  "SerialCorrelation": "AR(1)",
+                  "HRFderivatives": "TemporalDispersion"
                }
-            ]
+            }
          },
          "DummyContrasts": {
             "Test": "t",

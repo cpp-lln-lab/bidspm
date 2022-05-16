@@ -37,15 +37,13 @@
         "Options": {
           "HighPassFilterCutoffHz": 0.008
         },
-        "Software": [
-          {
-            "SPM": {
-              "SerialCorrelation": "FAST",
-              "HRFderivatives": "Temporal",
-              "InclusiveMaskingThreshold": 0
-            }
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "HRFderivatives": "Temporal",
+            "InclusiveMaskingThreshold": 0
           }
-        ]
+        }
       },
       "DummyContrasts": {
         "Test": "t",

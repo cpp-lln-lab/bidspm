@@ -38,14 +38,12 @@
         "Options": {
           "HighPassFilterCutoffHz": 0.0078
         },
-        "Software": [
-          {
-            "SPM": {
-              "SerialCorrelation": "FAST",
-              "HRFderivatives": "Temporal"
-            }
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "HRFderivatives": "Temporal"
           }
-        ],
+        },
         "DummyContrasts": {
           "Contrasts": [
             "trial_type.VisMot",

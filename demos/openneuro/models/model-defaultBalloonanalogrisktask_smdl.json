@@ -3,7 +3,9 @@
   "BIDSModelVersion": "1.0.0",
   "Description": "default model for balloonanalogrisktask",
   "Input": {
-    "task": ["balloonanalogrisktask"]
+    "task": [
+      "balloonanalogrisktask"
+    ]
   },
   "Nodes": [
     {
@@ -37,12 +39,12 @@
         "Options": {
           "HighPassFilterCutoffHz": 0.0078
         },
-        "Software": [{
+        "Software": {
           "SPM": {
             "SerialCorrelation": "FAST",
             "HRFderivatives": "Temporal"
           }
-        }]
+        }
       },
       "DummyContrasts": {
         "Test": "t",
@@ -78,7 +80,9 @@
         "contrast"
       ],
       "Model": {
-        "X": [1],
+        "X": [
+          1
+        ],
         "Type": "glm"
       },
       "DummyContrasts": {

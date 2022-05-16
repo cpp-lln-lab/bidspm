@@ -37,14 +37,12 @@
         "Options": {
           "HighPassFilterCutoffHz": 0.008
         },
-        "Software": [
-          {
-            "SPM": {
-              "SerialCorrelation": "FAST",
-              "HRFderivatives": "Temporal"
-            }
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "HRFderivatives": "Temporal"
           }
-        ]
+        }
       },
       "DummyContrasts": {
         "Test": "t",
@@ -129,7 +127,9 @@
       ],
       "Model": {
         "Type": "glm",
-        "X": [1]
+        "X": [
+          1
+        ]
       },
       "DummyContrasts": {
         "Test": "t"
