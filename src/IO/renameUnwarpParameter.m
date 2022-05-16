@@ -26,9 +26,7 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
       bf.suffix = 'unwarpparam';
       bf.extension = '.mat';
 
-      bidsFile = bids.File(bf);
-
-      newName = spm_file(unwarpParam(iFile, :), 'filename',  bidsFile.filename);
+      newName = spm_file(unwarpParam(iFile, :), 'filename',  bf.filename);
 
       if ~isempty(unwarpParam(iFile, :))
         movefile(unwarpParam(iFile, :), newName);
