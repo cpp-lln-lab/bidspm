@@ -27,3 +27,7 @@
 [submodule "lib/MACS"]
 	path = lib/MACS
 	url = https://github.com/cpp-lln-lab/MACS.git
+[submodule "lib/octache"]
+	path = lib/octache
+	url = https://github.com/Remi-Gau/Octache.git
+	datalad-url = https://github.com/Remi-Gau/Octache.git
