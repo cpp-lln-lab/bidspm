@@ -25,19 +25,19 @@ function test_getEventSpecificationRoiGlm_basic()
   % THEN
   assertEqual(numel(event_specification), 5);
 
-  assertEqual(event_specification(1).name, 'F1');
+  assertEqual(event_specification(1).name, 'famous_1');
   assertEqual(event_specification(1).eventSpec, [1; 1]);
   assertEqual(event_specification(1).duration, 0);
 
-  assertEqual(event_specification(2).name, 'F2');
+  assertEqual(event_specification(2).name, 'famous_2');
   assertEqual(event_specification(2).eventSpec, [1; 2]);
   assertEqual(event_specification(2).duration, 0);
 
-  assertEqual(event_specification(3).name, 'N1');
+  assertEqual(event_specification(3).name, 'unfamiliar_1');
   assertEqual(event_specification(3).eventSpec, [1; 3]);
   assertEqual(event_specification(3).duration, 0);
 
-  assertEqual(event_specification(4).name, 'N2');
+  assertEqual(event_specification(4).name, 'unfamiliar_2');
   assertEqual(event_specification(4).eventSpec, [1; 4]);
   assertEqual(event_specification(4).duration, 0);
 
