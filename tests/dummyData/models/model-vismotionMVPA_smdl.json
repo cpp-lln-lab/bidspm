@@ -3,13 +3,21 @@
   "BIDSModelVersion": "1.0.0",
   "Description": "This model only has simple contrasts for MVPA",
   "Input": {
-    "task": "vismotion",
-    "space": "IXI549Space"
+    "task": [
+      "vismotion"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
   },
   "Nodes": [
     {
       "Level": "Run",
       "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
       "Model": {
         "Type": "glm",
         "X": [
@@ -23,15 +31,16 @@
           "Model": "DoubleGamma"
         },
         "Options": {
-          "HighPassFilterCutoffHz": 0.008,
-          "Mask": ""
+          "HighPassFilterCutoffHz": 0.008
         },
-        "Software": {
-          "SPM": {
-            "SerialCorrelation": "FAST",
-            "HRFderivatives": "Temporal"
+        "Software": [
+          {
+            "SPM": {
+              "SerialCorrelation": "FAST",
+              "HRFderivatives": "Temporal"
+            }
           }
-        }
+        ]
       },
       "DummyContrasts": {
         "Test": "t",

@@ -3,12 +3,18 @@
   "BIDSModelVersion": "1.0.0",
   "Description": "This is a dummy BIDS stats model.",
   "Input": {
-    "task": "dummy"
+    "task": [
+      "dummy"
+    ]
   },
   "Nodes": [
     {
       "Level": "Run",
       "Name": "run",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
       "Transformations": {
         "Transformer": "",
         "Instructions": [
@@ -33,24 +39,28 @@
         },
         "Options": {
           "HighPassFilterCutoffHz": 0.008,
-          "LowPassFilterCutoffHz": null,
           "Mask": {
-            "desc": "brain",
-            "suffix": "mask"
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
           }
-        },
-        "Software": ""
+        }
       },
-      "Contrasts": {
-        "Name": "",
-        "ConditionList": [
-          ""
-        ],
-        "Weights": [
-          ""
-        ],
-        "Test": ""
-      },
+      "Contrasts": [
+        {
+          "Name": "",
+          "ConditionList": [
+            ""
+          ],
+          "Weights": [
+            ""
+          ],
+          "Test": "t"
+        }
+      ],
       "DummyContrasts": {
         "Test": "t",
         "Contrasts": [
@@ -58,8 +68,5 @@
         ]
       }
     }
-  ],
-  "Edges": [
-    "RECOMMENDED"
   ]
 }

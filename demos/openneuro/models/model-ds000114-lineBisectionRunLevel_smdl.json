@@ -12,7 +12,7 @@
       "GroupBy": [
         "run",
         "subject"
-      ],      
+      ],
       "Model": {
         "X": [
           "trial_type.Correct_Task",
@@ -23,7 +23,7 @@
           "trans_?",
           "rot_?"
         ],
-        "Type": "glm"        
+        "Type": "glm"
       },
       "DummyContrasts": {
         "Contrasts": [
