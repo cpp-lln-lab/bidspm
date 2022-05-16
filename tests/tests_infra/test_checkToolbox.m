@@ -17,6 +17,10 @@ function test_checkToolbox_mp2rage()
 
   assertEqual(status, isdir(fullfile(spm('dir'), 'toolbox', 'mp2rage')));
 
+  if isOctave
+    return
+  end
+
   if ~isdir(fullfile(spm('dir'), 'toolbox', 'mp2rage'))
     assertWarning(@()checkToolbox('mp2rage', 'verbose', true), ...
                   'checkToolbox:missingToolbox');
@@ -60,6 +64,10 @@ function test_checkToolbox_macs()
 end
 
 function test_checkToolbox_unknow()
+
+  if isOctave
+    return
+  end
 
   assertWarning(@()checkToolbox('foo', 'verbose', true), ...
                 'checkToolbox:unknownToolbox');

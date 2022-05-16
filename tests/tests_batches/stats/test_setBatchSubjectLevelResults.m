@@ -67,6 +67,10 @@ end
 
 function test_setBatchSubjectLevelResults_error_no_matching_contrast()
 
+  if isOctave
+    return
+  end
+
   contrast_name = 'NotAContrast';
   [subLabel, opt, result] = setUp('vismotion', contrast_name);
 
