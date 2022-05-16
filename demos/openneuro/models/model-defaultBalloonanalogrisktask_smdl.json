@@ -9,6 +9,10 @@
     {
       "Level": "Run",
       "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
       "Model": {
         "X": [
           "trial_type.cash_demean",
@@ -31,21 +35,14 @@
         },
         "Type": "glm",
         "Options": {
-          "HighPassFilterCutoffHz": 0.0078,
-          "Mask": ""
+          "HighPassFilterCutoffHz": 0.0078
         },
-        "Software": {
+        "Software": [{
           "SPM": {
             "SerialCorrelation": "FAST",
             "HRFderivatives": "Temporal"
           }
-        }
-      },
-      "Contrasts": {
-        "Name": "",
-        "ConditionList": [""],
-        "Weights": [""],
-        "Test": ""
+        }]
       },
       "DummyContrasts": {
         "Test": "t",
@@ -60,72 +57,32 @@
     {
       "Level": "Subject",
       "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
       "Model": {
         "X": [
-          "trial_type.cash_demean",
-          "trial_type.control_pumps_demean",
-          "trial_type.explode_demean",
-          "trial_type.pumps_demean",
-          "trans_?",
-          "rot_?",
-          "non_steady_state_outlier*",
-          "motion_outlier*"
+          1
         ],
-        "HRF": {
-          "Variables": [
-            "trial_type.cash_demean",
-            "trial_type.control_pumps_demean",
-            "trial_type.explode_demean",
-            "trial_type.pumps_demean"
-          ],
-          "Model": "DoubleGamma"
-        },
-        "Type": "glm",
-        "Options": {
-          "HighPassFilterCutoffHz": 0.0078,
-          "Mask": ""
-        },
-        "Software": {
-          "SPM": {
-            "SerialCorrelation": "FAST",
-            "HRFderivatives": "Temporal"
-          }
-        }
-      },
-      "Contrasts": {
-        "Name": "",
-        "ConditionList": [""],
-        "Weights": [""],
-        "Test": ""
+        "Type": "glm"
       },
       "DummyContrasts": {
-        "Test": "t",
-        "Contrasts": [
-          "trial_type.cash_demean",
-          "trial_type.control_pumps_demean",
-          "trial_type.explode_demean",
-          "trial_type.pumps_demean"
-        ]
+        "Test": "t"
       }
     },
     {
       "Level": "Dataset",
       "Name": "dataset_level",
+      "GroupBy": [
+        "contrast"
+      ],      
       "Model": {
-        "X": [" "],
-        "Type": "glm",
-        "Options": {
-          "Mask": ""
-        }
+        "X": [1],
+        "Type": "glm"
       },
       "DummyContrasts": {
-        "Test": "t",
-        "Contrasts": [
-          "trial_type.cash_demean",
-          "trial_type.control_pumps_demean",
-          "trial_type.explode_demean",
-          "trial_type.pumps_demean"
-        ]
+        "Test": "t"
       }
     }
   ]

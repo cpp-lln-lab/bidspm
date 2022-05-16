@@ -3,13 +3,21 @@
   "BIDSModelVersion": "1.0.0",
   "Description": "GLM and contrasts the FIL MoAE dataset in subject space",
   "Input": {
-    "task": "auditory",
-    "space": "individual"
+    "task": [
+      "auditory"
+    ],
+    "space": [
+      "individual"
+    ]
   },
   "Nodes": [
     {
       "Level": "Run",
       "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
       "Model": {
         "X": [
           "trial_type.listening",
@@ -24,15 +32,16 @@
         },
         "Type": "glm",
         "Options": {
-          "HighPassFilterCutoffHz": 0.0078,
-          "Mask": ""
+          "HighPassFilterCutoffHz": 0.0078
         },
-        "Software": {
-          "SPM": {
-            "SerialCorrelation": "AR(1)",
-            "HRFderivatives": "none"
+        "Software": [
+          {
+            "SPM": {
+              "SerialCorrelation": "AR(1)",
+              "HRFderivatives": "none"
+            }
           }
-        }
+        ]
       },
       "DummyContrasts": {
         "Test": "t",

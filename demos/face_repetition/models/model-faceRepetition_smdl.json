@@ -3,12 +3,18 @@
    "BIDSModelVersion": "1.0.0",
    "Description": "model for face repetition to check resampling effects",
    "Input": {
-      "task": "facerepetition"
+      "task": [
+         "facerepetition"
+      ]
    },
    "Nodes": [
       {
          "Level": "Run",
          "Name": "run",
+         "GroupBy": [
+            "run",
+            "subject"
+         ],
          "Model": {
             "X": [
                "trial_type.F1",
@@ -29,15 +35,16 @@
             },
             "Type": "glm",
             "Options": {
-               "HighPassFilterCutoffHz": 0.0078,
-               "Mask": ""
+               "HighPassFilterCutoffHz": 0.0078
             },
-            "Software": {
-               "SPM": {
-                  "SerialCorrelation": "AR(1)",
-                  "HRFderivatives": "TemporalDispersion"
+            "Software": [
+               {
+                  "SPM": {
+                     "SerialCorrelation": "AR(1)",
+                     "HRFderivatives": "TemporalDispersion"
+                  }
                }
-            }
+            ]
          },
          "DummyContrasts": {
             "Test": "t",
