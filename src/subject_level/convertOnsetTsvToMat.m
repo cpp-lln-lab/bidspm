@@ -68,6 +68,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
     % first assume the input is from events.tsv
     tokens = regexp(variablesToConvolve{iCond}, '\.', 'split');
 
+    % if the variable is present in namespace
     if ismember(tokens{1}, fieldnames(tsvContent))
 
       trialTypes = tsvContent.(tokens{1});

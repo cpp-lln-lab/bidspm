@@ -1,7 +1,7 @@
 {
    "Name": "resampling",
    "BIDSModelVersion": "1.0.0",
-   "Description": "model for face repetition to check resampling effects",
+   "Description": "model for face repetition",
    "Input": {
       "task": [
          "facerepetition"
@@ -15,21 +15,35 @@
             "run",
             "subject"
          ],
+         "Transformations": {
+            "Description": "merge the familiarity and repetition column to create the trial type column",
+            "Transformer": "cpp_spm",
+            "Instructions": [
+               {
+                  "Name": "Concatenate",
+                  "Input": [
+                     "face_type",
+                     "repetition_type"
+                  ],
+                  "Output": "trial_type"
+               }
+            ]
+         },
          "Model": {
             "X": [
-               "trial_type.F1",
-               "trial_type.F2",
-               "trial_type.N1",
-               "trial_type.N2",
+               "trial_type.famous_1",
+               "trial_type.famous_2",
+               "trial_type.unfamiliar_1",
+               "trial_type.unfamiliar_2",
                "trans_?",
                "rot_?"
             ],
             "HRF": {
                "Variables": [
-                  "trial_type.F1",
-                  "trial_type.F2",
-                  "trial_type.N1",
-                  "trial_type.N2"
+                  "trial_type.famous_1",
+                  "trial_type.famous_2",
+                  "trial_type.unfamiliar_1",
+                  "trial_type.unfamiliar_2"
                ],
                "Model": "DoubleGamma"
             },
@@ -47,20 +61,20 @@
          "DummyContrasts": {
             "Test": "t",
             "Contrasts": [
-               "trial_type.F1",
-               "trial_type.F2",
-               "trial_type.N1",
-               "trial_type.N2"
+               "trial_type.famous_1",
+               "trial_type.famous_2",
+               "trial_type.unfamiliar_1",
+               "trial_type.unfamiliar_2"
             ]
          },
          "Contrasts": [
             {
                "Name": "faces_gt_baseline",
                "ConditionList": [
-                  "trial_type.F1",
-                  "trial_type.F2",
-                  "trial_type.N1",
-                  "trial_type.N2"
+                  "trial_type.famous_1",
+                  "trial_type.famous_2",
+                  "trial_type.unfamiliar_1",
+                  "trial_type.unfamiliar_2"
                ],
                "Weights": [
                   1,
@@ -73,10 +87,10 @@
             {
                "Name": "faces_lt_baseline",
                "ConditionList": [
-                  "trial_type.F1",
-                  "trial_type.F2",
-                  "trial_type.N1",
-                  "trial_type.N2"
+                  "trial_type.famous_1",
+                  "trial_type.famous_2",
+                  "trial_type.unfamiliar_1",
+                  "trial_type.unfamiliar_2"
                ],
                "Weights": [
                   -1,
