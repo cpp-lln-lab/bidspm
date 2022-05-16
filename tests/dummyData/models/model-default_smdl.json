@@ -23,9 +23,7 @@
         "Instructions": [
           {
             "Name": "",
-            "Inputs": [
-              ""
-            ]
+            "Inputs": [""]
           }
         ]
       },
@@ -50,32 +48,22 @@
         "Options": {
           "HighPassFilterCutoffHz": 0.008,
           "Mask": {
-            "desc": [
-              "brain"
-            ],
-            "suffix": [
-              "mask"
-            ]
+            "desc": ["brain"],
+            "suffix": ["mask"]
           }
         },
-        "Software": [
-          {
-            "SPM": {
-              "SerialCorrelation": "FAST",
-              "HRFderivatives": "Temporal"
-            }
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "HRFderivatives": "Temporal"
           }
-        ]
+        }
       },
       "Contrasts": [
         {
           "Name": "",
-          "ConditionList": [
-            ""
-          ],
-          "Weights": [
-            ""
-          ],
+          "ConditionList": [""],
+          "Weights": [""],
           "Test": "t"
         }
       ],
@@ -88,159 +76,36 @@
       }
     },
     {
-      "Level": "Session",
-      "Name": "session",
-      "GroupBy": [
-        ""
-      ],
-      "Transformations": {
-        "Transformer": "",
-        "Instructions": [
-          {
-            "Name": "",
-            "Inputs": [
-              ""
-            ]
-          }
-        ]
-      },
-      "Model": {
-        "X": [
-          ""
-        ],
-        "Type": "glm",
-        "HRF": {
-          "Variables": [
-            ""
-          ],
-          "Model": "DoubleGamma"
-        },
-        "Options": {
-          "HighPassFilterCutoffHz": 0.008,
-          "Mask": {
-            "desc": [
-              "brain"
-            ],
-            "suffix": [
-              "mask"
-            ]
-          }
-        },
-        "Software": []
-      },
-      "Contrasts": [
-        {
-          "Name": "",
-          "ConditionList": [
-            ""
-          ],
-          "Weights": [
-            ""
-          ],
-          "Test": "t"
-        }
-      ],
-      "DummyContrasts": {
-        "Test": "t",
-        "Contrasts": [
-          ""
-        ]
-      }
-    },
-    {
       "Level": "Subject",
       "Name": "subject",
       "GroupBy": [
-        ""
+        "subject",
+        "contrast"
       ],
       "Model": {
-        "X": [
-          ""
-        ],
-        "Type": "glm",
-        "Options": {
-          "HighPassFilterCutoffHz": 0.008,
-          "Mask": {
-            "desc": [
-              "brain"
-            ],
-            "suffix": [
-              "mask"
-            ]
-          }
-        },
-        "Software": []
+        "X": [1],
+        "Type": "glm"
       },
-      "Contrasts": [
-        {
-          "Name": "",
-          "ConditionList": [
-            ""
-          ],
-          "Weights": [
-            ""
-          ],
-          "Test": "t"
-        }
-      ],
       "DummyContrasts": {
-        "Test": "t",
-        "Contrasts": [
-          ""
-        ]
+        "Test": "t"
       }
     },
     {
       "Level": "Dataset",
       "Name": "dataset",
-      "GroupBy": [
-        ""
-      ],
+      "GroupBy": [""],
       "Model": {
-        "X": [
-          ""
-        ],
-        "Type": "glm",
-        "Options": {
-          "HighPassFilterCutoffHz": 0.008,
-          "Mask": {
-            "desc": [
-              "brain"
-            ],
-            "suffix": [
-              "mask"
-            ]
-          }
-        },
-        "Software": {}
+        "X": [1],
+        "Type": "glm"
       },
-      "Contrasts": [
-        {
-          "Name": "",
-          "ConditionList": [
-            ""
-          ],
-          "Weights": [
-            ""
-          ],
-          "Test": "t"
-        }
-      ],
       "DummyContrasts": {
-        "Test": "t",
-        "Contrasts": [
-          ""
-        ]
+        "Test": "t"
       }
     }
   ],
   "Edges": [
     {
       "Source": "run",
-      "Destination": "session"
-    },
-    {
-      "Source": "session",
       "Destination": "subject"
     },
     {

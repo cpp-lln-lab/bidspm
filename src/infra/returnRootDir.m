@@ -10,14 +10,18 @@ function rootDir = returnRootDir()
   rootDir = cellstr(which(Mfile, '-ALL'));
 
   if isempty(rootDir)
-    error('CPP_SPM is not in your MATLAB / Octave path.\n');
+    err.message = 'CPP_SPM is not in your MATLAB / Octave path.\n';
+    err.identifier = 'CPP_SPM:CppSpmNotInPath';
+    error(err);
 
   elseif numel(rootDir) > 1
     fprintf('CPP_SPM seems to appear in several different folders:\n');
     for i = 1:numel(rootDir)
       fprintf('  * %s\n', fullfile(rootDir{i}, '..', '..'));
     end
-    error('Remove all but one with ''pathtool''' .\ n'); % or ''spm_rmpath
+    err.message = 'Remove all but one with ''pathtool''.\n'; % or ''spm_rmpath
+    err.identifier = 'CPP_SPM:SeveralCppSpmInPath';
+    error(err);
 
   end
 
