@@ -18,7 +18,7 @@
       "GroupBy": [
         "run",
         "subject"
-      ],      
+      ],
       "Model": {
         "Type": "glm",
         "X": [
@@ -103,7 +103,7 @@
       "Name": "dataset_level",
       "GroupBy": [
         "contrast"
-      ],      
+      ],
       "Model": {
         "Type": "glm",
         "X": [
