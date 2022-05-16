@@ -183,7 +183,6 @@ function opt = checkOptions(opt)
       errorHandling(mfilename(), 'modelFileMissing', msg, false, opt.verbosity);
     end
     bm = bids.Model('file', opt.model.file);
-    bm.validate();
     if strcmpi(opt.pipeline.type, 'stats')
       opt = overRideWithBidsModelContent(opt);
     end

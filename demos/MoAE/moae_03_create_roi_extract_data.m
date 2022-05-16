@@ -40,6 +40,8 @@ spm_mkdir(output_dir);
 
 [~, roiFile] = createRoi('expand', specification, conImage, output_dir, saveROI);
 
+bf = bids.File(roiFile);
+
 % rename mask image:
 % add a description and remove a whole bunch of entities
 % from the original name
@@ -51,19 +53,23 @@ newname.entities.p = '';
 newname.entities.k = '';
 newname.entities.MC = '';
 newname.entity_order = {'sub', 'hemi', 'space', 'desc'};
-rightRoiFile = renameFile(roiFile, newname);
+
+rightRoiFile = bf.rename('spec', newname, 'dry_run', false, 'verbose', true);
 
 %% same but with left hemisphere
 sphere.location = [-57 -22 11];
 
-specification  = struct( ...
-                        'mask1', maskImage, ...
+specification  = struct('mask1', maskImage, ...
                         'mask2', sphere);
 
 [~, roiFile] = createRoi('expand', specification, conImage, output_dir, saveROI);
+
+bf = bids.File(roiFile);
+
 newname.entities.hemi = 'L';
-leftRoiFile = renameFile(roiFile, newname);
+
+leftRoiFile = bf.rename('spec', newname, 'dry_run', false, 'verbose', true);
 
 %%
-right_data = spm_summarise(conImage, fullfile(output_dir, rightRoiFile));
-left_data = spm_summarise(conImage, fullfile(output_dir, leftRoiFile));
+right_data = spm_summarise(conImage, fullfile(output_dir, rightRoiFile.filename));
+left_data = spm_summarise(conImage, fullfile(output_dir, leftRoiFile.filename));
