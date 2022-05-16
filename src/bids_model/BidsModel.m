@@ -19,16 +19,29 @@ classdef BidsModel < bids.Model
       % else iscell(edges)
       %   rootNodeName = edges{1}.Source
       % end
-      if isstruct(edges{1})
+
+      if isempty(edges)
+        rootNode = obj.Nodes(1);
+
+      elseif iscell(edges)
         rootNodeName = edges{1}.Source;
         rootNode = obj.get_nodes('Name', rootNodeName);
+
+      elseif isstruct(edges{1})
+        rootNodeName = edges{1}.Source;
+        rootNode = obj.get_nodes('Name', rootNodeName);
+
       else
         rootNode = obj.Nodes(1);
+
       end
+
       if iscell(rootNode)
         rootNode = rootNode{1};
       end
+
       rootNodeName = rootNode.Name;
+
     end
 
     function [transformers, idx] = getBidsTransformers(obj, varargin)
@@ -177,7 +190,9 @@ classdef BidsModel < bids.Model
 
       [model, nodeName] = obj.getDefaultModel(varargin{:});
 
-      if isfield(model.Software, 'SPM') && isfield(model.Software.SPM, 'InclusiveMaskingThreshold')
+      if isfield(model, 'Software') && ...
+        isfield(model.Software, 'SPM') && ...
+          isfield(model.Software.SPM, 'InclusiveMaskingThreshold')
 
         threshold = model.Software.SPM.InclusiveMaskingThreshold;
 

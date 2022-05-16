@@ -4,17 +4,37 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, 
 
   printBatchName('group level contrast estimation', opt);
 
-  for j = 1:size(grpLvlCon.Contrasts, 1)
+  if ~isfield(grpLvlCon, 'Test')
+    disp(grpLvlCon);
+    errorHandling(mfilename(), ...
+                  'noGroupLevelContrast', ...
+                  'No group level contrast. Check your model.', ...
+                  false);
+  end
 
-    conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
+  if isfield(grpLvlCon, 'Contrasts')
 
-    spmMatFile = fullfile(rfxDir, conName, 'SPM.mat');
+    for j = 1:size(grpLvlCon.Contrasts, 1)
 
-    consess{1}.tcon.name = 'GROUP';
-    consess{1}.tcon.convec = 1;
-    consess{1}.tcon.sessrep = 'none';
+      conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
 
-    matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+      spmMatFile = fullfile(rfxDir, conName, 'SPM.mat');
+
+      consess{1}.tcon.name = 'GROUP';
+      consess{1}.tcon.convec = 1;
+      consess{1}.tcon.sessrep = 'none';
+
+      matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+
+    end
+
+  else
+
+    % TODO
+
+    notImplemented(mfilename, ...
+                   'Grabbing contrast from lower levels not implemented yet.', ...
+                   opt.verbosity);
 
   end
 

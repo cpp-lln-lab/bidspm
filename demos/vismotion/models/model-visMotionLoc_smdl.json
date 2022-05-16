@@ -1,14 +1,23 @@
 {
   "Name": "Motion localizer",
+  "BIDSModelVersion": "1.0.0",
   "Description": "contrasts for the motion localizer dataset",
   "Input": {
-    "task": "visMotion",
-    "space": "IXI549Space"
+    "task": [
+      "visMotion"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
   },
   "Nodes": [
     {
-      "Level": "run",
+      "Level": "Run",
       "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
       "Model": {
         "X": [
           "trial_type.VisMot",
@@ -27,102 +36,80 @@
         },
         "Type": "glm",
         "Options": {
-          "HighPassFilterCutoffHz": 0.0078,
-          "Mask": ""
+          "HighPassFilterCutoffHz": 0.0078
         },
         "Software": {
           "SPM": {
             "SerialCorrelation": "FAST",
             "HRFderivatives": "Temporal"
           }
-        }
+        },
+        "DummyContrasts": {
+          "Contrasts": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Test": "t"
+        },
+        "Contrasts": [
+          {
+            "Name": "VisMot_gt_VisStat",
+            "ConditionList": [
+              "trial_type.VisMot",
+              "trial_type.VisStat"
+            ],
+            "Weights": [
+              1,
+              -1
+            ],
+            "Test": "t"
+          },
+          {
+            "Name": "VisStat_gt_VisMot",
+            "ConditionList": [
+              "trial_type.VisMot",
+              "trial_type.VisStat"
+            ],
+            "Weights": [
+              -1,
+              1
+            ],
+            "Test": "t"
+          }
+        ]
       }
     },
     {
-      "Level": "subject",
+      "Level": "Subject",
       "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
       "Model": {
         "X": [
-          "trial_type.VisMot",
-          "trial_type.VisStat",
-          "trans_?",
-          "rot_?",
-          "non_steady_state_outlier*",
-          "motion_outlier*"
+          1
         ],
-        "HRF": {
-          "Variables": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-          ],
-          "Model": "DoubleGamma"
-        },
-        "Type": "glm",
-        "Options": {
-          "HighPassFilterCutoffHz": 0.0078,
-          "Mask": ""
-        },
-        "Software": {
-          "SPM": {
-            "SerialCorrelation": "FAST",
-            "HRFderivatives": "Temporal"
-          }
-        }
+        "Type": "glm"
       },
       "DummyContrasts": {
-        "Test": "t",
-        "Contrasts": [
-          "trial_type.VisMot",
-          "trial_type.VisStat"
-        ]
-      },
-      "Contrasts": [
-        {
-          "Name": "VisMot_gt_VisStat",
-          "ConditionList": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-          ],
-          "Weights": [
-            1,
-            -1
-          ],
-          "Test": "t"
-        },
-        {
-          "Name": "VisStat_gt_VisMot",
-          "ConditionList": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-          ],
-          "Weights": [
-            -1,
-            1
-          ],
-          "Test": "t"
-        }
-      ]
+        "Test": "t"
+      }
     },
     {
       "Level": "Dataset",
       "Name": "dataset_level",
+      "GroupBy": [
+        "contrast"
+      ],
       "Model": {
         "X": [
-          " "
+          1
         ],
-        "Type": "glm",
-        "Options": {
-          "Mask": ""
-        }
+        "Type": "glm"
       },
       "DummyContrasts": {
-        "Test": "t",
-        "Contrasts": [
-          "trial_type.VisMot",
-          "trial_type.VisStat",
-          "VisMot_gt_VisStat",
-          "VisStat_gt_VisMot"
-        ]
+        "Test": "t"
       }
     }
   ]

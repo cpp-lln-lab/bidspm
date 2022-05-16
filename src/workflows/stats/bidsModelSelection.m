@@ -166,7 +166,11 @@ function matlabbatch = bidsModelSelection(varargin)
       opt.model.file = opt.toolbox.MACS.model.files{iModel};
       opt.model.bm = BidsModel('file', opt.model.file);
       input = opt.model.bm.Input;
-      opt.space = {input.space};
+      if ischar(input.space)
+        opt.space = {input.space};
+      elseif iscell(input.space)
+        opt.space = input.space;
+      end
       opt.taskName = input.task;
       if ~iscell(opt.taskName)
         opt.taskName = {opt.taskName};
@@ -293,13 +297,17 @@ function checks(opt)
   end
 
   space = cellfun(@(x) x.space, inputs, 'UniformOutput', false);
+  if iscell(space)
+    space = cellfun(@(x) x.space, inputs);
+  end
   if numel(unique(space)) > 1
     msg = sprintf('All models must have same space inputs.');
     id = 'differentModelSpace';
     errorHandling(mfilename(), id, msg, false);
   end
 
-  % if some models have more than one task, then class(inputs.task) will be a cell
+  % if some models have more than one task,
+  % then class(inputs.task) will be a cell
   % and a char otherwise
   tmp = cellfun(@(x) class(x.task), inputs, 'UniformOutput', false);
   moreThanOneTask = numel(unique(tmp)) > 1;

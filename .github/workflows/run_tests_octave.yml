@@ -46,7 +46,7 @@ jobs:
 
     - name: Update octave path
       run: |
-        octave $OCTFLAGS --eval "initCppSpm(dev); savepath(); exit;"
+        octave $OCTFLAGS --eval "initCppSpm(true); savepath(); exit;"
 
     - name: Prepare data
       run: |

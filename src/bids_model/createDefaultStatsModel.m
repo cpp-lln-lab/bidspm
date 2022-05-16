@@ -70,6 +70,40 @@ function opt = createDefaultStatsModel(BIDS, opt)
   bm.Nodes{1}.Model.Software = struct('SPM', struct('SerialCorrelation', 'FAST', ...
                                                     'HRFderivatives', 'Temporal'));
 
+  % remove session level
+  [~, idx] = bm.get_nodes('Level', 'session');
+  if ~isempty(idx)
+    bm.Nodes(idx) = [];
+  end
+
+  % simplify higher levels
+  levelsToUpdate = {'subject', 'dataset'};
+
+  for i = 1:numel(levelsToUpdate)
+
+    [~, idx] = bm.get_nodes('Level', levelsToUpdate{i});
+
+    bm.Nodes{idx}.Model.X = {1};
+
+    if strcmp(levelsToUpdate{i}, 'subject')
+      bm.Nodes{idx}.GroupBy = {'subject', 'contrast'};
+    elseif strcmp(levelsToUpdate{i}, 'subject')
+      bm.Nodes{idx}.GroupBy = {'contrast'};
+    end
+
+    bm.Nodes{idx} = rmfield(bm.Nodes{idx}, 'Contrasts');
+    bm.Nodes{idx}.DummyContrasts = rmfield(bm.Nodes{idx}.DummyContrasts, 'Contrasts');
+    bm.Nodes{idx}.Model = rmfield(bm.Nodes{idx}.Model, 'Software');
+    bm.Nodes{idx}.Model = rmfield(bm.Nodes{idx}.Model, 'Options');
+
+  end
+
+  for i = 1:numel(bm.Edges)
+    bm.Edges(1) = [];
+  end
+
+  bm = bm.get_edges_from_nodes();
+
   bm = bm.update();
 
   filename = fullfile(pwd, 'models', ...

@@ -19,6 +19,7 @@ cd ~/visual_motion_localiser
 datalad install \
     -d . \
     -s https://github.com/cpp-lln-lab/CPP_SPM.git \
+    --branch dev \
     -r \
     code/CPP_SPM
 
@@ -43,14 +44,14 @@ datalad create -d . outputs/derivatives/cpp_spm-stats
 cd code/CPP_SPM/demos/vismotion
 
 # FIX ME
-/Applications/MATLAB_R2017b.app/bin/matlab \
+/usr/local/MATLAB/R2017a/bin/matlab \
     -nodisplay -nosplash -nodesktop \
     -r "run('step_1_preprocess.m');exit;"
 
 datalad save -m 'preprocessing done' -r
 
 # FIX ME
-/Applications/MATLAB_R2017b.app/bin/matlab \
+/usr/local/MATLAB/R2017a/bin/matlab \
     -nodisplay -nosplash -nodesktop \
     -r "run('step_2_stats.m');exit;"
 

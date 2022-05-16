@@ -19,7 +19,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   % :returns: :fullpathOnsetFilename: (string) name of the output ``.mat`` file.
   %
-  % See also: createAndReturnOnsetFile, applyTransformersToEventsTsv
+  % See also: createAndReturnOnsetFile, bids.transformers
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -57,7 +57,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
     opt.model.bm = BidsModel('file', opt.model.file);
   end
   transformers = opt.model.bm.getBidsTransformers();
-  tsvContent = applyTransformersToEventsTsv(tsvContent, transformers);
+  tsvContent = bids.transformers(transformers, tsvContent);
 
   for iCond = 1:numel(variablesToConvolve)
 
@@ -68,6 +68,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
     % first assume the input is from events.tsv
     tokens = regexp(variablesToConvolve{iCond}, '\.', 'split');
 
+    % if the variable is present in namespace
     if ismember(tokens{1}, fieldnames(tsvContent))
 
       trialTypes = tsvContent.(tokens{1});

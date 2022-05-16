@@ -24,7 +24,8 @@ bidsCreateROI(opt);
 
 opt.fwhm.func = 0;
 opt.glm.roibased.do = true;
-opt.space = 'individual';
+opt.space = {'individual'};
+opt.bidsFilterFile.roi.space = 'individual';
 
 bidsFFX('specify', opt);
 bidsRoiBasedGLM(opt);

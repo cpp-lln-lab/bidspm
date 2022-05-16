@@ -20,9 +20,17 @@ opt.pipeline.type = 'stats';
 opt = checkOptions(opt);
 
 use_schema = false;
-BIDS_ROI = bids.layout(opt.dir.roi, use_schema);
-rightRoiFile = bids.query(BIDS_ROI, 'data', 'sub', subLabel, 'desc', 'rightAuditoryCortex');
-leftRoiFile = bids.query(BIDS_ROI, 'data', 'sub', subLabel, 'desc', 'leftAuditoryCortex');
+BIDS_ROI = bids.layout(opt.dir.roi, 'use_schema', use_schema);
+
+filter = struct('sub', subLabel, ...
+                'hemi', 'R', ...
+                'desc', 'auditoryCortex');
+
+rightRoiFile = bids.query(BIDS_ROI, 'data', filter);
+
+filter.hemi = 'L';
+
+leftRoiFile = bids.query(BIDS_ROI, 'data', filter);
 
 % we get the con image to extract data
 ffxDir = getFFXdir(subLabel, opt);

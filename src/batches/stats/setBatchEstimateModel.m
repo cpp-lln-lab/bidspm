@@ -17,6 +17,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon)
 
   switch nargin
 
+    % run  / subject level
     case 2
 
       printBatchName('estimate subject level fmri model', opt);
@@ -31,25 +32,46 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon)
 
       matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
 
+      % group level
     case 3
+
+      if ~isfield(grpLvlCon, 'Test')
+        disp(grpLvlCon);
+        errorHandling(mfilename(), ...
+                      'noGroupLevelContrast', ...
+                      'No group level contrast. Check your model.', ...
+                      false);
+      end
 
       printBatchName('estimate group level fmri model', opt);
 
-      for j = 1:size(grpLvlCon.Contrasts, 1)
+      if isfield(grpLvlCon, 'Contrasts')
 
-        conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
+        for j = 1:size(grpLvlCon.Contrasts, 1)
 
-        spmMatFile = { fullfile(getRFXdir(opt), conName, 'SPM.mat') };
+          conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
 
-        % no QA at the group level GLM:
-        %   since there is no autocorrelation to check for
-        opt.QA.glm.do = false();
+          spmMatFile = { fullfile(getRFXdir(opt), conName, 'SPM.mat') };
 
-        matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
-        matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
-                                          fullfile(spm_fileparts(spmMatFile{1}), ...
-                                                   designMatrixFigureName(opt, ...
-                                                                          'after estimation')));
+          % no QA at the group level GLM:
+          %   since there is no autocorrelation to check for
+          opt.QA.glm.do = false();
+
+          matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
+          matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
+                                            fullfile(spm_fileparts(spmMatFile{1}), ...
+                                                     designMatrixFigureName(opt, ...
+                                                                            'after estimation')));
+
+        end
+
+      else
+
+        % TODO
+
+        notImplemented(mfilename, ...
+                       'Grabbing contrast from lower levels not implemented yet.', ...
+                       opt.verbosity);
 
       end
 

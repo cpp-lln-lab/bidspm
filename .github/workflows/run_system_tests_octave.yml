@@ -12,7 +12,7 @@ name: "system tests with octave: failure expected"
 # │ │ │ │ │
 # │ │ │ │ │
 # │ │ │ │ │
-# \* \* \* \* \*
+# * * * * *
 
 on:
 

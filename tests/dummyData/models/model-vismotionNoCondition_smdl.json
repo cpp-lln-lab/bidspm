@@ -3,13 +3,21 @@
   "BIDSModelVersion": "1.0.0",
   "Description": "model with no actual condition in design matrix, to use GLM fo denoising only",
   "Input": {
-    "task": "vismotion",
-    "space": "IXI549Space"
+    "task": [
+      "vismotion"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
   },
   "Nodes": [
     {
       "Level": "Run",
       "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
       "Model": {
         "Type": "glm",
         "X": [
@@ -24,8 +32,7 @@
           "Model": "DoubleGamma"
         },
         "Options": {
-          "HighPassFilterCutoffHz": 0.008,
-          "Mask": ""
+          "HighPassFilterCutoffHz": 0.008
         },
         "Software": {
           "SPM": {
