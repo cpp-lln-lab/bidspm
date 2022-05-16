@@ -309,6 +309,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.segment.samplingDistance = 3;
 
   %% Options for skullstripping
+  fieldsToSet.skullstrip.do = true;
   fieldsToSet.skullstrip.threshold = 0.75;
   fieldsToSet.skullstrip.mean = false;
 
