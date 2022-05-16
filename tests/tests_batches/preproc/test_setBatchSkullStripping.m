@@ -28,6 +28,23 @@ function test_setBatchSkullStripping_basic()
 
 end
 
+function test_setBatchSkullStripping_skip_skullstrip()
+
+  subLabel = '01';
+
+  opt = setOptions('vislocalizer', subLabel);
+
+  opt.skullstrip.do = false;
+
+  BIDS = struct([]);
+
+  matlabbatch = {};
+  matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
+
+  assert(isempty(matlabbatch));
+
+end
+
 function expectedBatch = returnExpectedBatch(opt)
 
   expectedAnatDataDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'anat');

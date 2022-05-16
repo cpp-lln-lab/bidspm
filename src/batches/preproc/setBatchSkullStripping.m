@@ -39,6 +39,10 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  if ~opt.skullstrip.do
+    return
+  end
+
   printBatchName('skull stripping', opt);
 
   [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, opt, subLabel);
