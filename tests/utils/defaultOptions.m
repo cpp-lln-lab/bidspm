@@ -56,6 +56,7 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.segment.samplingDistance = 3;
 
+  expectedOptions.skullstrip.do = true;
   expectedOptions.skullstrip.threshold = 0.75;
   expectedOptions.skullstrip.mean = false;
 

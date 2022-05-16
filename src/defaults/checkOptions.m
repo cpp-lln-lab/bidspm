@@ -104,6 +104,8 @@ function opt = checkOptions(opt)
   %     - ``opt.skullstrip.threshold = 0.75`` - Threshold used for the skull stripping.
   %       Any voxel with ``p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold``
   %       will be included in the mask.
+  %     - ``opt.skullstrip.do = true``  -  Set to ``true`` to skip skullstripping
+  %
   %
   %     - ``opt.stc.skip = false`` - boolean flag to skip slice time correction or not.
   %     - ``opt.stc.referenceSlice = []`` - reference slice for the slice timing correction.
@@ -117,7 +119,7 @@ function opt = checkOptions(opt)
   %
   %  - **preprocessing QA** (see ``functionalQA``)
   %
-  %     - ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
+  %     ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
   %
   %     - ``opt.QA.func.carpetPlot = true`` to plot carpet plot
   %     - ``opt.QA.func.MotionParameters = 'on'``
@@ -309,6 +311,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.segment.samplingDistance = 3;
 
   %% Options for skullstripping
+  fieldsToSet.skullstrip.do = true;
   fieldsToSet.skullstrip.threshold = 0.75;
   fieldsToSet.skullstrip.mean = false;
 

@@ -11,6 +11,8 @@ tmp
 dummyData/derivatives/cpp_spm-*/jobs
 dummyData/derivatives/cpp_spm-preproc/sub*
 
+dummyData/derivatives/cpp_spm-preproc/desc-skullstripped.json
+
 dummyData/derivatives/cpp_spm-stats/sub*
 dummyData/derivatives/cpp_spm-stats/derivatives
 dummyData/derivatives/cpp_spm-stats/README

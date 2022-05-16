@@ -26,6 +26,38 @@ function test_setBatchSkullStripping_basic()
   assertEqual(matlabbatch{1}.spm.util.imcalc, expectedBatch{1}.spm.util.imcalc);
   assertEqual(matlabbatch{end}.spm.util.imcalc, expectedBatch{end}.spm.util.imcalc);
 
+  assertEqual(exist(fullfile(BIDS.pth, 'desc-skullstripped.json'), 'file'), 2);
+  delete(fullfile(BIDS.pth, 'desc-skullstripped.json'));
+
+  assertEqual(exist(fullfile(BIDS.pth, 'sub-01', 'ses-01', 'anat', ...
+                             'sub-01_ses-01_space-individual_desc-skullstripped_T1w.json'), ...
+                    'file'), 2);
+  delete(fullfile(BIDS.pth, 'sub-01', 'ses-01', 'anat', ...
+                  'sub-01_ses-01_space-individual_desc-skullstripped_T1w.json'));
+
+  assertEqual(exist(fullfile(BIDS.pth, 'sub-01', 'ses-01', 'anat', ...
+                             'sub-01_ses-01_space-individual_label-brain_mask.json'), ...
+                    'file'), 2);
+  delete(fullfile(BIDS.pth, 'sub-01', 'ses-01', 'anat', ...
+                  'sub-01_ses-01_space-individual_label-brain_mask.json'));
+
+end
+
+function test_setBatchSkullStripping_skip_skullstrip()
+
+  subLabel = '01';
+
+  opt = setOptions('vislocalizer', subLabel);
+
+  opt.skullstrip.do = false;
+
+  BIDS = struct([]);
+
+  matlabbatch = {};
+  matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
+
+  assert(isempty(matlabbatch));
+
 end
 
 function expectedBatch = returnExpectedBatch(opt)
