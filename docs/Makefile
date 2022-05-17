@@ -19,6 +19,8 @@ help:
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
+clean:
+	rm -rf $(BUILDDIR)
 clean_default_options: source/default_options.m
 	sed -i "s@/home/remi/matlab/SPM/spm12@spm12_dir@g" source/default_options.m
 	sed -i "s@/home/remi/github/CPP_SPM/docs/derivatives@derivatives@g" source/default_options.m

@@ -1,3 +1,6 @@
+# ignoring this might speed up build
+# by preventing passing extra content to the docker daemon
+
 .vscode
 .git
 .github
@@ -6,10 +9,8 @@ coverage_html
 demos/*/outputs/
 demos/*/inputs/
 demos/*/cfg/
+docs
 env
+manualTests
+templates
 tests
-
-# ignoring this might speed up build
-# by preventing passing extra content to the docker daemon
-
-# lib
