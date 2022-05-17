@@ -41,7 +41,7 @@ update: update.sh ## Tries to get the latest version of the current branch from 
 fix_submodule: ## Fix any submodules that would not be checked out
 	git submodule update --init --recursive && git submodule update --recursive
 
-# TODO should update the version in 
+# TODO should update the version in
 # - the doc conf.py
 # - in the reference in the README
 # - dockerfile
@@ -51,7 +51,7 @@ version.txt: CITATION.cff
 validate_cff: CITATION.cff
 	cffconvert --validate
 
-	
+
 ################################################################################
 #   doc
 
@@ -94,7 +94,7 @@ system_test: manualTests/test_moae.m initCppSpm.m src demos/MoAE/options demos/M
 
 .PHONY: clean_docker
 
-clean_docker: 
+clean_docker:
 	rm -f Dockerfile_matlab
 
 build_image: Dockerfile fix_submodule ## Build stable docker image from the main branch
@@ -107,7 +107,7 @@ build_image_dev: Dockerfile ## Build latest docker image from the dev branch
 	git checkout dev
 	VERSION=$(cat version.txt | cut -c2-)
 	docker build . --no-cache -f Dockerfile -t cpplab/cpp_spm:latest
-	docker tag cpplab/cpp_spm:latest cpplab/cpp_spm:$$VERSION	
+	docker tag cpplab/cpp_spm:latest cpplab/cpp_spm:$$VERSION
 
 build_image_test: ## For debugging docker image building
 	docker build . -f Dockerfile -t cpplab/cpp_spm:test
@@ -121,10 +121,10 @@ Dockerfile_matlab:
 		--run "node -v && npm -v && npm install -g bids-validator" \
 		--user neuro \
 		--run "mkdir code output cpp_spm" \
-		--copy ".", "/home/neuro/cpp_spm/" > Dockerfile_matlab	
+		--copy ".", "/home/neuro/cpp_spm/" > Dockerfile_matlab
 
 build_image_matlab_dev: Dockerfile_matlab
 	VERSION=$(cat version.txt | cut -c2-)
-	docker build . -f Dockerfile_matlab -t cpplab/cpp_spm:matlab_$$VERSION	
+	docker build . -f Dockerfile_matlab -t cpplab/cpp_spm:matlab_$$VERSION
 
 ################################################################################
