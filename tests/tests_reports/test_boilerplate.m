@@ -53,16 +53,6 @@ function test_boilerplate_spatial_subject_glm()
 
   opt = setOptions('facerep');
 
-  filter = opt.bidsFilterFile.bold;
-  filter.task = opt.taskName;
-
-  sliceOrder = getAndCheckSliceOrder(opt.dir.input, opt, filter);
-  if isempty(sliceOrder)
-    opt.stc = false;
-  end
-
-  %   opt.stc.referenceSlice = 16;
-
   opt.fwhm.contrast = 0;
 
   opt.designType = 'block';
