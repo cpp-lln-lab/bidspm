@@ -90,6 +90,12 @@ system_test: manualTests/test_moae.m initCppSpm.m src demos/MoAE/options demos/M
 
 ################################################################################
 #   DOCKER
+
+.PHONY: clean_docker
+
+clean_docker: 
+	rm -f Dockerfile_matlab
+
 build_image: Dockerfile fix_submodule ## Build stable docker image from the main branch
 	git checkout main
 	docker build . --no-cache -f Dockerfile -t cpplab/cpp_spm:stable
@@ -105,5 +111,19 @@ build_image_dev: Dockerfile ## Build latest docker image from the dev branch
 build_image_test: ## For debugging docker image building
 	docker build . -f Dockerfile -t cpplab/cpp_spm:test
 
+Dockerfile_matlab:
+	docker run --rm repronim/neurodocker:0.7.0 generate docker \
+		--pkg-manager apt \
+		--base debian:stretch-slim \
+		--spm12 version=r7771 \
+		--install nodejs npm \
+		--run "node -v && npm -v && npm install -g bids-validator" \
+		--user neuro \
+		--run "mkdir code output cpp_spm" \
+		--copy ".", "/home/neuro/cpp_spm/" > Dockerfile_matlab	
+
+build_image_matlab_dev: Dockerfile_matlab
+	VERSION=$(cat version.txt | cut -c2-)
+	docker build . -f Dockerfile_matlab -t cpplab/cpp_spm:matlab_$$VERSION	
 
 ################################################################################

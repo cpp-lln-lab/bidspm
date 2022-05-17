@@ -11,6 +11,8 @@ ENV LANG="en_US.UTF-8" \
 #TODO how to update this with the content of the current version
 LABEL version="1.1.5dev"
 
+LABEL maintainer="Rémi Gau <remi.gau@gmail.com>"
+
 ## Install SPM
 # basic OS tools install and also octave
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
