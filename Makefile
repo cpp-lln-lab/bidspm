@@ -31,7 +31,7 @@ test: run_tests.m initCppSpm.m src tests
 docker_images: Dockerfile Dockerfile_dev
 	bash build_image.sh
 
-
+# TODO should update the version in the doc and in the reference in the README
 version.txt: CITATION.cff
 	grep -w "^version" CITATION.cff | sed "s/version: /v/g" > version.txt
 
@@ -40,3 +40,5 @@ validate_cff: CITATION.cff
 
 manual:
 	cd docs && sh create_manual.sh
+
+# TODO update contributors in code and citation CFF based on contributors?
