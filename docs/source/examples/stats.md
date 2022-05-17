@@ -5,7 +5,7 @@ https://doi.org/10.5281/zenodo.3554331) using statistical parametric mapping
 www.fil.ion.ucl.ac.uk/spm; RRID:SCR_007037) using MATLAB 9.2.0.538062 (R2017a)
 on a unix computer (Ubuntu 18.04.6 LTS).
 
-The input data were the preprocessed BOID images in individual IXI549Space space
+The input data were the preprocessed BOLD images in individual IXI549Space space
 for the task "facerepetition".
 
 At the subject level, we performed a mass univariate analysis with a linear

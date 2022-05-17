@@ -44,3 +44,8 @@ used at acquisition; interpolation: 4th degree b-spline).
 
 Preprocessed functional images were spatially smoothed using a 3D gaussian
 kernel (FWHM = 6 mm).
+
+This method section was automatically generated using CPP SPM (v1.1.5dev;
+https://github.com/cpp-lln-lab/CPP_SPM; DOI:
+https://doi.org/10.5281/zenodo.3554331) and octache
+(https://github.com/Remi-Gau/Octache).
