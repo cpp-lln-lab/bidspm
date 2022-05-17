@@ -1,4 +1,11 @@
-function outputFile = boilerplate(pipelineType, opt, outputPath)
+function outputFile = boilerplate(opt, outputPath, pipelineType)
+  %
+  % USAGE::
+  %
+  %  outputFile = boilerplate(opt, outputPath, pipelineType)
+  %
+  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt: structure
   %
   % (C) Copyright 2022 CPP_SPM developers
 

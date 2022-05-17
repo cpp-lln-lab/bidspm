@@ -23,7 +23,7 @@ Welcome to CPP SPM documentation!
    statistics
    quality_analysis
    FAQ
-   method_section_boilerplate
+   method_section
    mancoreg
    docker
    links_and_references

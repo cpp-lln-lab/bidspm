@@ -36,6 +36,7 @@ function test_boilerplate_spatial_preproc()
 
   %  opt.fwhm.func = 0;
 
-  boilerplate('spatial_preproc', opt, pwd);
+  boilerplate(opt, pwd, 'spatial_preproc');
+  
 
 end

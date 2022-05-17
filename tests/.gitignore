@@ -22,3 +22,5 @@ dummyData/derivatives/cpp_spm-stats/*.json
 dummyData/cpp_spm-raw/sub*
 
 dummyData/derivatives/cpp_spm-roi
+
+test_reports/*.md
