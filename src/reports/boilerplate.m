@@ -6,7 +6,7 @@ function outputFile = boilerplate(varargin)
   %                             'outputPath', outputPath, ...
   %                             'pipelineType', pipelineType, ...
   %                             'partialsPath', partialsPath, ...
-  %                             'verbose', true)
+  %                             'verbosity', 2)
   %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
@@ -14,7 +14,7 @@ function outputFile = boilerplate(varargin)
   % :param outputPath:
   % :type outputPath: char
   %
-  % :param pipelineType:
+  % :param pipelineType: ``'spatial_preproc'`` or ``'stats``
   % :type pipelineType: char
   %
   % :param partialsPath:
@@ -34,7 +34,7 @@ function outputFile = boilerplate(varargin)
   args.addParameter('outputPath', '', @ischar);
   args.addParameter('pipelineType', 'spatial_preproc', @ischar);
   args.addParameter('partialsPath', defaultPartialsPath, @isdir);
-  args.addParameter('verbose', true, @islogical);
+  args.addParameter('verbosity', 2);
 
   args.parse(varargin{:});
 
@@ -42,7 +42,7 @@ function outputFile = boilerplate(varargin)
   outputPath = args.Results.outputPath;
   pipelineType = args.Results.pipelineType;
   partialsPath = args.Results.partialsPath;
-  verbose = args.Results.verbose;
+  opt.verbosity = args.Results.verbosity;
 
   %% get info
   [OS, generatedBy] = getEnvInfo(opt);
@@ -139,11 +139,17 @@ function outputFile = boilerplate(varargin)
   end
 
   %% print to screen
-  if verbose
-    printToScreen(output);
-  end
+  printToScreen(output, opt);
 
   %% print to file
+  outputFile = printToFile(output, outputPath, pipelineType);
+
+end
+
+function outputFile = printToFile(output, outputPath, pipelineType)
+
+  outputFile = '';
+
   if ~isempty(outputPath)
 
     spm_mkdir(outputPath);
