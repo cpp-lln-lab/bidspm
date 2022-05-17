@@ -50,7 +50,7 @@ with the following git command::
 If you need the latest development, then you must clone from the ``dev`` branch::
 
   git clone \
-      -b dev \
+      --branch dev \
       --recurse-submodules \
       https://github.com/cpp-lln-lab/CPP_SPM.git
 
