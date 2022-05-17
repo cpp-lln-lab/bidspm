@@ -7,6 +7,6 @@ function printProcessingSubject(iSub, subLabel, opt)
                  'SUBJECT LABEL : %s \n'], ...
                 iSub, subLabel);
 
-  printToScreen(msg, opt);
+  printToScreen(msg, opt, 'format', '*blue');
 
 end

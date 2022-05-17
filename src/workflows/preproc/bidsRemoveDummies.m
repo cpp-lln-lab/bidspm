@@ -26,21 +26,21 @@ function bidsRemoveDummies(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   default_force = false;
 
   isPositive = @(x) x >= 0;
 
-  addRequired(p, 'opt', @isstruct);
-  addParameter(p, 'dummyScans', 0, isPositive);
-  addParameter(p, 'force', default_force, @islogical);
+  addRequired(args, 'opt', @isstruct);
+  addParameter(args, 'dummyScans', 0, isPositive);
+  addParameter(args, 'force', default_force, @islogical);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  opt = p.Results.opt;
-  dummyScans = p.Results.dummyScans;
-  force = p.Results.force;
+  opt = args.Results.opt;
+  dummyScans = args.Results.dummyScans;
+  force = args.Results.force;
 
   if dummyScans == 0
     errorHandling(mfilename(), 'noDummiesToRemove', ...
@@ -62,7 +62,11 @@ function bidsRemoveDummies(varargin)
     printProcessingSubject(iSub, subLabel, opt);
 
     filter = opt.bidsFilterFile.bold;
+    filter.ext = '\.nii.*$';
     filter.task = opt.taskName;
+    filter.desc = '';
+    filter.space = '';
+    filter.sub = subLabel;
 
     files = bids.query(BIDS, 'data', filter);
     metadata = bids.query(BIDS, 'metadata', filter);

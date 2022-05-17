@@ -16,15 +16,15 @@ function matlabbatch = setBatchRenameSegmentParameter(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
-  addRequired(p, 'matlabbatch', @iscell);
-  addRequired(p, 'opt', @isstruct);
+  addRequired(args, 'matlabbatch', @iscell);
+  addRequired(args, 'opt', @isstruct);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  matlabbatch = p.Results.matlabbatch;
-  opt = p.Results.opt;
+  matlabbatch = args.Results.matlabbatch;
+  opt = args.Results.opt;
 
   printBatchName('rename segmentation parameter file', opt);
 

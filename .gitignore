@@ -22,16 +22,19 @@ cpp_spm
 env
 venv
 
-## visual studio code
-.vscode
-
 ## from running tests in root dir
-cfg/*
-group/*
+*/cfg/*
+*/group/*
 models/*
 
 # jupyter notebooks
 .ipynb_checkpoints
+
+# node stuff
+
+node_modules
+package*
+yarn.lock
 
 ## MATLAB / OCTAVE gitignore template
 

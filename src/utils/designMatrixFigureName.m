@@ -18,25 +18,25 @@ function filename = designMatrixFigureName(varargin)
 
   % The code goes below
 
-  p = inputParser;
+  args = inputParser;
 
   defaultDesc = '';
   defaultSubLabel = '';
 
-  addRequired(p, 'opt', @isstruct);
-  addOptional(p, 'desc', defaultDesc, @ischar);
-  addOptional(p, 'subLabel', defaultSubLabel, @ischar);
+  addRequired(args, 'opt', @isstruct);
+  addOptional(args, 'desc', defaultDesc, @ischar);
+  addOptional(args, 'subLabel', defaultSubLabel, @ischar);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
   nameStructure = struct( ...
                          'suffix', 'designmatrix', ...
                          'ext', '.png', ...
                          'entities', struct( ...
-                                            'sub', p.Results.subLabel, ...
-                                            'task', strjoin(p.Results.opt.taskName, ''), ...
-                                            'space', p.Results.opt.space));
-  nameStructure.entities.desc = p.Results.desc;
+                                            'sub', args.Results.subLabel, ...
+                                            'task', strjoin(args.Results.opt.taskName, ''), ...
+                                            'space', args.Results.opt.space));
+  nameStructure.entities.desc = args.Results.desc;
   bidsFile = bids.File(nameStructure);
   filename = bidsFile.filename;
 

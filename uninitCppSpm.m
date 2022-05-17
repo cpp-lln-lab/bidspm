@@ -8,12 +8,6 @@ function uninitCppSpm()
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  warning('DEPRECATED: use `cpp_spm(''uninit'')` instead');
-
-  if dev
-    cpp_spm('dev');
-  else
-    cpp_spm('uninit');
-  end
+  cpp_spm('action', 'uninit');
 
 end

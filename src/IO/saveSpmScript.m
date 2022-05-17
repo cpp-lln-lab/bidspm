@@ -17,7 +17,7 @@ function outputFilename = saveSpmScript(varargin)
 
   % TODO add header to output .m file
 
-  p = inputParser;
+  args = inputParser;
 
   defaultOutputFilename = '';
 
@@ -25,22 +25,22 @@ function outputFilename = saveSpmScript(varargin)
                          (exist(x, 'file') == 2 && ...
                           strcmp(spm_file(x, 'ext'), 'mat'));
 
-  addRequired(p, 'input', isCellOrMatFile);
-  addOptional(p, 'outputFilename', defaultOutputFilename, @ischar);
+  addRequired(args, 'input', isCellOrMatFile);
+  addOptional(args, 'outputFilename', defaultOutputFilename, @ischar);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  outputFilename = p.Results.outputFilename;
+  outputFilename = args.Results.outputFilename;
 
-  if iscell(p.Results.input)
-    matlabbatch = p.Results.input;
+  if iscell(args.Results.input)
+    matlabbatch = args.Results.input;
 
   else
     % assumes the job was saved in a matlabbatch variable
-    load(p.Results.input, 'matlabbatch');
+    load(args.Results.input, 'matlabbatch');
 
     if strcmp(outputFilename, '')
-      outputFilename = spm_file(p.Results.input, 'ext', '.m');
+      outputFilename = spm_file(args.Results.input, 'ext', '.m');
     end
 
   end

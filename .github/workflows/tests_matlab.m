@@ -9,8 +9,11 @@ addpath(fullfile(root_dir, 'MOcov', 'MOcov'));
 cd(fullfile(root_dir, 'MOxUnit', 'MOxUnit'));
 run moxunit_set_path();
 
-cd(fullfile(root_dir));
+cd(root_dir);
+cpp_spm('action', 'dev');
 
-cpp_spm('dev');
+cd demos/MoAE;
+download_moae_ds(true);
 
+cd(root_dir);
 run run_tests();

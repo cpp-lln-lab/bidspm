@@ -21,13 +21,15 @@ inputs/raw:
 
 # cd inputs && datalad install https://gin.g-node.org/RemiGau/spm_moae_fmriprep.git
 # cd inputs && datalad install git@gin.g-node.org:/RemiGau/spm_moae_fmriprep.git
+# git@gin.g-node.org:/SPM_datasets/spm_moae_fmriprep.git
 inputs/fmriprep:
-	cd inputs && datalad install https://gin.g-node.org/RemiGau/spm_moae_fmriprep.git
-	datalad get inputs/spm_moae_fmriprep/*.json
-	datalad get inputs/spm_moae_fmriprep/sub*/*/*.nii*
-	datalad get inputs/spm_moae_fmriprep/sub*/*/*.tsv
-	datalad get inputs/spm_moae_fmriprep/sub*/*/*.json
-	mv inputs/spm_moae_fmriprep inputs/fmriprep
+	datalad install --source git@gin.g-node.org:/SPM_datasets/spm_moae_fmriprep.git \
+					inputs/fmriprep
+	cd inputs/fmriprep && datalad get *.json \
+										*/*/*tsv \
+										*/*/*json \
+										*/*/*desc-preproc*.nii.gz \
+										*/*/*desc-brain*.nii.gz
 all: $(roi)
 
 $(preproc): moae_01_preproc.m

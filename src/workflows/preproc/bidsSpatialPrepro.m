@@ -80,7 +80,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
     % Skip segmentation and skullstripping if done previously
     anatFile = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1};
-    anatFile = bids.internal.parse_filename(anatFile);
+    anatFile = bids.File(anatFile);
     filter = anatFile.entities;
     filter.modality = 'anat';
 

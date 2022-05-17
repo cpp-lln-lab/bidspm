@@ -31,28 +31,21 @@ function removeDummies(varargin)
   default_force = false;
   default_verbose = true;
 
-  p = inputParser;
+  args = inputParser;
 
-  addRequired(p, 'inputFile', isFile);
-  addRequired(p, 'dummyScans', isPositive);
-  addOptional(p, 'metadata', default_metadata, @isstruct);
-  addParameter(p, 'force', default_force, @islogical);
-  addParameter(p, 'verbose', default_verbose, @islogical);
+  addRequired(args, 'inputFile', isFile);
+  addRequired(args, 'dummyScans', isPositive);
+  addOptional(args, 'metadata', default_metadata, @isstruct);
+  addParameter(args, 'force', default_force, @islogical);
+  addParameter(args, 'verbose', default_verbose, @islogical);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  inputFile = p.Results.inputFile;
-  dummyScans = p.Results.dummyScans;
-  metadata = p.Results.metadata;
-  force = p.Results.force;
-  verbose = p.Results.verbose;
-
-  isZipped = strcmp(spm_file(inputFile, 'ext'), 'gz');
-  if isZipped
-    % TODO fix for octave as unzipping will delete original
-    gunzip(inputFile);
-    inputFile = spm_file(inputFile, 'ext', '');
-  end
+  inputFile = args.Results.inputFile;
+  dummyScans = args.Results.dummyScans;
+  metadata = args.Results.metadata;
+  force = args.Results.force;
+  verbose = args.Results.verbose;
 
   NumberOfVolumesDiscardedByUser = 0;
   if isfield(metadata, 'NumberOfVolumesDiscardedByUser')
@@ -83,17 +76,11 @@ function removeDummies(varargin)
 
   end
 
-  threeDimFiles = spm_file_split(inputFile);
-  V = threeDimFiles;
-  V(1:numberOfVolumeToDiscard) = [];
-  spm_file_merge(V, inputFile);
-  spm_unlink(threeDimFiles.fname);
+  volumeSplicing(inputFile, 1:numberOfVolumeToDiscard);
 
-  if isZipped
-    gzip(inputFile);
-    delete(inputFile);
+  if isZipped(inputFile)
+    inputFile = spm_file(inputFile, 'ext', '');
   end
-
   jsonFile = spm_file(inputFile, 'ext', 'json');
 
   metadata.NumberOfVolumesDiscardedByUser = NumberOfVolumesDiscardedByUser;

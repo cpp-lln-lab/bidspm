@@ -15,25 +15,25 @@ function status = noSPMmat(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
-  addRequired(p, 'opt', @isstruct);
-  addRequired(p, 'subLabel', @ischar);
-  addRequired(p, 'spmMatFile', @ischar);
+  addRequired(args, 'opt', @isstruct);
+  addRequired(args, 'subLabel', @ischar);
+  addRequired(args, 'spmMatFile', @ischar);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
   status = false;
 
-  if ~(exist(p.Results.spmMatFile, 'file') == 2)
+  if ~(exist(args.Results.spmMatFile, 'file') == 2)
 
     status = true;
 
     msg = sprintf(['No SPM.mat found for subject %s in folder:\n%s\n', ...
                    'Run bidsFFX(''specify'', opt)\n'], ...
-                  p.Results.subLabel, ...
-                  spm_fileparts(p.Results.spmMatFile));
-    errorHandling(mfilename(), 'noSpecifiedModel', msg, true, p.Results.opt.verbosity);
+                  args.Results.subLabel, ...
+                  spm_fileparts(args.Results.spmMatFile));
+    errorHandling(mfilename(), 'noSpecifiedModel', msg, true, args.Results.opt.verbosity);
 
   end
 

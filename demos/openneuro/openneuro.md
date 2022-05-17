@@ -61,15 +61,19 @@ cd datasets.datalad.org/
 datalad install openneuro datalad
 install openneuro/ds002790
 cd openneuro/ds002790
+
 # get resting state data first 2 subjects from MNI space
 ls derivatives/fmriprep/sub-000[12]/func/sub-000[12]_task-restingstate_acq-seq_*space-*MNI*_*
 datalad get derivatives/fmriprep/sub-000[12]/func/sub-000[12]_task-restingstate_acq-seq_*space-*MNI*_*
+
 # get their realignment parameters and other confounds
 ls derivatives/fmriprep/sub-000[12]/func/sub-000[12]_task-restingstate_*confounds*
 datalad get derivatives/fmriprep/sub-000[12]/func/sub-000[12]_task-restingstate_*confounds*
+
 # get normalization parameters
 ls derivatives/fmriprep/sub-000[12]/anat/*.h5
 datalad get derivatives/fmriprep/sub-000[12]/anat/*.h5
+
 # get anat data from MNI space
 ls derivatives/fmriprep/sub-0001/anat/*MNI*desc*
 datalad get derivatives/fmriprep/sub-0001/anat/*MNI*desc*

@@ -1,0 +1,38 @@
+@software{CPP_SPM,
+  author  = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo},
+  license = {GPL-3.0},
+  title   = {CPP SPM},
+  url     = {https://github.com/cpp-lln-lab/CPP_SPM},
+  version = {1.1.5dev},
+  doi     = {https://doi.org/10.5281/zenodo.3554331},
+}
+
+@article{Corbin2018,
+author = {Corbin, Nadège and Todd, Nick and Friston, Karl J. and Callaghan, Martina F.},
+title = {Accurate modeling of temporal correlations in rapidly sampled fMRI time series},
+journal = {Human Brain Mapping},
+volume = {39},
+number = {10},
+pages = {3884-3897},
+keywords = {accelerated acquisitions, functional MRI, functional sensitivity, prewhitening, temporal correlation},
+doi = {https://doi.org/10.1002/hbm.24218},
+url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/hbm.24218},
+eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/hbm.24218},
+abstract = {Abstract Rapid imaging techniques are increasingly used in functional MRI studies because they allow a greater number of samples to be acquired per unit time, thereby increasing statistical power. However, temporal correlations limit the increase in functional sensitivity and must be accurately accounted for to control the false-positive rate. A common approach to accounting for temporal correlations is to whiten the data prior to estimating fMRI model parameters. Models of white noise plus a first-order autoregressive process have proven sufficient for conventional imaging studies, but more elaborate models are required for rapidly sampled data. Here we show that when the “FAST” model implemented in SPM is used with a well-controlled number of parameters, it can successfully prewhiten 80\% of grey matter voxels even with volume repetition times as short as 0.35 s. We further show that the temporal signal-to-noise ratio (tSNR), which has conventionally been used to assess the relative functional sensitivity of competing imaging approaches, can be augmented to account for the temporal correlations in the time series. This amounts to computing the t-score testing for the mean signal. We show in a visual perception task that unlike the tSNR weighted by the number of samples, the t-score measure is directly related to the t-score testing for activation when the temporal correlations are correctly modeled. This score affords a more accurate means of evaluating the functional sensitivity of different data acquisition options.},
+year = {2018}
+}
+
+@article{Friston1995,
+  author   = {Friston, Karl. J. and Ashburner, J. and Frith, C. D. and Poline, J.-B. and Heather, J. D. and Frackowiak, R. S. J.},
+  title    = {Spatial registration and normalization of images},
+  journal  = {Human Brain Mapping},
+  volume   = {3},
+  number   = {3},
+  pages    = {165-189},
+  keywords = {realignment, registration, anatomy, imaging, stereotaxy, morphometrics, basis functions, spatial normalization, PET, MRI, functional mapping},
+  doi      = {https://doi.org/10.1002/hbm.460030303},
+  url      = {https://onlinelibrary.wiley.com/doi/abs/10.1002/hbm.460030303},
+  eprint   = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/hbm.460030303},
+  abstract = {Abstract This paper concerns the spatial and intensity transformations that map one image onto another. We present a general technique that facilitates nonlinear spatial (stereotactic) normalization and image realignment. This technique minimizes the sum of squares between two images following nonlinear spatial deformations and transformations of the voxel (intensity) values. The spatial and intensity transformations are obtained simultaneously, and explicitly, using a least squares solution and a series of linearising devices. The approach is completely noninteractive (automatic), nonlinear, and noniterative. It can be applied in any number of dimensions. Various applications are considered, including the realignment of functional magnetic resonance imaging (MRI) time-series, the linear (affine) and nonlinear spatial normalization of positron emission tomography (PET) and structural MRI images, the coregistration of PET to structural MRI, and, implicitly, the conjoining of PET and MRI to obtain high resolution functional images. © 1995 Wiley-Liss, Inc.},
+  year     = {1995}
+}

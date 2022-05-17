@@ -49,7 +49,7 @@ function opt = checkOptions(opt)
   %               'bold', struct('modality', 'func', 'suffix', 'bold'), ...
   %               't2w',  struct('modality', 'anat', 'suffix', 'T2w'), ...
   %               't1w',  struct('modality', 'anat', 'space', '', 'suffix', 'T1w'), ...
-  %               'roi',  struct('modality', 'roi', 'suffix', 'roi'));
+  %               'roi',  struct('modality', 'roi', 'suffix', 'mask'));
   %
   %  - **preprocessing**
   %
@@ -91,6 +91,8 @@ function opt = checkOptions(opt)
   %       Mostly for debugging as the ouput files won't be usable by any of the stats
   %       workflows.
   %
+  %     - ``opt.msg.color = blue`` - default font color of the prompt messages.
+  %
   %  - **preprocessing**
   %
   %     - ``opt.anatOnly = false`` - to only preprocess the anatomical file
@@ -102,6 +104,8 @@ function opt = checkOptions(opt)
   %     - ``opt.skullstrip.threshold = 0.75`` - Threshold used for the skull stripping.
   %       Any voxel with ``p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold``
   %       will be included in the mask.
+  %     - ``opt.skullstrip.do = true``  -  Set to ``true`` to skip skullstripping
+  %
   %
   %     - ``opt.stc.skip = false`` - boolean flag to skip slice time correction or not.
   %     - ``opt.stc.referenceSlice = []`` - reference slice for the slice timing correction.
@@ -115,7 +119,7 @@ function opt = checkOptions(opt)
   %
   %  - **preprocessing QA** (see ``functionalQA``)
   %
-  %     - ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
+  %     ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
   %
   %     - ``opt.QA.func.carpetPlot = true`` to plot carpet plot
   %     - ``opt.QA.func.MotionParameters = 'on'``
@@ -141,7 +145,7 @@ function opt = checkOptions(opt)
   %     - ``opt.glm.keepResiduals = false`` keeps the subject level GLM
   %       residuals
   %
-  %     - ``opt.QA.glm.do = true`` - If set to ``true`` the residual images of a
+  %     - ``opt.QA.glm.do = false`` - If set to ``true`` the residual images of a
   %       GLM at the subject levels will be used to estimate if there is any remaining structure
   %       in the GLM residuals (the power spectra are not flat) that could indicate
   %       the subject level results are likely confounded.
@@ -170,9 +174,9 @@ function opt = checkOptions(opt)
   end
 
   if ~iscell(opt.query.modality)
-    tmp = opt.query.modality;
+    Results = opt.query.modality;
     opt.query = rmfield(opt.query, 'modality');
-    opt.query.modality{1} = tmp;
+    opt.query.modality{1} = Results;
   end
 
   if ~isempty(opt.model.file)
@@ -180,6 +184,7 @@ function opt = checkOptions(opt)
       msg = sprintf('model file does not exist:\n %s', opt.model.file);
       errorHandling(mfilename(), 'modelFileMissing', msg, false, opt.verbosity);
     end
+    bm = bids.Model('file', opt.model.file);
     if strcmpi(opt.pipeline.type, 'stats')
       opt = overRideWithBidsModelContent(opt);
     end
@@ -203,7 +208,43 @@ function opt = checkOptions(opt)
 
   opt = setDirectories(opt);
 
-  % TODO add some checks on the content of opt.result.Nodes().Output
+  % Checks on the content of opt.result.Nodes().Output
+  Results = returnDefaultResultsStructure();
+  Contrasts = returnDefaultContrastsStructure();
+
+  for iNode = 1:numel(opt.result.Nodes)
+    thisNode = opt.result.Nodes(iNode);
+    thisNode =  setFields(thisNode, Results);
+
+    % validate values for contrast
+    for iCon = 1:numel(thisNode.Contrasts)
+
+      assert(ischar(thisNode.Contrasts(iCon).Name));
+
+      if isempty(thisNode.Contrasts(iCon).p)
+        thisNode.Contrasts(iCon).p = Contrasts.p;
+      end
+      assert(thisNode.Contrasts(iCon).p >= 0 && thisNode.Contrasts(iCon).p <= 1);
+
+      if isempty(thisNode.Contrasts(iCon).k)
+        thisNode.Contrasts(iCon).k = Contrasts.k;
+      end
+      assert(thisNode.Contrasts(iCon).k >= 0);
+
+      if ~islogical(thisNode.Contrasts(iCon).useMask)
+        thisNode.Contrasts(iCon).useMask = Contrasts.useMask;
+      end
+
+      if isempty(thisNode.Contrasts(iCon).MC) || ...
+         ~ismember(thisNode.Contrasts(iCon).MC, {'FWE', 'FDR', 'none'})
+        thisNode.Contrasts(iCon).MC = Contrasts.MC;
+      end
+
+    end
+
+    opt.result.Nodes(iNode) = thisNode;
+
+  end
 
 end
 
@@ -222,7 +263,10 @@ function fieldsToSet = setDefaultOption()
                                       't1w',  struct('modality', 'anat', ...
                                                      'space', '', ...
                                                      'suffix', 'T1w'), ...
-                                      'roi',  struct('modality', 'roi', 'suffix', 'roi'));
+                                      'mp2rage',  struct('modality', 'anat', ...
+                                                         'space', '', ...
+                                                         'suffix', 'MP2RAGE'), ...
+                                      'roi',  struct('modality', 'roi', 'suffix', 'mask'));
 
   fieldsToSet.pipeline.type = '';
   fieldsToSet.pipeline.name = 'cpp_spm';
@@ -263,8 +307,11 @@ function fieldsToSet = setDefaultOption()
 
   %% Options for segmentation
   fieldsToSet.segment.force = false;
+  fieldsToSet.segment.biasfwhm = 60;
+  fieldsToSet.segment.samplingDistance = 3;
 
   %% Options for skullstripping
+  fieldsToSet.skullstrip.do = true;
   fieldsToSet.skullstrip.threshold = 0.75;
   fieldsToSet.skullstrip.mean = false;
 
@@ -286,7 +333,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.glm.keepResiduals = false;
 
   %% Options for QA
-  fieldsToSet.QA.glm.do = true;
+  fieldsToSet.QA.glm.do = false;
   fieldsToSet.QA.anat.do = true;
   fieldsToSet.QA.func.carpetPlot = true;
   fieldsToSet.QA.func.Motion = 'on';
@@ -296,8 +343,10 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.QA.func.Movie = 'off';
   fieldsToSet.QA.func.Basics = 'on';
 
-  % specify the results to compute
   fieldsToSet.result.Nodes = returnDefaultResultsStructure();
+
+  %% Options for interface
+  fieldsToSet.msg.color = '';
 
 end
 

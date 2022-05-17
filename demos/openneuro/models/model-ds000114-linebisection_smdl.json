@@ -1,12 +1,20 @@
 {
   "Name": "linebisection",
+  "BIDSModelVersion": "1.0.0",
   "Description": "contrasts to compute for the line bisection task",
   "Input": {
-    "task": "linebisection"
+    "task": [
+      "linebisection"
+    ]
   },
   "Nodes": [
     {
-      "Level": "run",
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
       "Model": {
         "X": [
           "trial_type.Correct_Task",
@@ -17,6 +25,7 @@
           "trans_?",
           "rot_?"
         ],
+        "Type": "glm",
         "HRF": {
           "Variables": [
             "trial_type.Correct_Task",
@@ -28,35 +37,50 @@
           "Model": "DoubleGamma"
         }
       },
-      "DummyContrasts": [
-        "trial_type.Correct_Task",
-        "trial_type.Incorrect_Task"
-      ]
-    },
-    {
-      "Level": "subject",
-      "Model": {
-        "X": [
+      "DummyContrasts": {
+        "Contrasts": [
           "trial_type.Correct_Task",
           "trial_type.Incorrect_Task",
           "trial_type.No_Response_Task",
           "trial_type.Response_Control",
-          "trial_type.No_Response_Control",
-          "trans_?",
-          "rot_?"
-        ]
-      },
-      "DummyContrasts": [
-        "trial_type.Correct_Task",
-        "trial_type.Incorrect_Task"
-      ]
+          "trial_type.No_Response_Control"
+        ],
+        "Test": "t"
+      }
     },
     {
-      "Level": "dataset",
-      "DummyContrasts": [
-        "trial_type.Correct_Task",
-        "trial_type.Incorrect_Task"
-      ]
+      "Level": "Subject",
+      "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "dataset_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
     }
   ]
 }

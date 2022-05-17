@@ -132,6 +132,30 @@ create_raw_anat() {
 	mkdir -p ${this_dir}
 
 	touch "${this_dir}/sub-${subject}_ses-${ses}${suffix}.nii"
+
+	# MP2RAGE
+	touch "${this_dir}/sub-${subject}_ses-${ses}_UNIT1.nii"
+	touch "${this_dir}/sub-${subject}_ses-${ses}_inv-1_MP2RAGE.nii"
+	touch "${this_dir}/sub-${subject}_ses-${ses}_inv-2_MP2RAGE.nii"
+
+	template='{"MagneticFieldStrength":%f, "RepetitionTimePreparation":%f, "InversionTime":%f, "FlipAngle":%f, "FatSat":"%s", "EchoSpacing":%f, "PartialFourierInSlice":%f}'
+
+	FlipAngle=4
+	MagneticFieldStrength=7
+	RepetitionTimePreparation=4.3
+	InversionTime=1
+	Fatsat="yes"
+	EchoSpacing=0.0072
+	PartialFourierInSlice=0.75
+
+	json_string=$(printf "$template" "$MagneticFieldStrength" "$RepetitionTimePreparation" "$InversionTime" "$FlipAngle" "$Fatsat" "$EchoSpacing" "$PartialFourierInSlice")
+	echo "$json_string" >${this_dir}/sub-${subject}_ses-${ses}_inv-1_MP2RAGE.json
+
+	InversionTime=3.2
+
+	json_string=$(printf "$template" "$MagneticFieldStrength" "$RepetitionTimePreparation" "$InversionTime" "$FlipAngle" "$Fatsat" "$EchoSpacing" "$PartialFourierInSlice")
+	echo "$json_string" >${this_dir}/sub-${subject}_ses-${ses}_inv-2_MP2RAGE.json
+
 }
 
 # RAW DATASET
@@ -275,7 +299,7 @@ for subject in ${subject_list}; do
 	# STATS
 	task_list='vismotion vislocalizer'
 	for task in ${task_list}; do
-		this_dir=${stats_dir}/sub-${subject}/stats/task-${task}_space-IXI549Space_FWHM-6
+		this_dir=${stats_dir}/sub-${subject}/task-${task}_space-IXI549Space_FWHM-6
 		mkdir -p ${this_dir}
 
 		cp dummyData/mat_files/SPM.mat ${this_dir}/SPM.mat
@@ -296,7 +320,7 @@ for subject in ${subject_list}; do
 	# different model for model comparison
 	task_list='vismotion vislocalizer'
 	for task in ${task_list}; do
-		this_dir=${stats_dir}/sub-${subject}/stats/task-${task}_space-IXI549Space_FWHM-6_desc-globalSignal
+		this_dir=${stats_dir}/sub-${subject}/task-${task}_space-IXI549Space_FWHM-6_desc-globalSignal
 		mkdir -p ${this_dir}
 
 		cp dummyData/mat_files/SPM.mat ${this_dir}/SPM.mat

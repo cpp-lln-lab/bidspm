@@ -81,7 +81,7 @@ function anatFile = getAnatFileFromBatch(matlabbatch)
   anatFile = '';
   if not(isempty(matlabbatch)) && isfield(matlabbatch{1}, 'cfg_basicio')
     anatFile = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1};
-    anatFile = bids.internal.parse_filename(anatFile);
+    anatFile = bids.File(anatFile);
   end
 
 end

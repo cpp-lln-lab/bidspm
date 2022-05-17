@@ -12,7 +12,10 @@ function expectedOptions = defaultOptions(taskName)
                                           't1w',  struct('modality', 'anat', ...
                                                          'space', '', ...
                                                          'suffix', 'T1w'), ...
-                                          'roi',  struct('modality', 'roi', 'suffix', 'roi'));
+                                          'mp2rage',  struct('modality', 'anat', ...
+                                                             'space', '', ...
+                                                             'suffix', 'MP2RAGE'), ...
+                                          'roi',  struct('modality', 'roi', 'suffix', 'mask'));
 
   expectedOptions.pipeline.type =  '';
   expectedOptions.pipeline.name = 'cpp_spm';
@@ -49,6 +52,11 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.segment.force = false;
 
+  expectedOptions.segment.biasfwhm = 60;
+
+  expectedOptions.segment.samplingDistance = 3;
+
+  expectedOptions.skullstrip.do = true;
   expectedOptions.skullstrip.threshold = 0.75;
   expectedOptions.skullstrip.mean = false;
 
@@ -61,7 +69,7 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.rename = true;
 
-  expectedOptions.QA.glm.do = true;
+  expectedOptions.QA.glm.do = false;
   expectedOptions.QA.anat.do = true;
   expectedOptions.QA.func.carpetPlot = true;
   expectedOptions.QA.func.Motion = 'on';
@@ -94,6 +102,8 @@ function expectedOptions = defaultOptions(taskName)
   end
   expectedOptions = setFields(expectedOptions, rsHRF_my_defaults());
   expectedOptions = setFields(expectedOptions, MACS_my_defaults());
+
+  expectedOptions.msg.color = '';
 
   expectedOptions = orderfields(expectedOptions);
 

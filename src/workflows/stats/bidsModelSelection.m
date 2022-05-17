@@ -121,14 +121,14 @@ function matlabbatch = bidsModelSelection(varargin)
                                                          'posterior', ...
                                                          'bms'});
 
-  p = inputParser;
+  args = inputParser;
   defaultAction = 'all';
-  addRequired(p, 'opt', @isstruct);
-  addOptional(p, 'action', defaultAction, allowedActions);
-  parse(p, varargin{:});
+  addRequired(args, 'opt', @isstruct);
+  addOptional(args, 'action', defaultAction, allowedActions);
+  parse(args, varargin{:});
 
-  opt = p.Results.opt;
-  action = p.Results.action;
+  opt = args.Results.opt;
+  action = args.Results.action;
 
   checks(opt);
 
@@ -169,9 +169,14 @@ function matlabbatch = bidsModelSelection(varargin)
     for iModel = 1:size(names, 1)
 
       opt.model.file = opt.toolbox.MACS.model.files{iModel};
-      inputs = getBidsModelInput(opt.model.file);
-      opt.space = {inputs.space};
-      opt.taskName = inputs.task;
+      opt.model.bm = BidsModel('file', opt.model.file);
+      input = opt.model.bm.Input;
+      if ischar(input.space)
+        opt.space = {input.space};
+      elseif iscell(input.space)
+        opt.space = input.space;
+      end
+      opt.taskName = input.task;
       if ~iscell(opt.taskName)
         opt.taskName = {opt.taskName};
       end
@@ -291,7 +296,8 @@ function checks(opt)
       id = 'noModelFile';
       errorHandling(mfilename(), id, msg, false);
     end
-    inputs{iModel, 1} = getBidsModelInput(modelFiles{iModel});
+    bm = BidsModel('file', modelFiles{iModel});
+    inputs{iModel, 1} = bm.Input;
   end
 
   if any(~cellfun(@(x) isfield(x, 'space'), inputs))
@@ -307,13 +313,17 @@ function checks(opt)
   end
 
   space = cellfun(@(x) x.space, inputs, 'UniformOutput', false);
+  if iscell(space)
+    space = cellfun(@(x) x.space, inputs);
+  end
   if numel(unique(space)) > 1
     msg = sprintf('All models must have same space inputs.');
     id = 'differentModelSpace';
     errorHandling(mfilename(), id, msg, false);
   end
 
-  % if some models have more than one task, then class(inputs.task) will be a cell
+  % if some models have more than one task,
+  % then class(inputs.task) will be a cell
   % and a char otherwise
   tmp = cellfun(@(x) class(x.task), inputs, 'UniformOutput', false);
   moreThanOneTask = numel(unique(tmp)) > 1;
@@ -348,7 +358,8 @@ function names = getMacsModelNames(opt)
   modelFiles = opt.toolbox.MACS.model.files;
 
   for iModel = 1:numel(modelFiles)
-    names{iModel, 1} = getModelName(modelFiles{iModel});
+    bm = BidsModel('file', modelFiles{iModel});
+    names{iModel, 1} = bm.Name;
   end
 
 end

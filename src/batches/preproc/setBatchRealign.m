@@ -29,7 +29,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
   % TODO  make which image is resliced more consistent 'which = []'
 
-  p = inputParser;
+  args = inputParser;
 
   defaultAction = 'realignUnwarp';
   allowedActions = @(x) ischar(x) && ...
@@ -39,19 +39,19 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
                                   'realign', ...
                                   'reslice'});
 
-  addRequired(p, 'matlabbatch', @iscell);
-  addRequired(p, 'BIDS', @isstruct);
-  addRequired(p, 'opt', @isstruct);
-  addRequired(p, 'subLabel', @ischar);
-  addOptional(p, 'action', defaultAction, allowedActions);
+  addRequired(args, 'matlabbatch', @iscell);
+  addRequired(args, 'BIDS', @isstruct);
+  addRequired(args, 'opt', @isstruct);
+  addRequired(args, 'subLabel', @ischar);
+  addOptional(args, 'action', defaultAction, allowedActions);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  matlabbatch = p.Results.matlabbatch;
-  BIDS = p.Results.BIDS;
-  opt = p.Results.opt;
-  subLabel = p.Results.subLabel;
-  action = p.Results.action;
+  matlabbatch = args.Results.matlabbatch;
+  BIDS = args.Results.BIDS;
+  opt = args.Results.opt;
+  subLabel = args.Results.subLabel;
+  action = args.Results.action;
 
   if opt.anatOnly
     voxDim = [];

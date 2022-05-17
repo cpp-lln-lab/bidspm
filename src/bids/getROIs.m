@@ -12,18 +12,18 @@ function [roiList, roiFolder] = getROIs(varargin)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   defaultSubLabel = '';
   charOrCell = @(x) ischar(x) || iscell(x);
 
-  addRequired(p, 'opt');
-  addOptional(p, 'subLabel', defaultSubLabel, charOrCell);
+  addRequired(args, 'opt');
+  addOptional(args, 'subLabel', defaultSubLabel, charOrCell);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  opt = p.Results.opt;
-  subLabel = p.Results.subLabel;
+  opt = args.Results.opt;
+  subLabel = args.Results.subLabel;
 
   % outputs
   roiList = {};
@@ -59,7 +59,7 @@ function [roiList, roiFolder] = getROIs(varargin)
     roiList = spm_select('FPlist', roiFolder, pattern);
     roiList = cellstr(roiList);
 
-  elseif strcmp(space, 'individual')
+  else
 
     % we expect ROI files to have BIDS valid names
     BIDS_ROI = bids.layout(opt.dir.roi, 'use_schema', false);
@@ -70,14 +70,16 @@ function [roiList, roiFolder] = getROIs(varargin)
       errorHandling(mfilename(), 'noSubject', msg, false, opt.verbosity > 0);
     end
 
-    roiFolder = fullfile(BIDS_ROI.pth, ['sub-' subLabel], 'roi');
-
     filter = struct('sub', regexify(subLabel), ...
-                    'space', opt.space);
+                    'space', space, ...
+                    'suffix', 'mask');
 
     if ~isempty(roiNames)
-      if iscell(roiNames) && (numel(roiNames) == 1 && ~strcmp(roiNames{1}, ''))
-        filter.label = ['(' strjoin(opt.roi.name, '|') '){1}'];
+      if iscell(roiNames)
+        if ~(numel(roiNames) == 1 && ~strcmp(roiNames{1}, ''))
+        else
+          filter.label = ['(' strjoin(opt.roi.name, '|') '){1}'];
+        end
 
       elseif isstruct(roiNames)
         filter = setFields(filter, opt.roi.name);
@@ -87,6 +89,13 @@ function [roiList, roiFolder] = getROIs(varargin)
     end
 
     roiList = bids.query(BIDS_ROI, 'data', filter);
+
+    % assuming all ROIs are in the same folder
+    if ~isempty(roiList)
+      roiFolder = fileparts(roiList{1});
+    else
+      roiFolder = [];
+    end
 
   end
 
@@ -101,18 +110,14 @@ end
 
 function space = getSpace(opt)
 
-  space = opt.space;
+  space = opt.bidsFilterFile.roi.space;
+
+  if ~iscell(space)
+    space = {space};
+  end
 
   if any(~cellfun('isempty', regexp(space, 'MNI'))) || ismember('IXI549Space', space)
     space = 'MNI';
-
-  elseif strcmp(opt.space, 'individual')
-    space = 'individual';
-
-  else
-    msg = sprintf('unknwon space:\n%s', createUnorderedList(space));
-    errorHandling(mfilename(), 'unknownSpace', msg, false, opt.verbosity > 0);
-
   end
 
 end

@@ -2,6 +2,7 @@
 
 bids-examples
 openneuro
+tmp
 
 *.png
 
@@ -9,6 +10,8 @@ openneuro
 
 dummyData/derivatives/cpp_spm-*/jobs
 dummyData/derivatives/cpp_spm-preproc/sub*
+
+dummyData/derivatives/cpp_spm-preproc/desc-skullstripped.json
 
 dummyData/derivatives/cpp_spm-stats/sub*
 dummyData/derivatives/cpp_spm-stats/derivatives
@@ -19,3 +22,5 @@ dummyData/derivatives/cpp_spm-stats/*.json
 dummyData/cpp_spm-raw/sub*
 
 dummyData/derivatives/cpp_spm-roi
+
+test_reports/*.md

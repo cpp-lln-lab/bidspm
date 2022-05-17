@@ -18,3 +18,13 @@ help:
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+clean:
+	rm -rf $(BUILDDIR)
+clean_default_options: source/default_options.m
+	sed -i "s@/home/remi/matlab/SPM/spm12@spm12_dir@g" source/default_options.m
+	sed -i "s@/home/remi/github/CPP_SPM/docs/derivatives@derivatives@g" source/default_options.m
+	sed -i "s@/home/remi/github/CPP_SPM/docs/jobs@jobs@g" source/default_options.m
+	sed -i "s@\t@ @g" source/default_options.m
+view:
+	firefox build/html/index.html

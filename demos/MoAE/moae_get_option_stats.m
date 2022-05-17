@@ -7,6 +7,8 @@ function opt = moae_get_option_stats()
 
   opt = [];
 
+  opt.stc.skip = 1;
+
   % The directory where the data are located
   opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
   opt.dir.derivatives = fullfile(opt.dir.raw, '..', '..', 'outputs', 'derivatives');
@@ -19,8 +21,6 @@ function opt = moae_get_option_stats()
                             'models', 'model-MoAE_smdl.json');
 
   % Specify the result to compute
-  opt.result.Nodes(1) = returnDefaultResultsStructure();
-
   opt.result.Nodes(1).Level = 'subject';
 
   opt.result.Nodes(1).Contrasts(1).Name = 'listening_1';

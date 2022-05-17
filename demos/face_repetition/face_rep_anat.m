@@ -9,7 +9,7 @@ clc;
 downloadData = false;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 %% Set options
 opt.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');

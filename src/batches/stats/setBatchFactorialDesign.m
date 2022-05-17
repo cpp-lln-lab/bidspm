@@ -27,62 +27,82 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
 
   rfxDir = getRFXdir(opt);
 
-  grpLvlCon = getGrpLevelContrast(opt);
+  grpLvlCon = opt.model.bm.get_dummy_contrasts('Level', 'dataset');
 
-  % For each contrast
-  for j = 1:size(grpLvlCon.Contrasts, 1)
+  if ~isfield(grpLvlCon, 'Test')
+    disp(grpLvlCon);
+    errorHandling(mfilename(), ...
+                  'noGroupLevelContrast', ...
+                  'No group level contrast. Check your model.', ...
+                  false);
+  end
 
-    % the strrep(Session{j}, 'trial_type.', '') is there to remove
-    % 'trial_type.' because contrasts against baseline are renamed
-    % at the subject level
-    conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
+  if isfield(grpLvlCon, 'Contrasts')
 
-    msg = sprintf('\n\n  Group contrast: %s\n\n', conName);
-    printToScreen(msg, opt);
+    % For each contrast
+    for j = 1:size(grpLvlCon.Contrasts, 1)
 
-    directory = fullfile(rfxDir, conName);
+      % the strrep(Session{j}, 'trial_type.', '') is there to remove
+      % 'trial_type.' because contrasts against baseline are renamed
+      % at the subject level
+      conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
 
-    overwriteDir(directory, opt);
-
-    icell(1).levels = 1; %#ok<*AGROW>
-
-    for iSub = 1:numel(opt.subjects)
-
-      subLabel = opt.subjects{iSub};
-
-      printProcessingSubject(iSub, subLabel, opt);
-
-      % FFX directory and load SPM.mat of that subject
-      ffxDir = getFFXdir(subLabel, opt);
-      load(fullfile(ffxDir, 'SPM.mat'));
-
-      % find which contrast of that subject has the name of the contrast we
-      % want to bring to the group level
-      conIdx = find(strcmp({SPM.xCon.name}, conName));
-      if isempty(conIdx)
-        disp({SPM.xCon.name}');
-        msg = sprintf('Skipping subject %s as we could not find a contrast named %s\nin %s.\n', ...
-                      subLabel, ...
-                      conName, ...
-                      fullfile(ffxDir, 'SPM.mat'));
-        errorHandling(mfilename(), 'missingContrast', msg, true, opt.verbosity);
-        continue
-      end
-      fileName = sprintf('con_%0.4d.nii', conIdx);
-      file = validationInputFile(ffxDir, fileName, smoothPrefix);
-
-      icell(1).scans(iSub, :) = {file};
-
-      msg = sprintf(' %s\n\n', file);
+      msg = sprintf('\n\n  Group contrast: %s\n\n', conName);
       printToScreen(msg, opt);
+
+      directory = fullfile(rfxDir, conName);
+
+      overwriteDir(directory, opt);
+
+      icell(1).levels = 1; %#ok<*AGROW>
+
+      for iSub = 1:numel(opt.subjects)
+
+        subLabel = opt.subjects{iSub};
+
+        printProcessingSubject(iSub, subLabel, opt);
+
+        % FFX directory and load SPM.mat of that subject
+        ffxDir = getFFXdir(subLabel, opt);
+        load(fullfile(ffxDir, 'SPM.mat'));
+
+        % find which contrast of that subject has the name of the contrast we
+        % want to bring to the group level
+        conIdx = find(strcmp({SPM.xCon.name}, conName));
+        if isempty(conIdx)
+          disp({SPM.xCon.name}');
+          msg = sprintf('Skipping subject %s. Could not find a contrast named %s\nin %s.\n', ...
+                        subLabel, ...
+                        conName, ...
+                        fullfile(ffxDir, 'SPM.mat'));
+          errorHandling(mfilename(), 'missingContrast', msg, true, opt.verbosity);
+          continue
+        end
+        fileName = sprintf('con_%0.4d.nii', conIdx);
+        file = validationInputFile(ffxDir, fileName, smoothPrefix);
+
+        icell(1).scans(iSub, :) = {file};
+
+        msg = sprintf(' %s\n\n', file);
+        printToScreen(msg, opt);
+
+      end
+
+      matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell);
+      matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
+                                        fullfile(directory, ...
+                                                 designMatrixFigureName(opt, ...
+                                                                        'before estimation')));
 
     end
 
-    matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell);
-    matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
-                                      fullfile(directory, ...
-                                               designMatrixFigureName(opt, ...
-                                                                      'before estimation')));
+  else
+
+    % TODO
+
+    notImplemented(mfilename, ...
+                   'Grabbing contrast from lower levels not implemented yet.', ...
+                   opt.verbosity);
 
   end
 

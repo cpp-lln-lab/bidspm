@@ -6,7 +6,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 opt = ds001168_get_option();
 
@@ -20,7 +20,7 @@ bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
-bidsSmoothing(FWHM, opt);
+bidsSmoothing(opt);
 
 % Not implemented yet
 % bidsFFX('specifyAndEstimate', opt);

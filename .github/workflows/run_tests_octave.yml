@@ -1,18 +1,4 @@
-name: "tests with octave: : failure expected"
-
-# Uses the cron schedule for github actions
-#
-# https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows#scheduled-events
-#
-# ┌───────────── minute (0 - 59)
-# │ ┌───────────── hour (0 - 23)
-# │ │ ┌───────────── day of the month (1 - 31)
-# │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
-# │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
-# │ │ │ │ │
-# │ │ │ │ │
-# │ │ │ │ │
-# * * * * *
+name: "tests with octave: failure expected"
 
 on:
   push:
@@ -21,9 +7,6 @@ on:
       - dev
   pull_request:
     branches: ['*']
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 env:
   OCTFLAGS: --no-gui --no-window-system --silent
@@ -41,7 +24,7 @@ jobs:
         sudo apt-get -y install octave liboctave-dev
 
     - name: Clone cpp_spm
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: true
         fetch-depth: 2
@@ -52,7 +35,7 @@ jobs:
          make -C spm12/src PLATFORM=octave distclean
          make -C spm12/src PLATFORM=octave
          make -C spm12/src PLATFORM=octave install
-         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
+         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath(); exit;"
 
     - name: Install Moxunit and MOcov
       run: |
@@ -61,16 +44,15 @@ jobs:
         git clone https://github.com/MOcov/MOcov.git --depth 1
         make -C MOcov install
 
+    - name: Update octave path
+      run: |
+        octave $OCTFLAGS --eval "initCppSpm(true); savepath(); exit;"
+
     - name: Prepare data
       run: |
-        inputs_folder='demos/MoAE/inputs/'
-        mkdir $inputs_folder
-        curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $inputs_folder'MoAEpilot.zip'
-        unzip $inputs_folder'MoAEpilot.zip' -d $inputs_folder
-        mv $inputs_folder/MoAEpilot $inputs_folder/raw
+        octave $OCTFLAGS --eval "cd demos/MoAE; download_moae_ds(true); exit;"
         cd tests
         make data
-        cd ..
 
     - name: Run tests
       run: |

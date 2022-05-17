@@ -1,4 +1,4 @@
-#! /user/bin/bash
+#!/usr/bin/env bash
 
 # fail whenever something is fishy, use -x to get verbose logfiles
 set -e -u
@@ -19,6 +19,7 @@ cd ~/visual_motion_localiser
 datalad install \
     -d . \
     -s https://github.com/cpp-lln-lab/CPP_SPM.git \
+    --branch dev \
     -r \
     code/CPP_SPM
 
@@ -37,8 +38,8 @@ datalad install -d . \
 
 datalad save -m 'set up done'
 
-datlad create -d . outputs/derivatives/cpp_spm-preproc
-datlad create -d . outputs/derivatives/cpp_spm-stats
+datalad create -d . outputs/derivatives/cpp_spm-preproc
+datalad create -d . outputs/derivatives/cpp_spm-stats
 
 cd code/CPP_SPM/demos/vismotion
 

@@ -6,7 +6,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 opt = ds000114_get_option();
 
@@ -17,7 +17,7 @@ bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
-bidsSmoothing(FWHM, opt);
+bidsSmoothing(opt);
 
 %% Run level analysis: as for MVPA
 opt.pipeline.type = 'stats';

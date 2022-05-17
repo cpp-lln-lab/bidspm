@@ -18,7 +18,7 @@ function test_specifyContrasts_missing_condition()
   Contrasts.Weights = [1, -1];
   Contrasts.Test = 't';
 
-  model = createEmptyStatsModel;
+  model = bids.Model('init', true);
   model.Input.task = taskName;
   model.Nodes{1}.Contrasts = Contrasts;
   model.Nodes = model.Nodes{1};
@@ -48,7 +48,7 @@ function test_specifyContrasts_missing_condition_for_dummy_contrasts()
   % GIVEN
   DummyContrasts{1} = 'foo';
 
-  model = createEmptyStatsModel;
+  model = bids.Model('init', true);
   model.Input.task = taskName;
   model.Nodes{1}.DummyContrasts.Contrasts = DummyContrasts;
   model.Nodes{1}.DummyContrasts.Test = 't';
@@ -89,7 +89,8 @@ function test_specifyContrasts_complex()
   Contrasts.Weights = [1, -1];
   Contrasts.Test = 't';
 
-  model = createEmptyStatsModel;
+  model = bids.Model('init', true);
+  model.Nodes{2} = bids.Model.empty_node('subject');
   model.Input.task = taskName;
   model.Nodes{1}.DummyContrasts.Contrasts = DummyContrasts;
   model.Nodes{1}.Contrasts = Contrasts;
@@ -167,18 +168,6 @@ function test_specifyContrasts_vismotion()
   expected(end + 1).name = 'VisStat_gt_VisMot_1';
   expected(end).C = [-1 1 0 0 0 0 0 0 0];
 
-  expected(end + 1).name = 'VisMot'; %#ok<*AGROW>
-  expected(end).C = [1 0 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisStat';
-  expected(end).C = [0 1 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisMot_gt_VisStat';
-  expected(end).C = [1 -1 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisStat_gt_VisMot';
-  expected(end).C = [-1 1 0 0 0 0 0 0 0];
-
   assertEqual({contrasts.name}', {expected.name}');
   assertEqual({contrasts.C}', {expected.C}');
 
@@ -193,6 +182,7 @@ function test_specifyContrasts_vislocalizer()
   subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
+  opt.model.bm = BidsModel('file', opt.model.file);
 
   ffxDir = getFFXdir(subLabel, opt);
   spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
@@ -215,18 +205,6 @@ function test_specifyContrasts_vislocalizer()
 
   expected(end + 1).name =  'VisMot_&_VisStat_lt_baseline_1';
   expected(end).C = [-1 -1 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisMot';
-  expected(end).C = [1 0 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisStat';
-  expected(end).C = [0 1 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisMot_gt_VisStat';
-  expected(end).C = [1 -1 0 0 0 0 0 0 0];
-
-  expected(end + 1).name = 'VisStat_gt_VisMot';
-  expected(end).C = [-1 1 0 0 0 0 0 0 0];
 
   assertEqual({contrasts.name}', {expected.name}');
   assertEqual({contrasts.C}', {expected.C}');

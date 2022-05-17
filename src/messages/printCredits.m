@@ -4,54 +4,76 @@ function printCredits(opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  if nargin < 1
+    opt.verbosity = 2;
+  end
+
   versionNumber = getVersion();
 
-  contributors = { ...
-                  'Mohamed Rezk', ...
-                  'Remi Gau', ...
-                  'Olivier Collignon', ...
-                  'Ane Gurtubay', ...
-                  'Marco Barilari', ...
-                  'Iqra Shahzad', ...
-                  'Filippo Cerpelloni', ...
-                  'Michele MacLean', ...
-                  'Iqra Shahzad', ...
-                  'Filippo Cerpelloni', ...
-                  'Federica Falagiarda ', ...
-                  'Ceren Battal'};
+  try
+
+    content = bids.util.jsondecode(fullfile(returnRootDir(), '.all-contributorsrc'));
+    contributors = {content.contributors.name}';
+    contributors = contributors(randperm(numel(contributors)));
+    contributors = cat(1, contributors, 'Why not be the next?');
+
+  catch
+
+    contributors = {'Mohamed Rezk', ...
+                    'Remi Gau', ...
+                    'Olivier Collignon', ...
+                    'Ane Gurtubay', ...
+                    'Marco Barilari', ...
+                    'Iqra Shahzad', ...
+                    'Filippo Cerpelloni', ...
+                    'Michele MacLean', ...
+                    'Iqra Shahzad', ...
+                    'Filippo Cerpelloni', ...
+                    'Federica Falagiarda ', ...
+                    'Ceren Battal', ...
+                    'Marcia Nunes', ...
+                    'Why not be the next?'};
+  end
 
   DOI_URL = 'https://doi.org/10.5281/zenodo.3554331.';
+  horLine = '____________________________________________________________\n';
 
-  if opt.verbosity > 1
+  printToScreen(horLine, opt);
+  printToScreen(horLine, opt);
+  printToScreen('\n', opt);
+  printToScreen('       ____  ____   ____    ____   ____   __  __      \n', opt, ...
+                'format', '*green');
+  printToScreen('      / ___||  _ \\ |  _ \\  / ___| |  _ \\ |  \\/  | \n', opt, ...
+                'format', '*green');
+  printToScreen('     | |    | |_) || |_) | \\___ \\ | |_) || |\\/| |  \n', opt, ...
+                'format', '*green');
+  printToScreen('     | |___ |  __/ |  __/   ___) ||  __/ | |  | |     \n', opt, ...
+                'format', '*green');
+  printToScreen('      \\____||_|    |_|     |____/ |_|    |_|  |_|    \n', opt, ...
+                'format', '*green');
+  printToScreen('\n', opt);
 
-    disp('___________________________________________________________________________');
-    disp('___________________________________________________________________________');
-    disp('                                                   ');
-    disp('                 __  ____  ____     _      _    _  ');
-    disp('                / _)(  _ \(  _ \   | |    / \  | ) ');
-    disp('               ( (_  )___/ )___/   | |_  / _ \ | \ ');
-    disp('                \__)(__)  (__)     |___||_/ \_||__)');
-    disp('                                                   ');
+  printToScreen('\n\n', opt);
+  printToScreen('Thank you for using CPP SPM - ', opt);
+  printToScreen(sprintf('version %s ', versionNumber), opt, 'format', '-blue');
+  printToScreen('\n\n', opt);
 
-    splash = 'Thank you for using CPP SPM - version %s. ';
-    fprintf(splash, versionNumber);
-    fprintf('\n\n');
+  printToScreen('Current list of contributors includes\n');
+  printToScreen(createUnorderedList(contributors), opt);
 
-    fprintf('Current list of contributors includes\n');
-    for iCont = 1:numel(contributors)
-      fprintf(' %s\n', contributors{iCont});
-    end
-    fprintf('\b\n\n');
+  printToScreen(sprintf('\n\n'), opt);
 
-    fprintf('Please cite using the following DOI: \n %s\n\n', DOI_URL);
+  printToScreen('Please cite using the following DOI: \n ', opt);
+  printToScreen(sprintf('%s', DOI_URL), opt, 'format', 'hyper');
+  printToScreen(sprintf('\n\n'), opt);
 
-    fprintf('For bug report & suggestions see our github repo: \n %s\n\n', returnRepoURL());
+  printToScreen('For bug report & suggestions see our github repo: \n ', opt);
+  printToScreen(sprintf('%s', returnRepoURL()), opt, 'format', 'hyper');
+  printToScreen(sprintf('\n\n'), opt);
 
-    disp('___________________________________________________________________________');
-    disp('___________________________________________________________________________');
+  printToScreen(horLine, opt);
+  printToScreen(horLine, opt);
 
-    fprintf('\n\n');
-
-  end
+  printToScreen('\n\n', opt);
 
 end

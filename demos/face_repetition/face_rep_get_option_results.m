@@ -11,23 +11,14 @@ function opt =  face_rep_get_option_results()
   opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
   opt.dir.roi = fullfile(opt.dir.derivatives, 'cpp_spm-roi');
 
-  opt.model.file = fullfile( ...
-                            fileparts(mfilename('fullpath')), ...
+  opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                             'models', ...
                             'model-faceRepetition_smdl.json');
 
-  opt.QA.glm.do = false;
-
   % Specify the result to compute
-  opt.result.Nodes(1) = returnDefaultResultsStructure();
-
   opt.result.Nodes(1).Level = 'subject';
 
   opt.result.Nodes(1).Contrasts(1).Name = 'faces_gt_baseline_1';
-
-  opt.result.Nodes(1).Contrasts(1).MC =  'FWE';
-  opt.result.Nodes(1).Contrasts(1).p = 0.05;
-  opt.result.Nodes(1).Contrasts(1).k = 5;
 
   % Specify how you want your output (all the following are on false by default)
   opt.result.Nodes(1).Output.png = true();
@@ -41,6 +32,7 @@ function opt =  face_rep_get_option_results()
   opt.result.Nodes(1).Output.montage.orientation = 'axial';
 
   %% DO NOT TOUCH
+  opt = checkOptions(opt);
   saveOptions(opt);
 
 end

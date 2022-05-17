@@ -34,7 +34,7 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
     end
     funcFile = spm_file(funcFile, 'filename');
 
-    funcFile = bids.internal.parse_filename(funcFile);
+    funcFile = bids.File(funcFile);
 
     filter.modality = 'func';
     filter.suffix = funcFile.suffix;

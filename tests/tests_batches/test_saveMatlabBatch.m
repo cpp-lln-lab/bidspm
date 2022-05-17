@@ -21,7 +21,7 @@ function test_saveMatlabBatch_basic()
   expectedOutput = fullfile(pwd, ['sub-' subLabel], ...
                             ['batch_test_' datestr(now, 'yyyy-mm-ddTHH-MM') '.mat']);
 
-  assertEqual(exist(expectedOutput, 'file'), 2);
+  assertEqual(exist(expectedOutput, 'file'), 0);
   assertEqual(exist(spm_file(expectedOutput, 'ext', '.json'), 'file'), 2);
 
   expectedOutput = fullfile(pwd, ['sub-' subLabel], ...
@@ -47,7 +47,7 @@ function test_saveMatlabBatch_group()
 
   saveMatlabBatch(matlabbatch, 'groupTest', opt);
 
-  assertEqual(exist(expectedOutput, 'file'), 2);
+  assertEqual(exist(expectedOutput, 'file'), 0);
   assertEqual(exist(spm_file(strrep(expectedOutput, '-', '_'), 'ext', '.m'), 'file'), 2);
 
   cleanUp(fullfile(pwd, 'group'));

@@ -1,12 +1,18 @@
 {
   "Name": "run level",
+  "BIDSModelVersion": "1.0.0",
   "Description": "contrasts to compute for the line bisection task",
   "Input": {
-    "task": "linebisection"
+    "task": ["linebisection"]
   },
   "Nodes": [
     {
-      "Level": "run",
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
       "Model": {
         "X": [
           "trial_type.Correct_Task",
@@ -16,12 +22,19 @@
           "trial_type.No_Response_Control",
           "trans_?",
           "rot_?"
-        ]
+        ],
+        "Type": "glm"
       },
-      "DummyContrasts": [
-        "trial_type.Correct_Task",
-        "trial_type.Incorrect_Task"
-      ]
+      "DummyContrasts": {
+        "Contrasts": [
+          "trial_type.Correct_Task",
+          "trial_type.Incorrect_Task",
+          "trial_type.No_Response_Task",
+          "trial_type.Response_Control",
+          "trial_type.No_Response_Control"
+        ],
+        "Test": "t"
+      }
     }
   ]
 }

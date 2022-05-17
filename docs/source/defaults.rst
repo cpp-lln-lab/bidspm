@@ -70,3 +70,10 @@ spm to BIDS filename conversion
 ===============================
 
 .. autofunction:: set_spm_2_bids_defaults
+
+
+list of defaults
+================
+
+.. literalinclude:: default_options.m
+   :language: matlab

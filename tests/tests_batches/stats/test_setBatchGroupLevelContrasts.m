@@ -8,16 +8,40 @@ function test_suite = test_setBatchGroupLevelContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchGroupLevelContrasts_smoke_test()
+function test_setBatchGroupLevelContrasts_no_contrasts()
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   rfxDir = getRFXdir(opt);
 
-  grpLvlCon = getGrpLevelContrast(opt);
+  grpLvlCon = struct([]);
 
   matlabbatch = {};
-  matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir);
+  assertExceptionThrown(@()setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir), ...
+                        'setBatchGroupLevelContrasts:noGroupLevelContrast');
+
+end
+
+function test_setBatchGroupLevelContrasts_smoke_test()
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  opt.verbosity = 1;
+
+  rfxDir = getRFXdir(opt);
+
+  grpLvlCon = opt.model.bm.get_dummy_contrasts('Level', 'dataset');
+
+  matlabbatch = {};
+
+  assertWarning(@()setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir), ...
+                'setBatchGroupLevelContrasts:notImplemented');
+
+  return
+
+  % TODO fix group level results
+
+  matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir); %#ok<UNRCH>
 
   assertEqual(numel(matlabbatch), 4);
 

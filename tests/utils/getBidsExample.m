@@ -2,8 +2,6 @@ function dataDir = getBidsExample(dataset)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  thisDir = fileparts(mfilename('fullpath'));
-
-  dataDir = spm_file(fullfile(thisDir, '..', 'bids-examples', dataset), 'cpath');
+  dataDir = spm_file(fullfile(getTestDir(), 'bids-examples', dataset), 'cpath');
 
 end

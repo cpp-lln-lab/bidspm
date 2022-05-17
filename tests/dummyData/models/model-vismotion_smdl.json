@@ -3,13 +3,21 @@
   "BIDSModelVersion": "1.0.0",
   "Description": "contrasts for the motion dataset",
   "Input": {
-    "task": "vismotion",
-    "space": "IXI549Space"
+    "task": [
+      "vismotion"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
   },
   "Nodes": [
     {
       "Level": "Run",
       "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
       "Model": {
         "Type": "glm",
         "X": [
@@ -26,8 +34,7 @@
           "Model": "DoubleGamma"
         },
         "Options": {
-          "HighPassFilterCutoffHz": 0.008,
-          "Mask": ""
+          "HighPassFilterCutoffHz": 0.008
         },
         "Software": {
           "SPM": {
@@ -73,92 +80,34 @@
     {
       "Level": "Subject",
       "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
       "Model": {
         "Type": "glm",
         "X": [
-          "trial_type.VisUp",
-          "trial_type.VisDown",
-          "trans_?",
-          "rot_?"
-        ],
-        "HRF": {
-          "Variables": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-          ],
-          "Model": "DoubleGamma"
-        },
-        "Options": {
-          "HighPassFilterCutoffHz": 0.008,
-          "Mask": ""
-        },
-        "Software": {
-          "SPM": {
-            "SerialCorrelation": "FAST",
-            "HRFderivatives": "Temporal"
-          }
-        }
-      },
-      "DummyContrasts": {
-        "Test": "t",
-        "Contrasts": [
-          "trial_type.VisMot",
-          "trial_type.VisStat"
+          1
         ]
       },
-      "Contrasts": [
-        {
-          "Name": "VisMot_gt_VisStat",
-          "ConditionList": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-          ],
-          "Weights": [
-            1,
-            -1
-          ],
-          "Test": "t"
-        },
-        {
-          "Name": "VisStat_gt_VisMot",
-          "ConditionList": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-          ],
-          "Weights": [
-            -1,
-            1
-          ],
-          "Test": "t"
-        }
-      ]
+      "DummyContrasts": {
+        "Test": "t"
+      }
     },
     {
       "Level": "Dataset",
       "Name": "dataset_level",
+      "GroupBy": [
+        "contrast"
+      ],
       "Model": {
         "Type": "glm",
         "X": [
-          "trial_type.VisMot",
-          "trial_type.VisStat",
-          "VisMot_gt_VisStat",
-          "VisStat_gt_VisMot"
-        ],
-        "Options": {
-          "Mask": ""
-        },
-        "Software": {
-          "SPM": {}
-        }
+          1
+        ]
       },
       "DummyContrasts": {
-        "Test": "t",
-        "Contrasts": [
-          "trial_type.VisMot",
-          "trial_type.VisStat",
-          "VisMot_gt_VisStat",
-          "VisStat_gt_VisMot"
-        ]
+        "Test": "t"
       }
     }
   ]

@@ -50,7 +50,7 @@ with the following git command::
 If you need the latest development, then you must clone from the ``dev`` branch::
 
   git clone \
-      -b dev \
+      --branch dev \
       --recurse-submodules \
       https://github.com/cpp-lln-lab/CPP_SPM.git
 
@@ -64,13 +64,13 @@ In general DO NOT ADD CPP SPM PERMANENTLY to your MATLAB / Octave path.
 
 You just need to initialize for a given session with::
 
-  initCppSpm()
+  cpp_spm()
 
 This will add all the required folders to the path.
 
 You can also remove CPP_SPM from the path with::
 
-  uninitCppSpm()
+  cpp_spm('action', 'uninit')
 
 Installation on a computing cluster
 ===================================

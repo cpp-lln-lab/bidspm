@@ -8,15 +8,14 @@ by step approach.
 
 **Note**
 
-The bash script `vismotion_demo.sh` will run all the steps described here in one fell swoop.
+The bash script `vismotion_demo.sh` will run all the steps described here in one
+fell swoop.
 
 You can run it by typing the following from within the CPP_SPM/demos/vismotion
 
 ```bash
 bash vismotion_demo.sh
 ```
-
-This can sho
 
 ## Set up
 

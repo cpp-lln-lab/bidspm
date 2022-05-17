@@ -17,6 +17,26 @@ function test_checkOptions_basic()
 
   assertEqual(opt, expectedOptions);
 
+  % unfoldStruct(opt);
+
+end
+
+function test_checkOptions_results_structure()
+
+  opt.taskName = 'testTask';
+  opt.result.Nodes(1).Level = 'run';
+  opt.result.Nodes(1).Contrasts(1).Name = 'listening_1';
+  opt.result.Nodes(1).Contrasts(1).MC = 'none';
+  opt.result.Nodes(1).Contrasts(1).p = 0.001;
+  opt.result.Nodes(1).Contrasts(2).Name = 'not_listening_1';
+  opt.result.Nodes(2).Level = 'subject';
+  opt.result.Nodes(2).Contrasts(1).Name = 'listening_1';
+  opt = checkOptions(opt);
+
+  opt = checkOptions(opt);
+
+  assertEqual(opt.result.Nodes(1).Contrasts(2).MC, 'FWE');
+
 end
 
 function test_checkOptions_do_not_overwrite()
@@ -34,17 +54,14 @@ end
 
 function test_checkOptions_error_task()
 
-  opt.taskName = '';
-  opt.verbosity = 1;
-
-  % skip in CI
-  if isGithubCi()
+  if isOctave
     return
   end
 
-  assertWarning( ...
-                @()checkOptions(opt), ...
-                'checkOptions:noTask');
+  opt.taskName = '';
+  opt.verbosity = 1;
+
+  assertWarning(@()checkOptions(opt), 'checkOptions:noTask');
 
 end
 
@@ -52,9 +69,7 @@ function test_checkOptions_error_group()
 
   opt.groups = {1};
 
-  assertExceptionThrown( ...
-                        @()checkOptions(opt), ...
-                        'checkOptions:groupNotString');
+  assertExceptionThrown(@()checkOptions(opt), 'checkOptions:groupNotString');
 
 end
 
@@ -63,9 +78,7 @@ function test_checkOptions_error_ref_slice()
   opt.stc.referenceSlice = [1:10];
   opt.taskName = 'testTask';
 
-  assertExceptionThrown( ...
-                        @()checkOptions(opt), ...
-                        'checkOptions:refSliceNotScalar');
+  assertExceptionThrown(@()checkOptions(opt), 'checkOptions:refSliceNotScalar');
 
 end
 
@@ -73,8 +86,6 @@ function test_checkOptions_error_vox_dim()
 
   opt.funcVoxelDims = [1:10];
 
-  assertExceptionThrown( ...
-                        @()checkOptions(opt), ...
-                        'checkOptions:voxDim');
+  assertExceptionThrown(@()checkOptions(opt), 'checkOptions:voxDim');
 
 end

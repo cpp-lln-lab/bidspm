@@ -9,11 +9,14 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
+  %
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
+  %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
+  %
   % :param subLabel: subject label
   % :type subLabel: string
   %
@@ -31,8 +34,17 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   % Any voxel with p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold
   % will be included in the skull stripping mask.
   %
+  % It is also possible to segment a functional image by setting
+  % ``opt.skullstrip.mean`` to ``true``
+  %
+  % Skullstripping can be skipped by setting
+  % ``opt.skullstrip.do`` to ``false``
   %
   % (C) Copyright 2020 CPP_SPM developers
+
+  if ~opt.skullstrip.do
+    return
+  end
 
   printBatchName('skull stripping', opt);
 
@@ -43,19 +55,15 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
     [imageToSkullStrip, dataDir] = getMeanFuncFilename(BIDS, subLabel, opt);
   end
 
-  p = bids.internal.parse_filename(imageToSkullStrip);
-  p.entities.space = 'individual';
-  p.entities.desc = 'skullstripped';
-  bidsFile = bids.File(p);
-  output = bidsFile.filename;
-
-  p = bids.internal.parse_filename(imageToSkullStrip);
-  p.entities.space = 'individual';
-  p.entities.label = 'brain';
-  p.suffix = 'mask';
-
-  bidsFile = bids.File(p);
-  maskOutput = bidsFile.filename;
+  bf = bids.File(imageToSkullStrip, 'use_schema', false);
+  if isSkullstripped(bf)
+    errorHandling(mfilename(), ...
+                  'imageAlreadySkullstripped', ...
+                  'The image is already skullstripped. Skipping skullstripping batch.', ...
+                  true, ...
+                  opt.verbosity);
+    return
+  end
 
   expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
 
@@ -116,13 +124,63 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
 
   end
 
+  output = returnNameSkullstripOutput(imageToSkullStrip, 'image');
+  saveMetadataImage(dataDir, opt, output, imageToSkullStrip);
+
   matlabbatch = setBatchImageCalculation(matlabbatch, opt, input, output, dataDir, expression);
 
   %% Add a batch to output the mask
+  maskOutput = returnNameSkullstripOutput(imageToSkullStrip, 'mask');
+  saveMetadataImage(dataDir, opt, maskOutput, imageToSkullStrip);
+
   matlabbatch{end + 1} = matlabbatch{end};
   matlabbatch{end}.spm.util.imcalc.expression = sprintf( ...
                                                         '(i2+i3+i4)>%f', ...
                                                         opt.skullstrip.threshold);
   matlabbatch{end}.spm.util.imcalc.output = maskOutput;
 
+  %%
+  addSkullstrippedMetadataToRoot(BIDS);
+
+end
+
+function saveMetadataImage(dataDir, opt, output, imageToSkullStrip)
+
+  bf = bids.File(output);
+
+  json = bids.derivatives_json(output);
+
+  if strcmp(bf.suffix, 'mask')
+    json.content.Description = sprintf(['mask used for skullstripping values with', ...
+                                        '"p(GM) + p(WM) + p(CSF) > %f'], opt.skullstrip.threshold);
+
+  else
+    json.content.Description = sprintf(['image skullstripped for values with', ...
+                                        '"p(GM) + p(WM) + p(CSF) > %f'], opt.skullstrip.threshold);
+  end
+
+  json.content.Sources{1} = relPath(imageToSkullStrip);
+
+  % TODO RawSources
+  % will depend on if it is bold or not,
+  % if we are skullstripping a normalise)
+
+  if isfield(bf.entities, 'space') && strcmp(bf.entities.space, 'individual')
+    json.content.SpatialReference{1} = 'scanner space';
+  end
+
+  bids.util.jsonencode(fullfile(dataDir, json.filename), ...
+                       json.content);
+
+end
+
+function value = relPath(imageToSkullStrip)
+  bf = bids.File(imageToSkullStrip);
+  value = fullfile(bf.bids_path, bf.filename);
+end
+
+function addSkullstrippedMetadataToRoot(BIDS)
+  metadata = struct('SkullStripped', true);
+  filename = fullfile(BIDS.pth, 'desc-skullstripped.json');
+  bids.util.jsonencode(filename, metadata);
 end

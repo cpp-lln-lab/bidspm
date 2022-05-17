@@ -11,7 +11,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 subLabel = '01';
 
@@ -20,15 +20,23 @@ opt.pipeline.type = 'stats';
 opt = checkOptions(opt);
 
 use_schema = false;
-BIDS_ROI = bids.layout(opt.dir.roi, use_schema);
-rightRoiFile = bids.query(BIDS_ROI, 'data', 'sub', subLabel, 'desc', 'rightAuditoryCortex');
-leftRoiFile = bids.query(BIDS_ROI, 'data', 'sub', subLabel, 'desc', 'leftAuditoryCortex');
+BIDS_ROI = bids.layout(opt.dir.roi, 'use_schema', use_schema);
+
+filter = struct('sub', subLabel, ...
+                'hemi', 'R', ...
+                'desc', 'auditoryCortex');
+
+rightRoiFile = bids.query(BIDS_ROI, 'data', filter);
+
+filter.hemi = 'L';
+
+leftRoiFile = bids.query(BIDS_ROI, 'data', filter);
 
 % we get the con image to extract data
 ffxDir = getFFXdir(subLabel, opt);
 maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
-p = bids.internal.parse_filename(spm_file(maskImage, 'filename'));
-conImage = spm_select('FPList', ffxDir, ['^con_' p.entities.label '.nii$']);
+bf = bids.File(spm_file(maskImage, 'filename'));
+conImage = spm_select('FPList', ffxDir, ['^con_' bf.entities.label '.nii$']);
 
 %% Layers to put on the figure
 layers = sd_config_layers('init', {'truecolor', 'dual', 'contour', 'contour'});
@@ -57,7 +65,7 @@ layers(2).color.label = '\beta_{listening} - \beta_{baseline} (a.u.)';
 %
 %   - t-statistics opacity-coded
 
-spmTImage = spm_select('FPList', ffxDir, ['^spmT_' p.entities.label '.nii$']);
+spmTImage = spm_select('FPList', ffxDir, ['^spmT_' bf.entities.label '.nii$']);
 layers(2).opacity.file = spmTImage;
 
 layers(2).opacity.range = [2 3];

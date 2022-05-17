@@ -28,15 +28,15 @@ function repetitionTime = getAndCheckRepetitionTime(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
-  addRequired(p, 'BIDS', @isstruct);
-  addRequired(p, 'filter', @isstruct);
+  addRequired(args, 'BIDS', @isstruct);
+  addRequired(args, 'filter', @isstruct);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  BIDS = p.Results.BIDS;
-  filter = p.Results.filter;
+  BIDS = args.Results.BIDS;
+  filter = args.Results.filter;
 
   filter.target = 'RepetitionTime';
   repetitionTime = bids.query(BIDS, 'metadata', filter);

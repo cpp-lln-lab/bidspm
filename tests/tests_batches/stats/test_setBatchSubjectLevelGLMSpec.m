@@ -37,12 +37,12 @@ function test_setBatchSubjectLevelGLMSpec_fmriprep()
 
   opt = checkOptions(opt);
 
-  % No proper valid bids file in derivatives of synthetic dataset
+  [BIDS, opt] = getData(opt, opt.dir.input);
 
-  %   [BIDS, opt] = getData(opt, opt.dir.input);
-  %
-  %   matlabbatch = {};
-  %   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
+  matlabbatch = {};
+  % bids matlab issue?
+  % events.TSV are in the root of the synthetic dataset
+  % matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
 end
 
@@ -79,7 +79,7 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.sess(1).hpf, 125);
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.cvi, 'FAST');
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs, [1 0]);
-  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.mthresh, 0.8);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.mthresh, 0);
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.mask, ...
               {fullfile(spm('dir'), 'tpm', 'mask_ICV.nii')});
 

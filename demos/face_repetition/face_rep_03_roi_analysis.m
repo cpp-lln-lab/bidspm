@@ -12,7 +12,7 @@ close all;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 opt = face_rep_get_option_results();
 
@@ -20,9 +20,12 @@ opt.roi.atlas = 'wang';
 opt.roi.name = {'V1v', 'V1d'};
 opt.roi.space = {'individual'};
 
-% bidsCreateROI(opt);
+bidsCreateROI(opt);
 
+opt.fwhm.func = 0;
 opt.glm.roibased.do = true;
-opt.space = 'individual';
+opt.space = {'individual'};
+opt.bidsFilterFile.roi.space = 'individual';
 
+bidsFFX('specify', opt);
 bidsRoiBasedGLM(opt);

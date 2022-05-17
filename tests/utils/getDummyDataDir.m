@@ -2,9 +2,7 @@ function dummyDataDir = getDummyDataDir(arg)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  thisDir = fileparts(mfilename('fullpath'));
-
-  dummyDataDir = spm_file(fullfile(thisDir, '..', 'dummyData'), 'cpath');
+  dummyDataDir = spm_file(fullfile(getTestDir(), 'dummyData'), 'cpath');
 
   if nargin == 0 || isempty(arg)
     return

@@ -17,7 +17,13 @@ function ffxDir = getFFXdir(subLabel, opt)
 
   glmDirName = createGlmDirName(opt);
 
-  name = getModelName(opt.model.file);
+  if ~isfield(opt.model, 'bm')
+    opt.model.bm = bids.Model('file', opt.model.file);
+    if strcmpi(opt.pipeline.type, 'stats')
+      opt = overRideWithBidsModelContent(opt);
+    end
+  end
+  name = opt.model.bm.Name;
 
   if ~isempty(name) && ~strcmpi(name, strjoin(opt.taskName, ' '))
     glmDirName = [glmDirName, '_desc-', bids.internal.camel_case(name)];
@@ -25,7 +31,6 @@ function ffxDir = getFFXdir(subLabel, opt)
 
   ffxDir = fullfile(opt.dir.stats, ...
                     ['sub-', deregexify(subLabel)], ...
-                    'stats', ...
                     glmDirName);
 
   if opt.glm.roibased.do

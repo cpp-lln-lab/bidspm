@@ -3,27 +3,36 @@
    "BIDSModelVersion": "1.0.0",
    "Description": "default model for balloonanalogrisktask",
    "Input": {
-      "task": "balloonanalogrisktask"
+      "task": [
+         "balloonanalogrisktask"
+      ]
    },
    "Nodes": [
       {
          "Level": "Run",
          "Name": "run_level",
-         "Transformations": [
-            {
-               "Name": "Factor",
-               "Inputs": [
-                  "trial_type"
-               ]
-            },
-            {
-               "Name": "Convolve",
-               "Model": "spm",
-               "Inputs": [
-                  " "
-               ]
-            }
+         "GroupBy": [
+            "run",
+            "subject"
          ],
+         "Transformations": {
+            "Transformer": "cpp_spm",
+            "Instructions": [
+               {
+                  "Name": "Factor",
+                  "Inputs": [
+                     "trial_type"
+                  ]
+               },
+               {
+                  "Name": "Convolve",
+                  "Model": "spm",
+                  "Inputs": [
+                     " "
+                  ]
+               }
+            ]
+         },
          "Model": {
             "Type": "glm",
             "X": [
@@ -35,8 +44,7 @@
                "Model": "DoubleGamma"
             },
             "Options": {
-               "HighPassFilterCutoffHz": 0.008,
-               "Mask": ""
+               "HighPassFilterCutoffHz": 0.008
             },
             "Software": {
                "SPM": {
@@ -55,21 +63,28 @@
       {
          "Level": "Subject",
          "Name": "subject_level",
-         "Transformations": [
-            {
-               "Name": "Factor",
-               "Inputs": [
-                  "trial_type"
-               ]
-            },
-            {
-               "Name": "Convolve",
-               "Model": "spm",
-               "Inputs": [
-                  " "
-               ]
-            }
+         "GroupBy": [
+            "contrast",
+            "subject"
          ],
+         "Transformations": {
+            "Transformer": "cpp_spm",
+            "Instructions": [
+               {
+                  "Name": "Factor",
+                  "Inputs": [
+                     "trial_type"
+                  ]
+               },
+               {
+                  "Name": "Convolve",
+                  "Model": "spm",
+                  "Inputs": [
+                     " "
+                  ]
+               }
+            ]
+         },
          "Model": {
             "Type": "glm",
             "X": [
@@ -81,15 +96,16 @@
                "Model": "DoubleGamma"
             },
             "Options": {
-               "HighPassFilterCutoffHz": 0.008,
-               "Mask": ""
+               "HighPassFilterCutoffHz": 0.008
             },
-            "Software": {
-               "SPM": {
-                  "SerialCorrelation": "FAST",
-                  "HRFderivatives": "Temporal"
+            "Software": [
+               {
+                  "SPM": {
+                     "SerialCorrelation": "FAST",
+                     "HRFderivatives": "Temporal"
+                  }
                }
-            }
+            ]
          },
          "DummyContrasts": {
             "Test": "t",
@@ -101,19 +117,17 @@
       {
          "Level": "Dataset",
          "Name": "dataset_level",
+         "GroupBy": [
+            "contrast"
+         ],
          "Model": {
+            "Type": "glm",
             "X": [
                "trial_type.VisMot",
                "trial_type.VisStat",
                "VisMot_gt_VisStat",
                "VisStat_gt_VisMot"
-            ],
-            "Options": {
-               "Mask": ""
-            },
-            "Software": {
-               "SPM": {}
-            }
+            ]
          },
          "DummyContrasts": {
             "Test": "t",

@@ -5,5 +5,5 @@
     "participant_label": [
         "01"
     ],
-    "action": "segment"
+    "action": "preprocess"
 }

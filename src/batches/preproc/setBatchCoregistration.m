@@ -4,20 +4,29 @@ function matlabbatch = setBatchCoregistration(varargin)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchCoregistration(matlabbatch, ref, src, other)
+  %   matlabbatch = setBatchCoregistration(matlabbatch, opt, ref, src, other)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
+  %
   % :param opt: Other images to apply the coregistration to
   % :type opt: cell string
+  %
   % :param ref: Reference image
   % :type ref: string
+  %
   % :param src: Source image
   % :type src: string
+  %
   % :param other: Other images to apply the coregistration to
   % :type other: cell string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  %
+  %
+  % EXAMPLE::
+  %
+  %
   %
   % (C) Copyright 2020 CPP_SPM developers
 
@@ -25,22 +34,22 @@ function matlabbatch = setBatchCoregistration(varargin)
 
   isFile = @(x) exist(x, 'file') == 2;
 
-  p = inputParser;
+  args = inputParser;
 
-  addRequired(p, 'matlabbatch', @iscell);
-  addRequired(p, 'opt', @isstruct);
-  addRequired(p, 'ref', isFile);
-  addRequired(p, 'src', isFile);
-  addOptional(p, 'other', defaultOther, @iscell);
+  addRequired(args, 'matlabbatch', @iscell);
+  addRequired(args, 'opt', @isstruct);
+  addRequired(args, 'ref', isFile);
+  addRequired(args, 'src', isFile);
+  addOptional(args, 'other', defaultOther, @iscell);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  matlabbatch = p.Results.matlabbatch;
-  ref = p.Results.ref;
-  src = p.Results.src;
-  other = p.Results.other;
+  matlabbatch = args.Results.matlabbatch;
+  ref = args.Results.ref;
+  src = args.Results.src;
+  other = args.Results.other;
 
-  printBatchName('coregistration', p.Results.opt);
+  printBatchName('coregistration', args.Results.opt);
 
   matlabbatch{end + 1}.spm.spatial.coreg.estimate.ref = { ref };
   matlabbatch{end}.spm.spatial.coreg.estimate.source = { src };

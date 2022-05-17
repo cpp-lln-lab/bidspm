@@ -13,12 +13,13 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   % :param opt:
   % :type opt: structure
+  %
   % :param tsvFile:
   % :type tsvFile: string
   %
   % :returns: :fullpathOnsetFilename: (string) name of the output ``.mat`` file.
   %
-  % See also: createAndReturnOnsetFile
+  % See also: createAndReturnOnsetFile, bids.transformers
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -28,32 +29,35 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   tsvContent = bids.util.tsvread(tsvFile);
 
-  if ~isfield(tsvContent, 'trial_type')
+  if ~all(isnumeric(tsvContent.onset))
 
-    msg = sprintf('%s\n%s', ...
-                  'There was no trial_type field in this file:', ...
-                  tsvFile);
-    errorID = 'noTrialType';
+    errorID = 'onsetsNotNumeric';
+    msg = sprintf('%s\n%s', 'Onset column contains non numeric values in file:', tsvFile);
     errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
 
   end
 
-  variablesToConvolve = getVariablesToConvolve(opt.model.file, 'run');
+  if ~all(isnumeric(tsvContent.duration))
 
-  designMatrx = getBidsDesignMatrix(opt.model.file, 'run');
+    errorID = 'durationsNotNumeric';
+    msg = sprintf('%s\n%s', 'Duration column contains non numeric values in file:', tsvFile);
+    errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
+
+  end
+
+  variablesToConvolve = opt.model.bm.getVariablesToConvolve();
+  designMatrix = opt.model.bm.getBidsDesignMatrix();
 
   % create empty cell to be filled in according to the conditions present in each run
   names = {};
   onsets = {};
   durations = {};
 
-  % trial types from events.tsv
-  isTrialType = strfind(variablesToConvolve, 'trial_type.');
-  trialTypes = tsvContent.trial_type;
-
-  % transformed values
-  transformers = getBidsTransformers(opt.model.file);
-  transformedConditions = applyTransformersToEventsTsv(tsvContent, transformers);
+  if ~isfield(opt.model, 'bm')
+    opt.model.bm = BidsModel('file', opt.model.file);
+  end
+  transformers = opt.model.bm.getBidsTransformers();
+  tsvContent = bids.transformers(transformers, tsvContent);
 
   for iCond = 1:numel(variablesToConvolve)
 
@@ -61,15 +65,25 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
     variableNotFound = false;
     extra = '';
 
-    if bids.internal.starts_with(variablesToConvolve{iCond}, 'trial_type.')
+    % first assume the input is from events.tsv
+    tokens = regexp(variablesToConvolve{iCond}, '\.', 'split');
 
-      conditionName = rmTrialTypeStr(variablesToConvolve{iCond});
+    % if the variable is present in namespace
+    if ismember(tokens{1}, fieldnames(tsvContent))
+
+      trialTypes = tsvContent.(tokens{1});
+      conditionName = strjoin(tokens(2:end), '.');
 
       idx = find(strcmp(conditionName, trialTypes));
 
+      printToScreen(sprintf('   Condition %s: %i trials found.\n', ...
+                            conditionName, ...
+                            numel(idx)), ...
+                    opt);
+
       if ~isempty(idx)
 
-        if ~ismember(variablesToConvolve{iCond}, designMatrx)
+        if ~ismember(variablesToConvolve{iCond}, designMatrix)
           continue
         end
 
@@ -84,16 +98,6 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
         input1 = 'Trial type';
 
       end
-
-    elseif ismember(variablesToConvolve{iCond}, fieldnames(transformedConditions))
-
-      if ~ismember(variablesToConvolve{iCond}, designMatrx)
-        continue
-      end
-
-      names{1, end + 1} = variablesToConvolve{iCond};
-      onsets{1, end + 1} = transformedConditions.(variablesToConvolve{iCond}).onset;
-      durations{1, end + 1} = transformedConditions.(variablesToConvolve{iCond}).duration;
 
     else
 
@@ -125,13 +129,11 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %% save the onsets as a matfile
   [pth, file] = spm_fileparts(tsvFile);
 
-  p = bids.internal.parse_filename(file);
-  p.suffix = 'onsets';
-  p.ext = '.mat';
+  bf = bids.File(file);
+  bf.suffix = 'onsets';
+  bf.extension = '.mat';
 
-  bidsFile = bids.File(p);
-
-  fullpathOnsetFilename = fullfile(pth, bidsFile.filename);
+  fullpathOnsetFilename = fullfile(pth, bf.filename);
 
   save(fullpathOnsetFilename, ...
        'names', 'onsets', 'durations', ...

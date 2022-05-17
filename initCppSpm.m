@@ -9,16 +9,14 @@ function initCppSpm(dev)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  warning('DEPRECATED: use `cpp_spm(''init'')` instead');
-
   if nargin < 1
     dev = false;
   end
 
   if dev
-    cpp_spm('dev');
+    cpp_spm('action', 'dev');
   else
-    cpp_spm('init');
+    cpp_spm();
   end
 
 end

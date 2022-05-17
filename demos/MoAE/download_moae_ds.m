@@ -12,9 +12,6 @@ function download_moae_ds(download_data, clean)
 
   if download_data
 
-    % URL of the data set to download
-    URL = 'http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip';
-
     working_directory = fileparts(mfilename('fullpath'));
 
     % clean previous runs
@@ -25,14 +22,10 @@ function download_moae_ds(download_data, clean)
     spm_mkdir(fullfile(working_directory, 'inputs'));
 
     %% Get data
-    fprintf('%-10s:', 'Downloading dataset...');
-    urlwrite(URL, 'MoAEpilot.zip');
-    fprintf(1, ' Done\n\n');
-
-    fprintf('%-10s:', 'Unzipping dataset...');
-    unzip('MoAEpilot.zip');
-    movefile('MoAEpilot', fullfile(working_directory, 'inputs', 'raw'));
-    fprintf(1, ' Done\n\n');
+    bids.util.download_ds('source', 'spm', ...
+                          'demo', 'moae', ...
+                          'out_path', fullfile(working_directory, 'inputs', 'raw'), ...
+                          'force', true);
 
   end
 

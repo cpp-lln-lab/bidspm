@@ -19,7 +19,7 @@ WD = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'MoAE');
 cd(WD);
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm('init');
+cpp_spm();
 
 %% Set up
 optionsFilesList = {'options_task-auditory.json'; ...

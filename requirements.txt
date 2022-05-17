@@ -1,10 +1,15 @@
+# linting
+miss_hit==0.9.30
+pre-commit
+
+# octave and binder
+jupyterlab
+octave_kernel
+
+# doc
 Sphinx
 sphinxcontrib-matlabdomain
 sphinx-copybutton
-sphinxcontrib-napoleon
 sphinx_rtd_theme
-miss_hit==0.9.30
-pre-commit
-jupyterlab
-octave_kernel
 rstcheck
+myst-parser

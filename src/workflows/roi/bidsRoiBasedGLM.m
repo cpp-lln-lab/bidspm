@@ -37,11 +37,6 @@ function skipped = bidsRoiBasedGLM(opt)
 
   checks(opt);
 
-  if isempty(opt.model.file)
-    opt = createDefaultStatsModel(BIDS, opt);
-    opt = overRideWithBidsModelContent(opt);
-  end
-
   initBids(opt, 'description', description, 'force', false);
 
   skipped = struct('subject', {{}}, 'roi', {{}});
@@ -57,6 +52,8 @@ function skipped = bidsRoiBasedGLM(opt)
       continue
     end
 
+    printToScreen(['\n Using ROIs:' createUnorderedList(roiList)], opt);
+
     outputDir = getFFXdir(subLabel, opt);
 
     spmFile = fullfile(outputDir, 'SPM.mat');
@@ -68,6 +65,8 @@ function skipped = bidsRoiBasedGLM(opt)
     model = mardo(SPM);
 
     eventSpec = getEventSpecificationRoiGlm(spmFile, opt.model.file);
+
+    dataToCompile = {};
 
     for iROI = 1:size(roiList, 1)
 
@@ -83,8 +82,7 @@ function skipped = bidsRoiBasedGLM(opt)
       %% Do ROI based GLM
       % create ROI object for Marsbar
       % and convert to mat format to avoid delicacies of image format
-      roiObject = maroi_image(struct( ...
-                                     'vol', roiHeader, ...
+      roiObject = maroi_image(struct('vol', roiHeader, ...
                                      'binarize', true, ...
                                      'func', []));
       roiObject = maroi_matrix(roiObject);
@@ -94,6 +92,7 @@ function skipped = bidsRoiBasedGLM(opt)
         data = get_marsy(roiObject, model, 'mean', 'v');
         estimation = estimate(model, data);
       catch
+        fprintf('\n');
         warning('Skipping:\n- subject: %s \n- ROI: %s\n', ...
                 subLabel,  ...
                 spm_file(roiList{iROI, 1}, 'filename'));
@@ -161,6 +160,7 @@ function skipped = bidsRoiBasedGLM(opt)
       nameStructure.suffix = 'timecourse';
       nameStructure.ext = '.json';
       bidsFile = bids.File(nameStructure);
+      dataToCompile{end + 1, 1} = fullfile(outputDir, bidsFile.filename);
       bids.util.jsonwrite(fullfile(outputDir, bidsFile.filename), jsonContent);
 
       nameStructure.ext = '.tsv';
@@ -169,9 +169,50 @@ function skipped = bidsRoiBasedGLM(opt)
 
       plotRoiTimeCourse(fullfile(outputDir, bidsFile.filename), opt.verbosity > 0);
 
+      clear tsvContent;
+
     end
 
     close all;
+
+    %% Save summary table for all rois and conditions as tidy data
+    psc = {'max', 'absMax'};
+    row = 1;
+    for i = 1:numel(dataToCompile)
+
+      bidsFile = bids.File(dataToCompile{i});
+      jsonContent = bids.util.jsondecode(dataToCompile{i});
+
+      for iCon = 1:numel(eventSpec)
+
+        tsvContent.label{row} = bidsFile.entities.label;
+        if isfield(bidsFile.entities, 'hemi')
+          tsvContent.hemi{row} = bidsFile.entities.hemi;
+        else
+          tsvContent.hemi{row} = nan;
+        end
+
+        tsvContent.voxels(row) = jsonContent.size.voxels;
+        tsvContent.volume(row) = jsonContent.size.volume;
+
+        conName = eventSpec(iCon).name;
+        tsvContent.contrast_name{row} = conName;
+
+        for j = 1:numel(psc)
+          value = jsonContent.(conName).percentSignalChange.(psc{j});
+          tsvContent.(['percent_signal_change_' psc{j}])(row) = value;
+        end
+
+        row = row + 1;
+
+      end
+
+    end
+
+    bidsFile = bids.File(outputDir);
+    bidsFile.suffix = 'summary';
+    bidsFile.extension = '.tsv';
+    bids.util.tsvwrite(fullfile(outputDir, bidsFile.filename), tsvContent);
 
   end
 
@@ -189,19 +230,19 @@ end
 
 function outputNameSpec = outputName(opt, subLabel, roiFileName)
 
-  p = bids.internal.parse_filename(roiFileName);
+  bf = bids.File(roiFileName);
   fields = {'hemi', 'desc', 'label'};
   for iField = 1:numel(fields)
-    if ~isfield(p.entities, fields{iField})
-      p.entities.(fields{iField}) = '';
+    if ~isfield(bf.entities, fields{iField})
+      bf.entities.(fields{iField}) = '';
     end
   end
   outputNameSpec = struct('entities', struct( ...
                                              'sub', subLabel, ...
                                              'task', strjoin(opt.taskName, ''), ...
-                                             'hemi', p.entities.hemi, ...
-                                             'space', p.entities.space, ...
-                                             'label', p.entities.label, ...
-                                             'desc', p.entities.desc));
+                                             'hemi', bf.entities.hemi, ...
+                                             'space', bf.entities.space, ...
+                                             'label', bf.entities.label, ...
+                                             'desc', bf.entities.desc));
 
 end

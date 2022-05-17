@@ -7,6 +7,7 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   %
   % :param SPM_file: obligatory argument. fullpath to SPM.mat
   % :type SPM_file: path
+  %
   % :param model_file: obligatory argument. fullpath to BIDS stats model
   % :type model_file: fullpath
   %
@@ -28,35 +29,35 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  p = inputParser;
+  args = inputParser;
 
   isFile = @(x) exist(x, 'file') == 2;
 
-  addRequired(p, 'SPM', isFile);
-  addRequired(p, 'modelFile', isFile);
+  addRequired(args, 'SPM', isFile);
+  addRequired(args, 'modelFile', isFile);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  SPM = p.Results.SPM;
-  modelFile = p.Results.modelFile;
+  SPM = args.Results.SPM;
+  modelFile = args.Results.modelFile;
 
   load(SPM);
 
-  getModelType(modelFile);
-  model = bids.util.jsondecode(modelFile);
+  bm = BidsModel('file', modelFile);
+  bm.getModelType();
 
   % We focus on the run level but fall back on the subject level
   % if we do not find any contrasts at the run level
-  node = returnModelNode(model, 'run');
-  if ~isfield(node, 'DummyContrasts') || ~isfield(node, 'Contrasts')
-    node = returnModelNode(model, 'subject');
+  node = bm.get_nodes('Level', 'run');
+  if ~isfield(node{1}, 'DummyContrasts') || ~isfield(node{1}, 'Contrasts')
+    node = bm.get_nodes('Level', 'subject');
   end
 
   eventSpecification = struct('name', '', 'eventSpec', [], 'duration', []);
 
-  eventSpecification = getEventSpecForDummyContrasts(eventSpecification, node, SPM);
+  eventSpecification = getEventSpecForDummyContrasts(eventSpecification, node{1}, SPM);
 
-  eventSpecification = getEventSpecForContrasts(eventSpecification, node, SPM);
+  eventSpecification = getEventSpecForContrasts(eventSpecification, node{1}, SPM);
 
 end
 

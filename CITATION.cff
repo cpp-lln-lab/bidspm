@@ -2,7 +2,7 @@ cff-version: 1.2.0
 
 title: "CPP SPM"
 
-version: 1.1.4dev
+version: 1.1.5dev
 
 abstract: CPP_SPM is a set pipelines and tools for Octave/MATLAB to process and analyze BIDS data sets using SPM.
 
@@ -71,6 +71,9 @@ authors:
   given-names: "Iqra"
   orcid: "https://orcid.org/0000-0002-8724-7668"
   affiliation: "Université catholique de Louvain"
+
+- family-names: "Nunes"
+  given-names: "Márcia"
 
 license: GPL-3.0
 

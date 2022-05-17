@@ -9,14 +9,16 @@ function bidsCopyInputFolder(opt, unzip)
   %
   % USAGE::
   %
-  %   bidsCopyInputFolder(opt, ...
-  %                       [unzip = true])
+  %   bidsCopyInputFolder(opt, [unzip = true])
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   % :param unZip:
   % :type unZip: boolean
+  %
+  % See also: bids.copy_to_derivative
+  %
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -54,8 +56,13 @@ function bidsCopyInputFolder(opt, unzip)
       filter.task = opt.taskName;
     end
 
+    pipeline_name = opt.pipeline.name;
+    if ~strcmp(opt.pipeline.type, '')
+      pipeline_name =  [pipeline_name '-' opt.pipeline.type];
+    end
+
     bids.copy_to_derivative(BIDS, ...
-                            'pipeline_name', [opt.pipeline.name '-' opt.pipeline.type], ...
+                            'pipeline_name', pipeline_name, ...
                             'out_path', fullfile(opt.dir.output, '..'), ...
                             'filter', filter, ...
                             'unzip', unzip, ...
