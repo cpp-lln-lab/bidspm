@@ -33,7 +33,7 @@ function spmSessOut = padCounfoundMatFile(varargin)
   nbConfounds = [];
   for iRun = 1:numel(matFiles)
     load(matFiles{iRun}, 'names');
-    nbConfounds(iRun) = numel(names);
+    nbConfounds(iRun) = numel(names); %#ok<NODEF>
   end
 
   % if all run have same number of confounds
