@@ -317,6 +317,7 @@ function initCppSpm(dev)
     printCredits(opt);
 
     run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'));
+    run(fullfile(thisDirectory, 'lib', 'octache', 'setup'));
 
     %%
     if isOctave

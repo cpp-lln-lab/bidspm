@@ -1,7 +1,11 @@
 function reportBIDS(opt)
   %
   % Prints out a human readable description of a BIDS data set for every subject
-  % in ``opt.subjects``
+  % in ``opt.subjects``.
+  %
+  % The output is a markdown file save in the directory:
+  %
+  % ``opt.dir.output, ['sub-' subLabel], 'reports'``
   %
   % USAGE::
   %

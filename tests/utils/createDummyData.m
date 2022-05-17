@@ -4,8 +4,7 @@ function createDummyData()
 
   startDir = pwd;
 
-  thisDir = fileparts(mfilename('fullpath'));
-  script = fullfile(thisDir, '..', 'createDummyDataSet.sh');
+  script = fullfile(getTestDir(), 'createDummyDataSet.sh');
 
   cd(fileparts(script));
   system('sh createDummyDataSet.sh');

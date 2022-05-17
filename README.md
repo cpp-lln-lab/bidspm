@@ -1,3 +1,5 @@
+<!-- markdown-link-check-disable -->
+
 [![Documentation Status: stable](https://readthedocs.org/projects/cpp_spm/badge/?version=stable)](https://cpp_spm.readthedocs.io/en/stable/?badge=stable)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/CPP_SPM/dev)
 [![miss_hit_quality](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit_quality.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit_quality.yml)
@@ -10,12 +12,14 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3554331.svg)](https://doi.org/10.5281/zenodo.3554331)
 [![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](https://github.com/cpp-lln-lab/CPP_SPM#contributors)
 
+<!-- markdown-link-check-enable -->
+
 # CPP SPM
 
 This is a Matlab / Octave toolbox to perform MRI data analysis on a
 [BIDS data set](https://bids.neuroimaging.io/) using SPM12.
 
-## Installation
+## Installation and set up
 
 ```bash
 git clone \
@@ -23,9 +27,50 @@ git clone \
     https://github.com/cpp-lln-lab/CPP_SPM.git
 ```
 
+To get the latest version that is on the `dev` branch.
+
+```bash
+git clone \
+    --recurse-submodules \
+    --branch dev \
+    https://github.com/cpp-lln-lab/CPP_SPM.git
+```
+
+To start using CPP_SPM, you just need to initialize it for this MATLAB / Octave
+session with::
+
+```matlab
+cpp_spm()
+```
+
 Please see our
-[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
-info.
+[documentation](https://cpp-spm.readthedocs.io/en/dev/general_information.html)
+for more info.
+
+## Usage
+
+For some of its functionality cpp_spm has a BIDS app like API:
+
+### Preprocessing
+
+```matlab
+cpp_spm(bids_dir, output_dir, 'participant', ...
+        'action', 'preprocess', ...
+        'task', {...})
+```
+
+### GLM
+
+```matlab
+cpp_spm(bids_dir, output_dir, 'participant', ...
+        'action', 'preprocess', ...
+        'preproc_dir', preproc_dir, ...
+        'model_file', model_file)
+```
+
+Please see our
+[documentation](https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html) for
+more info.
 
 ## Features
 
@@ -35,8 +80,8 @@ If your data is fairly "typical" (for example whole brain coverage functional
 data with one associated anatomical scan for each subject), you might be better
 off running [fmriprep](https://fmriprep.org/en/stable/) on your data.
 
-If you have more exotic data that cannot be handled well by fmriprep then CPP_SPM
-has some automated workflows to perform amongst other things:
+If you have more exotic data that cannot be handled well by fmriprep then
+CPP_SPM has some automated workflows to perform amongst other things:
 
 -   slice timing correction
 
@@ -56,9 +101,9 @@ filenames.
 
 ### Statistics
 
-The model specification are done via the
-[BIDS stats model](https://docs.google.com/document/d/1bq5eNDHTb6Nkx3WUiOBgKvLNnaa5OMcGtD0AZ9yms2M/edit?usp=sharing)
-and can be used to perform:
+The model specification are set up using the
+[BIDS stats model](https://bids-standard.github.io/stats-models/intro.html) and
+can be used to perform:
 
 -   whole GLM at the subject level
 -   whole brain GLM at the group level à la SPM (meaning using a summary
@@ -78,13 +123,14 @@ info.
 ## Citation
 
 ```bibtex
-    @software{CPP_SPM,
-        author = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo},
-        license = {GPL-3.0},
-        title = {{CPP SPM}},
-        url = {https://github.com/cpp-lln-lab/CPP_SPM},
-        version = {1.1.3dev}
-    }
+@software{CPP_SPM,
+  author  = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo},
+  license = {GPL-3.0},
+  title   = {CPP SPM},
+  url     = {https://github.com/cpp-lln-lab/CPP_SPM},
+  version = {1.1.5dev},
+  doi     = {https://doi.org/10.5281/zenodo.3554331},
+}
 ```
 
 ## Contributors

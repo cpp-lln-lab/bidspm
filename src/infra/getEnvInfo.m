@@ -12,26 +12,56 @@ function [OS, generatedBy] = getEnvInfo(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  generatedBy(1).name = 'cpp_spm';
+  generatedBy(1).name = 'CPP SPM';
   generatedBy(1).Version =  getVersion();
   generatedBy(1).Description = '';
   generatedBy(1).CodeURL = returnRepoURL();
+  generatedBy(1).DOI = 'https://doi.org/10.5281/zenodo.3554331';
 
-  runsOn = 'Matlab';
+  runsOn = 'MATLAB';
   if isOctave
     runsOn = 'Octave';
   end
 
   OS.name = computer();
+
+  if ismember(OS.name, {'GLNXA64'})
+
+    [~, result] = system('lsb_release -d');
+    tokens = regexp(result, 'Description:', 'split');
+
+    OS.name = 'unix';
+    OS.version = strtrim(tokens{2});
+
+  elseif ismember(OS.name, {'MACI64'})
+
+    [~, result] = system('sw_vers');
+    tokens = regexp(result, newline, 'split');
+
+    ProductName = regexp(tokens{1}, 'ProductName:', 'split');
+    ProductVersion = regexp(tokens{2}, 'ProductVersion:', 'split');
+
+    OS.name = strtrim(ProductName{2});
+    OS.version = strtrim(ProductVersion{2});
+
+  else
+    % for windows: winver
+    % [~, result] = system('winver');
+
+    OS.name = 'unknown OS';
+    OS.version = 'unknown version';
+
+  end
+
   OS.platform.name = runsOn;
   OS.platform.version = version();
+
+  [a, b] = spm('ver');
+  OS.spmVersion = [a ' - ' b];
 
   if opt.dryRun
     return
   end
-
-  [a, b] = spm('ver');
-  OS.spmVersion = [a ' - ' b];
 
   %     if ispc()
   %         cmd = 'set';

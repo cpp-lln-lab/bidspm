@@ -1,0 +1,29 @@
+The fMRI data were analysed with {{>computing_environment}}
+The input data were the preprocessed BOLD images in {{space}} space for the task "{{taskName}}".
+
+At the subject level, we performed a mass univariate analysis with a linear
+regression at each voxel of the brain, using generalized least squares with a
+global {{SerialCorrelationCorrection}} model to account for temporal auto-correlation
+{{#FAST}}(Corbin et al, 2018){{/FAST}}
+and a drift fit with discrete cosine transform basis ({{HighPassFilterCutoffSecs}} seconds cut-off).
+
+Image intensity scaling was done run-wide before statistical modeling such that
+the mean image would have a mean intracerebral intensity of 100.
+
+We modeled the fMRI experiment in a {{designType}} design with regressors
+entered into the run-specific design matrix. The the onsets
+were convolved with a canonical hemodynamic response function (HRF)
+{{#derivatives}}and its {{type}} derivatives{{/derivatives}} for the conditions:
+{{variablesToConvolve}}.
+
+{{! TODO reference slice for each TR}}
+{{! TODO list covariates included}}
+Nuisance covariates included the 6 realignment parameters to account for residual motion artefacts.
+
+{{#smoothing}}
+Contrast images were computed for the following condition and spatially smoothed
+using a 3D gaussian kernel (FWHM = {{fwhm.contrast}} mm).
+{{/smoothing}}
+{{! TODO Table of conditions with duration of each event}}
+{{! TODO Table of constrast with weight}}
+{{>credits}}
