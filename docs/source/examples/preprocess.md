@@ -2,7 +2,7 @@ The fMRI data were pre-processed with CPP SPM (v1.1.5dev;
 https://github.com/cpp-lln-lab/CPP_SPM; DOI:
 https://doi.org/10.5281/zenodo.3554331) using statistical parametric mapping
 (SPM12 - 7771; Wellcome Center for Neuroimaging, London, UK;
-www.fil.ion.ucl.ac.uk/spm; RRID:SCR_007037) using MATLAB 9.2.0.538062 (R2017a)
+https://www.fil.ion.ucl.ac.uk/spm; RRID:SCR_007037) using MATLAB 9.2.0.538062 (R2017a)
 on a unix computer (Ubuntu 18.04.6 LTS).
 
 The preprocessing of the functional images was performed in the following order:
