@@ -6,7 +6,7 @@ Methods section
 Dataset description
 ===================
 
-Use the ``reportBIDS`` function to description of your dataset 
+Use the ``reportBIDS`` function to description of your dataset
 that can be used for your methods section
 
 .. autofunction:: reportBIDS
