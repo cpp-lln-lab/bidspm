@@ -58,6 +58,15 @@ function opt = setOptions(varargin)
     opt.result.Steps.Contrasts(1).Name = 'listening';
     opt.result.Steps.Contrasts(2).Name = 'listening_inf_baseline';
 
+  elseif strcmp(task, 'facerep')
+
+    opt.dir.derivatives = fullfile(getFaceRepDir(), 'outputs', 'derivatives');
+    opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+    opt.dir.inoput = opt.dir.preproc;
+    opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
+
+    opt.model.file = fullfile(getFaceRepDir(), 'models', 'model-faceRepetition_smdl.json');
+
   elseif strcmp(task, 'fmriprep')
 
     task = {'balloonanalogrisktask'};

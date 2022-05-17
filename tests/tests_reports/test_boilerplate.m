@@ -36,7 +36,48 @@ function test_boilerplate_spatial_preproc()
 
   %  opt.fwhm.func = 0;
 
-  boilerplate(opt, pwd, 'spatial_preproc');
-  
+  outputFile = boilerplate(opt, ...
+                           'outputPath', pwd, ...
+                           'pipelineType', 'spatial_preproc', ...
+                           'partialsPath', partialsPapth(), ...
+                           'verbose', false);
 
+  assertEqual(exist(outputFile, 'file'), 2);
+  delete(outputFile);
+
+end
+
+function test_boilerplate_spatial_subject_glm()
+
+  % GIVEN
+
+  opt = setOptions('facerep');
+
+  filter = opt.bidsFilterFile.bold;
+  filter.task = opt.taskName;
+
+  sliceOrder = getAndCheckSliceOrder(opt.dir.input, opt, filter);
+  if isempty(sliceOrder)
+    opt.stc = false;
+  end
+
+  %   opt.stc.referenceSlice = 16;
+
+  opt.fwhm.contrast = 0;
+
+  opt.designType = 'block';
+
+  outputFile = boilerplate(opt, ...
+                           'outputPath', pwd, ...
+                           'pipelineType', 'stats', ...
+                           'partialsPath', partialsPapth(), ...
+                           'verbose', true);
+
+  assertEqual(exist(outputFile, 'file'), 2);
+  delete(outputFile);
+
+end
+
+function value = partialsPapth()
+  value = fullfile(getTestDir(), '..', 'src', 'reports', 'partials');
 end

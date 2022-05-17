@@ -1,11 +1,8 @@
-The fMRI data were pre-processed with {{generatedBy.name}} 
-({{generatedBy.Version}}; {{generatedBy.CodeURL}}; DOI: {{generatedBy.DOI}})
-using statistical parametric mapping
-({{OS.spmVersion}}; 
-Wellcome Center for Neuroimaging, London, UK;
-www.fil.ion.ucl.ac.uk/spm; RRID:SCR_007037)
-using {{#OS}}{{platform.name}} {{platform.version}} 
-on a {{name}}computer ({{version}}){{/OS}}.
+The (f)MRI data were pre-processed with {{>computing_environment}}.
+
+{{! TODO anat only}}
+{{! TODO voxel displacement maps}}
+{{! TODO mention which task were processed}}
 
 The preprocessing of the functional images was performed in the following order:
 {{#dummy_scans}}- removing of dummy scans
@@ -59,3 +56,5 @@ interpolation: 4th degree b-spline).
 Preprocessed functional images were spatially smoothed using a 3D
 gaussian kernel (FWHM = {{fwhm.func}} mm).
 {{/smoothing}}
+
+{{>credits}}

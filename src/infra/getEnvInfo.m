@@ -24,13 +24,33 @@ function [OS, generatedBy] = getEnvInfo(opt)
   end
 
   OS.name = computer();
-  if strcmp(OS.name, 'GLNXA64')
-    OS.name = 'unix';
+
+  if ismember(OS.name, {'GLNXA64'})
+
     [~, result] = system('lsb_release -d');
     tokens = regexp(result, 'Description:', 'split');
+
+    OS.name = 'unix';
     OS.version = strtrim(tokens{2});
+
+  elseif ismember(OS.name, {'MACI64'})
+
+    [~, result] = system('sw_vers');
+    tokens = regexp(result, newline, 'split');
+
+    ProductName = regexp(tokens{1}, 'ProductName:', 'split');
+    ProductVersion = regexp(tokens{2}, 'ProductVersion:', 'split');
+
+    OS.name = strtrim(ProductName{2});
+    OS.version = strtrim(ProductVersion{2});
+
   else
+    % for windows: winver
+    % [~, result] = system('winver');
+
+    OS.name = 'unknown OS';
     OS.version = 'unknown version';
+
   end
 
   OS.platform.name = runsOn;
