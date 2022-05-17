@@ -75,7 +75,8 @@ lint_matlab: ## Clean MATLAB code
 	mh_style --fix && mh_metric --ci && mh_lint
 
 lint_python: ## Clean python code
-	black *.py && black src && black docs		
+	black *.py src docs
+	flake8	*.py src docs
 
 
 ################################################################################
