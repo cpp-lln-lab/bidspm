@@ -29,9 +29,30 @@ function [names, R] = reorderCounfounds(varargin)
   R = args.Results.R;
   allConfoundsNames = args.Results.allConfoundsNames;
 
+  allConfoundsNames = sort(allConfoundsNames);
+
+  if numel(allConfoundsNames) < numel(names) && not(all(ismember(names, allConfoundsNames)))
+    errorHandling(mfilename(), ...
+                  'missingConfounds', ...
+                  'Some of the confounds to reorder are not in the reference list.', ...
+                  false);
+  end
+
   [LIA, LOCB] = ismember(allConfoundsNames, names);
 
-  names = names(LOCB);
-  R = R(:, LOCB);
+  if all(LIA)
+    names = names(LOCB);
+    R = R(:, LOCB);
+
+  else
+    newR = zeros(size(R, 1), numel(allConfoundsNames));
+    newR(:, LIA) = R(:, LOCB(LIA));
+    R = newR;
+
+    newNames = repmat({'dummyConfound'}, 1, numel(allConfoundsNames));
+    newNames(LIA) = names(LOCB(LIA));
+    names = newNames;
+
+  end
 
 end
