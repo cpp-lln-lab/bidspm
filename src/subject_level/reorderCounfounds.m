@@ -29,7 +29,7 @@ function [names, R] = reorderCounfounds(varargin)
   R = args.Results.R;
   allConfoundsNames = args.Results.allConfoundsNames;
 
-  allConfoundsNames = sort(allConfoundsNames);
+  allConfoundsNames = unique(allConfoundsNames);
 
   if numel(allConfoundsNames) < numel(names) && not(all(ismember(names, allConfoundsNames)))
     errorHandling(mfilename(), ...

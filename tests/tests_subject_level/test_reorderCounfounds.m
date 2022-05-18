@@ -47,6 +47,24 @@ function test_reorderCounfounds_basic()
 
 end
 
+function test_reorderCounfounds_duplicate_should_not_matter()
+
+  % GIVEN
+  allConfoundsNames =  {'rot_x', 'rot_y', 'rot_z', 'rot_x'};
+  names = {'rot_z', 'rot_x', 'rot_y'};
+  R = rand(6, 3);
+
+  expected = R(:, [2, 3, 1]);
+
+  % WHEN
+  [names, R] = reorderCounfounds(names, R, allConfoundsNames);
+
+  % THEN
+  assertEqual(names, {'rot_x', 'rot_y', 'rot_z'});
+  assertEqual(R, expected);
+
+end
+
 function test_reorderCounfounds_error()
 
   % GIVEN
