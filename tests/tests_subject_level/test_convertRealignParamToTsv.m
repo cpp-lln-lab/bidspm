@@ -20,7 +20,7 @@ function test_convertRealignParamToTsv_basic()
   convertRealignParamToTsv(input, opt);
 
   output = fullfile(opt.dir.preproc, 'sub-01', 'ses-01', 'func', ...
-                    'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.tsv');
+                    'sub-01_ses-01_task-vislocalizer_motion.tsv');
 
   assertEqual(exist(output, 'file'), 2);
 
@@ -41,10 +41,10 @@ function test_convertRealignParamToTsv_non_bold_data()
 
   opt = set_spm_2_bids_defaults(opt);
 
-  convertRealignParamToTsv(input, opt);
+  rpTsvFile = convertRealignParamToTsv(input, opt);
 
   output = fullfile(opt.dir.preproc, 'sub-01', 'ses-01', 'func', ...
-                    'sub-01_ses-01_task-vislocalizer_desc-vasoConfounds_regressors.tsv');
+                    'sub-01_ses-01_task-vislocalizer_desc-vasoConfounds_motion.tsv');
 
   assertEqual(exist(output, 'file'), 2);
 
