@@ -1,4 +1,5 @@
 function makeStandalone(outdir, gateway, contentsver)
+% (C) Copyright 2010-2019 Wellcome Trust Centre for Neuroimaging  
 
   % taken from spm_make_standalone.m,
   % which lives in the config/ folder of your SPM installation
@@ -28,7 +29,7 @@ function makeStandalone(outdir, gateway, contentsver)
   %
   % See spm_standalone.m and https://en.wikibooks.org/wiki/SPM/Standalone
   % __________________________________________________________________________
-  % Copyright (C) 2010-2019 Wellcome Trust Centre for Neuroimaging
+  
 
   % Guillaume Flandin
   % $Id: spm_make_standalone.m 7534 2019-02-20 17:09:45Z guillaume $
