@@ -33,9 +33,11 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
   % Create Contrasts
   contrasts = specifyContrasts(SPM, model);
   for icon = 1:size(contrasts, 2)
-    consess{icon}.tcon.name = contrasts(icon).name; %#ok<*AGROW>
-    consess{icon}.tcon.convec = contrasts(icon).C;
-    consess{icon}.tcon.sessrep = 'none';
+    if any(contrasts(icon).C)
+      consess{icon}.tcon.name = contrasts(icon).name; %#ok<*AGROW>
+      consess{icon}.tcon.convec = contrasts(icon).C;
+      consess{icon}.tcon.sessrep = 'none';
+    end
   end
 
   matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
