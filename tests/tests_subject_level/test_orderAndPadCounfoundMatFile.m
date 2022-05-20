@@ -1,4 +1,4 @@
-function test_suite = test_padCounfoundMatFile %#ok<*STOUT>
+function test_suite = test_orderAndPadCounfoundMatFile %#ok<*STOUT>
   %
   % (C) Copyright 2022 CPP_SPM developers
 
@@ -11,24 +11,7 @@ function test_suite = test_padCounfoundMatFile %#ok<*STOUT>
 
 end
 
-function test_padCounfoundMatFile_basic()
-
-  % GIVEN
-  spmSess(1).counfoundMatFile = fullfile(getDummyDataDir, ...
-                                         'mat_files', ...
-                                         'task-olfid_desc-confounds_regressors.mat');
-  spmSess(2).counfoundMatFile = spmSess(1).counfoundMatFile;
-  opt.glm.useDummyRegressor = true;
-
-  % WHEN
-  spmSessOut = padCounfoundMatFile(spmSess, opt);
-
-  % THEN
-  assertEqual(spmSessOut, spmSess);
-
-end
-
-function test_padCounfoundMatFile_different_nb_confounds()
+function test_orderAndPadCounfoundMatFile_different_nb_confounds()
 
   % GIVEN
   spmSess(1).counfoundMatFile = fullfile(getDummyDataDir, ...
@@ -40,7 +23,7 @@ function test_padCounfoundMatFile_different_nb_confounds()
   opt.glm.useDummyRegressor = true;
 
   % WHEN
-  spmSessOut = padCounfoundMatFile(spmSess, opt);
+  spmSessOut = orderAndPadCounfoundMatFile(spmSess, opt);
 
   % THEN
   assert(~strcmp(spmSessOut(2).counfoundMatFile, spmSess(2).counfoundMatFile));
@@ -53,7 +36,7 @@ function test_padCounfoundMatFile_different_nb_confounds()
 
 end
 
-function test_allRunsHaveSameNbConfounds_one_session()
+function test_orderAndPadCounfoundMatFile_one_session()
 
   % GIVEN
   spmSess(1).counfoundMatFile = fullfile(getDummyDataDir, ...
@@ -62,21 +45,21 @@ function test_allRunsHaveSameNbConfounds_one_session()
   opt.glm.useDummyRegressor = true;
 
   % WHEN
-  spmSessOut = padCounfoundMatFile(spmSess, opt);
+  spmSessOut = orderAndPadCounfoundMatFile(spmSess, opt);
 
   % THEN
   assertEqual(spmSessOut, spmSess);
 
 end
 
-function test_allRunsHaveSameNbConfounds_no_dummy_required()
+function test_orderAndPadCounfoundMatFile_no_dummy_required()
 
   % GIVEN
   spmSess.counfoundMatFile = '';
   opt.glm.useDummyRegressor = false;
 
   % WHEN
-  spmSessOut = padCounfoundMatFile(spmSess, opt);
+  spmSessOut = orderAndPadCounfoundMatFile(spmSess, opt);
 
   % THEN
   assertEqual(spmSessOut, spmSess);

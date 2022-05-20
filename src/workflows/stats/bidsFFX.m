@@ -112,6 +112,25 @@ end
 
 function checks(opt, action)
 
+  % assume this is the first node and this is run_level
+  thisNode = opt.model.bm.getRootNode;
+  if ismember(lower(thisNode.Level), {'session', 'subject'})
+    notImplemented(mfilename(), ...
+                   '"session" and "subject" level Node not implemented yet', ...
+                   verbose);
+  elseif ismember(lower(thisNode.Level), {'dataset'})
+    msg = sprintf(['Your model seems to be having dataset Node at its root\n.', ...
+                   'Validate it: https://bids-standard.github.io/stats-models/validator.html\n']);
+    errorHandling(mfilename(), 'wrongLevel', msg, false, opt.verbosity);
+  end
+
+  % only certain type of GroupBy supported for now
+  if ~all(ismember(thisNode.GroupBy, {'run', 'session', 'subject'}))
+    msg = ['"GroubBy" other than\n- ["run", "subject"]\n- or ["run", "subject"]\n', ...
+           'at the run level Node not implemented yet'];
+    notImplemented(mfilename(), msg, verbose);
+  end
+
   if numel(opt.space) > 1
     disp(opt.space);
     msg = sprintf('GLMs can only be run in one space at a time.\n');

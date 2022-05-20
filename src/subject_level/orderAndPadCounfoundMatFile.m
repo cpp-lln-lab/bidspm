@@ -1,4 +1,10 @@
-function spmSessOut = padCounfoundMatFile(varargin)
+function spmSessOut = orderAndPadCounfoundMatFile(varargin)
+  %
+  % When doing model comparison all runs must have same number of confound regressors
+  % and have exactly the same names (be from the same conditions), so
+  %
+  %  - so we pad them with zeros if necessary
+  %  - we reorder them
   %
   % USAGE::
   %
@@ -6,10 +12,14 @@ function spmSessOut = padCounfoundMatFile(varargin)
   %
   % :param spmSess: obligatory argument.
   % :type spmSess: cell
+  %
   % :param opt: obligatory argument.
   % :type opt: structure
   %
   % :returns: - :status: (boolean)
+  %
+  %
+  % See also: reorderCounfounds
   %
   % (C) Copyright 2022 CPP_SPM developers
 
@@ -29,31 +39,26 @@ function spmSessOut = padCounfoundMatFile(varargin)
     return
   end
 
-  matFiles  = {spmSess.counfoundMatFile}';
-  nbConfounds = [];
-  for iRun = 1:numel(matFiles)
-    load(matFiles{iRun}, 'names');
-    nbConfounds(iRun) = numel(names);
-  end
+  allConfoundsNames = {};
 
-  % if all run have same number of confounds
-  if numel(unique(nbConfounds)) == 1
+  matFiles  = {spmSess.counfoundMatFile}';
+
+  % no point in reordering things across runs if there is only one
+  if numel(matFiles) == 1
     return
   end
 
-  maxNbConfounds = max(nbConfounds);
+  for iRun = 1:numel(matFiles)
+    load(matFiles{iRun}, 'names');
+    allConfoundsNames = cat(1, allConfoundsNames, names); %#ok<NODEF>
+  end
 
-  idxFilesToPad = find(nbConfounds < maxNbConfounds);
-  for i = 1:numel(idxFilesToPad)
+  for iRun = 1:numel(matFiles)
 
-    fileToLoad = matFiles{idxFilesToPad(i)};
+    fileToLoad = matFiles{iRun};
     load(fileToLoad, 'names', 'R');
 
-    columnsToPad = (nbConfounds(idxFilesToPad(i)) + 1):maxNbConfounds;
-    R(:, columnsToPad) = zeros(size(R, 1), numel(columnsToPad));
-    names = cat(1, ...
-                names, ...
-                repmat({'dummyConfound'}, numel(columnsToPad), 1));
+    [names, R] = reorderCounfounds(names, R, allConfoundsNames);
 
     bf = bids.File(fileToLoad);
     bf.entities.desc = 'confoundsPadded';
@@ -61,7 +66,7 @@ function spmSessOut = padCounfoundMatFile(varargin)
     outputFilename = fullfile(fileparts(fileToLoad), bf.filename);
 
     save(outputFilename, 'names', 'R');
-    spmSessOut(idxFilesToPad(i)).counfoundMatFile = outputFilename;
+    spmSessOut(iRun).counfoundMatFile = outputFilename;
 
   end
 
