@@ -93,7 +93,8 @@ function skipped = bidsRoiBasedGLM(opt)
         estimation = estimate(model, data);
       catch
         fprintf('\n');
-        warning('Skipping:\n- subject: %s \n- ROI: %s\n', ...
+        warning(['FAILED : Extract data & MarsBaR estimation.\n', ...
+                 'Skipping:\n- subject: %s \n- ROI: %s\n'], ...
                 subLabel,  ...
                 spm_file(roiList{iROI, 1}, 'filename'));
         skipped.subject{end + 1} = subLabel;
@@ -213,6 +214,8 @@ function skipped = bidsRoiBasedGLM(opt)
     bidsFile.suffix = 'summary';
     bidsFile.extension = '.tsv';
     bids.util.tsvwrite(fullfile(outputDir, bidsFile.filename), tsvContent);
+
+    clear tsvContent;
 
   end
 
