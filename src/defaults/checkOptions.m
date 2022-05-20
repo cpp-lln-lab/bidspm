@@ -208,6 +208,12 @@ function opt = checkOptions(opt)
 
   opt = setDirectories(opt);
 
+  opt = checkResultsOptions(opt);
+
+end
+
+function opt = checkResultsOptions(opt)
+
   % Checks on the content of opt.result.Nodes().Output
   Results = returnDefaultResultsStructure();
   Contrasts = returnDefaultContrastsStructure();

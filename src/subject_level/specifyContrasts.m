@@ -121,12 +121,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
         for iReg = 1:length(regIdx)
 
           % Use the SPM Sess index for the contrast name
-          % TODO could be optimized
-          for iSess = 1:numel(SPM.Sess)
-            if ismember(regIdx(iReg), SPM.Sess(iSess).col)
-              break
-            end
-          end
+          iSess = getSessionForRegressorNb(regIdx(iReg), SPM);
 
           C = newContrast(SPM, [cdtName, '_', num2str(iSess)]);
 
@@ -182,6 +177,16 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
 end
 
+function iSess = getSessionForRegressorNb(regIdx, SPM)
+  % Use the SPM Sess index for the contrast name
+  % TODO could be optimized
+  for iSess = 1:numel(SPM.Sess)
+    if ismember(regIdx, SPM.Sess(iSess).col)
+      break
+    end
+  end
+end
+
 function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
 
   if ~isfield(node, 'Contrasts')
@@ -223,12 +228,7 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
     for iRun = 1:nbRuns
 
       % Use the SPM Sess index for the contrast name
-      % TODO could be optimized
-      for iSess = 1:numel(SPM.Sess)
-        if ismember(regIdx{1}(iRun), SPM.Sess(iSess).col)
-          break
-        end
-      end
+      iSess = getSessionForRegressorNb(regIdx{1}(iRun), SPM);
 
       C = newContrast(SPM, [this_contrast.Name, '_', num2str(iSess)]);
 
