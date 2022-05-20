@@ -28,7 +28,7 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
 
   load(spmMatFile, 'SPM');
 
-  model = spm_jsonread(opt.model.file);
+  model = opt.model.bm;
 
   % Create Contrasts
   contrasts = specifyContrasts(SPM, model);
