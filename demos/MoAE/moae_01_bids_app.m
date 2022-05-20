@@ -2,11 +2,20 @@
 %
 % (C) Copyright 2022 Remi Gau
 
-%% PREPROC
 clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
+
+%%
+download_data = true;
+clean = true;
+download_moae_ds(download_data, clean);
+
+%% PREPROC
+
+% will download the dataset from the FIL for the block design SPM tutorial
+% and will run the basic preprocessing.
 
 bids_dir = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
 
@@ -19,6 +28,12 @@ cpp_spm(bids_dir, output_dir, 'subject', ...
         'space', {'IXI549Space'});
 
 %% STATS
+% This script will run the subject level GLM and contrasts on it of the MoAE dataset
+%
+% Results might be a bit different from those in the manual as some
+% default options are slightly different in this pipeline
+% (e.g use of FAST instead of AR(1), motion regressors added)
+
 addpath(fullfile(pwd, '..', '..'));
 
 bids_dir = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
