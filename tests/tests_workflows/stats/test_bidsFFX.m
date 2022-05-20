@@ -67,7 +67,7 @@ function test_bidsFFX_contrasts()
 
   [matlabbatch, opt] = bidsFFX('contrasts', opt);
 
-  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 4);
+  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 8);
 
   assertEqual(opt.dir.jobs, fullfile(opt.dir.stats, 'jobs', 'vislocalizer'));
 
