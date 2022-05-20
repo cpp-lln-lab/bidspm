@@ -42,7 +42,8 @@ function cppSpmHelp()
   % *Optional parameters common to all actions*
   %
   % :param participant_label: cell of participants labels.
-  %                           For example: ``{'01', '03', '08'}``
+  %                           For example: ``{'01', '03', '08'}``.
+  %                           Can be a regular expression.
   % :type cellstr:
   %
   % :param dry_run: Defaults to ``false``
