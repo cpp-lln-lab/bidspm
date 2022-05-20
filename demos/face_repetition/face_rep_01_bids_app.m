@@ -11,11 +11,8 @@ clc;
 downloadData = true;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
 
-opt = face_rep_get_option();
-
-%% Removes previous analysis, gets data and converts it to BIDS
+%% Gets data and converts it to BIDS
 if downloadData
 
   WD = pwd;
@@ -35,12 +32,13 @@ if downloadData
 
 end
 
-reportBIDS(opt);
+%% Preprocessing
 
-bidsCopyInputFolder(opt);
+bids_dir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
 
-bidsSTC(opt);
+output_dir = fullfile(bids_dir, '..', 'derivatives');
 
-bidsSpatialPrepro(opt);
-
-bidsSmoothing(opt);
+cpp_spm(bids_dir, output_dir, 'subject', ...
+        'action', 'preprocess', ...
+        'task', {'facerepetition'}, ...
+        'space', {'individual', 'IXI549Space'});
