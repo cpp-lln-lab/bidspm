@@ -182,92 +182,6 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
 end
 
-function contrastsList = getContrastsList(node, model)
-
-  contrastsList = {};
-
-  switch lower(node.Level)
-
-    case 'subject'
-
-      % TODO relax those assumptions
-
-      % assumptions
-      assert(checkGroupBy(node));
-      assert(node.Model.X == 1);
-
-      sourceNode = getSourceNode(model, node.Name);
-
-      % TODO transfer to BIDS model as a get_contrasts_list method
-      if isfield(sourceNode, 'Contrasts')
-        for i = 1:numel(sourceNode.Contrasts)
-          contrastsList{end + 1} = checkContrast(sourceNode, i);
-        end
-      end
-
-  end
-
-end
-
-function dummyContrastsList = getDummyContrastsList(node, model)
-
-  dummyContrastsList = {};
-
-  if isfield(node.DummyContrasts, 'Contrasts')
-
-    dummyContrastsList = node.DummyContrasts.Contrasts;
-
-  else
-
-    switch lower(node.Level)
-
-      case 'run'
-        % TODO this assumes "GroupBy": ["run", "subject"] or ["run", "session", "subject"]
-        dummyContrastsList = node.Model.X;
-
-      case 'subject'
-
-        % TODO relax those assumptions
-
-        % assumptions
-        assert(checkGroupBy(node));
-        assert(node.Model.X == 1);
-
-        sourceNode = getSourceNode(model, node.Name);
-
-        % TODO transfer to BIDS model as a get_contrasts_list method
-        if isfield(sourceNode.DummyContrasts, 'Contrasts')
-          dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
-        end
-
-    end
-
-  end
-
-end
-
-function sourceNode = getSourceNode(bm, destinationName)
-
-  % TODO transfer to BIDS model as a get_source method
-  if ~isfield(bm, 'Edges') || isempty(bm.Edges)
-    bm = bm.get_edges_from_nodes;
-  end
-
-  for i = 1:numel(bm.Edges)
-    if strcmp(bm.Edges{i}.Destination, destinationName)
-      source = bm.Edges{i}.Source;
-      break
-    end
-  end
-
-  sourceNode = bm.get_nodes('Name', source);
-
-  if iscell(sourceNode)
-    sourceNode = sourceNode{1};
-  end
-
-end
-
 function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
 
   if ~isfield(node, 'Contrasts')
@@ -394,6 +308,92 @@ function [contrasts, counter] = appendContrast(contrasts, C, counter)
   counter = counter + 1;
   contrasts(counter).C = C.C;
   contrasts(counter).name = C.name;
+end
+
+function contrastsList = getContrastsList(node, model)
+
+  contrastsList = {};
+
+  switch lower(node.Level)
+
+    case 'subject'
+
+      % TODO relax those assumptions
+
+      % assumptions
+      assert(checkGroupBy(node));
+      assert(node.Model.X == 1);
+
+      sourceNode = getSourceNode(model, node.Name);
+
+      % TODO transfer to BIDS model as a get_contrasts_list method
+      if isfield(sourceNode, 'Contrasts')
+        for i = 1:numel(sourceNode.Contrasts)
+          contrastsList{end + 1} = checkContrast(sourceNode, i);
+        end
+      end
+
+  end
+
+end
+
+function dummyContrastsList = getDummyContrastsList(node, model)
+
+  dummyContrastsList = {};
+
+  if isfield(node.DummyContrasts, 'Contrasts')
+
+    dummyContrastsList = node.DummyContrasts.Contrasts;
+
+  else
+
+    switch lower(node.Level)
+
+      case 'run'
+        % TODO this assumes "GroupBy": ["run", "subject"] or ["run", "session", "subject"]
+        dummyContrastsList = node.Model.X;
+
+      case 'subject'
+
+        % TODO relax those assumptions
+
+        % assumptions
+        assert(checkGroupBy(node));
+        assert(node.Model.X == 1);
+
+        sourceNode = getSourceNode(model, node.Name);
+
+        % TODO transfer to BIDS model as a get_contrasts_list method
+        if isfield(sourceNode.DummyContrasts, 'Contrasts')
+          dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
+        end
+
+    end
+
+  end
+
+end
+
+function sourceNode = getSourceNode(bm, destinationName)
+
+  % TODO transfer to BIDS model as a get_source method
+  if ~isfield(bm, 'Edges') || isempty(bm.Edges)
+    bm = bm.get_edges_from_nodes;
+  end
+
+  for i = 1:numel(bm.Edges)
+    if strcmp(bm.Edges{i}.Destination, destinationName)
+      source = bm.Edges{i}.Source;
+      break
+    end
+  end
+
+  sourceNode = bm.get_nodes('Name', source);
+
+  if iscell(sourceNode)
+    sourceNode = sourceNode{1};
+  end
+
 end
 
 function  [cdtName, regIdx, status] = getRegressorIdx(cdtName, SPM)
