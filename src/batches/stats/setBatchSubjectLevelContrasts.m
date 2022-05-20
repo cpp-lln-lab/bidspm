@@ -1,6 +1,6 @@
 function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
   %
-  % Short description of what the function does goes here.
+  % set batch for run and subject level contrasts
   %
   % USAGE::
   %
@@ -8,8 +8,10 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param opt:
   % :type opt: structure
+  %
   % :param subLabel:
   % :type subLabel: string
   %

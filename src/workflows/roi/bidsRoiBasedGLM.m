@@ -131,6 +131,9 @@ function skipped = bidsRoiBasedGLM(opt)
 
       end
 
+      %% Save to TSV and JSON
+      %  TODO refactor in separate function
+
       % Make fitted time course into percent signal change
       timeCourse = cellfun(@(x) x / mean(block_means(estimation)) * 100, ...
                            timeCourse, ...
@@ -138,7 +141,6 @@ function skipped = bidsRoiBasedGLM(opt)
 
       nbTimePoints = max(cellfun('length', timeCourse));
 
-      %% Save to TSV and JSON
       jsonContent = struct('SamplingFrequency', [], 'size', roiSize);
       if unique(dt) > 1
         error('temporal resolution different across conditions');
@@ -177,6 +179,7 @@ function skipped = bidsRoiBasedGLM(opt)
     close all;
 
     %% Save summary table for all rois and conditions as tidy data
+    %  TODO refactor in separate function
     psc = {'max', 'absMax'};
     row = 1;
     for i = 1:numel(dataToCompile)
