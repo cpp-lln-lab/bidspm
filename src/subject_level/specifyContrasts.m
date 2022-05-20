@@ -91,41 +91,18 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
     return
   end
 
-  ContrastsList = {};
+  dummyContrastsList = getDummyContrastsList(node, model);
 
-  DummyContrastsList = getDummyContrastsList(node, model);
-
+  contrastsList = {};
   if ~isfield(node.DummyContrasts, 'Contrasts')
-
     % try to grab ContrastsList from design matrix or from previous Node
-
-    switch level
-
-      case 'subject'
-
-        % TODO relax those assumptions
-
-        % assumptions
-        assert(checkGroupBy(node));
-        assert(node.Model.X == 1);
-
-        sourceNode = getSourceNode(model, node.Name);
-
-        % TODO transfer to BIDS model as a get_contrasts_list method
-        if isfield(sourceNode, 'Contrasts')
-          for i = 1:numel(sourceNode.Contrasts)
-            ContrastsList{end + 1} = checkContrast(sourceNode, i);
-          end
-        end
-
-    end
-
+    contrastsList = getContrastsList(node, model);
   end
 
   % first the contrasts to compute automatically against baseline
-  for iCon = 1:length(DummyContrastsList)
+  for iCon = 1:length(dummyContrastsList)
 
-    cdtName = DummyContrastsList{iCon};
+    cdtName = dummyContrastsList{iCon};
     [cdtName, regIdx] = getRegressorIdx(cdtName, SPM);
 
     switch level
@@ -167,9 +144,9 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
   % set up DummyContrasts at subject level
   % that are based on contrast from previous level
-  for iCon = 1:length(ContrastsList)
+  for iCon = 1:length(contrastsList)
 
-    this_contrast = ContrastsList{iCon};
+    this_contrast = contrastsList{iCon};
 
     if isempty(this_contrast)
       continue
@@ -207,7 +184,9 @@ end
 
 function contrastsList = getContrastsList(node, model)
 
-  switch lower(node.level)
+  contrastsList = {};
+
+  switch lower(node.Level)
 
     case 'subject'
 
