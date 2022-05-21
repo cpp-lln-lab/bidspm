@@ -11,14 +11,14 @@ end
 function test_setBatchResults_basic()
 
   %% GIVEN
+  result = defaultResultsStructure;
+
   result.dir = pwd;
   result.label = '01';
   result.nbSubj = 1;
   result.contrastNb = 1;
 
-  result.contrasts = defaultResultsStructure;
-
-  result.contrasts.name = result.contrasts.name{1};
+  result.name = result.name{1};
 
   %% WHEN
   matlabbatch = {};
@@ -35,20 +35,20 @@ function test_setBatchResults_export()
   %% GIVEN
   opt.taskName = 'test';
 
-  contrasts = defaultResultsStructure();
+  results = defaultResultsStructure();
 
-  contrasts.name = 'test';
-  contrasts.MC = 'FDR';
-  contrasts.p = 0.05;
-  contrasts.k = 0;
-  contrasts.useMask = false;
-  contrasts.png = true;
-  contrasts.csv = true;
-  contrasts.threshSpm = true;
-  contrasts.binary = true;
-  contrasts.nidm =  true;
+  results.name = 'test';
+  results.MC = 'FDR';
+  results.p = 0.05;
+  results.k = 0;
+  results.useMask = false;
+  results.png = true;
+  results.csv = true;
+  results.threshSpm = true;
+  results.binary = true;
+  results.nidm =  true;
 
-  opt.results = contrasts;
+  opt.results = results;
 
   opt.space = 'individual';
 
@@ -79,7 +79,7 @@ function test_setBatchResults_export()
   assertEqual(matlabbatch{1}.spm.stats.results.export{5}, export{5});
 
   expectedBatch = returnBasicExpectedResultsBatch();
-  expectedBatch{end}.spm.stats.results.conspec.titlestr = returnName(result.contrasts);
+  expectedBatch{end}.spm.stats.results.conspec.titlestr = returnName(result);
   expectedBatch{end}.spm.stats.results.conspec.threshdesc = 'FDR';
   expectedBatch{end}.spm.stats.results.export = export;
 
@@ -92,17 +92,17 @@ function test_setBatchResults_montage()
   %% GIVEN
   opt.taskName = 'test';
 
-  contrasts = defaultResultsStructure();
+  results = defaultResultsStructure();
 
-  contrasts.name = '';
-  contrasts.MC = 'FWE';
-  contrasts.p = 0.05;
-  contrasts.k = 0;
-  contrasts.useMask = false;
+  results.name = '';
+  results.MC = 'FWE';
+  results.p = 0.05;
+  results.k = 0;
+  results.useMask = false;
 
-  contrasts.montage.do =  true;
+  results.montage.do =  true;
 
-  opt.results = contrasts;
+  opt.results = results;
 
   opt.space = 'IXI549Space';
 
@@ -115,7 +115,7 @@ function test_setBatchResults_montage()
   %% THEN
   expectedBatch = returnBasicExpectedResultsBatch();
 
-  expectedBatch{end}.spm.stats.results.conspec.titlestr = returnName(result.contrasts);
+  expectedBatch{end}.spm.stats.results.conspec.titlestr = returnName(result);
   expectedBatch{end}.spm.stats.results.conspec.threshdesc = 'FWE';
 
   expectedBatch{end}.spm.stats.results.export{1}.montage.background = ...
@@ -123,7 +123,7 @@ function test_setBatchResults_montage()
   expectedBatch{end}.spm.stats.results.export{end}.montage.orientation = 'axial';
   expectedBatch{end}.spm.stats.results.export{end}.montage.slices = [];
 
-  expectedBatch{end + 1}.spm.util.print.fname = ['Montage' returnName(result.contrasts)];
+  expectedBatch{end + 1}.spm.util.print.fname = ['Montage' returnName(result)];
   expectedBatch{end}.spm.util.print.fig.figname = 'SliceOverlay';
   expectedBatch{end}.spm.util.print.opts = 'png';
 
@@ -162,6 +162,8 @@ function result = setBatchSubjectLevelResultsMock(opt)
 
   icon = 1;
 
+  result = opt.results(icon);
+
   result.dir = pwd;
   result.label = '01';
   result.nbSubj = 1;
@@ -180,7 +182,6 @@ function result = setBatchSubjectLevelResultsMock(opt)
                              'k', '', ...
                              'MC', '');
 
-  result.contrasts =  opt.results(icon);
   result.space = opt.space;
 
 end

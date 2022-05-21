@@ -25,10 +25,10 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   % (C) Copyright 2019 CPP_SPM developers
 
   result.outputName.entities.sub = result.label;
-  result.outputName.entities.desc = result.contrasts.name;
-  result.outputName.entities.p = convertPvalueToString(result.contrasts.p);
-  result.outputName.entities.k = num2str(result.contrasts.k);
-  result.outputName.entities.MC = result.contrasts.MC;
+  result.outputName.entities.desc = result.name;
+  result.outputName.entities.p = convertPvalueToString(result.p);
+  result.outputName.entities.k = num2str(result.k);
+  result.outputName.entities.MC = result.MC;
 
   fields = fieldnames(result.outputName.entities);
   for i = 1:numel(fields)
@@ -38,14 +38,14 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   stats.results.spmmat = {fullfile(result.dir, 'SPM.mat')};
 
-  stats.results.conspec.titlestr = returnName(result.contrasts);
+  stats.results.conspec.titlestr = returnName(result);
 
   stats.results.conspec.contrasts = result.contrastNb;
-  stats.results.conspec.threshdesc = result.contrasts.MC;
-  stats.results.conspec.thresh = result.contrasts.p;
-  stats.results.conspec.extent = result.contrasts.k;
+  stats.results.conspec.threshdesc = result.MC;
+  stats.results.conspec.thresh = result.p;
+  stats.results.conspec.extent = result.k;
   stats.results.conspec.conjunction = 1;
-  stats.results.conspec.mask.none = ~result.contrasts.useMask;
+  stats.results.conspec.mask.none = ~result.useMask;
 
   stats.results.units = 1;
 
@@ -53,28 +53,28 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   %% set up how to export the results
   export = [];
-  if result.contrasts.png
+  if result.png
     export{end + 1}.png = true;
   end
 
-  if result.contrasts.csv
+  if result.csv
     export{end + 1}.csv = true;
   end
 
-  if result.contrasts.threshSpm
+  if result.threshSpm
     result.outputName.ext = '';
     bidsFile = bids.File(result.outputName);
     export{end + 1}.tspm.basename = bidsFile.filename;
   end
 
-  if result.contrasts.binary
+  if result.binary
     result.outputName.ext = '';
     result.outputName.suffix = 'mask';
     bidsFile = bids.File(result.outputName);
     export{end + 1}.binary.basename = bidsFile.filename;
   end
 
-  if result.contrasts.nidm
+  if result.nidm
 
     nidm.modality = 'FMRI';
 
@@ -91,13 +91,13 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   end
 
-  if result.contrasts.montage.do
-    export{end + 1}.montage = setMontage(result.contrasts);
+  if result.montage.do
+    export{end + 1}.montage = setMontage(result);
   end
 
   matlabbatch{end}.spm.stats.results.export = export;
 
-  if result.contrasts.montage.do
+  if result.montage.do
 
     % Not sure why the name of the figure does not come out right
     result.outputName.ext = '';

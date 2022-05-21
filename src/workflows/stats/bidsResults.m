@@ -154,12 +154,23 @@ function matlabbatch = bidsResults(opt)
 
       case 'run'
 
-        notImplemented(mfilename, 'run level results not implemented yet', opt.verbosity);
+        for iSub = 1:numel(opt.subjects)
 
-        continue
+          subLabel = opt.subjects{iSub};
 
-        % TODO check what happens for models with a run level specified but no
-        %      subject level
+          printProcessingSubject(iSub, subLabel, opt);
+
+          [matlabbatch, result] = bidsResultsRun(opt, subLabel, iCon);
+
+          batchName = sprintf('compute_sub-%s_run_level_results', subLabel);
+
+          saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
+
+          renameOutputResults(result);
+
+          renamePng(result);
+
+        end
 
       case 'session'
 
@@ -180,7 +191,7 @@ function matlabbatch = bidsResults(opt)
 
           [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iCon);
 
-          batchName = sprintf('compute_sub-%s_results', subLabel);
+          batchName = sprintf('compute_sub-%s_subject_level_results', subLabel);
 
           saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
@@ -218,6 +229,30 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iCon)
 
   matlabbatch = {};
 
+  % allow constrast.name to be a cell and loop over it
+  for i = 1:length(opt.results(iCon).name)
+
+    result = opt.results(iCon);
+
+    result.name = regexify(opt.results(iCon).name{i});
+
+    result.space = opt.space;
+
+    result.dir = getFFXdir(subLabel, opt);
+
+    matlabbatch = setBatchSubjectLevelResults(matlabbatch, ...
+                                              opt, ...
+                                              subLabel, ...
+                                              result);
+
+  end
+
+end
+
+function [matlabbatch, result] = bidsResultsRun(opt, subLabel, iCon)
+
+  matlabbatch = {};
+
   result.space = opt.space;
 
   result.dir = getFFXdir(subLabel, opt);
@@ -225,8 +260,8 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iCon)
   % allow constrast.name to be a cell and loop over it
   for i = 1:length(opt.results(iCon).name)
 
-    result.contrasts = opt.results(iCon);
-    result.contrasts.name = opt.results(iCon).name{i};
+    result = opt.results(iCon);
+    result.name = regexify([opt.results(iCon).name{i}]);
 
     matlabbatch = setBatchSubjectLevelResults(matlabbatch, ...
                                               opt, ...
@@ -245,9 +280,9 @@ function [matlabbatch, result] = bidsResultsDataset(opt, iCon)
 
   for iCon = 1:length(opt.results(iCon))
 
-    result.contrasts = opt.results(iCon);
+    result = opt.results(iCon);
 
-    result.dir = fullfile(getRFXdir(opt), result.Contrasts.Name);
+    result.dir = fullfile(getRFXdir(opt), result.name);
 
     matlabbatch = setBatchGroupLevelResults(matlabbatch, ...
                                             opt, ...

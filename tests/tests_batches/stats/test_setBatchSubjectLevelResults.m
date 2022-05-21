@@ -51,18 +51,18 @@ function test_setBatchSubjectLevelResults_basic()
 
 end
 
-function test_setBatchSubjectLevelResults_error_missing_contrast_name()
+function test_setBatchSubjectLevelResults_missing_contrast_name()
 
   [subLabel, opt, result] = setUp('vismotion');
 
   result.contrasts.name = '';
 
   matlabbatch = {};
-  assertExceptionThrown(@()setBatchSubjectLevelResults(matlabbatch, ...
-                                                       opt, ...
-                                                       subLabel, ...
-                                                       result), ...
-                        'setBatchSubjectLevelResults:missingContrastName');
+  assertWarning(@()setBatchSubjectLevelResults(matlabbatch, ...
+                                               opt, ...
+                                               subLabel, ...
+                                               result), ...
+                'setBatchSubjectLevelResults:skippingContrastResults');
 
 end
 
@@ -80,7 +80,7 @@ function test_setBatchSubjectLevelResults_error_no_matching_contrast()
                                                opt, ...
                                                subLabel, ...
                                                result), ...
-                'setBatchSubjectLevelResults:noMatchingContrastName');
+                'setBatchSubjectLevelResults:skippingContrastResults');
 
 end
 
@@ -98,10 +98,8 @@ function [subLabel, opt, result] = setUp(task, contrastName)
     opt.results(iCon).name = contrastName;
   end
 
-  result.dir = getFFXdir(subLabel, opt);
-
+  result = opt.results(iCon);
   result.space = opt.space;
-
-  result.contrasts = opt.results(iCon);
+  result.dir = getFFXdir(subLabel, opt);
 
 end

@@ -23,15 +23,18 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   [matlabbatch, opt, subLabel, result] = deal(varargin{:});
 
   result.nbSubj = 1;
-  
+
   load(fullfile(result.dir, 'SPM.mat'), 'SPM');
 
   result.contrastNb = getContrastNb(result, opt, SPM);
   if isempty(result.contrastNb)
-    msg = sprintf('Skipping contrast named %s', result.contrasts.name);
+    msg = sprintf('Skipping contrast named %s', char(result.name));
     errorHandling(mfilename(), 'skippingContrastResults', msg, true, true);
     return
   end
+
+  % replace name that has likely been regexified by now
+  result.name = SPM.xCon(result.contrastNb).name;
 
   result.label = subLabel;
 

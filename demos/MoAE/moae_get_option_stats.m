@@ -21,7 +21,7 @@ function opt = moae_get_option_stats()
                             'models', 'model-MoAE_smdl.json');
 
   % Specify the result to compute
-  opt.results(1).nodeName = 'subject';
+  opt.results(1).nodeName = 'run_level';
 
   opt.results.name = 'listening_1';
 

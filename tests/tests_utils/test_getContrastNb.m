@@ -15,12 +15,12 @@ function test_getContrastNb_basic()
 
   result.dir = pwd;
   result.name = 'bar';
-  
+
   result.name = regexify(result.name);
-  
-  SPM.xCon(1,1).name = 'foo';
-  SPM.xCon(2,1).name = 'bar';
-  SPM.xCon(3,1).name = 'foobar';
+
+  SPM.xCon(1, 1).name = 'foo';
+  SPM.xCon(2, 1).name = 'bar';
+  SPM.xCon(3, 1).name = 'foobar';
 
   %% WHEN
   contrastNb = getContrastNb(result, opt, SPM);
@@ -38,12 +38,12 @@ function test_getContrastNb_missing()
 
   result.dir = pwd;
   result.name = 'rab';
-  
+
   result.name = regexify(result.name);
-  
-  SPM.xCon(1,1).name = 'foo';
-  SPM.xCon(2,1).name = 'bar';
-  SPM.xCon(3,1).name = 'foobar';
+
+  SPM.xCon(1, 1).name = 'foo';
+  SPM.xCon(2, 1).name = 'bar';
+  SPM.xCon(3, 1).name = 'foobar';
 
   %% THEN
   assertWarning(@()getContrastNb(result, opt, SPM), 'getContrastNb:noMatchingContrastName');
@@ -58,15 +58,14 @@ function test_getContrastNb_no_name()
 
   result.dir = pwd;
   result.name = '';
-  
+
   result.name = regexify(result.name);
-  
-  SPM.xCon(1,1).name = 'foo';
-  SPM.xCon(2,1).name = 'bar';
-  SPM.xCon(3,1).name = 'foobar';
+
+  SPM.xCon(1, 1).name = 'foo';
+  SPM.xCon(2, 1).name = 'bar';
+  SPM.xCon(3, 1).name = 'foobar';
 
   %% THEN
   assertWarning(@()getContrastNb(result, opt, SPM), 'getContrastNb:missingContrastName');
 
 end
-

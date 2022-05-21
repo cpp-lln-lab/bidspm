@@ -24,7 +24,7 @@ function opt = moae_get_option_fmriprep_stats()
                             'models', 'model-MoAE_smdl.json');
 
   % Specify the result to compute
-  opt.results(1).Level = 'subject';
+  opt.results(1).Level = 'run_level';
 
   opt.results(1).Name = 'listening';
 

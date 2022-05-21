@@ -16,7 +16,7 @@ function opt =  face_rep_get_option_results()
                             'model-faceRepetition_smdl.json');
 
   % Specify the result to compute
-  opt.results.nodeName = 'subject_level';
+  opt.results.nodeName = 'run_level';
 
   opt.results.name = 'faces_gt_baseline_1';
 
