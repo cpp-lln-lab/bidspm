@@ -1,6 +1,10 @@
 function contrastNb = getContrastNb(result, opt, SPM)
   %
-  % identify which contrast nb actually has the name the user asked
+  % identify the contrast nb actually has the name the user asked
+  %
+  % USAGE::
+  %
+  %     contrastNb = getContrastNb(result, opt, SPM)
   %
   %
   % (C) Copyright 2019 CPP_SPM developers
@@ -32,9 +36,9 @@ function contrastNb = getContrastNb(result, opt, SPM)
 
     printAvailableContrasts(SPM, opt);
 
-    msg = sprintf('\nThis SPM file\n%s\n does not contain a contrast named:\n %s', ...
+    msg = sprintf('\nThis SPM file\n%s\n does not contain a contrast named:\n "%s"', ...
                   fullfile(result.dir, 'SPM.mat'), ...
-                  result.name);
+                  result.name(2:end - 1));
 
     errorHandling(mfilename(), 'noMatchingContrastName', msg, true, true);
 
@@ -42,22 +46,4 @@ function contrastNb = getContrastNb(result, opt, SPM)
 
   end
 
-  if numel(contrastNb) > 1
-
-    printAvailableContrasts(SPM, opt);
-
-    msg = sprintf('\nGetting too many contrasts in SPM file\n%s\nfor the name:\n %s', ...
-                  fullfile(result.dir, 'SPM.mat'), ...
-                  result.name);
-
-    errorHandling(mfilename(), 'noMatchingContrastName', msg, true, true);
-
-  end
-
-end
-
-function printAvailableContrasts(SPM, opt)
-  printToScreen('List of contrast in this SPM file\n', opt);
-  printToScreen(strjoin({SPM.xCon.name}, '\n'), opt);
-  printToScreen('\n', opt);
 end

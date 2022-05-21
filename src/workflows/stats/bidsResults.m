@@ -253,20 +253,52 @@ function [matlabbatch, result] = bidsResultsRun(opt, subLabel, iCon)
 
   matlabbatch = {};
 
-  result.space = opt.space;
-
-  result.dir = getFFXdir(subLabel, opt);
-
-  % allow constrast.name to be a cell and loop over it
+  % Loop over all the contrasts for this results
   for i = 1:length(opt.results(iCon).name)
 
-    result = opt.results(iCon);
-    result.name = regexify([opt.results(iCon).name{i}]);
+    % find all the contrasts: potentially up to one per run
+    %
+    % Only neccessary
+    % if the user did not specify the run number in result.name
+    % by adding an "_[0-9]*" to indicate the run number to get this contrast
+    % for example
+    %
+    %  opt.result.name = 'listening_1'
+    %
 
-    matlabbatch = setBatchSubjectLevelResults(matlabbatch, ...
-                                              opt, ...
-                                              subLabel, ...
-                                              result);
+    contrastName = opt.results(iCon).name{i};
+    endsWithRunNumber = regexp(contrastName, '_[0-9]*\${0,1}$', 'match');
+    if isempty(endsWithRunNumber)
+      tmp.name = [contrastName '_[0-9]*'];
+    end
+
+    tmp.dir = getFFXdir(subLabel, opt);
+
+    load(fullfile(getFFXdir(subLabel, opt), 'SPM.mat'), 'SPM');
+
+    contrastNb = getContrastNb(tmp, opt, SPM);
+
+    runConstrastsNames = SPM.xCon(contrastNb).name;
+
+    if ischar(runConstrastsNames)
+      runConstrastsNames = cellstr(runConstrastsNames);
+    end
+
+    for iRun = 1:numel(runConstrastsNames)
+
+      result = opt.results(iCon);
+
+      result.name = runConstrastsNames{i};
+
+      result.space = opt.space;
+
+      result.dir = getFFXdir(subLabel, opt);
+
+      matlabbatch = setBatchSubjectLevelResults(matlabbatch, ...
+                                                opt, ...
+                                                subLabel, ...
+                                                result);
+    end
 
   end
 

@@ -23,7 +23,7 @@ function opt = moae_get_option_stats()
   % Specify the result to compute
   opt.results(1).nodeName = 'run_level';
 
-  opt.results.name = 'listening_1';
+  opt.results(1).name = 'listening';
 
   % For each contrats, you can adapt:
   %  - voxel level (p)

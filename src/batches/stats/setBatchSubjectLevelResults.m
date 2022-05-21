@@ -28,9 +28,26 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
 
   result.contrastNb = getContrastNb(result, opt, SPM);
   if isempty(result.contrastNb)
-    msg = sprintf('Skipping contrast named %s', char(result.name));
-    errorHandling(mfilename(), 'skippingContrastResults', msg, true, true);
+
+    result.name = char(result.name);
+    result.name = regexify(result.name);
+
+    msg = sprintf('Skipping contrast named "%s"', result.name(2:end - 1));
+    errorHandling(mfilename(), 'skippingContrastResults', msg, true, opt.verbosity);
     return
+
+  end
+
+  if numel(result.contrastNb) > 1
+
+    printAvailableContrasts(SPM, opt);
+
+    msg = sprintf('\nGetting too many contrasts in SPM file\n%s\nfor the name:\n %s', ...
+                  fullfile(result.dir, 'SPM.mat'), ...
+                  result.name);
+    errorHandling(mfilename(), 'noMatchingContrastName', msg, true, opt.verbosity);
+    return
+
   end
 
   % replace name that has likely been regexified by now
