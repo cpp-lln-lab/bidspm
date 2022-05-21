@@ -152,7 +152,7 @@ function matlabbatch = bidsResults(opt)
     % for each subject or just on for the whole group
     switch lower(node.Level)
 
-      case 'run'
+      case {'run', 'subject'}
 
         for iSub = 1:numel(opt.subjects)
 
@@ -160,9 +160,16 @@ function matlabbatch = bidsResults(opt)
 
           printProcessingSubject(iSub, subLabel, opt);
 
-          [matlabbatch, result] = bidsResultsRun(opt, subLabel, iRes);
+          if strcmpi(node.Level, 'run')
+            isRunLevel = true;
+            batchName = sprintf('compute_sub-%s_run_level_results', subLabel);
 
-          batchName = sprintf('compute_sub-%s_run_level_results', subLabel);
+          elseif  strcmpi(node.Level, 'subject')
+            isRunLevel = false;
+            batchName = sprintf('compute_sub-%s_subject_level_results', subLabel);
+          end
+
+          [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLevel);
 
           status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
@@ -177,26 +184,6 @@ function matlabbatch = bidsResults(opt)
         notImplemented(mfilename, 'session level results not implemented yet', opt.verbosity);
 
         continue
-
-      case 'subject'
-
-        for iSub = 1:numel(opt.subjects)
-
-          subLabel = opt.subjects{iSub};
-
-          printProcessingSubject(iSub, subLabel, opt);
-
-          [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes);
-
-          batchName = sprintf('compute_sub-%s_subject_level_results', subLabel);
-
-          status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
-
-          if status
-            renameOutputResults(result);
-          end
-
-        end
 
       case 'dataset'
 
@@ -222,58 +209,7 @@ function matlabbatch = bidsResults(opt)
 
 end
 
-function [matlabbatch, result] = bidsResultsRun(opt, subLabel, iRes)
-
-  matlabbatch = {};
-
-  % Loop over all the contrasts for this results
-  for i = 1:length(opt.results(iRes).name)
-
-    % find all the contrasts: potentially up to one per run
-    %
-    % Only neccessary
-    % if the user did not specify the run number in result.name
-    % by adding an "_[0-9]*" to indicate the run number to get this contrast
-    % for example
-    %
-    %  opt.result.name = 'listening_1'
-    %
-
-    contrastName = opt.results(iRes).name{i};
-    endsWithRunNumber = regexp(contrastName, '_[0-9]*\${0,1}$', 'match');
-    if isempty(endsWithRunNumber)
-      tmp.name = [contrastName '_[0-9]*'];
-    end
-
-    tmp.dir = getFFXdir(subLabel, opt);
-
-    load(fullfile(getFFXdir(subLabel, opt), 'SPM.mat'), 'SPM');
-
-    contrastNb = getContrastNb(tmp, opt, SPM);
-
-    runConstrastsNames = {SPM.xCon(contrastNb).name}';
-
-    for iRun = 1:numel(runConstrastsNames)
-
-      result = opt.results(iRes);
-
-      result.name = runConstrastsNames{i};
-
-      result.space = opt.space;
-
-      result.dir = getFFXdir(subLabel, opt);
-
-      matlabbatch = setBatchSubjectLevelResults(matlabbatch, ...
-                                                opt, ...
-                                                subLabel, ...
-                                                result);
-    end
-
-  end
-
-end
-
-function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes)
+function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLevel)
 
   matlabbatch = {};
 
@@ -282,8 +218,29 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes)
 
     contrastName = opt.results(iRes).name{i};
 
-    % use regexp via getContrastNb to identify all contrasts
-    tmp.name = contrastName;
+    if isRunLevel
+
+      % find all the contrasts: potentially up to one per run
+      %
+      % Only neccessary
+      % if the user did not specify the run number in result.name
+      % by adding an "_[0-9]*" to indicate the run number to get this contrast
+      % for example
+      %
+      %  opt.result.name = 'listening_1'
+      %
+
+      endsWithRunNumber = regexp(contrastName, '_[0-9]*\${0,1}$', 'match');
+      if isempty(endsWithRunNumber)
+        tmp.name = [contrastName '_[0-9]*'];
+      end
+
+    else
+
+      tmp.name = contrastName;
+
+    end
+
     tmp.dir = getFFXdir(subLabel, opt);
 
     load(fullfile(getFFXdir(subLabel, opt), 'SPM.mat'), 'SPM');
@@ -298,11 +255,13 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes)
 
       result.name = constrastsNamesList{i};
 
-      % skip contrast with name ending in _[0-9]* as they are run level
-      % contrasts
-      endsWithRunNumber = regexp(result.name, '_[0-9]*$', 'match');
-      if ~isempty(endsWithRunNumber)
-        continue
+      if ~isRunLevel
+        % skip contrast with name ending in _[0-9]* as they are run level
+        % contrasts
+        endsWithRunNumber = regexp(result.name, '_[0-9]*$', 'match');
+        if ~isempty(endsWithRunNumber)
+          continue
+        end
       end
 
       result.space = opt.space;

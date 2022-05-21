@@ -8,6 +8,8 @@ function test_suite = test_bidsResults %#ok<*STOUT>
   initTestSuite;
 end
 
+% TODO add test for subject level
+
 function test_bidsResults_subject_lvl_regex()
 
   createDummyData();
