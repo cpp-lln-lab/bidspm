@@ -127,10 +127,6 @@ function matlabbatch = bidsResults(opt)
   % mentioned for each step
   for iRes = 1:length(opt.results)
 
-    % TODO: add a check to make sure that the request Node level exists
-    % in this bids stats model: we might request dataset level,
-    % but it may not be present.
-
     node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
 
     if isempty(node)
@@ -214,6 +210,8 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLe
 
   matlabbatch = {};
 
+  result.space = opt.space;
+
   % allow constrast.name to be a cell and loop over it
   for i = 1:length(opt.results(iRes).name)
 
@@ -234,6 +232,8 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLe
       endsWithRunNumber = regexp(contrastName, '_[0-9]*\${0,1}$', 'match');
       if isempty(endsWithRunNumber)
         tmp.name = [contrastName '_[0-9]*'];
+      else
+        tmp.name = contrastName;
       end
 
     else
@@ -250,11 +250,11 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLe
 
     constrastsNamesList = {SPM.xCon(contrastNb).name}';
 
-    for iRun = 1:numel(constrastsNamesList)
+    for j = 1:numel(constrastsNamesList)
 
       result = opt.results(iRes);
 
-      result.name = constrastsNamesList{i};
+      result.name = constrastsNamesList{j};
 
       if ~isRunLevel
         % skip contrast with name ending in _[0-9]* as they are run level
