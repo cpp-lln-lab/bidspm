@@ -48,7 +48,7 @@ function test_setBatchResults_export()
   contrasts.binary = true;
   contrasts.nidm =  true;
 
-  opt.results.contrasts = contrasts;
+  opt.results = contrasts;
 
   opt.space = 'individual';
 
@@ -102,7 +102,7 @@ function test_setBatchResults_montage()
 
   contrasts.montage.do =  true;
 
-  opt.results.contrasts = contrasts;
+  opt.results = contrasts;
 
   opt.space = 'IXI549Space';
 
@@ -180,7 +180,7 @@ function result = setBatchSubjectLevelResultsMock(opt)
                              'k', '', ...
                              'MC', '');
 
-  result.contrasts =  opt.results.contrasts(icon);
+  result.contrasts =  opt.results(icon);
   result.space = opt.space;
 
 end

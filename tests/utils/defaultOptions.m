@@ -87,7 +87,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.model.designOnly = false;
   expectedOptions.contrastList = {};
 
-  expectedOptions.results.contrasts = defaultResultsStructure();
+  expectedOptions.results = defaultResultsStructure();
 
   if nargin > 0
     expectedOptions.taskName = taskName;

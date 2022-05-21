@@ -28,39 +28,36 @@
         "designOnly": false,
         "file": "./models/model-MoAE_smdl.json"
     },
-    "result": {
-        "Nodes": {
-            "Contrasts": {
-                "MC": "FWE",
-                "Name": "listening_1",
-                "k": 0,
-                "p": 0.05
+    "results": {
+        "contrasts": {
+            "MC": "FWE",
+            "Name": "listening_1",
+            "k": 0,
+            "p": 0.05,
+            "useMask": false,
+            "nodeName": "subject_level",
+            "nidm": true,
+            "binary": true,
+            "csv": true,
+            "montage": {
+                "do": true,
+                "orientation": "axial",
+                "slices": [
+                    -4,
+                    -2,
+                    0,
+                    2,
+                    4,
+                    6,
+                    8,
+                    10,
+                    12,
+                    14,
+                    16
+                ]
             },
-            "Level": "subject",
-            "Output": {
-                "NIDM_results": true,
-                "binary": true,
-                "csv": true,
-                "montage": {
-                    "do": true,
-                    "orientation": "axial",
-                    "slices": [
-                        -4,
-                        -2,
-                        0,
-                        2,
-                        4,
-                        6,
-                        8,
-                        10,
-                        12,
-                        14,
-                        16
-                    ]
-                },
-                "png": true,
-                "thresh_spm": true
-            }
+            "png": true,
+            "thresh_spm": true
         }
     }
 }

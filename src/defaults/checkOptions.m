@@ -214,20 +214,20 @@ end
 
 function opt = checkResultsOptions(opt)
 
-  % validate content of opt.results.contrasts
+  % validate content of opt.results
 
   defaultContrast = defaultResultsStructure();
 
   fields = fieldnames(defaultContrast);
 
   if ~isfield(opt, 'results')
-    opt.results.contrasts = defaultContrast;
+    opt.results = defaultContrast;
     return
   end
 
-  for iCon = 1:numel(opt.results.contrasts)
+  for iCon = 1:numel(opt.results)
 
-    thisContrast = opt.results.contrasts(iCon);
+    thisContrast = opt.results(iCon);
 
     % add mising fields
     thisContrast =  setFields(thisContrast, defaultContrast);
@@ -256,7 +256,7 @@ function opt = checkResultsOptions(opt)
 
   end
 
-  opt.results.contrasts = contrasts;
+  opt.results = contrasts;
 
 end
 
@@ -355,7 +355,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.QA.func.Movie = 'off';
   fieldsToSet.QA.func.Basics = 'on';
 
-  fieldsToSet.results.contrasts = defaultResultsStructure();
+  fieldsToSet.results = defaultResultsStructure();
 
   %% Options for interface
   fieldsToSet.msg.color = '';

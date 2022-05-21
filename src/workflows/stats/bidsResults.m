@@ -22,23 +22,23 @@ function matlabbatch = bidsResults(opt)
   % See the `online documentation <https://cpp-spm.readthedocs.io/en/dev>`_
   % for example of those outputs.
   %
-  % The field ``opt.results.contrasts`` allows you to get results from several Nodes
+  % The field ``opt.results`` allows you to get results from several Nodes
   % from the BIDS stats model. So you could run ``bidsResults`` once to view
   % results from the subject and the dataset level.
   %
   % Specify a default structure result for this node::
   %
-  %   opt.results.contrasts(1) = returnDefaultResultsStructure();
+  %   opt.results(1) = returnDefaultResultsStructure();
   %
   % Specify the Node name (usually "run_level", "subject_levle" or "dataset_level")::
   %
-  %   opt.results.contrasts(1).nodeName = 'subject_level';
+  %   opt.results(1).nodeName = 'subject_level';
   %
   % Specify the name of the contrast whose resul we want to see.
   % This must match one of the existing contrats (dummy contrast or contrast)
   % in the BIDS stats model for that Node::
   %
-  %   opt.results.contrasts(1).name = 'listening_1';
+  %   opt.results(1).name = 'listening_1';
   %
   % For each contrat, you can adapt:
   %
@@ -52,10 +52,10 @@ function matlabbatch = bidsResults(opt)
   %
   % You can thus specify something different for a second contrast::
   %
-  %   opt.results.contrasts(2).name = {'listening_lt_baseline'};
-  %   opt.results.contrasts(2).MC =  'none';
-  %   opt.results.contrasts(2).p = 0.01;
-  %   opt.results.contrasts(2).k = 0;
+  %   opt.results(2).name = {'listening_lt_baseline'};
+  %   opt.results(2).MC =  'none';
+  %   opt.results(2).p = 0.01;
+  %   opt.results(2).k = 0;
   %
   % Specify how you want your output
   % (all the following are on ``false`` by default):
@@ -63,34 +63,34 @@ function matlabbatch = bidsResults(opt)
   % .. code-block:: matlab
   %
   %   % simple figure with glass brain view and result table
-  %   opt.results.contrasts(1).png = true();
+  %   opt.results(1).png = true();
   %
   %   % result table as a .csv: very convenient when comes the time to write papers
-  %   opt.results.contrasts(1).csv = true();
+  %   opt.results(1).csv = true();
   %
   %   % thresholded statistical map
-  %   opt.results.contrasts(1).threshSpm = true();
+  %   opt.results(1).threshSpm = true();
   %
   %   % binarised thresholded statistical map (useful to create ROIs)
-  %   opt.results.contrasts(1).binary = true();
+  %   opt.results(1).binary = true();
   %
   % You can also create a montage to view the results
   % on several slices at once:
   %
   % .. code-block:: matlab
   %
-  %   opt.results.contrasts(1).montage.do = true();
+  %   opt.results(1).montage.do = true();
   %
   %   % slices position in mm [a scalar or a vector]
-  %   opt.results.contrasts(1).montage.slices = -0:2:16;
+  %   opt.results(1).montage.slices = -0:2:16;
   %
   %   % slices orientation: can be 'axial' 'sagittal' or 'coronal'
   %   % axial is default
-  %   opt.results.contrasts(1).montage.orientation = 'axial';
+  %   opt.results(1).montage.orientation = 'axial';
   %
   %   % path to the image to use as underlay
   %   % Will use the SPM MNI T1 template by default
-  %   opt.results.contrasts(1).montage.background = ...
+  %   opt.results(1).montage.background = ...
   %        fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
   %
   % Finally you can export as a NIDM results zip files.
@@ -108,7 +108,7 @@ function matlabbatch = bidsResults(opt)
   %
   % To generate NIDM results zip file for a given contrats simply::
   %
-  %   opt.results.contrasts(1).nidm = true();
+  %   opt.results(1).nidm = true();
   %
   % (C) Copyright 2020 CPP_SPM developers
 
@@ -125,19 +125,19 @@ function matlabbatch = bidsResults(opt)
 
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
-  for iCon = 1:length(opt.results.contrasts)
+  for iCon = 1:length(opt.results)
 
     % TODO: add a check to make sure that the request Node level exists
     % in this bids stats model: we might request dataset level,
     % but it may not be present.
 
-    node = opt.model.bm.get_nodes('Name',  opt.results.contrasts(iCon).nodeName);
+    node = opt.model.bm.get_nodes('Name',  opt.results(iCon).nodeName);
 
     if isempty(node)
       errorHandling(mfilename(), ...
                     'unknownModelNode', ...
                     sprintf('no Node named %s in model\n %s.', ...
-                            opt.results.contrasts(iCon).nodeName, ...
+                            opt.results(iCon).nodeName, ...
                             opt.model.file), ...
                     true, ...
                     opt.verbosity);
@@ -223,10 +223,10 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iCon)
   result.dir = getFFXdir(subLabel, opt);
 
   % allow constrast.name to be a cell and loop over it
-  for i = 1:length(opt.results.contrasts(iCon).name)
+  for i = 1:length(opt.results(iCon).name)
 
-    result.contrasts = opt.results.contrasts(iCon);
-    result.contrasts.name = opt.results.contrasts(iCon).name{i};
+    result.contrasts = opt.results(iCon);
+    result.contrasts.name = opt.results(iCon).name{i};
 
     matlabbatch = setBatchSubjectLevelResults(matlabbatch, ...
                                               opt, ...
@@ -243,9 +243,9 @@ function [matlabbatch, result] = bidsResultsDataset(opt, iCon)
 
   result.space = opt.space;
 
-  for iCon = 1:length(opt.results.contrasts(iCon))
+  for iCon = 1:length(opt.results(iCon))
 
-    result.contrasts = opt.results.contrasts(iCon);
+    result.contrasts = opt.results(iCon);
 
     result.dir = fullfile(getRFXdir(opt), result.Contrasts.Name);
 

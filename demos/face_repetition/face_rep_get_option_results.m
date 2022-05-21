@@ -16,20 +16,20 @@ function opt =  face_rep_get_option_results()
                             'model-faceRepetition_smdl.json');
 
   % Specify the result to compute
-  opt.result.Nodes(1).Level = 'subject';
+  opt.results.nodeName = 'subject_level';
 
-  opt.result.Nodes(1).Contrasts(1).Name = 'faces_gt_baseline_1';
+  opt.results.name = 'faces_gt_baseline_1';
 
   % Specify how you want your output (all the following are on false by default)
-  opt.result.Nodes(1).Output.png = true();
-  opt.result.Nodes(1).Output.csv = true();
-  opt.result.Nodes(1).Output.thresh_spm = true();
-  opt.result.Nodes(1).Output.binary = true();
+  opt.results.png = true();
+  opt.results.csv = true();
+  opt.results.threshSpm = true();
+  opt.results.binary = true();
 
   % MONTAGE FIGURE OPTIONS
-  opt.result.Nodes(1).Output.montage.do = true();
-  opt.result.Nodes(1).Output.montage.slices = -26:3:6; % in mm
-  opt.result.Nodes(1).Output.montage.orientation = 'axial';
+  opt.results.montage.do = true();
+  opt.results.montage.slices = -26:3:6; % in mm
+  opt.results.montage.orientation = 'axial';
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);

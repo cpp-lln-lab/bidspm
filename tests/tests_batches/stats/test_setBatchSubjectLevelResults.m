@@ -95,13 +95,13 @@ function [subLabel, opt, result] = setUp(task, contrastName)
   opt = setOptions(task, subLabel, 'pipelineType', 'stats');
 
   if nargin > 1
-    opt.results.contrasts(iCon).name = contrastName;
+    opt.results(iCon).name = contrastName;
   end
 
   result.dir = getFFXdir(subLabel, opt);
 
   result.space = opt.space;
 
-  result.contrasts = opt.results.contrasts(iCon);
+  result.contrasts = opt.results(iCon);
 
 end

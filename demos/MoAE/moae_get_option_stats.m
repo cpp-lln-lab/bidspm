@@ -21,9 +21,9 @@ function opt = moae_get_option_stats()
                             'models', 'model-MoAE_smdl.json');
 
   % Specify the result to compute
-  opt.result.Nodes(1).Level = 'subject';
+  opt.results(1).nodeName = 'subject';
 
-  opt.result.Nodes(1).Contrasts(1).Name = 'listening_1';
+  opt.results.name = 'listening_1';
 
   % For each contrats, you can adapt:
   %  - voxel level (p)
@@ -33,30 +33,30 @@ function opt = moae_get_option_stats()
   %    - 'FDR'
   %    - 'none'
   %
-  %   opt.result.Nodes(1).Contrasts(2).Name = 'listening_inf_baseline';
-  %   opt.result.Nodes(1).Contrasts(2).MC =  'none';
-  %   opt.result.Nodes(1).Contrasts(2).p = 0.01;
-  %   opt.result.Nodes(1).Contrasts(2).k = 0;
+  %   opt.results(2).Name = 'listening_inf_baseline';
+  %   opt.results(2).MC =  'none';
+  %   opt.results(2).p = 0.01;
+  %   opt.results(2).k = 0;
 
   % Specify how you want your output (all the following are on false by default)
-  opt.result.Nodes(1).Output.png = true();
+  opt.results(1).png = true();
 
-  opt.result.Nodes(1).Output.csv = true();
+  opt.results(1).csv = true();
 
-  opt.result.Nodes(1).Output.thresh_spm = true();
+  opt.results(1).threshSpm = true();
 
-  opt.result.Nodes(1).Output.binary = true();
+  opt.results(1).binary = true();
 
   % MONTAGE FIGURE OPTIONS
-  opt.result.Nodes(1).Output.montage.do = true();
-  opt.result.Nodes(1).Output.montage.slices = -4:2:16; % in mm
+  opt.results(1).montage.do = true();
+  opt.results(1).montage.slices = -4:2:16; % in mm
   % axial is default 'sagittal', 'coronal'
-  opt.result.Nodes(1).Output.montage.orientation = 'axial';
+  opt.results(1).montage.orientation = 'axial';
   % will use the MNI T1 template by default but the underlay image can be changed.
-  opt.result.Nodes(1).Output.montage.background = ...
+  opt.results(1).montage.background = ...
       fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
 
-  opt.result.Nodes(1).Output.NIDM_results = true();
+  opt.results(1).nidm = true();
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);

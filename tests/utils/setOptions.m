@@ -42,8 +42,8 @@ function opt = setOptions(varargin)
 
     opt.model.file = fullfile(getMoaeDir(), 'models', 'model-MoAE_smdl.json');
 
-    opt.results.contrasts(1).name = 'listening';
-    opt.results.contrasts(2).name = 'listening_inf_baseline';
+    opt.results(1).name = 'listening';
+    opt.results(2).name = 'listening_inf_baseline';
 
   elseif strcmp(task, 'MoAE-preproc')
 
@@ -55,8 +55,8 @@ function opt = setOptions(varargin)
 
     opt.model.file = fullfile(getMoaeDir(), 'models', 'model-MoAE_smdl.json');
 
-    opt.results.contrasts(1).name = 'listening';
-    opt.results.contrasts(2).name = 'listening_inf_baseline';
+    opt.results(1).name = 'listening';
+    opt.results(2).name = 'listening_inf_baseline';
 
   elseif strcmp(task, 'facerep')
 

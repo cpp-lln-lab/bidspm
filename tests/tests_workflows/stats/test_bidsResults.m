@@ -12,9 +12,9 @@ function test_bidsResults_error_missing_node()
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
-  opt.results.contrasts = defaultResultsStructure();
+  opt.results = defaultResultsStructure();
 
-  opt.results.contrasts.nodeName = 'foo';
+  opt.results.nodeName = 'foo';
 
   assertWarning(@()bidsResults(opt), 'Model:missingNode');
 
@@ -28,25 +28,25 @@ function test_bidsResults_subject_lvl()
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   % Specify what ouput we want
-  opt.results.contrasts = defaultResultsStructure();
+  opt.results = defaultResultsStructure();
 
-  opt.results.contrasts.nodeName = 'subject_level';
+  opt.results.nodeName = 'subject_level';
 
-  opt.results.contrasts.name = {'VisMot_gt_VisStat'};
+  opt.results.name = {'VisMot_gt_VisStat'};
 
-  opt.results.contrasts.MC =  'FWE';
-  opt.results.contrasts.p = 0.05;
-  opt.results.contrasts.k = 5;
+  opt.results.MC =  'FWE';
+  opt.results.p = 0.05;
+  opt.results.k = 5;
 
-  opt.results.contrasts.png = true();
+  opt.results.png = true();
 
-  opt.results.contrasts.csv = true();
+  opt.results.csv = true();
 
-  opt.results.contrasts.threshSpm = true();
+  opt.results.threshSpm = true();
 
-  opt.results.contrasts.binary = true();
+  opt.results.binary = true();
 
-  opt.results.contrasts.nidm = true();
+  opt.results.nidm = true();
 
   %% WHEN
   matlabbatch = bidsResults(opt);
@@ -96,18 +96,18 @@ function test_bidsResults_no_background_for_montage()
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   % Specify what ouput we want
-  opt.results.contrasts = defaultResultsStructure();
+  opt.results = defaultResultsStructure();
 
-  opt.results.contrasts.nodeName = 'subject_level';
+  opt.results.nodeName = 'subject_level';
 
-  opt.results.contrasts.name = {'VisMot_gt_VisStat'};
+  opt.results.name = {'VisMot_gt_VisStat'};
 
-  opt.results.contrasts.MC =  'FWE';
-  opt.results.contrasts.p = 0.05;
-  opt.results.contrasts.k = 5;
+  opt.results.MC =  'FWE';
+  opt.results.p = 0.05;
+  opt.results.k = 5;
 
-  opt.results.contrasts.montage.do = true;
-  opt.results.contrasts.montage.background = 'aFileThatDoesNotExist.nii';
+  opt.results.montage.do = true;
+  opt.results.montage.background = 'aFileThatDoesNotExist.nii';
 
   assertExceptionThrown(@()bidsResults(opt), 'setMontage:backgroundImageNotFound');
 

@@ -85,10 +85,10 @@ layers(4).color.line_width = 2;
 settings = sd_config_settings('init');
 
 % we reuse the details for the SPM montage
-settings.slice.orientation = opt.result.Nodes(1).Output.montage.orientation;
+settings.slice.orientation = opt.results(1).Output.montage.orientation;
 settings.slice.disp_slices = -15:3:18;
 settings.fig_specs.n.slice_column = 4;
-settings.fig_specs.title = opt.result.Nodes(1).Contrasts(1).Name;
+settings.fig_specs.title = opt.results(1).Contrasts(1).Name;
 
 %% Display the layers
 [settings, p] = sd_display(layers, settings);
