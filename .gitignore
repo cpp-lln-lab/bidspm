@@ -9,6 +9,8 @@
 *.html
 *.ps
 
+.vscode/settings.json
+
 # created by tests
 CHANGES
 README

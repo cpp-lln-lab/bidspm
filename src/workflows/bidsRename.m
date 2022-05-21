@@ -42,7 +42,6 @@ function bidsRename(opt)
 
     for iFile = 1:size(data, 1)
 
-      % TODO: take care of metadata in json
       [new_filename, ~, json] = spm_2_bids(data{iFile}, opt.spm_2_bids);
 
       msg = sprintf('%s --> %s\n', spm_file(data{iFile}, 'filename'), new_filename);
@@ -57,7 +56,13 @@ function bidsRename(opt)
           errorHandling(mfilename(), 'fileAlreadyExist', msg, true, opt.verbosity);
 
         else
+
           movefile(data{iFile}, spm_file(data{iFile}, 'filename', new_filename));
+
+          if ~isempty(json.filename)
+            bids.util.jsonencode(fullfile(fileparts(data{iFile}), json.filename), ...
+                                 json.content);
+          end
 
         end
 
