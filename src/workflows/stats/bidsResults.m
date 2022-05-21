@@ -175,6 +175,7 @@ function matlabbatch = bidsResults(opt)
 
           if status
             renameOutputResults(result);
+            renameNidm(opt, result, subLabel);
           end
 
         end
@@ -323,6 +324,31 @@ function renameOutputResults(result)
   end
 
   renamePng(result);
+
+end
+
+function renameNidm(opt, result, subLabel)
+  %
+  % removes the _XXX suffix before the PNG extension.
+
+  nidmFiles = spm_select('FPList', result.dir, '^spm_[0-9]{4}.nidm.zip$');
+
+  for iFile = 1:size(nidmFiles, 1)
+    source = deblank(nidmFiles(iFile, :));
+    basename =  spm_file(source, 'basename');
+    label =  regexp(basename, '[0-9]{4}', 'match');
+    spec = struct('suffix', 'nidm', ...
+                  'ext', '.zip', ...
+                  'entities', struct('sub', subLabel, ...
+                                     'task', strjoin(opt.taskName, ''), ...
+                                     'space', opt.space, ...
+                                     'label', label{1}));
+    bf = bids.File(spec, 'use_schema', false);
+    bf = bf.reorder_entities();
+    bf = bf.update;
+    target = fullfile(result.dir, bf.filename);
+    movefile(source, target);
+  end
 
 end
 
