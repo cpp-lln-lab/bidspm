@@ -24,18 +24,18 @@ end
 function test_checkOptions_results_structure()
 
   opt.taskName = 'testTask';
-  opt.result.Nodes(1).Level = 'run';
-  opt.result.Nodes(1).Contrasts(1).Name = 'listening_1';
-  opt.result.Nodes(1).Contrasts(1).MC = 'none';
-  opt.result.Nodes(1).Contrasts(1).p = 0.001;
-  opt.result.Nodes(1).Contrasts(2).Name = 'not_listening_1';
-  opt.result.Nodes(2).Level = 'subject';
-  opt.result.Nodes(2).Contrasts(1).Name = 'listening_1';
+  opt.result.contrasts(1).nodeName = 'run_level';
+  opt.result.contrasts(1).name = 'listening_1';
+  opt.result.contrasts(1).MC = 'none';
+  opt.result.contrasts(1).p = 0.001;
+  opt.result.contrasts(2).nodeName = 'run_level';
+  opt.result.contrasts(2).name = 'not_listening_1';
+  opt.result.contrasts(3).nodeName = 'subject_level';
+  opt.result.contrasts(3).name = 'listening_1';
   opt = checkOptions(opt);
 
-  opt = checkOptions(opt);
-
-  assertEqual(opt.result.Nodes(1).Contrasts(2).MC, 'FWE');
+  assertEqual(opt.result.contrasts(2).MC, 'FWE');
+  assertEqual(opt.result.contrasts(2).p, 0.05);
 
 end
 
