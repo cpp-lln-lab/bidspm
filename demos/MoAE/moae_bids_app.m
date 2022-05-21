@@ -29,12 +29,12 @@ preproc_dir = fullfile(output_dir, 'cpp_spm-preproc');
 
 model_file = fullfile(pwd, 'models', 'model-MoAE_smdl.json');
 
-opt.result.Nodes(1).Level = 'subject';
-opt.result.Nodes(1).Contrasts(1).Name = 'listening_1';
-opt.result.Nodes(1).Output.png = true();
-opt.result.Nodes(1).Output.montage.do = true();
-opt.result.Nodes(1).Output.montage.slices = -4:2:16;
-opt.result.Nodes(1).Output.NIDM_results = true();
+opt.results.nodeName = 'subject_level';
+opt.results.name = {'listening_1'};
+opt.results.png = true();
+opt.results.montage.do = true();
+opt.results.montage.slices = -4:2:16;
+opt.results.nidm = true();
 
 cpp_spm(bids_dir, output_dir, 'subject', ...
         'action', 'stats', ...

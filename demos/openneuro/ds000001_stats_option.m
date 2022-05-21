@@ -24,9 +24,9 @@ function opt = ds000001_stats_option()
 
   opt.model.file = fullfile(root_dir, 'models', 'model-defaultBalloonanalogrisktask_smdl.json');
 
-  opt.result.Nodes(1).Level = 'subject';
-  opt.result.Nodes(1).Contrasts(1).Name = 'cash_demean';
-  opt.result.Nodes(1).Output.png = true();
+  opt.results.nodeName = 'subject_level';
+  opt.results.name = 'cash_demean';
+  opt.results.png = true();
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);

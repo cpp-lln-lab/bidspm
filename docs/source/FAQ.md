@@ -241,9 +241,9 @@ changed like this (see `bidsResults` help section for more information):
 
 ```matlab
     % slices position in mm [a scalar or a vector]
-    opt.result.Nodes(1).Output.montage.slices = -12:4:60;
+    opt.results(1).montage.slices = -12:4:60;
 
     % slices orientation: can be 'axial' 'sagittal' or 'coronal'
     % axial is default
-    opt.result.Nodes(1).Output.montage.orientation = 'axial';
+    opt.results(1).montage.orientation = 'axial';
 ```
