@@ -81,8 +81,8 @@ for iResolution = 2:1:3
   [BIDS, opt] = getData(opt, opt.dir.preproc);
   [~, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
   opt.results(1).montage.background = spm_select('FPList', ...
-                                                             anatDataDir, ...
-                                                             '^wm.*desc-skullstripped.*.nii$');
+                                                 anatDataDir, ...
+                                                 '^wm.*desc-skullstripped.*.nii$');
 
   bidsResults(opt);
 
