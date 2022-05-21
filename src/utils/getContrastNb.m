@@ -1,6 +1,9 @@
 function contrastNb = getContrastNb(result, opt, SPM)
   %
-  % identify the contrast nb actually has the name the user asked
+  % Identify the contrast nb actually has the name the user asked
+  %
+  % The search is regex based and any string (like 'foo') will be by default
+  % regexified (into '^foo$').
   %
   % USAGE::
   %

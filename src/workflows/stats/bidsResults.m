@@ -125,19 +125,19 @@ function matlabbatch = bidsResults(opt)
 
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
-  for iCon = 1:length(opt.results)
+  for iRes = 1:length(opt.results)
 
     % TODO: add a check to make sure that the request Node level exists
     % in this bids stats model: we might request dataset level,
     % but it may not be present.
 
-    node = opt.model.bm.get_nodes('Name',  opt.results(iCon).nodeName);
+    node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
 
     if isempty(node)
       errorHandling(mfilename(), ...
                     'unknownModelNode', ...
                     sprintf('no Node named %s in model\n %s.', ...
-                            opt.results(iCon).nodeName, ...
+                            opt.results(iRes).nodeName, ...
                             opt.model.file), ...
                     true, ...
                     opt.verbosity);
@@ -160,15 +160,15 @@ function matlabbatch = bidsResults(opt)
 
           printProcessingSubject(iSub, subLabel, opt);
 
-          [matlabbatch, result] = bidsResultsRun(opt, subLabel, iCon);
+          [matlabbatch, result] = bidsResultsRun(opt, subLabel, iRes);
 
           batchName = sprintf('compute_sub-%s_run_level_results', subLabel);
 
-          saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
+          status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-          renameOutputResults(result);
-
-          renamePng(result);
+          if status
+            renameOutputResults(result);
+          end
 
         end
 
@@ -178,9 +178,6 @@ function matlabbatch = bidsResults(opt)
 
         continue
 
-        % TODO check what happens for models with a run level specified but no
-        %      subject level
-
       case 'subject'
 
         for iSub = 1:numel(opt.subjects)
@@ -189,29 +186,29 @@ function matlabbatch = bidsResults(opt)
 
           printProcessingSubject(iSub, subLabel, opt);
 
-          [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iCon);
+          [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes);
 
           batchName = sprintf('compute_sub-%s_subject_level_results', subLabel);
 
-          saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
+          status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-          renameOutputResults(result);
-
-          renamePng(result);
+          if status
+            renameOutputResults(result);
+          end
 
         end
 
       case 'dataset'
 
-        [matlabbatch, result] = bidsResultsDataset(opt, iCon);
+        [matlabbatch, result] = bidsResultsDataset(opt, iRes);
 
         batchName = 'compute_group_level_results';
 
-        saveAndRunWorkflow(matlabbatch, batchName, opt);
+        status = saveAndRunWorkflow(matlabbatch, batchName, opt);
 
-        renameOutputResults(result);
-
-        renamePng(result);
+        if status
+          renameOutputResults(result);
+        end
 
       otherwise
 
@@ -225,36 +222,12 @@ function matlabbatch = bidsResults(opt)
 
 end
 
-function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iCon)
-
-  matlabbatch = {};
-
-  % allow constrast.name to be a cell and loop over it
-  for i = 1:length(opt.results(iCon).name)
-
-    result = opt.results(iCon);
-
-    result.name = regexify(opt.results(iCon).name{i});
-
-    result.space = opt.space;
-
-    result.dir = getFFXdir(subLabel, opt);
-
-    matlabbatch = setBatchSubjectLevelResults(matlabbatch, ...
-                                              opt, ...
-                                              subLabel, ...
-                                              result);
-
-  end
-
-end
-
-function [matlabbatch, result] = bidsResultsRun(opt, subLabel, iCon)
+function [matlabbatch, result] = bidsResultsRun(opt, subLabel, iRes)
 
   matlabbatch = {};
 
   % Loop over all the contrasts for this results
-  for i = 1:length(opt.results(iCon).name)
+  for i = 1:length(opt.results(iRes).name)
 
     % find all the contrasts: potentially up to one per run
     %
@@ -266,7 +239,7 @@ function [matlabbatch, result] = bidsResultsRun(opt, subLabel, iCon)
     %  opt.result.name = 'listening_1'
     %
 
-    contrastName = opt.results(iCon).name{i};
+    contrastName = opt.results(iRes).name{i};
     endsWithRunNumber = regexp(contrastName, '_[0-9]*\${0,1}$', 'match');
     if isempty(endsWithRunNumber)
       tmp.name = [contrastName '_[0-9]*'];
@@ -278,15 +251,11 @@ function [matlabbatch, result] = bidsResultsRun(opt, subLabel, iCon)
 
     contrastNb = getContrastNb(tmp, opt, SPM);
 
-    runConstrastsNames = SPM.xCon(contrastNb).name;
-
-    if ischar(runConstrastsNames)
-      runConstrastsNames = cellstr(runConstrastsNames);
-    end
+    runConstrastsNames = {SPM.xCon(contrastNb).name}';
 
     for iRun = 1:numel(runConstrastsNames)
 
-      result = opt.results(iCon);
+      result = opt.results(iRes);
 
       result.name = runConstrastsNames{i};
 
@@ -304,15 +273,61 @@ function [matlabbatch, result] = bidsResultsRun(opt, subLabel, iCon)
 
 end
 
-function [matlabbatch, result] = bidsResultsDataset(opt, iCon)
+function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes)
+
+  matlabbatch = {};
+
+  % allow constrast.name to be a cell and loop over it
+  for i = 1:length(opt.results(iRes).name)
+
+    contrastName = opt.results(iRes).name{i};
+
+    % use regexp via getContrastNb to identify all contrasts
+    tmp.name = contrastName;
+    tmp.dir = getFFXdir(subLabel, opt);
+
+    load(fullfile(getFFXdir(subLabel, opt), 'SPM.mat'), 'SPM');
+
+    contrastNb = getContrastNb(tmp, opt, SPM);
+
+    constrastsNamesList = {SPM.xCon(contrastNb).name}';
+
+    for iRun = 1:numel(constrastsNamesList)
+
+      result = opt.results(iRes);
+
+      result.name = constrastsNamesList{i};
+
+      % skip contrast with name ending in _[0-9]* as they are run level
+      % contrasts
+      endsWithRunNumber = regexp(result.name, '_[0-9]*$', 'match');
+      if ~isempty(endsWithRunNumber)
+        continue
+      end
+
+      result.space = opt.space;
+
+      result.dir = getFFXdir(subLabel, opt);
+
+      matlabbatch = setBatchSubjectLevelResults(matlabbatch, ...
+                                                opt, ...
+                                                subLabel, ...
+                                                result);
+    end
+
+  end
+
+end
+
+function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
 
   matlabbatch = {};
 
   result.space = opt.space;
 
-  for iCon = 1:length(opt.results(iCon))
+  for iRes = 1:length(opt.results(iRes))
 
-    result = opt.results(iCon);
+    result = opt.results(iRes);
 
     result.dir = fullfile(getRFXdir(opt), result.name);
 
@@ -328,11 +343,11 @@ function [matlabbatch, result] = bidsResultsDataset(opt, iCon)
 
 end
 
-function renameOutputResults(results)
+function renameOutputResults(result)
   % we create new name for the nifti output by removing the
   % spmT_XXXX prefix and using the XXXX as label- for the file
 
-  outputFiles = spm_select('FPList', results.dir, '^spmT_[0-9].*_sub-.*$');
+  outputFiles = spm_select('FPList', result.dir, '^spmT_[0-9].*_sub-.*$');
 
   for iFile = 1:size(outputFiles, 1)
 
@@ -348,13 +363,15 @@ function renameOutputResults(results)
     movefile(source, target);
   end
 
+  renamePng(result);
+
 end
 
-function renamePng(results)
+function renamePng(result)
   %
   % removes the _XXX suffix before the PNG extension.
 
-  pngFiles = spm_select('FPList', results.dir, '^sub-.*[0-9].png$');
+  pngFiles = spm_select('FPList', result.dir, '^sub-.*[0-9].png$');
 
   for iFile = 1:size(pngFiles, 1)
     source = deblank(pngFiles(iFile, :));

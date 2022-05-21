@@ -2,6 +2,8 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   %
   % Outputs the typical matlabbatch to compute the result for a given contrast
   %
+  % Common for all type of results: run, session, subject, dataset
+  %
   % USAGE::
   %
   %   matlabbatch = setBatchResults(matlabbatch, opt, result)
@@ -53,20 +55,25 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   %% set up how to export the results
   export = [];
+
+  %%
   if result.png
     export{end + 1}.png = true;
   end
 
+  %%
   if result.csv
     export{end + 1}.csv = true;
   end
 
+  %%
   if result.threshSpm
     result.outputName.ext = '';
     bidsFile = bids.File(result.outputName);
     export{end + 1}.tspm.basename = bidsFile.filename;
   end
 
+  %%
   if result.binary
     result.outputName.ext = '';
     result.outputName.suffix = 'mask';
@@ -74,6 +81,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
     export{end + 1}.binary.basename = bidsFile.filename;
   end
 
+  %%
   if result.nidm
 
     nidm.modality = 'FMRI';
@@ -91,6 +99,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   end
 
+  %%
   if result.montage.do
     export{end + 1}.montage = setMontage(result);
   end

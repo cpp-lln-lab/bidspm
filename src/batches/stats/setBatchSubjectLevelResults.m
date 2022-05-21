@@ -44,7 +44,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
 
     msg = sprintf('\nGetting too many contrasts in SPM file\n%s\nfor the name:\n %s', ...
                   fullfile(result.dir, 'SPM.mat'), ...
-                  result.name);
+                  result.name(2:end - 1));
     errorHandling(mfilename(), 'noMatchingContrastName', msg, true, opt.verbosity);
     return
 
