@@ -14,6 +14,10 @@ function string = regexify(string)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  if isempty(string)
+    string = '^$';
+    return
+  end
   if ~strcmp(string(1), '^')
     string = ['^' string];
   end
