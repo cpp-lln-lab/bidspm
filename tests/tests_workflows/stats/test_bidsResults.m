@@ -8,7 +8,19 @@ function test_suite = test_bidsResults %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsResults_basic()
+function test_bidsResults_error_missing_node()
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  opt.results.contrasts = defaultResultsStructure();
+
+  opt.results.contrasts.nodeName = 'foo';
+
+  assertWarning(@()bidsResults(opt), 'Model:missingNode');
+
+end
+
+function test_bidsResults_subject_lvl()
 
   createDummyData();
 
@@ -16,25 +28,25 @@ function test_bidsResults_basic()
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   % Specify what ouput we want
-  opt.result.Nodes(1) = returnDefaultResultsStructure();
+  opt.results.contrasts = defaultResultsStructure();
 
-  opt.result.Nodes(1).Level = 'subject';
+  opt.results.contrasts.nodeName = 'subject_level';
 
-  opt.result.Nodes(1).Contrasts(1).Name = 'VisMot_gt_VisStat';
+  opt.results.contrasts.name = {'VisMot_gt_VisStat'};
 
-  opt.result.Nodes(1).Contrasts(1).MC =  'FWE';
-  opt.result.Nodes(1).Contrasts(1).p = 0.05;
-  opt.result.Nodes(1).Contrasts(1).k = 5;
+  opt.results.contrasts.MC =  'FWE';
+  opt.results.contrasts.p = 0.05;
+  opt.results.contrasts.k = 5;
 
-  opt.result.Nodes(1).Output.png = true();
+  opt.results.contrasts.png = true();
 
-  opt.result.Nodes(1).Output.csv = true();
+  opt.results.contrasts.csv = true();
 
-  opt.result.Nodes(1).Output.thresh_spm = true();
+  opt.results.contrasts.threshSpm = true();
 
-  opt.result.Nodes(1).Output.binary = true();
+  opt.results.contrasts.binary = true();
 
-  opt.result.Nodes(1).Output.NIDM_results = true();
+  opt.results.contrasts.nidm = true();
 
   %% WHEN
   matlabbatch = bidsResults(opt);
@@ -84,18 +96,18 @@ function test_bidsResults_no_background_for_montage()
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   % Specify what ouput we want
-  opt.result.Nodes(1) = returnDefaultResultsStructure();
+  opt.results.contrasts = defaultResultsStructure();
 
-  opt.result.Nodes(1).Level = 'subject';
+  opt.results.contrasts.nodeName = 'subject_level';
 
-  opt.result.Nodes(1).Contrasts(1).Name = 'VisMot_gt_VisStat';
+  opt.results.contrasts.name = {'VisMot_gt_VisStat'};
 
-  opt.result.Nodes(1).Contrasts(1).MC =  'FWE';
-  opt.result.Nodes(1).Contrasts(1).p = 0.05;
-  opt.result.Nodes(1).Contrasts(1).k = 5;
+  opt.results.contrasts.MC =  'FWE';
+  opt.results.contrasts.p = 0.05;
+  opt.results.contrasts.k = 5;
 
-  opt.result.Nodes(1).Output.montage.do = true;
-  opt.result.Nodes(1).Output.montage.background = 'aFileThatDoesNotExist.nii';
+  opt.results.contrasts.montage.do = true;
+  opt.results.contrasts.montage.background = 'aFileThatDoesNotExist.nii';
 
   assertExceptionThrown(@()bidsResults(opt), 'setMontage:backgroundImageNotFound');
 

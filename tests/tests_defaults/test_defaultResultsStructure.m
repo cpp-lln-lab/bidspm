@@ -14,7 +14,7 @@ function test_defaultResultsStructure_basic()
 
   expected.nodeName =  '';
 
-  expected.name = '';
+  expected.name = {''};
 
   expected.useMask = false();
   expected.MC = 'FWE';

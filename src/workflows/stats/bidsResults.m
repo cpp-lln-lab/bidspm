@@ -22,23 +22,23 @@ function matlabbatch = bidsResults(opt)
   % See the `online documentation <https://cpp-spm.readthedocs.io/en/dev>`_
   % for example of those outputs.
   %
-  % The field ``opt.result.Nodes`` allows you to get results from several Nodes
+  % The field ``opt.results.contrasts`` allows you to get results from several Nodes
   % from the BIDS stats model. So you could run ``bidsResults`` once to view
   % results from the subject and the dataset level.
   %
   % Specify a default structure result for this node::
   %
-  %   opt.result.Nodes(1) = returnDefaultResultsStructure();
+  %   opt.results.contrasts(1) = returnDefaultResultsStructure();
   %
-  % Specify the Node level type (run, subject or dataset)::
+  % Specify the Node name (usually "run_level", "subject_levle" or "dataset_level")::
   %
-  %   opt.result.Nodes(1).Level = 'subject';
+  %   opt.results.contrasts(1).nodeName = 'subject_level';
   %
   % Specify the name of the contrast whose resul we want to see.
   % This must match one of the existing contrats (dummy contrast or contrast)
   % in the BIDS stats model for that Node::
   %
-  %   opt.result.Nodes(1).Contrasts(1).Name = 'listening_1';
+  %   opt.results.contrasts(1).name = 'listening_1';
   %
   % For each contrat, you can adapt:
   %
@@ -52,10 +52,10 @@ function matlabbatch = bidsResults(opt)
   %
   % You can thus specify something different for a second contrast::
   %
-  %   opt.result.Nodes(1).Contrasts(2).Name = 'listening_lt_baseline';
-  %   opt.result.Nodes(1).Contrasts(2).MC =  'none';
-  %   opt.result.Nodes(1).Contrasts(2).p = 0.01;
-  %   opt.result.Nodes(1).Contrasts(2).k = 0;
+  %   opt.results.contrasts(2).name = {'listening_lt_baseline'};
+  %   opt.results.contrasts(2).MC =  'none';
+  %   opt.results.contrasts(2).p = 0.01;
+  %   opt.results.contrasts(2).k = 0;
   %
   % Specify how you want your output
   % (all the following are on ``false`` by default):
@@ -63,34 +63,34 @@ function matlabbatch = bidsResults(opt)
   % .. code-block:: matlab
   %
   %   % simple figure with glass brain view and result table
-  %   opt.result.Nodes(1).Output.png = true();
+  %   opt.results.contrasts(1).png = true();
   %
   %   % result table as a .csv: very convenient when comes the time to write papers
-  %   opt.result.Nodes(1).Output.csv = true();
+  %   opt.results.contrasts(1).csv = true();
   %
   %   % thresholded statistical map
-  %   opt.result.Nodes(1).Output.thresh_spm = true();
+  %   opt.results.contrasts(1).threshSpm = true();
   %
   %   % binarised thresholded statistical map (useful to create ROIs)
-  %   opt.result.Nodes(1).Output.binary = true();
+  %   opt.results.contrasts(1).binary = true();
   %
   % You can also create a montage to view the results
   % on several slices at once:
   %
   % .. code-block:: matlab
   %
-  %   opt.result.Nodes(1).Output.montage.do = true();
+  %   opt.results.contrasts(1).montage.do = true();
   %
   %   % slices position in mm [a scalar or a vector]
-  %   opt.result.Nodes(1).Output.montage.slices = -0:2:16;
+  %   opt.results.contrasts(1).montage.slices = -0:2:16;
   %
   %   % slices orientation: can be 'axial' 'sagittal' or 'coronal'
   %   % axial is default
-  %   opt.result.Nodes(1).Output.montage.orientation = 'axial';
+  %   opt.results.contrasts(1).montage.orientation = 'axial';
   %
   %   % path to the image to use as underlay
   %   % Will use the SPM MNI T1 template by default
-  %   opt.result.Nodes(1).Output.montage.background = ...
+  %   opt.results.contrasts(1).montage.background = ...
   %        fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
   %
   % Finally you can export as a NIDM results zip files.
@@ -108,7 +108,7 @@ function matlabbatch = bidsResults(opt)
   %
   % To generate NIDM results zip file for a given contrats simply::
   %
-  %   opt.result.Nodes(1).Output.NIDM_results = true();
+  %   opt.results.contrasts(1).nidm = true();
   %
   % (C) Copyright 2020 CPP_SPM developers
 
@@ -125,19 +125,45 @@ function matlabbatch = bidsResults(opt)
 
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
-  for iNode = 1:length(opt.result.Nodes)
+  for iCon = 1:length(opt.results.contrasts)
 
     % TODO: add a check to make sure that the request Node level exists
     % in this bids stats model: we might request dataset level,
     % but it may not be present.
 
+    node = opt.model.bm.get_nodes('Name',  opt.results.contrasts(iCon).nodeName);
+
+    if isempty(node)
+      errorHandling(mfilename(), ...
+                    'unknownModelNode', ...
+                    sprintf('no Node named %s in model\n %s.', ...
+                            opt.results.contrasts(iCon).nodeName, ...
+                            opt.model.file), ...
+                    true, ...
+                    opt.verbosity);
+      continue
+    end
+
+    if iscell(node)
+      node = node{1};
+    end
+
     % Depending on the level step we migh have to define a matlabbatch
     % for each subject or just on for the whole group
-    switch lower(opt.result.Nodes(iNode).Level)
+    switch lower(node.Level)
 
       case 'run'
 
-        notImplemented(mfilename, 'run level not implemented yet', opt.verbosity);
+        notImplemented(mfilename, 'run level results not implemented yet', opt.verbosity);
+
+        continue
+
+        % TODO check what happens for models with a run level specified but no
+        %      subject level
+
+      case 'session'
+
+        notImplemented(mfilename, 'session level results not implemented yet', opt.verbosity);
 
         continue
 
@@ -152,7 +178,7 @@ function matlabbatch = bidsResults(opt)
 
           printProcessingSubject(iSub, subLabel, opt);
 
-          [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iNode);
+          [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iCon);
 
           batchName = sprintf('compute_sub-%s_results', subLabel);
 
@@ -166,7 +192,7 @@ function matlabbatch = bidsResults(opt)
 
       case 'dataset'
 
-        [matlabbatch, result] = bidsResultsdataset(opt, iNode);
+        [matlabbatch, result] = bidsResultsDataset(opt, iCon);
 
         batchName = 'compute_group_level_results';
 
@@ -188,7 +214,7 @@ function matlabbatch = bidsResults(opt)
 
 end
 
-function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iNode)
+function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iCon)
 
   matlabbatch = {};
 
@@ -196,12 +222,11 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iNode)
 
   result.dir = getFFXdir(subLabel, opt);
 
-  for iCon = 1:length(opt.result.Nodes(iNode).Contrasts)
+  % allow constrast.name to be a cell and loop over it
+  for i = 1:length(opt.results.contrasts(iCon).name)
 
-    result.Contrasts = opt.result.Nodes(iNode).Contrasts(iCon);
-    if isfield(opt.result.Nodes(iNode), 'Output')
-      result.Output =  opt.result.Nodes(iNode).Output;
-    end
+    result.contrasts = opt.results.contrasts(iCon);
+    result.contrasts.name = opt.results.contrasts(iCon).name{i};
 
     matlabbatch = setBatchSubjectLevelResults(matlabbatch, ...
                                               opt, ...
@@ -212,18 +237,15 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iNode)
 
 end
 
-function [matlabbatch, result] = bidsResultsdataset(opt, iNode)
+function [matlabbatch, result] = bidsResultsDataset(opt, iCon)
 
   matlabbatch = {};
 
   result.space = opt.space;
 
-  for iCon = 1:length(opt.result.Nodes(iNode).Contrasts)
+  for iCon = 1:length(opt.results.contrasts(iCon))
 
-    result.Contrasts = opt.result.Nodes(iNode).Contrasts(iCon);
-    if isfield(opt.result.Nodes(iNode), 'Output')
-      result.Output =  opt.result.Nodes(iNode).Output;
-    end
+    result.contrasts = opt.results.contrasts(iCon);
 
     result.dir = fullfile(getRFXdir(opt), result.Contrasts.Name);
 
@@ -277,8 +299,7 @@ function renamePng(results)
 end
 
 function filename = figureName(opt)
-  spec = struct( ...
-                'suffix', 'designmatrix', ...
+  spec = struct('suffix', 'designmatrix', ...
                 'ext', '.png', ...
                 'entities', struct( ...
                                    'task', strjoin(opt.taskName, ''), ...

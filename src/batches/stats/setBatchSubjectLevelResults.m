@@ -1,6 +1,5 @@
 function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
-  % Short description of what the function does goes here.
   %
   % USAGE::
   %
@@ -8,8 +7,10 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param opt:
   % :type opt: structure
+  %
   % :param subLabel:
   % :type subLabel: string
   %
@@ -25,14 +26,14 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
 
   result.contrastNb = getContrastNb(result, opt);
   if isempty(result.contrastNb)
-    msg = sprintf('Skipping contrast named %s', result.Contrasts.Name);
+    msg = sprintf('Skipping contrast named %s', result.contrasts.name);
     errorHandling(mfilename(), 'skippingContrastResults', msg, true, true);
     return
   end
 
   result.label = subLabel;
 
-  result.outputNameStructure = defaultOuputNameStruct(opt, result);
+  result.outputName = defaultOuputNameStruct(opt, result);
 
   matlabbatch = setBatchResults(matlabbatch, result);
 
@@ -45,7 +46,7 @@ function contrastNb = getContrastNb(result, opt)
 
   load(fullfile(result.dir, 'SPM.mat'));
 
-  if isempty(result.Contrasts.Name)
+  if isempty(result.contrasts.name)
 
     printAvailableContrasts(SPM, opt);
 
@@ -55,16 +56,15 @@ function contrastNb = getContrastNb(result, opt)
 
   end
 
-  contrastNb = find(strcmp({SPM.xCon.name}', result.Contrasts.Name));
+  contrastNb = find(strcmp({SPM.xCon.name}', result.contrasts.name));
 
   if isempty(contrastNb)
 
     printAvailableContrasts(SPM, opt);
 
-    msg = sprintf( ...
-                  '\nThis SPM file %s does not contain a contrast named %s', ...
+    msg = sprintf('\nThis SPM file %s does not contain a contrast named %s', ...
                   fullfile(result.dir, 'SPM.mat'), ...
-                  result.Contrasts.Name);
+                  result.contrasts.name);
 
     errorHandling(mfilename(), 'noMatchingContrastName', msg, true, true);
 

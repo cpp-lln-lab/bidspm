@@ -1,13 +1,14 @@
 function matlabbatch = setBatchResults(matlabbatch, result)
   %
-  % Outputs the typical matlabbatch to compute the results for a given contrast
+  % Outputs the typical matlabbatch to compute the result for a given contrast
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchResults(matlabbatch, opt, results)
+  %   matlabbatch = setBatchResults(matlabbatch, opt, result)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param results:
   % :type results: structure
   %
@@ -23,32 +24,28 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  result.outputNameStructure.entities.sub = result.label;
-  result.outputNameStructure.entities.desc = result.Contrasts.Name;
-  result.outputNameStructure.entities.p = convertPvalueToString(result.Contrasts.p);
-  result.outputNameStructure.entities.k = num2str(result.Contrasts.k);
-  result.outputNameStructure.entities.MC = result.Contrasts.MC;
+  result.outputName.entities.sub = result.label;
+  result.outputName.entities.desc = result.contrasts.name;
+  result.outputName.entities.p = convertPvalueToString(result.contrasts.p);
+  result.outputName.entities.k = num2str(result.contrasts.k);
+  result.outputName.entities.MC = result.contrasts.MC;
 
-  fields = fieldnames(result.outputNameStructure.entities);
+  fields = fieldnames(result.outputName.entities);
   for i = 1:numel(fields)
-    value = result.outputNameStructure.entities.(fields{i});
-    result.outputNameStructure.entities.(fields{i}) = bids.internal.camel_case(value);
+    value = result.outputName.entities.(fields{i});
+    result.outputName.entities.(fields{i}) = bids.internal.camel_case(value);
   end
-
-  fieldsToSet = returnDefaultResultsStructure();
-  result = setFields(result, fieldsToSet);
-  result.Contrasts = replaceEmptyFields(result.Contrasts, fieldsToSet.Contrasts);
 
   stats.results.spmmat = {fullfile(result.dir, 'SPM.mat')};
 
-  stats.results.conspec.titlestr = returnName(result);
+  stats.results.conspec.titlestr = returnName(result.contrasts);
 
   stats.results.conspec.contrasts = result.contrastNb;
-  stats.results.conspec.threshdesc = result.Contrasts.MC;
-  stats.results.conspec.thresh = result.Contrasts.p;
-  stats.results.conspec.extent = result.Contrasts.k;
+  stats.results.conspec.threshdesc = result.contrasts.MC;
+  stats.results.conspec.thresh = result.contrasts.p;
+  stats.results.conspec.extent = result.contrasts.k;
   stats.results.conspec.conjunction = 1;
-  stats.results.conspec.mask.none = ~result.Contrasts.useMask;
+  stats.results.conspec.mask.none = ~result.contrasts.useMask;
 
   stats.results.units = 1;
 
@@ -56,28 +53,28 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   %% set up how to export the results
   export = [];
-  if result.Output.png
+  if result.contrasts.png
     export{end + 1}.png = true;
   end
 
-  if result.Output.csv
+  if result.contrasts.csv
     export{end + 1}.csv = true;
   end
 
-  if result.Output.thresh_spm
-    result.outputNameStructure.ext = '';
-    bidsFile = bids.File(result.outputNameStructure);
+  if result.contrasts.threshSpm
+    result.outputName.ext = '';
+    bidsFile = bids.File(result.outputName);
     export{end + 1}.tspm.basename = bidsFile.filename;
   end
 
-  if result.Output.binary
-    result.outputNameStructure.ext = '';
-    result.outputNameStructure.suffix = 'mask';
-    bidsFile = bids.File(result.outputNameStructure);
+  if result.contrasts.binary
+    result.outputName.ext = '';
+    result.outputName.suffix = 'mask';
+    bidsFile = bids.File(result.outputName);
     export{end + 1}.binary.basename = bidsFile.filename;
   end
 
-  if result.Output.NIDM_results
+  if result.contrasts.nidm
 
     nidm.modality = 'FMRI';
 
@@ -94,34 +91,22 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   end
 
-  if result.Output.montage.do
-    export{end + 1}.montage = setMontage(result);
+  if result.contrasts.montage.do
+    export{end + 1}.montage = setMontage(result.contrasts);
   end
 
   matlabbatch{end}.spm.stats.results.export = export;
 
-  if result.Output.montage.do
+  if result.contrasts.montage.do
 
     % Not sure why the name of the figure does not come out right
-    result.outputNameStructure.ext = '';
-    result.outputNameStructure.suffix = 'montage';
-    bidsFile = bids.File(result.outputNameStructure);
+    result.outputName.ext = '';
+    result.outputName.suffix = 'montage';
+    bidsFile = bids.File(result.outputName);
     matlabbatch{end + 1}.spm.util.print.fname = bidsFile.filename;
     matlabbatch{end}.spm.util.print.fig.figname = 'SliceOverlay';
     matlabbatch{end}.spm.util.print.opts = 'png';
 
-  end
-
-end
-
-function struct = replaceEmptyFields(struct, fieldsToCheck)
-
-  fieldsList = fieldnames(fieldsToCheck);
-
-  for  iField = 1:numel(fieldsList)
-    if isfield(struct, fieldsList{iField}) && isempty(struct.(fieldsList{iField}))
-      struct.(fieldsList{iField}) = fieldsToCheck.(fieldsList{iField});
-    end
   end
 
 end

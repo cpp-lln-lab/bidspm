@@ -55,9 +55,10 @@ function test_setBatchSubjectLevelResults_error_missing_contrast_name()
 
   [subLabel, opt, result] = setUp('vismotion');
 
+  result.contrasts.name = '';
+
   matlabbatch = {};
-  assertExceptionThrown( ...
-                        @()setBatchSubjectLevelResults(matlabbatch, ...
+  assertExceptionThrown(@()setBatchSubjectLevelResults(matlabbatch, ...
                                                        opt, ...
                                                        subLabel, ...
                                                        result), ...
@@ -75,8 +76,7 @@ function test_setBatchSubjectLevelResults_error_no_matching_contrast()
   [subLabel, opt, result] = setUp('vismotion', contrast_name);
 
   matlabbatch = {};
-  assertWarning( ...
-                @()setBatchSubjectLevelResults(matlabbatch, ...
+  assertWarning(@()setBatchSubjectLevelResults(matlabbatch, ...
                                                opt, ...
                                                subLabel, ...
                                                result), ...
@@ -88,7 +88,6 @@ function [subLabel, opt, result] = setUp(task, contrastName)
 
   createDummyData();
 
-  iNode = 1;
   iCon = 1;
 
   subLabel = '01';
@@ -96,16 +95,13 @@ function [subLabel, opt, result] = setUp(task, contrastName)
   opt = setOptions(task, subLabel, 'pipelineType', 'stats');
 
   if nargin > 1
-    opt.result.Nodes.Contrasts.Name = contrastName;
+    opt.results.contrasts(iCon).name = contrastName;
   end
 
   result.dir = getFFXdir(subLabel, opt);
 
   result.space = opt.space;
 
-  result.Contrasts = opt.result.Nodes(iNode).Contrasts(iCon);
-  if isfield(opt.result.Nodes(iNode), 'Output')
-    result.Output =  opt.result.Nodes(iNode).Output;
-  end
+  result.contrasts = opt.results.contrasts(iCon);
 
 end
