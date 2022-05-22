@@ -310,33 +310,6 @@ function [contrasts, counter] = appendContrast(contrasts, C, counter)
   contrasts(counter).name = C.name;
 end
 
-function contrastsList = getContrastsList(node, model)
-
-  contrastsList = {};
-
-  switch lower(node.Level)
-
-    case 'subject'
-
-      % TODO relax those assumptions
-
-      % assumptions
-      assert(checkGroupBy(node));
-      assert(node.Model.X == 1);
-
-      sourceNode = getSourceNode(model, node.Name);
-
-      % TODO transfer to BIDS model as a get_contrasts_list method
-      if isfield(sourceNode, 'Contrasts')
-        for i = 1:numel(sourceNode.Contrasts)
-          contrastsList{end + 1} = checkContrast(sourceNode, i);
-        end
-      end
-
-  end
-
-end
-
 function  [cdtName, regIdx, status] = getRegressorIdx(cdtName, SPM)
   % get regressors index corresponding to the HRF of of a condition
 
@@ -359,35 +332,4 @@ function status = checkRegressorFound(regIdx, cdtName)
     msg = sprintf('No regressor found for condition ''%s''', cdtName);
     errorHandling(mfilename(), 'missingRegressor', msg, true, true);
   end
-end
-
-function contrast = checkContrast(node, iCon)
-  %
-  % put some of that in bids.Model
-
-  if ~isTtest(node.Contrasts(iCon))
-    notImplemented(mfilename(), ...
-                   'Only t test implemented for Contrasts', ...
-                   true);
-    contrast = [];
-    return
-  end
-
-  contrast = node.Contrasts(iCon);
-  if iscell(contrast)
-    contrast = contrast{1};
-  end
-
-  if ~isfield(contrast, 'Weights')
-    msg = sprintf('No weights specified for Contrast %s of Node %s', ...
-                  node.Contrasts(iCon).Name, node.Name);
-    errorHandling(mfilename, 'weightsRequired', msg, false);
-  end
-
-  if numel(contrast.Weights) ~= numel(contrast.ConditionList)
-    msg = sprintf('Number of Weights and Conditions unequal for Contrast %s of Node %s', ...
-                  node.Contrasts(iCon).Name, node.Name);
-    errorHandling(mfilename, 'numelWeightsConditionMismatch', msg, false);
-  end
-
 end
