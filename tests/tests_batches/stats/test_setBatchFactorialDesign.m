@@ -9,6 +9,8 @@ function test_suite = test_setBatchFactorialDesign %#ok<*STOUT>
 end
 
 function test_setBatchFactorialDesign_basic()
+  
+  createDummyData();
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 
@@ -24,6 +26,8 @@ function test_setBatchFactorialDesign_basic()
 
   % add test to assert default mask is SPM ICV's
   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.fd.icell.scans), 2);
+  assertEqual(matlabbatch{1}.spm.stats.factorial_design.masking.em{1}, ...
+              spm_select('FPList', fullfile(spm('dir'), 'tpm'), 'mask_ICV.nii'));
 
 end
 
