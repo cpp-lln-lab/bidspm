@@ -1,5 +1,5 @@
 {
-  "Name": "nback MVPA",
+  "Name": "nback",
   "BIDSModelVersion": "1.0.0",
   "Description": "For folder naming.",
   "Input": {
@@ -28,7 +28,7 @@
       },
       "Model": {
         "X": [
-          ""
+          "nback"
         ],
         "Type": "glm",
         "HRF": {
@@ -51,7 +51,7 @@
       },
       "Contrasts": [
         {
-          "Name": "",
+          "Name": "nback",
           "ConditionList": [
             ""
           ],
@@ -66,6 +66,40 @@
         "Contrasts": [
           ""
         ]
+      }
+    },
+    {
+      "Level": "Subject",
+      "Name": "run",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "nback MVPA",
+      "Description": "use the name of the dataset level for naming folders",
+      "GroupBy": [
+        "contrast"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
       }
     }
   ]
