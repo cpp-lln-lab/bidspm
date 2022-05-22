@@ -1,5 +1,9 @@
 function status = checkGroupBy(node)
   %
+  % Only certain type of GroupBy supported for now for each level
+  %
+  % This helps doing some defensive programming
+  %
   % (C) Copyright 2022 CPP_SPM developers
 
   status = true;
@@ -22,9 +26,22 @@ function status = checkGroupBy(node)
     case 'subject'
 
       if not(all([strcmp(node.GroupBy{1}, 'contrast') strcmp(node.GroupBy{2}, 'subject')]))
+        
         status = false;
+        
         supportedGroupBy = {'["contrast", "subject"]', '["run", "session", "subject"]'};
 
+      end
+      
+    case 'dataset'
+      
+      % only certain type of GroupBy supported for now
+      if numel(node.GroupBy) > 1 &&  ~all(ismember(node.GroupBy, {'contrast'}))
+        
+        status = false;
+        
+        supportedGroupBy = {'["contrast"]'};
+        
       end
 
   end

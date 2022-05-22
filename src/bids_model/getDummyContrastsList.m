@@ -32,7 +32,6 @@ function dummyContrastsList = getDummyContrastsList(node, model)
     node = node{1};
   end
 
-  lower(node.Level);
 
   if isfield(node.DummyContrasts, 'Contrasts')
 
@@ -40,18 +39,18 @@ function dummyContrastsList = getDummyContrastsList(node, model)
 
   else
 
+    assert(checkGroupBy(node));
+    
     switch lower(node.Level)
 
       case 'run'
-        % TODO this assumes "GroupBy": ["run", "subject"] or ["run", "session", "subject"]
+        
         dummyContrastsList = node.Model.X;
 
       case 'subject'
 
         % TODO relax those assumptions
-
         % assumptions
-        assert(checkGroupBy(node));
         assert(node.Model.X == 1);
 
         sourceNode = getSourceNode(model, node.Name);
@@ -59,6 +58,37 @@ function dummyContrastsList = getDummyContrastsList(node, model)
         % TODO transfer to BIDS model as a get_contrasts_list method
         if isfield(sourceNode.DummyContrasts, 'Contrasts')
           dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
+        end
+        
+        case 'dataset'
+          
+        % TODO relax those assumptions
+        % assumptions
+        assert(node.Model.X == 1);
+
+        sourceNode = getSourceNode(model, node.Name);
+
+        % TODO transfer to BIDS model as a get_contrasts_list method
+        
+        % get DummyContrasts from previous level otherwise we go one level deeper
+        % Assumes a model run --> subject --> dataset
+        if isfield(sourceNode.DummyContrasts, 'Contrasts') 
+          dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
+          
+          
+        elseif model.get_design_matrix('Name', sourceNode.Name) == 1
+          sourceNode = getSourceNode(model, sourceNode.Name);
+          
+          dummyContrasts = model.get_dummy_contrasts('Name', sourceNode.Name);
+          dummyContrastsList = dummyContrasts.Contrasts;
+          
+        end   
+        
+        for i = 1:numel(dummyContrastsList)
+          
+          % contrasts against baseline are renamed at the subject level
+          dummyContrastsList{i} = rmTrialTypeStr(dummyContrastsList{i});
+          
         end
 
     end
