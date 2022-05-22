@@ -14,7 +14,7 @@ function status = checkGroupBy(node)
     case 'run'
 
       % only certain type of GroupBy supported for now
-      if strcmp(node.GroupBy{1}, 'run') && ...
+      if ~strcmp(node.GroupBy{1}, 'run') || ...
           ~all(ismember(node.GroupBy, {'run', 'session', 'subject'}))
 
         status = false;
@@ -25,23 +25,24 @@ function status = checkGroupBy(node)
 
     case 'subject'
 
-      if not(all([strcmp(node.GroupBy{1}, 'contrast') strcmp(node.GroupBy{2}, 'subject')]))
-        
+      if ~(numel(node.GroupBy) == 2) || ...
+          not(all([strcmp(node.GroupBy{1}, 'contrast') strcmp(node.GroupBy{2}, 'subject')]))
+
         status = false;
-        
+
         supportedGroupBy = {'["contrast", "subject"]', '["run", "session", "subject"]'};
 
       end
-      
+
     case 'dataset'
-      
+
       % only certain type of GroupBy supported for now
-      if numel(node.GroupBy) > 1 &&  ~all(ismember(node.GroupBy, {'contrast'}))
-        
+      if numel(node.GroupBy) > 1 ||  ~all(ismember(node.GroupBy, {'contrast'}))
+
         status = false;
-        
+
         supportedGroupBy = {'["contrast"]'};
-        
+
       end
 
   end
