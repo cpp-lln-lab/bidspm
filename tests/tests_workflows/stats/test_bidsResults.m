@@ -8,7 +8,28 @@ function test_suite = test_bidsResults %#ok<*STOUT>
   initTestSuite;
 end
 
-% TODO add test for subject level
+function test_bidsResults_dataset_lvl()
+
+  % TODO requires updating dummy dataset
+  return
+
+  createDummyData();
+
+  %% GIVEN
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  % Specify what ouput we want
+  opt.results = defaultResultsStructure();
+
+  opt.results.nodeName = 'dataset_level';
+
+  opt.results.name = {'VisMot_gt_VisStat'};
+
+  %% WHEN
+
+  % matlabbatch = bidsResults(opt);
+
+end
 
 function test_bidsResults_subject_lvl_regex()
 

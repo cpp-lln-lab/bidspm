@@ -20,14 +20,12 @@ function matlabbatch = setBatchGroupLevelResults(varargin)
 
   [matlabbatch, opt, result] = deal(varargin{:});
 
-  result.dir = fullfile(getRFXdir(opt), result.Contrasts.Name);
-
   load(fullfile(result.dir, 'SPM.mat'));
   result.nbSubj = SPM.nscan;
 
   result.contrastNb = 1;
 
-  result.label = 'group';
+  result.label = ['group-' result.name];
 
   result.outputName = defaultOuputNameStruct(opt, result);
 

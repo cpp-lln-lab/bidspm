@@ -283,13 +283,15 @@ function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
 
   matlabbatch = {};
 
-  result.space = opt.space;
-
-  for iRes = 1:length(opt.results(iRes))
+  for i = 1:length(opt.results(iRes).name)
 
     result = opt.results(iRes);
 
-    result.dir = fullfile(getRFXdir(opt), result.name);
+    result.name = opt.results(iRes).name{i};
+
+    result.dir = getRFXdir(opt, result.nodeName, result.name);
+
+    result.space = opt.space;
 
     matlabbatch = setBatchGroupLevelResults(matlabbatch, ...
                                             opt, ...
