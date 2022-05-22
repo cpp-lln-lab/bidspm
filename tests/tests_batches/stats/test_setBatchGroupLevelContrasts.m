@@ -8,45 +8,20 @@ function test_suite = test_setBatchGroupLevelContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchGroupLevelContrasts_no_contrasts()
+function test_setBatchGroupLevelContrasts_basic()
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
-  rfxDir = getRFXdir(opt);
-
-  grpLvlCon = struct([]);
+  nodeName = 'dataset_level';
 
   matlabbatch = {};
-  assertExceptionThrown(@()setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir), ...
-                        'setBatchGroupLevelContrasts:noGroupLevelContrast');
-
-end
-
-function test_setBatchGroupLevelContrasts_smoke_test()
-
-  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
-
-  opt.verbosity = 1;
-
-  rfxDir = getRFXdir(opt);
-
-  grpLvlCon = opt.model.bm.get_dummy_contrasts('Level', 'dataset');
-
-  matlabbatch = {};
-
-  assertWarning(@()setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir), ...
-                'setBatchGroupLevelContrasts:notImplemented');
-
-  return
-
-  % TODO fix group level results
-
-  matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir); %#ok<UNRCH>
+  matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName);
 
   assertEqual(numel(matlabbatch), 4);
 
-  path_parts = strsplit(matlabbatch{1}.spm.stats.con.spmmat{1}, filesep);
-  expected_rfx_folder = 'VisMot';
-  assertEqual(path_parts{end - 1}, expected_rfx_folder);
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{1}.tcon.name, 'VisMot');
+  assertEqual(matlabbatch{2}.spm.stats.con.consess{1}.tcon.name, 'VisStat');
+  assertEqual(matlabbatch{3}.spm.stats.con.consess{1}.tcon.name, 'VisMot_&_VisStat');
+  assertEqual(matlabbatch{4}.spm.stats.con.consess{1}.tcon.name, 'VisMot_&_VisStat_lt_baseline');
 
 end

@@ -8,6 +8,59 @@ function test_suite = test_specifyContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_specifyContrasts_run_level_dummy_contrast_from_X()
+  %
+  % to test the generation of contrasts when there are several runs
+  %
+
+  taskName = 'motion';
+
+  model = bids.Model('init', true);
+  model.Input.task = taskName;
+  model.Nodes{1}.Model.X = {'motion', 'static'};
+  model.Nodes{1}.DummyContrasts = struct('Test', 't');
+  model.Nodes{1} = rmfield(model.Nodes{1}, 'Contrasts');
+  model.Nodes{1}.GroupBy = {'run', 'subject'};
+  model.Nodes = model.Nodes{1};
+
+  SPM.Sess(1).col = [1, 2];
+  % skip Sess 2 to make sure contrast naming is based on the Sess number
+  SPM.Sess(3).col = [3, 4];
+  SPM.Sess(4).col = [5, 6];
+  SPM.xX.name = { ...
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                };
+
+  SPM.xX.X = ones(1, numel(SPM.xX.name));
+
+  % WHEN
+  contrasts = specifyContrasts(SPM, model);
+
+  % THEN
+  names_contrast = { ...
+                    'motion_1', [1 0 0 0 0 0]
+                    'motion_3', [0 0 1 0 0 0]
+                    'motion_4', [0 0 0 0 1 0]
+                    'static_1', [0 1 0 0 0 0]
+                    'static_3', [0 0 0 1 0 0]
+                    'static_4', [0 0 0 0 0 1]
+                   };
+
+  assertEqual(numel(contrasts), size(names_contrast, 1));
+
+  for i = 1:size(names_contrast, 1)
+    expected(i).name = names_contrast{i, 1};
+    expected(i).C = names_contrast{i, 2};
+    assertEqual(contrasts(i), expected(i));
+  end
+
+end
+
 function test_specifyContrasts_missing_condition_for_dummy_contrasts()
 
   taskName = 'motion';
@@ -130,58 +183,6 @@ function test_specifyContrasts_subject_level()
                     'motion', [1 0 1 0 1 0]
                     'static', [0 1 0 1 0 1]
                     'motion_gt_static', [1 -1 1 -1 1 -1]
-                   };
-
-  assertEqual(numel(contrasts), size(names_contrast, 1));
-
-  for i = 1:size(names_contrast, 1)
-    expected(i).name = names_contrast{i, 1};
-    expected(i).C = names_contrast{i, 2};
-    assertEqual(contrasts(i), expected(i));
-  end
-
-end
-
-function test_specifyContrasts_run_level_dummy_contrast_from_X()
-  %
-  % to test the generation of contrasts when there are several runs
-  %
-
-  taskName = 'motion';
-
-  model = bids.Model('init', true);
-  model.Input.task = taskName;
-  model.Nodes{1}.Model.X = {'motion', 'static'};
-  model.Nodes{1}.DummyContrasts = struct('Test', 't');
-  model.Nodes{1} = rmfield(model.Nodes{1}, 'Contrasts');
-  model.Nodes = model.Nodes{1};
-
-  SPM.Sess(1).col = [1, 2];
-  % skip Sess 2 to make sure contrast naming is based on the Sess number
-  SPM.Sess(3).col = [3, 4];
-  SPM.Sess(4).col = [5, 6];
-  SPM.xX.name = { ...
-                 ' motion*bf(1)'
-                 ' static*bf(1)'
-                 ' motion*bf(1)'
-                 ' static*bf(1)'
-                 ' motion*bf(1)'
-                 ' static*bf(1)'
-                };
-
-  SPM.xX.X = ones(1, numel(SPM.xX.name));
-
-  % WHEN
-  contrasts = specifyContrasts(SPM, model);
-
-  % THEN
-  names_contrast = { ...
-                    'motion_1', [1 0 0 0 0 0]
-                    'motion_3', [0 0 1 0 0 0]
-                    'motion_4', [0 0 0 0 1 0]
-                    'static_1', [0 1 0 0 0 0]
-                    'static_3', [0 0 0 1 0 0]
-                    'static_4', [0 0 0 0 0 1]
                    };
 
   assertEqual(numel(contrasts), size(names_contrast, 1));

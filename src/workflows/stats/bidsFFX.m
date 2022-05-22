@@ -124,12 +124,7 @@ function checks(opt, action)
     errorHandling(mfilename(), 'wrongLevel', msg, false, opt.verbosity);
   end
 
-  % only certain type of GroupBy supported for now
-  if ~all(ismember(thisNode.GroupBy, {'run', 'session', 'subject'}))
-    msg = ['"GroubBy" other than\n- ["run", "subject"]\n- or ["run", "subject"]\n', ...
-           'at the run level Node not implemented yet'];
-    notImplemented(mfilename(), msg, verbose);
-  end
+  checkGroupBy(thisNode);
 
   if numel(opt.space) > 1
     disp(opt.space);
