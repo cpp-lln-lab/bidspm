@@ -39,11 +39,21 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
   % average at the group level
   if opt.model.bm.get_design_matrix('Name', nodeName) == 1
 
+    % assumes DummyContrasts exist
     contrastsList = getDummyContrastsList(nodeName, opt.model.bm);
-    tmp = getContrastsList(nodeName, opt.model.bm);
 
-    for i = 1:numel(tmp)
-      contrastsList{end + 1} = tmp{i}.Name;
+    node = opt.model.bm.get_nodes('Name', nodeName);
+    if iscell(node)
+      node = node{1};
+    end
+
+    % no specific dummy contrasts mentionned also include all contrasts from previous levels
+    % contrast are mentionned we grab them
+    if ~isfield(node.DummyContrasts, 'Contrasts') || isfield(node, 'Contrasts')
+      tmp = getContrastsList(nodeName, opt.model.bm);
+      for i = 1:numel(tmp)
+        contrastsList{end + 1} = tmp{i}.Name;
+      end
     end
 
   end

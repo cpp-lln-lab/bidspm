@@ -6,6 +6,12 @@ function sourceNode = getSourceNode(bm, destinationName)
     bm = bm.get_edges_from_nodes;
   end
 
+  if strcmp(destinationName, bm.Edges{1}.Source)
+    % The root node cannot have a source
+    sourceNode = {};
+    return
+  end
+
   for i = 1:numel(bm.Edges)
     if strcmp(bm.Edges{i}.Destination, destinationName)
       source = bm.Edges{i}.Source;

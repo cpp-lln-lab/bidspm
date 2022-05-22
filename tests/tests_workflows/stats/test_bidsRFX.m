@@ -8,6 +8,44 @@ function test_suite = test_bidsRFX %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsRFX_basic_several_datasets_level()
+
+  createDummyData();
+
+  opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, ...
+                            'basename', ...
+                            'model-vislocalizerSeveralDatasetLevels_smdl');
+
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  matlabbatch = bidsRFX('RFX', opt);
+
+  nbGroupLevelModels = 3;
+  nbBatchPerModel = 4;
+
+  % creates 2 batches for (specify, figure, estimate, figure)
+  for i = 1:2:3
+    assert(isfield(matlabbatch{i}.spm.stats, 'factorial_design'));
+    assert(isfield(matlabbatch{i + 1}.spm.util, 'print'));
+  end
+  for i = 5:2:7
+    assert(isfield(matlabbatch{i}.spm.stats, 'fmri_est'));
+    assert(isfield(matlabbatch{i + 1}.spm.util, 'print'));
+  end
+  % creates 1 batch for (specify, figure, estimate, figure)
+  assert(isfield(matlabbatch{9}.spm.stats, 'factorial_design'));
+  assert(isfield(matlabbatch{10}.spm.util, 'print'));
+  assert(isfield(matlabbatch{11}.spm.stats, 'fmri_est'));
+  assert(isfield(matlabbatch{12}.spm.util, 'print'));
+
+  assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
+
+  cleanUp(fullfile(opt.dir.output, 'derivatives'));
+
+end
+
 function test_bidsRFX_basic_rfx()
 
   createDummyData();

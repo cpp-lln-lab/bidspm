@@ -8,13 +8,57 @@ function test_suite = test_setBatchFactorialDesign %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchFactorialDesign_basic()
+function test_setBatchFactorialDesign_complex()
 
   createDummyData();
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 
-  opt.verbosity = 1;
+  opt.model.file = spm_file(opt.model.file, ...
+                            'basename', ...
+                            'model-vismotionSeveralDatasetLevel_smdl');
+
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  datasetNode = opt.model.bm.get_nodes('Name', 'simple contrast');
+
+  matlabbatch = {};
+  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode{1}.Name);
+
+  basedirName = 'task-vismotion_space-IXI549Space_FWHM-6_conFWHM-6_';
+
+  % (2 dummy contrasts) specified at the dataset level * 2
+  % batches (design specification + figure design matrix)
+  assertEqual(numel(matlabbatch), 4);
+
+  % check that directory name contains:
+  % desc-Node(dataset).name_contrast_contrastName
+  [~, dir] = fileparts(matlabbatch{1}.spm.stats.factorial_design.dir{1});
+  assertEqual(dir, ...
+              [basedirName 'desc-simpleContrast_contrast-VisMot']);
+
+  datasetNode = opt.model.bm.get_nodes('Name', 'complex contrast');
+
+  matlabbatch = {};
+  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode{1}.Name);
+
+  % (1 contrasts) specified at the dataset level * 2
+  % batches (design specification + figure design matrix)
+  assertEqual(numel(matlabbatch), 2);
+
+  % check that directory name contains:
+  % desc-Node(dataset).name_contrast_contrastName
+  [~, dir] = fileparts(matlabbatch{1}.spm.stats.factorial_design.dir{1});
+  assertEqual(dir, ...
+              [basedirName 'desc-complexContrast_contrast-VisMotGtVisStat']);
+
+end
+
+function test_setBatchFactorialDesign_basic()
+
+  createDummyData();
+
+  opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 
   datasetNode = opt.model.bm.get_nodes('Level', 'dataset');
 
