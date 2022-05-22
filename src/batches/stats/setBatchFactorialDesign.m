@@ -1,4 +1,4 @@
-function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, nodeName)
+function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt, nodeName)
   %
   % Short description of what the function does goes here.
   %
@@ -40,6 +40,8 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, nodeName)
   if opt.model.bm.get_design_matrix('Name', nodeName) == 1
 
     dummyContrastsList = getDummyContrastsList(nodeName, opt.model.bm);
+
+    contrastsList = dummyContrastsList;
 
   end
 

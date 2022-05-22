@@ -18,6 +18,7 @@ function matlabbatch = bidsRFX(action, opt)
   % :param action: Action to be conducted: ``'smoothContrasts'`` or ``'RFX'`` or
   %                ``'meanAnatAndMask'``
   % :type action: string
+  %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
@@ -31,11 +32,17 @@ function matlabbatch = bidsRFX(action, opt)
 
   opt.dir.output = opt.dir.stats;
 
+  % To speed up group level as we do not need to index raw data ?
   [BIDS, opt] = setUpWorkflow(opt, description);
 
   checks(opt, action);
 
   matlabbatch = {};
+
+  % TODO refactor
+  % - extract function for contrast smoothing
+  % - extract function for anat and mask computation
+  % - merge rfx and ffx into a single "stats" workflow
 
   switch lower(action)
 
@@ -73,23 +80,45 @@ function matlabbatch = bidsRFX(action, opt)
       opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
       opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
 
-      matlabbatch = setBatchFactorialDesign(matlabbatch, opt);
+      datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
 
-      grpLvlCon = opt.model.bm.get_dummy_contrasts('Level', 'dataset');
-      matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon);
+      for i = 1:numel(datasetNodes)
 
-      saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
+        [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, ...
+                                                               opt, ...
+                                                               datasetNodes{i}.Name);
 
-      rfxDir = getRFXdir(opt);
+        matlabbatch = setBatchEstimateModel(matlabbatch, opt, datasetNodes{i}.Name, contrastsList);
 
-      % TODO split this in a different action
-      matlabbatch = {};
-      matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir);
-      saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);
+        saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
+
+      end
 
       opt.pipeline.name = 'cpp_spm';
       opt.pipeline.type = 'groupStats';
       initBids(opt, 'description', description, 'force', false);
+
+    case 'contrast'
+
+      opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
+      opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
+
+      datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
+
+      for i = 1:numel(datasetNodes)
+
+        % for average at the group level
+        if opt.model.bm.get_design_matrix('Name', datasetNodes{i}.Name) == 1
+
+          contrastsList = getDummyContrastsList(datasetNodes{i}.Name, opt.model.bm);
+
+        end
+
+        matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, contrastsList);
+
+        saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);
+
+      end
 
   end
 
@@ -103,7 +132,7 @@ function checks(opt, action)
     errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
   end
 
-  allowedActions = {'smoothcontrasts', 'meananatandmask', 'rfx'};
+  allowedActions = {'smoothcontrasts', 'meananatandmask', 'rfx', 'contrast'};
   if ~ismember(lower(action), allowedActions)
     msg = sprintf('action must be: %s.\n%s was given.', createUnorderedList(allowedActions), ...
                   action);

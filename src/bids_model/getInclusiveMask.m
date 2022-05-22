@@ -1,6 +1,6 @@
 function mask = getInclusiveMask(opt, nodeName)
   %
-  % use the mask specified in the BIDS stats model
+  % use the mask specified in the BIDS stats model as explicit mask
   %
   % if none is specified and we are in MNI space
   % we use the Intra Cerebal Volume SPM mask

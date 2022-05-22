@@ -32,7 +32,6 @@ function dummyContrastsList = getDummyContrastsList(node, model)
     node = node{1};
   end
 
-
   if isfield(node.DummyContrasts, 'Contrasts')
 
     dummyContrastsList = node.DummyContrasts.Contrasts;
@@ -40,11 +39,11 @@ function dummyContrastsList = getDummyContrastsList(node, model)
   else
 
     assert(checkGroupBy(node));
-    
+
     switch lower(node.Level)
 
       case 'run'
-        
+
         dummyContrastsList = node.Model.X;
 
       case 'subject'
@@ -59,9 +58,9 @@ function dummyContrastsList = getDummyContrastsList(node, model)
         if isfield(sourceNode.DummyContrasts, 'Contrasts')
           dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
         end
-        
-        case 'dataset'
-          
+
+      case 'dataset'
+
         % TODO relax those assumptions
         % assumptions
         assert(node.Model.X == 1);
@@ -69,26 +68,25 @@ function dummyContrastsList = getDummyContrastsList(node, model)
         sourceNode = getSourceNode(model, node.Name);
 
         % TODO transfer to BIDS model as a get_contrasts_list method
-        
+
         % get DummyContrasts from previous level otherwise we go one level deeper
         % Assumes a model run --> subject --> dataset
-        if isfield(sourceNode.DummyContrasts, 'Contrasts') 
+        if isfield(sourceNode.DummyContrasts, 'Contrasts')
           dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
-          
-          
+
         elseif model.get_design_matrix('Name', sourceNode.Name) == 1
           sourceNode = getSourceNode(model, sourceNode.Name);
-          
+
           dummyContrasts = model.get_dummy_contrasts('Name', sourceNode.Name);
           dummyContrastsList = dummyContrasts.Contrasts;
-          
-        end   
-        
+
+        end
+
         for i = 1:numel(dummyContrastsList)
-          
+
           % contrasts against baseline are renamed at the subject level
           dummyContrastsList{i} = rmTrialTypeStr(dummyContrastsList{i});
-          
+
         end
 
     end

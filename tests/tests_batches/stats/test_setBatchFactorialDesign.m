@@ -9,7 +9,7 @@ function test_suite = test_setBatchFactorialDesign %#ok<*STOUT>
 end
 
 function test_setBatchFactorialDesign_basic()
-  
+
   createDummyData();
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
