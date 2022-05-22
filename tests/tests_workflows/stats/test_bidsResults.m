@@ -8,7 +8,9 @@ function test_suite = test_bidsResults %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsResults_basic()
+% TODO add test for subject level
+
+function test_bidsResults_subject_lvl_regex()
 
   createDummyData();
 
@@ -16,25 +18,65 @@ function test_bidsResults_basic()
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   % Specify what ouput we want
-  opt.result.Nodes(1) = returnDefaultResultsStructure();
+  opt.results = defaultResultsStructure();
 
-  opt.result.Nodes(1).Level = 'subject';
+  opt.results.nodeName = 'subject_level';
 
-  opt.result.Nodes(1).Contrasts(1).Name = 'VisMot_gt_VisStat';
+  opt.results.name = {'.*VisMot.*'};
 
-  opt.result.Nodes(1).Contrasts(1).MC =  'FWE';
-  opt.result.Nodes(1).Contrasts(1).p = 0.05;
-  opt.result.Nodes(1).Contrasts(1).k = 5;
+  opt.subjects = '01';
 
-  opt.result.Nodes(1).Output.png = true();
+  %% WHEN
+  matlabbatch = bidsResults(opt);
 
-  opt.result.Nodes(1).Output.csv = true();
+  %% THEN
+  % 3 contrasts match the regex
+  %  'VisMot'
+  %  'VisMot_gt_VisStat'
+  %  'VisStat_gt_VisMot'
+  assertEqual(numel(matlabbatch), 3);
 
-  opt.result.Nodes(1).Output.thresh_spm = true();
+end
 
-  opt.result.Nodes(1).Output.binary = true();
+function test_bidsResults_error_missing_node()
 
-  opt.result.Nodes(1).Output.NIDM_results = true();
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  opt.results = defaultResultsStructure();
+
+  opt.results.nodeName = 'foo';
+
+  assertWarning(@()bidsResults(opt), 'Model:missingNode');
+
+end
+
+function test_bidsResults_subject_lvl()
+
+  createDummyData();
+
+  %% GIVEN
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  % Specify what ouput we want
+  opt.results = defaultResultsStructure();
+
+  opt.results.nodeName = 'subject_level';
+
+  opt.results.name = {'VisMot_gt_VisStat'};
+
+  opt.results.MC =  'FWE';
+  opt.results.p = 0.05;
+  opt.results.k = 5;
+
+  opt.results.png = true();
+
+  opt.results.csv = true();
+
+  opt.results.threshSpm = true();
+
+  opt.results.binary = true();
+
+  opt.results.nidm = true();
 
   %% WHEN
   matlabbatch = bidsResults(opt);
@@ -84,18 +126,18 @@ function test_bidsResults_no_background_for_montage()
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   % Specify what ouput we want
-  opt.result.Nodes(1) = returnDefaultResultsStructure();
+  opt.results = defaultResultsStructure();
 
-  opt.result.Nodes(1).Level = 'subject';
+  opt.results.nodeName = 'subject_level';
 
-  opt.result.Nodes(1).Contrasts(1).Name = 'VisMot_gt_VisStat';
+  opt.results.name = {'VisMot_gt_VisStat'};
 
-  opt.result.Nodes(1).Contrasts(1).MC =  'FWE';
-  opt.result.Nodes(1).Contrasts(1).p = 0.05;
-  opt.result.Nodes(1).Contrasts(1).k = 5;
+  opt.results.MC =  'FWE';
+  opt.results.p = 0.05;
+  opt.results.k = 5;
 
-  opt.result.Nodes(1).Output.montage.do = true;
-  opt.result.Nodes(1).Output.montage.background = 'aFileThatDoesNotExist.nii';
+  opt.results.montage.do = true;
+  opt.results.montage.background = 'aFileThatDoesNotExist.nii';
 
   assertExceptionThrown(@()bidsResults(opt), 'setMontage:backgroundImageNotFound');
 

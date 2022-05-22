@@ -11,10 +11,10 @@ end
 
 function test_setMontage_basic()
 
-  result.Output.montage.do = true;
-  result.Output.montage.background = fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
-  result.Output.montage.orientation = 'axial';
-  result.Output.montage.slices = 35:3:50;
+  result.montage.do = true;
+  result.montage.background = fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
+  result.montage.orientation = 'axial';
+  result.montage.slices = 35:3:50;
 
   montage = setMontage(result);
 
@@ -28,7 +28,7 @@ end
 
 function test_setMontage_no_background_for_montage()
 
-  result.Output.montage.background = 'aFileThatDoesNotExist.nii';
+  result.montage.background = 'aFileThatDoesNotExist.nii';
 
   assertExceptionThrown(@()setMontage(result), 'setMontage:backgroundImageNotFound');
 
@@ -36,8 +36,8 @@ end
 
 function test_setMontage_wrong_orientation()
 
-  result.Output.montage.background = fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
-  result.Output.montage.orientation = 'foo';
+  result.montage.background = fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
+  result.montage.orientation = 'foo';
 
   assertExceptionThrown(@()setMontage(result), 'setMontage:unknownOrientation');
 

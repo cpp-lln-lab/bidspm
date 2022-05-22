@@ -7,8 +7,10 @@ function matlabbatch = setBatchGroupLevelResults(varargin)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param opt:
   % :type opt: structure
+  %
   % :param result:
   % :type result: structure
   %
@@ -27,7 +29,7 @@ function matlabbatch = setBatchGroupLevelResults(varargin)
 
   result.label = 'group';
 
-  result.outputNameStructure = defaultOuputNameStruct(opt, result);
+  result.outputName = defaultOuputNameStruct(opt, result);
 
   matlabbatch = setBatchResults(matlabbatch, result);
 

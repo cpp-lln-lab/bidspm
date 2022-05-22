@@ -208,43 +208,55 @@ function opt = checkOptions(opt)
 
   opt = setDirectories(opt);
 
-  % Checks on the content of opt.result.Nodes().Output
-  Results = returnDefaultResultsStructure();
-  Contrasts = returnDefaultContrastsStructure();
+  opt = checkResultsOptions(opt);
 
-  for iNode = 1:numel(opt.result.Nodes)
-    thisNode = opt.result.Nodes(iNode);
-    thisNode =  setFields(thisNode, Results);
+end
 
-    % validate values for contrast
-    for iCon = 1:numel(thisNode.Contrasts)
+function opt = checkResultsOptions(opt)
 
-      assert(ischar(thisNode.Contrasts(iCon).Name));
+  % validate content of opt.results
 
-      if isempty(thisNode.Contrasts(iCon).p)
-        thisNode.Contrasts(iCon).p = Contrasts.p;
+  defaultContrast = defaultResultsStructure();
+
+  fields = fieldnames(defaultContrast);
+
+  if ~isfield(opt, 'results')
+    opt.results = defaultContrast;
+    return
+  end
+
+  for iCon = 1:numel(opt.results)
+
+    thisContrast = opt.results(iCon);
+
+    % add mising fields
+    thisContrast =  setFields(thisContrast, defaultContrast);
+
+    % fill in empty fields
+    for i = 1:numel(fields)
+      if isempty(thisContrast.(fields{i}))
+        thisContrast.(fields{i}) = defaultContrast.(fields{i});
       end
-      assert(thisNode.Contrasts(iCon).p >= 0 && thisNode.Contrasts(iCon).p <= 1);
-
-      if isempty(thisNode.Contrasts(iCon).k)
-        thisNode.Contrasts(iCon).k = Contrasts.k;
-      end
-      assert(thisNode.Contrasts(iCon).k >= 0);
-
-      if ~islogical(thisNode.Contrasts(iCon).useMask)
-        thisNode.Contrasts(iCon).useMask = Contrasts.useMask;
-      end
-
-      if isempty(thisNode.Contrasts(iCon).MC) || ...
-         ~ismember(thisNode.Contrasts(iCon).MC, {'FWE', 'FDR', 'none'})
-        thisNode.Contrasts(iCon).MC = Contrasts.MC;
-      end
-
     end
 
-    opt.result.Nodes(iNode) = thisNode;
+    if ischar(thisContrast.name)
+      thisContrast.name = {thisContrast.name};
+    end
+    assert(iscell(thisContrast.name));
+
+    assert(all([thisContrast.p >= 0 thisContrast.p <= 1]));
+
+    assert(thisContrast.k >= 0);
+
+    assert(islogical(thisContrast.useMask));
+
+    assert(ismember(thisContrast.MC, {'FWE', 'FDR', 'none'}));
+
+    contrasts(iCon) = thisContrast;
 
   end
+
+  opt.results = contrasts;
 
 end
 
@@ -343,7 +355,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.QA.func.Movie = 'off';
   fieldsToSet.QA.func.Basics = 'on';
 
-  fieldsToSet.result.Nodes = returnDefaultResultsStructure();
+  fieldsToSet.results = defaultResultsStructure();
 
   %% Options for interface
   fieldsToSet.msg.color = '';

@@ -39,7 +39,7 @@ function contrasts = specifyContrasts(SPM, model)
       node = node{1};
     end
 
-    [contrasts, counter] = specifylDummyContrasts(contrasts, node, counter, SPM, node.Level);
+    [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, SPM, model);
 
     switch lower(node.Level)
 
@@ -48,6 +48,10 @@ function contrasts = specifyContrasts(SPM, model)
         [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM);
 
       case 'subject'
+
+        if ~checkGroupBy(node)
+          continue
+        end
 
         [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM);
 
@@ -62,111 +66,125 @@ function contrasts = specifyContrasts(SPM, model)
 
 end
 
-function [contrasts, counter] = specifylDummyContrasts(contrasts, node, counter, SPM, level)
-
-  if strcmpi(level, 'dataset')
-    return
-  end
+function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, SPM, model)
 
   if ~isfield(node, 'DummyContrasts')
     return
   end
 
-  if isfield(node.DummyContrasts, 'Contrasts') && ...
-          isTtest(node.DummyContrasts)
+  level = lower(node.Level);
 
-    % first the contrasts to compute automatically against baseline
-    for iCon = 1:length(node.DummyContrasts.Contrasts)
+  if ismember(level, {'session', 'dataset'})
+    % not implemented
+    return
+  end
 
-      cdtName = node.DummyContrasts.Contrasts{iCon};
-      [cdtName, regIdx] = getRegressorIdx(cdtName, SPM);
+  if strcmp(level, 'subject') && ~checkGroupBy(node)
+    % only "GroupBy": ["contrast", "subject"] supported
+    return
+  end
 
-      switch lower(level)
+  if ~isTtest(node.DummyContrasts)
+    notImplemented(mfilename(), ...
+                   'Only t test implemented for DummyContrasts', ...
+                   true);
+    return
+  end
 
-        case 'subject'
+  dummyContrastsList = getDummyContrastsList(node, model);
 
-          C = newContrast(SPM, cdtName);
-          C.C(end, regIdx) = 1;
+  contrastsList = {};
+  if ~isfield(node.DummyContrasts, 'Contrasts')
+    % try to grab ContrastsList from design matrix or from previous Node
+    contrastsList = getContrastsList(node, model);
+  end
+
+  % first the contrasts to compute automatically against baseline
+  for iCon = 1:length(dummyContrastsList)
+
+    cdtName = dummyContrastsList{iCon};
+    [cdtName, regIdx] = getRegressorIdx(cdtName, SPM);
+
+    switch level
+
+      case 'subject'
+
+        C = newContrast(SPM, cdtName);
+        C.C(end, regIdx) = 1;
+        [contrasts, counter] = appendContrast(contrasts, C, counter);
+        clear regIdx;
+
+      case 'run'
+
+        % For each run of each condition, create a seperate contrast
+        regIdx = find(regIdx);
+        for iReg = 1:length(regIdx)
+
+          % Use the SPM Sess index for the contrast name
+          iSess = getSessionForRegressorNb(regIdx(iReg), SPM);
+
+          C = newContrast(SPM, [cdtName, '_', num2str(iSess)]);
+
+          % give each event a value of 1
+          C.C(end, regIdx(iReg)) = 1;
           [contrasts, counter] = appendContrast(contrasts, C, counter);
-          clear regIdx;
 
-        case 'run'
+        end
 
-          % For each run of each condition, create a seperate contrast
-          regIdx = find(regIdx);
-          for iReg = 1:length(regIdx)
-
-            C = newContrast(SPM, [cdtName, '_', num2str(iReg)]);
-
-            % give each event a value of 1
-            C.C(end, regIdx(iReg)) = 1;
-            [contrasts, counter] = appendContrast(contrasts, C, counter);
-
-          end
-
-          clear regIdx;
-
-        otherwise
-
-          notImplemented(mfilename, 'only Run and Subject node level supported', opt.verbosity);
-
-      end
+        clear regIdx;
 
     end
+
+  end
+
+  % set up DummyContrasts at subject level
+  % that are based on contrast from previous level
+  for iCon = 1:length(contrastsList)
+
+    this_contrast = contrastsList{iCon};
+
+    if isempty(this_contrast)
+      continue
+    end
+
+    switch level
+
+      case 'subject'
+
+        C = newContrast(SPM, this_contrast.Name);
+
+        ConditionList = this_contrast.ConditionList;
+
+        % get regressors index corresponding to the HRF of that condition
+        for iCdt = 1:length(ConditionList)
+
+          cdtName = ConditionList{iCdt};
+
+          [~, regIdx{iCdt}] = getRegressorIdx(cdtName, SPM);
+
+          regIdx{iCdt} = find(regIdx{iCdt});
+
+          C.C(end, regIdx{iCdt}) = this_contrast.Weights(iCdt);
+
+        end
+        clear regIdx;
+
+    end
+
+    [contrasts, counter] = appendContrast(contrasts, C, counter);
 
   end
 
 end
 
-function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM)
-
-  if ~isfield(node, 'Contrasts')
-    return
+function iSess = getSessionForRegressorNb(regIdx, SPM)
+  % Use the SPM Sess index for the contrast name
+  % TODO could be optimized
+  for iSess = 1:numel(SPM.Sess)
+    if ismember(regIdx, SPM.Sess(iSess).col)
+      break
+    end
   end
-
-  % then the contrasts that involve contrasting conditions
-  % amongst themselves or something inferior to baseline
-  for iCon = 1:length(node.Contrasts)
-
-    if ~isTtest(node.Contrasts(iCon))
-      continue
-    end
-
-    if ~isfield(node.Contrasts(iCon), 'Weights')
-      notImplemented(mfilename, 'weightless contrasts not supported', opt.verbosity);
-      continue
-    end
-
-    C = newContrast(SPM, node.Contrasts(iCon).Name);
-
-    for iCdt = 1:length(node.Contrasts(iCon).ConditionList)
-
-      % get regressors index corresponding to the HRF of that condition
-      cdtName = node.Contrasts(iCon).ConditionList{iCdt};
-      [~, regIdx, status] = getRegressorIdx(cdtName, SPM);
-
-      if ~status
-        break
-      end
-
-      % give them the value specified in the model
-      C.C(end, regIdx) = node.Contrasts(iCon).Weights(iCdt);
-
-      clear regIdx;
-
-    end
-
-    % do not create this contrast if a condition is missing
-    if ~status
-      msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
-                    node.Contrasts(iCon).Name, cdtName);
-      errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
-    else
-      [contrasts, counter] = appendContrast(contrasts, C, counter);
-    end
-
-  end
-
 end
 
 function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
@@ -179,27 +197,28 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
   % amongst themselves or something inferior to baseline
   for iCon = 1:length(node.Contrasts)
 
-    if ~isTtest(node.Contrasts(iCon))
-      continue
-    end
+    this_contrast = checkContrast(node, iCon);
 
-    if ~isfield(node.Contrasts(iCon), 'Weights')
-      notImplemented(mfilename, 'weightless contrasts not supported', opt.verbosity);
+    if isempty(this_contrast)
       continue
     end
 
     % get regressors index corresponding to the HRF of that condition
-    for iCdt = 1:length(node.Contrasts(iCon).ConditionList)
-      cdtName = node.Contrasts(iCon).ConditionList{iCdt};
+    ConditionList = this_contrast.ConditionList;
+    for iCdt = 1:length(ConditionList)
+      cdtName = ConditionList{iCdt};
       [~, regIdx{iCdt}] = getRegressorIdx(cdtName, SPM);
       regIdx{iCdt} = find(regIdx{iCdt});
     end
 
+    % make sure all runs have all conditions
+    % TODO possibly only skip the runs that are missing some conditions and not
+    % all of them.
     nbRuns = unique(cellfun(@numel, regIdx));
 
     if length(nbRuns) > 1
       msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
-                    node.Contrasts(iCon).Name, cdtName);
+                    this_contrast.Name, cdtName);
       errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
 
       continue
@@ -208,16 +227,73 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
     % give them the value specified in the model
     for iRun = 1:nbRuns
 
-      C = newContrast(SPM, [node.Contrasts(iCon).Name, '_', num2str(iRun)]);
+      % Use the SPM Sess index for the contrast name
+      iSess = getSessionForRegressorNb(regIdx{1}(iRun), SPM);
 
-      for iCdt = 1:length(node.Contrasts(iCon).ConditionList)
-        C.C(end, regIdx{iCdt}(iRun)) = node.Contrasts(iCon).Weights(iCdt);
+      C = newContrast(SPM, [this_contrast.Name, '_', num2str(iSess)]);
+
+      for iCdt = 1:length(this_contrast.ConditionList)
+        C.C(end, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
       end
 
       [contrasts, counter] = appendContrast(contrasts, C, counter);
 
     end
     clear regIdx;
+
+  end
+
+end
+
+function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM)
+  %
+  % dead code for now but will be reused later
+  %
+
+  if ~isfield(node, 'Contrasts')
+    return
+  end
+
+  % only averaging run level contrasts supported for now.
+  assert(node.Model.X == 1);
+
+  % then the contrasts that involve contrasting conditions
+  % amongst themselves or something inferior to baseline
+  for iCon = 1:length(node.Contrasts)
+
+    this_contrast = checkContrast(node, iCon);
+
+    if isempty(this_contrast)
+      continue
+    end
+
+    C = newContrast(SPM, this_contrast.Name);
+
+    for iCdt = 1:length(this_contrast.ConditionList)
+
+      % get regressors index corresponding to the HRF of that condition
+      cdtName = this_contrast.ConditionList{iCdt};
+      [~, regIdx, status] = getRegressorIdx(cdtName, SPM);
+
+      if ~status
+        break
+      end
+
+      % give them the value specified in the model
+      C.C(end, regIdx) = this_contrast.Weights(iCdt);
+
+      clear regIdx;
+
+    end
+
+    % do not create this contrast if a condition is missing
+    if ~status
+      msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
+                    this_contrast.Name, cdtName);
+      errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
+    else
+      [contrasts, counter] = appendContrast(contrasts, C, counter);
+    end
 
   end
 
@@ -232,6 +308,92 @@ function [contrasts, counter] = appendContrast(contrasts, C, counter)
   counter = counter + 1;
   contrasts(counter).C = C.C;
   contrasts(counter).name = C.name;
+end
+
+function contrastsList = getContrastsList(node, model)
+
+  contrastsList = {};
+
+  switch lower(node.Level)
+
+    case 'subject'
+
+      % TODO relax those assumptions
+
+      % assumptions
+      assert(checkGroupBy(node));
+      assert(node.Model.X == 1);
+
+      sourceNode = getSourceNode(model, node.Name);
+
+      % TODO transfer to BIDS model as a get_contrasts_list method
+      if isfield(sourceNode, 'Contrasts')
+        for i = 1:numel(sourceNode.Contrasts)
+          contrastsList{end + 1} = checkContrast(sourceNode, i);
+        end
+      end
+
+  end
+
+end
+
+function dummyContrastsList = getDummyContrastsList(node, model)
+
+  dummyContrastsList = {};
+
+  if isfield(node.DummyContrasts, 'Contrasts')
+
+    dummyContrastsList = node.DummyContrasts.Contrasts;
+
+  else
+
+    switch lower(node.Level)
+
+      case 'run'
+        % TODO this assumes "GroupBy": ["run", "subject"] or ["run", "session", "subject"]
+        dummyContrastsList = node.Model.X;
+
+      case 'subject'
+
+        % TODO relax those assumptions
+
+        % assumptions
+        assert(checkGroupBy(node));
+        assert(node.Model.X == 1);
+
+        sourceNode = getSourceNode(model, node.Name);
+
+        % TODO transfer to BIDS model as a get_contrasts_list method
+        if isfield(sourceNode.DummyContrasts, 'Contrasts')
+          dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
+        end
+
+    end
+
+  end
+
+end
+
+function sourceNode = getSourceNode(bm, destinationName)
+
+  % TODO transfer to BIDS model as a get_source method
+  if ~isfield(bm, 'Edges') || isempty(bm.Edges)
+    bm = bm.get_edges_from_nodes;
+  end
+
+  for i = 1:numel(bm.Edges)
+    if strcmp(bm.Edges{i}.Destination, destinationName)
+      source = bm.Edges{i}.Source;
+      break
+    end
+  end
+
+  sourceNode = bm.get_nodes('Name', source);
+
+  if iscell(sourceNode)
+    sourceNode = sourceNode{1};
+  end
+
 end
 
 function  [cdtName, regIdx, status] = getRegressorIdx(cdtName, SPM)
@@ -253,7 +415,49 @@ function status = checkRegressorFound(regIdx, cdtName)
   regIdx = find(regIdx);
   if all(~regIdx)
     status = false;
-    msg = sprintf('No regressor found for condition "%s"', cdtName);
-    errorHandling(mfilename(), 'noRegressorFound', msg, true, true);
+    msg = sprintf('No regressor found for condition ''%s''', cdtName);
+    errorHandling(mfilename(), 'missingRegressor', msg, true, true);
+  end
+end
+
+function contrast = checkContrast(node, iCon)
+  %
+  % put some of that in bids.Model
+
+  if ~isTtest(node.Contrasts(iCon))
+    notImplemented(mfilename(), ...
+                   'Only t test implemented for DummyContrasts', ...
+                   true);
+    contrast = [];
+    return
+  end
+
+  contrast = node.Contrasts(iCon);
+  if iscell(contrast)
+    contrast = contrast{1};
+  end
+
+  if ~isfield(contrast, 'Weights')
+    msg = sprintf('No weights specified for Contrast %s of Node %s', ...
+                  node.Contrasts(iCon).Name, node.Name);
+    errorHandling(mfilename, 'weightsRequired', msg, false);
+  end
+
+  if numel(contrast.Weights) ~= numel(contrast.ConditionList)
+    msg = sprintf('Number of Weights and Conditions unequal for Contrast %s of Node %s', ...
+                  node.Contrasts(iCon).Name, node.Name);
+    errorHandling(mfilename, 'numelWeightsConditionMismatch', msg, false);
+  end
+
+end
+
+function status = checkGroupBy(node)
+  status = true;
+  node.GroupBy = sort(node.GroupBy);
+  if not(all([strcmp(node.GroupBy{1}, 'contrast') strcmp(node.GroupBy{2}, 'subject')]))
+    status = false;
+    notImplemented(mfilename, ...
+                   'only "GroupBy": ["contrast", "subject"] supported Subject node level', ...
+                   true);
   end
 end

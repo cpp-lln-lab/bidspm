@@ -10,7 +10,7 @@
    "Nodes": [
       {
          "Level": "Run",
-         "Name": "run",
+         "Name": "run_level",
          "GroupBy": [
             "run",
             "subject"

@@ -52,6 +52,8 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
 
     model = spm_jsonread(opt.model.file);
 
+    % TODO probably want to focus at the run level of the model
+
     try
       contrasts = specifyContrasts(SPM, model);
     catch

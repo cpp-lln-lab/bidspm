@@ -42,8 +42,8 @@ function opt = setOptions(varargin)
 
     opt.model.file = fullfile(getMoaeDir(), 'models', 'model-MoAE_smdl.json');
 
-    opt.result.Steps.Contrasts(1).Name = 'listening';
-    opt.result.Steps.Contrasts(2).Name = 'listening_inf_baseline';
+    opt.results(1).name = 'listening';
+    opt.results(2).name = 'listening_inf_baseline';
 
   elseif strcmp(task, 'MoAE-preproc')
 
@@ -55,14 +55,14 @@ function opt = setOptions(varargin)
 
     opt.model.file = fullfile(getMoaeDir(), 'models', 'model-MoAE_smdl.json');
 
-    opt.result.Steps.Contrasts(1).Name = 'listening';
-    opt.result.Steps.Contrasts(2).Name = 'listening_inf_baseline';
+    opt.results(1).name = 'listening';
+    opt.results(2).name = 'listening_inf_baseline';
 
   elseif strcmp(task, 'facerep')
 
     opt.dir.derivatives = fullfile(getFaceRepDir(), 'outputs', 'derivatives');
     opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
-    opt.dir.inoput = opt.dir.preproc;
+    opt.dir.input = opt.dir.preproc;
     opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
 
     opt.model.file = fullfile(getFaceRepDir(), 'models', 'model-faceRepetition_smdl.json');

@@ -124,7 +124,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   % When doing model comparison all runs must have same number of confound regressors
   % so we pad them with zeros if necessary
-  spmSess = padCounfoundMatFile(spmSess, opt);
+  spmSess = orderAndPadCounfoundMatFile(spmSess, opt);
 
   %% Add scans, onsets, confounds to the model specification batch
   for iSpmSess = 1:(spmSessCounter - 1)

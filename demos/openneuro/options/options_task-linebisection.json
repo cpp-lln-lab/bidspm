@@ -17,19 +17,6 @@
     "realign": {
         "useUnwarp": true
     },
-    "result": {
-        "Nodes": {
-            "Contrasts": {
-                "MC": "FWE",
-                "Mask": false,
-                "NIDM": true,
-                "Name": "Correct_Task",
-                "k": 0,
-                "p": 0.05
-            },
-            "Level": "subject"
-        }
-    },
     "skullstrip": {
         "threshold": 0.75
     },

@@ -1,6 +1,6 @@
 function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
   %
-  % Short description of what the function does goes here.
+  % set batch for run and subject level contrasts
   %
   % USAGE::
   %
@@ -8,8 +8,10 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param opt:
   % :type opt: structure
+  %
   % :param subLabel:
   % :type subLabel: string
   %
@@ -26,14 +28,18 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
 
   load(spmMatFile, 'SPM');
 
-  model = spm_jsonread(opt.model.file);
+  model = opt.model.bm;
 
   % Create Contrasts
   contrasts = specifyContrasts(SPM, model);
+
+  consess = {};
   for icon = 1:size(contrasts, 2)
-    consess{icon}.tcon.name = contrasts(icon).name; %#ok<*AGROW>
-    consess{icon}.tcon.convec = contrasts(icon).C;
-    consess{icon}.tcon.sessrep = 'none';
+    if any(contrasts(icon).C)
+      consess{end + 1}.tcon.name = contrasts(icon).name; %#ok<*AGROW>
+      consess{end}.tcon.convec = contrasts(icon).C;
+      consess{end}.tcon.sessrep = 'none';
+    end
   end
 
   matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);

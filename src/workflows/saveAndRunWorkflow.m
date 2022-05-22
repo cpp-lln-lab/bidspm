@@ -1,4 +1,4 @@
-function saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
+function status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   %
   % Saves the SPM matlabbatch and runs it
   %
@@ -22,6 +22,8 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
     subLabel = [];
   end
 
+  status = true;
+
   if ~isempty(matlabbatch)
 
     saveMatlabBatch(matlabbatch, batchName, opt, subLabel);
@@ -31,6 +33,8 @@ function saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
     end
 
   else
+    status = false;
+
     errorHandling(mfilename(), ...
                   'emptyBatch', ...
                   'This batch is empty & will not be run.', ...
