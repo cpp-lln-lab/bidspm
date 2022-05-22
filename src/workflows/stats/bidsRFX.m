@@ -1,4 +1,4 @@
-function matlabbatch = bidsRFX(action, opt)
+function matlabbatch = bidsRFX(varargin)
   %
   % - smooths all contrast images created at the subject level
   %
@@ -16,15 +16,33 @@ function matlabbatch = bidsRFX(action, opt)
   %  bidsRFX(action, opt)
   %
   % :param action: Action to be conducted: ``'smoothContrasts'`` or ``'RFX'`` or
-  %                ``'meanAnatAndMask'``
+  %                ``'meanAnatAndMask'`` or ``'contrast'``
   % :type action: string
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
+  % :param nodeName: name of the BIDS stats model to run analysis on
+  % :type nodeName: char
+  %
   %
   % (C) Copyright 2020 CPP_SPM developers
+
+  allowedActions = @(x) ismember(lower(x), ...
+                                 {'smoothcontrasts', 'meananatandmask', 'rfx', 'contrast'});
+
+  args = inputParser;
+
+  args.addRequired('action', allowedActions);
+  args.addRequired('opt', @isstruct);
+  args.addParameter('nodeName', '', @ischar);
+
+  args.parse(varargin{:});
+
+  action =  args.Results.action;
+  opt =  args.Results.opt;
+  nodeName =  args.Results.nodeName;
 
   opt.pipeline.type = 'stats';
 
@@ -35,7 +53,11 @@ function matlabbatch = bidsRFX(action, opt)
   % To speed up group level as we do not need to index raw data ?
   [BIDS, opt] = setUpWorkflow(opt, description);
 
-  checks(opt, action);
+  if numel(opt.space) > 1
+    disp(opt.space);
+    msg = sprintf('GLMs can only be run in one space at a time.\n');
+    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+  end
 
   matlabbatch = {};
 
@@ -80,7 +102,11 @@ function matlabbatch = bidsRFX(action, opt)
       opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
       opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
 
-      datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
+      if ~isempty(nodeName)
+        datasetNodes = opt.model.bm.get_nodes('Name', nodeName);
+      else
+        datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
+      end
 
       for i = 1:numel(datasetNodes)
 
@@ -113,23 +139,6 @@ function matlabbatch = bidsRFX(action, opt)
 
       end
 
-  end
-
-end
-
-function checks(opt, action)
-
-  if numel(opt.space) > 1
-    disp(opt.space);
-    msg = sprintf('GLMs can only be run in one space at a time.\n');
-    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
-  end
-
-  allowedActions = {'smoothcontrasts', 'meananatandmask', 'rfx', 'contrast'};
-  if ~ismember(lower(action), allowedActions)
-    msg = sprintf('action must be: %s.\n%s was given.', createUnorderedList(allowedActions), ...
-                  action);
-    errorHandling(mfilename(), 'unknownAction', msg, false, opt.verbosity);
   end
 
 end

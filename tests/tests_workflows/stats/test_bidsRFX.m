@@ -8,6 +8,30 @@ function test_suite = test_bidsRFX %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsRFX_basic_select_datasets_level_to_run()
+
+  createDummyData();
+
+  opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, ...
+                            'basename', ...
+                            'model-vislocalizerSeveralDatasetLevels_smdl');
+
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  matlabbatch = bidsRFX('RFX', opt, 'nodeName', 'complex contrast');
+
+  % creates 1 batch for (specify, figure, estimate, figure)
+  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
+  assert(isfield(matlabbatch{2}.spm.util, 'print'));
+  assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
+  assert(isfield(matlabbatch{4}.spm.util, 'print'));
+
+  cleanUp(fullfile(opt.dir.output, 'derivatives'));
+
+end
+
 function test_bidsRFX_basic_several_datasets_level()
 
   createDummyData();
