@@ -55,3 +55,20 @@ function test_bidsRFX_basic_mean()
   assertEqual(numel(matlabbatch), 2);
 
 end
+
+function test_bidsRFX_basic_contrast()
+
+  createDummyData();
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  matlabbatch = bidsRFX('contrast', opt);
+
+  assertEqual(numel(matlabbatch), 4);
+
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{1}.tcon.name, 'VisMot');
+  assertEqual(matlabbatch{2}.spm.stats.con.consess{1}.tcon.name, 'VisStat');
+  assertEqual(matlabbatch{3}.spm.stats.con.consess{1}.tcon.name, 'VisMot_&_VisStat');
+  assertEqual(matlabbatch{4}.spm.stats.con.consess{1}.tcon.name, 'VisMot_&_VisStat_lt_baseline');
+
+end

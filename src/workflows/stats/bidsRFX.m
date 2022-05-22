@@ -107,14 +107,7 @@ function matlabbatch = bidsRFX(action, opt)
 
       for i = 1:numel(datasetNodes)
 
-        % for average at the group level
-        if opt.model.bm.get_design_matrix('Name', datasetNodes{i}.Name) == 1
-
-          contrastsList = getDummyContrastsList(datasetNodes{i}.Name, opt.model.bm);
-
-        end
-
-        matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, contrastsList);
+        matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, datasetNodes{i}.Name);
 
         saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);
 
