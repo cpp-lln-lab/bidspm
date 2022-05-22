@@ -450,14 +450,3 @@ function contrast = checkContrast(node, iCon)
   end
 
 end
-
-function status = checkGroupBy(node)
-  status = true;
-  node.GroupBy = sort(node.GroupBy);
-  if not(all([strcmp(node.GroupBy{1}, 'contrast') strcmp(node.GroupBy{2}, 'subject')]))
-    status = false;
-    notImplemented(mfilename, ...
-                   'only "GroupBy": ["contrast", "subject"] supported Subject node level', ...
-                   true);
-  end
-end
