@@ -14,18 +14,32 @@ function test_setBatchFactorialDesign_basic()
 
   opt.verbosity = 1;
 
+  datasetNode = opt.model.bm.get_nodes('Level', 'dataset');
+
   matlabbatch = {};
 
-  assertWarning(@()setBatchFactorialDesign(matlabbatch, opt), ...
-                'setBatchFactorialDesign:notImplemented');
+  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode{1}.Name);
 
-  return
-
-  % TODO fix group level results
-
-  matlabbatch = setBatchFactorialDesign(matlabbatch, opt);
+  assertEqual(numel(matlabbatch), 4);
 
   % add test to assert default mask is SPM ICV's
   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.fd.icell.scans), 2);
+
+end
+
+function test_setBatchFactorialDesign_wrong_model_design_matrix()
+
+  opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
+
+  opt.verbosity = 1;
+
+  datasetNode = opt.model.bm.get_nodes('Level', 'dataset');
+
+  opt.model.bm.Nodes{3}.Model.X = {'gain'};
+
+  matlabbatch = {};
+
+  assertWarning(@()setBatchFactorialDesign(matlabbatch, opt, datasetNode{1}.Name), ...
+                'setBatchFactorialDesign:notImplemented');
 
 end

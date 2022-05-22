@@ -1,19 +1,30 @@
-function matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
+function matlabbatch = setBatchFactorialDesign(matlabbatch, opt, nodeName)
   %
   % Short description of what the function does goes here.
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
+  %   matlabbatch = setBatchFactorialDesign(matlabbatch, opt, nodeName)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param opt:
   % :type opt: structure
+  %
+  % nodeName
   %
   % :returns: - :matlabbatch: (structure)
   %
   % (C) Copyright 2019 CPP_SPM developers
+
+  % TODO implement other models than group average of contrast from lower levels
+  % TODO implement Contrasts and not just dummy contrasts
+
+  status = checks(opt, nodeName);
+  if ~status
+    return
+  end
 
   printBatchName('specify group level fmri model', opt);
 
@@ -25,84 +36,68 @@ function matlabbatch = setBatchFactorialDesign(matlabbatch, opt)
 
   [~, opt] = getData(opt, opt.dir.preproc);
 
-  rfxDir = getRFXdir(opt);
+  % average at the group level
+  if opt.model.bm.get_design_matrix('Name', nodeName) == 1
 
-  grpLvlCon = opt.model.bm.get_dummy_contrasts('Level', 'dataset');
+    dummyContrastsList = getDummyContrastsList(nodeName, opt.model.bm);
 
-  if ~isfield(grpLvlCon, 'Test')
-    disp(grpLvlCon);
-    errorHandling(mfilename(), ...
-                  'noGroupLevelContrast', ...
-                  'No group level contrast. Check your model.', ...
-                  false);
   end
 
-  if isfield(grpLvlCon, 'Contrasts')
+  % For each contrast
+  for j = 1:numel(dummyContrastsList)
 
-    % For each contrast
-    for j = 1:size(grpLvlCon.Contrasts, 1)
+    contrastName = dummyContrastsList{j};
 
-      % the strrep(Session{j}, 'trial_type.', '') is there to remove
-      % 'trial_type.' because contrasts against baseline are renamed
-      % at the subject level
-      conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
+    msg = sprintf('\n\n  Group contrast: %s\n\n', contrastName);
+    printToScreen(msg, opt);
 
-      msg = sprintf('\n\n  Group contrast: %s\n\n', conName);
-      printToScreen(msg, opt);
+    rfxDir = getRFXdir(opt, nodeName, contrastName);
 
-      directory = fullfile(rfxDir, conName);
+    overwriteDir(rfxDir, opt);
 
-      overwriteDir(directory, opt);
+    icell(1).levels = 1; %#ok<*AGROW>
 
-      icell(1).levels = 1; %#ok<*AGROW>
+    for iSub = 1:numel(opt.subjects)
 
-      for iSub = 1:numel(opt.subjects)
+      subLabel = opt.subjects{iSub};
 
-        subLabel = opt.subjects{iSub};
+      printProcessingSubject(iSub, subLabel, opt);
 
-        printProcessingSubject(iSub, subLabel, opt);
+      % FFX directory and load SPM.mat of that subject
+      ffxDir = getFFXdir(subLabel, opt);
+      load(fullfile(ffxDir, 'SPM.mat'));
 
-        % FFX directory and load SPM.mat of that subject
-        ffxDir = getFFXdir(subLabel, opt);
-        load(fullfile(ffxDir, 'SPM.mat'));
-
-        % find which contrast of that subject has the name of the contrast we
-        % want to bring to the group level
-        conIdx = find(strcmp({SPM.xCon.name}, conName));
-        if isempty(conIdx)
-          disp({SPM.xCon.name}');
-          msg = sprintf('Skipping subject %s. Could not find a contrast named %s\nin %s.\n', ...
-                        subLabel, ...
-                        conName, ...
-                        fullfile(ffxDir, 'SPM.mat'));
-          errorHandling(mfilename(), 'missingContrast', msg, true, opt.verbosity);
-          continue
-        end
-        fileName = sprintf('con_%0.4d.nii', conIdx);
-        file = validationInputFile(ffxDir, fileName, smoothPrefix);
-
-        icell(1).scans(iSub, :) = {file};
-
-        msg = sprintf(' %s\n\n', file);
-        printToScreen(msg, opt);
-
+      % find which contrast of that subject has the name of the contrast we
+      % want to bring to the group level
+      conIdx = find(strcmp({SPM.xCon.name}, contrastName));
+      if isempty(conIdx)
+        disp({SPM.xCon.name}');
+        msg = sprintf('Skipping subject %s. Could not find a contrast named %s\nin %s.\n', ...
+                      subLabel, ...
+                      contrastName, ...
+                      fullfile(ffxDir, 'SPM.mat'));
+        errorHandling(mfilename(), 'missingContrast', msg, true, opt.verbosity);
+        continue
       end
+      fileName = sprintf('con_%0.4d.nii', conIdx);
+      file = validationInputFile(ffxDir, fileName, smoothPrefix);
 
-      matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell);
-      matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
-                                        fullfile(directory, ...
-                                                 designMatrixFigureName(opt, ...
-                                                                        'before estimation')));
+      icell(1).scans(iSub, :) = {file};
+
+      msg = sprintf(' %s\n\n', file);
+      printToScreen(msg, opt);
 
     end
 
-  else
+    matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell);
 
-    % TODO
+    mask = getInclusiveMask(opt, nodeName);
+    matlabbatch{end}.spm.stats.factorial_design.masking.em = {mask};
 
-    notImplemented(mfilename, ...
-                   'Grabbing contrast from lower levels not implemented yet.', ...
-                   opt.verbosity);
+    matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
+                                      fullfile(rfxDir, ...
+                                               designMatrixFigureName(opt, ...
+                                                                      'before estimation')));
 
   end
 
@@ -132,5 +127,47 @@ function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell)
   matlabbatch{end}.spm.stats.factorial_design.globalc.g_omit = 1;
   matlabbatch{end}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
   matlabbatch{end}.spm.stats.factorial_design.globalm.glonorm = 1;
+
+end
+
+function status = checks(opt, nodeName)
+
+  thisNode = opt.model.bm.get_nodes('Name', nodeName);
+  if iscell(thisNode)
+    thisNode = thisNode{1};
+  end
+
+  commonMsg = sprintf('for the dataset level node: "%s"', nodeName);
+
+  status = checkGroupBy(thisNode);
+
+  % only certain type of model supported for now
+  designMatrix = opt.model.bm.get_design_matrix('Name', nodeName);
+  if iscell(designMatrix) || (designMatrix ~= 1)
+
+    msg = sprintf('Models other than group average not implemented yet %s', commonMsg);
+    notImplemented(mfilename(), msg, opt.verbosity);
+
+    status = false;
+
+  end
+
+  datasetLvlDummyContrasts = opt.model.bm.get_dummy_contrasts('Name', nodeName);
+  if isempty(datasetLvlDummyContrasts) || ~isfield(datasetLvlDummyContrasts, 'Test')
+
+    msg = sprintf('Only DummyContrasts are implemented %s', commonMsg);
+    notImplemented(mfilename(), msg, opt.verbosity);
+
+    status = false;
+
+  end
+
+  datasetLvlContrasts = opt.model.bm.get_contrasts('Name', nodeName);
+  if ~isempty(datasetLvlContrasts)
+
+    msg = sprintf('Contrasts are not yet implemented %s', commonMsg);
+    notImplemented(mfilename(), msg, opt.verbosity);
+
+  end
 
 end
