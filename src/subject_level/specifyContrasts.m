@@ -337,65 +337,6 @@ function contrastsList = getContrastsList(node, model)
 
 end
 
-function dummyContrastsList = getDummyContrastsList(node, model)
-
-  dummyContrastsList = {};
-
-  if isfield(node.DummyContrasts, 'Contrasts')
-
-    dummyContrastsList = node.DummyContrasts.Contrasts;
-
-  else
-
-    switch lower(node.Level)
-
-      case 'run'
-        % TODO this assumes "GroupBy": ["run", "subject"] or ["run", "session", "subject"]
-        dummyContrastsList = node.Model.X;
-
-      case 'subject'
-
-        % TODO relax those assumptions
-
-        % assumptions
-        assert(checkGroupBy(node));
-        assert(node.Model.X == 1);
-
-        sourceNode = getSourceNode(model, node.Name);
-
-        % TODO transfer to BIDS model as a get_contrasts_list method
-        if isfield(sourceNode.DummyContrasts, 'Contrasts')
-          dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
-        end
-
-    end
-
-  end
-
-end
-
-function sourceNode = getSourceNode(bm, destinationName)
-
-  % TODO transfer to BIDS model as a get_source method
-  if ~isfield(bm, 'Edges') || isempty(bm.Edges)
-    bm = bm.get_edges_from_nodes;
-  end
-
-  for i = 1:numel(bm.Edges)
-    if strcmp(bm.Edges{i}.Destination, destinationName)
-      source = bm.Edges{i}.Source;
-      break
-    end
-  end
-
-  sourceNode = bm.get_nodes('Name', source);
-
-  if iscell(sourceNode)
-    sourceNode = sourceNode{1};
-  end
-
-end
-
 function  [cdtName, regIdx, status] = getRegressorIdx(cdtName, SPM)
   % get regressors index corresponding to the HRF of of a condition
 
@@ -426,7 +367,7 @@ function contrast = checkContrast(node, iCon)
 
   if ~isTtest(node.Contrasts(iCon))
     notImplemented(mfilename(), ...
-                   'Only t test implemented for DummyContrasts', ...
+                   'Only t test implemented for Contrasts', ...
                    true);
     contrast = [];
     return
