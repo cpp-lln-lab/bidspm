@@ -39,16 +39,19 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
   % average at the group level
   if opt.model.bm.get_design_matrix('Name', nodeName) == 1
 
-    dummyContrastsList = getDummyContrastsList(nodeName, opt.model.bm);
+    contrastsList = getDummyContrastsList(nodeName, opt.model.bm);
+    tmp = getContrastsList(nodeName, opt.model.bm);
 
-    contrastsList = dummyContrastsList;
+    for i = 1:numel(tmp)
+      contrastsList{end + 1} = tmp{i}.Name;
+    end
 
   end
 
   % For each contrast
-  for j = 1:numel(dummyContrastsList)
+  for j = 1:numel(contrastsList)
 
-    contrastName = dummyContrastsList{j};
+    contrastName = contrastsList{j};
 
     msg = sprintf('\n\n  Group contrast: %s\n\n', contrastName);
     printToScreen(msg, opt);
@@ -73,12 +76,13 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
       % want to bring to the group level
       conIdx = find(strcmp({SPM.xCon.name}, contrastName));
       if isempty(conIdx)
-        disp({SPM.xCon.name}');
         msg = sprintf('Skipping subject %s. Could not find a contrast named %s\nin %s.\n', ...
                       subLabel, ...
                       contrastName, ...
                       fullfile(ffxDir, 'SPM.mat'));
         errorHandling(mfilename(), 'missingContrast', msg, true, opt.verbosity);
+        printToScreen(['available contrasts:\n' createUnorderedList({SPM.xCon.name}')], ...
+                      opt, 'format', 'red');
         continue
       end
       fileName = sprintf('con_%0.4d.nii', conIdx);

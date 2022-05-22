@@ -16,18 +16,18 @@ function test_bidsRFX_basic_rfx()
 
   matlabbatch = bidsRFX('RFX', opt);
 
-  nbGroupLevelModels = 2;
+  nbGroupLevelModels = 4;
   nbBatchPerModel = 4;
 
   % creates 4 batches for (specify, figure, estimate, figure)
-  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{2}.spm.util, 'print'));
-  assert(isfield(matlabbatch{3}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{4}.spm.util, 'print'));
-  assert(isfield(matlabbatch{5}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{6}.spm.util, 'print'));
-  assert(isfield(matlabbatch{7}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{8}.spm.util, 'print'));
+  for i = 1:2:7
+    assert(isfield(matlabbatch{i}.spm.stats, 'factorial_design'));
+    assert(isfield(matlabbatch{i + 1}.spm.util, 'print'));
+  end
+  for i = 9:2:15
+    assert(isfield(matlabbatch{i}.spm.stats, 'fmri_est'));
+    assert(isfield(matlabbatch{i + 1}.spm.util, 'print'));
+  end
   assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
 
   cleanUp(fullfile(opt.dir.output, 'derivatives'));

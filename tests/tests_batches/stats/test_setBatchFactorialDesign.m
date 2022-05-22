@@ -22,7 +22,9 @@ function test_setBatchFactorialDesign_basic()
 
   matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode{1}.Name);
 
-  assertEqual(numel(matlabbatch), 4);
+  % (2 contrasts + 2 dummy contrasts) passed all the way from run level * 2
+  % batches (design specification + figure design matrix)
+  assertEqual(numel(matlabbatch), 8);
 
   % add test to assert default mask is SPM ICV's
   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.fd.icell.scans), 2);

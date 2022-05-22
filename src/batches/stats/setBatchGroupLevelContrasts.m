@@ -1,4 +1,4 @@
-function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir)
+function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -17,6 +17,8 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, 
     for j = 1:size(grpLvlCon.Contrasts, 1)
 
       conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
+
+      rfxDir = getRFXdir(opt);
 
       spmMatFile = fullfile(rfxDir, conName, 'SPM.mat');
 

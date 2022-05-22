@@ -1,6 +1,6 @@
 function dummyContrastsList = getDummyContrastsList(node, model)
   %
-  % Get list of names of cummyContrast from this Node or gets its from the
+  % Get list of names of DummyContrast from this Node or gets its from the
   % previous Nodes
   %
   % USAGE::
@@ -13,9 +13,7 @@ function dummyContrastsList = getDummyContrastsList(node, model)
   % :param model:
   % :type model: BIDS stats model object
   %
-  % nodeName
   %
-  % :returns: - :matlabbatch: (structure)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
