@@ -11,7 +11,7 @@ function contrast = checkContrast(node, iCon)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  if ~isTtest(node.Contrasts(iCon))
+  if ~ismember(lower(node.Level), {'run'}) && ~isTtest(node.Contrasts(iCon))
     notImplemented(mfilename(), ...
                    'Only t test implemented for Contrasts', ...
                    true);
