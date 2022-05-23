@@ -18,7 +18,7 @@ function contrasts = specifyContrasts(SPM, model)
   % ``strvcat(SPM.xX.name)``
   %
   %
-  % See also: setBatchGroupLevelContrasts
+  % See also: setBatchSubjectLevelContrasts, setBatchGroupLevelContrasts
   %
   %
   % (C) Copyright 2019 CPP_SPM developers
