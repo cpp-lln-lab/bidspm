@@ -119,7 +119,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
         C = newContrast(SPM, cdtName, testType);
         C.C(end, regIdx) = 1;
-        [contrasts, counter] = appendTContrast(contrasts, C, counter);
+        [contrasts, counter] = appendContrast(contrasts, C, counter, testType);
         clear regIdx;
 
       case 'run'
@@ -135,7 +135,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
           % give each event a value of 1
           C.C(end, regIdx(iReg)) = 1;
-          [contrasts, counter] = appendTContrast(contrasts, C, counter);
+          [contrasts, counter] = appendContrast(contrasts, C, counter, testType);
 
         end
 
@@ -189,7 +189,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
     end
 
-    [contrasts, counter] = appendTContrast(contrasts, C, counter);
+    [contrasts, counter] = appendContrast(contrasts, C, counter, this_contrast.Test);
 
   end
 
@@ -260,7 +260,7 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
             C.C(end, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
           end
 
-          [contrasts, counter] = appendTContrast(contrasts, C, counter);
+          [contrasts, counter] = appendContrast(contrasts, C, counter, this_contrast.Test);
 
         case 'F'
 
@@ -273,7 +273,7 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
             C.C(iCdt, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
           end
 
-          [contrasts, counter] = appendFContrast(contrasts, C, counter);
+          [contrasts, counter] = appendContrast(contrasts, C, counter, this_contrast.Test);
       end
 
     end
@@ -349,16 +349,9 @@ function C = newContrast(SPM, conName, type, conditionList)
   C.name = conName;
 end
 
-function [contrasts, counter] = appendTContrast(contrasts, C, counter)
+function [contrasts, counter] = appendContrast(contrasts, C, counter, type)
   counter = counter + 1;
-  contrasts(counter).type = 't';
-  contrasts(counter).C = C.C;
-  contrasts(counter).name = C.name;
-end
-
-function [contrasts, counter] = appendFContrast(contrasts, C, counter)
-  counter = counter + 1;
-  contrasts(counter).type = 'F';
+  contrasts(counter).type = type;
   contrasts(counter).C = C.C;
   contrasts(counter).name = C.name;
 end
