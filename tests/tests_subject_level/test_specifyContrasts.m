@@ -8,6 +8,37 @@ function test_suite = test_specifyContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_specifyContrasts_vismotion_F_contrast()
+  %
+  % Note requires an SPM.mat to run
+  %
+
+  % GIVEN
+  subLabel = '01';
+
+  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
+
+  ffxDir = getFFXdir(subLabel, opt);
+  spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
+  load(spmMatFile{1}, 'SPM');
+
+  opt.model.file = spm_file(opt.model.file, 'basename', 'model-vismotionFtest_smdl');
+  model = BidsModel('file', opt.model.file);
+
+  % WHEN
+  contrasts = specifyContrasts(SPM, model);
+
+  % THEN
+  expected.name = 'F_test_mot_static_1'; %#ok<*AGROW>
+  expected.weights = [1 0 0 0 0 0 0 0 0;
+                      0 1 0 0 0 0 0 0 0];
+
+  assertEqual({contrasts.name}', {expected.name}');
+  assertEqual({contrasts.weights}', {expected.weights}');
+
+end
+
+
 function test_specifyContrasts_run_level_dummy_contrast_from_X()
   %
   % to test the generation of contrasts when there are several runs
