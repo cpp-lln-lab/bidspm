@@ -8,6 +8,39 @@ function test_suite = test_setBatchSubjectLevelContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setBatchSubjectLevelContrasts_F_contrast()
+
+  subLabel = '01';
+
+  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, 'basename', 'model-vismotionFtest_smdl');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  matlabbatch = {};
+  matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);
+
+  con.spmmat = {fullfile(opt.dir.stats, ...
+                         'sub-01', ...
+                         'task-vismotion_space-IXI549Space_FWHM-6', ...
+                         'SPM.mat')};
+  con.delete = 1;
+
+  consess{1}.tcon.name = 'VisMot_gt_VisStat_1'; %#ok<*AGROW>
+  consess{1}.tcon.convec = [1 -1 0 0 0 0 0 0 0];
+  consess{1}.tcon.sessrep = 'none';
+
+  consess{2}.fcon.name = 'F_test_mot_static_1'; %#ok<*AGROW>
+  consess{2}.fcon.convec = [1 0 0 0 0 0 0 0 0
+                            0 1 0 0 0 0 0 0 0];
+  consess{2}.fcon.sessrep = 'none';
+
+  con.consess = consess;
+
+  assertEqual(matlabbatch{1}.spm.stats.con, con);
+
+end
+
 function test_setBatchSubjectLevelContrasts_basic()
 
   subLabel = '01';

@@ -17,6 +17,10 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
   %
   % :returns: - :matlabbatch:
   %
+  %
+  % See also: specifyContrasts, setBatchContrasts
+  %
+  %
   % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('subject level contrasts specification', opt);
@@ -35,11 +39,23 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
 
   consess = {};
   for icon = 1:size(contrasts, 2)
-    if any(contrasts(icon).C)
-      consess{end + 1}.tcon.name = contrasts(icon).name; %#ok<*AGROW>
-      consess{end}.tcon.convec = contrasts(icon).C;
-      consess{end}.tcon.sessrep = 'none';
+
+    if any(contrasts(icon).C(:))
+
+      con.name = contrasts(icon).name;
+      con.convec = contrasts(icon).C;
+      con.sessrep = 'none';
+
+      switch contrasts(icon).type
+        case 't'
+          consess{end + 1}.tcon = con; %#ok<*AGROW>
+
+        case 'F'
+          consess{end + 1}.fcon = con; %#ok<*AGROW>
+      end
+
     end
+
   end
 
   matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
