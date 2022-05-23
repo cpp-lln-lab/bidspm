@@ -80,11 +80,18 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
   level = lower(node.Level);
 
-  if ismember(level, {'session', 'dataset'})
-    % not implemented
+  if ismember(level, {'session'})
+    notImplemented(mfilename(), ...
+      'Specifying dummy contrasts for session level Node not implemented.', ...
+      true);
     return
   end
 
+  if ismember(level, {'dataset'})
+    % see setBatchGroupLevelContrasts
+    return
+  end  
+  
   if strcmp(level, 'subject') && ~checkGroupBy(node)
     % only "GroupBy": ["contrast", "subject"] supported
     return
@@ -98,15 +105,9 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
     return
   end
 
+  %% first the DummyContrasts that are explicitly mentioned
   dummyContrastsList = getDummyContrastsList(node, model);
-
-  contrastsList = {};
-  if ~isfield(node.DummyContrasts, 'Contrasts')
-    % try to grab ContrastsList from design matrix or from previous Node
-    contrastsList = getContrastsList(node, model);
-  end
-
-  % first the contrasts to compute automatically against baseline
+ 
   for iCon = 1:length(dummyContrastsList)
 
     cdtName = dummyContrastsList{iCon};
@@ -143,9 +144,16 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
     end
 
   end
-
-  % set up DummyContrasts at subject level
+  
+  %% set up DummyContrasts at subject level
   % that are based on contrast from previous level
+  
+  contrastsList = {};
+  if ~isfield(node.DummyContrasts, 'Contrasts')
+    % try to grab ContrastsList from design matrix or from previous Node
+    contrastsList = getContrastsList(node, model);
+  end
+  
   for iCon = 1:length(contrastsList)
 
     this_contrast = contrastsList{iCon};
