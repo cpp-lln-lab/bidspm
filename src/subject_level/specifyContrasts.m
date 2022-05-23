@@ -363,8 +363,8 @@ function  [cdtName, regIdx, status] = getRegressorIdx(cdtName, SPM)
   cdtName = strrep(cdtName, 'trial_type.', '');
 
   % get regressors index corresponding to the HRF of that condition
-  regIdx = strfind(SPM.xX.name', [' ' cdtName '*bf(1)']);
-  regIdx = ~cellfun('isempty', regIdx);  %#ok<*STRCL1>
+  regIdx = regexp(SPM.xX.name, ['.* ' cdtName '\*bf\(1\).*'], 'match');
+  regIdx = ~cellfun('isempty', regIdx);
 
   status = checkRegressorFound(regIdx, cdtName);
 
