@@ -1,0 +1,62 @@
+{
+  "Name": "vismotion",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "To test F contrasts on motion parameters",
+  "Input": {
+    "task": [
+      "vismotion"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          "trial_type.VisMot",
+          "trial_type.VisStat",
+          "trans_?",
+          "rot_?"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Model": "DoubleGamma"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "HRFderivatives": "Temporal"
+          }
+        }
+      },
+      "Contrasts": [
+        {
+          "Name": "F_test_mot_static",
+          "ConditionList": [
+            "VisMot",
+            "VisStat"
+          ],
+          "Weights": [
+            1,
+            1
+          ],
+          "Test": "F"
+        }
+      ]
+    }
+  ]
+}
