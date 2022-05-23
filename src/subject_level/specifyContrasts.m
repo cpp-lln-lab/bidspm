@@ -135,7 +135,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
           % give each event a value of 1
           C.C(end, regIdx(iReg)) = 1;
-          [contrasts, counter] = appendContrast(contrasts, C, counter);
+          [contrasts, counter] = appendTContrast(contrasts, C, counter);
 
         end
 
@@ -189,7 +189,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
     end
 
-    [contrasts, counter] = appendContrast(contrasts, C, counter);
+    [contrasts, counter] = appendTContrast(contrasts, C, counter);
 
   end
 
@@ -254,8 +254,9 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
       for iCdt = 1:length(this_contrast.ConditionList)
         C.C(end, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
       end
+            [contrasts, counter] = appendTContrast(contrasts, C, counter);
 
-      [contrasts, counter] = appendContrast(contrasts, C, counter);
+        case 'F'
 
     end
     clear regIdx;
@@ -311,7 +312,7 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
                     this_contrast.Name, cdtName);
       errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
     else
-      [contrasts, counter] = appendContrast(contrasts, C, counter);
+      [contrasts, counter] = appendTContrast(contrasts, C, counter);
     end
 
   end
@@ -323,9 +324,15 @@ function C = newContrast(SPM, conName)
   C.name = conName;
 end
 
-function [contrasts, counter] = appendContrast(contrasts, C, counter)
+function [contrasts, counter] = appendTContrast(contrasts, C, counter)
   counter = counter + 1;
   contrasts(counter).C = C.C;
+  contrasts(counter).name = C.name;
+end
+
+function [contrasts, counter] = appendFContrast(contrasts, C, counter)
+  counter = counter + 1;
+  contrasts(counter).weights = C.C;
   contrasts(counter).name = C.name;
 end
 
