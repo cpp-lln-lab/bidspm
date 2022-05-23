@@ -119,7 +119,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
         C = newContrast(SPM, cdtName);
         C.C(end, regIdx) = 1;
-        [contrasts, counter] = appendContrast(contrasts, C, counter);
+        [contrasts, counter] = appendTContrast(contrasts, C, counter);
         clear regIdx;
 
       case 'run'
@@ -255,8 +255,6 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
         C.C(end, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
       end
             [contrasts, counter] = appendTContrast(contrasts, C, counter);
-
-        case 'F'
 
     end
     clear regIdx;
