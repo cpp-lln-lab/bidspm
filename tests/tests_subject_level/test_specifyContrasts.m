@@ -30,11 +30,12 @@ function test_specifyContrasts_vismotion_F_contrast()
 
   % THEN
   expected.name = 'F_test_mot_static_1'; %#ok<*AGROW>
-  expected.weights = [1 0 0 0 0 0 0 0 0
-                      0 1 0 0 0 0 0 0 0];
+  expected.C = [1 0 0 0 0 0 0 0 0
+                0 1 0 0 0 0 0 0 0];
+  expected.type = 'F';
 
   assertEqual({contrasts.name}', {expected.name}');
-  assertEqual({contrasts.weights}', {expected.weights}');
+  assertEqual({contrasts.C}', {expected.C}');
 
 end
 
@@ -86,6 +87,7 @@ function test_specifyContrasts_run_level_dummy_contrast_from_X()
   for i = 1:size(names_contrast, 1)
     expected(i).name = names_contrast{i, 1};
     expected(i).C = names_contrast{i, 2};
+    expected(i).type = 't';
     assertEqual(contrasts(i), expected(i));
   end
 
@@ -220,6 +222,7 @@ function test_specifyContrasts_subject_level()
   for i = 1:size(names_contrast, 1)
     expected(i).name = names_contrast{i, 1};
     expected(i).C = names_contrast{i, 2};
+    expected(i).type = 't';
     assertEqual(contrasts(i), expected(i));
   end
 
@@ -283,6 +286,7 @@ function test_specifyContrasts_complex()
   for i = 1:size(names_contrast, 1)
     expected(i).name = names_contrast{i, 1};
     expected(i).C = names_contrast{i, 2};
+    expected(i).type = 't';
     assertEqual(contrasts(i), expected(i));
   end
 

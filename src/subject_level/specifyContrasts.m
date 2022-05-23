@@ -250,12 +250,31 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
       % Use the SPM Sess index for the contrast name
       iSess = getSessionForRegressorNb(regIdx{1}(iRun), SPM);
 
-      C = newContrast(SPM, [this_contrast.Name, '_', num2str(iSess)], this_contrast.Test);
+      switch this_contrast.Test
 
-      for iCdt = 1:length(conditionList)
-        C.C(end, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
+        case 't'
+
+          C = newContrast(SPM, [this_contrast.Name, '_', num2str(iSess)], this_contrast.Test);
+
+          for iCdt = 1:length(conditionList)
+            C.C(end, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
+          end
+
+          [contrasts, counter] = appendTContrast(contrasts, C, counter);
+
+        case 'F'
+
+          C = newContrast(SPM, ...
+                          [this_contrast.Name, '_', num2str(iSess)], ...
+                          this_contrast.Test, ...
+                          conditionList);
+
+          for iCdt = 1:length(conditionList)
+            C.C(iCdt, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
+          end
+
+          [contrasts, counter] = appendFContrast(contrasts, C, counter);
       end
-      [contrasts, counter] = appendTContrast(contrasts, C, counter);
 
     end
     clear regIdx;
@@ -320,24 +339,27 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
 
 end
 
-function C = newContrast(SPM, conName, type)
+function C = newContrast(SPM, conName, type, conditionList)
   switch type
     case 't'
-        C.C = zeros(1, size(SPM.xX.X, 2));
+      C.C = zeros(1, size(SPM.xX.X, 2));
     case 'F'
+      C.C = zeros(numel(conditionList), size(SPM.xX.X, 2));
   end
   C.name = conName;
 end
 
 function [contrasts, counter] = appendTContrast(contrasts, C, counter)
   counter = counter + 1;
+  contrasts(counter).type = 't';
   contrasts(counter).C = C.C;
   contrasts(counter).name = C.name;
 end
 
 function [contrasts, counter] = appendFContrast(contrasts, C, counter)
   counter = counter + 1;
-  contrasts(counter).weights = C.C;
+  contrasts(counter).type = 'F';
+  contrasts(counter).C = C.C;
   contrasts(counter).name = C.name;
 end
 
