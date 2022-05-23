@@ -1,5 +1,7 @@
 function contrast = checkContrast(node, iCon)
   %
+  % Validates contrast specification
+  %
   % put some of that in bids.Model
   %
   % USAGE::

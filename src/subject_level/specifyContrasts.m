@@ -4,10 +4,11 @@ function contrasts = specifyContrasts(SPM, model)
   %
   % USAGE::
   %
-  %   contrasts = specifyContrasts(SPM, taskName, model)
+  %   contrasts = specifyContrasts(SPM, model)
   %
   % :param SPM: content of SPM.mat
   % :type SPM: structure
+  %
   % :param opt:
   % :type opt: structure
   %
@@ -17,11 +18,16 @@ function contrasts = specifyContrasts(SPM, model)
   % ``strvcat(SPM.xX.name)``
   %
   %
+  % See also: setBatchGroupLevelContrasts
+  %
+  %
   % (C) Copyright 2019 CPP_SPM developers
 
   % TODO refactor code duplication between run level and subject level
 
   % TODO refactor with some of the functions from the bids-model folder ?
+  
+  % TODO add posibility to run only a single node
 
   contrasts = struct('C', [], 'name', []);
   counter = 0;
@@ -84,6 +90,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
     return
   end
 
+  testType = 't';
   if ~isTtest(node.DummyContrasts)
     notImplemented(mfilename(), ...
                    'Only t test implemented for DummyContrasts', ...
@@ -169,6 +176,9 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
         end
         clear regIdx;
 
+      otherwise
+        % not implemented
+
     end
 
     [contrasts, counter] = appendContrast(contrasts, C, counter);
@@ -188,13 +198,14 @@ function iSess = getSessionForRegressorNb(regIdx, SPM)
 end
 
 function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
-
+  %
+  % For the contrasts that involve contrasting conditions
+  % amongst themselves or something inferior to baseline
+  
   if ~isfield(node, 'Contrasts')
     return
   end
 
-  % then the contrasts that involve contrasting conditions
-  % amongst themselves or something inferior to baseline
   for iCon = 1:length(node.Contrasts)
 
     this_contrast = checkContrast(node, iCon);
