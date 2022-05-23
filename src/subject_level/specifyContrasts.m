@@ -26,7 +26,7 @@ function contrasts = specifyContrasts(SPM, model)
   % TODO refactor code duplication between run level and subject level
 
   % TODO refactor with some of the functions from the bids-model folder ?
-  
+
   % TODO add posibility to run only a single node
 
   contrasts = struct('C', [], 'name', []);
@@ -82,16 +82,16 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
   if ismember(level, {'session'})
     notImplemented(mfilename(), ...
-      'Specifying dummy contrasts for session level Node not implemented.', ...
-      true);
+                   'Specifying dummy contrasts for session level Node not implemented.', ...
+                   true);
     return
   end
 
   if ismember(level, {'dataset'})
     % see setBatchGroupLevelContrasts
     return
-  end  
-  
+  end
+
   if strcmp(level, 'subject') && ~checkGroupBy(node)
     % only "GroupBy": ["contrast", "subject"] supported
     return
@@ -107,7 +107,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
   %% first the DummyContrasts that are explicitly mentioned
   dummyContrastsList = getDummyContrastsList(node, model);
- 
+
   for iCon = 1:length(dummyContrastsList)
 
     cdtName = dummyContrastsList{iCon};
@@ -144,16 +144,16 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
     end
 
   end
-  
+
   %% set up DummyContrasts at subject level
   % that are based on contrast from previous level
-  
+
   contrastsList = {};
   if ~isfield(node.DummyContrasts, 'Contrasts')
     % try to grab ContrastsList from design matrix or from previous Node
     contrastsList = getContrastsList(node, model);
   end
-  
+
   for iCon = 1:length(contrastsList)
 
     this_contrast = contrastsList{iCon};
@@ -168,12 +168,12 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
         C = newContrast(SPM, this_contrast.Name);
 
-        ConditionList = this_contrast.ConditionList;
+        conditionList = this_contrast.ConditionList;
 
         % get regressors index corresponding to the HRF of that condition
-        for iCdt = 1:length(ConditionList)
+        for iCdt = 1:length(conditionList)
 
-          cdtName = ConditionList{iCdt};
+          cdtName = conditionList{iCdt};
 
           [~, regIdx{iCdt}] = getRegressorIdx(cdtName, SPM);
 
@@ -209,7 +209,7 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
   %
   % For the contrasts that involve contrasting conditions
   % amongst themselves or something inferior to baseline
-  
+
   if ~isfield(node, 'Contrasts')
     return
   end
@@ -222,10 +222,11 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
       continue
     end
 
+    conditionList = this_contrast.ConditionList;
+
     % get regressors index corresponding to the HRF of that condition
-    ConditionList = this_contrast.ConditionList;
-    for iCdt = 1:length(ConditionList)
-      cdtName = ConditionList{iCdt};
+    for iCdt = 1:length(conditionList)
+      cdtName = conditionList{iCdt};
       [~, regIdx{iCdt}] = getRegressorIdx(cdtName, SPM);
       regIdx{iCdt} = find(regIdx{iCdt});
     end
@@ -251,10 +252,10 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
 
       C = newContrast(SPM, [this_contrast.Name, '_', num2str(iSess)]);
 
-      for iCdt = 1:length(this_contrast.ConditionList)
+      for iCdt = 1:length(conditionList)
         C.C(end, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
       end
-            [contrasts, counter] = appendTContrast(contrasts, C, counter);
+      [contrasts, counter] = appendTContrast(contrasts, C, counter);
 
     end
     clear regIdx;
@@ -285,12 +286,14 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
       continue
     end
 
+    conditionList = this_contrast.ConditionList;
+
     C = newContrast(SPM, this_contrast.Name);
 
-    for iCdt = 1:length(this_contrast.ConditionList)
+    for iCdt = 1:length(conditionList)
 
       % get regressors index corresponding to the HRF of that condition
-      cdtName = this_contrast.ConditionList{iCdt};
+      cdtName = conditionList{iCdt};
       [~, regIdx, status] = getRegressorIdx(cdtName, SPM);
 
       if ~status

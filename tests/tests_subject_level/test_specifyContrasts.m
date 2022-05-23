@@ -30,14 +30,13 @@ function test_specifyContrasts_vismotion_F_contrast()
 
   % THEN
   expected.name = 'F_test_mot_static_1'; %#ok<*AGROW>
-  expected.weights = [1 0 0 0 0 0 0 0 0;
+  expected.weights = [1 0 0 0 0 0 0 0 0
                       0 1 0 0 0 0 0 0 0];
 
   assertEqual({contrasts.name}', {expected.name}');
   assertEqual({contrasts.weights}', {expected.weights}');
 
 end
-
 
 function test_specifyContrasts_run_level_dummy_contrast_from_X()
   %
