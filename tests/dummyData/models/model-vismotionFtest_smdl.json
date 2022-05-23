@@ -45,6 +45,18 @@
       },
       "Contrasts": [
         {
+          "Name": "VisMot_gt_VisStat",
+          "ConditionList": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Weights": [
+            1,
+            -1
+          ],
+          "Test": "t"
+        },
+        {
           "Name": "F_test_mot_static",
           "ConditionList": [
             "VisMot",
