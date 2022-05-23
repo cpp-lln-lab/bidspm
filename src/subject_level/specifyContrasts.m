@@ -117,7 +117,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
       case 'subject'
 
-        C = newContrast(SPM, cdtName);
+        C = newContrast(SPM, cdtName, testType);
         C.C(end, regIdx) = 1;
         [contrasts, counter] = appendTContrast(contrasts, C, counter);
         clear regIdx;
@@ -131,7 +131,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
           % Use the SPM Sess index for the contrast name
           iSess = getSessionForRegressorNb(regIdx(iReg), SPM);
 
-          C = newContrast(SPM, [cdtName, '_', num2str(iSess)]);
+          C = newContrast(SPM, [cdtName, '_', num2str(iSess)], testType);
 
           % give each event a value of 1
           C.C(end, regIdx(iReg)) = 1;
@@ -166,7 +166,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
       case 'subject'
 
-        C = newContrast(SPM, this_contrast.Name);
+        C = newContrast(SPM, this_contrast.Name, this_contrast.Test);
 
         conditionList = this_contrast.ConditionList;
 
@@ -250,7 +250,7 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
       % Use the SPM Sess index for the contrast name
       iSess = getSessionForRegressorNb(regIdx{1}(iRun), SPM);
 
-      C = newContrast(SPM, [this_contrast.Name, '_', num2str(iSess)]);
+      C = newContrast(SPM, [this_contrast.Name, '_', num2str(iSess)], this_contrast.Test);
 
       for iCdt = 1:length(conditionList)
         C.C(end, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
@@ -288,7 +288,7 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
 
     conditionList = this_contrast.ConditionList;
 
-    C = newContrast(SPM, this_contrast.Name);
+    C = newContrast(SPM, this_contrast.Name, this_contrast.Test);
 
     for iCdt = 1:length(conditionList)
 
@@ -320,8 +320,12 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
 
 end
 
-function C = newContrast(SPM, conName)
-  C.C = zeros(1, size(SPM.xX.X, 2));
+function C = newContrast(SPM, conName, type)
+  switch type
+    case 't'
+        C.C = zeros(1, size(SPM.xX.X, 2));
+    case 'F'
+  end
   C.name = conName;
 end
 
