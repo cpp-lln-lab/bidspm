@@ -32,7 +32,7 @@ function test_specifyContrasts_vismotion_F_contrast()
   expected(1).name = 'VisMot_gt_VisStat_1'; %#ok<*AGROW>
   expected(1).C = [1 -1 0 0 0 0 0 0 0];
   expected(1).type = 't';
-  
+
   expected(2).name = 'F_test_mot_static_1'; %#ok<*AGROW>
   expected(2).C = [1 0 0 0 0 0 0 0 0
                    0 1 0 0 0 0 0 0 0];
