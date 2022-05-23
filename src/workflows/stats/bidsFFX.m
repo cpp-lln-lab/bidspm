@@ -22,6 +22,7 @@ function [matlabbatch, opt] = bidsFFX(action, opt)
   %
   % :param action: Action to be conducted:``specifyAndEstimate`` or ``contrasts``.
   % :type action: string
+  %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
@@ -29,6 +30,7 @@ function [matlabbatch, opt] = bidsFFX(action, opt)
   % - ``specify`` to specify the fMRI GLM
   % - ``specifyAndEstimate`` for fMRI design + estimate
   % - ``contrasts`` to estimate contrasts.
+  %
   %
   % See also: setBatchSubjectLevelGLMSpec, setBatchSubjectLevelContrasts
   %
@@ -114,14 +116,19 @@ function checks(opt, action)
 
   % assume this is the first node and this is run_level
   thisNode = opt.model.bm.getRootNode;
+
   if ismember(lower(thisNode.Level), {'session', 'subject'})
+
     notImplemented(mfilename(), ...
                    '"session" and "subject" level Node not implemented yet', ...
                    verbose);
+
   elseif ismember(lower(thisNode.Level), {'dataset'})
+
     msg = sprintf(['Your model seems to be having dataset Node at its root\n.', ...
                    'Validate it: https://bids-standard.github.io/stats-models/validator.html\n']);
     errorHandling(mfilename(), 'wrongLevel', msg, false, opt.verbosity);
+
   end
 
   checkGroupBy(thisNode);

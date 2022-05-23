@@ -20,7 +20,7 @@ cpp_spm();
 opt = face_rep_get_option_results();
 opt.space = 'IXI549Space';
 
-bidsFFX('specifyAndEstimate', opt);
+% bidsFFX('specifyAndEstimate', opt);
 bidsFFX('contrasts', opt);
 
 bidsResults(opt);

@@ -38,7 +38,7 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
   contrasts = specifyContrasts(SPM, model);
 
   consess = {};
-  for icon = 1:size(contrasts, 2)
+  for icon = 1:numel(contrasts)
 
     if any(contrasts(icon).C(:))
 
