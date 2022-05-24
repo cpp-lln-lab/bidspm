@@ -8,6 +8,65 @@ function test_suite = test_specifyContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_specifyContrasts_subject_level_select_node()
+
+  taskName = 'motion';
+
+  % GIVEN
+  DummyContrasts{1} = 'motion';
+  DummyContrasts{2} = 'static';
+
+  Contrasts.Name = 'motion_gt_static';
+  Contrasts.ConditionList = {'motion', 'static'};
+  Contrasts.Weights = [1, -1];
+  Contrasts.Test = 't';
+
+  model = bids.Model('init', true);
+  model.Nodes{2, 1} = bids.Model.empty_node('subject');
+  model.Input.task = taskName;
+  model.Nodes{1, 1}.DummyContrasts.Contrasts = DummyContrasts;
+  model.Nodes{1, 1}.Contrasts = Contrasts;
+  model.Nodes{2, 1}.GroupBy = {'subject', 'contrast'};
+  model.Nodes{2, 1}.DummyContrasts = struct('Test', 't');
+  model.Nodes{2, 1} = rmfield(model.Nodes{2}, 'Contrasts');
+  model.Nodes{2, 1}.Model.X = 1;
+
+  SPM.Sess(1).col = [1, 2];
+  % skip Sess 2 to make sure contrast naming is based on the Sess number
+  SPM.Sess(3).col = [3, 4];
+  SPM.Sess(4).col = [5, 6];
+  SPM.xX.name = { ...
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                };
+
+  SPM.xX.X = ones(1, numel(SPM.xX.name));
+
+  % WHEN
+  contrasts = specifyContrasts(SPM, model, 'subject');
+
+  % THEN
+  names_contrast = {
+                    'motion', [1 0 1 0 1 0]
+                    'static', [0 1 0 1 0 1]
+                    'motion_gt_static', [1 -1 1 -1 1 -1]
+                   };
+
+  assertEqual(numel(contrasts), size(names_contrast, 1));
+
+  for i = 1:size(names_contrast, 1)
+    expected(i).name = names_contrast{i, 1};
+    expected(i).C = names_contrast{i, 2};
+    expected(i).type = 't';
+    assertEqual(contrasts(i), expected(i));
+  end
+
+end
+
 function test_specifyContrasts_subject_level_F_contrast()
   %
   % to test the generation of F contrasts when there are several runs
@@ -124,6 +183,7 @@ function test_specifyContrasts_run_level_dummy_contrast_from_X()
   % skip Sess 2 to make sure contrast naming is based on the Sess number
   SPM.Sess(3).col = [3, 4];
   SPM.Sess(4).col = [5, 6];
+
   SPM.xX.name = { ...
                  ' motion*bf(1)'
                  ' static*bf(1)'
@@ -175,6 +235,7 @@ function test_specifyContrasts_missing_condition_for_dummy_contrasts()
   model.Nodes = rmfield(model.Nodes, 'Contrasts');
 
   SPM.Sess(1).col = [1, 2];
+
   SPM.xX.name = { ...
                  ' motion*bf(1)'
                  ' static*bf(1)'
@@ -209,6 +270,7 @@ function test_specifyContrasts_missing_condition()
   model.Nodes = rmfield(model.Nodes, 'DummyContrasts');
 
   SPM.Sess(1).col = [1, 2];
+
   SPM.xX.name = { ...
                  ' motion*bf(1)'
                  ' static*bf(1)'
@@ -252,6 +314,7 @@ function test_specifyContrasts_subject_level()
   % skip Sess 2 to make sure contrast naming is based on the Sess number
   SPM.Sess(3).col = [3, 4];
   SPM.Sess(4).col = [5, 6];
+
   SPM.xX.name = { ...
                  ' motion*bf(1)'
                  ' static*bf(1)'

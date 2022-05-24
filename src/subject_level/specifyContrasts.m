@@ -1,4 +1,4 @@
-function contrasts = specifyContrasts(SPM, model)
+function contrasts = specifyContrasts(SPM, model, nodeName)
   %
   % Specifies the first level contrasts
   %
@@ -36,10 +36,16 @@ function contrasts = specifyContrasts(SPM, model)
     errorHandling(mfilename(), 'wrongStatsModel', 'No node in the model', true, true);
   end
 
-  % check all the nodes specified in the model
-  for iNode = 1:length(model.Nodes)
+  if nargin < 3 || isempty(nodeName)
+    nodeList = model.get_nodes();
+  else
+    nodeList = model.get_nodes('Name', nodeName);
+  end
 
-    node = model.Nodes(iNode);
+  % check all the nodes specified in the model
+  for iNode = 1:length(nodeList)
+
+    node = nodeList(iNode);
 
     if iscell(node)
       node = node{1};
