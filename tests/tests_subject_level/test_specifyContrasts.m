@@ -8,7 +8,7 @@ function test_suite = test_specifyContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_specifyContrasts_run_level_F_contrast()
+function test_specifyContrasts_subject_level_F_contrast()
   %
   % to test the generation of F contrasts when there are several runs
   %

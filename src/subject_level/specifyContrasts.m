@@ -97,9 +97,6 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
     return
   end
 
-  if strcmp(node.DummyContrasts.Test, 'pass')
-    return
-  end
   testType = 't';
   if ~isTtest(node.DummyContrasts)
     notImplemented(mfilename(), ...
@@ -108,7 +105,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
     return
   end
 
-  %% first the DummyContrasts that are explicitly mentioned
+  %% DummyContrasts that are explicitly mentioned or based on DummyContrasts from previous level
   dummyContrastsList = getDummyContrastsList(node, model);
 
   for iCon = 1:length(dummyContrastsList)
@@ -148,11 +145,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
   end
 
-  %% set up DummyContrasts at subject level
-  % that are based on contrast from previous level
-  %
-  % TODO make sure that only t contrasts are picked up from previous levels
-
+  %% set up DummyContrasts at subject level that are based on Contrast from previous level
   contrastsList = {};
   if ~isfield(node.DummyContrasts, 'Contrasts')
     % try to grab ContrastsList from design matrix or from previous Node
@@ -163,7 +156,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
     this_contrast = contrastsList{iCon};
 
-    if isempty(this_contrast)
+    if isempty(this_contrast) || strcmp(this_contrast.Test, 'pass')
       continue
     end
 
@@ -198,16 +191,6 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
   end
 
-end
-
-function iSess = getSessionForRegressorNb(regIdx, SPM)
-  % Use the SPM Sess index for the contrast name
-  % TODO could be optimized
-  for iSess = 1:numel(SPM.Sess)
-    if ismember(regIdx, SPM.Sess(iSess).col)
-      break
-    end
-  end
 end
 
 function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
@@ -248,7 +231,6 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
       continue
     end
 
-    % give them the value specified in the model
     for iRun = 1:nbRuns
 
       % Use the SPM Sess index for the contrast name
@@ -346,6 +328,16 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
 
   end
 
+end
+
+function iSess = getSessionForRegressorNb(regIdx, SPM)
+  % Use the SPM Sess index for the contrast name
+  % TODO could be optimized
+  for iSess = 1:numel(SPM.Sess)
+    if ismember(regIdx, SPM.Sess(iSess).col)
+      break
+    end
+  end
 end
 
 function C = newContrast(SPM, conName, type, conditionList)
