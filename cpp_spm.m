@@ -479,7 +479,7 @@ function detectCppSpm()
     for i = 1:numel(workflowsDir)
       fprintf('  * %s\n', fullfile(workflowsDir{i}, '..', '..'));
     end
-    error('Remove all but one with ''pathtool''' .\ n'); % or ''spm_rmpath
+    error('Remove all but one with ''pathtool''.\n'); % or ''spm_rmpath
 
   end
 end

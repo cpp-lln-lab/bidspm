@@ -102,8 +102,8 @@ filenames.
 ### Statistics
 
 The model specification are set up using the
-[BIDS stats model](https://bids-standard.github.io/stats-models/intro.html) and
-can be used to perform:
+[BIDS stats model](https://bids-standard.github.io/stats-models/) and can be
+used to perform:
 
 -   whole GLM at the subject level
 -   whole brain GLM at the group level à la SPM (meaning using a summary
