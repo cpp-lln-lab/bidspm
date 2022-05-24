@@ -307,22 +307,56 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
 
     conditionList = this_contrast.ConditionList;
 
-    C = newContrast(SPM, this_contrast.Name, this_contrast.Test);
+    switch this_contrast.Test
 
-    for iCdt = 1:length(conditionList)
+      case 't'
 
-      % get regressors index corresponding to the HRF of that condition
-      cdtName = conditionList{iCdt};
-      [~, regIdx, status] = getRegressorIdx(cdtName, SPM);
+        C = newContrast(SPM, this_contrast.Name, this_contrast.Test);
 
-      if ~status
-        break
-      end
+        for iCdt = 1:length(conditionList)
 
-      % give them the value specified in the model
-      C.C(end, regIdx) = this_contrast.Weights(iCdt);
+          % get regressors index corresponding to the HRF of that condition
+          cdtName = conditionList{iCdt};
+          [~, regIdx, status] = getRegressorIdx(cdtName, SPM);
 
-      clear regIdx;
+          if ~status
+            break
+          end
+
+          % give them the value specified in the model
+          C.C(end, regIdx) = this_contrast.Weights(iCdt);
+
+          clear regIdx;
+
+        end
+
+      case 'F'
+
+        C = newContrast(SPM, this_contrast.Name, this_contrast.Test, conditionList);
+
+        row = 1;
+
+        for iCdt = 1:length(conditionList)
+
+          % get regressors index corresponding to the HRF of that condition
+          cdtName = conditionList{iCdt};
+          [~, regIdx, status] = getRegressorIdx(cdtName, SPM);
+
+          if ~status
+            break
+          end
+
+          regIdx = find(regIdx);
+
+          % give them the value specified in the model
+          for i = 1:numel(regIdx)
+            C.C(row, regIdx(i)) = this_contrast.Weights(iCdt);
+            row = row + 1;
+          end
+
+          clear regIdx;
+
+        end
 
     end
 
@@ -332,7 +366,7 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
                     this_contrast.Name, cdtName);
       errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
     else
-      [contrasts, counter] = appendTContrast(contrasts, C, counter);
+      [contrasts, counter] = appendContrast(contrasts, C, counter, this_contrast.Test);
     end
 
   end

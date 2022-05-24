@@ -8,6 +8,69 @@ function test_suite = test_specifyContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_specifyContrasts_run_level_F_contrast()
+  %
+  % to test the generation of F contrasts when there are several runs
+  %
+
+  taskName = 'motion';
+
+  model = bids.Model('init', true);
+
+  model.Input.task = taskName;
+
+  model.Nodes{1}.Model.X = {'motion', 'static'};
+  model.Nodes{1}.Level = 'Run';
+  model.Nodes{1}.GroupBy = {'run', 'subject'};
+  model.Nodes{1} = rmfield(model.Nodes{1}, 'Contrasts');
+  model.Nodes{1} = rmfield(model.Nodes{1}, 'DummyContrasts');
+
+  model.Nodes{2}.Model.X = 1;
+  model.Nodes{2}.Level = 'Subject';
+  model.Nodes{2}.GroupBy = {'contrast', 'subject'};
+  model.Nodes{2}.Contrasts = struct('Test', 'F', ...
+                                    'Name', 'F_test_mot_static', ...
+                                    'ConditionList', {{'motion', 'static'}}, ...
+                                    'Weights', [1 1]);
+
+  SPM.Sess(1).col = [1, 2, 3];
+  % skip Sess 2 to make sure contrast naming is based on the Sess number
+  SPM.Sess(3).col = [4, 5, 6];
+  SPM.Sess(4).col = [7, 8, 9];
+  SPM.xX.name = { ...
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                 ' rot_x'
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                 ' rot_x'
+                 ' motion*bf(1)'
+                 ' static*bf(1)'
+                 ' rot_x'
+                };
+
+  SPM.xX.X = ones(1, numel(SPM.xX.name));
+
+  % WHEN
+  contrasts = specifyContrasts(SPM, model);
+
+  % THEN
+  expected.name =  'F_test_mot_static';
+
+  expected.C = zeros(6, 9);
+  expected.C(1, 1) = 1;
+  expected.C(2, 4) = 1;
+  expected.C(3, 7) = 1;
+  expected.C(4, 2) = 1;
+  expected.C(5, 5) = 1;
+  expected.C(6, 8) = 1;
+
+  expected.type = 'F';
+
+  assertEqual(contrasts, expected);
+
+end
+
 function test_specifyContrasts_vismotion_F_contrast()
   %
   % Note requires an SPM.mat to run
