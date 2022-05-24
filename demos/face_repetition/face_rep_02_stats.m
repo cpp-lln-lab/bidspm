@@ -8,7 +8,6 @@
 % (C) Copyright 2019 Remi Gau
 
 % TODO
-% - compute motion effect
 % - run parametric model
 
 clear;
