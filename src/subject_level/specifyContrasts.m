@@ -9,8 +9,11 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
   % :param SPM: content of SPM.mat
   % :type SPM: structure
   %
-  % :param opt:
-  % :type opt: structure
+  % :param model:
+  % :type model: bids model object
+  %
+  % :param nodeName: name of the node to return name of
+  % :type nodeName: char
   %
   % :returns: - :contrasts: (structure)
   %
@@ -26,8 +29,6 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
   % TODO refactor code duplication between run level and subject level
 
   % TODO refactor with some of the functions from the bids-model folder ?
-
-  % TODO add posibility to run only a single node
 
   contrasts = struct('C', [], 'name', []);
   counter = 0;

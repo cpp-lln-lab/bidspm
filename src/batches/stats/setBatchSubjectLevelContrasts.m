@@ -1,4 +1,4 @@
-function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
+function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, nodeName)
   %
   % set batch for run and subject level contrasts
   %
@@ -18,7 +18,7 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
   % :returns: - :matlabbatch:
   %
   %
-  % See also: specifyContrasts, setBatchContrasts
+  % See also: bidsFFX, specifyContrasts, setBatchContrasts
   %
   %
   % (C) Copyright 2019 CPP_SPM developers
@@ -35,7 +35,11 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel)
   model = opt.model.bm;
 
   % Create Contrasts
-  contrasts = specifyContrasts(SPM, model);
+  if nargin < 4 || isempty(nodeName)
+    contrasts = specifyContrasts(SPM, model);
+  else
+    contrasts = specifyContrasts(SPM, model, nodeName);
+  end
 
   consess = {};
   for icon = 1:numel(contrasts)

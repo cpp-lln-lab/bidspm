@@ -58,6 +58,20 @@ function test_bidsFFX_individual()
 
 end
 
+function test_bidsFFX_contrasts_select_node()
+
+  createDummyData();
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+  opt.stc.skip = 1;
+
+  matlabbatch = bidsFFX('contrasts', opt, ...
+                        'nodeName', 'subject_level');
+
+  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 4);
+
+end
+
 function test_bidsFFX_contrasts()
 
   createDummyData();
