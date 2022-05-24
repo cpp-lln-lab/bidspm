@@ -12,7 +12,7 @@ function contrasts = specifyContrasts(SPM, model)
   % :param opt:
   % :type opt: structure
   %
-  % :returns: - :contrasts: (type) (dimension)
+  % :returns: - :contrasts: (structure)
   %
   % To know the names of the columns of the design matrix, type :
   % ``strvcat(SPM.xX.name)``
@@ -354,32 +354,4 @@ function [contrasts, counter] = appendContrast(contrasts, C, counter, type)
   contrasts(counter).type = type;
   contrasts(counter).C = C.C;
   contrasts(counter).name = C.name;
-end
-
-function  [cdtName, regIdx, status] = getRegressorIdx(cdtName, SPM)
-  % get regressors index corresponding to the HRF of of a condition
-
-  % get condition name
-  cdtName = strrep(cdtName, 'trial_type.', '');
-
-  % get regressors index corresponding to the HRF of that condition
-  convolvedWithCanonicalHRF = ['^.* (' cdtName '\*bf\(1\))$'];
-  nonConvolved = ['^.* ' cdtName '$'];
-  regIdx = regexp(SPM.xX.name', ...
-                  [convolvedWithCanonicalHRF '|' nonConvolved], ...
-                  'match');
-  regIdx = ~cellfun('isempty', regIdx);
-
-  status = checkRegressorFound(regIdx, cdtName);
-
-end
-
-function status = checkRegressorFound(regIdx, cdtName)
-  status = true;
-  regIdx = find(regIdx);
-  if all(~regIdx)
-    status = false;
-    msg = sprintf('No regressor found for condition ''%s''', cdtName);
-    errorHandling(mfilename(), 'missingRegressor', msg, true, true);
-  end
 end

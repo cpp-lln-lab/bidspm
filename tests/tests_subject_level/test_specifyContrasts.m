@@ -121,10 +121,9 @@ function test_specifyContrasts_missing_condition_for_dummy_contrasts()
 
   % WHEN
   assertWarning(@()specifyContrasts(SPM, model), ...
-                'specifyContrasts:missingRegressor');
+                'specifyContrasts:noContrast');
 
-  assertExceptionThrown( ...
-                        @()specifyContrasts(SPM, model), ...
+  assertExceptionThrown(@()specifyContrasts(SPM, model), ...
                         'specifyContrasts:noContrast');
 
 end
@@ -156,7 +155,7 @@ function test_specifyContrasts_missing_condition()
 
   % WHEN
   assertWarning(@()specifyContrasts(SPM, model), ...
-                'specifyContrasts:missingRegressor');
+                'specifyContrasts:noContrast');
 
   assertExceptionThrown(@()specifyContrasts(SPM, model), ...
                         'specifyContrasts:noContrast');
