@@ -12,7 +12,7 @@ BUILDDIR      = build
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: help Makefile
+.PHONY: help Makefile cpp_spm-manual.pdf
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
@@ -21,6 +21,7 @@ help:
 
 clean:
 	rm -rf $(BUILDDIR)
+	rm -f cpp_spm-manual.pdf
 clean_default_options: source/default_options.m
 	sed -i "s@/home/remi/matlab/SPM/spm12@spm12_dir@g" source/default_options.m
 	sed -i "s@/home/remi/github/CPP_SPM/docs/derivatives@derivatives@g" source/default_options.m
@@ -28,3 +29,7 @@ clean_default_options: source/default_options.m
 	sed -i "s@\t@ @g" source/default_options.m
 view:
 	firefox build/html/index.html
+
+cpp_spm-manual.pdf:
+	bash create_manual.sh
+
