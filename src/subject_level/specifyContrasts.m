@@ -97,6 +97,9 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
     return
   end
 
+  if strcmp(node.DummyContrasts.Test, 'pass')
+    return
+  end
   testType = 't';
   if ~isTtest(node.DummyContrasts)
     notImplemented(mfilename(), ...
@@ -147,6 +150,8 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
   %% set up DummyContrasts at subject level
   % that are based on contrast from previous level
+  %
+  % TODO make sure that only t contrasts are picked up from previous levels
 
   contrastsList = {};
   if ~isfield(node.DummyContrasts, 'Contrasts')
@@ -218,13 +223,12 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
 
     this_contrast = checkContrast(node, iCon);
 
-    if isempty(this_contrast)
+    if isempty(this_contrast) || strcmp(this_contrast.Test, 'pass')
       continue
     end
 
     conditionList = this_contrast.ConditionList;
 
-    % get regressors index corresponding to the HRF of that condition
     for iCdt = 1:length(conditionList)
       cdtName = conditionList{iCdt};
       [~, regIdx{iCdt}] = getRegressorIdx(cdtName, SPM);
@@ -250,33 +254,27 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
       % Use the SPM Sess index for the contrast name
       iSess = getSessionForRegressorNb(regIdx{1}(iRun), SPM);
 
-      switch this_contrast.Test
+      C = newContrast(SPM, ...
+                      [this_contrast.Name, '_', num2str(iSess)], ...
+                      this_contrast.Test, ...
+                      conditionList);
 
-        case 't'
+      for iCdt = 1:length(conditionList)
 
-          C = newContrast(SPM, [this_contrast.Name, '_', num2str(iSess)], this_contrast.Test);
+        if strcmp(this_contrast.Test, 't')
+          C.C(end, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
 
-          for iCdt = 1:length(conditionList)
-            C.C(end, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
-          end
+        elseif strcmp(this_contrast.Test, 'F')
+          C.C(iCdt, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
 
-          [contrasts, counter] = appendContrast(contrasts, C, counter, this_contrast.Test);
+        end
 
-        case 'F'
-
-          C = newContrast(SPM, ...
-                          [this_contrast.Name, '_', num2str(iSess)], ...
-                          this_contrast.Test, ...
-                          conditionList);
-
-          for iCdt = 1:length(conditionList)
-            C.C(iCdt, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
-          end
-
-          [contrasts, counter] = appendContrast(contrasts, C, counter, this_contrast.Test);
       end
 
+      [contrasts, counter] = appendContrast(contrasts, C, counter, this_contrast.Test);
+
     end
+
     clear regIdx;
 
   end
@@ -284,9 +282,6 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
 end
 
 function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM)
-  %
-  % dead code for now but will be reused later
-  %
 
   if ~isfield(node, 'Contrasts')
     return
@@ -301,62 +296,40 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
 
     this_contrast = checkContrast(node, iCon);
 
-    if isempty(this_contrast)
+    if isempty(this_contrast) || strcmp(this_contrast.Test, 'pass')
       continue
     end
 
     conditionList = this_contrast.ConditionList;
 
-    switch this_contrast.Test
+    C = newContrast(SPM, this_contrast.Name, this_contrast.Test, conditionList);
 
-      case 't'
+    row = 1;
 
-        C = newContrast(SPM, this_contrast.Name, this_contrast.Test);
+    for iCdt = 1:length(conditionList)
 
-        for iCdt = 1:length(conditionList)
+      cdtName = conditionList{iCdt};
+      [~, regIdx, status] = getRegressorIdx(cdtName, SPM);
 
-          % get regressors index corresponding to the HRF of that condition
-          cdtName = conditionList{iCdt};
-          [~, regIdx, status] = getRegressorIdx(cdtName, SPM);
+      if ~status
+        break
+      end
 
-          if ~status
-            break
-          end
+      regIdx = find(regIdx);
 
-          % give them the value specified in the model
-          C.C(end, regIdx) = this_contrast.Weights(iCdt);
+      % give them the value specified in the model
+      if strcmp(this_contrast.Test, 't')
+        C.C(end, regIdx) = this_contrast.Weights(iCdt);
 
-          clear regIdx;
-
+      elseif strcmp(this_contrast.Test, 'F')
+        for i = 1:numel(regIdx)
+          C.C(row, regIdx(i)) = this_contrast.Weights(iCdt);
+          row = row + 1;
         end
 
-      case 'F'
+      end
 
-        C = newContrast(SPM, this_contrast.Name, this_contrast.Test, conditionList);
-
-        row = 1;
-
-        for iCdt = 1:length(conditionList)
-
-          % get regressors index corresponding to the HRF of that condition
-          cdtName = conditionList{iCdt};
-          [~, regIdx, status] = getRegressorIdx(cdtName, SPM);
-
-          if ~status
-            break
-          end
-
-          regIdx = find(regIdx);
-
-          % give them the value specified in the model
-          for i = 1:numel(regIdx)
-            C.C(row, regIdx(i)) = this_contrast.Weights(iCdt);
-            row = row + 1;
-          end
-
-          clear regIdx;
-
-        end
+      clear regIdx;
 
     end
 
@@ -365,8 +338,10 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
       msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
                     this_contrast.Name, cdtName);
       errorHandling(mfilename(), 'runMissingCondition', msg, true, true);
+
     else
       [contrasts, counter] = appendContrast(contrasts, C, counter, this_contrast.Test);
+
     end
 
   end
