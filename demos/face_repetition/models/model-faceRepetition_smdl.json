@@ -99,6 +99,26 @@
                   -1
                ],
                "Test": "t"
+            },
+            {
+               "Name": "motion",
+               "ConditionList": [
+                  "trans_x",
+                  "trans_y",
+                  "trans_z",
+                  "rot_x",
+                  "rot_y",
+                  "rot_z"
+               ],
+               "Weights": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+               ],
+               "Test": "F"
             }
          ]
       }

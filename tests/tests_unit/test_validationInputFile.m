@@ -8,7 +8,7 @@ function test_suite = test_validationInputFile %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_validationInputFil_basic()
+function test_validationInputFile_basic()
 
   directory = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func');
   prefix = '';

@@ -16,6 +16,7 @@ function opt =  face_rep_get_option_results()
                             'model-faceRepetition_smdl.json');
 
   % Specify the result to compute
+  opt.results = defaultResultsStructure();
   opt.results.nodeName = 'run_level';
 
   opt.results.name = 'faces_gt_baseline_1';
@@ -25,11 +26,16 @@ function opt =  face_rep_get_option_results()
   opt.results.csv = true();
   opt.results.threshSpm = true();
   opt.results.binary = true();
-
-  % MONTAGE FIGURE OPTIONS
   opt.results.montage.do = true();
   opt.results.montage.slices = -26:3:6; % in mm
   opt.results.montage.orientation = 'axial';
+
+  results = defaultResultsStructure();
+  results.nodeName = 'run_level';
+  results.name = 'motion';
+  results.png = true();
+
+  opt.results(2) = results;
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);

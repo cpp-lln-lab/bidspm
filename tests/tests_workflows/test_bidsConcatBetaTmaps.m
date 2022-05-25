@@ -28,6 +28,6 @@ function test_bidsConcatBetaTmapsBasic()
 
   assertEqual(content, expectedContent);
 
-  delete(fullfile(ffxDir, 'sub-01_task-vismotion_space-MNI_labelfold.tsv'));
+  delete(fullfile(ffxDir, 'sub-01_task-vismotion_space-IXI549Space_labelfold.tsv'));
 
 end

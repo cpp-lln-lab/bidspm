@@ -40,7 +40,8 @@
         "Software": {
           "SPM": {
             "HRFderivatives": "Temporal",
-            "InclusiveMaskingThreshold": 0
+            "InclusiveMaskingThreshold": 0,
+            "SerialCorrelation": "FAST"
           }
         }
       },

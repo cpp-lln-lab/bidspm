@@ -5,6 +5,9 @@ root_dir = getenv('GITHUB_WORKSPACE');
 
 addpath(fullfile(root_dir, 'spm12'));
 
+cd demos/MoAE;
+download_moae_ds(true);
+
 cd(fullfile(root_dir, 'manualTests'));
 
 run test_moae;

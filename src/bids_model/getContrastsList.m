@@ -30,27 +30,19 @@ function contrastsList = getContrastsList(node, model)
     node = node{1};
   end
 
+  % check current Node
   if isfield(node, 'Contrasts')
 
     for i = 1:numel(node.Contrasts)
       contrastsList{end + 1} = checkContrast(node, i);
     end
 
+    % check previous Nodes recursively
   else
 
     switch lower(node.Level)
 
-      case 'subject'
-
-        % TODO relax those assumptions
-
-        % assumptions
-        assert(checkGroupBy(node));
-        assert(node.Model.X == 1);
-
-        contrastsList = getContrastsListFromSource(node, model);
-
-      case 'dataset'
+      case {'subject', 'dataset'}
 
         % TODO relax those assumptions
 
@@ -83,7 +75,9 @@ function contrastsList = getContrastsListFromSource(node, model)
   % TODO transfer to BIDS model as a get_contrasts_list method
   if isfield(sourceNode, 'Contrasts')
     for i = 1:numel(sourceNode.Contrasts)
-      contrastsList{end + 1} = checkContrast(sourceNode, i);
+      if isTtest(sourceNode.Contrasts(i)) % only contrast can be forwarded
+        contrastsList{end + 1} = checkContrast(sourceNode, i);
+      end
     end
 
     % go one level deeper

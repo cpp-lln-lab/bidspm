@@ -75,5 +75,7 @@ spm to BIDS filename conversion
 list of defaults
 ================
 
-.. literalinclude:: default_options.m
-   :language: matlab
+.. only:: html
+
+    .. literalinclude:: default_options.m
+        :language: matlab

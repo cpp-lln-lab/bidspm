@@ -14,7 +14,7 @@ Quality control
 .. autofunction:: functionalQA
 
 .. _fig_spatialPrepro-reports:
-.. figure::  _static/bidsSpatialPrepro/out_report.png
+.. figure::  images/bidsSpatialPrepro/out_report.png
    :align:   center
 
    workflows for QA as part of the spatial preprocessing workflow

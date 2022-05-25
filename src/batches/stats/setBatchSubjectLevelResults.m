@@ -32,7 +32,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
     result.name = char(result.name);
     result.name = regexify(result.name);
 
-    msg = sprintf('Skipping contrast named "%s"', result.name(2:end - 1));
+    msg = sprintf('Skipping contrast named "%s"', deregexify(result.name));
     errorHandling(mfilename(), 'skippingContrastResults', msg, true, opt.verbosity);
     return
 
@@ -44,7 +44,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
 
     msg = sprintf('\nGetting too many contrasts in SPM file\n%s\nfor the name:\n %s', ...
                   fullfile(result.dir, 'SPM.mat'), ...
-                  result.name(2:end - 1));
+                  deregexify(result.name));
     errorHandling(mfilename(), 'noMatchingContrastName', msg, true, opt.verbosity);
     return
 

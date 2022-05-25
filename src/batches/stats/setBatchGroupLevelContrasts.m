@@ -1,5 +1,24 @@
 function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
   %
+  % USAGE::
+  %
+  %   matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
+  %
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  %
+  % :param opt:
+  % :type opt: structure
+  %
+  % :param nodeName:
+  % :type nodeName: string
+  %
+  % :returns: - :matlabbatch:
+  %
+  %
+  %
+  % See also: setBatchContrasts, specifyContrasts, setBatchSubjectLevelContrasts
+  %
   % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('group level contrast estimation', opt);
