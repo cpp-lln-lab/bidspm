@@ -9,8 +9,15 @@ on:
     branches: ['*']
 
 jobs:
-  set_up:
+
+  miss_hit:
+
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        command: ["mh_style", "mh_metric --ci && mh_lint"]
+      fail-fast: true  # cancel all jobs if one fails
 
     steps:
 
@@ -29,26 +36,6 @@ jobs:
         python -m pip install --upgrade pip setuptools
         pip3 install -r requirements.txt
 
-  style:
-    needs: set_up
-    runs-on: ubuntu-latest
-
-    steps:
-
-    - name: MISS_HIT Code style
+    - name: ${{ matrix.command }}
       run: |
-        mh_style
-
-  quality:
-    needs: set_up
-    runs-on: ubuntu-latest
-
-    steps:
-
-    - name: MISS_HIT Metrics
-      run: |
-        mh_metric --ci
-        
-    - name: MISS_HIT Bug finder
-      run: |
-        mh_lint
+        ${{ matrix.command }}
