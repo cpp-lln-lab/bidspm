@@ -5,8 +5,14 @@ root_dir = getenv('GITHUB_WORKSPACE');
 
 addpath(fullfile(root_dir, 'spm12'));
 
+cd(root_dir);
+cpp_spm('action', 'init');
+
 cd(fullfile(root_dir, 'demos', 'MoAE'));
 download_moae_ds(true);
+
+cd(root_dir);
+cpp_spm('action', 'uninit');
 
 cd(fullfile(root_dir, 'manualTests'));
 
