@@ -18,7 +18,7 @@ cpp_spm();
 opt = lesion_get_option();
 
 %% Run batches
-reportBIDS(opt);
+% reportBIDS(opt);
 
 bidsCopyInputFolder(opt);
 
