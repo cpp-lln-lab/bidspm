@@ -1,15 +1,24 @@
 function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contrastsList)
   %
-  % Short description of what the function does goes here.
+  % Set up the estimate model batch for run/subject or group level GLM
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon)
+  %   matlabbatch = setBatchEstimateModel(matlabbatch, opt)
+  %   matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contrastsList)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
-  % :param grpLvlCon:
-  % :type grpLvlCon:
+  %
+  % :param opt:
+  % :type opt: structure
+  %
+  % :param nodeName:
+  % :type nodeName: char
+  %
+  % :param contrastsList:
+  % :type contrastsList: cell string
+  %
   %
   % :returns: - :matlabbatch: (structure)
   %

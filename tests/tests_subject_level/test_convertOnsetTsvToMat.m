@@ -11,6 +11,53 @@ function test_suite = test_convertOnsetTsvToMat %#ok<*STOUT>
 
 end
 
+function test_convertOnsetTsvToMat_parametric_modulation()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
+  opt = setOptions('vismotion');
+
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  trans = struct('Description', 'add dummy param mod', ...
+                 'Transformer', 'cpp_spm', ...
+                 'Instructions', {{ ...
+                                   struct('Name', 'Constant', ...
+                                          'Value', 3, ...
+                                          'Output', 'pmod_amp'), ...
+                                   struct('Name', 'Power', ...
+                                          'Input', 'pmod_amp', ...
+                                          'Value', 2, ...
+                                          'Output', 'pmod_amp_squared')
+                                  }});
+
+  opt.model.bm.Nodes{1}.Transformations = trans;
+
+  % WHEN
+  fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
+
+  load(fullpathOnsetFilename, 'names', 'onsets', 'durations', 'pmod');
+
+  assertEqual(names, {'VisMot', 'VisStat'});
+  assertEqual(onsets, {2, 4});
+  assertEqual(durations, {2, 2});
+
+  assertEqual(pmod(1).name{1}, 'amp');
+  assertEqual(pmod(1).param(1), {3});
+  assertEqual(pmod(1).name{2}, 'amp_squared');
+  assertEqual(pmod(1).param(2), {9});
+
+  assertEqual(pmod(2).name{1}, 'amp');
+  assertEqual(pmod(2).param(1), {3});
+  assertEqual(pmod(2).name{2}, 'amp_squared');
+  assertEqual(pmod(2).param(2), {9});
+
+  cleanUp(fullpathOnsetFilename);
+
+end
+
 function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
 
   if isOctave
@@ -151,12 +198,6 @@ function test_convertOnsetTsvToMat_dummy_regressor()
   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
 
   % THEN
-  assertEqual(fullfile(getDummyDataDir(), ...
-                       'tsv_files', ...
-                       'sub-01_task-vismotion_onsets.mat'), ...
-              fullpathOnsetFilename);
-  assertEqual(exist(fullpathOnsetFilename, 'file'), 2);
-
   load(fullpathOnsetFilename);
 
   assertEqual(names, {'dummyRegressor'});
