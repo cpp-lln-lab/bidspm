@@ -8,7 +8,7 @@
 % (C) Copyright 2019 Remi Gau
 
 % TODO
-% - run parametric model
+% - create the contrast similar to the tuto
 
 clear;
 clc;
@@ -19,7 +19,10 @@ cpp_spm();
 opt = face_rep_get_option_results();
 opt.space = 'IXI549Space';
 
-bidsFFX('specifyAndEstimate', opt);
-bidsFFX('contrasts', opt);
+opt.model.file = spm_file(opt.model.file, 'basename', 'model-faceRepetitionParametric_smdl');
+opt.model.bm = BidsModel('file', opt.model.file);
 
-bidsResults(opt);
+bidsFFX('specifyAndEstimate', opt);
+% bidsFFX('contrasts', opt);
+
+% bidsResults(opt);
