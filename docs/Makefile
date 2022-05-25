@@ -32,4 +32,3 @@ view:
 
 cpp_spm-manual.pdf:
 	bash create_manual.sh
-
