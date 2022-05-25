@@ -109,31 +109,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
         names{1, conditionIdx} = conditionName;
         onsets{1, conditionIdx} = tsvContent.onset(rows)'; %#ok<*AGROW,*NASGU>
         durations{1, conditionIdx} = tsvContent.duration(rows)';
-
-        % parametric modulation (pmod)
-        %
-        % skipped if parametric modulation is 1 for all onsets
-        %
-        % coerces NaNs into 1
-
-        fields = fieldnames(tsvContent);
-        pmodIdx = ~cellfun('isempty', regexp(fields, '^pmod_.*', 'match'));
-        pmodIdx = find(pmodIdx);
-
-        for iMod = 1:numel(pmodIdx)
-
-          thisMod = fields{pmodIdx(iMod)};
-
-          amplitude = tsvContent.(thisMod)(rows);
-          amplitude(isnan(amplitude)) = 1;
-
-          if ~all(amplitude == 1)
-            pmod(1, conditionIdx).name{iMod}  = strrep(thisMod, 'pmod_', '');
-            pmod(end).param{iMod} = amplitude;
-            pmod(end).poly{iMod}  = 1;
-          end
-
-        end
+        pmod = parametricModulation(pmod, tsvContent, rows, conditionIdx);
 
       else
 
@@ -185,6 +161,33 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
        'names', 'onsets', 'durations', 'pmod', ...
        '-v7');
 
+end
+
+function pmod = parametricModulation(pmod, tsvContent, rows, conditionIdx)
+  % parametric modulation (pmod)
+  %
+  % skipped if parametric modulation is 1 for all onsets
+  %
+  % coerces NaNs into 1
+
+  fields = fieldnames(tsvContent);
+  pmodIdx = ~cellfun('isempty', regexp(fields, '^pmod_.*', 'match'));
+  pmodIdx = find(pmodIdx);
+
+  for iMod = 1:numel(pmodIdx)
+
+    thisMod = fields{pmodIdx(iMod)};
+
+    amplitude = tsvContent.(thisMod)(rows);
+    amplitude(isnan(amplitude)) = 1;
+
+    if ~all(amplitude == 1)
+      pmod(1, conditionIdx).name{iMod}  = strrep(thisMod, 'pmod_', '');
+      pmod(end).param{iMod} = amplitude;
+      pmod(end).poly{iMod}  = 1;
+    end
+
+  end
 end
 
 function [names, onsets, durations] = addDummyRegressor(names, onsets, durations)
