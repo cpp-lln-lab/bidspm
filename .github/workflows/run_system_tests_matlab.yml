@@ -54,11 +54,6 @@ jobs:
       - name: Copy Macs toolbox to SPM inputs_folder
         run: cp -rv lib/MACS spm12/toolbox/MACS
 
-      - name: Run commands
-        uses: matlab-actions/run-command@v1.0.1
-        with:
-          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_matlab;
-
   moae:
     needs: set_up
 
