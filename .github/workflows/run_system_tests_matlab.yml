@@ -30,7 +30,7 @@ on:
 
 jobs:
 
-  build:
+  set_up:
 
     runs-on: ubuntu-20.04
 
@@ -58,3 +58,25 @@ jobs:
         uses: matlab-actions/run-command@v1.0.1
         with:
           command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_matlab;
+
+  moae:
+    needs: set_up
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Run test_moae
+        uses: matlab-actions/run-command@v1.0.1
+        with:
+          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_moae;
+
+  face_rep:
+    needs: set_up
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Run face_rep_resolution
+        uses: matlab-actions/run-command@v1.0.1
+        with:
+          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_facerep;
