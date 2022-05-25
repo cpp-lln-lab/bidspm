@@ -1,5 +1,7 @@
 <!-- markdown-link-check-disable -->
 
+<!-- .. only:: html -->
+
 [![Documentation Status: stable](https://readthedocs.org/projects/cpp_spm/badge/?version=stable)](https://cpp_spm.readthedocs.io/en/stable/?badge=stable)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/CPP_SPM/dev)
 [![miss_hit_quality](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit_quality.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit_quality.yml)
