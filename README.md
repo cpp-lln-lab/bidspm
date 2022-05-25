@@ -4,8 +4,7 @@
 
 [![Documentation Status: stable](https://readthedocs.org/projects/cpp_spm/badge/?version=stable)](https://cpp_spm.readthedocs.io/en/stable/?badge=stable)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/CPP_SPM/dev)
-[![miss_hit_quality](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit_quality.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit_quality.yml)
-[![miss_hit_style](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit_style.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit_style.yml)
+[![miss_hit](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit.yml)
 [![tests with octave](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_tests_octave.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_tests_octave.yml)
 [![tests with matlab](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_tests_matlab.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_tests_matlab.yml)
 [![system tests with matlab](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_system_tests_matlab.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_system_tests_matlab.yml)

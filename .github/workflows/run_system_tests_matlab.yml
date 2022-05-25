@@ -34,6 +34,11 @@ jobs:
 
     runs-on: ubuntu-20.04
 
+    strategy:
+      matrix:
+        script: [system_tests_moae, system_tests_facerep]
+      fail-fast: false  
+
     steps:
       - name: Install MATLAB
         uses: matlab-actions/setup-matlab@v1.0.1
@@ -54,24 +59,7 @@ jobs:
       - name: Copy Macs toolbox to SPM inputs_folder
         run: cp -rv lib/MACS spm12/toolbox/MACS
 
-  moae:
-    needs: set_up
-
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Run test_moae
+      - name: Run ${{ matrix.script }}
         uses: matlab-actions/run-command@v1.0.1
         with:
-          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_moae;
-
-  face_rep:
-    needs: set_up
-
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Run face_rep_resolution
-        uses: matlab-actions/run-command@v1.0.1
-        with:
-          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_facerep;
+          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run ${{ matrix.script }};
