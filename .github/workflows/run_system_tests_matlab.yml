@@ -30,13 +30,13 @@ on:
 
 jobs:
 
-  set_up:
+  system_tests:
 
     runs-on: ubuntu-20.04
 
     strategy:
       matrix:
-        script: [system_tests_moae, system_tests_facerep]
+        script: [moae, facerep]
       fail-fast: false  
 
     steps:
@@ -62,4 +62,4 @@ jobs:
       - name: Run ${{ matrix.script }}
         uses: matlab-actions/run-command@v1.0.1
         with:
-          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run ${{ matrix.script }};
+          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_${{ matrix.script }};
