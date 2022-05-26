@@ -12,7 +12,7 @@ function cpp_spm(varargin)
   defaultAction = 'init';
 
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);
-  isFileOrStruct = @(x) exist(x, 'file') == 2 || isstruct(x);
+  isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
 
   addOptional(args, 'bids_dir', pwd, @isdir);
@@ -121,10 +121,10 @@ function opt = get_options_from_argument(args)
 
     cpp_spm('action', 'init');
 
-    if exist(args.Results.options, 'file') == 2
-      opt = bids.util.jsondecode(args.Results.options);
-    elseif isstruct(args.Results.options)
+    if isstruct(args.Results.options)
       opt = args.Results.options;
+    elseif exist(args.Results.options, 'file') == 2
+      opt = bids.util.jsondecode(args.Results.options);
     end
 
     if isempty(opt)

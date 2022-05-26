@@ -5,6 +5,9 @@
    "Input": {
       "task": [
          "facerepetition"
+      ],
+      "space": [
+         "IXI549Space"
       ]
    },
    "Nodes": [
