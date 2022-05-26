@@ -2,6 +2,8 @@ function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, im
   %
   % Creates a batch to detect lesion abnormalities
   %
+  % Requires the ALI toolbox: https://doi.org/10.3389/fnins.2013.00241
+  %
   % USAGE::
   %
   %   matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, BIDS, opt, subLabel)

@@ -3,6 +3,8 @@ function bidsLesionAbnormalitiesDetection(opt)
   % Use the ALI toolbox to detect lesion abnormalities in anatomical image
   % after segmentation of the image.
   %
+  % Requires the ALI toolbox: https://doi.org/10.3389/fnins.2013.00241
+  %
   % USAGE::
   %
   %  bidsLesionAbnormalitiesDetection(opt)

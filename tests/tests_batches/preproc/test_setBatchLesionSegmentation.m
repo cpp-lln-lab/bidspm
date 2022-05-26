@@ -12,21 +12,21 @@ function test_setBatchLesionSegmentation_basic()
 
   subLabel = '01';
 
-  opt = setOptions('vismotion', subLabel, 'useRaw', true);
+  opt = setOptions('MoAE', subLabel, 'useRaw', true);
 
   if not(isfield(opt.toolbox, 'ALI'))
     return
   end
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  [BIDS, opt] = getData(opt, opt.dir.input);
 
   matlabbatch = {};
   matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLabel);
 
-  unified_segmentation.step1data{1} = fullfile(getDummyDataDir('raw'), ...
+  unified_segmentation.step1data{1} = fullfile(getMoaeDir(), 'inputs', 'raw', ...
                                                ['sub-' subLabel], ...
-                                               'ses-01', 'anat', ...
-                                               'sub-01_ses-01_T1w.nii');
+                                               'anat', ...
+                                               'sub-01_T1w.nii');
   unified_segmentation.step1prior = {fullfile(spm('dir'), ...
                                               'toolbox', 'ALI', ...
                                               'Priors_extraClass', ...
@@ -36,12 +36,10 @@ function test_setBatchLesionSegmentation_basic()
   unified_segmentation.step1thr_size = 0.8000;
   unified_segmentation.step1coregister = 1;
   unified_segmentation.step1mask = {''};
-  unified_segmentation.step1vox = 2;
+  unified_segmentation.step1vox = 1;
   unified_segmentation.step1fwhm = [8 8 8];
 
-  expectedbatch{1}.spm.tools.ali.unified_segmentation = unified_segmentation;
-
   assertEqual(matlabbatch{1}.spm.tools.ali.unified_segmentation, ...
-              expectedbatch{1}.spm.tools.ali.unified_segmentation);
+              unified_segmentation);
 
 end
