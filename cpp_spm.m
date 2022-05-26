@@ -11,7 +11,8 @@ function cpp_spm(varargin)
 
   defaultAction = 'init';
 
-  isFileOrStruct = @(x) exist(x, 'file') == 2 || isstruct(x);
+  isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);
+  isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
 
   addOptional(args, 'bids_dir', pwd, @isdir);
@@ -23,7 +24,7 @@ function cpp_spm(varargin)
   addParameter(args, 'task', {}, @iscellstr);
   addParameter(args, 'dry_run', false, @islogical);
   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
-  addParameter(args, 'options', struct([]));
+  addParameter(args, 'options', struct([]), isFileOrStruct);
   addParameter(args, 'verbosity', 2, isPositiveScalar);
 
   addParameter(args, 'fwhm', 6, isPositiveScalar);
@@ -32,7 +33,7 @@ function cpp_spm(varargin)
   % preproc only
   addParameter(args, 'dummy_scans', 0, isPositiveScalar);
   addParameter(args, 'anat_only', false, @islogical);
-  addParameter(args, 'ignore', {}, @iscellstr);
+  addParameter(args, 'ignore', {}, isEmptyOrCellstr);
 
   % stats only
   addParameter(args, 'preproc_dir', pwd, @isdir);
@@ -42,10 +43,6 @@ function cpp_spm(varargin)
   parse(args, varargin{:});
 
   action = args.Results.action;
-
-  % TODO make sure that options defined in JSON or passed as a structure
-  % overrides any other arguments
-  opt = get_options_from_argument(args);
 
   switch lower(action)
 
@@ -92,17 +89,11 @@ function cpp_spm(varargin)
                       false);
       end
 
-      opt.pipeline.type = 'preproc';
-      opt = checkOptions(opt);
-
-      preprocess(opt);
+      preprocess(args);
 
     case 'stats'
 
-      opt.pipeline.type = 'stats';
-      opt = checkOptions(opt);
-
-      stats(opt);
+      stats(args);
 
     case 'meaning_of_life'
 
@@ -126,11 +117,15 @@ function opt = get_options_from_argument(args)
 
   action = args.Results.action;
 
-  opt = args.Results.options;
-
   if ismember(lower(action), bids_apps_actions)
 
     cpp_spm('action', 'init');
+
+    if isstruct(args.Results.options)
+      opt = args.Results.options;
+    elseif exist(args.Results.options, 'file') == 2
+      opt = bids.util.jsondecode(args.Results.options);
+    end
 
     if isempty(opt)
       % set defaults
@@ -188,7 +183,14 @@ end
 
 %% high level actions
 
-function preprocess(opt)
+function preprocess(args)
+
+  % TODO make sure that options defined in JSON or passed as a structure
+  % overrides any other arguments
+  opt = get_options_from_argument(args);
+
+  opt.pipeline.type = 'preproc';
+  opt = checkOptions(opt);
 
   if isempty(opt.taskName) || numel(opt.taskName) > 1
     errorHandling(mfilename(), ...
@@ -215,11 +217,16 @@ function preprocess(opt)
     bidsSmoothing(opt);
   end
 
-  cpp_spm('action', 'uninit');
-
 end
 
-function stats(opt)
+function stats(args)
+
+  % TODO make sure that options defined in JSON or passed as a structure
+  % overrides any other arguments
+  opt = get_options_from_argument(args);
+
+  opt.pipeline.type = 'stats';
+  opt = checkOptions(opt);
 
   if opt.glm.roibased.do
     bidsFFX('specify', opt);
@@ -229,8 +236,6 @@ function stats(opt)
     bidsFFX('contrasts', opt);
     bidsResults(opt);
   end
-
-  cpp_spm('action', 'uninit');
 
 end
 

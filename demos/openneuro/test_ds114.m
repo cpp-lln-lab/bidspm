@@ -15,7 +15,7 @@ clear;
 clc;
 
 % directory with this script becomes the current directory
-WD = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'openneuro');
+WD = pwd;
 cd(WD);
 
 addpath(fullfile(pwd, '..', '..'));

@@ -20,11 +20,13 @@ on:
     branches:
       - main
       - dev
-
+    paths:
+      - '**.m'
   pull_request:
     branches:
       - 'main'
-
+    paths:
+      - '**.m'
   schedule:
     - cron: "0 0 1,15 * *"
 
@@ -33,7 +35,10 @@ env:
 
 jobs:
 
-  build:
+  system_tests_octave:
+
+    # only trigger update on upstream repo
+    if: github.repository_owner == 'cpp-lln-lab'
 
     runs-on: ubuntu-latest
 
