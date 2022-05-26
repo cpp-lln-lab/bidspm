@@ -43,19 +43,18 @@ reportBIDS(opt);
 
 modelFile = opt.model.file;
 
-for iResolution = 2:1:3
+for iResolution = 1 % :2:3
 
   opt.pipeline.name = ['cpp_spm-res' num2str(iResolution)];
 
   % set the final output resolution
   opt.funcVoxelDims = repmat(iResolution, 1, 3);
 
-  opt.dir.preproc = spm_file( ...
-                             fullfile(opt.dir.raw, ...
-                                      '..', ...
-                                      'derivatives', ...
-                                      opt.pipeline.name), ...
-                             'cpath');
+  opt.dir.output = spm_file(fullfile(opt.dir.raw, ...
+                                     '..', ...
+                                     'derivatives', ...
+                                     opt.pipeline.name), ...
+                            'cpath');
 
   opt.dir.input = opt.dir.raw;
 
@@ -74,16 +73,23 @@ for iResolution = 2:1:3
 
   bids.util.jsonencode(newModel, content);
 
+  opt = checkOptions(opt);
+
   % run analysis
-  bidsCopyInputFolder(opt);
+  % bidsCopyInputFolder(opt);
 
-  bidsSTC(opt);
+  % bidsSTC(opt);
 
-  bidsSpatialPrepro(opt);
+  % bidsSpatialPrepro(opt);
 
-  bidsSmoothing(FWHM, opt);
+  bidsSmoothing(opt);
 
   opt.pipeline.name = ['cpp_spm-stats-res' num2str(iResolution)];
+  opt.dir.output = spm_file(fullfile(opt.dir.raw, ...
+                                     '..', ...
+                                     'derivatives', ...
+                                     opt.pipeline.name), ...
+                            'cpath');
   opt = checkOptions(opt);
 
   bidsFFX('specifyAndEstimate', opt);
@@ -91,7 +97,7 @@ for iResolution = 2:1:3
 
   % specify underlay image
   subLabel = '01';
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  [BIDS, opt] = getData(opt, opt.dir.output);
   [~, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
   opt.results(1).montage.background = spm_select('FPList', ...
                                                  anatDataDir, ...

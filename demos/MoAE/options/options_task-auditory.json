@@ -1,40 +1,14 @@
 {
-    "dir": {
-        "raw": "./inputs/raw",
-        "derivatives": "./outputs/derivatives",
-        "preproc": "./outputs/derivatives/cpp_spm-preproc",
-        "stats": "./outputs/derivatives/cpp_spm-stats"
-    },
-    "verbosity": 0,
-    "dryRun": false,
-    "pipeline": {
-        "name": "cpp_spm",
-        "type": "preproc"
-    },
-    "rename": true,
-    "stc": {
-        "skip": true
-    },
     "segment": {
         "force": true
     },
-    "taskName": [
-        "auditory"
-    ],
-    "space": [
-        "IXI549Space"
-    ],
-    "model": {
-        "designOnly": false,
-        "file": "./models/model-MoAE_smdl.json"
-    },
     "results": {
         "MC": "FWE",
-        "Name": "listening_1",
+        "name": "listening_1",
         "k": 0,
         "p": 0.05,
         "useMask": false,
-        "nodeName": "subject_level",
+        "nodeName": "run_level",
         "nidm": true,
         "binary": true,
         "csv": true,

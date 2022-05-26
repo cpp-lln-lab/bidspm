@@ -6,9 +6,12 @@ on:
     branches:
       - main
       - dev
-
+    paths:
+      - '**.m'
   pull_request:
     branches: ["*"]
+    paths:
+      - '**.m'
 
 jobs:
 

@@ -15,13 +15,18 @@ name: system tests with matlab
 # * * * * *
 
 on:
+
   push:
     branches:
       - main
       - dev
+    paths:
+      - '**.m'
   pull_request:
     branches:
       - main
+    paths:
+      - '**.m'
   schedule:
     - cron: "0 0 1,15 * *"
 
@@ -30,7 +35,10 @@ on:
 
 jobs:
 
-  system_tests:
+  system_tests_matlab:
+
+    # only trigger update on upstream repo
+    if: github.repository_owner == 'cpp-lln-lab'
 
     runs-on: ubuntu-20.04
 
