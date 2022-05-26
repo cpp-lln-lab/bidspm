@@ -7,4 +7,3 @@ addpath(fullfile(root_dir, 'spm12'));
 
 cd(fullfile(root_dir, 'demos', 'MoAE'));
 run test_moae;
-

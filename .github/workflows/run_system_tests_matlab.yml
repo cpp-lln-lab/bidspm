@@ -45,7 +45,7 @@ jobs:
     strategy:
       matrix:
         script: [moae, facerep]
-      fail-fast: false  
+      fail-fast: false
 
     steps:
       - name: Install MATLAB
