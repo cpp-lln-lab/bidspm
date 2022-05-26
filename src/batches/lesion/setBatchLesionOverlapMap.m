@@ -2,6 +2,8 @@ function matlabbatch = setBatchLesionOverlapMap(matlabbatch, BIDS, opt, subLabel
   %
   % Creates a batch for the lesion overlap map
   %
+  % Requires the ALI toolbox: https://doi.org/10.3389/fnins.2013.00241
+  %
   % USAGE::
   %
   %   matlabbatch = setBatchLesionOverlapMap(matlabbatch, BIDS, opt, subLabel)

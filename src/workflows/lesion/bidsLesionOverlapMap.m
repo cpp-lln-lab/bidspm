@@ -3,6 +3,8 @@ function bidsLesionOverlapMap(opt)
   % Creates lesion overlap map on the anatomical image after initial segmentation
   % and lesion abnormality detection of the image.
   %
+  % Requires the ALI toolbox: https://doi.org/10.3389/fnins.2013.00241
+  %
   % USAGE::
   %
   %  bidsLesionOverlapMap(opt)

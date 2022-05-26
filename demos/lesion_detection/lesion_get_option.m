@@ -21,6 +21,10 @@ function opt = lesion_get_option()
 
   opt.pipeline.type = 'preproc';
 
+  % opt.toolbox.ALI.unified_segmentation.step1thr_size = 0.6;
+  opt.toolbox.ALI.unified_segmentation.step1fwhm = 6;
+  opt.toolbox.ALI.unified_segmentation.step1niti = 3;
+
   %% DO NOT TOUCH
   opt = checkOptions(opt);
   saveOptions(opt);
