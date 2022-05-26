@@ -1,9 +1,9 @@
-function [matlabbatch, opt] = bidsFFX(action, opt)
+function [matlabbatch, opt] = bidsFFX(varargin)
   %
   % - specify the subject level fMRI model
   % - estimates it
   % - do both in one go
-  % - or compute the contrasts at the subject level.
+  % - or compute the contrasts
   %
   % To run this workflows get the BOLD input images from derivatives BIDS dataset
   % that contains the preprocessed data and get the condition, onsets, durations
@@ -18,23 +18,49 @@ function [matlabbatch, opt] = bidsFFX(action, opt)
   %
   % USAGE::
   %
-  %  bidsFFX(action, opt)
+  %   bidsFFX(action, opt, 'nodeName', 'run_level')
   %
-  % :param action: Action to be conducted:``specifyAndEstimate`` or ``contrasts``.
-  % :type action: string
+  %
+  % :param action: Action to be conducted
+  % :type action: char
+  %
+  % - ``'specify'`` to specify the fMRI GLM
+  % - ``'specifyAndEstimate'`` for fMRI design + estimate
+  % - ``'contrasts'`` to estimate contrasts.
+  %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % - ``specify`` to specify the fMRI GLM
-  % - ``specifyAndEstimate`` for fMRI design + estimate
-  % - ``contrasts`` to estimate contrasts.
+  % :param nodeName: Only for action ``'contrasts'``. Specifies which Node to
+  %                  work on.
+  % :type nodeName: char
   %
   % See also: setBatchSubjectLevelGLMSpec, setBatchSubjectLevelContrasts
   %
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  % TODO implement nodeName for 'specify', 'specifyAndEstimate'
+  % - will require adapting the subject level folder name to take into account
+  % the nodeName
+
+  %%
+  allowedActions = @(x) ismember(x, {'specify', 'specifyAndEstimate', 'contrasts'});
+
+  args = inputParser;
+
+  addRequired(args, 'action', allowedActions);
+  addRequired(args, 'opt', @isstruct);
+  addParameter(args, 'nodeName', '', @ischar);
+
+  parse(args, varargin{:});
+
+  action = args.Results.action;
+  opt = args.Results.opt;
+  nodeName = args.Results.nodeName;
+
+  %%
   opt.pipeline.type = 'stats';
 
   opt.dir.input = opt.dir.preproc;
@@ -44,7 +70,7 @@ function [matlabbatch, opt] = bidsFFX(action, opt)
 
   [BIDS, opt] = setUpWorkflow(opt, description);
 
-  checks(opt, action);
+  checkRootNode(opt);
 
   initBids(opt, 'description', description, 'force', false);
 
@@ -84,7 +110,11 @@ function [matlabbatch, opt] = bidsFFX(action, opt)
 
       case 'contrasts'
 
-        matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);
+        if isempty(nodeName)
+          matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);
+        else
+          matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, nodeName);
+        end
 
     end
 
@@ -110,38 +140,33 @@ function [matlabbatch, opt] = bidsFFX(action, opt)
 
 end
 
-function checks(opt, action)
+function checkRootNode(opt)
+  %
+  % This only concerns 'specify' and 'specifyAndEstimate'
+  %
 
-  % assume this is the first node and this is run_level
   thisNode = opt.model.bm.getRootNode;
+
   if ismember(lower(thisNode.Level), {'session', 'subject'})
+
     notImplemented(mfilename(), ...
                    '"session" and "subject" level Node not implemented yet', ...
                    verbose);
+
   elseif ismember(lower(thisNode.Level), {'dataset'})
+
     msg = sprintf(['Your model seems to be having dataset Node at its root\n.', ...
                    'Validate it: https://bids-standard.github.io/stats-models/validator.html\n']);
     errorHandling(mfilename(), 'wrongLevel', msg, false, opt.verbosity);
+
   end
 
-  % only certain type of GroupBy supported for now
-  if ~all(ismember(thisNode.GroupBy, {'run', 'session', 'subject'}))
-    msg = ['"GroubBy" other than\n- ["run", "subject"]\n- or ["run", "subject"]\n', ...
-           'at the run level Node not implemented yet'];
-    notImplemented(mfilename(), msg, verbose);
-  end
+  checkGroupBy(thisNode);
 
   if numel(opt.space) > 1
     disp(opt.space);
     msg = sprintf('GLMs can only be run in one space at a time.\n');
     errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
-  end
-
-  allowedActions = {'specify', 'specifyAndEstimate', 'contrasts'};
-  if ~ismember(action, allowedActions)
-    msg = sprintf('action must be: %s.\n%s was given.', createUnorderedList(allowedActions), ...
-                  action);
-    errorHandling(mfilename(), 'unknownAction', msg, false, opt.verbosity);
   end
 
 end
@@ -198,8 +223,5 @@ function matlabbatch = setAction(action, matlabbatch, BIDS, opt, subLabel)
                                                  designMatrixFigureName(opt, ...
                                                                         'after estimation', ...
                                                                         subLabel)));
-
-    case 'constrast'
-      matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);
   end
 end

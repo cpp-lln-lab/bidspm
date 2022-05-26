@@ -15,25 +15,37 @@ name: system tests with matlab
 # * * * * *
 
 on:
+
   push:
     branches:
       - main
       - dev
+    paths:
+      - '**.m'
   pull_request:
     branches:
       - main
+    paths:
+      - '**.m'
   schedule:
     - cron: "0 0 1,15 * *"
 
-# Allows you to run this workflow manually from the Actions tab
-
-workflow_dispatch:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
 
-  build:
+  system_tests_matlab:
+
+    # only trigger update on upstream repo
+    if: github.repository_owner == 'cpp-lln-lab'
 
     runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        script: [moae, facerep]
+      fail-fast: false
 
     steps:
       - name: Install MATLAB
@@ -55,15 +67,7 @@ jobs:
       - name: Copy Macs toolbox to SPM inputs_folder
         run: cp -rv lib/MACS spm12/toolbox/MACS
 
-      - name: Prepare data
-        run: |
-          inputs_folder='demos/MoAE/inputs/'
-          mkdir $inputs_folder
-          curl http://www.fil.ion.ucl.ac.uk/spm/download/data/MoAEpilot/MoAEpilot.bids.zip --output $inputs_folder'MoAEpilot.zip'
-          unzip $inputs_folder'MoAEpilot.zip' -d $inputs_folder
-          mv $inputs_folder/MoAEpilot $inputs_folder/raw
-
-      - name: Run commands
+      - name: Run ${{ matrix.script }}
         uses: matlab-actions/run-command@v1.0.1
         with:
-          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_matlab;
+          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_${{ matrix.script }};

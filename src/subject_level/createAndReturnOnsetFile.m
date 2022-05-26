@@ -8,18 +8,21 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   %
   % USAGE::
   %
-  %   onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile, funcFWHM)
+  %   onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   %
   % :param opt:
   % :type opt: structure
-  % :param subLabel:
-  % :type subLabel: string
-  % :param tsvFile: fullpath name of the tsv file.
-  % :type tsvFile: string
   %
-  % :returns: :onsetFilename: (string) fullpath name of the file created.
+  % :param subLabel:
+  % :type subLabel: char
+  %
+  % :param tsvFile: fullpath name of the tsv file.
+  % :type tsvFile: char
+  %
+  % :returns: :onsetFilename: (path) fullpath name of the file created.
   %
   % See also: convertOnsetTsvToMat
+  %
   %
   % (C) Copyright 2019 CPP_SPM developers
 

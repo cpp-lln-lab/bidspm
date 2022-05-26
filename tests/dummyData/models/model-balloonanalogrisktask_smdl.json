@@ -98,14 +98,14 @@
             "Options": {
                "HighPassFilterCutoffHz": 0.008
             },
-            "Software": [
+            "Software":
                {
                   "SPM": {
                      "SerialCorrelation": "FAST",
                      "HRFderivatives": "Temporal"
                   }
                }
-            ]
+
          },
          "DummyContrasts": {
             "Test": "t",

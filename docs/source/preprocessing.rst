@@ -24,7 +24,7 @@ More info available on this page of the
 `SPM wikibook <https://en.wikibooks.org/wiki/SPM/Slice_Timing>`_.
 
 .. _fig_stc:
-.. figure::  _static/bidsSTC/out.png
+.. figure::  images/bidsSTC/out.png
    :align:   center
 
    Slice timing correction workflow
@@ -74,13 +74,13 @@ The figures below show the ``bidsSpatialPrepro`` workflow as it would run using
 realign and unwarp (default) and with normalization to SPM MNI space (``IXI549Space``).
 
 .. _fig_spatialPrepro-anat:
-.. figure::  _static/bidsSpatialPrepro/out_anat.png
+.. figure::  images/bidsSpatialPrepro/out_anat.png
    :align:   center
 
    Anatomical component of the spatial preprocessing workflow
 
 .. _fig_spatialPrepro-func:
-.. figure::  _static/bidsSpatialPrepro/out_func.png
+.. figure::  images/bidsSpatialPrepro/out_func.png
    :align:   center
 
    Functional component of the spatial preprocessing workflow
@@ -96,7 +96,7 @@ Perform smoothing of the functional data by running ``bidsSmoothing``
 .. autofunction:: bidsSmoothing
 
 .. _fig_smoothing:
-.. figure::  _static/bidsSmoothing/out.png
+.. figure::  images/bidsSmoothing/out.png
    :align:   center
 
    Smoothing workflow
@@ -108,7 +108,7 @@ Others
 .. autofunction:: bidsSegmentSkullStrip
 
 .. _fig_segmentSkullstrip:
-.. figure::  _static/bidsSegmentSkullstrip/out.png
+.. figure::  images/bidsSegmentSkullstrip/out.png
    :align:   center
 
    Segment and skullstrip workflow

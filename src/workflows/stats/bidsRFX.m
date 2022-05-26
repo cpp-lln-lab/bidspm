@@ -1,4 +1,4 @@
-function matlabbatch = bidsRFX(action, opt)
+function matlabbatch = bidsRFX(varargin)
   %
   % - smooths all contrast images created at the subject level
   %
@@ -16,14 +16,33 @@ function matlabbatch = bidsRFX(action, opt)
   %  bidsRFX(action, opt)
   %
   % :param action: Action to be conducted: ``'smoothContrasts'`` or ``'RFX'`` or
-  %                ``'meanAnatAndMask'``
+  %                ``'meanAnatAndMask'`` or ``'contrast'``
   % :type action: string
+  %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
+  % :param nodeName: name of the BIDS stats model to run analysis on
+  % :type nodeName: char
+  %
   %
   % (C) Copyright 2020 CPP_SPM developers
+
+  allowedActions = @(x) ismember(lower(x), ...
+                                 {'smoothcontrasts', 'meananatandmask', 'rfx', 'contrast'});
+
+  args = inputParser;
+
+  args.addRequired('action', allowedActions);
+  args.addRequired('opt', @isstruct);
+  args.addParameter('nodeName', '', @ischar);
+
+  args.parse(varargin{:});
+
+  action =  args.Results.action;
+  opt =  args.Results.opt;
+  nodeName =  args.Results.nodeName;
 
   opt.pipeline.type = 'stats';
 
@@ -31,11 +50,21 @@ function matlabbatch = bidsRFX(action, opt)
 
   opt.dir.output = opt.dir.stats;
 
+  % To speed up group level as we do not need to index raw data ?
   [BIDS, opt] = setUpWorkflow(opt, description);
 
-  checks(opt, action);
+  if numel(opt.space) > 1
+    disp(opt.space);
+    msg = sprintf('GLMs can only be run in one space at a time.\n');
+    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+  end
 
   matlabbatch = {};
+
+  % TODO refactor
+  % - extract function for contrast smoothing
+  % - extract function for anat and mask computation
+  % - merge rfx and ffx into a single "stats" workflow
 
   switch lower(action)
 
@@ -73,41 +102,43 @@ function matlabbatch = bidsRFX(action, opt)
       opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
       opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
 
-      matlabbatch = setBatchFactorialDesign(matlabbatch, opt);
+      if ~isempty(nodeName)
+        datasetNodes = opt.model.bm.get_nodes('Name', nodeName);
+      else
+        datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
+      end
 
-      grpLvlCon = opt.model.bm.get_dummy_contrasts('Level', 'dataset');
-      matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon);
+      for i = 1:numel(datasetNodes)
 
-      saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
+        [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, ...
+                                                               opt, ...
+                                                               datasetNodes{i}.Name);
 
-      rfxDir = getRFXdir(opt);
+        matlabbatch = setBatchEstimateModel(matlabbatch, opt, datasetNodes{i}.Name, contrastsList);
 
-      % TODO split this in a different action
-      matlabbatch = {};
-      matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir);
-      saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);
+        saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
+
+      end
 
       opt.pipeline.name = 'cpp_spm';
       opt.pipeline.type = 'groupStats';
       initBids(opt, 'description', description, 'force', false);
 
-  end
+    case 'contrast'
 
-end
+      opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
+      opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
 
-function checks(opt, action)
+      datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
 
-  if numel(opt.space) > 1
-    disp(opt.space);
-    msg = sprintf('GLMs can only be run in one space at a time.\n');
-    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
-  end
+      for i = 1:numel(datasetNodes)
 
-  allowedActions = {'smoothcontrasts', 'meananatandmask', 'rfx'};
-  if ~ismember(lower(action), allowedActions)
-    msg = sprintf('action must be: %s.\n%s was given.', createUnorderedList(allowedActions), ...
-                  action);
-    errorHandling(mfilename(), 'unknownAction', msg, false, opt.verbosity);
+        matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, datasetNodes{i}.Name);
+
+        saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);
+
+      end
+
   end
 
 end

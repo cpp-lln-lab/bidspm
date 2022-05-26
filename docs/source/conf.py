@@ -16,14 +16,15 @@ import sys
 sys.path.insert(0, os.path.abspath("../.."))
 
 
+# The full version, including alpha/beta/rc tags
+with open('../../version.txt', encoding='utf-8') as version_file:
+    release = version_file.read()
+
 # -- Project information -----------------------------------------------------
 
 project = "CPP SPM"
 copyright = "2020, the CPP SPM pipeline dev team"
 author = "the CPP SPM pipeline dev team"
-
-# The full version, including alpha/beta/rc tags
-release = "v1.1.3dev"
 
 
 # -- General configuration ---------------------------------------------------
@@ -68,9 +69,9 @@ html_theme = "sphinx_rtd_theme"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+html_static_path = ["images"]
 
-html_logo = "_static/cpp_lab_logo.png"
+html_logo = "images/cpp_lab_logo.png"
 
 html_theme_options = {
     "collapse_navigation": False,

@@ -54,6 +54,7 @@ function opt = loadAndCheckOptions(optionJsonFile)
     if exist(optionJsonFile, 'file')
       msg = sprintf('\nReading option from: %s.\n', optionJsonFile);
       opt = spm_jsonread(optionJsonFile);
+      opt = checkOptions(opt);
       printToScreen(msg, opt);
     else
       msg = sprintf('the requested file does not exist: %s', optionJsonFile);

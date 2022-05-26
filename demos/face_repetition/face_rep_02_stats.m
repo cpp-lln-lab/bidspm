@@ -8,8 +8,6 @@
 % (C) Copyright 2019 Remi Gau
 
 % TODO
-% - compute the relevant contrasts
-% - compute motion effect
 % - run parametric model
 
 clear;

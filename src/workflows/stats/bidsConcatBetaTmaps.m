@@ -1,16 +1,15 @@
-function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
+function bidsConcatBetaTmaps(opt, deleteTmaps)
   %
   % Make 4D images of beta and t-maps for the MVPA.
   %
   % USAGE::
   %
-  %   concatBetaImgTmaps(opt, [deleteIndBeta = true,] [deleteIndTmaps = true])
+  %   concatBetaImgTmaps(opt, deleteIndTmaps)
   %
   % :param opt: options structure
   % :type opt: structure
-  % :param deleteIndBeta: decide to delete beta-maps
-  % :type deleteIndBeta: (boolean)
-  % :param deleteIndTmaps: decide to delete t-maps
+  %
+  % :param deleteIndTmaps: decide to delete t-maps. Default to ``false``.
   % :type deleteIndTmaps: (boolean)
   %
   % A valid BIDS stats model is required for this workflow:
@@ -29,13 +28,8 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
 
   [~, opt] = setUpWorkflow(opt, 'merge beta images and t-maps');
 
-  if nargin < 3
-    deleteIndBeta = true;
-    deleteIndTmaps = true;
-  end
-  if opt.dryRun
-    deleteIndBeta = false;
-    deleteIndTmaps = false;
+  if nargin < 3 || opt.dryRun
+    deleteTmaps = false;
   end
 
   RT = 0;
@@ -50,12 +44,12 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
 
     load(fullfile(ffxDir, 'SPM.mat'));
 
-    model = spm_jsonread(opt.model.file);
+    model = BidsModel('file', opt.model.file);
 
-    % TODO probably want to focus at the run level of the model
+    node = model.getRootNode();
 
     try
-      contrasts = specifyContrasts(SPM, model);
+      contrasts = specifyContrasts(SPM, model, node.Name);
     catch
       msg = 'Could not find dummy contrasts in the BIDS stats model.';
       errorHandling(mfilename(), 'noDummyContrast', msg, false, opt.verbosity);
@@ -104,38 +98,36 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
 
     end
 
-    % tsv
-    nameStructure = struct( ...
-                           'ext', '.tsv', ...
-                           'suffix', 'labelfold', ...
-                           'entities', struct('sub', subLabel, ...
+    nameStructure = struct('entities', struct('sub', subLabel, ...
                                               'task', opt.taskName, ...
                                               'space', opt.space));
 
-    bidsFile = bids.File(nameStructure);
+    % tsv
+    bf = bids.File(nameStructure);
+    bf.extension = '.tsv';
+    bf.suffix = 'labelfold';
 
     tsvContent = struct('folds', runs, 'labels', {conditions});
 
-    spm_save(fullfile(ffxDir, bidsFile.filename), tsvContent);
+    spm_save(fullfile(ffxDir, bf.filename), tsvContent);
 
     % TODO in the dev branch make those output filenames "BIDS derivatives" compliant
     % beta maps
-    outputName = ['4D_beta_', num2str(opt.fwhm.func), '.nii'];
+    bf = bids.File(nameStructure);
+    bf.extension = '.nii';
+    bf.entities.desc = '4D';
+    bf.suffix = 'beta';
 
     matlabbatch = {};
-    matlabbatch = setBatch3Dto4D(matlabbatch, opt, betaMaps, RT, outputName);
+    matlabbatch = setBatch3Dto4D(matlabbatch, opt, betaMaps, RT, bf.filename);
 
     % t-maps
-    outputName = ['4D_tMaps_', num2str(opt.fwhm.func), '.nii'];
+    bf.suffix = 'tmap';
+    matlabbatch = setBatch3Dto4D(matlabbatch, opt, tMaps, RT, bf.filename);
 
-    matlabbatch = setBatch3Dto4D(matlabbatch, opt, tMaps, RT, outputName);
+    saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subLabel);
 
-    % TODO temporary: remove on dev branch
-    if ~opt.dryRun
-      saveAndRunWorkflow(matlabbatch, 'concat_betaImg_tMaps', opt, subLabel);
-    end
-
-    removeBetaImgTmaps(tMaps, deleteIndBeta, deleteIndTmaps, ffxDir);
+    removeTmaps(tMaps, deleteTmaps, ffxDir);
 
     % TODO GunZip 4D image
 
@@ -143,19 +135,9 @@ function bidsConcatBetaTmaps(opt, deleteIndBeta, deleteIndTmaps)
 
 end
 
-function removeBetaImgTmaps(tMaps, deleteIndBeta, deleteIndTmaps, ffxDir)
+function removeTmaps(tMaps, deleteTmaps, ffxDir)
 
-  % delete maps
-  if deleteIndBeta
-
-    % delete all individual beta maps
-    printToScreen('Deleting individual beta-maps ...  ', opt);
-    delete(fullfile(ffxDir, ['beta_*', '.nii']));
-    printToScreen('Done. \n', opt);
-
-  end
-
-  if  deleteIndTmaps
+  if  deleteTmaps
 
     % delete all individual con maps
     printToScreen('Deleting individual con maps ...  ', opt);

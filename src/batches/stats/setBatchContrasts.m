@@ -8,10 +8,13 @@ function matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess)
   %
   % :param matlabbatch:
   % :type matlabbatch: cell
+  %
   % :param opt:
   % :type opt: structure
+  %
   % :param spmMatFile:
   % :type spmMatFile: string
+  %
   % :param consess:
   % :type consess: cell
   %

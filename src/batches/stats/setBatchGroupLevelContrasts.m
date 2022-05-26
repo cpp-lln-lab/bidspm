@@ -1,40 +1,49 @@
-function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, grpLvlCon, rfxDir)
+function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
+  %
+  % USAGE::
+  %
+  %   matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
+  %
+  % :param matlabbatch:
+  % :type matlabbatch: structure
+  %
+  % :param opt:
+  % :type opt: structure
+  %
+  % :param nodeName:
+  % :type nodeName: string
+  %
+  % :returns: - :matlabbatch:
+  %
+  %
+  %
+  % See also: setBatchContrasts, specifyContrasts, setBatchSubjectLevelContrasts
   %
   % (C) Copyright 2019 CPP_SPM developers
 
   printBatchName('group level contrast estimation', opt);
 
-  if ~isfield(grpLvlCon, 'Test')
-    disp(grpLvlCon);
-    errorHandling(mfilename(), ...
-                  'noGroupLevelContrast', ...
-                  'No group level contrast. Check your model.', ...
-                  false);
-  end
+  % average at the group level
+  if opt.model.bm.get_design_matrix('Name', nodeName) == 1
 
-  if isfield(grpLvlCon, 'Contrasts')
+    contrastsList = getDummyContrastsList(nodeName, opt.model.bm);
+    tmp = getContrastsList(nodeName, opt.model.bm);
 
-    for j = 1:size(grpLvlCon.Contrasts, 1)
-
-      conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
-
-      spmMatFile = fullfile(rfxDir, conName, 'SPM.mat');
-
-      consess{1}.tcon.name = 'GROUP';
-      consess{1}.tcon.convec = 1;
-      consess{1}.tcon.sessrep = 'none';
-
-      matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
-
+    for j = 1:numel(tmp)
+      contrastsList{end + 1} = tmp{j}.Name;
     end
 
-  else
+  end
 
-    % TODO
+  for j = 1:numel(contrastsList)
 
-    notImplemented(mfilename, ...
-                   'Grabbing contrast from lower levels not implemented yet.', ...
-                   opt.verbosity);
+    spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
+
+    consess{1}.tcon.name = contrastsList{j};
+    consess{1}.tcon.convec = 1;
+    consess{1}.tcon.sessrep = 'none';
+
+    matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
 
   end
 

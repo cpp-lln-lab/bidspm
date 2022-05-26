@@ -13,11 +13,13 @@ function opt = lesion_get_option()
 
   % The directory where the data are located
   opt.dir.raw = 'C:\Users\michm\Data\myphdproject\MRI\CVI-DataLad\data';
-  opt.dir.raw = '/home/remi/gin/CVI-Datalad/data';
+  opt.dir.raw = '/home/remi/gin/Michele/CVI-raw';
 
   opt.dir.derivatives = fullfile(opt.dir.raw, '..', 'derivatives');
 
   opt.query.modality = 'anat';
+
+  opt.pipeline.type = 'preproc';
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);

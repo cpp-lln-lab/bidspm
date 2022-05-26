@@ -13,7 +13,7 @@ clean:
 	rm -rf inputs
 	rm -rf outputs/derivatives
 	rm -rf cfg
-	rm MoAEpilot.zip
+	rm -f MoAEpilot.zip
 
 inputs/raw:
 	mkdir inputs/ -p

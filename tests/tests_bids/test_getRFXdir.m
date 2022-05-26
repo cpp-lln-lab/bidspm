@@ -30,14 +30,42 @@ end
 function test_getRFXdir_user_specified()
 
   opt = setOptions('nback', '', 'pipelineType', 'stats');
-  opt.fwhm.contrast = 0;
+  opt.fwhm.contrast = 6;
   opt.space = 'IXI549Space';
 
-  rfxDir = getRFXdir(opt);
+  datasetNode = opt.model.bm.get_nodes('Level', 'dataset');
+  nodeName = datasetNode{1}.Name;
+
+  rfxDir = getRFXdir(opt, nodeName);
 
   expectedOutput = fullfile(getDummyDataDir('stats'), ...
                             'derivatives', 'cpp_spm-groupStats', ...
-                            'task-nback_space-IXI549Space_FWHM-6_conFWHM-0_desc-nbackMVPA');
+                            'task-nback_space-IXI549Space_FWHM-6_conFWHM-6_desc-nbackMVPA');
+
+  assertEqual(exist(expectedOutput, 'dir'), 7);
+
+  cleanUp(fullfile(getDummyDataDir('stats'), 'derivatives', 'cpp_spm-groupStats'));
+
+end
+
+function test_getRFXdir_with_contrast()
+
+  opt = setOptions('nback', '', 'pipelineType', 'stats');
+  opt.fwhm.contrast = 6;
+  opt.space = 'IXI549Space';
+
+  datasetNode = opt.model.bm.get_nodes('Level', 'dataset');
+  nodeName = datasetNode{1}.Name;
+
+  runNode = opt.model.bm.get_nodes('Level', 'run');
+  contrastName = runNode{1}.Contrasts(1).Name;
+
+  rfxDir = getRFXdir(opt, nodeName, contrastName);
+
+  expectedOutput = fullfile(getDummyDataDir('stats'), ...
+                            'derivatives', 'cpp_spm-groupStats', ...
+                            ['task-nback_space-IXI549Space_FWHM-6_conFWHM-6', ...
+                             '_desc-nbackMVPA_contrast-nback']);
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 

@@ -16,7 +16,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % :type opt: structure
   %
   % :param subLabel:
-  % :type subLabel: string
+  % :type subLabel: char
   %
   % :returns: - :matlabbatch: (structure)
   %
@@ -228,8 +228,7 @@ function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, ru
 
   % get events file from raw data set and convert it to a onsets.mat file
   % store in the subject level GLM directory
-  filter = struct( ...
-                  'sub',  subLabel, ...
+  filter = struct('sub',  subLabel, ...
                   'task', task, ...
                   'ses', session, ...
                   'run', run, ...
@@ -248,25 +247,4 @@ function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, ru
   onsetFilename = createAndReturnOnsetFile(opt, ...
                                            subLabel, ...
                                            tsvFile);
-end
-
-function mask = getInclusiveMask(opt)
-  %
-  % use the mask specified in the BIDS stats model
-  %
-  % if none is specified and we are in MNI space
-  % we use the Intra Cerebal Volume SPM mask
-  %
-
-  mask = opt.model.bm.getModelMask();
-
-  if isempty(mask) && ...
-          (~isempty(strfind(opt.space{1}, 'MNI')) || strcmp(opt.space, 'IXI549Space'))
-    mask = spm_select('FPList', fullfile(spm('dir'), 'tpm'), 'mask_ICV.nii');
-  end
-
-  if ~isempty(mask)
-    validationInputFile([], mask);
-  end
-
 end

@@ -1,15 +1,24 @@
-function matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon)
+function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contrastsList)
   %
-  % Short description of what the function does goes here.
+  % Set up the estimate model batch for run/subject or group level GLM
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchEstimateModel(matlabbatch, grpLvlCon)
+  %   matlabbatch = setBatchEstimateModel(matlabbatch, opt)
+  %   matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contrastsList)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
-  % :param grpLvlCon:
-  % :type grpLvlCon:
+  %
+  % :param opt:
+  % :type opt: structure
+  %
+  % :param nodeName:
+  % :type nodeName: char
+  %
+  % :param contrastsList:
+  % :type contrastsList: cell string
+  %
   %
   % :returns: - :matlabbatch: (structure)
   %
@@ -33,46 +42,24 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, grpLvlCon)
       matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
 
       % group level
-    case 3
-
-      if ~isfield(grpLvlCon, 'Test')
-        disp(grpLvlCon);
-        errorHandling(mfilename(), ...
-                      'noGroupLevelContrast', ...
-                      'No group level contrast. Check your model.', ...
-                      false);
-      end
+    case 4
 
       printBatchName('estimate group level fmri model', opt);
 
-      if isfield(grpLvlCon, 'Contrasts')
+      for j = 1:size(contrastsList)
 
-        for j = 1:size(grpLvlCon.Contrasts, 1)
+        spmMatFile = { fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat') };
 
-          conName = rmTrialTypeStr(grpLvlCon.Contrasts{j});
+        % no QA at the group level GLM:
+        %   since there is no autocorrelation to check for
+        opt.QA.glm.do = false();
 
-          spmMatFile = { fullfile(getRFXdir(opt), conName, 'SPM.mat') };
+        matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
 
-          % no QA at the group level GLM:
-          %   since there is no autocorrelation to check for
-          opt.QA.glm.do = false();
-
-          matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
-          matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
-                                            fullfile(spm_fileparts(spmMatFile{1}), ...
-                                                     designMatrixFigureName(opt, ...
-                                                                            'after estimation')));
-
-        end
-
-      else
-
-        % TODO
-
-        notImplemented(mfilename, ...
-                       'Grabbing contrast from lower levels not implemented yet.', ...
-                       opt.verbosity);
-
+        matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
+                                          fullfile(spm_fileparts(spmMatFile{1}), ...
+                                                   designMatrixFigureName(opt, ...
+                                                                          'after estimation')));
       end
 
   end

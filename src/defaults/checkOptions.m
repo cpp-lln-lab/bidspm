@@ -227,36 +227,40 @@ function opt = checkResultsOptions(opt)
 
   for iCon = 1:numel(opt.results)
 
-    thisContrast = opt.results(iCon);
+    thisResult = opt.results(iCon);
+
+    if iscell(thisResult)
+      thisResult = thisResult{1};
+    end
 
     % add mising fields
-    thisContrast =  setFields(thisContrast, defaultContrast);
+    thisResult = setFields(thisResult, defaultContrast);
 
     % fill in empty fields
     for i = 1:numel(fields)
-      if isempty(thisContrast.(fields{i}))
-        thisContrast.(fields{i}) = defaultContrast.(fields{i});
+      if isempty(thisResult.(fields{i}))
+        thisResult.(fields{i}) = defaultContrast.(fields{i});
       end
     end
 
-    if ischar(thisContrast.name)
-      thisContrast.name = {thisContrast.name};
+    if ischar(thisResult.name)
+      thisResult.name = {thisResult.name};
     end
-    assert(iscell(thisContrast.name));
+    assert(iscell(thisResult.name));
 
-    assert(all([thisContrast.p >= 0 thisContrast.p <= 1]));
+    assert(all([thisResult.p >= 0 thisResult.p <= 1]));
 
-    assert(thisContrast.k >= 0);
+    assert(thisResult.k >= 0);
 
-    assert(islogical(thisContrast.useMask));
+    assert(islogical(thisResult.useMask));
 
-    assert(ismember(thisContrast.MC, {'FWE', 'FDR', 'none'}));
+    assert(ismember(thisResult.MC, {'FWE', 'FDR', 'none'}));
 
-    contrasts(iCon) = thisContrast;
+    results(iCon) = thisResult;
 
   end
 
-  opt.results = contrasts;
+  opt.results = results;
 
 end
 

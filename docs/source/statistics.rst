@@ -55,7 +55,7 @@ The mat files can directly be ingested by SPM:
 the TSV files are there for both logging and interoperability.
 
 .. _fig_FFX-specification:
-.. figure::  _static/bidsFFX/out.png
+.. figure::  images/bidsFFX/out.png
    :align:   center
 
    Subject level GLM specification workflow for model specification
@@ -72,16 +72,16 @@ Compute results
 
 .. autofunction:: bidsResults
 
-:download:`CSV output example <_static/results_fig/output.csv>`
+:download:`CSV output example <images/results_fig/output.csv>`
 
 .. _MoAE_output_figure:
-.. figure::  _static/results_fig/output.png
+.. figure::  images/results_fig/output.png
    :align:   center
 
    Example of subject level results from the MoAE demo
 
 .. _MoAE_montage_figure:
-.. figure::  _static/results_fig/montage.png
+.. figure::  images/results_fig/montage.png
    :align:   center
 
    Example of subject level montage from the MoAE demo
@@ -98,7 +98,7 @@ An example of how to use it is available in the ``moae_04_slice_display.m``
 script in the MoAE demo.
 
 .. _MoAE_slice_display_figure:
-.. figure::  _static/results_fig/slice_display.png
+.. figure::  images/results_fig/slice_display.png
    :align:   center
 
    Example of subject level slice display from the MoAE demo
