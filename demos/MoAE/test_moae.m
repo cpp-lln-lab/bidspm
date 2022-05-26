@@ -13,9 +13,10 @@
 
 clear;
 clc;
+close all;
 
-download_data = false;
-clean = false;
+download_data = true;
+clean = true;
 
 WD = fileparts(mfilename('fullpath'));
 
@@ -29,9 +30,9 @@ end
 optionsFile = fullfile(WD, 'options', 'options_task-auditory.json');
 
 space = { 'IXI549Space'
-          'IXI549Space'
-          'individual'
-          'individual'};
+         'IXI549Space'
+         'individual'
+         'individual'};
 ignore = {
           {''}
           {'unwarp'}
@@ -53,8 +54,9 @@ for iOption = 1:numel(space)
   %% preproc
   bids_dir = fullfile(WD, 'inputs', 'raw');
   output_dir = fullfile(WD, 'outputs', 'derivatives');
-  
+
   cpp_spm(bids_dir, output_dir, 'subject', ...
+          'participant_label', {'01'}, ...
           'action', 'preprocess', ...
           'task', {'auditory'}, ...
           'ignore', ignore{iOption}, ...
@@ -65,6 +67,7 @@ for iOption = 1:numel(space)
   preproc_dir = fullfile(output_dir, 'cpp_spm-preproc');
 
   cpp_spm(bids_dir, output_dir, 'subject', ...
+          'participant_label', {'01'}, ...
           'action', 'stats', ...
           'preproc_dir', preproc_dir, ...
           'model_file', models{iOption}, ...
@@ -75,4 +78,3 @@ for iOption = 1:numel(space)
   rmdir(fullfile(WD, 'outputs', 'derivatives'), 's');
 
 end
-

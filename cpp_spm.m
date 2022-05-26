@@ -120,7 +120,7 @@ function opt = get_options_from_argument(args)
   if ismember(lower(action), bids_apps_actions)
 
     cpp_spm('action', 'init');
-    
+
     if exist(args.Results.options, 'file') == 2
       opt = bids.util.jsondecode(args.Results.options);
     elseif isstruct(args.Results.options)
@@ -184,11 +184,11 @@ end
 %% high level actions
 
 function preprocess(args)
-  
+
   % TODO make sure that options defined in JSON or passed as a structure
   % overrides any other arguments
   opt = get_options_from_argument(args);
-  
+
   opt.pipeline.type = 'preproc';
   opt = checkOptions(opt);
 
@@ -216,15 +216,15 @@ function preprocess(args)
   if opt.fwhm.func > 0 && ~opt.anatOnly
     bidsSmoothing(opt);
   end
-  
+
 end
 
 function stats(args)
-  
+
   % TODO make sure that options defined in JSON or passed as a structure
   % overrides any other arguments
   opt = get_options_from_argument(args);
-  
+
   opt.pipeline.type = 'stats';
   opt = checkOptions(opt);
 
