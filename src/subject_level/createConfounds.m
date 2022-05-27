@@ -50,6 +50,8 @@ function [names, R] = createConfounds(tsvContent, designMatrix, maxNbVols)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  designMatrix = removeIntercept(designMatrix);
+
   % basic filter based on model content
   headers = fieldnames(tsvContent);
   names = intersect(designMatrix, headers);
