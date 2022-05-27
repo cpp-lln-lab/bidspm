@@ -10,8 +10,7 @@ opt = get_option_preprocess();
 
 reportBIDS(opt);
 
-unzip = true;
-bidsCopyInputFolder(opt, unzip);
+bidsCopyInputFolder(opt, 'unzip', true);
 
 bidsSTC(opt);
 
