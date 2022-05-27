@@ -9,13 +9,17 @@ function bidsCopyInputFolder(opt, unzip)
   %
   % USAGE::
   %
-  %   bidsCopyInputFolder(opt, 'unzip', true, 'force', 'false')
+  %   bidsCopyInputFolder(opt, 'unzip', true, 'force', true)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param unZip:
-  % :type unZip: boolean
+  %
+  % :param unzip: defaults to true
+  % :type unzip: boolean
+  %
+  % :param unzip: defaults to true
+  % :type unzip: boolean
   %
   % See also: bids.copy_to_derivative
   %
