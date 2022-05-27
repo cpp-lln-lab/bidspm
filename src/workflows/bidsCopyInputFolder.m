@@ -1,4 +1,4 @@
-function bidsCopyInputFolder(opt, unzip)
+function bidsCopyInputFolder(varargin)
   %
   % Copies the folders from the ``raw`` folder to the
   % ``derivatives`` folder, and will copy the dataset description and task json files
