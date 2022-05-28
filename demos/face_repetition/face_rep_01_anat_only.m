@@ -1,7 +1,5 @@
 %
-% This script will download the face repetition dataset from SPM
-% and will run the basic preprocessing.
-%
+% This show how an anat only pipeline would look like.
 %
 % (C) Copyright 2019 Remi Gau
 
@@ -26,5 +24,5 @@ output_dir = fullfile(bids_dir, '..', 'derivatives');
 
 cpp_spm(bids_dir, output_dir, 'subject', ...
         'action', 'preprocess', ...
-        'task', {'facerepetition'}, ...
-        'space', {'individual', 'IXI549Space'});
+        'space', {'individual', 'IXI549Space'}, ...
+        'anat_only', true);

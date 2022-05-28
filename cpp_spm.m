@@ -192,7 +192,11 @@ function preprocess(args)
   opt.pipeline.type = 'preproc';
   opt = checkOptions(opt);
 
-  if isempty(opt.taskName) || numel(opt.taskName) > 1
+  if opt.anatOnly
+    opt.query.modality = 'anat';
+  end
+
+  if ~opt.anatOnly && (isempty(opt.taskName) || numel(opt.taskName) > 1)
     errorHandling(mfilename(), ...
                   'onlyOneTaskForPreproc', ...
                   'A single task must be specified for preprocessing', ...
