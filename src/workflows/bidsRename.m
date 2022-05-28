@@ -42,33 +42,23 @@ function bidsRename(opt)
 
     for iFile = 1:size(data, 1)
 
-      [new_filename, ~, json] = spm_2_bids(data{iFile}, opt.spm_2_bids);
+      [newFilename, ~, json] = spm_2_bids(data{iFile}, opt.spm_2_bids);
 
-      msg = sprintf('%s --> %s\n', spm_file(data{iFile}, 'filename'), new_filename);
-      printToScreen(msg, opt);
+      outputFile = spm_file(data{iFile}, 'filename', newFilename);
 
-      if ~opt.dryRun && ~strcmp(new_filename, spm_file(data{iFile}, 'filename'))
+      % only continue if the file has actually been renamed
+      if ~strcmp(outputFile, data{iFile})
 
-        % TODO write test for this
-        if exist(new_filename, 'file') || ismember(new_filename, createdFiles)
-          msg = sprintf('This file already exists. Will not overwrite.\n\t%s\n', ...
-                        new_filename);
-          errorHandling(mfilename(), 'fileAlreadyExist', msg, true, opt.verbosity);
+        json = updateSource(json, data{iFile}, opt);
 
-        else
+        msg = sprintf('%s --> %s\n', spm_file(data{iFile}, 'filename'), newFilename);
+        printToScreen(msg, opt);
 
-          movefile(data{iFile}, spm_file(data{iFile}, 'filename', new_filename));
+        renameFileAndUpdateMetadata(opt, data{iFile}, newFilename, json, createdFiles);
 
-          if ~isempty(json.filename)
-            bids.util.jsonencode(fullfile(fileparts(data{iFile}), json.filename), ...
-                                 json.content);
-          end
-
-        end
+        createdFiles{end + 1, 1} = newFilename;
 
       end
-
-      createdFiles{end + 1, 1} = new_filename;
 
     end
 
@@ -76,4 +66,51 @@ function bidsRename(opt)
 
   cleanUpWorkflow(opt);
 
+end
+
+function renameFileAndUpdateMetadata(opt, data, newFilename, json, createdFiles)
+
+  outputFile = spm_file(data, 'filename', newFilename);
+
+  if opt.dryRun
+    return
+  end
+
+  % TODO write test for this
+  if exist(outputFile, 'file') || ismember(newFilename, createdFiles)
+
+    msg = sprintf('This file already exists. Will not overwrite.\n\t%s\n', ...
+                  newFilename);
+    errorHandling(mfilename(), 'fileAlreadyExist', msg, true, opt.verbosity);
+
+  else
+
+    movefile(data, outputFile);
+
+    if ~isempty(json.filename)
+      bids.util.jsonencode(fullfile(fileparts(data), json.filename), ...
+                           json.content);
+    end
+
+  end
+
+end
+
+function json = updateSource(json, data, opt)
+  %
+  % deal with prefixes not covered by spm_2_bids
+  %
+
+  bf = bids.File(data, 'verbose', opt.verbosity > 0, 'use_schema', false);
+
+  if startsWith(bf.prefix, 'std_')
+
+    bf.prefix = bf.prefix(5:end);
+
+    % call spm_2_bids what is the filename from the previous step
+    new_filename = spm_2_bids(bf.filename, opt.spm_2_bids, opt.verbosity > 0);
+
+    json.content.Sources{1, 1} = fullfile(bf.bids_path, new_filename);
+
+  end
 end
