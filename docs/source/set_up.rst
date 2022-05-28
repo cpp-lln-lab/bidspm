@@ -102,6 +102,10 @@ But you can set those by hand if you prefer.
 BIDS model JSON files
 ---------------------
 
+.. todo
+
+ point to the bids stats model website
+
 This files allow you to specify the GLM to run and which contrasts to run.
 It follows `BIDS statistical model <https://docs.google.com/document/d/1bq5eNDHTb6Nkx3WUiOBgKvLNnaa5OMcGtD0AZ9yms2M/edit?usp=sharing)>`_
 
@@ -334,6 +338,6 @@ Create a default BIDS model for a dataset
     path_to_dataset = fullfile(pwd, 'data', 'raw');
     BIDS = bids.layout(path_to_dataset);
 
-    opt.taskName = 'myFascinatingTask';
+    opt.taskName = {'myFascinatingTask'};
 
     createDefaultStatsModel(BIDS, opt);
