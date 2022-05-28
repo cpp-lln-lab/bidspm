@@ -183,6 +183,8 @@ function renameFile(BIDS, opt)
   % that only have a "r" or "ra" prefix
   opt.query =  struct('modality', {{'anat', 'func'}});
 
+  % extract into a renaming config function
+
   if ~opt.realign.useUnwarp
     opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
                                                 'name_spec', opt.spm_2_bids.cfg.preproc);
