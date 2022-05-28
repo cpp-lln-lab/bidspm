@@ -277,18 +277,29 @@ function initCppSpm(dev)
       pathSep = ';';
     end
 
+    % add library first and then cpp spm source code
+    % except for current folder
+    run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'));
+    run(fullfile(thisDirectory, 'lib', 'spm_2_bids', 'init_spm_2_bids'));
+    run(fullfile(thisDirectory, 'lib', 'octache', 'setup'));
+
+    % now add cpp spm source code
     CPP_SPM_PATHS = fullfile(thisDirectory);
     CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ...
                         pathSep, ...
                         genpath(fullfile(thisDirectory, 'src')));
+    if dev
+      CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...
+                          fullfile(thisDirectory, 'tests', 'utils'));
+    end
 
     % for some reasons this folder was otherwise not added to the path in Octave
     CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ...
                         pathSep, ...
                         genpath(fullfile(thisDirectory, 'src', 'workflows', 'stats')));
 
-    libList = {'spmup', ...
-               'spm_2_bids'};
+    % then add library that do not have an set up script
+    libList = {'spmup'};
 
     for i = 1:numel(libList)
       CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ...
@@ -311,18 +322,10 @@ function initCppSpm(dev)
     CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...
                         fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
 
-    if dev
-      CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...
-                          fullfile(thisDirectory, 'tests', 'utils'));
-    end
-
     addpath(CPP_SPM_PATHS, '-begin');
 
     checkDependencies(opt);
     printCredits(opt);
-
-    run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'));
-    run(fullfile(thisDirectory, 'lib', 'octache', 'setup'));
 
     %%
     if isOctave
