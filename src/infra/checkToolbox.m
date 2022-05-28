@@ -7,12 +7,18 @@ function status = checkToolbox(varargin)
   %
   %   status = checkToolbox(toolboxName, 'verbose', false, 'install', false)
   %
-  % :param toolboxName: obligatory argument
+  % :param toolboxName: obligatory argument. Any of {'ALI', 'MACS', 'mp2rage'}.
   % :type toolboxName: string
+  %
   % :param verbose: parameter
   % :type verbose: boolean
+  %
   % :param install: parameter
   % :type install: boolean
+  %
+  % EXAMPLE::
+  %
+  %   checkToolbox('MACS', 'verbose', true, 'install', true)
   %
   % (C) Copyright 2021 CPP_SPM developers
 

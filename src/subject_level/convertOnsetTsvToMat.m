@@ -62,6 +62,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   variablesToConvolve = opt.model.bm.getVariablesToConvolve();
   designMatrix = opt.model.bm.getBidsDesignMatrix();
+  designMatrix = removeIntercept(designMatrix);
 
   % create empty cell to be filled in according to the conditions present in each run
   names = {};
