@@ -114,7 +114,7 @@ function test_bidsRFX_basic_mean()
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
   matlabbatch =  bidsRFX('meanAnatAndMask', opt);
-  assertEqual(numel(matlabbatch), 2);
+  assertEqual(numel(matlabbatch), 7);
 
 end
 
