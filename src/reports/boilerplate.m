@@ -79,7 +79,7 @@ function outputFile = boilerplate(varargin)
 
     bm = BidsModel('file', opt.model.file);
 
-    opt.taskName = bm.Input.task;
+    opt.taskName = strjoin(bm.Input.task, ', ');
 
     if isfield(bm.Input, 'space')
       opt.space = bm.Input.space;
@@ -87,13 +87,19 @@ function outputFile = boilerplate(varargin)
 
     opt.HighPassFilterCutoffSecs = bm.getHighPassFilter();
 
+    opt.convolve = false;
     variablesToConvolve = bm.getVariablesToConvolve();
-    if iscell(variablesToConvolve)
-      % try to let octache deals with this.
-      variablesToConvolve = strjoin(variablesToConvolve, ', ');
-      variablesToConvolve = regexprep(variablesToConvolve, 'trial_type.', '');
+
+    if ~isempty(variablesToConvolve)
+
+      opt.convolve = true;
+      if iscell(variablesToConvolve)
+        % try to let octache deals with this.
+        variablesToConvolve = strjoin(variablesToConvolve, ', ');
+        variablesToConvolve = regexprep(variablesToConvolve, 'trial_type.', '');
+      end
+      opt.variablesToConvolve = variablesToConvolve;
     end
-    opt.variablesToConvolve = variablesToConvolve;
 
     opt.SerialCorrelationCorrection = bm.getSerialCorrelationCorrection;
     opt.FAST = false;

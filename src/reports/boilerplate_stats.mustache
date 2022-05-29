@@ -11,10 +11,13 @@ Image intensity scaling was done run-wide before statistical modeling such that
 the mean image would have a mean intracerebral intensity of 100.
 
 We modeled the fMRI experiment in a {{designType}} design with regressors
-entered into the run-specific design matrix. The the onsets
+entered into the run-specific design matrix. The onsets
 were convolved with a canonical hemodynamic response function (HRF)
-{{#derivatives}}and its {{type}} derivatives{{/derivatives}} for the conditions:
-{{variablesToConvolve}}.
+{{#derivatives}}and its {{type}} derivatives{{/derivatives}} 
+{{#convolve}}
+for the conditions:
+- {{variablesToConvolve}}
+{{/convolve}}.
 
 {{! TODO reference slice for each TR}}
 {{! TODO list covariates included}}

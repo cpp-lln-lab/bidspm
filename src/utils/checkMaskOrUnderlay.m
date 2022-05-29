@@ -9,7 +9,6 @@ function image = checkMaskOrUnderlay(image, opt, type)
     if isempty(image) || ~exist(image, 'file')
 
       msg = 'Could not find specified file for mask/montage.';
-      tolerant = false;
 
       if isMni(opt.space)
 
@@ -23,10 +22,9 @@ function image = checkMaskOrUnderlay(image, opt, type)
 
         end
 
-        tolerant = true;
-
       end
 
+      tolerant = true;
       msg = sprintf(msg);
       id = 'missingMaskOrUnderlay';
       errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);

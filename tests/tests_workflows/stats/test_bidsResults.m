@@ -94,7 +94,7 @@ function test_bidsResults_no_background_for_montage()
   opt.results.montage.background = 'aFileThatDoesNotExist.nii';
 
   opt.verbosity = 1;
-  assertWarning(@()bidsResults(opt), 'bidsResults:missingMontageBackground');
+  assertWarning(@()bidsResults(opt), 'checkMaskOrUnderlay:missingMaskOrUnderlay');
 
 end
 
