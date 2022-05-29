@@ -11,7 +11,7 @@ end
 function test_isMni_basic()
 
   space = {'IXI549Space'
-           'MNI'
+           'mni'
            'MNIColin27'
            'MNI152NLin2009aSym'
            'MNI152Lin'

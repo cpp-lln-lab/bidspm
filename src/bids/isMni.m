@@ -25,6 +25,23 @@ function idx = isMni(input)
            'ICBM452Warp5Space'
           };
 
-  idx = ismember(lower(input), lower(space));
+        % need to lowercase everyone in this horrible way because
+        %
+        % idx = ismember(lower(input), lower(space));
+        %
+        % fails in CI with
+        %
+        % failure: Error using lower
+        % Cell elements must be character arrays.        
+        %
+  space = cellstr(lower(char(space)));
+  
+  if iscellstr(input)
+    input = cellstr(lower(char(input)));
+  elseif ischar(input)
+    input = {lower(input)};
+  end
+
+  idx = ismember(input, space);
 
 end
