@@ -23,10 +23,13 @@ function ffxDir = getFFXdir(subLabel, opt)
       opt = overRideWithBidsModelContent(opt);
     end
   end
-  name = opt.model.bm.Name;
 
-  if ~isempty(name) && ~strcmpi(name, strjoin(opt.taskName, ' '))
-    glmDirName = [glmDirName, '_desc-', bids.internal.camel_case(name)];
+  % folder naming based on the rootNode name
+  rootNode = opt.model.bm.getRootNode();
+  nodeName = rootNode.Name;
+
+  if ~isempty(nodeName) && ~strcmpi(nodeName, 'run_level')
+    glmDirName = [glmDirName, '_desc-', bids.internal.camel_case(nodeName)];
   end
 
   ffxDir = fullfile(opt.dir.stats, ...

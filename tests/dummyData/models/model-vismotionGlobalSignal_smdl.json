@@ -1,5 +1,5 @@
 {
-  "Name": "global signal",
+  "Name": "this is not the name you are looking for",
   "BIDSModelVersion": "1.0.0",
   "Description": "model for the visual motion including global signal as a regressor",
   "Input": {
@@ -13,7 +13,7 @@
   "Nodes": [
     {
       "Level": "Run",
-      "Name": "run_level",
+      "Name": "global signal",
       "GroupBy": [
         "run",
         "subject"
