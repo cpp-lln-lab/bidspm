@@ -11,6 +11,8 @@
 
 .vscode/settings.json
 
+tmp
+
 # created by tests
 CHANGES
 README

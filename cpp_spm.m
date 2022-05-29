@@ -433,8 +433,10 @@ function run_tests()
 
   spm('defaults', 'fMRI');
 
+  subfolder = '';
+
   folderToCover = fullfile(pwd, 'src');
-  testFolder = fullfile(pwd, 'tests');
+  testFolder = fullfile(pwd, 'tests', subfolder);
 
   success = moxunit_runtests( ...
                              testFolder, ...
