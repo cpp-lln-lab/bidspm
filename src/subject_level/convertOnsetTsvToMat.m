@@ -112,6 +112,8 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
         durations{1, conditionIdx} = tsvContent.duration(rows)';
         pmod = parametricModulation(pmod, tsvContent, rows, conditionIdx);
 
+        conditionIdx = conditionIdx + 1;
+
       else
 
         trialTypeNotFound = true;
@@ -133,6 +135,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
       if opt.glm.useDummyRegressor
         [names, onsets, durations] = addDummyRegressor(names, onsets, durations);
         extra = 'Adding dummy regressor instead.';
+        conditionIdx = conditionIdx + 1;
       end
 
       msg = sprintf('%s %s not found in \n %s\n %s', ...
@@ -144,8 +147,6 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
       errorHandling(mfilename(), errorID, msg, true, opt.verbosity);
 
     end
-
-    conditionIdx = conditionIdx + 1;
 
   end
 
