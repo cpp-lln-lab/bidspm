@@ -8,14 +8,19 @@ function matlabbatch = setBatchImageCalculation(varargin)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param input: list of images
   % :type input: cell
+  %
   % :param output: name of the output file
   % :type output: string
+  %
   % :param outDir: output directory
   % :type outDir: string
+  %
   % :param expression: mathematical expression to apply (for example '(i1+i2)>3')
   % :type expression: string
+  %
   % :param expression: data type that must be one of the following:
   %    - 'uint8'
   %    - 'int16' (default)
