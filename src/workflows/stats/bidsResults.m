@@ -346,36 +346,8 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
 
     end
 
-    background = checkBackground(background, opt);
+    background = checkMaskOrUnderlay(background, opt, 'background');
     opt.results(iRes).montage.background = background;
-
-  end
-
-end
-
-function background = checkBackground(background, opt)
-
-  if ischar(background)
-
-    if isempty(background) || ~exist(background, 'file')
-
-      msg = 'Could not find specified file for montage.';
-      tolerant = false;
-
-      if isMni(opt.space)
-
-        msg = [msg '\nWill use SPM MNI default image'];
-
-        background = spm_select('FPList', fullfile(spm('dir'), 'canonical'), 'avg305T1.nii');
-        tolerant = true;
-
-      end
-
-      msg = sprintf(msg);
-      id = 'missingMontageBackground';
-      errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
-
-    end
 
   end
 

@@ -10,6 +10,29 @@ end
 
 % TODO add test to better cover setScans
 
+function test_setBatchSubjectLevelGLMSpec_brain_mask()
+
+  %% GIVEN
+  subLabel = '^01';
+
+  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
+
+  opt.model.bm.Nodes{1}.Model.Options.Mask = struct('label', 'brain', 'suffix', 'mask');
+
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  %% WHEN
+  matlabbatch = {};
+  matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
+
+  %% THEN
+  assertEqual(spm_file(matlabbatch{1}.spm.stats.fmri_spec.mask, 'filename'), ...
+              {'sub-01_ses-02_task-rest_space-IXI549Space_label-brain_mask.nii'});
+
+  cleanUp(fullfile(pwd, 'derivatives'));
+
+end
+
 function test_setBatchSubjectLevelGLMSpec_missing_raw_data()
 
   subLabel = '^01';
@@ -167,17 +190,3 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
   cleanUp(fullfile(pwd, 'derivatives'));
 
 end
-
-% function expectedBatch = returnExpectedBatch()
-%
-%
-%     for iRun = 1:nbRuns
-%
-%         matlabbatch{1}.spm.stats.fmri_spec.sess(iRun).scans = { boldFileForFFX};
-%         matlabbatch{1}.spm.stats.fmri_spec.sess(end).multi = { eventFile };
-%         matlabbatch{1}.spm.stats.fmri_spec.sess(end).multi_reg = { confoundsFile };
-%
-%     end
-%
-%
-% end

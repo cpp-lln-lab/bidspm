@@ -163,7 +163,7 @@ classdef BidsModel < bids.Model
 
     end
 
-    function mask = getModelMask(obj, varargin)
+    function [mask, nodeName] = getModelMask(obj, varargin)
       %
       % returns the mask of a node of a BIDS statistical model
       %
