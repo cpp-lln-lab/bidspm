@@ -123,6 +123,8 @@ function matlabbatch = bidsResults(opt)
 
   [~, opt] = setUpWorkflow(opt, 'computing GLM results');
 
+  BIDS = [];
+
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
   for iRes = 1:length(opt.results)
@@ -144,8 +146,6 @@ function matlabbatch = bidsResults(opt)
       node = node{1};
     end
 
-    opt = checkMontage(opt, iRes);
-
     % Depending on the level step we migh have to define a matlabbatch
     % for each subject or just on for the whole group
     switch lower(node.Level)
@@ -155,6 +155,8 @@ function matlabbatch = bidsResults(opt)
         for iSub = 1:numel(opt.subjects)
 
           subLabel = opt.subjects{iSub};
+
+          [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel);
 
           printProcessingSubject(iSub, subLabel, opt);
 
@@ -307,7 +309,7 @@ function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
 
 end
 
-function opt = checkMontage(opt, iRes)
+function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
 
   if isfield(opt.results(iRes), 'montage') && any(opt.results(iRes).montage.do)
 
@@ -315,28 +317,66 @@ function opt = checkMontage(opt, iRes)
 
     if isstruct(background)
 
-    elseif ischar(background)
-      if isempty(background) || ~exist(background, 'file')
+      if isempty(BIDS)
+        BIDS =  bids.layout(opt.dir.preproc, 'use_schema', false);
+      end
 
-        msg = 'Could not find specified file for montage.';
-        tolerant = false;
+      if ismember(lower(node.Level), {'run', 'session', 'subject'})
 
-        if isMni(opt.space)
+        background.sub = subLabel;
+        background.space = opt.space;
+        file = bids.query(BIDS, 'data', background);
 
-          msg = [msg '\nWill use SPM MNI default image'];
+        if iscell(file)
 
-          background = spm_select('FPList', fullfile(spm('dir'), 'canonical'), 'avg305T1.nii');
-          opt.results(iRes).montage.background = background;
-          tolerant = true;
+          if numel(file) > 1
+            msg = sprintf('More than 1 overlay image found for %s.\n Taking the first one.', ...
+                          createUnorderedList(background));
+            id = 'tooManyMontageBackground';
+            errorHandling(mfilename(), id, msg, true, opt.verbosity);
+          end
+
+          file = file{1};
 
         end
 
-        msg = sprintf(msg);
-        id = 'missingMontageBackground';
-        errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
+        background = file;
 
       end
+
     end
+
+    background = checkBackground(background, opt);
+    opt.results(iRes).montage.background = background;
+
+  end
+
+end
+
+function background = checkBackground(background, opt)
+
+  if ischar(background)
+
+    if isempty(background) || ~exist(background, 'file')
+
+      msg = 'Could not find specified file for montage.';
+      tolerant = false;
+
+      if isMni(opt.space)
+
+        msg = [msg '\nWill use SPM MNI default image'];
+
+        background = spm_select('FPList', fullfile(spm('dir'), 'canonical'), 'avg305T1.nii');
+        tolerant = true;
+
+      end
+
+      msg = sprintf(msg);
+      id = 'missingMontageBackground';
+      errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
+
+    end
+
   end
 
 end

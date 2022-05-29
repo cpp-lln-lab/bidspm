@@ -233,7 +233,7 @@ function opt = checkResultsOptions(opt)
       thisResult = thisResult{1};
     end
 
-    % add mising fields
+    % add missing fields
     thisResult = setFields(thisResult, defaultContrast);
 
     % fill in empty fields
@@ -358,8 +358,6 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.QA.func.Globals = 'on';
   fieldsToSet.QA.func.Movie = 'off';
   fieldsToSet.QA.func.Basics = 'on';
-
-  fieldsToSet.results = defaultResultsStructure();
 
   %% Options for interface
   fieldsToSet.msg.color = '';
