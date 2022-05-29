@@ -8,6 +8,32 @@ function test_suite = test_bidsResults %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsResults_no_background_for_montage()
+
+  createDummyData();
+
+  %% GIVEN
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  % Specify what ouput we want
+  opt.results = defaultResultsStructure();
+
+  opt.results.nodeName = 'subject_level';
+
+  opt.results.name = {'VisMot_gt_VisStat'};
+
+  opt.results.MC =  'FWE';
+  opt.results.p = 0.05;
+  opt.results.k = 5;
+
+  opt.results.montage.do = true;
+  opt.results.montage.background = 'aFileThatDoesNotExist.nii';
+
+  opt.verbosity = 1;
+  assertWarning(@()bidsResults(opt), 'bidsResults:missingMontageBackground');
+
+end
+
 function test_bidsResults_dataset_lvl()
 
   % TODO requires updating dummy dataset
@@ -136,30 +162,5 @@ function test_bidsResults_subject_lvl()
 
   assertEqual(matlabbatch{1}.spm.stats.results.export{4}.binary.basename, ...
               expected{4}.binary.basename);
-
-end
-
-function test_bidsResults_no_background_for_montage()
-
-  createDummyData();
-
-  %% GIVEN
-  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
-
-  % Specify what ouput we want
-  opt.results = defaultResultsStructure();
-
-  opt.results.nodeName = 'subject_level';
-
-  opt.results.name = {'VisMot_gt_VisStat'};
-
-  opt.results.MC =  'FWE';
-  opt.results.p = 0.05;
-  opt.results.k = 5;
-
-  opt.results.montage.do = true;
-  opt.results.montage.background = 'aFileThatDoesNotExist.nii';
-
-  assertExceptionThrown(@()bidsResults(opt), 'setMontage:backgroundImageNotFound');
 
 end

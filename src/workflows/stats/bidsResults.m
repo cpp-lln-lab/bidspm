@@ -144,6 +144,8 @@ function matlabbatch = bidsResults(opt)
       node = node{1};
     end
 
+    opt = checkMontage(opt, iRes);
+
     % Depending on the level step we migh have to define a matlabbatch
     % for each subject or just on for the whole group
     switch lower(node.Level)
@@ -301,6 +303,40 @@ function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
                                       opt, ...
                                       fullfile(result.dir, figureName(opt)));
 
+  end
+
+end
+
+function opt = checkMontage(opt, iRes)
+
+  if isfield(opt.results(iRes), 'montage') && any(opt.results(iRes).montage.do)
+
+    background = opt.results(iRes).montage.background;
+
+    if isstruct(background)
+
+    elseif ischar(background)
+      if isempty(background) || ~exist(background, 'file')
+
+        msg = 'Could not find specified file for montage.';
+        tolerant = false;
+
+        if isMni(opt.space)
+
+          msg = [msg '\nWill use SPM MNI default image'];
+
+          background = spm_select('FPList', fullfile(spm('dir'), 'canonical'), 'avg305T1.nii');
+          opt.results(iRes).montage.background = background;
+          tolerant = true;
+
+        end
+
+        msg = sprintf(msg);
+        id = 'missingMontageBackground';
+        errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
+
+      end
+    end
   end
 
 end
