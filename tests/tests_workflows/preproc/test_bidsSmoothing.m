@@ -30,7 +30,7 @@ function test_bidsSmoothing_fmriprep()
   opt.query.space = opt.space; % for bidsCopy only
   opt.query.desc = 'preproc';
 
-  bidsCopyInputFolder(opt, false());
+  bidsCopyInputFolder(opt, 'unzip', false);
 
   bidsSmoothing(opt);
 

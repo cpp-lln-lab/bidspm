@@ -1,4 +1,4 @@
-function bidsCopyInputFolder(opt, unzip)
+function bidsCopyInputFolder(varargin)
   %
   % Copies the folders from the ``raw`` folder to the
   % ``derivatives`` folder, and will copy the dataset description and task json files
@@ -9,26 +9,34 @@ function bidsCopyInputFolder(opt, unzip)
   %
   % USAGE::
   %
-  %   bidsCopyInputFolder(opt, [unzip = true])
+  %   bidsCopyInputFolder(opt, 'unzip', true, 'force', true)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
-  % :param unZip:
-  % :type unZip: boolean
+  %
+  % :param unzip: defaults to true
+  % :type unzip: boolean
+  %
+  % :param unzip: defaults to true
+  % :type unzip: boolean
   %
   % See also: bids.copy_to_derivative
   %
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  if nargin < 1 || isempty(opt)
-    opt = [];
-  end
+  args = inputParser;
 
-  if nargin < 2 || isempty(unzip)
-    unzip = true();
-  end
+  addRequired(args, 'opt', @isstruct);
+  addParameter(args, 'unzip', true, @islogical);
+  addParameter(args, 'force', true, @islogical);
+
+  parse(args, varargin{:});
+
+  opt = args.Results.opt;
+  unzip = args.Results.unzip;
+  force = args.Results.force;
 
   opt = loadAndCheckOptions(opt);
 
@@ -43,7 +51,6 @@ function bidsCopyInputFolder(opt, unzip)
   [BIDS, opt] = getData(opt, opt.dir.input);
 
   use_schema = true;
-  overwrite = true;
   skip_dependencies = false;
 
   for iModality = 1:numel(opt.query.modality)
@@ -66,7 +73,7 @@ function bidsCopyInputFolder(opt, unzip)
                             'out_path', fullfile(opt.dir.output, '..'), ...
                             'filter', filter, ...
                             'unzip', unzip, ...
-                            'force', overwrite, ...
+                            'force', force, ...
                             'skip_dep', skip_dependencies, ...
                             'use_schema', use_schema, ...
                             'verbose', opt.verbosity > 0);

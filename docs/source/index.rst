@@ -26,6 +26,8 @@ Welcome to CPP SPM documentation!
    method_section
    mancoreg
    docker
+   output_files
+   mapping
    links_and_references
 
 Indices and tables

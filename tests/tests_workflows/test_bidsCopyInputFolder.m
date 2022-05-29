@@ -19,7 +19,7 @@ function test_bidsCopyInputFolder_basic()
 
   output_folder = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm-preproc');
 
-  bidsCopyInputFolder(opt, true());
+  bidsCopyInputFolder(opt, 'unzip', true);
 
   layoutRaw = bids.layout(opt.dir.raw);
   layoutDerivatives = bids.layout(fullfile(opt.dir.preproc));
@@ -46,7 +46,7 @@ function test_bidsCopyInputFolder_fmriprep()
   opt.query.desc = 'preproc';
   opt.verbosity = 0;
 
-  bidsCopyInputFolder(opt, false());
+  bidsCopyInputFolder(opt, 'unzip', false);
 
   layoutDerivatives = bids.layout(fullfile(opt.dir.preproc), 'use_schema', false);
   data = bids.query(layoutDerivatives, 'data', 'extension', '.nii.gz');

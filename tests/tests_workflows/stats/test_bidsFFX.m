@@ -103,7 +103,7 @@ function test_bidsFFX_fmriprep_no_smoothing()
 
   opt = checkOptions(opt);
 
-  bidsCopyInputFolder(opt, false());
+  bidsCopyInputFolder(opt, 'unzip', false);
 
   % No proper valid bids file in derivatives of bids-example
 

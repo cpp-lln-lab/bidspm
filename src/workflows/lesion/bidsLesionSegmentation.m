@@ -45,6 +45,8 @@ end
 
 function opt = setRenamingConfig(opt)
 
+  % extract into a renaming config function
+
   opt = set_spm_2_bids_defaults(opt);
   map = opt.spm_2_bids;
 

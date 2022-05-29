@@ -154,6 +154,7 @@ function saveMetadataImage(dataDir, opt, output, imageToSkullStrip)
     json.content.Description = sprintf(['mask used for skullstripping values with', ...
                                         '"p(GM) + p(WM) + p(CSF) > %f'], opt.skullstrip.threshold);
 
+    json.content.Type = 'brain';
   else
     json.content.Description = sprintf(['image skullstripped for values with', ...
                                         '"p(GM) + p(WM) + p(CSF) > %f'], opt.skullstrip.threshold);
