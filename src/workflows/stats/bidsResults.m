@@ -284,17 +284,17 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLe
 end
 
 function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
-  
+
   BIDS = '';
 
   matlabbatch = {};
-  
+
   node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
 
   if iscell(node)
-     node = node{1};
+    node = node{1};
   end
-  
+
   opt = checkMontage(opt, iRes, node);
 
   for i = 1:length(opt.results(iRes).name)
@@ -320,7 +320,7 @@ function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
 end
 
 function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
-  
+
   if nargin < 4
     BIDS = '';
     subLabel = '';
@@ -333,10 +333,10 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
     if isstruct(background)
 
       if ismember(lower(node.Level), {'run', 'session', 'subject'})
-        
+
         if isempty(BIDS)
           BIDS =  bids.layout(opt.dir.preproc, 'use_schema', false);
-        end        
+        end
 
         background.sub = subLabel;
         background.space = opt.space;
