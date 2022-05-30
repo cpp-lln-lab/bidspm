@@ -8,8 +8,10 @@ function vargarout = newFunction(varargin)
   %
   % :param foo: obligatory argument. Lorem ipsum dolor sit amet,
   % :type foo: cell
+  %
   % :param faa: optional argument. Lorem ipsum dolor sit amet,
   % :type faa: structure
+  %
   % :param fii: parameter. default: ``boo``
   % :type fii: string
   %
