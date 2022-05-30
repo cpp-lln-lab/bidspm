@@ -5,7 +5,7 @@ function reportBIDS(opt)
   %
   % The output is a markdown file save in the directory:
   %
-  % ``opt.dir.output, 'reports', ['sub-' subLabel], ``
+  %   ``opt.dir.output, 'reports', ['sub-' subLabel]``
   %
   % USAGE::
   %
