@@ -8,11 +8,14 @@ function matlabbatch = batch(varargin)
   %
   % :param matlabbatch: matlabbatch to append to.
   % :type matlabbatch: cell
+  %
   % :param BIDS: BIDS layout returned by ``getData`` or ``bids.layout`.
   % :type BIDS: structure
+  %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
+  %
   % :param subLabel: subject label
   % :type subLabel: string
   %
