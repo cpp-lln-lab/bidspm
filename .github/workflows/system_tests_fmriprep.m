@@ -6,5 +6,5 @@ root_dir = getenv('GITHUB_WORKSPACE');
 addpath(fullfile(root_dir, 'spm12'));
 
 cd(fullfile(root_dir, 'demos', 'MoAE'));
-system('make make inputs/fmriprep')
+system('make make inputs/fmriprep');
 run moae_fmriprep;
