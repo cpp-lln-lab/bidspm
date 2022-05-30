@@ -44,10 +44,16 @@ jobs:
 
     strategy:
       matrix:
-        script: [moae, facerep]
+        script: [moae, facerep, fmriprep]
       fail-fast: false
 
     steps:
+      - name: Install datalad
+        run: |
+          sudo apt-get -y -qq update
+          sudo apt-get -y install datalad
+          datalad --version
+
       - name: Install MATLAB
         uses: matlab-actions/setup-matlab@v1.0.1
         with:
