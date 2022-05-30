@@ -1,32 +1,77 @@
+## fMRI statistical analysis
+
 The fMRI data were analysed with {{>computing_environment}}
-The input data were the preprocessed BOLD images in {{space}} space for the task "{{taskName}}".
+The input data were the preprocessed BOLD images in{{space}}space for the task "{{taskName}}".
+
+### Run / subject level analysis
 
 At the subject level, we performed a mass univariate analysis with a linear
 regression at each voxel of the brain, using generalized least squares with a
 global {{SerialCorrelationCorrection}} model to account for temporal auto-correlation
 {{#FAST}}(Corbin et al, 2018){{/FAST}}
-and a drift fit with discrete cosine transform basis ({{HighPassFilterCutoffSecs}} seconds cut-off).
+and a drift fit with discrete cosine transform basis ({{HighPassFilterCutoffSecs}}seconds cut-off).
 
 Image intensity scaling was done run-wide before statistical modeling such that
 the mean image would have a mean intracerebral intensity of 100.
 
 We modeled the fMRI experiment in a {{designType}} design with regressors
 entered into the run-specific design matrix. The onsets
-were convolved with a canonical hemodynamic response function (HRF)
+were convolved with SPM canonical hemodynamic response function (HRF)
 {{#derivatives}}and its {{type}} derivatives{{/derivatives}}
-{{#convolve}}
 for the conditions:
-- {{variablesToConvolve}}
+{{#convolve}}
+ - `{{variablesToConvolve}}`,
 {{/convolve}}.
 
 {{! TODO reference slice for each TR}}
-{{! TODO list covariates included}}
-Nuisance covariates included the 6 realignment parameters to account for residual motion artefacts.
+{{#confounds}}
+Nuisance covariates included:
+
+{{#variables}}
+ - `{{variables.name}}`,
+{{/variables}}
+
+{{#motion}}
+to account for residual motion artefacts, 
+{{/motion}}
+{{#tissue}}
+to regress out signal coming from non grey matter regions, 
+{{/tissue}}
+{{#scrubbing}}
+to censor any time points flagged as outlier, 
+{{/scrubbing}}
+{{/confounds}}.
 
 {{#smoothing}}
 Contrast images were computed for the following condition and spatially smoothed
 using a 3D gaussian kernel (FWHM = {{fwhm.contrast}} mm).
 {{/smoothing}}
 {{! TODO Table of conditions with duration of each event}}
+
+{{#group_level}}
+### Group level analysis
+
+Contrast for the following conditions were passed as summary statistics for a group level analysis:
+{{#contrasts}}
 {{! TODO Table of constrast with weight}}
+  - `{{contrasts.name}}`,
+{{/contrasts}}
+{{/group_level}}
+
 {{>credits}}
+
+{{! References}}
+{{#FAST}}
+```bibtex
+@article{Corbin2018,
+author = {Corbin, Nadège and Todd, Nick and Friston, Karl J. and Callaghan, Martina F.},
+title = {Accurate modeling of temporal correlations in rapidly sampled fMRI time series},
+journal = {Human Brain Mapping},
+volume = {39},
+number = {10},
+pages = {3884-3897},
+doi = {https://doi.org/10.1002/hbm.24218},
+year = {2018}
+}
+```
+{{/FAST}}

@@ -5,7 +5,7 @@ function reportBIDS(opt)
   %
   % The output is a markdown file save in the directory:
   %
-  % ``opt.dir.output, ['sub-' subLabel], 'reports'``
+  % ``opt.dir.output, 'reports', ['sub-' subLabel], ``
   %
   % USAGE::
   %
@@ -21,11 +21,15 @@ function reportBIDS(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'BIDS report');
 
+  bids.diagnostic(BIDS, ...
+                  'split_by', {'task'}, ...
+                  'output_path', fullfile(opt.dir.output, 'reports'));
+
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 
-    outputDir = fullfile(opt.dir.output, ['sub-' subLabel], 'reports');
+    outputDir = fullfile(opt.dir.output, 'reports', ['sub-' subLabel]);
 
     bids.util.mkdir(outputDir);
 

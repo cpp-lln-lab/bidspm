@@ -85,21 +85,7 @@ function outputFile = boilerplate(varargin)
       opt.space = bm.Input.space;
     end
 
-    opt.HighPassFilterCutoffSecs = bm.getHighPassFilter();
-
-    opt.convolve = false;
-    variablesToConvolve = bm.getVariablesToConvolve();
-
-    if ~isempty(variablesToConvolve)
-
-      opt.convolve = true;
-      if iscell(variablesToConvolve)
-        % try to let octache deals with this.
-        variablesToConvolve = strjoin(variablesToConvolve, ', ');
-        variablesToConvolve = regexprep(variablesToConvolve, 'trial_type.', '');
-      end
-      opt.variablesToConvolve = variablesToConvolve;
-    end
+    opt.HighPassFilterCutoffSecs = round(bm.getHighPassFilter());
 
     opt.SerialCorrelationCorrection = bm.getSerialCorrelationCorrection;
     opt.FAST = false;
@@ -107,15 +93,19 @@ function outputFile = boilerplate(varargin)
       opt.FAST = true;
     end
 
-    derivatives = bm.getHRFderivatives();
-    if any(derivatives)
-      if all(derivatives == [1 0])
-        opt.derivatives.type = 'temporal';
-      elseif all(derivatives == [1 1])
-        opt.derivatives.type = 'temporal and dispersion';
-      end
-    else
-      opt.derivatives = false;
+    opt = setConvolve(opt, bm);
+
+    opt = setDerivatives(opt, bm);
+
+    opt = setConfounds(opt, bm);
+
+    opt.group_level = false;
+    if ~isempty(bm.get_nodes('Level', 'dataset'))
+
+      contrasts = genList('name', getDummyContrastsList('dataset_level', bm));
+
+      opt.group_level = struct('contrasts', {contrasts});
+
     end
 
   end
@@ -150,6 +140,93 @@ function outputFile = boilerplate(varargin)
   %% print to file
   outputFile = printToFile(output, outputPath, pipelineType);
 
+end
+
+function list = genList(name, elements)
+
+  list = '';
+
+  if ~isempty(elements) && iscell(elements)
+    for i = 1:numel(elements)
+      list{i} = struct(name, elements{i});
+    end
+  end
+
+end
+
+function opt = setConfounds(opt, bm)
+
+  opt.confounds = false;
+
+  rootNode = bm.getRootNode();
+  designMatrix = rootNode.Model.X;
+  designMatrix = removeIntercept(designMatrix);
+
+  variablesToConvolve = bm.getVariablesToConvolve();
+
+  confoundsIdx = ~ismember(designMatrix, variablesToConvolve);
+  if sum(confoundsIdx) > 0
+
+    confounds = struct('motion', false, ...
+                       'tissue', false, ...
+                       'scrubbing', false);
+
+    confoundsNames = designMatrix(confoundsIdx);
+
+    motionRegressorRegexp = '^(rot)|(trans)|(std_dvars)|(dvars)|(framewise_displacement).*';
+    isMotionRegressor = ~cellfun('isempty', regexp(confoundsNames, ...
+                                                   motionRegressorRegexp, ...
+                                                   'match'));
+    if any(isMotionRegressor)
+      confounds.motion = true;
+    end
+
+    isTissueRegressor = ~cellfun('isempty', regexp(confoundsNames, ...
+                                                   '^(csf)|(white_matter)|(global_signal).*', ...
+                                                   'match'));
+    if any(isTissueRegressor)
+      confounds.tissue = true;
+    end
+
+    isOutlier = ~cellfun('isempty', regexp(confoundsNames, ...
+                                           '^.*outlier.*$', ...
+                                           'match'));
+    if any(isOutlier)
+      confounds.scrubbing = true;
+    end
+
+    confounds.variables = genList('name', confoundsNames);
+
+    opt.confounds = confounds;
+  end
+
+end
+
+function opt = setConvolve(opt, bm)
+
+  opt.convolve = false;
+
+  variablesToConvolve = bm.getVariablesToConvolve();
+
+  variablesToConvolve = regexprep(variablesToConvolve, 'trial_type.', '');
+
+  opt.convolve = genList('variablesToConvolve', variablesToConvolve);
+
+end
+
+function opt = setDerivatives(opt, bm)
+
+  opt.derivatives = false;
+
+  derivatives = bm.getHRFderivatives();
+
+  if any(derivatives)
+    if all(derivatives == [1 0])
+      opt.derivatives.type = 'temporal';
+    elseif all(derivatives == [1 1])
+      opt.derivatives.type = 'temporal and dispersion';
+    end
+  end
 end
 
 function outputFile = printToFile(output, outputPath, pipelineType)
