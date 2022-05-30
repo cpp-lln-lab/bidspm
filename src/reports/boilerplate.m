@@ -222,10 +222,13 @@ function opt = setDerivatives(opt, bm)
 
   if any(derivatives)
     if all(derivatives == [1 0])
-      opt.derivatives.type = 'temporal';
+      derivatives = struct('type', 'temporal');
+      opt.derivatives = derivatives;
     elseif all(derivatives == [1 1])
-      opt.derivatives.type = 'temporal and dispersion';
+      derivatives = struct('type', 'temporal and dispersion');
+      opt.derivatives = derivatives;
     end
+
   end
 end
 
