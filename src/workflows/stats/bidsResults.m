@@ -123,6 +123,8 @@ function matlabbatch = bidsResults(opt)
 
   [~, opt] = setUpWorkflow(opt, 'computing GLM results');
 
+  BIDS = [];
+
   % loop trough the steps and more results to compute for each contrast
   % mentioned for each step
   for iRes = 1:length(opt.results)
@@ -153,6 +155,8 @@ function matlabbatch = bidsResults(opt)
         for iSub = 1:numel(opt.subjects)
 
           subLabel = opt.subjects{iSub};
+
+          [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel);
 
           printProcessingSubject(iSub, subLabel, opt);
 
@@ -281,7 +285,17 @@ end
 
 function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
 
+  BIDS = '';
+
   matlabbatch = {};
+
+  node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
+
+  if iscell(node)
+    node = node{1};
+  end
+
+  opt = checkMontage(opt, iRes, node);
 
   for i = 1:length(opt.results(iRes).name)
 
@@ -300,6 +314,61 @@ function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
     matlabbatch = setBatchPrintFigure(matlabbatch, ...
                                       opt, ...
                                       fullfile(result.dir, figureName(opt)));
+
+  end
+
+end
+
+function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
+
+  if nargin < 4
+    BIDS = '';
+    subLabel = '';
+  end
+
+  if isfield(opt.results(iRes), 'montage') && any(opt.results(iRes).montage.do)
+
+    background = opt.results(iRes).montage.background;
+
+    % TODO refactor with getInclusiveMask
+    if isstruct(background)
+
+      if ismember(lower(node.Level), {'run', 'session', 'subject'})
+
+        if isempty(BIDS)
+          BIDS =  bids.layout(opt.dir.preproc, 'use_schema', false);
+        end
+
+        background.sub = subLabel;
+        background.space = opt.space;
+        file = bids.query(BIDS, 'data', background);
+
+        if iscell(file)
+
+          if isempty(file)
+            % let checkMaskOrUnderlay figure it out
+            file = '';
+
+          elseif numel(file) == 1
+            file = file{1};
+
+          elseif numel(file) > 1
+            msg = sprintf('More than 1 overlay image found for %s.\n Taking the first one.', ...
+                          createUnorderedList(background));
+            id = 'tooManyMontageBackground';
+            errorHandling(mfilename(), id, msg, true, opt.verbosity);
+          end
+
+        end
+
+        background = file;
+
+      end
+
+    end
+
+    background = checkMaskOrUnderlay(background, opt, 'background');
+    opt.results(iRes).montage.background = background;
 
   end
 

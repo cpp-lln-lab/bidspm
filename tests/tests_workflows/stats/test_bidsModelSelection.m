@@ -31,7 +31,7 @@ function test_bidsModelSelection_basic()
   % THEN
   assertEqual(numel(matlabbatch), 5);
 
-  expectedContent = {'vismotion'; 'global signal'};
+  expectedContent = {'vismotion'; 'this is not the name you are looking for'};
   assertEqual(matlabbatch{1}.spm.tools.MACS.MA_model_space.names, expectedContent);
 
   nbSubjects = 3;

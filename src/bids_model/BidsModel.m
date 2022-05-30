@@ -70,7 +70,11 @@ classdef BidsModel < bids.Model
       else
         [model, idx] = obj.get_model(varargin{:});
         nodes = obj.Nodes;
-        nodeName = nodes{idx}.Name;
+        if iscell(nodes)
+          nodeName = nodes{idx}.Name;
+        else
+          nodeName = nodes.Name;
+        end
       end
 
     end
@@ -163,7 +167,7 @@ classdef BidsModel < bids.Model
 
     end
 
-    function mask = getModelMask(obj, varargin)
+    function [mask, nodeName] = getModelMask(obj, varargin)
       %
       % returns the mask of a node of a BIDS statistical model
       %

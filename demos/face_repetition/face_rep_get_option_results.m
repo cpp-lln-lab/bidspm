@@ -11,10 +11,6 @@ function opt =  face_rep_get_option_results()
   opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
   opt.dir.roi = fullfile(opt.dir.derivatives, 'cpp_spm-roi');
 
-  opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
-                            'models', ...
-                            'model-faceRepetition_smdl.json');
-
   % Specify the result to compute
   opt.results = defaultResultsStructure();
   opt.results.nodeName = 'run_level';

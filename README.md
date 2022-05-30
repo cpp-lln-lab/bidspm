@@ -50,12 +50,22 @@ for more info.
 
 ## Usage
 
-For some of its functionality cpp_spm has a BIDS app like API:
+For some of its functionality cpp_spm has a BIDS app like API.
+
+See
+[this page for more information](https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html).
 
 ### Preprocessing
 
 ```matlab
-cpp_spm(bids_dir, output_dir, 'participant', ...
+
+bids_dir = path_to_raw_bids_dataset;
+output_dir = path_to_where_the_output_should_go;
+
+subject_label = '01';
+
+cpp_spm(bids_dir, output_dir, 'subject', ...
+        'participant_label', {subject_label}, ...
         'action', 'preprocess', ...
         'task', {...})
 ```
@@ -63,7 +73,16 @@ cpp_spm(bids_dir, output_dir, 'participant', ...
 ### GLM
 
 ```matlab
-cpp_spm(bids_dir, output_dir, 'participant', ...
+
+bids_dir = path_to_raw_bids_dataset;
+preproc_dir = path_to_preprocessed_dataset;
+output_dir = path_to_where_the_output_should_go;
+model_file = path_to_bids_stats_model_json_file;
+
+subject_label = '01';
+
+cpp_spm(bids_dir, output_dir, 'subject', ...
+        'participant_label', {subject_label}, ...
         'action', 'preprocess', ...
         'preproc_dir', preproc_dir, ...
         'model_file', model_file)

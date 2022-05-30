@@ -28,7 +28,7 @@ function test_setBatchMeanAnatAndMask_basic()
                                 'anat', ...
                                 'sub-ctrl01_ses-01_space-IXI549Space_res-hi_desc-preproc_T1w.nii');
 
-  imcalc.output = 'meanAnat.nii';
+  imcalc.output = 'space-IXI549Space_desc-mean_T1w.nii';
   imcalc.outdir{1} = pwd;
   imcalc.expression = '(i1+i2)/2';
   imcalc.options.dtype = 16;
@@ -36,24 +36,29 @@ function test_setBatchMeanAnatAndMask_basic()
   expectedBatch{1}.spm.util.imcalc = imcalc;
 
   %
-  imcalc.input{1, 1} = fullfile(opt.dir.stats, ...
+  imcalc.input{1, 1} = fullfile(opt.dir.preproc, ...
                                 'sub-01', ...
-                                'task-vismotion_space-IXI549Space_FWHM-6', ...
-                                'mask.nii');
-  imcalc.input{2, 1} = fullfile(opt.dir.stats, ...
+                                'ses-01', ...
+                                'anat', ...
+                                'sub-01_ses-01_space-IXI549Space_desc-brain_mask.nii');
+  imcalc.input{2, 1} = fullfile(opt.dir.preproc, ...
                                 'sub-ctrl01', ...
-                                'task-vismotion_space-IXI549Space_FWHM-6', ...
-                                'mask.nii');
+                                'ses-01', ...
+                                'anat', ...
+                                'sub-ctrl01_ses-01_space-IXI549Space_desc-brain_mask.nii');
 
-  imcalc.output = 'meanMask.nii';
+  imcalc.output = 'space-IXI549Space_desc-brain.nii';
   imcalc.outdir{1} = pwd;
-  imcalc.expression = '(i1+i2)>0.75*2';
+  imcalc.expression = '(i1+i2)==1*2';
   imcalc.options.dtype = 16;
 
   expectedBatch{2}.spm.util.imcalc = imcalc;
 
   assertEqual(matlabbatch{1}.spm.util.imcalc.input, expectedBatch{1}.spm.util.imcalc.input);
   assertEqual(matlabbatch{1}.spm.util.imcalc.output, expectedBatch{1}.spm.util.imcalc.output);
-  assertEqual(matlabbatch{2}.spm.util.imcalc, expectedBatch{2}.spm.util.imcalc);
+  assertEqual(matlabbatch{2}.spm.util.imcalc.input, expectedBatch{2}.spm.util.imcalc.input);
+  assertEqual(matlabbatch{2}.spm.util.imcalc.output, expectedBatch{2}.spm.util.imcalc.output);
+
+  assertEqual(numel(matlabbatch), 7);
 
 end

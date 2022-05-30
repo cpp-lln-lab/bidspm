@@ -295,6 +295,7 @@ for subject in ${subject_list}; do
 	touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_res-bold_label-GM_probseg.nii
 	touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_res-bold_label-WM_probseg.nii
 	touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_res-hi_desc-preproc${suffix}.nii
+	touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_desc-brain_mask.nii
 
 	# STATS
 	task_list='vismotion vislocalizer'

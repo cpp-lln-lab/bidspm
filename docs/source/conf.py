@@ -16,7 +16,7 @@ import sys
 sys.path.insert(0, os.path.abspath("../.."))
 
 # The full version, including alpha/beta/rc tags
-with open('../../version.txt', encoding='utf-8') as version_file:
+with open("../../version.txt", encoding="utf-8") as version_file:
     release = version_file.read()
 
 # -- Project information -----------------------------------------------------
@@ -36,6 +36,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx_copybutton",
     "myst_parser",
+    "sphinxcontrib.mermaid",
 ]
 matlab_src_dir = os.path.dirname(os.path.abspath("../../src"))
 primary_domain = "mat"

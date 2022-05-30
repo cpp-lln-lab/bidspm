@@ -151,7 +151,10 @@ function opt = get_options_from_argument(args)
       opt.bidsFilterFile = args.Results.bids_filter_file;
     end
 
-    opt.fwhm.func = args.Results.fwhm;
+    if ~isempty(args.Results.fwhm) && ...
+       (~isfield(opt, 'fwhm') || ~isfield(opt.fwhm, 'func') || isempty(opt.fwhm.func))
+      opt.fwhm.func = args.Results.fwhm;
+    end
 
     if ~isempty(args.Results.space)
       opt.space = args.Results.space;
@@ -433,8 +436,10 @@ function run_tests()
 
   spm('defaults', 'fMRI');
 
+  subfolder = '';
+
   folderToCover = fullfile(pwd, 'src');
-  testFolder = fullfile(pwd, 'tests');
+  testFolder = fullfile(pwd, 'tests', subfolder);
 
   success = moxunit_runtests( ...
                              testFolder, ...
