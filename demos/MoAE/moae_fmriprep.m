@@ -45,11 +45,7 @@ opt.dir.derivatives = fullfile(WD, 'outputs', 'derivatives');
 opt.pipeline.type = 'preproc';
 opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
 
-% specify some filter to decide which file to copy out of the frmipre dataset
-opt.query.desc = {'preproc', 'confounds', 'brain'};
-opt.query.suffix = {'T1w', 'bold', 'mask', 'timeseries'};
 opt.space = {'MNI152NLin6Asym'};
-opt.query.space = opt.space;
 
 subject_label = '01';
 
@@ -61,8 +57,25 @@ opt.fwhm.func = 8;
 
 opt = checkOptions(opt);
 
+% specify some filter to decide which file to copy out of the frmiprep dataset
+%
+% this 2 step copy should disappear in future version.
+%
+% See: https://github.com/cpp-lln-lab/CPP_SPM/issues/409
+%
+
+% desc-confounds_timeseries.tsv
+opt.query.desc = {'confounds'};
+opt.query.suffix = {'timeseries'};
 bidsCopyInputFolder(opt);
 
+% desc-confounds_timeseries.tsv
+opt.query.desc = {'preproc', 'brain'};
+opt.query.suffix = {'T1w', 'bold', 'mask'};
+opt.query.space = opt.space;
+bidsCopyInputFolder(opt);
+
+% then we can smooth
 bidsSmoothing(opt);
 
 %% STATS
