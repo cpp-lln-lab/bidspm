@@ -8,6 +8,35 @@ function test_suite = test_bidsRFX %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsRFX_basic_select_datasets_two_sample_ttest()
+
+  createDummyData();
+
+  opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, ...
+                            'basename', ...
+                            'model-vislocalizer2sampleTTest_smdl');
+
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  matlabbatch = bidsRFX('RFX', opt);
+
+  % creates 1 batch for (specify, figure, estimate, review, figure)
+  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
+  assert(isfield(matlabbatch{2}.spm.util, 'print'));
+  assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
+  assert(isfield(matlabbatch{4}.spm.stats, 'review'));
+  assert(isfield(matlabbatch{5}.spm.util, 'print'));
+
+  % 2 blind and 1 ctrl
+  assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.t2.scans1), 2);
+  assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.t2.scans2), 1);
+
+  cleanUp(fullfile(opt.dir.output, 'derivatives'));
+
+end
+
 function test_bidsRFX_basic_select_datasets_level_to_run()
 
   createDummyData();
@@ -22,7 +51,7 @@ function test_bidsRFX_basic_select_datasets_level_to_run()
 
   matlabbatch = bidsRFX('RFX', opt, 'nodeName', 'complex contrast');
 
-  % creates 1 batch for (specify, figure, estimate, figure)
+  % creates 1 batch for (specify, figure, estimate, review, figure)
   assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
   assert(isfield(matlabbatch{2}.spm.util, 'print'));
   assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
