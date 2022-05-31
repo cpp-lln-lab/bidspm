@@ -25,20 +25,20 @@ function vargarout = newFunction(varargin)
 
   % The code goes below
 
-  p = inputParser;
+  args = inputParser;
 
   default_faa = [];
   default_fii = 'boo';
 
-  addRequired(p, 'foo', @iscell);
-  addOptional(p, 'faa', default_faa, @isstruct);
-  addParameter(p, 'fii', default_fii, @ischar);
+  addRequired(args, 'foo', @iscell);
+  addOptional(args, 'faa', default_faa, @isstruct);
+  addParameter(args, 'fii', default_fii, @ischar);
 
-  parse(p, varargin{:});
+  parse(args, varargin{:});
 
-  foo = p.Results.foo;
-  faa = p.Results.faa;
-  fii = p.Results.fii;
+  foo = args.Results.foo;
+  faa = args.Results.faa;
+  fii = args.Results.fii;
 
   vargarout = {foo, faa, fii};
 

@@ -4,16 +4,18 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, opt)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSmoothConImages(matlabbatch, group, opt)
+  %   matlabbatch = setBatchSmoothConImages(matlabbatch, opt)
   %
   % :param matlabbatch:
-  % :type matlabbatch:
-  % :param group:
-  % :type group:
+  % :type matlabbatch: structure
+  %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt:
+  % :type opt: structure
   %
   % :returns: - :matlabbatch:
+  %
+  %
+  % See also: bidsRFX, setBatchSmoothing, setBatchSmoothingFunc
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -30,8 +32,7 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, opt)
     conImg = spm_select('FPlist', ffxDir, '^con*.*nii$');
     data = cellstr(conImg);
 
-    matlabbatch = setBatchSmoothing( ...
-                                    matlabbatch, ...
+    matlabbatch = setBatchSmoothing(matlabbatch, ...
                                     opt, ...
                                     data, ...
                                     opt.fwhm.contrast, ...

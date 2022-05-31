@@ -8,14 +8,20 @@ function matlabbatch = setBatchSmoothing(matlabbatch, opt, images, fwhm, prefix)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param images:
-  % :type images:
+  % :type images: fullpath
+  %
   % :param fwhm:
-  % :type fwhm:
+  % :type fwhm: positive integer
+  %
   % :param prefix:
-  % :type prefix:
+  % :type prefix: char
   %
   % :returns: - :matlabbatch: (structure)
+  %
+  %
+  % See also: bidsSmoothing, bidsRFX, setBatchSmoothingFunc, setBatchSmoothConImages
   %
   %
   % (C) Copyright 2019 CPP_SPM developers

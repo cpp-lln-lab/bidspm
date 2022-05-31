@@ -8,15 +8,20 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param BIDS: BIDS layout returned by ``getData``.
   % :type BIDS: structure
+  %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: string
+  %
   % :param subLabel:
   % :type subLabel:
   %
   % :returns: - :matlabbatch: (structure)
   %
+  %
+  % See also: bidsSmoothing, setBatchSmoothing
   %
   % (C) Copyright 2019 CPP_SPM developers
 
