@@ -34,7 +34,7 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
     smoothPrefix = ['s', num2str(opt.fwhm.contrast)];
   end
 
-  [~, opt] = getData(opt, opt.dir.preproc);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   % average at the group level
   if opt.model.bm.get_design_matrix('Name', nodeName) == 1

@@ -44,6 +44,10 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contras
       % group level
     case 4
 
+      if ischar(contrastsList)
+        contrastsList = cellstr(contrastsList);
+      end
+
       printBatchName('estimate group level fmri model', opt);
 
       for j = 1:size(contrastsList)
