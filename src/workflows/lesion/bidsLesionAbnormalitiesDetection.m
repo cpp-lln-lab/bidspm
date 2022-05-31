@@ -21,6 +21,10 @@ function bidsLesionAbnormalitiesDetection(opt)
 
   opt.dir.input = opt.dir.preproc;
 
+  if checkToolbox('ALI', 'verbose', opt.verbosity > 0)
+    opt = setFields(opt, ALI_my_defaults());
+  end
+
   [BIDS, opt] = setUpWorkflow(opt, 'abnormalities detection');
 
   labels = {'GM', 'WM'};
