@@ -25,7 +25,7 @@ function matlabbatch = setBatchGroupLevelResults(varargin)
 
   result.contrastNb = 1;
 
-  result.label = ['group-' result.name];
+  result.label = 'group';
 
   result.outputName = defaultOuputNameStruct(opt, result);
 
