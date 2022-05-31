@@ -56,7 +56,7 @@ jobs:
           sudo apt-get -y install datalad
 
       - name: Info
-        run: |          
+        run: |
           datalad --version
 
       - name: Install MATLAB
@@ -73,15 +73,15 @@ jobs:
 
       # Prep for later
       # - name: Get fmriprep data
-      #   run: |          
+      #   run: |
       #     cd demos/
       #     datalad install --source https://gin.g-node.org/SPM_datasets/spm_moae_fmriprep.git \
-      #                     inputs/fmriprep  
+      #                     inputs/fmriprep
       #     cd inputs/fmriprep && datalad get *.json \
       #                       */*/*tsv \
       #                       */*/*json \
       #                       */*/*desc-preproc*.nii.gz \
-      #                       */*/*desc-brain*.nii.gz                                     
+      #                       */*/*desc-brain*.nii.gz
 
       - name: Install SPM
         run: |
