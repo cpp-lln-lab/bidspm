@@ -74,7 +74,7 @@ jobs:
       #     sudo apt-get -y install datalad
       # - name: Info
       #   run: |
-      #     datalad --version      
+      #     datalad --version
       # - name: Get fmriprep data
       #   run: |
       #     cd demos/
@@ -87,12 +87,12 @@ jobs:
       #                       */*/*desc-brain*.nii.gz
 
       - name: Get moae fmriprep data from OSF
-          run: |
-            mkdir -p demos/MoAE/inputs/
-            cd demos/MoAE/inputs/
-            wget https://osf.io/vufjs/download
-            unzip download
-            mv moae_fmriprep fmriprep      
+        run: |
+          mkdir -p demos/MoAE/inputs/
+          cd demos/MoAE/inputs/
+          wget https://osf.io/vufjs/download
+          unzip download
+          mv moae_fmriprep fmriprep
 
       - name: Install SPM
         run: |
