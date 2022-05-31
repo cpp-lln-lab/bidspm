@@ -13,7 +13,8 @@
 %                     */*/*desc-preproc*.nii.gz \
 %                     */*/*desc-brain*.nii.gz
 %
-%
+% Otherwise you also grad the data from OSF:
+% https://osf.io/vufjs/download
 %
 % (C) Copyright 2019 Remi Gau
 

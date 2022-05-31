@@ -46,18 +46,14 @@ jobs:
 
     strategy:
       matrix:
-        script: [moae, facerep]
+        script: [moae, facerep, fmriprep]
       fail-fast: false
 
     steps:
-      - name: Install datalad
+      - name: Install dependencies
         run: |
           sudo apt-get -y -qq update
-          sudo apt-get -y install datalad
-
-      - name: Info
-        run: |
-          datalad --version
+          sudo apt-get -y install unzip wget
 
       - name: Install MATLAB
         uses: matlab-actions/setup-matlab@v1.0.1
@@ -72,6 +68,13 @@ jobs:
           fetch-depth: 2
 
       # Prep for later
+      # - name: Install datalad
+      #   run: |
+      #     sudo apt-get -y -qq update
+      #     sudo apt-get -y install datalad
+      # - name: Info
+      #   run: |
+      #     datalad --version      
       # - name: Get fmriprep data
       #   run: |
       #     cd demos/
@@ -82,6 +85,14 @@ jobs:
       #                       */*/*json \
       #                       */*/*desc-preproc*.nii.gz \
       #                       */*/*desc-brain*.nii.gz
+
+      - name: Get moae fmriprep data from OSF
+          run: |
+            mkdir -p demos/MoAE/inputs/
+            cd demos/MoAE/inputs/
+            wget https://osf.io/vufjs/download
+            unzip download
+            mv moae_fmriprep fmriprep      
 
       - name: Install SPM
         run: |
