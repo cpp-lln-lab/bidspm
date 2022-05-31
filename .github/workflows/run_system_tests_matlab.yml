@@ -22,11 +22,13 @@ on:
       - dev
     paths:
       - '**.m'
+      - '.github/workflows/*system*'
   pull_request:
     branches:
       - main
     paths:
       - '**.m'
+      - '.github/workflows/*system*'
   schedule:
     - cron: "0 0 1,15 * *"
 
@@ -48,6 +50,15 @@ jobs:
       fail-fast: false
 
     steps:
+      - name: Install datalad
+        run: |
+          sudo apt-get -y -qq update
+          sudo apt-get -y install datalad
+
+      - name: Info
+        run: |          
+          datalad --version
+
       - name: Install MATLAB
         uses: matlab-actions/setup-matlab@v1.0.1
         with:
@@ -59,6 +70,18 @@ jobs:
         with:
           submodules: true
           fetch-depth: 2
+
+      # Prep for later
+      # - name: Get fmriprep data
+      #   run: |          
+      #     cd demos/
+      #     datalad install --source https://gin.g-node.org/SPM_datasets/spm_moae_fmriprep.git \
+      #                     inputs/fmriprep  
+      #     cd inputs/fmriprep && datalad get *.json \
+      #                       */*/*tsv \
+      #                       */*/*json \
+      #                       */*/*desc-preproc*.nii.gz \
+      #                       */*/*desc-brain*.nii.gz                                     
 
       - name: Install SPM
         run: |

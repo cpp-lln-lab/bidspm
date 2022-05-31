@@ -17,7 +17,6 @@ addpath(fullfile(pwd, '..', '..'));
 cpp_spm();
 
 opt = face_rep_get_option_results();
-opt.space = 'IXI549Space';
 
 opt.model.file = spm_file(opt.model.file, 'basename', 'model-faceRepetitionParametric_smdl');
 opt.model.bm = BidsModel('file', opt.model.file);

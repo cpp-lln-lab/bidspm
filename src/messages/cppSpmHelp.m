@@ -119,6 +119,8 @@ function cppSpmHelp()
   % :param task:
   % :type task: cell string
   %
+  % :param fwhm: smoothing lelvel of the preprocessed data
+  % :type fwhm: positive scalar
   %
   %
   % **low level calls**

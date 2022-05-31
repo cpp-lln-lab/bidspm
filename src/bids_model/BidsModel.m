@@ -70,7 +70,11 @@ classdef BidsModel < bids.Model
       else
         [model, idx] = obj.get_model(varargin{:});
         nodes = obj.Nodes;
-        nodeName = nodes{idx}.Name;
+        if iscell(nodes)
+          nodeName = nodes{idx}.Name;
+        else
+          nodeName = nodes.Name;
+        end
       end
 
     end

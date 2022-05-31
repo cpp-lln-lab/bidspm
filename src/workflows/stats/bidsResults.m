@@ -330,6 +330,7 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
 
     background = opt.results(iRes).montage.background;
 
+    % TODO refactor with getInclusiveMask
     if isstruct(background)
 
       if ismember(lower(node.Level), {'run', 'session', 'subject'})
@@ -343,15 +344,20 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
         file = bids.query(BIDS, 'data', background);
 
         if iscell(file)
+          if isempty(file)
+            % let checkMaskOrUnderlay figure it out
+            file = '';
 
-          if numel(file) > 1
+          elseif numel(file) == 1
+            file = file{1};
+
+          elseif numel(file) > 1
+
             msg = sprintf('More than 1 overlay image found for %s.\n Taking the first one.', ...
                           createUnorderedList(background));
             id = 'tooManyMontageBackground';
             errorHandling(mfilename(), id, msg, true, opt.verbosity);
           end
-
-          file = file{1};
 
         end
 

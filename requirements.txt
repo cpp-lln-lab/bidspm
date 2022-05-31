@@ -13,3 +13,4 @@ sphinx-copybutton
 sphinx_rtd_theme
 rstcheck
 myst-parser
+sphinxcontrib-mermaid
