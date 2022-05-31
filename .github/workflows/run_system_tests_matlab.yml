@@ -46,7 +46,7 @@ jobs:
 
     strategy:
       matrix:
-        script: [moae, facerep, fmriprep]
+        script: [moae, facerep]
       fail-fast: false
 
     steps:
@@ -71,16 +71,17 @@ jobs:
           submodules: true
           fetch-depth: 2
 
-      - name: Get MoAE fmriprep data
-        run: |          
-          cd demos/MoAE
-          datalad install --source https://gin.g-node.org/SPM_datasets/spm_moae_fmriprep.git \
-                          inputs/fmriprep  
-          cd inputs/fmriprep && datalad get *.json \
-                            */*/*tsv \
-                            */*/*json \
-                            */*/*desc-preproc*.nii.gz \
-                            */*/*desc-brain*.nii.gz                                     
+      # Prep for later
+      # - name: Get fmriprep data
+      #   run: |          
+      #     cd demos/
+      #     datalad install --source https://gin.g-node.org/SPM_datasets/spm_moae_fmriprep.git \
+      #                     inputs/fmriprep  
+      #     cd inputs/fmriprep && datalad get *.json \
+      #                       */*/*tsv \
+      #                       */*/*json \
+      #                       */*/*desc-preproc*.nii.gz \
+      #                       */*/*desc-brain*.nii.gz                                     
 
       - name: Install SPM
         run: |
