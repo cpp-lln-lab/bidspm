@@ -26,7 +26,8 @@ function test_bidsRFX_basic_select_datasets_level_to_run()
   assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
   assert(isfield(matlabbatch{2}.spm.util, 'print'));
   assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{4}.spm.util, 'print'));
+  assert(isfield(matlabbatch{4}.spm.stats, 'review'));
+  assert(isfield(matlabbatch{5}.spm.util, 'print'));
 
   cleanUp(fullfile(opt.dir.output, 'derivatives'));
 
@@ -47,22 +48,24 @@ function test_bidsRFX_basic_several_datasets_level()
   matlabbatch = bidsRFX('RFX', opt);
 
   nbGroupLevelModels = 3;
-  nbBatchPerModel = 4;
+  nbBatchPerModel = 5;
 
-  % creates 2 batches for (specify, figure, estimate, figure)
+  % creates 5 batches for (specify, figure, estimate, review, figure)
   for i = 1:2:3
     assert(isfield(matlabbatch{i}.spm.stats, 'factorial_design'));
     assert(isfield(matlabbatch{i + 1}.spm.util, 'print'));
   end
-  for i = 5:2:7
+  for i = 5:3:8
     assert(isfield(matlabbatch{i}.spm.stats, 'fmri_est'));
-    assert(isfield(matlabbatch{i + 1}.spm.util, 'print'));
+    assert(isfield(matlabbatch{i + 1}.spm.stats, 'review'));
+    assert(isfield(matlabbatch{i + 2}.spm.util, 'print'));
   end
   % creates 1 batch for (specify, figure, estimate, figure)
-  assert(isfield(matlabbatch{9}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{10}.spm.util, 'print'));
-  assert(isfield(matlabbatch{11}.spm.stats, 'fmri_est'));
+  assert(isfield(matlabbatch{11}.spm.stats, 'factorial_design'));
   assert(isfield(matlabbatch{12}.spm.util, 'print'));
+  assert(isfield(matlabbatch{13}.spm.stats, 'fmri_est'));
+  assert(isfield(matlabbatch{14}.spm.stats, 'review'));
+  assert(isfield(matlabbatch{15}.spm.util, 'print'));
 
   assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
 
@@ -78,17 +81,22 @@ function test_bidsRFX_basic_rfx()
 
   matlabbatch = bidsRFX('RFX', opt);
 
+  % 2 dummy contrasts
+  % 2 contrasts
   nbGroupLevelModels = 4;
-  nbBatchPerModel = 4;
+  nbBatchPerModel = 5;
 
-  % creates 4 batches for (specify, figure, estimate, figure)
+  % setBatchFactorial creates 2 batches for each model (specify, figure)
   for i = 1:2:7
     assert(isfield(matlabbatch{i}.spm.stats, 'factorial_design'));
     assert(isfield(matlabbatch{i + 1}.spm.util, 'print'));
   end
-  for i = 9:2:15
+
+  % setBatchEstimateModel creates 3 batches for each model (estimate, review, figure)
+  for i = 9:3:18
     assert(isfield(matlabbatch{i}.spm.stats, 'fmri_est'));
-    assert(isfield(matlabbatch{i + 1}.spm.util, 'print'));
+    assert(isfield(matlabbatch{i + 1}.spm.stats, 'review'));
+    assert(isfield(matlabbatch{i + 2}.spm.util, 'print'));
   end
   assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
 
