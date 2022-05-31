@@ -34,9 +34,9 @@ function matlabbatch = setBatchTwoSampleTTest(varargin)
 
   parse(args, varargin{:});
 
-  matlabbatch =    args.Results.matlabbatch;
-  opt =    args.Results.opt;
-  nodeName =    args.Results.nodeName;
+  matlabbatch = args.Results.matlabbatch;
+  opt = args.Results.opt;
+  nodeName = args.Results.nodeName;
 
   printBatchName('specify group level paired T-test fmri model', opt);
 
@@ -122,60 +122,10 @@ function matlabbatch = setBatchTwoSampleTTest(varargin)
   factorialDesign.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
   factorialDesign.multi_cov = struct('files', {}, 'iCFI', {}, 'iCC', {});
 
-  factorialDesign = defaultImplicitMasking(factorialDesign);
+  factorialDesign = setBatchFactorialDesignImplicitMasking(factorialDesign);
 
-  factorialDesign = defaultGlobalCalcAndNorm(factorialDesign);
+  factorialDesign = setBatchFatorialDesignGlobalCalcAndNorm(factorialDesign);
 
   matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
 
-end
-
-function file = findSubjectConImage(opt, subLabel, contrastName)
-
-  file = '';
-
-  % FFX directory and load SPM.mat of that subject
-  ffxDir = getFFXdir(subLabel, opt);
-  load(fullfile(ffxDir, 'SPM.mat'));
-
-  % find which contrast of that subject has the name of the contrast we
-  % want to bring to the group level
-  conIdx = find(strcmp({SPM.xCon.name}, contrastName));
-
-  if isempty(conIdx)
-
-    msg = sprintf('Skipping subject %s. Could not find a contrast named %s\nin %s.\n', ...
-                  subLabel, ...
-                  contrastName, ...
-                  fullfile(ffxDir, 'SPM.mat'));
-
-    errorHandling(mfilename(), 'missingContrast', msg, true, opt.verbosity);
-
-    printToScreen(['available contrasts:\n' createUnorderedList({SPM.xCon.name}')], ...
-                  opt, 'format', 'red');
-
-  else
-
-    % Check which level of CON smoothing is desired
-    smoothPrefix = '';
-    if opt.fwhm.contrast > 0
-      smoothPrefix = [spm_get_defaults('smooth.prefix'), num2str(opt.fwhm.contrast)];
-    end
-
-    fileName = sprintf('con_%0.4d.nii', conIdx);
-    file = validationInputFile(ffxDir, fileName, smoothPrefix);
-
-  end
-
-end
-
-function factorialDesign = defaultGlobalCalcAndNorm(factorialDesign)
-  factorialDesign.globalc.g_omit = 1;
-  factorialDesign.globalm.gmsca.gmsca_no = 1;
-  factorialDesign.globalm.glonorm = 1;
-end
-
-function factorialDesign = defaultImplicitMasking(factorialDesign)
-  factorialDesign.masking.tm.tm_none = 1;
-  factorialDesign.masking.im = 1;
 end
