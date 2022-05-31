@@ -50,8 +50,8 @@ function matlabbatch = bidsRFX(varargin)
 
   opt.dir.output = opt.dir.stats;
 
-  % To speed up group level as we do not need to index raw data ?
-  [BIDS, opt] = setUpWorkflow(opt, description);
+  % To speed up group level as we may try to skip indexing data
+  [~, opt] = setUpWorkflow(opt, description);
 
   if numel(opt.space) > 1
     disp(opt.space);
@@ -70,6 +70,10 @@ function matlabbatch = bidsRFX(varargin)
 
     case 'smoothcontrasts'
 
+      % info for later refactoring
+      %
+      % this runs: [BIDS, opt] = getData(opt, opt.dir.preproc);
+
       % TODO split this in a different workflow
 
       matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
@@ -81,9 +85,11 @@ function matlabbatch = bidsRFX(varargin)
 
     case 'meananatandmask'
 
+      % info for later refactoring
+      %
+      % this runs: [BIDS, opt] = getData(opt, opt.dir.preproc);
+
       % TODO need to rethink where to save the anat and mask
-      % TODO need to smooth the anat
-      % TODO create a masked version of the anat too
 
       opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
       opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
@@ -98,6 +104,10 @@ function matlabbatch = bidsRFX(varargin)
       initBids(opt, 'description', description, 'force', false);
 
     case 'rfx'
+
+      % info for later refactoring
+      %
+      % this runs: [BIDS, opt] = getData(opt, opt.dir.preproc);
 
       opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
       opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
@@ -125,6 +135,10 @@ function matlabbatch = bidsRFX(varargin)
       initBids(opt, 'description', description, 'force', false);
 
     case 'contrast'
+
+      % info for later refactoring
+      %
+      % does not run getData and does not need it
 
       opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
       opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));

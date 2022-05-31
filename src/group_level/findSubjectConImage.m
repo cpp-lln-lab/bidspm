@@ -1,5 +1,8 @@
 function file = findSubjectConImage(varargin)
   %
+  % returns the fullpath of a con image for a given subject label
+  % and contrast name
+  %
   % USAGE::
   %
   %   file = findSubjectConImage(opt, subLabel, contrastName)
@@ -9,7 +12,7 @@ function file = findSubjectConImage(varargin)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2022 CPP_SPM developers
 
   args = inputParser;
 

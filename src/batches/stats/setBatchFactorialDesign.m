@@ -28,9 +28,9 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
     return
   end
 
-  printBatchName('specify group level fmri model', opt);
-
   [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  printBatchName('specify group level fmri model', opt);
 
   % average at the group level
   if opt.model.bm.get_design_matrix('Name', nodeName) == 1
