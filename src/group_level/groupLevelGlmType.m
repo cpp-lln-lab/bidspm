@@ -2,7 +2,7 @@ function [type, designMatrix] = groupLevelGlmType(opt, nodeName)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  designMatrix = opt.model.bm.get_design_matrix('Name', nodeName);
+  designMatrix = opt.model.bm.getBidsDesignMatrix('Name', nodeName);
 
   if isnumeric(designMatrix) && designMatrix == 1
 

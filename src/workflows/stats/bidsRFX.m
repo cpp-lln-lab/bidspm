@@ -97,6 +97,8 @@ function matlabbatch = bidsRFX(varargin)
 
       for i = 1:numel(datasetNodes)
 
+        nodeName = datasetNodes{i}.Name;
+
         switch  groupLevelGlmType(opt, nodeName)
 
           case 'one_sample_t_test'

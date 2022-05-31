@@ -402,7 +402,11 @@ function renameOutputResults(results)
 
   for i = 1:numel(results)
 
-    result = results{i};
+    if iscell(results)
+      result = results{i};
+    elseif isstruct(results)
+      result = results(i);
+    end
 
     outputFiles = spm_select('FPList', result.dir, '^spmT_[0-9].*_sub-.*$');
 
