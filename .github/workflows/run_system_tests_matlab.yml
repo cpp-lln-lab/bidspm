@@ -74,13 +74,13 @@ jobs:
       - name: Get MoAE fmriprep data
         run: |          
           cd demos/MoAE
-          	datalad install --source https://gin.g-node.org/SPM_datasets/spm_moae_fmriprep.git \
-					                  inputs/fmriprep  
-            cd inputs/fmriprep && datalad get *.json \
-                              */*/*tsv \
-                              */*/*json \
-                              */*/*desc-preproc*.nii.gz \
-                              */*/*desc-brain*.nii.gz                                     
+          datalad install --source https://gin.g-node.org/SPM_datasets/spm_moae_fmriprep.git \
+                          inputs/fmriprep  
+          cd inputs/fmriprep && datalad get *.json \
+                            */*/*tsv \
+                            */*/*json \
+                            */*/*desc-preproc*.nii.gz \
+                            */*/*desc-brain*.nii.gz                                     
 
       - name: Install SPM
         run: |
