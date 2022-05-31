@@ -120,12 +120,12 @@ function [matlabbatch, opt] = bidsFFX(varargin)
 
     batchName = createBatchName(opt, action);
 
-    saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
+    status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
-    if ~opt.dryRun && ...
-            opt.QA.glm.do && ....
-            ~opt.model.designOnly && ...
-            ismember(action, {'specifyAndEstimate', 'estimate'})
+    if status && ...
+       opt.QA.glm.do && ....
+       ~opt.model.designOnly && ...
+       ismember(action, {'specifyAndEstimate', 'estimate'})
 
       repetitionTime = matlabbatch{1}.spm.stats.fmri_spec.timing.RT;
       plot_power_spectra_of_GLM_residuals(outputDir, repetitionTime);
@@ -134,6 +134,10 @@ function [matlabbatch, opt] = bidsFFX(varargin)
         deleteResidualImages(getFFXdir(subLabel, opt));
       end
 
+    end
+
+    if status
+      renamePng(getFFXdir(subLabel, opt));
     end
 
   end
