@@ -7,7 +7,7 @@
       "auditory"
     ],
     "space": [
-      "IXI549Space"
+      "MNI152NLin6Asym"
     ]
   },
   "Nodes": [
@@ -34,8 +34,12 @@
         "Options": {
           "HighPassFilterCutoffHz": 0.0078,
           "Mask": {
-            "suffix": ["mask"],
-            "label": ["brain"]
+            "suffix": [
+              "mask"
+            ],
+            "desc": [
+              "brain"
+            ]
           }
         },
         "Software": {
