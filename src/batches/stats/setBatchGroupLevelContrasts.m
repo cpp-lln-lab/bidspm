@@ -23,27 +23,57 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
   printBatchName('group level contrast estimation', opt);
 
-  % average at the group level
-  if opt.model.bm.get_design_matrix('Name', nodeName) == 1
+  [groupGlmType, designMatrix] =  groupLevelGlmType(opt, nodeName);
 
-    contrastsList = getDummyContrastsList(nodeName, opt.model.bm);
-    tmp = getContrastsList(nodeName, opt.model.bm);
+  switch groupGlmType
 
-    for j = 1:numel(tmp)
-      contrastsList{end + 1} = tmp{j}.Name;
-    end
+    case 'one_sample_t_test'
 
-  end
+      contrastsList = getDummyContrastsList(nodeName, opt.model.bm);
+      tmp = getContrastsList(nodeName, opt.model.bm);
 
-  for j = 1:numel(contrastsList)
+      for j = 1:numel(tmp)
+        contrastsList{end + 1} = tmp{j}.Name;
+      end
 
-    spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
+      for j = 1:numel(contrastsList)
 
-    consess{1}.tcon.name = contrastsList{j};
-    consess{1}.tcon.convec = 1;
-    consess{1}.tcon.sessrep = 'none';
+        spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
 
-    matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+        consess{1}.tcon.name = contrastsList{j};
+        consess{1}.tcon.convec = 1;
+        consess{1}.tcon.sessrep = 'none';
+
+        matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+
+      end
+
+    case 'two_sample_t_test'
+
+      designMatrix = removeIntercept(designMatrix);
+
+      if ismember(lower(designMatrix), {'group'})
+        edge = getEdge(opt.model.bm, 'Destination', nodeName);
+        contrastsList = edge.Filter.contrast;
+      end
+
+      for j = 1:numel(contrastsList)
+
+        thisContrast = opt.model.bm.get_contrasts('Name', nodeName);
+
+        spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
+
+        consess{1}.tcon.name = thisContrast.Name;
+        consess{1}.tcon.convec = thisContrast.Weights;
+        consess{1}.tcon.sessrep = 'none';
+
+        matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+
+      end
+
+    otherwise
+      msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
+      notImplemented(mfilename(), msg, true);
 
   end
 

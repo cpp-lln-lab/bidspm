@@ -44,6 +44,10 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contras
       % group level
     case 4
 
+      if ischar(contrastsList)
+        contrastsList = cellstr(contrastsList);
+      end
+
       printBatchName('estimate group level fmri model', opt);
 
       for j = 1:size(contrastsList)
@@ -55,6 +59,10 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contras
         opt.QA.glm.do = false();
 
         matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
+
+        matlabbatch{end + 1}.spm.stats.review.spmmat = spmMatFile;
+        matlabbatch{end}.spm.stats.review.display.matrix = 1;
+        matlabbatch{end}.spm.stats.review.print = false;
 
         matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
                                           fullfile(spm_fileparts(spmMatFile{1}), ...

@@ -169,13 +169,13 @@ function matlabbatch = bidsResults(opt)
             batchName = sprintf('compute_sub-%s_subject_level_results', subLabel);
           end
 
-          [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLevel);
+          [matlabbatch, results] = bidsResultsSubject(opt, subLabel, iRes, isRunLevel);
 
           status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
           if status
-            renameOutputResults(result);
-            renameNidm(opt, result, subLabel);
+            renameOutputResults(results);
+            renameNidm(opt, results, subLabel);
           end
 
         end
@@ -188,14 +188,14 @@ function matlabbatch = bidsResults(opt)
 
       case 'dataset'
 
-        [matlabbatch, result] = bidsResultsDataset(opt, iRes);
+        [matlabbatch, results] = bidsResultsDataset(opt, iRes);
 
         batchName = 'compute_group_level_results';
 
         status = saveAndRunWorkflow(matlabbatch, batchName, opt);
 
         if status
-          renameOutputResults(result);
+          renameOutputResults(results);
         end
 
       otherwise
@@ -283,7 +283,7 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLe
 
 end
 
-function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
+function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
 
   BIDS = '';
 
@@ -301,9 +301,29 @@ function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
 
     result = opt.results(iRes);
 
-    result.name = opt.results(iRes).name{i};
+    name = opt.results(iRes).name{i};
+    if isempty(name)
+      unfold(opt.results(iRes));
+      msg = 'No name specified for this result. May lead to failure.';
+      id = 'unSpecifiedResultName';
+      errorHandling(mfilename(), id, msg, true, opt.verbosity);
+    end
+    result.dir = getRFXdir(opt, result.nodeName, name);
 
-    result.dir = getRFXdir(opt, result.nodeName, result.name);
+    switch  groupLevelGlmType(opt, node.Name)
+
+      case 'one_sample_t_test'
+        result.name = name;
+
+      case 'two_sample_t_test'
+        thisContrast = opt.model.bm.get_contrasts('Name', node.Name);
+        result.name = [thisContrast.Name ' - ' name];
+
+      otherwise
+        msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
+        notImplemented(mfilename(), msg, true);
+
+    end
 
     result.space = opt.space;
 
@@ -314,6 +334,8 @@ function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
     matlabbatch = setBatchPrintFigure(matlabbatch, ...
                                       opt, ...
                                       fullfile(result.dir, figureName(opt)));
+
+    results{i} = result;
 
   end
 
@@ -374,27 +396,37 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
 
 end
 
-function renameOutputResults(result)
+function renameOutputResults(results)
   % we create new name for the nifti output by removing the
   % spmT_XXXX prefix and using the XXXX as label- for the file
 
-  outputFiles = spm_select('FPList', result.dir, '^spmT_[0-9].*_sub-.*$');
+  for i = 1:numel(results)
 
-  for iFile = 1:size(outputFiles, 1)
+    if iscell(results)
+      result = results{i};
+    elseif isstruct(results)
+      result = results(i);
+    end
 
-    source = deblank(outputFiles(iFile, :));
+    outputFiles = spm_select('FPList', result.dir, '^spmT_[0-9].*_sub-.*$');
 
-    basename = spm_file(source, 'basename');
-    split = strfind(basename, '_sub');
-    bf = bids.File(basename(split + 1:end));
-    bf.entities.label = basename(split - 4:split - 1);
+    for iFile = 1:size(outputFiles, 1)
 
-    target = spm_file(source, 'basename', bf.filename);
+      source = deblank(outputFiles(iFile, :));
 
-    movefile(source, target);
+      basename = spm_file(source, 'basename');
+      split = strfind(basename, '_sub');
+      bf = bids.File(basename(split + 1:end));
+      bf.entities.label = basename(split - 4:split - 1);
+
+      target = spm_file(source, 'basename', bf.filename);
+
+      movefile(source, target);
+    end
+
+    renamePng(result);
+
   end
-
-  renamePng(result);
 
 end
 

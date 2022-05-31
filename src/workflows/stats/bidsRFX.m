@@ -50,14 +50,11 @@ function matlabbatch = bidsRFX(varargin)
 
   opt.dir.output = opt.dir.stats;
 
-  % To speed up group level as we do not need to index raw data ?
-  [BIDS, opt] = setUpWorkflow(opt, description);
+  % To speed up group level we skip indexing data
+  indexData = false;
+  [~, opt] = setUpWorkflow(opt, description, [], indexData);
 
-  if numel(opt.space) > 1
-    disp(opt.space);
-    msg = sprintf('GLMs can only be run in one space at a time.\n');
-    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
-  end
+  checks(opt);
 
   matlabbatch = {};
 
@@ -66,79 +63,83 @@ function matlabbatch = bidsRFX(varargin)
   % - extract function for anat and mask computation
   % - merge rfx and ffx into a single "stats" workflow
 
+  if ismember(lower(action), {'meananatandmask', 'rfx', 'contrast'})
+    opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
+    opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
+  end
+
+  if ismember(lower(action), {'rfx', 'contrast'})
+    if ~isempty(nodeName)
+      datasetNodes = opt.model.bm.get_nodes('Name', nodeName);
+    else
+      datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
+    end
+  end
+
   switch lower(action)
 
     case 'smoothcontrasts'
-
       % TODO split this in a different workflow
-
       matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
-
       saveAndRunWorkflow(matlabbatch, ...
                          ['smooth_con_FWHM-', num2str(opt.fwhm.contrast), ...
                           '_task-', strjoin(opt.taskName, '')], ...
                          opt);
 
     case 'meananatandmask'
-
       % TODO need to rethink where to save the anat and mask
-      % TODO need to smooth the anat
-      % TODO create a masked version of the anat too
-
-      opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
-      opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
-
       matlabbatch = setBatchMeanAnatAndMask(matlabbatch, ...
                                             opt, ...
                                             opt.dir.output);
       saveAndRunWorkflow(matlabbatch, 'create_mean_struc_mask', opt);
 
-      opt.pipeline.name = 'cpp_spm';
-      opt.pipeline.type = 'groupStats';
-      initBids(opt, 'description', description, 'force', false);
-
     case 'rfx'
-
-      opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
-      opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
-
-      if ~isempty(nodeName)
-        datasetNodes = opt.model.bm.get_nodes('Name', nodeName);
-      else
-        datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
-      end
 
       for i = 1:numel(datasetNodes)
 
-        [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, ...
-                                                               opt, ...
-                                                               datasetNodes{i}.Name);
+        nodeName = datasetNodes{i}.Name;
+
+        switch  groupLevelGlmType(opt, nodeName)
+
+          case 'one_sample_t_test'
+            [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, ...
+                                                                   opt, ...
+                                                                   datasetNodes{i}.Name);
+          case 'two_sample_t_test'
+            [matlabbatch, contrastsList] = setBatchTwoSampleTTest(matlabbatch, ...
+                                                                  opt, ...
+                                                                  datasetNodes{i}.Name);
+          otherwise
+            msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
+            notImplemented(mfilename(), msg, true);
+
+        end
 
         matlabbatch = setBatchEstimateModel(matlabbatch, opt, datasetNodes{i}.Name, contrastsList);
-
         saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
 
       end
 
-      opt.pipeline.name = 'cpp_spm';
-      opt.pipeline.type = 'groupStats';
-      initBids(opt, 'description', description, 'force', false);
-
     case 'contrast'
 
-      opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
-      opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
-
-      datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
-
       for i = 1:numel(datasetNodes)
-
         matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, datasetNodes{i}.Name);
-
         saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);
-
       end
 
   end
 
+  if ismember(lower(action), {'meananatandmask', 'rfx'})
+    opt.pipeline.name = 'cpp_spm';
+    opt.pipeline.type = 'groupStats';
+    initBids(opt, 'description', description, 'force', false);
+  end
+end
+
+function checks(opt)
+  if numel(opt.space) > 1
+    disp(opt.space);
+    msg = sprintf('GLMs can only be run in one space at a time.\n');
+    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+  end
 end
