@@ -79,85 +79,59 @@ function matlabbatch = bidsRFX(varargin)
   switch lower(action)
 
     case 'smoothcontrasts'
-
-      % info for later refactoring
-      %
-      % this runs: [BIDS, opt] = getData(opt, opt.dir.preproc);
-
       % TODO split this in a different workflow
-
       matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
-
       saveAndRunWorkflow(matlabbatch, ...
                          ['smooth_con_FWHM-', num2str(opt.fwhm.contrast), ...
                           '_task-', strjoin(opt.taskName, '')], ...
                          opt);
 
     case 'meananatandmask'
-
-      % info for later refactoring
-      %
-      % this runs: [BIDS, opt] = getData(opt, opt.dir.preproc);
-
       % TODO need to rethink where to save the anat and mask
-
       matlabbatch = setBatchMeanAnatAndMask(matlabbatch, ...
                                             opt, ...
                                             opt.dir.output);
       saveAndRunWorkflow(matlabbatch, 'create_mean_struc_mask', opt);
 
-      opt.pipeline.name = 'cpp_spm';
-      opt.pipeline.type = 'groupStats';
-      initBids(opt, 'description', description, 'force', false);
-
     case 'rfx'
-
-      % info for later refactoring
-      %
-      % this runs: [BIDS, opt] = getData(opt, opt.dir.preproc);
 
       for i = 1:numel(datasetNodes)
 
-        designMatrix = datasetNodes{i}.Model.X;
+        switch  groupLevelGlmType(opt, nodeName)
 
-        % one sample ttest
-        if isnumeric(designMatrix) && designMatrix == 1
-          [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, ...
-                                                                 opt, ...
-                                                                 datasetNodes{i}.Name);
-          % TODO this won't be specific enough for other models
-        elseif iscell(designMatrix) && numel(designMatrix) == 2
-          [matlabbatch, contrastsList] = setBatchTwoSampleTTest(matlabbatch, ...
-                                                                opt, ...
-                                                                datasetNodes{i}.Name);
+          case 'one_sample_t_test'
+            [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, ...
+                                                                   opt, ...
+                                                                   datasetNodes{i}.Name);
+          case 'two_sample_t_test'
+            [matlabbatch, contrastsList] = setBatchTwoSampleTTest(matlabbatch, ...
+                                                                  opt, ...
+                                                                  datasetNodes{i}.Name);
+          otherwise
+            msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
+            notImplemented(mfilename(), msg, true);
+
         end
 
         matlabbatch = setBatchEstimateModel(matlabbatch, opt, datasetNodes{i}.Name, contrastsList);
-
         saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
 
       end
 
-      opt.pipeline.name = 'cpp_spm';
-      opt.pipeline.type = 'groupStats';
-      initBids(opt, 'description', description, 'force', false);
-
     case 'contrast'
 
-      % info for later refactoring
-      %
-      % does not run getData and does not need it
-
       for i = 1:numel(datasetNodes)
-
         matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, datasetNodes{i}.Name);
-
         saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);
-
       end
 
   end
 
+  if ismember(lower(action), {'meananatandmask', 'rfx'})
+    opt.pipeline.name = 'cpp_spm';
+    opt.pipeline.type = 'groupStats';
+    initBids(opt, 'description', description, 'force', false);
+  end
 end
 
 function checks(opt)

@@ -302,6 +302,12 @@ function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
     result = opt.results(iRes);
 
     result.name = opt.results(iRes).name{i};
+    if isempty(result.name)
+      unfold(opt.results(iRes));
+      msg = 'No name specified for this result. May lead to failure.';
+      id = 'unSpecifiedResultName';
+      errorHandling(mfilename(), id, msg, true, opt.verbosity);
+    end
 
     result.dir = getRFXdir(opt, result.nodeName, result.name);
 
