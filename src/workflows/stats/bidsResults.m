@@ -301,15 +301,29 @@ function [matlabbatch, result] = bidsResultsDataset(opt, iRes)
 
     result = opt.results(iRes);
 
-    result.name = opt.results(iRes).name{i};
-    if isempty(result.name)
+    name = opt.results(iRes).name{i};
+    if isempty(name)
       unfold(opt.results(iRes));
       msg = 'No name specified for this result. May lead to failure.';
       id = 'unSpecifiedResultName';
       errorHandling(mfilename(), id, msg, true, opt.verbosity);
     end
+    result.dir = getRFXdir(opt, result.nodeName, name);
 
-    result.dir = getRFXdir(opt, result.nodeName, result.name);
+    switch  groupLevelGlmType(opt, node.Name)
+
+      case 'one_sample_t_test'
+        result.name = name;
+
+      case 'two_sample_t_test'
+        thisContrast = opt.model.bm.get_contrasts('Name', node.Name);
+        result.name = [thisContrast.Name ' - ' name];
+
+      otherwise
+        msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
+        notImplemented(mfilename(), msg, true);
+
+    end
 
     result.space = opt.space;
 
