@@ -52,7 +52,15 @@ jobs:
         run: |
           sudo apt-get -y -qq update
           sudo apt-get -y install datalad
+
+      - name: Info
+        run: |          
           datalad --version
+
+      - name: Get MoAE fmriprep data
+        run: |          
+          cd demos/MoAE
+          make inputs/fmriprep
 
       - name: Install MATLAB
         uses: matlab-actions/setup-matlab@v1.0.1
