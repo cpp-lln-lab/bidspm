@@ -47,7 +47,7 @@ function test_setBatchMeanAnatAndMask_basic()
                                 'anat', ...
                                 'sub-ctrl01_ses-01_space-IXI549Space_desc-brain_mask.nii');
 
-  imcalc.output = 'space-IXI549Space_desc-brain.nii';
+  imcalc.output = 'space-IXI549Space_desc-brain_mask.nii';
   imcalc.outdir{1} = pwd;
   imcalc.expression = '(i1+i2)==1*2';
   imcalc.options.dtype = 16;
