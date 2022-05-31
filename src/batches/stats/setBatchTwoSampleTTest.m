@@ -1,4 +1,4 @@
-function matlabbatch = setBatchTwoSampleTTest(varargin)
+function [matlabbatch, contrastsList] = setBatchTwoSampleTTest(varargin)
   %
   % Sets up a group level GLM specification for a 2 sample T test
   %
@@ -87,12 +87,12 @@ function matlabbatch = setBatchTwoSampleTTest(varargin)
   %   }
   % }
   edge = getEdge(opt.model.bm, 'Destination', nodeName);
-  contrastNames = edge.Filter.contrast;
+  contrastsList = edge.Filter.contrast;
 
   % collect con images
   for iSub = 1:numel(opt.subjects)
     subLabel = opt.subjects{iSub};
-    conImages{iSub} = findSubjectConImage(opt, subLabel, contrastNames);
+    conImages{iSub} = findSubjectConImage(opt, subLabel, contrastsList);
   end
 
   % set up the batch

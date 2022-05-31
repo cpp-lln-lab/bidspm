@@ -50,14 +50,11 @@ function matlabbatch = bidsRFX(varargin)
 
   opt.dir.output = opt.dir.stats;
 
-  % To speed up group level as we may try to skip indexing data
-  [~, opt] = setUpWorkflow(opt, description);
+  % To speed up group level we skip indexing data
+  indexData = false;
+  [~, opt] = setUpWorkflow(opt, description, [], indexData);
 
-  if numel(opt.space) > 1
-    disp(opt.space);
-    msg = sprintf('GLMs can only be run in one space at a time.\n');
-    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
-  end
+  checks(opt);
 
   matlabbatch = {};
 
@@ -65,6 +62,19 @@ function matlabbatch = bidsRFX(varargin)
   % - extract function for contrast smoothing
   % - extract function for anat and mask computation
   % - merge rfx and ffx into a single "stats" workflow
+
+  if ismember(lower(action), {'meananatandmask', 'rfx', 'contrast'})
+    opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
+    opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
+  end
+
+  if ismember(lower(action), {'rfx', 'contrast'})
+    if ~isempty(nodeName)
+      datasetNodes = opt.model.bm.get_nodes('Name', nodeName);
+    else
+      datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
+    end
+  end
 
   switch lower(action)
 
@@ -91,9 +101,6 @@ function matlabbatch = bidsRFX(varargin)
 
       % TODO need to rethink where to save the anat and mask
 
-      opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
-      opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
-
       matlabbatch = setBatchMeanAnatAndMask(matlabbatch, ...
                                             opt, ...
                                             opt.dir.output);
@@ -109,20 +116,21 @@ function matlabbatch = bidsRFX(varargin)
       %
       % this runs: [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-      opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
-      opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
-
-      if ~isempty(nodeName)
-        datasetNodes = opt.model.bm.get_nodes('Name', nodeName);
-      else
-        datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
-      end
-
       for i = 1:numel(datasetNodes)
 
-        [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, ...
-                                                               opt, ...
-                                                               datasetNodes{i}.Name);
+        designMatrix = datasetNodes{i}.Model.X;
+
+        % one sample ttest
+        if isnumeric(designMatrix) && designMatrix == 1
+          [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, ...
+                                                                 opt, ...
+                                                                 datasetNodes{i}.Name);
+          % TODO this won't be specific enough for other models
+        elseif iscell(designMatrix) && numel(designMatrix) == 2
+          [matlabbatch, contrastsList] = setBatchTwoSampleTTest(matlabbatch, ...
+                                                                opt, ...
+                                                                datasetNodes{i}.Name);
+        end
 
         matlabbatch = setBatchEstimateModel(matlabbatch, opt, datasetNodes{i}.Name, contrastsList);
 
@@ -140,11 +148,6 @@ function matlabbatch = bidsRFX(varargin)
       %
       % does not run getData and does not need it
 
-      opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
-      opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
-
-      datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
-
       for i = 1:numel(datasetNodes)
 
         matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, datasetNodes{i}.Name);
@@ -155,4 +158,12 @@ function matlabbatch = bidsRFX(varargin)
 
   end
 
+end
+
+function checks(opt)
+  if numel(opt.space) > 1
+    disp(opt.space);
+    msg = sprintf('GLMs can only be run in one space at a time.\n');
+    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+  end
 end
