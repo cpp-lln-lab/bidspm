@@ -1,4 +1,4 @@
-function file = findSubjectConImage(opt, subLabel, contrastName)
+function file = findSubjectConImage(varargin)
   %
   % USAGE::
   %

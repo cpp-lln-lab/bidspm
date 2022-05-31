@@ -1,6 +1,6 @@
 function matlabbatch = setBatchTwoSampleTTest(varargin)
   %
-  % Short batch description
+  % Sets up a group level GLM specification for a 2 sample T test
   %
   % USAGE::
   %
@@ -40,28 +40,28 @@ function matlabbatch = setBatchTwoSampleTTest(varargin)
 
   printBatchName('specify group level paired T-test fmri model', opt);
 
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
   node = opt.model.bm.get_nodes('Name', nodeName);
   if iscell(node)
     node = node{1};
   end
 
-  group1 = strrep(node.Contrasts.ConditionList{1}, 'group.', '');
-  group2 = strrep(node.Contrasts.ConditionList{2}, 'group.', '');
+  % Assumes that group belonging was entered like this in the node contrast
+  %
+  % "ConditionList": [
+  %   "Group.blind",
+  %   "Group.control"
+  % ],
+  group1 = regexp(node.Contrasts.ConditionList{1}, '.', 'split');
+  group2 = strrep(node.Contrasts.ConditionList{2}, '.', 'split');
 
-  edge = getEdge(opt.model.bm, 'Destination', nodeName);
+  % for now we assume we can read the suibject group belonging
+  % from the partiticipant TSV in the raw dataset
+  % and from the same column
+  assert(strcmp(group1{1}, group1{2}));
+  groupField = group1{1};
 
-  contrastName = edge.Filter.contrast{1};
-
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
-
-  % TODO maybe better to base this group field on the actual content of the
-  % design matrix of this node
-  groupField = regexp(fieldnames(BIDS.raw.participants.content), 'group|Group', 'match');
-  groupField = groupField{~cellfun('isempty', groupField)};
-  assert(numel(groupField) == 1);
-  if iscell(groupField)
-    groupField = groupField{1};
-  end
   availableGroups = unique(BIDS.raw.participants.content.(groupField));
 
   if any(~ismember({group1, group2}, availableGroups))
@@ -71,61 +71,82 @@ function matlabbatch = setBatchTwoSampleTTest(varargin)
           createUnorderedList(availableGroups));
   end
 
-  rfxDir = getRFXdir(opt, nodeName, contrastName);
+  % We assume that all the contrast we want to loop over
+  % are specified in the Filter of the edge of the BIDS stats model
+  %
+  % {
+  %   "Source": "subject_level",
+  %   "Destination": "between_groups",
+  %   "Filter": {
+  %     "contrast": [
+  %       "all_olf"
+  %     ]
+  %   }
+  % }
 
-  overwriteDir(rfxDir, opt);
+  edge = getEdge(opt.model.bm, 'Destination', nodeName);
 
-  factorialDesign.dir = {rfxDir};
-  factorialDesign.des.t2.scans1 = {};
-  factorialDesign.des.t2.scans2 = {};
+  for iCon = 1:numel(edge.Filter.contrast)
 
-  for iSub = 1:numel(opt.subjects)
+    contrastName = edge.Filter.contrast{iCon};
 
-    subLabel = opt.subjects{iSub};
+    rfxDir = getRFXdir(opt, nodeName, contrastName);
 
-    printProcessingSubject(iSub, subLabel, opt);
+    overwriteDir(rfxDir, opt);
 
-    idx = strcmp(BIDS.raw.participants.content.participant_id, ['sub-' subLabel]);
-    participantGroup = BIDS.raw.participants.content.(groupField){idx};
+    factorialDesign.dir = {rfxDir};
+    factorialDesign.des.t2.scans1 = {};
+    factorialDesign.des.t2.scans2 = {};
 
-    file = findSubjectConImage(opt, subLabel, contrastName);
-    if isempty(file)
-      continue
+    for iSub = 1:numel(opt.subjects)
+
+      subLabel = opt.subjects{iSub};
+
+      printProcessingSubject(iSub, subLabel, opt);
+
+      idx = strcmp(BIDS.raw.participants.content.participant_id, ['sub-' subLabel]);
+      participantGroup = BIDS.raw.participants.content.(groupField){idx};
+
+      file = findSubjectConImage(opt, subLabel, contrastName);
+      if isempty(file)
+        continue
+      end
+
+      if strcmp (participantGroup, group1)
+        factorialDesign.des.t2.scans1{end + 1, 1} = file;
+
+      elseif strcmp (participantGroup, group2)
+        factorialDesign.des.t2.scans2{end + 1, 1} = file;
+
+      else
+        error(['Unknown group: %s.', ...
+               '\nAvailable groups in participants.tsv:\n%s'], ...
+              participantGroup, ...
+              createUnorderedList(availableGroups));
+      end
+
+      msg = sprintf(' %s\n\n', file);
+      printToScreen(msg, opt);
+
     end
 
-    if strcmp (participantGroup, group1)
-      factorialDesign.des.t2.scans1{end + 1, 1} = file;
+    mask = getInclusiveMask(opt, nodeName);
+    factorialDesign.masking.em = {mask};
 
-    elseif strcmp (participantGroup, group2)
-      factorialDesign.des.t2.scans2{end + 1, 1} = file;
+    factorialDesign.des.t2.dept = 0;
+    factorialDesign.des.t2.variance = 1;
+    factorialDesign.des.t2.gmsca = 0;
+    factorialDesign.des.t2.ancova = 0;
 
-    else
-      error(['Unknown group: %s.', ...
-             '\nAvailable groups in participants.tsv:\n%s'], ...
-            participantGroup, ...
-            createUnorderedList(availableGroups));
-    end
+    factorialDesign.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
+    factorialDesign.multi_cov = struct('files', {}, 'iCFI', {}, 'iCC', {});
 
-    msg = sprintf(' %s\n\n', file);
-    printToScreen(msg, opt);
+    factorialDesign = setBatchFactorialDesignImplicitMasking(factorialDesign);
+
+    factorialDesign = setBatchFatorialDesignGlobalCalcAndNorm(factorialDesign);
+
+    matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
 
   end
-
-  mask = getInclusiveMask(opt, nodeName);
-  factorialDesign.masking.em = {mask};
-
-  factorialDesign.des.t2.dept = 0;
-  factorialDesign.des.t2.variance = 1;
-  factorialDesign.des.t2.gmsca = 0;
-  factorialDesign.des.t2.ancova = 0;
-
-  factorialDesign.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
-  factorialDesign.multi_cov = struct('files', {}, 'iCFI', {}, 'iCC', {});
-
-  factorialDesign = setBatchFactorialDesignImplicitMasking(factorialDesign);
-
-  factorialDesign = setBatchFatorialDesignGlobalCalcAndNorm(factorialDesign);
-
-  matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
 
 end

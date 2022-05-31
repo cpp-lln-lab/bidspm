@@ -1,8 +1,6 @@
 % test API
 % (C) Copyright 2019 CPP_SPM developers
 
-cd ..;
-
 % initialise (add relevant folders to path)
 cpp_spm;
 cpp_spm('action', 'uninit');
