@@ -30,6 +30,8 @@ function status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
 
     if ~opt.dryRun
       spm_jobman('run', matlabbatch);
+    else
+      status = false;
     end
 
   else

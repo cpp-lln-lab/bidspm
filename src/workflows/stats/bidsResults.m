@@ -424,7 +424,7 @@ function renameOutputResults(results)
       movefile(source, target);
     end
 
-    renamePng(result);
+    renamePng(result.dir);
 
   end
 
@@ -450,21 +450,6 @@ function renameNidm(opt, result, subLabel)
     bf = bf.reorder_entities();
     bf = bf.update;
     target = fullfile(result.dir, bf.filename);
-    movefile(source, target);
-  end
-
-end
-
-function renamePng(result)
-  %
-  % removes the _XXX suffix before the PNG extension.
-
-  pngFiles = spm_select('FPList', result.dir, '^sub-.*[0-9].png$');
-
-  for iFile = 1:size(pngFiles, 1)
-    source = deblank(pngFiles(iFile, :));
-    basename = spm_file(source, 'basename');
-    target = spm_file(source, 'basename', basename(1:end - 4));
     movefile(source, target);
   end
 
