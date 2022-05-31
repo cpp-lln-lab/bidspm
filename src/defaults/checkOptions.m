@@ -160,10 +160,6 @@ function opt = checkOptions(opt)
   opt = setFields(opt, fieldsToSet);
 
   %  Options for toolboxes
-  if checkToolbox('ALI', 'verbose', opt.verbosity > 0)
-    opt = setFields(opt, ALI_my_defaults());
-  end
-
   opt = setFields(opt, rsHRF_my_defaults());
   opt = setFields(opt, MACS_my_defaults());
 

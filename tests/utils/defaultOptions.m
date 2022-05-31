@@ -96,9 +96,6 @@ function expectedOptions = defaultOptions(taskName)
     expectedOptions.taskName = {expectedOptions.taskName};
   end
 
-  if  checkToolbox('ALI', 'verbose', expectedOptions.verbosity > 0)
-    expectedOptions = setFields(expectedOptions, ALI_my_defaults());
-  end
   expectedOptions = setFields(expectedOptions, rsHRF_my_defaults());
   expectedOptions = setFields(expectedOptions, MACS_my_defaults());
 
