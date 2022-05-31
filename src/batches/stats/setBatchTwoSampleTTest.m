@@ -53,14 +53,17 @@ function matlabbatch = setBatchTwoSampleTTest(varargin)
   %   "Group.blind",
   %   "Group.control"
   % ],
-  group1 = regexp(node.Contrasts.ConditionList{1}, '.', 'split');
-  group2 = strrep(node.Contrasts.ConditionList{2}, '.', 'split');
+  group1 = regexp(node.Contrasts.ConditionList{1}, '\.', 'split');
+  group2 = regexp(node.Contrasts.ConditionList{2}, '\.', 'split');
 
   % for now we assume we can read the suibject group belonging
   % from the partiticipant TSV in the raw dataset
   % and from the same column
-  assert(strcmp(group1{1}, group1{2}));
+  assert(strcmp(group1{1}, group2{1}));
   groupField = group1{1};
+
+  group1 = group1{2};
+  group2 = group2{2};
 
   availableGroups = unique(BIDS.raw.participants.content.(groupField));
 
@@ -79,13 +82,20 @@ function matlabbatch = setBatchTwoSampleTTest(varargin)
   %   "Destination": "between_groups",
   %   "Filter": {
   %     "contrast": [
-  %       "all_olf"
+  %       "bar", "foo"
   %     ]
   %   }
   % }
-
   edge = getEdge(opt.model.bm, 'Destination', nodeName);
+  contrastNames = edge.Filter.contrast;
 
+  % collect con images
+  for iSub = 1:numel(opt.subjects)
+    subLabel = opt.subjects{iSub};
+    conImages{iSub} = findSubjectConImage(opt, subLabel, contrastNames);
+  end
+
+  % set up the batch
   for iCon = 1:numel(edge.Filter.contrast)
 
     contrastName = edge.Filter.contrast{iCon};
@@ -107,7 +117,11 @@ function matlabbatch = setBatchTwoSampleTTest(varargin)
       idx = strcmp(BIDS.raw.participants.content.participant_id, ['sub-' subLabel]);
       participantGroup = BIDS.raw.participants.content.(groupField){idx};
 
-      file = findSubjectConImage(opt, subLabel, contrastName);
+      if numel(edge.Filter.contrast) == 1
+        file = conImages{iSub};
+      else
+        file = conImages{iSub}{iCon};
+      end
       if isempty(file)
         continue
       end
@@ -146,6 +160,11 @@ function matlabbatch = setBatchTwoSampleTTest(varargin)
     factorialDesign = setBatchFatorialDesignGlobalCalcAndNorm(factorialDesign);
 
     matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
+
+    matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
+                                      fullfile(rfxDir, ...
+                                               designMatrixFigureName(opt, ...
+                                                                      'before estimation')));
 
   end
 

@@ -1,7 +1,7 @@
 function file = findSubjectConImage(varargin)
   %
-  % returns the fullpath of a con image for a given subject label
-  % and contrast name
+  % Rreturns the fullpath of a con image(s) for a given subject label
+  % and contrast name(s).
   %
   % USAGE::
   %
@@ -12,13 +12,23 @@ function file = findSubjectConImage(varargin)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
+  % :param subLabel:
+  % :type subLabel: char
+  %
+  % :param contrastName:
+  % :type contrastName: char or cellstr
+  %
   % (C) Copyright 2022 CPP_SPM developers
+
+  file = {};
+
+  isCharOrCellStr = @(x) ischar(x) || iscellstr(x);
 
   args = inputParser;
 
   addRequired(args, 'opt', @isstruct);
   addRequired(args, 'subLabel', @ischar);
-  addRequired(args, 'contrastName', @ischar);
+  addRequired(args, 'contrastName', isCharOrCellStr);
 
   parse(args, varargin{:});
 
@@ -26,39 +36,51 @@ function file = findSubjectConImage(varargin)
   subLabel = args.Results.subLabel;
   contrastName = args.Results.contrastName;
 
-  file = '';
+  if ischar(contrastName)
+    contrastName = cellstr(contrastName);
+  end
 
   % FFX directory and load SPM.mat of that subject
   ffxDir = getFFXdir(subLabel, opt);
   load(fullfile(ffxDir, 'SPM.mat'));
 
-  % find which contrast of that subject has the name of the contrast we
-  % want to bring to the group level
-  conIdx = find(strcmp({SPM.xCon.name}, contrastName));
+  for iCon = 1:numel(contrastName)
 
-  if isempty(conIdx)
+    % find which contrast of that subject has the name of the contrast we
+    % want to bring to the group level
+    conIdx = find(strcmp({SPM.xCon.name}, contrastName{iCon}));
 
-    msg = sprintf('Skipping subject %s. Could not find a contrast named %s\nin %s.\n', ...
-                  subLabel, ...
-                  contrastName, ...
-                  fullfile(ffxDir, 'SPM.mat'));
+    if isempty(conIdx)
 
-    errorHandling(mfilename(), 'missingContrast', msg, true, opt.verbosity);
+      msg = sprintf('Skipping subject %s. Could not find a contrast named %s\nin %s.\n', ...
+                    subLabel, ...
+                    contrastName{iCon}, ...
+                    fullfile(ffxDir, 'SPM.mat'));
 
-    printToScreen(['available contrasts:\n' createUnorderedList({SPM.xCon.name}')], ...
-                  opt, 'format', 'red');
+      errorHandling(mfilename(), 'missingContrast', msg, true, opt.verbosity);
 
-  else
+      printToScreen(['available contrasts:\n' createUnorderedList({SPM.xCon.name}')], ...
+                    opt, 'format', 'red');
 
-    % Check which level of CON smoothing is desired
-    smoothPrefix = '';
-    if opt.fwhm.contrast > 0
-      smoothPrefix = [spm_get_defaults('smooth.prefix'), num2str(opt.fwhm.contrast)];
+      file{iCon, 1} = '';
+
+    else
+
+      % Check which level of CON smoothing is desired
+      smoothPrefix = '';
+      if opt.fwhm.contrast > 0
+        smoothPrefix = [spm_get_defaults('smooth.prefix'), num2str(opt.fwhm.contrast)];
+      end
+
+      fileName = sprintf('con_%0.4d.nii', conIdx);
+      file{iCon, 1} = validationInputFile(ffxDir, fileName, smoothPrefix);
+
     end
 
-    fileName = sprintf('con_%0.4d.nii', conIdx);
-    file = validationInputFile(ffxDir, fileName, smoothPrefix);
+  end
 
+  if numel(file) == 1
+    file = file{1};
   end
 
 end

@@ -60,6 +60,10 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contras
 
         matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
 
+        matlabbatch{end + 1}.spm.stats.review.spmmat = spmMatFile;
+        matlabbatch{end}.spm.stats.review.display.matrix = 1;
+        matlabbatch{end}.spm.stats.review.print = false;
+
         matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
                                           fullfile(spm_fileparts(spmMatFile{1}), ...
                                                    designMatrixFigureName(opt, ...

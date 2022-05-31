@@ -23,7 +23,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
   printBatchName('group level contrast estimation', opt);
 
-  % average at the group level
+  % one sample t-test at the group level
   designMatrix = opt.model.bm.get_design_matrix('Name', nodeName);
   if isnumeric(designMatrix) && designMatrix == 1
 
@@ -34,12 +34,12 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
       contrastsList{end + 1} = tmp{j}.Name;
     end
 
-    % comparison between groups
+    % 2 samples t-test at the group level
   elseif iscell(designMatrix)
     designMatrix = removeIntercept(designMatrix);
     if ismember(lower(designMatrix), {'group'})
       edge = getEdge(opt.model.bm, 'Destination', nodeName);
-      contrastsList = edge.Filter.contrast(1);
+      contrastsList = edge.Filter.contrast;
     end
 
   end
