@@ -8,8 +8,10 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
   % :param opt:
   % :type opt: structure
+  %
   % :param voxDim:
   % :type opt: array
   %
@@ -20,9 +22,12 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt
   jobsToAdd = numel(matlabbatch) + 1;
 
   if opt.anatOnly
-    maxJobsToAdd = 4;
+    maxJobsToAdd = 3;
   else
-    maxJobsToAdd = 5;
+    maxJobsToAdd = 4;
+  end
+  if opt.skullstrip.do
+    maxJobsToAdd = maxJobsToAdd + 2;
   end
 
   % set the deformation field for all the images we are about to normalize
@@ -67,12 +72,21 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt
   matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = csfTpm;
   jobsToAdd = jobsToAdd + 1;
 
-  % NORMALIZE SKULSTRIPPED STRUCTURAL
-  skullstrippedImage = getSkullstrippedImage(matlabbatch, BIDS, opt);
-  printBatchName('normalise skullstripped anatomical images', opt);
-  matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = skullstrippedImage;
-  % TODO why do we choose this resolution for this normalization?
-  matlabbatch{jobsToAdd}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
+  if opt.skullstrip.do
+    % NORMALIZE SKULLSTRIPPED STRUCTURAL AND MASK
+    skullstrippedImage = getSkullstrippedImage(matlabbatch, BIDS, opt);
+    printBatchName('normalise skullstripped anatomical images', opt);
+    matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = skullstrippedImage;
+    % TODO why do we choose this resolution for this normalization?
+    matlabbatch{jobsToAdd}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
+    jobsToAdd = jobsToAdd + 1;
+
+    skullstripMask = getSkullstripMask(matlabbatch, BIDS, opt);
+    printBatchName('normalise skullstrip mask', opt);
+    matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = skullstripMask;
+    % TODO why do we choose this resolution for this normalization?
+    matlabbatch{jobsToAdd}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
+  end
 
 end
 
@@ -86,28 +100,39 @@ function anatFile = getAnatFileFromBatch(matlabbatch)
 
 end
 
-function deformationField = getDeformationField(matlabbatch, BIDS, opt)
+function filter = basicFilter(matlabbatch)
 
-  deformationField = '';
+  filter = '';
 
   anatFile = getAnatFileFromBatch(matlabbatch);
 
   if not(isempty(anatFile))
     filter = anatFile.entities;
     filter.modality = 'anat';
-    filter.suffix = 'xfm';
     filter.prefix = '';
+    filter.extension = '.nii';
+  end
+
+end
+
+function deformationField = getDeformationField(matlabbatch, BIDS, opt)
+
+  deformationField = '';
+
+  filter = basicFilter(matlabbatch);
+  anatFile = getAnatFileFromBatch(matlabbatch);
+
+  if not(isempty(filter))
+    filter.suffix = 'xfm';
     filter.from = anatFile.suffix;
     filter.to = 'IXI549Space';
-    filter.extension = '.nii';
     deformationField = bids.query(BIDS, 'data', filter);
   end
 
   if isempty(deformationField)
-    deformationField = ...
-        cfg_dep('Segment: Forward Deformations', ...
-                returnDependency(opt, 'segment'), ...
-                substruct('.', 'fordef', '()', {':'}));
+    deformationField = cfg_dep('Segment: Forward Deformations', ...
+                               returnDependency(opt, 'segment'), ...
+                               substruct('.', 'fordef', '()', {':'}));
   end
 end
 
@@ -115,15 +140,13 @@ function biasCorrectedImage = getBiasCorrectedImage(matlabbatch, BIDS, opt)
 
   biasCorrectedImage = '';
 
+  filter = basicFilter(matlabbatch);
   anatFile = getAnatFileFromBatch(matlabbatch);
 
-  if not(isempty(anatFile))
-    filter = anatFile.entities;
-    filter.modality = 'anat';
+  if not(isempty(filter))
     filter.suffix = anatFile.suffix;
     filter.desc = 'biascor';
-    filter.prefix = '';
-    filter.extension = '.nii';
+    filter.space = 'individual';
     biasCorrectedImage = bids.query(BIDS, 'data', filter);
   end
 
@@ -142,17 +165,13 @@ function [gmTpm, wmTpm, csfTpm] = getTpms(matlabbatch, BIDS, opt)
   wmTpm = '';
   csfTpm = '';
 
-  anatFile = getAnatFileFromBatch(matlabbatch);
+  filter = basicFilter(matlabbatch);
 
-  if not(isempty(anatFile))
+  if not(isempty(filter))
 
-    filter = anatFile.entities;
-    filter.modality = 'anat';
     filter.suffix = 'probseg';
     filter.space = 'individual';
     filter.res =  '';
-    filter.prefix = '';
-    filter.extension = '.nii';
 
     filter.label = 'GM';
     gmTpm = bids.query(BIDS, 'data', filter);
@@ -188,27 +207,44 @@ function skullstrippedImage = getSkullstrippedImage(matlabbatch, BIDS, opt)
 
   skullstrippedImage = '';
 
+  filter = basicFilter(matlabbatch);
   anatFile = getAnatFileFromBatch(matlabbatch);
 
-  if not(isempty(anatFile))
-    filter = anatFile.entities;
-    filter.modality = 'anat';
-    filter.prefix = '';
+  if not(isempty(filter))
     filter.suffix = anatFile.suffix;
     filter.desc = 'skullstripped';
-    filter.extension = '.nii';
+    filter.space = 'individual';
     skullstrippedImage = bids.query(BIDS, 'data', filter);
   end
 
-  if isempty(skullstrippedImage)
+  if opt.skullstrip.do
     skullstrippedImage = cfg_dep('Image Calculator: skullstripped anatomical', ...
                                  returnDependency(opt, 'skullStripping'), ...
                                  substruct('.', 'files'));
   end
 end
 
+function skullstripMask = getSkullstripMask(matlabbatch, BIDS, opt)
+
+  skullstripMask = '';
+
+  filter = basicFilter(matlabbatch);
+
+  if not(isempty(filter))
+    filter.suffix = 'mask';
+    filter.desc = 'brain';
+    filter.space = 'individual';
+    skullstripMask = bids.query(BIDS, 'data', filter);
+  end
+
+  if opt.skullstrip.do
+    skullstripMask = cfg_dep('Image Calculator: skullstrip mask', ...
+                             returnDependency(opt, 'skullStrippingMask'), ...
+                             substruct('.', 'files'));
+  end
+end
+
 function tissueClass = returnDependencyOutputTissueClass(tissueClassNumber)
-  tissueClass = substruct( ...
-                          '.', 'tiss', '()', {tissueClassNumber}, ...
+  tissueClass = substruct('.', 'tiss', '()', {tissueClassNumber}, ...
                           '.', 'c', '()', {':'});
 end
