@@ -8,21 +8,30 @@ function test_suite = test_bidsSpatialPrepro %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsSpatialPrepro_anat_only()
+% TODO
+%
+% - add test for opt.skulltripping.skip
+
+function test_bidsSpatialPrepro_segment_no_force_no_skustrip()
+  %
+  % because
 
   opt = setOptions('MoAE-preproc');
 
-  opt.segment.force = true;
-  opt.anatOnly = true;
+  % some tweaks because we have dummy data
+  opt.funcVoxelDims = [2 2 2];
+  opt.segment.force = false;
+  opt.skullstrip.do = false;
 
   matlabbatch = bidsSpatialPrepro(opt);
 
   assertEqual(numel(matlabbatch), 9);
   assert(isfield(matlabbatch{1}, 'cfg_basicio'));
-  assert(isfield(matlabbatch{2}.spm.spatial, 'preproc'));
-  assert(isfield(matlabbatch{3}.spm.util, 'imcalc'));
-  assert(isfield(matlabbatch{4}.spm.util, 'imcalc'));
-  for i = 5:9
+  assert(isfield(matlabbatch{2}.spm.spatial, 'realignunwarp'));
+  assert(isfield(matlabbatch{3}.spm.spatial, 'coreg'));
+  assert(isfield(matlabbatch{4}, 'cfg_basicio'));
+  for i = 5:numel(matlabbatch)
+    matlabbatch{i}.spm.spatial.normalise.write.subj.resample;
     assert(isfield(matlabbatch{i}.spm.spatial, 'normalise'));
   end
 
@@ -34,15 +43,97 @@ function test_bidsSpatialPrepro_basic()
 
   % some tweaks because we have dummy data
   opt.funcVoxelDims = [2 2 2];
+  % dummy data that already contains the output of some segmentation
+  % so neeed to force it to see the whole full behavior of the workflow
+  opt.segment.force = true;
+
+  matlabbatch = bidsSpatialPrepro(opt);
+
+  assertEqual(numel(matlabbatch), 14);
+  assert(isfield(matlabbatch{1}, 'cfg_basicio'));
+  assert(isfield(matlabbatch{2}.spm.spatial, 'realignunwarp'));
+  assert(isfield(matlabbatch{3}.spm.spatial, 'coreg'));
+  assert(isfield(matlabbatch{4}, 'cfg_basicio'));
+  assert(isfield(matlabbatch{5}.spm.spatial, 'preproc'));
+  assert(isfield(matlabbatch{6}.spm.util, 'imcalc'));
+  assert(isfield(matlabbatch{7}.spm.util, 'imcalc'));
+  for i = 8:numel(matlabbatch)
+    matlabbatch{i}.spm.spatial.normalise.write.subj.resample;
+    assert(isfield(matlabbatch{i}.spm.spatial, 'normalise'));
+  end
+
+end
+
+function test_bidsSpatialPrepro_no_normalisation_no_unwarp()
+
+  opt = setOptions('MoAE-preproc');
+
+  opt.space = 'individual';
+  opt.realign.useUnwarp = false;
+
+  % some tweaks because we have dummy data
+  opt.funcVoxelDims = [2 2 2];
+
+  % dummy data that already contains the output of some segmentation
+  % so neeed to force it to see the whole full behavior of the workflow
+  opt.segment.force = true;
+
+  matlabbatch = bidsSpatialPrepro(opt);
+
+  assertEqual(numel(matlabbatch), 8);
+  assert(isfield(matlabbatch{1}, 'cfg_basicio'));
+  assert(isfield(matlabbatch{2}.spm.spatial.realign, 'estwrite'));
+  assert(isfield(matlabbatch{3}.spm.spatial, 'coreg'));
+  assert(isfield(matlabbatch{4}, 'cfg_basicio'));
+  assert(isfield(matlabbatch{5}.spm.spatial, 'preproc'));
+  assert(isfield(matlabbatch{6}.spm.util, 'imcalc'));
+  assert(isfield(matlabbatch{7}.spm.util, 'imcalc'));
+  assert(isfield(matlabbatch{8}.spm.spatial.realign, 'write'));
+
+end
+
+function test_bidsSpatialPrepro_no_normalisation()
+
+  opt = setOptions('MoAE-preproc');
+
+  opt.space = 'individual';
+
+  % some tweaks because we have dummy data
+  opt.funcVoxelDims = [2 2 2];
+
+  % dummy data that already contains the output of some segmentation
+  % so neeed to force it to see the whole full behavior of the workflow
+  opt.segment.force = true;
+
+  matlabbatch = bidsSpatialPrepro(opt);
+
+  assertEqual(numel(matlabbatch), 7);
+  assert(isfield(matlabbatch{1}, 'cfg_basicio'));
+  assert(isfield(matlabbatch{2}.spm.spatial, 'realignunwarp'));
+  assert(isfield(matlabbatch{3}.spm.spatial, 'coreg'));
+  assert(isfield(matlabbatch{4}, 'cfg_basicio'));
+  assert(isfield(matlabbatch{5}.spm.spatial, 'preproc'));
+  assert(isfield(matlabbatch{6}.spm.util, 'imcalc'));
+  assert(isfield(matlabbatch{7}.spm.util, 'imcalc'));
+
+end
+
+function test_bidsSpatialPrepro_anat_only()
+
+  opt = setOptions('MoAE-preproc');
+
+  opt.segment.force = true;
+  opt.anatOnly = true;
 
   matlabbatch = bidsSpatialPrepro(opt);
 
   assertEqual(numel(matlabbatch), 10);
   assert(isfield(matlabbatch{1}, 'cfg_basicio'));
-  assert(isfield(matlabbatch{2}.spm.spatial, 'realignunwarp'));
-  assert(isfield(matlabbatch{3}.spm.spatial, 'coreg'));
-  assert(isfield(matlabbatch{4}, 'cfg_basicio'));
-  for i = 5:10
+  assert(isfield(matlabbatch{2}.spm.spatial, 'preproc'));
+  assert(isfield(matlabbatch{3}.spm.util, 'imcalc'));
+  assert(isfield(matlabbatch{4}.spm.util, 'imcalc'));
+  for i = 5:numel(matlabbatch)
+    matlabbatch{i}.spm.spatial.normalise.write.subj.resample;
     assert(isfield(matlabbatch{i}.spm.spatial, 'normalise'));
   end
 
@@ -59,7 +150,7 @@ function test_bidsSpatialPrepro_force_segment()
 
   matlabbatch = bidsSpatialPrepro(opt);
 
-  assertEqual(numel(matlabbatch), 13);
+  assertEqual(numel(matlabbatch), 14);
   assert(isfield(matlabbatch{1}, 'cfg_basicio'));
   assert(isfield(matlabbatch{2}.spm.spatial, 'realignunwarp'));
   assert(isfield(matlabbatch{3}.spm.spatial, 'coreg'));
@@ -67,7 +158,7 @@ function test_bidsSpatialPrepro_force_segment()
   assert(isfield(matlabbatch{5}.spm.spatial, 'preproc'));
   assert(isfield(matlabbatch{6}.spm.util, 'imcalc'));
   assert(isfield(matlabbatch{7}.spm.util, 'imcalc'));
-  for i = 8:13
+  for i = 8:numel(matlabbatch)
     assert(isfield(matlabbatch{i}.spm.spatial, 'normalise'));
   end
 
