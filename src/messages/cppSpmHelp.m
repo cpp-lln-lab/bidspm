@@ -133,19 +133,34 @@ function cppSpmHelp()
   %   cpp_spm
   %
   %   % equivalent to
+  %   cpp_spm init
+  %   initCppSpm
   %   cpp_spm('action', 'init')
   %
+  %   % help
+  %   cpp_spm help
+  %   help cppSpmHelp
+  %   cpp_spm('action', 'help')
+  %
   %   % uninitialise (remove relevant folders from path)
+  %   cpp_spm uninit
+  %   uninitCppSpm
   %   cpp_spm('action', 'uninit')
   %
   %   % also adds folder for testing to the path
+  %   cpp_spm dev
+  %   uninitCppSpm(true)
   %   cpp_spm('action', 'dev')
   %
   %   % tried to update the current branch from the upstream repository
+  %   cpp_spm update
   %   cpp_spm('action', 'update')
   %
   %   % misc
+  %   cpp_spm version
   %   cpp_spm('action', 'version')
+  %
+  %   cpp_spm run_tests
   %   cpp_spm('action', 'run_tests')
   %
   %
