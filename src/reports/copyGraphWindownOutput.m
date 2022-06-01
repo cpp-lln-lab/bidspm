@@ -2,7 +2,9 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
   %
   % Looks into the current directory for an ``spm_.*imgNb.png`` file and moves it into
   % the output directory ``sub-label/figures``.
+  %
   % The output name of the file is
+  %
   % ``yyyymmddHHMM_sub-label_task-label_action.png``
   %
   % USAGE::
@@ -11,10 +13,13 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
   %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
+  %
   % :param subLabel: Subject label (for example `'01'`).
-  % :type subLabel: string
+  % :type subLabel: char
+  %
   % :param action: Name to be given to the figure.
-  % :type action: string
+  % :type action: char
+  %
   % :param imgNb: Image numbers to look for. SPM increments them automatically when
   %               adding a new figure a folder.
   % :type imgNb: vector of integer
