@@ -32,7 +32,7 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "Model": "spm"
+          "Model": "spm+derivative"
         },
         "Options": {
           "HighPassFilterCutoffHz": 0.008
