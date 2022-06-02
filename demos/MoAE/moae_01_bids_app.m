@@ -76,7 +76,8 @@ opt.results(1).name = {'listening_1'};
 % (all the following are on false by default)
 opt.results(1).png = true();
 opt.results(1).montage.do = true();
-opt.results(1).montage.background = struct('suffix', 'mask', ...
+opt.results(1).montage.background = struct('suffix', 'T1w', ...
+                                           'desc', 'preproc', ...
                                            'modality', 'anat');
 opt.results(1).montage.slices = -4:2:16;
 opt.results(1).nidm = true();

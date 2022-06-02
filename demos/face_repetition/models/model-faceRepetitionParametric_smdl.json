@@ -63,7 +63,15 @@
             },
             "Type": "glm",
             "Options": {
-               "HighPassFilterCutoffHz": 0.0078
+               "HighPassFilterCutoffHz": 0.0078,
+               "Mask": {
+                  "suffix": [
+                     "mask"
+                  ],
+                  "desc": [
+                     "brain"
+                  ]
+               }
             },
             "Software": {
                "SPM": {

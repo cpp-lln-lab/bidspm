@@ -41,6 +41,9 @@ results.binary = true();
 results.montage.do = true();
 results.montage.slices = -26:3:6; % in mm
 results.montage.orientation = 'axial';
+results.montage.background = struct('suffix', 'T1w', ...
+                                    'desc', 'preproc', ...
+                                    'modality', 'anat');
 
 opt.results(1) = results;
 
