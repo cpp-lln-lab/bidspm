@@ -86,6 +86,7 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt
     matlabbatch{jobsToAdd}.spm.spatial.normalise.write.subj.resample(1) = skullstripMask;
     % TODO why do we choose this resolution for this normalization?
     matlabbatch{jobsToAdd}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
+    matlabbatch{jobsToAdd}.spm.spatial.normalise.write.woptions.interp = 0;
   end
 
 end
