@@ -59,7 +59,7 @@
                   "trial_type.unfamiliar_1",
                   "trial_type.unfamiliar_2"
                ],
-               "Model": "DoubleGamma"
+               "Model": "spm + derivative"
             },
             "Type": "glm",
             "Options": {
@@ -75,8 +75,7 @@
             },
             "Software": {
                "SPM": {
-                  "SerialCorrelation": "AR(1)",
-                  "HRFderivatives": "TemporalDispersion"
+                  "SerialCorrelation": "AR(1)"
                }
             }
          },

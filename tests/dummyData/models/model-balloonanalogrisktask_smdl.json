@@ -41,15 +41,14 @@
             ],
             "HRF": {
                "Variables": [],
-               "Model": "DoubleGamma"
+               "Model": "spm"
             },
             "Options": {
                "HighPassFilterCutoffHz": 0.008
             },
             "Software": {
                "SPM": {
-                  "SerialCorrelation": "FAST",
-                  "HRFderivatives": "Temporal"
+                  "SerialCorrelation": "FAST"
                }
             }
          },
@@ -93,19 +92,16 @@
             ],
             "HRF": {
                "Variables": [],
-               "Model": "DoubleGamma"
+               "Model": "spm"
             },
             "Options": {
                "HighPassFilterCutoffHz": 0.008
             },
-            "Software":
-               {
-                  "SPM": {
-                     "SerialCorrelation": "FAST",
-                     "HRFderivatives": "Temporal"
-                  }
+            "Software": {
+               "SPM": {
+                  "SerialCorrelation": "FAST"
                }
-
+            }
          },
          "DummyContrasts": {
             "Test": "t",

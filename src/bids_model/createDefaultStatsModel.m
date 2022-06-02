@@ -67,8 +67,8 @@ function opt = createDefaultStatsModel(BIDS, opt)
   for iRealignParam = 1:numel(DEFAULT_CONFOUNDS)
     bm.Nodes{1}.Model.X{end + 1} = DEFAULT_CONFOUNDS{iRealignParam};
   end
-  bm.Nodes{1}.Model.Software = struct('SPM', struct('SerialCorrelation', 'FAST', ...
-                                                    'HRFderivatives', 'Temporal'));
+  bm.Nodes{1}.Model.Software = struct('SPM', struct('SerialCorrelation', 'FAST'));
+  bm.Nodes{1}.Model.HRF.Model = 'spm';
 
   % remove session level
   [~, idx] = bm.get_nodes('Level', 'session');

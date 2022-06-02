@@ -28,7 +28,7 @@
           "Variables": [
             "trial_type.listening"
           ],
-          "Model": "DoubleGamma"
+          "Model": "spm"
         },
         "Type": "glm",
         "Options": {
@@ -44,8 +44,7 @@
         },
         "Software": {
           "SPM": {
-            "SerialCorrelation": "AR(1)",
-            "HRFderivatives": "none"
+            "SerialCorrelation": "AR(1)"
           }
         }
       },

@@ -130,6 +130,8 @@ function test_getHRFderivatives()
   opt = setOptions('vislocalizer');
   bm = BidsModel('file', opt.model.file);
 
+  bm.Nodes{1}.Model.HRF.Model = ' spm + derivative';
+
   HRF = bm.getHRFderivatives();
 
   assertEqual(HRF, [1 0]);

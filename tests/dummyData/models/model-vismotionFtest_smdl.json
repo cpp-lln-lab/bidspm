@@ -31,15 +31,14 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "Model": "DoubleGamma"
+          "Model": "spm"
         },
         "Options": {
           "HighPassFilterCutoffHz": 0.008
         },
         "Software": {
           "SPM": {
-            "SerialCorrelation": "FAST",
-            "HRFderivatives": "Temporal"
+            "SerialCorrelation": "FAST"
           }
         }
       },
