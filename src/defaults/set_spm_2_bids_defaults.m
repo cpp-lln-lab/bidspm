@@ -134,6 +134,20 @@ function opt = set_spm_2_bids_defaults(opt)
                         'entities', entities, ...
                         'name_spec', name_spec);
 
+  prefix = map.norm;
+  suffix = 'mask';
+  ext = '.nii';
+  entities = struct('desc', 'brain');
+  name_spec = map.cfg.segment.bias_corrected;
+  name_spec.entities.res = 'r1pt0';
+  name_spec.entities.desc = 'brain';
+  name_spec.entities.space = 'IXI549Space';
+  map = map.add_mapping('prefix', prefix, ...
+                        'suffix', suffix, ...
+                        'ext', ext, ...
+                        'entities', entities, ...
+                        'name_spec', name_spec);
+
   prefix = [map.norm map.bias_cor];
   suffix = 'T1w';
   ext = '.nii';

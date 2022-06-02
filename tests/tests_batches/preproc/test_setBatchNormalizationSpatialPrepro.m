@@ -191,5 +191,6 @@ function expectedBatch = returnExpectedBatch(opt, voxDim)
                         '.', 'val', '{}', {1}), ...
               substruct('.', 'files'));
   expectedBatch{jobsToAdd + 6}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
+  expectedBatch{jobsToAdd + 6}.spm.spatial.normalise.write.woptions.interp = 0;
 
 end
