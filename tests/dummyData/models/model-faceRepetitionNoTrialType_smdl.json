@@ -28,15 +28,14 @@
                   "face_type.famous",
                   "face_type.unfamiliar"
                ],
-               "Model": "DoubleGamma"
+               "Model": "spm"
             },
             "Options": {
                "HighPassFilterCutoffHz": 0.008
             },
             "Software": {
                "SPM": {
-                  "SerialCorrelation": "FAST",
-                  "HRFderivatives": "Temporal"
+                  "SerialCorrelation": "FAST"
                }
             }
          }

@@ -167,7 +167,7 @@ An example of JSON file could look something like that:
                             "motion",
                             "static"
                         ],
-                        "Model": "DoubleGamma"
+                        "Model": "spm"
                     },
                     "Options": {
                         "HighPassFilterCutoffHz": 0.0078,
@@ -175,7 +175,6 @@ An example of JSON file could look something like that:
                     },
                     "Software": {
                         "SPM": {
-                            "HRFderivatives": "Temporal",
                             "SerialCorrelation": "FAST"
                         }
                     }
@@ -272,6 +271,13 @@ dummy scans will be included (those regressors are also in the ``_confounds.tsv`
 ``HRF`` specifies which variables of X have to be convolved and what HRF model to
 use to do so.
 
+You can choose from:
+
+- ``"spm"``
+- ``"spm + derivative"``
+- ``"spm + derivative + dispersion"``
+- ``"fir"``
+
 .. code-block:: json
 
                 "Model": {
@@ -288,7 +294,7 @@ use to do so.
                             "motion",
                             "static"
                         ],
-                        "Model": "DoubleGamma"
+                        "Model": "spm"
                     }
 
 

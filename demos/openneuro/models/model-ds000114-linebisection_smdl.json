@@ -34,7 +34,7 @@
             "trial_type.Response_Control",
             "trial_type.No_Response_Control"
           ],
-          "Model": "DoubleGamma"
+          "Model": "spm"
         }
       },
       "DummyContrasts": {

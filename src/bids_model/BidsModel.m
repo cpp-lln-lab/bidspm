@@ -10,15 +10,8 @@ classdef BidsModel < bids.Model
     end
 
     function [rootNode, rootNodeName] = getRootNode(obj)
-      edges = obj.Edges;
 
-      % TODO deal with case where edges is a struct
-      %
-      % if isstruct(edges)
-      %   rootNodeName = edges(1).Source;
-      % else iscell(edges)
-      %   rootNodeName = edges{1}.Source
-      % end
+      edges = obj.Edges;
 
       if isempty(edges)
         rootNode = obj.Nodes(1);
@@ -27,8 +20,8 @@ classdef BidsModel < bids.Model
         rootNodeName = edges{1}.Source;
         rootNode = obj.get_nodes('Name', rootNodeName);
 
-      elseif isstruct(edges{1})
-        rootNodeName = edges{1}.Source;
+      elseif isstruct(edges(1))
+        rootNodeName = edges(1).Source;
         rootNode = obj.get_nodes('Name', rootNodeName);
 
       else
@@ -151,18 +144,32 @@ classdef BidsModel < bids.Model
       [model, nodeName] = obj.getDefaultModel(varargin{:});
 
       try
-        HRFderivatives = model.Software.SPM.HRFderivatives;
+        HRFderivatives = model.HRF.Model;
       catch
         obj.bidsModelError('noHRFderivatives', ...
                            sprintf('No HRF derivatives for node ''%s''', nodeName));
       end
 
-      if isempty(HRFderivatives) || strcmpi(HRFderivatives, 'none')
-        return
-      elseif strcmpi(HRFderivatives, 'temporal')
-        derivatives =  [1 0];
-      else
-        derivatives =  [1 1];
+      HRFderivatives = lower(strrep(HRFderivatives, ' ', ''));
+
+      switch HRFderivatives
+        case 'spm'
+          derivatives =  [0 0];
+        case 'spm+derivative'
+          derivatives =  [1 0];
+        case 'spm+derivative+dispersion'
+          derivatives =  [1 1];
+        case 'fir'
+          notImplemented(mfilename(), ...
+                         ['HRF model of the type %s not yet implemented.\n', ...
+                          'Will use SPM canonical HRF insteasd.\n'], ...
+                         true);
+        otherwise
+          notImplemented(mfilename(), ...
+                         ['HRF model of the type %s not implemented.\n', ...
+                          'Will use SPM canonical HRF insteasd.\n'], ...
+                         true);
+
       end
 
     end

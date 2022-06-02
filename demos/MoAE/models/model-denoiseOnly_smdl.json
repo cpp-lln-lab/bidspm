@@ -37,8 +37,7 @@
         },
         "Software": {
           "SPM": {
-            "SerialCorrelation": "AR(1)",
-            "HRFderivatives": "none"
+            "SerialCorrelation": "AR(1)"
           }
         }
       }
