@@ -35,7 +35,7 @@
           "Variables": [
             ""
           ],
-          "Model": "DoubleGamma"
+          "Model": "spm"
         },
         "Options": {
           "HighPassFilterCutoffHz": 0.008,

@@ -57,8 +57,7 @@ via the ``Software`` object of the BIDS stats model:
             "Type": "glm",
             "Software": {
                 "SPM": {
-                    "SerialCorrelation": "AR(1)",
-                    "HRFderivatives": "none"
+                    "SerialCorrelation": "AR(1)"
                 }
             }
         }

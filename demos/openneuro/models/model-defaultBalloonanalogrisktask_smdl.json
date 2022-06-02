@@ -33,7 +33,7 @@
             "trial_type.explode_demean",
             "trial_type.pumps_demean"
           ],
-          "Model": "DoubleGamma"
+          "Model": "spm + derivative"
         },
         "Type": "glm",
         "Options": {
@@ -41,8 +41,7 @@
         },
         "Software": {
           "SPM": {
-            "SerialCorrelation": "FAST",
-            "HRFderivatives": "Temporal"
+            "SerialCorrelation": "FAST"
           }
         }
       },

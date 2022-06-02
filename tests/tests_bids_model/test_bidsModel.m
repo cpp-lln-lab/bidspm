@@ -32,6 +32,24 @@ function test_getRootNode()
 
 end
 
+function test_getRootNode_bug_605()
+
+  % https://github.com/cpp-lln-lab/CPP_SPM/issues/605
+
+  opt = setOptions('vislocalizer');
+
+  bm = BidsModel('file', opt.model.file);
+
+  bm.Edges = struct('Source', 'run_level', ...
+                    'Destination', 'subject_level');
+
+  [rootNode, rootNodeName] = bm.getRootNode;
+
+  assertEqual(rootNode.Level, 'Run');
+  assertEqual(rootNodeName, 'run_level');
+
+end
+
 function test_getModelType()
 
   opt = setOptions('vislocalizer');
@@ -129,6 +147,8 @@ function test_getHRFderivatives()
 
   opt = setOptions('vislocalizer');
   bm = BidsModel('file', opt.model.file);
+
+  bm.Nodes{1}.Model.HRF.Model = ' spm + derivative';
 
   HRF = bm.getHRFderivatives();
 
