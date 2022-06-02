@@ -65,8 +65,6 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
     return
   end
 
-  expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
-
   % if this is part of a pipeline we get the segmentation dependency to get
   % the input from.
   % Otherwise the files to process are stored in a cell
@@ -149,6 +147,8 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   output = returnNameSkullstripOutput(imageToSkullStrip, 'image');
   saveMetadataImage(dataDir, opt, output, imageToSkullStrip);
 
+  expression = sprintf('i1.*((i2+i3+i4)>%f)', opt.skullstrip.threshold);
+
   matlabbatch = setBatchImageCalculation(matlabbatch, opt, input, output, dataDir, expression);
 
   %% Add a batch to output the mask
@@ -156,6 +156,7 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   saveMetadataImage(dataDir, opt, maskOutput, imageToSkullStrip);
 
   matlabbatch{end + 1} = matlabbatch{end};
+
   matlabbatch{end}.spm.util.imcalc.expression = sprintf('(i2+i3+i4)>%f', ...
                                                         opt.skullstrip.threshold);
   matlabbatch{end}.spm.util.imcalc.output = maskOutput;
