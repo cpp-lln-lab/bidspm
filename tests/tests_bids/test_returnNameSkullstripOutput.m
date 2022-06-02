@@ -16,7 +16,7 @@ function test_returnNameSkullstripOutput_basic()
   assertEqual(image, 'sub-001_space-individual_desc-skullstripped_T1w.nii');
 
   mask = returnNameSkullstripOutput(inputFile, 'mask');
-  assertEqual(mask, 'sub-001_space-individual_label-brain_mask.nii');
+  assertEqual(mask, 'sub-001_space-individual_desc-brain_mask.nii');
 
 end
 
@@ -28,6 +28,6 @@ function test_returnNameSkullstripOutput_oops()
   assertEqual(image, 'sub-001_acq-r0p375_space-individual_desc-skullstripped_UNIT1.nii');
 
   mask = returnNameSkullstripOutput(inputFile, 'mask');
-  assertEqual(mask, 'sub-001_acq-r0p375_space-individual_label-brain_mask.nii');
+  assertEqual(mask, 'sub-001_acq-r0p375_space-individual_desc-brain_mask.nii');
 
 end

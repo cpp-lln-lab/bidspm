@@ -12,13 +12,8 @@ function outputFilename = returnNameSkullstripOutput(inputFilename, outputType)
   end
 
   if strcmp(outputType, 'mask')
-    bf.entities.label = 'brain';
+    bf.entities.desc = 'brain';
     bf.suffix = 'mask';
-
-    if isfield(bf.entities, 'desc')
-      bf.entities.desc = '';
-    end
-
   end
 
   bf = bf.reorder_entities();

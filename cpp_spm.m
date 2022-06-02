@@ -15,7 +15,10 @@ function cpp_spm(varargin)
   isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
 
-  addOptional(args, 'bids_dir', pwd, @isdir);
+  isLowLevelActionOrDir = @(x) (ismember(x, low_level_actions()) || isdir(x));
+
+  addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
+
   addOptional(args, 'output_dir', '', @ischar);
   addOptional(args, 'analysis_level', '', @ischar);
 
@@ -44,6 +47,13 @@ function cpp_spm(varargin)
 
   action = args.Results.action;
 
+  % to simplify the API, user can call things like ``cpp_spm help``
+  % or ``cpp_spm init`` but then this needs to override the action value.
+  bidsDir = args.Results.bids_dir;
+  if ismember(bidsDir, low_level_actions())
+    action = bidsDir;
+  end
+
   switch lower(action)
 
     case 'init'
@@ -56,13 +66,7 @@ function cpp_spm(varargin)
 
     case 'version'
 
-      try
-        versionNumber = getVersion();
-      catch
-        versionNumber = fileread(fullfile(fileparts(mfilename('fullpath')), 'version.txt'));
-        versionNumber = versionNumber(1:end - 1);
-      end
-      fprintf(1, '%s\n', versionNumber);
+      versionCppSpm();
 
     case 'dev'
 
@@ -247,6 +251,16 @@ function stats(args)
 end
 
 %% low level actions
+
+function versionCppSpm()
+  try
+    versionNumber = getVersion();
+  catch
+    versionNumber = fileread(fullfile(fileparts(mfilename('fullpath')), 'version.txt'));
+    versionNumber = versionNumber(1:end - 1);
+  end
+  fprintf(1, '%s\n', versionNumber);
+end
 
 function initCppSpm(dev)
   %
@@ -472,8 +486,8 @@ function value = low_level_actions()
            'dev'
            'version'; ...
            'run_tests'; ...
-           'update'};
-
+           'update'; ...
+           'help'};
 end
 
 function value = allowed_actions()

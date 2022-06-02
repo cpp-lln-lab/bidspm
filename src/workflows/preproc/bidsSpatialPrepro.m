@@ -2,14 +2,6 @@ function matlabbatch = bidsSpatialPrepro(opt)
   %
   % Performs spatial preprocessing of the functional and anatomical data.
   %
-  % USAGE::
-  %
-  %   bidsSpatialPrepro([opt])
-  %
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt: structure
-  %
   % The anatomical data are segmented, skull-stripped [and normalized to MNI space].
   %
   % The functional data are re-aligned (unwarped), coregistered with the anatomical,
@@ -18,10 +10,20 @@ function matlabbatch = bidsSpatialPrepro(opt)
   % Assumes that ``bidsSTC()`` has already been run if ``opt.stc.skip`` is not set
   % to ``true``.
   %
+  % USAGE::
+  %
+  %   bidsSpatialPrepro([opt])
+  %
+  % :param opt: structure or json filename containing the options. See
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt: structure
+  %
+  %
   % If you want to:
   %
   % - only do realign and not realign AND unwarp, make sure you set
   %   ``opt.realign.useUnwarp`` to ``false``.
+  %
   % - normalize the data to MNI space, make sure
   %   ``opt.space`` includes ``IXI549Space``.
   %
@@ -80,31 +82,21 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
     % Skip segmentation and skullstripping if done previously
     anatFile = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1};
-    anatFile = bids.File(anatFile);
-    filter = anatFile.entities;
-    filter.modality = 'anat';
-
-    filter.suffix = anatFile.suffix;
-    filter.desc = 'biascor';
-    biasCorrectedImage = bids.query(BIDS, 'data', filter);
-
-    filter.suffix = 'probseg';
-    filter = rmfield(filter, 'desc');
-    tpm = bids.query(BIDS, 'data', filter);
-
-    doSegmentAndSkullstrip = opt.segment.force || isempty(tpm) || isempty(biasCorrectedImage);
-
-    if doSegmentAndSkullstrip
+    opt = checkForPreviousSkullStripOutput(anatFile, BIDS, opt);
+    if opt.segment.do
       opt.orderBatches.segment = lastBatch + 1;
+      matlabbatch = setBatchSegmentation(matlabbatch, opt);
+    end
+    if opt.skullstrip.do
       opt.orderBatches.skullStripping = lastBatch + 2;
       opt.orderBatches.skullStrippingMask = lastBatch + 3;
-      matlabbatch = setBatchSegmentation(matlabbatch, opt);
       matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
     end
 
     if ismember('IXI549Space', opt.space)
       % dependency from segmentation
       % dependency from coregistration
+      % dependency from skullStripping
       matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt, voxDim);
     end
 
@@ -121,7 +113,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
     %% clean up and rename files
     copyFigures(BIDS, opt, subLabel);
 
-    if doSegmentAndSkullstrip && ~opt.dryRun
+    if opt.segment.do && ~opt.dryRun
       spmup_comp_dist2surf(matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1});
     end
 
@@ -131,7 +123,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
     functionalQA(opt);
   end
 
-  renameFile(BIDS, opt);
+  renameFiles(BIDS, opt);
 
   if ~opt.dryRun && opt.rename
     anatomicalQA(opt);
@@ -139,7 +131,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
 end
 
-function renameFile(BIDS, opt)
+function renameFiles(BIDS, opt)
 
   if ~opt.rename
     return
