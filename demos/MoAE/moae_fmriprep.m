@@ -13,8 +13,7 @@
 %                     */*/*desc-preproc*.nii.gz \
 %                     */*/*desc-brain*.nii.gz
 %
-% Otherwise you also grad the data from OSF:
-% https://osf.io/vufjs/download
+% Otherwise you also grab the data from OSF: https://osf.io/vufjs/download
 %
 % (C) Copyright 2019 Remi Gau
 
@@ -63,11 +62,6 @@ opt = checkOptions(opt);
 %
 % See: https://github.com/cpp-lln-lab/CPP_SPM/issues/409
 %
-
-% desc-confounds_timeseries.tsv
-opt.query.desc = {'confounds'};
-opt.query.suffix = {'timeseries'};
-bidsCopyInputFolder(opt);
 
 % copy the actual nifti images
 opt.query.desc = {'preproc', 'brain'};
