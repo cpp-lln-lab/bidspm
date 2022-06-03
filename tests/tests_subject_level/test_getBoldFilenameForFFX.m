@@ -16,7 +16,7 @@ function test_getBoldFilenameForFFX_mni()
 
   opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.query.task = 'vislocalizer';
 
@@ -38,7 +38,7 @@ function test_getBoldFilenameForFFX_individual()
   opt = setOptions('vislocalizer', subLabel);
   opt.space = {'individual'};
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.query.task = 'vislocalizer';
 
@@ -62,7 +62,7 @@ function test_getBoldFilenameForFFX_no_smoothing()
   opt.space = {'individual'};
   opt.fwhm.func = 0;
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.query.task = 'vislocalizer';
 

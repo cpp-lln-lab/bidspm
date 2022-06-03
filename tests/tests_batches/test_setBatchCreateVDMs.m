@@ -16,7 +16,7 @@ function test_setBatchCreateVDMs_smoke_test()
 
   opt.query.acq = '';
 
-  [BIDS, opt] = getData(opt, opt.dir.input);
+  BIDS = getLayout(opt);
 
   matlabbatch = {};
   matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel);

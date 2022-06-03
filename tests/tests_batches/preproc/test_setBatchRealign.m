@@ -92,11 +92,14 @@ function test_setBatchRealign_after_stc()
 
   opt = setOptions('vismotion', subLabel);
 
+  % TODO implement opt.bidsFilterFile.bold.acq = '';
+  opt.query.acq = '';
+
   % some tweaks because we have dummy data
   opt.funcVoxelDims = [2 2 2];
   opt.useFieldmaps = false;
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   matlabbatch = {};
   [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
@@ -119,6 +122,7 @@ function test_setBatchRealign_after_stc()
                             'ses', sessions{iSes}, ...
                             'task', opt.taskName, ...
                             'run', runs{iRun}, ...
+                            'acq', '', ...
                             'desc', 'stc', ...
                             'suffix', 'bold', ...
                             'extension', '.nii');

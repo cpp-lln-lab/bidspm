@@ -14,7 +14,7 @@ function test_setBatchSkullStripping_basic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.orderBatches.segment = 2;
 
@@ -49,7 +49,7 @@ function test_setBatchSkullStripping_without_segment
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   matlabbatch = {};
   matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);

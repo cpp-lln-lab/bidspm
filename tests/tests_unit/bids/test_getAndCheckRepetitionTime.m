@@ -6,9 +6,7 @@ function test_suite = test_getAndCheckRepetitionTime %#ok<*STOUT>
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
-
   initTestSuite;
-
 end
 
 function test_getAndCheckRepetitionTime_dual_task()
@@ -62,7 +60,7 @@ function [BIDS, filter] = setUp(task)
 
   opt.query.acq = '';
 
-  BIDS = bids.layout(opt.dir.preproc, 'use_schema', false);
+  BIDS = getLayout(opt);
 
   filter = fileFilterForBold(opt, subLabel);
 

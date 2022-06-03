@@ -74,7 +74,7 @@ function anatImage = returnLocalAnatFilename()
 
   opt = setOptions('vismotion', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 

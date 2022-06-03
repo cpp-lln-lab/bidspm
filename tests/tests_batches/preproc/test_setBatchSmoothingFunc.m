@@ -19,7 +19,7 @@ function test_setBatchSmoothingFunc_basic()
 
   opt.space = {'IXI549Space'};
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   % create dummy normalized file
   fileName = bids.query(BIDS, 'data', ...

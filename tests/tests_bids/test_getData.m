@@ -15,8 +15,7 @@ function test_getData_error_no_matching_task()
   % to speed up testing we use the raw dummy data
   opt.dir.preproc = getDummyDataDir('raw');
 
-  assertExceptionThrown( ...
-                        @()getData(opt, opt.dir.preproc), ...
+  assertExceptionThrown(@()getData(opt, opt.dir.preproc), ...
                         'getData:noMatchingTask');
 
 end

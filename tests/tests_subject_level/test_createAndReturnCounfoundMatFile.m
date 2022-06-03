@@ -43,7 +43,7 @@ function [opt, tsvFile] = setUp()
 
   opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   sessions = getInfo(BIDS, subLabel, opt, 'sessions');
   runs = getInfo(BIDS, subLabel, opt, 'runs', sessions{iSes});
