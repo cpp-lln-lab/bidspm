@@ -21,14 +21,37 @@ function test_fileFilterForBold_events()
 
   subLabel = '01';
 
-  [filter, opt] = fileFilterForBold(opt, subLabel, 'events');
+  [filter] = fileFilterForBold(opt, subLabel, 'events');
+
+  expected = struct('extension', '.tsv', ...
+                    'modality', 'func', ...
+                    'prefix', '', ...
+                    'sub', '^01$', ...
+                    'suffix', {{'events'}}, ...
+                    'task', 'foo');
+
+  assertEqual(filter, expected);
+
+end
+
+function test_fileFilterForBold_confounds()
+
+  opt.bidsFilterFile.bold = struct('modality', 'func', 'suffix', 'bold');
+  opt.verbosity = 2;
+  opt.taskName = 'foo';
+  opt.fwhm.func = 6;
+  opt.space = {'IXI549Space'};
+
+  subLabel = '01';
+
+  [filter] = fileFilterForBold(opt, subLabel, 'confounds');
 
   expected = struct('desc', 'confounds', ...
                     'extension', '.tsv', ...
                     'modality', 'func', ...
                     'prefix', '', ...
                     'sub', '^01$', ...
-                    'suffix', {{'regressors', 'timeseries'}}, ...
+                    'suffix', {{'regressors', 'timeseries', 'motion', 'outliers'}}, ...
                     'task', 'foo');
 
   assertEqual(filter, expected);
@@ -45,7 +68,7 @@ function test_fileFilterForBold_basic()
 
   subLabel = '01';
 
-  [filter, opt] = fileFilterForBold(opt, subLabel);
+  [filter] = fileFilterForBold(opt, subLabel);
 
   expected = struct('desc', 'smth6', ...
                     'extension', {{'.nii.*'}}, ...
