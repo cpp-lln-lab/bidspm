@@ -92,7 +92,7 @@ function test_getAnatFilename_no_session()
   subLabel = '01';
   opt = setOptions('MoAE-preproc');
 
-  BIDS = getLayout(opt);
+  BIDS = bids.layout(opt.dir.input);
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 

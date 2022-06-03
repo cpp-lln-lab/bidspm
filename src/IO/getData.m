@@ -41,11 +41,13 @@ function [BIDS, opt] = getData(varargin)
   BIDS = bids.layout(bidsDir, 'use_schema', opt.useBidsSchema);
 
   if strcmp(opt.pipeline.type, 'stats')
-    if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file')
-      BIDS.raw = load(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
+    if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file') == 2
+      tmp = load(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
+      if isempty(fieldnames(tmp))
+        BIDS.raw = bids.layout(opt.dir.raw);
+      end
     else
       BIDS.raw = bids.layout(opt.dir.raw);
-      save(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
     end
   end
 
