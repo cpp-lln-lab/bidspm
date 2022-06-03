@@ -5,7 +5,9 @@ function test_suite = test_setBatchSTC %#ok<*STOUT>
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
+
   initTestSuite;
+
 end
 
 function test_setBatchSTC_dual_task()
@@ -16,7 +18,8 @@ function test_setBatchSTC_dual_task()
 
   opt.query.acq = '';
 
-  BIDS = bids.layout(opt.dir.preproc, 'use_schema', false);
+  BIDS = getLayout(opt);
+
   matlabbatch = {};
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
@@ -34,7 +37,7 @@ function test_setBatchSTC_error_different_repetition_time()
 
   opt.query.acq = '';
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   matlabbatch = {};
   assertExceptionThrown( ...
@@ -49,7 +52,7 @@ function test_setBatchSTC_skip()
 
   opt = setOptions('vismotion', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.stc.skip = true;
 
@@ -65,7 +68,7 @@ function test_setBatchSTC_empty()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   matlabbatch = {};
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
@@ -88,7 +91,7 @@ function test_setBatchSTC_force()
 
   opt = checkOptions(opt);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   matlabbatch = {};
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
@@ -122,7 +125,7 @@ function test_setBatchSTC_basic()
 
   opt.query = struct('acq', '');
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   matlabbatch = {};
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
@@ -168,7 +171,7 @@ function test_setBatchSTC_error_invalid_input_time()
   opt.stc.sliceOrder(end) = [];
   opt.stc.referenceSlice = 2; % impossible reference value
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   matlabbatch = {};
   assertExceptionThrown( ...

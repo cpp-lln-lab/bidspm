@@ -16,7 +16,7 @@ function test_createAndReturnOnsetFile_basic()
 
   opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   sessions = getInfo(BIDS, subLabel, opt, 'sessions');
   runs = getInfo(BIDS, subLabel, opt, 'runs', sessions{iSes});

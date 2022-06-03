@@ -12,7 +12,7 @@ function test_getSubject_regex()
 
   opt = setOptions('vismotion', '');
 
-  BIDS = bids.layout(opt.dir.preproc, 'use_schema', false);
+  BIDS = getLayout(opt);
 
   group_subject_expected = {
                             {''}, {'.*01'}, {'01', 'blind01', 'ctrl01'}
@@ -35,7 +35,7 @@ function test_getSubject()
 
   opt = setOptions('vismotion', '');
 
-  BIDS = bids.layout(opt.dir.preproc, 'use_schema', false);
+  BIDS = getLayout(opt);
 
   group_subject_expected = {
                             {''},      {'blind01', 'ctrl01'}, {'blind01', 'ctrl01'}  % basic
@@ -59,7 +59,7 @@ function test_getSubjectList_error_subject()
 
   opt = setOptions('vismotion', '03');
 
-  BIDS = bids.layout(opt.dir.preproc, 'use_schema', false);
+  BIDS = getLayout(opt);
 
   assertExceptionThrown( ...
                         @()getSubjectList(BIDS, opt), ...

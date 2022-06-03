@@ -45,21 +45,7 @@ function matlabbatch = setBatchSTC(varargin)
   end
 
   % get metadata for STC
-
-  % only stick to raw data
-  opt.query.space = '';
-  opt.query.desc = '';
-
-  filter = opt.query;
-  filter.sub =  subLabel;
-  filter.suffix = 'bold';
-  filter.extension = {'.nii', '.nii.gz'};
-  filter.prefix = '';
-  % in case task was not passed through opt.query
-  if ~isfield(filter, 'task')
-    filter.task = opt.taskName;
-  end
-
+  filter = fileFilterForBold(opt, subLabel, 'stc');
   TR = getAndCheckRepetitionTime(BIDS, filter);
 
   % get slice order

@@ -16,7 +16,7 @@ function test_setBatchCoregistrationFmap_basic()
 
   opt.query.acq = '';
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   matlabbatch = {};
   matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLabel);

@@ -204,26 +204,37 @@ for subject in ${subject_list}; do
 
 		### derivatives
 		desc_label_list='preproc mean smth6'
-		for run in $(seq 1 2); do
+		for acq in $(seq 1 2); do
 
-			filename=${this_dir}/rp_sub-${subject}_ses-${ses}_task-${task_name}_run-${run}${suffix}.txt
-			cp dummyData/tsv_files/rp.txt "${filename}"
-			cp dummyData/tsv_files/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_desc-confounds_regressors.tsv
+			acq_entity=""
+			if [ ${acq} = 2 ]; then
+				acq_entity="_acq-1p60mm"
+			fi
 
-			for desc in ${desc_label_list}; do
-				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_space-individual_desc-${desc}${suffix}.nii
-				touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_space-IXI549Space_desc-${desc}${suffix}.nii
+			basename=sub-${subject}_ses-${ses}_task-${task_name}${acq_entity}
+
+			for run in $(seq 1 2); do
+
+				filename=${this_dir}/rp_${basename}_run-${run}${suffix}.txt
+				cp dummyData/tsv_files/rp.txt "${filename}"
+				cp dummyData/tsv_files/rp.tsv ${this_dir}/${basename}_run-${run}_desc-confounds_regressors.tsv
+
+				for desc in ${desc_label_list}; do
+					touch ${this_dir}/${basename}_run-${run}_space-individual_desc-${desc}${suffix}.nii
+					touch ${this_dir}/${basename}_run-${run}_space-IXI549Space_desc-${desc}${suffix}.nii
+				done
+				touch ${this_dir}/${basename}_run-${run}_space-individual_desc-stc${suffix}.nii
+
 			done
-			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_run-${run}_space-individual_desc-stc${suffix}.nii
+
+			if [ ${ses} = '01' ]; then
+				touch ${this_dir}/${basename}_space-individual_desc-mean${suffix}.nii
+				touch ${this_dir}/${basename}_space-IXI549Space_desc-mean${suffix}.nii
+
+				touch ${this_dir}/mean_${basename}${suffix}.nii
+			fi
 
 		done
-
-		if [ ${ses} = '01' ]; then
-			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-mean${suffix}.nii
-			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-mean${suffix}.nii
-
-			touch ${this_dir}/mean_sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
-		fi
 
 		## task: vislocalizer
 		suffix='_bold'
@@ -233,12 +244,6 @@ for subject in ${subject_list}; do
 		filename=${this_dir}/rp_sub-${subject}_ses-${ses}_task-${task_name}${suffix}.txt
 		cp dummyData/tsv_files/rp.txt "${filename}"
 		cp dummyData/tsv_files/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_desc-confounds_regressors.tsv
-
-		# func_prefix_list='a r u s6'
-		# for prefix in ${func_prefix_list}
-		# do
-		# 	touch ${this_dir}/${prefix}sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
-		# done
 
 		desc_label_list='preproc smth6'
 		for desc in ${desc_label_list}; do
@@ -300,6 +305,7 @@ for subject in ${subject_list}; do
 	# STATS
 	task_list='vismotion vislocalizer'
 	for task in ${task_list}; do
+
 		this_dir=${stats_dir}/sub-${subject}/task-${task}_space-IXI549Space_FWHM-6
 		mkdir -p ${this_dir}
 

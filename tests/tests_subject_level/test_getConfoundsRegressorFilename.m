@@ -16,7 +16,7 @@ function test_getConfoundRegressorFile_basic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.query.task = 'vislocalizer';
 

@@ -10,9 +10,9 @@ end
 
 function test_setBatchSmoothConImages_basic()
 
-  opt = setOptions('vismotion', {'01', 'blind01'}, 'pipelineType', 'stats');
+  createDummyData();
 
-  [~, opt] = getData(opt, opt.dir.preproc);
+  opt = setOptions('vismotion', {'01', 'blind01'}, 'pipelineType', 'stats');
 
   matlabbatch = {};
   matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
@@ -47,6 +47,8 @@ function test_setBatchSmoothConImages_basic()
   expectedBatch{2}.spm.spatial.smooth.dtype = 0;
   expectedBatch{2}.spm.spatial.smooth.im = 0;
 
+  assertEqual(matlabbatch{1}.spm.spatial.smooth, expectedBatch{1}.spm.spatial.smooth);
+  assertEqual(matlabbatch, expectedBatch);
   assertEqual(matlabbatch, expectedBatch);
 
 end

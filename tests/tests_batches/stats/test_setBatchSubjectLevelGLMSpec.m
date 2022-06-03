@@ -5,7 +5,9 @@ function test_suite = test_setBatchSubjectLevelGLMSpec %#ok<*STOUT>
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
+
   initTestSuite;
+
 end
 
 % TODO add test to better cover setScans
@@ -19,7 +21,7 @@ function test_setBatchSubjectLevelGLMSpec_brain_mask()
 
   opt.model.bm.Nodes{1}.Model.Options.Mask = struct('label', 'brain', 'suffix', 'mask');
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   %% WHEN
   matlabbatch = {};
@@ -60,8 +62,6 @@ function test_setBatchSubjectLevelGLMSpec_fmriprep()
 
   opt = checkOptions(opt);
 
-  [BIDS, opt] = getData(opt, opt.dir.input);
-
   matlabbatch = {};
   % bids matlab issue?
   % events.TSV are in the root of the synthetic dataset
@@ -76,7 +76,7 @@ function test_setBatchSubjectLevelGLMSpec_basic()
 
   opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   %% WHEN
   matlabbatch = {};
@@ -122,7 +122,7 @@ function test_setBatchSubjectLevelGLMSpec_slicetiming_metadata()
 
   opt.query.acq = '';
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   %% WHEN
   matlabbatch = {};
@@ -145,12 +145,11 @@ function test_setBatchSubjectLevelGLMSpec_inconsistent_metadata()
   opt = setOptions({'vismotion', 'vislocalizer'}, subLabel, ...
                    'pipelineType', 'stats');
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   %% WHEN
   matlabbatch = {};
-  assertExceptionThrown( ...
-                        @()setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel), ...
+  assertExceptionThrown(@()setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel), ...
                         'getAndCheckRepetitionTime:differentRepetitionTime');
 
 end
@@ -164,7 +163,7 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
 
   opt.model.designOnly = true;
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   %% WHEN
   matlabbatch = {};

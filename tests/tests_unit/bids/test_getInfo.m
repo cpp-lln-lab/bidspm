@@ -14,7 +14,7 @@ function test_getInfo_basic()
 
   opt = setOptions('vismotion', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   sessions = getInfo(BIDS, subLabel, opt, 'sessions');
   assertEqual(sessions, {'01' '02'});
@@ -42,11 +42,11 @@ function test_getInfo_query()
 
   opt = setOptions('vismotion', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.query.desc = 'preproc';
   filename = getInfo(BIDS, subLabel, opt, 'filename', session, run, 'bold');
-  assertEqual(size(filename, 1), 2);
+  assertEqual(size(filename, 1), 4);
 
   opt.query = struct('acq', '');
   filename = getInfo(BIDS, subLabel, opt, 'filename', session, run, 'bold');
@@ -76,7 +76,7 @@ function test_getInfo_no_run()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   sessions = getInfo(BIDS, subLabel, opt, 'sessions');
   assertEqual(sessions, {'01' '02'});
@@ -93,7 +93,7 @@ function test_getInfo_no_session_no_run()
   opt = setOptions('MoAE-preproc', subLabel);
   opt.dir.input = opt.dir.preproc;
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = bids.layout(opt.dir.input);
 
   sessions = getInfo(BIDS, subLabel, opt, 'sessions');
   assertEqual(sessions, {''});
@@ -109,7 +109,7 @@ function test_getInfo_query_with_session_restriction()
 
   opt = setOptions('vismotion', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.query = struct('ses', {{'01', '02'}});
   [~, nbSessions] = getInfo(BIDS, subLabel, opt, 'sessions');
@@ -127,7 +127,7 @@ function test_getInfo_error
   subLabel = 'ctrl01';
   opt = setOptions('vismotion', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.query = struct('ses', {{'01', '02'}});
 

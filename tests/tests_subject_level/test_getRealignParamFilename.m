@@ -16,7 +16,7 @@ function test_getRealignParamFilename_basic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   realignParamFile = getRealignParamFilename(BIDS, subLabel, session, run, opt);
 

@@ -88,8 +88,6 @@ BIDS related functions
 
 .. autofunction:: getROIs
 
-.. autofunction:: getData
-
 .. autofunction:: getInfo
 .. autofunction:: getSubjectList
 .. autofunction:: getAndCheckRepetitionTime
@@ -104,6 +102,8 @@ Input / Output
 --------------
 
 .. automodule:: src.IO
+
+.. autofunction:: getData
 
 .. autofunction:: saveOptions
 .. autofunction:: loadAndCheckOptions

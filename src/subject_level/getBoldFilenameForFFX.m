@@ -25,7 +25,7 @@ function boldFilename = getBoldFilenameForFFX(varargin)
 
   [BIDS, opt, subLabel, iSes, iRun] =  deal(varargin{:});
 
-  [filter, opt] = fileFilterForGlm(opt, subLabel);
+  [filter, opt] = fileFilterForBold(opt, subLabel);
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
   filter.ses = sessions{iSes};

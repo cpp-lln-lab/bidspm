@@ -17,7 +17,7 @@ function test_getBoldFilename_basic()
   iSes = 1;
   iRun = 1;
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.query = struct('acq', '', ... % to filter out raw data with acq entity
                      'space', '', 'desc', ''); % to filter out derivatives data
@@ -47,9 +47,9 @@ function test_getBoldFilename_derivatives()
   opt = setOptions('vismotion', subLabel);
   opt.useBidsSchema = false;
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
-  opt.query = struct('desc', 'stc', 'space', 'individual');
+  opt.query = struct('desc', 'stc', 'space', 'individual', 'acq', '');
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
 

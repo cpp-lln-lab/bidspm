@@ -41,7 +41,16 @@ function [BIDS, opt] = getData(varargin)
   BIDS = bids.layout(bidsDir, 'use_schema', opt.useBidsSchema);
 
   if strcmp(opt.pipeline.type, 'stats')
-    BIDS.raw = bids.layout(opt.dir.raw);
+    if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file') == 2
+      tmp = load(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
+      if isempty(fieldnames(tmp))
+        BIDS.raw = bids.layout(opt.dir.raw);
+      else
+        BIDS.raw = tmp.BIDS;
+      end
+    else
+      BIDS.raw = bids.layout(opt.dir.raw);
+    end
   end
 
   % make sure that the required tasks exist in the data set

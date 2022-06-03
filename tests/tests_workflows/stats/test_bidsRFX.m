@@ -10,8 +10,6 @@ end
 
 function test_bidsRFX_basic_select_datasets_two_sample_ttest()
 
-  createDummyData();
-
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
   opt.model.file = spm_file(opt.model.file, ...
@@ -39,8 +37,6 @@ end
 
 function test_bidsRFX_basic_select_datasets_level_to_run()
 
-  createDummyData();
-
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
   opt.model.file = spm_file(opt.model.file, ...
@@ -63,8 +59,6 @@ function test_bidsRFX_basic_select_datasets_level_to_run()
 end
 
 function test_bidsRFX_basic_several_datasets_level()
-
-  createDummyData();
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -104,8 +98,6 @@ end
 
 function test_bidsRFX_basic_rfx()
 
-  createDummyData();
-
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
   matlabbatch = bidsRFX('RFX', opt);
@@ -135,8 +127,6 @@ end
 
 function test_bidsRFX_basic_smooth()
 
-  createDummyData();
-
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
   matlabbatch = bidsRFX('smoothContrasts', opt);
@@ -146,8 +136,6 @@ end
 
 function test_bidsRFX_basic_mean()
 
-  createDummyData();
-
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
   matlabbatch =  bidsRFX('meanAnatAndMask', opt);
@@ -156,8 +144,6 @@ function test_bidsRFX_basic_mean()
 end
 
 function test_bidsRFX_basic_contrast()
-
-  createDummyData();
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 

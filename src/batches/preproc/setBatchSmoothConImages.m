@@ -19,7 +19,7 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  [~, opt] = getData(opt, opt.dir.preproc);
 
   printBatchName('smoothing contrast images', opt);
 

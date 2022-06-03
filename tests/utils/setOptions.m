@@ -2,6 +2,8 @@ function opt = setOptions(varargin)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  generateLayoutMat();
+
   args = inputParser;
 
   default_subLabel = '';

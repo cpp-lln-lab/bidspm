@@ -20,7 +20,7 @@ function test_getTpmFilename_basic()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  BIDS = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   gm = getTpmFilename(BIDS, getAnatFilename(BIDS, opt, subLabel));
 
@@ -36,7 +36,7 @@ function test_getTpmFilename_mni()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  BIDS = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   res = 'bold';
   space = 'MNI';

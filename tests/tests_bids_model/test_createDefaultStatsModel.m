@@ -12,7 +12,7 @@ function test_createDefaultStatsModel_basic()
 
   opt = setOptions('vislocalizer', '');
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   createDefaultStatsModel(BIDS, opt);
 

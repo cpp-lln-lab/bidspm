@@ -22,7 +22,7 @@ function test_getAnatFilename_forced_session()
   opt.bidsFilterFile.t1w.suffix = 'T1w';
   opt.bidsFilterFile.t1w.ses = '01';
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
@@ -39,7 +39,7 @@ function test_getAnatFilename_derivatives()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.bidsFilterFile.t1w.space = opt.space;
   opt.bidsFilterFile.t1w.desc = 'biascor';
@@ -61,7 +61,7 @@ function test_getAnatFilename_basic()
 
   opt = setOptions('vislocalizer', subLabel, 'useRaw', true);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
@@ -92,7 +92,8 @@ function test_getAnatFilename_no_session()
   subLabel = '01';
   opt = setOptions('MoAE-preproc');
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = bids.layout(opt.dir.input);
+
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
   expectedFilename = 'sub-01_T1w.nii';
@@ -111,7 +112,7 @@ function test_getAnatFilename_error_type()
 
   opt.bidsFilterFile.t1w.suffix = 'T2w';
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   assertExceptionThrown( ...
                         @()getAnatFilename(BIDS, opt, subLabel), ...
@@ -126,7 +127,7 @@ function test_getAnatFilename_error_session()
 
   opt.bidsFilterFile.t1w.ses = '001';
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   assertExceptionThrown( ...
                         @()getAnatFilename(BIDS, opt, subLabel), ...

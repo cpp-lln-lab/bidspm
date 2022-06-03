@@ -22,7 +22,7 @@ function test_setBatchNormalizationSpatialPrepro_force_segment()
   matlabbatch = {};
   voxDim = [3 3 3];
 
-  [BIDS, opt] = getData(opt, opt.dir.input);
+  BIDS = getLayout(opt);
 
   matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt, voxDim);
 
@@ -57,7 +57,7 @@ function test_setBatchNormalizationSpatialPrepro_anat_only()
   matlabbatch = {};
   voxDim = [];
 
-  [BIDS, opt] = getData(opt, opt.dir.input);
+  BIDS = getLayout(opt);
 
   matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt, voxDim);
 
@@ -86,7 +86,7 @@ function test_setBatchNormalizationSpatialPrepro_reuse_segment_output()
   matlabbatch = {};
   voxDim = [3 3 3];
 
-  [BIDS, opt] = getData(opt, opt.dir.input);
+  BIDS = getLayout(opt);
 
   matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt, voxDim);
 

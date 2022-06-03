@@ -69,7 +69,7 @@ opt.query.desc = {'confounds'};
 opt.query.suffix = {'timeseries'};
 bidsCopyInputFolder(opt);
 
-% desc-confounds_timeseries.tsv
+% copy the actual nifti images
 opt.query.desc = {'preproc', 'brain'};
 opt.query.suffix = {'T1w', 'bold', 'mask'};
 opt.query.space = opt.space;

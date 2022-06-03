@@ -14,7 +14,7 @@ function test_setBatchGenerateT1map_basic()
 
   opt = setOptions('vismotion', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   matlabbatch = {};
   matlabbatch = setBatchGenerateT1map(matlabbatch, BIDS, opt, subLabel);

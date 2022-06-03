@@ -30,7 +30,7 @@ function test_setBatchCoregistrationFuncToAnat_basic()
 
   opt = setOptions('vismotion', subLabel);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.orderBatches.selectAnat = 1;
   opt.orderBatches.realign = 2;
@@ -63,7 +63,7 @@ function test_setBatchCoregistrationFuncToAnat_no_unwarp()
   opt = setOptions('vismotion', subLabel);
   opt.realign.useUnwarp = false;
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  BIDS = getLayout(opt);
 
   opt.orderBatches.selectAnat = 1;
   opt.orderBatches.realign = 2;

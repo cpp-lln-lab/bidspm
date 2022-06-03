@@ -179,8 +179,7 @@ function status = subjectHasData(BIDS, opt, subLabel)
 
   status = true;
 
-  filter = fileFilterForGlm(opt, subLabel);
-  filter.task =  opt.taskName;
+  filter = fileFilterForBold(opt, subLabel);
   fileToProcess = bids.query(BIDS, 'data', filter);
 
   if isempty(fileToProcess)
