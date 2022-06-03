@@ -23,7 +23,7 @@ function test_setBatchFactorialDesign_complex()
   datasetNode = opt.model.bm.get_nodes('Name', 'simple contrast');
 
   matlabbatch = {};
-  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode{1}.Name);
+  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name);
 
   basedirName = 'task-vismotion_space-IXI549Space_FWHM-6_conFWHM-6_';
 
@@ -40,7 +40,7 @@ function test_setBatchFactorialDesign_complex()
   datasetNode = opt.model.bm.get_nodes('Name', 'complex contrast');
 
   matlabbatch = {};
-  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode{1}.Name);
+  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name);
 
   % (1 contrasts) specified at the dataset level * 2
   % batches (design specification + figure design matrix)
@@ -64,7 +64,7 @@ function test_setBatchFactorialDesign_basic()
 
   matlabbatch = {};
 
-  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode{1}.Name);
+  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name);
 
   % (2 contrasts + 2 dummy contrasts) passed all the way from run level * 2
   % batches (design specification + figure design matrix)
@@ -89,7 +89,7 @@ function test_setBatchFactorialDesign_wrong_model_design_matrix()
 
   matlabbatch = {};
 
-  assertWarning(@()setBatchFactorialDesign(matlabbatch, opt, datasetNode{1}.Name), ...
+  assertWarning(@()setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name), ...
                 'setBatchFactorialDesign:notImplemented');
 
 end

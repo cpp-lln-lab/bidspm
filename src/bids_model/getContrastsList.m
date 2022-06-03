@@ -71,7 +71,7 @@ function contrastsList = getContrastsListFromSource(node, model)
   % TODO transfer to BIDS model as a get_contrasts_list method
   if isfield(sourceNode, 'Contrasts')
     for i = 1:numel(sourceNode.Contrasts)
-      if isTtest(sourceNode.Contrasts(i)) % only contrast can be forwarded
+      if isTtest(sourceNode.Contrasts{i}) % only contrast can be forwarded
         contrastsList{end + 1} = checkContrast(sourceNode, i);
       end
     end

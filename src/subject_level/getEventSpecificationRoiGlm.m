@@ -49,15 +49,15 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   % We focus on the run level but fall back on the subject level
   % if we do not find any contrasts at the run level
   node = bm.get_nodes('Level', 'run');
-  if ~isfield(node{1}, 'DummyContrasts') || ~isfield(node{1}, 'Contrasts')
+  if ~isfield(node, 'DummyContrasts') || ~isfield(node, 'Contrasts')
     node = bm.get_nodes('Level', 'subject');
   end
 
   eventSpecification = struct('name', '', 'eventSpec', [], 'duration', []);
 
-  eventSpecification = getEventSpecForDummyContrasts(eventSpecification, node{1}, SPM);
+  eventSpecification = getEventSpecForDummyContrasts(eventSpecification, node, SPM);
 
-  eventSpecification = getEventSpecForContrasts(eventSpecification, node{1}, SPM);
+  eventSpecification = getEventSpecForContrasts(eventSpecification, node, SPM);
 
 end
 
@@ -100,17 +100,19 @@ function eventSpec = getEventSpecForContrasts(eventSpec, node, SPM)
 
   for iCon = 1:length(node.Contrasts)
 
+    thisContrast = node.Contrasts{iCon};
+
     % only check contrasts against baseline
     % (no comparing condtions - YET)
-    if isTtest(node.Contrasts(iCon)) && isContrastAgainstBaseline(node.Contrasts(iCon))
+    if isTtest(thisContrast) && isContrastAgainstBaseline(thisContrast)
 
-      conditionList = node.Contrasts(iCon).ConditionList;
+      conditionList = thisContrast.ConditionList;
 
       thisContrastEventSpec = returnThisContrastEventSpec(conditionList, SPM);
 
       if ~isempty(thisContrastEventSpec.eventSpec)
 
-        eventSpec(specCounter).name = node.Contrasts(iCon).Name;
+        eventSpec(specCounter).name = thisContrast.Name;
         eventSpec(specCounter).eventSpec = thisContrastEventSpec.eventSpec;
         eventSpec(specCounter).duration = mean(thisContrastEventSpec.duration);
 

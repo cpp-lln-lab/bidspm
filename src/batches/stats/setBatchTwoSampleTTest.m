@@ -50,8 +50,8 @@ function [matlabbatch, contrastsList] = setBatchTwoSampleTTest(varargin)
   %   "Group.blind",
   %   "Group.control"
   % ],
-  group1 = regexp(node.Contrasts.ConditionList{1}, '\.', 'split');
-  group2 = regexp(node.Contrasts.ConditionList{2}, '\.', 'split');
+  group1 = regexp(node.Contrasts{1}.ConditionList{1}, '\.', 'split');
+  group2 = regexp(node.Contrasts{1}.ConditionList{2}, '\.', 'split');
 
   % for now we assume we can read the suibject group belonging
   % from the partiticipant TSV in the raw dataset

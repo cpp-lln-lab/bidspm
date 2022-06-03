@@ -25,7 +25,7 @@ function test_specifyContrasts_subject_level_select_node()
   model.Nodes{2, 1} = bids.Model.empty_node('subject');
   model.Input.task = taskName;
   model.Nodes{1, 1}.DummyContrasts.Contrasts = DummyContrasts;
-  model.Nodes{1, 1}.Contrasts = Contrasts;
+  model.Nodes{1, 1}.Contrasts{1} = Contrasts;
   model.Nodes{2, 1}.GroupBy = {'subject', 'contrast'};
   model.Nodes{2, 1}.DummyContrasts = struct('Test', 't');
   model.Nodes{2, 1} = rmfield(model.Nodes{2}, 'Contrasts');
@@ -87,10 +87,10 @@ function test_specifyContrasts_subject_level_F_contrast()
   model.Nodes{2}.Model.X = 1;
   model.Nodes{2}.Level = 'Subject';
   model.Nodes{2}.GroupBy = {'contrast', 'subject'};
-  model.Nodes{2}.Contrasts = struct('Test', 'F', ...
-                                    'Name', 'F_test_mot_static', ...
-                                    'ConditionList', {{'motion', 'static'}}, ...
-                                    'Weights', [1 1]);
+  model.Nodes{2}.Contrasts{1} = struct('Test', 'F', ...
+                                       'Name', 'F_test_mot_static', ...
+                                       'ConditionList', {{'motion', 'static'}}, ...
+                                       'Weights', [1 1]);
 
   SPM.Sess(1).col = [1, 2, 3];
   % skip Sess 2 to make sure contrast naming is based on the Sess number
@@ -264,7 +264,7 @@ function test_specifyContrasts_missing_condition()
 
   model = bids.Model('init', true);
   model.Input.task = taskName;
-  model.Nodes{1, 1}.Contrasts = Contrasts;
+  model.Nodes{1, 1}.Contrasts{1} = Contrasts;
   model.Nodes = model.Nodes{1};
 
   model.Nodes = rmfield(model.Nodes, 'DummyContrasts');
@@ -304,7 +304,7 @@ function test_specifyContrasts_subject_level()
   model.Nodes{2, 1} = bids.Model.empty_node('subject');
   model.Input.task = taskName;
   model.Nodes{1, 1}.DummyContrasts.Contrasts = DummyContrasts;
-  model.Nodes{1, 1}.Contrasts = Contrasts;
+  model.Nodes{1, 1}.Contrasts{1} = Contrasts;
   model.Nodes{2, 1}.GroupBy = {'subject', 'contrast'};
   model.Nodes{2, 1}.DummyContrasts = struct('Test', 't');
   model.Nodes{2, 1} = rmfield(model.Nodes{2}, 'Contrasts');
@@ -375,7 +375,7 @@ function test_specifyContrasts_complex()
   model = bids.Model('init', true);
   model.Input.task = taskName;
   model.Nodes{1}.DummyContrasts.Contrasts = DummyContrasts;
-  model.Nodes{1}.Contrasts = Contrasts;
+  model.Nodes{1}.Contrasts{1} = Contrasts;
   model.Nodes = model.Nodes{1};
 
   SPM.Sess(1).col = [1, 2];
