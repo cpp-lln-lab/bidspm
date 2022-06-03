@@ -77,7 +77,7 @@ function contrastsList = getContrastsListFromSource(node, model)
     end
 
     % go one level deeper
-  elseif sourceNode.Model.X == 1
+  elseif isnumeric(sourceNode.Model.X) && sourceNode.Model.X == 1
     contrastsList = getContrastsListFromSource(sourceNode, model);
 
   end
