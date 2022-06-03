@@ -15,28 +15,27 @@ function cpp_spm(varargin)
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);
   isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
 
-  isLogical = @(x) validateattributes(x, {'logical'});
-  isChar = @(x) validateattributes(x, {'char'});
-  isCellStr = @(x) validateattributes(x, {'cellstr'});
-  isPositiveScalar = @(x) validateattributes(x, {'numeric'}, {'nonnegative'});
+  isLogical = @(x) validateattributes(x, {'logical'}, {'numel', 1});
+  isChar = @(x) validateattributes(x, {'char'}, {'row'});
+  isPositiveScalar = @(x) validateattributes(x, {'numeric'}, {'nonnegative', 'numel', 1});
 
   isLowLevelActionOrDir = @(x) (ismember(x, low_level_actions()) || isdir(x));
 
   addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
 
   addOptional(args, 'output_dir', '', isChar);
-  addOptional(args, 'analysis_level', '', isChar);
+  addOptional(args, 'analysis_level', 'subject', @(x) ismember(x, {'subject', 'dataset'}));
 
   addParameter(args, 'action', defaultAction, isChar);
-  addParameter(args, 'participant_label', {}, isCellStr);
-  addParameter(args, 'task', {}, isCellStr);
+  addParameter(args, 'participant_label', {}, @iscellstr);
+  addParameter(args, 'task', {}, @iscellstr);
   addParameter(args, 'dry_run', false, isLogical);
   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
   addParameter(args, 'options', struct([]), isFileOrStruct);
   addParameter(args, 'verbosity', 2, isPositiveScalar);
 
   addParameter(args, 'fwhm', 6, isPositiveScalar);
-  addParameter(args, 'space', {'individual', 'IXI549Space'}, isCellStr);
+  addParameter(args, 'space', {'individual', 'IXI549Space'}, @iscellstr);
 
   % preproc only
   addParameter(args, 'dummy_scans', 0, isPositiveScalar);
@@ -477,7 +476,7 @@ function run_tests()
 
 end
 
-%% contsants
+%% constants
 
 function value = bids_apps_actions()
 
