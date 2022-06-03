@@ -26,10 +26,6 @@ function contrastsList = getContrastsList(node, model)
     end
   end
 
-  if iscell(node)
-    node = node{1};
-  end
-
   % check current Node
   if isfield(node, 'Contrasts')
 
@@ -65,7 +61,7 @@ function contrastsList = getContrastsListFromSource(node, model)
 
   contrastsList = {};
 
-  sourceNode = getSourceNode(model, node.Name);
+  sourceNode = model.get_source_node(node.Name);
 
   if isempty(sourceNode)
     % we reached the root node
@@ -75,13 +71,13 @@ function contrastsList = getContrastsListFromSource(node, model)
   % TODO transfer to BIDS model as a get_contrasts_list method
   if isfield(sourceNode, 'Contrasts')
     for i = 1:numel(sourceNode.Contrasts)
-      if isTtest(sourceNode.Contrasts(i)) % only contrast can be forwarded
+      if isTtest(sourceNode.Contrasts{i}) % only contrast can be forwarded
         contrastsList{end + 1} = checkContrast(sourceNode, i);
       end
     end
 
     % go one level deeper
-  elseif sourceNode.Model.X == 1
+  elseif isnumeric(sourceNode.Model.X) && sourceNode.Model.X == 1
     contrastsList = getContrastsListFromSource(sourceNode, model);
 
   end

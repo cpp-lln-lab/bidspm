@@ -142,10 +142,6 @@ function matlabbatch = bidsResults(opt)
       continue
     end
 
-    if iscell(node)
-      node = node{1};
-    end
-
     % Depending on the level step we migh have to define a matlabbatch
     % for each subject or just on for the whole group
     switch lower(node.Level)
@@ -290,10 +286,6 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
   matlabbatch = {};
 
   node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
-
-  if iscell(node)
-    node = node{1};
-  end
 
   opt = checkMontage(opt, iRes, node);
 

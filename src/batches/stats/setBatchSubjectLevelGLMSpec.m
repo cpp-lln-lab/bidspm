@@ -156,9 +156,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   else
     node = opt.model.bm.getRootNode;
-    if iscell(node)
-      node = node{1};
-    end
+
     fmri_spec.mask = {getInclusiveMask(opt, node.Name, BIDS, subLabel)};
     matlabbatch{end + 1}.spm.stats.fmri_spec = fmri_spec;
 

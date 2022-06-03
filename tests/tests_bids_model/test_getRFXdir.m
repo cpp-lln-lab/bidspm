@@ -34,7 +34,7 @@ function test_getRFXdir_user_specified()
   opt.space = 'IXI549Space';
 
   datasetNode = opt.model.bm.get_nodes('Level', 'dataset');
-  nodeName = datasetNode{1}.Name;
+  nodeName = datasetNode.Name;
 
   rfxDir = getRFXdir(opt, nodeName);
 
@@ -55,10 +55,10 @@ function test_getRFXdir_with_contrast()
   opt.space = 'IXI549Space';
 
   datasetNode = opt.model.bm.get_nodes('Level', 'dataset');
-  nodeName = datasetNode{1}.Name;
+  nodeName = datasetNode.Name;
 
   runNode = opt.model.bm.get_nodes('Level', 'run');
-  contrastName = runNode{1}.Contrasts(1).Name;
+  contrastName = runNode.Contrasts{1}.Name;
 
   rfxDir = getRFXdir(opt, nodeName, contrastName);
 

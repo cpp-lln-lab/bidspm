@@ -135,12 +135,12 @@ function e = computeDesignEfficiency(tsvFile, opt)
   contrastsList = bm.get_contrasts('Level', 'Run');
   for i = 1:numel(contrastsList)
     contrast = zeros(size(opt.CM{end}));
-    for cdt = 1:numel(contrastsList(i).ConditionList)
-      idx = filterTrialtypes(data.conditions, contrastsList(i).ConditionList{cdt});
-      contrast(idx) = contrastsList(i).Weights(cdt);
+    for cdt = 1:numel(contrastsList{i}.ConditionList)
+      idx = filterTrialtypes(data.conditions, contrastsList{i}.ConditionList{cdt});
+      contrast(idx) = contrastsList{i}.Weights(cdt);
     end
     opt.CM{end + 1} = contrast;
-    opt.contrast_name{end + 1} = contrastsList(i).Name;
+    opt.contrast_name{end + 1} = contrastsList{i}.Name;
   end
 
   %%

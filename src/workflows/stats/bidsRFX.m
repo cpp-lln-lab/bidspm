@@ -74,6 +74,9 @@ function matlabbatch = bidsRFX(varargin)
     else
       datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
     end
+    if isstruct(datasetNodes)
+      datasetNodes = {datasetNodes};
+    end
   end
 
   switch lower(action)

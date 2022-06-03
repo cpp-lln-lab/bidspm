@@ -16,9 +16,6 @@ function mask = getInclusiveMask(opt, nodeName, BIDS, subLabel)
   end
 
   node = opt.model.bm.get_nodes('Name',  nodeName);
-  if iscell(node)
-    node = node{1};
-  end
 
   % TODO refactor with bidsResults part for checking background for montage
   if isstruct(mask)

@@ -39,9 +39,6 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
     contrastsList = getDummyContrastsList(nodeName, opt.model.bm);
 
     node = opt.model.bm.get_nodes('Name', nodeName);
-    if iscell(node)
-      node = node{1};
-    end
 
     % no specific dummy contrasts mentionned also include all contrasts from previous levels
     % contrast are mentionned we grab them
