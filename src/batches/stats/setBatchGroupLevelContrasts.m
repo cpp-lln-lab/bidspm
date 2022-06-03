@@ -53,7 +53,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
       designMatrix = removeIntercept(designMatrix);
 
       if ismember(lower(designMatrix), {'group'})
-        edge = getEdge(opt.model.bm, 'Destination', nodeName);
+        edge = opt.model.bm.get_edge('Destination', nodeName);
         contrastsList = edge.Filter.contrast;
       end
 

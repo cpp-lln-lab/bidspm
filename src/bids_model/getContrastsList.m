@@ -26,10 +26,6 @@ function contrastsList = getContrastsList(node, model)
     end
   end
 
-  if iscell(node)
-    node = node{1};
-  end
-
   % check current Node
   if isfield(node, 'Contrasts')
 
@@ -65,7 +61,7 @@ function contrastsList = getContrastsListFromSource(node, model)
 
   contrastsList = {};
 
-  sourceNode = getSourceNode(model, node.Name);
+  sourceNode = model.get_source_node(node.Name);
 
   if isempty(sourceNode)
     % we reached the root node

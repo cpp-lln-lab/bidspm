@@ -43,9 +43,6 @@ function [matlabbatch, contrastsList] = setBatchTwoSampleTTest(varargin)
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   node = opt.model.bm.get_nodes('Name', nodeName);
-  if iscell(node)
-    node = node{1};
-  end
 
   % Assumes that group belonging was entered like this in the node contrast
   %
@@ -86,7 +83,7 @@ function [matlabbatch, contrastsList] = setBatchTwoSampleTTest(varargin)
   %     ]
   %   }
   % }
-  edge = getEdge(opt.model.bm, 'Destination', nodeName);
+  edge = opt.model.bm.get_edge('Destination', nodeName);
   contrastsList = edge.Filter.contrast;
 
   % collect con images

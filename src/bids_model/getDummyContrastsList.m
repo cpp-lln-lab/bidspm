@@ -26,10 +26,6 @@ function dummyContrastsList = getDummyContrastsList(node, model)
     end
   end
 
-  if iscell(node)
-    node = node{1};
-  end
-
   if isfield(node.DummyContrasts, 'Contrasts')
 
     dummyContrastsList = node.DummyContrasts.Contrasts;
@@ -46,39 +42,11 @@ function dummyContrastsList = getDummyContrastsList(node, model)
 
       case 'subject'
 
-        % TODO relax those assumptions
-        % assumptions
-        assert(node.Model.X == 1);
-
-        sourceNode = getSourceNode(model, node.Name);
-
-        % TODO transfer to BIDS model as a get_contrasts_list method
-        if isfield(sourceNode.DummyContrasts, 'Contrasts')
-          dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
-        end
+        dummyContrastsList = getFromPreviousNode(model, node);
 
       case 'dataset'
 
-        % TODO relax those assumptions
-        % assumptions
-        assert(node.Model.X == 1);
-
-        sourceNode = getSourceNode(model, node.Name);
-
-        % TODO transfer to BIDS model as a get_contrasts_list method
-
-        % get DummyContrasts from previous level otherwise we go one level deeper
-        % Assumes a model run --> subject --> dataset
-        if isfield(sourceNode.DummyContrasts, 'Contrasts')
-          dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
-
-        elseif model.get_design_matrix('Name', sourceNode.Name) == 1
-          sourceNode = getSourceNode(model, sourceNode.Name);
-
-          dummyContrasts = model.get_dummy_contrasts('Name', sourceNode.Name);
-          dummyContrastsList = dummyContrasts.Contrasts;
-
-        end
+        dummyContrastsList = getFromPreviousNode(model, node);
 
         for i = 1:numel(dummyContrastsList)
 
@@ -89,6 +57,22 @@ function dummyContrastsList = getDummyContrastsList(node, model)
 
     end
 
+  end
+
+end
+
+function dummyContrastsList = getFromPreviousNode(model, node)
+  % TODO relax those assumptions
+  % assumptions
+  assert(node.Model.X == 1);
+
+  sourceNode = model.get_source_node(node.Name);
+
+  % TODO transfer to BIDS model as a get_contrasts_list method
+  if isfield(sourceNode.DummyContrasts, 'Contrasts')
+    dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
+  else
+    dummyContrastsList = getFromPreviousNode(model, sourceNode);
   end
 
 end
