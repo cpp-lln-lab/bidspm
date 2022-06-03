@@ -45,6 +45,8 @@ function [BIDS, opt] = getData(varargin)
       tmp = load(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
       if isempty(fieldnames(tmp))
         BIDS.raw = bids.layout(opt.dir.raw);
+      else
+        BIDS.raw = tmp.BIDS;
       end
     else
       BIDS.raw = bids.layout(opt.dir.raw);
