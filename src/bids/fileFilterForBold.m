@@ -2,7 +2,16 @@ function [filter, opt] = fileFilterForBold(opt, subLabel, type)
   %
   % USAGE::
   %
-  %  [filter, opt] = fileFilterForBold(opt)
+  %  [filter, opt] = fileFilterForBold(opt, subLabel, type)
+  %
+  % :param opt:
+  % :type opt: structure
+  %
+  % :param subLabel:
+  % :type subLabel: char
+  %
+  % :param type: any of {'glm', 'stc', 'confounds', 'events'}
+  % :type type: char
   %
   % (C) Copyright 2022 CPP_SPM developers
 
@@ -23,7 +32,7 @@ function [filter, opt] = fileFilterForBold(opt, subLabel, type)
   opt.query.space = opt.space;
   opt = mniToIxi(opt);
 
-  if strcmp(type, 'stc')
+  if ismember(type,  {'stc'})
     % only stick to raw data
     opt.query.space = '';
     opt.query.desc = '';
@@ -34,10 +43,14 @@ function [filter, opt] = fileFilterForBold(opt, subLabel, type)
   filter.sub =  regexify(subLabel);
 
   filter.extension = {'.nii.*'};
+  if strcmp(type, 'confounds')
+    filter.extension = '.tsv';
+    filter.suffix = {'regressors', 'timeseries', 'outliers'}; % 'motion',
+  end
+
   if strcmp(type, 'events')
     filter.extension = '.tsv';
-    opt.query.desc = 'confounds';
-    filter.suffix = {'regressors', 'timeseries'};
+    filter.suffix = {'events'};
   end
 
   % task details should be passed via opt.query
@@ -50,7 +63,7 @@ function [filter, opt] = fileFilterForBold(opt, subLabel, type)
     filter.task = opt.taskName;
   end
 
-  if strcmp(type, 'events')
+  if ismember(type, {'events', 'confounds'})
     if isfield(filter, 'space')
       filter = rmfield(filter, 'space');
     end

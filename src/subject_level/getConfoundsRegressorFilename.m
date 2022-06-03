@@ -27,7 +27,7 @@ function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, 
   %
   % (C) Copyright 2021 CPP_SPM developers
 
-  filter = fileFilterForBold(opt, subLabel, 'events');
+  filter = fileFilterForBold(opt, subLabel, 'confounds');
   filter.ses = session;
   filter.run = run;
   filename = bids.query(BIDS, 'data', filter);

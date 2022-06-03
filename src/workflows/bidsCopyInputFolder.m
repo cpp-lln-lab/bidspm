@@ -51,9 +51,10 @@ function bidsCopyInputFolder(varargin)
   [BIDS, opt] = getData(opt, opt.dir.input);
 
   use_schema = true;
-  skip_dependencies = false;
 
   for iModality = 1:numel(opt.query.modality)
+
+    skip_dependencies = false;
 
     filter = opt.query;
     filter.modality = opt.query.modality{iModality};
@@ -68,6 +69,14 @@ function bidsCopyInputFolder(varargin)
       pipeline_name =  [pipeline_name '-' opt.pipeline.type];
     end
 
+    % leave events files behind
+    if ismember(pipeline_name, {'preproc', 'cpp_spm-preproc'})
+      if ~isfield(filter, 'suffix')
+        filter.suffix = {'^(?!(events)$).*$'};
+      end
+      skip_dependencies = true;
+    end
+
     bids.copy_to_derivative(BIDS, ...
                             'pipeline_name', pipeline_name, ...
                             'out_path', fullfile(opt.dir.output, '..'), ...
@@ -77,6 +86,23 @@ function bidsCopyInputFolder(varargin)
                             'skip_dep', skip_dependencies, ...
                             'use_schema', use_schema, ...
                             'verbose', opt.verbosity > 0);
+
+    % force grab the confounds for fmriprep
+    if strcmp(filter.modality, 'func') && ismember(generatedBy(BIDS), {'fmriprep'})
+
+      filter.suffix = {'regressors', 'timeseries', 'motion', 'outliers'};
+
+      bids.copy_to_derivative(BIDS, ...
+                              'pipeline_name', pipeline_name, ...
+                              'out_path', fullfile(opt.dir.output, '..'), ...
+                              'filter', filter, ...
+                              'unzip', unzip, ...
+                              'force', force, ...
+                              'skip_dep', skip_dependencies, ...
+                              'use_schema', use_schema, ...
+                              'verbose', opt.verbosity > 0);
+
+    end
 
     printToScreen('\n\n', opt);
   end
@@ -88,4 +114,12 @@ function bidsCopyInputFolder(varargin)
 
   cleanUpWorkflow(opt);
 
+end
+
+function value = generatedBy(BIDS)
+  value = '';
+  if isfield(BIDS.description, 'GeneratedBy') && ...
+       isfield(BIDS.description.GeneratedBy, 'Name')
+    value = lower(BIDS.description.GeneratedBy.Name);
+  end
 end
