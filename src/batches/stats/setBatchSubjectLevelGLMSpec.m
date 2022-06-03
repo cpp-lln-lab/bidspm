@@ -41,7 +41,9 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   sliceOrder = returnSliceOrder(BIDS, opt, subLabel);
 
-  TR = getAndCheckRepetitionTime(BIDS, queryFilter(opt, subLabel));
+  filter = fileFilterForBold(opt, subLabel);
+  filter.desc = 'preproc';
+  TR = getAndCheckRepetitionTime(BIDS, filter);
 
   fmri_spec.timing.units = 'secs';
   fmri_spec.timing.RT = TR;
@@ -166,21 +168,9 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
 end
 
-function filter = queryFilter(opt, subLabel)
-  filter = opt.query;
-  filter.sub =  subLabel;
-  filter.suffix = opt.bidsFilterFile.bold.suffix;
-  filter.extension = '.nii';
-  filter.prefix = '';
-  % in case task was not passed through opt.query
-  if ~isfield(filter, 'task')
-    filter.task = opt.taskName;
-  end
-end
-
 function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
 
-  filter = queryFilter(opt, subLabel);
+  filter = fileFilterForBold(opt, subLabel);
 
   if ~opt.stc.skip
     % Get slice timing information.

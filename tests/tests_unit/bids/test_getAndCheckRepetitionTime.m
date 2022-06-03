@@ -64,13 +64,6 @@ function [BIDS, filter] = setUp(task)
 
   BIDS = bids.layout(opt.dir.preproc, 'use_schema', false);
 
-  filter = opt.query;
-  filter.sub =  subLabel;
-  filter.suffix = 'bold';
-  filter.extension = {'.nii', '.nii.gz'};
-  filter.prefix = '';
-  if ~isfield(filter, 'task')
-    filter.task = opt.taskName;
-  end
+  filter = fileFilterForBold(opt, subLabel);
 
 end
