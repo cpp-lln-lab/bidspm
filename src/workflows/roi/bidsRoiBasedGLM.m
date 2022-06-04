@@ -158,7 +158,7 @@ function skipped = bidsRoiBasedGLM(opt)
                                                     percentSignalChange(:, iCon));
       end
 
-      nameStructure = outputName(opt, subLabel, roiList{iROI, 1});
+      nameStructure = roiGlmOutputName(opt, subLabel, roiList{iROI, 1});
 
       nameStructure.suffix = 'timecourse';
       nameStructure.ext = '.json';
@@ -231,24 +231,5 @@ function checks(opt)
     msg = sprintf('GLMs can only be run in one space at a time.\n');
     errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
   end
-
-end
-
-function outputNameSpec = outputName(opt, subLabel, roiFileName)
-
-  bf = bids.File(roiFileName);
-  fields = {'hemi', 'desc', 'label'};
-  for iField = 1:numel(fields)
-    if ~isfield(bf.entities, fields{iField})
-      bf.entities.(fields{iField}) = '';
-    end
-  end
-  outputNameSpec = struct('entities', struct( ...
-                                             'sub', subLabel, ...
-                                             'task', strjoin(opt.taskName, ''), ...
-                                             'hemi', bf.entities.hemi, ...
-                                             'space', bf.entities.space, ...
-                                             'label', bf.entities.label, ...
-                                             'desc', bf.entities.desc));
 
 end
