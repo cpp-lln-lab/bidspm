@@ -9,11 +9,13 @@ function [names, R] = createConfounds(tsvContent, designMatrix, maxNbVols)
   %
   % :param tsvContent: output of spm_load or bids.util.tsvread
   % :type tsvContent: structure
+  %
   % :param designMatrix: conditions included in the design matrix
   % :type designMatrix: cell string
+  %
   % :param maxNbVols: number of volumes included in that run to limit the
-  % number of rows in the confound regressors; if ``Inf`` all rows will be
-  % included.
+  %                   number of rows in the confound regressors; if ``Inf`` all rows will be
+  %                   included.
   % :type maxNbVols: positive integer or Inf
   %
   % :returns: :counfoundMatFile: (string) fullpath name of the file created.

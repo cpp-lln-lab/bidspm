@@ -42,6 +42,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   sliceOrder = returnSliceOrder(BIDS, opt, subLabel);
 
   filter = fileFilterForBold(opt, subLabel);
+  % TODO pass the repetition time metadata to the smoothed data
+  % so we don't have to read it from the preproc data
   filter.desc = 'preproc';
   TR = getAndCheckRepetitionTime(BIDS, filter);
 
@@ -220,12 +222,10 @@ function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, ru
 
   % get events file from raw data set and convert it to a onsets.mat file
   % store in the subject level GLM directory
-  filter = struct('sub',  subLabel, ...
-                  'task', task, ...
-                  'ses', session, ...
-                  'run', run, ...
-                  'suffix', 'events', ...
-                  'extension', '.tsv');
+  filter = fileFilterForBold(opt, subLabel, 'events');
+  filter.ses = session;
+  filter.run = run;
+  filter.task = task;
 
   tsvFile = bids.query(BIDS.raw, 'data', filter);
 

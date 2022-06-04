@@ -8,24 +8,28 @@ function cpp_spm(varargin)
   % TODO  where to save the options?
 
   args = inputParser;
+  args.CaseSensitive = false;
 
   defaultAction = 'init';
 
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);
   isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
-  isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
+
+  isLogical = @(x) validateattributes(x, {'logical'}, {'numel', 1});
+  isChar = @(x) validateattributes(x, {'char'}, {'row'});
+  isPositiveScalar = @(x) validateattributes(x, {'numeric'}, {'nonnegative', 'numel', 1});
 
   isLowLevelActionOrDir = @(x) (ismember(x, low_level_actions()) || isdir(x));
 
   addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
 
-  addOptional(args, 'output_dir', '', @ischar);
-  addOptional(args, 'analysis_level', '', @ischar);
+  addOptional(args, 'output_dir', '', isChar);
+  addOptional(args, 'analysis_level', 'subject', @(x) ismember(x, {'subject', 'dataset'}));
 
-  addParameter(args, 'action', defaultAction, @ischar);
+  addParameter(args, 'action', defaultAction, isChar);
   addParameter(args, 'participant_label', {}, @iscellstr);
   addParameter(args, 'task', {}, @iscellstr);
-  addParameter(args, 'dry_run', false, @islogical);
+  addParameter(args, 'dry_run', false, isLogical);
   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
   addParameter(args, 'options', struct([]), isFileOrStruct);
   addParameter(args, 'verbosity', 2, isPositiveScalar);
@@ -35,13 +39,13 @@ function cpp_spm(varargin)
 
   % preproc only
   addParameter(args, 'dummy_scans', 0, isPositiveScalar);
-  addParameter(args, 'anat_only', false, @islogical);
+  addParameter(args, 'anat_only', false, isLogical);
   addParameter(args, 'ignore', {}, isEmptyOrCellstr);
 
   % stats only
   addParameter(args, 'preproc_dir', pwd, @isdir);
   addParameter(args, 'model_file', struct([]), isFileOrStruct);
-  addParameter(args, 'roi_based', false, @islogical);
+  addParameter(args, 'roi_based', false, isLogical);
 
   parse(args, varargin{:});
 
@@ -472,7 +476,7 @@ function run_tests()
 
 end
 
-%% contsants
+%% constants
 
 function value = bids_apps_actions()
 

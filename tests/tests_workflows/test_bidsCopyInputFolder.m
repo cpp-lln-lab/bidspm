@@ -35,6 +35,8 @@ function test_bidsCopyInputFolder_basic()
                     'file'), ...
               2);
 
+  assertEqual(numel(bids.query(layoutDerivatives, 'data', 'suffix', 'events')), 0);
+
   cleanUp(opt.dir.preproc);
 
 end
