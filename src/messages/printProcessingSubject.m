@@ -1,5 +1,10 @@
 function printProcessingSubject(iSub, subLabel, opt)
   %
+  % USAGE::
+  %
+  %  printProcessingSubject(iSub, subLabel, opt)
+  %
+  %
   % (C) Copyright 2019 CPP_SPM developers
 
   msg = sprintf([ ...
