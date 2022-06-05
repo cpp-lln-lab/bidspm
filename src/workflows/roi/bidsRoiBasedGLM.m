@@ -66,8 +66,6 @@ function skipped = bidsRoiBasedGLM(opt)
 
     eventSpec = getEventSpecificationRoiGlm(spmFile, opt.model.file);
 
-    dataToCompile = {};
-
     for iROI = 1:size(roiList, 1)
 
       roiHeader = spm_vol(roiList{iROI, 1});
@@ -158,12 +156,11 @@ function skipped = bidsRoiBasedGLM(opt)
                                                     percentSignalChange(:, iCon));
       end
 
-      nameStructure = outputName(opt, subLabel, roiList{iROI, 1});
+      nameStructure = roiGlmOutputName(opt, subLabel, roiList{iROI, 1});
 
       nameStructure.suffix = 'timecourse';
       nameStructure.ext = '.json';
       bidsFile = bids.File(nameStructure);
-      dataToCompile{end + 1, 1} = fullfile(outputDir, bidsFile.filename);
       bids.util.jsonwrite(fullfile(outputDir, bidsFile.filename), jsonContent);
 
       nameStructure.ext = '.tsv';
@@ -176,49 +173,9 @@ function skipped = bidsRoiBasedGLM(opt)
 
     end
 
+    saveRoiGlmSummaryTable(opt, subLabel, roiList, eventSpec);
+
     close all;
-
-    %% Save summary table for all rois and conditions as tidy data
-    %  TODO refactor in separate function
-    psc = {'max', 'absMax'};
-    row = 1;
-    for i = 1:numel(dataToCompile)
-
-      bidsFile = bids.File(dataToCompile{i});
-      jsonContent = bids.util.jsondecode(dataToCompile{i});
-
-      for iCon = 1:numel(eventSpec)
-
-        tsvContent.label{row} = bidsFile.entities.label;
-        if isfield(bidsFile.entities, 'hemi')
-          tsvContent.hemi{row} = bidsFile.entities.hemi;
-        else
-          tsvContent.hemi{row} = nan;
-        end
-
-        tsvContent.voxels(row) = jsonContent.size.voxels;
-        tsvContent.volume(row) = jsonContent.size.volume;
-
-        conName = eventSpec(iCon).name;
-        tsvContent.contrast_name{row} = conName;
-
-        for j = 1:numel(psc)
-          value = jsonContent.(conName).percentSignalChange.(psc{j});
-          tsvContent.(['percent_signal_change_' psc{j}])(row) = value;
-        end
-
-        row = row + 1;
-
-      end
-
-    end
-
-    bidsFile = bids.File(outputDir);
-    bidsFile.suffix = 'summary';
-    bidsFile.extension = '.tsv';
-    bids.util.tsvwrite(fullfile(outputDir, bidsFile.filename), tsvContent);
-
-    clear tsvContent;
 
   end
 
@@ -231,24 +188,5 @@ function checks(opt)
     msg = sprintf('GLMs can only be run in one space at a time.\n');
     errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
   end
-
-end
-
-function outputNameSpec = outputName(opt, subLabel, roiFileName)
-
-  bf = bids.File(roiFileName);
-  fields = {'hemi', 'desc', 'label'};
-  for iField = 1:numel(fields)
-    if ~isfield(bf.entities, fields{iField})
-      bf.entities.(fields{iField}) = '';
-    end
-  end
-  outputNameSpec = struct('entities', struct( ...
-                                             'sub', subLabel, ...
-                                             'task', strjoin(opt.taskName, ''), ...
-                                             'hemi', bf.entities.hemi, ...
-                                             'space', bf.entities.space, ...
-                                             'label', bf.entities.label, ...
-                                             'desc', bf.entities.desc));
 
 end

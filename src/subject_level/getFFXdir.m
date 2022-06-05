@@ -4,10 +4,11 @@ function ffxDir = getFFXdir(subLabel, opt)
   %
   % USAGE::
   %
-  %   ffxDir = getFFXdir(subLabel, funcFWFM, opt)
+  %   ffxDir = getFFXdir(subLabel, opt)
   %
   % :param subLabel:
   % :type subLabel: string
+  %
   % :param opt:
   % :param opt: structure
   %
@@ -18,7 +19,7 @@ function ffxDir = getFFXdir(subLabel, opt)
   glmDirName = createGlmDirName(opt);
 
   if ~isfield(opt.model, 'bm')
-    opt.model.bm = bids.Model('file', opt.model.file);
+    opt.model.bm = BidsModel('file', opt.model.file);
     if strcmpi(opt.pipeline.type, 'stats')
       opt = overRideWithBidsModelContent(opt);
     end
