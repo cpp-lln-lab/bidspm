@@ -99,7 +99,7 @@ function cpp_spm(varargin)
 
       preprocess(args);
 
-    case {'stats', 'contrasts'}
+    case {'stats', 'contrasts', 'results'}
 
       stats(args);
 
@@ -488,7 +488,7 @@ end
 
 function value = bids_apps_actions()
 
-  value = {'preprocess'; 'stats'; 'contrasts'};
+  value = {'preprocess'; 'stats'; 'contrasts'; 'results'};
 
 end
 
