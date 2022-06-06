@@ -180,7 +180,6 @@ function opt = checkOptions(opt)
       msg = sprintf('model file does not exist:\n %s', opt.model.file);
       errorHandling(mfilename(), 'modelFileMissing', msg, false, opt.verbosity);
     end
-    bm = bids.Model('file', opt.model.file);
     if strcmpi(opt.pipeline.type, 'stats')
       opt = overRideWithBidsModelContent(opt);
     end
