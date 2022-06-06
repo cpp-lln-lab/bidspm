@@ -144,12 +144,14 @@ info.
 
 ```bibtex
 @software{CPP_SPM,
-  author  = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo},
+  author  = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo and Shahzad, Iqra and Nunes, Márcia},
   license = {GPL-3.0},
   title   = {CPP SPM},
   url     = {https://github.com/cpp-lln-lab/CPP_SPM},
   version = {1.1.5dev},
-  doi     = {https://doi.org/10.5281/zenodo.3554331},
+  doi     = {10.5281/zenodo.3554331},
+  publisher = {Zenodo},
+  journal = {Software}
 }
 ```
 
