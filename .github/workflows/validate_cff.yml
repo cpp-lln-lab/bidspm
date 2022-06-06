@@ -14,7 +14,7 @@ on:
 
 jobs:
 
-  miss_hit:
+  validate_cff:
 
     runs-on: ubuntu-latest
 

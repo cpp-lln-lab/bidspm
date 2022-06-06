@@ -7,11 +7,12 @@ on:
       - dev
     paths:
       - '**.m'
+      - '.github/workflows/miss_hit.yml'
   pull_request:
     branches: ['*']
     paths:
       - '**.m'
-
+      - '.github/workflows/miss_hit.yml'
 jobs:
 
   miss_hit:
