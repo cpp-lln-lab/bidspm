@@ -90,6 +90,10 @@ function bidsCopyInputFolder(varargin)
     % force grab the confounds for fmriprep
     if strcmp(filter.modality, 'func') && ismember(generatedBy(BIDS), {'fmriprep'})
 
+      if isfield(filter, 'desc')
+        filter = rmfield(filter, 'desc');
+      end
+      filter = rmfield(filter, 'space');
       filter.suffix = {'regressors', 'timeseries', 'motion', 'outliers'};
 
       bids.copy_to_derivative(BIDS, ...
