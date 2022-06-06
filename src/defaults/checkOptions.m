@@ -169,21 +169,11 @@ function opt = checkOptions(opt)
     opt.pipeline.name = 'cpp_spm';
   end
 
+  % coerce query modality into a cell
   if ~iscell(opt.query.modality)
     Results = opt.query.modality;
     opt.query = rmfield(opt.query, 'modality');
     opt.query.modality{1} = Results;
-  end
-
-  if ~isempty(opt.model.file)
-    if exist(opt.model.file, 'file') ~= 2
-      msg = sprintf('model file does not exist:\n %s', opt.model.file);
-      errorHandling(mfilename(), 'modelFileMissing', msg, false, opt.verbosity);
-    end
-    bm = bids.Model('file', opt.model.file);
-    if strcmpi(opt.pipeline.type, 'stats')
-      opt = overRideWithBidsModelContent(opt);
-    end
   end
 
   if isfield(opt, 'taskName') && ~iscell(opt.taskName)
@@ -199,6 +189,8 @@ function opt = checkOptions(opt)
     opt.space = {opt.space};
   end
   opt = mniToIxi(opt);
+
+  opt = getOptionsFromModel(opt);
 
   opt = orderfields(opt);
 
@@ -378,8 +370,7 @@ function checkFields(opt)
 
   if ~isempty(opt.stc.referenceSlice) && length(opt.stc.referenceSlice) > 1
 
-    msg = sprintf( ...
-                  ['options.stc.referenceSlice should be a scalar.' ...
+    msg = sprintf(['options.stc.referenceSlice should be a scalar.' ...
                    '\nCurrent value is: %d'], ...
                   opt.stc.referenceSlice);
     errorHandling(mfilename(), 'refSliceNotScalar', msg, false, opt.verbosity);
@@ -388,8 +379,7 @@ function checkFields(opt)
 
   if ~isempty (opt.funcVoxelDims) && length(opt.funcVoxelDims) ~= 3
 
-    msg = sprintf( ...
-                  ['opt.funcVoxelDims should be a vector of length 3. '...
+    msg = sprintf(['opt.funcVoxelDims should be a vector of length 3. '...
                    '\nCurrent value is: %d'], ...
                   opt.funcVoxelDims);
     errorHandling(mfilename(), 'voxDim', msg, false, opt.verbosity);

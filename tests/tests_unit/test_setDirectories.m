@@ -8,11 +8,37 @@ function test_suite = test_setDirectories %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setDirectories_preproc()
+
+  %% preprocess
+  opt.dir.preproc = pwd;
+  opt.taskName = 'testTask';
+  opt.pipeline.type = 'preproc';
+
+  %
+  opt = checkOptions(opt);
+
+  %
+  expected = defaultOptions();
+
+  expected.dir.derivatives = spm_file(fullfile(pwd, '..', 'derivatives'), 'cpath');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
+  expected.dir.input = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
+  expected.dir.output = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
+  expected.dir.jobs = fullfile(expected.dir.output, 'jobs', opt.taskName{1});
+  expected.dir.stats = '';
+  expected.dir.raw = '';
+
+  assertEqual(opt.dir, expected.dir);
+
+end
+
 function test_setDirectories_stats()
 
   opt.pipeline.type = 'stats';
   opt.dir.raw = fullfile(pwd, 'raw');
   opt.dir.preproc = fullfile(pwd, 'derivatives', 'cpp_spm-preproc');
+  opt.model.file = fullfile(getDummyDataDir(),  'models', ['model-dummy_smdl.json']);
   opt = checkOptions(opt);
 
   %
@@ -25,8 +51,6 @@ function test_setDirectories_stats()
   expected.dir.input = expected.dir.preproc;
   expected.dir.output = expected.dir.stats;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
-
-  assertEqual(opt.dir, expected.dir);
 
 end
 
@@ -161,30 +185,6 @@ function test_setDirectories_copy_fmriprep_to_preproc()
   expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
   expected.dir.output = expected.dir.preproc;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
-
-  assertEqual(opt.dir, expected.dir);
-
-end
-
-function test_setDirectories_preproc()
-
-  %% preprocess
-  opt.dir.preproc = pwd;
-  opt.taskName = 'testTask';
-  opt.pipeline.type = 'stats';
-
-  %
-  opt = checkOptions(opt);
-
-  %
-  expected = defaultOptions();
-
-  expected.dir.derivatives = spm_file(fullfile(pwd, '..', 'derivatives'), 'cpath');
-  expected.dir.preproc = pwd;
-  expected.dir.stats = fullfile(expected.dir.derivatives, 'cpp_spm-stats');
-  expected.dir.input = pwd;
-  expected.dir.output = expected.dir.stats;
-  expected.dir.jobs = fullfile(expected.dir.output, 'jobs', opt.taskName{1});
 
   assertEqual(opt.dir, expected.dir);
 

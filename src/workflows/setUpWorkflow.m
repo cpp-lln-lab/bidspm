@@ -53,18 +53,11 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir, indexData)
     [BIDS, opt] = getData(opt, bidsDir);
   end
 
-  if strcmp(opt.pipeline.type, 'stats')
-
-    if isempty(opt.model.file)
-      opt = createDefaultStatsModel(BIDS, opt);
-      opt = overRideWithBidsModelContent(opt);
-    end
-
-    if ~isfield(opt.model, 'bm') || isempty(opt.model.bm)
-      opt.model.bm = BidsModel('file', opt.model.file);
-    end
-
+  if strcmp(opt.pipeline.type, 'stats') && isempty(opt.model.file)
+    opt = createDefaultStatsModel(BIDS, opt);
   end
+
+  opt = getOptionsFromModel(opt);
 
   cleanCrash();
 

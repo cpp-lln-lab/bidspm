@@ -1,5 +1,7 @@
 function opt = setOptions(varargin)
   %
+  % opt = setOptions(task, subLabel, 'useRaw', false, 'pipelineType', 'preproc');
+  %
   % (C) Copyright 2021 CPP_SPM developers
 
   generateLayoutMat();
@@ -104,6 +106,7 @@ function opt = setOptions(varargin)
 
   opt.taskName = task;
 
+  % not sure this is necessary as getOptionsFromModel takes care of that in checkOptions
   if strcmp(opt.pipeline.type, 'stats')
     opt =  rmfield(opt, 'taskName');
     if isfield(opt, 'space')
