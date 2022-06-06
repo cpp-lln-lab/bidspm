@@ -48,8 +48,9 @@ function opt = getOptionsFromModel(opt)
 
   else
 
-    % override with all inputs
-    % keep track of status to throw a warning
+    % override with all inputs from model
+
+    % keep track of inputs that already exist in the options to throw a warning
     % if model.Input actually overrides an option value
     inputsAlreadyInOptions = getInputInOptions(opt);
 
@@ -61,44 +62,42 @@ function opt = getOptionsFromModel(opt)
       thisEntity.key = schema.content.objects.entities.(fromInput{i}).entity;
       thisEntity.value = input.(fromInput{i});
 
+      % 'task', 'sub', 'space' will target a field in options
+      % all other entities will target a field in opt.query
+
       switch thisEntity.key
 
         case 'task'
-          if isfield(opt, 'taskName')
-            overrideWarning(opt.taskName, thisEntity, inputsAlreadyInOptions, opt.verbosity);
-          end
-          opt.taskName = input.task;
+          targetField = 'taskName';
 
         case 'sub'
-          if isfield(opt, 'subjects')
-            overrideWarning(opt.subjects, thisEntity, inputsAlreadyInOptions, opt.verbosity);
+          targetField = 'subjects';
+
+        case cat(1, fromQuery(), {'space'})
+          targetField = thisEntity.key;
+
+      end
+
+      switch thisEntity.key
+
+        case {'task', 'sub', 'space'}
+
+          if isfield(opt, targetField)
+            overrideWarning(opt.(targetField), thisEntity, inputsAlreadyInOptions, opt.verbosity);
           end
-          opt.subjects = input.subject;
 
-        case 'space'
-          if isfield(opt, 'space')
-            overrideWarning(opt.space, thisEntity, inputsAlreadyInOptions, opt.verbosity);
-          end
-          opt.space = input.space;
+          opt.(targetField) = thisEntity.value;
 
-        case  {'ses'
-               'acq'
-               'ce'
-               'rec'
-               'dir'
-               'run'
-               'echo'
-               'part'
-               'desc'}
+        case fromQuery()
 
-          if isfield(opt.query, thisEntity.key)
-            overrideWarning(opt.query.(thisEntity.key), ...
+          if isfield(opt.query, targetField)
+            overrideWarning(opt.query.(targetField), ...
                             thisEntity, ...
                             inputsAlreadyInOptions, ...
                             opt.verbosity);
           end
 
-          opt.query.(thisEntity.key) = thisEntity.value;
+          opt.query.(targetField) = thisEntity.value;
 
       end
 
@@ -131,16 +130,6 @@ function inputsAlreadyInOptions = getInputInOptions(opt)
                           'task'
                           'space'};
 
-  fromQuery = {'ses'
-               'acq'
-               'ce'
-               'rec'
-               'dir'
-               'run'
-               'echo'
-               'part'
-               'desc'};
-
   inputsAlreadyInOptions = fromOptionsShortForm(ismember(fromOptions, fieldnames(opt)));
 
   if isfield(opt, 'query')
@@ -148,4 +137,19 @@ function inputsAlreadyInOptions = getInputInOptions(opt)
     inputsAlreadyInOptions = [inputsAlreadyInOptions; fromQuery(queryPresent)];
   end
 
+end
+
+function value = fromQuery(idx)
+  value = {'ses'
+           'acq'
+           'ce'
+           'rec'
+           'dir'
+           'run'
+           'echo'
+           'part'
+           'desc'};
+  if nargin > 0
+    value = value(idx);
+  end
 end
