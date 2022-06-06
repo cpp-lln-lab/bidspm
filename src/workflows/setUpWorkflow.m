@@ -57,7 +57,7 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir, indexData)
 
     if isempty(opt.model.file)
       opt = createDefaultStatsModel(BIDS, opt);
-      opt = overRideWithBidsModelContent(opt);
+      opt = getOptionsFromModel(opt);
     end
 
     if ~isfield(opt.model, 'bm') || isempty(opt.model.bm)

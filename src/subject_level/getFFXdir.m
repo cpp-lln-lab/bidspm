@@ -21,7 +21,7 @@ function ffxDir = getFFXdir(subLabel, opt)
   if ~isfield(opt.model, 'bm')
     opt.model.bm = BidsModel('file', opt.model.file);
     if strcmpi(opt.pipeline.type, 'stats')
-      opt = overRideWithBidsModelContent(opt);
+      opt = getOptionsFromModel(opt);
     end
   end
 

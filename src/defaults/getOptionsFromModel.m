@@ -1,10 +1,12 @@
-function opt = overRideWithBidsModelContent(opt)
+function opt = getOptionsFromModel(opt)
   %
   % USAGE::
   %
-  %     opt = overRideWithBidsModelContent(opt)
+  %     opt = getOptionsFromModel(opt)
   %
   % (C) Copyright 2022 CPP_SPM developers
+
+  % TODO refactor to pass everything to bids filter file instead of query?
 
   inputsToOverride = {'task', 'subject', 'space', 'run', 'session', 'acq'};
 
