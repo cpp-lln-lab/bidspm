@@ -68,12 +68,15 @@ function opt = getOptionsFromModel(opt)
       switch thisEntity.key
 
         case 'task'
+          thisEntity.targetField = 'opt.taskName';
           targetField = 'taskName';
 
         case 'sub'
+          thisEntity.targetField = 'opt.subjects';
           targetField = 'subjects';
 
         case cat(1, fromQuery(), {'space'})
+          thisEntity.targetField = ['opt.query.' thisEntity.key];
           targetField = thisEntity.key;
 
       end
@@ -108,10 +111,15 @@ function opt = getOptionsFromModel(opt)
 end
 
 function overrideWarning(thisOption, thisEntity, inputsAlreadyInOptions, verbosity)
-  if ~ismember(thisEntity.value, thisOption) && ismember(thisEntity.key, inputsAlreadyInOptions)
-    msg = sprintf('\nBIDS stats model Input will overide options:%s\n', ...
-                  createUnorderedList(thisEntity));
-    errorHandling(mfilename(), 'bidsModelOverridesOptions', msg, true, verbosity);
+  if ischar(thisOption)
+    thisOption = {thisOption};
+  end
+  if ~all(ismember(thisEntity.value, thisOption)) && ...
+      ismember(thisEntity.key, inputsAlreadyInOptions)
+    msg = sprintf('\nBIDS stats model Input will overide "%s" to "%s"\n', ...
+                  thisEntity.targetField, ...
+                  char(thisEntity.value));
+    errorHandling(mfilename(), 'modelOverridesOptions', msg, true, verbosity);
   end
 
 end

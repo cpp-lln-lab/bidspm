@@ -60,7 +60,7 @@ function test_getOptionsFromModel_task()
   opt.taskName = {'foo'};
   opt.verbosity = 2;
 
-  assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:bidsModelOverridesOptions');
+  assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelOverridesOptions');
 
 end
 
@@ -71,18 +71,18 @@ function test_getOptionsFromModel_subject()
   opt.taskName = {'dummy'};
   opt.model.file = modelFile('dummy');
   opt.model.bm = BidsModel('file', opt.model.file);
-  opt.model.bm.Input.subject = {'01'};
+  opt.model.bm.Input.subject = {'02', '04'};
   opt.verbosity = 0;
 
   opt = getOptionsFromModel(opt);
 
-  assertEqual(opt.subjects, {'01'});
+  assertEqual(opt.subjects, {'02', '04'});
 
   %%
   opt.subjects = '02';
   opt.verbosity = 2;
 
-  assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:bidsModelOverridesOptions');
+  assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelOverridesOptions');
 
 end
 
@@ -101,7 +101,7 @@ function test_getOptionsFromModel_space()
   %%
   opt.space = 'MNI';
   opt.verbosity = 2;
-  assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:bidsModelOverridesOptions');
+  assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelOverridesOptions');
 
 end
 
@@ -119,7 +119,7 @@ function test_getOptionsFromModel_query()
   %%
   opt.query.acq = 'foo';
   opt.verbosity = 2;
-  assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:bidsModelOverridesOptions');
+  assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelOverridesOptions');
 
 end
 
