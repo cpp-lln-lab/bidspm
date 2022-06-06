@@ -36,8 +36,15 @@ function cppSpmHelp()
   %
   %                - ``'preprocess'``
   %                - ``'stats'``
+  %                - ``'contrasts'``
+  %                - ``'results'``
   % :type action: string
   %
+  % Note that:
+  %
+  % - ``'stats'`` runs model speification / estimation, contrast computation, display results
+  % - ``'contrasts'`` runs contrast computation, display results
+  % - ``'results'`` displays results
   %
   % *Optional parameters common to all actions*
   %
