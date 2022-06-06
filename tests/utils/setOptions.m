@@ -106,6 +106,7 @@ function opt = setOptions(varargin)
 
   opt.taskName = task;
 
+  % not sure this is necessary as getOptionsFromModel takes care of that in checkOptions
   if strcmp(opt.pipeline.type, 'stats')
     opt =  rmfield(opt, 'taskName');
     if isfield(opt, 'space')

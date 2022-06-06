@@ -176,27 +176,21 @@ function opt = checkOptions(opt)
     opt.query.modality{1} = Results;
   end
 
-  if strcmpi(opt.pipeline.type, 'stats')
-    if isempty(opt.model.file) || exist(opt.model.file, 'file') ~= 2
-      msg = sprintf('model file does not exist:\n %s', opt.model.file);
-      errorHandling(mfilename(), 'modelFileMissing', msg, false, opt.verbosity);
-    end
-
-    opt = getOptionsFromModel(opt);
-  else  % deal with space for other type of workflows
-
-    fieldsToSet = struct('space', {{'individual', 'IXI549Space'}});
-    opt = setFields(opt, fieldsToSet);
-
-  end
-
   if isfield(opt, 'taskName') && ~iscell(opt.taskName)
     opt.taskName = {opt.taskName};
+  end
+
+  % deal with space
+  if ~strcmpi(opt.pipeline.type, 'stats')
+    fieldsToSet = struct('space', {{'individual', 'IXI549Space'}});
+    opt = setFields(opt, fieldsToSet);
   end
   if isfield(opt, 'space') && ~iscell(opt.space)
     opt.space = {opt.space};
   end
   opt = mniToIxi(opt);
+
+  opt = getOptionsFromModel(opt);
 
   opt = orderfields(opt);
 

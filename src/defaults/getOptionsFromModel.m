@@ -7,11 +7,37 @@ function opt = getOptionsFromModel(opt)
   % (C) Copyright 2022 CPP_SPM developers
 
   % TODO refactor to pass everything to bids filter file instead of query?
+  % TODO override content in bids_filter_file
 
-  inputsToOverride = {'task', 'subject', 'space', 'run', 'session', 'acq'};
+  if ~strcmpi(opt.pipeline.type, 'stats')
+    return
+  end
 
-  bm = BidsModel('file', opt.model.file);
-  input = bm.Input;
+  if isempty(opt.model.file) || exist(opt.model.file, 'file') ~= 2
+    msg = sprintf('model file does not exist:\n %s', opt.model.file);
+    errorHandling(mfilename(), 'modelFileMissing', msg, false);
+  end
+
+  if ~isfield(opt.model, 'bm') || isempty(opt.model.bm)
+    opt.model.bm = BidsModel('file', opt.model.file);
+  end
+
+  % any of the func / bold entity
+  % from raw or derivatives
+  inputsToOverride = {'subject'
+                      'session'
+                      'task'
+                      'acquisition'
+                      'ceagent'
+                      'reconstruction'
+                      'direction'
+                      'run'
+                      'echo'
+                      'part'
+                      'space'
+                      'description'};
+
+  input = opt.model.bm.Input;
 
   fromInput = fieldnames(input);
 
@@ -22,46 +48,104 @@ function opt = getOptionsFromModel(opt)
 
   else
 
-    fromOptions = {'taskName', 'subjects', 'space'};
-    fromQuery = {'ses', 'run'};
+    % override with all inputs
+    % keep track of status to throw a warning
+    % if model.Input actually overrides an option value
+    inputsAlreadyInOptions = getInputInOptions(opt);
 
-    optionsPresent = ismember(fromOptions, fieldnames(opt));
-    queryPresent = ismember(fromQuery, fieldnames(opt.query));
-    optionsPresent = [fromOptions(optionsPresent) fromQuery(queryPresent)];
+    % we need the schema to know convert between entity short and long name
+    schema = bids.Schema;
 
-    optionsToOverride = optionsPresent(ismember(optionsPresent, fromInput(inputPresent)));
-
-    if ~any(isempty(optionsToOverride))
-      % TODO check if override is not actually the same value
-      % those warnings can be worrying to a new user
-      msg = sprintf('\nInput speficied in BIDS model will overide those options:%s\n', ...
-                    createUnorderedList(optionsToOverride));
-      errorHandling(mfilename(), 'bidsModelOverridesOptions', msg, true, opt.verbosity);
-    end
-
-    % TODO refactor to pass everything to bids filter file instead of query?
     for i = 1:numel(fromInput)
 
-      thisInput = fromInput{i};
+      thisEntity.key = schema.content.objects.entities.(fromInput{i}).entity;
+      thisEntity.value = input.(fromInput{i});
 
-      switch thisInput
+      switch thisEntity.key
 
         case 'task'
+          if isfield(opt, 'taskName')
+            overrideWarning(opt.taskName, thisEntity, inputsAlreadyInOptions, opt.verbosity);
+          end
           opt.taskName = input.task;
 
-        case 'subject'
+        case 'sub'
+          if isfield(opt, 'subjects')
+            overrideWarning(opt.subjects, thisEntity, inputsAlreadyInOptions, opt.verbosity);
+          end
           opt.subjects = input.subject;
 
         case 'space'
+          if isfield(opt, 'space')
+            overrideWarning(opt.space, thisEntity, inputsAlreadyInOptions, opt.verbosity);
+          end
           opt.space = input.space;
 
-        case  {'run', 'session', 'acq'}
-          opt.query.(thisInput) = input.(thisInput);
+        case  {'ses'
+               'acq'
+               'ce'
+               'rec'
+               'dir'
+               'run'
+               'echo'
+               'part'
+               'desc'}
+
+          if isfield(opt.query, thisEntity.key)
+            overrideWarning(opt.query.(thisEntity.key), ...
+                            thisEntity, ...
+                            inputsAlreadyInOptions, ...
+                            opt.verbosity);
+          end
+
+          opt.query.(thisEntity.key) = thisEntity.value;
 
       end
 
     end
 
+  end
+
+end
+
+function overrideWarning(thisOption, thisEntity, inputsAlreadyInOptions, verbosity)
+  if ~ismember(thisEntity.value, thisOption) && ismember(thisEntity.key, inputsAlreadyInOptions)
+    msg = sprintf('\nBIDS stats model Input will overide options:%s\n', ...
+                  createUnorderedList(thisEntity));
+    errorHandling(mfilename(), 'bidsModelOverridesOptions', msg, true, verbosity);
+  end
+
+end
+
+function inputsAlreadyInOptions = getInputInOptions(opt)
+  %
+  % returns a cellstr of all the BIDS entities that are already present
+  % in opt in some way
+  %
+
+  fromOptions = {'subjects'
+                 'taskName'
+                 'space'};
+
+  fromOptionsShortForm = {'sub'
+                          'task'
+                          'space'};
+
+  fromQuery = {'ses'
+               'acq'
+               'ce'
+               'rec'
+               'dir'
+               'run'
+               'echo'
+               'part'
+               'desc'};
+
+  inputsAlreadyInOptions = fromOptionsShortForm(ismember(fromOptions, fieldnames(opt)));
+
+  if isfield(opt, 'query')
+    queryPresent = ismember(fromQuery, fieldnames(opt.query));
+    inputsAlreadyInOptions = [inputsAlreadyInOptions; fromQuery(queryPresent)];
   end
 
 end

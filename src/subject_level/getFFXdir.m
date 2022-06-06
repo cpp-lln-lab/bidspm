@@ -18,12 +18,7 @@ function ffxDir = getFFXdir(subLabel, opt)
 
   glmDirName = createGlmDirName(opt);
 
-  if ~isfield(opt.model, 'bm')
-    opt.model.bm = BidsModel('file', opt.model.file);
-    if strcmpi(opt.pipeline.type, 'stats')
-      opt = getOptionsFromModel(opt);
-    end
-  end
+  opt = getOptionsFromModel(opt);
 
   % folder naming based on the rootNode name
   rootNode = opt.model.bm.getRootNode();
