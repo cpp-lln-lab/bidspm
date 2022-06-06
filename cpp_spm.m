@@ -99,7 +99,7 @@ function cpp_spm(varargin)
 
       preprocess(args);
 
-    case 'stats'
+    case {'stats', 'contrasts'}
 
       stats(args);
 
@@ -243,13 +243,21 @@ function stats(args)
   opt.pipeline.type = 'stats';
   opt = checkOptions(opt);
 
+  action = args.Results.action;
+
   if opt.glm.roibased.do
     bidsFFX('specify', opt);
     bidsRoiBasedGLM(opt);
   else
-    bidsFFX('specifyAndEstimate', opt);
-    bidsFFX('contrasts', opt);
-    bidsResults(opt);
+    if strcmp(action, 'stats')
+      bidsFFX('specifyAndEstimate', opt);
+    end
+    if ismember(action, {'stats', 'contrasts'})
+      bidsFFX('contrasts', opt);
+    end
+    if ismember(action, {'stats', 'contrasts', 'results'})
+      bidsResults(opt);
+    end
   end
 
 end
@@ -480,7 +488,7 @@ end
 
 function value = bids_apps_actions()
 
-  value = {'preprocess', 'stats'};
+  value = {'preprocess'; 'stats'; 'contrasts'};
 
 end
 
