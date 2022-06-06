@@ -17,8 +17,6 @@ function test_checkOptions_basic()
 
   assertEqual(opt, expectedOptions);
 
-  % unfoldStruct(opt);
-
 end
 
 function test_checkOptions_results_structure()
