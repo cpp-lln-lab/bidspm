@@ -8,6 +8,33 @@ function test_suite = test_bidsRFX %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsRFX_basic_select_datasets_within_group_ttest()
+
+  opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, ...
+                            'basename', ...
+                            'model-vislocalizerWithinGroup_smdl');
+
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  matlabbatch = bidsRFX('RFX', opt);
+
+  %   % creates 1 batch for (specify, figure, estimate, review, figure)
+  %   assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
+  %   assert(isfield(matlabbatch{2}.spm.util, 'print'));
+  %   assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
+  %   assert(isfield(matlabbatch{4}.spm.stats, 'review'));
+  %   assert(isfield(matlabbatch{5}.spm.util, 'print'));
+  %
+  %   % 2 blind and 1 ctrl
+  %   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.t2.scans1), 2);
+  %   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.t2.scans2), 1);
+  %
+  %   cleanUp(fullfile(opt.dir.output, 'derivatives'));
+
+end
+
 function test_bidsRFX_basic_select_datasets_two_sample_ttest()
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
@@ -139,7 +166,13 @@ function test_bidsRFX_basic_mean()
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
   matlabbatch =  bidsRFX('meanAnatAndMask', opt);
-  assertEqual(numel(matlabbatch), 7);
+  assertEqual(fieldnames(matlabbatch{1}.spm.util), {'imcalc'});
+  assertEqual(fieldnames(matlabbatch{2}.spm.util), {'imcalc'});
+  assertEqual(fieldnames(matlabbatch{3}.spm.spatial), {'smooth'});
+  assertEqual(fieldnames(matlabbatch{4}.spm.util), {'imcalc'});
+  assertEqual(fieldnames(matlabbatch{5}), {'cfg_basicio'});
+  assertEqual(fieldnames(matlabbatch{6}.spm.util), {'cfg_basicio'});
+  assertEqual(numel(matlabbatch), 6);
 
 end
 
@@ -147,7 +180,7 @@ function test_bidsRFX_basic_contrast()
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
-  matlabbatch = bidsRFX('contrast', opt);
+  matlabbatch = bidsRFX('contrasts', opt);
 
   assertEqual(numel(matlabbatch), 4);
 

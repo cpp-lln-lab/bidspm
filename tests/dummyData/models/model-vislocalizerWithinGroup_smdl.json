@@ -1,0 +1,112 @@
+{
+  "Name": "model for within group ttest at the dataset level",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "contrasts for the visual localizer",
+  "Input": {
+    "task": [
+      "vislocalizer"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          "trial_type.VisMot",
+          "trial_type.VisStat",
+          "trans_?",
+          "rot_?"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Model": "spm"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008
+        },
+        "Software": {
+          "SPM": {
+            "InclusiveMaskingThreshold": 0,
+            "SerialCorrelation": "FAST"
+          }
+        }
+      },
+      "Contrasts": [
+        {
+          "Name": "VisMot_gt_VisStat",
+          "ConditionList": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Weights": [
+            1,
+            -1
+          ],
+          "Test": "t"
+        }
+      ]
+    },
+    {
+      "Level": "Subject",
+      "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1
+        ]
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "within_group",
+      "Description": "sample t-test of each group",
+      "GroupBy": [
+        "contrast",
+        "group"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1
+        ]
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    }
+  ],
+  "Edges": [
+    {
+      "Source": "run_level",
+      "Destination": "subject_level"
+    },
+    {
+      "Source": "subject_level",
+      "Destination": "within_group",
+      "Filter": {
+        "contrast": [
+          "VisMot_gt_VisStat"
+        ]
+      }
+    }
+  ]
+}

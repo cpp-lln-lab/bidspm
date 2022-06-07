@@ -186,7 +186,10 @@ classdef BidsModel < bids.Model
       try
         mask = model.Options.Mask;
       catch
-        obj.bidsModelError('noMask', sprintf('No mask for Node ''%s''', nodeName));
+        msg = sprintf(['No mask for Node ''%s''.', ...
+                       '\nSpecify one in "Node.Options.Mask" in your BIDS stats model.\n\n'], ...
+                      nodeName);
+        obj.bidsModelError('noMask', msg);
       end
 
     end

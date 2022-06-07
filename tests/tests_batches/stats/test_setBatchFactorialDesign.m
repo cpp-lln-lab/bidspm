@@ -8,6 +8,34 @@ function test_suite = test_setBatchFactorialDesign %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setBatchFactorialDesign_within_group()
+
+  createDummyData();
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, ...
+                            'basename', ...
+                            'model-vislocalizerWithinGroup_smdl');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  datasetNode = opt.model.bm.get_nodes('Name', 'within_group');
+
+  matlabbatch = {};
+
+  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name);
+
+  %   % (2 contrasts + 2 dummy contrasts) passed all the way from run level * 2
+  %   % batches (design specification + figure design matrix)
+  %   assertEqual(numel(matlabbatch), 8);
+  %
+  %   % add test to assert default mask is SPM ICV's
+  %   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.fd.icell.scans), 2);
+  %   assertEqual(matlabbatch{1}.spm.stats.factorial_design.masking.em{1}, ...
+  %               spm_select('FPList', fullfile(spm('dir'), 'tpm'), 'mask_ICV.nii'));
+
+end
+
 function test_setBatchFactorialDesign_complex()
 
   createDummyData();
@@ -25,7 +53,7 @@ function test_setBatchFactorialDesign_complex()
   matlabbatch = {};
   matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name);
 
-  basedirName = 'task-vismotion_space-IXI549Space_FWHM-6_conFWHM-6_';
+  basedirName = 'task-vismotion_space-IXI549Space_FWHM-6_conFWHM-0_';
 
   % (2 dummy contrasts) specified at the dataset level * 2
   % batches (design specification + figure design matrix)

@@ -23,7 +23,7 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
 
   % TODO implement Contrasts and not just dummy contrasts
 
-  status = checks(opt, nodeName);
+  [status, groupBy] = checks(opt, nodeName);
   if ~status
     return
   end
@@ -52,49 +52,52 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
   end
 
   % For each contrast
-  for j = 1:numel(contrastsList)
+  if all(ismember(lower(groupBy), {'contrast'}))
 
-    contrastName = contrastsList{j};
+    for j = 1:numel(contrastsList)
 
-    msg = sprintf('\n\n  Group contrast: %s\n\n', contrastName);
-    printToScreen(msg, opt);
+      contrastName = contrastsList{j};
 
-    rfxDir = getRFXdir(opt, nodeName, contrastName);
+      msg = sprintf('\n\n  Group contrast: %s\n\n', contrastName);
+      printToScreen(msg, opt);
 
-    overwriteDir(rfxDir, opt);
+      rfxDir = getRFXdir(opt, nodeName, contrastName);
 
-    icell(1).levels = 1; %#ok<*AGROW>
+      overwriteDir(rfxDir, opt);
 
-    for iSub = 1:numel(opt.subjects)
+      icell(1).levels = 1; %#ok<*AGROW>
 
-      subLabel = opt.subjects{iSub};
+      for iSub = 1:numel(opt.subjects)
 
-      printProcessingSubject(iSub, subLabel, opt);
+        subLabel = opt.subjects{iSub};
 
-      file = findSubjectConImage(opt, subLabel, contrastName);
-      if isempty(file)
-        continue
+        printProcessingSubject(iSub, subLabel, opt);
+
+        file = findSubjectConImage(opt, subLabel, contrastName);
+        if isempty(file)
+          continue
+        end
+
+        icell(1).scans(iSub, :) = {file};
+
+        msg = sprintf(' %s\n\n', file);
+        printToScreen(msg, opt);
+
       end
 
-      icell(1).scans(iSub, :) = {file};
+      matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell);
 
-      msg = sprintf(' %s\n\n', file);
-      printToScreen(msg, opt);
+      mask = getInclusiveMask(opt, nodeName);
+      matlabbatch{end}.spm.stats.factorial_design.masking.em = {mask};
+
+      matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
+                                        fullfile(rfxDir, ...
+                                                 designMatrixFigureName(opt, ...
+                                                                        'before estimation')));
 
     end
 
-    matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell);
-
-    mask = getInclusiveMask(opt, nodeName);
-    matlabbatch{end}.spm.stats.factorial_design.masking.em = {mask};
-
-    matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
-                                      fullfile(rfxDir, ...
-                                               designMatrixFigureName(opt, ...
-                                                                      'before estimation')));
-
   end
-
 end
 
 function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell)
@@ -124,7 +127,7 @@ function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell)
 
 end
 
-function status = checks(opt, nodeName)
+function [status, groupBy] = checks(opt, nodeName)
 
   thisNode = opt.model.bm.get_nodes('Name', nodeName);
   if iscell(thisNode)
@@ -133,7 +136,7 @@ function status = checks(opt, nodeName)
 
   commonMsg = sprintf('for the dataset level node: "%s"', nodeName);
 
-  status = checkGroupBy(thisNode);
+  [status, groupBy] = checkGroupBy(thisNode);
 
   % only certain type of model supported for now
   designMatrix = opt.model.bm.get_design_matrix('Name', nodeName);

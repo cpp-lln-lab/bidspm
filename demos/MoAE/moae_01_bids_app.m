@@ -75,6 +75,9 @@ opt.results(1).name = {'listening_1'};
 % Specify how you want your output
 % (all the following are on false by default)
 opt.results(1).png = true();
+opt.results(1).csv = true();
+opt.results(1).p = 0.05;
+opt.results(1).MC = 'none';
 opt.results(1).montage.do = true();
 opt.results(1).montage.background = struct('suffix', 'T1w', ...
                                            'desc', 'preproc', ...
