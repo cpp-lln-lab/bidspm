@@ -8,6 +8,42 @@ function test_suite = test_bidsResults %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsResults_filter_by_nodeName()
+
+  createDummyData();
+
+  %% GIVEN
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  % Specify what ouput we want
+  opt.results = defaultResultsStructure();
+
+  opt.results(1).nodeName = 'subject_level';
+  opt.results(1).name = {'VisMot_gt_VisStat'};
+
+  opt.results(2).nodeName = 'dataset_level';
+  opt.results(2).name = {'VisMot_gt_VisStat'};
+
+  %% WHEN
+  matlabbatch = bidsResults(opt, 'nodeName', 'subject_level');
+
+  %% THEN
+  assertEqual(numel(matlabbatch), 1);
+
+end
+
+function test_bidsResults_filter_by_nodeName_empty()
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  opt.results = defaultResultsStructure();
+
+  opt.results.nodeName = 'subject_level';
+
+  bidsResults(opt, 'nodeName', 'foo');
+
+end
+
 function test_bidsResults_too_many_backgrounds()
 
   createDummyData();

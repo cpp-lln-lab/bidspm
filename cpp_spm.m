@@ -249,6 +249,11 @@ function stats(args)
   analysisLevel = args.Results.analysis_level;
   nodeName = args.Results.node_name;
 
+  isSubjectLevel = strcmp(analysisLevel, 'subject');
+  estimate = strcmp(action, 'stats');
+  contrasts = ismember(action, {'stats', 'contrasts'});
+  results = ismember(action, {'stats', 'contrasts', 'results'});
+
   if opt.glm.roibased.do
 
     bidsFFX('specify', opt);
@@ -256,20 +261,24 @@ function stats(args)
 
   else
 
-    if strcmp(action, 'stats') && strcmp(analysisLevel, 'subject')
-      bidsFFX('specifyAndEstimate', opt);
-    elseif strcmp(action, 'stats') && strcmp(analysisLevel, 'dataset')
-      bidsRFX('RFX', opt, 'nodeName', nodeName);
+    if estimate
+      if isSubjectLevel
+        bidsFFX('specifyAndEstimate', opt);
+      else
+        bidsRFX('RFX', opt, 'nodeName', nodeName);
+      end
     end
 
-    if ismember(action, {'stats', 'contrasts'}) && strcmp(analysisLevel, 'subject')
-      bidsFFX('contrasts', opt);
-    elseif ismember(action, {'stats', 'contrasts'}) && strcmp(analysisLevel, 'dataset')
-      bidsRFX('RFX', opt, 'nodeName', nodeName);
+    if contrasts
+      if isSubjectLevel
+        bidsFFX('contrasts', opt);
+      else
+        bidsRFX('RFX', opt, 'nodeName', nodeName);
+      end
     end
 
-    if ismember(action, {'stats', 'contrasts', 'results'})
-      bidsResults(opt);
+    if results
+      bidsResults(opt, 'nodeName', nodeName);
     end
 
   end

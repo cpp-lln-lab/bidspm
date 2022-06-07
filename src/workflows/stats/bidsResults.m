@@ -1,4 +1,4 @@
-function matlabbatch = bidsResults(opt)
+function matlabbatch = bidsResults(varargin)
   %
   % Computes the results for a series of contrast that can be
   % specified at the run, subject or dataset step level (see contrast specification
@@ -6,12 +6,14 @@ function matlabbatch = bidsResults(opt)
   %
   % USAGE::
   %
-  %  bidsResults(opt)
+  %  bidsResults(opt,'nodeName', '')
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
+  % :param nodeName: name of the BIDS stats model Node(s) to show results of
+  % :type nodeName: char or cellstr
   %
   % See also: setBatchSubjectLevelResults, setBatchGroupLevelResults
   %
@@ -112,16 +114,49 @@ function matlabbatch = bidsResults(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  % TODO move ps file
-  % TODO rename NIDM file
+  % TODO move ps / png file: difficult at subject level because there can be
+  %                          several png for one contrast
+  % TODO rename NIDM file:
 
-  % TODO filter opt.results by using a nodeName argument
+  args = inputParser;
 
+  args.addRequired('opt', @isstruct);
+  args.addParameter('nodeName', '');
+
+  args.parse(varargin{:});
+
+  opt =  args.Results.opt;
+
+  nodeName =  args.Results.nodeName;
+
+  %%
   currentDirectory = pwd;
 
   opt.pipeline.type = 'stats';
 
   opt.dir.output = opt.dir.stats;
+
+  % filter results to keep only the one requested
+  % modifies opt.results in place
+  if ~isempty(nodeName)
+    if ischar(nodeName)
+      nodeName = {nodeName};
+    end
+    tmp = opt.results;
+    for iRes = 1:numel(tmp)
+      node = opt.model.bm.get_nodes('Name',  tmp(iRes).nodeName);
+      listNodeNames{iRes} = node.Name;
+    end
+    keep = ismember(listNodeNames, nodeName);
+    tmp = tmp(keep);
+    opt.results = tmp;
+    clear tmp;
+  end
+
+  if isempty(opt.results)
+    matlabbatch = {};
+    return
+  end
 
   % skip data indexing if we are only at the group level
   indexData = true;
@@ -136,8 +171,7 @@ function matlabbatch = bidsResults(opt)
 
   BIDS = [];
 
-  % loop trough the steps and more results to compute for each contrast
-  % mentioned for each step
+  % loop trough the steps to compute for each contrast mentioned for each node
   for iRes = 1:length(opt.results)
 
     node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
