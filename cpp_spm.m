@@ -46,6 +46,8 @@ function cpp_spm(varargin)
   addParameter(args, 'preproc_dir', pwd, @isdir);
   addParameter(args, 'model_file', struct([]), isFileOrStruct);
   addParameter(args, 'roi_based', false, isLogical);
+  % group level stats only
+  addParameter(args, 'node_name', '', isChar);
 
   parse(args, varargin{:});
 
@@ -244,20 +246,32 @@ function stats(args)
   opt = checkOptions(opt);
 
   action = args.Results.action;
+  analysisLevel = args.Results.analysis_level;
+  nodeName = args.Results.node_name;
 
   if opt.glm.roibased.do
+
     bidsFFX('specify', opt);
     bidsRoiBasedGLM(opt);
+
   else
-    if strcmp(action, 'stats')
+
+    if strcmp(action, 'stats') && strcmp(analysisLevel, 'subject')
       bidsFFX('specifyAndEstimate', opt);
+    elseif strcmp(action, 'stats') && strcmp(analysisLevel, 'dataset')
+      bidsRFX('RFX', opt, 'nodeName', nodeName);
     end
-    if ismember(action, {'stats', 'contrasts'})
+
+    if ismember(action, {'stats', 'contrasts'}) && strcmp(analysisLevel, 'subject')
       bidsFFX('contrasts', opt);
+    elseif ismember(action, {'stats', 'contrasts'}) && strcmp(analysisLevel, 'dataset')
+      bidsRFX('RFX', opt, 'nodeName', nodeName);
     end
+
     if ismember(action, {'stats', 'contrasts', 'results'})
       bidsResults(opt);
     end
+
   end
 
 end

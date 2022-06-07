@@ -10,7 +10,7 @@ function cppSpmHelp()
   %
   %
   %
-  % **bids apps calls**
+  % **BIDS APP CALLS**
   %
   % generic call:
   %
@@ -18,6 +18,7 @@ function cppSpmHelp()
   %
   %   cpp_spm(bids_dir, output_dir, analysis_level, ...
   %           'action', 'some_action')
+  %
   %
   %
   % *Obligatory parameters*
@@ -69,7 +70,7 @@ function cppSpmHelp()
   % :type space: cell string
   %
   %
-  % PREPROCESSING:
+  % **PREPROCESSING:**
   %
   % .. code-block:: matlab
   %
@@ -99,7 +100,7 @@ function cppSpmHelp()
   % :type fwhm: positive scalar
   %
   %
-  % STATS:
+  % **STATS:**
   %
   % .. code-block:: matlab
   %
