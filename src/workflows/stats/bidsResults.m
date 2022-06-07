@@ -115,13 +115,24 @@ function matlabbatch = bidsResults(opt)
   % TODO move ps file
   % TODO rename NIDM file
 
+  % TODO filter opt.results by using a nodeName argument
+
   currentDirectory = pwd;
 
   opt.pipeline.type = 'stats';
 
   opt.dir.output = opt.dir.stats;
 
-  [~, opt] = setUpWorkflow(opt, 'computing GLM results');
+  % skip data indexing if we are only at the group level
+  indexData = true;
+  for iRes = 1:numel(opt.results)
+    node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
+    listNodeLevels{iRes} = lower(node.Level);
+  end
+  if all(ismember(listNodeLevels, 'dataset'))
+    indexData = false;
+  end
+  [~, opt] = setUpWorkflow(opt, 'computing GLM results', [], indexData);
 
   BIDS = [];
 
@@ -309,7 +320,7 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
 
       case 'two_sample_t_test'
         thisContrast = opt.model.bm.get_contrasts('Name', node.Name);
-        result.name = [thisContrast.Name ' - ' name];
+        result.name = [thisContrast{1}.Name ' - ' name];
 
       otherwise
         msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
