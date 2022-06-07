@@ -81,7 +81,7 @@
       "Description": "sample t-test of each group",
       "GroupBy": [
         "contrast",
-        "group"
+        "Group"
       ],
       "Model": {
         "Type": "glm",

@@ -28,30 +28,51 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
     return
   end
 
-  [~, opt] = getData(opt, opt.dir.preproc);
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
 
   printBatchName('specify group level fmri model', opt);
 
   % average at the group level
   if opt.model.bm.get_design_matrix('Name', nodeName) == 1
 
-    % assumes DummyContrasts exist
-    contrastsList = getDummyContrastsList(nodeName, opt.model.bm);
+    % assuming a GroupBy that contains at least "contrast"
+    % we try to grab the contrasts list from the Edge.Filter
+    % otherwise we dig in this in Node
+    % or the previous one to find the list of contrasts
+    edge = opt.model.bm.get_edge('Destination', nodeName);
 
-    node = opt.model.bm.get_nodes('Name', nodeName);
+    if isfield(edge, 'Filter') && ...
+        isfield(edge.Filter, 'contrast')  && ...
+        ~isempty(edge.Filter.contrast)
 
-    % no specific dummy contrasts mentionned also include all contrasts from previous levels
-    % contrast are mentionned we grab them
-    if ~isfield(node.DummyContrasts, 'Contrasts') || isfield(node, 'Contrasts')
-      tmp = getContrastsList(nodeName, opt.model.bm);
-      for i = 1:numel(tmp)
-        contrastsList{end + 1} = tmp{i}.Name;
+      contrastsList = edge.Filter.contrast;
+
+    else
+
+      % this assumes DummyContrasts exist
+      contrastsList = getDummyContrastsList(nodeName, opt.model.bm);
+
+      node = opt.model.bm.get_nodes('Name', nodeName);
+
+      % if no specific dummy contrasts mentionned also include all contrasts from previous levels
+      % or if contrasts are mentionned we grab them
+      if ~isfield(node.DummyContrasts, 'Contrasts') || isfield(node, 'Contrasts')
+        tmp = getContrastsList(nodeName, opt.model.bm);
+        for i = 1:numel(tmp)
+          contrastsList{end + 1} = tmp{i}.Name;
+        end
       end
+
     end
+
+  else
+
+    commonMsg = sprintf('for the dataset level node: "%s"', nodeName);
+    msg = sprintf('Models other than group average not implemented yet %s', commonMsg);
+    notImplemented(mfilename(), msg, opt.verbosity);
 
   end
 
-  % For each contrast
   if all(ismember(lower(groupBy), {'contrast'}))
 
     for j = 1:numel(contrastsList)
@@ -60,10 +81,6 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
 
       msg = sprintf('\n\n  Group contrast: %s\n\n', contrastName);
       printToScreen(msg, opt);
-
-      rfxDir = getRFXdir(opt, nodeName, contrastName);
-
-      overwriteDir(rfxDir, opt);
 
       icell(1).levels = 1; %#ok<*AGROW>
 
@@ -85,6 +102,9 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
 
       end
 
+      rfxDir = getRFXdir(opt, nodeName, contrastName);
+      overwriteDir(rfxDir, opt);
+
       matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell);
 
       mask = getInclusiveMask(opt, nodeName);
@@ -94,6 +114,76 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
                                         fullfile(rfxDir, ...
                                                  designMatrixFigureName(opt, ...
                                                                         'before estimation')));
+
+    end
+
+  elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
+
+    groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
+    availableGroups = unique(BIDS.raw.participants.content.(groupColumnHdr));
+
+    for iGroup = 1:numel(availableGroups)
+
+      thisGroup = availableGroups{iGroup};
+
+      % grab subjects label from participants.tsv in raw
+      subjectsInGroup = strcmp(BIDS.raw.participants.content.(groupColumnHdr), thisGroup);
+      subjectsInGroup = BIDS.raw.participants.content.participant_id(subjectsInGroup);
+      subjectsLabel = regexprep(subjectsInGroup, '^sub-', '');
+
+      % collect all con images from all subjects
+      for iSub = 1:numel(subjectsLabel)
+        subLabel = subjectsLabel{iSub};
+        conImages{iSub} = findSubjectConImage(opt, subLabel, contrastsList);
+      end
+
+      for j = 1:numel(contrastsList)
+
+        contrastName = contrastsList{j};
+
+        msg = sprintf('\n\n  Group contrast "%s" for group "%s"\n\n', contrastName, thisGroup);
+        printToScreen(msg, opt);
+
+        icell(1).levels = 1; %#ok<*AGROW>
+
+        for iSub = 1:numel(subjectsLabel)
+
+          subLabel = subjectsLabel{iSub};
+          printProcessingSubject(iSub, subLabel, opt);
+
+          % TODO refactor with setBatchTwoSampleTTest ?
+          if numel(edge.Filter.contrast) == 1
+            file = conImages{iSub};
+          else
+            file = conImages{iSub}{iCon};
+          end
+          if isempty(file)
+            continue
+          end
+
+          icell(1).scans{iSub, 1} = file;
+
+          msg = sprintf(' %s\n\n', conImages{iSub});
+          printToScreen(msg, opt);
+
+        end
+
+        rfxDir = getRFXdir(opt, [nodeName ' group ' thisGroup], contrastName);
+        overwriteDir(rfxDir, opt);
+
+        matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell);
+
+        clear icell;
+
+        mask = getInclusiveMask(opt, nodeName);
+        matlabbatch{end}.spm.stats.factorial_design.masking.em = {mask};
+
+        matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
+                                          fullfile(rfxDir, ...
+                                                   designMatrixFigureName(opt, ...
+                                                                          'before estimation')));
+
+      end
 
     end
 
@@ -130,9 +220,6 @@ end
 function [status, groupBy] = checks(opt, nodeName)
 
   thisNode = opt.model.bm.get_nodes('Name', nodeName);
-  if iscell(thisNode)
-    thisNode = thisNode{1};
-  end
 
   commonMsg = sprintf('for the dataset level node: "%s"', nodeName);
 

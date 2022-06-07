@@ -53,7 +53,7 @@ function [matlabbatch, contrastsList] = setBatchTwoSampleTTest(varargin)
   group1 = regexp(node.Contrasts{1}.ConditionList{1}, '\.', 'split');
   group2 = regexp(node.Contrasts{1}.ConditionList{2}, '\.', 'split');
 
-  % for now we assume we can read the suibject group belonging
+  % for now we assume we can read the subject group belonging
   % from the partiticipant TSV in the raw dataset
   % and from the same column
   assert(strcmp(group1{1}, group2{1}));

@@ -1,7 +1,7 @@
 function file = findSubjectConImage(varargin)
   %
-  % Rreturns the fullpath of a con image(s) for a given subject label
-  % and contrast name(s).
+  % Returns the fullpath of a con image(s)
+  % for a given subject label and contrast name(s).
   %
   % USAGE::
   %
@@ -17,6 +17,10 @@ function file = findSubjectConImage(varargin)
   %
   % :param contrastName:
   % :type contrastName: char or cellstr
+  %
+  %
+  % :returns: - file : a fullpath or a cellstrng of fullpath
+  %
   %
   % (C) Copyright 2022 CPP_SPM developers
 
@@ -46,8 +50,8 @@ function file = findSubjectConImage(varargin)
 
   for iCon = 1:numel(contrastName)
 
-    % find which contrast of that subject has the name of the contrast we
-    % want to bring to the group level
+    % find which contrast of that subject has the name of the contrast
+    % we want to bring to the group level
     conIdx = find(strcmp({SPM.xCon.name}, contrastName{iCon}));
 
     if isempty(conIdx)

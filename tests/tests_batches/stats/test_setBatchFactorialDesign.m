@@ -25,14 +25,11 @@ function test_setBatchFactorialDesign_within_group()
 
   matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name);
 
-  %   % (2 contrasts + 2 dummy contrasts) passed all the way from run level * 2
-  %   % batches (design specification + figure design matrix)
-  %   assertEqual(numel(matlabbatch), 8);
-  %
-  %   % add test to assert default mask is SPM ICV's
-  %   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.fd.icell.scans), 2);
-  %   assertEqual(matlabbatch{1}.spm.stats.factorial_design.masking.em{1}, ...
-  %               spm_select('FPList', fullfile(spm('dir'), 'tpm'), 'mask_ICV.nii'));
+  % 1 contrasts passed through the Edge filter * 2 batches / group * 2 groups
+  assertEqual(numel(matlabbatch), 4);
+
+  assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.fd.icell.scans), 2);
+  assertEqual(numel(matlabbatch{3}.spm.stats.factorial_design.des.fd.icell.scans), 1);
 
 end
 

@@ -171,7 +171,7 @@ function test_bidsRFX_basic_mean()
   assertEqual(fieldnames(matlabbatch{3}.spm.spatial), {'smooth'});
   assertEqual(fieldnames(matlabbatch{4}.spm.util), {'imcalc'});
   assertEqual(fieldnames(matlabbatch{5}), {'cfg_basicio'});
-  assertEqual(fieldnames(matlabbatch{6}.spm.util), {'cfg_basicio'});
+  assertEqual(fieldnames(matlabbatch{6}.spm.util), {'checkreg'});
   assertEqual(numel(matlabbatch), 6);
 
 end

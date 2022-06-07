@@ -187,7 +187,7 @@ classdef BidsModel < bids.Model
         mask = model.Options.Mask;
       catch
         msg = sprintf(['No mask for Node ''%s''.', ...
-                       '\nSpecify one in "Node.Options.Mask" in your BIDS stats model.\n\n'], ...
+                       '\nSpecify one in "Node.Options.Mask"'], ...
                       nodeName);
         obj.bidsModelError('noMask', msg);
       end
@@ -245,7 +245,7 @@ classdef BidsModel < bids.Model
     end
 
     function bidsModelError(obj, id, msg)
-      msg = sprintf('%s in BIDS model ''%s''', msg, obj.Name);
+      msg = sprintf('%s in BIDS stats model ''%s''\n', msg, obj.Name);
       errorHandling(mfilename(), id, msg, obj.tolerant, obj.verbose);
     end
 
