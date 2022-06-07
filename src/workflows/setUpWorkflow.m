@@ -9,7 +9,7 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir, indexData)
   %
   % USAGE::
   %
-  %   [BIDS, opt, group] = setUpWorkflow(opt, workflowName, [bidsDir])
+  %   [BIDS, opt, group] = setUpWorkflow(opt, workflowName, [bidsDir], indexData)
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions`` and ``loadAndCheckOptions``.

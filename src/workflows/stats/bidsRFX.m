@@ -13,7 +13,7 @@ function matlabbatch = bidsRFX(varargin)
   %
   % USAGE::
   %
-  %  bidsRFX(action, opt)
+  %  bidsRFX(action, opt, 'nodeName', '')
   %
   % :param action: Action to be conducted: ``'smoothContrasts'`` or ``'RFX'`` or
   %                ``'meanAnatAndMask'`` or ``'contrast'``
