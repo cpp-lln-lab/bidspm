@@ -30,7 +30,7 @@ function matlabbatch = bidsRFX(varargin)
   % (C) Copyright 2020 CPP_SPM developers
 
   allowedActions = @(x) ismember(lower(x), ...
-                                 {'smoothcontrasts', 'meananatandmask', 'rfx', 'contrast'});
+                                 {'smoothcontrasts', 'meananatandmask', 'rfx', 'contrasts'});
 
   args = inputParser;
 
@@ -63,12 +63,12 @@ function matlabbatch = bidsRFX(varargin)
   % - extract function for anat and mask computation
   % - merge rfx and ffx into a single "stats" workflow
 
-  if ismember(lower(action), {'meananatandmask', 'rfx', 'contrast'})
+  if ismember(lower(action), {'meananatandmask', 'rfx', 'contrasts'})
     opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
     opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
   end
 
-  if ismember(lower(action), {'rfx', 'contrast'})
+  if ismember(lower(action), {'rfx', 'contrasts'})
     if ~isempty(nodeName)
       datasetNodes = opt.model.bm.get_nodes('Name', nodeName);
     else
@@ -123,7 +123,7 @@ function matlabbatch = bidsRFX(varargin)
 
       end
 
-    case 'contrast'
+    case 'contrasts'
 
       for i = 1:numel(datasetNodes)
         matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, datasetNodes{i}.Name);

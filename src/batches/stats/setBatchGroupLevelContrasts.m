@@ -63,8 +63,8 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
         spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
 
-        consess{1}.tcon.name = thisContrast.Name;
-        consess{1}.tcon.convec = thisContrast.Weights;
+        consess{1}.tcon.name = thisContrast{1}.Name;
+        consess{1}.tcon.convec = thisContrast{1}.Weights;
         consess{1}.tcon.sessrep = 'none';
 
         matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);

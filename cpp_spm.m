@@ -273,7 +273,7 @@ function stats(args)
       if isSubjectLevel
         bidsFFX('contrasts', opt);
       else
-        bidsRFX('RFX', opt, 'nodeName', nodeName);
+        bidsRFX('contrasts', opt, 'nodeName', nodeName);
       end
     end
 
