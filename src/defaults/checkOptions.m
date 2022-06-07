@@ -324,7 +324,7 @@ function fieldsToSet = setDefaultOption()
 
   %% Options for smoothing
   fieldsToSet.fwhm.func = 6;
-  fieldsToSet.fwhm.contrast = 6;
+  fieldsToSet.fwhm.contrast = 0;
 
   %% Options for model specification and results
   fieldsToSet.model.file = '';
