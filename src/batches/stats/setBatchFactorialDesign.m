@@ -32,13 +32,121 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
 
   printBatchName('specify group level fmri model', opt);
 
-  % average at the group level
+  contrastsList = getContrastsListForFactorialDesign(opt, nodeName);
+
+  % now we fetch the contrast for each subject and allocate them in the batch
+  % - first case is we pool over all subjects
+  % - second case is we pool over all the subject of a group defined in the
+  %   participants.tsv of the raw dataset
+  if all(ismember(lower(groupBy), {'contrast'}))
+
+    % collect all con images from all subjects
+    for iSub = 1:numel(opt.subjects)
+      subLabel = opt.subjects{iSub};
+      conImages{iSub} = findSubjectConImage(opt, subLabel, contrastsList);
+    end
+
+    for j = 1:numel(contrastsList)
+
+      contrastName = contrastsList{j};
+
+      msg = sprintf('\n\n  Group contrast: "%s"\n\n', contrastName);
+      printToScreen(msg, opt);
+
+      icell(1).scans = {};
+
+      for iSub = 1:numel(opt.subjects)
+
+        subLabel = opt.subjects{iSub};
+
+        file = conImages{iSub};
+        if isempty(file)
+          continue
+        end
+
+        icell(1).scans{iSub, 1} = file;
+
+        printProcessingSubject(iSub, subLabel, opt);
+        msg = sprintf(' %s\n\n', char(file));
+        printToScreen(msg, opt);
+
+      end
+
+      matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, icell);
+
+    end
+
+  elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
+
+    groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
+    availableGroups = unique(BIDS.raw.participants.content.(groupColumnHdr));
+
+    for iGroup = 1:numel(availableGroups)
+
+      thisGroup = availableGroups{iGroup};
+
+      % grab subjects label from participants.tsv in raw
+      tsv = BIDS.raw.participants.content;
+      subjectsInGroup = strcmp(tsv.(groupColumnHdr), thisGroup);
+      subjectsLabel = regexprep(tsv.participant_id(subjectsInGroup), '^sub-', '');
+
+      % collect all con images from all subjects
+      for iSub = 1:numel(subjectsLabel)
+        subLabel = subjectsLabel{iSub};
+        conImages{iSub} = findSubjectConImage(opt, subLabel, contrastsList);
+      end
+
+      for j = 1:numel(contrastsList)
+
+        contrastName = contrastsList{j};
+
+        msg = sprintf('\n\n  Group contrast "%s" for group "%s"\n\n', contrastName, thisGroup);
+        printToScreen(msg, opt);
+
+        icell(1).scans = {};
+
+        for iSub = 1:numel(subjectsLabel)
+
+          subLabel = subjectsLabel{iSub};
+
+          % TODO refactor with setBatchTwoSampleTTest ?
+          if ischar(conImages{iSub})
+            file = conImages{iSub};
+          elseif iscell(conImages{iSub})
+            file = conImages{iSub}{iCon};
+          end
+          if isempty(file)
+            continue
+          end
+
+          icell(1).scans{iSub, 1} = file;
+
+          printProcessingSubject(iSub, subLabel, opt);
+          msg = sprintf(' %s\n\n', conImages{iSub});
+          printToScreen(msg, opt);
+
+        end
+
+        matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, icell, thisGroup);
+
+      end
+
+    end
+
+  end
+end
+
+function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
+
+  % assuming a GroupBy that contains at least "contrast"
+
+  % we try to grab the contrasts list from the Edge.Filter
+  % otherwise we dig in this in Node
+  % or the previous one to find the list of contrasts
+
+  % assuming we want to only average at the group level
   if opt.model.bm.get_design_matrix('Name', nodeName) == 1
 
-    % assuming a GroupBy that contains at least "contrast"
-    % we try to grab the contrasts list from the Edge.Filter
-    % otherwise we dig in this in Node
-    % or the previous one to find the list of contrasts
     edge = opt.model.bm.get_edge('Destination', nodeName);
 
     if isfield(edge, 'Filter') && ...
@@ -73,121 +181,28 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
 
   end
 
-  if all(ismember(lower(groupBy), {'contrast'}))
+end
 
-    for j = 1:numel(contrastsList)
+function matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, icell, thisGroup)
 
-      contrastName = contrastsList{j};
-
-      msg = sprintf('\n\n  Group contrast: %s\n\n', contrastName);
-      printToScreen(msg, opt);
-
-      icell(1).levels = 1; %#ok<*AGROW>
-
-      for iSub = 1:numel(opt.subjects)
-
-        subLabel = opt.subjects{iSub};
-
-        printProcessingSubject(iSub, subLabel, opt);
-
-        file = findSubjectConImage(opt, subLabel, contrastName);
-        if isempty(file)
-          continue
-        end
-
-        icell(1).scans(iSub, :) = {file};
-
-        msg = sprintf(' %s\n\n', file);
-        printToScreen(msg, opt);
-
-      end
-
-      rfxDir = getRFXdir(opt, nodeName, contrastName);
-      overwriteDir(rfxDir, opt);
-
-      matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell);
-
-      mask = getInclusiveMask(opt, nodeName);
-      matlabbatch{end}.spm.stats.factorial_design.masking.em = {mask};
-
-      matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
-                                        fullfile(rfxDir, ...
-                                                 designMatrixFigureName(opt, ...
-                                                                        'before estimation')));
-
-    end
-
-  elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
-
-    groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
-    availableGroups = unique(BIDS.raw.participants.content.(groupColumnHdr));
-
-    for iGroup = 1:numel(availableGroups)
-
-      thisGroup = availableGroups{iGroup};
-
-      % grab subjects label from participants.tsv in raw
-      subjectsInGroup = strcmp(BIDS.raw.participants.content.(groupColumnHdr), thisGroup);
-      subjectsInGroup = BIDS.raw.participants.content.participant_id(subjectsInGroup);
-      subjectsLabel = regexprep(subjectsInGroup, '^sub-', '');
-
-      % collect all con images from all subjects
-      for iSub = 1:numel(subjectsLabel)
-        subLabel = subjectsLabel{iSub};
-        conImages{iSub} = findSubjectConImage(opt, subLabel, contrastsList);
-      end
-
-      for j = 1:numel(contrastsList)
-
-        contrastName = contrastsList{j};
-
-        msg = sprintf('\n\n  Group contrast "%s" for group "%s"\n\n', contrastName, thisGroup);
-        printToScreen(msg, opt);
-
-        icell(1).levels = 1; %#ok<*AGROW>
-
-        for iSub = 1:numel(subjectsLabel)
-
-          subLabel = subjectsLabel{iSub};
-          printProcessingSubject(iSub, subLabel, opt);
-
-          % TODO refactor with setBatchTwoSampleTTest ?
-          if numel(edge.Filter.contrast) == 1
-            file = conImages{iSub};
-          else
-            file = conImages{iSub}{iCon};
-          end
-          if isempty(file)
-            continue
-          end
-
-          icell(1).scans{iSub, 1} = file;
-
-          msg = sprintf(' %s\n\n', conImages{iSub});
-          printToScreen(msg, opt);
-
-        end
-
-        rfxDir = getRFXdir(opt, [nodeName ' group ' thisGroup], contrastName);
-        overwriteDir(rfxDir, opt);
-
-        matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell);
-
-        clear icell;
-
-        mask = getInclusiveMask(opt, nodeName);
-        matlabbatch{end}.spm.stats.factorial_design.masking.em = {mask};
-
-        matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
-                                          fullfile(rfxDir, ...
-                                                   designMatrixFigureName(opt, ...
-                                                                          'before estimation')));
-
-      end
-
-    end
-
+  if nargin == 6
+    rfxDir = getRFXdir(opt, [nodeName ' group ' thisGroup], contrastName);
+  elseif nargin == 5
+    rfxDir = getRFXdir(opt, nodeName, contrastName);
   end
+  overwriteDir(rfxDir, opt);
+
+  icell(1).levels = 1;
+
+  matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell);
+
+  mask = getInclusiveMask(opt, nodeName);
+  matlabbatch{end}.spm.stats.factorial_design.masking.em = {mask};
+
+  matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
+                                    fullfile(rfxDir, ...
+                                             designMatrixFigureName(opt, ...
+                                                                    'before estimation')));
 end
 
 function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell)
