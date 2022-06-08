@@ -29,7 +29,11 @@ function  [cdtName, regIdx, status] = getRegressorIdx(cdtName, SPM)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  cdtName = rmTrialTypeStr(cdtName);
+  % in case the condition is of something like trial_type.foo
+  tokens = regexp(cdtName, '\.', 'split');
+  if numel(tokens) > 1
+    cdtName = tokens{2};
+  end
 
   % contruct regexp pattern
   convolvedWithCanonicalHRF = ['^.* (' cdtName '\*bf\(1\))$'];

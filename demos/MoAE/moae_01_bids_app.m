@@ -77,7 +77,7 @@ opt.results(1).name = {'listening_1'};
 opt.results(1).png = true();
 opt.results(1).csv = true();
 opt.results(1).p = 0.05;
-opt.results(1).MC = 'none';
+opt.results(1).MC = 'FWE';
 opt.results(1).montage.do = true();
 opt.results(1).montage.background = struct('suffix', 'T1w', ...
                                            'desc', 'preproc', ...
