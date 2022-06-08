@@ -4,13 +4,13 @@ function [type, designMatrix, groupBy] = groupLevelGlmType(opt, nodeName)
 
   designMatrix = opt.model.bm.getBidsDesignMatrix('Name', nodeName);
 
+  node = opt.model.bm.get_nodes('Name', nodeName);
+
+  groupBy = node.GroupBy;
+
   if isnumeric(designMatrix) && designMatrix == 1
 
     type = 'one_sample_t_test';
-
-    node = opt.model.bm.get_nodes('Name', nodeName);
-
-    groupBy = node.GroupBy;
 
   elseif iscell(designMatrix) && numel(designMatrix) == 2
 
