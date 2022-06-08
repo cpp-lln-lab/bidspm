@@ -51,7 +51,10 @@ function dummyContrastsList = getDummyContrastsList(node, model)
         for i = 1:numel(dummyContrastsList)
 
           % contrasts against baseline are renamed at the subject level
-          dummyContrastsList{i} = rmTrialTypeStr(dummyContrastsList{i});
+          tokens = regexp(dummyContrastsList{i}, '\.', 'split');
+          if numel(tokens) > 1
+            dummyContrastsList{i} = tokens{2};
+          end
 
         end
 

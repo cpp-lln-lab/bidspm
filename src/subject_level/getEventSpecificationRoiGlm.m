@@ -78,7 +78,14 @@ function eventSpec = getEventSpecForDummyContrasts(eventSpec, node, SPM)
 
     if ~isempty(thisContrastEventSpec.eventSpec)
 
-      eventSpec(specCounter).name = rmTrialTypeStr(cdtName);
+      tokens = regexp(cdtName, '\.', 'split');
+      if numel(tokens) > 1
+        cdtName = tokens{2};
+      else
+        cdtName = tokens{1};
+      end
+
+      eventSpec(specCounter).name = cdtName;
       eventSpec(specCounter).eventSpec = thisContrastEventSpec.eventSpec;
       eventSpec(specCounter).duration = mean(thisContrastEventSpec.duration);
 
@@ -138,7 +145,12 @@ function thisContrastEventSpec = returnThisContrastEventSpec(conditionList, SPM)
 
   for iCdt = 1:numel(conditionList)
 
-    cdtName = rmTrialTypeStr(conditionList{iCdt});
+    tokens = regexp(conditionList{iCdt}, '\.', 'split');
+    if numel(tokens) > 1
+      cdtName = tokens{2};
+    else
+      cdtName = tokens{1};
+    end
 
     for iRun = 1:nbRuns
 
