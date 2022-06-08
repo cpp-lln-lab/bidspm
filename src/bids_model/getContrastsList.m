@@ -1,7 +1,7 @@
 function contrastsList = getContrastsList(node, model)
   %
-  % Get list of names of Contrast from this Node or gets its from the
-  % previous Nodes
+  % Get list of names of Contrast from this Node
+  % or gets its from the previous Nodes
   %
   % USAGE::
   %

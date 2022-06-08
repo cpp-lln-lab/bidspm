@@ -8,6 +8,36 @@ function test_suite = test_getRFXdir %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getRFXdir_withinGroup()
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+  opt.fwhm.func = 0;
+  opt.fwhm.contrast = 0;
+  opt.space = 'IXI549Space';
+
+  opt.model.file = spm_file(opt.model.file, ...
+                            'basename', ...
+                            'model-vislocalizerWithinGroup_smdl');
+
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  rfxDir = getRFXdir(opt, 'within_group', 'VisMot_gt_VisStat', 'ctrl');
+
+  %       [~, dir] = fileparts(rfxDir)
+
+  expectedOutput = fullfile(getDummyDataDir('stats'), ...
+                            'derivatives', 'cpp_spm-groupStats', ...
+                            ['sub-ctrl_task-vislocalizer_space-IXI549Space_FWHM-0_conFWHM-0', ...
+                             '_node-withinGroup', '_contrast-VisMotGtVisStat']);
+
+  %       [~, dir] = fileparts(expectedOutput)
+
+  assertEqual(exist(expectedOutput, 'dir'), 7);
+
+  cleanUp(fullfile(getDummyDataDir('stats'), 'derivatives', 'cpp_spm-groupStats'));
+
+end
+
 function test_getRFXdir_basic()
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
@@ -19,7 +49,7 @@ function test_getRFXdir_basic()
 
   expectedOutput = fullfile(getDummyDataDir('stats'), ...
                             'derivatives', 'cpp_spm-groupStats', ...
-                            'task-vislocalizer_space-IXI549Space_FWHM-0_conFWHM-0');
+                            'sub-ALL_task-vislocalizer_space-IXI549Space_FWHM-0_conFWHM-0');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
@@ -40,7 +70,7 @@ function test_getRFXdir_user_specified()
 
   expectedOutput = fullfile(getDummyDataDir('stats'), ...
                             'derivatives', 'cpp_spm-groupStats', ...
-                            'task-nback_space-IXI549Space_FWHM-6_conFWHM-6_desc-nbackMVPA');
+                            'sub-ALL_task-nback_space-IXI549Space_FWHM-6_conFWHM-6_node-nbackMVPA');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
@@ -64,8 +94,8 @@ function test_getRFXdir_with_contrast()
 
   expectedOutput = fullfile(getDummyDataDir('stats'), ...
                             'derivatives', 'cpp_spm-groupStats', ...
-                            ['task-nback_space-IXI549Space_FWHM-6_conFWHM-6', ...
-                             '_desc-nbackMVPA_contrast-nback']);
+                            ['sub-ALL_task-nback_space-IXI549Space_FWHM-6_conFWHM-6', ...
+                             '_node-nbackMVPA_contrast-nback']);
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 

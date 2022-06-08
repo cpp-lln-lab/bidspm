@@ -1,11 +1,11 @@
-function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contrastsList)
+function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contrastsList, groups)
   %
   % Set up the estimate model batch for run/subject or group level GLM
   %
   % USAGE::
   %
   %   matlabbatch = setBatchEstimateModel(matlabbatch, opt)
-  %   matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contrastsList)
+  %   matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contrastsList, groups)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -31,8 +31,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contras
 
       printBatchName('estimate subject level fmri model', opt);
 
-      spmMatFile = cfg_dep( ...
-                           'fMRI model specification SPM file', ...
+      spmMatFile = cfg_dep('fMRI model specification SPM file', ...
                            substruct( ...
                                      '.', 'val', '{}', {1}, ...
                                      '.', 'val', '{}', {1}, ...
@@ -42,17 +41,26 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contras
       matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
 
       % group level
-    case 4
+    case 5
 
       if ischar(contrastsList)
         contrastsList = cellstr(contrastsList);
       end
 
+      if ischar(groups)
+        groups = cellstr(groups);
+      end
+
+      assert(numel(contrastsList) == numel(groups));
+
       printBatchName('estimate group level fmri model', opt);
 
       for j = 1:size(contrastsList)
 
-        spmMatFile = { fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat') };
+        rfxDir = getRFXdir(opt, nodeName, contrastsList{j}, groups{j});
+        spmMatFile = { fullfile(rfxDir, 'SPM.mat') };
+
+        assert(exist(spmMatFile{1}, 'file') == 0);
 
         % no QA at the group level GLM:
         %   since there is no autocorrelation to check for
@@ -69,6 +77,10 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contras
                                                    designMatrixFigureName(opt, ...
                                                                           'after estimation')));
       end
+
+    otherwise
+
+      error('Should have 2 or 5 inputs...');
 
   end
 

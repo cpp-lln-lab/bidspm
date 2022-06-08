@@ -8,6 +8,29 @@ function test_suite = test_setBatchFactorialDesign %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setBatchFactorialDesign_within_group()
+
+  createDummyData();
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, ...
+                            'basename', ...
+                            'model-vislocalizerWithinGroup_smdl');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  matlabbatch = {};
+
+  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, 'within_group');
+
+  % 1 contrasts passed through the Edge filter * 2 batches / group * 2 groups
+  assertEqual(numel(matlabbatch), 4);
+
+  assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.fd.icell.scans), 2);
+  assertEqual(numel(matlabbatch{3}.spm.stats.factorial_design.des.fd.icell.scans), 1);
+
+end
+
 function test_setBatchFactorialDesign_complex()
 
   createDummyData();
@@ -25,7 +48,7 @@ function test_setBatchFactorialDesign_complex()
   matlabbatch = {};
   matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name);
 
-  basedirName = 'task-vismotion_space-IXI549Space_FWHM-6_conFWHM-6_';
+  basedirName = 'sub-ALL_task-vismotion_space-IXI549Space_FWHM-6_conFWHM-0_';
 
   % (2 dummy contrasts) specified at the dataset level * 2
   % batches (design specification + figure design matrix)
@@ -35,7 +58,7 @@ function test_setBatchFactorialDesign_complex()
   % desc-Node(dataset).name_contrast_contrastName
   [~, dir] = fileparts(matlabbatch{1}.spm.stats.factorial_design.dir{1});
   assertEqual(dir, ...
-              [basedirName 'desc-simpleContrast_contrast-VisMot']);
+              [basedirName 'node-simpleContrast_contrast-VisMot']);
 
   datasetNode = opt.model.bm.get_nodes('Name', 'complex contrast');
 
@@ -50,7 +73,7 @@ function test_setBatchFactorialDesign_complex()
   % desc-Node(dataset).name_contrast_contrastName
   [~, dir] = fileparts(matlabbatch{1}.spm.stats.factorial_design.dir{1});
   assertEqual(dir, ...
-              [basedirName 'desc-complexContrast_contrast-VisMotGtVisStat']);
+              [basedirName 'node-complexContrast_contrast-VisMotGtVisStat']);
 
 end
 

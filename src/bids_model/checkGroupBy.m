@@ -1,4 +1,4 @@
-function status = checkGroupBy(node)
+function [status, groupBy] = checkGroupBy(node)
   %
   % Only certain type of GroupBy supported for now for each level
   %
@@ -7,15 +7,15 @@ function status = checkGroupBy(node)
   % (C) Copyright 2022 CPP_SPM developers
 
   status = true;
-  node.GroupBy = sort(node.GroupBy);
+  groupBy = sort(node.GroupBy);
 
   switch lower(node.Level)
 
     case 'run'
 
       % only certain type of GroupBy supported for now
-      if ~strcmp(node.GroupBy{1}, 'run') || ...
-          ~all(ismember(node.GroupBy, {'run', 'session', 'subject'}))
+      if ~strcmp(groupBy{1}, 'run') || ...
+          ~all(ismember(groupBy, {'run', 'session', 'subject'}))
 
         status = false;
 
@@ -25,8 +25,8 @@ function status = checkGroupBy(node)
 
     case 'subject'
 
-      if ~(numel(node.GroupBy) == 2) || ...
-          not(all([strcmp(node.GroupBy{1}, 'contrast') strcmp(node.GroupBy{2}, 'subject')]))
+      if ~(numel(groupBy) == 2) || ...
+          not(all([strcmp(groupBy{1}, 'contrast') strcmp(groupBy{2}, 'subject')]))
 
         status = false;
 
@@ -37,11 +37,11 @@ function status = checkGroupBy(node)
     case 'dataset'
 
       % only certain type of GroupBy supported for now
-      if numel(node.GroupBy) > 1 ||  ~all(ismember(node.GroupBy, {'contrast'}))
+      if numel(groupBy) > 2 || ~all(ismember(lower(groupBy), {'contrast', 'group'}))
 
         status = false;
 
-        supportedGroupBy = {'["contrast"]'};
+        supportedGroupBy = {'["contrast"]', '["contrast", "group"]'};
 
       end
 

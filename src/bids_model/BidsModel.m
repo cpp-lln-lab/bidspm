@@ -91,7 +91,7 @@ classdef BidsModel < bids.Model
 
       if ~strcmpi(modelType, 'glm')
         obj.bidsModelError('notGLM', ...
-                           sprintf('model Type is not ''glm'' for node ''%s''', nodeName));
+                           sprintf('model Type is not "glm" for node "%s"', nodeName));
       end
 
     end
@@ -106,7 +106,7 @@ classdef BidsModel < bids.Model
           isempty(model.Options.HighPassFilterCutoffHz)
 
         obj.bidsModelError('noHighPassFilter', ...
-                           sprintf('No high-pass filter for node ''%s''', nodeName));
+                           sprintf('No high-pass filter for node "%s"', nodeName));
 
       else
 
@@ -124,7 +124,7 @@ classdef BidsModel < bids.Model
 
       if ~isfield(model, 'HRF') || ~isfield(model.HRF, 'Variables')
         obj.bidsModelError('noVariablesToConvolve', ...
-                           sprintf('No variables to convolve for node ''%s''', nodeName));
+                           sprintf('No variables to convolve for node "%s"', nodeName));
 
       else
         variablesToConvolve = model.HRF.Variables;
@@ -147,7 +147,7 @@ classdef BidsModel < bids.Model
         HRFderivatives = model.HRF.Model;
       catch
         obj.bidsModelError('noHRFderivatives', ...
-                           sprintf('No HRF derivatives for node ''%s''', nodeName));
+                           sprintf('No HRF derivatives for node "%s"', nodeName));
       end
 
       HRFderivatives = lower(strrep(HRFderivatives, ' ', ''));
@@ -161,12 +161,12 @@ classdef BidsModel < bids.Model
           derivatives =  [1 1];
         case 'fir'
           notImplemented(mfilename(), ...
-                         ['HRF model of the type %s not yet implemented.\n', ...
+                         ['HRF model of the type "%s" not yet implemented.\n', ...
                           'Will use SPM canonical HRF insteasd.\n'], ...
                          true);
         otherwise
           notImplemented(mfilename(), ...
-                         ['HRF model of the type %s not implemented.\n', ...
+                         ['HRF model of the type "%s" not implemented.\n', ...
                           'Will use SPM canonical HRF insteasd.\n'], ...
                          true);
 
@@ -186,7 +186,10 @@ classdef BidsModel < bids.Model
       try
         mask = model.Options.Mask;
       catch
-        obj.bidsModelError('noMask', sprintf('No mask for Node ''%s''', nodeName));
+        msg = sprintf(['No mask for Node "%s".', ...
+                       '\nSpecify one in "Node.Options.Mask"'], ...
+                      nodeName);
+        obj.bidsModelError('noMask', msg);
       end
 
     end
@@ -210,7 +213,7 @@ classdef BidsModel < bids.Model
       else
 
         obj.bidsModelError('noInclMaskThresh', ...
-                           sprintf('No inclusive mask threshold for Node ''%s''', nodeName));
+                           sprintf('No inclusive mask threshold for Node "%s"', nodeName));
 
       end
 
@@ -236,13 +239,13 @@ classdef BidsModel < bids.Model
 
       else
         obj.bidsModelError('noTemporalCorrection', ...
-                           sprintf('No temporal correlation correction for Node ''%s''', nodeName));
+                           sprintf('No temporal correlation correction for Node "%s"', nodeName));
       end
 
     end
 
     function bidsModelError(obj, id, msg)
-      msg = sprintf('%s in BIDS model ''%s''', msg, obj.Name);
+      msg = sprintf('\n\n%s in BIDS stats model named "%s"\n', msg, obj.Name);
       errorHandling(mfilename(), id, msg, obj.tolerant, obj.verbose);
     end
 

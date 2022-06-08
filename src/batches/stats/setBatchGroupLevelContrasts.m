@@ -23,28 +23,48 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
   printBatchName('group level contrast estimation', opt);
 
-  [groupGlmType, designMatrix] =  groupLevelGlmType(opt, nodeName);
+  [groupGlmType, designMatrix, groupBy] =  groupLevelGlmType(opt, nodeName);
 
   switch groupGlmType
 
     case 'one_sample_t_test'
 
-      contrastsList = getDummyContrastsList(nodeName, opt.model.bm);
-      tmp = getContrastsList(nodeName, opt.model.bm);
+      contrastsList = getContrastsListForFactorialDesign(opt, nodeName);
 
-      for j = 1:numel(tmp)
-        contrastsList{end + 1} = tmp{j}.Name;
-      end
+      if all(ismember(lower(groupBy), {'contrast'}))
 
-      for j = 1:numel(contrastsList)
+        for j = 1:numel(contrastsList)
 
-        spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
+          spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
 
-        consess{1}.tcon.name = contrastsList{j};
-        consess{1}.tcon.convec = 1;
-        consess{1}.tcon.sessrep = 'none';
+          matlabbatch = setGroupContrast(matlabbatch, opt, spmMatFile, ...
+                                         contrastsList{j}, ...
+                                         1);
 
-        matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+        end
+
+      elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
+
+        participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+
+        groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
+        availableGroups = unique(participants.(groupColumnHdr));
+
+        for j = 1:numel(contrastsList)
+
+          for iGroup = 1:numel(availableGroups)
+
+            thisGroup = availableGroups{iGroup};
+            rfxDir = getRFXdir(opt, nodeName, contrastsList{j}, thisGroup);
+            spmMatFile = fullfile(rfxDir, 'SPM.mat');
+
+            matlabbatch = setGroupContrast(matlabbatch, opt, spmMatFile, ...
+                                           contrastsList{j}, ...
+                                           1);
+
+          end
+
+        end
 
       end
 
@@ -53,6 +73,8 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
       designMatrix = removeIntercept(designMatrix);
 
       if ismember(lower(designMatrix), {'group'})
+        % TODO will this ignore the contrasts define at other levels and not
+        % passed through the filter ?
         edge = opt.model.bm.get_edge('Destination', nodeName);
         contrastsList = edge.Filter.contrast;
       end
@@ -63,11 +85,9 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
         spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
 
-        consess{1}.tcon.name = thisContrast.Name;
-        consess{1}.tcon.convec = thisContrast.Weights;
-        consess{1}.tcon.sessrep = 'none';
-
-        matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+        matlabbatch = setGroupContrast(matlabbatch, opt, spmMatFile, ...
+                                       thisContrast{1}.Name, ...
+                                       thisContrast{1}.Weights);
 
       end
 
@@ -76,5 +96,19 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
       notImplemented(mfilename(), msg, true);
 
   end
+
+end
+
+function matlabbatch = setGroupContrast(matlabbatch, opt, spmMatFile, name, weights)
+
+  if ~opt.dryRun
+    assert(exist(spmMatFile, 'file') == 2);
+  end
+
+  consess{1}.tcon.name = name;
+  consess{1}.tcon.convec = weights;
+  consess{1}.tcon.sessrep = 'none';
+
+  matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
 
 end

@@ -13,7 +13,7 @@ function matlabbatch = bidsRFX(varargin)
   %
   % USAGE::
   %
-  %  bidsRFX(action, opt)
+  %  bidsRFX(action, opt, 'nodeName', '')
   %
   % :param action: Action to be conducted: ``'smoothContrasts'`` or ``'RFX'`` or
   %                ``'meanAnatAndMask'`` or ``'contrast'``
@@ -30,7 +30,7 @@ function matlabbatch = bidsRFX(varargin)
   % (C) Copyright 2020 CPP_SPM developers
 
   allowedActions = @(x) ismember(lower(x), ...
-                                 {'smoothcontrasts', 'meananatandmask', 'rfx', 'contrast'});
+                                 {'smoothcontrasts', 'meananatandmask', 'rfx', 'contrasts'});
 
   args = inputParser;
 
@@ -63,12 +63,12 @@ function matlabbatch = bidsRFX(varargin)
   % - extract function for anat and mask computation
   % - merge rfx and ffx into a single "stats" workflow
 
-  if ismember(lower(action), {'meananatandmask', 'rfx', 'contrast'})
+  if ismember(lower(action), {'meananatandmask', 'rfx', 'contrasts'})
     opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
     opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
   end
 
-  if ismember(lower(action), {'rfx', 'contrast'})
+  if ismember(lower(action), {'rfx', 'contrasts'})
     if ~isempty(nodeName)
       datasetNodes = opt.model.bm.get_nodes('Name', nodeName);
     else
@@ -100,30 +100,55 @@ function matlabbatch = bidsRFX(varargin)
 
       for i = 1:numel(datasetNodes)
 
+        matlabbatch = {};
+
         nodeName = datasetNodes{i}.Name;
 
         switch  groupLevelGlmType(opt, nodeName)
 
           case 'one_sample_t_test'
-            [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, ...
-                                                                   opt, ...
-                                                                   datasetNodes{i}.Name);
+            [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabbatch, ...
+                                                                           opt, ...
+                                                                           datasetNodes{i}.Name);
           case 'two_sample_t_test'
-            [matlabbatch, contrastsList] = setBatchTwoSampleTTest(matlabbatch, ...
-                                                                  opt, ...
-                                                                  datasetNodes{i}.Name);
+            [matlabbatch, contrastsList, groups] = setBatchTwoSampleTTest(matlabbatch, ...
+                                                                          opt, ...
+                                                                          datasetNodes{i}.Name);
           otherwise
             msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
             notImplemented(mfilename(), msg, true);
 
         end
 
-        matlabbatch = setBatchEstimateModel(matlabbatch, opt, datasetNodes{i}.Name, contrastsList);
+        matlabbatch = setBatchEstimateModel(matlabbatch, ...
+                                            opt, ...
+                                            datasetNodes{i}.Name, ...
+                                            contrastsList, ...
+                                            groups);
+
+        % make sure there is no SPM.mat in the target dir
+        %
+        % folders where the model is to be specified have already been emptied
+        % if at this stage they are not, something has gone horribly wrong.
+        %
+        % also if we continued SPM would ask us to manually confirm the over-write
+        % by clicking buttons and no one has got time this
+        for j = 1:numel(matlabbatch)
+
+          if isfield(matlabbatch{j}.spm, 'stats') && ...
+              isfield(matlabbatch{j}.spm.stats, 'fmri_est')
+            if exist(matlabbatch{j}.spm.stats.fmri_est.spmmat{1}, 'file')
+              error('PANIC! About to overwrite a model. That should not happen');
+            end
+          end
+
+        end
+
         saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
 
       end
 
-    case 'contrast'
+    case 'contrasts'
 
       for i = 1:numel(datasetNodes)
         matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, datasetNodes{i}.Name);

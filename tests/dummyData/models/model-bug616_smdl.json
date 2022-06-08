@@ -1,0 +1,250 @@
+{
+  "Name": "Only with tissue confounds",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "for regression test on bug for levels with paired t-tests; https://github.com/cpp-lln-lab/CPP_SPM/issues/616",
+  "Input": {
+    "task": [
+      "olfid",
+      "olfloc"
+    ],
+    "space": [
+      "MNI152NLin2009cAsym"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "TissueConfounds",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Transformations": {
+        "Transformer": "cpp_spm",
+        "Description": "add 250 ms to all olfactory onsets to take into account 'time of flight' delay for the odor stimulus to travel the tubing",
+        "Instructions": [
+          {
+            "Name": "Add",
+            "Input": [
+              "onset"
+            ],
+            "Query": "trial_type==olf.*",
+            "Value": 0.25
+          }
+        ]
+      },
+      "Model": {
+        "X": [
+          "trial_type.olfid_eucalyptus_left",
+          "trial_type.olfid_eucalyptus_right",
+          "trial_type.olfid_almond_left",
+          "trial_type.olfid_almond_right",
+          "trial_type.olfloc_eucalyptus_left",
+          "trial_type.olfloc_eucalyptus_right",
+          "trial_type.olfloc_almond_left",
+          "trial_type.olfloc_almond_right",
+          "trial_type.resp_03",
+          "trial_type.resp_12",
+          "trans_?",
+          "rot_?",
+          1,
+          "white_matter",
+          "csf"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.olfid_eucalyptus_left",
+            "trial_type.olfid_eucalyptus_right",
+            "trial_type.olfid_almond_left",
+            "trial_type.olfid_almond_right",
+            "trial_type.olfloc_eucalyptus_left",
+            "trial_type.olfloc_eucalyptus_right",
+            "trial_type.olfloc_almond_left",
+            "trial_type.olfloc_almond_right",
+            "trial_type.resp_03",
+            "trial_type.resp_12"
+          ],
+          "Model": "DoubleGamma"
+        },
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "HRFderivatives": "none",
+            "InclusiveMaskingThreshold": "-Inf"
+          }
+        }
+      },
+      "Contrasts": [
+        {
+          "Name": "Responses",
+          "ConditionList": [
+            "trial_type.resp_03",
+            "trial_type.resp_12"
+          ],
+          "Weights": [
+            1,
+            1
+          ],
+          "Test": "t"
+        },
+        {
+          "Name": "all_olfid",
+          "ConditionList": [
+            "trial_type.olfid_eucalyptus_left",
+            "trial_type.olfid_eucalyptus_right",
+            "trial_type.olfid_almond_left",
+            "trial_type.olfid_almond_right"
+          ],
+          "Weights": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "Test": "t"
+        },
+        {
+          "Name": "all_olfloc",
+          "ConditionList": [
+            "trial_type.olfloc_eucalyptus_left",
+            "trial_type.olfloc_eucalyptus_right",
+            "trial_type.olfloc_almond_left",
+            "trial_type.olfloc_almond_right"
+          ],
+          "Weights": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "Test": "t"
+        },
+        {
+          "Name": "all_olf",
+          "ConditionList": [
+            "trial_type.olfid_eucalyptus_left",
+            "trial_type.olfid_eucalyptus_right",
+            "trial_type.olfid_almond_left",
+            "trial_type.olfid_almond_right",
+            "trial_type.olfloc_eucalyptus_left",
+            "trial_type.olfloc_eucalyptus_right",
+            "trial_type.olfloc_almond_left",
+            "trial_type.olfloc_almond_right"
+          ],
+          "Weights": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "Test": "t"
+        },
+        {
+          "Name": "all_olf_lt_baseline",
+          "ConditionList": [
+            "trial_type.olfid_eucalyptus_left",
+            "trial_type.olfid_eucalyptus_right",
+            "trial_type.olfid_almond_left",
+            "trial_type.olfid_almond_right",
+            "trial_type.olfloc_eucalyptus_left",
+            "trial_type.olfloc_eucalyptus_right",
+            "trial_type.olfloc_almond_left",
+            "trial_type.olfloc_almond_right"
+          ],
+          "Weights": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "Test": "t"
+        }
+      ]
+    },
+    {
+      "Level": "Subject",
+      "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "between_groups",
+      "Description": "2 sample t-test of the conditions filtered in Edges",
+      "GroupBy": [
+        "contrast"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1,
+          "group"
+        ]
+      },
+      "Contrasts": [
+        {
+          "Name": "blind_gt_control",
+          "ConditionList": [
+            "Group.blind",
+            "Group.control"
+          ],
+          "Weights": [
+            1,
+            -1
+          ],
+          "Test": "t"
+        }
+      ]
+    }
+  ],
+  "Edges": [
+    {
+      "Source": "TissueConfounds",
+      "Destination": "subject_level"
+    },
+    {
+      "Source": "subject_level",
+      "Destination": "between_groups",
+      "Filter": {
+        "contrast": [
+          "all_olf",
+          "all_olfid",
+          "all_olfloc",
+          "Responses",
+          "all_olf_lt_baseline"
+        ]
+      }
+    }
+  ]
+}

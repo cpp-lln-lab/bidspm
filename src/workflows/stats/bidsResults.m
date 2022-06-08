@@ -1,4 +1,4 @@
-function matlabbatch = bidsResults(opt)
+function matlabbatch = bidsResults(varargin)
   %
   % Computes the results for a series of contrast that can be
   % specified at the run, subject or dataset step level (see contrast specification
@@ -6,12 +6,14 @@ function matlabbatch = bidsResults(opt)
   %
   % USAGE::
   %
-  %  bidsResults(opt)
+  %  bidsResults(opt,'nodeName', '')
   %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
+  % :param nodeName: name of the BIDS stats model Node(s) to show results of
+  % :type nodeName: char or cellstr
   %
   % See also: setBatchSubjectLevelResults, setBatchGroupLevelResults
   %
@@ -112,21 +114,64 @@ function matlabbatch = bidsResults(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  % TODO move ps file
-  % TODO rename NIDM file
+  % TODO move ps / png file: difficult at subject level because there can be
+  %                          several png for one contrast
+  % TODO rename NIDM file:
 
+  args = inputParser;
+
+  args.addRequired('opt', @isstruct);
+  args.addParameter('nodeName', '');
+
+  args.parse(varargin{:});
+
+  opt =  args.Results.opt;
+
+  nodeName =  args.Results.nodeName;
+
+  %%
   currentDirectory = pwd;
 
   opt.pipeline.type = 'stats';
 
   opt.dir.output = opt.dir.stats;
 
-  [~, opt] = setUpWorkflow(opt, 'computing GLM results');
+  % filter results to keep only the one requested
+  % modifies opt.results in place
+  if ~isempty(nodeName)
+    if ischar(nodeName)
+      nodeName = {nodeName};
+    end
+    tmp = opt.results;
+    for iRes = 1:numel(tmp)
+      node = opt.model.bm.get_nodes('Name',  tmp(iRes).nodeName);
+      listNodeNames{iRes} = node.Name;
+    end
+    keep = ismember(listNodeNames, nodeName);
+    tmp = tmp(keep);
+    opt.results = tmp;
+    clear tmp;
+  end
+
+  if isempty(opt.results)
+    matlabbatch = {};
+    return
+  end
+
+  % skip data indexing if we are only at the group level
+  indexData = true;
+  for iRes = 1:numel(opt.results)
+    node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
+    listNodeLevels{iRes} = lower(node.Level);
+  end
+  if all(ismember(listNodeLevels, 'dataset'))
+    indexData = false;
+  end
+  [~, opt] = setUpWorkflow(opt, 'computing GLM results', [], indexData);
 
   BIDS = [];
 
-  % loop trough the steps and more results to compute for each contrast
-  % mentioned for each step
+  % loop trough the steps to compute for each contrast mentioned for each node
   for iRes = 1:length(opt.results)
 
     node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
@@ -285,6 +330,8 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
 
   matlabbatch = {};
 
+  results = {};
+
   node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
 
   opt = checkMontage(opt, iRes, node);
@@ -300,36 +347,79 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
       id = 'unSpecifiedResultName';
       errorHandling(mfilename(), id, msg, true, opt.verbosity);
     end
-    result.dir = getRFXdir(opt, result.nodeName, name);
 
-    switch  groupLevelGlmType(opt, node.Name)
+    switch  groupLevelGlmType(opt, result.nodeName)
 
       case 'one_sample_t_test'
-        result.name = name;
+
+        [~, ~, groupBy] =  groupLevelGlmType(opt, result.nodeName);
+
+        if all(ismember(lower(groupBy), {'contrast'}))
+
+          result.name = name;
+          result.dir = getRFXdir(opt, result.nodeName, name);
+
+          [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
+
+        elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
+
+          participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+
+          groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
+          availableGroups = unique(participants.(groupColumnHdr));
+
+          for iGroup = 1:numel(availableGroups)
+
+            thisGroup = availableGroups{iGroup};
+            result.name = [thisGroup ' - ' name];
+            result.dir = getRFXdir(opt, result.nodeName, name, thisGroup);
+
+            [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
+
+          end
+
+        end
 
       case 'two_sample_t_test'
-        thisContrast = opt.model.bm.get_contrasts('Name', node.Name);
-        result.name = [thisContrast.Name ' - ' name];
+
+        thisContrast = opt.model.bm.get_contrasts('Name', result.nodeName);
+        result.name = [thisContrast{1}.Name ' - ' name];
+        result.dir = getRFXdir(opt, result.nodeName, name);
+
+        [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
 
       otherwise
-        msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
+        msg = sprintf('Node %s has has model type I cannot handle.\n', result.nodeName);
         notImplemented(mfilename(), msg, true);
 
     end
 
-    result.space = opt.space;
-
-    matlabbatch = setBatchGroupLevelResults(matlabbatch, ...
-                                            opt, ...
-                                            result);
-
-    matlabbatch = setBatchPrintFigure(matlabbatch, ...
-                                      opt, ...
-                                      fullfile(result.dir, figureName(opt)));
-
-    results{i} = result;
-
   end
+
+end
+
+function status = checkSpmMat(dir)
+  status = exist(fullfile(dir, 'SPM.mat'), 'file');
+  if ~status
+    msg = sprintf('\nCould not find a SPM.mat file in directory %s\n', dir);
+    id = 'noSpmMatFile';
+    errorHandling(mfilename(), id, msg, true, true);
+  end
+end
+
+function [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result)
+
+  if ~checkSpmMat(result.dir)
+    return
+  end
+
+  result.space = opt.space;
+
+  matlabbatch = setBatchGroupLevelResults(matlabbatch, opt, result);
+
+  matlabbatch = setBatchPrintFigure(matlabbatch, opt, fullfile(result.dir, figureName(opt)));
+
+  results{end + 1} = result;
 
 end
 
