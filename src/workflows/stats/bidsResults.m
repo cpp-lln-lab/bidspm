@@ -370,9 +370,8 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
 
           for iGroup = 1:numel(availableGroups)
 
-            result.name = name;
             thisGroup = availableGroups{iGroup};
-
+            result.name = [thisGroup ' - ' name];
             result.dir = getRFXdir(opt, result.nodeName, name, thisGroup);
 
             [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
