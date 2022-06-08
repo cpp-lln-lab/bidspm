@@ -13,8 +13,8 @@ function outputFile = volumeSplicing(varargin)
   % :type volumesToRemove: 1xn or nX1 array
   %
   % :param outputFile: optional parameter. default: will overwrite
-  % ``inputFile``. If only a filename is given, the file will be created in the
-  % same folder as the input file.
+  %                    ``inputFile``. If only a filename is given, the file will be created in the
+  %                    same folder as the input file.
   % :type outputFile: string
   %
   % :returns: - :outputFileFullPath:

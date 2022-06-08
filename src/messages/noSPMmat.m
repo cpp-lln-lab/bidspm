@@ -25,6 +25,7 @@ function status = noSPMmat(varargin)
 
   status = false;
 
+  % could be refactored with an equivalent function of group level result
   if ~(exist(args.Results.spmMatFile, 'file') == 2)
 
     status = true;

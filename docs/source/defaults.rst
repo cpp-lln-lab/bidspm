@@ -13,6 +13,10 @@ checkOptions
 .. autofunction:: checkOptions
 .. autofunction:: setDirectories
 
+
+.. autofunction:: defaultResultsStructure
+.. autofunction:: defaultContrastsStructure
+
 spm_my_defaults
 ===============
 

@@ -22,6 +22,7 @@ Welcome to CPP SPM documentation!
    fieldmaps
    statistics
    quality_analysis
+   utils
    FAQ
    method_section
    mancoreg

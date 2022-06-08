@@ -15,6 +15,11 @@ Preprocessing workflows
    In this sense they are not pure DAGs (directed acyclic graphs) as the ``*.m`` files
    mentioned in them already exist.
 
+Remove dummies
+--------------
+
+.. autofunction:: bidsRemoveDummies
+
 Slice Time Correction
 ---------------------
 
