@@ -233,6 +233,8 @@ function matlabbatch = bidsResults(varargin)
 
         batchName = 'compute_group_level_results';
 
+        tmp = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
+        opt.dir.jobs = fullfile(tmp, 'jobs',  strjoin(opt.taskName, ''));
         status = saveAndRunWorkflow(matlabbatch, batchName, opt);
 
         if status
