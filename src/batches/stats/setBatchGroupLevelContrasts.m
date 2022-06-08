@@ -29,14 +29,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
     case 'one_sample_t_test'
 
-      %       contrastsList = getDummyContrastsList(nodeName, opt.model.bm);
-      %       tmp = getContrastsList(nodeName, opt.model.bm);
-
       contrastsList = getContrastsListForFactorialDesign(opt, nodeName);
-
-      %       for j = 1:numel(tmp)
-      %         contrastsList{end + 1} = tmp{j}.Name;
-      %       end
 
       if all(ismember(lower(groupBy), {'contrast'}))
 

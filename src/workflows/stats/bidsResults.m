@@ -330,6 +330,8 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
 
   matlabbatch = {};
 
+  results = {};
+
   node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
 
   opt = checkMontage(opt, iRes, node);
@@ -345,36 +347,80 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
       id = 'unSpecifiedResultName';
       errorHandling(mfilename(), id, msg, true, opt.verbosity);
     end
-    result.dir = getRFXdir(opt, result.nodeName, name);
 
-    switch  groupLevelGlmType(opt, node.Name)
+    switch  groupLevelGlmType(opt, result.nodeName)
 
       case 'one_sample_t_test'
-        result.name = name;
+
+        [~, ~, groupBy] =  groupLevelGlmType(opt, result.nodeName);
+
+        if all(ismember(lower(groupBy), {'contrast'}))
+
+          result.name = name;
+          result.dir = getRFXdir(opt, result.nodeName, name);
+
+          [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
+
+        elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
+
+          participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+
+          groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
+          availableGroups = unique(participants.(groupColumnHdr));
+
+          for iGroup = 1:numel(availableGroups)
+
+            result.name = name;
+            thisGroup = availableGroups{iGroup};
+
+            result.dir = getRFXdir(opt, result.nodeName, name, thisGroup);
+
+            [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
+
+          end
+
+        end
 
       case 'two_sample_t_test'
-        thisContrast = opt.model.bm.get_contrasts('Name', node.Name);
+
+        thisContrast = opt.model.bm.get_contrasts('Name', result.nodeName);
         result.name = [thisContrast{1}.Name ' - ' name];
+        result.dir = getRFXdir(opt, result.nodeName, name);
+
+        [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
 
       otherwise
-        msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
+        msg = sprintf('Node %s has has model type I cannot handle.\n', result.nodeName);
         notImplemented(mfilename(), msg, true);
 
     end
 
-    result.space = opt.space;
-
-    matlabbatch = setBatchGroupLevelResults(matlabbatch, ...
-                                            opt, ...
-                                            result);
-
-    matlabbatch = setBatchPrintFigure(matlabbatch, ...
-                                      opt, ...
-                                      fullfile(result.dir, figureName(opt)));
-
-    results{i} = result;
-
   end
+
+end
+
+function status = checkSpmMat(dir)
+  status = exist(fullfile(dir, 'SPM.mat'), 'file');
+  if ~status
+    msg = sprintf('\nCould not find a SPM.mat file in directory %s\n', dir);
+    id = 'noSpmMatFile';
+    errorHandling(mfilename(), id, msg, true, true);
+  end
+end
+
+function [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result)
+
+  if ~checkSpmMat(result.dir)
+    return
+  end
+
+  result.space = opt.space;
+
+  matlabbatch = setBatchGroupLevelResults(matlabbatch, opt, result);
+
+  matlabbatch = setBatchPrintFigure(matlabbatch, opt, fullfile(result.dir, figureName(opt)));
+
+  results{end + 1} = result;
 
 end
 
