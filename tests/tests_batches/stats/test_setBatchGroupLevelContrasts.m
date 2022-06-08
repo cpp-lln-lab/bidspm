@@ -8,6 +8,29 @@ function test_suite = test_setBatchGroupLevelContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setBatchGroupLevelContrasts_within_group()
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, ...
+                            'basename', ...
+                            'model-vislocalizerWithinGroup_smdl');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  matlabbatch = {};
+  matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, 'within_group');
+
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{1}.tcon.name, 'VisMot_gt_VisStat');
+  dir = spm_file(spm_file(matlabbatch{1}.spm.stats.con.spmmat, 'path'), 'filename');
+  assertEqual(dir, {['sub-blind_task-vislocalizer_space-IXI549Space_FWHM-6_conFWHM-0', ...
+                     '_node-withinGroup_contrast-VisMotGtVisStat']});
+
+  assertEqual(matlabbatch{2}.spm.stats.con.consess{1}.tcon.name, 'VisMot_gt_VisStat');
+  dir = spm_file(spm_file(matlabbatch{2}.spm.stats.con.spmmat, 'path'), 'filename');
+  assertEqual(dir, {['sub-ctrl_task-vislocalizer_space-IXI549Space_FWHM-6_conFWHM-0', ...
+                     '_node-withinGroup_contrast-VisMotGtVisStat']});
+end
+
 function test_setBatchGroupLevelContrasts_basic()
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');

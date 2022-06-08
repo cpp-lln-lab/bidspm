@@ -9,6 +9,15 @@ function rfxDir = getRFXdir(varargin)
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
+  % :param nodeName:
+  % :type nodeName: char
+  %
+  % :param contrastName:
+  % :type contrastName: char
+  %
+  % :param thisGroup:
+  % :type thisGroup: cellstr
+  %
   % :returns: :rfxDir: (string) Fullpath of the group level directory
   %
   % Typical output:

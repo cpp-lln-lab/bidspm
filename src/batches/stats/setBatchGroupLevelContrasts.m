@@ -23,7 +23,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
   printBatchName('group level contrast estimation', opt);
 
-  [groupGlmType, designMatrix] =  groupLevelGlmType(opt, nodeName);
+  [groupGlmType, designMatrix, groupBy] =  groupLevelGlmType(opt, nodeName);
 
   switch groupGlmType
 
@@ -38,13 +38,38 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
       for j = 1:numel(contrastsList)
 
-        spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
+        if all(ismember(lower(groupBy), {'contrast'}))
 
-        consess{1}.tcon.name = contrastsList{j};
-        consess{1}.tcon.convec = 1;
-        consess{1}.tcon.sessrep = 'none';
+          spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
 
-        matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+          consess{1}.tcon.name = contrastsList{j};
+          consess{1}.tcon.convec = 1;
+          consess{1}.tcon.sessrep = 'none';
+
+          matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+
+        elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
+
+          participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+
+          groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
+          availableGroups = unique(participants.(groupColumnHdr));
+
+          for iGroup = 1:numel(availableGroups)
+
+            thisGroup = availableGroups{iGroup};
+            rfxDir = getRFXdir(opt, nodeName, contrastsList{j}, thisGroup);
+            spmMatFile = fullfile(rfxDir, 'SPM.mat');
+
+            consess{1}.tcon.name = contrastsList{j};
+            consess{1}.tcon.convec = 1;
+            consess{1}.tcon.sessrep = 'none';
+
+            matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+
+          end
+
+        end
 
       end
 

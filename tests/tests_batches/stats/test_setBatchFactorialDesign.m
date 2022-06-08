@@ -19,11 +19,9 @@ function test_setBatchFactorialDesign_within_group()
                             'model-vislocalizerWithinGroup_smdl');
   opt.model.bm = BidsModel('file', opt.model.file);
 
-  datasetNode = opt.model.bm.get_nodes('Name', 'within_group');
-
   matlabbatch = {};
 
-  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name);
+  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, 'within_group');
 
   % 1 contrasts passed through the Edge filter * 2 batches / group * 2 groups
   assertEqual(numel(matlabbatch), 4);

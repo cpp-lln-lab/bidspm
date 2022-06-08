@@ -1,4 +1,4 @@
-function [type, designMatrix] = groupLevelGlmType(opt, nodeName)
+function [type, designMatrix, groupBy] = groupLevelGlmType(opt, nodeName)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
@@ -7,6 +7,10 @@ function [type, designMatrix] = groupLevelGlmType(opt, nodeName)
   if isnumeric(designMatrix) && designMatrix == 1
 
     type = 'one_sample_t_test';
+
+    node = opt.model.bm.get_nodes('Name', nodeName);
+
+    groupBy = node.GroupBy;
 
   elseif iscell(designMatrix) && numel(designMatrix) == 2
 
