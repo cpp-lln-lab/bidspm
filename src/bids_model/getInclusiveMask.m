@@ -1,10 +1,13 @@
 function mask = getInclusiveMask(opt, nodeName, BIDS, subLabel)
   %
-  % use the mask specified in the BIDS stats model as explicit mask
+  % Use the mask specified in the BIDS stats model as explicit mask.
   %
-  % if none is specified and we are in MNI space
-  % we use the Intra Cerebal Volume SPM mask
+  % If none is specified and we are in MNI space,
+  % then use the Intra Cerebral Volume SPM mask.
   %
+  % USAGE::
+  %
+  %   mask = getInclusiveMask(opt, nodeName, BIDS, subLabel)
   %
   %
   % (C) Copyright 2022 CPP_SPM developers

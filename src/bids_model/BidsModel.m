@@ -245,7 +245,7 @@ classdef BidsModel < bids.Model
     end
 
     function bidsModelError(obj, id, msg)
-      msg = sprintf('\n\n%s in BIDS stats model ''%s''\n', msg, obj.Name);
+      msg = sprintf('\n\n%s in BIDS stats model named "%s"\n', msg, obj.Name);
       errorHandling(mfilename(), id, msg, obj.tolerant, obj.verbose);
     end
 

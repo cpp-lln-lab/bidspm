@@ -46,31 +46,14 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
       conImages{iSub} = findSubjectConImage(opt, subLabel, contrastsList);
     end
 
-    for j = 1:numel(contrastsList)
+    for iCon = 1:numel(contrastsList)
 
-      contrastName = contrastsList{j};
+      contrastName = contrastsList{iCon};
 
       msg = sprintf('\n\n  Group contrast: "%s"\n\n', contrastName);
       printToScreen(msg, opt);
 
-      icell(1).scans = {};
-
-      for iSub = 1:numel(opt.subjects)
-
-        subLabel = opt.subjects{iSub};
-
-        file = conImages{iSub};
-        if isempty(file)
-          continue
-        end
-
-        icell(1).scans{iSub, 1} = file;
-
-        printProcessingSubject(iSub, subLabel, opt);
-        msg = sprintf(' %s\n\n', char(file));
-        printToScreen(msg, opt);
-
-      end
+      icell = allocateSubjectsContrasts(opt, opt.subjects, conImages, iCon);
 
       matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, icell);
 
@@ -86,9 +69,15 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
       thisGroup = availableGroups{iGroup};
 
       % grab subjects label from participants.tsv in raw
+      % and only keep those that are part of the requested subjects
+      %
+      % Note that this will lead to different results depending on the requested
+      % subejcts
+      %
       tsv = BIDS.raw.participants.content;
       subjectsInGroup = strcmp(tsv.(groupColumnHdr), thisGroup);
       subjectsLabel = regexprep(tsv.participant_id(subjectsInGroup), '^sub-', '');
+      subjectsLabel = intersect(subjectsLabel, opt.subjects);
 
       % collect all con images from all subjects
       for iSub = 1:numel(subjectsLabel)
@@ -96,36 +85,14 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
         conImages{iSub} = findSubjectConImage(opt, subLabel, contrastsList);
       end
 
-      for j = 1:numel(contrastsList)
+      for iCon = 1:numel(contrastsList)
 
-        contrastName = contrastsList{j};
+        contrastName = contrastsList{iCon};
 
         msg = sprintf('\n\n  Group contrast "%s" for group "%s"\n\n', contrastName, thisGroup);
         printToScreen(msg, opt);
 
-        icell(1).scans = {};
-
-        for iSub = 1:numel(subjectsLabel)
-
-          subLabel = subjectsLabel{iSub};
-
-          % TODO refactor with setBatchTwoSampleTTest ?
-          if ischar(conImages{iSub})
-            file = conImages{iSub};
-          elseif iscell(conImages{iSub})
-            file = conImages{iSub}{iCon};
-          end
-          if isempty(file)
-            continue
-          end
-
-          icell(1).scans{iSub, 1} = file;
-
-          printProcessingSubject(iSub, subLabel, opt);
-          msg = sprintf(' %s\n\n', conImages{iSub});
-          printToScreen(msg, opt);
-
-        end
+        icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon);
 
         matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, icell, thisGroup);
 
@@ -134,6 +101,34 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
     end
 
   end
+end
+
+function icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon)
+
+  icell(1).scans = {};
+
+  for iSub = 1:numel(subjectsLabel)
+
+    subLabel = subjectsLabel{iSub};
+
+    % TODO refactor with setBatchTwoSampleTTest ?
+    if ischar(conImages{iSub})
+      file = conImages{iSub};
+    elseif iscell(conImages{iSub})
+      file = conImages{iSub}{iCon};
+    end
+    if isempty(file)
+      continue
+    end
+
+    icell(1).scans{end + 1, 1} = file;
+
+    printProcessingSubject(iSub, subLabel, opt);
+    msg = sprintf(' %s\n\n', char(file));
+    printToScreen(msg, opt);
+
+  end
+
 end
 
 function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
@@ -193,6 +188,8 @@ function matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, i
   overwriteDir(rfxDir, opt);
 
   icell(1).levels = 1;
+
+  assert(iscellstr(icell.scans));
 
   matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell);
 

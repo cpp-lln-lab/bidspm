@@ -109,8 +109,6 @@ function [matlabbatch, contrastsList] = setBatchTwoSampleTTest(varargin)
 
       subLabel = opt.subjects{iSub};
 
-      printProcessingSubject(iSub, subLabel, opt);
-
       idx = strcmp(BIDS.raw.participants.content.participant_id, ['sub-' subLabel]);
       participantGroup = BIDS.raw.participants.content.(groupField){idx};
 
@@ -136,6 +134,7 @@ function [matlabbatch, contrastsList] = setBatchTwoSampleTTest(varargin)
               createUnorderedList(availableGroups));
       end
 
+      printProcessingSubject(iSub, subLabel, opt);
       msg = sprintf(' %s\n\n', file);
       printToScreen(msg, opt);
 
