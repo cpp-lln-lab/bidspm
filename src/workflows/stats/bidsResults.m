@@ -481,8 +481,12 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
 end
 
 function renameOutputResults(results)
+  %
   % we create new name for the nifti output by removing the
   % spmT_XXXX prefix and using the XXXX as label- for the file
+  %
+  % also rename PNG and labels activations
+  %
 
   for i = 1:numel(results)
 
@@ -510,13 +514,24 @@ function renameOutputResults(results)
 
     renamePng(result.dir);
 
+    if result.csv && isMni(result.space)
+
+      csvFiles = spm_select('FPList', result.dir, '^spm_.*[0-9].csv$');
+
+      for iFile = 1:size(csvFiles, 1)
+        source = deblank(csvFiles(iFile, :));
+        labelActivations(source);
+      end
+
+    end
+
   end
 
 end
 
 function renameNidm(opt, result, subLabel)
   %
-  % removes the _XXX suffix before the PNG extension.
+  % removes the _XXX suffix before the nidm extension.
 
   nidmFiles = spm_select('FPList', result.dir, '^spm_[0-9]{4}.nidm.zip$');
 
