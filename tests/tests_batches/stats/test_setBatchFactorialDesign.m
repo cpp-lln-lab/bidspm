@@ -50,7 +50,7 @@ function test_setBatchFactorialDesign_complex()
   matlabbatch = {};
   matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name);
 
-  basedirName = 'task-vismotion_space-IXI549Space_FWHM-6_conFWHM-0_';
+  basedirName = 'sub-ALL_task-vismotion_space-IXI549Space_FWHM-6_conFWHM-0_';
 
   % (2 dummy contrasts) specified at the dataset level * 2
   % batches (design specification + figure design matrix)

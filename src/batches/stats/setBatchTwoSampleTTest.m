@@ -1,4 +1,4 @@
-function [matlabbatch, contrastsList] = setBatchTwoSampleTTest(varargin)
+function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(varargin)
   %
   % Sets up a group level GLM specification for a 2 sample T test
   %
@@ -26,6 +26,10 @@ function [matlabbatch, contrastsList] = setBatchTwoSampleTTest(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
+  % TODO so far this assumes contrasts are only passed through Edge.Filter
+  %      this is too restrictive
+  %      could want to do 2 sample t-tests on all contrast from lower levels
+
   args = inputParser;
 
   addRequired(args, 'matlabbatch', @iscell);
@@ -38,6 +42,10 @@ function [matlabbatch, contrastsList] = setBatchTwoSampleTTest(varargin)
   opt = args.Results.opt;
   nodeName = args.Results.nodeName;
 
+  %%
+  groupList = {};
+
+  %%
   printBatchName('specify group level paired T-test fmri model', opt);
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
@@ -93,11 +101,13 @@ function [matlabbatch, contrastsList] = setBatchTwoSampleTTest(varargin)
   end
 
   % set up the batch
-  for iCon = 1:numel(edge.Filter.contrast)
+  for iCon = 1:numel(contrastsList)
 
-    contrastName = edge.Filter.contrast{iCon};
+    groupList{end + 1, 1} = 'ALL';
 
-    rfxDir = getRFXdir(opt, nodeName, contrastName);
+    contrastName = contrastsList{iCon};
+
+    rfxDir = getRFXdir(opt, nodeName, contrastName, groupList{end});
 
     overwriteDir(rfxDir, opt);
 
@@ -112,7 +122,7 @@ function [matlabbatch, contrastsList] = setBatchTwoSampleTTest(varargin)
       idx = strcmp(BIDS.raw.participants.content.participant_id, ['sub-' subLabel]);
       participantGroup = BIDS.raw.participants.content.(groupField){idx};
 
-      if numel(edge.Filter.contrast) == 1
+      if numel(contrastsList) == 1
         file = conImages{iSub};
       else
         file = conImages{iSub}{iCon};

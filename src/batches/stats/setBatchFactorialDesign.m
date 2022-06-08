@@ -1,10 +1,10 @@
-function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt, nodeName)
+function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabbatch, opt, nodeName)
   %
   % Handles group level GLM specification
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchFactorialDesign(matlabbatch, opt, nodeName)
+  %   [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt, nodeName)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
@@ -23,6 +23,12 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
 
   % TODO implement Contrasts and not just dummy contrasts
 
+  % to keep track of all the contrast we used
+  % and to which group each batch corresponds to
+  % the later is needed to be able to create proper RFX dir name
+  contrastsList = {};
+  groups = {};
+
   [status, groupBy] = checks(opt, nodeName);
   if ~status
     return
@@ -32,7 +38,7 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
 
   printBatchName('specify group level fmri model', opt);
 
-  contrastsList = getContrastsListForFactorialDesign(opt, nodeName);
+  contrasts = getContrastsListForFactorialDesign(opt, nodeName);
 
   % now we fetch the contrast for each subject and allocate them in the batch
   % - first case is we pool over all subjects
@@ -43,12 +49,16 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
     % collect all con images from all subjects
     for iSub = 1:numel(opt.subjects)
       subLabel = opt.subjects{iSub};
-      conImages{iSub} = findSubjectConImage(opt, subLabel, contrastsList);
+      conImages{iSub} = findSubjectConImage(opt, subLabel, contrasts);
     end
 
-    for iCon = 1:numel(contrastsList)
+    % TODO further refactoring is possible?
+    for iCon = 1:numel(contrasts)
 
-      contrastName = contrastsList{iCon};
+      contrastName = contrasts{iCon};
+
+      contrastsList{end + 1, 1} = contrastName;
+      groups{end + 1, 1} = 'all_subjects';
 
       msg = sprintf('\n\n  Group contrast: "%s"\n\n', contrastName);
       printToScreen(msg, opt);
@@ -82,12 +92,15 @@ function [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt
       % collect all con images from all subjects
       for iSub = 1:numel(subjectsLabel)
         subLabel = subjectsLabel{iSub};
-        conImages{iSub} = findSubjectConImage(opt, subLabel, contrastsList);
+        conImages{iSub} = findSubjectConImage(opt, subLabel, contrasts);
       end
 
-      for iCon = 1:numel(contrastsList)
+      for iCon = 1:numel(contrasts)
 
-        contrastName = contrastsList{iCon};
+        contrastName = contrasts{iCon};
+
+        contrastsList{end + 1, 1} = contrastName;
+        groups{end + 1, 1} = thisGroup;
 
         msg = sprintf('\n\n  Group contrast "%s" for group "%s"\n\n', contrastName, thisGroup);
         printToScreen(msg, opt);
@@ -180,18 +193,17 @@ end
 
 function matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, icell, thisGroup)
 
-  if nargin == 6
-    rfxDir = getRFXdir(opt, [nodeName ' group ' thisGroup], contrastName);
-  elseif nargin == 5
-    rfxDir = getRFXdir(opt, nodeName, contrastName);
+  if nargin == 5
+    thisGroup = '';
   end
+  rfxDir = getRFXdir(opt, nodeName, contrastName, thisGroup);
   overwriteDir(rfxDir, opt);
 
   icell(1).levels = 1;
 
   assert(iscellstr(icell.scans));
 
-  matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell);
+  matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell, thisGroup);
 
   mask = getInclusiveMask(opt, nodeName);
   matlabbatch{end}.spm.stats.factorial_design.masking.em = {mask};
@@ -202,7 +214,11 @@ function matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, i
                                                                     'before estimation')));
 end
 
-function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell)
+function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell, thisGroup)
+
+  if isempty(thisGroup)
+    thisGroup = 'GROUP';
+  end
 
   factorialDesign.dir = {directory};
 
@@ -210,7 +226,7 @@ function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell)
 
   % GROUP and the number of levels in the group.
   % If 2 groups, then number of levels = 2
-  factorialDesign.des.fd.fact.name = 'GROUP';
+  factorialDesign.des.fd.fact.name = thisGroup;
   factorialDesign.des.fd.fact.levels = numel(icell);
   factorialDesign.des.fd.fact.dept = 0;
 

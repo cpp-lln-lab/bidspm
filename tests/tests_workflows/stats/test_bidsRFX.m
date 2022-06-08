@@ -20,18 +20,28 @@ function test_bidsRFX_basic_select_datasets_within_group_ttest()
 
   matlabbatch = bidsRFX('RFX', opt);
 
-  %   % creates 1 batch for (specify, figure, estimate, review, figure)
-  %   assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
-  %   assert(isfield(matlabbatch{2}.spm.util, 'print'));
-  %   assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
-  %   assert(isfield(matlabbatch{4}.spm.stats, 'review'));
-  %   assert(isfield(matlabbatch{5}.spm.util, 'print'));
-  %
-  %   % 2 blind and 1 ctrl
-  %   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.t2.scans1), 2);
-  %   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.t2.scans2), 1);
-  %
-  %   cleanUp(fullfile(opt.dir.output, 'derivatives'));
+  % creates 1 batch for (specify, figure, estimate, review, figure) for each group
+  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
+  assert(isfield(matlabbatch{2}.spm.util, 'print'));
+
+  assert(isfield(matlabbatch{3}.spm.stats, 'factorial_design'));
+  assert(isfield(matlabbatch{4}.spm.util, 'print'));
+
+  assert(isfield(matlabbatch{5}.spm.stats, 'fmri_est'));
+  assert(isfield(matlabbatch{6}.spm.stats, 'review'));
+  assert(isfield(matlabbatch{7}.spm.util, 'print'));
+
+  assert(isfield(matlabbatch{8}.spm.stats, 'fmri_est'));
+  assert(isfield(matlabbatch{9}.spm.stats, 'review'));
+  assert(isfield(matlabbatch{10}.spm.util, 'print'));
+
+  assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
+              fileparts(matlabbatch{5}.spm.stats.fmri_est.spmmat{1}));
+
+  assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
+              fileparts(matlabbatch{8}.spm.stats.fmri_est.spmmat{1}));
+
+  cleanUp(fullfile(opt.dir.output, 'derivatives'));
 
 end
 
@@ -53,6 +63,9 @@ function test_bidsRFX_basic_select_datasets_two_sample_ttest()
   assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
   assert(isfield(matlabbatch{4}.spm.stats, 'review'));
   assert(isfield(matlabbatch{5}.spm.util, 'print'));
+
+  assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
+              fileparts(matlabbatch{3}.spm.stats.fmri_est.spmmat{1}));
 
   % 2 blind and 1 ctrl
   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.t2.scans1), 2);
@@ -80,6 +93,9 @@ function test_bidsRFX_basic_select_datasets_level_to_run()
   assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
   assert(isfield(matlabbatch{4}.spm.stats, 'review'));
   assert(isfield(matlabbatch{5}.spm.util, 'print'));
+
+  assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
+              fileparts(matlabbatch{3}.spm.stats.fmri_est.spmmat{1}));
 
   cleanUp(fullfile(opt.dir.output, 'derivatives'));
 
