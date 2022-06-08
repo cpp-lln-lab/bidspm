@@ -20,13 +20,13 @@
       ],
       "Model": {
         "X": [
-          "condition.listening",
+          "trial_type.listening",
           "trans_?",
           "rot_?"
         ],
         "HRF": {
           "Variables": [
-            "condition.listening"
+            "trial_type.listening"
           ],
           "Model": "spm"
         },
@@ -51,14 +51,14 @@
       "DummyContrasts": {
         "Test": "t",
         "Contrasts": [
-          "condition.listening"
+          "trial_type.listening"
         ]
       },
       "Contrasts": [
         {
           "Name": "listening_inf_baseline",
           "ConditionList": [
-            "condition.listening"
+            "trial_type.listening"
           ],
           "Weights": [
             -1
