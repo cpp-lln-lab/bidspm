@@ -58,7 +58,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
       contrastName = contrasts{iCon};
 
       contrastsList{end + 1, 1} = contrastName;
-      groups{end + 1, 1} = 'all_subjects';
+      groups{end + 1, 1} = 'ALL';
 
       msg = sprintf('\n\n  Group contrast: "%s"\n\n', contrastName);
       printToScreen(msg, opt);
@@ -198,6 +198,8 @@ function matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, i
   end
   rfxDir = getRFXdir(opt, nodeName, contrastName, thisGroup);
   overwriteDir(rfxDir, opt);
+
+  assert(exist(fullfile(rfxDir, 'SPM.mat'), 'file') == 0);
 
   icell(1).levels = 1;
 

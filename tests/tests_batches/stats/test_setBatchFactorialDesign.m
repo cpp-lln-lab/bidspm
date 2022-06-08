@@ -60,7 +60,7 @@ function test_setBatchFactorialDesign_complex()
   % desc-Node(dataset).name_contrast_contrastName
   [~, dir] = fileparts(matlabbatch{1}.spm.stats.factorial_design.dir{1});
   assertEqual(dir, ...
-              [basedirName 'desc-simpleContrast_contrast-VisMot']);
+              [basedirName 'node-simpleContrast_contrast-VisMot']);
 
   datasetNode = opt.model.bm.get_nodes('Name', 'complex contrast');
 
@@ -75,7 +75,7 @@ function test_setBatchFactorialDesign_complex()
   % desc-Node(dataset).name_contrast_contrastName
   [~, dir] = fileparts(matlabbatch{1}.spm.stats.factorial_design.dir{1});
   assertEqual(dir, ...
-              [basedirName 'desc-complexContrast_contrast-VisMotGtVisStat']);
+              [basedirName 'node-complexContrast_contrast-VisMotGtVisStat']);
 
 end
 

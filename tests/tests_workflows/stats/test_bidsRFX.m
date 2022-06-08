@@ -8,7 +8,23 @@ function test_suite = test_bidsRFX %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsRFX_basic_select_datasets_within_group_ttest()
+function test_bidsRFX_no_overwrite_smoke_test()
+
+  opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, ...
+                            'basename', ...
+                            'model-vismotionNoOverWrite_smdl');
+
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  matlabbatch = bidsRFX('RFX', opt);
+
+  assertEqual(numel(matlabbatch), 5);
+
+end
+
+function test_bidsRFX_within_group_ttest()
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -41,11 +57,9 @@ function test_bidsRFX_basic_select_datasets_within_group_ttest()
   assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{8}.spm.stats.fmri_est.spmmat{1}));
 
-  cleanUp(fullfile(opt.dir.output, 'derivatives'));
-
 end
 
-function test_bidsRFX_basic_select_datasets_two_sample_ttest()
+function test_bidsRFX_two_sample_ttest()
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -71,11 +85,9 @@ function test_bidsRFX_basic_select_datasets_two_sample_ttest()
   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.t2.scans1), 2);
   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.t2.scans2), 1);
 
-  cleanUp(fullfile(opt.dir.output, 'derivatives'));
-
 end
 
-function test_bidsRFX_basic_select_datasets_level_to_run()
+function test_bidsRFX_select_datasets_level_to_run()
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -97,11 +109,9 @@ function test_bidsRFX_basic_select_datasets_level_to_run()
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{3}.spm.stats.fmri_est.spmmat{1}));
 
-  cleanUp(fullfile(opt.dir.output, 'derivatives'));
-
 end
 
-function test_bidsRFX_basic_several_datasets_level()
+function test_bidsRFX_several_datasets_level()
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -113,33 +123,30 @@ function test_bidsRFX_basic_several_datasets_level()
 
   matlabbatch = bidsRFX('RFX', opt);
 
-  nbGroupLevelModels = 3;
+  nbGroupLevelModelsReturned = 1;
   nbBatchPerModel = 5;
 
-  % creates 5 batches for (specify, figure, estimate, review, figure)
-  for i = 1:2:3
-    assert(isfield(matlabbatch{i}.spm.stats, 'factorial_design'));
-    assert(isfield(matlabbatch{i + 1}.spm.util, 'print'));
-  end
-  for i = 5:3:8
-    assert(isfield(matlabbatch{i}.spm.stats, 'fmri_est'));
-    assert(isfield(matlabbatch{i + 1}.spm.stats, 'review'));
-    assert(isfield(matlabbatch{i + 2}.spm.util, 'print'));
-  end
-  % creates 1 batch for (specify, figure, estimate, figure)
-  assert(isfield(matlabbatch{11}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{12}.spm.util, 'print'));
-  assert(isfield(matlabbatch{13}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{14}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{15}.spm.util, 'print'));
+  % only the batches from the last node is returned
+  % creates 1 batch for (specify, figure, estimate, review, figure)
+  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
+  assert(isfield(matlabbatch{2}.spm.util, 'print'));
+  assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
+  assert(isfield(matlabbatch{4}.spm.stats, 'review'));
+  assert(isfield(matlabbatch{5}.spm.util, 'print'));
 
-  assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
-
-  cleanUp(fullfile(opt.dir.output, 'derivatives'));
+  assertEqual(numel(matlabbatch), nbGroupLevelModelsReturned * nbBatchPerModel);
 
 end
 
-function test_bidsRFX_basic_rfx()
+function test_bidsRFX_rfx_on_empty_dir()
+
+  opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
+  cleanUp(fullfile(opt.dir.output, 'derivatives'));
+  matlabbatch = bidsRFX('RFX', opt);
+
+end
+
+function test_bidsRFX_rfx()
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -164,11 +171,9 @@ function test_bidsRFX_basic_rfx()
   end
   assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
 
-  cleanUp(fullfile(opt.dir.output, 'derivatives'));
-
 end
 
-function test_bidsRFX_basic_smooth()
+function test_bidsRFX_smooth()
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -177,7 +182,7 @@ function test_bidsRFX_basic_smooth()
 
 end
 
-function test_bidsRFX_basic_mean()
+function test_bidsRFX_mean()
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -192,7 +197,7 @@ function test_bidsRFX_basic_mean()
 
 end
 
-function test_bidsRFX_basic_contrast()
+function test_bidsRFX_contrast()
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 

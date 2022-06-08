@@ -17,11 +17,11 @@ function rfxDir = getRFXdir(varargin)
   %
   % .. code-block:: matlab
   %
-  %   ['task-',     model.Input.task, ...
+  %   ['sub-ALL-task-',     model.Input.task, ...
   %    '_space-'    model.Input.space, ...
   %    '_FWHM-',    num2str(opt.fwhm.func), ...
   %    '_conFWHM-', opt.fwhm.contrast, ...
-  %    'desc-', model.Input.Nodes(dataset_level).Name, ...             % optional
+  %    'node-', model.Input.Nodes(dataset_level).Name, ...             % optional
   %    'contrast-', model.Input.Nodes(dataset_level).Contrast(i).Name  % if ~= from "dataset_level"
   %    ]
   %
@@ -47,7 +47,7 @@ function rfxDir = getRFXdir(varargin)
   glmDirName = [glmDirName, '_conFWHM-', num2str(opt.fwhm.contrast)];
 
   if ~isempty(nodeName) && ~strcmpi(nodeName, 'dataset_level')
-    glmDirName = [glmDirName, '_desc-', bids.internal.camel_case(nodeName)];
+    glmDirName = [glmDirName, '_node-', bids.internal.camel_case(nodeName)];
   end
 
   if ~isempty(contrastName) && ~strcmpi(contrastName, 'dataset_level')
