@@ -60,7 +60,9 @@ you can fin the latest version from `HERE <https://github.com/cpp-lln-lab/CPP_SP
 Initialization
 ==============
 
-In general DO NOT ADD CPP SPM PERMANENTLY to your MATLAB / Octave path.
+.. warning::
+
+  In general DO NOT ADD CPP SPM PERMANENTLY to your MATLAB / Octave path.
 
 You just need to initialize for a given session with::
 
@@ -70,7 +72,7 @@ This will add all the required folders to the path.
 
 You can also remove CPP_SPM from the path with::
 
-  cpp_spm('action', 'uninit')
+  cpp_spm uninit
 
 Installation on a computing cluster
 ===================================

@@ -32,6 +32,7 @@ Note that some of the defaults value may be over-ridden by the content of the ``
 structure but also by the content of your BIDS stats model.
 
 .. _auto_correlation_model:
+
 auto-correlation modelisation
 -----------------------------
 
