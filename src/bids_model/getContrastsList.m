@@ -13,7 +13,7 @@ function contrastsList = getContrastsList(node, model)
   % :param model:
   % :type model: BIDS stats model object
   %
-  %
+  % :return: contrastsList (cellstr)
   %
   % (C) Copyright 2022 CPP_SPM developers
 

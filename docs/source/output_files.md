@@ -1,8 +1,8 @@
 # Outputs of CPP SPM
 
 ```{warning}
- PROGRESS ⚠️
-```⚠️ WORK IN
+⚠️ WORK IN PROGRESS ⚠️
+```
 
 For a complete list of how SPM outputs are renamed into BIDS derivatives see the
 Mapping page.
