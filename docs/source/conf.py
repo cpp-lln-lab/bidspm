@@ -37,6 +37,7 @@ extensions = [
     "sphinx_copybutton",
     "myst_parser",
     "sphinxcontrib.mermaid",
+    "sphinxcontrib.bibtex",
 ]
 matlab_src_dir = os.path.dirname(os.path.abspath("../../src"))
 primary_domain = "mat"
@@ -54,6 +55,8 @@ pygments_style = "sphinx"
 
 # The master toctree document.
 master_doc = "index"
+
+bibtex_bibfiles = ["references.bib"]
 
 # source_suffix = ['.rst', '.md']
 source_suffix = ".rst"
