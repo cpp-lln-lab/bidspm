@@ -22,13 +22,17 @@ Output example - Preprocessing
 ------------------------------
 
 .. include:: examples/preprocess.md
+   :parser: myst_parser.sphinx_
 
 Output example - GLM subject level
 ----------------------------------
 
 .. include:: examples/stats.md
+   :parser: myst_parser.sphinx_
 
 Output example - GLM Group level
 --------------------------------
 
-WIP
+```{warning}
+⚠️ WORK IN PROGRESS ⚠️
+```

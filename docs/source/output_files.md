@@ -1,8 +1,8 @@
 # Outputs of CPP SPM
 
 ```{warning}
-⚠️ WIP ⚠️
-```
+ PROGRESS ⚠️
+```⚠️ WORK IN
 
 For a complete list of how SPM outputs are renamed into BIDS derivatives see the
 Mapping page.
@@ -32,7 +32,7 @@ Mapping page.
 ## anat
 
 ```{note}
-Not listed: s
+Not listed:
 
 - some of the outputs of the segmentation done by the ALI toolbox for
 lesion detection
