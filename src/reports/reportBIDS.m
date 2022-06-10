@@ -9,6 +9,7 @@ function reportBIDS(opt)
   %
   % USAGE::
   %
+  %   opt.dir.input = "path_to_dataset"
   %   reportBIDS(opt)
   %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.

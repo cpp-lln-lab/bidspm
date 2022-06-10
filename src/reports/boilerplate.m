@@ -14,7 +14,7 @@ function outputFile = boilerplate(varargin)
   % :param outputPath:
   % :type outputPath: char
   %
-  % :param pipelineType: ``'spatial_preproc'`` or ``'stats``
+  % :param pipelineType: ``'preproc'`` or ``'stats``
   % :type pipelineType: char
   %
   % :param partialsPath:
@@ -22,6 +22,18 @@ function outputFile = boilerplate(varargin)
   %
   % :param verbose:
   % :type verbose: boolean
+  %
+  %
+  % EXAMPLE::
+  %
+  %   opt.model.file = path_to_model;
+  %   opt.designType = 'event';
+  %   opt = checkOptions(opt);
+  %
+  %   outputFile = boilerplate(opt, ...
+  %                             'outputPath', pwd, ...
+  %                             'pipelineType', 'stats', ...
+  %                             'verbosity', 2)
   %
   %
   % (C) Copyright 2022 CPP_SPM developers
@@ -111,7 +123,7 @@ function outputFile = boilerplate(varargin)
   end
 
   %% render
-  if strcmp(pipelineType, 'spatial_preproc')
+  if strcmp(pipelineType, 'preproc')
     fileToRender = fullfile(fileparts(mfilename('fullpath')), 'boilerplate_preprocess.mustache');
 
   elseif strcmp(pipelineType, 'stats')
@@ -240,7 +252,7 @@ function outputFile = printToFile(output, outputPath, pipelineType)
 
     spm_mkdir(outputPath);
 
-    if strcmp(pipelineType, 'spatial_preproc')
+    if strcmp(pipelineType, 'preproc')
       outputFile = 'preprocess.md';
     elseif strcmp(pipelineType, 'stats')
       outputFile = 'stats.md';
@@ -250,7 +262,7 @@ function outputFile = printToFile(output, outputPath, pipelineType)
 
     fid = fopen(outputFile, 'wt');
     if fid == -1
-      error('Unable to open file "%s" for writing.', filename);
+      error('Unable to open file "%s" for writing.', outputFile);
     end
     fprintf(fid, '%s', output);
     fclose(fid);
