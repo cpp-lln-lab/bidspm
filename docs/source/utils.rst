@@ -60,6 +60,7 @@ Utility functions
 .. autofunction:: removeDummies
 .. autofunction:: returnVolumeList
 .. autofunction:: volumeSplicing
+.. autofunction:: labelActivations
 
 .. autofunction:: getContrastNb
 .. autofunction:: getRegressorIdx

@@ -17,6 +17,10 @@ function opt =  face_rep_get_option_results()
 
   opt.results.name = 'faces_gt_baseline_1';
 
+  opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
+                            'models', ...
+                            'model-faceRepetition_smdl.json');
+
   % Specify how you want your output (all the following are on false by default)
   opt.results.png = true();
   opt.results.csv = true();

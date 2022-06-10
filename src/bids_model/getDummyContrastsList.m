@@ -13,7 +13,7 @@ function dummyContrastsList = getDummyContrastsList(node, model)
   % :param model:
   % :type model: BIDS stats model object
   %
-  %
+  % :return: dummyContrastsList (cellstr)
   %
   % (C) Copyright 2022 CPP_SPM developers
 

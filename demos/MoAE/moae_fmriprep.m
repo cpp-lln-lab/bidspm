@@ -4,7 +4,6 @@
 % If you want to get the preprocessed data and you have datalad on your computer
 % you can run the following commands to get the necesary data::
 %
-%
 %   datalad install --source git@gin.g-node.org:/SPM_datasets/spm_moae_fmriprep.git \
 %           inputs/fmriprep
 %   cd inputs/fmriprep && datalad get *.json \

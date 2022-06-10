@@ -8,9 +8,14 @@ octave_kernel
 
 # doc
 Sphinx
-sphinxcontrib-matlabdomain
-sphinx-copybutton
-sphinx_rtd_theme
-rstcheck
 myst-parser
+sphinx_rtd_theme
+sphinx-copybutton
+rstcheck
+sphinxcontrib-matlabdomain
 sphinxcontrib-mermaid
+sphinxcontrib-bibtex
+
+# bids stats model schema
+rich
+bsmschema

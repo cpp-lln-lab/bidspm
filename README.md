@@ -67,7 +67,7 @@ subject_label = '01';
 cpp_spm(bids_dir, output_dir, 'subject', ...
         'participant_label', {subject_label}, ...
         'action', 'preprocess', ...
-        'task', {...})
+        'task', {'yourTask'})
 ```
 
 ### GLM
@@ -83,7 +83,7 @@ subject_label = '01';
 
 cpp_spm(bids_dir, output_dir, 'subject', ...
         'participant_label', {subject_label}, ...
-        'action', 'preprocess', ...
+        'action', 'stats', ...
         'preproc_dir', preproc_dir, ...
         'model_file', model_file)
 ```
@@ -103,6 +103,8 @@ off running [fmriprep](https://fmriprep.org/en/stable/) on your data.
 If you have more exotic data that cannot be handled well by fmriprep then
 CPP_SPM has some automated workflows to perform amongst other things:
 
+-   remove dummies
+
 -   slice timing correction
 
 -   spatial preprocessing:
@@ -116,7 +118,7 @@ CPP_SPM has some automated workflows to perform amongst other things:
 
 -   fieldmaps processing and voxel displacement map creation (work in progress)
 
-All preprocessed outputs are saved as BIDS derivatives with BIDS compliant
+All (well almost all) preprocessed outputs are saved as BIDS derivatives with BIDS compliant
 filenames.
 
 ### Statistics
@@ -133,6 +135,7 @@ used to perform:
 
 ### Quality control:
 
+-   anatomical data (work in progress)
 -   functional data (work in progress)
 -   GLM auto-correlation check
 

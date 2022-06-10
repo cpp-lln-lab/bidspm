@@ -1,50 +1,60 @@
 repos:
 
--   repo: local
+- repo: local
 
-    hooks:
+  hooks:
 
-    - id: mh_version
-      name: mh_version
-      entry: mh_style
-      args: [-v]
-      verbose: true
-      language: python
-      additional_dependencies: [miss_hit_core]
+  - id: mh_version
+    name: mh_version
+    entry: mh_style
+    args: [-v]
+    verbose: true
+    language: python
+    additional_dependencies: [miss_hit_core]
 
-    - id: mh_style
-      name: mh_style
-      entry: mh_style
-      args: [--process-slx, --fix]
-      files: ^(.*\.(m|slx))$
-      language: python
-      additional_dependencies: [miss_hit_core]
+  - id: mh_style
+    name: mh_style
+    entry: mh_style
+    args: [--process-slx, --fix]
+    files: ^(.*\.(m|slx))$
+    language: python
+    additional_dependencies: [miss_hit_core]
 
-    - id: mh_metric
-      name: mh_metric
-      entry: mh_metric
-      args: [--ci]
-      files: ^(.*\.(m|slx))$
-      language: python
-      additional_dependencies: [miss_hit_core]
+  - id: mh_metric
+    name: mh_metric
+    entry: mh_metric
+    args: [--ci]
+    files: ^(.*\.(m|slx))$
+    language: python
+    additional_dependencies: [miss_hit_core]
 
-    - id: mh_lint
-      name: mh_lint
-      entry: mh_lint
-      files: ^(.*\.(m|slx))$
-      language: python
-      additional_dependencies: [miss_hit]
+  - id: mh_lint
+    name: mh_lint
+    entry: mh_lint
+    files: ^(.*\.(m|slx))$
+    language: python
+    additional_dependencies: [miss_hit]
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v4.1.0
   hooks:
-    - id: trailing-whitespace
-    - id: end-of-file-fixer
-    - id: check-yaml
-    - id: check-added-large-files
+  - id: trailing-whitespace
+  - id: end-of-file-fixer
+  - id: check-yaml
+  - id: check-added-large-files
 
--   repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.9.0
-    hooks:
-    -   id: rst-backticks # Detect common mistake of using single backticks when writing rst
-    -   id: rst-inline-touching-normal # Detect mistake of inline code touching normal text in rst
+- repo: https://github.com/pre-commit/pygrep-hooks
+  rev: v1.9.0
+  hooks:
+  - id: rst-backticks # Detect common mistake of using single backticks when writing rst
+  - id: rst-inline-touching-normal # Detect mistake of inline code touching normal text in rst
+
+- repo: https://github.com/psf/black
+  rev: 22.3.0
+  hooks:
+  - id: black
+
+- repo: https://github.com/asottile/reorder_python_imports
+  rev: v2.6.0
+  hooks:
+  - id: reorder-python-imports

@@ -15,17 +15,6 @@
         "run",
         "subject"
       ],
-      "Transformations": {
-        "Transformer": "",
-        "Instructions": [
-          {
-            "Name": "",
-            "Inputs": [
-              ""
-            ]
-          }
-        ]
-      },
       "Model": {
         "X": [
           "nback"

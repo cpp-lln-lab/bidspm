@@ -81,7 +81,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   for iCond = 1:numel(variablesToConvolve)
 
-    trialTypeNotFound = false;
+    trialTypeNotFound = false; % should be dead code by now
     variableNotFound = false;
     extra = '';
 
