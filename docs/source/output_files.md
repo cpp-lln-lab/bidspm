@@ -1,6 +1,8 @@
 # Outputs of CPP SPM
 
+```{warning}
 ⚠️ WIP ⚠️
+```
 
 For a complete list of how SPM outputs are renamed into BIDS derivatives see the
 Mapping page.
@@ -29,6 +31,13 @@ Mapping page.
 
 ## anat
 
+```{note}
+Not listed: s
+
+- some of the outputs of the segmentation done by the ALI toolbox for
+lesion detection
+```
+
 | SPM                                                          | BIDS                                                    |
 | ------------------------------------------------------------ | ------------------------------------------------------- |
 | wc1sub-01_T1w.nii                                            | sub-01_space-IXI549Space_res-bold_label-GM_probseg.nii  |
@@ -43,6 +52,3 @@ Mapping page.
 | wsub-01_desc-skullstripped_T1w.nii                           | sub-01_space-individual_res-r1pt0_desc-preproc_T1w.nii  |
 | msub-01_space-individual_desc-something_label-brain_mask.nii | sub-01_space-individual_label-brain_mask.nii            |
 | c1sub-01_T1w.surf.gii                                        | sub-01_desc-pialsurf_T1w.gii                            |
-
-Not listed: some of the outputs of the segmentation done by the ALI toolbox for
-lesion detection

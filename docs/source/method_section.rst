@@ -21,22 +21,14 @@ This can be generated with the ``boilerplate`` function.
 Output example - Preprocessing
 ------------------------------
 
-.. literalinclude:: examples/preprocess.md
-   :language: text
+.. include:: examples/preprocess.md
 
 Output example - GLM subject level
 ----------------------------------
 
-.. literalinclude:: examples/stats.md
-   :language: text
+.. include:: examples/stats.md
 
 Output example - GLM Group level
 --------------------------------
 
 WIP
-
-References
-==========
-
-.. literalinclude:: references.bib
-   :language: bibtex

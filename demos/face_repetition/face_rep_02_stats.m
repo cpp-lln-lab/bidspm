@@ -1,12 +1,34 @@
+%
+% .. warning::
+%
+%   This script assumes you have already preprocessed the data with face_rep_01_bids_app.m
+%
+% **stats**
+%
 % This script will run the FFX and contrasts on the the face repetition dataset from SPM.
 %
-% This assumes you have already preprocessed the data with face_rep_01_bids_app.m
+%   - GLM specification + estimation
+%   - compute contrasts
+%   - show results
 %
-% Results might be a bit different from those in the manual as some
-% default options are slightly different in this pipeline (e.g use of FAST
-% instead of AR(1)...)
+% that are otherwise handled by the workflows
 %
-% (C) Copyright 2019 Remi Gau
+%   - ``bidsFFX.m``
+%   - ``bidsResults.m``
+%
+% .. note::
+%
+%       Results might be a bit different from those in the SPM manual as some
+%       default options are slightly different in this pipeline
+%       (e.g use of FAST instead of AR(1), motion regressors added)
+%
+%
+% type `cpp_spm help` or `cpp_spm('action', 'help')`
+% or see this page: https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html
+% for more information on what parameters are obligatory or optional
+%
+%
+% (C) Copyright 2022 Remi Gau
 
 clear;
 clc;

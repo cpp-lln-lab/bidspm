@@ -1,15 +1,15 @@
-# Using CPP SPM and datalad
-
 Small demo using visual motion localizer data to show how to set up an analysis
 with CPP SPM from scratch with datalad.
+
+# Using CPP SPM and datalad
 
 Ideally better to use the datalad fMRI template we have set up, this shows a set
 by step approach.
 
-**Note**
-
+```{note}
 The bash script `vismotion_demo.sh` will run all the steps described here in one
 fell swoop.
+```
 
 You can run it by typing the following from within the CPP_SPM/demos/vismotion
 
@@ -26,7 +26,7 @@ datalad create -c yoda visual_motion_localiser
 cd visual_motion_localiser
 ```
 
-Add the CPP SPM code as a subdataset, checkout the dev branch ands initialises
+Add the CPP SPM code as a sub-dataset, checkout the dev branch ands initializes
 all submodules.
 
 ```bash
@@ -38,7 +38,7 @@ datalad install \
 ```
 
 In case you get some errors when installing the submodules you might have to
-initialise them manually, and update your dataset with that update
+initialize them manually, and update your dataset with that update
 
 ```bash
 cd code/CPP_SPM
@@ -51,13 +51,11 @@ datalad save -m 'update CPP SPM submodules'
 Now let's get the raw data as a subdataset and put it in an `inputs/raw` folder.
 
 The data from the CPP lab is openly available on GIN:
+[https://gin.g-node.org/cpp-lln-lab/CPP_visMotion-raw](https://gin.g-node.org/cpp-lln-lab/CPP_visMotion-raw)
 
-https://gin.g-node.org/cpp-lln-lab/CPP_visMotion-raw
-
-Note that to install it you will need to have set up datalad to play nice with
-GIN:
-
-http://handbook.datalad.org/en/latest/basics/101-139-gin.html
+Note that to install it you will need to have set up Datalad to play nice with
+GIN: see the
+[datalad handbook](http://handbook.datalad.org/en/latest/basics/101-139-gin.html)
 
 This will install the data:
 

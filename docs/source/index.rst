@@ -15,6 +15,7 @@ Welcome to CPP SPM documentation!
    installation
    bids_app_api
    set_up
+   bids_stats_model
    defaults
    demos
    architecture

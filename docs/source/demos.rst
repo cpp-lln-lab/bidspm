@@ -30,10 +30,10 @@ analysis in a json file.
 In the ``models`` shows the BIDS statistical model used to run the GLM of this demo.
 
 .. automodule:: demos.MoAE
-.. autoscript:: moae_01_preproc
-.. autoscript:: moae_02_stats
-.. autoscript:: moae_03_create_roi_extract_data
-.. autoscript:: moae_04_slice_display
+.. autoscript:: moae_01_bids_app
+.. autoscript:: moae_fmriprep
+.. autoscript:: moae_02_create_roi_extract_data
+.. autoscript:: moae_03_slice_display
 
 .. _face repetition demo:
 
@@ -43,15 +43,15 @@ Face repetition
 This is based on the event related design dataset of SPM.
 
 .. automodule:: demos.face_repetition
-.. autoscript:: face_rep_01_preproc_func
+.. autoscript:: face_rep_01_bids_app
+.. autoscript:: face_rep_01_anat_only
 .. autoscript:: face_rep_02_stats
 .. autoscript:: face_rep_03_roi_analysis
-.. autoscript:: face_rep_anat
 .. autoscript:: face_rep_resolution
 
 
-vismotion
-=========
+Visual motion localizers
+========================
 
-Small demo using the data from a visual motion localizer
-to show how to set up an analysis with CPP SPM from scratch with datalad.
+.. include:: ../../demos/vismotion/README.md
+   :parser: myst_parser.sphinx_

@@ -1,7 +1,9 @@
 % This script shows how to create a ROI and extract data from it.
 %
-% FYI: this is "double  dipping" as we use the same data to create the ROI
-% we are going to extract the value from.
+% .. warning::
+%
+%   This is "double dipping" as we use the same data to create the ROI
+%   we are going to extract the value from.
 %
 % (C) Copyright 2021 Remi Gau
 
