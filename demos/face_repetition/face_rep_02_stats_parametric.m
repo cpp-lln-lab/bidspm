@@ -1,9 +1,6 @@
-% This script will run the FFX and contrasts
+% This script will run the parametric model and contrasts
 % on the the face repetition dataset from SPM.
 %
-% Results might be a bit different from those in the manual as some
-% default options are slightly different in this pipeline (e.g use of FAST
-% instead of AR(1)...)
 %
 % (C) Copyright 2019 Remi Gau
 
@@ -13,8 +10,16 @@
 clear;
 clc;
 
+downloadData = true;
+
 addpath(fullfile(pwd, '..', '..'));
+
 cpp_spm();
+
+%% Gets data and converts it to BIDS
+if downloadData
+  download_face_rep_ds(downloadData);
+end
 
 opt = face_rep_get_option_results();
 
