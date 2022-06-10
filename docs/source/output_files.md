@@ -1,7 +1,7 @@
 # Outputs of CPP SPM
 
 ```{warning}
-⚠️ WORK IN PROGRESS ⚠️
+WORK IN PROGRESS
 ```
 
 For a complete list of how SPM outputs are renamed into BIDS derivatives see the

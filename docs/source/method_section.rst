@@ -34,5 +34,5 @@ Output example - GLM Group level
 --------------------------------
 
 ```{warning}
-⚠️ WORK IN PROGRESS ⚠️
+WORK IN PROGRESS
 ```
