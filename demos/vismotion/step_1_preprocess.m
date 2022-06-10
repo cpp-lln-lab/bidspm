@@ -6,14 +6,14 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 cpp_spm();
 
-opt = get_option_preprocess();
+this_dir = fileparts(mfilename('fullpath'));
+root_dir = fullfile(this_dir, '..', '..', '..', '..');
 
-reportBIDS(opt);
+bids_dir = fullfile(root_dir, 'inputs', 'raw');
+output_dir = fullfile(root_dir, 'outputs', 'derivatives');
 
-bidsCopyInputFolder(opt, 'unzip', true);
-
-bidsSTC(opt);
-
-bidsSpatialPrepro(opt);
-
-bidsSmoothing(opt);
+cpp_spm(bids_dir, output_dir, 'subject', ...
+        'action', 'preprocess', ...
+        'task', {'visMotion'}, ...
+        'ignore', {'unwarp', 'slicetiming'}, ...
+        'space', {'IXI549Space'});

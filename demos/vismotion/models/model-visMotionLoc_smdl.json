@@ -16,6 +16,7 @@
       "Name": "run_level",
       "GroupBy": [
         "run",
+        "session",
         "subject"
       ],
       "Model": {
@@ -36,47 +37,55 @@
         },
         "Type": "glm",
         "Options": {
-          "HighPassFilterCutoffHz": 0.0078
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": {
+            "suffix": [
+              "mask"
+            ],
+            "desc": [
+              "brain"
+            ]
+          }
         },
         "Software": {
           "SPM": {
             "SerialCorrelation": "FAST"
           }
-        },
-        "DummyContrasts": {
-          "Contrasts": [
+        }
+      },
+      "DummyContrasts": {
+        "Contrasts": [
+          "trial_type.VisMot",
+          "trial_type.VisStat"
+        ],
+        "Test": "t"
+      },
+      "Contrasts": [
+        {
+          "Name": "VisMot_gt_VisStat",
+          "ConditionList": [
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
+          "Weights": [
+            1,
+            -1
+          ],
           "Test": "t"
         },
-        "Contrasts": [
-          {
-            "Name": "VisMot_gt_VisStat",
-            "ConditionList": [
-              "trial_type.VisMot",
-              "trial_type.VisStat"
-            ],
-            "Weights": [
-              1,
-              -1
-            ],
-            "Test": "t"
-          },
-          {
-            "Name": "VisStat_gt_VisMot",
-            "ConditionList": [
-              "trial_type.VisMot",
-              "trial_type.VisStat"
-            ],
-            "Weights": [
-              -1,
-              1
-            ],
-            "Test": "t"
-          }
-        ]
-      }
+        {
+          "Name": "VisStat_gt_VisMot",
+          "ConditionList": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Weights": [
+            -1,
+            1
+          ],
+          "Test": "t"
+        }
+      ]
     },
     {
       "Level": "Subject",
