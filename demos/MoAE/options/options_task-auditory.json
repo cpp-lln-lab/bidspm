@@ -1,41 +1,35 @@
 {
-    "anatReference": {
-        "type": "T1w",
-        "session": ""
+    "segment": {
+        "force": true
     },
-    "dataDir": "./inputs/raw",
-    "derivativesDir": "./outputs/",
-    "model": {
-        "file": "./models/model-MoAE_smdl.json"
-    },
-    "result": {
-        "Steps": {
-            "Contrasts": [
-                {
-                    "MC": "FWE",
-                    "Mask": false,
-                    "NIDM": true,
-                    "Name": "listening",
-                    "k": 0,
-                    "p": 0.05
-                },
-                {
-                    "MC": "none",
-                    "Mask": false,
-                    "NIDM": true,
-                    "Name": "listening_inf_baseline",
-                    "k": 0,
-                    "p": 0.01
-                }
-            ],
-            "Level": "subject"
-        }
-    },
-    "skullstrip": {
-        "threshold": 0.75
-    },
-    "space": "MNI",
-    "taskName": "auditory",
-    "useFieldmaps": true,
-    "zeropad": 2
+    "results": {
+        "MC": "FWE",
+        "name": "listening_1",
+        "k": 0,
+        "p": 0.05,
+        "useMask": false,
+        "nodeName": "run_level",
+        "nidm": true,
+        "binary": true,
+        "csv": true,
+        "montage": {
+            "do": true,
+            "orientation": "axial",
+            "slices": [
+                -4,
+                -2,
+                0,
+                2,
+                4,
+                6,
+                8,
+                10,
+                12,
+                14,
+                16
+            ]
+        },
+        "png": true,
+        "thresh_spm": true
+    }
 }

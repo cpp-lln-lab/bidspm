@@ -1,0 +1,136 @@
+{
+   "Name": "balloonanalogrisktask",
+   "BIDSModelVersion": "1.0.0",
+   "Description": "default model for balloonanalogrisktask",
+   "Input": {
+      "task": [
+         "balloonanalogrisktask"
+      ]
+   },
+   "Nodes": [
+      {
+         "Level": "Run",
+         "Name": "run_level",
+         "GroupBy": [
+            "run",
+            "subject"
+         ],
+         "Transformations": {
+            "Transformer": "cpp_spm",
+            "Instructions": [
+               {
+                  "Name": "Factor",
+                  "Inputs": [
+                     "trial_type"
+                  ]
+               },
+               {
+                  "Name": "Convolve",
+                  "Model": "spm",
+                  "Inputs": [
+                     " "
+                  ]
+               }
+            ]
+         },
+         "Model": {
+            "Type": "glm",
+            "X": [
+               "trans_?",
+               "rot_?"
+            ],
+            "HRF": {
+               "Variables": [],
+               "Model": "spm"
+            },
+            "Options": {
+               "HighPassFilterCutoffHz": 0.008
+            },
+            "Software": {
+               "SPM": {
+                  "SerialCorrelation": "FAST"
+               }
+            }
+         },
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               " "
+            ]
+         }
+      },
+      {
+         "Level": "Subject",
+         "Name": "subject_level",
+         "GroupBy": [
+            "contrast",
+            "subject"
+         ],
+         "Transformations": {
+            "Transformer": "cpp_spm",
+            "Instructions": [
+               {
+                  "Name": "Factor",
+                  "Inputs": [
+                     "trial_type"
+                  ]
+               },
+               {
+                  "Name": "Convolve",
+                  "Model": "spm",
+                  "Inputs": [
+                     " "
+                  ]
+               }
+            ]
+         },
+         "Model": {
+            "Type": "glm",
+            "X": [
+               "trans_?",
+               "rot_?"
+            ],
+            "HRF": {
+               "Variables": [],
+               "Model": "spm"
+            },
+            "Options": {
+               "HighPassFilterCutoffHz": 0.008
+            },
+            "Software": {
+               "SPM": {
+                  "SerialCorrelation": "FAST"
+               }
+            }
+         },
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               " "
+            ]
+         }
+      },
+      {
+         "Level": "Dataset",
+         "Name": "dataset_level",
+         "GroupBy": [
+            "contrast"
+         ],
+         "Model": {
+            "Type": "glm",
+            "X": [
+               "trial_type.VisMot",
+               "trial_type.VisStat",
+               "VisMot_gt_VisStat",
+               "VisStat_gt_VisMot"
+            ]
+         },
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               " "
+            ]
+         }
+      }
+   ]
+}

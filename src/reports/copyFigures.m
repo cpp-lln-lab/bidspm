@@ -19,12 +19,12 @@ function copyFigures(BIDS, opt, subLabel)
   imgNb = copyGraphWindownOutput(opt, subLabel, 'realign');
 
   % loop through the figures outputed for unwarp: one per run
-  if  opt.realign.useUnwarp
+  if opt.realign.useUnwarp && ~opt.anatOnly
 
     runs = bids.query(BIDS, 'runs', ...
                       'sub', subLabel, ...
                       'task', opt.taskName, ...
-                      'suffix', 'bold');
+                      'suffix', opt.bidsFilterFile.bold.suffix);
 
     nbRuns = size(runs, 2);
     if nbRuns == 0

@@ -1,12 +1,20 @@
 {
   "Name": "linebisection",
+  "BIDSModelVersion": "1.0.0",
   "Description": "contrasts to compute for the line bisection task",
   "Input": {
-    "task": "linebisection"
+    "task": [
+      "linebisection"
+    ]
   },
-  "Steps": [
+  "Nodes": [
     {
-      "Level": "subject",
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
       "Model": {
         "X": [
           "trial_type.Correct_Task",
@@ -14,47 +22,65 @@
           "trial_type.No_Response_Task",
           "trial_type.Response_Control",
           "trial_type.No_Response_Control",
-          "trans_x",
-          "trans_y",
-          "trans_z",
-          "rot_x",
-          "rot_y",
-          "rot_z"
-        ]
+          "trans_?",
+          "rot_?"
+        ],
+        "Type": "glm",
+        "HRF": {
+          "Variables": [
+            "trial_type.Correct_Task",
+            "trial_type.Incorrect_Task",
+            "trial_type.No_Response_Task",
+            "trial_type.Response_Control",
+            "trial_type.No_Response_Control"
+          ],
+          "Model": "spm"
+        }
       },
-      "AutoContrasts": [
-        "trial_type.Correct_Task",
-        "trial_type.Incorrect_Task"
-      ]
-    },
-    {
-      "Level": "run",
-      "Model": {
-        "X": [
+      "DummyContrasts": {
+        "Contrasts": [
           "trial_type.Correct_Task",
           "trial_type.Incorrect_Task",
           "trial_type.No_Response_Task",
           "trial_type.Response_Control",
-          "trial_type.No_Response_Control",
-          "trans_x",
-          "trans_y",
-          "trans_z",
-          "rot_x",
-          "rot_y",
-          "rot_z"
-        ]
-      },
-      "AutoContrasts": [
-        "trial_type.Correct_Task",
-        "trial_type.Incorrect_Task"
-      ]
+          "trial_type.No_Response_Control"
+        ],
+        "Test": "t"
+      }
     },
     {
-      "Level": "dataset",
-      "AutoContrasts": [
-        "trial_type.Correct_Task",
-        "trial_type.Incorrect_Task"
-      ]
+      "Level": "Subject",
+      "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "dataset_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
     }
   ]
 }

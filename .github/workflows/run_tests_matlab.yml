@@ -1,18 +1,22 @@
 name: tests and coverage with matlab
 
 on:
+
   push:
     branches:
       - main
       - dev
+    paths:
+      - '**.m'
   pull_request:
     branches: ["*"]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    paths:
+      - '**.m'
 
 jobs:
+
   build:
+
     runs-on: ubuntu-20.04
 
     steps:
@@ -23,7 +27,7 @@ jobs:
           release: R2020a
 
       - name: Clone cpp_spm
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: true
           fetch-depth: 2
@@ -37,6 +41,10 @@ jobs:
           git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
           git clone https://github.com/MOcov/MOcov.git --depth 1
 
+
+      - name: Copy Macs toolbox to SPM inputs_folder
+        run: cp -rv lib/MACS spm12/toolbox/MACS
+
       - name: Prepare data
         run: |
           cd tests
@@ -45,18 +53,12 @@ jobs:
       - name: Run commands
         uses: matlab-actions/run-command@v1.0.1
         with:
-          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run matlab_workflow_script;
+          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
 
       - name: Run tests
         run: |
           cat test_report.log | grep 0
           bash <(curl -s https://codecov.io/bash)
-
-      - name: Upload coverage
-        uses: actions/upload-artifact@v1
-        with:
-          name: coverage_file
-          path: coverage.xml
 
       - name: Code coverage
         uses: codecov/codecov-action@v1

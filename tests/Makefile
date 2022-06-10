@@ -7,9 +7,9 @@ clean:
 	rm -rf bids-examples
 	mkdir bids-examples && touch bids-examples/.gitkeep
 
-data:
+data: clean
 	sh createDummyDataSet.sh
-	rm -f bids-examples/.gitkeep
+	rm -rf bids-examples/
 	git clone https://github.com/bids-standard/bids-examples.git --depth 1
 	cp bids-examples/synthetic/dataset_description.json bids-examples/synthetic/derivatives/fmriprep
 	touch bids-examples/.gitkeep

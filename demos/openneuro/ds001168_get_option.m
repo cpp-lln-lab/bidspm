@@ -11,16 +11,18 @@ function opt = ds001168_get_option()
   end
 
   % The directory where the data are located
-  opt.dataDir = '/home/remi/openneuro/ds001168/raw';
+  opt.dir.raw = '/home/remi/openneuro/ds001168/raw';
 
   % suject to run in each group
   opt.subjects = {'01'};
 
   % task to analyze
+  opt.pipeline.type = 'preproc';
   opt.taskName = 'rest';
 
-  opt.anatReference.type = 'T1w';
-  opt.anatReference.session = '1';
+  opt.query.modality = {'anat', 'func', 'fmap'};
+
+  opt.bidsFilterFile.t1w.ses = '1';
 
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp

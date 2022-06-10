@@ -1,0 +1,46 @@
+{
+  "Name": "auditory-denoised",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "GLM to only remove motion effect and contant from the data to denoise them",
+  "Input": {
+    "task": [
+      "auditory"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          "trans_?",
+          "rot_?"
+        ],
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": {
+            "suffix": [
+               "mask"
+            ],
+            "desc": [
+               "brain"
+            ]
+         }
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "AR(1)"
+          }
+        }
+      }
+    }
+  ]
+}

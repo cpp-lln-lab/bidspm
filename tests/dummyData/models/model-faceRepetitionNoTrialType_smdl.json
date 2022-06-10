@@ -1,0 +1,44 @@
+{
+   "Name": "FaceRepetitionBefore",
+   "BIDSModelVersion": "1.0.0",
+   "Description": "model for FaceRepetitionBefore with inputs from non trial_type column",
+   "Input": {
+      "task": [
+         "FaceRepetitionBefore"
+      ]
+   },
+   "Nodes": [
+      {
+         "Level": "Run",
+         "Name": "run_level",
+         "GroupBy": [
+            "run",
+            "subject"
+         ],
+         "Model": {
+            "Type": "glm",
+            "X": [
+               "face_type.famous",
+               "face_type.unfamiliar",
+               "trans_?",
+               "rot_?"
+            ],
+            "HRF": {
+               "Variables": [
+                  "face_type.famous",
+                  "face_type.unfamiliar"
+               ],
+               "Model": "spm"
+            },
+            "Options": {
+               "HighPassFilterCutoffHz": 0.008
+            },
+            "Software": {
+               "SPM": {
+                  "SerialCorrelation": "FAST"
+               }
+            }
+         }
+      }
+   ]
+}

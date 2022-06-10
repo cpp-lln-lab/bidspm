@@ -20,9 +20,7 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
   % At the moment the VDM is created based on the characteristics of the last
   % func file in the IntendedFor field
   %
-  % .. TODO:
-  %
-  %    - if there are several func file for this fmap and they have different
+  % .. TODO if there are several func file for this fmap and they have different
   %    characteristic this may require creating a VDM for each
   %
   % (C) Copyright 2020 CPP_SPM developers
@@ -30,25 +28,27 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
   for  iFile = 1:size(fmapMetadata.IntendedFor)
 
     if iscell(fmapMetadata.IntendedFor)
-      filename = fmapMetadata.IntendedFor{iFile};
+      funcFile = fmapMetadata.IntendedFor{iFile};
     else
-      filename = fmapMetadata.IntendedFor(iFile, :);
+      funcFile = fmapMetadata.IntendedFor(iFile, :);
     end
-    filename = spm_file(filename, 'filename');
+    funcFile = spm_file(funcFile, 'filename');
 
-    fragments = bids.internal.parse_filename(filename);
+    funcFile = bids.File(funcFile);
 
-    if ~isfield(fragments, 'acq')
-      fragments.acq = '';
+    filter.modality = 'func';
+    filter.suffix = funcFile.suffix;
+    filter.sub = regexify(funcFile.entities.sub);
+    filter.ses = funcFile.entities.ses;
+    filter.run = funcFile.entities.run;
+    filter.extension = '.nii';
+    filter.space = '';
+
+    if ~isfield(funcFile.entities, 'acq')
+      filter.acq = '';
     end
 
-    funcMetadata = bids.query(BIDS, 'metadata', ...
-                              'modality', 'func', ...
-                              'suffix', fragments.suffix, ...
-                              'sub', fragments.sub, ...
-                              'ses', fragments.ses, ...
-                              'run', fragments.run, ...
-                              'acq', fragments.acq);
+    funcMetadata = bids.query(BIDS, 'metadata', filter);
 
   end
 
@@ -58,11 +58,9 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
   %   totalReadoutTime = 63;
 
   if isempty(totalReadoutTime)
-    errorStruct.identifier = 'getMetadataForVDM:emptyReadoutTime';
-    errorStruct.message = [ ...
-                           'Voxel displacement map creation requires a non empty value' ...
-                           'for the TotalReadoutTime of the bold sequence they are matched to.'];
-    error(errorStruct);
+    msg = ['Voxel displacement map creation requires a non empty value' ...
+           'for the TotalReadoutTime of the bold sequence they are matched to.'];
+    errorHandling(mfilename(), 'emptyReadoutTime', msg, false);
   end
 
   blipDir = getBlipDirection(funcMetadata);

@@ -1,57 +1,71 @@
 {
   "Name": "auditory",
-  "Description": "contrasts to compute for the FIL MoAE dataset",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "GLM and contrasts to compute for the FIL MoAE dataset",
   "Input": {
-    "task": "auditory"
+    "task": [
+      "auditory"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
   },
-  "Steps": [
+  "Nodes": [
     {
-      "Level": "dataset",
-      "AutoContrasts": []
-    },
-    {
-      "Level": "subject",
-      "AutoContrasts": ["trial_type.listening"],
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          "trial_type.listening",
+          "trans_?",
+          "rot_?"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.listening"
+          ],
+          "Model": "spm"
+        },
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": {
+            "suffix": [
+              "mask"
+            ],
+            "desc": [
+              "brain"
+            ]
+          }
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "AR(1)"
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.listening"
+        ]
+      },
       "Contrasts": [
         {
           "Name": "listening_inf_baseline",
           "ConditionList": [
             "trial_type.listening"
           ],
-          "weights": [-1],
-          "type": "t"
+          "Weights": [
+            -1
+          ],
+          "Test": "t"
         }
       ]
-    },
-    {
-      "Level": "run",
-      "Transformations": [
-        {
-          "Name": "Factor",
-          "Inputs": ["trial_type"]
-        },
-        {
-          "Name": "Convolve",
-          "Model": "spm",
-          "Inputs": ["trial_type.listening"]
-        }
-      ],
-      "Model": {
-        "X": [
-          "trial_type.listening",
-          "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"
-        ],
-        "Options": {
-          "high_pass_filter_cutoff_secs": 128
-        },
-        "Software": {
-          "SPM": {
-            "whitening": "AR(1)"
-          }
-        },
-        "Mask": ""
-      },
-      "AutoContrasts": ["trial_type.listening"]
     }
   ]
 }

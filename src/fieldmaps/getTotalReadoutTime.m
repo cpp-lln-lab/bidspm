@@ -1,6 +1,7 @@
 function totalReadoutTime = getTotalReadoutTime(metadata)
   %
   % Gets the total read out time of a sequence.
+  % Used to create the voxel dsiplacement map (VDM) from the fieldmap
   %
   % USAGE::
   %
@@ -11,7 +12,11 @@ function totalReadoutTime = getTotalReadoutTime(metadata)
   %
   % :returns: - :totalReadoutTime: (float) in millisecond
   %
-  % Used to create the voxel dsiplacement map (VDM) from the fieldmap
+  % Currently this relies on the user adding extra metadata in the json of the
+  % functional files as the metadata queried are not "official" BIDS metadata
+  % but can usuall be found in the DICOM headers (for example:
+  % ``PixelBandwidth``)
+  %
   %
   % (C) Copyright 2020 CPP_SPM developers
 
@@ -21,20 +26,18 @@ function totalReadoutTime = getTotalReadoutTime(metadata)
   if isfield(metadata, 'TotalReadoutTime') && ~isempty(metadata.TotalReadoutTime)
     totalReadoutTime = metadata.TotalReadoutTime;
 
-    % TODO
-    % double check this section
+    % TODO double check this section
     % this was in spmup but I don't remember where I got this from
-    %
-    %   % from spmup: apparently this comes from the fmap metadata
-    %   %  but PixelBandwidth is not is not a valid BIDS term
-    %   elseif isfield(metadata, 'PixelBandwidth') && ~isempty(metadata.PixelBandwidth)
-    %     totalReadoutTime = 1 / fieldmap_param.PixelBandwidth * 1000;
-    %     warning('PixelBandwidth is not a valid BIDS term.');
-    %
+
+    % from spmup: apparently this comes from the fmap metadata
+    %  but PixelBandwidth is not is not a valid BIDS term
+  elseif isfield(metadata, 'PixelBandwidth') && ~isempty(metadata.PixelBandwidth)
+    totalReadoutTime = 1 / metadata.PixelBandwidth * 1000;
+
     %   % apparently this comes from the functional metadata ???
     %   elseif isfield(metadata, 'RepetitionTime') && ~isempty(metadata.RepetitionTime)
     %     totalReadoutTime = metadata.RepetitionTime;
-    %
+
     %   % apparently this comes from the functional metadata ???
     %   elseif isfield(metadata, 'EffectiveEchoSpacing') && ~isempty(metadata.NumberOfEchos)
     %     totalReadoutTime = (metadata.NumberOfEchos - 1) * ...

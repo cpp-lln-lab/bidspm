@@ -1,8 +1,95 @@
 {
-  "Name": "nback MVPA",
-  "Description": "for folder naming",
+  "Name": "nback",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "For folder naming.",
   "Input": {
-    "task": "nback"
-  }
+    "task": [
+      "nback"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          "nback"
+        ],
+        "Type": "glm",
+        "HRF": {
+          "Variables": [
+            ""
+          ],
+          "Model": "spm"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        }
+      },
+      "Contrasts": [
+        {
+          "Name": "nback",
+          "ConditionList": [
+            ""
+          ],
+          "Weights": [
+            ""
+          ],
+          "Test": "t"
+        }
+      ],
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          ""
+        ]
+      }
+    },
+    {
+      "Level": "Subject",
+      "Name": "run",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "nback MVPA",
+      "Description": "use the name of the dataset level for naming folders",
+      "GroupBy": [
+        "contrast"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    }
+  ]
 }
-  

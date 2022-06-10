@@ -1,0 +1,62 @@
+## Pre processing
+
+The (f)MRI data were pre-processed with {{>computing_environment}}.
+
+{{! TODO anat only}}
+{{! TODO voxel displacement maps}}
+{{! TODO mention which task were processed}}
+
+The preprocessing of the functional images was performed in the following order:
+{{#dummy_scans}}- removing of dummy scans
+{{/dummy_scans}}
+{{#stc}}- slice timing correction
+{{/stc}}
+- realignment{{#unwarp}} and unwarping{{/unwarp}}
+
+- segmentation{{#skullstrip}} and skullstripping
+{{/skullstrip}}
+{{#normalization}}- normalization MNI space
+{{/normalization}}
+{{#smoothing}}- smoothing
+{{/smoothing}}
+
+{{>remove_dummies}}
+{{>slice_timing}}
+Functional scans from each participant were realigned {{#unwarp}}and unwarped {{/unwarp}}
+using the mean image as a reference
+(SPM single pass; number of degrees of freedom: 6 ;
+cost function: least square) (Friston et al, 1995).
+
+The anatomical image was bias field corrected.
+The bias field corrected image was segmented {{#normalization}}and normalized to
+MNI space
+{{! TODO get target resolution from script}}
+(target space: IXI549Space;
+target resolution: 1 mm;
+interpolation: 4th degree b-spline)
+{{/normalization}}using a unified segmentation.
+
+{{#skullstrip}}{{>skullstripping}}
+{{/skullstrip}}
+
+The mean functional image obtained from realignement was co-registered to the
+bias corrected anatomical image
+(number of degrees of freedom: 6 ;
+cost function: normalized mutual information)
+(Friston et al, 1995).
+The transformation matrix from this coregistration was applied to all the functional images.
+
+{{#normalization}}
+{{! TODO get target resolution from script}}
+The deformation field obtained from the segmentation was applied to all the functional images
+(target space: IXI549Space;
+target resolution: equal to that used at acquisition;
+interpolation: 4th degree b-spline).
+{{/normalization}}
+
+{{#smoothing}}
+Preprocessed functional images were spatially smoothed using a 3D
+gaussian kernel (FWHM = {{fwhm.func}} mm).
+{{/smoothing}}
+
+{{>credits}}

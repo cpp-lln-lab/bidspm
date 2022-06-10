@@ -12,8 +12,10 @@ function structure = setFields(structure, fieldsToSet, overwrite)
   %
   % :param structure:
   % :type structure:
+  %
   % :param fieldsToSet:
   % :type fieldsToSet: string
+  %
   % :param overwrite:
   % :type overwrite: boolean
   %
@@ -22,7 +24,7 @@ function structure = setFields(structure, fieldsToSet, overwrite)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  if isempty(fieldsToSet)
+  if isempty(fieldsToSet) || ~isstruct(fieldsToSet)
     return
   end
 

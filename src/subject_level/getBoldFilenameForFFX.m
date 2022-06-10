@@ -1,46 +1,59 @@
-function [boldFileName, prefix] = getBoldFilenameForFFX(varargin)
+function boldFilename = getBoldFilenameForFFX(varargin)
   %
   % Gets the filename for this bold run for this task for the FFX setup
   % and check that the file with the right prefix exist
   %
   % USAGE::
   %
-  %   [boldFileName, prefix] = getBoldFilenameForFFX(BIDS, opt, subID, funcFWHM, iSes, iRun)
+  %   boldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun)
   %
   % :param BIDS:
   % :type BIDS: structure
   % :param opt:
   % :type opt: structure
-  % :param subID:
-  % :type subID: string
-  % :param funcFWHM:
-  % :type funcFWHM: scalar
+  % :param subLabel:
+  % :type subLabel: string
   % :param iSes:
   % :type iSes: integer
   % :param iRun:
   % :type iRun: integer
   %
-  % :returns: - :boldFileName: (string)
-  %           - :prefix: (srting)
+  % :returns: - :boldFilename: (string)
   %
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  [BIDS, opt, subID, funcFWHM, iSes, iRun] =  deal(varargin{:});
+  [BIDS, opt, subLabel, iSes, iRun] =  deal(varargin{:});
 
-  sessions = getInfo(BIDS, subID, opt, 'Sessions');
+  [filter, opt] = fileFilterForBold(opt, subLabel);
 
-  runs = getInfo(BIDS, subID, opt, 'Runs', sessions{iSes});
+  sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
+  filter.ses = sessions{iSes};
 
-  prefix = getPrefix('FFX', opt, funcFWHM);
+  runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
+  filter.run = runs{iRun};
 
-  [fileName, subFuncDataDir] = getBoldFilename( ...
-                                               BIDS, ...
-                                               subID, sessions{iSes}, runs{iRun}, opt);
+  boldFilename = bids.query(BIDS, 'data', filter);
 
-  boldFileName = validationInputFile( ...
-                                     subFuncDataDir, ...
-                                     fileName, ...
-                                     prefix);
+  if numel(boldFilename) > 1
+    disp(boldFilename);
+    errorHandling(mfilename(), 'tooManyFiles', 'This should only get one file.', false, true);
+  elseif isempty(boldFilename)
+    msg = sprintf('No bold file found in:\n\t%s\nfor query:%s\n', ...
+                  BIDS.pth, ...
+                  createUnorderedList(opt.query));
+    errorHandling(mfilename(), 'noFileFound', msg, false, true);
+  end
+
+  % in case files have been unzipped, we do it now
+  fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename{1}, opt);
+
+  printToScreen('\n  Bold file(s):', opt);
+  printToScreen(createUnorderedList(fullPathBoldFilename), opt);
+
+  boldFilename = spm_file(fullPathBoldFilename, 'filename');
+  subFuncDataDir = spm_file(fullPathBoldFilename, 'path');
+
+  boldFilename = fullfile(subFuncDataDir, boldFilename);
 
 end

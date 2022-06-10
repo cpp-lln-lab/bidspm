@@ -2,6 +2,10 @@ function anatomicalQA(opt)
   %
   % Computes several metrics for anatomical image.
   %
+  % Is run as part of:
+  %
+  % - ``bidsSpatialPrepro``
+  %
   % USAGE::
   %
   %   anatomicalQA(opt)
@@ -11,47 +15,60 @@ function anatomicalQA(opt)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  if ~opt.QA.anat.do
+    return
+  end
+
   if isOctave()
     warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.');
     return
   end
 
-  % if input has no opt, load the opt.mat file
-  if nargin < 1
-    opt = [];
-  end
-  opt = loadAndCheckOptions(opt);
+  opt.dir.input = opt.dir.preproc;
 
-  [BIDS, opt] = getData(opt);
-
-  fprintf(1, ' ANATOMICAL: QUALITY CONTROL\n\n');
+  [BIDS, opt] = setUpWorkflow(opt, 'quality control: anatomical');
 
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub}; %#ok<*PFBNS>
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
+    % TODO get bias corrected image ?
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
+    anatImage = fullfile(anatDataDir, anatImage);
 
-    % get grey and white matter tissue probability maps
-    TPMs = validationInputFile(anatDataDir, anatImage, 'c[12]');
+    [gm, wm] = getTpmFilename(BIDS, anatImage);
 
     % sanity check that all images are in the same space.
-    anatImage = fullfile(anatDataDir, anatImage);
-    volumesToCheck = {anatImage; TPMs(1, :); TPMs(2, :)};
+    volumesToCheck = {anatImage; gm; wm};
     spm_check_orientations(spm_vol(char(volumesToCheck)));
 
     % Basic QA for anatomical data is to get SNR, CNR, FBER and Entropy
     % This is useful to check coregistration worked fine
-    anatQA = spmup_anatQA(anatImage, TPMs(1, :), TPMs(2, :)); %#ok<*NASGU>
+    anatQA = spmup_anatQA(anatImage, gm,  wm); %#ok<*NASGU>
 
-    anatQA.avgDistToSurf = spmup_comp_dist2surf(anatImage);
+    anatQA.avgDistToSurf = getDist2surf(anatImage, opt);
 
-    spm_jsonwrite( ...
-                  strrep(anatImage, '.nii', '_qa.json'), ...
-                  anatQA, ...
-                  struct('indent', '   '));
+    %% rename output to make it BIDS friendly
+    outputDir = fullfile(anatDataDir, '..', 'reports');
+    spm_mkdir(outputDir);
+
+    bf = bids.File(anatImage);
+    bf.entities.label = bf.suffix;
+
+    bf.suffix = 'qametrics';
+    bf.extension = '.json';
+
+    bids.util.jsonwrite(fullfile(outputDir, bf.filename), anatQA);
+
+    bf.suffix = 'qa';
+    bf.extension = '.png';
+
+    movefile(fullfile(pwd, 'spmup_QC-Brain Mask_001.png'), ...
+             fullfile(outputDir,  bf.filename));
+
+    delete(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
 
   end
 

@@ -1,23 +1,40 @@
-function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
+function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
-  % Converts an events.tsv file to an onset file suitable for SPM subject level
-  % analysis.
-  %
-  % The function extracts from the events.tsv file the trials (with type, onsets, and durations)
-  % of th conditions of interest as requested in the model.json.
-  % It then stores them in a .mat file that can be fed directly in an SPM GLM
-  % batch.
+  % Converts an events.tsv file to an onset file suitable for SPM subject level analysis.
   %
   % USAGE::
   %
-  %   fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
+  %   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   % :param opt:
   % :type opt: structure
+  %
   % :param tsvFile:
   % :type tsvFile: string
   %
-  % :returns: :fullpathOnsetFileName: (string) name of the output ``.mat`` file.
+  % Use a BIDS stats model specified in a JSON file to:
+  %
+  % - loads events.tsv and apply the Node.Transformations to its content
+  %
+  % - extract the trials (onsets, durations)
+  %   of the conditions that should be convolved
+  %   as requested from Node.HRF.Variables field
+  %
+  % It then stores them in in a .mat file
+  % that can be fed directly in an SPM GLM batch as 'Multiple conditions'
+  %
+  % Parametric modulation can be specified via columns in the TSV
+  % file starting with ``pmod_``.
+  % These columns can be created via the use of Node.Transformations.
+  % Only polynomial 1 are supported.
+  % More complex modulation should be precomputed via the Transformations.
+  %
+  % if ``opt.glm.useDummyRegressor`` is set to ``true``, any missing condition
+  % will be replaced by a DummyRegressor.
+  %
+  % :returns: :fullpathOnsetFilename: (string) name of the output ``.mat`` file.
+  %
+  % See also: createAndReturnOnsetFile, bids.transformers
   %
   % (C) Copyright 2019 CPP_SPM developers
 
@@ -25,106 +42,160 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   [pth, file, ext] = spm_fileparts(tsvFile);
   tsvFile = validationInputFile(pth, [file, ext]);
 
-  % Read the tsv file
-  fprintf(' Reading the tsv file : %s \n', tsvFile);
-  t = spm_load(tsvFile);
+  tsvContent = bids.util.tsvread(tsvFile);
 
-  if ~all(isnumeric(t.onset))
+  if ~all(isnumeric(tsvContent.onset))
 
-    errorStruct.identifier = 'convertOnsetTsvToMat:onsetsNotNumeric';
-    errorStruct.message = sprintf('%s\n%s', ...
-                                  'Onset column contains non numeric values in this file:', ...
-                                  tsvFile);
-    error(errorStruct);
+    errorID = 'onsetsNotNumeric';
+    msg = sprintf('%s\n%s', 'Onset column contains non numeric values in file:', tsvFile);
+    errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
 
   end
 
-  if ~all(isnumeric(t.duration))
+  if ~all(isnumeric(tsvContent.duration))
 
-    errorStruct.identifier = 'convertOnsetTsvToMat:durationsNotNumeric';
-    errorStruct.message = sprintf('%s\n%s', ...
-                                  'Duration column contains non numeric values in this file:', ...
-                                  tsvFile);
-    error(errorStruct);
+    errorID = 'durationsNotNumeric';
+    msg = sprintf('%s\n%s', 'Duration column contains non numeric values in file:', tsvFile);
+    errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
 
   end
 
-  if ~isfield(t, 'trial_type')
-
-    errorStruct.identifier = 'convertOnsetTsvToMat:noTrialType';
-    errorStruct.message = sprintf('%s\n%s', ...
-                                  'There was no trial_type field in this file:', ...
-                                  tsvFile);
-    error(errorStruct);
-
-  end
-
-  % assign all the tsv information to a variable called conds.
-  conds = t.trial_type;
-
-  % identify where the conditions to include that are specificed
-  % in the run step of the model file
-  model = spm_jsonread(opt.model.file);
-
-  for runIdx = 1:numel(model.Steps)
-    step = model.Steps(runIdx);
-    if iscell(step)
-      step = step{1};
-    end
-    if strcmp(step.Level, 'run')
-      break
-    end
-  end
-
-  isTrialType = strfind(step.Model.X, 'trial_type.');
+  variablesToConvolve = opt.model.bm.getVariablesToConvolve();
+  designMatrix = opt.model.bm.getBidsDesignMatrix();
+  designMatrix = removeIntercept(designMatrix);
 
   % create empty cell to be filled in according to the conditions present in each run
   names = {};
   onsets = {};
   durations = {};
+  pmod = struct('name', {''}, 'param', {}, 'poly', {});
 
-  % for each condition
-  for iCond = 1:numel(isTrialType)
+  if ~isfield(opt.model, 'bm')
+    opt.model.bm = BidsModel('file', opt.model.file);
+  end
+  % TODO get / apply transformers from a specific node
+  transformers = opt.model.bm.getBidsTransformers();
+  tsvContent = bids.transformers(transformers, tsvContent);
 
-    if isTrialType{iCond}
+  conditionIdx = 1;
 
-      conditionName = strrep(step.Model.X{iCond}, ...
-                             'trial_type.', ...
-                             '');
+  for iCond = 1:numel(variablesToConvolve)
 
-      % Get the index of each condition by comparing the unique names and
-      % each line in the tsv files
-      idx = find(strcmp(conditionName, conds));
+    trialTypeNotFound = false; % should be dead code by now
+    variableNotFound = false;
+    extra = '';
 
-      fprintf('  Condition %s: %i trials found.\n', conditionName, numel(idx));
+    % first assume the input is from events.tsv
+    tokens = regexp(variablesToConvolve{iCond}, '\.', 'split');
 
-      if ~isempty(idx)
-        % Get the onset and duration of each condition
-        names{1, end + 1} = conditionName;
-        onsets{1, end + 1} = t.onset(idx)'; %#ok<*AGROW,*NASGU>
-        durations{1, end + 1} = t.duration(idx)';
+    % if the variable is present in namespace
+    if ismember(tokens{1}, fieldnames(tsvContent))
+
+      trialTypes = tsvContent.(tokens{1});
+      conditionName = strjoin(tokens(2:end), '.');
+
+      rows = find(strcmp(conditionName, trialTypes));
+
+      printToScreen(sprintf('   Condition %s: %i trials found.\n', ...
+                            conditionName, ...
+                            numel(rows)), ...
+                    opt);
+
+      if ~isempty(rows)
+
+        if ~ismember(variablesToConvolve{iCond}, designMatrix)
+          continue
+        end
+
+        names{1, conditionIdx} = conditionName;
+        onsets{1, conditionIdx} = tsvContent.onset(rows)'; %#ok<*AGROW,*NASGU>
+        durations{1, conditionIdx} = tsvContent.duration(rows)';
+        pmod = parametricModulation(pmod, tsvContent, rows, conditionIdx);
+
+        conditionIdx = conditionIdx + 1;
 
       else
-        warning('No trial found for trial type %s in \n%s', conditionName, tsvFile);
+
+        trialTypeNotFound = true;
+        errorID = 'trialTypeNotFound';
+        input1 = 'Trial type';
 
       end
 
+    else
+
+      variableNotFound = true;
+      errorID = 'variableNotFound';
+      input1 = 'Variable';
+
     end
+
+    if variableNotFound || trialTypeNotFound
+
+      if opt.glm.useDummyRegressor
+        [names, onsets, durations] = addDummyRegressor(names, onsets, durations);
+        extra = 'Adding dummy regressor instead.';
+        conditionIdx = conditionIdx + 1;
+      end
+
+      msg = sprintf('%s %s not found in \n %s\n %s', ...
+                    input1, ...
+                    variablesToConvolve{iCond}, ...
+                    tsvFile, ...
+                    extra);
+
+      errorHandling(mfilename(), errorID, msg, true, opt.verbosity);
+
+    end
+
   end
 
-  % save the onsets as a matfile
+  %% save the onsets as a matfile
   [pth, file] = spm_fileparts(tsvFile);
 
-  p = bids.internal.parse_filename(file);
-  p.entities.space = opt.space;
-  p.use_schema = false;
-  p.suffix = 'onsets';
-  p.ext = '.mat';
+  bf = bids.File(file);
+  bf.suffix = 'onsets';
+  bf.extension = '.mat';
 
-  fullpathOnsetFileName = fullfile(pth, bids.create_filename(p));
+  fullpathOnsetFilename = fullfile(pth, bf.filename);
 
-  save(fullpathOnsetFileName, ...
-       'names', 'onsets', 'durations', ...
+  save(fullpathOnsetFilename, ...
+       'names', 'onsets', 'durations', 'pmod', ...
        '-v7');
+
+end
+
+function pmod = parametricModulation(pmod, tsvContent, rows, conditionIdx)
+  % parametric modulation (pmod)
+  %
+  % skipped if parametric modulation is 1 for all onsets
+  %
+  % coerces NaNs into 1
+
+  fields = fieldnames(tsvContent);
+  pmodIdx = ~cellfun('isempty', regexp(fields, '^pmod_.*', 'match'));
+  pmodIdx = find(pmodIdx);
+
+  for iMod = 1:numel(pmodIdx)
+
+    thisMod = fields{pmodIdx(iMod)};
+
+    amplitude = tsvContent.(thisMod)(rows);
+    amplitude(isnan(amplitude)) = 1;
+
+    if ~all(amplitude == 1)
+      pmod(1, conditionIdx).name{iMod}  = strrep(thisMod, 'pmod_', '');
+      pmod(end).param{iMod} = amplitude;
+      pmod(end).poly{iMod}  = 1;
+    end
+
+  end
+end
+
+function [names, onsets, durations] = addDummyRegressor(names, onsets, durations)
+
+  names{1, end + 1} = 'dummyRegressor';
+  onsets{1, end + 1} = nan;
+  durations{1, end + 1} = nan;
 
 end

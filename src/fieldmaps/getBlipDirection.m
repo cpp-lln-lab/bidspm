@@ -24,10 +24,14 @@ function blipDir = getBlipDirection(metadata)
 
       case {'i', 'j', 'y'}
         blipDir = 1;
+
       case {'i-', 'j-', 'y-'}
         blipDir = -1;
+
       otherwise
-        error('unknown phase encoding direction: %s', metadata.PhaseEncodingDirection);
+        msg = sprintf('unknown phase encoding direction: %s', metadata.PhaseEncodingDirection);
+        id = 'unknownPhaseEncodingDirection';
+        errorHandling(mfilename(), id, msg, false);
 
     end
 

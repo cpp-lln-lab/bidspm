@@ -1,4 +1,4 @@
-function matlabbatch = setBatchPrintFigure(matlabbatch, figureName)
+function matlabbatch = setBatchPrintFigure(matlabbatch, opt, figureName)
   %
   % template to creae new setBatch functions
   %
@@ -17,11 +17,11 @@ function matlabbatch = setBatchPrintFigure(matlabbatch, figureName)
 
   if spm('CmdLine', true)
 
-    printBatchName('print figure');
+    printBatchName('print figure', opt);
 
     matlabbatch{end + 1}.spm.util.print.fname = figureName;
-    matlabbatch{1}.spm.util.print.fig.figname = 'Graphics';
-    matlabbatch{1}.spm.util.print.opts = 'png';
+    matlabbatch{end}.spm.util.print.fig.figname = 'Graphics';
+    matlabbatch{end}.spm.util.print.opts = 'png';
 
   end
 

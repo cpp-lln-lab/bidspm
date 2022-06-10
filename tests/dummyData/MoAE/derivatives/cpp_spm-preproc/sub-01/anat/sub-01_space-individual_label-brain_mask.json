@@ -1,0 +1,14 @@
+{
+  "Description": "mask used for skullstripping values with\"p(GM) + p(WM) + p(CSF) > 0.750000",
+  "Sources": ["sub-01/sub-01_T1w.nii"],
+  "RawSources": [
+    ["REQUIRED"]
+  ],
+  "SpatialReference": ["scanner space"],
+  "Atlas": [
+    ["OPTIONAL"]
+  ],
+  "Type": [
+    ["OPTIONAL"]
+  ]
+}

@@ -1,16 +1,51 @@
 {
   "Name": "vismotion",
+  "BIDSModelVersion": "1.0.0",
   "Description": "This model only has simple contrasts for MVPA",
   "Input": {
-    "task": "vismotion"
+    "task": [
+      "vismotion"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
   },
-  "Steps": [
+  "Nodes": [
     {
-      "Level": "subject",
-      "AutoContrasts": [
-        "trial_type.VisMot",
-        "trial_type.VisStat"
-      ]
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          "trans_?",
+          "rot_?"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.foo"
+          ],
+          "Model": "spm"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST"
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.VisMot",
+          "trial_type.VisStat"
+        ]
+      }
     }
   ]
 }

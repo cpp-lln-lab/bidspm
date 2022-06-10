@@ -1,0 +1,9 @@
+set_p	set_c	cluster_p_FWE_corr_	cluster_p_FDR_corr_	cluster_equivk	cluster_p_unc_	peak_p_FWE_corr_	peak_p_FDR_corr_	peak_T	peak_equivZ	peak_p_unc_	x	y	z	neuromorphometric_label
+0.000	4	0.000	0.000	218	0.000	0.000	0.000	12.15	Inf	0.000	57	-22	11	Right PT planum temporale
+n/a	n/a	n/a	n/a	n/a	n/a	0.000	0.000	11.38	Inf	0.000	66	-13	-4	Right STG superior temporal gyrus
+n/a	n/a	n/a	n/a	n/a	n/a	0.000	0.003	7.02	6.05	0.000	60	-37	5	Right MTG middle temporal gyrus
+n/a	n/a	0.000	0.000	401	0.000	0.000	0.000	12.11	Inf	0.000	-63	-28	11	Left PT planum temporale
+n/a	n/a	n/a	n/a	n/a	n/a	0.000	0.000	11.31	Inf	0.000	-45	-34	11	Left PT planum temporale
+n/a	n/a	n/a	n/a	n/a	n/a	0.000	0.000	10.10	7.84	0.000	-66	-10	-1	Left STG superior temporal gyrus
+n/a	n/a	0.001	0.016	5	0.012	0.005	0.161	5.86	5.24	0.000	69	-25	-4	Right MTG middle temporal gyrus
+n/a	n/a	0.015	0.219	1	0.219	0.032	0.684	5.40	4.90	0.000	51	5	-7	Right PP planum polare

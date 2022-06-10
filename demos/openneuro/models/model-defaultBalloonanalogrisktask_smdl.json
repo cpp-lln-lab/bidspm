@@ -1,104 +1,92 @@
 {
-   "Name": "balloonanalogrisktask",
-   "Description": "default model for balloonanalogrisktask",
-   "Input": {
-      "task": "balloonanalogrisktask"
-   },
-   "Steps": [
-      {
-         "Level": "subject",
-         "Transformations": [
-            {
-               "Name": "Factor",
-               "Inputs": ["trial_type"]
-            },
-            {
-               "Name": "Convolve",
-               "Model": "spm",
-               "Inputs": [" "]
-            }
-         ],
-         "Model": {
-            "X": [
-               "trial_type.cash_demean",
-               "trial_type.control_pumps_demean",
-               "trial_type.explode_demean",
-               "trial_type.pumps_demean",
-               "trans_x",
-               "trans_y",
-               "trans_z",
-               "rot_x",
-               "rot_y",
-               "rot_z"
-            ],
-            "Options": {
-               "high_pass_filter_cutoff_secs": 128
-            },
-            "Software": {
-               "SPM": {
-                  "whitening": "FAST"
-               }
-            },
-            "Mask": " "
-         },
-         "AutoContrasts": [
+  "Name": "balloonanalogrisktask",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "default model for balloonanalogrisktask",
+  "Input": {
+    "task": [
+      "balloonanalogrisktask"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          "trial_type.cash_demean",
+          "trial_type.control_pumps_demean",
+          "trial_type.explode_demean",
+          "trial_type.pumps_demean",
+          "trans_?",
+          "rot_?",
+          "non_steady_state_outlier*",
+          "motion_outlier*"
+        ],
+        "HRF": {
+          "Variables": [
             "trial_type.cash_demean",
             "trial_type.control_pumps_demean",
             "trial_type.explode_demean",
             "trial_type.pumps_demean"
-         ]
+          ],
+          "Model": "spm + derivative"
+        },
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST"
+          }
+        }
       },
-      {
-         "Level": "run",
-         "Transformations": [
-            {
-               "Name": "Factor",
-               "Inputs": ["trial_type"]
-            },
-            {
-               "Name": "Convolve",
-               "Model": "spm",
-               "Inputs": [" "]
-            }
-         ],
-         "Model": {
-            "X": [
-               "trial_type.cash_demean",
-               "trial_type.control_pumps_demean",
-               "trial_type.explode_demean",
-               "trial_type.pumps_demean",
-               "trans_x",
-               "trans_y",
-               "trans_z",
-               "rot_x",
-               "rot_y",
-               "rot_z"
-            ],
-            "Options": {
-               "high_pass_filter_cutoff_secs": 128
-            },
-            "Software": {
-               "SPM": {
-                  "whitening": "FAST"
-               }
-            },
-            "Mask": " "
-         },
-         "AutoContrasts": [
-            "trial_type.cash_demean",
-            "trial_type.control_pumps_demean",
-            "trial_type.explode_demean",
-            "trial_type.pumps_demean"
-         ]
-      },
-      {
-         "Level": "dataset",
-         "AutoContrasts": [
-            "trial_type.cash_demean",
-            "trial_type.control_pumps_demean",
-            "trial_type.explode_demean",
-            "trial_type.pumps_demean"
-         ]
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.cash_demean",
+          "trial_type.control_pumps_demean",
+          "trial_type.explode_demean",
+          "trial_type.pumps_demean"
+        ]
       }
-   ]
+    },
+    {
+      "Level": "Subject",
+      "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "dataset_level",
+      "GroupBy": [
+        "contrast"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    }
+  ]
 }

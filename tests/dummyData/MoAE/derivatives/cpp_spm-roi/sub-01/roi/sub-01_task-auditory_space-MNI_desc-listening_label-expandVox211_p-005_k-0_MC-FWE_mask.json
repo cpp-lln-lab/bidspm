@@ -1,0 +1,18 @@
+{
+  "Description": "RECOMMENDED",
+  "Sources": [
+    ["OPTIONAL"]
+  ],
+  "RawSources": [
+    ["REQUIRED"]
+  ],
+  "SpatialReference": [
+    ["REQUIRED if no space entityor if non standard space RECOMMENDED otherwise"]
+  ],
+  "Atlas": [
+    ["OPTIONAL"]
+  ],
+  "Type": [
+    ["OPTIONAL"]
+  ]
+}

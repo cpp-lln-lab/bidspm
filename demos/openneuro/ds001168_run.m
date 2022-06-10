@@ -5,19 +5,14 @@
 clear;
 clc;
 
-% Smoothing to apply
-FWHM = 6;
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm();
 
-run ../../initCppSpm.m;
-
-%% Set options
 opt = ds001168_get_option();
-
-%% Run batches
 
 reportBIDS(opt);
 
-bidsCopyRawFolder(opt, 1);
+bidsCopyInputFolder(opt);
 
 bidsCreateVDM(opt);
 
@@ -25,13 +20,9 @@ bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
-anatomicalQA(opt);
-bidsResliceTpmToFunc(opt);
-functionalQA(opt);
-
-bidsSmoothing(FWHM, opt);
+bidsSmoothing(opt);
 
 % Not implemented yet
-% bidsFFX('specifyAndEstimate', opt, FWHM);
-% bidsFFX('contrasts', opt, FWHM);
-% bidsResults(opt, FWHM, []);
+% bidsFFX('specifyAndEstimate', opt);
+% bidsFFX('contrasts', opt);
+% bidsResults(opt);

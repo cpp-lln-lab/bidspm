@@ -1,6 +1,21 @@
-Sphinx
-sphinxcontrib-matlabdomain
-sphinxcontrib-napoleon
-sphinx_rtd_theme
-miss_hit==0.9.29
+# linting
+miss_hit==0.9.30
 pre-commit
+
+# octave and binder
+jupyterlab
+octave_kernel
+
+# doc
+Sphinx
+myst-parser
+sphinx_rtd_theme
+sphinx-copybutton
+rstcheck
+sphinxcontrib-matlabdomain
+sphinxcontrib-mermaid
+sphinxcontrib-bibtex
+
+# bids stats model schema
+rich
+bsmschema

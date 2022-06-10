@@ -1,151 +1,162 @@
-<!-- lint disable -->
+<!-- markdown-link-check-disable -->
+
+<!-- .. only:: html -->
 
 [![Documentation Status: stable](https://readthedocs.org/projects/cpp_spm/badge/?version=stable)](https://cpp_spm.readthedocs.io/en/stable/?badge=stable)
-[![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/CPP_SPM/actions)
-![](https://github.com/cpp-lln-lab/CPP_SPM/workflows/CI/badge.svg)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/CPP_SPM/dev)
+[![miss_hit](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit.yml)
+[![tests with octave](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_tests_octave.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_tests_octave.yml)
+[![tests with matlab](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_tests_matlab.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_tests_matlab.yml)
+[![system tests with matlab](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_system_tests_matlab.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_system_tests_matlab.yml)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![codecov](https://codecov.io/gh/cpp-lln-lab/CPP_SPM/branch/master/graph/badge.svg?token=8IoRQtbFUV)](https://codecov.io/gh/cpp-lln-lab/CPP_SPM)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3554331.svg)](https://doi.org/10.5281/zenodo.3554331)
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](https://github.com/cpp-lln-lab/CPP_SPM#contributors)
 
-<!-- lint enable -->
+<!-- markdown-link-check-enable -->
 
 # CPP SPM
 
-This is a set of functions to MRI analysis on a
+This is a Matlab / Octave toolbox to perform MRI data analysis on a
 [BIDS data set](https://bids.neuroimaging.io/) using SPM12.
 
-## Installation
-
-<!-- TODO -->
-
-We strongly recommend using the CPP fMRI analysis template repository (INSERT
-URL) to use CPP_SPM.
-
-Download this repository and unzip the content where you want to install it.
-
-Or clone the repo.
+## Installation and set up
 
 ```bash
 git clone \
     --recurse-submodules \
-    https://github.com/cpp-lln-lab/CPP_SPM.git \
+    https://github.com/cpp-lln-lab/CPP_SPM.git
 ```
 
-Fire up Octave or Matlab and type
+To get the latest version that is on the `dev` branch.
+
+```bash
+git clone \
+    --recurse-submodules \
+    --branch dev \
+    https://github.com/cpp-lln-lab/CPP_SPM.git
+```
+
+To start using CPP_SPM, you just need to initialize it for this MATLAB / Octave
+session with::
 
 ```matlab
-
-cd CPP_SPM
-
-% Th following adds the relevant folders to your path.
-% This needs to be done once per session (your path will not be saved)
-
-initCppSpm
-
+cpp_spm()
 ```
 
 Please see our
-[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
-detailed instructions.
+[documentation](https://cpp-spm.readthedocs.io/en/dev/general_information.html)
+for more info.
 
-### Dependencies
+## Usage
 
-Make sure that the following toolboxes are installed and added to the matlab
-path.
+For some of its functionality cpp_spm has a BIDS app like API.
 
-For instructions see the following links:
+See
+[this page for more information](https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html).
 
-<!-- lint disable -->
+### Preprocessing
 
-| Dependencies                                               | Used version |
-| ---------------------------------------------------------- | ------------ |
-| [Matlab](https://www.mathworks.com/products/matlab.html)   | 20???        |
-| or [octave](https://www.gnu.org/software/octave/)          | 4.?          |
-| [SPM12](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/) | >7219        |
+```matlab
 
-<!-- lint enable -->
+bids_dir = path_to_raw_bids_dataset;
+output_dir = path_to_where_the_output_should_go;
+
+subject_label = '01';
+
+cpp_spm(bids_dir, output_dir, 'subject', ...
+        'participant_label', {subject_label}, ...
+        'action', 'preprocess', ...
+        'task', {'yourTask'})
+```
+
+### GLM
+
+```matlab
+
+bids_dir = path_to_raw_bids_dataset;
+preproc_dir = path_to_preprocessed_dataset;
+output_dir = path_to_where_the_output_should_go;
+model_file = path_to_bids_stats_model_json_file;
+
+subject_label = '01';
+
+cpp_spm(bids_dir, output_dir, 'subject', ...
+        'participant_label', {subject_label}, ...
+        'action', 'stats', ...
+        'preproc_dir', preproc_dir, ...
+        'model_file', model_file)
+```
+
+Please see our
+[documentation](https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html) for
+more info.
 
 ## Features
 
-This can perform:
+### Preprocessing
 
--   slice timing correction,
+If your data is fairly "typical" (for example whole brain coverage functional
+data with one associated anatomical scan for each subject), you might be better
+off running [fmriprep](https://fmriprep.org/en/stable/) on your data.
+
+If you have more exotic data that cannot be handled well by fmriprep then
+CPP_SPM has some automated workflows to perform amongst other things:
+
+-   remove dummies
+
+-   slice timing correction
 
 -   spatial preprocessing:
 
-    -   realignment, coregistration `func` to `anat`, `anat` segmentation,
-        normalization to MNI space
+    -   realignment OR realignm and unwarp
+    -   coregistration `func` to `anat`,
+    -   `anat` segmentation and skull stripping
+    -   (optional) normalization to SPM's MNI space
 
-    -   realignm and unwarp, coregistration `func` to `anat`, `anat`
-        segmentation
+-   smoothing
 
--   smoothing,
+-   fieldmaps processing and voxel displacement map creation (work in progress)
 
--   Quality analysis:
+All (well almost all) preprocessed outputs are saved as BIDS derivatives with BIDS compliant
+filenames.
 
-    -   for anatomical data
-    -   for functional data
+### Statistics
 
--   GLM at the subject level
+The model specification are set up using the
+[BIDS stats model](https://bids-standard.github.io/stats-models/) and can be
+used to perform:
 
--   GLM at the group level à la SPM (meaning using a summary statistics
-    approach).
+-   whole GLM at the subject level
+-   whole brain GLM at the group level à la SPM (meaning using a summary
+    statistics approach).
+-   ROI based GLM (using marsbar)
+-   model selection (with the MACS toolbox)
 
-The core functions are in the `src` folder.
+### Quality control:
+
+-   anatomical data (work in progress)
+-   functional data (work in progress)
+-   GLM auto-correlation check
 
 Please see our
 [documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
 info.
 
-## Octave compatibility
+## Citation
 
-The following features do not yet work with Octave:
-
--   anatomicalQA
--   functionalQA
--   slice_display toolbox
-
-## Contributing
-
-Feel free to open issues to report a bug and ask for improvements.
-
-If you want to contribute, have a look at our
-[contributing guidelines](https://github.com/cpp-lln-lab/.github/blob/main/CONTRIBUTING.md)
-that are meant to guide you and help you get started. If something is not clear
-or you get stuck: it is more likely we did not do good enough a job at
-explaining things. So do not hesitate to open an issue, just to ask for
-clarification.
-
-### Style guidelines
-
-These are some of the guidelines we try to follow.
-
-We use `camelCase` to name functions and variables for the vast majority of the
-code in this repository.
-
-Scripts names in general and as well functions related to the demos use a
-`snake_case`.
-
-Constant are written in `UPPERCASE`.
-
-#### Pre-commit
-
-There is a [pre-commit hook](https://pre-commit.com/) that you can use to
-reformat files as you commit them.
-
-Install pre-commit by using our `requirements.txt` file
-
-```bash
-pip install -r requirements.txt
+```bibtex
+@software{CPP_SPM,
+  author  = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo and Shahzad, Iqra and Nunes, Márcia},
+  license = {GPL-3.0},
+  title   = {CPP SPM},
+  url     = {https://github.com/cpp-lln-lab/CPP_SPM},
+  version = {1.1.5dev},
+  doi     = {10.5281/zenodo.3554331},
+  publisher = {Zenodo},
+  journal = {Software}
+}
 ```
-
-Install the hook
-
-```bash
-pre-commit install
-```
-
-You're done. `mh_style --fix` will now be run every time you commit.
 
 ## Contributors
 

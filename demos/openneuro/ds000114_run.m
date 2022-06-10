@@ -5,60 +5,40 @@
 clear;
 clc;
 
-% Smoothing to apply
-FWHM = 6;
-conFWHM = 6;
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm();
 
-run ../../initCppSpm.m;
-
-%% Set options
 opt = ds000114_get_option();
-
-%% Run batches
 
 reportBIDS(opt);
 
-bidsCopyRawFolder(opt, 1);
-
+bidsCopyInputFolder(opt);
 bidsSTC(opt);
 
 bidsSpatialPrepro(opt);
 
-anatomicalQA(opt);
-bidsResliceTpmToFunc(opt);
-functionalQA(opt);
-
-bidsSmoothing(FWHM, opt);
+bidsSmoothing(opt);
 
 %% Run level analysis: as for MVPA
+opt.pipeline.type = 'stats';
+bidsFFX('specifyAndEstimate', opt);
+bidsFFX('contrasts', opt);
 
-bidsFFX('specifyAndEstimate', opt, FWHM);
-bidsFFX('contrasts', opt, FWHM);
-
-bidsConcatBetaTmaps(opt, FWHM, false, false);
+bidsConcatBetaTmaps(opt, false, false);
 
 %% Subject level analysis: for regular univariate
-
+opt.pipeline.type = 'stats';
 opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                           'models', ...
                           'model-ds000114-linebisection_smdl.json');
 
-bidsFFX('specifyAndEstimate', opt, FWHM);
+bidsFFX('specifyAndEstimate', opt);
 
-opt.result.Steps(1) = struct( ...
-                             'Level',  'subject', ...
-                             'Contrasts', struct( ...
-                                                 'Name', 'Correct_Task', ... % has to match
-                                                 'Mask', false, ...
-                                                 'MC', 'FWE', ... FWE, none, FDR
-                                                 'p', 0.05, ...
-                                                 'k', 0));
+bidsFFX('contrasts', opt);
+bidsResults(opt);
 
-bidsFFX('contrasts', opt, FWHM);
-bidsResults(opt, FWHM);
-
-bidsRFX('smoothContrasts', opt, FWHM, conFWHM);
-bidsRFX('RFX', opt, FWHM, conFWHM);
+bidsRFX('smoothContrasts', opt);
+bidsRFX('RFX', opt);
 
 % WIP: group level results
-% bidsResults(opt, FWHM);
+% bidsResults(opt);

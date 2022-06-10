@@ -1,3 +1,5 @@
+*_report.md
+
 # General
 .DS_Store
 
@@ -6,27 +8,41 @@
 *.zip
 *.html
 *.ps
-*.png
+
+.vscode/settings.json
+
+tmp
+
+# created by tests
+CHANGES
+README
 
 # Project specific
 options_task-*date*.json
 onsets*_events.mat
 
 ## virtual env
-cpp_spm/*
-env/*
-venv/*
+cpp_spm
+env
+venv
 
-## visual studio code
-.vscode
+## from running tests in root dir
+*/cfg/*
+*/group/*
+models/*
 
-cfg
-group
+# jupyter notebooks
+.ipynb_checkpoints
+
+# node stuff
+
+node_modules
+package*
+yarn.lock
 
 ## MATLAB / OCTAVE gitignore template
 
 # From : https://github.com/github/gitignore/blob/master/Global/MATLAB.gitignore
-
 
 # Windows default autosave extension
 *.asv
@@ -59,5 +75,3 @@ codegen/
 
 # Octave session info
 octave-workspace
-
-

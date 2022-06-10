@@ -1,0 +1,23 @@
+{
+  "SamplingFrequency": 0.08333333333333333,
+  "F1": {
+    "percentSignalChange": {
+      "max": -0.1276793963681815
+    }
+  },
+  "F2": {
+    "percentSignalChange": {
+      "max": 0.2432062410751095
+    }
+  },
+  "N1": {
+    "percentSignalChange": {
+      "max": 0.2238832574055527
+    }
+  },
+  "N2": {
+    "percentSignalChange": {
+      "max": 0.3461463435355303
+    }
+  }
+}

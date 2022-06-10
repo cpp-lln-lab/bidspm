@@ -19,9 +19,8 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
 
   vdmFile = '';
 
-  fragments = bids.internal.parse_filename(boldFilename);
-
-  entities = fragments.entities;
+  bf = bids.File(boldFilename);
+  entities = bf.entities;
 
   if ~isfield(entities, 'ses')
     entities.ses = '';
@@ -62,7 +61,8 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   end
 
   if isempty(vdmFile)
-    warning('No voxel displacement map associated with: \n %s', boldFilename);
+    msg = sprintf('No voxel displacement map associated with: \n %s', boldFilename);
+    errorHandling(mfilename(), 'noVDM', msg, true, opt.verbosity);
   end
 
 end

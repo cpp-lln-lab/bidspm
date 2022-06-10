@@ -7,7 +7,7 @@ function opt = ds000114_get_option()
   % (C) Copyright 2020 CPP_SPM developers
 
   % The directory where the data are located
-  opt.dataDir = '/home/remi/openneuro/ds000114/raw';
+  opt.dir.raw = '/home/remi/openneuro/ds000114/raw';
 
   % suject to run in each group
   opt.subjects = {'01', '02'};
@@ -15,8 +15,10 @@ function opt = ds000114_get_option()
   % task to analyze
   opt.taskName = 'linebisection';
 
-  opt.anatReference.type = 'T1w';
-  opt.anatReference.session = 'retest';
+  opt.query.modality = {'anat', 'func'};
+
+  opt.bidsFilterFile.t1w.ses = 'retest';
+
   % Uncomment the lines below to run preprocessing
   % - don't use realign and unwarp
   %   opt.realign.useUnwarp = false;
@@ -28,18 +30,14 @@ function opt = ds000114_get_option()
                             'model-ds000114-lineBisectionRunLevel_smdl.json');
 
   % specify the result to compute
-  opt.result.Steps(1) = struct( ...
-                               'Level',  'run', ...
-                               'Contrasts', struct( ...
-                                                   'Name', 'Correct_Task', ... % has to match
-                                                   'Mask', false, ...
-                                                   'MC', 'FWE', ... FWE, none, FDR
-                                                   'p', 0.05, ...
-                                                   'k', 0));
-
-  opt.parallelize.do = true;
-  opt.parallelize.nbWorkers = 2;
-  opt.parallelize.killOnExit = false;
+  opt.results(1) = struct( ...
+                          'Level',  'run', ...
+                          'Contrasts', struct( ...
+                                              'Name', 'Correct_Task', ... % has to match
+                                              'Mask', false, ...
+                                              'MC', 'FWE', ... FWE, none, FDR
+                                              'p', 0.05, ...
+                                              'k', 0));
 
   %% DO NOT TOUCH
   opt = checkOptions(opt);

@@ -1,0 +1,127 @@
+{
+   "Name": "parametric modulation",
+   "BIDSModelVersion": "1.0.0",
+   "Description": "model for face repetition",
+   "Input": {
+      "task": [
+         "facerepetition"
+      ],
+      "space": [
+         "IXI549Space"
+      ]
+   },
+   "Nodes": [
+      {
+         "Level": "Run",
+         "Name": "run_level",
+         "GroupBy": [
+            "run",
+            "subject"
+         ],
+         "Transformations": {
+            "Description": "merge the familiarity and repetition column to create the trial type column, also create parametric modulation variable",
+            "Transformer": "cpp_spm",
+            "Instructions": [
+               {
+                  "Name": "Concatenate",
+                  "Input": [
+                     "face_type",
+                     "repetition_type"
+                  ],
+                  "Output": "trial_type"
+               },
+               {
+                  "Name": "Copy",
+                  "Input": "lag",
+                  "Output": "pmod_lag"
+               },
+               {
+                  "Name": "Power",
+                  "Input": "pmod_lag",
+                  "Value": 2,
+                  "Output": "pmod_lag_squared"
+               }
+            ]
+         },
+         "Model": {
+            "X": [
+               "trial_type.famous_1",
+               "trial_type.famous_2",
+               "trial_type.unfamiliar_1",
+               "trial_type.unfamiliar_2",
+               "trans_?",
+               "rot_?"
+            ],
+            "HRF": {
+               "Variables": [
+                  "trial_type.famous_1",
+                  "trial_type.famous_2",
+                  "trial_type.unfamiliar_1",
+                  "trial_type.unfamiliar_2"
+               ],
+               "Model": "spm + derivative"
+            },
+            "Type": "glm",
+            "Options": {
+               "HighPassFilterCutoffHz": 0.0078,
+               "Mask": {
+                  "suffix": [
+                     "mask"
+                  ],
+                  "desc": [
+                     "brain"
+                  ]
+               }
+            },
+            "Software": {
+               "SPM": {
+                  "SerialCorrelation": "AR(1)"
+               }
+            }
+         },
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               "trial_type.famous_1",
+               "trial_type.famous_2",
+               "trial_type.unfamiliar_1",
+               "trial_type.unfamiliar_2"
+            ]
+         },
+         "Contrasts": [
+            {
+               "Name": "faces_gt_baseline",
+               "ConditionList": [
+                  "trial_type.famous_1",
+                  "trial_type.famous_2",
+                  "trial_type.unfamiliar_1",
+                  "trial_type.unfamiliar_2"
+               ],
+               "Weights": [
+                  1,
+                  1,
+                  1,
+                  1
+               ],
+               "Test": "t"
+            },
+            {
+               "Name": "faces_lt_baseline",
+               "ConditionList": [
+                  "trial_type.famous_1",
+                  "trial_type.famous_2",
+                  "trial_type.unfamiliar_1",
+                  "trial_type.unfamiliar_2"
+               ],
+               "Weights": [
+                  -1,
+                  -1,
+                  -1,
+                  -1
+               ],
+               "Test": "t"
+            }
+         ]
+      }
+   ]
+}

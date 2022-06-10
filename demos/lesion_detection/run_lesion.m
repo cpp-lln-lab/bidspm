@@ -11,16 +11,16 @@ clc;
 % URL of the data set to download
 % URL = https://gin.g-node.org/mwmaclean/CVI-Datalad/src/master/data
 
-run ../../initCppSpm.m;
+addpath(fullfile(pwd, '..', '..'));
+cpp_spm();
 
 %% Set options
 opt = lesion_get_option();
 
 %% Run batches
-reportBIDS(opt);
+% reportBIDS(opt);
 
-deleteZippedNii = true;
-bidsCopyRawFolder(opt, deleteZippedNii, {'anat'});
+bidsCopyInputFolder(opt);
 
 % Step 1: segmentation
 bidsLesionSegmentation(opt);

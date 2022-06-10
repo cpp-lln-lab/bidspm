@@ -1,0 +1,68 @@
+name: "tests with octave: failure expected"
+
+on:
+
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - '**.m'
+  pull_request:
+    branches: ['*']
+    paths:
+      - '**.m'
+
+env:
+  OCTFLAGS: --no-gui --no-window-system --silent
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    # only trigger update on upstream repo
+    if: github.repository_owner == 'cpp-lln-lab'
+
+    steps:
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get -y -qq update
+        sudo apt-get -y install octave liboctave-dev
+
+    - name: Clone cpp_spm
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+        fetch-depth: 2
+
+    - name: Install SPM
+      run: |
+         git clone https://github.com/spm/spm12.git --depth 1
+         make -C spm12/src PLATFORM=octave distclean
+         make -C spm12/src PLATFORM=octave
+         make -C spm12/src PLATFORM=octave install
+         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath(); exit;"
+
+    - name: Install Moxunit and MOcov
+      run: |
+        git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
+        make -C MOxUnit install
+        git clone https://github.com/MOcov/MOcov.git --depth 1
+        make -C MOcov install
+
+    - name: Update octave path
+      run: |
+        octave $OCTFLAGS --eval "initCppSpm(true); savepath(); exit;"
+
+    - name: Prepare data
+      run: |
+        octave $OCTFLAGS --eval "cd demos/MoAE; download_moae_ds(true); exit;"
+        cd tests
+        make data
+
+    - name: Run tests
+      run: |
+        octave $OCTFLAGS --eval "run_tests"
+        cat test_report.log | grep 0

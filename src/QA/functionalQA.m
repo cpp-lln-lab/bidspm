@@ -1,138 +1,203 @@
 function functionalQA(opt)
   %
-  % For functional data, QA consists in getting temporal SNR and then
-  % check for motion - here we also compute additional regressors to
-  % account for motion.
+  % Is run as part of:
+  %
+  % - ``bidsSpatialPrepro``
   %
   % USAGE::
   %
   %   functionalQA(opt)
   %
+  % For  each run works on the realigned (and unwarped) data:
+  %
+  % - plots motion, global signal, framewise displacement
+  % - make a movie of the realigned time series
+  % - computes additional confounds regressors depending on the options asked
+  % - gets temporal SNR (TODO)
+  % - creates a carpet plot of the data (TODO) ; warning this is slow
+  %
+  % Relevant options::
+  %
+  %   opt.QA.func.Basics = 'on';
+  %   opt.QA.func.Motion = 'on';
+  %   opt.QA.func.FD = 'on';
+  %   opt.QA.func.Globals = 'on';
+  %   opt.QA.func.Movie = 'on';
+  %   opt.QA.func.Voltera = 'on';
+  %   opt.QA.func.carpetPlot = true;
+  %
+  %
   % :param opt: Options chosen for the analysis. See ``checkOptions()``.
   % :type opt: structure
   %
-  % ASSUMPTIONS:
+  % .. warning::
   %
-  % The previous step must have already been run:
-  %
-  %   - the functional images have been realigned and resliced using etiher
-  %     ``bidsSpatialPrepro()``, ``bidsRealignUnwarp()``, ``bidsRealignReslice()``
-  %   - the quality analysis of the anatomical data has been done with ``anatomicalQA()``
-  %   - the tissue probability maps have been generated in the "native" space of each subject
-  %     (using ``bidsSpatialPrepro()`` or ``bidsSegmentSkullStrip()``) and have been
-  %     resliced to the dimension of the functional with ``bidsResliceTpmToFunc()``
+  %    Because of a bug in spm_up, if ``Voltera = 'on'``, then the confound
+  %    regressors of framewise displacement, RMS and global signal
+  %    will not be saved.
   %
   % (C) Copyright 2020 CPP_SPM developers
+
+  % ASSUMPTIONS:
+  %
+  % - the functional images have been realigned and resliced using either:
+  %
+  %      - ``realign and unwarp``,
+  %      - ``realign and reslice``,
+  %
+  % TODO - the tissue probability maps are in the "native" space of each subject
+  %         and are resliced to the dimension of the functional
+
+  if opt.anatOnly
+    return
+  end
 
   if isOctave()
     warning('\nfunctionalQA is not yet supported on Octave. This step will be skipped.');
     return
   end
 
-  % if input has no opt, load the opt.mat file
-  if nargin < 1
-    opt = [];
-  end
-  opt = loadAndCheckOptions(opt);
+  opt.dir.input = opt.dir.preproc;
 
-  [BIDS, opt] = getData(opt);
-
-  fprintf(1, ' FUNCTIONAL: QUALITY CONTROL\n\n');
+  [BIDS, opt] = setUpWorkflow(opt, 'quality control: functional');
 
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
 
-    printProcessingSubject(iSub, subLabel);
+    printProcessingSubject(iSub, subLabel, opt);
 
     % get grey and white matter and csf tissue probability maps
-    [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt);
-    TPMs = validationInputFile(anatDataDir, anatImage, 'rc[123]');
+    % res = 'bold';
+    % space = 'individual';
+    % TODO need to reslice TPMs as part of spatial prepro first
+    % [greyMatter, whiteMatter, csf] = getTpmFilenames(BIDS, subLabel, res, space);
+    % tpms = char({greyMatter; whiteMatter; csf});
 
-    % load metrics from anat QA
-    anatQA = spm_jsonread( ...
-                          fullfile( ...
-                                   anatDataDir,  ...
-                                   strrep(anatImage, '.nii', '_qa.json')));
+    % TODO get bias corrected image ?
+    [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
+    anatImage = fullfile(anatDataDir, anatImage);
 
-    [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
+    distToSurf = getDist2surf(anatImage, opt);
 
-    for iSes = 1:nbSessions
+    for iTask = 1:numel(opt.taskName)
 
-      % get all runs for that subject across all sessions
-      [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
+      thisTask = opt.taskName{iTask};
 
-      for iRun = 1:nbRuns
+      opt.query.task = thisTask;
 
-        % get the filename for this bold run for this task
-        [fileName, subFuncDataDir] = getBoldFilename( ...
-                                                     BIDS, ...
-                                                     subLabel, ...
-                                                     sessions{iSes}, ...
-                                                     runs{iRun}, ...
-                                                     opt);
+      [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
-        prefix = getPrefix('funcQA', opt);
-        funcImage = validationInputFile(subFuncDataDir, fileName, prefix);
+      for iSes = 1:nbSessions
 
-        % sanity check that all images are in the same space.
-        volumesToCheck = {funcImage; TPMs(1, :); TPMs(2, :); TPMs(3, :)};
-        spm_check_orientations(spm_vol(char(volumesToCheck)));
+        [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
-        fMRIQA = computeFuncQAMetrics(funcImage, TPMs, anatQA.avgDistToSurf, opt);
+        for iRun = 1:nbRuns
 
-        % TODO
-        % find an ouput format that is leaner than a 3 Gb json file!!!
-        %           spm_jsonwrite( ...
-        %                         fullfile( ...
-        %                                  subFuncDataDir, ...
-        %                                  strrep(fileName, '.nii',  '_qa.json')), ...
-        %                         fMRIQA, ...
-        %                         struct('indent', '   '));
-        %           save( ...
-        %                fullfile( ...
-        %                         subFuncDataDir, ...
-        %                         strrep(fileName, '.nii',  '_qa.mat')), ...
-        %                'fMRIQA');
+          % get the filename for this bold run for this task
+          % TODO improve prefixes?
+          prefix = ['[', ...
+                    spm_get_defaults('coreg.write.prefix'), ...
+                    spm_get_defaults('unwarp.write.prefix'), ...
+                    ']'];
+          pattern = ['^', prefix, 'sub-', subLabel];
+          if ~strcmp(sessions{iSes}, '')
+            pattern = [pattern, '_ses-', sessions{iSes}];
+          end
+          pattern = [pattern, '.*', '_task-' thisTask, '.*'];
+          if ~strcmp(runs{iRun}, '')
+            pattern = [pattern, '_run-' runs{iRun}];
+          end
+          pattern = [pattern, '.*_' opt.bidsFilterFile.bold.suffix '.nii'];
+          funcImage = spm_select('FPListRec', fullfile(BIDS.pth, ['sub-' subLabel]), pattern);
 
-        outputFiles = spmup_first_level_qa( ...
-                                           funcImage, ...
-                                           'MotionParameters', opt.QA.func.Motion, ...
-                                           'FramewiseDisplacement', opt.QA.func.FD, ...
-                                           'Globals', opt.QA.func.Globals, ...
-                                           'Movie', opt.QA.func.Movie, ...
-                                           'Basics', opt.QA.func.Basics, ...
-                                           'Voltera', opt.QA.func.Voltera, ...
-                                           'Radius', anatQA.avgDistToSurf);
+          if size(funcImage, 1) ~= 1
+            msg = sprintf('too many files found:\n%s\n\n', createUnorderedList(funcImage));
+            errorHandling(mfilename(), 'tooManyFiles', msg, true, opt.verbosity);
+            continue
+          end
 
-        movefile( ...
-                 fullfile(subFuncDataDir, 'spmup_QC.ps'), ...
-                 fullfile(subFuncDataDir, strrep(fileName, '.nii',  '_qa.ps')));
+          % sanity check that all images are in the same space.
+          % TODO: need to reslice TPMs as part of spatial prepro first
+          % volumesToCheck = {funcImage; greyMatter; whiteMatter; csf};
+          % spm_check_orientations(spm_vol(char(volumesToCheck)));
 
-        confounds = load(outputFiles.design);
+          subFuncDataDir = spm_fileparts(funcImage);
 
-        spm_save( ...
-                 fullfile( ...
-                          subFuncDataDir, ...
-                          strrep(fileName, ...
-                                 '_bold.nii',  ...
-                                 '_desc-confounds_regressors.tsv')), ...
-                 confounds);
+          % TODO refactor so each step is saved after execution:
+          % will help ith refactoring
 
-        delete(outputFiles.design);
+          % TODO: need to reslice TPMs as part of spatial prepro first
+          notImplemented(mfilename(), 'temporal SNR not implemented', opt.verbosity > 0);
+          % funcQA.tSNR = spmup_temporalSNR(funcImage, ...
+          %                                 {tpms(1, :); tpms(2, :); tpms(3, :)}, ...
+          %                                 'save');
 
-        createDataDictionary(subFuncDataDir, fileName, size(confounds, 2));
+          % TODO use spm_select to get rp_ file
+          realignParamFile = getRealignParamFilename(BIDS, subLabel, sessions{iSes}, runs{iRun}, opt);
+          jsonContent.meanFD = mean(spmup_FD(realignParamFile, distToSurf));
 
-        % create carpet plot
+          outputFiles = spmup_first_level_qa(funcImage, ...
+                                             'MotionParameters', opt.QA.func.Motion, ...
+                                             'FramewiseDisplacement', opt.QA.func.FD, ...
+                                             'Globals', opt.QA.func.Globals, ...
+                                             'Movie', opt.QA.func.Movie, ...
+                                             'Basics', opt.QA.func.Basics, ...
+                                             'Voltera', opt.QA.func.Voltera, ...
+                                             'Radius', distToSurf);
 
-        % horrible hack to prevent the "abrupt" way spmup_volumecorr crashes
-        % if nansum is not there
-        if opt.QA.func.carpetPlot && exist('nansum', 'file') == 2
-          spmup_timeseriesplot(funcImage, TPMs(1, :), TPMs(2, :), TPMs(3, :), ...
-                               'motion', 'on', ...
-                               'nuisances', 'on', ...
-                               'correlation', 'on', ...
-                               'makefig', 'on');
+          confounds = load(outputFiles.design);
+          headers = returnConfoundColumnHeaders(opt);
+
+          tsvContent = returnRegressorTsvContent(confounds, headers);
+
+          % horrible hack to prevent the "abrupt" way spmup_volumecorr crashes
+          % if nansum is not there
+          if opt.QA.func.carpetPlot && exist('nansum', 'file') == 2
+            notImplemented(mfilename(), 'carpet plot not implemented', opt.verbosity > 0);
+            % TODO: need to reslice TPMs as part of spatial prepro first
+            % spmup_timeseriesplot(funcImage, greyMatter, whiteMatter, csf, ...
+            %                      'motion', 'on', ...
+            %                      'nuisances', 'on', ...
+            %                      'correlation', 'on', ...
+            %                      'makefig', 'on');
+          end
+
+          %% save and rename output
+          outputDir = fullfile(subFuncDataDir, '..', 'reports');
+          spm_mkdir(outputDir);
+
+          bf = bids.File(funcImage);
+          bf.entities.label = bf.suffix;
+          bf.prefix = '';
+
+          % TODO find an ouput format that is leaner than a 3 Gb json file!!!
+          bf.suffix = 'qametrics';
+          bf.extension = '.json';
+
+          bids.util.jsonwrite(fullfile(outputDir, bf.filename), jsonContent);
+
+          bf.suffix = 'qa';
+          bf.extension = '.pdf';
+
+          movefile(fullfile(subFuncDataDir, 'spmup_QC.ps'), ...
+                   fullfile(outputDir, bf.filename));
+
+          bf.entities.desc = 'confounds';
+          bf.entities.label = '';
+          bf.suffix = 'regressors';
+          bf.extension = '.tsv';
+
+          bids.util.tsvwrite(spm_file(funcImage, 'filename', bf.filename), tsvContent);
+
+          jsonContent = createDataDictionary(tsvContent);
+          bf.extension = '.json';
+
+          bids.util.jsonwrite(spm_file(funcImage, 'filename', bf.filename), jsonContent);
+
+          delete(outputFiles.design);
+          delete(realignParamFile);
+
         end
 
       end
@@ -143,18 +208,15 @@ function functionalQA(opt)
 
 end
 
-function fMRIQA = computeFuncQAMetrics(funcImage, TPMs, avgDistToSurf, opt)
+function tsvContent = returnRegressorTsvContent(confounds, headers)
+  outlier = 0;
+  for con = 1:size(confounds, 2)
+    if con > numel(headers)
+      tsvContent.(sprintf('outlier%02.0f', outlier)) = confounds(:, con);
+      outlier = outlier + 1;
+    else
+      tsvContent.(headers{con}) = confounds(:, con);
+    end
 
-  [subFuncDataDir, fileName, ext] = spm_fileparts(funcImage);
-
-  prefix = getPrefix('funcQA', opt);
-
-  fMRIQA.tSNR = spmup_temporalSNR( ...
-                                  funcImage, ...
-                                  {TPMs(1, :); TPMs(2, :); TPMs(3, :)}, ...
-                                  'save');
-
-  realignParamFile = getRealignParamFile(fullfile(subFuncDataDir, [fileName, ext]), prefix);
-  fMRIQA.meanFD = mean(spmup_FD(realignParamFile, avgDistToSurf));
-
+  end
 end

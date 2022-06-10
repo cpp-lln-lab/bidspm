@@ -11,7 +11,7 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   %
   % USAGE::
   %
-  %   files = validationInputFile(dir, fileName[, prefix])
+  %   files = validationInputFile(dir, fileName, prefix)
   %
   % :param dir: Directory where the search will be conducted.
   % :type dir: string
@@ -31,7 +31,7 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   %                   files matching the required pattern.
   %
   %
-  % See also: ``spm_select``.
+  % See also: spm_select
   %
   %
   % Example:
@@ -40,6 +40,21 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   %
   %
   % (C) Copyright 2019 CPP_SPM developers
+
+  % TODO use argparse
+  % TODO clarify usage with respect to unzipAndReturnsFullpathName
+
+  if isempty(fileNamePattern)
+    msg = sprintf(['The filename to validate cannot be empty.\n', ...
+                   'Check that your query did not come back empty']);
+    errorHandling(mfilename(), 'emptyInput', msg, false, true);
+  end
+
+  if size(fileNamePattern, 1) > 1
+    disp(fileNamePattern);
+    msg = 'More than one file to validate';
+    errorHandling(mfilename(), 'tooManyFiles', msg, false, true);
+  end
 
   % try to guess directory in case a fullpath filename was given
   if isempty(dir)
@@ -51,16 +66,15 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
     prefix = '';
   end
 
-  files = spm_select('FPList', dir, ['^' prefix fileNamePattern '$']);
+  fileNamePattern = deblank(fileNamePattern);
+
+  files = spm_select('FPList', dir, ['^', prefix, fileNamePattern, '$']);
 
   if isempty(files)
-
-    errorStruct.identifier = 'validationInputFile:nonExistentFile';
-    errorStruct.message = sprintf( ...
-                                  'This file does not exist: %s', ...
-                                  fullfile(dir, [prefix fileNamePattern '[.gz]']));
-    error(errorStruct);
-
+    msg = sprintf( ...
+                  'This file does not exist: %s', ...
+                  fullfile(dir, [prefix fileNamePattern '[.gz]']));
+    errorHandling(mfilename(), 'nonExistentFile', msg, false, true);
   end
 
 end

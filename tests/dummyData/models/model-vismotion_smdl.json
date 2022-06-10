@@ -1,16 +1,54 @@
 {
   "Name": "vismotion",
+  "BIDSModelVersion": "1.0.0",
   "Description": "contrasts for the motion dataset",
   "Input": {
-    "task": "vismotion"
+    "task": [
+      "vismotion"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
   },
-  "Steps": [
+  "Nodes": [
     {
-      "Level": "subject",
-      "AutoContrasts": [
-        "trial_type.VisMot",
-        "trial_type.VisStat"
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
       ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          "trial_type.VisMot",
+          "trial_type.VisStat",
+          "trans_?",
+          "rot_?"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Model": "spm"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST"
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.VisMot",
+          "trial_type.VisStat"
+        ]
+      },
       "Contrasts": [
         {
           "Name": "VisMot_gt_VisStat",
@@ -18,11 +56,11 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "weights": [
+          "Weights": [
             1,
             -1
           ],
-          "type": "t"
+          "Test": "t"
         },
         {
           "Name": "VisStat_gt_VisMot",
@@ -30,22 +68,46 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "weights": [
+          "Weights": [
             -1,
             1
           ],
-          "type": "t"
+          "Test": "t"
         }
       ]
     },
     {
-      "Level": "dataset",
-      "AutoContrasts": [
-        "trial_type.VisMot",
-        "trial_type.VisStat",
-        "VisMot_gt_VisStat",
-        "VisStat_gt_VisMot"
-      ]
+      "Level": "Subject",
+      "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1
+        ]
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "dataset_level",
+      "GroupBy": [
+        "contrast"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1
+        ]
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
     }
   ]
 }

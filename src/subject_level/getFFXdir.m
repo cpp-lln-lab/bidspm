@@ -1,15 +1,14 @@
-function ffxDir = getFFXdir(subLabel, funcFWFM, opt)
+function ffxDir = getFFXdir(subLabel, opt)
   %
   % Sets the name the FFX directory and creates it if it does not exist
   %
   % USAGE::
   %
-  %   ffxDir = getFFXdir(subLabel, funcFWFM, opt)
+  %   ffxDir = getFFXdir(subLabel, opt)
   %
   % :param subLabel:
   % :type subLabel: string
-  % :param funcFWFM:
-  % :type funcFWFM: scalar
+  %
   % :param opt:
   % :param opt: structure
   %
@@ -17,16 +16,20 @@ function ffxDir = getFFXdir(subLabel, funcFWFM, opt)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  glmDirName = createGlmDirName(opt, funcFWFM);
+  glmDirName = createGlmDirName(opt);
 
-  model = spm_jsonread(opt.model.file);
-  if ~isempty(model.Name) && ~strcmpi(model.Name, opt.taskName)
-    glmDirName = [glmDirName, '_desc-', bids.internal.camel_case(model.Name)];
+  opt = getOptionsFromModel(opt);
+
+  % folder naming based on the rootNode name
+  rootNode = opt.model.bm.getRootNode();
+  nodeName = rootNode.Name;
+
+  if ~isempty(nodeName) && ~strcmpi(nodeName, 'run_level')
+    glmDirName = [glmDirName, '_desc-', bids.internal.camel_case(nodeName)];
   end
 
   ffxDir = fullfile(opt.dir.stats, ...
-                    ['sub-', subLabel], ...
-                    'stats', ...
+                    ['sub-', deregexify(subLabel)], ...
                     glmDirName);
 
   if opt.glm.roibased.do
@@ -35,4 +38,9 @@ function ffxDir = getFFXdir(subLabel, funcFWFM, opt)
 
   spm_mkdir(ffxDir);
 
+end
+
+function string = deregexify(string)
+  % remove any non alphanumeric characters
+  string = regexprep(string, '[^a-zA-Z0-9]+', '');
 end

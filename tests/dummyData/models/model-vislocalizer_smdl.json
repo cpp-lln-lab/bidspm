@@ -1,29 +1,56 @@
 {
   "Name": "vislocalizer",
+  "BIDSModelVersion": "1.0.0",
   "Description": "contrasts for the visual localizer",
   "Input": {
-    "task": "vislocalizer"
+    "task": [
+      "vislocalizer"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
   },
-  "Steps": [
+  "Nodes": [
     {
-      "Level": "run",
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
       "Model": {
+        "Type": "glm",
         "X": [
           "trial_type.VisMot",
           "trial_type.VisStat",
           "trial_type.missing_condition",
-          "trans_x",
-          "trans_y",
-          "trans_z",
-          "rot_x",
-          "rot_y",
-          "rot_z"
+          "trans_?",
+          "rot_?"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Model": "spm+derivative"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008
+        },
+        "Software": {
+          "SPM": {
+            "InclusiveMaskingThreshold": 0,
+            "SerialCorrelation": "FAST"
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.VisMot",
+          "trial_type.VisStat"
         ]
       },
-      "AutoContrasts": [
-        "trial_type.listening",
-        "trial_type.VisMot"
-      ],
       "Contrasts": [
         {
           "Name": "VisMot_&_VisStat",
@@ -31,11 +58,11 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "weights": [
+          "Weights": [
             1,
             1
           ],
-          "type": "t"
+          "Test": "t"
         },
         {
           "Name": "VisMot_&_VisStat_lt_baseline",
@@ -43,55 +70,46 @@
             "trial_type.VisMot",
             "trial_type.VisStat"
           ],
-          "weights": [
+          "Weights": [
             -1,
             -1
           ],
-          "type": "t"
+          "Test": "t"
         }
       ]
     },
     {
-      "Level": "subject",
-      "AutoContrasts": [
-        "trial_type.VisMot",
-        "trial_type.VisStat"
+      "Level": "Subject",
+      "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
       ],
-      "Contrasts": [
-        {
-          "Name": "VisMot_gt_VisStat",
-          "ConditionList": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-          ],
-          "weights": [
-            1,
-            -1
-          ],
-          "type": "t"
-        },
-        {
-          "Name": "VisStat_gt_VisMot",
-          "ConditionList": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-          ],
-          "weights": [
-            -1,
-            1
-          ],
-          "type": "t"
-        }
-      ]
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1
+        ]
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
     },
     {
-      "Level": "dataset",
-      "AutoContrasts": [
-        "trial_type.VisMot",
-        "trial_type.VisStat",
-        "VisMot_gt_VisStat",
-        "VisStat_gt_VisMot"
-      ]
+      "Level": "Dataset",
+      "Name": "dataset_level",
+      "GroupBy": [
+        "contrast"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1
+        ]
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
     }
   ]
 }

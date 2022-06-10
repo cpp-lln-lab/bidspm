@@ -1,72 +1,134 @@
 {
    "Name": "resampling",
-   "Description": "model for face repetition to check resampling effects",
+   "BIDSModelVersion": "1.0.0",
+   "Description": "model for face repetition",
    "Input": {
-      "task": "facerepetition"
+      "task": [
+         "facerepetition"
+      ],
+      "space": [
+         "IXI549Space"
+      ]
    },
-   "Steps": [
+   "Nodes": [
       {
-         "Level": "subject",
-         "Transformations": [
-            {
-               "Name": "Factor",
-               "Inputs": [
-                  "trial_type"
-               ]
-            },
-            {
-               "Name": "Convolve",
-               "Model": "spm",
-               "Inputs": [
-                  " "
-               ]
-            }
+         "Level": "Run",
+         "Name": "run_level",
+         "GroupBy": [
+            "run",
+            "subject"
          ],
+         "Transformations": {
+            "Description": "merge the familiarity and repetition column to create the trial type column",
+            "Transformer": "cpp_spm",
+            "Instructions": [
+               {
+                  "Name": "Concatenate",
+                  "Input": [
+                     "face_type",
+                     "repetition_type"
+                  ],
+                  "Output": "trial_type"
+               }
+            ]
+         },
          "Model": {
             "X": [
-               "trial_type.F1",
-               "trial_type.F2",
-               "trial_type.N1",
-               "trial_type.N2",
-               "trans_x",
-               "trans_y",
-               "trans_z",
-               "rot_x",
-               "rot_y",
-               "rot_z"
+               "trial_type.famous_1",
+               "trial_type.famous_2",
+               "trial_type.unfamiliar_1",
+               "trial_type.unfamiliar_2",
+               "trans_?",
+               "rot_?"
             ],
+            "HRF": {
+               "Variables": [
+                  "trial_type.famous_1",
+                  "trial_type.famous_2",
+                  "trial_type.unfamiliar_1",
+                  "trial_type.unfamiliar_2"
+               ],
+               "Model": "spm + derivative + dispersion"
+            },
+            "Type": "glm",
             "Options": {
-               "high_pass_filter_cutoff_secs": 128
+               "HighPassFilterCutoffHz": 0.0078,
+               "Mask": {
+                  "suffix": [
+                     "mask"
+                  ],
+                  "desc": [
+                     "brain"
+                  ]
+               }
             },
             "Software": {
                "SPM": {
-                  "whitening": "FAST"
+                  "SerialCorrelation": "AR(1)"
                }
-            },
-            "Mask": " "
+            }
          },
-         "AutoContrasts": [
-            "trial_type.F1",
-            "trial_type.F2",
-            "trial_type.N1",
-            "trial_type.N2"
-         ],
+         "DummyContrasts": {
+            "Test": "t",
+            "Contrasts": [
+               "trial_type.famous_1",
+               "trial_type.famous_2",
+               "trial_type.unfamiliar_1",
+               "trial_type.unfamiliar_2"
+            ]
+         },
          "Contrasts": [
             {
                "Name": "faces_gt_baseline",
                "ConditionList": [
-                  "trial_type.F1",
-                  "trial_type.F2",
-                  "trial_type.N1",
-                  "trial_type.N2"
+                  "trial_type.famous_1",
+                  "trial_type.famous_2",
+                  "trial_type.unfamiliar_1",
+                  "trial_type.unfamiliar_2"
                ],
-               "weights": [
+               "Weights": [
                   1,
                   1,
                   1,
                   1
                ],
-               "type": "t"
+               "Test": "t"
+            },
+            {
+               "Name": "faces_lt_baseline",
+               "ConditionList": [
+                  "trial_type.famous_1",
+                  "trial_type.famous_2",
+                  "trial_type.unfamiliar_1",
+                  "trial_type.unfamiliar_2"
+               ],
+               "Weights": [
+                  -1,
+                  -1,
+                  -1,
+                  -1
+               ],
+               "Test": "t"
+            },
+            {
+               "Name": "motion",
+               "ConditionList": [
+                  "trans_x",
+                  "trans_y",
+                  "trans_z",
+                  "rot_x",
+                  "rot_y",
+                  "rot_z"
+               ],
+               "Weights": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+               ],
+               "Test": "F"
             }
          ]
       }

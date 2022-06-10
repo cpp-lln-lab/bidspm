@@ -1,4 +1,4 @@
-function matlabbatch = setBatch3Dto4D(matlabbatch, volumesList, RT, outputName, dataType)
+function matlabbatch = setBatch3Dto4D(matlabbatch, opt, volumesList, RT, outputName, dataType)
   %
   % Set the batch for 3D to 4D conversion
   %
@@ -31,17 +31,17 @@ function matlabbatch = setBatch3Dto4D(matlabbatch, volumesList, RT, outputName, 
   %
   % (C) Copyright 2020 CPP_SPM developers
 
-  if nargin < 5 || isempty(dataType)
+  if nargin < 6 || isempty(dataType)
     dataType = 0;
   end
 
-  if nargin < 4 || isempty(outputName)
+  if nargin < 5 || isempty(outputName)
     outputName = deblank(volumesList(1, :));
     [pth, filename, ext] = spm_fileparts(outputName);
     outputName = fullfile(pth, [filename, '_4D', ext]);
   end
 
-  printBatchName('3D to 4D conversion');
+  printBatchName('3D to 4D conversion', opt);
 
   matlabbatch{end + 1}.spm.util.cat.vols = volumesList;
   matlabbatch{end}.spm.util.cat.name = outputName;

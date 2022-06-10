@@ -1,7 +1,7 @@
 [submodule "lib/bids-matlab"]
 	path = lib/bids-matlab
 	url = https://github.com/bids-standard/bids-matlab.git
-	branch = master
+	branch = dev
 [submodule "lib/spmup"]
 	path = lib/spmup
 	url = https://github.com/CPernet/spmup.git
@@ -9,12 +9,28 @@
 [submodule "lib/CPP_ROI"]
 	path = lib/CPP_ROI
 	url = https://github.com/cpp-lln-lab/CPP_ROI.git
-	branch = main
+	branch = dev
 [submodule "lib/slice_display"]
 	path = lib/slice_display
-	url = https://github.com/bramzandbelt/slice_display.git
+	url = https://github.com/cpp-lln-lab/slice_display.git
 	branch = master
 [submodule "lib/brain_colours"]
 	path = lib/brain_colours
 	url = https://github.com/CPernet/brain_colours.git
 	branch = master
+[submodule "lib/spm_2_bids"]
+	path = lib/spm_2_bids
+	url = https://github.com/cpp-lln-lab/spm_2_bids.git
+[submodule "lib/riksneurotools"]
+	path = lib/riksneurotools
+	url = https://github.com/MRC-CBU/riksneurotools.git
+[submodule "lib/MACS"]
+	path = lib/MACS
+	url = https://github.com/cpp-lln-lab/MACS.git
+[submodule "lib/octache"]
+	path = lib/octache
+	url = https://github.com/Remi-Gau/Octache.git
+	datalad-url = https://github.com/Remi-Gau/Octache.git
+[submodule "tools/stats_model"]
+	path = tools/stats_model
+	url = https://github.com/bids-standard/stats-models.git
