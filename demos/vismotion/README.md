@@ -27,14 +27,16 @@ cd visual_motion_localiser
 ```
 
 Add the CPP SPM code as a sub-dataset, checkout the dev branch ands initializes
+
 all submodules.
 
 ```bash
 datalad install \
-        -d . \
-        -s https://github.com/cpp-lln-lab/CPP_SPM.git \
-        -r
-        code/CPP_SPM
+    -d . \
+    -s https://github.com/cpp-lln-lab/CPP_SPM.git \
+    --branch dev \
+    -r \
+    code/CPP_SPM
 ```
 
 In case you get some errors when installing the submodules you might have to
@@ -43,7 +45,7 @@ initialize them manually, and update your dataset with that update
 ```bash
 cd code/CPP_SPM
 git checkout dev
-git submodule init
+git submodule update --init --recursive && git submodule update --recursive
 cd ..
 datalad save -m 'update CPP SPM submodules'
 ```
@@ -61,7 +63,8 @@ This will install the data:
 
 ```bash
 datalad install -d . \
-                -s git@gin.g-node.org:/cpp-lln-lab/CPP_visMotion-raw.git \
+                -s git@gin.g-node.org:/cpp-lln-lab/Trento_VisMotionLocalizer_MR_raw.git \
+                --recursive \
                 inputs/raw
 ```
 
@@ -70,17 +73,10 @@ After this your datalad dataset should look something like this:
 ```bash
 ├── code
 │   └── CPP_SPM
-│       ├── binder
-│       ├── demos
-│       ├── docs
-│       ├── lib
-│       ├── manualTests
-│       ├── notebooks
-│       ├── src
-│       ├── templates
-│       └── tests
 └── inputs
     └── raw
+        ├── derivatives
+        │   └── fmriprep
         ├── sub-con07
         ├── sub-con08
         └── sub-con15
@@ -94,13 +90,6 @@ datalad get .
 ```
 
 Note that you could have installed the dataset and got the data in one command:
-
-```bash
-datalad install -d . \
-    --get-data \
-    -s git@gin.g-node.org:/cpp-lln-lab/CPP_visMotion-raw.git \
-    inputs/raw
-```
 
 ## Running the analysis
 
@@ -128,6 +117,8 @@ In the end your whole analysis should look like this.
 │       └── tests
 ├── inputs
 │   └── raw                        # <--- input data
+│       ├── derivatives
+│       │   └── fmriprep           # <--- fmriprep data
 │       ├── sub-con07
 │       │   └── ses-01
 │       ├── sub-con08
@@ -136,7 +127,7 @@ In the end your whole analysis should look like this.
 │           └── ses-01
 └── outputs
     └── derivatives
-        ├── cpp_spm-preproc        # <--- preprocessed data
+        ├── cpp_spm-preproc        # <--- smoothed data
         │   ├── jobs
         │   ├── sub-con07
         │   ├── sub-con08
