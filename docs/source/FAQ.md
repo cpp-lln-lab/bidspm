@@ -4,6 +4,59 @@
 
 ## General
 
+### How can I prevent from having SPM windows pop up all the freaking time?
+
+Running large number of batches when the GUI of Matlab is active can be
+annoying, as SPM windows will always pop up and become active instead of running
+in the background like most users would prefer to.
+
+One easy solution is to add a `spm_my_defaults` function with the following
+content in the Matlab path, or in the directory where you are running your
+scripts or command from.
+
+.. code-block:: matlab
+
+  function spm_my_defaults
+
+      global defaults
+
+      defaults.cmdline = true;
+
+  end
+
+This should be picked up by CPP SPM and SPM upn initialization and ensure that
+SPM runs in command line mode.
+
+### How can I run any of this from the command line?
+
+Related to the previous question but more radical. You can run most analysis
+from within your terminal without starting the Matlab graphic interface.
+
+For this you first need to know where is the Matlab application. Here are the
+typical location depending on your operating system (where `XXx` corresponds to
+the version you use).
+
+-   Windows: `C:\Program Files\MATLAB\R20XXx\bin\matlab.exe`
+-   Mac: `/Applications/Matlab_R20XXx.app/bin/matlab`
+-   Linux: `/usr/local/MATLAB/R20XXx/bin/matlab`
+
+You can then launch from a terminal in a command line only with the following
+arguments: `-nodisplay -nosplash -nodesktop`
+
+So on Linux for example:
+
+```bash
+/usr/local/MATLAB/R2017a/bin/matlab -nodisplay -nosplash -nodesktop
+```
+
+If you are on MAc or Linux, we would recommend adding those aliases to your
+`.bashrc` or wherever else you keep your aliases.
+
+```bash
+matlab=/usr/local/MATLAB/R20XXx/bin/matlab
+matlabcli='/usr/local/MATLAB/R20XXx/bin/matlab -nodisplay -nosplash -nodesktop'
+```
+
 ### What happens if we run same code twice? Are there timestamps on the files or are we overwriting them?
 
 In the vast majority of cases, if you have not touched anything to your options,
@@ -11,7 +64,7 @@ you will overwrite the output.
 
 Two exceptions that actually have time stamps and are not over-written:
 
--   The matlabbatches saved in the `jobs` folders as `.mat` and `.json` files.
+-   The `matlabbatches` saved in the `jobs` folders as `.mat` and `.json` files.
 -   If you have saved your options with `saveOptions`, then the output `.json`
     file is saved with a time stamp too. Most of the default `getOptions`
     templates include `saveOptions` as a last function call.
@@ -20,7 +73,7 @@ In most of other cases if you don't want to overwrite previous output, you will
 have to change the output directory.
 
 For the preprocessing workflows, in general you would have to specify a
-different `opt.dir.ouput`.
+different `opt.dir.output`.
 
 For the statistics workflows, you have a few more options as the name of the
 output folders includes information that comes from the options and / or the

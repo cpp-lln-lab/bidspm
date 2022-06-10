@@ -336,3 +336,9 @@ added after running contrasts
 
   - ``SPM.xCon.Vcon`` - Name of contrast (for 'T's) or ESS (for 'F's) image
   - ``SPM.xCon.Vspm`` - Name of SPM image
+
+
+Bilbiography
+============
+
+.. bibliography::

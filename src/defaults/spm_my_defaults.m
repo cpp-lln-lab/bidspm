@@ -4,11 +4,11 @@ function spm_my_defaults()
   %
   %   spm_my_defaults()
   %
-  % This is where we set the defautls we want to use.
+  % This is where we set the defaults we want to use.
   % These will overide the spm defaults.
   % When "not enough" information is specified in the batch files, SPM falls
-  % back on the defaults to fill in the blanks. This allows to make the
-  % script simpler.
+  % back on the defaults to fill in the blanks.
+  % This allows to make the scripts simpler.
   %
   % (C) Copyright 2019 CPP_SPM developers
 
