@@ -170,10 +170,11 @@ Not yet implementated:
 (bids_stats_model_sofware)=
 
 ### Software
-
+<!-- markdown-link-check-disable -->
 Note that if you wanted to change the
 [`SerialCorrelation` model](auto_correlation_model) used by CPP SPM, you could
 do so via the `Software` object of the BIDS stats model.
+<!-- markdown-link-check-enable -->
 
 Similar you can adapt directly in the model the threshold used by SPM to create
 an implicit inclusive mask when running a GLM (the value `defaults.mask.thresh`
