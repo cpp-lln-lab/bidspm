@@ -15,3 +15,8 @@ rstcheck
 sphinxcontrib-matlabdomain
 sphinxcontrib-mermaid
 sphinxcontrib-bibtex
+
+# bids stats model schema
+rich
+# bsmschema
+./tools/stats_model/bsmschema/
