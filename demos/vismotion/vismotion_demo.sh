@@ -9,34 +9,35 @@ set -e -u
 # to adapt this code to wherever MATLAB is on your computer (Look for the FIXME)
 #
 # What I used (see the line below) is very likely not where MATLAB lives on your computer
+#
 # /usr/local/MATLAB/R2017a/bin/matlab
 
-# create dataset in home dir
+root_directory="${PWD}/../.."
+
+# create dataset in the home dir
 datalad create -c yoda ~/visual_motion_localiser
 cd ~/visual_motion_localiser
 
-# get code  CPP SPM
+# get CPP SPM code from the dev branch
+source="https://github.com/cpp-lln-lab/CPP_SPM.git"
+
+# for debugging uncomment the follwing line
+source=${root_directory}
+
 datalad install \
     -d . \
-    -s https://github.com/cpp-lln-lab/CPP_SPM.git \
+    --source ${source} \
     --branch dev \
-    -r \
+    --recursive \
     code/CPP_SPM
 
-# change branch
-cd code/CPP_SPM
-git checkout dev
-git submodule init
-git submodule update
-cd ../..
+# TODO implement an fmriprep only demo
 
 # get data
 datalad install -d . \
+    --source git@gin.g-node.org:/cpp-lln-lab/Toronto_VisMotionLocalizer_MR_raw.git \
     --get-data \
-    -s git@gin.g-node.org:/cpp-lln-lab/CPP_visMotion-raw.git \
     inputs/raw
-
-datalad save -m 'set up done'
 
 datalad create -d . outputs/derivatives/cpp_spm-preproc
 datalad create -d . outputs/derivatives/cpp_spm-stats
@@ -48,11 +49,11 @@ cd code/CPP_SPM/demos/vismotion
     -nodisplay -nosplash -nodesktop \
     -r "run('step_1_preprocess.m');exit;"
 
-datalad save -m 'preprocessing done' -r
+datalad save -d ../../../.. -m 'preprocessing done' --recursive
 
 # FIX ME
 /usr/local/MATLAB/R2017a/bin/matlab \
     -nodisplay -nosplash -nodesktop \
     -r "run('step_2_stats.m');exit;"
 
-datalad save -m 'stats done' -r
+datalad save -d ../../../.. -m 'stats done' --recursive
