@@ -14,15 +14,15 @@ One easy solution is to add a `spm_my_defaults` function with the following
 content in the Matlab path, or in the directory where you are running your
 scripts or command from.
 
-.. code-block:: matlab
+```matlab
+function spm_my_defaults
 
-  function spm_my_defaults
+  global defaults
 
-      global defaults
+  defaults.cmdline = true;
 
-      defaults.cmdline = true;
-
-  end
+end
+```
 
 This should be picked up by CPP SPM and SPM upn initialization and ensure that
 SPM runs in command line mode.
