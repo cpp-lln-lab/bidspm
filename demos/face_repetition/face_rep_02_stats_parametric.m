@@ -10,7 +10,7 @@
 clear;
 clc;
 
-downloadData = true;
+downloadData = false;
 
 addpath(fullfile(pwd, '..', '..'));
 

@@ -19,7 +19,7 @@
             "subject"
          ],
          "Transformations": {
-            "Description": "merge the familiarity and repetition column to create the trial type column",
+            "Description": "merge the familiarity and repetition column to create the trial type column, also create parametric modulation variable",
             "Transformer": "cpp_spm",
             "Instructions": [
                {
@@ -37,7 +37,7 @@
                },
                {
                   "Name": "Power",
-                  "Input": "lag",
+                  "Input": "pmod_lag",
                   "Value": 2,
                   "Output": "pmod_lag_squared"
                }

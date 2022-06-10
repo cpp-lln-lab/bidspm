@@ -92,9 +92,11 @@ It uses
 to run those transformations. Please see this bids-matlab documentation to know
 how to use them and call them in your JSON.
 
-The advantage of this bids-matlab transformers is that they allow
+The advantage of this bids-matlab transformers is
+that they allow you to directly add on tsv files to quickly see
+what outcome a series of transformers will produce.
 
-Below is a simple how to subtract 3 seconds from the event onsets of the
+Below is an example on how to subtract 3 seconds from the event onsets of the
 conditions `motion` listed in the `trial_type` columns of the `events.tsv` file,
 and put the output in a variable called `motion`.
 
@@ -213,6 +215,8 @@ started in the face repetition demo folder.
 ```{literalinclude} ../../demos/face_repetition/models/model-faceRepetitionParametric_smdl.json
    :language: json
 ```
+
+See the help section of `convertOnsetTsvToMat` for more information.
 
 ## Examples
 
