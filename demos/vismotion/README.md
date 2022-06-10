@@ -53,7 +53,7 @@ datalad save -m 'update CPP SPM submodules'
 Now let's get the raw data as a subdataset and put it in an `inputs/raw` folder.
 
 The data from the CPP lab is openly available on GIN:
-[https://gin.g-node.org/cpp-lln-lab/CPP_visMotion-raw](https://gin.g-node.org/cpp-lln-lab/CPP_visMotion-raw)
+[https://gin.g-node.org/cpp-lln-lab/Toronto_VisMotionLocalizer_MR_raw](https://gin.g-node.org/cpp-lln-lab/Toronto_VisMotionLocalizer_MR_raw)
 
 Note that to install it you will need to have set up Datalad to play nice with
 GIN: see the
