@@ -1,7 +1,7 @@
 function [OS, generatedBy] = getEnvInfo(opt)
   %
-  % Gets information about the environement and operating system to help generate
-  % data descriptors for the derivatives.
+  % Gets information about the environement and operating system
+  % to help generate data descriptors for the derivatives.
   %
   % USAGE::
   %
@@ -11,6 +11,11 @@ function [OS, generatedBy] = getEnvInfo(opt)
   %           :generatedBy: (structure) (dimension)
   %
   % (C) Copyright 2020 CPP_SPM developers
+
+  if nargin < 1
+    opt.verbosity = 2;
+    opt.dryRun = false;
+  end
 
   generatedBy(1).name = 'CPP SPM';
   generatedBy(1).Version =  getVersion();
@@ -44,12 +49,13 @@ function [OS, generatedBy] = getEnvInfo(opt)
     OS.name = strtrim(ProductName{2});
     OS.version = strtrim(ProductVersion{2});
 
-  else
-    % for windows: winver
-    % [~, result] = system('winver');
+  elseif ismember(OS.name, 'PCWIN64')
 
-    OS.name = 'unknown OS';
-    OS.version = 'unknown version';
+    [~, ver] = system('ver');
+    tokens = regexp(ver, 'Version ', 'split');
+
+    OS.name = 'Microsoft Windows';
+    OS.version = tokens{2}(1:end - 2);
 
   end
 
@@ -63,29 +69,21 @@ function [OS, generatedBy] = getEnvInfo(opt)
     return
   end
 
-  %     if ispc()
-  %         cmd = 'set';
-  %     else
-  %         cmd = 'env';
-  %     end
-  %     [~, OS.environmentVariables] = system(cmd);
+  [keys, vals] = getenvall('system');
+  for i = 1:numel(keys)
 
-  try
-    [keys, vals] = getenvall('system');
-    for i = 1:numel(keys)
-      keyname = regexprep(keys{i}, '[=:;@]', '_');
-      keyname = regexprep(keyname, '^_*', '');
-      if ~ismember(keyname, {'_', ''})
-        if bids.internal.starts_with(keyname, 'LS_COLORS')
-          % to prevent annoying warnign when field names are too long.
-          OS.environmentVariables.LS_COLORS = vals{i};
-        else
-          OS.environmentVariables.(keyname) = vals{i};
-        end
-      end
+    keyname = regexprep(keys{i}, '[^a-zA-Z_]', '_');
+    keyname = regexprep(keyname, '^_*', '');
+    if length(keyname) > 63
+      keyname = keyname(1:63);
     end
-  catch
-    errorHandling(mfilename(), 'envUnknown', 'Could not get env info.', true, opt.verbosity);
+
+    if ismember(keyname, {'_', ''})
+      continue
+    end
+
+    OS.environmentVariables.(keyname) = vals{i};
+
   end
 
 end
@@ -105,7 +103,6 @@ function [keys, vals] = getenvall(method)
       vals = cell(map.values.toArray());
     case 'system'
       if ispc()
-        % cmd = 'set "';  %HACK for hidden variables
         cmd = 'set';
       else
         cmd = 'env';
