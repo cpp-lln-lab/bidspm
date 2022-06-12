@@ -1,6 +1,6 @@
 function [OS, generatedBy] = getEnvInfo(opt)
   %
-  % Gets information about the environement and operating system 
+  % Gets information about the environement and operating system
   % to help generate data descriptors for the derivatives.
   %
   % USAGE::
