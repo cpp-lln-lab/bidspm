@@ -49,13 +49,13 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.query.modality = {'anat', 'func'};
 
+  expectedOptions.segment.do = true;
   expectedOptions.segment.force = false;
-
   expectedOptions.segment.biasfwhm = 60;
-
   expectedOptions.segment.samplingDistance = 3;
 
   expectedOptions.skullstrip.do = true;
+  expectedOptions.skullstrip.force = false;
   expectedOptions.skullstrip.threshold = 0.75;
   expectedOptions.skullstrip.mean = false;
 
