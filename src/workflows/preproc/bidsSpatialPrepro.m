@@ -51,15 +51,21 @@ function matlabbatch = bidsSpatialPrepro(opt)
   [BIDS, opt] = setUpWorkflow(opt, 'spatial preprocessing');
 
   opt.orderBatches.selectAnat = 1;
-  lastBatch = 1;
   if ~opt.anatOnly
     opt.orderBatches.realign = 2;
     opt.orderBatches.coregister = 3;
     opt.orderBatches.saveCoregistrationMatrix = 4;
-    lastBatch = 4;
   end
 
+  % keep track of those flags and reset them to their initial values for each subject
+  % and we adapt them depending if some subject have already been segmented / skulstripped
+  segmentDo = opt.segment.do;
+  skullstripDo = opt.skullstrip.do;
+
   for iSub = 1:numel(opt.subjects)
+
+    opt.segment.do = segmentDo;
+    opt.skullstrip.do = skullstripDo;
 
     matlabbatch = {};
 
@@ -80,19 +86,27 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
     matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel);
 
-    % Skip segmentation and skullstripping if done previously
     anatFile = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1};
-    opt = checkForPreviousSkullStripOutput(anatFile, BIDS, opt);
-    if opt.segment.do
-      opt.orderBatches.segment = lastBatch + 1;
-      matlabbatch = setBatchSegmentation(matlabbatch, opt);
+
+    %% Skip segmentation / skullstripping if done previously
+    if skullstripDo && ~opt.skullstrip.force && skullstrippingAlreadyDone(anatFile, BIDS)
+      opt.skullstrip.do = false;
     end
-    if opt.skullstrip.do
-      opt.orderBatches.skullStripping = lastBatch + 2;
-      opt.orderBatches.skullStrippingMask = lastBatch + 3;
-      matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
+    if segmentDo && ~opt.segment.force && segmentationAlreadyDone(anatFile, BIDS)
+      opt.segment.do = false;
+      % but if we must force the skullstripping
+      % then we will need some segmentation input
+    elseif opt.skullstrip.do && ~segmentationAlreadyDone(anatFile, BIDS)
+      opt.segment.do = true;
     end
 
+    matlabbatch = setBatchSegmentation(matlabbatch, opt);
+
+    matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
+    opt.orderBatches.skullStripping = numel(matlabbatch) - 1;
+    opt.orderBatches.skullStrippingMask = numel(matlabbatch);
+
+    %% Normalization
     if ismember('IXI549Space', opt.space)
       % dependency from segmentation
       % dependency from coregistration
