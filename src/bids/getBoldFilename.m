@@ -11,13 +11,17 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
   %
   % :param BIDS:        returned by bids.layout when exploring a BIDS data set.
   % :type BIDS:         structure
-  % :param subLabel:       label of the subject ; in BIDS lingo that means that for a file name
+  %
+  % :param subLabel:    label of the subject ; in BIDS lingo that means that for a file name
   %                     ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
-  % :type subLabel:        string
+  % :type subLabel:      char
+  %
   % :param sessionID:   session label (for `ses-001`, the label will be `001`)
-  % :type sessionID:    string
+  % :type sessionID:    char
+  %
   % :param runID:       run index label (for `run-001`, the label will be `001`)
-  % :type runID:        string
+  % :type runID:        char
+  %
   % :param opt:         Mostly used to find the task name.
   % :type opt:          structure
   %
@@ -43,7 +47,7 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
   % some part of it is in getInfo
   if isempty(boldFilename)
     msg = sprintf('No bold file found in:\n\t%s\nfor filter:%s\n', ...
-                  BIDS.pth, ...
+                  pathToPrint(BIDS.pth), ...
                   createUnorderedList(opt.query));
 
     errorHandling(mfilename(), 'emptyInput', msg, false, true);
@@ -52,7 +56,7 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
   % in case files have been unzipped, we do it now
   fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename, opt);
 
-  printToScreen(createUnorderedList(fullPathBoldFilename), opt);
+  printToScreen(createUnorderedList(pathToPrint(fullPathBoldFilename)), opt);
 
   boldFilename = spm_file(fullPathBoldFilename, 'filename');
   subFuncDataDir = spm_file(fullPathBoldFilename, 'path');
