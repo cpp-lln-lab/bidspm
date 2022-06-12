@@ -57,7 +57,7 @@ function matlabbatch = bidsSegmentSkullStrip(opt)
       opt.segment.do = true;
     end
 
-    matlabbatch = setBatchSegmentation(matlabbatch, opt);
+    [matlabbatch, opt] = setBatchSegmentation(matlabbatch, opt);
 
     matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
 

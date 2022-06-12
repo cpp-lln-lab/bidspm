@@ -88,6 +88,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
     anatFile = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1};
 
+    % TODO refactor with bidsSegmentSkullstrip
     %% Skip segmentation / skullstripping if done previously
     if skullstripDo && ~opt.skullstrip.force && skullstrippingAlreadyDone(anatFile, BIDS)
       opt.skullstrip.do = false;
@@ -100,7 +101,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
       opt.segment.do = true;
     end
 
-    matlabbatch = setBatchSegmentation(matlabbatch, opt);
+    [matlabbatch, opt] = setBatchSegmentation(matlabbatch, opt);
 
     matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
     opt.orderBatches.skullStripping = numel(matlabbatch) - 1;

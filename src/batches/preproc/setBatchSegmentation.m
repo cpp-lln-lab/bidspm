@@ -1,4 +1,4 @@
-function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
+function [matlabbatch, opt] = setBatchSegmentation(matlabbatch, opt, imageToSegment)
   %
   % Creates a batch to segment the anatomical image
   %
