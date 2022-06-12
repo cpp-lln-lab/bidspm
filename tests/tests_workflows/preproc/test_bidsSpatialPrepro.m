@@ -8,29 +8,25 @@ function test_suite = test_bidsSpatialPrepro %#ok<*STOUT>
   initTestSuite;
 end
 
-% TODO
-%
-% - add test for opt.skulltripping.skip
-
-function test_bidsSpatialPrepro_segment_no_force_no_skustrip()
-  %
-  % because
+function test_bidsSpatialPrepro_segment_no_skustrip()
 
   opt = setOptions('MoAE-preproc');
 
   % some tweaks because we have dummy data
   opt.funcVoxelDims = [2 2 2];
-  opt.segment.force = false;
+  opt.segment.do = true;
+  opt.segment.force = true;
   opt.skullstrip.do = false;
 
   matlabbatch = bidsSpatialPrepro(opt);
 
-  assertEqual(numel(matlabbatch), 9);
+  assertEqual(numel(matlabbatch), 10);
   assert(isfield(matlabbatch{1}, 'cfg_basicio'));
   assert(isfield(matlabbatch{2}.spm.spatial, 'realignunwarp'));
   assert(isfield(matlabbatch{3}.spm.spatial, 'coreg'));
   assert(isfield(matlabbatch{4}, 'cfg_basicio'));
-  for i = 5:numel(matlabbatch)
+  assert(isfield(matlabbatch{5}.spm.spatial, 'preproc'));
+  for i = 6:numel(matlabbatch)
     matlabbatch{i}.spm.spatial.normalise.write.subj.resample;
     assert(isfield(matlabbatch{i}.spm.spatial, 'normalise'));
   end
