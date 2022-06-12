@@ -33,7 +33,7 @@ function [BIDS, opt] = getData(varargin)
     printToScreen(msg, opt);
   end
 
-  msg = sprintf('Getting data from:\n %s\n', bidsDir);
+  msg = sprintf('Getting data from:\n %s\n', pathToPrint(bidsDir));
   printToScreen(msg, opt);
 
   validationInputFile(bidsDir, 'dataset_description.json');

@@ -48,14 +48,14 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   % it could be required to take another one, or several and mean them...
   if numel(anat) > 1
     msg = sprintf('More than one anat file found:%s\n\nTaking the first one:\n\n %s\n', ...
-                  createUnorderedList(anat), ...
-                  anat{1});
+                  createUnorderedList(pathToPrint(anat)), ...
+                  pathToPrint(anat{1}));
     errorHandling(mfilename(), 'severalAnatFile', msg, true, opt.verbosity);
   end
   anat = anat{1};
   anatImage = unzipAndReturnsFullpathName(anat);
 
-  msg = sprintf('selecting anat file: %s\n', anat);
+  msg = sprintf('selecting anat file: %s\n', pathToPrint(anat));
   printToScreen(msg, opt);
 
   [anatDataDir, anatImage, ext] = spm_fileparts(anatImage);
