@@ -308,12 +308,14 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.useFieldmaps = true;
 
   %% Options for segmentation
+  fieldsToSet.segment.do = true;
   fieldsToSet.segment.force = false;
   fieldsToSet.segment.biasfwhm = 60;
   fieldsToSet.segment.samplingDistance = 3;
 
   %% Options for skullstripping
   fieldsToSet.skullstrip.do = true;
+  fieldsToSet.skullstrip.force = false;
   fieldsToSet.skullstrip.threshold = 0.75;
   fieldsToSet.skullstrip.mean = false;
 

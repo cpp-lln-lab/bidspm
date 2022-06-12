@@ -8,6 +8,18 @@ function test_suite = test_setBatchSegmentation %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setBatchSegmentation_skip()
+
+  opt = setOptions('dummy');
+  opt.segment.do = false;
+
+  matlabbatch = {};
+  matlabbatch = setBatchSegmentation(matlabbatch, opt);
+
+  assertEqual(matlabbatch, {});
+
+end
+
 function test_setBatchSegmentation_pipeline()
 
   spmLocation = spm('dir');

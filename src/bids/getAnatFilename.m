@@ -10,11 +10,13 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   %   [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
   %
   % :param BIDS:
-  % :type BIDS:         structure
+  % :type BIDS:      structure
+  %
   % :param subLabel:
-  % :param subLabel:    string
+  % :param subLabel:  char
+  %
   % :type opt:
-  % :param opt:         structure
+  % :param opt:      structure
   %
   % :returns: - :anatImage: (string)
   %           - :anatDataDir: (string)
@@ -55,7 +57,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   anat = anat{1};
   anatImage = unzipAndReturnsFullpathName(anat);
 
-  msg = sprintf('selecting anat file: %s\n', pathToPrint(anat));
+  msg = sprintf('  selecting anat file: %s\n', pathToPrint(anat));
   printToScreen(msg, opt);
 
   [anatDataDir, anatImage, ext] = spm_fileparts(anatImage);

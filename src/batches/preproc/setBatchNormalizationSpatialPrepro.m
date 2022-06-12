@@ -138,6 +138,11 @@ function deformationField = getDeformationField(matlabbatch, BIDS, opt)
 end
 
 function biasCorrectedImage = getBiasCorrectedImage(matlabbatch, BIDS, opt)
+  %
+  % tries to grab a previously computed bias corrected image
+  % if this fails we assume we are in a bidsSpatialPreproc workflow
+  % and we rely on the batch dependency
+  %
 
   biasCorrectedImage = '';
 
@@ -161,6 +166,11 @@ function biasCorrectedImage = getBiasCorrectedImage(matlabbatch, BIDS, opt)
 end
 
 function [gmTpm, wmTpm, csfTpm] = getTpms(matlabbatch, BIDS, opt)
+  %
+  % tries to grab a previously tissue probability maps
+  % if this fails we assume we are in a bidsSpatialPreproc workflow
+  % and we rely on the batch dependency
+  %
 
   gmTpm = '';
   wmTpm = '';
@@ -205,6 +215,11 @@ function [gmTpm, wmTpm, csfTpm] = getTpms(matlabbatch, BIDS, opt)
 end
 
 function skullstrippedImage = getSkullstrippedImage(matlabbatch, BIDS, opt)
+  %
+  % tries to grab a skullstripped image
+  % if this fails we assume we are in a bidsSpatialPreproc workflow
+  % and we rely on the batch dependency
+  %
 
   skullstrippedImage = '';
 
@@ -226,6 +241,11 @@ function skullstrippedImage = getSkullstrippedImage(matlabbatch, BIDS, opt)
 end
 
 function skullstripMask = getSkullstripMask(matlabbatch, BIDS, opt)
+  %
+  % tries to grab a skullstripped mask
+  % if this fails we assume we are in a bidsSpatialPreproc workflow
+  % and we rely on the batch dependency
+  %
 
   skullstripMask = '';
 
