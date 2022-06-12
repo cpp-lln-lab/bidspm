@@ -16,6 +16,13 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  if ~opt.segment.do
+    opt.orderBatches.segment = 0;
+    return
+  else
+    opt.orderBatches.segment = numel(matlabbatch) + 1;
+  end
+
   printBatchName('Segmentation anatomical image', opt);
 
   % define SPM folder
@@ -25,6 +32,7 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
   % save bias corrected image = true
   matlabbatch{end + 1}.spm.spatial.preproc.channel.write = [false true];
 
+  % firts part assumes we are in the bidsSpatialPreproc workflow
   if isfield(opt, 'orderBatches') && isfield(opt.orderBatches, 'selectAnat')
 
     % SAVE BIAS CORRECTED IMAGE
@@ -33,6 +41,10 @@ function matlabbatch = setBatchSegmentation(matlabbatch, opt, imageToSegment)
                 returnDependency(opt, 'selectAnat'), ...
                 substruct('.', 'files', '{}', {1}));
   else
+
+    % TODO
+    % implement the opt.segment.do and opt.segment.force
+    % with segmentationAlreadyDone ?
 
     % in case a cell was given as input
     if iscell(imageToSegment)
