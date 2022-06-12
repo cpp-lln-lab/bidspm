@@ -61,7 +61,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
                     'Will skip this step.');
       errorHandling(mfilename(), 'tooManyFiles', msg, true, opt.verbosity);
 
-      msg = sprintf('%s\n', strjoin(cellstr(file), '\n'));
+      msg = sprintf('%s\n', strjoin(pathToPrint(cellstr(file)), '\n'));
       printToScreen(msg, opt);
 
     else

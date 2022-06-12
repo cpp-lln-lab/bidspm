@@ -52,7 +52,8 @@ function skipped = bidsRoiBasedGLM(opt)
       continue
     end
 
-    printToScreen(['\n Using ROIs:' createUnorderedList(roiList)], opt);
+    printToScreen(['\n Using ROIs:' ...
+    createUnorderedList(pathToPrint(roiList))], opt);
 
     outputDir = getFFXdir(subLabel, opt);
 
