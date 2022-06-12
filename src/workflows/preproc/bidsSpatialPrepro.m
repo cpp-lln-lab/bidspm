@@ -147,17 +147,17 @@ end
 
 function renameFiles(BIDS, opt)
 
-  if ~opt.rename
+  if ~opt.rename || opt.dryRun
     return
   end
 
   opt = set_spm_2_bids_defaults(opt);
 
-  for iSub = 1:numel(opt.subjects)
+  if ~opt.dryRun && ~opt.anatOnly
 
-    subLabel = opt.subjects{iSub};
+    for iSub = 1:numel(opt.subjects)
 
-    if ~opt.dryRun && ~opt.anatOnly
+      subLabel = opt.subjects{iSub};
 
       % this is only necessary if the rp_ files have not already been converted
       % and deleted by functionalQA

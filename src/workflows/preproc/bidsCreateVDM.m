@@ -24,6 +24,8 @@ function bidsCreateVDM(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'create voxel displacement map');
 
+  opt.rename = false;
+
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
@@ -32,6 +34,8 @@ function bidsCreateVDM(opt)
     suffixes = bids.query(BIDS, 'suffixes', 'sub', subLabel);
 
     if any(ismember(suffixes, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
+
+      opt.rename = true;
 
       printProcessingSubject(iSub, subLabel, opt);
 
