@@ -16,7 +16,7 @@ function  createDerivativeDir(opt)
   if ~exist(opt.dir.derivatives, 'dir')
     spm_mkdir(opt.dir.derivatives);
     msg = sprintf('derivatives directory created: %s \n', ...
-      pathToPrint(opt.dir.derivatives));
+                  pathToPrint(opt.dir.derivatives));
   end
 
   printToScreen(msg, opt);

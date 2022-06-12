@@ -25,6 +25,6 @@ function saveOptions(opt)
   spm_jsonwrite(filename, opt, jsonFormat);
 
   printToScreen(sprintf('Options saved in: %s\n\n', ...
-  pathToPrint(filename)), opt);
+                        pathToPrint(filename)), opt);
 
 end
