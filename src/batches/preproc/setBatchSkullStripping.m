@@ -48,11 +48,11 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
 
   printBatchName('skull stripping', opt);
 
-  [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, opt, subLabel);
-
   % if the input image is mean func image instead of anatomical
   if opt.skullstrip.mean
     [imageToSkullStrip, dataDir] = getMeanFuncFilename(BIDS, subLabel, opt);
+  else
+    [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, opt, subLabel);
   end
 
   bf = bids.File(imageToSkullStrip, 'use_schema', false);
@@ -94,10 +94,8 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
 
   else
 
-    anatImage  = getAnatFilename(BIDS, opt, subLabel);
-
     % bias corrected image
-    anatFile = bids.File(anatImage);
+    anatFile = bids.File(imageToSkullStrip);
     filter = struct('suffix',  anatFile.suffix, ...
                     'sub', anatFile.entities.sub, ...
                     'prefix', '', ...
