@@ -160,10 +160,20 @@ function matlabbatch = bidsResults(varargin)
 
   % skip data indexing if we are only at the group level
   indexData = true;
+  listNodeLevels = {};
   for iRes = 1:numel(opt.results)
-    node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
-    listNodeLevels{iRes} = lower(node.Level);
+    if ~isempty(opt.results(iRes).nodeName)
+      node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
+      listNodeLevels{iRes} = lower(node.Level);
+    end
   end
+  if isempty(listNodeLevels)
+    msg = 'Specify results to show in "opt.results".';
+    id = 'noResultsAsked';
+    errorHandling(mfilename(), id, msg, true, true);
+    return
+  end
+
   if all(ismember(listNodeLevels, 'dataset'))
     indexData = false;
   end
@@ -197,8 +207,6 @@ function matlabbatch = bidsResults(varargin)
 
           subLabel = opt.subjects{iSub};
 
-          [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel);
-
           printProcessingSubject(iSub, subLabel, opt);
 
           if strcmpi(node.Level, 'run')
@@ -210,7 +218,8 @@ function matlabbatch = bidsResults(varargin)
             batchName = sprintf('compute_sub-%s_subject_level_results', subLabel);
           end
 
-          [matlabbatch, results] = bidsResultsSubject(opt, subLabel, iRes, isRunLevel);
+          [optThisSubject, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel);
+          [matlabbatch, results] = bidsResultsSubject(optThisSubject, subLabel, iRes, isRunLevel);
 
           status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
