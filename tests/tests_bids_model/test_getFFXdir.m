@@ -61,6 +61,29 @@ function test_getFFXdir_basic()
 
 end
 
+function test_getFFXdir_extra_entity()
+
+  subLabel = '^01';
+
+  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, 'basename', 'model-vismotion-desc-1pt6acq_smdl');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  opt = checkOptions(opt);
+
+  ffxDir = getFFXdir(subLabel, opt);
+
+  expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-01', ...
+                            'task-vismotion_acq-1p60mm_space-IXI549Space_FWHM-6');
+
+  assertEqual(ffxDir, expectedOutput);
+  assertEqual(exist(expectedOutput, 'dir'), 7);
+
+  rmdir(ffxDir, 's');
+
+end
+
 function test_getFFXdir_user_specified()
 
   subLabel = '02';

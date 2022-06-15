@@ -9,12 +9,16 @@ function boldFilename = getBoldFilenameForFFX(varargin)
   %
   % :param BIDS:
   % :type BIDS: structure
+  %
   % :param opt:
   % :type opt: structure
+  %
   % :param subLabel:
   % :type subLabel: string
+  %
   % :param iSes:
   % :type iSes: integer
+  %
   % :param iRun:
   % :type iRun: integer
   %

@@ -12,6 +12,33 @@ end
 
 % TODO add test to better cover setScans
 
+function test_setBatchSubjectLevelGLMSpec_vismotion_acq_1pt6acq()
+
+  %% GIVEN
+  subLabel = '^01';
+
+  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, 'basename', 'model-vismotion-desc-1pt6acq_smdl');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  opt = checkOptions(opt);
+
+  BIDS = getLayout(opt);
+
+  %% WHEN
+  matlabbatch = {};
+  matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
+
+  %% THEN
+  % check dir
+  [~, dir] = fileparts(matlabbatch{1}.spm.stats.fmri_spec.dir{1});
+  assertEqual(dir, 'task-vismotion_acq-1p60mm_space-IXI549Space_FWHM-6');
+
+  cleanUp(fullfile(pwd, 'derivatives'));
+
+end
+
 function test_setBatchSubjectLevelGLMSpec_brain_mask()
 
   %% GIVEN
@@ -120,7 +147,8 @@ function test_setBatchSubjectLevelGLMSpec_slicetiming_metadata()
 
   opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
 
-  opt.query.acq = '';
+  % needed to update the options with the content of the model
+  opt = checkOptions(opt);
 
   BIDS = getLayout(opt);
 
