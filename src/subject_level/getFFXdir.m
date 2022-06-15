@@ -26,7 +26,7 @@ function ffxDir = getFFXdir(subLabel, opt)
 
   nodeNameLabel = regexprep(nodeName, '[ -_]', '');
   if ~isempty(nodeNameLabel) && ~ismember(nodeNameLabel, {'runlevel', 'run'})
-    glmDirName = [glmDirName, '_desc-', bids.internal.camel_case(nodeName)];
+    glmDirName = [glmDirName, '_node-', bids.internal.camel_case(nodeName)];
   end
 
   ffxDir = fullfile(opt.dir.stats, ...

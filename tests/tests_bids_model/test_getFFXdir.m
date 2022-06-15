@@ -71,7 +71,7 @@ function test_getFFXdir_user_specified()
   ffxDir = getFFXdir(subLabel, opt);
 
   expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-02', ...
-                            'task-vismotion_space-individual_FWHM-6_desc-globalSignal');
+                            'task-vismotion_space-individual_FWHM-6_node-globalSignal');
 
   assertEqual(ffxDir, expectedOutput);
   assertEqual(exist(expectedOutput, 'dir'), 7);
