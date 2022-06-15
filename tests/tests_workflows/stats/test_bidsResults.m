@@ -93,7 +93,7 @@ function test_bidsResults_background_for_subject()
   opt.results.montage.background = struct('desc', 'preproc', ...
                                           'suffix', 'T1w');
 
-  opt.subjects = {'01'};
+  opt.subjects = {'^01'};
   matlabbatch = bidsResults(opt);
   bf = bids.File(matlabbatch{1}.spm.stats.results.export{1}.montage.background{1});
   assertEqual(bf.entities.desc, 'preproc');
