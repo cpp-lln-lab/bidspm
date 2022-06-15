@@ -8,6 +8,16 @@ function test_suite = test_bidsFFX %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsFFX_bug_642()
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+  opt.model.bm = BidsModel('file', opt.model.file);
+  opt.model.bm.Input.space = char(opt.model.bm.Input.space);
+
+  bidsFFX('specifyAndEstimate', opt);
+
+end
+
 function test_bidsFFX_individual()
 
   task = {'vislocalizer'}; % 'vismotion'
