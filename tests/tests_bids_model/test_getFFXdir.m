@@ -8,6 +8,39 @@ function test_suite = test_getFFXdir %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getFFXdir_ignored_desc()
+
+  subLabel = '01';
+
+  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
+
+  opt.fwhm.func = 0;
+
+  omitList = {'run'; ...
+              'run level'; ...
+              ' run level '; ...
+              '-run-level-'; ...
+              '_run_level_'};
+  omitList = cat(1, omitList, upper(omitList));
+
+  for i = 1:numel(omitList)
+
+    opt.model.bm.Nodes{1}.Name = omitList{i};
+    opt.model.bm.Edges{1}.Source = omitList{i};
+
+    ffxDir = getFFXdir(subLabel, opt);
+
+    expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-01', ...
+                              'task-vislocalizer_space-IXI549Space_FWHM-0');
+
+    assertEqual(ffxDir, expectedOutput);
+    assertEqual(exist(expectedOutput, 'dir'), 7);
+
+    rmdir(ffxDir, 's');
+  end
+
+end
+
 function test_getFFXdir_basic()
 
   subLabel = '01';
@@ -21,7 +54,10 @@ function test_getFFXdir_basic()
 
   ffxDir = getFFXdir(subLabel, opt);
 
+  assertEqual(ffxDir, expectedOutput);
   assertEqual(exist(expectedOutput, 'dir'), 7);
+
+  rmdir(ffxDir, 's');
 
 end
 
@@ -39,5 +75,7 @@ function test_getFFXdir_user_specified()
 
   assertEqual(ffxDir, expectedOutput);
   assertEqual(exist(expectedOutput, 'dir'), 7);
+
+  rmdir(ffxDir, 's');
 
 end
