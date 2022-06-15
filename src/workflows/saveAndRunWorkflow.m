@@ -8,11 +8,14 @@ function status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   %
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
+  %
   % :param batchName: name of the batch
   % :type batchName: string
+  %
   % :param opt: structure or json filename containing the options. See
   %             ``checkOptions`` and ``loadAndCheckOptions``.
   % :type opt: structure
+  %
   % :param subLabel: subject label
   % :type subLabel: string
   %
