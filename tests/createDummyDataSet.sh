@@ -52,6 +52,13 @@ create_raw_func_vismotion() {
 	echo "8\t2\tVisStat" >>"${filename}"
 
 	touch "${this_dir}/${basename}_acq-1p60mm_dir-PA_run-1${suffix}.nii"
+
+	filename=${this_dir}/${basename}_acq-1p60mm_run-2_events.tsv
+	echo "onset\tduration\ttrial_type" >"${filename}"
+	echo "4\t2\tVisMot" >>"${filename}"
+	echo "8\t2\tVisStat" >>"${filename}"
+
+	touch "${this_dir}/${basename}_acq-1p60mm_dir-PA_run-2${suffix}.nii"
 }
 
 create_raw_func_vislocalizer() {

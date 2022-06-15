@@ -91,6 +91,27 @@ function test_getRFXdir_basic()
 
 end
 
+function test_getRFXdir_extra_entity()
+
+  opt = setOptions('vismotion', '', 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, 'basename', 'model-vismotion-desc-1pt6acq_smdl');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  opt = checkOptions(opt);
+
+  rfxDir = getRFXdir(opt);
+
+  expectedOutput = fullfile(getDummyDataDir('stats'), ...
+                            'derivatives', 'cpp_spm-groupStats', ...
+                            'sub-ALL_task-vismotion_acq-1p60mm_space-IXI549Space_FWHM-6_conFWHM-0');
+
+  assertEqual(exist(expectedOutput, 'dir'), 7);
+
+  cleanUp(fullfile(getDummyDataDir('stats'), 'derivatives', 'cpp_spm-groupStats'));
+
+end
+
 function test_getRFXdir_user_specified()
 
   opt = setOptions('nback', '', 'pipelineType', 'stats');
