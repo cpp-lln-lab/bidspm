@@ -167,6 +167,13 @@ function checkRootNode(opt)
 
   checkGroupBy(thisNode);
 
+  % should not be necessary
+  % mostly in case users did not validate the model inputs
+  %   those should be array and not strings
+  if ischar(opt.space)
+    opt.space = cellstr(opt.space);
+  end
+
   if numel(opt.space) > 1
     disp(opt.space);
     msg = sprintf('GLMs can only be run in one space at a time.\n');

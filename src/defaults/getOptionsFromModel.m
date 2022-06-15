@@ -89,7 +89,7 @@ function opt = getOptionsFromModel(opt)
             overrideWarning(opt.(targetField), thisEntity, inputsAlreadyInOptions, opt.verbosity);
           end
 
-          opt.(targetField) = thisEntity.value;
+          opt.(targetField) = coerceToCellStr(thisEntity.value);
 
         case fromQuery()
 
@@ -108,6 +108,15 @@ function opt = getOptionsFromModel(opt)
 
   end
 
+end
+
+function a = coerceToCellStr(a)
+  % should not be necessary
+  % mostly in case users did not validate the inputs
+  % that should be array and not strings
+  if ischar(a)
+    a = cellstr(a);
+  end
 end
 
 function overrideWarning(thisOption, thisEntity, inputsAlreadyInOptions, verbosity)
