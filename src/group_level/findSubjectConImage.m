@@ -48,6 +48,8 @@ function file = findSubjectConImage(varargin)
   ffxDir = getFFXdir(subLabel, opt);
   load(fullfile(ffxDir, 'SPM.mat'));
 
+  printToScreen(sprintf('\n\nFor subject: %s', subLabel), opt);
+
   for iCon = 1:numel(contrastName)
 
     % find which contrast of that subject has the name of the contrast
@@ -56,7 +58,8 @@ function file = findSubjectConImage(varargin)
 
     if isempty(conIdx)
 
-      msg = sprintf('Skipping subject %s. Could not find a contrast named %s\nin %s.\n', ...
+      msg = sprintf(['\n\nSkipping subject %s. ', ...
+                     'Could not find a contrast named %s\nin %s.\n'], ...
                     subLabel, ...
                     contrastName{iCon}, ...
                     fullfile(ffxDir, 'SPM.mat'));
@@ -77,7 +80,14 @@ function file = findSubjectConImage(varargin)
       end
 
       fileName = sprintf('con_%0.4d.nii', conIdx);
-      file{iCon, 1} = validationInputFile(ffxDir, fileName, smoothPrefix);
+      fileName = validationInputFile(ffxDir, fileName, smoothPrefix);
+
+      msg = sprintf('\ncontrast "%s" in image:\n\t%s',  ...
+                    contrastName{iCon}, ...
+                    pathToPrint(fileName));
+      printToScreen(msg, opt);
+
+      file{iCon, 1} = fileName;
 
     end
 
