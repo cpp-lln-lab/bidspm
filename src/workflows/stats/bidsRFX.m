@@ -69,6 +69,7 @@ function matlabbatch = bidsRFX(varargin)
   end
 
   if ismember(lower(action), {'rfx', 'contrasts'})
+    % TODO add possibility to pass several nodeNames at once
     if ~isempty(nodeName)
       datasetNodes = opt.model.bm.get_nodes('Name', nodeName);
     else

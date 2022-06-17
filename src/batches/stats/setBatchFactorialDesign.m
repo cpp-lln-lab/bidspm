@@ -36,7 +36,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  printBatchName('specify group level fmri model', opt);
+  printBatchName(sprintf('specify group level fmri model for node "%s"', nodeName), opt);
 
   contrasts = getContrastsListForFactorialDesign(opt, nodeName);
 

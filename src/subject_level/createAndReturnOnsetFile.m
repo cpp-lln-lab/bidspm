@@ -37,6 +37,11 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
 
   % move file into the FFX directory
   [~, filename, ext] = spm_fileparts(onsetFilename);
+
+  % reset task query to original value
+  % in case we are merging several tasks in one GLM
+  opt.query.task = opt.taskName;
+
   ffxDir = getFFXdir(subLabel, opt);
   movefile(onsetFilename, ffxDir);
 

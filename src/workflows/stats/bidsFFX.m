@@ -219,7 +219,9 @@ function batchName = createBatchName(opt, action)
 end
 
 function matlabbatch = setAction(action, matlabbatch, BIDS, opt, subLabel)
+
   outputDir = getFFXdir(subLabel, opt);
+
   switch action
     case 'specify'
       matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
