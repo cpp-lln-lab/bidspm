@@ -145,6 +145,10 @@ function opt = get_options_from_argument(args)
     opt.dir.raw = args.Results.bids_dir;
     opt.dir.derivatives = args.Results.output_dir;
 
+    if isfield(opt, 'dryRun') && args.Results.dry_run ~= opt.dryRun
+      overrideWarning('dry_run', convertToString(args.Results.dry_run), ...
+                      'dryRun', convertToString(opt.dryRun));
+    end
     opt.dryRun = args.Results.dry_run;
 
     if ~isempty(args.Results.participant_label)
@@ -191,6 +195,25 @@ function opt = get_options_from_argument(args)
     opt.glm.roibased.do = args.Results.roi_based;
 
   end
+
+end
+
+function output = convertToString(input)
+  if islogical(input) && input == true
+    output = 'true';
+  elseif islogical(input) && input == false
+    output = 'false';
+  end
+end
+
+function overrideWarning(thisArgument, newValue, thisOption, oldValue)
+
+  msg = sprintf('\nArgument "%s" value "%s" will override option "%s" value "%s".\n', ...
+                thisArgument, ...
+                newValue, ...
+                thisOption, ...
+                oldValue);
+  errorHandling(mfilename(), 'argumentOverridesOptions', msg, true, true);
 
 end
 
