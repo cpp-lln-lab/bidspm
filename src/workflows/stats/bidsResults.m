@@ -300,7 +300,13 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLe
 
     tmp.dir = getFFXdir(subLabel, opt);
 
-    load(fullfile(getFFXdir(subLabel, opt), 'SPM.mat'), 'SPM');
+    status = checkSpmMat(tmp.dir);
+
+    if ~status
+      return
+    end
+
+    load(fullfile(tmp.dir, 'SPM.mat'), 'SPM');
 
     contrastNb = getContrastNb(tmp, opt, SPM);
 
