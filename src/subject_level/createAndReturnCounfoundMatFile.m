@@ -44,6 +44,10 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   bf = bids.File(tsvFile);
   bf.extension = '.mat';
 
+  % reset task query to original value
+  % in case we are merging several tasks in one GLM
+  opt.query.task = opt.taskName;
+
   ffxDir = getFFXdir(bf.entities.sub, opt);
   counfoundMatFile = fullfile(ffxDir, bf.filename);
 
