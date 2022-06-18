@@ -140,7 +140,7 @@ used to perform:
 -   GLM auto-correlation check
 
 Please see our
-[documentation](https://cpp_spm.readthedocs.io/en/latest/index.html) for more
+[documentation](https://cpp_spm.readthedocs.io/en/dev/index.html) for more
 info.
 
 ## Citation
