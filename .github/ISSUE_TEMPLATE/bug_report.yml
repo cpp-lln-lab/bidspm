@@ -43,9 +43,9 @@ body:
       description:
         Type `spm('version')` into the MATLAB / Octave command line to know.
       options:
-        - label: 7771
-        - label: 7487
-        - label: 7219
+        - label: "7771"
+        - label: "7487"
+        - label: "7219"
           required: true
 
   - type: checkboxes
