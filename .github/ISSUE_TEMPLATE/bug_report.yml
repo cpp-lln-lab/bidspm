@@ -63,7 +63,7 @@ body:
     attributes:
       label: Platform version
       render: markdown
-      placeholder:
+      placeholder: |
         - MATLAB 2017a
         - Octave 4.2.2
 
