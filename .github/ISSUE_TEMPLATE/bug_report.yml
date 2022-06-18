@@ -23,11 +23,12 @@ body:
   - type: checkboxes
     attributes:
       label: Operating system
+      description:
+        What operating system are you using?
       options:
         - label: Linux
         - label: Mac
         - label: Windows
-          required: true
 
   - type: textarea
     attributes:
@@ -41,26 +42,28 @@ body:
     attributes:
       label: SPM 12 version
       description:
+        What SPM 12 version are you using?
+
         Type `spm('version')` into the MATLAB / Octave command line to know.
       options:
         - label: "7771"
         - label: "7487"
         - label: "7219"
-          required: true
 
   - type: checkboxes
     attributes:
       label: Platform
+      description:
+        Which platform and version are you running?
       options:
         - label: MATLAB
         - label: Octave
-          required: true
 
   - type: textarea
     attributes:
       label: Platform version
       render: markdown
-      value: |
+      placeholder:
         - MATLAB 2017a
         - Octave 4.2.2
 
@@ -68,11 +71,13 @@ body:
     attributes:
       label: CPP SPM version
       description: |
-        "In the MATLAB / Octave command line, try one of the following:
-         - cpp_spm version
-         - cpp_spm('version')
-         - getVersion
-         Or check the content of CITATION.cff.
+        In the MATLAB / Octave command line, try one of the following:
+
+         - `cpp_spm version`
+         - `cpp_spm('version')`
+         - `getVersion`
+
+        Or check the content of CITATION.cff.
       options:
         - label: v2.0.0
         - label: v1.1.0
@@ -80,15 +85,16 @@ body:
         - label: v0.2.0
         - label: v0.1.0
         - label: v0.0.1
-          required: true
 
   - type: textarea
     attributes:
       label: CPP SPM branch / commit number
       description: |
-        "In a terminal:
-         - git rev-parse --abbrev-ref HEAD
-         - git rev-parse --short HEAD"
+        In a terminal:
+
+         - `git rev-parse --abbrev-ref HEAD`
+         - `git rev-parse --short HEAD`
+
       render: markdown
       value: |
         - main 29b689dd
@@ -117,16 +123,11 @@ body:
       description: If possible paste below the error message you encountered.
     validations:
       required: false
-
-  - type: textarea
-    attributes:
-      label: Branch
-      description: |
-        Which version or which branch did you encounter this bug on?
-      render: markdown
       value: |
-        - branch:
-        - version:
+        ```matlab
+        % this is the error I got
+
+        ```
 
   - type: textarea
     attributes:
