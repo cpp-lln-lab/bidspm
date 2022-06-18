@@ -1,0 +1,139 @@
+name: Bug report
+
+# See the json schema to help you create / update this form
+# https://json.schemastore.org/github-issue-forms.json
+
+description: Fill in this template to report a bug
+
+title: "[BUG]: "
+
+labels: ["bug"]
+
+body:
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      description:
+        Please search to see if an issue already exists for the bug you
+        encountered.
+      options:
+        - label: I have searched the existing issues
+          required: true
+
+  - type: checkboxes
+    attributes:
+      label: Operating system
+      options:
+        - label: Linux
+        - label: Mac
+        - label: Windows
+          required: true
+
+  - type: textarea
+    attributes:
+      label: Operating system version
+      render: markdown
+      value: |
+        - Linux Ubuntu 18.04 "bionic beaver"
+        - Mac OS Version 12 "monterey"
+
+  - type: checkboxes
+    attributes:
+      label: SPM 12 version
+      description:
+        Type `spm('version')` into the MATLAB / Octave command line to know.
+      options:
+        - label: 7771
+        - label: 7487
+        - label: 7219
+          required: true
+
+  - type: checkboxes
+    attributes:
+      label: Platform
+      options:
+        - label: MATLAB
+        - label: Octave
+          required: true
+
+  - type: textarea
+    attributes:
+      label: Platform version
+      render: markdown
+      value: |
+        - MATLAB 2017a
+        - Octave 4.2.2
+
+  - type: checkboxes
+    attributes:
+      label: CPP SPM version
+      description: |
+        "In the MATLAB / Octave command line, try one of the following:
+         - cpp_spm version
+         - cpp_spm('version')
+         - getVersion
+         Or check the content of CITATION.cff.
+      options:
+        - label: v2.0.0
+        - label: v1.1.0
+        - label: v1.0.0
+        - label: v0.2.0
+        - label: v0.1.0
+        - label: v0.0.1
+          required: true
+
+  - type: textarea
+    attributes:
+      label: CPP SPM branch / commit number
+      description: |
+        "In a terminal:
+         - git rev-parse --abbrev-ref HEAD
+         - git rev-parse --short HEAD"
+      render: markdown
+      value: |
+        - main 29b689dd
+        - dev 1bda0162
+
+
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: Describe what outcome you expected.
+      placeholder: Describe what outcome you expected.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Current Behavior
+      description: Describe what you got instead.
+      placeholder: Describe what you got instead
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Error message
+      description: If possible paste below the error message you encountered.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Branch
+      description: |
+        Which version or which branch did you encounter this bug on?
+      render: markdown
+      value: |
+        - branch:
+        - version:
+
+  - type: textarea
+    attributes:
+      label: Anything else?
+      description: |
+        Links? References? Anything that will give us more context about the issue you are encountering!
+
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+    validations:
+      required: false
