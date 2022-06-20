@@ -13,7 +13,7 @@ function tsvFile = labelActivations(varargin)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  % The code goes below
+  tsvFile = [];
 
   args = inputParser;
 
@@ -51,6 +51,13 @@ function tsvFile = labelActivations(varargin)
   label = {'x', 'y', 'z'};
   for i = 1:numel(coordinates)
     newCSV.(label{i}) = str2double(CSV.(headers{coordinates(i)})(2:end));
+  end
+
+  if isempty(newCSV.x)
+    verbosity = 2;
+    msg = sprintf('no significant voxels in file:\n\t%s', pathToPrint(csvFile));
+    errorHandling(mfilename(), 'noSignificantVoxel', msg, true, verbosity);
+    return
   end
 
   %% add MNI label
