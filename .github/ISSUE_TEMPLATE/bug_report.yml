@@ -95,6 +95,10 @@ body:
          - `git rev-parse --abbrev-ref HEAD`
          - `git rev-parse --short HEAD`
 
+        In the MATLAB command line
+
+         - `[branch, commit] = getRepoInfo()`
+
       render: markdown
       value: |
         - main 29b689dd
