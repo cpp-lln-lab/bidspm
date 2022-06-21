@@ -17,8 +17,12 @@ function [OS, generatedBy] = getEnvInfo(opt)
     opt.dryRun = false;
   end
 
+  [branch, commit] = getRepoInfo();
+
   generatedBy(1).name = 'CPP SPM';
   generatedBy(1).Version =  getVersion();
+  generatedBy(1).Branch = branch;
+  generatedBy(1).Commit = commit;
   generatedBy(1).Description = '';
   generatedBy(1).CodeURL = returnRepoURL();
   generatedBy(1).DOI = 'https://doi.org/10.5281/zenodo.3554331';

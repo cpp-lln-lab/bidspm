@@ -440,7 +440,7 @@ function [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, resul
 
   matlabbatch = setBatchGroupLevelResults(matlabbatch, opt, result);
 
-  matlabbatch = setBatchPrintFigure(matlabbatch, opt, fullfile(result.dir, figureName(opt)));
+  %   matlabbatch = setBatchPrintFigure(matlabbatch, opt, fullfile(result.dir, figureName(opt)));
 
   results{end + 1} = result;
 
