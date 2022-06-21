@@ -169,6 +169,8 @@ Not yet implementated:
 
 -   `"fir"`
 
+
+<!--
 ```json
 "Model": {
                             "Type": "glm",
@@ -187,6 +189,7 @@ Those 3 conditions      <-------"trans_?",       |
                                 "Model": "spm"
 }
 ```
+-->
 
 ```{image} ./images/gui_batch_model_hrf.png
 :alt: Corresponding options in SPM batch
