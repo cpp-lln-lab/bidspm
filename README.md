@@ -11,7 +11,7 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![codecov](https://codecov.io/gh/cpp-lln-lab/CPP_SPM/branch/main/graph/badge.svg?token=PMQYH0DIPX)](https://codecov.io/gh/cpp-lln-lab/CPP_SPM)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3554331.svg)](https://doi.org/10.5281/zenodo.3554331)
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](https://github.com/cpp-lln-lab/CPP_SPM#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](https://github.com/cpp-lln-lab/CPP_SPM#contributors)
 
 <!-- markdown-link-check-enable -->
 
@@ -58,7 +58,6 @@ See
 ### Preprocessing
 
 ```matlab
-
 bids_dir = path_to_raw_bids_dataset;
 output_dir = path_to_where_the_output_should_go;
 
@@ -73,7 +72,6 @@ cpp_spm(bids_dir, output_dir, 'subject', ...
 ### GLM
 
 ```matlab
-
 bids_dir = path_to_raw_bids_dataset;
 preproc_dir = path_to_preprocessed_dataset;
 output_dir = path_to_where_the_output_should_go;
