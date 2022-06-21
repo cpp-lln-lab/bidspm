@@ -145,7 +145,19 @@ function matlabbatch = bidsRFX(varargin)
 
         end
 
-        saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
+        status = saveAndRunWorkflow(matlabbatch, ...
+                                    'group_level_model_specification_estimation', ...
+                                    opt);
+
+        if status
+          for j = 1:numel(matlabbatch)
+            if isfield(matlabbatch{j}.spm, 'stats') && ...
+                isfield(matlabbatch{j}.spm.stats, 'fmri_est')
+              directory = fileparts(matlabbatch{j}.spm.stats.fmri_est.spmmat{1});
+              renamePng(directory, 'task');
+            end
+          end
+        end
 
       end
 
@@ -163,6 +175,7 @@ function matlabbatch = bidsRFX(varargin)
     opt.pipeline.type = 'groupStats';
     initBids(opt, 'description', description, 'force', false);
   end
+
 end
 
 function checks(opt)
