@@ -23,8 +23,6 @@ function matlabbatch = setBatchGroupLevelResults(varargin)
   load(fullfile(result.dir, 'SPM.mat'));
   result.nbSubj = SPM.nscan;
 
-  result.contrastNb = 1;
-
   result.label = 'group';
 
   result.outputName = defaultOuputNameStruct(opt, result);

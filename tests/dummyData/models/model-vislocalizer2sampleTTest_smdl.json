@@ -101,6 +101,18 @@
             -1
           ],
           "Test": "t"
+        },
+        {
+          "Name": "ctrl_gt_blind",
+          "ConditionList": [
+            "Group.blind",
+            "Group.ctrl"
+          ],
+          "Weights": [
+            -1,
+            1
+          ],
+          "Test": "t"
         }
       ]
     }

@@ -8,6 +8,24 @@ function test_suite = test_setBatchGroupLevelContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setBatchGroupLevelContrasts_between_groups()
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  opt.model.file = spm_file(opt.model.file, ...
+                            'basename', ...
+                            'model-vislocalizer2sampleTTest_smdl');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  matlabbatch = {};
+  matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, 'between_groups');
+
+  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 2);
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{1}.tcon.name, 'blind_gt_ctrl');
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{2}.tcon.name, 'ctrl_gt_blind');
+
+end
+
 function test_setBatchGroupLevelContrasts_within_group()
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
