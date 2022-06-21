@@ -374,6 +374,7 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
         if all(ismember(lower(groupBy), {'contrast'}))
 
           result.name = name;
+          result.contrastNb = 1;
           result.dir = getRFXdir(opt, result.nodeName, name);
 
           [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
@@ -389,6 +390,7 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
 
             thisGroup = availableGroups{iGroup};
             result.name = [thisGroup ' - ' name];
+            result.contrastNb = 1;
             result.dir = getRFXdir(opt, result.nodeName, name, thisGroup);
 
             [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
@@ -400,10 +402,14 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
       case 'two_sample_t_test'
 
         thisContrast = opt.model.bm.get_contrasts('Name', result.nodeName);
-        result.name = [thisContrast{1}.Name ' - ' name];
+
         result.dir = getRFXdir(opt, result.nodeName, name);
 
-        [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
+        for  iCon = 1:numel(thisContrast)
+          result.name = [thisContrast{iCon}.Name ' - ' name];
+          result.contrastNb = iCon;
+          [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
+        end
 
       otherwise
         msg = sprintf('Node %s has has model type I cannot handle.\n', result.nodeName);
