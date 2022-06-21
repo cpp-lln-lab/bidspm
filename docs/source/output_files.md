@@ -1,9 +1,5 @@
 # Outputs of CPP SPM
 
-```{warning}
-WORK IN PROGRESS
-```
-
 ## jobs and logs
 
 Each batch is saved in `jobs` folder in time a stamped m-file: those are more
@@ -24,9 +20,11 @@ cpp_spm-stats
 ```
 
 ## preprocessing
-
+<!-- markdown-link-check-disable -->
 For a complete list of how SPM outputs are renamed into BIDS derivatives see the
-Mapping page.
+[Mapping](all_mapping) page.
+<!-- markdown-link-check-enable -->
+
 
 ### func
 
