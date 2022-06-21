@@ -1,0 +1,16 @@
+{
+  "Level": "Dataset",
+  "Name": "dataset_level",
+  "GroupBy": [
+    "contrast"
+  ],
+  "Model": {
+    "X": [
+      1
+    ],
+    "Type": "glm"
+  },
+  "DummyContrasts": {
+    "Test": "t"
+  }
+}

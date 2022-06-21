@@ -1,0 +1,29 @@
+{
+  "Level": "Dataset",
+  "Name": "between_groups",
+  "Description": "2 sample t-test between groups",
+  "GroupBy": [
+    "contrast"
+  ],
+  "Model": {
+    "Type": "glm",
+    "X": [
+      1,
+      "group"
+    ]
+  },
+  "Contrasts": [
+    {
+      "Name": "blind_gt_control",
+      "ConditionList": [
+        "Group.blind",
+        "Group.control"
+      ],
+      "Weights": [
+        1,
+        -1
+      ],
+      "Test": "t"
+    }
+  ]
+}

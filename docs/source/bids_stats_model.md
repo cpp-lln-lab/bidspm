@@ -92,9 +92,9 @@ It uses
 to run those transformations. Please see this bids-matlab documentation to know
 how to use them and call them in your JSON.
 
-The advantage of this bids-matlab transformers is
-that they allow you to directly add on tsv files to quickly see
-what outcome a series of transformers will produce.
+The advantage of this bids-matlab transformers is that they allow you to
+directly add on tsv files to quickly see what outcome a series of transformers
+will produce.
 
 Below is an example on how to subtract 3 seconds from the event onsets of the
 conditions `motion` listed in the `trial_type` columns of the `events.tsv` file,
@@ -151,7 +151,7 @@ dummy scans will be included.
             "static"
         ],
         "Model": "spm"
-    }
+}
 ```
 
 `HRF` specifies:
@@ -169,13 +169,40 @@ Not yet implementated:
 
 -   `"fir"`
 
+```json
+"Model": {
+                            "Type": "glm",
+                            "X": [
+                                "motion", -------- Those 2 conditions will be convolved
+                                "static", -------|   using the canonical HRF only.
+Those 3 conditions      <-------"trans_?",       |
+    will not            <-------"rot_?",         |
+  be convolved.         <-------"*outlier*"      |
+                            ],                   |
+                            "HRF": {             |
+                                "Variables": [   |
+                                    "motion", <--|
+                                    "static"  <--|
+                                ],
+                                "Model": "spm"
+}
+```
+
+```{image} ./images/gui_batch_model_hrf.png
+:alt: Corresponding options in SPM batch
+:align: center
+```
+
 (bids_stats_model_sofware)=
 
 ### Software
+
 <!-- markdown-link-check-disable -->
+
 Note that if you wanted to change the
 [`SerialCorrelation` model](auto_correlation_model) used by CPP SPM, you could
 do so via the `Software` object of the BIDS stats model.
+
 <!-- markdown-link-check-enable -->
 
 Similar you can adapt directly in the model the threshold used by SPM to create
@@ -207,6 +234,111 @@ of SPM defaults.) .
 }
 ```
 
+```{figure} ./images/gui_batch_model_serialCorrelation_maskThresh.png
+---
+name: software_spm_batch
+align: center
+---
+Corresponding options in SPM batch
+```
+
+### Contrasts
+
+#### Run level
+
+To stay close to the way most SPM users are familiar with, all runs are analyzed
+in one single GLM.
+
+Contrasts are the run level that are either specified using `DummyContrasts` or
+`Contrasts` will be computed and will have the run number appended to their name
+in the SPM gui as shown in {ref}`contrast_run_1` and {ref}`contrast_run_2`.
+
+```{literalinclude} ./examples/model-contrastsRun_smdl.json
+:language: json
+```
+
+```{figure} ./images/gui_contrast_run_1.png
+---
+name: contrast_run_1
+align: center
+---
+Contrast for run 1
+```
+
+```{figure} ./images/gui_contrast_run_2.png
+---
+name: contrast_run_2
+align: center
+---
+Contrast for run 2
+```
+
+#### Subject level
+
+At the moment the only type of model supported at the run level is averaging of
+run level contrasts.
+
+```{literalinclude} ./examples/model-contrastsSubject_smdl.json
+:language: json
+```
+
+```{figure} ./images/gui_contrast_run_1_and_2.png
+---
+name: contrast_subject
+align: center
+---
+Subject level contrast averaging beta of run 1 and 2
+```
+
+## Dataset level
+
+At the moment only, the only type of models that are supported are:
+
+-   one sample t-test: averaging across all subjects
+
+```{literalinclude} ./examples/model-datasetLevel_smdl.json
+   :language: json
+```
+
+-   one sample t-test: averaging across all subjects of a specific group
+
+```{literalinclude} ./examples/model_withinGroup_smdl.json
+   :language: json
+```
+
+-   2 samples t-test: comparing 2 groups
+
+At the moment this can only be based on how participants are allocated to a
+group based on a `group` or `Group` column in the `participants.tsv` of in the
+raw dataset.
+
+```{literalinclude} ./examples/model_betweenGroups_smdl.json
+   :language: json
+```
+
+### Method section
+
+It is possible to write a draft of method section based on a BIDS statistical
+model.
+
+```matlab
+opt.model.file = fullfile(pwd, ...
+                          'models', ...
+                          'model-faceRepetition_smdl.json');
+opt.fwhm.contrast = 0;
+opt = checkOptions(opt);
+
+opt.designType = 'block';
+
+outputFile = boilerplate(opt, ...
+                        'outputPath', pwd, ...
+                        'pipelineType', 'stats');
+```
+
+```{literalinclude} ./examples/stats.md
+   :language: markdown
+```
+
 ## Parametric modulation
 
 Those are not yet fully implemented but there is an example of how to get
@@ -224,8 +356,13 @@ There are several examples of models in the
 [model zoo](https://github.com/bids-standard/model-zoo) along with links to
 their datasets.
 
-Several of the :ref:`demos` have their own model and you can find several
+<!-- markdown-link-check-disable -->
+
+Several of the [demos](demos) have their own model and you can find several
 "dummy" models (without corresponding data) used for testing
+
+<!-- markdown-link-check-enable -->
+
 [in this folder](https://github.com/cpp-lln-lab/CPP_SPM/tree/dev/tests/dummyData/models).
 
 An example of JSON file could look something like that:

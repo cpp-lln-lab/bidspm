@@ -22,7 +22,7 @@ cpp_spm-stats
 ## preprocessing
 <!-- markdown-link-check-disable -->
 For a complete list of how SPM outputs are renamed into BIDS derivatives see the
-[Mapping](all_mapping) page.
+[Mapping](mapping) page.
 <!-- markdown-link-check-enable -->
 
 
