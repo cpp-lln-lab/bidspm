@@ -22,13 +22,27 @@ function renamePng(directory, prefix)
   pngFiles = spm_select('FPList', directory, ['^' prefix '-.*[0-9].png$']);
 
   for iFile = 1:size(pngFiles, 1)
+
     source = deblank(pngFiles(iFile, :));
+
     basename = spm_file(source, 'basename');
     target = spm_file(source, 'basename', basename(1:end - 4));
+
     if exist(target, 'file')
       delete(target);
     end
-    movefile(source, target);
+
+    try
+      movefile(source, target);
+
+    catch
+      tolerant = true;
+      verbosity = 2;
+      msg = sprintf('Could not move file %s to %s', source, target);
+      errorHandling(mfilename(), 'cannotMoveFile', msg, tolerant, verbosity);
+
+    end
+
   end
 
 end
