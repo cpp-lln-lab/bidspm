@@ -88,7 +88,7 @@ function bidsCopyInputFolder(varargin)
                             'verbose', opt.verbosity > 0);
 
     % force grab the confounds for fmriprep
-    if strcmp(filter.modality, 'func') && ismember(generatedBy(BIDS), {'fmriprep'})
+    if strcmp(filter.modality, 'func') && checkFmriprep(BIDS)
 
       if isfield(filter, 'desc')
         filter = rmfield(filter, 'desc');
@@ -118,12 +118,4 @@ function bidsCopyInputFolder(varargin)
 
   cleanUpWorkflow(opt);
 
-end
-
-function value = generatedBy(BIDS)
-  value = '';
-  if isfield(BIDS.description, 'GeneratedBy') && ...
-       isfield(BIDS.description.GeneratedBy, 'Name')
-    value = lower(BIDS.description.GeneratedBy.Name);
-  end
 end
