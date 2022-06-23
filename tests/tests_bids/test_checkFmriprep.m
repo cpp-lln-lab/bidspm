@@ -9,6 +9,7 @@ end
 
 function test_checkFmriprep_basic()
 
+  BIDS.description.Name = 'valid fMRIPrep data';
   BIDS.description.GeneratedBy.Name = 'fMRIPrep';
   BIDS.description.GeneratedBy.Version = '20.0.2';
 
@@ -18,6 +19,7 @@ end
 
 function test_checkFmriprep_not_fmriprep()
 
+  BIDS.description.Name = 'not fMRIPrep data';
   BIDS.description.GeneratedBy.Name = 'foo';
   BIDS.description.GeneratedBy.Version = '20.0.2';
 
@@ -27,6 +29,7 @@ end
 
 function test_checkFmriprep_too_old()
 
+  BIDS.description.Name = 'old fMRIPrep data';
   BIDS.description.PipelineDescription.Name = 'fMRIPrep';
   BIDS.description.PipelineDescription.Version = '1.1.2';
 

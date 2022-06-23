@@ -16,9 +16,9 @@ function [name, version] = generatedBy(BIDS)
   version = 'unknown';
 
   % for support of old fmriprep dataset
-  if ismember(fieldnames(BIDS.description), 'PipelineDescription')
+  if ismember('PipelineDescription', fieldnames(BIDS.description))
     GeneratedBy = BIDS.description.PipelineDescription;
-  elseif ismember(fieldnames(BIDS.description), 'GeneratedBy')
+  elseif ismember('GeneratedBy', fieldnames(BIDS.description))
     GeneratedBy = BIDS.description.GeneratedBy;
   else
     return
