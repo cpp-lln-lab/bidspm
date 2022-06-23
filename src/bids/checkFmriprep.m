@@ -18,6 +18,7 @@ function status = checkFmriprep(BIDS)
 
   if ~strcmpi(name, 'fmriprep')
     status =  false;
+    return
   end
 
   tmp = strsplit(version, '.');

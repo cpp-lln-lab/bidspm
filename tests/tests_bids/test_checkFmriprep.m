@@ -33,3 +33,11 @@ function test_checkFmriprep_too_old()
   assertEqual(checkFmriprep(BIDS), false);
 
 end
+
+function test_checkFmriprep_unspeficied()
+
+  BIDS.description.Name = 'some data set';
+
+  assertEqual(checkFmriprep(BIDS), false);
+
+end

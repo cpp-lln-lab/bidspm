@@ -12,15 +12,16 @@ function [name, version] = generatedBy(BIDS)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
-  name = '';
-  version = '';
+  name = 'unknown';
+  version = 'unknown';
 
   % for support of old fmriprep dataset
   if ismember(fieldnames(BIDS.description), 'PipelineDescription')
     GeneratedBy = BIDS.description.PipelineDescription;
-  end
-  if ismember(fieldnames(BIDS.description), 'GeneratedBy')
+  elseif ismember(fieldnames(BIDS.description), 'GeneratedBy')
     GeneratedBy = BIDS.description.GeneratedBy;
+  else
+    return
   end
 
   if isfield(GeneratedBy, 'Name')
