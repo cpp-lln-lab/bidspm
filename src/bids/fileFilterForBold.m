@@ -15,6 +15,10 @@ function [filter, opt] = fileFilterForBold(opt, subLabel, type)
   %
   % (C) Copyright 2022 CPP_SPM developers
 
+  if nargin < 2
+    subLabel = '';
+  end
+
   if nargin < 3
     type = 'glm';
   end
@@ -29,6 +33,10 @@ function [filter, opt] = fileFilterForBold(opt, subLabel, type)
     end
   end
 
+  if ischar(opt.space)
+    opt.space = cellstr(opt.space);
+  end
+
   opt.query.space = opt.space;
   opt = mniToIxi(opt);
 
@@ -40,7 +48,9 @@ function [filter, opt] = fileFilterForBold(opt, subLabel, type)
 
   filter = opt.bidsFilterFile.bold;
   filter.prefix =  '';
-  filter.sub =  regexify(subLabel);
+  if ~isempty(subLabel)
+    filter.sub =  regexify(subLabel);
+  end
 
   filter.extension = {'.nii.*'};
   if strcmp(type, 'confounds')

@@ -46,10 +46,13 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subLabel) %#ok<INUSL>
   end
 
   jobsDir = fullfile(opt.dir.jobs, subLabel);
-  [~, ~, ~] = mkdir(jobsDir);
+  spm_mkdir(jobsDir);
 
   batchFileName = returnBatchFileName(batchType, '.mat');
   batchFileName = fullfile(jobsDir, batchFileName);
+
+  msg = sprintf('\nSaving job in:\n\t%s', pathToPrint(opt.dir.jobs));
+  printToScreen(msg, opt);
 
   save(batchFileName, 'matlabbatch', '-v7');
 

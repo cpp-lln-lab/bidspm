@@ -23,3 +23,11 @@ function test_labelActivations_basic()
   assertEqual(content, expectedContent);
 
 end
+
+function test_labelActivations_bug_662()
+
+  csvFile = fullfile(getDummyDataDir(), 'tsv_files', 'bug662_results_table.csv');
+
+  assertWarning(@() labelActivations(csvFile), 'labelActivations:noSignificantVoxel');
+
+end

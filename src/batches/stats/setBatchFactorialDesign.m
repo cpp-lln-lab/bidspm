@@ -36,7 +36,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-  printBatchName('specify group level fmri model', opt);
+  printBatchName(sprintf('specify group level fmri model for node "%s"', nodeName), opt);
 
   contrasts = getContrastsListForFactorialDesign(opt, nodeName);
 
@@ -137,7 +137,7 @@ function icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon)
     icell(1).scans{end + 1, 1} = file;
 
     printProcessingSubject(iSub, subLabel, opt);
-    msg = sprintf(' %s\n\n', char(file));
+    msg = sprintf(' %s\n\n', pathToPrint(char(file)));
     printToScreen(msg, opt);
 
   end

@@ -9,12 +9,16 @@ function boldFilename = getBoldFilenameForFFX(varargin)
   %
   % :param BIDS:
   % :type BIDS: structure
+  %
   % :param opt:
   % :type opt: structure
+  %
   % :param subLabel:
   % :type subLabel: string
+  %
   % :param iSes:
   % :type iSes: integer
+  %
   % :param iRun:
   % :type iRun: integer
   %
@@ -49,7 +53,7 @@ function boldFilename = getBoldFilenameForFFX(varargin)
   fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename{1}, opt);
 
   printToScreen('\n  Bold file(s):', opt);
-  printToScreen(createUnorderedList(fullPathBoldFilename), opt);
+  printToScreen(createUnorderedList(pathToPrint(fullPathBoldFilename)), opt);
 
   boldFilename = spm_file(fullPathBoldFilename, 'filename');
   subFuncDataDir = spm_file(fullPathBoldFilename, 'path');

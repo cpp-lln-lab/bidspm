@@ -1,0 +1,18 @@
+{
+  "Level": "Dataset",
+  "Name": "within_group",
+  "Description": "one sample t-test for each group",
+  "GroupBy": [
+    "contrast",
+    "Group"
+  ],
+  "Model": {
+    "Type": "glm",
+    "X": [
+      1
+    ]
+  },
+  "DummyContrasts": {
+    "Test": "t"
+  }
+}

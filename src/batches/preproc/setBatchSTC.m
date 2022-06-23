@@ -114,7 +114,7 @@ function matlabbatch = setBatchSTC(varargin)
 
     runCounter = runCounter + 1;
 
-    printToScreen([files{iFile}, '\n'], opt);
+    printToScreen([pathToPrint(files{iFile}), '\n'], opt);
 
   end
 

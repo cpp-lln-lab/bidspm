@@ -48,11 +48,11 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
 
   printBatchName('skull stripping', opt);
 
-  [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, opt, subLabel);
-
   % if the input image is mean func image instead of anatomical
   if opt.skullstrip.mean
     [imageToSkullStrip, dataDir] = getMeanFuncFilename(BIDS, subLabel, opt);
+  else
+    [imageToSkullStrip, dataDir] = getAnatFilename(BIDS, opt, subLabel);
   end
 
   bf = bids.File(imageToSkullStrip, 'use_schema', false);
@@ -68,7 +68,9 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   % if this is part of a pipeline we get the segmentation dependency to get
   % the input from.
   % Otherwise the files to process are stored in a cell
-  if isfield(opt, 'orderBatches') && isfield(opt.orderBatches, 'segment')
+  if isfield(opt, 'orderBatches') && ...
+      isfield(opt.orderBatches, 'segment') && ...
+      opt.orderBatches.segment > 0
 
     input(1) = cfg_dep('Segment: Bias Corrected (1)', ...
                        returnDependency(opt, 'segment'), ...
@@ -92,10 +94,8 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
 
   else
 
-    anatImage  = getAnatFilename(BIDS, opt, subLabel);
-
     % bias corrected image
-    anatFile = bids.File(anatImage);
+    anatFile = bids.File(imageToSkullStrip);
     filter = struct('suffix',  anatFile.suffix, ...
                     'sub', anatFile.entities.sub, ...
                     'prefix', '', ...

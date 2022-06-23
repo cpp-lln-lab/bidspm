@@ -30,13 +30,18 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
     tsvFile = tsvFile{1};
   end
 
-  msg = sprintf('\n  Reading the tsv file : %s \n', tsvFile);
+  msg = sprintf('\n  Reading the tsv file : %s \n', pathToPrint(tsvFile));
   printToScreen(msg, opt);
 
   onsetFilename = convertOnsetTsvToMat(opt, tsvFile);
 
   % move file into the FFX directory
   [~, filename, ext] = spm_fileparts(onsetFilename);
+
+  % reset task query to original value
+  % in case we are merging several tasks in one GLM
+  opt.query.task = opt.taskName;
+
   ffxDir = getFFXdir(subLabel, opt);
   movefile(onsetFilename, ffxDir);
 

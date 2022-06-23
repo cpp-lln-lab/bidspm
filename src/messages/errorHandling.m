@@ -5,13 +5,17 @@ function errorHandling(varargin)
   %  errorHandling(functionName, id, msg, tolerant, verbose)
   %
   % :param functionName:
-  % :type functionName: string
+  % :type functionName: char
+  %
   % :param id: Error or warning id
-  % :type id: string
+  % :type id: char
+  %
   % :param msg: Message to print
-  % :type msg: string
+  % :type msg: char
+  %
   % :param tolerant: If set to ``true`` errors are converted into warnings
   % :type tolerant: boolean
+  %
   % :param verbose: If set to ``0`` or ``false`` this will silence any warning
   % :type verbose: boolean
   %

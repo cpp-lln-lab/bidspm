@@ -1,0 +1,18 @@
+{
+    "Level": "Subject",
+    "Name": "subject_level",
+    "Description": "Only averaging at the subject level is supported for now.",
+    "GroupBy": [
+        "contrast",
+        "subject"
+    ],
+    "Model": {
+        "X": [
+            1
+        ],
+        "Type": "glm"
+    },
+    "DummyContrasts": {
+        "Test": "t"
+    }
+}

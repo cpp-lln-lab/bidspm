@@ -24,6 +24,7 @@ function saveOptions(opt)
   jsonFormat.indent = '    ';
   spm_jsonwrite(filename, opt, jsonFormat);
 
-  printToScreen(sprintf('Options saved in: %s\n\n', filename), opt);
+  printToScreen(sprintf('Options saved in: %s\n\n', ...
+                        pathToPrint(filename)), opt);
 
 end

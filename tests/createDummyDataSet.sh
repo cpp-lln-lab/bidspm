@@ -52,6 +52,13 @@ create_raw_func_vismotion() {
 	echo "8\t2\tVisStat" >>"${filename}"
 
 	touch "${this_dir}/${basename}_acq-1p60mm_dir-PA_run-1${suffix}.nii"
+
+	filename=${this_dir}/${basename}_acq-1p60mm_run-2_events.tsv
+	echo "onset\tduration\ttrial_type" >"${filename}"
+	echo "4\t2\tVisMot" >>"${filename}"
+	echo "8\t2\tVisStat" >>"${filename}"
+
+	touch "${this_dir}/${basename}_acq-1p60mm_dir-PA_run-2${suffix}.nii"
 }
 
 create_raw_func_vislocalizer() {
@@ -335,7 +342,7 @@ for subject in ${subject_list}; do
 	# different model for model comparison
 	task_list='vismotion vislocalizer'
 	for task in ${task_list}; do
-		this_dir=${stats_dir}/sub-${subject}/task-${task}_space-IXI549Space_FWHM-6_desc-globalSignal
+		this_dir=${stats_dir}/sub-${subject}/task-${task}_space-IXI549Space_FWHM-6_node-globalSignal
 		mkdir -p ${this_dir}
 
 		cp dummyData/mat_files/SPM.mat ${this_dir}/SPM.mat

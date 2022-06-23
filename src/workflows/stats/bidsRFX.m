@@ -69,6 +69,7 @@ function matlabbatch = bidsRFX(varargin)
   end
 
   if ismember(lower(action), {'rfx', 'contrasts'})
+    % TODO add possibility to pass several nodeNames at once
     if ~isempty(nodeName)
       datasetNodes = opt.model.bm.get_nodes('Name', nodeName);
     else
@@ -126,25 +127,13 @@ function matlabbatch = bidsRFX(varargin)
                                             contrastsList, ...
                                             groups);
 
-        % make sure there is no SPM.mat in the target dir
-        %
-        % folders where the model is to be specified have already been emptied
-        % if at this stage they are not, something has gone horribly wrong.
-        %
-        % also if we continued SPM would ask us to manually confirm the over-write
-        % by clicking buttons and no one has got time this
-        for j = 1:numel(matlabbatch)
+        checkDirIsEmpty(matlabbatch);
 
-          if isfield(matlabbatch{j}.spm, 'stats') && ...
-              isfield(matlabbatch{j}.spm.stats, 'fmri_est')
-            if exist(matlabbatch{j}.spm.stats.fmri_est.spmmat{1}, 'file')
-              error('PANIC! About to overwrite a model. That should not happen');
-            end
-          end
+        status = saveAndRunWorkflow(matlabbatch, ...
+                                    'group_level_model_specification_estimation', ...
+                                    opt);
 
-        end
-
-        saveAndRunWorkflow(matlabbatch, 'group_level_model_specification_estimation', opt);
+        renameDesignMatrixFigure(status, matlabbatch);
 
       end
 
@@ -162,6 +151,7 @@ function matlabbatch = bidsRFX(varargin)
     opt.pipeline.type = 'groupStats';
     initBids(opt, 'description', description, 'force', false);
   end
+
 end
 
 function checks(opt)
@@ -170,4 +160,42 @@ function checks(opt)
     msg = sprintf('GLMs can only be run in one space at a time.\n');
     errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
   end
+end
+
+function checkDirIsEmpty(matlabbatch)
+
+  % make sure there is no SPM.mat in the target dir
+  %
+  % folders where the model is to be specified have already been emptied
+  % if at this stage they are not, something has gone horribly wrong.
+  %
+  % also if we continued SPM would ask us to manually confirm the over-write
+  % by clicking buttons and no one has got time this
+  for i = 1:numel(matlabbatch)
+
+    if isfield(matlabbatch{i}.spm, 'stats') && ...
+        isfield(matlabbatch{i}.spm.stats, 'fmri_est')
+      if exist(matlabbatch{i}.spm.stats.fmri_est.spmmat{1}, 'file')
+        error('PANIC! About to overwrite a model. That should not happen');
+      end
+    end
+
+  end
+
+end
+
+function renameDesignMatrixFigure(status, matlabbatch)
+
+  if ~status
+    return
+  end
+
+  for j = 1:numel(matlabbatch)
+    if isfield(matlabbatch{j}.spm, 'stats') && ...
+        isfield(matlabbatch{j}.spm.stats, 'fmri_est')
+      directory = fileparts(matlabbatch{j}.spm.stats.fmri_est.spmmat{1});
+      renamePng(directory, 'task');
+    end
+  end
+
 end
