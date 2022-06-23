@@ -9,7 +9,7 @@ function [branch, commit] = getRepoInfo(rootDir)
   % (C) Copyright 2022 CPP_SPM developers
 
   if nargin < 1
-    rootDir = returnRootDir;
+    rootDir = returnRootDir();
   end
 
   WD = pwd;
