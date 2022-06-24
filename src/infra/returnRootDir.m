@@ -9,6 +9,13 @@ function rootDir = returnRootDir()
   Mfile = 'cpp_spm.m';
   rootDir = cellstr(which(Mfile, '-ALL'));
 
+  % convert to absolute paths and keep unique ones
+  for i = 1:numel(rootDir)
+    rootDir{i} = spm_file(fullfile(fileparts(rootDir{i})), 'cpath');
+  end
+
+  rootDir = unique(rootDir);
+
   if isempty(rootDir)
     err.message = 'CPP_SPM is not in your MATLAB / Octave path.\n';
     err.identifier = 'CPP_SPM:CppSpmNotInPath';
@@ -25,6 +32,6 @@ function rootDir = returnRootDir()
 
   end
 
-  rootDir = spm_file(fullfile(fileparts(rootDir{1})), 'cpath');
+  rootDir = rootDir{1};
 
 end
