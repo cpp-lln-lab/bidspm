@@ -118,6 +118,8 @@ function matlabbatch = bidsResults(varargin)
   %                          several png for one contrast
   % TODO rename NIDM file:
 
+  matlabbatch = {};
+
   args = inputParser;
 
   args.addRequired('opt', @isstruct);
@@ -136,44 +138,25 @@ function matlabbatch = bidsResults(varargin)
 
   opt.dir.output = opt.dir.stats;
 
+  status = checks(opt);
+  if ~status
+    return
+  end
+
   % filter results to keep only the one requested
   % modifies opt.results in place
   if ~isempty(nodeName)
     if ischar(nodeName)
       nodeName = {nodeName};
     end
-    tmp = opt.results;
-    for iRes = 1:numel(tmp)
-      node = opt.model.bm.get_nodes('Name',  tmp(iRes).nodeName);
-      listNodeNames{iRes} = node.Name;
-    end
+    listNodeNames = returnListNodeNames(opt);
     keep = ismember(listNodeNames, nodeName);
-    tmp = tmp(keep);
-    opt.results = tmp;
-    clear tmp;
-  end
-
-  if isempty(opt.results)
-    matlabbatch = {};
-    return
+    opt.results = opt.results(keep);
   end
 
   % skip data indexing if we are only at the group level
   indexData = true;
-  listNodeLevels = {};
-  for iRes = 1:numel(opt.results)
-    if ~isempty(opt.results(iRes).nodeName)
-      node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
-      listNodeLevels{iRes} = lower(node.Level);
-    end
-  end
-  if isempty(listNodeLevels)
-    msg = 'Specify results to show in "opt.results".';
-    id = 'noResultsAsked';
-    errorHandling(mfilename(), id, msg, true, true);
-    return
-  end
-
+  listNodeLevels = returnlistNodeLevels(opt);
   if all(ismember(listNodeLevels, 'dataset'))
     indexData = false;
   end
@@ -259,6 +242,61 @@ function matlabbatch = bidsResults(varargin)
   end
 
   cd(currentDirectory);
+
+end
+
+function [status] = checks(opt)
+
+  status = true;
+
+  if isempty(opt.results)
+    status = false;
+    return
+  end
+
+  listNodeNames = returnListNodeNames(opt);
+  if isempty(listNodeNames)
+    msg = 'Specify results to show in "opt.results".';
+    id = 'noResultsAsked';
+    errorHandling(mfilename(), id, msg, true, true);
+    status = false;
+    return
+  end
+
+  listNodeLevels = returnlistNodeLevels(opt);
+  if isempty(listNodeLevels)
+    msg = 'Specify results to show in "opt.results".';
+    id = 'noResultsAsked';
+    errorHandling(mfilename(), id, msg, true, true);
+    status = false;
+    return
+  end
+
+end
+
+function listNodeNames = returnListNodeNames(opt)
+
+  listNodeNames = {};
+
+  for iRes = 1:numel(opt.results)
+    if ~isempty(opt.results(iRes).nodeName)
+      node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
+      listNodeNames{iRes} = node.Name;
+    end
+  end
+
+end
+
+function listNodeLevels = returnlistNodeLevels(opt)
+
+  listNodeLevels = {};
+
+  for iRes = 1:numel(opt.results)
+    if ~isempty(opt.results(iRes).nodeName)
+      node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
+      listNodeLevels{iRes} = lower(node.Level);
+    end
+  end
 
 end
 
