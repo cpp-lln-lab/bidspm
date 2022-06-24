@@ -121,13 +121,16 @@ function matlabbatch = bidsResults(varargin)
   args = inputParser;
 
   args.addRequired('opt', @isstruct);
-  args.addParameter('nodeName', '');
+  args.addParameter('nodeName', {''});
 
   args.parse(varargin{:});
 
   opt =  args.Results.opt;
 
   nodeName =  args.Results.nodeName;
+  if ischar(nodeName)
+    nodeName = {nodeName};
+  end
 
   %%
   currentDirectory = pwd;
@@ -136,7 +139,8 @@ function matlabbatch = bidsResults(varargin)
 
   opt.dir.output = opt.dir.stats;
 
-  if isempty(opt.results)
+  status = checks(opt);
+  if ~status
     matlabbatch = {};
     return
   end
@@ -144,45 +148,14 @@ function matlabbatch = bidsResults(varargin)
   % filter results to keep only the one requested
   % modifies opt.results in place
   if ~isempty(nodeName)
-    listNodeNames = {};
-    if ischar(nodeName)
-      nodeName = {nodeName};
-    end
-    tmp = opt.results;
-    for iRes = 1:numel(tmp)
-      if ~isempty(tmp(iRes).nodeName)
-        node = opt.model.bm.get_nodes('Name',  tmp(iRes).nodeName);
-        listNodeNames{iRes} = node.Name;
-      end
-    end
-    if isempty(listNodeNames)
-      msg = 'Specify results to show in "opt.results".';
-      id = 'noResultsAsked';
-      errorHandling(mfilename(), id, msg, true, true);
-      return
-    end
+    listNodeNames = returnListNodeNames(opt);
     keep = ismember(listNodeNames, nodeName);
-    tmp = tmp(keep);
-    opt.results = tmp;
-    clear tmp;
+    opt.results = opt.results(keep);
   end
 
   % skip data indexing if we are only at the group level
   indexData = true;
-  listNodeLevels = {};
-  for iRes = 1:numel(opt.results)
-    if ~isempty(opt.results(iRes).nodeName)
-      node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
-      listNodeLevels{iRes} = lower(node.Level);
-    end
-  end
-  if isempty(listNodeLevels)
-    msg = 'Specify results to show in "opt.results".';
-    id = 'noResultsAsked';
-    errorHandling(mfilename(), id, msg, true, true);
-    return
-  end
-
+  listNodeLevels = returnlistNodeLevels(opt);
   if all(ismember(listNodeLevels, 'dataset'))
     indexData = false;
   end
@@ -268,6 +241,61 @@ function matlabbatch = bidsResults(varargin)
   end
 
   cd(currentDirectory);
+
+end
+
+function [status] = checks(opt)
+
+  status = true;
+
+  if isempty(opt.results)
+    status = false;
+    return
+  end
+
+  listNodeNames = returnListNodeNames(opt);
+  if isempty(listNodeNames)
+    msg = 'Specify results to show in "opt.results".';
+    id = 'noResultsAsked';
+    errorHandling(mfilename(), id, msg, true, true);
+    status = false;
+    return
+  end
+
+  listNodeLevels = returnlistNodeLevels(opt);
+  if isempty(listNodeLevels)
+    msg = 'Specify results to show in "opt.results".';
+    id = 'noResultsAsked';
+    errorHandling(mfilename(), id, msg, true, true);
+    status = false;
+    return
+  end
+
+end
+
+function listNodeNames = returnListNodeNames(opt)
+
+  listNodeNames = {};
+
+  for iRes = 1:numel(opt.results)
+    if ~isempty(opt.results(iRes).nodeName)
+      node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
+      listNodeNames{iRes} = node.Name;
+    end
+  end
+
+end
+
+function listNodeLevels = returnlistNodeLevels(opt)
+
+  listNodeLevels = {};
+
+  for iRes = 1:numel(opt.results)
+    if ~isempty(opt.results(iRes).nodeName)
+      node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
+      listNodeLevels{iRes} = lower(node.Level);
+    end
+  end
 
 end
 
