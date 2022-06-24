@@ -34,34 +34,7 @@ function [OS, generatedBy] = getEnvInfo(opt)
 
   OS.name = computer();
 
-  if ismember(OS.name, {'GLNXA64'})
-
-    [~, result] = system('lsb_release -d');
-    tokens = regexp(result, 'Description:', 'split');
-
-    OS.name = 'unix';
-    OS.version = strtrim(tokens{2});
-
-  elseif ismember(OS.name, {'MACI64'})
-
-    [~, result] = system('sw_vers');
-    tokens = regexp(result, newline, 'split');
-
-    ProductName = regexp(tokens{1}, 'ProductName:', 'split');
-    ProductVersion = regexp(tokens{2}, 'ProductVersion:', 'split');
-
-    OS.name = strtrim(ProductName{2});
-    OS.version = strtrim(ProductVersion{2});
-
-  elseif ismember(OS.name, 'PCWIN64')
-
-    [~, ver] = system('ver');
-    tokens = regexp(ver, 'Version ', 'split');
-
-    OS.name = 'Microsoft Windows';
-    OS.version = tokens{2}(1:end - 2);
-
-  end
+  OS = getOsNameAndVersion(OS);
 
   OS.platform.name = runsOn;
   OS.platform.version = version();
@@ -87,6 +60,42 @@ function [OS, generatedBy] = getEnvInfo(opt)
     end
 
     OS.environmentVariables.(keyname) = vals{i};
+
+  end
+
+end
+
+function OS = getOsNameAndVersion(OS)
+
+  if ismember(OS.name, {'GLNXA64'})
+
+    [~, result] = system('lsb_release -d');
+    tokens = regexp(result, 'Description:', 'split');
+
+    OS.name = 'unix';
+    OS.version = strtrim(tokens{2});
+    clear tokens;
+
+  elseif ismember(OS.name, {'MACI64'})
+
+    [~, result] = system('sw_vers');
+    tokens = regexp(result, newline, 'split');
+
+    ProductName = regexp(tokens{1}, 'ProductName:', 'split');
+    ProductVersion = regexp(tokens{2}, 'ProductVersion:', 'split');
+    clear tokens;
+
+    OS.name = strtrim(ProductName{2});
+    OS.version = strtrim(ProductVersion{2});
+
+  elseif ismember(OS.name, 'PCWIN64')
+
+    [~, ver] = system('ver');
+    tokens = regexp(ver, 'Version ', 'split');
+    clear tokens;
+
+    OS.name = 'Microsoft Windows';
+    OS.version = tokens{2}(1:end - 2);
 
   end
 
