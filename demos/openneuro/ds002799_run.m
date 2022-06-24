@@ -1,4 +1,3 @@
-
 % Runs smoothing and stats on ds002799 from openneuro
 %
 % To get the data run (requires datalad):
