@@ -22,7 +22,7 @@ path_to_mask_2 = 'FIX_ME';
 header_1 = spm_vol(path_to_mask_1);
 header_2 = spm_vol(path_to_mask_2);
 
-% if you want to make sure that images are in the same space 
+% if you want to make sure that images are in the same space
 % and have same resolution
 masks = char({path_to_mask_1; path_to_mask_2});
 spm_check_orientations(spm_vol(masks));
