@@ -212,6 +212,10 @@ function opt = checkResultsOptions(opt)
     return
   end
 
+  if isempty(opt.results)
+    return
+  end
+
   for iCon = 1:numel(opt.results)
 
     thisResult = opt.results(iCon);

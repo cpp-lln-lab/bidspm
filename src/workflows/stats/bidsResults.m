@@ -118,19 +118,18 @@ function matlabbatch = bidsResults(varargin)
   %                          several png for one contrast
   % TODO rename NIDM file:
 
+  matlabbatch = {};
+
   args = inputParser;
 
   args.addRequired('opt', @isstruct);
-  args.addParameter('nodeName', {''});
+  args.addParameter('nodeName', '');
 
   args.parse(varargin{:});
 
   opt =  args.Results.opt;
 
   nodeName =  args.Results.nodeName;
-  if ischar(nodeName)
-    nodeName = {nodeName};
-  end
 
   %%
   currentDirectory = pwd;
@@ -141,13 +140,15 @@ function matlabbatch = bidsResults(varargin)
 
   status = checks(opt);
   if ~status
-    matlabbatch = {};
     return
   end
 
   % filter results to keep only the one requested
   % modifies opt.results in place
   if ~isempty(nodeName)
+    if ischar(nodeName)
+      nodeName = {nodeName};
+    end
     listNodeNames = returnListNodeNames(opt);
     keep = ismember(listNodeNames, nodeName);
     opt.results = opt.results(keep);
