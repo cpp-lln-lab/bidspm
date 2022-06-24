@@ -136,26 +136,35 @@ function matlabbatch = bidsResults(varargin)
 
   opt.dir.output = opt.dir.stats;
 
+  if isempty(opt.results)
+    matlabbatch = {};
+    return
+  end
+
   % filter results to keep only the one requested
   % modifies opt.results in place
   if ~isempty(nodeName)
+    listNodeNames = {};
     if ischar(nodeName)
       nodeName = {nodeName};
     end
     tmp = opt.results;
     for iRes = 1:numel(tmp)
-      node = opt.model.bm.get_nodes('Name',  tmp(iRes).nodeName);
-      listNodeNames{iRes} = node.Name;
+      if ~isempty(tmp(iRes).nodeName)
+        node = opt.model.bm.get_nodes('Name',  tmp(iRes).nodeName);
+        listNodeNames{iRes} = node.Name;
+      end
+    end
+    if isempty(listNodeNames)
+      msg = 'Specify results to show in "opt.results".';
+      id = 'noResultsAsked';
+      errorHandling(mfilename(), id, msg, true, true);
+      return
     end
     keep = ismember(listNodeNames, nodeName);
     tmp = tmp(keep);
     opt.results = tmp;
     clear tmp;
-  end
-
-  if isempty(opt.results)
-    matlabbatch = {};
-    return
   end
 
   % skip data indexing if we are only at the group level
