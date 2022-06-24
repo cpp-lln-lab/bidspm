@@ -66,15 +66,15 @@ function [OS, generatedBy] = getEnvInfo(opt)
 end
 
 function OS = getOsNameAndVersion(OS)
-  
-    if ismember(OS.name, {'GLNXA64'})
+
+  if ismember(OS.name, {'GLNXA64'})
 
     [~, result] = system('lsb_release -d');
     tokens = regexp(result, 'Description:', 'split');
 
     OS.name = 'unix';
     OS.version = strtrim(tokens{2});
-    clear tokens
+    clear tokens;
 
   elseif ismember(OS.name, {'MACI64'})
 
@@ -83,7 +83,7 @@ function OS = getOsNameAndVersion(OS)
 
     ProductName = regexp(tokens{1}, 'ProductName:', 'split');
     ProductVersion = regexp(tokens{2}, 'ProductVersion:', 'split');
-    clear tokens
+    clear tokens;
 
     OS.name = strtrim(ProductName{2});
     OS.version = strtrim(ProductVersion{2});
@@ -92,13 +92,13 @@ function OS = getOsNameAndVersion(OS)
 
     [~, ver] = system('ver');
     tokens = regexp(ver, 'Version ', 'split');
-    clear tokens
+    clear tokens;
 
     OS.name = 'Microsoft Windows';
     OS.version = tokens{2}(1:end - 2);
 
   end
-  
+
 end
 
 function [keys, vals] = getenvall(method)
