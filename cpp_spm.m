@@ -166,9 +166,12 @@ function opt = get_options_from_argument(args)
     end
 
     if ~isempty(args.Results.fwhm) && ...
-       (~isfield(opt, 'fwhm') || ~isfield(opt.fwhm, 'func') || isempty(opt.fwhm.func))
-      opt.fwhm.func = args.Results.fwhm;
+       (isfield(opt, 'fwhm') || isfield(opt.fwhm, 'func')) && ...
+       args.Results.fwhm ~= opt.fwhm.func
+      overrideWarning('fwhm', convertToString(args.Results.fwhm), ...
+                      'fwhm.func', convertToString(opt.fwhm.func));
     end
+    opt.fwhm.func = args.Results.fwhm;
 
     if ~isempty(args.Results.space)
       opt.space = args.Results.space;
@@ -203,6 +206,8 @@ function output = convertToString(input)
     output = 'true';
   elseif islogical(input) && input == false
     output = 'false';
+  elseif isnumeric(input)
+    output = num2str(input);
   end
 end
 
