@@ -30,13 +30,14 @@ author = "the CPP SPM pipeline dev team"
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "sphinxcontrib.matlab",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
-    "sphinx_copybutton",
-    "myst_parser",
+    "sphinx.ext.coverage",
+    "sphinxcontrib.matlab",
     "sphinxcontrib.mermaid",
     "sphinxcontrib.bibtex",
-    "sphinx.ext.intersphinx",
+    "sphinx_copybutton",
+    "myst_parser",
 ]
 matlab_src_dir = os.path.dirname(os.path.abspath("../../src"))
 primary_domain = "mat"
@@ -63,6 +64,8 @@ source_suffix = ".rst"
 intersphinx_mapping = {
     "bids-matlab": ("https://bids-matlab.readthedocs.io/en/latest", None)
 }
+
+coverage_show_missing_items = True
 
 # -- Options for HTML output -------------------------------------------------
 
