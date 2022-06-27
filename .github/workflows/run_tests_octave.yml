@@ -41,10 +41,10 @@ jobs:
 
     - name: Install SPM
       run: |
-         git clone https://github.com/spm/spm12.git --depth 1
-         make -C spm12/src PLATFORM=octave distclean
-         make -C spm12/src PLATFORM=octave
-         make -C spm12/src PLATFORM=octave install
+        git clone https://github.com/spm/spm12.git --depth 1
+        make -C spm12/src PLATFORM=octave distclean
+        make -C spm12/src PLATFORM=octave
+        make -C spm12/src PLATFORM=octave install
 
     - name: Install Moxunit and MOcov
       run: |
@@ -58,9 +58,10 @@ jobs:
 
     - name: Update path
       run: |
-         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
-         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'MOcov', 'MOcov')); savepath();"
-         octave $OCTFLAGS --eval "cd(fullfile(pwd, 'Moxunit', 'Moxunit')); run moxunit_set_path();"
+        pwd
+        octave $OCTFLAGS --eval "cd(fullfile(pwd, 'MOxUnit', 'MOxUnit')); run moxunit_set_path();"
+        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'MOcov', 'MOcov')); savepath();"
+        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
     - name: Run tests
       run: |
