@@ -22,11 +22,13 @@ on:
       - dev
     paths:
       - '**.m'
+      - '.github/workflows/*system*'
   pull_request:
     branches:
       - 'main'
     paths:
       - '**.m'
+      - '.github/workflows/*system*'
   schedule:
     - cron: "0 0 1,15 * *"
 

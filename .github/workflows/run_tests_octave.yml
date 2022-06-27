@@ -8,10 +8,12 @@ on:
       - dev
     paths:
       - '**.m'
+      - '.github/workflows/run_tests*'
   pull_request:
     branches: ['*']
     paths:
       - '**.m'
+      - '.github/workflows/run_tests*'
 
 env:
   OCTFLAGS: --no-gui --no-window-system --silent
@@ -48,21 +50,14 @@ jobs:
     - name: Install Moxunit and MOcov
       run: |
         git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
-        make -C MOxUnit install
         git clone https://github.com/MOcov/MOcov.git --depth 1
-        make -C MOcov install
-
-    - name: Update octave path
-      run: |
-        octave $OCTFLAGS --eval "initCppSpm(true); savepath(); exit;"
 
     - name: Prepare data
       run: |
-        octave $OCTFLAGS --eval "cd demos/MoAE; download_moae_ds(true); exit;"
         cd tests
         make data
 
     - name: Run tests
       run: |
-        octave $OCTFLAGS --eval "run_tests"
+        octave $OCTFLAGS --eval "cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab; exit;"
         cat test_report.log | grep 0
