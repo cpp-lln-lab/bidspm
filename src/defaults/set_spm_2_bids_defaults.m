@@ -23,9 +23,11 @@ function opt = set_spm_2_bids_defaults(opt)
   map = Mapping();
   map = map.default();
 
-  if ~isempty(opt.fwhm.func) && opt.fwhm.func > 0
+  if nargin > 0 && ~isempty(opt.fwhm.func) && opt.fwhm.func > 0
     map.cfg.fwhm = opt.fwhm.func;
     fwhm = sprintf('%i', map.cfg.fwhm);
+  else
+    fwhm = 6;
   end
 
   % add resolution entity when reslicing TPMs
