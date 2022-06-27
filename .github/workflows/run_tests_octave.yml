@@ -61,6 +61,7 @@ jobs:
 
     - name: Run tests
       run: |
-        octave $OCTFLAGS --eval "cpp_spm('action', 'dev'); cd demos/MoAE; download_moae_ds(true);"
+        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
+        octave $OCTFLAGS --eval "cpp_spm(); cd demos/MoAE; download_moae_ds(true);"
         octave $OCTFLAGS --eval "run run_tests();"
         cat test_report.log | grep 0
