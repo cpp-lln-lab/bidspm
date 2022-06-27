@@ -59,5 +59,5 @@ jobs:
     - name: Run tests
       run: |
         cd /home/runner/work/CPP_SPM/CPP_SPM/.github/workflows
-        octave $OCTFLAGS --eval "fprintf('\n%s\n', pwd); run 'tests_octave'; exit;"
+        octave $OCTFLAGS --eval "fprintf('\n%s\n', pwd); ls; run 'tests_octave'; exit;"
         cat test_report.log | grep 0

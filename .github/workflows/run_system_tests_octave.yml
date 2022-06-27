@@ -50,13 +50,20 @@ jobs:
       run: |
         sudo apt-get -y -qq update
         sudo apt-get -y install octave liboctave-dev
-        sudo apt-get -y install nodejs npm
 
     - name: Clone cpp_spm
       uses: actions/checkout@v3
       with:
         submodules: true
         fetch-depth: 2
+
+    - name: Get moae fmriprep data from OSF
+      run: |
+        mkdir -p demos/MoAE/inputs/
+        cd demos/MoAE/inputs/
+        wget https://osf.io/vufjs/download
+        unzip download
+        mv moae_fmriprep fmriprep
 
     - name: Install SPM
       run: |
@@ -68,5 +75,5 @@ jobs:
 
     - name: Run system tests
       run: |
-        cd manualTests/
-        octave $OCTFLAGS --eval "test_moae"
+        cd /home/runner/work/CPP_SPM/CPP_SPM/.github/workflows
+        octave $OCTFLAGS --eval "fprintf('\n%s\n', pwd); ls; run system_tests_fmriprep_octave; exit;"
