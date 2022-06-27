@@ -19,17 +19,18 @@ Welcome to CPP SPM documentation!
    defaults
    demos
    architecture
-   preprocessing
-   fieldmaps
    statistics
-   quality_analysis
-   utils
-   FAQ
-   method_section
-   mancoreg
-   docker
+   preprocessing
    output_files
    mapping
+   method_section
+   diy
+   FAQ
+   fieldmaps
+   quality_analysis
+   utils
+   mancoreg
+   docker
    links_and_references
 
 Indices and tables

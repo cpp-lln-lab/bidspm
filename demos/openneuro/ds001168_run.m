@@ -1,7 +1,5 @@
 % (C) Copyright 2020 CPP_SPM developers
 
-% runDs001168
-
 clear;
 clc;
 
