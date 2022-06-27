@@ -63,5 +63,6 @@ jobs:
       run: |
         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
         octave $OCTFLAGS --eval "cpp_spm(); cd demos/MoAE; download_moae_ds(true);"
-        octave $OCTFLAGS --eval "cpp_spm('action', 'run_tests');"
+        cd .github/workflows
+        octave $OCTFLAGS --eval "tests_octave;"
         cat test_report.log | grep 0

@@ -81,4 +81,4 @@ jobs:
     - name: Run ${{ matrix.script }}
       run: |
         cd /home/runner/work/CPP_SPM/CPP_SPM/.github/workflows
-        octave $OCTFLAGS --eval "fprintf('\n%s\n', pwd); ls; run system_tests_${{ matrix.script }};"
+        octave $OCTFLAGS --eval "run system_tests_${{ matrix.script }};"
