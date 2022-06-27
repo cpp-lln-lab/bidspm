@@ -49,7 +49,7 @@ function skipped = bidsRoiBasedGLM(opt)
 
     [roiList, roiFolder] = getROIs(opt, subLabel);
     if iscell(roiFolder)
-        roiFolder= roiFolder{1};
+      roiFolder = roiFolder{1};
     end
     if noRoiFound(opt, roiList, 'folder', roiFolder)
       continue
