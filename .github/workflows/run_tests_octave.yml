@@ -56,8 +56,14 @@ jobs:
         cd tests
         make data
 
+    - name: Update path
+      run: |
+         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
+         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'MOcov', 'MOcov')); savepath();"
+         octave $OCTFLAGS --eval "cd(fullfile(pwd, 'Moxunit', 'Moxunit')); run moxunit_set_path();"
+
     - name: Run tests
       run: |
-        cd /home/runner/work/CPP_SPM/CPP_SPM/.github/workflows
-        octave $OCTFLAGS --eval "fprintf('\n%s\n', pwd); ls; run tests_octave; exit;"
+        octave $OCTFLAGS --eval "cpp_spm('action', 'dev'); cd demos/MoAE; download_moae_ds(true);"
+        octave $OCTFLAGS --eval "run run_tests();"
         cat test_report.log | grep 0
