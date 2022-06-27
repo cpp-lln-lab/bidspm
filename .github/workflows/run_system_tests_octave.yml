@@ -76,4 +76,4 @@ jobs:
     - name: Run system tests
       run: |
         cd /home/runner/work/CPP_SPM/CPP_SPM/.github/workflows
-        octave $OCTFLAGS --eval "fprintf('\n%s\n', pwd); ls; run system_tests_fmriprep_octave; exit;"
+        octave $OCTFLAGS --eval "fprintf('\n%s\n', pwd); ls; run system_tests_fmriprep; exit;"
