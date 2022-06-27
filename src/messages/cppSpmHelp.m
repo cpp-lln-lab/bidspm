@@ -5,8 +5,8 @@ function cppSpmHelp()
   %
   % Note:
   %
-  % - all parameters use snake_case
-  % - most invalid calls simply initialize CPP SPM
+  % - all parameters use ``snake_case``
+  % - most "invalid" calls simply initialize CPP SPM
   %
   %
   %
@@ -17,8 +17,13 @@ function cppSpmHelp()
   % .. code-block:: matlab
   %
   %   cpp_spm(bids_dir, output_dir, analysis_level, ...
-  %           'action', 'some_action')
-  %
+  %           'action', 'some_action', ...
+  %           'participant_label', {}, ...
+  %           'dry_run', false, ...
+  %           'bids_filter_file', struct([]), ...
+  %           'verbosity', 2, ...
+  %           'space', {'individual', 'IXI549Space'}, ...
+  %           'options', struct([]))
   %
   %
   % *Obligatory parameters*
@@ -32,7 +37,6 @@ function cppSpmHelp()
   % :param analysis_level: can either be ``'subject'`` or ``'dataset'``
   % :type analysis_level: string
   %
-  %
   % :param action: defines the pipeline to run; can be any of:
   %
   %                - ``'preprocess'``
@@ -41,11 +45,11 @@ function cppSpmHelp()
   %                - ``'results'``
   % :type action: string
   %
-  % Note that:
+  % .. note::
   %
-  % - ``'stats'`` runs model speification / estimation, contrast computation, display results
-  % - ``'contrasts'`` runs contrast computation, display results
-  % - ``'results'`` displays results
+  %   - ``'stats'`` runs model speification / estimation, contrast computation, display results
+  %   - ``'contrasts'`` runs contrast computation, display results
+  %   - ``'results'`` displays results
   %
   % *Optional parameters common to all actions*
   %
@@ -60,15 +64,20 @@ function cppSpmHelp()
   % :param bids_filter_file:
   % :type bids_filter_file: path to JSON file or structure
   %
-  % :param options:
-  % :type options: path to JSON file or structure
-  %
   % :param verbosity: can be ``0``, ``1`` or ``2``. Defaults to ``2``
   % :type verbosity: positive scalar
   %
   % :param space: Defaults to ``{'individual', 'IXI549Space'}``
   % :type space: cell string
   %
+  % :param options: See the ``checkOptions`` help to see the available options.
+  % :type options: path to JSON file or structure
+  %
+  % .. note::
+  %
+  %   Arguments passed to cpp_spm have priorities over the options defined in ``opt``.
+  %   For example passing the argument ``'dry_run', true``
+  %   will override the option ``opt.dryRun =  false``.
   %
   % **PREPROCESSING:**
   %
@@ -76,10 +85,22 @@ function cppSpmHelp()
   %
   %   cpp_spm(bids_dir, output_dir, 'subject', ...
   %           'action', 'preprocess', ...
-  %           'task', {...})
+  %           'participant_label', {}, ...
+  %           'dry_run', false, ...
+  %           'bids_filter_file', struct([]), ...
+  %           'verbosity', 2, ...
+  %           'space', {'individual', 'IXI549Space'}, ...
+  %           'options', struct([]), ...
+  %           'task', {}, ...
+  %           'dummy_scans', 0, ...       % specific to preprocessing
+  %           'anat_only', false, ...     % specific to preprocessing
+  %           'ignore', {}, ...           % specific to preprocessing
+  %           'fwhm', 6)
   %
   %
   % *Obligatory parameters*
+  %
+  % .. TODO check if REALLY obligatory
   %
   % :param task: only one task
   % :type task: cell string
@@ -106,17 +127,26 @@ function cppSpmHelp()
   %
   %   cpp_spm(bids_dir, output_dir, 'subject', ...
   %           'action', 'stats', ...
-  %           'preproc_dir', preproc_dir, ...
-  %           'model_file', model_file)
+  %           'preproc_dir', preproc_dir, ...        % specific to stats
+  %           'model_file', model_file, ...          % specific to stats
+  %           'participant_label', {}, ...
+  %           'dry_run', false, ...
+  %           'bids_filter_file', struct([]), ...
+  %           'verbosity', 2, ...
+  %           'space', {'individual', 'IXI549Space'}, ...
+  %           'options', struct([]), ...,
+  %           'roi_based', false, ...
+  %           'task', {}, ...
+  %           'fwhm', 6)
   %
   %
   % *Obligatory parameters*
   %
   % :param preproc_dir: path to preprocessed data
-  % :type preproc_dir: path
+  % :type  preproc_dir: path
   %
   % :param model_file:
-  % :type model_file: path to JSON file or structure
+  % :type  model_file: path to JSON file or structure
   %
   %
   % *Optional parameters*
