@@ -45,7 +45,6 @@ jobs:
          make -C spm12/src PLATFORM=octave distclean
          make -C spm12/src PLATFORM=octave
          make -C spm12/src PLATFORM=octave install
-         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath(); exit;"
 
     - name: Install Moxunit and MOcov
       run: |
@@ -59,6 +58,6 @@ jobs:
 
     - name: Run tests
       run: |
-        pwd
-        octave $OCTFLAGS --eval "cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab; exit;"
+        cd /home/runner/work/CPP_SPM/CPP_SPM/.github/workflows
+        octave $OCTFLAGS --eval "run tests_octave; exit;"
         cat test_report.log | grep 0
