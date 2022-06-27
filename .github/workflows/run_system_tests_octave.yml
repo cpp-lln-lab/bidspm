@@ -44,6 +44,11 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        script: [moae, facerep, fmriprep]
+      fail-fast: false
+
     steps:
 
     - name: Install dependencies
@@ -73,7 +78,7 @@ jobs:
          make -C spm12/src PLATFORM=octave install
          octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
-    - name: Run system tests
+    - name: Run ${{ matrix.script }}
       run: |
         cd /home/runner/work/CPP_SPM/CPP_SPM/.github/workflows
-        octave $OCTFLAGS --eval "fprintf('\n%s\n', pwd); ls; run system_tests_fmriprep;"
+        octave $OCTFLAGS --eval "fprintf('\n%s\n', pwd); ls; run system_tests_${{ matrix.script }};"
