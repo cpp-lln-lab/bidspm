@@ -1,7 +1,7 @@
 %
 % (C) Copyright 2021 CPP_SPM developers
 
-root_dir = fullfile(fileparts(mfilename('fullpath')), '..', '..');
+root_dir = getenv('GITHUB_WORKSPACE');
 
 addpath(fullfile(root_dir, 'spm12'));
 addpath(fullfile(root_dir, 'MOcov', 'MOcov'));

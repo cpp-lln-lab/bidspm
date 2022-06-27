@@ -2,7 +2,7 @@
 
 <!-- .. only:: html -->
 
-[![Documentation Status: stable](https://readthedocs.org/projects/cpp_spm/badge/?version=stable)](https://cpp_spm.readthedocs.io/en/stable/?badge=stable)
+[![Documentation Status: main](https://readthedocs.org/projects/cpp_spm/badge/?version=main)](https://cpp_spm.readthedocs.io/en/main/?badge=main)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/CPP_SPM/dev)
 [![miss_hit](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit.yml)
 [![tests with octave](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_tests_octave.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_tests_octave.yml)
