@@ -45,23 +45,19 @@ jobs:
         make -C spm12/src PLATFORM=octave distclean
         make -C spm12/src PLATFORM=octave
         make -C spm12/src PLATFORM=octave install
+        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
     - name: Install Moxunit and MOcov
       run: |
         git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
+        make -C MOxUnit install
         git clone https://github.com/MOcov/MOcov.git --depth 1
+        make -C MOcov install
 
     - name: Prepare data
       run: |
         cd tests
         make data
-
-    - name: Update path
-      run: |
-        pwd
-        octave $OCTFLAGS --eval "cd(fullfile(pwd, 'MOxUnit', 'MOxUnit')); run moxunit_set_path();"
-        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'MOcov', 'MOcov')); savepath();"
-        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
     - name: Run tests
       run: |
