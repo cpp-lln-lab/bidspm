@@ -50,6 +50,9 @@ function skipped = bidsRoiBasedGLM(opt)
     printProcessingSubject(iSub, subLabel, opt);
 
     [roiList, roiFolder] = getROIs(opt, subLabel);
+    if iscell(roiFolder)
+      roiFolder = roiFolder{1};
+    end
     if noRoiFound(opt, roiList, 'folder', roiFolder)
       continue
     end

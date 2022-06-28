@@ -36,7 +36,6 @@ function bidsSmoothing(opt)
   prefix = get_spm_prefix_list;
   opt.query.prefix = [prefix.smooth, num2str(opt.fwhm.func)];
   opt.query.space = opt.space;
-  opt = mniToIxi(opt);
   bidsRename(opt);
 
 end

@@ -22,11 +22,13 @@ on:
       - dev
     paths:
       - '**.m'
+      - '.github/workflows/*system*'
   pull_request:
     branches:
       - 'main'
     paths:
       - '**.m'
+      - '.github/workflows/*system*'
   schedule:
     - cron: "0 0 1,15 * *"
 
@@ -42,19 +44,31 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        script: [moae, facerep, fmriprep]
+      fail-fast: false
+
     steps:
 
     - name: Install dependencies
       run: |
         sudo apt-get -y -qq update
         sudo apt-get -y install octave liboctave-dev
-        sudo apt-get -y install nodejs npm
 
     - name: Clone cpp_spm
       uses: actions/checkout@v3
       with:
         submodules: true
         fetch-depth: 2
+
+    - name: Get moae fmriprep data from OSF
+      run: |
+        mkdir -p demos/MoAE/inputs/
+        cd demos/MoAE/inputs/
+        wget https://osf.io/vufjs/download
+        unzip download
+        mv moae_fmriprep fmriprep
 
     - name: Install SPM
       run: |
@@ -64,7 +78,7 @@ jobs:
          make -C spm12/src PLATFORM=octave install
          octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
-    - name: Run system tests
+    - name: Run ${{ matrix.script }}
       run: |
-        cd manualTests/
-        octave $OCTFLAGS --eval "test_moae"
+        cd /home/runner/work/CPP_SPM/CPP_SPM/.github/workflows
+        octave $OCTFLAGS --eval "run system_tests_${{ matrix.script }};"

@@ -8,10 +8,12 @@ on:
       - dev
     paths:
       - '**.m'
+      - '.github/workflows/run_tests*'
   pull_request:
     branches: ['*']
     paths:
       - '**.m'
+      - '.github/workflows/run_tests*'
 
 env:
   OCTFLAGS: --no-gui --no-window-system --silent
@@ -39,11 +41,11 @@ jobs:
 
     - name: Install SPM
       run: |
-         git clone https://github.com/spm/spm12.git --depth 1
-         make -C spm12/src PLATFORM=octave distclean
-         make -C spm12/src PLATFORM=octave
-         make -C spm12/src PLATFORM=octave install
-         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath(); exit;"
+        git clone https://github.com/spm/spm12.git --depth 1
+        make -C spm12/src PLATFORM=octave distclean
+        make -C spm12/src PLATFORM=octave
+        make -C spm12/src PLATFORM=octave install
+        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
     - name: Install Moxunit and MOcov
       run: |
@@ -52,17 +54,15 @@ jobs:
         git clone https://github.com/MOcov/MOcov.git --depth 1
         make -C MOcov install
 
-    - name: Update octave path
-      run: |
-        octave $OCTFLAGS --eval "initCppSpm(true); savepath(); exit;"
-
     - name: Prepare data
       run: |
-        octave $OCTFLAGS --eval "cd demos/MoAE; download_moae_ds(true); exit;"
         cd tests
         make data
 
     - name: Run tests
       run: |
-        octave $OCTFLAGS --eval "run_tests"
+        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
+        octave $OCTFLAGS --eval "cpp_spm(); cd demos/MoAE; download_moae_ds(true);"
+        cd .github/workflows
+        octave $OCTFLAGS --eval "tests_octave;"
         cat test_report.log | grep 0

@@ -32,6 +32,10 @@ end
 
 function test_getContrastNb_missing()
 
+  if isOctave
+    return
+  end
+
   %% GIVEN
 
   opt = setTestCfg();
@@ -51,6 +55,10 @@ function test_getContrastNb_missing()
 end
 
 function test_getContrastNb_no_name()
+
+  if isOctave
+    return
+  end
 
   %% GIVEN
 

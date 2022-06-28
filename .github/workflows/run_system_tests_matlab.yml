@@ -67,25 +67,6 @@ jobs:
           submodules: true
           fetch-depth: 2
 
-      # Prep for later
-      # - name: Install datalad
-      #   run: |
-      #     sudo apt-get -y -qq update
-      #     sudo apt-get -y install datalad
-      # - name: Info
-      #   run: |
-      #     datalad --version
-      # - name: Get fmriprep data
-      #   run: |
-      #     cd demos/
-      #     datalad install --source https://gin.g-node.org/SPM_datasets/spm_moae_fmriprep.git \
-      #                     inputs/fmriprep
-      #     cd inputs/fmriprep && datalad get *.json \
-      #                       */*/*tsv \
-      #                       */*/*json \
-      #                       */*/*desc-preproc*.nii.gz \
-      #                       */*/*desc-brain*.nii.gz
-
       - name: Get moae fmriprep data from OSF
         run: |
           mkdir -p demos/MoAE/inputs/
