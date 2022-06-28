@@ -5,6 +5,7 @@ function tests_octave()
   % Elapsed time is 284 seconds.
 
   more off;
+  warning off;
 
   tic;
 
@@ -21,8 +22,6 @@ function tests_octave()
   end
 
   printToScreen(sprintf('\nHome is %s\n', getenv('HOME')));
-
-  warning('OFF');
 
   spm('defaults', 'fMRI');
 
