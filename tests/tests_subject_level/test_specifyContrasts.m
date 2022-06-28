@@ -244,11 +244,15 @@ function test_specifyContrasts_missing_condition_for_dummy_contrasts()
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
   % WHEN
-  assertWarning(@()specifyContrasts(SPM, model), ...
-                'specifyContrasts:noContrast');
 
   assertExceptionThrown(@()specifyContrasts(SPM, model), ...
                         'specifyContrasts:noContrast');
+
+  if isOctave
+    return
+  end
+  assertWarning(@()specifyContrasts(SPM, model), ...
+                'specifyContrasts:noContrast');
 
 end
 
@@ -279,11 +283,15 @@ function test_specifyContrasts_missing_condition()
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
   % WHEN
-  assertWarning(@()specifyContrasts(SPM, model), ...
-                'specifyContrasts:noContrast');
 
   assertExceptionThrown(@()specifyContrasts(SPM, model), ...
                         'specifyContrasts:noContrast');
+
+  if isOctave
+    return
+  end
+  assertWarning(@()specifyContrasts(SPM, model), ...
+                'specifyContrasts:noContrast');
 
 end
 
