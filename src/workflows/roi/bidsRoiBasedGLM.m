@@ -41,6 +41,8 @@ function skipped = bidsRoiBasedGLM(opt)
 
   skipped = struct('subject', {{}}, 'roi', {{}});
 
+  visible = opt.verbosity > 0 && ~spm_get_defaults('cmdline');
+
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
@@ -78,8 +80,19 @@ function skipped = bidsRoiBasedGLM(opt)
       % if there is a way to extrat those info from marsbar object
       % I have yet to find it.
       roiSize.voxels = sum(roiVolume(:) > 0);
+      if roiSize.voxels < 1
+        msg = sprintf(['\nEmpty ROI.\n', ...
+                       'Skipping:\n- subject: %s \n- ROI: %s\n'], ...
+                      subLabel,  ...
+                      spm_file(roiList{iROI, 1}, 'filename'));
+        id = 'emptyRoi';
+        errorHandling(mfilename(), id, msg, true, opt.verbosity);
+      end
       voxelVolume = prod(abs(diag(roiHeader.mat)));
       roiSize.volume = roiSize.voxels * voxelVolume;
+
+      msg = sprintf('\n Processing ROI:\n\t%s\n', spm_file(roiList{iROI, 1}, 'filename'));
+      printToScreen(msg, opt);
 
       %% Do ROI based GLM
       % create ROI object for Marsbar
@@ -94,11 +107,13 @@ function skipped = bidsRoiBasedGLM(opt)
         data = get_marsy(roiObject, model, 'mean', 'v');
         estimation = estimate(model, data);
       catch
-        fprintf('\n');
-        warning(['FAILED : Extract data & MarsBaR estimation.\n', ...
-                 'Skipping:\n- subject: %s \n- ROI: %s\n'], ...
-                subLabel,  ...
-                spm_file(roiList{iROI, 1}, 'filename'));
+        msg = sprintf(['\nFAILED : Extract data & MarsBaR estimation.\n', ...
+                       'Skipping:\n- subject: %s \n- ROI: %s\n'], ...
+                      subLabel,  ...
+                      spm_file(roiList{iROI, 1}, 'filename'));
+        id = 'roiGlmFailed';
+        errorHandling(mfilename(), id, msg, true, opt.verbosity);
+
         skipped.subject{end + 1} = subLabel;
         skipped.roi{end + 1} = spm_file(roiList{iROI, 1}, 'filename');
         continue
@@ -171,7 +186,7 @@ function skipped = bidsRoiBasedGLM(opt)
       bidsFile = bids.File(nameStructure);
       bids.util.tsvwrite(fullfile(outputDir, bidsFile.filename), tsvContent);
 
-      plotRoiTimeCourse(fullfile(outputDir, bidsFile.filename), opt.verbosity > 0);
+      plotRoiTimeCourse(fullfile(outputDir, bidsFile.filename), visible);
 
       clear tsvContent;
 
