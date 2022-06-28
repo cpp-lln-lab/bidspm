@@ -147,10 +147,11 @@ function functionalQA(opt)
                                              'Radius', distToSurf);
 
           confounds = load(outputFiles.design);
-          headers = returnConfoundColumnHeaders(opt);
+          headers = bids.util.jsondecode(spm_file(outputFiles.design, 'ext', '.json'));
 
-          tsvContent = returnRegressorTsvContent(confounds, headers);
-
+          for con = 1:size(confounds, 2)
+            tsvContent.(headers.Columns{con}) = confounds(:, con);
+          end
           % horrible hack to prevent the "abrupt" way spmup_volumecorr crashes
           % if nansum is not there
           if opt.QA.func.carpetPlot && exist('nansum', 'file') == 2
@@ -196,6 +197,7 @@ function functionalQA(opt)
           bids.util.jsonwrite(spm_file(funcImage, 'filename', bf.filename), jsonContent);
 
           delete(outputFiles.design);
+          delete(spm_file(outputFiles.design, 'ext', '.json'));
           delete(realignParamFile);
 
         end
@@ -206,17 +208,4 @@ function functionalQA(opt)
 
   end
 
-end
-
-function tsvContent = returnRegressorTsvContent(confounds, headers)
-  outlier = 0;
-  for con = 1:size(confounds, 2)
-    if con > numel(headers)
-      tsvContent.(sprintf('outlier%02.0f', outlier)) = confounds(:, con);
-      outlier = outlier + 1;
-    else
-      tsvContent.(headers{con}) = confounds(:, con);
-    end
-
-  end
 end
