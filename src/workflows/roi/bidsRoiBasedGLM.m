@@ -91,8 +91,8 @@ function skipped = bidsRoiBasedGLM(opt)
       voxelVolume = prod(abs(diag(roiHeader.mat)));
       roiSize.volume = roiSize.voxels * voxelVolume;
 
-      printToScreen('\n Processing ROI:\n\t%s\n', ...
-                    spm_file(roiList{iROI, 1}, 'filename'));
+      msg = sprintf('\n Processing ROI:\n\t%s\n', spm_file(roiList{iROI, 1}, 'filename'));
+      printToScreen(msg, opt);
 
       %% Do ROI based GLM
       % create ROI object for Marsbar
