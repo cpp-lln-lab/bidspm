@@ -67,6 +67,10 @@ function test_bidsResults_too_many_backgrounds()
 
   opt.verbosity = 1;
 
+  if isOctave
+    return
+  end
+
   assertWarning(@()bidsResults(opt), 'bidsResults:tooManyMontageBackground');
 
 end
@@ -130,6 +134,11 @@ function test_bidsResults_no_background_for_montage()
   opt.results.montage.background = 'aFileThatDoesNotExist.nii';
 
   opt.verbosity = 1;
+
+  if isOctave
+    return
+  end
+
   assertWarning(@()bidsResults(opt), 'checkMaskOrUnderlay:missingMaskOrUnderlay');
 
 end

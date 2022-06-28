@@ -60,6 +60,10 @@ function test_getOptionsFromModel_task()
   opt.taskName = {'foo'};
   opt.verbosity = 2;
 
+  if isOctave
+    return
+  end
+
   assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelOverridesOptions');
 
 end
@@ -82,6 +86,10 @@ function test_getOptionsFromModel_subject()
   opt.subjects = '02';
   opt.verbosity = 2;
 
+  if isOctave
+    return
+  end
+
   assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelOverridesOptions');
 
 end
@@ -101,6 +109,11 @@ function test_getOptionsFromModel_space()
   %%
   opt.space = 'MNI';
   opt.verbosity = 2;
+
+  if isOctave
+    return
+  end
+
   assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelOverridesOptions');
 
 end
@@ -119,6 +132,11 @@ function test_getOptionsFromModel_query()
   %%
   opt.query.acq = 'foo';
   opt.verbosity = 2;
+
+  if isOctave
+    return
+  end
+
   assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelOverridesOptions');
 
 end
