@@ -4,14 +4,15 @@ function figureFile = plotRoiTimeCourse(varargin)
   %
   % USAGE::
   %
-  %   plotRoiTimeCourse(tsvFile, versbose, 'colors', colors)
+  %   plotRoiTimeCourse(tsvFile, verbose, 'colors', colors, 'roiName', roiName)
   %
   % :param tsvFile: obligatory argument.
-  % Content of TSV is organized in a "BIDS" way.
-  % Must be ``(t + 1) X c`` with t = time points and c = condtions.
-  % The + 1 for the row dimension is because of the headers giving the name of the condition.
-  % A side car JSON is expected to contain a ``SamplingFrequency`` field for the
-  % temporal resolution.
+  %                 Content of TSV is organized in a "BIDS" way.
+  %                 Must be ``(t + 1) X c`` with t = time points and c = condtions.
+  %                 The + 1 for the row dimension is because of the headers
+  %                 giving the name of the condition.
+  %                 A side car JSON is expected to contain a ``SamplingFrequency`` field
+  %                 for the temporal resolution.
   % :type tsvFile: path
   %
   % :param verbose: to show figure or not
@@ -20,8 +21,8 @@ function figureFile = plotRoiTimeCourse(varargin)
   % :param colors:
   % :type colors: ``n X 3`` array
   %
-  % :param title:
-  % :type title: char
+  % :param roiName:
+  % :type roiName: char
   %
   %
   % See also: bidsRoiBasedGLM(varargin)

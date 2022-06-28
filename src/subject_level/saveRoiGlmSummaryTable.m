@@ -1,22 +1,22 @@
 function outputFile = saveRoiGlmSummaryTable(varargin)
   %
-  %
+  % Creates a single table for a subject with all ROIs and conditions
   %
   % USAGE::
   %
   %   outputFile = saveRoiGlmSummaryTable(opt, subLabel, roiList, eventSpec)
   %
   % :param opt:
-  % :type opt: structure
+  % :type  opt: structure
   %
   % :param subLabel:
-  % :type subLabel: char
+  % :type  subLabel: char
   %
   % :param roiList: a cellstr of roi with bids friendly filenames
-  % :type roiList: cellstr
+  % :type  roiList: cellstr
   %
   % :param eventSpec: "eventSpec(iCon).name"
-  % :type eventSpec: struct
+  % :type  eventSpec: struct
   %
   %
   % (C) Copyright 2022 CPP_SPM developers
@@ -60,9 +60,11 @@ function outputFile = saveRoiGlmSummaryTable(varargin)
 
     if ~exist(dataToCompile{i}, 'file')
       bf = bids.File(dataToCompile{i});
-      warning('No data for sub-%s / roi %s\n', ...
-              subLabel, ...
-              bf.entities.label);
+      msg = sprintf('No data file found for sub-%s / roi %s\n', ...
+                    subLabel, ...
+                    bf.entities.label);
+      id = 'noRoiResultFileForRoi';
+      errorHandling(mfilename(), id, msg, true, opt.verbosity);
       continue
     end
 
@@ -103,6 +105,13 @@ function outputFile = saveRoiGlmSummaryTable(varargin)
 
     end
 
+  end
+
+  if ~exist('tsvContent', 'var')
+    msg = sprintf('No roi results found for sub-%s.\n', subLabel);
+    id = 'noRoiResultsForSubject';
+    errorHandling(mfilename(), id, msg, true, opt.verbosity);
+    return
   end
 
   %% save
