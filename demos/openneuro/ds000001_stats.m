@@ -6,12 +6,20 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 cpp_spm();
 
-opt = ds000001_stats_option();
+% The directory where the data are located
+root_dir = fileparts(mfilename('fullpath'));
+bids_dir = fullfile(root_dir, 'inputs', 'ds000001');
+output_dir = fullfile(root_dir, 'outputs', 'ds000001', 'derivatives');
+preproc_dir = fullfile(root_dir, 'outputs', 'ds000001', 'derivatives', 'cpp_spm-preproc');
 
-bidsFFX('specifyAndEstimate', opt);
-bidsFFX('contrasts', opt);
-bidsResults(opt);
+model_file = fullfile(root_dir, 'models', 'model-defaultBalloonanalogrisktask_smdl.json');
 
-bidsRFX('smoothContrasts', opt);
-bidsRFX('RFX', opt);
-bidsResults(opt);
+opt.results.nodeName = 'subject_level';
+opt.results.name = 'cash_demean';
+
+cpp_spm(bids_dir, output_dir, 'subject', ...
+        'action', 'stats', ...
+        'participant_label', {'01', '02'}, ...
+        'preproc_dir', preproc_dir, ...
+        'model_file', model_file, ...
+        'options', opt);
