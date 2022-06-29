@@ -21,9 +21,9 @@ function test_defaultResultsStructure_basic()
   expected.p = 0.05;
   expected.k = 0;
 
-  expected.png = false();
+  expected.png = true();
 
-  expected.csv = false();
+  expected.csv = true();
 
   expected.threshSpm = false();
 
@@ -34,7 +34,7 @@ function test_defaultResultsStructure_basic()
   expected.montage.orientation = 'axial';
   expected.montage.background = fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
 
-  expected.nidm = false();
+  expected.nidm = true();
 
   assertEqual(results, expected);
 
