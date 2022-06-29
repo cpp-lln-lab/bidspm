@@ -1,6 +1,6 @@
 function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   %
-  % Creates an ``_regressors.mat`` in the subject level GLM folder.
+  % Creates a ``_regressors.mat`` in the subject level GLM folder.
   %
   % For a given ``_regressors.tsv`` file and ``_model.json``,
   % it creates a  ``_regressors.mat`` file that can directly be used
@@ -13,9 +13,10 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   %   counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   %
   % :param opt:
-  % :type opt: structure
+  % :type  opt: structure
+  %
   % :param tsvFile: fullpath name of the tsv file.
-  % :type tsvFile: string
+  % :type  tsvFile: string
   %
   % :returns: :counfoundMatFile: (string) fullpath name of the file created.
   %

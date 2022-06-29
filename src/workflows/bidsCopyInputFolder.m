@@ -1,8 +1,6 @@
 function bidsCopyInputFolder(varargin)
   %
-  % Copies the folders from the ``raw`` folder to the
-  % ``derivatives`` folder, and will copy the dataset description and task json files
-  % to the derivatives directory.
+  % Copies data from the ``opt.dir.input`` folder to the ``opt.dir.output`` folder
   %
   % Then it will search the derivatives directory for any zipped ``*.gz`` image
   % and uncompress the files for the task of interest.

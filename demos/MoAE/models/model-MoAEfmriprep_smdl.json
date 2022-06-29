@@ -21,8 +21,8 @@
       "Model": {
         "X": [
           "trial_type.listening",
-          "trans_?",
-          "rot_?"
+          "trans_*",
+          "rot_*"
         ],
         "HRF": {
           "Variables": [

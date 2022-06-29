@@ -8,7 +8,26 @@ function test_suite = test_createCounfounds %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_createAndReturnCounfoundMatFile_maxNbVols()
+function test_createConfounds_no_nans()
+
+  tsvFile = fullfile(getDummyDataDir, ...
+                     'tsv_files', ...
+                     'sub-01_task-test_desc-confounds_regressors.tsv');
+  tsvContent = bids.util.tsvread(tsvFile);
+
+  designMatrix = {'trial_type.VisMot'
+                  'trial_type.VisStat'
+                  'trial_type.missing_condition'
+                  'trans_*'
+                  'rot_*'};
+
+  [~, R] = createConfounds(tsvContent, designMatrix);
+
+  assertEqual(sum(isnan(R(:))), 0);
+
+end
+
+function test_createConfounds_maxNbVols()
 
   tsvFile = fullfile(getDummyDataDir, ...
                      'tsv_files', ...
@@ -31,7 +50,7 @@ function test_createAndReturnCounfoundMatFile_maxNbVols()
 
 end
 
-function test_createAndReturnCounfoundMatFile_maxNbVols_gt_actualNbVols()
+function test_createConfounds_maxNbVols_gt_actualNbVols()
 
   tsvFile = fullfile(getDummyDataDir, ...
                      'tsv_files', ...
@@ -54,7 +73,7 @@ function test_createAndReturnCounfoundMatFile_maxNbVols_gt_actualNbVols()
 
 end
 
-function test_createAndReturnCounfoundMatFile_outlier_regressors()
+function test_createConfounds_outlier_regressors()
 
   tsvFile = fullfile(getDummyDataDir, ...
                      'tsv_files', ...
@@ -90,7 +109,7 @@ function test_createAndReturnCounfoundMatFile_outlier_regressors()
   assertEqual(names, expectedNames);
 end
 
-function test_createAndReturnCounfoundMatFile_regex()
+function test_createConfounds_regex()
 
   tsvFile = fullfile(getDummyDataDir, ...
                      'tsv_files', ...
