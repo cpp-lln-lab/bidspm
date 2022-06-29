@@ -4,9 +4,9 @@ function contrast  = defaultResultsStructure()
 
   contrast = defaultContrastsStructure;
 
-  contrast.png = false();
+  contrast.png = true();
 
-  contrast.csv = false();
+  contrast.csv = true();
 
   contrast.threshSpm = false();
 
@@ -19,6 +19,6 @@ function contrast  = defaultResultsStructure()
                                                     'canonical', ...
                                                     'avg152T1.nii'));
 
-  contrast.nidm = false();
+  contrast.nidm = true();
 
 end

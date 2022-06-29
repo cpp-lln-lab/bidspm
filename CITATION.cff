@@ -75,6 +75,11 @@ authors:
 - family-names: "Nunes"
   given-names: "Márcia"
 
+- family-names: "Caron-Guyon"
+  given-names: "Jeanne"
+  orcid: "https://orcid.org/0000-0001-8681-5267"
+  affiliation: "Université catholique de Louvain"
+
 license: GPL-3.0
 
 keywords:

@@ -15,6 +15,13 @@ on:
       - '**.m'
       - '.github/workflows/run_tests*'
 
+  # to trigger update manually from the Action tab in github
+  workflow_dispatch:
+    inputs:
+      log:
+        description: "run tests manually"
+        required: false
+
 jobs:
 
   build:
