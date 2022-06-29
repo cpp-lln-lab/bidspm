@@ -81,23 +81,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
     export{end + 1}.binary.basename = bidsFile.filename;
   end
 
-  %%
-  if result.nidm
-
-    nidm.modality = 'FMRI';
-
-    nidm.refspace = 'ixi';
-    if strcmp(result.space, 'individual')
-      nidm.refspace = 'subject';
-    end
-
-    nidm.group.nsubj = result.nbSubj;
-
-    nidm.group.label = result.label;
-
-    export{end + 1}.nidm = nidm;
-
-  end
+  export = setNidm(export, result);
 
   %%
   if result.montage.do
