@@ -35,7 +35,7 @@ function cpp_spm(varargin)
   addParameter(args, 'verbosity', 2, isPositiveScalar);
 
   addParameter(args, 'fwhm', 6, isPositiveScalar);
-  addParameter(args, 'space', {'individual', 'IXI549Space'}, @iscellstr);
+  addParameter(args, 'space', {}, @iscellstr);
 
   % preproc only
   addParameter(args, 'dummy_scans', 0, isPositiveScalar);
@@ -145,11 +145,7 @@ function opt = get_options_from_argument(args)
     opt.dir.raw = args.Results.bids_dir;
     opt.dir.derivatives = args.Results.output_dir;
 
-    if isfield(opt, 'dryRun') && args.Results.dry_run ~= opt.dryRun
-      overrideWarning('dry_run', convertToString(args.Results.dry_run), ...
-                      'dryRun', convertToString(opt.dryRun));
-    end
-    opt.dryRun = args.Results.dry_run;
+    opt = overrideDryRun(opt, args);
 
     if ~isempty(args.Results.participant_label)
       opt.subjects = args.Results.participant_label;
@@ -165,17 +161,9 @@ function opt = get_options_from_argument(args)
       opt.bidsFilterFile = args.Results.bids_filter_file;
     end
 
-    if ~isempty(args.Results.fwhm) && ...
-       (isfield(opt, 'fwhm') && isfield(opt.fwhm, 'func')) && ...
-       args.Results.fwhm ~= opt.fwhm.func
-      overrideWarning('fwhm', convertToString(args.Results.fwhm), ...
-                      'fwhm.func', convertToString(opt.fwhm.func));
-    end
-    opt.fwhm.func = args.Results.fwhm;
+    opt = overrideFwhm(opt, args);
 
-    if ~isempty(args.Results.space)
-      opt.space = args.Results.space;
-    end
+    opt = overrideSpace(opt, args);
 
     % preproc
     if ismember('slicetiming', args.Results.ignore)
@@ -201,6 +189,34 @@ function opt = get_options_from_argument(args)
 
 end
 
+function opt = overrideDryRun(opt, args)
+  if isfield(opt, 'dryRun') && args.Results.dry_run ~= opt.dryRun
+    overrideWarning('dry_run', convertToString(args.Results.dry_run), ...
+                    'dryRun', convertToString(opt.dryRun));
+  end
+  opt.dryRun = args.Results.dry_run;
+end
+
+function opt = overrideFwhm(opt, args)
+  if ~isempty(args.Results.fwhm) && ...
+     (isfield(opt, 'fwhm') && isfield(opt.fwhm, 'func')) && ...
+     args.Results.fwhm ~= opt.fwhm.func
+    overrideWarning('fwhm', convertToString(args.Results.fwhm), ...
+                    'fwhm.func', convertToString(opt.fwhm.func));
+  end
+  opt.fwhm.func = args.Results.fwhm;
+end
+
+function opt = overrideSpace(opt, args)
+  if ~isempty(args.Results.space)
+    if isfield(opt, 'space') && ~all(ismember(args.Results.space, opt.space))
+      overrideWarning('space', convertToString(args.Results.space), ...
+                      'space', convertToString(opt.space));
+    end
+    opt.space = args.Results.space;
+  end
+end
+
 function output = convertToString(input)
   if islogical(input) && input == true
     output = 'true';
@@ -208,6 +224,8 @@ function output = convertToString(input)
     output = 'false';
   elseif isnumeric(input)
     output = num2str(input);
+  elseif cellstr(input)
+    output = strjoin(input, ', ');
   end
 end
 
