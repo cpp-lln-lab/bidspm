@@ -95,6 +95,12 @@ function matlabbatch = bidsResults(varargin)
   %   opt.results(1).montage.background = ...
   %        fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
   %
+  %   % Can also be a structure to pick up the correct file for each subject
+  %   % opt.results(1).montage.background = struct('suffix', 'T1w', ...
+  %   %                                            'desc', 'preproc', ...
+  %   %                                            'modality', 'anat');
+  %
+  %
   % Finally you can export as a NIDM results zip files.
   %
   % NIDM results is a standardized results format that is readable
