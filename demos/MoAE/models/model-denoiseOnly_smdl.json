@@ -13,15 +13,15 @@
   "Nodes": [
     {
       "Level": "Run",
-      "Name": "run_level",
+      "Name": "denoise",
       "GroupBy": [
         "run",
         "subject"
       ],
       "Model": {
         "X": [
-          "trans_?",
-          "rot_?"
+          "trans_*",
+          "rot_*"
         ],
         "Type": "glm",
         "Options": {

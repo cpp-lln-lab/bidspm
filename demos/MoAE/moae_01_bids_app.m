@@ -51,7 +51,7 @@ cpp_spm();
 
 %% Dopwnload the dataset
 download_data = false;
-clean = true;
+clean = false;
 download_moae_ds(download_data, clean);
 
 %% PREPROC
@@ -92,6 +92,7 @@ opt.results(1).png = true();
 opt.results(1).csv = true();
 opt.results(1).p = 0.05;
 opt.results(1).MC = 'FWE';
+opt.results(1).binary = true();
 opt.results(1).montage.do = true();
 opt.results(1).montage.background = struct('suffix', 'T1w', ...
                                            'desc', 'preproc', ...

@@ -8,15 +8,40 @@
 % (C) Copyright 2021 Remi Gau
 
 clear;
+close all;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
 cpp_spm();
 
+this_dir = fileparts(mfilename('fullpath'));
+
 subLabel = '01';
 
-opt = moae_get_option_stats();
 opt.pipeline.type = 'stats';
+
+opt.dir.raw = fullfile(this_dir, 'inputs', 'raw');
+opt.dir.derivatives = fullfile(this_dir, 'outputs', 'derivatives');
+opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+
+opt.dir.roi = fullfile(opt.dir.derivatives, 'cpp_spm-roi');
+opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
+
+opt.model.file = fullfile(this_dir, 'models', 'model-MoAE_smdl.json');
+
+% Specify the result to compute
+opt.results(1).nodeName = 'run_level';
+
+opt.results(1).name = 'listening';
+% MONTAGE FIGURE OPTIONS
+opt.results(1).montage.do = true();
+opt.results(1).montage.slices = -4:2:16; % in mm
+% axial is default 'sagittal', 'coronal'
+opt.results(1).montage.orientation = 'axial';
+% will use the MNI T1 template by default but the underlay image can be changed.
+opt.results(1).montage.background = ...
+    fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
+
 opt = checkOptions(opt);
 
 use_schema = false;
@@ -85,10 +110,10 @@ layers(4).color.line_width = 2;
 settings = sd_config_settings('init');
 
 % we reuse the details for the SPM montage
-settings.slice.orientation = opt.results(1).Output.montage.orientation;
+settings.slice.orientation = opt.results(1).montage.orientation;
 settings.slice.disp_slices = -15:3:18;
 settings.fig_specs.n.slice_column = 4;
-settings.fig_specs.title = opt.results(1).Contrasts(1).Name;
+settings.fig_specs.title = opt.results(1).name;
 
 %% Display the layers
 [settings, p] = sd_display(layers, settings);

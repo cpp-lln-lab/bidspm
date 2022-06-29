@@ -22,6 +22,10 @@ function matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
+  if isempty(consess)
+    return
+  end
+
   printBatchName('contrasts specification', opt);
 
   matlabbatch{end + 1}.spm.stats.con.spmmat = {spmMatFile};
