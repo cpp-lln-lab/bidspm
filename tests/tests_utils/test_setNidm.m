@@ -56,3 +56,16 @@ function test_setNidm_IXI549Space()
   assertEqual(export{1}.nidm, expected);
 
 end
+
+function test_setNidm_wrong_space()
+
+  export = [];
+
+  result.nidm = true;
+  result.space = 'foo';
+  result.nbSubj = 10;
+  result.label = 'GROUP';
+
+  assertExceptionThrown(@() setNidm(export, result), 'setNidm:unknownNidmSpace');
+
+end
