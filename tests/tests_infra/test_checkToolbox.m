@@ -56,6 +56,10 @@ function test_checkToolbox_macs()
 
   else
 
+    if isOctave()
+      return
+    end
+
     status = checkToolbox('MACS');
     assertEqual(status, true);
 
