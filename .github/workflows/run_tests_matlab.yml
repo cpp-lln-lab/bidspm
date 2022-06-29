@@ -7,13 +7,11 @@ on:
       - main
       - dev
     paths:
-      - '*.m'
       - '**.m'
       - '.github/workflows/run_tests*'
   pull_request:
     branches: ["*"]
     paths:
-      - '*.m'
       - '**.m'
       - '.github/workflows/run_tests*'
 
