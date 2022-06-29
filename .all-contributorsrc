@@ -136,6 +136,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "JeanneCaronGuyon",
+      "name": "Jeanne Caron-Guyon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8718798?v=4",
+      "profile": "https://github.com/JeanneCaronGuyon",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
