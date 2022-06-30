@@ -20,21 +20,10 @@ data:
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds000001
 	cd inputs && datalad install ///openneuro/ds000114
-	cd inputs && datalad install ///openneuro/ds000168
+	cd inputs && datalad install ///openneuro/ds001168
 	datalad get inputs/ds000*/sub-0[12]
 
 data_ds000001:
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds000001
 	datalad get inputs/ds000001/sub-0[12]
-
-# all: $(roi)
-
-# $(preproc): moae_01_preproc.m
-# 	$(MATLAB) $(ARG) -r "run('moae_01_preproc.m');exit;"
-
-# $(stats): $(preproc)
-# 	$(MATLAB) $(ARG) -r "run('moae_02_stats.m');exit;"
-
-# $(roi): $(stats) moae_03_create_roi_extract_data.m
-# 	$(MATLAB) $(ARG) -r "run('moae_03_create_roi_extract_data.m');exit;"

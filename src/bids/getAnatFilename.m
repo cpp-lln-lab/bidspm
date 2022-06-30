@@ -10,12 +10,12 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   %   [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
   %
   % :param BIDS:
-  % :type BIDS:      structure
+  % :type  BIDS:      structure
   %
   % :param subLabel:
-  % :param subLabel:  char
+  % :type subLabel:  char
   %
-  % :type opt:
+  % :type  opt:
   % :param opt:      structure
   %
   % :returns: - :anatImage: (string)
