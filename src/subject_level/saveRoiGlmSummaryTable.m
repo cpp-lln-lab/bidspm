@@ -35,6 +35,8 @@ function outputFile = saveRoiGlmSummaryTable(varargin)
   roiList = args.Results.roiList;
   eventSpec = args.Results.eventSpec;
 
+  checks(opt);
+
   outputDir = getFFXdir(subLabel, opt);
 
   %% make a list of the files to load
@@ -122,5 +124,21 @@ function outputFile = saveRoiGlmSummaryTable(varargin)
   outputFile = fullfile(outputDir, bidsFile.filename);
 
   bids.util.tsvwrite(outputFile, tsvContent);
+
+end
+
+function checks(opt)
+
+  if numel(opt.space) > 1
+    disp(opt.space);
+    msg = sprintf('GLMs can only be run in one space at a time.\n');
+    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+  end
+
+  if ~opt.glm.roibased.do
+    msg = '"opt.glm.roibased.do" must be set to true for this workflow to to run.';
+    id = 'roiBasedAnalysis';
+    errorHandling(mfilename(), id, msg, false, opt.verbosity);
+  end
 
 end
