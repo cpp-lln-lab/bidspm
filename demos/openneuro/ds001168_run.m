@@ -6,19 +6,24 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 cpp_spm();
 
-opt = ds001168_get_option();
+% The directory where the data are located
+root_dir = fileparts(mfilename('fullpath'));
+bids_dir = fullfile(root_dir, 'inputs', 'ds001168');
+output_dir = fullfile(root_dir, 'outputs', 'ds001168', 'derivatives');
 
-reportBIDS(opt);
+opt.bidsFilterFile.t1w.ses = '1';
+opt.bidsFilterFile.bold.acq = 'fullbrain';
 
-bidsCopyInputFolder(opt);
+opt.query.modality = {'anat', 'func', 'fmap'};
 
-bidsCreateVDM(opt);
+%% Preprocessing
 
-bidsSTC(opt);
-
-bidsSpatialPrepro(opt);
-
-bidsSmoothing(opt);
+cpp_spm(bids_dir, output_dir, 'subject', ...
+        'participant_label', {'01'}, ...
+        'action', 'preprocess', ...
+        'task', {'rest'}, ...
+        'space', {'IXI549Space'}, ...
+        'options', opt);
 
 % Not implemented yet
 % bidsFFX('specifyAndEstimate', opt);

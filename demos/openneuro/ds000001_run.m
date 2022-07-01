@@ -10,10 +10,20 @@ cpp_spm();
 root_dir = fileparts(mfilename('fullpath'));
 bids_dir = fullfile(root_dir, 'inputs', 'ds000001');
 output_dir = fullfile(root_dir, 'outputs', 'ds000001', 'derivatives');
+
+%% Preprocessing
+cpp_spm(bids_dir, output_dir, 'subject', ...
+        'participant_label', {'01', '02'}, ...
+        'action', 'preprocess', ...
+        'task', {'balloonanalogrisktask'}, ...
+        'space', {'IXI549Space'});
+
+%% Stats
 preproc_dir = fullfile(root_dir, 'outputs', 'ds000001', 'derivatives', 'cpp_spm-preproc');
 
 model_file = fullfile(root_dir, 'models', 'model-defaultBalloonanalogrisktask_smdl.json');
 
+%% subject level
 opt.results.nodeName = 'subject_level';
 opt.results.name = 'cash_demean';
 
@@ -24,7 +34,7 @@ cpp_spm(bids_dir, output_dir, 'subject', ...
         'model_file', model_file, ...
         'options', opt);
 
-%%
+%% dataset level
 opt.results.nodeName = 'dataset_level';
 
 cpp_spm(bids_dir, output_dir, 'dataset', ...

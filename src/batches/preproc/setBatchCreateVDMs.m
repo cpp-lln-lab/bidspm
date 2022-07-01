@@ -51,13 +51,21 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
 
       if strfind(metadata.IntendedFor, opt.taskName)
 
+        try
+          [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, filter);
+        catch
+          % TODO
+          % dirty hack to let preprocessing continue
+          % until VDM creation is properly fixed
+          % TODO rethrow error message as warning
+          continue
+        end
+
         matlabbatch = setBatchComputeVDM(matlabbatch, 'phasediff', refImage);
 
         % TODO Move to getInfo ?
         matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.phase = ...
             bids.query(BIDS, 'data', filter);
-
-        [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, filter);
 
         filter.suffix = 'magnitude1';
         matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.magnitude = ...

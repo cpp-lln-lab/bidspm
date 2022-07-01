@@ -7,23 +7,31 @@ ARG    = -nodisplay -nosplash -nodesktop
 
 OCTFLAGS = --no-gui --no-window-system --silent
 
-preproc  = outputs/derivatives/cpp_spm-preproc/sub-%/func/sub-%_task-%_space-%_desc-smth%_bold.nii
-stats    = outputs/derivatives/cpp_spm-stats/sub-%/stats/task-%_space-MNI%/con_%.nii
-roi      = outputs/derivatives/cpp_spm-roi/sub-%/roi/sub-%_space-MNI_desc-%_mask.nii
-
 clean:
 	rm -rf inputs/ds*
 	rm -rf outputs/derivatives
 	rm -rf cfg
 
-data:
-	mkdir -p inputs
-	cd inputs && datalad install ///openneuro/ds000001
-	cd inputs && datalad install ///openneuro/ds000114
-	cd inputs && datalad install ///openneuro/ds001168
-	datalad get inputs/ds000*/sub-0[12]
+data: data_ds000001 data_ds000114 data_ds001168
 
 data_ds000001:
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds000001
-	datalad get inputs/ds000001/sub-0[12]
+	datalad -d inputs/ds000001 get inputs/ds000001/sub-0[12]
+
+data_ds000114:
+	mkdir -p inputs
+	cd inputs && datalad install ///openneuro/ds000114
+	datalad -d inputs/ds000114 get inputs/ds000114/sub-0[12]
+
+data_ds001168:
+	datalad install ///openneuro/ds001168 inputs/ds001168
+	datalad -d inputs/ds001168 get inputs/ds001168/sub-0[12]
+
+data_ds002799:
+	datalad install ///openneuro/ds002799 inputs/ds002799
+	cd inputs/ds002799/derivatives/fmriprep
+	datalad -d get sub-292/*/func/*MNI152NLin2009cAsym*
+	datalad get sub-292/*/func/*tsv
+	datalad get sub-30[27]/*/func/*MNI152NLin2009cAsym*
+	datalad get sub-30[27]/*/func/*tsv

@@ -7,13 +7,11 @@
 % **Preprocessing**
 %
 %   - copies the necessary data from the raw to the derivative folder,
-%   - runs slice time correction
 %   - runs spatial preprocessing
 %
 % those are otherwise handled by the workflows:
 %
 %   - ``bidsCopyInputFolder.m``
-%   - ``bidsSTC.m``
 %   - ``bidsSpatialPrepro.m``
 %
 % **stats**

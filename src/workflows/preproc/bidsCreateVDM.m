@@ -22,9 +22,14 @@ function bidsCreateVDM(opt)
 
   opt.pipeline.type = 'preproc';
 
+  opt.dir.input = opt.dir.preproc;
+
   [BIDS, opt] = setUpWorkflow(opt, 'create voxel displacement map');
 
+  % why?
   opt.rename = false;
+
+  opt.query.desc = '';
 
   for iSub = 1:numel(opt.subjects)
 
