@@ -33,6 +33,10 @@ function skipped = bidsRoiBasedGLM(opt)
 
   description = 'ROI based GLMs';
 
+  if ~isfield(opt.dir, 'roi')
+    opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'cpp_spm-roi'), 'cpath');
+  end
+
   [BIDS, opt] = setUpWorkflow(opt, description);
 
   checks(opt);
@@ -206,6 +210,12 @@ function checks(opt)
     disp(opt.space);
     msg = sprintf('GLMs can only be run in one space at a time.\n');
     errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+  end
+
+  if ~opt.glm.roibased.do
+    msg = '"opt.glm.roibased.do" must be set to true for this workflow to to run.';
+    id = 'roiBasedAnalysis';
+    errorHandling(mfilename(), id, msg, false, opt.verbosity);
   end
 
 end
