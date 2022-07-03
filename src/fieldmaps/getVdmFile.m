@@ -21,6 +21,8 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  vdmFile = '';
+
   bf = bids.File(boldFilename);
   entities = bf.entities;
 

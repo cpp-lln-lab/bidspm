@@ -73,7 +73,9 @@ function matlabbatch = setBatchSTC(varargin)
     referenceSlice = opt.stc.referenceSlice;
   end
 
-  if TA >= repetitionTime || referenceSlice > acquisitionTime || any(sliceOrder > acquisitionTime)
+  if acquisitionTime >= repetitionTime || ...
+      referenceSlice > acquisitionTime || ...
+      any(sliceOrder > acquisitionTime)
 
     pattern = repmat ('%.3f, ', 1, numel(sliceOrder));
     pattern(end) = [];
