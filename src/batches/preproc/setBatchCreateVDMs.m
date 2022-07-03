@@ -7,14 +7,16 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %   matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
+  % :type  matlabbatch: structure
+  %
   % :param BIDS: BIDS layout returned by ``getData``.
-  % :type BIDS: structure
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt: structure
+  % :type  BIDS: structure
+  %
+  % :param opt: structure or json filename containing the options.
+  %             See also: checkOptions and loadAndCheckOptions
+  % :type  opt: structure
   % :param subLabel: subject label
-  % :type subLabel: string
+  % :type  subLabel: string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
@@ -53,12 +55,22 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
 
         try
           [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, filter);
-        catch
-          % TODO
-          % dirty hack to let preprocessing continue
-          % until VDM creation is properly fixed
-          % TODO rethrow error message as warning
-          continue
+
+        catch ME
+          % until createVDM is fixed we skip it
+          % and rethrow this error as a warning only
+          if strcmp(ME.identifier, 'getMetadataFromIntendedForFunc:emptyReadoutTime')
+            msg = ['Voxel displacement map creation requires a non empty value' ...
+                   'for the TotalReadoutTime of the bold sequence they are matched to.\n', ...
+                   'Creating voxel displacement maps is work in progress.\n', ...
+                   'This is known issue\n.', ...
+                   'Skipping for now.'];
+            errorHandling(mfilename(), 'emptyReadoutTime', msg, true, opt.verbosity);
+            continue
+          else
+            rethrow(ME);
+
+          end
         end
 
         matlabbatch = setBatchComputeVDM(matlabbatch, 'phasediff', refImage);

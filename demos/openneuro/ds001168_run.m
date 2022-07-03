@@ -1,3 +1,8 @@
+% .. warning
+%
+%   the fieldmap handling is still work in progress
+%   and is therefore skipped in this analysis
+%
 % (C) Copyright 2020 CPP_SPM developers
 
 clear;
@@ -18,14 +23,18 @@ opt.query.modality = {'anat', 'func', 'fmap'};
 
 %% Preprocessing
 
+% TODO
+% skipping slicetiming for now as there seems to be a problem
+% with the slice timing metadata
+% (some slice timing values are higher than the computed acquisition time)
+% that lead to a crash
+
 cpp_spm(bids_dir, output_dir, 'subject', ...
         'participant_label', {'01'}, ...
         'action', 'preprocess', ...
         'task', {'rest'}, ...
         'space', {'IXI549Space'}, ...
+        'ignore', {'slicetiming'}, ...
         'options', opt);
 
-% Not implemented yet
-% bidsFFX('specifyAndEstimate', opt);
-% bidsFFX('contrasts', opt);
-% bidsResults(opt);
+%%

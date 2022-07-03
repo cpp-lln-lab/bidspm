@@ -11,7 +11,7 @@ function bidsCreateVDM(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % .. TODO:
+  % .. todo:
   %
   %    - take care of all types of fieldmaps
   %
