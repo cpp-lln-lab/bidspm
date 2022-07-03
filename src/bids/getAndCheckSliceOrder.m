@@ -28,6 +28,8 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  % TODO support for DelayTime and AcquisitionDuration
+
   if ~isempty(opt.stc.sliceOrder)
 
     sliceOrder = opt.stc.sliceOrder;
@@ -35,7 +37,7 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
     printToScreen(' SLICE TIMING INFORMATION EXTRACTED FROM OPTIONS.\n\n', opt);
 
     wng = ['[DEPRECATION WARNING]\n', ...
-           'Slice timing in the options will be deprecated in a future realease.\n', ...
+           'Slice timing in the options will be deprecated in release 3.0.\n', ...
            'Specify it in the relevant JSON file in your BIDS dataset.\n'];
     errorHandling(mfilename(), 'deprecation', wng, true, opt.verbosity);
 

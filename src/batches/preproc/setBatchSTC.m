@@ -7,21 +7,23 @@ function matlabbatch = setBatchSTC(varargin)
   %   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
   %
   % :param BIDS: BIDS layout returned by ``getData``.
-  % :type BIDS: structure
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt: structure
+  % :type  BIDS: structure
+  %
+  % :param opt: structure or json filename containing the options.
+  %             See also: checkOptions and loadAndCheckOptions
+  % :type  opt: structure
+  %
   % :param subLabel: subject label
-  % :type subLabel: string
+  % :type  subLabel: string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
-  % Slice timing units is in seconds to be BIDS compliant and not in slice number
-  % as is more traditionally the case with SPM.
+  % Slice timing units is in seconds to be BIDS compliant
+  % and not in slice number as is more traditionally the case with SPM.
   %
   % If no slice order can be found, the slice timing correction will not be performed.
   %
-  % If not specified this function will take the mid-volume time point as reference
+  % If not specified in the options, this function will take the mid-volume time point as reference
   % to do the slice timing correction.
   %
   % (C) Copyright 2019 CPP_SPM developers
@@ -46,7 +48,7 @@ function matlabbatch = setBatchSTC(varargin)
 
   % get metadata for STC
   filter = fileFilterForBold(opt, subLabel, 'stc');
-  TR = getAndCheckRepetitionTime(BIDS, filter);
+  repetitionTime = getAndCheckRepetitionTime(BIDS, filter);
 
   % get slice order
   sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter);
@@ -59,14 +61,7 @@ function matlabbatch = setBatchSTC(varargin)
 
   printBatchName('slice timing correction', opt);
 
-  % SPM accepts slice time acquisition as inputs for slice order
-  % (simplifies things when dealing with multiecho data)
-  nbSlices = length(sliceOrder);
-  TA = TR - (TR / nbSlices);
-  % round acquisition time to the upper millisecond
-  % mostly to avoid having errors when checking:
-  %     any(sliceOrder > TA)
-  TA = ceil(TA * 1000) / 1000;
+  acquisitionTime = getAcquisitionTime(sliceOrder, repetitionTime);
 
   maxSliceTime = max(sliceOrder);
   minSliceTime = min(sliceOrder);
@@ -77,7 +72,7 @@ function matlabbatch = setBatchSTC(varargin)
     referenceSlice = opt.stc.referenceSlice;
   end
 
-  if TA >= TR || referenceSlice > TA || any(sliceOrder > TA)
+  if TA >= repetitionTime || referenceSlice > acquisitionTime || any(sliceOrder > acquisitionTime)
 
     pattern = repmat ('%.3f, ', 1, numel(sliceOrder));
     pattern(end) = [];
@@ -90,15 +85,19 @@ function matlabbatch = setBatchSTC(varargin)
                    '\n- repetition time: %f', ...
                    '\n- acquisition time: %f', ...
                    '\n- reference slice: %f', ...
-                   '\n- slice order: ' pattern], TR, TA, referenceSlice, sliceOrder);
+                   '\n- slice order: ' pattern], ...
+                  repetitionTime, ...
+                  acquisitionTime, ...
+                  referenceSlice, ...
+                  sliceOrder);
 
     errorHandling(mfilename(), 'invalidInputTime', msg, ...
                   false, opt.verbosity);
   end
 
   temporal.st.nslices = nbSlices;
-  temporal.st.tr = TR;
-  temporal.st.ta = TA;
+  temporal.st.tr = repetitionTime;
+  temporal.st.ta = acquisitionTime;
   temporal.st.so = sliceOrder * 1000;
   temporal.st.refslice = referenceSlice * 1000;
 
