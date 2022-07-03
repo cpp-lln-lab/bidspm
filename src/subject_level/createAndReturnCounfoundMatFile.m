@@ -12,9 +12,9 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   %
   %   counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   %
-  % :type opt:  structure
-  % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
+  % :param opt:     Options chosen for the analysis.
+  %                 See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt:      structure
   %
   % :param tsvFile: fullpath name of the tsv file.
   % :type  tsvFile: char

@@ -6,7 +6,7 @@ function bidsChangeSuffix(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
+  %             See also: checkOptions
   %             To test the output, set ``opt.dryRun`` to ``true``.
   % :type opt: structure
   %

@@ -13,9 +13,9 @@ function matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, subLabel)
   %              See also: bids.layout, getData.
   % :type  BIDS: structure
   %
-  % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   % :type  subLabel: char
   % :param subLabel: subject label

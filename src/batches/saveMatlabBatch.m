@@ -8,18 +8,17 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subLabel) %#ok<INUSL>
   %   saveMatlabBatch(matlabbatch, batchType, opt, [subLabel])
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
+  % :type  matlabbatch: structure
   %
   % :param batchType:
-  % :type batchType: char
+  % :type  batchType: char
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
-  % :type opt: structure
+  %             See also: checkOptions
   %
   % :param subLabel:
-  % :type subLabel: char
+  % :type  subLabel: char
   %
   % The .m file can directly be loaded with the SPM batch or run directly
   % by SPM standalone or SPM docker.

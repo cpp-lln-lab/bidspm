@@ -8,16 +8,18 @@ function [gm, wm, csf] = getTpmFilename(BIDS, anatImage, res, space)
   %
   % :param BIDS: dataset layout.
   %              See also: bids.layout, getData.
-  % :type BIDS: structure
+  % :type  BIDS: structure
+  %
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt:  structure
-  % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
-  % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
+  %
   % :param anatImage:
   % :param anatImage: char
+  %
   % :param space:
   % :param space: char
+  %
   % :param res:
   % :param res: char
   %

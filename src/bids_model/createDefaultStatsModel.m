@@ -10,10 +10,9 @@ function opt = createDefaultStatsModel(BIDS, opt)
   %              See also: bids.layout, getData.
   % :type BIDS: struct or path
   %
-  % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
-  % :type opt: struct
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt:  structure
   %
   % :return: opt
   %

@@ -30,9 +30,9 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %                         ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
   % :type  subLabel: char
   %
-  % :type  opt: structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   % :param info: ``sessions``, ``runs``, ``filename``.
   % :type  info: char

@@ -17,7 +17,7 @@ function acquisitionTime = getAcquisitionTime(sliceOrder, repetitionTime)
 
   sliceOrder = unique(sliceOrder);
 
-  acquisitionTime = repetitionTime - repetitionTime / numel(sliceOrder);
+  acquisitionTime = repetitionTime - (repetitionTime / numel(sliceOrder));
 
   assert(~any(sliceOrder > acquisitionTime));
 

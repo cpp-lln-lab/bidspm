@@ -12,12 +12,7 @@ function mriqcQA(opt, suffix)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
-  % :type opt: structure
-  % :type opt:  structure
-  % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
-  % :type opt: char
+  %             See also: checkOptions
   %
   % EXAMPLE::
   %

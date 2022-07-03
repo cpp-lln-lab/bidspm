@@ -10,7 +10,7 @@ function checkRegressorName(SPM)
   %  checkRegressorName(SPM)
   %
   %
-  % see also: bidsModelSelection
+  % See also: bidsModelSelection
   %
   % (C) Copyright 2022 CPP_SPM developers
 

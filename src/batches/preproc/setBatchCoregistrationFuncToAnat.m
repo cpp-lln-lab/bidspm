@@ -14,9 +14,9 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, 
   % :param BIDS: dataset layout.
   %              See also: bids.layout, getData
   %
-  % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   % :param subLabel: subject label
   % :type  subLabel: char

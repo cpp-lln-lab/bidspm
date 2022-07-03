@@ -10,7 +10,7 @@ function file = findSubjectConImage(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
+  %             See also: checkOptions
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %

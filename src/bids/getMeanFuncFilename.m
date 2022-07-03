@@ -9,12 +9,13 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt)
   % :param BIDS: dataset layout.
   %              See also: bids.layout, getData.
   % :type BIDS: structure
+  %
   % :param subLabel:
-  % :type subLabel: char
-  % :type opt:  structure
+  % :type  subLabel: char
+  %
   % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
-  % :type opt: structure
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   % :returns: - :meanImage: (string)
   %           - :meanFuncDir: (string)

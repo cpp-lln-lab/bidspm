@@ -6,8 +6,7 @@ function filename = designMatrixFigureName(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
-  % :type opt: structure
+  %             See also: checkOptions
   % :param desc: optional argument. default: ``''``
   % :type desc: char
   % :param subLabel: optional argument. default: ``''``

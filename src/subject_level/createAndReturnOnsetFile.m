@@ -10,16 +10,15 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   %
   %   onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   %
-  % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
-  % :type opt: structure
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   % :param subLabel:
-  % :type subLabel: char
+  % :type  subLabel: char
   %
   % :param tsvFile: fullpath name of the tsv file.
-  % :type tsvFile: char
+  % :type  tsvFile: char
   %
   % :returns: :onsetFilename: (path) fullpath name of the file created.
   %

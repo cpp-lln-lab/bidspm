@@ -8,7 +8,7 @@ function [BIDS, opt] = getData(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
+  %             See also: checkOptions
   %
   % :param bidsDir: the directory where the data is ; default is :
   %                 ``fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm')``
