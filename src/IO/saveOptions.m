@@ -6,7 +6,9 @@ function saveOptions(opt)
   %
   %   saveOptions(opt)
   %
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt: structure
   %
   % (C) Copyright 2020 CPP_SPM developers

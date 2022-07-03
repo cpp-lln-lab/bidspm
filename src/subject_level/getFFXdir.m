@@ -7,10 +7,13 @@ function ffxDir = getFFXdir(subLabel, opt)
   %   ffxDir = getFFXdir(subLabel, opt)
   %
   % :param subLabel:
-  % :type subLabel: string
+  % :type subLabel: char
   %
-  % :param opt:
-  % :param opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %
   % :returns: - :ffxDir: (string)
   %

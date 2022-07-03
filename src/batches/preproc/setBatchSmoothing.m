@@ -4,10 +4,14 @@ function matlabbatch = setBatchSmoothing(matlabbatch, opt, images, fwhm, prefix)
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSmoothing(matlabbatch, images, fwhm, prefix)
+  %   matlabbatch = setBatchSmoothing(matlabbatch, opt, images, fwhm, prefix)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure
+  %
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %
   % :param images:
   % :type images: fullpath

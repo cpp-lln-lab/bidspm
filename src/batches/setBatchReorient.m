@@ -9,7 +9,9 @@ function matlabbatch = setBatchReorient(varargin)
   % :param matlabbatch: matlabbatch to append to.
   % :type matlabbatch: cell
   %
-  % :param opt:
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt: structure
   %
   % :param images:
@@ -19,7 +21,7 @@ function matlabbatch = setBatchReorient(varargin)
   % one in a ``transformationMatrix`` variable
   %
   % :param prefix:
-  % :type prefix: string
+  % :type prefix: char
   %
   %
   % :returns: - :matlabbatch: (cell) The matlabbatch ready to run the spm job

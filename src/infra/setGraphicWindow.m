@@ -6,7 +6,9 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
   %
   %   [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
   %
-  % :param opt:
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt: structure
   %
   % :returns: - :interactiveWindow:

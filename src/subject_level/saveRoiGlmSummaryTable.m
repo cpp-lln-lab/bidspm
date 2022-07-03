@@ -6,8 +6,9 @@ function outputFile = saveRoiGlmSummaryTable(varargin)
   %
   %   outputFile = saveRoiGlmSummaryTable(opt, subLabel, roiList, eventSpec)
   %
-  % :param opt:
-  % :type  opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %
   % :param subLabel:
   % :type  subLabel: char

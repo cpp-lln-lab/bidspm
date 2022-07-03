@@ -28,7 +28,9 @@ function [matlabbatch, opt] = bidsFFX(varargin)
   % - ``'specifyAndEstimate'`` for fMRI design + estimate
   % - ``'contrasts'`` to estimate contrasts.
   %
-  % :param opt: structure or json filename containing the options. See
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %

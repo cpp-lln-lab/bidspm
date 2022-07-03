@@ -9,15 +9,18 @@ function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel)
   % :param matlabbatch: list of SPM batches
   % :type  matlabbatch: structure
   %
-  % :param BIDS: BIDS layout returned by ``getData``.
   % :type  BIDS: structure
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
   %
-  % :param opt: structure or json filename containing the options.
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %             See ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type  opt: structure
   %
   % :param subLabel: subject label
-  % :type  subLabel: string
+  % :type  subLabel: char
   %
   % :returns: :matlabbatch: (structure)
   %

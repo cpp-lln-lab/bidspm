@@ -8,7 +8,9 @@ function matlabbatch = setBatchGroupLevelResults(varargin)
   % :param matlabbatch:
   % :type matlabbatch: structure
   %
-  % :param opt:
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt: structure
   %
   % :param result:

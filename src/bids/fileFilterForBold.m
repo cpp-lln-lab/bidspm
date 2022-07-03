@@ -4,7 +4,9 @@ function [filter, opt] = fileFilterForBold(opt, subLabel, type)
   %
   %  [filter, opt] = fileFilterForBold(opt, subLabel, type)
   %
-  % :param opt:
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt: structure
   %
   % :param subLabel:

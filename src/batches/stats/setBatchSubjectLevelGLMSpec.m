@@ -9,10 +9,13 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % :param matlabbatch:
   % :type matlabbatch: structure
   %
-  % :param BIDS:
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
   % :type BIDS: structure
   %
-  % :param opt:
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt: structure
   %
   % :param subLabel:

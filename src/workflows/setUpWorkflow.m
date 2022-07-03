@@ -11,12 +11,14 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir, indexData)
   %
   %   [BIDS, opt, group] = setUpWorkflow(opt, workflowName, [bidsDir], indexData)
   %
-  % :param opt: structure or json filename containing the options. See
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %             ``checkOptions`` and ``loadAndCheckOptions``.
   % :type opt: structure
   %
   % :param workflowName: name that will be printed on screen
-  % :type workflowName: string
+  % :type workflowName: char
   %
   % :param bidsDir:
   % :param bidsDir: fullpath

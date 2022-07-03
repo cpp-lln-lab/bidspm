@@ -6,15 +6,16 @@ function matlabbatch = setBatchSTC(varargin)
   %
   %   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
   %
-  % :param BIDS: BIDS layout returned by ``getData``.
   % :type  BIDS: structure
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
   %
-  % :param opt: structure or json filename containing the options.
-  %             See also: checkOptions and loadAndCheckOptions
-  % :type  opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %
   % :param subLabel: subject label
-  % :type  subLabel: string
+  % :type  subLabel: char
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %

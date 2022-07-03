@@ -8,11 +8,16 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
   %
   %   sliceOrder = getAndCheckSliceOrder(opt)
   %
-  % :param BIDS: output of ``getData`` or ``bids.layout``
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
   % :type BIDS: structure
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt: structure
-  % :param opt: filter for ``bids.query``.
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt: structure
   %
   % :returns:

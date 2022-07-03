@@ -6,13 +6,16 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
   %
   %   matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLabel)
   %
-  % :param BIDS: BIDS layout returned by ``getData``.
-  % :type BIDS: structure
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt: structure
+  % :type  BIDS: structure
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
+  %
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
+  %
   % :param subLabel:
-  % :type subLabel: string
+  % :type  subLabel: char
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %

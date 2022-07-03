@@ -27,7 +27,9 @@ function functionalQA(opt)
   %   opt.QA.func.carpetPlot = true;
   %
   %
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt: structure
   %
   % .. warning::

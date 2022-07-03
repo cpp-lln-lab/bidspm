@@ -8,16 +8,17 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contras
   %   matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contrastsList, groups)
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
+  % :type  matlabbatch: structure
   %
-  % :param opt:
-  % :type opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %
   % :param nodeName:
-  % :type nodeName: char
+  % :type  nodeName: char
   %
   % :param contrastsList:
-  % :type contrastsList: cell string
+  % :type  contrastsList: cell string
   %
   %
   % :returns: - :matlabbatch: (structure)

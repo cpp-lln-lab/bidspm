@@ -9,15 +9,16 @@ function matlabbatch = setBatchGenerateT1map(varargin)
   % :param matlabbatch: matlabbatch to append to.
   % :type matlabbatch: cell
   %
-  % :param BIDS: BIDS layout returned by ``getData`` or ``bids.layout`.
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
   % :type BIDS: structure
   %
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %
   % :param subLabel: subject label
-  % :type subLabel: string
+  % :type subLabel: char
   %
   % :returns: - :matlabbatch: (cell) The matlabbatch ready to run the spm job
   %

@@ -6,7 +6,9 @@ function bidsRealignReslice(opt)
   %
   %   bidsRealignReslice(opt)
   %
-  % :param opt: structure or json filename containing the options. See
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %

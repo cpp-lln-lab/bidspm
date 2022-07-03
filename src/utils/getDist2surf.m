@@ -9,7 +9,9 @@ function davg = getDist2surf(varargin)
   %
   % :param anatImage:
   % :type anatImage: cell
-  % :param opt:
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt: structure
   %
   % :returns: - :davg: (float) (1 x 1)

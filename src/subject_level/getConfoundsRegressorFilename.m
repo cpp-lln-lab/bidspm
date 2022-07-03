@@ -6,7 +6,8 @@ function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, 
   %
   %   realignParamFile = getRealignParamFile(BIDS, subLabel, session, run, opt)
   %
-  % :param BIDS:      returned by bids.layout when exploring a BIDS data set.
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
   % :type BIDS:       structure
   %
   % :param subLabel:  label of the subject ; in BIDS lingo that means that for a file name
@@ -19,7 +20,9 @@ function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, 
   % :param run:       run index label (for `run-001`, the label will be `001`)
   % :type run:        string
   %
-  % :param opt:       Mostly used to find the task name.
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt:        structure
   %
   %

@@ -6,10 +6,11 @@ function matlabbatch = setBatchRenameSegmentParameter(varargin)
   %   matlabbatch = setBachRenameSegmentParameter(matlabbatch, opt)
   %
   % :param matlabbatch: matlabbatch to append to.
-  % :type matlabbatch: cell
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt: structure
+  % :type  matlabbatch: cell
+  %
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %
   %
   % :returns: - :matlabbatch: (cell) The matlabbatch ready to run the spm job

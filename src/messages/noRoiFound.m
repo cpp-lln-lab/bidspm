@@ -4,7 +4,9 @@ function status = noRoiFound(varargin)
   %
   %   status = noRoiFound(opt, roiList, folder)
   %
-  % :param opt: obligatory argument.
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt: structure
   % :param roiList: obligatory argument.
   % :type roiList: cell

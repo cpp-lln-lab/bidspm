@@ -6,11 +6,13 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   %
   %   vdmFile = getVdmFile(BIDS, opt, boldFilename)
   %
-  % :param BIDS:
   % :type  BIDS: structure
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
   %
-  % :param opt: Options chosen for the analysis. See also: checkOptions
-  % :type  opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %
   % :param boldFilename:
   % :type  boldFilename: path

@@ -4,12 +4,14 @@ function bidsChangeSuffix(varargin)
   %
   %   bidsChangeSuffix(opt, newSuffix, 'filter', struct([]), 'force', false)
   %
-  % :param opt: BIDS input dataset must be defined in ``opt.dir.input``;
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %             To test the output, set ``opt.dryRun`` to ``true``.
   % :type opt: structure
   %
   % :param newSuffix: TODO: add checks on newSuffix to make sure it only contains [a-zA-Z0-9]
-  % :type newSuffix: string
+  % :type newSuffix: char
   %
   % :param filter: structure to decide which files to include. Default:
   % ``struct([])`` for no filter

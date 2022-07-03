@@ -7,13 +7,16 @@ function matlabbatch = setBatchNormalize(matlabbatch, deformField, voxDim, imgTo
   %   matlabbatch = setBatchNormalize(matlabbatch [, deformField] [, voxDim] [, imgToResample])
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
+  % :type  matlabbatch: structure
+  %
   % :param deformField:
-  % :type deformField:
+  % :type  deformField:
+  %
   % :param voxDim:
-  % :param voxDim:
+  % :type  voxDim:
+  %
   % :param imgToResample:
-  % :param imgToResample:
+  % :type  imgToResample:
   %
   % :returns: - :matlabbatch: (structure)
   %

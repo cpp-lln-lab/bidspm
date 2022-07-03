@@ -6,7 +6,9 @@ function initBids(varargin)
   %
   %   initBids(opt, 'description', '', 'force', false)
   %
-  % :param opt: obligatory argument.
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   % :type opt: structure
   %
   % (C) Copyright 2022 CPP_SPM developers

@@ -7,10 +7,11 @@ function [matlabbatch, opt] = setBatchSegmentation(matlabbatch, opt, imageToSegm
   %   matlabbatch = setBatchSegmentation(matlabbatch, opt)
   %
   % :param matlabbatch: list of SPM batches
-  % :type matlabbatch: structure
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt: structure
+  % :type  matlabbatch: structure
+  %
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See  also: checkOptions
   %
   % :returns: :matlabbatch: (structure)
   %

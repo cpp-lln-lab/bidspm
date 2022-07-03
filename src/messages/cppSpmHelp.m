@@ -43,7 +43,7 @@ function cppSpmHelp()
   %                - ``'stats'``
   %                - ``'contrasts'``
   %                - ``'results'``
-  % :type action: string
+  % :type action: char
   %
   % .. note::
   %
