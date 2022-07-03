@@ -10,9 +10,9 @@ function matlabbatch = setBatchSTC(varargin)
   % :param BIDS: dataset layout.
   %              See also: bids.layout, getData.
   %
-  % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See  also: checkOptions
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   % :param subLabel: subject label
   % :type  subLabel: char
@@ -97,6 +97,8 @@ function matlabbatch = setBatchSTC(varargin)
     errorHandling(mfilename(), 'invalidInputTime', msg, ...
                   false, opt.verbosity);
   end
+
+  nbSlices = numel(unique(sliceOrder));
 
   temporal.st.nslices = nbSlices;
   temporal.st.tr = repetitionTime;
