@@ -5,6 +5,9 @@
   "Input": {
     "task": [
       "linebisection"
+    ],
+    "space": [
+      "IXI549Space"
     ]
   },
   "Nodes": [
@@ -22,8 +25,9 @@
           "trial_type.No_Response_Task",
           "trial_type.Response_Control",
           "trial_type.No_Response_Control",
-          "trans_?",
-          "rot_?"
+          "trans_*",
+          "rot_*",
+          "*outlier*"
         ],
         "Type": "glm",
         "HRF": {
@@ -35,6 +39,14 @@
             "trial_type.No_Response_Control"
           ],
           "Model": "spm"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST"
+          }
         }
       },
       "DummyContrasts": {
@@ -69,8 +81,7 @@
       "Level": "Dataset",
       "Name": "dataset_level",
       "GroupBy": [
-        "contrast",
-        "subject"
+        "contrast"
       ],
       "Model": {
         "X": [

@@ -7,10 +7,11 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, opt)
   %   matlabbatch = setBatchSmoothConImages(matlabbatch, opt)
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
+  % :type  matlabbatch: structure
   %
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %
   % :returns: - :matlabbatch:
   %

@@ -9,14 +9,16 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   %
   %   [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
   %
-  % :param BIDS:
-  % :type BIDS:      structure
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
+  % :type  BIDS: structure
   %
   % :param subLabel:
-  % :param subLabel:  char
+  % :type  subLabel:  char
   %
-  % :type opt:
-  % :param opt:      structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt:  structure
   %
   % :returns: - :anatImage: (string)
   %           - :anatDataDir: (string)

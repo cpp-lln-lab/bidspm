@@ -5,9 +5,6 @@
   "Input": {
     "task": [
       "auditory"
-    ],
-    "space": [
-      "MNI152NLin6Asym"
     ]
   },
   "Nodes": [

@@ -6,11 +6,12 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   %   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
-  % :param opt:
-  % :type opt: structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   % :param tsvFile:
-  % :type tsvFile: string
+  % :type  tsvFile: char
   %
   % Use a BIDS stats model specified in a JSON file to:
   %

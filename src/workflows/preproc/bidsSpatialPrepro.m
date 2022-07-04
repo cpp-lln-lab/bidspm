@@ -7,14 +7,16 @@ function matlabbatch = bidsSpatialPrepro(opt)
   % The functional data are re-aligned (unwarped), coregistered with the anatomical,
   % [and normalized to MNI space].
   %
-  % Assumes that ``bidsSTC()`` has already been run if ``opt.stc.skip`` is not set
-  % to ``true``.
+  % Assumes that ``bidsSTC()`` has already been run
+  % if ``opt.stc.skip`` is not set to ``true``.
   %
   % USAGE::
   %
   %   bidsSpatialPrepro([opt])
   %
-  % :param opt: structure or json filename containing the options. See
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %

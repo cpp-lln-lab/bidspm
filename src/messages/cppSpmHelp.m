@@ -28,14 +28,14 @@ function cppSpmHelp()
   %
   % *Obligatory parameters*
   %
-  % :param bids_dir: path to a raw BIDS dataset
-  % :type bids_dir: path
+  % :param bids_dir:        path to a raw BIDS dataset
+  % :type  bids_dir:        path
   %
-  % :param output_dir: path where to output data
-  % :type output_dir: path
+  % :param output_dir:      path where to output data
+  % :type  output_dir:      path
   %
-  % :param analysis_level: can either be ``'subject'`` or ``'dataset'``
-  % :type analysis_level: string
+  % :param analysis_level:  can either be ``'subject'`` or ``'dataset'``
+  % :type  analysis_level:  string
   %
   % :param action: defines the pipeline to run; can be any of:
   %
@@ -43,35 +43,35 @@ function cppSpmHelp()
   %                - ``'stats'``
   %                - ``'contrasts'``
   %                - ``'results'``
-  % :type action: string
+  % :type action: char
   %
   % .. note::
   %
-  %   - ``'stats'`` runs model speification / estimation, contrast computation, display results
+  %   - ``'stats'``     runs model speification / estimation, contrast computation, display results
   %   - ``'contrasts'`` runs contrast computation, display results
-  %   - ``'results'`` displays results
+  %   - ``'results'``   displays results
   %
   % *Optional parameters common to all actions*
   %
   % :param participant_label: cell of participants labels.
   %                           For example: ``{'01', '03', '08'}``.
   %                           Can be a regular expression.
-  % :type cellstr:
+  % :type participant_label:  cellstr
   %
-  % :param dry_run: Defaults to ``false``
-  % :type dry_run: logical
+  % :param dry_run:           Defaults to ``false``
+  % :type dry_run:            logical
   %
-  % :param bids_filter_file:
-  % :type bids_filter_file: path to JSON file or structure
+  % :param bids_filter_file:  path to JSON file or structure
+  % :type  bids_filter_file:  path
   %
-  % :param verbosity: can be ``0``, ``1`` or ``2``. Defaults to ``2``
-  % :type verbosity: positive scalar
+  % :param verbosity:         can be ``0``, ``1`` or ``2``. Defaults to ``2``
+  % :type  verbosity:         positive integer
   %
-  % :param space: Defaults to ``{'individual', 'IXI549Space'}``
-  % :type space: cell string
+  % :param space:             Defaults to ``{'individual', 'IXI549Space'}``
+  % :type  space:             cell string
   %
-  % :param options: See the ``checkOptions`` help to see the available options.
-  % :type options: path to JSON file or structure
+  % :param options:           See the ``checkOptions`` help to see the available options.
+  % :type  options:            path to JSON file or structure
   %
   % .. note::
   %
@@ -102,23 +102,23 @@ function cppSpmHelp()
   %
   % .. TODO check if REALLY obligatory
   %
-  % :param task: only one task
-  % :type task: cell string
+  % :param task:        only one task
+  % :type  task:        cell string
   %
   % :param dummy_scans: Number of dummy scans to remove. Defaults to ``0``
-  % :type dummy_scans: positive scalar
+  % :type  dummy_scans:  positive scalar
   %
   %
   % *Optional parameters*
   %
   % :param anat_only:
-  % :type anat_only: logical
+  % :type  anat_only:   logical
   %
-  % :param ignore: can be any of ``{'fieldmaps', 'slicetiming', 'unwarp'}``
-  % :type ignore:  cell string
+  % :param ignore:      can be any of ``{'fieldmaps', 'slicetiming', 'unwarp'}``
+  % :type  ignore:      cell string
   %
-  % :param fwhm: smoothing to apply to the preprocessed data
-  % :type fwhm: positive scalar
+  % :param fwhm:        smoothing to apply to the preprocessed data
+  % :type  fwhm:        positive scalar
   %
   %
   % **STATS:**
@@ -146,19 +146,19 @@ function cppSpmHelp()
   % :type  preproc_dir: path
   %
   % :param model_file:
-  % :type  model_file: path to JSON file or structure
+  % :type  model_file:  path to JSON file or structure
   %
   %
   % *Optional parameters*
   %
   % :param roi_based:
-  % :type roi_based: logical
+  % :type  roi_based:   logical
   %
   % :param task:
-  % :type task: cell string
+  % :type  task:        cell string
   %
-  % :param fwhm: smoothing lelvel of the preprocessed data
-  % :type fwhm: positive scalar
+  % :param fwhm:        smoothing lelvel of the preprocessed data
+  % :type  fwhm:        positive scalar
   %
   %
   % **low level calls**

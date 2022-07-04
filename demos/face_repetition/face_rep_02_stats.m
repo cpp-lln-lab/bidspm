@@ -36,13 +36,13 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 cpp_spm();
 
-bids_dir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
-output_dir = fullfile(bids_dir, '..', 'derivatives');
+this_dir = fileparts(mfilename('fullpath'));
+
+bids_dir = fullfile(this_dir, 'outputs', 'raw');
+output_dir = fullfile(this_dir, 'outputs', 'derivatives');
 preproc_dir = fullfile(output_dir, 'cpp_spm-preproc');
 
-model_file = fullfile(fileparts(mfilename('fullpath')), ...
-                      'models', ...
-                      'model-faceRepetition_smdl.json');
+model_file = fullfile(this_dir, 'models', 'model-faceRepetition_smdl.json');
 
 subject_label = '01';
 
@@ -50,14 +50,12 @@ subject_label = '01';
 
 % 1rst result to show
 results = defaultResultsStructure();
-results.nodeName = 'run_level';
 
+results.nodeName = 'run_level';
 results.name = 'faces_gt_baseline_1';
 
 % Specify how you want your output
 % (all the following are on false by default)
-results.png = true();
-results.csv = true();
 results.threshSpm = true();
 results.binary = true();
 results.montage.do = true();
@@ -73,7 +71,6 @@ opt.results(1) = results;
 results = defaultResultsStructure();
 results.nodeName = 'run_level';
 results.name = 'motion';
-results.png = true();
 
 opt.results(2) = results;
 

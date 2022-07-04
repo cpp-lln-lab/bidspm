@@ -7,20 +7,21 @@ function matlabbatch = setBatchReslice(matlabbatch, opt, referenceImg, sourceIma
   %   matlabbatch = setBatchReslice(matlabbatch, opt, referenceImg, sourceImages, interp)
   %
   % :param matlabbatch: list of SPM batches
-  % :type matlabbatch: structure
+  % :type  matlabbatch: structure
   %
-  % :param opt:
-  % :type opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %
   % :param referenceImg: Reference image (only one image)
-  % :type referenceImg: string or cellstring
+  % :type  referenceImg: char or cellstring
   %
   % :param sourceImages: Source images
-  % :type sourceImages: string or cellstring
+  % :type  sourceImages: char or cellstring
   %
   % :param interp: type of interpolation to use (default = ``4``). Nearest
   %                neighbour = ``0``.
-  % :type interp: integer >= 0
+  % :type  interp: integer >= 0
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %

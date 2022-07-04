@@ -13,6 +13,7 @@ function test_setBatchResults_basic()
   %% GIVEN
   result = defaultResultsStructure;
 
+  result.space = 'IXI549Space';
   result.dir = pwd;
   result.label = '01';
   result.nbSubj = 1;
@@ -26,6 +27,8 @@ function test_setBatchResults_basic()
 
   %% THEN
   expectedBatch = returnBasicExpectedResultsBatch();
+  matlabbatch{end}.spm.stats.results.export(3) = [];
+  expectedBatch{end}.spm.stats.results.export(3) = [];
   assertEqual(matlabbatch, expectedBatch);
 
 end
@@ -67,7 +70,6 @@ function test_setBatchResults_export()
       'sub-01_task-test_space-individual_desc-test_label-XXXX_p-0pt050_k-0_MC-FDR_mask';
 
   export{5}.nidm.modality = 'FMRI';
-  export{end}.nidm.refspace = 'ixi';
   export{end}.nidm.refspace = 'subject';
   export{end}.nidm.group.nsubj = 1;
   export{end}.nidm.group.label = '01';
@@ -118,7 +120,7 @@ function test_setBatchResults_montage()
   expectedBatch{end}.spm.stats.results.conspec.titlestr = returnName(result);
   expectedBatch{end}.spm.stats.results.conspec.threshdesc = 'FWE';
 
-  expectedBatch{end}.spm.stats.results.export{1}.montage.background = ...
+  expectedBatch{end}.spm.stats.results.export{end + 1}.montage.background = ...
       {fullfile(spm('dir'), 'canonical', 'avg152T1.nii')};
   expectedBatch{end}.spm.stats.results.export{end}.montage.orientation = 'axial';
   expectedBatch{end}.spm.stats.results.export{end}.montage.slices = [];
@@ -128,8 +130,8 @@ function test_setBatchResults_montage()
   expectedBatch{end}.spm.util.print.opts = 'png';
 
   assertEqual(matlabbatch{1}.spm.stats.results.conspec, expectedBatch{1}.spm.stats.results.conspec);
-  assertEqual(matlabbatch{1}.spm.stats.results.export{1}.montage, ...
-              expectedBatch{1}.spm.stats.results.export{1}.montage);
+  assertEqual(matlabbatch{1}.spm.stats.results.export{4}.montage, ...
+              expectedBatch{1}.spm.stats.results.export{4}.montage);
 
 end
 
@@ -154,7 +156,9 @@ function expectedBatch = returnBasicExpectedResultsBatch()
 
   expectedBatch = {};
   expectedBatch{end + 1}.spm.stats = stats;
-  expectedBatch{end}.spm.stats.results.export = [];
+  expectedBatch{end}.spm.stats.results.export{1}.png = true;
+  expectedBatch{end}.spm.stats.results.export{2}.csv = true;
+  expectedBatch{end}.spm.stats.results.export{3}.nidm.modality = 'FMRI';
 
 end
 
@@ -174,8 +178,7 @@ function result = setBatchSubjectLevelResultsMock(opt)
                     'space', opt.space, ...
                     'desc', '', ...
                     'label', 'XXXX');
-  result.outputName = struct( ...
-                             'suffix', 'spmT', ...
+  result.outputName = struct('suffix', 'spmT', ...
                              'ext', '.nii', ...
                              'entities', entities, ...
                              'p', '', ...

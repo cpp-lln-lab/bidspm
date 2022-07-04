@@ -1,5 +1,5 @@
 % This script will run the subject level GLM to denoise the data:
-% with no condition in the design matric and only motion confounds.
+% with no condition in the design matrix and only motion confounds.
 %
 % The residuals correspond to the time series of denoised data.
 %
@@ -11,8 +11,16 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 cpp_spm();
 
-opt = moae_get_option_stats();
-opt.model.file = fullfile(pwd, 'models', 'model-denoiseOnly_smdl.json');
+bids_dir = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
+output_dir = fullfile(bids_dir, '..', '..', 'outputs', 'derivatives');
+preproc_dir = fullfile(output_dir, 'cpp_spm-preproc');
+
+model_file = fullfile(pwd, 'models', 'model-denoiseOnly_smdl.json');
+
 opt.glm.keepResiduals = true;
 
-bidsFFX('specifyAndEstimate', opt);
+cpp_spm(bids_dir, output_dir, 'subject', ...
+        'action', 'stats', ...
+        'preproc_dir', preproc_dir, ...
+        'model_file', model_file, ...
+        'options', opt);

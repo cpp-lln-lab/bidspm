@@ -1,0 +1,50 @@
+{
+  "Name": "denoise full brain resting state data",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "GLM to denoise resting state data",
+  "Input": {
+    "task": [
+      "rest"
+    ],
+    "space": [
+      "IXI549Space"
+    ],
+    "acquisition": [
+      "fullbrain"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "denoise",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          "trans_*",
+          "rot_*",
+          "*outlier*"
+        ],
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": {
+            "suffix": [
+              "mask"
+            ],
+            "desc": [
+              "brain"
+            ]
+          }
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST"
+          }
+        }
+      }
+    }
+  ]
+}

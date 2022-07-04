@@ -6,8 +6,9 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
   %
   %   concatBetaImgTmaps(opt, deleteIndTmaps)
   %
-  % :param opt: options structure
-  % :type opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %
   % :param deleteIndTmaps: decide to delete t-maps. Default to ``false``.
   % :type deleteIndTmaps: (boolean)

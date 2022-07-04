@@ -7,16 +7,18 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
   %   matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
+  % :type  matlabbatch: structure
   %
-  % :param BIDS: BIDS layout returned by ``getData``.
-  % :type BIDS: structure
+  % :type  BIDS: structure
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
   %
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: string
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   % :param subLabel:
-  % :type subLabel:
+  % :type  subLabel:
   %
   % :returns: - :matlabbatch: (structure)
   %

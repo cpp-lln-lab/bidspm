@@ -7,7 +7,8 @@ function status = checkFmriprep(BIDS)
   %     status = checkFmriprep(BIDS)
   %
   %
-  % :param BIDS: output of bids.layout
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
   % :type BIDS: struct
   %
   % (C) Copyright 2022 CPP_SPM developers

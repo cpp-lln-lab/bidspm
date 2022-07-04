@@ -14,7 +14,13 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 cpp_spm();
 
-opt = face_rep_get_option_results();
+this_dir = fileparts(mfilename('fullpath'));
+
+%% Create roi
+
+opt.dir.derivatives = fullfile(this_dir, 'outputs', 'derivatives');
+opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+opt.dir.roi = fullfile(opt.dir.derivatives, 'cpp_spm-roi');
 
 opt.roi.atlas = 'wang';
 opt.roi.name = {'V1v', 'V1d'};
@@ -22,10 +28,22 @@ opt.roi.space = {'individual'};
 
 bidsCreateROI(opt);
 
-opt.fwhm.func = 0;
-opt.glm.roibased.do = true;
-opt.space = {'individual'};
+%% run GLM
+
+bids_dir = fullfile(this_dir, 'outputs', 'raw');
+output_dir = fullfile(this_dir, 'outputs', 'derivatives');
+preproc_dir = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+
 opt.bidsFilterFile.roi.space = 'individual';
 
-bidsFFX('specify', opt);
-bidsRoiBasedGLM(opt);
+model_file = fullfile(this_dir, 'models', 'model-faceRepetition_smdl.json');
+
+cpp_spm(bids_dir, output_dir, 'subject', ...
+        'action', 'stats', ...
+        'participant_label', {'01'}, ...
+        'preproc_dir', preproc_dir, ...
+        'model_file', model_file, ...
+        'roi_based', true, ...
+        'space', {'individual'}, ...
+        'options', opt, ...
+        'fwhm', 0);

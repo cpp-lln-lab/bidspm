@@ -7,12 +7,17 @@ function matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, subLabel)
   %   matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch: SPM batch
-  % :type matlabbatch: structure
-  % :param BIDS: BIDS layout returned by ``getData``.
-  % :type BIDS: structure
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: structure
-  % :type subLabel: string
+  % :type  matlabbatch: structure
+  %
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
+  % :type  BIDS: structure
+  %
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
+  %
+  % :type  subLabel: char
   % :param subLabel: subject label
   %
   % :returns: - :matlabbatch: (structure) (dimension)

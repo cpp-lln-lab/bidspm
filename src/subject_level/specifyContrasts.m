@@ -74,7 +74,7 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
 
   if numel(contrasts) == 1 && isempty(contrasts.C)
     msg = 'No contrast to build';
-    errorHandling(mfilename(), 'noContrast', msg, false, true);
+    errorHandling(mfilename(), 'noContrast', msg, true, true);
   end
 
 end

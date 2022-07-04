@@ -5,6 +5,9 @@
   "Input": {
     "task": [
       "balloonanalogrisktask"
+    ],
+    "space": [
+      "IXI549Space"
     ]
   },
   "Nodes": [
@@ -21,10 +24,9 @@
           "trial_type.control_pumps_demean",
           "trial_type.explode_demean",
           "trial_type.pumps_demean",
-          "trans_?",
-          "rot_?",
-          "non_steady_state_outlier*",
-          "motion_outlier*"
+          "trans_*",
+          "rot_*",
+          "*outlier*"
         ],
         "HRF": {
           "Variables": [
