@@ -240,6 +240,8 @@ for subject in ${subject_list}; do
 				done
 				touch ${this_dir}/${basename}_run-${run}_space-individual_desc-stc${suffix}.nii
 
+				touch ${this_dir}/${basename}_run-${run}_space-IXI549Space_label-brain_mask.nii
+
 			done
 
 			if [ ${ses} = '01' ]; then
@@ -264,6 +266,7 @@ for subject in ${subject_list}; do
 		for desc in ${desc_label_list}; do
 			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-${desc}${suffix}.nii
 			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-${desc}${suffix}.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_label-brain_mask.nii
 		done
 
 		if [ ${ses} = '01' ]; then

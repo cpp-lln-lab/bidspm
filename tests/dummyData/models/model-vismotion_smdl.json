@@ -37,7 +37,15 @@
           "Model": "spm"
         },
         "Options": {
-          "HighPassFilterCutoffHz": 0.008
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": {
+            "suffix": [
+              "mask"
+            ],
+            "desc": [
+              "brain"
+            ]
+          }
         },
         "Software": {
           "SPM": {
