@@ -19,6 +19,16 @@ function acquisitionTime = getAcquisitionTime(sliceOrder, repetitionTime)
 
   acquisitionTime = repetitionTime - (repetitionTime / numel(sliceOrder));
 
-  assert(~any(sliceOrder > acquisitionTime));
+  % ceil to avoid making this too brittle
+  if any(sliceOrder >= ceil(acquisitionTime * 1000) / 1000)
+    msg = sprintf(['Acquisition time cannot be < to any slice timing value:\n\n', ...
+                   'Current values:', ...
+                   '\n- acquisition time: %f', ...
+                   '\n- slice timing: ' pattern], ...
+                  acquisitionTime, ...
+                  sliceOrder);
+    id = 'sliceTimingSuperiorToAcqTime';
+    errorHandling(mfilename(), id, msg, false);
+  end
 
 end
