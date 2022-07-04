@@ -1,5 +1,14 @@
 function image = checkMaskOrUnderlay(image, opt, type)
   %
+  % USAGE::
+  %
+  %     image = checkMaskOrUnderlay(image, opt, type)
+  %
+  % :param image:
+  % :type  image: path
+  %
+  % :param type: any of ``{'underlay', 'background', 'mask'}``
+  % :type  type: char
   %
   %
   % (C) Copyright 2022 CPP_SPM developers

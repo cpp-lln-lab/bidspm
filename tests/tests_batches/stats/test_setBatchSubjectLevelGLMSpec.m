@@ -46,7 +46,7 @@ function test_setBatchSubjectLevelGLMSpec_brain_mask()
 
   opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
 
-  opt.model.bm.Nodes{1}.Model.Options.Mask = struct('label', 'brain', 'suffix', 'mask');
+  opt.model.bm.Nodes{1}.Model.Options.Mask = struct('desc', 'brain', 'suffix', 'mask');
 
   BIDS = getLayout(opt);
 
@@ -56,7 +56,7 @@ function test_setBatchSubjectLevelGLMSpec_brain_mask()
 
   %% THEN
   assertEqual(spm_file(matlabbatch{1}.spm.stats.fmri_spec.mask, 'filename'), ...
-              {'sub-01_ses-02_task-rest_space-IXI549Space_label-brain_mask.nii'});
+              {'sub-01_ses-01_space-IXI549Space_desc-brain_mask.nii'});
 
   cleanUp(fullfile(pwd, 'derivatives'));
 
