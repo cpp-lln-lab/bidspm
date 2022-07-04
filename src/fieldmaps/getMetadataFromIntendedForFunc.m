@@ -9,7 +9,8 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
   %
   %   [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmapMetadata)
   %
-  % :param BIDS: BIDS layout returned by ``getData()``.
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
   % :type BIDS: structure
   % :param fmapMetadata:
   % :type fmapMetadata: structure

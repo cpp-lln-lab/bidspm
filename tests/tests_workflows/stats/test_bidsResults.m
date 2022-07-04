@@ -99,14 +99,14 @@ function test_bidsResults_background_for_subject()
 
   opt.subjects = {'^01'};
   matlabbatch = bidsResults(opt);
-  bf = bids.File(matlabbatch{1}.spm.stats.results.export{1}.montage.background{1});
+  bf = bids.File(matlabbatch{1}.spm.stats.results.export{4}.montage.background{1});
   assertEqual(bf.entities.desc, 'preproc');
   assertEqual(bf.entities.sub, '01');
   assertEqual(bf.suffix, 'T1w');
 
   opt.subjects = {'ctrl01'};
   matlabbatch = bidsResults(opt);
-  bf = bids.File(matlabbatch{1}.spm.stats.results.export{1}.montage.background{1});
+  bf = bids.File(matlabbatch{1}.spm.stats.results.export{4}.montage.background{1});
   assertEqual(bf.entities.desc, 'preproc');
   assertEqual(bf.entities.sub, 'ctrl01');
   assertEqual(bf.suffix, 'T1w');

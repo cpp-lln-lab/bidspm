@@ -6,12 +6,16 @@ function copyFigures(BIDS, opt, subLabel)
   %
   %   copyFigures(BIDS, opt, subLabel)
   %
-  % :param BIDS: BIDS layout returned by ``getData``.
-  % :type BIDS: structure
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: structure
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
+  % :type  BIDS: structure
+  %
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
+  %
   % :param subLabel: Subject label (for example `'01'`).
-  % :type subLabel: string
+  % :type  subLabel: char
   %
   %
   % (C) Copyright 2019 CPP_SPM developers

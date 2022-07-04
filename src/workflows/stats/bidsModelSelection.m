@@ -6,12 +6,14 @@ function matlabbatch = bidsModelSelection(varargin)
   %
   %   bidsModelSelection(opt, 'action', 'all')
   %
-  % :param opt: structure or json filename containing the options.
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %             See ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   % :param action: any of ``'all'``, ``'modelSpace'``, ``'cvLME'``,
   %                ``'posterior'``, ``'BMS'``
-  % :type action: string
+  % :type action: char
   %
   % Steps are performed in that order:
   %

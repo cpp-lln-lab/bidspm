@@ -10,14 +10,15 @@ function status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   % :type matlabbatch: structure
   %
   % :param batchName: name of the batch
-  % :type batchName: string
+  % :type batchName: char
   %
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions`` and ``loadAndCheckOptions``.
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   % :type opt: structure
   %
   % :param subLabel: subject label
-  % :type subLabel: string
+  % :type subLabel: char
   %
   % (C) Copyright 2019 CPP_SPM developers
 

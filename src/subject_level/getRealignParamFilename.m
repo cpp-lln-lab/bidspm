@@ -7,17 +7,23 @@ function realignParamFile = getRealignParamFilename(BIDS, subLabel, session, run
   %
   %   realignParamFile = getRealignParamFile(BIDS, subLabel, session, run, opt)
   %
-  % :param BIDS:        returned by bids.layout when exploring a BIDS data set.
-  % :type BIDS:         structure
-  % :param subLabel:       label of the subject ; in BIDS lingo that means that for a file name
-  %                     ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
-  % :type subLabel:        string
+  % :param BIDS:       dataset layout.
+  %                    See also: bids.layout, getData.
+  % :type  BIDS:       structure
+  %
+  % :param subLabel:   label of the subject ; in BIDS lingo that means that for a file name
+  %                    ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
+  % :type  subLabel:   char
+  %
   % :param session:   session label (for `ses-001`, the label will be `001`)
-  % :type session:    string
+  % :type  session:   string
+  %
   % :param run:       run index label (for `run-001`, the label will be `001`)
-  % :type run:        string
-  % :param opt:         Mostly used to find the task name.
-  % :type opt:          structure
+  % :type  run:       string
+  %
+  % :param opt:       Options chosen for the analysis.
+  %                   See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt:       structure
   %
   % :returns: - :realignParamFile: (string)
   %

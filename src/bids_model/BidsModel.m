@@ -234,7 +234,9 @@ classdef BidsModel < bids.Model
 
       [model, nodeName] = obj.getDefaultModel(varargin{:});
 
-      if isfield(model.Software, 'SPM') && isfield(model.Software.SPM, 'SerialCorrelation')
+      if isfield(model, 'Software') && ...
+          isfield(model.Software, 'SPM') && ...
+          isfield(model.Software.SPM, 'SerialCorrelation')
         autoCorCorrection = model.Software.SPM.SerialCorrelation;
 
       else

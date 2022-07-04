@@ -8,12 +8,13 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
   %
   %   sliceOrder = getAndCheckSliceOrder(opt)
   %
-  % :param BIDS: output of ``getData`` or ``bids.layout``
-  % :type BIDS: structure
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: structure
-  % :param opt: filter for ``bids.query``.
-  % :type opt: structure
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
+  % :type  BIDS: structure
+  %
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   % :returns:
   %   - :sliceOrder: a vector of the time when each slice was acquired in
@@ -28,6 +29,8 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
   %
   % (C) Copyright 2020 CPP_SPM developers
 
+  % TODO support for DelayTime and AcquisitionDuration
+
   if ~isempty(opt.stc.sliceOrder)
 
     sliceOrder = opt.stc.sliceOrder;
@@ -35,7 +38,7 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
     printToScreen(' SLICE TIMING INFORMATION EXTRACTED FROM OPTIONS.\n\n', opt);
 
     wng = ['[DEPRECATION WARNING]\n', ...
-           'Slice timing in the options will be deprecated in a future realease.\n', ...
+           'Slice timing in the options will be deprecated in release 3.0.\n', ...
            'Specify it in the relevant JSON file in your BIDS dataset.\n'];
     errorHandling(mfilename(), 'deprecation', wng, true, opt.verbosity);
 

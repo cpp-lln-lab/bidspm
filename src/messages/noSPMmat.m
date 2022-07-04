@@ -4,10 +4,11 @@ function status = noSPMmat(varargin)
   %
   %   status = noSPMmat(opt, subLabel, spmMatFile)
   %
-  % :param opt:
-  % :type opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   % :param subLabel:
-  % :type subLabel: string
+  % :type subLabel: char
   % :param spmMatFile:
   % :type spmMatFile: path
   %

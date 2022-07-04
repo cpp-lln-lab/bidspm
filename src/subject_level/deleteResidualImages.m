@@ -5,7 +5,7 @@ function deleteResidualImages(ffxDir)
   %   deleteResidualImages(ffxDir)
   %
   % :param ffxDir:
-  % :type ffxDir: string
+  % :type ffxDir: char
   %
   % (C) Copyright 2020 CPP_SPM developers
 

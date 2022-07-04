@@ -6,8 +6,9 @@ function rfxDir = getRFXdir(varargin)
   %
   %   rfxDir = getRFXdir(opt, nodeName, contrastName, thisGroup)
   %
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %
   % :param nodeName:
   % :type nodeName: char

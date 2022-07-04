@@ -7,14 +7,18 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %   matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
-  % :param BIDS: BIDS layout returned by ``getData``.
-  % :type BIDS: structure
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt: structure
+  % :type  matlabbatch: structure
+  %
+  % :type  BIDS: structure
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
+  %
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
+  %
   % :param subLabel: subject label
-  % :type subLabel: string
+  % :type  subLabel: char
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
@@ -51,13 +55,31 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
 
       if strfind(metadata.IntendedFor, opt.taskName)
 
+        try
+          [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, filter);
+
+        catch ME
+          % until createVDM is fixed we skip it
+          % and rethrow this error as a warning only
+          if strcmp(ME.identifier, 'getMetadataFromIntendedForFunc:emptyReadoutTime')
+            msg = ['Voxel displacement map creation requires a non empty value' ...
+                   'for the TotalReadoutTime of the bold sequence they are matched to.\n', ...
+                   'Creating voxel displacement maps is work in progress.\n', ...
+                   'This is known issue\n.', ...
+                   'Skipping for now.'];
+            errorHandling(mfilename(), 'emptyReadoutTime', msg, true, opt.verbosity);
+            continue
+          else
+            rethrow(ME);
+
+          end
+        end
+
         matlabbatch = setBatchComputeVDM(matlabbatch, 'phasediff', refImage);
 
         % TODO Move to getInfo ?
         matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.phase = ...
             bids.query(BIDS, 'data', filter);
-
-        [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, filter);
 
         filter.suffix = 'magnitude1';
         matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj.data.presubphasemag.magnitude = ...

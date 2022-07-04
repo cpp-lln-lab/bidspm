@@ -22,28 +22,29 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %   filenames = getInfo(BIDS, subLabel, opt, 'filename', sessionID, runID, suffix)
   %
   %
-  % :param BIDS:            returned by bids.layout when exploring a BIDS data set.
-  % :type BIDS:             structure
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
+  % :type  BIDS: structure
   %
-  % :param subLabel:        label of the subject ; in BIDS lingo that means that for a file name
+  % :param subLabel: label of the subject ; in BIDS lingo that means that for a file name
   %                         ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
-  % :type subLabel:         string
+  % :type  subLabel: char
   %
-  % :param opt:             Used to find the task name and to pass extra ``query``
-  %                         options.
-  % :type opt:              structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
-  % :param info:            ``sessions``, ``runs``, ``filename``.
-  % :type info:             string
+  % :param info: ``sessions``, ``runs``, ``filename``.
+  % :type  info: char
   %
-  % :param sessionLabel:   session label (for `ses-001`, the label will be `001`)
-  % :type sessionLabel:    string
+  % :param sessionLabel: session label (for `ses-001`, the label will be `001`)
+  % :type  sessionLabel: char
   %
-  % :param runIdx:          run index label (for `run-001`, the label will be `001`)
-  % :type runIdx:           string
+  % :param runIdx: run index label (for `run-001`, the label will be `001`)
+  % :type  runIdx: char
   %
-  % :param suffix:            datatype (``bold``, ``events``, ``physio``)
-  % :type suffix:             string
+  % :param suffix: datatype (``bold``, ``events``, ``physio``)
+  % :type  suffix: char
   %
   % (C) Copyright 2020 CPP_SPM developers
 
@@ -107,8 +108,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
 
       [session, run, suffix] = deal(varargin{:});
 
-      filter = struct( ...
-                      'sub',  subLabel, ...
+      filter = struct('sub',  subLabel, ...
                       'task', {opt.taskName}, ...
                       'ses', session, ...
                       'run', run, ...

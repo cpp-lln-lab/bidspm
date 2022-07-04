@@ -7,19 +7,20 @@ function matlabbatch = setBatchReorient(varargin)
   %   matlabbatch = setBatchReorient(matlabbatch, opt, images, reorientMatrix, 'prefix', '')
   %
   % :param matlabbatch: matlabbatch to append to.
-  % :type matlabbatch: cell
+  % :type  matlabbatch: cell
   %
-  % :param opt:
-  % :type opt: structure
+  % :type  opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %
   % :param images:
-  % :type images: cell string
+  % :type  images: cell string
   %
   % :param reorientMatrix:  4 X 4 transformation matric or .mat file containing
-  % one in a ``transformationMatrix`` variable
+  %                         a ``transformationMatrix`` variable
   %
   % :param prefix:
-  % :type prefix: string
+  % :type  prefix: char
   %
   %
   % :returns: - :matlabbatch: (cell) The matlabbatch ready to run the spm job
