@@ -104,11 +104,12 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
         spmSess(spmSessCounter).scans = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
-        spmSess(spmSessCounter).onsetsFile = returnOnsetsFile(BIDS, opt, ...
-                                                              subLabel, ...
-                                                              sessions{iSes}, ...
-                                                              opt.taskName{iTask}, ...
-                                                              runs{iRun});
+        onsetFilename = returnOnsetsFile(BIDS, opt, ...
+                                         subLabel, ...
+                                         sessions{iSes}, ...
+                                         opt.taskName{iTask}, ...
+                                         runs{iRun});
+        spmSess(spmSessCounter).onsetsFile = onsetFilename;
 
         % get confounds
         confoundsRegFile = getConfoundsRegressorFilename(BIDS, ...
@@ -153,7 +154,9 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   %%  convert mat files to tsv for quicker inspection and interoperability
   for iSpmSess = 1:(spmSessCounter - 1)
-    onsetsMatToTsv(spmSess(iSpmSess).onsetsFile);
+    if ~isempty(spmSess(iSpmSess).onsetsFile)
+      onsetsMatToTsv(spmSess(iSpmSess).onsetsFile);
+    end
     regressorsMatToTsv(spmSess(iSpmSess).counfoundMatFile);
   end
 
@@ -232,10 +235,15 @@ function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, ru
   tsvFile = bids.query(BIDS.raw, 'data', filter);
 
   if isempty(tsvFile)
+
     msg = sprintf('No events.tsv file found in:\n\t%s\nfor filter:%s\n', ...
                   BIDS.raw.pth, ...
                   createUnorderedList(filter));
-    errorHandling(mfilename(), 'emptyInput', msg, false);
+    errorHandling(mfilename(), 'emptyInput', msg, true, opt.verbosity);
+
+    onsetFilename = '';
+
+    return
   end
 
   onsetFilename = createAndReturnOnsetFile(opt, ...
