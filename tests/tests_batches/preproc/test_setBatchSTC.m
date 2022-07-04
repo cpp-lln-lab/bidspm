@@ -167,24 +167,22 @@ function test_setBatchSTC_error_invalid_input_time()
 
   opt = setOptions('vislocalizer', subLabel);
 
-  opt.stc.sliceOrder = linspace(0, 1.6, 10);
+  opt.stc.sliceOrder = linspace(0, 1.5, 10);
   opt.stc.sliceOrder(end) = [];
   opt.stc.referenceSlice = 2; % impossible reference value
 
   BIDS = getLayout(opt);
 
   matlabbatch = {};
-  assertExceptionThrown( ...
-                        @()setBatchSTC(matlabbatch, BIDS, opt, subLabel), ...
+  assertExceptionThrown(@()setBatchSTC(matlabbatch, BIDS, opt, subLabel), ...
                         'setBatchSTC:invalidInputTime');
 
 end
 
 function expectedBatch = returnExpectedBatch(sliceOrder, referenceSlice, TR)
 
-  nbSlices = length(sliceOrder);
-  TA = TR - (TR / nbSlices);
-  TA = ceil(TA * 1000) / 1000;
+  nbSlices = length(unique(sliceOrder));
+  TA = getAcquisitionTime(sliceOrder, TR);
 
   temporal.st.nslices = nbSlices;
   temporal.st.tr = TR;

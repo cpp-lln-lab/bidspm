@@ -8,8 +8,8 @@ function matlabbatch = bidsResults(varargin)
   %
   %  bidsResults(opt,'nodeName', '')
   %
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
   % :param nodeName: name of the BIDS stats model Node(s) to show results of
@@ -94,6 +94,12 @@ function matlabbatch = bidsResults(varargin)
   %   % Will use the SPM MNI T1 template by default
   %   opt.results(1).montage.background = ...
   %        fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
+  %
+  %   % Can also be a structure to pick up the correct file for each subject
+  %   % opt.results(1).montage.background = struct('suffix', 'T1w', ...
+  %   %                                            'desc', 'preproc', ...
+  %   %                                            'modality', 'anat');
+  %
   %
   % Finally you can export as a NIDM results zip files.
   %
@@ -517,6 +523,7 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
             file = file{1};
 
           elseif numel(file) > 1
+            file = file{1};
 
             msg = sprintf('More than 1 overlay image found for %s.\n Taking the first one.', ...
                           createUnorderedList(background));

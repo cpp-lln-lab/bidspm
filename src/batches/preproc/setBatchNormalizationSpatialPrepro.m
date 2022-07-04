@@ -9,8 +9,9 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt
   % :param matlabbatch:
   % :type matlabbatch: structure
   %
-  % :param opt:
-  % :type opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %
   % :param voxDim:
   % :type opt: array

@@ -183,10 +183,20 @@ function opt = get_options_from_argument(args)
     % stats
     opt.dir.preproc = args.Results.preproc_dir;
     opt.model.file = args.Results.model_file;
-    opt.glm.roibased.do = args.Results.roi_based;
+
+    opt = overrideRoiBased(opt, args);
 
   end
 
+end
+
+function opt = overrideRoiBased(opt, args)
+  if isfield(opt, 'glm') && isfield(opt.glm, 'roibased') && ...
+      isfield(opt.glm.roibased, 'do') && opt.glm.roibased.do ~= args.Results.roi_based
+    overrideWarning('roi_based', convertToString(args.Results.roi_based), ...
+                    'glm.roibased.do', convertToString(opt.glm.roibased.do));
+  end
+  opt.glm.roibased.do = args.Results.roi_based;
 end
 
 function opt = overrideDryRun(opt, args)

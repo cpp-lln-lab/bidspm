@@ -7,19 +7,20 @@ function matlabbatch = setBatchCoregistration(varargin)
   %   matlabbatch = setBatchCoregistration(matlabbatch, opt, ref, src, other)
   %
   % :param matlabbatch: list of SPM batches
-  % :type matlabbatch: structure
+  % :type  matlabbatch: structure
   %
-  % :param opt: Other images to apply the coregistration to
-  % :type opt: cell string
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %
   % :param ref: Reference image
-  % :type ref: string
+  % :type ref: char
   %
   % :param src: Source image
-  % :type src: string
+  % :type  src: char
   %
   % :param other: Other images to apply the coregistration to
-  % :type other: cell string
+  % :type  other: cell string
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %

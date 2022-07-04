@@ -7,11 +7,13 @@ function matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
   %   matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
   %
   % :param matlabbatch: list of SPM batches
-  % :type matlabbatch: structure
-  % :param fmapType:
-  % :type fmapType:
+  % :type  matlabbatch: structure
+  %
+  % :param fmapType: ``''phasediff''`` or ``'phase&mag'``
+  % :type  fmapType: char
+  %
   % :param refImage: Reference image
-  % :type refImage:
+  % :type  refImage:
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %

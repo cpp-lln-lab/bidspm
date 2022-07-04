@@ -14,16 +14,16 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   %   files = validationInputFile(dir, fileName, prefix)
   %
   % :param dir: Directory where the search will be conducted.
-  % :type dir: string
+  % :type dir: char
   % :param fileName: file name pattern. Can be a regular expression except for
   %                  the starting ``^`` and ending ``$``. For example:
   %                  ``'sub-.*_ses-.*_task-.*_bold.nii'``.
-  % :type fileName: string
+  % :type fileName: char
   % :param prefix: prefix to be added to the filename pattern. This can also be
   %                a regular expression (ish). For example ,f looking for the files that
   %                start with ``c1`` or ``c2`` or ``c3``, the prefix can be
   %                ``c[123]``.
-  % :type prefix: string
+  % :type prefix: char
   %
   % :returns:
   %

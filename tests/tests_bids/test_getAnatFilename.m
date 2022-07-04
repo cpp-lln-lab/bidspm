@@ -129,8 +129,7 @@ function test_getAnatFilename_error_session()
 
   BIDS = getLayout(opt);
 
-  assertExceptionThrown( ...
-                        @()getAnatFilename(BIDS, opt, subLabel), ...
+  assertExceptionThrown(@()getAnatFilename(BIDS, opt, subLabel), ...
                         'getAnatFilename:requestedSessionUnvailable');
 
 end

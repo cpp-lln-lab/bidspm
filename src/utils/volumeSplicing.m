@@ -15,7 +15,7 @@ function outputFile = volumeSplicing(varargin)
   % :param outputFile: optional parameter. default: will overwrite
   %                    ``inputFile``. If only a filename is given, the file will be created in the
   %                    same folder as the input file.
-  % :type outputFile: string
+  % :type outputFile: char
   %
   % :returns: - :outputFileFullPath:
   %

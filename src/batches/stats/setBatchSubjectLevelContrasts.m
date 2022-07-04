@@ -9,11 +9,12 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
   % :param matlabbatch:
   % :type matlabbatch: structure
   %
-  % :param opt:
-  % :type opt: structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   % :param subLabel:
-  % :type subLabel: string
+  % :type subLabel: char
   %
   % :returns: - :matlabbatch:
   %

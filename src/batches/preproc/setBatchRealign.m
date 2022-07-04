@@ -11,19 +11,21 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %                                           [action = 'realign'])
   %
   % :param matlabbatch: SPM batch
-  % :type matlabbatch: cell
+  % :type  matlabbatch: cell
   %
-  % :param BIDS: BIDS layout returned by ``getData``.
-  % :type BIDS: structure
+  % :type  BIDS: structure
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
   %
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   % :param subLabel: subject label
-  % :type subLabel: char
+  % :type  subLabel: char
   %
   % :param action: ``realign``, ``realignReslice``, ``realignUnwarp``, ``'reslice'``
-  % :type action: char
+  % :type  action: char
   %
   % :returns: - :matlabbatch: (structure) (dimension)
   %           - :voxDim: (array) (dimension)

@@ -5,11 +5,12 @@ function outputName = defaultOuputNameStruct(opt, result)
   %
   %   outputName = defaultOuputNameStruct(opt, result)
   %
-  % :param opt:
-  % :type opt: structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt:  structure
   %
   % :param result:
-  % :type result: structure
+  % :type  result: structure
   %
   % :returns: - :outputName: (structure)
   %

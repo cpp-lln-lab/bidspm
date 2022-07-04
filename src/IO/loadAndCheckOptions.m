@@ -14,7 +14,7 @@ function opt = loadAndCheckOptions(optionJsonFile)
   % :param optionJsonFile: Fullpath to the json file describing the options of an
   %                        analysis. It can also be an ``opt`` structure
   %                        containing the options.
-  % :type optionJsonFile: string
+  % :type optionJsonFile: char
   %
   % :returns: :opt: (structure) Options chosen for the analysis. See ``checkOptions()``.
   %

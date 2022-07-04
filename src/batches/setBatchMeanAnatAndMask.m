@@ -7,11 +7,14 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, outputDir)
   %   matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, funcFWHM, outputDir)
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: structure
+  % :type  matlabbatch: structure
+  %
+  % :type  opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
+  %
   % :param outputDir:
-  % :type outputDir: tring
+  % :type  outputDir: string
   %
   % :returns: - :matlabbatch: (structure)
   %

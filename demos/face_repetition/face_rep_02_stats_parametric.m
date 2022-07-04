@@ -10,23 +10,21 @@
 clear;
 clc;
 
-downloadData = false;
-
 addpath(fullfile(pwd, '..', '..'));
-
 cpp_spm();
 
-%% Gets data and converts it to BIDS
-if downloadData
-  download_face_rep_ds(downloadData);
-end
+this_dir = fileparts(mfilename('fullpath'));
 
-opt = face_rep_get_option_results();
+bids_dir = fullfile(this_dir, 'outputs', 'raw');
+output_dir = fullfile(this_dir, 'outputs', 'derivatives');
+preproc_dir = fullfile(output_dir, 'cpp_spm-preproc');
 
-opt.model.file = spm_file(opt.model.file, 'basename', 'model-faceRepetitionParametric_smdl');
-opt.model.bm = BidsModel('file', opt.model.file);
+model_file = fullfile(this_dir, 'models', 'model-faceRepetitionParametric_smdl.json');
 
-bidsFFX('specifyAndEstimate', opt);
-% bidsFFX('contrasts', opt);
+subject_label = '01';
 
-% bidsResults(opt);
+cpp_spm(bids_dir, output_dir, 'subject', ...
+        'action', 'stats', ...
+        'participant_label', {subject_label}, ...
+        'preproc_dir', preproc_dir, ...
+        'model_file', model_file);

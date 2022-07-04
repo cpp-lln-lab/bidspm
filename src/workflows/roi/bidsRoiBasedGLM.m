@@ -6,8 +6,8 @@ function skipped = bidsRoiBasedGLM(opt)
   %
   %   bidsRoiBasedGLM(opt)
   %
-  % :param opt: structure or json filename containing the options. See
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
   % Will compute the absolute maximum percent signal change and the time course of the events

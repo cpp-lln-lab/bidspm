@@ -7,7 +7,7 @@ function unzippedFullpathName = unzipAndReturnsFullpathName(fullpathName, opt)
   %   unzippedFullpathName = unzipAndReturnsFullpathName(fullpathName)
   %
   % :param fullpathName:
-  % :type fullpathName: string array
+  % :type fullpathName: char array
   %
   % :returns: - :unzippedFullpathName: (string)
   %

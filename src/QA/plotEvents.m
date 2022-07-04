@@ -5,7 +5,7 @@ function plotEvents(eventsFile, modelFile)
   %   plotEvents(eventsFile, modelFile)
   %
   % :param eventsFile: Path to a bids _events.tsv file.
-  % :type eventsFile: string
+  % :type eventsFile: char
   % :param modelFile: Optional. Path to a bids statistical model file to filter
   %                   what events to plot.
   % :type modelFile: structure

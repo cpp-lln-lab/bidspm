@@ -7,20 +7,25 @@ function matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess)
   %   matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess)
   %
   % :param matlabbatch:
-  % :type matlabbatch: cell
+  % :type  matlabbatch: cell
   %
-  % :param opt:
-  % :type opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %
   % :param spmMatFile:
-  % :type spmMatFile: string
+  % :type  spmMatFile: char
   %
   % :param consess:
-  % :type consess: cell
+  % :type  consess: cell
   %
   % :returns: - :matlabbatch: (structure)
   %
   % (C) Copyright 2019 CPP_SPM developers
+
+  if isempty(consess)
+    return
+  end
 
   printBatchName('contrasts specification', opt);
 

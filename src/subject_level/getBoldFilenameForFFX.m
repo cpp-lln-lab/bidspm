@@ -7,20 +7,22 @@ function boldFilename = getBoldFilenameForFFX(varargin)
   %
   %   boldFilename = getBoldFilenameForFFX(BIDS, opt, subLabel, funcFWHM, iSes, iRun)
   %
-  % :param BIDS:
-  % :type BIDS: structure
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
+  % :type  BIDS: structure
   %
-  % :param opt:
-  % :type opt: structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   % :param subLabel:
-  % :type subLabel: string
+  % :type  subLabel: char
   %
   % :param iSes:
-  % :type iSes: integer
+  % :type  iSes: integer
   %
   % :param iRun:
-  % :type iRun: integer
+  % :type  iRun: integer
   %
   % :returns: - :boldFilename: (string)
   %

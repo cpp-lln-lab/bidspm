@@ -13,13 +13,13 @@ function matlabbatch = setBatchImageCalculation(varargin)
   % :type input: cell
   %
   % :param output: name of the output file
-  % :type output: string
+  % :type output: char
   %
   % :param outDir: output directory
-  % :type outDir: string
+  % :type outDir: char
   %
   % :param expression: mathematical expression to apply (for example '(i1+i2)>3')
-  % :type expression: string
+  % :type expression: char
   %
   % :param expression: data type that must be one of the following:
   %    - 'uint8'
@@ -30,7 +30,7 @@ function matlabbatch = setBatchImageCalculation(varargin)
   %    - 'int8'
   %    - 'uint16'
   %    - 'uint32'
-  % :type expression: string
+  % :type expression: char
   %
   % See ``spm_cfg_imcalc.m`` for more information::
   %

@@ -9,7 +9,8 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
   %
   %   [boldFilename, subFuncDataDir] = getBoldFilename(BIDS, subLabel, sessionID, runID, opt)
   %
-  % :param BIDS:        returned by bids.layout when exploring a BIDS data set.
+  % :param BIDS: dataset layout.
+  %              See also: bids.layout, getData.
   % :type BIDS:         structure
   %
   % :param subLabel:    label of the subject ; in BIDS lingo that means that for a file name
@@ -22,8 +23,9 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
   % :param runID:       run index label (for `run-001`, the label will be `001`)
   % :type runID:        char
   %
-  % :param opt:         Mostly used to find the task name.
-  % :type opt:          structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type opt:  structure
   %
   %
   % :returns: - :boldFilename: (string)

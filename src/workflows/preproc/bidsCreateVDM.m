@@ -7,11 +7,13 @@ function bidsCreateVDM(opt)
   %
   %   bidsCreateVDM(opt)
   %
-  % :param opt: structure or json filename containing the options. See
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % .. TODO:
+  % .. todo:
   %
   %    - take care of all types of fieldmaps
   %
@@ -22,9 +24,14 @@ function bidsCreateVDM(opt)
 
   opt.pipeline.type = 'preproc';
 
+  opt.dir.input = opt.dir.preproc;
+
   [BIDS, opt] = setUpWorkflow(opt, 'create voxel displacement map');
 
+  % why?
   opt.rename = false;
+
+  opt.query.desc = '';
 
   for iSub = 1:numel(opt.subjects)
 

@@ -23,9 +23,11 @@ function e = computeDesignEfficiency(tsvFile, opt)
   %     e = computeDesignEfficiency(tsvFile, opt)
   %
   % :param tsvFile: Path to a bids _events.tsv file.
-  % :type tsvFile: string
-  % :param opt: Options chosen for the analysis with the content below.
-  % :type opt: structure
+  % :type tsvFile: char
+  %
+  % :param opt: Options chosen for the analysis.
+  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type  opt: structure
   %
   %
   % Required:

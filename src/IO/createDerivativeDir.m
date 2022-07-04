@@ -6,8 +6,9 @@ function  createDerivativeDir(opt)
   %
   %   opt = createDerivativeDir(opt)
   %
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %
   % (C) Copyright 2019 CPP_SPM developers
 

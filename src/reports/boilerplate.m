@@ -8,8 +8,9 @@ function outputFile = boilerplate(varargin)
   %                             'partialsPath', partialsPath, ...
   %                             'verbosity', 2)
   %
-  % :param opt: Options chosen for the analysis. See ``checkOptions()``.
-  % :type opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %
   % :param outputPath:
   % :type outputPath: char

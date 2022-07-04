@@ -46,8 +46,9 @@ function test_setBatchSubjectLevelResults_basic()
               expectedBatch{end}.spm.stats.results.conspec);
   assertEqual(matlabbatch{end}.spm.stats.results.units, ...
               expectedBatch{end}.spm.stats.results.units);
-  assertEqual(matlabbatch{end}.spm.stats.results.export, ...
-              expectedBatch{end}.spm.stats.results.export);
+  assertEqual(matlabbatch{end}.spm.stats.results.export{1}.png, true);
+  assertEqual(matlabbatch{end}.spm.stats.results.export{2}.csv, true);
+  assert(isfield(matlabbatch{end}.spm.stats.results.export{3}, 'nidm'));
 
 end
 

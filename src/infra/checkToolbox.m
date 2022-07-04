@@ -8,7 +8,7 @@ function status = checkToolbox(varargin)
   %   status = checkToolbox(toolboxName, 'verbose', false, 'install', false)
   %
   % :param toolboxName: obligatory argument. Any of {'ALI', 'MACS', 'mp2rage'}.
-  % :type toolboxName: string
+  % :type toolboxName: char
   %
   % :param verbose: parameter
   % :type verbose: boolean

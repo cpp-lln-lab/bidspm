@@ -8,16 +8,17 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contras
   %   matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contrastsList, groups)
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
+  % :type  matlabbatch: structure
   %
-  % :param opt:
-  % :type opt: structure
+  % :type opt:  structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
   %
   % :param nodeName:
-  % :type nodeName: char
+  % :type  nodeName: char
   %
   % :param contrastsList:
-  % :type contrastsList: cell string
+  % :type  contrastsList: cell string
   %
   %
   % :returns: - :matlabbatch: (structure)
@@ -91,9 +92,9 @@ function matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt)
   matlabbatch{end + 1}.spm.stats.fmri_est.method.Classical = 1;
   matlabbatch{end}.spm.stats.fmri_est.spmmat = spmMatFile;
 
-  writeResiduals = true();
-  if ~opt.QA.glm.do || ~opt.glm.keepResiduals
-    writeResiduals = false();
+  writeResiduals = false();
+  if opt.glm.keepResiduals || opt.QA.glm.do
+    writeResiduals = true();
   end
   matlabbatch{end}.spm.stats.fmri_est.write_residuals = writeResiduals;
 
