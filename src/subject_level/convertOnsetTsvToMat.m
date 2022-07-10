@@ -41,58 +41,57 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   %
   [pth, file, ext] = spm_fileparts(tsvFile);
-  tsvFile = validationInputFile(pth, [file, ext]);
+  tsv.file = validationInputFile(pth, [file, ext]);
 
-  tsvContent = bids.util.tsvread(tsvFile);
+  tsv.content = bids.util.tsvread(tsv.file);
 
-  if ~all(isnumeric(tsvContent.onset))
+  if ~all(isnumeric(tsv.content.onset))
 
     errorID = 'onsetsNotNumeric';
-    msg = sprintf('%s\n%s', 'Onset column contains non numeric values in file:', tsvFile);
+    msg = sprintf('%s\n%s', 'Onset column contains non numeric values in file:', tsv.file);
     errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
 
   end
 
-  if ~all(isnumeric(tsvContent.duration))
+  if ~all(isnumeric(tsv.content.duration))
 
     errorID = 'durationsNotNumeric';
-    msg = sprintf('%s\n%s', 'Duration column contains non numeric values in file:', tsvFile);
+    msg = sprintf('%s\n%s', 'Duration column contains non numeric values in file:', tsv.file);
     errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
 
   end
 
-  variablesToConvolve = opt.model.bm.getVariablesToConvolve();
+  varToConvolve = opt.model.bm.getVariablesToConvolve();
   designMatrix = opt.model.bm.getBidsDesignMatrix();
   designMatrix = removeIntercept(designMatrix);
 
-  % create empty cell to be filled in according to the conditions present in each run
-  names = {};
-  onsets = {};
-  durations = {};
-  pmod = struct('name', {''}, 'param', {}, 'poly', {});
+  % conditions to be filled in according to the conditions present in each run
+  condToModel.names = {};
+  condToModel.onsets = {};
+  condToModel.durations = {};
+  condToModel.pmod = struct('name', {''}, 'param', {}, 'poly', {});
+  condToModel.idx = 1;
 
   if ~isfield(opt.model, 'bm')
     opt.model.bm = BidsModel('file', opt.model.file);
   end
   % TODO get / apply transformers from a specific node
   transformers = opt.model.bm.getBidsTransformers();
-  tsvContent = bids.transformers(transformers, tsvContent);
+  tsv.content = bids.transformers(transformers, tsv.content);
 
-  conditionIdx = 1;
-
-  for iCond = 1:numel(variablesToConvolve)
+  for iVar = 1:numel(varToConvolve)
 
     trialTypeNotFound = false; % should be dead code by now
     variableNotFound = false;
     extra = '';
 
     % first assume the input is from events.tsv
-    tokens = regexp(variablesToConvolve{iCond}, '\.', 'split');
+    tokens = regexp(varToConvolve{iVar}, '\.', 'split');
 
     % if the variable is present in namespace
-    if ismember(tokens{1}, fieldnames(tsvContent))
+    if ismember(tokens{1}, fieldnames(tsv.content))
 
-      if ~ismember(variablesToConvolve{iCond}, designMatrix)
+      if ~ismember(varToConvolve{iVar}, designMatrix)
         % TODO does not account for edge cases where design matrix uses globbing pattern
         % like "face_*"
         % but variablesToConvolve only includes a subset of conditions
@@ -100,90 +99,40 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
         continue
       end
 
-      trialTypes = tsvContent.(tokens{1});
-      conditionName = strjoin(tokens(2:end), '.');
+      trialTypes = tsv.content.(tokens{1});
+      condName = strjoin(tokens(2:end), '.');
 
       % deal with any globbing search like 'face_familiar*'
-      hasGlobPattern = ~cellfun('isempty', regexp({conditionName}, '\*|\?'));
+      hasGlobPattern = ~cellfun('isempty', regexp({condName}, '\*|\?'));
 
-      if any(hasGlobPattern)
+      if hasGlobPattern
 
-        pattern = strrep(conditionName, '*', '[\_\-0-9a-zA-Z]*');
+        pattern = strrep(condName, '*', '[\_\-0-9a-zA-Z]*');
         pattern = strrep(pattern, '?', '[0-9a-zA-Z]?');
         pattern = regexify(pattern);
         containsPattern = ~cellfun('isempty', regexp(trialTypes, pattern));
 
-        conditionsList = unique(trialTypes(containsPattern));
+        condList = unique(trialTypes(containsPattern));
 
-        for iCdt = 1:numel(conditionsList)
+        for iCdt = 1:numel(condList)
 
-          rows = find(strcmp(conditionsList{iCdt}, trialTypes));
-
-          printToScreen(sprintf('   Condition %s: %i trials found.\n', ...
-                                conditionsList{iCdt}, ...
-                                numel(rows)), ...
-                        opt);
-
-          if ~isempty(rows)
-
-            names{1, conditionIdx} = conditionsList{iCdt};
-            onsets{1, conditionIdx} = tsvContent.onset(rows)'; %#ok<*AGROW,*NASGU>
-            durations{1, conditionIdx} = tsvContent.duration(rows)';
-            pmod = parametricModulation(pmod, tsvContent, rows, conditionIdx);
-
-            conditionIdx = conditionIdx + 1;
-
-          else
-
-            trialTypeNotFound = true;
-            errorID = 'trialTypeNotFound';
-            input1 = 'Trial type';
-
-            msg = sprintf('%s %s not found in \n %s\n %s', ...
-                          input1, ...
-                          variablesToConvolve{iCond}, ...
-                          tsvFile, ...
-                          extra);
-
-            errorHandling(mfilename(), errorID, msg, true, opt.verbosity);
-
-          end
+          condToModel = addCondition(opt, ...
+                                     condList{iCdt}, ...
+                                     trialTypes, ...
+                                     tsv, ...
+                                     condToModel, ...
+                                     varToConvolve{iVar});
 
         end
 
       else
 
-        rows = find(strcmp(conditionName, trialTypes));
-
-        printToScreen(sprintf('   Condition %s: %i trials found.\n', ...
-                              conditionName, ...
-                              numel(rows)), ...
-                      opt);
-
-        if ~isempty(rows)
-
-          names{1, conditionIdx} = conditionName;
-          onsets{1, conditionIdx} = tsvContent.onset(rows)'; %#ok<*AGROW,*NASGU>
-          durations{1, conditionIdx} = tsvContent.duration(rows)';
-          pmod = parametricModulation(pmod, tsvContent, rows, conditionIdx);
-
-          conditionIdx = conditionIdx + 1;
-
-        else
-
-          trialTypeNotFound = true;
-          errorID = 'trialTypeNotFound';
-          input1 = 'Trial type';
-
-          msg = sprintf('%s %s not found in \n %s\n %s', ...
-                        input1, ...
-                        variablesToConvolve{iCond}, ...
-                        tsvFile, ...
-                        extra);
-
-          errorHandling(mfilename(), errorID, msg, true, opt.verbosity);
-
-        end
+        condToModel = addCondition(opt, ...
+                                   condName, ...
+                                   trialTypes, ...
+                                   tsv, ...
+                                   condToModel, ...
+                                   varToConvolve{iVar});
 
       end
 
@@ -195,19 +144,16 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
     end
 
-    if variableNotFound || trialTypeNotFound
+    if variableNotFound
 
       if opt.glm.useDummyRegressor
-        [names, onsets, durations] = addDummyRegressor(names, onsets, durations);
-        extra = 'Adding dummy regressor instead.';
-        conditionIdx = conditionIdx + 1;
+        condToModel = addDummyRegressor(condToModel);
       end
 
-      msg = sprintf('%s %s not found in \n %s\n %s', ...
+      msg = sprintf('%s %s not found in \n %s\n Adding dummy regressor instead.', ...
                     input1, ...
-                    variablesToConvolve{iCond}, ...
-                    tsvFile, ...
-                    extra);
+                    varToConvolve{iVar}, ...
+                    tsv.file);
 
       errorHandling(mfilename(), errorID, msg, true, opt.verbosity);
 
@@ -216,7 +162,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   end
 
   %% save the onsets as a matfile
-  [pth, file] = spm_fileparts(tsvFile);
+  [pth, file] = spm_fileparts(tsv.file);
 
   bf = bids.File(file);
   bf.suffix = 'onsets';
@@ -224,20 +170,59 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   fullpathOnsetFilename = fullfile(pth, bf.filename);
 
+  names = condToModel.names; %#ok<*NASGU>
+  onsets = condToModel.onsets;
+  durations = condToModel.durations;
+  pmod = condToModel.pmod;
+
   save(fullpathOnsetFilename, ...
        'names', 'onsets', 'durations', 'pmod', ...
        '-v7');
 
 end
 
-function pmod = parametricModulation(pmod, tsvContent, rows, conditionIdx)
+function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel, varToConvolve)
+
+  rows = find(strcmp(condName, trialTypes));
+
+  printToScreen(sprintf('   Condition %s: %i trials found.\n', ...
+                        condName, ...
+                        numel(rows)), ...
+                opt);
+
+  if ~isempty(rows)
+
+    condToModel.names{1, condToModel.idx} = condName;
+    condToModel.onsets{1, condToModel.idx} = tsv.content.onset(rows)';
+    condToModel.durations{1, condToModel.idx} = tsv.content.duration(rows)';
+    condToModel = parametricModulation(condToModel, tsv, rows);
+
+    condToModel.idx = condToModel.idx + 1;
+
+  else
+
+    msg = sprintf('Trial type %s not found in \n\t%s\n', ...
+                  varToConvolve, ...
+                  tsv.file);
+
+    errorHandling(mfilename(), 'trialTypeNotFound', msg, true, opt.verbosity);
+
+    if opt.glm.useDummyRegressor
+      condToModel = addDummyRegressor(condToModel);
+    end
+
+  end
+
+end
+
+function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows)
   % parametric modulation (pmod)
   %
-  % skipped if parametric modulation is 1 for all onsets
+  % skipped if parametric modulation == 1 for all onsets
   %
   % coerces NaNs into 1
 
-  fields = fieldnames(tsvContent);
+  fields = fieldnames(tsv.content);
   pmodIdx = ~cellfun('isempty', regexp(fields, '^pmod_.*', 'match'));
   pmodIdx = find(pmodIdx);
 
@@ -245,22 +230,23 @@ function pmod = parametricModulation(pmod, tsvContent, rows, conditionIdx)
 
     thisMod = fields{pmodIdx(iMod)};
 
-    amplitude = tsvContent.(thisMod)(rows);
+    amplitude = tsv.content.(thisMod)(rows);
     amplitude(isnan(amplitude)) = 1;
 
     if ~all(amplitude == 1)
-      pmod(1, conditionIdx).name{iMod}  = strrep(thisMod, 'pmod_', '');
-      pmod(end).param{iMod} = amplitude;
-      pmod(end).poly{iMod}  = 1;
+      conditionsToModel.pmod(1, conditionsToModel.idx).name{iMod}  = strrep(thisMod, 'pmod_', '');
+      conditionsToModel.pmod(end).param{iMod} = amplitude;
+      conditionsToModel.pmod(end).poly{iMod}  = 1;
     end
 
   end
 end
 
-function [names, onsets, durations] = addDummyRegressor(names, onsets, durations)
+function conditionsToModel = addDummyRegressor(conditionsToModel)
 
-  names{1, end + 1} = 'dummyRegressor';
-  onsets{1, end + 1} = nan;
-  durations{1, end + 1} = nan;
+  conditionsToModel.names{1, end + 1} = 'dummyRegressor';
+  conditionsToModel.onsets{1, end + 1} = nan;
+  conditionsToModel.durations{1, end + 1} = nan;
+  conditionsToModel.idx = conditionsToModel.idx + 1;
 
 end
