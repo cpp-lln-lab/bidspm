@@ -39,25 +39,21 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  %
   [pth, file, ext] = spm_fileparts(tsvFile);
   tsv.file = validationInputFile(pth, [file, ext]);
-
   tsv.content = bids.util.tsvread(tsv.file);
 
   if ~all(isnumeric(tsv.content.onset))
 
-    errorID = 'onsetsNotNumeric';
     msg = sprintf('%s\n%s', 'Onset column contains non numeric values in file:', tsv.file);
-    errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
+    errorHandling(mfilename(), 'onsetsNotNumeric', msg, false, opt.verbosity);
 
   end
 
   if ~all(isnumeric(tsv.content.duration))
 
-    errorID = 'durationsNotNumeric';
     msg = sprintf('%s\n%s', 'Duration column contains non numeric values in file:', tsv.file);
-    errorHandling(mfilename(), errorID, msg, false, opt.verbosity);
+    errorHandling(mfilename(), 'durationsNotNumeric', msg, false, opt.verbosity);
 
   end
 
@@ -65,7 +61,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   designMatrix = opt.model.bm.getBidsDesignMatrix();
   designMatrix = removeIntercept(designMatrix);
 
-  % conditions to be filled in according to the conditions present in each run
+  % conditions to be filled according to the conditions present in each run
   condToModel.names = {};
   condToModel.onsets = {};
   condToModel.durations = {};
@@ -81,11 +77,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   for iVar = 1:numel(varToConvolve)
 
-    trialTypeNotFound = false; % should be dead code by now
-    variableNotFound = false;
-    extra = '';
-
-    % first assume the input is from events.tsv
+    % in case we get the column names with a dot separator
     tokens = regexp(varToConvolve{iVar}, '\.', 'split');
 
     % if the variable is present in namespace
@@ -138,24 +130,15 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
     else
 
-      variableNotFound = true;
-      errorID = 'variableNotFound';
-      input1 = 'Variable';
-
-    end
-
-    if variableNotFound
-
       if opt.glm.useDummyRegressor
         condToModel = addDummyRegressor(condToModel);
       end
 
-      msg = sprintf('%s %s not found in \n %s\n Adding dummy regressor instead.', ...
-                    input1, ...
+      msg = sprintf('Variable %s not found in \n %s\n Adding dummy regressor instead.', ...
                     varToConvolve{iVar}, ...
                     tsv.file);
 
-      errorHandling(mfilename(), errorID, msg, true, opt.verbosity);
+      errorHandling(mfilename(), 'variableNotFound', msg, true, opt.verbosity);
 
     end
 
