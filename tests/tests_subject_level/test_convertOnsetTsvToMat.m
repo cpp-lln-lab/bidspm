@@ -18,6 +18,7 @@ function test_convertOnsetTsvToMat_globbing_conditions()
                      'tsv_files', ...
                      'sub-01_task-FaceRepetitionAfter_events.tsv');
   opt = setOptions('vismotion');
+
   opt.model.bm = BidsModel('file', opt.model.file);
 
   opt.model.bm.Input.task = {'FaceRepetitionAfter'};

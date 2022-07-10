@@ -15,25 +15,36 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   % Use a BIDS stats model specified in a JSON file to:
   %
-  % - loads events.tsv and apply the Node.Transformations to its content
+  % - loads events.tsv and apply the ``Node.Transformations`` to its content
   %
   % - extract the trials (onsets, durations)
   %   of the conditions that should be convolved
-  %   as requested from Node.HRF.Variables field
+  %   as requested from ``Node.Model.HRF.Variables``
   %
   % It then stores them in in a .mat file
   % that can be fed directly in an SPM GLM batch as 'Multiple conditions'
   %
   % Parametric modulation can be specified via columns in the TSV
   % file starting with ``pmod_``.
-  % These columns can be created via the use of Node.Transformations.
+  % These columns can be created via the use of ``Node.Transformations``.
   % Only polynomial 1 are supported.
   % More complex modulation should be precomputed via the Transformations.
   %
-  % if ``opt.glm.useDummyRegressor`` is set to ``true``, any missing condition
-  % will be replaced by a DummyRegressor.
+  % if ``opt.glm.useDummyRegressor`` is set to ``true``,
+  % any missing condition will be replaced by a DummyRegressor.
   %
   % :returns: :fullpathOnsetFilename: (string) name of the output ``.mat`` file.
+  %
+  % EXAMPLE::
+  %
+  %         tsvFile = fullfile(pwd, 'data', 'sub-03_task-VisuoTact_run-02_events.tsv');
+  %
+  %         opt.model.file = fullfile(pwd, 'models', 'model-VisuoTact_smdl.json');
+  %         opt.verbosity = 2;
+  %         opt.glm.useDummyRegressor = false;
+  %
+  %         fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
+  %
   %
   % See also: createAndReturnOnsetFile, bids.transformers
   %
@@ -57,6 +68,10 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   end
 
+  if ~isfield(opt.model, 'bm')
+    opt.model.bm = BidsModel('file', opt.model.file);
+  end
+
   varToConvolve = opt.model.bm.getVariablesToConvolve();
   designMatrix = opt.model.bm.getBidsDesignMatrix();
   designMatrix = removeIntercept(designMatrix);
@@ -68,9 +83,6 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   condToModel.pmod = struct('name', {''}, 'param', {}, 'poly', {});
   condToModel.idx = 1;
 
-  if ~isfield(opt.model, 'bm')
-    opt.model.bm = BidsModel('file', opt.model.file);
-  end
   % TODO get / apply transformers from a specific node
   transformers = opt.model.bm.getBidsTransformers();
   tsv.content = bids.transformers(transformers, tsv.content);
