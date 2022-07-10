@@ -11,6 +11,47 @@ function test_suite = test_convertOnsetTsvToMat %#ok<*STOUT>
 
 end
 
+function test_convertOnsetTsvToMat_globbing_conditions()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-FaceRepetitionAfter_events.tsv');
+  opt = setOptions('vismotion');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  opt.model.bm.Input.task = {'FaceRepetitionAfter'};
+  opt.model.bm.Nodes{1}.Model.X = {
+                                   'trial_type.N*'
+                                   'trial_type.F*'
+                                   'trans_?'
+                                   'rot_?'};
+
+  opt.model.bm.Nodes{1}.Model.HRF.Variables = {
+                                               'trial_type.N*'
+                                               'trial_type.F*'
+                                              };
+
+  % WHEN
+  fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
+
+  % THEN
+  assertEqual(fullfile(getDummyDataDir(), ...
+                       'tsv_files', ...
+                       'sub-01_task-FaceRepetitionAfter_onsets.mat'), ...
+              fullpathOnsetFilename);
+  assertEqual(exist(fullpathOnsetFilename, 'file'), 2);
+
+  load(fullpathOnsetFilename);
+
+  assertEqual(names, {'N1', 'N2', 'F1', 'F2'});
+  assertEqual(cellfun('size', onsets, 2), [26 26 26 26]);
+  assertEqual(cellfun('size', durations, 2), [26 26 26 26]);
+
+  cleanUp(fullpathOnsetFilename);
+
+end
+
 function test_convertOnsetTsvToMat_parametric_modulation()
 
   % GIVEN
@@ -190,8 +231,11 @@ function test_convertOnsetTsvToMat_dummy_regressor()
                      'tsv_files', ...
                      'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
-  opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionMVPA_smdl.json');
+
   opt.model.bm = BidsModel('file', opt.model.file);
+  opt.model.bm.Nodes{1}.Model.X{1} = 'trial_type.foo';
+  opt.model.bm.Nodes{1}.Model.HRF.Variables{1} = 'trial_type.foo';
+
   opt.glm.useDummyRegressor = true;
 
   % WHEN
@@ -200,9 +244,9 @@ function test_convertOnsetTsvToMat_dummy_regressor()
   % THEN
   load(fullpathOnsetFilename);
 
-  assertEqual(names, {'dummyRegressor'});
-  assertEqual(onsets, {nan});
-  assertEqual(durations, {nan});
+  assertEqual(names, {'dummyRegressor', 'VisStat'});
+  assertEqual(onsets, {nan, 4});
+  assertEqual(durations, {nan, 2});
 
   cleanUp(fullpathOnsetFilename);
 
@@ -219,8 +263,11 @@ function test_convertOnsetTsvToMat_missing_trial_type()
                      'tsv_files', ...
                      'sub-01_task-vismotion_events.tsv');
   opt = setOptions('vismotion');
-  opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionMVPA_smdl.json');
+
   opt.model.bm = BidsModel('file', opt.model.file);
+  opt.model.bm.Nodes{1}.Model.X{1} = 'trial_type.foo';
+  opt.model.bm.Nodes{1}.Model.HRF.Variables{1} = 'trial_type.foo';
+
   opt.verbosity = 1;
 
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...

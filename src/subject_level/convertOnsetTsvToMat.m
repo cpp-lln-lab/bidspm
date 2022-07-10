@@ -92,34 +92,98 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
     % if the variable is present in namespace
     if ismember(tokens{1}, fieldnames(tsvContent))
 
+      if ~ismember(variablesToConvolve{iCond}, designMatrix)
+        % TODO does not account for edge cases where design matrix uses globbing pattern
+        % like "face_*"
+        % but variablesToConvolve only includes a subset of conditions
+        % like "face_1" but not "face_2"
+        continue
+      end
+
       trialTypes = tsvContent.(tokens{1});
       conditionName = strjoin(tokens(2:end), '.');
 
-      rows = find(strcmp(conditionName, trialTypes));
+      % deal with any globbing search like 'face_familiar*'
+      hasGlobPattern = ~cellfun('isempty', regexp({conditionName}, '\*|\?'));
 
-      printToScreen(sprintf('   Condition %s: %i trials found.\n', ...
-                            conditionName, ...
-                            numel(rows)), ...
-                    opt);
+      if any(hasGlobPattern)
 
-      if ~isempty(rows)
+        pattern = strrep(conditionName, '*', '[\_\-0-9a-zA-Z]*');
+        pattern = strrep(pattern, '?', '[0-9a-zA-Z]?');
+        pattern = regexify(pattern);
+        containsPattern = ~cellfun('isempty', regexp(trialTypes, pattern));
 
-        if ~ismember(variablesToConvolve{iCond}, designMatrix)
-          continue
+        conditionsList = unique(trialTypes(containsPattern));
+
+        for iCdt = 1:numel(conditionsList)
+
+          rows = find(strcmp(conditionsList{iCdt}, trialTypes));
+
+          printToScreen(sprintf('   Condition %s: %i trials found.\n', ...
+                                conditionsList{iCdt}, ...
+                                numel(rows)), ...
+                        opt);
+
+          if ~isempty(rows)
+
+            names{1, conditionIdx} = conditionsList{iCdt};
+            onsets{1, conditionIdx} = tsvContent.onset(rows)'; %#ok<*AGROW,*NASGU>
+            durations{1, conditionIdx} = tsvContent.duration(rows)';
+            pmod = parametricModulation(pmod, tsvContent, rows, conditionIdx);
+
+            conditionIdx = conditionIdx + 1;
+
+          else
+
+            trialTypeNotFound = true;
+            errorID = 'trialTypeNotFound';
+            input1 = 'Trial type';
+
+            msg = sprintf('%s %s not found in \n %s\n %s', ...
+                          input1, ...
+                          variablesToConvolve{iCond}, ...
+                          tsvFile, ...
+                          extra);
+
+            errorHandling(mfilename(), errorID, msg, true, opt.verbosity);
+
+          end
+
         end
-
-        names{1, conditionIdx} = conditionName;
-        onsets{1, conditionIdx} = tsvContent.onset(rows)'; %#ok<*AGROW,*NASGU>
-        durations{1, conditionIdx} = tsvContent.duration(rows)';
-        pmod = parametricModulation(pmod, tsvContent, rows, conditionIdx);
-
-        conditionIdx = conditionIdx + 1;
 
       else
 
-        trialTypeNotFound = true;
-        errorID = 'trialTypeNotFound';
-        input1 = 'Trial type';
+        rows = find(strcmp(conditionName, trialTypes));
+
+        printToScreen(sprintf('   Condition %s: %i trials found.\n', ...
+                              conditionName, ...
+                              numel(rows)), ...
+                      opt);
+
+        if ~isempty(rows)
+
+          names{1, conditionIdx} = conditionName;
+          onsets{1, conditionIdx} = tsvContent.onset(rows)'; %#ok<*AGROW,*NASGU>
+          durations{1, conditionIdx} = tsvContent.duration(rows)';
+          pmod = parametricModulation(pmod, tsvContent, rows, conditionIdx);
+
+          conditionIdx = conditionIdx + 1;
+
+        else
+
+          trialTypeNotFound = true;
+          errorID = 'trialTypeNotFound';
+          input1 = 'Trial type';
+
+          msg = sprintf('%s %s not found in \n %s\n %s', ...
+                        input1, ...
+                        variablesToConvolve{iCond}, ...
+                        tsvFile, ...
+                        extra);
+
+          errorHandling(mfilename(), errorID, msg, true, opt.verbosity);
+
+        end
 
       end
 
