@@ -59,7 +59,7 @@ function opt = getOptionsFromModel(opt)
 
     for i = 1:numel(fromInput)
 
-      thisEntity.key = schema.content.objects.entities.(fromInput{i}).entity;
+      thisEntity.key = schema.content.objects.entities.(fromInput{i}).name;
       thisEntity.value = input.(fromInput{i});
 
       % 'task', 'sub', 'space' will target a field in options
