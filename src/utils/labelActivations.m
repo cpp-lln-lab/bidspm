@@ -33,7 +33,7 @@ function tsvFile = labelActivations(varargin)
 
   atlasName = 'Neuromorphometrics';
   if ~strcmp(atlas, 'Neuromorphometrics')
-    copyAtlasToSpmDir(atlas);
+    copyAtlasToSpmDir(atlas, 'verbose', false);
     switch atlas
       case 'AAL'
         atlasName = 'AAL3v1_1mm';
