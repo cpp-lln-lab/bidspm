@@ -7,6 +7,23 @@ function test_suite = test_labelActivations %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_labelActivations_aal()
+
+  csvFile = fullfile(getDummyDataDir(), 'tsv_files', 'moae_results_table.csv');
+
+  tsvFile = labelActivations(csvFile, 'atlas', 'AAL');
+
+  assertEqual(exist(tsvFile, 'file'), 2);
+
+  expectedFile = fullfile(getDummyDataDir(), 'tsv_files', 'moae_results_table_aal.tsv');
+  expectedContent = bids.util.tsvread(expectedFile);
+
+  content = bids.util.tsvread(tsvFile);
+
+  assertEqual(content, expectedContent);
+
+end
+
 function test_labelActivations_basic()
 
   csvFile = fullfile(getDummyDataDir(), 'tsv_files', 'moae_results_table.csv');
@@ -15,7 +32,7 @@ function test_labelActivations_basic()
 
   assertEqual(exist(tsvFile, 'file'), 2);
 
-  expectedFile = fullfile(getDummyDataDir(), 'tsv_files', 'moae_results_table.tsv');
+  expectedFile = fullfile(getDummyDataDir(), 'tsv_files', 'moae_results_table_neuromorpho.tsv');
   expectedContent = bids.util.tsvread(expectedFile);
 
   content = bids.util.tsvread(tsvFile);

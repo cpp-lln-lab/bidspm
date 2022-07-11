@@ -1,24 +1,25 @@
-function contrast  = defaultResultsStructure()
+function result  = defaultResultsStructure()
   %
   % (C) Copyright 2019 CPP_SPM developers
 
-  contrast = defaultContrastsStructure;
+  result = defaultContrastsStructure;
 
-  contrast.png = true();
+  result.png = true();
 
-  contrast.csv = true();
+  result.csv = true();
+  result.atlas = 'Neuromorphometrics';
 
-  contrast.threshSpm = false();
+  result.threshSpm = false();
 
-  contrast.binary = false();
+  result.binary = false();
 
-  contrast.montage = struct('do', false(), ...
-                            'slices', [], ...
-                            'orientation', 'axial', ...
-                            'background',  fullfile(spm('dir'), ...
-                                                    'canonical', ...
-                                                    'avg152T1.nii'));
+  result.montage = struct('do', false(), ...
+                          'slices', [], ...
+                          'orientation', 'axial', ...
+                          'background',  fullfile(spm('dir'), ...
+                                                  'canonical', ...
+                                                  'avg152T1.nii'));
 
-  contrast.nidm = true();
+  result.nidm = true();
 
 end

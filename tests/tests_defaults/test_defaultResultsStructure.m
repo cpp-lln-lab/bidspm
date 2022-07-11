@@ -24,6 +24,7 @@ function test_defaultResultsStructure_basic()
   expected.png = true();
 
   expected.csv = true();
+  expected.atlas = 'Neuromorphometrics';
 
   expected.threshSpm = false();
 

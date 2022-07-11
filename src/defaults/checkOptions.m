@@ -204,12 +204,12 @@ function opt = checkResultsOptions(opt)
 
   % validate content of opt.results
 
-  defaultContrast = defaultResultsStructure();
+  defaultResults = defaultResultsStructure();
 
-  fields = fieldnames(defaultContrast);
+  fields = fieldnames(defaultResults);
 
   if ~isfield(opt, 'results')
-    opt.results = defaultContrast;
+    opt.results = defaultResults;
     return
   end
 
@@ -226,12 +226,12 @@ function opt = checkResultsOptions(opt)
     end
 
     % add missing fields
-    thisResult = setFields(thisResult, defaultContrast);
+    thisResult = setFields(thisResult, defaultResults);
 
     % fill in empty fields
     for i = 1:numel(fields)
       if isempty(thisResult.(fields{i}))
-        thisResult.(fields{i}) = defaultContrast.(fields{i});
+        thisResult.(fields{i}) = defaultResults.(fields{i});
       end
     end
 

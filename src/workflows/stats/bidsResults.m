@@ -586,7 +586,7 @@ function renameOutputResults(results)
 
       for iFile = 1:size(csvFiles, 1)
         source = deblank(csvFiles(iFile, :));
-        labelActivations(source);
+        labelActivations(source, 'atlas', result.atlas);
       end
 
     end
