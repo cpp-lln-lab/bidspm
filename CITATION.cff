@@ -80,6 +80,11 @@ authors:
   orcid: "https://orcid.org/0000-0001-8681-5267"
   affiliation: "Université catholique de Louvain"
 
+- family-names: "Chouinard-Leclaire"
+  given-names: "Christine"
+  orcid: "https://orcid.org/0000-0002-1066-6266"
+  affiliation: "Université de Montréal"
+
 license: GPL-3.0
 
 keywords:
