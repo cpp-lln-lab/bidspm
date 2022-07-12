@@ -1,13 +1,19 @@
 function tsvFile = labelActivations(varargin)
   %
-  % Adds MNI labels to a csv output file from SPM
+  % Adds MNI labels to a csv output file from SPM and saves it as SPM.
+  %
+  % Can choose which atlas to use.
   %
   % USAGE::
   %
-  %   tsvFile = labelActivations(csvFile)
+  %   tsvFile = labelActivations(csvFile, 'atlas', 'Neuromorphometrics')
   %
   % :param csvFile:
-  % :type csvFile: path
+  % :type  csvFile: path
+  %
+  % :param atlas: Any of ``{'Neuromorphometrics', 'AAL'}``.
+  %               Defaults to ``'Neuromorphometrics'``
+  % :type  atlas: char
   %
   % :returns: - :tsvFile: (path)
   %
@@ -18,10 +24,21 @@ function tsvFile = labelActivations(varargin)
   args = inputParser;
 
   addRequired(args, 'csvFile', @ischar);
+  addParameter(args, 'atlas', 'Neuromorphometrics', @ischar);
 
   parse(args, varargin{:});
 
   csvFile = args.Results.csvFile;
+  atlas = args.Results.atlas;
+
+  atlasName = 'Neuromorphometrics';
+  if ~strcmp(atlas, 'Neuromorphometrics')
+    copyAtlasToSpmDir(atlas, 'verbose', false);
+    switch atlas
+      case 'AAL'
+        atlasName = 'AAL3v1_1mm';
+    end
+  end
 
   %% renaming headers to have only one row
   % combine 1rst and 2nd row
@@ -61,13 +78,13 @@ function tsvFile = labelActivations(varargin)
   end
 
   %% add MNI label
-  %   L = spm_atlas('list');
-  xA = spm_atlas('load', 'Neuromorphometrics');
+  spm_atlas('list', 'installed', '-refresh');
+  xA = spm_atlas('load', atlasName);
 
   for  i = 1:numel(newCSV.x)
-    newCSV.neuromorphometric_label{i} = spm_atlas('query', xA, [newCSV.x(i), ...
-                                                                newCSV.y(i), ...
-                                                                newCSV.z(i)]');
+    newCSV.([atlas '_label']){i} = spm_atlas('query', xA, [newCSV.x(i), ...
+                                                           newCSV.y(i), ...
+                                                           newCSV.z(i)]');
   end
 
   tsvFile = bids.internal.file_utils(csvFile, 'ext', '.tsv');
