@@ -35,4 +35,4 @@ jobs:
         pip3 install cffconvert
 
     - name: Validate CITATION.cff
-      run: cffconvert --validate
+      run: make validate_cff
