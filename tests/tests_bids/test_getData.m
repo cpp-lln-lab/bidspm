@@ -8,6 +8,16 @@ function test_suite = test_getData %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getData_invalid_dir()
+
+  opt = struct([]);
+  bidsDir = fullfile('/foo');
+
+  assertExceptionThrown(@()getData(opt, bidsDir), ...
+                        'getData:notADirectory');
+
+end
+
 function test_getData_error_no_matching_task()
 
   opt = setOptions('dummy');

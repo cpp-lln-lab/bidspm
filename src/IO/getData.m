@@ -25,7 +25,16 @@ function [BIDS, opt] = getData(varargin)
   addRequired(args, 'opt', @isstruct);
   addRequired(args, 'bidsDir', @isdir);
 
-  parse(args, varargin{:});
+  try
+    parse(args, varargin{:});
+  catch ME
+    if bids.internal.starts_with(ME.message, 'The value of ')
+      msg = sprintf('The following directory does not exist:\n\t%s', varargin{2});
+      errorHandling(mfilename(), 'notADirectory', msg, false);
+    else
+      rethrow(ME);
+    end
+  end
 
   opt = args.Results.opt;
   bidsDir = args.Results.bidsDir;
@@ -64,7 +73,7 @@ function [BIDS, opt] = getData(varargin)
                   strjoin(opt.taskName), ...
                   createUnorderedList(bids.query(BIDS, 'tasks')));
 
-    errorHandling(mfilename(), 'noMatchingTask', msg, false, opt.verbosity);
+    errorHandling(mfilename(), 'noMatchingTask', msg, false);
 
   end
 

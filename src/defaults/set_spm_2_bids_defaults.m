@@ -1,6 +1,6 @@
 function opt = set_spm_2_bids_defaults(opt)
   %
-  % set default map for renaming for cpp_bids
+  % set default map for renaming for cpp_spm
   %
   % USAGE::
   %

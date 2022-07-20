@@ -75,13 +75,7 @@ function bidsResliceTpmToFunc(opt)
 
   end
 
-  % extract into a renaming config function
-  opt = set_spm_2_bids_defaults(opt);
-  name_spec.entities.res = 'bold';
-  opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
-                                              'name_spec', name_spec);
-  opt.spm_2_bids = opt.spm_2_bids.flatten_mapping();
-
+  opt = setRenamingConfig(opt, 'ResliceTpmToFunc');
   bidsRename(opt);
 
 end

@@ -22,10 +22,10 @@ opt = lesion_get_option();
 
 bidsCopyInputFolder(opt);
 
-% Step 1: segmentation
+%% Step 1: segmentation
 bidsLesionSegmentation(opt);
 
-% % Step 2: lesion abnormalities
+%% Step 2: lesion abnormalities
 bidsLesionAbnormalitiesDetection(opt);
 
 % % Step 3: overlap map
