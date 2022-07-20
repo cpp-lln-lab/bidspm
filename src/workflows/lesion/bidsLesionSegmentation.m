@@ -44,73 +44,7 @@ function bidsLesionSegmentation(opt)
 
   end
 
-  opt = setRenamingConfig(opt);
+  opt = setRenamingConfig(opt, 'LesionSegmentation');
   bidsRename(opt);
-
-end
-
-function opt = setRenamingConfig(opt)
-
-  % extract into a renaming config function
-
-  opt = set_spm_2_bids_defaults(opt);
-  map = opt.spm_2_bids;
-
-  name_spec = map.cfg.segment.gm;
-  name_spec.entities.res = 'r2pt0';
-  map = map.add_mapping('prefix', [map.realign 'c1'], ...
-                        'name_spec', name_spec);
-
-  name_spec = map.cfg.segment.wm;
-  name_spec.entities.res = 'r2pt0';
-  map = map.add_mapping('prefix', [map.realign 'c2'], ...
-                        'name_spec', name_spec);
-
-  name_spec = map.cfg.segment.csf;
-  name_spec.entities.res = 'r2pt0';
-  map = map.add_mapping('prefix', [map.realign 'c3'], ...
-                        'name_spec', name_spec);
-
-  name_spec = map.cfg.segment.gm;
-  name_spec.entities.label = 'PRIOR';
-  name_spec.entities.res = 'r2pt0';
-  map = map.add_mapping('prefix', [map.realign 'c4'], ...
-                        'name_spec', name_spec);
-
-  name_spec = map.cfg.segment.gm_norm;
-  name_spec.entities.label = 'PRIOR';
-  name_spec.entities.res = 'r2pt0';
-  map = map.add_mapping('prefix', [map.norm 'c4'], ...
-                        'name_spec', name_spec);
-
-  % 4th class prior next iteration
-  name_spec = map.cfg.segment.gm_norm;
-  name_spec.entities.label = 'PRIOR';
-  name_spec.entities.res = 'r1pt5';
-  name_spec.entities.desc = 'nextIte';
-  map = map.add_mapping('prefix', [map.norm 'c4prior1'], ...
-                        'name_spec', name_spec);
-
-  % 4th class at previous iteration
-  name_spec = map.cfg.segment.gm_norm;
-  name_spec.entities.label = 'PRIOR';
-  name_spec.entities.res = 'r1pt5';
-  name_spec.entities.desc = 'prevIte';
-  map = map.add_mapping('prefix', [map.norm 'c4previous1'], ...
-                        'name_spec', name_spec);
-
-  name_spec = map.cfg.segment.gm_norm;
-  name_spec.entities.res = 'r2pt0';
-  name_spec.entities.desc = 'smth8';
-  map = map.add_mapping('prefix', [map.smooth map.norm 'c1'], ...
-                        'name_spec', name_spec);
-
-  name_spec = map.cfg.segment.wm_norm;
-  name_spec.entities.res = 'r2pt0';
-  name_spec.entities.desc = 'smth8';
-  map = map.add_mapping('prefix', [map.smooth map.norm 'c2'], ...
-                        'name_spec', name_spec);
-
-  opt.spm_2_bids = map.flatten_mapping();
 
 end
