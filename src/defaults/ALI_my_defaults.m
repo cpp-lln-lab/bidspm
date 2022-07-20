@@ -54,13 +54,6 @@ function defaults = ALI_my_defaults()
   % Specify lambda parameter
   defaults.toolbox.ALI.outliers_detection.step3tissue.step3Lambda = -4;
 
-  % specify lesion mask
-  defaults.toolbox.ALI.outliers_detection.step3mask{1} = fullfile(spmDir, ...
-                                                                  'toolbox', ...
-                                                                  'ALI', ...
-                                                                  'Mask_image', ...
-                                                                  'mask_controls_vox2mm.nii');
-
   % threshold for the mask
   defaults.toolbox.ALI.outliers_detection.step3mask_thr = 0;
   % binary lesion: threshold U

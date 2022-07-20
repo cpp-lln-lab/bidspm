@@ -21,6 +21,8 @@ function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, im
 
   outliers_detection = opt.toolbox.ALI.outliers_detection;
 
+  outliers_detection.step3mask{1} = resizeAliMask(opt);
+
   for i = 1:size(images, 1)
 
     % 1. Define smoothed segmented tissue images of patients
