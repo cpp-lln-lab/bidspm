@@ -37,4 +37,6 @@ function test_bidsRename_basic()
 
   bidsRename(opt);
 
+  rmdir(tmpDir, 's');
+
 end
