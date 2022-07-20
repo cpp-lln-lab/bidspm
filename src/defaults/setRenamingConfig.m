@@ -77,21 +77,24 @@ function opt = setRenamingConfig(opt, workflowName)
       map = map.add_mapping('prefix', [map.norm 'c4'], ...
                             'name_spec', nameSpec);
 
-      % 4th class prior next iteration
-      nameSpec = map.cfg.segment.gm_norm;
-      nameSpec.entities.label = 'PRIOR';
-      nameSpec.entities.res = 'r1pt5';
-      nameSpec.entities.desc = 'nextIte';
-      map = map.add_mapping('prefix', [map.norm 'c4prior1'], ...
-                            'name_spec', nameSpec);
+      nbIteration = opt.toolbox.ALI.unified_segmentation.step1niti;
+      for i = 1:(nbIteration - 1)
+        % 4th class prior next iteration
+        nameSpec = map.cfg.segment.gm_norm;
+        nameSpec.entities.label = 'PRIOR';
+        nameSpec.entities.res = 'r1pt5';
+        nameSpec.entities.desc = sprintf('nextIte%i', i);
+        map = map.add_mapping('prefix', sprintf('%sc4prior%i', map.norm, i), ...
+                              'name_spec', nameSpec);
 
-      % 4th class at previous iteration
-      nameSpec = map.cfg.segment.gm_norm;
-      nameSpec.entities.label = 'PRIOR';
-      nameSpec.entities.res = 'r1pt5';
-      nameSpec.entities.desc = 'prevIte';
-      map = map.add_mapping('prefix', [map.norm 'c4previous1'], ...
-                            'name_spec', nameSpec);
+        % 4th class at previous iteration
+        nameSpec = map.cfg.segment.gm_norm;
+        nameSpec.entities.label = 'PRIOR';
+        nameSpec.entities.res = 'r1pt5';
+        nameSpec.entities.desc = sprintf('prevIte%i', i);
+        map = map.add_mapping('prefix', sprintf('%sc4previous%i', map.norm, i), ...
+                              'name_spec', nameSpec);
+      end
 
       nameSpec = map.cfg.segment.gm_norm;
       nameSpec.entities.res = res;

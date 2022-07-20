@@ -38,9 +38,7 @@ function bidsLesionSegmentation(opt)
     matlabbatch = {};
     matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLabel);
 
-    saveAndRunWorkflow(matlabbatch, 'LesionSegmentation', opt, subLabel);
-
-    % copyFigures(BIDS, opt, subLabel);
+    %     saveAndRunWorkflow(matlabbatch, 'LesionSegmentation', opt, subLabel);
 
   end
 
