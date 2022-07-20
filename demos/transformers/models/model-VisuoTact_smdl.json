@@ -1,0 +1,178 @@
+{
+  "Name": "demo transformers",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "demo transformers",
+  "Input": {
+    "task": [
+      "VisuoTact"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Transformations": {
+        "Transformer": "bids-matlab_v0.1.0dev",
+        "Instructions": [
+          {
+            "Name": "Replace",
+            "Input": "trial_type",
+            "Replace": {
+              "key": "^RESPONSE.*",
+              "value": "RESPONSE"
+            },
+            "Attribute": "value"
+          },
+          {
+            "Name": "Filter",
+            "Input": "trial_type",
+            "Query": "trial_type==^.*LEFT$",
+            "Output": "tmp"
+          },
+          {
+            "Name": "LabelIdenticalRows",
+            "Cumulative": true,
+            "Input": [
+              "tmp"
+            ],
+            "Output": [
+              "label"
+            ]
+          },
+          {
+            "Name": "Concatenate",
+            "Input": [
+              "tmp",
+              "label"
+            ],
+            "Output": [
+              "LEFT"
+            ]
+          },
+          {
+            "Name": "Delete",
+            "Input": [
+              "tmp",
+              "label"
+            ]
+          },
+          {
+            "Name": "Filter",
+            "Input": "trial_type",
+            "Query": "trial_type==^.*RIGHT$",
+            "Output": "tmp"
+          },
+          {
+            "Name": "LabelIdenticalRows",
+            "Cumulative": true,
+            "Input": [
+              "tmp"
+            ],
+            "Output": [
+              "label"
+            ]
+          },
+          {
+            "Name": "Concatenate",
+            "Input": [
+              "tmp",
+              "label"
+            ],
+            "Output": [
+              "RIGHT"
+            ]
+          },
+          {
+            "Name": "Delete",
+            "Input": [
+              "tmp",
+              "label"
+            ]
+          },
+          {
+            "Name": "Filter",
+            "Input": "trial_type",
+            "Query": "trial_type==^INCONG.*$",
+            "Output": "tmp"
+          },
+          {
+            "Name": "LabelIdenticalRows",
+            "Cumulative": true,
+            "Input": [
+              "tmp"
+            ],
+            "Output": [
+              "label"
+            ]
+          },
+          {
+            "Name": "Concatenate",
+            "Input": [
+              "tmp",
+              "label"
+            ],
+            "Output": [
+              "INCONG"
+            ]
+          },
+          {
+            "Name": "Delete",
+            "Input": [
+              "tmp",
+              "label"
+            ]
+          }
+        ]
+      },
+      "Model": {
+        "X": [
+          "trial_type.REST",
+          "LEFT.P_LEFT_?",
+          "LEFT.V_LEFT_?",
+          "LEFT.CONG_LEFT_?",
+          "RIGHT.P_RIGHT_?",
+          "RIGHT.V_RIGHT_?",
+          "RIGHT.CONG_RIGHT_?",
+          "INCONG.INCONG*"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.REST",
+            "LEFT.P_LEFT_?",
+            "LEFT.V_LEFT_?",
+            "LEFT.CONG_LEFT_?",
+            "RIGHT.P_RIGHT_?",
+            "RIGHT.V_RIGHT_?",
+            "RIGHT.CONG_RIGHT_?",
+            "INCONG.INCONG*"
+          ],
+          "Model": "spm"
+        },
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": {
+            "suffix": [
+              "mask"
+            ],
+            "desc": [
+              "brain"
+            ]
+          }
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "AR(1)"
+          }
+        }
+      }
+    }
+  ]
+}
