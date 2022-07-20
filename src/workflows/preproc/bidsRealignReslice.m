@@ -43,8 +43,6 @@ function bidsRealignReslice(opt)
 
     if ~opt.dryRun && opt.rename
 
-      opt = set_spm_2_bids_defaults(opt);
-
       copyFigures(BIDS, opt, subLabel);
 
       for iTask = 1:numel(opt.taskName)
@@ -62,15 +60,7 @@ function bidsRealignReslice(opt)
       prefix = get_spm_prefix_list();
       opt.query.prefix = prefix.realign;
 
-      % extract into a renaming config function
-
-      opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
-                                                  'name_spec', opt.spm_2_bids.cfg.preproc);
-
-      opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', [opt.spm_2_bids.realign 'mean'], ...
-                                                  'name_spec', opt.spm_2_bids.cfg.mean);
-      opt.spm_2_bids = opt.spm_2_bids.flatten_mapping();
-
+      opt = setRenamingConfig(opt, 'RealignReslice');
       bidsRename(opt);
 
     end

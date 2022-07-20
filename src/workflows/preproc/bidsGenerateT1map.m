@@ -30,7 +30,6 @@ function matlabbatch = bidsGenerateT1map(opt)
     opt.query.suffix = 'UNIT1';
 
     % extract into a renaming config function
-
     opt.spm_2_bids = Mapping;
 
     prefix = matlabbatch{1}.spm.tools.mp2rage.estimateT1.outputT1.prefix;

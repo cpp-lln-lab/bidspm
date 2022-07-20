@@ -9,13 +9,37 @@ function opt = setRenamingConfig(opt, workflowName)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  opt = set_spm_2_bids_defaults(opt);
+
   switch lower(workflowName)
+
+    case 'spatialprepro'
+
+      if ~opt.realign.useUnwarp
+        opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
+                                                    'name_spec', opt.spm_2_bids.cfg.preproc);
+
+        opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', [opt.spm_2_bids.realign 'mean'], ...
+                                                    'name_spec', opt.spm_2_bids.cfg.mean);
+        opt.spm_2_bids = opt.spm_2_bids.flatten_mapping();
+      end
+
+    case 'realignreslice'
+
+      opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
+                                                  'name_spec', opt.spm_2_bids.cfg.preproc);
+
+      opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', [opt.spm_2_bids.realign 'mean'], ...
+                                                  'name_spec', opt.spm_2_bids.cfg.mean);
+
+    case 'reslicetpmtofunc'
+
+      name_spec.entities.res = 'bold';
+      opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
+                                                  'name_spec', name_spec);
 
     case 'lesionsegmentation'
 
-      opt.spm_2_bids = Mapping;
-
-      opt = set_spm_2_bids_defaults(opt);
       map = opt.spm_2_bids;
 
       nameSpec = map.cfg.segment.gm;

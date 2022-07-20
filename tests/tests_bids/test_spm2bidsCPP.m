@@ -16,8 +16,6 @@ function test_spm2bidsCPP_lesion_segmenting()
 
   opt = setRenamingConfig(opt, 'LesionSegmentation');
 
-  opt.verbosity = 2;
-
   pfx_in_out = {
                 {'rc1'}, ...
                 anatFile, ...
@@ -48,24 +46,7 @@ function test_spm2bidsCPP_lesion_segmenting()
                 'sub-01_space-IXI549Space_res-r2pt0_label-WM_desc-smth8_probseg.nii' ...
                };
 
-  for i = 1:size(pfx_in_out, 1)
-
-    prefixes = getPrefixes(pfx_in_out, i);
-
-    for j = 1:numel(prefixes)
-
-      file = [prefixes{j} pfx_in_out{i, 2}];
-
-      filename = spm_2_bids(file, opt.spm_2_bids);
-
-      msg = sprintf('%s --> %s\n', file, filename);
-      printToScreen(msg, opt);
-
-      expected = pfx_in_out{i, 3};
-      assertEqual(filename, expected);
-
-    end
-  end
+  tryAllPrefixes(pfx_in_out, opt);
 
 end
 
@@ -117,24 +98,7 @@ function test_spm2bidsCPP_mapping_func()
                 'sub-01_task-auditory_space-individual_desc-std_bold.nii' ...
                };
 
-  for i = 1:size(pfx_in_out, 1)
-
-    prefixes = getPrefixes(pfx_in_out, i);
-
-    for j = 1:numel(prefixes)
-
-      file = [prefixes{j} pfx_in_out{i, 2}];
-
-      filename = spm_2_bids(file, opt.spm_2_bids);
-
-      msg = sprintf('%s --> %s\n', file, filename);
-      printToScreen(msg, opt);
-
-      expected = pfx_in_out{i, 3};
-      assertEqual(filename, expected);
-
-    end
-  end
+  tryAllPrefixes(pfx_in_out, opt);
 
 end
 
@@ -188,23 +152,30 @@ function test_spm2bidsCPP_mapping_anat()
                 'sub-01_space-IXI549Space_res-r1pt0_desc-brain_mask.nii' ...
                };
 
-  for i = 1:size(pfx_in_out, 1)
+  tryAllPrefixes(pfx_in_out, opt);
 
-    prefixes = getPrefixes(pfx_in_out, i);
+end
+
+function tryAllPrefixes(pfxInOut, opt)
+
+  for i = 1:size(pfxInOut, 1)
+
+    prefixes = getPrefixes(pfxInOut, i);
 
     for j = 1:numel(prefixes)
 
-      file = [prefixes{j} pfx_in_out{i, 2}];
+      file = [prefixes{j} pfxInOut{i, 2}];
 
       filename = spm_2_bids(file, opt.spm_2_bids);
 
       msg = sprintf('%s --> %s\n', file, filename);
       printToScreen(msg, opt);
 
-      expected = pfx_in_out{i, 3};
+      expected = pfxInOut{i, 3};
       assertEqual(filename, expected);
 
     end
+
   end
 
 end
