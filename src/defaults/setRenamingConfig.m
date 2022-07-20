@@ -11,36 +11,35 @@ function opt = setRenamingConfig(opt, workflowName)
 
   opt = set_spm_2_bids_defaults(opt);
 
+  map = opt.spm_2_bids;
+
   switch lower(workflowName)
 
     case 'spatialprepro'
 
       if ~opt.realign.useUnwarp
-        opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
-                                                    'name_spec', opt.spm_2_bids.cfg.preproc);
+        map = map.add_mapping('prefix', map.realign, ...
+                              'name_spec', map.cfg.preproc);
 
-        opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', [opt.spm_2_bids.realign 'mean'], ...
-                                                    'name_spec', opt.spm_2_bids.cfg.mean);
-        opt.spm_2_bids = opt.spm_2_bids.flatten_mapping();
+        map = map.add_mapping('prefix', [map.realign 'mean'], ...
+                              'name_spec', map.cfg.mean);
       end
 
     case 'realignreslice'
 
-      opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
-                                                  'name_spec', opt.spm_2_bids.cfg.preproc);
+      map = map.add_mapping('prefix', map.realign, ...
+                            'name_spec', map.cfg.preproc);
 
-      opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', [opt.spm_2_bids.realign 'mean'], ...
-                                                  'name_spec', opt.spm_2_bids.cfg.mean);
+      map = map.add_mapping('prefix', [map.realign 'mean'], ...
+                            'name_spec', map.cfg.mean);
 
     case 'reslicetpmtofunc'
 
       name_spec.entities.res = 'bold';
-      opt.spm_2_bids = opt.spm_2_bids.add_mapping('prefix', opt.spm_2_bids.realign, ...
-                                                  'name_spec', name_spec);
+      map = map.add_mapping('prefix', map.realign, ...
+                            'name_spec', name_spec);
 
     case 'lesionsegmentation'
-
-      map = opt.spm_2_bids;
 
       res = opt.toolbox.ALI.unified_segmentation.step1vox;
       res = ['r' convertToStr(res)];
@@ -110,7 +109,9 @@ function opt = setRenamingConfig(opt, workflowName)
 
   end
 
-  opt.spm_2_bids = map.flatten_mapping();
+  map = map.flatten_mapping();
+
+  opt.spm_2_bids = map;
 
 end
 
