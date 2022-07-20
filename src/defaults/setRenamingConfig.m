@@ -42,24 +42,28 @@ function opt = setRenamingConfig(opt, workflowName)
 
       map = opt.spm_2_bids;
 
+      res = opt.toolbox.ALI.unified_segmentation.step1vox;
+      res = ['r' convertToStr(res)];
+      fwhm = opt.toolbox.ALI.unified_segmentation.step1fwhm;
+
       nameSpec = map.cfg.segment.gm;
-      nameSpec.entities.res = 'r2pt0';
+      nameSpec.entities.res = res;
       prefix =  [map.realign 'c1'];
       map = replaceMapping(map, prefix, nameSpec);
 
       nameSpec = map.cfg.segment.wm;
-      nameSpec.entities.res = 'r2pt0';
+      nameSpec.entities.res = res;
       prefix =  [map.realign 'c2'];
       map = replaceMapping(map, prefix, nameSpec);
 
       nameSpec = map.cfg.segment.csf;
-      nameSpec.entities.res = 'r2pt0';
+      nameSpec.entities.res = res;
       prefix =  [map.realign 'c3'];
       map = replaceMapping(map, prefix, nameSpec);
 
       nameSpec = map.cfg.segment.gm;
       nameSpec.entities.label = 'PRIOR';
-      nameSpec.entities.res = 'r2pt0';
+      nameSpec.entities.res = res;
       idx = map.find_mapping('prefix', [map.realign 'c4']);
       map = map.rm_mapping(idx);
       map = map.add_mapping('prefix', [map.realign 'c4'], ...
@@ -67,7 +71,7 @@ function opt = setRenamingConfig(opt, workflowName)
 
       nameSpec = map.cfg.segment.gm_norm;
       nameSpec.entities.label = 'PRIOR';
-      nameSpec.entities.res = 'r2pt0';
+      nameSpec.entities.res = res;
       idx = map.find_mapping('prefix', [map.norm 'c4']);
       map = map.rm_mapping(idx);
       map = map.add_mapping('prefix', [map.norm 'c4'], ...
@@ -90,14 +94,14 @@ function opt = setRenamingConfig(opt, workflowName)
                             'name_spec', nameSpec);
 
       nameSpec = map.cfg.segment.gm_norm;
-      nameSpec.entities.res = 'r2pt0';
-      nameSpec.entities.desc = 'smth8';
+      nameSpec.entities.res = res;
+      nameSpec.entities.desc = ['smth' num2str(fwhm)];
       prefix =  [map.smooth map.norm 'c1'];
       map = replaceMapping(map, prefix, nameSpec);
 
       nameSpec = map.cfg.segment.wm_norm;
-      nameSpec.entities.res = 'r2pt0';
-      nameSpec.entities.desc = 'smth8';
+      nameSpec.entities.res = res;
+      nameSpec.entities.desc = ['smth' num2str(fwhm)];
       prefix =  [map.smooth map.norm 'c2'];
       map = replaceMapping(map, prefix, nameSpec);
 
@@ -112,4 +116,9 @@ function map = replaceMapping(map, prefix, nameSpec)
   map = map.rm_mapping(idx);
   map = map.add_mapping('prefix', prefix, ...
                         'name_spec', nameSpec);
+end
+
+function out = convertToStr(in)
+  out = num2str(in);
+  out = strrep(out, '.', 'pt');
 end
