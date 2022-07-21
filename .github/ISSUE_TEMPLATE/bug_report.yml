@@ -88,6 +88,7 @@ body:
 
         Or check the content of CITATION.cff.
       options:
+        - label: v2.1.0
         - label: v2.0.0
         - label: v1.1.0
         - label: v1.0.0
