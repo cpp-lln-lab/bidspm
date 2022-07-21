@@ -21,10 +21,16 @@ function matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLab
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
-  hdr = spm_vol(fullfile(anatDataDir, anatImage));
-  voxRes = diag(hdr.mat);
-  voxRes = min(voxRes(1:3));
-  unified_segmentation.step1vox = abs(voxRes);
+  % TODO
+  % this needs to be changed
+  % - to be consistent across subject
+  % - to reslice the size of the mask that is then used for lesion detection
+  %
+  %   hdr = spm_vol(fullfile(anatDataDir, anatImage));
+  %   voxRes = diag(hdr.mat);
+  %   voxRes = min(voxRes(1:3));
+  %   unified_segmentation.step1vox = abs(voxRes);
+
   unified_segmentation.step1data{1} = fullfile(anatDataDir, anatImage);
 
   matlabbatch{end + 1}.spm.tools.ali.unified_segmentation = unified_segmentation;

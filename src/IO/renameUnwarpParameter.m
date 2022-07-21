@@ -12,6 +12,8 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
     return
   end
 
+  opt = set_spm_2_bids_defaults(opt);
+
   for iTask = 1:numel(opt.taskName)
 
     unwarpParam = spm_select('FPListRec', BIDS.pth, ...
@@ -19,17 +21,12 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
 
     for iFile = 1:size(unwarpParam, 1)
 
-      inputFilename = strrep(unwarpParam(iFile, :), '_uw.', '.');
+      newFilename = spm_2_bids(unwarpParam(iFile, :), opt.spm_2_bids);
 
-      bf = bids.File(inputFilename);
-      bf.entities.label = bf.suffix;
-      bf.suffix = 'unwarpparam';
-      bf.extension = '.mat';
-
-      newName = spm_file(unwarpParam(iFile, :), 'filename',  bf.filename);
+      outputFile = spm_file(unwarpParam(iFile, :), 'filename', newFilename);
 
       if ~isempty(unwarpParam(iFile, :))
-        movefile(unwarpParam(iFile, :), newName);
+        movefile(unwarpParam(iFile, :), outputFile);
       end
 
     end

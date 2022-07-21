@@ -98,6 +98,14 @@ opt.results(1).montage.background = struct('suffix', 'T1w', ...
 opt.results(1).montage.slices = -4:2:16;
 opt.results(1).nidm = true();
 
+opt.results(2).nodeName = 'run_level';
+opt.results(2).name = {'listening_inf_baseline'};
+opt.results(2).p = 0.01;
+opt.results(2).k = 10;
+opt.results(2).MC = 'none';
+opt.results(2).csv = true;
+opt.results(2).atlas = 'AAL';
+
 cpp_spm(bids_dir, output_dir, 'subject', ...
         'participant_label', {subject_label}, ...
         'action', 'stats', ...

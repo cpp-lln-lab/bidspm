@@ -1,6 +1,7 @@
-% (C) Copyright 2021 CPP_SPM developers
+function test_suite = test_renameUnwarpParameter %#ok<*STOUT>
+  %
+  % (C) Copyright 2022 CPP_SPM developers
 
-function test_suite = test_bidsRename %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -8,11 +9,7 @@ function test_suite = test_bidsRename %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsRename_basic()
-
-  % TODO take care of
-  % - SpatialReference probably not needed for space individual if anat modality
-  % - transfer of Skullstripped true, if sources has it?
+function test_renameUnwarpParameter_basic()
 
   opt = setOptions('MoAE-preproc');
 
@@ -24,18 +21,21 @@ function test_bidsRename_basic()
   spm_mkdir(tmpDir);
   copyfile(opt.dir.preproc, tmpDir);
 
-  opt.dir.preproc = tmpDir;
-
   BIDS = bids.layout(tmpDir, 'use_schema', false);
-  files = bids.query(BIDS, 'data', 'prefix', '');
-  for i = 1:numel(files)
-    delete(files{i});
-  end
 
   opt.dryRun = false;
   opt.verbosity = 2;
 
-  bidsRename(opt);
+  unwarpParamFiles = spm_select('FPListRec', tmpDir, '^.*_bold_uw.mat$');
+  assertEqual(size(unwarpParamFiles, 1), 1);
+
+  renameUnwarpParameter(BIDS, '01', opt);
+
+  unwarpParamFiles = spm_select('FPListRec', tmpDir, '^.*_bold_uw.mat$');
+  assertEqual(size(unwarpParamFiles, 1), 0);
+
+  unwarpParamFiles = spm_select('FPListRec', tmpDir, '^.*label-bold_unwarpparam.mat$');
+  assertEqual(size(unwarpParamFiles, 1), 1);
 
   rmdir(tmpDir, 's');
 

@@ -8,6 +8,53 @@ function test_suite = test_spm2bidsCPP %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_spm2bidsCPP_lesion_segmenting()
+
+  anatFile = 'sub-01_T1w.nii';
+
+  opt = setOptions('vismotion');
+
+  opt = setFields(opt, ALI_my_defaults());
+
+  opt.toolbox.ALI.unified_segmentation.step1vox = 1.2;
+  opt.toolbox.ALI.unified_segmentation.step1fwhm = 6;
+
+  opt = setRenamingConfig(opt, 'LesionSegmentation');
+
+  pfx_in_out = {
+                {'rc1'}, ...
+                anatFile, ...
+                'sub-01_space-individual_res-r1pt2_label-GM_probseg.nii'; ...
+                {'rc2'}, ...
+                anatFile, ...
+                'sub-01_space-individual_res-r1pt2_label-WM_probseg.nii'; ...
+                {'rc3'}, ...
+                anatFile, ...
+                'sub-01_space-individual_res-r1pt2_label-CSF_probseg.nii'; ...
+                {'rc4'}, ...
+                anatFile, ...
+                'sub-01_space-individual_res-r1pt2_label-PRIOR_probseg.nii'; ...
+                {'wc4'}, ...
+                anatFile, ...
+                'sub-01_space-IXI549Space_res-r1pt2_label-PRIOR_probseg.nii'; ...
+                {'wc4prior1'}, ...
+                anatFile, ...
+                'sub-01_space-IXI549Space_res-r1pt5_label-PRIOR_desc-nextIte1_probseg.nii'; ...
+                {'wc4previous1'}, ...
+                anatFile, ...
+                'sub-01_space-IXI549Space_res-r1pt5_label-PRIOR_desc-prevIte1_probseg.nii'; ...
+                {'swc1'}, ...
+                anatFile, ...
+                'sub-01_space-IXI549Space_res-r1pt2_label-GM_desc-smth6_probseg.nii'; ...
+                {'swc2'}, ...
+                anatFile, ...
+                'sub-01_space-IXI549Space_res-r1pt2_label-WM_desc-smth6_probseg.nii' ...
+               };
+
+  tryAllPrefixes(pfx_in_out, opt);
+
+end
+
 function test_spm2bidsCPP_mapping_func()
 
   opt = setOptions('vismotion');
@@ -56,24 +103,7 @@ function test_spm2bidsCPP_mapping_func()
                 'sub-01_task-auditory_space-individual_desc-std_bold.nii' ...
                };
 
-  for i = 1:size(pfx_in_out, 1)
-
-    prefixes = getPrefixes(pfx_in_out, i);
-
-    for j = 1:numel(prefixes)
-
-      file = [prefixes{j} pfx_in_out{i, 2}];
-
-      filename = spm_2_bids(file, opt.spm_2_bids);
-
-      msg = sprintf('%s --> %s\n', file, filename);
-      printToScreen(msg, opt);
-
-      expected = pfx_in_out{i, 3};
-      assertEqual(filename, expected);
-
-    end
-  end
+  tryAllPrefixes(pfx_in_out, opt);
 
 end
 
@@ -127,23 +157,30 @@ function test_spm2bidsCPP_mapping_anat()
                 'sub-01_space-IXI549Space_res-r1pt0_desc-brain_mask.nii' ...
                };
 
-  for i = 1:size(pfx_in_out, 1)
+  tryAllPrefixes(pfx_in_out, opt);
 
-    prefixes = getPrefixes(pfx_in_out, i);
+end
+
+function tryAllPrefixes(pfxInOut, opt)
+
+  for i = 1:size(pfxInOut, 1)
+
+    prefixes = getPrefixes(pfxInOut, i);
 
     for j = 1:numel(prefixes)
 
-      file = [prefixes{j} pfx_in_out{i, 2}];
+      file = [prefixes{j} pfxInOut{i, 2}];
 
       filename = spm_2_bids(file, opt.spm_2_bids);
 
       msg = sprintf('%s --> %s\n', file, filename);
       printToScreen(msg, opt);
 
-      expected = pfx_in_out{i, 3};
+      expected = pfxInOut{i, 3};
       assertEqual(filename, expected);
 
     end
+
   end
 
 end

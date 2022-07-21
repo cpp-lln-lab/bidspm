@@ -50,7 +50,9 @@ function bidsLesionAbnormalitiesDetection(opt)
     filter = anatImage.entities;
     filter.modality = 'anat';
     filter.suffix = 'probseg';
-    filter.desc = 'smth8';
+
+    fwhm = opt.toolbox.ALI.unified_segmentation.step1fwhm;
+    filter.desc = ['smth' num2str(fwhm)];
 
     for i = 1:numel(labels)
 
@@ -80,6 +82,6 @@ function bidsLesionAbnormalitiesDetection(opt)
   matlabbatch = {};
   matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, images);
 
-  saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt, subLabel);
+  saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt);
 
 end

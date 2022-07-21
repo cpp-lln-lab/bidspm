@@ -6,7 +6,7 @@ function defaults = ALI_my_defaults()
   %
   %   defaults = ALI_my_defaults()
   %
-  % This is where we set the defautls we want to use for the ALE (lesion) toolbox.
+  % This is where we set the defautls we want to use for the ALI (lesion) toolbox.
   % These will overide the spm defaults.
   % When "not enough" information is specified in the batch files, SPM falls
   % back on the defaults to fill in the blanks. This allows to make the
@@ -21,8 +21,11 @@ function defaults = ALI_my_defaults()
   spmDir = spm('dir');
 
   %   specify Prior EXTRA class (lesion prior map)
-  lesionPriorMap = fullfile(spmDir, 'toolbox', 'ALI', ...
-                            'Priors_extraClass', 'wc4prior0.nii');
+  lesionPriorMap = fullfile(spmDir, ...
+                            'toolbox', ...
+                            'ALI', ...
+                            'Priors_extraClass', ...
+                            'wc4prior0.nii');
 
   defaults.toolbox.ALI.unified_segmentation.step1prior = {lesionPriorMap};
 
@@ -50,10 +53,6 @@ function defaults = ALI_my_defaults()
 
   % Specify lambda parameter
   defaults.toolbox.ALI.outliers_detection.step3tissue.step3Lambda = -4;
-
-  % specify lesion mask
-  defaults.toolbox.ALI.lesionMask = fullfile(spmDir, 'toolbox', 'ALI', ...
-                                             'Mask_image', 'mask_controls_vox2mm.nii');
 
   % threshold for the mask
   defaults.toolbox.ALI.outliers_detection.step3mask_thr = 0;
