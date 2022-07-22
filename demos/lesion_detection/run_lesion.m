@@ -15,18 +15,18 @@ addpath(fullfile(pwd, '..', '..'));
 cpp_spm();
 
 %% Set options
-opt = lesion_get_option();
+[opt, opt2] = lesion_get_option();
 
 %% Run batches
-% reportBIDS(opt);
-
-bidsCopyInputFolder(opt);
+% bidsCopyInputFolder(opt);
+% bidsCopyInputFolder(opt2);
 
 %% Step 1: segmentation
-bidsLesionSegmentation(opt);
+% bidsLesionSegmentation(opt);
+% bidsLesionSegmentation(opt2);
 
 %% Step 2: lesion abnormalities
-bidsLesionAbnormalitiesDetection(opt);
+bidsLesionAbnormalitiesDetection(opt, opt2);
 
 % % Step 3: overlap map
 % bidsLesionOverlapMap(opt)

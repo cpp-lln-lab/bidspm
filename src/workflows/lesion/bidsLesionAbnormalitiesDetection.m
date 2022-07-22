@@ -1,4 +1,4 @@
-function bidsLesionAbnormalitiesDetection(opt)
+function bidsLesionAbnormalitiesDetection(opt, extraOptions)
   %
   % Use the ALI toolbox to detect lesion abnormalities in anatomical image
   % after segmentation of the image.
@@ -9,17 +9,28 @@ function bidsLesionAbnormalitiesDetection(opt)
   %
   %  bidsLesionAbnormalitiesDetection(opt)
   %
-  % :type opt:  structure
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
+  %
+  % :param extraOptions: Options chosen for analysis of another dataset
+  %                      in case they need to be merged.
+  %                      See also: checkOptions
+  %                      ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type extraOptions: structure
   %
   % Lesion abnormalities detection will be performed using the information provided
   % from the lesion segmentation output in BIDS format.
   %
   %
   % (C) Copyright 2021 CPP_SPM developers
+
+  % TODO: do not use extraOptions but instead either opt(1) and opt(2) or
+
+  if nargin < 2
+    extraOptions = [];
+  end
 
   % create a structure to collect image names
   labels = {'GM', 'WM'};
@@ -34,6 +45,14 @@ function bidsLesionAbnormalitiesDetection(opt)
   end
 
   images = collectImagesFromDataset(opt, images, labels);
+
+  if ~isempty(extraOptions)
+    if checkToolbox('ALI', 'verbose', extraOptions.verbosity > 0)
+      extraOptions = setFields(extraOptions, ALI_my_defaults());
+    end
+    extraOptions.dir.input = extraOptions.dir.preproc;
+    images = collectImagesFromDataset(extraOptions, images, labels);
+  end
 
   %%
   controlsImages = cat(1, images.controls);
