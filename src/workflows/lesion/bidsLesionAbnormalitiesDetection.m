@@ -21,20 +21,43 @@ function bidsLesionAbnormalitiesDetection(opt)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  % create a structure to collect image names
+  labels = {'GM', 'WM'};
+  for i = 1:numel(labels)
+    images(i, 1) = struct('controls', [], 'patients', []);
+  end
+
   opt.dir.input = opt.dir.preproc;
 
   if checkToolbox('ALI', 'verbose', opt.verbosity > 0)
     opt = setFields(opt, ALI_my_defaults());
   end
 
-  [BIDS, opt] = setUpWorkflow(opt, 'abnormalities detection');
+  images = collectImagesFromDataset(opt, images, labels);
 
-  labels = {'GM', 'WM'};
+  %%
+  controlsImages = cat(1, images.controls);
+  patientsImages = cat(1, images.patients);
 
-  % create a structure to collect image names
-  for i = 1:numel(labels)
-    images(i, 1) = struct('controls', [], 'patients', []);
+  if isempty(controlsImages) || ...
+    isempty(patientsImages) || ...
+    any(cellfun('isempty', controlsImages)) || ...
+      any(cellfun('isempty', patientsImages))
+    msg = sprintf('Must have segmentation output from patients AND control');
+    id = 'missingImages';
+    errorHandling(mfilename(), id, msg, false);
   end
+
+  matlabbatch = {};
+  matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, images);
+
+  saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt);
+
+end
+
+function images = collectImagesFromDataset(opt, images, labels)
+
+  [BIDS, opt] = setUpWorkflow(opt, 'abnormalities detection');
 
   for iSub = 1:numel(opt.subjects)
 
@@ -82,22 +105,5 @@ function bidsLesionAbnormalitiesDetection(opt)
     end
 
   end
-
-  controlsImages = cat(1, images.controls);
-  patientsImages = cat(1, images.patients);
-
-  if isempty(controlsImages) || ...
-    isempty(patientsImages) || ...
-    any(cellfun('isempty', controlsImages)) || ...
-      any(cellfun('isempty', patientsImages))
-    msg = sprintf('Must have segmentation output from patients AND control');
-    id = 'missingImages';
-    errorHandling(mfilename(), id, msg, false);
-  end
-
-  matlabbatch = {};
-  matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, images);
-
-  saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt);
 
 end
