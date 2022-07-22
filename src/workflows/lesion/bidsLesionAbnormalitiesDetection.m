@@ -43,7 +43,11 @@ function bidsLesionAbnormalitiesDetection(opt)
     printProcessingSubject(iSub, subLabel, opt);
 
     idx = strcmp(BIDS.participants.content.participant_id, ['sub-' subLabel]);
-    participantsGroup = BIDS.participants.content.group(idx);
+    if isfield(BIDS.participants.content, 'group')
+      participantsGroup = BIDS.participants.content.group(idx);
+    elseif isfield(BIDS.participants.content, 'Group')
+      participantsGroup = BIDS.participants.content.Group(idx);
+    end
 
     anatImage = getAnatFilename(BIDS, opt, subLabel);
     anatImage = bids.File(anatImage);
@@ -77,6 +81,18 @@ function bidsLesionAbnormalitiesDetection(opt)
 
     end
 
+  end
+
+  controlsImages = cat(1, images.controls);
+  patientsImages = cat(1, images.patients);
+
+  if isempty(controlsImages) || ...
+    isempty(patientsImages) || ...
+    any(cellfun('isempty', controlsImages)) || ...
+      any(cellfun('isempty', patientsImages))
+    msg = sprintf('Must have segmentation output from patients AND control');
+    id = 'missingImages';
+    errorHandling(mfilename(), id, msg, false);
   end
 
   matlabbatch = {};
