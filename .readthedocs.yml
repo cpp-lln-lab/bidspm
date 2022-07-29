@@ -23,7 +23,4 @@ formats:
 python:
   version: 3.8
   install:
-    - method: pip
-      path: "-e ."
-      extra_requirements:
-        - docs
+    - requirements: requirements_doc.txt
