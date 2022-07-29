@@ -1,4 +1,4 @@
-function bidsLesionAbnormalitiesDetection(opt)
+function bidsLesionAbnormalitiesDetection(opt, extraOptions)
   %
   % Use the ALI toolbox to detect lesion abnormalities in anatomical image
   % after segmentation of the image.
@@ -9,11 +9,16 @@ function bidsLesionAbnormalitiesDetection(opt)
   %
   %  bidsLesionAbnormalitiesDetection(opt)
   %
-  % :type opt:  structure
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
+  %
+  % :param extraOptions: Options chosen for analysis of another dataset
+  %                      in case they need to be merged.
+  %                      See also: checkOptions
+  %                      ``checkOptions()`` and ``loadAndCheckOptions()``.
+  % :type extraOptions: structure
   %
   % Lesion abnormalities detection will be performed using the information provided
   % from the lesion segmentation output in BIDS format.
@@ -21,20 +26,57 @@ function bidsLesionAbnormalitiesDetection(opt)
   %
   % (C) Copyright 2021 CPP_SPM developers
 
+  % TODO: do not use extraOptions but instead either opt(1) and opt(2) or
+
+  if nargin < 2
+    extraOptions = [];
+  end
+
+  % create a structure to collect image names
+  labels = {'GM', 'WM'};
+  for i = 1:numel(labels)
+    images(i, 1) = struct('controls', [], 'patients', []);
+  end
+
   opt.dir.input = opt.dir.preproc;
 
   if checkToolbox('ALI', 'verbose', opt.verbosity > 0)
     opt = setFields(opt, ALI_my_defaults());
   end
 
-  [BIDS, opt] = setUpWorkflow(opt, 'abnormalities detection');
+  images = collectImagesFromDataset(opt, images, labels);
 
-  labels = {'GM', 'WM'};
-
-  % create a structure to collect image names
-  for i = 1:numel(labels)
-    images(i, 1) = struct('controls', [], 'patients', []);
+  if ~isempty(extraOptions)
+    if checkToolbox('ALI', 'verbose', extraOptions.verbosity > 0)
+      extraOptions = setFields(extraOptions, ALI_my_defaults());
+    end
+    extraOptions.dir.input = extraOptions.dir.preproc;
+    images = collectImagesFromDataset(extraOptions, images, labels);
   end
+
+  %%
+  controlsImages = cat(1, images.controls);
+  patientsImages = cat(1, images.patients);
+
+  if isempty(controlsImages) || ...
+    isempty(patientsImages) || ...
+    any(cellfun('isempty', controlsImages)) || ...
+      any(cellfun('isempty', patientsImages))
+    msg = sprintf('Must have segmentation output from patients AND control');
+    id = 'missingImages';
+    errorHandling(mfilename(), id, msg, false);
+  end
+
+  matlabbatch = {};
+  matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, images);
+
+  saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt);
+
+end
+
+function images = collectImagesFromDataset(opt, images, labels)
+
+  [BIDS, opt] = setUpWorkflow(opt, 'abnormalities detection');
 
   for iSub = 1:numel(opt.subjects)
 
@@ -43,7 +85,11 @@ function bidsLesionAbnormalitiesDetection(opt)
     printProcessingSubject(iSub, subLabel, opt);
 
     idx = strcmp(BIDS.participants.content.participant_id, ['sub-' subLabel]);
-    participantsGroup = BIDS.participants.content.group(idx);
+    if isfield(BIDS.participants.content, 'group')
+      participantsGroup = BIDS.participants.content.group(idx);
+    elseif isfield(BIDS.participants.content, 'Group')
+      participantsGroup = BIDS.participants.content.Group(idx);
+    end
 
     anatImage = getAnatFilename(BIDS, opt, subLabel);
     anatImage = bids.File(anatImage);
@@ -78,10 +124,5 @@ function bidsLesionAbnormalitiesDetection(opt)
     end
 
   end
-
-  matlabbatch = {};
-  matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, images);
-
-  saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt);
 
 end
