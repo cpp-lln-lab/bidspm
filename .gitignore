@@ -31,11 +31,14 @@ venv
 */group/*
 models/*
 
+# python
+**/*egg-info
+**/__pycache__
+
 # jupyter notebooks
 .ipynb_checkpoints
 
 # node stuff
-
 node_modules
 package*
 yarn.lock
