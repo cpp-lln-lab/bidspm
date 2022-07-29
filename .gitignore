@@ -34,6 +34,7 @@ models/*
 # python
 **/*egg-info
 **/__pycache__
+**/build
 
 # jupyter notebooks
 .ipynb_checkpoints
