@@ -1,4 +1,4 @@
-function cppSpmHelp()
+function bidspmHelp()
   %
   % General intro function for CPP SPM
   %
@@ -47,7 +47,7 @@ function cppSpmHelp()
   %
   % .. note::
   %
-  %   - ``'stats'``     runs model speification / estimation, contrast computation, display results
+  %   - ``'stats'``     runs model specification / estimation, contrast computation, display results
   %   - ``'contrasts'`` runs contrast computation, display results
   %   - ``'results'``   displays results
   %

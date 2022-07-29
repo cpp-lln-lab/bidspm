@@ -1,2 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+bidspm/_version.py export-subst
+src/_version.py export-subst

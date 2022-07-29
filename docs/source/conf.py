@@ -38,6 +38,7 @@ extensions = [
     "sphinxcontrib.bibtex",
     "sphinx_copybutton",
     "myst_parser",
+    "sphinxarg.ext",
 ]
 matlab_src_dir = os.path.dirname(os.path.abspath("../../src"))
 primary_domain = "mat"

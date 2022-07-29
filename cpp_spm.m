@@ -68,7 +68,9 @@ function cpp_spm(varargin)
 
     case 'help'
 
-      help(fullfile(fileparts(mfilename('fullpath')), 'src', 'messages', 'cppSpmHelp.m'));
+      system('bidspm --help');
+
+      help(fullfile(fileparts(mfilename('fullpath')), 'src', 'messages', 'bidspmHelp.m'));
 
     case 'version'
 
