@@ -10,13 +10,6 @@ import rich
 __version__ = _version.get_versions()["version"]
 
 
-def main(argv=sys.argv) -> None:
-
-    parser = preproc_parser()
-
-    args = parser.parse_args(argv[1:])
-
-
 class MuhParser(argparse.ArgumentParser):
     def _print_message(self, message: str, file: Optional[IO[str]] = None) -> None:
         rich.print(message, file=file)
@@ -45,9 +38,9 @@ def base_parser():
     return parser
 
 
-def low_level_parser():
+def low_parser():
 
-    parser = common_parser()
+    parser = base_parser()
 
     parser.add_argument(
         "--action",
@@ -65,6 +58,7 @@ def low_level_parser():
         type=str,
         nargs=1,
     )
+
     return parser
 
 
@@ -72,11 +66,6 @@ def common_parser():
 
     parser = base_parser()
 
-    """
-    **COMMON:**
-
-    obligatory
-    """
     parser.add_argument(
         "bids_dir",
         help="""
@@ -105,30 +94,6 @@ def common_parser():
         type=str,
         nargs=1,
     )
-    parser.add_argument(
-        "--action",
-        help="""
-        Level of the analysis that will be performed.
-        Multiple participant level analyses can be run independently
-        (in parallel) using the same output_dir.
-
-        \n- stats: runs model specification / estimation, contrast computation, display results
-        """,
-        choices=[
-            "preprocess",
-            "stats",
-            "contrasts",
-            "results",
-        ],
-        required=True,
-        type=str,
-        nargs=1,
-    )
-    """
-    **COMMON:**
-
-    optional
-    """
     parser.add_argument(
         "--participant_label",
         help="""
@@ -170,16 +135,6 @@ def common_parser():
         nargs=1,
     )
     parser.add_argument(
-        "--space",
-        help="""
-        Space to normalize to generate output in for ``preprocess``
-        or to use as input for ``stats``.
-        Only one value is allowed for ``stats``
-        """,
-        default=["individual", "IXI549Space"],
-        nargs="+",
-    )
-    parser.add_argument(
         "--options",
         help="""
         Path to JSON file containing bidspm options.
@@ -189,21 +144,117 @@ def common_parser():
     return parser
 
 
+def stats_parser():
+
+    parser = common_parser()
+
+    parser.add_argument(
+        "--action",
+        help="""
+        Level of the analysis that will be performed.
+        Multiple participant level analyses can be run independently
+        (in parallel) using the same output_dir.
+
+        - ``stats``: runs model specification / estimation, contrast computation, display results
+        - ``contrasts``: contrast computation, display results
+        - ``results``: display results
+        """,
+        choices=[
+            "stats",
+            "contrasts",
+            "results",
+        ],
+        required=True,
+        type=str,
+        nargs=1,
+    )
+    parser.add_argument(
+        "--preproc_dir",
+        help="""
+        Path to preprocessed data.
+        """,
+        nargs=1,
+    )
+    parser.add_argument(
+        "--task",
+        help="""
+        Tasks of the input data.
+        """,
+        type=str,
+        nargs="+",
+    )
+    parser.add_argument(
+        "--space",
+        help="""
+        Space of the input data.
+        """,
+        default=["individual", "IXI549Space"],
+        nargs=1,
+    )
+    parser.add_argument(
+        "--model_file",
+        help="""
+        Path to BIDS stats model.
+        """,
+        nargs=1,
+    )
+    parser.add_argument(
+        "--fwhm",
+        help="""
+        Full width at half maximum of the gaussian kernel of the input data.
+        """,
+        type=float,
+        nargs=1,
+        default=6.0,
+    )
+    parser.add_argument(
+        "--roi_based",
+        help="""
+        To run stats only in regions of interests.
+        """,
+        choices=[True, False],
+        default=False,
+        type=bool,
+        nargs=1,
+    )
+
+    return parser
+
+
 def preproc_parser():
 
     parser = common_parser()
 
-    """
-    **PREPROCESSING:**
-
-    obligatory
-    """
+    parser.add_argument(
+        "--action",
+        help="""
+        Level of the analysis that will be performed.
+        Multiple participant level analyses can be run independently
+        (in parallel) using the same output_dir.
+        """,
+        choices=[
+            "preprocess",
+        ],
+        required=True,
+        type=str,
+        nargs=1,
+    )
+    parser.add_argument(
+        "--space",
+        help="""
+        Space to normalize to generate output in for ``preprocess``.
+        """,
+        default=["individual", "IXI549Space"],
+        nargs="+",
+    )
     parser.add_argument(
         "--task",
         help="""
-        Tasks to ``preprocess`` or to include in ``stats``.
-        Only one value allowed for ``preprocess``.
+        Tasks to ``preprocess``.
+        Only one value allowed.
         """,
+        type=str,
+        nargs=1,
     )
     parser.add_argument(
         "--dummy_scans",
@@ -214,13 +265,10 @@ def preproc_parser():
         nargs=1,
         default=0,
     )
-    """
-    optional
-    """
     parser.add_argument(
         "--anat_only",
         help="""
-        If preprocessing should be done only on anatomocal data.
+        If preprocessing should be done only on anatomical data.
         """,
         choices=[True, False],
         default=False,
@@ -245,9 +293,35 @@ def preproc_parser():
         default=6.0,
     )
 
-    # TODO create an update action
-
     return parser
+
+
+def low(argv=sys.argv) -> None:
+
+    parser = low_parser()
+
+    args = parser.parse_args(argv[1:])
+
+
+def stats(argv=sys.argv) -> None:
+
+    parser = stats_parser()
+
+    args = parser.parse_args(argv[1:])
+
+
+def preproc(argv=sys.argv) -> None:
+
+    parser = preproc_parser()
+
+    args = parser.parse_args(argv[1:])
+
+
+def main(argv=sys.argv) -> None:
+
+    parser = preproc_parser()
+
+    args = parser.parse_args(argv[1:])
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ function testSuite = test_api %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_isMni_basic()
+function test_api_basic()
 
   % initialise (add relevant folders to path)
   cpp_spm;

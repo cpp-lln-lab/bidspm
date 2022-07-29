@@ -13,7 +13,7 @@ Welcome to CPP SPM documentation!
 
    general_information
    installation
-   bids_app_api
+   usage_notes
    set_up
    bids_stats_model
    defaults
