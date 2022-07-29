@@ -24,6 +24,6 @@ python:
   version: 3.8
   install:
     - method: pip
-      path: .
+      path: "-e ."
       extra_requirements:
         - docs

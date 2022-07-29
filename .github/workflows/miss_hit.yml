@@ -38,7 +38,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools
-        pip3 install .[matlab_styles]
+        pip3 install -e .[matlab_styles]
 
     - name: ${{ matrix.command }}
       run: |
