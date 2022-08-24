@@ -9,11 +9,13 @@ on:
     paths:
       - '**.m'
       - '.github/workflows/run_tests*'
+      - 'lib'
   pull_request:
     branches: ['*']
     paths:
       - '**.m'
       - '.github/workflows/run_tests*'
+      - 'lib'
 
 env:
   OCTFLAGS: --no-gui --no-window-system --silent

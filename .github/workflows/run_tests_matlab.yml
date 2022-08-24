@@ -9,11 +9,13 @@ on:
     paths:
       - '**.m'
       - '.github/workflows/run_tests*'
+      - 'lib'
   pull_request:
     branches: ["*"]
     paths:
       - '**.m'
       - '.github/workflows/run_tests*'
+      - 'lib'
 
   # to trigger update manually from the Action tab in github
   workflow_dispatch:
