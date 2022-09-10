@@ -103,6 +103,9 @@ function matlabbatch = bidsRFX(varargin)
 
       for i = 1:numel(datasetNodes)
 
+        msg = sprintf('\n PROCESSING NODE: %s\n', nodeName);
+        printToScreen(msg, opt, 'format', '*blue');
+
         matlabbatch = {};
 
         nodeName = datasetNodes{i}.Name;

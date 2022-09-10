@@ -108,7 +108,8 @@ function opt = checkOptions(opt)
   %
   %
   %     - ``opt.stc.skip = false`` - boolean flag to skip slice time correction or not.
-  %     - ``opt.stc.referenceSlice = []`` - reference slice for the slice timing correction.
+  %     - ``opt.stc.referenceSlice = []`` - reference slice (in seconds)
+  %       for the slice timing correction.
   %       If left emtpy the mid-volume acquisition time point will be selected at run time.
   %     - ``opt.stc.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED,
   %       if you know the order in which slices were acquired, you should be able to recompute

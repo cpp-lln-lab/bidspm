@@ -106,7 +106,10 @@ classdef BidsModel < bids.Model
           isempty(model.Options.HighPassFilterCutoffHz)
 
         obj.bidsModelError('noHighPassFilter', ...
-                           sprintf('No high-pass filter for node "%s"', nodeName));
+                           sprintf(['No high-pass filter for node "%s"\n', ...
+                                    'Will use default falue instead: %f.'], ...
+                                   nodeName, ...
+                                   spm_get_defaults('stats.fmri.hpf')));
 
       else
 
@@ -147,7 +150,8 @@ classdef BidsModel < bids.Model
         HRFderivatives = model.HRF.Model;
       catch
         obj.bidsModelError('noHRFderivatives', ...
-                           sprintf('No HRF derivatives for node "%s"', nodeName));
+                           sprintf(['No HRF derivatives for node "%s".\n', ...
+                                    'Will use SPM canonical HRF.\n'], nodeName));
       end
 
       HRFderivatives = lower(strrep(HRFderivatives, ' ', ''));
@@ -187,7 +191,7 @@ classdef BidsModel < bids.Model
         mask = model.Options.Mask;
       catch
         msg = sprintf(['No mask for Node "%s".', ...
-                       '\nSpecify one in "Node.Options.Mask"'], ...
+                       '\nSpecify one in "Node.Options.Mask".\n'], ...
                       nodeName);
         obj.bidsModelError('noMask', msg);
       end
@@ -213,7 +217,10 @@ classdef BidsModel < bids.Model
       else
 
         obj.bidsModelError('noInclMaskThresh', ...
-                           sprintf('No inclusive mask threshold for Node "%s"', nodeName));
+                           sprintf(['No inclusive mask threshold for Node "%s".\n', ...
+                                    'Will use default falue instead: %f.'], ...
+                                   nodeName, ...
+                                   spm_get_defaults('mask.thresh')));
 
       end
 
@@ -241,13 +248,17 @@ classdef BidsModel < bids.Model
 
       else
         obj.bidsModelError('noTemporalCorrection', ...
-                           sprintf('No temporal correlation correction for Node "%s"', nodeName));
+                           sprintf(['No temporal correlation correction for Node "%s"\n', ...
+                                    'Will use default falue instead: %s.'], ...
+                                   nodeName, ...
+                                   spm_get_defaults('stats.fmri.cvi')));
+
       end
 
     end
 
     function bidsModelError(obj, id, msg)
-      msg = sprintf('\n\n%s in BIDS stats model named "%s"\n', msg, obj.Name);
+      msg = sprintf('\n\nFor BIDS stats model named: "%s"\n%s\n', obj.Name, msg);
       errorHandling(mfilename(), id, msg, obj.tolerant, obj.verbose);
     end
 

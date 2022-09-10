@@ -48,7 +48,7 @@ addpath(fullfile(pwd, '..', '..'));
 cpp_spm();
 
 %% Dopwnload the dataset
-download_data = false;
+download_data = true;
 clean = false;
 download_moae_ds(download_data, clean);
 

@@ -44,15 +44,14 @@ function [BIDS, opt] = getData(varargin)
     printToScreen(msg, opt);
   end
 
-  msg = sprintf('Getting data from:\n %s\n', pathToPrint(bidsDir));
-  printToScreen(msg, opt);
-
   validationInputFile(bidsDir, 'dataset_description.json');
 
-  BIDS = bids.layout(bidsDir, 'use_schema', opt.useBidsSchema);
+  BIDS = bids.layout(bidsDir, 'use_schema', opt.useBidsSchema, 'verbose', opt.verbosity > 0);
 
   if strcmp(opt.pipeline.type, 'stats')
     if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file') == 2
+      msg = sprintf('\nLoading BIDS raw layout from:\n\t%s\n', fullfile(opt.dir.raw, 'layout.mat'));
+      printToScreen(msg, opt);
       tmp = load(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
       if isempty(fieldnames(tmp))
         BIDS.raw = bids.layout(opt.dir.raw);

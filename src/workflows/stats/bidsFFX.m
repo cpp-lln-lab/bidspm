@@ -180,6 +180,9 @@ function checkRootNode(opt)
     errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
   end
 
+  msg = sprintf('\n PROCESSING NODE: %s\n', thisNode.Name);
+  printToScreen(msg, opt, 'format', '*blue');
+
 end
 
 function status = subjectHasData(BIDS, opt, subLabel)
