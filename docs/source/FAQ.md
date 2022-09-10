@@ -6,12 +6,12 @@
 
 ### How can I prevent from having SPM windows pop up all the freaking time?
 
-Running large number of batches when the GUI of Matlab is active can be
+Running large number of batches when the GUI of MATLAB is active can be
 annoying, as SPM windows will always pop up and become active instead of running
 in the background like most users would prefer to.
 
 One easy solution is to add a `spm_my_defaults` function with the following
-content in the Matlab path, or in the directory where you are running your
+content in the MATLAB path, or in the directory where you are running your
 scripts or command from.
 
 ```matlab
@@ -30,9 +30,9 @@ SPM runs in command line mode.
 ### How can I run any of this from the command line?
 
 Related to the previous question but more radical. You can run most analysis
-from within your terminal without starting the Matlab graphic interface.
+from within your terminal without starting the MATLAB graphic interface.
 
-For this you first need to know where is the Matlab application. Here are the
+For this you first need to know where is the MATLAB application. Here are the
 typical location depending on your operating system (where `XXx` corresponds to
 the version you use).
 
@@ -183,7 +183,7 @@ it.
 
 Ideally you would want to add a JSON file to add metadata about those ROIs.
 
-You can use bids matlab to help you create bids valid filenames.
+You can use bids-matlab to help you create BIDS valid filenames.
 
 ```matlab
   >> name_spec.ext = '.nii';
@@ -213,7 +213,7 @@ This is similar to the way you can "select" only certain files to preprocess
 with [fmriprep](https://fmriprep.org/en/stable/faq.html#how-do-i-select-only-certain-files-to-be-input-to-fmriprep).
 
 You can use a `opt.bidsFilterFile` field in your options
-to define a typical images "bold", "T1w" in terms of their bids entities.
+to define a typical images "bold", "T1w" in terms of their BIDS entities.
 The default value is:
 
 ```matlab
@@ -256,10 +256,10 @@ you would define this file like this:
 
 You can select a subset of your data by using the `opt.query`.
 
-This will create a "filter" that bids matlab will use to only "query" and
+This will create a "filter" that bids-matlab will use to only "query" and
 retrieve the subset of files that match the requirement of that filter
 
-In "pure" bids matlab it would look like:
+In "pure" bids-matlab it would look like:
 
 ```matlab
   BIDS = bids.layout(path_to_my_dataset)
@@ -345,7 +345,7 @@ If your data was preprocessed with fmriprep, cpp_spm will first need to copy,
 unzip and smooth the data into a `cpp_spm-preproc` folder
 
 Here is an example of how the data is organized for the MoAE fmriprep demo and
-what the `cpp_spm` bids call would look like.
+what the `cpp_spm` BIDS call would look like.
 
 ```bash
 ├── inputs
