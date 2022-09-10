@@ -189,7 +189,7 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
           str2num(tokens{1}) == 20 && str2num(tokens{2}) >= 4));  %#ok<*ST2NM>
 
   sliceOrder = [];
-  if skip
+  if ~skip
     % Get slice timing information.
     % Necessary to make sure that the reference slice used for slice time
     % correction is the one we center our model on;
