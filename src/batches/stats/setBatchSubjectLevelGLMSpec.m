@@ -52,6 +52,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   fmri_spec.timing.units = 'secs';
   fmri_spec.timing.RT = TR;
 
+  % unique is used in case data was acquired multiband
   nbTimeBins = numel(unique(sliceOrder));
   fmri_spec.timing.fmri_t = nbTimeBins;
 
@@ -59,10 +60,11 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % then STC took the mid-volume as reference time point for the GLM.
   % When no STC was done, this is usually a good way to do it too.
   if isempty(opt.stc.referenceSlice)
-    refBin = floor(nbTimeBins / 2);
+    refBin = nbTimeBins / 2;
   else
     refBin = opt.stc.referenceSlice / TR;
   end
+  refBin = floor(refBin);
   fmri_spec.timing.fmri_t0 = refBin;
 
   % Create ffxDir if it doesnt exist
@@ -177,25 +179,52 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
 
   filter = fileFilterForBold(opt, subLabel);
 
-  if ~opt.stc.skip
+  [name, version] = generatedBy(BIDS);
+  tokens = strsplit(version);
+  % TODO implement differently for fmriprep >=20.2.4
+  % https://fmriprep.org/en/stable/changes.html#october-04-2021
+  skip = opt.stc.skip || ...
+        (strcmp(name, 'fMRIPrep') && ...
+         (str2num(tokens{1}) > 20 || ...
+          str2num(tokens{1}) == 20 && str2num(tokens{2}) >= 4));  %#ok<*ST2NM>
+
+  sliceOrder = [];
+  if skip
     % Get slice timing information.
     % Necessary to make sure that the reference slice used for slice time
     % correction is the one we center our model on;
+
+    % temporary silence warnings and only throw a single warning
+    % after that if necessary
+    oldVerbosity = opt.verbosity;
+    opt.verbosity = 0;
+
     sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter);
-  else
-    sliceOrder = [];
+
+    opt.verbosity = oldVerbosity;
   end
 
   if isempty(sliceOrder) && ~opt.dryRun
-    % no slice order defined here (or different across tasks)
-    % so we fall back on using the number of
-    % slice in the first bold image to set the number of time bins
-    % we will use to upsample our model during regression creation
+
     fileName = bids.query(BIDS, 'data', filter);
     hdr = spm_vol(fileName{1});
 
-    % we are assuming axial acquisition here
+    % TODO we are assuming axial acquisition here
     sliceOrder = 1:hdr(1).dim(3);
+
+    wng = ['\n\n', ...
+           'Slice timing information was missing for at least one run,\n', ...
+           'or was inconsistent across runs.', ...
+           '\n', ...
+           'Will be using the number of slices as the number of bins\n', ...
+           'for temporal upsampling before convolution.', ...
+           '\n', ...
+           'If your data was processed with fMRIprep < 20.2.4, this is expected.\n'];
+    % note that with multiband
+    % this may lead to more time bins that used in reality at acquisition
+
+    errorHandling(mfilename(), 'noSliceTimingInfoForGlm', wng, true, opt.verbosity);
+
   end
 
 end
