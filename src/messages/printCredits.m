@@ -1,7 +1,4 @@
 function printCredits(opt)
-  %
-  % TODO use the .CFF to load contributors
-  %
   % (C) Copyright 2019 bidspm developers
 
   if nargin < 1
