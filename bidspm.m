@@ -64,7 +64,7 @@ function bidspm(varargin)
 
     case 'init'
 
-      initCppSpm();
+      initBidspm();
 
     case 'help'
 
@@ -74,15 +74,15 @@ function bidspm(varargin)
 
     case 'version'
 
-      versionCppSpm();
+      versionBidspm();
 
     case 'dev'
 
-      initCppSpm(true);
+      initBidspm(true);
 
     case 'uninit'
 
-      uninitCppSpm();
+      uninitBidspm();
 
     case 'update'
 
@@ -345,7 +345,7 @@ end
 
 %% low level actions
 
-function versionCppSpm()
+function versionBidspm()
   try
     versionNumber = getVersion();
   catch
@@ -355,14 +355,14 @@ function versionCppSpm()
   fprintf(1, '%s\n', versionNumber);
 end
 
-function initCppSpm(dev)
+function initBidspm(dev)
   %
   % Adds the relevant folders to the path for a given session.
   % Has to be run to be able to use CPP_SPM.
   %
   % USAGE::
   %
-  %   initCppSpm()
+  %   initBidspm()
   %
   % (C) Copyright 2021 bidspm developers
 
@@ -475,7 +475,7 @@ function initCppSpm(dev)
 
     CPP_SPM_INITIALIZED = true();
 
-    detectCppSpm();
+    detectBidspm();
 
   else
     printToScreen('\n\nCPP_SPM already initialized\n\n');
@@ -484,13 +484,13 @@ function initCppSpm(dev)
 
 end
 
-function uninitCppSpm()
+function uninitBidspm()
   %
   % Removes the added folders fromthe path for a given session.
   %
   % USAGE::
   %
-  %   uninitCppSpm()
+  %   uninitBidspm()
   %
   % (C) Copyright 2021 bidspm developers
 
@@ -592,7 +592,7 @@ end
 
 %% helpers functions
 
-function detectCppSpm()
+function detectBidspm()
 
   workflowsDir = cellstr(which('bidsSpatialPrepro.m', '-ALL'));
 

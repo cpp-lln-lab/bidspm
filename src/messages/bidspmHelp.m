@@ -172,22 +172,18 @@ function bidspmHelp()
   %
   %   % equivalent to
   %   bidspm init
-  %   initCppSpm
   %   bidspm('action', 'init')
   %
   %   % help
   %   bidspm help
-  %   help cppSpmHelp
   %   bidspm('action', 'help')
   %
   %   % uninitialise (remove relevant folders from path)
   %   bidspm uninit
-  %   uninitCppSpm
   %   bidspm('action', 'uninit')
   %
   %   % also adds folder for testing to the path
   %   bidspm dev
-  %   uninitCppSpm(true)
   %   bidspm('action', 'dev')
   %
   %   % tried to update the current branch from the upstream repository
