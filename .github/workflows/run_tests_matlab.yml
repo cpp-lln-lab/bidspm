@@ -2,18 +2,31 @@ name: tests and coverage with matlab
 
 on:
 
-push: branches: - main - dev paths: - '**.m' - '.github/workflows/run_tests*' -
-'lib' pull_request: branches: ["*"] paths: - '**.m' -
-'.github/workflows/run_tests\*' - 'lib'
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - '**.m'
+      - '.github/workflows/run_tests*'
+      - 'lib'
+  pull_request:
+    branches: ["*"]
+    paths:
+      - '**.m'
+      - '.github/workflows/run_tests*'
+      - 'lib'
 
-# to trigger update manually from the Action tab in github
-
-workflow_dispatch: inputs: log: description: "run tests manually" required:
-false
+  # to trigger update manually from the Action tab in github
+  workflow_dispatch:
+    inputs:
+      log:
+        description: "run tests manually"
+        required: false
 
 jobs:
 
-build:
+  build:
 
     runs-on: ubuntu-20.04
 

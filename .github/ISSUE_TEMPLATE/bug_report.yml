@@ -1,7 +1,6 @@
 name: Bug report
 
 # See the json schema to help you create / update this form
-
 # https://json.schemastore.org/github-issue-forms.json
 
 description: Fill in this template to report a bug
@@ -12,80 +11,147 @@ labels: ["bug :bug:"]
 
 body:
 
-- type: markdown attributes: value: | Thanks for taking the time to fill out
-  this bug report!
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
 
-      To maximize chances for a quick fix make sure you know
-      [How to Report Bugs Effectively](https://www.chiark.greenend.org.uk/~sgtatham/bugs.html)
+        To maximize chances for a quick fix make sure you know
+        [How to Report Bugs Effectively](https://www.chiark.greenend.org.uk/~sgtatham/bugs.html)
 
-- type: checkboxes attributes: label: Is there an existing issue for this?
-  description: Please search to see if an issue already exists for the bug you
-  encountered. options: - label: I have searched the existing issues required:
-  true
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      description:
+        Please search to see if an issue already exists for the bug you
+        encountered.
+      options:
+        - label: I have searched the existing issues
+          required: true
 
-- type: checkboxes attributes: label: Operating system description: What
-  operating system are you using? options: - label: Linux - label: Mac - label:
-  Windows
+  - type: checkboxes
+    attributes:
+      label: Operating system
+      description:
+        What operating system are you using?
+      options:
+        - label: Linux
+        - label: Mac
+        - label: Windows
 
-- type: textarea attributes: label: Operating system version render: markdown
-  value: | - Linux Ubuntu 18.04 "bionic beaver" - Mac OS Version 12 "monterey"
-  validations: required: true
+  - type: textarea
+    attributes:
+      label: Operating system version
+      render: markdown
+      value: |
+        - Linux Ubuntu 18.04 "bionic beaver"
+        - Mac OS Version 12 "monterey"
+    validations:
+      required: true
 
-- type: checkboxes attributes: label: SPM 12 version description: What SPM 12
-  version are you using?
+  - type: checkboxes
+    attributes:
+      label: SPM 12 version
+      description:
+        What SPM 12 version are you using?
 
-      Type `spm('version')` into the MATLAB / Octave command line to know.
+        Type `spm('version')` into the MATLAB / Octave command line to know.
+      options:
+        - label: "7771"
+        - label: "7487"
+        - label: "7219"
 
-  options: - label: "7771" - label: "7487" - label: "7219"
+  - type: checkboxes
+    attributes:
+      label: Platform
+      description:
+        Which platform and version are you running?
+      options:
+        - label: MATLAB
+        - label: Octave
 
-- type: checkboxes attributes: label: Platform description: Which platform and
-  version are you running? options: - label: MATLAB - label: Octave
+  - type: textarea
+    attributes:
+      label: Platform version
+      render: markdown
+      placeholder: |
+        - MATLAB 2017a
+        - Octave 4.2.2
 
-- type: textarea attributes: label: Platform version render: markdown
-  placeholder: | - MATLAB 2017a - Octave 4.2.2
+  - type: dropdown
+    attributes:
+      label: BIDSpm version
+      description: |
+        In the MATLAB / Octave command line, try one of the following:
 
-- type: dropdown attributes: label: BIDSpm version description: | In the MATLAB
-  / Octave command line, try one of the following:
+         - `bidspm version`
+         - `bidspm('version')`
+         - `getVersion`
 
-       - `cpp_spm version`
-       - `cpp_spm('version')`
-       - `getVersion`
+        Or check the content of CITATION.cff.
+      options:
+        - v2.1.0
+        - v2.0.0
+        - v1.1.0
+        - v1.0.0
+        - v0.2.0
+        - v0.1.0
+        - v0.0.1
+    validations:
+      required: true
 
-      Or check the content of CITATION.cff.
+  - type: textarea
+    attributes:
+      label: BIDSpm branch / commit number
+      description: |
+        In a terminal:
 
-  options: - v2.1.0 - v2.0.0 - v1.1.0 - v1.0.0 - v0.2.0 - v0.1.0 - v0.0.1
-  validations: required: true
+         - `git rev-parse --abbrev-ref HEAD`
+         - `git rev-parse --short HEAD`
 
-- type: textarea attributes: label: BIDSpm branch / commit number description: |
-  In a terminal:
+        In the MATLAB command line
 
-       - `git rev-parse --abbrev-ref HEAD`
-       - `git rev-parse --short HEAD`
+         - `[branch, commit] = getRepoInfo()`
 
-      In the MATLAB command line
+      render: markdown
+      value: |
+        - main 29b689dd
+        - dev 1bda0162
 
-       - `[branch, commit] = getRepoInfo()`
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: Describe what outcome you expected.
+      placeholder: Describe what outcome you expected.
+    validations:
+      required: false
 
-  render: markdown value: | - main 29b689dd - dev 1bda0162
+  - type: textarea
+    attributes:
+      label: Current Behavior
+      description: Describe what you got instead.
+      placeholder: Describe what you got instead
+    validations:
+      required: true
 
-- type: textarea attributes: label: Expected Behavior description: Describe what
-  outcome you expected. placeholder: Describe what outcome you expected.
-  validations: required: false
+  - type: textarea
+    attributes:
+      label: Error message
+      description: If possible paste below the error message you encountered.
+    validations:
+      required: false
+      value: |
+        ```matlab
+        % this is the error I got
 
-- type: textarea attributes: label: Current Behavior description: Describe what
-  you got instead. placeholder: Describe what you got instead validations:
-  required: true
+        ```
 
-- type: textarea attributes: label: Error message description: If possible paste
-  below the error message you encountered. validations: required: false value: |
-  ```matlab % this is the error I got
+  - type: textarea
+    attributes:
+      label: Anything else?
+      description: |
+        Links? References? Anything that will give us more context about the issue you are encountering!
 
-      ```
-
-- type: textarea attributes: label: Anything else? description: | Links?
-  References? Anything that will give us more context about the issue you are
-  encountering!
-
-      Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
-
-  validations: required: false
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+    validations:
+      required: false

@@ -2,13 +2,26 @@ name: "tests with octave: failure expected"
 
 on:
 
-push: branches: - main - dev paths: - '**.m' - '.github/workflows/run_tests*' -
-'lib' pull_request: branches: ['*'] paths: - '**.m' -
-'.github/workflows/run_tests\*' - 'lib'
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - '**.m'
+      - '.github/workflows/run_tests*'
+      - 'lib'
+  pull_request:
+    branches: ['*']
+    paths:
+      - '**.m'
+      - '.github/workflows/run_tests*'
+      - 'lib'
 
-env: OCTFLAGS: --no-gui --no-window-system --silent
+env:
+  OCTFLAGS: --no-gui --no-window-system --silent
 
-jobs: build:
+jobs:
+  build:
 
     runs-on: ubuntu-20.04
 

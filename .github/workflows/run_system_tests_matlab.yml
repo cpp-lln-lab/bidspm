@@ -1,44 +1,45 @@
 name: system tests with matlab
 
 # Uses the cron schedule for github actions
-
 #
-
 # https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows#scheduled-events
-
 #
-
 # ┌───────────── minute (0 - 59)
-
 # │ ┌───────────── hour (0 - 23)
-
 # │ │ ┌───────────── day of the month (1 - 31)
-
 # │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
-
 # │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
-
 # │ │ │ │ │
-
 # │ │ │ │ │
-
 # │ │ │ │ │
-
-# \* \* \* \* \*
+# * * * * *
 
 on:
 
-push: branches: - main - dev paths: - '**.m' - '.github/workflows/_system_' -
-'lib' pull_request: branches: - main paths: - '**.m' -
-'.github/workflows/_system_' - 'lib' schedule: - cron: "0 0 1,15 \* \*"
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - '**.m'
+      - '.github/workflows/*system*'
+      - 'lib'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**.m'
+      - '.github/workflows/*system*'
+      - 'lib'
+  schedule:
+    - cron: "0 0 1,15 * *"
 
-# Allows you to run this workflow manually from the Actions tab
-
-workflow_dispatch:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
 
-system_tests_matlab:
+  system_tests_matlab:
 
     # only trigger update on upstream repo
     if: github.repository_owner == 'cpp-lln-lab'
