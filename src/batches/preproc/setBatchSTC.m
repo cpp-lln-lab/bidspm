@@ -27,7 +27,7 @@ function matlabbatch = setBatchSTC(varargin)
   % If not specified in the options, this function will take the mid-volume time point as reference
   % to do the slice timing correction.
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   args = inputParser;
 

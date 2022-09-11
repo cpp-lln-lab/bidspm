@@ -17,7 +17,7 @@ function davg = getDist2surf(varargin)
   %
   % Example::
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   isFile = @(x) exist(x, 'file') == 2;
 

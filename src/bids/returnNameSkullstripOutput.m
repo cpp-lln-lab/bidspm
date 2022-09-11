@@ -1,6 +1,6 @@
 function outputFilename = returnNameSkullstripOutput(inputFilename, outputType)
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   bf = bids.File(inputFilename, 'use_schema', false);
   bf.entity_order();

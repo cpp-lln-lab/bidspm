@@ -27,7 +27,7 @@ function [gm, wm, csf] = getTpmFilename(BIDS, anatImage, res, space)
   %           - :wm: (string) white matter TPM
   %           - :csf: (string) csf matter TPM
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   if nargin < 4
     res = '';

@@ -2,7 +2,7 @@ function printCredits(opt)
   %
   % TODO use the .CFF to load contributors
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   if nargin < 1
     opt.verbosity = 2;
@@ -54,7 +54,7 @@ function printCredits(opt)
   printToScreen('\n', opt);
 
   printToScreen('\n\n', opt);
-  printToScreen('Thank you for using CPP SPM - ', opt);
+  printToScreen('Thank you for using BIDSpm - ', opt);
   printToScreen(sprintf('version %s ', versionNumber), opt, 'format', '-blue');
   printToScreen('\n\n', opt);
 

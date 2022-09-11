@@ -11,7 +11,7 @@ function string = deregexify(string)
   %   string = deregexify(string)
   %
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   if isempty(string)
     return

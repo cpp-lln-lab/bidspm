@@ -51,7 +51,7 @@ function opt = getSubjectList(BIDS, opt)
   %
   % This will include all ``blind`` subjects and ``sub-ctrl01``.
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   allSubjects = bids.query(BIDS, 'subjects');
 

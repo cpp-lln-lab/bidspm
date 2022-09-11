@@ -9,7 +9,7 @@ function versionNumber = getVersion()
   %
   % :returns: :versionNumber: (string) Use semantic versioning format (like v0.1.0)
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   try
     versionNumber = fileread(fullfile(fileparts(mfilename('fullpath')), ...

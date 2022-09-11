@@ -12,7 +12,7 @@ function unzippedFullpathName = unzipAndReturnsFullpathName(fullpathName, opt)
   % :returns: - :unzippedFullpathName: (string)
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   % TODO use argparse
   % TODO add tests

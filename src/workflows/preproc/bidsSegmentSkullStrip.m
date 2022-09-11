@@ -14,7 +14,7 @@ function matlabbatch = bidsSegmentSkullStrip(opt)
   % :type opt: structure
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   opt.pipeline.type = 'preproc';
 

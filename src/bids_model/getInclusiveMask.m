@@ -10,7 +10,7 @@ function mask = getInclusiveMask(opt, nodeName, BIDS, subLabel)
   %   mask = getInclusiveMask(opt, nodeName, BIDS, subLabel)
   %
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   if nargin < 2
     [mask, nodeName] = opt.model.bm.getModelMask();

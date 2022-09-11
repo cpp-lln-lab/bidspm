@@ -7,7 +7,7 @@ function pth = pathToPrint(pth)
   %             recursively on it.
   % :type pth: char or cellstr
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   if isunix()
     return

@@ -18,7 +18,7 @@ root_directory="${PWD}/../.."
 datalad create -c yoda ~/visual_motion_localiser
 cd ~/visual_motion_localiser
 
-# get CPP SPM code from the dev branch
+# get BIDSpm code from the dev branch
 source="https://github.com/cpp-lln-lab/CPP_SPM.git"
 
 # for debugging uncomment the follwing line

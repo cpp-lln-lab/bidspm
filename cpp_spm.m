@@ -2,7 +2,7 @@ function cpp_spm(varargin)
   %
   % Type cpp_spm('action', 'help') for more information.
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   % TODO  cpp_spm('action', 'update')
   % TODO  where to save the options?
@@ -364,7 +364,7 @@ function initCppSpm(dev)
   %
   %   initCppSpm()
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   if nargin < 1
     dev = false;
@@ -391,13 +391,13 @@ function initCppSpm(dev)
       pathSep = ';';
     end
 
-    % add library first and then cpp spm source code
+    % add library first and then BIDSpm source code
     % except for current folder
     run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'));
     run(fullfile(thisDirectory, 'lib', 'spm_2_bids', 'init_spm_2_bids'));
     run(fullfile(thisDirectory, 'lib', 'octache', 'setup'));
 
-    % now add cpp spm source code
+    % now add BIDSpm source code
     CPP_SPM_PATHS = fullfile(thisDirectory);
     CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ...
                         pathSep, ...
@@ -492,7 +492,7 @@ function uninitCppSpm()
   %
   %   uninitCppSpm()
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   thisDirectory = fileparts(mfilename('fullpath'));
 
@@ -521,7 +521,7 @@ end
 
 function run_tests()
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   % Elapsed time is 284 seconds.
 

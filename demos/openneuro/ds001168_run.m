@@ -3,7 +3,7 @@
 %   the fieldmap handling is still work in progress
 %   and is therefore skipped in this analysis
 %
-% (C) Copyright 2020 CPP_SPM developers
+% (C) Copyright 2020 bidspm developers
 
 clear;
 clc;

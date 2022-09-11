@@ -15,7 +15,7 @@ function ffxDir = getFFXdir(subLabel, opt)
   %
   % :returns: - :ffxDir: (string)
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   glmDirName = createGlmDirName(opt);
 

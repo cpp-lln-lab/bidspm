@@ -16,7 +16,7 @@ function outputName = defaultOuputNameStruct(opt, result)
   %
   % See also: setBatchSubjectLevelResults, bidsResults
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   outputName = struct('suffix', 'spmT', ...
                       'ext', '.nii', ...

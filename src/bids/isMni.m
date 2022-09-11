@@ -2,7 +2,7 @@ function [idx, allowedSpaces] = isMni(input)
   %
   %
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   if ischar(input)
     input = cellstr(input);

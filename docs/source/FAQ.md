@@ -24,7 +24,7 @@ function spm_my_defaults
 end
 ```
 
-This should be picked up by CPP SPM and SPM upn initialization and ensure that
+This should be picked up by bidspm and SPM upn initialization and ensure that
 SPM runs in command line mode.
 
 ### How can I run any of this from the command line?
@@ -86,7 +86,7 @@ JSON file (like the name of the task or the MNI space of the input images).
 
 ```bash
 
-  $ ls demos/MoAE/outputs/derivatives/cpp_spm-stats/sub-01/stats
+  $ ls demos/MoAE/outputs/derivatives/bidspm-stats/sub-01/stats
 
   # Folder name for a model on the auditory task in SPM's MNI space
   # on data smoothed with a 6mm kernel
@@ -120,7 +120,7 @@ And this code to set things up
   opt.taskName = 'nback';
   opt.space = 'individual';
 
-  opt.dir.stats = 'outputs/derivatives/cpp_spm-stats';
+  opt.dir.stats = 'outputs/derivatives/bidspm-stats';
 
   ffxDir = getFFXdir(subLabel, opt);
 ```
@@ -155,7 +155,7 @@ The closest things to ROI naming are the `masks` for the
 Here is an example from the :ref:`face repetition demo`::
 
 ```text
-  cpp_spm-roi
+  bidspm-roi
   ├── group
   │   ├── hemi-L_space-MNI_label-V1d_desc-wang_mask.json
   │   ├── hemi-L_space-MNI_label-V1d_desc-wang_mask.nii
@@ -202,19 +202,20 @@ You can use bids-matlab to help you create BIDS valid filenames.
 ### How can run my script only only certain files, like just the session `02` for example?
 
 Currently there are 2 ways of doing this.
-- using a `bids_filter_file.json` file or its counterpart field `opt.bidsFilterFile`
-- using the `opt.query` option field.
-On the long run the plan is to use only the `bids_filter_file.json`,
-but for now both possibilities should work.
+
+-   using a `bids_filter_file.json` file or its counterpart field
+    `opt.bidsFilterFile`
+-   using the `opt.query` option field. On the long run the plan is to use only
+    the `bids_filter_file.json`, but for now both possibilities should work.
 
 #### `bids filter file`
 
 This is similar to the way you can "select" only certain files to preprocess
-with [fmriprep](https://fmriprep.org/en/stable/faq.html#how-do-i-select-only-certain-files-to-be-input-to-fmriprep).
+with
+[fmriprep](https://fmriprep.org/en/stable/faq.html#how-do-i-select-only-certain-files-to-be-input-to-fmriprep).
 
-You can use a `opt.bidsFilterFile` field in your options
-to define a typical images "bold", "T1w" in terms of their BIDS entities.
-The default value is:
+You can use a `opt.bidsFilterFile` field in your options to define a typical
+images "bold", "T1w" in terms of their BIDS entities. The default value is:
 
 ```matlab
 struct('fmap', struct('modality', 'fmap'), ...
@@ -224,18 +225,19 @@ struct('fmap', struct('modality', 'fmap'), ...
        'roi',  struct('modality', 'roi', 'suffix', 'mask'));
 ```
 
-Similarly when using the BIDS app cpp_spm you can use the argument `bids_filter_file`
-to point to a JSON file that would also define typical images "bold", "T1w"...
+Similarly when using the BIDS app bidspm you can use the argument
+`bids_filter_file` to point to a JSON file that would also define typical images
+"bold", "T1w"...
 
 The default content in this case would be:
 
 ```json
 {
-  "fmap": {"datatype": "fmap"},
-  "bold": {"datatype": "func", "suffix": "bold"},
-  "t2w": {"datatype": "anat", "suffix": "T2w"},
-  "t1w": {"datatype": "anat", "space": "", "suffix": "T1w"},
-  "roi": {"datatype": "roi", "suffix": "mask"},
+    "fmap": { "datatype": "fmap" },
+    "bold": { "datatype": "func", "suffix": "bold" },
+    "t2w": { "datatype": "anat", "suffix": "T2w" },
+    "t1w": { "datatype": "anat", "space": "", "suffix": "T1w" },
+    "roi": { "datatype": "roi", "suffix": "mask" }
 }
 ```
 
@@ -244,11 +246,16 @@ you would define this file like this:
 
 ```json
 {
-  "fmap": {"datatype": "fmap"},
-  "bold": {"datatype": "func", "suffix": "bold", "ses": "02", "run": ["02", "05"]},
-  "t2w": {"datatype": "anat", "suffix": "T2w"},
-  "t1w": {"datatype": "anat", "space": "", "suffix": "T1w"},
-  "roi": {"datatype": "roi", "suffix": "mask"},
+    "fmap": { "datatype": "fmap" },
+    "bold": {
+        "datatype": "func",
+        "suffix": "bold",
+        "ses": "02",
+        "run": ["02", "05"]
+    },
+    "t2w": { "datatype": "anat", "suffix": "T2w" },
+    "t1w": { "datatype": "anat", "space": "", "suffix": "T1w" },
+    "roi": { "datatype": "roi", "suffix": "mask" }
 }
 ```
 
@@ -337,15 +344,15 @@ analysis.
 
 ### How should I structure my data to run my statistical analysis?
 
-The main thing to remember is that CPP SPM will read the events.tsv files from
-your raw BIDS data set and will read the bold images from a `cpp_spm-preproc`
+The main thing to remember is that bidspm will read the events.tsv files from
+your raw BIDS data set and will read the bold images from a `bidspm-preproc`
 folder.
 
-If your data was preprocessed with fmriprep, cpp_spm will first need to copy,
-unzip and smooth the data into a `cpp_spm-preproc` folder
+If your data was preprocessed with fmriprep, bidspm will first need to copy,
+unzip and smooth the data into a `bidspm-preproc` folder
 
 Here is an example of how the data is organized for the MoAE fmriprep demo and
-what the `cpp_spm` BIDS call would look like.
+what the `bidspm` BIDS call would look like.
 
 ```bash
 ├── inputs
@@ -378,7 +385,7 @@ what the `cpp_spm` BIDS call would look like.
 ├── options
 └── outputs
     └── derivatives
-        └── cpp_spm-preproc          # contains either data taken from fmriprep and smoothed
+        └── bidspm-preproc          # contains either data taken from fmriprep and smoothed
             ├── dataset_description.json
             ├── README
             ├── jobs
@@ -404,11 +411,11 @@ subject_label = '01';
 
 bids_dir = fullfile(WD, 'inputs', 'raw');
 output_dir = fullfile(WD, 'outputs', 'derivatives');
-preproc_dir = fullfile(output_dir, 'cpp_spm-preproc');
+preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
 model_file = fullfile(pwd, 'models', 'model-MoAEfmriprep_smdl.json');
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
+bidspm(bids_dir, output_dir, 'subject', ...
         'participant_label', {subject_label}, ...
         'action', 'stats', ...
         'preproc_dir', preproc_dir, ...

@@ -16,7 +16,7 @@ function bidsRename(opt)
   % for more info.
   %
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   if ~opt.rename
     return

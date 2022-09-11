@@ -27,7 +27,7 @@ function  [cdtName, regIdx, status] = getRegressorIdx(cdtName, SPM)
   %             condition
   %
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   % in case the condition is of something like trial_type.foo
   tokens = regexp(cdtName, '\.', 'split');

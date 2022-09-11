@@ -10,7 +10,7 @@ function spm_my_defaults()
   % back on the defaults to fill in the blanks.
   % This allows to make the scripts simpler.
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   global defaults
 

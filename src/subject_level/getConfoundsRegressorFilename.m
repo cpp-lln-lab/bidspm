@@ -27,7 +27,7 @@ function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, 
   %
   % :returns: - :filename: (string)
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   filter = fileFilterForBold(opt, subLabel, 'confounds');
   filter.ses = session;

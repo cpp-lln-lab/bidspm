@@ -1,4 +1,4 @@
-% (C) Copyright 2021 CPP_SPM developers
+% (C) Copyright 2021 bidspm developers
 
 function test_suite = test_bidsRealignReslice %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016

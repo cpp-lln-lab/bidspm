@@ -5,7 +5,7 @@ function montage = setMontage(result)
   %   montage = setMontage(result)
   %
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   % TO DO
   % - adapt so that the background image is in MNI only if opt.space is IXI549Space

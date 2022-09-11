@@ -19,7 +19,7 @@ function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, fileName)
   %
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   % get native resolution to reuse it at normalisation;
   if ~isempty(opt.funcVoxelDims) % If voxel dimensions is defined in the opt

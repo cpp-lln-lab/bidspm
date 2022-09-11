@@ -11,7 +11,7 @@ function anatomicalQALesion(opt)
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   if isOctave()
     warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.');

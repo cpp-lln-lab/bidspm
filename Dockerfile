@@ -51,7 +51,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
 
 RUN node -v && npm -v && npm install -g bids-validator
 
-## Install CPP SPM in user folder
+## Install BIDSpm in user folder
 RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
 
 USER neuro

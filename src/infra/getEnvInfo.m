@@ -10,7 +10,7 @@ function [OS, generatedBy] = getEnvInfo(opt)
   % :returns: :OS: (structure) (dimension)
   %           :generatedBy: (structure) (dimension)
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   if nargin < 1
     opt.verbosity = 2;
@@ -19,7 +19,7 @@ function [OS, generatedBy] = getEnvInfo(opt)
 
   [branch, commit] = getRepoInfo();
 
-  generatedBy(1).name = 'CPP SPM';
+  generatedBy(1).name = 'BIDSpm';
   generatedBy(1).Version =  getVersion();
   generatedBy(1).Branch = branch;
   generatedBy(1).Commit = commit;

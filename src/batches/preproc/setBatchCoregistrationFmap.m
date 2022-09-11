@@ -21,7 +21,7 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
   %
   % TODO implement for 'phase12', 'fieldmap', 'epi'
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   printBatchName('coregister fieldmaps data to functional', opt);
 

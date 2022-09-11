@@ -1,12 +1,12 @@
 function bidspmHelp()
   %
-  % General intro function for CPP SPM
+  % General intro function for BIDSpm
   %
   %
   % Note:
   %
   % - all parameters use ``snake_case``
-  % - most "invalid" calls simply initialize CPP SPM
+  % - most "invalid" calls simply initialize BIDSpm
   %
   %
   %
@@ -206,4 +206,4 @@ function bidspmHelp()
   %  see the online <a
   %  href="https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html">documentation</a>.
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers

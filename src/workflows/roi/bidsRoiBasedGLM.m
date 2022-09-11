@@ -25,7 +25,7 @@ function skipped = bidsRoiBasedGLM(opt)
   %
   % See also: bidsCreateRoi, plotRoiTimeCourse, getEventSpecificationRoiGlm
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   opt.pipeline.type = 'stats';
   opt.dir.input = opt.dir.preproc;

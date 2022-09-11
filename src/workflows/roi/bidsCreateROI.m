@@ -20,7 +20,7 @@ function bidsCreateROI(opt)
   %  bidsCreateROI(opt);
   %
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   if nargin < 1
     opt = [];

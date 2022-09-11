@@ -2,7 +2,7 @@
 
 <!-- .. only:: html -->
 
-[![Documentation Status: main](https://readthedocs.org/projects/cpp_spm/badge/?version=main)](https://cpp_spm.readthedocs.io/en/main/?badge=main)
+[![Documentation Status: main](https://readthedocs.org/projects/bidspm/badge/?version=main)](https://bidspm.readthedocs.io/en/main/?badge=main)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/CPP_SPM/dev)
 [![miss_hit](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/miss_hit.yml)
 [![tests with octave](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_tests_octave.yml/badge.svg)](https://github.com/cpp-lln-lab/CPP_SPM/actions/workflows/run_tests_octave.yml)
@@ -15,7 +15,7 @@
 
 <!-- markdown-link-check-enable -->
 
-# CPP SPM
+# bidspm
 
 This is a Matlab / Octave toolbox to perform MRI data analysis on a
 [BIDS data set](https://bids.neuroimaging.io/) using SPM12.
@@ -41,7 +41,7 @@ To start using CPP_SPM, you just need to initialize it for this MATLAB / Octave
 session with::
 
 ```matlab
-cpp_spm()
+bidspm()
 ```
 
 Please see our
@@ -50,7 +50,7 @@ for more info.
 
 ## Usage
 
-For some of its functionality cpp_spm has a BIDS app like API.
+For some of its functionality bidspm has a BIDS app like API.
 
 See
 [this page for more information](https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html).
@@ -63,7 +63,7 @@ output_dir = path_to_where_the_output_should_go;
 
 subject_label = '01';
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
+bidspm(bids_dir, output_dir, 'subject', ...
         'participant_label', {subject_label}, ...
         'action', 'preprocess', ...
         'task', {'yourTask'})
@@ -79,7 +79,7 @@ model_file = path_to_bids_stats_model_json_file;
 
 subject_label = '01';
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
+bidspm(bids_dir, output_dir, 'subject', ...
         'participant_label', {subject_label}, ...
         'action', 'stats', ...
         'preproc_dir', preproc_dir, ...
@@ -116,8 +116,8 @@ CPP_SPM has some automated workflows to perform amongst other things:
 
 -   fieldmaps processing and voxel displacement map creation (work in progress)
 
-All (well almost all) preprocessed outputs are saved as BIDS derivatives with BIDS compliant
-filenames.
+All (well almost all) preprocessed outputs are saved as BIDS derivatives with
+BIDS compliant filenames.
 
 ### Statistics
 
@@ -137,9 +137,8 @@ used to perform:
 -   functional data (work in progress)
 -   GLM auto-correlation check
 
-Please see our
-[documentation](https://cpp_spm.readthedocs.io/en/dev/index.html) for more
-info.
+Please see our [documentation](https://bidspm.readthedocs.io/en/dev/index.html)
+for more info.
 
 ## Citation
 
@@ -147,7 +146,7 @@ info.
 @software{CPP_SPM,
   author  = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo and Shahzad, Iqra and Nunes, Márcia},
   license = {GPL-3.0},
-  title   = {CPP SPM},
+  title   = {bidspm},
   url     = {https://github.com/cpp-lln-lab/CPP_SPM},
   version = {1.1.5dev},
   doi     = {10.5281/zenodo.3554331},

@@ -7,7 +7,7 @@ function export = setNidm(export, result)
   %   export = setNidm(export, result)
   %
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   if result.nidm
 

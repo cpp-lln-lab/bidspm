@@ -19,7 +19,7 @@ function bidsLesionOverlapMap(opt)
   % Lesion abnormalities detection output in BIDS format.
   %
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   % TODO add test
 

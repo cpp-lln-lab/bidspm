@@ -2,7 +2,7 @@ function generateLayoutMat(force)
   %
   % generate layout.mat for faster loading
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   if nargin < 1
     force = false;

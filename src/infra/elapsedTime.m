@@ -5,7 +5,7 @@ function [startTime, runTime] = elapsedTime(opt, action, startTime, runTime, nbI
   %   [start, runTime] = elapsedTime(input, startTime, runTime, nbIteration)
   %
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   if nargin < 4
     runTime = [];

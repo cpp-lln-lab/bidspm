@@ -29,7 +29,7 @@ function matlabbatch = setBatch3Dto4D(matlabbatch, opt, volumesList, RT, outputN
   %   - 16: FLOAT32 - single prec. float
   %   - 64: FLOAT64 - double prec. float
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   if nargin < 6 || isempty(dataType)
     dataType = 0;

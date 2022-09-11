@@ -29,7 +29,7 @@ function matlabbatch = bidsRFX(varargin)
   % :type nodeName: char
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   allowedActions = @(x) ismember(lower(x), ...
                                  {'smoothcontrasts', 'meananatandmask', 'rfx', 'contrasts'});

@@ -20,7 +20,7 @@ function matlabbatch = setBatchNormalize(matlabbatch, deformField, voxDim, imgTo
   %
   % :returns: - :matlabbatch: (structure)
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   if nargin > 1 && ~isempty(deformField)
     matlabbatch{end + 1}.spm.spatial.normalise.write.subj.def(1) = deformField;

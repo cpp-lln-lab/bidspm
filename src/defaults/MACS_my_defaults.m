@@ -6,7 +6,7 @@ function defaults = MACS_my_defaults()
   %
   % Set defaults for the MACS toolbox
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   defaults.toolbox.MACS.model.files = [];
 

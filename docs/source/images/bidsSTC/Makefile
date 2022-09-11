@@ -1,7 +1,7 @@
 # .PHONY: sub-01_task-audio_bold.nii bidsSTC.m
 
 # Final output
-cpp_spm-preproc/sub-01/func/: sub-01_task-audio_desc-stc_bold.nii
+bidspm-preproc/sub-01/func/: sub-01_task-audio_desc-stc_bold.nii
 
 # Workflows and batches
 setBatchSTC.m: bidsSTC.m

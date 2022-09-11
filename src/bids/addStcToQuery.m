@@ -7,7 +7,7 @@ function opt = addStcToQuery(BIDS, opt, subLabel)
   % In case slice timing correction was performed this update the query to fetch
   % the correct files for realignment.
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   if ~opt.stc.skip
 

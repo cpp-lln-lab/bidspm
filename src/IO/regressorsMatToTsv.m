@@ -13,7 +13,7 @@ function regressorsTsvFile = regressorsMatToTsv(varargin)
   % :returns: - :regressorsTsvFile: (path)
   %
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   args = inputParser;
   isFile = @(x) exist(x, 'file') == 2;

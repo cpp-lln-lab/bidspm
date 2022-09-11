@@ -118,7 +118,7 @@ function matlabbatch = bidsResults(varargin)
   %
   %   opt.results(1).nidm = true();
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   % TODO move ps / png file: difficult at subject level because there can be
   %                          several png for one contrast

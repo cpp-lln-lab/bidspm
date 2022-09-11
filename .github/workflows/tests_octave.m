@@ -1,6 +1,6 @@
 function tests_octave()
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   % Elapsed time is 284 seconds.
 

@@ -1,7 +1,7 @@
 function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
   %
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   % rp_*.txt files are organized as
   % trans x  trans y  trans z  rot x  rot y  rot z

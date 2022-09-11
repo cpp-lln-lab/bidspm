@@ -40,7 +40,7 @@ function matlabbatch = setBatchImageCalculation(varargin)
   %
   % :returns: - :matlabbatch:
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   allowedDataType = {'uint8', ...
                      'int16', ...

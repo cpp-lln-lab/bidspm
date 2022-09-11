@@ -9,7 +9,7 @@ function retval = isOctave()
   % :returns: :retval: (boolean)
   %
   % (C) Copyright 2020 Agah Karakuzu
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   persistent cacheval   % speeds up repeated calls
 

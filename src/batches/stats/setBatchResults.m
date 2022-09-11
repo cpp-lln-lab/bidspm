@@ -24,7 +24,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
   % See also: setBatchSubjectLevelResults, setBatchGroupLevelResults
   %
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   result.outputName.entities.sub = result.label;
   result.outputName.entities.desc = result.name;

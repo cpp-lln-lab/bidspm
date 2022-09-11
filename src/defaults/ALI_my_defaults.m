@@ -12,7 +12,7 @@ function defaults = ALI_my_defaults()
   % back on the defaults to fill in the blanks. This allows to make the
   % script simpler.
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   % Lesion segmentation defaults
   % ==========================================================================

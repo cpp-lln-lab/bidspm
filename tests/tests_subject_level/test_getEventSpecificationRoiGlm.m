@@ -1,6 +1,6 @@
 function test_suite = test_getEventSpecificationRoiGlm %#ok<*STOUT>
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>

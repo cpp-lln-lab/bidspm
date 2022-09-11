@@ -27,7 +27,7 @@ function boldFilename = getBoldFilenameForFFX(varargin)
   % :returns: - :boldFilename: (string)
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   [BIDS, opt, subLabel, iSes, iRun] =  deal(varargin{:});
 

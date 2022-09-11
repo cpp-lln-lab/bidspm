@@ -15,7 +15,7 @@ function contrastsList = getContrastsList(node, model)
   %
   % :return: contrastsList (cellstr)
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   contrastsList = {};
 

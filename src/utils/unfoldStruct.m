@@ -4,7 +4,7 @@ function unfoldStruct(input)
   %
   %   unfoldStruct(input)
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   name = inputname(1);
   show = true;

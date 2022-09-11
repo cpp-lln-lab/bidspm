@@ -23,7 +23,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % :returns: - :matlabbatch: (structure)
   %
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   [matlabbatch, BIDS, opt, subLabel] =  deal(varargin{:});
 

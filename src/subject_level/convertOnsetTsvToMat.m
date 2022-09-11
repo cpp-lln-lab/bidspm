@@ -48,7 +48,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   % See also: createAndReturnOnsetFile, bids.transformers
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   [pth, file, ext] = spm_fileparts(tsvFile);
   tsv.file = validationInputFile(pth, [file, ext]);
