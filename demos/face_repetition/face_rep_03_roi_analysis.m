@@ -12,7 +12,7 @@ close all;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 this_dir = fileparts(mfilename('fullpath'));
 
@@ -38,7 +38,7 @@ opt.bidsFilterFile.roi.space = 'individual';
 
 model_file = fullfile(this_dir, 'models', 'model-faceRepetition_smdl.json');
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
+bidspm(bids_dir, output_dir, 'subject', ...
         'action', 'stats', ...
         'participant_label', {'01'}, ...
         'preproc_dir', preproc_dir, ...

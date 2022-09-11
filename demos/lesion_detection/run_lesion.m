@@ -12,7 +12,7 @@ clc;
 % URL = https://gin.g-node.org/mwmaclean/CVI-Datalad/src/master/data
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 %% Set options
 [opt, opt2] = lesion_get_option();

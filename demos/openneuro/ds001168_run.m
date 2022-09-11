@@ -9,7 +9,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 % The directory where the data are located
 root_dir = fileparts(mfilename('fullpath'));
@@ -29,7 +29,7 @@ opt.query.modality = {'anat', 'func', 'fmap'};
 % (some slice timing values are higher than the computed acquisition time)
 % that lead to a crash
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
+bidspm(bids_dir, output_dir, 'subject', ...
         'participant_label', {'01'}, ...
         'action', 'preprocess', ...
         'task', {'rest'}, ...
@@ -43,7 +43,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 root_dir = fileparts(mfilename('fullpath'));
 bids_dir = fullfile(root_dir, 'inputs', 'ds001168');
@@ -53,7 +53,7 @@ model_file = fullfile(root_dir, 'models', 'model-ds001168_smdl.json');
 
 opt.glm.keepResiduals = true;
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
+bidspm(bids_dir, output_dir, 'subject', ...
         'action', 'stats', ...
         'participant_label', {'01'}, ...
         'ignore', {'slicetiming'}, ...

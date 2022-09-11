@@ -9,7 +9,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 bids_dir = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
 output_dir = fullfile(bids_dir, '..', '..', 'outputs', 'derivatives');
@@ -19,7 +19,7 @@ model_file = fullfile(pwd, 'models', 'model-denoiseOnly_smdl.json');
 
 opt.glm.keepResiduals = true;
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
+bidspm(bids_dir, output_dir, 'subject', ...
         'action', 'stats', ...
         'preproc_dir', preproc_dir, ...
         'model_file', model_file, ...

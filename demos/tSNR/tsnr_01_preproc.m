@@ -9,7 +9,7 @@ clc;
 download_data = false;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 opt = tsnr_get_option();
 

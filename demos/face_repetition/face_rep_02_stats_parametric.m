@@ -11,7 +11,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 this_dir = fileparts(mfilename('fullpath'));
 
@@ -23,7 +23,7 @@ model_file = fullfile(this_dir, 'models', 'model-faceRepetitionParametric_smdl.j
 
 subject_label = '01';
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
+bidspm(bids_dir, output_dir, 'subject', ...
         'action', 'stats', ...
         'participant_label', {subject_label}, ...
         'preproc_dir', preproc_dir, ...

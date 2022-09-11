@@ -12,7 +12,7 @@ close all;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 this_dir = fileparts(mfilename('fullpath'));
 

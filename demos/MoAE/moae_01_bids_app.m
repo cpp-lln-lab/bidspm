@@ -1,4 +1,4 @@
-% This script shows how to use the cpp_spm BIDS app
+% This script shows how to use the bidspm BIDS app
 %
 % **Download**
 %
@@ -34,7 +34,7 @@
 %       (e.g use of FAST instead of AR(1), motion regressors added)
 %
 %
-% type `cpp_spm help` or `cpp_spm('action', 'help')`
+% type `bidspm help` or `bidspm('action', 'help')`
 % or see this page: https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html
 % for more information on what parameters are obligatory or optional
 %
@@ -45,7 +45,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 %% Dopwnload the dataset
 download_data = true;
@@ -59,7 +59,7 @@ bids_dir = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
 
 output_dir = fullfile(bids_dir, '..', '..', 'outputs', 'derivatives');
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
+bidspm(bids_dir, output_dir, 'subject', ...
         'participant_label', {subject_label}, ...
         'action', 'preprocess', ...
         'task', {'auditory'}, ...
@@ -106,7 +106,7 @@ opt.results(2).MC = 'none';
 opt.results(2).csv = true;
 opt.results(2).atlas = 'AAL';
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
+bidspm(bids_dir, output_dir, 'subject', ...
         'participant_label', {subject_label}, ...
         'action', 'stats', ...
         'preproc_dir', preproc_dir, ...
