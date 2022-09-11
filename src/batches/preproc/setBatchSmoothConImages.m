@@ -18,7 +18,7 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, opt)
   %
   % See also: bidsRFX, setBatchSmoothing, setBatchSmoothingFunc
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   [~, opt] = getData(opt, opt.dir.preproc);
 

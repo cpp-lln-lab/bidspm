@@ -62,17 +62,17 @@ Initialization
 
 .. warning::
 
-  In general DO NOT ADD CPP SPM PERMANENTLY to your MATLAB / Octave path.
+  In general DO NOT ADD bidspm PERMANENTLY to your MATLAB / Octave path.
 
 You just need to initialize for a given session with::
 
-  cpp_spm()
+  bidspm()
 
 This will add all the required folders to the path.
 
 You can also remove CPP_SPM from the path with::
 
-  cpp_spm uninit
+  bidspm uninit
 
 Installation on a computing cluster
 ===================================
@@ -90,7 +90,7 @@ Installation on a computing cluster
   https://en.wikibooks.org/wiki/SPM/Standalone#Frequently_Asked_Questions
 
 This relies on the fact that SPM and CPM SPM are Octave compatible,
-so you will be able to run most of CPP SPM on a high performance cluster (HPC)
+so you will be able to run most of bidspm on a high performance cluster (HPC)
 without having to worry about MATLAB licenses.
 
 Of course this assumes that Octave is available on your HPC.
@@ -99,7 +99,7 @@ Note that it should also be possible to precompile with MATLAB
 all the things you want to run, but this is not shown here.
 
 The pre-requisite steps are described in the example below that shows
-how to set up CPP SPM on one of the HPC of the université catholique de Louvain.
+how to set up bidspm on one of the HPC of the université catholique de Louvain.
 
 1. SSH into the HPC
 
@@ -181,7 +181,7 @@ Add the SPM12 folder to the path and save the path:
   octave:2> savepath
   octave:3> exit
 
-5. Install CPP SPM
+5. Install bidspm
 
 As before install and run an initialization:
 

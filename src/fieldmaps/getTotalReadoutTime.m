@@ -18,7 +18,7 @@ function totalReadoutTime = getTotalReadoutTime(metadata)
   % ``PixelBandwidth``)
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   totalReadoutTime = '';
 

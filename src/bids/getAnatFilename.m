@@ -23,7 +23,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
   % :returns: - :anatImage: (string)
   %           - :anatDataDir: (string)
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   % TODO try to channel this function via getInfo ?
 

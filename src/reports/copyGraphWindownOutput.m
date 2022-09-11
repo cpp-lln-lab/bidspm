@@ -27,7 +27,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
   %
   % :returns: :imgNb: (integer) number of the next image to get.
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   if nargin < 4 || isempty(imgNb)
     imgNb = 1;

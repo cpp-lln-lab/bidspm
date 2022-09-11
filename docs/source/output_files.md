@@ -1,4 +1,4 @@
-# Outputs of CPP SPM
+# Outputs of bidspm
 
 ## jobs and logs
 
@@ -7,10 +7,10 @@ human readable and interoperable than their equivalent `.mat` file, and they can
 still be loaded in the SPM batch interface.
 
 It is accompanied by a `.json` file that contains information about the
-environment in which the batch was run (operating system, CPP SPM version...).
+environment in which the batch was run (operating system, bidspm version...).
 
 ```text
-cpp_spm-stats
+bidspm-stats
 ├── jobs
 │   └── taskName
 │       ├── sub-01
@@ -20,11 +20,13 @@ cpp_spm-stats
 ```
 
 ## preprocessing
+
 <!-- markdown-link-check-disable -->
+
 For a complete list of how SPM outputs are renamed into BIDS derivatives see the
 [Mapping](mapping) page.
-<!-- markdown-link-check-enable -->
 
+<!-- markdown-link-check-enable -->
 
 ### func
 
@@ -76,22 +78,23 @@ lesion detection
 
 At the subject level each folder contains for each run modeled:
 
-- a pair of `*_onsets.mat` / `*_onsets.tsv`
+-   a pair of `*_onsets.mat` / `*_onsets.tsv`
 
 The `*_onsets.mat` file contains the `names`, `onsets`, `durations`, `pmod`
-required by SPM to build the "multi condition" section of the model specification.
-The `*_onsets.tsv` is a human readable equivalent
-organised like BIDS `events.tsv` files.
+required by SPM to build the "multi condition" section of the model
+specification. The `*_onsets.tsv` is a human readable equivalent organised like
+BIDS `events.tsv` files.
 
-- a pair of `*_desc-confounds_regressors.mat` / `*_desc-confounds_regressors.tsv`
+-   a pair of `*_desc-confounds_regressors.mat` /
+    `*_desc-confounds_regressors.tsv`
 
-The `*_desc-confounds_regressors.mat` file contains the `names`, `R`
-required by SPM to build the "multi regressor" section of the model specification.
-The `*_desc-confounds_regressors.tsv` is a human readable equivalent
-organised like BIDS derivatives `timeseries.tsv` files.
+The `*_desc-confounds_regressors.mat` file contains the `names`, `R` required by
+SPM to build the "multi regressor" section of the model specification. The
+`*_desc-confounds_regressors.tsv` is a human readable equivalent organised like
+BIDS derivatives `timeseries.tsv` files.
 
 ```text
-cpp_spm-stats
+bidspm-stats
 ├── sub-01
 │   └── task-taskName_space-space_FWHM-0_node-nodeName
 │       |

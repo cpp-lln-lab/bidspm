@@ -23,7 +23,7 @@ function matlabbatch = bidsSTC(opt)
   %
   % See the documentation for more information about slice timing correction.
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   opt.pipeline.type = 'preproc';
 

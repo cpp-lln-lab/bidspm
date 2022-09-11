@@ -1,7 +1,7 @@
 # .PHONY: sub-01_task-audio_space-IXI549Space_desc-preproc_bold.nii bidsSmoothing.m
 
 # Final output
-cpp_spm-preproc/sub-01/func/: sub-01_task-audio_space-IXI549Space_desc-smth6_bold.nii
+bidspm-preproc/sub-01/func/: sub-01_task-audio_space-IXI549Space_desc-smth6_bold.nii
 
 # Workflows and batches
 setBatchSmoothingFunc.m: bidsSmoothing.m

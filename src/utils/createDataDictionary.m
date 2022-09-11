@@ -5,7 +5,7 @@ function jsonContent = createDataDictionary(tsvContent)
   %   jsonContent = createDataDictionary(tsvContent)
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   columns = fieldnames(tsvContent);
 

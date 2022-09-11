@@ -1,6 +1,6 @@
 function syntheticDataDir = getSyntheticDataDir()
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   syntheticDataDir = getBidsExample('synthetic');
 

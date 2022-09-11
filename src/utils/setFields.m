@@ -22,7 +22,7 @@ function structure = setFields(structure, fieldsToSet, overwrite)
   % :returns: - :structure: (structure)
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   if isempty(fieldsToSet) || ~isstruct(fieldsToSet)
     return

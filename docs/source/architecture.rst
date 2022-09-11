@@ -1,7 +1,7 @@
 Architecture
 ************
 
-At the highest levels CPP SPM is organized in workflows:
+At the highest levels bidspm is organized in workflows:
 
 - they all start with the prefix ``bids`` (for example ``bidsRealignReslice``)
 - they are in the folder :mod:`src.workflows`

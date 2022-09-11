@@ -28,7 +28,7 @@ function errorHandling(varargin)
   %
   % adapted from bids-matlab
   %
-  % (C) Copyright 2018 CPP_SPM developers
+  % (C) Copyright 2018 bidspm developers
 
   defaultFunctionName = 'cpp_spm';
   defaultId = 'unspecified';

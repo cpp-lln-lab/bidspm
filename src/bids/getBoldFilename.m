@@ -32,7 +32,7 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
   %           - :subFuncDataDir: (string)
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   [BIDS, subLabel, sessionID, runID, opt] = deal(varargin{:});
 

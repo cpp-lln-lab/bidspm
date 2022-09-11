@@ -42,7 +42,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
   %     opt.bidsFilterFiler.t1w.ses = 1;
   %
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   %  TODO average T1s across sessions if necessarry
 

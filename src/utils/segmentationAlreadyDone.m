@@ -13,7 +13,7 @@ function status = segmentationAlreadyDone(anatFile, BIDS)
   %
   %
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   anatFile = bids.File(anatFile);
   filter = anatFile.entities;

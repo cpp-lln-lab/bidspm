@@ -18,7 +18,7 @@ function [BIDS, opt] = getData(varargin)
   %           - :opt: (structure)
   %           - :BIDS: (structure)
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   args = inputParser;
 

@@ -19,9 +19,9 @@ with open("../../version.txt", encoding="utf-8") as version_file:
 
 # -- Project information -----------------------------------------------------
 
-project = "CPP SPM"
-copyright = "2020, the CPP SPM pipeline dev team"
-author = "the CPP SPM pipeline dev team"
+project = "bidspm"
+copyright = "2020, the bidspm pipeline dev team"
+author = "the bidspm pipeline dev team"
 
 
 # -- General configuration ---------------------------------------------------

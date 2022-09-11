@@ -26,7 +26,7 @@ function matlabbatch = batch(varargin)
   % Example::
   %
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   args = inputParser;
 

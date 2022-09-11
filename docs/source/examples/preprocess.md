@@ -1,6 +1,6 @@
 ## Pre processing
 
-The (f)MRI data were pre-processed with CPP SPM (v1.1.5dev;
+The (f)MRI data were pre-processed with bidspm (v1.1.5dev;
 https://github.com/cpp-lln-lab/CPP_SPM; DOI:
 https://doi.org/10.5281/zenodo.3554331) using statistical parametric mapping
 (SPM12 - 7771; Wellcome Center for Neuroimaging, London, UK;
@@ -49,7 +49,7 @@ kernel (FWHM = 6 mm).
 
 ## References
 
-This method section was automatically generated using CPP SPM (v1.1.5dev;
+This method section was automatically generated using bidspm (v1.1.5dev;
 https://github.com/cpp-lln-lab/CPP_SPM; DOI:
 https://doi.org/10.5281/zenodo.3554331) and octache
 (https://github.com/Remi-Gau/Octache).

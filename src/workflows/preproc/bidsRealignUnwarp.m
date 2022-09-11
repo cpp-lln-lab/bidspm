@@ -18,7 +18,7 @@ function bidsRealignUnwarp(opt)
   % maps will be used unless ``opt.useFieldmaps`` is set to ``false``.
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   opt.pipeline.type = 'preproc';
 

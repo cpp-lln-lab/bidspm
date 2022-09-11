@@ -9,7 +9,7 @@ function opt = tsnr_get_option()
   %
   % :returns: - :opt: (struct)
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   % The directory where the data are located
   opt.dir.raw = 'C:\Users\michm\Data\myphdproject\MRI\CVI-DataLad\data';

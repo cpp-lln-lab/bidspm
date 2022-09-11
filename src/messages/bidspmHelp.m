@@ -1,12 +1,12 @@
 function bidspmHelp()
   %
-  % General intro function for CPP SPM
+  % General intro function for bidspm
   %
   %
   % Note:
   %
   % - all parameters use ``snake_case``
-  % - most "invalid" calls simply initialize CPP SPM
+  % - most "invalid" calls simply initialize bidspm
   %
   %
   %
@@ -16,7 +16,7 @@ function bidspmHelp()
   %
   % .. code-block:: matlab
   %
-  %   cpp_spm(bids_dir, output_dir, analysis_level, ...
+  %   bidspm(bids_dir, output_dir, analysis_level, ...
   %           'action', 'some_action', ...
   %           'participant_label', {}, ...
   %           'dry_run', false, ...
@@ -75,7 +75,7 @@ function bidspmHelp()
   %
   % .. note::
   %
-  %   Arguments passed to cpp_spm have priorities over the options defined in ``opt``.
+  %   Arguments passed to bidspm have priorities over the options defined in ``opt``.
   %   For example passing the argument ``'dry_run', true``
   %   will override the option ``opt.dryRun =  false``.
   %
@@ -83,7 +83,7 @@ function bidspmHelp()
   %
   % .. code-block:: matlab
   %
-  %   cpp_spm(bids_dir, output_dir, 'subject', ...
+  %   bidspm(bids_dir, output_dir, 'subject', ...
   %           'action', 'preprocess', ...
   %           'participant_label', {}, ...
   %           'dry_run', false, ...
@@ -125,7 +125,7 @@ function bidspmHelp()
   %
   % .. code-block:: matlab
   %
-  %   cpp_spm(bids_dir, output_dir, 'subject', ...
+  %   bidspm(bids_dir, output_dir, 'subject', ...
   %           'action', 'stats', ...
   %           'preproc_dir', preproc_dir, ...        % specific to stats
   %           'model_file', model_file, ...          % specific to stats
@@ -168,42 +168,38 @@ function bidspmHelp()
   % .. code-block:: matlab
   %
   %   % initialise (add relevant folders to path)
-  %   cpp_spm
+  %   bidspm
   %
   %   % equivalent to
-  %   cpp_spm init
-  %   initCppSpm
-  %   cpp_spm('action', 'init')
+  %   bidspm init
+  %   bidspm('action', 'init')
   %
   %   % help
-  %   cpp_spm help
-  %   help cppSpmHelp
-  %   cpp_spm('action', 'help')
+  %   bidspm help
+  %   bidspm('action', 'help')
   %
   %   % uninitialise (remove relevant folders from path)
-  %   cpp_spm uninit
-  %   uninitCppSpm
-  %   cpp_spm('action', 'uninit')
+  %   bidspm uninit
+  %   bidspm('action', 'uninit')
   %
   %   % also adds folder for testing to the path
-  %   cpp_spm dev
-  %   uninitCppSpm(true)
-  %   cpp_spm('action', 'dev')
+  %   bidspm dev
+  %   bidspm('action', 'dev')
   %
   %   % tried to update the current branch from the upstream repository
-  %   cpp_spm update
-  %   cpp_spm('action', 'update')
+  %   bidspm update
+  %   bidspm('action', 'update')
   %
   %   % misc
-  %   cpp_spm version
-  %   cpp_spm('action', 'version')
+  %   bidspm version
+  %   bidspm('action', 'version')
   %
-  %   cpp_spm run_tests
-  %   cpp_spm('action', 'run_tests')
+  %   bidspm run_tests
+  %   bidspm('action', 'run_tests')
   %
   %
   %  For a more readable version of this help section,
   %  see the online <a
   %  href="https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html">documentation</a>.
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers

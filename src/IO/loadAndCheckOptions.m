@@ -22,7 +22,7 @@ function opt = loadAndCheckOptions(optionJsonFile)
   %
   %    - add test for when the input is a structure.
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   if nargin < 1 || isempty(optionJsonFile)
     optionJsonFile = spm_select('FPList', ...

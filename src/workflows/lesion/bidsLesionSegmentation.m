@@ -17,7 +17,7 @@ function bidsLesionSegmentation(opt)
   % Segmentation will be performed using the information provided in the BIDS data set.
   %
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   opt.pipeline.type = 'preproc';
 

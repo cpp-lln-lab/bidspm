@@ -26,7 +26,7 @@ on:
 
 jobs:
 
-  build:
+  tests_matlab:
 
     runs-on: ubuntu-20.04
 
@@ -37,7 +37,7 @@ jobs:
           # MATLAB release to set up R2020a
           release: R2020a
 
-      - name: Clone cpp_spm
+      - name: Clone bidspm
         uses: actions/checkout@v3
         with:
           submodules: true

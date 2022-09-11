@@ -20,7 +20,7 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt)
   % :returns: - :meanImage: (string)
   %           - :meanFuncDir: (string)
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   opt.query.space = 'individual';
   opt.query.desc = 'mean';

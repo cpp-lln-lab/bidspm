@@ -1,7 +1,7 @@
 Small demo using visual motion localizer data to show how to set up an analysis
-with CPP SPM from scratch with datalad.
+with BIDSpm from scratch with datalad.
 
-# Using CPP SPM and datalad
+# Using BIDSpm and datalad
 
 Ideally better to use the datalad fMRI template we have set up, this shows a set
 by step approach.
@@ -26,7 +26,7 @@ datalad create -c yoda visual_motion_localiser
 cd visual_motion_localiser
 ```
 
-Add the CPP SPM code as a sub-dataset, checkout the dev branch ands initializes
+Add the BIDSpm code as a sub-dataset, checkout the dev branch ands initializes
 
 all submodules.
 
@@ -47,7 +47,7 @@ cd code/CPP_SPM
 git checkout dev
 git submodule update --init --recursive && git submodule update --recursive
 cd ..
-datalad save -m 'update CPP SPM submodules'
+datalad save -m 'update BIDSpm submodules'
 ```
 
 Now let's get the raw data as a subdataset and put it in an `inputs/raw` folder.

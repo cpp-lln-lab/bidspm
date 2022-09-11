@@ -6,7 +6,7 @@ function renameSegmentParameter(BIDS, subLabel, opt)
   %    renameSegmentParameter(BIDS, subLabel, opt)
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   opt = set_spm_2_bids_defaults(opt);
 

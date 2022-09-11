@@ -4,7 +4,7 @@ function allRunsHaveSameNbRegressors(spmMat)
   %
   %    allRunsHaveSameNbRegressors(spmMatFile)
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
   if isstruct(spmMat)
     SPM = spmMat;
   elseif exist(spmMat, 'file')

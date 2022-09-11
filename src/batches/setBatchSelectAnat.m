@@ -29,7 +29,7 @@ function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel)
   %
   % We assume that the first anat of that type is the "correct" one
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   printBatchName('selecting anatomical image', opt);
 

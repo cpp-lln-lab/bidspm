@@ -8,7 +8,7 @@ function checkDependencies(opt)
   %   checkDependencies()
   %
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   printToScreen('Checking dependencies\n', opt);
 

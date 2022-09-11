@@ -15,7 +15,7 @@
 %   - ``bidsCopyInputFolder.m``
 %   - ``bidsSpatialPrepro.m``
 %
-% type `cpp_spm help` or `cpp_spm('action', 'help')`
+% type `bidspm help` or `bidspm('action', 'help')`
 % or see this page: https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html
 % for more information on what parameters are obligatory or optional
 %
@@ -31,7 +31,7 @@ addpath(fullfile(pwd, '..', '..'));
 
 %% Gets data and converts it to BIDS
 if downloadData
-  cpp_spm();
+  bidspm();
   download_face_rep_ds(downloadData);
 end
 
@@ -39,7 +39,7 @@ bids_dir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
 
 output_dir = fullfile(bids_dir, '..', 'derivatives');
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
-        'action', 'preprocess', ...
-        'space', {'individual', 'IXI549Space'}, ...
-        'anat_only', true);
+bidspm(bids_dir, output_dir, 'subject', ...
+       'action', 'preprocess', ...
+       'space', {'individual', 'IXI549Space'}, ...
+       'anat_only', true);

@@ -55,7 +55,7 @@ function [names, R] = createConfounds(tsvContent, designMatrix, maxNbVols)
   %
   % See also: setBatchSubjectLevelGLMSpec, createConfounds
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   if nargin < 3
     maxNbVols = Inf;

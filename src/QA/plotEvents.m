@@ -22,7 +22,7 @@ function plotEvents(eventsFile, modelFile)
   %
   %     plotEvents(eventsFile{1});
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   if nargin < 2
     modelFile = '';

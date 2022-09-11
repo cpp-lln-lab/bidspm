@@ -20,7 +20,7 @@ downloadData = true;
 
 % Gets data and converts it to BIDS
 if downloadData
-  cpp_spm();
+  bidspm();
   %   download_face_rep_ds(downloadData);
 end
 

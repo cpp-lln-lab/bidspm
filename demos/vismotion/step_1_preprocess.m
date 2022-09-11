@@ -1,10 +1,10 @@
-% (C) Copyright 2019 CPP_SPM developers
+% (C) Copyright 2019 bidspm developers
 
 clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 this_dir = fileparts(mfilename('fullpath'));
 root_dir = fullfile(this_dir, '..', '..', '..', '..');
@@ -12,8 +12,8 @@ root_dir = fullfile(this_dir, '..', '..', '..', '..');
 bids_dir = fullfile(root_dir, 'inputs', 'raw');
 output_dir = fullfile(root_dir, 'outputs', 'derivatives');
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
-        'action', 'preprocess', ...
-        'task', {'visMotion'}, ...
-        'ignore', {'unwarp', 'slicetiming'}, ...
-        'space', {'IXI549Space'});
+bidspm(bids_dir, output_dir, 'subject', ...
+       'action', 'preprocess', ...
+       'task', {'visMotion'}, ...
+       'ignore', {'unwarp', 'slicetiming'}, ...
+       'space', {'IXI549Space'});

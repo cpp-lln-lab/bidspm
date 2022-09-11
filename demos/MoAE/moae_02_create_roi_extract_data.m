@@ -11,7 +11,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 subLabel = '01';
 

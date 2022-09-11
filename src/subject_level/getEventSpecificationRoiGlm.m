@@ -27,7 +27,7 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   %
   % See also: event_fitted, event_signal
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   args = inputParser;
 

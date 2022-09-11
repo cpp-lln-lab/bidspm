@@ -10,7 +10,7 @@ function acquisitionTime = getAcquisitionTime(sliceOrder, repetitionTime)
   %
   % :returns: - :acquisitionTime:
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   % SPM accepts slice time acquisition as inputs for slice order
   % (simplifies things when dealing with multiecho data)

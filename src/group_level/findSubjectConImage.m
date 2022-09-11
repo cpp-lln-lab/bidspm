@@ -24,7 +24,7 @@ function file = findSubjectConImage(varargin)
   % :returns: - file : a fullpath or a cellstrng of fullpath
   %
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   file = {};
 
