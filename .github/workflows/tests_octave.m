@@ -13,7 +13,7 @@ function tests_octave()
 
   addpath(fullfile(pwd, 'tests', 'utils'));
 
-  cpp_spm();
+  bidspm();
 
   if isGithubCi
     printToScreen('\nThis is github CI\n');

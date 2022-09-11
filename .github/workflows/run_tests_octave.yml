@@ -2,26 +2,13 @@ name: "tests with octave: failure expected"
 
 on:
 
-  push:
-    branches:
-      - main
-      - dev
-    paths:
-      - '**.m'
-      - '.github/workflows/run_tests*'
-      - 'lib'
-  pull_request:
-    branches: ['*']
-    paths:
-      - '**.m'
-      - '.github/workflows/run_tests*'
-      - 'lib'
+push: branches: - main - dev paths: - '**.m' - '.github/workflows/run_tests*' -
+'lib' pull_request: branches: ['*'] paths: - '**.m' -
+'.github/workflows/run_tests\*' - 'lib'
 
-env:
-  OCTFLAGS: --no-gui --no-window-system --silent
+env: OCTFLAGS: --no-gui --no-window-system --silent
 
-jobs:
-  build:
+jobs: build:
 
     runs-on: ubuntu-20.04
 
@@ -35,7 +22,7 @@ jobs:
         sudo apt-get -y -qq update
         sudo apt-get -y install octave liboctave-dev
 
-    - name: Clone cpp_spm
+    - name: Clone bidspm
       uses: actions/checkout@v3
       with:
         submodules: true
@@ -64,7 +51,7 @@ jobs:
     - name: Run tests
       run: |
         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
-        octave $OCTFLAGS --eval "cpp_spm(); cd demos/MoAE; download_moae_ds(true);"
+        octave $OCTFLAGS --eval "bidspm(); cd demos/MoAE; download_moae_ds(true);"
         cd .github/workflows
         octave $OCTFLAGS --eval "tests_octave;"
         cat test_report.log | grep 0
