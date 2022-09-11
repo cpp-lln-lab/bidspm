@@ -358,7 +358,7 @@ end
 function initBidspm(dev)
   %
   % Adds the relevant folders to the path for a given session.
-  % Has to be run to be able to use CPP_SPM.
+  % Has to be run to be able to use bidspm.
   %
   % USAGE::
   %
@@ -381,10 +381,10 @@ function initBidspm(dev)
 
   thisDirectory = fileparts(mfilename('fullpath'));
 
-  global CPP_SPM_INITIALIZED
-  global CPP_SPM_PATHS
+  global BIDSPM_INITIALIZED
+  global BIDSPM_PATHS
 
-  if isempty(CPP_SPM_INITIALIZED)
+  if isempty(BIDSPM_INITIALIZED)
 
     pathSep = ':';
     if ~isunix
@@ -398,26 +398,26 @@ function initBidspm(dev)
     run(fullfile(thisDirectory, 'lib', 'octache', 'setup'));
 
     % now add BIDSpm source code
-    CPP_SPM_PATHS = fullfile(thisDirectory);
-    CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ...
-                        pathSep, ...
-                        genpath(fullfile(thisDirectory, 'src')));
+    BIDSPM_PATHS = fullfile(thisDirectory);
+    BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
+                       pathSep, ...
+                       genpath(fullfile(thisDirectory, 'src')));
     if dev
-      CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...
-                          fullfile(thisDirectory, 'tests', 'utils'));
+      BIDSPM_PATHS = cat(2, BIDSPM_PATHS, pathSep, ...
+                         fullfile(thisDirectory, 'tests', 'utils'));
     end
 
     % for some reasons this folder was otherwise not added to the path in Octave
-    CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ...
-                        pathSep, ...
-                        genpath(fullfile(thisDirectory, 'src', 'workflows', 'stats')));
+    BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
+                       pathSep, ...
+                       genpath(fullfile(thisDirectory, 'src', 'workflows', 'stats')));
 
     % then add library that do not have an set up script
     libList = {'spmup'};
 
     for i = 1:numel(libList)
-      CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, ...
-                          genpath(fullfile(thisDirectory, 'lib', libList{i})));
+      BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
+                         genpath(fullfile(thisDirectory, 'lib', libList{i})));
     end
 
     libList = {'mancoreg', ...
@@ -426,17 +426,17 @@ function initBidspm(dev)
                'panel-2.14', ...
                'utils'};
     for i = 1:numel(libList)
-      CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...
-                          fullfile(thisDirectory, 'lib', libList{i}));
+      BIDSPM_PATHS = cat(2, BIDSPM_PATHS, pathSep, ...
+                         fullfile(thisDirectory, 'lib', libList{i}));
     end
 
-    CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...
-                        fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
+    BIDSPM_PATHS = cat(2, BIDSPM_PATHS, pathSep, ...
+                       fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
 
-    CPP_SPM_PATHS = cat(2, CPP_SPM_PATHS, pathSep, ...
-                        fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
+    BIDSPM_PATHS = cat(2, BIDSPM_PATHS, pathSep, ...
+                       fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
 
-    addpath(CPP_SPM_PATHS, '-begin');
+    addpath(BIDSPM_PATHS, '-begin');
 
     checkDependencies(opt);
     printCredits(opt);
@@ -473,12 +473,12 @@ function initBidspm(dev)
 
     end
 
-    CPP_SPM_INITIALIZED = true();
+    BIDSPM_INITIALIZED = true();
 
     detectBidspm();
 
   else
-    printToScreen('\n\nCPP_SPM already initialized\n\n');
+    printToScreen('\n\nbidspm already initialized\n\n');
 
   end
 
@@ -496,16 +496,16 @@ function uninitBidspm()
 
   thisDirectory = fileparts(mfilename('fullpath'));
 
-  global CPP_SPM_INITIALIZED
-  global CPP_SPM_PATHS
+  global BIDSPM_INITIALIZED
+  global BIDSPM_PATHS
 
-  if isempty(CPP_SPM_INITIALIZED) || ~CPP_SPM_INITIALIZED
+  if isempty(BIDSPM_INITIALIZED) || ~BIDSPM_INITIALIZED
     fprintf('\n\nCPP_SPM not initialized\n\n');
     return
 
   else
     run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'uninitCppRoi'));
-    rmpath(CPP_SPM_PATHS);
+    rmpath(BIDSPM_PATHS);
     spm('Clean');
     spm('Quit');
 
@@ -597,10 +597,10 @@ function detectBidspm()
   workflowsDir = cellstr(which('bidsSpatialPrepro.m', '-ALL'));
 
   if isempty(workflowsDir)
-    error('CPP_SPM is not in your MATLAB / Octave path.\n');
+    error('bidspm is not in your MATLAB / Octave path.\n');
 
   elseif numel(workflowsDir) > 1
-    printToScreen('CPP_SPM seems to appear in several different folders:\n');
+    printToScreen('bidspm seems to appear in several different folders:\n');
     for i = 1:numel(workflowsDir)
       fprintf('  * %s\n', fullfile(workflowsDir{i}, '..', '..'));
     end

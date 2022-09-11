@@ -21,7 +21,7 @@ env:
   OCTFLAGS: --no-gui --no-window-system --silent
 
 jobs:
-  build:
+  tests_octave:
 
     runs-on: ubuntu-20.04
 

@@ -1,4 +1,4 @@
-# Creates a docker image of CPP_SPM with
+# Creates a docker image of bidspm with
 
 # this is mostly taken from the spm docker files: https://github.com/spm/spm-docker
 FROM ubuntu:22.04
