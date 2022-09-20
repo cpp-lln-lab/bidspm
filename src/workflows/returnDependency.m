@@ -6,7 +6,7 @@ function dep = returnDependency(opt, type)
   %
   %  dep = returnDependency(opt, type)
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   handledDependencies = {'segment', 'skullStripping', 'skullStrippingMask'...
                          'coregister', 'selectAnat', 'realign', ...

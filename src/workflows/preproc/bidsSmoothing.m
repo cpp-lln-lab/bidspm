@@ -14,7 +14,7 @@ function bidsSmoothing(opt)
   % :type opt: structure
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   opt.dir.input = opt.dir.preproc;
   opt.query.modality = 'func';

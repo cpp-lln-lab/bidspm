@@ -66,8 +66,8 @@ Example content of ``getOptionPreproc`` file:
 
 **For statistics**
 
-To run a GLM, CPP SPM gets the images and confound time series from a preprocessed
-derivatives BIDS dataset (from fMRIprep or CPP SPM) and the ``events.tsv`` files
+To run a GLM, bidspm gets the images and confound time series from a preprocessed
+derivatives BIDS dataset (from fMRIprep or bidspm) and the ``events.tsv`` files
 from a raw BIDS dataset.
 
 For a given folder structure::

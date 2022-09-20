@@ -9,7 +9,7 @@ function contrast = checkContrast(node, iCon)
   %     contrast = checkContrast(node, iCon)
   %
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   bids.Model.validate_constrasts(node);
 

@@ -8,7 +8,7 @@ function cleanCrash()
   %   cleanCrash()
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   files = {'spm.*.png'};
 

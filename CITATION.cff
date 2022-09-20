@@ -1,17 +1,17 @@
 cff-version: 1.2.0
 
-title: "CPP SPM"
+title: "BIDSpm"
 
 version: 2.1.0dev
 
-abstract: CPP_SPM is a set pipelines and tools for Octave/MATLAB to process and analyze BIDS data sets using SPM.
+abstract: BIDSpm is a set pipelines and tools for Octave/MATLAB to process and analyze BIDS data sets using SPM.
 
 message: "If you use this software, please cite it as below."
 
 repository-code: "https://github.com/cpp-lln-lab/CPP_SPM"
 
 identifiers:
-  - description: This is the collection of archived snapshots of all releases of CPP SPM
+  - description: This is the collection of archived snapshots of all releases of BIDSpm
     type: doi
     value: "10.5281/zenodo.3554331"
 

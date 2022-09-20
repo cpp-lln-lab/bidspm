@@ -17,7 +17,7 @@ function reportBIDS(opt)
   %             See also: checkOptions
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   opt.pipeline.type = 'preproc';
 

@@ -1,6 +1,6 @@
 function expectedOptions = defaultOptions(taskName)
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   expectedOptions.verbosity = 2;
   expectedOptions.dryRun = false;

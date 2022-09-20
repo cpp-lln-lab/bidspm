@@ -4,7 +4,7 @@ function overwriteDir(directory, opt)
   %
   %     overwriteDir(directory, opt)
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   if exist(directory, 'dir') == 7
     msg = sprintf('\noverwriting directory:\n\t%s\n\n', pathToPrint(directory));

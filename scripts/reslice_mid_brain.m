@@ -1,7 +1,7 @@
 % Relice midbrain masks at the correct resolution
 %
 %
-% (C) Copyright 2021 CPP_SPM developers
+% (C) Copyright 2021 bidspm developers
 
 opt.dir.input = opt.dir.preproc;
 

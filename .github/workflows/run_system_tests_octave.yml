@@ -58,7 +58,7 @@ jobs:
         sudo apt-get -y -qq update
         sudo apt-get -y install octave liboctave-dev
 
-    - name: Clone cpp_spm
+    - name: Clone bidspm
       uses: actions/checkout@v3
       with:
         submodules: true

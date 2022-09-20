@@ -15,7 +15,7 @@ function dummyContrastsList = getDummyContrastsList(node, model)
   %
   % :return: dummyContrastsList (cellstr)
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   dummyContrastsList = {};
 

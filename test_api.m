@@ -1,4 +1,4 @@
-% (C) Copyright 2022 CPP_SPM developers
+% (C) Copyright 2022 bidspm developers
 
 function testSuite = test_api %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
@@ -11,16 +11,16 @@ end
 function test_api_basic()
 
   % initialise (add relevant folders to path)
-  cpp_spm;
-  cpp_spm('action', 'uninit');
-  cpp_spm('action', 'init');
-  cpp_spm('action', 'uninit');
+  bidspm;
+  bidspm('action', 'uninit');
+  bidspm('action', 'init');
+  bidspm('action', 'uninit');
 
   % also adds folder for testing to the path
-  cpp_spm('action', 'dev');
-  cpp_spm('action', 'uninit');
+  bidspm('action', 'dev');
+  bidspm('action', 'uninit');
 
   % misc
-  cpp_spm('action', 'version');
+  bidspm('action', 'version');
 
 end

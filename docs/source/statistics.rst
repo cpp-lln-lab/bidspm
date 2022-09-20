@@ -30,7 +30,7 @@ To get the fullpath of that folder you can use::
 
 A typical folder will contain::
 
-   cpp_spm-stats/sub-01/stats/task-audio_space-IXI549Space_FWHM-6
+   bidspm-stats/sub-01/stats/task-audio_space-IXI549Space_FWHM-6
    ├── SPM.mat
    ├── sub-01_task-audio_space-IXI549Space_desc-beforeEstimation_designmatrix.png
    ├── sub-01_task-audio_run-01_desc-confounds_regressors.mat
@@ -88,7 +88,7 @@ Compute results
 
    Example of subject level montage from the MoAE demo
 
-CPP SPM also includes the ``slice_display`` code that allows you to plot on the
+bidspm also includes the ``slice_display`` code that allows you to plot on the
 same figure:
 
 - beta values

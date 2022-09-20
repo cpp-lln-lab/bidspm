@@ -6,9 +6,9 @@
 
 # Final output
 # beta_XXXX.nii: mask.nii
-# mask.nii: cpp_spm-stats/sub-01/stats/task-audio_space-IXI549Space_FWHM-6
+# mask.nii: bidspm-stats/sub-01/stats/task-audio_space-IXI549Space_FWHM-6
 
-cpp_spm-stats/sub-01/stats/task-audio_space-IXI549Space_FWHM-6: SPM.mat \
+bidspm-stats/sub-01/stats/task-audio_space-IXI549Space_FWHM-6: SPM.mat \
 																sub-01_task-audio_regressors.mat \
 																sub-01_task-audio_onsets.mat \
 																sub-01_task-audio_regressors.tsv \

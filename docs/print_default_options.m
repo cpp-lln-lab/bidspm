@@ -2,7 +2,7 @@
 %
 % (C) Copyright 2022 Remi Gau
 
-run ../cpp_spm;
+run ../bidspm;
 opt = struct();
 opt = checkOptions(opt);
 file_id = fopen(fullfile(pwd, 'source', 'default_options.m'), 'w+');

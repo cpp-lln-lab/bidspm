@@ -25,7 +25,7 @@ function matlabbatch = setBatchReslice(matlabbatch, opt, referenceImg, sourceIma
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   printBatchName('reslicing', opt);
 

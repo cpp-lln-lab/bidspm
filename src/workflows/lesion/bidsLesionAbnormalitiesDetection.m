@@ -24,7 +24,7 @@ function bidsLesionAbnormalitiesDetection(opt, extraOptions)
   % from the lesion segmentation output in BIDS format.
   %
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   % TODO: do not use extraOptions but instead either opt(1) and opt(2) or
 

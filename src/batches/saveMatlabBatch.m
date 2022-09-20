@@ -38,7 +38,7 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subLabel) %#ok<INUSL>
   % in terms of computational reproducibility.
   %
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   if nargin < 4 || isempty(subLabel)
     subLabel = 'group';

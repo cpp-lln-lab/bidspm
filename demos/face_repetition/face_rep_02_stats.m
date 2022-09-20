@@ -23,7 +23,7 @@
 %       (e.g use of FAST instead of AR(1), motion regressors added)
 %
 %
-% type `cpp_spm help` or `cpp_spm('action', 'help')`
+% type `bidspm help` or `bidspm('action', 'help')`
 % or see this page: https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html
 % for more information on what parameters are obligatory or optional
 %
@@ -34,7 +34,7 @@ clear;
 clc;
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 this_dir = fileparts(mfilename('fullpath'));
 
@@ -82,14 +82,14 @@ opt.results(2) = results;
 %
 % that are otherwise handled by the bidsFFX.m and bidsResults.m workflows
 %
-% type cpp_spm('action', 'help')
+% type bidspm('action', 'help')
 % or see this page: https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html
 % for more information on what parameters are obligatory or optional
 %
 
-cpp_spm(bids_dir, output_dir, 'subject', ...
-        'action', 'stats', ...
-        'participant_label', {subject_label}, ...
-        'preproc_dir', preproc_dir, ...
-        'model_file', model_file, ...
-        'options', opt);
+bidspm(bids_dir, output_dir, 'subject', ...
+       'action', 'stats', ...
+       'participant_label', {subject_label}, ...
+       'preproc_dir', preproc_dir, ...
+       'model_file', model_file, ...
+       'options', opt);

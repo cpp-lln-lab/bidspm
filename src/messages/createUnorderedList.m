@@ -11,7 +11,7 @@ function list = createUnorderedList(list)
   % :type list: cell string or structure
   %
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   prefix = '\n\t- ';
 

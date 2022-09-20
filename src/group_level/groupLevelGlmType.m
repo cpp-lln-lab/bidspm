@@ -1,6 +1,6 @@
 function [type, designMatrix, groupBy] = groupLevelGlmType(opt, nodeName)
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   designMatrix = opt.model.bm.getBidsDesignMatrix('Name', nodeName);
 

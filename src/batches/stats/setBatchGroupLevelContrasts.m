@@ -20,7 +20,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
   %
   % See also: setBatchContrasts, specifyContrasts, setBatchSubjectLevelContrasts
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   printBatchName('group level contrast estimation', opt);
 

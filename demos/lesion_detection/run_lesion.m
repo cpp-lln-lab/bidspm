@@ -1,4 +1,4 @@
-% (C) Copyright 2021 CPP_SPM developers
+% (C) Copyright 2021 bidspm developers
 
 clear;
 clc;
@@ -12,7 +12,7 @@ clc;
 % URL = https://gin.g-node.org/mwmaclean/CVI-Datalad/src/master/data
 
 addpath(fullfile(pwd, '..', '..'));
-cpp_spm();
+bidspm();
 
 %% Set options
 [opt, opt2] = lesion_get_option();

@@ -21,7 +21,7 @@ function bidsResliceTpmToFunc(opt)
   % as the functional.
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   % TODO consider renaming this function to highlight that it creates a mask as
   % well, though this might get confusing with `bidsWholeBrainFuncMask`

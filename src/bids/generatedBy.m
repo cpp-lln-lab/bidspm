@@ -11,7 +11,7 @@ function [name, version] = generatedBy(BIDS)
   %              See also: bids.layout, getData.
   % :type BIDS: struct
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   name = 'unknown';
   version = 'unknown';

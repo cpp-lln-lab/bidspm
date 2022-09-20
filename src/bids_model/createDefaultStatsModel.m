@@ -58,7 +58,7 @@ function opt = createDefaultStatsModel(BIDS, opt)
   %
   %   createDefaultStatsModel(BIDS, opt);
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   DEFAULT_CONFOUNDS = {'trans_?'
                        'rot_?'

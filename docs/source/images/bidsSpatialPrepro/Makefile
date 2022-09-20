@@ -1,5 +1,5 @@
 # Final output
-cpp_spm-preproc/sub-01/func/: 	sub-01_task-auditory_desc-confounds_regressors.tsv \
+bidspm-preproc/sub-01/func/: 	sub-01_task-auditory_desc-confounds_regressors.tsv \
 								sub-01_task-audio_desc-stc_bold.mat \
 								sub-01_task-auditory_label-bold_unwarpparam.mat \
 								sub-01_task-audio_space-IXI549Space_desc-mean_bold.nii \
@@ -9,7 +9,7 @@ cpp_spm-preproc/sub-01/func/: 	sub-01_task-auditory_desc-confounds_regressors.ts
 								sub-01_task-auditory_space-individual_desc-std_bold.nii \
 								sub-01_task-auditory_space-individual_desc-preproc_bold.avi
 
-cpp_spm-preproc/sub-01/anat/: 	sub-01_space-individual_label-GM_probseg.nii \
+bidspm-preproc/sub-01/anat/: 	sub-01_space-individual_label-GM_probseg.nii \
 								sub-01_space-individual_label-WM_probseg.nii \
 								sub-01_space-individual_label-CSF_probseg.nii \
 								sub-01_from-IXI549Space_to-T1w_mode-image_xfm.nii \
@@ -22,7 +22,7 @@ cpp_spm-preproc/sub-01/anat/: 	sub-01_space-individual_label-GM_probseg.nii \
 								sub-01_space-IXI549Space_res-bold_label-CSF_probseg.nii \
 								sub-01_desc-pialsurf_T1w.gii
 
-cpp_spm-preproc/sub-01/reports/: sub-01_label-T1w_qa.pdf \
+bidspm-preproc/sub-01/reports/: sub-01_label-T1w_qa.pdf \
 									sub-01_label-T1w_qametrics.json \
 									sub-01_task-auditory_label-bold_qametrics.json \
 									sub-01_task-auditory_label-bold_qa.pdf

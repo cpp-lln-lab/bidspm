@@ -14,7 +14,7 @@ function anatomicalQA(opt)
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   if ~opt.QA.anat.do
     return

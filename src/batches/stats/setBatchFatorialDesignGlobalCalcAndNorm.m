@@ -5,7 +5,7 @@ function factorialDesign = setBatchFatorialDesignGlobalCalcAndNorm(factorialDesi
   %   factorialDesign = setBatchFatorialDesignGlobalCalcAndNorm(factorialDesign)
   %
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   factorialDesign.globalc.g_omit = 1;
   factorialDesign.globalm.gmsca.gmsca_no = 1;

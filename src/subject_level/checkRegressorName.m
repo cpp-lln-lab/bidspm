@@ -12,7 +12,7 @@ function checkRegressorName(SPM)
   %
   % See also: bidsModelSelection
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   all_columns = {};
 

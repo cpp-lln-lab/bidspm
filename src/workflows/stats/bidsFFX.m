@@ -39,7 +39,7 @@ function [matlabbatch, opt] = bidsFFX(varargin)
   % See also: setBatchSubjectLevelGLMSpec, setBatchSubjectLevelContrasts
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   % TODO implement nodeName for 'specify', 'specifyAndEstimate'
   % - will require adapting the subject level folder name to take into account

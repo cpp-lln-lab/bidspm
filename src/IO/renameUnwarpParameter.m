@@ -6,7 +6,7 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
   %    renameUnwarpParameter(BIDS, subLabel, opt)
   %
   %
-  % (C) Copyright 2020 CPP_SPM developers
+  % (C) Copyright 2020 bidspm developers
 
   if opt.anatOnly
     return

@@ -1,8 +1,5 @@
 function printCredits(opt)
-  %
-  % TODO use the .CFF to load contributors
-  %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   if nargin < 1
     opt.verbosity = 2;
@@ -41,20 +38,18 @@ function printCredits(opt)
   printToScreen(horLine, opt);
   printToScreen(horLine, opt);
   printToScreen('\n', opt);
-  printToScreen('       ____  ____   ____    ____   ____   __  __      \n', opt, ...
-                'format', '*green');
-  printToScreen('      / ___||  _ \\ |  _ \\  / ___| |  _ \\ |  \\/  | \n', opt, ...
-                'format', '*green');
-  printToScreen('     | |    | |_) || |_) | \\___ \\ | |_) || |\\/| |  \n', opt, ...
-                'format', '*green');
-  printToScreen('     | |___ |  __/ |  __/   ___) ||  __/ | |  | |     \n', opt, ...
-                'format', '*green');
-  printToScreen('      \\____||_|    |_|     |____/ |_|    |_|  |_|    \n', opt, ...
-                'format', '*green');
+
+  printToScreen('______  _____ ______  _____ ______ ___  ___    \n', opt,  'format', '*green');
+  printToScreen('| ___ \\|_   _||  _  \\/  ___|| ___ \\|  \\/  |\n', opt,  'format', '*green');
+  printToScreen('| |_/ /  | |  | | | |\\ `--. | |_/ /| .  . |   \n', opt,  'format', '*green');
+  printToScreen('| ___ \\  | |  | | | | `--. \\|  __/ | |\\/| | \n', opt,  'format', '*green');
+  printToScreen('| |_/ / _| |_ | |/ / /\\__/ /| |    | |  | |   \n', opt,  'format', '*green');
+  printToScreen('\\____/  \\___/ |___/  \\____/ \\_|    \\_|  |_/\n', opt,  'format', '*green');
+
   printToScreen('\n', opt);
 
   printToScreen('\n\n', opt);
-  printToScreen('Thank you for using CPP SPM - ', opt);
+  printToScreen('Thank you for using bidspm - ', opt);
   printToScreen(sprintf('version %s ', versionNumber), opt, 'format', '-blue');
   printToScreen('\n\n', opt);
 

@@ -1,4 +1,4 @@
-% (C) Copyright 2020 CPP_SPM developers
+% (C) Copyright 2020 bidspm developers
 
 function test_suite = test_setBatchSTC %#ok<*STOUT>
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016

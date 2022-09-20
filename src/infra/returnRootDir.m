@@ -4,7 +4,7 @@ function rootDir = returnRootDir()
   %
   %   rootDir = returnRootDir()
   %
-  % (C) Copyright 2022 CPP_SPM developers
+  % (C) Copyright 2022 bidspm developers
 
   Mfile = 'cpp_spm.m';
   rootDir = cellstr(which(Mfile, '-ALL'));

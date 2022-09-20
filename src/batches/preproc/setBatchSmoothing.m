@@ -28,7 +28,7 @@ function matlabbatch = setBatchSmoothing(matlabbatch, opt, images, fwhm, prefix)
   % See also: bidsSmoothing, bidsRFX, setBatchSmoothingFunc, setBatchSmoothConImages
   %
   %
-  % (C) Copyright 2019 CPP_SPM developers
+  % (C) Copyright 2019 bidspm developers
 
   printBatchName('smoothing images', opt);
 

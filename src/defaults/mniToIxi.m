@@ -12,7 +12,7 @@ function optOut = mniToIxi(varargin)
   % :returns: - :opt_out: (type) (structure)
   %
   %
-  % (C) Copyright 2021 CPP_SPM developers
+  % (C) Copyright 2021 bidspm developers
 
   args = inputParser;
   addRequired(args, 'opt', @isstruct);
