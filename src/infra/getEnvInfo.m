@@ -69,11 +69,15 @@ function OS = getOsNameAndVersion(OS)
 
   if ismember(OS.name, {'GLNXA64'})
 
-    [~, result] = system('lsb_release -d');
-    tokens = regexp(result, 'Description:', 'split');
-
     OS.name = 'unix';
-    OS.version = strtrim(tokens{2});
+
+    try
+      [~, result] = system('lsb_release -d');
+      tokens = regexp(result, 'Description:', 'split');
+      OS.version = strtrim(tokens{2});
+    catch
+      [~, OS.version] = system('cat /proc/version');
+    end
 
   elseif ismember(OS.name, {'MACI64'})
 

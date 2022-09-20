@@ -34,26 +34,26 @@ create_raw_func_vismotion() {
 		touch "${filename}"
 	done
 
-	filename=${this_dir}/${basename}_run-1_events.tsv
+	filename="${this_dir}/${basename}_run-1_events.tsv"
 	echo "onset\tduration\ttrial_type" >"${filename}"
 	echo "2\t2\tVisMot" >>"${filename}"
 	echo "4\t2\tVisStat" >>"${filename}"
 
-	filename=${this_dir}/${basename}_run-2_events.tsv
+	filename="${this_dir}/${basename}_run-2_events.tsv"
 	echo "onset\tduration\ttrial_type" >"${filename}"
 	echo "3\t2\tVisStat" >>"${filename}"
 	echo "6\t2\tVisMot" >>"${filename}"
 
 	touch "${this_dir}/${basename}_acq-1p60mm_run-1${suffix}.nii"
 
-	filename=${this_dir}/${basename}_acq-1p60mm_run-1_events.tsv
+	filename="${this_dir}/${basename}_acq-1p60mm_run-1_events.tsv"
 	echo "onset\tduration\ttrial_type" >"${filename}"
 	echo "4\t2\tVisMot" >>"${filename}"
 	echo "8\t2\tVisStat" >>"${filename}"
 
 	touch "${this_dir}/${basename}_acq-1p60mm_dir-PA_run-1${suffix}.nii"
 
-	filename=${this_dir}/${basename}_acq-1p60mm_run-2_events.tsv
+	filename="${this_dir}/${basename}_acq-1p60mm_run-2_events.tsv"
 	echo "onset\tduration\ttrial_type" >"${filename}"
 	echo "4\t2\tVisMot" >>"${filename}"
 	echo "8\t2\tVisStat" >>"${filename}"
