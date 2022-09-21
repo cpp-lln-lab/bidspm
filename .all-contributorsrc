@@ -14,7 +14,9 @@
       "contributions": [
         "code",
         "design",
-        "doc"
+        "doc",
+        "financial",
+        "fundingFinding"
       ]
     },
     {
@@ -50,7 +52,8 @@
         "doc",
         "test",
         "bug",
-        "userTesting"
+        "userTesting",
+        "ideas"
       ]
     },
     {
@@ -61,11 +64,16 @@
       "contributions": [
         "code",
         "doc",
+        "ideas",
         "infra",
         "design",
         "review",
         "bug",
-        "test"
+        "test",
+        "content",
+        "design",
+        "tutorial",
+        "maintenance"
       ]
     },
     {
@@ -143,7 +151,11 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/8718798?v=4",
       "profile": "https://github.com/JeanneCaronGuyon",
       "contributions": [
-        "bug"
+        "bug",
+        "example",
+        "userTesting",
+        "question",
+        "tutorial"
       ]
     },
     {
@@ -152,7 +164,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/70207207?v=4",
       "profile": "https://github.com/christine0903",
       "contributions": [
-        "ideas"
+        "ideas",
+        "bug"
       ]
     }
   ],
