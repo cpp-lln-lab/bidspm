@@ -11,6 +11,7 @@ function list = createUnorderedList(list)
   % :type list: cell string or structure
   %
   %
+
   % (C) Copyright 2021 bidspm developers
 
   prefix = '\n\t- ';

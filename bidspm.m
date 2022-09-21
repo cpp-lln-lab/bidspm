@@ -2,6 +2,7 @@ function bidspm(varargin)
   %
   % Type bidspm('action', 'help') for more information.
   %
+
   % (C) Copyright 2022 bidspm developers
 
   % TODO  bidspm('action', 'update')
@@ -364,6 +365,7 @@ function initBidspm(dev)
   %
   %   initBidspm()
   %
+
   % (C) Copyright 2021 bidspm developers
 
   if nargin < 1
@@ -492,6 +494,7 @@ function uninitBidspm()
   %
   %   uninitBidspm()
   %
+
   % (C) Copyright 2021 bidspm developers
 
   thisDirectory = fileparts(mfilename('fullpath'));
@@ -500,7 +503,7 @@ function uninitBidspm()
   global BIDSPM_PATHS
 
   if isempty(BIDSPM_INITIALIZED) || ~BIDSPM_INITIALIZED
-    fprintf('\n\nCPP_SPM not initialized\n\n');
+    fprintf('\n\nbidspm not initialized\n\n');
     return
 
   else
@@ -521,6 +524,7 @@ end
 
 function run_tests()
   %
+
   % (C) Copyright 2019 bidspm developers
 
   % Elapsed time is 284 seconds.

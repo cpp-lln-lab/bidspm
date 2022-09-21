@@ -27,6 +27,7 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
   %
   % See also: bidsSTC, setBatchSTC
   %
+
   % (C) Copyright 2020 bidspm developers
 
   % TODO support for DelayTime and AcquisitionDuration

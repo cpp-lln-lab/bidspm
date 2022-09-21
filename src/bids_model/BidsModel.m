@@ -1,6 +1,7 @@
 classdef BidsModel < bids.Model
   %
   %
+
   % (C) Copyright 2022 Remi Gau
 
   methods

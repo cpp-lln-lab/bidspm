@@ -8,6 +8,7 @@ function value = computeMeanValueInMask(image, mask)
   % mask: mask filename
   %
   %
+
   % (C) Copyright 2021 bidspm developers
 
   % TODO what is returned by this when image is a 4D time series?

@@ -20,6 +20,7 @@ function status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   % :param subLabel: subject label
   % :type subLabel: char
   %
+
   % (C) Copyright 2019 bidspm developers
 
   if nargin < 4

@@ -26,6 +26,7 @@ function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(vararg
   % Example::
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   % TODO so far this assumes contrasts are only passed through Edge.Filter

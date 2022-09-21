@@ -13,6 +13,7 @@ function matlabbatch = setBatchLesionOverlapMap(matlabbatch, BIDS, opt, subLabel
   %
   % :returns: - :matlabbatch: (structure)
   %
+
   % (C) Copyright 2021 bidspm developers
 
   printBatchName('Lesion overlap map');

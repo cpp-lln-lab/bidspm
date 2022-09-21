@@ -13,6 +13,7 @@ function outputFilename = saveSpmScript(varargin)
   %
   % :returns: - :outputFilename: (path)
   %
+
   % (C) Copyright 2022 bidspm developers
 
   % TODO add header to output .m file

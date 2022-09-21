@@ -1,5 +1,6 @@
 function query = removeEmptyQueryFields(query)
   %
+
   % (C) Copyright 2021 bidspm developers
 
   names = {'ses', 'run'};

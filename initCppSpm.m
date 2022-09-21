@@ -1,4 +1,5 @@
 function initCppSpm(dev)
+
   % (C) Copyright 2021 bidspm developers
 
   if nargin < 1

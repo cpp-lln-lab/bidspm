@@ -7,6 +7,7 @@ function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
   % or the previous one to find the list of contrasts
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   % assuming we want to only average at the group level

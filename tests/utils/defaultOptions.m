@@ -1,5 +1,6 @@
 function expectedOptions = defaultOptions(taskName)
   %
+
   % (C) Copyright 2021 bidspm developers
 
   expectedOptions.verbosity = 2;

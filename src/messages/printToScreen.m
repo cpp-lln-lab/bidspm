@@ -4,6 +4,7 @@ function printToScreen(varargin)
   %
   %   printToScreen(msg, opt, 'format', 'blue')
   %
+
   % (C) Copyright 2021 bidspm developers
 
   args = inputParser;

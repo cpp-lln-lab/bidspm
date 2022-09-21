@@ -4,6 +4,7 @@ function rootDir = returnRootDir()
   %
   %   rootDir = returnRootDir()
   %
+
   % (C) Copyright 2022 bidspm developers
 
   Mfile = 'cpp_spm.m';
@@ -17,17 +18,17 @@ function rootDir = returnRootDir()
   rootDir = unique(rootDir);
 
   if isempty(rootDir)
-    err.message = 'CPP_SPM is not in your MATLAB / Octave path.\n';
-    err.identifier = 'CPP_SPM:CppSpmNotInPath';
+    err.message = 'bidspm is not in your MATLAB / Octave path.\n';
+    err.identifier = 'bidspm:bidspmNotInPath';
     error(err);
 
   elseif numel(rootDir) > 1
-    fprintf('CPP_SPM seems to appear in several different folders:\n');
+    fprintf('bidspm seems to appear in several different folders:\n');
     for i = 1:numel(rootDir)
       fprintf('  * %s\n', fullfile(rootDir{i}, '..', '..'));
     end
     err.message = 'Remove all but one with ''pathtool''.\n'; % or ''spm_rmpath
-    err.identifier = 'CPP_SPM:SeveralCppSpmInPath';
+    err.identifier = 'bidspm:SeveralBidspmInPath';
     error(err);
 
   end

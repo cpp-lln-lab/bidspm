@@ -1,5 +1,6 @@
 function dummyDataDir = getDummyDataDir(arg)
   %
+
   % (C) Copyright 2021 bidspm developers
 
   dummyDataDir = spm_file(fullfile(getTestDir(), 'dummyData'), 'cpath');

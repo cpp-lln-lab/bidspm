@@ -23,6 +23,7 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, 
   %
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
+
   % (C) Copyright 2020 bidspm developers
 
   if opt.anatOnly

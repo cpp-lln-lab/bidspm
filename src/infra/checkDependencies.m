@@ -8,6 +8,7 @@ function checkDependencies(opt)
   %   checkDependencies()
   %
   %
+
   % (C) Copyright 2019 bidspm developers
 
   printToScreen('Checking dependencies\n', opt);

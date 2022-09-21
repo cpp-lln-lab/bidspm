@@ -20,6 +20,7 @@ function status = checkToolbox(varargin)
   %
   %   checkToolbox('MACS', 'verbose', true, 'install', true)
   %
+
   % (C) Copyright 2021 bidspm developers
 
   args = inputParser;

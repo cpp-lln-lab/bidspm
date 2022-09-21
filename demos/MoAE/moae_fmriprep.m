@@ -59,7 +59,7 @@ opt = checkOptions(opt);
 %
 % this 2 step copy should disappear in future version.
 %
-% See: https://github.com/cpp-lln-lab/CPP_SPM/issues/409
+% See: https://github.com/cpp-lln-lab/bidspm/issues/409
 %
 
 % copy the actual nifti images

@@ -35,6 +35,7 @@ function bidsChangeSuffix(varargin)
   %                     'force', false)
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   args = inputParser;

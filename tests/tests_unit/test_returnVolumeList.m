@@ -1,5 +1,6 @@
 function test_suite = test_returnVolumeList %#ok<*STOUT>
   %
+
   % (C) Copyright 2022 bidspm developers
 
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016

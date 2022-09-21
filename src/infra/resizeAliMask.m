@@ -5,6 +5,7 @@ function aliMask = resizeAliMask(opt)
   %  aliMask = resizeAliMask(opt)
   %
   %
+
   % (C) Copyright 2022 bidspm developers
   aliMask = fullfile(spm('dir'), 'toolbox', 'ALI', 'Mask_image', 'mask_controls_vox2mm.nii');
 

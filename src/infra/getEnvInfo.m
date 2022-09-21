@@ -10,6 +10,7 @@ function [OS, generatedBy] = getEnvInfo(opt)
   % :returns: :OS: (structure) (dimension)
   %           :generatedBy: (structure) (dimension)
   %
+
   % (C) Copyright 2020 bidspm developers
 
   if nargin < 1

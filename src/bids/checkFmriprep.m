@@ -11,6 +11,7 @@ function status = checkFmriprep(BIDS)
   %              See also: bids.layout, getData.
   % :type BIDS: struct
   %
+
   % (C) Copyright 2022 bidspm developers
 
   status =  true;

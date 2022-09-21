@@ -18,6 +18,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
   %
   % :returns: - :matlabbatch: (structure)
   %
+
   % (C) Copyright 2019 bidspm developers
 
   % TODO implement other models than group average of contrast from lower levels

@@ -10,6 +10,7 @@ function workflow(opt)
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
+
   % (C) Copyright 2022 bidspm developers
 
   [BIDS, opt] = setUpWorkflow(opt, 'workflow name');

@@ -7,6 +7,7 @@ function opt = setRenamingConfig(opt, workflowName)
   %   opt = setRenamingConfig(opt, workflowName)
   %
   %
+
   % (C) Copyright 2021 bidspm developers
 
   opt = set_spm_2_bids_defaults(opt);

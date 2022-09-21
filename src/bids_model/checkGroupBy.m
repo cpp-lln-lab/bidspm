@@ -4,6 +4,7 @@ function [status, groupBy] = checkGroupBy(node)
   %
   % This helps doing some defensive programming
   %
+
   % (C) Copyright 2022 bidspm developers
 
   status = true;

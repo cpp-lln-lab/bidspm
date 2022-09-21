@@ -58,6 +58,7 @@ function opt = createDefaultStatsModel(BIDS, opt)
   %
   %   createDefaultStatsModel(BIDS, opt);
   %
+
   % (C) Copyright 2020 bidspm developers
 
   DEFAULT_CONFOUNDS = {'trans_?'

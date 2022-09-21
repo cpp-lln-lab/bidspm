@@ -1,4 +1,5 @@
 function printCredits(opt)
+
   % (C) Copyright 2019 bidspm developers
 
   if nargin < 1

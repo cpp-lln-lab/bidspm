@@ -1,5 +1,6 @@
 function createDummyData()
   %
+
   % (C) Copyright 2022 bidspm developers
 
   startDir = pwd;

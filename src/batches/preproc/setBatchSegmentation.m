@@ -15,6 +15,7 @@ function [matlabbatch, opt] = setBatchSegmentation(matlabbatch, opt, imageToSegm
   %
   % :returns: :matlabbatch: (structure)
   %
+
   % (C) Copyright 2020 bidspm developers
 
   if ~opt.segment.do

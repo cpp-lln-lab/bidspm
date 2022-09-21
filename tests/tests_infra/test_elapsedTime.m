@@ -1,5 +1,6 @@
 function test_suite = test_elapsedTime %#ok<*STOUT>
   %
+
   % (C) Copyright 2020 bidspm developers
 
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016

@@ -2,6 +2,7 @@ function opt = setOptions(varargin)
   %
   % opt = setOptions(task, subLabel, 'useRaw', false, 'pipelineType', 'preproc');
   %
+
   % (C) Copyright 2021 bidspm developers
 
   generateLayoutMat();

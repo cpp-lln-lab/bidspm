@@ -14,6 +14,7 @@ function [filter, opt] = fileFilterForBold(opt, subLabel, type)
   % :param type: any of {'glm', 'stc', 'confounds', 'events'}
   % :type type: char
   %
+
   % (C) Copyright 2022 bidspm developers
 
   if nargin < 2

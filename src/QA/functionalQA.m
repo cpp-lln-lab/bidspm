@@ -37,6 +37,7 @@ function functionalQA(opt)
   %    regressors of framewise displacement, RMS and global signal
   %    will not be saved.
   %
+
   % (C) Copyright 2020 bidspm developers
 
   % ASSUMPTIONS:

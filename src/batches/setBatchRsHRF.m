@@ -22,6 +22,7 @@ function matlabbatch = setBatchRsHRF(matlabbatch, BIDS, opt, subLabel)
   %
   % :returns: - :matlabbatch: (structure) (dimension)
   %
+
   % (C) Copyright 2020 bidspm developers
 
   msg = 'estimate HRF';

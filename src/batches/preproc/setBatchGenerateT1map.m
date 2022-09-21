@@ -36,6 +36,7 @@ function matlabbatch = setBatchGenerateT1map(varargin)
   % Most of the those metadata should be available from the PDF of with yout
   % sequence details.
   %
+
   % (C) Copyright 2022 bidspm developers
 
   defaultT1Prefix = 'qT1';

@@ -13,6 +13,7 @@ function status = isSkullstripped(bidsFile)
   %     status = isSkullstripped(bf)
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   status = false;

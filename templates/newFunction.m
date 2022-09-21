@@ -21,6 +21,7 @@ function vargarout = newFunction(varargin)
   %
   % Example::
   %
+
   % (C) Copyright 2022 bidspm developers
 
   % The code goes below

@@ -25,6 +25,7 @@ function mriqcQA(opt, suffix)
   %
   %   - bids-matlab
   %
+
   % (C) Copyright 2021 Remi Gau
 
   inputFile = fullfile(opt.dir.mriqc, ['group_' suffix '.tsv']);

@@ -11,6 +11,7 @@ function image = checkMaskOrUnderlay(image, opt, type)
   % :type  type: char
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   if ischar(image)

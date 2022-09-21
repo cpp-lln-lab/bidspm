@@ -19,6 +19,7 @@ function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, fileName)
   %
   %
   %
+
   % (C) Copyright 2020 bidspm developers
 
   % get native resolution to reuse it at normalisation;

@@ -25,6 +25,7 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   % See also: convertOnsetTsvToMat
   %
   %
+
   % (C) Copyright 2019 bidspm developers
 
   if iscell(tsvFile)

@@ -13,6 +13,7 @@ function status = skullstrippingAlreadyDone(anatFile, BIDS)
   %
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   anatFile = bids.File(anatFile);

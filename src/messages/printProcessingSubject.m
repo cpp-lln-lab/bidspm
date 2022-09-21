@@ -5,6 +5,7 @@ function printProcessingSubject(iSub, subLabel, opt)
   %  printProcessingSubject(iSub, subLabel, opt)
   %
   %
+
   % (C) Copyright 2019 bidspm developers
 
   msg = sprintf([' PROCESSING SUBJECT No.: %i ' ...

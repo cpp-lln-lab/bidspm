@@ -155,6 +155,7 @@ function opt = checkOptions(opt)
   %       <https://www.nature.com/articles/s41467-019-09230-w.pdf>`_ for more info.
   %
   %
+
   % (C) Copyright 2019 bidspm developers
 
   fieldsToSet = setDefaultOption();

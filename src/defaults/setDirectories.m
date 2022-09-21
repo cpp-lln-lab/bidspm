@@ -4,6 +4,7 @@ function opt = setDirectories(opt)
   %
   %   opt = setDirectories(opt)
   %
+
   % (C) Copyright 2021 bidspm developers
 
   if ~isempty(opt.dir.input) && ~isempty(opt.dir.output)

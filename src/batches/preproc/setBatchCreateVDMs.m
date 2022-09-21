@@ -24,6 +24,7 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %
   % TODO implement for 'phase12', 'fieldmap', 'epi'
   %
+
   % (C) Copyright 2020 bidspm developers
 
   printBatchName('create voxel displacement map', opt);

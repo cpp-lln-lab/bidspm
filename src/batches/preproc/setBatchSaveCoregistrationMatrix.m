@@ -22,6 +22,7 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   %
   % :returns: - :matlabbatch:
   %
+
   % (C) Copyright 2020 bidspm developers
 
   if opt.anatOnly

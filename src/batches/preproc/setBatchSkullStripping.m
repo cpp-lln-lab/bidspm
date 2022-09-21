@@ -41,6 +41,7 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   % Skullstripping can be skipped by setting
   % ``opt.skullstrip.do`` to ``false``
   %
+
   % (C) Copyright 2020 bidspm developers
 
   if ~opt.skullstrip.do

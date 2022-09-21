@@ -115,6 +115,7 @@ function matlabbatch = bidsModelSelection(varargin)
   %      doi={https://doi.org/10.1016/j.neuroimage.2017.06.056}
   %    }
   %
+
   % (C) Copyright 2022 bidspm developers
 
   allowedActions = @(x) ischar(x) && ismember(lower(x), {'all', ...

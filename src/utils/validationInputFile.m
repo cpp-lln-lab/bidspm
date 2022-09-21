@@ -39,6 +39,7 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   % % tissueProbaMaps = validationInputFile(anatDataDir, anatImage, 'c[12]');
   %
   %
+
   % (C) Copyright 2019 bidspm developers
 
   % TODO use argparse

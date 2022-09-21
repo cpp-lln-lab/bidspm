@@ -2,6 +2,7 @@ function BIDS = getLayout(opt)
   %
   % BIDS = getLayout(opt)
   %
+
   % (C) Copyright 2022 bidspm developers
   try
     load(fullfile(opt.dir.preproc, 'layout.mat'), 'BIDS');

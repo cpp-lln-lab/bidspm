@@ -10,6 +10,7 @@ function saveOptions(opt)
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
   %
+
   % (C) Copyright 2020 bidspm developers
 
   optionDir = fullfile(pwd, 'cfg');

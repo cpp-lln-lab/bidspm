@@ -10,6 +10,7 @@ function initBids(varargin)
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
   %
+
   % (C) Copyright 2022 bidspm developers
 
   args = inputParser;

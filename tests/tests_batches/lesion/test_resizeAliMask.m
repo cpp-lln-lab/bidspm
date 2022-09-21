@@ -1,4 +1,5 @@
 function test_suite = test_resizeAliMask %#ok<*STOUT>
+
   % (C) Copyright 2021 bidspm developers
 
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
