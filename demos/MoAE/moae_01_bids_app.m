@@ -35,7 +35,7 @@
 %
 %
 % type `bidspm help` or `bidspm('action', 'help')`
-% or see this page: https://bidspm.readthedocs.io/en/dev/bids_app_api.html
+% or see this page: https://bidspm.readthedocs.io/en/stable/bids_app_api.html
 % for more information on what parameters are obligatory or optional
 %
 %

@@ -24,7 +24,7 @@ def base_parser():
         \n- most "invalid" calls simply initialize bidspm.
 
         For a more readable version of this help section,
-        see the online https://bidspm.readthedocs.io/en/dev/bids_app_api.html.
+        see the online https://bidspm.readthedocs.io/en/stable/bids_app_api.html.
         """,
     )
 

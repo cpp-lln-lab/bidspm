@@ -45,7 +45,7 @@ bidspm()
 ```
 
 Please see our
-[documentation](https://bidspm.readthedocs.io/en/dev/general_information.html)
+[documentation](https://bidspm.readthedocs.io/en/stable/general_information.html)
 for more info.
 
 ## Usage
@@ -53,7 +53,7 @@ for more info.
 For some of its functionality bidspm has a BIDS app like API.
 
 See
-[this page for more information](https://bidspm.readthedocs.io/en/dev/bids_app_api.html).
+[this page for more information](https://bidspm.readthedocs.io/en/stable/bids_app_api.html).
 
 ### Preprocessing
 
@@ -87,8 +87,8 @@ bidspm(bids_dir, output_dir, 'subject', ...
 ```
 
 Please see our
-[documentation](https://bidspm.readthedocs.io/en/dev/bids_app_api.html) for more
-info.
+[documentation](https://bidspm.readthedocs.io/en/stable/bids_app_api.html) for
+more info.
 
 ## Features
 
@@ -137,8 +137,9 @@ used to perform:
 -   functional data (work in progress)
 -   GLM auto-correlation check
 
-Please see our [documentation](https://bidspm.readthedocs.io/en/dev/index.html)
-for more info.
+Please see our
+[documentation](https://bidspm.readthedocs.io/en/stable/index.html) for more
+info.
 
 ## Citation
 
