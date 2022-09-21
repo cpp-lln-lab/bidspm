@@ -2,7 +2,6 @@ function newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata
   %
   % Selects up to X of the fmriprep counfound regressors
   % from a specific tissue type that explain most of the variance
-
   %
   % USAGE::
   %
