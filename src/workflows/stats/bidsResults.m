@@ -21,7 +21,7 @@ function matlabbatch = bidsResults(varargin)
   % Below is an example of how specify the option structure
   % to getsome speific results outputs for certain contrasts.
   %
-  % See the `online documentation <https://cpp-spm.readthedocs.io/en/dev>`_
+  % See the `online documentation <https://bidspm.readthedocs.io/en/dev>`_
   % for example of those outputs.
   %
   % The field ``opt.results`` allows you to get results from several Nodes

@@ -200,7 +200,7 @@ function bidspmHelp()
   %
   %  For a more readable version of this help section,
   %  see the online <a
-  %  href="https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html">documentation</a>.
+  %  href="https://bidspm.readthedocs.io/en/dev/bids_app_api.html">documentation</a>.
   %
 
   % (C) Copyright 2022 bidspm developers

@@ -2,4 +2,4 @@
 
 sphinx-build -M latexpdf source build
 
-cp build/latex/cppspm.pdf bidspm-manual.pdf
+cp build/latex/bidspm.pdf bidspm-manual.pdf

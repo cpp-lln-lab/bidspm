@@ -24,7 +24,7 @@
 %
 %
 % type `bidspm help` or `bidspm('action', 'help')`
-% or see this page: https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html
+% or see this page: https://bidspm.readthedocs.io/en/dev/bids_app_api.html
 % for more information on what parameters are obligatory or optional
 %
 %
@@ -83,7 +83,7 @@ opt.results(2) = results;
 % that are otherwise handled by the bidsFFX.m and bidsResults.m workflows
 %
 % type bidspm('action', 'help')
-% or see this page: https://cpp-spm.readthedocs.io/en/dev/bids_app_api.html
+% or see this page: https://bidspm.readthedocs.io/en/dev/bids_app_api.html
 % for more information on what parameters are obligatory or optional
 %
 
