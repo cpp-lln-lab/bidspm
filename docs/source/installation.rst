@@ -36,26 +36,26 @@ Installation
 ============
 
 If you are only going to use this toolbox for a new analysis
-and you are not planning to edit the code base of CPP_SPM itself, we STRONGLY
+and you are not planning to edit the code base of bidspm itself, we STRONGLY
 suggest you use this `template repository <https://github.com/cpp-lln-lab/template_datalad_fMRI>`_
-to create a new project with a basic structure of folders and with the CPP_SPM code already set up.
+to create a new project with a basic structure of folders and with the bidspm code already set up.
 
 Otherwise you can clone the repo with all its dependencies
 with the following git command::
 
   git clone \
       --recurse-submodules \
-      https://github.com/cpp-lln-lab/CPP_SPM.git
+      https://github.com/cpp-lln-lab/bidspm.git
 
 If you need the latest development, then you must clone from the ``dev`` branch::
 
   git clone \
       --branch dev \
       --recurse-submodules \
-      https://github.com/cpp-lln-lab/CPP_SPM.git
+      https://github.com/cpp-lln-lab/bidspm.git
 
 If you just need the code without the commit history download and unzip,
-you can fin the latest version from `HERE <https://github.com/cpp-lln-lab/CPP_SPM/releases>`_.
+you can fin the latest version from `HERE <https://github.com/cpp-lln-lab/bidspm/releases>`_.
 
 Initialization
 ==============
@@ -70,7 +70,7 @@ You just need to initialize for a given session with::
 
 This will add all the required folders to the path.
 
-You can also remove CPP_SPM from the path with::
+You can also remove bidspm from the path with::
 
   bidspm uninit
 
@@ -190,18 +190,18 @@ As before install and run an initialization:
   git clone \
     -b dev \
     --recurse-submodules \
-    https://github.com/cpp-lln-lab/CPP_SPM.git
+    https://github.com/cpp-lln-lab/bidspm.git
 
 .. warning::
 
   There are some warnings thrown during initialization::
 
     octave:1> initCppSpm
-    warning: addpath: /home/users/r/g/rgau/CPP_SPM/lib/spmup/utlilities/home/users/r/g/rgau/CPP_SPM/lib/spm_2_bids: No such file or directory
+    warning: addpath: /home/users/r/g/rgau/bidspm/lib/spmup/utlilities/home/users/r/g/rgau/bidspm/lib/spm_2_bids: No such file or directory
     warning: called from initCppSpm at line 67 column 5
-    warning: function /home/users/r/g/rgau/CPP_SPM/lib/spmup/external/cubehelix.m shadows a core library function
+    warning: function /home/users/r/g/rgau/bidspm/lib/spmup/external/cubehelix.m shadows a core library function
     warning: called from initCppSpm at line 67 column 5
-    warning: addpath: /home/users/r/g/rgau/CPP_SPM/src/workflows/stats/home/users/r/g/rgau/CPP_SPM/lib/spmup: No such file or directory
+    warning: addpath: /home/users/r/g/rgau/bidspm/src/workflows/stats/home/users/r/g/rgau/bidspm/lib/spmup: No such file or directory
 
   As well as many warnings of the type::
 

@@ -16,7 +16,7 @@
             "subject"
          ],
          "Transformations": {
-            "Transformer": "cpp_spm",
+            "Transformer": "bidspm",
             "Instructions": [
                {
                   "Name": "Factor",
@@ -67,7 +67,7 @@
             "subject"
          ],
          "Transformations": {
-            "Transformer": "cpp_spm",
+            "Transformer": "bidspm",
             "Instructions": [
                {
                   "Name": "Factor",

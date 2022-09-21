@@ -35,8 +35,8 @@ clean:
 	rm -f bidspm-manual.pdf
 clean_default_options: source/default_options.m
 	sed -i "s@/home/remi/matlab/SPM/spm12@spm12_dir@g" source/default_options.m
-	sed -i "s@/home/remi/github/CPP_SPM/docs/derivatives@derivatives@g" source/default_options.m
-	sed -i "s@/home/remi/github/CPP_SPM/docs/jobs@jobs@g" source/default_options.m
+	sed -i "s@/home/remi/github/bidspm/docs/derivatives@derivatives@g" source/default_options.m
+	sed -i "s@/home/remi/github/bidspm/docs/jobs@jobs@g" source/default_options.m
 	sed -i "s@\t@ @g" source/default_options.m
 view:
 	$(BROWSER) build/html/index.html

@@ -1,7 +1,7 @@
 ## Pre processing
 
 The (f)MRI data were pre-processed with bidspm (v1.1.5dev;
-https://github.com/cpp-lln-lab/CPP_SPM; DOI:
+https://github.com/cpp-lln-lab/bidspm; DOI:
 https://doi.org/10.5281/zenodo.3554331) using statistical parametric mapping
 (SPM12 - 7771; Wellcome Center for Neuroimaging, London, UK;
 https://www.fil.ion.ucl.ac.uk/spm; RRID:SCR_007037) using MATLAB 9.2.0.538062
@@ -50,6 +50,6 @@ kernel (FWHM = 6 mm).
 ## References
 
 This method section was automatically generated using bidspm (v1.1.5dev;
-https://github.com/cpp-lln-lab/CPP_SPM; DOI:
+https://github.com/cpp-lln-lab/bidspm; DOI:
 https://doi.org/10.5281/zenodo.3554331) and octache
 (https://github.com/Remi-Gau/Octache).

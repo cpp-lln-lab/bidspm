@@ -44,7 +44,7 @@ For example, you could run the demos by doing this:
 
 .. code-block:: bash
 
-    code_folder=/home/remi/github/CPP_SPM/demos/MoAE
+    code_folder=/home/remi/github/bidspm/demos/MoAE
 
     docker run -it --rm \
         -v $code_folder:/code \

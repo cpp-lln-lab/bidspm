@@ -1,11 +1,11 @@
 {
-    "name": "cpp_spm",
-    "command-line": "cpp_spm [InputDataset] [OutputLocation] [AnalysisLevel] [ParticipantLabel] [Action]",
+    "name": "bidspm",
+    "command-line": "bidspm [InputDataset] [OutputLocation] [AnalysisLevel] [ParticipantLabel] [Action]",
     "container-image": {
         "image": "bids/example",
         "type": "docker"
     },
-    "description": "See https://github.com/cpp-lln-lab/CPP_SPM.git",
+    "description": "See https://github.com/cpp-lln-lab/bidspm.git",
     "inputs": [
         {
             "description": "The directory with the input dataset formatted according to the BIDS standard.",

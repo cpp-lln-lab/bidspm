@@ -365,7 +365,7 @@ Several of the [demos](demos) have their own model and you can find several
 
 <!-- markdown-link-check-enable -->
 
-[in this folder](https://github.com/cpp-lln-lab/CPP_SPM/tree/dev/tests/dummyData/models).
+[in this folder](https://github.com/cpp-lln-lab/bidspm/tree/dev/tests/dummyData/models).
 
 An example of JSON file could look something like that:
 

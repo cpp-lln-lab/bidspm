@@ -11,7 +11,7 @@ Demos
         ├── tSNR
         └── vismotion
 
-The demos show show you different way to use CPP_SPM.
+The demos show show you different way to use bidspm.
 
 MoAE
 ====

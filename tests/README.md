@@ -1,4 +1,4 @@
-# Tests for CPP_SPM
+# Tests for bidspm
 
 We use a series of unit and integration tests to make sure the code behaves as
 expected and to also help in development.
@@ -41,8 +41,8 @@ tests_workflows/test_bidsRealignReslice.m
 
 ## Add helper functions to the path
 
-There are a some help functions you need to be added to the Matlab / Octave path to
-run the tests:
+There are a some help functions you need to be added to the Matlab / Octave path
+to run the tests:
 
 ```
 addpath(fullfile('tests', 'utils'))

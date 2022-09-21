@@ -1,7 +1,7 @@
 {
   "Name": "Only with tissue confounds",
   "BIDSModelVersion": "1.0.0",
-  "Description": "for regression test on bug for levels with paired t-tests; https://github.com/cpp-lln-lab/CPP_SPM/issues/616",
+  "Description": "for regression test on bug for levels with paired t-tests; https://github.com/cpp-lln-lab/bidspm/issues/616",
   "Input": {
     "task": [
       "olfid",
@@ -20,7 +20,7 @@
         "subject"
       ],
       "Transformations": {
-        "Transformer": "cpp_spm",
+        "Transformer": "bidspm",
         "Description": "add 250 ms to all olfactory onsets to take into account 'time of flight' delay for the odor stimulus to travel the tubing",
         "Instructions": [
           {

@@ -110,18 +110,18 @@ clean_docker:
 
 build_image: Dockerfile fix_submodule ## Build stable docker image from the main branch
 	git checkout main
-	docker build . --no-cache -f Dockerfile -t cpplab/cpp_spm:stable
+	docker build . --no-cache -f Dockerfile -t cpplab/bidspm:stable
 	VERSION=$(cat version.txt | cut -c2-)
-	docker tag cpplab/cpp_spm:stable cpplab/cpp_spm:$$VERSION
+	docker tag cpplab/bidspm:stable cpplab/bidspm:$$VERSION
 
 build_image_dev: Dockerfile ## Build latest docker image from the dev branch
 	git checkout dev
 	VERSION=$(cat version.txt | cut -c2-)
-	docker build . --no-cache -f Dockerfile -t cpplab/cpp_spm:latest
-	docker tag cpplab/cpp_spm:latest cpplab/cpp_spm:$$VERSION
+	docker build . --no-cache -f Dockerfile -t cpplab/bidspm:latest
+	docker tag cpplab/bidspm:latest cpplab/bidspm:$$VERSION
 
 build_image_test: ## For debugging docker image building
-	docker build . -f Dockerfile -t cpplab/cpp_spm:test
+	docker build . -f Dockerfile -t cpplab/bidspm:test
 
 Dockerfile_matlab:
 	docker run --rm repronim/neurodocker:0.7.0 generate docker \
@@ -131,11 +131,11 @@ Dockerfile_matlab:
 		--install nodejs npm \
 		--run "node -v && npm -v && npm install -g bids-validator" \
 		--user neuro \
-		--run "mkdir code output cpp_spm" \
-		--copy ".", "/home/neuro/cpp_spm/" > Dockerfile_matlab
+		--run "mkdir code output bidspm" \
+		--copy ".", "/home/neuro/bidspm/" > Dockerfile_matlab
 
 build_image_matlab_dev: Dockerfile_matlab
 	VERSION=$(cat version.txt | cut -c2-)
-	docker build . -f Dockerfile_matlab -t cpplab/cpp_spm:matlab_$$VERSION
+	docker build . -f Dockerfile_matlab -t cpplab/bidspm:matlab_$$VERSION
 
 ################################################################################

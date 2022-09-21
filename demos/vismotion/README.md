@@ -11,7 +11,7 @@ The bash script `vismotion_demo.sh` will run all the steps described here in one
 fell swoop.
 ```
 
-You can run it by typing the following from within the CPP_SPM/demos/vismotion
+You can run it by typing the following from within the bidspm/demos/vismotion
 
 ```bash
 bash vismotion_demo.sh
@@ -33,17 +33,17 @@ all submodules.
 ```bash
 datalad install \
     -d . \
-    -s https://github.com/cpp-lln-lab/CPP_SPM.git \
+    -s https://github.com/cpp-lln-lab/bidspm.git \
     --branch dev \
     -r \
-    code/CPP_SPM
+    code/bidspm
 ```
 
 In case you get some errors when installing the submodules you might have to
 initialize them manually, and update your dataset with that update
 
 ```bash
-cd code/CPP_SPM
+cd code/bidspm
 git checkout dev
 git submodule update --init --recursive && git submodule update --recursive
 cd ..
@@ -72,7 +72,7 @@ After this your datalad dataset should look something like this:
 
 ```bash
 ├── code
-│   └── CPP_SPM
+│   └── bidspm
 └── inputs
     └── raw
         ├── derivatives
@@ -99,7 +99,7 @@ In the end your whole analysis should look like this.
 
 ```bash
 ├── code
-│   └── CPP_SPM
+│   └── bidspm
 │       ├── binder
 │       ├── demos
 │       │   ├── face_repetition
@@ -127,12 +127,12 @@ In the end your whole analysis should look like this.
 │           └── ses-01
 └── outputs
     └── derivatives
-        ├── cpp_spm-preproc        # <--- smoothed data
+        ├── bidspm-preproc        # <--- smoothed data
         │   ├── jobs
         │   ├── sub-con07
         │   ├── sub-con08
         │   └── sub-con15
-        └── cpp_spm-stats          # <--- stats output
+        └── bidspm-stats          # <--- stats output
             ├── jobs
             ├── sub-con07
             ├── sub-con08

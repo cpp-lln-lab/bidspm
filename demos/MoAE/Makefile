@@ -5,9 +5,9 @@ ARG    = -nodisplay -nosplash -nodesktop
 
 OCTFLAGS = --no-gui --no-window-system --silent
 
-preproc  = outputs/derivatives/cpp_spm-preproc/sub-%/func/sub-%_task-%_space-%_desc-smth%_bold.nii
-stats    = outputs/derivatives/cpp_spm-stats/sub-%/stats/task-%_space-IXI549Space%/con_%.nii
-roi      = outputs/derivatives/cpp_spm-roi/sub-%/roi/sub-%_space-MNI_desc-%_mask.nii
+preproc  = outputs/derivatives/bidspm-preproc/sub-%/func/sub-%_task-%_space-%_desc-smth%_bold.nii
+stats    = outputs/derivatives/bidspm-stats/sub-%/stats/task-%_space-IXI549Space%/con_%.nii
+roi      = outputs/derivatives/bidspm-roi/sub-%/roi/sub-%_space-MNI_desc-%_mask.nii
 
 clean:
 	rm -rf inputs

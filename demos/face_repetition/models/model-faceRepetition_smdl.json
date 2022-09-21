@@ -20,7 +20,7 @@
          ],
          "Transformations": {
             "Description": "merge the familiarity and repetition column to create the trial type column",
-            "Transformer": "cpp_spm",
+            "Transformer": "bidspm",
             "Instructions": [
                {
                   "Name": "Concatenate",

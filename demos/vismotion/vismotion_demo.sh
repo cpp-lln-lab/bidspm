@@ -19,7 +19,7 @@ datalad create -c yoda ~/visual_motion_localiser
 cd ~/visual_motion_localiser
 
 # get BIDSpm code from the dev branch
-source="https://github.com/cpp-lln-lab/CPP_SPM.git"
+source="https://github.com/cpp-lln-lab/bidspm.git"
 
 # for debugging uncomment the follwing line
 source=${root_directory}
@@ -29,7 +29,7 @@ datalad install \
     --source ${source} \
     --branch dev \
     --recursive \
-    code/CPP_SPM
+    code/bidspm
 
 # TODO implement an fmriprep only demo
 
@@ -39,10 +39,10 @@ datalad install -d . \
     --get-data \
     inputs/raw
 
-datalad create -d . outputs/derivatives/cpp_spm-preproc
-datalad create -d . outputs/derivatives/cpp_spm-stats
+datalad create -d . outputs/derivatives/bidspm-preproc
+datalad create -d . outputs/derivatives/bidspm-stats
 
-cd code/CPP_SPM/demos/vismotion
+cd code/bidspm/demos/vismotion
 
 # FIX ME
 /usr/local/MATLAB/R2017a/bin/matlab \
