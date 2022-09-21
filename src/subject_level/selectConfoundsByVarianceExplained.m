@@ -21,6 +21,8 @@ function newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata
   %
   % (C) Copyright 2022 bidspm developers
 
+  % TODO: add a way to select the X confounds that explain the most variance
+
   if nargin == 2 || isempty(opt)
     opt.columnsToSearch = {'a_comp_cor_', 'c_comp_cor'};
     % tissues to regress out: for example 'WM','CSF' ou 'combined'
