@@ -73,7 +73,7 @@ subject_label = '01';
 
 bids_dir = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
 output_dir = fullfile(bids_dir, '..', '..', 'outputs', 'derivatives');
-preproc_dir = fullfile(output_dir, 'cpp_spm-preproc');
+preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
 model_file = fullfile(pwd, 'models', 'model-MoAE_smdl.json');
 

@@ -22,10 +22,10 @@ opt.pipeline.type = 'stats';
 
 opt.dir.raw = fullfile(this_dir, 'inputs', 'raw');
 opt.dir.derivatives = fullfile(this_dir, 'outputs', 'derivatives');
-opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
 
-opt.dir.roi = fullfile(opt.dir.derivatives, 'cpp_spm-roi');
-opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
+opt.dir.roi = fullfile(opt.dir.derivatives, 'bidspm-roi');
+opt.dir.stats = fullfile(opt.dir.derivatives, 'bidspm-stats');
 
 opt.model.file = fullfile(this_dir, 'models', 'model-MoAE_smdl.json');
 

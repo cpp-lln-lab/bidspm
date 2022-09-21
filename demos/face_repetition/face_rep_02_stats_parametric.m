@@ -17,7 +17,7 @@ this_dir = fileparts(mfilename('fullpath'));
 
 bids_dir = fullfile(this_dir, 'outputs', 'raw');
 output_dir = fullfile(this_dir, 'outputs', 'derivatives');
-preproc_dir = fullfile(output_dir, 'cpp_spm-preproc');
+preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
 model_file = fullfile(this_dir, 'models', 'model-faceRepetitionParametric_smdl.json');
 

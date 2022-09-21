@@ -4,10 +4,10 @@
 
 # defines where the BIDS data set will be created
 start_dir=$(pwd) # relative to starting directory
-raw_dir=${start_dir}/dummyData/cpp_spm-raw
-preproc_dir=${start_dir}/dummyData/derivatives/cpp_spm-preproc
-stats_dir=${start_dir}/dummyData/derivatives/cpp_spm-stats
-roi_dir=${start_dir}/dummyData/derivatives/cpp_spm-roi
+raw_dir=${start_dir}/dummyData/bidspm-raw
+preproc_dir=${start_dir}/dummyData/derivatives/bidspm-preproc
+stats_dir=${start_dir}/dummyData/derivatives/bidspm-stats
+roi_dir=${start_dir}/dummyData/derivatives/bidspm-roi
 
 subject_list='ctrl01 blind01 01'
 session_list='01 02'

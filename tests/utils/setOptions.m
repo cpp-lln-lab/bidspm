@@ -43,7 +43,7 @@ function opt = setOptions(varargin)
     task = {'auditory'};
 
     opt.dir.raw = fullfile(getMoaeDir(), 'inputs', 'raw');
-    opt.dir.preproc = fullfile(getMoaeDir(), 'outputs', 'cpp_spm-preproc');
+    opt.dir.preproc = fullfile(getMoaeDir(), 'outputs', 'bidspm-preproc');
 
     opt.model.file = fullfile(getMoaeDir(), 'models', 'model-MoAE_smdl.json');
 
@@ -55,8 +55,8 @@ function opt = setOptions(varargin)
     task = {'auditory'};
 
     opt.dir.derivatives = fullfile(getDummyDataDir(), 'MoAE', 'derivatives');
-    opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
-    opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
+    opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
+    opt.dir.stats = fullfile(opt.dir.derivatives, 'bidspm-stats');
 
     opt.model.file = fullfile(getMoaeDir(), 'models', 'model-MoAE_smdl.json');
 
@@ -66,9 +66,9 @@ function opt = setOptions(varargin)
   elseif strcmp(task, 'facerep')
 
     opt.dir.derivatives = fullfile(getFaceRepDir(), 'outputs', 'derivatives');
-    opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+    opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
     opt.dir.input = opt.dir.preproc;
-    opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
+    opt.dir.stats = fullfile(opt.dir.derivatives, 'bidspm-stats');
 
     opt.model.file = fullfile(getFaceRepDir(), 'models', 'model-faceRepetition_smdl.json');
 

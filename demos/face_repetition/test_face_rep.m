@@ -26,7 +26,7 @@ model_file = fullfile(WD, 'models', 'model-faceRepetition_smdl.json');
 
 for iResolution = 2:3
 
-  opt.pipeline.name = ['cpp_spm-res' num2str(iResolution)];
+  opt.pipeline.name = ['bidspm-res' num2str(iResolution)];
   opt.funcVoxelDims = repmat(iResolution, 1, 3);
 
   %% preproc
@@ -60,7 +60,7 @@ for iResolution = 2:3
   % stats options
   opt = bids.util.jsondecode(optionsFile);
   % TODO put in a json file
-  opt.pipeline.name = ['cpp_spm-res' num2str(iResolution)];
+  opt.pipeline.name = ['bidspm-res' num2str(iResolution)];
 
   % specify underlay image
   BIDS = bids.layout([preproc_dir '-preproc'], 'use_schema', false);

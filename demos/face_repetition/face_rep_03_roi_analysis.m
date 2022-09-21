@@ -19,8 +19,8 @@ this_dir = fileparts(mfilename('fullpath'));
 %% Create roi
 
 opt.dir.derivatives = fullfile(this_dir, 'outputs', 'derivatives');
-opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
-opt.dir.roi = fullfile(opt.dir.derivatives, 'cpp_spm-roi');
+opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
+opt.dir.roi = fullfile(opt.dir.derivatives, 'bidspm-roi');
 
 opt.roi.atlas = 'wang';
 opt.roi.name = {'V1v', 'V1d'};
@@ -32,7 +32,7 @@ bidsCreateROI(opt);
 
 bids_dir = fullfile(this_dir, 'outputs', 'raw');
 output_dir = fullfile(this_dir, 'outputs', 'derivatives');
-preproc_dir = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+preproc_dir = fullfile(opt.dir.derivatives, 'bidspm-preproc');
 
 opt.bidsFilterFile.roi.space = 'individual';
 

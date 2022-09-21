@@ -19,7 +19,7 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'space', {'IXI549Space'});
 
 %% Stats
-preproc_dir = fullfile(root_dir, 'outputs', 'ds000001', 'derivatives', 'cpp_spm-preproc');
+preproc_dir = fullfile(root_dir, 'outputs', 'ds000001', 'derivatives', 'bidspm-preproc');
 
 model_file = fullfile(root_dir, 'models', 'model-defaultBalloonanalogrisktask_smdl.json');
 

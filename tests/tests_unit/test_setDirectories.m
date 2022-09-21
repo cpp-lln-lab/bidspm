@@ -22,9 +22,9 @@ function test_setDirectories_preproc()
   expected = defaultOptions();
 
   expected.dir.derivatives = spm_file(fullfile(pwd, '..', 'derivatives'), 'cpath');
-  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
-  expected.dir.input = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
-  expected.dir.output = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'bidspm-preproc');
+  expected.dir.input = fullfile(expected.dir.derivatives, 'bidspm-preproc');
+  expected.dir.output = fullfile(expected.dir.derivatives, 'bidspm-preproc');
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs', opt.taskName{1});
   expected.dir.stats = '';
   expected.dir.raw = '';
@@ -37,7 +37,7 @@ function test_setDirectories_stats()
 
   opt.pipeline.type = 'stats';
   opt.dir.raw = fullfile(pwd, 'raw');
-  opt.dir.preproc = fullfile(pwd, 'derivatives', 'cpp_spm-preproc');
+  opt.dir.preproc = fullfile(pwd, 'derivatives', 'bidspm-preproc');
   opt.model.file = fullfile(getDummyDataDir(),  'models', ['model-dummy_smdl.json']);
   opt = checkOptions(opt);
 
@@ -46,8 +46,8 @@ function test_setDirectories_stats()
 
   expected.dir.raw = fullfile(pwd, 'raw');
   expected.dir.derivatives = fullfile(pwd, 'derivatives');
-  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
-  expected.dir.stats = fullfile(expected.dir.derivatives, 'cpp_spm-stats');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'bidspm-preproc');
+  expected.dir.stats = fullfile(expected.dir.derivatives, 'bidspm-stats');
   expected.dir.input = expected.dir.preproc;
   expected.dir.output = expected.dir.stats;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
@@ -67,7 +67,7 @@ function test_setDirectories_inputs_outputs()
   baseDir = fullfile(fileparts(mfilename('fullpath')));
   expected.dir.raw = fullfile(baseDir, 'inputs', 'raw');
   expected.dir.derivatives = fullfile(baseDir, 'outputs', 'derivatives');
-  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'bidspm-preproc');
   expected.dir.input = expected.dir.raw;
   expected.dir.output = expected.dir.preproc;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
@@ -113,7 +113,7 @@ function test_setDirectories_raw_derivatives()
   expected.dir.raw = fullfile(fileparts(mfilename('fullpath')), 'inputs', 'raw');
   expected.dir.input = expected.dir.raw;
   expected.dir.derivatives = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'derivatives');
-  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'bidspm-preproc');
   expected.dir.output = expected.dir.preproc;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
   expected.dir.stats = '';
@@ -161,7 +161,7 @@ function test_setDirectories_copy_raw_to_preproc()
   expected.dir.raw =  pwd;
   expected.dir.input = expected.dir.raw;
   expected.dir.derivatives = spm_file(fullfile(expected.dir.raw, '..', 'derivatives'), 'cpath');
-  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'bidspm-preproc');
   expected.dir.output = expected.dir.preproc;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
 
@@ -182,7 +182,7 @@ function test_setDirectories_copy_fmriprep_to_preproc()
 
   expected.dir.input = pwd;
   expected.dir.derivatives = spm_file(fullfile(expected.dir.input, '..', 'derivatives'), 'cpath');
-  expected.dir.preproc = fullfile(expected.dir.derivatives, 'cpp_spm-preproc');
+  expected.dir.preproc = fullfile(expected.dir.derivatives, 'bidspm-preproc');
   expected.dir.output = expected.dir.preproc;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
 

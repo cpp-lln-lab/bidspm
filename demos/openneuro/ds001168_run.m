@@ -48,7 +48,7 @@ bidspm();
 root_dir = fileparts(mfilename('fullpath'));
 bids_dir = fullfile(root_dir, 'inputs', 'ds001168');
 output_dir = fullfile(root_dir, 'outputs', 'ds001168', 'derivatives');
-preproc_dir = fullfile(output_dir, 'cpp_spm-preproc');
+preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 model_file = fullfile(root_dir, 'models', 'model-ds001168_smdl.json');
 
 opt.glm.keepResiduals = true;

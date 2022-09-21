@@ -83,7 +83,7 @@ function test_setBatchSubjectLevelGLMSpec_fmriprep()
   opt.space = 'MNI152NLin2009cAsym';
   opt.query.space = opt.space;
 
-  opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
+  opt.dir.stats = fullfile(opt.dir.derivatives, 'bidspm-stats');
 
   opt.fwhm.func = 0;
 

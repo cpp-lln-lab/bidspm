@@ -67,7 +67,7 @@ function matlabbatch = bidsRFX(varargin)
   % - merge rfx and ffx into a single "stats" workflow
 
   if ismember(lower(action), {'meananatandmask', 'rfx', 'contrasts'})
-    opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
+    opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'bidspm-groupStats');
     opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
   end
 
@@ -153,7 +153,7 @@ function matlabbatch = bidsRFX(varargin)
   end
 
   if ismember(lower(action), {'meananatandmask', 'rfx'})
-    opt.pipeline.name = 'cpp_spm';
+    opt.pipeline.name = 'bidspm';
     opt.pipeline.type = 'groupStats';
     initBids(opt, 'description', description, 'force', false);
   end

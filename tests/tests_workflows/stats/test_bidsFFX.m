@@ -109,7 +109,7 @@ function test_bidsFFX_fmriprep_no_smoothing()
   opt.query.space = opt.space; % for bidsCopy only
   opt.fwhm.func = 0;
 
-  opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+  opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
 
   opt = checkOptions(opt);
 
@@ -117,7 +117,7 @@ function test_bidsFFX_fmriprep_no_smoothing()
 
   % No proper valid bids file in derivatives of bids-example
 
-  opt.dir.stats = fullfile(opt.dir.derivatives, 'cpp_spm-stats');
+  opt.dir.stats = fullfile(opt.dir.derivatives, 'bidspm-stats');
   opt.dir.output = opt.dir.stats;
   opt.model.bm = BidsModel('file', opt.model.file);
 

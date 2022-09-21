@@ -23,7 +23,7 @@ function rfxDir = getRFXdir(varargin)
   %
   % Typical output:
   %
-  % - ``opt.dir.derivatives/cpp_spm-stats/derivatives/cpp_spm-groupStats/cpp_spm-stats``
+  % - ``opt.dir.derivatives/bidspm-stats/derivatives/bidspm-groupStats/bidspm-stats``
   %
   % .. code-block:: matlab
   %
@@ -77,7 +77,7 @@ function rfxDir = getRFXdir(varargin)
 
   rfxDir = fullfile(opt.dir.stats, ...
                     'derivatives', ...
-                    'cpp_spm-groupStats', ...
+                    'bidspm-groupStats', ...
                     glmDirName);
 
   spm_mkdir(rfxDir);
