@@ -26,7 +26,7 @@ function [opt, opt2] = lesion_get_option()
   %%
   opt2.subjects = {'ctrl01'};
   opt2.dir.derivatives = '/home/remi/gin/Christine/olfaction_blind/derivatives/lesion/derivatives/';
-  opt2.dir.preproc = fullfile(opt2.dir.derivatives, 'cpp_spm-preproc');
+  opt2.dir.preproc = fullfile(opt2.dir.derivatives, 'bidspm-preproc');
   opt2.query.run = '';
   opt2.query.acq = '';
   opt2.toolbox.ALI.unified_segmentation.step1fwhm = 6;

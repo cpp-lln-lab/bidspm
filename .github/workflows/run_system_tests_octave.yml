@@ -82,5 +82,5 @@ jobs:
 
     - name: Run ${{ matrix.script }}
       run: |
-        cd /home/runner/work/CPP_SPM/CPP_SPM/.github/workflows
+        cd /home/runner/work/bidspm/bidspm/.github/workflows
         octave $OCTFLAGS --eval "run system_tests_${{ matrix.script }};"

@@ -64,7 +64,7 @@ for iOption = 1:numel(space)
          'options', optionsFile);
 
   %% stats
-  preproc_dir = fullfile(output_dir, 'cpp_spm-preproc');
+  preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
   bidspm(bids_dir, output_dir, 'subject', ...
          'participant_label', {'01'}, ...

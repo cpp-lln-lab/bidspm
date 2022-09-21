@@ -26,7 +26,7 @@ bidspm(bids_dir, output_dir, 'subject', ...
 
 %% Statistics
 
-preproc_dir = fullfile(root_dir, 'outputs', 'ds000114', 'derivatives', 'cpp_spm-preproc');
+preproc_dir = fullfile(root_dir, 'outputs', 'ds000114', 'derivatives', 'bidspm-preproc');
 model_file = fullfile(root_dir, 'models', 'model-ds000114_desc-linebisection_smdl.json');
 
 opt.results.nodeName = 'subject_level';

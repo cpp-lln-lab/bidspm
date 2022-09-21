@@ -8,7 +8,7 @@ opt = checkOptions(opt);
 
 [BIDS, opt] = getData(opt, opt.dir.preproc);
 
-opt.dir.roi = fullfile(opt.dir.preproc, '..', 'cpp_spm-roi');
+opt.dir.roi = fullfile(opt.dir.preproc, '..', 'bidspm-roi');
 opt = rmfield(opt, 'taskName');
 [BIDSroi, opt] = getData(opt, opt.dir.roi);
 

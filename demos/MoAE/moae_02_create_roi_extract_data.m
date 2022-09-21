@@ -16,8 +16,8 @@ bidspm();
 subLabel = '01';
 
 opt.dir.derivatives = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'derivatives');
-opt.dir.roi = fullfile(opt.dir.derivatives, 'cpp_spm-roi');
-opt.dir.stats = fullfile(opt.dir.derivatives, 'outputs', 'cpp_spm-stats');
+opt.dir.roi = fullfile(opt.dir.derivatives, 'bidspm-roi');
+opt.dir.stats = fullfile(opt.dir.derivatives, 'outputs', 'bidspm-stats');
 
 opt.model.file = fullfile(fileparts(mfilename('fullpath')), ...
                           'models', 'model-MoAE_smdl.json');

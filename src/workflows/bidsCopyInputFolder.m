@@ -69,7 +69,7 @@ function bidsCopyInputFolder(varargin)
     end
 
     % leave events files behind
-    if ismember(pipeline_name, {'preproc', 'cpp_spm-preproc'})
+    if ismember(pipeline_name, {'preproc', 'bidspm-preproc'})
       if ~isfield(filter, 'suffix')
         filter.suffix = {'^(?!(events)$).*$'};
       end

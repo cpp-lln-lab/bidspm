@@ -152,7 +152,7 @@ function matlabbatch = bidsModelSelection(varargin)
       opt.orderBatches.MACS_BMS_group_auto = 2;
   end
 
-  opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-modelSelection');
+  opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'bidspm-modelSelection');
   opt.dir.jobs = fullfile(opt.dir.output, 'jobs');
 
   spm_mkdir(fullfile(opt.dir.output, 'group'));

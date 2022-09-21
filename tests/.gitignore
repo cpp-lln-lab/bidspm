@@ -10,19 +10,19 @@ tmp
 
 */*.json
 
-dummyData/derivatives/cpp_spm-*/jobs
-dummyData/derivatives/cpp_spm-preproc/sub*
+dummyData/derivatives/bidspm-*/jobs
+dummyData/derivatives/bidspm-preproc/sub*
 
-dummyData/derivatives/cpp_spm-preproc/desc-skullstripped.json
+dummyData/derivatives/bidspm-preproc/desc-skullstripped.json
 
-dummyData/derivatives/cpp_spm-stats/sub*
-dummyData/derivatives/cpp_spm-stats/derivatives
-dummyData/derivatives/cpp_spm-stats/README
-dummyData/derivatives/cpp_spm-stats/CHANGES
-dummyData/derivatives/cpp_spm-stats/*.json
+dummyData/derivatives/bidspm-stats/sub*
+dummyData/derivatives/bidspm-stats/derivatives
+dummyData/derivatives/bidspm-stats/README
+dummyData/derivatives/bidspm-stats/CHANGES
+dummyData/derivatives/bidspm-stats/*.json
 
-dummyData/cpp_spm-raw/sub*
+dummyData/bidspm-raw/sub*
 
-dummyData/derivatives/cpp_spm-roi
+dummyData/derivatives/bidspm-roi
 
 test_reports/*.md

@@ -41,7 +41,7 @@ opt.dir.derivatives = fullfile(WD, 'outputs', 'derivatives');
 
 % we need to specify where the smoothed data will go
 opt.pipeline.type = 'preproc';
-opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
 
 opt.space = {'MNI152NLin6Asym'};
 
@@ -82,7 +82,7 @@ subject_label = '01';
 
 bids_dir = fullfile(WD, 'inputs', 'raw');
 output_dir = fullfile(WD, 'outputs', 'derivatives');
-preproc_dir = fullfile(output_dir, 'cpp_spm-preproc');
+preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
 model_file = fullfile(pwd, 'models', 'model-MoAEfmriprep_smdl.json');
 

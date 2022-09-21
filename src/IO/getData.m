@@ -11,7 +11,7 @@ function [BIDS, opt] = getData(varargin)
   %             See also: checkOptions
   %
   % :param bidsDir: the directory where the data is ; default is :
-  %                 ``fullfile(opt.dataDir, '..', 'derivatives', 'cpp_spm')``
+  %                 ``fullfile(opt.dataDir, '..', 'derivatives', 'bidspm')``
   % :type  bidsDir: char
   %
   % :returns:

@@ -16,7 +16,7 @@ function test_initBids_basic()
 
   % GIVEN
   opt.dir.output = fullfile(pwd, 'foo');
-  opt.pipeline.name = 'cpp_spm';
+  opt.pipeline.name = 'bidspm';
   opt.pipeline.type = '';
   opt.verbosity = 1;
 
@@ -26,7 +26,7 @@ function test_initBids_basic()
   content = bids.util.jsondecode(fullfile(opt.dir.output, 'dataset_description.json'));
 
   assertEqual(content.Name, '');
-  assertEqual(content.GeneratedBy.Name, 'cpp_spm');
+  assertEqual(content.GeneratedBy.Name, 'bidspm');
   assertEqual(content.GeneratedBy.Description, '');
 
   cleanUp(opt);
@@ -37,7 +37,7 @@ function test_initBids_name_description()
 
   % GIVEN
   opt.dir.output = fullfile(pwd, 'foo');
-  opt.pipeline.name = 'cpp_spm';
+  opt.pipeline.name = 'bidspm';
   opt.pipeline.type = 'stats';
   opt.verbosity = 1;
 
@@ -47,7 +47,7 @@ function test_initBids_name_description()
   content = bids.util.jsondecode(fullfile(opt.dir.output, 'dataset_description.json'));
 
   assertEqual(content.Name, 'subject level stats');
-  assertEqual(content.GeneratedBy.Name, 'cpp_spm-stats');
+  assertEqual(content.GeneratedBy.Name, 'bidspm-stats');
   assertEqual(content.GeneratedBy.Description, 'subject level stats');
 
   cleanUp(opt);
@@ -58,7 +58,7 @@ function test_initBids_force()
 
   % GIVEN
   opt.dir.output = fullfile(pwd, 'foo');
-  opt.pipeline.name = 'cpp_spm';
+  opt.pipeline.name = 'bidspm';
   opt.pipeline.type = 'stats';
   opt.verbosity = 1;
 

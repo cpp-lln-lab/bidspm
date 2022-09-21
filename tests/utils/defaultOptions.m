@@ -18,7 +18,7 @@ function expectedOptions = defaultOptions(taskName)
                                           'roi',  struct('modality', 'roi', 'suffix', 'mask'));
 
   expectedOptions.pipeline.type =  '';
-  expectedOptions.pipeline.name = 'cpp_spm';
+  expectedOptions.pipeline.name = 'bidspm';
 
   expectedOptions.anatOnly = false;
 

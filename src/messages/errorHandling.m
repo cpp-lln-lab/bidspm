@@ -31,7 +31,7 @@ function errorHandling(varargin)
 
   % (C) Copyright 2018 bidspm developers
 
-  defaultFunctionName = 'cpp_spm';
+  defaultFunctionName = 'bidspm';
   defaultId = 'unspecified';
   defaultMsg = 'unspecified';
   defaultTolerant = true;

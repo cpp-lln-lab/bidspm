@@ -7,7 +7,7 @@ function rootDir = returnRootDir()
 
   % (C) Copyright 2022 bidspm developers
 
-  Mfile = 'cpp_spm.m';
+  Mfile = 'bidspm.m';
   rootDir = cellstr(which(Mfile, '-ALL'));
 
   % convert to absolute paths and keep unique ones

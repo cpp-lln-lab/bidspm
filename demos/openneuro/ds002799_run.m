@@ -33,7 +33,7 @@ opt.fwhm.func = 8;
 
 % we need to specify where the smoothed data will go
 opt.pipeline.type = 'preproc';
-opt.dir.preproc = fullfile(opt.dir.derivatives, 'cpp_spm-preproc');
+opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
 
 opt = checkOptions(opt);
 
@@ -69,7 +69,7 @@ run_lvl_idx = 1;
 % this use the "constant" Transformer
 % to add a column with all the same value in each row
 
-bm.Nodes{run_lvl_idx}.Transformations.Transformer = 'cpp_spm';
+bm.Nodes{run_lvl_idx}.Transformations.Transformer = 'bidspm';
 bm.Nodes{run_lvl_idx}.Transformations.Instructions = {struct('Name', 'Constant', ...
                                                              'Value', 'es', ...
                                                              'Output', 'trial_type')};

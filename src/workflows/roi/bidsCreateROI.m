@@ -15,7 +15,7 @@ function bidsCreateROI(opt)
   %  opt.roi.atlas = 'wang';
   %  opt.roi.name = {'V1v', 'V1d'};
   %  opt.roi.space = {'IXI549Space', 'individual'};
-  %  opt.dir.stats = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm-stats');
+  %  opt.dir.stats = fullfile(opt.dir.raw, '..', 'derivatives', 'bidspm-stats');
   %
   %  bidsCreateROI(opt);
   %
@@ -28,7 +28,7 @@ function bidsCreateROI(opt)
   end
 
   if ~isfield(opt.dir, 'roi')
-    opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'cpp_spm-roi'), 'cpath');
+    opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'bidspm-roi'), 'cpath');
   end
   spm_mkdir(fullfile(opt.dir.roi, 'group'));
 

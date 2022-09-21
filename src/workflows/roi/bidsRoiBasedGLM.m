@@ -35,7 +35,7 @@ function skipped = bidsRoiBasedGLM(opt)
   description = 'ROI based GLMs';
 
   if ~isfield(opt.dir, 'roi')
-    opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'cpp_spm-roi'), 'cpath');
+    opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'bidspm-roi'), 'cpath');
   end
 
   [BIDS, opt] = setUpWorkflow(opt, description);

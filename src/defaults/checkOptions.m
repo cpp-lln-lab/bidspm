@@ -167,8 +167,8 @@ function opt = checkOptions(opt)
 
   checkFields(opt);
 
-  if any(strcmp(opt.pipeline.name, {'cpp_spm-stats', 'cpp_spm-preproc'}))
-    opt.pipeline.name = 'cpp_spm';
+  if any(strcmp(opt.pipeline.name, {'bidspm-stats', 'bidspm-preproc'}))
+    opt.pipeline.name = 'bidspm';
   end
 
   % coerce query modality into a cell
@@ -278,7 +278,7 @@ function fieldsToSet = setDefaultOption()
                                       'roi',  struct('modality', 'roi', 'suffix', 'mask'));
 
   fieldsToSet.pipeline.type = '';
-  fieldsToSet.pipeline.name = 'cpp_spm';
+  fieldsToSet.pipeline.name = 'bidspm';
 
   fieldsToSet.useBidsSchema = false;
 

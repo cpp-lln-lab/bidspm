@@ -17,7 +17,7 @@ function test_bidsCopyInputFolder_basic()
 
   opt = checkOptions(opt);
 
-  output_folder = fullfile(opt.dir.raw, '..', 'derivatives', 'cpp_spm-preproc');
+  output_folder = fullfile(opt.dir.raw, '..', 'derivatives', 'bidspm-preproc');
 
   bidsCopyInputFolder(opt, 'unzip', true);
 

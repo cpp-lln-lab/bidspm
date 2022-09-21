@@ -53,7 +53,7 @@ contrast_levels = cartesian(1:numel(task_labels), ...
                             1:numel(side_labels));
 
 %%
-opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'cpp_spm-groupStats');
+opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'bidspm-groupStats');
 opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
 
 % collect con images

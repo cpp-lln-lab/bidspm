@@ -1,9 +1,9 @@
 clean:
-	rm -rf dummyData/derivatives/cpp_spm-preproc/sub-*
-	rm -rf dummyData/derivatives/cpp_spm-stats/sub-*
-	rm -rf dummyData/cpp_spm-raw/sub-*
-	rm -rf dummyData/derivatives/cpp_spm-stats/group
-	rm -rf dummyData/derivatives/cpp_spm-*/jobs
+	rm -rf dummyData/derivatives/bidspm-preproc/sub-*
+	rm -rf dummyData/derivatives/bidspm-stats/sub-*
+	rm -rf dummyData/bidspm-raw/sub-*
+	rm -rf dummyData/derivatives/bidspm-stats/group
+	rm -rf dummyData/derivatives/bidspm-*/jobs
 	rm -rf bids-examples
 	mkdir bids-examples && touch bids-examples/.gitkeep
 

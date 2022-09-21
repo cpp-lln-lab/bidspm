@@ -139,6 +139,6 @@ end
 
 function fileName = returnFullpathExpectedFilename(spec)
   bidsFile = bids.File(spec, 'use_schema', true);
-  fileName = fullfile(getDummyDataDir(), 'derivatives', 'cpp_spm-preproc', ...
+  fileName = fullfile(getDummyDataDir(), 'derivatives', 'bidspm-preproc', ...
                       bidsFile.bids_path, bidsFile.filename);
 end
