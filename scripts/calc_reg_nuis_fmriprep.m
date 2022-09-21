@@ -4,7 +4,6 @@ function calc_reg_nuis_fmriprep (w, num_sess)
   fic_json = spm_select('FPList',  fullfile(w.main_dir, w.subName, 'func'), ['^' w.subName '.*' 'MT' '.*confounds_regressors\.json$']);
   fic_tsv = spm_select('FPList',  fullfile(w.main_dir, w.subName, 'func'), ['^' w.subName '.*' 'MT' '.*confounds_regressors\.tsv$']);
 
-
   info_json = jsonread(fic_json);
   data_tsv = bids.util.tsvread(fic_tsv);
 
@@ -38,10 +37,10 @@ function calc_reg_nuis_fmriprep (w, num_sess)
   for ii = 1:length(w.reg_supp_mvt)
     names_reg = [names_reg w.reg_supp_mvt(ii)];
     % colonne lue comme cell de strings et non comme vecteur de double a cause du n/A de la 1ere ligne
-    if iscell(data_tsv.(w.reg_supp_mvt{ii}))    
+    if iscell(data_tsv.(w.reg_supp_mvt{ii}))
       data_tmp = [];
       % On remplace 'n/a' par '0.0'
-      data_tsv.(w.reg_supp_mvt{ii}){1} = '0.0'; 
+      data_tsv.(w.reg_supp_mvt{ii}){1} = '0.0';
       for jj = 1:length(data_tsv.(w.reg_supp_mvt{ii}))
         data_tmp = [data_tmp; str2double(data_tsv.(w.reg_supp_mvt{ii}){jj})];
       end

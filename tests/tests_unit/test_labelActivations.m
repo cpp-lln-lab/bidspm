@@ -12,7 +12,7 @@ function test_labelActivations_aal()
   if isGithubCi()
     return
   end
-  
+
   csvFile = fullfile(getDummyDataDir(), 'tsv_files', 'moae_results_table.csv');
 
   tsvFile = labelActivations(csvFile, 'atlas', 'AAL');
