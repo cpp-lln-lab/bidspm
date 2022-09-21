@@ -46,6 +46,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   % :param suffix: datatype (``bold``, ``events``, ``physio``)
   % :type  suffix: char
   %
+
   % (C) Copyright 2020 bidspm developers
 
   % TODO make it more flexible to fetch anat, confounds...

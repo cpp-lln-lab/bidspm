@@ -18,6 +18,7 @@ function copyFigures(BIDS, opt, subLabel)
   % :type  subLabel: char
   %
   %
+
   % (C) Copyright 2019 bidspm developers
 
   imgNb = copyGraphWindownOutput(opt, subLabel, 'realign');

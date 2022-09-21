@@ -31,6 +31,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   %           - :voxDim: (array) (dimension)
   %
   %
+
   % (C) Copyright 2020 bidspm developers
 
   % TODO  make which image is resliced more consistent 'which = []'

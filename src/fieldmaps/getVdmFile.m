@@ -19,6 +19,7 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   %
   % :returns: - :vdmFile: (string)
   %
+
   % (C) Copyright 2020 bidspm developers
 
   vdmFile = '';

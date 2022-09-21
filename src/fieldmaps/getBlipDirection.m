@@ -13,6 +13,7 @@ function blipDir = getBlipDirection(metadata)
   %
   % Used to create the voxel dsiplacement map (VDM) from the fieldmap
   %
+
   % (C) Copyright 2020 bidspm developers
 
   blipDir = 1;

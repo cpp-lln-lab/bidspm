@@ -37,6 +37,7 @@ function outputFile = boilerplate(varargin)
   %                             'verbosity', 2)
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   defaultPartialsPath = fullfile(fileparts(mfilename('fullpath')), 'partials');

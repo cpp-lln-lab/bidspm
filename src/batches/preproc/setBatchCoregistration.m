@@ -29,6 +29,7 @@ function matlabbatch = setBatchCoregistration(varargin)
   %
   %
   %
+
   % (C) Copyright 2020 bidspm developers
 
   defaultOther = {''};

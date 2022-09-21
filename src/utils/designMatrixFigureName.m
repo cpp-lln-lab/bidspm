@@ -15,6 +15,7 @@ function filename = designMatrixFigureName(varargin)
   % :returns: - :filename: (string)
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   % The code goes below

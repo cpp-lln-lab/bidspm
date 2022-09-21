@@ -12,6 +12,7 @@ function batchFileName = returnBatchFileName(batchType, ext)
   % :returns: - :batchFileName: (path)
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   if nargin < 1

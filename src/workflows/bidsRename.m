@@ -16,6 +16,7 @@ function bidsRename(opt)
   % for more info.
   %
   %
+
   % (C) Copyright 2019 bidspm developers
 
   if ~opt.rename

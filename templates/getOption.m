@@ -3,6 +3,7 @@ function opt = getOption()
   % returns a structure that contains the options chosen for preprocessing
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   if nargin < 1

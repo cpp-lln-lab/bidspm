@@ -18,6 +18,7 @@ function totalReadoutTime = getTotalReadoutTime(metadata)
   % ``PixelBandwidth``)
   %
   %
+
   % (C) Copyright 2020 bidspm developers
 
   totalReadoutTime = '';

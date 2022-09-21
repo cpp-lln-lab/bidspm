@@ -39,6 +39,7 @@ function [matlabbatch, opt] = bidsFFX(varargin)
   % See also: setBatchSubjectLevelGLMSpec, setBatchSubjectLevelContrasts
   %
   %
+
   % (C) Copyright 2020 bidspm developers
 
   % TODO implement nodeName for 'specify', 'specifyAndEstimate'

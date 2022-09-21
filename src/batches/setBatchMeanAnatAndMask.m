@@ -18,6 +18,7 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, outputDir)
   %
   % :returns: - :matlabbatch: (structure)
   %
+
   % (C) Copyright 2019 bidspm developers
 
   [BIDS, opt] = getData(opt, opt.dir.preproc);

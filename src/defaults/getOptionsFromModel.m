@@ -4,6 +4,7 @@ function opt = getOptionsFromModel(opt)
   %
   %     opt = getOptionsFromModel(opt)
   %
+
   % (C) Copyright 2022 bidspm developers
 
   % TODO refactor to pass everything to bids filter file instead of query?

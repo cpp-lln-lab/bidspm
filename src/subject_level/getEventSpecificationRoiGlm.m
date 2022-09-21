@@ -27,6 +27,7 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   %
   % See also: event_fitted, event_signal
   %
+
   % (C) Copyright 2022 bidspm developers
 
   args = inputParser;
@@ -177,6 +178,7 @@ function status = isContrastAgainstBaseline(contrast)
   %
   %  only includes contrast with all weights > 0 and all equal to each other
   %
+
   % (C) Copyright 2022 Remi Gau
 
   status = true;

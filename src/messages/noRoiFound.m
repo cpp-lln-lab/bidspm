@@ -14,6 +14,7 @@ function status = noRoiFound(varargin)
   %
   % :returns: - :status: (boolean)
   %
+
   % (C) Copyright 2022 bidspm developers
 
   args = inputParser;

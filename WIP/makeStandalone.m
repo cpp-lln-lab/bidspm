@@ -1,4 +1,5 @@
 function makeStandalone(outdir, gateway, contentsver)
+  
   % (C) Copyright 2010-2019 Wellcome Trust Centre for Neuroimaging
 
   % taken from spm_make_standalone.m,

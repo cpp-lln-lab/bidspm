@@ -13,6 +13,7 @@ function matlabbatch = bidsRsHrf(opt)
   % :type opt: structure
   %
   %
+
   % (C) Copyright 2021 bidspm developers
 
   % TODO add test

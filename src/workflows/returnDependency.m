@@ -6,6 +6,7 @@ function dep = returnDependency(opt, type)
   %
   %  dep = returnDependency(opt, type)
   %
+
   % (C) Copyright 2021 bidspm developers
 
   handledDependencies = {'segment', 'skullStripping', 'skullStrippingMask'...

@@ -6,6 +6,7 @@ function [branch, commit] = getRepoInfo(rootDir)
   %
   %   [branch, commit] = getRepoInfo()
   %
+
   % (C) Copyright 2022 bidspm developers
 
   if nargin < 1

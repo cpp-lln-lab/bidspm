@@ -4,6 +4,7 @@ function cleanUpWorkflow(opt)
   %
   %   cleanUpWorkflow(opt)
   %
+
   % (C) Copyright 2021 bidspm developers
 
   if isfield(opt, 'globalStart')

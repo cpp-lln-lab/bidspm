@@ -1,4 +1,5 @@
 function outputNameSpec = roiGlmOutputName(opt, subLabel, roiFileName)
+
   % (C) Copyright 2022 bidspm developers
 
   bf = bids.File(roiFileName);

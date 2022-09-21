@@ -25,6 +25,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
   %
   % See also: bidsSmoothing, setBatchSmoothing
   %
+
   % (C) Copyright 2019 bidspm developers
 
   printBatchName('smoothing functional images', opt);

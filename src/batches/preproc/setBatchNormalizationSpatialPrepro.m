@@ -18,6 +18,7 @@ function matlabbatch = setBatchNormalizationSpatialPrepro(matlabbatch, BIDS, opt
   %
   % :returns: - :matlabbatch: (structure)
   %
+
   % (C) Copyright 2019 bidspm developers
 
   jobsToAdd = numel(matlabbatch) + 1;

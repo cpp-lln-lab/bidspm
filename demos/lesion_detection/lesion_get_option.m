@@ -1,5 +1,6 @@
 function [opt, opt2] = lesion_get_option()
   %
+
   % (C) Copyright 2021 bidspm developers
 
   % The directory where the data are located

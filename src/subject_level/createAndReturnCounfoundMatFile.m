@@ -23,6 +23,7 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   %
   % See also: setBatchSubjectLevelGLMSpec, createConfounds
   %
+
   % (C) Copyright 2019 bidspm developers
 
   if iscell(tsvFile)

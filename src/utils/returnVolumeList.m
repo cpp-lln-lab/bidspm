@@ -12,6 +12,7 @@ function volumes = returnVolumeList(varargin)
   %
   % :returns: - :volumes: (cell string)
   %
+
   % (C) Copyright 2022 bidspm developers
 
   args = inputParser;

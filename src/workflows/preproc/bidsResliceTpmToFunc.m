@@ -21,6 +21,7 @@ function bidsResliceTpmToFunc(opt)
   % as the functional.
   %
   %
+
   % (C) Copyright 2020 bidspm developers
 
   % TODO consider renaming this function to highlight that it creates a mask as

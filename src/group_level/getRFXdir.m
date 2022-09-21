@@ -35,6 +35,7 @@ function rfxDir = getRFXdir(varargin)
   %    'contrast-', model.Input.Nodes(dataset_level).Contrast(i).Name  % if ~= from "dataset_level"
   %    ]
   %
+
   % (C) Copyright 2019 bidspm developers
 
   args = inputParser;

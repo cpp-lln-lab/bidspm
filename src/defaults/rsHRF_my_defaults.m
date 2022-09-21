@@ -6,6 +6,7 @@ function defaults = rsHRF_my_defaults()
   %
   % Set defaults for the rsHRF toolbox
   %
+
   % (C) Copyright 2020 bidspm developers
 
   vox_rsHRF.Denoising.generic = cell(1, 0);

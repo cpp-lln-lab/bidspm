@@ -20,6 +20,7 @@ function matlabbatch = setBatchNormalize(matlabbatch, deformField, voxDim, imgTo
   %
   % :returns: - :matlabbatch: (structure)
   %
+
   % (C) Copyright 2019 bidspm developers
 
   if nargin > 1 && ~isempty(deformField)

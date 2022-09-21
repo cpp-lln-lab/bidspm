@@ -22,6 +22,7 @@ function matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
   % adapted from spmup get_FM_workflow.m (@ commit
   % 198c980d6d7520b1a996f0e56269e2ceab72cc83)
   %
+
   % (C) Copyright 2020 bidspm developers
 
   switch lower(fmapType)

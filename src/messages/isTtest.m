@@ -1,5 +1,6 @@
 function status = isTtest(structure)
   %
+
   % (C) Copyright 2021 Remi Gau
 
   status = true;

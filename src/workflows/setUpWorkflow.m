@@ -34,6 +34,7 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir, indexData)
   %           - :BIDS: (structure) returned by ``getData``
   %           - :opt: options checked
   %
+
   % (C) Copyright 2019 bidspm developers
 
   BIDS = [];

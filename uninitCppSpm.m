@@ -1,5 +1,6 @@
 function uninitCppSpm()
   %
+
   % (C) Copyright 2021 bidspm developers
 
   warning(['"uninitCppSpm" will be deprecated in the next major release.\n', ...

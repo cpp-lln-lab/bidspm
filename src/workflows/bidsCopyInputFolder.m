@@ -22,6 +22,7 @@ function bidsCopyInputFolder(varargin)
   % See also: bids.copy_to_derivative
   %
   %
+
   % (C) Copyright 2019 bidspm developers
 
   args = inputParser;

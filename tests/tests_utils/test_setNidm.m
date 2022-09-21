@@ -1,5 +1,6 @@
 function test_suite = test_setNidm %#ok<*STOUT>
   %
+
   % (C) Copyright 2020 bidspm developers
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>

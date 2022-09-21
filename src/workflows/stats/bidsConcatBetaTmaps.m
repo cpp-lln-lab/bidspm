@@ -25,6 +25,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
   % - This TSV is in the subject level GLM folder where the beta map came from.
   % - This TSV file is named ``sub-subLabel_task-taskName_space-space_labelfold.tsv``.
   %
+
   % (C) Copyright 2019 bidspm developers
 
   [~, opt] = setUpWorkflow(opt, 'merge beta images and t-maps');

@@ -16,6 +16,7 @@ function bidsRealignReslice(opt)
   % to ``true``.
   %
   %
+
   % (C) Copyright 2020 bidspm developers
 
   opt.pipeline.type = 'preproc';

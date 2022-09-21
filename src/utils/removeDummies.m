@@ -22,6 +22,7 @@ function removeDummies(varargin)
   % :type verbose: boolean
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   isFile = @(x) exist(x, 'file');

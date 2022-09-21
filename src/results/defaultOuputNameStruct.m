@@ -16,6 +16,7 @@ function outputName = defaultOuputNameStruct(opt, result)
   %
   % See also: setBatchSubjectLevelResults, bidsResults
   %
+
   % (C) Copyright 2021 bidspm developers
 
   outputName = struct('suffix', 'spmT', ...

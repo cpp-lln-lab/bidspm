@@ -4,6 +4,7 @@ function glmDirName = createGlmDirName(opt)
   %
   %   glmDirName = createGlmDirName(opt)
   %
+
   % (C) Copyright 2021 bidspm developers
 
   % TODO use tasks defined in model for glm dir

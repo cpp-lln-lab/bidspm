@@ -4,6 +4,7 @@ function rootDir = returnRootDir()
   %
   %   rootDir = returnRootDir()
   %
+
   % (C) Copyright 2022 bidspm developers
 
   Mfile = 'cpp_spm.m';

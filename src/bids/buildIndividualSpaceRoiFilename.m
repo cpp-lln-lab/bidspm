@@ -15,6 +15,7 @@ function roiBidsFile = buildIndividualSpaceRoiFilename(deformationField, roiFile
   % :returns: - :roiBidsFile: (bids.File object)
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   deformationField = bids.File(deformationField);

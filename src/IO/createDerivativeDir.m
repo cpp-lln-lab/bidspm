@@ -10,6 +10,7 @@ function  createDerivativeDir(opt)
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
   %
+
   % (C) Copyright 2019 bidspm developers
 
   msg = 'derivatives directory already exists. \n';

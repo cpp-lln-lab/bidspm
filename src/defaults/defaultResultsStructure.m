@@ -1,5 +1,6 @@
 function result  = defaultResultsStructure()
   %
+
   % (C) Copyright 2019 bidspm developers
 
   result = defaultContrastsStructure;

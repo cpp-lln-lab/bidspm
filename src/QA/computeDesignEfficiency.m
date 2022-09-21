@@ -100,6 +100,7 @@ function e = computeDesignEfficiency(tsvFile, opt)
   %       e = computeDesignEfficiency(fullfile(pwd, 'events.tsv'), opt);
   %
   %
+
   % (C) Copyright 2021 Remi Gau
 
   opt = checkOptions(opt);

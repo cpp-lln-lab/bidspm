@@ -24,6 +24,7 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
   % See also: setBatchSubjectLevelContrasts, setBatchGroupLevelContrasts
   %
   %
+
   % (C) Copyright 2019 bidspm developers
 
   % TODO refactor code duplication between run level and subject level

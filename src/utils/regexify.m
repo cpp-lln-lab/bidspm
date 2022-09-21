@@ -12,6 +12,7 @@ function string = regexify(string)
   %   string = regexify(string)
   %
   %
+
   % (C) Copyright 2021 bidspm developers
 
   if isempty(string)

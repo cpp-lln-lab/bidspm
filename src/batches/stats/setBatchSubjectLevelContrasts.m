@@ -22,6 +22,7 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
   % See also: bidsFFX, specifyContrasts, setBatchContrasts
   %
   %
+
   % (C) Copyright 2019 bidspm developers
 
   printBatchName('subject level contrasts specification', opt);

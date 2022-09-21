@@ -1,5 +1,6 @@
 function [IS_GITHUB, pth] = isGithubCi()
   %
+
   % (C) Copyright 2021 Remi Gau
 
   IS_GITHUB = false;

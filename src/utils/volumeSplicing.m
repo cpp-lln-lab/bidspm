@@ -24,6 +24,7 @@ function outputFile = volumeSplicing(varargin)
   %   outputFileFullPath = volumeSplicing(inputFile, volumesToRemove, 'outputFile', 'foo.nii.gz');
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   args = inputParser;

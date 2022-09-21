@@ -2,6 +2,7 @@ function [idx, allowedSpaces] = isMni(input)
   %
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   if ischar(input)

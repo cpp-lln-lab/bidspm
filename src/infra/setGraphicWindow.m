@@ -14,6 +14,7 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
   %           - :graphWindow:
   %           - :cmdLine: (boolean)
   %
+
   % (C) Copyright 2019 bidspm developers
 
   interactiveWindow = [];

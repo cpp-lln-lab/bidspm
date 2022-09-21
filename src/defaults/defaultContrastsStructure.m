@@ -1,5 +1,6 @@
 function contrasts  = defaultContrastsStructure()
   %
+
   % (C) Copyright 2022 bidspm developers
 
   contrasts =  struct('nodeName', '', ...

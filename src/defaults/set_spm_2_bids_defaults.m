@@ -9,6 +9,7 @@ function opt = set_spm_2_bids_defaults(opt)
   % Further renaming mapping can then be added, changed or removed
   % through the ``opt.spm_2_bids object``.
   %
+
   % (C) Copyright 2021 bidspm developers
 
   % TODO update entities normalization to reflect the resolution of each output image

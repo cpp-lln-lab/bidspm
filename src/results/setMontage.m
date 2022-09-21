@@ -5,6 +5,7 @@ function montage = setMontage(result)
   %   montage = setMontage(result)
   %
   %
+
   % (C) Copyright 2019 bidspm developers
 
   % TO DO

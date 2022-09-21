@@ -1,5 +1,6 @@
 function cleanUp(folder)
   %
+
   % (C) Copyright 2021 bidspm developers
 
   pause(0.1);

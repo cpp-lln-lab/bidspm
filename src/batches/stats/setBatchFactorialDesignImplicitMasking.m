@@ -5,6 +5,7 @@ function factorialDesign = setBatchFactorialDesignImplicitMasking(factorialDesig
   %   factorialDesign = setBatchFactorialDesignImplicitMasking(factorialDesign)
   %
   %
+
   % (C) Copyright 2022 bidspm developers
 
   factorialDesign.masking.tm.tm_none = 1;

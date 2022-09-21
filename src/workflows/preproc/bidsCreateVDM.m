@@ -20,6 +20,7 @@ function bidsCreateVDM(opt)
   % Inspired from spmup ``spmup_BIDS_preprocess`` (@ commit 198c980d6d7520b1a99)
   % (URL missing)
   %
+
   % (C) Copyright 2020 bidspm developers
 
   opt.pipeline.type = 'preproc';

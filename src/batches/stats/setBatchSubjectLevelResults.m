@@ -19,6 +19,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   %
   % See also: bidsResults, setBatchResults
   %
+
   % (C) Copyright 2019 bidspm developers
 
   [matlabbatch, opt, subLabel, result] = deal(varargin{:});

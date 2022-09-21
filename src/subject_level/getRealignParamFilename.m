@@ -27,6 +27,7 @@ function realignParamFile = getRealignParamFilename(BIDS, subLabel, session, run
   %
   % :returns: - :realignParamFile: (string)
   %
+
   % (C) Copyright 2020 bidspm developers
 
   realignParamFile = bids.query(BIDS, 'data', ...

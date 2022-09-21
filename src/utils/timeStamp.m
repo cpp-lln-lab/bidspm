@@ -6,6 +6,7 @@ function output = timeStamp()
   %
   %   output = timeStamp()
   %
+
   % (C) Copyright 2022 bidspm developers
 
   output = datestr(now, 'yyyy-mm-ddTHH-MM');
