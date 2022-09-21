@@ -2,14 +2,14 @@
 
 <!-- .. only:: html -->
 
-[![Documentation Status: main](https://readthedocs.org/projects/bidspm/badge/?version=main)](https://bidspm.readthedocs.io/en/main/?badge=main)
+[![Documentation Status: main](https://readthedocs.org/projects/bidspm/badge/?version=stable)](https://bidspm.readthedocs.io/en/stable/?badge=stable)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/bidspm/dev)
 [![miss_hit](https://github.com/cpp-lln-lab/bidspm/actions/workflows/miss_hit.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/miss_hit.yml)
 [![tests with octave](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_tests_octave.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_tests_octave.yml)
 [![tests with matlab](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_tests_matlab.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_tests_matlab.yml)
 [![system tests with matlab](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_system_tests_matlab.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_system_tests_matlab.yml)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![codecov](https://codecov.io/gh/cpp-lln-lab/bidspm/branch/main/graph/badge.svg?token=PMQYH0DIPX)](https://codecov.io/gh/cpp-lln-lab/bidspm)
+[![codecov](https://codecov.io/gh/cpp-lln-lab/bidspm/branch/master/graph/badge.svg?token=PMQYH0DIPX)](https://codecov.io/gh/cpp-lln-lab/bidspm)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3554331.svg)](https://doi.org/10.5281/zenodo.3554331)
 [![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](https://github.com/cpp-lln-lab/bidspm#contributors)
 
