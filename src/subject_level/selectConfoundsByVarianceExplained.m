@@ -13,7 +13,7 @@ function newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata
   %   tsvContent = bids.util.tsvread(tsvFile);
   %   metadata = bids.util.tsvread(jsonFile);
   %
-  %   opt.columnsToInclude = {'c_comp_cor'};
+  %   opt.columnsToSearch = {'c_comp_cor'};
   %   opt.tissueNames = {'CSF'};
   %   opt.maxNbRegPerTissue = 2;
   %   opt.prefix = 'keep_';
@@ -22,7 +22,7 @@ function newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata
   % (C) Copyright 2022 bidspm developers
 
   if nargin == 2 || isempty(opt)
-    opt.columnsToInclude = {'a_comp_cor_', 'c_comp_cor'};
+    opt.columnsToSearch = {'a_comp_cor_', 'c_comp_cor'};
     % tissues to regress out: for example 'WM','CSF' ou 'combined'
     opt.tissueNames = {'CSF', 'WM'};
     % max nb of PCA regressors per Tissue
@@ -31,7 +31,7 @@ function newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata
     opt.prefix = 'toinclude_';
   end
 
-  columnsToInclude = opt.columnsToInclude;
+  columnsToSearch = opt.columnsToSearch;
   maxNbRegPerTissue = opt.maxNbRegPerTissue;
   tissueNames = opt.tissueNames;
 
@@ -53,7 +53,7 @@ function newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata
     thisCol.content = tsvContent.(thisCol.name);
 
     include = any(cellfun(@(x) bids.internal.starts_with(thisCol.name, x), ...
-                          columnsToInclude));
+                          columnsToSearch));
 
     if include
 

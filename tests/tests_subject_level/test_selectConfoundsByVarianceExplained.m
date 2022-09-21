@@ -24,7 +24,7 @@ function test_selectConfoundsByVarianceExplained_basic()
   assert(sum(wasIncluded) <= 24);
 
   %
-  opt.columnsToInclude = {'c_comp_cor'};
+  opt.columnsToSearch = {'c_comp_cor'};
   opt.tissueNames = {'CSF'};
   opt.maxNbRegPerTissue = 2;
   opt.prefix = 'keep_';

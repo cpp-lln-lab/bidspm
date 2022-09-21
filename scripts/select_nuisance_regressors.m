@@ -13,7 +13,7 @@ clc;
 data_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'demos', 'MoAE', 'inputs', 'fmriprep');
 tasks = {'auditory'};
 
-opt.columnsToInclude = {'c_comp_cor'};
+opt.columnsToSearch = {'c_comp_cor'};
 opt.tissueNames = {'CSF'};
 opt.maxNbRegPerTissue = 2;
 opt.prefix = 'included_';
@@ -25,6 +25,7 @@ for iSub = 1:numel(subjects)
 
   for iTask = 1:numel(tasks)
 
+    % the suffix may change depending on the fMRIprep version you have used
     tsvFiles = bids.query(BIDS, 'data', ...
                           'sub', subjects{iSub}, ...
                           'task', tasks{iTask}, ...
