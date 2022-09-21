@@ -10,7 +10,7 @@ end
 
 function test_model_bug_616()
 
-  % https://github.com/cpp-lln-lab/CPP_SPM/issues/616
+  % https://github.com/cpp-lln-lab/bidspm/issues/616
 
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-bug616_smdl.json');
 

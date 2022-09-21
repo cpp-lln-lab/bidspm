@@ -1,7 +1,7 @@
 % This script runs preprocessing with different final spatial resolution in MNI space
 % It then runs the subject level GLMs
 %
-% This can show how to script several analysis within the CPP_SPM framework
+% This can show how to script several analysis within the bidspm framework
 %
 % (C) Copyright 2019 Remi Gau
 

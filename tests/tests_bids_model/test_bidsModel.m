@@ -34,7 +34,7 @@ end
 
 function test_getRootNode_bug_605()
 
-  % https://github.com/cpp-lln-lab/CPP_SPM/issues/605
+  % https://github.com/cpp-lln-lab/bidspm/issues/605
 
   opt = setOptions('vislocalizer');
 

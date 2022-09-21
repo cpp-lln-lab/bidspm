@@ -503,7 +503,7 @@ function uninitBidspm()
   global BIDSPM_PATHS
 
   if isempty(BIDSPM_INITIALIZED) || ~BIDSPM_INITIALIZED
-    fprintf('\n\nCPP_SPM not initialized\n\n');
+    fprintf('\n\nbidspm not initialized\n\n');
     return
 
   else

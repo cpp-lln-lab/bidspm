@@ -29,7 +29,7 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subLabel) %#ok<INUSL>
   % - OS,
   % - MATLAB or Octave,
   % - SPM,
-  % - CPP_SPM
+  % - bidspm
   %
   % This can be useful for methods writing though if the the batch is generated
   % in one environment and run in another (for example set up the batch with Octave
