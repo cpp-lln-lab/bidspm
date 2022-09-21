@@ -20,7 +20,7 @@ inputs/raw:
 	octave $(OCTFLAGS) --eval "run('download_moae_ds.m');exit;"
 
 inputs/fmriprep:
-	datalad install --source git@gin.g-node.org:/SPM_datasets/spm_moae_fmriprep.git \
+	datalad install -s git@gin.g-node.org:/SPM_datasets/spm_moae_fmriprep.git \
 					inputs/fmriprep
 	cd inputs/fmriprep && datalad get *.json \
 										*/*/*tsv \

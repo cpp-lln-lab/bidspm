@@ -41,7 +41,7 @@ tests_workflows/test_bidsRealignReslice.m
 
 ## Add helper functions to the path
 
-There are a some help functions you need to add to the Matlab / Octave path to
+There are a some help functions you need to be added to the Matlab / Octave path to
 run the tests:
 
 ```
@@ -57,6 +57,9 @@ From within the `tests` folder.
 ```
 make data
 ```
+
+Once you have done this, run `generateLayoutMat(true)` to generate the layout of
+the tests datasets.
 
 ### Run the tests
 
