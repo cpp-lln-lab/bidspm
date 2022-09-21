@@ -21,7 +21,7 @@ function newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata
   %
   % (C) Copyright 2022 bidspm developers
 
-  % TODO: add a way to select the X confounds that explain the most variance
+  % TODO: add a way to select the X confounds that explain at most Y % of variance
 
   if nargin == 2 || isempty(opt)
     opt.columnsToSearch = {'a_comp_cor_', 'c_comp_cor'};
