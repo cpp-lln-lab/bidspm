@@ -105,7 +105,7 @@ function json = updateSource(json, data, opt)
 
   bf = bids.File(data, 'verbose', opt.verbosity > 0, 'use_schema', false);
 
-  if bids.internal.startsWith(bf.prefix, 'std_')
+  if bids.internal.starts_with(bf.prefix, 'std_')
 
     bf.prefix = bf.prefix(5:end);
 
