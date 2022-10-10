@@ -50,7 +50,7 @@ repos:
   - id: rst-inline-touching-normal # Detect mistake of inline code touching normal text in rst
 
 - repo: https://github.com/psf/black
-  rev: 22.8.0
+  rev: 22.10.0
   hooks:
   - id: black
 
