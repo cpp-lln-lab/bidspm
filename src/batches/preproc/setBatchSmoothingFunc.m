@@ -30,7 +30,12 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
 
   printBatchName('smoothing functional images', opt);
 
-  opt.query.desc = 'preproc';
+  
+  desc = 'preproc';
+  if ~isempty(opt.query.desc)
+      desc = opt.query.desc;
+  end 
+  opt.query.desc = desc;
   opt.query.space = opt.space;
   opt = mniToIxi(opt);
 
@@ -45,8 +50,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
 
     for iRun = 1:nbRuns
 
-      [fileName, subFuncDataDir] = getBoldFilename( ...
-                                                   BIDS, ...
+      [fileName, subFuncDataDir] = getBoldFilename(BIDS, ...
                                                    subLabel, sessions{iSes}, runs{iRun}, opt);
 
       % TODO remove this extra check
