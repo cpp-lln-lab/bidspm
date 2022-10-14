@@ -30,7 +30,6 @@ function matlabbatch = setBatchSmoothingAnat(matlabbatch, BIDS, opt, subLabel)
 
   printBatchName('smoothing anat images', opt);
 
-
   opt.query.space = opt.space;
   opt = mniToIxi(opt);
 
@@ -44,11 +43,11 @@ function matlabbatch = setBatchSmoothingAnat(matlabbatch, BIDS, opt, subLabel)
     [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
     for iRun = 1:nbRuns
-                         
+
       opt.bidsFilterFile.t1w = opt.query;
       opt.bidsFilterFile.t1w.ses = sessions{iSes};
       opt.bidsFilterFile.t1w.run = runs{iRun};
-                                               
+
       [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
       % TODO remove this extra check

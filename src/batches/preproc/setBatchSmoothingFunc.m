@@ -30,11 +30,10 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
 
   printBatchName('smoothing functional images', opt);
 
-  
   desc = 'preproc';
   if ~isempty(opt.query.desc)
-      desc = opt.query.desc;
-  end 
+    desc = opt.query.desc;
+  end
   opt.query.desc = desc;
   opt.query.space = opt.space;
   opt = mniToIxi(opt);

@@ -40,7 +40,7 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
 
   % get all anat images for that subject fo that type
   anat = bids.query(BIDS, 'data', filter);
-  
+
   if isempty(anat)
 
     msg = sprintf('No anat file for:\n%s\n\n', createUnorderedList(filter));
