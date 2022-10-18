@@ -52,7 +52,7 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
   filter = opt.bidsFilterFile.t1w;
   filter.extension = '.nii';
   filter.prefix = '';
-  filter.sub = subLabel;
+  filter.sub = regexify(subLabel);
 
   % get all anat images for that subject fo that type
   anat = bids.query(BIDS, 'data', filter);
@@ -66,7 +66,7 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
   end
 
   if numel(anat) > nbImgToReturn
-    msg = sprintf('More than %i anat file. Found: %i.\n\nTaking the first %i:\n\n %s\n', ...
+    msg = sprintf('More than %i anat file. Found: %i.\n\nTaking the first %i:%s\n', ...
                   nbImgToReturn, ...
                   numel(anat), ...
                   nbImgToReturn, ...
