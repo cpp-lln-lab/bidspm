@@ -72,11 +72,13 @@ function bidsLesionAbnormalitiesDetection(opt, extraOptions)
   matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, images);
 
   saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt);
-  
+
+  opt = setRenamingConfig(opt, 'LesionDetection');
   bidsRename(opt);
-  
+
   if ~isempty(extraOptions)
-        bidsRename(extraOptions);
+    extraOptions = setRenamingConfig(extraOptions, 'LesionDetection');
+    bidsRename(extraOptions);
   end
 
 end
@@ -100,7 +102,7 @@ function images = collectImagesFromDataset(opt, images, labels)
 
     anatImage = getAnatFilename(BIDS, opt, subLabel);
     anatImage = bids.File(anatImage);
-    
+
     filter = anatImage.entities;
     filter.modality = 'anat';
     filter.suffix = 'probseg';
