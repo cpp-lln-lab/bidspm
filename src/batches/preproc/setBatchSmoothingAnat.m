@@ -1,6 +1,6 @@
 function matlabbatch = setBatchSmoothingAnat(matlabbatch, BIDS, opt, subLabel)
   %
-  % Short description of what the function does goes here.
+  % Creates a batch to smooth the anat files of a subject
   %
   % USAGE::
   %
@@ -11,7 +11,6 @@ function matlabbatch = setBatchSmoothingAnat(matlabbatch, BIDS, opt, subLabel)
   %
   % :type  BIDS: structure
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
   %
   % :param opt: Options chosen for the analysis.
   %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
@@ -44,25 +43,37 @@ function matlabbatch = setBatchSmoothingAnat(matlabbatch, BIDS, opt, subLabel)
 
     for iRun = 1:nbRuns
 
-      opt.bidsFilterFile.t1w = opt.query;
       opt.bidsFilterFile.t1w.ses = sessions{iSes};
       opt.bidsFilterFile.t1w.run = runs{iRun};
 
-      [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
+      fieldsToTransfer = {'space', 'desc', 'label'};
+      for i = 1:numel(fieldsToTransfer)
+        field = fieldsToTransfer{i};
+        if isfield(opt.query, field)
+          opt.bidsFilterFile.t1w.(field) = opt.query.(field);
+        end
+      end
 
-      % TODO remove this extra check
+      tolerant = true;
+      nbImgToReturn = Inf;
+      [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel, nbImgToReturn, tolerant);
+
+      if isempty(anatImage)
+        break
+      end
+
       for iFile = 1:size(anatImage, 1)
-        files{iFile, 1} = validationInputFile(anatDataDir, anatImage);
+        files{iFile, 1} = validationInputFile(anatDataDir, anatImage(iFile, :)); %#ok<*AGROW>
       end
 
       % add the files to list
       allFilesTemp = cellstr(char(files));
-      allFiles = [allFiles; allFilesTemp]; %#ok<AGROW>
+      allFiles = [allFiles; allFilesTemp];
 
     end
   end
 
-  % Prefix = s+funcFWHM
+  % Prefix = FWHM
   matlabbatch = setBatchSmoothing(matlabbatch, ...
                                   opt, ...
                                   allFiles, ...

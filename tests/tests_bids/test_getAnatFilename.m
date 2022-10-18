@@ -13,6 +13,24 @@ end
 %  - that the function is smart enough to find an anat even when user has not
 %    specified a session
 
+function test_getAnatFilename_return_several()
+
+  subLabel = '01';
+
+  opt = setOptions('vislocalizer', subLabel, 'useRaw', true);
+
+  opt.bidsFilterFile.t1w.suffix = '.*';
+  opt.bidsFilterFile.t1w.ses = '01';
+
+  BIDS = getLayout(opt);
+
+  nbImgToReturn = 3;
+  anatImage = getAnatFilename(BIDS, opt, subLabel, nbImgToReturn);
+
+  assertEqual(numel(anatImage), 3);
+
+end
+
 function test_getAnatFilename_forced_session()
 
   subLabel = '01';

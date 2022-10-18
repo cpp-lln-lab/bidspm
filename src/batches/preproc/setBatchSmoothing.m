@@ -31,6 +31,10 @@ function matlabbatch = setBatchSmoothing(matlabbatch, opt, images, fwhm, prefix)
 
   % (C) Copyright 2019 bidspm developers
 
+  if isempty(images)
+    return
+  end
+
   printBatchName('smoothing images', opt);
 
   matlabbatch{end + 1}.spm.spatial.smooth.data = images;

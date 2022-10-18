@@ -1,13 +1,13 @@
-function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
+function [anatImage, anatDataDir] = getAnatFilename(varargin)
   %
-  % Get the filename and the directory of an anat file for a given session and run.
-  % Unzips the file if necessary.
+  % Get the filename and the directory of some anat files for a given session and run.
+  % Unzips the files if necessary.
   %
   % It several images are available it will take the first one it finds.
   %
   % USAGE::
   %
-  %   [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt)
+  %   [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt, nbImgToReturn, tolerant)
   %
   % :param BIDS: dataset layout.
   %              See also: bids.layout, getData.
@@ -28,9 +28,25 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
 
   % TODO try to channel this function via getInfo ?
 
-  checkAvailableSuffix(BIDS, subLabel, opt.bidsFilterFile.t1w);
+  args = inputParser;
+
+  addRequired(args, 'BIDS', @isstruct);
+  addRequired(args, 'opt', @isstruct);
+  addRequired(args, 'subLabel', @ischar);
+  addOptional(args, 'nbImgToReturn', 1);
+  addOptional(args, 'tolerant', false, @islogical);
+
+  parse(args, varargin{:});
+
+  BIDS = args.Results.BIDS;
+  opt = args.Results.opt;
+  subLabel = args.Results.subLabel;
+  nbImgToReturn = args.Results.nbImgToReturn;
+  tolerant = args.Results.tolerant;
+
+  checkAvailableSuffix(BIDS, subLabel, opt.bidsFilterFile.t1w, tolerant);
   if isfield(opt.bidsFilterFile.t1w, 'ses')
-    checkAvailableSessions(BIDS, subLabel, opt.bidsFilterFile.t1w);
+    checkAvailableSessions(BIDS, subLabel, opt.bidsFilterFile.t1w, tolerant);
   end
 
   filter = opt.bidsFilterFile.t1w;
@@ -45,51 +61,81 @@ function [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel)
 
     msg = sprintf('No anat file for:\n%s\n\n', createUnorderedList(filter));
 
-    errorHandling(mfilename(), 'noAnatFile', msg, false, opt.verbosity);
+    errorHandling(mfilename(), 'noAnatFile', msg, tolerant, opt.verbosity);
 
   end
 
-  % TODO we take the first image of that suffix/session as the right one.
-  % it could be required to take another one, or several and mean them...
-  if numel(anat) > 1
-    msg = sprintf('More than one anat file found:%s\n\nTaking the first one:\n\n %s\n', ...
-                  createUnorderedList(pathToPrint(anat)), ...
-                  pathToPrint(anat{1}));
+  if numel(anat) > nbImgToReturn
+    msg = sprintf('More than %i anat file. Found: %i.\n\nTaking the first %i:\n\n %s\n', ...
+                  nbImgToReturn, ...
+                  numel(anat), ...
+                  nbImgToReturn, ...
+                  createUnorderedList(pathToPrint(anat(1:nbImgToReturn))));
     errorHandling(mfilename(), 'severalAnatFile', msg, true, opt.verbosity);
   end
-  anat = anat{1};
+
+  anatDataDir = '';
+  anatImage = '';
+  if isempty(anat)
+    return
+  end
+
+  if nbImgToReturn == 1
+    anat = anat{1};
+  elseif nbImgToReturn == Inf
+  else
+    anat = anat(1:nbImgToReturn);
+  end
+
   anatImage = unzipAndReturnsFullpathName(anat);
 
-  msg = sprintf('  selecting anat file: %s\n', pathToPrint(anat));
+  msg = sprintf('  selecting anat file: %s\n', createUnorderedList(pathToPrint(anat)));
   printToScreen(msg, opt);
 
-  [anatDataDir, anatImage, ext] = spm_fileparts(anatImage);
-  anatImage = [anatImage ext];
+  tmpDir = {};
+  tmpImage = {};
+  for iFile = 1:size(anatImage, 1)
+    [tmpDir{end + 1, 1}, name, ext] = spm_fileparts(anatImage(iFile, :)); %#ok<*AGROW>
+    tmpImage{end + 1, 1} = [name ext];
+  end
+  anatDataDir = tmpDir;
+  anatImage = tmpImage;
+
+  if size(anatImage, 1) == 1
+    anatDataDir = char(anatDataDir);
+    anatImage = char(anatImage);
+  end
+
 end
 
-function checkAvailableSuffix(BIDS, subLabel, filter)
+function checkAvailableSuffix(BIDS, subLabel, filter, tolerant)
 
   anatSuffixes = filter.suffix;
 
   filter = rmfield(filter, 'suffix');
+  if isfield(filter, 'ses')
+    filter = rmfield(filter, 'ses');
+  end
   filter.sub = subLabel;
   availableSuffixes = bids.query(BIDS, 'suffixes', filter);
 
-  if ~strcmp(anatSuffixes, availableSuffixes)
+  containsSuffix = regexp(availableSuffixes, regexify(anatSuffixes), 'match');
+
+  if all(cellfun('isempty', containsSuffix))
 
     msg = sprintf(['Requested anatomical suffix %s unavailable for subject %s.'...
-                   ' All available suffixes:\n%s'], ...
+                   '\nAll available suffixes:\n%s'], ...
                   anatSuffixes, ...
                   subLabel, ...
                   createUnorderedList(availableSuffixes));
 
-    errorHandling(mfilename(), 'requestedSuffixUnvailable', msg, false, false);
+    errorHandling(mfilename(), 'requestedSuffixUnvailable', msg, tolerant, false);
 
   end
 
 end
 
-function anatSession = checkAvailableSessions(BIDS, subLabel, filter)
+function anatSession = checkAvailableSessions(BIDS, subLabel, filter, tolerant)
 
   anatSession = filter.ses;
 
@@ -105,12 +151,12 @@ function anatSession = checkAvailableSessions(BIDS, subLabel, filter)
     if all(~strcmp(anatSession, sessions))
 
       msg = sprintf(['Requested session %s for anatomical unavailable for subject %s.', ...
-                     ' All available sessions:\n%s.'], ...
+                     '\nAll available sessions:\n%s.'], ...
                     anatSession, ...
                     subLabel, ...
                     createUnorderedList(sessions));
 
-      errorHandling(mfilename(), 'requestedSessionUnvailable', msg, false, false);
+      errorHandling(mfilename(), 'requestedSessionUnvailable', msg, tolerant, false);
 
     end
 
