@@ -7,7 +7,7 @@ function bidsLesionAbnormalitiesDetection(opt, extraOptions)
   %
   % USAGE::
   %
-  %  bidsLesionAbnormalitiesDetection(opt)
+  %  bidsLesionAbnormalitiesDetection(opt, extraOptions)
   %
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
@@ -34,9 +34,9 @@ function bidsLesionAbnormalitiesDetection(opt, extraOptions)
   end
 
   % create a structure to collect image names
-  labels = {'GM', 'WM'};
+  labels = {'GM', 'WM', 'CSF'};
   for i = 1:numel(labels)
-    images(i, 1) = struct('controls', [], 'patients', []);
+    images(i, 1) = struct('controls', [], 'patients', []); %#ok<AGROW>
   end
 
   opt.dir.input = opt.dir.preproc;
@@ -72,6 +72,12 @@ function bidsLesionAbnormalitiesDetection(opt, extraOptions)
   matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, images);
 
   saveAndRunWorkflow(matlabbatch, 'LesionAbnormalitiesDetection', opt);
+  
+  bidsRename(opt);
+  
+  if ~isempty(extraOptions)
+        bidsRename(extraOptions);
+  end
 
 end
 
@@ -94,9 +100,12 @@ function images = collectImagesFromDataset(opt, images, labels)
 
     anatImage = getAnatFilename(BIDS, opt, subLabel);
     anatImage = bids.File(anatImage);
+    
     filter = anatImage.entities;
     filter.modality = 'anat';
     filter.suffix = 'probseg';
+    filter.ext = anatImage.extension;
+    filter.prefix = '';
 
     fwhm = opt.toolbox.ALI.unified_segmentation.step1fwhm;
     filter.desc = ['smth' num2str(fwhm)];
