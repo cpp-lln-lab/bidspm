@@ -290,6 +290,7 @@ function preprocess(args)
   end
   bidsSpatialPrepro(opt);
   if opt.fwhm.func > 0 && ~opt.anatOnly
+    opt.query.desc = 'preproc';
     bidsSmoothing(opt);
   end
 
