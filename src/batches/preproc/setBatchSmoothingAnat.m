@@ -46,7 +46,7 @@ function matlabbatch = setBatchSmoothingAnat(matlabbatch, BIDS, opt, subLabel)
       opt.bidsFilterFile.t1w.ses = sessions{iSes};
       opt.bidsFilterFile.t1w.run = runs{iRun};
 
-      fieldsToTransfer = {'space', 'desc', 'label'};
+      fieldsToTransfer = {'space', 'desc', 'label', 'res'};
       for i = 1:numel(fieldsToTransfer)
         field = fieldsToTransfer{i};
         if isfield(opt.query, field)
