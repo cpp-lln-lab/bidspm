@@ -16,7 +16,7 @@ for iSub = 1:numel(opt.subjects)
 
   roiFiles = bids.query(BIDSroi, 'data', 'sub', subLabel, 'label', 'V1d', 'hemi', 'R');
 
-  referenceImg bids.query(BIDS, 'data', 'space', 'individual', 'desc', 'mean', 'suffix', 'bold');
+  referenceImg = bids.query(BIDS, 'data', 'space', 'individual', 'desc', 'mean', 'suffix', 'bold');
 
   printProcessingSubject(iSub, subLabel);
 

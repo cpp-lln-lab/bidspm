@@ -123,6 +123,8 @@ function images = collectImagesFromDataset(opt, images, labels)
         msg = sprintf('Too many files for label %s for subject %s', labels{i}, subLabel);
         id = 'tooManyTissueClassFiles';
         errorHandling(mfilename(), id, msg, tolerant);
+      else
+        printToScreen(createUnorderedList(files), opt);
       end
 
       % TODO avoid the hard coding of 'control' :

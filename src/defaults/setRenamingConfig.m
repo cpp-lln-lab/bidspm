@@ -93,6 +93,27 @@ function opt = setRenamingConfig(opt, workflowName)
                             'name_spec', nameSpec);
 
       nameSpec = map.cfg.segment.gm_norm;
+      nameSpec.entities.res = res;
+      idx = map.find_mapping('prefix', [map.norm 'c1']);
+      map = map.rm_mapping(idx);
+      map = map.add_mapping('prefix', [map.norm 'c1'], ...
+                            'name_spec', nameSpec);
+
+      nameSpec = map.cfg.segment.wm_norm;
+      nameSpec.entities.res = res;
+      idx = map.find_mapping('prefix', [map.norm 'c2']);
+      map = map.rm_mapping(idx);
+      map = map.add_mapping('prefix', [map.norm 'c2'], ...
+                            'name_spec', nameSpec);
+
+      nameSpec = map.cfg.segment.csf_norm;
+      nameSpec.entities.res = res;
+      idx = map.find_mapping('prefix', [map.norm 'c3']);
+      map = map.rm_mapping(idx);
+      map = map.add_mapping('prefix', [map.norm 'c3'], ...
+                            'name_spec', nameSpec);
+
+      nameSpec = map.cfg.segment.gm_norm;
       nameSpec.entities.label = 'PRIOR';
       nameSpec.entities.res = res;
       idx = map.find_mapping('prefix', [map.norm 'c4']);
