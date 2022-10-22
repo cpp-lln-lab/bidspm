@@ -21,10 +21,12 @@ function [BIDS, opt] = getData(varargin)
 
   % (C) Copyright 2020 bidspm developers
 
+  isDir = @(x) isdir(x);
+
   args = inputParser;
 
   addRequired(args, 'opt', @isstruct);
-  addRequired(args, 'bidsDir', @isdir);
+  addRequired(args, 'bidsDir', isDir);
 
   try
     parse(args, varargin{:});

@@ -20,6 +20,8 @@ function bidspm(varargin)
   isChar = @(x) validateattributes(x, {'char'}, {'row'});
   isPositiveScalar = @(x) validateattributes(x, {'numeric'}, {'nonnegative', 'numel', 1});
 
+  isDir = @(x) isdir(x);
+
   isLowLevelActionOrDir = @(x) (ismember(x, low_level_actions()) || isdir(x));
 
   addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
@@ -44,7 +46,7 @@ function bidspm(varargin)
   addParameter(args, 'ignore', {}, isEmptyOrCellstr);
 
   % stats only
-  addParameter(args, 'preproc_dir', pwd, @isdir);
+  addParameter(args, 'preproc_dir', pwd, isDir);
   addParameter(args, 'model_file', struct([]), isFileOrStruct);
   addParameter(args, 'roi_based', false, isLogical);
   % group level stats only
