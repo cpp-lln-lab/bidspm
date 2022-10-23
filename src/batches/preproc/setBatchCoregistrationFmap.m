@@ -29,10 +29,10 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
   % Use a rough mean of the 1rst run to improve SNR for coregistration
   % created by spmup
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
-  filter = struct( ...
-                  'sub', subLabel, ...
+  filter = struct('sub', subLabel, ...
                   'task', opt.taskName, ...
                   'suffix', 'bold', ...
+                  'ses',  sessions{1}, ...
                   'prefix', 'mean_');
   refImage = bids.query(BIDS, 'data', filter);
 
@@ -52,6 +52,10 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
       filter.extension = '.nii';
 
       metadata = bids.query(BIDS, 'metadata', filter);
+
+      if numel(metadata) > 1
+        error('Only one file expected');
+      end
 
       if strfind(metadata.IntendedFor, opt.taskName)
 

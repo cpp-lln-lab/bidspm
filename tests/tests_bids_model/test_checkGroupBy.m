@@ -10,6 +10,10 @@ end
 
 function test_checkGroupBy_run()
 
+  if isOctave
+    return
+  end
+
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 
   opt.model.bm.Nodes{1}.GroupBy = {'subject'};
@@ -26,6 +30,10 @@ end
 
 function test_checkGroupBy_subject()
 
+  if isOctave
+    return
+  end
+
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 
   opt.model.bm.Nodes{2}.GroupBy = {'subject'};
@@ -41,6 +49,10 @@ function test_checkGroupBy_subject()
 end
 
 function test_checkGroupBy_dataset()
+
+  if isOctave
+    return
+  end
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 
