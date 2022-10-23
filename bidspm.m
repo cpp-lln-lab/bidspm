@@ -8,8 +8,6 @@ function bidspm(varargin)
   % TODO  bidspm('action', 'update')
   % TODO  where to save the options?
 
-  warning('off', 'Octave:shadowed-function');
-
   args = inputParser;
   args.CaseSensitive = false;
 
@@ -446,6 +444,10 @@ function initBidspm(dev)
                        fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
 
     addpath(BIDSPM_PATHS, '-begin');
+
+    if isOctave
+      warning('off', 'Octave:shadowed-function');
+    end
 
     checkDependencies(opt);
     printCredits(opt);
