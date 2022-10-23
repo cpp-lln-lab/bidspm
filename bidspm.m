@@ -8,6 +8,8 @@ function bidspm(varargin)
   % TODO  bidspm('action', 'update')
   % TODO  where to save the options?
 
+  warning('off', 'Octave:shadowed-function');
+
   args = inputParser;
   args.CaseSensitive = false;
 
@@ -16,9 +18,9 @@ function bidspm(varargin)
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);
   isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
 
-  isLogical = @(x) validateattributes(x, {'logical'}, {'numel', 1});
-  isChar = @(x) validateattributes(x, {'char'}, {'row'});
-  isPositiveScalar = @(x) validateattributes(x, {'numeric'}, {'nonnegative', 'numel', 1});
+  isLogical = @(x) islogial(x) && numel(x) == 1;
+  isChar = @(x) ischar(x);
+  isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
 
   isDir = @(x) isdir(x);
 
