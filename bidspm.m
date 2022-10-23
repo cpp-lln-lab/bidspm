@@ -22,6 +22,8 @@ function bidspm(varargin)
 
   isDir = @(x) isdir(x);
 
+  isCellStr = @(x) iscellstr(x);
+
   isLowLevelActionOrDir = @(x) (ismember(x, low_level_actions()) || isdir(x));
 
   addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
@@ -30,15 +32,15 @@ function bidspm(varargin)
   addOptional(args, 'analysis_level', 'subject', @(x) ismember(x, {'subject', 'dataset'}));
 
   addParameter(args, 'action', defaultAction, isChar);
-  addParameter(args, 'participant_label', {}, @iscellstr);
-  addParameter(args, 'task', {}, @iscellstr);
+  addParameter(args, 'participant_label', {}, isCellStr);
+  addParameter(args, 'task', {}, isCellStr);
   addParameter(args, 'dry_run', false, isLogical);
   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
   addParameter(args, 'options', struct([]), isFileOrStruct);
   addParameter(args, 'verbosity', 2, isPositiveScalar);
 
   addParameter(args, 'fwhm', 6, isPositiveScalar);
-  addParameter(args, 'space', {}, @iscellstr);
+  addParameter(args, 'space', {}, isCellStr);
 
   % preproc only
   addParameter(args, 'dummy_scans', 0, isPositiveScalar);
