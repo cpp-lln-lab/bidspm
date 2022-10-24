@@ -96,7 +96,7 @@ function matlabbatch = setBatchSTC(varargin)
                   false, opt.verbosity);
   end
 
-  nbSlices = numel(unique(sliceOrder));
+  nbSlices = numel(sliceOrder);
 
   temporal.st.nslices = nbSlices;
   temporal.st.tr = repetitionTime;
