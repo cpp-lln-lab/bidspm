@@ -181,7 +181,7 @@ end
 
 function expectedBatch = returnExpectedBatch(sliceOrder, referenceSlice, TR)
 
-  nbSlices = length(unique(sliceOrder));
+  nbSlices = length(sliceOrder);
   TA = getAcquisitionTime(sliceOrder, TR);
 
   temporal.st.nslices = nbSlices;
