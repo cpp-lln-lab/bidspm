@@ -24,7 +24,12 @@ function test_renameSegmentParameter_basic()
   spm_mkdir(tmpDir);
   copyfile(opt.dir.preproc, tmpDir);
 
-  BIDS = bids.layout(tmpDir, 'use_schema', false);
+  bidsDir = fullfile(tmpDir);
+  if isOctave
+    bidsDir = fullfile(tmpDir, 'bidspm-preproc');
+  end
+
+  BIDS = bids.layout(bidsDir, 'use_schema', false);
 
   opt.dryRun = false;
   opt.verbosity = 2;
