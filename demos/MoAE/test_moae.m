@@ -45,7 +45,7 @@ models = {fullfile(WD, 'models', 'model-MoAE_smdl.json')
           fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')
          };
 
-for iOption = numel(space)
+for iOption = 1:numel(space)
 
   fprintf(1, repmat('\n', 1, 5));
 
@@ -74,5 +74,15 @@ for iOption = numel(space)
   cd(WD);
 
   rmdir(fullfile(WD, 'outputs', 'derivatives'), 's');
+
+  % with Octave running more n-1 loop in CI is fine
+  % but not running crashes with a segmentation fault
+  % /home/runner/work/_temp/fb8e9d58-fa9f-4f93-8c96-387973f3632e.sh: line 2:
+  % 7487 Segmentation fault      (core dumped) octave $OCTFLAGS --eval "run system_tests_facerep;"
+  %
+  % not sure why
+  if isOctave
+    break
+  end
 
 end
