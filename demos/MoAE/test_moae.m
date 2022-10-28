@@ -29,25 +29,23 @@ end
 
 optionsFile = fullfile(WD, 'options', 'options_task-auditory.json');
 
-space = { 'IXI549Space'
+space = {'IXI549Space'
          'IXI549Space'
          'individual'
          'individual'};
-ignore = {
-          {''}
-          {'unwarp'}
+ignore = {{''}
+          {'unwarp', 'qa'}
           {'unwarp'}
           {''}
          };
 
-models = {
-          fullfile(WD, 'models', 'model-MoAE_smdl.json')
+models = {fullfile(WD, 'models', 'model-MoAE_smdl.json')
           fullfile(WD, 'models', 'model-MoAE_smdl.json')
           fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')
           fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')
          };
 
-for iOption = 1:numel(space)
+for iOption = numel(space)
 
   fprintf(1, repmat('\n', 1, 5));
 

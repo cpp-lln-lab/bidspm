@@ -24,7 +24,7 @@ optionsFile = fullfile(WD, 'options', 'options_task-facerepetition.json');
 
 model_file = fullfile(WD, 'models', 'model-faceRepetition_smdl.json');
 
-for iResolution = 2:3
+for iResolution = 3
 
   opt.pipeline.name = ['bidspm-res' num2str(iResolution)];
   opt.funcVoxelDims = repmat(iResolution, 1, 3);
