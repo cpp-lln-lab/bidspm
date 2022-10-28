@@ -72,3 +72,12 @@ jobs:
         cd .github/workflows
         octave $OCTFLAGS --eval "tests_octave;"
         cat test_report.log | grep 0
+
+    - name: Code coverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: coverage.xml
+        flags: octave
+        name: codecov-octave
+        fail_ci_if_error: false
+        # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits

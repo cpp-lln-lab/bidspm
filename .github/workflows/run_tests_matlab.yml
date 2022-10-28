@@ -66,15 +66,15 @@ jobs:
         with:
           command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
 
-      - name: Run tests
+      - name: Check tests
         run: |
           cat test_report.log | grep 0
-          bash <(curl -s https://codecov.io/bash)
 
       - name: Code coverage
         uses: codecov/codecov-action@v3
         with:
-          file: coverage.xml # optional
-          flags: unittests # optional
-          name: codecov-umbrella # optional
-          fail_ci_if_error: true # optional (default = false)
+          file: coverage.xml
+          flags: matlab
+          name: codecov-matlab
+          fail_ci_if_error: false
+        # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
