@@ -26,11 +26,14 @@ function test_bidsRename_basic()
   spm_mkdir(tmpDir);
   copyfile(opt.dir.preproc, tmpDir);
 
-  opt.dir.preproc = tmpDir;
+  bidsDir = tmpDir;
+  if isOctave
+    bidsDir = fullfile(tmpDir, 'bidspm-preproc');
+  end
 
-  ls(tmpDir);
+  opt.dir.preproc = bidsDir;
 
-  BIDS = bids.layout(tmpDir, 'use_schema', false);
+  BIDS = bids.layout(bidsDir, 'use_schema', false);
   files = bids.query(BIDS, 'data', 'prefix', '');
   for i = 1:numel(files)
     delete(files{i});
