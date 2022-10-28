@@ -18,6 +18,8 @@ function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
   % :type  rmInput: logical
   % :param rmInput: Optional. Default to ``false``.
   %                 If true remove original txt file.
+  %
+  %
 
   % (C) Copyright 2019 bidspm developers
 

@@ -42,7 +42,7 @@ function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, 
     msg = sprintf('No TSV file found in:\n\t%s\nfor query:%s\n', ...
                   BIDS.pth, ...
                   createUnorderedList(opt.query));
-    errorHandling(mfilename(), 'noFileFound', msg, false, true);
+    errorHandling(mfilename(), 'noFileFound', msg, true, true);
   end
 
   filename = filename{1};

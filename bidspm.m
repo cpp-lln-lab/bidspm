@@ -182,6 +182,11 @@ function opt = get_options_from_argument(args)
     if ismember('fieldmaps', args.Results.ignore)
       opt.useFieldmaps = false;
     end
+    if ismember('qa', lower(args.Results.ignore))
+      opt.QA.func.do = false;
+      opt.QA.anat.do = false;
+      opt.QA.glm.do = false;
+    end
 
     opt.dummy_scans = args.Results.dummy_scans;
 
