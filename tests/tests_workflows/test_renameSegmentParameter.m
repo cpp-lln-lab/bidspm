@@ -12,11 +12,13 @@ end
 
 function test_renameSegmentParameter_basic()
 
+  createDummyData();
+
   opt = setOptions('MoAE-preproc');
 
   % move test data into temp directory to test renaming
   tmpDir = fullfile(pwd, 'tmp');
-  if isdir(tmpDir)
+  if isfolder(tmpDir)
     rmdir(tmpDir, 's');
   end
   spm_mkdir(tmpDir);

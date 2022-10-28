@@ -10,11 +10,17 @@ end
 
 function test_bidsChangeSuffix_basic()
 
+  createDummyData();
+
   dataset = 'ds001';
 
   dataDir = getBidsExample('ds001');
 
   dataset_dir = fullfile(dataDir, '..', '..', 'tmp', dataset);
+
+  if isfolder(dataset_dir)
+    rmdir(dataset_dir, 's');
+  end
 
   bids.util.mkdir(dataset_dir);
   copyfile(dataDir, dataset_dir);
@@ -24,7 +30,9 @@ function test_bidsChangeSuffix_basic()
   opt.verbosity = 0;
   opt.useBidsSchema = false;
 
-  BIDS_before = bids.layout(opt.dir.input, 'use_schema', false);
+  ls(opt.dir.input);
+
+  BIDS_before = bids.layout(opt.dir.input, 'use_schema', opt.useBidsSchema);
 
   expected = bids.query(BIDS_before, 'data', 'suffix', 'bold');
   expected_metadata = bids.query(BIDS_before, 'metadata', 'suffix', 'bold');
@@ -33,7 +41,7 @@ function test_bidsChangeSuffix_basic()
   bidsChangeSuffix(opt, 'vaso', 'filter', struct('suffix', 'bold'), 'force', true);
 
   %% THEN
-  BIDS_after = bids.layout(dataset_dir, 'use_schema', false);
+  BIDS_after = bids.layout(dataset_dir, 'use_schema', opt.useBidsSchema);
 
   % only vaso
   data = bids.query(BIDS_after, 'data', 'suffix', 'vaso');

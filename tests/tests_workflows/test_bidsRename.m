@@ -14,17 +14,21 @@ function test_bidsRename_basic()
   % - SpatialReference probably not needed for space individual if anat modality
   % - transfer of Skullstripped true, if sources has it?
 
+  createDummyData();
+
   opt = setOptions('MoAE-preproc');
 
   % move test data into temp directory to test renaming
   tmpDir = fullfile(pwd, 'tmp');
-  if isdir(tmpDir)
+  if isfolder(tmpDir)
     rmdir(tmpDir, 's');
   end
   spm_mkdir(tmpDir);
   copyfile(opt.dir.preproc, tmpDir);
 
   opt.dir.preproc = tmpDir;
+
+  ls(tmpDir);
 
   BIDS = bids.layout(tmpDir, 'use_schema', false);
   files = bids.query(BIDS, 'data', 'prefix', '');

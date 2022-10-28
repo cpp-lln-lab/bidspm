@@ -155,6 +155,8 @@ function renameFiles(BIDS, opt)
     return
   end
 
+  opt = setRenamingConfig(opt, 'SpatialPrepro');
+
   if ~opt.dryRun && ~opt.anatOnly
 
     for iSub = 1:numel(opt.subjects)
@@ -190,8 +192,6 @@ function renameFiles(BIDS, opt)
   % TODO adapt spm_2_bids map to rename eventual files
   % that only have a "r" or "ra" prefix
   opt.query =  struct('modality', {{'anat', 'func'}});
-
-  opt = setRenamingConfig(opt, 'SpatialPrepro');
 
   bidsRename(opt);
 
