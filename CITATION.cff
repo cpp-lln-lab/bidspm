@@ -87,6 +87,7 @@ authors:
 
 - family-names: "Yang"
   given-names: "Ying"
+  orcid: "https://orcid.org/0000-0002-4157-2975"
   affiliation: "Université catholique de Louvain"
 
 license: GPL-3.0
