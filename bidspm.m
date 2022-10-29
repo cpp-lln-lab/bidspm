@@ -22,7 +22,7 @@ function bidspm(varargin)
 
   isFolder = @(x) isfolder(x);
 
-  isCellStr = @(x) isstring(x);
+  isCellStr = @(x) iscellstr(x); %#ok<ISCLSTR>
 
   isLowLevelActionOrDir = @(x) (ismember(x, low_level_actions()) || isfolder(x));
 
