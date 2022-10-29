@@ -47,7 +47,9 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir, indexData)
     indexData = true;
   end
 
-  opt.globalStart = elapsedTime(opt, 'globalStart');
+  if ~isfield(opt, 'globalStart')
+    opt.globalStart = elapsedTime(opt, 'globalStart');
+  end
 
   opt = loadAndCheckOptions(opt);
 

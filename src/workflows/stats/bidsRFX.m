@@ -158,6 +158,8 @@ function matlabbatch = bidsRFX(varargin)
     initBids(opt, 'description', description, 'force', false);
   end
 
+  cleanUpWorkflow(opt);
+
 end
 
 function checks(opt)

@@ -143,6 +143,8 @@ function [matlabbatch, opt] = bidsFFX(varargin)
 
   end
 
+  cleanUpWorkflow(opt);
+
 end
 
 function checkRootNode(opt)
