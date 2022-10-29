@@ -14,8 +14,6 @@ end
 
 function test_bidsModelSelection_basic()
 
-  createDummyData();
-
   % GIVEN
   opt = setOptions('vislocalizer');
   opt = rmfield(opt, 'taskName');
@@ -26,6 +24,7 @@ function test_bidsModelSelection_basic()
                                            'models', ...
                                            'model-vismotionGlobalSignal_smdl.json')};
 
+  opt.verbosity = 3;
   % WHEN
   matlabbatch = bidsModelSelection(opt);
 
@@ -44,8 +43,6 @@ function test_bidsModelSelection_basic()
 end
 
 function test_bidsModelSelection_actions()
-
-  createDummyData();
 
   % GIVEN
   opt = setOptions('vislocalizer');

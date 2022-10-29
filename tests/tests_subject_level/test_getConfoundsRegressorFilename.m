@@ -27,6 +27,8 @@ function test_getConfoundRegressorFile_basic()
 end
 
 function  expectedFilename = getExpectedFilename()
-  expectedFilename = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func', ...
-                              'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.tsv');
+  funcDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func');
+  expectedFilename =  {fullfile(funcDir, ...
+                                'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.tsv')};
+
 end

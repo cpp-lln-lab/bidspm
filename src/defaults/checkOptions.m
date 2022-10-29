@@ -120,8 +120,11 @@ function opt = checkOptions(opt)
   %
   %  - **preprocessing QA** (see ``functionalQA``)
   %
+  %       opt.QA.anat.do = true;
+  %
   %     ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
   %
+  %     - ``opt.QA.func.do = true`` skips QA if set to false
   %     - ``opt.QA.func.carpetPlot = true`` to plot carpet plot
   %     - ``opt.QA.func.MotionParameters = 'on'``
   %     - ``opt.QA.func.FramewiseDisplacement = 'on'``
@@ -346,6 +349,7 @@ function fieldsToSet = setDefaultOption()
   %% Options for QA
   fieldsToSet.QA.glm.do = false;
   fieldsToSet.QA.anat.do = true;
+  fieldsToSet.QA.func.do = true;
   fieldsToSet.QA.func.carpetPlot = true;
   fieldsToSet.QA.func.Motion = 'on';
   fieldsToSet.QA.func.FD = 'on';

@@ -10,6 +10,15 @@ end
 
 function test_computeTsnr_basic()
 
+  if isOctave
+    % failure: 'nanmean' undefined near line 42, column 42
+    % The 'nanmean' function belongs to the statistics package from Octave
+    % Forge which seems to not be installed in your system.
+    %
+    % But installing packages does not seem to work now.
+    return
+  end
+
   opt = setOptions('MoAE');
 
   BIDS = bids.layout(opt.dir.raw);

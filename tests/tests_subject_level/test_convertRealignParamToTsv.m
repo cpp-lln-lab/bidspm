@@ -24,6 +24,8 @@ function test_convertRealignParamToTsv_basic()
 
   assertEqual(exist(output, 'file'), 2);
 
+  delete(output);
+
 end
 
 function test_convertRealignParamToTsv_non_bold_data()
@@ -49,5 +51,6 @@ function test_convertRealignParamToTsv_non_bold_data()
   assertEqual(exist(output, 'file'), 2);
 
   delete(input);
+  delete(output);
 
 end

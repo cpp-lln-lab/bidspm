@@ -27,7 +27,7 @@ function unzippedFullpathName = unzipAndReturnsFullpathName(fullpathName, opt)
     errorHandling(mfilename(), 'emptyInput', msg, false, true);
   end
 
-  for iFile = 1:size(fullpathName)
+  for iFile = 1:size(fullpathName, 1)
 
     [directory, filename, ext] = spm_fileparts(fullpathName(iFile, :));
 

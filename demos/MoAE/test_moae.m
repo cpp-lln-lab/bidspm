@@ -22,26 +22,29 @@ WD = fileparts(mfilename('fullpath'));
 
 addpath(fullfile(WD, '..', '..'));
 
+bidspm();
 if download_data
-  bidspm();
   download_moae_ds(download_data, clean);
+end
+
+warning('off', 'SPM:noDisplay');
+if isOctave
+  warning('off', 'setGraphicWindow:noGraphicWindow');
 end
 
 optionsFile = fullfile(WD, 'options', 'options_task-auditory.json');
 
-space = { 'IXI549Space'
+space = {'IXI549Space'
          'IXI549Space'
          'individual'
          'individual'};
-ignore = {
-          {''}
-          {'unwarp'}
+ignore = {{''}
+          {'unwarp', 'qa'}
           {'unwarp'}
           {''}
          };
 
-models = {
-          fullfile(WD, 'models', 'model-MoAE_smdl.json')
+models = {fullfile(WD, 'models', 'model-MoAE_smdl.json')
           fullfile(WD, 'models', 'model-MoAE_smdl.json')
           fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')
           fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')
@@ -76,5 +79,15 @@ for iOption = 1:numel(space)
   cd(WD);
 
   rmdir(fullfile(WD, 'outputs', 'derivatives'), 's');
+
+  % with Octave running more n-1 loop in CI is fine
+  % but not running crashes with a segmentation fault
+  % /home/runner/work/_temp/fb8e9d58-fa9f-4f93-8c96-387973f3632e.sh: line 2:
+  % 7487 Segmentation fault      (core dumped) octave $OCTFLAGS --eval "run system_tests_facerep;"
+  %
+  % not sure why
+  if isOctave
+    break
+  end
 
 end

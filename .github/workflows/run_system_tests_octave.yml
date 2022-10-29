@@ -1,4 +1,4 @@
-name: "system tests with octave: failure expected"
+name: "system tests with octave"
 
 # Uses the cron schedule for github actions
 #
@@ -44,7 +44,7 @@ jobs:
     # only trigger update on upstream repo
     if: github.repository_owner == 'cpp-lln-lab'
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
@@ -58,11 +58,15 @@ jobs:
         sudo apt-get -y -qq update
         sudo apt-get -y install octave liboctave-dev
 
+    - name: Info
+      run: |
+        octave --version
+
     - name: Clone bidspm
       uses: actions/checkout@v3
       with:
         submodules: true
-        fetch-depth: 2
+        fetch-depth: 0
 
     - name: Get moae fmriprep data from OSF
       run: |

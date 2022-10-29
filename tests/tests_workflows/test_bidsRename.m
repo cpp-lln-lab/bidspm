@@ -18,15 +18,20 @@ function test_bidsRename_basic()
 
   % move test data into temp directory to test renaming
   tmpDir = fullfile(pwd, 'tmp');
-  if isdir(tmpDir)
+  if isfolder(tmpDir)
     rmdir(tmpDir, 's');
   end
   spm_mkdir(tmpDir);
   copyfile(opt.dir.preproc, tmpDir);
 
-  opt.dir.preproc = tmpDir;
+  bidsDir = tmpDir;
+  if isOctave
+    bidsDir = fullfile(tmpDir, 'bidspm-preproc');
+  end
 
-  BIDS = bids.layout(tmpDir, 'use_schema', false);
+  opt.dir.preproc = bidsDir;
+
+  BIDS = bids.layout(bidsDir, 'use_schema', false);
   files = bids.query(BIDS, 'data', 'prefix', '');
   for i = 1:numel(files)
     delete(files{i});

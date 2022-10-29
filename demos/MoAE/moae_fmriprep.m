@@ -22,6 +22,10 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
+if isOctave
+  warning('off', 'setGraphicWindow:noGraphicWindow');
+end
+
 % Getting the raw dataset
 download_data = true;
 download_moae_ds(download_data);

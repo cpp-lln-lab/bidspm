@@ -15,9 +15,15 @@ WD = fileparts(mfilename('fullpath'));
 
 addpath(fullfile(WD, '..', '..'));
 
+bidspm();
+
 if download_data
-  bidspm();
   download_face_rep_ds(download_data);
+end
+
+warning('off', 'SPM:noDisplay');
+if isOctave
+  warning('off', 'setGraphicWindow:noGraphicWindow');
 end
 
 optionsFile = fullfile(WD, 'options', 'options_task-facerepetition.json');
@@ -76,5 +82,15 @@ for iResolution = 2:3
          'preproc_dir', [preproc_dir '-preproc'], ...
          'model_file', newModel, ...
          'options', opt);
+
+  % with Octave running more n-1 loop in CI is fine
+  % but not running crashes with a segmentation fault
+  % /home/runner/work/_temp/fb8e9d58-fa9f-4f93-8c96-387973f3632e.sh: line 2:
+  % 7487 Segmentation fault      (core dumped) octave $OCTFLAGS --eval "run system_tests_facerep;"
+  %
+  % not sure why
+  if isOctave
+    break
+  end
 
 end

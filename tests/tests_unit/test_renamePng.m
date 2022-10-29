@@ -12,7 +12,7 @@ function test_renamePng_basic()
 
   outputDir = fullfile(pwd, 'tmp');
 
-  if isdir(outputDir)
+  if isfolder(outputDir)
     rmdir(outputDir, 's');
   end
 
