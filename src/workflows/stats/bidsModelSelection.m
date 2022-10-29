@@ -227,6 +227,8 @@ function matlabbatch = bidsModelSelection(varargin)
 
   saveAndRunWorkflow(matlabbatch, workflowName, opt);
 
+  cleanUpWorkflow(opt);
+
 end
 
 function matlabbatch = seBatchCvLme(matlabbatch, opt, action)

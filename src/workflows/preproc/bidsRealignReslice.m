@@ -68,4 +68,6 @@ function bidsRealignReslice(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
 end

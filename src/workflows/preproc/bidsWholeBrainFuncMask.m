@@ -44,3 +44,7 @@ function mask = bidsWholeBrainFuncMask(opt)
     end
 
   end
+
+  cleanUpWorkflow(opt);
+
+end

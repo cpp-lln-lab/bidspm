@@ -50,6 +50,8 @@ function bidsRealignUnwarp(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
   if ~opt.dryRun && opt.rename
     opt = set_spm_2_bids_defaults(opt);
     prefix = get_spm_prefix_list();

@@ -186,6 +186,8 @@ function renameFiles(BIDS, opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
   % TODO: when anatOnly update the res label for TPMs
 
   % TODO: when the voxDim is specified in opt,

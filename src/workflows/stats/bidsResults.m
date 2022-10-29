@@ -253,6 +253,8 @@ function matlabbatch = bidsResults(varargin)
 
   cd(currentDirectory);
 
+  cleanUpWorkflow(opt);
+
 end
 
 function [status] = checks(opt)

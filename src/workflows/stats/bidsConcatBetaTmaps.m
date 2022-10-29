@@ -135,6 +135,8 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
 
   end
 
+  cleanUpWorkflow(opt);
+
 end
 
 function removeTmaps(tMaps, deleteTmaps, ffxDir)
