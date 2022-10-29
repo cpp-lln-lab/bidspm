@@ -158,7 +158,7 @@ function matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, i
 
   icell(1).levels = 1;
 
-  assert(isstring(icell.scans));
+  assert(iscellstr(icell.scans));
 
   matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell, thisGroup);
 

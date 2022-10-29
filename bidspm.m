@@ -13,7 +13,7 @@ function bidspm(varargin)
 
   defaultAction = 'init';
 
-  isEmptyOrCellstr = @(x) isempty(x) || isstring(x);
+  isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
   isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
 
   isLogical = @(x) islogial(x) && numel(x) == 1;
@@ -22,7 +22,7 @@ function bidspm(varargin)
 
   isFolder = @(x) isfolder(x);
 
-  isCellStr = @(x) iscellstr(x); %#ok<ISCLSTR>
+  isCellStr = @(x) iscellstr(x);
 
   isLowLevelActionOrDir = @(x) (ismember(x, low_level_actions()) || isfolder(x));
 
