@@ -10,7 +10,7 @@ end
 
 function test_bidsResults_filter_by_nodeName()
 
-  createDummyData();
+  % createDummyData();
 
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
@@ -46,7 +46,7 @@ end
 
 function test_bidsResults_too_many_backgrounds()
 
-  createDummyData();
+  % createDummyData();
 
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
@@ -77,7 +77,7 @@ end
 
 function test_bidsResults_background_for_subject()
 
-  createDummyData();
+  % createDummyData();
 
   %% GIVEN
   opt = setOptions('vislocalizer', {'01', 'ctrl01', 'blind01'}, 'pipelineType', 'stats');
@@ -114,7 +114,7 @@ end
 
 function test_bidsResults_no_background_for_montage()
 
-  createDummyData();
+  % createDummyData();
 
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
@@ -148,7 +148,7 @@ function test_bidsResults_dataset_lvl()
   % TODO requires updating dummy dataset
   return
 
-  createDummyData();
+  % createDummyData();
 
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
@@ -168,7 +168,7 @@ end
 
 function test_bidsResults_subject_lvl_regex()
 
-  createDummyData();
+  % createDummyData();
 
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
@@ -208,7 +208,7 @@ end
 
 function test_bidsResults_subject_lvl()
 
-  createDummyData();
+  % createDummyData();
 
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');

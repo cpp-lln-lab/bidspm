@@ -10,7 +10,7 @@ end
 
 function test_setBatchFactorialDesign_within_group()
 
-  createDummyData();
+  % createDummyData();
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
@@ -33,7 +33,7 @@ end
 
 function test_setBatchFactorialDesign_complex()
 
-  createDummyData();
+  % createDummyData();
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 
@@ -79,7 +79,7 @@ end
 
 function test_setBatchFactorialDesign_basic()
 
-  createDummyData();
+  % createDummyData();
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 

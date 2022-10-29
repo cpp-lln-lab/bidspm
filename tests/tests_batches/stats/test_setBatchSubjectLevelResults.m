@@ -10,7 +10,7 @@ end
 
 function test_setBatchSubjectLevelResults_basic()
 
-  createDummyData();
+  % createDummyData();
 
   % IF
   contrast_name = 'VisMot';
@@ -91,7 +91,7 @@ end
 
 function [subLabel, opt, result] = setUp(task, contrastName)
 
-  createDummyData();
+  % createDummyData();
 
   iCon = 1;
 

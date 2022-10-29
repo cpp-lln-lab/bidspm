@@ -10,7 +10,7 @@ end
 
 function test_setBatchSmoothConImages_basic()
 
-  createDummyData();
+  % createDummyData();
 
   opt = setOptions('vismotion', {'01', 'blind01'}, 'pipelineType', 'stats');
 

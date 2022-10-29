@@ -10,7 +10,7 @@ end
 
 function test_setBatchMeanAnatAndMask_basic()
 
-  createDummyData();
+  % createDummyData();
 
   opt = setOptions('vismotion', {'01', 'ctrl01'}, 'pipelinetype', 'stats');
 

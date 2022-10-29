@@ -1,4 +1,4 @@
-function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, run)
+function filenames = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, run)
   %
   % Gets the potential confounds files for a given subject, session, run
   %
@@ -33,19 +33,20 @@ function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, 
   filter = fileFilterForBold(opt, subLabel, 'confounds');
   filter.ses = session;
   filter.run = run;
-  filename = bids.query(BIDS, 'data', filter);
+  filenames = bids.query(BIDS, 'data', filter);
 
-  if numel(filename) > 1
-    disp(filename);
-    errorHandling(mfilename(), 'tooManyFiles', 'This should only get one file.', false, true);
+  if numel(filenames) > 1
+    msg = ['Found several confounds files:' createUnorderedList(filenames)];
+    errorHandling(mfilename(), 'tooManyFiles', msg, true, true);
 
-  elseif isempty(filename)
+  elseif isempty(filenames)
     msg = sprintf('No TSV file found in:\n\t%s\nfor query:%s\n', ...
                   BIDS.pth, ...
                   createUnorderedList(opt.query));
     errorHandling(mfilename(), 'noFileFound', msg, true, true);
+
   end
 
-  filename = filename{1};
+  filenames = filenames{1};
 
 end

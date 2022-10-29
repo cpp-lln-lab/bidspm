@@ -21,6 +21,7 @@ if download_data
   download_face_rep_ds(download_data);
 end
 
+warning('off', 'SPM:noDisplay');
 if isOctave
   warning('off', 'setGraphicWindow:noGraphicWindow');
 end

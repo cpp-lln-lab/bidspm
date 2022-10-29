@@ -10,7 +10,7 @@ end
 
 function test_bidsChangeSuffix_basic()
 
-  createDummyData();
+  % createDummyData();
 
   dataset = 'ds001';
 

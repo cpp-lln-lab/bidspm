@@ -70,7 +70,7 @@ end
 
 function test_bidsFFX_contrasts_select_node()
 
-  createDummyData();
+  % createDummyData();
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
   opt.stc.skip = 1;
@@ -84,7 +84,7 @@ end
 
 function test_bidsFFX_contrasts()
 
-  createDummyData();
+  % createDummyData();
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
   opt.stc.skip = 1;
@@ -157,6 +157,6 @@ function test_bidsFFX_mni()
 
   end
 
-  createDummyData();
+  % createDummyData();
 
 end

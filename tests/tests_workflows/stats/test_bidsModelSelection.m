@@ -14,7 +14,7 @@ end
 
 function test_bidsModelSelection_basic()
 
-  createDummyData();
+  % createDummyData();
 
   % GIVEN
   opt = setOptions('vislocalizer');
@@ -45,7 +45,7 @@ end
 
 function test_bidsModelSelection_actions()
 
-  createDummyData();
+  % createDummyData();
 
   % GIVEN
   opt = setOptions('vislocalizer');

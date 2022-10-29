@@ -27,6 +27,7 @@ if download_data
   download_moae_ds(download_data, clean);
 end
 
+warning('off', 'SPM:noDisplay');
 if isOctave
   warning('off', 'setGraphicWindow:noGraphicWindow');
 end

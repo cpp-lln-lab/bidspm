@@ -12,7 +12,7 @@ end
 
 function test_renameSegmentParameter_basic()
 
-  createDummyData();
+  % createDummyData();
 
   opt = setOptions('MoAE-preproc');
 

@@ -21,11 +21,20 @@ function list = createUnorderedList(list)
   end
 
   if iscell(list)
+
+    for i = 1:numel(list)
+      if isnumeric(list{i})
+        list{i} = num2str(list{i});
+      end
+    end
+
     list = sprintf([prefix, strjoin(list, prefix), '\n']);
 
   elseif isstruct(list)
+
     output = [];
     fields = fieldnames(list);
+
     for i = 1:numel(fields)
       content = list.(fields{i});
       if ~iscell(content)
@@ -33,6 +42,9 @@ function list = createUnorderedList(list)
       end
       output = [output prefix fields{i} ': {' strjoin(content, ', ') '}'];
     end
+
     list = sprintf(output);
+
   end
+
 end
