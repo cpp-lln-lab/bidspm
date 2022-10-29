@@ -19,4 +19,6 @@ function createDummyData()
 
   cd(startDir);
 
+  generateLayoutMat(true);
+
 end

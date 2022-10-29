@@ -28,7 +28,7 @@ end
 
 function  expectedFilename = getExpectedFilename()
   funcDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func');
-  expectedFilename =  fullfile(funcDir, ...
-                               'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.tsv');
+  expectedFilename =  {fullfile(funcDir, ...
+                                'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.tsv')};
 
 end
