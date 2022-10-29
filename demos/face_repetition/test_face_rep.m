@@ -15,9 +15,14 @@ WD = fileparts(mfilename('fullpath'));
 
 addpath(fullfile(WD, '..', '..'));
 
+bidspm();
+
 if download_data
-  bidspm();
   download_face_rep_ds(download_data);
+end
+
+if isOctave
+  warning('off', 'setGraphicWindow:noGraphicWindow');
 end
 
 optionsFile = fullfile(WD, 'options', 'options_task-facerepetition.json');

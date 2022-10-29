@@ -16,6 +16,10 @@ function anatomicalQALesion(opt)
 
   if isOctave()
     warning('\nanatomicalQA is not yet supported on Octave. This step will be skipped.');
+    opt.QA.anat.do = false;
+  end
+
+  if ~opt.QA.anat.do
     return
   end
 

@@ -1,6 +1,6 @@
 function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, run)
   %
-  % Gets the ``_confounds.tsv`` for a given subject, session, run
+  % Gets the potential confounds files for a given subject, session, run
   %
   % USAGE::
   %
@@ -38,6 +38,7 @@ function filename = getConfoundsRegressorFilename(BIDS, opt, subLabel, session, 
   if numel(filename) > 1
     disp(filename);
     errorHandling(mfilename(), 'tooManyFiles', 'This should only get one file.', false, true);
+
   elseif isempty(filename)
     msg = sprintf('No TSV file found in:\n\t%s\nfor query:%s\n', ...
                   BIDS.pth, ...

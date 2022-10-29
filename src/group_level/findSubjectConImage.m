@@ -29,7 +29,7 @@ function file = findSubjectConImage(varargin)
 
   file = {};
 
-  isCharOrCellStr = @(x) ischar(x) || iscellstr(x);
+  isCharOrCellStr = @(x) ischar(x) || isstring(x);
 
   args = inputParser;
 

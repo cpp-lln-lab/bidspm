@@ -13,18 +13,18 @@ function bidspm(varargin)
 
   defaultAction = 'init';
 
-  isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);
+  isEmptyOrCellstr = @(x) isempty(x) || isstring(x);
   isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
 
   isLogical = @(x) islogial(x) && numel(x) == 1;
   isChar = @(x) ischar(x);
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
 
-  isDir = @(x) isdir(x);
+  isFolder = @(x) isfolder(x);
 
-  isCellStr = @(x) iscellstr(x);
+  isCellStr = @(x) isstring(x);
 
-  isLowLevelActionOrDir = @(x) (ismember(x, low_level_actions()) || isdir(x));
+  isLowLevelActionOrDir = @(x) (ismember(x, low_level_actions()) || isfolder(x));
 
   addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
 
@@ -48,7 +48,7 @@ function bidspm(varargin)
   addParameter(args, 'ignore', {}, isEmptyOrCellstr);
 
   % stats only
-  addParameter(args, 'preproc_dir', pwd, isDir);
+  addParameter(args, 'preproc_dir', pwd, isFolder);
   addParameter(args, 'model_file', struct([]), isFileOrStruct);
   addParameter(args, 'roi_based', false, isLogical);
   % group level stats only
@@ -384,7 +384,7 @@ function initBidspm(dev)
   opt.verbosity = 2;
   opt.msg.color = '';
 
-  octaveVersion = '4.0.3';
+  octaveVersion = '6.4.0';
   matlabVersion = '8.6.0';
 
   % octave packages
@@ -547,6 +547,11 @@ function run_tests()
 
   bidspm('action', 'dev');
 
+  % to reduce noise in the output
+  if isOctave
+    warning('off', 'setGraphicWindow:noGraphicWindow');
+  end
+
   cd(fileparts(mfilename('fullpath')));
 
   if isGithubCi
@@ -566,8 +571,7 @@ function run_tests()
   folderToCover = fullfile(pwd, 'src');
   testFolder = fullfile(pwd, 'tests', subfolder);
 
-  success = moxunit_runtests( ...
-                             testFolder, ...
+  success = moxunit_runtests(testFolder, ...
                              '-verbose', '-recursive', '-with_coverage', ...
                              '-cover', folderToCover, ...
                              '-cover_xml_file', 'coverage.xml', ...

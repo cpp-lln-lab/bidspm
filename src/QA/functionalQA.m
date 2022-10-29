@@ -109,7 +109,7 @@ function functionalQA(opt)
                     ']'];
           pattern = ['^', prefix, 'sub-', subLabel];
           if ~strcmp(sessions{iSes}, '')
-            pattern = [pattern, '_ses-', sessions{iSes}];
+            pattern = [pattern, '_ses-', sessions{iSes}]; %#ok<*AGROW>
           end
           pattern = [pattern, '.*', '_task-' thisTask, '.*'];
           if ~strcmp(runs{iRun}, '')
