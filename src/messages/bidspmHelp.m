@@ -136,6 +136,7 @@ function bidspmHelp()
   %           'space', {'individual', 'IXI549Space'}, ...
   %           'options', struct([]), ...,
   %           'roi_based', false, ...
+  %           'design_only', false, ...
   %           'ignore', {}, ...
   %           'task', {}, ...
   %           'fwhm', 6)
@@ -153,16 +154,20 @@ function bidspmHelp()
   % *Optional parameters*
   %
   % :param roi_based:
-  % :type  roi_based:   logical
+  % :type  roi_based:     logical
   %
   % :param task:
-  % :type  task:        cell string
+  % :type  task:          cell string
   %
-  % :param fwhm:        smoothing lelvel of the preprocessed data
-  % :type  fwhm:        positive scalar
+  % :param fwhm:          smoothing lelvel of the preprocessed data
+  % :type  fwhm:          positive scalar
   %
-  % :param ignore:      can be any of ``{'qa'}``
-  % :type  ignore:      cell string
+  % :param design_only:   to only run the model specification when at the group level
+  % :type  design_only:   logical
+  %
+  % :param ignore:        can be any of ``{'qa'}``
+  % :type  ignore:        cell string
+  %
   %
   % **low level calls**
   %

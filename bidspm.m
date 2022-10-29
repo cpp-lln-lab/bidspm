@@ -16,7 +16,7 @@ function bidspm(varargin)
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
   isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
 
-  isLogical = @(x) islogial(x) && numel(x) == 1;
+  isLogical = @(x) islogical(x) && numel(x) == 1;
   isChar = @(x) ischar(x);
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
 
@@ -51,6 +51,7 @@ function bidspm(varargin)
   addParameter(args, 'preproc_dir', pwd, isFolder);
   addParameter(args, 'model_file', struct([]), isFileOrStruct);
   addParameter(args, 'roi_based', false, isLogical);
+  addParameter(args, 'design_only', false, isLogical);
   % group level stats only
   addParameter(args, 'node_name', '', isChar);
 
@@ -195,6 +196,7 @@ function opt = get_options_from_argument(args)
     % stats
     opt.dir.preproc = args.Results.preproc_dir;
     opt.model.file = args.Results.model_file;
+    opt.model.designOnly = args.Results.design_only;
 
     opt = overrideRoiBased(opt, args);
 
@@ -322,16 +324,27 @@ function stats(args)
   contrasts = ismember(action, {'stats', 'contrasts'});
   results = ismember(action, {'stats', 'contrasts', 'results'});
 
+  if opt.model.designOnly
+    contrasts = false;
+    results = false;
+  end
+
   if opt.glm.roibased.do
 
     bidsFFX('specify', opt);
-    bidsRoiBasedGLM(opt);
+    if ~opt.model.designOnly
+      bidsRoiBasedGLM(opt);
+    end
 
   else
 
     if estimate
       if isSubjectLevel
-        bidsFFX('specifyAndEstimate', opt);
+        if opt.model.designOnly
+          bidsFFX('specify', opt);
+        else
+          bidsFFX('specifyAndEstimate', opt);
+        end
       else
         bidsRFX('RFX', opt, 'nodeName', nodeName);
       end
