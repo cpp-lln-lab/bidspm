@@ -324,7 +324,7 @@ function stats(args)
   contrasts = ismember(action, {'stats', 'contrasts'});
   results = ismember(action, {'stats', 'contrasts', 'results'});
 
-  if ~opt.model.designOnly
+  if opt.model.designOnly
     contrasts = false;
     results = false;
   end
