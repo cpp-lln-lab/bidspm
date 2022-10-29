@@ -47,6 +47,4 @@ function filenames = getConfoundsRegressorFilename(BIDS, opt, subLabel, session,
 
   end
 
-  filenames = filenames{1};
-
 end
