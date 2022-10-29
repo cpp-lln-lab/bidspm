@@ -1,4 +1,4 @@
-name: "tests with octave: failure expected"
+name: "tests with octave"
 
 on:
 
@@ -71,7 +71,9 @@ jobs:
         octave $OCTFLAGS --eval "bidspm(); cd demos/MoAE; download_moae_ds(true);"
         cd .github/workflows
         octave $OCTFLAGS --eval "tests_octave;"
-        cat test_report.log | grep 0
+
+    - name: Check tests
+      run: cat test_report.log | grep 0
 
     - name: Code coverage
       uses: codecov/codecov-action@v3
