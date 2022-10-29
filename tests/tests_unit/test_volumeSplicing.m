@@ -10,6 +10,10 @@ end
 
 function test_volumeSplicing_remove_dummies()
 
+  if isOctave()
+    return
+  end
+
   [inputFile, inputData] = setUp();
   outputFile = volumeSplicing(inputFile, 1:4, 'outputFile', 'foo.nii.gz');
 
@@ -22,6 +26,10 @@ function test_volumeSplicing_remove_dummies()
 end
 
 function test_volumeSplicing_overwrite_input()
+
+  if isOctave()
+    return
+  end
 
   inputFile = setUp();
   outputFile = volumeSplicing(inputFile, 1:4);
@@ -36,6 +44,10 @@ function test_volumeSplicing_overwrite_input()
 end
 
 function test_volumeSplicing_remove_middle_vol()
+
+  if isOctave()
+    return
+  end
 
   [inputFile, inputData] = setUp();
   outputFile = volumeSplicing(inputFile, 2:3, 'outputFile', 'foo.nii.gz');
@@ -53,6 +65,8 @@ function [inputFile, inputData] = setUp()
   inputFile = fullfile(getDummyDataDir(), 'nifti_files', 'tmp.nii.gz');
   copyfile(fullfile(getDummyDataDir(), 'nifti_files', 'sub-01_task-auditory_bold.nii.gz'), ...
            inputFile);
+  inputFile = gunzip(inputFile);
+  inputFile = inputFile{1};
   pause(0.005);
   inputData = spm_read_vols(spm_vol(inputFile));
 end
