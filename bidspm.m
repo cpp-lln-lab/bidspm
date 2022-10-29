@@ -16,7 +16,7 @@ function bidspm(varargin)
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
   isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
 
-  isLogical = @(x) islogial(x) && numel(x) == 1;
+  isLogical = @(x) islogical(x) && numel(x) == 1;
   isChar = @(x) ischar(x);
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
 
