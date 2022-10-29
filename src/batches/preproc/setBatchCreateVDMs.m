@@ -54,7 +54,7 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
 
       metadata = bids.query(BIDS, 'metadata', filter);
 
-      if strfind(metadata.IntendedFor, opt.taskName)
+      if any(strfind(metadata.IntendedFor, opt.taskName))
 
         try
           [echotimes, isEPI, totReadTime, blipDir] = getMetadataForVDM(BIDS, filter);

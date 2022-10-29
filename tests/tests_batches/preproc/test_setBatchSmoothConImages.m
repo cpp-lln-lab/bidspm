@@ -10,8 +10,6 @@ end
 
 function test_setBatchSmoothConImages_basic()
 
-  % createDummyData();
-
   opt = setOptions('vismotion', {'01', 'blind01'}, 'pipelineType', 'stats');
 
   opt.fwhm.contrast = 6;

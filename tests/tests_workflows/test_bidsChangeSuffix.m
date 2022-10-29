@@ -10,8 +10,6 @@ end
 
 function test_bidsChangeSuffix_basic()
 
-  % createDummyData();
-
   dataset = 'ds001';
 
   dataDir = getBidsExample('ds001');

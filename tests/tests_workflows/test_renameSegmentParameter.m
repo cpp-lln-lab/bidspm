@@ -12,8 +12,6 @@ end
 
 function test_renameSegmentParameter_basic()
 
-  % createDummyData();
-
   opt = setOptions('MoAE-preproc');
 
   % move test data into temp directory to test renaming

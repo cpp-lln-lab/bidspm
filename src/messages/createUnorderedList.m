@@ -40,6 +40,13 @@ function list = createUnorderedList(list)
       if ~iscell(content)
         content = {content};
       end
+
+      for j = 1:numel(content)
+        if isnumeric(content{j})
+          content{j} = num2str(content{j});
+        end
+      end
+
       output = [output prefix fields{i} ': {' strjoin(content, ', ') '}'];
     end
 

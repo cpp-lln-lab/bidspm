@@ -89,8 +89,6 @@ end
 
 function [subLabel, opt, result] = setUp(task, contrastName)
 
-  % createDummyData();
-
   iCon = 1;
 
   subLabel = '01';
