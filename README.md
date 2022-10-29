@@ -145,11 +145,11 @@ info.
 
 ```bibtex
 @software{bidspm,
-  author  = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo and Shahzad, Iqra and Nunes, Márcia},
+  author = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo and Shahzad, Iqra and Nunes, Márcia and Caron-Guyon, Jeanne and Chouinard-Leclaire, Christine and Yang, Ying},
   license = {GPL-3.0},
   title   = {bidspm},
-  url     = {https://github.com/cpp-lln-lab/bidspm},
-  version = {1.1.5dev},
+  url = {https://github.com/cpp-lln-lab/bidspm},
+  version = {2.1.0dev},
   doi     = {10.5281/zenodo.3554331},
   publisher = {Zenodo},
   journal = {Software}
