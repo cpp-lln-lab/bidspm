@@ -85,6 +85,10 @@ authors:
   orcid: "https://orcid.org/0000-0002-1066-6266"
   affiliation: "Université de Montréal"
 
+- family-names: "Yang"
+  given-names: "Ying"
+  affiliation: "Université catholique de Louvain"
+
 license: GPL-3.0
 
 keywords:
