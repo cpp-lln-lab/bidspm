@@ -26,6 +26,7 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
 
   % (C) Copyright 2019 bidspm developers
 
+  % TODO handle when there are more than one confound file
   if iscell(tsvFile)
     tsvFile = tsvFile{1};
   end

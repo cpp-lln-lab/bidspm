@@ -24,6 +24,7 @@ function test_bidsModelSelection_basic()
                                            'models', ...
                                            'model-vismotionGlobalSignal_smdl.json')};
 
+  opt.verbosity = 3;
   % WHEN
   matlabbatch = bidsModelSelection(opt);
 

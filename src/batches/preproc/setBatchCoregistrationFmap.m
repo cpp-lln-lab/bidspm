@@ -57,7 +57,7 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
         error('Only one file expected');
       end
 
-      if strfind(metadata.IntendedFor, opt.taskName)
+      if any(strfind(metadata.IntendedFor, opt.taskName))
 
         otherImages = cell(2, 1);
         otherImages(2) = bids.query(BIDS, 'data', filter);

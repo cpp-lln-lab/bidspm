@@ -32,7 +32,7 @@ function list = createUnorderedList(list)
 
   elseif isstruct(list)
 
-    output = [];
+    output = '';
     fields = fieldnames(list);
 
     for i = 1:numel(fields)
