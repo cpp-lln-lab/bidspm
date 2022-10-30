@@ -1,19 +1,16 @@
-<!-- markdown-link-check-disable -->
-
 <!-- .. only:: html -->
 
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/cpp-lln-lab/bidspm/main.svg)](https://results.pre-commit.ci/latest/github/cpp-lln-lab/bidspm/main)
+[![miss hit](https://img.shields.io/badge/code%20style-miss_hit-000000.svg)](https://misshit.org/)
 [![Documentation Status: main](https://readthedocs.org/projects/bidspm/badge/?version=stable)](https://bidspm.readthedocs.io/en/stable/?badge=stable)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/bidspm/dev)
-[![miss_hit](https://github.com/cpp-lln-lab/bidspm/actions/workflows/miss_hit.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/miss_hit.yml)
-[![tests with octave](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_tests_octave.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_tests_octave.yml)
 [![tests with matlab](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_tests_matlab.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_tests_matlab.yml)
+[![tests with octave](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_tests_octave.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_tests_octave.yml)
 [![system tests with matlab](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_system_tests_matlab.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_system_tests_matlab.yml)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![codecov](https://codecov.io/gh/cpp-lln-lab/bidspm/branch/master/graph/badge.svg?token=PMQYH0DIPX)](https://codecov.io/gh/cpp-lln-lab/bidspm)
+[![system tests with octave](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_system_tests_octave.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/run_system_tests_octave.yml)
+[![codecov](https://codecov.io/gh/cpp-lln-lab/bidspm/branch/main/graph/badge.svg?token=PMQYH0DIPX)](https://codecov.io/gh/cpp-lln-lab/bidspm)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3554331.svg)](https://doi.org/10.5281/zenodo.3554331)
 [![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](https://github.com/cpp-lln-lab/bidspm#contributors)
-
-<!-- markdown-link-check-enable -->
 
 # bidspm
 
@@ -45,7 +42,7 @@ bidspm()
 ```
 
 Please see our
-[documentation](https://bidspm.readthedocs.io/en/stable/general_information.html)
+[documentation](https://bidspm.readthedocs.io/en/latest/general_information.html)
 for more info.
 
 ## Usage
@@ -53,7 +50,7 @@ for more info.
 For some of its functionality bidspm has a BIDS app like API.
 
 See
-[this page for more information](https://bidspm.readthedocs.io/en/stable/bids_app_api.html).
+[this page for more information](https://bidspm.readthedocs.io/en/latest/usage_notes.html).
 
 ### Preprocessing
 
@@ -87,7 +84,7 @@ bidspm(bids_dir, output_dir, 'subject', ...
 ```
 
 Please see our
-[documentation](https://bidspm.readthedocs.io/en/stable/bids_app_api.html) for
+[documentation](https://bidspm.readthedocs.io/en/latest/usage_notes.html) for
 more info.
 
 ## Features
@@ -138,7 +135,7 @@ used to perform:
 -   GLM auto-correlation check
 
 Please see our
-[documentation](https://bidspm.readthedocs.io/en/stable/index.html) for more
+[documentation](https://bidspm.readthedocs.io/en/latest/index.html) for more
 info.
 
 ## Citation
