@@ -48,7 +48,7 @@ function status = checkToolbox(varargin)
     errorHandling(mfilename(), id, msg, true, verbose);
   end
 
-  status = isdir(fullfile(spm('dir'), 'toolbox', toolboxName));
+  status = isfolder(fullfile(spm('dir'), 'toolbox', toolboxName));
   if status
     return
   end

@@ -1,11 +1,13 @@
-clean:
+clean: clean_local
+	rm -rf bids-examples
+	mkdir bids-examples && touch bids-examples/.gitkeep
+
+clean_local:
 	rm -rf dummyData/derivatives/bidspm-preproc/sub-*
 	rm -rf dummyData/derivatives/bidspm-stats/sub-*
 	rm -rf dummyData/bidspm-raw/sub-*
 	rm -rf dummyData/derivatives/bidspm-stats/group
 	rm -rf dummyData/derivatives/bidspm-*/jobs
-	rm -rf bids-examples
-	mkdir bids-examples && touch bids-examples/.gitkeep
 
 data: clean
 	sh createDummyDataSet.sh

@@ -12,7 +12,7 @@ function test_setBatchCoregistrationFmap_basic()
 
   subLabel = '^01';
 
-  opt = setOptions('vismotion', subLabel);
+  opt = setOptions('vislocalizer', subLabel);
 
   opt.query.acq = '';
 

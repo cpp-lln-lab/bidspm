@@ -268,6 +268,7 @@ for subject in ${subject_list}; do
 			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-${desc}${suffix}.nii
 			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_label-brain_mask.nii
 		done
+		touch ${this_dir}/mean_sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
 
 		if [ ${ses} = '01' ]; then
 			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-mean${suffix}.nii

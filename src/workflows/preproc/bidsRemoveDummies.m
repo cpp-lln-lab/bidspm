@@ -89,4 +89,6 @@ function bidsRemoveDummies(varargin)
 
   end
 
+  cleanUpWorkflow(opt);
+
 end

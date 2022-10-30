@@ -51,4 +51,6 @@ function matlabbatch = bidsGenerateT1map(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
 end

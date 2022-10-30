@@ -57,7 +57,7 @@ function [filter, opt] = fileFilterForBold(opt, subLabel, type)
   filter.extension = {'.nii.*'};
   if strcmp(type, 'confounds')
     filter.extension = '.tsv';
-    filter.suffix = {'regressors', 'timeseries', 'outliers'}; % 'motion',
+    filter.suffix = {'regressors', 'timeseries', 'outliers', 'motion'};
   end
 
   if strcmp(type, 'events')

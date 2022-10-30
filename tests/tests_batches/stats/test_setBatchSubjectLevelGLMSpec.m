@@ -35,8 +35,6 @@ function test_setBatchSubjectLevelGLMSpec_vismotion_acq_1pt6acq()
   [~, dir] = fileparts(matlabbatch{1}.spm.stats.fmri_spec.dir{1});
   assertEqual(dir, 'task-vismotion_acq-1p60mm_space-IXI549Space_FWHM-6');
 
-  cleanUp(fullfile(pwd, 'derivatives'));
-
 end
 
 function test_setBatchSubjectLevelGLMSpec_brain_mask()
@@ -57,8 +55,6 @@ function test_setBatchSubjectLevelGLMSpec_brain_mask()
   %% THEN
   assertEqual(spm_file(matlabbatch{1}.spm.stats.fmri_spec.mask, 'filename'), ...
               {'sub-01_ses-01_space-IXI549Space_desc-brain_mask.nii'});
-
-  cleanUp(fullfile(pwd, 'derivatives'));
 
 end
 
@@ -136,8 +132,6 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.units, 'secs');
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.RT, 1.55);
 
-  cleanUp(fullfile(pwd, 'derivatives'));
-
 end
 
 function test_setBatchSubjectLevelGLMSpec_slicetiming_metadata()
@@ -160,8 +154,6 @@ function test_setBatchSubjectLevelGLMSpec_slicetiming_metadata()
   assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 4);
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t,  14);
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0, 7);
-
-  cleanUp(fullfile(pwd, 'derivatives'));
 
 end
 
@@ -214,6 +206,6 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
   assertEqual(matlabbatch{1}.spm.stats.fmri_design.cvi, 'FAST');
   assertEqual(matlabbatch{1}.spm.stats.fmri_design.bases.hrf.derivs, [1 0]);
 
-  cleanUp(fullfile(pwd, 'derivatives'));
+  createDummyData();
 
 end

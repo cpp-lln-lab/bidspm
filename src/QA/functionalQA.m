@@ -55,7 +55,12 @@ function functionalQA(opt)
   end
 
   if isOctave()
+    opt.QA.func.do = false;
     warning('\nfunctionalQA is not yet supported on Octave. This step will be skipped.');
+
+  end
+
+  if ~opt.QA.func.do
     return
   end
 
@@ -104,7 +109,7 @@ function functionalQA(opt)
                     ']'];
           pattern = ['^', prefix, 'sub-', subLabel];
           if ~strcmp(sessions{iSes}, '')
-            pattern = [pattern, '_ses-', sessions{iSes}];
+            pattern = [pattern, '_ses-', sessions{iSes}]; %#ok<*AGROW>
           end
           pattern = [pattern, '.*', '_task-' thisTask, '.*'];
           if ~strcmp(runs{iRun}, '')

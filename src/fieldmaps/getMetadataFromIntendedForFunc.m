@@ -27,13 +27,14 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
 
   % (C) Copyright 2020 bidspm developers
 
-  for  iFile = 1:size(fmapMetadata.IntendedFor)
+  if ischar(fmapMetadata.IntendedFor)
+    fmapMetadata.IntendedFor = cellstr(fmapMetadata.IntendedFor);
+  end
 
-    if iscell(fmapMetadata.IntendedFor)
-      funcFile = fmapMetadata.IntendedFor{iFile};
-    else
-      funcFile = fmapMetadata.IntendedFor(iFile, :);
-    end
+  for  iFile = 1:numel(fmapMetadata.IntendedFor)
+
+    funcFile = fmapMetadata.IntendedFor{iFile};
+
     funcFile = spm_file(funcFile, 'filename');
 
     funcFile = bids.File(funcFile);

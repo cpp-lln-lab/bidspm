@@ -1,4 +1,4 @@
-name: "tests with octave: failure expected"
+name: "octave: tests"
 
 on:
 
@@ -23,7 +23,7 @@ env:
 jobs:
   tests_octave:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     # only trigger update on upstream repo
     if: github.repository_owner == 'cpp-lln-lab'
@@ -35,11 +35,15 @@ jobs:
         sudo apt-get -y -qq update
         sudo apt-get -y install octave liboctave-dev
 
+    - name: Info
+      run: |
+        octave --version
+
     - name: Clone bidspm
       uses: actions/checkout@v3
       with:
         submodules: true
-        fetch-depth: 2
+        fetch-depth: 0
 
     - name: Install SPM
       run: |
@@ -67,4 +71,15 @@ jobs:
         octave $OCTFLAGS --eval "bidspm(); cd demos/MoAE; download_moae_ds(true);"
         cd .github/workflows
         octave $OCTFLAGS --eval "tests_octave;"
-        cat test_report.log | grep 0
+
+    - name: Check tests
+      run: cat test_report.log | grep 0
+
+    - name: Code coverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: coverage.xml
+        flags: octave
+        name: codecov-octave
+        fail_ci_if_error: false
+        # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits

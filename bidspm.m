@@ -13,14 +13,18 @@ function bidspm(varargin)
 
   defaultAction = 'init';
 
-  isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);
+  isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
   isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
 
-  isLogical = @(x) validateattributes(x, {'logical'}, {'numel', 1});
-  isChar = @(x) validateattributes(x, {'char'}, {'row'});
-  isPositiveScalar = @(x) validateattributes(x, {'numeric'}, {'nonnegative', 'numel', 1});
+  isLogical = @(x) islogical(x) && numel(x) == 1;
+  isChar = @(x) ischar(x);
+  isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
 
-  isLowLevelActionOrDir = @(x) (ismember(x, low_level_actions()) || isdir(x));
+  isFolder = @(x) isfolder(x);
+
+  isCellStr = @(x) iscellstr(x);
+
+  isLowLevelActionOrDir = @(x) (ismember(x, low_level_actions()) || isfolder(x));
 
   addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
 
@@ -28,15 +32,15 @@ function bidspm(varargin)
   addOptional(args, 'analysis_level', 'subject', @(x) ismember(x, {'subject', 'dataset'}));
 
   addParameter(args, 'action', defaultAction, isChar);
-  addParameter(args, 'participant_label', {}, @iscellstr);
-  addParameter(args, 'task', {}, @iscellstr);
+  addParameter(args, 'participant_label', {}, isCellStr);
+  addParameter(args, 'task', {}, isCellStr);
   addParameter(args, 'dry_run', false, isLogical);
   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
   addParameter(args, 'options', struct([]), isFileOrStruct);
   addParameter(args, 'verbosity', 2, isPositiveScalar);
 
   addParameter(args, 'fwhm', 6, isPositiveScalar);
-  addParameter(args, 'space', {}, @iscellstr);
+  addParameter(args, 'space', {}, isCellStr);
 
   % preproc only
   addParameter(args, 'dummy_scans', 0, isPositiveScalar);
@@ -44,9 +48,10 @@ function bidspm(varargin)
   addParameter(args, 'ignore', {}, isEmptyOrCellstr);
 
   % stats only
-  addParameter(args, 'preproc_dir', pwd, @isdir);
+  addParameter(args, 'preproc_dir', pwd, isFolder);
   addParameter(args, 'model_file', struct([]), isFileOrStruct);
   addParameter(args, 'roi_based', false, isLogical);
+  addParameter(args, 'design_only', false, isLogical);
   % group level stats only
   addParameter(args, 'node_name', '', isChar);
 
@@ -178,6 +183,11 @@ function opt = get_options_from_argument(args)
     if ismember('fieldmaps', args.Results.ignore)
       opt.useFieldmaps = false;
     end
+    if ismember('qa', lower(args.Results.ignore))
+      opt.QA.func.do = false;
+      opt.QA.anat.do = false;
+      opt.QA.glm.do = false;
+    end
 
     opt.dummy_scans = args.Results.dummy_scans;
 
@@ -186,6 +196,7 @@ function opt = get_options_from_argument(args)
     % stats
     opt.dir.preproc = args.Results.preproc_dir;
     opt.model.file = args.Results.model_file;
+    opt.model.designOnly = args.Results.design_only;
 
     opt = overrideRoiBased(opt, args);
 
@@ -314,16 +325,27 @@ function stats(args)
   contrasts = ismember(action, {'stats', 'contrasts'});
   results = ismember(action, {'stats', 'contrasts', 'results'});
 
+  if opt.model.designOnly
+    contrasts = false;
+    results = false;
+  end
+
   if opt.glm.roibased.do
 
     bidsFFX('specify', opt);
-    bidsRoiBasedGLM(opt);
+    if ~opt.model.designOnly
+      bidsRoiBasedGLM(opt);
+    end
 
   else
 
     if estimate
       if isSubjectLevel
-        bidsFFX('specifyAndEstimate', opt);
+        if opt.model.designOnly
+          bidsFFX('specify', opt);
+        else
+          bidsFFX('specifyAndEstimate', opt);
+        end
       else
         bidsRFX('RFX', opt, 'nodeName', nodeName);
       end
@@ -376,11 +398,12 @@ function initBidspm(dev)
   opt.verbosity = 2;
   opt.msg.color = '';
 
-  octaveVersion = '4.0.3';
+  octaveVersion = '6.4.0';
   matlabVersion = '8.6.0';
 
   % octave packages
-  installlist = {'io', 'statistics', 'image'};
+  installlist = {};
+  % installlist = {'io', 'statistics', 'image'};
 
   thisDirectory = fileparts(mfilename('fullpath'));
 
@@ -440,6 +463,10 @@ function initBidspm(dev)
                        fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
 
     addpath(BIDSPM_PATHS, '-begin');
+
+    if isOctave
+      warning('off', 'Octave:shadowed-function');
+    end
 
     checkDependencies(opt);
     printCredits(opt);
@@ -534,6 +561,11 @@ function run_tests()
 
   bidspm('action', 'dev');
 
+  % to reduce noise in the output
+  if isOctave
+    warning('off', 'setGraphicWindow:noGraphicWindow');
+  end
+
   cd(fileparts(mfilename('fullpath')));
 
   if isGithubCi
@@ -553,8 +585,7 @@ function run_tests()
   folderToCover = fullfile(pwd, 'src');
   testFolder = fullfile(pwd, 'tests', subfolder);
 
-  success = moxunit_runtests( ...
-                             testFolder, ...
+  success = moxunit_runtests(testFolder, ...
                              '-verbose', '-recursive', '-with_coverage', ...
                              '-cover', folderToCover, ...
                              '-cover_xml_file', 'coverage.xml', ...

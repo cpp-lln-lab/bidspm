@@ -203,6 +203,8 @@ function skipped = bidsRoiBasedGLM(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
 end
 
 function checks(opt)

@@ -27,7 +27,7 @@ function test_plotEvents_vislocalizer()
 
   close all;
 
-  opt = setOptions('vislocalizer', '01', 'pipeline', 'stats');
+  opt = setOptions('vislocalizer', '01', 'pipelineType', 'stats');
 
   BIDS = getLayout(opt);
 
@@ -46,7 +46,7 @@ function test_plotEvents_vismotion()
 
   close all;
 
-  opt = setOptions('vismotion', '01', 'pipeline', 'stats');
+  opt = setOptions('vismotion', '01', 'pipelineType', 'stats');
 
   BIDS = getLayout(opt);
 

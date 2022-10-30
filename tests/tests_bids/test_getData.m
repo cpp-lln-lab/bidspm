@@ -10,6 +10,10 @@ end
 
 function test_getData_invalid_dir()
 
+  if isOctave
+    return
+  end
+
   opt = struct([]);
   bidsDir = fullfile('/foo');
 

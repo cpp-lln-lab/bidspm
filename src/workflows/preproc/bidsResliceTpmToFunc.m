@@ -76,6 +76,8 @@ function bidsResliceTpmToFunc(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
   opt = setRenamingConfig(opt, 'ResliceTpmToFunc');
   bidsRename(opt);
 

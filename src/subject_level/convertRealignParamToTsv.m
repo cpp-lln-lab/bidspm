@@ -1,5 +1,24 @@
 function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
   %
+  % Convert SPM typical realignement files to a BIDs compatible TSV one.
+  %
+  % USAGE::
+  %
+  %     rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
+  %
+  %
+  % :type  rpTxtFile: path
+  % :param rpTxtFile: path to SPM realignement parameter txt file.
+  %
+  % :type  opt: structure
+  % :param opt: Options chosen for the analysis.
+  %             See also: checkOptions
+  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %
+  % :type  rmInput: logical
+  % :param rmInput: Optional. Default to ``false``.
+  %                 If true remove original txt file.
+  %
   %
 
   % (C) Copyright 2019 bidspm developers
@@ -24,8 +43,7 @@ function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
   rpTsvFile = spm_2_bids(rpTxtFile, opt.spm_2_bids);
   rpTsvFile = spm_file(rpTsvFile, 'path', spm_fileparts(rpTxtFile));
 
-  nameColumns = { ...
-                 'trans_x', ...
+  nameColumns = {'trans_x', ...
                  'trans_y', ...
                  'trans_z', ...
                  'rot_x', ...
@@ -43,6 +61,10 @@ function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
     delete(rpTsvFile);
   end
   bids.util.tsvwrite(rpTsvFile, newContent);
+
+  msg = sprintf('%s --> %s\n', spm_file(rpTxtFile, 'filename'), ...
+                spm_file(rpTsvFile, 'filename'));
+  printToScreen(msg, opt);
 
   if rmInput
     delete(rpTxtFile);

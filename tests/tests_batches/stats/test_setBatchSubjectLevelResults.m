@@ -10,8 +10,6 @@ end
 
 function test_setBatchSubjectLevelResults_basic()
 
-  createDummyData();
-
   % IF
   contrast_name = 'VisMot';
   [subLabel, opt, result] = setUp('vismotion', contrast_name);
@@ -90,8 +88,6 @@ function test_setBatchSubjectLevelResults_error_no_matching_contrast()
 end
 
 function [subLabel, opt, result] = setUp(task, contrastName)
-
-  createDummyData();
 
   iCon = 1;
 

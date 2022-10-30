@@ -77,6 +77,8 @@ function matlabbatch = bidsSegmentSkullStrip(opt)
 
   end
 
+  cleanUpWorkflow(opt);
+
   if opt.dryRun || ~opt.rename
     return
   end

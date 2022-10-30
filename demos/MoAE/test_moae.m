@@ -22,30 +22,31 @@ WD = fileparts(mfilename('fullpath'));
 
 addpath(fullfile(WD, '..', '..'));
 
+bidspm();
 if download_data
-  bidspm();
   download_moae_ds(download_data, clean);
+end
+
+warning('off', 'SPM:noDisplay');
+if isOctave
+  warning('off', 'setGraphicWindow:noGraphicWindow');
 end
 
 optionsFile = fullfile(WD, 'options', 'options_task-auditory.json');
 
-space = { 'IXI549Space'
+space = {'individual'
          'IXI549Space'
-         'individual'
+         'IXI549Space'
          'individual'};
-ignore = {
+ignore = {{'unwarp'}
+          {'unwarp', 'qa'}
           {''}
-          {'unwarp'}
-          {'unwarp'}
-          {''}
-         };
+          {''}};
 
-models = {
+models = {fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')
           fullfile(WD, 'models', 'model-MoAE_smdl.json')
           fullfile(WD, 'models', 'model-MoAE_smdl.json')
-          fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')
-          fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')
-         };
+          fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')};
 
 for iOption = 1:numel(space)
 
@@ -66,6 +67,16 @@ for iOption = 1:numel(space)
   %% stats
   preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
+  % only specify the subject level model
+  bidspm(bids_dir, output_dir, 'subject', ...
+         'participant_label', {'01'}, ...
+         'action', 'stats', ...
+         'preproc_dir', preproc_dir, ...
+         'model_file', models{iOption}, ...
+         'options', optionsFile, ...
+         'design_only', true);
+
+  % specify, estimate model and contrasts, and view results
   bidspm(bids_dir, output_dir, 'subject', ...
          'participant_label', {'01'}, ...
          'action', 'stats', ...
@@ -76,5 +87,15 @@ for iOption = 1:numel(space)
   cd(WD);
 
   rmdir(fullfile(WD, 'outputs', 'derivatives'), 's');
+
+  % with Octave running more n-1 loop in CI is fine
+  % but not running crashes with a segmentation fault
+  % /home/runner/work/_temp/fb8e9d58-fa9f-4f93-8c96-387973f3632e.sh: line 2:
+  % 7487 Segmentation fault      (core dumped) octave $OCTFLAGS --eval "run system_tests_facerep;"
+  %
+  % not sure why
+  if isOctave
+    break
+  end
 
 end

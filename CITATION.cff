@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 
-title: "BIDSpm"
+title: "bidspm"
 
 version: 2.1.0dev
 
@@ -84,6 +84,11 @@ authors:
   given-names: "Christine"
   orcid: "https://orcid.org/0000-0002-1066-6266"
   affiliation: "Université de Montréal"
+
+- family-names: "Yang"
+  given-names: "Ying"
+  orcid: "https://orcid.org/0000-0002-4157-2975"
+  affiliation: "Université catholique de Louvain"
 
 license: GPL-3.0
 

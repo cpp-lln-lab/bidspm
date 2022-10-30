@@ -39,6 +39,10 @@ function bidsCopyInputFolder(varargin)
 
   opt = loadAndCheckOptions(opt);
 
+  if ~isfield(opt, 'globalStart')
+    opt.globalStart = elapsedTime(opt, 'globalStart');
+  end
+
   cleanCrash();
 
   printWorkflowName('copy data', opt);

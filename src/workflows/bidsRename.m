@@ -67,8 +67,6 @@ function bidsRename(opt)
 
   end
 
-  cleanUpWorkflow(opt);
-
 end
 
 function renameFileAndUpdateMetadata(opt, data, newFilename, json, createdFiles)

@@ -71,7 +71,7 @@ function bidspmHelp()
   % :type  space:             cell string
   %
   % :param options:           See the ``checkOptions`` help to see the available options.
-  % :type  options:            path to JSON file or structure
+  % :type  options:           path to JSON file or structure
   %
   % .. note::
   %
@@ -94,7 +94,7 @@ function bidspmHelp()
   %           'task', {}, ...
   %           'dummy_scans', 0, ...       % specific to preprocessing
   %           'anat_only', false, ...     % specific to preprocessing
-  %           'ignore', {}, ...           % specific to preprocessing
+  %           'ignore', {}, ...
   %           'fwhm', 6)
   %
   %
@@ -114,7 +114,7 @@ function bidspmHelp()
   % :param anat_only:
   % :type  anat_only:   logical
   %
-  % :param ignore:      can be any of ``{'fieldmaps', 'slicetiming', 'unwarp'}``
+  % :param ignore:      can be any of ``{'fieldmaps', 'slicetiming', 'unwarp', 'qa'}``
   % :type  ignore:      cell string
   %
   % :param fwhm:        smoothing to apply to the preprocessed data
@@ -136,6 +136,8 @@ function bidspmHelp()
   %           'space', {'individual', 'IXI549Space'}, ...
   %           'options', struct([]), ...,
   %           'roi_based', false, ...
+  %           'design_only', false, ...
+  %           'ignore', {}, ...
   %           'task', {}, ...
   %           'fwhm', 6)
   %
@@ -152,13 +154,19 @@ function bidspmHelp()
   % *Optional parameters*
   %
   % :param roi_based:
-  % :type  roi_based:   logical
+  % :type  roi_based:     logical
   %
   % :param task:
-  % :type  task:        cell string
+  % :type  task:          cell string
   %
-  % :param fwhm:        smoothing lelvel of the preprocessed data
-  % :type  fwhm:        positive scalar
+  % :param fwhm:          smoothing lelvel of the preprocessed data
+  % :type  fwhm:          positive scalar
+  %
+  % :param design_only:   to only run the model specification when at the group level
+  % :type  design_only:   logical
+  %
+  % :param ignore:        can be any of ``{'qa'}``
+  % :type  ignore:        cell string
   %
   %
   % **low level calls**
