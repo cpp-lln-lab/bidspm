@@ -34,19 +34,18 @@ end
 
 optionsFile = fullfile(WD, 'options', 'options_task-auditory.json');
 
-space = {'IXI549Space'
+space = {'individual'
          'IXI549Space'
-         'individual'
+         'IXI549Space'
          'individual'};
-ignore = {{''}
+ignore = {{'unwarp'}
           {'unwarp', 'qa'}
-          {'unwarp'}
           {''}
-         };
+          {''}};
 
-models = {fullfile(WD, 'models', 'model-MoAE_smdl.json')
+models = {fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')
           fullfile(WD, 'models', 'model-MoAE_smdl.json')
-          fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')
+          fullfile(WD, 'models', 'model-MoAE_smdl.json')
           fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')};
 
 for iOption = 1:numel(space)

@@ -30,6 +30,13 @@ optionsFile = fullfile(WD, 'options', 'options_task-facerepetition.json');
 
 model_file = fullfile(WD, 'models', 'model-faceRepetition_smdl.json');
 
+% skip unwarping with octave to avoid failure in CI
+% see https://github.com/cpp-lln-lab/bidspm/issues/769
+ignore = {''};
+if isOctave
+  ignore = {'unwarp'};
+end
+
 for iResolution = 2:3
 
   opt.pipeline.name = ['bidspm-res' num2str(iResolution)];
@@ -46,6 +53,7 @@ for iResolution = 2:3
          'action', 'preprocess', ...
          'task', {'facerepetition'}, ...
          'space', {'IXI549Space'}, ...
+         'ignore', ignore, ...
          'options', opt);
 
   %% stats
