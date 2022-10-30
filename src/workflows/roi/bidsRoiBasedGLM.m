@@ -72,7 +72,7 @@ function skipped = bidsRoiBasedGLM(opt)
     if noSPMmat(opt, subLabel, spmFile)
       continue
     end
-    load(spmFile);
+    load(spmFile, 'SPM');
     model = mardo(SPM);
 
     eventSpec = getEventSpecificationRoiGlm(spmFile, opt.model.file);
@@ -108,21 +108,21 @@ function skipped = bidsRoiBasedGLM(opt)
       roiObject = maroi_matrix(roiObject);
 
       % Extract data and do MarsBaR estimation
-      try
-        data = get_marsy(roiObject, model, 'mean', 'v');
-        estimation = estimate(model, data);
-      catch
-        msg = sprintf(['\nFAILED : Extract data & MarsBaR estimation.\n', ...
-                       'Skipping:\n- subject: %s \n- ROI: %s\n'], ...
-                      subLabel,  ...
-                      spm_file(roiList{iROI, 1}, 'filename'));
-        id = 'roiGlmFailed';
-        errorHandling(mfilename(), id, msg, true, opt.verbosity);
-
-        skipped.subject{end + 1} = subLabel;
-        skipped.roi{end + 1} = spm_file(roiList{iROI, 1}, 'filename');
-        continue
-      end
+      %       try
+      data = get_marsy(roiObject, model, 'mean', 'v');
+      estimation = estimate(model, data);
+      %       catch
+      %         msg = sprintf(['\nFAILED : Extract data & MarsBaR estimation.\n', ...
+      %                        'Skipping:\n- subject: %s \n- ROI: %s\n'], ...
+      %                       subLabel,  ...
+      %                       spm_file(roiList{iROI, 1}, 'filename'));
+      %         id = 'roiGlmFailed';
+      %         errorHandling(mfilename(), id, msg, true, opt.verbosity);
+      %
+      %         skipped.subject{end + 1} = subLabel;
+      %         skipped.roi{end + 1} = spm_file(roiList{iROI, 1}, 'filename');
+      %         continue
+      %       end
 
       timeCourse = {};
       dt = [];
