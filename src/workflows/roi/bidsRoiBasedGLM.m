@@ -108,21 +108,38 @@ function skipped = bidsRoiBasedGLM(opt)
       roiObject = maroi_matrix(roiObject);
 
       % Extract data and do MarsBaR estimation
-      %       try
       data = get_marsy(roiObject, model, 'mean', 'v');
-      estimation = estimate(model, data);
-      %       catch
-      %         msg = sprintf(['\nFAILED : Extract data & MarsBaR estimation.\n', ...
-      %                        'Skipping:\n- subject: %s \n- ROI: %s\n'], ...
-      %                       subLabel,  ...
-      %                       spm_file(roiList{iROI, 1}, 'filename'));
-      %         id = 'roiGlmFailed';
-      %         errorHandling(mfilename(), id, msg, true, opt.verbosity);
-      %
-      %         skipped.subject{end + 1} = subLabel;
-      %         skipped.roi{end + 1} = spm_file(roiList{iROI, 1}, 'filename');
-      %         continue
-      %       end
+      try
+        estimation = estimate(model, data);
+      catch  ME
+        if strcmp(ME.identifier, 'MATLAB:spdiags:InvalidSizeBFourInput')
+          fprintf(1, '\n');
+          msg = sprintf(['\n---------------------------------------------------', ...
+                         '\nFAILED : Extract data & MarsBaR estimation.', ...
+                         '\nSkipping:', ...
+                         '\n- subject: %s', ...
+                         '\n- ROI: %s', .....
+                         '\n---------------------------------------------------', ...
+                         '\n'], ...
+                        subLabel,  ...
+                        spm_file(roiList{iROI, 1}, 'filename'));
+          id = 'roiGlmFailed';
+          errorHandling(mfilename(), id, msg, true, 3);
+          if ~strcmp(SPM.xVi.form(1:2), 'AR')
+            warning(['\n---------------------------------------------------', ...
+                     '\nConsider using AR(1) instead of %s', ...
+                     '\nfor SerialCorrelation correction', ...
+                     '\nin your model specification.', ...
+                     '\n---------------------------------------------------', ...
+                     '\n'], SPM.xVi.form);
+          end
+
+          skipped.subject{end + 1} = subLabel;
+          skipped.roi{end + 1} = spm_file(roiList{iROI, 1}, 'filename');
+          continue
+        end
+
+      end
 
       timeCourse = {};
       dt = [];
@@ -132,7 +149,7 @@ function skipped = bidsRoiBasedGLM(opt)
 
         [timeCourse{1, iCon}, dt(:, iCon)] = event_fitted(estimation, ...
                                                           eventSpec(iCon).eventSpec, ...
-                                                          eventSpec(iCon).duration);
+                                                          eventSpec(iCon).duration); %#ok<*AGROW>
 
         % TODO Add contrast
         % Add contrast, return model, and contrast index
