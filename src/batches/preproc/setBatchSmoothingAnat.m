@@ -62,6 +62,9 @@ function matlabbatch = setBatchSmoothingAnat(matlabbatch, BIDS, opt, subLabel)
         break
       end
 
+      anatImage = cellstr(anatImage);
+      anatDataDir = cellstr(anatDataDir);
+
       for iFile = 1:numel(anatImage)
         files{iFile, 1} = validationInputFile(anatDataDir{iFile}, ...
                                               anatImage{iFile}); %#ok<*AGROW>
