@@ -62,9 +62,9 @@ function matlabbatch = setBatchSmoothingAnat(matlabbatch, BIDS, opt, subLabel)
         break
       end
 
-      for iFile = 1:size(anatImage, 1)
-        files{iFile, 1} = validationInputFile(anatDataDir(iFile, :), ...
-                                              anatImage(iFile, :)); %#ok<*AGROW>
+      for iFile = 1:numel(anatImage)
+        files{iFile, 1} = validationInputFile(anatDataDir{iFile}, ...
+                                              anatImage{iFile}); %#ok<*AGROW>
       end
 
       % add the files to list
