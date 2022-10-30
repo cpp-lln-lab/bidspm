@@ -1,4 +1,4 @@
-name: system tests with matlab
+name: "matlab: system tests"
 
 # Uses the cron schedule for github actions
 #
