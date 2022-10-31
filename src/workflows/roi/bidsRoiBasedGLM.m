@@ -10,8 +10,14 @@ function skipped = bidsRoiBasedGLM(opt)
   %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
-  % Will compute the absolute maximum percent signal change and the time course of the events
-  % or blocks of contrast specified in the BIDS model and save and plot the results
+  % Returns:
+  %
+  % - skipped:
+  %
+  % Will compute the absolute maximum percent signal change
+  % and the time course of the events
+  % or blocks of contrast specified in the BIDS model
+  % and save and plot the results
   % in tsv / json / jpeg files.
   %
   % .. warning::
@@ -113,7 +119,9 @@ function skipped = bidsRoiBasedGLM(opt)
         estimation = estimate(model, data);
       catch  ME
         if strcmp(ME.identifier, 'MATLAB:spdiags:InvalidSizeBFourInput')
+
           fprintf(1, '\n');
+
           msg = sprintf(['\n---------------------------------------------------', ...
                          '\nFAILED : Extract data & MarsBaR estimation.', ...
                          '\nSkipping:', ...
@@ -125,13 +133,16 @@ function skipped = bidsRoiBasedGLM(opt)
                         spm_file(roiList{iROI, 1}, 'filename'));
           id = 'roiGlmFailed';
           errorHandling(mfilename(), id, msg, true, 3);
+
           if ~strcmp(SPM.xVi.form(1:2), 'AR')
-            warning(['\n---------------------------------------------------', ...
-                     '\nConsider using AR(1) instead of %s', ...
-                     '\nfor SerialCorrelation correction', ...
-                     '\nin your model specification.', ...
-                     '\n---------------------------------------------------', ...
-                     '\n'], SPM.xVi.form);
+            msg = sprintf(['\n---------------------------------------------------', ...
+                           '\nConsider using AR(1) instead of %s', ...
+                           '\nfor SerialCorrelation correction', ...
+                           '\nin your model specification.', ...
+                           '\n---------------------------------------------------', ...
+                           '\n'], SPM.xVi.form);
+            id = 'roiGlmFailedFAST';
+            errorHandling(mfilename(), id, msg, true, 3);
           end
 
           skipped.subject{end + 1} = subLabel;
