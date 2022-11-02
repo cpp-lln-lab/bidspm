@@ -15,6 +15,10 @@ function matlabbatch = setBatchInverseNormalize(matlabbatch, BIDS, opt, subLabel
 
   % (C) Copyright 2022 bidspm developers
 
+  if ischar(imgToResample)
+    imgToResample = cellstr(imgToResample);
+  end
+
   % locate 1 deformation field
   filter = struct('sub', subLabel, ...
                   'suffix', opt.bidsFilterFile.xfm.suffix, ...
