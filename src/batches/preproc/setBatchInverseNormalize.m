@@ -50,7 +50,7 @@ function matlabbatch = setBatchInverseNormalize(matlabbatch, BIDS, opt, subLabel
 
   matlabbatch{end + 1}.spm.spatial.normalise.write.subj.def(1) = deformationField;
   matlabbatch{end}.spm.spatial.normalise.write.woptions.vox = nan(1, 3);
-  matlabbatch{end}.spm.spatial.normalise.write.subj.resample(1) = imgToResample;
+  matlabbatch{end}.spm.spatial.normalise.write.subj.resample = imgToResample;
   matlabbatch{end}.spm.spatial.normalise.write.woptions.bb = nan(2, 3);
 
 end

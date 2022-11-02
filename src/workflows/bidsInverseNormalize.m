@@ -38,7 +38,7 @@ function matlabbatch = bidsInverseNormalize(opt)
   if ~opt.dryRun && opt.rename
 
     map =  Mapping();
-    nameSpec = struct('entities', struct('space', opt.bidsFilterFile.roi.to));
+    nameSpec = struct('entities', struct('space', opt.bidsFilterFile.xfm.to));
     map = map.add_mapping('prefix', map.norm, 'name_spec', nameSpec);
     map = map.flatten_mapping();
     opt.spm_2_bids = map;

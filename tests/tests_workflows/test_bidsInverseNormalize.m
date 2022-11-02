@@ -12,7 +12,7 @@ function test_bidsInverseNormalize_basic()
 
   opt = setOptions('vismotion');
 
-  opt.verbosity = 3;
+  opt.verbosity = 0;
 
   opt.bidsFilterFile.roi.suffix = 'probseg';
   opt.bidsFilterFile.roi.space = 'IXI549Space';
