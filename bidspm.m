@@ -36,6 +36,7 @@ function bidspm(varargin)
   addParameter(args, 'task', {}, isCellStr);
   addParameter(args, 'dry_run', false, isLogical);
   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
+  addParameter(args, 'skip_validation', false, isLogical);
   addParameter(args, 'options', struct([]), isFileOrStruct);
   addParameter(args, 'verbosity', 2, isPositiveScalar);
 
@@ -633,10 +634,18 @@ end
 %% helpers functions
 
 function validate(args)
+
+  if ~args.Results.skip_validation
+    return
+  end
+
   % run validation if validator is installed locally
   [sts, msg] = bids.validate(args.Results.bids_dir);
   if sts == 1 && ~startsWith(msg, 'Require')
-    return
+    error('\nBIDS validation of %s failed:\n\n%s\n\nCheck with\n: %s', ...
+          args.Results.bids_dir, ...
+          msg, ...
+          'https://bids-standard.github.io/bids-validator/');
   else
     disp(msg);
   end
