@@ -68,7 +68,10 @@ function bidsCreateROI(opt)
 
       printProcessingSubject(iSub, subLabel, opt);
 
+      matlabbatch = {};
       matlabbatch = setBatchInverseNormalize(matlabbatch, BIDS, opt, subLabel, roiList);
+
+      deformationField = matlabbatch{1}.spm.spatial.normalise.write.subj.def{1};
 
       saveAndRunWorkflow(matlabbatch, 'inverseNormalize', opt, subLabel);
 
@@ -92,7 +95,7 @@ function bidsCreateROI(opt)
 
       for iROI = 1:size(roiList, 1)
 
-        roiBidsFile = buildIndividualSpaceRoiFilename(deformationField{1}, roiList{iROI, 1});
+        roiBidsFile = buildIndividualSpaceRoiFilename(deformationField, roiList{iROI, 1});
 
         spm_mkdir(fullfile(opt.dir.roi, roiBidsFile.bids_path, 'roi'));
 
