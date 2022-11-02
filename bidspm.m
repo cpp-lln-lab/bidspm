@@ -100,6 +100,8 @@ function bidspm(varargin)
 
     case 'preprocess'
 
+      validate(args);
+
       if ~strcmp(args.Results.analysis_level, 'subject')
         errorHandling(mfilename(), ...
                       'noGroupLevelPreproc', ...
@@ -110,6 +112,8 @@ function bidspm(varargin)
       preprocess(args);
 
     case {'stats', 'contrasts', 'results'}
+
+      validate(args);
 
       stats(args);
 
@@ -627,6 +631,16 @@ function value = allowed_actions()
 end
 
 %% helpers functions
+
+function validate(args)
+  % run validation if validator is installed locally
+  [sts, msg] = bids.validate(args.Results.bids_dir);
+  if sts == 1 && ~startsWith(msg, 'Require')
+    return
+  else
+    disp(msg);
+  end
+end
 
 function detectBidspm()
 
