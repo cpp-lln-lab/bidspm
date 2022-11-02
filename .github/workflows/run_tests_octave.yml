@@ -42,7 +42,7 @@ jobs:
     - name: Clone bidspm
       uses: actions/checkout@v3
       with:
-        submodules: true
+        submodules: recursive
         fetch-depth: 0
 
     - name: Install SPM

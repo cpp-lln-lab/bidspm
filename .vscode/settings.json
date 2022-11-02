@@ -5,5 +5,5 @@
         "url": "https://bids-standard.github.io/stats-models/BIDSStatsModel.json"
         }
     ],
-    "esbonio.sphinx.confDir": ""
+    "files.associations": {"*.m": "matlab"}
 }

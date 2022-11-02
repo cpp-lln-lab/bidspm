@@ -40,6 +40,29 @@ function opt = setRenamingConfig(opt, workflowName)
       map = map.add_mapping('prefix', map.realign, ...
                             'name_spec', name_spec);
 
+    case 'lesiondetection'
+
+      nameSpec = struct('prefix', '', 'suffix', 'roi', ...
+                        'entities', struct('label', 'lesion'));
+      prefix =  'Lesion_binary_';
+      map = replaceMapping(map, prefix, nameSpec);
+
+      nameSpec = struct('prefix', '', 'suffix', 'roi', ...
+                        'entities', struct('label', 'lesion', ...
+                                           'desc', 'contour'));
+      prefix =  'Lesion_contour_';
+      map = replaceMapping(map, prefix, nameSpec);
+
+      nameSpec = struct('prefix', '', 'suffix', 'roi', ...
+                        'entities', struct('label', 'lesion', ...
+                                           'desc', 'fuzzy'));
+      prefix =  'Lesion_fuzzy_';
+      map = replaceMapping(map, prefix, nameSpec);
+
+      nameSpec = struct('prefix', '', 'suffix', 'outliers');
+      prefix =  'Outliers_low_';
+      map = replaceMapping(map, prefix, nameSpec);
+
     case 'lesionsegmentation'
 
       res = opt.toolbox.ALI.unified_segmentation.step1vox;
@@ -67,6 +90,27 @@ function opt = setRenamingConfig(opt, workflowName)
       idx = map.find_mapping('prefix', [map.realign 'c4']);
       map = map.rm_mapping(idx);
       map = map.add_mapping('prefix', [map.realign 'c4'], ...
+                            'name_spec', nameSpec);
+
+      nameSpec = map.cfg.segment.gm_norm;
+      nameSpec.entities.res = res;
+      idx = map.find_mapping('prefix', [map.norm 'c1']);
+      map = map.rm_mapping(idx);
+      map = map.add_mapping('prefix', [map.norm 'c1'], ...
+                            'name_spec', nameSpec);
+
+      nameSpec = map.cfg.segment.wm_norm;
+      nameSpec.entities.res = res;
+      idx = map.find_mapping('prefix', [map.norm 'c2']);
+      map = map.rm_mapping(idx);
+      map = map.add_mapping('prefix', [map.norm 'c2'], ...
+                            'name_spec', nameSpec);
+
+      nameSpec = map.cfg.segment.csf_norm;
+      nameSpec.entities.res = res;
+      idx = map.find_mapping('prefix', [map.norm 'c3']);
+      map = map.rm_mapping(idx);
+      map = map.add_mapping('prefix', [map.norm 'c3'], ...
                             'name_spec', nameSpec);
 
       nameSpec = map.cfg.segment.gm_norm;

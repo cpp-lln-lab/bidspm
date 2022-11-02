@@ -18,10 +18,18 @@ function bidsSmoothing(opt)
   % (C) Copyright 2020 bidspm developers
 
   opt.dir.input = opt.dir.preproc;
-  opt.query.modality = 'func';
+
+  modality = 'func';
+  if ~isempty(opt.query.modality)
+    modality = opt.query.modality;
+  end
+  opt.query.modality = modality;
+
+  clear modality;
+
   opt.query.space = opt.space;
 
-  [BIDS, opt] = setUpWorkflow(opt, 'smoothing functional data');
+  [BIDS, opt] = setUpWorkflow(opt, 'smoothing data');
 
   for iSub = 1:numel(opt.subjects)
 
@@ -29,10 +37,31 @@ function bidsSmoothing(opt)
 
     printProcessingSubject(iSub, subLabel, opt);
 
-    matlabbatch = {};
-    matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel);
+    for i = 1:numel(opt.query.modality)
 
-    saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(opt.fwhm.func)], opt, subLabel);
+      modality  = opt.query.modality{i};
+
+      switch modality
+        case 'func'
+          matlabbatch = {};
+          matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel);
+          saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(opt.fwhm.func)], ...
+                             opt, ...
+                             subLabel);
+        case 'anat'
+          % TODO opt.fwhm.func should also have a opt.fwhm.anat
+          matlabbatch = {};
+          matlabbatch = setBatchSmoothingAnat(matlabbatch, BIDS, opt, subLabel);
+          saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(opt.fwhm.func)], ...
+                             opt, ...
+                             subLabel);
+        otherwise
+          notImplemented(mfilename(), ...
+                         sprintf('smoothing for modality %s not implemented', modality), ...
+                         true);
+      end
+
+    end
 
   end
 
