@@ -4,10 +4,10 @@ import sys
 from typing import IO
 from typing import Optional
 
-import _version
 import rich
 
-__version__ = _version.get_versions()["version"]
+
+__version__ = "v2.2.0"
 
 
 class MuhParser(argparse.ArgumentParser):
@@ -19,7 +19,7 @@ def base_parser():
 
     parser = MuhParser(
         description="bidspm is a SPM base BIDS app",
-        epilog=f"""
+        epilog="""
         \n- all parameters use ``snake_case``,
         \n- most "invalid" calls simply initialize bidspm.
 

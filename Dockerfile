@@ -9,7 +9,7 @@ ENV LANG="en_US.UTF-8" \
     LC_ALL="en_US.UTF-8"
 
 #TODO how to update this with the content of the current version
-LABEL version="1.1.5dev"
+LABEL version="2.2.0"
 
 LABEL maintainer="Rémi Gau <remi.gau@gmail.com>"
 

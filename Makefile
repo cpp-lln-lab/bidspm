@@ -24,7 +24,7 @@ endef
 export PRINT_HELP_PYSCRIPT
 
 # TODO make more general to use the local matlab version
-MATLAB = /usr/local/MATLAB/R2017a/bin/matlab
+MATLAB = /usr/local/MATLAB/R2018a/bin/matlab
 ARG    = -nodisplay -nosplash -nodesktop
 
 ################################################################################
@@ -34,8 +34,10 @@ ARG    = -nodisplay -nosplash -nodesktop
 
 help: ## Show what this Makefile can do
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+
 clean: clean_demos clean_doc clean_test ## Remove all the clutter
 	rm -rf version.txt
+
 clean_demos: ## Remove all the output of the demo
 	rm -rf demos/*/cfg
 	rm -rf demos/*/outputs/derivatives
@@ -46,27 +48,24 @@ clean_demos: ## Remove all the output of the demo
 clean_test:	## Remove all the output of the tests
 	rm *.log
 	rm -rf coverage_html
+
 update: update.sh ## Tries to get the latest version of the current branch from upstream
 	bash update.sh
 
 fix_submodule: ## Fix any submodules that would not be checked out
 	git submodule update --init --recursive && git submodule update --recursive
 
-# TODO should update the version in
-# - the doc conf.py
-# - in the reference in the README
-# - dockerfile
-version.txt: CITATION.cff
-	grep -w "^version" CITATION.cff | sed "s/version: /v/g" > version.txt
+bump_version:
+	bash bump_version.sh
 
 validate_cff: ## Validate the citation file
 	cffconvert --validate
 
+release: validate_cff bump_version lint manual
+
 
 ################################################################################
 #   doc
-
-.PHONY: clean_doc manual
 
 clean_doc:
 	cd docs && make clean
@@ -77,8 +76,6 @@ manual: ## Build PDF version of the doc
 
 ################################################################################
 #   lint
-
-.PHONY: lint lint_matlab lint_python
 
 lint: lint_matlab lint_python ## Clean MATLAB and python code
 
@@ -93,11 +90,12 @@ lint_python: ## Clean python code
 ################################################################################
 #   test
 
-.PHONY: test system_test
-test: run_tests.m initCppSpm.m src tests ## Run tests with coverage
+test: ## Run tests with coverage
 	$(MATLAB) $(ARG) -r "run_tests; exit()"
-system_test: manualTests/test_moae.m initCppSpm.m src demos/MoAE/options demos/MoAE/models ## Run system tests
-	$(MATLAB) $(ARG) -r "cd manualTests; test_moae; exit()"
+
+system_test: ## Run system tests
+	$(MATLAB) $(ARG) -r "cd demos/face_repetition/; test_face_rep; exit()"
+	$(MATLAB) $(ARG) -r "cd demos/MoAE/; test_moae; exit()"
 
 
 ################################################################################
