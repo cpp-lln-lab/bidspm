@@ -208,12 +208,12 @@ output_name = spm_2_bids(input_name, opt.spm_2_bids);
 %
 % The `bidsRename` workflow uses this to rename all "SPM files" at the end of each step.
 
-demo_dir = fullfile(pwd, '..', 'demos', 'MoAE');
+demo_dir = fullfile(pwd, '..', 'MoAE');
 
 opt.taskName = 'auditory';
 
-opt.dir.raw = fullfile(demo_dir, 'inputs', 'raw');
 opt.dir.derivatives = fullfile(demo_dir, 'outputs', 'derivatives');
+opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
 
 opt = checkOptions(opt);
 
