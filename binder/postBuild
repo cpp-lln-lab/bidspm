@@ -3,7 +3,6 @@
 git config --global --add user.name "Ford Escort"
 git config --global --add user.email 42@H2G2.com
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 nvm use 18
 node -v && npm -v
 npm install -g bids-validator

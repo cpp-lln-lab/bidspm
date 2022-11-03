@@ -34,7 +34,7 @@ function status = test_notebooks()
           run(matlab_script);
         catch
           status = false;
-          failed(end + 1) = matlab_script; %#ok<AGROW>
+          failed{end + 1} = matlab_script; %#ok<AGROW>
 
         end
       end
@@ -42,7 +42,7 @@ function status = test_notebooks()
     end
 
     for f = 1:numel(failed)
-      warning('\n\tRunning %s failed.\n', notebooks(failed(f)).name);
+      warning('\n\tRunning %s failed.\n', failed{f});
     end
 
   end
