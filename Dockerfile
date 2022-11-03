@@ -14,20 +14,28 @@ LABEL version="2.2.0"
 
 LABEL maintainer="Rémi Gau <remi.gau@gmail.com>"
 
-## Install SPM
-# basic OS tools install and also octave
+
+## basic OS tools install, node, npm also octave
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    build-essential \
+    build-essential software-properties-common\
     curl \
-    octave \
-    liboctave-dev && \
-    apt-get clean && \
+    octave liboctave-dev \
+    nodejs npm
+
+## add python
+RUN add-apt-repository ppa:deadsnakes/ppa && apt-get update
+RUN apt install python3.10
+
+RUN python --version
+
+RUN apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
         /var/*/apt/*/partial \
         /var/lib/apt/lists/* \
         /var/log/apt/term*
 
+## Install SPM
 RUN mkdir /opt/spm12 && \
     curl -SL https://github.com/spm/spm12/archive/r7771.tar.gz | \
     tar -xzC /opt/spm12 --strip-components 1 && \
@@ -41,15 +49,6 @@ RUN mkdir /opt/spm12 && \
 RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();"
 
 ## Install nods and bids validator
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    nodejs npm && \
-    apt-get clean && \
-    rm -rf \
-        /tmp/hsperfdata* \
-        /var/*/apt/*/partial \
-        /var/lib/apt/lists/* \
-        /var/log/apt/term*
-
 RUN node -v && npm -v && npm install -g bids-validator
 
 ## Install BIDSpm in user folder
@@ -66,7 +65,7 @@ WORKDIR /home/neuro/
 COPY [".", "/home/neuro/bidspm/"]
 
 RUN git clone --branch v2.2.0 --depth 1 --recursive https://github.com/cpp-lln-lab/bidspm.git
-
+RUN cd bidspm && pip install .
 RUN cd bidspm && octave --no-gui --eval "bidspm; savepath();"
 
 ENTRYPOINT ["octave"]

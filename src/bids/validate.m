@@ -11,6 +11,7 @@ function validate(args)
 
   % run validation if validators are installed locally
 
+  printToScreen(sprintf('\nValidating bids dataset:\s %s\n', args.Results.bids_dir));
   [sts_data, msg_data] = bids.validate(args.Results.bids_dir);
   if sts_data == 1 && ~startsWith(msg_data, 'Require')
     msg_data = sprintf('\nBIDS validation of %s failed:\n\n%s\n\nCheck with\n: %s\n\n', ...
