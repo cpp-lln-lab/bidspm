@@ -14,7 +14,6 @@ LABEL version="2.2.0"
 
 LABEL maintainer="Rémi Gau <remi.gau@gmail.com>"
 
-
 ## basic OS tools install, node, npm also octave
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
     build-essential software-properties-common\
@@ -25,8 +24,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
 ## add python
 RUN add-apt-repository ppa:deadsnakes/ppa && apt-get update
 RUN apt-get -y install python3.10 python3-pip
-
-RUN python3 --version
 
 RUN apt-get clean && \
     rm -rf \
@@ -45,7 +42,6 @@ RUN mkdir /opt/spm12 && \
     make -C /opt/spm12/src PLATFORM=octave && \
     make -C /opt/spm12/src PLATFORM=octave install && \
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
-
 RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();"
 
 ## Install nods and bids validator
@@ -62,7 +58,7 @@ RUN git clone --branch v2.2.0 --depth 1 --recursive https://github.com/cpp-lln-l
 
 RUN cd bidspm && pip3 install .
 RUN echo '\n'
-RUN pip3 list
+RUN python3 --version && pip3 list
 RUN echo '\n'
 
 RUN cd bidspm && octave --no-gui --eval "bidspm; savepath();"
