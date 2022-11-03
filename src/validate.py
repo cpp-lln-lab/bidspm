@@ -22,6 +22,7 @@ def validate(file: Path) -> None:
     Please use the validator: https://bids-standard.github.io/stats-models/validator.html"""
         )
         log.warning(e)
+        sys.exit(1)
 
 
 def main(argv: Any = sys.argv) -> None:
