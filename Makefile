@@ -34,7 +34,7 @@ ARG    = -nodisplay -nosplash -nodesktop
 
 install:
 	npm install -g bids-validator
-	pip install bsmschema
+	pip install .
 
 help: ## Show what this Makefile can do
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)

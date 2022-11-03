@@ -39,6 +39,17 @@ jobs:
       run: |
         octave --version
 
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install validators
+      run: make install
+
     - name: Clone bidspm
       uses: actions/checkout@v3
       with:
