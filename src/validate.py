@@ -16,13 +16,14 @@ def validate(file: Path) -> None:
     log.info(f"Validating {file}")
     try:
         BIDSStatsModel.parse_file(file)
+        return 0
     except pydantic.error_wrappers.ValidationError as e:
         log.warning(
             f"""{file} is not a valid BIDS Stats Model file.
     Please use the validator: https://bids-standard.github.io/stats-models/validator.html"""
         )
         log.warning(e)
-        sys.exit(1)
+        return 1
 
 
 def main(argv: Any = sys.argv) -> None:
@@ -36,11 +37,16 @@ def main(argv: Any = sys.argv) -> None:
         raise FileNotFoundError(f"{input_} does not exist.")
 
     elif input_.is_file():
-        validate(input_)
+        sts = validate(input_)
+        sys.exit(sts)
 
     if input_.is_dir():
+        global_status = 0
         for file in input_.glob("*_smdl.json"):
-            validate(file)
+            sts = validate(file)
+            if sts == 1:
+                global_status = 1
+        sys.exit(global_status)
 
 
 if __name__ == "__main__":
