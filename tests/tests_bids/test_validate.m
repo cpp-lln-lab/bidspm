@@ -56,7 +56,7 @@ function test_validate_model_warning()
   args.Results.skip_validation = false;
   args.Results.action = 'stats';
   args.Results.bids_dir = opt.dir.raw;
-  args.Results.model_file = fullfile(getRootDir(), 'demos', 'transformers', 'models');
+  args.Results.model_file = fullfile(returnRootDir(), 'demos', 'transformers', 'models');
   args.Results.verbosity = 3;
 
   assertWarning(@() validate(args), 'validate:invalidModel');
