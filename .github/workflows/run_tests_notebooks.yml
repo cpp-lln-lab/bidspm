@@ -1,29 +1,7 @@
-name: "matlab: system tests"
-
-# Uses the cron schedule for github actions
-#
-# https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows#scheduled-events
-#
-# ┌───────────── minute (0 - 59)
-# │ ┌───────────── hour (0 - 23)
-# │ │ ┌───────────── day of the month (1 - 31)
-# │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
-# │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
-# │ │ │ │ │
-# │ │ │ │ │
-# │ │ │ │ │
-# * * * * *
+name: "test notebooks"
 
 on:
 
-  push:
-    branches:
-      - main
-      - dev
-    paths:
-      - '**.m'
-      - '.github/workflows/*system*'
-      - 'lib'
   pull_request:
     branches:
       - main
@@ -31,8 +9,6 @@ on:
       - '**.m'
       - '.github/workflows/*system*'
       - 'lib'
-  schedule:
-    - cron: "0 0 1,15 * *"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -46,16 +22,11 @@ jobs:
 
     runs-on: ubuntu-22.04
 
-    strategy:
-      matrix:
-        script: [moae, facerep, fmriprep]
-      fail-fast: false
-
     steps:
       - name: Install dependencies
         run: |
           sudo apt-get -y -qq update
-          sudo apt-get -y install unzip wget
+          sudo apt-get -y install unzip wget tree
 
       - name: Install MATLAB
         uses: matlab-actions/setup-matlab@v1.2.2
@@ -76,7 +47,7 @@ jobs:
       - name: Copy Macs toolbox to SPM inputs_folder
         run: cp -rv lib/MACS spm12/toolbox/MACS
 
-      - name: Run ${{ matrix.script }}
+      - name: Test notebooks
         uses: matlab-actions/run-command@v1.1.1
         with:
-          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_${{ matrix.script }};
+          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), 'demos')); run test_notebooks;

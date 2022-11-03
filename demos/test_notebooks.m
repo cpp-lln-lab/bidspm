@@ -5,26 +5,45 @@ function status = test_notebooks()
 
   status = true;
 
-  notebooks = dir(pwd);
+  this_dir = fileparts(mfilename('fullpath'));
+
+  folders = dir(this_dir);
 
   failed = [];
 
-  for nb = 1:numel(notebooks)
-    if regexp(notebooks(nb).name, '^BIDS_Matlab.*m$')
-      fprintf(1, '\n');
-      disp(notebooks(nb).name);
-      fprintf(1, '\n');
-      try
-        run(notebooks(nb).name);
-      catch
-        status = false;
-        failed(end + 1) = nb;
-      end
-    end
-  end
+  for idir = 1:numel(folders)
 
-  for f = 1:numel(failed)
-    warning('\n\tRunning %s failed.\n', notebooks(failed(f)).name);
+    if ~folders(idir).isdir
+      continue
+    end
+
+    notebooks = dir(fullfile(this_dir, folders(idir).name));
+
+    for nb = 1:numel(notebooks)
+
+      if regexp(notebooks(nb).name, '^.*.ipynb$')
+
+        fprintf(1, '\n');
+        disp(notebooks(nb).name);
+        fprintf(1, '\n');
+
+        [~, name] = fileparts(notebooks(nb).name);
+        matlab_script = fullfile(this_dir, folders(idir).name, [name, '.m']);
+
+        try
+          run(matlab_script);
+        catch
+          status = false;
+          failed(end + 1) = nb; %#ok<AGROW>
+        end
+      end
+
+    end
+
+    for f = 1:numel(failed)
+      warning('\n\tRunning %s failed.\n', notebooks(failed(f)).name);
+    end
+
   end
 
 end
