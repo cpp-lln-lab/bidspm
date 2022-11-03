@@ -15,7 +15,6 @@ function davg = getDist2surf(varargin)
   %
   % :returns: - :davg: (float) (1 x 1)
   %
-  % Example::
   %
 
   % (C) Copyright 2022 bidspm developers

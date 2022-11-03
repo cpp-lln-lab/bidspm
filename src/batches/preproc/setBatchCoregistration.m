@@ -25,10 +25,6 @@ function matlabbatch = setBatchCoregistration(varargin)
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
   %
-  % EXAMPLE::
-  %
-  %
-  %
 
   % (C) Copyright 2020 bidspm developers
 
