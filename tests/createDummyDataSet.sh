@@ -303,6 +303,8 @@ for subject in ${subject_list}; do
 		touch ${this_dir}/${prefix}sub-${subject}_ses-${ses}${suffix}.nii
 	done
 
+
+
 	space='individual'
 
 	touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_desc-biascor${suffix}.nii
@@ -320,6 +322,9 @@ for subject in ${subject_list}; do
 	touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_res-bold_label-WM_probseg.nii
 	touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_res-hi_desc-preproc${suffix}.nii
 	touch ${this_dir}/sub-${subject}_ses-${ses}_space-${space}_desc-brain_mask.nii
+
+	# deformation fields
+	touch ${this_dir}/sub-${subject}_ses-${ses}_from-IXI549Space_to-T1w_mode-image_xfm.nii
 
 	# STATS
 	task_list='vismotion vislocalizer'

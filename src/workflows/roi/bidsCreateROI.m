@@ -68,47 +68,10 @@ function bidsCreateROI(opt)
 
       printProcessingSubject(iSub, subLabel, opt);
 
-      %% inverse normalize
-
-      % locate 1 deformation field
-      filter = struct('sub', subLabel, ...
-                      'suffix', 'xfm', ...
-                      'to', opt.bidsFilterFile.t1w.suffix, ...
-                      'extension', '.nii');
-      if isfield(opt.bidsFilterFile.t1w, 'ses')
-        filter.ses = opt.bidsFilterFile.t1w.ses;
-      end
-
-      deformationField = bids.query(BIDS, 'data', filter);
-
-      if isempty(deformationField)
-        tolerant = true;
-        msg = sprintf('No deformation field for subject %s', subLabel);
-        id = 'noDeformationField';
-        errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
-        continue
-      end
-
-      if numel(deformationField) > 1
-        tolerant = false;
-        msg = sprintf(['Too deformation field for subject %s:', ...
-                       '\n%s', ...
-                       '\n\nSpecify the target session in "opt.bidsFilterFile.t1w.ses"'], ...
-                      subLabel, ...
-                      createUnorderedList(deformationField));
-        id = 'tooManyDeformationField';
-        errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
-      end
-
-      % set batch
       matlabbatch = {};
-      for iROI = 1:size(roiList, 1)
-        matlabbatch = setBatchNormalize(matlabbatch, ...
-                                        deformationField, ...
-                                        nan(1, 3), ...
-                                        roiList(iROI, :));
-        matlabbatch{end}.spm.spatial.normalise.write.woptions.bb = nan(2, 3);
-      end
+      matlabbatch = setBatchInverseNormalize(matlabbatch, BIDS, opt, subLabel, roiList);
+
+      deformationField = matlabbatch{1}.spm.spatial.normalise.write.subj.def{1};
 
       saveAndRunWorkflow(matlabbatch, 'inverseNormalize', opt, subLabel);
 
@@ -132,7 +95,7 @@ function bidsCreateROI(opt)
 
       for iROI = 1:size(roiList, 1)
 
-        roiBidsFile = buildIndividualSpaceRoiFilename(deformationField{1}, roiList{iROI, 1});
+        roiBidsFile = buildIndividualSpaceRoiFilename(deformationField, roiList{iROI, 1});
 
         spm_mkdir(fullfile(opt.dir.roi, roiBidsFile.bids_path, 'roi'));
 
