@@ -16,6 +16,10 @@ end
 
 function test_validate_dataset()
 
+  if isOctave()
+    return
+  end
+
   args.Results.skip_validation = false;
   args.Results.bids_dir = pwd;
   assertExceptionThrown(@() validate(args), 'validate:invalidBidsDataset');
