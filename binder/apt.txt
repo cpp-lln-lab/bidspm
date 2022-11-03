@@ -4,3 +4,5 @@ octave
 liboctave-dev
 gnuplot
 ghostscript
+nodejs
+npm
