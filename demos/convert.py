@@ -22,24 +22,30 @@ for ntbk in notebooks:
         for cell in nb["cells"]:
 
             if cell["cell_type"] == "markdown":
-                for line in cell["source"]:
-                    print(f"% {line}", file=f, end="")
-                print(
-                    "\n",
-                    file=f,
-                )
+                for i, line in enumerate(cell["source"]):
+                    line = line.rstrip()
+                    ending = "\n"
+                    if i == len(cell["source"]) - 1:
+                        ending = ""
+                    if line == "":
+                        print("%", file=f)
+                    else:
+                        print(f"% {line.rstrip()}{ending}", file=f, end="")
 
             if cell["cell_type"] == "code":
-                print(
-                    "%%\n",
-                    file=f,
-                )
-                for line in cell["source"]:
-                    if line.startswith("https://"):
-                        print(f"% {line}", file=f, end="")
+                for i, line in enumerate(cell["source"]):
+                    line = line.rstrip()
+                    ending = "\n"
+                    if i == len(cell["source"]) - 1:
+                        ending = ""
+                    if line == "":
+                        print("", file=f)
+                    elif not line.endswith(";") and not line.endswith("..."):
+                        print(f"{line.rstrip()};{ending}", file=f, end="")
                     else:
-                        print(f"{line}", file=f, end="")
-                print(
-                    "\n",
-                    file=f,
-                )
+                        print(f"{line.rstrip()}{ending}", file=f, end="")
+
+            print(
+                "\n",
+                file=f,
+            )
