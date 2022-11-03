@@ -9,7 +9,7 @@ function status = test_notebooks()
 
   folders = dir(this_dir);
 
-  failed = [];
+  failed = {};
 
   for idir = 1:numel(folders)
 
@@ -34,7 +34,8 @@ function status = test_notebooks()
           run(matlab_script);
         catch
           status = false;
-          failed(end + 1) = nb; %#ok<AGROW>
+          failed(end + 1) = matlab_script; %#ok<AGROW>
+
         end
       end
 

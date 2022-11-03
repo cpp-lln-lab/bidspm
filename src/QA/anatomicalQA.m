@@ -64,9 +64,6 @@ function anatomicalQA(opt)
 
     bids.util.jsonwrite(fullfile(outputDir, bf.filename), anatQA);
 
-    bf.suffix = 'qa';
-    bf.extension = '.png';
-
   end
 
 end
