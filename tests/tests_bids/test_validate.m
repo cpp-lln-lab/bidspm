@@ -29,7 +29,7 @@ function test_validate_quiet()
   args.Results.skip_validation = false;
   args.Results.action = 'preproc';
   args.Results.bids_dir = opt.dir.raw;
-  args.Results.versbosity = 0;
+  args.Results.verbosity = 0;
 
   validate(args);
 
