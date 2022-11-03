@@ -1,49 +1,14 @@
-import argparse
-import logging
 import sys
 from pathlib import Path
 from typing import Any
 
 import pydantic
 from bsmschema.models import BIDSStatsModel
-from rich.logging import RichHandler
 
-log = logging.getLogger("bidspm")
+from src.parsers import bidspm_log
+from src.parsers import validate_parser
 
-
-def bidspm_log(name: str = "bidspm") -> logging.Logger:
-    """Create log."""
-
-    FORMAT = "bidspm - %(asctime)s - %(levelname)s - %(message)s"
-
-    if not name:
-        name = "rich"
-
-    logging.basicConfig(
-        level="INFO", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()]
-    )
-
-    return logging.getLogger(name)
-
-
-def validate_parser():
-
-    log = bidspm_log(name="bidspm")
-
-    parser = argparse.ArgumentParser(
-        description="validate bids stats model",
-    )
-
-    parser.add_argument(
-        "model",
-        help="""
-        The bids stats model file. If a directory is provided,
-        all files ending in '_smdl.json' will be validated.
-        """,
-        nargs=1,
-    )
-
-    return parser
+log = bidspm_log(name="bidspm")
 
 
 def validate(file: Path) -> None:
