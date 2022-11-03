@@ -68,9 +68,6 @@
 
 % ## Initialize bidspm
 
-clear;
-clc;
-
 this_dir = fileparts(mfilename('fullpath'));
 
 addpath(fullfile(this_dir, '..', '..'));

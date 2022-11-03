@@ -62,9 +62,6 @@
 
 % addpath('/home/remi/matlab/SPM/spm12');
 
-clear;
-clc;
-
 this_dir = fileparts(mfilename('fullpath'));
 
 addpath(fullfile(this_dir, '..', '..'));
