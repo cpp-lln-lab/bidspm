@@ -61,9 +61,9 @@ RUN mkdir code input output
 RUN git clone --branch v2.2.0 --depth 1 --recursive https://github.com/cpp-lln-lab/bidspm.git
 
 RUN cd bidspm && pip3 install .
-ECHO '\n'
+RUN echo '\n'
 RUN pip3 list
-ECHO '\n'
+RUN echo '\n'
 
 RUN cd bidspm && octave --no-gui --eval "bidspm; savepath();"
 
