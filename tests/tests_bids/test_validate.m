@@ -49,7 +49,7 @@ function test_validate_model()
 
 end
 
-function test_validate_model()
+function test_validate_model_warning()
 
   opt = setOptions('MoAE');
 

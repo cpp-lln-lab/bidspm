@@ -36,32 +36,41 @@ git clone \
 ```
 
 To start using bidspm, you just need to initialize it for this MATLAB / Octave
-session with::
+session with:
 
 ```matlab
 bidspm()
 ```
 
-If you want to run bids dataset and bids stats model validation
-through bidspm,
-you will need to install their validators and install the bidspm package.
+Please see our
+[documentation](https://bidspm.readthedocs.io/en/latest/installation.html) for
+more info.
 
-If you have [node.js](https://nodejs.org/en/download/) and
-[python3](https://www.python.org/downloads/) installed,
-you can install all of this with:
+### Validation dependencies
+
+If you want to validate bids dataset and bids stats model through bidspm, you
+will need:
+
+-   [python3](https://www.python.org/downloads/)
+-   [node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+
+You can then install:
+
+-   the bids validator
+-   the bidspm package
+
+by running from the command line in the root folder of the repository:
 
 ```bash
 make install
 ```
 
+or
+
 ```bash
 npm install -g bids-validator
 pip install .
 ```
-
-Please see our
-[documentation](https://bidspm.readthedocs.io/en/latest/installation.html)
-for more info.
 
 ## Usage
 
