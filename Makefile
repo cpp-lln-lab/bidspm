@@ -32,6 +32,10 @@ ARG    = -nodisplay -nosplash -nodesktop
 
 .PHONY: help clean clean_demos clean_test update fix_submodule
 
+install:
+	npm install -g bids-validator
+	pip install bsmschema
+
 help: ## Show what this Makefile can do
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 clean: clean_demos clean_doc clean_test ## Remove all the clutter

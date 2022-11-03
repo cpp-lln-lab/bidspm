@@ -635,7 +635,7 @@ end
 
 function validate(args)
 
-  if ~args.Results.skip_validation
+  if args.Results.skip_validation
     return
   end
 
