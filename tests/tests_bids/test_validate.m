@@ -43,7 +43,7 @@ function test_validate_model()
   args.Results.action = 'stats';
   args.Results.bids_dir = opt.dir.raw;
   args.Results.model_file = fullfile(opt.dir.raw, '..', '..', 'models');
-  args.Results.versbosity = 3;
+  args.Results.verbosity = 3;
 
   assertWarning(@() validate(args), 'validate:invalidModel');
 

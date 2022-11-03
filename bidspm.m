@@ -155,7 +155,7 @@ function opt = get_options_from_argument(args)
       opt = checkOptions(struct());
     end
 
-    opt.versbosity = args.Results.versbosity;
+    opt.verbosity = args.Results.verbosity;
 
     opt.dir.raw = args.Results.bids_dir;
     opt.dir.derivatives = args.Results.output_dir;
