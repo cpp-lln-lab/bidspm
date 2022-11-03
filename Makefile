@@ -54,13 +54,13 @@ clean_test:	## Remove all the output of the tests
 	rm -rf coverage_html
 
 update: update.sh ## Tries to get the latest version of the current branch from upstream
-	bash update.sh
+	bash tools/update.sh
 
 fix_submodule: ## Fix any submodules that would not be checked out
 	git submodule update --init --recursive && git submodule update --recursive
 
 bump_version:
-	bash bump_version.sh
+	bash tools/bump_version.sh
 
 validate_cff: ## Validate the citation file
 	cffconvert --validate
