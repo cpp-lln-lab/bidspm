@@ -24,9 +24,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
 
 ## add python
 RUN add-apt-repository ppa:deadsnakes/ppa && apt-get update
-RUN apt install python3.10
+RUN apt-get -y install python3.10 python3-pip
 
-RUN python --version
+RUN python3 --version
 
 RUN apt-get clean && \
     rm -rf \
@@ -54,18 +54,19 @@ RUN node -v && npm -v && npm install -g bids-validator
 ## Install BIDSpm in user folder
 RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
 
-USER neuro
-
 WORKDIR /home/neuro
+RUN mkdir code input output
 
-RUN mkdir code output bidspm
-
-WORKDIR /home/neuro/
-
-COPY [".", "/home/neuro/bidspm/"]
-
+# COPY . /home/neuro/bidspm # this is for local development
 RUN git clone --branch v2.2.0 --depth 1 --recursive https://github.com/cpp-lln-lab/bidspm.git
-RUN cd bidspm && pip install .
+
+RUN cd bidspm && pip3 install .
+ECHO '\n'
+RUN pip3 list
+ECHO '\n'
+
 RUN cd bidspm && octave --no-gui --eval "bidspm; savepath();"
+
+USER neuro
 
 ENTRYPOINT ["octave"]
