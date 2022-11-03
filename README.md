@@ -42,8 +42,25 @@ session with::
 bidspm()
 ```
 
+If you want to run bids dataset and bids stats model validation
+through bidspm,
+you will need to install their validators and install the bidspm package.
+
+If you have [node.js](https://nodejs.org/en/download/) and
+[python3](https://www.python.org/downloads/) installed,
+you can install all of this with:
+
+```bash
+make install
+```
+
+```bash
+npm install -g bids-validator
+pip install .
+```
+
 Please see our
-[documentation](https://bidspm.readthedocs.io/en/latest/general_information.html)
+[documentation](https://bidspm.readthedocs.io/en/latest/installation.html)
 for more info.
 
 ## Usage

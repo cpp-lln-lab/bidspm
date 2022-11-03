@@ -45,6 +45,20 @@ function test_validate_model()
   args.Results.model_file = fullfile(opt.dir.raw, '..', '..', 'models');
   args.Results.verbosity = 3;
 
+  validate(args);
+
+end
+
+function test_validate_model()
+
+  opt = setOptions('MoAE');
+
+  args.Results.skip_validation = false;
+  args.Results.action = 'stats';
+  args.Results.bids_dir = opt.dir.raw;
+  args.Results.model_file = fullfile(getRootDir(), 'demos', 'transformers', 'models');
+  args.Results.verbosity = 3;
+
   assertWarning(@() validate(args), 'validate:invalidModel');
 
 end

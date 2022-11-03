@@ -214,7 +214,7 @@ function bidspmHelp()
   %
   %  For a more readable version of this help section,
   %  see the online <a
-  %  href="https://bidspm.readthedocs.io/en/stable/bids_app_api.html">documentation</a>.
+  %  href="https://bidspm.readthedocs.io/en/latest/usage_notes.html">documentation</a>.
   %
 
   % (C) Copyright 2022 bidspm developers
