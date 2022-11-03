@@ -67,11 +67,6 @@ function anatomicalQA(opt)
     bf.suffix = 'qa';
     bf.extension = '.png';
 
-    movefile(fullfile(pwd, 'spmup_QC-Brain Mask_001.png'), ...
-             fullfile(outputDir,  bf.filename));
-
-    delete(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
-
   end
 
 end
