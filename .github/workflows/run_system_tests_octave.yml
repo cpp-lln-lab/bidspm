@@ -67,9 +67,6 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install validators
-      run: make install
-
     - name: Info
       run: |
         octave --version
@@ -79,6 +76,9 @@ jobs:
       with:
         submodules: recursive
         fetch-depth: 0
+
+    - name: Install validators
+      run: make install
 
     - name: Get moae fmriprep data from OSF
       run: |
