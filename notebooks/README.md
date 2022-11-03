@@ -22,7 +22,7 @@
 
 1.  Install [Octave kernel](https://pypi.org/project/octave-kernel/):
     `pip install octave_kernel`. If you have already run
-    `pip install -r requirements.txt`, you should be fine.
+    `pip install .[demo]`, you should be fine.
 
 1.  Run `jupyter lab` or `jupyter notebook` in your terminal. `Octave` should
     appear on the list of kernels available for creating a new notebook.
