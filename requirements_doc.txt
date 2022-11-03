@@ -1,7 +1,7 @@
 # only for Read the docs
 myst-parser
 rstcheck
-sphinx >= 2.0
+sphinx
 sphinx-argparse
 sphinx-copybutton
 sphinx_rtd_theme

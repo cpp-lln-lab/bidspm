@@ -64,8 +64,6 @@ function anatomicalQA(opt)
 
     bids.util.jsonwrite(fullfile(outputDir, bf.filename), anatQA);
 
-    delete(fullfile(anatDataDir, [spm_file(anatImage, 'basename') '_anatQA.txt']));
-
   end
 
 end

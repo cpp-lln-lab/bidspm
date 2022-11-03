@@ -31,6 +31,3 @@
 	path = lib/octache
 	url = https://github.com/Remi-Gau/Octache.git
 	datalad-url = https://github.com/Remi-Gau/Octache.git
-[submodule "tools/stats_model"]
-	path = tools/stats_model
-	url = https://github.com/bids-standard/stats-models.git

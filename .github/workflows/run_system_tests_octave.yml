@@ -59,6 +59,14 @@ jobs:
         sudo apt-get -y -qq update
         sudo apt-get -y install octave liboctave-dev
 
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
     - name: Info
       run: |
         octave --version
@@ -68,6 +76,9 @@ jobs:
       with:
         submodules: recursive
         fetch-depth: 0
+
+    - name: Install validators
+      run: make install
 
     - name: Get moae fmriprep data from OSF
       run: |

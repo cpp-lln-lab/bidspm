@@ -155,6 +155,8 @@ function opt = get_options_from_argument(args)
       opt = checkOptions(struct());
     end
 
+    opt.verbosity = args.Results.verbosity;
+
     opt.dir.raw = args.Results.bids_dir;
     opt.dir.derivatives = args.Results.output_dir;
 
@@ -632,24 +634,6 @@ function value = allowed_actions()
 end
 
 %% helpers functions
-
-function validate(args)
-
-  if ~args.Results.skip_validation
-    return
-  end
-
-  % run validation if validator is installed locally
-  [sts, msg] = bids.validate(args.Results.bids_dir);
-  if sts == 1 && ~startsWith(msg, 'Require')
-    error('\nBIDS validation of %s failed:\n\n%s\n\nCheck with\n: %s', ...
-          args.Results.bids_dir, ...
-          msg, ...
-          'https://bids-standard.github.io/bids-validator/');
-  else
-    disp(msg);
-  end
-end
 
 function detectBidspm()
 

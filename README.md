@@ -1,4 +1,5 @@
-<!-- .. only:: html -->
+<!-- needed to ignore badges when building doc -->
+<!-- .. only:: not latex -->
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/cpp-lln-lab/bidspm/main.svg)](https://results.pre-commit.ci/latest/github/cpp-lln-lab/bidspm/main)
 [![miss hit](https://img.shields.io/badge/code%20style-miss_hit-000000.svg)](https://misshit.org/)
@@ -35,15 +36,41 @@ git clone \
 ```
 
 To start using bidspm, you just need to initialize it for this MATLAB / Octave
-session with::
+session with:
 
 ```matlab
 bidspm()
 ```
 
 Please see our
-[documentation](https://bidspm.readthedocs.io/en/latest/general_information.html)
-for more info.
+[documentation](https://bidspm.readthedocs.io/en/latest/installation.html) for
+more info.
+
+### Validation dependencies
+
+If you want to validate bids dataset and bids stats model through bidspm, you
+will need:
+
+-   [python3](https://www.python.org/downloads/)
+-   [node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+
+You can then install:
+
+-   the bids validator
+-   the bidspm package
+
+by running from the command line in the root folder of the repository:
+
+```bash
+make install
+```
+
+or
+
+```bash
+npm install -g bids-validator
+pip install .
+```
 
 ## Usage
 
@@ -146,7 +173,7 @@ info.
   license = {GPL-3.0},
   title   = {bidspm},
   url = {https://github.com/cpp-lln-lab/bidspm},
-  version = {2.1.0dev},
+  version = {2.2.0}
   doi     = {10.5281/zenodo.3554331},
   publisher = {Zenodo},
   journal = {Software}
