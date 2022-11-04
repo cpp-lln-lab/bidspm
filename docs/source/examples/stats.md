@@ -1,11 +1,13 @@
 ## fMRI statistical analysis
 
-The fMRI data were analysed with bidspm (v1.1.5dev;
+The fMRI data were analysed with bidspm (v2.2.0;
 https://github.com/cpp-lln-lab/bidspm; DOI:
 https://doi.org/10.5281/zenodo.3554331) using statistical parametric mapping
 (SPM12 - 7771; Wellcome Center for Neuroimaging, London, UK;
-https://www.fil.ion.ucl.ac.uk/spm; RRID:SCR_007037) using MATLAB 9.2.0.538062
-(R2017a) on a unix computer (Ubuntu 18.04.6 LTS).
+https://www.fil.ion.ucl.ac.uk/spm; RRID:SCR_007037) using MATLAB 9.4.0.813654
+(R2018a) on a unix computer (Linux version 5.15.0-52-generic
+(buildd@lcy02-amd64-032) (gcc (Ubuntu 11.2.0-19ubuntu1) 11.2.0, GNU ld (GNU
+Binutils for Ubuntu) 2.38) #58-Ubuntu SMP Thu Oct 13 08:03:55 UTC 2022 ).
 
 The input data were the preprocessed BOLD images in IXI549Space space for the
 task " facerepetition ".
@@ -39,7 +41,7 @@ to account for residual motion artefacts, .
 
 ## References
 
-This method section was automatically generated using bidspm (v1.1.5dev;
+This method section was automatically generated using bidspm (v2.2.0;
 https://github.com/cpp-lln-lab/bidspm; DOI:
 https://doi.org/10.5281/zenodo.3554331) and octache
 (https://github.com/Remi-Gau/Octache).

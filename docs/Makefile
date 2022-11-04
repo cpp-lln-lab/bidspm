@@ -1,5 +1,6 @@
-# Minimal makefile for Sphinx documentation
-#
+# TODO make more general to use the local matlab version
+MATLAB = /usr/local/MATLAB/R2018a/bin/matlab
+ARG    = -nodisplay -nosplash -nodesktop
 
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
@@ -33,13 +34,23 @@ help:
 clean:
 	rm -rf $(BUILDDIR)
 	rm -f bidspm-manual.pdf
-clean_default_options: source/default_options.m
-	sed -i "s@/home/remi/matlab/SPM/spm12@spm12_dir@g" source/default_options.m
-	sed -i "s@/home/remi/github/bidspm/docs/derivatives@derivatives@g" source/default_options.m
-	sed -i "s@/home/remi/github/bidspm/docs/jobs@jobs@g" source/default_options.m
-	sed -i "s@\t@ @g" source/default_options.m
+
 view:
 	$(BROWSER) build/html/index.html
 
 bidspm-manual.pdf:
 	bash create_manual.sh
+
+boilerplate:
+	$(MATLAB) $(ARG) -r "print_boilerplate; exit()"
+	rm -fr reports
+
+clean_default_options:
+	$(MATLAB) $(ARG) -r "print_default_options; exit()"
+	sed -i "s@/home/remi/matlab/SPM/spm12@spm12_dir@g" source/default_options.m
+	sed -i "s@/home/remi/github/bidspm/docs/derivatives@derivatives@g" source/default_options.m
+	sed -i "s@/home/remi/github/bidspm/docs/jobs@jobs@g" source/default_options.m
+	sed -i "s@\t@ @g" source/default_options.m
+
+default_mapping:
+	$(MATLAB) $(ARG) -r "print_spm_to_bids_mapping; exit()"
