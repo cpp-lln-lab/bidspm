@@ -34,7 +34,7 @@ function [matlabbatch, opt] = setBatchSegmentation(matlabbatch, opt, imageToSegm
   % save bias corrected image = true
   preproc.channel.write = [false true];
 
-  % firts part assumes we are in the bidsSpatialPreproc workflow
+  % first part assumes we are in the bidsSpatialPreproc workflow
   if isfield(opt, 'orderBatches') && isfield(opt.orderBatches, 'selectAnat')
 
     % SAVE BIAS CORRECTED IMAGE

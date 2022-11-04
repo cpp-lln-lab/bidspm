@@ -107,7 +107,7 @@ In the end your whole analysis should look like this.
 │       │   ├── MoAE
 │       │   ├── openneuro
 │       │   ├── tSNR
-│       │   └── vismotion          # <--- your scrips are there
+│       │   └── vismotion          # <--- your scripts are there
 │       ├── docs
 │       ├── lib
 │       ├── manualTests

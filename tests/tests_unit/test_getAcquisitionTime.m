@@ -10,7 +10,7 @@ function test_suite = test_getAcquisitionTime %#ok<*STOUT>
   initTestSuite;
 end
 
-% add test for mutli echo
+% add test for multi echo
 
 function test_getAcquisitionTime_basic()
 

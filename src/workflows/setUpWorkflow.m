@@ -2,7 +2,7 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir, indexData)
   %
   % Calls some common functions to:
   %
-  %   - check the configuraton,
+  %   - check the configuration,
   %   - remove some old files from an eventual previous crash
   %   - loads the layout of the BIDS dataset
   %   - tries to open a graphic window

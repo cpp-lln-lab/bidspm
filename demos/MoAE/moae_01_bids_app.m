@@ -80,7 +80,7 @@ download_data = true;
 clean = false;
 download_moae_ds(download_data, clean);
 
-% If the `tree` command is intalled on your computer, you view it:
+% If the `tree` command is installed on your computer, you view it:
 
 system('tree inputs/raw');
 
@@ -99,7 +99,7 @@ system('tree inputs/raw');
 % - smooth the data
 
 % You can type `bidspm help` to get more info
-% on the arguements and parameters needed by the bidspm app.
+% on the arguments and parameters needed by the bidspm app.
 %
 % But it follows the general pattern of any bidsapp:
 %

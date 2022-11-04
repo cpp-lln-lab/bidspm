@@ -54,10 +54,10 @@ end
 
 function outliers = identifyOutliers(data, nameFlipUnilateral)
 
-  % The iqrMethod sub-function indentifies outliers that are higher than a
+  % The iqrMethod sub-function identifies outliers that are higher than a
   % certain value (unilateral) or within a certain range (bilateral).
   % Each metric of interest can be "switched" (if higher values mean
-  % better quality like for SNR) and can be thresholded unilateraly or not.
+  % better quality like for SNR) and can be thresholded unilaterally or not.
 
   for i_field = 1:size(nameFlipUnilateral, 1)
 
@@ -141,8 +141,8 @@ function nameFlipUnilateral = getFuncMetricsToFilter()
   %             - dvars_nstd
   %             - dvars_std
   %             - dvars_vstd
-  % fd_per =  framewise diplacement - percentage of time points above 0.2 mm
-  % fd_mean = mean framewise diplacement
+  % fd_per =  framewise displacement - percentage of time points above 0.2 mm
+  % fd_mean = mean framewise displacement
   % gsr =     Ghost to Signal Ratio
   % aor =     AFNI's outlier ratio - Mean fraction of outliers per fMRI
   %           volume as given by AFNI's 3dToutcount.

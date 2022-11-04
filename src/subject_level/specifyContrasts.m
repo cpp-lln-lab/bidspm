@@ -132,7 +132,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
       case 'run'
 
-        % For each run of each condition, create a seperate contrast
+        % For each run of each condition, create a separate contrast
         regIdx = find(regIdx);
         for iReg = 1:length(regIdx)
 

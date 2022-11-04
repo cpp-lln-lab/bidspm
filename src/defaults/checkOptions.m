@@ -64,7 +64,7 @@ function opt = checkOptions(opt)
   %  - **statistics**
   %
   %     - ``opt.model.file = ''`` - path to the BIDS model file that contains the
-  %       model to speficy and the contrasts to compute.
+  %       model to specify and the contrasts to compute.
   %
   %     - ``opt.fwhm.contrast = 6`` - FWHM to apply to the contrast images before bringing
   %       them at the group level.
@@ -88,7 +88,7 @@ function opt = checkOptions(opt)
   %       subjects should be fetched by their number ``1`` and not their label ``O1'``.
   %
   %     - ``opt.rename = true`` - to skip renaming files with ``bidsRename()``.
-  %       Mostly for debugging as the ouput files won't be usable by any of the stats
+  %       Mostly for debugging as the output files won't be usable by any of the stats
   %       workflows.
   %
   %     - ``opt.msg.color = blue`` - default font color of the prompt messages.
@@ -110,7 +110,7 @@ function opt = checkOptions(opt)
   %     - ``opt.stc.skip = false`` - boolean flag to skip slice time correction or not.
   %     - ``opt.stc.referenceSlice = []`` - reference slice (in seconds)
   %       for the slice timing correction.
-  %       If left emtpy the mid-volume acquisition time point will be selected at run time.
+  %       If left empty the mid-volume acquisition time point will be selected at run time.
   %     - ``opt.stc.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED,
   %       if you know the order in which slices were acquired, you should be able to recompute
   %       slice timing and add it to the json files in your BIDS data set.

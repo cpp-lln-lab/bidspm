@@ -65,7 +65,7 @@ function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(vararg
   group2 = regexp(node.Contrasts{1}.ConditionList{2}, '\.', 'split');
 
   % for now we assume we can read the subject group belonging
-  % from the partiticipant TSV in the raw dataset
+  % from the participant TSV in the raw dataset
   % and from the same column
   assert(strcmp(group1{1}, group2{1}));
   groupField = group1{1};
@@ -205,8 +205,8 @@ function contrastsList = getContrastsListForDatasetLevel(opt, nodeName)
 
     node = opt.model.bm.get_nodes('Name', nodeName);
 
-    % if no specific dummy contrasts mentionned also include all contrasts from previous levels
-    % or if contrasts are mentionned we grab them
+    % if no specific dummy contrasts mentioned also include all contrasts from previous levels
+    % or if contrasts are mentioned we grab them
     if isfield(node, 'Contrasts')
       tmp = getContrastsList(nodeName, opt.model.bm);
       for i = 1:numel(tmp)

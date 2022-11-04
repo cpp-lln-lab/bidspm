@@ -21,7 +21,7 @@ cd ~/visual_motion_localiser
 # get BIDSpm code from the dev branch
 source="https://github.com/cpp-lln-lab/bidspm.git"
 
-# for debugging uncomment the follwing line
+# for debugging uncomment the following line
 source=${root_directory}
 
 datalad install \

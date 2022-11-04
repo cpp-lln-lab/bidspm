@@ -11,7 +11,7 @@
     make PLATFORM=octave install
     ```
 
-1.  If you have Conda or pip installed jupyter notebook or jupyter lab, skipt
+1.  If you have Conda or pip installed jupyter notebook or jupyter lab, skip
     the next step. To check if Conda is installed properly: type `conda list`
     into your terminal.
 

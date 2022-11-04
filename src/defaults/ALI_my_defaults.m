@@ -6,8 +6,8 @@ function defaults = ALI_my_defaults()
   %
   %   defaults = ALI_my_defaults()
   %
-  % This is where we set the defautls we want to use for the ALI (lesion) toolbox.
-  % These will overide the spm defaults.
+  % This is where we set the defaults we want to use for the ALI (lesion) toolbox.
+  % These will override the spm defaults.
   % When "not enough" information is specified in the batch files, SPM falls
   % back on the defaults to fill in the blanks. This allows to make the
   % script simpler.

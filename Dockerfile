@@ -1,6 +1,6 @@
 # Creates a docker image of bidspm
 
-# version number are updated automatically with tbe bump version script
+# version number are updated automatically with the bump version script
 
 # this is mostly taken from the spm docker files: https://github.com/spm/spm-docker
 FROM ubuntu:22.04
