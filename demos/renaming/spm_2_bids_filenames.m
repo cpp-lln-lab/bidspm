@@ -107,7 +107,7 @@ bidsFile.filename;
 
 % ## Typical SPM filenames
 %
-% SPM typicall adds prefixes to filenames and concatenates them.
+% SPM typically adds prefixes to filenames and concatenates them.
 %
 % - `r` for realigned or resliced
 % - `w` for warped (often means normalized in MNI space)
@@ -168,7 +168,7 @@ bidsFile = bids.File(file_spec);
 bidsFile.filename;
 
 % It can be a pain to create the right map
-% between a specific SPM type of ouput and "the right" BIDS equivalent.
+% between a specific SPM type of output and "the right" BIDS equivalent.
 %
 % So easier to use (https://github.com/cpp-lln-lab/spm_2_bids)
 % which will also try to use the "proper" MNI space name

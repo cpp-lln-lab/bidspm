@@ -18,7 +18,7 @@ function opt = getSubjectList(BIDS, opt)
   %           - :opt: (structure)
   %
   %
-  % If no group or subject is speficied in ``opt`` then all subjects are included.
+  % If no group or subject is specified in ``opt`` then all subjects are included.
   % This is equivalent to the default::
   %
   %   opt.groups = {''};

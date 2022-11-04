@@ -45,7 +45,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
 
   for iFile = imgNb
 
-    % Using validationInputFile might be too agressive as it throws an error if
+    % Using validationInputFile might be too aggressive as it throws an error if
     % it can't find a file. Let's use a work around and stick to warnings for now
 
     %     file = validationInputFile(pwd, sprintf('spm_.*%i.png', iFile));

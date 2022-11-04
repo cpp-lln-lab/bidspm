@@ -40,7 +40,7 @@ function test_bidsSpatialPrepro_basic()
   % some tweaks because we have dummy data
   opt.funcVoxelDims = [2 2 2];
   % dummy data that already contains the output of some segmentation
-  % so neeed to force it to see the whole full behavior of the workflow
+  % so need to force it to see the whole full behavior of the workflow
   opt.segment.force = true;
 
   matlabbatch = bidsSpatialPrepro(opt);
@@ -71,7 +71,7 @@ function test_bidsSpatialPrepro_no_normalisation_no_unwarp()
   opt.funcVoxelDims = [2 2 2];
 
   % dummy data that already contains the output of some segmentation
-  % so neeed to force it to see the whole full behavior of the workflow
+  % so need to force it to see the whole full behavior of the workflow
   opt.segment.force = true;
 
   matlabbatch = bidsSpatialPrepro(opt);
@@ -98,7 +98,7 @@ function test_bidsSpatialPrepro_no_normalisation()
   opt.funcVoxelDims = [2 2 2];
 
   % dummy data that already contains the output of some segmentation
-  % so neeed to force it to see the whole full behavior of the workflow
+  % so need to force it to see the whole full behavior of the workflow
   opt.segment.force = true;
 
   matlabbatch = bidsSpatialPrepro(opt);

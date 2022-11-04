@@ -7,7 +7,7 @@ function blipDir = getBlipDirection(metadata)
   %   blipDir = getBlipDirection(metadata)
   %
   % :param metadata: image metadata
-  % :type metadata: strcuture
+  % :type metadata: structure
   %
   % :returns: - :blipDir:
   %

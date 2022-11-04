@@ -516,7 +516,7 @@ end
 
 function uninitBidspm()
   %
-  % Removes the added folders fromthe path for a given session.
+  % Removes the added folders from the path for a given session.
   %
   % USAGE::
   %

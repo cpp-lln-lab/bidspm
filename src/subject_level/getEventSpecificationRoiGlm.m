@@ -111,7 +111,7 @@ function eventSpec = getEventSpecForContrasts(eventSpec, node, SPM)
     thisContrast = node.Contrasts{iCon};
 
     % only check contrasts against baseline
-    % (no comparing condtions - YET)
+    % (no comparing conditions - YET)
     if isTtest(thisContrast) && isContrastAgainstBaseline(thisContrast)
 
       conditionList = thisContrast.ConditionList;

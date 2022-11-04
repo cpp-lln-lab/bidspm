@@ -3,7 +3,7 @@ function opt = loadAndCheckOptions(optionJsonFile)
   % Loads the json file provided describing the options of an analysis. It then checks
   % its content and fills any missing fields with the defaults.
   %
-  % If no argument is provived, it checks in the current directory for any
+  % If no argument is provided, it checks in the current directory for any
   % ``opt_task-*.json`` files and loads the most recent one by name
   % (using the ``date-`` key).
   %

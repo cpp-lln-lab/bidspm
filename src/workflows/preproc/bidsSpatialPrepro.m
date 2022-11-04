@@ -45,7 +45,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
   % (C) Copyright 2019 bidspm developers
 
-  %  TODO average T1s across sessions if necessarry
+  %  TODO average T1s across sessions if necessary
 
   opt.pipeline.type = 'preproc';
 

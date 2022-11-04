@@ -8,7 +8,7 @@ function figureFile = plotRoiTimeCourse(varargin)
   %
   % :param tsvFile: obligatory argument.
   %                 Content of TSV is organized in a "BIDS" way.
-  %                 Must be ``(t + 1) X c`` with t = time points and c = condtions.
+  %                 Must be ``(t + 1) X c`` with t = time points and c = conditions.
   %                 The + 1 for the row dimension is because of the headers
   %                 giving the name of the condition.
   %                 A side car JSON is expected to contain a ``SamplingFrequency`` field

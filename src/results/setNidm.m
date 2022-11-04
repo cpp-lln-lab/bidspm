@@ -26,7 +26,7 @@ function export = setNidm(export, result)
 
     else
       [~, allowedSpaces] = isMni(result.space);
-      msg = sprintf(['Unknown space for NIDM resuts "%s".\n', ...
+      msg = sprintf(['Unknown space for NIDM results "%s".\n', ...
                      'Allowed spaces are:\n'], result.space, strjoin(allowedSpaces));
       id = 'unknownNidmSpace';
       errorHandling(mfilename(), id, msg, false, true);

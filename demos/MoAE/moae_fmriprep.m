@@ -2,7 +2,7 @@
 % using the fmriprep preprocessed data
 %
 % If you want to get the preprocessed data and you have datalad on your computer
-% you can run the following commands to get the necesary data::
+% you can run the following commands to get the necessary data::
 %
 %   datalad install --source git@gin.g-node.org:/SPM_datasets/spm_moae_fmriprep.git \
 %           inputs/fmriprep

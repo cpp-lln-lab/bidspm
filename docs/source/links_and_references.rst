@@ -40,7 +40,7 @@ This is here because SPM has the sad (and bad) Matlabic tradition of using varia
 that have often attempted to replicate the notation in the papers to make engineers
 and the generally math enclined happy,
 rather then the ``TypicalLongVariableNames`` that many programmers and new comers
-would prefer to see to help with code readibility.
+would prefer to see to help with code readability.
 
 Adapted from: http://andysbrainblog.blogspot.com/2013/10/whats-in-spmmat-file.html
 
@@ -87,46 +87,46 @@ user-specified covariates/regressors
 
 e.g. motion
 
-- ``SPM.Sess([sesssion]).C.C``    - (n x c) double regressor (``c`` is number of covariates, ``n`` is number of sessions)
-- ``SPM.Sess([sesssion]).C.name`` - names of covariates
+- ``SPM.Sess([session]).C.C``    - (n x c) double regressor (``c`` is number of covariates, ``n`` is number of sessions)
+- ``SPM.Sess([session]).C.name`` - names of covariates
 
 conditions & modulators specified
 +++++++++++++++++++++++++++++++++
 
 i.e. input structure array
 
-- ``SPM.Sess([sesssion]).U(condition).dt``:  - time bin length (seconds)
-- ``SPM.Sess([sesssion]).U(condition).name`` - names of conditions
-- ``SPM.Sess([sesssion]).U(condition).ons``  - onset for condition's trials
-- ``SPM.Sess([sesssion]).U(condition).dur``  - duration for condition's trials
-- ``SPM.Sess([sesssion]).U(condition).u``    - (t x j) inputs or stimulus function matrix
-- ``SPM.Sess([sesssion]).U(condition).pst``  - (1 x k) peri-stimulus times (seconds)
+- ``SPM.Sess([session]).U(condition).dt``:  - time bin length (seconds)
+- ``SPM.Sess([session]).U(condition).name`` - names of conditions
+- ``SPM.Sess([session]).U(condition).ons``  - onset for condition's trials
+- ``SPM.Sess([session]).U(condition).dur``  - duration for condition's trials
+- ``SPM.Sess([session]).U(condition).u``    - (t x j) inputs or stimulus function matrix
+- ``SPM.Sess([session]).U(condition).pst``  - (1 x k) peri-stimulus times (seconds)
 
 parameters/modulators specified
 +++++++++++++++++++++++++++++++
 
-- ``SPM.Sess([sesssion]).U(condition).P``      - parameter structure/matrix
-- ``SPM.Sess([sesssion]).U(condition).P.name`` - names of modulators/parameters
-- ``SPM.Sess([sesssion]).U(condition).P.h``    - polynomial order of modulating parameter (order of polynomial expansion where 0 is none)
-- ``SPM.Sess([sesssion]).U(condition).P.P``    - vector of modulating values
-- ``SPM.Sess([sesssion]).U(condition).P.P.i``  - sub-indices of ``U(i).u`` for plotting
+- ``SPM.Sess([session]).U(condition).P``      - parameter structure/matrix
+- ``SPM.Sess([session]).U(condition).P.name`` - names of modulators/parameters
+- ``SPM.Sess([session]).U(condition).P.h``    - polynomial order of modulating parameter (order of polynomial expansion where 0 is none)
+- ``SPM.Sess([session]).U(condition).P.P``    - vector of modulating values
+- ``SPM.Sess([session]).U(condition).P.P.i``  - sub-indices of ``U(i).u`` for plotting
 
 scan indices for sessions
 +++++++++++++++++++++++++
 
-- ``SPM.Sess([sesssion]).row``
+- ``SPM.Sess([session]).row``
 
 effect indices for sessions
 +++++++++++++++++++++++++++
 
-- ``SPM.Sess([sesssion]).col``
+- ``SPM.Sess([session]).col``
 
 F Contrast information for input-specific effects
 +++++++++++++++++++++++++++++++++++++++++++++++++
 
-- ``SPM.Sess([sesssion]).Fc``
-- ``SPM.Sess([sesssion]).Fc.i``    - F Contrast columns for input-specific effects
-- ``SPM.Sess([sesssion]).Fc.name`` - F Contrast names for input-specific effects
+- ``SPM.Sess([session]).Fc``
+- ``SPM.Sess([session]).Fc.i``    - F Contrast columns for input-specific effects
+- ``SPM.Sess([session]).Fc.name`` - F Contrast names for input-specific effects
 
 - ``SPM.nscan([session])`` - number of scans per session (or if e.g. a t-test, total number of con*.nii files)
 
@@ -214,13 +214,13 @@ structure describing intrinsic temporal non-sphericity
 - ``SPM.xVi.Vi``  - array of non-sphericity components
 
     - defaults to ``{speye(size(xX.X,1))}`` - i.i.d.
-    - specifying a cell array of contraints ((Qi)
-    - These contraints invoke ``spm_reml`` to estimate hyperparameters assuming V is constant over voxels that provide a high precise estimate of xX.V
+    - specifying a cell array of constraints ((Qi)
+    - These constraints invoke ``spm_reml`` to estimate hyperparameters assuming V is constant over voxels that provide a high precise estimate of xX.V
 
 - ``SPM.xVi.form`` - form of non-sphericity (either ``'none'`` or ``'AR(1)'`` or ``'FAST'``)
 
 - ``SPM.xX.V``     - Optional non-sphericity matrix. ``CCov(e)sigma^2*V``.
-  If not specified ``spm_spm`` will compute this using a 1st pass to identify signifcant voxels over which to estimate V.
+  If not specified ``spm_spm`` will compute this using a 1st pass to identify significant voxels over which to estimate V.
   A 2nd pass is then used to re-estimate the parameters with WLS and save the ML estimates (unless xX.W is already specified).
 
 

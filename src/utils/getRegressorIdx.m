@@ -36,7 +36,7 @@ function  [cdtName, regIdx, status] = getRegressorIdx(cdtName, SPM)
     cdtName = tokens{2};
   end
 
-  % contruct regexp pattern
+  % construct regexp pattern
   convolvedWithCanonicalHRF = ['^.* (' cdtName '\*bf\(1\))$'];
   nonConvolved = ['^.* ' cdtName '$'];
 

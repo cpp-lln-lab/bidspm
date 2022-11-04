@@ -1,5 +1,5 @@
 %
-% Creates a ROI in MNI space from the retinotopic probablistic atlas.
+% Creates a ROI in MNI space from the retinotopic probabilistic atlas.
 %
 % Creates its equivalent in subject space (inverse normalization).
 %
