@@ -5,5 +5,5 @@
 opt = checkOptions(struct('verbosity', 0));
 opt = set_spm_2_bids_defaults(opt);
 
-opt.spm_2_bids.print_mapping(fullfile('mapping.md'));
-opt.spm_2_bids.print_mapping(fullfile('mapping.json'));
+opt.spm_2_bids.print_mapping(fullfile('source', 'mapping.md'));
+% opt.spm_2_bids.print_mapping(fullfile('mapping.json'));
