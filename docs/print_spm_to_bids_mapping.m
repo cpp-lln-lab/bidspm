@@ -2,6 +2,7 @@
 
 % TODO all mapping (one for preprocessing...) should be added here
 
+run ../bidspm;
 opt = checkOptions(struct('verbosity', 0));
 opt = set_spm_2_bids_defaults(opt);
 

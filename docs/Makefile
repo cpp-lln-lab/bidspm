@@ -38,11 +38,12 @@ clean:
 view:
 	$(BROWSER) build/html/index.html
 
-bidspm-manual.pdf: boilerplate clean_default_options default_mapping
+bidspm-manual.pdf:
 	bash create_manual.sh
 
 boilerplate:
 	$(MATLAB) $(ARG) -r "print_boilerplate; exit()"
+	rm -fr reports
 
 clean_default_options:
 	$(MATLAB) $(ARG) -r "print_default_options; exit()"
