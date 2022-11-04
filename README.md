@@ -136,8 +136,7 @@ used to perform:
 -   GLM auto-correlation check
 
 Please see our
-[documentation](https://bidspm.readthedocs.io/en/latest/index.html) for more
-info.
+[documentation](https://bidspm.readthedocs.io/en/latest/index.html) for more info.
 
 ## Citation
 
