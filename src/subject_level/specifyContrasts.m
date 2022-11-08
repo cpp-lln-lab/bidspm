@@ -80,7 +80,8 @@ function  [cdt_name, regIdx] = getRegIdx(conList, iCon, SPM, iCdt)
   end
 
   % get condition name
-  cdt_name = strrep(cdt_name, 'trial_type.', '');
+  columnCondition = regexp(cdt_name, '\.', 'split');
+  cdt_name = columnCondition{2};
 
   % get regressors index corresponding to the HRF of that condition
   regIdx = strfind(SPM.xX.name', [' ' cdt_name '*bf(1)']);
