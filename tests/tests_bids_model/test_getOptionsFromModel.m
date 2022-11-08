@@ -33,12 +33,15 @@ function test_getOptionsFromModel_basic()
 
   opt.pipeline.type = 'stats';
   opt.model.file = modelFile('dummy');
+  opt.verbosity = 1;
 
   opt = getOptionsFromModel(opt);
 
   expectedOptions.pipeline.type = 'stats';
   expectedOptions.model.file = modelFile('dummy');
-  expectedOptions.model.bm = BidsModel('file', modelFile('dummy'));
+  expectedOptions.model.bm = BidsModel('file', modelFile('dummy'), ...
+                                       'verbose', true, 'tolerant', false);
+  expectedOptions.verbosity = 1;
   expectedOptions.taskName = {'dummy'};
 
   assertEqual(opt, expectedOptions);

@@ -21,8 +21,8 @@ function opt = getOptionsFromModel(opt)
 
   if ~isfield(opt.model, 'bm') || isempty(opt.model.bm)
     opt.model.bm = BidsModel('file', opt.model.file, ...
-                             'tolerant', false, ...
-                             'verbose', opt.verbosity > 1);
+                             'tolerant', true, ...
+                             'verbose', opt.verbosity >= 1);
   end
 
   % any of the func / bold entity
