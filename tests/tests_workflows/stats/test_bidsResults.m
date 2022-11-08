@@ -8,6 +8,18 @@ function test_suite = test_bidsResults %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsResults_no_results()
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  assertWarning(@() bidsResults(opt), 'bidsResults:noResultsAsked');
+
+  opt = rmfield(opt, 'results');
+
+  assertWarning(@() bidsResults(opt), 'bidsResults:noResultsAsked');
+
+end
+
 function test_bidsResults_filter_by_nodeName()
 
   %% GIVEN
