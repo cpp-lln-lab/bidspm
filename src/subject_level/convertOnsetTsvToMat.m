@@ -227,6 +227,9 @@ function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows)
     thisMod = fields{pmodIdx(iMod)};
 
     amplitude = tsv.content.(thisMod)(rows);
+    if iscellstr(amplitude) %#ok<ISCLSTR>
+      amplitude = str2num(char(amplitude)); %#ok<ST2NM>
+    end
     amplitude(isnan(amplitude)) = 1;
 
     if ~all(amplitude == 1)
