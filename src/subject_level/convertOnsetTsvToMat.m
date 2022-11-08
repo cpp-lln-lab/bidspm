@@ -50,7 +50,7 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
       break
     end
   end
-  
+
   columnsInTsv = fieldnames(t);
 
   % create empty cell to be filled in according to the conditions present in each run
@@ -61,20 +61,20 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   % for each condition
   for iCond = 1:numel(step.Model.X)
 
-      columnCond = regexp(step.Model.X{iCond}, '\.', 'split');
-      
-      if numel(columnCond) == 1
-          continue;
-      end
-      
-      columnName = columnCond{1};
-      conditionName = columnCond{2};
-      
-      columnPresent = ismember(columnName, columnsInTsv);
+    columnCond = regexp(step.Model.X{iCond}, '\.', 'split');
+
+    if numel(columnCond) == 1
+      continue
+    end
+
+    columnName = columnCond{1};
+    conditionName = columnCond{2};
+
+    columnPresent = ismember(columnName, columnsInTsv);
 
     if columnPresent
 
-        conds = t.(columnCond{1});
+      conds = t.(columnCond{1});
 
       % Get the index of each condition by comparing the unique names and
       % each line in the tsv files
