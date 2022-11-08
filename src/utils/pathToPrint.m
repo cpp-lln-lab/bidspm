@@ -13,9 +13,9 @@ function pth = pathToPrint(pth)
   if isunix()
     return
   end
-  
+
   if ischar(pth) && size(pth, 1) > 1
-      pth = cellstr(pth);
+    pth = cellstr(pth);
   end
 
   if ischar(pth)
