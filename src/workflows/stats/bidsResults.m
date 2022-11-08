@@ -1,12 +1,12 @@
 function matlabbatch = bidsResults(varargin)
   %
   % Computes the results for a series of contrast that can be
-  % specified at the run, subject or dataset step level (see contrast specification
-  % following the BIDS stats model specification).
+  % specified at the run, subject or dataset step level
+  % (see contrast specification following the BIDS stats model specification).
   %
   % USAGE::
   %
-  %  bidsResults(opt,'nodeName', '')
+  %   bidsResults(opt,'nodeName', '')
   %
   % :param opt: Options chosen for the analysis.
   %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
@@ -19,7 +19,7 @@ function matlabbatch = bidsResults(varargin)
   %
   %
   % Below is an example of how specify the option structure
-  % to getsome speific results outputs for certain contrasts.
+  % to get some specific results outputs for certain contrasts.
   %
   % See the `online documentation <https://bidspm.readthedocs.io/en/dev>`_
   % for example of those outputs.
@@ -261,25 +261,19 @@ function [status] = checks(opt)
 
   status = true;
 
-  if isempty(opt.results)
+  msg = sprintf(['Specify node names and levels in "opt.results".', ...
+                 '\t\nType "help bidsResults" for more information.']);
+
+  if ~isfield(opt, 'results') || isempty(opt.results)
+    errorHandling(mfilename(), 'noResultsAsked', msg, true, true);
     status = false;
-    return
   end
 
   listNodeNames = returnListNodeNames(opt);
-  if isempty(listNodeNames)
-    msg = 'Specify results to show in "opt.results".';
-    id = 'noResultsAsked';
-    errorHandling(mfilename(), id, msg, true, true);
-    status = false;
-    return
-  end
-
   listNodeLevels = returnlistNodeLevels(opt);
-  if isempty(listNodeLevels)
-    msg = 'Specify results to show in "opt.results".';
-    id = 'noResultsAsked';
-    errorHandling(mfilename(), id, msg, true, true);
+
+  if isempty(listNodeNames) || isempty(listNodeLevels)
+    errorHandling(mfilename(), 'noResultsAsked', msg, true, true);
     status = false;
     return
   end
@@ -293,7 +287,7 @@ function listNodeNames = returnListNodeNames(opt)
   for iRes = 1:numel(opt.results)
     if ~isempty(opt.results(iRes).nodeName)
       node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
-      listNodeNames{iRes} = node.Name;
+      listNodeNames{iRes} = node.Name; %#ok<*AGROW>
     end
   end
 
