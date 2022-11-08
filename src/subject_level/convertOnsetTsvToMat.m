@@ -37,9 +37,6 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
 
   end
 
-  % assign all the tsv information to a variable called conds.
-  conds = t.trial_type;
-
   % identify where the conditions to include that are specificed
   % in the run step of the model file
   model = spm_jsonread(opt.model.file);
@@ -53,8 +50,8 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
       break
     end
   end
-
-  isTrialType = strfind(step.Model.X, 'trial_type.');
+  
+  columnsInTsv = fieldnames(t);
 
   % create empty cell to be filled in according to the conditions present in each run
   names = {};
@@ -62,13 +59,22 @@ function fullpathOnsetFileName = convertOnsetTsvToMat(opt, tsvFile)
   durations = {};
 
   % for each condition
-  for iCond = 1:numel(isTrialType)
+  for iCond = 1:numel(step.Model.X)
 
-    if isTrialType{iCond}
+      columnCond = regexp(step.Model.X{iCond}, '\.', 'split');
+      
+      if numel(columnCond) == 1
+          continue;
+      end
+      
+      columnName = columnCond{1};
+      conditionName = columnCond{2};
+      
+      columnPresent = ismember(columnName, columnsInTsv);
 
-      conditionName = strrep(step.Model.X{iCond}, ...
-                             'trial_type.', ...
-                             '');
+    if columnPresent
+
+        conds = t.(columnCond{1});
 
       % Get the index of each condition by comparing the unique names and
       % each line in the tsv files
