@@ -131,7 +131,7 @@ function opt = createDefaultStatsModel(BIDS, opt)
                        '_smdl.json']);
 
   bm.write(filename);
-  printToScreen(sprintf('Default model was created:\n%s', filename), opt);
+  printToScreen(sprintf('\nDefault model was created:\n\t%s\n', filename), opt);
 
   opt.model.file = filename;
 

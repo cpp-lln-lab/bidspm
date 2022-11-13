@@ -257,7 +257,7 @@ function output = convertToString(input)
     output = 'false';
   elseif isnumeric(input)
     output = num2str(input);
-  elseif cellstr(input)
+  elseif iscellstr(input)
     output = strjoin(input, ', ');
   end
 end
@@ -318,7 +318,11 @@ end
 
 function default_model(args)
   opt = get_options_from_argument(args);
+  if ~isfield(opt, 'taskName')
+    opt.taskName = '';
+  end
   opt = checkOptions(opt);
+
   createDefaultStatsModel(opt.dir.raw, opt);
 end
 

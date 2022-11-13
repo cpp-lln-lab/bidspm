@@ -80,15 +80,24 @@ bidsSmoothing(opt);
 clear;
 clc;
 
-WD = fileparts(mfilename('fullpath'));
+% Create stats model
 
-subject_label = '01';
+WD = fileparts(mfilename('fullpath'));
 
 bids_dir = fullfile(WD, 'inputs', 'raw');
 output_dir = fullfile(WD, 'outputs', 'derivatives');
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
-model_file = fullfile(pwd, 'models', 'model-MoAEfmriprep_smdl.json');
+bidspm(bids_dir, output_dir, 'dataset', ...
+       'action', 'default_model', ...
+       'space', {'MNI152NLin6Asym'}, ...
+       'fwhm', 8);
+
+% Run model
+
+model_file = fullfile(output_dir, 'models', 'model-MoAEfmriprep_smdl.json');
+
+subject_label = '01';
 
 % Specify the result to show
 %
