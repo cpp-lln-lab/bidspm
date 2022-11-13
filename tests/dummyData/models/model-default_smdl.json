@@ -61,6 +61,7 @@
         },
         "Software": {
           "SPM": {
+            "InclusiveMaskingThreshold": 0.8,
             "SerialCorrelation": "FAST"
           }
         }

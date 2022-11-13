@@ -323,7 +323,7 @@ function default_model(args)
   end
   opt = checkOptions(opt);
 
-  createDefaultStatsModel(opt.dir.raw, opt);
+  createDefaultStatsModel(opt.dir.raw, opt, lower(args.Results.ignore));
 end
 
 function stats(args)

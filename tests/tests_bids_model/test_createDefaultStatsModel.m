@@ -61,6 +61,27 @@ function test_createDefaultStatsModel_basic()
 
 end
 
+function test_createDefaultStatsModel_ignore()
+
+  opt = setOptions('vislocalizer', '');
+
+  BIDS = getLayout(opt);
+
+  opt.dir.derivatives = pwd;
+  opt.space = {'IXI549Space'};
+  opt.taskName = {'vislocalizer'};
+
+  opt = createDefaultStatsModel(BIDS, opt, {'contrasts', 'transformations'});
+
+  content = spm_jsonread(opt.model.file);
+
+  assertEqual(isfield(content.Nodes, 'Transformations'), false);
+  assertEqual(isfield(content.Nodes, 'Contrasts'), false);
+
+  cleanUp(fullfile(pwd, 'models'));
+
+end
+
 function test_createDefaultStatsModel_CLI()
 
   opt = setOptions('vislocalizer', '');
@@ -88,6 +109,31 @@ function test_createDefaultStatsModel_CLI()
     assertEqual(content.Edges, expectedContent.Edges);
     assertEqual(content.Input, expectedContent.Input);
   end
+
+  cleanUp(fullfile(pwd, 'derivatives'));
+
+end
+
+function test_createDefaultStatsModel_CLI_ignore()
+
+  opt = setOptions('vislocalizer', '');
+
+  bidspm(opt.dir.input, pwd, 'dataset', ...
+         'action', 'default_model', ...
+         'task', {'vismotion'}, ...
+         'space', {'individual'}, ...
+         'ignore', {'contrasts', 'transformations'}, ...
+         'verbosity', 3);
+
+  % make sure the file was created where expected
+  expectedFilename = fullfile(pwd, 'derivatives', 'models', ...
+                              'model-defaultVismotion_smdl.json');
+
+  % check it has the right content
+  content = spm_jsonread(expectedFilename);
+
+  assertEqual(isfield(content.Nodes, 'Transformations'), false);
+  assertEqual(isfield(content.Nodes, 'Contrasts'), false);
 
   cleanUp(fullfile(pwd, 'derivatives'));
 
