@@ -33,15 +33,41 @@ git clone --recurse-submodules --branch dev https://github.com/cpp-lln-lab/bidsp
 ```
 
 To start using bidspm, you just need to initialize it for this MATLAB / Octave
-session with::
+session with:
 
 ```matlab
 bidspm()
 ```
 
 Please see our
-[documentation](https://bidspm.readthedocs.io/en/latest/general_information.html)
-for more info.
+[documentation](https://bidspm.readthedocs.io/en/latest/installation.html) for
+more info.
+
+### Validation dependencies
+
+If you want to validate bids dataset and bids stats model through bidspm, you
+will need:
+
+-   [python3](https://www.python.org/downloads/)
+-   [node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+
+You can then install:
+
+-   the bids validator
+-   the bidspm package
+
+by running from the command line in the root folder of the repository:
+
+```bash
+make install
+```
+
+or
+
+```bash
+npm install -g bids-validator
+pip install .
+```
 
 ## Usage
 

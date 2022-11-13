@@ -1,4 +1,4 @@
 [codespell]
-skip = *.tsv,*.json,*.nii*,*.js,*.svg,*.eps,.git,env,*build,lib,outputs,inputs,bids-examples,stats_model,coverage_html,stats.md,preprocess.md
+skip = *.tsv,*.json,*.nii*,*.js,*.svg,*.eps,*.log,.git,env,*build,lib,outputs,inputs,bids-examples,stats_model,coverage_html,stats.md,preprocess.md
 ignore-words-list = fo,te,als,ane,nin,fot,fwe,commun
 builtin = clear,rare

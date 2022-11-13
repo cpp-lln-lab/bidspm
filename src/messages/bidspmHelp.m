@@ -23,7 +23,8 @@ function bidspmHelp()
   %           'bids_filter_file', struct([]), ...
   %           'verbosity', 2, ...
   %           'space', {'individual', 'IXI549Space'}, ...
-  %           'options', struct([]))
+  %           'options', struct([]), ...
+  %           'skip_validation', false)
   %
   %
   % *Obligatory parameters*
@@ -74,6 +75,9 @@ function bidspmHelp()
   % :param options:           See the ``checkOptions`` help to see the available options.
   % :type  options:           path to JSON file or structure
   %
+  % :param skip_validation:   To skip bids dataset or bids stats model validation.
+  % :type  skip_validation:   logical
+  %
   % .. note::
   %
   %   Arguments passed to bidspm have priorities over the options defined in ``opt``.
@@ -96,7 +100,8 @@ function bidspmHelp()
   %           'dummy_scans', 0, ...       % specific to preprocessing
   %           'anat_only', false, ...     % specific to preprocessing
   %           'ignore', {}, ...
-  %           'fwhm', 6)
+  %           'fwhm', 6, ...
+  %           'skip_validation', false)
   %
   %
   % *Obligatory parameters*
@@ -152,7 +157,8 @@ function bidspmHelp()
   %           'design_only', false, ...
   %           'ignore', {}, ...
   %           'task', {}, ...
-  %           'fwhm', 6)
+  %           'fwhm', 6, ...
+  %           'skip_validation', false)
   %
   %
   % *Obligatory parameters*
@@ -221,7 +227,7 @@ function bidspmHelp()
   %
   %  For a more readable version of this help section,
   %  see the online <a
-  %  href="https://bidspm.readthedocs.io/en/stable/bids_app_api.html">documentation</a>.
+  %  href="https://bidspm.readthedocs.io/en/latest/usage_notes.html">documentation</a>.
   %
 
   % (C) Copyright 2022 bidspm developers

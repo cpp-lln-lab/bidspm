@@ -36,6 +36,7 @@ function bidspm(varargin)
   addParameter(args, 'task', {}, isCellStr);
   addParameter(args, 'dry_run', false, isLogical);
   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
+  addParameter(args, 'skip_validation', false, isLogical);
   addParameter(args, 'options', struct([]), isFileOrStruct);
   addParameter(args, 'verbosity', 2, isPositiveScalar);
 
@@ -105,6 +106,8 @@ function executeAction(action, args)
 
     case 'preprocess'
 
+      validate(args);
+
       if ~strcmp(args.Results.analysis_level, 'subject')
         errorHandling(mfilename(), ...
                       'noGroupLevelPreproc', ...
@@ -119,6 +122,8 @@ function executeAction(action, args)
       default_model(args);
 
     case {'stats', 'contrasts', 'results'}
+
+      validate(args);
 
       stats(args);
 
@@ -158,6 +163,8 @@ function opt = get_options_from_argument(args)
       % set defaults
       opt = checkOptions(struct());
     end
+
+    opt.verbosity = args.Results.verbosity;
 
     opt.dir.raw = args.Results.bids_dir;
     opt.dir.derivatives = args.Results.output_dir;

@@ -9,6 +9,10 @@ clear;
 clc;
 close all;
 
+% skipping validation for now
+% as raw data is not 100% valid
+skip_validation = true;
+
 download_data = true;
 
 WD = fileparts(mfilename('fullpath'));
@@ -54,7 +58,8 @@ for iResolution = 2:3
          'task', {'facerepetition'}, ...
          'space', {'IXI549Space'}, ...
          'ignore', ignore, ...
-         'options', opt);
+         'options', opt, ...
+         'skip_validation', skip_validation);
 
   %% stats
 
@@ -89,7 +94,8 @@ for iResolution = 2:3
          'action', 'stats', ...
          'preproc_dir', [preproc_dir '-preproc'], ...
          'model_file', newModel, ...
-         'options', opt);
+         'options', opt, ...
+         'skip_validation', skip_validation);
 
   % with Octave running more n-1 loop in CI is fine
   % but not running crashes with a segmentation fault

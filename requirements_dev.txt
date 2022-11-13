@@ -1,2 +1,0 @@
-miss_hit
-./tools/stats_model/bsmschema/
