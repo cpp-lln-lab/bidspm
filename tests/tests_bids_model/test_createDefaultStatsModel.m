@@ -69,7 +69,6 @@ function test_createDefaultStatsModel_CLI()
          'action', 'default_model', ...
          'task', {'vislocalizer', 'vismotion'}, ...
          'space', {'individual'}, ...
-         'fwhm', 4, ...
          'verbosity', 0);
 
   % make sure the file was created where expected
@@ -83,7 +82,6 @@ function test_createDefaultStatsModel_CLI()
   expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-default_smdl.json'));
   expectedContent.Input.task = {'vislocalizer'; 'vismotion'};
   expectedContent.Input.space = {'individual'};
-  expectedContent.Input.desc = {'smth4'};
 
   if ~isGithubCi
     assertEqual(content.Nodes, expectedContent.Nodes);

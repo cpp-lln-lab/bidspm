@@ -119,10 +119,6 @@ function opt = createDefaultStatsModel(BIDS, opt)
     errorHandling(mfilename(), id, msg, false);
   end
 
-  if isfield(opt.fwhm, 'func') && ~ismember(num2str(opt.fwhm.func), {'', '0'})
-    bm.Input.desc = {['smth' num2str(opt.fwhm.func)]};
-  end
-
   bm = bm.update();
 
   filename = fullfile(opt.dir.derivatives, 'models', ...
