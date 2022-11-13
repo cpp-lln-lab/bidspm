@@ -82,6 +82,8 @@ function opt = checkOptions(opt)
   %
   %     - ``opt.verbosity = 1;`` - Set it to ``0`` if you want to see less output on the prompt.
   %
+  %     - ``opt.tolerant = true;`` - Set it to ``false`` if you want turn warning into errors.
+  %
   %     - ``opt.dryRun = false`` - Set it to ``true`` in case you don't want to run the analysis.
   %
   %     - ``opt.pipeline.type = 'preproc'`` - Switch it to ``stats`` when running GLMs.
@@ -269,6 +271,7 @@ function fieldsToSet = setDefaultOption()
   % this defines the missing fields
 
   fieldsToSet.verbosity = 2;
+  fieldsToSet.tolerant = true;
   fieldsToSet.dryRun = false;
 
   %% defines what counts as BOLD, T1W...

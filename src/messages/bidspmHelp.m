@@ -41,6 +41,7 @@ function bidspmHelp()
   % :param action: defines the pipeline to run; can be any of:
   %
   %                - ``'preprocess'``
+  %                - ``'default_model'``
   %                - ``'stats'``
   %                - ``'contrasts'``
   %                - ``'results'``
@@ -124,6 +125,18 @@ function bidspmHelp()
   %
   % :param fwhm:        smoothing to apply to the preprocessed data
   % :type  fwhm:        positive scalar
+  %
+  %
+  % **DEFAULT_MODEL:**
+  %
+  % .. code-block:: matlab
+  %
+  %   bidspm(bids_dir, output_dir, 'dataset', ...
+  %           'action', 'default_model', ...
+  %           'verbosity', 2, ...
+  %           'space', {'IXI549Space'}, ...
+  %           'options', struct([]), ...,
+  %           'task', {})
   %
   %
   % **STATS:**

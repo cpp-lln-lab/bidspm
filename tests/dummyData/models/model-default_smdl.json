@@ -4,9 +4,10 @@
   "Description": "default BIDS stats model for rest/vislocalizer/vismotion task",
   "Input": {
     "task": [
-      "rest",
-      "vislocalizer",
-      "vismotion"
+      "vislocalizer"
+    ],
+    "space": [
+      "IXI549Space"
     ]
   },
   "Nodes": [
@@ -23,7 +24,9 @@
         "Instructions": [
           {
             "Name": "",
-            "Inputs": [""]
+            "Inputs": [
+              ""
+            ]
           }
         ]
       },
@@ -48,12 +51,17 @@
         "Options": {
           "HighPassFilterCutoffHz": 0.008,
           "Mask": {
-            "desc": ["brain"],
-            "suffix": ["mask"]
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
           }
         },
         "Software": {
           "SPM": {
+            "InclusiveMaskingThreshold": 0.8,
             "SerialCorrelation": "FAST"
           }
         }
@@ -61,8 +69,12 @@
       "Contrasts": [
         {
           "Name": "",
-          "ConditionList": [""],
-          "Weights": [""],
+          "ConditionList": [
+            ""
+          ],
+          "Weights": [
+            ""
+          ],
           "Test": "t"
         }
       ],
@@ -82,7 +94,9 @@
         "contrast"
       ],
       "Model": {
-        "X": [1],
+        "X": [
+          1
+        ],
         "Type": "glm"
       },
       "DummyContrasts": {
@@ -92,9 +106,13 @@
     {
       "Level": "Dataset",
       "Name": "dataset",
-      "GroupBy": [""],
+      "GroupBy": [
+        ""
+      ],
       "Model": {
-        "X": [1],
+        "X": [
+          1
+        ],
         "Type": "glm"
       },
       "DummyContrasts": {

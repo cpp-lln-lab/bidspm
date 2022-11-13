@@ -67,6 +67,11 @@ function bidspm(varargin)
     action = bidsDir;
   end
 
+  executeAction(action, args);
+end
+
+function executeAction(action, args)
+
   switch lower(action)
 
     case 'init'
@@ -93,7 +98,7 @@ function bidspm(varargin)
 
     case 'update'
 
-      system('make update');
+      update();
 
     case 'run_tests'
 
@@ -111,6 +116,10 @@ function bidspm(varargin)
       end
 
       preprocess(args);
+
+    case 'default_model'
+
+      default_model(args);
 
     case {'stats', 'contrasts', 'results'}
 
@@ -255,7 +264,7 @@ function output = convertToString(input)
     output = 'false';
   elseif isnumeric(input)
     output = num2str(input);
-  elseif cellstr(input)
+  elseif iscellstr(input)
     output = strjoin(input, ', ');
   end
 end
@@ -312,6 +321,16 @@ function preprocess(args)
     bidsSmoothing(opt);
   end
 
+end
+
+function default_model(args)
+  opt = get_options_from_argument(args);
+  if ~isfield(opt, 'taskName')
+    opt.taskName = '';
+  end
+  opt = checkOptions(opt);
+
+  createDefaultStatsModel(opt.dir.raw, opt, lower(args.Results.ignore));
 end
 
 function stats(args)
@@ -608,11 +627,20 @@ function run_tests()
 
 end
 
+function update()
+  try
+    system('make update');
+  catch ME
+    warning('Could not run the update.');
+    rethrow(ME);
+  end
+end
+
 %% constants
 
 function value = bids_apps_actions()
 
-  value = {'preprocess'; 'stats'; 'contrasts'; 'results'};
+  value = {'preprocess'; 'default_model'; 'stats'; 'contrasts'; 'results'};
 
 end
 

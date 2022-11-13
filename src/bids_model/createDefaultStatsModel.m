@@ -1,4 +1,4 @@
-function opt = createDefaultStatsModel(BIDS, opt)
+function opt = createDefaultStatsModel(BIDS, opt, ignore)
   %
   % Creates a default model json file for a BIDS dataset
   %
@@ -8,11 +8,18 @@ function opt = createDefaultStatsModel(BIDS, opt)
   %
   % :param BIDS: dataset layout.
   %              See also: bids.layout, getData.
-  % :type BIDS: struct or path
+  % :type  BIDS: struct or path
   %
   % :param opt: Options chosen for the analysis.
   %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt:  structure
+  % :type  opt:  structure
+  %
+  % :param ignore: Optional. Cell string that can contain:
+  %                  - ``"Transformations"``
+  %                  - ``"Contrasts"``
+  %                Can be used to avoid generating certain objects of the BIDS
+  %                stats model.
+  % :type  ignore: cellstr
   %
   % :return: opt
   %
@@ -66,15 +73,20 @@ function opt = createDefaultStatsModel(BIDS, opt)
                        'non_steady_state_outlier*'
                        'motion_outlier*'};
 
+  if nargin < 3
+    ignore = {};
+  end
+
   bm = bids.Model();
 
-  bm = bm.default(BIDS);
+  bm = bm.default(BIDS, opt.taskName);
 
   % add realign parameters
   for iRealignParam = 1:numel(DEFAULT_CONFOUNDS)
     bm.Nodes{1}.Model.X{end + 1} = DEFAULT_CONFOUNDS{iRealignParam};
   end
-  bm.Nodes{1}.Model.Software = struct('SPM', struct('SerialCorrelation', 'FAST'));
+  bm.Nodes{1}.Model.Software = struct('SPM', struct('SerialCorrelation', 'FAST', ...
+                                                    'InclusiveMaskingThreshold', 0.8));
   bm.Nodes{1}.Model.HRF.Model = 'spm';
 
   % remove session level
@@ -105,20 +117,36 @@ function opt = createDefaultStatsModel(BIDS, opt)
 
   end
 
+  if ismember('transformations', lower(ignore))
+    bm.Nodes{1} = rmfield(bm.Nodes{1}, 'Transformations');
+  end
+  if ismember('contrasts', lower(ignore))
+    bm.Nodes{1} = rmfield(bm.Nodes{1}, 'Contrasts');
+  end
+
   for i = 1:numel(bm.Edges)
     bm.Edges(1) = [];
   end
 
   bm = bm.get_edges_from_nodes();
 
+  bm.Input.space = opt.space;
+  if numel(bm.Input.space) > 1
+    msg = sprintf('Models can only accept one space.\nGot: %s', ...
+                  createUnorderedList(bm.Input.space));
+    id = 'tooManySpaces';
+    errorHandling(mfilename(), id, msg, false);
+  end
+
   bm = bm.update();
 
-  filename = fullfile(pwd, 'models', ...
+  filename = fullfile(opt.dir.derivatives, 'models', ...
                       ['model-', ...
                        bids.internal.camel_case(['default ' strjoin(opt.taskName)]), ...
                        '_smdl.json']);
 
   bm.write(filename);
+  printToScreen(sprintf('\nDefault model was created:\n\t%s\n', filename), opt);
 
   opt.model.file = filename;
 

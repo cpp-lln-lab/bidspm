@@ -20,19 +20,16 @@ This is a Matlab / Octave toolbox to perform MRI data analysis on a
 
 ## Installation and set up
 
+In a terminal or a git bash prompt, type:
+
 ```bash
-git clone \
-    --recurse-submodules \
-    https://github.com/cpp-lln-lab/bidspm.git
+git clone --recurse-submodules https://github.com/cpp-lln-lab/bidspm.git
 ```
 
 To get the latest version that is on the `dev` branch.
 
 ```bash
-git clone \
-    --recurse-submodules \
-    --branch dev \
-    https://github.com/cpp-lln-lab/bidspm.git
+git clone --recurse-submodules --branch dev https://github.com/cpp-lln-lab/bidspm.git
 ```
 
 To start using bidspm, you just need to initialize it for this MATLAB / Octave
@@ -79,6 +76,61 @@ For some of its functionality bidspm has a BIDS app like API.
 See
 [this page for more information](https://bidspm.readthedocs.io/en/latest/usage_notes.html).
 
+But in brief they are of the form:
+
+```matlab
+bidspm(bids_dir, output_dir, ...
+        'analysis_level', ...
+        'action', 'what_to_do')
+```
+
+### Creating a default BIDS statistical model
+
+Use a MATLAB / Octave script with:
+
+```matlab
+% path to your raw BIDS dataset
+bids_dir = path_of_raw_bids_dataset;
+
+% where you want to save the model
+output_dir = path_where_the_output_should_go;
+
+tasks_to_include_in_model = {'task1', 'task2', 'task3'};
+
+% for example 'MNI152NLin2009cAsym'
+space_to_include_in_model = {'spaceName'};
+
+bidspm(bids_dir, output_dir, 'dataset', ...
+        'action', 'default_model', ...
+        'task', tasks_to_include_in_model, ...
+        'space', space_to_include_in_model, ...
+        'model_file', model_file)
+```
+
+### GLM
+
+Use a MATLAB / Octave script with:
+
+```matlab
+% path to your raw BIDS dataset
+bids_dir = path_of_raw_bids_dataset;
+
+% where you want to save the model
+output_dir = path_where_the_output_should_go;
+
+preproc_dir = path_to_preprocessed_dataset; % for example fmriprep output
+
+model_file = path_to_bids_stats_model_json_file;
+
+subject_label = '01';
+
+bidspm(bids_dir, output_dir, 'subject', ...
+        'participant_label', {subject_label}, ...
+        'action', 'stats', ...
+        'preproc_dir', preproc_dir, ...
+        'model_file', model_file)
+```
+
 ### Preprocessing
 
 ```matlab
@@ -93,28 +145,19 @@ bidspm(bids_dir, output_dir, 'subject', ...
         'task', {'yourTask'})
 ```
 
-### GLM
-
-```matlab
-bids_dir = path_to_raw_bids_dataset;
-preproc_dir = path_to_preprocessed_dataset;
-output_dir = path_to_where_the_output_should_go;
-model_file = path_to_bids_stats_model_json_file;
-
-subject_label = '01';
-
-bidspm(bids_dir, output_dir, 'subject', ...
-        'participant_label', {subject_label}, ...
-        'action', 'stats', ...
-        'preproc_dir', preproc_dir, ...
-        'model_file', model_file)
-```
-
-Please see our
-[documentation](https://bidspm.readthedocs.io/en/latest/usage_notes.html) for
-more info.
-
 ## Features
+
+### Statistics
+
+The model specification are set up using the
+[BIDS stats model](https://bids-standard.github.io/stats-models/) and can be
+used to perform:
+
+-   whole GLM at the subject level
+-   whole brain GLM at the group level à la SPM (meaning using a summary
+    statistics approach).
+-   ROI based GLM (using marsbar)
+-   model selection (with the MACS toolbox)
 
 ### Preprocessing
 
@@ -142,18 +185,6 @@ has some automated workflows to perform amongst other things:
 
 All (well almost all) preprocessed outputs are saved as BIDS derivatives with
 BIDS compliant filenames.
-
-### Statistics
-
-The model specification are set up using the
-[BIDS stats model](https://bids-standard.github.io/stats-models/) and can be
-used to perform:
-
--   whole GLM at the subject level
--   whole brain GLM at the group level à la SPM (meaning using a summary
-    statistics approach).
--   ROI based GLM (using marsbar)
--   model selection (with the MACS toolbox)
 
 ### Quality control:
 
