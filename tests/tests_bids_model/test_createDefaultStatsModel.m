@@ -14,6 +14,10 @@ function test_createDefaultStatsModel_basic()
 
   BIDS = getLayout(opt);
 
+  opt.dir.derivatives = pwd;
+  opt.space = {'IXI549Space'};
+  opt.taskName = {'vislocalizer'};
+
   createDefaultStatsModel(BIDS, opt);
 
   % make sure the file was created where expected
@@ -48,9 +52,43 @@ function test_createDefaultStatsModel_basic()
     % expectedContent.Nodes(1).Model.X{5} = 'non_steady_state_outlier*';
     % expectedContent.Nodes(1).Model.X{6} = 'motion_outlier*';
 
-    assertEqual(content, expectedContent);
+    assertEqual(content.Nodes, expectedContent.Nodes);
+    assertEqual(content.Edges, expectedContent.Edges);
+    assertEqual(content.Input, expectedContent.Input);
   end
 
   cleanUp(fullfile(pwd, 'models'));
+
+end
+
+function test_createDefaultStatsModel_CLI()
+
+  opt = setOptions('vislocalizer', '');
+
+  bidspm(opt.dir.input, pwd, 'dataset', ...
+         'action', 'default_model', ...
+         'task', {'vislocalizer', 'vismotion'}, ...
+         'space', {'individual'}, ...
+         'fwhm', 4, ...
+         'verbosity', 0);
+
+  % make sure the file was created where expected
+  expectedFilename = fullfile(pwd, 'derivatives', 'models', ...
+                              'model-defaultVislocalizerVismotion_smdl.json');
+  assertEqual(exist(expectedFilename, 'file'), 2);
+
+  % check it has the right content
+  content = spm_jsonread(expectedFilename);
+
+  expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-default_smdl.json'));
+  expectedContent.Input.task = {'vislocalizer'; 'vismotion'};
+  expectedContent.Input.space = {'individual'};
+  expectedContent.Input.desc = {'smth4'};
+
+  assertEqual(content.Nodes, expectedContent.Nodes);
+  assertEqual(content.Edges, expectedContent.Edges);
+  assertEqual(content.Input, expectedContent.Input);
+
+  cleanUp(fullfile(pwd, 'derivatives'));
 
 end

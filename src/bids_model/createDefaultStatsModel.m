@@ -68,7 +68,7 @@ function opt = createDefaultStatsModel(BIDS, opt)
 
   bm = bids.Model();
 
-  bm = bm.default(BIDS);
+  bm = bm.default(BIDS, opt.taskName);
 
   % add realign parameters
   for iRealignParam = 1:numel(DEFAULT_CONFOUNDS)
@@ -111,14 +111,27 @@ function opt = createDefaultStatsModel(BIDS, opt)
 
   bm = bm.get_edges_from_nodes();
 
+  bm.Input.space = opt.space;
+  if numel(bm.Input.space) > 1
+    msg = sprintf('Models can only accept one space.\nGot: %s', ...
+                  createUnorderedList(bm.Input.space));
+    id = 'tooManySpaces';
+    errorHandling(mfilename(), id, msg, false);
+  end
+
+  if isfield(opt.fwhm, 'func') && ~ismember(num2str(opt.fwhm.func), {'', '0'})
+    bm.Input.desc = {['smth' num2str(opt.fwhm.func)]};
+  end
+
   bm = bm.update();
 
-  filename = fullfile(pwd, 'models', ...
+  filename = fullfile(opt.dir.derivatives, 'models', ...
                       ['model-', ...
                        bids.internal.camel_case(['default ' strjoin(opt.taskName)]), ...
                        '_smdl.json']);
 
   bm.write(filename);
+  printToScreen(sprintf('Default model was created:\n%s', filename), opt);
 
   opt.model.file = filename;
 
