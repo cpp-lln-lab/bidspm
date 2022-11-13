@@ -4,6 +4,7 @@ function expectedOptions = defaultOptions(taskName)
   % (C) Copyright 2021 bidspm developers
 
   expectedOptions.verbosity = 2;
+  expectedOptions.tolerant = true;
   expectedOptions.dryRun = false;
 
   expectedOptions.bidsFilterFile = struct('fmap', struct('modality', 'fmap'), ...

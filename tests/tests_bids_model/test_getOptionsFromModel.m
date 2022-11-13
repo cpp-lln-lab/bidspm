@@ -24,6 +24,7 @@ function test_getOptionsFromModel_no_model()
 
   opt.pipeline.type = 'stats';
   opt.model.file = '';
+  opt.tolerant = true;
   opt.verbosity = 3;
 
   assertExceptionThrown(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelFileMissing');
@@ -35,15 +36,17 @@ function test_getOptionsFromModel_basic()
   opt.pipeline.type = 'stats';
   opt.model.file = modelFile('dummy');
   opt.verbosity = 0;
+  opt.tolerant = true;
 
   opt = getOptionsFromModel(opt);
 
   expectedOptions.pipeline.type = 'stats';
   expectedOptions.model.file = modelFile('dummy');
   expectedOptions.verbosity = 0;
+  expectedOptions.tolerant = true;
   expectedOptions.model.bm = BidsModel('file', modelFile('dummy'), ...
                                        'verbose', expectedOptions.verbosity > 0, ...
-                                       'tolerant', false);
+                                       'tolerant', expectedOptions.tolerant);
 
   expectedOptions.taskName = {'dummy'};
 
@@ -62,6 +65,7 @@ function test_getOptionsFromModel_task()
   opt.taskName = {'foo'};
   opt.model.file = modelFile('dummy');
   opt.verbosity = 0;
+  opt.tolerant = true;
 
   opt = getOptionsFromModel(opt);
 
@@ -70,6 +74,7 @@ function test_getOptionsFromModel_task()
   %%
   opt.taskName = {'foo'};
   opt.verbosity = 2;
+  opt.tolerant = true;
 
   if isOctave
     return
@@ -88,6 +93,7 @@ function test_getOptionsFromModel_subject()
   opt.model.bm = BidsModel('file', opt.model.file);
   opt.model.bm.Input.subject = {'02', '04'};
   opt.verbosity = 0;
+  opt.tolerant = true;
 
   opt = getOptionsFromModel(opt);
 
@@ -112,6 +118,7 @@ function test_getOptionsFromModel_space()
   opt.taskName = {'vislocalizer'};
   opt.model.file = modelFile('vislocalizer');
   opt.verbosity = 0;
+  opt.tolerant = true;
 
   opt = getOptionsFromModel(opt);
 
@@ -135,6 +142,7 @@ function test_getOptionsFromModel_query()
   opt.model.file = modelFile('bug385');
   opt.query.acq = 'foo';
   opt.verbosity = 0;
+  opt.tolerant = true;
 
   opt = getOptionsFromModel(opt);
 
