@@ -179,7 +179,7 @@ function functionalQA(opt)
           bf.entities.label = bf.suffix;
           bf.prefix = '';
 
-          % TODO find an ouput format that is leaner than a 3 Gb json file!!!
+          % TODO find an output format that is leaner than a 3 Gb json file!!!
           bf.suffix = 'qametrics';
           bf.extension = '.json';
 

@@ -68,7 +68,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   refBin = floor(refBin);
   fmri_spec.timing.fmri_t0 = refBin;
 
-  % Create ffxDir if it doesnt exist
+  % Create ffxDir if it does not exist
   % If it exists, issue a warning that it has been overwritten
   ffxDir = getFFXdir(subLabel, opt);
   overwriteDir(ffxDir, opt);

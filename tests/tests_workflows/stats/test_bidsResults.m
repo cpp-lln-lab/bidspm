@@ -8,12 +8,24 @@ function test_suite = test_bidsResults %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsResults_no_results()
+
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  assertWarning(@() bidsResults(opt), 'bidsResults:noResultsAsked');
+
+  opt = rmfield(opt, 'results');
+
+  assertWarning(@() bidsResults(opt), 'bidsResults:noResultsAsked');
+
+end
+
 function test_bidsResults_filter_by_nodeName()
 
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
-  % Specify what ouput we want
+  % Specify what output we want
   opt.results = defaultResultsStructure();
 
   opt.results(1).nodeName = 'subject_level';
@@ -47,7 +59,7 @@ function test_bidsResults_too_many_backgrounds()
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
-  % Specify what ouput we want
+  % Specify what output we want
   opt.results = defaultResultsStructure();
 
   opt.results.nodeName = 'subject_level';
@@ -76,7 +88,7 @@ function test_bidsResults_background_for_subject()
   %% GIVEN
   opt = setOptions('vislocalizer', {'01', 'ctrl01', 'blind01'}, 'pipelineType', 'stats');
 
-  % Specify what ouput we want
+  % Specify what output we want
   opt.results = defaultResultsStructure();
 
   opt.results.nodeName = 'subject_level';
@@ -111,7 +123,7 @@ function test_bidsResults_no_background_for_montage()
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
-  % Specify what ouput we want
+  % Specify what output we want
   opt.results = defaultResultsStructure();
 
   opt.results.nodeName = 'subject_level';
@@ -143,7 +155,7 @@ function test_bidsResults_dataset_lvl()
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
-  % Specify what ouput we want
+  % Specify what output we want
   opt.results = defaultResultsStructure();
 
   opt.results.nodeName = 'dataset_level';
@@ -161,7 +173,7 @@ function test_bidsResults_subject_lvl_regex()
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
-  % Specify what ouput we want
+  % Specify what output we want
   opt.results = defaultResultsStructure();
 
   opt.results.nodeName = 'subject_level';
@@ -199,7 +211,7 @@ function test_bidsResults_subject_lvl()
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
-  % Specify what ouput we want
+  % Specify what output we want
   opt.results = defaultResultsStructure();
 
   opt.results.nodeName = 'subject_level';

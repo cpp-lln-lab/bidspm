@@ -18,10 +18,10 @@ root_directory="${PWD}/../.."
 datalad create -c yoda ~/visual_motion_localiser
 cd ~/visual_motion_localiser
 
-# get BIDSpm code from the dev branch
+# get bidspm code from the dev branch
 source="https://github.com/cpp-lln-lab/bidspm.git"
 
-# for debugging uncomment the follwing line
+# for debugging uncomment the following line
 source=${root_directory}
 
 datalad install \

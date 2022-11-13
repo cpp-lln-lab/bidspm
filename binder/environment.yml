@@ -1,11 +1,9 @@
 channels:
-
 - default
 - conda-forge
-
 dependencies:
-
+- pip
 - octave_kernel
 - texinfo
 - jupyterlab
-- datalad=0.14
+- datalad=0.17

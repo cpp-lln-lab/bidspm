@@ -424,13 +424,13 @@ function initBidspm(dev)
       pathSep = ';';
     end
 
-    % add library first and then BIDSpm source code
+    % add library first and then bidspm source code
     % except for current folder
     run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'));
     run(fullfile(thisDirectory, 'lib', 'spm_2_bids', 'init_spm_2_bids'));
     run(fullfile(thisDirectory, 'lib', 'octache', 'setup'));
 
-    % now add BIDSpm source code
+    % now add bidspm source code
     BIDSPM_PATHS = fullfile(thisDirectory);
     BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
                        pathSep, ...
@@ -523,7 +523,7 @@ end
 
 function uninitBidspm()
   %
-  % Removes the added folders fromthe path for a given session.
+  % Removes the added folders from the path for a given session.
   %
   % USAGE::
   %

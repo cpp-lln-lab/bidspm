@@ -88,7 +88,7 @@ function skipped = bidsRoiBasedGLM(opt)
       roiHeader = spm_vol(roiList{iROI, 1});
       roiVolume = spm_read_vols(roiHeader);
 
-      % if there is a way to extrat those info from marsbar object
+      % if there is a way to extract those info from marsbar object
       % I have yet to find it.
       roiSize.voxels = sum(roiVolume(:) > 0);
       if roiSize.voxels < 1

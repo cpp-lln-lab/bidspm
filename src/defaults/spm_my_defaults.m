@@ -5,7 +5,7 @@ function spm_my_defaults()
   %   spm_my_defaults()
   %
   % This is where we set the defaults we want to use.
-  % These will overide the spm defaults.
+  % These will override the spm defaults.
   % When "not enough" information is specified in the batch files, SPM falls
   % back on the defaults to fill in the blanks.
   % This allows to make the scripts simpler.

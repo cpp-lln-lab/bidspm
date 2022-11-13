@@ -1,6 +1,6 @@
 function [OS, generatedBy] = getEnvInfo(opt)
   %
-  % Gets information about the environement and operating system
+  % Gets information about the environment and operating system
   % to help generate data descriptors for the derivatives.
   %
   % USAGE::
@@ -20,7 +20,7 @@ function [OS, generatedBy] = getEnvInfo(opt)
 
   [branch, commit] = getRepoInfo();
 
-  generatedBy(1).name = 'BIDSpm';
+  generatedBy(1).name = 'bidspm';
   generatedBy(1).Version =  getVersion();
   generatedBy(1).Branch = branch;
   generatedBy(1).Commit = commit;

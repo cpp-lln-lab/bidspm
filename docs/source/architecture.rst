@@ -42,7 +42,7 @@ Other
 .. autofunction:: bidsRename
 
 
-Worflow helper functions
+Workflow helper functions
 ------------------------
 
 To be used if you want to create a new workflow.

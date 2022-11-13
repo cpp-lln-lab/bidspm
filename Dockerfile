@@ -1,6 +1,6 @@
 # Creates a docker image of bidspm
 
-# version number are updated automatically with tbe bump version script
+# version number are updated automatically with the bump version script
 
 # this is mostly taken from the spm docker files: https://github.com/spm/spm-docker
 FROM ubuntu:22.04
@@ -45,9 +45,10 @@ RUN mkdir /opt/spm12 && \
 RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();"
 
 ## Install nods and bids validator
+
 RUN node -v && npm -v && npm install -g bids-validator
 
-## Install BIDSpm in user folder
+## Install bidspm in user folder
 RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
 
 WORKDIR /home/neuro

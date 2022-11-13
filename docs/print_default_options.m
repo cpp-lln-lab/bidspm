@@ -8,5 +8,3 @@ opt = checkOptions(opt);
 file_id = fopen(fullfile(pwd, 'source', 'default_options.m'), 'w+');
 unfold(opt, 'opt', true, file_id);
 fclose(file_id);
-
-system('make clean_default_options');

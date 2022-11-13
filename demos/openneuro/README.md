@@ -5,7 +5,7 @@
     one or several runs depending on task
 -   ds001168: resting state, several sessions, several acquisition, fieldmaps,
     physio data
--   ds002799: resting state and taks, several sessions, with fmriprep data
+-   ds002799: resting state and task, several sessions, with fmriprep data
 
 ## Download with datalad
 

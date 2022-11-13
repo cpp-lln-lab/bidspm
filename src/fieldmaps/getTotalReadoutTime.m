@@ -8,13 +8,13 @@ function totalReadoutTime = getTotalReadoutTime(metadata)
   %   totalReadoutTime = getTotalReadoutTime(metadata)
   %
   % :param metadata: image metadata
-  % :type metadata: strcuture
+  % :type metadata: structure
   %
   % :returns: - :totalReadoutTime: (float) in millisecond
   %
   % Currently this relies on the user adding extra metadata in the json of the
   % functional files as the metadata queried are not "official" BIDS metadata
-  % but can usuall be found in the DICOM headers (for example:
+  % but can usually be found in the DICOM headers (for example:
   % ``PixelBandwidth``)
   %
   %
@@ -44,7 +44,7 @@ function totalReadoutTime = getTotalReadoutTime(metadata)
     %     totalReadoutTime = (metadata.NumberOfEchos - 1) * ...
     %       metadata.EffectiveEchoSpacing;
 
-    %% Phase enconded lines (PELines) and ReadOutTime
+    %% Phase encoded lines (PELines) and ReadOutTime
 
     % PELines = ((BaseResolution * PartialFourier)/iPat) + ((iPat-1)/iPAT) * ReferenceLines) =
     % ReadoutDuration = PELines * InterEchoSpacing

@@ -14,6 +14,10 @@ function pth = pathToPrint(pth)
     return
   end
 
+  if ischar(pth) && size(pth, 1) > 1
+    pth = cellstr(pth);
+  end
+
   if ischar(pth)
     pth = strrep(pth, '\', '/');
 

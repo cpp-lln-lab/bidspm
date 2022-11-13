@@ -74,7 +74,7 @@ function bidsChangeSuffix(varargin)
                    'verbose', opt.verbosity, ...
                    'force', force);
 
-    % createa JSON side car
+    % create JSON side car
     if ~opt.dryRun
       json_file = fullfile(fileparts(data{iFile}), bf.json_filename);
       bids.util.jsonencode(json_file, metadata{iFile});

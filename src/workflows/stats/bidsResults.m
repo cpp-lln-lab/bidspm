@@ -1,12 +1,12 @@
 function matlabbatch = bidsResults(varargin)
   %
   % Computes the results for a series of contrast that can be
-  % specified at the run, subject or dataset step level (see contrast specification
-  % following the BIDS stats model specification).
+  % specified at the run, subject or dataset step level
+  % (see contrast specification following the BIDS stats model specification).
   %
   % USAGE::
   %
-  %  bidsResults(opt,'nodeName', '')
+  %   bidsResults(opt,'nodeName', '')
   %
   % :param opt: Options chosen for the analysis.
   %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
@@ -19,7 +19,7 @@ function matlabbatch = bidsResults(varargin)
   %
   %
   % Below is an example of how specify the option structure
-  % to getsome speific results outputs for certain contrasts.
+  % to get some specific results outputs for certain contrasts.
   %
   % See the `online documentation <https://bidspm.readthedocs.io/en/dev>`_
   % for example of those outputs.
@@ -36,7 +36,7 @@ function matlabbatch = bidsResults(varargin)
   %
   %   opt.results(1).nodeName = 'subject_level';
   %
-  % Specify the name of the contrast whose resul we want to see.
+  % Specify the name of the contrast whose result we want to see.
   % This must match one of the existing contrats (dummy contrast or contrast)
   % in the BIDS stats model for that Node::
   %
@@ -48,7 +48,7 @@ function matlabbatch = bidsResults(varargin)
   %  - cluster level threshold (``k``) [positive integer]
   %  - type of multiple comparison (``MC``):
   %
-  %    - ``'FWE'`` is the defaut
+  %    - ``'FWE'`` is the default
   %    - ``'FDR'``
   %    - ``'none'``
   %
@@ -104,7 +104,7 @@ function matlabbatch = bidsResults(varargin)
   % Finally you can export as a NIDM results zip files.
   %
   % NIDM results is a standardized results format that is readable
-  % by the main neuroimaging softwares (SPM, FSL, AFNI).
+  % by the main neuroimaging software (SPM, FSL, AFNI).
   % Think of NIDM as BIDS for your statistical maps.
   % One of the main other advantage is that it makes it VERY easy
   % to share your group results on `neurovault <https://neurovault.org/>`_
@@ -171,7 +171,7 @@ function matlabbatch = bidsResults(varargin)
 
   BIDS = [];
 
-  % loop trough the steps to compute for each contrast mentioned for each node
+  % loop through the steps to compute for each contrast mentioned for each node
   for iRes = 1:length(opt.results)
 
     node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
@@ -190,7 +190,7 @@ function matlabbatch = bidsResults(varargin)
     msg = sprintf('\n PROCESSING NODE: %s\n', node.Name);
     printToScreen(msg, opt, 'format', '*blue');
 
-    % Depending on the level step we migh have to define a matlabbatch
+    % Depending on the level step we might have to define a matlabbatch
     % for each subject or just on for the whole group
     switch lower(node.Level)
 
@@ -261,25 +261,19 @@ function [status] = checks(opt)
 
   status = true;
 
-  if isempty(opt.results)
+  msg = sprintf(['Specify node names and levels in "opt.results".', ...
+                 '\t\nType "help bidsResults" for more information.']);
+
+  if ~isfield(opt, 'results') || isempty(opt.results)
+    errorHandling(mfilename(), 'noResultsAsked', msg, true, true);
     status = false;
-    return
   end
 
   listNodeNames = returnListNodeNames(opt);
-  if isempty(listNodeNames)
-    msg = 'Specify results to show in "opt.results".';
-    id = 'noResultsAsked';
-    errorHandling(mfilename(), id, msg, true, true);
-    status = false;
-    return
-  end
-
   listNodeLevels = returnlistNodeLevels(opt);
-  if isempty(listNodeLevels)
-    msg = 'Specify results to show in "opt.results".';
-    id = 'noResultsAsked';
-    errorHandling(mfilename(), id, msg, true, true);
+
+  if isempty(listNodeNames) || isempty(listNodeLevels)
+    errorHandling(mfilename(), 'noResultsAsked', msg, true, true);
     status = false;
     return
   end
@@ -293,7 +287,7 @@ function listNodeNames = returnListNodeNames(opt)
   for iRes = 1:numel(opt.results)
     if ~isempty(opt.results(iRes).nodeName)
       node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
-      listNodeNames{iRes} = node.Name;
+      listNodeNames{iRes} = node.Name; %#ok<*AGROW>
     end
   end
 
@@ -318,7 +312,7 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLe
 
   result.space = opt.space;
 
-  % allow constrast.name to be a cell and loop over it
+  % allow contrast.name to be a cell and loop over it
   for i = 1:length(opt.results(iRes).name)
 
     contrastName = opt.results(iRes).name{i};
@@ -327,7 +321,7 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLe
 
       % find all the contrasts: potentially up to one per run
       %
-      % Only neccessary
+      % Only necessary
       % if the user did not specify the run number in result.name
       % by adding an "_[0-9]*" to indicate the run number to get this contrast
       % for example

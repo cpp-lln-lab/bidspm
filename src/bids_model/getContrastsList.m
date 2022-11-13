@@ -57,7 +57,7 @@ end
 
 function contrastsList = getContrastsListFromSource(node, model)
   %
-  % Recurisvely look for contrasts at previous levels
+  % Recursively look for contrasts at previous levels
   %
 
   contrastsList = {};
