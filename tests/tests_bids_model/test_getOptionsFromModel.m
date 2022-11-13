@@ -24,6 +24,7 @@ function test_getOptionsFromModel_no_model()
 
   opt.pipeline.type = 'stats';
   opt.model.file = '';
+  opt.verbosity = 3;
 
   assertExceptionThrown(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelFileMissing');
 
@@ -33,15 +34,25 @@ function test_getOptionsFromModel_basic()
 
   opt.pipeline.type = 'stats';
   opt.model.file = modelFile('dummy');
+  opt.verbosity = 0;
 
   opt = getOptionsFromModel(opt);
 
   expectedOptions.pipeline.type = 'stats';
   expectedOptions.model.file = modelFile('dummy');
-  expectedOptions.model.bm = BidsModel('file', modelFile('dummy'));
+  expectedOptions.verbosity = 0;
+  expectedOptions.model.bm = BidsModel('file', modelFile('dummy'), ...
+                                       'verbose', expectedOptions.verbosity > 0, ...
+                                       'tolerant', false);
+
   expectedOptions.taskName = {'dummy'};
 
-  assertEqual(opt, expectedOptions);
+  assertEqual(opt.model.bm.content, expectedOptions.model.bm.content);
+  assertEqual(opt.pipeline, expectedOptions.pipeline);
+  assertEqual(opt.taskName, expectedOptions.taskName);
+  assertEqual(opt.verbosity, expectedOptions.verbosity);
+  assertEqual(opt.model.file, expectedOptions.model.file);
+  assertEqual(opt.model.bm, expectedOptions.model.bm);
 
 end
 
