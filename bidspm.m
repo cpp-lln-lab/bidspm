@@ -295,23 +295,29 @@ function preprocess(args)
                   false);
   end
 
-  reportBIDS(opt);
-  bidsCopyInputFolder(opt);
-  if opt.dummy_scans > 0
-    bidsRemoveDummies(opt, ...
-                      'dummyScans', opt.dummy_scans, ...
-                      'force', false);
-  end
-  if opt.useFieldmaps && ~opt.anatOnly
-    bidsCreateVDM(opt);
-  end
-  if ~opt.stc.skip && ~opt.anatOnly
-    bidsSTC(opt);
-  end
-  bidsSpatialPrepro(opt);
-  if opt.fwhm.func > 0 && ~opt.anatOnly
-    opt.query.desc = 'preproc';
-    bidsSmoothing(opt);
+  try
+
+    reportBIDS(opt);
+    bidsCopyInputFolder(opt);
+    if opt.dummy_scans > 0
+      bidsRemoveDummies(opt, ...
+                        'dummyScans', opt.dummy_scans, ...
+                        'force', false);
+    end
+    if opt.useFieldmaps && ~opt.anatOnly
+      bidsCreateVDM(opt);
+    end
+    if ~opt.stc.skip && ~opt.anatOnly
+      bidsSTC(opt);
+    end
+    bidsSpatialPrepro(opt);
+    if opt.fwhm.func > 0 && ~opt.anatOnly
+      opt.query.desc = 'preproc';
+      bidsSmoothing(opt);
+    end
+
+  catch ME
+    bugReport(opt, ME);
   end
 
 end
@@ -323,7 +329,11 @@ function default_model(args)
   end
   opt = checkOptions(opt);
 
-  createDefaultStatsModel(opt.dir.raw, opt, lower(args.Results.ignore));
+  try
+    createDefaultStatsModel(opt.dir.raw, opt, lower(args.Results.ignore));
+  catch ME
+    bugReport(opt, ME);
+  end
 end
 
 function stats(args)
@@ -349,39 +359,45 @@ function stats(args)
     results = false;
   end
 
-  if opt.glm.roibased.do
+  try
 
-    bidsFFX('specify', opt);
-    if ~opt.model.designOnly
-      bidsRoiBasedGLM(opt);
-    end
+    if opt.glm.roibased.do
 
-  else
+      bidsFFX('specify', opt);
+      if ~opt.model.designOnly
+        bidsRoiBasedGLM(opt);
+      end
 
-    if estimate
-      if isSubjectLevel
-        if opt.model.designOnly
-          bidsFFX('specify', opt);
+    else
+
+      if estimate
+        if isSubjectLevel
+          if opt.model.designOnly
+            bidsFFX('specify', opt);
+          else
+            bidsFFX('specifyAndEstimate', opt);
+          end
         else
-          bidsFFX('specifyAndEstimate', opt);
+          bidsRFX('RFX', opt, 'nodeName', nodeName);
         end
-      else
-        bidsRFX('RFX', opt, 'nodeName', nodeName);
       end
-    end
 
-    if contrasts
-      if isSubjectLevel
-        bidsFFX('contrasts', opt);
-      else
-        bidsRFX('contrasts', opt, 'nodeName', nodeName);
+      if contrasts
+        if isSubjectLevel
+          bidsFFX('contrasts', opt);
+        else
+          bidsRFX('contrasts', opt, 'nodeName', nodeName);
+        end
       end
+
+      if results
+        bidsResults(opt, 'nodeName', nodeName);
+      end
+
     end
 
-    if results
-      bidsResults(opt, 'nodeName', nodeName);
-    end
-
+  catch ME
+    bugReport(opt, ME);
   end
 
 end
