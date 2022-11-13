@@ -6,7 +6,6 @@ from typing import Optional
 
 import rich
 
-
 __version__ = "v2.2.0"
 
 
@@ -139,6 +138,39 @@ def common_parser():
         help="""
         Path to JSON file containing bidspm options.
         """,
+    )
+
+    return parser
+
+
+def default_model_parser():
+
+    parser = common_parser()
+
+    parser.add_argument(
+        "--action",
+        choices=[
+            "default_model",
+        ],
+        required=True,
+        type=str,
+        nargs=1,
+    )
+    parser.add_argument(
+        "--task",
+        help="""
+        Tasks of the input data.
+        """,
+        type=str,
+        nargs="+",
+    )
+    parser.add_argument(
+        "--space",
+        help="""
+        Space of the input data.
+        """,
+        default=["individual", "IXI549Space"],
+        nargs=1,
     )
 
     return parser
