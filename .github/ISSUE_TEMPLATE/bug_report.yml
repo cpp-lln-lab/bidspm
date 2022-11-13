@@ -115,8 +115,6 @@ body:
         In the MATLAB command line
 
          - `[branch, commit] = getRepoInfo()`
-
-      render: markdown
       value: |
         - main 29b689dd
         - dev 1bda0162
@@ -131,23 +129,15 @@ body:
 
   - type: textarea
     attributes:
-      label: Current Behavior
-      description: Describe what you got instead.
-      placeholder: Describe what you got instead
-    validations:
-      required: true
-
-  - type: textarea
-    attributes:
-      label: Error message
-      description: If possible paste below the error message you encountered.
-    validations:
-      required: false
-      value: |
+      label: Current Behavior & Error message
+      description: Describe what you got instead. If possible paste below the error message you encountered.
+      placeholder: |
         ```matlab
         % this is the error I got
 
         ```
+    validations:
+      required: true
 
   - type: textarea
     attributes:
