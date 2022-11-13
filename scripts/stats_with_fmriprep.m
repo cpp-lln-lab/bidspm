@@ -22,30 +22,21 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
-if isOctave
-  warning('off', 'setGraphicWindow:noGraphicWindow');
-end
-
-% Getting the raw dataset
-download_data = true;
-download_moae_ds(download_data);
-
 % The directory where the data are located
 WD = fileparts(mfilename('fullpath'));
 
 opt.dir.raw = fullfile(WD, 'inputs', 'raw');
 opt.dir.input = fullfile(WD, 'inputs', 'fmriprep');
-
 opt.dir.derivatives = fullfile(WD, 'outputs', 'derivatives');
+
+% we need to specify where the smoothed data will go
+opt.pipeline.type = 'preproc';
+opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
 
 %% Smooth the data
 %
 % fmriprep data is not smoothed so we need to do that first
 %
-
-% we need to specify where the smoothed data will go
-opt.pipeline.type = 'preproc';
-opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
 
 opt.space = {'MNI152NLin6Asym'};
 
@@ -77,16 +68,8 @@ bidsSmoothing(opt);
 
 %% STATS
 
-clear;
-clc;
-
 % Create stats model
-
-WD = fileparts(mfilename('fullpath'));
-
-bids_dir = fullfile(WD, 'inputs', 'raw');
 output_dir = fullfile(WD, 'outputs', 'derivatives');
-preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
 bidspm(bids_dir, output_dir, 'dataset', ...
        'action', 'default_model', ...
@@ -94,7 +77,6 @@ bidspm(bids_dir, output_dir, 'dataset', ...
        'ignore', {'contrasts', 'transformations'});
 
 % Run model
-
 model_file = fullfile(output_dir, 'models', 'model-default_smdl.json');
 
 subject_label = '01';
@@ -104,7 +86,7 @@ subject_label = '01';
 % nodeName corresponds to the name of the Node in the BIDS stats model
 opt.results(1).nodeName = 'run';
 % this results corresponds to the name of the contrast in the BIDS stats model
-opt.results(1).name = {'listening_1'};
+opt.results(1).name = {'TODO'};
 
 % Specify how you want your output
 % (all the following are on false by default)

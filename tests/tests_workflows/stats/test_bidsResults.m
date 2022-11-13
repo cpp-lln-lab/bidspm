@@ -196,6 +196,10 @@ end
 
 function test_bidsResults_error_missing_node()
 
+  if isOctave
+    return
+  end
+
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   opt.results = defaultResultsStructure();
