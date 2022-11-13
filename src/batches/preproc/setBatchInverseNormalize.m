@@ -34,7 +34,7 @@ function matlabbatch = setBatchInverseNormalize(matlabbatch, BIDS, opt, subLabel
 
   if isempty(deformationField)
     tolerant = true;
-    msg = sprintf('No deformation field foudn for query %s', ...
+    msg = sprintf('No deformation field found for query %s', ...
                   createUnorderedList(filter));
     id = 'noDeformationField';
     errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
