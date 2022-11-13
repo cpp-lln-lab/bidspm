@@ -177,6 +177,15 @@
         "bug",
         "userTesting"
       ]
+    },
+    {
+      "login": "Manon-56",
+      "name": "Manon Chateaux",
+      "avatar_url": "https://avatars.githubusercontent.com/u/102988114?v=4",
+      "profile": "https://github.com/Manon-56",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
