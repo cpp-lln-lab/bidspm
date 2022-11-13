@@ -93,11 +93,21 @@ function OS = getOsNameAndVersion(OS)
 
   elseif ismember(OS.name, 'PCWIN64')
 
-    [~, ver] = system('ver');
-    tokens = regexp(ver, 'Version ', 'split');
+    [~, result] = system('ver');
+    tokens = regexp(result, 'Version ', 'split');
 
     OS.name = 'Microsoft Windows';
-    OS.version = tokens{2}(1:end - 2);
+    try
+      OS.version = tokens{2}(1:end - 2);
+    catch
+      msg = sprintf(['Could not parse OS version %s.', ...
+                     '\nPlease report here: %s'], ...
+                    result, ...
+                    'https://github.com/cpp-lln-lab/bidspm/issues');
+      id = 'osParseError';
+      errorHandling(mfilename(), id, msg, true, true);
+      OS.version = ver;
+    end
 
   end
 
