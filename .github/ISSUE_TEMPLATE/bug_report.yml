@@ -45,7 +45,7 @@ body:
         - Linux Ubuntu 18.04 "bionic beaver"
         - Mac OS Version 12 "monterey"
     validations:
-      required: true
+      required: false
 
   - type: checkboxes
     attributes:
@@ -130,7 +130,10 @@ body:
   - type: textarea
     attributes:
       label: Current Behavior & Error message
-      description: Describe what you got instead. If possible paste below the error message you encountered.
+      description: |
+        Describe what you got instead.
+        If possible paste below the error message you encountered.
+        Also add the error.log that might have been generated.
       placeholder: |
         ```matlab
         % this is the error I got
