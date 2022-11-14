@@ -124,7 +124,7 @@ function images = collectImagesFromDataset(opt, images, labels)
         id = 'tooManyTissueClassFiles';
         errorHandling(mfilename(), id, msg, tolerant);
       else
-        printToScreen(createUnorderedList(files), opt);
+        printToScreen(createUnorderedList(pathToPrint(files)), opt);
       end
 
       % TODO avoid the hard coding of 'control' :

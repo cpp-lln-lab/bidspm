@@ -53,7 +53,7 @@ function opt = loadAndCheckOptions(optionJsonFile)
 
   if ischar(optionJsonFile) && size(optionJsonFile, 1) == 1
     if exist(optionJsonFile, 'file')
-      msg = sprintf('\nReading option from: %s.\n', optionJsonFile);
+      msg = sprintf('\nReading option from: %s.\n', pathToPrint(optionJsonFile));
       opt = spm_jsonread(optionJsonFile);
       opt = checkOptions(opt);
       printToScreen(msg, opt);
