@@ -32,7 +32,8 @@ function [BIDS, opt] = getData(varargin)
     parse(args, varargin{:});
   catch ME
     if bids.internal.starts_with(ME.message, 'The value of ')
-      msg = sprintf('The following directory does not exist:\n\t%s', varargin{2});
+      msg = sprintf('The following directory does not exist:\n\t%s', ...
+                    pathToPrint(varargin{2}));
       errorHandling(mfilename(), 'notADirectory', msg, false);
     else
       rethrow(ME);
@@ -53,7 +54,8 @@ function [BIDS, opt] = getData(varargin)
 
   if strcmp(opt.pipeline.type, 'stats')
     if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file') == 2
-      msg = sprintf('\nLoading BIDS raw layout from:\n\t%s\n', fullfile(opt.dir.raw, 'layout.mat'));
+      msg = sprintf('\nLoading BIDS raw layout from:\n\t%s\n', ...
+                    pathToPrint(fullfile(opt.dir.raw, 'layout.mat')));
       printToScreen(msg, opt);
       tmp = load(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
       if isempty(fieldnames(tmp))
