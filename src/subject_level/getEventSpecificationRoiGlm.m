@@ -6,10 +6,10 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   %   event_specification = getEventSpecificationRoiGlm(SPM_file, model_file)
   %
   % :param SPM_file: obligatory argument. fullpath to SPM.mat
-  % :type SPM_file: path
+  % :type  SPM_file: path
   %
   % :param model_file: obligatory argument. fullpath to BIDS stats model
-  % :type model_file: fullpath
+  % :type  model_file: fullpath
   %
   % :returns: - :event_specification: (structure) (dimension)
   %

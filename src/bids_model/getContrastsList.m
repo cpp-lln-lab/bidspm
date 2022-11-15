@@ -31,7 +31,7 @@ function contrastsList = getContrastsList(node, model)
   if isfield(node, 'Contrasts')
 
     for i = 1:numel(node.Contrasts)
-      contrastsList{end + 1} = checkContrast(node, i);
+      contrastsList{end + 1} = checkContrast(node, i); %#ok<*AGROW>
     end
 
     % check previous Nodes recursively
