@@ -160,6 +160,7 @@ function test_getModelMask_method()
 
   opt = setOptions('vislocalizer');
   bm = BidsModel('file', opt.model.file);
+  bm.verbose = false;
 
   mask = bm.getModelMask('Name', 'subject_level');
   assertEqual(mask, '');
@@ -168,6 +169,7 @@ function test_getModelMask_method()
   mask = bm.getModelMask('Name', 'run_level');
   assertEqual(mask, 'mask.nii');
 
+  bm.verbose = true;
   bm.Nodes{1}.Model.Options = rmfield(bm.Nodes{1}.Model.Options, 'Mask');
   assertWarning(@()bm.getModelMask('Name', 'run_level'), ...
                 'BidsModel:noMask');

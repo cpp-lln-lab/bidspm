@@ -11,6 +11,7 @@ end
 function test_getContrastsList_wrong_level()
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
+  opt.model.bm.verbose = false;
 
   nodeName = 'foo_level';
 

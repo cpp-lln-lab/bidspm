@@ -78,6 +78,43 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
     errorHandling(mfilename(), 'noContrast', msg, true, true);
   end
 
+  contrasts = removeDuplicates(contrasts);
+
+end
+
+function contrasts = removeDuplicates(contrasts)
+  % remove all but one contrast that have the same name, vector and type
+
+  tmp = contrasts;
+
+  for i = 1:numel(contrasts)
+
+    name = contrasts(i).name;
+    if sum(ismember({contrasts.name}, name)) == 1
+      continue
+    end
+
+    duplicates = find(~cellfun('isempty', regexp({tmp.name}, name, 'match')));
+
+    if numel(unique({tmp(duplicates).type})) > 1
+      continue
+    end
+
+    vectors = cat(1, tmp(duplicates).C);
+
+    if size(unique(vectors, 'rows'), 1) > 1
+      msg = 'there are duplicate contrasts.';
+      id = 'duplicateContrasts';
+      errorHandling(mfilename(), id, msg, true, true);
+      continue
+    end
+
+    tmp(duplicates(2:end)) = [];
+
+  end
+
+  contrasts = tmp;
+
 end
 
 function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
