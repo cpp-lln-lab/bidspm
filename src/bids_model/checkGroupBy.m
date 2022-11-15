@@ -15,7 +15,7 @@ function [status, groupBy] = checkGroupBy(node)
     case 'run'
 
       % only certain type of GroupBy supported for now
-      if ~strcmp(groupBy{1}, 'run') || ...
+      if ~ismember('run', groupBy) || ...
           ~all(ismember(groupBy, {'run', 'session', 'subject'}))
 
         status = false;
@@ -27,7 +27,7 @@ function [status, groupBy] = checkGroupBy(node)
     case 'subject'
 
       if ~(numel(groupBy) == 2) || ...
-          not(all([strcmp(groupBy{1}, 'contrast') strcmp(groupBy{2}, 'subject')]))
+          not(all([ismember('contrast', groupBy) ismember('subject', groupBy)]))
 
         status = false;
 

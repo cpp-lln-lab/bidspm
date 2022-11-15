@@ -8,6 +8,17 @@ function test_suite = test_getContrastsList %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getContrastsList_bug_815()
+
+  model_file = fullfile(getDummyDataDir(), 'models', 'model-bug815_smdl.json');
+  model = bids.Model('file', model_file, 'verbose', false);
+
+  nodeName = 'subject_level';
+
+  contrastsList = getContrastsList(nodeName, model);
+
+end
+
 function test_getContrastsList_wrong_level()
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');

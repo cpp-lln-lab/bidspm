@@ -102,7 +102,11 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
   contrastsList = {};
   if ~isfield(node.DummyContrasts, 'Contrasts') % && strcmp(level, 'run')
     % try to grab ContrastsList from design matrix or from previous Node
-    contrastsList = getContrastsList(node, model);
+    if strcmp(level, 'run')
+      contrastsList = getContrastsList(node, model);
+    else
+      contrastsList = getContrastsListFromSource(node, model);
+    end
   end
 
   for iCon = 1:length(contrastsList)

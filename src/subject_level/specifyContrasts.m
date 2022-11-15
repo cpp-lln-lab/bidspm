@@ -103,7 +103,8 @@ function contrasts = removeDuplicates(contrasts)
     vectors = cat(1, tmp(duplicates).C);
 
     if size(unique(vectors, 'rows'), 1) > 1
-      msg = 'there are duplicate contrasts.';
+      disp(tmp(duplicates));
+      msg = 'there are contrasts with the same name but different vector.';
       id = 'duplicateContrasts';
       errorHandling(mfilename(), id, msg, true, true);
       continue
