@@ -42,7 +42,8 @@ function opt = setRenamingConfig(opt, workflowName)
     case 'lesiondetection'
 
       nameSpec = struct('prefix', '', 'suffix', 'roi', ...
-                        'entities', struct('label', 'lesion'));
+                        'entities', struct('label', 'lesion', ...
+                                           'desc', ''));
       prefix =  'Lesion_binary_';
       map = replaceMapping(map, prefix, nameSpec);
 
