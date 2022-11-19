@@ -304,6 +304,8 @@ function preprocess(args)
 
   try
 
+    saveOptions(opt);
+
     reportBIDS(opt);
     bidsCopyInputFolder(opt);
     if opt.dummy_scans > 0
@@ -336,6 +338,8 @@ function default_model(args)
   end
   opt = checkOptions(opt);
 
+  saveOptions(opt);
+
   try
     createDefaultStatsModel(opt.dir.raw, opt, lower(args.Results.ignore));
   catch ME
@@ -365,6 +369,8 @@ function stats(args)
     contrasts = false;
     results = false;
   end
+
+  saveOptions(opt);
 
   try
 

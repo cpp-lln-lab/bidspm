@@ -1,6 +1,6 @@
 function saveOptions(opt)
   %
-  % Saves options in a JSON file in a ``cfg`` folder.
+  % Saves options in a JSON file in a ``options`` folder.
   %
   % USAGE::
   %
@@ -13,8 +13,8 @@ function saveOptions(opt)
 
   % (C) Copyright 2020 bidspm developers
 
-  optionDir = fullfile(pwd, 'cfg');
-  [~, ~, ~] = mkdir(optionDir);
+  optionDir = fullfile(pwd, 'options');
+  spm_mkdir(optionDir);
 
   taskString = '';
   if isfield(opt, 'taskName')
@@ -23,8 +23,7 @@ function saveOptions(opt)
 
   filename = fullfile(optionDir, ['options', taskString, '_', timeStamp(), '.json']);
 
-  jsonFormat.indent = '    ';
-  spm_jsonwrite(filename, opt, jsonFormat);
+  bids.util.jsonwrite(filename, opt);
 
   printToScreen(sprintf('Options saved in: %s\n\n', ...
                         pathToPrint(filename)), opt);
