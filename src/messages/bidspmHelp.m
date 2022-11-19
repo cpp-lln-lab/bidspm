@@ -184,7 +184,9 @@ function bidspmHelp()
   % :param design_only:   to only run the model specification when at the group level
   % :type  design_only:   logical
   %
-  % :param ignore:        can be any of ``{'qa'}``
+  % :param ignore:        can be any of ``{'qa', 'concat'}``, to skip
+  %                       quality controls or contanetation of beta images
+  %                       into a single 4D image.
   % :type  ignore:        cell string
   %
   %

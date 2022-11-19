@@ -365,6 +365,7 @@ function stats(args)
   action = args.Results.action;
   analysisLevel = args.Results.analysis_level;
   nodeName = args.Results.node_name;
+  ignore = args.Results.ignore;
 
   isSubjectLevel = strcmp(analysisLevel, 'subject');
   estimate = strcmp(action, 'stats');
@@ -391,6 +392,7 @@ function stats(args)
       if ~opt.model.designOnly
         bidsRoiBasedGLM(opt);
       end
+
     else
 
       if estimate
@@ -412,7 +414,9 @@ function stats(args)
           bidsRFX('contrasts', opt, 'nodeName', nodeName);
         end
 
-        bidsConcatBetaTmaps(opt);
+        if ~ismember('concat', ignore)
+          bidsConcatBetaTmaps(opt);
+        end
 
       end
 

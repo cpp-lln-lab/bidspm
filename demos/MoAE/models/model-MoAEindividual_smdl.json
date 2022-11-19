@@ -35,16 +35,17 @@
           "HighPassFilterCutoffHz": 0.0078,
           "Mask": {
             "suffix": [
-               "mask"
+              "mask"
             ],
             "desc": [
-               "brain"
+              "brain"
             ]
-         }
+          }
         },
         "Software": {
           "SPM": {
-            "SerialCorrelation": "AR(1)"
+            "SerialCorrelation": "AR(1)",
+            "InclusiveMaskingThreshold": 0.8
           }
         }
       },

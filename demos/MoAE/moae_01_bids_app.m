@@ -130,15 +130,6 @@ bidspm(bids_dir, output_dir, 'subject', ...
 
 % ## Stats
 
-addpath(fullfile(this_dir, '..', '..'));
-
-subject_label = '01';
-
-bids_dir = fullfile(this_dir, 'inputs', 'raw');
-
-% the statistical output will be saved in a bidspm-stats subfolder;
-output_dir = fullfile(this_dir, 'outputs', 'derivatives');
-
 % for the stats we need to specifcy where the preprocessed data is;
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
@@ -213,4 +204,5 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'preproc_dir', preproc_dir, ...
        'model_file', model_file, ...
        'options', opt, ...
+       'ignore', {'concat'}, ...
        'fwhm', 6);
