@@ -80,6 +80,8 @@ workflows
 .. autofunction:: src.workflows.bidsRsHrf
 .. _bidsChangeSuffix:
 .. autofunction:: src.workflows.bidsChangeSuffix
+.. _bidsReport:
+.. autofunction:: src.workflows.bidsReport
 .. _setUpWorkflow:
 .. autofunction:: src.workflows.setUpWorkflow
 .. _cleanUpWorkflow:
@@ -234,8 +236,6 @@ reports
 .. autofunction:: src.reports.copyFigures
 .. _boilerplate:
 .. autofunction:: src.reports.boilerplate
-.. _reportBIDS:
-.. autofunction:: src.reports.reportBIDS
 
 
 .. _infra:
@@ -244,6 +244,8 @@ infra
 =====
 .. _checkToolbox:
 .. autofunction:: src.infra.checkToolbox
+.. _returnBsmDocURL:
+.. autofunction:: src.infra.returnBsmDocURL
 .. _getRepoInfo:
 .. autofunction:: src.infra.getRepoInfo
 .. _elapsedTime:
@@ -266,6 +268,8 @@ infra
 .. autofunction:: src.infra.getVersion
 .. _isOctave:
 .. autofunction:: src.infra.isOctave
+.. _returnRtdURL:
+.. autofunction:: src.infra.returnRtdURL
 
 
 .. _QA:

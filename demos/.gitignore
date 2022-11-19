@@ -2,4 +2,4 @@
 */outputs/
 */inputs/
 */*.nii
-*/cfg
+*.png

@@ -1,5 +1,3 @@
-% (C) Copyright 2022 Remi Gau
-
 % # BIDS filenames
 %
 % Ideally we would like to have the same pipeline for statistical analysis
@@ -32,12 +30,17 @@
 %
 % - **prefixes are not a thing in official BIDS names**
 %
-% BIDS has a number of (https://bids-specification.readthedocs.io/en/stable/99-appendices/04-entity-table.html)
+% BIDS has a number of officially recognised entities
 % (`sub`, `ses`, `task`...) that must come in a specific order for each data type.
+%
+% https://bids-specification.readthedocs.io/en/stable/99-appendices/04-entity-table.html
 %
 % BIDS derivatives adds a few more entities (`desc`, `space`, `res`...)
 % and suffixes (`pseg`, `dseg`, `mask`...)
 % that can be used to name and describe preprocessed data.
+%
+%
+% (C) Copyright 2022 Remi Gau
 
 % The toolbox BIDS Matlab has some function to help you create bids valid names.
 
@@ -209,8 +212,6 @@ output_name = spm_2_bids(input_name, opt.spm_2_bids);
 % The `bidsRename` workflow uses this to rename all "SPM files" at the end of each step.
 
 demo_dir = fullfile(pwd, '..', 'MoAE');
-
-opt.taskName = 'auditory';
 
 opt.dir.derivatives = fullfile(demo_dir, 'outputs', 'derivatives');
 opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');

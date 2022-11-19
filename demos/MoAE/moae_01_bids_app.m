@@ -1,5 +1,5 @@
 % # MoAE demo
-
+%
 % This script shows how to use the bidspm BIDS app
 %
 % - **Download**

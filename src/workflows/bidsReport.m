@@ -1,4 +1,4 @@
-function reportBIDS(opt)
+function bidsReport(opt)
   %
   % Prints out a human readable description of a BIDS data set for every subject
   % in ``opt.subjects``.
@@ -10,7 +10,7 @@ function reportBIDS(opt)
   % USAGE::
   %
   %   opt.dir.input = "path_to_dataset"
-  %   reportBIDS(opt)
+  %   bidsReport(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.

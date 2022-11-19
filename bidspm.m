@@ -306,13 +306,18 @@ function preprocess(args)
 
     saveOptions(opt);
 
-    reportBIDS(opt);
+    bidsReport(opt);
     bidsCopyInputFolder(opt);
     if opt.dummy_scans > 0
       bidsRemoveDummies(opt, ...
                         'dummyScans', opt.dummy_scans, ...
                         'force', false);
     end
+
+    boilerplate(opt, ...
+                'outputPath', fullfile(opt.dir.output, 'reports'), ...
+                'pipelineType', 'preproc', ...
+                'verbosity', opt.verbosity);
     if opt.useFieldmaps && ~opt.anatOnly
       bidsCreateVDM(opt);
     end
@@ -338,9 +343,8 @@ function default_model(args)
   end
   opt = checkOptions(opt);
 
-  saveOptions(opt);
-
   try
+    saveOptions(opt);
     createDefaultStatsModel(opt.dir.raw, opt, lower(args.Results.ignore));
   catch ME
     bugReport(opt, ME);
@@ -370,9 +374,14 @@ function stats(args)
     results = false;
   end
 
-  saveOptions(opt);
-
   try
+
+    saveOptions(opt);
+
+    boilerplate(opt, ...
+                'outputPath', fullfile(opt.dir.output, 'reports'), ...
+                'pipelineType', 'stats', ...
+                'verbosity', opt.verbosity);
 
     if opt.glm.roibased.do
 
@@ -380,7 +389,6 @@ function stats(args)
       if ~opt.model.designOnly
         bidsRoiBasedGLM(opt);
       end
-
     else
 
       if estimate
