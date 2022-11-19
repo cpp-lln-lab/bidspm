@@ -411,6 +411,9 @@ function stats(args)
         else
           bidsRFX('contrasts', opt, 'nodeName', nodeName);
         end
+
+        bidsConcatBetaTmaps(opt);
+
       end
 
       if results

@@ -4,7 +4,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
   %
   % USAGE::
   %
-  %   concatBetaImgTmaps(opt, deleteIndTmaps)
+  %   bidsConcatBetaTmaps(opt, deleteIndTmaps)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
@@ -28,7 +28,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
 
   % (C) Copyright 2019 bidspm developers
 
-  [~, opt] = setUpWorkflow(opt, 'merge beta images and t-maps');
+  [~, opt] = setUpWorkflow(opt, 'concatenate beta images and t-maps');
 
   if nargin < 3 || opt.dryRun
     deleteTmaps = false;
