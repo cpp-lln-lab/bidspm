@@ -1,6 +1,6 @@
 function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
   %
-  % Short description of what the function does goes here.
+  % Open SPM graphic window.
   %
   % USAGE::
   %

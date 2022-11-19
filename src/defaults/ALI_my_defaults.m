@@ -1,6 +1,6 @@
 function defaults = ALI_my_defaults()
   %
-  % Short description of what the function does goes here.
+  % Return default for the ALI toolbox.
   %
   % USAGE::
   %
