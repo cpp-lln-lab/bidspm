@@ -1,4 +1,4 @@
-function test_suite = test_reportBIDS %#ok<*STOUT>
+function test_suite = test_bidsReport %#ok<*STOUT>
   %
 
   % (C) Copyright 2021 bidspm developers
@@ -10,11 +10,11 @@ function test_suite = test_reportBIDS %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_reportBIDS_smoke_test()
+function test_bidsReport_smoke_test()
 
   opt = setOptions('vismotion');
 
-  reportBIDS(opt);
+  bidsReport(opt);
 
   assertEqual(exist(fullfile(opt.dir.preproc, ...
                              'reports', ...
@@ -22,5 +22,13 @@ function test_reportBIDS_smoke_test()
                              'dataset-bidspm-raw_bids-matlab_report.md'), ...
                     'file'), ...
               2);
+
+end
+
+function test_bidsReport_basic()
+
+  opt = setOptions('MoAE');
+
+  bidsReport(opt);
 
 end

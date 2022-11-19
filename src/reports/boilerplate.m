@@ -69,6 +69,8 @@ function outputFile = boilerplate(varargin)
     opt.OS.name = 'unix';
   end
 
+  copyBibFile(outputPath);
+
   if strcmp(pipelineType, 'spatial_preproc')
 
     opt.normalization = false;
@@ -248,25 +250,36 @@ function opt = setDerivatives(opt, bm)
   end
 end
 
-function outputFile = printToFile(output, outputPath, pipelineType)
+function copyBibFile(outputPath)
+  bibFile = fullfile(returnRootDir(), 'src', 'reports', 'bidspm.bib');
+  copyfile(bibFile, outputPath);
+end
+
+function outputFile = printToFile(output, outputPath, pipelineType, modelName)
 
   outputFile = '';
+
+  if nargin < 4
+    modelName = '';
+  end
 
   if ~isempty(outputPath)
 
     spm_mkdir(outputPath);
 
     if strcmp(pipelineType, 'preproc')
-      outputFile = 'preprocess.md';
+      outputFile = 'preprocess_CITATION.md';
     elseif strcmp(pipelineType, 'stats')
-      outputFile = 'stats.md';
+      outputFile = ['stats_model-' modelName '_CITATION.md'];
     end
 
     outputFile = fullfile(outputPath, outputFile);
 
     fid = fopen(outputFile, 'wt');
     if fid == -1
-      error('Unable to open file "%s" for writing.', outputFile);
+      error(['Unable to open file "%s" for writing.', ...
+             '\nIf you are using a datalad dataset, make sure the file is unlocked.'], ...
+            bids.internal.file_utils(outputFile, 'cpath'));
     end
     fprintf(fid, '%s', output);
     fclose(fid);

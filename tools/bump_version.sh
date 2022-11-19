@@ -11,6 +11,8 @@ sed -i "s/version=.*/version=\"$VERSION\"/g" Dockerfile_matlab
 sed -i "s/version = {.*/version = {$VERSION}/g" README.md
 sed -i "s/__version__ = .*/version = {$VERSION}/g" README.md
 
+sed -i "s/  version   = {.*/  version   = {$VERSION}/g" src/reports/bidspm.bib
+
 cd tools
-git tag --list | tac > versions.txt
+git tag --list | tac >versions.txt
 python update_versions_bug_report.py

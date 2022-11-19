@@ -45,6 +45,7 @@ function test_boilerplate_spatial_preproc()
 
   assertEqual(exist(outputFile, 'file'), 2);
   delete(outputFile);
+  delete('bidspm.bib');
 
 end
 
@@ -66,6 +67,7 @@ function test_boilerplate_spatial_subject_glm()
 
   assertEqual(exist(outputFile, 'file'), 2);
   delete(outputFile);
+  delete('bidspm.bib');
 
 end
 

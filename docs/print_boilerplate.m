@@ -31,7 +31,7 @@ opt.dir.output = WK;
 opt = checkOptions(opt);
 
 % dataset descriptor
-reportBIDS(opt);
+bidsReport(opt);
 
 % preprocessing
 boilerplate(opt, 'outputPath', fullfile(WK, 'source', 'examples'), ...

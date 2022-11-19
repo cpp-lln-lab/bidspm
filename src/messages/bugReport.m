@@ -23,7 +23,10 @@ function bugReport(opt, ME)
     json.ME = ME;
   end
 
-  logFile = spm_file(sprintf('error_%s.log', timeStamp()), 'cpath');
+  output_dir = fullfile(pwd, 'error_logs');
+  spm_mkdir(output_dir);
+
+  logFile = spm_file(fullfile(output_dir, sprintf('error_%s.log', timeStamp())), 'cpath');
   bids.util.jsonwrite(logFile, json);
   printToScreen(sprintf(['\nERROR LOG SAVED:\n\t%s\n', ...
                          'Use it when opening an issue <a href="%s">%s</a>.\n'], ...

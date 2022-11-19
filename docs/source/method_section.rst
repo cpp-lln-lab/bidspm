@@ -4,7 +4,7 @@ Methods section
 Dataset description
 ===================
 
-Use the :func:`src.reports.reportBIDS` function to description of your dataset
+Use the :func:`src.workflows.bidsReport` function to description of your dataset
 that can be used for your methods section
 
 Preprocessing & GLM
