@@ -19,7 +19,7 @@ function test_bugReport_basic()
 
   bugReport(opt);
 
-  delete *.log;
+  cleanUp('error_logs');
 
 end
 
@@ -35,5 +35,7 @@ function test_bugReport_error()
   catch ME
     bugReport(opt, ME);
   end
+
+  cleanUp('error_logs');
 
 end
