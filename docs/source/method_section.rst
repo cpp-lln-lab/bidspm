@@ -1,22 +1,16 @@
 Methods section
 ***************
 
-.. automodule:: src.reports
-
 Dataset description
 ===================
 
-Use the ``reportBIDS`` function to description of your dataset
+Use the :func:`src.reports.reportBIDS` function to description of your dataset
 that can be used for your methods section
-
-.. autofunction:: reportBIDS
 
 Preprocessing & GLM
 ===================
 
-This can be generated with the ``boilerplate`` function.
-
-.. autofunction:: boilerplate
+This can be generated with the :func:`src.reports.boilerplate` function.
 
 Output example - Preprocessing
 ------------------------------
@@ -32,7 +26,3 @@ Output example - GLM subject level
 
 Output example - GLM Group level
 --------------------------------
-
-```{warning}
-WORK IN PROGRESS
-```

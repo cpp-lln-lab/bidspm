@@ -6,8 +6,6 @@ Preprocessing
 Preprocessing workflows
 =======================
 
-.. automodule:: src.workflows.preproc
-
 .. Note::
 
    The illustrations in this section mix what the files created by each workflow
@@ -15,15 +13,11 @@ Preprocessing workflows
    In this sense they are not pure DAGs (directed acyclic graphs) as the ``*.m`` files
    mentioned in them already exist.
 
-Remove dummies
---------------
-
-.. autofunction:: bidsRemoveDummies
 
 Slice Time Correction
 ---------------------
 
-.. autofunction:: bidsSTC
+:func:`src.workflows.preproc.bidsSTC`
 
 More info available on this page of the
 `SPM wikibook <https://en.wikibooks.org/wiki/SPM/Slice_Timing>`_.
@@ -71,9 +65,7 @@ do a search for "slice timing AND before" in the archives of the list.*
 Spatial Preprocessing
 ---------------------
 
-Perform spatial preprocessing by running ``bidsSpatialPrepro``
-
-.. autofunction:: bidsSpatialPrepro
+Perform spatial preprocessing by running :func:`src.workflows.preproc.bidsSpatialPrepro`
 
 The figures below show the ``bidsSpatialPrepro`` workflow as it would run using
 realign and unwarp (default) and with normalization to SPM MNI space (``IXI549Space``).
@@ -90,15 +82,11 @@ realign and unwarp (default) and with normalization to SPM MNI space (``IXI549Sp
 
    Functional component of the spatial preprocessing workflow
 
-.. autofunction:: bidsRealignReslice
-.. autofunction:: bidsRealignUnwarp
-
 Smoothing
 ---------
 
-Perform smoothing of the functional data by running ``bidsSmoothing``
-
-.. autofunction:: bidsSmoothing
+Perform smoothing of the functional data by running
+:func:`src.workflows.preproc.bidsSmoothing`
 
 .. _fig_smoothing:
 .. figure::  images/bidsSmoothing/out.png
@@ -109,43 +97,10 @@ Perform smoothing of the functional data by running ``bidsSmoothing``
 Others
 ------
 
-.. autofunction:: bidsResliceTpmToFunc
-.. autofunction:: bidsSegmentSkullStrip
+:func:`src.workflows.preproc.bidsSegmentSkullStrip`
 
 .. _fig_segmentSkullstrip:
 .. figure::  images/bidsSegmentSkullstrip/out.png
    :align:   center
 
    Segment and skullstrip workflow
-
-.. autofunction:: bidsWholeBrainFuncMask
-
-Preprocessing batches
-=====================
-
-.. automodule:: src.batches.preproc
-
-Slice Time Correction
----------------------
-
-.. autofunction:: setBatchSTC
-
-Spatial Preprocessing
----------------------
-
-.. autofunction:: setBatchRealign
-.. autofunction:: setBatchReslice
-.. autofunction:: setBatchSegmentation
-.. autofunction:: setBatchSkullStripping
-.. autofunction:: setBatchNormalize
-.. autofunction:: setBatchNormalizationSpatialPrepro
-.. autofunction:: setBatchCoregistrationFuncToAnat
-.. autofunction:: setBatchCoregistration
-.. autofunction:: setBatchSaveCoregistrationMatrix
-
-Smoothing
----------
-
-.. autofunction:: setBatchSmoothConImages
-.. autofunction:: setBatchSmoothingFunc
-.. autofunction:: setBatchSmoothing

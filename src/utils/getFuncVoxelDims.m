@@ -1,6 +1,6 @@
 function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, fileName)
   %
-  % Short description of what the function does goes here.
+  % Get the resolution of an image and update the relevant field in the options.
   %
   % USAGE::
   %

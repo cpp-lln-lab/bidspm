@@ -26,12 +26,8 @@ Selecting groups and subjects
 +++++++++++++++++++++++++++++
 
 The way to select certain subjects is summarised in the documentation of the
-:func:`src/utils/getSubjectList` function.
+:func:`src.utils.getSubjectList` function.
 
-.. automodule:: src.bids
-
-.. autofunction:: getSubjectList
-    :noindex:
 
 Setting directories
 +++++++++++++++++++

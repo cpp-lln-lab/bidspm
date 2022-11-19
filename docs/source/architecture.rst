@@ -31,44 +31,38 @@ HRF estimation
 
 Relies on the resting-state HRF toolbox.
 
-.. automodule:: src.workflows
-
-.. autofunction:: bidsRsHrf
+:func:`src.workflows.bidsRsHrf`
 
 Other
 -----
 
-.. autofunction:: bidsCopyInputFolder
-.. autofunction:: bidsRename
+:func:`src.workflows.bidsCopyInputFolder`
+:func:`src.workflows.bidsRename`
 
 
 Workflow helper functions
-------------------------
+-------------------------
 
 To be used if you want to create a new workflow.
 
-.. autofunction:: setUpWorkflow
-.. autofunction:: saveAndRunWorkflow
-.. autofunction:: cleanUpWorkflow
-.. autofunction:: returnDependency
+:func:`src.workflows.setUpWorkflow`
+:func:`src.workflows.saveAndRunWorkflow`
+:func:`src.workflows.cleanUpWorkflow`
+:func:`src.workflows.returnDependency`
 
 
 Batches
 =======
 
-.. automodule:: src.batches
+:func:`src.batches.setBatchSelectAnat`
+:func:`src.batches.setBatchPrintFigure`
+:func:`src.batches.setBatchMeanAnatAndMask`
+:func:`src.batches.setBatchRsHRF`
+:func:`src.batches.setBatchImageCalculation`
+:func:`src.batches.setBatch3Dto4D`
 
-.. autofunction:: setBatchSelectAnat
-.. autofunction:: setBatchPrintFigure
-.. autofunction:: setBatchMeanAnatAndMask
-.. autofunction:: setBatchRsHRF
-.. autofunction:: setBatchImageCalculation
-.. autofunction:: setBatch3Dto4D
+:func:`src.batches.saveMatlabBatch`
 
-.. autofunction:: saveMatlabBatch
-
-.. automodule:: src.batches.lesion
-
-.. autofunction:: setBatchLesionOverlapMap
-.. autofunction:: setBatchLesionSegmentation
-.. autofunction:: setBatchLesionAbnormalitiesDetection
+:func:`src.batches.setBatchLesionOverlapMap`
+:func:`src.batches.setBatchLesionSegmentation`
+:func:`src.batches.setBatchLesionAbnormalitiesDetection`

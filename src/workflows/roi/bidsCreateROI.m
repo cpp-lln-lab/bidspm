@@ -3,11 +3,10 @@ function bidsCreateROI(opt)
   % Use CPP_ROI and marsbar to create a ROI in MNI space based on a given atlas
   % and inverse normalize those ROIs in native space if requested.
   %
-  % :type opt:  structure
+  % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt: structure
   %
   % USAGE::
   %

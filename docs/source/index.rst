@@ -28,14 +28,13 @@ Welcome to bidspm documentation!
    FAQ
    fieldmaps
    quality_analysis
-   utils
    mancoreg
    docker
    links_and_references
+   dev_doc
+
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

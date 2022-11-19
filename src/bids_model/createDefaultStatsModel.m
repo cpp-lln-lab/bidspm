@@ -12,13 +12,12 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
   %
   % :param opt: Options chosen for the analysis.
   %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type  opt:  structure
+  % :type  opt: structure
   %
   % :param ignore: Optional. Cell string that can contain:
-  %                  - ``"Transformations"``
-  %                  - ``"Contrasts"``
-  %                Can be used to avoid generating certain objects of the BIDS
-  %                stats model.
+  %                - ``"Transformations"``
+  %                - ``"Contrasts"``
+  %                Can be used to avoid generating certain objects of the BIDS stats model.
   % :type  ignore: cellstr
   %
   % :return: opt
@@ -29,31 +28,31 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
   %
   % This model has 3 "Nodes" in that order:
   %
-  % - Run level:
+  %  - Run level:
   %
-  %   - will create a GLM with a design matrix that includes all
-  %     all the possible type of trial_types that exist across
-  %     all subjects and runs for the task specified in ``opt``,
-  %     as well as the realignment parameters.
+  %     - will create a GLM with a design matrix that includes all
+  %       all the possible type of trial_types that exist across
+  %       all subjects and runs for the task specified in ``opt``,
+  %       as well as the realignment parameters.
   %
-  %   - use ``DummyContrasts`` to generate contrasts for each trial_type
-  %     for each run. This can be useful to run MVPA analysis on the beta
-  %     images of each run.
+  %     - use ``DummyContrasts`` to generate contrasts for each trial_type
+  %       for each run. This can be useful to run MVPA analysis on the beta
+  %       images of each run.
   %
-  % - Subject level:
+  %  - Subject level:
   %
-  %   - will create a GLM with a design matrix that includes all
-  %     all the possible type of trial_types that exist across
-  %     all subjects and runs for the task specified in ``opt``,
-  %     as well as the realignment parameters.
+  %     - will create a GLM with a design matrix that includes all
+  %       all the possible type of trial_types that exist across
+  %       all subjects and runs for the task specified in ``opt``,
+  %       as well as the realignment parameters.
   %
-  %   - use ``DummyContrasts`` to generate contrasts for all each trial_type
-  %     across runs
+  %     - use ``DummyContrasts`` to generate contrasts for all each trial_type
+  %       across runs
   %
-  % - Dataset level:
+  %    Dataset level:
   %
-  %   - use ``DummyContrasts`` to generate contrasts for each trial_type
-  %     for at the group level.
+  %    - use ``DummyContrasts`` to generate contrasts for each trial_type
+  %      for at the group level.
   %
   % EXAMPLE::
   %

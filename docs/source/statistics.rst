@@ -9,8 +9,6 @@ before you embark on to statistical analysis.
 Statistics workflows
 ====================
 
-.. automodule:: src.workflows.stats
-
 .. Note::
 
    The illustrations in this section mix what the files created by each workflow
@@ -21,7 +19,7 @@ Statistics workflows
 Subject level
 -------------
 
-.. autofunction:: bidsFFX
+:func:`bidsFFX`
 
 After the specification step an output folder is created.
 To get the fullpath of that folder you can use::
@@ -62,17 +60,11 @@ the TSV files are there for both logging and interoperability.
 
    Subject level GLM specification workflow for model specification
 
-.. autofunction:: bidsConcatBetaTmaps
-
-Group level
------------
-
-.. autofunction:: bidsRFX
 
 Compute results
 ---------------
 
-.. autofunction:: bidsResults
+:func:`bidsResults`
 
 :download:`CSV output example <images/results_fig/output.csv>`
 
@@ -104,80 +96,3 @@ script in the MoAE demo.
    :align:   center
 
    Example of subject level slice display from the MoAE demo
-
-Model selection
----------------
-
-.. autofunction::  bidsModelSelection
-
-
-Region of interest analysis
----------------------------
-
-.. automodule:: src.workflows.roi
-
-.. autofunction::  bidsCreateROI
-.. autofunction::  bidsRoiBasedGLM
-
-Statistics batches
-==================
-
-.. automodule:: src.batches.stats
-
-Subject level
--------------
-
-.. autofunction:: setBatchSubjectLevelGLMSpec
-.. autofunction:: setBatchEstimateModel
-
-Group level model
------------------
-
-.. autofunction:: setBatchContrasts
-.. autofunction:: setBatchFactorialDesign
-.. autofunction:: setBatchSubjectLevelContrasts
-.. autofunction:: setBatchGroupLevelContrasts
-
-Compute results
----------------
-
-.. autofunction:: setBatchResults
-.. autofunction:: setBatchSubjectLevelResults
-.. autofunction:: setBatchGroupLevelResults
-
-Statistics functions
-====================
-
-Subject level
--------------
-
-.. automodule:: src.subject_level
-
-.. autofunction:: createAndReturnOnsetFile
-.. autofunction:: getFFXdir
-.. autofunction:: getBoldFilenameForFFX
-.. autofunction:: deleteResidualImages
-.. autofunction:: specifyContrasts
-
-Functions to deal with onsets files and confounds regressors.
-
-.. autofunction:: convertOnsetTsvToMat
-.. autofunction:: convertRealignParamToTsv
-.. autofunction:: createAndReturnCounfoundMatFile
-.. autofunction:: getConfoundsRegressorFilename
-.. autofunction:: getRealignParamFilename
-
-Group level model
------------------
-
-.. automodule:: src.group_level
-
-.. autofunction:: getRFXdir
-
-Compute results
----------------
-
-.. automodule:: src.results
-
-.. autofunction:: defaultOuputNameStruct
-.. autofunction:: setMontage

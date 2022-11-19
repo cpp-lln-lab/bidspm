@@ -9,8 +9,8 @@ This SPM toolbox runs with Matlab and Octave.
 ============  ================   ======================
 Dependencies  Minimum required   Used for testing in CI
 ============  ================   ======================
-MATLAB        2014               2020  on Ubuntu 20.04
-Octave        4.2.2              4.2.2 on Ubuntu 20.04
+MATLAB        2014               2020a on Ubuntu 22.04
+Octave        6.4.0              6.4.0 on Ubuntu 20.04
 SPM12         7219               7771
 ============  ================   ======================
 
@@ -22,10 +22,10 @@ Octave compatibility
 
 The following features do not yet work with Octave:
 
--   anatomicalQA
--   functionalQA
--   slice_display toolbox
--   rsHRF workflow
+- :func:`src.QA.anatomicalQA`
+- :func:`src.QA.functionalQA`
+- :func:`src/workflows/bidsRsHrf`
+- slice_display toolbox
 
 Not (yet) tested with Octave:
 
@@ -43,16 +43,11 @@ to create a new project with a basic structure of folders and with the bidspm co
 Otherwise you can clone the repo with all its dependencies
 with the following git command::
 
-  git clone \
-      --recurse-submodules \
-      https://github.com/cpp-lln-lab/bidspm.git
+  git clone --recurse-submodules https://github.com/cpp-lln-lab/bidspm.git
 
 If you need the latest development, then you must clone from the ``dev`` branch::
 
-  git clone \
-      --branch dev \
-      --recurse-submodules \
-      https://github.com/cpp-lln-lab/bidspm.git
+  git clone --branch dev --recurse-submodules https://github.com/cpp-lln-lab/bidspm.git
 
 If you just need the code without the commit history download and unzip,
 you can fin the latest version from `HERE <https://github.com/cpp-lln-lab/bidspm/releases>`_.

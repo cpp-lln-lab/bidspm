@@ -5,7 +5,7 @@ function newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata
   %
   % USAGE::
   %
-  % newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata, opt)
+  %   newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata, opt)
   %
   %
   % EXAMPLE::
@@ -19,6 +19,8 @@ function newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata
   %   opt.prefix = 'keep_';
   %   newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata, opt);
   %
+  %
+
   % (C) Copyright 2022 bidspm developers
 
   % TODO: add a way to select the X confounds that explain at most Y % of variance

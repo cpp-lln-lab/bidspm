@@ -1,6 +1,6 @@
 function matlabbatch = setBatchReorient(varargin)
   %
-  % Short batch description
+  % Set up a batch to reorient images.
   %
   % USAGE::
   %

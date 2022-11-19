@@ -8,23 +8,15 @@ function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(vararg
   %
   %
   % :param matlabbatch: matlabbatch to append to.
-  % :type matlabbatch: cell
+  % :type  matlabbatch: cell
   %
-  % :type opt:  structure
-  % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
-  % :type opt: structure
+  % :type  opt: structure
+  % :param opt: Options chosen for the analysis. See also: checkOptions, loadAndCheckOptions
   %
   % :param nodeName:
-  % :type nodeName: char
-  %
+  % :type  nodeName: char
   %
   % :returns: - :matlabbatch: (cell) The matlabbatch ready to run the spm job
-  %
-  %
-  % Example::
-  %
   %
 
   % (C) Copyright 2022 bidspm developers

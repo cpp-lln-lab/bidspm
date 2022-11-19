@@ -1,6 +1,6 @@
 function removeDummies(varargin)
   %
-  % Short description of what the function does goes here.
+  % Remove dummy scans from a time series and update file metadata.
   %
   % USAGE::
   %
