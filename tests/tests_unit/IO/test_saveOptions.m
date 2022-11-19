@@ -14,7 +14,7 @@ function test_saveOptions_basic()
 
   saveOptions(opt);
 
-  expected = fullfile(pwd, 'cfg', ['options_task-dummy_' timeStamp()  '.json']);
+  expected = fullfile(pwd, 'options', ['options_task-dummy_' timeStamp()  '.json']);
 
   assertEqual(exist(expected, 'file'), 2);
 
