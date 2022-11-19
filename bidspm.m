@@ -332,6 +332,7 @@ function preprocess(args)
 
   catch ME
     bugReport(opt, ME);
+    rethrow(ME);
   end
 
 end
@@ -348,6 +349,7 @@ function default_model(args)
     createDefaultStatsModel(opt.dir.raw, opt, lower(args.Results.ignore));
   catch ME
     bugReport(opt, ME);
+    rethrow(ME);
   end
 end
 
@@ -419,6 +421,7 @@ function stats(args)
 
   catch ME
     bugReport(opt, ME);
+    rethrow(ME);
   end
 
 end

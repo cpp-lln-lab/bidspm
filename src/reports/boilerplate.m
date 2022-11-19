@@ -130,9 +130,11 @@ function outputFile = boilerplate(varargin)
 
   %% render
   if strcmp(pipelineType, 'preproc')
+    modelName = '';
     fileToRender = fullfile(fileparts(mfilename('fullpath')), 'boilerplate_preprocess.mustache');
 
   elseif strcmp(pipelineType, 'stats')
+    modelName = bm.Name;
     fileToRender = fullfile(fileparts(mfilename('fullpath')), 'boilerplate_stats.mustache');
 
   end
@@ -156,7 +158,7 @@ function outputFile = boilerplate(varargin)
   printToScreen(output, opt);
 
   %% print to file
-  outputFile = printToFile(output, outputPath, pipelineType);
+  outputFile = printToFile(output, outputPath, pipelineType, modelName);
 
 end
 
@@ -252,6 +254,7 @@ end
 
 function copyBibFile(outputPath)
   bibFile = fullfile(returnRootDir(), 'src', 'reports', 'bidspm.bib');
+  spm_mkdir(outputPath);
   copyfile(bibFile, outputPath);
 end
 
@@ -265,7 +268,10 @@ function outputFile = printToFile(output, outputPath, pipelineType, modelName)
 
   if ~isempty(outputPath)
 
-    spm_mkdir(outputPath);
+    sts = spm_mkdir(spm_file(outputPath, 'cpath'));
+    if sts == 0
+      error('Unable to create folder:\n\t%s', outputPath);
+    end
 
     if strcmp(pipelineType, 'preproc')
       outputFile = 'preprocess_CITATION.md';
