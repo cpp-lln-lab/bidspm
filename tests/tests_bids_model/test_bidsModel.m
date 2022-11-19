@@ -207,6 +207,8 @@ function test_getInclusiveMaskThreshold_method()
   opt = setOptions('vislocalizer');
   bm = BidsModel('file', opt.model.file, 'verbose', true);
 
+  bm.getInclusiveMaskThreshold('Name', 'subject_level');
+
   assertWarning(@()bm.getInclusiveMaskThreshold('Name', 'subject_level'), ...
                 'BidsModel:noInclMaskThresh');
 
