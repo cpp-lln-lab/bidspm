@@ -22,19 +22,13 @@ Things that are yet unclear:
 Things to keep an eye on: the code from this `repo <https://github.com/nipreps/sdcflows>`_
 from the fMRIprep team could have answers for us.
 
-.. automodule:: src.workflows.preproc
+:func:`src.fieldmaps.bidsCreateVDM`
 
-.. autofunction:: bidsCreateVDM
+:func:`src.fieldmaps.setBatchCoregistrationFmap`
+:func:`src.fieldmaps.setBatchCreateVDMs`
+:func:`src.fieldmaps.setBatchComputeVDM`
 
-.. automodule:: src.batches.preproc
-
-.. autofunction:: setBatchCoregistrationFmap
-.. autofunction:: setBatchCreateVDMs
-.. autofunction:: setBatchComputeVDM
-
-.. automodule:: src.fieldmaps
-
-.. autofunction:: getBlipDirection
-.. autofunction:: getMetadataFromIntendedForFunc
-.. autofunction:: getTotalReadoutTime
-.. autofunction:: getVdmFile
+:func:`src.fieldmaps.getBlipDirection`
+:func:`src.fieldmaps.getMetadataFromIntendedForFunc`
+:func:`src.fieldmaps.getTotalReadoutTime`
+:func:`src.fieldmaps.getVdmFile`

@@ -5,20 +5,19 @@ function bidsChangeSuffix(varargin)
   %   bidsChangeSuffix(opt, newSuffix, 'filter', struct([]), 'force', false)
   %
   % :type opt:  structure
-  % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
-  %             To test the output, set ``opt.dryRun`` to ``true``.
-  % :type opt: structure
+  % :param opt: Options chosen for the analysis. To test the output, set ``opt.dryRun`` to ``true``.
+  %             See also: checkOptions.
+  % :type  opt: structure
   %
   % :param newSuffix: TODO: add checks on newSuffix to make sure it only contains [a-zA-Z0-9]
-  % :type newSuffix: char
+  % :type  newSuffix: char
   %
   % :param filter: structure to decide which files to include. Default:
-  % ``struct([])`` for no filter
-  % :type filter: structure
+  %                ``struct([])`` for no filter
+  % :type  filter: structure
   %
   % :param force: If set to ``true`` it will overwrite already existing files. Default: ``false``
-  % :type force: boolean
+  % :type  force: boolean
   %
   %
   % EXAMPLE::

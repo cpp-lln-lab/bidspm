@@ -5,25 +5,20 @@ Pipeline defaults
 
 Defaults of the pipeline.
 
-.. automodule:: src.defaults
-
 checkOptions
 ============
 
-.. autofunction:: checkOptions
-.. autofunction:: setDirectories
+The defaults are handled mostly by those functions:
 
-
-.. autofunction:: defaultResultsStructure
-.. autofunction:: defaultContrastsStructure
+- :func:`src.defaults.checkOptions`
+- :func:`src.defaults.setDirectories`
+- :func:`src.defaults.defaultResultsStructure`
+- :func:`src.defaults.defaultContrastsStructure`
 
 spm_my_defaults
 ===============
 
-Some more SPM options can be set in the :func:`src.defaults.spm_my_defaults.m`.
-
-.. autofunction:: spm_my_defaults
-
+Some more SPM options can be set in the :func:`src.defaults.spm_my_defaults`.
 
 statistics defaults
 ===================
@@ -42,14 +37,11 @@ Using FAST does not seem to affect results on time series with "normal" TRs but
 improves results when using sequences: it is therefore used by default in this
 pipeline.
 
-Check the :ref:`the relevant section of the BIDS stats model <bids_stats_model_sofware>`
-to know how to change this value.
-
 
 SPM to BIDS filename conversion
 ===============================
 
-.. autofunction:: set_spm_2_bids_defaults
+:func:`src.defaults.set_spm_2_bids_defaults`
 
 
 list of defaults

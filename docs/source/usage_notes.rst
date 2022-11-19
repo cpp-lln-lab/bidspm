@@ -4,8 +4,6 @@ Usage notes
 MATLAB API
 ==========
 
-.. automodule:: src.messages
-
 .. autofunction::  bidspmHelp
 
 Command line API

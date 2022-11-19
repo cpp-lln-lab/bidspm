@@ -1,6 +1,6 @@
 (bids_stats_model)=
 
-# BIDS stats model JSON file
+# BIDS stats model
 
 This file allows you to specify the GLM to run and which contrasts to compute.
 
@@ -15,11 +15,9 @@ Then have a look at the
 [walkthrough](https://bids-standard.github.io/stats-models/walkthrough-1.html)
 that explains how to build a simple model.
 
-## Create a default BIDS model for a dataset
-
-```{eval-rst}
-.. autofunction:: src.bids_model.createDefaultStatsModel
-```
+<!-- ## Create a default BIDS model for a dataset
+See this [section](general_information#bidspm)
+ -->
 
 ## Validate your model
 
@@ -41,14 +39,18 @@ and copy paste your model in it.
 
 ### Using the BIDS stats model python package
 
+Requires python and pip.
+
+From within the bidspm folder open a terminal and install the bidspm package.
+
 ```bash
-pip install bsmschema
+pip install .
 ```
 
-```python
-from bsmschema.models import BIDSStatsModel
+Then you can validate your model with the following command.
 
-BIDSStatsModel.parse_file('model-example_smdl.json')
+```bash
+validate_model path_to_your_model_json
 ```
 
 ## Loading and interacting with a BIDS stats model
@@ -64,8 +66,8 @@ with. This class inherits from bids-matlab {mat:class}`+bids.Model` class.
 There are also extra functions to interact with those models.
 
 ```{eval-rst}
-.. autofunction:: src.bids_model.getContrastsList
-.. autofunction:: src.bids_model.getDummyContrastsList
+- :func:`src.bids_model.getContrastsList`
+- :func:`src.bids_model.getDummyContrastsList`
 ```
 
 ## bidspm implementation of the BIDS stats model
@@ -358,14 +360,9 @@ There are several examples of models in the
 [model zoo](https://github.com/bids-standard/model-zoo) along with links to
 their datasets.
 
-<!-- markdown-link-check-disable -->
-
 Several of the [demos](demos) have their own model and you can find several
 "dummy" models (without corresponding data) used for testing
-
-<!-- markdown-link-check-enable -->
-
-[in this folder](https://github.com/cpp-lln-lab/bidspm/tree/dev/tests/dummyData/models).
+[in this folder](https://github.com/cpp-lln-lab/bidspm/tree/main/tests/dummyData/models).
 
 An example of JSON file could look something like that:
 
