@@ -76,7 +76,18 @@ function matlabbatch = bidsResults(varargin)
   %   % binarised thresholded statistical map (useful to create ROIs)
   %   opt.results(1).binary = true();
   %
-  % You can also create a montage to view the results
+  % You can also create a montage to view the results with
+  % `opt.results(1).csv = true();` activation neuroanatomical location
+  % will be labelled.
+  % You can specify the atlas to use for that by choosing between
+  %
+  %  - `'Neuromorphometrics'` (default)
+  %  - `'aal'`
+  %
+  % .. code-block:: matlab
+  %
+  %   opt.results(1).atlas = 'Neuromorphometrics';
+  %
   % on several slices at once:
   %
   % .. code-block:: matlab
