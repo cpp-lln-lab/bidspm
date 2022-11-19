@@ -209,7 +209,8 @@ so via the `Software` object of the BIDS stats model.
 
 <!-- markdown-link-check-enable -->
 
-Similar you can adapt directly in the model the threshold used by SPM to create
+Similar you can adapt directly in the model `InclusiveMaskingThreshold`
+the threshold used by SPM to create
 an implicit inclusive mask when running a GLM (the value `defaults.mask.thresh`
 of SPM defaults.) .
 
@@ -360,9 +361,11 @@ There are several examples of models in the
 [model zoo](https://github.com/bids-standard/model-zoo) along with links to
 their datasets.
 
+<!-- markdown-link-check-disable -->
 Several of the [demos](demos) have their own model and you can find several
 "dummy" models (without corresponding data) used for testing
 [in this folder](https://github.com/cpp-lln-lab/bidspm/tree/main/tests/dummyData/models).
+<!-- markdown-link-check-enable -->
 
 An example of JSON file could look something like that:
 
