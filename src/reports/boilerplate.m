@@ -48,7 +48,7 @@ function outputFile = boilerplate(varargin)
 
   args.addRequired('opt', @isstruct);
   args.addParameter('outputPath', '', @ischar);
-  args.addParameter('pipelineType', 'spatial_preproc', @ischar);
+  args.addParameter('pipelineType', 'preproc', @ischar);
   args.addParameter('partialsPath', defaultPartialsPath, isFolder);
   args.addParameter('verbosity', 2);
 
@@ -71,11 +71,16 @@ function outputFile = boilerplate(varargin)
 
   copyBibFile(outputPath);
 
-  if strcmp(pipelineType, 'spatial_preproc')
+  if strcmp(pipelineType, 'preproc')
 
     opt.normalization = false;
     if ismember('IXI549Space', opt.space)
       opt.normalization = true;
+    end
+
+    if opt.stc.skip
+      opt.referenceSlice = opt.stc.referenceSlice;
+      opt.stc = true;
     end
 
     opt.unwarp = false;
@@ -129,7 +134,7 @@ function outputFile = boilerplate(varargin)
   end
 
   %% render
-  if strcmp(pipelineType, 'spatial_preproc')
+  if strcmp(pipelineType, 'preproc')
     modelName = '';
     fileToRender = fullfile(fileparts(mfilename('fullpath')), 'boilerplate_preprocess.mustache');
 
@@ -273,10 +278,10 @@ function outputFile = printToFile(output, outputPath, pipelineType, modelName)
       error('Unable to create folder:\n\t%s', outputPath);
     end
 
-    if strcmp(pipelineType, 'spatial_preproc')
-      outputFile = 'preprocess_CITATION.md';
+    if strcmp(pipelineType, 'preproc')
+      outputFile = 'preprocess_citation.md';
     elseif strcmp(pipelineType, 'stats')
-      outputFile = ['stats_model-' modelName '_CITATION.md'];
+      outputFile = ['stats_model-' modelName '_citation.md'];
     end
 
     outputFile = fullfile(outputPath, outputFile);

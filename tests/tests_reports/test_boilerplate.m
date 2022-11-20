@@ -21,12 +21,7 @@ function test_boilerplate_spatial_preproc()
   filter = opt.bidsFilterFile.bold;
   filter.task = opt.taskName;
 
-  %   sliceOrder = getAndCheckSliceOrder(opt.dir.input, opt, filter);
-  %   if isempty(sliceOrder)
-  %     opt.stc = false;
-  %   end
-
-  opt.stc.referenceSlice = 16;
+  opt.stc.referenceSlice = 32;
 
   %   opt.dummy_scans = false;
   opt.dummy_scans.nb = 4;
