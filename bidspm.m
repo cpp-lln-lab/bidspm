@@ -24,7 +24,7 @@ function bidspm(varargin)
 
   isCellStr = @(x) iscellstr(x);
 
-  isLowLevelActionOrDir = @(x) (ismember(x, low_level_actions()) || isfolder(x));
+  isLowLevelActionOrDir = @(x) (ismember(x, lowLevelActions()) || isfolder(x));
 
   addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
 
@@ -53,6 +53,8 @@ function bidspm(varargin)
   addParameter(args, 'model_file', struct([]), isFileOrStruct);
   addParameter(args, 'roi_based', false, isLogical);
   addParameter(args, 'design_only', false, isLogical);
+  addParameter(args, 'concatenate', false, isLogical);
+
   % group level stats only
   addParameter(args, 'node_name', '', isChar);
 
@@ -63,7 +65,7 @@ function bidspm(varargin)
   % to simplify the API, user can call things like ``bidspm help``
   % or ``bidspm init`` but then this needs to override the action value.
   bidsDir = args.Results.bids_dir;
-  if ismember(bidsDir, low_level_actions())
+  if ismember(bidsDir, lowLevelActions())
     action = bidsDir;
   end
 
@@ -136,147 +138,10 @@ function executeAction(action, args)
       errorStruct.identifier = 'bidspm:unknownAction';
       errorStruct.message = sprintf('action %s is not among the known actions:\n\t- %s', ...
                                     action, ...
-                                    strjoin(allowed_actions(), '\n\t- '));
+                                    strjoin(allowedActions(), '\n\t- '));
       error(errorStruct);
 
   end
-
-end
-
-%% "getter"
-
-function opt = get_options_from_argument(args)
-
-  action = args.Results.action;
-
-  if ismember(lower(action), bids_apps_actions)
-
-    bidspm('action', 'init');
-
-    if isstruct(args.Results.options)
-      opt = args.Results.options;
-    elseif exist(args.Results.options, 'file') == 2
-      opt = bids.util.jsondecode(args.Results.options);
-    end
-
-    if isempty(opt)
-      % set defaults
-      opt = checkOptions(struct());
-    end
-
-    opt.verbosity = args.Results.verbosity;
-
-    opt.dir.raw = args.Results.bids_dir;
-    opt.dir.derivatives = args.Results.output_dir;
-
-    opt = overrideDryRun(opt, args);
-
-    if ~isempty(args.Results.participant_label)
-      opt.subjects = args.Results.participant_label;
-    end
-
-    if ~isempty(args.Results.task)
-      opt.taskName = args.Results.task;
-    end
-
-    if ~isempty(args.Results.bids_filter_file)
-      % TODO read from JSON if necessary
-      % TODO validate
-      opt.bidsFilterFile = args.Results.bids_filter_file;
-    end
-
-    opt = overrideFwhm(opt, args);
-
-    opt = overrideSpace(opt, args);
-
-    % preproc
-    if ismember('slicetiming', args.Results.ignore)
-      opt.stc.skip = true;
-    end
-    if ismember('unwarp', args.Results.ignore)
-      opt.realign.useUnwarp = false;
-    end
-    if ismember('fieldmaps', args.Results.ignore)
-      opt.useFieldmaps = false;
-    end
-    if ismember('qa', lower(args.Results.ignore))
-      opt.QA.func.do = false;
-      opt.QA.anat.do = false;
-      opt.QA.glm.do = false;
-    end
-
-    opt.dummy_scans = args.Results.dummy_scans;
-
-    opt.anatOnly = args.Results.anat_only;
-
-    % stats
-    opt.dir.preproc = args.Results.preproc_dir;
-    opt.model.file = args.Results.model_file;
-    opt.model.designOnly = args.Results.design_only;
-
-    opt = overrideRoiBased(opt, args);
-
-  end
-
-end
-
-function opt = overrideRoiBased(opt, args)
-  if isfield(opt, 'glm') && isfield(opt.glm, 'roibased') && ...
-      isfield(opt.glm.roibased, 'do') && opt.glm.roibased.do ~= args.Results.roi_based
-    overrideWarning('roi_based', convertToString(args.Results.roi_based), ...
-                    'glm.roibased.do', convertToString(opt.glm.roibased.do));
-  end
-  opt.glm.roibased.do = args.Results.roi_based;
-end
-
-function opt = overrideDryRun(opt, args)
-  if isfield(opt, 'dryRun') && args.Results.dry_run ~= opt.dryRun
-    overrideWarning('dry_run', convertToString(args.Results.dry_run), ...
-                    'dryRun', convertToString(opt.dryRun));
-  end
-  opt.dryRun = args.Results.dry_run;
-end
-
-function opt = overrideFwhm(opt, args)
-  if ~isempty(args.Results.fwhm) && ...
-     (isfield(opt, 'fwhm') && isfield(opt.fwhm, 'func')) && ...
-     args.Results.fwhm ~= opt.fwhm.func
-    overrideWarning('fwhm', convertToString(args.Results.fwhm), ...
-                    'fwhm.func', convertToString(opt.fwhm.func));
-  end
-  opt.fwhm.func = args.Results.fwhm;
-end
-
-function opt = overrideSpace(opt, args)
-  if ~isempty(args.Results.space)
-    if isfield(opt, 'space') && ~all(ismember(args.Results.space, opt.space))
-      overrideWarning('space', convertToString(args.Results.space), ...
-                      'space', convertToString(opt.space));
-    end
-    opt.space = args.Results.space;
-  end
-end
-
-function output = convertToString(input)
-  if islogical(input) && input == true
-    output = 'true';
-  elseif islogical(input) && input == false
-    output = 'false';
-  elseif isnumeric(input)
-    output = num2str(input);
-  elseif iscellstr(input)
-    output = strjoin(input, ', ');
-  end
-end
-
-function overrideWarning(thisArgument, newValue, thisOption, oldValue)
-
-  msg = sprintf('\nArgument "%s" value "%s" will override option "%s" value "%s".\n', ...
-                thisArgument, ...
-                newValue, ...
-                thisOption, ...
-                oldValue);
-  errorHandling(mfilename(), 'argumentOverridesOptions', msg, true, true);
 
 end
 
@@ -286,7 +151,7 @@ function preprocess(args)
 
   % TODO make sure that options defined in JSON or passed as a structure
   % overrides any other arguments
-  opt = get_options_from_argument(args);
+  opt = getOptionsFromCliArgument(args);
 
   opt.pipeline.type = 'preproc';
   opt = checkOptions(opt);
@@ -316,7 +181,7 @@ function preprocess(args)
 
     boilerplate(opt, ...
                 'outputPath', fullfile(opt.dir.output, 'reports'), ...
-                'pipelineType', 'preproc', ...
+                'pipelineType', 'spatial_preproc', ...
                 'verbosity', opt.verbosity);
     if opt.useFieldmaps && ~opt.anatOnly
       bidsCreateVDM(opt);
@@ -338,7 +203,7 @@ function preprocess(args)
 end
 
 function default_model(args)
-  opt = get_options_from_argument(args);
+  opt = getOptionsFromCliArgument(args);
   if ~isfield(opt, 'taskName')
     opt.taskName = '';
   end
@@ -357,7 +222,7 @@ function stats(args)
 
   % TODO make sure that options defined in JSON or passed as a structure
   % overrides any other arguments
-  opt = get_options_from_argument(args);
+  opt = getOptionsFromCliArgument(args);
 
   opt.pipeline.type = 'stats';
   opt = checkOptions(opt);
@@ -365,7 +230,7 @@ function stats(args)
   action = args.Results.action;
   analysisLevel = args.Results.analysis_level;
   nodeName = args.Results.node_name;
-  ignore = args.Results.ignore;
+  concatenate = args.Results.concatenate;
 
   isSubjectLevel = strcmp(analysisLevel, 'subject');
   estimate = strcmp(action, 'stats');
@@ -396,25 +261,32 @@ function stats(args)
     else
 
       if estimate
+
         if isSubjectLevel
+
           if opt.model.designOnly
             bidsFFX('specify', opt);
           else
             bidsFFX('specifyAndEstimate', opt);
           end
+
         else
+
           bidsRFX('RFX', opt, 'nodeName', nodeName);
+
         end
+
       end
 
       if contrasts
+
         if isSubjectLevel
           bidsFFX('contrasts', opt);
         else
           bidsRFX('contrasts', opt, 'nodeName', nodeName);
         end
 
-        if ~ismember('concat', ignore)
+        if concatenate
           bidsConcatBetaTmaps(opt);
         end
 
@@ -678,13 +550,13 @@ end
 
 %% constants
 
-function value = bids_apps_actions()
+function value = bidsAppsActions()
 
   value = {'preprocess'; 'default_model'; 'stats'; 'contrasts'; 'results'};
 
 end
 
-function value = low_level_actions()
+function value = lowLevelActions()
   value = {'init'; ...
            'uninit'; ...
            'dev'
@@ -695,9 +567,9 @@ function value = low_level_actions()
            'meaning_of_life'};
 end
 
-function value = allowed_actions()
+function value = allowedActions()
 
-  value = cat(1, bids_apps_actions(), low_level_actions());
+  value = cat(1, bidsAppsActions(), lowLevelActions());
 
 end
 

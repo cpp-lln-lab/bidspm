@@ -129,7 +129,7 @@ function outputFile = boilerplate(varargin)
   end
 
   %% render
-  if strcmp(pipelineType, 'preproc')
+  if strcmp(pipelineType, 'spatial_preproc')
     modelName = '';
     fileToRender = fullfile(fileparts(mfilename('fullpath')), 'boilerplate_preprocess.mustache');
 
@@ -273,7 +273,7 @@ function outputFile = printToFile(output, outputPath, pipelineType, modelName)
       error('Unable to create folder:\n\t%s', outputPath);
     end
 
-    if strcmp(pipelineType, 'preproc')
+    if strcmp(pipelineType, 'spatial_preproc')
       outputFile = 'preprocess_CITATION.md';
     elseif strcmp(pipelineType, 'stats')
       outputFile = ['stats_model-' modelName '_CITATION.md'];
