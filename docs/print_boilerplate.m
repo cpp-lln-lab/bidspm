@@ -16,12 +16,12 @@ addpath(root_dir);
 % move to the facerep folder and grad the data
 cd(face_rep_dir);
 
-downloadData = true;
+download_data = true;
 
 % Gets data and converts it to BIDS
-if downloadData
+if download_data
   bidspm();
-  %   download_face_rep_ds(downloadData);
+  %   download_face_rep_ds(download_data);
 end
 
 % options

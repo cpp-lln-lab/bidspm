@@ -25,14 +25,14 @@
 clear;
 clc;
 
-downloadData = true;
+download_data = true;
 
 addpath(fullfile(pwd, '..', '..'));
 
 %% Gets data and converts it to BIDS
-if downloadData
+if download_data
   bidspm();
-  download_face_rep_ds(downloadData);
+  download_face_rep_ds(download_data);
 end
 
 bids_dir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');

@@ -10,6 +10,7 @@ function status = test_notebooks()
   folders = dir(this_dir);
 
   failed = {};
+  errors_ls = {};
 
   for idir = 1:numel(folders)
 
@@ -32,10 +33,10 @@ function status = test_notebooks()
 
         try
           run(matlab_script);
-        catch
+        catch ME
           status = false;
-          failed{end + 1} = matlab_script; %#ok<AGROW>
-
+          failed{end + 1} = matlab_script;
+          errors_ls{end + 1} = ME; %#ok<*AGROW>
         end
       end
 
@@ -43,6 +44,7 @@ function status = test_notebooks()
 
     for f = 1:numel(failed)
       warning('\n\tRunning %s failed.\n', failed{f});
+      rethrow(errors_ls{f});
     end
 
   end

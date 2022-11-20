@@ -233,6 +233,9 @@ function skipped = bidsRoiBasedGLM(opt)
 
   cleanUpWorkflow(opt);
 
+  skippedRoiListFile = fullfile(pwd, ['skipped_roi_' timeStamp() '.tsv']);
+  bids.util.tsvwrite(skippedRoiListFile, skipped);
+
 end
 
 function checks(opt)

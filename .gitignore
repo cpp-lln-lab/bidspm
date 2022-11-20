@@ -17,6 +17,7 @@ error_logs
 *_report.md
 src/batches/cfg
 options_task*[0-9][0-9].json
+skipped_roi_*.tsv
 
 # created by tests
 CHANGES
