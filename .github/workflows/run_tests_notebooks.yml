@@ -50,4 +50,8 @@ jobs:
       - name: Test notebooks
         uses: matlab-actions/run-command@v1.1.1
         with:
-          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), 'demos')); run test_notebooks;
+          command: |
+            root_dir = getenv('GITHUB_WORKSPACE');
+            addpath(fullfile(root_dir, 'spm12'));
+            cd(fullfile(root_dir, 'demos'));
+            run test_notebooks;
