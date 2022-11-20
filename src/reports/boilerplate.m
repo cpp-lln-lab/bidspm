@@ -78,11 +78,6 @@ function outputFile = boilerplate(varargin)
       opt.normalization = true;
     end
 
-    if opt.stc.skip
-      opt.referenceSlice = opt.stc.referenceSlice;
-      opt.stc = true;
-    end
-
     opt.unwarp = false;
     if opt.realign.useUnwarp
       opt.unwarp = true;

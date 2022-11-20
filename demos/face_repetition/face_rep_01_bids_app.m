@@ -27,7 +27,7 @@
 clear;
 clc;
 
-downloadData = false;
+download_data = true;
 
 % skipping validation for now
 % as raw data is not 100% valid
@@ -36,9 +36,9 @@ skip_validation = true;
 addpath(fullfile(pwd, '..', '..'));
 
 %% Gets data and converts it to BIDS
-if downloadData
+if download_data
   bidspm();
-  download_face_rep_ds(downloadData);
+  download_face_rep_ds(download_data);
 end
 
 %% Preprocessing

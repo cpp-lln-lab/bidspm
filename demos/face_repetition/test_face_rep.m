@@ -97,7 +97,6 @@ for iResolution = 2:3
          'options', opt, ...
          'skip_validation', skip_validation, ...
          'concatenate', true);
-  s;
 
   % with Octave running more n-1 loop in CI is fine
   % but not running crashes with a segmentation fault

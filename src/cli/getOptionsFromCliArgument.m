@@ -4,6 +4,8 @@ function opt = getOptionsFromCliArgument(args)
   %
   %   opt = getOptionsFromCliArgument(args)
   %
+  %
+
   % (C) Copyright 2022 bidspm developers
 
   action = args.Results.action;
