@@ -394,6 +394,14 @@ bids_model
 .. autofunction:: src.bids_model.getInclusiveMask
 
 
+.. _cli:
+
+cli
+===
+.. _getOptionsFromCliArgument:
+.. autofunction:: src.cli.getOptionsFromCliArgument
+
+
 .. _defaults:
 
 defaults

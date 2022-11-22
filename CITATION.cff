@@ -2,7 +2,7 @@ cff-version: 1.2.0
 
 title: "bidspm"
 
-version: 2.2.0
+version: 2.3.0
 
 abstract: bidspm is a set of pipelines and tools for Octave / MATLAB to process and analyze BIDS data sets using SPM12.
 

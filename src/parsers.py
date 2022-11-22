@@ -14,7 +14,6 @@ __version__ = "v2.2.0"
 
 def bidspm_log(name: str = "bidspm") -> logging.Logger:
     """Create log."""
-
     FORMAT = "bidspm - %(asctime)s - %(levelname)s - %(message)s"
 
     if not name:

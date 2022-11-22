@@ -13,6 +13,9 @@ sed -i "s/__version__ = .*/version = {$VERSION}/g" README.md
 
 sed -i "s/  version   = {.*/  version   = {$VERSION}/g" src/reports/bidspm.bib
 
-cd tools
+cd tools || exit
+
 git tag --list | tac >versions.txt
 python update_versions_bug_report.py
+
+echo "Version updated to $VERSION"
