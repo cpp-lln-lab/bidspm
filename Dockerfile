@@ -10,7 +10,7 @@ USER root
 ENV LANG="en_US.UTF-8" \
     LC_ALL="en_US.UTF-8"
 
-LABEL version="2.2.0"
+LABEL version="2.3.0"
 
 LABEL maintainer="Rémi Gau <remi.gau@gmail.com>"
 
@@ -55,7 +55,7 @@ WORKDIR /home/neuro
 RUN mkdir code input output
 
 # COPY . /home/neuro/bidspm # this is for local development
-RUN git clone --branch v2.2.0 --depth 1 --recursive https://github.com/cpp-lln-lab/bidspm.git
+RUN git clone --branch v2.3.0 --depth 1 --recursive https://github.com/cpp-lln-lab/bidspm.git
 
 RUN cd bidspm && pip3 install .
 RUN echo '\n'

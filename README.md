@@ -205,7 +205,7 @@ Please see our
   license = {GPL-3.0},
   title   = {bidspm},
   url = {https://github.com/cpp-lln-lab/bidspm},
-  version = {2.2.0}
+  version = {2.3.0}
   doi     = {10.5281/zenodo.3554331},
   publisher = {Zenodo},
   journal = {Software}
