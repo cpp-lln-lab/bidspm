@@ -186,6 +186,16 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "SteMat9787",
+      "name": "Stefania Mattioni",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50380749?v=4",
+      "profile": "https://github.com/SteMat9787",
+      "contributions": [
+        "bug",
+        "userTesting"
+      ]
     }
   ],
   "contributorsPerLine": 7,
