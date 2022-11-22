@@ -1,0 +1,59 @@
+{
+  "Name": "bug_825",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "globbing pattern should work for dummy contrasts too",
+  "Input": {
+    "task": [
+      "signMVPA"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "Trial by trial",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+          "X": [
+              "trial_type_name.sign*",
+              "trial_type_name.no_sign*",
+              "trial_type_name.target*",
+              "trans_?",
+              "rot_?",
+              "*outlier*"
+          ],
+          "HRF": {
+              "Variables": [
+                "trial_type_name.sign*",
+                "trial_type_name.no_sign*",
+                "trial_type_name.target*"
+              ],
+              "Model": "DoubleGamma"
+          },
+          "Type": "glm",
+          "Options": {
+              "HighPassFilterCutoffHz": 0.0078
+          },
+          "Software": {
+              "SPM": {
+                  "SerialCorrelation": "FAST",
+                  "HRFderivatives": "Temporal"
+              }
+          }
+      },
+      "DummyContrasts": {
+          "Test": "t",
+          "Contrasts": [
+              "trial_type_name.sign*",
+              "trial_type_name.no_sign*",
+              "trial_type_name.target*"
+          ]
+      }
+  }
+  ]
+  }
