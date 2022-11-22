@@ -64,6 +64,9 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
   for iCon = 1:length(dummyContrastsList)
 
     cdtName = dummyContrastsList{iCon};
+
+    cdtName = dealWithGlobPattern(cdtName);
+
     [cdtName, regIdx] = getRegressorIdx(cdtName, SPM);
 
     switch level
@@ -148,4 +151,18 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
   end
 
+end
+
+function cdtName = dealWithGlobPattern(cdtName)
+  % deal with any globbing search like 'face_familiar*'
+  hasGlobPattern = ~cellfun('isempty', regexp({cdtName}, '\*|\?'));
+  if hasGlobPattern
+
+    tokens = regexp(cdtName, '\.', 'split');
+    if numel(tokens) > 1
+      cdtName = tokens{2};
+    end
+    pattern = strrep(cdtName, '*', '[\_\-0-9a-zA-Z]*');
+    cdtName = strrep(pattern, '?', '[0-9a-zA-Z]?');
+  end
 end

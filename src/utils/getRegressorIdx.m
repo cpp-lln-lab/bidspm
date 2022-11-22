@@ -56,7 +56,7 @@ function status = checkRegressorFound(regIdx, cdtName)
 
   if all(~regIdx)
     status = false;
-    msg = sprintf('No regressor found for condition ''%s''', cdtName);
+    msg = sprintf('No regressor found for condition "%s"', deregexify(cdtName));
     errorHandling(mfilename(), 'missingRegressor', msg, true, true);
   end
 
