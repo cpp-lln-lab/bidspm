@@ -26,13 +26,13 @@ def default_model(argv=sys.argv) -> None:
 
     args = parser.parse_args(argv[1:])
 
+    os.chdir(root_dir())
+
     bids_dir = Path(args.bids_dir[0]).resolve()
     output_dir = Path(args.output_dir[0]).resolve()
 
     task = "{ '" + "', '".join(args.task) + "' }" if args.task else None
     space = "{ '" + "', '".join(args.space) + "' }" if args.space else None
-
-    # os.chdir(root_dir())
 
     octave_cmd = " bidspm();"
     octave_cmd += (
