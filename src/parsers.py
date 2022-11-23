@@ -1,5 +1,6 @@
 import argparse
 import logging
+from pathlib import Path
 from typing import IO
 from typing import Optional
 
@@ -8,8 +9,10 @@ from rich.logging import RichHandler
 
 log = logging.getLogger("bidspm")
 
+version_file = Path(__file__).parent.parent.joinpath("version.txt")
 
-__version__ = "v2.2.0"
+with open(version_file) as f:
+    __version__ = f.read().strip()
 
 
 def bidspm_log(name: str = "bidspm") -> logging.Logger:
@@ -178,7 +181,8 @@ def default_model_parser():
         help="""
         Tasks of the input data.
         """,
-        type=str,
+        type=list,
+        default=[],
         nargs="+",
     )
     parser.add_argument(
@@ -186,7 +190,7 @@ def default_model_parser():
         help="""
         Space of the input data.
         """,
-        default=["individual", "IXI549Space"],
+        default=["IXI549Space"],
         nargs=1,
     )
 
@@ -222,6 +226,7 @@ def stats_parser():
         help="""
         Path to preprocessed data.
         """,
+        type=str,
         nargs=1,
     )
     parser.add_argument(
