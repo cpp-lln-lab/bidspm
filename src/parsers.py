@@ -181,7 +181,6 @@ def default_model_parser():
         help="""
         Tasks of the input data.
         """,
-        type=list,
         default=[],
         nargs="+",
     )

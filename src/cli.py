@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -9,6 +10,7 @@ from src.parsers import default_model_parser
 from src.parsers import low_parser
 from src.parsers import preproc_parser
 from src.parsers import stats_parser
+from src.utils import root_dir
 
 
 def low(argv=sys.argv) -> None:
@@ -27,26 +29,23 @@ def default_model(argv=sys.argv) -> None:
     bids_dir = Path(args.bids_dir[0]).resolve()
     output_dir = Path(args.output_dir[0]).resolve()
 
-    task = None
-    if args.task:
-        task = "{ '" + "', '".join(args.task) + "' }"
+    task = "{ '" + "', '".join(args.task) + "' }" if args.task else None
+    space = "{ '" + "', '".join(args.space) + "' }" if args.space else None
 
-    space = None
-    if args.space:
-        space = "{ '" + "', '".join(args.space) + "' }"
+    # os.chdir(root_dir())
 
-    octave_cmd = f"bidspm(); bidspm('{bids_dir}', '{output_dir}', 'dataset', 'action', 'default_model'"
-
+    octave_cmd = " bidspm();"
+    octave_cmd += (
+        f" bidspm('{bids_dir}', '{output_dir}', 'dataset', 'action', 'default_model'"
+    )
     if space:
         octave_cmd += f", 'space', {space}"
-
     if task:
         octave_cmd += f", 'task', {task}"
-
     octave_cmd += "); exit;"
 
-    print("Running the following command:")
-    print(octave_cmd)
+    print("\nRunning the following command:\n")
+    print(octave_cmd.replace(";", ";\n"))
     print()
 
     subprocess.run(
@@ -56,7 +55,7 @@ def default_model(argv=sys.argv) -> None:
             "--no-window-system",
             "--silent",
             "--eval",
-            f"{octave_cmd}; exit;",
+            f"{octave_cmd}",
         ]
     )
 
