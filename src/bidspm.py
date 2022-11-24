@@ -112,6 +112,9 @@ def stats(
     skip_validation=False,
     bids_filter_file=None,
     dry_run=False,
+    roi_based=False,
+    concatenate=False,
+    design_only=False,
 ):
 
     task = "{ '" + "', '".join(task) + "' }" if task is not None else None
@@ -142,14 +145,16 @@ def stats(
         octave_cmd += f"{new_line}'skip_validation', true"
     if dry_run:
         octave_cmd += f"{new_line}'dry_run', true"
+    if roi_based:
+        octave_cmd += f"{new_line}'roi_based', true"
+    if concatenate:
+        octave_cmd += f"{new_line}'concatenate', true"
+    if design_only:
+        octave_cmd += f"{new_line}'design_only', true"
     if bids_filter_file:
         octave_cmd += f"{new_line}'bids_filter_file', '{bids_filter_file}'"
 
     octave_cmd += "); exit();"
-
-    #   %           'roi_based', false, ...
-    #   %           'design_only', false, ...
-    #   %           'concatenate', false, ...
 
     run_octave_command(octave_cmd)
 
@@ -186,6 +191,9 @@ def cli(argv=sys.argv) -> None:
     model_file = (
         Path(args.model_file[0]).resolve() if args.model_file is not None else None
     )
+    roi_based = args.roi_based
+    concatenate = args.concatenate
+    design_only = args.design_only
 
     bidspm(
         bids_dir,
@@ -204,6 +212,9 @@ def cli(argv=sys.argv) -> None:
         dry_run=dry_run,
         preproc_dir=preproc_dir,
         model_file=model_file,
+        roi_based=roi_based,
+        concatenate=concatenate,
+        design_only=design_only,
     )
 
 
@@ -224,9 +235,10 @@ def bidspm(
     dry_run=False,
     preproc_dir=None,
     model_file=None,
+    roi_based=False,
+    concatenate=False,
+    design_only=False,
 ) -> None:
-
-    # TODO add dry_run
 
     if action == "default_model":
         default_model(
@@ -269,6 +281,9 @@ def bidspm(
             skip_validation=skip_validation,
             bids_filter_file=bids_filter_file,
             dry_run=dry_run,
+            roi_based=roi_based,
+            concatenate=concatenate,
+            design_only=design_only,
         )
     else:
         print(f"\nunknown action: {action}")

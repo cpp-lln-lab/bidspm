@@ -172,10 +172,28 @@ def common_parser():
         nargs=1,
     )
     parser.add_argument(
+        "--fwhm",
+        help="""
+        The full width at half maximum of the gaussian kernel to apply to the preprocessed data
+        or to use as inputs for the statistical analysis.
+        """,
+        type=float,
+        nargs=1,
+        default=6.0,
+    )
+    parser.add_argument(
         "--options",
         help="""
         Path to JSON file containing bidspm options.
         """,
+    )
+    parser.add_argument(
+        "--skip_validation",
+        help="""
+        To skip BIDS dataset and BIDS stats model validation.
+        """,
+        action="store_true",
+        default=False,
     )
     parser.add_argument(
         "--preproc_dir",
@@ -202,14 +220,20 @@ def common_parser():
         default=False,
     )
     parser.add_argument(
-        "--fwhm",
+        "--design_only",
         help="""
-        The full width at half maximum of the gaussian kernel to apply to the preprocessed data
-        or to use as inputs for the statistical analysis.
+        To only specify the GLM without estimating it.
         """,
-        type=float,
-        nargs=1,
-        default=6.0,
+        action="store_true",
+        default=False,
+    )
+    parser.add_argument(
+        "--concatenate",
+        help="""
+        To create 4D image of all the beta images from the conditions of interest.
+        """,
+        action="store_true",
+        default=False,
     )
     parser.add_argument(
         "--dummy_scans",
@@ -224,14 +248,6 @@ def common_parser():
         "--anat_only",
         help="""
         If preprocessing should be done only on anatomical data.
-        """,
-        action="store_true",
-        default=False,
-    )
-    parser.add_argument(
-        "--skip_validation",
-        help="""
-        To skip BIDS dataset and BIDS stats model validation.
         """,
         action="store_true",
         default=False,
