@@ -13,7 +13,8 @@ bidspm \
     --participant_label 01 \
     --space individual IXI549Space \
     --task facerepetition \
-    --skip_validation
+    --skip_validation \
+    --dummy_scans 5
 ```
 
 ```bash

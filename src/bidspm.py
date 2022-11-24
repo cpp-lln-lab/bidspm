@@ -61,6 +61,7 @@ def preprocess(
     verbosity=2,
     participant_label=None,
     fwhm=6,
+    dummy_scans=None,
     space=None,
     task=None,
     ignore=None,
@@ -95,6 +96,8 @@ def preprocess(
         octave_cmd += f"{new_line}'skip_validation', true"
     if anat_only:
         octave_cmd += f"{new_line}'anat_only', true"
+    if dummy_scans:
+        octave_cmd += f"{new_line}'dummy_scans', {dummy_scans}"
 
     octave_cmd += "); exit();"
 
@@ -189,6 +192,7 @@ def bidspm(
             space=space,
             ignore=ignore,
             fwhm=fwhm,
+            dummy_scans=dummy_scans,
             skip_validation=skip_validation,
             anat_only=anat_only,
         )
