@@ -22,16 +22,16 @@ data_ds000001:
 data_ds000114:
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds000114
-	datalad -d inputs/ds000114 get inputs/ds000114/sub-0[12]
+	cd inputs/ds000114 && datalad get sub-0[12]
 
 data_ds001168:
 	datalad install ///openneuro/ds001168 inputs/ds001168
-	datalad -d inputs/ds001168 get inputs/ds001168/sub-0[12]
+	cd inputs/ds001168 && datalad get ds001168/sub-0[12]
 
 data_ds002799:
 	datalad install ///openneuro/ds002799 inputs/ds002799
 	cd inputs/ds002799/derivatives/fmriprep
-	datalad -d get sub-292/*/func/*MNI152NLin2009cAsym*
+	datalad get sub-292/*/func/*MNI152NLin2009cAsym*
 	datalad get sub-292/*/func/*tsv
 	datalad get sub-30[27]/*/func/*MNI152NLin2009cAsym*
 	datalad get sub-30[27]/*/func/*tsv
