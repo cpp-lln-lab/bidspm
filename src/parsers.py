@@ -180,7 +180,7 @@ def common_parser():
     parser.add_argument(
         "--preproc_dir",
         help="""
-        Fullpath to the diretory with the preprocessed data.
+        Fullpath to the directory with the preprocessed data.
         """,
         type=str,
         nargs=1,
