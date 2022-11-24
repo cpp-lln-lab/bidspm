@@ -40,7 +40,6 @@ body:
   - type: textarea
     attributes:
       label: Operating system version
-      render: markdown
       value: |
         - Linux Ubuntu 18.04 "bionic beaver"
         - Mac OS Version 12 "monterey"
@@ -68,8 +67,7 @@ body:
   - type: textarea
     attributes:
       label: Platform version
-      render: markdown
-      placeholder: |
+      value: |
         - MATLAB 2017a
         - Octave 4.2.2
 
@@ -85,6 +83,7 @@ body:
 
         Or check the content of CITATION.cff.
       options:
+        - v2.3.0
         - v2.2.0
         - v2.1.0
         - v2.0.0
@@ -134,7 +133,7 @@ body:
         Describe what you got instead.
         If possible paste below the error message you encountered.
         Also add the error.log that might have been generated.
-      placeholder: |
+      value: |
         ```matlab
         % this is the error I got
 

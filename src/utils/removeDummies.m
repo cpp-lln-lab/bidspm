@@ -79,6 +79,12 @@ function removeDummies(varargin)
 
   volumeSplicing(inputFile, 1:numberOfVolumeToDiscard);
 
+  if verbose
+    msg = sprintf('\nRemoved %i volumes from file:\n%s', ...
+                  numberOfVolumeToDiscard, inputFile);
+    printToScreen(msg);
+  end
+
   if isZipped(inputFile)
     inputFile = spm_file(inputFile, 'ext', '');
   end

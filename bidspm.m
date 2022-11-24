@@ -381,6 +381,7 @@ function initBidspm(dev)
 
     for i = 1:numel(libList)
       BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
+                         pathSep, ...
                          genpath(fullfile(thisDirectory, 'lib', libList{i})));
     end
 

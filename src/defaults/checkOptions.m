@@ -316,6 +316,8 @@ function fieldsToSet = setDefaultOption()
   %% General options for functional data
   fieldsToSet.funcVolToSelect = [];
 
+  fieldsToSet.dummy_scans = 0;
+
   %% Options for slice time correction
   % all in seconds
   fieldsToSet.stc.referenceSlice = [];

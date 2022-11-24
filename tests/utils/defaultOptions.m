@@ -33,6 +33,8 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.fwhm.func = 6;
   expectedOptions.fwhm.contrast = 0;
 
+  expectedOptions.dummy_scans = 0;
+
   expectedOptions.stc.sliceOrder = [];
   expectedOptions.stc.referenceSlice = [];
   expectedOptions.stc.skip = false;

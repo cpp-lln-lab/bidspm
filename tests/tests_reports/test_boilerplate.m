@@ -23,8 +23,7 @@ function test_boilerplate_spatial_preproc()
 
   opt.stc.referenceSlice = 32;
 
-  %   opt.dummy_scans = false;
-  opt.dummy_scans.nb = 4;
+  opt.dummy_scans = 4;
 
   %  opt.space = {'individual'};
 

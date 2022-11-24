@@ -73,6 +73,12 @@ function outputFile = boilerplate(varargin)
 
   if strcmp(pipelineType, 'preproc')
 
+    if opt.dummy_scans == 0
+      opt.dummy_scans = false;
+    else
+      opt.dummy_scans = struct('nb', opt.dummy_scans);
+    end
+
     opt.normalization = false;
     if ismember('IXI549Space', opt.space)
       opt.normalization = true;
@@ -91,6 +97,7 @@ function outputFile = boilerplate(varargin)
   elseif strcmp(pipelineType, 'stats')
 
     opt.smoothing = true;
+
     if opt.fwhm.contrast == 0
       opt.smoothing = false;
     end

@@ -9,3 +9,48 @@ In the `models` shows the BIDS statistical model used to run the GLM of this
 demo.
 
 You can use the makefile to run all the main scripts with `make all`
+
+## CLI commands
+
+### Create model
+
+```bash
+bidspm \
+    /home/remi/github/bidspm/demos/MoAE/inputs/raw \
+    /home/remi/github/bidspm/demos/MoAE/outputs/derivatives \
+     dataset \
+    --action default_model \
+    --space IXI549Space \
+    --task auditory \
+    --verbosity 0 \
+    --ignore transformations
+```
+
+### Preprocessing
+
+```bash
+bidspm \
+    /home/remi/github/bidspm/demos/MoAE/inputs/raw \
+    /home/remi/github/bidspm/demos/MoAE/outputs/derivatives \
+    subject \
+    --action preprocess \
+    --participant_label 01 \
+    --space individual IXI549Space \
+    --task auditory \
+    --verbosity 2 \
+    --fwhm 6 \
+    --ignore unwarp slicetiming
+```
+
+### GLM
+
+```bash
+bidspm \
+    /home/remi/github/bidspm/demos/MoAE/inputs/raw \
+    /home/remi/github/bidspm/demos/MoAE/outputs/derivatives \
+    subject \
+    --action stats \
+    --preproc_dir /home/remi/github/bidspm/demos/MoAE/outputs/derivatives/bidspm-preproc \
+    --model_file /home/remi/github/bidspm/demos/MoAE/models/model-MoAE_smdl.json \
+    --fwhm 6
+```
