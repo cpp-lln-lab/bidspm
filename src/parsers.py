@@ -168,6 +168,8 @@ def common_parser():
         help="""
         Fullpath to a JSON file describing custom BIDS input filters.
         """,
+        type=str,
+        nargs=1,
     )
     parser.add_argument(
         "--options",
@@ -188,6 +190,7 @@ def common_parser():
         help="""
         Path to BIDS stats model.
         """,
+        type=str,
         nargs=1,
     )
     parser.add_argument(

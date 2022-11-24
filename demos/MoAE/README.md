@@ -41,3 +41,16 @@ bidspm \
     --fwhm 6 \
     --ignore unwarp slicetiming
 ```
+
+### GLM
+
+```bash
+bidspm \
+    /home/remi/github/bidspm/demos/MoAE/inputs/raw \
+    /home/remi/github/bidspm/demos/MoAE/outputs/derivatives \
+    subject \
+    --action stats \
+    --preproc_dir /home/remi/github/bidspm/demos/MoAE/outputs/derivatives/bidspm-preproc \
+    --model_file /home/remi/github/bidspm/demos/MoAE/models/model-MoAE_smdl.json \
+    --fwhm 6
+```
