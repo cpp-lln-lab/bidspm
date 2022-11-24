@@ -56,7 +56,7 @@ def common_parser():
     parser.add_argument(
         "bids_dir",
         help="""
-        The directory with the input dataset
+        Fullpath to the directory with the input dataset
         formatted according to the BIDS standard.
         """,
         nargs=1,
@@ -64,7 +64,7 @@ def common_parser():
     parser.add_argument(
         "output_dir",
         help="""
-        The directory where the output files will be stored.
+        Fullpath to the directory where the output files will be stored.
         If you are running group level analysis this folder should be prepopulated
         with the results of the participant level analysis.
         """,
@@ -122,7 +122,8 @@ def common_parser():
         Space of the input data.
         """,
         default=["IXI549Space"],
-        nargs=1,
+        type=str,
+        nargs="+",
     )
     parser.add_argument(
         "--ignore",
@@ -179,7 +180,7 @@ def common_parser():
     parser.add_argument(
         "--preproc_dir",
         help="""
-        Path to preprocessed data.
+        Fullpath to the diretory with the preprocessed data.
         """,
         type=str,
         nargs=1,
@@ -204,7 +205,8 @@ def common_parser():
     parser.add_argument(
         "--fwhm",
         help="""
-        The full width at half maximum of the gaussian kernel to apply to the preprocessed data.
+        The full width at half maximum of the gaussian kernel to apply to the preprocessed data
+        or to use as inputs for the statistical analysis.
         """,
         type=float,
         nargs=1,
