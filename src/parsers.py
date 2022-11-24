@@ -160,15 +160,13 @@ def common_parser():
         When set to ``true`` this will generate and save the SPM batches,
         but not actually run them.
         """,
-        choices=[True, False],
+        action="store_true",
         default=False,
-        type=bool,
-        nargs=1,
     )
     parser.add_argument(
         "--bids_filter_file",
         help="""
-        A JSON file describing custom BIDS input filters.
+        Fullpath to a JSON file describing custom BIDS input filters.
         """,
     )
     parser.add_argument(
@@ -197,10 +195,8 @@ def common_parser():
         help="""
         To run stats only in regions of interests.
         """,
-        choices=[True, False],
+        action="store_true",
         default=False,
-        type=bool,
-        nargs=1,
     )
     parser.add_argument(
         "--fwhm",
@@ -226,10 +222,16 @@ def common_parser():
         help="""
         If preprocessing should be done only on anatomical data.
         """,
-        choices=[True, False],
+        action="store_true",
         default=False,
-        type=bool,
-        nargs=1,
+    )
+    parser.add_argument(
+        "--skip_validation",
+        help="""
+        To skip BIDS dataset and BIDS stats model validation.
+        """,
+        action="store_true",
+        default=False,
     )
 
     return parser

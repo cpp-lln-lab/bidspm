@@ -17,7 +17,7 @@ data: data_ds000001 data_ds000114 data_ds001168
 data_ds000001:
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds000001
-	datalad -d inputs/ds000001 get inputs/ds000001/sub-0[12]
+	cd inputs/ds000001 && datalad get sub-0[12]
 
 data_ds000114:
 	mkdir -p inputs

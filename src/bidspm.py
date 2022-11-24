@@ -25,18 +25,17 @@ def default_model(
     space = "{ '" + "', '".join(space) + "' }" if space is not None else None
     ignore = "{ '" + "', '".join(ignore) + "' }" if ignore is not None else None
 
+    new_line = ", ...\n\t "
     octave_cmd = " bidspm();"
-    octave_cmd += (
-        f" bidspm('{bids_dir}', '{output_dir}', 'dataset', 'action', 'default_model'"
-    )
+    octave_cmd += f" bidspm('{bids_dir}'{new_line}'{output_dir}'{new_line}'dataset'{new_line}'action', 'default_model'"
     if verbosity:
-        octave_cmd += f", 'verbosity', {verbosity}"
+        octave_cmd += f"{new_line}'verbosity', {verbosity}"
     if space:
-        octave_cmd += f", 'space', {space}"
+        octave_cmd += f"{new_line}'space', {space}"
     if task:
-        octave_cmd += f", 'task', {task}"
+        octave_cmd += f"{new_line}'task', {task}"
     if ignore:
-        octave_cmd += f", 'ignore', {ignore}"
+        octave_cmd += f"{new_line}'ignore', {ignore}"
 
     octave_cmd += "); exit;"
 
@@ -65,6 +64,8 @@ def preprocess(
     space=None,
     task=None,
     ignore=None,
+    anat_only=False,
+    skip_validation=False,
 ) -> None:
 
     task = "{ '" + "', '".join(task) + "' }" if task is not None else None
@@ -76,23 +77,26 @@ def preprocess(
         else None
     )
 
+    new_line = ", ...\n\t "
     octave_cmd = " bidspm();"
-    octave_cmd += (
-        f" bidspm('{bids_dir}', '{output_dir}', 'subject', 'action', 'preprocess'"
-    )
-    octave_cmd += f", 'fwhm', {fwhm}"
+    octave_cmd += f" bidspm('{bids_dir}'{new_line}'{output_dir}'{new_line}'subject'{new_line}'action', 'preprocess'"
+    octave_cmd += f"{new_line}'fwhm', {fwhm}"
     if verbosity:
-        octave_cmd += f", 'verbosity', {verbosity}"
+        octave_cmd += f"{new_line}'verbosity', {verbosity}"
     if space:
-        octave_cmd += f", 'space', {space}"
+        octave_cmd += f"{new_line}'space', {space}"
     if task:
-        octave_cmd += f", 'task', {task}"
+        octave_cmd += f"{new_line}'task', {task}"
     if participant_label:
-        octave_cmd += f", 'participant_label', {participant_label}"
+        octave_cmd += f"{new_line}'participant_label', {participant_label}"
     if ignore:
-        octave_cmd += f", 'ignore', {ignore}"
+        octave_cmd += f"{new_line}'ignore', {ignore}"
+    if skip_validation:
+        octave_cmd += f"{new_line}'skip_validation', true"
+    if anat_only:
+        octave_cmd += f"{new_line}'anat_only', true"
 
-    octave_cmd += "); exit;"
+    octave_cmd += "); exit();"
 
     print("\nRunning the following command:\n")
     print(octave_cmd.replace(";", ";\n"))
@@ -127,6 +131,10 @@ def cli(argv=sys.argv) -> None:
     verbosity = args.verbosity
     ignore = args.ignore
     fwhm = args.fwhm
+    bids_filter_file = args.bids_filter_file
+    dummy_scans = args.dummy_scans
+    anat_only = args.anat_only
+    skip_validation = args.skip_validation
 
     bidspm(
         bids_dir,
@@ -138,6 +146,10 @@ def cli(argv=sys.argv) -> None:
         space=space,
         ignore=ignore,
         fwhm=fwhm,
+        bids_filter_file=bids_filter_file,
+        dummy_scans=dummy_scans,
+        anat_only=anat_only,
+        skip_validation=skip_validation,
     )
 
 
@@ -151,6 +163,10 @@ def bidspm(
     space=None,
     ignore=None,
     fwhm=None,
+    bids_filter_file=None,
+    dummy_scans=0,
+    anat_only=False,
+    skip_validation=False,
 ) -> None:
 
     if action == "default_model":
@@ -163,7 +179,8 @@ def bidspm(
             space=space,
             ignore=ignore,
         )
-    if action == "preprocess":
+
+    elif action == "preprocess":
         preprocess(
             bids_dir=bids_dir,
             output_dir=output_dir,
@@ -172,6 +189,8 @@ def bidspm(
             space=space,
             ignore=ignore,
             fwhm=fwhm,
+            skip_validation=skip_validation,
+            anat_only=anat_only,
         )
     else:
         print(f"\nunknown action: {action}")
