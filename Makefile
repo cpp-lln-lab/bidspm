@@ -111,7 +111,7 @@ clean_docker:
 	rm -f Dockerfile_matlab
 
 build_image: Dockerfile fix_submodule ## Build stable docker image from the main branch
-	git checkout main
+# git checkout main
 	docker build . --no-cache -f Dockerfile -t cpplab/bidspm:stable
 	VERSION=$(cat version.txt | cut -c2-)
 	docker tag cpplab/bidspm:stable cpplab/bidspm:$$VERSION

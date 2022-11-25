@@ -55,15 +55,21 @@ WORKDIR /home/neuro
 RUN mkdir code input output
 
 # COPY . /home/neuro/bidspm # this is for local development
-RUN git clone --branch v2.3.0 --depth 1 --recursive https://github.com/cpp-lln-lab/bidspm.git
 
-RUN cd bidspm && pip3 install .
+RUN git clone --depth 1 --recursive https://github.com/cpp-lln-lab/bidspm.git
+
+RUN cd bidspm && pip3 install -e .
 RUN echo '\n'
 RUN python3 --version && pip3 list
 RUN echo '\n'
 
+# USER neuro
+
 RUN cd bidspm && octave --no-gui --eval "bidspm; savepath();"
 
-USER neuro
+# RUN octave --no-gui --eval "cd('/opt/spm12/'); addpath(pwd); savepath();"
 
-ENTRYPOINT ["octave"]
+RUN octave --no-gui --eval "spm"
+
+
+ENTRYPOINT ["bidspm"]
