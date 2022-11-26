@@ -27,7 +27,7 @@ if isOctave
 end
 
 % Getting the raw dataset
-download_data = false;
+download_data = true;
 download_moae_ds(download_data);
 
 % The directory where the data are located
