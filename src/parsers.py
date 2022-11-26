@@ -1,18 +1,18 @@
+from __future__ import annotations
+
 import argparse
 import logging
-from pathlib import Path
 from typing import IO
-from typing import Optional
 
 import rich
 from rich.logging import RichHandler
 
+from . import _version
+
 log = logging.getLogger("bidspm")
 
-version_file = Path(__file__).parent.parent.joinpath("version.txt")
 
-with open(version_file) as f:
-    __version__ = f.read().strip()
+__version__ = _version.get_versions()["version"]
 
 
 def bidspm_log(name: str = "bidspm") -> logging.Logger:
@@ -30,11 +30,11 @@ def bidspm_log(name: str = "bidspm") -> logging.Logger:
 
 
 class MuhParser(argparse.ArgumentParser):
-    def _print_message(self, message: str, file: Optional[IO[str]] = None) -> None:
+    def _print_message(self, message: str, file: IO[str] | None = None) -> None:
         rich.print(message, file=file)
 
 
-def common_parser():
+def common_parser() -> MuhParser:
 
     parser = MuhParser(
         description="bidspm is a SPM base BIDS app",
@@ -256,7 +256,7 @@ def common_parser():
     return parser
 
 
-def validate_parser():
+def validate_parser() -> argparse.ArgumentParser:
 
     parser = argparse.ArgumentParser(
         description="validate bids stats model",

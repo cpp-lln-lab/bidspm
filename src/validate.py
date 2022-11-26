@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import sys
 from pathlib import Path
 from typing import Any
@@ -11,7 +13,7 @@ from src.parsers import validate_parser
 log = bidspm_log(name="bidspm")
 
 
-def validate(file: Path) -> None:
+def validate(file: Path) -> int:
     file = file.absolute()
     log.info(f"Validating {file}")
     try:

@@ -22,7 +22,7 @@ bidspm \
     --action default_model \
     --space IXI549Space \
     --task auditory \
-    --verbosity 0 \
+    --verbosity 2 \
     --ignore transformations
 ```
 
@@ -53,4 +53,38 @@ bidspm \
     --preproc_dir /home/remi/github/bidspm/demos/MoAE/outputs/derivatives/bidspm-preproc \
     --model_file /home/remi/github/bidspm/demos/MoAE/models/model-MoAE_smdl.json \
     --fwhm 6
+```
+
+## Docker commands
+
+### Preproc
+
+```bash
+docker run -it --rm \
+    -v /home/remi/github/bidspm/demos/MoAE/inputs/raw:/raw \
+    -v /home/remi/github/bidspm/demos/MoAE/outputs/derivatives:/derivatives \
+    cpplab/bidspm:stable \
+        /raw \
+        /derivatives \
+        subject \
+        --task auditory \
+        --action preprocess \
+        --fwhm 8
+```
+
+### Stats
+
+```bash
+docker run -it --rm \
+    -v /home/remi/github/bidspm/demos/MoAE/inputs/raw:/raw \
+    -v /home/remi/github/bidspm/demos/MoAE/outputs/derivatives:/derivatives \
+    -v /home/remi/github/bidspm/demos/MoAE/models:/models \
+    cpplab/bidspm:latest \
+        /raw \
+        /derivatives \
+        subject \
+        --action stats \
+        --preproc_dir /derivatives/bidspm-preproc \
+        --model_file /models/model-MoAE_smdl.json \
+        --fwhm 6
 ```

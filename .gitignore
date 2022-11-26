@@ -38,6 +38,7 @@ models/*
 **/*egg-info
 **/__pycache__
 **/build
+.coverage
 
 # jupyter notebooks
 .ipynb_checkpoints

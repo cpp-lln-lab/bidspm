@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 
 code_src = Path(__file__).parent.parent.joinpath("src")

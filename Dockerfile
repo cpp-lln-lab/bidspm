@@ -44,9 +44,8 @@ RUN mkdir /opt/spm12 && \
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
 RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();"
 
-## Install nods and bids validator
-
-RUN node -v && npm -v && npm install -g bids-validator
+## Install node.js
+RUN node -v && npm -v
 
 ## Install bidspm in user folder
 RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
@@ -54,16 +53,22 @@ RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --she
 WORKDIR /home/neuro
 RUN mkdir code input output
 
-# COPY . /home/neuro/bidspm # this is for local development
-RUN git clone --branch v2.3.0 --depth 1 --recursive https://github.com/cpp-lln-lab/bidspm.git
+# uncomment when local development
+RUN echo '\nDEV'
+COPY . /home/neuro/bidspm
 
-RUN cd bidspm && pip3 install .
+# RUN echo '\nPROD'
+# RUN git clone --depth 1 --branch FIXME --recursive https://github.com/cpp-lln-lab/bidspm.git
+
+RUN cd bidspm && make install
+
 RUN echo '\n'
 RUN python3 --version && pip3 list
 RUN echo '\n'
 
-RUN cd bidspm && octave --no-gui --eval "bidspm; savepath();"
+# TODO
+# USER neuro
 
-USER neuro
+RUN cd bidspm && octave --no-gui --eval "addpath(pwd); savepath();"
 
-ENTRYPOINT ["octave"]
+ENTRYPOINT ["bidspm"]

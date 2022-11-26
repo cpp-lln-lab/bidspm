@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # see https://github.com/python-versioneer/python-versioneer/issues/249#issuecomment-1038184056
+from __future__ import annotations
+
+import versioneer
 from setuptools import setup
 
-with open("version.txt") as f:
-    version = f.read().strip()
-
 if __name__ == "__main__":
-    setup(version=version)
+    setup(version=versioneer.get_version(), cmdclass=versioneer.get_cmdclass())
