@@ -180,7 +180,7 @@ def stats(
         return 1
 
     cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
-    cmd += f"'{new_line}'subject'{new_line}'action', '{action}'"
+    cmd += f"{new_line}'subject'{new_line}'action', '{action}'"
     cmd = append_base_arguments(
         cmd=cmd, verbosity=verbosity, space=space, task=task, ignore=ignore
     )

@@ -125,9 +125,9 @@ build_image: Dockerfile fix_submodule ## Build stable docker image from the main
 	docker tag cpplab/bidspm:stable cpplab/bidspm:$$VERSION
 
 build_image_dev: Dockerfile ## Build latest docker image from the dev branch
-	git checkout dev
+# git checkout dev
+	docker build . -f Dockerfile -t cpplab/bidspm:latest
 	VERSION=$(cat version.txt | cut -c2-)
-	docker build . --no-cache -f Dockerfile -t cpplab/bidspm:latest
 	docker tag cpplab/bidspm:latest cpplab/bidspm:$$VERSION
 
 build_image_test: ## For debugging docker image building

@@ -79,7 +79,7 @@ docker run -it --rm \
     -v /home/remi/github/bidspm/demos/MoAE/inputs/raw:/raw \
     -v /home/remi/github/bidspm/demos/MoAE/outputs/derivatives:/derivatives \
     -v /home/remi/github/bidspm/demos/MoAE/models:/models \
-    cpplab/bidspm:stable \
+    cpplab/bidspm:latest \
         /raw \
         /derivatives \
         subject \
