@@ -76,24 +76,24 @@ def test_run_command():
 
 
 def test_bidspm_error_dir(caplog):
-    sts = bidspm(
+    return_code = bidspm(
         bids_dir=Path("/foo/bar"),
         output_dir=Path,
         analysis_level="subject",
         action="preprocess",
     )
-    assert sts == 1
+    assert return_code == 1
     assert ["The 'bids_dir' does not exist:\n\t/foo/bar"] == [
         rec.message for rec in caplog.records
     ]
 
 
 def test_bidspm_error_action(caplog):
-    sts = bidspm(
+    return_code = bidspm(
         bids_dir=Path(),
         output_dir=Path,
         analysis_level="subject",
         action="spam",
     )
-    assert sts == 1
+    assert return_code == 1
     assert ["\nunknown action: spam"] == [rec.message for rec in caplog.records]

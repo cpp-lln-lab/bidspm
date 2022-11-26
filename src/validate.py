@@ -39,14 +39,14 @@ def main(argv: Any = sys.argv) -> None:
         raise FileNotFoundError(f"{input_} does not exist.")
 
     elif input_.is_file():
-        sts = validate(input_)
-        sys.exit(sts)
+        return_code = validate(input_)
+        sys.exit(return_code)
 
     if input_.is_dir():
         global_status = 0
         for file in input_.glob("*_smdl.json"):
-            sts = validate(file)
-            if sts == 1:
+            return_code = validate(file)
+            if return_code == 1:
                 global_status = 1
         sys.exit(global_status)
 

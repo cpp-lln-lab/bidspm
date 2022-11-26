@@ -87,12 +87,20 @@ def common_parser() -> MuhParser:
         Action to perform.
 
         - ``preprocess``
+        - ``smooth``
         - ``default_model``
         - ``stats``: runs model specification / estimation, contrast computation, display results
         - ``contrasts``: contrast computation, display results
         - ``results``: display results
         """,
-        choices=["preprocess", "default_model", "stats", "contrasts", "results"],
+        choices=[
+            "preprocess",
+            "smooth",
+            "default_model",
+            "stats",
+            "contrasts",
+            "results",
+        ],
         required=True,
         type=str,
         nargs=1,

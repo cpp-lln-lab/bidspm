@@ -71,8 +71,9 @@ function returnCode = bidspm(varargin)
 
   try
     executeAction(action, args);
-    return_code = 0;
+    returnCode = 0;
   catch ME
+    returnCode = 1;
     rethrow(ME);
   end
 end
@@ -110,6 +111,10 @@ function executeAction(action, args)
     case 'run_tests'
 
       run_tests();
+
+    case 'smooth'
+
+      smooth(args);
 
     case 'preprocess'
 
@@ -151,6 +156,30 @@ function executeAction(action, args)
 end
 
 %% high level actions
+
+function smooth(args)
+  % TODO make sure that options defined in JSON or passed as a structure
+  % overrides any other arguments
+  opt = getOptionsFromCliArgument(args);
+
+  opt.pipeline.type = 'preproc';
+  opt = checkOptions(opt);
+
+  try
+
+    saveOptions(opt);
+
+    if opt.fwhm.func > 0
+      opt.query.desc = 'preproc';
+      bidsSmoothing(opt);
+    end
+
+  catch ME
+    bugReport(opt, ME);
+    rethrow(ME);
+  end
+
+end
 
 function preprocess(args)
 
@@ -558,7 +587,7 @@ end
 
 function value = bidsAppsActions()
 
-  value = {'preprocess'; 'default_model'; 'stats'; 'contrasts'; 'results'};
+  value = {'preprocess'; 'smooth'; 'default_model'; 'stats'; 'contrasts'; 'results'};
 
 end
 

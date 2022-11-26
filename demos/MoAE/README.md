@@ -42,6 +42,19 @@ bidspm \
     --ignore unwarp slicetiming
 ```
 
+```bash
+bidspm \
+    /home/remi/github/bidspm/demos/MoAE/inputs/raw \
+    /home/remi/github/bidspm/demos/MoAE/outputs/derivatives \
+    subject \
+    --action smooth \
+    --participant_label 01 \
+    --space '^.*MNI.*$' \
+    --task auditory \
+    --verbosity 2 \
+    --fwhm 6
+```
+
 ### GLM
 
 ```bash

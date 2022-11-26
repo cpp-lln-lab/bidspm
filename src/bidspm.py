@@ -116,6 +116,7 @@ def default_model(
 def preprocess(
     bids_dir: Path,
     output_dir: Path,
+    action: str,
     verbosity: int = 2,
     participant_label: list[str] | None = None,
     fwhm: Any = 6,
@@ -129,12 +130,12 @@ def preprocess(
     dry_run: bool = False,
 ) -> int:
 
-    if task and len(task) > 1:
+    if action == "preprocess" and task and len(task) > 1:
         log.error(f"Only one task allowed for preprocessing. Got\n:{task}")
         return 1
 
     cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
-    cmd = append_main_cmd(cmd=cmd, analysis_level="subject", action="preprocess")
+    cmd = append_main_cmd(cmd=cmd, analysis_level="subject", action=action)
     cmd = append_base_arguments(
         cmd=cmd, verbosity=verbosity, space=space, task=task, ignore=ignore
     )
@@ -152,8 +153,12 @@ def preprocess(
         cmd += f"{new_line}'dummy_scans', {dummy_scans}"
     cmd = end_cmd(cmd)
 
-    log.info("Running preprocessing.")
-    log.info("For typical fmri data, consider using fmriprep instead.")
+    if action == "preprocess":
+        log.info("Running preprocessing.")
+        log.info("For typical fmri data, consider using fmriprep instead.")
+
+    elif action == "smooth":
+        log.info("Running smoothing.")
 
     run_command(cmd)
 
@@ -236,7 +241,7 @@ def cli(argv: Any = sys.argv) -> None:
         Path(args.model_file[0]).resolve() if args.model_file is not None else None
     )
 
-    sts = bidspm(
+    return_code = bidspm(
         bids_dir,
         output_dir,
         analysis_level,
@@ -258,7 +263,7 @@ def cli(argv: Any = sys.argv) -> None:
         design_only=args.design_only,
     )
 
-    if sts == 1:
+    if return_code == 1:
         sys.exit(1)
     else:
         sys.exit(0)
@@ -295,7 +300,7 @@ def bidspm(
         return 1
 
     if action == "default_model":
-        sts = default_model(
+        return_code = default_model(
             bids_dir=bids_dir,
             output_dir=output_dir,
             analysis_level=analysis_level,
@@ -305,10 +310,11 @@ def bidspm(
             ignore=ignore,
         )
 
-    elif action == "preprocess":
-        sts = preprocess(
+    elif action in {"preprocess", "smooth"}:
+        return_code = preprocess(
             bids_dir=bids_dir,
             output_dir=output_dir,
+            action=action,
             verbosity=verbosity,
             task=task,
             space=space,
@@ -330,7 +336,7 @@ def bidspm(
             log.error(f"'model_file' must be specified for stats. Got:\n{model_file}")
             return 1
 
-        sts = stats(
+        return_code = stats(
             bids_dir=bids_dir,
             output_dir=output_dir,
             action=action,
@@ -352,7 +358,7 @@ def bidspm(
         log.error(f"\nunknown action: {action}")
         return 1
 
-    return sts
+    return return_code
 
 
 def run_command(cmd: str, platform: str | None = None) -> int:
