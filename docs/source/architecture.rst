@@ -19,7 +19,7 @@ Many workflows include some post-processing steps (like file renaming) after the
 so in many cases the output of running just the batch and running the whole workflow
 will be different.
 
-:ref:`preprocessing`, :ref:`statistics` and :ref:`fieldmaps` handling have their own document pages.
+:ref:`preprocessing`, :ref:`statistics` and :ref:`fieldmaps_page` handling have their own document pages.
 
 Other workflows, batches and related helper functions are listed below.
 

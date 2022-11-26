@@ -1,5 +1,3 @@
-.. _defaults:
-
 Pipeline defaults
 *****************
 
