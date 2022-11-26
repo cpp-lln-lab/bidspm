@@ -19,30 +19,6 @@ log = bidspm_log(name="bidspm")
 new_line = ", ...\n\t "
 
 
-def default_model(
-    bids_dir: Path,
-    output_dir: Path,
-    analysis_level: str = "dataset",
-    verbosity: int = 2,
-    space: list[str] | None = None,
-    task: list[str] | None = None,
-    ignore: list[str] | None = None,
-) -> None:
-
-    if space and len(space) > 1:
-        log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
-        sys.exit(1)
-
-    cmd = base_cmd(bids_dir, output_dir)
-    cmd += f"{new_line}'dataset'{new_line}'action', 'default_model'"
-    cmd = append_base_arguments(cmd, verbosity, space, task, ignore)
-    cmd += "); exit;"
-
-    log.info("Creating default model.")
-
-    run_command(cmd)
-
-
 def base_cmd(bids_dir: Path, output_dir: Path) -> str:
     cmd = " bidspm();"
     cmd += f" bidspm('{bids_dir}'{new_line}'{output_dir}'"
@@ -76,10 +52,10 @@ def append_base_arguments(
 def append_common_arguments(
     cmd: str,
     fwhm: Any,
-    participant_label: list[str] | None,
     skip_validation: bool,
     dry_run: bool,
-    bids_filter_file: Path | None,
+    participant_label: list[str] | None = None,
+    bids_filter_file: Path | None = None,
 ) -> str:
     """Append arguments common to preproc and stats."""
     participant_label = (
@@ -99,6 +75,32 @@ def append_common_arguments(
         cmd += f"{new_line}'bids_filter_file', '{bids_filter_file}'"
 
     return cmd
+
+
+def default_model(
+    bids_dir: Path,
+    output_dir: Path,
+    analysis_level: str = "dataset",
+    verbosity: int = 2,
+    space: list[str] | None = None,
+    task: list[str] | None = None,
+    ignore: list[str] | None = None,
+) -> None:
+
+    if space and len(space) > 1:
+        log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
+        sys.exit(1)
+
+    cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
+    cmd += f"{new_line}'dataset'{new_line}'action', 'default_model'"
+    cmd = append_base_arguments(
+        cmd=cmd, verbosity=verbosity, space=space, task=task, ignore=ignore
+    )
+    cmd += "); exit;"
+
+    log.info("Creating default model.")
+
+    run_command(cmd)
 
 
 def preprocess(
@@ -121,11 +123,18 @@ def preprocess(
         log.error(f"Only one task allowed for preprocessing. Got\n:{task}")
         sys.exit(1)
 
-    cmd = base_cmd(bids_dir, output_dir)
+    cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
     cmd += f"{new_line}'subject'{new_line}'action', 'preprocess'"
-    cmd = append_base_arguments(cmd, verbosity, space, task, ignore)
+    cmd = append_base_arguments(
+        cmd=cmd, verbosity=verbosity, space=space, task=task, ignore=ignore
+    )
     cmd = append_common_arguments(
-        cmd, fwhm, participant_label, skip_validation, dry_run, bids_filter_file
+        cmd=cmd,
+        fwhm=fwhm,
+        participant_label=participant_label,
+        skip_validation=skip_validation,
+        dry_run=dry_run,
+        bids_filter_file=bids_filter_file,
     )
     if anat_only:
         cmd += f"{new_line}'anat_only', true"
@@ -162,11 +171,18 @@ def stats(
         log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
         sys.exit(1)
 
-    cmd = base_cmd(bids_dir, output_dir)
+    cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
     cmd += f"'{new_line}'subject'{new_line}'action', '{action}'"
-    cmd = append_base_arguments(cmd, verbosity, space, task, ignore)
+    cmd = append_base_arguments(
+        cmd=cmd, verbosity=verbosity, space=space, task=task, ignore=ignore
+    )
     cmd = append_common_arguments(
-        cmd, fwhm, participant_label, skip_validation, dry_run, bids_filter_file
+        cmd=cmd,
+        fwhm=fwhm,
+        participant_label=participant_label,
+        skip_validation=skip_validation,
+        dry_run=dry_run,
+        bids_filter_file=bids_filter_file,
     )
     cmd += f"{new_line}'preproc_dir', '{preproc_dir}'"
     cmd += f"{new_line}'model_file', '{model_file}'"
@@ -310,19 +326,21 @@ def bidspm(
         print(f"\nunknown action: {action}")
 
 
-def run_command(cmd: str) -> None:
+def run_command(cmd: str, platform: str | None = None) -> Any:
 
     print("\nRunning the following command:\n")
     print(cmd.replace(";", ";\n"))
     print()
 
-    platform = "octave"
-    if Path(matlab()).exists():
-        platform = matlab()
-        cmd = cmd.replace(new_line, ", ")
+    if platform is None:
+        if Path(matlab()).exists():
+            platform = matlab()
+            cmd = cmd.replace(new_line, ", ")
+        else:
+            platform = "octave"
 
     if platform == "octave":
-        subprocess.run(
+        return subprocess.run(
             [
                 "octave",
                 "--no-gui",
@@ -332,8 +350,9 @@ def run_command(cmd: str) -> None:
                 f"{cmd}",
             ]
         )
+
     else:
-        subprocess.run(
+        return subprocess.run(
             [
                 platform,
                 "-nodisplay",

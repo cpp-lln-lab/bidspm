@@ -102,7 +102,12 @@ system_test: ## Run system tests
 	$(MATLAB) $(ARG) -r "cd demos/MoAE/; test_moae; exit()"
 
 test_python: ## Run python tests
-	python -m pytest -v --cov-report term-missing --cov=src tests
+	python -m pytest
+
+coverage: ## use coverage
+	coverage erase
+	coverage run --source src -m pytest
+	coverage report -m
 
 ################################################################################
 #   DOCKER

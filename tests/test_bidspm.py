@@ -4,7 +4,9 @@ from __future__ import annotations
 from pathlib import Path
 
 from src.bidspm import append_base_arguments
+from src.bidspm import append_common_arguments
 from src.bidspm import base_cmd
+from src.bidspm import run_command
 from src.parsers import common_parser
 
 
@@ -37,6 +39,21 @@ def test_parser():
     assert args.task == ["foo", "bar"]
 
 
+def test_append_common_arguments():
+
+    cmd = append_common_arguments(
+        cmd="",
+        fwhm=6,
+        participant_label=["01", "02"],
+        skip_validation=True,
+        dry_run=True,
+    )
+    assert (
+        cmd
+        == ", ...\n\t 'fwhm', 6, ...\n\t 'participant_label', { '01', '02' }, ...\n\t 'skip_validation', true, ...\n\t 'dry_run', true"
+    )
+
+
 def test_append_base_arguments():
 
     cmd = append_base_arguments(
@@ -46,3 +63,10 @@ def test_append_base_arguments():
         cmd
         == ", ...\n\t 'verbosity', 0, ...\n\t 'space', { 'foo', 'bar' }, ...\n\t 'task', { 'spam', 'eggs' }, ...\n\t 'ignore', { 'nii' }"
     )
+
+
+def test_run_command():
+    """Test run_command."""
+    cmd = "disp('hello'); exit();"
+    completed_process = run_command(cmd, platform="octave")
+    assert completed_process.returncode == 0
