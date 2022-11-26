@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+
 def matlab() -> str:
     """Return the path to the Matlab executable.
 

@@ -31,7 +31,7 @@ def bidspm_log(name: str = "bidspm") -> logging.Logger:
 
 
 class MuhParser(argparse.ArgumentParser):
-    def _print_message(self, message: str, file: Optional[IO[str]] = None) -> None:
+    def _print_message(self, message: str, file: IO[str] | None = None) -> None:
         rich.print(message, file=file)
 
 
