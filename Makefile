@@ -34,7 +34,7 @@ ARG    = -nodisplay -nosplash -nodesktop
 
 install:
 	npm install -g bids-validator
-	pip install .
+	pip3 install .
 
 help: ## Show what this Makefile can do
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
@@ -87,9 +87,9 @@ lint_matlab: ## Clean MATLAB code
 	mh_style --fix && mh_metric --ci && mh_lint
 
 lint_python: ## Clean python code
-	black *.py src docs
-	flake8	*.py src docs
-
+	black *.py src tests docs
+	flake8	*.py src tests docs
+	mypy *.py src
 
 ################################################################################
 #   test
@@ -101,6 +101,8 @@ system_test: ## Run system tests
 	$(MATLAB) $(ARG) -r "cd demos/face_repetition/; test_face_rep; exit()"
 	$(MATLAB) $(ARG) -r "cd demos/MoAE/; test_moae; exit()"
 
+test_python: ## Run python tests
+	python -m pytest -v --cov-report term-missing --cov=src tests
 
 ################################################################################
 #   DOCKER
@@ -112,7 +114,8 @@ clean_docker:
 
 build_image: Dockerfile fix_submodule ## Build stable docker image from the main branch
 # git checkout main
-	docker build . --no-cache -f Dockerfile -t cpplab/bidspm:stable
+# docker build . --no-cache -f Dockerfile -t cpplab/bidspm:stable
+	docker build . -f Dockerfile -t cpplab/bidspm:stable
 	VERSION=$(cat version.txt | cut -c2-)
 	docker tag cpplab/bidspm:stable cpplab/bidspm:$$VERSION
 

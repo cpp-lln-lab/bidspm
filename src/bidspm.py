@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+
 import os
 import subprocess
 import sys
 from pathlib import Path
 from typing import Any
-from typing import Optional
 
 from rich import print
 
@@ -23,9 +24,9 @@ def default_model(
     output_dir: Path,
     analysis_level: str = "dataset",
     verbosity: int = 2,
-    space: Optional[list[str]] = None,
-    task: Optional[list[str]] = None,
-    ignore: Optional[list[str]] = None,
+    space: list[str] | None = None,
+    task: list[str] | None = None,
+    ignore: list[str] | None = None,
 ) -> None:
 
     if space and len(space) > 1:
@@ -50,17 +51,17 @@ def base_cmd(bids_dir: Path, output_dir: Path) -> str:
 
 def append_base_arguments(
     cmd: str,
-    verbosity: int,
-    space: Optional[list[str]],
-    task: Optional[list[str]],
-    ignore: Optional[list[str]],
+    verbosity: int | None = None,
+    space: list[str] | None = None,
+    task: list[str] | None = None,
+    ignore: list[str] | None = None,
 ) -> str:
     """Append arguments common to all actions to the command string."""
-    task = "{ '" + "', '".join(task) + "' }" if task is not None else None
-    space = "{ '" + "', '".join(space) + "' }" if space is not None else None
-    ignore = "{ '" + "', '".join(ignore) + "' }" if ignore is not None else None
+    task = "{ '" + "', '".join(task) + "' }" if task is not None else None  # type: ignore
+    space = "{ '" + "', '".join(space) + "' }" if space is not None else None  # type: ignore
+    ignore = "{ '" + "', '".join(ignore) + "' }" if ignore is not None else None  # type: ignore
 
-    if verbosity:
+    if verbosity is not None:
         cmd += f"{new_line}'verbosity', {verbosity}"
     if space:
         cmd += f"{new_line}'space', {space}"
@@ -75,14 +76,14 @@ def append_base_arguments(
 def append_common_arguments(
     cmd: str,
     fwhm: Any,
-    participant_label: Optional[list[str]],
+    participant_label: list[str] | None,
     skip_validation: bool,
     dry_run: bool,
-    bids_filter_file: Optional[Path],
+    bids_filter_file: Path | None,
 ) -> str:
     """Append arguments common to preproc and stats."""
     participant_label = (
-        "{ '" + "', '".join(participant_label) + "' }"
+        "{ '" + "', '".join(participant_label) + "' }"  # type: ignore
         if participant_label is not None
         else None
     )
@@ -104,15 +105,15 @@ def preprocess(
     bids_dir: Path,
     output_dir: Path,
     verbosity: int = 2,
-    participant_label: Optional[list[str]] = None,
+    participant_label: list[str] | None = None,
     fwhm: Any = 6,
-    dummy_scans: Optional[int] = None,
-    space: Optional[list[str]] = None,
-    task: Optional[list[str]] = None,
-    ignore: Optional[list[str]] = None,
+    dummy_scans: int | None = None,
+    space: list[str] | None = None,
+    task: list[str] | None = None,
+    ignore: list[str] | None = None,
     anat_only: bool = False,
     skip_validation: bool = False,
-    bids_filter_file: Optional[Path] = None,
+    bids_filter_file: Path | None = None,
     dry_run: bool = False,
 ) -> None:
 
@@ -144,13 +145,13 @@ def stats(
     preproc_dir: Path,
     model_file: Path,
     verbosity: int = 2,
-    participant_label: Optional[list[str]] = None,
+    participant_label: list[str] | None = None,
     fwhm: Any = 6,
-    space: Optional[list[str]] = None,
-    task: Optional[list[str]] = None,
-    ignore: Optional[list[str]] = None,
+    space: list[str] | None = None,
+    task: list[str] | None = None,
+    ignore: list[str] | None = None,
     skip_validation: bool = False,
-    bids_filter_file: Optional[Path] = None,
+    bids_filter_file: Path | None = None,
     dry_run: bool = False,
     roi_based: bool = False,
     concatenate: bool = False,
@@ -235,17 +236,17 @@ def bidspm(
     analysis_level: str,
     action: str,
     verbosity: int = 2,
-    task: Optional[list[str]] = None,
-    space: Optional[list[str]] = None,
-    ignore: Optional[list[str]] = None,
+    task: list[str] | None = None,
+    space: list[str] | None = None,
+    ignore: list[str] | None = None,
     fwhm: Any = None,
-    bids_filter_file: Optional[Path] = None,
-    dummy_scans: Optional[int] = 0,
+    bids_filter_file: Path | None = None,
+    dummy_scans: int | None = 0,
     anat_only: bool = False,
     skip_validation: bool = False,
     dry_run: bool = False,
-    preproc_dir: Optional[Path] = None,
-    model_file: Optional[Path] = None,
+    preproc_dir: Path | None = None,
+    model_file: Path | None = None,
     roi_based: bool = False,
     concatenate: bool = False,
     design_only: bool = False,
