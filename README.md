@@ -53,7 +53,10 @@ If you want to use the BIDS app python based CLI of bidspm, you need to
 -   [python3](https://www.python.org/downloads/)
 -   pip
 
-It can then be installed from within the `bidspm` folder with:
+If you are using MATLAB, you need to edit the file `src/matlab.py`,
+so that it returns the fullpath to the MATLAB executable on your computer.
+
+You can then install the bidspm CLI from within the `bidspm` folder with:
 
 ```bash
 pip install .

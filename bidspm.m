@@ -1,4 +1,4 @@
-function bidspm(varargin)
+function returnCode = bidspm(varargin)
   %
   % Type bidspm('action', 'help') for more information.
   %
@@ -69,7 +69,12 @@ function bidspm(varargin)
     action = bidsDir;
   end
 
-  executeAction(action, args);
+  try
+    executeAction(action, args);
+    return_code = 0;
+  catch ME
+    rethrow(ME);
+  end
 end
 
 function executeAction(action, args)

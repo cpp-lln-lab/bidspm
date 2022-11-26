@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import os
 import subprocess
 import sys
 from pathlib import Path
@@ -12,16 +11,20 @@ from rich import print
 from src.matlab import matlab
 from src.parsers import bidspm_log
 from src.parsers import common_parser
-from src.utils import root_dir
 
 log = bidspm_log(name="bidspm")
 
-new_line = ", ...\n\t "
+new_line = ", ...\n\t\t\t "
 
 
 def base_cmd(bids_dir: Path, output_dir: Path) -> str:
     cmd = " bidspm();"
     cmd += f" bidspm('{bids_dir}'{new_line}'{output_dir}'"
+    return cmd
+
+
+def end_cmd(cmd: str) -> str:
+    cmd += "); exit;"
     return cmd
 
 
@@ -85,22 +88,24 @@ def default_model(
     space: list[str] | None = None,
     task: list[str] | None = None,
     ignore: list[str] | None = None,
-) -> None:
+) -> int:
 
     if space and len(space) > 1:
         log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
-        sys.exit(1)
+        return 1
 
     cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
     cmd += f"{new_line}'dataset'{new_line}'action', 'default_model'"
     cmd = append_base_arguments(
         cmd=cmd, verbosity=verbosity, space=space, task=task, ignore=ignore
     )
-    cmd += "); exit;"
+    cmd = end_cmd(cmd)
 
     log.info("Creating default model.")
 
     run_command(cmd)
+
+    return 0
 
 
 def preprocess(
@@ -117,11 +122,11 @@ def preprocess(
     skip_validation: bool = False,
     bids_filter_file: Path | None = None,
     dry_run: bool = False,
-) -> None:
+) -> int:
 
     if task and len(task) > 1:
         log.error(f"Only one task allowed for preprocessing. Got\n:{task}")
-        sys.exit(1)
+        return 1
 
     cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
     cmd += f"{new_line}'subject'{new_line}'action', 'preprocess'"
@@ -140,11 +145,14 @@ def preprocess(
         cmd += f"{new_line}'anat_only', true"
     if dummy_scans:
         cmd += f"{new_line}'dummy_scans', {dummy_scans}"
-    cmd += "); exit();"
+    cmd = end_cmd(cmd)
 
-    log.info("Running preprocessing. Consider using fmriprep for regular data.")
+    log.info("Running preprocessing.")
+    log.info("For typical fmri data, consider using fmriprep instead.")
 
     run_command(cmd)
+
+    return 0
 
 
 def stats(
@@ -165,11 +173,11 @@ def stats(
     roi_based: bool = False,
     concatenate: bool = False,
     design_only: bool = False,
-) -> None:
+) -> int:
 
     if space and len(space) > 1:
         log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
-        sys.exit(1)
+        return 1
 
     cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
     cmd += f"'{new_line}'subject'{new_line}'action', '{action}'"
@@ -192,11 +200,13 @@ def stats(
         cmd += f"{new_line}'concatenate', true"
     if design_only:
         cmd += f"{new_line}'design_only', true"
-    cmd += "); exit();"
+    cmd = end_cmd(cmd)
 
     log.info("Running statistics.")
 
     run_command(cmd)
+
+    return 0
 
 
 def cli(argv: Any = sys.argv) -> None:
@@ -204,8 +214,6 @@ def cli(argv: Any = sys.argv) -> None:
     parser = common_parser()
 
     args, unknowns = parser.parse_known_args(argv[1:])
-
-    os.chdir(root_dir())
 
     bids_dir = Path(args.bids_dir[0]).resolve()
     output_dir = Path(args.output_dir[0]).resolve()
@@ -223,7 +231,7 @@ def cli(argv: Any = sys.argv) -> None:
         Path(args.model_file[0]).resolve() if args.model_file is not None else None
     )
 
-    bidspm(
+    sts = bidspm(
         bids_dir,
         output_dir,
         analysis_level,
@@ -244,6 +252,11 @@ def cli(argv: Any = sys.argv) -> None:
         concatenate=args.concatenate,
         design_only=args.design_only,
     )
+
+    if sts == 1:
+        sys.exit(1)
+    else:
+        sys.exit(0)
 
 
 def bidspm(
@@ -266,10 +279,18 @@ def bidspm(
     roi_based: bool = False,
     concatenate: bool = False,
     design_only: bool = False,
-) -> None:
+) -> int:
+
+    if not bids_dir.is_dir():
+        log.error(f"The 'bids_dir' does not exist:\n\t{bids_dir}")
+        return 1
+
+    if preproc_dir is not None and not preproc_dir.is_dir():
+        log.error(f"The 'preproc_dir' does not exist:\n\t{preproc_dir}")
+        return 1
 
     if action == "default_model":
-        default_model(
+        sts = default_model(
             bids_dir=bids_dir,
             output_dir=output_dir,
             analysis_level=analysis_level,
@@ -280,7 +301,7 @@ def bidspm(
         )
 
     elif action == "preprocess":
-        preprocess(
+        sts = preprocess(
             bids_dir=bids_dir,
             output_dir=output_dir,
             verbosity=verbosity,
@@ -298,13 +319,13 @@ def bidspm(
 
         if preproc_dir is None or not preproc_dir.exists():
             log.error(f"'preproc_dir' must be specified for stats. Got:\n{preproc_dir}")
-            sys.exit(1)
+            return 1
 
         if model_file is None or not model_file.exists():
             log.error(f"'model_file' must be specified for stats. Got:\n{model_file}")
-            sys.exit(1)
+            return 1
 
-        stats(
+        sts = stats(
             bids_dir=bids_dir,
             output_dir=output_dir,
             action=action,
@@ -323,14 +344,19 @@ def bidspm(
             design_only=design_only,
         )
     else:
-        print(f"\nunknown action: {action}")
+        log.error(f"\nunknown action: {action}")
+        return 1
+
+    return sts
 
 
-def run_command(cmd: str, platform: str | None = None) -> Any:
+def run_command(cmd: str, platform: str | None = None) -> int:
 
     print("\nRunning the following command:\n")
     print(cmd.replace(";", ";\n"))
     print()
+
+    # TODO exit matlab / octave on crash
 
     if platform is None:
         if Path(matlab()).exists():
@@ -340,7 +366,7 @@ def run_command(cmd: str, platform: str | None = None) -> Any:
             platform = "octave"
 
     if platform == "octave":
-        return subprocess.run(
+        completed_process = subprocess.run(
             [
                 "octave",
                 "--no-gui",
@@ -352,7 +378,7 @@ def run_command(cmd: str, platform: str | None = None) -> Any:
         )
 
     else:
-        return subprocess.run(
+        completed_process = subprocess.run(
             [
                 platform,
                 "-nodisplay",
@@ -362,3 +388,5 @@ def run_command(cmd: str, platform: str | None = None) -> Any:
                 f"{cmd}",
             ]
         )
+
+    return completed_process.returncode

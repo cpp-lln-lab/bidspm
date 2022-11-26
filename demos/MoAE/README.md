@@ -22,7 +22,7 @@ bidspm \
     --action default_model \
     --space IXI549Space \
     --task auditory \
-    --verbosity 0 \
+    --verbosity 2 \
     --ignore transformations
 ```
 

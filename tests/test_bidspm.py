@@ -3,9 +3,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from src.bidspm import append_base_arguments
 from src.bidspm import append_common_arguments
 from src.bidspm import base_cmd
+from src.bidspm import bidspm
 from src.bidspm import run_command
 from src.parsers import common_parser
 
@@ -68,5 +71,29 @@ def test_append_base_arguments():
 def test_run_command():
     """Test run_command."""
     cmd = "disp('hello'); exit();"
-    completed_process = run_command(cmd, platform="octave")
-    assert completed_process.returncode == 0
+    return_code = run_command(cmd, platform="octave")
+    assert return_code == 0
+
+
+def test_bidspm_error_dir(caplog):
+    sts = bidspm(
+        bids_dir=Path("/foo/bar"),
+        output_dir=Path,
+        analysis_level="subject",
+        action="preprocess",
+    )
+    assert sts == 1
+    assert ["The 'bids_dir' does not exist:\n\t/foo/bar"] == [
+        rec.message for rec in caplog.records
+    ]
+
+
+def test_bidspm_error_action(caplog):
+    sts = bidspm(
+        bids_dir=Path(),
+        output_dir=Path,
+        analysis_level="subject",
+        action="spam",
+    )
+    assert sts == 1
+    assert ["\nunknown action: spam"] == [rec.message for rec in caplog.records]
