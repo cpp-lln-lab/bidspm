@@ -3,163 +3,186 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
+from typing import Optional
 
 from rich import print
 
+from src.matlab import matlab
+from src.parsers import bidspm_log
 from src.parsers import common_parser
 from src.utils import root_dir
+
+log = bidspm_log(name="bidspm")
 
 new_line = ", ...\n\t "
 
 
 def default_model(
-    bids_dir,
-    output_dir,
-    analysis_level="dataset",
-    verbosity=2,
-    space=None,
-    task=None,
-    ignore=None,
+    bids_dir: Path,
+    output_dir: Path,
+    analysis_level: str = "dataset",
+    verbosity: int = 2,
+    space: Optional[list[str]] = None,
+    task: Optional[list[str]] = None,
+    ignore: Optional[list[str]] = None,
 ) -> None:
 
+    if space and len(space) > 1:
+        log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
+        sys.exit(1)
+
+    cmd = base_cmd(bids_dir, output_dir)
+    cmd += f"{new_line}'dataset'{new_line}'action', 'default_model'"
+    cmd = append_base_arguments(cmd, verbosity, space, task, ignore)
+    cmd += "); exit;"
+
+    log.info("Creating default model.")
+
+    run_command(cmd)
+
+
+def base_cmd(bids_dir: Path, output_dir: Path) -> str:
+    cmd = " bidspm();"
+    cmd += f" bidspm('{bids_dir}'{new_line}'{output_dir}'"
+    return cmd
+
+
+def append_base_arguments(
+    cmd: str,
+    verbosity: int,
+    space: Optional[list[str]],
+    task: Optional[list[str]],
+    ignore: Optional[list[str]],
+) -> str:
+    """Append arguments common to all actions to the command string."""
     task = "{ '" + "', '".join(task) + "' }" if task is not None else None
-    # TODO check only one space
     space = "{ '" + "', '".join(space) + "' }" if space is not None else None
     ignore = "{ '" + "', '".join(ignore) + "' }" if ignore is not None else None
 
-    octave_cmd = " bidspm();"
-    octave_cmd += f" bidspm('{bids_dir}'{new_line}'{output_dir}'{new_line}'dataset'{new_line}'action', 'default_model'"
     if verbosity:
-        octave_cmd += f"{new_line}'verbosity', {verbosity}"
+        cmd += f"{new_line}'verbosity', {verbosity}"
     if space:
-        octave_cmd += f"{new_line}'space', {space}"
+        cmd += f"{new_line}'space', {space}"
     if task:
-        octave_cmd += f"{new_line}'task', {task}"
+        cmd += f"{new_line}'task', {task}"
     if ignore:
-        octave_cmd += f"{new_line}'ignore', {ignore}"
+        cmd += f"{new_line}'ignore', {ignore}"
 
-    octave_cmd += "); exit;"
+    return cmd
 
-    run_octave_command(octave_cmd)
+
+def append_common_arguments(
+    cmd: str,
+    fwhm: Any,
+    participant_label: Optional[list[str]],
+    skip_validation: bool,
+    dry_run: bool,
+    bids_filter_file: Optional[Path],
+) -> str:
+    """Append arguments common to preproc and stats."""
+    participant_label = (
+        "{ '" + "', '".join(participant_label) + "' }"
+        if participant_label is not None
+        else None
+    )
+
+    cmd += f"{new_line}'fwhm', {fwhm}"
+    if participant_label:
+        cmd += f"{new_line}'participant_label', {participant_label}"
+    if skip_validation:
+        cmd += f"{new_line}'skip_validation', true"
+    if dry_run:
+        cmd += f"{new_line}'dry_run', true"
+    if bids_filter_file:
+        cmd += f"{new_line}'bids_filter_file', '{bids_filter_file}'"
+
+    return cmd
 
 
 def preprocess(
-    bids_dir,
-    output_dir,
-    verbosity=2,
-    participant_label=None,
-    fwhm=6,
-    dummy_scans=None,
-    space=None,
-    task=None,
-    ignore=None,
-    anat_only=False,
-    skip_validation=False,
-    bids_filter_file=None,
-    dry_run=False,
+    bids_dir: Path,
+    output_dir: Path,
+    verbosity: int = 2,
+    participant_label: Optional[list[str]] = None,
+    fwhm: Any = 6,
+    dummy_scans: Optional[int] = None,
+    space: Optional[list[str]] = None,
+    task: Optional[list[str]] = None,
+    ignore: Optional[list[str]] = None,
+    anat_only: bool = False,
+    skip_validation: bool = False,
+    bids_filter_file: Optional[Path] = None,
+    dry_run: bool = False,
 ) -> None:
 
-    task = "{ '" + "', '".join(task) + "' }" if task is not None else None
-    space = "{ '" + "', '".join(space) + "' }" if space is not None else None
-    ignore = "{ '" + "', '".join(ignore) + "' }" if ignore is not None else None
-    participant_label = (
-        "{ '" + "', '".join(participant_label) + "' }"
-        if participant_label is not None
-        else None
+    if task and len(task) > 1:
+        log.error(f"Only one task allowed for preprocessing. Got\n:{task}")
+        sys.exit(1)
+
+    cmd = base_cmd(bids_dir, output_dir)
+    cmd += f"{new_line}'subject'{new_line}'action', 'preprocess'"
+    cmd = append_base_arguments(cmd, verbosity, space, task, ignore)
+    cmd = append_common_arguments(
+        cmd, fwhm, participant_label, skip_validation, dry_run, bids_filter_file
     )
-
-    octave_cmd = " bidspm();"
-    octave_cmd += f" bidspm('{bids_dir}'{new_line}'{output_dir}'{new_line}'subject'{new_line}'action', 'preprocess'"
-    octave_cmd += f"{new_line}'fwhm', {fwhm}"
-    if verbosity:
-        octave_cmd += f"{new_line}'verbosity', {verbosity}"
-    if space:
-        octave_cmd += f"{new_line}'space', {space}"
-    if task:
-        octave_cmd += f"{new_line}'task', {task}"
-    if participant_label:
-        octave_cmd += f"{new_line}'participant_label', {participant_label}"
-    if ignore:
-        octave_cmd += f"{new_line}'ignore', {ignore}"
-    if skip_validation:
-        octave_cmd += f"{new_line}'skip_validation', true"
     if anat_only:
-        octave_cmd += f"{new_line}'anat_only', true"
-    if dry_run:
-        octave_cmd += f"{new_line}'dry_run', true"
+        cmd += f"{new_line}'anat_only', true"
     if dummy_scans:
-        octave_cmd += f"{new_line}'dummy_scans', {dummy_scans}"
-    if bids_filter_file:
-        octave_cmd += f"{new_line}'bids_filter_file', '{bids_filter_file}'"
+        cmd += f"{new_line}'dummy_scans', {dummy_scans}"
+    cmd += "); exit();"
 
-    octave_cmd += "); exit();"
+    log.info("Running preprocessing. Consider using fmriprep for regular data.")
 
-    run_octave_command(octave_cmd)
+    run_command(cmd)
 
 
 def stats(
-    bids_dir,
-    output_dir,
-    action,
-    preproc_dir,
-    model_file,
-    verbosity=2,
-    participant_label=None,
-    fwhm=6,
-    space=None,
-    task=None,
-    ignore=None,
-    skip_validation=False,
-    bids_filter_file=None,
-    dry_run=False,
-    roi_based=False,
-    concatenate=False,
-    design_only=False,
-):
+    bids_dir: Path,
+    output_dir: Path,
+    action: str,
+    preproc_dir: Path,
+    model_file: Path,
+    verbosity: int = 2,
+    participant_label: Optional[list[str]] = None,
+    fwhm: Any = 6,
+    space: Optional[list[str]] = None,
+    task: Optional[list[str]] = None,
+    ignore: Optional[list[str]] = None,
+    skip_validation: bool = False,
+    bids_filter_file: Optional[Path] = None,
+    dry_run: bool = False,
+    roi_based: bool = False,
+    concatenate: bool = False,
+    design_only: bool = False,
+) -> None:
 
-    task = "{ '" + "', '".join(task) + "' }" if task is not None else None
-    space = "{ '" + "', '".join(space) + "' }" if space is not None else None
-    ignore = "{ '" + "', '".join(ignore) + "' }" if ignore is not None else None
-    participant_label = (
-        "{ '" + "', '".join(participant_label) + "' }"
-        if participant_label is not None
-        else None
+    if space and len(space) > 1:
+        log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
+        sys.exit(1)
+
+    cmd = base_cmd(bids_dir, output_dir)
+    cmd += f"'{new_line}'subject'{new_line}'action', '{action}'"
+    cmd = append_base_arguments(cmd, verbosity, space, task, ignore)
+    cmd = append_common_arguments(
+        cmd, fwhm, participant_label, skip_validation, dry_run, bids_filter_file
     )
-
-    octave_cmd = " bidspm();"
-    octave_cmd += f" bidspm('{bids_dir}'{new_line}'{output_dir}'{new_line}'subject'{new_line}'action', '{action}'"
-    octave_cmd += f"{new_line}'preproc_dir', '{preproc_dir}'"
-    octave_cmd += f"{new_line}'model_file', '{model_file}'"
-    octave_cmd += f"{new_line}'fwhm', {fwhm}"
-    if verbosity:
-        octave_cmd += f"{new_line}'verbosity', {verbosity}"
-    if space:
-        octave_cmd += f"{new_line}'space', {space}"
-    if task:
-        octave_cmd += f"{new_line}'task', {task}"
-    if participant_label:
-        octave_cmd += f"{new_line}'participant_label', {participant_label}"
-    if ignore:
-        octave_cmd += f"{new_line}'ignore', {ignore}"
-    if skip_validation:
-        octave_cmd += f"{new_line}'skip_validation', true"
-    if dry_run:
-        octave_cmd += f"{new_line}'dry_run', true"
+    cmd += f"{new_line}'preproc_dir', '{preproc_dir}'"
+    cmd += f"{new_line}'model_file', '{model_file}'"
     if roi_based:
-        octave_cmd += f"{new_line}'roi_based', true"
+        cmd += f"{new_line}'roi_based', true"
     if concatenate:
-        octave_cmd += f"{new_line}'concatenate', true"
+        cmd += f"{new_line}'concatenate', true"
     if design_only:
-        octave_cmd += f"{new_line}'design_only', true"
-    if bids_filter_file:
-        octave_cmd += f"{new_line}'bids_filter_file', '{bids_filter_file}'"
+        cmd += f"{new_line}'design_only', true"
+    cmd += "); exit();"
 
-    octave_cmd += "); exit();"
+    log.info("Running statistics.")
 
-    run_octave_command(octave_cmd)
+    run_command(cmd)
 
 
-def cli(argv=sys.argv) -> None:
+def cli(argv: Any = sys.argv) -> None:
 
     parser = common_parser()
 
@@ -171,73 +194,61 @@ def cli(argv=sys.argv) -> None:
     output_dir = Path(args.output_dir[0]).resolve()
     analysis_level = args.analysis_level[0]
     action = args.action[0]
-    task = args.task
-    space = args.space
-    verbosity = args.verbosity
-    ignore = args.ignore
-    fwhm = args.fwhm
     bids_filter_file = (
         Path(args.bids_filter_file[0]).resolve()
         if args.bids_filter_file is not None
         else None
     )
-    skip_validation = args.skip_validation
-    dry_run = args.dry_run
-    dummy_scans = args.dummy_scans
-    anat_only = args.anat_only
     preproc_dir = (
         Path(args.preproc_dir[0]).resolve() if args.preproc_dir is not None else None
     )
     model_file = (
         Path(args.model_file[0]).resolve() if args.model_file is not None else None
     )
-    roi_based = args.roi_based
-    concatenate = args.concatenate
-    design_only = args.design_only
 
     bidspm(
         bids_dir,
         output_dir,
         analysis_level,
         action=action,
-        verbosity=verbosity,
-        task=task,
-        space=space,
-        ignore=ignore,
-        fwhm=fwhm,
+        verbosity=args.verbosity,
+        task=args.task,
+        space=args.space,
+        ignore=args.ignore,
+        fwhm=args.fwhm,
         bids_filter_file=bids_filter_file,
-        dummy_scans=dummy_scans,
-        anat_only=anat_only,
-        skip_validation=skip_validation,
-        dry_run=dry_run,
+        dummy_scans=args.dummy_scans,
+        anat_only=args.anat_only,
+        skip_validation=args.skip_validation,
+        dry_run=args.dry_run,
         preproc_dir=preproc_dir,
         model_file=model_file,
-        roi_based=roi_based,
-        concatenate=concatenate,
-        design_only=design_only,
+        roi_based=args.roi_based,
+        concatenate=args.concatenate,
+        design_only=args.design_only,
     )
 
 
 def bidspm(
-    bids_dir,
-    output_dir,
-    analysis_level,
-    action=None,
-    verbosity=2,
-    task=None,
-    space=None,
-    ignore=None,
-    fwhm=None,
-    bids_filter_file=None,
-    dummy_scans=0,
-    anat_only=False,
-    skip_validation=False,
-    dry_run=False,
-    preproc_dir=None,
-    model_file=None,
-    roi_based=False,
-    concatenate=False,
-    design_only=False,
+    bids_dir: Path,
+    output_dir: Path,
+    analysis_level: str,
+    action: str,
+    verbosity: int = 2,
+    task: Optional[list[str]] = None,
+    space: Optional[list[str]] = None,
+    ignore: Optional[list[str]] = None,
+    fwhm: Any = None,
+    bids_filter_file: Optional[Path] = None,
+    dummy_scans: Optional[int] = 0,
+    anat_only: bool = False,
+    skip_validation: bool = False,
+    dry_run: bool = False,
+    preproc_dir: Optional[Path] = None,
+    model_file: Optional[Path] = None,
+    roi_based: bool = False,
+    concatenate: bool = False,
+    design_only: bool = False,
 ) -> None:
 
     if action == "default_model":
@@ -266,7 +277,16 @@ def bidspm(
             bids_filter_file=bids_filter_file,
             dry_run=dry_run,
         )
-    elif action in ["stats", "contrasts", "results"]:
+    elif action in {"stats", "contrasts", "results"}:
+
+        if preproc_dir is None or not preproc_dir.exists():
+            log.error(f"'preproc_dir' must be specified for stats. Got:\n{preproc_dir}")
+            sys.exit(1)
+
+        if model_file is None or not model_file.exists():
+            log.error(f"'model_file' must be specified for stats. Got:\n{model_file}")
+            sys.exit(1)
+
         stats(
             bids_dir=bids_dir,
             output_dir=output_dir,
@@ -289,19 +309,36 @@ def bidspm(
         print(f"\nunknown action: {action}")
 
 
-def run_octave_command(octave_cmd: str):
+def run_command(cmd: str) -> None:
 
     print("\nRunning the following command:\n")
-    print(octave_cmd.replace(";", ";\n"))
+    print(cmd.replace(";", ";\n"))
     print()
 
-    subprocess.run(
-        [
-            "octave",
-            "--no-gui",
-            "--no-window-system",
-            "--silent",
-            "--eval",
-            f"{octave_cmd}",
-        ]
-    )
+    platform = "octave"
+    if Path(matlab()).exists():
+        platform = matlab()
+        cmd = cmd.replace(new_line, ", ")
+
+    if platform == "octave":
+        subprocess.run(
+            [
+                "octave",
+                "--no-gui",
+                "--no-window-system",
+                "--silent",
+                "--eval",
+                f"{cmd}",
+            ]
+        )
+    else:
+        subprocess.run(
+            [
+                platform,
+                "-nodisplay",
+                "-nosplash",
+                "-nodesktop",
+                "-r",
+                f"{cmd}",
+            ]
+        )

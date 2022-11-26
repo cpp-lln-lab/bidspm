@@ -11,7 +11,7 @@ from src.parsers import validate_parser
 log = bidspm_log(name="bidspm")
 
 
-def validate(file: Path) -> None:
+def validate(file: Path) -> int:
     file = file.absolute()
     log.info(f"Validating {file}")
     try:
