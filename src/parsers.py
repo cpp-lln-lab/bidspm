@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import logging
 from typing import IO
-from typing import Optional
 
 import rich
 from rich.logging import RichHandler
