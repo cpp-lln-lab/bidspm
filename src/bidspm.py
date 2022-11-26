@@ -23,6 +23,11 @@ def base_cmd(bids_dir: Path, output_dir: Path) -> str:
     return cmd
 
 
+def append_main_cmd(cmd: str, analysis_level: str, action: str) -> str:
+    cmd += f"{new_line}'{analysis_level}'{new_line}'action', '{action}'"
+    return cmd
+
+
 def end_cmd(cmd: str) -> str:
     cmd += "); exit;"
     return cmd
@@ -95,7 +100,7 @@ def default_model(
         return 1
 
     cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
-    cmd += f"{new_line}'dataset'{new_line}'action', 'default_model'"
+    cmd = append_main_cmd(cmd=cmd, analysis_level=analysis_level, action="default_model")
     cmd = append_base_arguments(
         cmd=cmd, verbosity=verbosity, space=space, task=task, ignore=ignore
     )
@@ -129,7 +134,7 @@ def preprocess(
         return 1
 
     cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
-    cmd += f"{new_line}'subject'{new_line}'action', 'preprocess'"
+    cmd = append_main_cmd(cmd=cmd, analysis_level="subject", action="preprocess")
     cmd = append_base_arguments(
         cmd=cmd, verbosity=verbosity, space=space, task=task, ignore=ignore
     )
@@ -180,7 +185,7 @@ def stats(
         return 1
 
     cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
-    cmd += f"{new_line}'subject'{new_line}'action', '{action}'"
+    cmd = append_main_cmd(cmd=cmd, analysis_level="subject", action=action)
     cmd = append_base_arguments(
         cmd=cmd, verbosity=verbosity, space=space, task=task, ignore=ignore
     )

@@ -10,4 +10,4 @@ def matlab() -> str:
 
     The 'matlab' executable is usually in the 'bin' subdirectory.
     """
-    return "/usr/local/MATLAB/R2018a/bin/matlab"
+    return "/usr/local/MATLAB/R2018a/ bin/matlab"
