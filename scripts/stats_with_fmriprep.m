@@ -1,20 +1,12 @@
-% This script will run the FFX and contrasts on it of the MoAE dataset
-% using the fmriprep preprocessed data
+% This script will run the stats on it
+% of an fmriprep preprocessed dataset
 %
-% If you want to get the preprocessed data and you have datalad on your computer
-% you can run the following commands to get the necessary data::
+% In general type "bidspm help" in the MATLAB commandet line
+% to get more info on the options you can use.
 %
-%   datalad install --source git@gin.g-node.org:/SPM_datasets/spm_moae_fmriprep.git \
-%           inputs/fmriprep
-%   cd inputs/fmriprep && datalad get *.json \
-%                     */*/*tsv \
-%                     */*/*json \
-%                     */*/*desc-preproc*.nii.gz \
-%                     */*/*desc-brain*.nii.gz
 %
-% Otherwise you also grab the data from OSF: https://osf.io/vufjs/download
-%
-% (C) Copyright 2019 Remi Gau
+
+% (C) Copyright 2022 Remi Gau
 
 clear;
 clc;
@@ -22,49 +14,32 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
-% The directory where the data are located
-WD = fileparts(mfilename('fullpath'));
+%% Parameters
 
-opt.dir.raw = fullfile(WD, 'inputs', 'raw');
-opt.dir.input = fullfile(WD, 'inputs', 'fmriprep');
-opt.dir.derivatives = fullfile(WD, 'outputs', 'derivatives');
+% directories
+bids_dir = path_to_your_raw_bids_dataset;
+fmriprep_dir = path_to_your_fmriprep_dataset;
+output_dir = path_where_to_save_the_output;
 
-% we need to specify where the smoothed data will go
-opt.pipeline.type = 'preproc';
-opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
+% the the values below are just examples
+subject_label = {'01'};
+task = {'auditory'};
+space = {'MNI152NLin6Asym'};
+fwhm = 8;
 
-%% Smooth the data
+%% Copy and smooth
 %
 % fmriprep data is not smoothed so we need to do that first
+% but we copy the required data out of it first
+% to not pollute our fmriprep dataset.
 %
 
-opt.space = {'MNI152NLin6Asym'};
-
-subject_label = '01';
-
-opt.subjects = {subject_label};
-
-opt.taskName = 'auditory';
-
-opt.fwhm.func = 8;
-
-opt = checkOptions(opt);
-
-% specify some filter to decide which file to copy out of the frmiprep dataset
-%
-% this 2 step copy should disappear in future version.
-%
-% See: https://github.com/cpp-lln-lab/bidspm/issues/409
-%
-
-% copy the actual nifti images
-opt.query.desc = {'preproc', 'brain'};
-opt.query.suffix = {'T1w', 'bold', 'mask'};
-opt.query.space = opt.space;
-bidsCopyInputFolder(opt);
-
-% then we can smooth
-bidsSmoothing(opt);
+bidspm(fmriprep_dir, output_dir, 'subject', ...
+       'action', 'smooth', ...
+       'participant_label', {subject_label}, ...
+       'task', {task}, ...
+       'space', {space}, ...
+       'fwhm', fwhm);
 
 %% STATS
 
@@ -73,13 +48,11 @@ output_dir = fullfile(WD, 'outputs', 'derivatives');
 
 bidspm(bids_dir, output_dir, 'dataset', ...
        'action', 'default_model', ...
-       'space', {'MNI152NLin6Asym'}, ...
+       'space', space, ...
        'ignore', {'contrasts', 'transformations'});
 
 % Run model
 model_file = fullfile(output_dir, 'models', 'model-default_smdl.json');
-
-subject_label = '01';
 
 % Specify the result to show
 %
@@ -96,26 +69,12 @@ opt.results(1).montage.background = struct('suffix', 'T1w', ...
                                            'desc', 'preproc', ...
                                            'modality', 'anat');
 opt.results(1).montage.slices = -4:2:16;
-opt.results(1).nidm = true();
-
-% the following "bids app" runs:
-%
-% - GLM specification + estimation,
-% - compute contrasts and
-% - show results
-%
-% that are otherwise handled by the bidsFFX.m and bidsResults.m workflows
-%
-% type bidspm('action', 'help')
-% or see this page: https://bidspm.readthedocs.io/en/stable/bids_app_api.html
-% for more information on what parameters are obligatory or optional
-%
 
 bidspm(bids_dir, output_dir, 'subject', ...
-       'participant_label', {subject_label}, ...
+       'participant_label', subject_label, ...
        'action', 'stats', ...
        'preproc_dir', preproc_dir, ...
        'model_file', model_file, ...
-       'space', {'MNI152NLin6Asym'}, ...
-       'fwhm', 8, ...
+       'space', space, ...
+       'fwhm', fwhm, ...
        'options', opt);

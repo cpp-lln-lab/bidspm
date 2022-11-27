@@ -7,6 +7,20 @@ function test_suite = test_bugReport %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bugReport_output_dir()
+
+  %%
+  opt.dryRun = false;
+  opt.verbosity = 0;
+  opt.dir.output = fullfile(pwd, 'tmp');
+  opt = checkOptions(opt);
+
+  bugReport(opt);
+
+  cleanUp('tmp');
+
+end
+
 function test_bugReport_basic()
 
   %%

@@ -26,84 +26,46 @@ if isOctave
   warning('off', 'setGraphicWindow:noGraphicWindow');
 end
 
-% Getting the raw dataset
+% Getting the raw dataset to get the events.tsv
 download_data = true;
 download_moae_ds(download_data);
 
-% The directory where the data are located
-WD = fileparts(mfilename('fullpath'));
+%%
+subject_label = {'01'};
+task = {'auditory'};
+space = {'MNI152NLin6Asym'};
 
-opt.dir.raw = fullfile(WD, 'inputs', 'raw');
-opt.dir.input = fullfile(WD, 'inputs', 'fmriprep');
-
-opt.dir.derivatives = fullfile(WD, 'outputs', 'derivatives');
-
-%% Smooth the data
+%% Copy and smooth
 %
 % fmriprep data is not smoothed so we need to do that first
 %
 
-% we need to specify where the smoothed data will go
-opt.pipeline.type = 'preproc';
-opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
-
-opt.space = {'MNI152NLin6Asym'};
-
-subject_label = '01';
-
-opt.subjects = {subject_label};
-
-opt.taskName = 'auditory';
-
-opt = checkOptions(opt);
-
-% specify some filter to decide which file to copy out of the frmiprep dataset
-%
-% this 2 step copy should disappear in future version.
-%
-% See: https://github.com/cpp-lln-lab/bidspm/issues/409
-%
-
-% copy the actual nifti images
-opt.query.desc = {'preproc', 'brain'};
-opt.query.suffix = {'T1w', 'bold', 'mask'};
-opt.query.space = opt.space;
-bidsCopyInputFolder(opt);
-
-%% SMOOTH
-
 WD = fileparts(mfilename('fullpath'));
 
 bids_dir = fullfile(WD, 'inputs', 'raw');
+fmriprep_dir = fullfile(WD, 'inputs', 'fmriprep');
+
+% we need to specify where the smoothed data will go
 output_dir = fullfile(WD, 'outputs', 'derivatives');
 
-bidspm(bids_dir, output_dir, 'subject', ...
+bidspm(fmriprep_dir, output_dir, 'subject', ...
        'action', 'smooth', ...
-       'participant_label', {subject_label}, ...
-       'task', {'auditory'}, ...
-       'space', {'MNI152NLin6Asym'}, ...
+       'participant_label', subject_label, ...
+       'task', task, ...
+       'space', space, ...
        'fwhm', 8);
 
 %% STATS
 
-clear opt;
-
-% Create stats model
-
-WD = fileparts(mfilename('fullpath'));
-
-bids_dir = fullfile(WD, 'inputs', 'raw');
-output_dir = fullfile(WD, 'outputs', 'derivatives');
-preproc_dir = fullfile(output_dir, 'bidspm-preproc');
-
+% create default model
 bidspm(bids_dir, output_dir, 'dataset', ...
        'action', 'default_model', ...
-       'task', {'auditory'}, ...
-       'space', {'MNI152NLin6Asym'}, ...
+       'participant_label', subject_label, ...
+       'task', task, ...
+       'space', space, ...
        'ignore', {'contrasts', 'transformations'});
 
-% Run model
-
+% run model
 model_file = fullfile(output_dir, 'models', 'model-defaultAuditory_smdl.json');
 
 % Specify the result to show
@@ -121,7 +83,6 @@ opt.results(1).montage.background = struct('suffix', 'T1w', ...
                                            'desc', 'preproc', ...
                                            'modality', 'anat');
 opt.results(1).montage.slices = -4:2:16;
-opt.results(1).nidm = true();
 
 % the following "bids app" runs:
 %
@@ -136,11 +97,14 @@ opt.results(1).nidm = true();
 % for more information on what parameters are obligatory or optional
 %
 
+% where the smooth data is
+preproc_dir = fullfile(output_dir, 'bidspm-preproc');
+
 bidspm(bids_dir, output_dir, 'subject', ...
-       'participant_label', {subject_label}, ...
+       'participant_label', subject_label, ...
        'action', 'stats', ...
        'preproc_dir', preproc_dir, ...
        'model_file', model_file, ...
-       'space', {'MNI152NLin6Asym'}, ...
+       'space', space, ...
        'fwhm', 8, ...
        'options', opt);

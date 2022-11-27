@@ -6,7 +6,6 @@ function returnCode = bidspm(varargin)
   % (C) Copyright 2022 bidspm developers
 
   % TODO  bidspm('action', 'update')
-  % TODO  where to save the options?
 
   args = inputParser;
   args.CaseSensitive = false;
@@ -54,6 +53,7 @@ function returnCode = bidspm(varargin)
   addParameter(args, 'roi_based', false, isLogical);
   addParameter(args, 'design_only', false, isLogical);
   addParameter(args, 'concatenate', false, isLogical);
+  addParameter(args, 'keep_residuals', false, isLogical);
 
   % group level stats only
   addParameter(args, 'node_name', '', isChar);
@@ -112,6 +112,10 @@ function executeAction(action, args)
 
       run_tests();
 
+    case 'copy'
+
+      copy(args);
+
     case 'smooth'
 
       smooth(args);
@@ -157,9 +161,11 @@ end
 
 %% high level actions
 
-function smooth(args)
-  % TODO make sure that options defined in JSON or passed as a structure
-  % overrides any other arguments
+function copy(args)
+  %
+  % Copy the content of the fmripre directory to the output directory.
+  %
+
   opt = getOptionsFromCliArgument(args);
 
   opt.pipeline.type = 'preproc';
@@ -169,10 +175,10 @@ function smooth(args)
 
     saveOptions(opt);
 
-    if opt.fwhm.func > 0
-      opt.query.desc = 'preproc';
-      bidsSmoothing(opt);
-    end
+    opt.query.desc = {'preproc', 'brain'};
+    opt.query.suffix = {'T1w', 'bold', 'mask'};
+    opt.query.space = opt.space;
+    bidsCopyInputFolder(opt);
 
   catch ME
     bugReport(opt, ME);
@@ -225,6 +231,34 @@ function preprocess(args)
     end
     bidsSpatialPrepro(opt);
     if opt.fwhm.func > 0 && ~opt.anatOnly
+      opt.query.desc = 'preproc';
+      bidsSmoothing(opt);
+    end
+
+  catch ME
+    bugReport(opt, ME);
+    rethrow(ME);
+  end
+
+end
+
+function smooth(args)
+  % TODO make sure that options defined in JSON or passed as a structure
+  % overrides any other arguments
+  opt = getOptionsFromCliArgument(args);
+
+  opt.pipeline.type = 'preproc';
+  opt = checkOptions(opt);
+
+  try
+
+    saveOptions(opt);
+
+    if ~isfolder(opt.dir.output)
+      copy(args);
+    end
+
+    if opt.fwhm.func > 0
       opt.query.desc = 'preproc';
       bidsSmoothing(opt);
     end
@@ -587,7 +621,7 @@ end
 
 function value = bidsAppsActions()
 
-  value = {'preprocess'; 'smooth'; 'default_model'; 'stats'; 'contrasts'; 'results'};
+  value = {'copy'; 'preprocess'; 'smooth'; 'default_model'; 'stats'; 'contrasts'; 'results'};
 
 end
 

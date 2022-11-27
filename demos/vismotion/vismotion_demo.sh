@@ -12,8 +12,6 @@ set -e -u
 #
 # /usr/local/MATLAB/R2017a/bin/matlab
 
-root_directory="${PWD}/../.."
-
 # create dataset in the home dir
 datalad create -c yoda ~/visual_motion_localiser
 cd ~/visual_motion_localiser
@@ -21,8 +19,9 @@ cd ~/visual_motion_localiser
 # get bidspm code from the dev branch
 source="https://github.com/cpp-lln-lab/bidspm.git"
 
-# for debugging uncomment the following line
-source=${root_directory}
+# for debugging uncomment the following lines
+# root_directory="${PWD}/../.."
+# source=${root_directory}
 
 datalad install \
     -d . \
@@ -31,7 +30,10 @@ datalad install \
     --recursive \
     code/bidspm
 
-# TODO implement an fmriprep only demo
+# TODO: implement via bidspm bids app CLI only
+# cd code/bidspm
+# pip install .
+# cd ../..
 
 # get data
 datalad install -d . \

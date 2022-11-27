@@ -40,7 +40,9 @@ function bidspmHelp()
   %
   % :param action: defines the pipeline to run; can be any of:
   %
+  %                - ``'copy'``: copies fmriprep data for smoothing
   %                - ``'preprocess'``
+  %                - ``'smooth'``: smooths data
   %                - ``'default_model'``
   %                - ``'stats'``
   %                - ``'contrasts'``
@@ -84,6 +86,7 @@ function bidspmHelp()
   %   For example passing the argument ``'dry_run', true``
   %   will override the option ``opt.dryRun =  false``.
   %
+  %
   % **PREPROCESSING:**
   %
   % .. code-block:: matlab
@@ -125,6 +128,38 @@ function bidspmHelp()
   %
   % :param fwhm:        smoothing to apply to the preprocessed data
   % :type  fwhm:        positive scalar
+  %
+  %
+  % **COPY:**
+  %
+  % .. code-block:: matlab
+  %
+  %   bidspm(bids_dir, output_dir, 'subject', ...
+  %           'action', 'copy', ...
+  %           'participant_label', {}, ...
+  %           'bids_filter_file', struct([]), ...
+  %           'verbosity', 2, ...
+  %           'space', {'individual', 'IXI549Space'}, ...
+  %           'options', struct([]), ...
+  %           'task', {}, ...
+  %           'skip_validation', false)
+  %
+  %
+  % **SMOOTH:**
+  %
+  % .. code-block:: matlab
+  %
+  %   bidspm(bids_dir, output_dir, 'subject', ...
+  %           'action', 'smooth', ...
+  %           'participant_label', {}, ...
+  %           'dry_run', false, ...
+  %           'bids_filter_file', struct([]), ...
+  %           'verbosity', 2, ...
+  %           'space', {'individual', 'IXI549Space'}, ...
+  %           'options', struct([]), ...
+  %           'task', {}, ...
+  %           'fwhm', 6, ...
+  %           'skip_validation', false)
   %
   %
   % **DEFAULT_MODEL:**
@@ -190,6 +225,9 @@ function bidspmHelp()
   %                       into a single 4D image.
   % :type  ignore:        cell string
   %
+  % :param concatenate:   will contatenate the beta images of the
+  %                       conditions of interest convolved by an HRF.
+  % :type  concatenate:   logical
   %
   % **low level calls**
   %

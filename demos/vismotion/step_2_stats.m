@@ -13,9 +13,6 @@ bids_dir = fullfile(root_dir, 'inputs', 'raw');
 output_dir = fullfile(root_dir, 'outputs', 'derivatives');
 preproc_dir = fullfile(root_dir, 'outputs', 'derivatives', 'bidspm-preproc');
 
-% TODO via BIDS api
-% bidsRFX('meananatandmask', opt);
-
 %% subject level
 
 results.nodeName = 'subject_level';
