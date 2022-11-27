@@ -104,7 +104,7 @@ bidspm(bids_dir, output_dir, 'dataset', ...
 
 % Run model
 
-model_file = fullfile(output_dir, 'models', 'model-default_smdl.json');
+model_file = fullfile(output_dir, 'models', 'model-defaultAuditory_smdl.json');
 
 % Specify the result to show
 %
