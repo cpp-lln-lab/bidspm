@@ -23,7 +23,11 @@ function bugReport(opt, ME)
     json.ME = ME;
   end
 
-  output_dir = fullfile(pwd, 'error_logs');
+  output_dir = pwd;
+  if isfield(opt, 'dir') && isfield(opt.dir, 'output')
+    output_dir = opt.dir.output;
+  end
+  output_dir = fullfile(output_dir, 'error_logs');
   spm_mkdir(output_dir);
 
   logFile = spm_file(fullfile(output_dir, sprintf('error_%s.log', timeStamp())), 'cpath');

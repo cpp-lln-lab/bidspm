@@ -36,8 +36,8 @@ skip_validation = true;
 addpath(fullfile(pwd, '..', '..'));
 
 %% Gets data and converts it to BIDS
+bidspm();
 if download_data
-  bidspm();
   download_face_rep_ds(download_data);
 end
 
