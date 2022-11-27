@@ -55,8 +55,6 @@ opt.subjects = {subject_label};
 
 opt.taskName = 'auditory';
 
-opt.fwhm.func = 8;
-
 opt = checkOptions(opt);
 
 % specify some filter to decide which file to copy out of the frmiprep dataset
@@ -72,13 +70,23 @@ opt.query.suffix = {'T1w', 'bold', 'mask'};
 opt.query.space = opt.space;
 bidsCopyInputFolder(opt);
 
-% then we can smooth
-bidsSmoothing(opt);
+%% SMOOTH
+
+WD = fileparts(mfilename('fullpath'));
+
+bids_dir = fullfile(WD, 'inputs', 'raw');
+output_dir = fullfile(WD, 'outputs', 'derivatives');
+
+bidspm(bids_dir, output_dir, 'subject', ...
+       'action', 'smooth', ...
+       'participant_label', {subject_label}, ...
+       'task', {'auditory'}, ...
+       'space', {'MNI152NLin6Asym'}, ...
+       'fwhm', 8);
 
 %% STATS
 
-clear;
-clc;
+clear opt;
 
 % Create stats model
 
@@ -90,14 +98,13 @@ preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
 bidspm(bids_dir, output_dir, 'dataset', ...
        'action', 'default_model', ...
+       'task', {'auditory'}, ...
        'space', {'MNI152NLin6Asym'}, ...
        'ignore', {'contrasts', 'transformations'});
 
 % Run model
 
-model_file = fullfile(output_dir, 'models', 'model-default_smdl.json');
-
-subject_label = '01';
+model_file = fullfile(output_dir, 'models', 'model-defaultAuditory_smdl.json');
 
 % Specify the result to show
 %
