@@ -27,7 +27,7 @@ if isOctave
 end
 
 % Getting the raw dataset to get the events.tsv
-download_data = false;
+download_data = true;
 download_moae_ds(download_data);
 
 %%
