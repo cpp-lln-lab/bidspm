@@ -17,47 +17,39 @@ bidspm();
 % The directory where the data are located
 root_dir = fullfile(fileparts(mfilename('fullpath')));
 
-opt.dir.raw = fullfile(root_dir, 'inputs', 'ds002799');
-opt.dir.input = fullfile(opt.dir.raw, 'derivatives', 'fmriprep');
-opt.dir.derivatives = fullfile(root_dir, 'outputs', 'derivatives');
+%% Parameters
 
-opt.space = {'MNI152NLin2009cAsym'};
+% directories
+bids_dir = fullfile(root_dir, 'inputs', 'ds002799');
+fmriprep_dir =  fullfile(opt.dir.raw, 'inputs', 'fmriprep');
+output_dir = fullfile(root_dir, 'outputs', 'derivatives');
+preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
-opt.subjects = {'292', '302', '307'};
+% the the values below are just examples
+subject_label = {'292', '302', '307'};
+task = {'es'};
+space = {'MNI152NLin2009cAsym'};
+fwhm = 8;
 
-opt.taskName = 'es';
+%% Smooth
 
-opt.fwhm.func = 8;
+bidspm(fmriprep_dir, output_dir, 'subject', ...
+       'action', 'smooth', ...
+       'participant_label', subject_label, ...
+       'task', task, ...
+       'space', space, ...
+       'fwhm', 8);
 
-%% SMOOTH
+%% Create model
 
-% we need to specify where the smoothed data will go
-opt.pipeline.type = 'preproc';
-opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
-
-opt = checkOptions(opt);
-
-% copy the preprocessed Nifti images and
-opt.query.desc = {'preproc', 'brain'};
-opt.query.suffix = {'T1w', 'bold', 'mask'};
-opt.query.space = opt.space;
-bidsCopyInputFolder(opt);
-
-% then we can smooth
-bidsSmoothing(opt);
-
-%% CREATE MODEL
-[BIDS, opt] = getData(opt, opt.dir.raw);
-
-createDefaultStatsModel(BIDS, opt);
+% create default model
+bidspm(bids_dir, output_dir, 'dataset', ...
+       'action', 'default_model', ...
+       'task', task, ...
+       'space', space);
 
 % we need to edit the model a bit
-opt.model.file = fullfile(pwd, 'models', 'model-defaultEs_smdl.json');
-bm = BidsModel('file', opt.model.file);
-
-% only focus on the 'es' task
-bm.Input.task = {'es'};
-bm.Input.space = opt.space;
+model_file = fullfile(pwd, 'models', 'model-defaultEs_smdl.json');
 
 %% update the run level node
 
@@ -88,20 +80,20 @@ run_lvl_idx = 3;
 bm.Nodes{run_lvl_idx}.GroupBy = {'contrast'};
 
 %% write
-bm.write(opt.model.file);
+bm.write(model_file);
 
 %% run subject level stats
-bidspm(opt.dir.raw, opt.dir.derivatives, 'subject', ...
-       'participant_label', opt.subjects, ...
+bidspm(bids_dir, output_dir, 'subject', ...
+       'participant_label', subject_label, ...
        'action', 'stats', ...
-       'preproc_dir', opt.dir.preproc, ...
-       'model_file', opt.model.file, ...
-       'fwhm', opt.fwhm.func);
+       'preproc_dir', preproc_dir, ...
+       'model_file', model_file, ...
+       'fwhm', fwhm);
 
 %% run group level stats
-bidspm(opt.dir.raw, opt.dir.derivatives, 'dataset', ...
-       'participant_label', opt.subjects, ...
+bidspm(bids_dir, output_dir, 'dataset', ...
+       'participant_label', subject_label, ...
        'action', 'stats', ...
        'preproc_dir', opt.dir.preproc, ...
-       'model_file', opt.model.file, ...
-       'fwhm', opt.fwhm.func);
+       'model_file', model_file, ...
+       'fwhm', fwhm);

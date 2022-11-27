@@ -244,6 +244,14 @@ def common_parser() -> MuhParser:
         default=False,
     )
     parser.add_argument(
+        "--keep_residuals",
+        help="""
+        Keep GLM residuals.
+        """,
+        action="store_true",
+        default=False,
+    )
+    parser.add_argument(
         "--dummy_scans",
         help="""
         Number of dummy scans to remove.

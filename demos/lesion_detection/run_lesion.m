@@ -18,15 +18,15 @@ bidspm();
 [opt, opt2] = lesion_get_option();
 
 %% Run batches
-% bidsCopyInputFolder(opt);
-% bidsCopyInputFolder(opt2);
+bidsCopyInputFolder(opt);
+bidsCopyInputFolder(opt2);
 
 %% Step 1: segmentation
-% bidsLesionSegmentation(opt);
-% bidsLesionSegmentation(opt2);
+bidsLesionSegmentation(opt);
+bidsLesionSegmentation(opt2);
 
 %% Step 2: lesion abnormalities
 bidsLesionAbnormalitiesDetection(opt, opt2);
 
-% % Step 3: overlap map
-% bidsLesionOverlapMap(opt)
+% Step 3: overlap map
+bidsLesionOverlapMap(opt);

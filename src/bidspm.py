@@ -183,6 +183,7 @@ def stats(
     roi_based: bool = False,
     concatenate: bool = False,
     design_only: bool = False,
+    keep_residuals: bool = False,
 ) -> int:
 
     if space and len(space) > 1:
@@ -210,6 +211,8 @@ def stats(
         cmd += f"{new_line}'concatenate', true"
     if design_only:
         cmd += f"{new_line}'design_only', true"
+    if keep_residuals:
+        cmd += f"{new_line}'keep_residuals', true"
     cmd = end_cmd(cmd)
 
     log.info("Running statistics.")
@@ -261,6 +264,7 @@ def cli(argv: Any = sys.argv) -> None:
         roi_based=args.roi_based,
         concatenate=args.concatenate,
         design_only=args.design_only,
+        keep_residuals=args.keep_residuals,
     )
 
     if return_code == 1:
@@ -289,6 +293,7 @@ def bidspm(
     roi_based: bool = False,
     concatenate: bool = False,
     design_only: bool = False,
+    keep_residuals: bool = False,
 ) -> int:
 
     if not bids_dir.is_dir():
@@ -353,6 +358,7 @@ def bidspm(
             roi_based=roi_based,
             concatenate=concatenate,
             design_only=design_only,
+            keep_residuals=keep_residuals,
         )
     else:
         log.error(f"\nunknown action: {action}")

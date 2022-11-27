@@ -42,9 +42,13 @@ bidspm \
     --ignore unwarp slicetiming
 ```
 
+### Smoothing
+
+To smooth directly an fmriprep dataset
+
 ```bash
 bidspm \
-    /home/remi/github/bidspm/demos/MoAE/inputs/raw \
+    /home/remi/github/bidspm/demos/MoAE/inputs/fmriprep \
     /home/remi/github/bidspm/demos/MoAE/outputs/derivatives \
     subject \
     --action smooth \
@@ -65,6 +69,17 @@ bidspm \
     --action stats \
     --preproc_dir /home/remi/github/bidspm/demos/MoAE/outputs/derivatives/bidspm-preproc \
     --model_file /home/remi/github/bidspm/demos/MoAE/models/model-MoAE_smdl.json \
+    --fwhm 6
+```
+
+```bash
+bidspm \
+    /home/remi/github/bidspm/demos/MoAE/inputs/raw \
+    /home/remi/github/bidspm/demos/MoAE/outputs/derivatives \
+    subject \
+    --action stats \
+    --preproc_dir /home/remi/github/bidspm/demos/MoAE/outputs/derivatives/bidspm-preproc \
+    --model_file /home/remi/github/bidspm/demos/MoAE/outputs/derivatives/models/model-defaultAuditory_smdl.json \
     --fwhm 6
 ```
 

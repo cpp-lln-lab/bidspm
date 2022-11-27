@@ -39,19 +39,8 @@ bidspm(bids_dir, output_dir, 'subject', ...
 
 %% denoise with GLM
 
-clear;
-clc;
-
-addpath(fullfile(pwd, '..', '..'));
-bidspm();
-
-root_dir = fileparts(mfilename('fullpath'));
-bids_dir = fullfile(root_dir, 'inputs', 'ds001168');
-output_dir = fullfile(root_dir, 'outputs', 'ds001168', 'derivatives');
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 model_file = fullfile(root_dir, 'models', 'model-ds001168_smdl.json');
-
-opt.glm.keepResiduals = true;
 
 bidspm(bids_dir, output_dir, 'subject', ...
        'action', 'stats', ...
@@ -59,4 +48,4 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'ignore', {'slicetiming'}, ...
        'preproc_dir', preproc_dir, ...
        'model_file', model_file, ...
-       'options', opt);
+       'keep_residuls', true);

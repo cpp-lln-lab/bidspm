@@ -74,6 +74,7 @@ function opt = getOptionsFromCliArgument(args)
     opt.dir.preproc = args.Results.preproc_dir;
     opt.model.file = args.Results.model_file;
     opt.model.designOnly = args.Results.design_only;
+    opt.glm.keepResiduals = args.Results.keep_residuals;
 
     opt = overrideRoiBased(opt, args);
 
@@ -83,7 +84,7 @@ end
 
 function value = bidsAppsActions()
 
-  value = {'preprocess'; 'smooth'; 'default_model'; 'stats'; 'contrasts'; 'results'};
+  value = {'copy'; 'preprocess'; 'smooth'; 'default_model'; 'stats'; 'contrasts'; 'results'};
 
 end
 
