@@ -65,7 +65,7 @@ jobs:
           make data
 
       - name: Run commands
-        uses: matlab-actions/run-command@v1.1.1
+        uses: matlab-actions/run-command@v1.1.2
         with:
           command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
 
