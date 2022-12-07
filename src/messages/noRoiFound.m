@@ -21,11 +21,11 @@ function status = noRoiFound(varargin)
 
   defaultFolder = '';
 
-  isFolder = @(x) isfolder(x);
+  isdir = @(x) isdir(x);
 
   addRequired(args, 'opt', @isstruct);
   addOptional(args, 'roiList', @isstruct);
-  addParameter(args, 'folder', defaultFolder, isFolder);
+  addParameter(args, 'folder', defaultFolder, isdir);
 
   parse(args, varargin{:});
 

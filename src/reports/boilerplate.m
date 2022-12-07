@@ -42,14 +42,14 @@ function outputFile = boilerplate(varargin)
 
   defaultPartialsPath = fullfile(fileparts(mfilename('fullpath')), 'partials');
 
-  isFolder = @(x) isfolder(x);
+  isdir = @(x) isdir(x);
 
   args = inputParser;
 
   args.addRequired('opt', @isstruct);
   args.addParameter('outputPath', '', @ischar);
   args.addParameter('pipelineType', 'preproc', @ischar);
-  args.addParameter('partialsPath', defaultPartialsPath, isFolder);
+  args.addParameter('partialsPath', defaultPartialsPath, isdir);
   args.addParameter('verbosity', 2);
 
   args.parse(varargin{:});

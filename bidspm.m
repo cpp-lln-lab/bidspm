@@ -19,11 +19,11 @@ function returnCode = bidspm(varargin)
   isChar = @(x) ischar(x);
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
 
-  isFolder = @(x) isfolder(x);
+  isdir = @(x) isdir(x);
 
   isCellStr = @(x) iscellstr(x);
 
-  isLowLevelActionOrDir = @(x) (ismember(x, lowLevelActions()) || isfolder(x));
+  isLowLevelActionOrDir = @(x) (ismember(x, lowLevelActions()) || isdir(x));
 
   addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
 
@@ -48,7 +48,7 @@ function returnCode = bidspm(varargin)
   addParameter(args, 'ignore', {}, isEmptyOrCellstr);
 
   % stats only
-  addParameter(args, 'preproc_dir', pwd, isFolder);
+  addParameter(args, 'preproc_dir', pwd, isdir);
   addParameter(args, 'model_file', struct([]), isFileOrStruct);
   addParameter(args, 'roi_based', false, isLogical);
   addParameter(args, 'design_only', false, isLogical);
@@ -254,7 +254,7 @@ function smooth(args)
 
     saveOptions(opt);
 
-    if ~isfolder(opt.dir.output)
+    if ~isdir(opt.dir.output)
       copy(args);
     end
 
