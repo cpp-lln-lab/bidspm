@@ -16,7 +16,7 @@ function test_renameSegmentParameter_basic()
 
   % move test data into temp directory to test renaming
   tmpDir = fullfile(pwd, 'tmp');
-  if isfolder(tmpDir)
+  if isdir(tmpDir)
     rmdir(tmpDir, 's');
   end
   spm_mkdir(tmpDir);
