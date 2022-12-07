@@ -46,6 +46,14 @@ jobs:
       - name: Install validators
         run: make install
 
+      - name: Get moae fmriprep data from OSF
+        run: |
+          mkdir -p demos/MoAE/inputs/
+          cd demos/MoAE/inputs/
+          wget https://osf.io/vufjs/download
+          unzip download
+          mv moae_fmriprep fmriprep
+
       - name: Install SPM
         run: |
           git clone https://github.com/spm/spm12.git --depth 1

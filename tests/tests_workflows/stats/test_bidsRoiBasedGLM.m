@@ -17,3 +17,45 @@ function test_bidsRoiBasedGLM_checks()
   assertExceptionThrown(@() bidsRoiBasedGLM(opt), 'bidsRoiBasedGLM:roiBasedAnalysis');
 
 end
+
+function test_bidsRoiBasedGLM_run()
+
+  opt = setOptions('MoAE-fmriprep', '01');
+
+  opt.query.space = opt.space;
+
+  opt.dir.input = opt.dir.fmriprep;
+
+  opt.versbosity = 0;
+
+  bidsCopyInputFolder(opt, 'unzip', true);
+
+  opt.model.file = fullfile(getMoaeDir(), ...
+                            'models', ...
+                            'model-MoAE_smdl.json');
+
+  opt.model.bm = BidsModel('file', opt.model.file);
+  opt.model.bm.Input.space = opt.space;
+
+  % rmdir(fullfile(pwd, 'options'), 's');
+
+  opt.dir.roi = fullfile(opt.dir.derivatives, 'bidspm-roi');
+
+  opt.roi.atlas = 'wang';
+  opt.roi.name = {'V1v', 'V1d'};
+  opt.roi.space = opt.space;
+
+  opt.bidsFilterFile.roi.space = 'MNI';
+
+  bidsCreateROI(opt);
+
+  opt.roi.name = {'.*V1v', '.*V1d'};
+
+  opt.glm.roibased.do = true;
+  opt.dryRun = false;
+  opt.fwhm.func = 0;
+
+  bidsFFX('specify', opt);
+  bidsRoiBasedGLM(opt);
+
+end

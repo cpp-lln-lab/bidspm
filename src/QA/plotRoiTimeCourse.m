@@ -43,6 +43,11 @@ function figureFile = plotRoiTimeCourse(varargin)
 
   tsvFile = args.Results.tsvFile;
   timeCourse = bids.util.tsvread(tsvFile);
+  if ~isstruct(timeCourse)
+    tmp = struct('this_condition', timeCourse);
+    timeCourse = tmp;
+    clear tmp;
+  end
   conditionNames = fieldnames(timeCourse);
 
   visible = 'off';
