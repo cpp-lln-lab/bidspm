@@ -12,8 +12,9 @@
   [![codecov](https://codecov.io/gh/cpp-lln-lab/bidspm/branch/main/graph/badge.svg?token=PMQYH0DIPX)](https://codecov.io/gh/cpp-lln-lab/bidspm)
   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3554331.svg)](https://doi.org/10.5281/zenodo.3554331)
   [![GitHub last commit](https://img.shields.io/github/last-commit/cpp-lln-lab/bidspm)](https://github.com/cpp-lln-lab/bidspm.git)
-  [![HitCount](https://hits.dwyl.com/cpp-lln-lab/bidspm.svg?style=flat-square&show=unique)](http://hits.dwyl.com/cpp-lln-lab/bidspm)
   [![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](https://github.com/cpp-lln-lab/bidspm#contributors)
+
+<!-- [![HitCount](https://hits.dwyl.com/cpp-lln-lab/bidspm.svg?style=flat-square&show=unique)](http://hits.dwyl.com/cpp-lln-lab/bidspm) -->
 
 
 # bidspm

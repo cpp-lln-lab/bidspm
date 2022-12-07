@@ -50,6 +50,17 @@ function opt = setOptions(varargin)
     opt.results(1).name = 'listening';
     opt.results(2).name = 'listening_inf_baseline';
 
+  elseif strcmp(task, 'MoAE-fmriprep')
+
+    task = {'auditory'};
+
+    opt.space = {'MNI152NLin6Asym'};
+
+    opt.dir.raw = fullfile(getMoaeDir(), 'inputs', 'raw');
+    opt.dir.fmriprep = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
+    opt.dir.derivatives = fullfile(getMoaeDir(), 'outputs', 'derivatives');
+    opt.dir.stats = fullfile(opt.dir.derivatives, 'bidspm-stats');
+
   elseif strcmp(task, 'MoAE-preproc')
 
     task = {'auditory'};

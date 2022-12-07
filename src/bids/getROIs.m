@@ -71,9 +71,8 @@ function [roiList, roiFolder] = getROIs(varargin)
       errorHandling(mfilename(), 'noSubject', msg, false, opt.verbosity > 0);
     end
 
-    filter = struct('sub', regexify(subLabel), ...
-                    'space', space, ...
-                    'suffix', 'mask');
+    filter = opt.bidsFilterFile.roi;
+    filter.sub = regexify(subLabel);
 
     if ~isempty(roiNames)
       if iscell(roiNames)
