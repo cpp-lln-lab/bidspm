@@ -21,7 +21,7 @@ function status = noRoiFound(varargin)
 
   defaultFolder = '';
 
-  isFolder = @(x) isfolder(x);
+  isFolder = @(x) isdir(x);
 
   addRequired(args, 'opt', @isstruct);
   addOptional(args, 'roiList', @isstruct);
