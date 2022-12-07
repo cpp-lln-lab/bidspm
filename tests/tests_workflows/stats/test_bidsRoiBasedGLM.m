@@ -19,6 +19,10 @@ function test_bidsRoiBasedGLM_checks()
 end
 
 function test_bidsRoiBasedGLM_run()
+  %
+  % integration test:
+  %  - also makes sure that previous results are not deleted
+  %
 
   opt = setOptions('MoAE-fmriprep', '01');
 
@@ -37,6 +41,8 @@ function test_bidsRoiBasedGLM_run()
   opt.model.bm = BidsModel('file', opt.model.file);
   opt.model.bm.Input.space = opt.space;
 
+  bidsFFX('specify', opt);
+
   % rmdir(fullfile(pwd, 'options'), 's');
 
   opt.dir.roi = fullfile(opt.dir.derivatives, 'bidspm-roi');
@@ -49,13 +55,20 @@ function test_bidsRoiBasedGLM_run()
 
   bidsCreateROI(opt);
 
-  opt.roi.name = {'.*V1v', '.*V1d'};
-
   opt.glm.roibased.do = true;
   opt.dryRun = false;
   opt.fwhm.func = 0;
 
-  bidsFFX('specify', opt);
+  opt.roi.name = {'.*V1v'};
+
   bidsRoiBasedGLM(opt);
+
+  opt.roi.name = {'.*V1d'};
+
+  bidsRoiBasedGLM(opt);
+
+  timecourseFiles = spm_select('FPListRec', opt.dir.stats, '^.*timecourse.tsv$');
+
+  assertEqual(size(timecourseFiles, 1), 4);
 
 end
