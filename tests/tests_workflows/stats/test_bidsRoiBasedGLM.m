@@ -41,6 +41,10 @@ function test_bidsRoiBasedGLM_run()
   opt.model.bm = BidsModel('file', opt.model.file);
   opt.model.bm.Input.space = opt.space;
 
+  opt.glm.roibased.do = true;
+  opt.dryRun = false;
+  opt.fwhm.func = 0;
+
   bidsFFX('specify', opt);
 
   % rmdir(fullfile(pwd, 'options'), 's');
@@ -55,10 +59,6 @@ function test_bidsRoiBasedGLM_run()
 
   bidsCreateROI(opt);
 
-  opt.glm.roibased.do = true;
-  opt.dryRun = false;
-  opt.fwhm.func = 0;
-
   opt.roi.name = {'.*V1v'};
 
   bidsRoiBasedGLM(opt);
@@ -70,5 +70,7 @@ function test_bidsRoiBasedGLM_run()
   timecourseFiles = spm_select('FPListRec', opt.dir.stats, '^.*timecourse.tsv$');
 
   assertEqual(size(timecourseFiles, 1), 4);
+
+  delete('skipped_roi_*.tsv');
 
 end
