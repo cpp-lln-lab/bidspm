@@ -48,7 +48,7 @@ jobs:
         run: cp -rv lib/MACS spm12/toolbox/MACS
 
       - name: Test notebooks
-        uses: matlab-actions/run-command@v1.1.1
+        uses: matlab-actions/run-command@v1.1.2
         with:
           command: |
             root_dir = getenv('GITHUB_WORKSPACE');

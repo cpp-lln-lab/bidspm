@@ -97,6 +97,6 @@ jobs:
         run: cp -rv lib/MACS spm12/toolbox/MACS
 
       - name: Run ${{ matrix.script }}
-        uses: matlab-actions/run-command@v1.1.1
+        uses: matlab-actions/run-command@v1.1.2
         with:
           command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_${{ matrix.script }};
