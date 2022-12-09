@@ -35,7 +35,8 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
 
   if isempty(content)
     msg = sprintf('This confound file is empty:\n %s\n', tsvFile);
-    errorHandling(mfilename(), 'emptyConfoundFle', msg, true, opt.verbosity);
+    id = 'emptyConfoundFle';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename, 'options', opt);
     counfoundMatFile = '';
     return
   end

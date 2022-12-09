@@ -67,8 +67,8 @@ function file = findSubjectConImage(varargin)
                     subLabel, ...
                     contrastName{iCon}, ...
                     pathToPrint(fullfile(ffxDir, 'SPM.mat')));
-
-      errorHandling(mfilename(), 'missingContrast', msg, true, opt.verbosity);
+      id = 'missingContrast';
+      logger('WARNING', msg, 'id', id, 'filename', mfilename, 'options', opt);
 
       printToScreen(['available contrasts:\n' createUnorderedList({SPM.xCon.name}')], ...
                     opt, 'format', 'red');

@@ -152,8 +152,8 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
       msg = sprintf('Variable %s not found in \n %s\n Adding dummy regressor instead.', ...
                     varToConvolve{iVar}, ...
                     tsv.file);
-
-      errorHandling(mfilename(), 'variableNotFound', msg, true, opt.verbosity);
+      id = 'variableNotFound';
+      logger('WARNING', msg, 'id', id, 'filename', mfilename, 'options', opt);
 
     end
 
@@ -202,8 +202,8 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
     msg = sprintf('Trial type %s not found in \n\t%s\n', ...
                   varToConvolve, ...
                   tsv.file);
-
-    errorHandling(mfilename(), 'trialTypeNotFound', msg, true, opt.verbosity);
+    id = 'trialTypeNotFound';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename, 'options', opt);
 
     if opt.glm.useDummyRegressor
       condToModel = addDummyRegressor(condToModel);

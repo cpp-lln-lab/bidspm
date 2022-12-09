@@ -74,7 +74,8 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
       if numel(betasIndices) > 1
         msg = sprintf(['Supposed to concatenate one beta image per contrast.' ...
                        '\nSkipping: %s'], contrasts(iContrast).name);
-        errorHandling(mfilename(), 'concatOneImgOnly', msg, true, opt.verbosity);
+        id = 'concatOneImgOnly';
+        logger('WARNING', msg, 'id', id, 'filename', mfilename, 'options', opt);
         continue
       end
 
