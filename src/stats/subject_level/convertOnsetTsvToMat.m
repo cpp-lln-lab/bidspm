@@ -58,14 +58,16 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   if ~all(isnumeric(tsv.content.onset))
 
     msg = sprintf('%s\n%s', 'Onset column contains non numeric values in file:', tsv.file);
-    errorHandling(mfilename(), 'onsetsNotNumeric', msg, false, opt.verbosity);
+    id = 'onsetsNotNumeric';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename);
 
   end
 
   if ~all(isnumeric(tsv.content.duration))
 
     msg = sprintf('%s\n%s', 'Duration column contains non numeric values in file:', tsv.file);
-    errorHandling(mfilename(), 'durationsNotNumeric', msg, false, opt.verbosity);
+    id = 'durationsNotNumeric';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename);
 
   end
 

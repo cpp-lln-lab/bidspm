@@ -65,7 +65,7 @@ function bidsLesionAbnormalitiesDetection(opt, extraOptions)
       any(cellfun('isempty', patientsImages))
     msg = sprintf('Must have segmentation output from patients AND control');
     id = 'missingImages';
-    errorHandling(mfilename(), id, msg, false);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename);
   end
 
   matlabbatch = {};
@@ -119,10 +119,9 @@ function images = collectImagesFromDataset(opt, images, labels)
 
       if numel(files) > 1
         disp(files);
-        tolerant =  false;
         msg = sprintf('Too many files for label %s for subject %s', labels{i}, subLabel);
         id = 'tooManyTissueClassFiles';
-        errorHandling(mfilename(), id, msg, tolerant);
+        logger('ERROR', msg, 'id', id, 'filename', mfilename);
       else
         logger('INFO', createUnorderedList(pathToPrint(files)), ...
                'options', opt, ...

@@ -91,9 +91,8 @@ function matlabbatch = setBatchSTC(varargin)
                   acquisitionTime, ...
                   referenceSlice, ...
                   sliceOrder);
-
-    errorHandling(mfilename(), 'invalidInputTime', msg, ...
-                  false, opt.verbosity);
+    id = 'invalidInputTime';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename);
   end
 
   nbSlices = numel(sliceOrder);

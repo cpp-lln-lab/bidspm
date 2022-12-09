@@ -49,7 +49,8 @@ function boldFilename = getBoldFilenameForFFX(varargin)
     msg = sprintf('No bold file found in:\n\t%s\nfor query:%s\n', ...
                   BIDS.pth, ...
                   createUnorderedList(opt.query));
-    errorHandling(mfilename(), 'noFileFound', msg, false, true);
+    id = 'noFileFound';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename);
   end
 
   % in case files have been unzipped, we do it now

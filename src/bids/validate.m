@@ -21,7 +21,8 @@ function validate(args)
                        args.Results.bids_dir, ...
                        msg_data, ...
                        'https://bids-standard.github.io/bids-validator/');
-    errorHandling(mfilename(), 'invalidBidsDataset', msg_data, false);
+    id = 'invalidBidsDataset';
+    logger('ERROR', msg_data, 'filaneme', mfilename, 'id', id);
   elseif args.Results.verbosity > 0
     disp(msg_data);
   end

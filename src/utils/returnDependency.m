@@ -36,7 +36,7 @@ function dep = returnDependency(opt, type)
                     type, ...
                     createUnorderedList(handledDependencies));
       id = 'unknownDependency';
-      errorHandling(mfilename(), id, msg, false, opt.verbosity);
+      logger('ERROR', msg, 'id', id, 'filename', mfilename);
 
   end
 

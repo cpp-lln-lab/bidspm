@@ -166,7 +166,8 @@ function checks(opt)
   if numel(opt.space) > 1
     disp(opt.space);
     msg = sprintf('GLMs can only be run in one space at a time.\n');
-    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+    id = 'tooManySpaces';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename);
   end
 end
 

@@ -55,9 +55,9 @@ function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
   end
 
   if exist(rpTsvFile, 'file')
-    tolerant = true;
     msg = sprintf('Overwriting confound file: %s', rpTsvFile);
-    errorHandling(mfilename(), 'deletingConfoundTsvFile', msg, tolerant, opt.verbosity);
+    id = 'deletingConfoundTsvFile';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename, 'options', opt);
     delete(rpTsvFile);
   end
   bids.util.tsvwrite(rpTsvFile, newContent);

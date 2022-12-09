@@ -92,14 +92,14 @@ function matlabbatch = setBatchGenerateT1map(varargin)
       if numel(uniT1) < 1
         msg = sprintf('No UNIT1 image found for %s', createUnorderedList(filter));
         id = 'missingUniT1';
-        errorHandling(mfilename(), id, msg, true, opt.verbosity);
+        logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
         continue
       end
 
       if numel(uniT1) > 1
         msg = sprintf('Too many UNIT1 image found for %s', createUnorderedList(filter));
         id = 'tooManyUniT1';
-        errorHandling(mfilename(), id, msg, true, opt.verbosity);
+        logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
         continue
       end
 
@@ -114,7 +114,7 @@ function matlabbatch = setBatchGenerateT1map(varargin)
       if numel(metadataInv1) < 1 || numel(metadataInv2) < 1
         msg = sprintf('Missing metadata for INV images for %s', createUnorderedList(filter));
         id = 'missingMetadata';
-        errorHandling(mfilename(), id, msg, true, opt.verbosity);
+        logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
         continue
       end
 
@@ -149,7 +149,7 @@ function matlabbatch = setBatchGenerateT1map(varargin)
         msg = sprintf('Missing non-BIDS metadata for %s\nSee ''help setBatchGenerateT1map''', ...
                       createUnorderedList(filter));
         id = 'missingNonBIDSMetadata';
-        errorHandling(mfilename(), id, msg, true, opt.verbosity);
+        logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
         continue
       end
 

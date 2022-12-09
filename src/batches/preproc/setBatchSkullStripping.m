@@ -132,14 +132,14 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
     if any(cellfun('isempty', input))
       msg = sprintf('Missing data for skullstripping: run the segmentation.');
       id = 'missingDataForSkullstripping';
-      errorHandling(mfilename(), id, msg, true, opt.verbosity);
+      logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
     end
 
     if any(cellfun(@(x) numel(x), input) > 1)
       msg = sprintf(['Too much data for skullstripping: ', ...
                      'should have only bias corrected image + 1 TPM per tissue class.']);
       id = 'tooMuchDataForSkullstripping';
-      errorHandling(mfilename(), id, msg, true, opt.verbosity);
+      logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
     end
 
     input = {input{1}, input{2}, input{3}, input{4}};

@@ -21,12 +21,12 @@ function checkDependencies(opt)
     [a, b] = spm('ver');
   catch
     msg = 'Failed to check the SPM version: Are you sure that SPM is in the matlab path?';
-    tolerant = false;
-    errorHandling(mfilename(), 'noSpm', msg, tolerant, opt.verbosity);
+    id = 'noSpm';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename);
   end
 
   msg = sprintf(' Using %s %s', a, b);
-  logger('INFO', 'Checking dependencies', opt, mfilename);
+  logger('INFO', msg, opt, mfilename);
 
   if ~strcmp(a, SPM_main) || str2num(b) < 7219
     str = sprintf('%s %s %s.\n%s', ...

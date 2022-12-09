@@ -71,7 +71,8 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
                   numel(anat), ...
                   nbImgToReturn, ...
                   createUnorderedList(pathToPrint(anat(1:nbImgToReturn))));
-    errorHandling(mfilename(), 'severalAnatFile', msg, true, opt.verbosity);
+    id = 'severalAnatFile';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename);
   end
 
   anatDataDir = '';

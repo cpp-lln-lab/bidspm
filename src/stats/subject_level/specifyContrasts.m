@@ -106,7 +106,7 @@ function contrasts = removeDuplicates(contrasts)
       disp(tmp(duplicates));
       msg = 'there are contrasts with the same name but different vector.';
       id = 'duplicateContrasts';
-      errorHandling(mfilename(), id, msg, true, true);
+      logger('WARNING', msg, 'id', id);
       continue
     end
 

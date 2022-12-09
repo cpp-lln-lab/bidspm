@@ -119,6 +119,7 @@ function [gmTpm, wmTpm, csfTpm] = getTpms(BIDS, opt, subLabel)
 
   if any(isempty(cat(1, gmTpm, wmTpm, csfTpm)))
     msg = sprintf('Missing tissue probability map for subject %s', subLabel);
-    errorHandling(mfilename(), 'missingTpms', msg, false);
+    id = 'missingTpms';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename);
   end
 end

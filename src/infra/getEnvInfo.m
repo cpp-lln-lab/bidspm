@@ -105,7 +105,7 @@ function OS = getOsNameAndVersion(OS)
                     result, ...
                     'https://github.com/cpp-lln-lab/bidspm/issues');
       id = 'osParseError';
-      errorHandling(mfilename(), id, msg, true, true);
+      logger('WARNING', msg, 'id', id);
       OS.version = ver;
     end
 

@@ -58,7 +58,8 @@ function opt = loadAndCheckOptions(optionJsonFile)
       logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
     else
       msg = sprintf('the requested file does not exist: %s', optionJsonFile);
-      errorHandling(mfilename(), 'missingOptionFile', msg, false, true);
+      id = 'missingOptionFile';
+      logger('ERROR', msg, 'id', id, 'filename', mfilename);
     end
   end
 

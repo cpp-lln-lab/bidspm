@@ -54,7 +54,8 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
       contrasts = specifyContrasts(SPM, model, node.Name);
     catch
       msg = 'Could not find dummy contrasts in the BIDS stats model.';
-      errorHandling(mfilename(), 'noDummyContrast', msg, false, opt.verbosity);
+      id = 'noDummyContrast';
+      logger('ERROR', msg, 'id', id, 'filename', mfilename);
     end
 
     betaMaps = {};
@@ -82,7 +83,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
       % - the exact condition name stored in the SPM.mat
       % so they can be saved in a tsv for for "label" and "fold" for MVPA
       for iSess = 1:numel(SPM.Sess)
-        tmp(iSess) = ismember(betasIndices, SPM.Sess(iSess).col);
+        tmp(iSess) = ismember(betasIndices, SPM.Sess(iSess).col); %#ok<*AGROW>
       end
       runs(iContrast, 1) = find(any(tmp, 2));
       clear tmp;

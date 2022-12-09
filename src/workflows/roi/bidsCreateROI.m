@@ -85,10 +85,12 @@ function bidsCreateROI(opt)
       end
 
       if opt.dryRun
-        tolerant = true;
         msg = 'Renaming ROI in native space will not work on a dry run';
         id = 'willNotRunOnDryRun';
-        errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
+        logger('WARNING', msg, ...
+               'options', opt, ...
+               'id', id, ...
+               'filename', mfilename);
         continue
       end
 

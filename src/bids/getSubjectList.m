@@ -125,7 +125,8 @@ function errorMissingSubject(opt, allSubjects)
                  'subjects specified:%s \nsubjects present:%s'], ...
                 subjectsSpecified, ...
                 subjectsPresent);
-  errorHandling(mfilename(), 'noMatchingSubject', msg, false, opt.verbosity);
+  id = 'noMatchingSubject';
+  logger('ERROR', msg, 'id', id, 'filename', mfilename);
 end
 
 function option = prepareRegex(option)

@@ -134,7 +134,7 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
     msg = sprintf('Models can only accept one space.\nGot: %s', ...
                   createUnorderedList(bm.Input.space));
     id = 'tooManySpaces';
-    errorHandling(mfilename(), id, msg, false);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename);
   end
 
   bm = bm.update();

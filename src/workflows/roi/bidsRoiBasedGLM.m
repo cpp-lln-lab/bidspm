@@ -99,7 +99,7 @@ function skipped = bidsRoiBasedGLM(opt)
                       subLabel,  ...
                       spm_file(roiList{iROI, 1}, 'filename'));
         id = 'emptyRoi';
-        errorHandling(mfilename(), id, msg, true, opt.verbosity);
+        logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
       end
       voxelVolume = prod(abs(diag(roiHeader.mat)));
       roiSize.volume = roiSize.voxels * voxelVolume;
@@ -134,7 +134,7 @@ function skipped = bidsRoiBasedGLM(opt)
                         subLabel,  ...
                         spm_file(roiList{iROI, 1}, 'filename'));
           id = 'roiGlmFailed';
-          errorHandling(mfilename(), id, msg, true, 3);
+          error('WARNING', msg, 'filename', mfilename, 'id', id);
 
           if ~strcmp(SPM.xVi.form(1:2), 'AR')
             msg = sprintf(['\n---------------------------------------------------', ...
@@ -144,7 +144,7 @@ function skipped = bidsRoiBasedGLM(opt)
                            '\n---------------------------------------------------', ...
                            '\n'], SPM.xVi.form);
             id = 'roiGlmFailedFAST';
-            errorHandling(mfilename(), id, msg, true, 3);
+            error('WARNING', msg, 'filename', mfilename, 'id', id);
           end
 
           skipped.subject{end + 1} = subLabel;
@@ -245,13 +245,14 @@ function checks(opt)
   if numel(opt.space) > 1
     disp(opt.space);
     msg = sprintf('GLMs can only be run in one space at a time.\n');
-    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+    id = 'tooManySpaces';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename);
   end
 
   if ~opt.glm.roibased.do
     msg = '"opt.glm.roibased.do" must be set to true for this workflow to to run.';
     id = 'roiBasedAnalysis';
-    errorHandling(mfilename(), id, msg, false, opt.verbosity);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename);
   end
 
 end

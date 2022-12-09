@@ -418,7 +418,7 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
       unfold(opt.results(iRes));
       msg = 'No name specified for this result. May lead to failure.';
       id = 'unSpecifiedResultName';
-      errorHandling(mfilename(), id, msg, true, opt.verbosity);
+      logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
     end
 
     switch  groupLevelGlmType(opt, result.nodeName)
@@ -482,7 +482,7 @@ function status = checkSpmMat(dir)
   if ~status
     msg = sprintf('\nCould not find a SPM.mat file in directory %s\n', dir);
     id = 'noSpmMatFile';
-    errorHandling(mfilename(), id, msg, true, true);
+    logger('WARNING', msg, 'id', id);
   end
 end
 
@@ -540,7 +540,7 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
             msg = sprintf('More than 1 overlay image found for %s.\n Taking the first one.', ...
                           createUnorderedList(background));
             id = 'tooManyMontageBackground';
-            errorHandling(mfilename(), id, msg, true, opt.verbosity);
+            logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
           end
 
         end
@@ -630,14 +630,4 @@ function renameNidm(opt, result, subLabel)
     movefile(source, target);
   end
 
-end
-
-function filename = figureName(opt)
-  spec = struct('suffix', 'designmatrix', ...
-                'ext', '.png', ...
-                'entities', struct( ...
-                                   'task', strjoin(opt.taskName, ''), ...
-                                   'space', opt.space));
-  bf = bids.File(spec, 'use_schema', false);
-  filename = bf.filename;
 end

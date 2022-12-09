@@ -16,7 +16,8 @@ function opt = getOptionsFromModel(opt)
 
   if isempty(opt.model.file) || exist(opt.model.file, 'file') ~= 2
     msg = sprintf('model file does not exist:\n %s', opt.model.file);
-    errorHandling(mfilename(), 'modelFileMissing', msg, false);
+    id = 'modelFileMissing';
+    logger('ERROR', msg, 'filaneme', mfilename, 'id', id);
   end
 
   if ~isfield(opt.model, 'bm') || isempty(opt.model.bm)

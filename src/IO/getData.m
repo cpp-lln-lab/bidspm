@@ -34,7 +34,8 @@ function [BIDS, opt] = getData(varargin)
     if bids.internal.starts_with(ME.message, 'The value of ')
       msg = sprintf('The following directory does not exist:\n\t%s', ...
                     pathToPrint(varargin{2}));
-      errorHandling(mfilename(), 'notADirectory', msg, false);
+      id = 'notADirectory';
+      logger('ERROR', msg, 'filaneme', mfilename, 'id', id);
     else
       rethrow(ME);
     end
@@ -77,7 +78,8 @@ function [BIDS, opt] = getData(varargin)
                   strjoin(opt.taskName), ...
                   createUnorderedList(bids.query(BIDS, 'tasks')));
 
-    errorHandling(mfilename(), 'noMatchingTask', msg, false);
+    id = 'noMatchingTask';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename);
 
   end
 

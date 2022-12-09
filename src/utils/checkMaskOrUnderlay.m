@@ -34,10 +34,12 @@ function image = checkMaskOrUnderlay(image, opt, type)
 
       end
 
-      tolerant = true;
       msg = sprintf(msg);
       id = 'missingMaskOrUnderlay';
-      errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
+      logger('WARNING', msg, ...
+             'options', opt, ...
+             'id', id, ...
+             'filename', mfilename);
 
     end
 

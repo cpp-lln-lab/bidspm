@@ -45,7 +45,7 @@ function optOut = mniToIxi(varargin)
   if throwWarning
     msg = sprintf('Converting reference to MNI space tp SPM IXI549Space');
     id = 'mniToIXI549Space';
-    errorHandling(mfilename(), id, msg, true, opt.verbosity);
+    logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
   end
 
   optOut = opt;

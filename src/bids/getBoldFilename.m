@@ -53,7 +53,8 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
                   pathToPrint(BIDS.pth), ...
                   createUnorderedList(opt.query));
 
-    errorHandling(mfilename(), 'emptyInput', msg, false, true);
+    id = 'emptyInput';
+    logger('ERROR', msg, 'filaneme', mfilename, 'id', id);
   end
 
   % in case files have been unzipped, we do it now

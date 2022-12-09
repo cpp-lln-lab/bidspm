@@ -45,7 +45,7 @@ function status = checkToolbox(varargin)
                   toolboxName, ...
                   createUnorderedList(knownToolboxes));
     id = 'unknownToolbox';
-    errorHandling(mfilename(), id, msg, true, verbose);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename);
   end
 
   status = isdir(fullfile(spm('dir'), 'toolbox', toolboxName));
@@ -62,7 +62,7 @@ function status = checkToolbox(varargin)
         msg = sprintf('installing MACS toolbox in:\n%s.\n\n', ...
                       fullfile(spm('dir'), 'toolbox', 'MACS'));
         id = 'installingMacsToolbox';
-        errorHandling(mfilename(), id, msg, true, verbose);
+        logger('WARNING', msg, 'id', id, 'filename', mfilename);
 
         copyfile(fullfile(returnRootDir(), 'lib', 'MACS'), ...
                  fullfile(spm('dir'), 'toolbox', 'MACS'));

@@ -57,7 +57,8 @@ function repetitionTime = getAndCheckRepetitionTime(varargin)
 
   if isempty(repetitionTime)
     msg = sprintf('No repetition time found for filter:\n%s', createUnorderedList(filter));
-    errorHandling(mfilename(), 'noRepetitionTimeFound', msg, false, true);
+    id = 'noRepetitionTimeFound';
+    logger('ERROR', msg, 'filaneme', mfilename, 'id', id);
   end
 
 end
