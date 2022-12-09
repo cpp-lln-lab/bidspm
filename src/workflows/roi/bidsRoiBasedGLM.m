@@ -134,7 +134,7 @@ function skipped = bidsRoiBasedGLM(opt)
                         subLabel,  ...
                         spm_file(roiList{iROI, 1}, 'filename'));
           id = 'roiGlmFailed';
-          error('WARNING', msg, 'filename', mfilename(), 'id', id);
+          logger('WARNING', msg, 'filename', mfilename(), 'id', id);
 
           if ~strcmp(SPM.xVi.form(1:2), 'AR')
             msg = sprintf(['\n---------------------------------------------------', ...
@@ -144,7 +144,7 @@ function skipped = bidsRoiBasedGLM(opt)
                            '\n---------------------------------------------------', ...
                            '\n'], SPM.xVi.form);
             id = 'roiGlmFailedFAST';
-            error('WARNING', msg, 'filename', mfilename(), 'id', id);
+            logger('WARNING', msg, 'filename', mfilename(), 'id', id);
           end
 
           skipped.subject{end + 1} = subLabel;

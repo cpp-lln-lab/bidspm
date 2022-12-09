@@ -60,7 +60,7 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
 
     sliceOrder = [];
 
-    wng = sprintf('no slice timing found for filter:\n%s.\n\n', ...
+    msg = sprintf('no slice timing found for filter:\n%s.\n\n', ...
                   createUnorderedList(filter));
     id = 'noSliceTimingFound';
     logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
@@ -74,7 +74,7 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
 
     sliceOrder = [];
 
-    wng = sprintf('inconsistent slice timing found for filter:\n%s.\n\n', ...
+    msg = sprintf('inconsistent slice timing found for filter:\n%s.\n\n', ...
                   createUnorderedList(filter));
     id = 'inconsistentSliceTiming';
     logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
