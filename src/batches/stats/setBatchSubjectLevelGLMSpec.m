@@ -29,6 +29,9 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   [matlabbatch, BIDS, opt, subLabel] =  deal(varargin{:});
 
   if ~isfield(BIDS, 'raw')
+    msg = sprintf(['Provide raw BIDS dataset path in opt.dir.raw .\n' ...
+                   'It is needed to load events.tsv files.\n']);
+
     logger('ERROR', msg, 'filename', mfilename(), 'id', 'missingRawDir');
   end
 

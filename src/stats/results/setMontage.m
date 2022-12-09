@@ -22,8 +22,8 @@ function montage = setMontage(result)
 
   if ~any(ismember(result.montage.orientation, {'axial', 'sagittal', 'coronal'}))
     id = 'unknownOrientation';
-    mdg =              sprintf(['The only allowed orientation for montage are:', ...
-                                createUnorderedList({'axial', 'sagittal', 'coronal'})]);
+    msg = sprintf(['The only allowed orientation for montage are:', ...
+                   createUnorderedList({'axial', 'sagittal', 'coronal'})]);
     logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
