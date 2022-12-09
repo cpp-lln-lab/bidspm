@@ -6,60 +6,22 @@ developer documentation
 ***********************
 
 
-.. _workflows stats:
+.. _workflows:
 
-workflows stats
-===============
-.. _bidsModelSelection:
-.. autofunction:: src.workflows.stats.bidsModelSelection
-.. _bidsFFX:
-.. autofunction:: src.workflows.stats.bidsFFX
-.. _bidsConcatBetaTmaps:
-.. autofunction:: src.workflows.stats.bidsConcatBetaTmaps
-.. _bidsRFX:
-.. autofunction:: src.workflows.stats.bidsRFX
-.. _bidsResults:
-.. autofunction:: src.workflows.stats.bidsResults
-
-
-.. _workflows preproc:
-
-workflows preproc
-=================
-.. _bidsGenerateT1map:
-.. autofunction:: src.workflows.preproc.bidsGenerateT1map
-.. _bidsCreateVDM:
-.. autofunction:: src.workflows.preproc.bidsCreateVDM
-.. _bidsResliceTpmToFunc:
-.. autofunction:: src.workflows.preproc.bidsResliceTpmToFunc
-.. _bidsRealignUnwarp:
-.. autofunction:: src.workflows.preproc.bidsRealignUnwarp
-.. _bidsSpatialPrepro:
-.. autofunction:: src.workflows.preproc.bidsSpatialPrepro
-.. _bidsWholeBrainFuncMask:
-.. autofunction:: src.workflows.preproc.bidsWholeBrainFuncMask
-.. _bidsRemoveDummies:
-.. autofunction:: src.workflows.preproc.bidsRemoveDummies
-.. _bidsSmoothing:
-.. autofunction:: src.workflows.preproc.bidsSmoothing
-.. _bidsRealignReslice:
-.. autofunction:: src.workflows.preproc.bidsRealignReslice
-.. _bidsSegmentSkullStrip:
-.. autofunction:: src.workflows.preproc.bidsSegmentSkullStrip
-.. _bidsSTC:
-.. autofunction:: src.workflows.preproc.bidsSTC
-
-
-.. _workflows lesion:
-
-workflows lesion
-================
-.. _bidsLesionSegmentation:
-.. autofunction:: src.workflows.lesion.bidsLesionSegmentation
-.. _bidsLesionAbnormalitiesDetection:
-.. autofunction:: src.workflows.lesion.bidsLesionAbnormalitiesDetection
-.. _bidsLesionOverlapMap:
-.. autofunction:: src.workflows.lesion.bidsLesionOverlapMap
+workflows
+=========
+.. _bidsChangeSuffix:
+.. autofunction:: src.workflows.bidsChangeSuffix
+.. _bidsCopyInputFolder:
+.. autofunction:: src.workflows.bidsCopyInputFolder
+.. _bidsInverseNormalize:
+.. autofunction:: src.workflows.bidsInverseNormalize
+.. _bidsRename:
+.. autofunction:: src.workflows.bidsRename
+.. _bidsReport:
+.. autofunction:: src.workflows.bidsReport
+.. _bidsRsHrf:
+.. autofunction:: src.workflows.bidsRsHrf
 
 
 .. _workflows roi:
@@ -72,50 +34,124 @@ workflows roi
 .. autofunction:: src.workflows.roi.bidsRoiBasedGLM
 
 
-.. _workflows:
+.. _workflows lesion:
 
-workflows
-=========
-.. _bidsRsHrf:
-.. autofunction:: src.workflows.bidsRsHrf
-.. _bidsChangeSuffix:
-.. autofunction:: src.workflows.bidsChangeSuffix
-.. _bidsReport:
-.. autofunction:: src.workflows.bidsReport
-.. _bidsCopyInputFolder:
-.. autofunction:: src.workflows.bidsCopyInputFolder
-.. _bidsRename:
-.. autofunction:: src.workflows.bidsRename
-.. _bidsInverseNormalize:
-.. autofunction:: src.workflows.bidsInverseNormalize
+workflows lesion
+================
+.. _bidsLesionAbnormalitiesDetection:
+.. autofunction:: src.workflows.lesion.bidsLesionAbnormalitiesDetection
+.. _bidsLesionOverlapMap:
+.. autofunction:: src.workflows.lesion.bidsLesionOverlapMap
+.. _bidsLesionSegmentation:
+.. autofunction:: src.workflows.lesion.bidsLesionSegmentation
+
+
+.. _workflows stats:
+
+workflows stats
+===============
+.. _bidsConcatBetaTmaps:
+.. autofunction:: src.workflows.stats.bidsConcatBetaTmaps
+.. _bidsFFX:
+.. autofunction:: src.workflows.stats.bidsFFX
+.. _bidsModelSelection:
+.. autofunction:: src.workflows.stats.bidsModelSelection
+.. _bidsRFX:
+.. autofunction:: src.workflows.stats.bidsRFX
+.. _bidsResults:
+.. autofunction:: src.workflows.stats.bidsResults
+
+
+.. _workflows preproc:
+
+workflows preproc
+=================
+.. _bidsCreateVDM:
+.. autofunction:: src.workflows.preproc.bidsCreateVDM
+.. _bidsGenerateT1map:
+.. autofunction:: src.workflows.preproc.bidsGenerateT1map
+.. _bidsRealignReslice:
+.. autofunction:: src.workflows.preproc.bidsRealignReslice
+.. _bidsRealignUnwarp:
+.. autofunction:: src.workflows.preproc.bidsRealignUnwarp
+.. _bidsRemoveDummies:
+.. autofunction:: src.workflows.preproc.bidsRemoveDummies
+.. _bidsResliceTpmToFunc:
+.. autofunction:: src.workflows.preproc.bidsResliceTpmToFunc
+.. _bidsSTC:
+.. autofunction:: src.workflows.preproc.bidsSTC
+.. _bidsSegmentSkullStrip:
+.. autofunction:: src.workflows.preproc.bidsSegmentSkullStrip
+.. _bidsSmoothing:
+.. autofunction:: src.workflows.preproc.bidsSmoothing
+.. _bidsSpatialPrepro:
+.. autofunction:: src.workflows.preproc.bidsSpatialPrepro
+.. _bidsWholeBrainFuncMask:
+.. autofunction:: src.workflows.preproc.bidsWholeBrainFuncMask
+
+
+.. _batches:
+
+batches
+=======
+.. _saveMatlabBatch:
+.. autofunction:: src.batches.saveMatlabBatch
+.. _setBachRename:
+.. autofunction:: src.batches.setBachRename
+.. _setBatch3Dto4D:
+.. autofunction:: src.batches.setBatch3Dto4D
+.. _setBatchImageCalculation:
+.. autofunction:: src.batches.setBatchImageCalculation
+.. _setBatchMeanAnatAndMask:
+.. autofunction:: src.batches.setBatchMeanAnatAndMask
+.. _setBatchPrintFigure:
+.. autofunction:: src.batches.setBatchPrintFigure
+.. _setBatchReorient:
+.. autofunction:: src.batches.setBatchReorient
+.. _setBatchRsHRF:
+.. autofunction:: src.batches.setBatchRsHRF
+.. _setBatchSelectAnat:
+.. autofunction:: src.batches.setBatchSelectAnat
+
+
+.. _batches lesion:
+
+batches lesion
+==============
+.. _setBatchLesionAbnormalitiesDetection:
+.. autofunction:: src.batches.lesion.setBatchLesionAbnormalitiesDetection
+.. _setBatchLesionOverlapMap:
+.. autofunction:: src.batches.lesion.setBatchLesionOverlapMap
+.. _setBatchLesionSegmentation:
+.. autofunction:: src.batches.lesion.setBatchLesionSegmentation
 
 
 .. _batches stats:
 
 batches stats
 =============
-.. _setBatchResults:
-.. autofunction:: src.batches.stats.setBatchResults
-.. _setBatchSubjectLevelGLMSpec:
-.. autofunction:: src.batches.stats.setBatchSubjectLevelGLMSpec
-.. _setBatchSubjectLevelContrasts:
-.. autofunction:: src.batches.stats.setBatchSubjectLevelContrasts
-.. _setBatchSubjectLevelResults:
-.. autofunction:: src.batches.stats.setBatchSubjectLevelResults
-.. _setBatchFatorialDesignGlobalCalcAndNorm:
-.. autofunction:: src.batches.stats.setBatchFatorialDesignGlobalCalcAndNorm
-.. _setBatchFactorialDesign:
-.. autofunction:: src.batches.stats.setBatchFactorialDesign
-.. _setBatchEstimateModel:
-.. autofunction:: src.batches.stats.setBatchEstimateModel
-.. _setBatchFactorialDesignImplicitMasking:
-.. autofunction:: src.batches.stats.setBatchFactorialDesignImplicitMasking
-.. _setBatchGroupLevelResults:
-.. autofunction:: src.batches.stats.setBatchGroupLevelResults
 .. _setBatchContrasts:
 .. autofunction:: src.batches.stats.setBatchContrasts
+.. _setBatchEstimateModel:
+.. autofunction:: src.batches.stats.setBatchEstimateModel
+.. _setBatchFactorialDesign:
+.. autofunction:: src.batches.stats.setBatchFactorialDesign
+.. _setBatchFactorialDesignImplicitMasking:
+.. autofunction:: src.batches.stats.setBatchFactorialDesignImplicitMasking
+.. _setBatchFatorialDesignGlobalCalcAndNorm:
+.. autofunction:: src.batches.stats.setBatchFatorialDesignGlobalCalcAndNorm
 .. _setBatchGroupLevelContrasts:
 .. autofunction:: src.batches.stats.setBatchGroupLevelContrasts
+.. _setBatchGroupLevelResults:
+.. autofunction:: src.batches.stats.setBatchGroupLevelResults
+.. _setBatchResults:
+.. autofunction:: src.batches.stats.setBatchResults
+.. _setBatchSubjectLevelContrasts:
+.. autofunction:: src.batches.stats.setBatchSubjectLevelContrasts
+.. _setBatchSubjectLevelGLMSpec:
+.. autofunction:: src.batches.stats.setBatchSubjectLevelGLMSpec
+.. _setBatchSubjectLevelResults:
+.. autofunction:: src.batches.stats.setBatchSubjectLevelResults
 .. _setBatchTwoSampleTTest:
 .. autofunction:: src.batches.stats.setBatchTwoSampleTTest
 
@@ -124,166 +160,164 @@ batches stats
 
 batches preproc
 ===============
-.. _setBatchRealign:
-.. autofunction:: src.batches.preproc.setBatchRealign
-.. _setBatchSmoothingAnat:
-.. autofunction:: src.batches.preproc.setBatchSmoothingAnat
+.. _setBatchComputeVDM:
+.. autofunction:: src.batches.preproc.setBatchComputeVDM
+.. _setBatchCoregistration:
+.. autofunction:: src.batches.preproc.setBatchCoregistration
 .. _setBatchCoregistrationFmap:
 .. autofunction:: src.batches.preproc.setBatchCoregistrationFmap
-.. _setBatchRenameSegmentParameter:
-.. autofunction:: src.batches.preproc.setBatchRenameSegmentParameter
-.. _setBatchInverseNormalize:
-.. autofunction:: src.batches.preproc.setBatchInverseNormalize
-.. _setBatchSTC:
-.. autofunction:: src.batches.preproc.setBatchSTC
-.. _setBatchNormalizationSpatialPrepro:
-.. autofunction:: src.batches.preproc.setBatchNormalizationSpatialPrepro
 .. _setBatchCoregistrationFuncToAnat:
 .. autofunction:: src.batches.preproc.setBatchCoregistrationFuncToAnat
 .. _setBatchCreateVDMs:
 .. autofunction:: src.batches.preproc.setBatchCreateVDMs
-.. _setBatchSkullStripping:
-.. autofunction:: src.batches.preproc.setBatchSkullStripping
-.. _setBatchNormalize:
-.. autofunction:: src.batches.preproc.setBatchNormalize
-.. _setBatchSaveCoregistrationMatrix:
-.. autofunction:: src.batches.preproc.setBatchSaveCoregistrationMatrix
-.. _setBatchCoregistration:
-.. autofunction:: src.batches.preproc.setBatchCoregistration
-.. _setBatchReslice:
-.. autofunction:: src.batches.preproc.setBatchReslice
-.. _setBatchSmoothing:
-.. autofunction:: src.batches.preproc.setBatchSmoothing
-.. _setBatchComputeVDM:
-.. autofunction:: src.batches.preproc.setBatchComputeVDM
-.. _setBatchSmoothingFunc:
-.. autofunction:: src.batches.preproc.setBatchSmoothingFunc
-.. _setBatchSmoothConImages:
-.. autofunction:: src.batches.preproc.setBatchSmoothConImages
 .. _setBatchGenerateT1map:
 .. autofunction:: src.batches.preproc.setBatchGenerateT1map
+.. _setBatchInverseNormalize:
+.. autofunction:: src.batches.preproc.setBatchInverseNormalize
+.. _setBatchNormalizationSpatialPrepro:
+.. autofunction:: src.batches.preproc.setBatchNormalizationSpatialPrepro
+.. _setBatchNormalize:
+.. autofunction:: src.batches.preproc.setBatchNormalize
+.. _setBatchRealign:
+.. autofunction:: src.batches.preproc.setBatchRealign
+.. _setBatchRenameSegmentParameter:
+.. autofunction:: src.batches.preproc.setBatchRenameSegmentParameter
+.. _setBatchReslice:
+.. autofunction:: src.batches.preproc.setBatchReslice
+.. _setBatchSTC:
+.. autofunction:: src.batches.preproc.setBatchSTC
+.. _setBatchSaveCoregistrationMatrix:
+.. autofunction:: src.batches.preproc.setBatchSaveCoregistrationMatrix
 .. _setBatchSegmentation:
 .. autofunction:: src.batches.preproc.setBatchSegmentation
+.. _setBatchSkullStripping:
+.. autofunction:: src.batches.preproc.setBatchSkullStripping
+.. _setBatchSmoothConImages:
+.. autofunction:: src.batches.preproc.setBatchSmoothConImages
+.. _setBatchSmoothing:
+.. autofunction:: src.batches.preproc.setBatchSmoothing
+.. _setBatchSmoothingAnat:
+.. autofunction:: src.batches.preproc.setBatchSmoothingAnat
+.. _setBatchSmoothingFunc:
+.. autofunction:: src.batches.preproc.setBatchSmoothingFunc
 
 
-.. _batches lesion:
+.. _IO:
 
-batches lesion
-==============
-.. _setBatchLesionOverlapMap:
-.. autofunction:: src.batches.lesion.setBatchLesionOverlapMap
-.. _setBatchLesionAbnormalitiesDetection:
-.. autofunction:: src.batches.lesion.setBatchLesionAbnormalitiesDetection
-.. _setBatchLesionSegmentation:
-.. autofunction:: src.batches.lesion.setBatchLesionSegmentation
-
-
-.. _batches:
-
-batches
-=======
-.. _setBatchSelectAnat:
-.. autofunction:: src.batches.setBatchSelectAnat
-.. _saveMatlabBatch:
-.. autofunction:: src.batches.saveMatlabBatch
-.. _setBatchReorient:
-.. autofunction:: src.batches.setBatchReorient
-.. _setBachRename:
-.. autofunction:: src.batches.setBachRename
-.. _setBatchMeanAnatAndMask:
-.. autofunction:: src.batches.setBatchMeanAnatAndMask
-.. _setBatchPrintFigure:
-.. autofunction:: src.batches.setBatchPrintFigure
-.. _setBatchImageCalculation:
-.. autofunction:: src.batches.setBatchImageCalculation
-.. _setBatchRsHRF:
-.. autofunction:: src.batches.setBatchRsHRF
-.. _setBatch3Dto4D:
-.. autofunction:: src.batches.setBatch3Dto4D
-
-
-.. _reports:
-
-reports
-=======
-.. _copyGraphWindownOutput:
-.. autofunction:: src.reports.copyGraphWindownOutput
-.. _copyFigures:
-.. autofunction:: src.reports.copyFigures
-.. _boilerplate:
-.. autofunction:: src.reports.boilerplate
-
-
-.. _infra:
-
-infra
-=====
-.. _checkToolbox:
-.. autofunction:: src.infra.checkToolbox
-.. _returnBsmDocURL:
-.. autofunction:: src.infra.returnBsmDocURL
-.. _getRepoInfo:
-.. autofunction:: src.infra.getRepoInfo
-.. _elapsedTime:
-.. autofunction:: src.infra.elapsedTime
-.. _returnRepoURL:
-.. autofunction:: src.infra.returnRepoURL
-.. _setGraphicWindow:
-.. autofunction:: src.infra.setGraphicWindow
-.. _getEnvInfo:
-.. autofunction:: src.infra.getEnvInfo
-.. _isGithubCi:
-.. autofunction:: src.infra.isGithubCi
-.. _checkDependencies:
-.. autofunction:: src.infra.checkDependencies
-.. _resizeAliMask:
-.. autofunction:: src.infra.resizeAliMask
-.. _returnRootDir:
-.. autofunction:: src.infra.returnRootDir
-.. _getVersion:
-.. autofunction:: src.infra.getVersion
-.. _isOctave:
-.. autofunction:: src.infra.isOctave
-.. _returnRtdURL:
-.. autofunction:: src.infra.returnRtdURL
+IO
+==
+.. _cleanCrash:
+.. autofunction:: src.IO.cleanCrash
+.. _createDerivativeDir:
+.. autofunction:: src.IO.createDerivativeDir
+.. _getData:
+.. autofunction:: src.IO.getData
+.. _loadAndCheckOptions:
+.. autofunction:: src.IO.loadAndCheckOptions
+.. _onsetsMatToTsv:
+.. autofunction:: src.IO.onsetsMatToTsv
+.. _overwriteDir:
+.. autofunction:: src.IO.overwriteDir
+.. _regressorsMatToTsv:
+.. autofunction:: src.IO.regressorsMatToTsv
+.. _renameSegmentParameter:
+.. autofunction:: src.IO.renameSegmentParameter
+.. _renameUnwarpParameter:
+.. autofunction:: src.IO.renameUnwarpParameter
+.. _saveAndRunWorkflow:
+.. autofunction:: src.IO.saveAndRunWorkflow
+.. _saveOptions:
+.. autofunction:: src.IO.saveOptions
+.. _saveSpmScript:
+.. autofunction:: src.IO.saveSpmScript
+.. _unzipAndReturnsFullpathName:
+.. autofunction:: src.IO.unzipAndReturnsFullpathName
 
 
 .. _QA:
 
 QA
 ==
-.. _functionalQA:
-.. autofunction:: src.QA.functionalQA
 .. _anatomicalQA:
 .. autofunction:: src.QA.anatomicalQA
-.. _plotEvents:
-.. autofunction:: src.QA.plotEvents
 .. _computeDesignEfficiency:
 .. autofunction:: src.QA.computeDesignEfficiency
+.. _functionalQA:
+.. autofunction:: src.QA.functionalQA
 .. _mriqcQA:
 .. autofunction:: src.QA.mriqcQA
+.. _plotEvents:
+.. autofunction:: src.QA.plotEvents
 .. _plotRoiTimeCourse:
 .. autofunction:: src.QA.plotRoiTimeCourse
+
+
+.. _bids:
+
+bids
+====
+.. _addStcToQuery:
+.. autofunction:: src.bids.addStcToQuery
+.. _buildIndividualSpaceRoiFilename:
+.. autofunction:: src.bids.buildIndividualSpaceRoiFilename
+.. _checkFmriprep:
+.. autofunction:: src.bids.checkFmriprep
+.. _fileFilterForBold:
+.. autofunction:: src.bids.fileFilterForBold
+.. _generatedBy:
+.. autofunction:: src.bids.generatedBy
+.. _getAnatFilename:
+.. autofunction:: src.bids.getAnatFilename
+.. _getAndCheckRepetitionTime:
+.. autofunction:: src.bids.getAndCheckRepetitionTime
+.. _getAndCheckSliceOrder:
+.. autofunction:: src.bids.getAndCheckSliceOrder
+.. _getBoldFilename:
+.. autofunction:: src.bids.getBoldFilename
+.. _getInfo:
+.. autofunction:: src.bids.getInfo
+.. _getMeanFuncFilename:
+.. autofunction:: src.bids.getMeanFuncFilename
+.. _getROIs:
+.. autofunction:: src.bids.getROIs
+.. _getSubjectList:
+.. autofunction:: src.bids.getSubjectList
+.. _getTpmFilename:
+.. autofunction:: src.bids.getTpmFilename
+.. _initBids:
+.. autofunction:: src.bids.initBids
+.. _isMni:
+.. autofunction:: src.bids.isMni
+.. _isSkullstripped:
+.. autofunction:: src.bids.isSkullstripped
+.. _removeEmptyQueryFields:
+.. autofunction:: src.bids.removeEmptyQueryFields
+.. _returnNameSkullstripOutput:
+.. autofunction:: src.bids.returnNameSkullstripOutput
+.. _roiGlmOutputName:
+.. autofunction:: src.bids.roiGlmOutputName
+.. _validate:
+.. autofunction:: src.bids.validate
 
 
 .. _bids_model:
 
 bids_model
 ==========
+.. _checkContrast:
+.. autofunction:: src.bids_model.checkContrast
+.. _checkGroupBy:
+.. autofunction:: src.bids_model.checkGroupBy
 .. _createDefaultStatsModel:
 .. autofunction:: src.bids_model.createDefaultStatsModel
+.. _getContrastsList:
+.. autofunction:: src.bids_model.getContrastsList
 .. _getContrastsListForFactorialDesign:
 .. autofunction:: src.bids_model.getContrastsListForFactorialDesign
 .. _getContrastsListFromSource:
 .. autofunction:: src.bids_model.getContrastsListFromSource
-.. _checkContrast:
-.. autofunction:: src.bids_model.checkContrast
 .. _getDummyContrastsList:
 .. autofunction:: src.bids_model.getDummyContrastsList
-.. _checkGroupBy:
-.. autofunction:: src.bids_model.checkGroupBy
-.. _getContrastsList:
-.. autofunction:: src.bids_model.getContrastsList
 .. _getInclusiveMask:
 .. autofunction:: src.bids_model.getInclusiveMask
 
@@ -296,28 +330,10 @@ cli
 .. autofunction:: src.cli.getOptionsFromCliArgument
 
 
-.. _stats:
-
-stats
-=====
-
-
 .. _defaults:
 
 defaults
 ========
-.. _setRenamingConfig:
-.. autofunction:: src.defaults.setRenamingConfig
-.. _rsHRF_my_defaults:
-.. autofunction:: src.defaults.rsHRF_my_defaults
-.. _setDirectories:
-.. autofunction:: src.defaults.setDirectories
-.. _mniToIxi:
-.. autofunction:: src.defaults.mniToIxi
-.. _getOptionsFromModel:
-.. autofunction:: src.defaults.getOptionsFromModel
-.. _set_spm_2_bids_defaults:
-.. autofunction:: src.defaults.set_spm_2_bids_defaults
 .. _ALI_my_defaults:
 .. autofunction:: src.defaults.ALI_my_defaults
 .. _MACS_my_defaults:
@@ -326,177 +342,279 @@ defaults
 .. autofunction:: src.defaults.checkOptions
 .. _defaultContrastsStructure:
 .. autofunction:: src.defaults.defaultContrastsStructure
-.. _spm_my_defaults:
-.. autofunction:: src.defaults.spm_my_defaults
 .. _defaultResultsStructure:
 .. autofunction:: src.defaults.defaultResultsStructure
+.. _getOptionsFromModel:
+.. autofunction:: src.defaults.getOptionsFromModel
+.. _mniToIxi:
+.. autofunction:: src.defaults.mniToIxi
+.. _rsHRF_my_defaults:
+.. autofunction:: src.defaults.rsHRF_my_defaults
+.. _setDirectories:
+.. autofunction:: src.defaults.setDirectories
+.. _setRenamingConfig:
+.. autofunction:: src.defaults.setRenamingConfig
+.. _set_spm_2_bids_defaults:
+.. autofunction:: src.defaults.set_spm_2_bids_defaults
+.. _spm_my_defaults:
+.. autofunction:: src.defaults.spm_my_defaults
 
 
-.. _utils:
+.. _infra:
 
-utils
+infra
 =====
-.. _isZipped:
-.. autofunction:: src.utils.isZipped
-.. _renamePng:
-.. autofunction:: src.utils.renamePng
-.. _returnBatchFileName:
-.. autofunction:: src.utils.returnBatchFileName
-.. _volumeSplicing:
-.. autofunction:: src.utils.volumeSplicing
-.. _computeTsnr:
-.. autofunction:: src.utils.computeTsnr
-.. _checkMaskOrUnderlay:
-.. autofunction:: src.utils.checkMaskOrUnderlay
-.. _setUpWorkflow:
-.. autofunction:: src.utils.setUpWorkflow
-.. _deregexify:
-.. autofunction:: src.utils.deregexify
-.. _cleanUpWorkflow:
-.. autofunction:: src.utils.cleanUpWorkflow
-.. _createDataDictionary:
-.. autofunction:: src.utils.createDataDictionary
-.. _isTtest:
-.. autofunction:: src.utils.isTtest
-.. _regexify:
-.. autofunction:: src.utils.regexify
-.. _setFields:
-.. autofunction:: src.utils.setFields
-.. _computeMeanValueInMask:
-.. autofunction:: src.utils.computeMeanValueInMask
-.. _getFuncVoxelDims:
-.. autofunction:: src.utils.getFuncVoxelDims
-.. _returnDependency:
-.. autofunction:: src.utils.returnDependency
-.. _getDist2surf:
-.. autofunction:: src.utils.getDist2surf
-.. _returnVolumeList:
-.. autofunction:: src.utils.returnVolumeList
-.. _validationInputFile:
-.. autofunction:: src.utils.validationInputFile
-.. _unfoldStruct:
-.. autofunction:: src.utils.unfoldStruct
-
-
-.. _bids:
-
-bids
-====
-.. _getAndCheckSliceOrder:
-.. autofunction:: src.bids.getAndCheckSliceOrder
-.. _generatedBy:
-.. autofunction:: src.bids.generatedBy
-.. _getTpmFilename:
-.. autofunction:: src.bids.getTpmFilename
-.. _addStcToQuery:
-.. autofunction:: src.bids.addStcToQuery
-.. _validate:
-.. autofunction:: src.bids.validate
-.. _getROIs:
-.. autofunction:: src.bids.getROIs
-.. _fileFilterForBold:
-.. autofunction:: src.bids.fileFilterForBold
-.. _roiGlmOutputName:
-.. autofunction:: src.bids.roiGlmOutputName
-.. _removeEmptyQueryFields:
-.. autofunction:: src.bids.removeEmptyQueryFields
-.. _buildIndividualSpaceRoiFilename:
-.. autofunction:: src.bids.buildIndividualSpaceRoiFilename
-.. _getBoldFilename:
-.. autofunction:: src.bids.getBoldFilename
-.. _getInfo:
-.. autofunction:: src.bids.getInfo
-.. _isSkullstripped:
-.. autofunction:: src.bids.isSkullstripped
-.. _isMni:
-.. autofunction:: src.bids.isMni
-.. _getMeanFuncFilename:
-.. autofunction:: src.bids.getMeanFuncFilename
-.. _initBids:
-.. autofunction:: src.bids.initBids
-.. _getAnatFilename:
-.. autofunction:: src.bids.getAnatFilename
-.. _getSubjectList:
-.. autofunction:: src.bids.getSubjectList
-.. _returnNameSkullstripOutput:
-.. autofunction:: src.bids.returnNameSkullstripOutput
-.. _checkFmriprep:
-.. autofunction:: src.bids.checkFmriprep
-.. _getAndCheckRepetitionTime:
-.. autofunction:: src.bids.getAndCheckRepetitionTime
-
-
-.. _IO:
-
-IO
-==
-.. _createDerivativeDir:
-.. autofunction:: src.IO.createDerivativeDir
-.. _renameUnwarpParameter:
-.. autofunction:: src.IO.renameUnwarpParameter
-.. _saveOptions:
-.. autofunction:: src.IO.saveOptions
-.. _onsetsMatToTsv:
-.. autofunction:: src.IO.onsetsMatToTsv
-.. _getData:
-.. autofunction:: src.IO.getData
-.. _unzipAndReturnsFullpathName:
-.. autofunction:: src.IO.unzipAndReturnsFullpathName
-.. _cleanCrash:
-.. autofunction:: src.IO.cleanCrash
-.. _regressorsMatToTsv:
-.. autofunction:: src.IO.regressorsMatToTsv
-.. _overwriteDir:
-.. autofunction:: src.IO.overwriteDir
-.. _saveSpmScript:
-.. autofunction:: src.IO.saveSpmScript
-.. _loadAndCheckOptions:
-.. autofunction:: src.IO.loadAndCheckOptions
-.. _saveAndRunWorkflow:
-.. autofunction:: src.IO.saveAndRunWorkflow
-.. _renameSegmentParameter:
-.. autofunction:: src.IO.renameSegmentParameter
+.. _checkDependencies:
+.. autofunction:: src.infra.checkDependencies
+.. _checkToolbox:
+.. autofunction:: src.infra.checkToolbox
+.. _elapsedTime:
+.. autofunction:: src.infra.elapsedTime
+.. _getEnvInfo:
+.. autofunction:: src.infra.getEnvInfo
+.. _getRepoInfo:
+.. autofunction:: src.infra.getRepoInfo
+.. _getVersion:
+.. autofunction:: src.infra.getVersion
+.. _isGithubCi:
+.. autofunction:: src.infra.isGithubCi
+.. _isOctave:
+.. autofunction:: src.infra.isOctave
+.. _resizeAliMask:
+.. autofunction:: src.infra.resizeAliMask
+.. _returnBsmDocURL:
+.. autofunction:: src.infra.returnBsmDocURL
+.. _returnRepoURL:
+.. autofunction:: src.infra.returnRepoURL
+.. _returnRootDir:
+.. autofunction:: src.infra.returnRootDir
+.. _returnRtdURL:
+.. autofunction:: src.infra.returnRtdURL
+.. _setGraphicWindow:
+.. autofunction:: src.infra.setGraphicWindow
 
 
 .. _messages:
 
 messages
 ========
-.. _pathToPrint:
-.. autofunction:: src.messages.pathToPrint
-.. _printBatchName:
-.. autofunction:: src.messages.printBatchName
-.. _noRoiFound:
-.. autofunction:: src.messages.noRoiFound
-.. _printToScreen:
-.. autofunction:: src.messages.printToScreen
 .. _bidspmHelp:
 .. autofunction:: src.messages.bidspmHelp
 .. _bugReport:
 .. autofunction:: src.messages.bugReport
-.. _printProcessingSubject:
-.. autofunction:: src.messages.printProcessingSubject
 .. _createUnorderedList:
 .. autofunction:: src.messages.createUnorderedList
-.. _printCredits:
-.. autofunction:: src.messages.printCredits
 .. _errorHandling:
 .. autofunction:: src.messages.errorHandling
-.. _noSPMmat:
-.. autofunction:: src.messages.noSPMmat
-.. _timeStamp:
-.. autofunction:: src.messages.timeStamp
-.. _notImplemented:
-.. autofunction:: src.messages.notImplemented
-.. _printWorkflowName:
-.. autofunction:: src.messages.printWorkflowName
 .. _logger:
 .. autofunction:: src.messages.logger
+.. _noRoiFound:
+.. autofunction:: src.messages.noRoiFound
+.. _noSPMmat:
+.. autofunction:: src.messages.noSPMmat
+.. _notImplemented:
+.. autofunction:: src.messages.notImplemented
+.. _pathToPrint:
+.. autofunction:: src.messages.pathToPrint
 .. _printAvailableContrasts:
 .. autofunction:: src.messages.printAvailableContrasts
+.. _printBatchName:
+.. autofunction:: src.messages.printBatchName
+.. _printCredits:
+.. autofunction:: src.messages.printCredits
+.. _printProcessingSubject:
+.. autofunction:: src.messages.printProcessingSubject
+.. _printToScreen:
+.. autofunction:: src.messages.printToScreen
+.. _printWorkflowName:
+.. autofunction:: src.messages.printWorkflowName
+.. _timeStamp:
+.. autofunction:: src.messages.timeStamp
 
 
-.. _preproc:
+.. _preproc fieldmaps:
 
-preproc
+preproc fieldmaps
+=================
+.. _getBlipDirection:
+.. autofunction:: src.preproc.fieldmaps.getBlipDirection
+.. _getMetadataFromIntendedForFunc:
+.. autofunction:: src.preproc.fieldmaps.getMetadataFromIntendedForFunc
+.. _getTotalReadoutTime:
+.. autofunction:: src.preproc.fieldmaps.getTotalReadoutTime
+.. _getVdmFile:
+.. autofunction:: src.preproc.fieldmaps.getVdmFile
+
+
+.. _preproc utils:
+
+preproc utils
+=============
+.. _getAcquisitionTime:
+.. autofunction:: src.preproc.utils.getAcquisitionTime
+.. _removeDummies:
+.. autofunction:: src.preproc.utils.removeDummies
+.. _segmentationAlreadyDone:
+.. autofunction:: src.preproc.utils.segmentationAlreadyDone
+.. _skullstrippingAlreadyDone:
+.. autofunction:: src.preproc.utils.skullstrippingAlreadyDone
+
+
+.. _reports:
+
+reports
 =======
+.. _boilerplate:
+.. autofunction:: src.reports.boilerplate
+.. _copyFigures:
+.. autofunction:: src.reports.copyFigures
+.. _copyGraphWindownOutput:
+.. autofunction:: src.reports.copyGraphWindownOutput
+
+
+.. _stats results:
+
+stats results
+=============
+.. _convertPvalueToString:
+.. autofunction:: src.stats.results.convertPvalueToString
+.. _defaultOuputNameStruct:
+.. autofunction:: src.stats.results.defaultOuputNameStruct
+.. _returnName:
+.. autofunction:: src.stats.results.returnName
+.. _setMontage:
+.. autofunction:: src.stats.results.setMontage
+.. _setNidm:
+.. autofunction:: src.stats.results.setNidm
+
+
+.. _stats subject_level:
+
+stats subject_level
+===================
+.. _allRunsHaveSameNbRegressors:
+.. autofunction:: src.stats.subject_level.allRunsHaveSameNbRegressors
+.. _appendContrast:
+.. autofunction:: src.stats.subject_level.appendContrast
+.. _checkRegressorName:
+.. autofunction:: src.stats.subject_level.checkRegressorName
+.. _convertOnsetTsvToMat:
+.. autofunction:: src.stats.subject_level.convertOnsetTsvToMat
+.. _convertRealignParamToTsv:
+.. autofunction:: src.stats.subject_level.convertRealignParamToTsv
+.. _createAndReturnCounfoundMatFile:
+.. autofunction:: src.stats.subject_level.createAndReturnCounfoundMatFile
+.. _createAndReturnOnsetFile:
+.. autofunction:: src.stats.subject_level.createAndReturnOnsetFile
+.. _createConfounds:
+.. autofunction:: src.stats.subject_level.createConfounds
+.. _deleteResidualImages:
+.. autofunction:: src.stats.subject_level.deleteResidualImages
+.. _getBoldFilenameForFFX:
+.. autofunction:: src.stats.subject_level.getBoldFilenameForFFX
+.. _getConfoundsRegressorFilename:
+.. autofunction:: src.stats.subject_level.getConfoundsRegressorFilename
+.. _getEventSpecificationRoiGlm:
+.. autofunction:: src.stats.subject_level.getEventSpecificationRoiGlm
+.. _getEventsData:
+.. autofunction:: src.stats.subject_level.getEventsData
+.. _getFFXdir:
+.. autofunction:: src.stats.subject_level.getFFXdir
+.. _getRealignParamFilename:
+.. autofunction:: src.stats.subject_level.getRealignParamFilename
+.. _getSessionForRegressorNb:
+.. autofunction:: src.stats.subject_level.getSessionForRegressorNb
+.. _newContrast:
+.. autofunction:: src.stats.subject_level.newContrast
+.. _orderAndPadCounfoundMatFile:
+.. autofunction:: src.stats.subject_level.orderAndPadCounfoundMatFile
+.. _removeIntercept:
+.. autofunction:: src.stats.subject_level.removeIntercept
+.. _reorderCounfounds:
+.. autofunction:: src.stats.subject_level.reorderCounfounds
+.. _saveRoiGlmSummaryTable:
+.. autofunction:: src.stats.subject_level.saveRoiGlmSummaryTable
+.. _selectConfoundsByVarianceExplained:
+.. autofunction:: src.stats.subject_level.selectConfoundsByVarianceExplained
+.. _specifyContrasts:
+.. autofunction:: src.stats.subject_level.specifyContrasts
+.. _specifyDummyContrasts:
+.. autofunction:: src.stats.subject_level.specifyDummyContrasts
+.. _specifySubLvlContrasts:
+.. autofunction:: src.stats.subject_level.specifySubLvlContrasts
+
+
+.. _stats group_level:
+
+stats group_level
+=================
+.. _findSubjectConImage:
+.. autofunction:: src.stats.group_level.findSubjectConImage
+.. _getRFXdir:
+.. autofunction:: src.stats.group_level.getRFXdir
+.. _groupLevelGlmType:
+.. autofunction:: src.stats.group_level.groupLevelGlmType
+
+
+.. _stats utils:
+
+stats utils
+===========
+.. _createGlmDirName:
+.. autofunction:: src.stats.utils.createGlmDirName
+.. _designMatrixFigureName:
+.. autofunction:: src.stats.utils.designMatrixFigureName
+.. _getContrastNb:
+.. autofunction:: src.stats.utils.getContrastNb
+.. _getRegressorIdx:
+.. autofunction:: src.stats.utils.getRegressorIdx
+.. _labelActivations:
+.. autofunction:: src.stats.utils.labelActivations
+.. _returnContrastImageFile:
+.. autofunction:: src.stats.utils.returnContrastImageFile
+
+
+.. _utils:
+
+utils
+=====
+.. _checkMaskOrUnderlay:
+.. autofunction:: src.utils.checkMaskOrUnderlay
+.. _cleanUpWorkflow:
+.. autofunction:: src.utils.cleanUpWorkflow
+.. _computeMeanValueInMask:
+.. autofunction:: src.utils.computeMeanValueInMask
+.. _computeTsnr:
+.. autofunction:: src.utils.computeTsnr
+.. _createDataDictionary:
+.. autofunction:: src.utils.createDataDictionary
+.. _deregexify:
+.. autofunction:: src.utils.deregexify
+.. _getDist2surf:
+.. autofunction:: src.utils.getDist2surf
+.. _getFuncVoxelDims:
+.. autofunction:: src.utils.getFuncVoxelDims
+.. _isTtest:
+.. autofunction:: src.utils.isTtest
+.. _isZipped:
+.. autofunction:: src.utils.isZipped
+.. _regexify:
+.. autofunction:: src.utils.regexify
+.. _renamePng:
+.. autofunction:: src.utils.renamePng
+.. _returnBatchFileName:
+.. autofunction:: src.utils.returnBatchFileName
+.. _returnDependency:
+.. autofunction:: src.utils.returnDependency
+.. _returnVolumeList:
+.. autofunction:: src.utils.returnVolumeList
+.. _setFields:
+.. autofunction:: src.utils.setFields
+.. _setUpWorkflow:
+.. autofunction:: src.utils.setUpWorkflow
+.. _unfoldStruct:
+.. autofunction:: src.utils.unfoldStruct
+.. _validationInputFile:
+.. autofunction:: src.utils.validationInputFile
+.. _volumeSplicing:
+.. autofunction:: src.utils.volumeSplicing
