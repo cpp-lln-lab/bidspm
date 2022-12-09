@@ -21,7 +21,11 @@ function test_logger_basic()
       opt.verbosity = verbosity;
       msg = sprintf('log level: %s - verbosity: %i', logLevel, opt.verbosity);
 
-      logger(logLevel, msg, opt, mfilename);
+      if strcmp(logLevel, 'ERROR')
+
+      else
+        logger(logLevel, msg, opt, mfilename, 'ID');
+      end
 
     end
   end

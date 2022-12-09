@@ -14,7 +14,7 @@ function printToScreen(varargin)
 
   addRequired(args, 'msg', @ischar);
   addOptional(args, 'opt', defaultOpt, @isstruct);
-  addParameter(args, 'format', default_format);
+  addParameter(args, 'format', defaultFormat);
 
   parse(args, varargin{:});
 
