@@ -43,21 +43,22 @@ function boldFilename = getBoldFilenameForFFX(varargin)
   boldFilename = bids.query(BIDS, 'data', filter);
 
   if numel(boldFilename) > 1
-    disp(boldFilename);
-    errorHandling(mfilename(), 'tooManyFiles', 'This should only get one file.', false, true);
+    id = 'tooManyFiles';
+    msg = sprintf('This should only get one file. Got:%s', createUnorderedList(boldFilename));
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   elseif isempty(boldFilename)
     msg = sprintf('No bold file found in:\n\t%s\nfor query:%s\n', ...
                   BIDS.pth, ...
                   createUnorderedList(opt.query));
     id = 'noFileFound';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   % in case files have been unzipped, we do it now
   fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename{1}, opt);
 
   msg = ['  Bold file(s):', createUnorderedList(pathToPrint(fullPathBoldFilename))];
-  logger('INFO', msg, 'options', opt, 'filename', mfilename);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   boldFilename = spm_file(fullPathBoldFilename, 'filename');
   subFuncDataDir = spm_file(fullPathBoldFilename, 'path');

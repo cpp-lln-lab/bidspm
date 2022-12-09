@@ -37,7 +37,7 @@ function status = noRoiFound(varargin)
 
     msg = sprintf('No ROI found in folder: %s', args.Results.folder);
     id = 'noRoiFile';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', args.Results.opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', args.Results.opt);
 
   end
 

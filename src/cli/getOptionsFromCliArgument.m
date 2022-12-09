@@ -148,6 +148,6 @@ function overrideMsg(thisArgument, newValue, thisOption, oldValue, opt)
                 newValue, ...
                 thisOption, ...
                 oldValue);
-  logger('DEBUG', msg, opt, mfilename);
+  logger('DEBUG', msg, opt, mfilename());
 
 end

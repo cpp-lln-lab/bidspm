@@ -55,9 +55,9 @@ function matlabbatch = setBatchSTC(varargin)
   % get slice order
   sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter);
   if isempty(sliceOrder)
-    errorHandling(mfilename(), 'noSliceOrder', ...
-                  'skipping slice timing correction.', ...
-                  true, opt.verbosity);
+    id = 'noSliceOrder';
+    msg = 'skipping slice timing correction.';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
     return
   end
 
@@ -92,7 +92,7 @@ function matlabbatch = setBatchSTC(varargin)
                   referenceSlice, ...
                   sliceOrder);
     id = 'invalidInputTime';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   nbSlices = numel(sliceOrder);
@@ -107,7 +107,7 @@ function matlabbatch = setBatchSTC(varargin)
 
   runCounter = 1;
 
-  logger('INFO', createUnorderedList(files), 'options', opt, 'filename',  mfilename);
+  logger('INFO', createUnorderedList(files), 'options', opt, 'filename',  mfilename());
 
   for iFile = 1:size(files, 1)
 

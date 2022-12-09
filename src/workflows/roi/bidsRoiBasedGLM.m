@@ -71,7 +71,7 @@ function skipped = bidsRoiBasedGLM(opt)
     msg = [' Using ROIs:' ...
            createUnorderedList(pathToPrint(roiList))];
 
-    logger('INFO', msg, 'options', opt, 'filename', mfilename);
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
     outputDir = getFFXdir(subLabel, opt);
 
@@ -99,13 +99,13 @@ function skipped = bidsRoiBasedGLM(opt)
                       subLabel,  ...
                       spm_file(roiList{iROI, 1}, 'filename'));
         id = 'emptyRoi';
-        logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
+        logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
       end
       voxelVolume = prod(abs(diag(roiHeader.mat)));
       roiSize.volume = roiSize.voxels * voxelVolume;
 
       msg = sprintf('\n Processing ROI:\n\t%s\n', spm_file(roiList{iROI, 1}, 'filename'));
-      logger('INFO', msg, 'options', opt, 'filename', mfilename);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
       %% Do ROI based GLM
       % create ROI object for Marsbar
@@ -246,13 +246,13 @@ function checks(opt)
     disp(opt.space);
     msg = sprintf('GLMs can only be run in one space at a time.\n');
     id = 'tooManySpaces';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   if ~opt.glm.roibased.do
     msg = '"opt.glm.roibased.do" must be set to true for this workflow to to run.';
     id = 'roiBasedAnalysis';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
 end

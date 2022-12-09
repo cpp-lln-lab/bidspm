@@ -38,14 +38,14 @@ function filenames = getConfoundsRegressorFilename(BIDS, opt, subLabel, session,
   if numel(filenames) > 1
     msg = ['Found several confounds files:' createUnorderedList(filenames)];
     id = 'tooManyFiles';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
 
   elseif isempty(filenames)
     msg = sprintf('No TSV file found in:\n\t%s\nfor query:%s\n', ...
                   BIDS.pth, ...
                   createUnorderedList(opt.query));
     id = 'noFileFound';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
 
   end
 

@@ -21,7 +21,7 @@ function allRunsHaveSameNbRegressors(spmMat)
   if numel(unique(nbRegressorPerRun)) > 1
     msg = sprintf('Runs have different number of regressors in SPM.mat:\n%s\n\n.', spmMat);
     id = 'differentNbRegressor';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
 end

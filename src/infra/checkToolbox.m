@@ -45,7 +45,7 @@ function status = checkToolbox(varargin)
                   toolboxName, ...
                   createUnorderedList(knownToolboxes));
     id = 'unknownToolbox';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
   end
 
   status = isdir(fullfile(spm('dir'), 'toolbox', toolboxName));
@@ -62,7 +62,7 @@ function status = checkToolbox(varargin)
         msg = sprintf('installing MACS toolbox in:\n%s.\n\n', ...
                       fullfile(spm('dir'), 'toolbox', 'MACS'));
         id = 'installingMacsToolbox';
-        logger('WARNING', msg, 'id', id, 'filename', mfilename);
+        logger('WARNING', msg, 'id', id, 'filename', mfilename());
 
         copyfile(fullfile(returnRootDir(), 'lib', 'MACS'), ...
                  fullfile(spm('dir'), 'toolbox', 'MACS'));
@@ -76,13 +76,13 @@ function status = checkToolbox(varargin)
       msg = sprintf('The toolbox %s should be installed from:\n %s\n\n', ...
                     toolboxName, ...
                     'https://github.com/benoitberanger/mp2rage');
-      errorHandling(mfilename(), 'missingToolbox', msg, true, verbose);
+      errorHandling(mfilename()(), 'missingToolbox', msg, true, verbose);
 
   end
 
   if ~status
     msg = sprintf('The toolbox %s could not be found or installed.\n\n', toolboxName);
-    errorHandling(mfilename(), 'missingToolbox', msg, true, verbose);
+    errorHandling(mfilename()(), 'missingToolbox', msg, true, verbose);
   end
 
 end

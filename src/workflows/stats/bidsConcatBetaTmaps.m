@@ -55,7 +55,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
     catch
       msg = 'Could not find dummy contrasts in the BIDS stats model.';
       id = 'noDummyContrast';
-      logger('ERROR', msg, 'id', id, 'filename', mfilename);
+      logger('ERROR', msg, 'id', id, 'filename', mfilename());
     end
 
     betaMaps = {};
@@ -64,7 +64,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
     % path to beta and t-map files.
 
     msg = 'Concatenating the following contrasts:';
-    logger('INFO', msg, 'options', opt, 'filename', mfilename);
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
     for iContrast = 1:length(contrasts)
 
       msg = sprintf('\n\t%s', contrasts(iContrast).name);
@@ -75,7 +75,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
         msg = sprintf(['Supposed to concatenate one beta image per contrast.' ...
                        '\nSkipping: %s'], contrasts(iContrast).name);
         id = 'concatOneImgOnly';
-        logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+        logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
         continue
       end
 
@@ -147,19 +147,19 @@ function removeTmaps(tMaps, deleteTmaps, ffxDir)
 
     % delete all individual con maps
     msg = 'Deleting individual con maps ...  ';
-    logger('INFO', msg, 'options', opt, 'filename', mfilename);
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
     for iCon = 1:length(tMaps)
       delete(fullfile(ffxDir, ['con_', sprintf('%04d', iCon), '.nii']));
     end
-    logger('INFO', 'Done', 'options', opt, 'filename', mfilename);
+    logger('INFO', 'Done', 'options', opt, 'filename', mfilename());
 
     % delete all individual t-maps
     msg = 'Deleting individual t-maps ...  ';
-    logger('INFO', msg, 'options', opt, 'filename', mfilename);
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
     for iTmap = 1:length(tMaps)
       delete(tMaps{iTmap}(1:end - 2));
     end
-    logger('INFO', 'Done', 'options', opt, 'filename', mfilename);
+    logger('INFO', 'Done', 'options', opt, 'filename', mfilename());
 
   end
 

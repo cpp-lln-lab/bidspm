@@ -29,7 +29,7 @@ function export = setNidm(export, result)
       msg = sprintf(['Unknown space for NIDM results "%s".\n', ...
                      'Allowed spaces are:\n'], result.space, strjoin(allowedSpaces));
       id = 'unknownNidmSpace';
-      logger('ERROR', msg, 'id', id, 'filename', mfilename);
+      logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
     end
 

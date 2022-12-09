@@ -191,7 +191,7 @@ function matlabbatch = bidsModelSelection(varargin)
       if isempty(spmMatFile)
         msg = sprintf('no SPM.mat found in:\n%s\n\n', ffxDir);
         id = 'noSPMmat';
-        logger('ERROR', msg, 'id', id, 'filename', mfilename);
+        logger('ERROR', msg, 'id', id, 'filename', mfilename());
       end
 
       msg = struct('Subject', subLabel);
@@ -199,7 +199,7 @@ function matlabbatch = bidsModelSelection(varargin)
       msg.Task = opt.taskName;
       msg.Space = opt.space;
       msg = [createUnorderedList(msg) '\n\n' pathToPrint(spmMatFile) '\n'];
-      logger('INFO', msg, 'options', opt, 'filename', mfilename);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
       matlabbatch{1}.spm.tools.MACS.MA_model_space.models{1, iSub}{1, iModel} = {spmMatFile};
 
@@ -212,7 +212,7 @@ function matlabbatch = bidsModelSelection(varargin)
                            subLabel, ...
                            names{iModel});
         id = 'missingMACSField';
-        logger('WARNING', errorMsg, 'id', id, 'filename', mfilename(), 'options', opt);
+        logger('WARNING', errorMsg, 'id', id, 'filename', mfilename()(), 'options', opt);
       end
 
     end
@@ -283,13 +283,13 @@ function checks(opt)
   status = checkToolbox('MACS', 'install', true, 'verbose', opt.verbosity > 0);
   if ~status
     id = 'macsToolboxMissing';
-    logger('ERROR', 'MACS toolbox missing', 'id', id, 'filename', mfilename);
+    logger('ERROR', 'MACS toolbox missing', 'id', id, 'filename', mfilename());
   end
 
   if isempty(opt.toolbox.MACS.model.files)
     msg = sprintf('no model list provided in opt.toolbox.MACS.model.files');
     id = 'noModelList';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   % check all models have same space and task inputs
@@ -299,7 +299,7 @@ function checks(opt)
     if ~(exist(modelFiles{iModel}, 'file') == 2)
       msg = sprintf('This model file does not exist:\n%s\n\n', modelFiles{iModel});
       id = 'noModelFile';
-      logger('ERROR', msg, 'id', id, 'filename', mfilename);
+      logger('ERROR', msg, 'id', id, 'filename', mfilename());
     end
     bm = BidsModel('file', modelFiles{iModel});
     inputs{iModel, 1} = bm.Input;
@@ -308,13 +308,13 @@ function checks(opt)
   if any(~cellfun(@(x) isfield(x, 'space'), inputs))
     msg = sprintf('All models must have a space input defined.');
     id = 'missingModelInputSpace';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   if any(~cellfun(@(x) isfield(x, 'task'), inputs))
     msg = sprintf('All models must have a task input defined.');
     id = 'missingModelInputTask';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   space = cellfun(@(x) x.space, inputs, 'UniformOutput', false);
@@ -324,7 +324,7 @@ function checks(opt)
   if numel(unique(space)) > 1
     msg = sprintf('All models must have same space inputs.');
     id = 'differentModelSpace';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   % if some models have more than one task,
@@ -335,7 +335,7 @@ function checks(opt)
   if moreThanOneTask
     msg = sprintf('All models must have same task inputs.');
     id = 'differentModelTasks';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
   if all(ismember(tmp, 'cell'))
     task = cellfun(@(x) strjoin(x.task, ' '), inputs, 'UniformOutput', false);
@@ -345,7 +345,7 @@ function checks(opt)
   if numel(unique(task)) > 1
     msg = sprintf('All models must have same task inputs.');
     id = 'differentModelTasks';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
 end

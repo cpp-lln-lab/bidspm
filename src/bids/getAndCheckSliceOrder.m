@@ -37,13 +37,13 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
     sliceOrder = opt.stc.sliceOrder;
 
     msg = ' SLICE TIMING INFORMATION EXTRACTED FROM OPTIONS.';
-    logger('INFO', msg, 'options', opt, 'filename', mfilename);
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
     wng = ['[DEPRECATION WARNING]\n', ...
            'Slice timing in the options will be deprecated in release 3.0.\n', ...
            'Specify it in the relevant JSON file in your BIDS dataset.\n'];
     id = 'deprecation';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
 
     return
 
@@ -63,7 +63,7 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
     msg = sprintf('no slice timing found for filter:\n%s.\n\n', ...
                   createUnorderedList(filter));
     id = 'noSliceTimingFound';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
 
     return
 
@@ -77,7 +77,7 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
     msg = sprintf('inconsistent slice timing found for filter:\n%s.\n\n', ...
                   createUnorderedList(filter));
     id = 'inconsistentSliceTiming';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
 
     return
 
@@ -96,7 +96,7 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
       wng = sprintf('inconsistent slice timing found for filter:\n%s.\n\n', ...
                     createUnorderedList(filter));
       id = 'inconsistentSliceTiming';
-      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+      logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
 
       return
     end
@@ -104,6 +104,6 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
   end
 
   msg = ' SLICE TIMING INFORMATION EXTRACTED FROM METADATA.';
-  logger('INFO', msg, 'options', opt, 'filename', mfilename);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
 end

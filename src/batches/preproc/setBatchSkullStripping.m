@@ -59,11 +59,10 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
 
   bf = bids.File(imageToSkullStrip, 'use_schema', false);
   if isSkullstripped(bf)
-    errorHandling(mfilename(), ...
-                  'imageAlreadySkullstripped', ...
-                  'The image is already skullstripped. Skipping skullstripping batch.', ...
-                  true, ...
-                  opt.verbosity);
+    id =  'imageAlreadySkullstripped';
+    msg = 'The image is already skullstripped. Skipping skullstripping batch.';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+
     return
   end
 
@@ -132,14 +131,14 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
     if any(cellfun('isempty', input))
       msg = sprintf('Missing data for skullstripping: run the segmentation.');
       id = 'missingDataForSkullstripping';
-      logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
+      logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
     end
 
     if any(cellfun(@(x) numel(x), input) > 1)
       msg = sprintf(['Too much data for skullstripping: ', ...
                      'should have only bias corrected image + 1 TPM per tissue class.']);
       id = 'tooMuchDataForSkullstripping';
-      logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
+      logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
     end
 
     input = {input{1}, input{2}, input{3}, input{4}};

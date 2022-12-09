@@ -12,6 +12,6 @@ function printProcessingSubject(iSub, subLabel, opt)
                  'SUBJECT LABEL : %s'], ...
                 iSub, subLabel);
 
-  logger('INFO', msg, 'options', opt, 'filename', mfilename);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
 end

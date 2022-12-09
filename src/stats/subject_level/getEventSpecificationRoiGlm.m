@@ -188,7 +188,7 @@ function status = isContrastAgainstBaseline(contrast)
     status = false;
     verbose = true;
     msg = 'Only contrasts against baseline supported';
-    notImplemented(mfilename(), msg, verbose);
+    notImplemented(mfilename()(), msg, verbose);
 
   end
 

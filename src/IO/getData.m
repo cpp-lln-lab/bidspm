@@ -35,7 +35,7 @@ function [BIDS, opt] = getData(varargin)
       msg = sprintf('The following directory does not exist:\n\t%s', ...
                     pathToPrint(varargin{2}));
       id = 'notADirectory';
-      logger('ERROR', msg, 'filename', mfilename(), 'id', id);
+      logger('ERROR', msg, 'filename', mfilename()(), 'id', id);
     else
       rethrow(ME);
     end
@@ -46,7 +46,7 @@ function [BIDS, opt] = getData(varargin)
 
   if isfield(opt, 'taskName')
     msg = sprintf('FOR TASK(s): %s', strjoin(opt.taskName, ' '));
-    logger('INFO', msg, 'options', opt, 'filename', mfilename);
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
   end
 
   validationInputFile(bidsDir, 'dataset_description.json');
@@ -57,7 +57,7 @@ function [BIDS, opt] = getData(varargin)
     if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file') == 2
       msg = sprintf('Loading BIDS raw layout from:\n\t%s', ...
                     pathToPrint(fullfile(opt.dir.raw, 'layout.mat')));
-      logger('INFO', msg, 'options', opt, 'filename', mfilename);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename());
       tmp = load(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
       if isempty(fieldnames(tmp))
         BIDS.raw = bids.layout(opt.dir.raw);
@@ -79,7 +79,7 @@ function [BIDS, opt] = getData(varargin)
                   createUnorderedList(bids.query(BIDS, 'tasks')));
 
     id = 'noMatchingTask';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
   end
 
@@ -89,6 +89,6 @@ function [BIDS, opt] = getData(varargin)
   opt = getSubjectList(BIDS, opt);
 
   msg = sprintf('WILL WORK ON SUBJECTS%s', createUnorderedList(opt.subjects));
-  logger('INFO', msg, 'options', opt, 'filename', mfilename);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
 end

@@ -36,7 +36,7 @@ function contrastNb = getContrastNb(result, opt, SPM)
 
     msg = 'No contrast name specified';
     id = 'missingContrastName';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename());
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()());
 
     return
 
@@ -56,7 +56,7 @@ function contrastNb = getContrastNb(result, opt, SPM)
                   fullfile(result.dir, 'SPM.mat'), ...
                   result.name(2:end - 1));
     id = 'noMatchingContrastName';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename());
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()());
 
     return
 

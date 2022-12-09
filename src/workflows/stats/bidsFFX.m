@@ -156,7 +156,7 @@ function checkRootNode(opt)
 
   if ismember(lower(thisNode.Level), {'session', 'subject'})
 
-    notImplemented(mfilename(), ...
+    notImplemented(mfilename()(), ...
                    '"session" and "subject" level Node not implemented yet', ...
                    verbose);
 
@@ -165,7 +165,7 @@ function checkRootNode(opt)
     msg = sprintf(['Your model seems to be having dataset Node at its root\n.', ...
                    'Validate it: https://bids-standard.github.io/stats-models/validator.html\n']);
     id = 'wrongLevel';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
   end
 
@@ -182,11 +182,11 @@ function checkRootNode(opt)
     disp(opt.space);
     msg = sprintf('GLMs can only be run in one space at a time.\n');
     id = 'tooManySpaces';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   msg = sprintf('\n PROCESSING NODE: %s\n', thisNode.Name);
-  logger('INFO', msg, 'options', opt, 'filename', mfilename);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
 end
 
@@ -215,7 +215,7 @@ function status = subjectHasData(BIDS, opt, subLabel)
                   createUnorderedList(bids.query(BIDS, 'tasks', filter)));
 
     id = 'noDataForSubjectGLM';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
 
   end
 

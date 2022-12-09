@@ -36,7 +36,7 @@ function dep = returnDependency(opt, type)
                     type, ...
                     createUnorderedList(handledDependencies));
       id = 'unknownDependency';
-      logger('ERROR', msg, 'id', id, 'filename', mfilename);
+      logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
   end
 

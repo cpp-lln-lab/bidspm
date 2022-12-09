@@ -32,7 +32,7 @@ function blipDir = getBlipDirection(metadata)
       otherwise
         msg = sprintf('unknown phase encoding direction: %s', metadata.PhaseEncodingDirection);
         id = 'unknownPhaseEncodingDirection';
-        logger('ERROR', msg, 'id', id, 'filename', mfilename);
+        logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
     end
 

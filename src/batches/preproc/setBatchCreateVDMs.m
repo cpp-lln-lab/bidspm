@@ -70,7 +70,7 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
                    'This is known issue\n.', ...
                    'Skipping for now.'];
             id = 'emptyReadoutTime';
-            logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+            logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
             continue
           else
             rethrow(ME);

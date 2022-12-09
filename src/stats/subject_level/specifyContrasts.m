@@ -35,8 +35,9 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
   counter = 0;
 
   if numel(model.Nodes) < 1
-    errorHandling(mfilename(), 'wrongStatsModel', 'No node in the model', true, true);
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    id = 'wrongStatsModel';
+    msg = 'No node in the model';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
   end
 
   if nargin < 3 || isempty(nodeName)
@@ -77,7 +78,7 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
   if numel(contrasts) == 1 && isempty(contrasts.C)
     msg = 'No contrast to build';
     id = 'noContrast';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
   end
 
   contrasts = removeDuplicates(contrasts);
@@ -108,7 +109,7 @@ function contrasts = removeDuplicates(contrasts)
       disp(tmp(duplicates));
       msg = 'there are contrasts with the same name but different vector.';
       id = 'duplicateContrasts';
-      logger('WARNING', msg, 'id', id);
+      logger('WARNING', msg, 'id', id, 'filename', mfilename());
       continue
     end
 
@@ -154,7 +155,7 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
       msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
                     this_contrast.Name, cdtName);
       id = 'runMissingCondition';
-      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+      logger('WARNING', msg, 'id', id, 'filename', mfilename());
 
       continue
     end

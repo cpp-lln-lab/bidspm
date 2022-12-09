@@ -29,7 +29,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   [matlabbatch, BIDS, opt, subLabel] =  deal(varargin{:});
 
   if ~isfield(BIDS, 'raw')
-    logger('ERROR', msg, 'filename', mfilename(), 'id', 'missingRawDir');
+    logger('ERROR', msg, 'filename', mfilename()(), 'id', 'missingRawDir');
   end
 
   opt.model.bm.getModelType();
@@ -71,7 +71,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   ffxDir = getFFXdir(subLabel, opt);
   overwriteDir(ffxDir, opt);
   msg = sprintf(' output dir:\n\t%s', pathToPrint(ffxDir));
-  logger('INFO', msg, 'options', opt, 'filename', mfilename);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
   fmri_spec.dir = {ffxDir};
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
@@ -102,7 +102,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
         if ~strcmp(runs{iRun}, '')
           msg = sprintf(' Processing run %s', runs{iRun});
-          logger('INFO', msg, 'options', opt, 'filename', mfilename);
+          logger('INFO', msg, 'options', opt, 'filename', mfilename());
         end
 
         spmSess(spmSessCounter).scans = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
@@ -225,7 +225,7 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
     % this may lead to more time bins that used in reality at acquisition
 
     id = 'noSliceTimingInfoForGlm';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
 
   end
 
@@ -271,7 +271,7 @@ function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, ru
                   BIDS.raw.pth, ...
                   createUnorderedList(filter));
     id = 'emptyInput';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
 
     onsetFilename = '';
 

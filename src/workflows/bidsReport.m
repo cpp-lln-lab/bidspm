@@ -50,7 +50,7 @@ function bidsReport(opt)
 
       msg = sprintf('Could not read data to write report for dataset:\n%s', BIDS.pth);
       id = 'unspecifiedError';
-      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+      logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
 
       bids.report(BIDS, ...
                   'filter', filter, ...

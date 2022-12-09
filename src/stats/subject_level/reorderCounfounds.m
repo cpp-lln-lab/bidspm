@@ -33,10 +33,9 @@ function [names, R] = reorderCounfounds(varargin)
   allConfoundsNames = unique(allConfoundsNames);
 
   if numel(allConfoundsNames) < numel(names) && not(all(ismember(names, allConfoundsNames)))
-    errorHandling(mfilename(), ...
-                  'missingConfounds', ...
-                  'Some of the confounds to reorder are not in the reference list.', ...
-                  false);
+    id = 'missingConfounds';
+    msg = 'Some of the confounds to reorder are not in the reference list.';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   [LIA, LOCB] = ismember(allConfoundsNames, names);

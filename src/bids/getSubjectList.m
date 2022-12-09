@@ -126,7 +126,7 @@ function errorMissingSubject(opt, allSubjects)
                 subjectsSpecified, ...
                 subjectsPresent);
   id = 'noMatchingSubject';
-  logger('ERROR', msg, 'id', id, 'filename', mfilename);
+  logger('ERROR', msg, 'id', id, 'filename', mfilename());
 end
 
 function option = prepareRegex(option)

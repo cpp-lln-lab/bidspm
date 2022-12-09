@@ -68,7 +68,7 @@ function outputFile = saveRoiGlmSummaryTable(varargin)
                     subLabel, ...
                     bf.entities.label);
       id = 'noRoiResultFileForRoi';
-      logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
+      logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
       continue
     end
 
@@ -114,7 +114,7 @@ function outputFile = saveRoiGlmSummaryTable(varargin)
   if ~exist('tsvContent', 'var')
     msg = sprintf('No roi results found for sub-%s.\n', subLabel);
     id = 'noRoiResultsForSubject';
-    logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
+    logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
     return
   end
 
@@ -135,13 +135,13 @@ function checks(opt)
     disp(opt.space);
     msg = sprintf('GLMs can only be run in one space at a time.\n');
     id = 'tooManySpaces';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   if ~opt.glm.roibased.do
     msg = '"opt.glm.roibased.do" must be set to true for this workflow to to run.';
     id = 'roiBasedAnalysis';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
 end

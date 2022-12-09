@@ -13,7 +13,7 @@ function versionNumber = getVersion()
   % (C) Copyright 2020 bidspm developers
 
   try
-    versionNumber = fileread(fullfile(fileparts(mfilename('fullpath')), ...
+    versionNumber = fileread(fullfile(fileparts(mfilename()('fullpath')), ...
                                       '..', '..', 'version.txt'));
   catch
 

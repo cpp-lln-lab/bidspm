@@ -74,7 +74,7 @@ function tsvFile = labelActivations(varargin)
   if isempty(newCSV.x)
     msg = sprintf('no significant voxels in file:\n\t%s', pathToPrint(csvFile));
     id = 'noSignificantVoxel';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename());
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()());
     return
   end
 

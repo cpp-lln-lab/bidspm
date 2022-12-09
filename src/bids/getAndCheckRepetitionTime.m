@@ -50,9 +50,9 @@ function repetitionTime = getAndCheckRepetitionTime(varargin)
   repetitionTime = unique(cat(1, repetitionTime{:}));
 
   if length(repetitionTime) > 1
-    errorHandling(mfilename(), 'differentRepetitionTime', ...
-                  'Input files have different repetition time.', ...
-                  false, true);
+    id = 'differentRepetitionTime';
+    msg = 'Input files have different repetition time.';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   if isempty(repetitionTime)

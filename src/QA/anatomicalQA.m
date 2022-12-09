@@ -20,7 +20,7 @@ function anatomicalQA(opt)
   if isOctave()
     logger('WARNING', ...
            'anatomicalQA is not yet supported on Octave. This step will be skipped.', ...
-           opt, mfilename);
+           opt, mfilename());
     opt.QA.anat.do = false;
   end
 

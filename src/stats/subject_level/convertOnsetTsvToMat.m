@@ -59,7 +59,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
     msg = sprintf('%s\n%s', 'Onset column contains non numeric values in file:', tsv.file);
     id = 'onsetsNotNumeric';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
   end
 
@@ -67,7 +67,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
     msg = sprintf('%s\n%s', 'Duration column contains non numeric values in file:', tsv.file);
     id = 'durationsNotNumeric';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
   end
 
@@ -153,7 +153,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
                     varToConvolve{iVar}, ...
                     tsv.file);
       id = 'variableNotFound';
-      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+      logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
 
     end
 
@@ -186,7 +186,7 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
   msg = sprintf('   Condition %s: %i trials found.\n', ...
                 condName, ...
                 numel(rows));
-  logger('INFO', msg, 'options', opt, 'filename', mfilename);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   if ~isempty(rows)
 
@@ -203,7 +203,7 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
                   varToConvolve, ...
                   tsv.file);
     id = 'trialTypeNotFound';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
 
     if opt.glm.useDummyRegressor
       condToModel = addDummyRegressor(condToModel);

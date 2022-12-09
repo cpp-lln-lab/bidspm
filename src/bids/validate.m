@@ -22,7 +22,7 @@ function validate(args)
                        msg_data, ...
                        'https://bids-standard.github.io/bids-validator/');
     id = 'invalidBidsDataset';
-    logger('ERROR', msg_data, 'filename', mfilename(), 'id', id);
+    logger('ERROR', msg_data, 'filename', mfilename()(), 'id', id);
   elseif args.Results.verbosity > 0
     disp(msg_data);
   end
@@ -39,7 +39,7 @@ function validate(args)
       msg_model = sprintf(['\nBIDS stats models could not be validated.', ...
                            '\nTo silence this warning install bsmschema:', ...
                            '\n   pip install bsmschema']);
-      errorHandling(mfilename(), 'invalidModel', msg_model, true, args.Results.verbosity);
+      errorHandling(mfilename()(), 'invalidModel', msg_model, true, args.Results.verbosity);
     end
   end
 

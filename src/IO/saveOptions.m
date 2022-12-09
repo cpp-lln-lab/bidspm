@@ -26,6 +26,6 @@ function saveOptions(opt)
   bids.util.jsonwrite(filename, opt);
 
   msg = sprintf('Options saved in: %s', pathToPrint(filename));
-  logger('INFO', msg, 'options', opt, 'filename', mfilename);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
 end

@@ -29,7 +29,7 @@ function acquisitionTime = getAcquisitionTime(sliceOrder, repetitionTime)
                   acquisitionTime, ...
                   sliceOrder);
     id = 'sliceTimingSuperiorToAcqTime';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
 end

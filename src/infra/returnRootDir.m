@@ -20,7 +20,7 @@ function rootDir = returnRootDir()
   if isempty(rootDir)
     msg = 'bidspm is not in your MATLAB / Octave path.\n';
     id = 'bidspm:bidspmNotInPath';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
   elseif numel(rootDir) > 1
     fprintf('bidspm seems to appear in several different folders:\n');
@@ -29,7 +29,7 @@ function rootDir = returnRootDir()
     end
     msg = 'Remove all but one with ''pathtool''.\n'; % or ''spm_rmpath
     id = 'bidspm:SeveralBidspmInPath';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
   end
 

@@ -193,12 +193,12 @@ function matlabbatch = bidsResults(varargin)
       msg = sprintf('no Node named %s in model\n %s.', ...
                     opt.results(iRes).nodeName, ...
                     opt.model.file);
-      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+      logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
       continue
     end
 
     msg = sprintf('\n PROCESSING NODE: %s\n', node.Name);
-    logger('INFO', msg, 'options', opt, 'filename', mfilename);
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
     % Depending on the level step we might have to define a matlabbatch
     % for each subject or just on for the whole group
@@ -235,7 +235,7 @@ function matlabbatch = bidsResults(varargin)
 
       case 'session'
 
-        notImplemented(mfilename(), 'session level results not implemented yet', opt.verbosity);
+        notImplemented(mfilename()(), 'session level results not implemented yet', opt.verbosity);
 
         continue
 
@@ -256,7 +256,7 @@ function matlabbatch = bidsResults(varargin)
       otherwise
 
         logger('ERROR', 'This BIDS model does not contain an analysis step I understand.', ...
-               'filename', mfilename(), 'id', 'unknownBsmStep');
+               'filename', mfilename()(), 'id', 'unknownBsmStep');
 
     end
 
@@ -277,7 +277,7 @@ function [status] = checks(opt)
 
   if ~isfield(opt, 'results') || isempty(opt.results)
     id = 'noResultsAsked';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename());
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()());
     status = false;
   end
 
@@ -286,7 +286,7 @@ function [status] = checks(opt)
 
   if isempty(listNodeNames) || isempty(listNodeLevels)
     id = 'noResultsAsked';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename());
+    logger('WARNING', msg, 'id', id, 'filename', mfilename()());
     status = false;
     return
   end
@@ -419,7 +419,7 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
       unfold(opt.results(iRes));
       msg = 'No name specified for this result. May lead to failure.';
       id = 'unSpecifiedResultName';
-      logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
+      logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
     end
 
     switch  groupLevelGlmType(opt, result.nodeName)
@@ -470,7 +470,7 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
 
       otherwise
         msg = sprintf('Node %s has has model type I cannot handle.\n', result.nodeName);
-        notImplemented(mfilename(), msg, true);
+        notImplemented(mfilename()(), msg, true);
 
     end
 
@@ -541,7 +541,7 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
             msg = sprintf('More than 1 overlay image found for %s.\n Taking the first one.', ...
                           createUnorderedList(background));
             id = 'tooManyMontageBackground';
-            logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
+            logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
           end
 
         end

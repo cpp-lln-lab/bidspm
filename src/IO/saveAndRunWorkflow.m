@@ -42,11 +42,9 @@ function status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   else
     status = false;
 
-    errorHandling(mfilename(), ...
-                  'emptyBatch', ...
-                  'This batch is empty & will not be run.', ...
-                  true, ...
-                  opt.verbosity);
+    id = 'emptyBatch';
+    msg  = 'This batch is empty & will not be run.';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
 
   end
 

@@ -55,11 +55,11 @@ function opt = loadAndCheckOptions(optionJsonFile)
       msg = sprintf('\nReading option from: %s.', pathToPrint(optionJsonFile));
       opt = spm_jsonread(optionJsonFile);
       opt = checkOptions(opt);
-      logger('INFO', msg, 'options', opt, 'filename', mfilename);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename());
     else
       msg = sprintf('the requested file does not exist: %s', optionJsonFile);
       id = 'missingOptionFile';
-      logger('ERROR', msg, 'id', id, 'filename', mfilename);
+      logger('ERROR', msg, 'id', id, 'filename', mfilename());
     end
   end
 
