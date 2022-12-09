@@ -4,7 +4,7 @@ function notImplemented(varargin)
   %
   % USAGE::
   %
-  %   notImplemented(functionName, msg)
+  %   notImplemented(functionName, msg, opt)
   %
   % :param functionName: obligatory argument.
   % :type functionName: path
@@ -12,8 +12,6 @@ function notImplemented(varargin)
   % :param msg: optional
   % :type msg: char
   %
-  % :param verbose: default ``true``
-  % :type verbose: boolean
   %
   % :returns: - :status: (boolean)
   %
@@ -26,20 +24,19 @@ function notImplemented(varargin)
 
   % (C) Copyright 2022 bidspm developers
 
+  defaultOpt = struct('verbosity', 2);
+
   args = inputParser;
 
-  defaultMsg = '';
-  defaultVerbose = true;
-
-  logicalOrNumeric = @(x) islogical(x) || isnumeric(x);
-
   addRequired(args, 'functionName', @ischar);
-  addOptional(args, 'msg', defaultMsg, @ischar);
+  addRequired(args, 'msg', @ischar);
+  addOptional(args, 'opt', defaultOpt, @isstruct);
 
   parse(args, varargin{:});
 
   logger('WARNING', args.Results.msg, ...
          'filename', args.Results.functionName, ...
-         'id', 'notImplemented');
+         'id', 'notImplemented', ...
+         'options', args.Results.opt);
 
 end

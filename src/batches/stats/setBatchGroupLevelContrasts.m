@@ -103,7 +103,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
     otherwise
       msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
-      notImplemented(mfilename(), msg, true);
+      notImplemented(mfilename(), msg, opt);
 
   end
 

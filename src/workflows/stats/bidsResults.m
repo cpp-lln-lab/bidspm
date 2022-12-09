@@ -235,7 +235,7 @@ function matlabbatch = bidsResults(varargin)
 
       case 'session'
 
-        notImplemented(mfilename(), 'session level results not implemented yet', opt.verbosity);
+        notImplemented(mfilename(), 'session level results not implemented yet', opt);
 
         continue
 
@@ -470,7 +470,7 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
 
       otherwise
         msg = sprintf('Node %s has has model type I cannot handle.\n', result.nodeName);
-        notImplemented(mfilename(), msg, true);
+        notImplemented(mfilename(), msg);
 
     end
 

@@ -123,7 +123,7 @@ function matlabbatch = bidsRFX(varargin)
                                                                           datasetNodes{i}.Name);
           otherwise
             msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
-            notImplemented(mfilename(), msg, true);
+            notImplemented(mfilename(), msg);
 
         end
 

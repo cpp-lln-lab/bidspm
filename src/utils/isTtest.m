@@ -6,9 +6,8 @@ function status = isTtest(structure)
   status = true;
   if isfield(structure, 'Test') && ~strcmp(structure.Test, 't')
     status = false;
-    verbose = 2;
     msg = 'Only t test supported for contrasts';
-    notImplemented(mfilename(), msg, verbose);
+    notImplemented(mfilename(), msg);
   end
 
 end

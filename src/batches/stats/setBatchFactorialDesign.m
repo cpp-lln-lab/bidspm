@@ -215,7 +215,7 @@ function [status, groupBy] = checks(opt, nodeName)
   if iscell(designMatrix) || (designMatrix ~= 1)
 
     msg = sprintf('Models other than group average not implemented yet %s', commonMsg);
-    notImplemented(mfilename(), msg, opt.verbosity);
+    notImplemented(mfilename(), msg, opt);
 
     status = false;
 
@@ -225,7 +225,7 @@ function [status, groupBy] = checks(opt, nodeName)
   if isempty(datasetLvlDummyContrasts) || ~isfield(datasetLvlDummyContrasts, 'Test')
 
     msg = sprintf('Only DummyContrasts are implemented %s', commonMsg);
-    notImplemented(mfilename(), msg, opt.verbosity);
+    notImplemented(mfilename(), msg, opt);
 
     status = false;
 
@@ -235,7 +235,7 @@ function [status, groupBy] = checks(opt, nodeName)
   if ~isempty(datasetLvlContrasts)
 
     msg = sprintf('Contrasts are not yet implemented %s', commonMsg);
-    notImplemented(mfilename(), msg, opt.verbosity);
+    notImplemented(mfilename(), msg, opt);
 
   end
 

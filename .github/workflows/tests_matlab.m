@@ -16,4 +16,4 @@ cd demos/MoAE;
 download_moae_ds(true);
 
 cd(root_dir);
-run run_tests();
+bidspm('action', 'run_tests');

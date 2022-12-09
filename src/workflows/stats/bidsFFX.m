@@ -157,8 +157,7 @@ function checkRootNode(opt)
   if ismember(lower(thisNode.Level), {'session', 'subject'})
 
     notImplemented(mfilename(), ...
-                   '"session" and "subject" level Node not implemented yet', ...
-                   verbose);
+                   '"session" and "subject" level Node not implemented yet');
 
   elseif ismember(lower(thisNode.Level), {'dataset'})
 

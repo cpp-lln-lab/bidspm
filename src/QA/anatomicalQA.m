@@ -18,7 +18,8 @@ function anatomicalQA(opt)
   % (C) Copyright 2020 bidspm developers
 
   if isOctave()
-    notImplemented(functionName, 'anatomicalQA is not yet supported on Octave. This step will be skipped.');
+    notImplemented(mfilename(), ...
+                   'anatomicalQA is not yet supported on Octave. This step will be skipped.');
     opt.QA.anat.do = false;
   end
 
