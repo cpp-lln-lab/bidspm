@@ -55,9 +55,8 @@ function functionalQA(opt)
   end
 
   if isOctave()
+    notImplemented(functionName, 'nfunctionalQA is not yet supported on Octave. This step will be skipped.');
     opt.QA.func.do = false;
-    warning('\nfunctionalQA is not yet supported on Octave. This step will be skipped.');
-
   end
 
   if ~opt.QA.func.do

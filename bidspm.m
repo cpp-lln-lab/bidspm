@@ -571,6 +571,7 @@ function run_tests()
   % to reduce noise in the output
   if isOctave
     warning('off', 'setGraphicWindow:noGraphicWindow');
+    warning('off', 'Octave:mixed-string-concat');
   end
 
   cd(fileparts(mfilename('fullpath')));

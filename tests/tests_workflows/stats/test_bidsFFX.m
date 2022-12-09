@@ -51,10 +51,6 @@ end
 
 function test_bidsFFX_skip_subject_no_data()
 
-  if isOctave
-    return
-  end
-
   opt = setOptions('vislocalizer', '^01', 'pipelineType', 'stats');
   opt.model.file =  fullfile(getDummyDataDir(),  'models', ...
                              'model-vislocalizerWrongSpace_smdl.json');

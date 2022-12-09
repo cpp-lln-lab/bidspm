@@ -52,10 +52,6 @@ end
 
 function test_setBatchSubjectLevelResults_missing_contrast_name()
 
-  if isOctave
-    return
-  end
-
   [subLabel, opt, result] = setUp('vismotion');
 
   result.contrasts.name = '';
@@ -70,10 +66,6 @@ function test_setBatchSubjectLevelResults_missing_contrast_name()
 end
 
 function test_setBatchSubjectLevelResults_error_no_matching_contrast()
-
-  if isOctave
-    return
-  end
 
   contrast_name = 'NotAContrast';
   [subLabel, opt, result] = setUp('vismotion', contrast_name);

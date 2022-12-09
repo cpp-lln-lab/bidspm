@@ -75,10 +75,6 @@ function test_bidsResults_too_many_backgrounds()
 
   opt.verbosity = 1;
 
-  if isOctave
-    return
-  end
-
   assertWarning(@()bidsResults(opt), 'bidsResults:tooManyMontageBackground');
 
 end
@@ -139,10 +135,6 @@ function test_bidsResults_no_background_for_montage()
 
   opt.verbosity = 1;
 
-  if isOctave
-    return
-  end
-
   assertWarning(@()bidsResults(opt), 'checkMaskOrUnderlay:missingMaskOrUnderlay');
 
 end
@@ -195,10 +187,6 @@ function test_bidsResults_subject_lvl_regex()
 end
 
 function test_bidsResults_error_missing_node()
-
-  if isOctave
-    return
-  end
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 

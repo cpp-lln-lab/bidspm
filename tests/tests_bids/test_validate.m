@@ -55,10 +55,6 @@ end
 
 function test_validate_model_warning()
 
-  if isOctave
-    return
-  end
-
   opt = setOptions('MoAE');
 
   args.Results.skip_validation = false;

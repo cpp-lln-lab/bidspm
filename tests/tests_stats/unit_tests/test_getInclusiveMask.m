@@ -26,10 +26,6 @@ function test_getInclusiveMask_too_many()
 
   BIDS = getLayout(opt);
 
-  if isOctave
-    return
-  end
-
   assertWarning(@()getInclusiveMask(opt, nodeName, BIDS, subLabel), ...
                 'getInclusiveMask:tooManyMasks');
 
@@ -71,10 +67,6 @@ function test_getInclusiveMask_no_image()
   opt.space = opt.model.bm.Input.space;
 
   BIDS = getLayout(opt);
-
-  if isOctave
-    return
-  end
 
   assertWarning(@()getInclusiveMask(opt, nodeName, BIDS, subLabel), ...
                 'checkMaskOrUnderlay:missingMaskOrUnderlay');

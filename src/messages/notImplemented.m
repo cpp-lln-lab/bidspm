@@ -4,7 +4,7 @@ function notImplemented(varargin)
   %
   % USAGE::
   %
-  %   notImplemented(functionName, msg, verbose)
+  %   notImplemented(functionName, msg)
   %
   % :param functionName: obligatory argument.
   % :type functionName: path
@@ -35,15 +35,11 @@ function notImplemented(varargin)
 
   addRequired(args, 'functionName', @ischar);
   addOptional(args, 'msg', defaultMsg, @ischar);
-  addOptional(args, 'verbose', defaultVerbose, logicalOrNumeric);
 
   parse(args, varargin{:});
 
-  tolerant = true;
-
-  errorHandling(args.Results.functionName, 'notImplemented', ...
-                args.Results.msg, ...
-                tolerant, ...
-                args.Results.verbose);
+  logger('WARNING', args.Results.msg, ...
+         'filename', args.Results.functionName, ...
+         'id', 'notImplemented');
 
 end

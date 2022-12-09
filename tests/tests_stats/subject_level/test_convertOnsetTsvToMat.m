@@ -103,10 +103,6 @@ end
 
 function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
 
-  if isOctave
-    return
-  end
-
   % GIVEN
   tsvFile = fullfile(getDummyDataDir(), ...
                      'tsv_files', ...
@@ -255,10 +251,6 @@ function test_convertOnsetTsvToMat_dummy_regressor()
 end
 
 function test_convertOnsetTsvToMat_missing_trial_type()
-
-  if isOctave
-    return
-  end
 
   % GIVEN
   tsvFile = fullfile(getDummyDataDir(), ...

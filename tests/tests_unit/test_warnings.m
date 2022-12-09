@@ -52,10 +52,6 @@ end
 
 function test_notImplemented()
 
-  if isOctave()
-    return
-  end
-
   assertWarning(@()notImplemented('foo', '', true), 'foo:notImplemented');
 
 end
