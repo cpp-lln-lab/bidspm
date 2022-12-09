@@ -55,7 +55,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
 
       id = 'noFile';
       msg = 'No figure file to copy';
-      logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
     elseif size(file, 1) > 1
 
@@ -64,7 +64,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
                     'Not sure what to do.', ...
                     'Will skip this step.');
       id = 'tooManyFiles';
-      logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
       msg = sprintf('%s\n', strjoin(pathToPrint(cellstr(file)), '\n'));
       logger('INFO', msg, 'options', opt, 'filename', mfilename());

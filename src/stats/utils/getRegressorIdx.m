@@ -58,7 +58,7 @@ function status = checkRegressorFound(regIdx, cdtName)
     status = false;
     msg = sprintf('No regressor found for condition "%s"', deregexify(cdtName));
     id = 'missingRegressor';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename()());
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
   end
 
 end

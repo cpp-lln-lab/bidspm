@@ -61,7 +61,7 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
 
     msg = sprintf('No anat file for:\n%s\n\n', createUnorderedList(filter));
 
-    errorHandling(mfilename()(), 'noAnatFile', msg, tolerant, opt.verbosity);
+    errorHandling(mfilename(), 'noAnatFile', msg, tolerant, opt.verbosity);
 
   end
 
@@ -130,7 +130,7 @@ function checkAvailableSuffix(BIDS, subLabel, filter, tolerant)
                   subLabel, ...
                   createUnorderedList(availableSuffixes));
 
-    errorHandling(mfilename()(), 'requestedSuffixUnvailable', msg, tolerant, false);
+    errorHandling(mfilename(), 'requestedSuffixUnvailable', msg, tolerant, false);
 
   end
 
@@ -157,7 +157,7 @@ function anatSession = checkAvailableSessions(BIDS, subLabel, filter, tolerant)
                     subLabel, ...
                     createUnorderedList(sessions));
 
-      errorHandling(mfilename()(), 'requestedSessionUnvailable', msg, tolerant, false);
+      errorHandling(mfilename(), 'requestedSessionUnvailable', msg, tolerant, false);
 
     end
 

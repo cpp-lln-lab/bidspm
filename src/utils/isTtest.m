@@ -8,7 +8,7 @@ function status = isTtest(structure)
     status = false;
     verbose = 2;
     msg = 'Only t test supported for contrasts';
-    notImplemented(mfilename()(), msg, verbose);
+    notImplemented(mfilename(), msg, verbose);
   end
 
 end

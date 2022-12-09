@@ -123,7 +123,7 @@ function matlabbatch = bidsRFX(varargin)
                                                                           datasetNodes{i}.Name);
           otherwise
             msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
-            notImplemented(mfilename()(), msg, true);
+            notImplemented(mfilename(), msg, true);
 
         end
 
@@ -186,7 +186,7 @@ function checkDirIsEmpty(matlabbatch)
         isfield(matlabbatch{i}.spm.stats, 'fmri_est')
       if exist(matlabbatch{i}.spm.stats.fmri_est.spmmat{1}, 'file')
         logger('ERROR', 'About to overwrite a model. That should not happen', ...
-               'filename', mfilename()(), ...
+               'filename', mfilename(), ...
                'id', 'overWriteModel');
       end
     end

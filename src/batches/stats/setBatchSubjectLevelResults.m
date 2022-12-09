@@ -36,7 +36,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
 
     msg = sprintf('Skipping contrast named "%s"', deregexify(result.name));
     id = 'skippingContrastResults';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
     return
 
   end
@@ -49,7 +49,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
                   fullfile(result.dir, 'SPM.mat'), ...
                   deregexify(result.name));
     id = 'noMatchingContrastName';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
     return
 
   end

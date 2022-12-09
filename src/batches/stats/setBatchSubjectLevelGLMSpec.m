@@ -29,7 +29,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   [matlabbatch, BIDS, opt, subLabel] =  deal(varargin{:});
 
   if ~isfield(BIDS, 'raw')
-    logger('ERROR', msg, 'filename', mfilename()(), 'id', 'missingRawDir');
+    logger('ERROR', msg, 'filename', mfilename(), 'id', 'missingRawDir');
   end
 
   opt.model.bm.getModelType();
@@ -225,7 +225,7 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
     % this may lead to more time bins that used in reality at acquisition
 
     id = 'noSliceTimingInfoForGlm';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
   end
 
@@ -271,7 +271,7 @@ function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, ru
                   BIDS.raw.pth, ...
                   createUnorderedList(filter));
     id = 'emptyInput';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
     onsetFilename = '';
 

@@ -28,7 +28,7 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
     catch
       msg = 'Could not open a graphic window. No figure will be created.';
       id = 'noGraphicWindow';
-      logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
     end
 
   else
@@ -40,7 +40,7 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
            'To silence this warning, you can run ', ...
            '"warning(''off'', ''setGraphicWindow:noGraphicWindow'')".'];
     id = 'noGraphicWindow';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
   end
 

@@ -65,7 +65,7 @@ function removeDummies(varargin)
                      'unless the ''force'' parameter is used.'], ...
                     metadata.NumberOfVolumesDiscardedByUser, ...
                     inputFile);
-      errorHandling(mfilename()(), 'dummiesAlreadyRemoved', msg, true, verbose);
+      errorHandling(mfilename(), 'dummiesAlreadyRemoved', msg, true, verbose);
 
       return
 

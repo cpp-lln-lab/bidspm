@@ -576,12 +576,12 @@ function run_tests()
   cd(fileparts(mfilename('fullpath')));
 
   if isGithubCi
-    printToScreen('This is github CI');
+    logger('INFO', 'This is github CI');
   else
-    printToScreen('This is not github CI');
+    logger('INFO', 'This is not github CI');
   end
 
-  printToScreen(sprintf('Home is %s\n', getenv('HOME')));
+  logger('INFO', sprintf('Home is "%s"\n', getenv('HOME')));
 
   warning('OFF');
 

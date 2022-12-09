@@ -40,16 +40,11 @@ function logMsg = logger(varargin)
   if ~ismember(logLevel, ALLOWED_LOG_LEVELS)
     logger('ERROR', ...
            ['log levels must be one of:' createUnorderedList(ALLOWED_LOG_LEVELS)], ...
-           'filename', mfilename()(), ...
+           'filename', mfilename(), ...
            'id', 'wrongLogLevel');
   end
 
   format = '\n[%s] bidspm - %s\t\t\t\t%s\n%s\n';
-
-  baseMsg = sprintf(format, ...
-                    datestr(now, 'HH:MM:SS'), ...
-                    logLevel, ...
-                    [filename, ext]);
 
   logMsg = sprintf(format, ...
                    datestr(now, 'HH:MM:SS'), ...
@@ -60,24 +55,19 @@ function logMsg = logger(varargin)
   if ismember(logLevel, {'ERROR'})
     tmpOpt = opt;
     tmpOpt.verbosity = 3;
-    printToScreen(logMsg, tmpOpt, 'format', 'red');
-    errorHandling(filename, id, msg, false);
+    errorHandling(filename, id, logMsg, false);
   end
 
   switch opt.verbosity
 
     case 1
       if ismember(logLevel, {'WARNING'})
-        printToScreen(baseMsg, opt, 'format', [1, 0.5, 0]);
-        tmpOpt = opt;
-        tmpOpt.verbosity = 3;
-        errorHandling(filename, id, msg, true, true);
+        errorHandling(filename, id, logMsg, true, true);
       end
 
     case 2
       if ismember(logLevel, {'WARNING'})
-        printToScreen(baseMsg, opt, 'format', [1, 0.5, 0]);
-        errorHandling(filename, id, msg, true, true);
+        errorHandling(filename, id, logMsg, true, true);
       end
       if ismember(logLevel, {'INFO'})
         printToScreen(logMsg, opt, 'format', 'blue');
@@ -85,8 +75,7 @@ function logMsg = logger(varargin)
 
     case 3
       if ismember(logLevel, {'WARNING'})
-        printToScreen(baseMsg, opt, 'format', [1, 0.5, 0]);
-        errorHandling(filename, id, msg, true, true);
+        errorHandling(filename, id, logMsg, true, true);
       end
       if ismember(logLevel, {'INFO', 'DEBUG'})
         printToScreen(logMsg, opt, 'format', 'blue');

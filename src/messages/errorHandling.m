@@ -23,7 +23,7 @@ function errorHandling(varargin)
   %
   %  msg = sprintf('this error happened with this file %s', filename)
   %  id = 'thisError';
-  %  errorHandling(mfilename()(), id, msg, true, opt.verbosity)
+  %  errorHandling(mfilename(), id, msg, true, opt.verbosity)
   %
   %
   % adapted from bids-matlab

@@ -212,7 +212,7 @@ function matlabbatch = bidsModelSelection(varargin)
                            subLabel, ...
                            names{iModel});
         id = 'missingMACSField';
-        logger('WARNING', errorMsg, 'id', id, 'filename', mfilename()(), 'options', opt);
+        logger('WARNING', errorMsg, 'id', id, 'filename', mfilename(), 'options', opt);
       end
 
     end

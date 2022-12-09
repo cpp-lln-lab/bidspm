@@ -40,7 +40,7 @@ function outputFile = boilerplate(varargin)
 
   % (C) Copyright 2022 bidspm developers
 
-  defaultPartialsPath = fullfile(fileparts(mfilename()('fullpath')), 'partials');
+  defaultPartialsPath = fullfile(fileparts(mfilename('fullpath')), 'partials');
 
   isFolder = @(x) isdir(x);
 
@@ -138,11 +138,11 @@ function outputFile = boilerplate(varargin)
   %% render
   if strcmp(pipelineType, 'preproc')
     modelName = '';
-    fileToRender = fullfile(fileparts(mfilename()('fullpath')), 'boilerplate_preprocess.mustache');
+    fileToRender = fullfile(fileparts(mfilename('fullpath')), 'boilerplate_preprocess.mustache');
 
   elseif strcmp(pipelineType, 'stats')
     modelName = bm.Name;
-    fileToRender = fullfile(fileparts(mfilename()('fullpath')), 'boilerplate_stats.mustache');
+    fileToRender = fullfile(fileparts(mfilename('fullpath')), 'boilerplate_stats.mustache');
 
   end
 

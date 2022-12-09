@@ -83,7 +83,7 @@ function renameFileAndUpdateMetadata(opt, data, newFilename, json, createdFiles)
     msg = sprintf('This file already exists. Will not overwrite.\n\t%s\n', ...
                   newFilename);
     id = 'fileAlreadyExist';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
   else
 

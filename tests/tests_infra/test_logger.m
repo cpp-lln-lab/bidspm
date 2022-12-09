@@ -22,7 +22,7 @@ function test_logger_basic()
       msg = sprintf('log level: %s - verbosity: %i', logLevel, opt.verbosity);
 
       if strcmp(logLevel, 'ERROR')
-
+        %         logger(logLevel, msg, 'options', opt, 'filename', mfilename, 'id', 'ID');
       else
         logger(logLevel, msg, 'options', opt, 'filename', mfilename, 'id', 'ID');
       end

@@ -72,7 +72,7 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   if isempty(vdmFile)
     msg = sprintf('No voxel displacement map associated with: \n %s', boldFilename);
     id = 'noVDM';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
   end
 
 end
@@ -99,7 +99,7 @@ function vdmFile = returnVdmFilename(opt, intendedFor, boldFilename, fmapFile)
                'Creating voxel displacement maps is work in progress.\n', ...
                'This is known issue. Skipping for now.'];
         id = 'missingVdm';
-        logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+        logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
         return
 

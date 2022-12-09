@@ -41,7 +41,7 @@ function realignParamFile = getRealignParamFilename(BIDS, subLabel, session, run
 
   if numel(realignParamFile) > 1
     msg = ['Too many realignment parameter files found for', createUnorderedList(filter)];
-    logger('ERROR', msg, 'filename', mfilename()(), 'id', 'tooManyFiles');
+    logger('ERROR', msg, 'filename', mfilename(), 'id', 'tooManyFiles');
   end
   realignParamFile = realignParamFile{1};
 

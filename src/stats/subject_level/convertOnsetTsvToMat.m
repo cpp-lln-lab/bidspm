@@ -153,7 +153,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
                     varToConvolve{iVar}, ...
                     tsv.file);
       id = 'variableNotFound';
-      logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
     end
 
@@ -203,7 +203,7 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
                   varToConvolve, ...
                   tsv.file);
     id = 'trialTypeNotFound';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
     if opt.glm.useDummyRegressor
       condToModel = addDummyRegressor(condToModel);

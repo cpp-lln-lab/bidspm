@@ -76,13 +76,13 @@ function status = checkToolbox(varargin)
       msg = sprintf('The toolbox %s should be installed from:\n %s\n\n', ...
                     toolboxName, ...
                     'https://github.com/benoitberanger/mp2rage');
-      errorHandling(mfilename()(), 'missingToolbox', msg, true, verbose);
+      errorHandling(mfilename(), 'missingToolbox', msg, true, verbose);
 
   end
 
   if ~status
     msg = sprintf('The toolbox %s could not be found or installed.\n\n', toolboxName);
-    errorHandling(mfilename()(), 'missingToolbox', msg, true, verbose);
+    errorHandling(mfilename(), 'missingToolbox', msg, true, verbose);
   end
 
 end

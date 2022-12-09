@@ -35,7 +35,7 @@ function [BIDS, opt] = getData(varargin)
       msg = sprintf('The following directory does not exist:\n\t%s', ...
                     pathToPrint(varargin{2}));
       id = 'notADirectory';
-      logger('ERROR', msg, 'filename', mfilename()(), 'id', id);
+      logger('ERROR', msg, 'filename', mfilename(), 'id', id);
     else
       rethrow(ME);
     end

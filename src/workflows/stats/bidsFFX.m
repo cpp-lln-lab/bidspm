@@ -156,7 +156,7 @@ function checkRootNode(opt)
 
   if ismember(lower(thisNode.Level), {'session', 'subject'})
 
-    notImplemented(mfilename()(), ...
+    notImplemented(mfilename(), ...
                    '"session" and "subject" level Node not implemented yet', ...
                    verbose);
 
@@ -215,7 +215,7 @@ function status = subjectHasData(BIDS, opt, subLabel)
                   createUnorderedList(bids.query(BIDS, 'tasks', filter)));
 
     id = 'noDataForSubjectGLM';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename()(), 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
   end
 
