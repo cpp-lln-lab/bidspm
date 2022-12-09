@@ -86,7 +86,7 @@ function [BIDS, opt] = getData(varargin)
   % get IDs of all subjects
   opt = getSubjectList(BIDS, opt);
 
-  msg = sprintf('WILL WORK ON SUBJECTS\n%s', createUnorderedList(opt.subjects));
+  msg = sprintf('WILL WORK ON SUBJECTS%s', createUnorderedList(opt.subjects));
   logger('INFO', msg, opt, mfilename);
 
 end
