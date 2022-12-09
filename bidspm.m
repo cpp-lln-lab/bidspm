@@ -569,10 +569,7 @@ function run_tests()
   bidspm('action', 'dev');
 
   % to reduce noise in the output
-  if isOctave
-    warning('off', 'setGraphicWindow:noGraphicWindow');
-    warning('off', 'Octave:mixed-string-concat');
-  end
+  silenceOctaveWarning();
 
   cd(fileparts(mfilename('fullpath')));
 
