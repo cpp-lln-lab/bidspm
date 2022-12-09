@@ -82,16 +82,8 @@ workflows
 .. autofunction:: src.workflows.bidsChangeSuffix
 .. _bidsReport:
 .. autofunction:: src.workflows.bidsReport
-.. _setUpWorkflow:
-.. autofunction:: src.workflows.setUpWorkflow
-.. _cleanUpWorkflow:
-.. autofunction:: src.workflows.cleanUpWorkflow
 .. _bidsCopyInputFolder:
 .. autofunction:: src.workflows.bidsCopyInputFolder
-.. _returnDependency:
-.. autofunction:: src.workflows.returnDependency
-.. _saveAndRunWorkflow:
-.. autofunction:: src.workflows.saveAndRunWorkflow
 .. _bidsRename:
 .. autofunction:: src.workflows.bidsRename
 .. _bidsInverseNormalize:
@@ -210,22 +202,6 @@ batches
 .. autofunction:: src.batches.setBatch3Dto4D
 
 
-.. _results:
-
-results
-=======
-.. _setNidm:
-.. autofunction:: src.results.setNidm
-.. _defaultOuputNameStruct:
-.. autofunction:: src.results.defaultOuputNameStruct
-.. _returnName:
-.. autofunction:: src.results.returnName
-.. _convertPvalueToString:
-.. autofunction:: src.results.convertPvalueToString
-.. _setMontage:
-.. autofunction:: src.results.setMontage
-
-
 .. _reports:
 
 reports
@@ -290,88 +266,6 @@ QA
 .. autofunction:: src.QA.plotRoiTimeCourse
 
 
-.. _subject_level:
-
-subject_level
-=============
-.. _reorderCounfounds:
-.. autofunction:: src.subject_level.reorderCounfounds
-.. _removeIntercept:
-.. autofunction:: src.subject_level.removeIntercept
-.. _createConfounds:
-.. autofunction:: src.subject_level.createConfounds
-.. _checkRegressorName:
-.. autofunction:: src.subject_level.checkRegressorName
-.. _getBoldFilenameForFFX:
-.. autofunction:: src.subject_level.getBoldFilenameForFFX
-.. _convertOnsetTsvToMat:
-.. autofunction:: src.subject_level.convertOnsetTsvToMat
-.. _newContrast:
-.. autofunction:: src.subject_level.newContrast
-.. _specifyDummyContrasts:
-.. autofunction:: src.subject_level.specifyDummyContrasts
-.. _getSessionForRegressorNb:
-.. autofunction:: src.subject_level.getSessionForRegressorNb
-.. _getFFXdir:
-.. autofunction:: src.subject_level.getFFXdir
-.. _specifyContrasts:
-.. autofunction:: src.subject_level.specifyContrasts
-.. _appendContrast:
-.. autofunction:: src.subject_level.appendContrast
-.. _specifySubLvlContrasts:
-.. autofunction:: src.subject_level.specifySubLvlContrasts
-.. _createAndReturnOnsetFile:
-.. autofunction:: src.subject_level.createAndReturnOnsetFile
-.. _deleteResidualImages:
-.. autofunction:: src.subject_level.deleteResidualImages
-.. _selectConfoundsByVarianceExplained:
-.. autofunction:: src.subject_level.selectConfoundsByVarianceExplained
-.. _orderAndPadCounfoundMatFile:
-.. autofunction:: src.subject_level.orderAndPadCounfoundMatFile
-.. _createAndReturnCounfoundMatFile:
-.. autofunction:: src.subject_level.createAndReturnCounfoundMatFile
-.. _convertRealignParamToTsv:
-.. autofunction:: src.subject_level.convertRealignParamToTsv
-.. _getEventsData:
-.. autofunction:: src.subject_level.getEventsData
-.. _getConfoundsRegressorFilename:
-.. autofunction:: src.subject_level.getConfoundsRegressorFilename
-.. _saveRoiGlmSummaryTable:
-.. autofunction:: src.subject_level.saveRoiGlmSummaryTable
-.. _allRunsHaveSameNbRegressors:
-.. autofunction:: src.subject_level.allRunsHaveSameNbRegressors
-.. _getRealignParamFilename:
-.. autofunction:: src.subject_level.getRealignParamFilename
-.. _getEventSpecificationRoiGlm:
-.. autofunction:: src.subject_level.getEventSpecificationRoiGlm
-
-
-.. _fieldmaps:
-
-fieldmaps
-=========
-.. _getMetadataFromIntendedForFunc:
-.. autofunction:: src.fieldmaps.getMetadataFromIntendedForFunc
-.. _getTotalReadoutTime:
-.. autofunction:: src.fieldmaps.getTotalReadoutTime
-.. _getBlipDirection:
-.. autofunction:: src.fieldmaps.getBlipDirection
-.. _getVdmFile:
-.. autofunction:: src.fieldmaps.getVdmFile
-
-
-.. _group_level:
-
-group_level
-===========
-.. _getRFXdir:
-.. autofunction:: src.group_level.getRFXdir
-.. _groupLevelGlmType:
-.. autofunction:: src.group_level.groupLevelGlmType
-.. _findSubjectConImage:
-.. autofunction:: src.group_level.findSubjectConImage
-
-
 .. _bids_model:
 
 bids_model
@@ -400,6 +294,12 @@ cli
 ===
 .. _getOptionsFromCliArgument:
 .. autofunction:: src.cli.getOptionsFromCliArgument
+
+
+.. _stats:
+
+stats
+=====
 
 
 .. _defaults:
@@ -440,56 +340,42 @@ utils
 .. autofunction:: src.utils.isZipped
 .. _renamePng:
 .. autofunction:: src.utils.renamePng
-.. _getRegressorIdx:
-.. autofunction:: src.utils.getRegressorIdx
-.. _designMatrixFigureName:
-.. autofunction:: src.utils.designMatrixFigureName
-.. _pathToPrint:
-.. autofunction:: src.utils.pathToPrint
 .. _returnBatchFileName:
 .. autofunction:: src.utils.returnBatchFileName
-.. _segmentationAlreadyDone:
-.. autofunction:: src.utils.segmentationAlreadyDone
 .. _volumeSplicing:
 .. autofunction:: src.utils.volumeSplicing
 .. _computeTsnr:
 .. autofunction:: src.utils.computeTsnr
 .. _checkMaskOrUnderlay:
 .. autofunction:: src.utils.checkMaskOrUnderlay
-.. _labelActivations:
-.. autofunction:: src.utils.labelActivations
+.. _setUpWorkflow:
+.. autofunction:: src.utils.setUpWorkflow
 .. _deregexify:
 .. autofunction:: src.utils.deregexify
-.. _timeStamp:
-.. autofunction:: src.utils.timeStamp
+.. _cleanUpWorkflow:
+.. autofunction:: src.utils.cleanUpWorkflow
 .. _createDataDictionary:
 .. autofunction:: src.utils.createDataDictionary
+.. _isTtest:
+.. autofunction:: src.utils.isTtest
 .. _regexify:
 .. autofunction:: src.utils.regexify
-.. _getAcquisitionTime:
-.. autofunction:: src.utils.getAcquisitionTime
 .. _setFields:
 .. autofunction:: src.utils.setFields
-.. _getContrastNb:
-.. autofunction:: src.utils.getContrastNb
 .. _computeMeanValueInMask:
 .. autofunction:: src.utils.computeMeanValueInMask
 .. _getFuncVoxelDims:
 .. autofunction:: src.utils.getFuncVoxelDims
-.. _skullstrippingAlreadyDone:
-.. autofunction:: src.utils.skullstrippingAlreadyDone
+.. _returnDependency:
+.. autofunction:: src.utils.returnDependency
 .. _getDist2surf:
 .. autofunction:: src.utils.getDist2surf
 .. _returnVolumeList:
 .. autofunction:: src.utils.returnVolumeList
 .. _validationInputFile:
 .. autofunction:: src.utils.validationInputFile
-.. _removeDummies:
-.. autofunction:: src.utils.removeDummies
 .. _unfoldStruct:
 .. autofunction:: src.utils.unfoldStruct
-.. _createGlmDirName:
-.. autofunction:: src.utils.createGlmDirName
 
 
 .. _bids:
@@ -566,6 +452,8 @@ IO
 .. autofunction:: src.IO.saveSpmScript
 .. _loadAndCheckOptions:
 .. autofunction:: src.IO.loadAndCheckOptions
+.. _saveAndRunWorkflow:
+.. autofunction:: src.IO.saveAndRunWorkflow
 .. _renameSegmentParameter:
 .. autofunction:: src.IO.renameSegmentParameter
 
@@ -574,6 +462,8 @@ IO
 
 messages
 ========
+.. _pathToPrint:
+.. autofunction:: src.messages.pathToPrint
 .. _printBatchName:
 .. autofunction:: src.messages.printBatchName
 .. _noRoiFound:
@@ -594,11 +484,19 @@ messages
 .. autofunction:: src.messages.errorHandling
 .. _noSPMmat:
 .. autofunction:: src.messages.noSPMmat
+.. _timeStamp:
+.. autofunction:: src.messages.timeStamp
 .. _notImplemented:
 .. autofunction:: src.messages.notImplemented
-.. _isTtest:
-.. autofunction:: src.messages.isTtest
 .. _printWorkflowName:
 .. autofunction:: src.messages.printWorkflowName
+.. _logger:
+.. autofunction:: src.messages.logger
 .. _printAvailableContrasts:
 .. autofunction:: src.messages.printAvailableContrasts
+
+
+.. _preproc:
+
+preproc
+=======

@@ -194,11 +194,11 @@ function matlabbatch = bidsModelSelection(varargin)
         errorHandling(mfilename(), id, msg, false);
       end
 
-      msg.Subject = subLabel;
+      msg = struct('Subject', subLabel);
       msg.Model = names{iModel};
       msg.Task = opt.taskName;
       msg.Space = opt.space;
-      lsg = ['\n' createUnorderedList(msg) '\n\n' pathToPrint(spmMatFile) '\n'];
+      msg = [createUnorderedList(msg) '\n\n' pathToPrint(spmMatFile) '\n'];
       logger('INFO', msg, opt, mfilename);
 
       matlabbatch{1}.spm.tools.MACS.MA_model_space.models{1, iSub}{1, iModel} = {spmMatFile};

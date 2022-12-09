@@ -80,6 +80,7 @@ function removeDummies(varargin)
   volumeSplicing(inputFile, 1:numberOfVolumeToDiscard);
 
   if verbose
+    opt.verbosity = 2;
     msg = sprintf('\nRemoved %i volumes from file:\n%s', ...
                   numberOfVolumeToDiscard, inputFile);
     logger('INFO', msg, opt, mfilename);

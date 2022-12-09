@@ -55,7 +55,7 @@ function bidsRename(opt)
         json = updateSource(json, data{iFile}, opt);
 
         msg = sprintf('%s --> %s\n', spm_file(data{iFile}, 'filename'), newFilename);
-        logger('INFO', msg, opt, mfilename);
+        printToScreen(msg, opt);
 
         renameFileAndUpdateMetadata(opt, data{iFile}, newFilename, json, createdFiles);
 
