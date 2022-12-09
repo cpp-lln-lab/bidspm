@@ -9,11 +9,11 @@ function printToScreen(varargin)
 
   args = inputParser;
 
-  default_opt = struct('verbosity', 2);
-  default_format = 'blue';
+  defaultOpt = struct('verbosity', 2);
+  defaultFormat = 'blue';
 
   addRequired(args, 'msg', @ischar);
-  addOptional(args, 'opt', default_opt, @isstruct);
+  addOptional(args, 'opt', defaultOpt, @isstruct);
   addParameter(args, 'format', default_format);
 
   parse(args, varargin{:});

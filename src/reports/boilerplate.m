@@ -42,7 +42,7 @@ function outputFile = boilerplate(varargin)
 
   defaultPartialsPath = fullfile(fileparts(mfilename('fullpath')), 'partials');
 
-  isFolder = @(x) isfolder(x);
+  isFolder = @(x) isdir(x);
 
   args = inputParser;
 

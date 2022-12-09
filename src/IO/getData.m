@@ -21,7 +21,7 @@ function [BIDS, opt] = getData(varargin)
 
   % (C) Copyright 2020 bidspm developers
 
-  isFolder = @(x) isfolder(x);
+  isFolder = @(x) isdir(x);
 
   args = inputParser;
 

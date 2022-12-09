@@ -16,7 +16,7 @@ function test_bidsChangeSuffix_basic()
 
   tmpDir = fullfile(dataDir, '..', '..', 'tmp');
 
-  if isfolder(tmpDir)
+  if isdir(tmpDir)
     rmdir(tmpDir, 's');
   end
 

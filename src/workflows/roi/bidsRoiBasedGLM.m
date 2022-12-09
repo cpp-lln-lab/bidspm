@@ -156,7 +156,7 @@ function skipped = bidsRoiBasedGLM(opt)
 
       timeCourse = {};
       dt = [];
-      percentSignalChange = [];
+      percentSignalChange = struct('absMax', [], 'max', []);
 
       for iCon = 1:numel(eventSpec)
 
