@@ -42,7 +42,8 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
     wng = ['[DEPRECATION WARNING]\n', ...
            'Slice timing in the options will be deprecated in release 3.0.\n', ...
            'Specify it in the relevant JSON file in your BIDS dataset.\n'];
-    errorHandling(mfilename(), 'deprecation', wng, true, opt.verbosity);
+    id = 'deprecation';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
     return
 
@@ -61,7 +62,8 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
 
     wng = sprintf('no slice timing found for filter:\n%s.\n\n', ...
                   createUnorderedList(filter));
-    errorHandling(mfilename(), 'noSliceTimingFound', wng, true, opt.verbosity);
+    id = 'noSliceTimingFound';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
     return
 
@@ -74,7 +76,8 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
 
     wng = sprintf('inconsistent slice timing found for filter:\n%s.\n\n', ...
                   createUnorderedList(filter));
-    errorHandling(mfilename(), 'inconsistentSliceTiming', wng, true, opt.verbosity);
+    id = 'inconsistentSliceTiming';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
     return
 
@@ -92,7 +95,8 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
 
       wng = sprintf('inconsistent slice timing found for filter:\n%s.\n\n', ...
                     createUnorderedList(filter));
-      errorHandling(mfilename(), 'inconsistentSliceTiming', wng, true, opt.verbosity);
+      id = 'inconsistentSliceTiming';
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
       return
     end

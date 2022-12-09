@@ -215,7 +215,7 @@ function status = subjectHasData(BIDS, opt, subLabel)
                   createUnorderedList(bids.query(BIDS, 'tasks', filter)));
 
     id = 'noDataForSubjectGLM';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename, 'options', opt);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
   end
 

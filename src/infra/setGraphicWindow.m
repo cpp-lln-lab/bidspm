@@ -27,7 +27,8 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
       [interactiveWindow, graphWindow, cmdLine] = spm('FnUIsetup');
     catch
       msg = 'Could not open a graphic window. No figure will be created.';
-      errorHandling(mfilename(), 'noGraphicWindow', msg, true, opt.verbosity);
+      id = 'noGraphicWindow';
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
     end
 
   else
@@ -38,7 +39,8 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
            ' - running under octave.\n' ...
            'To silence this warning, you can run ', ...
            '"warning(''off'', ''setGraphicWindow:noGraphicWindow'')".'];
-    errorHandling(mfilename(), 'noGraphicWindow', msg, true, opt.verbosity);
+    id = 'noGraphicWindow';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
   end
 

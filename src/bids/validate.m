@@ -22,7 +22,7 @@ function validate(args)
                        msg_data, ...
                        'https://bids-standard.github.io/bids-validator/');
     id = 'invalidBidsDataset';
-    logger('ERROR', msg_data, 'filaneme', mfilename, 'id', id);
+    logger('ERROR', msg_data, 'filaneme', mfilename(), 'id', id);
   elseif args.Results.verbosity > 0
     disp(msg_data);
   end

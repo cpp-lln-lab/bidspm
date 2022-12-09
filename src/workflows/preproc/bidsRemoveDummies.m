@@ -46,13 +46,16 @@ function bidsRemoveDummies(varargin)
   force = args.Results.force;
 
   if dummyScans == 0
-    errorHandling(mfilename(), 'noDummiesToRemove', ...
-                  'Number dummy scans to remove set to 0.', true, true);
+    id = 'noDummiesToRemove';
+    msg = 'Number dummy scans to remove set to 0.';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
     return
   end
 
   if ~isfield(opt, 'taskName') || isempty(opt.taskName)
-    errorHandling(mfilename(), 'noTask', 'No task specified.', true, true);
+    id = 'noTask';
+    msg = 'No task specified.';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
     return
   end
 

@@ -379,7 +379,8 @@ function checkFields(opt)
   if isfield(opt, 'taskName') && isempty(opt.taskName)
 
     msg = 'You may need to provide the name of the task to analyze.';
-    errorHandling(mfilename(), 'noTask', msg, true, opt.verbosity);
+    id = 'noTask';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
   end
 
@@ -387,7 +388,7 @@ function checkFields(opt)
 
     msg = 'All group names should be string.';
     id = 'groupNotString';
-    logger('ERROR', msg, 'filaneme', mfilename, 'id', id);
+    logger('ERROR', msg, 'filaneme', mfilename(), 'id', id);
 
   end
 
@@ -397,7 +398,7 @@ function checkFields(opt)
                    '\nCurrent value is: %d'], ...
                   opt.stc.referenceSlice);
     id = 'refSliceNotScalar';
-    logger('ERROR', msg, 'filaneme', mfilename, 'id', id);
+    logger('ERROR', msg, 'filaneme', mfilename(), 'id', id);
 
   end
 
@@ -407,7 +408,7 @@ function checkFields(opt)
                    '\nCurrent value is: %d'], ...
                   opt.funcVoxelDims);
     id = 'voxDim';
-    logger('ERROR', msg, 'filaneme', mfilename, 'id', id);
+    logger('ERROR', msg, 'filaneme', mfilename(), 'id', id);
 
   end
 
@@ -415,7 +416,7 @@ function checkFields(opt)
 
     msg = ('HRF derivatives should be set in the BIDS stats model file, not in the options.');
     id = 'voxDim';
-    logger('ERROR', msg, 'filaneme', mfilename, 'id', id, 'options', opt);
+    logger('ERROR', msg, 'filaneme', mfilename(), 'id', id, 'options', opt);
 
   end
 

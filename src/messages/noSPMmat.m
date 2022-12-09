@@ -36,7 +36,8 @@ function status = noSPMmat(varargin)
                    'Run bidsFFX(''specify'', opt)\n'], ...
                   args.Results.subLabel, ...
                   pathToPrint(spm_fileparts(args.Results.spmMatFile)));
-    errorHandling(mfilename(), 'noSpecifiedModel', msg, true, args.Results.opt.verbosity);
+    id = 'noSpecifiedModel';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', args.Results.opt);
 
   end
 

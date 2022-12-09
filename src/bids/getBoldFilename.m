@@ -54,7 +54,7 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
                   createUnorderedList(opt.query));
 
     id = 'emptyInput';
-    logger('ERROR', msg, 'filaneme', mfilename, 'id', id);
+    logger('ERROR', msg, 'filaneme', mfilename(), 'id', id);
   end
 
   % in case files have been unzipped, we do it now

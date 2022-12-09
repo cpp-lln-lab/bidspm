@@ -188,13 +188,12 @@ function matlabbatch = bidsResults(varargin)
     node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
 
     if isempty(node)
-      errorHandling(mfilename(), ...
-                    'unknownModelNode', ...
-                    sprintf('no Node named %s in model\n %s.', ...
-                            opt.results(iRes).nodeName, ...
-                            opt.model.file), ...
-                    true, ...
-                    opt.verbosity);
+
+      id = 'unknownModelNode';
+      msg = sprintf('no Node named %s in model\n %s.', ...
+                    opt.results(iRes).nodeName, ...
+                    opt.model.file);
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
       continue
     end
 
@@ -236,7 +235,7 @@ function matlabbatch = bidsResults(varargin)
 
       case 'session'
 
-        notImplemented(mfilename, 'session level results not implemented yet', opt.verbosity);
+        notImplemented(mfilename(), 'session level results not implemented yet', opt.verbosity);
 
         continue
 
@@ -257,7 +256,7 @@ function matlabbatch = bidsResults(varargin)
       otherwise
 
         logger('ERROR', 'This BIDS model does not contain an analysis step I understand.', ...
-               'filename', mfilename, 'id', 'unknownBsmStep');
+               'filename', mfilename(), 'id', 'unknownBsmStep');
 
     end
 
@@ -277,7 +276,8 @@ function [status] = checks(opt)
                  '\t\nType "help bidsResults" for more information.']);
 
   if ~isfield(opt, 'results') || isempty(opt.results)
-    errorHandling(mfilename(), 'noResultsAsked', msg, true, true);
+    id = 'noResultsAsked';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
     status = false;
   end
 
@@ -285,7 +285,8 @@ function [status] = checks(opt)
   listNodeLevels = returnlistNodeLevels(opt);
 
   if isempty(listNodeNames) || isempty(listNodeLevels)
-    errorHandling(mfilename(), 'noResultsAsked', msg, true, true);
+    id = 'noResultsAsked';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
     status = false;
     return
   end

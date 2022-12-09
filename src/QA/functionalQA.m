@@ -121,7 +121,7 @@ function functionalQA(opt)
           if size(funcImage, 1) ~= 1
             msg = sprintf('too many files found:\n%s', createUnorderedList(funcImage));
             id = 'tooManyFiles';
-            logger('WARNING', msg, 'id', id, 'filename', mfilename, 'options', opt);
+            logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
             continue
           end
 

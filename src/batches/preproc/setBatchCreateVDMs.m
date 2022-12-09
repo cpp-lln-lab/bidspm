@@ -69,7 +69,8 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
                    'Creating voxel displacement maps is work in progress.\n', ...
                    'This is known issue\n.', ...
                    'Skipping for now.'];
-            errorHandling(mfilename(), 'emptyReadoutTime', msg, true, opt.verbosity);
+            id = 'emptyReadoutTime';
+            logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
             continue
           else
             rethrow(ME);
