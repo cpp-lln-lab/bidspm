@@ -20,11 +20,29 @@ function test_returnContrastImageFile_basic()
   SPM.xCon(3, 1).name = 'foobar';
 
   conImageFile = returnContrastImageFile(SPM, 'bar');
-  assertEqual(conImageFile, fullfile(pwd, 'con_0002.nii'));
+  assertEqual(conImageFile, {fullfile(pwd, 'con_0002.nii')});
 
   save(fullfile(pwd, 'SPM.mat'), 'SPM');
   conImageFile = returnContrastImageFile(SPM, 'foobar');
-  assertEqual(conImageFile, fullfile(pwd, 'con_0003.nii'));
+  assertEqual(conImageFile, {fullfile(pwd, 'con_0003.nii')});
   delete(fullfile(pwd, 'SPM.mat'));
+
+end
+
+function test_returnContrastImageFile_several()
+
+  %% GIVEN
+
+  opt = setTestCfg();
+
+  SPM.swd = pwd;
+  SPM.xCon(1, 1).name = 'foo';
+  SPM.xCon(2, 1).name = 'bar';
+  SPM.xCon(3, 1).name = 'foobar';
+
+  conImageFile = returnContrastImageFile(SPM, '.*bar');
+  assertEqual(conImageFile, ...
+              {fullfile(pwd, 'con_0002.nii'); ...
+               fullfile(pwd, 'con_0003.nii')});
 
 end

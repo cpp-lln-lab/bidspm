@@ -45,6 +45,9 @@ function conImageFile = returnContrastImageFile(varargin)
 
   contrastNb = getContrastNb(result, opt, SPM);
 
-  conImageFile = fullfile(SPM.swd, sprintf('con_%04.0f.nii', contrastNb));
+  for i = 1:numel(contrastNb)
+    conImageFile{i, 1} = fullfile(SPM.swd, ...
+                                  sprintf('con_%04.0f.nii', contrastNb(i))); %#ok<AGROW>
+  end
 
 end

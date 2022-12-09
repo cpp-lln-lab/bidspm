@@ -31,6 +31,29 @@ function test_getContrastNb_basic()
 
 end
 
+function test_getContrastNb_several_contrast()
+
+  %% GIVEN
+
+  opt = setTestCfg();
+
+  result.dir = pwd;
+  result.name = '.*bar';
+
+  result.name = regexify(result.name);
+
+  SPM.xCon(1, 1).name = 'foo';
+  SPM.xCon(2, 1).name = 'bar';
+  SPM.xCon(3, 1).name = 'foobar';
+
+  %% WHEN
+  contrastNb = getContrastNb(result, opt, SPM);
+
+  %% THEN
+  assertEqual(contrastNb, [2; 3]);
+
+end
+
 function test_getContrastNb_missing()
 
   if isOctave
