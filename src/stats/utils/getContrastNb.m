@@ -10,6 +10,18 @@ function contrastNb = getContrastNb(result, opt, SPM)
   %     contrastNb = getContrastNb(result, opt, SPM)
   %
   %
+  % :param SPM: content of SPM.mat file
+  % :type  SPM: structure or path
+  %
+  % :param result: structure with at least a ``name`` field
+  %                with a chat with the name of the contrast of interest
+  % :type  result: struct
+  %
+  % :param opt: Options chosen.
+  % :type  opt:  structure
+  %
+  %
+  % See also: printAvailableContrasts, getContrastNb
 
   % (C) Copyright 2019 bidspm developers
 
