@@ -515,7 +515,7 @@ function initBidspm(dev)
     detectBidspm();
 
   else
-    printToScreen('\n\nbidspm already initialized\n\n');
+    logger('INFO', 'bidspm already initialized');
 
   end
 
@@ -576,12 +576,12 @@ function run_tests()
   cd(fileparts(mfilename('fullpath')));
 
   if isGithubCi
-    printToScreen('\nThis is github CI\n');
+    printToScreen('This is github CI');
   else
-    printToScreen('\nThis is not github CI\n');
+    printToScreen('This is not github CI');
   end
 
-  printToScreen(sprintf('\nHome is %s\n', getenv('HOME')));
+  printToScreen(sprintf('Home is %s\n', getenv('HOME')));
 
   warning('OFF');
 
@@ -652,7 +652,7 @@ function detectBidspm()
     error('bidspm is not in your MATLAB / Octave path.\n');
 
   elseif numel(workflowsDir) > 1
-    printToScreen('bidspm seems to appear in several different folders:\n');
+    printToScreen('bidspm seems to appear in several different folders:');
     for i = 1:numel(workflowsDir)
       fprintf('  * %s\n', fullfile(workflowsDir{i}, '..', '..'));
     end

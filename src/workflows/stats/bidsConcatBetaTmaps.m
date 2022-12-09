@@ -62,7 +62,8 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
 
     % path to beta and t-map files.
 
-    printToScreen('\nConcatenating the following contrasts:', opt);
+    msg = 'Concatenating the following contrasts:';
+    logger('INFO', msg, opt, mfilename);
     for iContrast = 1:length(contrasts)
 
       msg = sprintf('\n\t%s', contrasts(iContrast).name);
@@ -70,7 +71,6 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
       betasIndices = find(contrasts(iContrast).C);
 
       if numel(betasIndices) > 1
-        printToScreen('\n', opt);
         msg = sprintf(['Supposed to concatenate one beta image per contrast.' ...
                        '\nSkipping: %s'], contrasts(iContrast).name);
         errorHandling(mfilename(), 'concatOneImgOnly', msg, true, opt.verbosity);
@@ -144,18 +144,20 @@ function removeTmaps(tMaps, deleteTmaps, ffxDir)
   if  deleteTmaps
 
     % delete all individual con maps
-    printToScreen('Deleting individual con maps ...  ', opt);
+    msg = 'Deleting individual con maps ...  ';
+    logger('INFO', msg, opt, mfilename);
     for iCon = 1:length(tMaps)
       delete(fullfile(ffxDir, ['con_', sprintf('%04d', iCon), '.nii']));
     end
-    printToScreen('Done. \n', opt);
+    logger('INFO', 'Done', opt, mfilename);
 
     % delete all individual t-maps
-    printToScreen('Deleting individual t-maps ...  ', opt);
+    msg = 'Deleting individual t-maps ...  ';
+    logger('INFO', msg, opt, mfilename);
     for iTmap = 1:length(tMaps)
       delete(tMaps{iTmap}(1:end - 2));
     end
-    printToScreen('Done. \n', opt);
+    logger('INFO', 'Done', opt, mfilename);
 
   end
 

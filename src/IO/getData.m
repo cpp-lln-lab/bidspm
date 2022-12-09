@@ -44,8 +44,8 @@ function [BIDS, opt] = getData(varargin)
   bidsDir = args.Results.bidsDir;
 
   if isfield(opt, 'taskName')
-    msg = sprintf('\nFOR TASK(s): %s\n', strjoin(opt.taskName, ' '));
-    printToScreen(msg, opt);
+    msg = sprintf('FOR TASK(s): %s', strjoin(opt.taskName, ' '));
+    logger('INFO', msg, opt, mfilename);
   end
 
   validationInputFile(bidsDir, 'dataset_description.json');
@@ -54,9 +54,9 @@ function [BIDS, opt] = getData(varargin)
 
   if strcmp(opt.pipeline.type, 'stats')
     if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file') == 2
-      msg = sprintf('\nLoading BIDS raw layout from:\n\t%s\n', ...
+      msg = sprintf('Loading BIDS raw layout from:\n\t%s', ...
                     pathToPrint(fullfile(opt.dir.raw, 'layout.mat')));
-      printToScreen(msg, opt);
+      logger('INFO', msg, opt, mfilename);
       tmp = load(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
       if isempty(fieldnames(tmp))
         BIDS.raw = bids.layout(opt.dir.raw);
@@ -86,8 +86,7 @@ function [BIDS, opt] = getData(varargin)
   % get IDs of all subjects
   opt = getSubjectList(BIDS, opt);
 
-  printToScreen('\nWILL WORK ON SUBJECTS\n', opt);
-  printToScreen(createUnorderedList(opt.subjects), opt);
-  printToScreen('\n', opt);
+  msg = sprintf('WILL WORK ON SUBJECTS\n%s', createUnorderedList(opt.subjects));
+  logger('INFO', msg, opt, mfilename);
 
 end

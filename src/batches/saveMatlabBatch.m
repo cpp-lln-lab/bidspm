@@ -53,8 +53,8 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subLabel) %#ok<INUSL>
   batchFileName = returnBatchFileName(batchType, '.mat');
   batchFileName = fullfile(jobsDir, batchFileName);
 
-  msg = sprintf('\nSaving job in:\n\t%s', pathToPrint(opt.dir.jobs));
-  printToScreen(msg, opt);
+  msg = sprintf('Saving job in:\n\t%s', pathToPrint(opt.dir.jobs));
+  logger('INFO', msg, opt, mfilename);
 
   save(batchFileName, 'matlabbatch', '-v7');
 

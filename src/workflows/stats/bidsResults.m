@@ -199,7 +199,7 @@ function matlabbatch = bidsResults(varargin)
     end
 
     msg = sprintf('\n PROCESSING NODE: %s\n', node.Name);
-    printToScreen(msg, opt, 'format', '*blue');
+    logger('INFO', msg, opt, mfilename);
 
     % Depending on the level step we might have to define a matlabbatch
     % for each subject or just on for the whole group

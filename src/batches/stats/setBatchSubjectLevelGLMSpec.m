@@ -72,7 +72,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % If it exists, issue a warning that it has been overwritten
   ffxDir = getFFXdir(subLabel, opt);
   overwriteDir(ffxDir, opt);
-  printToScreen(sprintf('\n output dir:\n\t%s\n\n', pathToPrint(ffxDir)), opt);
+  msg = sprintf(' output dir:\n\t%s', pathToPrint(ffxDir));
+  logger('INFO', msg, opt, mfilename);
   fmri_spec.dir = {ffxDir};
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
@@ -102,7 +103,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
       for iRun = 1:nbRuns
 
         if ~strcmp(runs{iRun}, '')
-          printToScreen(sprintf('\n Processing run %s\n', runs{iRun}), opt);
+          msg = sprintf(' Processing run %s', runs{iRun});
+          logger('INFO', msg, opt, mfilename);
         end
 
         spmSess(spmSessCounter).scans = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);

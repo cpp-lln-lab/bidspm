@@ -162,7 +162,7 @@ function outputFile = boilerplate(varargin)
   end
 
   %% print to screen
-  printToScreen(output, opt);
+  logger('INFO', output, opt, mfilename);
 
   %% print to file
   outputFile = printToFile(output, outputPath, pipelineType, modelName);

@@ -59,7 +59,8 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
   % in case files have been unzipped, we do it now
   fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename, opt);
 
-  printToScreen(createUnorderedList(pathToPrint(fullPathBoldFilename)), opt);
+  msg = createUnorderedList(pathToPrint(fullPathBoldFilename));
+  logger('INFO', msg, opt, mfilename);
 
   boldFilename = spm_file(fullPathBoldFilename, 'filename');
   subFuncDataDir = spm_file(fullPathBoldFilename, 'path');

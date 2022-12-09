@@ -105,7 +105,7 @@ function matlabbatch = bidsRFX(varargin)
       for i = 1:numel(datasetNodes)
 
         msg = sprintf('\n PROCESSING NODE: %s\n', nodeName);
-        printToScreen(msg, opt, 'format', '*blue');
+        logger('INFO', msg, opt, mfilename);
 
         matlabbatch = {};
 

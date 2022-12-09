@@ -55,8 +55,8 @@ function boldFilename = getBoldFilenameForFFX(varargin)
   % in case files have been unzipped, we do it now
   fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename{1}, opt);
 
-  printToScreen('\n  Bold file(s):', opt);
-  printToScreen(createUnorderedList(pathToPrint(fullPathBoldFilename)), opt);
+  msg = ['  Bold file(s):', createUnorderedList(pathToPrint(fullPathBoldFilename))];
+  logger('INFO', msg, opt, mfilename);
 
   boldFilename = spm_file(fullPathBoldFilename, 'filename');
   subFuncDataDir = spm_file(fullPathBoldFilename, 'path');

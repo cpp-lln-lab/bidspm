@@ -177,8 +177,6 @@ function renameFiles(BIDS, opt)
         end
       end
 
-      printToScreen('\n', opt);
-
       renameSegmentParameter(BIDS, subLabel, opt);
       renameUnwarpParameter(BIDS, subLabel, opt);
 

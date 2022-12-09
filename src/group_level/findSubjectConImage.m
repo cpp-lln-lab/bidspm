@@ -51,7 +51,8 @@ function file = findSubjectConImage(varargin)
   ffxDir = getFFXdir(subLabel, opt);
   load(fullfile(ffxDir, 'SPM.mat'));
 
-  printToScreen(sprintf('\n\nFor subject: %s', subLabel), opt);
+  msg = sprintf('\n\nFor subject: %s', subLabel);
+  logger('INFO', msg, opt, mfilename);
 
   for iCon = 1:numel(contrastName)
 
@@ -88,7 +89,7 @@ function file = findSubjectConImage(varargin)
       msg = sprintf('\ncontrast "%s" in image:\n\t%s',  ...
                     contrastName{iCon}, ...
                     pathToPrint(fileName));
-      printToScreen(msg, opt);
+      logger('INFO', msg, opt, mfilename);
 
       file{iCon, 1} = fileName;
 

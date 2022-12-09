@@ -17,12 +17,12 @@ function tests_octave()
   bidspm();
 
   if isGithubCi
-    printToScreen('\nThis is github CI\n');
+    printToScreen('This is github CI');
   else
-    printToScreen('\nThis is not github CI\n');
+    printToScreen('This is not github CI');
   end
 
-  printToScreen(sprintf('\nHome is %s\n', getenv('HOME')));
+  printToScreen(sprintf('Home is %s', getenv('HOME')));
 
   spm('defaults', 'fMRI');
 

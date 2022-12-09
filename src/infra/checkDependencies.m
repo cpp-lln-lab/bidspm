@@ -11,7 +11,7 @@ function checkDependencies(opt)
 
   % (C) Copyright 2019 bidspm developers
 
-  printToScreen('Checking dependencies\n', opt);
+  logger('INFO', 'Checking dependencies', opt, mfilename);
 
   SPM_main = 'SPM12';
   SPM_sub = 7219;
@@ -25,7 +25,8 @@ function checkDependencies(opt)
     errorHandling(mfilename(), 'noSpm', msg, tolerant, opt.verbosity);
   end
 
-  printToScreen(sprintf(' Using %s %s\n', a, b), opt);
+  msg = sprintf(' Using %s %s', a, b);
+  logger('INFO', 'Checking dependencies', opt, mfilename);
 
   if ~strcmp(a, SPM_main) || str2num(b) < 7219
     str = sprintf('%s %s %s.\n%s', ...
@@ -36,7 +37,5 @@ function checkDependencies(opt)
 
   spm('defaults', 'fmri');
   spm_jobman('initcfg');
-
-  printToScreen(' We got all we need. Let''s get to work.\n', opt);
 
 end

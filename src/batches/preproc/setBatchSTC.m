@@ -108,6 +108,8 @@ function matlabbatch = setBatchSTC(varargin)
 
   runCounter = 1;
 
+  logger('INFO', createUnorderedList(files{iFile}), opt, mfilename);
+
   for iFile = 1:size(files, 1)
 
     % TODO check for eventually zipped files
@@ -115,9 +117,6 @@ function matlabbatch = setBatchSTC(varargin)
     temporal.st.scans{runCounter} = {file};
 
     runCounter = runCounter + 1;
-
-    printToScreen([pathToPrint(files{iFile}), '\n'], opt);
-
   end
 
   matlabbatch{end + 1}.spm.temporal = temporal;

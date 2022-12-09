@@ -20,18 +20,18 @@ function [startTime, runTime] = elapsedTime(opt, action, startTime, runTime, nbI
 
     case 'stop'
 
-      printDone(opt);
+      msg = '********* Done :) *********\n';
+      msg = [msg, ' elapsed time: %s\n'];
+      msg = [msg, ' ETA: %s'];
+      msg = [msg, returnHorizontalLine(27)];
 
       t = toc(startTime(end));
-      msg = sprintf(' elapsed time: %s', formatDuration(t));
-      printToScreen(msg, opt);
-
       runTime(end + 1) = t;
       ETA = mean(runTime) * (nbIteration - numel(runTime));
-      msg = sprintf('\n ETA: %s', formatDuration(ETA));
-      printToScreen(msg, opt);
 
-      printHorizontalLine(opt, 27);
+      msg = sprintf(msg, formatDuration(t), formatDuration(ETA));
+
+      logger('INFO', msg, opt, mfilename);
 
     case 'globalStart'
 
@@ -39,24 +39,21 @@ function [startTime, runTime] = elapsedTime(opt, action, startTime, runTime, nbI
 
     case 'globalStop'
 
-      printToScreen('\n\n********* Pipeline done :) *********\n', opt);
+      msg = '********* Pipeline done :) *********\n';
+      msg = [msg, '  global elapsed time: %s'];
+      msg = [msg, returnHorizontalLine(36)];
 
       t = toc(opt.globalStart);
-      msg = sprintf('  global elapsed time: %s', formatDuration(t));
-      printToScreen(msg, opt);
+      msg = sprintf(msg, formatDuration(t));
 
-      printHorizontalLine(opt, 36);
+      logger('INFO', msg, opt, mfilename);
 
   end
 
 end
 
-function printDone(opt)
-  printToScreen('\n\n********* Done :) *********\n', opt);
-end
-
-function printHorizontalLine(opt, length)
-  printToScreen(['\n' repmat('*', 1, length) '\n\n'], opt);
+function line = returnHorizontalLine(length)
+  line = ['\n' repmat('*', 1, length)];
 end
 
 function string = formatDuration(duration)

@@ -184,7 +184,7 @@ function checkRootNode(opt)
   end
 
   msg = sprintf('\n PROCESSING NODE: %s\n', thisNode.Name);
-  printToScreen(msg, opt, 'format', '*blue');
+  logger('INFO', msg, opt, mfilename);
 
 end
 
