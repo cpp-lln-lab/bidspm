@@ -105,7 +105,7 @@ function matlabbatch = bidsRFX(varargin)
       for i = 1:numel(datasetNodes)
 
         msg = sprintf('\n PROCESSING NODE: %s\n', nodeName);
-        logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
+        logger('INFO', msg, 'options', opt, 'filename', mfilename);
 
         matlabbatch = {};
 

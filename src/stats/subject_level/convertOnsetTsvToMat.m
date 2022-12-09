@@ -186,7 +186,7 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
   msg = sprintf('   Condition %s: %i trials found.\n', ...
                 condName, ...
                 numel(rows));
-  logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename);
 
   if ~isempty(rows)
 

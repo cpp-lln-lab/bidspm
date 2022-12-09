@@ -37,7 +37,7 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
     sliceOrder = opt.stc.sliceOrder;
 
     msg = ' SLICE TIMING INFORMATION EXTRACTED FROM OPTIONS.';
-    logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
+    logger('INFO', msg, 'options', opt, 'filename', mfilename);
 
     wng = ['[DEPRECATION WARNING]\n', ...
            'Slice timing in the options will be deprecated in release 3.0.\n', ...
@@ -104,6 +104,6 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
   end
 
   msg = ' SLICE TIMING INFORMATION EXTRACTED FROM METADATA.';
-  logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename);
 
 end

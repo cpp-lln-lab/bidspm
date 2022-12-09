@@ -388,7 +388,7 @@ function checkFields(opt)
 
     msg = 'All group names should be string.';
     id = 'groupNotString';
-    logger('ERROR', msg, 'filaneme', mfilename(), 'id', id);
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
 
   end
 
@@ -398,7 +398,7 @@ function checkFields(opt)
                    '\nCurrent value is: %d'], ...
                   opt.stc.referenceSlice);
     id = 'refSliceNotScalar';
-    logger('ERROR', msg, 'filaneme', mfilename(), 'id', id);
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
 
   end
 
@@ -408,7 +408,7 @@ function checkFields(opt)
                    '\nCurrent value is: %d'], ...
                   opt.funcVoxelDims);
     id = 'voxDim';
-    logger('ERROR', msg, 'filaneme', mfilename(), 'id', id);
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
 
   end
 
@@ -416,7 +416,7 @@ function checkFields(opt)
 
     msg = ('HRF derivatives should be set in the BIDS stats model file, not in the options.');
     id = 'voxDim';
-    logger('ERROR', msg, 'filaneme', mfilename(), 'id', id, 'options', opt);
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id, 'options', opt);
 
   end
 

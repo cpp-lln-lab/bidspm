@@ -54,14 +54,14 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
                   createUnorderedList(opt.query));
 
     id = 'emptyInput';
-    logger('ERROR', msg, 'filaneme', mfilename(), 'id', id);
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
   end
 
   % in case files have been unzipped, we do it now
   fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename, opt);
 
   msg = createUnorderedList(pathToPrint(fullPathBoldFilename));
-  logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename);
 
   boldFilename = spm_file(fullPathBoldFilename, 'filename');
   subFuncDataDir = spm_file(fullPathBoldFilename, 'path');

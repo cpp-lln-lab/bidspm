@@ -67,7 +67,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
       logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
       msg = sprintf('%s\n', strjoin(pathToPrint(cellstr(file)), '\n'));
-      logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename);
 
     else
 
@@ -84,7 +84,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
       msg = sprintf('\n%s\nwas moved to\n%s\n', ...
                     pathToPrint(file), ...
                     pathToPrint(fullfile(figureDir, targetFile)));
-      logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename);
 
     end
 

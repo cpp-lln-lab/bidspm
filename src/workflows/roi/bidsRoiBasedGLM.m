@@ -71,7 +71,7 @@ function skipped = bidsRoiBasedGLM(opt)
     msg = [' Using ROIs:' ...
            createUnorderedList(pathToPrint(roiList))];
 
-    logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
+    logger('INFO', msg, 'options', opt, 'filename', mfilename);
 
     outputDir = getFFXdir(subLabel, opt);
 
@@ -105,7 +105,7 @@ function skipped = bidsRoiBasedGLM(opt)
       roiSize.volume = roiSize.voxels * voxelVolume;
 
       msg = sprintf('\n Processing ROI:\n\t%s\n', spm_file(roiList{iROI, 1}, 'filename'));
-      logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename);
 
       %% Do ROI based GLM
       % create ROI object for Marsbar

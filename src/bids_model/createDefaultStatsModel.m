@@ -146,7 +146,7 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
 
   bm.write(filename);
   msg = sprintf('\nDefault model was created:\n\t%s', pathToPrint(filename));
-  logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename);
 
   opt.model.file = filename;
 

@@ -31,7 +31,7 @@ function [startTime, runTime] = elapsedTime(opt, action, startTime, runTime, nbI
 
       msg = sprintf(msg, formatDuration(t), formatDuration(ETA));
 
-      logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename);
 
     case 'globalStart'
 
@@ -46,7 +46,7 @@ function [startTime, runTime] = elapsedTime(opt, action, startTime, runTime, nbI
       t = toc(opt.globalStart);
       msg = sprintf(msg, formatDuration(t));
 
-      logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename);
 
   end
 
