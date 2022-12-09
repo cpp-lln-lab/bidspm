@@ -105,7 +105,7 @@ function matlabbatch = bidsRFX(varargin)
       for i = 1:numel(datasetNodes)
 
         msg = sprintf('\n PROCESSING NODE: %s\n', nodeName);
-        logger('INFO', msg, opt, mfilename);
+        logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
 
         matlabbatch = {};
 
@@ -184,7 +184,9 @@ function checkDirIsEmpty(matlabbatch)
     if isfield(matlabbatch{i}.spm, 'stats') && ...
         isfield(matlabbatch{i}.spm.stats, 'fmri_est')
       if exist(matlabbatch{i}.spm.stats.fmri_est.spmmat{1}, 'file')
-        error('PANIC! About to overwrite a model. That should not happen');
+        logger('ERROR', 'About to overwrite a model. That should not happen', ...
+               'filename', mfilename, ...
+               'id', 'overWriteModel');
       end
     end
 

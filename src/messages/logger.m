@@ -4,10 +4,18 @@ function logMsg = logger(varargin)
   %
   % USAGE::
   %
-  %   logger(logLevel, msg, opt, filename)
+  %   logger(logLevel, msg, 'options', opt, 'filename', filename, 'id', id)
+  %
+  % :param logLevel:
+  % :type  logLevel: char
+  %
+  % :param msg:
+  % :type  msg: char
   %
 
   % (C) Copyright 2022 bidspm developers
+
+  ALLOWED_LOG_LEVELS = {'ERROR', 'WARNING', 'INFO', 'DEBUG'};
 
   default_opt = struct('verbosity', 2);
 
@@ -15,19 +23,26 @@ function logMsg = logger(varargin)
 
   addRequired(args, 'logLevel', @ischar);
   addRequired(args, 'msg', @ischar);
-  addOptional(args, 'opt', default_opt, @isstruct);
-  addOptional(args, 'filename', '', @ischar);
-  addOptional(args, 'id', '', @ischar);
+  addParameter(args, 'options', default_opt, @isstruct);
+  addParameter(args, 'filename', '', @ischar);
+  addParameter(args, 'id', '', @ischar);
 
   parse(args, varargin{:});
 
   logLevel = args.Results.logLevel;
   msg = args.Results.msg;
-  opt = args.Results.opt;
+  opt = args.Results.options;
   filename = args.Results.filename;
   id = args.Results.id;
 
   [~, filename, ext] = fileparts(filename);
+
+  if ~ismember(logLevel, ALLOWED_LOG_LEVELS)
+    logger('ERROR', ...
+           ['log levels must be one of:' createUnorderedList(ALLOWED_LOG_LEVELS)], ...
+           'filename', mfilename, ...
+           'id', 'wrongLogLevel');
+  end
 
   baseMsg = sprintf('\n[%s] bidspm - %s\t\t\t%s\n%s\n', ...
                     datestr(now, 'HH:MM:SS'), ...

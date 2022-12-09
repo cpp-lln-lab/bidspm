@@ -83,7 +83,7 @@ function removeDummies(varargin)
     opt.verbosity = 2;
     msg = sprintf('\nRemoved %i volumes from file:\n%s', ...
                   numberOfVolumeToDiscard, inputFile);
-    logger('INFO', msg, opt, mfilename);
+    logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
   end
 
   if isZipped(inputFile)

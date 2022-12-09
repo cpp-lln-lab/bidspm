@@ -52,7 +52,10 @@ function davg = getDist2surf(varargin)
 
     msg = ' Could not compute the average distance to the brain surface.\n';
     msg = [msg, ' Using the default value instead.\n'];
-    logger('WARNING', msg, opt, mfilename);
+    logger('WARNING', msg, ...
+           'options', opt, ...
+           'filename', mfilename, ...
+           'id', 'cannotComputeDist2surf');
 
   end
 

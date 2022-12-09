@@ -63,7 +63,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
       groups{end + 1, 1} = 'ALL';
 
       msg = sprintf('  Group contrast: "%s"', contrastName);
-      logger('INFO', msg, opt, mfilename);
+      logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
 
       icell = allocateSubjectsContrasts(opt, opt.subjects, conImages, iCon);
 
@@ -105,7 +105,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
         groups{end + 1, 1} = thisGroup;
 
         msg = sprintf('  Group contrast "%s" for group "%s"', contrastName, thisGroup);
-        logger('INFO', msg, opt, mfilename);
+        logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
 
         icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon);
 
@@ -140,7 +140,7 @@ function icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon)
 
     printProcessingSubject(iSub, subLabel, opt);
     msg = sprintf(' %s', pathToPrint(char(file)));
-    logger('INFO', msg, opt, mfilename);
+    logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
 
   end
 

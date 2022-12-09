@@ -73,7 +73,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   ffxDir = getFFXdir(subLabel, opt);
   overwriteDir(ffxDir, opt);
   msg = sprintf(' output dir:\n\t%s', pathToPrint(ffxDir));
-  logger('INFO', msg, opt, mfilename);
+  logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
   fmri_spec.dir = {ffxDir};
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
@@ -104,7 +104,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
         if ~strcmp(runs{iRun}, '')
           msg = sprintf(' Processing run %s', runs{iRun});
-          logger('INFO', msg, opt, mfilename);
+          logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
         end
 
         spmSess(spmSessCounter).scans = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);

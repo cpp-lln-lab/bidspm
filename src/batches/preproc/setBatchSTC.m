@@ -108,7 +108,7 @@ function matlabbatch = setBatchSTC(varargin)
 
   runCounter = 1;
 
-  logger('INFO', createUnorderedList(files), opt, mfilename);
+  logger('INFO', createUnorderedList(files), 'options', opt, 'filename',  mfilename);
 
   for iFile = 1:size(files, 1)
 

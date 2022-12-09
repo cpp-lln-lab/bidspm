@@ -64,7 +64,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
       errorHandling(mfilename(), 'tooManyFiles', msg, true, opt.verbosity);
 
       msg = sprintf('%s\n', strjoin(pathToPrint(cellstr(file)), '\n'));
-      logger('INFO', msg, opt, mfilename);
+      logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
 
     else
 
@@ -81,7 +81,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
       msg = sprintf('\n%s\nwas moved to\n%s\n', ...
                     pathToPrint(file), ...
                     pathToPrint(fullfile(figureDir, targetFile)));
-      logger('INFO', msg, opt, mfilename);
+      logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
 
     end
 

@@ -24,7 +24,7 @@ function test_logger_basic()
       if strcmp(logLevel, 'ERROR')
 
       else
-        logger(logLevel, msg, opt, mfilename, 'ID');
+        logger(logLevel, msg, 'options', opt, 'filename', mfilename, 'id', 'ID');
       end
 
     end

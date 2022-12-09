@@ -4,6 +4,6 @@ function printWorkflowName(workflowName, opt)
   % (C) Copyright 2019 bidspm developers
 
   msg = sprintf('WORKFLOW: %s', upper(workflowName));
-  logger('INFO', msg, opt, mfilename);
+  logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
 
 end

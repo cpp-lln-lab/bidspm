@@ -64,7 +64,7 @@ function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
 
   msg = sprintf('%s --> %s\n', spm_file(rpTxtFile, 'filename'), ...
                 spm_file(rpTsvFile, 'filename'));
-  logger('INFO', msg, opt, mfilename);
+  logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
 
   if rmInput
     delete(rpTxtFile);

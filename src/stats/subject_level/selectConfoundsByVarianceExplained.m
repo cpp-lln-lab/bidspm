@@ -39,9 +39,7 @@ function newTsvContent = selectConfoundsByVarianceExplained(tsvContent, metadata
   maxNbRegPerTissue = opt.maxNbRegPerTissue;
   tissueNames = opt.tissueNames;
 
-  if length(maxNbRegPerTissue) ~= length(tissueNames)
-    error('mismatch');
-  end
+  assert(length(maxNbRegPerTissue) == length(tissueNames));
 
   regressorCounter = zeros(1, length(tissueNames));
   nameRegressorsToInclude = {};

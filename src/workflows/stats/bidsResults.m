@@ -199,7 +199,7 @@ function matlabbatch = bidsResults(varargin)
     end
 
     msg = sprintf('\n PROCESSING NODE: %s\n', node.Name);
-    logger('INFO', msg, opt, mfilename);
+    logger('INFO', msg, 'options', opt, 'filaneme', mfilename);
 
     % Depending on the level step we might have to define a matlabbatch
     % for each subject or just on for the whole group
@@ -256,7 +256,8 @@ function matlabbatch = bidsResults(varargin)
 
       otherwise
 
-        error('This BIDS model does not contain an analysis step I understand.');
+        logger('ERROR', 'This BIDS model does not contain an analysis step I understand.', ...
+               'filename', mfilename, 'id', 'unknownBsmStep');
 
     end
 
