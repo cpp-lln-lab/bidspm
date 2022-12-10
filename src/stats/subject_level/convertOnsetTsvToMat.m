@@ -58,14 +58,16 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   if ~all(isnumeric(tsv.content.onset))
 
     msg = sprintf('%s\n%s', 'Onset column contains non numeric values in file:', tsv.file);
-    errorHandling(mfilename(), 'onsetsNotNumeric', msg, false, opt.verbosity);
+    id = 'onsetsNotNumeric';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
   end
 
   if ~all(isnumeric(tsv.content.duration))
 
     msg = sprintf('%s\n%s', 'Duration column contains non numeric values in file:', tsv.file);
-    errorHandling(mfilename(), 'durationsNotNumeric', msg, false, opt.verbosity);
+    id = 'durationsNotNumeric';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
   end
 
@@ -150,8 +152,8 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
       msg = sprintf('Variable %s not found in \n %s\n Adding dummy regressor instead.', ...
                     varToConvolve{iVar}, ...
                     tsv.file);
-
-      errorHandling(mfilename(), 'variableNotFound', msg, true, opt.verbosity);
+      id = 'variableNotFound';
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
     end
 
@@ -181,10 +183,10 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
 
   rows = find(strcmp(condName, trialTypes));
 
-  printToScreen(sprintf('   Condition %s: %i trials found.\n', ...
-                        condName, ...
-                        numel(rows)), ...
-                opt);
+  msg = sprintf('   Condition %s: %i trials found.\n', ...
+                condName, ...
+                numel(rows));
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   if ~isempty(rows)
 
@@ -200,8 +202,8 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
     msg = sprintf('Trial type %s not found in \n\t%s\n', ...
                   varToConvolve, ...
                   tsv.file);
-
-    errorHandling(mfilename(), 'trialTypeNotFound', msg, true, opt.verbosity);
+    id = 'trialTypeNotFound';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
     if opt.glm.useDummyRegressor
       condToModel = addDummyRegressor(condToModel);

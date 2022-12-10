@@ -138,9 +138,9 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
       end
 
     otherwise
-      errorHandling(mfilename(), 'unknownRequest', ...
-                    'Not sure what info you want me to get.', ...
-                    false, true);
+      id = 'unknownRequest';
+      msg = 'Not sure what info you want me to get.';
+      logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
   end
 

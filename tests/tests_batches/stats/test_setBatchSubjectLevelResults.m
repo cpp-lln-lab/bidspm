@@ -53,6 +53,7 @@ end
 function test_setBatchSubjectLevelResults_missing_contrast_name()
 
   if isOctave
+    %       'Octave:mixed-string-concat'
     return
   end
 
@@ -72,6 +73,7 @@ end
 function test_setBatchSubjectLevelResults_error_no_matching_contrast()
 
   if isOctave
+    %       'Octave:mixed-string-concat'
     return
   end
 

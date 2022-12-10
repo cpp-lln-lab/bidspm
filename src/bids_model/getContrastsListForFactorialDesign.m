@@ -43,7 +43,7 @@ function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
 
     commonMsg = sprintf('for the dataset level node: "%s"', nodeName);
     msg = sprintf('Models other than group average not implemented yet %s', commonMsg);
-    notImplemented(mfilename(), msg, opt.verbosity);
+    notImplemented(mfilename(), msg, opt);
 
   end
 

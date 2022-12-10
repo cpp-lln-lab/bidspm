@@ -186,9 +186,8 @@ function status = isContrastAgainstBaseline(contrast)
   if any(contrast.Weights < 0) || ~(numel(unique(contrast.Weights)) == 1)
 
     status = false;
-    verbose = true;
     msg = 'Only contrasts against baseline supported';
-    notImplemented(mfilename(), msg, verbose);
+    notImplemented(mfilename(), msg);
 
   end
 

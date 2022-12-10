@@ -35,8 +35,8 @@ function contrastNb = getContrastNb(result, opt, SPM)
     printAvailableContrasts(SPM, opt);
 
     msg = 'No contrast name specified';
-
-    errorHandling(mfilename(), 'missingContrastName', msg, true, true);
+    id = 'missingContrastName';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
 
     return
 
@@ -55,8 +55,8 @@ function contrastNb = getContrastNb(result, opt, SPM)
     msg = sprintf('\nThis SPM file\n%s\n does not contain a contrast named:\n "%s"', ...
                   fullfile(result.dir, 'SPM.mat'), ...
                   result.name(2:end - 1));
-
-    errorHandling(mfilename(), 'noMatchingContrastName', msg, true, true);
+    id = 'noMatchingContrastName';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
 
     return
 

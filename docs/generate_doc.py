@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from rich import print
+
 code_src = Path(__file__).parent.parent.joinpath("src")
 
 doc_src = Path(__file__).parent.joinpath("source")
@@ -13,16 +15,28 @@ dir_ignore_list = ("__pycache__", "bidspm.egg-info", "workflows", "batches")
 file_ignore_list = "BidsModel"
 
 
-def append_dir_content(path, content, parent_folder=None):
+def return_title(path: Path, parent_folder=None):
 
-    title = f"{path.name}" if parent_folder is None else f"{parent_folder} {path.name}"
-    title.replace("_", " ")
+    tmp = f"{path.name}" if parent_folder is None else f"{parent_folder} {path.name}"
+    tmp.replace("_", " ")
 
-    content += f"\n\n.. _{title}:\n"
-    content += f"\n{title}\n"
-    content += "=" * len(title) + "\n"
+    title = f"\n\n.. _{tmp}:\n"
+    title += f"\n{tmp}\n"
+    title += "=" * len(tmp) + "\n"
 
-    m_files = path.glob("*.m")
+    return title
+
+
+def append_dir_content(path: Path, content: str, parent_folder=None, recursive=False):
+
+    if not path.is_dir():
+        return content
+
+    m_files = sorted(list(path.glob("*.m")))
+
+    if len(m_files) > 0:
+        title = return_title(path=path, parent_folder=parent_folder)
+        content += title
 
     for file in m_files:
 
@@ -35,6 +49,15 @@ def append_dir_content(path, content, parent_folder=None):
         else:
             function_name = f"src.{parent_folder}.{path.name}.{file.stem}"
         content += f".. autofunction:: {function_name}\n"
+
+        print(function_name)
+
+    if recursive and path.is_dir():
+        print(path)
+        for subpath in path.iterdir():
+            content = append_dir_content(
+                subpath, content, parent_folder=path.name, recursive=recursive
+            )
 
     return content
 
@@ -52,45 +75,30 @@ developer documentation
 """
 
         content = append_dir_content(
-            code_src.joinpath("workflows", "stats"), content, "workflows"
+            code_src.joinpath("workflows"), content, parent_folder=None, recursive=True
         )
         content = append_dir_content(
-            code_src.joinpath("workflows", "preproc"), content, "workflows"
+            code_src.joinpath("batches"), content, parent_folder=None, recursive=True
         )
-        content = append_dir_content(
-            code_src.joinpath("workflows", "lesion"), content, "workflows"
-        )
-        content = append_dir_content(
-            code_src.joinpath("workflows", "roi"), content, "workflows"
-        )
-        content = append_dir_content(code_src.joinpath("workflows"), content)
 
-        content = append_dir_content(
-            code_src.joinpath("batches", "stats"), content, "batches"
-        )
-        content = append_dir_content(
-            code_src.joinpath("batches", "preproc"), content, "batches"
-        )
-        content = append_dir_content(
-            code_src.joinpath("batches", "lesion"), content, "batches"
-        )
-        content = append_dir_content(code_src.joinpath("batches"), content)
+        subfolders = sorted(list(code_src.iterdir()))
 
-        for path in code_src.iterdir():
+        for path in subfolders:
 
             if path.name in dir_ignore_list:
                 continue
 
             if path.is_dir():
-
-                content = append_dir_content(path, content)
+                content = append_dir_content(
+                    path, content, parent_folder=None, recursive=True
+                )
 
         print(content, file=f)
 
     with bidspm_file.open("r", encoding="utf8") as f:
         content = f.read()
 
-    print(content)
+    # print(content)
 
 
 if __name__ == "__main__":

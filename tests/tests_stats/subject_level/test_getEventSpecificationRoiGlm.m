@@ -52,10 +52,6 @@ end
 
 function test_getEventSpecificationRoiGlm_warning_complex_contrasts()
 
-  if isOctave
-    return
-  end
-
   % GIVEN
   [modelFile, spmFile] = setUp();
 

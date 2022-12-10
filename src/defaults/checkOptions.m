@@ -379,14 +379,16 @@ function checkFields(opt)
   if isfield(opt, 'taskName') && isempty(opt.taskName)
 
     msg = 'You may need to provide the name of the task to analyze.';
-    errorHandling(mfilename(), 'noTask', msg, true, opt.verbosity);
+    id = 'noTask';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
   end
 
   if ~all(cellfun(@ischar, opt.groups))
 
     msg = 'All group names should be string.';
-    errorHandling(mfilename(), 'groupNotString', msg, false, opt.verbosity);
+    id = 'groupNotString';
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
 
   end
 
@@ -395,7 +397,8 @@ function checkFields(opt)
     msg = sprintf(['options.stc.referenceSlice should be a scalar.' ...
                    '\nCurrent value is: %d'], ...
                   opt.stc.referenceSlice);
-    errorHandling(mfilename(), 'refSliceNotScalar', msg, false, opt.verbosity);
+    id = 'refSliceNotScalar';
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
 
   end
 
@@ -404,14 +407,16 @@ function checkFields(opt)
     msg = sprintf(['opt.funcVoxelDims should be a vector of length 3. '...
                    '\nCurrent value is: %d'], ...
                   opt.funcVoxelDims);
-    errorHandling(mfilename(), 'voxDim', msg, false, opt.verbosity);
+    id = 'voxDim';
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
 
   end
 
   if isfield(opt.model, 'hrfDerivatives')
 
     msg = ('HRF derivatives should be set in the BIDS stats model file, not in the options.');
-    errorHandling(mfilename(), 'voxDim', msg, true, opt.verbosity);
+    id = 'voxDim';
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id, 'options', opt);
 
   end
 

@@ -3,8 +3,7 @@ function printWorkflowName(workflowName, opt)
 
   % (C) Copyright 2019 bidspm developers
 
-  msg = sprintf('\n\n\nWORKFLOW: %s\n\n', upper(workflowName));
-
-  printToScreen(msg, opt, 'format', '*blue');
+  msg = sprintf('WORKFLOW: %s', upper(workflowName));
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
 end

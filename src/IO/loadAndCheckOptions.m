@@ -35,7 +35,6 @@ function opt = loadAndCheckOptions(optionJsonFile)
 
     opt = optionJsonFile;
     opt = checkOptions(opt);
-    printToScreen('\nOptions are locked & loaded.\n\n', opt);
 
     return
   end
@@ -53,13 +52,14 @@ function opt = loadAndCheckOptions(optionJsonFile)
 
   if ischar(optionJsonFile) && size(optionJsonFile, 1) == 1
     if exist(optionJsonFile, 'file')
-      msg = sprintf('\nReading option from: %s.\n', pathToPrint(optionJsonFile));
+      msg = sprintf('\nReading option from: %s.', pathToPrint(optionJsonFile));
       opt = spm_jsonread(optionJsonFile);
       opt = checkOptions(opt);
-      printToScreen(msg, opt);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename());
     else
       msg = sprintf('the requested file does not exist: %s', optionJsonFile);
-      errorHandling(mfilename(), 'missingOptionFile', msg, false, true);
+      id = 'missingOptionFile';
+      logger('ERROR', msg, 'id', id, 'filename', mfilename());
     end
   end
 
@@ -70,7 +70,5 @@ function opt = loadAndCheckOptions(optionJsonFile)
   end
 
   opt = checkOptions(opt);
-
-  printToScreen('\nOptions are locked & loaded.\n\n', opt);
 
 end

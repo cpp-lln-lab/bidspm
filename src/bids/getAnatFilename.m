@@ -61,7 +61,12 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
 
     msg = sprintf('No anat file for:\n%s\n\n', createUnorderedList(filter));
 
-    errorHandling(mfilename(), 'noAnatFile', msg, tolerant, opt.verbosity);
+    id = 'noAnatFile';
+    if tolerant
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    else
+      logger('ERROR', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    end
 
   end
 
@@ -71,7 +76,8 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
                   numel(anat), ...
                   nbImgToReturn, ...
                   createUnorderedList(pathToPrint(anat(1:nbImgToReturn))));
-    errorHandling(mfilename(), 'severalAnatFile', msg, true, opt.verbosity);
+    id = 'severalAnatFile';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
   end
 
   anatDataDir = '';
@@ -89,8 +95,8 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
 
   anatImage = unzipAndReturnsFullpathName(anat);
 
-  msg = sprintf('  selecting anat file: %s\n', createUnorderedList(pathToPrint(anat)));
-  printToScreen(msg, opt);
+  msg = sprintf('  selecting anat file: %s', createUnorderedList(pathToPrint(anat)));
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   tmpDir = {};
   tmpImage = {};
@@ -128,8 +134,12 @@ function checkAvailableSuffix(BIDS, subLabel, filter, tolerant)
                   anatSuffixes, ...
                   subLabel, ...
                   createUnorderedList(availableSuffixes));
-
-    errorHandling(mfilename(), 'requestedSuffixUnvailable', msg, tolerant, false);
+    id = 'requestedSuffixUnvailable';
+    if tolerant
+      logger('WARNING', msg, 'id', id, 'filename', mfilename());
+    else
+      logger('ERROR', msg, 'id', id, 'filename', mfilename());
+    end
 
   end
 
@@ -155,8 +165,12 @@ function anatSession = checkAvailableSessions(BIDS, subLabel, filter, tolerant)
                     anatSession, ...
                     subLabel, ...
                     createUnorderedList(sessions));
-
-      errorHandling(mfilename(), 'requestedSessionUnvailable', msg, tolerant, false);
+      id = 'requestedSessionUnvailable';
+      if tolerant
+        logger('WARNING', msg, 'id', id, 'filename', mfilename());
+      else
+        logger('ERROR', msg, 'id', id, 'filename', mfilename());
+      end
 
     end
 

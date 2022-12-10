@@ -179,13 +179,11 @@ classdef BidsModel < bids.Model
         case 'fir'
           notImplemented(mfilename(), ...
                          ['HRF model of the type "%s" not yet implemented.\n', ...
-                          'Will use SPM canonical HRF insteasd.\n'], ...
-                         true);
+                          'Will use SPM canonical HRF insteasd.\n']);
         otherwise
           notImplemented(mfilename(), ...
                          ['HRF model of the type "%s" not implemented.\n', ...
-                          'Will use SPM canonical HRF insteasd.\n'], ...
-                         true);
+                          'Will use SPM canonical HRF insteasd.\n']);
 
       end
 
@@ -292,7 +290,15 @@ classdef BidsModel < bids.Model
 
     function bidsModelError(obj, id, msg)
       msg = sprintf('\n\nFor BIDS stats model named: "%s"\n%s\n', obj.Name, msg);
-      errorHandling(mfilename(), id, msg, obj.tolerant, obj.verbose);
+      opt.verbosity = 0;
+      if obj.verbose
+        opt.verbosity = 1;
+      end
+      if obj.tolerant
+        logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+      else
+        logger('ERROR', msg, 'id', id, 'filename', mfilename());
+      end
     end
 
   end

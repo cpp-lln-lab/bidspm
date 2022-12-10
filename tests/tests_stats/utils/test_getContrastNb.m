@@ -56,12 +56,6 @@ end
 
 function test_getContrastNb_missing()
 
-  if isOctave
-    return
-  end
-
-  %% GIVEN
-
   opt = setTestCfg();
 
   result.dir = pwd;
@@ -73,18 +67,11 @@ function test_getContrastNb_missing()
   SPM.xCon(2, 1).name = 'bar';
   SPM.xCon(3, 1).name = 'foobar';
 
-  %% THEN
   assertWarning(@()getContrastNb(result, opt, SPM), 'getContrastNb:noMatchingContrastName');
 
 end
 
 function test_getContrastNb_no_name()
-
-  if isOctave
-    return
-  end
-
-  %% GIVEN
 
   opt = setTestCfg();
 
@@ -97,7 +84,6 @@ function test_getContrastNb_no_name()
   SPM.xCon(2, 1).name = 'bar';
   SPM.xCon(3, 1).name = 'foobar';
 
-  %% THEN
   assertWarning(@()getContrastNb(result, opt, SPM), 'getContrastNb:missingContrastName');
 
 end

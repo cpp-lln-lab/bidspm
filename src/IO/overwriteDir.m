@@ -9,7 +9,8 @@ function overwriteDir(directory, opt)
 
   if exist(directory, 'dir') == 7
     msg = sprintf('\noverwriting directory:\n\t%s\n\n', pathToPrint(directory));
-    errorHandling(mfilename(), 'overWritingDir', msg, true, opt.verbosity);
+    id = 'overWritingDir';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
     rmdir(directory, 's');
   end
   spm_mkdir(directory);

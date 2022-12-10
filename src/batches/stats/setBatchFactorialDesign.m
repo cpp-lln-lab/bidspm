@@ -62,8 +62,8 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
       contrastsList{end + 1, 1} = contrastName;
       groups{end + 1, 1} = 'ALL';
 
-      msg = sprintf('\n\n  Group contrast: "%s"\n\n', contrastName);
-      printToScreen(msg, opt);
+      msg = sprintf('  Group contrast: "%s"', contrastName);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
       icell = allocateSubjectsContrasts(opt, opt.subjects, conImages, iCon);
 
@@ -104,8 +104,8 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
         contrastsList{end + 1, 1} = contrastName;
         groups{end + 1, 1} = thisGroup;
 
-        msg = sprintf('\n\n  Group contrast "%s" for group "%s"\n\n', contrastName, thisGroup);
-        printToScreen(msg, opt);
+        msg = sprintf('  Group contrast "%s" for group "%s"', contrastName, thisGroup);
+        logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
         icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon);
 
@@ -139,8 +139,8 @@ function icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon)
     icell(1).scans{end + 1, 1} = file;
 
     printProcessingSubject(iSub, subLabel, opt);
-    msg = sprintf(' %s\n\n', pathToPrint(char(file)));
-    printToScreen(msg, opt);
+    msg = sprintf(' %s', pathToPrint(char(file)));
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   end
 
@@ -215,7 +215,7 @@ function [status, groupBy] = checks(opt, nodeName)
   if iscell(designMatrix) || (designMatrix ~= 1)
 
     msg = sprintf('Models other than group average not implemented yet %s', commonMsg);
-    notImplemented(mfilename(), msg, opt.verbosity);
+    notImplemented(mfilename(), msg, opt);
 
     status = false;
 
@@ -225,7 +225,7 @@ function [status, groupBy] = checks(opt, nodeName)
   if isempty(datasetLvlDummyContrasts) || ~isfield(datasetLvlDummyContrasts, 'Test')
 
     msg = sprintf('Only DummyContrasts are implemented %s', commonMsg);
-    notImplemented(mfilename(), msg, opt.verbosity);
+    notImplemented(mfilename(), msg, opt);
 
     status = false;
 
@@ -235,7 +235,7 @@ function [status, groupBy] = checks(opt, nodeName)
   if ~isempty(datasetLvlContrasts)
 
     msg = sprintf('Contrasts are not yet implemented %s', commonMsg);
-    notImplemented(mfilename(), msg, opt.verbosity);
+    notImplemented(mfilename(), msg, opt);
 
   end
 

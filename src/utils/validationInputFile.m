@@ -48,13 +48,15 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
   if isempty(fileNamePattern)
     msg = sprintf(['The filename to validate cannot be empty.\n', ...
                    'Check that your query did not come back empty']);
-    errorHandling(mfilename(), 'emptyInput', msg, false, true);
+    id = 'emptyInput';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   if size(fileNamePattern, 1) > 1
     disp(fileNamePattern);
     msg = 'More than one file to validate';
-    errorHandling(mfilename(), 'tooManyFiles', msg, false, true);
+    id = 'tooManyFiles';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   % try to guess directory in case a fullpath filename was given
@@ -75,7 +77,8 @@ function files = validationInputFile(dir, fileNamePattern, prefix)
     msg = sprintf( ...
                   'This file does not exist: %s', ...
                   fullfile(dir, [prefix fileNamePattern '[.gz]']));
-    errorHandling(mfilename(), 'nonExistentFile', msg, false, true);
+    id = 'nonExistentFile';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
 end

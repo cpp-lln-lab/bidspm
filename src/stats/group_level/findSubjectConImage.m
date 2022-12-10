@@ -51,7 +51,8 @@ function file = findSubjectConImage(varargin)
   ffxDir = getFFXdir(subLabel, opt);
   load(fullfile(ffxDir, 'SPM.mat'));
 
-  printToScreen(sprintf('\n\nFor subject: %s', subLabel), opt);
+  msg = sprintf('\n\nFor subject: %s', subLabel);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   for iCon = 1:numel(contrastName)
 
@@ -66,8 +67,8 @@ function file = findSubjectConImage(varargin)
                     subLabel, ...
                     contrastName{iCon}, ...
                     pathToPrint(fullfile(ffxDir, 'SPM.mat')));
-
-      errorHandling(mfilename(), 'missingContrast', msg, true, opt.verbosity);
+      id = 'missingContrast';
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
       printToScreen(['available contrasts:\n' createUnorderedList({SPM.xCon.name}')], ...
                     opt, 'format', 'red');
@@ -88,7 +89,7 @@ function file = findSubjectConImage(varargin)
       msg = sprintf('\ncontrast "%s" in image:\n\t%s',  ...
                     contrastName{iCon}, ...
                     pathToPrint(fileName));
-      printToScreen(msg, opt);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
       file{iCon, 1} = fileName;
 

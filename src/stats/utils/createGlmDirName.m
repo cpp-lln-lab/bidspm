@@ -15,7 +15,7 @@ function glmDirName = createGlmDirName(opt)
     printToScreen(['Requested spaces: ' strjoin(filter.space) '\n'], opt);
     msg = sprintf('Please specify only a single space');
     id = 'tooManyMRISpaces';
-    errorHandling(mfilename(), id, msg, false, opt.verbosity);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   % make sure we use BIDS entities requested in stats model to folder name

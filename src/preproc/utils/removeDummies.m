@@ -46,7 +46,12 @@ function removeDummies(varargin)
   dummyScans = args.Results.dummyScans;
   metadata = args.Results.metadata;
   force = args.Results.force;
+
   verbose = args.Results.verbose;
+  opt.verbosity = 0;
+  if verbose
+    opt.verbosity = 2;
+  end
 
   NumberOfVolumesDiscardedByUser = 0;
   if isfield(metadata, 'NumberOfVolumesDiscardedByUser')
@@ -65,7 +70,8 @@ function removeDummies(varargin)
                      'unless the ''force'' parameter is used.'], ...
                     metadata.NumberOfVolumesDiscardedByUser, ...
                     inputFile);
-      errorHandling(mfilename(), 'dummiesAlreadyRemoved', msg, true, verbose);
+      id = 'dummiesAlreadyRemoved';
+      logger('WARNING', msg, 'options', opt, 'filename', mfilename(), 'id', id);
 
       return
 
@@ -79,11 +85,9 @@ function removeDummies(varargin)
 
   volumeSplicing(inputFile, 1:numberOfVolumeToDiscard);
 
-  if verbose
-    msg = sprintf('\nRemoved %i volumes from file:\n%s', ...
-                  numberOfVolumeToDiscard, inputFile);
-    printToScreen(msg);
-  end
+  msg = sprintf('\nRemoved %i volumes from file:\n%s', ...
+                numberOfVolumeToDiscard, inputFile);
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   if isZipped(inputFile)
     inputFile = spm_file(inputFile, 'ext', '');

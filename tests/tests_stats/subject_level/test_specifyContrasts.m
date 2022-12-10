@@ -271,11 +271,12 @@ function test_specifyContrasts_missing_condition_for_dummy_contrasts()
 
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
-  % WHEN
-
   if isOctave
+    % warning 'getRegressorIdx:missingRegressor' was raised,
+    %  expected 'specifyContrasts:noContrast'
     return
   end
+
   assertWarning(@()specifyContrasts(SPM, model), ...
                 'specifyContrasts:noContrast');
 
@@ -307,11 +308,12 @@ function test_specifyContrasts_missing_condition()
 
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
-  % WHEN
-
   if isOctave
+    % warning 'getRegressorIdx:missingRegressor' was raised,
+    %  expected 'specifyContrasts:noContrast'
     return
   end
+
   assertWarning(@()specifyContrasts(SPM, model), ...
                 'specifyContrasts:noContrast');
 

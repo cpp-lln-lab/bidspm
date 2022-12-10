@@ -46,7 +46,7 @@ function mask = getInclusiveMask(opt, nodeName, BIDS, subLabel)
                         file{1}, ...
                         createUnorderedList(file));
           id = 'tooManyMasks';
-          errorHandling(mfilename(), id, msg, true, opt.verbosity);
+          logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
           file = file{1};
 
         else

@@ -103,11 +103,6 @@ end
 
 function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
 
-  if isOctave
-    return
-  end
-
-  % GIVEN
   tsvFile = fullfile(getDummyDataDir(), ...
                      'tsv_files', ...
                      'sub-01_task-vismotion_events.tsv');
@@ -118,7 +113,10 @@ function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
 
   opt.verbosity = 1;
 
-  % WHEN
+  if isOctave
+    %       'Octave:mixed-string-concat'
+    return
+  end
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
                 'convertOnsetTsvToMat:variableNotFound');
 
@@ -256,10 +254,6 @@ end
 
 function test_convertOnsetTsvToMat_missing_trial_type()
 
-  if isOctave
-    return
-  end
-
   % GIVEN
   tsvFile = fullfile(getDummyDataDir(), ...
                      'tsv_files', ...
@@ -271,6 +265,11 @@ function test_convertOnsetTsvToMat_missing_trial_type()
   opt.model.bm.Nodes{1}.Model.HRF.Variables{1} = 'trial_type.foo';
 
   opt.verbosity = 1;
+
+  if isOctave
+    %       'Octave:mixed-string-concat'
+    return
+  end
 
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
                 'convertOnsetTsvToMat:trialTypeNotFound');

@@ -35,8 +35,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
   if ismember(level, {'session'})
     notImplemented(mfilename(), ...
-                   'Specifying dummy contrasts for session level Node not implemented.', ...
-                   true);
+                   'Specifying dummy contrasts for session level Node not implemented.');
     return
   end
 
@@ -53,8 +52,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
   testType = 't';
   if ~isTtest(node.DummyContrasts)
     notImplemented(mfilename(), ...
-                   'Only t test implemented for DummyContrasts', ...
-                   true);
+                   'Only t test implemented for DummyContrasts');
     return
   end
 

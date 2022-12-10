@@ -63,7 +63,8 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
   if isempty(totalReadoutTime)
     msg = ['Voxel displacement map creation requires a non empty value' ...
            'for the TotalReadoutTime of the bold sequence they are matched to.'];
-    errorHandling(mfilename(), 'emptyReadoutTime', msg, false);
+    id = 'emptyReadoutTime';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   blipDir = getBlipDirection(funcMetadata);

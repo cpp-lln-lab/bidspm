@@ -117,11 +117,9 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
                                                          opt);
 
         if size(boldFilename, 1) > 1
-          errorHandling(mfilename(), ...
-                        'tooManyFiles', ...
-                        'This should only get one file.', ...
-                        false, ...
-                        true);
+          id = 'tooManyFiles';
+          msg = 'This should only get one file.';
+          logger('ERROR', msg, 'id', id, 'filename', mfilename());
         end
 
         % TODO voxDim might be different for different tasks
