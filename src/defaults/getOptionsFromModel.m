@@ -90,7 +90,7 @@ function opt = getOptionsFromModel(opt)
         case {'task', 'sub', 'space'}
 
           if isfield(opt, targetField)
-            overrideWarning(opt.(targetField), thisEntity, inputsAlreadyInOptions, opt.verbosity);
+            overrideWarning(opt.(targetField), thisEntity, inputsAlreadyInOptions, opt);
           end
 
           opt.(targetField) = coerceToCellStr(thisEntity.value);
@@ -101,7 +101,7 @@ function opt = getOptionsFromModel(opt)
             overrideWarning(opt.query.(targetField), ...
                             thisEntity, ...
                             inputsAlreadyInOptions, ...
-                            opt.verbosity);
+                            opt);
           end
 
           opt.query.(targetField) = thisEntity.value;
@@ -123,7 +123,7 @@ function a = coerceToCellStr(a)
   end
 end
 
-function overrideWarning(thisOption, thisEntity, inputsAlreadyInOptions, verbosity)
+function overrideWarning(thisOption, thisEntity, inputsAlreadyInOptions, opt)
   if ischar(thisOption)
     thisOption = {thisOption};
   end
@@ -133,7 +133,8 @@ function overrideWarning(thisOption, thisEntity, inputsAlreadyInOptions, verbosi
                   thisEntity.targetField, ...
                   strjoin(thisOption, ', '), ...
                   char(thisEntity.value));
-    errorHandling(mfilename(), 'modelOverridesOptions', msg, true, verbosity);
+    id = 'modelOverridesOptions';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
   end
 
 end

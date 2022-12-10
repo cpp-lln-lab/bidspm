@@ -290,7 +290,15 @@ classdef BidsModel < bids.Model
 
     function bidsModelError(obj, id, msg)
       msg = sprintf('\n\nFor BIDS stats model named: "%s"\n%s\n', obj.Name, msg);
-      errorHandling(mfilename(), id, msg, obj.tolerant, obj.verbose);
+      opt.verbosity = 0;
+      if obj.verbose
+        opt.verbosity = 1;
+      end
+      if tolerant
+        logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+      else
+        logger('ERROR', msg, 'id', id, 'filename', mfilename());
+      end
     end
 
   end
