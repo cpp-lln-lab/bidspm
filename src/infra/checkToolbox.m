@@ -39,8 +39,9 @@ function status = checkToolbox(varargin)
   install = args.Results.install;
 
   verbose = args.Results.verbose;
+  opt.verbosity = 0;
   if verbose
-    opt.verbosity = 2;
+    opt.verbosity = 1;
   end
 
   knownToolboxes = {'ALI', 'MACS', 'mp2rage'};
