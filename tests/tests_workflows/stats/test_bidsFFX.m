@@ -60,6 +60,12 @@ function test_bidsFFX_skip_subject_no_data()
 
   opt.verbosity = 1;
 
+  if isOctave
+    %  warning 'getOptionsFromModel:modelOverridesOptions' was raised,
+    %    expected 'bidsFFX:noDataForSubjectGLM'
+    return
+  end
+
   assertWarning(@()bidsFFX('specifyAndEstimate', opt), 'bidsFFX:noDataForSubjectGLM');
 
 end

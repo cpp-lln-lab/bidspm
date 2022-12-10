@@ -26,6 +26,11 @@ function test_getInclusiveMask_too_many()
 
   BIDS = getLayout(opt);
 
+  if isOctave
+    %       'Octave:mixed-string-concat'
+    return
+  end
+
   assertWarning(@()getInclusiveMask(opt, nodeName, BIDS, subLabel), ...
                 'getInclusiveMask:tooManyMasks');
 
