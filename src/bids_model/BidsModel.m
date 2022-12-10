@@ -294,7 +294,7 @@ classdef BidsModel < bids.Model
       if obj.verbose
         opt.verbosity = 1;
       end
-      if tolerant
+      if obj.tolerant
         logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
       else
         logger('ERROR', msg, 'id', id, 'filename', mfilename());
