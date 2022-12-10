@@ -52,7 +52,9 @@ end
 
 function test_notImplemented()
 
-  assertWarning(@()notImplemented('foo', '', true), 'foo:notImplemented');
+  opt.verbosity = 1;
+
+  assertWarning(@()notImplemented('foo', '', opt), 'foo:notImplemented');
 
 end
 

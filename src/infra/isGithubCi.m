@@ -1,7 +1,13 @@
-function [IS_GITHUB, pth] = isGithubCi()
+function [IS_GITHUB, pth] = isGithubCi(verbose)
   %
 
   % (C) Copyright 2021 Remi Gau
+
+  if nargin < 1 || isempty(verbose)
+
+    verbose = false;
+
+  end
 
   IS_GITHUB = false;
 
@@ -9,7 +15,9 @@ function [IS_GITHUB, pth] = isGithubCi()
 
   if strcmp(GITHUB_WORKSPACE, '/home/runner')
 
-    fprintf(1, '\n WE ARE RUNNING IN GITHUB CI\n');
+    if verbose
+      fprintf(1, '\n WE ARE RUNNING IN GITHUB CI\n');
+    end
 
     IS_GITHUB = true;
     pth = GITHUB_WORKSPACE;

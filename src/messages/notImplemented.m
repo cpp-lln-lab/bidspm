@@ -7,11 +7,13 @@ function notImplemented(varargin)
   %   notImplemented(functionName, msg, opt)
   %
   % :param functionName: obligatory argument.
-  % :type functionName: path
+  % :type  functionName: path
   %
   % :param msg: optional
-  % :type msg: char
+  % :type  msg: char
   %
+  % :param opt:
+  % :type  opt: struct
   %
   % :returns: - :status: (boolean)
   %
@@ -19,7 +21,7 @@ function notImplemented(varargin)
   %
   %     notImplemented(mfilename(), ...
   %                    'Meaning of life the universe and everything not impemented', ...
-  %                    true);
+  %                    opt);
   %
 
   % (C) Copyright 2022 bidspm developers

@@ -14,6 +14,8 @@ function list = createUnorderedList(list)
 
   % (C) Copyright 2021 bidspm developers
 
+  silenceOctaveWarning();
+
   prefix = '\n\t- ';
 
   if ischar(list)
