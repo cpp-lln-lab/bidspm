@@ -23,7 +23,7 @@ function test_returnContrastImageFile_basic()
   assertEqual(conImageFile, {fullfile(pwd, 'con_0002.nii')});
 
   save(fullfile(pwd, 'SPM.mat'), 'SPM');
-  conImageFile = returnContrastImageFile(SPM, 'foobar');
+  conImageFile = returnContrastImageFile(fullfile(pwd, 'SPM.mat'), 'foobar');
   assertEqual(conImageFile, {fullfile(pwd, 'con_0003.nii')});
   delete(fullfile(pwd, 'SPM.mat'));
 
