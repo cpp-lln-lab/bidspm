@@ -28,7 +28,6 @@ you validate BIDS stats models as you write them.
 
 ```{literalinclude} ../../.vscode/settings.json
    :language: json
-   :emphasize-lines: 2,3,4,5,6,7
 ```
 
 ### In the browser

@@ -362,7 +362,7 @@ like in the example below
     ...
 ```
 
-then :func:`getFFXdir` will set the subject level folder to be named as follow:
+then {func}`src.stats.subject_level.getFFXdir.m` will set the subject level folder to be named as follow:
 
 ```text
 sub-subLabel
