@@ -139,12 +139,13 @@ def common_parser() -> MuhParser:
         If preprocessing should be done only on anatomical data.
         """,
         choices=[
-            "contrasts",
-            "transformations",
-            "qa",
             "fieldmaps",
             "slicetiming",
             "unwarp",
+            "qa",
+            "contrasts",
+            "transformations",
+            "dataset",
         ],
         nargs="+",
     )

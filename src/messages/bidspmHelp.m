@@ -171,7 +171,12 @@ function bidspmHelp()
   %           'verbosity', 2, ...
   %           'space', {'IXI549Space'}, ...
   %           'options', struct([]), ...,
+  %           'ignore', {}, ...
   %           'task', {})
+  %
+  %
+  % :param ignore:      can be any of ``{'contrasts', 'transformations', 'dataset'}``
+  % :type  ignore:      cell string
   %
   %
   % **STATS:**
