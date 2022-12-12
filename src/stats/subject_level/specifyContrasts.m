@@ -76,9 +76,10 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
   end
 
   if numel(contrasts) == 1 && isempty(contrasts.C)
-    msg = 'No contrast to build';
+    msg = 'No contrast to build.';
     id = 'noContrast';
     logger('WARNING', msg, 'id', id, 'filename', mfilename());
+    return
   end
 
   contrasts = removeDuplicates(contrasts);
