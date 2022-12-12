@@ -8,6 +8,32 @@ function test_suite = test_specifyContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_specifyContrasts_bug_854()
+
+  % GIVEN
+  subLabel = '01';
+
+  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  for iNode = 1:numel(opt.model.bm.Nodes)
+    if isfield(opt.model.bm.Nodes{iNode}, 'DummyContrasts')
+      opt.model.bm.Nodes{iNode} = rmfield(opt.model.bm.Nodes{iNode}, 'DummyContrasts');
+    end
+    if isfield(opt.model.bm.Nodes{iNode}, 'Contrasts')
+      opt.model.bm.Nodes{iNode} = rmfield(opt.model.bm.Nodes{iNode}, 'Contrasts');
+    end
+  end
+
+  ffxDir = getFFXdir(subLabel, opt);
+  spmMatFile = cellstr(fullfile(ffxDir, 'SPM.mat'));
+  load(spmMatFile{1}, 'SPM');
+
+  % WHEN
+  contrasts = specifyContrasts(SPM, opt.model.bm);
+
+end
+
 function test_specifyContrasts_bug_815()
 
   SPM.xX.name = {'Sn(1) fw*bf(1)', ...
