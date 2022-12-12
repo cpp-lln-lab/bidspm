@@ -37,7 +37,7 @@ function conImageFile = returnContrastImageFile(varargin)
 
   SPM = args.Results.SPM;
   if ~isstruct(SPM)
-    SPM = load(SPM, 'SPM');
+    load(SPM, 'SPM');
   end
 
   result.name = args.Results.name;
