@@ -92,8 +92,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   for iVar = 1:numel(varToConvolve)
 
-    % in case we get the column names with a dot separator
-    tokens = regexp(varToConvolve{iVar}, '\.', 'split');
+    tokens = splitColumnCondtion(varToConvolve{iVar});
 
     % if the variable is present in namespace
     if ismember(tokens{1}, fieldnames(tsv.content))
@@ -179,6 +178,11 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
 end
 
+function tokens = splitColumnCondtion(varToConvolve)
+  % in case we get the column names with a dot separator
+  tokens = regexp(varToConvolve, '\.', 'split');
+end
+
 function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel, varToConvolve)
 
   rows = find(strcmp(condName, trialTypes));
@@ -193,7 +197,11 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
     condToModel.names{1, condToModel.idx} = condName;
     condToModel.onsets{1, condToModel.idx} = tsv.content.onset(rows)';
     condToModel.durations{1, condToModel.idx} = tsv.content.duration(rows)';
-    condToModel = parametricModulation(condToModel, tsv, rows);
+
+    parametricModulations = opt.model.bm.getParametricModulations;
+    if ~isempty(parametricModulations)
+      condToModel = parametricModulation(condToModel, tsv, rows, parametricModulations);
+    end
 
     condToModel.idx = condToModel.idx + 1;
 
@@ -213,7 +221,23 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
 
 end
 
-function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows)
+function targetCondition = returnNameConditionToModulate(thisMod)
+  tokens = splitColumnCondtion(thisMod.Conditions);
+  targetCondition = tokens;
+  if numel(tokens) == 1 && size(tokens{1}, 2) > 1
+    targetCondition = tokens{1}(2);
+  end
+  if size(tokens, 1) > 1
+    for iTargetCondition = 1:size(tokens, 1)
+      targetCondition{iTargetCondition} = tokens{iTargetCondition};
+      if numel(tokens{iTargetCondition}) > 1
+        targetCondition{iTargetCondition} = tokens{iTargetCondition}{1, 2};
+      end
+    end
+  end
+end
+
+function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows, parameMod)
   % parametric modulation (pmod)
   %
   % skipped if parametric modulation == 1 for all onsets
@@ -221,26 +245,55 @@ function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows)
   % coerces NaNs into 1
 
   fields = fieldnames(tsv.content);
-  pmodIdx = ~cellfun('isempty', regexp(fields, '^pmod_.*', 'match'));
-  pmodIdx = find(pmodIdx);
 
-  for iMod = 1:numel(pmodIdx)
+  for iMod = 1:numel(parameMod)
 
-    thisMod = fields{pmodIdx(iMod)};
+    thisMod = parameMod{iMod};
 
-    amplitude = tsv.content.(thisMod)(rows);
-    if iscellstr(amplitude) %#ok<ISCLSTR>
-      amplitude = str2num(char(amplitude)); %#ok<ST2NM>
-    end
-    amplitude(isnan(amplitude)) = 1;
+    for iValue = 1:numel(thisMod.Values)
 
-    if ~all(amplitude == 1)
-      conditionsToModel.pmod(1, conditionsToModel.idx).name{iMod}  = strrep(thisMod, 'pmod_', '');
-      conditionsToModel.pmod(end).param{iMod} = amplitude;
-      conditionsToModel.pmod(end).poly{iMod}  = 1;
+      thisValue = thisMod.Values{iValue};
+
+      targetCondition = returnNameConditionToModulate(thisMod);
+
+      if ismember(thisValue, fields) && ...
+              any(ismember(targetCondition, conditionsToModel.names))
+
+        amplitude = tsv.content.(thisValue)(rows);
+        if iscellstr(amplitude) %#ok<ISCLSTR>
+          amplitude = str2num(char(amplitude)); %#ok<ST2NM>
+        end
+        amplitude(isnan(amplitude)) = 1;
+        if all(amplitude == 1)
+          continue
+        end
+
+        poly = 1;
+        if isfield(thisMod, 'PolynomialExpansion')
+          poly = thisMod.PolynomialExpansion;
+        end
+
+        for iCond = 1:numel(thisMod.Conditions)
+
+          tokens = splitColumnCondtion(thisMod.Conditions{iCond});
+          conditionToModulate = tokens{1};
+          if numel(tokens) == 2
+            conditionToModulate = tokens{2};
+          end
+
+          if ismember(conditionToModulate, conditionsToModel.names)
+            conditionsToModel.pmod(1, conditionsToModel.idx).name{iMod}  = thisMod.Name;
+            conditionsToModel.pmod(end).param{iMod} = amplitude;
+            conditionsToModel.pmod(end).poly{iMod}  = poly;
+          end
+        end
+
+      end
+
     end
 
   end
+
 end
 
 function conditionsToModel = addDummyRegressor(conditionsToModel)
