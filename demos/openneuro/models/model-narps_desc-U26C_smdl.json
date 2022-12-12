@@ -1,0 +1,155 @@
+{
+    "Name": "NARPS U26C",
+    "Description": "NARPS Analysis model for team E3B6",
+    "BIDSModelVersion": "1.0.0",
+    "Input": {
+        "task": [
+            "MGT"
+        ],
+        "space": [
+            "MNI152NLin2009cAsym"
+        ]
+    },
+    "Nodes": [
+        {
+            "Level": "Run",
+            "Name": "run",
+            "GroupBy": [
+                "run",
+                "subject"
+            ],
+            "Transformations": {
+                "Transformer": "bidspm",
+                "Instructions": [
+                    {
+                        "Description": "Create a trial column.",
+                        "Name": "Threshold",
+                        "Input": [
+                            "gain"
+                        ],
+                        "Binarize": true,
+                        "Output": [
+                            "trials"
+                        ]
+                    },
+                    {
+                        "Descriptions": "All loss/gain/EV values were mean-centered in a runwise fashion before being used to modulate the trial regressor.",
+                        "Name": "Scale",
+                        "Input": [
+                            "gain",
+                            "loss"
+                        ],
+                        "Demean": true,
+                        "Output": [
+                            "gain_centered",
+                            "loss_centered"
+                        ]
+                    },
+                    {
+                        "Description": "Trials with no response or very short responses (< 500 ms) were modelled separately in another condition of no interest.",
+                        "Name": "Threshold",
+                        "Input": [
+                            "RT"
+                        ],
+                        "Threshold": 0.5,
+                        "Binarize": true,
+                        "Output": [
+                            "include_button_presses"
+                        ]
+                    },
+                    {
+                        "Description": "Button presses were modelled as a separate condition of no interest: they were modelled as delta functions (duration = 0) with onsets defined by the trial onset + reaction time relative to that trial. They were then convolved with the HRF (see below).",
+                        "Name": "Sum",
+                        "Input": [
+                            "onset",
+                            "RT"
+                        ],
+                        "Output": "button_presses"
+                    }
+                ]
+            },
+            "Model": {
+                "Description": "All trials were modeled using a single condition (with a duration of 4 secs). The following regressors obtained from fMRIprep were added to the each subject's GLM: 'framewise displacement', 'white matter signal change', 'CSF signal change'",
+                "X": [
+                    "trials",
+                    "button_presses",
+                    "framewise_displacement",
+                    "csf",
+                    "white_matter",
+                    1
+                ],
+                "HRF": {
+                    "Description": "",
+                    "Variables": [
+                        "trials",
+                        "button_presses"
+                    ],
+                    "Model": "spm"
+                },
+                "Type": "glm",
+                "Software": {
+                    "SPM": {
+                        "Description": "Auto-correlation model: SPM FAST option. The SPM threshold to define the implicit mask was set to 0 (instead of the 0.8 default). Three additional parametric regressors were included : a) param_loss: a regressor modulated by the loss value,associated to that trial, b) param_gain: regressor modulated by the gain vallue associated to that trial, c) TODO the Euclidean distance of the gain/loss combination from the indifference line (i.e. assuming lambda=2 and a linear value function).",
+                        "InclusiveMaskingThreshold": 0,
+                        "SerialCorrelation": "FAST",
+                        "ParametricModulations": [
+                            {
+                                "Name": "pmod_loss",
+                                "Conditions": [
+                                    "trials"
+                                ],
+                                "Values": [
+                                    "loss_centered"
+                                ]
+                            },
+                            {
+                                "Name": "pmod_gain",
+                                "Conditions": [
+                                    "trials"
+                                ],
+                                "Values": [
+                                    "gain_centered"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "Options": {
+                    "Description": "Drift regressors were the DCT basis included in the GLM (SPM default 128 secs high-pass filter)",
+                    "HighPassFilterCutoffHz": 0.08
+                }
+            },
+            "DummyContrasts": {
+                "Contrasts": [
+                    "trials",
+                    "gain",
+                    "loss"
+                ],
+                "Test": "t"
+            }
+        },
+        {
+            "Level": "Subject",
+            "Name": "subject",
+            "GroupBy": [
+                "subject",
+                "contrast"
+            ],
+            "Model": {
+                "X": [
+                    1
+                ],
+                "Type": "glm"
+            },
+            "DummyContrasts": {
+                "Test": "t"
+            }
+        }
+    ],
+    "Edges": [
+        {
+            "Source": "run",
+            "Destination": "subject"
+        }
+    ]
+}
