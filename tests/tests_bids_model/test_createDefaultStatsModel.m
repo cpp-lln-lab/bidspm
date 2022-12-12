@@ -71,12 +71,15 @@ function test_createDefaultStatsModel_ignore()
   opt.space = {'IXI549Space'};
   opt.taskName = {'vislocalizer'};
 
-  opt = createDefaultStatsModel(BIDS, opt, {'contrasts', 'transformations'});
+  opt = createDefaultStatsModel(BIDS, opt, ...
+                                {'contrasts', 'transformations', 'dataset'});
 
   content = spm_jsonread(opt.model.file);
 
   assertEqual(isfield(content.Nodes, 'Transformations'), false);
   assertEqual(isfield(content.Nodes, 'Contrasts'), false);
+  assertEqual(numel(content.Nodes), 2);
+  assertEqual(numel(content.Edges), 1);
 
   cleanUp(fullfile(pwd, 'models'));
 
@@ -122,7 +125,7 @@ function test_createDefaultStatsModel_CLI_ignore()
          'action', 'default_model', ...
          'task', {'vismotion'}, ...
          'space', {'individual'}, ...
-         'ignore', {'contrasts', 'transformations'}, ...
+         'ignore', {'contrasts', 'transformations', 'dataset'}, ...
          'verbosity', 3);
 
   % make sure the file was created where expected
@@ -134,6 +137,8 @@ function test_createDefaultStatsModel_CLI_ignore()
 
   assertEqual(isfield(content.Nodes, 'Transformations'), false);
   assertEqual(isfield(content.Nodes, 'Contrasts'), false);
+  assertEqual(numel(content.Nodes), 2);
+  assertEqual(numel(content.Edges), 1);
 
   cleanUp(fullfile(pwd, 'derivatives'));
 
