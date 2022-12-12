@@ -222,11 +222,19 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
 end
 
 function targetCondition = returnNameConditionToModulate(thisMod)
+  % list all the conditions that are meant to be modulated
+  % by this parametric modulators
+
   tokens = splitColumnCondtion(thisMod.Conditions);
   targetCondition = tokens;
+
+  % in case we have single condition of the shape
+  % column_name.condition_name
   if numel(tokens) == 1 && size(tokens{1}, 2) > 1
     targetCondition = tokens{1}(2);
   end
+
+  % in case we have more than a single condition of the shape
   if size(tokens, 1) > 1
     for iTargetCondition = 1:size(tokens, 1)
       targetCondition{iTargetCondition} = tokens{iTargetCondition};
@@ -235,12 +243,13 @@ function targetCondition = returnNameConditionToModulate(thisMod)
       end
     end
   end
+
 end
 
 function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows, parameMod)
   % parametric modulation (pmod)
   %
-  % skipped if parametric modulation == 1 for all onsets
+  % skipped if parametric modulation amplitude == 1 for all onsets
   %
   % coerces NaNs into 1
 
