@@ -5,8 +5,6 @@ function returnCode = bidspm(varargin)
 
   % (C) Copyright 2022 bidspm developers
 
-  % TODO  bidspm('action', 'update')
-
   args = inputParser;
   args.CaseSensitive = false;
 
@@ -14,15 +12,15 @@ function returnCode = bidspm(varargin)
 
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
   isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
-
   isLogical = @(x) islogical(x) && numel(x) == 1;
   isChar = @(x) ischar(x);
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
-
   isFolder = @(x) isdir(x);
-
   isCellStr = @(x) iscellstr(x);
-
+  isInAvailableAtlas = @(x) (ischar(x) && ismember(x, { 'visfatlas', ...
+                                                       'anatomy_toobox', ...
+                                                       'neuromorphometrics', ...
+                                                       'wang'}));
   isLowLevelActionOrDir = @(x) (ismember(x, lowLevelActions()) || isdir(x));
 
   addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
@@ -41,6 +39,11 @@ function returnCode = bidspm(varargin)
 
   addParameter(args, 'fwhm', 6, isPositiveScalar);
   addParameter(args, 'space', {}, isCellStr);
+
+  % create_roi only
+  addParameter(args, 'roi_dir', pwd, isFolder);
+  addParameter(args, 'roi_atlas', 'neuromorphometrics', isInAvailableAtlas);
+  addParameter(args, 'roi_name', {''}, isCellStr);
 
   % preproc only
   addParameter(args, 'dummy_scans', 0, isPositiveScalar);
@@ -116,6 +119,10 @@ function executeAction(action, args)
 
       copy(args);
 
+    case 'create_roi'
+
+      create_roi(args);
+
     case 'smooth'
 
       smooth(args);
@@ -185,6 +192,20 @@ function copy(args)
     rethrow(ME);
   end
 
+end
+
+function create_roi(args)
+  opt = getOptionsFromCliArgument(args);
+  opt.dir.roi = opt.dir.derivatives;
+  opt = checkOptions(opt);
+
+  try
+    saveOptions(opt);
+    bidsCreateROI(opt);
+  catch ME
+    bugReport(opt, ME);
+    rethrow(ME);
+  end
 end
 
 function preprocess(args)
@@ -619,7 +640,14 @@ end
 
 function value = bidsAppsActions()
 
-  value = {'copy'; 'preprocess'; 'smooth'; 'default_model'; 'stats'; 'contrasts'; 'results'};
+  value = {'copy'; ...
+           'create_roi'; ...
+           'preprocess'; ...
+           'smooth'; ...
+           'default_model'; ...
+           'stats'; ...
+           'contrasts'; ...
+           'results'};
 
 end
 
