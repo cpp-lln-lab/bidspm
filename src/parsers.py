@@ -89,6 +89,7 @@ def common_parser() -> MuhParser:
         - ``preprocess``
         - ``smooth``
         - ``default_model``
+        - ``create_roi``
         - ``stats``: runs model specification / estimation, contrast computation, display results
         - ``contrasts``: contrast computation, display results
         - ``results``: display results
@@ -97,6 +98,7 @@ def common_parser() -> MuhParser:
             "preprocess",
             "smooth",
             "default_model",
+            "create_roi",
             "stats",
             "contrasts",
             "results",
@@ -219,6 +221,31 @@ def common_parser() -> MuhParser:
         """,
         type=str,
         nargs=1,
+    )
+    parser.add_argument(
+        "--roi_dir",
+        help="""
+        Fullpath to the directory with the regions of interest.
+        """,
+        type=str,
+        nargs=1,
+    )
+    parser.add_argument(
+        "--roi_atlas",
+        help="""
+        atlas to create the regions of interest from.
+        """,
+        type=str,
+        nargs=1,
+        default="neuromorphometrics",
+        choices=["neuromorphometrics", "wang", "anatomy_toobox", "visfatlas"],
+    )
+    parser.add_argument(
+        "--roi_name",
+        help="""
+        Name of the roi to create. If the ROI does not exist in the atlas,
+the list of available ROI will be returned in the error message.""",
+        nargs="+",
     )
     parser.add_argument(
         "--roi_based",
