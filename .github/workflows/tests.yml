@@ -50,10 +50,6 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install SPM
-        run: |
-          git clone https://github.com/spm/spm12.git --depth 1
-
       - name: Clone bidspm
         uses: actions/checkout@v3
         with:
@@ -62,6 +58,10 @@ jobs:
 
       - name: Install validators
         run: make install
+
+      - name: Install SPM
+        run: |
+          git clone https://github.com/spm/spm12.git --depth 1
 
       - name: Copy Macs toolbox to SPM inputs_folder
         run: cp -rv lib/MACS spm12/toolbox/MACS
