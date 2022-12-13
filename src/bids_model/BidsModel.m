@@ -224,9 +224,6 @@ classdef BidsModel < bids.Model
 
         parametricModulations = model.Software.SPM.ParametricModulations;
       end
-      if isstruct(parametricModulations)
-        parametricModulations = {parametricModulations};
-      end
     end
 
     function threshold = getInclusiveMaskThreshold(obj, varargin)

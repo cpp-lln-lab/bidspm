@@ -9,7 +9,7 @@ function [names, R] = createConfounds(tsvContent, designMatrix, maxNbVols)
   %
   % USAGE::
   %
-  %   counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
+  %   [names, R] = createConfounds(tsvContent, designMatrix, maxNbVols)
   %
   % :param tsvContent: output of spm_load or bids.util.tsvread
   % :type  tsvContent: structure
@@ -23,7 +23,8 @@ function [names, R] = createConfounds(tsvContent, designMatrix, maxNbVols)
   %                   Default to ``Inf``.
   % :type  maxNbVols: positive integer or Inf
   %
-  % :returns: :counfoundMatFile: (string) fullpath name of the file created.
+  % :returns: :names:
+  % :returns: :R:
   %
   % EXAMPLE::
   %

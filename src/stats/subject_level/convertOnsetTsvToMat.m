@@ -148,7 +148,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
         condToModel = addDummyRegressor(condToModel);
       end
 
-      msg = sprintf('Variable %s not found in \n %s\n Adding dummy regressor instead.', ...
+      msg = sprintf('Variable "%s" not found in \n %s\n Adding dummy regressor instead.', ...
                     varToConvolve{iVar}, ...
                     tsv.file);
       id = 'variableNotFound';
@@ -187,7 +187,7 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
 
   rows = find(strcmp(condName, trialTypes));
 
-  msg = sprintf('   Condition %s: %i trials found.\n', ...
+  msg = sprintf('   Condition "%s": %i trials found.\n', ...
                 condName, ...
                 numel(rows));
   logger('INFO', msg, 'options', opt, 'filename', mfilename());
@@ -200,7 +200,7 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
 
     parametricModulations = opt.model.bm.getParametricModulations;
     if ~isempty(parametricModulations)
-      condToModel = parametricModulation(condToModel, tsv, rows, parametricModulations);
+      condToModel = parametricModulation(condToModel, tsv, rows, parametricModulations, condName);
     end
 
     condToModel.idx = condToModel.idx + 1;
@@ -246,7 +246,7 @@ function targetCondition = returnNameConditionToModulate(thisMod)
 
 end
 
-function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows, parameMod)
+function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows, parameMod, condName)
   % parametric modulation (pmod)
   %
   % skipped if parametric modulation amplitude == 1 for all onsets
@@ -257,7 +257,11 @@ function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows, 
 
   for iMod = 1:numel(parameMod)
 
-    thisMod = parameMod{iMod};
+    if iscell(parameMod)
+      thisMod = parameMod{iMod};
+    elseif isstruct(parameMod)
+      thisMod = parameMod(iMod);
+    end
 
     for iValue = 1:numel(thisMod.Values)
 
@@ -266,7 +270,7 @@ function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows, 
       targetCondition = returnNameConditionToModulate(thisMod);
 
       if ismember(thisValue, fields) && ...
-              any(ismember(targetCondition, conditionsToModel.names))
+              any(ismember(targetCondition, condName))
 
         amplitude = tsv.content.(thisValue)(rows);
         if iscellstr(amplitude) %#ok<ISCLSTR>

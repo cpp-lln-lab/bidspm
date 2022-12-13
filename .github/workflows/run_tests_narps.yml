@@ -1,0 +1,118 @@
+name: "matlab: narps dataset"
+
+on:
+
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches: ["*"]
+
+  # to trigger update manually from the Action tab in github
+  workflow_dispatch:
+    inputs:
+      log:
+        description: "run tests manually"
+        required: false
+
+jobs:
+
+  cache_test_data:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: "Make cachedir"
+        run: |
+          mkdir -p /tmp/.cache/data && \
+          chmod 777 /tmp/.cache/data
+
+      - name: Set git ID
+        run: |
+          git config --global user.name 'bipdsm GH-Action User' && \
+          git config --global user.email 'remi_gau@hotmail.com'
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        shell: bash -l {0}
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y git-annex
+          python -m pip install --upgrade pip
+          pip install datalad
+
+      - name: Datalad WTF
+        run: |
+         datalad wtf
+
+      - name: Install cached data
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: /tmp/.cache/data
+          key: ds001734-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            ds001734-${{ github.ref_name }}-
+            ds001734-
+
+      - name: "Install raw and fMRIPrep derivatives of ds001734"
+        run: |
+          cd /tmp/.cache/data
+          datalad install ///openneuro/ds001734
+          datalad install ///openneuro-derivatives/ds001734-fmriprep
+          cd  ds001734-fmriprep && \
+              datalad get sub-00[1-4]/anat/*MNI152NLin2009cAsym*mask.nii.gz \
+                          sub-00[1-4]/anat/*MNI152NLin2009cAsym*T1w.nii.gz \
+                          sub-00[1-4]/func/*MNI152NLin2009cAsym*desc-preproc*bold.nii.gz \
+                          sub-*/func/*tsv	\
+                          sub-*/func/*json
+          datalad status
+
+  tests_matlab:
+
+    needs: [cache_test_data]
+
+    runs-on: ubuntu-22.04
+
+    steps:
+
+      - name: Clone bidspm
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Install MATLAB
+        uses: matlab-actions/setup-matlab@v1.2.3
+        with:
+          # MATLAB release to set up R2020a
+          release: R2020a
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install validators
+        run: make install
+
+      - name: Install SPM
+        run: |
+          git clone https://github.com/spm/spm12.git --depth 1
+
+      - name: Copy Macs toolbox to SPM inputs_folder
+        run: cp -rv lib/MACS spm12/toolbox/MACS
+
+      - name: Run commands
+        uses: matlab-actions/run-command@v1.1.2
+        with:
+          command: |
+            root_dir = getenv('GITHUB_WORKSPACE');
+            fprintf('\nroot dir is %s\n', root_dir);
+            addpath(fullfile(root_dir, 'spm12'));
+            cd(fullfile(root_dir, 'demos', 'openneuro'));
+            run ds001734_run;
