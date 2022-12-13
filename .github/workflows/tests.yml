@@ -32,7 +32,7 @@ jobs:
 
   set_up:
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Install dependencies
@@ -73,3 +73,36 @@ jobs:
           wget https://osf.io/vufjs/download
           unzip download
           mv moae_fmriprep fmriprep
+
+  install_octave:
+
+    needs: [set_up]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install octave
+        run: |
+          sudo apt-get -y -qq update
+          sudo apt-get -y install octave liboctave-dev
+
+      - name: Compile SPM
+        run: |
+          make -C spm12/src PLATFORM=octave distclean
+          make -C spm12/src PLATFORM=octave
+          make -C spm12/src PLATFORM=octave install
+          octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
+
+  install_matlab:
+
+    needs: [set_up]
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Install MATLAB
+        uses: matlab-actions/setup-matlab@v1.2.3
+        with:
+          # MATLAB release to set up R2020a
+          release: R2020a
