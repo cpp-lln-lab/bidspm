@@ -86,6 +86,16 @@ function test_bidsCreateROI_CLI()
          'roi_name', {'SCA subcallosal area'}, ...
          'space', {'IXI549Space'});
 
+  if isGithubCi
+
+    bidspm(pwd, fullfile(pwd, 'tmp'), ...
+           'action', 'create_roi', ...
+           'roi_atlas', 'neuromorphometrics', ...
+           'roi_name', {'SCA subcallosal area'}, ...
+           'space', {'individual'});
+
+  end
+
   cleanUp(fullfile(pwd, 'tmp'));
   cleanUp(fullfile(pwd, 'options'));
   cleanUp(fullfile(pwd, 'error_logs'));
