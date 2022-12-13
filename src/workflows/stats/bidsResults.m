@@ -156,6 +156,13 @@ function matlabbatch = bidsResults(varargin)
 
   opt.dir.output = opt.dir.stats;
 
+  % TODO
+  % bids stats model should override options
+  if ~isfield(opt, 'results') || isempty(opt.results) || ...
+          strcmp(opt.results(1).name{1}, '')
+    opt.results = opt.model.bm.getResults();
+  end
+
   status = checks(opt);
   if ~status
     return
@@ -275,7 +282,8 @@ function [status] = checks(opt)
   msg = sprintf(['Specify node names and levels in "opt.results".', ...
                  '\t\nType "help bidsResults" for more information.']);
 
-  if ~isfield(opt, 'results') || isempty(opt.results)
+  if ~isfield(opt, 'results') || isempty(opt.results) || ...
+          strcmp(opt.results(1).name{1}, '')
     id = 'noResultsAsked';
     logger('WARNING', msg, 'id', id, 'filename', mfilename());
     status = false;

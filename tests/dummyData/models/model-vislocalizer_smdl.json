@@ -41,6 +41,24 @@
           "SPM": {
             "InclusiveMaskingThreshold": 0,
             "SerialCorrelation": "FAST"
+          },
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "VisMot_&_VisStat"
+                ],
+                "p": 0.001,
+                "MC": "none"
+              },
+              {
+                "name": [
+                  "VisStat",
+                  "VisMot"
+                ],
+                "k": 10
+              }
+            ]
           }
         }
       },
@@ -89,7 +107,20 @@
         "Type": "glm",
         "X": [
           1
-        ]
+        ],
+        "Software": {
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "VisMot_&_VisStat"
+                ],
+                "p": 0.001,
+                "MC": "FDR"
+              }
+            ]
+          }
+        }
       },
       "DummyContrasts": {
         "Test": "t"
@@ -105,7 +136,20 @@
         "Type": "glm",
         "X": [
           1
-        ]
+        ],
+        "Software": {
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "VisMot_&_VisStat_lt_baseline"
+                ],
+                "p": 0.001,
+                "binary": true
+              }
+            ]
+          }
+        }
       },
       "DummyContrasts": {
         "Test": "t"

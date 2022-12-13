@@ -50,6 +50,38 @@
         "Software": {
           "SPM": {
             "SerialCorrelation": "FAST"
+          },
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "VisMot",
+                  "VisStat",
+                  "VisMot_gt_VisStat"
+                ],
+                "p": 0.05,
+                "MC": "FWE",
+                "png": true,
+                "binary": true,
+                "nidm": true,
+                "montage": {
+                  "do": true,
+                  "orientation": "axial",
+                  "slices": [
+                    -4,
+                    0,
+                    4,
+                    8,
+                    16
+                  ],
+                  "background": {
+                    "suffix": "T1w",
+                    "desc": "preproc",
+                    "modality": "anat"
+                  }
+                }
+              }
+            ]
           }
         }
       },
@@ -114,7 +146,26 @@
         "X": [
           1
         ],
-        "Type": "glm"
+        "Type": "glm",
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST"
+          },
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "VisMot_gt_VisStat"
+                ],
+                "Mask": false,
+                "MC": "none",
+                "p": 0.05,
+                "k": 10,
+                "nidm": true
+              }
+            ]
+          }
+        }
       },
       "DummyContrasts": {
         "Test": "t"

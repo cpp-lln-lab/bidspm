@@ -10,7 +10,7 @@ end
 
 function test_bidsResults_no_results()
 
-  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+  opt = setOptions('vismotion', '', 'pipelineType', 'stats');
 
   assertWarning(@() bidsResults(opt), 'bidsResults:noResultsAsked');
 
@@ -188,11 +188,12 @@ end
 
 function test_bidsResults_error_missing_node()
 
-  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+  opt = setOptions('vismotion', '', 'pipelineType', 'stats');
 
   opt.results = defaultResultsStructure();
 
-  opt.results.nodeName = 'foo';
+  opt.results.nodeName = 'egg';
+  opt.results.name = {'spam'};
 
   assertWarning(@()bidsResults(opt), 'Model:missingNode');
 
