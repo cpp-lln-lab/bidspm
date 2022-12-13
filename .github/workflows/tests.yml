@@ -89,8 +89,8 @@ jobs:
         git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
         git clone https://github.com/MOcov/MOcov.git --depth 1
 
-    - name: Install octave
-      if: ${{ matrix.platform }} == 'octave'
+    - name: Install ${{ matrix.platform }}
+      if: matrix.platform == 'octave'
       run: |
         sudo apt-get -y -qq update
         sudo apt-get -y install octave liboctave-dev
@@ -98,7 +98,7 @@ jobs:
         make -C MOcov install
 
     - name: Compile SPM
-      if: ${{ matrix.platform }} == 'octave'
+      if: matrix.platform == 'octave'
       run: |
         make -C spm12/src PLATFORM=octave distclean
         make -C spm12/src PLATFORM=octave
@@ -106,7 +106,7 @@ jobs:
         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
     - name: Run tests Octave
-      if: ${{ matrix.platform }} == 'octave'
+      if: matrix.platform == 'octave'
       run: |
         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
         octave $OCTFLAGS --eval "bidspm(); cd demos/MoAE; download_moae_ds(true);"
@@ -114,14 +114,13 @@ jobs:
         octave $OCTFLAGS --eval "tests_octave;"
 
     - name: Install MATLAB
-      if: ${{ matrix.platform }} == 'matlab'
+      if: matrix.platform == 'matlab'
       uses: matlab-actions/setup-matlab@v1.2.3
       with:
-        # MATLAB release to set up R2020a
         release: R2020a
 
     - name: Run tests MATLAB
-      if: ${{ matrix.platform }} == 'matlab'
+      if: matrix.platform == 'matlab'
       uses: matlab-actions/run-command@v1.1.2
       with:
         command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
