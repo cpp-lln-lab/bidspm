@@ -308,7 +308,11 @@ classdef BidsModel < bids.Model
 
       for iNode = 1:numel(Nodes)
 
-        nodeName = Nodes{iNode}.Name;
+        if isstruct(Nodes)
+          nodeName = Nodes(iNode).Name;
+        else
+          nodeName = Nodes{iNode}.Name;
+        end
 
         model = obj.get_model('Name', nodeName);
 
