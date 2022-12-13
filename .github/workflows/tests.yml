@@ -122,3 +122,30 @@ jobs:
       run: |
         git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
         git clone https://github.com/MOcov/MOcov.git --depth 1
+
+
+  unit_test_matlab:
+
+    needs: [install_matlab]
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Run tests
+        uses: matlab-actions/run-command@v1.1.2
+        with:
+          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
+
+      - name: Check tests
+        run: |
+          cat test_report.log | grep 0
+
+      - name: Code coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: coverage.xml
+          flags: matlab
+          name: codecov-matlab
+          fail_ci_if_error: false
+        # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
