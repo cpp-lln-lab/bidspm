@@ -1,5 +1,5 @@
 %
-% Analyis of the NARPS dataset
+% Analysis of the NARPS dataset
 %
 % (C) Copyright 2022 bidspm developers
 
