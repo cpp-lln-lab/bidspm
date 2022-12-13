@@ -56,8 +56,8 @@ jobs:
 
     steps:
 
-    - name: ${{ matrix.platform }} - ${{ matrix.test_type }}  - ${{ matrix.script }}
-      run: echo "${{ matrix.platform matrix.test_type matrix.script }}"
+    - name: ${{ matrix.platform }} - ${{ matrix.test_type }} - ${{ matrix.script }}
+      run: echo ${{ matrix.platform matrix.test_type matrix.script }}
 
     - name: Install dependencies
       run: |
