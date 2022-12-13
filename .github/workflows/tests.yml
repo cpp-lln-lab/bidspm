@@ -17,6 +17,10 @@ name: "tests"
 env:
   OCTFLAGS: --no-gui --no-window-system --silent
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: ['*']
@@ -31,6 +35,8 @@ on:
 jobs:
 
   test:
+
+    if: github.repository_owner == 'cpp-lln-lab'
 
     runs-on: ubuntu-latest
 
