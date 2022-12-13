@@ -215,6 +215,20 @@ classdef BidsModel < bids.Model
 
     end
 
+    function parametricModulations = getParametricModulations(obj, varargin)
+      [model, ~] = obj.getDefaultModel(varargin{:});
+      parametricModulations = {};
+      if isfield(model, 'Software') && ...
+          isfield(model.Software, 'SPM') && ...
+            isfield(model.Software.SPM, 'ParametricModulations')
+
+        parametricModulations = model.Software.SPM.ParametricModulations;
+      end
+      if isstruct(parametricModulations)
+        parametricModulations = {parametricModulations};
+      end
+    end
+
     function threshold = getInclusiveMaskThreshold(obj, varargin)
       %
       % returns the threshold for inclusive masking of subject level GLM

@@ -19,7 +19,7 @@
             "subject"
          ],
          "Transformations": {
-            "Description": "merge the familiarity and repetition column to create the trial type column, also create parametric modulation variable",
+            "Description": "merge the familiarity and repetition column to create the trial type column",
             "Transformer": "bidspm",
             "Instructions": [
                {
@@ -29,17 +29,6 @@
                      "repetition_type"
                   ],
                   "Output": "trial_type"
-               },
-               {
-                  "Name": "Copy",
-                  "Input": "lag",
-                  "Output": "pmod_lag"
-               },
-               {
-                  "Name": "Power",
-                  "Input": "pmod_lag",
-                  "Value": 2,
-                  "Output": "pmod_lag_squared"
                }
             ]
          },
@@ -59,7 +48,7 @@
                   "trial_type.unfamiliar_1",
                   "trial_type.unfamiliar_2"
                ],
-               "Model": "spm + derivative"
+               "Model": "spm"
             },
             "Type": "glm",
             "Options": {
@@ -75,7 +64,20 @@
             },
             "Software": {
                "SPM": {
-                  "SerialCorrelation": "AR(1)"
+                  "SerialCorrelation": "AR(1)",
+                  "ParametricModulations": [
+                     {
+                        "Name": "lag mod",
+                        "Conditions": [
+                           "trial_type.famous_2",
+                           "trial_type.unfamiliar_2"
+                        ],
+                        "Values": [
+                           "lag"
+                        ],
+                        "PolynomialExpansion": 2
+                     }
+                  ]
                }
             }
          },

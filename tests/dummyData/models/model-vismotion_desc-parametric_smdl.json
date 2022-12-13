@@ -1,0 +1,96 @@
+{
+  "Name": "vismotion",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "contrasts for the motion dataset",
+  "Input": {
+    "task": [
+      "vismotion"
+    ],
+    "space": [
+      "IXI549Space"
+    ],
+    "acquisition": [
+      ""
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Transformations": {
+        "Description": "add dummy param modulation",
+        "Transformer": "bidspm",
+        "Instructions": [
+          {
+            "Name": "Constant",
+            "Value": 3,
+            "Output": "amp_1"
+          },
+          {
+            "Name": "Constant",
+            "Value": 2,
+            "Output": "amp_2"
+          }
+        ]
+      },
+      "Model": {
+        "Type": "glm",
+        "X": [
+          "trial_type.VisMot",
+          "trial_type.VisStat",
+          "trans_?",
+          "rot_?"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Model": "spm"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": {
+            "suffix": [
+              "mask"
+            ],
+            "desc": [
+              "brain"
+            ]
+          }
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "ParametricModulations": [
+              {
+                "Name": "amp_1_pmod",
+                "Conditions": [
+                  "trial_type.VisMot",
+                  "trial_type.VisStat"
+                ],
+                "Values": [
+                  "amp_1"
+                ]
+              },
+              {
+                "Name": "amp_2_pmod^2",
+                "Conditions": [
+                  "trial_type.VisMot"
+                ],
+                "Values": [
+                  "amp_2"
+                ],
+                "PolynomialExpansion": 2
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -12,6 +12,46 @@ function test_suite = test_convertOnsetTsvToMat %#ok<*STOUT>
 
 end
 
+function test_convertOnsetTsvToMat_parametric_modulation()
+
+  % GIVEN
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
+  opt = setOptions('vismotion');
+
+  opt.model.file = fullfile(fileparts(opt.model.file),  ...
+                            'model-vismotion_desc-parametric_smdl.json');
+
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  % WHEN
+  fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
+
+  load(fullpathOnsetFilename, 'names', 'onsets', 'durations', 'pmod');
+
+  assertEqual(names, {'VisMot', 'VisStat'});
+  assertEqual(onsets, {2, 4});
+  assertEqual(durations, {2, 2});
+
+  assertEqual(pmod(1).name{1}, 'amp_1_pmod');
+  assertEqual(pmod(1).param(1), {3});
+  assertEqual(pmod(1).poly(1), {1});
+  assertEqual(pmod(1).name{2}, 'amp_2_pmod^2');
+  assertEqual(pmod(1).param(2), {2});
+  assertEqual(pmod(1).poly(2), {2});
+
+  assertEqual(pmod(2).name{1}, 'amp_1_pmod');
+  assertEqual(pmod(2).param(1), {3});
+  assertEqual(pmod(2).poly(1), {1});
+  assertEqual(pmod(2).name{2}, 'amp_2_pmod^2');
+  assertEqual(pmod(2).param(2), {2});
+  assertEqual(pmod(2).poly(2), {2});
+
+  cleanUp(fullpathOnsetFilename);
+
+end
+
 function test_convertOnsetTsvToMat_globbing_conditions()
 
   % GIVEN
@@ -49,53 +89,6 @@ function test_convertOnsetTsvToMat_globbing_conditions()
   assertEqual(names, {'N1', 'N2', 'F1', 'F2'});
   assertEqual(cellfun('size', onsets, 2), [26 26 26 26]);
   assertEqual(cellfun('size', durations, 2), [26 26 26 26]);
-
-  cleanUp(fullpathOnsetFilename);
-
-end
-
-function test_convertOnsetTsvToMat_parametric_modulation()
-
-  % GIVEN
-  tsvFile = fullfile(getDummyDataDir(), ...
-                     'tsv_files', ...
-                     'sub-01_task-vismotion_events.tsv');
-  opt = setOptions('vismotion');
-
-  opt.model.bm = BidsModel('file', opt.model.file);
-
-  trans = struct('Description', 'add dummy param mod', ...
-                 'Transformer', 'bidspm', ...
-                 'Instructions', {{ ...
-                                   struct('Name', 'Constant', ...
-                                          'Value', 3, ...
-                                          'Output', 'pmod_amp'), ...
-                                   struct('Name', 'Power', ...
-                                          'Input', 'pmod_amp', ...
-                                          'Value', 2, ...
-                                          'Output', 'pmod_amp_squared')
-                                  }});
-
-  opt.model.bm.Nodes{1}.Transformations = trans;
-
-  % WHEN
-  fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
-
-  load(fullpathOnsetFilename, 'names', 'onsets', 'durations', 'pmod');
-
-  assertEqual(names, {'VisMot', 'VisStat'});
-  assertEqual(onsets, {2, 4});
-  assertEqual(durations, {2, 2});
-
-  assertEqual(pmod(1).name{1}, 'amp');
-  assertEqual(pmod(1).param(1), {3});
-  assertEqual(pmod(1).name{2}, 'amp_squared');
-  assertEqual(pmod(1).param(2), {9});
-
-  assertEqual(pmod(2).name{1}, 'amp');
-  assertEqual(pmod(2).param(1), {3});
-  assertEqual(pmod(2).name{2}, 'amp_squared');
-  assertEqual(pmod(2).param(2), {9});
 
   cleanUp(fullpathOnsetFilename);
 
