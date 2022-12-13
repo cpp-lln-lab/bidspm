@@ -209,10 +209,9 @@ so via the `Software` object of the BIDS stats model.
 
 <!-- markdown-link-check-enable -->
 
-Similar you can adapt directly in the model `InclusiveMaskingThreshold`
-the threshold used by SPM to create
-an implicit inclusive mask when running a GLM (the value `defaults.mask.thresh`
-of SPM defaults.) .
+Similar you can adapt directly in the model `InclusiveMaskingThreshold` the
+threshold used by SPM to create an implicit inclusive mask when running a GLM
+(the value `defaults.mask.thresh` of SPM defaults.) .
 
 ```json
 {
@@ -245,6 +244,61 @@ name: software_spm_batch
 align: center
 ---
 Corresponding options in SPM batch
+```
+
+#### Results
+
+It is possible to specify the results you want to view directly the
+`Model.Software` object of any `Nodes` in the BIDS stats model.
+
+See the help section of the `bidsResults` function for more detail, but here is
+an example how you could specify it in a JSON.
+
+```json
+"Model": {
+    "Software": {
+        "bidspm": {
+        "Results": [
+            {
+            "name": [
+                "contrast_name", "other_contrast_name"
+            ],
+            "p": 0.05,
+            "MC": "FWE",
+            "png": true,
+            "binary": true,
+            "nidm": true,
+            "montage": {
+                "do": true,
+                "slices": [
+                -4,
+                0,
+                4,
+                8,
+                16
+                ],
+                "background": {
+                "suffix": "T1w",
+                "desc": "preproc",
+                "modality": "anat"
+                }
+            }
+            },
+            {
+            "Description": "Note that you can specify multiple results objects, each with different parameters.",
+            "name": [
+                "yes_another_contrast_name"
+            ],
+            "p": 0.01,
+            "k": 10,
+            "MC": "none",
+            "csv": true,
+            "atlas": "AAL"
+            }
+        ]
+        }
+    }
+}
 ```
 
 ### Contrasts
@@ -362,9 +416,11 @@ There are several examples of models in the
 their datasets.
 
 <!-- markdown-link-check-disable -->
+
 Several of the [demos](demos) have their own model and you can find several
 "dummy" models (without corresponding data) used for testing
 [in this folder](https://github.com/cpp-lln-lab/bidspm/tree/main/tests/dummyData/models).
+
 <!-- markdown-link-check-enable -->
 
 An example of JSON file could look something like that:
