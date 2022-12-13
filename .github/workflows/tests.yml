@@ -44,6 +44,7 @@ jobs:
       matrix:
         platform: [matlab, octave]
         test_type: [unit, system]
+        script: [none]
         include:
           - test_type: system
             script: moae
@@ -56,7 +57,7 @@ jobs:
     steps:
 
     - name: ${{ matrix.platform }} - ${{ matrix.test_type }}  - ${{ matrix.script }}
-      run: echo "${{ matrix.platform matrix.test_type  matrix.script }}"
+      run: echo "${{ matrix.platform matrix.test_type matrix.script }}"
 
     - name: Install dependencies
       run: |
