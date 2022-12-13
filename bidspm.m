@@ -41,7 +41,7 @@ function returnCode = bidspm(varargin)
   addParameter(args, 'space', {}, isCellStr);
 
   % create_roi only
-  addParameter(args, 'roi_dir', pwd, isFolder);
+  addParameter(args, 'roi_dir', '', isChar);
   addParameter(args, 'roi_atlas', 'neuromorphometrics', isInAvailableAtlas);
   addParameter(args, 'roi_name', {''}, isCellStr);
 
@@ -196,7 +196,6 @@ end
 
 function create_roi(args)
   opt = getOptionsFromCliArgument(args);
-  opt.dir.roi = opt.dir.derivatives;
   opt = checkOptions(opt);
 
   try
@@ -312,6 +311,11 @@ function stats(args)
   % TODO make sure that options defined in JSON or passed as a structure
   % overrides any other arguments
   opt = getOptionsFromCliArgument(args);
+
+  if opt.glm.roibased.do
+    opt.bidsFilterFile.roi.space = opt.space;
+    opt.bidsFilterFile.roi.label = opt.roi.name;
+  end
 
   opt.pipeline.type = 'stats';
   opt = checkOptions(opt);
