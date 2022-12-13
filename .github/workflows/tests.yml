@@ -30,9 +30,14 @@ on:
 
 jobs:
 
-  set_up:
+  test:
 
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        platform: [matlab, octave]
+      fail-fast: false
 
     steps:
     - name: Install dependencies
@@ -79,73 +84,57 @@ jobs:
         cd tests
         make data
 
-  install_octave:
-
-    needs: [set_up]
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Install octave
-      run: |
-        sudo apt-get -y -qq update
-        sudo apt-get -y install octave liboctave-dev
-
     - name: Install Moxunit and MOcov
       run: |
         git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
-        make -C MOxUnit install
         git clone https://github.com/MOcov/MOcov.git --depth 1
+
+    - name: Install octave
+      if: ${{ matrix.platform }} == 'octave'
+      run: |
+        sudo apt-get -y -qq update
+        sudo apt-get -y install octave liboctave-dev
+        make -C MOxUnit install
         make -C MOcov install
 
     - name: Compile SPM
+      if: ${{ matrix.platform }} == 'octave'
       run: |
         make -C spm12/src PLATFORM=octave distclean
         make -C spm12/src PLATFORM=octave
         make -C spm12/src PLATFORM=octave install
         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
-  install_matlab:
+    - name: Run tests Octave
+      if: ${{ matrix.platform }} == 'octave'
+      run: |
+        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
+        octave $OCTFLAGS --eval "bidspm(); cd demos/MoAE; download_moae_ds(true);"
+        cd .github/workflows
+        octave $OCTFLAGS --eval "tests_octave;"
 
-    needs: [set_up]
-
-    runs-on: ubuntu-latest
-
-    steps:
     - name: Install MATLAB
+      if: ${{ matrix.platform }} == 'matlab'
       uses: matlab-actions/setup-matlab@v1.2.3
       with:
         # MATLAB release to set up R2020a
         release: R2020a
 
-    - name: Install Moxunit and MOcov
+    - name: Run tests MATLAB
+      if: ${{ matrix.platform }} == 'matlab'
+      uses: matlab-actions/run-command@v1.1.2
+      with:
+        command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
+
+    - name: Check tests
       run: |
-        git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
-        git clone https://github.com/MOcov/MOcov.git --depth 1
+        cat test_report.log | grep 0
 
-
-  unit_test_matlab:
-
-    needs: [install_matlab]
-
-    runs-on: ubuntu-latest
-
-    steps:
-
-      - name: Run tests
-        uses: matlab-actions/run-command@v1.1.2
-        with:
-          command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
-
-      - name: Check tests
-        run: |
-          cat test_report.log | grep 0
-
-      - name: Code coverage
-        uses: codecov/codecov-action@v3
-        with:
-          file: coverage.xml
-          flags: matlab
-          name: codecov-matlab
-          fail_ci_if_error: false
-        # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
+    - name: Code coverage ${{ matrix.platform }}
+      uses: codecov/codecov-action@v3
+      with:
+        file: coverage.xml
+        flags: ${{ matrix.platform }}
+        name: codecov-${{ matrix.platform }}
+        fail_ci_if_error: false
+      # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
