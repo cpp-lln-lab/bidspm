@@ -46,6 +46,45 @@
           "SPM": {
             "SerialCorrelation": "AR(1)",
             "InclusiveMaskingThreshold": 0.8
+          },
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "listening_1"
+                ],
+                "p": 0.05,
+                "MC": "FWE",
+                "png": true,
+                "binary": true,
+                "nidm": true,
+                "montage": {
+                  "do": true,
+                  "slices": [
+                    -4,
+                    0,
+                    4,
+                    8,
+                    16
+                  ],
+                  "background": {
+                    "suffix": "T1w",
+                    "desc": "preproc",
+                    "modality": "anat"
+                  }
+                }
+              },
+              {
+                "name": [
+                  "listening_inf_baseline'"
+                ],
+                "p": 0.01,
+                "k": 10,
+                "MC": "none",
+                "csv": true,
+                "atlas": "AAL"
+              }
+            ]
           }
         }
       },

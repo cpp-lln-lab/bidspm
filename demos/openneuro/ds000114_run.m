@@ -29,13 +29,6 @@ bidspm(bids_dir, output_dir, 'subject', ...
 preproc_dir = fullfile(root_dir, 'outputs', 'ds000114', 'derivatives', 'bidspm-preproc');
 model_file = fullfile(root_dir, 'models', 'model-ds000114_desc-linebisection_smdl.json');
 
-opt.results.nodeName = 'subject_level';
-opt.results.name = {'Correct_Task'
-                    'Incorrect_Task'
-                    'No_Response_Task'
-                    'Response_Control'
-                    'No_Response_Control'};
-
 %% Subject level analysis
 
 bidspm(bids_dir, output_dir, 'subject', ...
@@ -46,9 +39,6 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'options', opt);
 
 %% dataset level analysis
-
-opt.results.nodeName = 'dataset_level';
-opt.results.k = 10;
 
 bidspm(bids_dir, output_dir, 'dataset', ...
        'action', 'stats', ...

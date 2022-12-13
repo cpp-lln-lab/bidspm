@@ -50,34 +50,6 @@ model_file = fullfile(this_dir, 'models', 'model-faceRepetition_smdl.json');
 
 subject_label = '01';
 
-% Specify the result to show
-
-% 1rst result to show
-results = defaultResultsStructure();
-
-results.nodeName = 'run_level';
-results.name = 'faces_gt_baseline_1';
-
-% Specify how you want your output
-% (all the following are on false by default)
-results.threshSpm = true();
-results.binary = true();
-results.montage.do = true();
-results.montage.slices = -26:3:6; % in mm
-results.montage.orientation = 'axial';
-results.montage.background = struct('suffix', 'T1w', ...
-                                    'desc', 'preproc', ...
-                                    'modality', 'anat');
-
-opt.results(1) = results;
-
-% 2nd result to show
-results = defaultResultsStructure();
-results.nodeName = 'run_level';
-results.name = 'motion';
-
-opt.results(2) = results;
-
 % this bids app call will run:
 %
 % - GLM specification + estimation,
@@ -90,7 +62,8 @@ opt.results(2) = results;
 % or see this page: https://bidspm.readthedocs.io/en/stable/bids_app_api.html
 % for more information on what parameters are obligatory or optional
 %
-
+% The result to show are specified in the model
+%
 bidspm(bids_dir, output_dir, 'subject', ...
        'action', 'stats', ...
        'participant_label', {subject_label}, ...

@@ -46,6 +46,19 @@
         "Software": {
           "SPM": {
             "SerialCorrelation": "FAST"
+          },
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "Correct_Task",
+                  "Incorrect_Task",
+                  "No_Response_Task",
+                  "Response_Control",
+                  "No_Response_Control"
+                ]
+              }
+            ]
           }
         }
       },
@@ -87,7 +100,16 @@
         "X": [
           1
         ],
-        "Type": "glm"
+        "Type": "glm",
+        "Software": {
+          "bidspm": {
+            "Results": [
+              {
+                "k": 10
+              }
+            ]
+          }
+        }
       },
       "DummyContrasts": {
         "Test": "t"
