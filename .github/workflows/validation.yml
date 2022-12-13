@@ -1,4 +1,4 @@
-name: validate CITATION.cff
+name: validation
 
 on:
   push:
