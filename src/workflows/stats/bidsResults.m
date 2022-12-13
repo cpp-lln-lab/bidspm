@@ -280,7 +280,8 @@ function [status] = checks(opt)
   msg = sprintf(['Specify node names and levels in "opt.results".', ...
                  '\t\nType "help bidsResults" for more information.']);
 
-  if ~isfield(opt, 'results') || isempty(opt.results)
+  if ~isfield(opt, 'results') || isempty(opt.results) || ...
+          strcmp(opt.results(1).name{1}, '')
     id = 'noResultsAsked';
     logger('WARNING', msg, 'id', id, 'filename', mfilename());
     status = false;
