@@ -34,6 +34,10 @@ function test_convertOnsetTsvToMat_parametric_modulation()
   assertEqual(onsets, {2, 4});
   assertEqual(durations, {2, 2});
 
+  assertEqual(numel(pmod), 2);
+
+  assertEqual(numel(pmod(1).name), 2);
+
   assertEqual(pmod(1).name{1}, 'amp_1_pmod');
   assertEqual(pmod(1).param(1), {3});
   assertEqual(pmod(1).poly(1), {1});
@@ -41,14 +45,32 @@ function test_convertOnsetTsvToMat_parametric_modulation()
   assertEqual(pmod(1).param(2), {2});
   assertEqual(pmod(1).poly(2), {2});
 
+  assertEqual(numel(pmod(2).name), 1);
+
   assertEqual(pmod(2).name{1}, 'amp_1_pmod');
   assertEqual(pmod(2).param(1), {3});
   assertEqual(pmod(2).poly(1), {1});
-  assertEqual(pmod(2).name{2}, 'amp_2_pmod^2');
-  assertEqual(pmod(2).param(2), {2});
-  assertEqual(pmod(2).poly(2), {2});
+
+  clear names onsets durations pmod;
+
+  %%
+  bm = opt.model.bm;
+  bm.Nodes{1}.Model.Software.SPM.ParametricModulations(2) = [];
+  bm.write('tmp.json');
+  opt.model.file = fullfile(pwd, 'tmp.json');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile);
+
+  load(fullpathOnsetFilename, 'names', 'onsets', 'durations', 'pmod');
+
+  assertEqual(pmod(1).name{1}, 'amp_1_pmod');
+  assertEqual(pmod(1).param(1), {3});
+  assertEqual(pmod(1).poly(1), {1});
 
   cleanUp(fullpathOnsetFilename);
+
+  delete('tmp.json');
 
 end
 

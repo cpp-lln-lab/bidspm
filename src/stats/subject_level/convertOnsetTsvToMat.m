@@ -200,7 +200,7 @@ function condToModel = addCondition(opt, condName, trialTypes, tsv, condToModel,
 
     parametricModulations = opt.model.bm.getParametricModulations;
     if ~isempty(parametricModulations)
-      condToModel = parametricModulation(condToModel, tsv, rows, parametricModulations);
+      condToModel = parametricModulation(condToModel, tsv, rows, parametricModulations, condName);
     end
 
     condToModel.idx = condToModel.idx + 1;
@@ -246,7 +246,7 @@ function targetCondition = returnNameConditionToModulate(thisMod)
 
 end
 
-function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows, parameMod)
+function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows, parameMod, condName)
   % parametric modulation (pmod)
   %
   % skipped if parametric modulation amplitude == 1 for all onsets
@@ -257,7 +257,11 @@ function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows, 
 
   for iMod = 1:numel(parameMod)
 
-    thisMod = parameMod{iMod};
+    if iscell(parameMod)
+      thisMod = parameMod{iMod};
+    elseif isstruct(parameMod)
+      thisMod = parameMod(iMod);
+    end
 
     for iValue = 1:numel(thisMod.Values)
 
@@ -266,7 +270,7 @@ function conditionsToModel = parametricModulation(conditionsToModel, tsv, rows, 
       targetCondition = returnNameConditionToModulate(thisMod);
 
       if ismember(thisValue, fields) && ...
-              any(ismember(targetCondition, conditionsToModel.names))
+              any(ismember(targetCondition, condName))
 
         amplitude = tsv.content.(thisValue)(rows);
         if iscellstr(amplitude) %#ok<ISCLSTR>

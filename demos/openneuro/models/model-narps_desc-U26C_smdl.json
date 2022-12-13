@@ -27,7 +27,7 @@
                         "Input": [
                             "framewise_displacement"
                         ],
-                        "Threshold": 0.15,
+                        "Threshold": 0.5,
                         "Binarize": true,
                         "Output": [
                             "outliers_FD"
@@ -177,7 +177,15 @@
                                     "trials.include"
                                 ],
                                 "Values": [
-                                    "loss_centered",
+                                    "loss_centered"
+                                ]
+                            },
+                            {
+                                "Name": "pmod_gain",
+                                "Conditions": [
+                                    "trials.include"
+                                ],
+                                "Values": [
                                     "gain_centered"
                                 ]
                             }
