@@ -35,44 +35,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install dependencies
-        run: |
-          sudo apt-get -y -qq update
-          sudo apt-get -y install unzip wget
+    - name: Install dependencies
+      run: |
+        sudo apt-get -y -qq update
+        sudo apt-get -y install unzip wget
 
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    - name: Install Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
 
-      - name: Install python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+    - name: Install python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
 
-      - name: Clone bidspm
-        uses: actions/checkout@v3
-        with:
-          submodules: recursive
-          fetch-depth: 0
+    - name: Clone bidspm
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        fetch-depth: 0
 
-      - name: Install validators
-        run: make install
+    - name: Install validators
+      run: make install
 
-      - name: Install SPM
-        run: |
-          git clone https://github.com/spm/spm12.git --depth 1
+    - name: Install SPM
+      run: |
+        git clone https://github.com/spm/spm12.git --depth 1
 
-      - name: Copy Macs toolbox to SPM inputs_folder
-        run: cp -rv lib/MACS spm12/toolbox/MACS
+    - name: Copy Macs toolbox to SPM inputs_folder
+      run: cp -rv lib/MACS spm12/toolbox/MACS
 
-      - name: Get moae fmriprep data from OSF
-        run: |
-          mkdir -p demos/MoAE/inputs/
-          cd demos/MoAE/inputs/
-          wget https://osf.io/vufjs/download
-          unzip download
-          mv moae_fmriprep fmriprep
+    - name: Get moae fmriprep data from OSF
+      run: |
+        mkdir -p demos/MoAE/inputs/
+        cd demos/MoAE/inputs/
+        wget https://osf.io/vufjs/download
+        unzip download
+        mv moae_fmriprep fmriprep
+
+    - name: Prepare test data
+      run: |
+        cd tests
+        make data
 
   install_octave:
 
@@ -81,17 +86,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install octave
-        run: |
-          sudo apt-get -y -qq update
-          sudo apt-get -y install octave liboctave-dev
+    - name: Install octave
+      run: |
+        sudo apt-get -y -qq update
+        sudo apt-get -y install octave liboctave-dev
 
-      - name: Compile SPM
-        run: |
-          make -C spm12/src PLATFORM=octave distclean
-          make -C spm12/src PLATFORM=octave
-          make -C spm12/src PLATFORM=octave install
-          octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
+    - name: Install Moxunit and MOcov
+      run: |
+        git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
+        make -C MOxUnit install
+        git clone https://github.com/MOcov/MOcov.git --depth 1
+        make -C MOcov install
+
+    - name: Compile SPM
+      run: |
+        make -C spm12/src PLATFORM=octave distclean
+        make -C spm12/src PLATFORM=octave
+        make -C spm12/src PLATFORM=octave install
+        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
   install_matlab:
 
@@ -100,9 +112,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install MATLAB
+      uses: matlab-actions/setup-matlab@v1.2.3
+      with:
+        # MATLAB release to set up R2020a
+        release: R2020a
 
-      - name: Install MATLAB
-        uses: matlab-actions/setup-matlab@v1.2.3
-        with:
-          # MATLAB release to set up R2020a
-          release: R2020a
+    - name: Install Moxunit and MOcov
+      run: |
+        git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
+        git clone https://github.com/MOcov/MOcov.git --depth 1
