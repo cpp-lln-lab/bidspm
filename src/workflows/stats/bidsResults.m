@@ -156,6 +156,8 @@ function matlabbatch = bidsResults(varargin)
 
   opt.dir.output = opt.dir.stats;
 
+  % TODO
+  % bids stats model should override options
   if ~isfield(opt, 'results') || isempty(opt.results) || ...
           strcmp(opt.results(1).name{1}, '')
     opt.results = opt.model.bm.getResults();
