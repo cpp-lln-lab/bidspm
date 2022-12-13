@@ -154,13 +154,13 @@ jobs:
         fail_ci_if_error: false
       # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
 
-    - name: Run system tests octave ${{ matrix.script }}"
+    - name: Run system tests octave ${{ matrix.script }}
       if: matrix.platform == 'octave' && matrix.test_type == 'system'
       run: |
         cd /home/runner/work/bidspm/bidspm/.github/workflows
         octave $OCTFLAGS --eval "run system_tests_${{ matrix.script }};"
 
-    - name: Run system tests MATLAB ${{ matrix.script }}"
+    - name: Run system tests MATLAB ${{ matrix.script }}
       if: matrix.platform == 'matlab' && matrix.test_type == 'system'
       uses: matlab-actions/run-command@v1.1.2
       with:
