@@ -17,7 +17,7 @@ function returnCode = bidspm(varargin)
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
   isFolder = @(x) isdir(x);
   isCellStr = @(x) iscellstr(x);
-  isInAvailableAtlas = @(x) (ischar(x) && ismember(x, { 'visfatlas', ...
+  isInAvailableAtlas = @(x) (ischar(x) && ismember(x, {'visfatlas', ...
                                                        'anatomy_toobox', ...
                                                        'neuromorphometrics', ...
                                                        'wang'}));
@@ -197,7 +197,7 @@ end
 function create_roi(args)
   opt = getOptionsFromCliArgument(args);
   opt = checkOptions(opt);
-
+  opt.roi.space = opt.space;
   try
     saveOptions(opt);
     bidsCreateROI(opt);

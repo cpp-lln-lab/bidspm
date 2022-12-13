@@ -72,7 +72,6 @@ function opt = getOptionsFromCliArgument(args)
     opt.anatOnly = args.Results.anat_only;
 
     % create_roi
-    opt.roi.space = opt.space;
     opt.roi.atlas = args.Results.roi_atlas;
     opt.roi.name = args.Results.roi_name;
 

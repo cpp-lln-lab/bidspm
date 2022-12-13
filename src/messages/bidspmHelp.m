@@ -145,6 +145,31 @@ function bidspmHelp()
   %           'skip_validation', false)
   %
   %
+  % **CREATE_ROI:**
+  %
+  % .. code-block:: matlab
+  %
+  %   bidspm(bids_dir, output_dir, 'subject', ...
+  %           'action', 'create_roi', ...
+  %           'participant_label', {}, ...
+  %           'verbosity', 2, ...
+  %           'roi_atlas', 'wang', ...
+  %           'roi_name', {'V1v', 'V1d'}, ...
+  %           'space', {'wang'}, ...
+  %           'options', struct([]))
+  %
+  % :param roi_atlas:     Can be any of:
+  %                       - ``'visfatlas'``
+  %                       - ``'anatomy_toobox'``
+  %                       - ``'neuromorphometrics'``
+  %                       - ``'wang'``
+  % :type  roi_atlas:     char
+  %
+  % :param roi_name:      Name of the roi to create. If the ROI does not exist in the atlas,
+  %                       the list of available ROI will be returned in the error message.
+  % :type  roi_name:      cell string
+  %
+  %
   % **SMOOTH:**
   %
   % .. code-block:: matlab
