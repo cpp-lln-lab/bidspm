@@ -54,6 +54,10 @@ jobs:
       fail-fast: false
 
     steps:
+
+    - name: ${{ matrix.platform }} - ${{ matrix.test_type }}  - ${{ matrix.script }}
+      run: echo "${{ matrix.platform matrix.test_type  matrix.script }}"
+
     - name: Install dependencies
       run: |
         sudo apt-get -y -qq update
