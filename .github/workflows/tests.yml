@@ -43,14 +43,13 @@ jobs:
     strategy:
       matrix:
         platform: [matlab, octave]
-        test_type: [unit]
+        test_type: [system]
+        script: [moae, facerep, fmriprep]
         include:
-          - test_type: system
-            script: moae
-          - test_type: system
-            script: facerep
-          - test_type: system
-            script: fmriprep
+          - test_type: unit
+            platform: matlab
+          - test_type: unit
+            platform: octave
       fail-fast: false
 
     steps:
