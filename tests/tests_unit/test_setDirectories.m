@@ -26,6 +26,7 @@ function test_setDirectories_preproc()
   expected.dir.input = fullfile(expected.dir.derivatives, 'bidspm-preproc');
   expected.dir.output = fullfile(expected.dir.derivatives, 'bidspm-preproc');
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs', opt.taskName{1});
+  expected.dir.roi = fullfile(expected.dir.derivatives, 'bidspm-roi');
   expected.dir.stats = '';
   expected.dir.raw = '';
 
@@ -51,6 +52,7 @@ function test_setDirectories_stats()
   expected.dir.input = expected.dir.preproc;
   expected.dir.output = expected.dir.stats;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
+  expected.dir.roi = fullfile(expected.dir.derivatives, 'bidspm-roi');
 
 end
 
@@ -71,6 +73,7 @@ function test_setDirectories_inputs_outputs()
   expected.dir.input = expected.dir.raw;
   expected.dir.output = expected.dir.preproc;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
+  expected.dir.roi = fullfile(expected.dir.derivatives, 'bidspm-roi');
 
   assertEqual(opt.dir, expected.dir);
 
@@ -95,6 +98,7 @@ function test_setDirectories_copy_raw_to_preproc_named()
   expected.dir.preproc = fullfile(expected.dir.derivatives, 'preproc');
   expected.dir.output = expected.dir.preproc;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
+  expected.dir.roi = fullfile(expected.dir.derivatives, 'bidspm-roi');
 
   assertEqual(opt.dir, expected.dir);
 
@@ -116,6 +120,7 @@ function test_setDirectories_raw_derivatives()
   expected.dir.preproc = fullfile(expected.dir.derivatives, 'bidspm-preproc');
   expected.dir.output = expected.dir.preproc;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
+  expected.dir.roi = fullfile(expected.dir.derivatives, 'bidspm-roi');
   expected.dir.stats = '';
 
   assertEqual(opt.dir, expected.dir);
@@ -143,6 +148,8 @@ function test_setDirectories_input_output()
   expected.dir.output = fullfile(pwd, 'output');
   expected.dir.jobs = fullfile(opt.dir.output, 'jobs');
 
+  expected.dir = rmfield(expected.dir, 'roi');
+
   assertEqual(opt.dir, expected.dir);
 
 end
@@ -164,6 +171,7 @@ function test_setDirectories_copy_raw_to_preproc()
   expected.dir.preproc = fullfile(expected.dir.derivatives, 'bidspm-preproc');
   expected.dir.output = expected.dir.preproc;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
+  expected.dir.roi = fullfile(expected.dir.derivatives, 'bidspm-roi');
 
   assertEqual(opt.dir, expected.dir);
 
@@ -185,6 +193,7 @@ function test_setDirectories_copy_fmriprep_to_preproc()
   expected.dir.preproc = fullfile(expected.dir.derivatives, 'bidspm-preproc');
   expected.dir.output = expected.dir.preproc;
   expected.dir.jobs = fullfile(expected.dir.output, 'jobs');
+  expected.dir.roi = fullfile(expected.dir.derivatives, 'bidspm-roi');
 
   assertEqual(opt.dir, expected.dir);
 
