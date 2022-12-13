@@ -44,8 +44,9 @@ jobs:
       matrix:
         platform: [matlab, octave]
         test_type: [unit, system]
-        script: [moae]
         include:
+          - test_type: system
+            script: moae
           - test_type: system
             script: facerep
           - test_type: system
