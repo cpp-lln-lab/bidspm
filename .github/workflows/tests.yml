@@ -1,0 +1,75 @@
+name: "tests"
+
+# Uses the cron schedule for github actions
+#
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows#scheduled-events
+#
+# ┌───────────── minute (0 - 59)
+# │ ┌───────────── hour (0 - 23)
+# │ │ ┌───────────── day of the month (1 - 31)
+# │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+# │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+# │ │ │ │ │
+# │ │ │ │ │
+# │ │ │ │ │
+# * * * * *
+
+env:
+  OCTFLAGS: --no-gui --no-window-system --silent
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: ['*']
+  schedule:
+    - cron: "0 0 1,15 * *"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+
+  set_up:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get -y -qq update
+          sudo apt-get -y install unzip wget
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install SPM
+        run: |
+          git clone https://github.com/spm/spm12.git --depth 1
+
+      - name: Clone bidspm
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Install validators
+        run: make install
+
+      - name: Copy Macs toolbox to SPM inputs_folder
+        run: cp -rv lib/MACS spm12/toolbox/MACS
+
+      - name: Get moae fmriprep data from OSF
+        run: |
+          mkdir -p demos/MoAE/inputs/
+          cd demos/MoAE/inputs/
+          wget https://osf.io/vufjs/download
+          unzip download
+          mv moae_fmriprep fmriprep
