@@ -37,6 +37,14 @@ jobs:
     strategy:
       matrix:
         platform: [matlab, octave]
+        test_type: [unit, system]
+        include:
+          - test_type: system
+            script: moae
+          - test_type: system
+            script: facerep
+          - test_type: system
+            script: fmriprep
       fail-fast: false
 
     steps:
@@ -89,7 +97,7 @@ jobs:
         git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
         git clone https://github.com/MOcov/MOcov.git --depth 1
 
-    - name: Install ${{ matrix.platform }}
+    - name: Install octave
       if: matrix.platform == 'octave'
       run: |
         sudo apt-get -y -qq update
@@ -105,8 +113,8 @@ jobs:
         make -C spm12/src PLATFORM=octave install
         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
-    - name: Run tests Octave
-      if: matrix.platform == 'octave'
+    - name: Run unit tests Octave
+      if: matrix.platform == 'octave' && matrix.test_type == 'unit'
       run: |
         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
         octave $OCTFLAGS --eval "bidspm(); cd demos/MoAE; download_moae_ds(true);"
@@ -119,17 +127,19 @@ jobs:
       with:
         release: R2020a
 
-    - name: Run tests MATLAB
-      if: matrix.platform == 'matlab'
+    - name: Run unit tests MATLAB
+      if: matrix.platform == 'matlab' && matrix.test_type == 'unit'
       uses: matlab-actions/run-command@v1.1.2
       with:
         command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
 
-    - name: Check tests
+    - name: Check unit tests
+      if: matrix.test_type == 'unit'
       run: |
         cat test_report.log | grep 0
 
     - name: Code coverage ${{ matrix.platform }}
+      if: matrix.test_type == 'unit'
       uses: codecov/codecov-action@v3
       with:
         file: coverage.xml
@@ -137,3 +147,15 @@ jobs:
         name: codecov-${{ matrix.platform }}
         fail_ci_if_error: false
       # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
+
+    - name: Run system tests octave ${{ matrix.script }}"
+      if: matrix.platform == 'octave' && matrix.test_type == 'system'
+      run: |
+        cd /home/runner/work/bidspm/bidspm/.github/workflows
+        octave $OCTFLAGS --eval "run system_tests_${{ matrix.script }};"
+
+    - name: Run system tests MATLAB ${{ matrix.script }}"
+      if: matrix.platform == 'matlab' && matrix.test_type == 'system'
+      uses: matlab-actions/run-command@v1.1.2
+      with:
+        command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_${{ matrix.script }};
