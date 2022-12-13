@@ -156,6 +156,10 @@ function matlabbatch = bidsResults(varargin)
 
   opt.dir.output = opt.dir.stats;
 
+  if ~isfield(opt, 'results') || isempty(opt.results)
+    opt.results = opt.model.bm.getResults();
+  end
+
   status = checks(opt);
   if ~status
     return
