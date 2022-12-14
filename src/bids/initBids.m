@@ -56,6 +56,9 @@ function initBids(varargin)
 
   end
 
+  addGitIgnore(opt.dir.output);
+  addReadme(opt.dir.output);
+
 end
 
 function version = getDefaultBIDSVersion()
