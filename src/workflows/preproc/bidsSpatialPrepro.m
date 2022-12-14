@@ -29,7 +29,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
   % - normalize the data to MNI space, make sure
   %   ``opt.space`` includes ``IXI549Space``.
   %
-  % See the :ref:`preprocessing resampling` section of the FAQ to know
+  % See the `preprocessing` section of the FAQ to know
   % at what resolution files are resampled during normalization.
   %
   % If you want to:

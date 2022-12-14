@@ -6,6 +6,7 @@ MATLAB API
 
 .. module:: src.messages
 .. autofunction::  bidspmHelp
+   :noindex:
 
 Command line API
 ================
