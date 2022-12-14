@@ -57,7 +57,10 @@ RUN mkdir code input output
 # RUN echo '\nDEV'
 # COPY . /home/neuro/bidspm
 
-RUN echo '\nPROD'
+# TODO
+# USER neuro
+
+RUN echo '\n production'
 RUN git clone --depth 1 --branch main --recursive https://github.com/cpp-lln-lab/bidspm.git
 
 RUN cd bidspm && make install
@@ -66,8 +69,6 @@ RUN echo '\n'
 RUN python3 --version && pip3 list
 RUN echo '\n'
 
-# TODO
-# USER neuro
 
 RUN cd bidspm && octave --no-gui --eval "addpath(pwd); savepath();"
 
