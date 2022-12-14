@@ -63,6 +63,15 @@ function bidsChangeSuffix(varargin)
     metafiles = bids.query(BIDS, 'metafiles', filter);
   end
 
+  if isstruct(metadata) && isempty(fieldnames(metadata))
+    warning('No metadata for filter: %s', createUnorderedList(filter));
+  end
+
+  if isstruct(metadata)
+    tmp = {metadata};
+    metadata = tmp;
+  end
+
   for iFile = 1:size(data, 1)
 
     specification.suffix = newSuffix;
@@ -74,7 +83,7 @@ function bidsChangeSuffix(varargin)
                    'force', force);
 
     % create JSON side car
-    if ~opt.dryRun
+    if ~opt.dryRun && ~isempty(fieldnames(metadata{iFile}))
       json_file = fullfile(fileparts(data{iFile}), bf.json_filename);
       bids.util.jsonencode(json_file, metadata{iFile});
     end
