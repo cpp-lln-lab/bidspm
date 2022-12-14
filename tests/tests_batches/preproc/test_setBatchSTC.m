@@ -78,45 +78,6 @@ function test_setBatchSTC_empty()
 
 end
 
-function test_setBatchSTC_force()
-
-  subLabel = '^01';
-
-  opt = setOptions('vislocalizer', subLabel);
-
-  % we give it some slice timing value to force slice timing to happen
-  sliceOrder = linspace(0, 1.6, 10);
-  sliceOrder(end - 1:end) = [];
-  opt.stc.referenceSlice = 1.6 / 2;
-
-  opt = checkOptions(opt);
-
-  BIDS = getLayout(opt);
-
-  matlabbatch = {};
-  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
-
-  TR = 1.55;
-  expectedBatch = returnExpectedBatch(sliceOrder, opt.stc.referenceSlice, TR);
-
-  runCounter = 1;
-  for iSes = 1:2
-    fileName = bids.query(BIDS, 'data', ...
-                          'sub', subLabel, ...
-                          'ses', sprintf('0%i', iSes), ...
-                          'task', opt.taskName, ...
-                          'suffix', 'bold', ...
-                          'extension', '.nii', ...
-                          'prefix', '',  ...
-                          'space', '', 'desc', '');
-    expectedBatch{1}.spm.temporal.st.scans{runCounter} = {fileName{1}};
-    runCounter = runCounter + 1;
-  end
-
-  assertEqual(matlabbatch{1}.spm.temporal.st, expectedBatch{1}.spm.temporal.st);
-
-end
-
 function test_setBatchSTC_basic()
 
   subLabel = '^01';

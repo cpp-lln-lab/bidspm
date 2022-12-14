@@ -290,7 +290,6 @@ function fieldsToSet = setDefaultOption()
   %% Options for slice time correction
   % all in seconds
   fieldsToSet.stc.referenceSlice = [];
-  fieldsToSet.stc.sliceOrder = [];
   fieldsToSet.stc.skip = false;
 
   %% Options for realign
