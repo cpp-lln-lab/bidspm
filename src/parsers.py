@@ -85,14 +85,6 @@ def common_parser() -> MuhParser:
         "--action",
         help="""
         Action to perform.
-
-        - ``preprocess``
-        - ``smooth``
-        - ``default_model``
-        - ``create_roi``
-        - ``stats``: runs model specification / estimation, contrast computation, display results
-        - ``contrasts``: contrast computation, display results
-        - ``results``: display results
         """,
         choices=[
             "preprocess",
@@ -107,7 +99,6 @@ def common_parser() -> MuhParser:
         type=str,
         nargs=1,
     )
-
     parser.add_argument(
         "--verbosity",
         help="""
@@ -151,7 +142,6 @@ def common_parser() -> MuhParser:
         ],
         nargs="+",
     )
-
     parser.add_argument(
         "--participant_label",
         help="""
@@ -217,7 +207,7 @@ def common_parser() -> MuhParser:
     parser.add_argument(
         "--model_file",
         help="""
-        Path to BIDS stats model.
+        Fullpath to BIDS stats model.
         """,
         type=str,
         nargs=1,
@@ -233,7 +223,7 @@ def common_parser() -> MuhParser:
     parser.add_argument(
         "--roi_atlas",
         help="""
-        atlas to create the regions of interest from.
+        Atlas to create the regions of interest from.
         """,
         type=str,
         nargs=1,
@@ -244,7 +234,8 @@ def common_parser() -> MuhParser:
         "--roi_name",
         help="""
         Name of the roi to create. If the ROI does not exist in the atlas,
-the list of available ROI will be returned in the error message.""",
+        the list of available ROI will be returned in the error message.
+        """,
         nargs="+",
     )
     parser.add_argument(
@@ -266,7 +257,8 @@ the list of available ROI will be returned in the error message.""",
     parser.add_argument(
         "--concatenate",
         help="""
-        To create 4D image of all the beta images from the conditions of interest.
+        To create 4D image of all the beta and contrast images of the conditions
+        of interest included in the run level design matrix.
         """,
         action="store_true",
         default=False,
