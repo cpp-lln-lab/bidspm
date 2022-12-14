@@ -63,7 +63,7 @@ function bidsChangeSuffix(varargin)
     metafiles = bids.query(BIDS, 'metafiles', filter);
   end
 
-  if isempty(fieldnames(metadata))
+  if isstruct(metadata) && isempty(fieldnames(metadata))
     warning('No metadata for filter: %s', createUnorderedList(filter));
   end
 
