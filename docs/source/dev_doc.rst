@@ -206,6 +206,10 @@ batches preproc
 
 IO
 ==
+.. _addGitIgnore:
+.. autofunction:: src.IO.addGitIgnore
+.. _addReadme:
+.. autofunction:: src.IO.addReadme
 .. _cleanCrash:
 .. autofunction:: src.IO.cleanCrash
 .. _createDerivativeDir:
@@ -392,6 +396,8 @@ infra
 .. autofunction:: src.infra.returnRtdURL
 .. _setGraphicWindow:
 .. autofunction:: src.infra.setGraphicWindow
+.. _silenceOctaveWarning:
+.. autofunction:: src.infra.silenceOctaveWarning
 
 
 .. _messages:
@@ -564,10 +570,14 @@ stats utils
 .. autofunction:: src.stats.utils.createGlmDirName
 .. _designMatrixFigureName:
 .. autofunction:: src.stats.utils.designMatrixFigureName
+.. _fillInResultStructure:
+.. autofunction:: src.stats.utils.fillInResultStructure
 .. _getContrastNb:
 .. autofunction:: src.stats.utils.getContrastNb
 .. _getRegressorIdx:
 .. autofunction:: src.stats.utils.getRegressorIdx
+.. _isTtest:
+.. autofunction:: src.stats.utils.isTtest
 .. _labelActivations:
 .. autofunction:: src.stats.utils.labelActivations
 .. _returnContrastImageFile:
@@ -594,8 +604,6 @@ utils
 .. autofunction:: src.utils.getDist2surf
 .. _getFuncVoxelDims:
 .. autofunction:: src.utils.getFuncVoxelDims
-.. _isTtest:
-.. autofunction:: src.utils.isTtest
 .. _isZipped:
 .. autofunction:: src.utils.isZipped
 .. _regexify:

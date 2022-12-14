@@ -11,7 +11,7 @@
   [![GitHub last commit](https://img.shields.io/github/last-commit/cpp-lln-lab/bidspm)](https://github.com/cpp-lln-lab/bidspm.git)
   [![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](https://github.com/cpp-lln-lab/bidspm#contributors)
 
-<!-- [![HitCount](https://hits.dwyl.com/cpp-lln-lab/bidspm.svg?style=flat-square&show=unique)](http://hits.dwyl.com/cpp-lln-lab/bidspm) -->
+<!--  [![HitCount](https://hits.dwyl.com/cpp-lln-lab/bidspm.svg?style=flat-square&show=unique)](http://hits.dwyl.com/cpp-lln-lab/bidspm) -->
 
 
 # bidspm
@@ -218,7 +218,7 @@ Please see our
   license = {GPL-3.0},
   title   = {bidspm},
   url = {https://github.com/cpp-lln-lab/bidspm},
-  version = {2.3.0}
+  version = {3.0.0}
   doi     = {10.5281/zenodo.3554331},
   publisher = {Zenodo},
   journal = {Software}
