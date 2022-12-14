@@ -54,14 +54,15 @@ WORKDIR /home/neuro
 RUN mkdir code input output
 
 # uncomment when local development
-# RUN echo '\nDEV'
-# COPY . /home/neuro/bidspm
+RUN echo '\n development'
+COPY . /home/neuro/bidspm
 
 # TODO
 # USER neuro
 
-RUN echo '\n production'
-RUN git clone --depth 1 --branch main --recursive https://github.com/cpp-lln-lab/bidspm.git
+# RUN echo '\n production'
+# RUN git clone --depth 1 --branch main --recursive https://github.com/cpp-lln-lab/bidspm.git
+
 
 RUN cd bidspm && make install
 

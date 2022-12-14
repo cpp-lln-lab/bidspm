@@ -27,3 +27,42 @@ bidspm \
     --anat_only \
     --skip_validation
 ```
+
+### Create ROI
+
+```bash
+bidspm \
+    $PWD/outputs/raw \
+    $PWD/outputs/derivatives \
+    subject \
+    --action create_roi \
+    --roi_atlas wang \
+    --roi_name MST hMT
+```
+
+```bash
+bidspm \
+    $PWD/outputs/raw \
+    $PWD/outputs/derivatives \
+    subject \
+    --action create_roi \
+    --roi_atlas hpcex \
+    --roi_name MST MT
+```
+
+## Docker
+
+### Create ROI
+
+```bash
+docker run -it --rm \
+    -v $PWD/outputs/raw ~/:/raw \
+    -v $PWD/outputs/derivatives:/derivatives \
+    cpplab/bidspm:3.0.0 \
+        /raw \
+        /derivatives \
+        subject \
+        --action create_roi \
+        --roi_atlas wang \
+        --roi_name MST MT
+```
