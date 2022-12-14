@@ -56,13 +56,13 @@ bidspm \
 
 ```bash
 docker run -it --rm \
-    -v $PWD/outputs/raw ~/:/raw \
+    -v $PWD/outputs/raw:/raw \
     -v $PWD/outputs/derivatives:/derivatives \
-    cpplab/bidspm:3.0.0 \
+    cpplab/bidspm:latest \
         /raw \
         /derivatives \
         subject \
         --action create_roi \
-        --roi_atlas wang \
+        --roi_atlas hcpex \
         --roi_name MST MT
 ```
