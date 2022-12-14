@@ -127,8 +127,8 @@ function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(vararg
       end
 
       printProcessingSubject(iSub, subLabel, opt);
-      msg = sprintf(' %s\n\n', file);
-      printToScreen(msg, opt);
+      msg = sprintf(' %s', file);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
     end
 

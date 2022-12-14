@@ -51,7 +51,7 @@ function [status, groupBy] = checkGroupBy(node)
   if ~status
     template = 'only "GroupBy": %s supported %s node level';
     msg = sprintf(template, createUnorderedList(supportedGroupBy), node.Level);
-    notImplemented(mfilename(), msg, true);
+    notImplemented(mfilename(), msg);
   end
 
 end

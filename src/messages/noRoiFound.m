@@ -21,7 +21,7 @@ function status = noRoiFound(varargin)
 
   defaultFolder = '';
 
-  isFolder = @(x) isfolder(x);
+  isFolder = @(x) isdir(x);
 
   addRequired(args, 'opt', @isstruct);
   addOptional(args, 'roiList', @isstruct);
@@ -35,10 +35,9 @@ function status = noRoiFound(varargin)
 
     status = true;
 
-    tolerant = true;
     msg = sprintf('No ROI found in folder: %s', args.Results.folder);
     id = 'noRoiFile';
-    errorHandling(mfilename(), id, msg, tolerant, args.Results.opt.verbosity);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', args.Results.opt);
 
   end
 

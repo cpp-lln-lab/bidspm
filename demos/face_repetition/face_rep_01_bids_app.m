@@ -21,7 +21,7 @@
 % or see this page: https://bidspm.readthedocs.io/en/stable/bids_app_api.html
 % for more information on what parameters are obligatory or optional
 %
-%
+
 % (C) Copyright 2022 Remi Gau
 
 clear;

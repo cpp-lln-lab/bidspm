@@ -111,7 +111,6 @@ function bidsCopyInputFolder(varargin)
 
     end
 
-    printToScreen('\n\n', opt);
   end
 
   % update dataset description

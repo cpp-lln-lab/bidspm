@@ -55,9 +55,9 @@ function functionalQA(opt)
   end
 
   if isOctave()
+    notImplemented(mfilename(), ...
+                   'functionalQA is not yet supported on Octave. This step will be skipped.');
     opt.QA.func.do = false;
-    warning('\nfunctionalQA is not yet supported on Octave. This step will be skipped.');
-
   end
 
   if ~opt.QA.func.do
@@ -119,8 +119,9 @@ function functionalQA(opt)
           funcImage = spm_select('FPListRec', fullfile(BIDS.pth, ['sub-' subLabel]), pattern);
 
           if size(funcImage, 1) ~= 1
-            msg = sprintf('too many files found:\n%s\n\n', createUnorderedList(funcImage));
-            errorHandling(mfilename(), 'tooManyFiles', msg, true, opt.verbosity);
+            msg = sprintf('too many files found:\n%s', createUnorderedList(funcImage));
+            id = 'tooManyFiles';
+            logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
             continue
           end
 
@@ -135,7 +136,7 @@ function functionalQA(opt)
           % will help ith refactoring
 
           % TODO: need to reslice TPMs as part of spatial prepro first
-          notImplemented(mfilename(), 'temporal SNR not implemented', opt.verbosity > 0);
+          notImplemented(mfilename(), 'temporal SNR not implemented', opt);
           % funcQA.tSNR = spmup_temporalSNR(funcImage, ...
           %                                 {tpms(1, :); tpms(2, :); tpms(3, :)}, ...
           %                                 'save');
@@ -162,7 +163,7 @@ function functionalQA(opt)
           % horrible hack to prevent the "abrupt" way spmup_volumecorr crashes
           % if nansum is not there
           if opt.QA.func.carpetPlot && exist('nansum', 'file') == 2
-            notImplemented(mfilename(), 'carpet plot not implemented', opt.verbosity > 0);
+            notImplemented(mfilename(), 'carpet plot not implemented', opt);
             % TODO: need to reslice TPMs as part of spatial prepro first
             % spmup_timeseriesplot(funcImage, greyMatter, whiteMatter, csf, ...
             %                      'motion', 'on', ...

@@ -37,10 +37,9 @@ function renamePng(directory, prefix)
       movefile(source, target);
 
     catch
-      tolerant = true;
-      verbosity = 2;
       msg = sprintf('Could not move file %s to %s', pathToPrint(source), pathToPrint(target));
-      errorHandling(mfilename(), 'cannotMoveFile', msg, tolerant, verbosity);
+      id = 'cannotMoveFile';
+      logger('WARNING', msg, 'id', id, 'filename', mfilename());
 
     end
 

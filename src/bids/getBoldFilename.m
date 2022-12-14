@@ -53,13 +53,15 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
                   pathToPrint(BIDS.pth), ...
                   createUnorderedList(opt.query));
 
-    errorHandling(mfilename(), 'emptyInput', msg, false, true);
+    id = 'emptyInput';
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
   end
 
   % in case files have been unzipped, we do it now
   fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename, opt);
 
-  printToScreen(createUnorderedList(pathToPrint(fullPathBoldFilename)), opt);
+  msg = createUnorderedList(pathToPrint(fullPathBoldFilename));
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   boldFilename = spm_file(fullPathBoldFilename, 'filename');
   subFuncDataDir = spm_file(fullPathBoldFilename, 'path');

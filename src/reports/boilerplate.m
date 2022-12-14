@@ -42,7 +42,7 @@ function outputFile = boilerplate(varargin)
 
   defaultPartialsPath = fullfile(fileparts(mfilename('fullpath')), 'partials');
 
-  isFolder = @(x) isfolder(x);
+  isFolder = @(x) isdir(x);
 
   args = inputParser;
 
@@ -162,7 +162,7 @@ function outputFile = boilerplate(varargin)
   end
 
   %% print to screen
-  printToScreen(output, opt);
+  logger('INFO', output, 'options', opt, 'filename', mfilename());
 
   %% print to file
   outputFile = printToFile(output, outputPath, pipelineType, modelName);

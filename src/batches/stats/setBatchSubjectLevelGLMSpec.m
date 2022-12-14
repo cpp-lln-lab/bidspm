@@ -31,7 +31,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   if ~isfield(BIDS, 'raw')
     msg = sprintf(['Provide raw BIDS dataset path in opt.dir.raw .\n' ...
                    'It is needed to load events.tsv files.\n']);
-    errorHandling(mfilename(), 'missingRawDir', msg, false);
+
+    logger('ERROR', msg, 'filename', mfilename(), 'id', 'missingRawDir');
   end
 
   opt.model.bm.getModelType();
@@ -72,7 +73,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % If it exists, issue a warning that it has been overwritten
   ffxDir = getFFXdir(subLabel, opt);
   overwriteDir(ffxDir, opt);
-  printToScreen(sprintf('\n output dir:\n\t%s\n\n', pathToPrint(ffxDir)), opt);
+  msg = sprintf(' output dir:\n\t%s', pathToPrint(ffxDir));
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
   fmri_spec.dir = {ffxDir};
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
@@ -102,7 +104,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
       for iRun = 1:nbRuns
 
         if ~strcmp(runs{iRun}, '')
-          printToScreen(sprintf('\n Processing run %s\n', runs{iRun}), opt);
+          msg = sprintf(' Processing run %s', runs{iRun});
+          logger('INFO', msg, 'options', opt, 'filename', mfilename());
         end
 
         spmSess(spmSessCounter).scans = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
@@ -213,7 +216,7 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
     % TODO we are assuming axial acquisition here
     sliceOrder = 1:hdr(1).dim(3);
 
-    wng = ['\n\n', ...
+    msg = ['\n\n', ...
            'Slice timing information was missing for at least one run,\n', ...
            'or was inconsistent across runs.', ...
            '\n', ...
@@ -224,7 +227,8 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
     % note that with multiband
     % this may lead to more time bins that used in reality at acquisition
 
-    errorHandling(mfilename(), 'noSliceTimingInfoForGlm', wng, true, opt.verbosity);
+    id = 'noSliceTimingInfoForGlm';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
   end
 
@@ -269,7 +273,8 @@ function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, ru
     msg = sprintf('No events.tsv file found in:\n\t%s\nfor filter:%s\n', ...
                   BIDS.raw.pth, ...
                   createUnorderedList(filter));
-    errorHandling(mfilename(), 'emptyInput', msg, true, opt.verbosity);
+    id = 'emptyInput';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
     onsetFilename = '';
 

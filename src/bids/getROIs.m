@@ -68,12 +68,12 @@ function [roiList, roiFolder] = getROIs(varargin)
     if strcmp(subLabel, '')
       msg = sprintf('Provide a subject label amongst those:\n%s\n\n', ...
                     createUnorderedList(bids.query(BIDS_ROI, 'subjects')));
-      errorHandling(mfilename(), 'noSubject', msg, false, opt.verbosity > 0);
+      id = 'noSubject';
+      logger('ERROR', msg, 'filename', mfilename(), 'id', id);
     end
 
-    filter = struct('sub', regexify(subLabel), ...
-                    'space', space, ...
-                    'suffix', 'mask');
+    filter = opt.bidsFilterFile.roi;
+    filter.sub = regexify(subLabel);
 
     if ~isempty(roiNames)
       if iscell(roiNames)

@@ -27,8 +27,9 @@ function [tsnrImage, volTsnr] = computeTsnr(boldImage)
   % First access and reshape the functional data: 4D to 2D
   hdr = spm_vol(boldImage);
   if numel(hdr) < 10
-    warning(['Very low number of times points.\n', ...
-             'Check that the input image is a BOLD time series.']);
+    logger('WARNING', ['Very low number of times points.\n', ...
+                       'Check that the input image is a BOLD time series.'], ...
+           'id', 'lowNumTimePoints');
   end
   vol = spm_read_vols(hdr);
   [Nx, Ny, Nz, Nt] = size(vol);

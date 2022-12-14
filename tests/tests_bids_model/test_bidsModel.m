@@ -8,6 +8,20 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getResults()
+
+  opt = setOptions('vislocalizer');
+  bm = BidsModel('file', opt.model.file);
+  results = bm.getResults();
+
+  assertEqual(numel(results), 4);
+  assertEqual(results(1).nodeName, 'run_level');
+  assertEqual(results(2).nodeName, 'run_level');
+  assertEqual(results(3).nodeName, 'subject_level');
+  assertEqual(results(4).nodeName, 'dataset_level');
+
+end
+
 function test_getRootNode_2()
 
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionNoCondition_smdl.json');

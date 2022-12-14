@@ -11,8 +11,9 @@ function validate(args)
 
   % run validation if validators are installed locally
 
-  printToScreen(sprintf('\nValidating bids dataset:\n %s\n', ...
-                        pathToPrint(args.Results.bids_dir)));
+  msg = sprintf('Validating bids dataset:\n %s', ...
+                pathToPrint(args.Results.bids_dir));
+  logger('INFO', msg);
 
   [sts_data, msg_data] = bids.validate(args.Results.bids_dir);
   if sts_data == 1 && ~bids.internal.starts_with(msg_data, 'Require')
@@ -20,7 +21,8 @@ function validate(args)
                        args.Results.bids_dir, ...
                        msg_data, ...
                        'https://bids-standard.github.io/bids-validator/');
-    errorHandling(mfilename(), 'invalidBidsDataset', msg_data, false);
+    id = 'invalidBidsDataset';
+    logger('ERROR', msg_data, 'filename', mfilename(), 'id', id);
   elseif args.Results.verbosity > 0
     disp(msg_data);
   end

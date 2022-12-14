@@ -17,6 +17,7 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
   % :param ignore: Optional. Cell string that can contain:
   %                - ``"Transformations"``
   %                - ``"Contrasts"``
+  %                - ``"Dataset"``
   %                Can be used to avoid generating certain objects of the BIDS stats model.
   % :type  ignore: cellstr
   %
@@ -122,6 +123,15 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
   if ismember('contrasts', lower(ignore))
     bm.Nodes{1} = rmfield(bm.Nodes{1}, 'Contrasts');
   end
+  if ismember('dataset', lower(ignore))
+    tmp = bm;
+    for i = 1:numel(tmp.Nodes)
+      if strcmpi(tmp.Nodes{i}.Level, 'dataset')
+        bm.Nodes(i) = [];
+      end
+    end
+    clear tmp;
+  end
 
   for i = 1:numel(bm.Edges)
     bm.Edges(1) = [];
@@ -134,7 +144,7 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
     msg = sprintf('Models can only accept one space.\nGot: %s', ...
                   createUnorderedList(bm.Input.space));
     id = 'tooManySpaces';
-    errorHandling(mfilename(), id, msg, false);
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   bm = bm.update();
@@ -145,7 +155,8 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
                        '_smdl.json']);
 
   bm.write(filename);
-  printToScreen(sprintf('\nDefault model was created:\n\t%s\n', pathToPrint(filename)), opt);
+  msg = sprintf('\nDefault model was created:\n\t%s', pathToPrint(filename));
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   opt.model.file = filename;
 

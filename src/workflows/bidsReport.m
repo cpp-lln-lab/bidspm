@@ -48,8 +48,9 @@ function bidsReport(opt)
       % in case we are dealing with empty files (a la bids-examples, or with
       % datalad datasets symlinks)
 
-      msg = sprintf('Could not read data to write report for dataset:\n%s\n\n', BIDS.pth);
-      errorHandling(mfilename(), 'unspecifiedError', msg, true, opt.verbosity);
+      msg = sprintf('Could not read data to write report for dataset:\n%s', BIDS.pth);
+      id = 'unspecifiedError';
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
       bids.report(BIDS, ...
                   'filter', filter, ...

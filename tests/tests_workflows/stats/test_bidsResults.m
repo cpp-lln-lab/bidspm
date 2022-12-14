@@ -10,7 +10,7 @@ end
 
 function test_bidsResults_no_results()
 
-  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+  opt = setOptions('vismotion', '', 'pipelineType', 'stats');
 
   assertWarning(@() bidsResults(opt), 'bidsResults:noResultsAsked');
 
@@ -75,10 +75,6 @@ function test_bidsResults_too_many_backgrounds()
 
   opt.verbosity = 1;
 
-  if isOctave
-    return
-  end
-
   assertWarning(@()bidsResults(opt), 'bidsResults:tooManyMontageBackground');
 
 end
@@ -139,10 +135,6 @@ function test_bidsResults_no_background_for_montage()
 
   opt.verbosity = 1;
 
-  if isOctave
-    return
-  end
-
   assertWarning(@()bidsResults(opt), 'checkMaskOrUnderlay:missingMaskOrUnderlay');
 
 end
@@ -196,15 +188,12 @@ end
 
 function test_bidsResults_error_missing_node()
 
-  if isOctave
-    return
-  end
-
-  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+  opt = setOptions('vismotion', '', 'pipelineType', 'stats');
 
   opt.results = defaultResultsStructure();
 
-  opt.results.nodeName = 'foo';
+  opt.results.nodeName = 'egg';
+  opt.results.name = {'spam'};
 
   assertWarning(@()bidsResults(opt), 'Model:missingNode');
 

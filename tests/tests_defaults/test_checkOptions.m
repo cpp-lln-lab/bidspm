@@ -53,10 +53,6 @@ end
 
 function test_checkOptions_error_task()
 
-  if isOctave
-    return
-  end
-
   opt.taskName = '';
   opt.verbosity = 1;
 

@@ -51,10 +51,6 @@ end
 
 function test_bidsFFX_skip_subject_no_data()
 
-  if isOctave
-    return
-  end
-
   opt = setOptions('vislocalizer', '^01', 'pipelineType', 'stats');
   opt.model.file =  fullfile(getDummyDataDir(),  'models', ...
                              'model-vislocalizerWrongSpace_smdl.json');
@@ -63,6 +59,12 @@ function test_bidsFFX_skip_subject_no_data()
   opt.model.bm.verbose = false;
 
   opt.verbosity = 1;
+
+  if isOctave
+    %  warning 'getOptionsFromModel:modelOverridesOptions' was raised,
+    %    expected 'bidsFFX:noDataForSubjectGLM'
+    return
+  end
 
   assertWarning(@()bidsFFX('specifyAndEstimate', opt), 'bidsFFX:noDataForSubjectGLM');
 

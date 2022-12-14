@@ -54,7 +54,8 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
       contrasts = specifyContrasts(SPM, model, node.Name);
     catch
       msg = 'Could not find dummy contrasts in the BIDS stats model.';
-      errorHandling(mfilename(), 'noDummyContrast', msg, false, opt.verbosity);
+      id = 'noDummyContrast';
+      logger('ERROR', msg, 'id', id, 'filename', mfilename());
     end
 
     betaMaps = {};
@@ -62,7 +63,8 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
 
     % path to beta and t-map files.
 
-    printToScreen('\nConcatenating the following contrasts:', opt);
+    msg = 'Concatenating the following contrasts:';
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
     for iContrast = 1:length(contrasts)
 
       msg = sprintf('\n\t%s', contrasts(iContrast).name);
@@ -70,10 +72,10 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
       betasIndices = find(contrasts(iContrast).C);
 
       if numel(betasIndices) > 1
-        printToScreen('\n', opt);
         msg = sprintf(['Supposed to concatenate one beta image per contrast.' ...
                        '\nSkipping: %s'], contrasts(iContrast).name);
-        errorHandling(mfilename(), 'concatOneImgOnly', msg, true, opt.verbosity);
+        id = 'concatOneImgOnly';
+        logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
         continue
       end
 
@@ -82,7 +84,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
       % - the exact condition name stored in the SPM.mat
       % so they can be saved in a tsv for for "label" and "fold" for MVPA
       for iSess = 1:numel(SPM.Sess)
-        tmp(iSess) = ismember(betasIndices, SPM.Sess(iSess).col);
+        tmp(iSess) = ismember(betasIndices, SPM.Sess(iSess).col); %#ok<*AGROW>
       end
       runs(iContrast, 1) = find(any(tmp, 2));
       clear tmp;
@@ -144,18 +146,20 @@ function removeTmaps(tMaps, deleteTmaps, ffxDir)
   if  deleteTmaps
 
     % delete all individual con maps
-    printToScreen('Deleting individual con maps ...  ', opt);
+    msg = 'Deleting individual con maps ...  ';
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
     for iCon = 1:length(tMaps)
       delete(fullfile(ffxDir, ['con_', sprintf('%04d', iCon), '.nii']));
     end
-    printToScreen('Done. \n', opt);
+    logger('INFO', 'Done', 'options', opt, 'filename', mfilename());
 
     % delete all individual t-maps
-    printToScreen('Deleting individual t-maps ...  ', opt);
+    msg = 'Deleting individual t-maps ...  ';
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
     for iTmap = 1:length(tMaps)
       delete(tMaps{iTmap}(1:end - 2));
     end
-    printToScreen('Done. \n', opt);
+    logger('INFO', 'Done', 'options', opt, 'filename', mfilename());
 
   end
 

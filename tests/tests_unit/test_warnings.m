@@ -52,11 +52,9 @@ end
 
 function test_notImplemented()
 
-  if isOctave()
-    return
-  end
+  opt.verbosity = 1;
 
-  assertWarning(@()notImplemented('foo', '', true), 'foo:notImplemented');
+  assertWarning(@()notImplemented('foo', '', opt), 'foo:notImplemented');
 
 end
 

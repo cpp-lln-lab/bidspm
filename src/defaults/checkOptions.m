@@ -116,9 +116,6 @@ function opt = checkOptions(opt)
   %     - ``opt.stc.referenceSlice = []`` - reference slice (in seconds)
   %       for the slice timing correction.
   %       If left empty the mid-volume acquisition time point will be selected at run time.
-  %     - ``opt.stc.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED,
-  %       if you know the order in which slices were acquired, you should be able to recompute
-  %       slice timing and add it to the json files in your BIDS data set.
   %
   %     - ``opt.funcVoxelDims = []`` - Voxel dimensions to use for resampling of functional data
   %       at normalization.
@@ -215,9 +212,6 @@ function opt = checkResultsOptions(opt)
   % validate content of opt.results
 
   defaultResults = defaultResultsStructure();
-
-  fields = fieldnames(defaultResults);
-
   if ~isfield(opt, 'results')
     opt.results = defaultResults;
     return
@@ -231,32 +225,7 @@ function opt = checkResultsOptions(opt)
 
     thisResult = opt.results(iCon);
 
-    if iscell(thisResult)
-      thisResult = thisResult{1};
-    end
-
-    % add missing fields
-    thisResult = setFields(thisResult, defaultResults);
-
-    % fill in empty fields
-    for i = 1:numel(fields)
-      if isempty(thisResult.(fields{i}))
-        thisResult.(fields{i}) = defaultResults.(fields{i});
-      end
-    end
-
-    if ischar(thisResult.name)
-      thisResult.name = {thisResult.name};
-    end
-    assert(iscell(thisResult.name));
-
-    assert(all([thisResult.p >= 0 thisResult.p <= 1]));
-
-    assert(thisResult.k >= 0);
-
-    assert(islogical(thisResult.useMask));
-
-    assert(ismember(thisResult.MC, {'FWE', 'FDR', 'none'}));
+    thisResult = fillInResultStructure(thisResult);
 
     results(iCon) = thisResult;
 
@@ -321,7 +290,6 @@ function fieldsToSet = setDefaultOption()
   %% Options for slice time correction
   % all in seconds
   fieldsToSet.stc.referenceSlice = [];
-  fieldsToSet.stc.sliceOrder = [];
   fieldsToSet.stc.skip = false;
 
   %% Options for realign
@@ -379,14 +347,16 @@ function checkFields(opt)
   if isfield(opt, 'taskName') && isempty(opt.taskName)
 
     msg = 'You may need to provide the name of the task to analyze.';
-    errorHandling(mfilename(), 'noTask', msg, true, opt.verbosity);
+    id = 'noTask';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
   end
 
   if ~all(cellfun(@ischar, opt.groups))
 
     msg = 'All group names should be string.';
-    errorHandling(mfilename(), 'groupNotString', msg, false, opt.verbosity);
+    id = 'groupNotString';
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
 
   end
 
@@ -395,7 +365,8 @@ function checkFields(opt)
     msg = sprintf(['options.stc.referenceSlice should be a scalar.' ...
                    '\nCurrent value is: %d'], ...
                   opt.stc.referenceSlice);
-    errorHandling(mfilename(), 'refSliceNotScalar', msg, false, opt.verbosity);
+    id = 'refSliceNotScalar';
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
 
   end
 
@@ -404,14 +375,16 @@ function checkFields(opt)
     msg = sprintf(['opt.funcVoxelDims should be a vector of length 3. '...
                    '\nCurrent value is: %d'], ...
                   opt.funcVoxelDims);
-    errorHandling(mfilename(), 'voxDim', msg, false, opt.verbosity);
+    id = 'voxDim';
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
 
   end
 
   if isfield(opt.model, 'hrfDerivatives')
 
     msg = ('HRF derivatives should be set in the BIDS stats model file, not in the options.');
-    errorHandling(mfilename(), 'voxDim', msg, true, opt.verbosity);
+    id = 'voxDim';
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id, 'options', opt);
 
   end
 

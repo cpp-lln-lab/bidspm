@@ -50,14 +50,15 @@ function repetitionTime = getAndCheckRepetitionTime(varargin)
   repetitionTime = unique(cat(1, repetitionTime{:}));
 
   if length(repetitionTime) > 1
-    errorHandling(mfilename(), 'differentRepetitionTime', ...
-                  'Input files have different repetition time.', ...
-                  false, true);
+    id = 'differentRepetitionTime';
+    msg = 'Input files have different repetition time.';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   if isempty(repetitionTime)
     msg = sprintf('No repetition time found for filter:\n%s', createUnorderedList(filter));
-    errorHandling(mfilename(), 'noRepetitionTimeFound', msg, false, true);
+    id = 'noRepetitionTimeFound';
+    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
   end
 
 end

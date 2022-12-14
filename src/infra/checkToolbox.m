@@ -11,10 +11,10 @@ function status = checkToolbox(varargin)
   % :type toolboxName: char
   %
   % :param verbose: parameter
-  % :type verbose: boolean
+  % :type  verbose: boolean
   %
   % :param install: parameter
-  % :type install: boolean
+  % :type  install: boolean
   %
   % EXAMPLE::
   %
@@ -35,8 +35,14 @@ function status = checkToolbox(varargin)
   parse(args, varargin{:});
 
   toolboxName = args.Results.toolboxName;
-  verbose = args.Results.verbose;
+
   install = args.Results.install;
+
+  verbose = args.Results.verbose;
+  opt.verbosity = 0;
+  if verbose
+    opt.verbosity = 1;
+  end
 
   knownToolboxes = {'ALI', 'MACS', 'mp2rage'};
 
@@ -45,10 +51,10 @@ function status = checkToolbox(varargin)
                   toolboxName, ...
                   createUnorderedList(knownToolboxes));
     id = 'unknownToolbox';
-    errorHandling(mfilename(), id, msg, true, verbose);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
   end
 
-  status = isfolder(fullfile(spm('dir'), 'toolbox', toolboxName));
+  status = isdir(fullfile(spm('dir'), 'toolbox', toolboxName));
   if status
     return
   end
@@ -62,7 +68,7 @@ function status = checkToolbox(varargin)
         msg = sprintf('installing MACS toolbox in:\n%s.\n\n', ...
                       fullfile(spm('dir'), 'toolbox', 'MACS'));
         id = 'installingMacsToolbox';
-        errorHandling(mfilename(), id, msg, true, verbose);
+        logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
         copyfile(fullfile(returnRootDir(), 'lib', 'MACS'), ...
                  fullfile(spm('dir'), 'toolbox', 'MACS'));
@@ -76,13 +82,15 @@ function status = checkToolbox(varargin)
       msg = sprintf('The toolbox %s should be installed from:\n %s\n\n', ...
                     toolboxName, ...
                     'https://github.com/benoitberanger/mp2rage');
-      errorHandling(mfilename(), 'missingToolbox', msg, true, verbose);
+      id = 'missingToolbox';
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
   end
 
   if ~status
     msg = sprintf('The toolbox %s could not be found or installed.\n\n', toolboxName);
-    errorHandling(mfilename(), 'missingToolbox', msg, true, verbose);
+    id = 'missingToolbox';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
   end
 
 end

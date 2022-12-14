@@ -30,6 +30,8 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
 
   % (C) Copyright 2019 bidspm developers
 
+  silenceOctaveWarning();
+
   if nargin < 4 || isempty(imgNb)
     imgNb = 1;
   end
@@ -53,7 +55,9 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
 
     if isempty(file)
 
-      errorHandling(mfilename(), 'noFile', 'No figure file to copy', true, opt.verbosity);
+      id = 'noFile';
+      msg = 'No figure file to copy';
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
     elseif size(file, 1) > 1
 
@@ -61,10 +65,11 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
                     'Too many figure files to copy.', ...
                     'Not sure what to do.', ...
                     'Will skip this step.');
-      errorHandling(mfilename(), 'tooManyFiles', msg, true, opt.verbosity);
+      id = 'tooManyFiles';
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
       msg = sprintf('%s\n', strjoin(pathToPrint(cellstr(file)), '\n'));
-      printToScreen(msg, opt);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
     else
 
@@ -81,7 +86,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
       msg = sprintf('\n%s\nwas moved to\n%s\n', ...
                     pathToPrint(file), ...
                     pathToPrint(fullfile(figureDir, targetFile)));
-      printToScreen(msg, opt);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
     end
 

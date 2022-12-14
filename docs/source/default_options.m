@@ -81,7 +81,6 @@ opt.space{1} = 'individual'  ;
 opt.space{2} = 'IXI549Space'  ;
 opt.stc.referenceSlice = []  ;
 opt.stc.skip = 0, ;
-opt.stc.sliceOrder = []  ;
 opt.subjects{1} = []  ;
 opt.tolerant = 1, ;
 opt.toolbox.MACS.model.files = []  ;

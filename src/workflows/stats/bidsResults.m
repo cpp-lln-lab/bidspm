@@ -156,6 +156,13 @@ function matlabbatch = bidsResults(varargin)
 
   opt.dir.output = opt.dir.stats;
 
+  % TODO
+  % bids stats model should override options
+  if ~isfield(opt, 'results') || isempty(opt.results) || ...
+          strcmp(opt.results(1).name{1}, '')
+    opt.results = opt.model.bm.getResults();
+  end
+
   status = checks(opt);
   if ~status
     return
@@ -188,18 +195,17 @@ function matlabbatch = bidsResults(varargin)
     node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
 
     if isempty(node)
-      errorHandling(mfilename(), ...
-                    'unknownModelNode', ...
-                    sprintf('no Node named %s in model\n %s.', ...
-                            opt.results(iRes).nodeName, ...
-                            opt.model.file), ...
-                    true, ...
-                    opt.verbosity);
+
+      id = 'unknownModelNode';
+      msg = sprintf('no Node named %s in model\n %s.', ...
+                    opt.results(iRes).nodeName, ...
+                    opt.model.file);
+      logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
       continue
     end
 
     msg = sprintf('\n PROCESSING NODE: %s\n', node.Name);
-    printToScreen(msg, opt, 'format', '*blue');
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
     % Depending on the level step we might have to define a matlabbatch
     % for each subject or just on for the whole group
@@ -236,7 +242,7 @@ function matlabbatch = bidsResults(varargin)
 
       case 'session'
 
-        notImplemented(mfilename, 'session level results not implemented yet', opt.verbosity);
+        notImplemented(mfilename(), 'session level results not implemented yet', opt);
 
         continue
 
@@ -256,7 +262,8 @@ function matlabbatch = bidsResults(varargin)
 
       otherwise
 
-        error('This BIDS model does not contain an analysis step I understand.');
+        logger('ERROR', 'This BIDS model does not contain an analysis step I understand.', ...
+               'filename', mfilename(), 'id', 'unknownBsmStep');
 
     end
 
@@ -275,8 +282,10 @@ function [status] = checks(opt)
   msg = sprintf(['Specify node names and levels in "opt.results".', ...
                  '\t\nType "help bidsResults" for more information.']);
 
-  if ~isfield(opt, 'results') || isempty(opt.results)
-    errorHandling(mfilename(), 'noResultsAsked', msg, true, true);
+  if ~isfield(opt, 'results') || isempty(opt.results) || ...
+          strcmp(opt.results(1).name{1}, '')
+    id = 'noResultsAsked';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
     status = false;
   end
 
@@ -284,7 +293,8 @@ function [status] = checks(opt)
   listNodeLevels = returnlistNodeLevels(opt);
 
   if isempty(listNodeNames) || isempty(listNodeLevels)
-    errorHandling(mfilename(), 'noResultsAsked', msg, true, true);
+    id = 'noResultsAsked';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
     status = false;
     return
   end
@@ -417,7 +427,7 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
       unfold(opt.results(iRes));
       msg = 'No name specified for this result. May lead to failure.';
       id = 'unSpecifiedResultName';
-      errorHandling(mfilename(), id, msg, true, opt.verbosity);
+      logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
     end
 
     switch  groupLevelGlmType(opt, result.nodeName)
@@ -468,7 +478,7 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
 
       otherwise
         msg = sprintf('Node %s has has model type I cannot handle.\n', result.nodeName);
-        notImplemented(mfilename(), msg, true);
+        notImplemented(mfilename(), msg);
 
     end
 
@@ -481,7 +491,7 @@ function status = checkSpmMat(dir)
   if ~status
     msg = sprintf('\nCould not find a SPM.mat file in directory %s\n', dir);
     id = 'noSpmMatFile';
-    errorHandling(mfilename(), id, msg, true, true);
+    logger('WARNING', msg, 'id', id);
   end
 end
 
@@ -539,7 +549,7 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
             msg = sprintf('More than 1 overlay image found for %s.\n Taking the first one.', ...
                           createUnorderedList(background));
             id = 'tooManyMontageBackground';
-            errorHandling(mfilename(), id, msg, true, opt.verbosity);
+            logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
           end
 
         end
@@ -629,14 +639,4 @@ function renameNidm(opt, result, subLabel)
     movefile(source, target);
   end
 
-end
-
-function filename = figureName(opt)
-  spec = struct('suffix', 'designmatrix', ...
-                'ext', '.png', ...
-                'entities', struct( ...
-                                   'task', strjoin(opt.taskName, ''), ...
-                                   'space', opt.space));
-  bf = bids.File(spec, 'use_schema', false);
-  filename = bf.filename;
 end

@@ -179,13 +179,11 @@ classdef BidsModel < bids.Model
         case 'fir'
           notImplemented(mfilename(), ...
                          ['HRF model of the type "%s" not yet implemented.\n', ...
-                          'Will use SPM canonical HRF insteasd.\n'], ...
-                         true);
+                          'Will use SPM canonical HRF insteasd.\n']);
         otherwise
           notImplemented(mfilename(), ...
                          ['HRF model of the type "%s" not implemented.\n', ...
-                          'Will use SPM canonical HRF insteasd.\n'], ...
-                         true);
+                          'Will use SPM canonical HRF insteasd.\n']);
 
       end
 
@@ -215,6 +213,17 @@ classdef BidsModel < bids.Model
 
       end
 
+    end
+
+    function parametricModulations = getParametricModulations(obj, varargin)
+      [model, ~] = obj.getDefaultModel(varargin{:});
+      parametricModulations = {};
+      if isfield(model, 'Software') && ...
+          isfield(model.Software, 'SPM') && ...
+            isfield(model.Software.SPM, 'ParametricModulations')
+
+        parametricModulations = model.Software.SPM.ParametricModulations;
+      end
     end
 
     function threshold = getInclusiveMaskThreshold(obj, varargin)
@@ -290,9 +299,58 @@ classdef BidsModel < bids.Model
 
     end
 
+    function results = getResults(obj)
+
+      results = struct([]);
+      idx = 1;
+
+      Nodes = obj.get_nodes();
+
+      for iNode = 1:numel(Nodes)
+
+        if isstruct(Nodes)
+          nodeName = Nodes(iNode).Name;
+        else
+          nodeName = Nodes{iNode}.Name;
+        end
+
+        model = obj.get_model('Name', nodeName);
+
+        if isfield(model, 'Software') && ...
+            isfield(model.Software, 'bidspm') && ...
+            isfield(model.Software.bidspm, 'Results')
+
+          resultsForNode = model.Software.bidspm.Results;
+          for i = 1:numel(resultsForNode)
+
+            thisResult = resultsForNode(i);
+            thisResult = fillInResultStructure(thisResult);
+            thisResult.nodeName = nodeName;
+            if idx == 1
+              results = thisResult;
+            else
+              results(idx) = thisResult;
+            end
+
+            idx = idx + 1;
+          end
+        end
+
+      end
+
+    end
+
     function bidsModelError(obj, id, msg)
       msg = sprintf('\n\nFor BIDS stats model named: "%s"\n%s\n', obj.Name, msg);
-      errorHandling(mfilename(), id, msg, obj.tolerant, obj.verbose);
+      opt.verbosity = 0;
+      if obj.verbose
+        opt.verbosity = 1;
+      end
+      if obj.tolerant
+        logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+      else
+        logger('ERROR', msg, 'id', id, 'filename', mfilename());
+      end
     end
 
   end

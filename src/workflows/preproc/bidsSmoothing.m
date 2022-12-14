@@ -57,8 +57,7 @@ function bidsSmoothing(opt)
                              subLabel);
         otherwise
           notImplemented(mfilename(), ...
-                         sprintf('smoothing for modality %s not implemented', modality), ...
-                         true);
+                         sprintf('smoothing for modality %s not implemented', modality));
       end
 
     end

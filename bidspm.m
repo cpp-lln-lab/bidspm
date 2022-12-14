@@ -5,8 +5,6 @@ function returnCode = bidspm(varargin)
 
   % (C) Copyright 2022 bidspm developers
 
-  % TODO  bidspm('action', 'update')
-
   args = inputParser;
   args.CaseSensitive = false;
 
@@ -14,16 +12,16 @@ function returnCode = bidspm(varargin)
 
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
   isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
-
   isLogical = @(x) islogical(x) && numel(x) == 1;
   isChar = @(x) ischar(x);
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
-
-  isFolder = @(x) isfolder(x);
-
+  isFolder = @(x) isdir(x);
   isCellStr = @(x) iscellstr(x);
-
-  isLowLevelActionOrDir = @(x) (ismember(x, lowLevelActions()) || isfolder(x));
+  isInAvailableAtlas = @(x) (ischar(x) && ismember(x, {'visfatlas', ...
+                                                       'anatomy_toobox', ...
+                                                       'neuromorphometrics', ...
+                                                       'wang'}));
+  isLowLevelActionOrDir = @(x) (ismember(x, lowLevelActions()) || isdir(x));
 
   addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
 
@@ -41,6 +39,11 @@ function returnCode = bidspm(varargin)
 
   addParameter(args, 'fwhm', 6, isPositiveScalar);
   addParameter(args, 'space', {}, isCellStr);
+
+  % create_roi only
+  addParameter(args, 'roi_dir', '', isChar);
+  addParameter(args, 'roi_atlas', 'neuromorphometrics', isInAvailableAtlas);
+  addParameter(args, 'roi_name', {''}, isCellStr);
 
   % preproc only
   addParameter(args, 'dummy_scans', 0, isPositiveScalar);
@@ -116,6 +119,10 @@ function executeAction(action, args)
 
       copy(args);
 
+    case 'create_roi'
+
+      create_roi(args);
+
     case 'smooth'
 
       smooth(args);
@@ -187,6 +194,19 @@ function copy(args)
 
 end
 
+function create_roi(args)
+  opt = getOptionsFromCliArgument(args);
+  opt = checkOptions(opt);
+  opt.roi.space = opt.space;
+  try
+    saveOptions(opt);
+    bidsCreateROI(opt);
+  catch ME
+    bugReport(opt, ME);
+    rethrow(ME);
+  end
+end
+
 function preprocess(args)
 
   % TODO make sure that options defined in JSON or passed as a structure
@@ -254,7 +274,7 @@ function smooth(args)
 
     saveOptions(opt);
 
-    if ~isfolder(opt.dir.output)
+    if ~isdir(opt.dir.output)
       copy(args);
     end
 
@@ -291,6 +311,11 @@ function stats(args)
   % TODO make sure that options defined in JSON or passed as a structure
   % overrides any other arguments
   opt = getOptionsFromCliArgument(args);
+
+  if opt.glm.roibased.do
+    opt.bidsFilterFile.roi.space = opt.space;
+    opt.bidsFilterFile.roi.label = opt.roi.name;
+  end
 
   opt.pipeline.type = 'stats';
   opt = checkOptions(opt);
@@ -515,7 +540,7 @@ function initBidspm(dev)
     detectBidspm();
 
   else
-    printToScreen('\n\nbidspm already initialized\n\n');
+    logger('INFO', 'bidspm already initialized');
 
   end
 
@@ -569,19 +594,17 @@ function run_tests()
   bidspm('action', 'dev');
 
   % to reduce noise in the output
-  if isOctave
-    warning('off', 'setGraphicWindow:noGraphicWindow');
-  end
+  silenceOctaveWarning();
 
   cd(fileparts(mfilename('fullpath')));
 
   if isGithubCi
-    printToScreen('\nThis is github CI\n');
+    logger('INFO', 'This is github CI');
   else
-    printToScreen('\nThis is not github CI\n');
+    logger('INFO', 'This is not github CI');
   end
 
-  printToScreen(sprintf('\nHome is %s\n', getenv('HOME')));
+  logger('INFO', sprintf('Home is "%s"\n', getenv('HOME')));
 
   warning('OFF');
 
@@ -621,7 +644,14 @@ end
 
 function value = bidsAppsActions()
 
-  value = {'copy'; 'preprocess'; 'smooth'; 'default_model'; 'stats'; 'contrasts'; 'results'};
+  value = {'copy'; ...
+           'create_roi'; ...
+           'preprocess'; ...
+           'smooth'; ...
+           'default_model'; ...
+           'stats'; ...
+           'contrasts'; ...
+           'results'};
 
 end
 
@@ -652,7 +682,7 @@ function detectBidspm()
     error('bidspm is not in your MATLAB / Octave path.\n');
 
   elseif numel(workflowsDir) > 1
-    printToScreen('bidspm seems to appear in several different folders:\n');
+    printToScreen('bidspm seems to appear in several different folders:');
     for i = 1:numel(workflowsDir)
       fprintf('  * %s\n', fullfile(workflowsDir{i}, '..', '..'));
     end

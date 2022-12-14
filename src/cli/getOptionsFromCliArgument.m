@@ -29,6 +29,7 @@ function opt = getOptionsFromCliArgument(args)
 
     opt.dir.raw = args.Results.bids_dir;
     opt.dir.derivatives = args.Results.output_dir;
+    opt.dir.roi = args.Results.roi_dir;
 
     opt = overrideDryRun(opt, args);
 
@@ -70,6 +71,10 @@ function opt = getOptionsFromCliArgument(args)
 
     opt.anatOnly = args.Results.anat_only;
 
+    % create_roi
+    opt.roi.atlas = args.Results.roi_atlas;
+    opt.roi.name = args.Results.roi_name;
+
     % stats
     opt.dir.preproc = args.Results.preproc_dir;
     opt.model.file = args.Results.model_file;
@@ -84,8 +89,14 @@ end
 
 function value = bidsAppsActions()
 
-  value = {'copy'; 'preprocess'; 'smooth'; 'default_model'; 'stats'; 'contrasts'; 'results'};
-
+  value = {'copy'; ...
+           'create_roi'; ...
+           'preprocess'; ...
+           'smooth'; ...
+           'default_model'; ...
+           'stats'; ...
+           'contrasts'; ...
+           'results'};
 end
 
 function opt = overrideRoiBased(opt, args)
@@ -143,11 +154,11 @@ end
 
 function overrideMsg(thisArgument, newValue, thisOption, oldValue, opt)
 
-  msg = sprintf('\nArgument "%s" value "%s" will override option "%s" value "%s".\n', ...
+  msg = sprintf('\nArgument "%s" value "%s" will override option "%s" value "%s".', ...
                 thisArgument, ...
                 newValue, ...
                 thisOption, ...
                 oldValue);
-  printToScreen(msg, opt);
+  logger('DEBUG', msg, 'options', opt, 'filename', mfilename());
 
 end

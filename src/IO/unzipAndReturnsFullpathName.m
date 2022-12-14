@@ -24,7 +24,8 @@ function unzippedFullpathName = unzipAndReturnsFullpathName(fullpathName, opt)
 
   if isempty(fullpathName)
     msg = sprintf('Provide at least one file.\n');
-    errorHandling(mfilename(), 'emptyInput', msg, false, true);
+    id = 'emptyInput';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
   if ~iscell(fullpathName)

@@ -85,7 +85,6 @@ images as well as info specified in the `Inputs` section of the BIDS stats model
 JSON file (like the name of the task or the MNI space of the input images).
 
 ```bash
-
   $ ls demos/MoAE/outputs/derivatives/bidspm-stats/sub-01/stats
 
   # Folder name for a model on the auditory task in SPM's MNI space
@@ -99,7 +98,6 @@ description (`desc`) if this `Name` is not just the name `opt.taskName`.
 For example, here with the following BIDS stats model.
 
 ```bash
-
   $ head tests/dummyData/models/model-nback_smdl.json
 
   {
@@ -115,7 +113,6 @@ For example, here with the following BIDS stats model.
 And this code to set things up
 
 ```matlab
-
   subLabel = '02';
   opt.taskName = 'nback';
   opt.space = 'individual';
@@ -341,6 +338,53 @@ for some pointers on how to make choices for the resolution to choose for your
 analysis.
 
 ## Statistics
+
+### How can change the name of the folder of the subject level analysis?
+
+This can be done by changing the `Name` of the run level `Nodes`
+in the BIDS stats model.
+
+If your `Nodes.Name` is one of the "default" values:
+
+- `"run"`
+- `"run level"`
+- `"run_level"`
+- `"run-level"`
+- ...
+
+like in the example below
+
+```json
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+    ...
+```
+
+then {func}`src.stats.subject_level.getFFXdir.m` will set the subject level folder to be named as follow:
+
+```text
+sub-subLabel
+└── task-taskLabel_space-spaceLabel_FWHM-FWHMValue
+```
+
+However if your `Nodes.Name` is not one of the "default" values, like this
+
+```json
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "parametric",
+    ...
+```
+
+then the subject level folder to be named as follow:
+
+```text
+sub-subLabel
+└── task-taskLabel_space-spaceLabel_FWHM-FWHMValue_node-parametric
+```
 
 ### How should I structure my data to run my statistical analysis?
 

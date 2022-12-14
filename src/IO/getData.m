@@ -21,7 +21,7 @@ function [BIDS, opt] = getData(varargin)
 
   % (C) Copyright 2020 bidspm developers
 
-  isFolder = @(x) isfolder(x);
+  isFolder = @(x) isdir(x);
 
   args = inputParser;
 
@@ -34,7 +34,8 @@ function [BIDS, opt] = getData(varargin)
     if bids.internal.starts_with(ME.message, 'The value of ')
       msg = sprintf('The following directory does not exist:\n\t%s', ...
                     pathToPrint(varargin{2}));
-      errorHandling(mfilename(), 'notADirectory', msg, false);
+      id = 'notADirectory';
+      logger('ERROR', msg, 'filename', mfilename(), 'id', id);
     else
       rethrow(ME);
     end
@@ -44,19 +45,19 @@ function [BIDS, opt] = getData(varargin)
   bidsDir = args.Results.bidsDir;
 
   if isfield(opt, 'taskName')
-    msg = sprintf('\nFOR TASK(s): %s\n', strjoin(opt.taskName, ' '));
-    printToScreen(msg, opt);
+    msg = sprintf('FOR TASK(s): %s', strjoin(opt.taskName, ' '));
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
   end
 
   validationInputFile(bidsDir, 'dataset_description.json');
 
-  BIDS = bids.layout(bidsDir, 'use_schema', opt.useBidsSchema, 'verbose', opt.verbosity > 0);
+  BIDS = bids.layout(bidsDir, 'use_schema', opt.useBidsSchema, 'verbose', opt.verbosity > 1);
 
   if strcmp(opt.pipeline.type, 'stats')
     if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file') == 2
-      msg = sprintf('\nLoading BIDS raw layout from:\n\t%s\n', ...
+      msg = sprintf('Loading BIDS raw layout from:\n\t%s', ...
                     pathToPrint(fullfile(opt.dir.raw, 'layout.mat')));
-      printToScreen(msg, opt);
+      logger('INFO', msg, 'options', opt, 'filename', mfilename());
       tmp = load(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
       if isempty(fieldnames(tmp))
         BIDS.raw = bids.layout(opt.dir.raw);
@@ -64,7 +65,7 @@ function [BIDS, opt] = getData(varargin)
         BIDS.raw = tmp.BIDS;
       end
     else
-      BIDS.raw = bids.layout(opt.dir.raw);
+      BIDS.raw = bids.layout(opt.dir.raw, 'verbose', opt.verbosity > 1);
     end
   end
 
@@ -77,7 +78,8 @@ function [BIDS, opt] = getData(varargin)
                   strjoin(opt.taskName), ...
                   createUnorderedList(bids.query(BIDS, 'tasks')));
 
-    errorHandling(mfilename(), 'noMatchingTask', msg, false);
+    id = 'noMatchingTask';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
 
   end
 
@@ -86,8 +88,7 @@ function [BIDS, opt] = getData(varargin)
   % get IDs of all subjects
   opt = getSubjectList(BIDS, opt);
 
-  printToScreen('\nWILL WORK ON SUBJECTS\n', opt);
-  printToScreen(createUnorderedList(opt.subjects), opt);
-  printToScreen('\n', opt);
+  msg = sprintf('WILL WORK ON SUBJECTS%s', createUnorderedList(opt.subjects));
+  logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
 end

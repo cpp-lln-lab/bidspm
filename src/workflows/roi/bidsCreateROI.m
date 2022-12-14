@@ -26,21 +26,25 @@ function bidsCreateROI(opt)
     opt = [];
   end
 
-  if ~isfield(opt.dir, 'roi')
-    opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'bidspm-roi'), 'cpath');
-  end
-  spm_mkdir(fullfile(opt.dir.roi, 'group'));
+  if any(~strcmp(opt.roi.space, 'individual'))
 
-  hemi = {'L', 'R'};
+    if ~isfield(opt.dir, 'roi')
+      opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'bidspm-roi'), 'cpath');
+    end
+    spm_mkdir(fullfile(opt.dir.roi, 'group'));
 
-  for iHemi = 1:numel(hemi)
+    hemi = {'L', 'R'};
 
-    for iROI = 1:numel(opt.roi.name)
+    for iHemi = 1:numel(hemi)
 
-      extractRoiFromAtlas(fullfile(opt.dir.roi, 'group'), ...
-                          opt.roi.atlas, ...
-                          opt.roi.name{iROI}, ...
-                          hemi{iHemi});
+      for iROI = 1:numel(opt.roi.name)
+
+        extractRoiFromAtlas(fullfile(opt.dir.roi, 'group'), ...
+                            opt.roi.atlas, ...
+                            opt.roi.name{iROI}, ...
+                            hemi{iHemi});
+
+      end
 
     end
 
@@ -85,10 +89,12 @@ function bidsCreateROI(opt)
       end
 
       if opt.dryRun
-        tolerant = true;
         msg = 'Renaming ROI in native space will not work on a dry run';
         id = 'willNotRunOnDryRun';
-        errorHandling(mfilename(), id, msg, tolerant, opt.verbosity);
+        logger('WARNING', msg, ...
+               'options', opt, ...
+               'id', id, ...
+               'filename', mfilename());
         continue
       end
 

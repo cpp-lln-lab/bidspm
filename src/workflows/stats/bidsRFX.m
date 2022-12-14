@@ -105,7 +105,7 @@ function matlabbatch = bidsRFX(varargin)
       for i = 1:numel(datasetNodes)
 
         msg = sprintf('\n PROCESSING NODE: %s\n', nodeName);
-        printToScreen(msg, opt, 'format', '*blue');
+        logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
         matlabbatch = {};
 
@@ -123,7 +123,7 @@ function matlabbatch = bidsRFX(varargin)
                                                                           datasetNodes{i}.Name);
           otherwise
             msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
-            notImplemented(mfilename(), msg, true);
+            notImplemented(mfilename(), msg);
 
         end
 
@@ -166,7 +166,8 @@ function checks(opt)
   if numel(opt.space) > 1
     disp(opt.space);
     msg = sprintf('GLMs can only be run in one space at a time.\n');
-    errorHandling(mfilename(), 'tooManySpaces', msg, false, opt.verbosity);
+    id = 'tooManySpaces';
+    logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 end
 
@@ -184,7 +185,9 @@ function checkDirIsEmpty(matlabbatch)
     if isfield(matlabbatch{i}.spm, 'stats') && ...
         isfield(matlabbatch{i}.spm.stats, 'fmri_est')
       if exist(matlabbatch{i}.spm.stats.fmri_est.spmmat{1}, 'file')
-        error('PANIC! About to overwrite a model. That should not happen');
+        logger('ERROR', 'About to overwrite a model. That should not happen', ...
+               'filename', mfilename(), ...
+               'id', 'overWriteModel');
       end
     end
 
