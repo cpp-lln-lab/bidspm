@@ -52,6 +52,10 @@ end
 
 function test_addGitIgnore_append()
 
+  if isOctave()
+    return
+  end
+
   if exist(fullfile(pwd, '.gitignore'), 'file')
     delete(fullfile(pwd, '.gitignore'));
   end
