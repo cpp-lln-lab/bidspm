@@ -12,26 +12,12 @@ You can use the makefile to run all the main scripts with `make all`
 
 ## CLI commands
 
-### Create model
-
-```bash
-bidspm \
-    /home/remi/github/bidspm/demos/MoAE/inputs/raw \
-    /home/remi/github/bidspm/demos/MoAE/outputs/derivatives \
-     dataset \
-    --action default_model \
-    --space IXI549Space \
-    --task auditory \
-    --verbosity 2 \
-    --ignore transformations
-```
-
 ### Preprocessing
 
 ```bash
 bidspm \
-    /home/remi/github/bidspm/demos/MoAE/inputs/raw \
-    /home/remi/github/bidspm/demos/MoAE/outputs/derivatives \
+    $PWD/inputs/raw \
+    $PWD/outputs/derivatives \
     subject \
     --action preprocess \
     --participant_label 01 \
@@ -48,8 +34,8 @@ To smooth directly an fmriprep dataset
 
 ```bash
 bidspm \
-    /home/remi/github/bidspm/demos/MoAE/inputs/fmriprep \
-    /home/remi/github/bidspm/demos/MoAE/outputs/derivatives \
+    $PWD/inputs/fmriprep \
+    $PWD/outputs/derivatives \
     subject \
     --action smooth \
     --participant_label 01 \
@@ -59,27 +45,41 @@ bidspm \
     --fwhm 6
 ```
 
+### Create model
+
+```bash
+bidspm \
+    $PWD/inputs/raw \
+    $PWD/outputs/derivatives \
+     dataset \
+    --action default_model \
+    --space IXI549Space \
+    --task auditory \
+    --verbosity 2 \
+    --ignore transformations
+```
+
 ### GLM
 
 ```bash
 bidspm \
-    /home/remi/github/bidspm/demos/MoAE/inputs/raw \
-    /home/remi/github/bidspm/demos/MoAE/outputs/derivatives \
+    $PWD/inputs/raw \
+    $PWD/outputs/derivatives \
     subject \
     --action stats \
-    --preproc_dir /home/remi/github/bidspm/demos/MoAE/outputs/derivatives/bidspm-preproc \
-    --model_file /home/remi/github/bidspm/demos/MoAE/models/model-MoAE_smdl.json \
+    --preproc_dir $PWD/outputs/derivatives/bidspm-preproc \
+    --model_file $PWD/models/model-MoAE_smdl.json \
     --fwhm 6
 ```
 
 ```bash
 bidspm \
-    /home/remi/github/bidspm/demos/MoAE/inputs/raw \
-    /home/remi/github/bidspm/demos/MoAE/outputs/derivatives \
+    $PWD/inputs/raw \
+    $PWD/outputs/derivatives \
     subject \
     --action stats \
-    --preproc_dir /home/remi/github/bidspm/demos/MoAE/outputs/derivatives/bidspm-preproc \
-    --model_file /home/remi/github/bidspm/demos/MoAE/outputs/derivatives/models/model-defaultAuditory_smdl.json \
+    --preproc_dir $PWD/outputs/derivatives/bidspm-preproc \
+    --model_file $PWD/outputs/derivatives/models/model-defaultAuditory_smdl.json \
     --fwhm 6
 ```
 
@@ -89,8 +89,8 @@ bidspm \
 
 ```bash
 docker run -it --rm \
-    -v /home/remi/github/bidspm/demos/MoAE/inputs/raw:/raw \
-    -v /home/remi/github/bidspm/demos/MoAE/outputs/derivatives:/derivatives \
+    -v $PWD/inputs/raw:/raw \
+    -v $PWD/outputs/derivatives:/derivatives \
     cpplab/bidspm:stable \
         /raw \
         /derivatives \
@@ -104,9 +104,9 @@ docker run -it --rm \
 
 ```bash
 docker run -it --rm \
-    -v /home/remi/github/bidspm/demos/MoAE/inputs/raw:/raw \
-    -v /home/remi/github/bidspm/demos/MoAE/outputs/derivatives:/derivatives \
-    -v /home/remi/github/bidspm/demos/MoAE/models:/models \
+    -v $PWD/inputs/raw:/raw \
+    -v $PWD/outputs/derivatives:/derivatives \
+    -v $PWD/models:/models \
     cpplab/bidspm:latest \
         /raw \
         /derivatives \

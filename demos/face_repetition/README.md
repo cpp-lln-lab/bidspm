@@ -6,8 +6,8 @@
 
 ```bash
 bidspm \
-    /home/remi/github/bidspm/demos/face_repetition/outputs/raw \
-    /home/remi/github/bidspm/demos/face_repetition/outputs/derivatives \
+    $PWD/outputs/raw \
+    $PWD/outputs/derivatives \
     subject \
     --action preprocess \
     --participant_label 01 \
@@ -19,8 +19,8 @@ bidspm \
 
 ```bash
 bidspm \
-    /home/remi/github/bidspm/demos/face_repetition/outputs/raw \
-    /home/remi/github/bidspm/demos/face_repetition/outputs/derivatives \
+    $PWD/outputs/raw \
+    $PWD/outputs/derivatives \
     subject \
     --action preprocess \
     --space individual IXI549Space \

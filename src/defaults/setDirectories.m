@@ -18,6 +18,7 @@ function opt = setDirectories(opt)
   opt = setInputDir(opt);
   opt = setOutputDir(opt);
   opt = setJobsDir(opt, opt.dir.output);
+  opt = setRoiDir(opt);
 
   fields = fieldnames(opt.dir);
   for i = 1:numel(fields)
@@ -70,6 +71,12 @@ function opt = setDerivativesDir(opt)
 
   opt.dir.derivatives = derDir;
 
+end
+
+function opt = setRoiDir(opt)
+  if ~isfield(opt.dir, 'roi') || isempty(opt.dir.roi)
+    opt.dir.roi = fullfile(opt.dir.derivatives, 'bidspm-roi');
+  end
 end
 
 function opt = setDir(opt, step)

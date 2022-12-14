@@ -59,9 +59,9 @@ def append_base_arguments(
 
 def append_common_arguments(
     cmd: str,
-    fwhm: Any,
-    skip_validation: bool,
-    dry_run: bool,
+    skip_validation: bool = False,
+    dry_run: bool = False,
+    fwhm: Any = 6,
     participant_label: list[str] | None = None,
     bids_filter_file: Path | None = None,
 ) -> str:
@@ -165,6 +165,47 @@ def preprocess(
     return 0
 
 
+def create_roi(
+    bids_dir: Path,
+    output_dir: Path,
+    action: str,
+    preproc_dir: Path | None = None,
+    verbosity: int = 2,
+    participant_label: list[str] | None = None,
+    roi_dir: Path | None = Path(),
+    roi_atlas: str | None = "neuromorphometrics",
+    roi_name: list[str] | None = None,
+    space: list[str] | None = None,
+    bids_filter_file: Path | None = None,
+) -> int:
+
+    cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
+    cmd = append_main_cmd(cmd=cmd, analysis_level="subject", action=action)
+    cmd = append_base_arguments(
+        cmd=cmd,
+        verbosity=verbosity,
+        space=space,
+    )
+    cmd = append_common_arguments(
+        cmd=cmd,
+        participant_label=participant_label,
+        bids_filter_file=bids_filter_file,
+    )
+    cmd += f"{new_line}'roi_atlas', '{roi_atlas}'"
+    cmd += f"{new_line}'roi_name', '{roi_name}'"
+    if roi_dir:
+        cmd += f"{new_line}'roi_dir', '{roi_dir}'"
+    if preproc_dir:
+        cmd += f"{new_line}'preproc_dir', '{preproc_dir}'"
+    cmd = end_cmd(cmd)
+
+    log.info("Creating ROI.")
+
+    run_command(cmd)
+
+    return 0
+
+
 def stats(
     bids_dir: Path,
     output_dir: Path,
@@ -262,6 +303,9 @@ def cli(argv: Any = sys.argv) -> None:
         preproc_dir=preproc_dir,
         model_file=model_file,
         roi_based=args.roi_based,
+        roi_atlas=args.roi_atlas,
+        roi_name=args.roi_name,
+        roi_dir=args.roi_dir,
         concatenate=args.concatenate,
         design_only=args.design_only,
         keep_residuals=args.keep_residuals,
@@ -278,6 +322,7 @@ def bidspm(
     output_dir: Path,
     analysis_level: str,
     action: str,
+    participant_label: list[str] | None = None,
     verbosity: int = 2,
     task: list[str] | None = None,
     space: list[str] | None = None,
@@ -291,6 +336,9 @@ def bidspm(
     preproc_dir: Path | None = None,
     model_file: Path | None = None,
     roi_based: bool = False,
+    roi_atlas: str | None = None,
+    roi_name: list[str] | None = None,
+    roi_dir: Path | None = None,
     concatenate: bool = False,
     design_only: bool = False,
     keep_residuals: bool = False,
@@ -320,6 +368,7 @@ def bidspm(
             bids_dir=bids_dir,
             output_dir=output_dir,
             action=action,
+            participant_label=participant_label,
             verbosity=verbosity,
             task=task,
             space=space,
@@ -331,6 +380,21 @@ def bidspm(
             bids_filter_file=bids_filter_file,
             dry_run=dry_run,
         )
+    elif action in {"create_roi"}:
+        return_code = create_roi(
+            bids_dir=bids_dir,
+            output_dir=output_dir,
+            action=action,
+            preproc_dir=preproc_dir,
+            verbosity=verbosity,
+            participant_label=participant_label,
+            roi_dir=roi_dir,
+            roi_atlas=roi_atlas,
+            roi_name=roi_name,
+            space=space,
+            bids_filter_file=bids_filter_file,
+        )
+
     elif action in {"stats", "contrasts", "results"}:
 
         if preproc_dir is None or not preproc_dir.exists():
