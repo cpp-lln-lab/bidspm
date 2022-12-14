@@ -85,8 +85,8 @@ function test_setBatchSTC_force()
   opt = setOptions('vislocalizer', subLabel);
 
   % we give it some slice timing value to force slice timing to happen
-  opt.stc.sliceOrder = linspace(0, 1.6, 10);
-  opt.stc.sliceOrder(end - 1:end) = [];
+  sliceOrder = linspace(0, 1.6, 10);
+  sliceOrder(end - 1:end) = [];
   opt.stc.referenceSlice = 1.6 / 2;
 
   opt = checkOptions(opt);
@@ -97,7 +97,7 @@ function test_setBatchSTC_force()
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
   TR = 1.55;
-  expectedBatch = returnExpectedBatch(opt.stc.sliceOrder, opt.stc.referenceSlice, TR);
+  expectedBatch = returnExpectedBatch(sliceOrder, opt.stc.referenceSlice, TR);
 
   runCounter = 1;
   for iSes = 1:2
@@ -131,8 +131,7 @@ function test_setBatchSTC_basic()
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
   TR = 1.5;
-  sliceOrder = repmat([ ...
-                       0.5475, 0, 0.3825, 0.055, 0.4375, 0.11, 0.4925, 0.22, 0.6025, ...
+  sliceOrder = repmat([0.5475, 0, 0.3825, 0.055, 0.4375, 0.11, 0.4925, 0.22, 0.6025, ...
                        0.275, 0.6575, ...
                        0.3275, 0.71, 0.165], 1, 3)';
   referenceSlice = 0.355;
@@ -158,24 +157,6 @@ function test_setBatchSTC_basic()
   end
 
   assertEqual(matlabbatch{1}.spm.temporal.st, expectedBatch{1}.spm.temporal.st);
-
-end
-
-function test_setBatchSTC_error_invalid_input_time()
-
-  subLabel = '01';
-
-  opt = setOptions('vislocalizer', subLabel);
-
-  opt.stc.sliceOrder = linspace(0, 1.5, 10);
-  opt.stc.sliceOrder(end) = [];
-  opt.stc.referenceSlice = 2; % impossible reference value
-
-  BIDS = getLayout(opt);
-
-  matlabbatch = {};
-  assertExceptionThrown(@()setBatchSTC(matlabbatch, BIDS, opt, subLabel), ...
-                        'setBatchSTC:invalidInputTime');
 
 end
 

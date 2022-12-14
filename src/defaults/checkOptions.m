@@ -116,9 +116,6 @@ function opt = checkOptions(opt)
   %     - ``opt.stc.referenceSlice = []`` - reference slice (in seconds)
   %       for the slice timing correction.
   %       If left empty the mid-volume acquisition time point will be selected at run time.
-  %     - ``opt.stc.sliceOrder = []`` - To be used if SPM can't extract slice info. NOT RECOMMENDED,
-  %       if you know the order in which slices were acquired, you should be able to recompute
-  %       slice timing and add it to the json files in your BIDS data set.
   %
   %     - ``opt.funcVoxelDims = []`` - Voxel dimensions to use for resampling of functional data
   %       at normalization.

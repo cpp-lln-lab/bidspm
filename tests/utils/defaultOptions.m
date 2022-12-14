@@ -35,7 +35,6 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.dummy_scans = 0;
 
-  expectedOptions.stc.sliceOrder = [];
   expectedOptions.stc.referenceSlice = [];
   expectedOptions.stc.skip = false;
 

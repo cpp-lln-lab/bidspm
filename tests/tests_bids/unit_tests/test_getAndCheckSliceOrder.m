@@ -80,19 +80,6 @@ function test_getAndCheckSliceOrder_empty()
 
 end
 
-function test_getAndCheckSliceOrder_from_options()
-
-  [BIDS, opt, filter] = setUp('vislocalizer');
-
-  opt.stc.referenceSlice = 1000;
-  opt.stc.sliceOrder = 0:250:2000;
-
-  sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter);
-
-  assert(isequal(sliceOrder, opt.stc.sliceOrder));
-
-end
-
 function [BIDS, opt, filter] = setUp(task)
 
   subLabel = '^01';
