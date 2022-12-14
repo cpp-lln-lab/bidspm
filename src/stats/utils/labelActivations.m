@@ -38,6 +38,8 @@ function tsvFile = labelActivations(varargin)
     switch atlas
       case 'AAL'
         atlasName = 'AAL3v1_1mm';
+      case 'hcpex'
+        atlasName = 'HCPex';
     end
   end
 

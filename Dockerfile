@@ -58,7 +58,7 @@ RUN mkdir code input output
 # COPY . /home/neuro/bidspm
 
 RUN echo '\nPROD'
-RUN git clone --depth 1 --branch FIXME --recursive https://github.com/cpp-lln-lab/bidspm.git
+RUN git clone --depth 1 --branch main --recursive https://github.com/cpp-lln-lab/bidspm.git
 
 RUN cd bidspm && make install
 
