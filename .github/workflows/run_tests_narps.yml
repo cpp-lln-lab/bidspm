@@ -2,12 +2,8 @@ name: "matlab: narps dataset"
 
 on:
 
-  push:
-    branches:
-      - main
-      - dev
-  pull_request:
-    branches: ["*"]
+  schedule:
+    - cron: "0 0 1,15 * *"
 
   # to trigger update manually from the Action tab in github
   workflow_dispatch:

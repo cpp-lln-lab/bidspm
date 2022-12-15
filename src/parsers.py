@@ -228,7 +228,7 @@ def common_parser() -> MuhParser:
         type=str,
         nargs=1,
         default="neuromorphometrics",
-        choices=["neuromorphometrics", "wang", "anatomy_toobox", "visfatlas"],
+        choices=["neuromorphometrics", "wang", "anatomy_toobox", "visfatlas", "hcpex"],
     )
     parser.add_argument(
         "--roi_name",

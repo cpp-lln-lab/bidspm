@@ -179,6 +179,8 @@ def create_roi(
     bids_filter_file: Path | None = None,
 ) -> int:
 
+    roi_name = "{ '" + "', '".join(roi_name) + "' }" if roi_name is not None else None  # type: ignore
+
     cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
     cmd = append_main_cmd(cmd=cmd, analysis_level="subject", action=action)
     cmd = append_base_arguments(
@@ -192,7 +194,7 @@ def create_roi(
         bids_filter_file=bids_filter_file,
     )
     cmd += f"{new_line}'roi_atlas', '{roi_atlas}'"
-    cmd += f"{new_line}'roi_name', '{roi_name}'"
+    cmd += f"{new_line}'roi_name', {roi_name}"
     if roi_dir:
         cmd += f"{new_line}'roi_dir', '{roi_dir}'"
     if preproc_dir:
@@ -273,6 +275,7 @@ def cli(argv: Any = sys.argv) -> None:
     output_dir = Path(args.output_dir[0]).resolve()
     analysis_level = args.analysis_level[0]
     action = args.action[0]
+    roi_atlas = args.roi_atlas[0]
     bids_filter_file = (
         Path(args.bids_filter_file[0]).resolve()
         if args.bids_filter_file is not None
@@ -303,7 +306,7 @@ def cli(argv: Any = sys.argv) -> None:
         preproc_dir=preproc_dir,
         model_file=model_file,
         roi_based=args.roi_based,
-        roi_atlas=args.roi_atlas,
+        roi_atlas=roi_atlas,
         roi_name=args.roi_name,
         roi_dir=args.roi_dir,
         concatenate=args.concatenate,

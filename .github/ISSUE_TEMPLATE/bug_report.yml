@@ -83,6 +83,7 @@ body:
 
         Or check the content of CITATION.cff.
       options:
+        - v3.0.0
         - v2.3.0
         - v2.2.0
         - v2.1.0
