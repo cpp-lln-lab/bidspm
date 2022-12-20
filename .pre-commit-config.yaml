@@ -93,6 +93,6 @@ repos:
     args: ["--config-file", "setup.cfg"]
 
 - repo: https://github.com/MarcoGorelli/auto-walrus
-  rev: v0.2.1
+  rev: v0.2.2
   hooks:
   - id: auto-walrus
