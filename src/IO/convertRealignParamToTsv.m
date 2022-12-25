@@ -30,6 +30,12 @@ function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
     rmInput = false;
   end
 
+  % dirty hack to fix bug 892
+  % ideally replace with a better solution if the cause of the problem gets identified.
+  if ismember(newline, rpTxtFile)
+    rpTxtFile = strrep(rpTxtFile, newline, '');
+  end
+
   content = spm_load(rpTxtFile);
 
   if ~strcmp(opt.bidsFilterFile.bold.suffix, 'bold')
