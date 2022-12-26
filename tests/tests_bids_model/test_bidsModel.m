@@ -22,31 +22,7 @@ function test_getResults()
 
 end
 
-function test_getRootNode_2()
-
-  opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-vismotionNoCondition_smdl.json');
-
-  bm = BidsModel('file', opt.model.file);
-  [rootNode, rootNodeName] = bm.getRootNode;
-
-  assertEqual(rootNode.Level, 'Run');
-  assertEqual(rootNodeName, 'run_level');
-
-end
-
-function test_getRootNode()
-
-  opt = setOptions('vislocalizer');
-
-  bm = BidsModel('file', opt.model.file);
-  [rootNode, rootNodeName] = bm.getRootNode;
-
-  assertEqual(rootNode.Level, 'Run');
-  assertEqual(rootNodeName, 'run_level');
-
-end
-
-function test_getRootNode_bug_605()
+function test_get_root_node_bug_605()
 
   % https://github.com/cpp-lln-lab/bidspm/issues/605
 
@@ -57,7 +33,7 @@ function test_getRootNode_bug_605()
   bm.Edges = struct('Source', 'run_level', ...
                     'Destination', 'subject_level');
 
-  [rootNode, rootNodeName] = bm.getRootNode;
+  [rootNode, rootNodeName] = bm.get_root_node;
 
   assertEqual(rootNode.Level, 'Run');
   assertEqual(rootNodeName, 'run_level');

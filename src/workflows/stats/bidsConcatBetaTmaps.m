@@ -48,7 +48,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
 
     model = BidsModel('file', opt.model.file);
 
-    node = model.getRootNode();
+    node = model.get_root_node();
 
     try
       contrasts = specifyContrasts(SPM, model, node.Name);
