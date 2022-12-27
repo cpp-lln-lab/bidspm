@@ -87,3 +87,14 @@ varargout = getInfo('filename', BIDS, opt, subID, varargin)
 varargout = getInfo(BIDS, opt, subID, 'filename', varargin)
 [matlabbatch, voxDim] = setBatchRealign(BIDS, opt, subID, matlabbatch, [action = 'realign'])
 ```
+
+### Updating the FAQ
+
+The FAQ is rendered with FAQtory.
+
+New questions must be added to `docs/questions` and the main FAQ.md can be
+created with:
+
+```bash
+make update_faq
+```
