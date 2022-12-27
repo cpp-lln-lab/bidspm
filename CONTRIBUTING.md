@@ -18,6 +18,21 @@ package in editable mode with all its development dependencies.
 pip install -e .[dev]
 ```
 
+### Initilisation
+
+To facilitate running tests, make sure you initialize bidspm in dev mode, from
+the MATLAB command line:
+
+```matlab
+bidspm dev
+```
+
+You can also run all the tests with:
+
+```matlab
+bidspm run_tests
+```
+
 ### Style guidelines
 
 We use `camelCase` to name functions and variables for the vast majority of the
