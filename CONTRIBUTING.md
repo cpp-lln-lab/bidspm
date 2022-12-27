@@ -9,6 +9,15 @@ or you get stuck: it is more likely we did not do good enough a job at
 explaining things. So do not hesitate to open an issue, just to ask for
 clarification.
 
+### Installation
+
+To install bidspm and make changes to it, it is recommend to install the python
+package in editable mode with all its development dependencies.
+
+```bash
+pip install -e .[dev]
+```
+
 ### Style guidelines
 
 We use `camelCase` to name functions and variables for the vast majority of the

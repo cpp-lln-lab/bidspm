@@ -1,10 +1,6 @@
-
 {# FAQ template #}
-
 <!-- DO NOT EDIT MANUALLY -->
-
 (faq)=
-
 # Frequently Asked Questions
 
 {%- for question in questions %}

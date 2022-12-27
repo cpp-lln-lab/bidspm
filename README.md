@@ -17,7 +17,15 @@
 This is a Matlab / Octave toolbox to perform MRI data analysis on a
 [BIDS data set](https://bids.neuroimaging.io/) using SPM12.
 
-## Installation and set up
+## Installation
+
+### From docker hub
+
+```bash
+docker pull cpplab/bidspm:latest
+```
+
+### From the source
 
 In a terminal or a git bash prompt, type:
 
@@ -42,7 +50,7 @@ Please see our
 [documentation](https://bidspm.readthedocs.io/en/latest/installation.html) for
 more info.
 
-### Command line interface
+### Installing the Command line Interface (CLI)
 
 If you want to use the BIDS app python based CLI of bidspm, you need to
 
@@ -63,7 +71,7 @@ You can then type the following to see which command you have access to:
 bidspm --help
 ```
 
-### Validation dependencies
+### Installing the validation dependencies
 
 If you want to validate bids dataset and bids stats model through bidspm, you
 will need:
