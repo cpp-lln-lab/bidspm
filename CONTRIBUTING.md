@@ -18,7 +18,7 @@ package in editable mode with all its development dependencies.
 pip install -e .[dev]
 ```
 
-### Initilisation
+### Initialisation
 
 To facilitate running tests, make sure you initialize bidspm in dev mode, from
 the MATLAB command line:
