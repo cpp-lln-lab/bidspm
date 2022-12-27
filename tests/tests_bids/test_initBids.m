@@ -18,14 +18,21 @@ function test_initBids_basic()
   opt.dir.output = fullfile(pwd, 'foo');
   opt.pipeline.name = 'bidspm';
   opt.pipeline.type = '';
-  opt.verbosity = 1;
+  opt.verbosity = 0;
+
+  cleanUp(opt);
 
   % WHEN
   initBids(opt);
 
+  assertEqual(exist(fullfile(opt.dir.output, 'LICENSE'), 'file'), 2);
+  assertEqual(exist(fullfile(opt.dir.output, 'README.md'), 'file'), 2);
+  assertEqual(exist(fullfile(opt.dir.output, '.gitignore'), 'file'), 2);
+
   content = bids.util.jsondecode(fullfile(opt.dir.output, 'dataset_description.json'));
 
   assertEqual(content.Name, '');
+  assertEqual(content.License, 'CC0');
   assertEqual(content.GeneratedBy.Name, 'bidspm');
   assertEqual(content.GeneratedBy.Description, '');
 
@@ -39,7 +46,9 @@ function test_initBids_name_description()
   opt.dir.output = fullfile(pwd, 'foo');
   opt.pipeline.name = 'bidspm';
   opt.pipeline.type = 'stats';
-  opt.verbosity = 1;
+  opt.verbosity = 0;
+
+  cleanUp(opt);
 
   % WHEN
   initBids(opt, 'description', 'subject level stats');
@@ -60,7 +69,9 @@ function test_initBids_force()
   opt.dir.output = fullfile(pwd, 'foo');
   opt.pipeline.name = 'bidspm';
   opt.pipeline.type = 'stats';
-  opt.verbosity = 1;
+  opt.verbosity = 0;
+
+  cleanUp(opt);
 
   % WHEN
   initBids(opt, 'description', 'subject level stats');
@@ -82,5 +93,7 @@ function setUp()
 end
 
 function cleanUp(opt)
-  rmdir(opt.dir.output, 's');
+  if isdir(opt.dir.output)
+    rmdir(opt.dir.output, 's');
+  end
 end

@@ -46,6 +46,8 @@ function initBids(varargin)
 
     ds_desc.content.BIDSVersion = getDefaultBIDSVersion();
 
+    ds_desc.content.License = 'CC0';
+
     ds_desc.content.GeneratedBy{1}.Version = getVersion();
     ds_desc.content.GeneratedBy{1}.CodeURL = returnRepoURL();
     ds_desc.content.GeneratedBy{1}.Description = args.Results.description;
@@ -58,6 +60,7 @@ function initBids(varargin)
 
   addGitIgnore(opt.dir.output);
   addReadme(opt.dir.output);
+  addLicense(opt.dir.output);
 
 end
 
