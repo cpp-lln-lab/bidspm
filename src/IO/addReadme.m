@@ -12,6 +12,8 @@ function addReadme(fullpath)
 
   % (C) Copyright 2022 bidspm developers
 
+  spm_mkdir(fullpath);
+
   outputFile = fullfile(fullpath, 'README.md');
 
   if exist(outputFile, 'file') == 2
