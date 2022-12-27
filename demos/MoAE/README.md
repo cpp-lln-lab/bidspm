@@ -91,7 +91,7 @@ bidspm \
 docker run -it --rm \
     -v $PWD/inputs/raw:/raw \
     -v $PWD/outputs/derivatives:/derivatives \
-    cpplab/bidspm:stable \
+    cpplab/bidspm:latest \
         /raw \
         /derivatives \
         subject \

@@ -1,6 +1,7 @@
 function davg = getDist2surf(varargin)
   %
   % Loads the pial surface and computes the mean distance to the surface.
+  % Will return a default value of 50 mm if this fails.
   %
   %
   % USAGE::
@@ -8,13 +9,19 @@ function davg = getDist2surf(varargin)
   %   davg = getDist2surf(anatImage, opt)
   %
   % :param anatImage:
-  % :type anatImage: cell
-  % :type opt:  structure
+  % :type  anatImage: cell
+  %
+  % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
   %
   % :returns: - :davg: (float) (1 x 1)
   %
+  %
+  % Adapted from motion finger print functions and script (mw_mfp.m) from Marko Wilke
+  % https://www.medizin.uni-tuebingen.de/kinder/en/research/neuroimaging/software/
+  % see http://www.dx.doi.org/10.1016/j.neuroimage.2011.10.043
+  % and http://www.dx.doi.org/10.1371/journal.pone.0106498
   %
 
   % (C) Copyright 2022 bidspm developers

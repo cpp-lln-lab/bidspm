@@ -14,9 +14,8 @@ Welcome to bidspm documentation!
    general_information
    installation
    usage_notes
-   set_up
+   configuration
    bids_stats_model
-   defaults
    demos
    architecture
    statistics
@@ -24,7 +23,6 @@ Welcome to bidspm documentation!
    output_files
    mapping
    method_section
-   diy
    FAQ
    fieldmaps
    quality_analysis

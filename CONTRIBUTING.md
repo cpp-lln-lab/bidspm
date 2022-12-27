@@ -9,6 +9,30 @@ or you get stuck: it is more likely we did not do good enough a job at
 explaining things. So do not hesitate to open an issue, just to ask for
 clarification.
 
+### Installation
+
+To install bidspm and make changes to it, it is recommend to install the python
+package in editable mode with all its development dependencies.
+
+```bash
+pip install -e .[dev]
+```
+
+### Initialisation
+
+To facilitate running tests, make sure you initialize bidspm in dev mode, from
+the MATLAB command line:
+
+```matlab
+bidspm dev
+```
+
+You can also run all the tests with:
+
+```matlab
+bidspm run_tests
+```
+
 ### Style guidelines
 
 We use `camelCase` to name functions and variables for the vast majority of the
@@ -62,4 +86,15 @@ varargout = getInfo('filename', BIDS, opt, subID, varargin)
 % batch and action should go first
 varargout = getInfo(BIDS, opt, subID, 'filename', varargin)
 [matlabbatch, voxDim] = setBatchRealign(BIDS, opt, subID, matlabbatch, [action = 'realign'])
+```
+
+### Updating the FAQ
+
+The FAQ is rendered with FAQtory.
+
+New questions must be added to `docs/questions` and the main FAQ.md can be
+created with:
+
+```bash
+make update_faq
 ```
