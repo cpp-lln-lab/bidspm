@@ -10,38 +10,10 @@ classdef BidsModel < bids.Model
       obj = obj@bids.Model(varargin{:});
     end
 
-    function [rootNode, rootNodeName] = getRootNode(obj)
-
-      edges = obj.Edges;
-
-      if isempty(edges)
-        rootNode = obj.Nodes(1);
-
-      elseif iscell(edges)
-        rootNodeName = edges{1}.Source;
-        rootNode = obj.get_nodes('Name', rootNodeName);
-
-      elseif isstruct(edges(1))
-        rootNodeName = edges(1).Source;
-        rootNode = obj.get_nodes('Name', rootNodeName);
-
-      else
-        rootNode = obj.Nodes(1);
-
-      end
-
-      if iscell(rootNode)
-        rootNode = rootNode{1};
-      end
-
-      rootNodeName = rootNode.Name;
-
-    end
-
     function [transformers, idx] = getBidsTransformers(obj, varargin)
 
       if isempty(varargin)
-        [~, rootNodeName] = obj.getRootNode();
+        [~, rootNodeName] = obj.get_root_node();
         [value, idx] = obj.get_transformations('Name', rootNodeName);
       else
         [value, idx] = obj.get_transformations(varargin{:});
@@ -59,7 +31,7 @@ classdef BidsModel < bids.Model
     function [model, nodeName] = getDefaultModel(obj, varargin)
 
       if isempty(varargin)
-        [~, nodeName] = obj.getRootNode();
+        [~, nodeName] = obj.get_root_node();
         model = obj.get_model('Name', nodeName);
       else
         [model, idx] = obj.get_model(varargin{:});
@@ -76,7 +48,7 @@ classdef BidsModel < bids.Model
     function designMatrix = getBidsDesignMatrix(obj, varargin)
 
       if isempty(varargin)
-        [~, rootNodeName] = obj.getRootNode();
+        [~, rootNodeName] = obj.get_root_node();
         designMatrix = obj.get_design_matrix('Name', rootNodeName);
       else
         designMatrix = obj.get_design_matrix(varargin{:});

@@ -27,7 +27,7 @@ function test_model_bug_385()
   opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-bug385_smdl.json');
 
   bm = BidsModel('file', opt.model.file);
-  bm.getRootNode;
+  bm.get_root_node;
 
   nodeName = 'dataset';
   contrastsList = getContrastsList(nodeName, bm);

@@ -1,15 +1,19 @@
 {
-    "recommendations": [
-        "lextudio.restructuredtext-pack",
-        "github.vscode-pull-request-github",
-        "ms-vscode.makefile-tools",
-        "yzhang.markdown-all-in-one",
-        "gimly81.matlab",
-        "executablebookproject.myst-highlight",
-        "dawhite.mustache",
-        "foxundermoon.shell-format",
-        "timonwong.shellcheck",
-        "gruntfuggly.todo-tree",
-        "xshrim.txt-syntax"
-    ]
+  "recommendations": [
+    "lextudio.restructuredtext-pack",
+    "github.vscode-pull-request-github",
+    "ms-vscode.makefile-tools",
+    "yzhang.markdown-all-in-one",
+    "gimly81.matlab",
+    "executablebookproject.myst-highlight",
+    "dawhite.mustache",
+    "foxundermoon.shell-format",
+    "timonwong.shellcheck",
+    "gruntfuggly.todo-tree",
+    "xshrim.txt-syntax",
+    "oderwat.indent-rainbow",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "usernamehw.errorlens"
+  ]
 }

@@ -23,7 +23,7 @@ function ffxDir = getFFXdir(subLabel, opt)
   opt = getOptionsFromModel(opt);
 
   % folder naming based on the rootNode name
-  rootNode = opt.model.bm.getRootNode();
+  rootNode = opt.model.bm.get_root_node();
   nodeName = rootNode.Name;
 
   nodeNameLabel = regexprep(nodeName, '[ -_]', '');

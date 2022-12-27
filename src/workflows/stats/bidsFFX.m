@@ -152,7 +152,7 @@ function checkRootNode(opt)
   % This only concerns 'specify' and 'specifyAndEstimate'
   %
 
-  thisNode = opt.model.bm.getRootNode;
+  thisNode = opt.model.bm.get_root_node;
 
   if ismember(lower(thisNode.Level), {'session', 'subject'})
 
