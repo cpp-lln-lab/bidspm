@@ -11,8 +11,6 @@
   [![GitHub last commit](https://img.shields.io/github/last-commit/cpp-lln-lab/bidspm)](https://github.com/cpp-lln-lab/bidspm.git)
   [![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](https://github.com/cpp-lln-lab/bidspm#contributors)
 
-<!--  [![HitCount](https://hits.dwyl.com/cpp-lln-lab/bidspm.svg?style=flat-square&show=unique)](http://hits.dwyl.com/cpp-lln-lab/bidspm) -->
-
 
 # bidspm
 
@@ -58,6 +56,11 @@ You can then install the bidspm CLI from within the `bidspm` folder with:
 
 ```bash
 pip install .
+```
+
+You can then type the following to see which command you have access to:
+```bash
+bidspm --help
 ```
 
 ### Validation dependencies

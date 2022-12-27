@@ -24,7 +24,6 @@ Welcome to bidspm documentation!
    output_files
    mapping
    method_section
-   diy
    FAQ
    fieldmaps
    quality_analysis

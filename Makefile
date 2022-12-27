@@ -71,10 +71,13 @@ release: validate_cff bump_version lint manual
 ################################################################################
 #   doc
 
+update_faq:
+	faqtory build
+
 clean_doc:
 	cd docs && make clean
 
-manual: ## Build PDF version of the doc
+manual: update_faq ## Build PDF version of the doc
 	cd docs && sh create_manual.sh
 
 
