@@ -1,2 +1,3 @@
 { "json.schemas": [ { "fileMatch": ["model-*_smdl.json"], "url":
-"https://bids-standard.github.io/stats-models/BIDSStatsModel.json" } ]}
+"https://bids-standard.github.io/stats-models/BIDSStatsModel.json" } ],
+"esbonio.sphinx.confDir": "" }
