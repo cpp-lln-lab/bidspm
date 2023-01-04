@@ -132,6 +132,8 @@ function bidspmHelp()
   %
   % **COPY:**
   %
+  % Copies fmriprep data for smoothing.
+  %
   % .. code-block:: matlab
   %
   %   bidspm(bids_dir, output_dir, 'subject', ...
@@ -146,6 +148,8 @@ function bidspmHelp()
   %
   %
   % **CREATE_ROI:**
+  %
+  % Creates ROIs from a given atlas.
   %
   % .. code-block:: matlab
   %
@@ -189,6 +193,8 @@ function bidspmHelp()
   %
   % **DEFAULT_MODEL:**
   %
+  % Creates a default BIDS stats model for a given raw BIDS dataset.
+  %
   % .. code-block:: matlab
   %
   %   bidspm(bids_dir, output_dir, 'dataset', ...
@@ -205,6 +211,12 @@ function bidspmHelp()
   %
   %
   % **STATS:**
+  %
+  % .. note::
+  %
+  %   - ``'stats'``     runs model specification / estimation, contrast computation, display results
+  %   - ``'contrasts'`` runs contrast computation, display results
+  %   - ``'results'``   displays results
   %
   % .. code-block:: matlab
   %
