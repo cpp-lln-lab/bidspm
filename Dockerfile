@@ -1,9 +1,9 @@
 # Creates a docker image of bidspm
-
 # version number are updated automatically with the bump version script
 
-# this is mostly taken from the spm docker files: https://github.com/spm/spm-docker
 FROM ubuntu:22.04
+
+ARG DEBIAN_FRONTEND="noninteractive"
 
 USER root
 
@@ -14,7 +14,7 @@ LABEL version="3.0.0"
 
 ## basic OS tools install, node, npm also octave
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive apt-get qq -y --no-install-recommends install \
+    apt-get -qq -y --no-install-recommends install \
         build-essential \
         software-properties-common\
         curl \
@@ -31,8 +31,8 @@ RUN apt-get update -qq && \
 
 ## add python
 RUN add-apt-repository ppa:deadsnakes/ppa && apt-get update -qq && \
-    apt-get -y --no-install-recommends install install \
-        python3.10 \
+    apt-get -qq -y --no-install-recommends install \
+        python3.11 \
         python3-pip && \
     apt-get clean && \
     rm -rf \
