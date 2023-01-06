@@ -44,6 +44,7 @@ function bidspmHelp()
   %                - ``'preprocess'``
   %                - ``'smooth'``: smooths data
   %                - ``'default_model'``
+  %                - ``'create_roi'``
   %                - ``'stats'``
   %                - ``'contrasts'``
   %                - ``'results'``
