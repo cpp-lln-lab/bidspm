@@ -86,7 +86,6 @@ def common_parser() -> MuhParser:
         help="""
         Action to perform.
         """,
-        required=True,
         choices=[
             "preprocess",
             "smooth",
