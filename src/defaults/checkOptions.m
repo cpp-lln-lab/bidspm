@@ -167,7 +167,6 @@ function opt = checkOptions(opt)
   opt = setFields(opt, fieldsToSet);
 
   %  Options for toolboxes
-  opt = setFields(opt, rsHRF_my_defaults());
   opt = setFields(opt, MACS_my_defaults());
 
   checkFields(opt);
