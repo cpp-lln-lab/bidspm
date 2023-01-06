@@ -1,11 +1,12 @@
-name: "CLI: tests"
+---
+name: 'CLI: tests'
 
 on:
 
   push:
     branches:
-      - main
-      - dev
+    - main
+    - dev
   pull_request:
     branches: ['*']
 

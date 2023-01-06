@@ -12,25 +12,38 @@ ENV LANG="en_US.UTF-8" \
 
 LABEL version="3.0.0"
 
-LABEL maintainer="Rémi Gau <remi.gau@gmail.com>"
-
 ## basic OS tools install, node, npm also octave
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    build-essential software-properties-common\
-    curl \
-    octave liboctave-dev \
-    nodejs npm
-
-## add python
-RUN add-apt-repository ppa:deadsnakes/ppa && apt-get update
-RUN apt-get -y install python3.10 python3-pip
-
-RUN apt-get clean && \
+RUN apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive apt-get qq -y --no-install-recommends install \
+        build-essential \
+        software-properties-common\
+        curl \
+        octave \
+        liboctave-dev \
+        nodejs \
+        npm && \
+    apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
         /var/*/apt/*/partial \
         /var/lib/apt/lists/* \
         /var/log/apt/term*
+
+## add python
+RUN add-apt-repository ppa:deadsnakes/ppa && apt-get update -qq && \
+    apt-get -y --no-install-recommends install install \
+        python3.10 \
+        python3-pip && \
+    apt-get clean && \
+    rm -rf \
+        /tmp/hsperfdata* \
+        /var/*/apt/*/partial \
+        /var/lib/apt/lists/* \
+        /var/log/apt/term* && \
+    echo '\n' && \
+    python3 --version && \
+    pip3 list && \
+    echo '\n'
 
 ## Install SPM
 RUN mkdir /opt/spm12 && \
@@ -41,14 +54,16 @@ RUN mkdir /opt/spm12 && \
     make -C /opt/spm12/src PLATFORM=octave distclean && \
     make -C /opt/spm12/src PLATFORM=octave && \
     make -C /opt/spm12/src PLATFORM=octave install && \
-    ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
-RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();"
+    ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12 && \
+    octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();"
 
 ## Install node.js
 RUN node -v && npm -v
 
 ## Install bidspm in user folder
 RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
+
+COPY version /version
 
 WORKDIR /home/neuro
 RUN mkdir code input output
@@ -63,14 +78,10 @@ COPY . /home/neuro/bidspm
 # RUN echo '\n production'
 # RUN git clone --depth 1 --branch main --recursive https://github.com/cpp-lln-lab/bidspm.git
 
+WORKDIR /home/neuro/bidspm
+RUN make install && \
+    octave --no-gui --eval "addpath(pwd); savepath();"
 
-RUN cd bidspm && make install
-
-RUN echo '\n'
-RUN python3 --version && pip3 list
-RUN echo '\n'
-
-
-RUN cd bidspm && octave --no-gui --eval "addpath(pwd); savepath();"
+WORKDIR /home/neuro
 
 ENTRYPOINT ["bidspm"]

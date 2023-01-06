@@ -1,3 +1,4 @@
+---
 name: FAQtory issues
 
 on:
@@ -15,24 +16,24 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v3
-        with:
-          ref: main
+    - uses: actions/checkout@v3
+      with:
+        ref: main
 
-      - name: Install FAQtory
-        run: pip install FAQtory
+    - name: Install FAQtory
+      run: pip install FAQtory
 
-      - name: Run Suggest
-        run: faqtory suggest "${{ github.event.issue.title }}" > suggest.md
+    - name: Run Suggest
+      run: faqtory suggest "${{ github.event.issue.title }}" > suggest.md
 
-      - name: Read suggest.md
-        id: suggest
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: ./suggest.md
+    - name: Read suggest.md
+      id: suggest
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ./suggest.md
 
-      - name: Suggest FAQ
-        uses: peter-evans/create-or-update-comment@5adcb0bb0f9fb3f95ef05400558bdb3f329ee808
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: ${{ steps.suggest.outputs.content }}
+    - name: Suggest FAQ
+      uses: peter-evans/create-or-update-comment@5adcb0bb0f9fb3f95ef05400558bdb3f329ee808
+      with:
+        issue-number: ${{ github.event.issue.number }}
+        body: ${{ steps.suggest.outputs.content }}
