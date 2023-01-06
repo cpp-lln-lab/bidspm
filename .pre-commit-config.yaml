@@ -1,18 +1,8 @@
 ---
 repos:
-
 - repo: local
 
   hooks:
-
-  - id: mh_version
-    name: mh_version
-    entry: mh_style
-    args: [-v]
-    verbose: true
-    language: python
-    additional_dependencies: [miss_hit_core]
-
   - id: mh_style
     name: mh_style
     entry: mh_style
@@ -47,15 +37,14 @@ repos:
 - repo: https://github.com/pre-commit/pygrep-hooks
   rev: v1.9.0
   hooks:
-  - id: rst-backticks # Detect common mistake of using single backticks when writing rst
-  - id: rst-inline-touching-normal # Detect mistake of inline code touching normal text in rst
+  - id: rst-backticks     # Detect common mistake of using single backticks when writing rst
+  - id: rst-inline-touching-normal     # Detect mistake of inline code touching normal text in rst
 
 - repo: https://github.com/psf/black
   rev: 22.12.0
   hooks:
   - id: black
     args: [--config=pyproject.toml]
-
 
 - repo: https://github.com/asottile/setup-cfg-fmt
   rev: v2.2.0
@@ -103,7 +92,6 @@ repos:
   hooks:
   - id: yamlfmt
     args: [--mapping, '2', --sequence, '2', --offset, '0']
-
 
 - repo: https://github.com/hadolint/hadolint
   rev: v2.12.0
