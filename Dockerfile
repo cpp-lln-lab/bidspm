@@ -23,7 +23,7 @@ RUN apt-get update -qq && \
 # bids validator
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get update -qq && \
-    apt-get inst1all -y -q --no-install-recommends && \
+    apt-get install -y -q --no-install-recommends && \
         nodejs && \
     apt-get clean && \
     rm -rf \
