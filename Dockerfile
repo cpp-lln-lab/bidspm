@@ -1,27 +1,21 @@
 # Creates a docker image of bidspm
 # version number are updated automatically with the bump version script
 
-FROM ubuntu:22.04
+FROM ubuntu:jammy
 
 ARG DEBIAN_FRONTEND="noninteractive"
-
-USER root
-
-ENV LANG="en_US.UTF-8" \
-    LC_ALL="en_US.UTF-8"
-
-LABEL version="3.0.0"
 
 ## basic OS tools install, node, npm also octave
 RUN apt-get update -qq && \
     apt-get -qq -y --no-install-recommends install \
         build-essential \
-        software-properties-common\
+        software-properties-common \
+        apt-utils \
         curl \
         octave \
         liboctave-dev \
-        nodejs \
-        npm && \
+        ca-certificates \
+        gnupg2 && \
     apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
@@ -60,9 +54,13 @@ RUN mkdir /opt/spm12 && \
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12 && \
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();"
 
-## Install validator
-RUN node -v && npm -v && \
-    npm install -g bids-validator@1.9.9
+## Install bids-validator
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get update -qq && \
+    apt-get install -y -q --no-install-recommends \
+        nodejs && \
+    rm -rf /var/lib/apt/lists/*
+RUN node --version && npm --version && npm install -g bids-validator@1.9.9
 
 RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
 
