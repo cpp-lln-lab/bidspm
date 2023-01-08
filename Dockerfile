@@ -29,9 +29,12 @@ RUN apt-get update -qq && \
         /var/lib/apt/lists/* \
         /var/log/apt/term*
 
-## add python
-RUN add-apt-repository ppa:deadsnakes/ppa && apt-get update -qq && \
-    apt-get -qq -y --no-install-recommends install \
+RUN : \
+    && . /etc/lsb-release \
+    && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F23C5A6CF475977595C89F51BA6932366A755776 \
+    && echo deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu $DISTRIB_CODENAME main > /etc/apt/sources.list.d/deadsnakes.list \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         python3.11 \
         python3-pip && \
     apt-get clean && \
@@ -41,7 +44,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa && apt-get update -qq && \
         /var/lib/apt/lists/* \
         /var/log/apt/term* && \
     echo '\n' && \
-    python3 --version && \
+    python3.11 --version && \
     pip3 list && \
     echo '\n'
 
@@ -57,31 +60,19 @@ RUN mkdir /opt/spm12 && \
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12 && \
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();"
 
-## Install node.js
-RUN node -v && npm -v
+## Install validator
+RUN node -v && npm -v && \
+    npm install -g bids-validator@1.9.9
 
-## Install bidspm in user folder
 RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
 
-COPY version /version
-
 WORKDIR /home/neuro
-RUN mkdir code input output
-
-# uncomment when local development
-RUN echo '\n development'
 COPY . /home/neuro/bidspm
-
-# TODO
-# USER neuro
-
-# RUN echo '\n production'
-# RUN git clone --depth 1 --branch main --recursive https://github.com/cpp-lln-lab/bidspm.git
-
 WORKDIR /home/neuro/bidspm
 RUN make install && \
     octave --no-gui --eval "addpath(pwd); savepath();"
 
+USER neuro
 WORKDIR /home/neuro
 
 ENTRYPOINT ["bidspm"]
