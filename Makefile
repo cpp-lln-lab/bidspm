@@ -115,31 +115,19 @@ coverage: ## use coverage
 ################################################################################
 #   DOCKER
 
-.PHONY: clean_docker
+.PHONY: clean_docker Dockerfile_matlab
 
 clean_docker:
 	rm -f Dockerfile_matlab
 
-build_image: Dockerfile fix_submodule ## Build stable docker image from the main branch
-# git checkout main
-# docker build . --no-cache -f Dockerfile -t cpplab/bidspm:stable
-	docker build . -f Dockerfile -t cpplab/bidspm:stable
+build_image: Dockerfile ## Build stable docker image from the main branch
+	docker build . -f Dockerfile -t cpplab/bidspm:unstable
 	VERSION=$(cat version.txt | cut -c2-)
-	docker tag cpplab/bidspm:stable cpplab/bidspm:$$VERSION
-
-build_image_dev: Dockerfile ## Build latest docker image from the dev branch
-# git checkout dev
-	docker build . -f Dockerfile -t cpplab/bidspm:latest
-	VERSION=$(cat version.txt | cut -c2-)
-	docker tag cpplab/bidspm:latest cpplab/bidspm:$$VERSION
-
-build_image_test: ## For debugging docker image building
-	docker build . -f Dockerfile -t cpplab/bidspm:test
 
 Dockerfile_matlab:
-	docker run --rm repronim/neurodocker:0.7.0 generate docker \
+	docker run --rm kaczmarj/neurodocker:0.9.1 generate docker \
 		--pkg-manager apt \
-		--base debian:stretch-slim \
+		--base-image debian:stretch-slim \
 		--spm12 version=r7771 \
 		--install nodejs npm \
 		--run "node -v && npm -v && npm install -g bids-validator" \
@@ -147,8 +135,7 @@ Dockerfile_matlab:
 		--run "mkdir code output bidspm" \
 		--copy ".", "/home/neuro/bidspm/" > Dockerfile_matlab
 
-build_image_matlab_dev: Dockerfile_matlab
-	VERSION=$(cat version.txt | cut -c2-)
-	docker build . -f Dockerfile_matlab -t cpplab/bidspm:matlab_$$VERSION
+build_image_matlab: Dockerfile_matlab
+	docker build . -f Dockerfile_matlab -t cpplab/bidspm_matlab:unstable
 
 ################################################################################
