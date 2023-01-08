@@ -110,29 +110,17 @@ jobs:
 workflows:
   build-test-deploy:
     jobs:
-    - build:
-        filters:
-          branches:
-            only: /.*/
-          tags:
-            only: /.*/
+    - build
     - test:
         requires:
         - build
         matrix:
           parameters:
             dataset: ['1', '2']
-        filters:
-          branches:
-            only: /.*/
-          tags:
-            only: /.*/
     - deploy:
         requires:
         - test
         filters:
-          branches:
-            only: master
           tags:
             only: /.*/
 
