@@ -7,6 +7,7 @@ jobs:
       image: ubuntu-2204:2022.10.2
     steps:
     - checkout
+    - run: make fix_submodule
     - restore_cache:
         keys:
         - my_cache
@@ -70,8 +71,6 @@ jobs:
         no_output_timeout: 6h
 
     - checkout
-
-    - run: make fix_submodule
 
     - run:
         name: stats
