@@ -11,6 +11,7 @@ RUN apt-get update -qq && \
         build-essential \
         software-properties-common \
         apt-utils \
+        git \
         curl \
         octave \
         liboctave-dev \
@@ -68,12 +69,8 @@ RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --she
 WORKDIR /home/neuro
 COPY . /home/neuro/bidspm
 WORKDIR /home/neuro/bidspm
+
 RUN make install
-
-RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
-    octave --no-gui --eval "addpath(pwd); savepath(); bidspm(); path"
-
-USER neuro
 
 RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
     octave --no-gui --eval "addpath(pwd); savepath(); bidspm(); path"
