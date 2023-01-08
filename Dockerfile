@@ -1,4 +1,4 @@
-FROM python:3.11.1-slim-bullseye
+FROM bids/base_validator
 
 ARG DEBIAN_FRONTEND="noninteractive"
 
@@ -12,6 +12,8 @@ RUN apt-get update -qq && \
         git \
         curl \
         octave \
+        python3 \
+        python3-pip \
         liboctave-dev && \
     apt-get clean && \
     rm -rf \
@@ -19,15 +21,6 @@ RUN apt-get update -qq && \
         /var/*/apt/*/partial \
         /var/lib/apt/lists/* \
         /var/log/apt/term*
-
-# bids validator
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get update -qq && \
-    apt-get install -y -q --no-install-recommends \
-        nodejs && \
-    rm -rf /var/lib/apt/lists/*
-RUN node --version && npm --version && \
-    npm install -g bids-validator@1.9.9
 
 ## Install SPM
 RUN mkdir /opt/spm12 && \
