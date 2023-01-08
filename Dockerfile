@@ -12,7 +12,7 @@ RUN apt-get update -qq && \
         git \
         curl \
         octave \
-        liboctave-dev \
+        liboctave-dev && \
     apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
