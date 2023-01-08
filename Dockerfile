@@ -67,6 +67,7 @@ RUN node --version && npm --version
 RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
 
 WORKDIR /home/neuro
+RUN chmod 777 /home/neuro
 COPY . /home/neuro/bidspm
 WORKDIR /home/neuro/bidspm
 
