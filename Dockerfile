@@ -11,11 +11,10 @@ RUN apt-get update -qq && \
         ca-certificates \
         git \
         curl \
-        gnuplot \
         python3 \
         python3-pip \
         octave \
-        liboctave-dev && \
+        liboctave-dev \
         gcc g++ autoconf automake bison dvipng epstool fig2dev flex gfortran \
         gnuplot-x11 gperf gzip icoutils libarpack2-dev libbison-dev \
         libopenblas-dev libcurl4-gnutls-dev libfftw3-dev libfltk1.3-dev \
