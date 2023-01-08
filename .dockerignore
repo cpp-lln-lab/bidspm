@@ -12,3 +12,6 @@ env
 templates
 **/tests
 **/bids-examples
+lib/*/.git
+.mypy_cache
+.Rproj.user
