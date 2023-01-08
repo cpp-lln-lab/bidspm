@@ -23,6 +23,7 @@ RUN apt-get update -qq && \
         /var/lib/apt/lists/* \
         /var/log/apt/term*
 
+## Install python
 RUN : \
     && . /etc/lsb-release \
     && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F23C5A6CF475977595C89F51BA6932366A755776 \
