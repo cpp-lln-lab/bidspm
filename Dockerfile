@@ -1,52 +1,37 @@
-# Creates a docker image of bidspm
-# version number are updated automatically with the bump version script
-
-FROM bids:base_validator
+FROM python:3.11.1-slim-bullseye
 
 ARG DEBIAN_FRONTEND="noninteractive"
 
-## basic OS tools install, node, npm also octave
+## basic OS tools install octave
 RUN apt-get update -qq && \
     apt-get -qq -y --no-install-recommends install \
         build-essential \
         software-properties-common \
         apt-utils \
+        ca-certificates \
         git \
         curl \
         octave \
         liboctave-dev \
-        ca-certificates \
-        python3-pip \
-        gnupg2 && \
     apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
         /var/*/apt/*/partial \
         /var/lib/apt/lists/* \
-        /var/log/apt/term* \
-    pip install --no-cache-dir --upgrade pip && \
-    python --version && \
-    pip3 list
+        /var/log/apt/term*
 
-# ## Install python
-# RUN : \
-#     && . /etc/lsb-release \
-#     && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F23C5A6CF475977595C89F51BA6932366A755776 \
-#     && echo deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu $DISTRIB_CODENAME main > /etc/apt/sources.list.d/deadsnakes.list \
-#     && apt-get update \
-#     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-#         python3.11 \
-#         python3-pip && \
-#     apt-get clean && \
-#     rm -rf \
-#         /tmp/hsperfdata* \
-#         /var/*/apt/*/partial \
-#         /var/lib/apt/lists/* \
-#         /var/log/apt/term* && \
-#     echo '\n' && \
-#     python3.11 --version && \
-#     pip3 list && \
-#     echo '\n'
+# bids validator
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get update -qq && \
+    apt-get inst1all -y -q --no-install-recommends && \
+        nodejs && \
+    apt-get clean && \
+    rm -rf \
+        /tmp/hsperfdata* \
+        /var/*/apt/*/partial \
+        /var/lib/apt/lists/* \
+        /var/log/apt/term*
+RUN node --version && npm --version && npm install -g bids-validator@1.9.9
 
 ## Install SPM
 RUN mkdir /opt/spm12 && \
@@ -63,7 +48,8 @@ WORKDIR /home/neuro
 
 COPY . /home/neuro/bidspm
 WORKDIR /home/neuro/bidspm
-RUN pip3 --no-cache-dir install . && \
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip3 --no-cache-dir install . && \
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
     octave --no-gui --eval "addpath(pwd); savepath(); bidspm(); path"
 
