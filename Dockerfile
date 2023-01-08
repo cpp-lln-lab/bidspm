@@ -23,15 +23,11 @@ RUN apt-get update -qq && \
 # bids validator
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get update -qq && \
-    apt-get install -y -q --no-install-recommends && \
+    apt-get install -y -q --no-install-recommends \
         nodejs && \
-    apt-get clean && \
-    rm -rf \
-        /tmp/hsperfdata* \
-        /var/*/apt/*/partial \
-        /var/lib/apt/lists/* \
-        /var/log/apt/term*
-RUN node --version && npm --version && npm install -g bids-validator@1.9.9
+    rm -rf /var/lib/apt/lists/*
+RUN node --version && npm --version && \
+    npm install -g bids-validator@1.9.9
 
 ## Install SPM
 RUN mkdir /opt/spm12 && \
