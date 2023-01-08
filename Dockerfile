@@ -65,13 +65,13 @@ RUN node --version && npm --version
 
 RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
 
-RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
-    octave --no-gui --eval "addpath(pwd); savepath(); bidspm();"
-
 WORKDIR /home/neuro
 COPY . /home/neuro/bidspm
 WORKDIR /home/neuro/bidspm
 RUN make install
+
+RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
+    octave --no-gui --eval "addpath(pwd); savepath(); bidspm();"
 
 USER neuro
 
