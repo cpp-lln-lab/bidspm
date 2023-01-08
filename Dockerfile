@@ -1,7 +1,7 @@
 # Creates a docker image of bidspm
 # version number are updated automatically with the bump version script
 
-FROM ubuntu:jammy
+FROM bids:base_validator
 
 ARG DEBIAN_FRONTEND="noninteractive"
 
@@ -16,33 +16,37 @@ RUN apt-get update -qq && \
         octave \
         liboctave-dev \
         ca-certificates \
+        python3-pip \
         gnupg2 && \
     apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
         /var/*/apt/*/partial \
         /var/lib/apt/lists/* \
-        /var/log/apt/term*
+        /var/log/apt/term* \
+    pip install --no-cache-dir --upgrade pip && \
+    python --version && \
+    pip3 list
 
-## Install python
-RUN : \
-    && . /etc/lsb-release \
-    && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F23C5A6CF475977595C89F51BA6932366A755776 \
-    && echo deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu $DISTRIB_CODENAME main > /etc/apt/sources.list.d/deadsnakes.list \
-    && apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        python3.11 \
-        python3-pip && \
-    apt-get clean && \
-    rm -rf \
-        /tmp/hsperfdata* \
-        /var/*/apt/*/partial \
-        /var/lib/apt/lists/* \
-        /var/log/apt/term* && \
-    echo '\n' && \
-    python3.11 --version && \
-    pip3 list && \
-    echo '\n'
+# ## Install python
+# RUN : \
+#     && . /etc/lsb-release \
+#     && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F23C5A6CF475977595C89F51BA6932366A755776 \
+#     && echo deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu $DISTRIB_CODENAME main > /etc/apt/sources.list.d/deadsnakes.list \
+#     && apt-get update \
+#     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+#         python3.11 \
+#         python3-pip && \
+#     apt-get clean && \
+#     rm -rf \
+#         /tmp/hsperfdata* \
+#         /var/*/apt/*/partial \
+#         /var/lib/apt/lists/* \
+#         /var/log/apt/term* && \
+#     echo '\n' && \
+#     python3.11 --version && \
+#     pip3 list && \
+#     echo '\n'
 
 ## Install SPM
 RUN mkdir /opt/spm12 && \
@@ -55,22 +59,12 @@ RUN mkdir /opt/spm12 && \
     make -C /opt/spm12/src PLATFORM=octave install && \
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
 
-
-## Install node and npm
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get update -qq && \
-    apt-get install -y -q --no-install-recommends \
-        nodejs && \
-    rm -rf /var/lib/apt/lists/*
-RUN node --version && npm --version
-
-
 WORKDIR /home/neuro
 
 COPY . /home/neuro/bidspm
 WORKDIR /home/neuro/bidspm
-RUN make install
-RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
+RUN pip3 --no-cache-dir install . && \
+    octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
     octave --no-gui --eval "addpath(pwd); savepath(); bidspm(); path"
 
 WORKDIR /home/neuro
