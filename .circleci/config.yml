@@ -71,7 +71,7 @@ jobs:
 
     - checkout
 
-    - run: ls -l
+    - run: make fix_submodule
 
     - run:
         name: stats

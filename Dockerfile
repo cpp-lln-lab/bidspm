@@ -75,8 +75,7 @@ USER neuro
 RUN ls -l
 
 RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
-    octave --no-gui --eval "addpath(pwd); savepath();" && \
-    octave --no-gui --eval "bidspm(); savepath()"
+    octave --no-gui --eval "addpath(pwd); savepath();"
 
 WORKDIR /home/neuro
 
