@@ -1,0 +1,128 @@
+---
+version: 2.1
+
+jobs:
+  build:
+    machine:
+      image: ubuntu-2204:2022.10.2
+    steps:
+    - checkout
+    - run: make fix_submodule
+    - restore_cache:
+        keys:
+        - my_cache
+    - run:
+        name: Get test data ds114_test1
+        command: |
+          wget https://raw.githubusercontent.com/bids-apps/maintenance-tools/main/utils/get_data_from_osf.sh
+          bash get_data_from_osf.sh ds114_test1
+          bash get_data_from_osf.sh ds114_test2
+    - run:
+        name: Build Docker image
+        command: |
+          wget https://raw.githubusercontent.com/bids-apps/maintenance-tools/main/circleci/build_docker.sh
+          bash build_docker.sh
+    - save_cache:
+        key: my_cache
+        paths:
+        - ~/docker
+        - ~/data
+    - persist_to_workspace:
+        root: /home/circleci
+        paths:
+        - data/ds114_test1
+        - data/ds114_test2
+        - docker/image.tar
+
+  test:
+    machine:
+      image: ubuntu-2204:2022.10.2
+
+    parameters:
+      dataset:
+        type: string
+
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+    - run: docker load -i /tmp/workspace/docker/image.tar
+
+    - run: mkdir -p ${HOME}/outputs<< parameters.dataset >>
+
+    - run:
+        name: print version
+        command: |
+          docker run -ti --rm --read-only \
+            -v /tmp/workspace/data/ds114_test1:/bids_dataset \
+              ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} --version
+
+    - run:
+        name: preprocess
+        command: |
+          docker run -ti --rm --read-only \
+            -v /tmp/workspace/data/ds114_test<< parameters.dataset >>:/bids_dataset \
+            -v ${HOME}/outputs<< parameters.dataset >>:/outputs \
+              ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} \
+              /bids_dataset \
+              /outputs subject \
+              --action preprocess \
+              --task linebisection \
+              --participant_label 01 02
+        no_output_timeout: 6h
+
+    - checkout
+
+    - run:
+        name: stats
+        command: |
+          docker run -ti --rm --read-only \
+            -v /tmp/workspace/data/ds114_test<< parameters.dataset >>:/bids_dataset \
+            -v ${HOME}/demos/openneuro/models:/models \
+            -v ${HOME}/outputs<< parameters.dataset >>:/outputs \
+              ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} \
+              /bids_dataset \
+              /outputs subject \
+              --action stats \
+              --preproc_dir /outputs/derivatives/bidspm-preproc \
+              --model_file /models/model-ds000114_desc-linebisection_smdl.json \
+              --task linebisection \
+              --participant_label 01 02
+        no_output_timeout: 6h
+
+    - store_artifacts:
+        path: ~/output<< parameters.dataset >>
+
+  deploy:
+
+    machine:
+      image: ubuntu-2204:2022.10.2
+
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+
+    - run: docker load -i /tmp/workspace/docker/image.tar
+    - run:
+        name: push to dockerhub
+        command: |
+          wget https://raw.githubusercontent.com/bids-apps/maintenance-tools/main/circleci/push_docker.sh
+          bash push_docker.sh
+
+workflows:
+  build-test-deploy:
+    jobs:
+    - build
+    - test:
+        requires:
+        - build
+        matrix:
+          parameters:
+            dataset: ['1', '2']
+    - deploy:
+        requires:
+        - test
+        filters:
+          tags:
+            only: /.*/
+
+# VS Code Extension Version: 1.5.1
