@@ -11,9 +11,10 @@ RUN apt-get update -qq && \
         ca-certificates \
         git \
         curl \
-        octave \
+        gnuplot \
         python3 \
         python3-pip \
+        octave \
         liboctave-dev && \
     apt-get clean && \
     rm -rf \
