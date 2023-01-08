@@ -71,9 +71,12 @@ WORKDIR /home/neuro/bidspm
 RUN make install
 
 RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
-    octave --no-gui --eval "addpath(pwd); savepath(); bidspm();"
+    octave --no-gui --eval "addpath(pwd); savepath(); bidspm(); path"
 
 USER neuro
+
+RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
+    octave --no-gui --eval "addpath(pwd); savepath(); bidspm(); path"
 
 WORKDIR /home/neuro
 
