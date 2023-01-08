@@ -64,9 +64,6 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/*
 RUN node --version && npm --version
 
-RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
-
-USER neuro
 
 WORKDIR /home/neuro
 
