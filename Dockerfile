@@ -51,8 +51,8 @@ RUN mkdir /opt/spm12 && \
     make -C /opt/spm12/src PLATFORM=octave distclean && \
     make -C /opt/spm12/src PLATFORM=octave && \
     make -C /opt/spm12/src PLATFORM=octave install && \
-    ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12 && \
-    octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();"
+    ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
+
 
 ## Install bids-validator
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
@@ -67,10 +67,12 @@ RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --she
 WORKDIR /home/neuro
 COPY . /home/neuro/bidspm
 WORKDIR /home/neuro/bidspm
-RUN make install && \
-    octave --no-gui --eval "addpath(pwd); savepath();"
+RUN make install
 
 USER neuro
+RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
+    octave --no-gui --eval "addpath(pwd); savepath();"
+
 WORKDIR /home/neuro
 
 ENTRYPOINT ["bidspm"]
