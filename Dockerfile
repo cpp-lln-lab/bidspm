@@ -72,7 +72,7 @@ RUN make install
 
 USER neuro
 RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
-    octave --no-gui --eval "addpath(pwd); savepath();"
+    octave --no-gui --eval "addpath(pwd); bidspm(); savepath(); "
 
 WORKDIR /home/neuro
 
