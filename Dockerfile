@@ -55,15 +55,18 @@ RUN mkdir /opt/spm12 && \
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
 
 
-## Install bids-validator
+## Install node and npm
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get update -qq && \
     apt-get install -y -q --no-install-recommends \
         nodejs && \
     rm -rf /var/lib/apt/lists/*
-RUN node --version && npm --version && npm install -g bids-validator@1.9.9
+RUN node --version && npm --version
 
 RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
+
+RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
+    octave --no-gui --eval "addpath(pwd); savepath(); bidspm();"
 
 WORKDIR /home/neuro
 COPY . /home/neuro/bidspm
@@ -71,9 +74,6 @@ WORKDIR /home/neuro/bidspm
 RUN make install
 
 USER neuro
-
-RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
-    octave --no-gui --eval "addpath(pwd); savepath();"
 
 WORKDIR /home/neuro
 
