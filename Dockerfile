@@ -13,15 +13,15 @@ RUN apt-get update -qq && \
         curl \
         python3 \
         python3-pip \
+        fonts-freefont-otf \
+        build-dep \
         octave \
+        liboctave-dev \
         octave-common \
         octave-io \
         octave-image \
         octave-signal \
-        octave-statistics \
-        fonts-freefont-otf \
-        liboctave-dev \
-        qtoctave && \
+        octave-statistics && \
     apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
