@@ -14,6 +14,12 @@ RUN apt-get update -qq && \
         python3 \
         python3-pip \
         octave \
+        octave-common \
+        octave-io \
+        octave-image \
+        octave-signal \
+        octave-statistics \
+        fonts-freefont-otf \
         liboctave-dev \
         qtoctave && \
     apt-get clean && \
