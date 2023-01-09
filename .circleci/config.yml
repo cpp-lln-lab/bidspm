@@ -75,7 +75,7 @@ jobs:
     - run:
         name: stats
         command: |
-          docker run -ti --rm --read-only \
+          docker run -ti --rm  \
             -v /tmp/workspace/data/ds114_test<< parameters.dataset >>:/bids_dataset \
             -v ${HOME}/demos/openneuro/models:/models \
             -v ${HOME}/outputs<< parameters.dataset >>:/outputs \
