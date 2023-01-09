@@ -14,10 +14,10 @@ function test_saveOptions_basic()
 
   saveOptions(opt);
 
-  expected = fullfile(pwd, 'options', ['options_task-dummy_' timeStamp()  '.json']);
+  expected = fullfile(opt.dir.derivatives, 'options', ['options_task-dummy_' timeStamp()  '.json']);
 
   assertEqual(exist(expected, 'file'), 2);
 
-  cleanUp(fullfile(pwd, 'cfg'));
+  cleanUp(fullfile(opt.dir.derivatives, 'options'));
 
 end
