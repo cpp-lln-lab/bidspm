@@ -25,6 +25,7 @@ jobs:
     - save_cache:
         key: my_cache
         paths:
+
         - ~/data
     - persist_to_workspace:
         root: /home/circleci
