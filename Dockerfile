@@ -14,6 +14,7 @@ RUN apt-get update -qq && \
         python3 \
         python3-pip \
         fonts-freefont-otf \
+        ghostscript \
         # TODO reduce number of octave dependencies
         gnuplot-x11 libcurl4-gnutls-dev \
         # autoconf bison dvipng epstool fig2dev flex \
