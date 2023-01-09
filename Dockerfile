@@ -23,7 +23,7 @@ RUN apt-get update -qq && \
         libpcre3-dev libqhull-dev libqscintilla2-qt5-dev libqrupdate-dev  \
         libreadline-dev librsvg2-bin libsndfile1-dev libsuitesparse-dev  \
         libsundials-dev libtool libxft-dev openjdk-8-jdk  \
-        pstoedit qtbase5-dev qttools5-dev qttools5-dev-tools rapidjson-dev  \
+        pstoedit qtbase5-dev qttools5-dev qttools5-dev-tools \
         zlib1g-dev \
         octave \
         liboctave-dev \
