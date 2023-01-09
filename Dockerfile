@@ -14,16 +14,17 @@ RUN apt-get update -qq && \
         python3 \
         python3-pip \
         fonts-freefont-otf \
-        gcc g++ autoconf automake gnuplot-x11 bison dvipng epstool fig2dev flex gfortran  \
-        gperf gzip icoutils libarpack2-dev libbison-dev libopenblas-dev  \
+        # TODO reduce number of octave dependencies
+        autoconf gnuplot-x11 bison dvipng epstool fig2dev flex \
+        gperf icoutils libarpack2-dev libbison-dev libopenblas-dev  \
         libcurl4-gnutls-dev libfftw3-dev libfltk1.3-dev libfontconfig1-dev  \
         libfreetype6-dev libgl1-mesa-dev libgl2ps-dev libglpk-dev  \
         libgraphicsmagick++1-dev libhdf5-dev liblapack-dev libosmesa6-dev  \
         libpcre3-dev libqhull-dev libqscintilla2-qt5-dev libqrupdate-dev  \
         libreadline-dev librsvg2-bin libsndfile1-dev libsuitesparse-dev  \
-        libsundials-dev libtool libxft-dev make openjdk-8-jdk perl  \
+        libsundials-dev libtool libxft-dev openjdk-8-jdk  \
         pstoedit qtbase5-dev qttools5-dev qttools5-dev-tools rapidjson-dev  \
-        rsync tar texinfo texlive-latex-extra zlib1g-dev \
+        zlib1g-dev \
         octave \
         liboctave-dev \
         octave-common \
