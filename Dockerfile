@@ -14,7 +14,7 @@ RUN apt-get update -qq && \
         python3 \
         python3-pip \
         fonts-freefont-otf \
-        gcc g++ autoconf automake bison dvipng epstool fig2dev flex gfortran  \
+        gcc g++ autoconf automake gnuplot-x11 bison dvipng epstool fig2dev flex gfortran  \
         gperf gzip icoutils libarpack2-dev libbison-dev libopenblas-dev  \
         libcurl4-gnutls-dev libfftw3-dev libfltk1.3-dev libfontconfig1-dev  \
         libfreetype6-dev libgl1-mesa-dev libgl2ps-dev libglpk-dev  \
