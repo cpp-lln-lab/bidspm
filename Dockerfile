@@ -15,17 +15,8 @@ RUN apt-get update -qq && \
         python3-pip \
         fonts-freefont-otf \
         ghostscript \
-        # TODO reduce number of octave dependencies
-        gnuplot-x11 libcurl4-gnutls-dev \
-        # autoconf bison dvipng epstool fig2dev flex \
-        # gperf icoutils libarpack2-dev libbison-dev libopenblas-dev  \
-        # libfftw3-dev libfltk1.3-dev libfontconfig1-dev  \
-        # libfreetype6-dev libgl1-mesa-dev libgl2ps-dev libglpk-dev  \
-        # libgraphicsmagick++1-dev libhdf5-dev liblapack-dev libosmesa6-dev  \
-        # libpcre3-dev libqhull-dev libqscintilla2-qt5-dev libqrupdate-dev  \
-        # libreadline-dev librsvg2-bin libsndfile1-dev libsuitesparse-dev  \
-        # libsundials-dev libtool libxft-dev openjdk-8-jdk  \
-        # pstoedit qtbase5-dev qttools5-dev qttools5-dev-tools zlib1g-dev \
+        gnuplot-x11 \
+        libcurl4-gnutls-dev \
         octave \
         liboctave-dev \
         octave-common \
