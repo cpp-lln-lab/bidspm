@@ -25,7 +25,7 @@ jobs:
     - save_cache:
         key: my_cache
         paths:
-        - ~/docker
+
         - ~/data
     - persist_to_workspace:
         root: /home/circleci
@@ -52,14 +52,14 @@ jobs:
     - run:
         name: print version
         command: |
-          docker run -ti --rm --read-only \
+          docker run -ti --rm \
             -v /tmp/workspace/data/ds114_test1:/bids_dataset \
               ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} --version
 
     - run:
         name: preprocess
         command: |
-          docker run -ti --rm --read-only \
+          docker run -ti --rm \
             -v /tmp/workspace/data/ds114_test<< parameters.dataset >>:/bids_dataset \
             -v ${HOME}/outputs<< parameters.dataset >>:/outputs \
               ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} \
@@ -67,7 +67,8 @@ jobs:
               /outputs subject \
               --action preprocess \
               --task linebisection \
-              --participant_label 01 02
+              --participant_label 01 02 \
+              --verbosity 2
         no_output_timeout: 6h
 
     - checkout
@@ -75,7 +76,7 @@ jobs:
     - run:
         name: stats
         command: |
-          docker run -ti --rm --read-only \
+          docker run -ti --rm  \
             -v /tmp/workspace/data/ds114_test<< parameters.dataset >>:/bids_dataset \
             -v ${HOME}/demos/openneuro/models:/models \
             -v ${HOME}/outputs<< parameters.dataset >>:/outputs \
@@ -86,7 +87,8 @@ jobs:
               --preproc_dir /outputs/derivatives/bidspm-preproc \
               --model_file /models/model-ds000114_desc-linebisection_smdl.json \
               --task linebisection \
-              --participant_label 01 02
+              --participant_label 01 02 \
+              --verbosity 2
         no_output_timeout: 6h
 
     - store_artifacts:

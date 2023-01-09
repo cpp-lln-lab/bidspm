@@ -13,7 +13,7 @@ function saveOptions(opt)
 
   % (C) Copyright 2020 bidspm developers
 
-  optionDir = fullfile(pwd, 'options');
+  optionDir = fullfile(opt.dir.derivatives, 'options');
   spm_mkdir(optionDir);
 
   taskString = '';

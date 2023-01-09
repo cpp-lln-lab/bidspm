@@ -1,49 +1,35 @@
-# Creates a docker image of bidspm
-# version number are updated automatically with the bump version script
-
-FROM ubuntu:22.04
+FROM bids/base_validator
 
 ARG DEBIAN_FRONTEND="noninteractive"
 
-USER root
-
-ENV LANG="en_US.UTF-8" \
-    LC_ALL="en_US.UTF-8"
-
-LABEL version="3.0.0"
-
-## basic OS tools install, node, npm also octave
+## basic OS tools install octave
 RUN apt-get update -qq && \
     apt-get -qq -y --no-install-recommends install \
         build-essential \
-        software-properties-common\
+        software-properties-common \
+        apt-utils \
+        ca-certificates \
+        git \
         curl \
+        python3 \
+        python3-pip \
+        fonts-freefont-otf \
+        ghostscript \
+        gnuplot-x11 \
+        libcurl4-gnutls-dev \
         octave \
         liboctave-dev \
-        nodejs \
-        npm && \
+        octave-common \
+        octave-io \
+        octave-image \
+        octave-signal \
+        octave-statistics && \
     apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
         /var/*/apt/*/partial \
         /var/lib/apt/lists/* \
         /var/log/apt/term*
-
-## add python
-RUN add-apt-repository ppa:deadsnakes/ppa && apt-get update -qq && \
-    apt-get -qq -y --no-install-recommends install \
-        python3.11 \
-        python3-pip && \
-    apt-get clean && \
-    rm -rf \
-        /tmp/hsperfdata* \
-        /var/*/apt/*/partial \
-        /var/lib/apt/lists/* \
-        /var/log/apt/term* && \
-    echo '\n' && \
-    python3 --version && \
-    pip3 list && \
-    echo '\n'
 
 ## Install SPM
 RUN mkdir /opt/spm12 && \
@@ -54,33 +40,16 @@ RUN mkdir /opt/spm12 && \
     make -C /opt/spm12/src PLATFORM=octave distclean && \
     make -C /opt/spm12/src PLATFORM=octave && \
     make -C /opt/spm12/src PLATFORM=octave install && \
-    ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12 && \
-    octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();"
-
-## Install node.js
-RUN node -v && npm -v
-
-## Install bidspm in user folder
-RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
-
-COPY version /version
+    ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
 
 WORKDIR /home/neuro
-RUN mkdir code input output
 
-# uncomment when local development
-RUN echo '\n development'
 COPY . /home/neuro/bidspm
-
-# TODO
-# USER neuro
-
-# RUN echo '\n production'
-# RUN git clone --depth 1 --branch main --recursive https://github.com/cpp-lln-lab/bidspm.git
-
 WORKDIR /home/neuro/bidspm
-RUN make install && \
-    octave --no-gui --eval "addpath(pwd); savepath();"
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip3 --no-cache-dir install . && \
+    octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
+    octave --no-gui --eval "addpath(pwd); savepath(); bidspm(); path"
 
 WORKDIR /home/neuro
 

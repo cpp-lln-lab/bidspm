@@ -1,7 +1,6 @@
 # ignoring this might speed up build
 # by preventing passing extra content to the docker daemon
 
-.git/*
 .github
 .mypy_cache
 .vscode
@@ -13,3 +12,6 @@ env
 templates
 **/tests
 **/bids-examples
+lib/*/.git
+.mypy_cache
+.Rproj.user
