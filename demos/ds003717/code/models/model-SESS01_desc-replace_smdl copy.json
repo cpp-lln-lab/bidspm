@@ -1,0 +1,116 @@
+{
+  "Name": "SESS01_model_replace_transformer",
+  "BIDSModelVersion": "1.0.0",
+  "Input": {
+    "task": [
+      "SESS01"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_combine_AV",
+      "Transformations": {
+        "Transformer": "bids-matlab_v0.1.0dev",
+        "Instructions": [
+          {
+            "Name": "Replace",
+            "Input": "trial_type",
+            "Attribute": "value",
+            "Replace": [
+              {
+                "key": "AV_n10_SNR",
+                "value": "AV"
+              },
+              {
+                "key": "AV_n5_SNR",
+                "value": "AV"
+              }
+            ]
+          }
+        ]
+      },
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          "trial_type.AV_0_SNR",
+          "trial_type.AV_Quiet",
+          "trial_type.AV",
+          "trial_type.AV_p5_SNR",
+          "trial_type.A_Quiet",
+          "trial_type.NULL",
+          "trial_type.V_only_Quiet_InScanner",
+          "1",
+          "trans_?",
+          "rot_?",
+          "outlier*"
+        ],
+        "Type": "glm",
+        "HRF": {
+          "Variables": [
+          "trial_type.AV_0_SNR",
+          "trial_type.AV_Quiet",
+          "trial_type.AV_n10_SNR",
+          "trial_type.AV",
+          "trial_type.A_Quiet",
+          "trial_type.NULL",
+          "trial_type.V_only_Quiet_InScanner"
+          ],
+          "Model": "spm"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "InclusiveMaskingThreshold": 0.8
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.AV_0_SNR",
+          "trial_type.AV_Quiet",
+          "trial_type.AV",
+          "trial_type.AV_p5_SNR",
+          "trial_type.A_Quiet",
+          "trial_type.NULL",
+          "trial_type.V_only_Quiet_InScanner"
+        ]
+      }
+    },
+    {
+      "Level": "Subject",
+      "Name": "subject",
+      "GroupBy": [
+        "subject",
+        "contrast"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    }
+  ]
+}
