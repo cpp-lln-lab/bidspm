@@ -6,7 +6,7 @@
 %
 % in the trial type column by the value AV
 %
-% This is an example of how to desgin a transformer
+% This is an example of how to design a transformer
 % to then use it in your bids stats model.
 % One could also use the same approach to create a transformer
 % with many more steps.
