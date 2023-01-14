@@ -15,7 +15,7 @@ preproc_dir = fullfile(output_dir, 'derivatives', 'bidspm-preproc');
 % You can try some of the other models from the models folder.
 model_file = fullfile(cwd, 'models', 'model-defaultSESS01_smdl.json');
 
-% definte what result to see
+% define what result to see
 opt.results(1) = defaultResultsStructure();
 opt.results(1).nodeName = 'run_combine_AV';
 opt.results(1).name = 'AV';

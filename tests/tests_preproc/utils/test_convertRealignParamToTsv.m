@@ -13,7 +13,7 @@ function test_convertRealignParamToTsv_basic()
   opt = setOptions('vislocalizer');
 
   input = fullfile(opt.dir.preproc, 'sub-01', 'ses-01', 'func', ...
-                   'rp_sub-01_ses-01_task-vislocalizer_bold.txt');
+                   sprintf('rp_sub-01_ses-01_task-vislocalizer_bold.txt\n'));
 
   opt = set_spm_2_bids_defaults(opt);
 
