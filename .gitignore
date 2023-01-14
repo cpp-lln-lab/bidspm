@@ -5,6 +5,7 @@
 *.log
 *.zip
 *.html
+*.docx
 *.ps
 
 new_events.tsv
@@ -25,14 +26,12 @@ README
 # Project specific
 onsets*_events.mat
 
-## virtual env
-env
-venv
 
 ## from running tests in root dir
 */group/*
 models/*
 
+###############################################################################
 # python
 **/*egg-info
 **/__pycache__
@@ -42,11 +41,18 @@ models/*
 # jupyter notebooks
 .ipynb_checkpoints
 
+## virtual env
+env
+venv
+
+###############################################################################
 # node stuff
 node_modules
 package*
 yarn.lock
 
+
+###############################################################################
 ## MATLAB / OCTAVE gitignore template
 
 # From : https://github.com/github/gitignore/blob/master/Global/MATLAB.gitignore
@@ -82,3 +88,10 @@ codegen/
 
 # Octave session info
 octave-workspace
+
+
+###############################################################################
+#  R
+
+.Rproj.user
+.Rhistory
