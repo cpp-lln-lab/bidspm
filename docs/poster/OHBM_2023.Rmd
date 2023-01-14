@@ -54,7 +54,7 @@ date: "2022-12-17"
 output:
   word_document: default
   pdf_document: default
-bibliography: poster.bib
+bibliography: OHBM_2023.bib
 ---
 
 # Abstract
