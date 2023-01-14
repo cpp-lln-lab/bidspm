@@ -12,6 +12,8 @@ function addGitIgnore(fullpath)
 
   % (C) Copyright 2022 bidspm developers
 
+  spm_mkdir(fullpath);
+
   outputFile = fullfile(fullpath, '.gitignore');
 
   if exist(outputFile, 'file') == 2

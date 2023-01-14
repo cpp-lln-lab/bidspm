@@ -1,31 +1,30 @@
-# Creates a docker image of bidspm
+FROM bids/base_validator
 
-# version number are updated automatically with the bump version script
+ARG DEBIAN_FRONTEND="noninteractive"
 
-# this is mostly taken from the spm docker files: https://github.com/spm/spm-docker
-FROM ubuntu:22.04
-
-USER root
-
-ENV LANG="en_US.UTF-8" \
-    LC_ALL="en_US.UTF-8"
-
-LABEL version="3.0.0"
-
-LABEL maintainer="Rémi Gau <remi.gau@gmail.com>"
-
-## basic OS tools install, node, npm also octave
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    build-essential software-properties-common\
-    curl \
-    octave liboctave-dev \
-    nodejs npm
-
-## add python
-RUN add-apt-repository ppa:deadsnakes/ppa && apt-get update
-RUN apt-get -y install python3.10 python3-pip
-
-RUN apt-get clean && \
+## basic OS tools install octave
+RUN apt-get update -qq && \
+    apt-get -qq -y --no-install-recommends install \
+        build-essential \
+        software-properties-common \
+        apt-utils \
+        ca-certificates \
+        git \
+        curl \
+        python3 \
+        python3-pip \
+        fonts-freefont-otf \
+        ghostscript \
+        gnuplot-x11 \
+        libcurl4-gnutls-dev \
+        octave \
+        liboctave-dev \
+        octave-common \
+        octave-io \
+        octave-image \
+        octave-signal \
+        octave-statistics && \
+    apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
         /var/*/apt/*/partial \
@@ -42,35 +41,16 @@ RUN mkdir /opt/spm12 && \
     make -C /opt/spm12/src PLATFORM=octave && \
     make -C /opt/spm12/src PLATFORM=octave install && \
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
-RUN octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();"
-
-## Install node.js
-RUN node -v && npm -v
-
-## Install bidspm in user folder
-RUN test "$(getent passwd neuro)" || useradd --no-user-group --create-home --shell /bin/bash neuro
 
 WORKDIR /home/neuro
-RUN mkdir code input output
 
-# uncomment when local development
-RUN echo '\n development'
 COPY . /home/neuro/bidspm
+WORKDIR /home/neuro/bidspm
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip3 --no-cache-dir install . && \
+    octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
+    octave --no-gui --eval "addpath(pwd); savepath(); bidspm(); path"
 
-# TODO
-# USER neuro
-
-# RUN echo '\n production'
-# RUN git clone --depth 1 --branch main --recursive https://github.com/cpp-lln-lab/bidspm.git
-
-
-RUN cd bidspm && make install
-
-RUN echo '\n'
-RUN python3 --version && pip3 list
-RUN echo '\n'
-
-
-RUN cd bidspm && octave --no-gui --eval "addpath(pwd); savepath();"
+WORKDIR /home/neuro
 
 ENTRYPOINT ["bidspm"]

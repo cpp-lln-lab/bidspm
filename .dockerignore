@@ -1,16 +1,17 @@
 # ignoring this might speed up build
 # by preventing passing extra content to the docker daemon
 
-.vscode
-.git
 .github
+.mypy_cache
+.vscode
 binder
 coverage_html
-demos/*/outputs/
-demos/*/inputs/
-demos/*/cfg/
-docs
+**/demos
+**/docs
 env
-manualTests
 templates
-tests
+**/tests
+**/bids-examples
+lib/*/.git
+.mypy_cache
+.Rproj.user

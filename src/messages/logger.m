@@ -6,7 +6,7 @@ function logMsg = logger(varargin)
   %
   %   logger(logLevel, msg, 'options', opt, 'filename', filename, 'id', id)
   %
-  % :param logLevel:
+  % :param logLevel: Any of ``{'ERROR', 'WARNING', 'INFO', 'DEBUG'}``
   % :type  logLevel: char
   %
   % :param msg:

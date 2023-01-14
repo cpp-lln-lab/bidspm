@@ -1,18 +1,10 @@
-# Do it yourself
+---
+title: "SPM: How do I merge 2 masks with SPM?"
+alt_titles:
+  - "How do I merge 2 ROIs?"
+---
 
-Listing here some basic commands you might need to know to combine masks by
-hand.
-
-Also good way to learn about some basic low level functions of SPM.
-
--   `spm_vol`: reads the header of a 3D or 4D Nifti images
--   `spm_read_vols`: given a header it will get the data of Nifti image
--   `spm_write_vol`: given a header it will get the data of Nifti image
-
-For more info about basic files, check the
-[SPM wikibooks](https://en.wikibooks.org/wiki/SPM/Programming_intro#SPM_functions).
-
-## Merging 2 masks
+Here is a code snippet to merge 2 masks:
 
 ```matlab
 path_to_mask_1 = 'FIX_ME';
@@ -43,3 +35,12 @@ merged_mask_header.fname = 'new_mask.nii';
 
 spm_write_vol(merged_mask_header, merged_mask);
 ```
+
+Also good way to learn about some basic low level functions of SPM.
+
+-   `spm_vol`: reads the header of a 3D or 4D Nifti images
+-   `spm_read_vols`: given a header it will get the data of Nifti image
+-   `spm_write_vol`: given a header and a 3D matrix, it will write a Nifti image
+
+For more info about basic files, check the
+[SPM wikibooks](https://en.wikibooks.org/wiki/SPM/Programming_intro#SPM_functions).

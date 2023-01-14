@@ -3,10 +3,10 @@ function bidspmHelp()
   % General intro function for bidspm
   %
   %
-  % Note:
+  % Note::
   %
-  % - all parameters use ``snake_case``
-  % - most "invalid" calls simply initialize bidspm
+  %   - all parameters use ``snake_case``
+  %   - most "invalid" calls simply initialize bidspm
   %
   %
   %
@@ -44,6 +44,7 @@ function bidspmHelp()
   %                - ``'preprocess'``
   %                - ``'smooth'``: smooths data
   %                - ``'default_model'``
+  %                - ``'create_roi'``
   %                - ``'stats'``
   %                - ``'contrasts'``
   %                - ``'results'``
@@ -132,6 +133,8 @@ function bidspmHelp()
   %
   % **COPY:**
   %
+  % Copies fmriprep data for smoothing.
+  %
   % .. code-block:: matlab
   %
   %   bidspm(bids_dir, output_dir, 'subject', ...
@@ -146,6 +149,8 @@ function bidspmHelp()
   %
   %
   % **CREATE_ROI:**
+  %
+  % Creates ROIs from a given atlas.
   %
   % .. code-block:: matlab
   %
@@ -189,6 +194,8 @@ function bidspmHelp()
   %
   % **DEFAULT_MODEL:**
   %
+  % Creates a default BIDS stats model for a given raw BIDS dataset.
+  %
   % .. code-block:: matlab
   %
   %   bidspm(bids_dir, output_dir, 'dataset', ...
@@ -205,6 +212,12 @@ function bidspmHelp()
   %
   %
   % **STATS:**
+  %
+  % .. note::
+  %
+  %   - ``'stats'``     runs model specification / estimation, contrast computation, display results
+  %   - ``'contrasts'`` runs contrast computation, display results
+  %   - ``'results'``   displays results
   %
   % .. code-block:: matlab
   %
@@ -296,9 +309,9 @@ function bidspmHelp()
   %   bidspm('action', 'run_tests')
   %
   %
-  %  For a more readable version of this help section,
-  %  see the online <a
-  %  href="https://bidspm.readthedocs.io/en/latest/usage_notes.html">documentation</a>.
+  % For a more readable version of this help section,
+  % see the online <a
+  % href="https://bidspm.readthedocs.io/en/latest/usage_notes.html">documentation</a>.
   %
 
   % (C) Copyright 2022 bidspm developers

@@ -197,38 +197,12 @@ def common_parser() -> MuhParser:
         default=False,
     )
     parser.add_argument(
-        "--preproc_dir",
-        help="""
-        Fullpath to the directory with the preprocessed data.
-        """,
-        type=str,
-        nargs=1,
-    )
-    parser.add_argument(
-        "--model_file",
-        help="""
-        Fullpath to BIDS stats model.
-        """,
-        type=str,
-        nargs=1,
-    )
-    parser.add_argument(
         "--roi_dir",
         help="""
         Fullpath to the directory with the regions of interest.
         """,
         type=str,
         nargs=1,
-    )
-    parser.add_argument(
-        "--roi_atlas",
-        help="""
-        Atlas to create the regions of interest from.
-        """,
-        type=str,
-        nargs=1,
-        default="neuromorphometrics",
-        choices=["neuromorphometrics", "wang", "anatomy_toobox", "visfatlas", "hcpex"],
     )
     parser.add_argument(
         "--roi_name",
@@ -238,40 +212,17 @@ def common_parser() -> MuhParser:
         """,
         nargs="+",
     )
-    parser.add_argument(
-        "--roi_based",
+
+    preprocess_only = parser.add_argument_group("preprocess only arguments")
+    preprocess_only.add_argument(
+        "--anat_only",
         help="""
-        To run stats only in regions of interests.
+        If preprocessing should be done only on anatomical data.
         """,
         action="store_true",
         default=False,
     )
-    parser.add_argument(
-        "--design_only",
-        help="""
-        To only specify the GLM without estimating it.
-        """,
-        action="store_true",
-        default=False,
-    )
-    parser.add_argument(
-        "--concatenate",
-        help="""
-        To create 4D image of all the beta and contrast images of the conditions
-        of interest included in the run level design matrix.
-        """,
-        action="store_true",
-        default=False,
-    )
-    parser.add_argument(
-        "--keep_residuals",
-        help="""
-        Keep GLM residuals.
-        """,
-        action="store_true",
-        default=False,
-    )
-    parser.add_argument(
+    preprocess_only.add_argument(
         "--dummy_scans",
         help="""
         Number of dummy scans to remove.
@@ -280,10 +231,65 @@ def common_parser() -> MuhParser:
         nargs=1,
         default=0,
     )
-    parser.add_argument(
-        "--anat_only",
+
+    create_roi_only = parser.add_argument_group("create roi only arguments")
+    create_roi_only.add_argument(
+        "--roi_atlas",
         help="""
-        If preprocessing should be done only on anatomical data.
+        Atlas to create the regions of interest from.
+        """,
+        type=str,
+        nargs=1,
+        default="neuromorphometrics",
+        choices=["neuromorphometrics", "wang", "anatomy_toobox", "visfatlas", "hcpex"],
+    )
+
+    stats_only = parser.add_argument_group("stats only arguments")
+    stats_only.add_argument(
+        "--model_file",
+        help="""
+        Fullpath to BIDS stats model.
+        """,
+        type=str,
+        nargs=1,
+    )
+    stats_only.add_argument(
+        "--preproc_dir",
+        help="""
+        Fullpath to the directory with the preprocessed data.
+        """,
+        type=str,
+        nargs=1,
+    )
+    stats_only.add_argument(
+        "--keep_residuals",
+        help="""
+        Keep GLM residuals.
+        """,
+        action="store_true",
+        default=False,
+    )
+    stats_only.add_argument(
+        "--concatenate",
+        help="""
+        To create 4D image of all the beta and contrast images of the conditions
+        of interest included in the run level design matrix.
+        """,
+        action="store_true",
+        default=False,
+    )
+    stats_only.add_argument(
+        "--design_only",
+        help="""
+        To only specify the GLM without estimating it.
+        """,
+        action="store_true",
+        default=False,
+    )
+    stats_only.add_argument(
+        "--roi_based",
+        help="""
+        To run stats only in regions of interests.
         """,
         action="store_true",
         default=False,

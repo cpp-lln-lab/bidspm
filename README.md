@@ -11,15 +11,21 @@
   [![GitHub last commit](https://img.shields.io/github/last-commit/cpp-lln-lab/bidspm)](https://github.com/cpp-lln-lab/bidspm.git)
   [![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](https://github.com/cpp-lln-lab/bidspm#contributors)
 
-<!--  [![HitCount](https://hits.dwyl.com/cpp-lln-lab/bidspm.svg?style=flat-square&show=unique)](http://hits.dwyl.com/cpp-lln-lab/bidspm) -->
-
 
 # bidspm
 
 This is a Matlab / Octave toolbox to perform MRI data analysis on a
 [BIDS data set](https://bids.neuroimaging.io/) using SPM12.
 
-## Installation and set up
+## Installation
+
+### From docker hub
+
+```bash
+docker pull cpplab/bidspm:latest
+```
+
+### From the source
 
 In a terminal or a git bash prompt, type:
 
@@ -44,7 +50,7 @@ Please see our
 [documentation](https://bidspm.readthedocs.io/en/latest/installation.html) for
 more info.
 
-### Command line interface
+### Installing the Command line Interface (CLI)
 
 If you want to use the BIDS app python based CLI of bidspm, you need to
 
@@ -60,7 +66,12 @@ You can then install the bidspm CLI from within the `bidspm` folder with:
 pip install .
 ```
 
-### Validation dependencies
+You can then type the following to see which command you have access to:
+```bash
+bidspm --help
+```
+
+### Installing the validation dependencies
 
 If you want to validate bids dataset and bids stats model through bidspm, you
 will need:

@@ -185,7 +185,7 @@ function opt = setConfounds(opt, bm)
 
   opt.confounds = false;
 
-  rootNode = bm.getRootNode();
+  rootNode = bm.get_root_node();
   designMatrix = rootNode.Model.X;
   designMatrix = removeIntercept(designMatrix);
 
