@@ -73,6 +73,11 @@ end
 
 function test_boilerplate_stats_only()
 
+  if ~isGithubCi
+    % when not in CI the octache partials are not in the right place
+    return
+  end
+
   % GIVEN
 
   opt = setOptions('MoAE');
@@ -101,6 +106,10 @@ end
 
 function test_boilerplate_preproc_only()
 
+  if ~isGithubCi
+    % when not in CI the octache partials are not in the right place
+    return
+  end
   % GIVEN
 
   opt = setOptions('MoAE');

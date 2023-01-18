@@ -40,7 +40,7 @@ function outputFile = boilerplate(varargin)
 
   % (C) Copyright 2022 bidspm developers
 
-  defaultPartialsPath = fullfile(fileparts(mfilename('fullpath')), 'partials');
+  defaultPartialsPath = fullfile(returnRootDir(), 'src', 'reports', 'partials');
 
   isFolder = @(x) isdir(x);
 
