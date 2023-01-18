@@ -234,6 +234,13 @@ function preprocess(args)
     saveOptions(opt);
 
     bidsReport(opt);
+    boilerplate(opt, ...
+                'outputPath', fullfile(opt.dir.output, 'reports'), ...
+                'pipelineType', 'preproc', ...
+                'verbosity', 0);
+    if opt.boilerplate_only
+      return
+    end
     bidsCopyInputFolder(opt);
     if opt.dummy_scans > 0
       bidsRemoveDummies(opt, ...
@@ -241,10 +248,6 @@ function preprocess(args)
                         'force', false);
     end
 
-    boilerplate(opt, ...
-                'outputPath', fullfile(opt.dir.output, 'reports'), ...
-                'pipelineType', 'preproc', ...
-                'verbosity', 0);
     if opt.useFieldmaps && ~opt.anatOnly
       bidsCreateVDM(opt);
     end
@@ -345,6 +348,9 @@ function stats(args)
                 'outputPath', fullfile(opt.dir.output, 'reports'), ...
                 'pipelineType', 'stats', ...
                 'verbosity', 0);
+    if opt.boilerplate_only
+      return
+    end
 
     if opt.glm.roibased.do
 
