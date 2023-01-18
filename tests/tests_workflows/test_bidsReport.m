@@ -13,7 +13,7 @@ end
 function test_bidsReport_smoke_test()
 
   opt = setOptions('vismotion');
-  
+
   cleanUp(fullfile(opt.dir.preproc, 'reports'));
 
   bidsReport(opt);
@@ -24,26 +24,26 @@ function test_bidsReport_smoke_test()
                              'dataset-bidspm-raw_bids-matlab_report.md'), ...
                     'file'), ...
               2);
-          
-    cleanUp(fullfile(opt.dir.preproc, 'reports'));
+
+  cleanUp(fullfile(opt.dir.preproc, 'reports'));
 
 end
 
 function test_bidsReport_basic()
 
   opt = setOptions('MoAE');
-  
+
   cleanUp(fullfile(opt.dir.preproc, 'reports'));
 
   bidsReport(opt);
-  
+
   assertEqual(exist(fullfile(opt.dir.preproc, ...
                              'reports', ...
                              'sub-01', ...
                              'dataset-raw_bids-matlab_report.md'), ...
                     'file'), ...
-              2);  
-  
+              2);
+
   cleanUp(fullfile(opt.dir.preproc, 'reports'));
 
 end

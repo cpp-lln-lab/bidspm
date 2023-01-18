@@ -172,7 +172,7 @@ def common_parser() -> MuhParser:
         """,
         action="store_true",
         default=False,
-    )    
+    )
     parser.add_argument(
         "--bids_filter_file",
         help="""

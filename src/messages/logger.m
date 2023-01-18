@@ -53,15 +53,15 @@ function logMsg = logger(varargin)
                    logLevel, ...
                    [filename, ext], ...
                    msg);
-             
+
   % print file that sent the message
   if ismember(logLevel, {'INFO', 'DEBUG'})
     if ~strcmp(id, '')
-        logMsg = sprintf('%s\t\t\t%s', logMsg, id);
-    end 
+      logMsg = sprintf('%s\t\t\t%s', logMsg, id);
+    end
   end
-  
-  logMsg = [logMsg , '\n'];
+
+  logMsg = [logMsg, '\n'];
 
   if ismember(logLevel, {'ERROR'})
     tmpOpt = opt;
@@ -88,7 +88,7 @@ function logMsg = logger(varargin)
       if ismember(logLevel, {'WARNING'})
         errorHandling(filename, id, logMsg, true, true);
       end
-      if ismember(logLevel, {'INFO', 'DEBUG'})       
+      if ismember(logLevel, {'INFO', 'DEBUG'})
         printToScreen(logMsg, opt, 'format', 'blue');
       end
   end

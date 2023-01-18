@@ -261,7 +261,7 @@ function fieldsToSet = setDefaultOption()
 
   fieldsToSet.pipeline.type = '';
   fieldsToSet.pipeline.name = 'bidspm';
-  
+
   fieldsToSet.boilerplate_only = false;
 
   fieldsToSet.useBidsSchema = false;
