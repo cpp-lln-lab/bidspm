@@ -101,23 +101,10 @@ function functionalQA(opt)
 
         for iRun = 1:nbRuns
 
-          % get the filename for this bold run for this task
-          % TODO improve prefixes?
           prefix = ['[', ...
                     spm_get_defaults('coreg.write.prefix'), ...
                     spm_get_defaults('unwarp.write.prefix'), ...
                     ']'];
-          pattern = ['^', prefix, 'sub-', subLabel];
-          if ~strcmp(sessions{iSes}, '')
-            pattern = [pattern, '_ses-', sessions{iSes}]; %#ok<*AGROW>
-          end
-          pattern = [pattern, '.*', '_task-' thisTask, '.*'];
-          if ~strcmp(runs{iRun}, '')
-            pattern = [pattern, '_run-' runs{iRun}];
-          end
-          pattern = [pattern, '_.*_' opt.bidsFilterFile.bold.suffix '.nii'];
-          funcImage = spm_select('FPListRec', fullfile(BIDS.pth, ['sub-' subLabel]), pattern);
-
           funcImage = bids.query(BIDS, 'data', ...
                                  'prefix', prefix, ...
                                  'sub', subLabel, ...
