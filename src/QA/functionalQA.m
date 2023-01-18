@@ -115,15 +115,24 @@ function functionalQA(opt)
           if ~strcmp(runs{iRun}, '')
             pattern = [pattern, '_run-' runs{iRun}];
           end
-          pattern = [pattern, '.*_' opt.bidsFilterFile.bold.suffix '.nii'];
+          pattern = [pattern, '_.*_' opt.bidsFilterFile.bold.suffix '.nii'];
           funcImage = spm_select('FPListRec', fullfile(BIDS.pth, ['sub-' subLabel]), pattern);
 
-          if size(funcImage, 1) ~= 1
+          funcImage = bids.query(BIDS, 'data', ...
+                                 'prefix', prefix, ...
+                                 'sub', subLabel, ...
+                                 'ses', sessions{iSes}, ...
+                                 'run', runs{iRun}, ...
+                                 'suffix', opt.bidsFilterFile.bold.suffix, ...
+                                 'extension', '.nii');
+
+          if numel(funcImage) ~= 1
             msg = sprintf('too many files found:\n%s', createUnorderedList(funcImage));
             id = 'tooManyFiles';
-            logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+            logger('ERROR', msg, 'id', id, 'filename', mfilename(), 'options', opt);
             continue
           end
+          funcImage = funcImage{1};
 
           % sanity check that all images are in the same space.
           % TODO: need to reslice TPMs as part of spatial prepro first
@@ -141,7 +150,6 @@ function functionalQA(opt)
           %                                 {tpms(1, :); tpms(2, :); tpms(3, :)}, ...
           %                                 'save');
 
-          % TODO use spm_select to get rp_ file
           realignParamFile = getRealignParamFilename(BIDS, subLabel, sessions{iSes}, runs{iRun}, opt);
           jsonContent.meanFD = mean(spmup_FD(realignParamFile, distToSurf));
 
@@ -154,12 +162,6 @@ function functionalQA(opt)
                                              'Voltera', opt.QA.func.Voltera, ...
                                              'Radius', distToSurf);
 
-          confounds = load(outputFiles.design);
-          headers = bids.util.jsondecode(spm_file(outputFiles.design, 'ext', '.json'));
-
-          for con = 1:size(confounds, 2)
-            tsvContent.(headers.Columns{con}) = confounds(:, con);
-          end
           % horrible hack to prevent the "abrupt" way spmup_volumecorr crashes
           % if nansum is not there
           if opt.QA.func.carpetPlot && exist('nansum', 'file') == 2
@@ -197,13 +199,17 @@ function functionalQA(opt)
           bf.suffix = 'regressors';
           bf.extension = '.tsv';
 
+          %%
+          tsvContent = returnTsvContent(outputFiles);
           bids.util.tsvwrite(spm_file(funcImage, 'filename', bf.filename), tsvContent);
 
+          %%
           jsonContent = createDataDictionary(tsvContent);
           bf.extension = '.json';
 
           bids.util.jsonwrite(spm_file(funcImage, 'filename', bf.filename), jsonContent);
 
+          %%
           delete(outputFiles.design);
           delete(spm_file(outputFiles.design, 'ext', '.json'));
           delete(realignParamFile);
@@ -214,6 +220,16 @@ function functionalQA(opt)
 
     end
 
+  end
+
+end
+
+function tsvContent = returnTsvContent(outputFiles)
+  confounds = load(outputFiles.design);
+  headers = bids.util.jsondecode(spm_file(outputFiles.design, 'ext', '.json'));
+
+  for con = 1:size(confounds, 2)
+    tsvContent.(headers.Columns{con}) = confounds(:, con);
   end
 
 end
