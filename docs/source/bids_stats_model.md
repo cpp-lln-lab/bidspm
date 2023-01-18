@@ -93,9 +93,14 @@ It uses
 to run those transformations. Please see this bids-matlab documentation to know
 how to use them and call them in your JSON.
 
-The advantage of this bids-matlab transformers is that they allow you to
-directly add on tsv files to quickly see what outcome a series of transformers
-will produce.
+You can find a list of the available variables transformations in the
+[bids matlab doc](https://bids-matlab.readthedocs.io/en/latest/transformers.html)
+and on the
+[variable-transforms repository](https://github.com/bids-standard/variable-transform)
+
+The advantage of these bids-matlab transformers is that they allow you to
+directly test them on tsv files to quickly see what outcome a series of
+transformers will produce.
 
 Below is an example on how to subtract 3 seconds from the event onsets of the
 conditions `motion` listed in the `trial_type` columns of the `events.tsv` file,
@@ -122,6 +127,10 @@ and put the output in a variable called `motion`.
 
 At the subject level, bidspm can only access apply transformation on the content
 `events.tsv`.
+
+You can find demo of how to design the transformers for your analysis
+in the `demos/transformers` folder and
+also in `demos/ds003717/code/04_transformation.m`.
 
 ### HRF
 
@@ -157,18 +166,18 @@ dummy scans will be included.
 
 `HRF` specifies:
 
--   which variables of `X` have to be convolved
--   what HRF model to use to do so.
+- which variables of `X` have to be convolved
+- what HRF model to use to do so.
 
 You can choose from:
 
--   `"spm"`
--   `"spm + derivative"`
--   `"spm + derivative + dispersion"`
+- `"spm"`
+- `"spm + derivative"`
+- `"spm + derivative + dispersion"`
 
 Not yet implemented:
 
--   `"fir"`
+- `"fir"`
 
 <!--
 ```json
@@ -214,26 +223,26 @@ threshold used by SPM to create an implicit inclusive mask when running a GLM
 
 ```json
 {
-    "Nodes": [
-        {
-            "Level": "Run",
-            "Name": "run_level",
-            "Model": {
-                "X": ["trial_type.listening"],
-                "HRF": {
-                    "Variables": ["trial_type.listening"],
-                    "Model": "spm"
-                },
-                "Type": "glm",
-                "Software": {
-                    "SPM": {
-                        "SerialCorrelation": "AR(1)",
-                        "InclusiveMaskingThreshold": "-Inf"
-                    }
-                }
-            }
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+      "Model": {
+        "X": ["trial_type.listening"],
+        "HRF": {
+          "Variables": ["trial_type.listening"],
+          "Model": "spm"
+        },
+        "Type": "glm",
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "AR(1)",
+            "InclusiveMaskingThreshold": "-Inf"
+          }
         }
-    ]
+      }
+    }
+  ]
 }
 ```
 
@@ -352,19 +361,19 @@ Subject level contrast averaging beta of run 1 and 2
 
 At the moment only, the only type of models that are supported are:
 
--   one sample t-test: averaging across all subjects
+- one sample t-test: averaging across all subjects
 
 ```{literalinclude} ./examples/model-datasetLevel_smdl.json
    :language: json
 ```
 
--   one sample t-test: averaging across all subjects of a specific group
+- one sample t-test: averaging across all subjects of a specific group
 
 ```{literalinclude} ./examples/model_withinGroup_smdl.json
    :language: json
 ```
 
--   2 samples t-test: comparing 2 groups
+- 2 samples t-test: comparing 2 groups
 
 At the moment this can only be based on how participants are allocated to a
 group based on a `group` or `Group` column in the `participants.tsv` of in the
