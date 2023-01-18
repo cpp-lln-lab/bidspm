@@ -46,13 +46,22 @@ function logMsg = logger(varargin)
            'id', 'wrongLogLevel');
   end
 
-  format = '\n[%s] bidspm - %s\t\t\t\t%s\n%s\n';
+  format = '\n[%s] bidspm - %s\t\t\t\t%s\n%s';
 
   logMsg = sprintf(format, ...
                    datestr(now, 'HH:MM:SS'), ...
                    logLevel, ...
                    [filename, ext], ...
                    msg);
+             
+  % print file that sent the message
+  if ismember(logLevel, {'INFO', 'DEBUG'})
+    if ~strcmp(id, '')
+        logMsg = sprintf('%s\t\t\t%s', logMsg, id);
+    end 
+  end
+  
+  logMsg = [logMsg , '\n'];
 
   if ismember(logLevel, {'ERROR'})
     tmpOpt = opt;
@@ -79,7 +88,7 @@ function logMsg = logger(varargin)
       if ismember(logLevel, {'WARNING'})
         errorHandling(filename, id, logMsg, true, true);
       end
-      if ismember(logLevel, {'INFO', 'DEBUG'})
+      if ismember(logLevel, {'INFO', 'DEBUG'})       
         printToScreen(logMsg, opt, 'format', 'blue');
       end
   end

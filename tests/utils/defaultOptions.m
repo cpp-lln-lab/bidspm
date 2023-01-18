@@ -23,6 +23,8 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.pipeline.type =  '';
   expectedOptions.pipeline.name = 'bidspm';
+  
+  expectedOptions.boilerplate_only = false;  
 
   expectedOptions.anatOnly = false;
 

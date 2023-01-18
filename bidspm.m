@@ -35,6 +35,7 @@ function returnCode = bidspm(varargin)
   addParameter(args, 'dry_run', false, isLogical);
   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
   addParameter(args, 'skip_validation', false, isLogical);
+  addParameter(args, 'boilerplate_only', false, isLogical);
   addParameter(args, 'options', struct([]), isFileOrStruct);
   addParameter(args, 'verbosity', 2, isPositiveScalar);
 

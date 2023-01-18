@@ -21,6 +21,14 @@ function bidsReport(opt)
   % (C) Copyright 2020 bidspm developers
 
   opt.pipeline.type = 'preproc';
+  
+  if ~opt.boilerplate_only && ...
+      isdir(fullfile(opt.dir.output, 'reports'))
+      logger('INFO', 'Dataset reports alread exist.', ...
+             'options', opt, ...
+             'id', mfilename());
+      return
+  end
 
   [BIDS, opt] = setUpWorkflow(opt, 'BIDS report');
 

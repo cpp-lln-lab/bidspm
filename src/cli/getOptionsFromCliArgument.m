@@ -46,6 +46,8 @@ function opt = getOptionsFromCliArgument(args)
       % TODO validate
       opt.bidsFilterFile = args.Results.bids_filter_file;
     end
+    
+    opt.boilerplate_only = args.Results.boilerplate_only;
 
     opt = overrideFwhm(opt, args);
 

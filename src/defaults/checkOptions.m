@@ -89,6 +89,8 @@ function opt = checkOptions(opt)
   %     - ``opt.pipeline.type = 'preproc'`` - Switch it to ``stats`` when running GLMs.
   %     - ``opt.pipeline.name``
   %
+  %     - ``opt.reports.force = false`` - force to overwrite previous dataset description reports
+  %
   %     - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
   %       subjects should be fetched by their number ``1`` and not their label ``O1'``.
   %
@@ -259,6 +261,8 @@ function fieldsToSet = setDefaultOption()
 
   fieldsToSet.pipeline.type = '';
   fieldsToSet.pipeline.name = 'bidspm';
+  
+  fieldsToSet.boilerplate_only = false;
 
   fieldsToSet.useBidsSchema = false;
 
