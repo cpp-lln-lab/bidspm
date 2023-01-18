@@ -22,11 +22,20 @@ function bidsReport(opt)
 
   opt.pipeline.type = 'preproc';
 
+  if ~opt.boilerplate_only && ...
+      isdir(fullfile(opt.dir.output, 'reports'))
+    logger('INFO', 'Dataset reports already exist.', ...
+           'options', opt, ...
+           'id', mfilename());
+    return
+  end
+
   [BIDS, opt] = setUpWorkflow(opt, 'BIDS report');
 
   bids.diagnostic(BIDS, ...
                   'split_by', {'task'}, ...
-                  'output_path', fullfile(opt.dir.output, 'reports'));
+                  'output_path', fullfile(opt.dir.output, 'reports'), ...
+                  'verbose', false);
 
   for iSub = 1:numel(opt.subjects)
 
@@ -43,7 +52,7 @@ function bidsReport(opt)
                   'filter', filter, ...
                   'output_path', outputDir, ...
                   'read_nifti', true, ...
-                  'verbose', opt.verbosity > 1);
+                  'verbose', false);
     catch
       % in case we are dealing with empty files (a la bids-examples, or with
       % datalad datasets symlinks)
@@ -56,7 +65,7 @@ function bidsReport(opt)
                   'filter', filter, ...
                   'output_path', outputDir, ...
                   'read_nifti', false, ...
-                  'verbose', opt.verbosity > 1);
+                  'verbose', false);
     end
 
   end

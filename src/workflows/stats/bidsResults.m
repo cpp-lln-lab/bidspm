@@ -30,7 +30,7 @@ function matlabbatch = bidsResults(varargin)
   %
   % Specify a default structure result for this node::
   %
-  %   opt.results(1) = returnDefaultResultsStructure();
+  %   opt.results(1) = defaultResultsStructure();
   %
   % Specify the Node name (usually "run_level", "subject_levle" or "dataset_level")::
   %

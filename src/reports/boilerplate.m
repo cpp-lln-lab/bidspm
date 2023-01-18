@@ -40,7 +40,7 @@ function outputFile = boilerplate(varargin)
 
   % (C) Copyright 2022 bidspm developers
 
-  defaultPartialsPath = fullfile(fileparts(mfilename('fullpath')), 'partials');
+  defaultPartialsPath = fullfile(returnRootDir(), 'src', 'reports', 'partials');
 
   isFolder = @(x) isdir(x);
 
@@ -161,11 +161,13 @@ function outputFile = boilerplate(varargin)
     output = strjoin(output);
   end
 
-  %% print to screen
-  logger('INFO', output, 'options', opt, 'filename', mfilename());
-
   %% print to file
   outputFile = printToFile(output, outputPath, pipelineType, modelName);
+
+  %% print to screen
+  logger('INFO', sprintf('methods boilerplate saved at:\n\t%s\n', outputFile), ...
+         'options', opt, ...
+         'filename', mfilename());
 
 end
 

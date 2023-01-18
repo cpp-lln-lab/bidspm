@@ -156,6 +156,15 @@ def common_parser() -> MuhParser:
         nargs="+",
     )
     parser.add_argument(
+        "--boilerplate_only",
+        help="""
+        When set to ``true`` this will only generate figures describing the raw data,
+        the methods section boilerplate.
+        """,
+        action="store_true",
+        default=False,
+    )
+    parser.add_argument(
         "--dry_run",
         help="""
         When set to ``true`` this will generate and save the SPM batches,
