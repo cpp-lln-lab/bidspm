@@ -69,7 +69,7 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
 
   end
 
-  if isempty(vdmFile)
+  if isempty(vdmFile) && any(ismember('fmap', modalities))
     msg = sprintf('No voxel displacement map associated with: \n %s', boldFilename);
     id = 'noVDM';
     logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
