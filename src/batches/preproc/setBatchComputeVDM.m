@@ -70,7 +70,7 @@ function matlabbatch = setBatchComputeVDM(matlabbatch, fmapType, refImage)
                                          'toolbox', ...
                                          'FieldMap'), ...
                                 '^T1.nii$');
-  defaultsval.mflags.template = { fieldMapTemplate };
+  defaultsval.mflags.template = { deblank(fieldMapTemplate) };
 
   matlabbatch{end}.spm.tools.fieldmap.calculatevdm.subj(1).defaults.defaultsval = defaultsval;
 

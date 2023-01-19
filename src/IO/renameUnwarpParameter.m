@@ -27,7 +27,7 @@ function renameUnwarpParameter(BIDS, subLabel, opt)
       outputFile = spm_file(unwarpParam(iFile, :), 'filename', newFilename);
 
       if ~isempty(unwarpParam(iFile, :))
-        movefile(unwarpParam(iFile, :), outputFile);
+        movefile(deblank(unwarpParam(iFile, :)), outputFile);
       end
 
     end
