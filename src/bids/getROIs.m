@@ -58,6 +58,8 @@ function [roiList, roiFolder] = getROIs(varargin)
     pattern = [pattern '.*_mask.nii'];
     pattern = regexify(pattern);
     roiList = spm_select('FPlist', roiFolder, pattern);
+    % TODO
+    % test if deblank is needed
     roiList = cellstr(roiList);
 
   else
