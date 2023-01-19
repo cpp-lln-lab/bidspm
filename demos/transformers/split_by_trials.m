@@ -15,7 +15,11 @@
 % For MVPA analyses, the latter can be used to have 1 beta per trial
 % (and not 1 per run per condition).
 %
-%
+% You can find a list of the available variables transformations
+% in the bids matlab doc:
+% - https://bids-matlab.readthedocs.io/en/latest/transformers.html
+% on the variable-transforms repository
+% - https://github.com/bids-standard/variable-transform
 %
 % (C) Copyright 2021 Remi Gau
 

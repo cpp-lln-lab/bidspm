@@ -66,5 +66,5 @@ function test_boilerplate_spatial_subject_glm()
 end
 
 function value = partialsPapth()
-  value = fullfile(getTestDir(), '..', 'src', 'reports', 'partials');
+  value = fullfile(returnRootDir(), 'src', 'reports', 'partials');
 end
