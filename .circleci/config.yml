@@ -73,7 +73,7 @@ jobs:
 
     - checkout
 
-    - run: ls  ${HOME}/demos/openneuro/models
+    - run: ls  ~/project/demos/openneuro/models
 
     - run:
         name: stats
@@ -123,6 +123,8 @@ workflows:
           parameters:
             dataset: ['1', '2']
     - deploy:
+        context:
+        - DOCKER_HUB
         requires:
         - test
         filters:
