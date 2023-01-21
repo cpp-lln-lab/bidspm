@@ -73,6 +73,8 @@ jobs:
 
     - checkout
 
+    - run: ls  ${HOME}/demos/openneuro/models
+
     - run:
         name: stats
         command: |
