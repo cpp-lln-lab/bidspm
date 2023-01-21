@@ -73,14 +73,12 @@ jobs:
 
     - checkout
 
-    - run: ls  ~/project/demos/openneuro/models
-
     - run:
         name: stats
         command: |
           docker run -ti --rm  \
             -v /tmp/workspace/data/ds114_test<< parameters.dataset >>:/bids_dataset \
-            -v ${HOME}/demos/openneuro/models:/models \
+            -v ~/project/demos/openneuro/models:/models \
             -v ${HOME}/outputs<< parameters.dataset >>:/outputs \
               ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} \
               /bids_dataset \
