@@ -78,6 +78,9 @@ function returnCode = bidspm(varargin)
     executeAction(action, args);
     returnCode = 0;
   catch ME
+    opt.dir.output = args.Results.output_dir;
+    opt.dryRun = false;
+    opt.verbosity = 3;
     bugReport(opt, ME);
     returnCode = 1;
   end
