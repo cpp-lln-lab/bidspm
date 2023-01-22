@@ -38,6 +38,8 @@ models/*
 **/build
 .coverage
 
+.mypy_cache
+
 # jupyter notebooks
 .ipynb_checkpoints
 

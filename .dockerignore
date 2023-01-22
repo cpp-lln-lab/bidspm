@@ -8,10 +8,106 @@ binder
 coverage_html
 **/demos
 **/docs
-env
 templates
 **/tests
 **/bids-examples
 lib/*/.git
-.mypy_cache
+
+
+# General
+.DS_Store
+
+*.xml
+*.log
+*.zip
+*.html
+*.docx
+*.ps
+
+new_events.tsv
+
+tmp
+
+# logs and options
+error_logs
+*_report.md
+src/batches/cfg
+options_*[0-9][0-9].json
+skipped_roi_*.tsv
+
+# created by tests
+CHANGES
+README
+
+# Project specific
+onsets*_events.mat
+
+
+## from running tests in root dir
+*/group/*
+models/*
+
+###############################################################################
+# python
+**/*egg-info
+**/__pycache__
+**/build
+.coverage
+
+# jupyter notebooks
+.ipynb_checkpoints
+
+## virtual env
+env
+venv
+
+###############################################################################
+# node stuff
+node_modules
+package*
+yarn.lock
+
+
+###############################################################################
+## MATLAB / OCTAVE gitignore template
+
+# From : https://github.com/github/gitignore/blob/master/Global/MATLAB.gitignore
+
+# Windows default autosave extension
+*.asv
+
+# OSX / *nix default autosave extension
+*.m~
+
+# Compiled MEX binaries (all platforms)
+*.mex*
+
+# Packaged app and toolbox files
+*.mlappinstall
+*.mltbx
+
+# Generated helpsearch folders
+helpsearch*/
+
+# Simulink code generation folders
+slprj/
+sccprj/
+
+# Matlab code generation folders
+codegen/
+
+# Simulink autosave extension
+*.autosave
+
+# Simulink cache files
+*.slxc
+
+# Octave session info
+octave-workspace
+
+
+###############################################################################
+#  R
+
 .Rproj.user
+.Rhistory
