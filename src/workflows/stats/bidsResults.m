@@ -528,7 +528,8 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
       if ismember(lower(node.Level), {'run', 'session', 'subject'})
 
         if isempty(BIDS)
-          BIDS =  bids.layout(opt.dir.preproc, 'use_schema', false);
+          BIDS =  bids.layout(opt.dir.preproc, 'use_schema', false, ...
+                              'filter', struct('sub', {opt.subjects}));
         end
 
         background.sub = subLabel;

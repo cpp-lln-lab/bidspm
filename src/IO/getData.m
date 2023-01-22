@@ -51,7 +51,12 @@ function [BIDS, opt] = getData(varargin)
 
   validationInputFile(bidsDir, 'dataset_description.json');
 
-  BIDS = bids.layout(bidsDir, 'use_schema', opt.useBidsSchema, 'verbose', opt.verbosity > 1);
+  layout_filter = struct('sub', {opt.subjects});
+
+  BIDS = bids.layout(bidsDir, ...
+                     'use_schema', opt.useBidsSchema, ...
+                     'verbose', opt.verbosity > 1, ...
+                     'filter', layout_filter);
 
   if strcmp(opt.pipeline.type, 'stats')
     if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file') == 2
@@ -60,12 +65,14 @@ function [BIDS, opt] = getData(varargin)
       logger('INFO', msg, 'options', opt, 'filename', mfilename());
       tmp = load(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
       if isempty(fieldnames(tmp))
-        BIDS.raw = bids.layout(opt.dir.raw);
+        BIDS.raw = bids.layout(opt.dir.raw, 'filter', layout_filter);
       else
         BIDS.raw = tmp.BIDS;
       end
     else
-      BIDS.raw = bids.layout(opt.dir.raw, 'verbose', opt.verbosity > 1);
+      BIDS.raw = bids.layout(opt.dir.raw, ...
+                             'verbose', opt.verbosity > 1, ...
+                             'filter', layout_filter);
     end
   end
 
