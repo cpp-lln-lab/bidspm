@@ -334,7 +334,6 @@ function stats(args)
     if estimate
 
       if isSubjectLevel
-
         if opt.model.designOnly
           bidsFFX('specify', opt);
         else
@@ -342,7 +341,6 @@ function stats(args)
         end
 
       else
-
         bidsRFX('RFX', opt, 'nodeName', nodeName);
 
       end
@@ -350,7 +348,6 @@ function stats(args)
     end
 
     if contrasts
-
       if isSubjectLevel
         bidsFFX('contrasts', opt);
       else
