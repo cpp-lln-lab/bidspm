@@ -123,7 +123,7 @@ jobs:
           user_name=cpplab
           repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
           docker run -ti --rm  \
-            -v /tmp/workspace/data/ds001734-fmriprep:/bids_dataset \
+            -v /tmp/workspace/data/ds001734:/bids_dataset \
             -v ${HOME}/outputs:/outputs \
             -v ~/project/demos/openneuro/models:/models \
               ${user_name}/${repo_name} \
