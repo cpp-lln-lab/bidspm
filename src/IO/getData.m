@@ -52,7 +52,7 @@ function [BIDS, opt] = getData(varargin)
   validationInputFile(bidsDir, 'dataset_description.json');
 
   layout_filter = struct([]);
-  if ~ismember('', opt.subjects)
+  if ~isempty(opt.subjects{1}) && ~ismember('', opt.subjects)
     layout_filter = struct('sub', {opt.subjects});
   end
 
