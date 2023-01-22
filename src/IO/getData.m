@@ -51,7 +51,10 @@ function [BIDS, opt] = getData(varargin)
 
   validationInputFile(bidsDir, 'dataset_description.json');
 
-  layout_filter = struct('sub', {opt.subjects});
+  layout_filter = struct([]);
+  if ~ismember('', opt.subjects)
+    layout_filter = struct('sub', {opt.subjects});
+  end
 
   BIDS = bids.layout(bidsDir, ...
                      'use_schema', opt.useBidsSchema, ...
