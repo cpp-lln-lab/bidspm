@@ -8,6 +8,32 @@ function test_suite = test_bidsResults %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsResults_subject_lvl_regex()
+
+  %% GIVEN
+  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
+
+  % Specify what output we want
+  opt.results = defaultResultsStructure();
+
+  opt.results.nodeName = 'subject_level';
+
+  opt.results.name = {'.*VisMot.*'};
+
+  opt.subjects = {'01'};
+
+  %% WHEN
+  matlabbatch = bidsResults(opt);
+
+  %% THEN
+  % 3 contrasts match the regex
+  %  'VisMot'
+  %  'VisMot_gt_VisStat'
+  %  'VisStat_gt_VisMot'
+  assertEqual(numel(matlabbatch), 3);
+
+end
+
 function test_bidsResults_no_results()
 
   opt = setOptions('vismotion', '', 'pipelineType', 'stats');
@@ -157,32 +183,6 @@ function test_bidsResults_dataset_lvl()
   %% WHEN
 
   % matlabbatch = bidsResults(opt);
-
-end
-
-function test_bidsResults_subject_lvl_regex()
-
-  %% GIVEN
-  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
-
-  % Specify what output we want
-  opt.results = defaultResultsStructure();
-
-  opt.results.nodeName = 'subject_level';
-
-  opt.results.name = {'.*VisMot.*'};
-
-  opt.subjects = '01';
-
-  %% WHEN
-  matlabbatch = bidsResults(opt);
-
-  %% THEN
-  % 3 contrasts match the regex
-  %  'VisMot'
-  %  'VisMot_gt_VisStat'
-  %  'VisStat_gt_VisMot'
-  assertEqual(numel(matlabbatch), 3);
 
 end
 
