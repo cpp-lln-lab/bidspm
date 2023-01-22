@@ -30,7 +30,10 @@ function matlabbatch = setBatchSmoothingAnat(matlabbatch, BIDS, opt, subLabel)
   printBatchName('smoothing anat images', opt);
 
   opt.query.space = opt.space;
+  opt.query.modality = 'anat';
   opt = mniToIxi(opt);
+
+  opt = rmfield(opt, 'taskName');
 
   % identify sessions for this subject
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');

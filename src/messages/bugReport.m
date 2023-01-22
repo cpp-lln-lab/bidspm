@@ -30,6 +30,9 @@ function bugReport(opt, ME)
   output_dir = fullfile(output_dir, 'error_logs');
   spm_mkdir(output_dir);
 
+  logger('WARNING', 'An error occurred');
+  unfold(json);
+
   logFile = spm_file(fullfile(output_dir, sprintf('error_%s.log', timeStamp())), 'cpath');
   bids.util.jsonwrite(logFile, json);
   printToScreen(sprintf(['\nERROR LOG SAVED:\n\t%s\n', ...

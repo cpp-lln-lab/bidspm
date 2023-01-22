@@ -78,8 +78,11 @@ function returnCode = bidspm(varargin)
     executeAction(action, args);
     returnCode = 0;
   catch ME
+    opt.dir.output = args.Results.output_dir;
+    opt.dryRun = false;
+    opt.verbosity = 3;
+    bugReport(opt, ME);
     returnCode = 1;
-    rethrow(ME);
   end
 end
 
@@ -180,19 +183,12 @@ function copy(args)
   opt.pipeline.type = 'preproc';
   opt = checkOptions(opt);
 
-  try
+  saveOptions(opt);
 
-    saveOptions(opt);
-
-    opt.query.desc = {'preproc', 'brain'};
-    opt.query.suffix = {'T1w', 'bold', 'mask'};
-    opt.query.space = opt.space;
-    bidsCopyInputFolder(opt);
-
-  catch ME
-    bugReport(opt, ME);
-    rethrow(ME);
-  end
+  opt.query.desc = {'preproc', 'brain'};
+  opt.query.suffix = {'T1w', 'bold', 'mask'};
+  opt.query.space = opt.space;
+  bidsCopyInputFolder(opt);
 
 end
 
@@ -200,13 +196,10 @@ function create_roi(args)
   opt = getOptionsFromCliArgument(args);
   opt = checkOptions(opt);
   opt.roi.space = opt.space;
-  try
-    saveOptions(opt);
-    bidsCreateROI(opt);
-  catch ME
-    bugReport(opt, ME);
-    rethrow(ME);
-  end
+
+  saveOptions(opt);
+  bidsCreateROI(opt);
+
 end
 
 function preprocess(args)
@@ -229,40 +222,33 @@ function preprocess(args)
                   false);
   end
 
-  try
+  saveOptions(opt);
 
-    saveOptions(opt);
+  bidsReport(opt);
+  boilerplate(opt, ...
+              'outputPath', fullfile(opt.dir.output, 'reports'), ...
+              'pipelineType', 'preproc', ...
+              'verbosity', 0);
+  if opt.boilerplate_only
+    return
+  end
+  bidsCopyInputFolder(opt);
+  if opt.dummy_scans > 0
+    bidsRemoveDummies(opt, ...
+                      'dummyScans', opt.dummy_scans, ...
+                      'force', false);
+  end
 
-    bidsReport(opt);
-    boilerplate(opt, ...
-                'outputPath', fullfile(opt.dir.output, 'reports'), ...
-                'pipelineType', 'preproc', ...
-                'verbosity', 0);
-    if opt.boilerplate_only
-      return
-    end
-    bidsCopyInputFolder(opt);
-    if opt.dummy_scans > 0
-      bidsRemoveDummies(opt, ...
-                        'dummyScans', opt.dummy_scans, ...
-                        'force', false);
-    end
-
-    if opt.useFieldmaps && ~opt.anatOnly
-      bidsCreateVDM(opt);
-    end
-    if ~opt.stc.skip && ~opt.anatOnly
-      bidsSTC(opt);
-    end
-    bidsSpatialPrepro(opt);
-    if opt.fwhm.func > 0 && ~opt.anatOnly
-      opt.query.desc = 'preproc';
-      bidsSmoothing(opt);
-    end
-
-  catch ME
-    bugReport(opt, ME);
-    rethrow(ME);
+  if opt.useFieldmaps && ~opt.anatOnly
+    bidsCreateVDM(opt);
+  end
+  if ~opt.stc.skip && ~opt.anatOnly
+    bidsSTC(opt);
+  end
+  bidsSpatialPrepro(opt);
+  if opt.fwhm.func > 0 && ~opt.anatOnly
+    opt.query.desc = 'preproc';
+    bidsSmoothing(opt);
   end
 
 end
@@ -275,22 +261,15 @@ function smooth(args)
   opt.pipeline.type = 'preproc';
   opt = checkOptions(opt);
 
-  try
+  saveOptions(opt);
 
-    saveOptions(opt);
+  if ~isdir(opt.dir.output)
+    copy(args);
+  end
 
-    if ~isdir(opt.dir.output)
-      copy(args);
-    end
-
-    if opt.fwhm.func > 0
-      opt.query.desc = 'preproc';
-      bidsSmoothing(opt);
-    end
-
-  catch ME
-    bugReport(opt, ME);
-    rethrow(ME);
+  if opt.fwhm.func > 0
+    opt.query.desc = 'preproc';
+    bidsSmoothing(opt);
   end
 
 end
@@ -302,13 +281,8 @@ function default_model(args)
   end
   opt = checkOptions(opt);
 
-  try
-    saveOptions(opt);
-    createDefaultStatsModel(opt.dir.raw, opt, lower(args.Results.ignore));
-  catch ME
-    bugReport(opt, ME);
-    rethrow(ME);
-  end
+  saveOptions(opt);
+  createDefaultStatsModel(opt.dir.raw, opt, lower(args.Results.ignore));
 end
 
 function stats(args)
@@ -340,68 +314,58 @@ function stats(args)
     results = false;
   end
 
-  try
+  saveOptions(opt);
 
-    saveOptions(opt);
+  boilerplate(opt, ...
+              'outputPath', fullfile(opt.dir.output, 'reports'), ...
+              'pipelineType', 'stats', ...
+              'verbosity', 0);
+  if opt.boilerplate_only
+    return
+  end
 
-    boilerplate(opt, ...
-                'outputPath', fullfile(opt.dir.output, 'reports'), ...
-                'pipelineType', 'stats', ...
-                'verbosity', 0);
-    if opt.boilerplate_only
-      return
+  if opt.glm.roibased.do
+
+    bidsFFX('specify', opt);
+    if ~opt.model.designOnly
+      bidsRoiBasedGLM(opt);
     end
 
-    if opt.glm.roibased.do
+  else
 
-      bidsFFX('specify', opt);
-      if ~opt.model.designOnly
-        bidsRoiBasedGLM(opt);
-      end
+    if estimate
 
-    else
-
-      if estimate
-
-        if isSubjectLevel
-
-          if opt.model.designOnly
-            bidsFFX('specify', opt);
-          else
-            bidsFFX('specifyAndEstimate', opt);
-          end
-
+      if isSubjectLevel
+        if opt.model.designOnly
+          bidsFFX('specify', opt);
         else
-
-          bidsRFX('RFX', opt, 'nodeName', nodeName);
-
+          bidsFFX('specifyAndEstimate', opt);
         end
 
-      end
+      else
+        bidsRFX('RFX', opt, 'nodeName', nodeName);
 
-      if contrasts
-
-        if isSubjectLevel
-          bidsFFX('contrasts', opt);
-        else
-          bidsRFX('contrasts', opt, 'nodeName', nodeName);
-        end
-
-        if concatenate
-          bidsConcatBetaTmaps(opt);
-        end
-
-      end
-
-      if results
-        bidsResults(opt, 'nodeName', nodeName);
       end
 
     end
 
-  catch ME
-    bugReport(opt, ME);
-    rethrow(ME);
+    if contrasts
+      if isSubjectLevel
+        bidsFFX('contrasts', opt);
+      else
+        bidsRFX('contrasts', opt, 'nodeName', nodeName);
+      end
+
+      if concatenate
+        bidsConcatBetaTmaps(opt);
+      end
+
+    end
+
+    if results
+      bidsResults(opt, 'nodeName', nodeName);
+    end
+
   end
 
 end
