@@ -108,9 +108,7 @@ def default_model(
 
     log.info("Creating default model.")
 
-    returncode = run_command(cmd)
-
-    return returncode
+    return run_command(cmd)
 
 
 def preprocess(
@@ -160,9 +158,7 @@ def preprocess(
     elif action == "smooth":
         log.info("Running smoothing.")
 
-    returncode = run_command(cmd)
-
-    return returncode
+    return run_command(cmd)
 
 
 def create_roi(
@@ -203,9 +199,7 @@ def create_roi(
 
     log.info("Creating ROI.")
 
-    returncode = run_command(cmd)
-
-    return returncode
+    return run_command(cmd)
 
 
 def stats(
@@ -260,9 +254,7 @@ def stats(
 
     log.info("Running statistics.")
 
-    returncode = run_command(cmd)
-
-    return returncode
+    return run_command(cmd)
 
 
 def cli(argv: Any = sys.argv) -> None:
