@@ -80,7 +80,6 @@ function returnCode = bidspm(varargin)
   catch ME
     bugReport(opt, ME);
     returnCode = 1;
-    rethrow(ME);
   end
 end
 
