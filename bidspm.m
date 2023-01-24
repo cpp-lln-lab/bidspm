@@ -605,7 +605,11 @@ end
 
 function update()
   try
+    initBidspm();
+    cwd = pwd();
+    cd(returnRootDir());
     system('make update');
+    cd(cwd);
   catch ME
     warning('Could not run the update.');
     rethrow(ME);
