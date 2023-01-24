@@ -8,34 +8,14 @@ function functionalQA(opt)
   %
   %   functionalQA(opt)
   %
-  % For  each run works on the realigned (and unwarped) data:
+  % For each run works on the realigned (and unwarped) data:
   %
   % - plots motion, global signal, framewise displacement
-  % - make a movie of the realigned time series
-  % - computes additional confounds regressors depending on the options asked
   % - gets temporal SNR (TODO)
-  % - creates a carpet plot of the data (TODO) ; warning this is slow
-  %
-  % Relevant options::
-  %
-  %   opt.QA.func.Basics = 'on';
-  %   opt.QA.func.Motion = 'on';
-  %   opt.QA.func.FD = 'on';
-  %   opt.QA.func.Globals = 'on';
-  %   opt.QA.func.Movie = 'on';
-  %   opt.QA.func.Voltera = 'on';
-  %   opt.QA.func.carpetPlot = true;
-  %
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
-  %
-  % .. warning::
-  %
-  %    Because of a bug in spm_up, if ``Voltera = 'on'``, then the confound
-  %    regressors of framewise displacement, RMS and global signal
-  %    will not be saved.
   %
 
   % (C) Copyright 2020 bidspm developers
@@ -150,18 +130,6 @@ function functionalQA(opt)
                                              'Basics', opt.QA.func.Basics, ...
                                              'Voltera', opt.QA.func.Voltera, ...
                                              'Radius', distToSurf);
-
-          % horrible hack to prevent the "abrupt" way spmup_volumecorr crashes
-          % if nansum is not there
-          if opt.QA.func.carpetPlot && exist('nansum', 'file') == 2
-            notImplemented(mfilename(), 'carpet plot not implemented', opt);
-            % TODO: need to reslice TPMs as part of spatial prepro first
-            % spmup_timeseriesplot(funcImage, greyMatter, whiteMatter, csf, ...
-            %                      'motion', 'on', ...
-            %                      'nuisances', 'on', ...
-            %                      'correlation', 'on', ...
-            %                      'makefig', 'on');
-          end
 
           %% save and rename output
           outputDir = fullfile(subFuncDataDir, '..', 'reports');

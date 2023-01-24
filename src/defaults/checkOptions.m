@@ -124,22 +124,6 @@ function opt = checkOptions(opt)
   %     - ``opt.funcVoxelDims = []`` - Voxel dimensions to use for resampling of functional data
   %       at normalization.
   %
-  %  - **preprocessing QA** (see ``functionalQA``)
-  %
-  %       opt.QA.anat.do = true;
-  %
-  %     ``opt.QA.func`` contains a lot of options used by ``spmup_first_level_qa``
-  %
-  %     - ``opt.QA.func.do = true`` skips QA if set to false
-  %     - ``opt.QA.func.carpetPlot = true`` to plot carpet plot
-  %     - ``opt.QA.func.MotionParameters = 'on'``
-  %     - ``opt.QA.func.FramewiseDisplacement = 'on'``
-  %     - ``opt.QA.func.Voltera = 'on'``
-  %     - ``opt.QA.func.Globals = 'on'``
-  %     - ``opt.QA.func.Movie = 'on'`` ; set it to ``off`` to skip generating movies
-  %       of the time series
-  %     - ``opt.QA.func.Basics = 'on'``
-  %
   %  - **statistics**
   %
   %     - ``opt.glm.roibased.do = false`` must be set to ``true`` to use the
@@ -332,15 +316,6 @@ function fieldsToSet = setDefaultOption()
 
   %% Options for QA
   fieldsToSet.QA.glm.do = false;
-  fieldsToSet.QA.anat.do = true;
-  fieldsToSet.QA.func.do = true;
-  fieldsToSet.QA.func.carpetPlot = true;
-  fieldsToSet.QA.func.Motion = 'on';
-  fieldsToSet.QA.func.FD = 'on';
-  fieldsToSet.QA.func.Voltera = 'on';
-  fieldsToSet.QA.func.Globals = 'on';
-  fieldsToSet.QA.func.Movie = 'off';
-  fieldsToSet.QA.func.Basics = 'on';
 
   %% Options for interface
   fieldsToSet.msg.color = '';

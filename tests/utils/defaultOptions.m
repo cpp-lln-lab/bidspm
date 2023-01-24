@@ -79,7 +79,6 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.QA.glm.do = false;
   expectedOptions.QA.anat.do = true;
   expectedOptions.QA.func.do = true;
-  expectedOptions.QA.func.carpetPlot = true;
   expectedOptions.QA.func.Motion = 'on';
   expectedOptions.QA.func.FD = 'on';
   expectedOptions.QA.func.Voltera = 'on';
