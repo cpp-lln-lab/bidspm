@@ -53,7 +53,7 @@ function test_bidsRoiBasedGLM_run()
 
   opt.roi.atlas = 'wang';
   opt.roi.name = {'V1v', 'V1d'};
-  opt.roi.hemisphere = {'L', 'R'};
+  opt.roi.hemi = {'L', 'R'};
   opt.roi.space = opt.space;
 
   opt.bidsFilterFile.roi.space = 'MNI';
