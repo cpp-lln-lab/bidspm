@@ -183,7 +183,7 @@ function bidspmHelp()
   % :type  roi_name:      cell string
   %
   % :param hemisphre:     Hemisphere of the ROI to create.
-  %                       Not all ROIs have both hemipsheres.
+  %                       Not all ROIs have both hemispheres.
   % :type  hemisphre:     cell string containing any of 'L', 'R'
   %
   %
