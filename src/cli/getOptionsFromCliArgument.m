@@ -76,6 +76,7 @@ function opt = getOptionsFromCliArgument(args)
     % create_roi
     opt.roi.atlas = args.Results.roi_atlas;
     opt.roi.name = args.Results.roi_name;
+    opt.roi.hemi = args.Results.hemisphere;
 
     % stats
     opt.dir.preproc = args.Results.preproc_dir;

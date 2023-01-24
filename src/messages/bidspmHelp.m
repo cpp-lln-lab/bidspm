@@ -167,6 +167,7 @@ function bidspmHelp()
   %           'verbosity', 2, ...
   %           'roi_atlas', 'wang', ...
   %           'roi_name', {'V1v', 'V1d'}, ...
+  %           'hemisphre', {'L', 'R'}, ...
   %           'space', {'wang'}, ...
   %           'options', struct([]))
   %
@@ -180,6 +181,10 @@ function bidspmHelp()
   % :param roi_name:      Name of the roi to create. If the ROI does not exist in the atlas,
   %                       the list of available ROI will be returned in the error message.
   % :type  roi_name:      cell string
+  %
+  % :param hemisphre:     Hemisphere of the ROI to create.
+  %                       Not all ROIs have both hemipsheres.
+  % :type  hemisphre:     cell string containing any of 'L', 'R'
   %
   %
   % **SMOOTH:**

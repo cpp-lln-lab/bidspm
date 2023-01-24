@@ -44,6 +44,7 @@ function returnCode = bidspm(varargin)
 
   % create_roi only
   addParameter(args, 'roi_dir', '', isChar);
+  addParameter(args, 'hemisphere', {'L', 'R'}, isCellStr);
   addParameter(args, 'roi_atlas', 'neuromorphometrics', isInAvailableAtlas);
   addParameter(args, 'roi_name', {''}, isCellStr);
 
