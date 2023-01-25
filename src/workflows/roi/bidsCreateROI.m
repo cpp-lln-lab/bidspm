@@ -10,21 +10,29 @@ function bidsCreateROI(opt)
   %
   % USAGE::
   %
-  %  opt = get_option();
-  %  opt.roi.atlas = 'wang';
-  %  opt.roi.name = {'V1v', 'V1d'};
-  %  opt.roi.space = {'IXI549Space', 'individual'};
-  %  opt.dir.stats = fullfile(opt.dir.raw, '..', 'derivatives', 'bidspm-stats');
+  %   % to create ROI in MNI space
+  %   opt.dir.roi = pwd;
+  %   opt.roi.atlas = 'wang';
+  %   opt.roi.hemi = {'L', 'R'};
+  %   opt.roi.name = {'V1v', 'V1d'};
+  %   opt.roi.space = {'IXI549Space''};
   %
-  %  bidsCreateROI(opt);
+  %   bidsCreateROI(opt);
+  %
+  %
+  %   % to create ROI in subject space
+  %   opt.dir.roi = pwd;
+  %   opt.roi.atlas = 'wang';
+  %   opt.roi.hemi = {'L', 'R'};
+  %   opt.roi.name = {'V1v', 'V1d'};
+  %   opt.roi.space = {'IXI549Space', 'individual'};
+  %   opt.dir.input = fullfile(opt.dir.raw, '..', 'derivatives', 'bidspm-preproc');
+  %
+  %   bidsCreateROI(opt);
   %
   %
 
   % (C) Copyright 2021 bidspm developers
-
-  if nargin < 1
-    opt = [];
-  end
 
   if any(~strcmp(opt.roi.space, 'individual'))
 
@@ -33,16 +41,14 @@ function bidsCreateROI(opt)
     end
     spm_mkdir(fullfile(opt.dir.roi, 'group'));
 
-    hemi = {'L', 'R'};
-
-    for iHemi = 1:numel(hemi)
+    for iHemi = 1:numel(opt.roi.hemi)
 
       for iROI = 1:numel(opt.roi.name)
 
         extractRoiFromAtlas(fullfile(opt.dir.roi, 'group'), ...
                             opt.roi.atlas, ...
                             opt.roi.name{iROI}, ...
-                            hemi{iHemi});
+                            opt.roi.hemi{iHemi});
 
       end
 

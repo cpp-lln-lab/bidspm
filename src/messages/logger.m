@@ -28,6 +28,7 @@ function logMsg = logger(varargin)
   addParameter(args, 'options', default_opt, @isstruct);
   addParameter(args, 'filename', '', @ischar);
   addParameter(args, 'id', '', @ischar);
+  addParameter(args, 'color', 'blue', @ischar);
 
   parse(args, varargin{:});
 
@@ -36,6 +37,7 @@ function logMsg = logger(varargin)
   opt = args.Results.options;
   filename = args.Results.filename;
   id = args.Results.id;
+  color = args.Results.color;
 
   [~, filename, ext] = fileparts(filename);
 
@@ -81,7 +83,7 @@ function logMsg = logger(varargin)
         errorHandling(filename, id, logMsg, true, true);
       end
       if ismember(logLevel, {'INFO'})
-        printToScreen(logMsg, opt, 'format', 'blue');
+        printToScreen(logMsg, opt, 'format', color);
       end
 
     case 3
@@ -89,7 +91,7 @@ function logMsg = logger(varargin)
         errorHandling(filename, id, logMsg, true, true);
       end
       if ismember(logLevel, {'INFO', 'DEBUG'})
-        printToScreen(logMsg, opt, 'format', 'blue');
+        printToScreen(logMsg, opt, 'format', color);
       end
   end
 
