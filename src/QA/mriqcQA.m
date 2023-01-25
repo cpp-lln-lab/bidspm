@@ -77,7 +77,7 @@ function outliers = identifyOutliers(data, nameFlipUnilateral)
     end
 
     % identifies outliers.
-    [outliers(:, i_field)] = iqrMethod(tmp, unilat); %#ok<SAGROW>
+    [outliers(:, i_field)] = computeRobustOutliers(tmp, 'outlierType', 's-outliers');
 
   end
 

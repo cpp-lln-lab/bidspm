@@ -15,6 +15,8 @@ data: clean
 	git clone https://github.com/bids-standard/bids-examples.git --depth 1
 	cp bids-examples/synthetic/dataset_description.json bids-examples/synthetic/derivatives/fmriprep
 	touch bids-examples/.gitkeep
+	wget -O moae_spm12.zip https://files.de-1.osf.io/v1/resources/3vufp/providers/osfstorage/62ab741be6f3ec09a7e48d13/?zip=
+	unzip -d ./dummyData/MoAE/derivatives/spm12 moae_spm12.zip
 
 clean_openneuro:
 	rm -rf openneuro/*

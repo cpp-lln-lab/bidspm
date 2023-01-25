@@ -5,7 +5,7 @@ function outliers = computeRobustOutliers(varargin)
   %
   % EXAMPLE::
   %
-  %     outliers = spmup_comp_robust_outliers(time_series, 'outlierType', 'Carling')
+  %     outliers = computeRobustOutliers(time_series, 'outlierType', 'Carling')
   %
   %
   % :param timeSeries: time_series are the time courses as colum vectors
@@ -50,7 +50,7 @@ function outliers = computeRobustOutliers(varargin)
   % Adapted from Cyril Pernet's spmup
   %
 
-  % (C) Copyright 2023 Cyril Pernet
+  % (C) Copyright 2017-2023 Cyril Pernet
   % (C) Copyright 2023 Remi Gau
 
   allowedTypes = @(x) ismember(lower(x), {'carling', 's-outliers'});

@@ -34,16 +34,6 @@ function functionalQA(opt)
     return
   end
 
-  if isOctave()
-    notImplemented(mfilename(), ...
-                   'functionalQA is not yet supported on Octave. This step will be skipped.');
-    opt.QA.func.do = false;
-  end
-
-  if ~opt.QA.func.do
-    return
-  end
-
   opt.dir.input = opt.dir.preproc;
 
   [BIDS, opt] = setUpWorkflow(opt, 'quality control: functional');
@@ -120,16 +110,8 @@ function functionalQA(opt)
           %                                 'save');
 
           realignParamFile = getRealignParamFilename(BIDS, subLabel, sessions{iSes}, runs{iRun}, opt);
-          jsonContent.meanFD = mean(spmup_FD(realignParamFile, distToSurf));
 
-          outputFiles = spmup_first_level_qa(funcImage, ...
-                                             'MotionParameters', opt.QA.func.Motion, ...
-                                             'FramewiseDisplacement', opt.QA.func.FD, ...
-                                             'Globals', opt.QA.func.Globals, ...
-                                             'Movie', opt.QA.func.Movie, ...
-                                             'Basics', opt.QA.func.Basics, ...
-                                             'Voltera', opt.QA.func.Voltera, ...
-                                             'Radius', distToSurf);
+          [confoundsTsv, figureHandle] = realignQA(varargin, distToSurf);
 
           %% save and rename output
           outputDir = fullfile(subFuncDataDir, '..', 'reports');
