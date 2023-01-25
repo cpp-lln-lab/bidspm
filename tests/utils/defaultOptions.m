@@ -77,14 +77,6 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.rename = true;
 
   expectedOptions.QA.glm.do = false;
-  expectedOptions.QA.anat.do = true;
-  expectedOptions.QA.func.do = true;
-  expectedOptions.QA.func.Motion = 'on';
-  expectedOptions.QA.func.FD = 'on';
-  expectedOptions.QA.func.Voltera = 'on';
-  expectedOptions.QA.func.Globals = 'on';
-  expectedOptions.QA.func.Movie = 'off';
-  expectedOptions.QA.func.Basics = 'on';
 
   expectedOptions.glm.roibased.do = false;
   expectedOptions.glm.maxNbVols = Inf;

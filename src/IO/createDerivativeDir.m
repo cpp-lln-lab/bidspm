@@ -21,6 +21,6 @@ function  createDerivativeDir(opt)
                   pathToPrint(opt.dir.derivatives));
   end
 
-  logger('INFO', msg, 'options', opt, 'filename', mfilename());
+  logger('DEBUG', msg, 'options', opt, 'filename', mfilename());
 
 end

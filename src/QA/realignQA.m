@@ -30,6 +30,18 @@ function [confoundsTsv, figureHandle] = realignQA(varargin)
 
   if strcmp(spm_file(motionFile, 'ext'), 'txt')
     motionParameters = load(motionFile);
+  elseif strcmp(spm_file(motionFile, 'ext'), 'tsv')
+    tsv = bids.util.tsvread(motionFile);
+    headers = {'trans_x'; ...
+               'trans_y'; ...
+               'trans_z'; ...
+               'rot_x'; ...
+               'rot_y'; ...
+               'rot_z'};
+    motionParameters = [];
+    for i = 1:numel(headers)
+      motionParameters(:, i) = tsv.(headers{i}); %#ok<*AGROW>
+    end
   end
 
   [fd, rms] = computeFDandRMS(motionParameters, radiusCm);

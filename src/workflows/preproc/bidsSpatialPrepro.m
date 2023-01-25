@@ -131,22 +131,11 @@ function matlabbatch = bidsSpatialPrepro(opt)
     %% clean up and rename files
     copyFigures(BIDS, opt, subLabel);
 
-    %     if opt.segment.do && ~opt.dryRun
-    %       spmup_comp_dist2surf(matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1});
-    surfaceFile = createPialSurface(gm, wm, opt);
-    %     end
-
   end
-
-  %   if ~opt.dryRun
-  %     functionalQA(opt);
-  %   end
 
   renameFiles(BIDS, opt);
 
-  %   if ~opt.dryRun && opt.rename
-  %     anatomicalQA(opt);
-  %   end
+  bidsQApreproc(opt);
 
 end
 

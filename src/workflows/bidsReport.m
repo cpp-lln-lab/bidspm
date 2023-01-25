@@ -26,7 +26,7 @@ function bidsReport(opt)
       isdir(fullfile(opt.dir.output, 'reports'))
     logger('INFO', 'Dataset reports already exist.', ...
            'options', opt, ...
-           'id', mfilename());
+           'filename', mfilename());
     return
   end
 

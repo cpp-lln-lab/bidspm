@@ -7,7 +7,7 @@ function [json, fig] = anatQA(varargin)
   % EXAMPLE::
   %
   %     [json, fig] = anatQA(anatImageFile, grayMatterFile, whiteMatterFile, ...
-  %                          noBackground, visible)
+  %                          'noBackground', true, 'visible', 'on')
   %
   %
   % :param anatImageFile:
