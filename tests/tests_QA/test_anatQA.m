@@ -7,7 +7,7 @@ function test_suite = test_anatQA %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_createPialSurface_basic()
+function test_anatQA_basic()
 
   moaeSpm12Dir = fullfile(getDummyDataDir, 'MoAE', 'derivatives', 'spm12');
 

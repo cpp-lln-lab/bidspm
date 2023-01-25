@@ -157,6 +157,8 @@ end
 
 function fig = plotAnatQA(anatHeader, brainMask, data, visible)
 
+  fig = spm_figure('Create', 'brainMask', 'Brain Mask', visible);
+
   if isOctave
     return
   end
@@ -165,8 +167,6 @@ function fig = plotAnatQA(anatHeader, brainMask, data, visible)
 
   up = median(data) + iqr(data) / 2;
   down = median(data) - iqr(data) / 2;
-
-  fig = spm_figure('Create', 'brainMask', 'Brain Mask', visible);
 
   tmp = spm_read_vols(anatHeader); % read anat
   tmp = tmp ./ max(tmp(:)) * 100; % nornalize to 100
