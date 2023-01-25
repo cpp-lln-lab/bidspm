@@ -8,7 +8,7 @@ function outliers = computeRobustOutliers(varargin)
   %     outliers = computeRobustOutliers(time_series, 'outlierType', 'Carling')
   %
   %
-  % :param timeSeries: time_series are the time courses as colum vectors
+  % :param timeSeries: time_series are the time courses as column vectors
   % :type  timeSeries: n X m array
   %
   % :param outlierType: any of 'S-outliers' or 'Carling'.
@@ -19,7 +19,7 @@ function outliers = computeRobustOutliers(varargin)
   %
   % Uutliers a binary vector indicating outliers.
   %
-  % S-outliers is the default options, it is independent of a mesure of
+  % S-outliers is the default options, it is independent of a measure of
   % centrality as this is based on the median of pair-wise distances.
   % This is a very sensitive measures,
   % i.e. it has a relatively high false positive rates.
