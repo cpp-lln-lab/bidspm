@@ -77,7 +77,7 @@ function outliers = identifyOutliers(data, nameFlipUnilateral)
     end
 
     % identifies outliers.
-    [outliers(:, i_field)] = iqrMethod(tmp, unilat); %#ok<SAGROW>
+    [outliers(:, i_field)] = computeRobustOutliers(tmp, 'outlierType', 's-outliers');
 
   end
 
@@ -114,19 +114,17 @@ function nameFlipUnilateral = getAnatMetricsToFilter()
   %               due to hyper-intensity of the carotid vessels and fat.
   %           Values should be around the interval [0.6, 0.8].
 
-  nameFlipUnilateral = {
-                        'cjv',      false,  true
-                        'cnr',      true,   true
-                        'snr_gm',   true,   true
-                        'snr_wm',   true,   true
-                        'snrd_gm',  true,   true
-                        'snrd_wm',  true,   true
-                        'efc',      false,  true
-                        'fber',     true,   true
-                        'qi_1',     false,  true
-                        'inu_med',  false,  true
-                        'wm2max',   false,  false
-                       };
+  nameFlipUnilateral = {'cjv',      false,  true; ...
+                        'cnr',      true,   true; ...
+                        'snr_gm',   true,   true; ...
+                        'snr_wm',   true,   true; ...
+                        'snrd_gm',  true,   true; ...
+                        'snrd_wm',  true,   true; ...
+                        'efc',      false,  true; ...
+                        'fber',     true,   true; ...
+                        'qi_1',     false,  true; ...
+                        'inu_med',  false,  true; ...
+                        'wm2max',   false,  false};
 
 end
 
@@ -149,19 +147,17 @@ function nameFlipUnilateral = getFuncMetricsToFilter()
   % snr =     signal to noise ratio
   % tsnr =    Temporal SNR
 
-  nameFlipUnilateral = {
-                        'aor',        false,  true
-                        'dvars_nstd', false,  true
-                        'dvars_std',  false,  true
-                        'dvars_vstd', false,  true
-                        'efc',        false,  true
-                        'fber',       true,   true
-                        'fd_mean',    false,  true
-                        'fd_perc',    false,  true
-                        'gsr_x',      true,   true
-                        'gsr_y',      true,   true
-                        'snr',        true,   true
-                        'tsnr',       true,   true
-                       };
+  nameFlipUnilateral = {'aor',        false,  true; ...
+                        'dvars_nstd', false,  true; ...
+                        'dvars_std',  false,  true; ...
+                        'dvars_vstd', false,  true; ...
+                        'efc',        false,  true; ...
+                        'fber',       true,   true; ...
+                        'fd_mean',    false,  true; ...
+                        'fd_perc',    false,  true; ...
+                        'gsr_x',      true,   true; ...
+                        'gsr_y',      true,   true; ...
+                        'snr',        true,   true; ...
+                        'tsnr',       true,   true};
 
 end

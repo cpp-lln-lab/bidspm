@@ -96,7 +96,7 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
   anatImage = unzipAndReturnsFullpathName(anat);
 
   msg = sprintf('  selecting anat file: %s', createUnorderedList(pathToPrint(anat)));
-  logger('INFO', msg, 'options', opt, 'filename', mfilename());
+  logger('DEBUG', msg, 'options', opt, 'filename', mfilename());
 
   tmpDir = {};
   tmpImage = {};

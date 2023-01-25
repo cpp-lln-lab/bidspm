@@ -119,6 +119,8 @@ output_dir = fullfile(this_dir, 'outputs', 'derivatives');
 % the subject we want to analyse;
 subject_label = '01';
 
+verbosity = 3;
+
 bidspm(bids_dir, output_dir, 'subject', ...
        'participant_label', {subject_label}, ...
        'action', 'preprocess', ...
@@ -126,7 +128,7 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'ignore', {'unwarp', 'slicetiming'}, ...
        'space', {'IXI549Space'}, ...
        'fwhm', 6, ...
-       'verbosity', 3);
+       'verbosity', verbosity);
 
 % ## Stats
 
@@ -162,47 +164,11 @@ system('cat models/model-MoAE_smdl.json');
 % - an NIDM results zip file
 % - a table of labelled activations
 
-% nodeName corresponds to the name of the Node in the BIDS stats model;
-opt.results(1).nodeName = 'run_level';
-% this results corresponds to the name of the contrast in the BIDS stats model;
-opt.results(1).name = {'listening_1'};
-
-% cluster forming threshold;
-opt.results(1).p = 0.05;
-% type of multiple comparison correction;
-opt.results(1).MC = 'FWE';
-
-% Specify how you want your output;
-% (all the following are on false by default);
-opt.results(1).png = true();
-opt.results(1).csv = true();
-opt.results(1).binary = true();
-
-opt.results(1).montage.do = true();
-opt.results(1).montage.background = struct('suffix', 'T1w', ...
-                                           'desc', 'preproc', ...
-                                           'modality', 'anat');
-opt.results(1).montage.slices = -4:2:16;
-opt.results(1).nidm = true();
-
-% We can do the same for other contrasts;
-opt.results(2).nodeName = 'run_level';
-opt.results(2).name = {'listening_inf_baseline'};
-
-opt.results(2).p = 0.01;
-% cluster size threshold;
-opt.results(2).k = 10;
-opt.results(2).MC = 'none';
-
-opt.results(2).csv = true;
-% atlas to use to label activations;
-opt.results(2).atlas = 'AAL';
-
 bidspm(bids_dir, output_dir, 'subject', ...
        'participant_label', {subject_label}, ...
        'action', 'stats', ...
        'preproc_dir', preproc_dir, ...
        'model_file', model_file, ...
-       'options', opt, ...
        'concatenate', false, ...
-       'fwhm', 6);
+       'fwhm', 6, ...
+       'verbosity', verbosity);

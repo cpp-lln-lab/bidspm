@@ -76,7 +76,7 @@
               },
               {
                 "name": [
-                  "listening_inf_baseline'"
+                  "listening_inf_baseline"
                 ],
                 "p": 0.01,
                 "k": 10,

@@ -44,7 +44,7 @@ function davg = getDist2surf(varargin)
 
   surface_file = spm_select('FPList', ...
                             path, ...
-                            ['^.*sub-' bf.entities.sub '.*_desc-.*' bf.suffix '.*\.gii$']);
+                            ['^.*sub-' bf.entities.sub '.*_label-pial.*' bf.suffix '.*\.gii$']);
 
   if size(surface_file, 1) == 1
 

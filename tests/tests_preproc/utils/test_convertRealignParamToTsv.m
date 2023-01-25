@@ -46,7 +46,7 @@ function test_convertRealignParamToTsv_non_bold_data()
   rpTsvFile = convertRealignParamToTsv(input, opt);
 
   output = fullfile(opt.dir.preproc, 'sub-01', 'ses-01', 'func', ...
-                    'sub-01_ses-01_task-vislocalizer_desc-vasoConfounds_motion.tsv');
+                    'sub-01_ses-01_task-vislocalizer_desc-vaso_motion.tsv');
 
   assertEqual(exist(output, 'file'), 2);
 

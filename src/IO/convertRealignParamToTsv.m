@@ -41,8 +41,7 @@ function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
   if ~strcmp(opt.bidsFilterFile.bold.suffix, 'bold')
     idx = opt.spm_2_bids.find_mapping('prefix', 'rp_');
     renamingSpec = opt.spm_2_bids.mapping(idx).name_spec;
-    renamingSpec.entities.desc = bids.internal.camel_case([opt.bidsFilterFile.bold.suffix ...
-                                                           ' confounds']);
+    renamingSpec.entities.desc = [opt.bidsFilterFile.bold.suffix];
     opt.spm_2_bids.mapping(idx).name_spec = renamingSpec;
   end
 

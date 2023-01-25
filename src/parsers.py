@@ -129,7 +129,7 @@ def common_parser() -> MuhParser:
     parser.add_argument(
         "--ignore",
         help="""
-        If preprocessing should be done only on anatomical data.
+        To specify steps to skip.
         """,
         choices=[
             "fieldmaps",

@@ -112,7 +112,14 @@ jobs:
       if: matrix.platform == 'octave'
       run: |
         sudo apt-get -y -qq update
-        sudo apt-get -y install octave liboctave-dev
+        sudo apt-get -y install \
+          octave \
+          liboctave-dev\
+          octave-common \
+          octave-io \
+          octave-image \
+          octave-signal \
+          octave-statistics
         make -C MOxUnit install
         make -C MOcov install
 
