@@ -80,7 +80,8 @@ file_spec = struct('entities', struct('run', '01', ...
 bidsFile = bids.File(file_spec);
 bidsFile.filename;
 
-% If not enough information is provided, BIDS matlab should hopefully help you figure out what is missing.
+% If not enough information is provided, BIDS matlab should hopefully help you figure out what
+is missing.;
 
 file_spec = struct('entities', struct('run', '01', ...
                                       'sub', '01', ...

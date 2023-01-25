@@ -12,6 +12,8 @@ notebooks = this_dir.glob("**/*.ipynb")
 
 for ntbk in notebooks:
 
+    print(ntbk)
+
     with open(ntbk) as f:
         nb = json.load(f)
 
