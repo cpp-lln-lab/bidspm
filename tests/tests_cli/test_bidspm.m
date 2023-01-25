@@ -11,7 +11,7 @@ function test_suite = test_bidspm %#ok<*STOUT>
 
 end
 
-function test_bidsCreateROI_CLI()
+function test_bidsCreateROI_wang()
 
   bidspm(pwd, fullfile(pwd, 'tmp'), ...
          'subject', ...
@@ -25,19 +25,24 @@ function test_bidsCreateROI_CLI()
   cleanUp(fullfile(pwd, 'options'));
   cleanUp(fullfile(pwd, 'error_logs'));
 
-  if ~isOctave()
-    bidspm(pwd, fullfile(pwd, 'tmp'), ...
-           'subject', ...
-           'action', 'create_roi', ...
-           'roi_atlas', 'visfatlas', ...
-           'roi_name', {'OTS'}, ...
-           'space', {'IXI549Space'}, ...
-           'verbosity', 0);
+end
 
-    cleanUp(fullfile(pwd, 'tmp'));
-    cleanUp(fullfile(pwd, 'options'));
-    cleanUp(fullfile(pwd, 'error_logs'));
-  end
+function test_bidsCreateROI_visfatlas()
+
+  bidspm(pwd, fullfile(pwd, 'tmp'), ...
+         'subject', ...
+         'action', 'create_roi', ...
+         'roi_atlas', 'visfatlas', ...
+         'roi_name', {'OTS'}, ...
+         'space', {'IXI549Space'}, ...
+         'verbosity', 0);
+
+  cleanUp(fullfile(pwd, 'tmp'));
+  cleanUp(fullfile(pwd, 'options'));
+  cleanUp(fullfile(pwd, 'error_logs'));
+end
+
+function test_bidsCreateROI_neuromorphometrics()
 
   bidspm(pwd, fullfile(pwd, 'tmp'), ...
          'subject', ...
@@ -50,6 +55,10 @@ function test_bidsCreateROI_CLI()
   cleanUp(fullfile(pwd, 'tmp'));
   cleanUp(fullfile(pwd, 'options'));
   cleanUp(fullfile(pwd, 'error_logs'));
+
+end
+
+function test_bidsCreateROI_neuromorphometrics_inve_norm()
 
   % requires some deformation field to work
 
