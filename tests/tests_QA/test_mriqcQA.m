@@ -7,7 +7,7 @@ function test_suite = test_mriqcQA %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_createPialSurface_basic()
+function test_mriqc_basic()
 
   opt.dir.mriqc = fullfile(getDummyDataDir, 'tsv_files');
 
