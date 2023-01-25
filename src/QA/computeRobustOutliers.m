@@ -71,7 +71,7 @@ function outliers = computeRobustOutliers(varargin)
     timeSeries = timeSeries';
   end
 
-  if strcmpi(outlierType, 'S-outliers')
+  if strcmpi(outlierType, 's-outliers')
     k = sqrt(chi2inv(0.975, 1));
     for p = size(timeSeries, 2):-1:1
       tmp = timeSeries(:, p);
@@ -100,7 +100,7 @@ function outliers = computeRobustOutliers(varargin)
       outliers(:, p) = outliers(:, p) + isnan(timeSeries(:, p));
     end
 
-  elseif strcmpi(outlierType, 'Carling')
+  elseif strcmpi(outlierType, 'carling')
 
     % interquartile range
     n = size(timeSeries, 1);

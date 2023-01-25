@@ -19,6 +19,4 @@ function test_basic()
 
   assert(size(censoringRegressors, 2) == 9);
 
-  teardown();
-
 end

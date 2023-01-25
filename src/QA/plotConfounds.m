@@ -35,44 +35,56 @@ function fig = plotConfounds(confounds, visible)
                                         rms, ...
                                         global_signal}));
 
-  subplot(nbSubplots, 1, 1);
+  iSubplot = 1;
+
+  subplot(nbSubplots, 1, iSubplot);
   setSubplot('translations', ...
              'mm', ...
              nbVolumes);
   plot(translations, 'LineWidth', 2);
+  iSubplot = iSubplot + 1;
 
-  subplot(nbSubplots, 1, 2);
+  subplot(nbSubplots, 1, iSubplot);
   setSubplot('rotations', ...
              'degrees', ...
              nbVolumes);
   plot(rotations, 'LineWidth', 2);
+  iSubplot = iSubplot + 1;
 
-  subplot(nbSubplots, 1, 3);
-  plot(fd, 'LineWidth', 1);
-  setSubplot('framewise displacement', ...
-             'mm', ...
-             nbVolumes);
-  tmp = computeRobustOutliers(fd) .* fd;
-  tmp(tmp == 0) = NaN;
-  plot(tmp, 'ro', 'LineWidth', 3);
+  if ~isempty(fd)
+    subplot(nbSubplots, 1, iSubplot);
+    plot(fd, 'LineWidth', 1);
+    setSubplot('framewise displacement', ...
+               'mm', ...
+               nbVolumes);
+    tmp = computeRobustOutliers(fd) .* fd;
+    tmp(tmp == 0) = NaN;
+    plot(tmp, 'ro', 'LineWidth', 3);
+    iSubplot = iSubplot + 1;
+  end
 
-  subplot(nbSubplots, 1, 4);
-  plot(rms, 'LineWidth', 1);
-  setSubplot('root mean squares', ...
-             'mm', ...
-             nbVolumes);
-  tmp = computeRobustOutliers(rms) .* rms;
-  tmp(tmp == 0) = NaN;
-  plot(tmp, 'ro', 'LineWidth', 3);
+  if ~isempty(rms)
+    subplot(nbSubplots, 1, iSubplot);
+    plot(rms, 'LineWidth', 1);
+    setSubplot('root mean squares', ...
+               'mm', ...
+               nbVolumes);
+    tmp = computeRobustOutliers(rms, 'outlierType', 's-outliers') .* rms;
+    tmp(tmp == 0) = NaN;
+    plot(tmp, 'ro', 'LineWidth', 3);
+    iSubplot = iSubplot + 1;
+  end
 
-  subplot(nbSubplots, 1, 5);
-  plot(global_signal, 'LineWidth', 1);
-  setSubplot('global intensity', ...
-             'mean intensity', ...
-             nbVolumes);
-  tmp = computeRobustOutliers(global_signal) .* global_signal;
-  tmp(tmp == 0) = NaN;
-  plot(tmp, 'ro', 'LineWidth', 3);
+  if ~isempty(global_signal)
+    subplot(nbSubplots, 1, iSubplot);
+    plot(global_signal, 'LineWidth', 1);
+    setSubplot('global intensity', ...
+               'mean intensity', ...
+               nbVolumes);
+    tmp = computeRobustOutliers(global_signal) .* global_signal;
+    tmp(tmp == 0) = NaN;
+    plot(tmp, 'ro', 'LineWidth', 3);
+  end
 
   xlabel('Volumes');
 

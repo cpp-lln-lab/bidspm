@@ -26,6 +26,10 @@ function bidsQApreproc(opt)
   % TODO - the tissue probability maps are in the "native" space of each subject
   %         and are resliced to the dimension of the functional
 
+  if opt.dryRun
+    return
+  end
+
   opt.dir.input = opt.dir.preproc;
 
   [BIDS, opt] = setUpWorkflow(opt, 'preprocessing quality control');
