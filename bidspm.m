@@ -405,8 +405,7 @@ function initBidspm(dev)
   matlabVersion = '8.6.0';
 
   % octave packages
-  installlist = {};
-  % installlist = {'io', 'statistics', 'image'};
+  installlist = {'io', 'statistics', 'image'};
 
   thisDirectory = fileparts(mfilename('fullpath'));
 
