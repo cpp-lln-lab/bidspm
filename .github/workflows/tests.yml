@@ -141,7 +141,7 @@ jobs:
 
     - name: Install MATLAB
       if: matrix.platform == 'matlab'
-      uses: matlab-actions/setup-matlab@v1.2.3
+      uses: matlab-actions/setup-matlab@v1.2.4
       with:
         release: R2020a
 
