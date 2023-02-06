@@ -9,7 +9,6 @@ yaml.indent(mapping=2, sequence=4, offset=2)
 
 
 def main():
-
     bug_report = (
         Path(__file__)
         .parent.parent.joinpath(".github", "ISSUE_TEMPLATE", "bug_report.yml")

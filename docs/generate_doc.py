@@ -16,7 +16,6 @@ file_ignore_list = "BidsModel"
 
 
 def return_title(path: Path, parent_folder=None):
-
     tmp = f"{path.name}" if parent_folder is None else f"{parent_folder} {path.name}"
     tmp.replace("_", " ")
 
@@ -28,7 +27,6 @@ def return_title(path: Path, parent_folder=None):
 
 
 def append_dir_content(path: Path, content: str, parent_folder=None, recursive=False):
-
     if not path.is_dir():
         return content
 
@@ -39,7 +37,6 @@ def append_dir_content(path: Path, content: str, parent_folder=None, recursive=F
         content += title
 
     for file in m_files:
-
         if file.stem in file_ignore_list:
             continue
 
@@ -63,9 +60,7 @@ def append_dir_content(path: Path, content: str, parent_folder=None, recursive=F
 
 
 def main():
-
     with bidspm_file.open("w", encoding="utf8") as f:
-
         content = """.. AUTOMATICALLY GENERATED
 
 .. _dev_doc:
@@ -84,7 +79,6 @@ developer documentation
         subfolders = sorted(list(code_src.iterdir()))
 
         for path in subfolders:
-
             if path.name in dir_ignore_list:
                 continue
 

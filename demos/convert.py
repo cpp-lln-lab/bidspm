@@ -11,7 +11,6 @@ this_dir = Path(__file__).parent
 notebooks = this_dir.glob("**/*.ipynb")
 
 for ntbk in notebooks:
-
     print(ntbk)
 
     with open(ntbk) as f:
@@ -22,9 +21,7 @@ for ntbk in notebooks:
     output_file = ntbk.with_stem(filename).with_suffix(".m")
 
     with open(output_file, "w") as f:
-
         for cell in nb["cells"]:
-
             if cell["cell_type"] == "markdown":
                 for i, line in enumerate(cell["source"]):
                     line = line.rstrip()

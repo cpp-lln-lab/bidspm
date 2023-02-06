@@ -29,7 +29,6 @@ def validate(file: Path) -> int:
 
 
 def main(argv: Any = sys.argv) -> None:
-
     parser = validate_parser()
     args = parser.parse_args(argv[1:])
 

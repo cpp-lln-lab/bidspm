@@ -38,7 +38,6 @@ def main():
     affiliation_list = []
 
     for this_author_name in author_order:
-
         author = citation["authors"][author_names.index(this_author_name)]
 
         this_author = {
@@ -49,7 +48,6 @@ def main():
             this_author["orcid"] = author.get("orcid").replace("https://orcid.org/", "")
 
         if author.get("affiliation") is not None:
-
             this_affiliation = author.get("affiliation")
             affiliation_list_names = [x["name"] for x in affiliation_list]
 
