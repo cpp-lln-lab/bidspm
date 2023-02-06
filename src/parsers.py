@@ -35,7 +35,6 @@ class MuhParser(argparse.ArgumentParser):
 
 
 def common_parser() -> MuhParser:
-
     parser = MuhParser(
         description="bidspm is a SPM base BIDS app",
         epilog="""
@@ -308,7 +307,6 @@ def common_parser() -> MuhParser:
 
 
 def validate_parser() -> argparse.ArgumentParser:
-
     parser = argparse.ArgumentParser(
         description="validate bids stats model",
     )

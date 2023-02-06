@@ -11,9 +11,7 @@ from rich import print
 
 
 def validate_file(full_file_name):
-
     if re.findall("model-[]a-zA-Z0-9]*_smdl.json", full_file_name):
-
         try:
             BIDSStatsModel.parse_file(full_file_name)
 

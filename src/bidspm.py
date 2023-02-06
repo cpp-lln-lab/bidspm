@@ -94,7 +94,6 @@ def default_model(
     task: list[str] | None = None,
     ignore: list[str] | None = None,
 ) -> int:
-
     if space and len(space) > 1:
         log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
         return 1
@@ -127,7 +126,6 @@ def preprocess(
     bids_filter_file: Path | None = None,
     dry_run: bool = False,
 ) -> int:
-
     if action == "preprocess" and task and len(task) > 1:
         log.error(f"Only one task allowed for preprocessing. Got\n:{task}")
         return 1
@@ -174,7 +172,6 @@ def create_roi(
     space: list[str] | None = None,
     bids_filter_file: Path | None = None,
 ) -> int:
-
     roi_name = "{ '" + "', '".join(roi_name) + "' }" if roi_name is not None else None  # type: ignore
 
     cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
@@ -222,7 +219,6 @@ def stats(
     design_only: bool = False,
     keep_residuals: bool = False,
 ) -> int:
-
     if space and len(space) > 1:
         log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
         return 1
@@ -258,7 +254,6 @@ def stats(
 
 
 def cli(argv: Any = sys.argv) -> None:
-
     parser = common_parser()
 
     args, unknowns = parser.parse_known_args(argv[1:])
@@ -339,7 +334,6 @@ def bidspm(
     design_only: bool = False,
     keep_residuals: bool = False,
 ) -> int:
-
     if not bids_dir.is_dir():
         log.error(f"The 'bids_dir' does not exist:\n\t{bids_dir}")
         return 1
@@ -392,7 +386,6 @@ def bidspm(
         )
 
     elif action in {"stats", "contrasts", "results"}:
-
         if preproc_dir is None or not preproc_dir.exists():
             log.error(f"'preproc_dir' must be specified for stats. Got:\n{preproc_dir}")
             return 1
@@ -428,7 +421,6 @@ def bidspm(
 
 
 def run_command(cmd: str, platform: str | None = None) -> int:
-
     print("\nRunning the following command:\n")
     print(cmd.replace(";", ";\n"))
     print()

@@ -43,7 +43,6 @@ def test_parser():
 
 
 def test_append_common_arguments():
-
     cmd = append_common_arguments(
         cmd="",
         fwhm=6,
@@ -58,7 +57,6 @@ def test_append_common_arguments():
 
 
 def test_append_base_arguments():
-
     cmd = append_base_arguments(
         cmd="", verbosity=0, space=["foo", "bar"], task=["spam", "eggs"], ignore=["nii"]
     )
