@@ -14,14 +14,8 @@ end
 
 function test_noSPMmat()
 
-  % GIVEN
   opt.verbosity = 0;
   subLabel = '01';
-  spmMatFile = fullfile(pwd, 'sub-01', 'stats', 'foo', 'SPM.mat');
-  % WHEN
-  status = noSPMmat(opt, subLabel, spmMatFile);
-  % THEN
-  assertEqual(status, true);
 
   % GIVEN
   spmMatFile = fullfile(getDummyDataDir(), 'mat_files', 'SPM.mat');
@@ -29,6 +23,13 @@ function test_noSPMmat()
   status = noSPMmat(opt, subLabel, spmMatFile);
   % THEN
   assertEqual(status, false);
+
+  % GIVEN
+  spmMatFile = fullfile(pwd, 'sub-01', 'stats', 'foo', 'SPM.mat');
+  % WHEN
+  status = noSPMmat(opt, subLabel, spmMatFile);
+  % THEN
+  assertEqual(status, true);
 
   if bids.internal.is_octave()
     return
@@ -62,7 +63,6 @@ function test_notImplemented()
     return
   end
   opt.verbosity = 1;
-
   assertWarning(@()notImplemented('foo', '', opt), 'foo:notImplemented');
 
 end
