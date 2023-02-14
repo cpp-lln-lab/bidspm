@@ -67,7 +67,7 @@ function matlabbatch = setBatchImageCalculation(varargin)
   parse(args, varargin{:});
 
   if ~ismember(args.Results.dataType, allowedDataType)
-    list = createUnorderedList(allowedDataType);
+    list = bids.internal.create_unordered_list(allowedDataType);
     errorStruct.identifier = [mfilename() ':invalidDatatype'];
     errorStruct.message = sprintf('dataType must be one of the those types:%s', list);
     error(errorStruct);

@@ -56,7 +56,8 @@ function repetitionTime = getAndCheckRepetitionTime(varargin)
   end
 
   if isempty(repetitionTime)
-    msg = sprintf('No repetition time found for filter:\n%s', createUnorderedList(filter));
+    msg = sprintf('No repetition time found for filter:\n%s', ...
+                  bids.internal.create_unordered_list(filter));
     id = 'noRepetitionTimeFound';
     logger('ERROR', msg, 'filename', mfilename(), 'id', id);
   end

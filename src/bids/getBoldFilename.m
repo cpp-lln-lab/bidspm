@@ -51,7 +51,7 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
   if isempty(boldFilename)
     msg = sprintf('No bold file found in:\n\t%s\nfor filter:%s\n', ...
                   pathToPrint(BIDS.pth), ...
-                  createUnorderedList(opt.query));
+                  bids.internal.create_unordered_list(opt.query));
 
     id = 'emptyInput';
     logger('ERROR', msg, 'filename', mfilename(), 'id', id);
@@ -60,7 +60,7 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
   % in case files have been unzipped, we do it now
   fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename, opt);
 
-  msg = createUnorderedList(pathToPrint(fullPathBoldFilename));
+  msg = bids.internal.create_unordered_list(pathToPrint(fullPathBoldFilename));
   logger('DEBUG', msg, 'options', opt, 'filename', mfilename());
 
   boldFilename = spm_file(fullPathBoldFilename, 'filename');

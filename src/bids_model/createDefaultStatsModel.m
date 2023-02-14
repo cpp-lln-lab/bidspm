@@ -142,7 +142,7 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
   bm.Input.space = opt.space;
   if numel(bm.Input.space) > 1
     msg = sprintf('Models can only accept one space.\nGot: %s', ...
-                  createUnorderedList(bm.Input.space));
+                  bids.internal.create_unordered_list(bm.Input.space));
     id = 'tooManySpaces';
     logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end

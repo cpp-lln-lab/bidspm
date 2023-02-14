@@ -272,7 +272,7 @@ function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, ru
 
     msg = sprintf('No events.tsv file found in:\n\t%s\nfor filter:%s\n', ...
                   BIDS.raw.pth, ...
-                  createUnorderedList(filter));
+                  bids.internal.create_unordered_list(filter));
     id = 'emptyInput';
     logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 

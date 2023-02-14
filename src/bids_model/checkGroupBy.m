@@ -50,7 +50,9 @@ function [status, groupBy] = checkGroupBy(node)
 
   if ~status
     template = 'only "GroupBy": %s supported %s node level';
-    msg = sprintf(template, createUnorderedList(supportedGroupBy), node.Level);
+    msg = sprintf(template, ...
+                  bids.internal.create_unordered_list(supportedGroupBy), ...
+                  node.Level);
     notImplemented(mfilename(), msg);
   end
 

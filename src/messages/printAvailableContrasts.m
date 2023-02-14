@@ -34,7 +34,7 @@ function printAvailableContrasts(varargin)
   opt = args.Results.opt;
 
   printToScreen('List of contrast in this SPM file\n', opt);
-  printToScreen(createUnorderedList({SPM.xCon.name}), opt);
+  printToScreen(bids.internal.create_unordered_list({SPM.xCon.name}), opt);
   printToScreen('\n', opt);
 
 end

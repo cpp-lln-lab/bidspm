@@ -118,8 +118,8 @@ function opt = getSubjectList(BIDS, opt)
 end
 
 function errorMissingSubject(opt, allSubjects)
-  subjectsSpecified = createUnorderedList(opt.subjects);
-  subjectsPresent = createUnorderedList(allSubjects);
+  subjectsSpecified = bids.internal.create_unordered_list(opt.subjects);
+  subjectsPresent = bids.internal.create_unordered_list(allSubjects);
 
   msg = sprintf(['Some of the subjects specified do not exist in this data set.\n', ...
                  'subjects specified:%s \nsubjects present:%s'], ...

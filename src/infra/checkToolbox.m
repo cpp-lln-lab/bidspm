@@ -49,7 +49,7 @@ function status = checkToolbox(varargin)
   if ~ismember(toolboxName, knownToolboxes)
     msg = sprintf('Unknown toolbox: %s.\nKwnon toolboxes:\n%s\n\n', ...
                   toolboxName, ...
-                  createUnorderedList(knownToolboxes));
+                  bids.internal.create_unordered_list(knownToolboxes));
     id = 'unknownToolbox';
     logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
   end

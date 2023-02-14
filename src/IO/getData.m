@@ -86,7 +86,7 @@ function [BIDS, opt] = getData(varargin)
                    'does not exist in this data set.\n', ...
                    'List of tasks present in this dataset:\n%s'], ...
                   strjoin(opt.taskName), ...
-                  createUnorderedList(bids.query(BIDS, 'tasks')));
+                  bids.internal.create_unordered_list(bids.query(BIDS, 'tasks')));
 
     id = 'noMatchingTask';
     logger('ERROR', msg, 'id', id, 'filename', mfilename());
@@ -98,7 +98,8 @@ function [BIDS, opt] = getData(varargin)
   % get IDs of all subjects
   opt = getSubjectList(BIDS, opt);
 
-  msg = sprintf('WILL WORK ON SUBJECTS%s', createUnorderedList(opt.subjects));
+  msg = sprintf('WILL WORK ON SUBJECTS%s', ...
+                bids.internal.create_unordered_list(opt.subjects));
   logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
 end
