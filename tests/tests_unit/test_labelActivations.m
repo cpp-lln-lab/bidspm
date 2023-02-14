@@ -10,7 +10,7 @@ end
 
 function test_labelActivations_aal()
 
-  if isGithubCi()
+  if bids.internal.is_github_ci()
     return
   end
 
@@ -47,6 +47,10 @@ function test_labelActivations_basic()
 end
 
 function test_labelActivations_bug_662()
+
+  if bids.internal.is_octave()
+    return
+  end
 
   csvFile = fullfile(getDummyDataDir(), 'tsv_files', 'bug662_results_table.csv');
 

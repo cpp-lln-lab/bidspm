@@ -52,6 +52,10 @@ end
 
 function test_getEventSpecificationRoiGlm_warning_complex_contrasts()
 
+  if bids.internal.is_octave()
+    return
+  end
+
   % GIVEN
   [modelFile, spmFile] = setUp();
 

@@ -113,7 +113,7 @@ function bidsQApreproc(opt)
 
           if numel(funcImage) ~= 1
             msg = sprintf('too many files found:\n%s\n\nfor filter:%s', ...
-                          createUnorderedList(funcImage));
+                          bids.internal.create_unordered_list(funcImage));
             id = 'wrongNumberOFFiles';
             logger('ERROR', msg, 'id', id, 'filename', mfilename(), 'options', opt);
           end
@@ -134,7 +134,7 @@ function bidsQApreproc(opt)
           realignParamFile = bids.query(BIDS, 'data', filter);
           if numel(realignParamFile) ~= 1
             msg = sprintf('too many files found:\n%s\n\nfor filter:%s', ...
-                          createUnorderedList(realignParamFile));
+                          bids.internal.create_unordered_list(realignParamFile));
             id = 'wrongNumberOFFiles';
             logger('ERROR', msg, 'id', id, 'filename', mfilename(), 'options', opt);
           end

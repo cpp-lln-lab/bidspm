@@ -24,7 +24,7 @@ function test_bidsChangeSuffix_basic()
   copyfile(dataDir, tmpDir);
 
   bidsDir = tmpDir;
-  if isOctave
+  if bids.internal.is_octave()
     bidsDir = fullfile(tmpDir, dataset);
   end
 

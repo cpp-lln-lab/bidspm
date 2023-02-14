@@ -34,7 +34,7 @@ function dep = returnDependency(opt, type)
 
       msg = sprintf('unknown batch dependency requested: %s\nHandled dependencies:\n%s\n\n', ...
                     type, ...
-                    createUnorderedList(handledDependencies));
+                    bids.internal.create_unordered_list(handledDependencies));
       id = 'unknownDependency';
       logger('ERROR', msg, 'id', id, 'filename', mfilename());
 

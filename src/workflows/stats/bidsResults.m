@@ -548,7 +548,7 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
             file = file{1};
 
             msg = sprintf('More than 1 overlay image found for %s.\n Taking the first one.', ...
-                          createUnorderedList(background));
+                          bids.internal.create_unordered_list(background));
             id = 'tooManyMontageBackground';
             logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
           end

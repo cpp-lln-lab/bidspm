@@ -52,7 +52,7 @@ end
 
 function test_addGitIgnore_append()
 
-  if isOctave()
+  if bids.internal.is_octave()
     return
   end
 

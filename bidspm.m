@@ -420,13 +420,7 @@ function initBidspm(dev)
       pathSep = ';';
     end
 
-    % add library first and then bidspm source code
-    % except for current folder
-    run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'));
-    run(fullfile(thisDirectory, 'lib', 'spm_2_bids', 'init_spm_2_bids'));
-    run(fullfile(thisDirectory, 'lib', 'octache', 'setup'));
-
-    % now add bidspm source code
+    % add bidspm source code
     BIDSPM_PATHS = fullfile(thisDirectory);
     BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
                        pathSep, ...
@@ -441,7 +435,7 @@ function initBidspm(dev)
                        pathSep, ...
                        genpath(fullfile(thisDirectory, 'src', 'workflows', 'stats')));
 
-    % then add library that do not have an set up script
+    % add library that do not have an set up script
     libList = {'spmup'};
 
     for i = 1:numel(libList)
@@ -468,15 +462,18 @@ function initBidspm(dev)
 
     addpath(BIDSPM_PATHS, '-begin');
 
-    if isOctave
-      warning('off', 'Octave:shadowed-function');
-    end
+    silenceOctaveWarning();
+
+    % add library that have a set up script
+    run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'));
+    run(fullfile(thisDirectory, 'lib', 'spm_2_bids', 'init_spm_2_bids'));
+    run(fullfile(thisDirectory, 'lib', 'octache', 'setup'));
 
     checkDependencies(opt);
     printCredits(opt);
 
     %%
-    if isOctave
+    if bids.internal.is_octave()
 
       % Exit if min version is not satisfied
       if ~compare_versions(OCTAVE_VERSION, octaveVersion, '>=')
@@ -570,7 +567,7 @@ function run_tests()
 
   cd(fileparts(mfilename('fullpath')));
 
-  if isGithubCi
+  if bids.internal.is_github_ci()
     logger('INFO', 'This is github CI');
   else
     logger('INFO', 'This is not github CI');

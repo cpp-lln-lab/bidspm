@@ -59,7 +59,8 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
 
   if isempty(anat)
 
-    msg = sprintf('No anat file for:\n%s\n\n', createUnorderedList(filter));
+    msg = sprintf('No anat file for:\n%s\n\n', ...
+                  bids.internal.create_unordered_list(filter));
 
     id = 'noAnatFile';
     if tolerant
@@ -75,7 +76,7 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
                   nbImgToReturn, ...
                   numel(anat), ...
                   nbImgToReturn, ...
-                  createUnorderedList(pathToPrint(anat(1:nbImgToReturn))));
+                  bids.internal.create_unordered_list(pathToPrint(anat(1:nbImgToReturn))));
     id = 'severalAnatFile';
     logger('WARNING', msg, 'id', id, 'filename', mfilename());
   end
@@ -95,7 +96,8 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
 
   anatImage = unzipAndReturnsFullpathName(anat);
 
-  msg = sprintf('  selecting anat file: %s', createUnorderedList(pathToPrint(anat)));
+  msg = sprintf('  selecting anat file: %s', ...
+                bids.internal.create_unordered_list(pathToPrint(anat)));
   logger('DEBUG', msg, 'options', opt, 'filename', mfilename());
 
   tmpDir = {};
@@ -133,7 +135,7 @@ function checkAvailableSuffix(BIDS, subLabel, filter, tolerant)
                    '\nAll available suffixes:\n%s'], ...
                   anatSuffixes, ...
                   subLabel, ...
-                  createUnorderedList(availableSuffixes));
+                  bids.internal.create_unordered_list(availableSuffixes));
     id = 'requestedSuffixUnvailable';
     if tolerant
       logger('WARNING', msg, 'id', id, 'filename', mfilename());
@@ -164,7 +166,7 @@ function anatSession = checkAvailableSessions(BIDS, subLabel, filter, tolerant)
                      '\nAll available sessions:\n%s.'], ...
                     anatSession, ...
                     subLabel, ...
-                    createUnorderedList(sessions));
+                    bids.internal.create_unordered_list(sessions));
       id = 'requestedSessionUnvailable';
       if tolerant
         logger('WARNING', msg, 'id', id, 'filename', mfilename());

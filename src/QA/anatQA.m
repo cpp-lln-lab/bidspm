@@ -159,7 +159,7 @@ function fig = plotAnatQA(anatHeader, brainMask, data, visible)
 
   fig = spm_figure('Create', 'brainMask', 'Brain Mask', visible);
 
-  if isOctave
+  if bids.internal.is_octave()
     return
   end
 

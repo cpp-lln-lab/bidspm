@@ -15,8 +15,6 @@ function logMsg = logger(varargin)
 
   % (C) Copyright 2022 bidspm developers
 
-  silenceOctaveWarning();
-
   ALLOWED_LOG_LEVELS = {'ERROR', 'WARNING', 'INFO', 'DEBUG'};
 
   default_opt = struct('verbosity', 2);
@@ -43,7 +41,8 @@ function logMsg = logger(varargin)
 
   if ~ismember(logLevel, ALLOWED_LOG_LEVELS)
     logger('ERROR', ...
-           ['log levels must be one of:' createUnorderedList(ALLOWED_LOG_LEVELS)], ...
+           ['log levels must be one of:', ...
+            bids.internal.create_unordered_list(ALLOWED_LOG_LEVELS)], ...
            'filename', mfilename(), ...
            'id', 'wrongLogLevel');
   end

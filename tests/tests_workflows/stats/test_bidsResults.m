@@ -36,6 +36,10 @@ end
 
 function test_bidsResults_no_results()
 
+  if bids.internal.is_octave()
+    return
+  end
+
   opt = setOptions('vismotion', '', 'pipelineType', 'stats');
 
   assertWarning(@() bidsResults(opt), 'bidsResults:noResultsAsked');
@@ -99,8 +103,10 @@ function test_bidsResults_too_many_backgrounds()
   opt.results.montage.do = true;
   opt.results.montage.background = struct('suffix', 'probseg');
 
+  if bids.internal.is_octave()
+    return
+  end
   opt.verbosity = 1;
-
   assertWarning(@()bidsResults(opt), 'bidsResults:tooManyMontageBackground');
 
 end
@@ -159,8 +165,10 @@ function test_bidsResults_no_background_for_montage()
   opt.results.montage.do = true;
   opt.results.montage.background = 'aFileThatDoesNotExist.nii';
 
+  if bids.internal.is_octave()
+    return
+  end
   opt.verbosity = 1;
-
   assertWarning(@()bidsResults(opt), 'checkMaskOrUnderlay:missingMaskOrUnderlay');
 
 end

@@ -30,8 +30,6 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
 
   % (C) Copyright 2019 bidspm developers
 
-  silenceOctaveWarning();
-
   if nargin < 4 || isempty(imgNb)
     imgNb = 1;
   end

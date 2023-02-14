@@ -80,7 +80,7 @@ function figureFile = plotRoiTimeCourse(varargin)
     colors = repmat(colors, 2, 1);
   end
 
-  if isGithubCi()
+  if bids.internal.is_github_ci()
     return
   end
 

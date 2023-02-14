@@ -44,12 +44,13 @@ function boldFilename = getBoldFilenameForFFX(varargin)
 
   if numel(boldFilename) > 1
     id = 'tooManyFiles';
-    msg = sprintf('This should only get one file. Got:%s', createUnorderedList(boldFilename));
+    msg = sprintf('This should only get one file. Got:%s', ...
+                  bids.internal.create_unordered_list(boldFilename));
     logger('ERROR', msg, 'id', id, 'filename', mfilename());
   elseif isempty(boldFilename)
     msg = sprintf('No bold file found in:\n\t%s\nfor query:%s\n', ...
                   BIDS.pth, ...
-                  createUnorderedList(opt.query));
+                  bids.internal.create_unordered_list(opt.query));
     id = 'noFileFound';
     logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
@@ -57,7 +58,8 @@ function boldFilename = getBoldFilenameForFFX(varargin)
   % in case files have been unzipped, we do it now
   fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename{1}, opt);
 
-  msg = ['  Bold file(s):', createUnorderedList(pathToPrint(fullPathBoldFilename))];
+  msg = ['  Bold file(s):', ...
+         bids.internal.create_unordered_list(pathToPrint(fullPathBoldFilename))];
   logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   boldFilename = spm_file(fullPathBoldFilename, 'filename');

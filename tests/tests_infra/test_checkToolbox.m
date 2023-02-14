@@ -18,7 +18,7 @@ function test_checkToolbox_mp2rage()
 
   assertEqual(status, isdir(fullfile(spm('dir'), 'toolbox', 'mp2rage')));
 
-  if isOctave
+  if bids.internal.is_octave()
     %       'Octave:mixed-string-concat'
     return
   end
@@ -32,7 +32,7 @@ end
 
 function test_checkToolbox_ali()
 
-  if isGithubCi
+  if bids.internal.is_github_ci()
 
     status = checkToolbox('ALI');
 
@@ -44,7 +44,7 @@ end
 
 function test_checkToolbox_macs()
 
-  if ~isGithubCi
+  if ~bids.internal.is_github_ci()
 
     if exist(fullfile(spm('dir'), 'toolbox', 'MACS'), 'dir')
       rmdir(fullfile(spm('dir'), 'toolbox', 'MACS'), 's');
@@ -58,7 +58,7 @@ function test_checkToolbox_macs()
 
   else
 
-    if isOctave()
+    if bids.internal.is_octave()
       return
     end
 

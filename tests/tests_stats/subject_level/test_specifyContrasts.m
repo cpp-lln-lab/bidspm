@@ -297,7 +297,7 @@ function test_specifyContrasts_missing_condition_for_dummy_contrasts()
 
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
-  if isOctave
+  if bids.internal.is_octave()
     % warning 'getRegressorIdx:missingRegressor' was raised,
     %  expected 'specifyContrasts:noContrast'
     return
@@ -334,7 +334,7 @@ function test_specifyContrasts_missing_condition()
 
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
-  if isOctave
+  if bids.internal.is_octave()
     % warning 'getRegressorIdx:missingRegressor' was raised,
     %  expected 'specifyContrasts:noContrast'
     return

@@ -29,7 +29,7 @@ function [OS, generatedBy] = getEnvInfo(opt)
   generatedBy(1).DOI = 'https://doi.org/10.5281/zenodo.3554331';
 
   runsOn = 'MATLAB';
-  if isOctave
+  if bids.internal.is_octave()
     runsOn = 'Octave';
   end
 

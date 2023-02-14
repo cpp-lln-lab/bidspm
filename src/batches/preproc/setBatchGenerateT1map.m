@@ -90,14 +90,16 @@ function matlabbatch = setBatchGenerateT1map(varargin)
       uniT1 = bids.query(BIDS, 'data', filter);
 
       if numel(uniT1) < 1
-        msg = sprintf('No UNIT1 image found for %s', createUnorderedList(filter));
+        msg = sprintf('No UNIT1 image found for %s', ...
+                      bids.internal.create_unordered_list(filter));
         id = 'missingUniT1';
         logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
         continue
       end
 
       if numel(uniT1) > 1
-        msg = sprintf('Too many UNIT1 image found for %s', createUnorderedList(filter));
+        msg = sprintf('Too many UNIT1 image found for %s', ...
+                      bids.internal.create_unordered_list(filter));
         id = 'tooManyUniT1';
         logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
         continue
@@ -112,7 +114,8 @@ function matlabbatch = setBatchGenerateT1map(varargin)
       metadataInv2 = bids.query(BIDS, 'metadata', filter);
 
       if numel(metadataInv1) < 1 || numel(metadataInv2) < 1
-        msg = sprintf('Missing metadata for INV images for %s', createUnorderedList(filter));
+        msg = sprintf('Missing metadata for INV images for %s', ...
+                      bids.internal.create_unordered_list(filter));
         id = 'missingMetadata';
         logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
         continue
@@ -147,7 +150,7 @@ function matlabbatch = setBatchGenerateT1map(varargin)
         estimateT1.FatSat = metadataInv1.FatSat;
       catch
         msg = sprintf('Missing non-BIDS metadata for %s\nSee ''help setBatchGenerateT1map''', ...
-                      createUnorderedList(filter));
+                      bids.internal.create_unordered_list(filter));
         id = 'missingNonBIDSMetadata';
         logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
         continue

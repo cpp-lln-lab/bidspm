@@ -62,7 +62,7 @@ function test_bidsCreateROI_neuromorphometrics_inve_norm()
 
   % requires some deformation field to work
 
-  %   if ~isGithubCi
+  %   if ~bids.internal.is_github_ci()
   %
   %     bidspm(pwd, fullfile(pwd, 'tmp'), ...
   %            'subject', ...
@@ -99,7 +99,7 @@ end
 
 function test_boilerplate_stats_only()
 
-  if ~isGithubCi
+  if ~bids.internal.is_github_ci()
     % when not in CI the octache partials are not in the right place
     return
   end
@@ -132,7 +132,7 @@ end
 
 function test_boilerplate_preproc_only()
 
-  if ~isGithubCi
+  if ~bids.internal.is_github_ci()
     % when not in CI the octache partials are not in the right place
     return
   end
@@ -210,7 +210,7 @@ function test_createDefaultStatsModel_CLI()
   expectedContent.Input.task = {'vislocalizer'; 'vismotion'};
   expectedContent.Input.space = {'individual'};
 
-  if ~isGithubCi
+  if ~bids.internal.is_github_ci()
     assertEqual(content.Nodes, expectedContent.Nodes);
     assertEqual(content.Edges, expectedContent.Edges);
     assertEqual(content.Input, expectedContent.Input);

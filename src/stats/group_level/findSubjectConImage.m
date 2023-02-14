@@ -70,7 +70,8 @@ function file = findSubjectConImage(varargin)
       id = 'missingContrast';
       logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
-      printToScreen(['available contrasts:\n' createUnorderedList({SPM.xCon.name}')], ...
+      printToScreen(['available contrasts:\n' ...
+                     bids.internal.create_unordered_list({SPM.xCon.name}')], ...
                     opt, 'format', 'red');
 
       file{iCon, 1} = '';

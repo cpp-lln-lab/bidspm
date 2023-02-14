@@ -14,8 +14,6 @@ function image = checkMaskOrUnderlay(image, opt, type)
 
   % (C) Copyright 2022 bidspm developers
 
-  silenceOctaveWarning();
-
   if ischar(image)
 
     if isempty(image) || ~exist(image, 'file')

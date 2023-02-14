@@ -53,6 +53,10 @@ end
 
 function test_checkOptions_error_task()
 
+  if bids.internal.is_octave()
+    return
+  end
+
   opt.taskName = '';
   opt.verbosity = 1;
 

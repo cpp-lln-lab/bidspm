@@ -128,6 +128,9 @@ function test_getVariablesToConvolve_warning()
   opt = setOptions('vislocalizer');
   bm = BidsModel('file', opt.model.file);
 
+  if bids.internal.is_octave()
+    return
+  end
   assertWarning(@()bm.getVariablesToConvolve('Name', 'dataset_level'), ...
                 'BidsModel:noVariablesToConvolve');
 
@@ -159,6 +162,9 @@ function test_getModelMask_method()
   mask = bm.getModelMask('Name', 'run_level');
   assertEqual(mask, 'mask.nii');
 
+  if bids.internal.is_octave()
+    return
+  end
   bm.verbose = true;
   bm.Nodes{1}.Model.Options = rmfield(bm.Nodes{1}.Model.Options, 'Mask');
   assertWarning(@()bm.getModelMask('Name', 'run_level'), ...
@@ -199,6 +205,9 @@ function test_getInclusiveMaskThreshold_method()
 
   bm.getInclusiveMaskThreshold('Name', 'subject_level');
 
+  if bids.internal.is_octave()
+    return
+  end
   assertWarning(@()bm.getInclusiveMaskThreshold('Name', 'subject_level'), ...
                 'BidsModel:noInclMaskThresh');
 

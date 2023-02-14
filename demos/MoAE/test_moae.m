@@ -28,9 +28,6 @@ if download_data
 end
 
 warning('off', 'SPM:noDisplay');
-if isOctave
-  warning('off', 'setGraphicWindow:noGraphicWindow');
-end
 
 optionsFile = fullfile(WD, 'options', 'options_task-auditory.json');
 
@@ -94,7 +91,7 @@ for iOption = 1:numel(space)
   % 7487 Segmentation fault      (core dumped) octave $OCTFLAGS --eval "run system_tests_facerep;"
   %
   % not sure why
-  if isOctave
+  if bids.internal.is_octave()
     break
   end
 

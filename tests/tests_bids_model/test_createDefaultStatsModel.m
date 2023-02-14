@@ -29,7 +29,7 @@ function test_createDefaultStatsModel_basic()
 
   expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-default_smdl.json'));
 
-  if ~isGithubCi
+  if ~bids.internal.is_github_ci()
     % silencing because in CI first node design matrix includes a an extra empty
     % regressor
     %

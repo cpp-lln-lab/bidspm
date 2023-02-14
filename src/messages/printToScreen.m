@@ -28,7 +28,7 @@ function printToScreen(varargin)
 
   if opt.verbosity > 1
 
-    if isOctave()
+    if bids.internal.is_octave()
       fprintf(1, msg);
     else
       try

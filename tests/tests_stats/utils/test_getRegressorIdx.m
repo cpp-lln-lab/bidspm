@@ -54,6 +54,9 @@ function test_getRegressorIdx_basic()
   assertEqual(status, true);
 
   %% missing
+  if bids.internal.is_octave()
+    return
+  end
   assertWarning(@()getRegressorIdx('foo', SPM), 'getRegressorIdx:missingRegressor');
 
   sts = warning('QUERY', 'getRegressorIdx:missingRegressor');

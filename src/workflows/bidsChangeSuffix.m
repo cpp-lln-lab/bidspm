@@ -64,7 +64,8 @@ function bidsChangeSuffix(varargin)
   end
 
   if isstruct(metadata) && isempty(fieldnames(metadata))
-    warning('No metadata for filter: %s', createUnorderedList(filter));
+    warning('No metadata for filter: %s', ...
+            bids.internal.create_unordered_list(filter));
   end
 
   if isstruct(metadata)

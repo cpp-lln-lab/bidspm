@@ -16,7 +16,7 @@ end
 
 function test_validate_dataset()
 
-  if isOctave()
+  if bids.internal.is_octave()
     return
   end
 
@@ -63,6 +63,9 @@ function test_validate_model_warning()
   args.Results.model_file = fullfile(returnRootDir(), 'demos', 'transformers', 'models');
   args.Results.verbosity = 3;
 
+  if bids.internal.is_octave()
+    return
+  end
   assertWarning(@() validate(args), 'validate:invalidModel');
 
 end

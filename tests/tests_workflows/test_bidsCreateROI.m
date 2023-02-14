@@ -22,7 +22,7 @@ function test_bidsCreateROI_neuromorphometrics()
   cleanUp(opt.dir.roi);
 
   % skip test in CI
-  if isGithubCi
+  if bids.internal.is_github_ci()
     return
   end
 
@@ -50,8 +50,7 @@ function test_bidsCreateROI_wang()
 
   cleanUp(opt.dir.roi);
 
-  % skip test in CI
-  if isGithubCi
+  if bids.internal.is_github_ci()
     return
   end
 

@@ -382,8 +382,6 @@ infra
 .. autofunction:: src.infra.getVersion
 .. _isGithubCi:
 .. autofunction:: src.infra.isGithubCi
-.. _isOctave:
-.. autofunction:: src.infra.isOctave
 .. _resizeAliMask:
 .. autofunction:: src.infra.resizeAliMask
 .. _returnBsmDocURL:

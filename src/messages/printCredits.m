@@ -55,7 +55,7 @@ function printCredits(opt)
   printToScreen('\n\n', opt);
 
   printToScreen('Current list of contributors includes\n');
-  printToScreen(createUnorderedList(contributors), opt);
+  printToScreen(bids.internal.create_unordered_list(contributors), opt);
 
   printToScreen(sprintf('\n\n'), opt);
 

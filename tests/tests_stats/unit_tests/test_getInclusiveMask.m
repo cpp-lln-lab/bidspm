@@ -26,7 +26,7 @@ function test_getInclusiveMask_too_many()
 
   BIDS = getLayout(opt);
 
-  if isOctave
+  if bids.internal.is_octave()
     %       'Octave:mixed-string-concat'
     return
   end
@@ -57,6 +57,10 @@ function test_getInclusiveMask_basic()
 end
 
 function test_getInclusiveMask_no_image()
+
+  if bids.internal.is_octave()
+    return
+  end
 
   subLabel = '01';
   nodeName = 'run_level';

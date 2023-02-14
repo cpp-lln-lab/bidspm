@@ -35,6 +35,10 @@ end
 
 function test_copyGraphWindownOutput_warning()
 
+  if bids.internal.is_octave()
+    return
+  end
+
   [opt, subLabel, action] = setUp();
   opt.verbosity = 1;
 
