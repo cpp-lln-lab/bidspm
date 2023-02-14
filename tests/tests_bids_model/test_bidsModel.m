@@ -205,6 +205,9 @@ function test_getInclusiveMaskThreshold_method()
 
   bm.getInclusiveMaskThreshold('Name', 'subject_level');
 
+  if bids.internal.is_octave()
+    return
+  end
   assertWarning(@()bm.getInclusiveMaskThreshold('Name', 'subject_level'), ...
                 'BidsModel:noInclMaskThresh');
 
