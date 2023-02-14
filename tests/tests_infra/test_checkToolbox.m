@@ -18,7 +18,7 @@ function test_checkToolbox_mp2rage()
 
   assertEqual(status, isdir(fullfile(spm('dir'), 'toolbox', 'mp2rage')));
 
-  if isOctave
+  if bids.internal.is_octave()
     %       'Octave:mixed-string-concat'
     return
   end
@@ -58,7 +58,7 @@ function test_checkToolbox_macs()
 
   else
 
-    if isOctave()
+    if bids.internal.is_octave()
       return
     end
 

@@ -10,7 +10,7 @@ end
 
 function test_getData_invalid_dir()
 
-  if isOctave
+  if bids.internal.is_octave()
     return
   end
 

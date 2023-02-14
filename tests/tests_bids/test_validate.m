@@ -16,7 +16,7 @@ end
 
 function test_validate_dataset()
 
-  if isOctave()
+  if bids.internal.is_octave()
     return
   end
 

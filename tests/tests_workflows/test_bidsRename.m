@@ -25,7 +25,7 @@ function test_bidsRename_basic()
   copyfile(opt.dir.preproc, tmpDir);
 
   bidsDir = tmpDir;
-  if isOctave
+  if bids.internal.is_octave()
     bidsDir = fullfile(tmpDir, 'bidspm-preproc');
   end
 

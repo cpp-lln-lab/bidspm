@@ -39,7 +39,7 @@ function unzippedFullpathName = unzipAndReturnsFullpathName(fullpathName, opt)
     if strcmp(ext, '.gz') && ~opt.dryRun
 
       gunzip(fullpathName(iFile, :));
-      if ~isOctave()
+      if ~bids.internal.is_octave()
         delete(fullpathName(iFile, :));
       end
 

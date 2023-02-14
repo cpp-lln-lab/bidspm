@@ -10,7 +10,7 @@ end
 
 function test_volumeSplicing_remove_dummies()
 
-  if isOctave()
+  if bids.internal.is_octave()
     return
   end
 
@@ -27,7 +27,7 @@ end
 
 function test_volumeSplicing_overwrite_input()
 
-  if isOctave()
+  if bids.internal.is_octave()
     return
   end
 
@@ -45,7 +45,7 @@ end
 
 function test_volumeSplicing_remove_middle_vol()
 
-  if isOctave()
+  if bids.internal.is_octave()
     return
   end
 

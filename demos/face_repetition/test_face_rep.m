@@ -26,9 +26,6 @@ if download_data
 end
 
 warning('off', 'SPM:noDisplay');
-if isOctave
-  warning('off', 'setGraphicWindow:noGraphicWindow');
-end
 
 optionsFile = fullfile(WD, 'options', 'options_task-facerepetition.json');
 
@@ -37,7 +34,7 @@ model_file = fullfile(WD, 'models', 'model-faceRepetition_smdl.json');
 % skip unwarping with octave to avoid failure in CI
 % see https://github.com/cpp-lln-lab/bidspm/issues/769
 ignore = {''};
-if isOctave
+if bids.internal.is_octave()
   ignore = {'unwarp'};
 end
 
@@ -104,7 +101,7 @@ for iResolution = 2:3
   % 7487 Segmentation fault      (core dumped) octave $OCTFLAGS --eval "run system_tests_facerep;"
   %
   % not sure why
-  if isOctave
+  if bids.internal.is_octave()
     break
   end
 

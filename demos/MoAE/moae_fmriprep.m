@@ -22,10 +22,6 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
-if isOctave
-  warning('off', 'setGraphicWindow:noGraphicWindow');
-end
-
 % Getting the raw dataset to get the events.tsv
 download_data = true;
 download_moae_ds(download_data);

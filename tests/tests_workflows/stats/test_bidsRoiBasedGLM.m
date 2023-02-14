@@ -24,7 +24,7 @@ function test_bidsRoiBasedGLM_run()
   %  - also makes sure that previous results are not deleted
   %
 
-  if isOctave
+  if bids.internal.is_octave()
     return
   end
 

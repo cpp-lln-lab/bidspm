@@ -468,15 +468,13 @@ function initBidspm(dev)
 
     addpath(BIDSPM_PATHS, '-begin');
 
-    if isOctave
-      warning('off', 'Octave:shadowed-function');
-    end
+    silenceOctaveWarning();
 
     checkDependencies(opt);
     printCredits(opt);
 
     %%
-    if isOctave
+    if bids.internal.is_octave()
 
       % Exit if min version is not satisfied
       if ~compare_versions(OCTAVE_VERSION, octaveVersion, '>=')

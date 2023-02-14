@@ -26,7 +26,7 @@ function test_getInclusiveMask_too_many()
 
   BIDS = getLayout(opt);
 
-  if isOctave
+  if bids.internal.is_octave()
     %       'Octave:mixed-string-concat'
     return
   end

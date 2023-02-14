@@ -60,7 +60,7 @@ function test_bidsFFX_skip_subject_no_data()
 
   opt.verbosity = 1;
 
-  if isOctave
+  if bids.internal.is_octave()
     %  warning 'getOptionsFromModel:modelOverridesOptions' was raised,
     %    expected 'bidsFFX:noDataForSubjectGLM'
     return

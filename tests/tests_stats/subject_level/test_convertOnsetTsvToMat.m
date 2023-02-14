@@ -128,7 +128,7 @@ function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
 
   opt.verbosity = 1;
 
-  if isOctave
+  if bids.internal.is_octave()
     %       'Octave:mixed-string-concat'
     return
   end
@@ -281,7 +281,7 @@ function test_convertOnsetTsvToMat_missing_trial_type()
 
   opt.verbosity = 1;
 
-  if isOctave
+  if bids.internal.is_octave()
     %       'Octave:mixed-string-concat'
     return
   end

@@ -15,8 +15,6 @@ function logMsg = logger(varargin)
 
   % (C) Copyright 2022 bidspm developers
 
-  silenceOctaveWarning();
-
   ALLOWED_LOG_LEVELS = {'ERROR', 'WARNING', 'INFO', 'DEBUG'};
 
   default_opt = struct('verbosity', 2);

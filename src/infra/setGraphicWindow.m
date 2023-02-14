@@ -21,7 +21,7 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
   graphWindow = [];
   cmdLine = true;
 
-  if ~opt.dryRun && ~spm('CmdLine') && ~isOctave
+  if ~opt.dryRun && ~spm('CmdLine') && ~bids.internal.is_octave()
 
     try
       [interactiveWindow, graphWindow, cmdLine] = spm('FnUIsetup');
