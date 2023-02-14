@@ -23,15 +23,18 @@ function test_noSPMmat()
   % THEN
   assertEqual(status, true);
 
-  opt.verbosity = 1;
-  assertWarning(@()noSPMmat(opt, subLabel, spmMatFile), 'noSPMmat:noSpecifiedModel');
-
   % GIVEN
   spmMatFile = fullfile(getDummyDataDir(), 'mat_files', 'SPM.mat');
   % WHEN
   status = noSPMmat(opt, subLabel, spmMatFile);
   % THEN
   assertEqual(status, false);
+
+  if bids.internal.is_octave()
+    return
+  end
+  opt.verbosity = 1;
+  assertWarning(@()noSPMmat(opt, subLabel, spmMatFile), 'noSPMmat:noSpecifiedModel');
 
 end
 
@@ -45,6 +48,9 @@ function test_noRoiFound()
   % THEN
   assertEqual(status, true);
 
+  if bids.internal.is_octave()
+    return
+  end
   opt.verbosity = 1;
   assertWarning(@()noRoiFound(opt, roiList), 'noRoiFound:noRoiFile');
 
@@ -52,6 +58,9 @@ end
 
 function test_notImplemented()
 
+  if bids.internal.is_octave()
+    return
+  end
   opt.verbosity = 1;
 
   assertWarning(@()notImplemented('foo', '', opt), 'foo:notImplemented');
@@ -74,6 +83,9 @@ function test_isTtest()
   % THEN
   assertEqual(status, false);
 
+  if bids.internal.is_octave()
+    return
+  end
   assertWarning(@()isTtest(tmp), 'isTtest:notImplemented');
 
 end

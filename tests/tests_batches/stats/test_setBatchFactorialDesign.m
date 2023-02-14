@@ -106,6 +106,9 @@ function test_setBatchFactorialDesign_wrong_model_design_matrix()
 
   matlabbatch = {};
 
+  if bids.internal.is_octave()
+    return
+  end
   assertWarning(@()setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name), ...
                 'setBatchFactorialDesign:notImplemented');
 

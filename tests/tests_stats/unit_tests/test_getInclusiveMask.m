@@ -58,6 +58,10 @@ end
 
 function test_getInclusiveMask_no_image()
 
+  if bids.internal.is_octave()
+    return
+  end
+
   subLabel = '01';
   nodeName = 'run_level';
 

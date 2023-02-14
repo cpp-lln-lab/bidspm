@@ -32,6 +32,9 @@ function test_removeDummies_not_force()
   inputFile = setUp();
   metadata.NumberOfVolumesDiscardedByUser = 10;
 
+  if bids.internal.is_octave()
+    return
+  end
   assertWarning(@()removeDummies(inputFile, 4, metadata), ...
                 'removeDummies:dummiesAlreadyRemoved');
 

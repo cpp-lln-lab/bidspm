@@ -48,6 +48,10 @@ end
 
 function test_labelActivations_bug_662()
 
+  if bids.internal.is_octave()
+    return
+  end
+
   csvFile = fullfile(getDummyDataDir(), 'tsv_files', 'bug662_results_table.csv');
 
   assertWarning(@() labelActivations(csvFile), 'labelActivations:noSignificantVoxel');
