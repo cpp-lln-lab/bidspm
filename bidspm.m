@@ -568,7 +568,7 @@ function run_tests()
 
   cd(fileparts(mfilename('fullpath')));
 
-  if isGithubCi
+  if bids.internal.is_github_ci()
     logger('INFO', 'This is github CI');
   else
     logger('INFO', 'This is not github CI');

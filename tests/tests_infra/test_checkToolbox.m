@@ -32,7 +32,7 @@ end
 
 function test_checkToolbox_ali()
 
-  if isGithubCi
+  if bids.internal.is_github_ci()
 
     status = checkToolbox('ALI');
 
@@ -44,7 +44,7 @@ end
 
 function test_checkToolbox_macs()
 
-  if ~isGithubCi
+  if ~bids.internal.is_github_ci()
 
     if exist(fullfile(spm('dir'), 'toolbox', 'MACS'), 'dir')
       rmdir(fullfile(spm('dir'), 'toolbox', 'MACS'), 's');

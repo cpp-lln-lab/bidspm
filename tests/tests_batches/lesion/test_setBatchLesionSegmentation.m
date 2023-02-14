@@ -15,7 +15,7 @@ function test_setBatchLesionSegmentation_basic()
 
   opt = setOptions('MoAE', subLabel, 'useRaw', true);
 
-  if isGithubCi
+  if bids.internal.is_github_ci()
     return
   else
     opt = setFields(opt, ALI_my_defaults());

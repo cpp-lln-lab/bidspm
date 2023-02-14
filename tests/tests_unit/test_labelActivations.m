@@ -10,7 +10,7 @@ end
 
 function test_labelActivations_aal()
 
-  if isGithubCi()
+  if bids.internal.is_github_ci()
     return
   end
 

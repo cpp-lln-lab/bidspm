@@ -97,7 +97,7 @@ end
 
 function test_bidsFFX_fmriprep_no_smoothing()
 
-  if isGithubCi()
+  if bids.internal.is_github_ci()
     return
   end
 
