@@ -541,10 +541,10 @@ function uninitBidspm()
     spm('Clean');
     spm('Quit');
 
-    try
-      % this might not work on octave
+    if isOctave()
+      clear -g;
+    else
       clearvars -GLOBAL;
-    catch
     end
 
   end
@@ -680,4 +680,13 @@ function tryInstallFromForge(packageName)
     end
   end
 
+end
+
+function retval = isOctave()
+  persistent cacheval   % speeds up repeated calls
+  if isempty (cacheval)
+    cacheval = (exist ('OCTAVE_VERSION', 'builtin') > 0);
+  end
+
+  retval = cacheval;
 end
