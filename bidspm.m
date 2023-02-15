@@ -486,7 +486,7 @@ function initBidspm(dev)
 
         try
           % Try loading Octave packages
-          printToScreen(['loading ' packageName]);
+          printToScreen(['loading ' packageName '\n']);
           pkg('load', packageName);
 
         catch
