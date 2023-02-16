@@ -147,7 +147,7 @@ function renameFiles(BIDS, opt)
 
   opt = setRenamingConfig(opt, 'SpatialPrepro');
 
-  if ~opt.dryRun && ~opt.anatOnly
+  if ~opt.anatOnly
 
     for iSub = 1:numel(opt.subjects)
 
