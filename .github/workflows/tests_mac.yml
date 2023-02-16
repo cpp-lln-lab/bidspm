@@ -1,5 +1,5 @@
 ---
-name: tests
+name: tests_mac
 
 # Uses the cron schedule for github actions
 #
@@ -35,7 +35,7 @@ on:
 
 jobs:
 
-  test:
+  tests_mac:
 
     if: github.repository_owner == 'cpp-lln-lab'
 
