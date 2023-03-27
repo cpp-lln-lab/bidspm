@@ -64,7 +64,7 @@ repos:
     exclude: tests_.*.py|version.*.py|setup.py
 
 - repo: https://github.com/ikamensh/flynt/
-  rev: '0.77'
+  rev: '0.78'
   hooks:
   - id: flynt
 
