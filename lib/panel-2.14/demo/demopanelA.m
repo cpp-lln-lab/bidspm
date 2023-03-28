@@ -84,7 +84,7 @@ p.export('export_e', '-a1.4', '-rp');
 % mitigate this is to export at a higher DPI, but that makes
 % for a very large figure file. an alternative is to ask
 % panel to render at a higher DPI but then to smooth back
-% down to the specfied resolution. you'll have to wait a few
+% down to the specified resolution. you'll have to wait a few
 % seconds for the result, since rendering at these sizes
 % takes time. here, we'll smooth by factor 2. since this
 % takes a little while, i don't usually do this until i'm

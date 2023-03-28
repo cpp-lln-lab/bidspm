@@ -333,7 +333,7 @@ function [underlineFlag,boldFlag,style,debugFlag] = processStyleInfo(style)
           style = style(~debugIdx);
       end
 
-      % Check if the remaining style sting is a numeric vector
+      % Check if the remaining style string is a numeric vector
       %styleNum = str2num(style); %#ok<ST2NM>  % not good because style='text' is evaled!
       %if ~isempty(styleNum)
       if any(style==' ' | style==',' | style==';')

@@ -23,7 +23,7 @@ function resize_img(imnames, Voxdim, BB, ismask)
   % This version doesn't check spm_flip_analyze_images -- the handedness of
   % the output image and matrix should match those of the input.
 
-  % DONWLOADED FROM ON THE 2021 02 17
+  % DOWNLOADED FROM ON THE 2021 02 17
   % https://blogs.warwick.ac.uk/nichols/entry/spm5_gem_3/
 
   % Check spm version:
@@ -99,8 +99,8 @@ function resize_img(imnames, Voxdim, BB, ismask)
 
     % output image
     VO            = V;
-    [pth, nam, ext] = fileparts(V.fname);
-    VO.fname      = fullfile(pth, ['r' nam ext]);
+    [pth, name, ext] = fileparts(V.fname);
+    VO.fname      = fullfile(pth, ['r' name ext]);
     VO.dim(1:3)   = imgdim(1:3);
     VO.mat        = mat;
     VO = spm_create_vol(VO);
