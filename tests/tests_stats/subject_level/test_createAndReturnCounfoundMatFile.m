@@ -35,6 +35,28 @@ function test_createAndReturnCounfoundMatFile_basic()
 
 end
 
+function test_createAndReturnCounfoundMatFile_bug_966()
+  % missing variable for a filter file should not throw an error.
+  %
+
+  opt.taskName = 'auditory';
+  opt.space = 'IXI549Space';
+  opt = checkOptions(opt);
+
+  opt.model.file = fullfile(getDummyDataDir(), ...
+                            'models', 'model-bug966_smdl.json');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  tsvFile = fullfile(getDummyDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-auditory_desc-confounds_timeseries.tsv');
+
+  counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile);
+
+  delete(counfoundMatFile);
+
+end
+
 function [opt, tsvFile] = setUp()
 
   subLabel = '01';
