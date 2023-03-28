@@ -103,5 +103,11 @@ repos:
     types: [dockerfile]
     entry: ghcr.io/hadolint/hadolint hadolint
 
+- repo: https://github.com/codespell-project/codespell
+  rev: v2.2.4
+  hooks:
+  - id: codespell
+    args: [--config=setup.cfg]
+
 ci:
   skip: [hadolint-docker]
