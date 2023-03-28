@@ -82,7 +82,11 @@ function returnCode = bidspm(varargin)
     opt.dir.output = args.Results.output_dir;
     opt.dryRun = false;
     opt.verbosity = 3;
-    bugReport(opt, ME);
+    if isempty(which('bugReport'))
+      rethrow(ME);
+    else
+      bugReport(opt, ME);
+    end
     returnCode = 1;
   end
 end
