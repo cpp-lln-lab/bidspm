@@ -206,6 +206,16 @@
         "bug",
         "userTesting"
       ]
+    },
+    {
+      "login": "JacMatu",
+      "name": "JacMatu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/94451915?v=4",
+      "profile": "https://github.com/JacMatu",
+      "contributions": [
+        "bug",
+        "userTesting"
+      ]
     }
   ],
   "contributorsPerLine": 7,
