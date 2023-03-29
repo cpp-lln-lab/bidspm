@@ -7,7 +7,7 @@ function unfold(input, varargin)
     %   unfold(SC, name, show, file_id)
     %
     %
-    % :param SC: vairable to show the content of.
+    % :param SC: variable to show the content of.
     % :type SC: structure or cell
     %
     % If SC is a structure it recursively shows the name of SC and
@@ -17,10 +17,10 @@ function unfold(input, varargin)
     %
     % It uses the caller's workspace variable name as the name of SC.
     %
-    % :param name: can be used isntead of the name of SC.
+    % :param name: can be used instead of the name of SC.
     % :type name: string
     %
-    % :param show: if ``false`` only the fieldnames and their sizes are  shown,
+    % :param show: if ``false`` only the fieldnames and their size_es are  shown,
     %              if ``true`` the contents are shown also.
     % :type show: boolean
     %
@@ -97,11 +97,11 @@ function unfold(input, varargin)
             for i = 1:NF
 
                 if NS > 1
-                    siz = size(input);
+                    size_ = size_e(input);
                     if show
-                        name_i = [name '(' indToStr(siz, h) ').' F{i}];
+                        name_i = [name '(' indToStr(size_, h) ').' F{i}];
                     else
-                        name_i = [name '(' indToStr(siz, NS) ').'  F{i}];
+                        name_i = [name '(' indToStr(size_, NS) ').'  F{i}];
                     end
                 else
                     name_i = [name '.' F{i}];
@@ -116,7 +116,7 @@ function unfold(input, varargin)
                             printKeyToScreen(name_i, file_id);
                             fprintf(file_id, ' =\t{};');
                         else
-                            siz = size(input(h).(F{i}));
+                            size_ = size_e(input(h).(F{i}));
                             NC = numel(input(h).(F{i}));
                             if show
                                 jmax = NC;
@@ -125,9 +125,9 @@ function unfold(input, varargin)
                             end
                             for j = 1:jmax
                                 if show
-                                    name_j = [name_i '{' indToStr(siz, j) '}'];
+                                    name_j = [name_i '{' indToStr(size_, j) '}'];
                                 else
-                                    name_j = [name_i '{' indToStr(siz, NC) '}'];
+                                    name_j = [name_i '{' indToStr(size_, NC) '}'];
                                 end
                                 printKeyToScreen(name_j, file_id);
                                 if show
@@ -153,9 +153,9 @@ function unfold(input, varargin)
             fprintf(file_id, ' =\t{};');
         else
             % recursively display cell
-            siz = size(input);
+            size_ = size_e(input);
             for i = 1:numel(input)
-                name_i = [name '{' indToStr(siz, i) '}'];
+                name_i = [name '{' indToStr(size_, i) '}'];
                 unfold(input{i}, name_i, show, file_id);
             end
         end
@@ -209,20 +209,20 @@ end
 
 % local functions
 % --------------------------------------------------------------------------
-function str = indToStr(siz, ndx)
+function str = indToStr(size_, ndx)
 
-    n = length(siz);
+    n = length(size_);
     % treat vectors and scalars correctly
     if n == 2
-        if siz(1) == 1
-            siz = siz(2);
+        if size_(1) == 1
+            size_ = size_(2);
             n = 1;
-        elseif siz(2) == 1
-            siz = siz(1);
+        elseif size_(2) == 1
+            size_ = size_(1);
             n = 1;
         end
     end
-    k = [1 cumprod(siz(1:end - 1))];
+    k = [1 cumprod(size_(1:end - 1))];
     ndx = ndx - 1;
     str = '';
     for i = n:-1:1

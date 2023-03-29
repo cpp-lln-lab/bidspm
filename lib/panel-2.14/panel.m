@@ -2382,7 +2382,7 @@ classdef (Sealed = true) panel < handle
           p.m_children(end + 1) = child;
         end
 
-        % recurse (further argumens are passed on)
+        % recurse (further arguments are passed on)
         if ~isempty(args)
           child_packdim = flippackdim(p.packdim);
           edges = 'hv';
@@ -5027,10 +5027,10 @@ function b = isscalardimension(value)
 
 end
 
-function b = isofsize(value, siz)
+function b = isofsize(value, size_)
 
   sz = size(value);
-  b = length(sz) == length(siz) && all(sz == siz);
+  b = length(sz) == length(size_) && all(sz == size_);
 
 end
 

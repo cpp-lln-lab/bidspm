@@ -51,7 +51,7 @@ function mancoreg(varargin)
   % and "reset transformation" button (12.1.2004, JH)
   %
   % Version 1.0.3
-  % Added: Made compatible with SPM5 and corrected "Yawn" (altho I like it)
+  % Added: Made compatible with SPM5 and corrected "Yawn" (although I like it)
 
   global st mancoregvar
 
