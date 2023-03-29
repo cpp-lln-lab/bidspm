@@ -196,6 +196,16 @@
         "bug",
         "userTesting"
       ]
+    },
+    {
+      "login": "avanaudenhaege",
+      "name": "avanaudenhaege",
+      "avatar_url": "https://avatars.githubusercontent.com/u/75271651?v=4",
+      "profile": "https://github.com/avanaudenhaege",
+      "contributions": [
+        "bug",
+        "userTesting"
+      ]
     }
   ],
   "contributorsPerLine": 7,
