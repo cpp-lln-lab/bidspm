@@ -38,9 +38,8 @@ function test_getAndCheckSliceOrder_inconsistent_slice_timing()
 
   [BIDS, opt, filter] = setUp({'vismotion', 'vislocalizer'});
 
-  sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter);
-
-  assert(isempty(sliceOrder));
+  assertExceptionThrown(@()getAndCheckSliceOrder(BIDS, opt, filter), ...
+                        'getAndCheckSliceOrder:inconsistentSliceTimingLength');
 
 end
 
