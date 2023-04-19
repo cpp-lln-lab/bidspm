@@ -30,7 +30,7 @@ function test_getResults_bug_977()
                        'models', ...
                        'model-withResults_smdl.json');
   bm = BidsModel('file', modelFile);
-  assertError(@()bm.getResults(), 'fillInResultStructure:unknownResultsField');
+  assertError(@()bm.getResults(), 'validateResultsStructure:unknownResultsField');
 
 end
 

@@ -30,33 +30,12 @@ function thisResult = fillInResultStructure(thisResult)
     end
   end
 
-  % make sure there is no extra field
-  currentFields = fieldnames(thisResult);
-  for i = 1:numel(currentFields)
-    if ~ismember(currentFields{i}, defaultFields)
-      unfold(thisResult);
-      id = 'unknownResultsField';
-      msg = sprintf( ...
-                    ['Unknown field ''%s'' in result structure above.\n', ...
-                     'Allowed fields include:%s'], ...
-                    currentFields{i}, ...
-                    bids.internal.create_unordered_list(defaultFields));
-      errorHandling(mfilename(), id, msg, false);
-
-    end
-  end
-
   if ischar(thisResult.name)
     thisResult.name = {thisResult.name};
   end
+
+  validateResultsStructure(thisResult);
+
   assert(iscell(thisResult.name));
-
-  assert(all([thisResult.p >= 0 thisResult.p <= 1]));
-
-  assert(thisResult.k >= 0);
-
-  assert(islogical(thisResult.useMask));
-
-  assert(ismember(thisResult.MC, {'FWE', 'FDR', 'none'}));
 
 end
