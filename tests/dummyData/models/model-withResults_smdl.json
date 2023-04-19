@@ -1,0 +1,177 @@
+{
+  "Name": "Model with results section",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "getResults should work with a results section missing in some node.",
+  "Input": {
+    "task": [
+      "visualLocalizer2"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "session",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          "trial_type.motion",
+          "trial_type.static",
+          "trial_type.response",
+          "trans_?",
+          "rot_?",
+          "non_steady_state_outlier*",
+          "motion_outlier*"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.motion",
+            "trial_type.static",
+            "trial_type.response"
+          ],
+          "Model": "spm"
+        },
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": {
+            "suffix": [
+              "mask"
+            ],
+            "desc": [
+              "brain"
+            ]
+          }
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST"
+          },
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "motion",
+                  "static",
+                  "motion_gt_static"
+                ],
+                "p": 0.05,
+                "MC": "FWE",
+                "png": true,
+                "binary": true,
+                "nidm": true,
+                "montage": {
+                  "do": true,
+                  "orientation": "axial",
+                  "slices": [
+                    -4,
+                    0,
+                    4,
+                    8,
+                    16
+                  ],
+                  "background": {
+                    "suffix": "T1w",
+                    "desc": "preproc",
+                    "modality": "anat"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Contrasts": [
+          "trial_type.motion",
+          "trial_type.static"
+        ],
+        "Test": "t"
+      },
+      "Contrasts": [
+        {
+          "Name": "motion_gt_static",
+          "ConditionList": [
+            "trial_type.motion",
+            "trial_type.static"
+          ],
+          "Weights": [
+            1,
+            -1
+          ],
+          "Test": "t"
+        },
+        {
+          "Name": "static_gt_motion",
+          "ConditionList": [
+            "trial_type.motion",
+            "trial_type.static"
+          ],
+          "Weights": [
+            -1,
+            1
+          ],
+          "Test": "t"
+        }
+      ]
+    },
+    {
+      "Level": "Subject",
+      "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "dataset_level",
+      "GroupBy": [
+        "contrast"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm",
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST"
+          },
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "motion_gt_static"
+                ],
+                "Mask": false,
+                "MC": "none",
+                "p": 0.05,
+                "k": 0,
+                "nidm": true
+              }
+            ]
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    }
+  ]
+}
