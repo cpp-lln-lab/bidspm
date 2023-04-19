@@ -273,7 +273,7 @@ classdef BidsModel < bids.Model
 
     function results = getResults(obj)
 
-      results = {};
+      results = struct([]);
       idx = 1;
 
       Nodes = obj.get_nodes();
@@ -299,9 +299,9 @@ classdef BidsModel < bids.Model
             thisResult = fillInResultStructure(thisResult);
             thisResult.nodeName = nodeName;
             if idx == 1
-              results = {thisResult};
+              results = thisResult;
             else
-              results{idx} = thisResult;
+              results(idx) = thisResult;
             end
 
             idx = idx + 1;

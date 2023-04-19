@@ -159,7 +159,7 @@
                 "name": [
                   "motion_gt_static"
                 ],
-                "Mask": false,
+                "useMask": false,
                 "MC": "none",
                 "p": 0.05,
                 "k": 0,

@@ -1,6 +1,6 @@
 function thisResult = fillInResultStructure(thisResult)
   %
-  % Fill a structure use to dsiplay results with defaults
+  % Fill a structure use to display results with defaults
   %
   % USAGE::
   %
@@ -18,15 +18,31 @@ function thisResult = fillInResultStructure(thisResult)
 
   defaultResults = defaultResultsStructure();
 
-  % add missing fields
+  % add missing defaultFields
   thisResult = setFields(thisResult, defaultResults);
 
-  fields = fieldnames(defaultResults);
+  defaultFields = fieldnames(defaultResults);
 
-  % fill in empty fields
-  for i = 1:numel(fields)
-    if isempty(thisResult.(fields{i}))
-      thisResult.(fields{i}) = defaultResults.(fields{i});
+  % fill in empty defaultFields
+  for i = 1:numel(defaultFields)
+    if isempty(thisResult.(defaultFields{i}))
+      thisResult.(defaultFields{i}) = defaultResults.(defaultFields{i});
+    end
+  end
+
+  % make sure there is no extra field
+  currentFields = fieldnames(thisResult);
+  for i = 1:numel(currentFields)
+    if ~ismember(currentFields{i}, defaultFields)
+      unfold(thisResult);
+      id = 'unknownResultsField';
+      msg = sprintf( ...
+                    ['Unknown field ''%s'' in result structure above.\n', ...
+                     'Allowed fields include:%s'], ...
+                    currentFields{i}, ...
+                    bids.internal.create_unordered_list(defaultFields));
+      errorHandling(mfilename(), id, msg, false);
+
     end
   end
 

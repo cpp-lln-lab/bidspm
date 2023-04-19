@@ -15,10 +15,10 @@ function test_getResults()
   results = bm.getResults();
 
   assertEqual(numel(results), 4);
-  assertEqual(results{1}.nodeName, 'run_level');
-  assertEqual(results{2}.nodeName, 'run_level');
-  assertEqual(results{3}.nodeName, 'subject_level');
-  assertEqual(results{4}.nodeName, 'dataset_level');
+  assertEqual(results(1).nodeName, 'run_level');
+  assertEqual(results(2).nodeName, 'run_level');
+  assertEqual(results(3).nodeName, 'subject_level');
+  assertEqual(results(4).nodeName, 'dataset_level');
 
 end
 
@@ -30,7 +30,7 @@ function test_getResults_bug_977()
                        'models', ...
                        'model-withResults_smdl.json');
   bm = BidsModel('file', modelFile);
-  results = bm.getResults();
+  assertError(@()bm.getResults(), 'fillInResultStructure:unknownResultsField');
 
 end
 
