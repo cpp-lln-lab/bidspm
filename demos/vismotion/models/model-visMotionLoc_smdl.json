@@ -157,7 +157,7 @@
                 "name": [
                   "VisMot_gt_VisStat"
                 ],
-                "Mask": false,
+                "useMask": false,
                 "MC": "none",
                 "p": 0.05,
                 "k": 10,
