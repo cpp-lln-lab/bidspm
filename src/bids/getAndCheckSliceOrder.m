@@ -1,8 +1,8 @@
 function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
   %
   % Get the slice order information from the BIDS metadata.
-  % If inconsistent slice timing is found across files it returns empty and
-  % throws a warning.
+  % If inconsistent slice timing is found across files
+  % it throws an error.
   %
   % USAGE::
   %
@@ -20,10 +20,10 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
   %   - :sliceOrder: a vector of the time when each slice was acquired in
   %                  in a volume or indicating the order of acquisition of the slices.
   %
-  % ``getAndCheckSliceOrder`` will try to read the ``opt`` structure for any relevant information
-  % about slice timing.
-  % If this is empty, it queries the BIDS dataset to ee if there is any
-  % consistent slice timing information for a given ``filter``
+  % ``getAndCheckSliceOrder`` will try to read the ``opt`` structure
+  % for any relevant information about slice timing.
+  % If this is empty, it queries the BIDS dataset to see if there is any
+  % consistent slice timing information for a given ``filter``.
   %
   % See also: bidsSTC, setBatchSTC
   %
