@@ -95,6 +95,15 @@ authors:
   affiliation: "University of Gent"
   orcid: "https://orcid.org/0000-0001-8279-6118"
 
+- family-names: "Van Audenhaege"
+  given-names:  "Alice"
+  affiliation: "Université catholique de Louvain"
+  orcid: "https://orcid.org/0000-0002-5276-8818"
+
+- family-names: "Matuszewski"
+  given-names:  "Jacek"
+  affiliation: "Université catholique de Louvain"
+
 license: GPL-3.0
 
 keywords:
