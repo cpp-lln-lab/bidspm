@@ -116,7 +116,7 @@ function unfold(input, varargin)
                             printKeyToScreen(name_i, file_id);
                             fprintf(file_id, ' =\t{};');
                         else
-                            size_ = size_e(input(h).(F{i}));
+                            size_ = size(input(h).(F{i}));
                             NC = numel(input(h).(F{i}));
                             if show
                                 jmax = NC;
