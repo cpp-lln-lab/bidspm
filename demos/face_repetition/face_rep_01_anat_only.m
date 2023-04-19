@@ -34,7 +34,6 @@ if download_data
   bidspm();
   download_face_rep_ds(download_data);
 end
-
 bids_dir = fullfile(fileparts(mfilename('fullpath')), 'outputs', 'raw');
 
 output_dir = fullfile(bids_dir, '..', 'derivatives');

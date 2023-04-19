@@ -16,12 +16,12 @@ workflows
 .. autofunction:: src.workflows.bidsCopyInputFolder
 .. _bidsInverseNormalize:
 .. autofunction:: src.workflows.bidsInverseNormalize
+.. _bidsQApreproc:
+.. autofunction:: src.workflows.bidsQApreproc
 .. _bidsRename:
 .. autofunction:: src.workflows.bidsRename
 .. _bidsReport:
 .. autofunction:: src.workflows.bidsReport
-.. _bidsRsHrf:
-.. autofunction:: src.workflows.bidsRsHrf
 
 
 .. _workflows roi:
@@ -108,8 +108,6 @@ batches
 .. autofunction:: src.batches.setBatchPrintFigure
 .. _setBatchReorient:
 .. autofunction:: src.batches.setBatchReorient
-.. _setBatchRsHRF:
-.. autofunction:: src.batches.setBatchRsHRF
 .. _setBatchSelectAnat:
 .. autofunction:: src.batches.setBatchSelectAnat
 
@@ -208,10 +206,14 @@ IO
 ==
 .. _addGitIgnore:
 .. autofunction:: src.IO.addGitIgnore
+.. _addLicense:
+.. autofunction:: src.IO.addLicense
 .. _addReadme:
 .. autofunction:: src.IO.addReadme
 .. _cleanCrash:
 .. autofunction:: src.IO.cleanCrash
+.. _convertRealignParamToTsv:
+.. autofunction:: src.IO.convertRealignParamToTsv
 .. _createDerivativeDir:
 .. autofunction:: src.IO.createDerivativeDir
 .. _getData:
@@ -242,18 +244,26 @@ IO
 
 QA
 ==
-.. _anatomicalQA:
-.. autofunction:: src.QA.anatomicalQA
+.. _anatQA:
+.. autofunction:: src.QA.anatQA
+.. _censoring:
+.. autofunction:: src.QA.censoring
 .. _computeDesignEfficiency:
 .. autofunction:: src.QA.computeDesignEfficiency
-.. _functionalQA:
-.. autofunction:: src.QA.functionalQA
+.. _computeFDandRMS:
+.. autofunction:: src.QA.computeFDandRMS
+.. _computeRobustOutliers:
+.. autofunction:: src.QA.computeRobustOutliers
 .. _mriqcQA:
 .. autofunction:: src.QA.mriqcQA
+.. _plotConfounds:
+.. autofunction:: src.QA.plotConfounds
 .. _plotEvents:
 .. autofunction:: src.QA.plotEvents
 .. _plotRoiTimeCourse:
 .. autofunction:: src.QA.plotRoiTimeCourse
+.. _realignQA:
+.. autofunction:: src.QA.realignQA
 
 
 .. _bids:
@@ -352,8 +362,6 @@ defaults
 .. autofunction:: src.defaults.getOptionsFromModel
 .. _mniToIxi:
 .. autofunction:: src.defaults.mniToIxi
-.. _rsHRF_my_defaults:
-.. autofunction:: src.defaults.rsHRF_my_defaults
 .. _setDirectories:
 .. autofunction:: src.defaults.setDirectories
 .. _setRenamingConfig:
@@ -380,8 +388,6 @@ infra
 .. autofunction:: src.infra.getRepoInfo
 .. _getVersion:
 .. autofunction:: src.infra.getVersion
-.. _isGithubCi:
-.. autofunction:: src.infra.isGithubCi
 .. _resizeAliMask:
 .. autofunction:: src.infra.resizeAliMask
 .. _returnBsmDocURL:
@@ -406,8 +412,8 @@ messages
 .. autofunction:: src.messages.bidspmHelp
 .. _bugReport:
 .. autofunction:: src.messages.bugReport
-.. _createUnorderedList:
-.. autofunction:: src.messages.createUnorderedList
+.. _deprecated:
+.. autofunction:: src.messages.deprecated
 .. _errorHandling:
 .. autofunction:: src.messages.errorHandling
 .. _logger:
@@ -454,6 +460,8 @@ preproc fieldmaps
 
 preproc utils
 =============
+.. _createPialSurface:
+.. autofunction:: src.preproc.utils.createPialSurface
 .. _getAcquisitionTime:
 .. autofunction:: src.preproc.utils.getAcquisitionTime
 .. _removeDummies:
@@ -504,8 +512,6 @@ stats subject_level
 .. autofunction:: src.stats.subject_level.checkRegressorName
 .. _convertOnsetTsvToMat:
 .. autofunction:: src.stats.subject_level.convertOnsetTsvToMat
-.. _convertRealignParamToTsv:
-.. autofunction:: src.stats.subject_level.convertRealignParamToTsv
 .. _createAndReturnCounfoundMatFile:
 .. autofunction:: src.stats.subject_level.createAndReturnCounfoundMatFile
 .. _createAndReturnOnsetFile:
@@ -524,8 +530,6 @@ stats subject_level
 .. autofunction:: src.stats.subject_level.getEventsData
 .. _getFFXdir:
 .. autofunction:: src.stats.subject_level.getFFXdir
-.. _getRealignParamFilename:
-.. autofunction:: src.stats.subject_level.getRealignParamFilename
 .. _getSessionForRegressorNb:
 .. autofunction:: src.stats.subject_level.getSessionForRegressorNb
 .. _newContrast:
