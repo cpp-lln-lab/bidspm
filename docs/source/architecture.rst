@@ -5,8 +5,7 @@ At the highest levels bidspm is organized in workflows:
 
 - they all start with the prefix ``bids`` (for example ``bidsRealignReslice``)
 - they are in the folder :mod:`src.workflows`
-- they run on all the subjects specified in the ``options`` structure
-  (see the :ref:`set-up` section).
+- they run on all the subjects specified in the ``options`` structure.
 
 Most workflows run by creating matlab batches that are saved as ``.mat`` files in a ``jobs``
 then passed to the SPM jobman to run.

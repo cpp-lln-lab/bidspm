@@ -161,6 +161,7 @@ dummy scans will be included.
             "static"
         ],
         "Model": "spm"
+    }
 }
 ```
 
@@ -205,21 +206,55 @@ Those 3 conditions      <-------"trans_?",       |
 :align: center
 ```
 
-(bids_stats_model_sofware)=
-
 ### Software
 
 <!-- markdown-link-check-disable -->
-
-Note that if you wanted to change the
-[`SerialCorrelation` model](auto_correlation_model) used by bidspm, you could do
-so via the `Software` object of the BIDS stats model.
-
+By default, bidspm will use SPM's FAST model for the [`SerialCorrelation` model](serial_correlation_model).
 <!-- markdown-link-check-enable -->
+It will also use a value of 0.8 for the `InclusiveMaskingThreshold`
+to define the implicit inclusive mask
+that is used by SPM to determine in which voxels the GLM will be estimated
+(the value is taken from`defaults.mask.thresh` from SPM's defaults).
 
-Similar you can adapt directly in the model `InclusiveMaskingThreshold` the
-threshold used by SPM to create an implicit inclusive mask when running a GLM
-(the value `defaults.mask.thresh` of SPM defaults.) .
+This corresponds to explicitly setting the following fields in the ``Model.Software.SPM``
+object of a node in the BIDS stats model.
+
+```json
+{
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+      "Model": {
+        "X": ["trial_type.listening"],
+        "HRF": {
+          "Variables": ["trial_type.listening"],
+          "Model": "spm"
+        },
+        "Type": "glm",
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "InclusiveMaskingThreshold": 0.8
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+These values will explicitly be added to your your default BIDS stats model
+if you use bidspm 'default_model' action.
+
+```matlab
+bidspm(bids_dir, output_dir, 'dataset', ...
+        'action', 'default_model')
+```
+
+Note that if you wanted to use the `AR(1)` model for the serial correlation
+and to include all voxels in the implicit mask,
+you would have to set the following:
 
 ```json
 {
@@ -266,44 +301,44 @@ an example how you could specify it in a JSON.
 "Model": {
     "Software": {
         "bidspm": {
-        "Results": [
-            {
-            "name": [
-                "contrast_name", "other_contrast_name"
-            ],
-            "p": 0.05,
-            "MC": "FWE",
-            "png": true,
-            "binary": true,
-            "nidm": true,
-            "montage": {
-                "do": true,
-                "slices": [
-                -4,
-                0,
-                4,
-                8,
-                16
+          "Results": [
+              {
+                "name": [
+                    "contrast_name", "other_contrast_name"
                 ],
-                "background": {
-                "suffix": "T1w",
-                "desc": "preproc",
-                "modality": "anat"
+                "p": 0.05,
+                "MC": "FWE",
+                "png": true,
+                "binary": true,
+                "nidm": true,
+                "montage": {
+                    "do": true,
+                    "slices": [
+                    -4,
+                    0,
+                    4,
+                    8,
+                    16
+                    ],
+                    "background": {
+                    "suffix": "T1w",
+                    "desc": "preproc",
+                    "modality": "anat"
+                    }
                 }
-            }
-            },
-            {
-            "Description": "Note that you can specify multiple results objects, each with different parameters.",
-            "name": [
-                "yes_another_contrast_name"
-            ],
-            "p": 0.01,
-            "k": 10,
-            "MC": "none",
-            "csv": true,
-            "atlas": "AAL"
-            }
-        ]
+              },
+              {
+                "Description": "Note that you can specify multiple results objects, each with different parameters.",
+                "name": [
+                    "yes_another_contrast_name"
+                ],
+                "p": 0.01,
+                "k": 10,
+                "MC": "none",
+                "csv": true,
+                "atlas": "AAL"
+              }
+          ]
         }
     }
 }
