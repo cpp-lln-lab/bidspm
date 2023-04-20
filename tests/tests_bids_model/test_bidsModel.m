@@ -22,6 +22,18 @@ function test_getResults()
 
 end
 
+function test_getResults_bug_977()
+  % https://github.com/cpp-lln-lab/bidspm/issues/977
+
+  dummyDataDir = getDummyDataDir();
+  modelFile = fullfile(dummyDataDir, ...
+                       'models', ...
+                       'model-withResults_smdl.json');
+  bm = BidsModel('file', modelFile);
+  assertError(@()bm.getResults(), 'validateResultsStructure:unknownResultsField');
+
+end
+
 function test_get_root_node_bug_605()
 
   % https://github.com/cpp-lln-lab/bidspm/issues/605

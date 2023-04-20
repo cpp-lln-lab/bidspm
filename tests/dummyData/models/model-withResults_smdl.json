@@ -1,10 +1,10 @@
 {
-  "Name": "Motion localizer",
+  "Name": "Model with results section",
   "BIDSModelVersion": "1.0.0",
-  "Description": "contrasts for the motion localizer dataset",
+  "Description": "getResults should work with a results section missing in some node.",
   "Input": {
     "task": [
-      "visMotion"
+      "visualLocalizer2"
     ],
     "space": [
       "IXI549Space"
@@ -21,8 +21,9 @@
       ],
       "Model": {
         "X": [
-          "trial_type.VisMot",
-          "trial_type.VisStat",
+          "trial_type.motion",
+          "trial_type.static",
+          "trial_type.response",
           "trans_?",
           "rot_?",
           "non_steady_state_outlier*",
@@ -30,8 +31,9 @@
         ],
         "HRF": {
           "Variables": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
+            "trial_type.motion",
+            "trial_type.static",
+            "trial_type.response"
           ],
           "Model": "spm"
         },
@@ -55,9 +57,9 @@
             "Results": [
               {
                 "name": [
-                  "VisMot",
-                  "VisStat",
-                  "VisMot_gt_VisStat"
+                  "motion",
+                  "static",
+                  "motion_gt_static"
                 ],
                 "p": 0.05,
                 "MC": "FWE",
@@ -87,17 +89,17 @@
       },
       "DummyContrasts": {
         "Contrasts": [
-          "trial_type.VisMot",
-          "trial_type.VisStat"
+          "trial_type.motion",
+          "trial_type.static"
         ],
         "Test": "t"
       },
       "Contrasts": [
         {
-          "Name": "VisMot_gt_VisStat",
+          "Name": "motion_gt_static",
           "ConditionList": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
+            "trial_type.motion",
+            "trial_type.static"
           ],
           "Weights": [
             1,
@@ -106,10 +108,10 @@
           "Test": "t"
         },
         {
-          "Name": "VisStat_gt_VisMot",
+          "Name": "static_gt_motion",
           "ConditionList": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
+            "trial_type.motion",
+            "trial_type.static"
           ],
           "Weights": [
             -1,
@@ -155,12 +157,12 @@
             "Results": [
               {
                 "name": [
-                  "VisMot_gt_VisStat"
+                  "motion_gt_static"
                 ],
-                "useMask": false,
+                "Mask": false,
                 "MC": "none",
                 "p": 0.05,
-                "k": 10,
+                "k": 0,
                 "nidm": true
               }
             ]

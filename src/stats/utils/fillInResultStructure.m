@@ -1,6 +1,6 @@
 function thisResult = fillInResultStructure(thisResult)
   %
-  % Fill a structure use to dsiplay results with defaults
+  % Fill a structure use to display results with defaults
   %
   % USAGE::
   %
@@ -18,29 +18,24 @@ function thisResult = fillInResultStructure(thisResult)
 
   defaultResults = defaultResultsStructure();
 
-  % add missing fields
+  % add missing defaultFields
   thisResult = setFields(thisResult, defaultResults);
 
-  fields = fieldnames(defaultResults);
+  defaultFields = fieldnames(defaultResults);
 
-  % fill in empty fields
-  for i = 1:numel(fields)
-    if isempty(thisResult.(fields{i}))
-      thisResult.(fields{i}) = defaultResults.(fields{i});
+  % fill in empty defaultFields
+  for i = 1:numel(defaultFields)
+    if isempty(thisResult.(defaultFields{i}))
+      thisResult.(defaultFields{i}) = defaultResults.(defaultFields{i});
     end
   end
 
   if ischar(thisResult.name)
     thisResult.name = {thisResult.name};
   end
+
+  validateResultsStructure(thisResult);
+
   assert(iscell(thisResult.name));
-
-  assert(all([thisResult.p >= 0 thisResult.p <= 1]));
-
-  assert(thisResult.k >= 0);
-
-  assert(islogical(thisResult.useMask));
-
-  assert(ismember(thisResult.MC, {'FWE', 'FDR', 'none'}));
 
 end

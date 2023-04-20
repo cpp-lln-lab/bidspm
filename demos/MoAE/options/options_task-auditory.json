@@ -30,6 +30,6 @@
             ]
         },
         "png": true,
-        "thresh_spm": true
+        "threshSpm": true
     }
 }
