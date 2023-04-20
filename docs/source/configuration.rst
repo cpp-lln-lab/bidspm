@@ -116,10 +116,10 @@ statistics defaults
 Note that some of the defaults value may be over-ridden by the content of the ``opt``
 structure but also by the content of your BIDS stats model.
 
-.. _auto_correlation_model:
+.. _serial_correlation_model:
 
-auto-correlation modelisation
------------------------------
+Serial correlation modelisation
+-------------------------------
 
 Use of FAST :cite:p:`Olszowy2019` and not AR1 for auto-correlation modelisation.
 
@@ -127,6 +127,8 @@ Using FAST does not seem to affect results on time series with "normal" TRs but
 improves results when using sequences: it is therefore used by default in this
 pipeline.
 
+See the :ref:`bids stats model SerialCorrelation` section if you want to use
+the BIDS stats model to change the serial correlation modelisation.
 
 SPM to BIDS filename conversion
 ===============================
