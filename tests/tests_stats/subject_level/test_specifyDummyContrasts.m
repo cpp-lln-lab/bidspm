@@ -120,3 +120,48 @@ function test_specifyDummyContrasts_bug_825()
   assertEqual(numel({contrasts.name}), 20);
 
 end
+
+function test_specifyDummyContrasts_subselect_contrasts()
+
+  contrasts = struct('C', [], 'name', []);
+  counter = 0;
+
+  SPM.xX.name = {
+                 'Sn(1) sign_Stim1F*bf(1)'
+                 'Sn(1) sign_Stim1M*bf(1)'
+                 'Sn(1) sign_Stim1SCF*bf(1)'
+                 'Sn(1) sign_Stim1SCM*bf(1)'
+                 'Sn(1) no_sign_NoStim1F*bf(1)'
+                 'Sn(1) no_sign_NoStim1M*bf(1)'
+                 'Sn(1) no_sign_NoStim2F*bf(1)'
+                 'Sn(1) no_sign_NoStim2M*bf(1)'
+                 'Sn(1) no_sign_NoStim9M*bf(1)'
+                 'Sn(1) target*bf(1)'
+                 'Sn(2) sign_Stim1F*bf(1)'
+                 'Sn(2) sign_Stim1M*bf(1)'
+                 'Sn(2) sign_Stim1SCF*bf(1)'
+                 'Sn(2) sign_Stim1SCM*bf(1)'
+                 'Sn(2) no_sign_NoStim1F*bf(1)'
+                 'Sn(2) no_sign_NoStim1M*bf(1)'
+                 'Sn(2) no_sign_NoStim2F*bf(1)'
+                 'Sn(2) no_sign_NoStim2M*bf(1)'
+                 'Sn(2) no_sign_NoStim3F*bf(1)'
+                 'Sn(2) target*bf(1)'
+                };
+
+  SPM.Sess(1).col = 1:10;
+  SPM.Sess(2).col = 11:20;
+
+  SPM.xX.X = rand(3, numel(SPM.xX.name));
+
+  model_file = fullfile(getDummyDataDir(), 'models', 'model-bug825_smdl.json');
+  model = bids.Model('file', model_file, 'verbose', true);
+
+  node = model.Nodes{1};
+  node.DummyContrasts.Contrasts = node.DummyContrasts.Contrasts(1);
+
+  contrasts = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+
+  assertEqual(numel({contrasts.name}), 8);
+
+end
