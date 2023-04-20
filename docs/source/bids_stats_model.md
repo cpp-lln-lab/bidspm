@@ -161,6 +161,7 @@ dummy scans will be included.
             "static"
         ],
         "Model": "spm"
+    }
 }
 ```
 
@@ -205,11 +206,7 @@ Those 3 conditions      <-------"trans_?",       |
 :align: center
 ```
 
-(bids_stats_model_sofware)=
-
 ### Software
-
-(bids stats model SerialCorrelation)=
 
 <!-- markdown-link-check-disable -->
 By default, bidspm will use SPM's FAST model for the [`SerialCorrelation` model](serial_correlation_model).
@@ -247,8 +244,17 @@ object of a node in the BIDS stats model.
 }
 ```
 
-Note that if you wanted to use the `AR(1)` model for the serial correlation and to
-include all voxels in the implicit mask, you would have to set the following:
+These values will explicitly be added to your your default BIDS stats model
+if you use bidspm 'default_model' action.
+
+```matlab
+bidspm(bids_dir, output_dir, 'dataset', ...
+        'action', 'default_model')
+```
+
+Note that if you wanted to use the `AR(1)` model for the serial correlation
+and to include all voxels in the implicit mask,
+you would have to set the following:
 
 ```json
 {

@@ -127,7 +127,7 @@ Using FAST does not seem to affect results on time series with "normal" TRs but
 improves results when using sequences: it is therefore used by default in this
 pipeline.
 
-See the :ref:`bids stats model SerialCorrelation` section if you want to use
+See the Software section in the :ref:`bids_stats_model` page if you want to use
 the BIDS stats model to change the serial correlation modelisation.
 
 SPM to BIDS filename conversion
