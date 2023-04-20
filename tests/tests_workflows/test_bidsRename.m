@@ -17,10 +17,7 @@ function test_bidsRename_basic()
   opt = setOptions('MoAE-preproc');
 
   % move test data into temp directory to test renaming
-  tmpDir = fullfile(pwd, 'tmp');
-  if isdir(tmpDir)
-    rmdir(tmpDir, 's');
-  end
+  tmpDir = tempname;
   spm_mkdir(tmpDir);
   copyfile(opt.dir.preproc, tmpDir);
 
@@ -32,6 +29,7 @@ function test_bidsRename_basic()
   opt.dir.preproc = bidsDir;
 
   BIDS = bids.layout(bidsDir, 'use_schema', false);
+
   files = bids.query(BIDS, 'data', 'prefix', '');
   for i = 1:numel(files)
     delete(files{i});
@@ -40,8 +38,17 @@ function test_bidsRename_basic()
   opt.dryRun = false;
   opt.verbosity = 2;
 
-  bidsRename(opt);
+  createdFiles = bidsRename(opt);
 
-  rmdir(tmpDir, 's');
+  files = bids.query(BIDS, 'data');
+  for i = 1:numel(createdFiles)
+    jsonFile = spm_file(createdFiles{i}, 'ext', '.json');
+    if exist(jsonFile, 'file')
+      content = bids.util.jsondecode(jsonFile);
+      if isfield(content, 'SpmFilename')
+        assert(size(content.SpmFilename, 1) == 1);
+      end
+    end
+  end
 
 end
