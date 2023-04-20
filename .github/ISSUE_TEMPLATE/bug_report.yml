@@ -128,6 +128,15 @@ body:
 
 - type: textarea
   attributes:
+    label: BIDS stats model
+    description: If your error is related to running GLMs with bidspm, it may be useful to share your BIDS stats model.
+    render: json
+    placeholder: Paste your BIDS stats model here.
+  validations:
+    required: false
+
+- type: textarea
+  attributes:
     label: Current Behavior & Error message
     description: |
       Describe what you got instead.

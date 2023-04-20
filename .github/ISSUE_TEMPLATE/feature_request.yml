@@ -21,7 +21,6 @@ body:
   attributes:
     label: New feature
     description: You think / need this code to do...
-    render: markdown
     placeholder: Insert here your cool idea.
   validations:
     required: false
@@ -37,7 +36,6 @@ body:
       It is not clear how / why the code does **Z**.
 
       That means that we can improve the code or the documentation.
-    render: markdown
     placeholder: Tell us more.
   validations:
     required: false
