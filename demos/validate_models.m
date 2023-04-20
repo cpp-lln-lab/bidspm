@@ -2,6 +2,9 @@
 %
 % Validate all models in the demo folder
 %
+% Mostly for maintenance purposes:
+% ensures that all the models of all demos are valid.
+%
 
 this_dir = fileparts(mfilename('fullpath'));
 
@@ -9,6 +12,7 @@ addpath(fullfile(this_dir, '..'));
 
 bidspm();
 
+% get full path list of all the directories in this_dir
 dirs = spm_select('FPList', this_dir, 'dir');
 
 for i_dir = 1:size(dirs, 1)
