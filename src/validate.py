@@ -38,6 +38,7 @@ def main(argv: Any = sys.argv) -> None:
         raise FileNotFoundError(f"{input_} does not exist.")
 
     elif input_.is_file():
+        log.info(f"Validating {input_}")
         return_code = validate(input_)
         sys.exit(return_code)
 

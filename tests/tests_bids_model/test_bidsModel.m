@@ -8,6 +8,28 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_validateConstrasts()
+
+  opt = setOptions('vislocalizer');
+  bm = BidsModel('file', opt.model.file);
+
+  bm.validateConstrasts();
+
+  bm.Nodes{1}.Contrasts{1}.ConditionList{1} = 'foo1';
+  bm.validateConstrasts();
+
+  bmWithInvalidConstrast = bm;
+  bmWithInvalidConstrast.Nodes{1}.Contrasts{1}.ConditionList{1} = 'foo_1';
+  assertWarning(@()bmWithInvalidConstrast.validateConstrasts(), ...
+                'BidsModel:invalidConditionName');
+
+  bmWithInvalidConstrast = bm;
+  bmWithInvalidConstrast.Nodes{1}.DummyContrasts.Contrasts{2} = 'bar_2';
+  assertWarning(@()bmWithInvalidConstrast.validateConstrasts(), ...
+                'BidsModel:invalidConditionName');
+
+end
+
 function test_getResults()
 
   opt = setOptions('vislocalizer');

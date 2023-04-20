@@ -1,4 +1,4 @@
-function rtdURL = returnRtdURL()
+function rtdURL = returnRtdURL(page, anchor)
   %
   % USAGE::
   %
@@ -7,5 +7,13 @@ function rtdURL = returnRtdURL()
 
   % (C) Copyright 2021 bidspm developers
 
-  rtdURL = 'https://bidspm.readthedocs.io/en/latest/general_information.html';
+  if nargin < 1 || isempty(page)
+    page = 'general_information';
+  end
+  if nargin < 2
+    anchor = '';
+  else
+    anchor = ['#' anchor];
+  end
+  rtdURL = ['https://bidspm.readthedocs.io/en/latest/' page '.html' anchor];
 end
