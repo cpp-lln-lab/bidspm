@@ -241,7 +241,7 @@ function fmriSpec = setScans(opt, fullpathBoldFilename, fmriSpec, spmSessCounter
     try
       hdr = spm_vol(fullpathBoldFilename);
     catch
-      warning('Could not open %s.\nThis expected during testing.', fullpathBoldFilename);
+      warning('Could not open %s.\nExpected during testing.', fullpathBoldFilename);
       % TODO a value should be passed by user for this
       % hard coded value for test
       hdr = ones(200, 1);
