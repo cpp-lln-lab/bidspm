@@ -50,13 +50,13 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
 
     node = model.get_root_node();
 
-    %     try
-    contrasts = specifyContrasts(SPM, model, node.Name);
-    %     catch
-    %       msg = 'Could not find dummy contrasts in the BIDS stats model.';
-    %       id = 'noDummyContrast';
-    %       logger('ERROR', msg, 'id', id, 'filename', mfilename());
-    %     end
+    try
+      contrasts = specifyContrasts(SPM, model, node.Name);
+    catch
+      msg = 'Could not find dummy contrasts in the BIDS stats model.';
+      id = 'noDummyContrast';
+      logger('ERROR', msg, 'id', id, 'filename', mfilename());
+    end
 
     betaMaps = {};
     tMaps = {};
@@ -86,7 +86,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
       for iSess = 1:numel(SPM.Sess)
         tmp(iSess) = ismember(betasIndices, SPM.Sess(iSess).col); %#ok<*AGROW>
       end
-      runs(iContrast, 1) = find(any(tmp, 2));
+      runs(iContrast, 1) = find(any(tmp, 1));
       clear tmp;
 
       parts = strsplit(SPM.xX.name{betasIndices}, ' ');
