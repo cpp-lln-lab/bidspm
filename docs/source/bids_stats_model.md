@@ -213,7 +213,7 @@ By default, bidspm will use SPM's FAST model for the [`SerialCorrelation` model]
 <!-- markdown-link-check-enable -->
 It will also use a value of 0.8 for the `InclusiveMaskingThreshold`
 to define the implicit inclusive mask
-that usd by SPM to determine in which voxels the GLM will be estimated
+that is used by SPM to determine in which voxels the GLM will be estimated
 (the value is taken from`defaults.mask.thresh` from SPM's defaults).
 
 This corresponds to explicitly setting the following fields in the ``Model.Software.SPM``
