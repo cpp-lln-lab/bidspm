@@ -52,7 +52,9 @@ more info.
 
 ### Installing the Command line Interface (CLI)
 
-If you want to use the BIDS app python based CLI of bidspm, you need to
+If you want to use the BIDS app python based CLI of bidspm.
+
+You need to
 
 -   [python3](https://www.python.org/downloads/)
 -   pip
@@ -71,9 +73,17 @@ You can then type the following to see which command you have access to:
 bidspm --help
 ```
 
-### Installing the validation dependencies
+### BIDS validation
 
-If you want to validate bids dataset and bids stats model through bidspm, you
+After installing bidspm python package, you can get access to extra validation options.
+
+### BIDS stats model validation
+
+Please see [the documentation](https://bidspm.readthedocs.io/en/latest/bids_stats_model.html#using-the-bids-stats-model-python-package)
+
+### BIDS dataset validation
+
+To run the bids-validator when running bidspm, you
 will need:
 
 -   [node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
@@ -93,7 +103,6 @@ or
 
 ```bash
 npm install -g bids-validator
-pip install .
 ```
 
 ## Usage
