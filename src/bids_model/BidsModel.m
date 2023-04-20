@@ -28,19 +28,23 @@ classdef BidsModel < bids.Model
 
     end
 
+    function nodeName = getNodeName(obj, idx)
+      nodes = obj.Nodes;
+      if iscell(nodes)
+        nodeName = nodes{idx}.Name;
+      else
+        nodeName = nodes(idx).Name;
+      end
+    end
+
     function [model, nodeName] = getDefaultModel(obj, varargin)
 
       if isempty(varargin)
         [~, nodeName] = obj.get_root_node();
         model = obj.get_model('Name', nodeName);
       else
-        [model, idx] = obj.get_model(varargin{:});
-        nodes = obj.Nodes;
-        if iscell(nodes)
-          nodeName = nodes{idx}.Name;
-        else
-          nodeName = nodes.Name;
-        end
+        [model, iNode] = obj.get_model(varargin{:});
+        nodeName = obj.getNodeName(iNode);
       end
 
     end
@@ -135,7 +139,7 @@ classdef BidsModel < bids.Model
                        'See the documentation for more details:\n\t%s'], ...
                       nodeName, ...
                       nodeName, ...
-                      [returnRtdURL() '#HRF']);
+                      returnRtdURL('', 'HRF'));
         obj.bidsModelError('noHRFderivatives', msg);
       end
 
@@ -209,8 +213,8 @@ classdef BidsModel < bids.Model
       [model, nodeName] = obj.getDefaultModel(varargin{:});
 
       if isfield(model, 'Software') && ...
-        isfield(model.Software, 'SPM') && ...
-          isfield(model.Software.SPM, 'InclusiveMaskingThreshold')
+           isfield(model.Software, 'SPM') && ...
+             isfield(model.Software.SPM, 'InclusiveMaskingThreshold')
 
         threshold = model.Software.SPM.InclusiveMaskingThreshold;
 
@@ -225,7 +229,7 @@ classdef BidsModel < bids.Model
                       nodeName, ...
                       spm_get_defaults('mask.thresh'), ...
                       nodeName, ...
-                      [returnRtdURL() '#software']);
+                      returnRtdURL('', 'software'));
         obj.bidsModelError('noInclMaskThresh', msg);
 
       end
@@ -263,7 +267,7 @@ classdef BidsModel < bids.Model
                       nodeName, ...
                       spm_get_defaults('stats.fmri.cvi'), ...
                       nodeName, ...
-                      [returnRtdURL() '#software']);
+                      returnRtdURL('', 'software'));
 
         obj.bidsModelError('noTemporalCorrection', msg);
 
@@ -280,12 +284,7 @@ classdef BidsModel < bids.Model
 
       for iNode = 1:numel(Nodes)
 
-        if isstruct(Nodes)
-          nodeName = Nodes(iNode).Name;
-        else
-          nodeName = Nodes{iNode}.Name;
-        end
-
+        nodeName = obj.getNodeName(iNode);
         model = obj.get_model('Name', nodeName);
 
         if isfield(model, 'Software') && ...
@@ -312,8 +311,54 @@ classdef BidsModel < bids.Model
 
     end
 
+    function validateConstrasts(obj)
+      % validate all contrasts spec in the model
+
+      Nodes = obj.get_nodes();
+
+      for iNode = 1:numel(Nodes)
+
+        node = obj.get_nodes('Name', obj.getNodeName(iNode));
+
+        if isfield(node, 'Contrasts')
+          for iContrast = 1:numel(node.Contrasts)
+            conditionList = node.Contrasts{iContrast}.ConditionList;
+            validateConditionNames(conditionList, 'Contrast');
+          end
+        end
+
+        if isfield(node, 'DummyContrasts') && ...
+             isfield(node.DummyContrasts, 'Contrasts')
+          Contrasts = node.DummyContrasts.Contrasts;
+          validateConditionNames(Contrasts, 'DummyConstrasts');
+        end
+
+      end
+
+    end
+
+    function validateConditionNames(conditionList, contrastType)
+      anchor = 'statistics:-How-should-I-name-my-conditions-in-my-events-tsv';
+      baseMsg = ['This will lead to an error during results computation.\n', ...
+                 'Change the name of your conditions.\n', ...
+                 'See the FAQ: ' returnRtdURL('FAQ', anchor)];
+
+      for iCondition = 1:numel(conditionList)
+        if  ~isempty(regexp(conditionList{iCondition}, '^.*_[0-9]*$', 'match'))
+          msg = sprintf([contrastType ' %s of Node %s ', ...
+                         'contains conditions ending with _[0-9]*: ''%s''.\n', ...
+                         baseMsg], ...
+                        node.Contrasts{iContrast}.Name, ...
+                        node.Name, ...
+                        conditionList{iCondition});
+          obj.tolerant = false;
+          obj.bidsModelError('invalidConditionName', msg);
+        end
+      end
+    end
+
     function bidsModelError(obj, id, msg)
-      msg = sprintf('\n\nFor BIDS stats model named: "%s"\n%s\n', obj.Name, msg);
+      msg = sprintf('\nFor BIDS stats model named: "%s"\n%s', obj.Name, msg);
       opt.verbosity = 0;
       if obj.verbose
         opt.verbosity = 1;

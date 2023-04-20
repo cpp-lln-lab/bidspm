@@ -1,5 +1,5 @@
 ---
-title: "How can I see what the transformation in the BIDS stats model will do to my events.tsv?"
+title: "Statistics: How can I see what the transformation in the BIDS stats model will do to my events.tsv?"
 ---
 
 You can use the `bids.util.plot_events` function to help you visualize what events will be used in your GLM.

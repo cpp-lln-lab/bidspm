@@ -147,6 +147,7 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
     logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
+  bm.validateConstrasts();
   bm = bm.update();
 
   filename = fullfile(opt.dir.derivatives, 'models', ...
