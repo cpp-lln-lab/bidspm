@@ -1,8 +1,9 @@
 function  [cdtName, regIdx, status] = getRegressorIdx(cdtName, SPM)
   %
-  % Gets from the SPM structure the regressors index
-  % corresponding to the a condition convolved with the
-  % canonical HRF. This can also look for non convolved conditions to identify a confound regressor.
+  % Gets from the SPM structure the regressors index corresponding
+  % to the a condition convolved with the canonical HRF.
+  % This can also look for non convolved conditions
+  % to identify a confound regressor.
   %
   % Throws a warning if there is no regressor for that condition.
   %

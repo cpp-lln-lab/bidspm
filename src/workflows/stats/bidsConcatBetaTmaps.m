@@ -44,19 +44,19 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
 
     ffxDir = getFFXdir(subLabel, opt);
 
-    load(fullfile(ffxDir, 'SPM.mat'));
+    load(fullfile(ffxDir, 'SPM.mat'), 'SPM');
 
     model = BidsModel('file', opt.model.file);
 
     node = model.get_root_node();
 
-    try
-      contrasts = specifyContrasts(SPM, model, node.Name);
-    catch
-      msg = 'Could not find dummy contrasts in the BIDS stats model.';
-      id = 'noDummyContrast';
-      logger('ERROR', msg, 'id', id, 'filename', mfilename());
-    end
+    %     try
+    contrasts = specifyContrasts(SPM, model, node.Name);
+    %     catch
+    %       msg = 'Could not find dummy contrasts in the BIDS stats model.';
+    %       id = 'noDummyContrast';
+    %       logger('ERROR', msg, 'id', id, 'filename', mfilename());
+    %     end
 
     betaMaps = {};
     tMaps = {};
