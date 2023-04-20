@@ -170,7 +170,7 @@ function test_setBatchSubjectLevelGLMSpec_inconsistent_metadata()
   %% WHEN
   matlabbatch = {};
   assertExceptionThrown(@()setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel), ...
-                        'getAndCheckRepetitionTime:differentRepetitionTime');
+                        'getAndCheckSliceOrder:inconsistentSliceTimingLength');
 
 end
 
