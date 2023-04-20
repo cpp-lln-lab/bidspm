@@ -75,7 +75,7 @@ function bidspmHelp()
   %                           Se to ``true`` to overwrites previous versions.
   % :type  boilerplate_only:  logical
   %
-  % :param verbosity:         can be ``0``, ``1`` or ``2``. Defaults to ``2``
+  % :param verbosity:         can be any value between ``0`` and ``3``. Defaults to ``2``
   % :type  verbosity:         positive integer
   %
   % :param space:             Defaults to ``{'individual', 'IXI549Space'}``
