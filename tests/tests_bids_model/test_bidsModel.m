@@ -20,15 +20,13 @@ function test_validateConstrasts()
 
   bmWithInvalidConstrast = bm;
   bmWithInvalidConstrast.Nodes{1}.Contrasts{1}.ConditionList{1} = 'foo_1';
-  assertExceptionThrown(@()bmWithInvalidConstrast.validateConstrasts(), ...
-                        'BidsModel:invalidConditionName');
+  assertWarning(@()bmWithInvalidConstrast.validateConstrasts(), ...
+                'BidsModel:invalidConditionName');
 
   bmWithInvalidConstrast = bm;
   bmWithInvalidConstrast.Nodes{1}.DummyContrasts.Contrasts{2} = 'bar_2';
-  assertExceptionThrown(@()bmWithInvalidConstrast.validateConstrasts(), ...
-                        'BidsModel:invalidConditionName');
-
-  bmWithInvalidConstrast.validateConstrasts();
+  assertWarning(@()bmWithInvalidConstrast.validateConstrasts(), ...
+                'BidsModel:invalidConditionName');
 
 end
 

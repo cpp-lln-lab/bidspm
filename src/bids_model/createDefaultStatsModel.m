@@ -77,7 +77,7 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
     ignore = {};
   end
 
-  bm = bids.Model();
+  bm = BidsModel();
 
   bm = bm.default(BIDS, opt.taskName);
 
