@@ -963,9 +963,13 @@ For example: `foo_bar` is ok, but `f$o}o b^a*r` is not.
 
 For example: `1` or `one` or `condition1` are short but not descriptive.
 
-An extra condition to have condition names that can work with bidspm
-is that that condition name should not end with an underscore
-followed by one or more digits.
+An extra requirement to have condition names that can work with bidspm
+is that condition names ending with an underscore followed by one or more digits
+may lead to unwanted behavior (error or nothing happening
+- see [issue](https://github.com/cpp-lln-lab/bidspm/issues/973))
+when computing results of a GLM.
+
+So for example:
 
 `happy_face1` and `house123` are ok, but `happy_face_1` and `house_123`  are not.
 
@@ -1038,6 +1042,8 @@ of your BIDS stats model.
   ]
 }
 ```
+
+Related issue: https://github.com/cpp-lln-lab/bidspm/issues/973
 
 <a name="statistics:-how-should-i-structure-my-data-to-run-my-statistical-analysis"></a>
 ## Statistics: How should I structure my data to run my statistical analysis?
