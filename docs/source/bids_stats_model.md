@@ -247,7 +247,7 @@ object of a node in the BIDS stats model.
 }
 ```
 
-Note that if you wanted to use the AR(1) model for the serial correlation and to
+Note that if you wanted to use the `AR(1)` model for the serial correlation and to
 include all voxels in the implicit mask, you would have to set the following:
 
 ```json
@@ -295,44 +295,44 @@ an example how you could specify it in a JSON.
 "Model": {
     "Software": {
         "bidspm": {
-        "Results": [
-            {
-            "name": [
-                "contrast_name", "other_contrast_name"
-            ],
-            "p": 0.05,
-            "MC": "FWE",
-            "png": true,
-            "binary": true,
-            "nidm": true,
-            "montage": {
-                "do": true,
-                "slices": [
-                -4,
-                0,
-                4,
-                8,
-                16
+          "Results": [
+              {
+                "name": [
+                    "contrast_name", "other_contrast_name"
                 ],
-                "background": {
-                "suffix": "T1w",
-                "desc": "preproc",
-                "modality": "anat"
+                "p": 0.05,
+                "MC": "FWE",
+                "png": true,
+                "binary": true,
+                "nidm": true,
+                "montage": {
+                    "do": true,
+                    "slices": [
+                    -4,
+                    0,
+                    4,
+                    8,
+                    16
+                    ],
+                    "background": {
+                    "suffix": "T1w",
+                    "desc": "preproc",
+                    "modality": "anat"
+                    }
                 }
-            }
-            },
-            {
-            "Description": "Note that you can specify multiple results objects, each with different parameters.",
-            "name": [
-                "yes_another_contrast_name"
-            ],
-            "p": 0.01,
-            "k": 10,
-            "MC": "none",
-            "csv": true,
-            "atlas": "AAL"
-            }
-        ]
+              },
+              {
+                "Description": "Note that you can specify multiple results objects, each with different parameters.",
+                "name": [
+                    "yes_another_contrast_name"
+                ],
+                "p": 0.01,
+                "k": 10,
+                "MC": "none",
+                "csv": true,
+                "atlas": "AAL"
+              }
+          ]
         }
     }
 }
