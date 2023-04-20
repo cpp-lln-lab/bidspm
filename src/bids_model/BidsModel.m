@@ -331,8 +331,19 @@ classdef BidsModel < bids.Model
         if isfield(node, 'DummyContrasts')
           if isfield(node.DummyContrasts, 'Contrasts')
             Contrasts = node.DummyContrasts.Contrasts;
+
           else
-            Contrasts = node.Model.HRF.Variables;
+            if strcmpi(node.Level, 'run')
+              Contrasts = node.Model.HRF.Variables;
+            else
+              Contrasts = node.Model.X;
+              if ~iscell(Contrasts)
+                Contrasts = {Contrasts};
+              end
+              % no need to validate intercept
+              isIntercept = cellfun(@(x) x == 1, Contrasts);
+              Contrasts(isIntercept) = [];
+            end
           end
           obj.validateConditionNames(Contrasts, node.Name, 'DummyConstrasts');
         end
@@ -343,20 +354,24 @@ classdef BidsModel < bids.Model
 
     function validateConditionNames(obj, conditionList, nodeName, contrast)
       anchor = 'statistics-how-should-i-name-my-conditions-in-my-events-tsv';
-      baseMsg = ['This will lead to an error during results computation.\n', ...
-                 'Change the name of your conditions.\n', ...
+      baseMsg = ['This may lead to an error during results computation.\n', ...
+                 'Consider changing the name of your conditions.\n', ...
                  'See the FAQ: ' returnRtdURL('FAQ', anchor)];
 
+      problematicConditions = {};
       for iCondition = 1:numel(conditionList)
         if  ~isempty(regexp(conditionList{iCondition}, '^.*_[0-9]*$', 'match'))
-          msg = sprintf([contrast ' of Node %s ', ...
-                         'contains conditions ending with _[0-9]*: ''%s''.\n', ...
-                         baseMsg], ...
-                        nodeName, ...
-                        conditionList{iCondition});
-          obj.tolerant = false;
-          obj.bidsModelError('invalidConditionName', msg);
+          problematicConditions{end + 1} = conditionList{iCondition}; %#ok<*AGROW>
         end
+      end
+      if ~isempty(problematicConditions)
+        msg = sprintf([contrast ' of Node %s ', ...
+                       'contains conditions ending with _[0-9]*: ''%s''.\n', ...
+                       baseMsg], ...
+                      nodeName, ...
+                      bids.internal.create_unordered_list(problematicConditions));
+        obj.tolerant = true;
+        obj.bidsModelError('invalidConditionName', msg);
       end
     end
 

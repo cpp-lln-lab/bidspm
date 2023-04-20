@@ -90,3 +90,5 @@ of your BIDS stats model.
   ]
 }
 ```
+
+Related issue: https://github.com/cpp-lln-lab/bidspm/issues/973

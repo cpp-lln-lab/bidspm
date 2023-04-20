@@ -20,6 +20,7 @@ for i_dir = 1:size(dirs, 1)
     models = spm_select('FPList', model_dir, '.*smdl.json$');
 
     for i_model = 1:size(models, 1)
+      disp(models(i_model, :));
       bm = BidsModel('file', deblank(models(i_model, :)));
       bm.validate();
       bm.validateConstrasts();
