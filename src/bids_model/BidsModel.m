@@ -328,9 +328,12 @@ classdef BidsModel < bids.Model
           end
         end
 
-        if isfield(node, 'DummyContrasts') && ...
-             isfield(node.DummyContrasts, 'Contrasts')
-          Contrasts = node.DummyContrasts.Contrasts;
+        if isfield(node, 'DummyContrasts')
+          if isfield(node.DummyContrasts, 'Contrasts')
+            Contrasts = node.DummyContrasts.Contrasts;
+          else
+            Contrasts = node.Model.HRF.Variables;
+          end
           obj.validateConditionNames(Contrasts, node.Name, 'DummyConstrasts');
         end
 
