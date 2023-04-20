@@ -28,6 +28,8 @@ function test_validateConstrasts()
   assertExceptionThrown(@()bmWithInvalidConstrast.validateConstrasts(), ...
                         'BidsModel:invalidConditionName');
 
+  bmWithInvalidConstrast.validateConstrasts();
+
 end
 
 function test_getResults()

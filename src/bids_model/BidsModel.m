@@ -323,33 +323,33 @@ classdef BidsModel < bids.Model
         if isfield(node, 'Contrasts')
           for iContrast = 1:numel(node.Contrasts)
             conditionList = node.Contrasts{iContrast}.ConditionList;
-            validateConditionNames(conditionList, 'Contrast');
+            contrast = ['Contrast ' node.Contrasts{iContrast}.Name];
+            obj.validateConditionNames(conditionList, node.Name, contrast);
           end
         end
 
         if isfield(node, 'DummyContrasts') && ...
              isfield(node.DummyContrasts, 'Contrasts')
           Contrasts = node.DummyContrasts.Contrasts;
-          validateConditionNames(Contrasts, 'DummyConstrasts');
+          obj.validateConditionNames(Contrasts, node.Name, 'DummyConstrasts');
         end
 
       end
 
     end
 
-    function validateConditionNames(conditionList, contrastType)
-      anchor = 'statistics:-How-should-I-name-my-conditions-in-my-events-tsv';
+    function validateConditionNames(obj, conditionList, nodeName, contrast)
+      anchor = 'statistics-how-should-i-name-my-conditions-in-my-events-tsv';
       baseMsg = ['This will lead to an error during results computation.\n', ...
                  'Change the name of your conditions.\n', ...
                  'See the FAQ: ' returnRtdURL('FAQ', anchor)];
 
       for iCondition = 1:numel(conditionList)
         if  ~isempty(regexp(conditionList{iCondition}, '^.*_[0-9]*$', 'match'))
-          msg = sprintf([contrastType ' %s of Node %s ', ...
+          msg = sprintf([contrast ' of Node %s ', ...
                          'contains conditions ending with _[0-9]*: ''%s''.\n', ...
                          baseMsg], ...
-                        node.Contrasts{iContrast}.Name, ...
-                        node.Name, ...
+                        nodeName, ...
                         conditionList{iCondition});
           obj.tolerant = false;
           obj.bidsModelError('invalidConditionName', msg);
