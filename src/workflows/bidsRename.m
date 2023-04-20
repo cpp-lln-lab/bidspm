@@ -1,4 +1,4 @@
-function bidsRename(opt)
+function createdFiles = bidsRename(opt)
   %
   % Renames SPM output into BIDS compatible files.
   %
@@ -54,12 +54,16 @@ function bidsRename(opt)
 
         json = updateSource(json, data{iFile}, opt);
 
+        json.content.SpmFilename = spm_file(data{iFile}, 'filename');
+
         msg = sprintf('%s --> %s\n', spm_file(data{iFile}, 'filename'), newFilename);
         printToScreen(msg, opt);
 
         renameFileAndUpdateMetadata(opt, data{iFile}, newFilename, json, createdFiles);
 
-        createdFiles{end + 1, 1} = newFilename;
+        createdFiles{end + 1, 1} = spm_file(data{iFile}, ...
+                                            'filename', ...
+                                            newFilename); %#ok<*AGROW>
 
       end
 
