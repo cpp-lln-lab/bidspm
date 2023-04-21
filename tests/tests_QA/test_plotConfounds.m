@@ -13,7 +13,7 @@ function test_plotConfounds_basic()
 
   opt = setOptions('vislocalizer');
 
-  input = fullfile(getDummyDataDir, 'tsv_files', ...
+  input = fullfile(getTestDataDir, 'tsv_files', ...
                    'sub-01_task-auditory_desc-confounds_timeseries.tsv');
 
   confounds = bids.util.tsvread(input);

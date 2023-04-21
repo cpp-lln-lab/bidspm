@@ -10,19 +10,21 @@ tmp
 
 */*.json
 
-dummyData/derivatives/bidspm-*/jobs
-dummyData/derivatives/bidspm-preproc/sub*
+data/derivatives/bidspm-*/jobs
+data/derivatives/bidspm-preproc/sub*
 
-dummyData/derivatives/bidspm-preproc/desc-skullstripped.json
+data/derivatives/bidspm-preproc/desc-skullstripped.json
 
-dummyData/derivatives/bidspm-stats/sub*
-dummyData/derivatives/bidspm-stats/derivatives
-dummyData/derivatives/bidspm-stats/README
-dummyData/derivatives/bidspm-stats/CHANGES
-dummyData/derivatives/bidspm-stats/*.json
+data/derivatives/bidspm-stats/sub*
+data/derivatives/bidspm-stats/derivatives
+data/derivatives/bidspm-stats/README
+data/derivatives/bidspm-stats/CHANGES
+data/derivatives/bidspm-stats/*.json
+data/derivatives/bidspm-stats/LICENSE
+data/derivatives/bidspm-stats/.gitignore
 
-dummyData/bidspm-raw/sub*
+data/bidspm-raw/sub*
 
-dummyData/derivatives/bidspm-roi
+data/derivatives/bidspm-roi
 
 test_reports/*.md

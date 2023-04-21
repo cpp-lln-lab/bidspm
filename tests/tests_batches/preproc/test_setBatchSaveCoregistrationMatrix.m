@@ -48,7 +48,7 @@ function expectedBatch = returnExpectedBatch()
 
   expectedBatch = {};
 
-  subFuncDataDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func');
+  subFuncDataDir = fullfile(getTestDataDir('preproc'), 'sub-01', 'ses-01', 'func');
 
   fileName = 'sub-01_ses-01_task-vismotion_from-scanner_to-T1w_mode-image_xfm.mat';
 

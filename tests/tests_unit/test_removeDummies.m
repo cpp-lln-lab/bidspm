@@ -59,11 +59,11 @@ end
 
 function inputFile = setUp()
   teardown();
-  inputFile = fullfile(getDummyDataDir(), 'nifti_files', 'tmp.nii.gz');
-  copyfile(fullfile(getDummyDataDir(), 'nifti_files', 'sub-01_task-auditory_bold.nii.gz'), ...
+  inputFile = fullfile(getTestDataDir(), 'nifti_files', 'tmp.nii.gz');
+  copyfile(fullfile(getTestDataDir(), 'nifti_files', 'sub-01_task-auditory_bold.nii.gz'), ...
            inputFile);
 end
 
 function teardown()
-  delete(fullfile(getDummyDataDir(), 'nifti_files', 'tmp*'));
+  delete(fullfile(getTestDataDir(), 'nifti_files', 'tmp*'));
 end

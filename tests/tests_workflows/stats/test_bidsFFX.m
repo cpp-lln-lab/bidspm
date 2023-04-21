@@ -25,7 +25,7 @@ function test_bidsFFX_individual()
   for i = 1
 
     opt = setOptions(task{i}, '', 'pipelineType', 'stats');
-    opt.model.file =  fullfile(getDummyDataDir(),  'models', ...
+    opt.model.file =  fullfile(getTestDataDir(),  'models', ...
                                ['model-' strjoin(task, '') 'SpaceIndividual_smdl.json']);
     opt.model.bm = BidsModel('file', opt.model.file);
     opt.fwhm.func = 0;
@@ -52,7 +52,7 @@ end
 function test_bidsFFX_skip_subject_no_data()
 
   opt = setOptions('vislocalizer', '^01', 'pipelineType', 'stats');
-  opt.model.file =  fullfile(getDummyDataDir(),  'models', ...
+  opt.model.file =  fullfile(getTestDataDir(),  'models', ...
                              'model-vislocalizerWrongSpace_smdl.json');
   opt.model.bm = BidsModel('file', opt.model.file);
   opt.stc.skip = 1;

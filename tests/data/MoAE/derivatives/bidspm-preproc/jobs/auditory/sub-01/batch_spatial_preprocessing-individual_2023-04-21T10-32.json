@@ -1,0 +1,20 @@
+{
+  "GeneratedBy": {
+    "name": "bidspm",
+    "Version": "v3.0.0",
+    "Branch": "concat",
+    "Commit": "7de59742",
+    "Description": "spatial_preprocessing-individual",
+    "CodeURL": "https://github.com/cpp-lln-lab/bidspm",
+    "DOI": "https://doi.org/10.5281/zenodo.3554331"
+  },
+  "OS": {
+    "name": "unix",
+    "version": "Linux version 5.19.0-40-generic (buildd@lcy02-amd64-047) (x86_64-linux-gnu-gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #41~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 31 16:00:14 UTC 2\n",
+    "platform": {
+      "name": "MATLAB",
+      "version": "9.4.0.813654 (R2018a)"
+    },
+    "spmVersion": "SPM12 - 7771"
+  }
+}

@@ -67,7 +67,7 @@ end
 
 function [modelFile, spmFile] = setUp()
 
-  spmFile = fullfile(getDummyDataDir(), 'mat_files', 'SPM_facerep.mat');
+  spmFile = fullfile(getTestDataDir(), 'mat_files', 'SPM_facerep.mat');
 
   modelFile = fullfile(getFaceRepDir(), ...
                        'models', ...

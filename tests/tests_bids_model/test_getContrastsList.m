@@ -10,7 +10,7 @@ end
 
 function test_getContrastsList_bug_815()
 
-  model_file = fullfile(getDummyDataDir(), 'models', 'model-bug815_smdl.json');
+  model_file = fullfile(getTestDataDir(), 'models', 'model-bug815_smdl.json');
   model = bids.Model('file', model_file, 'verbose', false);
 
   nodeName = 'subject_level';

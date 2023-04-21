@@ -15,7 +15,7 @@ end
 function test_onsetMatToTsv_basic()
 
   % GIVEN
-  onsetsMatFile = fullfile(getDummyDataDir(), 'mat_files', 'task-olfid_onsets.mat');
+  onsetsMatFile = fullfile(getTestDataDir(), 'mat_files', 'task-olfid_onsets.mat');
   % WHEN
   onsetsTsvFile = onsetsMatToTsv(onsetsMatFile);
   % THEN
@@ -28,7 +28,7 @@ end
 function test_regressorsMatToTsv_basic()
 
   % GIVEN
-  regressorsMatFile = fullfile(getDummyDataDir(), 'mat_files', ...
+  regressorsMatFile = fullfile(getTestDataDir(), 'mat_files', ...
                                'task-olfid_desc-confounds_regressors.mat');
   % WHEN
   regressorsTsvFile = regressorsMatToTsv(regressorsMatFile);

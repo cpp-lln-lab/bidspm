@@ -32,14 +32,14 @@ function test_createAndReturnOnsetFile_basic()
 
   onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile);
 
-  expectedFilename = fullfile(getDummyDataDir('stats'), 'sub-01', ...
+  expectedFilename = fullfile(getTestDataDir('stats'), 'sub-01', ...
                               'task-vislocalizer_space-IXI549Space_FWHM-6', ...
                               'sub-01_ses-01_task-vislocalizer_onsets.mat');
 
   assertEqual(exist(onsetFilename, 'file'), 2);
   assertEqual(exist(expectedFilename, 'file'), 2);
 
-  expected_content = load(fullfile(getDummyDataDir(), 'mat_files', 'onsets.mat'));
+  expected_content = load(fullfile(getTestDataDir(), 'mat_files', 'onsets.mat'));
 
   actual_content = load(onsetFilename);
 

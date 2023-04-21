@@ -9,7 +9,7 @@ end
 
 function test_selectConfoundsByVarianceExplained_basic()
 
-  testDir = fullfile(getDummyDataDir(), 'tsv_files');
+  testDir = fullfile(getTestDataDir(), 'tsv_files');
 
   tsvFile = fullfile(testDir, 'sub-01_task-auditory_desc-confounds_timeseries.tsv');
   jsonFile = fullfile(testDir, 'sub-01_task-auditory_desc-confounds_timeseries.json');

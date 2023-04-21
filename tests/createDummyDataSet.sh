@@ -4,10 +4,10 @@
 
 # defines where the BIDS data set will be created
 start_dir=$(pwd) # relative to starting directory
-raw_dir=${start_dir}/dummyData/bidspm-raw
-preproc_dir=${start_dir}/dummyData/derivatives/bidspm-preproc
-stats_dir=${start_dir}/dummyData/derivatives/bidspm-stats
-roi_dir=${start_dir}/dummyData/derivatives/bidspm-roi
+raw_dir=${start_dir}/data/bidspm-raw
+preproc_dir=${start_dir}/data/derivatives/bidspm-preproc
+stats_dir=${start_dir}/data/derivatives/bidspm-stats
+roi_dir=${start_dir}/data/derivatives/bidspm-roi
 
 subject_list='ctrl01 blind01 01'
 session_list='01 02'
@@ -231,8 +231,8 @@ for subject in ${subject_list}; do
 			for run in $(seq 1 2); do
 
 				filename=${this_dir}/rp_${basename}_run-${run}${suffix}.txt
-				cp dummyData/tsv_files/rp.txt "${filename}"
-				cp dummyData/tsv_files/rp.tsv ${this_dir}/${basename}_run-${run}_desc-confounds_regressors.tsv
+				cp data/tsv_files/rp.txt "${filename}"
+				cp data/tsv_files/rp.tsv ${this_dir}/${basename}_run-${run}_desc-confounds_regressors.tsv
 
 				for desc in ${desc_label_list}; do
 					touch ${this_dir}/${basename}_run-${run}_space-individual_desc-${desc}${suffix}.nii
@@ -259,8 +259,8 @@ for subject in ${subject_list}; do
 
 		### derivatives
 		filename=${this_dir}/rp_sub-${subject}_ses-${ses}_task-${task_name}${suffix}.txt
-		cp dummyData/tsv_files/rp.txt "${filename}"
-		cp dummyData/tsv_files/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_desc-confounds_regressors.tsv
+		cp data/tsv_files/rp.txt "${filename}"
+		cp data/tsv_files/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_desc-confounds_regressors.tsv
 
 		desc_label_list='preproc smth6'
 		for desc in ${desc_label_list}; do
@@ -333,7 +333,7 @@ for subject in ${subject_list}; do
 		this_dir=${stats_dir}/sub-${subject}/task-${task}_space-IXI549Space_FWHM-6
 		mkdir -p ${this_dir}
 
-		cp dummyData/mat_files/SPM.mat ${this_dir}/SPM.mat
+		cp data/mat_files/SPM.mat ${this_dir}/SPM.mat
 
 		touch ${this_dir}/mask.nii
 
@@ -354,7 +354,7 @@ for subject in ${subject_list}; do
 		this_dir=${stats_dir}/sub-${subject}/task-${task}_space-IXI549Space_FWHM-6_node-globalSignal
 		mkdir -p ${this_dir}
 
-		cp dummyData/mat_files/SPM.mat ${this_dir}/SPM.mat
+		cp data/mat_files/SPM.mat ${this_dir}/SPM.mat
 
 		touch ${this_dir}/mask.nii
 

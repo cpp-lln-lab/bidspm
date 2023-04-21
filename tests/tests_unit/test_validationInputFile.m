@@ -10,11 +10,11 @@ end
 
 function test_validationInputFile_basic()
 
-  directory = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'func');
+  directory = fullfile(getTestDataDir('preproc'), 'sub-01', 'ses-01', 'func');
   prefix = '';
   fileName = 'sub-01_ses-01_task-vislocalizer_bold.nii';
 
-  expectedOutput = fullfile(getDummyDataDir('preproc'), ...
+  expectedOutput = fullfile(getTestDataDir('preproc'), ...
                             'sub-01', 'ses-01', 'func', ...
                             'sub-01_ses-01_task-vislocalizer_bold.nii');
 

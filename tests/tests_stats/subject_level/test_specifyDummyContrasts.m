@@ -29,7 +29,7 @@ function test_specifyDummyContrasts_basic()
 
   SPM.xX.X = rand(3, numel(SPM.xX.name));
 
-  model_file = fullfile(getDummyDataDir(), 'models', 'model-bug815_smdl.json');
+  model_file = fullfile(getTestDataDir(), 'models', 'model-bug815_smdl.json');
   model = bids.Model('file', model_file, 'verbose', true);
 
   node.Name = 'subject_level';
@@ -66,7 +66,7 @@ function test_specifyDummyContrasts_bug_815()
 
   SPM.xX.X = rand(3, numel(SPM.xX.name));
 
-  model_file = fullfile(getDummyDataDir(), 'models', 'model-bug815_smdl.json');
+  model_file = fullfile(getTestDataDir(), 'models', 'model-bug815_smdl.json');
   model = bids.Model('file', model_file, 'verbose', true);
 
   node = model.Nodes{2};
@@ -110,7 +110,7 @@ function test_specifyDummyContrasts_bug_825()
 
   SPM.xX.X = rand(3, numel(SPM.xX.name));
 
-  model_file = fullfile(getDummyDataDir(), 'models', 'model-bug825_smdl.json');
+  model_file = fullfile(getTestDataDir(), 'models', 'model-bug825_smdl.json');
   model = bids.Model('file', model_file, 'verbose', true);
 
   node = model.Nodes{1};
@@ -154,7 +154,7 @@ function test_specifyDummyContrasts_subselect_contrasts()
 
   SPM.xX.X = rand(3, numel(SPM.xX.name));
 
-  model_file = fullfile(getDummyDataDir(), 'models', 'model-bug825_smdl.json');
+  model_file = fullfile(getTestDataDir(), 'models', 'model-bug825_smdl.json');
   model = bids.Model('file', model_file, 'verbose', true);
 
   node = model.Nodes{1};

@@ -26,7 +26,7 @@ function test_saveSpmScript_basic()
   expectedFile = fullfile(pwd, returnBatchFileName('', '.m'));
   assertEqual(exist(expectedFile, 'file'), 2);
 
-  expectedContent = fullfile(getDummyDataDir(), 'dummy_batch.m');
+  expectedContent = fullfile(getTestDataDir(), 'dummy_batch.m');
   fid1 = fopen(expectedContent, 'r');
   expectedContent = fscanf(fid1, '%s');
   fclose(fid1);
@@ -55,7 +55,7 @@ function test_saveSpmScript_output_name()
   expectedFile = fullfile(pwd, returnBatchFileName('', '.m'));
   assertEqual(exist(expectedFile, 'file'), 2);
 
-  expectedContent = fullfile(getDummyDataDir(), 'dummy_batch.m');
+  expectedContent = fullfile(getTestDataDir(), 'dummy_batch.m');
   compareContent(outputFilename, expectedFile);
 
   cleanUp();
@@ -67,16 +67,16 @@ function test_saveSpmScript_from_file()
   % TODO add tests to overwrite output filename
 
   % GIVEN
-  inputMatFile = fullfile(getDummyDataDir(), 'mat_files', 'dummy_batch.mat');
+  inputMatFile = fullfile(getTestDataDir(), 'mat_files', 'dummy_batch.mat');
 
   % WHEN
   outputFilename = saveSpmScript(inputMatFile);
 
   % THEN
-  expectedFile = fullfile(getDummyDataDir(), 'mat_files', 'dummy_batch.m');
+  expectedFile = fullfile(getTestDataDir(), 'mat_files', 'dummy_batch.m');
   assertEqual(exist(expectedFile, 'file'), 2);
 
-  expectedFile = fullfile(getDummyDataDir(), 'dummy_batch.m');
+  expectedFile = fullfile(getTestDataDir(), 'dummy_batch.m');
   compareContent(outputFilename, expectedFile);
 
   cleanUp();
@@ -104,6 +104,6 @@ end
 function cleanUp()
 
   delete batch*.m;
-  delete(fullfile(getDummyDataDir(), 'mat_files', 'dummy_batch.m'));
+  delete(fullfile(getTestDataDir(), 'mat_files', 'dummy_batch.m'));
 
 end

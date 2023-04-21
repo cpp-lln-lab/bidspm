@@ -9,7 +9,7 @@ end
 
 function test_createPialSurface_basic()
 
-  moaeSpm12Dir = fullfile(getDummyDataDir, 'MoAE', 'derivatives', 'spm12');
+  moaeSpm12Dir = fullfile(getTestDataDir, 'MoAE', 'derivatives', 'spm12');
 
   boldFile = spm_select('FPListRec', moaeSpm12Dir, '^wsub.*nii$');
   motionFile = spm_select('FPListRec', moaeSpm12Dir, '^rp_sub.*txt$');

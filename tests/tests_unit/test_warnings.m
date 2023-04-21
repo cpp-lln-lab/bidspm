@@ -18,7 +18,7 @@ function test_noSPMmat()
   subLabel = '01';
 
   % GIVEN
-  spmMatFile = fullfile(getDummyDataDir(), 'mat_files', 'SPM.mat');
+  spmMatFile = fullfile(getTestDataDir(), 'mat_files', 'SPM.mat');
   % WHEN
   status = noSPMmat(opt, subLabel, spmMatFile);
   % THEN

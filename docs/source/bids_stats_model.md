@@ -462,12 +462,12 @@ their datasets.
 
 Several of the [demos](demos) have their own model and you can find several
 "dummy" models (without corresponding data) used for testing
-[in this folder](https://github.com/cpp-lln-lab/bidspm/tree/main/tests/dummyData/models).
+[in this folder](https://github.com/cpp-lln-lab/bidspm/tree/main/tests/data/models).
 
 <!-- markdown-link-check-enable -->
 
 An example of JSON file could look something like that:
 
-```{literalinclude} ../../tests/dummyData/models/model-vislocalizer_smdl.json
+```{literalinclude} ../../tests/data/models/model-vislocalizer_smdl.json
    :language: json
 ```

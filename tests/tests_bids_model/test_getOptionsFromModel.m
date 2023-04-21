@@ -145,5 +145,5 @@ function test_getOptionsFromModel_query()
 end
 
 function value = modelFile(task)
-  value = fullfile(getDummyDataDir(),  'models', ['model-' task '_smdl.json']);
+  value = fullfile(getTestDataDir(),  'models', ['model-' task '_smdl.json']);
 end
