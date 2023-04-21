@@ -9,7 +9,7 @@ end
 
 function test_createPialSurface_basic()
 
-  moaeSpm12Dir = fullfile(getDummyDataDir, 'MoAE', 'derivatives', 'spm12');
+  moaeSpm12Dir = fullfile(getTestDataDir, 'MoAE', 'derivatives', 'spm12');
 
   grayMatterFile = spm_select('FPListRec', moaeSpm12Dir, '^c1sub.*nii$');
   whiteMatterFile = spm_select('FPListRec', moaeSpm12Dir, '^c2sub.*nii$');

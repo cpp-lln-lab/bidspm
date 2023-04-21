@@ -12,7 +12,7 @@ function test_model_bug_616()
 
   % https://github.com/cpp-lln-lab/bidspm/issues/616
 
-  opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-bug616_smdl.json');
+  opt.model.file = fullfile(getTestDataDir(), 'models', 'model-bug616_smdl.json');
 
   bm = BidsModel('file', opt.model.file);
 
@@ -24,7 +24,7 @@ function test_model_bug_385()
 
   % https://github.com/bids-standard/bids-matlab/issues/385
 
-  opt.model.file = fullfile(getDummyDataDir(), 'models', 'model-bug385_smdl.json');
+  opt.model.file = fullfile(getTestDataDir(), 'models', 'model-bug385_smdl.json');
 
   bm = BidsModel('file', opt.model.file);
   bm.get_root_node;

@@ -47,7 +47,7 @@ end
 function test_getResults_bug_977()
   % https://github.com/cpp-lln-lab/bidspm/issues/977
 
-  dummyDataDir = getDummyDataDir();
+  dummyDataDir = getTestDataDir();
   modelFile = fullfile(dummyDataDir, ...
                        'models', ...
                        'model-withResults_smdl.json');

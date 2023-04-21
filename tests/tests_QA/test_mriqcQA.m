@@ -9,7 +9,7 @@ end
 
 function test_mriqc_basic()
 
-  opt.dir.mriqc = fullfile(getDummyDataDir, 'tsv_files');
+  opt.dir.mriqc = fullfile(getTestDataDir, 'tsv_files');
 
   mriqcQA(opt, 'T1w');
 

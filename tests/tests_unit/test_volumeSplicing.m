@@ -62,8 +62,8 @@ end
 
 function [inputFile, inputData] = setUp()
   teardown();
-  inputFile = fullfile(getDummyDataDir(), 'nifti_files', 'tmp.nii.gz');
-  copyfile(fullfile(getDummyDataDir(), 'nifti_files', 'sub-01_task-auditory_bold.nii.gz'), ...
+  inputFile = fullfile(getTestDataDir(), 'nifti_files', 'tmp.nii.gz');
+  copyfile(fullfile(getTestDataDir(), 'nifti_files', 'sub-01_task-auditory_bold.nii.gz'), ...
            inputFile);
   inputFile = gunzip(inputFile);
   inputFile = inputFile{1};
@@ -72,7 +72,7 @@ function [inputFile, inputData] = setUp()
 end
 
 function teardown(file)
-  delete(fullfile(getDummyDataDir(), 'nifti_files', 'tmp*'));
+  delete(fullfile(getTestDataDir(), 'nifti_files', 'tmp*'));
   if nargin > 0 && exist(file, 'file')
     delete(file);
   end

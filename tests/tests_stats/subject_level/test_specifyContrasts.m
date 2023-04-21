@@ -53,7 +53,7 @@ function test_specifyContrasts_bug_815()
 
   SPM.xX.X = rand(3, numel(SPM.xX.name));
 
-  model_file = fullfile(getDummyDataDir(), 'models', 'model-bug815_smdl.json');
+  model_file = fullfile(getTestDataDir(), 'models', 'model-bug815_smdl.json');
   model = bids.Model('file', model_file, 'verbose', true);
 
   contrasts = specifyContrasts(SPM, model, 'subject_level');

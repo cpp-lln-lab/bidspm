@@ -44,7 +44,7 @@ function test_getAnatFilename_forced_session()
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
 
-  expectedAnatDataDir = fullfile(getDummyDataDir('raw'), 'sub-01', 'ses-01', 'anat');
+  expectedAnatDataDir = fullfile(getTestDataDir('raw'), 'sub-01', 'ses-01', 'anat');
 
   assertEqual(anatDataDir, expectedAnatDataDir);
   assertEqual(anatImage, 'sub-01_ses-01_T1w.nii');
@@ -66,7 +66,7 @@ function test_getAnatFilename_derivatives()
 
   expectedFilename = 'sub-01_ses-01_space-individual_desc-biascor_T1w.nii';
 
-  expectedAnatDataDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'anat');
+  expectedAnatDataDir = fullfile(getTestDataDir('preproc'), 'sub-01', 'ses-01', 'anat');
 
   assertEqual(anatDataDir, expectedAnatDataDir);
   assertEqual(anatImage, expectedFilename);
@@ -85,7 +85,7 @@ function test_getAnatFilename_basic()
 
   assertEqual(anatImage, 'sub-01_ses-01_T1w.nii');
 
-  expectedAnatDataDir = fullfile(getDummyDataDir('raw'), 'sub-01', 'ses-01', 'anat');
+  expectedAnatDataDir = fullfile(getTestDataDir('raw'), 'sub-01', 'ses-01', 'anat');
   assertEqual(anatDataDir, expectedAnatDataDir);
 
   %%

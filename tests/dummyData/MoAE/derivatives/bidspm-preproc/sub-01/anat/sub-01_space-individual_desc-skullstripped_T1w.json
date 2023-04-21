@@ -1,8 +1,0 @@
-{
-  "Description": "image skullstripped for values with\"p(GM) + p(WM) + p(CSF) > 0.750000",
-  "Sources": ["sub-01/sub-01_T1w.nii"],
-  "RawSources": [
-    ["OPTIONAL"]
-  ],
-  "SpatialReference": ["scanner space"]
-}

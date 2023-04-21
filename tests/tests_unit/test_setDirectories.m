@@ -39,7 +39,7 @@ function test_setDirectories_stats()
   opt.pipeline.type = 'stats';
   opt.dir.raw = fullfile(pwd, 'raw');
   opt.dir.preproc = fullfile(pwd, 'derivatives', 'bidspm-preproc');
-  opt.model.file = fullfile(getDummyDataDir(),  'models', ['model-dummy_smdl.json']);
+  opt.model.file = fullfile(getTestDataDir(),  'models', ['model-dummy_smdl.json']);
   opt = checkOptions(opt);
 
   %

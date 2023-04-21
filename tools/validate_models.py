@@ -35,7 +35,7 @@ def main():
     demo_dir = join(root_dir, "demos")
     validate_dir(demo_dir)
 
-    tests_dir = join(root_dir, "tests", "dummyData", "models")
+    tests_dir = join(root_dir, "tests", "data", "models")
     validate_dir(tests_dir)
 
 

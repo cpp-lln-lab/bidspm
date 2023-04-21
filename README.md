@@ -4,7 +4,7 @@
   [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/cpp-lln-lab/bidspm/main.svg)](https://results.pre-commit.ci/latest/github/cpp-lln-lab/bidspm/main)
   [![miss hit](https://img.shields.io/badge/code%20style-miss_hit-000000.svg)](https://misshit.org/)
   [![Documentation Status: main](https://readthedocs.org/projects/bidspm/badge/?version=stable)](https://bidspm.readthedocs.io/en/stable/?badge=stable)
-  [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/bidspm/dev)
+  [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/bidspm/main)
   [![tests](https://github.com/cpp-lln-lab/bidspm/actions/workflows/tests.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/tests.yml)
   [![codecov](https://codecov.io/gh/cpp-lln-lab/bidspm/branch/main/graph/badge.svg?token=PMQYH0DIPX)](https://codecov.io/gh/cpp-lln-lab/bidspm)
   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3554331.svg)](https://doi.org/10.5281/zenodo.3554331)

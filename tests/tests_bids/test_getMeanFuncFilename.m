@@ -20,7 +20,7 @@ function test_getMeanFuncFilename_basic()
 
   expectedMeanImage = 'sub-01_ses-01_task-vislocalizer_space-individual_desc-mean_bold.nii';
 
-  expectedmeanFuncDir = fullfile(getDummyDataDir('preproc'), ...
+  expectedmeanFuncDir = fullfile(getTestDataDir('preproc'), ...
                                  'sub-01', 'ses-01', 'func');
 
   assertEqual(meanFuncDir, expectedmeanFuncDir);

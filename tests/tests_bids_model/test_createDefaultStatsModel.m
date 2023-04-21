@@ -27,7 +27,7 @@ function test_createDefaultStatsModel_basic()
   % check it has the right content
   content = spm_jsonread(expectedFilename);
 
-  expectedContent = spm_jsonread(fullfile(getDummyDataDir(), 'models', 'model-default_smdl.json'));
+  expectedContent = spm_jsonread(fullfile(getTestDataDir(), 'models', 'model-default_smdl.json'));
 
   if ~bids.internal.is_github_ci()
     % silencing because in CI first node design matrix includes a an extra empty

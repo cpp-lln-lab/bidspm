@@ -3,11 +3,11 @@ clean: clean_local
 	mkdir bids-examples && touch bids-examples/.gitkeep
 
 clean_local:
-	rm -rf dummyData/derivatives/bidspm-preproc/sub-*
-	rm -rf dummyData/derivatives/bidspm-stats/sub-*
-	rm -rf dummyData/bidspm-raw/sub-*
-	rm -rf dummyData/derivatives/bidspm-stats/group
-	rm -rf dummyData/derivatives/bidspm-*/jobs
+	rm -rf data/derivatives/bidspm-preproc/sub-*
+	rm -rf data/derivatives/bidspm-stats/sub-*
+	rm -rf data/bidspm-raw/sub-*
+	rm -rf data/derivatives/bidspm-stats/group
+	rm -rf data/derivatives/bidspm-*/jobs
 
 data: clean
 	sh createDummyDataSet.sh
@@ -15,8 +15,9 @@ data: clean
 	git clone https://github.com/bids-standard/bids-examples.git --depth 1
 	cp bids-examples/synthetic/dataset_description.json bids-examples/synthetic/derivatives/fmriprep
 	touch bids-examples/.gitkeep
-	wget -O moae_spm12.zip https://files.de-1.osf.io/v1/resources/3vufp/providers/osfstorage/62ab741be6f3ec09a7e48d13/?zip=
-	unzip -d ./dummyData/MoAE/derivatives/spm12 moae_spm12.zip
+	wget --quiet -O moae_spm12.zip https://files.de-1.osf.io/v1/resources/3vufp/providers/osfstorage/62ab741be6f3ec09a7e48d13/?zip=
+	mkdir -p data/MoAE/derivatives/spm12
+	unzip -d ./data/MoAE/derivatives/spm12 moae_spm12.zip
 
 clean_openneuro:
 	rm -rf openneuro/*

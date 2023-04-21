@@ -15,7 +15,7 @@ end
 function test_getROIs_individual_space_no_subject()
 
   opt = setTestCfg();
-  opt.dir.roi = getDummyDataDir('roi');
+  opt.dir.roi = getTestDataDir('roi');
   opt.bidsFilterFile.roi.space = 'individual';
   opt = checkOptions(opt);
 
@@ -26,7 +26,7 @@ end
 function test_getROIs_no_roi()
 
   opt = setTestCfg();
-  opt.dir.roi = getDummyDataDir('roi');
+  opt.dir.roi = getTestDataDir('roi');
   opt = checkOptions(opt);
 
   opt.roi.name = {''};
@@ -48,7 +48,7 @@ end
 function test_getROIs_mni()
 
   opt = setTestCfg();
-  opt.dir.roi = getDummyDataDir('roi');
+  opt.dir.roi = getTestDataDir('roi');
   opt.bidsFilterFile.roi.space = 'IXI549Space';
   opt = checkOptions(opt);
 
@@ -66,7 +66,7 @@ end
 function test_getROIs_mni_subselect()
 
   opt = setTestCfg();
-  opt.dir.roi = getDummyDataDir('roi');
+  opt.dir.roi = getTestDataDir('roi');
   opt.bidsFilterFile.roi.space = 'IXI549Space';
   opt = checkOptions(opt);
 
@@ -102,7 +102,7 @@ function test_getROIs_individual()
 
   opt = setTestCfg();
   subLabel = '01';
-  opt.dir.roi = getDummyDataDir('roi');
+  opt.dir.roi = getTestDataDir('roi');
   opt.bidsFilterFile.roi.space = 'individual';
   opt = checkOptions(opt);
 
@@ -123,7 +123,7 @@ function test_getROIs_individual_subselect()
 
   opt = setTestCfg();
   subLabel = '01';
-  opt.dir.roi = getDummyDataDir('roi');
+  opt.dir.roi = getTestDataDir('roi');
   opt.bidsFilterFile.roi.space = 'individual';
   opt = checkOptions(opt);
 
@@ -166,7 +166,7 @@ function test_getROIs_individual_subselect_filter()
 
   opt = setTestCfg();
   subLabel = '01';
-  opt.dir.roi = getDummyDataDir('roi');
+  opt.dir.roi = getTestDataDir('roi');
   opt.bidsFilterFile.roi.space = 'individual';
   opt = checkOptions(opt);
 

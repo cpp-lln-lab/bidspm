@@ -29,14 +29,14 @@ function test_getRFXdir_ignored_desc()
 
     ffxDir = getRFXdir(opt);
 
-    expectedOutput = fullfile(getDummyDataDir('stats'), ...
+    expectedOutput = fullfile(getTestDataDir('stats'), ...
                               'derivatives', 'bidspm-groupStats', ...
                               'sub-ALL_task-vislocalizer_space-IXI549Space_FWHM-0_conFWHM-0');
 
     assertEqual(ffxDir, expectedOutput);
     assertEqual(exist(expectedOutput, 'dir'), 7);
 
-    cleanUp(fullfile(getDummyDataDir('stats'), 'derivatives', 'bidspm-groupStats'));
+    cleanUp(fullfile(getTestDataDir('stats'), 'derivatives', 'bidspm-groupStats'));
 
   end
 
@@ -59,7 +59,7 @@ function test_getRFXdir_withinGroup()
 
   %       [~, dir] = fileparts(rfxDir)
 
-  expectedOutput = fullfile(getDummyDataDir('stats'), ...
+  expectedOutput = fullfile(getTestDataDir('stats'), ...
                             'derivatives', 'bidspm-groupStats', ...
                             ['sub-ctrl_task-vislocalizer_space-IXI549Space_FWHM-0_conFWHM-0', ...
                              '_node-withinGroup', '_contrast-VisMotGtVisStat']);
@@ -68,7 +68,7 @@ function test_getRFXdir_withinGroup()
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
-  cleanUp(fullfile(getDummyDataDir('stats'), 'derivatives', 'bidspm-groupStats'));
+  cleanUp(fullfile(getTestDataDir('stats'), 'derivatives', 'bidspm-groupStats'));
 
 end
 
@@ -81,13 +81,13 @@ function test_getRFXdir_basic()
 
   rfxDir = getRFXdir(opt);
 
-  expectedOutput = fullfile(getDummyDataDir('stats'), ...
+  expectedOutput = fullfile(getTestDataDir('stats'), ...
                             'derivatives', 'bidspm-groupStats', ...
                             'sub-ALL_task-vislocalizer_space-IXI549Space_FWHM-0_conFWHM-0');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
-  cleanUp(fullfile(getDummyDataDir('stats'), 'derivatives', 'bidspm-groupStats'));
+  cleanUp(fullfile(getTestDataDir('stats'), 'derivatives', 'bidspm-groupStats'));
 
 end
 
@@ -102,13 +102,13 @@ function test_getRFXdir_extra_entity()
 
   rfxDir = getRFXdir(opt);
 
-  expectedOutput = fullfile(getDummyDataDir('stats'), ...
+  expectedOutput = fullfile(getTestDataDir('stats'), ...
                             'derivatives', 'bidspm-groupStats', ...
                             'sub-ALL_task-vismotion_acq-1p60mm_space-IXI549Space_FWHM-6_conFWHM-0');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
-  cleanUp(fullfile(getDummyDataDir('stats'), 'derivatives', 'bidspm-groupStats'));
+  cleanUp(fullfile(getTestDataDir('stats'), 'derivatives', 'bidspm-groupStats'));
 
 end
 
@@ -123,13 +123,13 @@ function test_getRFXdir_user_specified()
 
   rfxDir = getRFXdir(opt, nodeName);
 
-  expectedOutput = fullfile(getDummyDataDir('stats'), ...
+  expectedOutput = fullfile(getTestDataDir('stats'), ...
                             'derivatives', 'bidspm-groupStats', ...
                             'sub-ALL_task-nback_space-IXI549Space_FWHM-6_conFWHM-6_node-nbackMVPA');
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
-  cleanUp(fullfile(getDummyDataDir('stats'), 'derivatives', 'bidspm-groupStats'));
+  cleanUp(fullfile(getTestDataDir('stats'), 'derivatives', 'bidspm-groupStats'));
 
 end
 
@@ -147,13 +147,13 @@ function test_getRFXdir_with_contrast()
 
   rfxDir = getRFXdir(opt, nodeName, contrastName);
 
-  expectedOutput = fullfile(getDummyDataDir('stats'), ...
+  expectedOutput = fullfile(getTestDataDir('stats'), ...
                             'derivatives', 'bidspm-groupStats', ...
                             ['sub-ALL_task-nback_space-IXI549Space_FWHM-6_conFWHM-6', ...
                              '_node-nbackMVPA_contrast-nback']);
 
   assertEqual(exist(expectedOutput, 'dir'), 7);
 
-  cleanUp(fullfile(getDummyDataDir('stats'), 'derivatives', 'bidspm-groupStats'));
+  cleanUp(fullfile(getTestDataDir('stats'), 'derivatives', 'bidspm-groupStats'));
 
 end

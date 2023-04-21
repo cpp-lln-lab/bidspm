@@ -77,7 +77,7 @@ end
 
 function expectedBatch = returnExpectedBatch(opt)
 
-  expectedAnatDataDir = fullfile(getDummyDataDir('preproc'), 'sub-01', 'ses-01', 'anat');
+  expectedAnatDataDir = fullfile(getTestDataDir('preproc'), 'sub-01', 'ses-01', 'anat');
 
   expectedBatch = [];
 

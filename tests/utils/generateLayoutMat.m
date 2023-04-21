@@ -9,8 +9,8 @@ function generateLayoutMat(force)
     force = false;
   end
 
-  opt.dir.raw = getDummyDataDir('raw');
-  opt.dir.preproc = getDummyDataDir('preproc');
+  opt.dir.raw = getTestDataDir('raw');
+  opt.dir.preproc = getTestDataDir('preproc');
 
   if force || exist(fullfile(opt.dir.preproc, 'layout.mat'), 'file') == 0
     BIDS = bids.layout(opt.dir.raw);

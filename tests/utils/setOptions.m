@@ -65,7 +65,7 @@ function opt = setOptions(varargin)
 
     task = {'auditory'};
 
-    opt.dir.derivatives = fullfile(getDummyDataDir(), 'MoAE', 'derivatives');
+    opt.dir.derivatives = fullfile(getTestDataDir(), 'MoAE', 'derivatives');
     opt.dir.preproc = fullfile(opt.dir.derivatives, 'bidspm-preproc');
     opt.dir.stats = fullfile(opt.dir.derivatives, 'bidspm-stats');
 
@@ -90,7 +90,7 @@ function opt = setOptions(varargin)
     opt.dir.raw = fullfile(getFmriprepDir(), '..', 'ds001');
     opt.dir.input = getFmriprepDir();
 
-    opt.model.file = fullfile(getDummyDataDir(),  'models', ...
+    opt.model.file = fullfile(getTestDataDir(),  'models', ...
                               ['model-' strjoin(task, '') '_smdl.json']);
 
   elseif strcmp(task, 'fmriprep-synthetic')
@@ -101,17 +101,17 @@ function opt = setOptions(varargin)
     opt.dir.raw = getSyntheticDataDir();
     opt.dir.preproc = fullfile(getSyntheticDataDir(), 'derivatives', 'fmriprep');
 
-    opt.model.file = fullfile(getDummyDataDir(),  'models', ...
+    opt.model.file = fullfile(getTestDataDir(),  'models', ...
                               ['model-' strjoin(task, '') '_smdl.json']);
 
   else
 
-    opt.dir.raw = getDummyDataDir('raw');
-    opt.dir.derivatives = fullfile(getDummyDataDir(), 'derivatives');
-    opt.dir.preproc = getDummyDataDir('preproc');
-    opt.dir.stats = getDummyDataDir('stats');
+    opt.dir.raw = getTestDataDir('raw');
+    opt.dir.derivatives = fullfile(getTestDataDir(), 'derivatives');
+    opt.dir.preproc = getTestDataDir('preproc');
+    opt.dir.stats = getTestDataDir('stats');
 
-    opt.model.file = fullfile(getDummyDataDir(),  'models', ...
+    opt.model.file = fullfile(getTestDataDir(),  'models', ...
                               ['model-' strjoin(task, '') '_smdl.json']);
 
   end
@@ -135,7 +135,7 @@ function opt = setOptions(varargin)
 
   useRaw = args.Results.useRaw;
   if useRaw
-    opt.dir.preproc = getDummyDataDir('raw');
+    opt.dir.preproc = getTestDataDir('raw');
   end
 
 end

@@ -14,14 +14,14 @@ function test_createAndReturnCounfoundMatFile_basic()
 
   counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile);
 
-  expectedFilename = fullfile(getDummyDataDir('stats'), 'sub-01', ...
+  expectedFilename = fullfile(getTestDataDir('stats'), 'sub-01', ...
                               'task-vislocalizer_space-IXI549Space_FWHM-6', ...
                               'sub-01_ses-01_task-vislocalizer_desc-confounds_regressors.mat');
 
   assertEqual(exist(counfoundMatFile, 'file'), 2);
   assertEqual(exist(expectedFilename, 'file'), 2);
 
-  expected_content = fullfile(getDummyDataDir(), 'mat_files', 'regressors.mat');
+  expected_content = fullfile(getTestDataDir(), 'mat_files', 'regressors.mat');
 
   expected_R = load(expected_content, 'R');
   actual_R = load(counfoundMatFile, 'R');
@@ -43,11 +43,11 @@ function test_createAndReturnCounfoundMatFile_bug_966()
   opt.space = 'IXI549Space';
   opt = checkOptions(opt);
 
-  opt.model.file = fullfile(getDummyDataDir(), ...
+  opt.model.file = fullfile(getTestDataDir(), ...
                             'models', 'model-bug966_smdl.json');
   opt.model.bm = BidsModel('file', opt.model.file);
 
-  tsvFile = fullfile(getDummyDataDir(), ...
+  tsvFile = fullfile(getTestDataDir(), ...
                      'tsv_files', ...
                      'sub-01_task-auditory_desc-confounds_timeseries.tsv');
 

@@ -30,7 +30,7 @@ function test_getFFXdir_ignored_desc()
 
     ffxDir = getFFXdir(subLabel, opt);
 
-    expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-01', ...
+    expectedOutput = fullfile(getTestDataDir('stats'), 'sub-01', ...
                               'task-vislocalizer_space-IXI549Space_FWHM-0');
 
     assertEqual(ffxDir, expectedOutput);
@@ -49,7 +49,7 @@ function test_getFFXdir_basic()
 
   opt.fwhm.func = 0;
 
-  expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-01', ...
+  expectedOutput = fullfile(getTestDataDir('stats'), 'sub-01', ...
                             'task-vislocalizer_space-IXI549Space_FWHM-0');
 
   ffxDir = getFFXdir(subLabel, opt);
@@ -74,7 +74,7 @@ function test_getFFXdir_extra_entity()
 
   ffxDir = getFFXdir(subLabel, opt);
 
-  expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-01', ...
+  expectedOutput = fullfile(getTestDataDir('stats'), 'sub-01', ...
                             'task-vismotion_acq-1p60mm_space-IXI549Space_FWHM-6');
 
   assertEqual(ffxDir, expectedOutput);
@@ -93,7 +93,7 @@ function test_getFFXdir_user_specified()
 
   ffxDir = getFFXdir(subLabel, opt);
 
-  expectedOutput = fullfile(getDummyDataDir('stats'), 'sub-02', ...
+  expectedOutput = fullfile(getTestDataDir('stats'), 'sub-02', ...
                             'task-vismotion_space-individual_FWHM-6_node-globalSignal');
 
   assertEqual(ffxDir, expectedOutput);

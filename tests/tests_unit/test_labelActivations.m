@@ -14,13 +14,13 @@ function test_labelActivations_aal()
     return
   end
 
-  csvFile = fullfile(getDummyDataDir(), 'tsv_files', 'moae_results_table.csv');
+  csvFile = fullfile(getTestDataDir(), 'tsv_files', 'moae_results_table.csv');
 
   tsvFile = labelActivations(csvFile, 'atlas', 'AAL');
 
   assertEqual(exist(tsvFile, 'file'), 2);
 
-  expectedFile = fullfile(getDummyDataDir(), 'tsv_files', 'moae_results_table_aal.tsv');
+  expectedFile = fullfile(getTestDataDir(), 'tsv_files', 'moae_results_table_aal.tsv');
   expectedContent = bids.util.tsvread(expectedFile);
 
   content = bids.util.tsvread(tsvFile);
@@ -31,13 +31,13 @@ end
 
 function test_labelActivations_basic()
 
-  csvFile = fullfile(getDummyDataDir(), 'tsv_files', 'moae_results_table.csv');
+  csvFile = fullfile(getTestDataDir(), 'tsv_files', 'moae_results_table.csv');
 
   tsvFile = labelActivations(csvFile);
 
   assertEqual(exist(tsvFile, 'file'), 2);
 
-  expectedFile = fullfile(getDummyDataDir(), 'tsv_files', 'moae_results_table_neuromorpho.tsv');
+  expectedFile = fullfile(getTestDataDir(), 'tsv_files', 'moae_results_table_neuromorpho.tsv');
   expectedContent = bids.util.tsvread(expectedFile);
 
   content = bids.util.tsvread(tsvFile);
@@ -52,7 +52,7 @@ function test_labelActivations_bug_662()
     return
   end
 
-  csvFile = fullfile(getDummyDataDir(), 'tsv_files', 'bug662_results_table.csv');
+  csvFile = fullfile(getTestDataDir(), 'tsv_files', 'bug662_results_table.csv');
 
   assertWarning(@() labelActivations(csvFile), 'labelActivations:noSignificantVoxel');
 
