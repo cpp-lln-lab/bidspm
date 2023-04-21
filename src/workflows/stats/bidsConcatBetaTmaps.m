@@ -44,7 +44,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
 
     ffxDir = getFFXdir(subLabel, opt);
 
-    load(fullfile(ffxDir, 'SPM.mat'));
+    load(fullfile(ffxDir, 'SPM.mat'), 'SPM');
 
     model = BidsModel('file', opt.model.file);
 
@@ -86,7 +86,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
       for iSess = 1:numel(SPM.Sess)
         tmp(iSess) = ismember(betasIndices, SPM.Sess(iSess).col); %#ok<*AGROW>
       end
-      runs(iContrast, 1) = find(any(tmp, 2));
+      runs(iContrast, 1) = find(any(tmp, 1));
       clear tmp;
 
       parts = strsplit(SPM.xX.name{betasIndices}, ' ');
