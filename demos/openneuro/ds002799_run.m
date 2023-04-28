@@ -2,8 +2,6 @@
 %
 % To get the data run (requires datalad):
 %
-% bash ds002799_install_and_get_data.sh
-%
 %
 % (C) Copyright 2022 Remi Gau
 
