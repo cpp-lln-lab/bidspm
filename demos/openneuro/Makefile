@@ -33,9 +33,9 @@ data_ds001734:
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds001734
 	cd inputs && datalad install ///openneuro-derivatives/ds001734-fmriprep
-	cd inputs/ds001734-fmriprep && datalad get sub-00[1]/anat/*MNI152NLin2009cAsym*mask.nii.gz
-	cd inputs/ds001734-fmriprep && datalad get sub-00[1]/anat/*MNI152NLin2009cAsym*T1w.nii.gz
-	cd inputs/ds001734-fmriprep && datalad get sub-00[1]/func/*MNI152NLin2009cAsym*desc-preproc*bold.nii.gz
+	cd inputs/ds001734-fmriprep && datalad get sub-00[1-3]/anat/*MNI152NLin2009cAsym*mask.nii.gz
+	cd inputs/ds001734-fmriprep && datalad get sub-00[1-3]/anat/*MNI152NLin2009cAsym*T1w.nii.gz
+	cd inputs/ds001734-fmriprep && datalad get sub-00[1-3]/func/*MNI152NLin2009cAsym*desc-preproc*bold.nii.gz
 	cd inputs/ds001734-fmriprep && datalad get sub-*/func/*tsv
 	cd inputs/ds001734-fmriprep && datalad get sub-*/func/*json
 
