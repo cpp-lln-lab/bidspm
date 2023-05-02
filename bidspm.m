@@ -268,9 +268,7 @@ function smooth(args)
 
   saveOptions(opt);
 
-  if ~isdir(opt.dir.output)
-    copy(args);
-  end
+  copy(args);
 
   if opt.fwhm.func > 0
     opt.query.desc = 'preproc';
