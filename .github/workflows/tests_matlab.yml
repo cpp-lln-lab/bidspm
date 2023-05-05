@@ -94,13 +94,22 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: Copy-Item -Recurse -Verbose -Path ".\lib\MACS" -Destination ".\spm12\toolbox\MACS"
 
-    - name: Get moae fmriprep data from OSF
+    - name: Get moae fmriprep data from OSF on unix
+      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
       run: |
         mkdir -p demos/MoAE/inputs/
         cd demos/MoAE/inputs/
         wget https://osf.io/vufjs/download
         unzip download
         mv moae_fmriprep fmriprep
+    - name: Get moae fmriprep data from OSF on windows
+      if: matrix.os == 'windows-latest'
+      run: |
+        New-Item -ItemType Directory -Path ".\demos\MoAE\inputs\" -Force
+        Set-Location -Path ".\demos\MoAE\inputs\"
+        Invoke-WebRequest -Uri "https://osf.io/vufjs/download" -OutFile "download"
+        Expand-Archive -Path ".\download" -DestinationPath ".\"
+        Rename-Item -Path ".\moae_fmriprep" -NewName "fmriprep"
 
     - name: Prepare test data
       run: |
