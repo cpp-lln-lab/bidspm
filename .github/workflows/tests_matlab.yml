@@ -87,8 +87,12 @@ jobs:
       run: |
         git clone https://github.com/spm/spm12.git --depth 1
 
-    - name: Copy Macs toolbox to SPM inputs_folder
+    - name: Copy Macs toolbox to SPM inputs_folder on unix
+      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
       run: cp -rv lib/MACS spm12/toolbox/MACS
+    - name: Copy Macs toolbox to SPM inputs_folder on windows
+      if: matrix.os == 'windows-latest'
+      run: Copy-Item -Recurse -Verbose -Path ".\lib\MACS" -Destination ".\spm12\toolbox\MACS"
 
     - name: Get moae fmriprep data from OSF
       run: |
