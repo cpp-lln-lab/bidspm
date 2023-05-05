@@ -148,10 +148,11 @@ function [json, fig] = anatQA(varargin)
   Bmax = sqrt(sum(data(:).^2));
   try
     % should work most of the time, possibly throwing warnings (cf Joost Kuijer)
-    json.EFC = real(nansum((data(:) ./ Bmax) .* log(data(:) ./ Bmax)));
+    tmp = (data(:) ./ Bmax) .* log(data(:) ./ Bmax);
   catch
-    json.EFC = real(nansum((data(:) ./ Bmax) .* abs(log(data(:) ./ Bmax))));
+    tmp = (data(:) ./ Bmax) .* abs(log(data(:) ./ Bmax));
   end
+  json.EFC = real(bids.internal.nansum(tmp));
 
 end
 
