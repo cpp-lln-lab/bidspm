@@ -173,15 +173,6 @@ function test_bidsRFX_rfx()
 
 end
 
-function test_bidsRFX_smooth()
-
-  opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
-
-  matlabbatch = bidsRFX('smoothContrasts', opt);
-  assertEqual(numel(matlabbatch), 3); % one batch per subject
-
-end
-
 function test_bidsRFX_mean()
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');

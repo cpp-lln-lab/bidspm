@@ -67,7 +67,7 @@ function opt = checkOptions(opt)
   %     - ``opt.model.file = ''`` - path to the BIDS model file that contains the
   %       model to specify and the contrasts to compute.
   %
-  %     - ``opt.fwhm.contrast = 6`` - FWHM to apply to the contrast images before bringing
+  %     - ``opt.fwhm.contrast = 0`` - FWHM to apply to the contrast images before bringing
   %       them at the group level.
   %
   %     - ``'opt.model.designOnly'`` = if set to ``true``, the GLM will be set
