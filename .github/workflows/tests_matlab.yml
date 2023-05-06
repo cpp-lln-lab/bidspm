@@ -120,7 +120,11 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: |
         cd tests
-        make data_win
+        make create_dummy_dataset
+        make bids_examples
+        Invoke-WebRequest -Uri "https://files.de-1.osf.io/v1/resources/3vufp/providers/osfstorage/62ab741be6f3ec09a7e48d13/?zip=" -OutFile "moae_spm12.zip"
+        New-Item -ItemType Directory -Path "data/MoAE/derivatives/spm12" -Force
+        Expand-Archive -Path "./moae_spm12.zip" -DestinationPath "./data/MoAE/derivatives/spm12"
 
     - name: Install Moxunit and MOcov
       run: |
