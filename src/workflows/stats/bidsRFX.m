@@ -33,7 +33,7 @@ function matlabbatch = bidsRFX(varargin)
   % (C) Copyright 2020 bidspm developers
 
   allowedActions = @(x) ismember(lower(x), ...
-                                 {'smoothcontrasts', 'meananatandmask', 'rfx', 'contrasts'});
+                                 {'meananatandmask', 'rfx', 'contrasts'});
 
   args = inputParser;
 
@@ -62,7 +62,6 @@ function matlabbatch = bidsRFX(varargin)
   matlabbatch = {};
 
   % TODO refactor
-  % - extract function for contrast smoothing
   % - extract function for anat and mask computation
   % - merge rfx and ffx into a single "stats" workflow
 
@@ -84,14 +83,6 @@ function matlabbatch = bidsRFX(varargin)
   end
 
   switch lower(action)
-
-    case 'smoothcontrasts'
-      % TODO split this in a different workflow
-      matlabbatch = setBatchSmoothConImages(matlabbatch, opt);
-      saveAndRunWorkflow(matlabbatch, ...
-                         ['smooth_con_FWHM-', num2str(opt.fwhm.contrast), ...
-                          '_task-', strjoin(opt.taskName, '')], ...
-                         opt);
 
     case 'meananatandmask'
       % TODO need to rethink where to save the anat and mask

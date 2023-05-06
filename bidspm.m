@@ -346,6 +346,9 @@ function stats(args)
         end
 
       else
+        if opt.fwhm.contrast > 0
+          bidsSmoothContrasts(opt);
+        end
         bidsRFX('RFX', opt, 'nodeName', nodeName);
 
       end
