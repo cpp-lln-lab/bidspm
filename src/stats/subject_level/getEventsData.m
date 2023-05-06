@@ -11,6 +11,16 @@ function data = getEventsData(tsvFile, modelFile)
 
   content = bids.util.tsvread(tsvFile);
 
+  if ~isfield(content, 'trial_type')
+    msg = sprintf(['''trial_type'' column is missing from file: %s', ...
+                   '\nAvailable columns are: %s'], ...
+                  tsvFile, ...
+                  bids.internal.create_unordered_list(fieldnames(content)));
+    logger('ERROR', msg, ...
+           'filename', filename, ...
+           'id', 'missingTrialypeColumn');
+  end
+
   conditions = unique(content.trial_type);
 
   if ~isempty(modelFile)
