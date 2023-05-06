@@ -53,10 +53,8 @@ bidspm(bids_dir, output_dir, 'dataset', ...
 model_file = fullfile(output_dir, 'models', 'model-defaultEs_smdl.json');
 bm = BidsModel('file', model_file);
 
-%% update the run level node
-
+% update the run level node
 run_lvl_idx = 1;
-
 % add a transformation to add a dummy column of trial type
 % because there is none in the events.file
 %
@@ -67,21 +65,18 @@ bm.Nodes{run_lvl_idx}.Transformations.Transformer = 'bidspm';
 bm.Nodes{run_lvl_idx}.Transformations.Instructions = {struct('Name', 'Constant', ...
                                                              'Value', 'es', ...
                                                              'Output', 'trial_type')};
-
 % update design matrix and contrasts
 % we model the main condition and get a contrast just for this condition
-
 bm.Nodes{run_lvl_idx}.Model.X{end + 1} = 'trial_type.es';
 bm.Nodes{run_lvl_idx}.Model.HRF.Variables = {'trial_type.es'};
 bm.Nodes{run_lvl_idx}.DummyContrasts.Contrasts =  {'es'};
 bm.Nodes{run_lvl_idx} = rmfield(bm.Nodes{run_lvl_idx}, 'Contrasts');
 
-%% update the dataset level node
-
+% update the dataset level node
 run_lvl_idx = 3;
 bm.Nodes{run_lvl_idx}.GroupBy = {'contrast'};
 
-%% write
+% write
 bm.write(model_file);
 
 %% run subject level stats
@@ -91,7 +86,8 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'preproc_dir', preproc_dir, ...
        'model_file', model_file, ...
        'fwhm', fwhm, ...
-       'verbosity', verbosity);
+       'verbosity', verbosity, ...
+       'skip_validation', true);
 
 %% run group level stats
 opt.fwhm.contrasts = fwhm;
@@ -103,4 +99,5 @@ bidspm(bids_dir, output_dir, 'dataset', ...
        'model_file', model_file, ...
        'fwhm', fwhm, ...
        'options', opt, ...
-       'verbosity', verbosity);
+       'verbosity', verbosity, ...
+       'skip_validation', true);
