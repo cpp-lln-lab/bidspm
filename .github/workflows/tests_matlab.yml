@@ -111,10 +111,16 @@ jobs:
         Expand-Archive -Path ".\download" -DestinationPath ".\"
         Rename-Item -Path ".\moae_fmriprep" -NewName "fmriprep"
 
-    - name: Prepare test data
+    - name: Prepare test data unix
+      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
       run: |
         cd tests
         make data
+    - name: Prepare test data windows
+      if: matrix.os == 'windows-latest'
+      run: |
+        cd tests
+        make data_win
 
     - name: Install Moxunit and MOcov
       run: |

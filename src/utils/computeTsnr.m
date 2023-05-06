@@ -88,7 +88,7 @@ function outData = rmLowFreq(data, order)
   % Copyright (C) Stephan Heunis 2018
 
   % Define variables
-  [r, c] = size(data);
+  r = size(data);
 
   % Create design matrix with model regressors
   if order == 1
@@ -108,4 +108,17 @@ function outData = rmLowFreq(data, order)
   % Detrend data
   outData = data - X(:, 2:end) * b(2:end, :);
 
+end
+
+function y = nanmean(varargin)
+
+  if bids.internal.is_octave()
+    data = varargin{1}(:);
+    nanIdx = isnan(data);
+    y = mean(data(~nanIdx));
+    return
+  end
+
+  narginchk(1, 2);
+  y = mean(varargin{:}, 'omitnan');
 end
