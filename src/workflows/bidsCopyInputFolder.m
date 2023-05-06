@@ -25,6 +25,8 @@ function bidsCopyInputFolder(varargin)
 
   % (C) Copyright 2019 bidspm developers
 
+  TOLERANT = true;
+
   args = inputParser;
 
   addRequired(args, 'opt', @isstruct);
@@ -89,7 +91,7 @@ function bidsCopyInputFolder(varargin)
                             'skip_dep', skip_dependencies, ...
                             'use_schema', use_schema, ...
                             'verbose', opt.verbosity > 0, ...
-                            'tolerant', false);
+                            'tolerant', TOLERANT);
 
     % force grab the confounds for fmriprep
     if strcmp(filter.modality, 'func') && checkFmriprep(BIDS)
@@ -109,7 +111,7 @@ function bidsCopyInputFolder(varargin)
                               'skip_dep', skip_dependencies, ...
                               'use_schema', use_schema, ...
                               'verbose', opt.verbosity > 0, ...
-                              'tolerant', false);
+                              'tolerant', TOLERANT);
 
     end
 
