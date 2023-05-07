@@ -52,7 +52,6 @@ function bidsCopyInputFolder(varargin)
   % raw directory and derivatives directory
   createDerivativeDir(opt);
 
-  %% Loop through the groups, subjects, sessions
   [BIDS, opt] = getData(opt, opt.dir.input);
 
   use_schema = true;

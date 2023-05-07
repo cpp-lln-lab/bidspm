@@ -43,7 +43,7 @@ function returnCode = bidspm(varargin)
   addParameter(args, 'space', {}, isCellStr);
 
   % copy only
-  addParameter(args, 'force', 'false', isLogical);
+  addParameter(args, 'force', false, isLogical);
 
   % create_roi only
   addParameter(args, 'roi_dir', '', isChar);
@@ -196,6 +196,29 @@ function copy(args)
   opt.query.desc = {'preproc', 'brain'};
   opt.query.suffix = {'T1w', 'bold', 'mask'};
   opt.query.space = opt.space;
+
+  bidsFilterFile = get_bidsFilterFile(args);
+  if ~isempty(bidsFilterFile)
+    suffixes = fieldnames(bidsFilterFile);
+    modalities = {};
+    for i = 1:numel(suffixes)
+      modalities{end + 1} = bidsFilterFile.(suffixes{i}).modality; %#ok<*AGROW>
+      if isfield(bidsFilterFile.(suffixes{i}), 'suffix')
+        opt.query.suffix = cat(2, ...
+                               opt.query.suffix, ...
+                               bidsFilterFile.(suffixes{i}).suffix);
+      end
+      if isfield(bidsFilterFile.(suffixes{i}), 'desc')
+        opt.query.desc = cat(2, ...
+                             opt.query.desc, ...
+                             bidsFilterFile.(suffixes{i}).desc);
+      end
+    end
+    opt.query.modality = unique(modalities);
+  end
+  opt.query.suffix = unique(opt.query.suffix);
+  opt.query.desc = unique(opt.query.desc);
+
   bidsCopyInputFolder(opt, 'unzip', true, 'force', args.Results.force);
 
 end
@@ -654,6 +677,16 @@ function value = allowedActions()
 end
 
 %% helpers functions
+
+function bidsFilterFile = get_bidsFilterFile(args)
+
+  if isstruct(args.Results.bids_filter_file)
+    bidsFilterFile = args.Results.bids_filter_file;
+  else
+    bidsFilterFile = bids.util.jsondecode(args.Results.bids_filter_file);
+  end
+
+end
 
 function detectBidspm()
 
