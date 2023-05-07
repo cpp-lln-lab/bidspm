@@ -14,57 +14,83 @@ end
 
 function test_boilerplate_spatial_preproc()
 
-  % GIVEN
+  useUnwarp = {true, false};
+  space = { {'individual'}, ...
+           {'individual', 'IXI549Space'} };
 
-  opt = setOptions('MoAE-preproc');
+  for iUseUnwarp = 1:2
+    for iSpace = 1:numel(space)
+      for fwhm = [0, 6]
+        for dummy_scans = [0, 4]
 
-  filter = opt.bidsFilterFile.bold;
-  filter.task = opt.taskName;
+          printTestParameters(mfilename(), ...
+                              dummy_scans, ...
+                              space{iSpace}, ...
+                              useUnwarp{iUseUnwarp}, ...
+                              fwhm);
 
-  opt.stc.referenceSlice = 32;
+          outputPath = tempName();
 
-  opt.dummy_scans = 4;
+          opt = setOptions('MoAE-preproc');
 
-  %  opt.space = {'individual'};
+          opt.stc.referenceSlice = 32;
 
-  %  opt.realign.useUnwarp = false;
+          opt.dummy_scans = dummy_scans;
+          opt.space = space{iSpace};
+          opt.realign.useUnwarp = useUnwarp{iUseUnwarp};
+          opt.fwhm.func = fwhm;
 
-  %  opt.fwhm.func = 0;
+          outputFile = boilerplate(opt, ...
+                                   'outputPath', outputPath, ...
+                                   'pipelineType', 'preproc', ...
+                                   'partialsPath', partialsPath(), ...
+                                   'verbosity', 0);
 
-  outputFile = boilerplate(opt, ...
-                           'outputPath', pwd, ...
-                           'pipelineType', 'preproc', ...
-                           'partialsPath', partialsPath(), ...
-                           'verbosity', 0);
+          assertEqual(exist(outputFile, 'file'), 2);
 
-  assertEqual(exist(outputFile, 'file'), 2);
-  delete(outputFile);
-  delete('bidspm.bib');
+        end
+
+      end
+
+    end
+
+  end
 
 end
 
 function test_boilerplate_spatial_subject_glm()
 
-  % GIVEN
+  desginTypes = {'block', 'event'};
 
-  opt = setOptions('facerep');
+  for fwhm = [0, 6]
+    for i = 1:numel(desginTypes)
 
-  opt.fwhm.contrast = 0;
+      outputPath = tempName();
 
-  opt.designType = 'block';
+      opt = setOptions('facerep');
 
-  outputFile = boilerplate(opt, ...
-                           'outputPath', pwd, ...
-                           'pipelineType', 'stats', ...
-                           'partialsPath', partialsPath(), ...
-                           'verbosity', 0);
+      opt.fwhm.contrast = fwhm;
 
-  assertEqual(exist(outputFile, 'file'), 2);
-  delete(outputFile);
-  delete('bidspm.bib');
+      opt.designType = desginTypes{i};
+
+      outputFile = boilerplate(opt, ...
+                               'outputPath', outputPath, ...
+                               'pipelineType', 'stats', ...
+                               'partialsPath', partialsPath(), ...
+                               'verbosity', 0);
+
+      assertEqual(exist(outputFile, 'file'), 2);
+
+    end
+  end
 
 end
 
 function value = partialsPath()
   value = fullfile(returnRootDir(), 'src', 'reports', 'partials');
+end
+
+function pth = tempName()
+  pth = tempname();
+  mkdir(pth);
 end
