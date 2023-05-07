@@ -124,3 +124,160 @@ bidspm-stats
 │       └── sub-blnd01_task-taskName_run-*_onsets.tsv --------------------------
 ...
 ```
+
+
+```
+outputs/derivatives/bidspm-stats
+├── CHANGES
+├── dataset_description.json
+├── derivatives
+│   └── bidspm-groupStats
+│       ├── CHANGES
+│       ├── dataset_description.json
+│       ├── jobs
+│       │   └── <taskLabel>
+│       │       └── group
+│       │           ├── batch_contrasts_rfx_2023-05-06T12-49.json
+│       │           ├── batch_contrasts_rfx_2023_05_06T12_49.m
+│       │           ├── batch_group_level_model_specification_estimation_2023-05-06T12-49.json
+│       │           └── batch_group_level_model_specification_estimation_2023_05_06T12_49.m
+│       ├── LICENSE
+│       ├── README.md
+│       ├── sub-ALL_task-<taskLabel>_space-<spaceLabel>_FWHM-6_conFWHM-0_node-dataset_contrast-<taskLabel>
+│       │   ├── beta_0001.nii
+│       │   ├── con_0001.nii
+│       │   ├── mask.nii
+│       │   ├── ResMS.nii
+│       │   ├── RPV.nii
+│       │   ├── SPM.mat
+│       │   ├── spmT_0001.nii
+│       │   ├── task-<taskLabel>_space-<spaceLabel>_desc-afterEstimation_designmatrix.png
+│       │   └── task-<taskLabel>_space-<spaceLabel>_desc-beforeEstimation_designmatrix.png
+│       └── sub-ALL_task-<taskLabel>_space-<spaceLabel>_FWHM-6_conFWHM-6_node-dataset_contrast-<taskLabel>
+│           ├── beta_0001.nii
+│           ├── con_0001.nii
+│           ├── mask.nii
+│           ├── ResMS.nii
+│           ├── RPV.nii
+│           ├── SPM.mat
+│           ├── spmT_0001.nii
+│           ├── task-<taskLabel>_space-<spaceLabel>_desc-afterEstimation_designmatrix.png
+│           └── task-<taskLabel>_space-<spaceLabel>_desc-beforeEstimation_designmatrix.png
+├── jobs
+│   └── <taskLabel>
+│       ├── group
+│       │   ├── batch_smooth_con_FWHM-6_task-<taskLabel>_2023-05-06T12-49.json
+│       │   └── batch_smooth_con_FWHM_6_task_<taskLabel>_2023_05_06T12_49.m
+│       ├── sub-292
+│       │   ├── batch_contrasts_ffx_task-<taskLabel>_space-<spaceLabel>_FWHM-6_2023-05-06T12-43.json
+│       │   ├── batch_contrasts_ffx_task_<taskLabel>_space_<spaceLabel>_FWHM_6_2023_05_06T12_43.m
+│       │   ├── batch_specifyAndEstimate_ffx_task-<taskLabel>_space-<spaceLabel>_FWHM-6_2023-05-06T12-35.json
+│       │   └── batch_specifyAndEstimate_ffx_task_<taskLabel>_space_<spaceLabel>_FWHM_6_2023_05_06T12_35.m
+│       ├── sub-302
+│       └── sub-307
+
+├── LICENSE
+├── README.md
+├── reports
+│   ├── bidspm.bib
+│   └── stats_model-default_es_model_citation.md
+├── sub-292
+│   └── task-<taskLabel>_space-<spaceLabel>_FWHM-6
+│       ├── beta_0001.nii
+│       ├── beta_0002.nii
+│       ├── ...
+│       ├── beta_0060.nii
+│       ├── con_0001.nii
+│       ├── con_0002.nii
+│       ├── con_0003.nii
+│       ├── con_0004.nii
+│       ├── con_0005.nii
+│       ├── con_0006.nii
+│       ├── mask.nii
+│       ├── ResMS.nii
+│       ├── RPV.nii
+│       ├── s6con_0001.nii
+│       ├── s6con_0002.nii
+│       ├── s6con_0003.nii
+│       ├── s6con_0004.nii
+│       ├── s6con_0005.nii
+│       ├── s6con_0006.nii
+│       ├── SPM.mat
+│       ├── spmT_0001.nii
+│       ├── spmT_0002.nii
+│       ├── spmT_0003.nii
+│       ├── spmT_0004.nii
+│       ├── spmT_0005.nii
+│       ├── spmT_0006.nii
+│       ├── sub-292_ses-<sesLabel>_task-<taskLabel>_run-01_desc-confounds_regressors.mat
+│       ├── sub-292_ses-<sesLabel>_task-<taskLabel>_run-01_desc-confounds_regressors.tsv
+│       ├── sub-292_ses-<sesLabel>_task-<taskLabel>_run-01_onsets.mat
+│       ├── sub-292_ses-<sesLabel>_task-<taskLabel>_run-01_onsets.tsv
+│       ├── sub-292_task-<taskLabel>_space-<spaceLabel>_desc-afterEstimation_designmatrix.png
+│       └── sub-292_task-<taskLabel>_space-<spaceLabel>_desc-beforeEstimation_designmatrix.png
+├── sub-302
+│   └── task-<taskLabel>_space-<spaceLabel>_FWHM-6
+│       ├── beta_0001.nii
+│       ├── beta_0002.nii
+│       ├── ...
+│       ├── beta_0154.nii
+│       ├── con_0001.nii
+│       ├── con_0002.nii
+│       ├── con_0003.nii
+│       ├── mask.nii
+│       ├── ResMS.nii
+│       ├── RPV.nii
+│       ├── s6con_0001.nii
+│       ├── s6con_0002.nii
+│       ├── s6con_0003.nii
+│       ├── SPM.mat
+│       ├── spmT_0001.nii
+│       ├── spmT_0002.nii
+│       ├── spmT_0003.nii
+│       ├── sub-302_ses-<sesLabel>_task-<taskLabel>_run-01_desc-confounds_regressors.mat
+│       ├── sub-302_ses-<sesLabel>_task-<taskLabel>_run-01_desc-confounds_regressors.tsv
+│       ├── sub-302_ses-<sesLabel>_task-<taskLabel>_run-01_onsets.mat
+│       ├── sub-302_ses-<sesLabel>_task-<taskLabel>_run-01_onsets.tsv
+│       ├── sub-302_task-<taskLabel>_space-<spaceLabel>_desc-afterEstimation_designmatrix.png
+│       └── sub-302_task-<taskLabel>_space-<spaceLabel>_desc-beforeEstimation_designmatrix.png
+└── sub-307
+    └── task-<taskLabel>_space-<spaceLabel>_FWHM-6
+        ├── beta_0001.nii
+        ├── beta_0002.nii
+        ├── ...
+        ├── beta_0237.nii
+        ├── con_0001.nii
+        ├── con_0002.nii
+        ├── con_0003.nii
+        ├── con_0004.nii
+        ├── con_0005.nii
+        ├── con_0006.nii
+        ├── con_0007.nii
+        ├── con_0008.nii
+        ├── mask.nii
+        ├── ResMS.nii
+        ├── RPV.nii
+        ├── s6con_0001.nii
+        ├── s6con_0002.nii
+        ├── s6con_0003.nii
+        ├── s6con_0004.nii
+        ├── s6con_0005.nii
+        ├── s6con_0006.nii
+        ├── s6con_0007.nii
+        ├── s6con_0008.nii
+        ├── SPM.mat
+        ├── spmT_0001.nii
+        ├── spmT_0002.nii
+        ├── spmT_0003.nii
+        ├── spmT_0004.nii
+        ├── spmT_0005.nii
+        ├── spmT_0006.nii
+        ├── spmT_0007.nii
+        ├── spmT_0008.nii
+        ├── sub-307_ses-<sesLabel>_task-<taskLabel>_run-01_desc-confounds_regressors.mat
+        ├── sub-307_ses-<sesLabel>_task-<taskLabel>_run-01_desc-confounds_regressors.tsv
+        ├── sub-307_ses-<sesLabel>_task-<taskLabel>_run-01_onsets.mat
+        ├── sub-307_ses-<sesLabel>_task-<taskLabel>_run-01_onsets.tsv
+        ├── sub-307_task-<taskLabel>_space-<spaceLabel>_desc-afterEstimation_designmatrix.png
+        └── sub-307_task-<taskLabel>_space-<spaceLabel>_desc-beforeEstimation_designmatrix.png
+```
