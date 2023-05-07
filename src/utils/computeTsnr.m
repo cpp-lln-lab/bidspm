@@ -88,7 +88,7 @@ function outData = rmLowFreq(data, order)
   % Copyright (C) Stephan Heunis 2018
 
   % Define variables
-  r = size(data);
+  [r, c] = size(data);
 
   % Create design matrix with model regressors
   if order == 1
@@ -97,7 +97,7 @@ function outData = rmLowFreq(data, order)
     X = [(1:r)' ((1:r)').^2];
   end
   % Remove mean from design matrix
-  X = X - repmat(mean(X, 1), [r, 1]);
+  X = X - repmat(mean(X, 1), r, 1);
 
   % Add constant regressor
   X = [ones(r, 1) X];
@@ -121,4 +121,5 @@ function y = nanmean(varargin)
 
   narginchk(1, 2);
   y = mean(varargin{:}, 'omitnan');
+
 end

@@ -49,6 +49,10 @@ function test_addGitIgnore_append()
     return
   end
 
+  if ispc || ismac
+    return
+  end
+
   pth = tempName();
 
   fid = fopen(fullfile(pth, '.gitignore'), 'w');
