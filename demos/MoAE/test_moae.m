@@ -51,7 +51,8 @@ for iOption = 1:numel(space)
 
   %% preproc
   bids_dir = fullfile(WD, 'inputs', 'raw');
-  output_dir = fullfile(WD, 'outputs', 'derivatives');
+  output_dir = fullfile(tempname, 'outputs', 'derivatives');
+  mkdir(output_dir);
 
   bidspm(bids_dir, output_dir, 'subject', ...
          'participant_label', {'01'}, ...
@@ -82,8 +83,6 @@ for iOption = 1:numel(space)
          'options', optionsFile);
 
   cd(WD);
-
-  rmdir(fullfile(WD, 'outputs', 'derivatives'), 's');
 
   % with Octave running more n-1 loop in CI is fine
   % but not running crashes with a segmentation fault

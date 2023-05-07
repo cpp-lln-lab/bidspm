@@ -51,9 +51,24 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
 
   % (C) Copyright 2019 bidspm developers
 
+  REQUIRED_COLUMNS = {'onset', 'duration'};
+
   [pth, file, ext] = spm_fileparts(tsvFile);
   tsv.file = validationInputFile(pth, [file, ext]);
   tsv.content = bids.util.tsvread(tsv.file);
+
+  for i = 1:numel(REQUIRED_COLUMNS)
+    if ~isfield(tsv.content, REQUIRED_COLUMNS{i})
+      msg = sprintf(['''%s'' column is missing from file: %s', ...
+                     '\nAvailable columns are: %s'], ...
+                    REQUIRED_COLUMNS{i}, ...
+                    tsv.file, ...
+                    bids.internal.create_unordered_list(fieldnames(tsv.content)));
+      logger('ERROR', msg, ...
+             'filename', mfilename(), ...
+             'id', 'missingTrialypeColumn');
+    end
+  end
 
   if ~all(isnumeric(tsv.content.onset))
 

@@ -72,6 +72,15 @@ function outliers = computeRobustOutliers(varargin)
   end
 
   if strcmpi(outlierType, 's-outliers')
+
+    if isempty(which('chi2inv'))
+      logger('WARNING', 'chi2inv function required to compute s-outliers.', ...
+             'filename', mfilename, ...
+             'id', 'missingChi2inv');
+      outliers = false(size(timeSeries));
+      return
+    end
+
     k = sqrt(chi2inv(0.975, 1));
     for p = size(timeSeries, 2):-1:1
       tmp = timeSeries(:, p);
