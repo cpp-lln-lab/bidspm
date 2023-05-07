@@ -109,3 +109,17 @@ function outData = rmLowFreq(data, order)
   outData = data - X(:, 2:end) * b(2:end, :);
 
 end
+
+function y = nanmean(varargin)
+
+  if bids.internal.is_octave()
+    data = varargin{1}(:);
+    nanIdx = isnan(data);
+    y = mean(data(~nanIdx));
+    return
+  end
+
+  narginchk(1, 2);
+  y = mean(varargin{:}, 'omitnan');
+
+end

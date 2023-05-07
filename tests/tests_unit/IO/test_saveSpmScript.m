@@ -30,6 +30,9 @@ function test_saveSpmScript_basic()
   fid1 = fopen(expectedContent, 'r');
   expectedContent = fscanf(fid1, '%s');
   fclose(fid1);
+  if ispc
+    expectedContent = strrep('/', '\');
+  end
 
   fid2 = fopen(outputFilename, 'r');
   actualContent = fscanf(fid2, '%s');

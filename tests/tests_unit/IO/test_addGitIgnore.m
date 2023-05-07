@@ -1,6 +1,5 @@
-% (C) Copyright 2020 bidspm developers
-
 function test_suite = test_addGitIgnore %#ok<*STOUT>
+  % (C) Copyright 2020 bidspm developers
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -10,44 +9,38 @@ end
 
 function test_addGitIgnore_basic()
 
-  if exist(fullfile(pwd, '.gitignore'), 'file')
-    delete(fullfile(pwd, '.gitignore'));
-  end
+  pth = tempName();
 
-  addGitIgnore(pwd);
+  addGitIgnore(pth);
 
-  assertEqual(exist(fullfile(pwd, '.gitignore'), 'file'), 2);
+  assertEqual(exist(fullfile(pth, '.gitignore'), 'file'), 2);
 
-  fid = fopen(fullfile(pwd, '.gitignore'), 'r');
+  fid = fopen(fullfile(pth, '.gitignore'), 'r');
   c = fread(fid, Inf, 'uint8=>char')';
 
   assertEqual(strfind(c, '.DS_store'), 1);
 
   fclose(fid);
 
-  delete(fullfile(pwd, '.gitignore'));
-
 end
 
 function test_addGitIgnore_already_present()
 
-  if exist(fullfile(pwd, '.gitignore'), 'file')
-    delete(fullfile(pwd, '.gitignore'));
-  end
-  fid = fopen(fullfile(pwd, '.gitignore'), 'w');
+  pth = tempName();
+
+  fid = fopen(fullfile(pth, '.gitignore'), 'w');
   fprintf(fid, 'foo\n');
   fprintf(fid, '.DS_store\n');
   fclose(fid);
 
-  addGitIgnore(pwd);
+  addGitIgnore(pth);
 
-  fid = fopen(fullfile(pwd, '.gitignore'), 'r');
+  fid = fopen(fullfile(pth, '.gitignore'), 'r');
   c = fread(fid, Inf, 'uint8=>char')';
   assertEqual(numel(strfind(c, '.DS_store')), 1);
 
   fclose(fid);
 
-  delete(fullfile(pwd, '.gitignore'));
 end
 
 function test_addGitIgnore_append()
@@ -56,21 +49,22 @@ function test_addGitIgnore_append()
     return
   end
 
-  if exist(fullfile(pwd, '.gitignore'), 'file')
-    delete(fullfile(pwd, '.gitignore'));
+  if ispc || ismac
+    return
   end
 
-  fid = fopen(fullfile(pwd, '.gitignore'), 'w');
+  pth = tempName();
+
+  fid = fopen(fullfile(pth, '.gitignore'), 'w');
   fprintf(fid, 'foo\n');
   fprintf(fid, 'bar\n');
   fclose(fid);
 
-  addGitIgnore(pwd);
+  addGitIgnore(pth);
 
-  fid = fopen(fullfile(pwd, '.gitignore'), 'r');
+  fid = fopen(fullfile(pth, '.gitignore'), 'r');
   c = fread(fid, Inf, 'uint8=>char')';
   assert(strfind(c, '.DS_store') > 0);
   fclose(fid);
 
-  delete(fullfile(pwd, '.gitignore'));
 end
