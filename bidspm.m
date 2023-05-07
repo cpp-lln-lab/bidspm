@@ -42,6 +42,9 @@ function returnCode = bidspm(varargin)
   addParameter(args, 'fwhm', 6, isPositiveScalar);
   addParameter(args, 'space', {}, isCellStr);
 
+  % copy only
+  addParameter(args, 'force', 'false', isLogical);
+
   % create_roi only
   addParameter(args, 'roi_dir', '', isChar);
   addParameter(args, 'hemisphere', {'L', 'R'}, isCellStr);
@@ -193,7 +196,7 @@ function copy(args)
   opt.query.desc = {'preproc', 'brain'};
   opt.query.suffix = {'T1w', 'bold', 'mask'};
   opt.query.space = opt.space;
-  bidsCopyInputFolder(opt);
+  bidsCopyInputFolder(opt, 'unzip', true, 'force', args.Results.force);
 
 end
 

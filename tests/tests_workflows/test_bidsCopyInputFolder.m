@@ -10,14 +10,16 @@ end
 
 function test_bidsCopyInputFolder_basic()
 
+  opt = setTestCfg();
   opt.dir.raw = fullfile(getMoaeDir(), 'inputs', 'raw');
+  opt.dir.derivatives = fullfile(tempName(), 'derivatives');
   opt.taskName = 'auditory';
   opt.pipeline.type = 'preproc';
   opt.verbosity = 0;
 
   opt = checkOptions(opt);
 
-  output_folder = fullfile(opt.dir.raw, '..', 'derivatives', 'bidspm-preproc');
+  output_folder = fullfile(opt.dir.derivatives, 'bidspm-preproc');
 
   bidsCopyInputFolder(opt, 'unzip', true);
 
@@ -37,16 +39,21 @@ function test_bidsCopyInputFolder_basic()
 
   assertEqual(numel(bids.query(layoutDerivatives, 'data', 'suffix', 'events')), 0);
 
-  cleanUp(opt.dir.preproc);
-
 end
 
 function test_bidsCopyInputFolder_fmriprep()
 
-  opt = setOptions('fmriprep');
+  opt = setTestCfg();
+  opt.taskName = {'balloonanalogrisktask'};
+  opt.pipeline.type = 'preproc';
+  opt.dir.raw = fullfile(getFmriprepDir(), '..', 'ds001');
+  opt.dir.input = getFmriprepDir();
+  opt.dir.derivatives = fullfile(tempname(), 'derivatives');
   opt.query.space = 'MNI152NLin2009cAsym';
   opt.query.desc = 'preproc';
   opt.verbosity = 0;
+
+  opt = checkOptions(opt);
 
   bidsCopyInputFolder(opt, 'unzip', false);
 
@@ -54,6 +61,16 @@ function test_bidsCopyInputFolder_fmriprep()
   data = bids.query(layoutDerivatives, 'data', 'extension', '.nii.gz');
   assertEqual(size(data, 1), 16);
 
-  cleanUp(opt.dir.preproc);
+  % ensure that by default data are not overwritten
+  opt.verbosity = 3;
+  bidsCopyInputFolder(opt, 'unzip', false);
 
+  % or that they are
+  bidsCopyInputFolder(opt, 'unzip', false, 'force', true);
+
+end
+
+function pth = tempName()
+  pth = tempname();
+  mkdir(pth);
 end

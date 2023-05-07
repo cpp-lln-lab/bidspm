@@ -16,8 +16,8 @@ function bidsCopyInputFolder(varargin)
   % :param unzip: defaults to true
   % :type unzip: boolean
   %
-  % :param unzip: defaults to true
-  % :type unzip: boolean
+  % :param force: defaults to true
+  % :type force: boolean
   %
   % See also: bids.copy_to_derivative
   %
@@ -31,7 +31,7 @@ function bidsCopyInputFolder(varargin)
 
   addRequired(args, 'opt', @isstruct);
   addParameter(args, 'unzip', true, @islogical);
-  addParameter(args, 'force', true, @islogical);
+  addParameter(args, 'force', false, @islogical);
 
   parse(args, varargin{:});
 
