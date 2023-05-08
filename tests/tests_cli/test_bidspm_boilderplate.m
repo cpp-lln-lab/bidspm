@@ -22,6 +22,8 @@ function test_boilerplate_stats_only()
 
   opt = setOptions('MoAE');
 
+  spm_mkdir(opt.dir.preproc);
+
   bidspm(opt.dir.raw, outputPath, 'subject', ...
          'action', 'stats', ...
          'preproc_dir', opt.dir.preproc, ...
@@ -41,10 +43,10 @@ end
 
 function test_boilerplate_preproc_only()
 
-  if ~bids.internal.is_github_ci()
-    % when not in CI the octache partials are not in the right place
-    return
-  end
+  %   if ~bids.internal.is_github_ci()
+  %     % when not in CI the octache partials are not in the right place
+  %     return
+  %   end
   outputPath = tmpName();
 
   opt = setOptions('MoAE');
@@ -57,6 +59,7 @@ function test_boilerplate_preproc_only()
          'fwhm', 6);
 
   assertEqual(exist(fullfile(outputPath, ...
+                             'derivatives', ...
                              'bidspm-preproc', ...
                              'reports', ...
                              'preprocess_citation.md'), ...
