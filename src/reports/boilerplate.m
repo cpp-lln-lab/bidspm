@@ -89,17 +89,13 @@ function outputFile = boilerplate(varargin)
       opt.unwarp = true;
     end
 
-    opt.smoothing = true;
-    if opt.fwhm.func == 0
-      opt.smoothing = false;
-    end
+    opt.smoothing = opt.fwhm.func > 0;
 
   elseif strcmp(pipelineType, 'stats')
 
-    opt.smoothing = true;
-
-    if opt.fwhm.contrast == 0
-      opt.smoothing = false;
+    opt.smoothing = opt.fwhm.contrast > 0;
+    if opt.smoothing
+      opt.fwhm.cumulative = computeCumulativeFwhm(opt);
     end
 
     bm = BidsModel('file', opt.model.file);

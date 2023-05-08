@@ -99,10 +99,10 @@ end
 
 function test_boilerplate_stats_only()
 
-  if ~bids.internal.is_github_ci()
-    % when not in CI the octache partials are not in the right place
-    return
-  end
+  %   if ~bids.internal.is_github_ci()
+  %     % when not in CI the octache partials are not in the right place
+  %     return
+  %   end
 
   % GIVEN
 
@@ -110,6 +110,8 @@ function test_boilerplate_stats_only()
 
   cleanUp(fullfile(opt.dir.derivatives));
   spm_mkdir(opt.dir.preproc);
+
+  opt.fwhm.contrast = 6;
 
   bidspm(opt.dir.raw, opt.dir.derivatives, 'subject', ...
          'action', 'stats', ...
