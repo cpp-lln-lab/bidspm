@@ -41,7 +41,7 @@ body:
   attributes:
     label: Operating system version
     value: |
-      - Linux Ubuntu 18.04 "bionic beaver"
+      - Linux Ubuntu 22.04 "jammy jellyfish"
       - Mac OS Version 12 "monterey"
   validations:
     required: false
@@ -114,7 +114,7 @@ body:
       In the MATLAB command line
 
        - `[branch, commit] = getRepoInfo()`
-    value: |
+    placeholder: |
       - main 29b689dd
       - dev 1bda0162
 
@@ -144,7 +144,11 @@ body:
       Also add the error.log that might have been generated.
     value: |
       ```matlab
-      % this is the error I got
+      % copy the error you got below
+      % before the three backticks (```)
+
+
+
 
       ```
   validations:

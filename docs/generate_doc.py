@@ -65,7 +65,7 @@ def main():
 
 .. _dev_doc:
 
-developer documentation
+Developer documentation
 ***********************
 """
 

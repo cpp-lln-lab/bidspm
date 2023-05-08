@@ -1,8 +1,5 @@
 function matlabbatch = bidsRFX(varargin)
   %
-  % - smooths all contrast images created at the subject level
-  %
-  % OR
   %
   % - creates a mean structural image and mean mask over the sample
   %
@@ -15,7 +12,7 @@ function matlabbatch = bidsRFX(varargin)
   %
   %  bidsRFX(action, opt, 'nodeName', '')
   %
-  % :param action: Action to be conducted: ``'smoothContrasts'`` or ``'RFX'`` or
+  % :param action: Action to be conducted: ``'RFX'`` or
   %                ``'meanAnatAndMask'`` or ``'contrast'``
   % :type action: char
   %
