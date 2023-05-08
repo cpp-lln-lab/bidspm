@@ -2,7 +2,7 @@
 
 .. _dev_doc:
 
-developer documentation
+Developer documentation
 ***********************
 
 
