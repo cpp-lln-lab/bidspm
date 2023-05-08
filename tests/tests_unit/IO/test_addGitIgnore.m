@@ -45,12 +45,9 @@ end
 
 function test_addGitIgnore_append()
 
-  if bids.internal.is_octave()
-    return
-  end
-
-  if ispc || ismac
-    return
+  if bids.internal.is_octave() || ispc || ismac
+    moxunit_throw_test_skipped_exception( ...
+                                         'Waiting for fix on octave, windows and mac.');
   end
 
   pth = tempName();

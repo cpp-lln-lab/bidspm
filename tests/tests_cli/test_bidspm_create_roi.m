@@ -63,7 +63,8 @@ end
 
 function test_bidsCreateROI_neuromorphometrics_inv_norm()
 
-  % requires some deformation field to work
+  moxunit_throw_test_skipped_exception( ...
+                                       'Requires some deformation field to work');
 
   %   if ~bids.internal.is_github_ci()
   %
@@ -84,6 +85,11 @@ function test_bidsCreateROI_neuromorphometrics_inv_norm()
 end
 
 function test_bidsCreateROI_one_hemisphere()
+
+  if bids.internal.is_octave
+    moxunit_throw_test_skipped_exception( ...
+                                         'Waiting for bug fix in CPP ROI extractRoiFromAtlas.');
+  end
 
   outputPath = tmpName();
 

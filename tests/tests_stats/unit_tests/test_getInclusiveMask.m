@@ -27,8 +27,7 @@ function test_getInclusiveMask_too_many()
   BIDS = getLayout(opt);
 
   if bids.internal.is_octave()
-    %       'Octave:mixed-string-concat'
-    return
+    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
   end
 
   assertWarning(@()getInclusiveMask(opt, nodeName, BIDS, subLabel), ...
