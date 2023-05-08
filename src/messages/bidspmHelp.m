@@ -140,7 +140,8 @@ function bidspmHelp()
   %
   % **COPY:**
   %
-  % Copies fmriprep data for smoothing.
+  % Copies and unzips input data to output dir.
+  % For example for fmriprep data before smoothing.
   %
   % .. code-block:: matlab
   %
@@ -152,8 +153,11 @@ function bidspmHelp()
   %           'space', {'individual', 'IXI549Space'}, ...
   %           'options', struct([]), ...
   %           'task', {}, ...
-  %           'skip_validation', false)
+  %           'skip_validation', false, ...
+  %           'force', false)
   %
+  % :param force:   overwrites previous data if true
+  % :type  force:   logical
   %
   % **CREATE_ROI:**
   %
@@ -189,6 +193,8 @@ function bidspmHelp()
   %
   % **SMOOTH:**
   %
+  % Copies files to output dir and smooths them.
+  %
   % .. code-block:: matlab
   %
   %   bidspm(bids_dir, output_dir, 'subject', ...
@@ -201,7 +207,11 @@ function bidspmHelp()
   %           'options', struct([]), ...
   %           'task', {}, ...
   %           'fwhm', 6, ...
-  %           'skip_validation', false)
+  %           'skip_validation', false
+  %           'force', false)
+  %
+  % :param force:   overwrites previous data if true
+  % :type  force:   logical
   %
   %
   % **DEFAULT_MODEL:**
