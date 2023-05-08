@@ -156,11 +156,9 @@ function matlabbatch = bidsResults(varargin)
 
   opt.dir.output = opt.dir.stats;
 
-  % TODO
-  % bids stats model should override options
-  if ~isfield(opt, 'results') || isempty(opt.results) || ...
-          strcmp(opt.results(1).name{1}, '')
-    opt.results = opt.model.bm.getResults();
+  modelResults = opt.model.bm.getResults();
+  if ~isempty(modelResults)
+    opt.results = modelResults;
   end
 
   status = checks(opt);
@@ -365,7 +363,7 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLe
 
     tmp.dir = getFFXdir(subLabel, opt);
 
-    status = checkSpmMat(tmp.dir);
+    status = checkSpmMat(tmp.dir, opt);
 
     if ~status
       return
@@ -486,18 +484,21 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
 
 end
 
-function status = checkSpmMat(dir)
+function status = checkSpmMat(dir, opt)
   status = exist(fullfile(dir, 'SPM.mat'), 'file');
   if ~status
-    msg = sprintf('\nCould not find a SPM.mat file in directory %s\n', dir);
+    if nargin < 2
+      opt = struct('verbosity', 2);
+    end
+    msg = sprintf('\nCould not find a SPM.mat file in directory:\n%s\n', dir);
     id = 'noSpmMatFile';
-    logger('WARNING', msg, 'id', id);
+    logger('WARNING', msg, 'id', id, 'options', opt, 'filename', filename);
   end
 end
 
 function [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result)
 
-  if ~checkSpmMat(result.dir)
+  if ~checkSpmMat(result.dir, opt)
     return
   end
 
