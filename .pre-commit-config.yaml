@@ -108,5 +108,11 @@ repos:
   hooks:
   - id: codespell
 
+# - repo: https://github.com/tcort/markdown-link-check
+#   rev: v3.11.2
+#   hooks:
+#   - id: markdown-link-check
+#     args: [-q, -c, .github/workflows/mlc_config.json]
+
 ci:
   skip: [hadolint-docker]
