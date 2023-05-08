@@ -492,7 +492,7 @@ function status = checkSpmMat(dir, opt)
     end
     msg = sprintf('\nCould not find a SPM.mat file in directory:\n%s\n', dir);
     id = 'noSpmMatFile';
-    logger('WARNING', msg, 'id', id, 'options', opt, 'filename', filename);
+    logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
   end
 end
 
