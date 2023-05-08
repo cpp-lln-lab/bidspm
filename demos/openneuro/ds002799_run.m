@@ -14,6 +14,7 @@ bidspm();
 
 % The directory where the data are located
 root_dir = fullfile(fileparts(mfilename('fullpath')));
+root_dir = pwd;
 
 %% Parameters
 
@@ -75,6 +76,9 @@ bm.Nodes{run_lvl_idx} = rmfield(bm.Nodes{run_lvl_idx}, 'Contrasts');
 % update the dataset level node
 run_lvl_idx = 3;
 bm.Nodes{run_lvl_idx}.GroupBy = {'contrast'};
+bm.Nodes{run_lvl_idx}.Model.Software.bidspm.Results(1) = defaultResultsStructure();
+bm.Nodes{run_lvl_idx}.Model.Software.bidspm.Results(1).nodeName = 'dataset';
+bm.Nodes{run_lvl_idx}.Model.Software.bidspm.Results(1).name = {'es'};
 
 % write
 bm.write(model_file);

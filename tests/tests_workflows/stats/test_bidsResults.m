@@ -22,6 +22,8 @@ function test_bidsResults_subject_lvl_regex()
 
   opt.subjects = {'01'};
 
+  opt = rmResultsFromModel(opt);
+
   %% WHEN
   matlabbatch = bidsResults(opt);
 
@@ -64,6 +66,8 @@ function test_bidsResults_filter_by_nodeName()
   opt.results(2).nodeName = 'dataset_level';
   opt.results(2).name = {'VisMot_gt_VisStat'};
 
+  opt = rmResultsFromModel(opt);
+
   %% WHEN
   matlabbatch = bidsResults(opt, 'nodeName', 'subject_level');
 
@@ -103,6 +107,8 @@ function test_bidsResults_too_many_backgrounds()
   opt.results.montage.do = true;
   opt.results.montage.background = struct('suffix', 'probseg');
 
+  opt = rmResultsFromModel(opt);
+
   if bids.internal.is_octave()
     return
   end
@@ -114,7 +120,8 @@ end
 function test_bidsResults_background_for_subject()
 
   %% GIVEN
-  opt = setOptions('vislocalizer', {'01', 'ctrl01', 'blind01'}, 'pipelineType', 'stats');
+  opt = setOptions('vislocalizer', {'01', 'ctrl01', 'blind01'}, ...
+                   'pipelineType', 'stats');
 
   % Specify what output we want
   opt.results = defaultResultsStructure();
@@ -132,14 +139,20 @@ function test_bidsResults_background_for_subject()
                                           'suffix', 'T1w');
 
   opt.subjects = {'^01'};
+
+  opt = rmResultsFromModel(opt);
+
   matlabbatch = bidsResults(opt);
+
   bf = bids.File(matlabbatch{1}.spm.stats.results.export{4}.montage.background{1});
   assertEqual(bf.entities.desc, 'preproc');
   assertEqual(bf.entities.sub, '01');
   assertEqual(bf.suffix, 'T1w');
 
   opt.subjects = {'ctrl01'};
+
   matlabbatch = bidsResults(opt);
+
   bf = bids.File(matlabbatch{1}.spm.stats.results.export{4}.montage.background{1});
   assertEqual(bf.entities.desc, 'preproc');
   assertEqual(bf.entities.sub, 'ctrl01');
@@ -164,6 +177,8 @@ function test_bidsResults_no_background_for_montage()
 
   opt.results.montage.do = true;
   opt.results.montage.background = 'aFileThatDoesNotExist.nii';
+
+  opt = rmResultsFromModel(opt);
 
   if bids.internal.is_octave()
     return
@@ -190,7 +205,7 @@ function test_bidsResults_dataset_lvl()
 
   %% WHEN
 
-  % matlabbatch = bidsResults(opt);
+  matlabbatch = bidsResults(opt);
 
 end
 
@@ -222,16 +237,13 @@ function test_bidsResults_subject_lvl()
   opt.results.MC =  'FWE';
   opt.results.p = 0.05;
   opt.results.k = 5;
-
   opt.results.png = true();
-
   opt.results.csv = true();
-
   opt.results.threshSpm = true();
-
   opt.results.binary = true();
-
   opt.results.nidm = true();
+
+  opt = rmResultsFromModel(opt);
 
   %% WHEN
   matlabbatch = bidsResults(opt);
@@ -271,4 +283,11 @@ function test_bidsResults_subject_lvl()
   assertEqual(matlabbatch{1}.spm.stats.results.export{4}.binary.basename, ...
               expected{4}.binary.basename);
 
+end
+
+function opt = rmResultsFromModel(opt)
+  for i = 1:numel(opt.model.bm.Nodes)
+    opt.model.bm.Nodes{i}.Model.Software = rmfield(opt.model.bm.Nodes{i}.Model.Software, ...
+                                                   'bidspm');
+  end
 end
