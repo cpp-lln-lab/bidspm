@@ -43,10 +43,10 @@ end
 
 function test_boilerplate_preproc_only()
 
-  %   if ~bids.internal.is_github_ci()
-  %     % when not in CI the octache partials are not in the right place
-  %     return
-  %   end
+  if ~bids.internal.is_github_ci()
+    % when not in CI the octache partials are not in the right place
+    return
+  end
   outputPath = tmpName();
 
   opt = setOptions('MoAE');
