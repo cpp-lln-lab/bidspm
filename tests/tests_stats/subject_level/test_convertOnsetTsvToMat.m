@@ -129,8 +129,7 @@ function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
   opt.verbosity = 1;
 
   if bids.internal.is_octave()
-    %       'Octave:mixed-string-concat'
-    return
+    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
   end
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
                 'convertOnsetTsvToMat:variableNotFound');
@@ -282,8 +281,7 @@ function test_convertOnsetTsvToMat_missing_trial_type()
   opt.verbosity = 1;
 
   if bids.internal.is_octave()
-    %       'Octave:mixed-string-concat'
-    return
+    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
   end
 
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
