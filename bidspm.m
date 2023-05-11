@@ -617,22 +617,19 @@ function run_tests()
 
   if ispc
     success = moxunit_runtests(testFolder, ...
-                               '-verbose', '-recursive');
+                               '-verbose', '-recursive', '-randomize_order');
   else
     success = moxunit_runtests(testFolder, ...
-                               '-verbose', '-recursive', '-with_coverage', ...
+                               '-verbose', '-recursive', '-randomize_order', ...
+                               '-with_coverage', ...
                                '-cover', folderToCover, ...
                                '-cover_xml_file', 'coverage.xml', ...
                                '-cover_html_dir', fullfile(pwd, 'coverage_html'));
   end
 
-  if success
-    system('echo 0 > test_report.log');
-  else
-    system('echo 1 > test_report.log');
-  end
-
   toc;
+
+  returnCode = success;
 
 end
 

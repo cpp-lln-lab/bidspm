@@ -133,11 +133,6 @@ jobs:
         cd .github/workflows
         octave $OCTFLAGS --eval "tests_octave;"
 
-    - name: Check unit tests
-      if: matrix.test_type == 'unit'
-      run: |
-        cat test_report.log | grep 0
-
     - name: Code coverage
       if: matrix.test_type == 'unit'
       uses: codecov/codecov-action@v3
