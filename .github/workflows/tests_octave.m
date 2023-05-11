@@ -17,6 +17,6 @@ function tests_octave()
 
   toc;
 
-  exit(double(~success));
+  exit(double(success));
 
 end
