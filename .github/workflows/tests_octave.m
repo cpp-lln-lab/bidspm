@@ -13,8 +13,10 @@ function tests_octave()
 
   bidspm('action', 'dev');
 
-  bidspm('action', 'run_tests');
+  success = bidspm('action', 'run_tests');
 
   toc;
+
+  exit(double(~success));
 
 end

@@ -142,18 +142,8 @@ jobs:
       with:
         command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
 
-    - name: Check unit tests
-      if: matrix.test_type == 'unit' && ( matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' )
-      run: grep -q 0 test_report.log || { echo "Some tests failed. Check the 'Run tests' step to know which ones." >&2; exit 1; }
-    - name: Check logs windows
-      if: matrix.test_type == 'unit' && matrix.os == 'windows-latest'
-      run: |
-        if (-not (Get-Content test_report.log | Select-String -Pattern "0")) {
-          throw "Some tests failed.  Check the 'Run tests' step to know which ones."
-        }
-
     - name: Code coverage matlab
-      if: matrix.test_type == 'unit' && ( matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' )
+      if: matrix.test_type == 'unit'
       uses: codecov/codecov-action@v3
       with:
         file: coverage.xml
