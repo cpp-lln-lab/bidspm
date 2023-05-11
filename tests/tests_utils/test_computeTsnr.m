@@ -27,7 +27,7 @@ function test_computeTsnr_basic()
   boldImage = bids.query(BIDS, 'data', 'suffix', 'bold', 'extension', '.nii');
 
   pth = tempName();
-  copyfile(boldImage, fullfile(pth, 'sub-01_task-auditory_bold.nii'));
+  copyfile(boldImage{1}, fullfile(pth, 'sub-01_task-auditory_bold.nii'));
 
   [tsnrImage, volTsnr] = computeTsnr(fullfile(pth, 'sub-01_task-auditory_bold.nii'));
 
