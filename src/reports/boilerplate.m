@@ -15,7 +15,7 @@ function outputFile = boilerplate(varargin)
   % :param outputPath:
   % :type outputPath: char
   %
-  % :param pipelineType: ``'preproc'``, ``'stats'``, ``'create_roi'``
+  % :param pipelineType: ``'preprocess'``, ``'stats'``, ``'create_roi'``
   % :type pipelineType: char
   %
   % :param partialsPath:
