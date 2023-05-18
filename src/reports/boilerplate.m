@@ -40,7 +40,7 @@ function outputFile = boilerplate(varargin)
 
   % (C) Copyright 2022 bidspm developers
 
-  ALLOWED_BOILERPLATES = sort({'preproc', 'stats', 'create_roi'});
+  ALLOWED_BOILERPLATES = sort({'preprocess', 'stats', 'create_roi'});
 
   defaultPartialsPath = fullfile(returnRootDir(), 'src', 'reports', 'partials');
 
@@ -78,7 +78,7 @@ function outputFile = boilerplate(varargin)
 
   switch pipelineType
 
-    case 'preproc'
+    case 'preprocess'
 
       if opt.dummy_scans == 0
         opt.dummy_scans = false;
@@ -316,12 +316,12 @@ function outputFile = printToFile(output, outputPath, pipelineType, extra)
 
     switch pipelineType
       case 'stats'
-        extra = ['model-' extra];
+        extra = ['model-' extra '_'];
       case 'create_roi'
-        extra = ['atlas-' extra];
+        extra = ['atlas-' extra '_'];
     end
 
-    outputFile = [pipelineType '_' extra '_citation.md'];
+    outputFile = [pipelineType '_' extra 'citation.md'];
 
     outputFile = fullfile(outputPath, outputFile);
 

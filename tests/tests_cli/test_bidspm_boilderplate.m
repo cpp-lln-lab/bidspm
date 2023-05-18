@@ -13,10 +13,10 @@ end
 
 function test_boilerplate_create_roi_only()
 
-  if ~bids.internal.is_github_ci()
-    moxunit_throw_test_skipped_exception(['When not in CI the octache partials ', ...
-                                          'are not in the right place']);
-  end
+  %   if ~bids.internal.is_github_ci()
+  %     moxunit_throw_test_skipped_exception(['When not in CI the octache partials ', ...
+  %                                           'are not in the right place']);
+  %   end
 
   outputPath = tmpName();
 
@@ -43,11 +43,11 @@ function test_boilerplate_create_roi_only()
 end
 
 function test_boilerplate_stats_only()
-
-  if ~bids.internal.is_github_ci()
-    moxunit_throw_test_skipped_exception(['When not in CI the octache partials ', ...
-                                          'are not in the right place']);
-  end
+  %
+  %   if ~bids.internal.is_github_ci()
+  %     moxunit_throw_test_skipped_exception(['When not in CI the octache partials ', ...
+  %                                           'are not in the right place']);
+  %   end
 
   outputPath = tmpName();
 
@@ -85,10 +85,10 @@ end
 
 function test_boilerplate_preproc_only()
 
-  if ~bids.internal.is_github_ci()
-    moxunit_throw_test_skipped_exception(['When not in CI the octache partials ', ...
-                                          'are not in the right place']);
-  end
+  %   if ~bids.internal.is_github_ci()
+  %     moxunit_throw_test_skipped_exception(['When not in CI the octache partials ', ...
+  %                                           'are not in the right place']);
+  %   end
 
   outputPath = tmpName();
 
