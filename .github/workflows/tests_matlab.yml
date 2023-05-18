@@ -147,7 +147,7 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         file: coverage.xml
-        flags: ${{ matrix.os }}_matlab-${{ matrix.version }}
+        flags: ${{ matrix.os }}_matlab-R2022b
         name: codecov-matlab
         fail_ci_if_error: false
       # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits

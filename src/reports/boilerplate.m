@@ -15,7 +15,7 @@ function outputFile = boilerplate(varargin)
   % :param outputPath:
   % :type outputPath: char
   %
-  % :param pipelineType: ``'preproc'`` or ``'stats``
+  % :param pipelineType: ``'preprocess'``, ``'stats'``, ``'create_roi'``
   % :type pipelineType: char
   %
   % :param partialsPath:
@@ -40,6 +40,8 @@ function outputFile = boilerplate(varargin)
 
   % (C) Copyright 2022 bidspm developers
 
+  ALLOWED_BOILERPLATES = sort({'preprocess', 'stats', 'create_roi'});
+
   defaultPartialsPath = fullfile(returnRootDir(), 'src', 'reports', 'partials');
 
   isFolder = @(x) isdir(x);
@@ -56,7 +58,7 @@ function outputFile = boilerplate(varargin)
 
   opt = args.Results.opt;
   outputPath = args.Results.outputPath;
-  pipelineType = args.Results.pipelineType;
+  pipelineType = lower(args.Results.pipelineType);
   partialsPath = args.Results.partialsPath;
   opt.verbosity = args.Results.verbosity;
 
@@ -71,78 +73,112 @@ function outputFile = boilerplate(varargin)
 
   copyBibFile(outputPath);
 
-  if strcmp(pipelineType, 'preproc')
+  extra = '';
+  fileToRender = sprintf('boilerplate_%s.mustache', pipelineType);
 
-    if opt.dummy_scans == 0
-      opt.dummy_scans = false;
-    else
-      opt.dummy_scans = struct('nb', opt.dummy_scans);
-    end
+  switch pipelineType
 
-    opt.normalization = false;
-    if ismember('IXI549Space', opt.space)
-      opt.normalization = true;
-    end
+    case 'preprocess'
 
-    opt.unwarp = false;
-    if opt.realign.useUnwarp
-      opt.unwarp = true;
-    end
+      if opt.dummy_scans == 0
+        opt.dummy_scans = false;
+      else
+        opt.dummy_scans = struct('nb', opt.dummy_scans);
+      end
 
-    opt.smoothing = opt.fwhm.func > 0;
+      opt.normalization = false;
+      if ismember('IXI549Space', opt.space)
+        opt.normalization = true;
+      end
 
-  elseif strcmp(pipelineType, 'stats')
+      opt.unwarp = false;
+      if opt.realign.useUnwarp
+        opt.unwarp = true;
+      end
 
-    opt.smoothing = opt.fwhm.contrast > 0;
-    if opt.smoothing
-      opt.fwhm.cumulative = computeCumulativeFwhm(opt);
-    end
+      opt.smoothing = opt.fwhm.func > 0;
 
-    bm = BidsModel('file', opt.model.file);
+    case 'stats'
 
-    opt.taskName = strjoin(bm.Input.task, ', ');
+      opt.smoothing = opt.fwhm.contrast > 0;
+      if opt.smoothing
+        opt.fwhm.cumulative = computeCumulativeFwhm(opt);
+      end
 
-    if isfield(bm.Input, 'space')
-      opt.space = bm.Input.space;
-    end
+      bm = BidsModel('file', opt.model.file);
 
-    opt.HighPassFilterCutoffSecs = round(bm.getHighPassFilter());
+      opt.taskName = strjoin(bm.Input.task, ', ');
 
-    opt.SerialCorrelationCorrection = bm.getSerialCorrelationCorrection;
-    opt.FAST = false;
-    if strcmpi(opt.SerialCorrelationCorrection, 'fast')
-      opt.FAST = true;
-    end
+      if isfield(bm.Input, 'space')
+        opt.space = bm.Input.space;
+      end
 
-    opt = setConvolve(opt, bm);
+      opt.HighPassFilterCutoffSecs = round(bm.getHighPassFilter());
 
-    opt = setDerivatives(opt, bm);
+      opt.SerialCorrelationCorrection = bm.getSerialCorrelationCorrection;
+      opt.FAST = false;
+      if strcmpi(opt.SerialCorrelationCorrection, 'fast')
+        opt.FAST = true;
+      end
 
-    opt = setConfounds(opt, bm);
+      opt = setConvolve(opt, bm);
 
-    opt.group_level = false;
-    if ~isempty(bm.get_nodes('Level', 'dataset'))
+      opt = setDerivatives(opt, bm);
 
-      contrasts = genList('name', getDummyContrastsList('dataset_level', bm));
+      opt = setConfounds(opt, bm);
 
-      opt.group_level = struct('contrasts', {contrasts});
+      opt.group_level = false;
+      if ~isempty(bm.get_nodes('Level', 'dataset'))
 
-    end
+        contrasts = genList('name', getDummyContrastsList('dataset_level', bm));
+
+        opt.group_level = struct('contrasts', {contrasts});
+
+      end
+
+      opt.roi_based = false;
+      if opt.glm.roibased.do
+        opt.roi_based = true;
+        opt.smoothing = false;
+        opt.group_level = false;
+      end
+
+      extra = bm.Name;
+
+    case 'create_roi'
+      opt.atlas = lower(opt.roi.atlas);
+
+      switch opt.atlas
+        case 'glasser'
+          opt.reference = '[glasser2016]';
+        case 'hcpex'
+          opt.reference = '[huang2022]';
+        case 'wang'
+          opt.reference = '[wang2014]';
+        case 'visfatlas'
+          opt.reference = '[rosenke2020]';
+        otherwise
+          opt.reference = '';
+      end
+
+      opt.roi = genList('name', opt.roi.name);
+
+      extra = opt.atlas;
+
+    otherwise
+      msg = sprintf(['Unknown boilerplate requested. Got: "%s".\n', ...
+                     'Allowed boilerplates are: %s'], ...
+                    pipelineType, ...
+                    bids.internal.create_unordered_list(ALLOWED_BOILERPLATES));
+
+      logger('ERROR', msg, ...
+             'options', opt, ...
+             'filename', mfilename, 'id', 'unknownBoilerplateType');
 
   end
 
   %% render
-  if strcmp(pipelineType, 'preproc')
-    modelName = '';
-    fileToRender = fullfile(fileparts(mfilename('fullpath')), 'boilerplate_preprocess.mustache');
-
-  elseif strcmp(pipelineType, 'stats')
-    modelName = bm.Name;
-    fileToRender = fullfile(fileparts(mfilename('fullpath')), 'boilerplate_stats.mustache');
-
-  end
-
-  output = octache(fileToRender, ...
+  output = octache(fullfile(fileparts(mfilename('fullpath')), fileToRender), ...
                    'data', opt, ...
                    'partials_path', partialsPath, ...
                    'partials_ext', 'mustache', ...
@@ -158,7 +194,7 @@ function outputFile = boilerplate(varargin)
   end
 
   %% print to file
-  outputFile = printToFile(output, outputPath, pipelineType, modelName);
+  outputFile = printToFile(output, outputPath, pipelineType, extra);
 
   %% print to screen
   logger('INFO', sprintf('methods boilerplate saved at:\n\t%s\n', outputFile), ...
@@ -263,12 +299,12 @@ function copyBibFile(outputPath)
   copyfile(bibFile, outputPath);
 end
 
-function outputFile = printToFile(output, outputPath, pipelineType, modelName)
+function outputFile = printToFile(output, outputPath, pipelineType, extra)
 
   outputFile = '';
 
   if nargin < 4
-    modelName = '';
+    extra = '';
   end
 
   if ~isempty(outputPath)
@@ -278,11 +314,14 @@ function outputFile = printToFile(output, outputPath, pipelineType, modelName)
       error('Unable to create folder:\n\t%s', outputPath);
     end
 
-    if strcmp(pipelineType, 'preproc')
-      outputFile = 'preprocess_citation.md';
-    elseif strcmp(pipelineType, 'stats')
-      outputFile = ['stats_model-' modelName '_citation.md'];
+    switch pipelineType
+      case 'stats'
+        extra = ['model-' extra '_'];
+      case 'create_roi'
+        extra = ['atlas-' extra '_'];
     end
+
+    outputFile = [pipelineType '_' extra 'citation.md'];
 
     outputFile = fullfile(outputPath, outputFile);
 
