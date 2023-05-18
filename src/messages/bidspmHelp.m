@@ -180,6 +180,7 @@ function bidspmHelp()
   %                       - ``'anatomy_toobox'``
   %                       - ``'neuromorphometrics'``
   %                       - ``'wang'``
+  %                       - ``'glasser'``
   % :type  roi_atlas:     char
   %
   % :param roi_name:      Name of the roi to create. If the ROI does not exist in the atlas,

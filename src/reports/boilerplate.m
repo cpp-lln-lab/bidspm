@@ -129,6 +129,13 @@ function outputFile = boilerplate(varargin)
 
     end
 
+    opt.roi_based = false;
+    if opt.glm.roibased.do
+      opt.roi_based = true;
+      opt.smoothing = false;
+      opt.group_level = false;
+    end
+
   end
 
   %% render

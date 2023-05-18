@@ -11,6 +11,23 @@ function test_suite = test_bidspm_create_roi %#ok<*STOUT>
 
 end
 
+function test_bidsCreateROI_glasser()
+
+  outputPath = tmpName();
+
+  bidspm(pwd, outputPath, ...
+         'subject', ...
+         'action', 'create_roi', ...
+         'roi_atlas', 'glasser', ...
+         'roi_name', {'OFC'}, ...
+         'space', {'IXI549Space'}, ...
+         'verbosity', 0);
+
+  cleanUp(fullfile(pwd, 'options'));
+  cleanUp(fullfile(pwd, 'error_logs'));
+
+end
+
 function test_bidsCreateROI_wang()
 
   outputPath = tmpName();
@@ -63,8 +80,7 @@ end
 
 function test_bidsCreateROI_neuromorphometrics_inv_norm()
 
-  moxunit_throw_test_skipped_exception( ...
-                                       'Requires some deformation field to work');
+  moxunit_throw_test_skipped_exception('Requires some deformation field to work');
 
   %   if ~bids.internal.is_github_ci()
   %
@@ -87,8 +103,7 @@ end
 function test_bidsCreateROI_one_hemisphere()
 
   if bids.internal.is_octave
-    moxunit_throw_test_skipped_exception( ...
-                                         'Waiting for bug fix in CPP ROI extractRoiFromAtlas.');
+    moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
   end
 
   outputPath = tmpName();
