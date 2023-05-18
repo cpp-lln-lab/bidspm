@@ -231,6 +231,13 @@ function create_roi(args)
   opt.roi.space = opt.space;
 
   saveOptions(opt);
+  boilerplate(opt, ...
+              'outputPath', fullfile(opt.dir.roi, 'reports'), ...
+              'pipelineType', 'create_roi', ...
+              'verbosity', 0);
+  if opt.boilerplate_only
+    return
+  end
   bidsCreateROI(opt);
 
 end
