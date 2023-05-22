@@ -1,0 +1,56 @@
+ext=.nii
+
+dataset_description.json
+subs.tsv
+README.md (readme)
+CHANGES (changes)
+LICENSE (license)
+derivatives
+    bidspm-groupStats
+        jobs (group_level_jobs)
+            {task} (grp_level_jobs_for_task)
+                group (grp_level_results)
+                    batch_{grpBatchname}_{YYYY}_{MM}_{DD}T{HH}_{mm}.m
+        sub-{grp}_task-{task}_space-{space}_FWHM-{FWHM}_conFWHM-{conFWHM}_node-{node}_contrast-{contrast}
+            beta_{grpBetaIndex}{ext}
+            con_{grpConIndex}{ext}
+            spmT_{grpSpmTindex}{ext}
+            SPM.mat (groupLevelSpmMat)
+            mask.{ext} (groupLevelMask)
+            RPV.{ext} (groupLevelReselsPerVoxel)
+            ResMS.{ext} (groupLevelResiduals)
+            spm_{grpDate}_{grpResultsIndex}.{resultsExts}
+reports
+    stats_{model}_citation.md
+    bidspm.bib
+jobs
+    {task}
+        group (jobs_before_group_level)
+            batch_{preGrpBatchname}_task_{task}_{YYYY}_{MM}_{DD}T{HH}_{mm}.m
+        sub-{sub} (jobs_for_sub)
+            batch_{batchname}_ffx_task_{task}_space_{space}_FWHM_{FWHM}_{YYYY}_{MM}_{DD}T{HH}_{mm}.m
+sub-{sub}
+    task-{task}_space-{space}_FWHM-{FWHM}_roi[_node-{nodeName}]
+        SPM.mat (spmMatRoi)
+        sub-{sub}[_ses-{ses}]_task-{task}[_run-{run}]_desc-confounds_{suffix}.{confoundsExts} (confoundsRoi)
+        sub-{sub}[_ses-{ses}]_task-{task}[_run-{run}]_onsets.{onsetsExts} (onsetsRoi)
+        sub-{sub}_task-{task}_space-{space}_desc-beforeEstimation_designmatrix.png (matrixRoi)
+        sub-{sub}_task-{task}[_hemi-{hemi}]_space-{space}_label-{roiLabel}_timecourse.{timecourseExts}
+        sub-{sub}_task-{task}_space-{space}_FWHM-{FWHM}_summary.tsv
+    task-{task}_space-{space}_FWHM-{FWHM}[_node-{nodeName}]
+        beta_{betaIndex}{ext}
+        [s{conFWHM}]con_{conIndex}{ext}
+        spmT_{spmTindex}{ext}
+        SPM.mat
+        mask{ext}
+        RPV{ext}
+        ResMS{ext}
+        spm_{date}_{resultsIndex}.{resultsExts}
+        sub-{sub}[_ses-{ses}]_task-{task}[_run-{run}]_desc-confounds_{suffix}.{confoundsExts}
+        sub-{sub}[_ses-{ses}]_task-{task}[_run-{run}]_onsets.{onsetsExts}
+        sub-{sub}_task-{task}_space-{space}_desc-afterEstimation_designmatrix.png
+        sub-{sub}_task-{task}_space-{space}_desc-beforeEstimation_designmatrix.png
+        sub-{sub}_task-{task}_space-{space}_desc-{desc}_label-{conLabel}_p-{p}_k{k}_MC-{MC}_mask.nii
+        sub-{sub}_task-{task}_space-{space}_desc-{desc}_label-{conLabel}_p-{p}_k{k}_MC-{MC}_spmT.nii
+        sub-{sub}_task-{task}_space-{space}_desc-{desc}_label-{conLabel}_p-{p}_k{k}_MC-{MC}_montage.png
+        sub-{sub}_task-{task}_space-{space}_label-{nidmLabel}_nidm.zip
