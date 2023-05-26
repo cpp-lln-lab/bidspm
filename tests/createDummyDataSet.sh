@@ -30,7 +30,8 @@ create_raw_func_vismotion() {
 	mkdir -p "${this_dir}"
 
 	for run in $(seq 1 2); do
-		filename=${this_dir}/${basename}_run-${run}${suffix}.nii
+		filename=${this_dir}/${basename}_run-${run}_part-mag_${suffix}.nii
+		filename=${this_dir}/${basename}_run-${run}_part-phase_${suffix}.nii
 		touch "${filename}"
 	done
 
@@ -74,7 +75,8 @@ create_raw_func_vislocalizer() {
 
 	mkdir -p ${this_dir}
 
-	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
+	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_part-mag_${suffix}.nii
+	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_part-phase_${suffix}.nii
 	touch "${filename}"
 
 	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_events.tsv
@@ -124,12 +126,12 @@ create_raw_fmap() {
 	suffix='_bold'
 
 	task_name='vislocalizer'
-	IntendedFor=$(echo ses-${ses}/func/sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii)
+	IntendedFor=$(echo ses-${ses}/func/sub-${subject}_ses-${ses}_task-${task_name}_part-mag_${suffix}.nii)
 	json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
 	echo "$json_string" >${this_dir}/sub-${subject}_ses-${ses}_run-1_phasediff.json
 
 	task_name='vismotion'
-	IntendedFor=$(echo ses-${ses}/func/sub-${subject}_ses-${ses}_task-${task_name}_run-1${suffix}.nii)
+	IntendedFor=$(echo ses-${ses}/func/sub-${subject}_ses-${ses}_task-${task_name}_run-1_part-mag_${suffix}.nii)
 	json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
 	echo "$json_string" >"${this_dir}/sub-${subject}_ses-${ses}_run-2_phasediff.json"
 
