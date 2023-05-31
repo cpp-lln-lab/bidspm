@@ -83,6 +83,35 @@ function test_fileFilterForBold_basic()
 
 end
 
+function test_fileFilterForBold_desc()
+
+  opt.bidsFilterFile.bold = struct('modality', 'func', ...
+                                   'suffix', 'bold', ...
+                                   'desc', {'smoothAROMAnonaggr'});
+  opt.verbosity = 2;
+  opt.taskName = 'foo';
+  opt.fwhm.func = 6;
+  opt.space = {'IXI549Space'};
+
+  subLabel = '01';
+
+  type = 'glm';
+
+  [filter] = fileFilterForBold(opt, subLabel, type);
+
+  expected = struct('desc', 'smoothAROMAnonaggr', ...
+                    'extension', {{'.nii.*'}}, ...
+                    'modality', 'func', ...
+                    'prefix', '', ...
+                    'space', {{'IXI549Space'}}, ...
+                    'sub', '^01$', ...
+                    'suffix', 'bold', ...
+                    'task', 'foo');
+
+  assertEqual(filter, expected);
+
+end
+
 function test_fileFilterForBold_no_smooth()
 
   opt.bidsFilterFile.bold = struct('modality', 'func', 'suffix', 'bold');

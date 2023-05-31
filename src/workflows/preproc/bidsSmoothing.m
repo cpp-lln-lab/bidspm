@@ -1,13 +1,12 @@
 function bidsSmoothing(opt)
   %
   % This performs smoothing to the functional data using a full width
-  % half maximum smoothing kernel of size "mm_smoothing".
+  % half maximum smoothing kernel of size "opt.fwhm.func".
   %
   % USAGE::
   %
   %   bidsSmoothing(opt)
   %
-  % :type opt:  structure
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
