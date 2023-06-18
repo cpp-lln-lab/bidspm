@@ -1,5 +1,5 @@
 ---
-name: tests matlab
+name: tests windows
 
 # Uses the cron schedule for github actions
 #
@@ -32,7 +32,7 @@ on:
 
 jobs:
 
-  test:
+  tests_windows:
 
     if: github.repository_owner == 'cpp-lln-lab'
 
@@ -40,14 +40,12 @@ jobs:
       matrix:
         test_type: [system]
         script: [moae, facerep, fmriprep]
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [windows-latest]
+        matlab: [R2022b]
         include:
         - test_type: unit
-          os: ubuntu-latest
-        - test_type: unit
-          os: macos-latest
-        - test_type: unit
           os: windows-latest
+          matlab: R2022b
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -57,12 +55,6 @@ jobs:
     - name: ${{ matrix.test_type }} test
       if: matrix.test_type == 'system'
       run: echo ${{ matrix.test_type }} test ${{ matrix.script }}
-
-    - name: Install dependencies
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        sudo apt-get -y -qq update
-        sudo apt-get -y install unzip wget
 
     - name: Install Node
       uses: actions/setup-node@v3
@@ -87,23 +79,10 @@ jobs:
       run: |
         git clone https://github.com/spm/spm12.git --depth 1
 
-    - name: Copy Macs toolbox to SPM inputs_folder on unix
-      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-      run: cp -rv lib/MACS spm12/toolbox/MACS
-    - name: Copy Macs toolbox to SPM inputs_folder on windows
-      if: matrix.os == 'windows-latest'
+    - name: Copy Macs toolbox to SPM inputs_folder
       run: Copy-Item -Recurse -Verbose -Path ".\lib\MACS" -Destination ".\spm12\toolbox\MACS"
 
-    - name: Get moae fmriprep data from OSF on unix
-      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-      run: |
-        mkdir -p demos/MoAE/inputs/
-        cd demos/MoAE/inputs/
-        wget https://osf.io/vufjs/download
-        unzip download
-        mv moae_fmriprep fmriprep
-    - name: Get moae fmriprep data from OSF on windows
-      if: matrix.os == 'windows-latest'
+    - name: Get moae fmriprep data from OSF
       run: |
         New-Item -ItemType Directory -Path ".\demos\MoAE\inputs\" -Force
         Set-Location -Path ".\demos\MoAE\inputs\"
@@ -111,13 +90,7 @@ jobs:
         Expand-Archive -Path ".\download" -DestinationPath ".\"
         Rename-Item -Path ".\moae_fmriprep" -NewName "fmriprep"
 
-    - name: Prepare test data unix
-      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-      run: |
-        cd tests
-        make data
-    - name: Prepare test data windows
-      if: matrix.os == 'windows-latest'
+    - name: Prepare test data
       run: |
         cd tests
         make create_dummy_dataset
@@ -134,7 +107,7 @@ jobs:
     - name: Install MATLAB
       uses: matlab-actions/setup-matlab@v1.2.4
       with:
-        release: R2022b
+        release: ${{ matrix.matlab }}
 
     - name: Run unit tests MATLAB
       if: matrix.test_type == 'unit'
@@ -147,11 +120,10 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         file: coverage.xml
-        flags: ${{ matrix.os }}_matlab-R2022b
+        flags: ${{ matrix.os }}_matlab-${{ matrix.matlab }}
         name: codecov-matlab
         fail_ci_if_error: false
       # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
-
 
     - name: Run system tests MATLAB ${{ matrix.script }}
       if: matrix.test_type == 'system'
