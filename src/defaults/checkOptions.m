@@ -262,7 +262,8 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.subjects = {[]};
   fieldsToSet.zeropad = 2;
 
-  fieldsToSet.rename = true;
+  fieldsToSet.rename.do = true;
+  fieldsToSet.rename.overwrite = true;
 
   fieldsToSet.query.modality = {'anat', 'func'};
 
