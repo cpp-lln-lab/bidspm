@@ -7,7 +7,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
   %   [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt, nodeName)
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
+  % :type  matlabbatch: structure
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
