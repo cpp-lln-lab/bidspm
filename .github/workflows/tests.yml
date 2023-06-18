@@ -32,7 +32,7 @@ on:
 
 jobs:
 
-  test:
+  tests:
 
     if: github.repository_owner == 'cpp-lln-lab'
 
@@ -40,14 +40,15 @@ jobs:
       matrix:
         test_type: [system]
         script: [moae, facerep, fmriprep]
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
+        matlab: [R2022b]
         include:
         - test_type: unit
           os: ubuntu-latest
+          matlab: [R2022b]
         - test_type: unit
           os: macos-latest
-        - test_type: unit
-          os: windows-latest
+          matlab: [R2022b]
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -87,44 +88,21 @@ jobs:
       run: |
         git clone https://github.com/spm/spm12.git --depth 1
 
-    - name: Copy Macs toolbox to SPM inputs_folder on unix
-      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+    - name: Copy Macs toolbox to SPM inputs_folder
       run: cp -rv lib/MACS spm12/toolbox/MACS
-    - name: Copy Macs toolbox to SPM inputs_folder on windows
-      if: matrix.os == 'windows-latest'
-      run: Copy-Item -Recurse -Verbose -Path ".\lib\MACS" -Destination ".\spm12\toolbox\MACS"
 
-    - name: Get moae fmriprep data from OSF on unix
-      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+    - name: Get moae fmriprep data from OSF
       run: |
         mkdir -p demos/MoAE/inputs/
         cd demos/MoAE/inputs/
         wget https://osf.io/vufjs/download
         unzip download
         mv moae_fmriprep fmriprep
-    - name: Get moae fmriprep data from OSF on windows
-      if: matrix.os == 'windows-latest'
-      run: |
-        New-Item -ItemType Directory -Path ".\demos\MoAE\inputs\" -Force
-        Set-Location -Path ".\demos\MoAE\inputs\"
-        Invoke-WebRequest -Uri "https://osf.io/vufjs/download" -OutFile "download"
-        Expand-Archive -Path ".\download" -DestinationPath ".\"
-        Rename-Item -Path ".\moae_fmriprep" -NewName "fmriprep"
 
     - name: Prepare test data unix
-      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
       run: |
         cd tests
         make data
-    - name: Prepare test data windows
-      if: matrix.os == 'windows-latest'
-      run: |
-        cd tests
-        make create_dummy_dataset
-        make bids_examples
-        Invoke-WebRequest -Uri "https://files.de-1.osf.io/v1/resources/3vufp/providers/osfstorage/62ab741be6f3ec09a7e48d13/?zip=" -OutFile "moae_spm12.zip"
-        New-Item -ItemType Directory -Path "data/MoAE/derivatives/spm12" -Force
-        Expand-Archive -Path "./moae_spm12.zip" -DestinationPath "./data/MoAE/derivatives/spm12"
 
     - name: Install Moxunit and MOcov
       run: |
@@ -134,7 +112,7 @@ jobs:
     - name: Install MATLAB
       uses: matlab-actions/setup-matlab@v1.2.4
       with:
-        release: R2022b
+        release: ${{ matrix.matlab }}
 
     - name: Run unit tests MATLAB
       if: matrix.test_type == 'unit'
@@ -147,7 +125,7 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         file: coverage.xml
-        flags: ${{ matrix.os }}_matlab-R2022b
+        flags: ${{ matrix.os }}_matlab-${{ matrix.matlab }}
         name: codecov-matlab
         fail_ci_if_error: false
       # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits

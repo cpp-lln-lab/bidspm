@@ -1,0 +1,132 @@
+---
+name: tests windows
+
+# Uses the cron schedule for github actions
+#
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows#scheduled-events
+#
+# ┌───────────── minute (0 - 59)
+# │ ┌───────────── hour (0 - 23)
+# │ │ ┌───────────── day of the month (1 - 31)
+# │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+# │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+# │ │ │ │ │
+# │ │ │ │ │
+# │ │ │ │ │
+# * * * * *
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: ['*']
+  schedule:
+  - cron: 0 0 1,15 * *
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+
+  tests_windows:
+
+    if: github.repository_owner == 'cpp-lln-lab'
+
+    strategy:
+      matrix:
+        test_type: [system]
+        script: [moae, facerep, fmriprep]
+        os: [windows-latest]
+        matlab: [R2022b]
+        include:
+        - test_type: unit
+          os: windows-latest
+          matlab: R2022b
+      fail-fast: false
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+    - name: ${{ matrix.test_type }} test
+      if: matrix.test_type == 'system'
+      run: echo ${{ matrix.test_type }} test ${{ matrix.script }}
+
+    - name: Install Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Clone bidspm
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        fetch-depth: 0
+
+    - name: Install validators
+      run: make install
+
+    - name: Install SPM
+      run: |
+        git clone https://github.com/spm/spm12.git --depth 1
+
+    - name: Copy Macs toolbox to SPM inputs_folder
+      run: Copy-Item -Recurse -Verbose -Path ".\lib\MACS" -Destination ".\spm12\toolbox\MACS"
+
+    - name: Get moae fmriprep data from OSF
+      run: |
+        New-Item -ItemType Directory -Path ".\demos\MoAE\inputs\" -Force
+        Set-Location -Path ".\demos\MoAE\inputs\"
+        Invoke-WebRequest -Uri "https://osf.io/vufjs/download" -OutFile "download"
+        Expand-Archive -Path ".\download" -DestinationPath ".\"
+        Rename-Item -Path ".\moae_fmriprep" -NewName "fmriprep"
+
+    - name: Prepare test data
+      run: |
+        cd tests
+        make create_dummy_dataset
+        make bids_examples
+        Invoke-WebRequest -Uri "https://files.de-1.osf.io/v1/resources/3vufp/providers/osfstorage/62ab741be6f3ec09a7e48d13/?zip=" -OutFile "moae_spm12.zip"
+        New-Item -ItemType Directory -Path "data/MoAE/derivatives/spm12" -Force
+        Expand-Archive -Path "./moae_spm12.zip" -DestinationPath "./data/MoAE/derivatives/spm12"
+
+    - name: Install Moxunit and MOcov
+      run: |
+        git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
+        git clone https://github.com/MOcov/MOcov.git --depth 1
+
+    - name: Install MATLAB
+      uses: matlab-actions/setup-matlab@v1.2.4
+      with:
+        release: ${{ matrix.matlab }}
+
+    - name: Run unit tests MATLAB
+      if: matrix.test_type == 'unit'
+      uses: matlab-actions/run-command@v1.2.0
+      with:
+        command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
+
+    - name: Code coverage matlab
+      if: matrix.test_type == 'unit'
+      uses: codecov/codecov-action@v3
+      with:
+        file: coverage.xml
+        flags: ${{ matrix.os }}_matlab-${{ matrix.matlab }}
+        name: codecov-matlab
+        fail_ci_if_error: false
+      # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
+
+    - name: Run system tests MATLAB ${{ matrix.script }}
+      if: matrix.test_type == 'system'
+      uses: matlab-actions/run-command@v1.2.0
+      with:
+        command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_${{ matrix.script }};
