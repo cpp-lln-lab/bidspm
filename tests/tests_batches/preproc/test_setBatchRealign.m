@@ -12,6 +12,66 @@ end
 % add test realign and reslice
 % check it returns the right voxDim
 
+function test_setBatchRealign_after_stc()
+
+  subLabel = '^01';
+
+  opt = setOptions('vismotion', subLabel);
+
+  % TODO implement opt.bidsFilterFile.bold.acq = '';
+  opt.bidsFilterFile.bold.acq = '';
+  opt.bidsFilterFile.bold.part = 'mag';
+
+  % some tweaks because we have dummy data
+  opt.funcVoxelDims = [2 2 2];
+  opt.useFieldmaps = false;
+
+  BIDS = getLayout(opt);
+
+  matlabbatch = {};
+  [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
+
+  expectedBatch{1}.spm.spatial.realignunwarp.eoptions.weight = {''};
+  expectedBatch{end}.spm.spatial.realignunwarp.uwroptions.uwwhich = [2 1];
+
+  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
+
+  runCounter = 1;
+  for iSes = 1:nbSessions
+
+    [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
+
+    for iRun = 1:nbRuns
+
+      fileName = bids.query(BIDS, 'data', ...
+                            'prefix', '', ...
+                            'sub', subLabel, ...
+                            'ses', sessions{iSes}, ...
+                            'task', opt.taskName, ...
+                            'run', runs{iRun}, ...
+                            'acq', '', ...
+                            'part', 'mag', ...
+                            'desc', 'stc', ...
+                            'suffix', 'bold', ...
+                            'extension', '.nii');
+
+      expectedBatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = { '' };
+      expectedBatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = cellstr(fileName);
+
+      runCounter = runCounter + 1;
+
+    end
+  end
+
+  assertEqual(voxDim, [2 2 2]);
+  assertEqual(matlabbatch{1}.spm.spatial.realignunwarp.eoptions, ...
+              expectedBatch{1}.spm.spatial.realignunwarp.eoptions);
+  assertEqual(matlabbatch{1}.spm.spatial.realignunwarp.uwroptions, ...
+              expectedBatch{1}.spm.spatial.realignunwarp.uwroptions);
+  assertEqual(matlabbatch{1}.spm.spatial.realignunwarp.data, ...
+              expectedBatch{1}.spm.spatial.realignunwarp.data);
+end
+
 function test_setBatchRealign_anat_only()
 
   subLabel = '^01';
@@ -78,64 +138,6 @@ function test_setBatchRealign_basic()
     expectedBatch{end}.spm.spatial.realignunwarp.data(1, iSes).scans = cellstr(fileName);
   end
 
-  assertEqual(matlabbatch{1}.spm.spatial.realignunwarp.eoptions, ...
-              expectedBatch{1}.spm.spatial.realignunwarp.eoptions);
-  assertEqual(matlabbatch{1}.spm.spatial.realignunwarp.uwroptions, ...
-              expectedBatch{1}.spm.spatial.realignunwarp.uwroptions);
-  assertEqual(matlabbatch{1}.spm.spatial.realignunwarp.data, ...
-              expectedBatch{1}.spm.spatial.realignunwarp.data);
-end
-
-function test_setBatchRealign_after_stc()
-
-  subLabel = '^01';
-
-  opt = setOptions('vismotion', subLabel);
-
-  % TODO implement opt.bidsFilterFile.bold.acq = '';
-  opt.query.acq = '';
-
-  % some tweaks because we have dummy data
-  opt.funcVoxelDims = [2 2 2];
-  opt.useFieldmaps = false;
-
-  BIDS = getLayout(opt);
-
-  matlabbatch = {};
-  [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
-
-  expectedBatch{1}.spm.spatial.realignunwarp.eoptions.weight = {''};
-  expectedBatch{end}.spm.spatial.realignunwarp.uwroptions.uwwhich = [2 1];
-
-  [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
-
-  runCounter = 1;
-  for iSes = 1:nbSessions
-
-    [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
-
-    for iRun = 1:nbRuns
-
-      fileName = bids.query(BIDS, 'data', ...
-                            'prefix', '', ...
-                            'sub', subLabel, ...
-                            'ses', sessions{iSes}, ...
-                            'task', opt.taskName, ...
-                            'run', runs{iRun}, ...
-                            'acq', '', ...
-                            'desc', 'stc', ...
-                            'suffix', 'bold', ...
-                            'extension', '.nii');
-
-      expectedBatch{end}.spm.spatial.realignunwarp.data(1, runCounter).pmscan = { '' };
-      expectedBatch{end}.spm.spatial.realignunwarp.data(1, runCounter).scans = cellstr(fileName);
-
-      runCounter = runCounter + 1;
-
-    end
-  end
-
-  assertEqual(voxDim, [2 2 2]);
   assertEqual(matlabbatch{1}.spm.spatial.realignunwarp.eoptions, ...
               expectedBatch{1}.spm.spatial.realignunwarp.eoptions);
   assertEqual(matlabbatch{1}.spm.spatial.realignunwarp.uwroptions, ...

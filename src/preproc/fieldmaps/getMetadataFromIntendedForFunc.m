@@ -35,20 +35,21 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
 
     funcFile = fmapMetadata.IntendedFor{iFile};
 
-    funcFile = spm_file(funcFile, 'filename');
-
     funcFile = bids.File(funcFile);
+
+    filter = funcFile.entities;
 
     filter.modality = 'func';
     filter.suffix = funcFile.suffix;
     filter.sub = regexify(funcFile.entities.sub);
-    filter.ses = funcFile.entities.ses;
-    filter.run = funcFile.entities.run;
     filter.extension = '.nii';
     filter.space = '';
 
-    if ~isfield(funcFile.entities, 'acq')
-      filter.acq = '';
+    entitiesToSilence = {'ses', 'run', 'acq'};
+    for i = 1:numel(entitiesToSilence)
+      if ~isfield(funcFile.entities, entitiesToSilence{i})
+        filter.(entitiesToSilence{i}) = '';
+      end
     end
 
     funcMetadata = bids.query(BIDS, 'metadata', filter);
