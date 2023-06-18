@@ -45,10 +45,10 @@ jobs:
         include:
         - test_type: unit
           os: ubuntu-latest
-          matlab: [R2022b]
+          matlab: R2022b
         - test_type: unit
           os: macos-latest
-          matlab: [R2022b]
+          matlab: R2022b
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
