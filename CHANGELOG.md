@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* [DOC] add changelog (#1056) @Remi-Gau
 * [DOC] minor doc fixes (#1020) @Remi-Gau
 * [DOC] Improve doc example out stats (#1014) @Remi-Gau
 * [DOC] update doc regarding FAST model as default (#985) @Remi-Gau
@@ -80,7 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [DEP] deprecate slice order in options (#882) @Remi-Gau
 * [ENH] change the way parametric models are run (#873) @Remi-Gau*
 
-## Added
+### Added
 
 * [ENH] include roi based calls in CLI  (#880) @Remi-Gau
 * [ENH] add copy dataset to CLI (#842) @Remi-Gau
@@ -95,7 +96,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [ENH] add function to return contrast filename for a certain contrast name (#866) @Remi-Gau
 * [DOC] update FAQ to explain how to change subject level GLM folder name (#872) @Remi-Gau
 
-## Fixed
+### Fixed
 
 * [FIX] better handle metadata when changing suffix (#884) @Remi-Gau
 * [FIX] exit with a warning and not an error when no contrast specified (#870) @Remi-Gau
