@@ -36,3 +36,18 @@ function test_setBatchGenerateT1map_basic()
   assertEqual(estimateT1, expected);
 
 end
+
+function test_setBatchGenerateT1map_warning()
+
+  subLabel = '^01';
+
+  opt = setOptions('vismotion', subLabel);
+
+  BIDS = getLayout(opt);
+
+  matlabbatch = {};
+  opt.verbosity = 2;
+  assertWarning(@() setBatchGenerateT1map(matlabbatch, BIDS, opt, subLabel), ...
+                'setBatchGenerateT1map:missingNonBIDSMetadata');
+
+end
