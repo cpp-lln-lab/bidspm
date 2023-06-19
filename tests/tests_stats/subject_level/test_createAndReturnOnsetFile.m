@@ -30,7 +30,9 @@ function test_createAndReturnOnsetFile_basic()
                   'extension', '.tsv');
   tsvFile = bids.query(BIDS, 'data', filter);
 
-  onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile);
+  runDuration = nan;
+
+  onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile, runDuration);
 
   expectedFilename = fullfile(getTestDataDir('stats'), 'sub-01', ...
                               'task-vislocalizer_space-IXI549Space_FWHM-6', ...
