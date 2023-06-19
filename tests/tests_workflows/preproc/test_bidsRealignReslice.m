@@ -13,6 +13,7 @@ function test_bidsRealignReslice_basic()
   opt = setOptions('vislocalizer', '');
 
   opt.funcVoxelDims = [2 2 2];
+  opt.bidsFilterFile.bold.part = 'mag';
 
   bidsRealignReslice(opt);
 

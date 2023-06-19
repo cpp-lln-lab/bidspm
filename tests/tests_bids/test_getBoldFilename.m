@@ -20,17 +20,19 @@ function test_getBoldFilename_basic()
   BIDS = getLayout(opt);
 
   opt.query = struct('acq', '', ... % to filter out raw data with acq entity
+                     'part', 'mag', ...
                      'space', '', 'desc', ''); % to filter out derivatives data
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   runs = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
 
-  [fileName, subFuncDataDir] = getBoldFilename( ...
-                                               BIDS, ...
+  [fileName, subFuncDataDir] = getBoldFilename(BIDS, ...
                                                subLabel, sessions{iSes}, runs{iRun}, opt);
 
-  expectedFilename = 'sub-01_ses-01_task-vislocalizer_bold.nii';
+  assertEqual(size(fileName, 1), 1);
+
+  expectedFilename = 'sub-01_ses-01_task-vislocalizer_part-mag_bold.nii';
   expectedSubFuncDataDir = fullfile(getTestDataDir('raw'), 'sub-01', 'ses-01', 'func');
 
   assertEqual(subFuncDataDir, expectedSubFuncDataDir);
@@ -49,7 +51,10 @@ function test_getBoldFilename_derivatives()
 
   BIDS = getLayout(opt);
 
-  opt.query = struct('desc', 'stc', 'space', 'individual', 'acq', '');
+  opt.query = struct('part', 'mag', ...
+                     'desc', 'stc', ...
+                     'space', 'individual', ...
+                     'acq', '');
 
   sessions = getInfo(BIDS, subLabel, opt, 'Sessions');
 
@@ -59,7 +64,10 @@ function test_getBoldFilename_derivatives()
                                                BIDS, ...
                                                subLabel, sessions{iSes}, runs{iRun}, opt);
 
-  expectedFilename = 'sub-01_ses-01_task-vismotion_run-1_space-individual_desc-stc_bold.nii';
+  assertEqual(size(fileName, 1), 1);
+
+  expectedFilename = ['sub-01_ses-01_task-vismotion_run-1', ...
+                      '_part-mag_space-individual_desc-stc_bold.nii'];
   expectedSubFuncDataDir = fullfile(getTestDataDir('preproc'), 'sub-01', 'ses-01', 'func');
 
   assertEqual(subFuncDataDir, expectedSubFuncDataDir);

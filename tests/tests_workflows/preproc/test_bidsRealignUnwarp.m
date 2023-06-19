@@ -11,7 +11,7 @@ end
 function test_bidsRealignUnwarp_basic()
 
   opt = setOptions('vislocalizer', '');
-
+  opt.bidsFilterFile.bold.part = 'mag';
   opt.funcVoxelDims = [2 2 2];
   opt.useFieldmaps = false;
 

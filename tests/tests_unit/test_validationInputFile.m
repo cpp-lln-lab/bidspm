@@ -12,11 +12,11 @@ function test_validationInputFile_basic()
 
   directory = fullfile(getTestDataDir('preproc'), 'sub-01', 'ses-01', 'func');
   prefix = '';
-  fileName = 'sub-01_ses-01_task-vislocalizer_bold.nii';
+  fileName = 'sub-01_ses-01_task-vislocalizer_part-mag_bold.nii';
 
   expectedOutput = fullfile(getTestDataDir('preproc'), ...
                             'sub-01', 'ses-01', 'func', ...
-                            'sub-01_ses-01_task-vislocalizer_bold.nii');
+                            'sub-01_ses-01_task-vislocalizer_part-mag_bold.nii');
 
   file = validationInputFile(directory, fileName, prefix);
 

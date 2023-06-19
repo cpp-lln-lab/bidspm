@@ -30,7 +30,9 @@ create_raw_func_vismotion() {
 	mkdir -p "${this_dir}"
 
 	for run in $(seq 1 2); do
-		filename=${this_dir}/${basename}_run-${run}${suffix}.nii
+		filename=${this_dir}/${basename}_run-${run}_part-mag${suffix}.nii
+		touch "${filename}"
+		filename=${this_dir}/${basename}_run-${run}_part-phase${suffix}.nii
 		touch "${filename}"
 	done
 
@@ -74,7 +76,9 @@ create_raw_func_vislocalizer() {
 
 	mkdir -p ${this_dir}
 
-	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
+	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_part-mag${suffix}.nii
+	touch "${filename}"
+	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_part-phase${suffix}.nii
 	touch "${filename}"
 
 	filename=${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_events.tsv
@@ -124,12 +128,12 @@ create_raw_fmap() {
 	suffix='_bold'
 
 	task_name='vislocalizer'
-	IntendedFor=$(echo ses-${ses}/func/sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii)
+	IntendedFor=$(echo ses-${ses}/func/sub-${subject}_ses-${ses}_task-${task_name}_part-mag${suffix}.nii)
 	json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
 	echo "$json_string" >${this_dir}/sub-${subject}_ses-${ses}_run-1_phasediff.json
 
 	task_name='vismotion'
-	IntendedFor=$(echo ses-${ses}/func/sub-${subject}_ses-${ses}_task-${task_name}_run-1${suffix}.nii)
+	IntendedFor=$(echo ses-${ses}/func/sub-${subject}_ses-${ses}_task-${task_name}_run-1_part-mag${suffix}.nii)
 	json_string=$(printf "$template" "$EchoTime1" "$EchoTime2" "$IntendedFor")
 	echo "$json_string" >"${this_dir}/sub-${subject}_ses-${ses}_run-2_phasediff.json"
 
@@ -230,25 +234,25 @@ for subject in ${subject_list}; do
 
 			for run in $(seq 1 2); do
 
-				filename=${this_dir}/rp_${basename}_run-${run}${suffix}.txt
+				filename=${this_dir}/rp_${basename}_run-${run}_part-mag${suffix}.txt
 				cp data/tsv_files/rp.txt "${filename}"
-				cp data/tsv_files/rp.tsv ${this_dir}/${basename}_run-${run}_desc-confounds_regressors.tsv
+				cp data/tsv_files/rp.tsv ${this_dir}/${basename}_run-${run}_part-mag_desc-confounds_regressors.tsv
 
 				for desc in ${desc_label_list}; do
-					touch ${this_dir}/${basename}_run-${run}_space-individual_desc-${desc}${suffix}.nii
-					touch ${this_dir}/${basename}_run-${run}_space-IXI549Space_desc-${desc}${suffix}.nii
+					touch ${this_dir}/${basename}_run-${run}_part-mag_space-individual_desc-${desc}${suffix}.nii
+					touch ${this_dir}/${basename}_run-${run}_part-mag_space-IXI549Space_desc-${desc}${suffix}.nii
 				done
-				touch ${this_dir}/${basename}_run-${run}_space-individual_desc-stc${suffix}.nii
+				touch ${this_dir}/${basename}_run-${run}_part-mag_space-individual_desc-stc${suffix}.nii
 
-				touch ${this_dir}/${basename}_run-${run}_space-IXI549Space_label-brain_mask.nii
+				touch ${this_dir}/${basename}_run-${run}_part-mag_space-IXI549Space_label-brain_mask.nii
 
 			done
 
 			if [ ${ses} = '01' ]; then
-				touch ${this_dir}/${basename}_space-individual_desc-mean${suffix}.nii
-				touch ${this_dir}/${basename}_space-IXI549Space_desc-mean${suffix}.nii
+				touch ${this_dir}/${basename}_part-mag_space-individual_desc-mean${suffix}.nii
+				touch ${this_dir}/${basename}_part-mag_space-IXI549Space_desc-mean${suffix}.nii
 
-				touch ${this_dir}/mean_${basename}${suffix}.nii
+				touch ${this_dir}/mean_${basename}_part-mag${suffix}.nii
 			fi
 
 		done
@@ -260,19 +264,19 @@ for subject in ${subject_list}; do
 		### derivatives
 		filename=${this_dir}/rp_sub-${subject}_ses-${ses}_task-${task_name}${suffix}.txt
 		cp data/tsv_files/rp.txt "${filename}"
-		cp data/tsv_files/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_desc-confounds_regressors.tsv
+		cp data/tsv_files/rp.tsv ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_part-mag_desc-confounds_regressors.tsv
 
 		desc_label_list='preproc smth6'
 		for desc in ${desc_label_list}; do
-			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-${desc}${suffix}.nii
-			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-${desc}${suffix}.nii
-			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_label-brain_mask.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_part-mag_space-individual_desc-${desc}${suffix}.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_part-mag_space-IXI549Space_desc-${desc}${suffix}.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_part-mag_space-IXI549Space_label-brain_mask.nii
 		done
-		touch ${this_dir}/mean_sub-${subject}_ses-${ses}_task-${task_name}${suffix}.nii
+		touch ${this_dir}/mean_sub-${subject}_ses-${ses}_task-${task_name}_part-mag${suffix}.nii
 
 		if [ ${ses} = '01' ]; then
-			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-individual_desc-mean${suffix}.nii
-			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_space-IXI549Space_desc-mean${suffix}.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_part-mag_space-individual_desc-mean${suffix}.nii
+			touch ${this_dir}/sub-${subject}_ses-${ses}_task-${task_name}_part-mag_space-IXI549Space_desc-mean${suffix}.nii
 		fi
 
 	done
@@ -302,8 +306,6 @@ for subject in ${subject_list}; do
 	for prefix in ${anat_prefix_list}; do
 		touch ${this_dir}/${prefix}sub-${subject}_ses-${ses}${suffix}.nii
 	done
-
-
 
 	space='individual'
 

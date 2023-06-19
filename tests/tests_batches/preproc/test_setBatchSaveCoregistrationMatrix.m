@@ -50,7 +50,8 @@ function expectedBatch = returnExpectedBatch()
 
   subFuncDataDir = fullfile(getTestDataDir('preproc'), 'sub-01', 'ses-01', 'func');
 
-  fileName = 'sub-01_ses-01_task-vismotion_from-scanner_to-T1w_mode-image_xfm.mat';
+  fileName = ['sub-01_ses-01_task-vismotion_part-mag', ...
+              '_from-scanner_to-T1w_mode-image_xfm.mat'];
 
   expectedBatch{end + 1}.cfg_basicio.var_ops.cfg_save_vars.name = fileName;
   expectedBatch{end}.cfg_basicio.var_ops.cfg_save_vars.outdir = {subFuncDataDir};

@@ -8,33 +8,37 @@ function test_suite = test_bidsSTC %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsStc_basic()
+function test_bidsStc_dual_task()
 
-  opt = setOptions('vismotion', '');
+  % Cannot test dual task for now as rest and vismotion
+  % do not have the same entities (rest has not part entity)
+  %   opt = setOptions({'vismotion', 'rest'}, '');
+  opt = setOptions({'vismotion'}, '');
 
-  opt.query.acq = '';
+  opt.bidsFilterFile.bold.acq = '';
+  opt.bidsFilterFile.bold.part = 'mag';
 
   matlabbatch = bidsSTC(opt);
 
   assertEqual(numel(matlabbatch), 1);
 
-end
-
-function test_bidsStc_dual_task()
-
-  opt = setOptions({'vismotion', 'rest'}, '');
-
-  opt.query.acq = '';
-
-  matlabbatch = bidsSTC(opt);
-
-  assertEqual(numel(matlabbatch), 2);
-
   nbRunsVismotion = 4;
   assertEqual(numel(matlabbatch{1}.spm.temporal.st.scans), nbRunsVismotion);
 
-  nbRunsRest = 1;
-  assertEqual(numel(matlabbatch{2}.spm.temporal.st.scans), nbRunsRest);
+  %   nbRunsRest = 1;
+  %   assertEqual(numel(matlabbatch{2}.spm.temporal.st.scans), nbRunsRest);
+
+end
+
+function test_bidsStc_basic()
+
+  opt = setOptions('vismotion', '');
+
+  opt.bidsFilterFile.bold.acq = '';
+
+  matlabbatch = bidsSTC(opt);
+
+  assertEqual(numel(matlabbatch), 1);
 
 end
 

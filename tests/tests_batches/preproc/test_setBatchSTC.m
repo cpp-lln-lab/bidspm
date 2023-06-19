@@ -15,8 +15,8 @@ function test_setBatchSTC_dual_task()
   subLabel = '^01';
 
   opt = setOptions({'vismotion', 'rest'}, subLabel);
-
-  opt.query.acq = '';
+  opt.bidsFilterFile.bold.part = 'mag';
+  opt.bidsFilterFile.bold.acq = '';
 
   BIDS = getLayout(opt);
 
@@ -24,8 +24,7 @@ function test_setBatchSTC_dual_task()
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
   nbRunsVismotion = 4;
-  nbRunsRest = 1;
-  assertEqual(numel(matlabbatch{1}.spm.temporal.st.scans), nbRunsVismotion + nbRunsRest);
+  assertEqual(numel(matlabbatch{1}.spm.temporal.st.scans), nbRunsVismotion);
 
 end
 
@@ -35,7 +34,7 @@ function test_setBatchSTC_error_different_repetition_time()
 
   opt = setOptions({'vismotion', 'vislocalizer'}, subLabel);
 
-  opt.query.acq = '';
+  opt.bidsFilterFile.bold.acq = '';
 
   BIDS = getLayout(opt);
 
@@ -83,8 +82,8 @@ function test_setBatchSTC_basic()
   subLabel = '^01';
 
   opt = setOptions('vismotion', subLabel);
-
-  opt.query = struct('acq', '');
+  opt.bidsFilterFile.bold.part = 'mag';
+  opt.bidsFilterFile.bold.acq = '';
 
   BIDS = getLayout(opt);
 
@@ -108,6 +107,7 @@ function test_setBatchSTC_basic()
                           'suffix', 'bold', ...
                           'extension', '.nii', ...
                           'prefix', '',  ...
+                          'part', 'mag', ...
                           'acq', '', ...
                           'space', '', 'desc', '');
     expectedBatch{1}.spm.temporal.st.scans{runCounter} = ...
