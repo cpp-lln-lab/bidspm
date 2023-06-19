@@ -288,6 +288,15 @@ function preprocess(args)
   bidsSpatialPrepro(opt);
   if opt.fwhm.func > 0 && ~opt.anatOnly
     opt.query.desc = 'preproc';
+    if opt.dryRun
+      msg = ['"dryRun" set to "true", so smoothing will be skipped', ...
+             ' as it requires the output of spatial preprocessing to run.'];
+      logger('WARNING', msg, ...
+             'options', opt, ...
+             'filename', mfilename(), ...
+             'id', 'skipSmoothingInDryRun');
+      return
+    end
     bidsSmoothing(opt);
   end
 
