@@ -280,7 +280,7 @@ function preprocess(args)
                       'dummyScans', tmpOpt.dummy_scans, ...
                       'force', false);
   end
-
+  bidsCheckVoxelSize(opt);
   if opt.useFieldmaps && ~opt.anatOnly
     bidsCreateVDM(opt);
   end

@@ -28,13 +28,9 @@ function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, fileName)
     return
   else
     hdr = spm_vol(fullfile(subFuncDataDir, fileName));
-    voxDim = diag(hdr(1).mat);
-    % Voxel dimensions are not pure integers before reslicing, therefore
-    % round the dimensions of the functional files to the 1st decimal point
-    voxDim = abs(voxDim(1:3)');
-    voxDim = round(voxDim * 10) / 10;
-    % Add it to opt.funcVoxelDims to have the same value for
-    % all subjects and sessions
+    M = hdr(1).mat;
+    voxDim  = sqrt(sum(M(1:3, 1:3).^2));
+    % Add it to opt.funcVoxelDims to have the same value for all sessions
     opt.funcVoxelDims = voxDim;
   end
 

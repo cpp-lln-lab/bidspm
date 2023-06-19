@@ -36,3 +36,22 @@ function test_setBatchGenerateT1map_basic()
   assertEqual(estimateT1, expected);
 
 end
+
+function test_setBatchGenerateT1map_warning()
+
+  if bids.internal.is_octave()
+    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
+  end
+
+  subLabel = '^01';
+
+  opt = setOptions('vismotion', subLabel);
+
+  BIDS = getLayout(opt);
+
+  matlabbatch = {};
+  opt.verbosity = 2;
+  assertWarning(@() setBatchGenerateT1map(matlabbatch, BIDS, opt, subLabel), ...
+                'setBatchGenerateT1map:missingNonBIDSMetadata');
+
+end
