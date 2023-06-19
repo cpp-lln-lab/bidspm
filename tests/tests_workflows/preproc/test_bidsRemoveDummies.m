@@ -10,10 +10,18 @@ end
 
 function test_bidsRemoveDummies_basic()
 
-  tmpDir = fullfile(tempname, 'raw');
+  if bids.internal.is_octave()
+    tmpDir = fullfile(tempname);
+  else
+    tmpDir = fullfile(tempname, 'raw');
+  end
   spm_mkdir(tmpDir);
   opt = setOptions('MoAE');
   copyfile(opt.dir.raw, tmpDir);
+
+  if bids.internal.is_octave()
+    tmpDir = fullfile(tmpDir, 'raw');
+  end
   opt.dir.raw = tmpDir;
   opt.dir.input = tmpDir;
   bidsRemoveDummies(opt, 'dummyScans', 20, 'force', false);
