@@ -39,6 +39,10 @@ end
 
 function test_setBatchGenerateT1map_warning()
 
+  if bids.internal.is_octave()
+    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
+  end
+
   subLabel = '^01';
 
   opt = setOptions('vismotion', subLabel);
