@@ -6,18 +6,17 @@ function bidsRemoveDummies(varargin)
   %
   %  bidsRemoveDummies(opt, 'dummyScans', someInteger, 'force', false)
   %
-  % :type opt:  structure
   % :param opt: Options chosen for the analysis.
   %             See also: checkOptions
   %             ``checkOptions()`` and ``loadAndCheckOptions()``.
   % :type opt: structure
   %
   % :param dummyScans: number of volumes to remove
-  % :type dummyScans: integer >= 0
+  % :type  dummyScans: integer >= 0
   %
   % :param force: use ``'force', true`` to remove dummy scans even if metadata say
   %               they have already been removed
-  % :type force: boolean
+  % :type  force: boolean
   %
   % EXAMPLE::
   %
@@ -69,6 +68,7 @@ function bidsRemoveDummies(varargin)
 
     filter = opt.bidsFilterFile.bold;
     filter.ext = '\.nii.*$';
+    filter.prefix = '';
     filter.task = opt.taskName;
     filter.desc = '';
     filter.space = '';

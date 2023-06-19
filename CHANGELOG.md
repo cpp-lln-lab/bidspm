@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-<!-- **Full Changelog**: https://github.com/cpp-lln-lab/CPP_SPM/compare/v3.0.0...v3.1.0 -->
+<!-- **Full Changelog**: https://github.com/cpp-lln-lab/bidspm/compare/v3.0.0...v3.1.0 -->
 
 ### Added
 
@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* [FIX] remove dummies from preproc dataset and not raw dataset when using CLI (#1057) @Remi-Gau
 * [FIX] skip smoothing when running bidspm prepoc in dryRun (#1054) @Remi-Gau
 * [FIX] handle phase entity in filename (#1034) @Remi-Gau
 * [FIX] fix group level results after contrasts smoothing  (#1021) @Remi-Gau
@@ -75,7 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.0] - 2022-12-14
 
-**Full Changelog**: https://github.com/cpp-lln-lab/CPP_SPM/compare/v2.3.0...v3.0.0
+**Full Changelog**: https://github.com/cpp-lln-lab/bidspm/compare/v2.3.0...v3.0.0
 
 ### Changed
 
@@ -106,7 +107,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.3.0] - 2022-11-22
 
-**Full Changelog**: https://github.com/cpp-lln-lab/CPP_SPM/compare/v2.2.0...v2.3.0
+**Full Changelog**: https://github.com/cpp-lln-lab/bidspm/compare/v2.2.0...v2.3.0
 
 - `bidspm` main function:
   - saving options are saved to help with bug report
@@ -141,7 +142,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.2.0] - 2022-10-29
 
-**Full Changelog**: https://github.com/cpp-lln-lab/CPP_SPM/compare/v2.1.0...v2.2.0
+**Full Changelog**: https://github.com/cpp-lln-lab/bidspm/compare/v2.1.0...v2.2.0
 
 ### Added
 
@@ -164,7 +165,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.1.0] - 2022-07-21
 
-**Full Changelog**: https://github.com/cpp-lln-lab/CPP_SPM/compare/v2.0.0...v2.0.1
+**Full Changelog**: https://github.com/cpp-lln-lab/bidspm/compare/v2.0.0...v2.0.1
 
 ### Added
 
@@ -213,7 +214,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0] - 2022-07-10
 
-**Full Changelog**: https://github.com/cpp-lln-lab/CPP_SPM/compare/v1.1.5...v2.0.0
+**Full Changelog**: https://github.com/cpp-lln-lab/bidspm/compare/v1.1.5...v2.0.0
 
 ### Added
 
