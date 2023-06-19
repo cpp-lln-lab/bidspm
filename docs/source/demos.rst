@@ -47,7 +47,6 @@ This is based on the event related design dataset of SPM.
 .. autoscript:: face_rep_01_anat_only
 .. autoscript:: face_rep_02_stats
 .. autoscript:: face_rep_03_roi_analysis
-.. autoscript:: face_rep_resolution
 
 
 Visual motion localizers

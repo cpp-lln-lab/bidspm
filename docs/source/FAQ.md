@@ -950,7 +950,7 @@ bids.util.tsvwrite(fullfile(pwd, 'new_events.tsv'), new_content);
 <a name="statistics:-how-should-i-name-my-conditions-in-my-eventstsv"></a>
 ## Statistics: How should I name my conditions in my events.tsv?
 
-In BIDS conditions should be named in the `trial_type` column of the `events.tsv` file.
+In BIDS format, conditions should be named in the `trial_type` column of the `events.tsv` file.
 
 Some good practices for naming "things" can probably be applied here.
 
@@ -975,7 +975,7 @@ So for example:
 
 If your BIDS dataset has conditions that do not follow this rule,
 then you can use
-the [`Replace` variable transform](https://github.com/bids-standard/variable-transform/blob/main/spec/munge.md#replace )
+the [`Replace` variable transform](https://github.com/bids-standard/variable-transform/blob/main/spec/munge.md#replace)
 in your [BIDS statistical model](https://bidspm.readthedocs.io/en/latest/bids_stats_model.html#transformation')
 to rename them on the fly without having to manually edit potentially dozens of files.
 
