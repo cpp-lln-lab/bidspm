@@ -110,11 +110,15 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
         spmSess(spmSessCounter).scans = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
 
+        runDuration = getRunDuration(opt, spmSess(spmSessCounter).scans, TR);
+
+        spec = struct('sub', subLabel, ...
+                      'ses', sessions{iSes}, ...
+                      'task', opt.taskName{iTask}, ...
+                      'run', runs{iRun});
         onsetFilename = returnOnsetsFile(BIDS, opt, ...
-                                         subLabel, ...
-                                         sessions{iSes}, ...
-                                         opt.taskName{iTask}, ...
-                                         runs{iRun});
+                                         spec, ...
+                                         runDuration);
         spmSess(spmSessCounter).onsetsFile = onsetFilename;
 
         % get confounds
@@ -234,20 +238,49 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
 
 end
 
+function runDuration = getRunDuration(opt, fullpathBoldFilename, TR)
+
+  nvVols = getNbVols(opt, fullpathBoldFilename);
+  runDuration = nvVols * TR;
+
+end
+
+function nbVols = getNbVols(opt, fullpathBoldFilename)
+  if opt.glm.maxNbVols == Inf && isempty(opt.funcVolToSelect)
+    try
+      hdr = spm_vol(fullpathBoldFilename);
+      nbVols = numel(hdr);
+    catch
+      nbVols = nan;
+    end
+    return
+  end
+
+  if opt.glm.maxNbVols ~= Inf
+    nbVols = opt.glm.maxNbVols;
+    return
+  end
+
+  if ~isempty(opt.funcVolToSelect)
+    nbVols = numel(opt.funcVolToSelect);
+    return
+  end
+  error('WTF');
+end
+
 function fmriSpec = setScans(opt, fullpathBoldFilename, fmriSpec, spmSessCounter)
 
   if opt.model.designOnly
 
-    try
-      hdr = spm_vol(fullpathBoldFilename);
-    catch
+    nbVols = getNbVols(opt, fullpathBoldFilename);
+    if isnan(nbVols)
       warning('Could not open %s.\nExpected during testing.', fullpathBoldFilename);
       % TODO a value should be passed by user for this
       % hard coded value for test
-      hdr = ones(200, 1);
+      nbVols = 200;
     end
 
-    fmriSpec.sess(spmSessCounter).nscan = numel(hdr);
+    fmriSpec.sess(spmSessCounter).nscan = nbVols;
 
   else
 
@@ -257,14 +290,14 @@ function fmriSpec = setScans(opt, fullpathBoldFilename, fmriSpec, spmSessCounter
 
 end
 
-function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, run)
+function onsetFilename = returnOnsetsFile(BIDS, opt, spec, runDuration)
 
   % get events file from raw data set and convert it to a onsets.mat file
   % store in the subject level GLM directory
-  filter = fileFilterForBold(opt, subLabel, 'events');
-  filter.ses = session;
-  filter.run = run;
-  filter.task = task;
+  filter = fileFilterForBold(opt, spec.sub, 'events');
+  filter.ses = spec.ses;
+  filter.run = spec.run;
+  filter.task = spec.task;
 
   tsvFile = bids.query(BIDS.raw, 'data', filter);
 
@@ -282,6 +315,7 @@ function onsetFilename = returnOnsetsFile(BIDS, opt, subLabel, session, task, ru
   end
 
   onsetFilename = createAndReturnOnsetFile(opt, ...
-                                           subLabel, ...
-                                           tsvFile);
+                                           spec.sub, ...
+                                           tsvFile, ...
+                                           runDuration);
 end
