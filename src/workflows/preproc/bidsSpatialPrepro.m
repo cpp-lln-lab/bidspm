@@ -141,7 +141,7 @@ end
 
 function renameFiles(BIDS, opt)
 
-  if ~opt.rename || opt.dryRun
+  if ~opt.rename.do || opt.dryRun
     return
   end
 
