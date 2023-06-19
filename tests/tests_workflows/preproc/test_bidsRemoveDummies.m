@@ -10,7 +10,12 @@ end
 
 function test_bidsRemoveDummies_basic()
 
+  tmpDir = fullfile(tempname, 'raw');
+  spm_mkdir(tmpDir);
   opt = setOptions('MoAE');
-  bidsRemoveDummies(opt, 'dummyScans', 12, 'force', false);
+  copyfile(opt.dir.raw, tmpDir);
+  opt.dir.raw = tmpDir;
+  opt.dir.input = tmpDir;
+  bidsRemoveDummies(opt, 'dummyScans', 20, 'force', false);
 
 end
