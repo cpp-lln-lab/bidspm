@@ -13,23 +13,23 @@ function test_saveMatlabBatch_basic()
   subLabel = '01';
   opt = setOptions('dummy', subLabel);
   opt.dryRun = false;
-  opt.dir.jobs = pwd;
+  tmpDir = tempdir;
+  spm_mkdir(tmpDir);
+  opt.dir.jobs = tmpDir;
 
   matlabbatch = struct('test', 1);
   saveMatlabBatch(matlabbatch, 'test', opt, subLabel);
 
-  expectedOutput = fullfile(pwd, ['sub-' subLabel], ...
+  expectedOutput = fullfile(tmpDir, ['sub-' subLabel], ...
                             ['batch_test_' datestr(now, 'yyyy-mm-ddTHH-MM') '.mat']);
 
   assertEqual(exist(expectedOutput, 'file'), 0);
   assertEqual(exist(spm_file(expectedOutput, 'ext', '.json'), 'file'), 2);
 
-  expectedOutput = fullfile(pwd, ['sub-' subLabel], ...
+  expectedOutput = fullfile(tmpDir, ['sub-' subLabel], ...
                             ['batch_test_' datestr(now, 'yyyy_mm_ddTHH_MM') '.m']);
 
   assertEqual(exist(expectedOutput, 'file'), 2);
-
-  cleanUp(fullfile(pwd, ['sub-' subLabel]));
 
 end
 
@@ -38,18 +38,18 @@ function test_saveMatlabBatch_group()
   subLabel = '01';
   opt = setOptions('dummy', subLabel);
   opt.dryRun = false;
-  opt.dir.jobs = pwd;
+  tmpDir = tempdir;
+  spm_mkdir(tmpDir);
+  opt.dir.jobs = tmpDir;
 
   matlabbatch = struct('test', 1);
 
-  expectedOutput = fullfile(pwd, 'group', ...
+  expectedOutput = fullfile(tmpDir, 'group', ...
                             ['batch_groupTest_' datestr(now, 'yyyy-mm-ddTHH-MM') '.mat']);
 
   saveMatlabBatch(matlabbatch, 'groupTest', opt);
 
   assertEqual(exist(expectedOutput, 'file'), 0);
   assertEqual(exist(spm_file(strrep(expectedOutput, '-', '_'), 'ext', '.m'), 'file'), 2);
-
-  cleanUp(fullfile(pwd, 'group'));
 
 end
