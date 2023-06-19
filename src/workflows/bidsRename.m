@@ -25,7 +25,7 @@ function createdFiles = bidsRename(opt)
 
   createdFiles = {};
 
-  if not(isfield(opt, 'spm_2_bids'))
+  if ~(isfield(opt, 'spm_2_bids'))
     opt = set_spm_2_bids_defaults(opt);
   end
 

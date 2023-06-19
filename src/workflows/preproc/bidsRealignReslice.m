@@ -42,7 +42,7 @@ function bidsRealignReslice(opt)
 
     saveAndRunWorkflow(matlabbatch, 'realign_reslice', opt, subLabel);
 
-    if ~opt.dryRun && opt.rename
+    if ~opt.dryRun && opt.rename.do
 
       copyFigures(BIDS, opt, subLabel);
 
