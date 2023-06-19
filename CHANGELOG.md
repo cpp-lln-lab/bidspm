@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* [FIX] skip smoothing when running bidspm prepoc in dryRun (#1054) @Remi-Gau
 * [FIX] handle phase entity in filename (#1034) @Remi-Gau
 * [FIX] fix group level results after contrasts smoothing  (#1021) @Remi-Gau
 * [FIX] copy to derivatives handles bids filter file and minimize re copying files that already exist (#1015) @Remi-Gau
