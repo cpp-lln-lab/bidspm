@@ -19,22 +19,24 @@ if [ ! -d ${yoda_dir} ]; then
 
     # create dataset in the home dir
     datalad create -c yoda ${yoda_dir}
-    cd ~/visual_motion_localiser
+    cd ${yoda_dir}
 
     # get data
-    datalad install -d . \
+    datalad install -d ${yoda_dir} \
         --source git@gin.g-node.org:/cpp-lln-lab/Toronto_VisMotionLocalizer_MR_raw.git \
         --get-data \
         --jobs 12 \
         inputs/raw
 
-    datalad create -d . outputs/derivatives/bidspm-preproc
-    datalad create -d . outputs/derivatives/bidspm-stats
+    datalad create -d ${yoda_dir} outputs/derivatives/bidspm-preproc
+    datalad create -d ${yoda_dir} outputs/derivatives/bidspm-stats
 
 fi
 
 # install bidspm if it doesn't exist
-if [ ! -d ${yoda_dir}/code/bidspm ]; then
+if [ ! -d "${yoda_dir}/code/bidspm" ]; then
+
+    echo "installing bidspm in ${yoda_dir}/code/bidspm"
 
     # get bidspm code
     source="https://github.com/cpp-lln-lab/bidspm.git"
@@ -44,14 +46,17 @@ if [ ! -d ${yoda_dir}/code/bidspm ]; then
     # directory of this script
     script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
     root_directory="${script_directory}/../.."
+    # absolute path of root directory
+    root_directory="$(readlink -f ${root_directory})"
     source=${root_directory}
 
+    echo "from ${source}"
+
     datalad install \
-        -d . \
+        -d ${yoda_dir} \
         --source ${source} \
-        --branch main \
         --recursive \
-        code/bidspm
+        ${yoda_dir}/code/bidspm
 
     # TODO: implement via bidspm bids app CLI only
     # cd code/bidspm
