@@ -43,12 +43,12 @@ if [ ! -d "${yoda_dir}/code/bidspm" ]; then
 
     # for debugging uncomment the following lines
 
-    # directory of this script
-    script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-    root_directory="${script_directory}/../.."
-    # absolute path of root directory
-    root_directory="$(readlink -f ${root_directory})"
-    source=${root_directory}
+    # # directory of this script
+    # script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+    # root_directory="${script_directory}/../.."
+    # # absolute path of root directory
+    # root_directory="$(readlink -f ${root_directory})"
+    # source=${root_directory}
 
     echo "from ${source}"
 
