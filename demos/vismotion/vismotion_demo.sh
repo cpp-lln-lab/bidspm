@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # fail whenever something is fishy, use -x to get verbose logfiles
-set -e -u
+set -e -u -x
 
 # IMPORTANT
 #
