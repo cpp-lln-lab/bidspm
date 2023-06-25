@@ -1,10 +1,12 @@
 function [confoundsTsv, figureHandle] = realignQA(varargin)
   %
-  % implement different quality control fMRI realigned
+  % Implement different quality control fMRI realigned.
   %
-  % [confoundsTsv, figureHandle] = realignQA(boldFile, motionFile, ...
-  %                                          'radius', 50, ...
-  %                                          'visible', 'on')
+  % USAGE::
+  %
+  %   [confoundsTsv, figureHandle] = realignQA(boldFile, motionFile, ...
+  %                                            'radius', 50, ...
+  %                                            'visible', 'on')
   %
   %
   % Adapted from Cyril Pernet's spmup

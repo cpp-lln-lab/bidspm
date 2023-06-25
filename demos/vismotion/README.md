@@ -34,7 +34,6 @@ all submodules.
 datalad install \
     -d . \
     -s https://github.com/cpp-lln-lab/bidspm.git \
-    --branch dev \
     -r \
     code/bidspm
 ```
@@ -44,7 +43,7 @@ initialize them manually, and update your dataset with that update
 
 ```bash
 cd code/bidspm
-git checkout dev
+git checkout main
 git submodule update --init --recursive && git submodule update --recursive
 cd ..
 datalad save -m 'update bidspm submodules'
@@ -65,6 +64,7 @@ This will install the data:
 datalad install -d . \
                 -s git@gin.g-node.org:/cpp-lln-lab/Trento_VisMotionLocalizer_MR_raw.git \
                 --recursive \
+                --jobs 12 \
                 inputs/raw
 ```
 

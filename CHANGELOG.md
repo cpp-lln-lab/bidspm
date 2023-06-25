@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* [FIX] Fix vismotion demo (#1070) @Remi-Gau
 * [FIX] Exclude from GLM specification events with onsets longer than the run duration (#1060) @Remi-Gau
 * [FIX] remove dummies from preproc dataset and not raw dataset when using CLI (#1057) @Remi-Gau
 * [FIX] skip smoothing when running bidspm prepoc in dryRun (#1054) @Remi-Gau

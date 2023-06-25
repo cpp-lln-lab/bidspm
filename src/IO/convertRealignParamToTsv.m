@@ -12,8 +12,7 @@ function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
   %
   % :type  opt: structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   %
   % :type  rmInput: logical
   % :param rmInput: Optional. Default to ``false``.

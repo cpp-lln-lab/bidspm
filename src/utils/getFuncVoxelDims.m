@@ -8,7 +8,7 @@ function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, fileName)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
+  %             See checkOptions.
   % :param subFuncDataDir:
   % :type subFuncDataDir:
   % :param fileName:

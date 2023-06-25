@@ -13,7 +13,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
+  %             See checkOptions.
   %
   % :param subLabel: Subject label (for example `'01'`).
   % :type subLabel: char

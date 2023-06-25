@@ -8,8 +8,7 @@ function bidsRealignReslice(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt: structure
   %
   % Assumes that ``bidsSTC()`` has already been run if ``opt.stc.skip`` is not set

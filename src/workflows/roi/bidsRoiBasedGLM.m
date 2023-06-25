@@ -7,7 +7,7 @@ function skipped = bidsRoiBasedGLM(opt)
   %   bidsRoiBasedGLM(opt)
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt: structure
   %
   % Returns:

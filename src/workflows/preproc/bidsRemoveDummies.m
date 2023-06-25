@@ -7,8 +7,7 @@ function bidsRemoveDummies(varargin)
   %  bidsRemoveDummies(opt, 'dummyScans', someInteger, 'force', false)
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt: structure
   %
   % :param dummyScans: number of volumes to remove
