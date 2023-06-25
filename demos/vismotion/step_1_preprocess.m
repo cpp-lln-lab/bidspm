@@ -6,8 +6,7 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
-this_dir = fileparts(mfilename('fullpath'));
-root_dir = fullfile(this_dir, '..', '..', '..', '..');
+root_dir = fullfile(returnHomeDir(), "visual_motion_localiser");
 
 bids_dir = fullfile(root_dir, 'inputs', 'raw');
 output_dir = fullfile(root_dir, 'outputs', 'derivatives');

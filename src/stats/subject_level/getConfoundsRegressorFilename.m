@@ -21,7 +21,7 @@ function filenames = getConfoundsRegressorFilename(BIDS, opt, subLabel, session,
   % :type run:        char
   %
   % :param opt:       Options chosen for the analysis.
-  %                   See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %                   See checkOptions.
   % :type opt:        structure
   %
   %

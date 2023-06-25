@@ -11,7 +11,7 @@ function [gm, wm, csf] = getTpmFilename(BIDS, anatImage, res, space)
   % :type  BIDS: structure
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt:  structure
   %
   % :param anatImage:

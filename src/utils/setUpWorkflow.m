@@ -13,7 +13,7 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir, indexData)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
+  %             See checkOptions.
   % :type opt: structure
   %
   % :param workflowName: name that will be printed on screen

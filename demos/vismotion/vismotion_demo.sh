@@ -10,52 +10,68 @@ set -e -u
 #
 # What I used (see the line below) is very likely not where MATLAB lives on your computer
 #
-# /usr/local/MATLAB/R2017a/bin/matlab
+# /usr/local/MATLAB/R2018a/bin/matlab
 
-# create dataset in the home dir
-datalad create -c yoda ~/visual_motion_localiser
-cd ~/visual_motion_localiser
+yoda_dir=~/visual_motion_localiser
 
-# get bidspm code from the dev branch
-source="https://github.com/cpp-lln-lab/bidspm.git"
+# create a new dataset if it doesn't exist
+if [ ! -d ${yoda_dir} ]; then
 
-# for debugging uncomment the following lines
-# root_directory="${PWD}/../.."
-# source=${root_directory}
+    # create dataset in the home dir
+    datalad create -c yoda ${yoda_dir}
+    cd ~/visual_motion_localiser
 
-datalad install \
-    -d . \
-    --source ${source} \
-    --branch dev \
-    --recursive \
-    code/bidspm
+    # get data
+    datalad install -d . \
+        --source git@gin.g-node.org:/cpp-lln-lab/Toronto_VisMotionLocalizer_MR_raw.git \
+        --get-data \
+        --jobs 12 \
+        inputs/raw
 
-# TODO: implement via bidspm bids app CLI only
-# cd code/bidspm
-# pip install .
-# cd ../..
+    datalad create -d . outputs/derivatives/bidspm-preproc
+    datalad create -d . outputs/derivatives/bidspm-stats
 
-# get data
-datalad install -d . \
-    --source git@gin.g-node.org:/cpp-lln-lab/Toronto_VisMotionLocalizer_MR_raw.git \
-    --get-data \
-    inputs/raw
+fi
 
-datalad create -d . outputs/derivatives/bidspm-preproc
-datalad create -d . outputs/derivatives/bidspm-stats
+# install bidspm if it doesn't exist
+if [ ! -d ${yoda_dir}/code/bidspm ]; then
 
-cd code/bidspm/demos/vismotion
+    # get bidspm code
+    source="https://github.com/cpp-lln-lab/bidspm.git"
+
+    # for debugging uncomment the following lines
+
+    # directory of this script
+    script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+    root_directory="${script_directory}/../.."
+    source=${root_directory}
+
+    datalad install \
+        -d . \
+        --source ${source} \
+        --branch main \
+        --recursive \
+        code/bidspm
+
+    # TODO: implement via bidspm bids app CLI only
+    # cd code/bidspm
+    # pip install .
+    # cd ../..
+
+fi
+
+cd ${yoda_dir}/code/bidspm/demos/vismotion
 
 # FIX ME
-/usr/local/MATLAB/R2017a/bin/matlab \
+/usr/local/MATLAB/R2018a/bin/matlab \
     -nodisplay -nosplash -nodesktop \
     -r "run('step_1_preprocess.m');exit;"
 
-datalad save -d ../../../.. -m 'preprocessing done' --recursive
+datalad save -d ${yoda_dir} -m 'preprocessing done' --recursive
 
 # FIX ME
-/usr/local/MATLAB/R2017a/bin/matlab \
+/usr/local/MATLAB/R2018a/bin/matlab \
     -nodisplay -nosplash -nodesktop \
     -r "run('step_2_stats.m');exit;"
 
-datalad save -d ../../../.. -m 'stats done' --recursive
+datalad save -d ${yoda_dir} -m 'stats done' --recursive

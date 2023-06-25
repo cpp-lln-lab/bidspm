@@ -31,7 +31,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   % :type  subLabel: char
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type  opt: structure
   %
   % :param info: ``sessions``, ``runs``, ``filename``.

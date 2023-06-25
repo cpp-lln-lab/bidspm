@@ -6,7 +6,7 @@ function status = noRoiFound(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
+  %             See checkOptions.
   % :param roiList: obligatory argument.
   % :type roiList: cell
   % :param folder: optional argument. default: ``''``

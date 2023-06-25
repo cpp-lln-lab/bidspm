@@ -14,7 +14,7 @@ function spmSessOut = orderAndPadCounfoundMatFile(varargin)
   % :type spmSess: cell
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt: structure
   %
   % :returns: - :status: (boolean)

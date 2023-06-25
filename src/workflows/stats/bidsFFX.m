@@ -29,7 +29,7 @@ function [matlabbatch, opt] = bidsFFX(varargin)
   % - ``'contrasts'`` to estimate contrasts.
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt: structure
   %
   % :param nodeName: Only for action ``'contrasts'``. Specifies which Node to

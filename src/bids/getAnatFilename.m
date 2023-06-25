@@ -17,7 +17,7 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
   % :type  subLabel:  char
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type  opt:  structure
   %
   % :returns: - :anatImage: (string)
