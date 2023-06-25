@@ -27,7 +27,3 @@
 	path = lib/octache
 	url = https://github.com/Remi-Gau/Octache.git
 	datalad-url = https://github.com/Remi-Gau/Octache.git
-[submodule "code/bidspm"]
-	path = code/bidspm
-	url = /home/remi/github/bidspm/demos/vismotion/../..
-	datalad-url = /home/remi/github/bidspm/demos/vismotion/../..
