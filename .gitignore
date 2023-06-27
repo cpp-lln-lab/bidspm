@@ -9,6 +9,7 @@ lib/spmup
 *.html
 *.docx
 *.ps
+.~lock.*
 
 new_events.tsv
 
