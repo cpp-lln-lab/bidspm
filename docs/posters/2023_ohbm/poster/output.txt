@@ -1,0 +1,20 @@
+.
+├── sub-control01
+│   └── task-Motion_space-MNI152NLin6Asym_FWHM-6
+│       ├── SPM.mat
+│       ├── spm_*.png
+│       ├── spm_*.tsv
+│       ├── sub-control01_ses-01_task-Motion_desc-confounds_timeseries.tsv
+│       ├── sub-control01_ses-01_task-Motion_onsets.tsv
+│       ├── sub-control01_*_designmatrix.png
+│       └── sub-control01_*_p-0pt050_k-0_MC-FWE_montage.png
+├── sub-control*
+├── sub-blind*
+└──derivatives
+    └── bidspm-groupStats
+        └── *_task-Motion_space-MNI152NLin6Asym_FWHM-6_contrast-MotionGtStatic
+            ├── SPM.mat
+            ├── *.nidm.zip
+            ├── spm_*.png
+            ├── spm_*.tsv
+            └── *_designmatrix.png

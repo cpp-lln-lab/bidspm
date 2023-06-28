@@ -1,5 +1,7 @@
 lib/spmup
 
+docs/posters/2023_ohbm/poster/betterposter-thumbnail-portrait.png
+
 # General
 .DS_Store
 
@@ -9,7 +11,8 @@ lib/spmup
 *.html
 *.docx
 *.ps
-.~lock.*
+*.~lock.*
+*.ppt*
 
 new_events.tsv
 

@@ -1,122 +1,54 @@
-{
-  "Name": "Motion localizer",
+{ "Name": "auditory motion localizer analysis",
   "BIDSModelVersion": "1.0.0",
-  "Description": "contrasts for the motion localizer dataset",
-  "Input": {"task": ["visMotion"],
-    "space": ["IXI549Space"]
-  },
+  "Input": {"task": ["Motion"],
+            "space": ["MNI152NLin6Asym"]},
   "Nodes": [
-    {
-      "Level": "Run",
+
+    { "Level": "Run",
       "Name": "run_level",
-      "GroupBy": [
-        "run",
-        "session",
-        "subject"
-      ],
-      "Model": {
-        "X": [
-          "trial_type.VisMot",
-          "trial_type.VisStat",
-          "trans_?",
-          "rot_?",
-          "non_steady_state_outlier*",
-          "motion_outlier*"
-        ],
-        "HRF": {
-          "Variables": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-          ],
-          "Model": "spm"
-        },
-        "Type": "glm",
-        "Options": {
-          "HighPassFilterCutoffHz": 0.0078,
-          "Mask": {
-            "suffix": ["mask"],
-            "desc": ["brain"]
-          }
-        },
-        "Software": {
-          "SPM": {
-            "SerialCorrelation": "FAST"
-          }
-        }
-      },
-      "DummyContrasts": {
-        "Contrasts": [
-          "trial_type.VisMot",
-          "trial_type.VisStat"
-        ],
-        "Test": "t"
-      },
-      "Contrasts": [
-        {
-          "Name": "VisMot_gt_VisStat",
-          "ConditionList": [
-            "trial_type.VisMot",
-            "trial_type.VisStat"
-          ],
-          "Weights": [
-            1,
-            -1
-          ],
-          "Test": "t"
-        }
-      ]
-    },
-    {
-      "Level": "Subject",
+      "GroupBy": ["run", "subject"],
+      "Model": {"X": ["Motion", "Static", "trans_?", "rot_?"],
+                "HRF": {"Variables": ["Motion", "Static"],
+                        "Model": "spm"},
+                "Type": "glm"},
+      "Contrasts": [{ "Name": "Motion_gt_Static",
+                      "ConditionList": ["Motion", "Static"],
+                      "Weights":       [1       , -1      ],
+                      "Test": "t"}]},
+
+    { "Level": "Subject",
       "Name": "subject_level",
-      "GroupBy": [
-        "contrast",
-        "subject"
-      ],
-      "Model": {
-        "X": [
-          1
-        ],
-        "Type": "glm"
-      },
-      "DummyContrasts": {
-        "Test": "t"
-      }
-    },
-    {
-      "Level": "Dataset",
-      "Name": "dataset_level",
-      "GroupBy": [
-        "contrast"
-      ],
-      "Model": {
-        "X": [
-          1
-        ],
-        "Type": "glm",
-        "Software": {
-          "SPM": {
-            "SerialCorrelation": "FAST"
-          },
-          "bidspm": {
-            "Results": [
-              {
-                "name": [
-                  "VisMot_gt_VisStat"
-                ],
-                "useMask": false,
-                "MC": "none",
-                "p": 0.05,
-                "k": 10,
-                "nidm": true
-              }
-            ]
-          }
-        }
-      },
-      "DummyContrasts": {
-        "Test": "t"
-      }
-    }
-  ]
-}
+      "GroupBy": ["contrast", "subject"],
+      "Model": {"X": [1], "Type": "glm"},
+      "DummyContrasts": {"Test": "t"}},
+
+    { "Level": "Dataset",
+      "Name": "within_group",
+      "GroupBy": ["contrast", "group"],
+      "Model": {"X": [1],
+                "Type": "glm",
+                "Software":
+                  {"bidspm":
+                    {"Results": [{"name": ["Motion_gt_Static"],
+                                  "MC": "FWE",
+                                  "p": 0.05,
+                                  "k": 10,
+                                  "nidm": true}]}}},
+      "DummyContrasts": {"Test": "t"}},
+    { "Level": "Dataset",
+      "Name": "between_groups",
+      "GroupBy": ["contrast"],
+      "Model": {"Type": "glm",
+                "X": [1, "group"]},
+      "Contrasts": [
+        { "Name": "blind_gt_control",
+          "ConditionList": ["group.blind", "group.control"],
+          "Weights":       [1,             -1             ],
+          "Test": "t"}]}],
+
+  "Edges": [{ "Source": "run_level",
+              "Destination": "subject_level"},
+            { "Source": "subject_level",
+              "Destination": "between_groups"},
+            { "Source": "subject_level",
+              "Destination": "within_group"}]}
