@@ -2,15 +2,25 @@
   "BIDSModelVersion": "1.0.0",
   "Input": {"task": ["Motion"],
             "space": ["MNI152NLin6Asym"]},
+
+  "Edges": [{ "Source": "run_level",
+              "Destination": "subject_level"},
+            { "Source": "subject_level",
+              "Destination": "between_groups"},
+            { "Source": "subject_level",
+              "Destination": "within_group"}],
+
   "Nodes": [
 
     { "Level": "Run",
       "Name": "run_level",
       "GroupBy": ["run", "subject"],
+
       "Model": {"X": ["Motion", "Static", "trans_?", "rot_?"],
                 "HRF": {"Variables": ["Motion", "Static"],
                         "Model": "spm"},
                 "Type": "glm"},
+
       "Contrasts": [{ "Name": "Motion_gt_Static",
                       "ConditionList": ["Motion", "Static"],
                       "Weights":       [1       , -1      ],
@@ -41,14 +51,7 @@
       "Model": {"Type": "glm",
                 "X": [1, "group"]},
       "Contrasts": [
-        { "Name": "blind_gt_control",
-          "ConditionList": ["group.blind", "group.control"],
+        { "Name": "grp_1_gt_grp_2",
+          "ConditionList": ["group.GRP_1", "group.GRP_2"],
           "Weights":       [1,             -1             ],
-          "Test": "t"}]}],
-
-  "Edges": [{ "Source": "run_level",
-              "Destination": "subject_level"},
-            { "Source": "subject_level",
-              "Destination": "between_groups"},
-            { "Source": "subject_level",
-              "Destination": "within_group"}]}
+          "Test": "t"}]}]}
