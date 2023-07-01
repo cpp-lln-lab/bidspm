@@ -28,12 +28,15 @@ README
 # Project specific
 onsets*_events.mat
 
-
 ## from running tests in root dir
 */group/*
 models/*
 derivatives/models
 derivatives/options
+
+# hatch
+src/_version.py
+
 
 ###############################################################################
 # python
