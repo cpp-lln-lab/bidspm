@@ -80,7 +80,7 @@ repos:
   - id: mypy
     additional_dependencies: [types-all]
     files: bidspm
-    args: [--config-file, setup.cfg]
+    args: [--config-file, pyproject.toml]
 
 - repo: https://github.com/MarcoGorelli/auto-walrus
   rev: v0.2.2
