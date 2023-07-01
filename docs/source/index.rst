@@ -30,6 +30,7 @@ Welcome to bidspm documentation!
    docker
    CHANGELOG
    links_and_references
+   CONTRIBUTING
    dev_doc
 
 

@@ -47,6 +47,7 @@ opt.query.modality{1} = 'anat'  ;
 opt.query.modality{2} = 'func'  ;
 opt.realign.useUnwarp = 1, ;
 opt.rename.do = 1, ;
+opt.rename.overwrite = 1, ;
 opt.results.MC = 'FWE'  ;
 opt.results.atlas = 'Neuromorphometrics'  ;
 opt.results.binary = 0, ;

@@ -35,7 +35,7 @@ bidsReport(opt);
 
 % preprocessing
 boilerplate(opt, 'outputPath', fullfile(WK, 'source', 'examples'), ...
-            'pipelineType', 'preproc');
+            'pipelineType', 'preprocess');
 
 % stats
 opt.model.file = fullfile(face_rep_dir, ...
