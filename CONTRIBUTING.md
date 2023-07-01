@@ -103,8 +103,6 @@ make update_faq
 
 - [ ] create a dedicated branch for the release candidate
 - [ ] update version in `citation.cff`
-- [ ] open a pull request (PR) from this release candidate branch targeting the default branch
-- [ ] fix any remaining failing continuous integration (test, markdown and code linting...)
 - [ ] documentation related
   - [ ] ensure the documentation is up to date
   - [ ] make sure the doc builds correctly and fix any error
@@ -112,6 +110,9 @@ make update_faq
 - [ ] update binder
 - [ ] update docker recipes
 - [ ] update changelog
+- [ ] run `make release`
+- [ ] open a pull request (PR) from this release candidate branch targeting the default branch
+- [ ] fix any remaining failing continuous integration (test, markdown and code linting...)
 - [ ] merge to default branch
 - [ ] create a tagged release
 - [ ] build and push docker images if necessary

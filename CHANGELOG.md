@@ -21,7 +21,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-<!-- **Full Changelog**: https://github.com/cpp-lln-lab/bidspm/compare/v3.0.0...v3.1.0 -->
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [3.1.0] - 2023-07-01
+
+**Full Changelog**: https://github.com/cpp-lln-lab/bidspm/compare/v3.0.0...v3.1.0
 
 ### Added
 
@@ -48,8 +64,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * [ENH] overwrite files when renaming by default (#1051) @Remi-Gau
 * [ENH] turn error into warning when no data to copy found (#992) @Remi-Gau
-
-### Deprecated
 
 ### Removed
 
