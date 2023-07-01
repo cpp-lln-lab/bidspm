@@ -234,16 +234,18 @@ Please see our
 
 ```bibtex
 @software{bidspm,
-  author = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo and Shahzad, Iqra and Nunes, Márcia and Caron-Guyon, Jeanne and Chouinard-Leclaire, Christine and Yang, Ying, and Mattioni, Stefania},
+  author = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo and Shahzad, Iqra and Nunes, Márcia and Caron-Guyon, Jeanne and Chouinard-Leclaire, Christine and Yang, Ying and Mattioni, Stefania and Van Audenhaege, Alice and Matuszewski, Jacek},
   license = {GPL-3.0},
-  title   = {bidspm},
+  title = {{bidspm}},
   url = {https://github.com/cpp-lln-lab/bidspm},
-  version = {3.0.0}
-  doi     = {10.5281/zenodo.3554331},
-  publisher = {Zenodo},
-  journal = {Software}
+  version = {3.1.0}
 }
 ```
+
+### Posters
+
+- [OHBM 2023](https://doi.org/10.5281/zenodo.8099835)
+
 
 ## Contributors
 
