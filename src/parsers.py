@@ -12,7 +12,7 @@ from . import _version
 log = logging.getLogger("bidspm")
 
 
-__version__ = _version.get_versions()["version"]
+__version__ = _version.__version__
 
 
 def bidspm_log(name: str = "bidspm") -> logging.Logger:

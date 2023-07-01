@@ -50,6 +50,7 @@ doc = [
     "sphinxcontrib-matlabdomain",
     "sphinxcontrib-mermaid",
 ]
+docs = ["bidspm[doc]"]
 style = [
 	"black",
     "codespell",
