@@ -12,6 +12,8 @@ workflows
 =========
 .. _bidsChangeSuffix:
 .. autofunction:: src.workflows.bidsChangeSuffix
+.. _bidsCheckVoxelSize:
+.. autofunction:: src.workflows.bidsCheckVoxelSize
 .. _bidsCopyInputFolder:
 .. autofunction:: src.workflows.bidsCopyInputFolder
 .. _bidsInverseNormalize:
@@ -398,6 +400,8 @@ infra
 .. autofunction:: src.infra.resizeAliMask
 .. _returnBsmDocURL:
 .. autofunction:: src.infra.returnBsmDocURL
+.. _returnHomeDir:
+.. autofunction:: src.infra.returnHomeDir
 .. _returnRepoURL:
 .. autofunction:: src.infra.returnRepoURL
 .. _returnRootDir:

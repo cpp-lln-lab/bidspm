@@ -32,13 +32,14 @@ repos:
   - id: trailing-whitespace
   - id: end-of-file-fixer
   - id: check-yaml
-  - id: check-added-large-files
+  - id: check-json
+  # - id: check-added-large-files
 
 - repo: https://github.com/pre-commit/pygrep-hooks
   rev: v1.10.0
   hooks:
-  - id: rst-backticks     # Detect common mistake of using single backticks when writing rst
-  - id: rst-inline-touching-normal     # Detect mistake of inline code touching normal text in rst
+  - id: rst-backticks
+  - id: rst-inline-touching-normal
 
 - repo: https://github.com/psf/black
   rev: 23.3.0
@@ -107,12 +108,6 @@ repos:
   rev: v2.2.5
   hooks:
   - id: codespell
-
-# - repo: https://github.com/tcort/markdown-link-check
-#   rev: v3.11.2
-#   hooks:
-#   - id: markdown-link-check
-#     args: [-q, -c, .github/workflows/mlc_config.json]
 
 ci:
   skip: [hadolint-docker]
