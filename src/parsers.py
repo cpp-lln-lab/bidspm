@@ -7,7 +7,7 @@ from typing import IO
 import rich
 from rich.logging import RichHandler
 
-from . import _version
+from . import _version  # type: ignore
 
 log = logging.getLogger("bidspm")
 
