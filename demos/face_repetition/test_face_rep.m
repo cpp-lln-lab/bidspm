@@ -38,10 +38,24 @@ if bids.internal.is_octave()
   ignore = {'unwarp'};
 end
 
-for iResolution = 2:3
+resolutions_to_test = 2:3;
 
-  opt.pipeline.name = ['bidspm-res' num2str(iResolution)];
-  opt.funcVoxelDims = repmat(iResolution, 1, 3);
+% with Octave running more n-1 loop in CI is fine
+% but not running crashes with a segmentation fault
+% /home/runner/work/_temp/fb8e9d58-fa9f-4f93-8c96-387973f3632e.sh: line 2:
+% 7487 Segmentation fault      (core dumped) octave $OCTFLAGS --eval "run system_tests_facerep;"
+%
+% not sure why
+if bids.internal.is_octave()
+  %  resolutions_to_test = 2;
+end
+
+parfor iResolution = 1:numel(resolutions_to_test)
+
+  this_res = resolutions_to_test(iResolution);
+
+  opt.pipeline.name = ['bidspm-res' num2str(this_res)];
+  opt.funcVoxelDims = repmat(this_res, 1, 3);
 
   %% preproc
   bids_dir = fullfile(WD, 'outputs', 'raw');
@@ -66,17 +80,17 @@ for iResolution = 2:3
   % resolution as the name of the GLM directory is based on the name of the
   % model in the BIDS model
   content = bids.util.jsondecode(model_file);
-  content.Name = [content.Name, ' resolution - ', num2str(iResolution)];
+  content.Name = [content.Name, ' resolution - ', num2str(this_res)];
 
   newModel = spm_file(model_file, ...
-                      'filename', ['model-faceRepetitionRes' num2str(iResolution) '_smdl.json']);
+                      'filename', ['model-faceRepetitionRes' num2str(this_res) '_smdl.json']);
 
   bids.util.jsonencode(newModel, content);
 
   % stats options
   opt = bids.util.jsondecode(optionsFile);
   % TODO put in a json file
-  opt.pipeline.name = ['bidspm-res' num2str(iResolution)];
+  opt.pipeline.name = ['bidspm-res' this_res];
 
   % specify underlay image
   BIDS = bids.layout([preproc_dir '-preproc'], 'use_schema', false);
@@ -94,15 +108,5 @@ for iResolution = 2:3
          'options', opt, ...
          'skip_validation', skip_validation, ...
          'concatenate', true);
-
-  % with Octave running more n-1 loop in CI is fine
-  % but not running crashes with a segmentation fault
-  % /home/runner/work/_temp/fb8e9d58-fa9f-4f93-8c96-387973f3632e.sh: line 2:
-  % 7487 Segmentation fault      (core dumped) octave $OCTFLAGS --eval "run system_tests_facerep;"
-  %
-  % not sure why
-  if bids.internal.is_octave()
-    break
-  end
 
 end
