@@ -21,7 +21,7 @@ root_dir = pwd;
 % directories
 bids_dir = fullfile(root_dir, 'inputs', 'ds002799');
 fmriprep_dir =  fullfile(bids_dir, 'derivatives', 'fmriprep');
-output_dir = fullfile(root_dir, 'outputs', 'derivatives');
+output_dir = fullfile(root_dir, 'outputs', 'derivatives', 'ds002799');
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
 % the the values below are just examples

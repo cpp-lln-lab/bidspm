@@ -30,12 +30,14 @@ The following command would pull from our
 `docker hub <https://hub.docker.com/repository/docker/cpplab/bidspm>`_
 and start the docker image::
 
+.. code-block:: bash
+
     docker run -it --rm cpplab/bidspm:latest
 
 The following command would do do the same,
 but it would also map 2 folders from your computer
 and run preprocessing on your dataset
-(assuming there is a task called auditory):
+(assuming there is a task called ``auditory``):
 
 .. code-block:: bash
 
@@ -73,4 +75,4 @@ and the path to the preprocessed data.
             --action stats \
             --preproc_dir /derivatives/bidspm-preproc \
             --model_file /models/smdl.json \
-            --fwhm 6
+            --fwhm 8
