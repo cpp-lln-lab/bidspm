@@ -3,6 +3,7 @@
 (faq)=
 # Frequently Asked Questions
 - [BIDS: What is a BIDS way to name and store Regions of Interest (ROIs)?](#bids:-what-is-a-bids-way-to-name-and-store-regions-of-interest-(rois))
+- [General: Can I use parallelization with bidspm?](#general:-can-i-use-parallelization-with-bidspm)
 - [General: How can I know that things are set up properly before I run an analysis?](#general:-how-can-i-know-that-things-are-set-up-properly-before-i-run-an-analysis)
 - [General: How can I prevent from having SPM windows pop up all the time?](#general:-how-can-i-prevent-from-having-spm-windows-pop-up-all-the-time)
 - [General: How can I run bidspm from the command line?](#general:-how-can-i-run-bidspm-from-the-command-line)
@@ -75,6 +76,26 @@ You can use bids-matlab to help you create BIDS valid filenames.
   >> file.filename
 
      hemi-R_space-MNI_label-V1v_desc-wang_mask.nii
+```
+
+<a name="general:-can-i-use-parallelization-with-bidspm"></a>
+## General: Can I use parallelization with bidspm?
+
+You can use parallelization with bidspm.
+The main way to do so is to use `parfor` loops in your code
+when running the `preprocess`, `smooth` or `stats` actions.
+
+For example, if you want to run the `preprocess` action on a list of subjects,
+
+```matlab
+subjects = {'01', '02', '03', '04', '05'};
+parfor i = 1:length(subjects)
+    bidspm(bids_dir, output_dir, ...
+           'participant_label', subjects(i), ...
+           'action', 'preprocess', ...
+           'task', {'tasnName'}, ...
+           'space', {'IXI549Space'});
+end
 ```
 
 <a name="general:-how-can-i-know-that-things-are-set-up-properly-before-i-run-an-analysis"></a>
