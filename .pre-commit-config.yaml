@@ -53,7 +53,7 @@ repos:
   - id: setup-cfg-fmt
 
 - repo: https://github.com/asottile/pyupgrade
-  rev: v3.8.0
+  rev: v3.9.0
   hooks:
   - id: pyupgrade
     args: [--py38-plus]
@@ -65,7 +65,7 @@ repos:
     exclude: tests_.*.py|version.*.py|setup.py
 
 - repo: https://github.com/ikamensh/flynt/
-  rev: '0.78'
+  rev: '1.0.0'
   hooks:
   - id: flynt
 
