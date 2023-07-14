@@ -1,9 +1,11 @@
 function [roiList, roiFolder] = getROIs(varargin)
   %
-  % Get the rois from :
+  % Get the rois depending on value of "opt.bidsFilterFile.roi.space":
   %
-  % - the group folder when running analysis in MNI space
-  % - the ``sub-*/roi/sub-subLabel`` folder when in individual space
+  % - the group folder for space: "MNI" or "IXI549Space"
+  % - the ``sub-*/roi/sub-subLabel`` folder:
+  %     - when in individual space ('T1w')
+  %     - or another MNI space
   %
   % USAGE::
   %
@@ -63,23 +65,32 @@ function [roiList, roiFolder] = getROIs(varargin)
     roiList = cellstr(roiList);
 
   else
-
+      
     % we expect ROI files to have BIDS valid names
-    BIDS_ROI = bids.layout(opt.dir.roi, 'use_schema', false);
-
+    clear filter;
+    filter.sub = {subLabel};
+    BIDS_ROI = bids.layout(opt.dir.roi, ...
+                           'use_schema', false, ...
+                           'filter', filter, ...
+                           'verbose', opt.verbosity > 1, ...
+                           'index_dependencies', false);
+    
     if strcmp(subLabel, '')
       msg = sprintf('Provide a subject label amongst those:\n%s\n\n', ...
                     bids.internal.create_unordered_list(bids.query(BIDS_ROI, 'subjects')));
       id = 'noSubject';
       logger('ERROR', msg, 'filename', mfilename(), 'id', id);
     end
-
+    
+    clear filter
     filter = opt.bidsFilterFile.roi;
     filter.sub = regexify(subLabel);
 
     if ~isempty(roiNames)
       if iscell(roiNames)
-        if ~(numel(roiNames) == 1 && ~strcmp(roiNames{1}, ''))
+        if numel(roiNames) > 1
+          filter.label = ['(' strjoin(opt.roi.name, '|') '){1}'];
+        elseif ~(numel(roiNames) == 1 && ~strcmp(roiNames{1}, ''))
         else
           filter.label = ['(' strjoin(opt.roi.name, '|') '){1}'];
         end
@@ -119,7 +130,8 @@ function space = getSpace(opt)
     space = {space};
   end
 
-  if any(~cellfun('isempty', regexp(space, 'MNI'))) || ismember('IXI549Space', space)
+  if ~strcmp(space{1}, 'MNI') && ~cellfun('isempty', regexp(space, 'MNI'))
+  elseif ismember(space, {'IXI549Space', 'MNI'})
     space = 'MNI';
   end
 

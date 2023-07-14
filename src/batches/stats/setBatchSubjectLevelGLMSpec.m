@@ -188,7 +188,7 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
   filter = fileFilterForBold(opt, subLabel);
 
   [name, version] = generatedBy(BIDS);
-  tokens = strsplit(version);
+  tokens = strsplit(version, '.');
   % TODO implement differently for fmriprep >=20.2.4
   % https://fmriprep.org/en/stable/changes.html#october-04-2021
   skip = opt.stc.skip || ...
