@@ -95,7 +95,7 @@ function [names, R] = createConfounds(tsvContent, designMatrix, maxNbVols)
 
     tmp(isnan(tmp)) = 0;
 
-    R(:, col) = tmp;
+    R(:, col) = tmp; %#ok<*AGROW>
 
   end
 
