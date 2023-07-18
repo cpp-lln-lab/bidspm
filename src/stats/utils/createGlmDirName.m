@@ -50,7 +50,9 @@ function glmDirName = createGlmDirName(opt)
       spec.entities.(fields{i}) = strjoin(spec.entities.(fields{i}), '');
     end
   end
-
+  if ismember('smoothAROMAnonaggr', opt.query.desc)
+    spec.entities.FWHM = 'aroma';
+  end
   bf = bids.File(spec);
 
   glmDirName = bf.filename;

@@ -408,7 +408,7 @@ function stats(args)
         bidsRFX('contrasts', opt, 'nodeName', nodeName);
       end
 
-      if concatenate
+      if isSubjectLevel && concatenate
         bidsConcatBetaTmaps(opt);
       end
 
