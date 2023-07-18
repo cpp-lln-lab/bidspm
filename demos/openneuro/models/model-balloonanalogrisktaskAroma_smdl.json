@@ -1,0 +1,90 @@
+{
+  "Name": "balloonanalogrisktask",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "default model for balloonanalogrisktask",
+  "Input": {
+    "task": [
+      "balloonanalogrisktask"
+    ],
+    "space": [
+      "MNI152NLin6Asym"
+    ],
+    "description": [
+      "smoothAROMAnonaggr"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          "trial_type.cash_demean",
+          "trial_type.control_pumps_demean",
+          "trial_type.explode_demean",
+          "trial_type.pumps_demean",
+          "trans_*",
+          "rot_*",
+          "*outlier*"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.cash_demean",
+            "trial_type.control_pumps_demean",
+            "trial_type.explode_demean",
+            "trial_type.pumps_demean"
+          ],
+          "Model": "spm + derivative"
+        },
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST"
+          },
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "cash_demean"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.cash_demean",
+          "trial_type.control_pumps_demean",
+          "trial_type.explode_demean",
+          "trial_type.pumps_demean"
+        ]
+      }
+    },
+    {
+      "Level": "Subject",
+      "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    }
+  ]
+}
