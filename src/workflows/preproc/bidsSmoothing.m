@@ -8,8 +8,7 @@ function bidsSmoothing(opt)
   %   bidsSmoothing(opt)
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt: structure
   %
   %

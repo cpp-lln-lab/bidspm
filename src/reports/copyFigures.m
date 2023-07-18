@@ -11,7 +11,7 @@ function copyFigures(BIDS, opt, subLabel)
   % :type  BIDS: structure
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type  opt: structure
   %
   % :param subLabel: Subject label (for example `'01'`).

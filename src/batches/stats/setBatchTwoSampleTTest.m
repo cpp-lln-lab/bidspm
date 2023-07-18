@@ -11,7 +11,8 @@ function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(vararg
   % :type  matlabbatch: cell
   %
   % :type  opt: structure
-  % :param opt: Options chosen for the analysis. See also: checkOptions, loadAndCheckOptions
+  % :param opt: Options chosen for the analysis.
+  %             See checkOptions.
   %
   % :param nodeName:
   % :type  nodeName: char

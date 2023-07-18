@@ -6,8 +6,7 @@ function figureFile = plotRoiTimeCourse(varargin)
   %
   %   plotRoiTimeCourse(tsvFile, verbose, 'colors', colors, 'roiName', roiName)
   %
-  % :param tsvFile: obligatory argument.
-  %                 Content of TSV is organized in a "BIDS" way.
+  % :param tsvFile: Content of TSV is organized in a "BIDS" way.
   %                 Must be ``(t + 1) X c`` with t = time points and c = conditions.
   %                 The + 1 for the row dimension is because of the headers
   %                 giving the name of the condition.
@@ -25,7 +24,7 @@ function figureFile = plotRoiTimeCourse(varargin)
   % :type roiName: char
   %
   %
-  % See also: bidsRoiBasedGLM(varargin)
+  % See also: bidsRoiBasedGLM
   %
 
   % (C) Copyright 2022 bidspm developers

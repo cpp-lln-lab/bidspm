@@ -11,7 +11,7 @@ function matlabbatch = setBatchReslice(matlabbatch, opt, referenceImg, sourceIma
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
+  %             See checkOptions.
   %
   % :param referenceImg: Reference image (only one image)
   % :type  referenceImg: char or cellstring

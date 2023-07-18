@@ -8,8 +8,7 @@ function bidsRealignUnwarp(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt: structure
   %
   % Assumes that ``bidsSTC`` has already been run.
@@ -52,7 +51,7 @@ function bidsRealignUnwarp(opt)
 
   cleanUpWorkflow(opt);
 
-  if ~opt.dryRun && opt.rename
+  if ~opt.dryRun && opt.rename.do
     opt = set_spm_2_bids_defaults(opt);
     prefix = get_spm_prefix_list();
     opt.query.prefix = prefix.unwarp;

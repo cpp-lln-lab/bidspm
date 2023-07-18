@@ -7,14 +7,14 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
   %   [matlabbatch, contrastsList] = setBatchFactorialDesign(matlabbatch, opt, nodeName)
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
+  % :type  matlabbatch: structure
   %
-  % :type opt:  structure
+  % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
+  %             See checkOptions.
   %
   % :param nodeName:
-  % :type nodeName: char
+  % :type  nodeName: char
   %
   % :returns: - :matlabbatch: (structure)
   %
@@ -74,6 +74,9 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
   elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
 
     groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
+
+    checkColumnParticipantsTsv(BIDS, groupColumnHdr);
+
     availableGroups = unique(BIDS.raw.participants.content.(groupColumnHdr));
 
     for iGroup = 1:numel(availableGroups)

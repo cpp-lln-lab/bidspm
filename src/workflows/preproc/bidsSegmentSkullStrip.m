@@ -9,8 +9,7 @@ function matlabbatch = bidsSegmentSkullStrip(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt: structure
   %
   %
@@ -71,7 +70,7 @@ function matlabbatch = bidsSegmentSkullStrip(opt)
 
     saveAndRunWorkflow(matlabbatch, 'segment_skullstrip', opt, subLabel);
 
-    if ~opt.dryRun && opt.rename
+    if ~opt.dryRun && opt.rename.do
       renameSegmentParameter(BIDS, subLabel, opt);
     end
 
@@ -79,7 +78,7 @@ function matlabbatch = bidsSegmentSkullStrip(opt)
 
   cleanUpWorkflow(opt);
 
-  if opt.dryRun || ~opt.rename
+  if opt.dryRun || ~opt.rename.do
     return
   end
 

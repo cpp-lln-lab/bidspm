@@ -12,6 +12,36 @@ function test_suite = test_convertOnsetTsvToMat %#ok<*STOUT>
 
 end
 
+function test_convertOnsetTsvToMat_exclude_late_events()
+
+  % GIVEN
+  tsvFile = fullfile(getTestDataDir(), ...
+                     'tsv_files', ...
+                     'sub-01_task-vismotion_events.tsv');
+  opt = setOptions('vismotion');
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  % WHEN
+  runDuration = 3;
+  fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration);
+
+  % THEN
+  assertEqual(fullfile(getTestDataDir(), ...
+                       'tsv_files', ...
+                       'sub-01_task-vismotion_onsets.mat'), ...
+              fullpathOnsetFilename);
+  assertEqual(exist(fullpathOnsetFilename, 'file'), 2);
+
+  load(fullpathOnsetFilename);
+
+  assertEqual(names, {'VisMot'});
+  assertEqual(onsets, {2});
+  assertEqual(durations, {2});
+
+  cleanUp(fullpathOnsetFilename);
+
+end
+
 function test_convertOnsetTsvToMat_parametric_modulation()
 
   % GIVEN

@@ -11,7 +11,7 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
   %              See also: bids.layout, getData.
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type  opt: structure
   %
   % :param subLabel:

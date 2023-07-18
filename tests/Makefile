@@ -9,7 +9,7 @@ clean_local:
 	rm -rf data/derivatives/bidspm-stats/group
 	rm -rf data/derivatives/bidspm-*/jobs
 
-create_dummy_dataset: clean
+create_dummy_dataset: clean_local
 	sh createDummyDataSet.sh
 
 bids_examples:
@@ -18,7 +18,7 @@ bids_examples:
 	cp bids-examples/synthetic/dataset_description.json bids-examples/synthetic/derivatives/fmriprep
 	touch bids-examples/.gitkeep
 
-data: create_dummy_dataset bids_examples
+data: clean create_dummy_dataset bids_examples
 	wget --quiet -O moae_spm12.zip https://files.de-1.osf.io/v1/resources/3vufp/providers/osfstorage/62ab741be6f3ec09a7e48d13/?zip=
 	mkdir -p data/MoAE/derivatives/spm12
 	unzip -d ./data/MoAE/derivatives/spm12 moae_spm12.zip

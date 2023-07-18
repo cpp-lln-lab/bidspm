@@ -28,7 +28,9 @@ Welcome to bidspm documentation!
    quality_analysis
    mancoreg
    docker
+   CHANGELOG
    links_and_references
+   CONTRIBUTING
    dev_doc
 
 

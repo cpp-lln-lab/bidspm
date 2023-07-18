@@ -9,8 +9,7 @@ function bidsCreateVDM(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt: structure
   %
   % .. todo:
@@ -30,7 +29,7 @@ function bidsCreateVDM(opt)
   [BIDS, opt] = setUpWorkflow(opt, 'create voxel displacement map');
 
   % why?
-  opt.rename = false;
+  opt.rename.do = false;
 
   opt.query.desc = '';
 
@@ -43,7 +42,7 @@ function bidsCreateVDM(opt)
 
     if any(ismember(suffixes, {'phase12', 'phasediff', 'fieldmap', 'epi'}))
 
-      opt.rename = true;
+      opt.rename.do = true;
 
       printProcessingSubject(iSub, subLabel, opt);
 

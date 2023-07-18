@@ -10,8 +10,7 @@ function bidsLesionSegmentation(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt: structure
   %
   % Segmentation will be performed using the information provided in the BIDS data set.

@@ -8,7 +8,7 @@ function opt = checkOptions(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
+  %             See checkOptions.
   %
   % :returns:
   %
@@ -94,9 +94,11 @@ function opt = checkOptions(opt)
   %     - ``opt.zeropad = 2`` - number of zeros used for padding subject numbers, in case
   %       subjects should be fetched by their number ``1`` and not their label ``O1'``.
   %
-  %     - ``opt.rename = true`` - to skip renaming files with ``bidsRename()``.
+  %     - ``opt.rename.do = true`` - to skip renaming files with ``bidsRename()``.
   %       Mostly for debugging as the output files won't be usable by any of the stats
   %       workflows.
+  %     - ``opt.rename.overwrite = true`` - To overwrite any eventual previous output of
+  %       ``bidsRename()``.
   %
   %     - ``opt.msg.color = blue`` - default font color of the prompt messages.
   %
@@ -230,7 +232,8 @@ function fieldsToSet = setDefaultOption()
 
   %% defines what counts as BOLD, T1W...
   fieldsToSet.bidsFilterFile = struct('fmap', struct('modality', 'fmap'), ...
-                                      'bold', struct('modality', 'func', 'suffix', 'bold'), ...
+                                      'bold', struct('modality', 'func', ...
+                                                     'suffix', 'bold'), ...
                                       't2w',  struct('modality', 'anat', 'suffix', 'T2w'), ...
                                       't1w',  struct('modality', 'anat', ...
                                                      'space', '', ...
@@ -262,7 +265,8 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.subjects = {[]};
   fieldsToSet.zeropad = 2;
 
-  fieldsToSet.rename = true;
+  fieldsToSet.rename.do = true;
+  fieldsToSet.rename.overwrite = true;
 
   fieldsToSet.query.modality = {'anat', 'func'};
 

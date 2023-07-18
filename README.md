@@ -5,7 +5,7 @@
   [![miss hit](https://img.shields.io/badge/code%20style-miss_hit-000000.svg)](https://misshit.org/)
   [![Documentation Status: main](https://readthedocs.org/projects/bidspm/badge/?version=stable)](https://bidspm.readthedocs.io/en/stable/?badge=stable)
   [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/bidspm/main)
-  [![tests matlab](https://github.com/cpp-lln-lab/bidspm/actions/workflows/tests_matlab.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/tests_matlab.yml)
+  [![tests matlab](https://github.com/cpp-lln-lab/bidspm/actions/workflows/tests.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/tests.yml)
   [![tests octave](https://github.com/cpp-lln-lab/bidspm/actions/workflows/tests_octave.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/tests_octave.yml)
   [![codecov](https://codecov.io/gh/cpp-lln-lab/bidspm/branch/main/graph/badge.svg?token=PMQYH0DIPX)](https://codecov.io/gh/cpp-lln-lab/bidspm)
   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3554331.svg)](https://doi.org/10.5281/zenodo.3554331)
@@ -234,16 +234,18 @@ Please see our
 
 ```bibtex
 @software{bidspm,
-  author = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo and Shahzad, Iqra and Nunes, Márcia and Caron-Guyon, Jeanne and Chouinard-Leclaire, Christine and Yang, Ying, and Mattioni, Stefania},
+  author = {Gau, Rémi and Barilari, Marco and Battal, Ceren and Rezk, Mohamed and Collignon, Olivier and Gurtubay, Ane and Falagiarda, Federica and MacLean, Michèle and Cerpelloni, Filippo and Shahzad, Iqra and Nunes, Márcia and Caron-Guyon, Jeanne and Chouinard-Leclaire, Christine and Yang, Ying and Mattioni, Stefania and Van Audenhaege, Alice and Matuszewski, Jacek},
   license = {GPL-3.0},
-  title   = {bidspm},
+  title = {{bidspm}},
   url = {https://github.com/cpp-lln-lab/bidspm},
-  version = {3.0.0}
-  doi     = {10.5281/zenodo.3554331},
-  publisher = {Zenodo},
-  journal = {Software}
+  version = {3.1.0}
 }
 ```
+
+### Posters
+
+- [OHBM 2023](https://doi.org/10.5281/zenodo.8099835)
+
 
 ## Contributors
 

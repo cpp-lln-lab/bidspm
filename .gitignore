@@ -1,5 +1,7 @@
 lib/spmup
 
+docs/posters/2023_ohbm/poster/betterposter-thumbnail-portrait.png
+
 # General
 .DS_Store
 
@@ -9,6 +11,8 @@ lib/spmup
 *.html
 *.docx
 *.ps
+*.~lock.*
+*.ppt*
 
 new_events.tsv
 
@@ -28,12 +32,15 @@ README
 # Project specific
 onsets*_events.mat
 
-
 ## from running tests in root dir
 */group/*
 models/*
 derivatives/models
 derivatives/options
+
+# hatch
+src/_version.py
+
 
 ###############################################################################
 # python

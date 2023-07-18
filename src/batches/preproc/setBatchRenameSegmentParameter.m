@@ -10,7 +10,7 @@ function matlabbatch = setBatchRenameSegmentParameter(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
+  %             See checkOptions.
   %
   %
   % :returns: - :matlabbatch: (cell) The matlabbatch ready to run the spm job

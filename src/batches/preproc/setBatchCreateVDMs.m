@@ -14,7 +14,7 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   %              See also: bids.layout, getData.
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type  opt: structure
   %
   % :param subLabel: subject label
@@ -30,11 +30,11 @@ function matlabbatch = setBatchCreateVDMs(matlabbatch, BIDS, opt, subLabel)
   printBatchName('create voxel displacement map', opt);
 
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
-  filter = struct( ...
-                  'sub', subLabel, ...
-                  'task', opt.taskName, ...
-                  'suffix', 'bold', ...
-                  'prefix', 'mean_');
+  filter = opt.query;
+  filter.sub = subLabel;
+  filter.task =  opt.taskName;
+  filter.suffix = 'bold';
+  filter.prefix = 'mean_';
   refImage = bids.query(BIDS, 'data', filter);
 
   for iSes = 1:nbSessions

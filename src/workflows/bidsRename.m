@@ -8,8 +8,7 @@ function createdFiles = bidsRename(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
-  %             ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt: structure
   %
   % See the spm_2_bids submodule and ``defaults.set_spm_2_bids_defaults``
@@ -19,13 +18,13 @@ function createdFiles = bidsRename(opt)
 
   % (C) Copyright 2019 bidspm developers
 
-  if ~opt.rename
+  if ~opt.rename.do
     return
   end
 
   createdFiles = {};
 
-  if not(isfield(opt, 'spm_2_bids'))
+  if ~(isfield(opt, 'spm_2_bids'))
     opt = set_spm_2_bids_defaults(opt);
   end
 
@@ -82,7 +81,8 @@ function renameFileAndUpdateMetadata(opt, data, newFilename, json, createdFiles)
   end
 
   % TODO write test for this
-  if exist(outputFile, 'file') || ismember(newFilename, createdFiles)
+  if ~opt.rename.overwrite && exist(outputFile, 'file') || ...
+      ismember(newFilename, createdFiles)
 
     msg = sprintf('This file already exists. Will not overwrite.\n\t%s\n', ...
                   newFilename);

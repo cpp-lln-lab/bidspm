@@ -1,4 +1,4 @@
-function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
+function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile, runDuration)
   %
   % For a given ``_events.tsv`` file and ``_model.json``,
   % it creates a  ``_onset.mat`` file that can directly be used
@@ -11,7 +11,7 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   %   onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type  opt: structure
   %
   % :param subLabel:
@@ -19,6 +19,10 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   %
   % :param tsvFile: fullpath name of the tsv file.
   % :type  tsvFile: char
+  %
+  % :param runDuration: Total duration of the run (in seconds). Optional.
+  %                     Events occurring later than this will be excluded.
+  % :type  runDuration: numeric
   %
   % :returns: :onsetFilename: (path) fullpath name of the file created.
   %
@@ -35,7 +39,7 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   msg = sprintf('\n  Reading the tsv file : %s \n', pathToPrint(tsvFile));
   logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
-  onsetFilename = convertOnsetTsvToMat(opt, tsvFile);
+  onsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration);
 
   % move file into the FFX directory
   [~, filename, ext] = spm_fileparts(onsetFilename);

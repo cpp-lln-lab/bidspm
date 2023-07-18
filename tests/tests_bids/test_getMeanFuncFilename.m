@@ -18,7 +18,8 @@ function test_getMeanFuncFilename_basic()
 
   [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt);
 
-  expectedMeanImage = 'sub-01_ses-01_task-vislocalizer_space-individual_desc-mean_bold.nii';
+  expectedMeanImage = ['sub-01_ses-01_task-vislocalizer_part-mag', ...
+                       '_space-individual_desc-mean_bold.nii'];
 
   expectedmeanFuncDir = fullfile(getTestDataDir('preproc'), ...
                                  'sub-01', 'ses-01', 'func');
@@ -29,6 +30,7 @@ function test_getMeanFuncFilename_basic()
   opt.query.space = 'IXI549Space';
   meanImage = getMeanFuncFilename(BIDS, subLabel, opt);
 
-  expectedMeanImage = 'sub-01_ses-01_task-vislocalizer_space-IXI549Space_desc-mean_bold.nii';
+  expectedMeanImage = ['sub-01_ses-01_task-vislocalizer_part-mag', ...
+                       '_space-IXI549Space_desc-mean_bold.nii'];
 
 end

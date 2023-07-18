@@ -14,7 +14,7 @@ function matlabbatch = setBatchGenerateT1map(varargin)
   % :type BIDS: structure
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type  opt: structure
   %
   % :param subLabel: subject label
@@ -30,7 +30,8 @@ function matlabbatch = setBatchGenerateT1map(varargin)
   % images for this to work (check the README of the toolbox for more info):
   %
   %   - ``EchoSpacing``
-  %   - ``PartialFourierInSlice``: between 0 and 1 (example: 6/8)
+  %   - ``SlicePartialFourier`` or ``PartialFourierInSlice``:
+  %     between 0 and 1 (example: 6/8)
   %   - ``FatSat``: must be "yes" or "no"
   %
   % Most of the those metadata should be available from the PDF of with yout
@@ -144,22 +145,48 @@ function matlabbatch = setBatchGenerateT1map(varargin)
 
       % Things that are not officially part of BIDS
       % but that should be added to the JSON of the inversion images
-      try
-        estimateT1.EchoSpacing = metadataInv1.EchoSpacing;
-        estimateT1.PartialFourierInSlice = metadataInv1.PartialFourierInSlice;
-        estimateT1.FatSat = metadataInv1.FatSat;
-      catch
-        msg = sprintf('Missing non-BIDS metadata for %s\nSee ''help setBatchGenerateT1map''', ...
-                      bids.internal.create_unordered_list(filter));
-        id = 'missingNonBIDSMetadata';
-        logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
-        continue
+
+      requiredMetadata = {'EchoSpacing', 'FatSat'};
+      for i = 1:numel(requiredMetadata)
+        if ~ismember(requiredMetadata{i}, fieldnames(metadataInv1))
+          missingMetadata(requiredMetadata{i}, filter, opt);
+          continue
+        end
+        estimateT1.(requiredMetadata{i}) = metadataInv1.(requiredMetadata{i});
       end
 
-      matlabbatch{end + 1}.spm.tools.mp2rage.estimateT1 = estimateT1;
+      if ~ismember('SlicePartialFourier', fieldnames(metadataInv1))
+        missingMetadata('SlicePartialFourier', filter, opt, true);
+        if ~ismember('PartialFourierInSlice', fieldnames(metadataInv1))
+          missingMetadata('PartialFourierInSlice', filter, opt);
+          continue
+        else
+          estimateT1.PartialFourierInSlice = metadataInv1.PartialFourierInSlice;
+        end
+      else
+        estimateT1.PartialFourierInSlice = metadataInv1.SlicePartialFourier;
+      end
+
+      matlabbatch{end + 1}.spm.tools.mp2rage.estimateT1 = estimateT1; %#ok<*AGROW>
 
     end
 
   end
 
+end
+
+function missingMetadata(metadata, filter, opt, tolerant)
+  if nargin < 3
+    tolerant = false;
+  end
+  msg = sprintf(['Missing non-BIDS metadata "%s" for %s\n', ...
+                 'See "help setBatchGenerateT1map"'], ...
+                metadata, ...
+                bids.internal.create_unordered_list(filter));
+  id = 'missingNonBIDSMetadata';
+  if tolerant
+    logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
+  else
+    logger('ERROR', msg, 'id', id, 'options', opt, 'filename', mfilename());
+  end
 end

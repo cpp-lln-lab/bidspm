@@ -9,7 +9,7 @@ function matlabbatch = bidsResults(varargin)
   %   bidsResults(opt,'nodeName', '')
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions
   % :type opt: structure
   %
   % :param nodeName: name of the BIDS stats model Node(s) to show results of

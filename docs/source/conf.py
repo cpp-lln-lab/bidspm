@@ -43,6 +43,8 @@ extensions = [
     "sphinxarg.ext",
 ]
 matlab_src_dir = os.path.dirname(os.path.abspath("../../src"))
+matlab_short_links = True
+matlab_auto_link = "basic"
 primary_domain = "mat"
 
 # Add any paths that contain templates here, relative to this directory.
@@ -53,7 +55,7 @@ templates_path = ["_templates"]
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ["examples", "defaults", "demo", "images/*.md"]
 
-suppress_warnings = ["myst.header"]
+suppress_warnings = ["myst.header", "myst.xref_missing"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"

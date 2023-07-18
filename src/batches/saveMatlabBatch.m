@@ -15,7 +15,7 @@ function saveMatlabBatch(matlabbatch, batchType, opt, subLabel) %#ok<INUSL>
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See also: checkOptions
+  %             See checkOptions.
   %
   % :param subLabel:
   % :type  subLabel: char

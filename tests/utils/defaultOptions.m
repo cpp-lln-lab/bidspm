@@ -74,7 +74,8 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.zeropad = 2;
 
-  expectedOptions.rename = true;
+  expectedOptions.rename.do = true;
+  expectedOptions.rename.overwrite = true;
 
   expectedOptions.QA.glm.do = false;
 

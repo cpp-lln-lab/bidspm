@@ -12,6 +12,8 @@ workflows
 =========
 .. _bidsChangeSuffix:
 .. autofunction:: src.workflows.bidsChangeSuffix
+.. _bidsCheckVoxelSize:
+.. autofunction:: src.workflows.bidsCheckVoxelSize
 .. _bidsCopyInputFolder:
 .. autofunction:: src.workflows.bidsCopyInputFolder
 .. _bidsInverseNormalize:
@@ -60,6 +62,8 @@ workflows stats
 .. autofunction:: src.workflows.stats.bidsRFX
 .. _bidsResults:
 .. autofunction:: src.workflows.stats.bidsResults
+.. _bidsSmoothContrasts:
+.. autofunction:: src.workflows.stats.bidsSmoothContrasts
 
 
 .. _workflows preproc:
@@ -274,6 +278,8 @@ bids
 .. autofunction:: src.bids.addStcToQuery
 .. _buildIndividualSpaceRoiFilename:
 .. autofunction:: src.bids.buildIndividualSpaceRoiFilename
+.. _checkColumnParticipantsTsv:
+.. autofunction:: src.bids.checkColumnParticipantsTsv
 .. _checkFmriprep:
 .. autofunction:: src.bids.checkFmriprep
 .. _fileFilterForBold:
@@ -370,6 +376,8 @@ defaults
 .. autofunction:: src.defaults.set_spm_2_bids_defaults
 .. _spm_my_defaults:
 .. autofunction:: src.defaults.spm_my_defaults
+.. _validateResultsStructure:
+.. autofunction:: src.defaults.validateResultsStructure
 
 
 .. _infra:
@@ -392,6 +400,8 @@ infra
 .. autofunction:: src.infra.resizeAliMask
 .. _returnBsmDocURL:
 .. autofunction:: src.infra.returnBsmDocURL
+.. _returnHomeDir:
+.. autofunction:: src.infra.returnHomeDir
 .. _returnRepoURL:
 .. autofunction:: src.infra.returnRepoURL
 .. _returnRootDir:
@@ -556,6 +566,8 @@ stats subject_level
 
 stats group_level
 =================
+.. _computeCumulativeFwhm:
+.. autofunction:: src.stats.group_level.computeCumulativeFwhm
 .. _findSubjectConImage:
 .. autofunction:: src.stats.group_level.findSubjectConImage
 .. _getRFXdir:

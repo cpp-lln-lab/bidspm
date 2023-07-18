@@ -1,6 +1,125 @@
 [build-system]
-requires = ["setuptools", "versioneer[toml]"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/_version.py"
+
+[project]
+name = "bidspm"
+description = "SPM centric bids app"
+long_description = { file = "README.md" }
+authors = [{ name = "bidspm developers" }]
+maintainers = [{ name = "Rémin Gau", email = "remi.gau@gmail.com" }]
+readme = "README.md"
+license = { text = "GPL-3.0" }
+requires-python = ">=3.8"
+dependencies = [
+    "bsmschema",
+    "rich",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+]
+# Version from setuptools_scm
+dynamic = ["version"]
+
+[project.optional-dependencies]
+demo = [
+    "jupyterlab",
+    "octave-kernel",
+]
+doc = [
+    "urllib3==1.26.15",
+    "faqtory",
+    "myst-parser",
+    "sphinx",
+    "sphinx-argparse",
+    "sphinx-copybutton",
+    "sphinx-rtd-theme",
+    "sphinxcontrib-bibtex",
+    "sphinxcontrib-matlabdomain",
+    "sphinxcontrib-mermaid",
+]
+docs = ["bidspm[doc]"]
+style = [
+	"black",
+    "codespell",
+    "flake8",
+    "flake8-docstrings",
+    "miss-hit",
+    "mypy",
+    "pre-commit",
+    "reorder-python-imports",
+    "rstcheck",
+    "sourcery",
+]
+dev = [
+    "bidspm[demo,doc,style]",
+    "cffconvert",
+    "coverage",
+    "pytest",
+    "ruamel.yaml",
+]
+
+[project.scripts]
+bidspm = "src.bidspm:cli"
+validate_model = "src.validate:main"
+
+[project.urls]
+Homepage = "https://bidspm.readthedocs.io"
+
 
 [tool.black]
 line-length = 90
+
+[tool.isort]
+profile = "black"
+line_length = 90
+skip_gitignore = true
+combine_as_imports = true
+
+[tool.pytest.ini_options]
+addopts = "-ra -vv"
+
+[tool.codespell]
+skip = "*.tsv,*.json,*.nii*,*.js,*.svg,*.eps,*.log,.git,env,build,lib,options,outputs,inputs,bids-examples,stats_model,coverage_html,stats.md,preprocess.md,ds001734"
+ignore-words-list = "fo,te,als,ane,nin,fot,fwe,commun"
+builtin = "clear,rare"
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+omit = [
+    "*_version.py",
+    "__init__.py",
+]
+
+[tool.mypy]
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = [
+    "bsmschema.models",
+    "rich",
+    "rich.logging",
+]
+ignore_missing_imports = true

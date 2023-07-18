@@ -1,0 +1,14 @@
+[flake8]
+max-line-length = 110
+max-complexity = 10
+ignore = F841, D100, D101, D103, D104
+exclude =
+    *build
+    .git
+    __pycache__
+    tests/*
+    _version.py
+    demos/*
+count = True
+show-source = True
+statistics = True

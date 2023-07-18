@@ -7,7 +7,7 @@ function matlabbatch = bidsSTC(opt)
   %  bidsSTC(opt)
   %
   % :param opt: Options chosen for the analysis.
-  %             See also: ``checkOptions()`` and ``loadAndCheckOptions()``.
+  %             See checkOptions.
   % :type opt: structure
   %
   % STC will be performed using the information provided in the BIDS data set.

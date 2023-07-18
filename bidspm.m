@@ -274,11 +274,13 @@ function preprocess(args)
   end
   bidsCopyInputFolder(opt);
   if opt.dummy_scans > 0
-    bidsRemoveDummies(opt, ...
-                      'dummyScans', opt.dummy_scans, ...
+    tmpOpt = opt;
+    tmpOpt.dir.input = tmpOpt.dir.preproc;
+    bidsRemoveDummies(tmpOpt, ...
+                      'dummyScans', tmpOpt.dummy_scans, ...
                       'force', false);
   end
-
+  bidsCheckVoxelSize(opt);
   if opt.useFieldmaps && ~opt.anatOnly
     bidsCreateVDM(opt);
   end
@@ -288,6 +290,15 @@ function preprocess(args)
   bidsSpatialPrepro(opt);
   if opt.fwhm.func > 0 && ~opt.anatOnly
     opt.query.desc = 'preproc';
+    if opt.dryRun
+      msg = ['"dryRun" set to "true", so smoothing will be skipped', ...
+             ' as it requires the output of spatial preprocessing to run.'];
+      logger('WARNING', msg, ...
+             'options', opt, ...
+             'filename', mfilename(), ...
+             'id', 'skipSmoothingInDryRun');
+      return
+    end
     bidsSmoothing(opt);
   end
 
