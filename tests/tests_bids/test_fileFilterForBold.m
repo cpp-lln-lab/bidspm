@@ -35,6 +35,31 @@ function test_fileFilterForBold_events()
 
 end
 
+function test_fileFilterForBold_events_aroma()
+
+  opt.bidsFilterFile.bold = struct('modality', 'func', ...
+                                   'suffix', 'bold', ...
+                                   'desc', {'smoothAROMAnonaggr'});
+  opt.verbosity = 2;
+  opt.taskName = 'foo';
+  opt.fwhm.func = 6;
+  opt.space = {'MNI152NLin6Asym'};
+
+  subLabel = '01';
+
+  [filter] = fileFilterForBold(opt, subLabel, 'events');
+
+  expected = struct('extension', '.tsv', ...
+                    'modality', 'func', ...
+                    'prefix', '', ...
+                    'sub', '^01$', ...
+                    'suffix', {{'events'}}, ...
+                    'task', 'foo');
+
+  assertEqual(filter, expected);
+
+end
+
 function test_fileFilterForBold_confounds()
 
   opt.bidsFilterFile.bold = struct('modality', 'func', 'suffix', 'bold');
@@ -91,7 +116,7 @@ function test_fileFilterForBold_desc()
   opt.verbosity = 2;
   opt.taskName = 'foo';
   opt.fwhm.func = 6;
-  opt.space = {'IXI549Space'};
+  opt.space = {'MNI152NLin6Asym'};
 
   subLabel = '01';
 
@@ -103,7 +128,7 @@ function test_fileFilterForBold_desc()
                     'extension', {{'.nii.*'}}, ...
                     'modality', 'func', ...
                     'prefix', '', ...
-                    'space', {{'IXI549Space'}}, ...
+                    'space', {{'MNI152NLin6Asym'}}, ...
                     'sub', '^01$', ...
                     'suffix', 'bold', ...
                     'task', 'foo');
