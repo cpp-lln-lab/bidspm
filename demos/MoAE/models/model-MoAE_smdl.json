@@ -45,7 +45,7 @@
         "Software": {
           "SPM": {
             "SerialCorrelation": "AR(1)",
-            "InclusiveMaskingThreshold": 0.8
+            "InclusiveMaskingThreshold": "-Inf"
           },
           "bidspm": {
             "Results": [
