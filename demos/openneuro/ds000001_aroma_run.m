@@ -6,7 +6,7 @@
 clear;
 clc;
 
-COPY = false;
+COPY = true;
 
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
