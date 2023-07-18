@@ -28,7 +28,8 @@ function [filter, opt] = fileFilterForBold(opt, subLabel, type)
   opt.query.modality = 'func';
 
   if strcmp(type, 'glm')
-    if opt.fwhm.func > 0
+    if isfield(opt.query, 'desc') && ~isempty(opt.query.desc)
+    elseif opt.fwhm.func > 0
       opt.query.desc = ['smth' num2str(opt.fwhm.func)];
     else
       opt.query.desc = 'preproc';
@@ -78,6 +79,9 @@ function [filter, opt] = fileFilterForBold(opt, subLabel, type)
   if ismember(type, {'events', 'confounds'})
     if isfield(filter, 'space')
       filter = rmfield(filter, 'space');
+    end
+    if isfield(filter, 'desc')
+      filter = rmfield(filter, 'desc');
     end
   end
 
