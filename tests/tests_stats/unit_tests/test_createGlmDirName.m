@@ -30,3 +30,18 @@ function test_createGlmDirName_basic()
   assertEqual(glmDirName, expectedOutput);
 
 end
+
+function test_createGlmDirName_aroma()
+
+  opt = setOptions('dummy');
+  opt.query.desc = {'smoothAROMAnonaggr'};
+  opt.space = 'MNI152NLin6Asym';
+  opt.model.bm = BidsModel('file', opt.model.file);
+
+  glmDirName = createGlmDirName(opt);
+
+  expectedOutput = 'task-dummy_space-MNI152NLin6Asym_FWHM-aroma';
+
+  assertEqual(glmDirName, expectedOutput);
+
+end

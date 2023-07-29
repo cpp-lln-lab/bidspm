@@ -7,11 +7,11 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   %   matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel)
   %
   % :param matlabbatch:
-  % :type matlabbatch: structure
+  % :type  matlabbatch: structure
   %
   % :param BIDS: dataset layout.
   %              See also: bids.layout, getData.
-  % :type BIDS: structure
+  % :type  BIDS: structure
   %
   % :param opt: Options chosen for the analysis.
   %             See checkOptions.
@@ -46,9 +46,9 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   sliceOrder = returnSliceOrder(BIDS, opt, subLabel);
 
   filter = fileFilterForBold(opt, subLabel);
-  % TODO pass the repetition time metadata to the smoothed data
-  % so we don't have to read it from the preproc data
-  filter.desc = 'preproc';
+  %   % TODO pass the repetition time metadata to the smoothed data
+  %   % so we don't have to read it from the preproc data
+  %     filter.desc = 'preproc';
   TR = getAndCheckRepetitionTime(BIDS, filter);
 
   fmri_spec.timing.units = 'secs';
