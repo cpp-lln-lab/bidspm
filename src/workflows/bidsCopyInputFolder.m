@@ -32,12 +32,14 @@ function bidsCopyInputFolder(varargin)
   addRequired(args, 'opt', @isstruct);
   addParameter(args, 'unzip', true, @islogical);
   addParameter(args, 'force', false, @islogical);
+  addParameter(args, 'use_schema', true, @islogical);
 
   parse(args, varargin{:});
 
   opt = args.Results.opt;
   unzip = args.Results.unzip;
   force = args.Results.force;
+  use_schema = args.Results.use_schema;
 
   opt = loadAndCheckOptions(opt);
 
@@ -53,8 +55,6 @@ function bidsCopyInputFolder(varargin)
   createDerivativeDir(opt);
 
   [BIDS, opt] = getData(opt, opt.dir.input);
-
-  use_schema = true;
 
   for iModality = 1:numel(opt.query.modality)
 
