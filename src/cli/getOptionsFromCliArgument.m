@@ -10,50 +10,55 @@ function opt = getOptionsFromCliArgument(args)
 
   action = args.Results.action;
 
-  if ismember(lower(action), bidsAppsActions)
+  if ~ismember(lower(action), bidsAppsActions)
+    return
+  end
 
-    bidspm('action', 'init');
+  bidspm('action', 'init');
 
-    if isstruct(args.Results.options)
-      opt = args.Results.options;
-    elseif exist(args.Results.options, 'file') == 2
-      opt = bids.util.jsondecode(args.Results.options);
-    end
+  opt = getOptions(args);
 
-    if isempty(opt)
-      % set defaults
-      opt = checkOptions(struct());
-    end
+  opt.verbosity = args.Results.verbosity;
 
-    opt.verbosity = args.Results.verbosity;
+  opt.dir.raw = args.Results.bids_dir;
+  opt.dir.derivatives = args.Results.output_dir;
 
-    opt.dir.raw = args.Results.bids_dir;
-    opt.dir.derivatives = args.Results.output_dir;
-    opt.dir.roi = args.Results.roi_dir;
+  if ~isempty(args.Results.participant_label)
+    opt.subjects = args.Results.participant_label;
+  end
 
-    opt = overrideDryRun(opt, args);
+  if ~isempty(args.Results.task)
+    opt.taskName = args.Results.task;
+  end
 
-    if ~isempty(args.Results.participant_label)
-      opt.subjects = args.Results.participant_label;
-    end
+  if ~isempty(args.Results.bids_filter_file)
+    % TODO read from JSON if necessary
+    % TODO validate
+    opt.bidsFilterFile = args.Results.bids_filter_file;
+  end
 
-    if ~isempty(args.Results.task)
-      opt.taskName = args.Results.task;
-    end
+  opt = overrideSpace(opt, args);
 
-    if ~isempty(args.Results.bids_filter_file)
-      % TODO read from JSON if necessary
-      % TODO validate
-      opt.bidsFilterFile = args.Results.bids_filter_file;
-    end
-
+  if isfield(args.Results, 'boilerplate_only')
     opt.boilerplate_only = args.Results.boilerplate_only;
+  end
 
+  if isfield(args.Results, 'dry_run')
+    opt = overrideDryRun(opt, args);
+  end
+
+  if isfield(args.Results, 'fwhm')
     opt = overrideFwhm(opt, args);
+  end
 
-    opt = overrideSpace(opt, args);
+  if isfield(args.Results, 'anat_only') && args.Results.anat_only == true
+    opt.anatOnly = true;
+    opt.query.modality = {'anat'};
+  end
 
-    % preproc
+  % preproc
+  if ismember(lower(action), {'preprocess'})
+
     if ismember('slicetiming', args.Results.ignore)
       opt.stc.skip = true;
     end
@@ -73,12 +78,12 @@ function opt = getOptionsFromCliArgument(args)
 
     opt.anatOnly = args.Results.anat_only;
 
-    % create_roi
-    opt.roi.atlas = args.Results.roi_atlas;
-    opt.roi.name = args.Results.roi_name;
-    opt.roi.hemi = args.Results.hemisphere;
+  end
 
-    % stats
+  opt = roiOptions(opt, args);
+
+  % stats
+  if ismember(lower(action), {'stats', 'contrasts', 'results'})
     opt.dir.preproc = args.Results.preproc_dir;
     opt.model.file = args.Results.model_file;
     opt.model.designOnly = args.Results.design_only;
@@ -100,6 +105,33 @@ function value = bidsAppsActions()
            'stats'; ...
            'contrasts'; ...
            'results'};
+end
+
+function opt = getOptions(args)
+  if isstruct(args.Results.options)
+    opt = args.Results.options;
+  elseif exist(args.Results.options, 'file') == 2
+    opt = bids.util.jsondecode(args.Results.options);
+  end
+  if isempty(opt)
+    % set defaults
+    opt = checkOptions(struct());
+  end
+end
+
+function opt = roiOptions(opt, args)
+  if isfield(args.Results, 'roi_dir')
+    opt.dir.roi = args.Results.roi_dir;
+  end
+  if isfield(args.Results, 'roi_atlas')
+    opt.roi.atlas = args.Results.roi_atlas;
+  end
+  if isfield(args.Results, 'roi_name')
+    opt.roi.name = args.Results.roi_name;
+  end
+  if isfield(args.Results, 'hemisphere')
+    opt.roi.hemi = args.Results.hemisphere;
+  end
 end
 
 function opt = overrideRoiBased(opt, args)

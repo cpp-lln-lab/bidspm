@@ -5,69 +5,7 @@ function returnCode = bidspm(varargin)
 
   % (C) Copyright 2022 bidspm developers
 
-  args = inputParser;
-  args.CaseSensitive = false;
-
-  defaultAction = 'init';
-
-  isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
-  isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
-  isLogical = @(x) islogical(x) && numel(x) == 1;
-  isChar = @(x) ischar(x);
-  isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
-  isFolder = @(x) isdir(x);
-  isCellStr = @(x) iscellstr(x);
-  isInAvailableAtlas = @(x) (ischar(x) && ismember(x, {'visfatlas', ...
-                                                       'anatomy_toobox', ...
-                                                       'neuromorphometrics', ...
-                                                       'hcpex', ...
-                                                       'glasser', ...
-                                                       'wang'}));
-  isLowLevelActionOrDir = @(x) (ismember(x, lowLevelActions()) || isdir(x));
-
-  addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
-
-  addOptional(args, 'output_dir', '', isChar);
-  addOptional(args, 'analysis_level', 'subject', @(x) ismember(x, {'subject', 'dataset'}));
-
-  addParameter(args, 'action', defaultAction, isChar);
-  addParameter(args, 'participant_label', {}, isCellStr);
-  addParameter(args, 'task', {}, isCellStr);
-  addParameter(args, 'dry_run', false, isLogical);
-  addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
-  addParameter(args, 'skip_validation', false, isLogical);
-  addParameter(args, 'boilerplate_only', false, isLogical);
-  addParameter(args, 'options', struct([]), isFileOrStruct);
-  addParameter(args, 'verbosity', 2, isPositiveScalar);
-
-  addParameter(args, 'fwhm', 6, isPositiveScalar);
-  addParameter(args, 'space', {}, isCellStr);
-
-  % copy only
-  addParameter(args, 'force', false, isLogical);
-
-  % create_roi only
-  addParameter(args, 'roi_dir', '', isChar);
-  addParameter(args, 'hemisphere', {'L', 'R'}, isCellStr);
-  addParameter(args, 'roi_atlas', 'neuromorphometrics', isInAvailableAtlas);
-  addParameter(args, 'roi_name', {''}, isCellStr);
-
-  % preproc only
-  addParameter(args, 'dummy_scans', 0, isPositiveScalar);
-  addParameter(args, 'anat_only', false, isLogical);
-  addParameter(args, 'ignore', {}, isEmptyOrCellstr);
-
-  % stats only
-  addParameter(args, 'preproc_dir', pwd, isFolder);
-  addParameter(args, 'model_file', struct([]), isFileOrStruct);
-  addParameter(args, 'roi_based', false, isLogical);
-  addParameter(args, 'design_only', false, isLogical);
-  addParameter(args, 'concatenate', false, isLogical);
-  addParameter(args, 'keep_residuals', false, isLogical);
-
-  % group level stats only
-  addParameter(args, 'node_name', '', isChar);
-
+  args = defaultInputParser();
   parse(args, varargin{:});
 
   action = args.Results.action;
@@ -80,7 +18,7 @@ function returnCode = bidspm(varargin)
   end
 
   try
-    returnCode = executeAction(action, args);
+    returnCode = executeAction(action, varargin{:});
   catch ME
     opt.dir.output = args.Results.output_dir;
     opt.dryRun = false;
@@ -94,83 +32,58 @@ function returnCode = bidspm(varargin)
   end
 end
 
-function returnCode = executeAction(action, args)
+function returnCode = executeAction(varargin)
 
   returnCode = 0;
+
+  action = varargin{1};
 
   switch lower(action)
 
     case 'init'
-
       initBidspm();
 
     case 'help'
-
       system('bidspm --help');
-
       help(fullfile(fileparts(mfilename('fullpath')), 'src', 'messages', 'bidspmHelp.m'));
 
     case 'version'
-
       versionBidspm();
 
     case 'dev'
-
       initBidspm(true);
 
     case 'uninit'
-
       uninitBidspm();
 
     case 'update'
-
       update();
 
     case 'run_tests'
-
       returnCode = run_tests();
 
     case 'copy'
-
-      copy(args);
+      cliCopy(varargin{2:end});
 
     case 'create_roi'
-
-      create_roi(args);
+      cliCreateRoi(varargin{2:end});
 
     case 'smooth'
-
-      smooth(args);
+      cliSmooth(varargin{2:end});
 
     case 'preprocess'
-
-      validate(args);
-
-      if ~strcmp(args.Results.analysis_level, 'subject')
-        errorHandling(mfilename(), ...
-                      'noGroupLevelPreproc', ...
-                      '"analysis_level" must be "subject" for preprocessing', ...
-                      false);
-      end
-
-      preprocess(args);
+      cliPreprocess(varargin{2:end});
 
     case 'default_model'
-
-      default_model(args);
+      cliDefaultModel(varargin{2:end});
 
     case {'stats', 'contrasts', 'results'}
-
-      validate(args);
-
-      stats(args);
+      cliStats(varargin{2:end});
 
     case 'meaning_of_life'
-
       fprintf('\n42\n\n');
 
     otherwise
-
       errorStruct.identifier = 'bidspm:unknownAction';
       errorStruct.message = sprintf('action %s is not among the known actions:\n\t- %s', ...
                                     action, ...
@@ -181,249 +94,7 @@ function returnCode = executeAction(action, args)
 
 end
 
-%% high level actions
-
-function copy(args)
-  %
-  % Copy the content of the fmripre directory to the output directory.
-  %
-
-  opt = getOptionsFromCliArgument(args);
-
-  opt.pipeline.type = 'preproc';
-  opt = checkOptions(opt);
-
-  saveOptions(opt);
-
-  opt.query.desc = {'preproc', 'brain'};
-  opt.query.suffix = {'T1w', 'bold', 'mask'};
-  opt.query.space = opt.space;
-
-  bidsFilterFile = get_bidsFilterFile(args);
-  if ~isempty(bidsFilterFile)
-    suffixes = fieldnames(bidsFilterFile);
-    modalities = {};
-    for i = 1:numel(suffixes)
-      modalities{end + 1} = bidsFilterFile.(suffixes{i}).modality; %#ok<*AGROW>
-      if isfield(bidsFilterFile.(suffixes{i}), 'suffix')
-        opt.query.suffix = cat(2, ...
-                               opt.query.suffix, ...
-                               bidsFilterFile.(suffixes{i}).suffix);
-      end
-      if isfield(bidsFilterFile.(suffixes{i}), 'desc')
-        opt.query.desc = cat(2, ...
-                             opt.query.desc, ...
-                             bidsFilterFile.(suffixes{i}).desc);
-      end
-    end
-    opt.query.modality = unique(modalities);
-  end
-  opt.query.suffix = unique(opt.query.suffix);
-  opt.query.desc = unique(opt.query.desc);
-
-  bidsCopyInputFolder(opt, 'unzip', true, 'force', args.Results.force);
-
-end
-
-function create_roi(args)
-  opt = getOptionsFromCliArgument(args);
-  opt = checkOptions(opt);
-  opt.roi.space = opt.space;
-
-  saveOptions(opt);
-  boilerplate(opt, ...
-              'outputPath', fullfile(opt.dir.roi, 'reports'), ...
-              'pipelineType', 'create_roi', ...
-              'verbosity', 0);
-  if opt.boilerplate_only
-    return
-  end
-  bidsCreateROI(opt);
-
-end
-
-function preprocess(args)
-
-  % TODO make sure that options defined in JSON or passed as a structure
-  % overrides any other arguments
-  opt = getOptionsFromCliArgument(args);
-
-  opt.pipeline.type = 'preproc';
-  opt = checkOptions(opt);
-
-  if opt.anatOnly
-    opt.query.modality = 'anat';
-  end
-
-  if ~opt.anatOnly && (isempty(opt.taskName) || numel(opt.taskName) > 1)
-    errorHandling(mfilename(), ...
-                  'onlyOneTaskForPreproc', ...
-                  'A single task must be specified for preprocessing', ...
-                  false);
-  end
-
-  saveOptions(opt);
-
-  bidsReport(opt);
-  boilerplate(opt, ...
-              'outputPath', fullfile(opt.dir.output, 'reports'), ...
-              'pipelineType', 'preprocess', ...
-              'verbosity', 0);
-  if opt.boilerplate_only
-    return
-  end
-  bidsCopyInputFolder(opt);
-  if opt.dummy_scans > 0
-    tmpOpt = opt;
-    tmpOpt.dir.input = tmpOpt.dir.preproc;
-    bidsRemoveDummies(tmpOpt, ...
-                      'dummyScans', tmpOpt.dummy_scans, ...
-                      'force', false);
-  end
-  bidsCheckVoxelSize(opt);
-  if opt.useFieldmaps && ~opt.anatOnly
-    bidsCreateVDM(opt);
-  end
-  if ~opt.stc.skip && ~opt.anatOnly
-    bidsSTC(opt);
-  end
-  bidsSpatialPrepro(opt);
-  if opt.fwhm.func > 0 && ~opt.anatOnly
-    opt.query.desc = 'preproc';
-    if opt.dryRun
-      msg = ['"dryRun" set to "true", so smoothing will be skipped', ...
-             ' as it requires the output of spatial preprocessing to run.'];
-      logger('WARNING', msg, ...
-             'options', opt, ...
-             'filename', mfilename(), ...
-             'id', 'skipSmoothingInDryRun');
-      return
-    end
-    bidsSmoothing(opt);
-  end
-
-end
-
-function smooth(args)
-  % TODO make sure that options defined in JSON or passed as a structure
-  % overrides any other arguments
-  opt = getOptionsFromCliArgument(args);
-
-  opt.pipeline.type = 'preproc';
-  opt = checkOptions(opt);
-
-  saveOptions(opt);
-
-  copy(args);
-
-  if opt.fwhm.func > 0
-    opt.query.desc = 'preproc';
-    bidsSmoothing(opt);
-  end
-
-end
-
-function default_model(args)
-  opt = getOptionsFromCliArgument(args);
-  if ~isfield(opt, 'taskName')
-    opt.taskName = '';
-  end
-  opt = checkOptions(opt);
-
-  saveOptions(opt);
-  createDefaultStatsModel(opt.dir.raw, opt, lower(args.Results.ignore));
-end
-
-function stats(args)
-
-  % TODO make sure that options defined in JSON or passed as a structure
-  % overrides any other arguments
-  opt = getOptionsFromCliArgument(args);
-
-  if opt.glm.roibased.do
-    opt.bidsFilterFile.roi.space = opt.space;
-    opt.bidsFilterFile.roi.label = opt.roi.name;
-  end
-
-  opt.pipeline.type = 'stats';
-  opt = checkOptions(opt);
-
-  action = args.Results.action;
-  analysisLevel = args.Results.analysis_level;
-  nodeName = args.Results.node_name;
-  concatenate = args.Results.concatenate;
-
-  isSubjectLevel = strcmp(analysisLevel, 'subject');
-  estimate = strcmp(action, 'stats');
-  contrasts = ismember(action, {'stats', 'contrasts'});
-  results = ismember(action, {'stats', 'contrasts', 'results'});
-
-  if opt.model.designOnly
-    contrasts = false;
-    results = false;
-  end
-
-  saveOptions(opt);
-
-  boilerplate(opt, ...
-              'outputPath', fullfile(opt.dir.output, 'reports'), ...
-              'pipelineType', 'stats', ...
-              'verbosity', 0);
-  if opt.boilerplate_only
-    return
-  end
-
-  if opt.glm.roibased.do
-
-    bidsFFX('specify', opt);
-    if ~opt.model.designOnly
-      bidsRoiBasedGLM(opt);
-    end
-
-  else
-
-    if estimate
-
-      if isSubjectLevel
-        if opt.model.designOnly
-          bidsFFX('specify', opt);
-        else
-          bidsFFX('specifyAndEstimate', opt);
-        end
-
-      else
-        if opt.fwhm.contrast > 0
-          bidsSmoothContrasts(opt);
-        end
-        bidsRFX('RFX', opt, 'nodeName', nodeName);
-
-      end
-
-    end
-
-    if contrasts
-      if isSubjectLevel
-        bidsFFX('contrasts', opt);
-      else
-        bidsRFX('contrasts', opt, 'nodeName', nodeName);
-      end
-
-      if isSubjectLevel && concatenate
-        bidsConcatBetaTmaps(opt);
-      end
-
-    end
-
-    if results
-      bidsResults(opt, 'nodeName', nodeName);
-    end
-
-  end
-
-end
-
 %% low level actions
-
 function versionBidspm()
   try
     versionNumber = getVersion();
@@ -661,6 +332,17 @@ end
 
 %% constants
 
+function value = lowLevelActions()
+  value = {'init'; ...
+           'uninit'; ...
+           'dev'
+           'version'; ...
+           'run_tests'; ...
+           'update'; ...
+           'help'; ...
+           'meaning_of_life'};
+end
+
 function value = bidsAppsActions()
 
   value = {'copy'; ...
@@ -674,35 +356,33 @@ function value = bidsAppsActions()
 
 end
 
-function value = lowLevelActions()
-  value = {'init'; ...
-           'uninit'; ...
-           'dev'
-           'version'; ...
-           'run_tests'; ...
-           'update'; ...
-           'help'; ...
-           'meaning_of_life'};
-end
-
 function value = allowedActions()
 
   value = cat(1, bidsAppsActions(), lowLevelActions());
 
 end
 
-%% helpers functions
+%% input parsers
+function args = defaultInputParser()
 
-function bidsFilterFile = get_bidsFilterFile(args)
+  args = inputParser;
+  args.CaseSensitive = false;
+  args.KeepUnmatched = true;
+  args.FunctionName = 'bidspm';
 
-  if isstruct(args.Results.bids_filter_file)
-    bidsFilterFile = args.Results.bids_filter_file;
-  else
-    bidsFilterFile = bids.util.jsondecode(args.Results.bids_filter_file);
-  end
+  defaultAction = 'init';
+
+  isLowLevelActionOrDir = @(x) (ismember(x, lowLevelActions()) || isdir(x));
+  isChar = @(x) ischar(x);
+
+  addOptional(args, 'bids_dir', pwd, isLowLevelActionOrDir);
+  addOptional(args, 'output_dir', '', isChar);
+  addOptional(args, 'analysis_level', 'subject', @(x) ismember(x, {'subject', 'dataset'}));
+  addParameter(args, 'action', defaultAction, isChar);
 
 end
 
+%% helpers functions
 function detectBidspm()
 
   workflowsDir = cellstr(which('bidsSpatialPrepro.m', '-ALL'));
