@@ -39,10 +39,6 @@ function opt = getOptionsFromCliArgument(args)
 
   opt = overrideSpace(opt, args);
 
-  if isfield(args.Results, 'roi_dir')
-    opt.dir.roi = args.Results.roi_dir;
-  end
-
   if isfield(args.Results, 'boilerplate_only')
     opt.boilerplate_only = args.Results.boilerplate_only;
   end
@@ -56,6 +52,7 @@ function opt = getOptionsFromCliArgument(args)
   end
 
   if isfield(args.Results, 'anat_only') && args.Results.anat_only == true
+    opt.anatOnly = true;
     opt.query.modality = {'anat'};
   end
 
@@ -83,12 +80,7 @@ function opt = getOptionsFromCliArgument(args)
 
   end
 
-  % create_roi
-  if ismember(lower(action), {'create_roi'})
-    opt.roi.atlas = args.Results.roi_atlas;
-    opt.roi.name = args.Results.roi_name;
-    opt.roi.hemi = args.Results.hemisphere;
-  end
+  opt = roiOptions(opt, args);
 
   % stats
   if ismember(lower(action), {'stats', 'contrasts', 'results'})
@@ -124,6 +116,21 @@ function opt = getOptions(args)
   if isempty(opt)
     % set defaults
     opt = checkOptions(struct());
+  end
+end
+
+function opt = roiOptions(opt, args)
+  if isfield(args.Results, 'roi_dir')
+    opt.dir.roi = args.Results.roi_dir;
+  end
+  if isfield(args.Results, 'roi_atlas')
+    opt.roi.atlas = args.Results.roi_dir;
+  end
+  if isfield(args.Results, 'roi_name')
+    opt.roi.name = args.Results.roi_dir;
+  end
+  if isfield(args.Results, 'hemisphere')
+    opt.roi.hemi = args.Results.hemisphere;
   end
 end
 
