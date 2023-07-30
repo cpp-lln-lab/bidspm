@@ -1,4 +1,4 @@
-function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
+function [boldFilename, subFuncDataDir, metadata] = getBoldFilename(varargin)
   %
   % Get the filename and the directory of a bold file for a given session /
   % run.
@@ -65,5 +65,12 @@ function [boldFilename, subFuncDataDir] = getBoldFilename(varargin)
 
   boldFilename = spm_file(fullPathBoldFilename, 'filename');
   subFuncDataDir = spm_file(fullPathBoldFilename, 'path');
+
+  metadata = getInfo(BIDS, ...
+                     subLabel, ...
+                     opt, ...
+                     'metadata', ...
+                     sessionID, ...
+                     runID, opt.bidsFilterFile.bold.suffix);
 
 end

@@ -22,8 +22,10 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
+download_data = false;
+smooth = true;
+
 % Getting the raw dataset to get the events.tsv
-download_data = true;
 download_moae_ds(download_data);
 
 %%
@@ -31,25 +33,26 @@ subject_label = {'01'};
 task = {'auditory'};
 space = {'MNI152NLin6Asym'};
 
-%% Copy and smooth
-%
-% fmriprep data is not smoothed so we need to do that first
-%
-
 WD = fileparts(mfilename('fullpath'));
-
 bids_dir = fullfile(WD, 'inputs', 'raw');
 fmriprep_dir = fullfile(WD, 'inputs', 'fmriprep');
 
 % we need to specify where the smoothed data will go
 output_dir = fullfile(WD, 'outputs', 'derivatives');
 
-bidspm(fmriprep_dir, output_dir, 'subject', ...
-       'action', 'smooth', ...
-       'participant_label', subject_label, ...
-       'task', task, ...
-       'space', space, ...
-       'fwhm', 8);
+%% Copy and smooth
+%
+% fmriprep data is not smoothed so we need to do that first
+%
+
+if smooth
+  bidspm(fmriprep_dir, output_dir, 'subject', ...
+         'action', 'smooth', ...
+         'participant_label', subject_label, ...
+         'task', task, ...
+         'space', space, ...
+         'fwhm', 8);
+end
 
 %% STATS
 

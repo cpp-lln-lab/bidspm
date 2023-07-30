@@ -1,4 +1,4 @@
-function returnCode = bidspm(varargin)
+function bidspm(varargin)
   %
   % Type bidspm('action', 'help') for more information.
   %
@@ -18,7 +18,7 @@ function returnCode = bidspm(varargin)
   end
 
   try
-    returnCode = executeAction(action, varargin{:});
+    executeAction(action, varargin{:});
   catch ME
     opt.dir.output = args.Results.output_dir;
     opt.dryRun = false;
@@ -28,14 +28,11 @@ function returnCode = bidspm(varargin)
     else
       bugReport(opt, ME);
     end
-    returnCode = 1;
     rethrow(ME);
   end
 end
 
-function returnCode = executeAction(varargin)
-
-  returnCode = 0;
+function executeAction(varargin)
 
   action = varargin{1};
 
@@ -61,7 +58,7 @@ function returnCode = executeAction(varargin)
       update();
 
     case 'run_tests'
-      returnCode = run_tests();
+      run_tests();
 
     case 'copy'
       cliCopy(varargin{2:end});
@@ -274,12 +271,10 @@ function uninitBidspm()
 
 end
 
-function returnCode = run_tests()
+function run_tests()
   %
 
   % (C) Copyright 2019 bidspm developers
-
-  % Elapsed time is 284 seconds.
 
   tic;
 
@@ -307,12 +302,12 @@ function returnCode = run_tests()
   folderToCover = fullfile(pwd, 'src');
   testFolder = fullfile(pwd, 'tests', subfolder);
 
-  returnCode = moxunit_runtests(testFolder, ...
-                                '-verbose', '-recursive', '-randomize_order', ...
-                                '-with_coverage', ...
-                                '-cover', folderToCover, ...
-                                '-cover_xml_file', 'coverage.xml', ...
-                                '-cover_html_dir', fullfile(pwd, 'coverage_html'));
+  moxunit_runtests(testFolder, ...
+                   '-verbose', '-recursive', '-randomize_order', ...
+                   '-with_coverage', ...
+                   '-cover', folderToCover, ...
+                   '-cover_xml_file', 'coverage.xml', ...
+                   '-cover_html_dir', fullfile(pwd, 'coverage_html'));
 
   toc;
 
