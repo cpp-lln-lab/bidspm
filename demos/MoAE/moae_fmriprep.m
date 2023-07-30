@@ -22,7 +22,7 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
-download_data = false;
+download_data = true;
 smooth = true;
 
 % Getting the raw dataset to get the events.tsv
