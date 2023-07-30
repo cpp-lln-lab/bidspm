@@ -1,6 +1,6 @@
 function tsvFile = labelActivations(varargin)
   %
-  % Add MNI labels to a csv output file from SPM and saves it as SPM.
+  % Add MNI labels to a csv output file from SPM and saves it as TSV.
   %
   % Can choose which atlas to use.
   %
@@ -11,9 +11,17 @@ function tsvFile = labelActivations(varargin)
   % :param csvFile:
   % :type  csvFile: path
   %
-  % :param atlas: Any of ``{'neuromorphometrics', 'aal', 'hcpex'}``.
-  %               Defaults to ``'neuromorphometrics'``
-  % :type  atlas: char
+  % :type  atlas:   char
+  % :param atlas:   Any of
+  %
+  %                 - `'Neuromorphometrics'``
+  %                 - `'aal'``
+  %                 - `'hcpex'``
+  %                 - `'wang'``
+  %                 - `'glasser'``
+  %                 - `'visfatlas'``
+  %
+  %                 Defaults to ``'neuromorphometrics'``
   %
   % :returns: - :tsvFile: (path)
   %
