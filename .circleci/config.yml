@@ -49,7 +49,7 @@ jobs:
         keys:
         - my_cache
     - run:
-        name: Get ds001734
+        name: Get ds000001
         command: |
           # Git set up: to keep datalad warnings away
           git config --global --add user.name "Ford Escort"
@@ -109,7 +109,7 @@ jobs:
                 --action smooth \
                 --task balloonanalogrisktask \
                 --participant_label 01 02 \
-                --space MNI152NLin6Asym \
+                --space MNI152NLin2009cAsym \
                 --fwhm 8 \
                 --verbosity 2
         no_output_timeout: 6h
@@ -134,9 +134,10 @@ jobs:
                 --preproc_dir /outputs/ds000001/derivatives/bidspm-preproc \
                 --model_file /models/model-balloonanalogrisktaskDefault_smdl.json \
                 --ignore slicetiming \
+                --space MNI152NLin2009cAsym \
                 --skip_validation \
                 --fwhm 8 \
-                --participant_label 001 002 \
+                --participant_label 01 02 \
                 --verbosity 2
         no_output_timeout: 6h
 
