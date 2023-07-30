@@ -8,6 +8,47 @@ function test_suite = test_labelActivations %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_labelActivations_basic()
+
+  csvFile = fullfile(getTestDataDir(), 'tsv_files', 'moae_results_table.csv');
+
+  tsvFile = labelActivations(csvFile);
+
+  assertEqual(exist(tsvFile, 'file'), 2);
+
+  expectedFile = fullfile(getTestDataDir(), 'tsv_files', 'moae_results_table_neuromorpho.tsv');
+  expectedContent = bids.util.tsvread(expectedFile);
+
+  content = bids.util.tsvread(tsvFile);
+
+  assertEqual(content, expectedContent);
+
+  delete(tsvFile);
+
+end
+
+function test_labelActivations_all_atlases()
+
+  atlases = {'visfatlas', ...
+             'hcpex', ...
+             'glasser', ...
+             'wang'};
+
+  csvFile = fullfile(getTestDataDir(), 'tsv_files', 'moae_results_table.csv');
+
+  for i = 1:numel(atlases)
+    tsvFile = labelActivations(csvFile, 'atlas', atlases{i});
+
+    assertEqual(exist(tsvFile, 'file'), 2);
+
+    expectedContent = bids.util.tsvread(tsvFile);
+    expectedContent.([atlases{i} '_label']);
+
+    delete(tsvFile);
+
+  end
+end
+
 function test_labelActivations_aal()
 
   if bids.internal.is_github_ci()
@@ -27,22 +68,7 @@ function test_labelActivations_aal()
 
   assertEqual(content, expectedContent);
 
-end
-
-function test_labelActivations_basic()
-
-  csvFile = fullfile(getTestDataDir(), 'tsv_files', 'moae_results_table.csv');
-
-  tsvFile = labelActivations(csvFile);
-
-  assertEqual(exist(tsvFile, 'file'), 2);
-
-  expectedFile = fullfile(getTestDataDir(), 'tsv_files', 'moae_results_table_neuromorpho.tsv');
-  expectedContent = bids.util.tsvread(expectedFile);
-
-  content = bids.util.tsvread(tsvFile);
-
-  assertEqual(content, expectedContent);
+  delete(tsvFile);
 
 end
 
