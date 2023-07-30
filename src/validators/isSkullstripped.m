@@ -1,12 +1,18 @@
 function status = isSkullstripped(bidsFile)
   %
+  % Check if the image is skullstripped.
+  %
   % USAGE::
   %
   %   status = isSkullstripped(bidsFile)
   %
-  % bidsFile is a bids.File object
+  % :param bidsFile: bids.File object
+  % :type  bidsFile: bids.File
   %
-  % EXAMPLE
+  % :return: status: true if the image is skullstripped
+  % :rtype: logical
+  %
+  % EXAMPLE::
   %
   %     bf = bids.File('sub-01_T1w', 'use_schema', false);
   %
