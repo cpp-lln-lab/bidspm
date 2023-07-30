@@ -58,9 +58,9 @@ jobs:
           datalad install -s ///openneuro/ds000001 ${HOME}/data/ds000001
           datalad install -s ///openneuro-derivatives/ds000001-fmriprep ${HOME}/data/ds000001-fmriprep
           cd ${HOME}/data/ds000001-fmriprep/
-          datalad get sub-0[1-2]/anat/*MNI152NLin6Asym*mask.nii.gz \
-                sub-0[1-2]/anat/*MNI152NLin6Asym*T1w.nii.gz \
-                sub-0[1-2]/func/*MNI152NLin6Asym*desc-preproc*bold.nii.gz \
+          datalad get sub-0[1-2]/anat/*MNI*mask.nii.gz \
+                sub-0[1-2]/anat/*MNI*T1w.nii.gz \
+                sub-0[1-2]/func/*MNI*desc-preproc*bold.nii.gz \
                 sub-*/func/*tsv	\
                 sub-*/func/*json
           datalad status
