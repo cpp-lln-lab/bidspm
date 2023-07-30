@@ -1,4 +1,9 @@
 function args = inputParserForPreprocess()
+  % Returns an input parser for cliPreprocess.
+  %
+  % Type ``bidspm help`` for more info.
+  %
+
   % (C) Copyright 2022 bidspm developers
   args = baseInputParser();
 

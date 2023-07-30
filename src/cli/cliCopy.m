@@ -1,11 +1,10 @@
 function cliCopy(varargin)
+  % Copy the content of the fmriprep directory to the output directory.
   %
-  % Copy the content of the fmripre directory to the output directory.
+  % Type ``bidspm help`` for more info.
   %
 
-  % TODO check if
-
-  % (C) Copyright 2022 bidspm developers
+  % (C) Copyright 2023 bidspm developers
   args = inputParserForCopy();
   parse(args, varargin{:});
 

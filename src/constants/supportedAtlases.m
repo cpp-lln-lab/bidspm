@@ -1,4 +1,6 @@
 function value = supportedAtlases()
+  % Return a cell array of supported atlases
+
   % (C) Copyright 2022 bidspm developers
   value = {'visfatlas', ...
            'anatomy_toobox', ...

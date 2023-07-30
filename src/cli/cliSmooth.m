@@ -1,5 +1,10 @@
 function cliSmooth(varargin)
-  % (C) Copyright 2022 bidspm developers
+  % Smooth an fmriprep dataset.
+  %
+  % Type ``bidspm help`` for more info.
+  %
+
+  % (C) Copyright 2023 bidspm developers
 
   % TODO make sure that options defined in JSON or passed as a structure
   % overrides any other arguments

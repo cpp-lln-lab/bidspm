@@ -1,4 +1,6 @@
 function value = lowLevelActions()
+  % Returns a cell array of the low level actions that can be performed
+
   % (C) Copyright 2022 bidspm developers
   value = {'init'; ...
            'uninit'; ...

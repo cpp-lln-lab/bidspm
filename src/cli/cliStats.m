@@ -1,4 +1,8 @@
 function cliStats(varargin)
+  % Run stats on bids datasets.
+  %
+  % Type ``bidspm help`` for more info.
+  %
 
   % TODO make sure that options defined in JSON or passed as a structure
   % overrides any other arguments

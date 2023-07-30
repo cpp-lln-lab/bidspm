@@ -1,5 +1,10 @@
 function args = baseInputParser()
-  % (C) Copyright 2022 bidspm developers
+  % Returns an input parser with the common arguments for all bids apps calls.
+  %
+  % Type ``bidspm help`` for more info.
+  %
+
+  % (C) Copyright 2023 bidspm developers
   args = inputParser;
   args.CaseSensitive = false;
 
@@ -22,7 +27,7 @@ function args = baseInputParser()
   addParameter(args, 'space', {}, isCellStr);
   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
 
-  addParameter(args, 'options', struct([]), isFileOrStruct);
   addParameter(args, 'verbosity', 2, isPositiveScalar);
+  addParameter(args, 'options', struct([]), isFileOrStruct);
 
 end

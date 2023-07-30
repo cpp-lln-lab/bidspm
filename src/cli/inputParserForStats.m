@@ -1,4 +1,9 @@
 function args = inputParserForStats()
+  % Returns an input parser for cliStats.
+  %
+  % Type ``bidspm help`` for more info.
+  %
+
   % (C) Copyright 2022 bidspm developers
   args = baseInputParser();
 
@@ -10,13 +15,13 @@ function args = inputParserForStats()
   isFolder = @(x) isdir(x);
   isCellStr = @(x) iscellstr(x);
 
+  addParameter(args, 'preproc_dir', pwd, isFolder);
+  addParameter(args, 'model_file', struct([]), isFileOrStruct);
+
   addParameter(args, 'fwhm', 6, isPositiveScalar);
   addParameter(args, 'dry_run', false, isLogical);
   addParameter(args, 'skip_validation', false, isLogical);
   addParameter(args, 'boilerplate_only', false, isLogical);
-
-  addParameter(args, 'preproc_dir', pwd, isFolder);
-  addParameter(args, 'model_file', struct([]), isFileOrStruct);
 
   addParameter(args, 'design_only', false, isLogical);
   addParameter(args, 'concatenate', false, isLogical);
@@ -27,6 +32,10 @@ function args = inputParserForStats()
   addParameter(args, 'roi_based', false, isLogical);
   addParameter(args, 'roi_dir', '', isChar);
   addParameter(args, 'roi_name', {''}, isCellStr);
+
+  % :param ignore:      can be any of ``{'qa'}``
+  % :type  ignore:      cell string
+  addParameter(args, 'ignore', {}, isEmptyOrCellstr);
 
   % group level stats only
   addParameter(args, 'node_name', '', isChar);

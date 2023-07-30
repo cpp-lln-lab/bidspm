@@ -1,5 +1,13 @@
 function args = inputParserForCreateRoi()
-  % (C) Copyright 2022 bidspm developers
+  % Returns an input parser for cliDefaultModel.
+  %
+  % Type ``bidspm help`` for more info.
+  %
+
+  % (C) Copyright 2023 bidspm developers
+
+  % realying on the base parser adds too many options
+  % like task
   args = baseInputParser();
 
   isInAvailableAtlas = @(x) (ischar(x) && ismember(x, supportedAtlases()));

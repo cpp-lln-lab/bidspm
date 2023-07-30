@@ -1,6 +1,18 @@
 function [idx, allowedSpaces] = isMni(input)
+  % Check if input is a valid MNI space
   %
+  % USAGE::
   %
+  %   [idx, allowedSpaces] = isMni(input)
+  %
+  % :param input: The space to check
+  % :type  input: string or cell array of strings
+  %
+  % :return idx: A logical array indicating which elements of input are valid MNI spaces
+  % :rtype  idx: logical array
+  %
+  % :return allowedSpaces: A cell array of valid MNI spaces
+  % :rtype  allowedSpaces: cell array of strings
   %
 
   % (C) Copyright 2022 bidspm developers

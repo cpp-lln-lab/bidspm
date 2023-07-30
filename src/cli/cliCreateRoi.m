@@ -1,5 +1,10 @@
 function cliCreateRoi(varargin)
-  % (C) Copyright 2022 bidspm developers
+  % Create a ROI from an atlas.
+  %
+  % Type ``bidspm help`` for more info.
+  %
+
+  % (C) Copyright 2023 bidspm developers
   args = inputParserForCreateRoi();
   parse(args, varargin{:});
 

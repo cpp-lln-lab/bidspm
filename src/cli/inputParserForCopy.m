@@ -1,5 +1,10 @@
 function args = inputParserForCopy()
-  % (C) Copyright 2022 bidspm developers
+  % Returns an input parser for cliCopy.
+  %
+  % Type ``bidspm help`` for more info.
+  %
+
+  % (C) Copyright 2023 bidspm developers
   isLogical = @(x) islogical(x) && numel(x) == 1;
 
   args = baseInputParser();

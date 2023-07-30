@@ -1,5 +1,10 @@
 function cliDefaultModel(varargin)
-  % (C) Copyright 2022 bidspm developers
+  % Create a default bids stats model for a raw dataset.
+  %
+  % Type ``bidspm help`` for more info.
+  %
+
+  % (C) Copyright 2023 bidspm developers
   args = inputParserForCreateModel();
   parse(args, varargin{:});
   opt = getOptionsFromCliArgument(args);

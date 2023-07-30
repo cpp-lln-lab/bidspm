@@ -1,8 +1,16 @@
 function args = inputParserForCreateModel()
-  % (C) Copyright 2022 bidspm developers
+  % Returns an input parser for cliDefaultModel.
+  %
+  % Type ``bidspm help`` for more info.
+  %
+
+  % (C) Copyright 2023 bidspm developers
   args = baseInputParser();
 
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
+
+  % realying on the base parser adds too many options
+  % like task
 
   % :param ignore: Optional. Cell string that can contain:
   %                - ``"Transformations"``
