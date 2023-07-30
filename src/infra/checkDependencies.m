@@ -28,7 +28,7 @@ function checkDependencies(opt)
   msg = sprintf(' Using %s %s', a, b);
   logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
-  if ~strcmp(a, SPM_main) || str2num(b) < 7219
+  if ~strcmp(a, SPM_main) || str2num(b) < SPM_sub
     str = sprintf('%s %s %s.\n%s', ...
                   'The current version SPM version is less than', SPM_main, SPM_sub, ...
                   'Update with: spm_update update');

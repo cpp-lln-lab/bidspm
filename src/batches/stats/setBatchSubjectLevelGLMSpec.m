@@ -72,9 +72,19 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % Create ffxDir if it does not exist
   % If it exists, issue a warning that it has been overwritten
   ffxDir = getFFXdir(subLabel, opt);
-  overwriteDir(ffxDir, opt);
+  if ~opt.glm.roibased.do
+    overwriteDir(ffxDir, opt);
+  else
+    if exist(fullfile(ffxDir, 'SPM.mat'), 'file')
+      delete(fullfile(ffxDir, 'SPM.mat'));
+    else
+      spm_mkdir(ffxDir);
+    end
+  end
+
   msg = sprintf(' output dir:\n\t%s', pathToPrint(ffxDir));
   logger('INFO', msg, 'options', opt, 'filename', mfilename());
+
   fmri_spec.dir = {ffxDir};
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
@@ -188,7 +198,7 @@ function sliceOrder = returnSliceOrder(BIDS, opt, subLabel)
   filter = fileFilterForBold(opt, subLabel);
 
   [name, version] = generatedBy(BIDS);
-  tokens = strsplit(version);
+  tokens = strsplit(version, '.');
   % TODO implement differently for fmriprep >=20.2.4
   % https://fmriprep.org/en/stable/changes.html#october-04-2021
   skip = opt.stc.skip || ...

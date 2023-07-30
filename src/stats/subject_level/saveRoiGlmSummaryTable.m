@@ -115,6 +115,7 @@ function outputFile = saveRoiGlmSummaryTable(varargin)
     msg = sprintf('No roi results found for sub-%s.\n', subLabel);
     id = 'noRoiResultsForSubject';
     logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
+    outputFile = '';
     return
   end
 

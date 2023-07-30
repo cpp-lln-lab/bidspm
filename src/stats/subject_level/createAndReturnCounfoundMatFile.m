@@ -47,6 +47,7 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   content = bids.transformers(transformers, content);
 
   [names, R] = createConfounds(content, designMatrix, opt.glm.maxNbVols); %#ok<*ASGLU>
+  [names, R] = sanitizeConfounds(names, R);
 
   % save the confounds as a matfile
   bf = bids.File(tsvFile);

@@ -116,8 +116,8 @@ function skipped = bidsRoiBasedGLM(opt)
       roiObject = maroi_matrix(roiObject);
 
       % Extract data and do MarsBaR estimation
-      data = get_marsy(roiObject, model, 'mean', 'v');
       try
+        data = get_marsy(roiObject, model, 'mean', 'v');
         estimation = estimate(model, data);
       catch  ME
         if strcmp(ME.identifier, 'MATLAB:spdiags:InvalidSizeBFourInput')
@@ -150,6 +150,25 @@ function skipped = bidsRoiBasedGLM(opt)
           skipped.subject{end + 1} = subLabel;
           skipped.roi{end + 1} = spm_file(roiList{iROI, 1}, 'filename');
           continue
+
+        elseif strcmp(ME.identifier, 'MATLAB:unassignedOutputs')
+
+          msg = sprintf(['\n---------------------------------------------------', ...
+                         '\nFAILED : Extract data & MarsBaR estimation.', ...
+                         '\nSkipping:', ...
+                         '\n- subject: %s', ...
+                         '\n- ROI: %s', .....
+                         '\n---------------------------------------------------', ...
+                         '\n'], ...
+                        subLabel,  ...
+                        spm_file(roiList{iROI, 1}, 'filename'));
+          id = 'roiGlmFailed';
+          logger('WARNING', msg, 'filename', mfilename(), 'id', id);
+
+          skipped.subject{end + 1} = subLabel;
+          skipped.roi{end + 1} = spm_file(roiList{iROI, 1}, 'filename');
+          continue
+
         end
 
       end
