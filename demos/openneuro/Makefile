@@ -21,7 +21,7 @@ data_ds000001:
 	cd inputs/ds000001 && datalad get sub-0[123] -J 3
 	cd inputs/ds000001-fmriprep && datalad get sub-0[123]/func/*tsv -J 12
 	cd inputs/ds000001-fmriprep && datalad get sub-0[123]/func/*json -J 12
-	cd inputs/ds000001-fmriprep && datalad get sub-0[123]/func/*MNI*desc-*AROMA*bold.nii.gz -J 12
+	cd inputs/ds000001-fmriprep && datalad get sub-0[123]/func/*MNI*desc-*bold.nii.gz -J 12
 
 
 data_ds000114:
