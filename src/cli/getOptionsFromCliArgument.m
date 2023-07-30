@@ -29,9 +29,6 @@ function opt = getOptionsFromCliArgument(args)
 
     opt.dir.raw = args.Results.bids_dir;
     opt.dir.derivatives = args.Results.output_dir;
-    opt.dir.roi = args.Results.roi_dir;
-
-    opt = overrideDryRun(opt, args);
 
     if ~isempty(args.Results.participant_label)
       opt.subjects = args.Results.participant_label;
@@ -47,45 +44,65 @@ function opt = getOptionsFromCliArgument(args)
       opt.bidsFilterFile = args.Results.bids_filter_file;
     end
 
-    opt.boilerplate_only = args.Results.boilerplate_only;
+    if isfield(args.Results, 'roi_dir')
+      opt.dir.roi = args.Results.roi_dir;
+    end
 
-    opt = overrideFwhm(opt, args);
+    if isfield(args.Results, 'boilerplate_only')
+      opt.boilerplate_only = args.Results.boilerplate_only;
+    end
+
+    if isfield(args.Results, 'dry_run')
+      opt = overrideDryRun(opt, args);
+    end
+
+    if isfield(args.Results, 'fwhm')
+      opt = overrideFwhm(opt, args);
+    end
 
     opt = overrideSpace(opt, args);
 
     % preproc
-    if ismember('slicetiming', args.Results.ignore)
-      opt.stc.skip = true;
-    end
-    if ismember('unwarp', args.Results.ignore)
-      opt.realign.useUnwarp = false;
-    end
-    if ismember('fieldmaps', args.Results.ignore)
-      opt.useFieldmaps = false;
-    end
-    if ismember('qa', lower(args.Results.ignore))
-      opt.QA.func.do = false;
-      opt.QA.anat.do = false;
-      opt.QA.glm.do = false;
-    end
+    if ismember(lower(action), {'preprocess'})
 
-    opt.dummy_scans = args.Results.dummy_scans;
+      if ismember('slicetiming', args.Results.ignore)
+        opt.stc.skip = true;
+      end
+      if ismember('unwarp', args.Results.ignore)
+        opt.realign.useUnwarp = false;
+      end
+      if ismember('fieldmaps', args.Results.ignore)
+        opt.useFieldmaps = false;
+      end
+      if ismember('qa', lower(args.Results.ignore))
+        opt.QA.func.do = false;
+        opt.QA.anat.do = false;
+        opt.QA.glm.do = false;
+      end
 
-    opt.anatOnly = args.Results.anat_only;
+      opt.dummy_scans = args.Results.dummy_scans;
+
+      opt.anatOnly = args.Results.anat_only;
+
+    end
 
     % create_roi
-    opt.roi.atlas = args.Results.roi_atlas;
-    opt.roi.name = args.Results.roi_name;
-    opt.roi.hemi = args.Results.hemisphere;
+    if ismember(lower(action), {'create_roi'})
+      opt.roi.atlas = args.Results.roi_atlas;
+      opt.roi.name = args.Results.roi_name;
+      opt.roi.hemi = args.Results.hemisphere;
+    end
 
     % stats
-    opt.dir.preproc = args.Results.preproc_dir;
-    opt.model.file = args.Results.model_file;
-    opt.model.designOnly = args.Results.design_only;
-    opt.glm.keepResiduals = args.Results.keep_residuals;
+    if ismember(lower(action), {'stats', 'contrasts', 'results'})
+      opt.dir.preproc = args.Results.preproc_dir;
+      opt.model.file = args.Results.model_file;
+      opt.model.designOnly = args.Results.design_only;
+      opt.glm.keepResiduals = args.Results.keep_residuals;
 
-    opt = overrideRoiBased(opt, args);
+      opt = overrideRoiBased(opt, args);
 
+    end
   end
 
 end
