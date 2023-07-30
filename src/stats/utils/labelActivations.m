@@ -11,8 +11,8 @@ function tsvFile = labelActivations(varargin)
   % :param csvFile:
   % :type  csvFile: path
   %
-  % :param atlas: Any of ``{'Neuromorphometrics', 'AAL'}``.
-  %               Defaults to ``'Neuromorphometrics'``
+  % :param atlas: Any of ``{'neuromorphometrics', 'aal', 'hcpex'}``.
+  %               Defaults to ``'neuromorphometrics'``
   % :type  atlas: char
   %
   % :returns: - :tsvFile: (path)
@@ -24,22 +24,34 @@ function tsvFile = labelActivations(varargin)
 
   args = inputParser;
 
+  defaultAtlas = 'Neuromorphometrics';
+
   addRequired(args, 'csvFile', @ischar);
-  addParameter(args, 'atlas', 'Neuromorphometrics', @ischar);
+  addParameter(args, 'atlas', defaultAtlas, @ischar);
 
   parse(args, varargin{:});
 
   csvFile = args.Results.csvFile;
   atlas = args.Results.atlas;
 
-  atlasName = 'Neuromorphometrics';
-  if ~strcmp(atlas, 'Neuromorphometrics')
+  atlasName = defaultAtlas;
+  if ~strcmpi(atlas, 'neuromorphometrics')
     copyAtlasToSpmDir(atlas, 'verbose', false);
-    switch atlas
-      case 'AAL'
+    switch lower(atlas)
+      case 'aal'
         atlasName = 'AAL3v1_1mm';
       case 'hcpex'
         atlasName = 'HCPex';
+      case 'glasser'
+        atlasName = 'space-MNI152ICBM2009anlin_atlas-glasser_dseg';
+      case 'visfatlas'
+        atlasName = 'space-MNI_atlas-visfAtlas_dseg';
+      case 'wang'
+        atlasName = 'space-MNI_atlas-wang_dseg';
+      otherwise
+        logger('ERROR', 'unknown atlas', ...
+               'filename', mfilename(), ...
+               'id', 'labelActivations:UnknownAtlas');
     end
   end
 
