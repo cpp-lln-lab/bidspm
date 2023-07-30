@@ -14,24 +14,17 @@ end
 
 function test_getROIs_individual_space_no_subject()
 
-  opt = setTestCfg();
-  opt.dir.roi = getTestDataDir('roi');
-  opt.bidsFilterFile.roi.space = 'individual';
-  opt = checkOptions(opt);
-
+  opt = setup('individual');
   assertExceptionThrown(@()getROIs(opt), 'getROIs:noSubject');
 
 end
 
 function test_getROIs_no_roi()
 
-  opt = setTestCfg();
-  opt.dir.roi = getTestDataDir('roi');
-  opt = checkOptions(opt);
+  opt = setup('IXI549Space');
 
   opt.roi.name = {''};
 
-  opt.bidsFilterFile.roi.space = 'IXI549Space';
   [roiList, roiFolder] = getROIs(opt);
 
   assertEqual(roiFolder, '');
@@ -47,10 +40,7 @@ end
 
 function test_getROIs_mni()
 
-  opt = setTestCfg();
-  opt.dir.roi = getTestDataDir('roi');
-  opt.bidsFilterFile.roi.space = 'IXI549Space';
-  opt = checkOptions(opt);
+  opt = setup('IXI549Space');
 
   [roiList, roiFolder] = getROIs(opt);
 
@@ -65,10 +55,7 @@ end
 
 function test_getROIs_mni_subselect()
 
-  opt = setTestCfg();
-  opt.dir.roi = getTestDataDir('roi');
-  opt.bidsFilterFile.roi.space = 'IXI549Space';
-  opt = checkOptions(opt);
+  opt = setup('IXI549Space');
 
   opt.roi.name = {'V1'};
 
@@ -100,11 +87,8 @@ end
 
 function test_getROIs_individual()
 
-  opt = setTestCfg();
+  opt = setup('individual');
   subLabel = '01';
-  opt.dir.roi = getTestDataDir('roi');
-  opt.bidsFilterFile.roi.space = 'individual';
-  opt = checkOptions(opt);
 
   [roiList, roiFolder] = getROIs(opt, subLabel);
 
@@ -121,12 +105,8 @@ end
 
 function test_getROIs_individual_subselect()
 
-  opt = setTestCfg();
+  opt = setup('individual');
   subLabel = '01';
-  opt.dir.roi = getTestDataDir('roi');
-  opt.bidsFilterFile.roi.space = 'individual';
-  opt = checkOptions(opt);
-
   opt.roi.name = {'V1'};
 
   [roiList, roiFolder] = getROIs(opt, subLabel);
@@ -135,10 +115,15 @@ function test_getROIs_individual_subselect()
                       fullfile(roiFolder, 'sub-01_hemi-R_space-individual_label-V1_mask.nii')};
   assertEqual(roiList, expectedRoiLists);
 
-  % test regex
+end
+
+function test_getROIs_individual_subselect_regex()
+
+  opt = setup('individual');
+  subLabel = '01';
 
   opt.roi.name = {'.*1'};
-  roiList = getROIs(opt, subLabel);
+  [roiList, roiFolder] = getROIs(opt, subLabel);
   expectedRoiLists = {fullfile(roiFolder, 'sub-01_hemi-L_space-individual_label-A1_mask.nii'); ...
                       fullfile(roiFolder, 'sub-01_hemi-L_space-individual_label-V1_mask.nii'); ...
                       fullfile(roiFolder, 'sub-01_hemi-R_space-individual_label-A1_mask.nii'); ...
@@ -156,7 +141,7 @@ function test_getROIs_individual_subselect()
   % TODO: check why this regex fails in bids matlab
   %   opt.roi.name = {'A|V'};
 
-  opt.roi.name = {'A', 'V'};
+  opt.roi.name = {'A.*', 'V.*'};
   roiList = getROIs(opt, subLabel);
   assertEqual(roiList, expectedRoiLists);
 
@@ -164,11 +149,8 @@ end
 
 function test_getROIs_individual_subselect_filter()
 
-  opt = setTestCfg();
+  opt = setup('individual');
   subLabel = '01';
-  opt.dir.roi = getTestDataDir('roi');
-  opt.bidsFilterFile.roi.space = 'individual';
-  opt = checkOptions(opt);
 
   opt.roi.name = struct('label', 'V1', 'hemi', 'L');
 
@@ -187,4 +169,11 @@ function test_getROIs_individual_subselect_filter()
   roiList = getROIs(opt, subLabel);
   assertEqual(roiList, {});
 
+end
+
+function opt = setup(space)
+  opt = setTestCfg();
+  opt.dir.roi = getTestDataDir('roi');
+  opt.bidsFilterFile.roi.space = space;
+  opt = checkOptions(opt);
 end

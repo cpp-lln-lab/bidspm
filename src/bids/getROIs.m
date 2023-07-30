@@ -66,6 +66,12 @@ function [roiList, roiFolder] = getROIs(varargin)
 
   else
 
+    if strcmp(subLabel, '')
+      msg = sprintf('Provide a subject label.');
+      id = 'noSubject';
+      logger('ERROR', msg, 'filename', mfilename(), 'id', id);
+    end
+
     % we expect ROI files to have BIDS valid names
     clear filter;
     filter.sub = {subLabel};
@@ -75,13 +81,6 @@ function [roiList, roiFolder] = getROIs(varargin)
                            'filter', filter, ...
                            'verbose', opt.verbosity > 1, ...
                            'index_dependencies', false);
-
-    if strcmp(subLabel, '')
-      msg = sprintf('Provide a subject label amongst those:\n%s\n\n', ...
-                    bids.internal.create_unordered_list(bids.query(BIDS_ROI, 'subjects')));
-      id = 'noSubject';
-      logger('ERROR', msg, 'filename', mfilename(), 'id', id);
-    end
 
     clear filter;
     filter = opt.bidsFilterFile.roi;
