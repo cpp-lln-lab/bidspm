@@ -81,8 +81,13 @@ function matlabbatch = bidsResults(varargin)
   % will be labelled.
   % You can specify the atlas to use for that by choosing between
   %
-  %  - `'Neuromorphometrics'` (default)
-  %  - `'aal'`
+  %  - ``'Neuromorphometrics'`` (default)
+  %  - ``'aal'``
+  %  - ``'visfatlas'``
+  %  - ``'anatomy_toobox'``
+  %  - ``'hcpex'``
+  %  - ``'glasser'``
+  %  - ``'wang'``
   %
   % .. code-block:: matlab
   %
@@ -131,10 +136,6 @@ function matlabbatch = bidsResults(varargin)
   %
 
   % (C) Copyright 2020 bidspm developers
-
-  % TODO move ps / png file: difficult at subject level because there can be
-  %                          several png for one contrast
-  % TODO rename NIDM file:
 
   matlabbatch = {};
 
