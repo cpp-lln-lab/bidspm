@@ -20,3 +20,5 @@ download_moae_ds(true);
 
 cd(root_dir);
 success = bidspm('action', 'run_tests');
+
+exit(double(~success));
