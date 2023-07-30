@@ -29,6 +29,7 @@ function returnCode = bidspm(varargin)
       bugReport(opt, ME);
     end
     returnCode = 1;
+    rethrow(ME);
   end
 end
 
