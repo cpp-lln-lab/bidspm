@@ -12,5 +12,4 @@ function args = inputParserForSmooth()
 
   addParameter(args, 'fwhm', 6, isPositiveScalar);
   addParameter(args, 'dry_run', false, isLogical);
-  addParameter(args, 'anat_only', false, isLogical);
 end

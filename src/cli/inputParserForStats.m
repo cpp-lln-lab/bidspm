@@ -14,6 +14,7 @@ function args = inputParserForStats()
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
   isFolder = @(x) isdir(x);
   isCellStr = @(x) iscellstr(x);
+  isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
 
   addParameter(args, 'preproc_dir', pwd, isFolder);
   addParameter(args, 'model_file', struct([]), isFileOrStruct);

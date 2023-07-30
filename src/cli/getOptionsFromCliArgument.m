@@ -124,10 +124,10 @@ function opt = roiOptions(opt, args)
     opt.dir.roi = args.Results.roi_dir;
   end
   if isfield(args.Results, 'roi_atlas')
-    opt.roi.atlas = args.Results.roi_dir;
+    opt.roi.atlas = args.Results.roi_atlas;
   end
   if isfield(args.Results, 'roi_name')
-    opt.roi.name = args.Results.roi_dir;
+    opt.roi.name = args.Results.roi_name;
   end
   if isfield(args.Results, 'hemisphere')
     opt.roi.hemi = args.Results.hemisphere;
