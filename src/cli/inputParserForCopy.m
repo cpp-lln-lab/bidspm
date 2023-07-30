@@ -5,4 +5,5 @@ function args = inputParserForCopy()
   % allow unmatched in case this is called from cliSmooth
   args.KeepUnmatched = true;
   addParameter(args, 'force', false, isLogical);
+  addParameter(args, 'anat_only', false, isLogical);
 end

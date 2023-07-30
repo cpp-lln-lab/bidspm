@@ -10,99 +10,95 @@ function opt = getOptionsFromCliArgument(args)
 
   action = args.Results.action;
 
-  if ismember(lower(action), bidsAppsActions)
+  if ~ismember(lower(action), bidsAppsActions)
+    return
+  end
 
-    bidspm('action', 'init');
+  bidspm('action', 'init');
 
-    if isstruct(args.Results.options)
-      opt = args.Results.options;
-    elseif exist(args.Results.options, 'file') == 2
-      opt = bids.util.jsondecode(args.Results.options);
+  opt = getOptions(args);
+
+  opt.verbosity = args.Results.verbosity;
+
+  opt.dir.raw = args.Results.bids_dir;
+  opt.dir.derivatives = args.Results.output_dir;
+
+  if ~isempty(args.Results.participant_label)
+    opt.subjects = args.Results.participant_label;
+  end
+
+  if ~isempty(args.Results.task)
+    opt.taskName = args.Results.task;
+  end
+
+  if ~isempty(args.Results.bids_filter_file)
+    % TODO read from JSON if necessary
+    % TODO validate
+    opt.bidsFilterFile = args.Results.bids_filter_file;
+  end
+
+  opt = overrideSpace(opt, args);
+
+  if isfield(args.Results, 'roi_dir')
+    opt.dir.roi = args.Results.roi_dir;
+  end
+
+  if isfield(args.Results, 'boilerplate_only')
+    opt.boilerplate_only = args.Results.boilerplate_only;
+  end
+
+  if isfield(args.Results, 'dry_run')
+    opt = overrideDryRun(opt, args);
+  end
+
+  if isfield(args.Results, 'fwhm')
+    opt = overrideFwhm(opt, args);
+  end
+
+  if isfield(args.Results, 'anat_only') && args.Results.anat_only == true
+    opt.query.modality = {'anat'};
+  end
+
+  % preproc
+  if ismember(lower(action), {'preprocess'})
+
+    if ismember('slicetiming', args.Results.ignore)
+      opt.stc.skip = true;
+    end
+    if ismember('unwarp', args.Results.ignore)
+      opt.realign.useUnwarp = false;
+    end
+    if ismember('fieldmaps', args.Results.ignore)
+      opt.useFieldmaps = false;
+    end
+    if ismember('qa', lower(args.Results.ignore))
+      opt.QA.func.do = false;
+      opt.QA.anat.do = false;
+      opt.QA.glm.do = false;
     end
 
-    if isempty(opt)
-      % set defaults
-      opt = checkOptions(struct());
-    end
+    opt.dummy_scans = args.Results.dummy_scans;
 
-    opt.verbosity = args.Results.verbosity;
+    opt.anatOnly = args.Results.anat_only;
 
-    opt.dir.raw = args.Results.bids_dir;
-    opt.dir.derivatives = args.Results.output_dir;
+  end
 
-    if ~isempty(args.Results.participant_label)
-      opt.subjects = args.Results.participant_label;
-    end
+  % create_roi
+  if ismember(lower(action), {'create_roi'})
+    opt.roi.atlas = args.Results.roi_atlas;
+    opt.roi.name = args.Results.roi_name;
+    opt.roi.hemi = args.Results.hemisphere;
+  end
 
-    if ~isempty(args.Results.task)
-      opt.taskName = args.Results.task;
-    end
+  % stats
+  if ismember(lower(action), {'stats', 'contrasts', 'results'})
+    opt.dir.preproc = args.Results.preproc_dir;
+    opt.model.file = args.Results.model_file;
+    opt.model.designOnly = args.Results.design_only;
+    opt.glm.keepResiduals = args.Results.keep_residuals;
 
-    if ~isempty(args.Results.bids_filter_file)
-      % TODO read from JSON if necessary
-      % TODO validate
-      opt.bidsFilterFile = args.Results.bids_filter_file;
-    end
+    opt = overrideRoiBased(opt, args);
 
-    if isfield(args.Results, 'roi_dir')
-      opt.dir.roi = args.Results.roi_dir;
-    end
-
-    if isfield(args.Results, 'boilerplate_only')
-      opt.boilerplate_only = args.Results.boilerplate_only;
-    end
-
-    if isfield(args.Results, 'dry_run')
-      opt = overrideDryRun(opt, args);
-    end
-
-    if isfield(args.Results, 'fwhm')
-      opt = overrideFwhm(opt, args);
-    end
-
-    opt = overrideSpace(opt, args);
-
-    % preproc
-    if ismember(lower(action), {'preprocess'})
-
-      if ismember('slicetiming', args.Results.ignore)
-        opt.stc.skip = true;
-      end
-      if ismember('unwarp', args.Results.ignore)
-        opt.realign.useUnwarp = false;
-      end
-      if ismember('fieldmaps', args.Results.ignore)
-        opt.useFieldmaps = false;
-      end
-      if ismember('qa', lower(args.Results.ignore))
-        opt.QA.func.do = false;
-        opt.QA.anat.do = false;
-        opt.QA.glm.do = false;
-      end
-
-      opt.dummy_scans = args.Results.dummy_scans;
-
-      opt.anatOnly = args.Results.anat_only;
-
-    end
-
-    % create_roi
-    if ismember(lower(action), {'create_roi'})
-      opt.roi.atlas = args.Results.roi_atlas;
-      opt.roi.name = args.Results.roi_name;
-      opt.roi.hemi = args.Results.hemisphere;
-    end
-
-    % stats
-    if ismember(lower(action), {'stats', 'contrasts', 'results'})
-      opt.dir.preproc = args.Results.preproc_dir;
-      opt.model.file = args.Results.model_file;
-      opt.model.designOnly = args.Results.design_only;
-      opt.glm.keepResiduals = args.Results.keep_residuals;
-
-      opt = overrideRoiBased(opt, args);
-
-    end
   end
 
 end
@@ -117,6 +113,18 @@ function value = bidsAppsActions()
            'stats'; ...
            'contrasts'; ...
            'results'};
+end
+
+function opt = getOptions(args)
+  if isstruct(args.Results.options)
+    opt = args.Results.options;
+  elseif exist(args.Results.options, 'file') == 2
+    opt = bids.util.jsondecode(args.Results.options);
+  end
+  if isempty(opt)
+    % set defaults
+    opt = checkOptions(struct());
+  end
 end
 
 function opt = overrideRoiBased(opt, args)
