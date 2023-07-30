@@ -306,10 +306,6 @@ bids
 .. autofunction:: src.bids.getTpmFilename
 .. _initBids:
 .. autofunction:: src.bids.initBids
-.. _isMni:
-.. autofunction:: src.bids.isMni
-.. _isSkullstripped:
-.. autofunction:: src.bids.isSkullstripped
 .. _removeEmptyQueryFields:
 .. autofunction:: src.bids.removeEmptyQueryFields
 .. _returnNameSkullstripOutput:
@@ -346,8 +342,46 @@ bids_model
 
 cli
 ===
+.. _baseInputParser:
+.. autofunction:: src.cli.baseInputParser
+.. _cliCopy:
+.. autofunction:: src.cli.cliCopy
+.. _cliCreateRoi:
+.. autofunction:: src.cli.cliCreateRoi
+.. _cliDefaultModel:
+.. autofunction:: src.cli.cliDefaultModel
+.. _cliPreprocess:
+.. autofunction:: src.cli.cliPreprocess
+.. _cliSmooth:
+.. autofunction:: src.cli.cliSmooth
+.. _cliStats:
+.. autofunction:: src.cli.cliStats
+.. _getBidsFilterFile:
+.. autofunction:: src.cli.getBidsFilterFile
 .. _getOptionsFromCliArgument:
 .. autofunction:: src.cli.getOptionsFromCliArgument
+.. _inputParserForCopy:
+.. autofunction:: src.cli.inputParserForCopy
+.. _inputParserForCreateModel:
+.. autofunction:: src.cli.inputParserForCreateModel
+.. _inputParserForCreateRoi:
+.. autofunction:: src.cli.inputParserForCreateRoi
+.. _inputParserForPreprocess:
+.. autofunction:: src.cli.inputParserForPreprocess
+.. _inputParserForSmooth:
+.. autofunction:: src.cli.inputParserForSmooth
+.. _inputParserForStats:
+.. autofunction:: src.cli.inputParserForStats
+
+
+.. _constants:
+
+constants
+=========
+.. _lowLevelActions:
+.. autofunction:: src.constants.lowLevelActions
+.. _supportedAtlases:
+.. autofunction:: src.constants.supportedAtlases
 
 
 .. _defaults:
@@ -550,6 +584,8 @@ stats subject_level
 .. autofunction:: src.stats.subject_level.removeIntercept
 .. _reorderCounfounds:
 .. autofunction:: src.stats.subject_level.reorderCounfounds
+.. _sanitizeConfounds:
+.. autofunction:: src.stats.subject_level.sanitizeConfounds
 .. _saveRoiGlmSummaryTable:
 .. autofunction:: src.stats.subject_level.saveRoiGlmSummaryTable
 .. _selectConfoundsByVarianceExplained:
@@ -590,8 +626,6 @@ stats utils
 .. autofunction:: src.stats.utils.getContrastNb
 .. _getRegressorIdx:
 .. autofunction:: src.stats.utils.getRegressorIdx
-.. _isTtest:
-.. autofunction:: src.stats.utils.isTtest
 .. _labelActivations:
 .. autofunction:: src.stats.utils.labelActivations
 .. _returnContrastImageFile:
@@ -618,8 +652,6 @@ utils
 .. autofunction:: src.utils.getDist2surf
 .. _getFuncVoxelDims:
 .. autofunction:: src.utils.getFuncVoxelDims
-.. _isZipped:
-.. autofunction:: src.utils.isZipped
 .. _regexify:
 .. autofunction:: src.utils.regexify
 .. _renamePng:
@@ -640,3 +672,17 @@ utils
 .. autofunction:: src.utils.validationInputFile
 .. _volumeSplicing:
 .. autofunction:: src.utils.volumeSplicing
+
+
+.. _validators:
+
+validators
+==========
+.. _isMni:
+.. autofunction:: src.validators.isMni
+.. _isSkullstripped:
+.. autofunction:: src.validators.isSkullstripped
+.. _isTtest:
+.. autofunction:: src.validators.isTtest
+.. _isZipped:
+.. autofunction:: src.validators.isZipped

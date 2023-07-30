@@ -26,9 +26,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* [REF] Refactor and update CLI (#1096) @Remi-Gau
+
 ### Deprecated
 
 ### Removed
+
+* [REF] Remove old CLI (#1096) @Remi-Gau
 
 ### Fixed
 

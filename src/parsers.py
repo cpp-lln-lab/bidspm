@@ -34,6 +34,9 @@ class MuhParser(argparse.ArgumentParser):
         rich.print(message, file=file)
 
 
+# TODO qplit in several parsers like in matlab
+
+
 def common_parser() -> MuhParser:
     parser = MuhParser(
         description="bidspm is a SPM base BIDS app",

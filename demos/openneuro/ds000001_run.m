@@ -25,7 +25,7 @@ end
 %% Stats
 preproc_dir = fullfile(root_dir, 'outputs', 'ds000001', 'derivatives', 'bidspm-preproc');
 
-model_file = fullfile(root_dir, 'models', 'model-balloonanalogrisktaskDefault_smdl copy.json');
+model_file = fullfile(root_dir, 'models', 'model-balloonanalogrisktaskDefault_smdl.json');
 
 %% subject level
 parfor i_participant = 1:numel(participant_label)

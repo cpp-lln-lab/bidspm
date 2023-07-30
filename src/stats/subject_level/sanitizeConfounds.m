@@ -19,6 +19,8 @@ function [names, R] = sanitizeConfounds(names, R)
 
   % (C) Copyright 2023 bidspm developers
 
+  %   TODO should not remove duplicate confounds when doing model comparison
+
   idx_col_to_rm = [];
   for col = 1:(size(R, 2) - 1)
     ref = R(:, col);

@@ -1,6 +1,6 @@
 function tsvFile = labelActivations(varargin)
   %
-  % Adds MNI labels to a csv output file from SPM and saves it as SPM.
+  % Add MNI labels to a csv output file from SPM and saves it as SPM.
   %
   % Can choose which atlas to use.
   %
