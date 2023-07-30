@@ -7,10 +7,8 @@ function cliSmooth(varargin)
   parse(args, varargin{:});
 
   opt = getOptionsFromCliArgument(args);
-
   opt.pipeline.type = 'preproc';
   opt = checkOptions(opt);
-
   saveOptions(opt);
 
   cliCopy(varargin{:});

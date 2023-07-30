@@ -22,11 +22,6 @@ function returnCode = bidspm(varargin)
   %
   %   addParameter(args, 'fwhm', 6, isPositiveScalar);
   %
-  %   % create_roi only
-  %   addParameter(args, 'roi_dir', '', isChar);
-  %   addParameter(args, 'hemisphere', {'L', 'R'}, isCellStr);
-  %   addParameter(args, 'roi_atlas', 'neuromorphometrics', isInAvailableAtlas);
-  %   addParameter(args, 'roi_name', {''}, isCellStr);
   %
   %   % preproc only
   %   addParameter(args, 'dummy_scans', 0, isPositiveScalar);
@@ -104,7 +99,7 @@ function returnCode = executeAction(varargin)
       cliCopy(varargin{2:end});
 
     case 'create_roi'
-      create_roi(args);
+      cliCreateRoi(varargin{2:end});
 
     case 'smooth'
       cliSmooth(varargin{2:end});
@@ -141,23 +136,6 @@ function returnCode = executeAction(varargin)
 end
 
 %% high level actions
-
-function create_roi(args)
-  opt = getOptionsFromCliArgument(args);
-  opt = checkOptions(opt);
-  opt.roi.space = opt.space;
-
-  saveOptions(opt);
-  boilerplate(opt, ...
-              'outputPath', fullfile(opt.dir.roi, 'reports'), ...
-              'pipelineType', 'create_roi', ...
-              'verbosity', 0);
-  if opt.boilerplate_only
-    return
-  end
-  bidsCreateROI(opt);
-
-end
 
 function preprocess(args)
   % TODO make sure that options defined in JSON or passed as a structure

@@ -10,17 +10,16 @@ function cliCopy(varargin)
   parse(args, varargin{:});
 
   opt = getOptionsFromCliArgument(args);
-
   opt.pipeline.type = 'preproc';
-  opt = checkOptions(opt);
 
-  saveOptions(opt);
+  opt = checkOptions(opt);
 
   opt.query.desc = {'preproc', 'brain'};
   opt.query.suffix = {'T1w', 'bold', 'mask'};
   opt.query.space = opt.space;
 
   bidsFilterFile = getBidsFilterFile(args);
+
   if ~isempty(bidsFilterFile)
     suffixes = fieldnames(bidsFilterFile);
     modalities = {};
@@ -41,6 +40,8 @@ function cliCopy(varargin)
   end
   opt.query.suffix = unique(opt.query.suffix);
   opt.query.desc = unique(opt.query.desc);
+
+  saveOptions(opt);
 
   bidsCopyInputFolder(opt, 'unzip', true, 'force', args.Results.force);
 
