@@ -85,7 +85,17 @@
         "X": [
           1
         ],
-        "Type": "glm"
+        "Type": "glm",
+        "Options": {
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        }
       },
       "DummyContrasts": {
         "Test": "t"

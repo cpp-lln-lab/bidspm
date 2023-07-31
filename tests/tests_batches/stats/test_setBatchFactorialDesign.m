@@ -79,6 +79,9 @@ function test_setBatchFactorialDesign_basic()
 
   datasetNode = opt.model.bm.get_nodes('Level', 'dataset');
 
+  opt.model.bm.Nodes{3}.Model.Options = rmfield(opt.model.bm.Nodes{3}.Model.Options, ...
+                                                'Mask');
+
   matlabbatch = {};
 
   matlabbatch = setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name);
@@ -107,7 +110,7 @@ function test_setBatchFactorialDesign_wrong_model_design_matrix()
   matlabbatch = {};
 
   if bids.internal.is_octave()
-    return
+    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
   end
   assertWarning(@()setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name), ...
                 'setBatchFactorialDesign:notImplemented');

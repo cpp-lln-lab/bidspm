@@ -35,7 +35,15 @@
           "Model": "spm+derivative"
         },
         "Options": {
-          "HighPassFilterCutoffHz": 0.008
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
         },
         "Software": {
           "SPM": {
@@ -108,6 +116,16 @@
         "X": [
           1
         ],
+        "Options": {
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        },
         "Software": {
           "bidspm": {
             "Results": [
@@ -137,6 +155,16 @@
         "X": [
           1
         ],
+        "Options": {
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        },
         "Software": {
           "bidspm": {
             "Results": [

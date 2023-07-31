@@ -60,6 +60,7 @@ function matlabbatch = setBatchResults(matlabbatch, opt, result)
   %%
   if result.threshSpm
     result.outputName.ext = '';
+    result.outputName.suffix = 'spmT';
     bidsFile = bids.File(result.outputName);
     export{end + 1}.tspm.basename = bidsFile.filename;
   end

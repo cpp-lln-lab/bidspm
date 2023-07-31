@@ -10,10 +10,12 @@ end
 
 function test_setBatchResults_basic()
 
+  opt.taskName = {'test'};
+
   %% GIVEN
   result = defaultResultsStructure;
 
-  result.space = 'IXI549Space';
+  result.space = {'IXI549Space'};
   result.dir = pwd;
   result.label = '01';
   result.nbSubj = 1;
@@ -23,7 +25,7 @@ function test_setBatchResults_basic()
 
   %% WHEN
   matlabbatch = {};
-  matlabbatch = setBatchResults(matlabbatch, result);
+  matlabbatch = setBatchResults(matlabbatch, opt, result);
 
   %% THEN
   expectedBatch = returnBasicExpectedResultsBatch();
@@ -36,7 +38,7 @@ end
 function test_setBatchResults_export()
 
   %% GIVEN
-  opt.taskName = 'test';
+  opt.taskName = {'test'};
 
   results = defaultResultsStructure();
 
@@ -53,21 +55,21 @@ function test_setBatchResults_export()
 
   opt.results = results;
 
-  opt.space = 'individual';
+  opt.space = {'individual'};
 
   result = setBatchSubjectLevelResultsMock(opt);
 
   %% WHEN
   matlabbatch = {};
-  matlabbatch = setBatchResults(matlabbatch, result);
+  matlabbatch = setBatchResults(matlabbatch, opt, result);
 
   %% THEN
   export{1}.png = true;
   export{2}.csv = true;
   export{3}.tspm.basename = ...
-      'sub-01_task-test_space-individual_desc-test_label-XXXX_p-0pt050_k-0_MC-FDR_spmT';
+      'sub-01_task-test_space-individual_desc-test_p-0pt050_k-0_MC-FDR_spmT';
   export{4}.binary.basename = ...
-      'sub-01_task-test_space-individual_desc-test_label-XXXX_p-0pt050_k-0_MC-FDR_mask';
+      'sub-01_task-test_space-individual_desc-test_p-0pt050_k-0_MC-FDR_mask';
 
   export{5}.nidm.modality = 'FMRI';
   export{end}.nidm.refspace = 'subject';
@@ -92,7 +94,7 @@ end
 function test_setBatchResults_montage()
 
   %% GIVEN
-  opt.taskName = 'test';
+  opt.taskName = {'test'};
 
   results = defaultResultsStructure();
 
@@ -106,13 +108,13 @@ function test_setBatchResults_montage()
 
   opt.results = results;
 
-  opt.space = 'IXI549Space';
+  opt.space = {'IXI549Space'};
 
   result = setBatchSubjectLevelResultsMock(opt);
 
   %% WHEN
   matlabbatch = {};
-  matlabbatch = setBatchResults(matlabbatch, result);
+  matlabbatch = setBatchResults(matlabbatch, opt, result);
 
   %% THEN
   expectedBatch = returnBasicExpectedResultsBatch();

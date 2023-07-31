@@ -35,7 +35,15 @@
           "Model": "spm"
         },
         "Options": {
-          "HighPassFilterCutoffHz": 0.008
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
         },
         "Software": {
           "SPM": {
@@ -104,7 +112,17 @@
         "Type": "glm",
         "X": [
           1
-        ]
+        ],
+        "Options": {
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        }
       },
       "DummyContrasts": {
         "Test": "t"
