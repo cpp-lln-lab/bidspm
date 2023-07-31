@@ -230,11 +230,13 @@ function matlabbatch = bidsResults(varargin)
           [optThisSubject, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel);
           [matlabbatch, results] = bidsResultsSubject(optThisSubject, subLabel, iRes, isRunLevel);
 
-          status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
+          for iBatch = 1:numel(matlabbatch)
+            status = saveAndRunWorkflow(matlabbatch(iBatch), batchName, opt, subLabel);
 
-          if status
-            renameOutputResults(results);
-            renameNidm(opt, results, subLabel);
+            if status
+              renameOutputResults(results);
+              renameNidm(opt, results, subLabel);
+            end
           end
 
         end
@@ -253,10 +255,14 @@ function matlabbatch = bidsResults(varargin)
 
         tmp = fullfile(opt.dir.stats, 'derivatives', 'bidspm-groupStats');
         opt.dir.jobs = fullfile(tmp, 'jobs',  strjoin(opt.taskName, ''));
-        status = saveAndRunWorkflow(matlabbatch, batchName, opt);
 
-        if status
-          renameOutputResults(results);
+        for iBatch = 1:numel(matlabbatch)
+          status = saveAndRunWorkflow(matlabbatch(iBatch), batchName, opt);
+
+          if status
+            renameOutputResults(results);
+            renameNidm(opt, results, subLabel);
+          end
         end
 
       otherwise
@@ -623,18 +629,23 @@ function renameNidm(opt, result, subLabel)
   %
   % removes the _XXX suffix before the nidm extension.
 
+  if nargin < 3
+    subLabel = '';
+  end
+
   nidmFiles = spm_select('FPList', result.dir, '^spm_[0-9]{4}.nidm.zip$');
+
+  spec = struct('suffix', 'nidm', ...
+                'ext', '.zip', ...
+                'entities', struct('sub', subLabel, ...
+                                   'task', strjoin(opt.taskName, ''), ...
+                                   'space', opt.space));
 
   for iFile = 1:size(nidmFiles, 1)
     source = deblank(nidmFiles(iFile, :));
     basename =  spm_file(source, 'basename');
     label =  regexp(basename, '[0-9]{4}', 'match');
-    spec = struct('suffix', 'nidm', ...
-                  'ext', '.zip', ...
-                  'entities', struct('sub', subLabel, ...
-                                     'task', strjoin(opt.taskName, ''), ...
-                                     'space', opt.space, ...
-                                     'label', label{1}));
+    spec.entities.label = label{1};
     bf = bids.File(spec, 'use_schema', false);
     bf = bf.reorder_entities();
     bf = bf.update;
