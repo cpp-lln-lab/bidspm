@@ -29,6 +29,9 @@ function bidsSmoothing(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'smoothing data');
 
+  allRT = {};
+  unRenamedFiles = {};
+
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
@@ -42,10 +45,15 @@ function bidsSmoothing(opt)
       switch modality
         case 'func'
           matlabbatch = {};
-          matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel);
-          saveAndRunWorkflow(matlabbatch, ['smoothing_FWHM-' num2str(opt.fwhm.func)], ...
-                             opt, ...
-                             subLabel);
+          [matlabbatch, allRT{iSub}] = setBatchSmoothingFunc(matlabbatch, ...
+                                                             BIDS, ...
+                                                             opt, ...
+                                                             subLabel); %#ok<AGROW>
+          [~, unRenamedFiles{iSub}] = saveAndRunWorkflow(matlabbatch, ...
+                                                         ['smoothing_FWHM-', ...
+                                                          num2str(opt.fwhm.func)], ...
+                                                         opt, ...
+                                                         subLabel);
         case 'anat'
           % TODO opt.fwhm.func should also have a opt.fwhm.anat
           matlabbatch = {};
@@ -67,6 +75,26 @@ function bidsSmoothing(opt)
   prefix = get_spm_prefix_list;
   opt.query.prefix = [prefix.smooth, num2str(opt.fwhm.func)];
   opt.query.space = opt.space;
-  bidsRename(opt);
+  createdFiles = bidsRename(opt);
+
+  % add Repetition Time to smoothed files metadata
+  for iSub = 1:numel(opt.subjects)
+    subLabel = opt.subjects{iSub};
+    for iFile = 1:numel(createdFiles)
+      bf = bids.File(createdFiles{iFile});
+      if ~strcmp(bf.suffix, 'bold') || ~strcmp(bf.entities.sub, subLabel)
+        continue
+      end
+      jsonFile = spm_file(createdFiles{iFile}, 'ext', '.json');
+      if exist(jsonFile, 'file')
+        metadata = bids.util.jsondecode(jsonFile);
+        idx = ismember(metadata.SpmFilename, ...
+                       spm_file(unRenamedFiles{iSub}{1}.files, 'filename'));
+        rt = allRT{iSub}(idx);
+        metadata.RepetitionTime = rt;
+        bids.util.jsonencode(jsonFile, metadata);
+      end
+    end
+  end
 
 end

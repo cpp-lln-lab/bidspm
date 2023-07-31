@@ -1,4 +1,4 @@
-function status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
+function [status, output] = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   %
   % Saves the SPM matlabbatch and runs it
   %
@@ -28,13 +28,14 @@ function status = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel)
   end
 
   status = true;
+  output = {};
 
   if ~isempty(matlabbatch)
 
     saveMatlabBatch(matlabbatch, batchName, opt, subLabel);
 
     if ~opt.dryRun
-      spm_jobman('run', matlabbatch);
+      output = spm_jobman('run', matlabbatch);
     else
       status = false;
     end

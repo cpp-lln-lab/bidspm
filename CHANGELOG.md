@@ -24,21 +24,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* [DOC] support label of activations with all atlases [1100](https://github.com/cpp-lln-lab/bidspm/pull/1100) by [Remi-Gau](https://github.com/Remi-Gau)
+* [ENH] support label of activations with all atlases [1100](https://github.com/cpp-lln-lab/bidspm/pull/1100) by [Remi-Gau](https://github.com/Remi-Gau)
 
 ### Changed
 
-* [REF] Refactor and update CLI (#1096) @Remi-Gau
+* [REF] Refactor and update CLI in #1096 @Remi-Gau
 
 ### Deprecated
 
 ### Removed
 
-* [REF] Remove old CLI (#1096) @Remi-Gau
+* [REF] Remove old CLI in #1096 @Remi-Gau
 
 ### Fixed
 
 * [FIX] do not compute subject level contrast when running dataset level #1102 by @Remi-Gau
+* [FIX] copy `RepetitionTime` in sidecar JSON after running smoothing in #1099 by @Remi-Gau
 
 ### Security
 
