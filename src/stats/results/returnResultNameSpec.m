@@ -1,4 +1,8 @@
 function nameSpec = returnResultNameSpec(opt, result)
+  %
+  % Return a bids.File name specification for a result file
+  %
+
   % (C) Copyright 2023 bidspm developers
   nameSpec.entities.sub = result.label;
   nameSpec.entities.task = strjoin(opt.taskName, '');

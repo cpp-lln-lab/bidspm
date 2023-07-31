@@ -1,5 +1,11 @@
 function renamePngCsvResults(opt, result, ext, subLabel)
   %
+  % Rename the reuslts png and csv files to a bids friendly filename.
+  %
+  % USAGE::
+  %
+  %   renamePngCsvResults(opt, result, ext, subLabel)
+  %
 
   % (C) Copyright 2023 bidspm developers
   if nargin < 4

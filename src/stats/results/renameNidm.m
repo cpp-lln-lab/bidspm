@@ -1,6 +1,11 @@
 function renameNidm(opt, result, subLabel)
   %
-  % removes the _XXX suffix before the nidm extension.
+  % Rename the nidm files to a bids friendly filename.
+  %
+  % USAGE::
+  %
+  %   renameNidm(opt, result, subLabel)
+  %
 
   % (C) Copyright 2023 bidspm developers
   if nargin < 3
