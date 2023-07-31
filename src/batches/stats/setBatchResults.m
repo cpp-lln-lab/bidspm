@@ -1,4 +1,4 @@
-function matlabbatch = setBatchResults(matlabbatch, result)
+function matlabbatch = setBatchResults(matlabbatch, opt, result)
   %
   % Outputs the typical matlabbatch to compute the result for a given contrast
   %
@@ -27,17 +27,7 @@ function matlabbatch = setBatchResults(matlabbatch, result)
 
   % (C) Copyright 2019 bidspm developers
 
-  result.outputName.entities.sub = result.label;
-  result.outputName.entities.desc = result.name;
-  result.outputName.entities.p = convertPvalueToString(result.p);
-  result.outputName.entities.k = num2str(result.k);
-  result.outputName.entities.MC = result.MC;
-
-  fields = fieldnames(result.outputName.entities);
-  for i = 1:numel(fields)
-    value = result.outputName.entities.(fields{i});
-    result.outputName.entities.(fields{i}) = bids.internal.camel_case(value);
-  end
+  result.outputName = returnResultNameSpec(opt, result);
 
   stats.results.spmmat = {fullfile(result.dir, 'SPM.mat')};
 

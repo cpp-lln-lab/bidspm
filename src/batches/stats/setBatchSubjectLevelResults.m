@@ -59,8 +59,6 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
 
   result.label = subLabel;
 
-  result.outputName = defaultOuputNameStruct(opt, result);
-
-  matlabbatch = setBatchResults(matlabbatch, result);
+  matlabbatch = setBatchResults(matlabbatch, opt, result);
 
 end

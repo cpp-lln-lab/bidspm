@@ -220,14 +220,14 @@ function matlabbatch = bidsResults(varargin)
           end
 
           [optThisSubject, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel);
-          [matlabbatch, results] = bidsResultsSubject(optThisSubject, subLabel, iRes, isRunLevel);
+          [matlabbatch] = bidsResultsSubject(optThisSubject, subLabel, iRes, isRunLevel);
 
           for iBatch = 1:numel(matlabbatch)
-            [status, output] = saveAndRunWorkflow(matlabbatch(iBatch), batchName, opt, subLabel);
+            batch{1} = struct('spm', matlabbatch{iBatch}.spm);
+            status = saveAndRunWorkflow(batch, batchName, opt, subLabel);
 
-            if status
-              renameOutputResults(results);
-              renameNidm(opt, results, subLabel);
+            if status && isfield(matlabbatch{iBatch}, 'result')
+              renameOutputResults(opt, matlabbatch{iBatch}.result, subLabel);
             end
           end
 
@@ -252,8 +252,7 @@ function matlabbatch = bidsResults(varargin)
           [status, output] = saveAndRunWorkflow(matlabbatch(iBatch), batchName, opt);
 
           if status
-            renameOutputResults(results);
-            renameNidm(opt, results, subLabel);
+            renameOutputResults(opt, results);
           end
         end
 
@@ -420,6 +419,8 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLe
                                                 opt, ...
                                                 subLabel, ...
                                                 result);
+      matlabbatch{end}.result = result;
+
     end
 
   end
@@ -587,85 +588,6 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
     background = checkMaskOrUnderlay(background, opt, 'background');
     opt.results(iRes).montage.background = background;
 
-  end
-
-end
-
-function renameOutputResults(results)
-  %
-  % we create new name for the nifti output by removing the
-  % spmT_XXXX prefix and using the XXXX as label- for the file
-  %
-  % also rename PNG and labels activations
-  %
-
-  for i = 1:numel(results)
-
-    if iscell(results)
-      result = results{i};
-    elseif isstruct(results)
-      result = results(i);
-    end
-
-    outputFiles = spm_select('FPList', result.dir, '^spmT_[0-9].*_sub-.*$');
-
-    for iFile = 1:size(outputFiles, 1)
-
-      source = deblank(outputFiles(iFile, :));
-
-      basename = spm_file(source, 'basename');
-      split = strfind(basename, '_sub');
-      bf = bids.File(basename(split + 1:end));
-      bf.entities.label = basename(split - 4:split - 1);
-
-      target = spm_file(source, 'basename', bf.filename);
-
-      movefile(source, target);
-    end
-
-    renamePng(result.dir, 'spm');
-
-    if result.csv && isMni(result.space)
-
-      csvFiles = spm_select('FPList', result.dir, '^spm_.*[0-9].csv$');
-
-      for iFile = 1:size(csvFiles, 1)
-        source = deblank(csvFiles(iFile, :));
-        labelActivations(source, 'atlas', result.atlas);
-      end
-
-    end
-
-  end
-
-end
-
-function renameNidm(opt, result, subLabel)
-  %
-  % removes the _XXX suffix before the nidm extension.
-
-  if nargin < 3
-    subLabel = '';
-  end
-
-  nidmFiles = spm_select('FPList', result.dir, '^spm_[0-9]{4}.nidm.zip$');
-
-  spec = struct('suffix', 'nidm', ...
-                'ext', '.zip', ...
-                'entities', struct('sub', subLabel, ...
-                                   'task', strjoin(opt.taskName, ''), ...
-                                   'space', opt.space));
-
-  for iFile = 1:size(nidmFiles, 1)
-    source = deblank(nidmFiles(iFile, :));
-    basename =  spm_file(source, 'basename');
-    label =  regexp(basename, '[0-9]{4}', 'match');
-    spec.entities.label = label{1};
-    bf = bids.File(spec, 'use_schema', false);
-    bf = bf.reorder_entities();
-    bf = bf.update;
-    target = fullfile(result.dir, bf.filename);
-    movefile(source, target);
   end
 
 end
