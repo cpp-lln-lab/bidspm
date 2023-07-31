@@ -38,6 +38,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* [FIX] do not compute subject level contrast when running dataset level #1102 by @Remi-Gau
+
 ### Security
 
 
