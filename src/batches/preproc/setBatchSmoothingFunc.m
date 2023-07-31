@@ -1,4 +1,4 @@
-function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
+function [matlabbatch, allRT] = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch to smooth the bold files of a subject
   %
@@ -42,6 +42,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   allFiles = [];
+  allRT = [];
 
   for iSes = 1:nbSessions
 
@@ -49,17 +50,30 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
 
     for iRun = 1:nbRuns
 
-      [fileName, subFuncDataDir] = getBoldFilename(BIDS, ...
-                                                   subLabel, sessions{iSes}, runs{iRun}, opt);
+      [fileName, subFuncDataDir, metadata] = getBoldFilename(BIDS, ...
+                                                             subLabel, ...
+                                                             sessions{iSes}, ...
+                                                             runs{iRun}, ...
+                                                             opt);
+      if isstruct(metadata)
+        metadata = {metadata};
+      end
 
-      % TODO remove this extra check
       for iFile = 1:size(fileName, 1)
-        files{iFile, 1} = validationInputFile(subFuncDataDir(iFile, :), fileName(iFile, :));
+        files{iFile, 1} = validationInputFile(subFuncDataDir(iFile, :), ...
+                                              fileName(iFile, :)); %#ok<*AGROW>
+
+        if isfield(metadata{iFile, 1}, 'RepetitionTime')
+          allRT = metadata{iFile, 1}.RepetitionTime;
+        else
+          allRT = nan;
+        end
+
       end
 
       % add the files to list
       allFilesTemp = cellstr(char(files));
-      allFiles = [allFiles; allFilesTemp]; %#ok<AGROW>
+      allFiles = [allFiles; allFilesTemp];
 
     end
   end
@@ -69,6 +83,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
                                   opt, ...
                                   allFiles, ...
                                   opt.fwhm.func, ...
-                                  [spm_get_defaults('smooth.prefix'), num2str(opt.fwhm.func)]);
+                                  [spm_get_defaults('smooth.prefix'), ...
+                                   num2str(opt.fwhm.func)]);
 
 end

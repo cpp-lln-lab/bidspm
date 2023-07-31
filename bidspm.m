@@ -28,15 +28,15 @@ function returnCode = bidspm(varargin)
     else
       bugReport(opt, ME);
     end
-    returnCode = 1;
+    rethrow(ME);
   end
 end
 
 function returnCode = executeAction(varargin)
 
-  returnCode = 0;
-
   action = varargin{1};
+
+  returnCode = 0;
 
   switch lower(action)
 
@@ -277,8 +277,6 @@ function returnCode = run_tests()
   %
 
   % (C) Copyright 2019 bidspm developers
-
-  % Elapsed time is 284 seconds.
 
   tic;
 
