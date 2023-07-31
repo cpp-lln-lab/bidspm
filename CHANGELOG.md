@@ -28,15 +28,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* [REF] Refactor and update CLI (#1096) @Remi-Gau
+* [REF] Refactor and update CLI in #1096 @Remi-Gau
 
 ### Deprecated
 
 ### Removed
 
-* [REF] Remove old CLI (#1096) @Remi-Gau
+* [REF] Remove old CLI in #1096 @Remi-Gau
 
 ### Fixed
+
+* [INFRA] copy `RepetitionTime` in sidecar JSON after running smoothing in #1099 by @Remi-Gau
 
 ### Security
 
