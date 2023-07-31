@@ -13,6 +13,10 @@ end
 
 function test_bidsCreateROI_boilerplate_only()
 
+  if bids.internal.is_octave
+    moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
+  end
+
   outputPath = tmpName();
 
   bidspm(pwd, outputPath, ...
@@ -34,6 +38,10 @@ end
 
 function test_bidsCreateROI_glasser()
 
+  if bids.internal.is_octave
+    moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
+  end
+
   outputPath = tmpName();
 
   bidspm(pwd, outputPath, ...
@@ -53,6 +61,10 @@ end
 
 function test_bidsCreateROI_wang()
 
+  if bids.internal.is_octave
+    moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
+  end
+
   outputPath = tmpName();
 
   bidspm(pwd, outputPath, ...
@@ -71,6 +83,10 @@ function test_bidsCreateROI_wang()
 end
 
 function test_bidsCreateROI_neuromorphometrics()
+
+  if bids.internal.is_octave
+    moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
+  end
 
   outputPath = tmpName();
 

@@ -189,6 +189,8 @@ function test_getModelMask_method()
   bm = BidsModel('file', opt.model.file);
   bm.verbose = false;
 
+  bm.Nodes{2}.Model.Options = rmfield(bm.Nodes{2}.Model.Options, 'Mask');
+
   mask = bm.getModelMask('Name', 'subject_level');
   assertEqual(mask, '');
 
