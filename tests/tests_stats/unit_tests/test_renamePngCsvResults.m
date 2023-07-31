@@ -41,6 +41,37 @@ function test_renamePngCsvResults_basic()
 
 end
 
+function test_renamePngCsvResults_csv()
+
+  glmDir = setup('.csv');
+
+  opt = struct('taskName', {{'MGT'}});
+
+  subLabel = '01';
+
+  result = struct('MC', 'FWE', ...
+                  'atlas', 'Neuromorphometrics', ...
+                  'binary', 0, ...
+                  'csv', 1, ...
+                  'k', 0, ...
+                  'name', 'cash_demean_3', ...
+                  'nidm', 1, ...
+                  'nodeName', 'run_level', ...
+                  'p', 0.0500, ...
+                  'png', 1, ...
+                  'threshSpm', 0, ...
+                  'useMask', 0, ...
+                  'space', {{'MNI152NLin2009cAsym'}}, ...
+                  'dir', glmDir);
+
+  renamedFiles = renamePngCsvResults(opt, result, '.csv', subLabel);
+
+  renamedFile =  ['sub-01_task-MGT_space-MNI152NLin2009cAsym', ...
+                  '_desc-cashDemean3_p-0pt050_k-0_MC-FWE_results.csv'];
+  assertEqual(exist(fullfile(glmDir, renamedFile), 'file'), 2);
+
+end
+
 function test_renamePngCsvResults_group()
 
   glmDir = setup();
@@ -73,10 +104,18 @@ function test_renamePngCsvResults_group()
 
 end
 
-function glmDir = setup()
+function glmDir = setup(ext)
+  if nargin < 1
+    ext = '.png';
+  end
   glmDir = tempname();
   spm_mkdir(glmDir);
-  files = { 'spm_2023Jul31_001.png',  'spm_2023Jul31_002.png'};
+  switch ext
+    case '.png'
+      files = { 'spm_2023Jul31_001.png',  'spm_2023Jul31_002.png'};
+    case '.csv'
+      files = { 'spm_2023Jul31_001.csv'};
+  end
   for i = 1:numel(files)
     fid = fopen(fullfile(glmDir, files{i}), 'w');
     fclose(fid);

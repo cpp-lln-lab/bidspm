@@ -36,7 +36,7 @@ function test_renameNidm_basic()
 
   renameNidm(opt, result, subLabel);
 
-  renamedFile =  ['sub-01_task-MGT_space-MNI152NLin2009cAsym_label-0001', ...
+  renamedFile =  ['sub-01_task-MGT_space-MNI152NLin2009cAsym', ...
                   '_desc-cashDemean3_p-0pt050_k-0_MC-FWE_nidm.zip'];
 
   assertEqual(exist(fullfile(glmDir, renamedFile), 'file'), 2);
@@ -70,7 +70,7 @@ function test_renameNidm_group()
 
   renameNidm(opt, result);
 
-  renamedFile =  ['task-MGT_space-MNI152NLin2009cAsym_label-0001', ...
+  renamedFile =  ['task-MGT_space-MNI152NLin2009cAsym', ...
                   '_desc-cashDemean3_p-0pt050_k-0_MC-FWE_nidm.zip'];
 
   assertEqual(exist(fullfile(glmDir, renamedFile), 'file'), 2);

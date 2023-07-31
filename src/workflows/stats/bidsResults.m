@@ -220,7 +220,7 @@ function matlabbatch = bidsResults(varargin)
           end
 
           [optThisSubject, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel);
-          [matlabbatch] = bidsResultsSubject(optThisSubject, subLabel, iRes, isRunLevel);
+          matlabbatch = bidsResultsSubject(optThisSubject, subLabel, iRes, isRunLevel);
 
           for iBatch = 1:numel(matlabbatch)
             batch{1} = struct('spm', matlabbatch{iBatch}.spm);
@@ -241,7 +241,7 @@ function matlabbatch = bidsResults(varargin)
 
       case 'dataset'
 
-        [matlabbatch, results] = bidsResultsDataset(opt, iRes);
+        matlabbatch = bidsResultsDataset(opt, iRes);
 
         batchName = 'compute_group_level_results';
 
@@ -249,10 +249,10 @@ function matlabbatch = bidsResults(varargin)
         opt.dir.jobs = fullfile(tmp, 'jobs',  strjoin(opt.taskName, ''));
 
         for iBatch = 1:numel(matlabbatch)
-          [status, output] = saveAndRunWorkflow(matlabbatch(iBatch), batchName, opt);
-
-          if status
-            renameOutputResults(opt, results);
+          batch{1} = struct('spm', matlabbatch{iBatch}.spm);
+          status = saveAndRunWorkflow(batch, batchName, opt);
+          if status && isfield(matlabbatch{iBatch}, 'result')
+            renameOutputResults(opt, matlabbatch{iBatch}.result);
           end
         end
 
@@ -346,11 +346,9 @@ function listNodeLevels = returnlistNodeLevels(opt)
 
 end
 
-function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLevel)
+function matlabbatch = bidsResultsSubject(opt, subLabel, iRes, isRunLevel)
 
   matlabbatch = {};
-
-  result.space = opt.space;
 
   % allow contrast.name to be a cell and loop over it
   for i = 1:length(opt.results(iRes).name)
@@ -427,13 +425,9 @@ function [matlabbatch, result] = bidsResultsSubject(opt, subLabel, iRes, isRunLe
 
 end
 
-function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
-
-  BIDS = '';
+function matlabbatch = bidsResultsDataset(opt, iRes)
 
   matlabbatch = {};
-
-  results = {};
 
   node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
 
@@ -463,7 +457,7 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
           result.contrastNb = 1;
           result.dir = getRFXdir(opt, result.nodeName, name);
 
-          [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
+          matlabbatch = appendToBatch(matlabbatch, opt, result);
 
         elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
 
@@ -479,7 +473,7 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
             result.contrastNb = 1;
             result.dir = getRFXdir(opt, result.nodeName, name, thisGroup);
 
-            [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
+            matlabbatch = appendToBatch(matlabbatch, opt, result);
 
           end
 
@@ -494,7 +488,7 @@ function [matlabbatch, results] = bidsResultsDataset(opt, iRes)
         for  iCon = 1:numel(thisContrast)
           result.name = [thisContrast{iCon}.Name ' - ' name];
           result.contrastNb = iCon;
-          [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result);
+          matlabbatch = appendToBatch(matlabbatch, opt, result);
         end
 
       otherwise
@@ -519,7 +513,7 @@ function status = checkSpmMat(dir, opt)
   end
 end
 
-function [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, result)
+function matlabbatch = appendToBatch(matlabbatch, opt, result)
 
   if ~checkSpmMat(result.dir, opt)
     return
@@ -529,9 +523,7 @@ function [matlabbatch, results] = appendToBatch(matlabbatch, opt, results, resul
 
   matlabbatch = setBatchGroupLevelResults(matlabbatch, opt, result);
 
-  %   matlabbatch = setBatchPrintFigure(matlabbatch, opt, fullfile(result.dir, figureName(opt)));
-
-  results{end + 1} = result;
+  matlabbatch{end}.result = result;
 
 end
 

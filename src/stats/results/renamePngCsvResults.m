@@ -1,4 +1,4 @@
-function renamePngCsvResults(opt, result, ext, subLabel)
+function renamedFiles = renamePngCsvResults(opt, result, ext, subLabel)
   %
   % Rename the reuslts png and csv files to a bids friendly filename.
   %
@@ -19,6 +19,8 @@ function renamePngCsvResults(opt, result, ext, subLabel)
 
   files = spm_select('FPList', result.dir, ['^spm_.*[0-9]{3}' ext '$']);
 
+  renamedFiles = {};
+
   for iFile = 1:size(files, 1)
 
     source = deblank(files(iFile, :));
@@ -34,6 +36,7 @@ function renamePngCsvResults(opt, result, ext, subLabel)
     target = fullfile(result.dir, bf.filename);
 
     movefile(source, target);
+    renamedFiles{iFile} = target;
 
   end
 

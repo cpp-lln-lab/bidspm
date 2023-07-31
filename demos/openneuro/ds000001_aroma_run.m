@@ -6,7 +6,7 @@
 clear;
 clc;
 
-COPY = true;
+COPY = false;
 SUBJECT_LEVEL_DO = true;
 
 addpath(fullfile(pwd, '..', '..'));
@@ -45,7 +45,7 @@ model_file = fullfile(root_dir, 'models', 'model-balloonanalogrisktaskAroma_smdl
 %% subject level
 if SUBJECT_LEVEL_DO
   bidspm(bids_dir, output_dir, 'subject', ...
-         'action', 'stats', ...
+         'action', 'results', ...
          'participant_label', participant_label, ...
          'preproc_dir', preproc_dir, ...
          'model_file', model_file);
