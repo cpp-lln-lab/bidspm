@@ -169,22 +169,7 @@ function matlabbatch = bidsResults(varargin)
     return
   end
 
-  % filter results to keep only the one requested
-  % modifies opt.results in place
-  if ~isempty(nodeName)
-    if ischar(nodeName)
-      nodeName = {nodeName};
-    end
-    listNodeNames = returnListNodeNames(opt);
-    keep = ismember(listNodeNames, nodeName);
-    opt.results = opt.results(keep);
-  end
-  listNodeLevels = returnlistNodeLevels(opt);
-  if ~isempty(analysisLevel)
-    keep = ismember(listNodeLevels, analysisLevel);
-    opt.results = opt.results(keep);
-    listNodeLevels = listNodeLevels(keep);
-  end
+  [opt, listNodeLevels] = keepRequestedNodes(opt, nodeName, analysisLevel);
 
   % skip data indexing if we are only at the group level
   indexData = true;
@@ -238,7 +223,7 @@ function matlabbatch = bidsResults(varargin)
           [matlabbatch, results] = bidsResultsSubject(optThisSubject, subLabel, iRes, isRunLevel);
 
           for iBatch = 1:numel(matlabbatch)
-            status = saveAndRunWorkflow(matlabbatch(iBatch), batchName, opt, subLabel);
+            [status, output] = saveAndRunWorkflow(matlabbatch(iBatch), batchName, opt, subLabel);
 
             if status
               renameOutputResults(results);
@@ -264,7 +249,7 @@ function matlabbatch = bidsResults(varargin)
         opt.dir.jobs = fullfile(tmp, 'jobs',  strjoin(opt.taskName, ''));
 
         for iBatch = 1:numel(matlabbatch)
-          status = saveAndRunWorkflow(matlabbatch(iBatch), batchName, opt);
+          [status, output] = saveAndRunWorkflow(matlabbatch(iBatch), batchName, opt);
 
           if status
             renameOutputResults(results);
@@ -285,6 +270,29 @@ function matlabbatch = bidsResults(varargin)
 
   cleanUpWorkflow(opt);
 
+end
+
+function [opt, listNodeLevels] = keepRequestedNodes(opt, nodeName, analysisLevel)
+  % filter results to keep only the ones requested
+  % modifies opt.results in place
+  if ~isempty(nodeName)
+    if ischar(nodeName)
+      nodeName = {nodeName};
+    end
+    listNodeNames = returnListNodeNames(opt);
+    keep = ismember(listNodeNames, nodeName);
+    opt.results = opt.results(keep);
+  end
+  listNodeLevels = returnlistNodeLevels(opt);
+  if ~isempty(analysisLevel)
+    if strcmp(analysisLevel, 'dataset')
+      keep = ismember(listNodeLevels, 'dataset');
+    else
+      keep = ~ismember(listNodeLevels, 'dataset');
+    end
+    opt.results = opt.results(keep);
+    listNodeLevels = listNodeLevels(keep);
+  end
 end
 
 function [status] = checks(opt)
@@ -615,7 +623,7 @@ function renameOutputResults(results)
       movefile(source, target);
     end
 
-    renamePng(result.dir);
+    renamePng(result.dir, 'spm');
 
     if result.csv && isMni(result.space)
 

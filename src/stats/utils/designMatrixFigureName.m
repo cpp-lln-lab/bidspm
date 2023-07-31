@@ -4,21 +4,21 @@ function filename = designMatrixFigureName(varargin)
   %
   %   filename = designMatrixFigureName(opt, desc, subLabel)
   %
-  % :type opt:  structure
-  % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
-  % :param desc: optional argument. default: ``''``
-  % :type desc: char
+  % :type  opt:      structure
+  % :param opt:      Options chosen for the analysis.
+  %                  See checkOptions.
+  %
+  % :param desc:     optional argument. default: ``''``
+  % :type  desc:     char
+  %
   % :param subLabel: optional argument. default: ``''``
-  % :type subLabel: char
+  % :type  subLabel: char
   %
   % :returns: - :filename: (string)
   %
   %
 
   % (C) Copyright 2022 bidspm developers
-
-  % The code goes below
 
   args = inputParser;
 
@@ -31,8 +31,7 @@ function filename = designMatrixFigureName(varargin)
 
   parse(args, varargin{:});
 
-  nameStructure = struct( ...
-                         'suffix', 'designmatrix', ...
+  nameStructure = struct('suffix', 'designmatrix', ...
                          'ext', '.png', ...
                          'entities', struct('sub', args.Results.subLabel, ...
                                             'task', strjoin(args.Results.opt.taskName, ''), ...
