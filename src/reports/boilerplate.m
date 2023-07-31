@@ -130,7 +130,7 @@ function outputFile = boilerplate(varargin)
       opt.group_level = false;
       if ~isempty(bm.get_nodes('Level', 'dataset'))
 
-        contrasts = genList('name', getDummyContrastsList('dataset_level', bm));
+        contrasts = genList('name', getDummyContrastsList('dataset', bm));
 
         opt.group_level = struct('contrasts', {contrasts});
 

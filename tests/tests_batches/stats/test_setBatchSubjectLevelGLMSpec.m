@@ -99,6 +99,9 @@ function test_setBatchSubjectLevelGLMSpec_basic()
 
   opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
 
+  opt.model.bm.Nodes{1}.Model.Options = rmfield(opt.model.bm.Nodes{1}.Model.Options, ...
+                                                'Mask');
+
   BIDS = getLayout(opt);
 
   %% WHEN

@@ -148,6 +148,16 @@
         "X": [
           1
         ],
+        "Options": {
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        },
         "Type": "glm",
         "Software": {
           "SPM": {

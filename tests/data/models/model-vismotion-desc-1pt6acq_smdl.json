@@ -37,7 +37,15 @@
           "Model": "spm"
         },
         "Options": {
-          "HighPassFilterCutoffHz": 0.008
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": {
+            "suffix": [
+              "mask"
+            ],
+            "desc": [
+              "brain"
+            ]
+          }
         },
         "Software": {
           "SPM": {
@@ -90,7 +98,17 @@
         "Type": "glm",
         "X": [
           1
-        ]
+        ],
+        "Options": {
+          "Mask": {
+            "suffix": [
+              "mask"
+            ],
+            "desc": [
+              "brain"
+            ]
+          }
+        }
       },
       "DummyContrasts": {
         "Test": "t"
@@ -106,7 +124,17 @@
         "Type": "glm",
         "X": [
           1
-        ]
+        ],
+        "Options": {
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        }
       },
       "DummyContrasts": {
         "Test": "t"

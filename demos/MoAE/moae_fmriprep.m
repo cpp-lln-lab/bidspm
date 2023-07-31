@@ -22,11 +22,11 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
-download_data = true;
-smooth = true;
+DOWNLOAD_DATA = true;
+SMOOTH = true;
 
 % Getting the raw dataset to get the events.tsv
-download_moae_ds(download_data);
+download_moae_ds(DOWNLOAD_DATA);
 
 %%
 subject_label = {'01'};
@@ -45,7 +45,7 @@ output_dir = fullfile(WD, 'outputs', 'derivatives');
 % fmriprep data is not smoothed so we need to do that first
 %
 
-if smooth
+if SMOOTH
   bidspm(fmriprep_dir, output_dir, 'subject', ...
          'action', 'smooth', ...
          'participant_label', subject_label, ...
@@ -62,7 +62,7 @@ bidspm(bids_dir, output_dir, 'dataset', ...
        'participant_label', subject_label, ...
        'task', task, ...
        'space', space, ...
-       'ignore', {'contrasts', 'transformations'});
+       'ignore', {'contrasts', 'transformations', 'dataset'});
 
 % run model
 model_file = fullfile(output_dir, 'models', 'model-defaultAuditory_smdl.json');
@@ -77,6 +77,10 @@ opt.results(1).name = {'listening_1'};
 % Specify how you want your output
 % (all the following are on false by default)
 opt.results(1).png = true();
+opt.results(1).nidm = true();
+opt.results(1).csv = true();
+opt.results(1).threshSpm = true();
+opt.results(1).binary = true();
 opt.results(1).montage.do = true();
 opt.results(1).montage.background = struct('suffix', 'T1w', ...
                                            'desc', 'preproc', ...

@@ -87,7 +87,17 @@
         "X": [
           1,
           "group"
-        ]
+        ],
+        "Options": {
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        }
       },
       "Contrasts": [
         {

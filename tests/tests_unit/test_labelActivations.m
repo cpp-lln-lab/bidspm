@@ -52,7 +52,7 @@ end
 function test_labelActivations_aal()
 
   if bids.internal.is_github_ci()
-    return
+    moxunit_throw_test_skipped_exception('no AAL in ci');
   end
 
   csvFile = fullfile(getTestDataDir(), 'tsv_files', 'moae_results_table.csv');
@@ -75,7 +75,7 @@ end
 function test_labelActivations_bug_662()
 
   if bids.internal.is_octave()
-    return
+    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
   end
 
   csvFile = fullfile(getTestDataDir(), 'tsv_files', 'bug662_results_table.csv');

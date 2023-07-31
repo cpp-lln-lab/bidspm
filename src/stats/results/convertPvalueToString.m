@@ -1,6 +1,6 @@
 function p = convertPvalueToString(p)
   %
-  % convert p value
+  % convert p value to char
   %
 
   % (C) Copyright 2019 bidspm developers

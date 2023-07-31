@@ -20,7 +20,7 @@ function renamePng(directory, prefix)
     prefix = 'sub';
   end
 
-  pngFiles = spm_select('FPList', directory, ['^' prefix '-.*[0-9].png$']);
+  pngFiles = spm_select('FPList', directory, ['^' prefix '.*[0-9]*.png$']);
 
   for iFile = 1:size(pngFiles, 1)
 

@@ -6,7 +6,8 @@
 clear;
 clc;
 
-COPY = true;
+COPY = false;
+SUBJECT_LEVEL_DO = true;
 
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
@@ -17,7 +18,7 @@ bids_dir = fullfile(root_dir, 'inputs', 'ds000001');
 fmriprep_dir =  fullfile(root_dir, 'inputs', 'ds000001-fmriprep');
 output_dir = fullfile(root_dir, 'outputs', 'ds000001', 'derivatives');
 
-participant_label = {'02', '03'};
+participant_label = {'01', '02', '03', '04', '05'};
 task = {'balloonanalogrisktask'};
 space = {'MNI152NLin6Asym'};
 
@@ -42,14 +43,16 @@ preproc_dir = fullfile(root_dir, 'outputs', 'ds000001', 'derivatives', 'bidspm-p
 model_file = fullfile(root_dir, 'models', 'model-balloonanalogrisktaskAroma_smdl.json');
 
 %% subject level
-bidspm(bids_dir, output_dir, 'subject', ...
-       'action', 'stats', ...
-       'participant_label', participant_label, ...
-       'preproc_dir', preproc_dir, ...
-       'model_file', model_file);
+if SUBJECT_LEVEL_DO
+  bidspm(bids_dir, output_dir, 'subject', ...
+         'action', 'results', ...
+         'participant_label', participant_label, ...
+         'preproc_dir', preproc_dir, ...
+         'model_file', model_file);
+end
 
 %% dataset level
 bidspm(bids_dir, output_dir, 'dataset', ...
-       'action', 'results', ...
+       'action', 'stats', ...
        'preproc_dir', preproc_dir, ...
        'model_file', model_file);
