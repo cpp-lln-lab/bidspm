@@ -88,7 +88,8 @@ function cliStats(varargin)
     end
 
     if results
-      bidsResults(opt, 'nodeName', nodeName);
+      bidsResults(opt, 'nodeName', nodeName, ...
+                  'analysisLevel', analysisLevel);
     end
 
   end

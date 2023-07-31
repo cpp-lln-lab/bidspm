@@ -85,6 +85,36 @@
       "DummyContrasts": {
         "Test": "t"
       }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "dataset_level",
+      "GroupBy": [
+        "contrast"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm",
+        "Software": {
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "cash_demean",
+                  "control_pumps_demean",
+                  "explode_demean",
+                  "pumps_demean"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
     }
   ]
 }

@@ -143,12 +143,14 @@ function matlabbatch = bidsResults(varargin)
 
   args.addRequired('opt', @isstruct);
   args.addParameter('nodeName', '');
+  args.addParameter('analysisLevel', '', @ischar);
 
   args.parse(varargin{:});
 
   opt =  args.Results.opt;
 
   nodeName =  args.Results.nodeName;
+  analysisLevel =  args.Results.analysisLevel;
 
   %%
   currentDirectory = pwd;
@@ -177,10 +179,15 @@ function matlabbatch = bidsResults(varargin)
     keep = ismember(listNodeNames, nodeName);
     opt.results = opt.results(keep);
   end
+  listNodeLevels = returnlistNodeLevels(opt);
+  if ~isempty(analysisLevel)
+    keep = ismember(listNodeLevels, analysisLevel);
+    opt.results = opt.results(keep);
+    listNodeLevels = listNodeLevels(keep);
+  end
 
   % skip data indexing if we are only at the group level
   indexData = true;
-  listNodeLevels = returnlistNodeLevels(opt);
   if all(ismember(listNodeLevels, 'dataset'))
     indexData = false;
   end

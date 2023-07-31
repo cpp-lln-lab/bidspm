@@ -34,7 +34,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %             See checkOptions.
   % :type  opt: structure
   %
-  % :param info: ``sessions``, ``runs``, ``filename``.
+  % :param info: ``sessions``, ``runs``, ``filename``, ``metadata``
   % :type  info: char
   %
   % :param sessionLabel: session label (for `ses-001`, the label will be `001`)
@@ -129,7 +129,6 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
 
       if strcmpi(info, 'filename')
         filenames = bids.query(BIDS, 'data', filter);
-
         varargout = {char(filenames)};
 
       elseif strcmpi(info, 'metadata')
