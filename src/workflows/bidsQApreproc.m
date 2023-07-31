@@ -80,7 +80,7 @@ function bidsQApreproc(opt)
     bids.util.jsonwrite(fullfile(outputDir, bf.filename), anatJson);
 
     bf.extension = '.png';
-    print(fig, fullfile(outputDir, bf.filename), '-dpng', '-noui', '-painters');
+    printFigure(fig, outputDir, bf);
 
     if opt.anatOnly
       continue
@@ -155,7 +155,7 @@ function bidsQApreproc(opt)
           bf.suffix = 'qa';
           bf.entities.space = '';
           bf.extension = '.png';
-          print(fig, fullfile(outputDir, bf.filename), '-dpng', '-noui', '-painters');
+          printFigure(fig, outputDir, bf);
 
           % save confounds
           bf = bids.File(funcImage);
@@ -180,4 +180,16 @@ function bidsQApreproc(opt)
 
   end
 
+end
+
+function printFigure(fig, outputDir, bf)
+  try
+    if isOctave()
+      print(fig, fullfile(outputDir, bf.filename), '-dpng', '-noui');
+    else
+      print(fig, fullfile(outputDir, bf.filename), '-dpng', '-noui', '-painters');
+    end
+  catch ME
+    logger('WARNING', 'Could not print figure.', 'filename', mfilename, 'id', 'cannotPrintFigure');
+  end
 end
