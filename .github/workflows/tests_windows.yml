@@ -111,7 +111,7 @@ jobs:
 
     - name: Run unit tests MATLAB
       if: matrix.test_type == 'unit'
-      uses: matlab-actions/run-command@v1.2.0
+      uses: matlab-actions/run-command@v1.2.1
       with:
         command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
 
@@ -127,6 +127,6 @@ jobs:
 
     - name: Run system tests MATLAB ${{ matrix.script }}
       if: matrix.test_type == 'system'
-      uses: matlab-actions/run-command@v1.2.0
+      uses: matlab-actions/run-command@v1.2.1
       with:
         command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_${{ matrix.script }};
