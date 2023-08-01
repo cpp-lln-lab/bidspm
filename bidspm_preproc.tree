@@ -1,0 +1,36 @@
+ext=.nii
+
+dataset_description.json
+desc-skullstripped.json
+participants.tsv
+README (readme)
+CHANGES (changes)
+LICENSE (license)
+reports (citation)
+    preprocess_citation.md
+    bidspm.bib
+jobs
+    {task}
+        sub-{sub}
+            batch_{batchname}_{YYYY}_{MM}_{DD}T{HH}_{MM}.m
+sub-{sub} (folder)
+    [ses-{ses}]
+        figures
+        reports
+        anat (anat_dir)
+            sub-{sub}[_ses-{ses}][_acq-{acq}][_ce-{ce}][_rec-{rec}][_run-{{run}}][_space-{space}][_res-{res}][_desc-{desc}]_T1w{ext}
+            sub-{sub}[_ses-{ses}][_acq-{acq}][_ce-{ce}][_rec-{rec}][_run-{{run}}]_label-T1w_segparam.mat
+            sub-{sub}[_ses-{ses}][_acq-{acq}][_ce-{ce}][_rec-{rec}][_run-{{run}}][_space-{space}]_label-pial[_den-{den}][_desc-{desc}]_T1w.gii
+            sub-{sub}[_ses-{ses}][_acq-{acq}][_ce-{ce}][_rec-{rec}][_run-{{run}}][_space-{space}][_res-{res}]_desc-brain_mask{ext}
+            sub-{sub}[_ses-{ses}][_acq-{acq}][_ce-{ce}][_rec-{rec}][_run-{{run}}][_space-{space}][_res-{res}]_label-CSF_probseg{ext}
+            sub-{sub}[_ses-{ses}][_acq-{acq}][_ce-{ce}][_rec-{rec}][_run-{{run}}][_space-{space}][_res-{res}]_label-GM_probseg{ext}
+            sub-{sub}[_ses-{ses}][_acq-{acq}][_ce-{ce}][_rec-{rec}][_run-{{run}}][_space-{space}][_res-{res}]_label-WM_probseg{ext}
+            sub-{sub}[_ses-{ses}][_acq-{acq}][_ce-{ce}][_rec-{rec}][_run-{{run}}]_from-{from}_to-{to}_mode-image_xfm{ext}
+        func (func_dir)
+            sub-{sub}[_ses-{ses}]_task-{task}[_acq-{acq}][_ce-{ce}][_dir-{dir}][_rec-{rec}][_run-{{run}}][_space-{space}][_res-{res}][_label-{label}][_desc-{desc}]_bold{ext}
+            sub-{sub}[_ses-{ses}]_task-{task}[_acq-{acq}][_ce-{ce}][_dir-{dir}][_rec-{rec}][_run-{{run}}][_space-{space}][_res-{res}][_label-{label}]_desc-preproc_bold{ext}
+            sub-{sub}[_ses-{ses}]_task-{task}[_acq-{acq}][_ce-{ce}][_dir-{dir}][_rec-{rec}][_space-{space}][_res-{res}]_desc-mean_bold{ext}
+            sub-{sub}[_ses-{ses}]_task-{task}[_acq-{acq}][_ce-{ce}][_dir-{dir}][_rec-{rec}][_run-{{run}}]_desc-confounds_timeseries.tsv
+            sub-{sub}[_ses-{ses}]_task-{task}[_acq-{acq}][_ce-{ce}][_dir-{dir}][_rec-{rec}][_run-{{run}}][_desc-{desc}]_motion.tsv
+            sub-{sub}[_ses-{ses}]_task-{task}[_acq-{acq}][_ce-{ce}][_dir-{dir}][_rec-{rec}][_run-{{run}}][_space-{space}][_res-{res}][_label-{label}][_desc-{desc}]_mask{ext}
+            sub-{sub}[_ses-{ses}]_task-{task}[_acq-{acq}][_ce-{ce}][_dir-{dir}][_rec-{rec}][_run-{{run}}]_from-{from}_to-{to}_mode-image_xfm.mat

@@ -15,7 +15,7 @@ bidspm-stats
 │   └── taskName
 │       ├── sub-01
 │       │   ├── batch_batchName_task-taskName_space-space_FWHM-0_YYYY-MM-HHTMM-SS.json
-│       │   └── batch_batchName_task_taskName_space_space_FWHM_0_YYYY-MM-HHTMM-SS.m
+│       │   └── batch_batchName_task_taskName_space_space_FWHM_0_YYYY_MM_HHTMM-SS.m
 │       ├── sub-02
 ```
 
