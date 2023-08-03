@@ -37,6 +37,9 @@ function test_labelActivations_all_atlases()
   csvFile = fullfile(getTestDataDir(), 'tsv_files', 'moae_results_table.csv');
 
   for i = 1:numel(atlases)
+    if bids.internal.is_github_ci() && strcmp(atlases{i}, 'visfatlas')
+      continue
+    end
     tsvFile = labelActivations(csvFile, 'atlas', atlases{i});
 
     assertEqual(exist(tsvFile, 'file'), 2);

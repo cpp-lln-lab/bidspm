@@ -10,12 +10,14 @@ function args = inputParserForCreateRoi()
   % like task
   args = baseInputParser();
 
+  isDir = @(x) isdir(x);
   isInAvailableAtlas = @(x) (ischar(x) && ismember(x, supportedAtlases()));
   isChar = @(x) ischar(x);
   isCellStr = @(x) iscellstr(x);
   isLogical = @(x) islogical(x) && numel(x) == 1;
 
-  addParameter(args, 'roi_dir', '', isChar);
+  addParameter(args, 'roi_dir', '', isDir);
+  addParameter(args, 'preproc_dir', '', isDir);
   addParameter(args, 'hemisphere', {'L', 'R'}, isCellStr);
   addParameter(args, 'roi_atlas', 'neuromorphometrics', isInAvailableAtlas);
   addParameter(args, 'roi_name', {''}, isCellStr);

@@ -80,6 +80,10 @@ function opt = getOptionsFromCliArgument(args)
 
   end
 
+  if ismember(lower(action), {'create_roi', 'stats', 'contrasts', 'results'})
+    opt.dir.preproc = args.Results.preproc_dir;
+  end
+
   opt = roiOptions(opt, args);
 
   % stats
