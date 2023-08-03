@@ -92,36 +92,15 @@ function skipped = bidsRoiBasedGLM(opt)
 
     for iROI = 1:size(roiList, 1)
 
-      roiHeader = spm_vol(roiList{iROI, 1});
-
-      firstBoldVolume = deblank(SPM.xY.P(1, :));
-      firstBoldVolumeHeader = spm_vol(firstBoldVolume);
-
       % Check that ROI has same dimension as BOLD images,
       % if not we reslice it and store the resliced image in the tmp dir.
       % The roibased GLM will then be run on this image.
       % ASSUMPTION: the ROI is at least coregistered to the BOLD
-      volumesToCheck = cat(1, roiHeader, firstBoldVolumeHeader);
-      status = spm_check_orientations(volumesToCheck, false);
+      status = checkRoiResolution(SPM, roiList{iROI, 1});
       if ~status
-
-        matlabbatch = {};
-        interp = 0;
-        matlabbatch = setBatchReslice(matlabbatch, ...
-                                      opt, ...
-                                      firstBoldVolume, ...
-                                      roiList{iROI, 1}, ...
-                                      interp);
-        files = spm_jobman('run', matlabbatch);
-
-        reslicedRoi = files{1}.rfiles{1}(1:end - 2);
-        tmpRoi = fullfile(subTempDir, spm_file(reslicedRoi, 'filename'));
-        movefile(reslicedRoi, tmpRoi);
-        roiHeader = spm_vol(tmpRoi);
-
-        % sanity check
-        volumesToCheck = cat(1, roiHeader, firstBoldVolumeHeader);
-        spm_check_orientations(volumesToCheck);
+        roiHeader = resliceRoiIntoTempDir(opt, subTempDir, SPM, roiList{iROI, 1});
+      else
+        roiHeader = spm_vol(roiList{iROI, 1});
       end
 
       roiVolume = spm_read_vols(roiHeader);
@@ -312,4 +291,53 @@ function checks(opt)
     logger('ERROR', msg, 'id', id, 'filename', mfilename());
   end
 
+end
+
+function status = checkRoiResolution(SPM, roiFile)
+  firstBoldVolume = deblank(SPM.xY.P(1, :));
+  imagesToCheck = char({firstBoldVolume, roiFile});
+  volumesToCheck = spm_vol(imagesToCheck);
+  status = spm_check_orientations(volumesToCheck, false);
+end
+
+function roiHeader = resliceRoiIntoTempDir(opt, subTempDir, SPM, roiFile)
+  if isZipped(roiFile)
+    roiFile = gunzip(roiFile);
+    wasUnzipped = true;
+  else
+    wasUnzipped = false;
+  end
+
+  if iscell(roiFile)
+    roiFile = char(roiFile);
+  end
+
+  firstBoldVolume = deblank(SPM.xY.P(1, :));
+
+  matlabbatch = {};
+  interp = 0;
+  matlabbatch = setBatchReslice(matlabbatch, ...
+                                opt, ...
+                                firstBoldVolume, ...
+                                roiFile, ...
+                                interp);
+  files = spm_jobman('run', matlabbatch);
+
+  if wasUnzipped
+    if bids.internal.is_octave()
+      gzip(roiFile);
+    else
+      delete(roiFile);
+    end
+  end
+
+  reslicedRoi = files{1}.rfiles{1}(1:end - 2);
+  tmpRoi = fullfile(subTempDir, spm_file(reslicedRoi, 'filename'));
+  movefile(reslicedRoi, tmpRoi);
+  roiHeader = spm_vol(tmpRoi);
+
+  % sanity check
+  imagesToCheck = char({firstBoldVolume, tmpRoi});
+  volumesToCheck = spm_vol(imagesToCheck);
+  spm_check_orientations(volumesToCheck);
 end
