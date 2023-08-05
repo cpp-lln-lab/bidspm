@@ -71,7 +71,7 @@ function skipped = bidsRoiBasedGLM(opt)
     end
 
     msg = [' Using ROIs:' ...
-           bids.internal.create_unordered_list(pathToPrint(roiList))];
+           bids.internal.create_unordered_list(bids.internal.format_path(roiList))];
 
     logger('INFO', msg, 'options', opt, 'filename', mfilename());
 

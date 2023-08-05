@@ -18,7 +18,7 @@ function  createDerivativeDir(opt)
   if ~exist(opt.dir.derivatives, 'dir')
     spm_mkdir(opt.dir.derivatives);
     msg = sprintf('derivatives directory created: %s', ...
-                  pathToPrint(opt.dir.derivatives));
+                  bids.internal.format_path(opt.dir.derivatives));
   end
 
   logger('DEBUG', msg, 'options', opt, 'filename', mfilename());

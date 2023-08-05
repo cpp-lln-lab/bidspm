@@ -82,7 +82,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     end
   end
 
-  msg = sprintf(' output dir:\n\t%s', pathToPrint(ffxDir));
+  msg = sprintf(' output dir:\n\t%s', bids.internal.format_path(ffxDir));
   logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   fmri_spec.dir = {ffxDir};

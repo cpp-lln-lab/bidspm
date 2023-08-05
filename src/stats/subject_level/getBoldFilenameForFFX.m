@@ -59,7 +59,7 @@ function boldFilename = getBoldFilenameForFFX(varargin)
   fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename{1}, opt);
 
   msg = ['  Bold file(s):', ...
-         bids.internal.create_unordered_list(pathToPrint(fullPathBoldFilename))];
+         bids.internal.create_unordered_list(bids.internal.format_path(fullPathBoldFilename))];
   logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   boldFilename = spm_file(fullPathBoldFilename, 'filename');

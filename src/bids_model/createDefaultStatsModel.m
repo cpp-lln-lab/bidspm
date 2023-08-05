@@ -156,7 +156,7 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
                        '_smdl.json']);
 
   bm.write(filename);
-  msg = sprintf('\nDefault model was created:\n\t%s', pathToPrint(filename));
+  msg = sprintf('\nDefault model was created:\n\t%s', bids.internal.format_path(filename));
   logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   opt.model.file = filename;

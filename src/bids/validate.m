@@ -12,7 +12,7 @@ function validate(args)
   % run validation if validators are installed locally
 
   msg = sprintf('Validating bids dataset:\n %s', ...
-                pathToPrint(args.Results.bids_dir));
+                bids.internal.format_path(args.Results.bids_dir));
   logger('INFO', msg);
 
   [sts_data, msg_data] = bids.validate(args.Results.bids_dir);
