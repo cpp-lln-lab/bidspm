@@ -22,9 +22,7 @@ Octave compatibility
 
 The following features do not yet work with Octave:
 
-- :func:`src.QA.anatomicalQA`
-- :func:`src.QA.functionalQA`
-- :func:`src/workflows/bidsRsHrf`
+- :func:`anatQA`
 - slice_display toolbox
 
 Not (yet) tested with Octave:
@@ -41,11 +39,15 @@ suggest you use this `template repository <https://github.com/cpp-lln-lab/templa
 to create a new project with a basic structure of folders and with the bidspm code already set up.
 
 Otherwise you can clone the repo with all its dependencies
-with the following git command::
+with the following git command:
+
+.. code-block:: bash
 
   git clone --recurse-submodules https://github.com/cpp-lln-lab/bidspm.git
 
-If you need the latest development, then you must clone from the ``dev`` branch::
+If you need the latest development, then you must clone from the ``dev`` branch:
+
+.. code-block:: bash
 
   git clone --branch dev --recurse-submodules https://github.com/cpp-lln-lab/bidspm.git
 
@@ -59,19 +61,22 @@ Initialization
 
   In general DO NOT ADD bidspm PERMANENTLY to your MATLAB / Octave path.
 
-You just need to initialize for a given session with::
+You just need to initialize for a given session with:
+
+.. code-block:: matlab
 
   bidspm()
 
 This will add all the required folders to the path.
 
-You can also remove bidspm from the path with::
+You can also remove bidspm from the path with:
+
+.. code-block:: matlab
 
   bidspm uninit
 
 Installation on a computing cluster
 ===================================
-
 
 ..
 

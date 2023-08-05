@@ -17,7 +17,7 @@ Preprocessing workflows
 Slice Time Correction
 ---------------------
 
-:func:`src.workflows.preproc.bidsSTC`
+:func:`bidsSTC`
 
 More info available on this page of the
 `SPM wikibook <https://en.wikibooks.org/wiki/SPM/Slice_Timing>`_.
@@ -65,7 +65,7 @@ do a search for "slice timing AND before" in the archives of the list.*
 Spatial Preprocessing
 ---------------------
 
-Perform spatial preprocessing by running :func:`src.workflows.preproc.bidsSpatialPrepro`
+Perform spatial preprocessing by running :func:`bidsSpatialPrepro`
 
 The figures below show the ``bidsSpatialPrepro`` workflow as it would run using
 realign and unwarp (default) and with normalization to SPM MNI space (``IXI549Space``).
@@ -86,7 +86,7 @@ Smoothing
 ---------
 
 Perform smoothing of the functional data by running
-:func:`src.workflows.preproc.bidsSmoothing`
+:func:`bidsSmoothing`
 
 .. _fig_smoothing:
 .. figure::  images/bidsSmoothing/out.png
@@ -97,7 +97,7 @@ Perform smoothing of the functional data by running
 Others
 ------
 
-:func:`src.workflows.preproc.bidsSegmentSkullStrip`
+:func:`bidsSegmentSkullStrip`
 
 .. _fig_segmentSkullstrip:
 .. figure::  images/bidsSegmentSkullstrip/out.png

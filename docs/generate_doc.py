@@ -59,40 +59,43 @@ def append_dir_content(path: Path, content: str, parent_folder=None, recursive=F
     return content
 
 
-def main():
-    with bidspm_file.open("w", encoding="utf8") as f:
-        content = """.. AUTOMATICALLY GENERATED
-
-.. _dev_doc:
-
-Developer documentation
-***********************
+def update_content(old_content, f):
+    for line in old_content:
+        if line.startswith(".. AUTOMATICALLY GENERATED"):
+            break
+        print(line.strip("\n"), file=f)
+    content = """.. AUTOMATICALLY GENERATED
 """
 
-        content = append_dir_content(
-            code_src.joinpath("workflows"), content, parent_folder=None, recursive=True
-        )
-        content = append_dir_content(
-            code_src.joinpath("batches"), content, parent_folder=None, recursive=True
-        )
+    content = append_dir_content(
+        code_src.joinpath("workflows"), content, parent_folder=None, recursive=True
+    )
+    content = append_dir_content(
+        code_src.joinpath("batches"), content, parent_folder=None, recursive=True
+    )
 
-        subfolders = sorted(list(code_src.iterdir()))
+    subfolders = sorted(list(code_src.iterdir()))
 
-        for path in subfolders:
-            if path.name in dir_ignore_list:
-                continue
+    for path in subfolders:
+        if path.name in dir_ignore_list:
+            continue
 
-            if path.is_dir():
-                content = append_dir_content(
-                    path, content, parent_folder=None, recursive=True
-                )
+        if path.is_dir():
+            content = append_dir_content(
+                path, content, parent_folder=None, recursive=True
+            )
 
-        print(content, file=f)
-
-    with bidspm_file.open("r", encoding="utf8") as f:
-        content = f.read()
+    print(content, file=f)
 
     # print(content)
+
+
+def main():
+    with bidspm_file.open("r", encoding="utf8") as f:
+        old_content = f.readlines()
+
+    with bidspm_file.open("w", encoding="utf8") as f:
+        update_content(old_content, f)
 
 
 if __name__ == "__main__":

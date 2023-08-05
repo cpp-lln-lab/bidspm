@@ -22,13 +22,13 @@ Things that are yet unclear:
 Things to keep an eye on: the code from this `repo <https://github.com/nipreps/sdcflows>`_
 from the fMRIprep team could have answers for us.
 
-:func:`src.fieldmaps.bidsCreateVDM`
+:func:`bidsCreateVDM`
 
-:func:`src.fieldmaps.setBatchCoregistrationFmap`
-:func:`src.fieldmaps.setBatchCreateVDMs`
-:func:`src.fieldmaps.setBatchComputeVDM`
+:func:`setBatchCoregistrationFmap`
+:func:`setBatchCreateVDMs`
+:func:`setBatchComputeVDM`
 
-:func:`src.fieldmaps.getBlipDirection`
-:func:`src.fieldmaps.getMetadataFromIntendedForFunc`
-:func:`src.fieldmaps.getTotalReadoutTime`
-:func:`src.fieldmaps.getVdmFile`
+:func:`getBlipDirection`
+:func:`getMetadataFromIntendedForFunc`
+:func:`getTotalReadoutTime`
+:func:`getVdmFile`
