@@ -115,6 +115,9 @@ function figureFile = plotRoiTimeCourse(varargin)
   legend(legend_content);
 
   figureFile = bids.internal.file_utils(tsvFile, 'ext', '.png');
+  if exist(figureFile, 'file')
+    delete(figureFile);
+  end
   print(gcf, figureFile, '-dpng');
 
 end

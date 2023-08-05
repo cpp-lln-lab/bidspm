@@ -9,7 +9,7 @@ function matlabbatch = setBatchReslice(matlabbatch, opt, referenceImg, sourceIma
   % :param matlabbatch: list of SPM batches
   % :type  matlabbatch: structure
   %
-  % :type opt:  structure
+  % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
   %             See checkOptions.
   %
