@@ -17,7 +17,6 @@ Welcome to bidspm documentation!
    configuration
    bids_stats_model
    demos
-   architecture
    statistics
    preprocessing
    output_files

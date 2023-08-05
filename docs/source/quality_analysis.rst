@@ -9,8 +9,8 @@ Quality control
    mentioned in them already exist.
 
 
-- :func:`src.QA.anatomicalQA`
-- :func:`src.QA.functionalQA`
+- :func:`anatomicalQA`
+- :func:`functionalQA`
 
 .. _fig_spatialPrepro-reports:
 .. figure::  images/bidsSpatialPrepro/out_report.png
@@ -18,5 +18,5 @@ Quality control
 
    workflows for QA as part of the spatial preprocessing workflow
 
-- :func:`src.QA.computeDesignEfficiency`
-- :func:`src.QA.plotEvents`
+- :func:`computeDesignEfficiency`
+- :func:`plotEvents`

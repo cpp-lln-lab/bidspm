@@ -1,9 +1,31 @@
-.. AUTOMATICALLY GENERATED
-
 .. _dev_doc:
 
-Developer documentation
-***********************
+Developers documentation
+************************
+
+At the highest levels bidspm is organized in workflows:
+
+- they all start with the prefix ``bids`` (for example ``bidsRealignReslice``)
+- they are in the folder :mod:`src.workflows`
+- they run on all the subjects specified in the ``options`` structure.
+
+Most workflows run by creating matlab batches that are saved as ``.mat`` files in a ``jobs``
+then passed to the SPM jobman to run.
+To do this the workflows call "batch creating functions":
+
+- all start with the prefix ``setBatch`` (for example ``setBatchCoregistration``).
+- are in the folder :mod:`src.batches`.
+
+Many workflows include some post-processing steps (like file renaming) after the execution of the batch,
+so in many cases the output of running just the batch and running the whole workflow
+will be different.
+
+:ref:`preprocessing`, :ref:`statistics` and :ref:`fieldmaps_page` handling have their own document pages.
+
+Other workflows, batches and related helper functions are listed below.
+
+
+.. AUTOMATICALLY GENERATED
 
 
 .. _workflows:
@@ -380,8 +402,6 @@ constants
 =========
 .. _lowLevelActions:
 .. autofunction:: src.constants.lowLevelActions
-.. _supportedAtlases:
-.. autofunction:: src.constants.supportedAtlases
 
 
 .. _defaults:
@@ -534,10 +554,18 @@ stats results
 =============
 .. _convertPvalueToString:
 .. autofunction:: src.stats.results.convertPvalueToString
-.. _defaultOuputNameStruct:
-.. autofunction:: src.stats.results.defaultOuputNameStruct
+.. _renameNidm:
+.. autofunction:: src.stats.results.renameNidm
+.. _renameOutputResults:
+.. autofunction:: src.stats.results.renameOutputResults
+.. _renamePngCsvResults:
+.. autofunction:: src.stats.results.renamePngCsvResults
+.. _renameSpmT:
+.. autofunction:: src.stats.results.renameSpmT
 .. _returnName:
 .. autofunction:: src.stats.results.returnName
+.. _returnResultNameSpec:
+.. autofunction:: src.stats.results.returnResultNameSpec
 .. _setMontage:
 .. autofunction:: src.stats.results.setMontage
 .. _setNidm:
@@ -666,6 +694,8 @@ utils
 .. autofunction:: src.utils.setFields
 .. _setUpWorkflow:
 .. autofunction:: src.utils.setUpWorkflow
+.. _tempName:
+.. autofunction:: src.utils.tempName
 .. _unfoldStruct:
 .. autofunction:: src.utils.unfoldStruct
 .. _validationInputFile:
