@@ -36,7 +36,7 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile, runDur
     tsvFile = tsvFile{1};
   end
 
-  msg = sprintf('\n  Reading the tsv file : %s \n', pathToPrint(tsvFile));
+  msg = sprintf('\n  Reading the tsv file : %s \n', bids.internal.format_path(tsvFile));
   logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   onsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration);

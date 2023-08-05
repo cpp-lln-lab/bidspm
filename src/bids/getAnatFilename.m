@@ -72,11 +72,12 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
   end
 
   if numel(anat) > nbImgToReturn
+    tmp = bids.internal.format_path(anat(1:nbImgToReturn));
     msg = sprintf('More than %i anat file. Found: %i.\n\nTaking the first %i:%s\n', ...
                   nbImgToReturn, ...
                   numel(anat), ...
                   nbImgToReturn, ...
-                  bids.internal.create_unordered_list(pathToPrint(anat(1:nbImgToReturn))));
+                  bids.internal.create_unordered_list(tmp));
     id = 'severalAnatFile';
     logger('WARNING', msg, 'id', id, 'filename', mfilename());
   end
@@ -97,7 +98,7 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
   anatImage = unzipAndReturnsFullpathName(anat);
 
   msg = sprintf('  selecting anat file: %s', ...
-                bids.internal.create_unordered_list(pathToPrint(anat)));
+                bids.internal.create_unordered_list(bids.internal.format_path(anat)));
   logger('DEBUG', msg, 'options', opt, 'filename', mfilename());
 
   tmpDir = {};

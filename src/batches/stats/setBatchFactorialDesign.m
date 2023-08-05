@@ -142,7 +142,7 @@ function icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon)
     icell(1).scans{end + 1, 1} = file;
 
     printProcessingSubject(iSub, subLabel, opt);
-    msg = sprintf(' %s', pathToPrint(char(file)));
+    msg = sprintf(' %s', bids.internal.format_path(char(file)));
     logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
   end

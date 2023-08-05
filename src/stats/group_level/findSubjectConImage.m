@@ -65,7 +65,7 @@ function file = findSubjectConImage(varargin)
                      'Could not find a contrast named %s\nin %s.\n'], ...
                     subLabel, ...
                     contrastName{iCon}, ...
-                    pathToPrint(fullfile(ffxDir, 'SPM.mat')));
+                    bids.internal.format_path(fullfile(ffxDir, 'SPM.mat')));
       id = 'missingContrast';
       logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
@@ -88,7 +88,7 @@ function file = findSubjectConImage(varargin)
 
       msg = sprintf('\ncontrast "%s" in image:\n\t%s',  ...
                     contrastName{iCon}, ...
-                    pathToPrint(fileName));
+                    bids.internal.format_path(fileName));
       logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
       file{iCon, 1} = fileName;

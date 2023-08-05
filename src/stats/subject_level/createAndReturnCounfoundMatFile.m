@@ -1,4 +1,4 @@
-function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
+function [counfoundFile, counfoundMeta] = createAndReturnCounfoundMatFile(opt, tsvFile)
   %
   % Creates a ``_regressors.mat`` in the subject level GLM folder.
   %
@@ -37,7 +37,8 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
     msg = sprintf('This confound file is empty:\n %s\n', tsvFile);
     id = 'emptyConfoundFle';
     logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
-    counfoundMatFile = '';
+    counfoundFile = '';
+    counfoundMeta = '';
     return
   end
 
@@ -58,10 +59,28 @@ function counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   opt.query.task = opt.taskName;
 
   ffxDir = getFFXdir(bf.entities.sub, opt);
-  counfoundMatFile = fullfile(ffxDir, bf.filename);
+  counfoundFile = fullfile(ffxDir, bf.filename);
 
-  save(counfoundMatFile, ...
+  save(counfoundFile, ...
        'names', 'R', ...
        '-v7');
+
+  scrubbed = returnNumberScrubbedTimePoints(R);
+  content = struct('NumberTimePoints', size(R, 1), ...
+                   'ProportionCensored', scrubbed / size(R, 1));
+
+  if content.ProportionCensored > 0.5
+    bf = bids.File(counfoundFile);
+    msg = sprintf('%0.0f of time points censored for run:%', ...
+                  content.ProportionCensored, ...
+                  bids.internal.create_unordered_list(bf.entities));
+    logger('WARNING', msg, ...
+           'options', opt, ...
+           'filename', mfilename(), ...
+           'id', 'LargeNumberTimePointsCensored');
+  end
+
+  counfoundMeta = spm_file(counfoundFile, 'ext', '.json');
+  bids.util.jsonencode(counfoundMeta, content);
 
 end

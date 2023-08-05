@@ -81,7 +81,7 @@ function bidsRemoveDummies(varargin)
 
     for iFile = 1:size(files, 1)
 
-      printToScreen(sprintf('\n%s\n', pathToPrint(files{iFile})), opt);
+      printToScreen(sprintf('\n%s\n', bids.internal.format_path(files{iFile})), opt);
 
       removeDummies(files{iFile}, dummyScans, metadata{iFile}, ...
                     'force', force, ...

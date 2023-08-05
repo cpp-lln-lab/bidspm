@@ -8,31 +8,54 @@ function test_suite = test_createAndReturnCounfoundMatFile %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_createAndReturnCounfoundMatFile_metadata()
+  [opt, tsvFile] = setUp();
+
+  [counfoundFile,  counfoundMeta] = createAndReturnCounfoundMatFile(opt, ...
+                                                                    tsvFile);
+
+  expectedFilename = fullfile(getTestDataDir('stats'), 'sub-01', ...
+                              'task-vislocalizer_space-IXI549Space_FWHM-6', ...
+                              ['sub-01_ses-01_task-vislocalizer_part-mag', ...
+                               '_desc-confounds_regressors.json']);
+  assertEqual(exist(counfoundMeta, 'file'), 2);
+  assertEqual(counfoundMeta, expectedFilename);
+
+  content = bids.util.jsondecode(counfoundMeta);
+  assertEqual(content.NumberTimePoints, 351);
+  assertEqual(content.ProportionCensored, 0);
+
+  delete(counfoundFile);
+  delete(counfoundMeta);
+
+end
+
 function test_createAndReturnCounfoundMatFile_basic()
 
   [opt, tsvFile] = setUp();
 
-  counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile);
+  [counfoundFile,  counfoundMeta] = createAndReturnCounfoundMatFile(opt, tsvFile);
 
   expectedFilename = fullfile(getTestDataDir('stats'), 'sub-01', ...
                               'task-vislocalizer_space-IXI549Space_FWHM-6', ...
                               ['sub-01_ses-01_task-vislocalizer_part-mag', ...
                                '_desc-confounds_regressors.mat']);
 
-  assertEqual(exist(counfoundMatFile, 'file'), 2);
-  assertEqual(exist(expectedFilename, 'file'), 2);
+  assertEqual(exist(counfoundFile, 'file'), 2);
+  assertEqual(counfoundFile, expectedFilename);
 
   expected_content = fullfile(getTestDataDir(), 'mat_files', 'regressors.mat');
 
   expected_R = load(expected_content, 'R');
-  actual_R = load(counfoundMatFile, 'R');
+  actual_R = load(counfoundFile, 'R');
   assertEqual(actual_R, expected_R);
 
   expected_names = load(expected_content, 'names');
-  actual_names = load(counfoundMatFile, 'names');
+  actual_names = load(counfoundFile, 'names');
   assertEqual(actual_names.names, expected_names.names);
 
-  delete(counfoundMatFile);
+  delete(counfoundFile);
+  delete(counfoundMeta);
 
 end
 
@@ -52,9 +75,10 @@ function test_createAndReturnCounfoundMatFile_bug_966()
                      'tsv_files', ...
                      'sub-01_task-auditory_desc-confounds_timeseries.tsv');
 
-  counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile);
+  [counfoundFile,  counfoundMeta] = createAndReturnCounfoundMatFile(opt, tsvFile);
 
-  delete(counfoundMatFile);
+  delete(counfoundFile);
+  delete(counfoundMeta);
 
 end
 

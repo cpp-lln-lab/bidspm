@@ -50,7 +50,7 @@ function [boldFilename, subFuncDataDir, metadata] = getBoldFilename(varargin)
   % some part of it is in getInfo
   if isempty(boldFilename)
     msg = sprintf('No bold file found in:\n\t%s\nfor filter:%s\n', ...
-                  pathToPrint(BIDS.pth), ...
+                  bids.internal.format_path(BIDS.pth), ...
                   bids.internal.create_unordered_list(opt.query));
 
     id = 'emptyInput';
@@ -60,7 +60,7 @@ function [boldFilename, subFuncDataDir, metadata] = getBoldFilename(varargin)
   % in case files have been unzipped, we do it now
   fullPathBoldFilename = unzipAndReturnsFullpathName(boldFilename, opt);
 
-  msg = bids.internal.create_unordered_list(pathToPrint(fullPathBoldFilename));
+  msg = bids.internal.create_unordered_list(bids.internal.format_path(fullPathBoldFilename));
   logger('DEBUG', msg, 'options', opt, 'filename', mfilename());
 
   boldFilename = spm_file(fullPathBoldFilename, 'filename');
