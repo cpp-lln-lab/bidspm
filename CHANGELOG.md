@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [FIX] do not compute subject level contrast when running dataset level #1102 by @Remi-Gau
 * [FIX] copy `RepetitionTime` in sidecar JSON after running smoothing in #1099 by @Remi-Gau
 * [FIX] rename results files (csv, tsv, png, nii) of each contrasts #1104 by @Remi-Gau
+* [DIX] reslice ROIS before running ROI based analysis to make sure they are at the resolution of the BOLD images in #1110 by @Remi-Gau
 
 ### Security
 
