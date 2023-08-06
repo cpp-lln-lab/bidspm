@@ -132,7 +132,7 @@
       "Destination": "session",
       "Filter": {
         "contrast": [
-          "Correct_Task",
+          "trial_type.Correct_Task",
           "TaskResponded_gt_CtrlResponded"
         ]
       }

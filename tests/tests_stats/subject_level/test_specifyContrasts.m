@@ -500,10 +500,10 @@ function test_specifyContrasts_vismotion()
   contrasts = specifyContrasts(SPM, model);
 
   % THEN
-  expected.name = 'VisMot_1'; %#ok<*AGROW>
+  expected.name = 'VisMot_ses-01'; %#ok<*AGROW>
   expected.C = [1 0 0 0 0 0 0 0 0];
 
-  expected(end + 1).name = 'VisStat_1';
+  expected(end + 1).name = 'VisStat_ses-01';
   expected(end).C = [0 1 0 0 0 0 0 0 0];
 
   expected(end + 1).name = 'VisMot_gt_VisStat_1';
@@ -550,10 +550,10 @@ function test_specifyContrasts_vislocalizer()
   contrasts = specifyContrasts(SPM, model);
 
   % THEN
-  expected.name = 'VisMot_1';
+  expected.name = 'VisMot_ses-01';
   expected.C = [1 0 0 0 0 0 0 0 0];
 
-  expected(end + 1).name = 'VisStat_1';
+  expected(end + 1).name = 'VisStat_ses-01';
   expected(end).C = [0 1 0 0 0 0 0 0 0];
 
   expected(end + 1).name = 'VisMot_&_VisStat_1';

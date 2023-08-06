@@ -69,14 +69,3 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
   matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
 
 end
-
-function validateContrasts(contrasts)
-  for i = 1:numel(contrasts)
-    if all(contrasts(i).C == 0)
-      logger('ERROR', ....
-             sprintf('Contrast "%s" is empty', contrasts(i).name), ...
-             'filename', mfilename, ...
-             'id', 'emptyContrast');
-    end
-  end
-end

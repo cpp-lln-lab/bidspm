@@ -29,4 +29,6 @@ function [contrasts, counter] = appendContrast(contrasts, C, counter, type)
   contrasts(counter).C = C.C;
   contrasts(counter).name = C.name;
 
+  validateContrasts(contrasts);
+
 end

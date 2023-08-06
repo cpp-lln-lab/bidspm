@@ -146,7 +146,9 @@ function contrasts = removeDuplicates(contrasts)
     vectors = cat(1, tmp(duplicates).C);
 
     if size(unique(vectors, 'rows'), 1) > 1
-      disp(tmp(duplicates));
+      for iDupe = 1:numel(duplicates)
+        disp(tmp(duplicates(iDupe)));
+      end
       msg = 'there are contrasts with the same name but different vector.';
       id = 'duplicateContrasts';
       logger('WARNING', msg, 'id', id, 'filename', mfilename());

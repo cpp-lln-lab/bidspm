@@ -153,7 +153,25 @@ function [contrasts, counter] = addExplicitDummyContrasts(contrasts, node, count
           % Use the SPM Sess index for the contrast name
           iSess = getSessionForRegressorNb(regIdx(iReg), SPM);
 
-          C = newContrast(SPM, [cdtName, '_', num2str(iSess)], testType);
+          contrastName = cdtName;
+
+          ses = '';
+          if isfield(SPM.Sess(iSess), 'ses')
+            ses = SPM.Sess(iSess).ses;
+            contrastName = [contrastName '_ses-' ses];
+          end
+
+          run = '';
+          if isfield(SPM.Sess(iSess), '_run')
+            run = SPM.Sess(iSess).run;
+            contrastName = [contrastName 'run-' run];
+          end
+
+          if isempty(ses) && isempty(run)
+            contrastName =  [cdtName, '_', num2str(iSess)];
+          end
+
+          C = newContrast(SPM, contrastName, testType);
 
           % give each event a value of 1
           C.C(end, regIdx(iReg)) = 1;
@@ -162,6 +180,8 @@ function [contrasts, counter] = addExplicitDummyContrasts(contrasts, node, count
         end
 
         clear regIdx;
+
+      otherwise
 
     end
 
