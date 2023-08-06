@@ -1,10 +1,10 @@
-function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM)
+function [contrasts, counter] = specifySessionLvlContrasts(contrasts, node, counter, SPM)
   %
   %
   %
   % USAGE::
   %
-  %   [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM)
+  %   [contrasts, counter] = specifySessionLvlContrasts(contrasts, node, counter, SPM)
   %
   % :param contrasts:
   % :type  contrasts: struct
@@ -22,7 +22,7 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
   % See also: specifyContrasts
   %
 
-  % (C) Copyright 2022 bidspm developers
+  % (C) Copyright 2023 bidspm developers
 
   if ~isfield(node, 'Contrasts')
     return

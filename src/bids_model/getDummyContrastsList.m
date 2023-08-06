@@ -75,10 +75,6 @@ function dummyContrastsList = getFromPreviousNode(model, node)
     return
   end
 
-  % TODO relax those assumptions
-  % assumptions
-  assert(node.Model.X == 1);
-
   sourceNode = model.get_source_node(node.Name);
 
   % TODO transfer to BIDS model as a get_contrasts_list method

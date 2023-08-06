@@ -41,7 +41,15 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
   end
 
   if nargin < 3 || isempty(nodeName)
-    nodeList = model.get_nodes();
+    nodeList = {};
+    for i = 1:numel(model.Edges)
+      nodeList{end + 1} = model.Edges{i}.Source; %#ok<*AGROW>
+      nodeList{end + 1} = model.Edges{i}.Destination;
+    end
+    nodeList = unique(nodeList);
+    for iNode = 1:length(nodeList)
+      nodeList{iNode} = model.get_nodes('Name', nodeList{iNode});
+    end
   else
     nodeList = model.get_nodes('Name', nodeName);
   end
@@ -62,6 +70,14 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
       case 'run'
 
         [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM);
+
+      case 'session'
+
+        if ~checkGroupBy(node)
+          continue
+        end
+
+        [contrasts, counter] = specifySessionLvlContrasts(contrasts, node, counter, SPM);
 
       case 'subject'
 
@@ -124,8 +140,9 @@ end
 
 function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
   %
-  % For the contrasts that involve contrasting conditions
-  % amongst themselves or something inferior to baseline
+  % For the contrasts that involve contrasting conditions amongst themselves
+  % or something inferior to baseline
+  %
 
   if ~isfield(node, 'Contrasts')
     return

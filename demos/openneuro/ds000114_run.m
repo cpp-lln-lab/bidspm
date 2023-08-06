@@ -6,7 +6,7 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
-SMOOTH = true;
+SMOOTH = false;
 TASK = 'linebisection'; % 'verbal'
 
 % The directory where the data are located
@@ -16,14 +16,11 @@ fmriprep_dir = fullfile(root_dir, 'inputs', 'ds000114-fmriprep');
 output_dir = fullfile(root_dir, 'outputs', 'ds000114', 'derivatives');
 
 space = {'MNI152NLin2009cAsym'};
-participant_label = {'01'};
+participant_label = {'01', '02'};
 
 switch TASK
   case 'linebisection'
-    task = {'linebisection', ...
-            'overtverbgeneration', ...
-            'covertverbgeneration', ...
-            'overtverbgeneration'};
+    task = {'linebisection'};
   case 'verbal'
     task = {'overtverbgeneration', ...
             'overtwordrepetition', ...
@@ -42,17 +39,21 @@ if SMOOTH
 end
 
 %% Statistics
-preproc_dir = fullfile(root_dir, 'outputs', 'ds000114', 'derivatives', 'bidspm-preproc');
+preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
 %% Subject level analysis
-% some runs have a lot of extra volumes after the session was over
-opt.glm.maxNbVols = 220;
 
-model_file = fullfile(root_dir, 'models', 'model-ds000114_desc-testRetestLineBisection_smdl.json');
+% Some runs have a lot of extra volumes after the session was over
+% so we limit the number of volumes included in each run.
+opt.glm.maxNbVols = 235;
+
+model_file = fullfile(root_dir, ...
+                      'models', ...
+                      'model-ds000114_desc-testRetestLineBisection_smdl.json');
 
 bidspm(bids_dir, output_dir, 'subject', ...
        'participant_label', participant_label, ...
-       'action', 'stats', ...
+       'action', 'contrasts', ...
        'preproc_dir', preproc_dir, ...
        'model_file', model_file, ...
        'roi_atlas', 'hcpex', ...

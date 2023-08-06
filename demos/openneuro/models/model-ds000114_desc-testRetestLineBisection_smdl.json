@@ -64,12 +64,29 @@
           "trial_type.No_Response_Task",
           "trial_type.Response_Control"
         ]
-      }
+      },
+      "Contrasts": [
+        {
+           "Name": "TaskResponded_gt_CtrlResponded",
+           "ConditionList": [
+              "trial_type.Correct_Task",
+              "trial_type.Incorrect_Task",
+              "trial_type.Response_Control"
+           ],
+           "Weights": [
+              0.5,
+              0.5,
+              -1
+           ],
+           "Test": "t"
+        }
+      ]
     },
     {
-      "Level": "Subject",
-      "Name": "subject",
+      "Level": "Session",
+      "Name": "session",
       "GroupBy": [
+        "session",
         "subject",
         "contrast"
       ],
@@ -80,6 +97,32 @@
       "DummyContrasts": {
         "Test": "t"
       }
+    },
+    {
+      "Level": "Subject",
+      "Name": "subject",
+      "GroupBy": [
+        "subject",
+        "contrast"
+      ],
+      "Model": {
+        "X": ["session", 1],
+        "Type": "glm"
+      },
+      "Contrasts": [
+        {
+           "Name": "Retest_gt_Test",
+           "ConditionList": [
+              "session.retest",
+              "session.test"
+           ],
+           "Weights": [
+              1,
+              -1
+           ],
+           "Test": "t"
+        }
+      ]
     },
     {
       "Level": "Dataset",
@@ -97,6 +140,15 @@
   "Edges": [
     {
       "Source": "run",
+      "Destination": "session",
+      "Filter": {
+        "contrast": [
+          "TaskResponded_gt_CtrlResponded"
+        ]
+      }
+    },
+    {
+      "Source": "session",
       "Destination": "subject"
     },
     {
