@@ -106,23 +106,12 @@
         "contrast"
       ],
       "Model": {
-        "X": ["session", 1],
+        "X": [1],
         "Type": "glm"
       },
-      "Contrasts": [
-        {
-           "Name": "Retest_gt_Test",
-           "ConditionList": [
-              "session.retest",
-              "session.test"
-           ],
-           "Weights": [
-              1,
-              -1
-           ],
-           "Test": "t"
-        }
-      ]
+      "DummyContrasts": {
+        "Test": "t"
+      }
     },
     {
       "Level": "Dataset",
@@ -143,12 +132,13 @@
       "Destination": "session",
       "Filter": {
         "contrast": [
+          "Correct_Task",
           "TaskResponded_gt_CtrlResponded"
         ]
       }
     },
     {
-      "Source": "session",
+      "Source": "run",
       "Destination": "subject"
     },
     {

@@ -137,7 +137,7 @@ function [contrasts, counter] = addExplicitDummyContrasts(contrasts, node, count
 
         bidsSessions = unique({SPM.Sess.ses});
         for iSes = 1:numel(bidsSessions)
-          [~, regIdx] = getRegressorIdx('sign_Stim1F', SPM, bidsSessions{iSes});
+          [~, regIdx] = getRegressorIdx(cdtName, SPM, bidsSessions{iSes});
           C = newContrast(SPM, [cdtName, '_ses-', bidsSessions{iSes}], testType);
           C.C(end, regIdx) = 1;
           [contrasts, counter] = appendContrast(contrasts, C, counter, testType);

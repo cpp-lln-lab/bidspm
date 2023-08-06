@@ -8,6 +8,9 @@ function test_suite = test_bidsModel %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_getFilter()
+end
+
 function test_validateConstrasts()
 
   opt = setOptions('vislocalizer');

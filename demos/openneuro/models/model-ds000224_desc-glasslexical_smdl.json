@@ -66,17 +66,25 @@
       "DummyContrasts": {
         "Test": "t",
         "Contrasts": [
-          "trial_type.Glass_coherent",
-          "trial_type.Glass_endcue",
-          "trial_type.Glass_random",
-          "trial_type.Glass_startcue",
-          "trial_type.Glass_sustained",
-          "trial_type.NV_endcue",
-          "trial_type.NV_startcue",
-          "trial_type.NV_sustained",
           "trial_type.Noun",
           "trial_type.Verb"
         ]
+      }
+    },
+    {
+      "Level": "Session",
+      "Name": "session",
+      "GroupBy": [
+        "session",
+        "subject",
+        "contrast"
+      ],
+      "Model": {
+        "X": [1],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
       }
     },
     {
@@ -96,6 +104,10 @@
     }
   ],
   "Edges": [
+    {
+      "Source": "run",
+      "Destination": "session"
+    },
     {
       "Source": "run",
       "Destination": "subject"

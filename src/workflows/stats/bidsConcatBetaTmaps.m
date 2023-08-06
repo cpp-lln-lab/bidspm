@@ -52,10 +52,11 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
 
     try
       contrasts = specifyContrasts(SPM, model, node.Name);
-    catch
+    catch ME
       msg = 'Could not find dummy contrasts in the BIDS stats model.';
       id = 'noDummyContrast';
       logger('ERROR', msg, 'id', id, 'filename', mfilename());
+      rethrow(ME);
     end
 
     betaMaps = {};
