@@ -38,7 +38,7 @@ function test_specifyDummyContrasts_basic()
   node.GroupBy = {'contrast', 'subject'};
   node.Model.X = 1;
 
-  contrasts = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+  contrasts = specifyDummyContrasts(model, node, SPM, contrasts, counter);
 
   assertEqual(numel({contrasts.name}), 7);
 
@@ -71,7 +71,7 @@ function test_specifyDummyContrasts_bug_815()
 
   node = model.Nodes{2};
 
-  contrasts = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+  contrasts = specifyDummyContrasts(model, node, SPM, contrasts, counter);
 
   assertEqual(numel({contrasts.name}), 7);
 
@@ -115,7 +115,7 @@ function test_specifyDummyContrasts_bug_825()
 
   node = model.Nodes{1};
 
-  contrasts = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+  contrasts = specifyDummyContrasts(model, node, SPM, contrasts, counter);
 
   assertEqual(numel({contrasts.name}), 20);
 
@@ -160,7 +160,7 @@ function test_specifyDummyContrasts_subselect_contrasts()
   node = model.Nodes{1};
   node.DummyContrasts.Contrasts = node.DummyContrasts.Contrasts(1);
 
-  contrasts = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+  contrasts = specifyDummyContrasts(model, node, SPM, contrasts, counter);
 
   assertEqual(numel({contrasts.name}), 8);
 

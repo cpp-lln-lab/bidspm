@@ -134,7 +134,7 @@ function outputFile = boilerplate(varargin)
         node = bm.get_nodes('Name', nodeName);
         level = node.Level;
         if strcmp(level, 'Dataset')
-          contrasts = genList('name', getDummyContrastsList('dataset', bm));
+          contrasts = genList('name', getDummyContrastsList(bm, 'dataset'));
           opt.group_level = struct('contrasts', {contrasts});
           break
         end

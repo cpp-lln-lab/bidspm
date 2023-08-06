@@ -26,7 +26,7 @@ function test_specifyContrasts_vismotion_F_contrast()
   model = BidsModel('file', opt.model.file);
 
   % WHEN
-  contrasts = specifyContrasts(SPM, model);
+  contrasts = specifyContrasts(model, SPM);
 
   % THEN
   expected(1).name = 'VisMot_gt_VisStat_1'; %#ok<*AGROW>
@@ -88,7 +88,7 @@ function test_specifyContrasts_subject_level_F_contrast()
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
   % WHEN
-  contrasts = specifyContrasts(SPM, model);
+  contrasts = specifyContrasts(model, SPM);
 
   % THEN
   expected.name =  'F_test_mot_static';
@@ -129,7 +129,7 @@ function test_specifyContrasts_bug_854()
   load(spmMatFile{1}, 'SPM');
 
   % WHEN
-  contrasts = specifyContrasts(SPM, opt.model.bm);
+  contrasts = specifyContrasts(opt.model.bm, SPM);
 
 end
 
@@ -155,7 +155,7 @@ function test_specifyContrasts_bug_815()
   model_file = fullfile(getTestDataDir(), 'models', 'model-bug815_smdl.json');
   model = bids.Model('file', model_file, 'verbose', true);
 
-  contrasts = specifyContrasts(SPM, model, 'subject_level');
+  contrasts = specifyContrasts(model, SPM, 'subject_level');
 
   assertEqual(numel({contrasts.name}), 12);
 
@@ -200,7 +200,7 @@ function test_specifyContrasts_subject_level_select_node()
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
   % WHEN
-  contrasts = specifyContrasts(SPM, model, 'subject');
+  contrasts = specifyContrasts(model, SPM, 'subject');
 
   % THEN
   names_contrast = {
@@ -253,7 +253,7 @@ function test_specifyContrasts_run_level_dummy_contrast_from_X()
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
   % WHEN
-  contrasts = specifyContrasts(SPM, model);
+  contrasts = specifyContrasts(model, SPM);
 
   % THEN
   names_contrast = { ...
@@ -305,7 +305,7 @@ function test_specifyContrasts_missing_condition_for_dummy_contrasts()
     return
   end
 
-  assertWarning(@()specifyContrasts(SPM, model), ...
+  assertWarning(@()specifyContrasts(model, SPM), ...
                 'specifyContrasts:noContrast');
 
 end
@@ -341,7 +341,7 @@ function test_specifyContrasts_missing_condition()
     return
   end
 
-  assertWarning(@()specifyContrasts(SPM, model), ...
+  assertWarning(@()specifyContrasts(model, SPM), ...
                 'specifyContrasts:noContrast');
 
 end
@@ -386,7 +386,7 @@ function test_specifyContrasts_subject_level()
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
   % WHEN
-  contrasts = specifyContrasts(SPM, model);
+  contrasts = specifyContrasts(model, SPM);
 
   % THEN
   names_contrast = { ...
@@ -454,7 +454,7 @@ function test_specifyContrasts_complex()
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
   % WHEN
-  contrasts = specifyContrasts(SPM, model);
+  contrasts = specifyContrasts(model, SPM);
 
   % THEN
   names_contrast = { ...
@@ -497,7 +497,7 @@ function test_specifyContrasts_vismotion()
   model = BidsModel('file', opt.model.file);
 
   % WHEN
-  contrasts = specifyContrasts(SPM, model);
+  contrasts = specifyContrasts(model, SPM);
 
   % THEN
   expected.name = 'VisMot_ses-01'; %#ok<*AGROW>
@@ -547,7 +547,7 @@ function test_specifyContrasts_vislocalizer()
   model = BidsModel('file', opt.model.file);
 
   % WHEN
-  contrasts = specifyContrasts(SPM, model);
+  contrasts = specifyContrasts(model, SPM);
 
   % THEN
   expected.name = 'VisMot_ses-01';

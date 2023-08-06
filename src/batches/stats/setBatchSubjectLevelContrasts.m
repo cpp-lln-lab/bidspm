@@ -38,9 +38,9 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
 
   % Create Contrasts
   if nargin < 4 || isempty(nodeName)
-    contrasts = specifyContrasts(SPM, model);
+    contrasts = specifyContrasts(model, SPM);
   else
-    contrasts = specifyContrasts(SPM, model, nodeName);
+    contrasts = specifyContrasts(model, SPM, nodeName);
   end
 
   validateContrasts(contrasts);

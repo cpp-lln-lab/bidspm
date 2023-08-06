@@ -1,10 +1,8 @@
-function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, SPM, model)
-  %
-  %
+function [contrasts, counter] = specifyDummyContrasts(model, node, SPM, contrasts, counter)
   %
   % USAGE::
   %
-  %   [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, SPM, model)
+  %   [contrasts, counter] = specifyDummyContrasts(model, node, SPM, contrasts, counter )
   %
   % :param contrasts:
   % :type  contrasts: struct
@@ -44,17 +42,17 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
   SPM = labelSpmSessWithBidsSesAndRun(SPM);
 
-  [contrasts, counter] = addExplicitDummyContrasts(contrasts, node, counter, SPM, model);
+  [contrasts, counter] = addExplicitDummyContrasts(model, node, SPM, contrasts, counter);
 
-  %% DummyContrasts at subject level that are based on Contrast from previous level
+  %% DummyContrasts at session / subject level that are based on Contrast from previous level
 
   contrastsList = {};
   if ~isfield(node.DummyContrasts, 'Contrasts') % && strcmp(level, 'run')
     % try to grab ContrastsList from design matrix or from previous Node
     if strcmpi(node.Level, 'run')
-      contrastsList = getContrastsList(node, model);
+      contrastsList = getContrastsList(model, node);
     else
-      contrastsList = getContrastsListFromSource(node, model);
+      contrastsList = getContrastsFromParentNode(model, node);
     end
   end
 
@@ -102,7 +100,7 @@ function  C = addSubjectLevelContrastBasedOnPreviousLevels(SPM, thisContrast)
 
 end
 
-function [contrasts, counter] = addExplicitDummyContrasts(contrasts, node, counter, SPM, model)
+function [contrasts, counter] = addExplicitDummyContrasts(model, node, SPM, contrasts, counter)
   %
   % DummyContrasts explicitly mentioned or based on DummyContrasts from previous level
   %
@@ -114,7 +112,7 @@ function [contrasts, counter] = addExplicitDummyContrasts(contrasts, node, count
     return
   end
 
-  dummyContrastsList = getDummyContrastsList(node, model);
+  dummyContrastsList = getDummyContrastsList(model, node);
 
   for iCon = 1:length(dummyContrastsList)
 
@@ -153,24 +151,7 @@ function [contrasts, counter] = addExplicitDummyContrasts(contrasts, node, count
           % Use the SPM Sess index for the contrast name
           iSess = getSessionForRegressorNb(regIdx(iReg), SPM);
 
-          contrastName = cdtName;
-
-          ses = '';
-          if isfield(SPM.Sess(iSess), 'ses')
-            ses = SPM.Sess(iSess).ses;
-            contrastName = [contrastName '_ses-' ses];
-          end
-
-          run = '';
-          if isfield(SPM.Sess(iSess), '_run')
-            run = SPM.Sess(iSess).run;
-            contrastName = [contrastName 'run-' run];
-          end
-
-          if isempty(ses) && isempty(run)
-            contrastName =  [cdtName, '_', num2str(iSess)];
-          end
-
+          contrastName = constructContrastNameFromBidsEntity(cdtName, SPM, iSess);
           C = newContrast(SPM, contrastName, testType);
 
           % give each event a value of 1

@@ -15,7 +15,7 @@ function test_getContrastsList_bug_815()
 
   nodeName = 'subject_level';
 
-  contrastsList = getContrastsList(nodeName, model);
+  contrastsList = getContrastsList(model, nodeName);
 
 end
 
@@ -26,7 +26,7 @@ function test_getContrastsList_wrong_level()
 
   nodeName = 'foo_level';
 
-  contrastsList = getContrastsList(nodeName, opt.model.bm);
+  contrastsList = getContrastsList(opt.model.bm, nodeName);
 
   assert(isempty(contrastsList));
 
@@ -42,7 +42,7 @@ function test_getContrastsList_basic()
 
   nodeName = 'dataset_level';
 
-  contrastsList = getContrastsList(nodeName, opt.model.bm);
+  contrastsList = getContrastsList(opt.model.bm, nodeName);
 
   assertEqual(contrastsList{1}.Name, 'foo');
 
@@ -54,7 +54,7 @@ function test_getContrastsList_from_lower_levels()
 
   nodeName = 'dataset_level';
 
-  contrastsList = getContrastsList(nodeName, opt.model.bm);
+  contrastsList = getContrastsList(opt.model.bm, nodeName);
 
   assertEqual(contrastsList{1}.Name, 'VisMot_gt_VisStat');
   assertEqual(contrastsList{2}.Name, 'VisStat_gt_VisMot');

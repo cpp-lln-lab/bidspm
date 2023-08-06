@@ -69,7 +69,33 @@
           "trial_type.Noun",
           "trial_type.Verb"
         ]
-      }
+      },
+      "Contrasts": [
+        {
+           "Name": "Verb_gt_Noun",
+           "ConditionList": [
+            "trial_type.Noun",
+            "trial_type.Verb"
+           ],
+           "Weights": [
+              -1,
+              1
+           ],
+           "Test": "t"
+        },
+        {
+          "Name": "Noun_gt_Verb",
+          "ConditionList": [
+           "trial_type.Noun",
+           "trial_type.Verb"
+          ],
+          "Weights": [
+             1,
+             -1
+          ],
+          "Test": "t"
+       }
+      ]
     },
     {
       "Level": "Session",

@@ -1,10 +1,10 @@
-function contrasts = specifyContrasts(SPM, model, nodeName)
+function contrasts = specifyContrasts(model, SPM, nodeName)
   %
-  % Specifies the first level contrasts
+  % Specifies the contrasts for run, session and subject level nodes.
   %
   % USAGE::
   %
-  %   contrasts = specifyContrasts(SPM, model)
+  %   contrasts = specifyContrasts(model, SPM)
   %
   % :param SPM: content of SPM.mat
   % :type SPM: structure
@@ -55,28 +55,23 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
       node = node{1};
     end
 
-    [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+    [contrasts, counter] = specifyDummyContrasts(model, node, SPM, contrasts, counter);
 
     switch lower(node.Level)
 
       case 'run'
-
-        [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM);
+        [contrasts, counter] = specifyRunLvlContrasts(node, SPM, contrasts, counter);
 
       case 'session'
-
         if ~checkGroupBy(node)
           continue
         end
-
         [contrasts, counter] = specifySessionLvlContrasts(contrasts, node, counter, SPM);
 
       case 'subject'
-
         if ~checkGroupBy(node)
           continue
         end
-
         [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM);
 
     end
@@ -95,6 +90,11 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
 end
 
 function nodeList = getNodeList(model)
+  %
+  %  Return all the nodes present in the bids stats model
+  %  - if there is only one,
+  %  - or as long as they are included in some edges.
+  %
   nodeList = {};
 
   if isempty(model.Nodes)
@@ -105,6 +105,9 @@ function nodeList = getNodeList(model)
     if iscell(model.Nodes)
       nodeList = model.Nodes{1};
     else
+      % should not be necessary
+      % but in case nodes were not coerced to cell
+      % during test set up
       nodeList = model.Nodes(1);
     end
     return
@@ -163,7 +166,7 @@ function contrasts = removeDuplicates(contrasts)
 
 end
 
-function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
+function [contrasts, counter] = specifyRunLvlContrasts(node, SPM, contrasts, counter)
   %
   % For the contrasts that involve contrasting conditions amongst themselves
   % or something inferior to baseline
@@ -208,10 +211,8 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
       % Use the SPM Sess index for the contrast name
       iSess = getSessionForRegressorNb(regIdx{1}(iRun), SPM);
 
-      C = newContrast(SPM, ...
-                      [this_contrast.Name, '_', num2str(iSess)], ...
-                      this_contrast.Test, ...
-                      conditionList);
+      contrastName = constructContrastNameFromBidsEntity(this_contrast.Name, SPM, iSess);
+      C = newContrast(SPM, contrastName, this_contrast.Test, conditionList);
 
       for iCdt = 1:length(conditionList)
 

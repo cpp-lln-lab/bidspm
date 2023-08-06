@@ -194,8 +194,6 @@ function contrastsList = getContrastsListForDatasetLevel(opt, nodeName)
   else
 
     % TODO?? can't imagine a 2 sample t-test with dummy contrasts
-    % contrastsList = getDummyContrastsList(nodeName, opt.model.bm);
-
     node = opt.model.bm.get_nodes('Name', nodeName);
 
     % if no specific dummy contrasts mentioned also include all contrasts from previous levels

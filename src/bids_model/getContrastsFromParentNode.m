@@ -1,10 +1,10 @@
-function contrastsList = getContrastsListFromSource(node, model)
+function contrastsList = getContrastsFromParentNode(model, node)
   %
   % Recursively look for contrasts at previous levels
   %
   % UISAGE::
   %
-  %     contrastsList = getContrastsListFromSource(node, model)
+  %     contrastsList = getContrastsFromParentNode(model, node)
   %
 
   % (C) Copyright 2022 bidspm developers
@@ -28,7 +28,7 @@ function contrastsList = getContrastsListFromSource(node, model)
 
     % go one level deeper
   elseif isnumeric(sourceNode.Model.X) && sourceNode.Model.X == 1
-    contrastsList = getContrastsListFromSource(sourceNode, model);
+    contrastsList = getContrastsFromParentNode(model, sourceNode);
 
   end
 

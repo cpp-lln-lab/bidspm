@@ -24,14 +24,14 @@ function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
     else
 
       % this assumes DummyContrasts exist
-      contrastsList = getDummyContrastsList(nodeName, opt.model.bm);
+      contrastsList = getDummyContrastsList(opt.model.bm, nodeName);
 
       node = opt.model.bm.get_nodes('Name', nodeName);
 
       % if no specific dummy contrasts mentioned also include all contrasts from previous levels
       % or if contrasts are mentioned we grab them
       if ~isfield(node.DummyContrasts, 'Contrasts') || isfield(node, 'Contrasts')
-        tmp = getContrastsList(nodeName, opt.model.bm);
+        tmp = getContrastsList(opt.model.bm, nodeName);
         for i = 1:numel(tmp)
           contrastsList{end + 1} = tmp{i}.Name;
         end

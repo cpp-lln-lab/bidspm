@@ -1,8 +1,8 @@
-function dummyContrastsList = getContrastFromPreviousNode(model, node)
+function dummyContrastsList = getDummyContrastFromParentNode(model, node)
   %
   % USAGGE::
   %
-  %   dummyContrastsList = getContrastFromPreviousNode(model, node)
+  %   dummyContrastsList = getDummyContrastFromParentNode(model, node)
   %
   % :param node:
   % :type  node: struct
@@ -27,7 +27,7 @@ function dummyContrastsList = getContrastFromPreviousNode(model, node)
   if isfield(sourceNode, 'DummyContrasts') && isfield(sourceNode.DummyContrasts, 'Contrasts')
     dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
   else
-    dummyContrastsList = getContrastFromPreviousNode(model, sourceNode);
+    dummyContrastsList = getDummyContrastFromParentNode(model, sourceNode);
   end
 
   filter = getFilter(model, sourceNode.Name, node.Name);

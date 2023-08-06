@@ -1,11 +1,11 @@
-function dummyContrastsList = getDummyContrastsList(node, model)
+function dummyContrastsList = getDummyContrastsList(model, node)
   %
   % Get list of names of DummyContrast from this Node or gets its from the
   % previous Nodes
   %
   % USAGE::
   %
-  %   dummyContrastsList = getDummyContrastsList(node, model)
+  %   dummyContrastsList = getDummyContrastsList(model, mode)
   %
   % :param node: node name or node content
   % :type node: char or structure
@@ -43,11 +43,11 @@ function dummyContrastsList = getDummyContrastsList(node, model)
 
       case {'session', 'subject'}
 
-        dummyContrastsList = getContrastFromPreviousNode(model, node);
+        dummyContrastsList = getDummyContrastFromParentNode(model, node);
 
       case 'dataset'
 
-        dummyContrastsList = getContrastFromPreviousNode(model, node);
+        dummyContrastsList = getDummyContrastFromParentNode(model, node);
 
         for i = 1:numel(dummyContrastsList)
 

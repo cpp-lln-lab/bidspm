@@ -1,4 +1,4 @@
-function test_suite = test_getContrastFromPreviousNode %#ok<*STOUT>
+function test_suite = test_getDummyContrastFromParentNode %#ok<*STOUT>
   % (C) Copyright 2022 bidspm developers
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -7,7 +7,7 @@ function test_suite = test_getContrastFromPreviousNode %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_getContrastFromPreviousNode_basic()
+function test_getContrastsFromParentNode_basic()
   %
   % run --> session --> subject --> dataset
 
@@ -17,26 +17,26 @@ function test_getContrastFromPreviousNode_basic()
 
   % run node have no previous node
   node = model.Nodes{1};
-  dummyContrastsList = getContrastFromPreviousNode(model, node);
+  dummyContrastsList = getDummyContrastFromParentNode(model, node);
   assert(isempty(dummyContrastsList));
 
   % session node
   node = model.Nodes{2};
-  dummyContrastsList = getContrastFromPreviousNode(model, node);
+  dummyContrastsList = getDummyContrastFromParentNode(model, node);
   assertEqual(dummyContrastsList, {'sign_Stim1F'});
 
   % subject node
   node = model.Nodes{3};
-  dummyContrastsList = getContrastFromPreviousNode(model, node);
+  dummyContrastsList = getDummyContrastFromParentNode(model, node);
   assertEqual(dummyContrastsList, {'sign_Stim1F'});
 
   % dataset node
   node = model.Nodes{4};
-  dummyContrastsList = getContrastFromPreviousNode(model, node);
+  dummyContrastsList = getDummyContrastFromParentNode(model, node);
   assertEqual(dummyContrastsList, {'sign_Stim1F'});
 end
 
-function test_getContrastFromPreviousNode_v_shaped()
+function test_getContrastsFromParentNode_v_shaped()
   %
   % run --> session
   % run --> subject
@@ -48,17 +48,17 @@ function test_getContrastFromPreviousNode_v_shaped()
 
   % session node
   node = model.Nodes{2};
-  dummyContrastsList = getContrastFromPreviousNode(model, node);
+  dummyContrastsList = getDummyContrastFromParentNode(model, node);
   assertEqual(dummyContrastsList, {'sign_Stim1F'});
 
   % subject node
   node = model.Nodes{3};
-  dummyContrastsList = getContrastFromPreviousNode(model, node);
+  dummyContrastsList = getDummyContrastFromParentNode(model, node);
   assertEqual(dummyContrastsList, {'sign_Stim1F'});
 
 end
 
-function test_getContrastFromPreviousNode_filter()
+function test_getContrastsFromParentNode_filter()
   %
   % run --> session --> dataset (only foo)
   % run --> subject (all)
@@ -71,22 +71,22 @@ function test_getContrastFromPreviousNode_filter()
   model.Edges{1} = struct('Source', 'Run', 'Destination', 'Subject');
   model.Edges{2, 1} = struct('Source', 'Run', ...
                              'Destination', 'Session', ...
-                             'Filter', {{'foo'}});
+                             'Filter', struct('contrast', {{'foo'}}));
   model.Edges{3, 1} = struct('Source', 'Session', ...
                              'Destination', 'Dataset');
   % subject node
   node = model.Nodes{3};
-  dummyContrastsList = getContrastFromPreviousNode(model, node);
+  dummyContrastsList = getDummyContrastFromParentNode(model, node);
   assertEqual(dummyContrastsList, {{'sign_Stim1F', 'foo'}});
 
   % session node
   node = model.Nodes{2};
-  dummyContrastsList = getContrastFromPreviousNode(model, node);
+  dummyContrastsList = getDummyContrastFromParentNode(model, node);
   assertEqual(dummyContrastsList, {'foo'});
 
   % dataset node
   node = model.Nodes{4};
-  dummyContrastsList = getContrastFromPreviousNode(model, node);
+  dummyContrastsList = getDummyContrastFromParentNode(model, node);
   assertEqual(dummyContrastsList, {'foo'});
 
 end

@@ -14,7 +14,8 @@ function contrast = checkContrast(node, iCon)
 
   bids.Model.validate_constrasts(node);
 
-  if ~ismember(lower(node.Level), {'run', 'subject'}) && ~isTtest(node.Contrasts(iCon))
+  if ~ismember(lower(node.Level), {'run', 'session', 'subject'}) && ...
+          ~isTtest(node.Contrasts(iCon))
     notImplemented(mfilename(), 'Only t test implemented for Contrasts');
     contrast = [];
     return

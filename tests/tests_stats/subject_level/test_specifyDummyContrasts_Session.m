@@ -69,14 +69,14 @@ function test_specifyDummyContrasts_session()
   node = model.Nodes{1};
   contrasts = struct('C', [], 'name', []);
   counter = 0;
-  contrasts = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+  contrasts = specifyDummyContrasts(model, node, SPM, contrasts, counter);
   assertEqual(numel({contrasts.name}), 5);
 
   node = model.Nodes{2};
   contrasts = struct('C', [], 'name', []);
   counter = 0;
 
-  contrasts = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+  contrasts = specifyDummyContrasts(model, node, SPM, contrasts, counter);
   assertEqual(numel({contrasts.name}), 3);
 
 end

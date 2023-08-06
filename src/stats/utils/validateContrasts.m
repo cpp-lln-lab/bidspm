@@ -12,7 +12,7 @@ function validateContrasts(contrasts)
 
   % all vectors must have same length
   % take first contrast as reference
-  vectorsLength = cellfun('length', {contrasts.C});
+  vectorsLength = cellfun(@(x) size(x, 2), {contrasts.C});
   vectorWithDifferentLength = vectorsLength ~= length(contrasts(1).C);
   if any(vectorWithDifferentLength)
     names = contrasts(vectorWithDifferentLength).name;
@@ -23,8 +23,10 @@ function validateContrasts(contrasts)
            'id', 'longerContrast');
   end
 
-  weightVectorIsAllZero = cellfun(@(x) all(x == 0), {contrasts.C});
-  if any(weightVectorIsAllZero)
+  weightVectorIsAllZero = cellfun(@(x) all(x(:) == 0), ...
+                                  {contrasts.C}, ...
+                                  'UniformOutput', false);
+  if any(cellfun(@(x) x == 1, weightVectorIsAllZero))
     names = contrasts(weightVectorIsAllZero).name;
     logger('ERROR', ....
            sprintf('Empty contrast vector(s) for:%s', ...

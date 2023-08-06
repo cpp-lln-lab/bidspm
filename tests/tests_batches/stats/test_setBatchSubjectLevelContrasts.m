@@ -56,11 +56,11 @@ function test_setBatchSubjectLevelContrasts_basic()
                          'SPM.mat')};
   con.delete = 1;
 
-  consess{1}.tcon.name = 'VisMot_1'; %#ok<*AGROW>
+  consess{1}.tcon.name = 'VisMot_ses-01'; %#ok<*AGROW>
   consess{end}.tcon.convec = [1 0 0 0 0 0 0 0 0];
   consess{end}.tcon.sessrep = 'none';
 
-  consess{end + 1}.tcon.name = 'VisStat_1'; %#ok<*AGROW>
+  consess{end + 1}.tcon.name = 'VisStat_ses-01'; %#ok<*AGROW>
   consess{end}.tcon.convec = [0 1 0 0 0 0 0 0 0];
   consess{end}.tcon.sessrep = 'none';
 
@@ -90,6 +90,10 @@ function test_setBatchSubjectLevelContrasts_basic()
 
   con.consess = consess;
 
+  for i = 1:numel(matlabbatch{1}.spm.stats.con.consess)
+    assertEqual(matlabbatch{1}.spm.stats.con.consess{i}.tcon, ...
+                con.consess{i}.tcon);
+  end
   assertEqual(matlabbatch{1}.spm.stats.con, con);
 
 end
