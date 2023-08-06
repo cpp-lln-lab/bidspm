@@ -1,10 +1,10 @@
-function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM)
+function [contrasts, counter] = specifySubLvlContrasts(node, SPM, contrasts, counter)
   %
   %
   %
   % USAGE::
   %
-  %   [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM)
+  %   [contrasts, counter] = specifySubLvlContrasts(node, SPM, contrasts, counter)
   %
   % :param contrasts:
   % :type  contrasts: struct
@@ -28,8 +28,8 @@ function [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter,
     return
   end
 
-  % then the contrasts that involve contrasting conditions
-  % amongst themselves or something inferior to baseline
+  % include contrasts that involve contrasting conditions
+  % amongst themselves or inferior to baseline
   for iCon = 1:length(node.Contrasts)
 
     this_contrast = checkContrast(node, iCon);

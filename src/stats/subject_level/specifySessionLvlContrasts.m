@@ -1,4 +1,4 @@
-function [contrasts, counter] = specifySessionLvlContrasts(contrasts, node, counter, SPM)
+function [contrasts, counter] = specifySessionLvlContrasts(node, SPM, contrasts, counter)
   %
   %
   %

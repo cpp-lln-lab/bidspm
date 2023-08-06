@@ -46,6 +46,8 @@ function contrasts = specifyContrasts(model, SPM, nodeName)
     nodeList = model.get_nodes('Name', nodeName);
   end
 
+  SPM = labelSpmSessWithBidsSesAndRun(SPM);
+
   % check all the nodes specified in the model
   for iNode = 1:length(nodeList)
 
@@ -66,13 +68,14 @@ function contrasts = specifyContrasts(model, SPM, nodeName)
         if ~checkGroupBy(node)
           continue
         end
-        [contrasts, counter] = specifySessionLvlContrasts(contrasts, node, counter, SPM);
+        %         [contrasts, counter] = specifySessionLvlContrasts(node, SPM, contrasts, counter);
+        [contrasts, counter] = specifySubLvlContrasts(node, SPM, contrasts, counter);
 
       case 'subject'
         if ~checkGroupBy(node)
           continue
         end
-        [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM);
+        [contrasts, counter] = specifySubLvlContrasts(node, SPM, contrasts, counter);
 
     end
 
