@@ -10,12 +10,12 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
   % :type  contrasts: struct
   %
   % :param node:
-  % :type  node:
+  % :type  node: struct
   %
   % :param counter:
   % :type  counter: integer
   %
-  % :param SPM:
+  % :param SPM: content of SPM.mat
   % :type  SPM: struct
   %
   % :param model:
@@ -45,7 +45,6 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
   end
 
   if strcmp(level, 'subject') && ~checkGroupBy(node)
-    % only "GroupBy": ["contrast", "subject"] supported
     return
   end
 

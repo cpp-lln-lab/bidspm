@@ -1,6 +1,6 @@
 function matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess)
   %
-  % Short description of what the function does goes here.
+  % Add a contrast to the batch for SPM.
   %
   % USAGE::
   %

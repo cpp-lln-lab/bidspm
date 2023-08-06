@@ -41,15 +41,7 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
   end
 
   if nargin < 3 || isempty(nodeName)
-    nodeList = {};
-    for i = 1:numel(model.Edges)
-      nodeList{end + 1} = model.Edges{i}.Source; %#ok<*AGROW>
-      nodeList{end + 1} = model.Edges{i}.Destination;
-    end
-    nodeList = unique(nodeList);
-    for iNode = 1:length(nodeList)
-      nodeList{iNode} = model.get_nodes('Name', nodeList{iNode});
-    end
+    nodeList = getNodeList(model);
   else
     nodeList = model.get_nodes('Name', nodeName);
   end
@@ -99,6 +91,37 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
   end
 
   contrasts = removeDuplicates(contrasts);
+
+end
+
+function nodeList = getNodeList(model)
+  nodeList = {};
+
+  if isempty(model.Nodes)
+    return
+  end
+
+  if numel(model.Nodes) == 1
+    if iscell(model.Nodes)
+      nodeList = model.Nodes{1};
+    else
+      nodeList = model.Nodes(1);
+    end
+    return
+  end
+
+  if isempty(model.Edges)
+    model = model.get_edges_from_nodes();
+  end
+
+  for i = 1:numel(model.Edges)
+    nodeList{end + 1} = model.Edges{i}.Source; %#ok<*AGROW>
+    nodeList{end + 1} = model.Edges{i}.Destination;
+  end
+  nodeList = unique(nodeList);
+  for iNode = 1:length(nodeList)
+    nodeList{iNode} = model.get_nodes('Name', nodeList{iNode});
+  end
 
 end
 

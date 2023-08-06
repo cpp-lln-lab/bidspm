@@ -7,25 +7,16 @@ addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
 SMOOTH = false;
-TASK = 'linebisection'; % 'verbal'
 
 % The directory where the data are located
 root_dir = fileparts(mfilename('fullpath'));
-bids_dir = fullfile(root_dir, 'inputs', 'ds000114');
-fmriprep_dir = fullfile(root_dir, 'inputs', 'ds000114-fmriprep');
-output_dir = fullfile(root_dir, 'outputs', 'ds000114', 'derivatives');
+bids_dir = fullfile(root_dir, 'inputs', 'ds000224');
+fmriprep_dir = fullfile(root_dir, 'inputs', 'ds000224-fmriprep');
+output_dir = fullfile(root_dir, 'outputs', 'ds000224', 'derivatives');
 
 space = {'MNI152NLin2009cAsym'};
-participant_label = {'01', '02'};
-
-switch TASK
-  case 'linebisection'
-    task = {'linebisection'};
-  case 'verbal'
-    task = {'overtverbgeneration', ...
-            'overtwordrepetition', ...
-            'covertverbgeneration'};
-end
+participant_label = {'MSC01'};
+task = {'glasslexical'};
 
 %% Smooth
 if SMOOTH
@@ -35,21 +26,16 @@ if SMOOTH
          'task', task, ...
          'space', space, ...
          'fwhm', 8, ...
-         'verbosity', 3); %#ok<*UNRCH>
+         'verbosity', 2); %#ok<*UNRCH>
 end
 
 %% Statistics
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
 %% Subject level analysis
-
-% Some runs have a lot of extra volumes after the session was over
-% so we limit the number of volumes included in each run.
-opt.glm.maxNbVols = 235;
-
 model_file = fullfile(root_dir, ...
                       'models', ...
-                      'model-ds000114_desc-testRetestLineBisection_smdl.json');
+                      'model-ds000224_desc-glasslexical_smdl.json');
 
 bidspm(bids_dir, output_dir, 'subject', ...
        'participant_label', participant_label, ...
@@ -60,7 +46,4 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'space', space, ...
        'fwhm', 8, ...
        'skip_validation', true, ...
-       'options', opt, ...
-       'verbosity', 3);
-
-%% dataset level analysis
+       'verbosity', 2);

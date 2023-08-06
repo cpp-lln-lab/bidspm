@@ -1,0 +1,104 @@
+{
+  "Name": "glasslexica",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "default BIDS stats model for glasslexical task",
+  "Input": {
+    "task": ["glasslexical"],
+    "space": ["MNI152NLin2009cAsym"]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run",
+      "GroupBy": [
+        "run",
+        "session",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          "trial_type.Glass_coherent",
+          "trial_type.Glass_endcue",
+          "trial_type.Glass_random",
+          "trial_type.Glass_startcue",
+          "trial_type.Glass_sustained",
+          "trial_type.NV_endcue",
+          "trial_type.NV_startcue",
+          "trial_type.NV_sustained",
+          "trial_type.Noun",
+          "trial_type.Verb",
+          "1",
+          "trans_?",
+          "rot_?",
+          "non_steady_state_outlier*",
+          "motion_outlier*"
+        ],
+        "Type": "glm",
+        "HRF": {
+          "Variables": [
+            "trial_type.Glass_coherent",
+            "trial_type.Glass_endcue",
+            "trial_type.Glass_random",
+            "trial_type.Glass_startcue",
+            "trial_type.Glass_sustained",
+            "trial_type.NV_endcue",
+            "trial_type.NV_startcue",
+            "trial_type.NV_sustained",
+            "trial_type.Noun",
+            "trial_type.Verb"
+          ],
+          "Model": "spm"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": {
+            "desc": ["brain"],
+            "suffix": ["mask"]
+          }
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "InclusiveMaskingThreshold": 0.8
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.Glass_coherent",
+          "trial_type.Glass_endcue",
+          "trial_type.Glass_random",
+          "trial_type.Glass_startcue",
+          "trial_type.Glass_sustained",
+          "trial_type.NV_endcue",
+          "trial_type.NV_startcue",
+          "trial_type.NV_sustained",
+          "trial_type.Noun",
+          "trial_type.Verb"
+        ]
+      }
+    },
+    {
+      "Level": "Subject",
+      "Name": "subject",
+      "GroupBy": [
+        "subject",
+        "contrast"
+      ],
+      "Model": {
+        "X": [1],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    }
+  ],
+  "Edges": [
+    {
+      "Source": "run",
+      "Destination": "subject"
+    }
+  ]
+}
