@@ -31,22 +31,81 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
     return
   end
 
-  level = lower(node.Level);
-
-  if ismember(level, {'session'})
-    notImplemented(mfilename(), ...
-                   'Specifying dummy contrasts for session level Node not implemented.');
+  if ismember(node.Level, {'session'}) && ~checkGroupBy(node)
     return
   end
-
-  if ismember(level, {'dataset'})
+  if strcmp(node.Level, 'subject') && ~checkGroupBy(node)
+    return
+  end
+  if ismember(node.Level, {'dataset'})
     % see setBatchGroupLevelContrasts
     return
   end
 
-  if strcmp(level, 'subject') && ~checkGroupBy(node)
-    return
+  SPM = labelSpmSessWithBidsSesAndRun(SPM);
+
+  [contrasts, counter] = addExplicitDummyContrasts(contrasts, node, counter, SPM, model);
+
+  %% DummyContrasts at subject level that are based on Contrast from previous level
+
+  contrastsList = {};
+  if ~isfield(node.DummyContrasts, 'Contrasts') % && strcmp(level, 'run')
+    % try to grab ContrastsList from design matrix or from previous Node
+    if strcmpi(node.Level, 'run')
+      contrastsList = getContrastsList(node, model);
+    else
+      contrastsList = getContrastsListFromSource(node, model);
+    end
   end
+
+  for iCon = 1:length(contrastsList)
+
+    thisContrast = contrastsList{iCon};
+
+    if isempty(thisContrast) || strcmp(thisContrast.Test, 'pass')
+      continue
+    end
+
+    switch lower(node.Level)
+
+      case 'subject'
+        C = addSubjectLevelContrastBasedOnPreviousLevels(SPM, thisContrast);
+        [contrasts, counter] = appendContrast(contrasts, C, counter, thisContrast.Test);
+
+      otherwise
+        % not implemented
+
+    end
+
+  end
+
+end
+
+function  C = addSubjectLevelContrastBasedOnPreviousLevels(SPM, thisContrast)
+
+  C = newContrast(SPM, thisContrast.Name, thisContrast.Test);
+
+  conditionList = thisContrast.ConditionList;
+
+  % get regressors index corresponding to the HRF of that condition
+  for iCdt = 1:length(conditionList)
+
+    cdtName = conditionList{iCdt};
+
+    [~, regIdx{iCdt}] = getRegressorIdx(cdtName, SPM);
+    regIdx{iCdt} = find(regIdx{iCdt});
+
+    C.C(end, regIdx{iCdt}) = thisContrast.Weights(iCdt);
+
+  end
+  clear regIdx;
+
+end
+
+function [contrasts, counter] = addExplicitDummyContrasts(contrasts, node, counter, SPM, model)
+  %
+  % DummyContrasts explicitly mentioned or based on DummyContrasts from previous level
+  %
 
   testType = 't';
   if ~isTtest(node.DummyContrasts)
@@ -55,7 +114,6 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
     return
   end
 
-  %% DummyContrasts that are explicitly mentioned or based on DummyContrasts from previous level
   dummyContrastsList = getDummyContrastsList(node, model);
 
   for iCon = 1:length(dummyContrastsList)
@@ -66,7 +124,7 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
 
     [cdtName, regIdx] = getRegressorIdx(cdtName, SPM);
 
-    switch level
+    switch lower(node.Level)
 
       case 'subject'
 
@@ -74,6 +132,17 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
         C.C(end, regIdx) = 1;
         [contrasts, counter] = appendContrast(contrasts, C, counter, testType);
         clear regIdx;
+
+      case 'session'
+
+        bidsSessions = unique({SPM.Sess.ses});
+        for iSes = 1:numel(bidsSessions)
+          [~, regIdx] = getRegressorIdx('sign_Stim1F', SPM, bidsSessions{iSes});
+          C = newContrast(SPM, [cdtName, '_ses-', bidsSessions{iSes}], testType);
+          C.C(end, regIdx) = 1;
+          [contrasts, counter] = appendContrast(contrasts, C, counter, testType);
+          clear regIdx;
+        end
 
       case 'run'
 
@@ -95,56 +164,6 @@ function [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, 
         clear regIdx;
 
     end
-
-  end
-
-  %% set up DummyContrasts at subject level that are based on Contrast from previous level
-  contrastsList = {};
-  if ~isfield(node.DummyContrasts, 'Contrasts') % && strcmp(level, 'run')
-    % try to grab ContrastsList from design matrix or from previous Node
-    if strcmp(level, 'run')
-      contrastsList = getContrastsList(node, model);
-    else
-      contrastsList = getContrastsListFromSource(node, model);
-    end
-  end
-
-  for iCon = 1:length(contrastsList)
-
-    this_contrast = contrastsList{iCon};
-
-    if isempty(this_contrast) || strcmp(this_contrast.Test, 'pass')
-      continue
-    end
-
-    switch level
-
-      case 'subject'
-
-        C = newContrast(SPM, this_contrast.Name, this_contrast.Test);
-
-        conditionList = this_contrast.ConditionList;
-
-        % get regressors index corresponding to the HRF of that condition
-        for iCdt = 1:length(conditionList)
-
-          cdtName = conditionList{iCdt};
-
-          [~, regIdx{iCdt}] = getRegressorIdx(cdtName, SPM);
-
-          regIdx{iCdt} = find(regIdx{iCdt});
-
-          C.C(end, regIdx{iCdt}) = this_contrast.Weights(iCdt);
-
-        end
-        clear regIdx;
-
-      otherwise
-        % not implemented
-
-    end
-
-    [contrasts, counter] = appendContrast(contrasts, C, counter, this_contrast.Test);
 
   end
 

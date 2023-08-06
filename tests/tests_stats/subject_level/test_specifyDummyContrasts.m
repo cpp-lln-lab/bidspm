@@ -38,7 +38,7 @@ function test_specifyDummyContrasts_basic()
   node.GroupBy = {'contrast', 'subject'};
   node.Model.X = 1;
 
-  [contrasts] = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+  contrasts = specifyDummyContrasts(contrasts, node, counter, SPM, model);
 
   assertEqual(numel({contrasts.name}), 7);
 
@@ -71,7 +71,7 @@ function test_specifyDummyContrasts_bug_815()
 
   node = model.Nodes{2};
 
-  [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+  contrasts = specifyDummyContrasts(contrasts, node, counter, SPM, model);
 
   assertEqual(numel({contrasts.name}), 7);
 

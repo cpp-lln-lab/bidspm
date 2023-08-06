@@ -41,7 +41,7 @@ function dummyContrastsList = getDummyContrastsList(node, model)
 
         dummyContrastsList = node.Model.X;
 
-      case 'subject'
+      case {'session', 'subject'}
 
         dummyContrastsList = getFromPreviousNode(model, node);
 
