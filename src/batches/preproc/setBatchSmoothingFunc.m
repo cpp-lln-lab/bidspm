@@ -63,10 +63,10 @@ function [matlabbatch, allRT] = setBatchSmoothingFunc(matlabbatch, BIDS, opt, su
         files{iFile, 1} = validationInputFile(subFuncDataDir(iFile, :), ...
                                               fileName(iFile, :)); %#ok<*AGROW>
 
-        if isfield(metadata{iFile, 1}, 'RepetitionTime')
-          allRT = metadata{iFile, 1}.RepetitionTime;
+        if isfield(metadata{iFile}, 'RepetitionTime')
+          allRT(end + 1) = metadata{iFile}.RepetitionTime;
         else
-          allRT = nan;
+          allRT(end + 1) = nan;
         end
 
       end
