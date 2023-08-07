@@ -28,6 +28,10 @@ function [contrasts, count] = specifySubLvlContrasts(model, node, contrasts, cou
     return
   end
 
+  if ~strcmpi(node.Level, 'subject')
+    return
+  end
+
   % include contrasts that involve contrasting conditions
   % amongst themselves or inferior to baseline
   for iCon = 1:length(node.Contrasts)
@@ -93,6 +97,7 @@ function  [contrasts, count] = crossSesContrast(model, node, thisContrast, contr
 end
 
 function [contrasts, count] = averageAtSubjectLevel(model, contrasts, count, thisContrast)
+
   conditionList = thisContrast.ConditionList;
 
   C = newContrast(model.SPM, thisContrast.Name, thisContrast.Test, conditionList);
@@ -102,8 +107,11 @@ function [contrasts, count] = averageAtSubjectLevel(model, contrasts, count, thi
   for iCdt = 1:length(conditionList)
 
     cdtName = conditionList{iCdt};
-    [~, regIdx, status] = getRegressorIdx(cdtName, model.SPM);
+    if isempty(cdtName)
+      continue
+    end
 
+    [~, regIdx, status] = getRegressorIdx(cdtName, model.SPM);
     if ~status
       break
     end
@@ -127,15 +135,17 @@ function [contrasts, count] = averageAtSubjectLevel(model, contrasts, count, thi
   end
 
   % do not create this contrast if a condition is missing
-  if ~status
-    msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
-                  thisContrast.Name, cdtName);
-    id = 'runMissingCondition';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename());
+  if exist('status', 'var')
+    if ~status
+      msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
+                    thisContrast.Name, cdtName);
+      id = 'runMissingCondition';
+      logger('WARNING', msg, 'id', id, 'filename', mfilename());
 
-  else
-    [contrasts, count] = appendContrast(contrasts, C, count, thisContrast.Test);
+    else
+      [contrasts, count] = appendContrast(contrasts, C, count, thisContrast.Test);
 
+    end
   end
 
 end
