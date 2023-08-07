@@ -127,12 +127,41 @@
       "DummyContrasts": {
         "Test": "t"
       }
+    },
+    {
+      "Level": "Subject",
+      "Name": "compare_sessions",
+      "GroupBy": [
+        "subject",
+        "contrast"
+      ],
+      "Model": {
+        "X": ["session", 1],
+        "Type": "glm"
+      },
+      "Contrasts": [{
+        "Name": "OddSessions_gt_EvenSessions",
+        "ConditionList": [
+         "func01", "func03", "func05", "func07", "func09",
+         "func02", "func04", "func06", "func08", "func10"
+        ],
+        "Weights": [
+           1, 1, 1, 1, 1,
+           -1, -1, -1, -1, -1
+        ],
+        "Test": "t"
+     }]
     }
   ],
   "Edges": [
     {
       "Source": "run",
       "Destination": "session"
+    },
+    {
+      "Source": "session",
+      "Destination": "compare_sessions",
+      "Filter": {"contrast": ["Noun_gt_Verb"]}
     },
     {
       "Source": "run",

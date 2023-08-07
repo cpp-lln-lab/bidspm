@@ -49,7 +49,7 @@ function test_specifyContrasts_subject_level_F_contrast()
 
   taskName = 'motion';
 
-  model = bids.Model('init', true);
+  model = BidsModel('init', true);
 
   model.Input.task = taskName;
 
@@ -153,7 +153,7 @@ function test_specifyContrasts_bug_815()
   SPM.xX.X = rand(3, numel(SPM.xX.name));
 
   model_file = fullfile(getTestDataDir(), 'models', 'model-bug815_smdl.json');
-  model = bids.Model('file', model_file, 'verbose', true);
+  model = BidsModel('file', model_file, 'verbose', true);
 
   contrasts = specifyContrasts(model, SPM, 'subject_level');
 
@@ -174,8 +174,8 @@ function test_specifyContrasts_subject_level_select_node()
   Contrasts.Weights = [1, -1];
   Contrasts.Test = 't';
 
-  model = bids.Model('init', true);
-  model.Nodes{2, 1} = bids.Model.empty_node('subject');
+  model = BidsModel('init', true);
+  model.Nodes{2, 1} = BidsModel.empty_node('subject');
   model.Input.task = taskName;
   model.Nodes{1, 1}.DummyContrasts.Contrasts = DummyContrasts;
   model.Nodes{1, 1}.Contrasts{1} = Contrasts;
@@ -227,7 +227,7 @@ function test_specifyContrasts_run_level_dummy_contrast_from_X()
 
   taskName = 'motion';
 
-  model = bids.Model('init', true);
+  model = BidsModel('init', true);
   model.Input.task = taskName;
   model.Nodes = [];
   model.Nodes{1}.Model.X = {'motion', 'static'};
@@ -283,7 +283,7 @@ function test_specifyContrasts_missing_condition_for_dummy_contrasts()
   % GIVEN
   DummyContrasts{1} = 'foo';
 
-  model = bids.Model('init', true);
+  model = BidsModel('init', true);
   model.Input.task = taskName;
   model.Nodes = [];
   model.Nodes{1}.Level = 'Run';
@@ -320,7 +320,7 @@ function test_specifyContrasts_missing_condition()
   Contrasts.Weights = [1, -1];
   Contrasts.Test = 't';
 
-  model = bids.Model('init', true);
+  model = BidsModel('init', true);
   model.Input.task = taskName;
   model.Nodes = [];
   model.Nodes{1, 1}.Contrasts{1} = Contrasts;
@@ -359,8 +359,8 @@ function test_specifyContrasts_subject_level()
   Contrasts.Weights = [1, -1];
   Contrasts.Test = 't';
 
-  model = bids.Model('init', true);
-  model.Nodes{2, 1} = bids.Model.empty_node('subject');
+  model = BidsModel('init', true);
+  model.Nodes{2, 1} = BidsModel.empty_node('subject');
   model.Input.task = taskName;
   model.Nodes{1, 1}.DummyContrasts.Contrasts = DummyContrasts;
   model.Nodes{1, 1}.Contrasts{1} = Contrasts;
@@ -431,7 +431,7 @@ function test_specifyContrasts_complex()
   Contrasts.Weights = [1, -1];
   Contrasts.Test = 't';
 
-  model = bids.Model('init', true);
+  model = BidsModel('init', true);
   model.Input.task = taskName;
   model.Nodes = [];
   model.Nodes{1}.DummyContrasts.Contrasts = DummyContrasts;

@@ -40,7 +40,7 @@ end
 function test_computeDesignEfficiency_block_design
 
   %% create stats model JSON
-  json = bids.Model('init', true);
+  json = BidsModel('init', true);
   runNodeIdx = 1;
   json.Nodes{runNodeIdx}.Model.X = {'trial_type.cdt_A', 'trial_type.cdt_B'};
   json.Nodes{runNodeIdx}.DummyContrasts.Contrasts = {'trial_type.cdt_A', 'trial_type.cdt_B'};

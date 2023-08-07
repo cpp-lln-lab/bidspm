@@ -1,22 +1,22 @@
-function [contrasts, counter] = specifySubLvlContrasts(node, SPM, contrasts, counter)
+function [contrasts, count] = specifySubLvlContrasts(model, node, contrasts, count)
   %
   %
   %
   % USAGE::
   %
-  %   [contrasts, counter] = specifySubLvlContrasts(node, SPM, contrasts, counter)
+  %   [contrasts, counter] = specifySubLvlContrasts(model, node, contrasts, counter)
+  %
+  % :param model:
+  % :type  model: BidsModel instance
   %
   % :param contrasts:
   % :type  contrasts: struct
   %
   % :param node:
-  % :type  node:
+  % :type  node: struct
   %
   % :param counter:
   % :type  counter: integer
-  %
-  % :param SPM:
-  % :type  SPM: struct
   %
   %
   % See also: specifyContrasts
@@ -32,57 +32,109 @@ function [contrasts, counter] = specifySubLvlContrasts(node, SPM, contrasts, cou
   % amongst themselves or inferior to baseline
   for iCon = 1:length(node.Contrasts)
 
-    this_contrast = checkContrast(node, iCon);
+    thisContrast = checkContrast(node, iCon);
 
-    if isempty(this_contrast) || strcmp(this_contrast.Test, 'pass')
+    if isempty(thisContrast) || strcmp(thisContrast.Test, 'pass')
       continue
     end
 
-    conditionList = this_contrast.ConditionList;
+    if isnumeric(node.Model.X) && node.Model.X == 1
+      [contrasts, count] = averageAtSubjectLevel(model, ...
+                                                 contrasts, ...
+                                                 count, ...
+                                                 thisContrast);
 
-    C = newContrast(SPM, this_contrast.Name, this_contrast.Test, conditionList);
-    this_contrast.Name;
-
-    row = 1;
-
-    for iCdt = 1:length(conditionList)
-
-      cdtName = conditionList{iCdt};
-      [~, regIdx, status] = getRegressorIdx(cdtName, SPM);
-
-      if ~status
-        break
-      end
-
-      regIdx = find(regIdx);
-
-      % give them the value specified in the model
-      if strcmp(this_contrast.Test, 't')
-        C.C(end, regIdx) = this_contrast.Weights(iCdt);
-
-      elseif strcmp(this_contrast.Test, 'F')
-        for i = 1:numel(regIdx)
-          C.C(row, regIdx(i)) = this_contrast.Weights(iCdt);
-          row = row + 1;
-        end
-
-      end
-
-      clear regIdx;
-
+    elseif iscell(node.Model.X) && ...
+            all(cellfun(@(x) strcmp(x, 'session') || x == 1, node.Model.X))
+      [contrasts, count] = crossSesContrast(model, ...
+                                            node, ...
+                                            thisContrast, ...
+                                            contrasts, ...
+                                            count);
     end
 
-    % do not create this contrast if a condition is missing
+  end
+
+end
+
+function  [contrasts, count] = crossSesContrast(model, node, thisContrast, contrasts, count)
+  % loop over contrasts from previous levels to do a cross session comparison
+  sessionList = thisContrast.ConditionList;
+
+  if ~strcmp(thisContrast.Test, 't')
+    return
+  end
+
+  % collect contrasts from previous runs
+  % TODO
+  % dummyContrastsList = getDummyContrastFromParentNode(model, node);
+  contrastsList = getContrastsFromParentNode(model, node);
+
+  for iCon = 1:numel(contrastsList)
+
+    contrastName = [thisContrast.Name '-' contrastsList{iCon}.Name];
+    C = newContrast(model.SPM, contrastName, thisContrast.Test, sessionList);
+
+    for iSes = 1:length(sessionList)
+      % apply weight specified in previous level
+      % multiplied by weight for each sessions
+      for iCdt = 1:numel(contrastsList{iCon}.ConditionList)
+        cdtName = contrastsList{iCon}.ConditionList{iCdt};
+        [~, regIdx] = getRegressorIdx(cdtName, model.SPM, sessionList{iSes});
+        C.C(end, regIdx) = contrastsList{iCon}.Weights(iCdt) * ...
+            thisContrast.Weights(iSes);
+      end
+    end
+
+    [contrasts, count] = appendContrast(contrasts, C, count, thisContrast.Test);
+
+  end
+
+end
+
+function [contrasts, count] = averageAtSubjectLevel(model, contrasts, count, thisContrast)
+  conditionList = thisContrast.ConditionList;
+
+  C = newContrast(model.SPM, thisContrast.Name, thisContrast.Test, conditionList);
+
+  row = 1;
+
+  for iCdt = 1:length(conditionList)
+
+    cdtName = conditionList{iCdt};
+    [~, regIdx, status] = getRegressorIdx(cdtName, model.SPM);
+
     if ~status
-      msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
-                    this_contrast.Name, cdtName);
-      id = 'runMissingCondition';
-      logger('WARNING', msg, 'id', id, 'filename', mfilename());
+      break
+    end
 
-    else
-      [contrasts, counter] = appendContrast(contrasts, C, counter, this_contrast.Test);
+    regIdx = find(regIdx);
+
+    % give them the value specified in the model
+    if strcmp(thisContrast.Test, 't')
+      C.C(end, regIdx) = thisContrast.Weights(iCdt);
+
+    elseif strcmp(thisContrast.Test, 'F')
+      for i = 1:numel(regIdx)
+        C.C(row, regIdx(i)) = thisContrast.Weights(iCdt);
+        row = row + 1;
+      end
 
     end
+
+    clear regIdx;
+
+  end
+
+  % do not create this contrast if a condition is missing
+  if ~status
+    msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
+                  thisContrast.Name, cdtName);
+    id = 'runMissingCondition';
+    logger('WARNING', msg, 'id', id, 'filename', mfilename());
+
+  else
+    [contrasts, count] = appendContrast(contrasts, C, count, thisContrast.Test);
 
   end
 

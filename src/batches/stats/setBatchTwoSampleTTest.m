@@ -199,7 +199,7 @@ function contrastsList = getContrastsListForDatasetLevel(opt, nodeName)
     % if no specific dummy contrasts mentioned also include all contrasts from previous levels
     % or if contrasts are mentioned we grab them
     if isfield(node, 'Contrasts')
-      tmp = getContrastsList(nodeName, opt.model.bm);
+      tmp = getContrastsList(opt.model.bm, nodeName);
       for i = 1:numel(tmp)
         contrastsList{end + 1} = tmp{i}.Name;
       end

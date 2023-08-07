@@ -26,11 +26,11 @@ function test_setBatchSubjectLevelContrasts_F_contrast()
                          'SPM.mat')};
   con.delete = 1;
 
-  consess{1}.tcon.name = 'VisMot_gt_VisStat_1'; %#ok<*AGROW>
+  consess{1}.tcon.name = 'VisMot_gt_VisStat_ses-01'; %#ok<*AGROW>
   consess{1}.tcon.convec = [1 -1 0 0 0 0 0 0 0];
   consess{1}.tcon.sessrep = 'none';
 
-  consess{2}.fcon.name = 'F_test_mot_static_1'; %#ok<*AGROW>
+  consess{2}.fcon.name = 'F_test_mot_static_ses-01'; %#ok<*AGROW>
   consess{2}.fcon.convec = [1 0 0 0 0 0 0 0 0
                             0 1 0 0 0 0 0 0 0];
   consess{2}.fcon.sessrep = 'none';
@@ -64,11 +64,11 @@ function test_setBatchSubjectLevelContrasts_basic()
   consess{end}.tcon.convec = [0 1 0 0 0 0 0 0 0];
   consess{end}.tcon.sessrep = 'none';
 
-  consess{end + 1}.tcon.name = 'VisMot_gt_VisStat_1'; %#ok<*AGROW>
+  consess{end + 1}.tcon.name = 'VisMot_gt_VisStat_ses-01'; %#ok<*AGROW>
   consess{end}.tcon.convec = [1 -1 0 0 0 0 0 0 0];
   consess{end}.tcon.sessrep = 'none';
 
-  consess{end + 1}.tcon.name = 'VisStat_gt_VisMot_1'; %#ok<*AGROW>
+  consess{end + 1}.tcon.name = 'VisStat_gt_VisMot_ses-01'; %#ok<*AGROW>
   consess{end}.tcon.convec = [-1 1 0 0 0 0 0 0 0];
   consess{end}.tcon.sessrep = 'none';
 

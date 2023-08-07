@@ -1,8 +1,8 @@
-function [contrasts, counter] = specifyDummyContrasts(model, node, SPM, contrasts, counter)
+function [contrasts, counter] = specifyDummyContrasts(model, node, contrasts, counter)
   %
   % USAGE::
   %
-  %   [contrasts, counter] = specifyDummyContrasts(model, node, SPM, contrasts, counter )
+  %   [contrasts, counter] = specifyDummyContrasts(model, node, contrasts, counter )
   %
   % :param contrasts:
   % :type  contrasts: struct
@@ -12,9 +12,6 @@ function [contrasts, counter] = specifyDummyContrasts(model, node, SPM, contrast
   %
   % :param counter:
   % :type  counter: integer
-  %
-  % :param SPM: content of SPM.mat
-  % :type  SPM: struct
   %
   % :param model:
   % :type  model: BidsModel object
@@ -40,9 +37,7 @@ function [contrasts, counter] = specifyDummyContrasts(model, node, SPM, contrast
     return
   end
 
-  SPM = labelSpmSessWithBidsSesAndRun(SPM);
-
-  [contrasts, counter] = addExplicitDummyContrasts(model, node, SPM, contrasts, counter);
+  [contrasts, counter] = addExplicitDummyContrasts(model, node, contrasts, counter);
 
   %% DummyContrasts at session / subject level that are based on Contrast from previous level
 
@@ -67,22 +62,22 @@ function [contrasts, counter] = specifyDummyContrasts(model, node, SPM, contrast
     switch lower(node.Level)
 
       case 'session'
-        bidsSessions = unique({SPM.Sess.ses});
+        bidsSessions = unique({model.SPM.Sess.ses});
         for iSes = 1:numel(bidsSessions)
-          C = newContrast(SPM, ...
+          C = newContrast(model.SPM, ...
                           [thisContrast.Name, '_ses-', bidsSessions{iSes}], ...
                           thisContrast.Test);
           conditionList = thisContrast.ConditionList;
           for iCdt = 1:length(conditionList)
             cdtName = conditionList{iCdt};
-            [~, regIdx] = getRegressorIdx(cdtName, SPM, bidsSessions{iSes});
+            [~, regIdx] = getRegressorIdx(cdtName, model.SPM, bidsSessions{iSes});
             C.C(end, regIdx) = thisContrast.Weights(iCdt);
           end
           [contrasts, counter] = appendContrast(contrasts, C, counter, thisContrast.Test);
         end
 
       case 'subject'
-        C = addSubjectLevelContrastBasedOnPreviousLevels(SPM, thisContrast);
+        C = addSubjectLevelContrastBasedOnPreviousLevels(model, thisContrast);
         [contrasts, counter] = appendContrast(contrasts, C, counter, thisContrast.Test);
 
       otherwise
@@ -94,9 +89,9 @@ function [contrasts, counter] = specifyDummyContrasts(model, node, SPM, contrast
 
 end
 
-function  C = addSubjectLevelContrastBasedOnPreviousLevels(SPM, thisContrast)
+function  C = addSubjectLevelContrastBasedOnPreviousLevels(model, thisContrast)
 
-  C = newContrast(SPM, thisContrast.Name, thisContrast.Test);
+  C = newContrast(model.SPM, thisContrast.Name, thisContrast.Test);
 
   conditionList = thisContrast.ConditionList;
 
@@ -105,7 +100,7 @@ function  C = addSubjectLevelContrastBasedOnPreviousLevels(SPM, thisContrast)
 
     cdtName = conditionList{iCdt};
 
-    [~, regIdx{iCdt}] = getRegressorIdx(cdtName, SPM);
+    [~, regIdx{iCdt}] = getRegressorIdx(cdtName, model.SPM);
     regIdx{iCdt} = find(regIdx{iCdt});
 
     C.C(end, regIdx{iCdt}) = thisContrast.Weights(iCdt);
@@ -115,7 +110,7 @@ function  C = addSubjectLevelContrastBasedOnPreviousLevels(SPM, thisContrast)
 
 end
 
-function [contrasts, counter] = addExplicitDummyContrasts(model, node, SPM, contrasts, counter)
+function [contrasts, counter] = addExplicitDummyContrasts(model, node, contrasts, counter)
   %
   % DummyContrasts explicitly mentioned or based on DummyContrasts from previous level
   %
@@ -135,23 +130,23 @@ function [contrasts, counter] = addExplicitDummyContrasts(model, node, SPM, cont
 
     cdtName = dealWithGlobPattern(cdtName);
 
-    [cdtName, regIdx] = getRegressorIdx(cdtName, SPM);
+    [cdtName, regIdx] = getRegressorIdx(cdtName, model.SPM);
 
     switch lower(node.Level)
 
       case 'subject'
 
-        C = newContrast(SPM, cdtName, testType);
+        C = newContrast(model.SPM, cdtName, testType);
         C.C(end, regIdx) = 1;
         [contrasts, counter] = appendContrast(contrasts, C, counter, testType);
         clear regIdx;
 
       case 'session'
 
-        bidsSessions = unique({SPM.Sess.ses});
+        bidsSessions = unique({model.SPM.Sess.ses});
         for iSes = 1:numel(bidsSessions)
-          C = newContrast(SPM, [cdtName, '_ses-', bidsSessions{iSes}], testType);
-          [~, regIdx] = getRegressorIdx(cdtName, SPM, bidsSessions{iSes});
+          C = newContrast(model.SPM, [cdtName, '_ses-', bidsSessions{iSes}], testType);
+          [~, regIdx] = getRegressorIdx(cdtName, model.SPM, bidsSessions{iSes});
           C.C(end, regIdx) = 1;
           [contrasts, counter] = appendContrast(contrasts, C, counter, testType);
           clear regIdx;
@@ -164,10 +159,10 @@ function [contrasts, counter] = addExplicitDummyContrasts(model, node, SPM, cont
         for iReg = 1:length(regIdx)
 
           % Use the SPM Sess index for the contrast name
-          iSess = getSessionForRegressorNb(regIdx(iReg), SPM);
+          iSess = getSessionForRegressorNb(regIdx(iReg), model.SPM);
 
-          contrastName = constructContrastNameFromBidsEntity(cdtName, SPM, iSess);
-          C = newContrast(SPM, contrastName, testType);
+          contrastName = constructContrastNameFromBidsEntity(cdtName, model.SPM, iSess);
+          C = newContrast(model.SPM, contrastName, testType);
 
           % give each event a value of 1
           C.C(end, regIdx(iReg)) = 1;

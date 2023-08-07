@@ -3,11 +3,22 @@ classdef BidsModel < bids.Model
   %
 
   % (C) Copyright 2022 Remi Gau
+  properties
+
+    SPM = [] % content of SPM.mat
+
+  end
 
   methods
 
+    function obj = set.SPM(obj, SPM)
+      SPM = labelSpmSessWithBidsSesAndRun(SPM);
+      obj.SPM = SPM;
+    end
+
     function obj = BidsModel(varargin)
       obj = obj@bids.Model(varargin{:});
+      obj.SPM = [];
     end
 
     function [transformers, idx] = getBidsTransformers(obj, varargin)

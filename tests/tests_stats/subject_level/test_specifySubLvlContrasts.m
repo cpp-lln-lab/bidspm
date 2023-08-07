@@ -22,7 +22,10 @@ function test_specifySubLvlContrasts_basic()
   SPM.xX.X = rand(6, 2);
   SPM.xX.name = {'Sn(1) fw*bf(1)', 'Sn(1) sfw*bf(1)'};
 
-  [contrasts, counter] = specifySubLvlContrasts(node, SPM, contrasts, counter);
+  model = BidsModel('init', true);
+  model.SPM = SPM;
+
+  [contrasts, counter] = specifySubLvlContrasts(model, node, contrasts, counter);
 
   assertEqual(counter, 1);
   assertEqual(contrasts.C, [1 -1]);

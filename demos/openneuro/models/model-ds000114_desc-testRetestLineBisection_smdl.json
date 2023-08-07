@@ -26,8 +26,6 @@
           "trial_type.Response_Control",
           "trans_?",
           "rot_?",
-          "non_steady_state_outlier*",
-          "motion_outlier*",
           "1"
         ],
         "Type": "glm",
@@ -114,16 +112,24 @@
       }
     },
     {
-      "Level": "Dataset",
-      "Name": "dataset",
-      "GroupBy": ["contrast"],
+      "Level": "Subject",
+      "Name": "compare_sessions",
+      "GroupBy": [
+        "subject",
+        "contrast"
+      ],
       "Model": {
-        "X": [1],
+        "X": ["session", 1],
         "Type": "glm"
       },
-      "DummyContrasts": {
+      "Contrasts": [
+        {
+        "Name": "test_gt_retest",
+        "ConditionList": ["test", "retest"],
+        "Weights": [1, -1],
         "Test": "t"
-      }
+        }
+      ]
     }
   ],
   "Edges": [
@@ -132,18 +138,17 @@
       "Destination": "session",
       "Filter": {
         "contrast": [
-          "trial_type.Correct_Task",
           "TaskResponded_gt_CtrlResponded"
         ]
       }
     },
     {
-      "Source": "run",
-      "Destination": "subject"
+      "Source": "session",
+      "Destination": "compare_sessions"
     },
     {
-      "Source": "subject",
-      "Destination": "dataset"
+      "Source": "run",
+      "Destination": "subject"
     }
   ]
 }

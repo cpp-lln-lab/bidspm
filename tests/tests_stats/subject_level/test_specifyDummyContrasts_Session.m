@@ -55,6 +55,7 @@ function test_specifyDummyContrasts_session()
   SPM.xX.X = rand(size(SPM.xY.P, 1), numel(SPM.xX.name));
 
   model = BidsModel('init', true);
+  model.SPM = SPM;
 
   model.Nodes{1}.DummyContrasts.Contrasts{1} = 'sign_Stim1F';
 
@@ -69,14 +70,14 @@ function test_specifyDummyContrasts_session()
   node = model.Nodes{1};
   contrasts = struct('C', [], 'name', []);
   counter = 0;
-  contrasts = specifyDummyContrasts(model, node, SPM, contrasts, counter);
+  contrasts = specifyDummyContrasts(model, node, contrasts, counter);
   assertEqual(numel({contrasts.name}), 5);
 
   node = model.Nodes{2};
   contrasts = struct('C', [], 'name', []);
   counter = 0;
 
-  contrasts = specifyDummyContrasts(model, node, SPM, contrasts, counter);
+  contrasts = specifyDummyContrasts(model, node, contrasts, counter);
   assertEqual(numel({contrasts.name}), 3);
 
 end

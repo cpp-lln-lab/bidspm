@@ -11,7 +11,7 @@ end
 function test_getDummyContrastsList_bug_815()
 
   model_file = fullfile(getTestDataDir(), 'models', 'model-bug815_smdl.json');
-  model = bids.Model('file', model_file, 'verbose', false);
+  model = BidsModel('file', model_file, 'verbose', false);
 
   nodeName = 'subject_level';
 

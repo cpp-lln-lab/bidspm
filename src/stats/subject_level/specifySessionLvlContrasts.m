@@ -1,10 +1,10 @@
-function [contrasts, counter] = specifySessionLvlContrasts(node, SPM, contrasts, counter)
+function [contrasts, counter] = specifySessionLvlContrasts(model, node, contrasts, counter)
   %
   %
   %
   % USAGE::
   %
-  %   [contrasts, counter] = specifySessionLvlContrasts(contrasts, node, counter, SPM)
+  %   [contrasts, counter] = specifySessionLvlContrasts(model, node, contrasts, counter)
   %
   % :param contrasts:
   % :type  contrasts: struct
@@ -15,8 +15,8 @@ function [contrasts, counter] = specifySessionLvlContrasts(node, SPM, contrasts,
   % :param counter:
   % :type  counter: integer
   %
-  % :param SPM:
-  % :type  SPM: struct
+  % :param model:
+  % :type  model: BidsModel object
   %
   %
   % See also: specifyContrasts
@@ -40,7 +40,7 @@ function [contrasts, counter] = specifySessionLvlContrasts(node, SPM, contrasts,
 
     conditionList = this_contrast.ConditionList;
 
-    C = newContrast(SPM, this_contrast.Name, this_contrast.Test, conditionList);
+    C = newContrast(model.SPM, this_contrast.Name, this_contrast.Test, conditionList);
     this_contrast.Name;
 
     row = 1;
@@ -48,7 +48,7 @@ function [contrasts, counter] = specifySessionLvlContrasts(node, SPM, contrasts,
     for iCdt = 1:length(conditionList)
 
       cdtName = conditionList{iCdt};
-      [~, regIdx, status] = getRegressorIdx(cdtName, SPM);
+      [~, regIdx, status] = getRegressorIdx(cdtName, model.SPM);
 
       if ~status
         break
