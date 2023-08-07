@@ -7,7 +7,7 @@ addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
 SMOOTH = false;
-TASK = 'linebisection'; % 'verbal'
+TASK = 'verbal'; % 'verbal' / 'linebisection'
 
 % The directory where the data are located
 root_dir = fileparts(mfilename('fullpath'));
@@ -21,10 +21,24 @@ participant_label = {'01', '02'};
 switch TASK
   case 'linebisection'
     task = {'linebisection'};
+
+    % Some runs have a lot of extra volumes after the session was over
+    % so we limit the number of volumes included in each run.
+    opt.glm.maxNbVols = 235;
+
+    model_file = fullfile(root_dir, ...
+                          'models', ...
+                          'model-ds000114_desc-testRetestLineBisection_smdl.json');
   case 'verbal'
     task = {'overtverbgeneration', ...
             'overtwordrepetition', ...
             'covertverbgeneration'};
+
+    opt = struct([]);
+
+    model_file = fullfile(root_dir, ...
+                          'models', ...
+                          'model-ds000114_desc-testRetestVerbal_smdl.json');
 end
 
 %% Smooth
@@ -42,15 +56,6 @@ end
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
 %% Subject level analysis
-
-% Some runs have a lot of extra volumes after the session was over
-% so we limit the number of volumes included in each run.
-opt.glm.maxNbVols = 235;
-
-model_file = fullfile(root_dir, ...
-                      'models', ...
-                      'model-ds000114_desc-testRetestLineBisection_smdl.json');
-
 bidspm(bids_dir, output_dir, 'subject', ...
        'participant_label', participant_label, ...
        'action', 'stats', ...

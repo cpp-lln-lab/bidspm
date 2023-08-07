@@ -4,9 +4,7 @@
   "Description": "BIDS stats model for linebisection / oververbgeneration / overwordrepetition / covertverbgeneration tasks",
   "Input": {
     "task": [
-      "overtverbgeneration",
-      "overtwordrepetition",
-      "covertverbgeneration"
+      "overtverbgeneration"
     ],
     "space": ["MNI152NLin2009cAsym"]
   },
@@ -24,8 +22,6 @@
           "trial_type.Task",
           "trans_?",
           "rot_?",
-          "non_steady_state_outlier*",
-          "motion_outlier*",
           "1"
         ],
         "Type": "glm",
@@ -49,12 +45,18 @@
           }
         }
       },
-      "DummyContrasts": {
-        "Test": "t",
-        "Contrasts": [
-          "trial_type.Task"
-        ]
-      }
+      "Contrasts": [
+        {
+           "Name": "Task",
+           "ConditionList": [
+              "trial_type.Task"
+           ],
+           "Weights": [
+              1
+           ],
+           "Test": "t"
+        }
+      ]
     },
     {
       "Level": "Subject",
@@ -72,9 +74,13 @@
       }
     },
     {
-      "Level": "Dataset",
-      "Name": "dataset",
-      "GroupBy": ["contrast"],
+      "Level": "Session",
+      "Name": "session",
+      "GroupBy": [
+        "session",
+        "subject",
+        "contrast"
+      ],
       "Model": {
         "X": [1],
         "Type": "glm"
@@ -82,16 +88,40 @@
       "DummyContrasts": {
         "Test": "t"
       }
+    },
+    {
+      "Level": "Subject",
+      "Name": "compare_sessions",
+      "GroupBy": [
+        "subject",
+        "contrast"
+      ],
+      "Model": {
+        "X": ["session", 1],
+        "Type": "glm"
+      },
+      "Contrasts": [
+        {
+        "Name": "test_gt_retest",
+        "ConditionList": ["test", "retest"],
+        "Weights": [1, -1],
+        "Test": "t"
+        }
+      ]
     }
   ],
   "Edges": [
     {
       "Source": "run",
-      "Destination": "subject"
+      "Destination": "session"
     },
     {
-      "Source": "subject",
-      "Destination": "dataset"
+      "Source": "session",
+      "Destination": "compare_sessions"
+    },
+    {
+      "Source": "run",
+      "Destination": "subject"
     }
   ]
 }
