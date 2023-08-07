@@ -68,8 +68,7 @@ function contrasts = specifyContrasts(model, SPM, nodeName)
         if ~checkGroupBy(node)
           continue
         end
-        %         [contrasts, counter] = specifySessionLvlContrasts(node, SPM, contrasts, counter);
-        [contrasts, counter] = specifySubLvlContrasts(node, SPM, contrasts, counter);
+        [contrasts, counter] = specifySessionLvlContrasts(node, SPM, contrasts, counter);
 
       case 'subject'
         if ~checkGroupBy(node)

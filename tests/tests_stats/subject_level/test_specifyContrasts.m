@@ -29,11 +29,11 @@ function test_specifyContrasts_vismotion_F_contrast()
   contrasts = specifyContrasts(model, SPM);
 
   % THEN
-  expected(1).name = 'VisMot_gt_VisStat_1'; %#ok<*AGROW>
+  expected(1).name = 'VisMot_gt_VisStat_ses-01'; %#ok<*AGROW>
   expected(1).C = [1 -1 0 0 0 0 0 0 0];
   expected(1).type = 't';
 
-  expected(2).name = 'F_test_mot_static_1'; %#ok<*AGROW>
+  expected(2).name = 'F_test_mot_static_ses-01'; %#ok<*AGROW>
   expected(2).C = [1 0 0 0 0 0 0 0 0
                    0 1 0 0 0 0 0 0 0];
   expected(2).type = 'F';
@@ -506,10 +506,10 @@ function test_specifyContrasts_vismotion()
   expected(end + 1).name = 'VisStat_ses-01';
   expected(end).C = [0 1 0 0 0 0 0 0 0];
 
-  expected(end + 1).name = 'VisMot_gt_VisStat_1';
+  expected(end + 1).name = 'VisMot_gt_VisStat_ses-01';
   expected(end).C = [1 -1 0 0 0 0 0 0 0];
 
-  expected(end + 1).name = 'VisStat_gt_VisMot_1';
+  expected(end + 1).name = 'VisStat_gt_VisMot_ses-01';
   expected(end).C = [-1 1 0 0 0 0 0 0 0];
 
   expected(end + 1).name = 'VisMot';
@@ -556,10 +556,10 @@ function test_specifyContrasts_vislocalizer()
   expected(end + 1).name = 'VisStat_ses-01';
   expected(end).C = [0 1 0 0 0 0 0 0 0];
 
-  expected(end + 1).name = 'VisMot_&_VisStat_1';
+  expected(end + 1).name = 'VisMot_&_VisStat_ses-01';
   expected(end).C = [1 1 0 0 0 0 0 0 0];
 
-  expected(end + 1).name =  'VisMot_&_VisStat_lt_baseline_1';
+  expected(end + 1).name =  'VisMot_&_VisStat_lt_baseline_ses-01';
   expected(end).C = [-1 -1 0 0 0 0 0 0 0];
 
   expected(end + 1).name = 'VisMot';
