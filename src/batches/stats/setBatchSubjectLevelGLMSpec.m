@@ -311,6 +311,19 @@ function onsetFilename = returnOnsetsFile(BIDS, opt, spec, runDuration)
 
   tsvFile = bids.query(BIDS.raw, 'data', filter);
 
+  % remove some entities in case the file is in the root of the dataset
+  if isempty(tsvFile)
+    fieldsToRemove = {'run', 'modality', 'ses', 'sub'};
+    for i = 1:numel(fieldsToRemove)
+      filter = rmfield(filter, fieldsToRemove{i});
+      tsvFile = bids.query(BIDS.raw, 'data', filter);
+      if ~isempty(tsvFile)
+        assert(numel(tsvFile) == 1);
+        break
+      end
+    end
+  end
+
   if isempty(tsvFile)
 
     msg = sprintf('No events.tsv file found in:\n\t%s\nfor filter:%s\n', ...

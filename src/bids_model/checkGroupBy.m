@@ -20,7 +20,19 @@ function [status, groupBy] = checkGroupBy(node)
 
         status = false;
 
-        supportedGroupBy = {'["run", "subject"]', '["run", "session", "subject"]'};
+        supportedGroupBy = {'["run", "subject"]', ...
+                            '["run", "session", "subject"]'};
+
+      end
+
+    case 'session'
+
+      if ~(numel(groupBy) == 3) || ...
+          ~all(ismember(groupBy, {'contrast', 'session', 'subject'}))
+
+        status = false;
+
+        supportedGroupBy = {'["contrast", "session", "subject"]'};
 
       end
 
@@ -31,7 +43,7 @@ function [status, groupBy] = checkGroupBy(node)
 
         status = false;
 
-        supportedGroupBy = {'["contrast", "subject"]', '["run", "session", "subject"]'};
+        supportedGroupBy = {'["contrast", "subject"]'};
 
       end
 

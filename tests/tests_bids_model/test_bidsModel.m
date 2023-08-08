@@ -253,7 +253,7 @@ function test_getGrpLevelContrast_basic()
 
   opt = setOptions('vismotion');
 
-  bm = bids.Model('file', opt.model.file);
+  bm = BidsModel('file', opt.model.file);
   [grpLvlCon, iNode] = bm.get_dummy_contrasts('Level', 'dataset');
 
   DummyContrasts = struct('Test', 't');
@@ -263,7 +263,7 @@ function test_getGrpLevelContrast_basic()
 
   %%
   opt = setOptions('vislocalizer');
-  bm = bids.Model('file', opt.model.file);
+  bm = BidsModel('file', opt.model.file);
   [grpLvlCon, iNode] = bm.get_dummy_contrasts('Level', 'dataset');
 
   DummyContrasts = struct('Test', 't');

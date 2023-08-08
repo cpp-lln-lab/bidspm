@@ -128,12 +128,16 @@ function outputFile = boilerplate(varargin)
       opt = setConfounds(opt, bm);
 
       opt.group_level = false;
-      if ~isempty(bm.get_nodes('Level', 'dataset'))
 
-        contrasts = genList('name', getDummyContrastsList('dataset', bm));
-
-        opt.group_level = struct('contrasts', {contrasts});
-
+      for i = 1:numel(bm.Edges)
+        nodeName = bm.Edges{i}.Destination;
+        node = bm.get_nodes('Name', nodeName);
+        level = node.Level;
+        if strcmp(level, 'Dataset')
+          contrasts = genList('name', getDummyContrastsList(bm, 'dataset'));
+          opt.group_level = struct('contrasts', {contrasts});
+          break
+        end
       end
 
       opt.roi_based = false;

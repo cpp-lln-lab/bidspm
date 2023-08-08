@@ -51,11 +51,12 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
     node = model.get_root_node();
 
     try
-      contrasts = specifyContrasts(SPM, model, node.Name);
-    catch
+      contrasts = specifyContrasts(model, SPM, node.Name);
+    catch ME
       msg = 'Could not find dummy contrasts in the BIDS stats model.';
       id = 'noDummyContrast';
       logger('ERROR', msg, 'id', id, 'filename', mfilename());
+      rethrow(ME);
     end
 
     betaMaps = {};

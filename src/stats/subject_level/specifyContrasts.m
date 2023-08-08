@@ -1,10 +1,10 @@
-function contrasts = specifyContrasts(SPM, model, nodeName)
+function contrasts = specifyContrasts(model, SPM, nodeName)
   %
-  % Specifies the first level contrasts
+  % Specifies the contrasts for run, session and subject level nodes.
   %
   % USAGE::
   %
-  %   contrasts = specifyContrasts(SPM, model)
+  %   contrasts = specifyContrasts(model, SPM)
   %
   % :param SPM: content of SPM.mat
   % :type SPM: structure
@@ -41,10 +41,12 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
   end
 
   if nargin < 3 || isempty(nodeName)
-    nodeList = model.get_nodes();
+    nodeList = getNodeList(model);
   else
     nodeList = model.get_nodes('Name', nodeName);
   end
+
+  model.SPM = SPM;
 
   % check all the nodes specified in the model
   for iNode = 1:length(nodeList)
@@ -55,21 +57,24 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
       node = node{1};
     end
 
-    [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+    [contrasts, counter] = specifyDummyContrasts(model, node, contrasts, counter);
 
     switch lower(node.Level)
 
       case 'run'
+        [contrasts, counter] = specifyRunLvlContrasts(model, node, contrasts, counter);
 
-        [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM);
-
-      case 'subject'
-
+      case 'session'
         if ~checkGroupBy(node)
           continue
         end
+        [contrasts, counter] = specifySessionLvlContrasts(model, node, contrasts, counter);
 
-        [contrasts, counter] = specifySubLvlContrasts(contrasts, node, counter, SPM);
+      case 'subject'
+        if ~checkGroupBy(node)
+          continue
+        end
+        [contrasts, counter] = specifySubLvlContrasts(model, node, contrasts, counter);
 
     end
 
@@ -83,6 +88,45 @@ function contrasts = specifyContrasts(SPM, model, nodeName)
   end
 
   contrasts = removeDuplicates(contrasts);
+
+end
+
+function nodeList = getNodeList(model)
+  %
+  %  Return all the nodes present in the bids stats model
+  %  - if there is only one,
+  %  - or as long as they are included in some edges.
+  %
+  nodeList = {};
+
+  if isempty(model.Nodes)
+    return
+  end
+
+  if numel(model.Nodes) == 1
+    if iscell(model.Nodes)
+      nodeList = model.Nodes{1};
+    else
+      % should not be necessary
+      % but in case nodes were not coerced to cell
+      % during test set up
+      nodeList = model.Nodes(1);
+    end
+    return
+  end
+
+  if isempty(model.Edges)
+    model = model.get_edges_from_nodes();
+  end
+
+  for i = 1:numel(model.Edges)
+    nodeList{end + 1} = model.Edges{i}.Source; %#ok<*AGROW>
+    nodeList{end + 1} = model.Edges{i}.Destination;
+  end
+  nodeList = unique(nodeList);
+  for iNode = 1:length(nodeList)
+    nodeList{iNode} = model.get_nodes('Name', nodeList{iNode});
+  end
 
 end
 
@@ -107,7 +151,9 @@ function contrasts = removeDuplicates(contrasts)
     vectors = cat(1, tmp(duplicates).C);
 
     if size(unique(vectors, 'rows'), 1) > 1
-      disp(tmp(duplicates));
+      for iDupe = 1:numel(duplicates)
+        disp(tmp(duplicates(iDupe)));
+      end
       msg = 'there are contrasts with the same name but different vector.';
       id = 'duplicateContrasts';
       logger('WARNING', msg, 'id', id, 'filename', mfilename());
@@ -122,10 +168,11 @@ function contrasts = removeDuplicates(contrasts)
 
 end
 
-function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter, SPM)
+function [contrasts, counter] = specifyRunLvlContrasts(model, node, contrasts, counter)
   %
-  % For the contrasts that involve contrasting conditions
-  % amongst themselves or something inferior to baseline
+  % For the contrasts that involve contrasting conditions amongst themselves
+  % or something inferior to baseline
+  %
 
   if ~isfield(node, 'Contrasts')
     return
@@ -143,7 +190,7 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
 
     for iCdt = 1:length(conditionList)
       cdtName = conditionList{iCdt};
-      [~, regIdx{iCdt}] = getRegressorIdx(cdtName, SPM);
+      [~, regIdx{iCdt}] = getRegressorIdx(cdtName, model.SPM);
       regIdx{iCdt} = find(regIdx{iCdt});
     end
 
@@ -164,12 +211,10 @@ function [contrasts, counter] = specifyRunLvlContrasts(contrasts, node, counter,
     for iRun = 1:nbRuns
 
       % Use the SPM Sess index for the contrast name
-      iSess = getSessionForRegressorNb(regIdx{1}(iRun), SPM);
+      iSess = getSessionForRegressorNb(regIdx{1}(iRun), model.SPM);
 
-      C = newContrast(SPM, ...
-                      [this_contrast.Name, '_', num2str(iSess)], ...
-                      this_contrast.Test, ...
-                      conditionList);
+      contrastName = constructContrastNameFromBidsEntity(this_contrast.Name, model.SPM, iSess);
+      C = newContrast(model.SPM, contrastName, this_contrast.Test, conditionList);
 
       for iCdt = 1:length(conditionList)
 

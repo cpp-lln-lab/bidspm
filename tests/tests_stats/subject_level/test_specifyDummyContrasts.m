@@ -30,7 +30,7 @@ function test_specifyDummyContrasts_basic()
   SPM.xX.X = rand(3, numel(SPM.xX.name));
 
   model_file = fullfile(getTestDataDir(), 'models', 'model-bug815_smdl.json');
-  model = bids.Model('file', model_file, 'verbose', true);
+  model = BidsModel('file', model_file, 'verbose', true);
 
   node.Name = 'subject_level';
   node.DummyContrasts.Test = 't';
@@ -38,7 +38,9 @@ function test_specifyDummyContrasts_basic()
   node.GroupBy = {'contrast', 'subject'};
   node.Model.X = 1;
 
-  [contrasts] = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+  model.SPM = SPM;
+
+  contrasts = specifyDummyContrasts(model, node, contrasts, counter);
 
   assertEqual(numel({contrasts.name}), 7);
 
@@ -67,11 +69,13 @@ function test_specifyDummyContrasts_bug_815()
   SPM.xX.X = rand(3, numel(SPM.xX.name));
 
   model_file = fullfile(getTestDataDir(), 'models', 'model-bug815_smdl.json');
-  model = bids.Model('file', model_file, 'verbose', true);
+  model = BidsModel('file', model_file, 'verbose', true);
+
+  model.SPM = SPM;
 
   node = model.Nodes{2};
 
-  [contrasts, counter] = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+  contrasts = specifyDummyContrasts(model, node, contrasts, counter);
 
   assertEqual(numel({contrasts.name}), 7);
 
@@ -111,11 +115,13 @@ function test_specifyDummyContrasts_bug_825()
   SPM.xX.X = rand(3, numel(SPM.xX.name));
 
   model_file = fullfile(getTestDataDir(), 'models', 'model-bug825_smdl.json');
-  model = bids.Model('file', model_file, 'verbose', true);
+  model = BidsModel('file', model_file, 'verbose', true);
+
+  model.SPM = SPM;
 
   node = model.Nodes{1};
 
-  contrasts = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+  contrasts = specifyDummyContrasts(model, node, contrasts, counter);
 
   assertEqual(numel({contrasts.name}), 20);
 
@@ -155,12 +161,14 @@ function test_specifyDummyContrasts_subselect_contrasts()
   SPM.xX.X = rand(3, numel(SPM.xX.name));
 
   model_file = fullfile(getTestDataDir(), 'models', 'model-bug825_smdl.json');
-  model = bids.Model('file', model_file, 'verbose', true);
+  model = BidsModel('file', model_file, 'verbose', true);
+
+  model.SPM = SPM;
 
   node = model.Nodes{1};
   node.DummyContrasts.Contrasts = node.DummyContrasts.Contrasts(1);
 
-  contrasts = specifyDummyContrasts(contrasts, node, counter, SPM, model);
+  contrasts = specifyDummyContrasts(model, node, contrasts, counter);
 
   assertEqual(numel({contrasts.name}), 8);
 

@@ -11,11 +11,11 @@ end
 function test_getDummyContrastsList_bug_815()
 
   model_file = fullfile(getTestDataDir(), 'models', 'model-bug815_smdl.json');
-  model = bids.Model('file', model_file, 'verbose', false);
+  model = BidsModel('file', model_file, 'verbose', false);
 
   nodeName = 'subject_level';
 
-  dummyContrastsList = getDummyContrastsList(nodeName, model);
+  dummyContrastsList = getDummyContrastsList(model, nodeName);
 
   assertEqual(numel(dummyContrastsList), 7);
 
@@ -28,7 +28,7 @@ function test_getDummyContrastsList_wrong_level()
 
   nodeName = 'foo_level';
 
-  dummyContrastsList = getDummyContrastsList(nodeName, opt.model.bm);
+  dummyContrastsList = getDummyContrastsList(opt.model.bm, nodeName);
 
   assert(isempty(dummyContrastsList));
 
@@ -42,7 +42,7 @@ function test_getDummyContrastsList_basic()
 
   nodeName = 'dataset_level';
 
-  dummyContrastsList = getDummyContrastsList(nodeName, opt.model.bm);
+  dummyContrastsList = getDummyContrastsList(opt.model.bm, nodeName);
 
   assertEqual(dummyContrastsList, {'foo', 'bar', 'foobar'});
 
@@ -54,7 +54,7 @@ function test_getDummyContrastsList_from_lower_levels()
 
   nodeName = 'dataset_level';
 
-  dummyContrastsList = getDummyContrastsList(nodeName, opt.model.bm);
+  dummyContrastsList = getDummyContrastsList(opt.model.bm, nodeName);
 
   assertEqual(dummyContrastsList, {'VisMot'
                                    'VisStat'});
