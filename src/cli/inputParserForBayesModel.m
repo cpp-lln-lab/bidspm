@@ -1,4 +1,4 @@
-function args = inputParserForStats()
+function args = inputParserForBayesModel()
   % Returns an input parser for cliSBayesModel
   %
   % Type ``bidspm help`` for more info.

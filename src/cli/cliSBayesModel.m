@@ -1,4 +1,4 @@
-function cliStats(varargin)
+function cliSBayesModel(varargin)
   % Run stats on bids datasets.
   %
   % Type ``bidspm help`` for more info.

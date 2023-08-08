@@ -1,0 +1,146 @@
+{
+  "Name": "Model for ds000114 cross session test-retest",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "BIDS stats model for linebisection / oververbgeneration / overwordrepetition / covertverbgeneration tasks",
+  "Input": {
+    "task": [
+      "overtverbgeneration"
+    ],
+    "space": [
+      "MNI152NLin2009cAsym"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run",
+      "GroupBy": [
+        "run",
+        "session",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          "trial_type.Task",
+          "trans_?",
+          "rot_?",
+          "1"
+        ],
+        "Type": "glm",
+        "HRF": {
+          "Variables": [
+            "trial_type.Task"
+          ],
+          "Model": "spm"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "InclusiveMaskingThreshold": 0.8
+          }
+        }
+      },
+      "Contrasts": [
+        {
+          "Name": "Task",
+          "ConditionList": [
+            "trial_type.Task"
+          ],
+          "Weights": [
+            1
+          ],
+          "Test": "t"
+        }
+      ]
+    },
+    {
+      "Level": "Subject",
+      "Name": "subject",
+      "GroupBy": [
+        "subject",
+        "contrast"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Session",
+      "Name": "session",
+      "GroupBy": [
+        "session",
+        "subject",
+        "contrast"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Subject",
+      "Name": "compare_sessions",
+      "GroupBy": [
+        "subject",
+        "contrast"
+      ],
+      "Model": {
+        "X": [
+          "session",
+          1
+        ],
+        "Type": "glm"
+      },
+      "Contrasts": [
+        {
+          "Name": "test_gt_retest",
+          "ConditionList": [
+            "test",
+            "retest"
+          ],
+          "Weights": [
+            1,
+            -1
+          ],
+          "Test": "t"
+        }
+      ]
+    }
+  ],
+  "Edges": [
+    {
+      "Source": "run",
+      "Destination": "session"
+    },
+    {
+      "Source": "session",
+      "Destination": "compare_sessions"
+    },
+    {
+      "Source": "run",
+      "Destination": "subject"
+    }
+  ]
+}
