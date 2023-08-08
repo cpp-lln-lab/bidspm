@@ -300,9 +300,9 @@ function test_specifyContrasts_missing_condition_for_dummy_contrasts()
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
   if bids.internal.is_octave()
-    % warning 'getRegressorIdx:missingRegressor' was raised,
-    %  expected 'specifyContrasts:noContrast'
-    return
+    moxunit_throw_test_skipped_exception(['getRegressorIdx:missingRegressor ', ...
+                                          'was raised expected ', ...
+                                          'specifyContrasts:noContrast']);
   end
 
   assertWarning(@()specifyContrasts(model, SPM), ...
@@ -336,9 +336,9 @@ function test_specifyContrasts_missing_condition()
   SPM.xX.X = ones(1, numel(SPM.xX.name));
 
   if bids.internal.is_octave()
-    % warning 'getRegressorIdx:missingRegressor' was raised,
-    %  expected 'specifyContrasts:noContrast'
-    return
+    moxunit_throw_test_skipped_exception(['getRegressorIdx:missingRegressor ', ...
+                                          'was raised expected ', ...
+                                          'specifyContrasts:noContrast']);
   end
 
   assertWarning(@()specifyContrasts(model, SPM), ...

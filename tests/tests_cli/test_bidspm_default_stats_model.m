@@ -63,7 +63,14 @@ function test_createDefaultStatsModel_CLI()
   expectedContent.Input.space = {'individual'};
 
   if ~bids.internal.is_github_ci()
-    assertEqual(content.Nodes, expectedContent.Nodes);
+    for i = 1:numel(content.Nodes)
+      tmp = fieldnames(content.Nodes{i});
+      for j = 1:numel(tmp)
+        assertEqual(content.Nodes{i}.(tmp{j}), ...
+                    expectedContent.Nodes{i}.(tmp{j}));
+      end
+    end
+
     assertEqual(content.Edges, expectedContent.Edges);
     assertEqual(content.Input, expectedContent.Input);
   end

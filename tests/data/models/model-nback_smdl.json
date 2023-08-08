@@ -59,7 +59,7 @@
     },
     {
       "Level": "Subject",
-      "Name": "run",
+      "Name": "subject",
       "GroupBy": [
         "contrast",
         "subject"

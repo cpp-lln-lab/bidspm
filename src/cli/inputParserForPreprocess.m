@@ -10,8 +10,9 @@ function args = inputParserForPreprocess()
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
   isLogical = @(x) islogical(x) && numel(x) == 1;
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
+  isEmptyOrisChar = @(x) isempty(x) || ischar(x);  %#ok<*ISCLSTR>
 
-  addParameter(args, 'task', '', ischar);
+  addParameter(args, 'task', '', isEmptyOrisChar);
   addParameter(args, 'fwhm', 6, isPositiveScalar);
   addParameter(args, 'dry_run', false, isLogical);
   addParameter(args, 'anat_only', false, isLogical);

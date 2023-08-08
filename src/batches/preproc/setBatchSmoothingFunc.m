@@ -55,6 +55,10 @@ function [matlabbatch, allRT] = setBatchSmoothingFunc(matlabbatch, BIDS, opt, su
                                                              sessions{iSes}, ...
                                                              runs{iRun}, ...
                                                              opt);
+      if isempty(fileName)
+        continue
+      end
+
       if isstruct(metadata)
         metadata = {metadata};
       end
