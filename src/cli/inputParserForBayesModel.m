@@ -13,7 +13,7 @@ function args = inputParserForBayesModel()
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
 
   addParameter(args, 'preproc_dir', pwd, isFolder);
-  addParameter(args, 'models_dir', struct([]), isFolder);
+  addParameter(args, 'models_dir', pwd, isFolder);
 
   addParameter(args, 'fwhm', 6, isPositiveScalar);
   addParameter(args, 'dry_run', false, isLogical);

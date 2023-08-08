@@ -14,6 +14,14 @@ function opt = getOptionsFromModel(opt)
     return
   end
 
+  if isfield(opt.toolbox.MACS.model, 'dir') && ~isempty(opt.toolbox.MACS.model.dir)
+    files = spm_select('FPList', ...
+                       opt.toolbox.MACS.model.dir, ...
+                       '.*_smdl.json');
+    opt.toolbox.MACS.model.files = cellstr(files);
+    return
+  end
+
   if isempty(opt.model.file) || exist(opt.model.file, 'file') ~= 2
     msg = sprintf('model file does not exist:\n %s', opt.model.file);
     id = 'modelFileMissing';

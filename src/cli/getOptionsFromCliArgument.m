@@ -87,6 +87,11 @@ function opt = getOptionsFromCliArgument(args)
   opt = roiOptions(opt, args);
 
   % stats
+  if ismember(lower(action), {'stats', 'contrasts', 'results', ...
+                              'modelspace', 'cvlme', 'posterior', 'bms'})
+    opt.dir.preproc = args.Results.preproc_dir;
+  end
+
   if ismember(lower(action), {'stats', 'contrasts', 'results'})
     opt.dir.preproc = args.Results.preproc_dir;
     opt.model.file = args.Results.model_file;
@@ -95,6 +100,10 @@ function opt = getOptionsFromCliArgument(args)
 
     opt = overrideRoiBased(opt, args);
 
+  end
+
+  if ismember(lower(action), {'modelspace', 'cvlme', 'posterior', 'bms'})
+    opt.toolbox.MACS.model.dir = args.Results.models_dir;
   end
 
 end
@@ -108,7 +117,11 @@ function value = bidsAppsActions()
            'default_model'; ...
            'stats'; ...
            'contrasts'; ...
-           'results'};
+           'results'; ...
+           'modelspace'; ...
+           'cvlme'; ...
+           'posterior'; ...
+           'bms'};
 end
 
 function opt = getOptions(args)
