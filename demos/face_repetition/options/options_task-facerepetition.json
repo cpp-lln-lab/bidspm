@@ -1,38 +1,38 @@
 {
-    "results": [
-        {
-            "MC": "FWE",
-            "name": "faces_gt_baseline_1",
-            "k": 0,
-            "p": 0.05,
-            "nodeName": "run_level",
-            "nidm": true,
-            "binary": true,
-            "csv": true,
-            "png": true,
-            "montage": {
-                "do": true,
-                "orientation": "axial",
-                "slices": [
-                    -26,
-                    -23,
-                    -20,
-                    -17,
-                    -14,
-                    -11,
-                    -8,
-                    -5,
-                    -2,
-                    1,
-                    4
-                ]
-            },
-            "threshSpm": true
-        },
-        {
-            "name": "motion",
-            "nodeName": "run_level",
-            "png": true
-        }
-    ]
+  "results": [
+    {
+      "MC": "FWE",
+      "name": "faces_gt_baseline_1",
+      "k": 0,
+      "p": 0.05,
+      "nodeName": "run_level",
+      "nidm": true,
+      "binary": true,
+      "csv": true,
+      "png": true,
+      "montage": {
+        "do": true,
+        "orientation": "axial",
+        "slices": [
+          -26,
+          -23,
+          -20,
+          -17,
+          -14,
+          -11,
+          -8,
+          -5,
+          -2,
+          1,
+          4
+        ]
+      },
+      "threshSpm": true
+    },
+    {
+      "name": "motion",
+      "nodeName": "run_level",
+      "png": true
+    }
+  ]
 }

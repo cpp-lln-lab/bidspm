@@ -1,7 +1,7 @@
 {
-    "ignorePatterns": [
-        {
-            "pattern": "fil.ion.ucl.ac.uk|mybinder.org"
-        }
-    ]
+  "ignorePatterns": [
+    {
+      "pattern": "fil.ion.ucl.ac.uk|mybinder.org"
+    }
+  ]
 }

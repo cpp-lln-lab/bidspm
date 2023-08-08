@@ -29,30 +29,29 @@
         ]
       },
       "Model": {
-          "X": [
-              "actor.S1",
-              "trans_?",
-              "rot_?",
-              "*outlier*"
+        "X": [
+          "actor.S1",
+          "trans_?",
+          "rot_?",
+          "*outlier*"
+        ],
+        "HRF": {
+          "Variables": [
+            "actor.S1"
           ],
-          "HRF": {
-              "Variables": [
-                "actor.S1"
-              ],
-              "Model": "DoubleGamma"
-          },
-          "Type": "glm",
-          "Options": {
-              "HighPassFilterCutoffHz": 0.0078,
-              "Mask": ""
-          },
-          "Software": {
-              "SPM": {
-                  "SerialCorrelation": "FAST"
-              }
+          "Model": "DoubleGamma"
+        },
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": ""
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST"
           }
+        }
       }
-  }
-
+    }
   ]
-  }
+}

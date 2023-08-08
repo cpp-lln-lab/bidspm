@@ -1,233 +1,233 @@
 {
-    "Name": "NARPS U26C",
-    "Description": "NARPS Analysis model for team E3B6",
-    "BIDSModelVersion": "1.0.0",
-    "Input": {
-        "task": [
-            "MGT"
-        ],
-        "space": [
-            "MNI152NLin2009cAsym"
-        ]
-    },
-    "Nodes": [
-        {
-            "Level": "Run",
-            "Name": "run",
-            "GroupBy": [
-                "run",
-                "subject"
-            ],
-            "Transformations": {
-                "Transformer": "bidspm",
-                "Instructions": [
-                    {
-                        "Description": "Time points with a framewise displacement (as calculated by fMRIprep) > 0.5 mm were censored (no interpolation) at the subject level GLM.",
-                        "Name": "Threshold",
-                        "Input": [
-                            "framewise_displacement"
-                        ],
-                        "Threshold": 0.5,
-                        "Binarize": true,
-                        "Output": [
-                            "outliers_FD"
-                        ]
-                    },
-                    {
-                        "Name": "Replace",
-                        "Input": [
-                            "outliers_FD"
-                        ],
-                        "Replace": [
-                            {
-                                "key": 1,
-                                "value": "outlier"
-                            }
-                        ],
-                        "Attribute": "value"
-                    },
-                    {
-                        "Name": "LabelIdenticalRows",
-                        "Cumulative": true,
-                        "Input": [
-                            "outliers_FD"
-                        ],
-                        "Output": [
-                            "label"
-                        ]
-                    },
-                    {
-                        "Name": "Concatenate",
-                        "Input": [
-                            "outliers_FD",
-                            "label"
-                        ],
-                        "Output": "outliers_FD_label"
-                    },
-                    {
-                        "Name": "Replace",
-                        "Input": [
-                            "outliers_FD_label"
-                        ],
-                        "Replace": [
-                            {
-                                "key": "0_.*",
-                                "value": "0"
-                            }
-                        ],
-                        "Attribute": "value",
-                        "Output": "outliers_FD_label"
-                    },
-                    {
-                        "Name": "Factor",
-                        "Input": [
-                            "outliers_FD_label"
-                        ]
-                    },
-                    {
-                        "Name": "Delete",
-                        "Input": [
-                            "outliers_FD_label_1"
-                        ]
-                    },
-                    {
-                        "Description": "Create a trial column. Trials with no response or very short responses (< 500 ms) were modelled separately in another condition of no interest.",
-                        "Name": "Threshold",
-                        "Input": [
-                            "RT"
-                        ],
-                        "Threshold": 0.5,
-                        "Binarize": true,
-                        "Output": [
-                            "trials"
-                        ]
-                    },
-                    {
-                        "Name": "Replace",
-                        "Input": [
-                            "trials"
-                        ],
-                        "Replace": [
-                            {
-                                "key": 1,
-                                "value": "include"
-                            },
-                            {
-                                "key": 0,
-                                "value": "exclude"
-                            }
-                        ],
-                        "Attribute": "value"
-                    },
-                    {
-                        "Descriptions": "All loss/gain/EV values were mean-centered in a runwise fashion before being used to modulate the trial regressor.",
-                        "Name": "Scale",
-                        "Input": [
-                            "gain",
-                            "loss"
-                        ],
-                        "Demean": true,
-                        "Output": [
-                            "gain_centered",
-                            "loss_centered"
-                        ]
-                    },
-                    {
-                        "Description": "Button presses were modelled as a separate condition of no interest: they were modelled as delta functions (duration = 0) with onsets defined by the trial onset + reaction time relative to that trial. They were then convolved with the HRF (see below).",
-                        "Name": "Sum",
-                        "Input": [
-                            "onset",
-                            "RT"
-                        ],
-                        "Output": "button_presses"
-                    }
-                ]
-            },
-            "Model": {
-                "Description": "All trials were modeled using a single condition (with a duration of 4 secs). The following regressors obtained from fMRIprep were added to the each subject's GLM: 'framewise displacement', 'white matter signal change', 'CSF signal change'",
-                "X": [
-                    "trials.include",
-                    "trials.exclude",
-                    "button_presses",
-                    "framewise_displacement",
-                    "csf",
-                    "white_matter",
-                    "outliers_FD_label_*",
-                    1
-                ],
-                "HRF": {
-                    "Description": "",
-                    "Variables": [
-                        "trials.include",
-                        "trials.exclude",
-                        "button_presses"
-                    ],
-                    "Model": "spm"
-                },
-                "Type": "glm",
-                "Software": {
-                    "SPM": {
-                        "Description": "Auto-correlation model: SPM FAST option. The SPM threshold to define the implicit mask was set to 0 (instead of the 0.8 default). Three additional parametric regressors were included : a) param_loss: a regressor modulated by the loss value,associated to that trial, b) param_gain: regressor modulated by the gain vallue associated to that trial, c) TODO the Euclidean distance of the gain/loss combination from the indifference line (i.e. assuming lambda=2 and a linear value function).",
-                        "InclusiveMaskingThreshold": 0,
-                        "SerialCorrelation": "FAST",
-                        "ParametricModulations": [
-                            {
-                                "Name": "pmod_loss",
-                                "Conditions": [
-                                    "trials.include"
-                                ],
-                                "Values": [
-                                    "loss_centered"
-                                ]
-                            },
-                            {
-                                "Name": "pmod_gain",
-                                "Conditions": [
-                                    "trials.include"
-                                ],
-                                "Values": [
-                                    "gain_centered"
-                                ]
-                            }
-                        ]
-                    }
-                },
-                "Options": {
-                    "Description": "Drift regressors were the DCT basis included in the GLM (SPM default 128 secs high-pass filter)",
-                    "HighPassFilterCutoffHz": 0.08
-                }
-            },
-            "DummyContrasts": {
-                "Contrasts": [
-                    "trials",
-                    "gain",
-                    "loss"
-                ],
-                "Test": "t"
-            }
-        },
-        {
-            "Level": "Subject",
-            "Name": "subject",
-            "GroupBy": [
-                "subject",
-                "contrast"
-            ],
-            "Model": {
-                "X": [
-                    1
-                ],
-                "Type": "glm"
-            },
-            "DummyContrasts": {
-                "Test": "t"
-            }
-        }
+  "Name": "NARPS U26C",
+  "Description": "NARPS Analysis model for team E3B6",
+  "BIDSModelVersion": "1.0.0",
+  "Input": {
+    "task": [
+      "MGT"
     ],
-    "Edges": [
-        {
-            "Source": "run",
-            "Destination": "subject"
-        }
+    "space": [
+      "MNI152NLin2009cAsym"
     ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Transformations": {
+        "Transformer": "bidspm",
+        "Instructions": [
+          {
+            "Description": "Time points with a framewise displacement (as calculated by fMRIprep) > 0.5 mm were censored (no interpolation) at the subject level GLM.",
+            "Name": "Threshold",
+            "Input": [
+              "framewise_displacement"
+            ],
+            "Threshold": 0.5,
+            "Binarize": true,
+            "Output": [
+              "outliers_FD"
+            ]
+          },
+          {
+            "Name": "Replace",
+            "Input": [
+              "outliers_FD"
+            ],
+            "Replace": [
+              {
+                "key": 1,
+                "value": "outlier"
+              }
+            ],
+            "Attribute": "value"
+          },
+          {
+            "Name": "LabelIdenticalRows",
+            "Cumulative": true,
+            "Input": [
+              "outliers_FD"
+            ],
+            "Output": [
+              "label"
+            ]
+          },
+          {
+            "Name": "Concatenate",
+            "Input": [
+              "outliers_FD",
+              "label"
+            ],
+            "Output": "outliers_FD_label"
+          },
+          {
+            "Name": "Replace",
+            "Input": [
+              "outliers_FD_label"
+            ],
+            "Replace": [
+              {
+                "key": "0_.*",
+                "value": "0"
+              }
+            ],
+            "Attribute": "value",
+            "Output": "outliers_FD_label"
+          },
+          {
+            "Name": "Factor",
+            "Input": [
+              "outliers_FD_label"
+            ]
+          },
+          {
+            "Name": "Delete",
+            "Input": [
+              "outliers_FD_label_1"
+            ]
+          },
+          {
+            "Description": "Create a trial column. Trials with no response or very short responses (< 500 ms) were modelled separately in another condition of no interest.",
+            "Name": "Threshold",
+            "Input": [
+              "RT"
+            ],
+            "Threshold": 0.5,
+            "Binarize": true,
+            "Output": [
+              "trials"
+            ]
+          },
+          {
+            "Name": "Replace",
+            "Input": [
+              "trials"
+            ],
+            "Replace": [
+              {
+                "key": 1,
+                "value": "include"
+              },
+              {
+                "key": 0,
+                "value": "exclude"
+              }
+            ],
+            "Attribute": "value"
+          },
+          {
+            "Descriptions": "All loss/gain/EV values were mean-centered in a runwise fashion before being used to modulate the trial regressor.",
+            "Name": "Scale",
+            "Input": [
+              "gain",
+              "loss"
+            ],
+            "Demean": true,
+            "Output": [
+              "gain_centered",
+              "loss_centered"
+            ]
+          },
+          {
+            "Description": "Button presses were modelled as a separate condition of no interest: they were modelled as delta functions (duration = 0) with onsets defined by the trial onset + reaction time relative to that trial. They were then convolved with the HRF (see below).",
+            "Name": "Sum",
+            "Input": [
+              "onset",
+              "RT"
+            ],
+            "Output": "button_presses"
+          }
+        ]
+      },
+      "Model": {
+        "Description": "All trials were modeled using a single condition (with a duration of 4 secs). The following regressors obtained from fMRIprep were added to the each subject's GLM: 'framewise displacement', 'white matter signal change', 'CSF signal change'",
+        "X": [
+          "trials.include",
+          "trials.exclude",
+          "button_presses",
+          "framewise_displacement",
+          "csf",
+          "white_matter",
+          "outliers_FD_label_*",
+          1
+        ],
+        "HRF": {
+          "Description": "",
+          "Variables": [
+            "trials.include",
+            "trials.exclude",
+            "button_presses"
+          ],
+          "Model": "spm"
+        },
+        "Type": "glm",
+        "Software": {
+          "SPM": {
+            "Description": "Auto-correlation model: SPM FAST option. The SPM threshold to define the implicit mask was set to 0 (instead of the 0.8 default). Three additional parametric regressors were included : a) param_loss: a regressor modulated by the loss value,associated to that trial, b) param_gain: regressor modulated by the gain vallue associated to that trial, c) TODO the Euclidean distance of the gain/loss combination from the indifference line (i.e. assuming lambda=2 and a linear value function).",
+            "InclusiveMaskingThreshold": 0,
+            "SerialCorrelation": "FAST",
+            "ParametricModulations": [
+              {
+                "Name": "pmod_loss",
+                "Conditions": [
+                  "trials.include"
+                ],
+                "Values": [
+                  "loss_centered"
+                ]
+              },
+              {
+                "Name": "pmod_gain",
+                "Conditions": [
+                  "trials.include"
+                ],
+                "Values": [
+                  "gain_centered"
+                ]
+              }
+            ]
+          }
+        },
+        "Options": {
+          "Description": "Drift regressors were the DCT basis included in the GLM (SPM default 128 secs high-pass filter)",
+          "HighPassFilterCutoffHz": 0.08
+        }
+      },
+      "DummyContrasts": {
+        "Contrasts": [
+          "trials",
+          "gain",
+          "loss"
+        ],
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Subject",
+      "Name": "subject",
+      "GroupBy": [
+        "subject",
+        "contrast"
+      ],
+      "Model": {
+        "X": [
+          1
+        ],
+        "Type": "glm"
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    }
+  ],
+  "Edges": [
+    {
+      "Source": "run",
+      "Destination": "subject"
+    }
+  ]
 }

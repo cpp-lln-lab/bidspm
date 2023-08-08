@@ -1,0 +1,103 @@
+{
+  "name": "bidspm",
+  "command-line": "bidspm [InputDataset] [OutputLocation] [AnalysisLevel] [ParticipantLabel] [Action]",
+  "container-image": {
+    "image": "bids/example",
+    "type": "docker"
+  },
+  "description": "See https://github.com/cpp-lln-lab/bidspm.git",
+  "inputs": [
+    {
+      "description": "The directory with the input dataset formatted according to the BIDS standard.",
+      "id": "InputDataset",
+      "name": "Input datasets",
+      "value-key": "[InputDataset]",
+      "type": "File",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "--input-datasets"
+    },
+    {
+      "description": "The directory where the output files should be stored. If you are running a group level analysis, this folder should be prepopulated with the results of the participant level analysis.",
+      "id": "OutputLocation",
+      "name": "Output location",
+      "value-key": "[OutputLocation]",
+      "type": "File",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "--output-location"
+    },
+    {
+      "description": "Level of the analysis that will be performed. Multiple participant level analyses can be run independently (in parallel).",
+      "id": "AnalysisLevel",
+      "name": "Analysis level",
+      "value-key": "[AnalysisLevel]",
+      "type": "String",
+      "optional": false,
+      "list": false,
+      "value-choices": [
+        "subject",
+        "dataset"
+      ],
+      "default": "subject",
+      "command-line-flag": "--analysis-level"
+    },
+    {
+      "description": "The label(s) of the participant(s) that should be analyzed. The label corresponds to sub-<participant_label> from the BIDS spec (so it does not include \"sub-\"). If this parameter is not provided all subjects will be analyzed. Multiple participants can be specified with a space separated list.",
+      "id": "SubjectLabel",
+      "name": "Subject labels",
+      "value-key": "[SubjectLabel]",
+      "type": "String",
+      "list": true,
+      "optional": false,
+      "command-line-flag": "--participant-label"
+    },
+    {
+      "description": "Action to perform",
+      "id": "Action",
+      "name": "Action",
+      "value-key": "[Action]",
+      "type": "String",
+      "list": false,
+      "value-choices": [
+        "preprocess",
+        "stats"
+      ],
+      "optional": false,
+      "command-line-flag": "--action"
+    },
+    {
+      "description": " Path to a JSON file to filter input file",
+      "id": "BidsFileFilter",
+      "name": "Bids file filter",
+      "value-key": "[BidsFileFilter]",
+      "type": "File",
+      "default": "",
+      "list": false,
+      "optional": true,
+      "command-line-flag": "--bids-filter-file"
+    },
+    {
+      "description": "for debugging",
+      "id": "DryRun",
+      "name": "Dry run",
+      "value-key": "[DryRun]",
+      "type": "File",
+      "default": false,
+      "list": false,
+      "optional": true,
+      "command-line-flag": "--dry-run"
+    }
+  ],
+  "output-files": [
+    {
+      "description": "The directory where the output files should be stored. If you are running a group level analysis, this folder should be prepopulated with the results of the participant level analysis.",
+      "id": "OutputLocation",
+      "name": "Output location",
+      "optional": false,
+      "path-template": "OutputLocation"
+    }
+  ],
+  "schema-version": "0.5",
+  "tool-version": "dev"
+}
