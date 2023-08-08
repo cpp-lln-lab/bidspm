@@ -1,13 +1,13 @@
 {
-    "ImageType": "ORIGINAL\\PRIMARY\\M\\ND\\MOSAIC",
-    "Modality": "MR",
-    "TotalReadoutTime": 1.0035123,
-    "RepetitionTime": 1.55,
-    "PhaseEncodingDirection": "j-",
-    "EffectiveEchoSpacing": 0.00024499812,
-    "EchoTime": 0.03,
-    "SliceThickness": 3,
-    "FlipAngle": 54,
-    "NumberOfVolumesDiscardedByUser": 4,
-    "TaskName": "vislocalizer"
+  "ImageType": "ORIGINAL\\PRIMARY\\M\\ND\\MOSAIC",
+  "Modality": "MR",
+  "TotalReadoutTime": 1.0035123,
+  "RepetitionTime": 1.55,
+  "PhaseEncodingDirection": "j-",
+  "EffectiveEchoSpacing": 0.00024499812,
+  "EchoTime": 0.03,
+  "SliceThickness": 3,
+  "FlipAngle": 54,
+  "NumberOfVolumesDiscardedByUser": 4,
+  "TaskName": "vislocalizer"
 }

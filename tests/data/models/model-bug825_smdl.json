@@ -19,41 +19,41 @@
         "subject"
       ],
       "Model": {
-          "X": [
-              "trial_type_name.sign*",
-              "trial_type_name.no_sign*",
-              "trial_type_name.target*",
-              "trans_?",
-              "rot_?",
-              "*outlier*"
+        "X": [
+          "trial_type_name.sign*",
+          "trial_type_name.no_sign*",
+          "trial_type_name.target*",
+          "trans_?",
+          "rot_?",
+          "*outlier*"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type_name.sign*",
+            "trial_type_name.no_sign*",
+            "trial_type_name.target*"
           ],
-          "HRF": {
-              "Variables": [
-                "trial_type_name.sign*",
-                "trial_type_name.no_sign*",
-                "trial_type_name.target*"
-              ],
-              "Model": "DoubleGamma"
-          },
-          "Type": "glm",
-          "Options": {
-              "HighPassFilterCutoffHz": 0.0078
-          },
-          "Software": {
-              "SPM": {
-                  "SerialCorrelation": "FAST",
-                  "HRFderivatives": "Temporal"
-              }
+          "Model": "DoubleGamma"
+        },
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "HRFderivatives": "Temporal"
           }
+        }
       },
       "DummyContrasts": {
-          "Test": "t",
-          "Contrasts": [
-              "trial_type_name.sign*",
-              "trial_type_name.no_sign*",
-              "trial_type_name.target*"
-          ]
+        "Test": "t",
+        "Contrasts": [
+          "trial_type_name.sign*",
+          "trial_type_name.no_sign*",
+          "trial_type_name.target*"
+        ]
       }
-  }
+    }
   ]
-  }
+}

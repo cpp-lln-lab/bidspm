@@ -1,35 +1,35 @@
 {
-   "Acknowledgements": "",
-   "Authors": [
-      ""
-   ],
-   "BIDSVersion": "1.4.1",
-   "DatasetDOI": "",
-   "DatasetType": "derivative",
-   "Funding": [
-      ""
-   ],
-   "GeneratedBy": [
-      {
-         "Name": "bidspm",
-         "Version": "v1.0.0",
-         "Container": {
-            "Type": "",
-            "Tag": ""
-         }
+  "Acknowledgements": "",
+  "Authors": [
+    ""
+  ],
+  "BIDSVersion": "1.4.1",
+  "DatasetDOI": "",
+  "DatasetType": "derivative",
+  "Funding": [
+    ""
+  ],
+  "GeneratedBy": [
+    {
+      "Name": "bidspm",
+      "Version": "v1.0.0",
+      "Container": {
+        "Type": "",
+        "Tag": ""
       }
-   ],
-   "HowToAcknowledge": "",
-   "License": "",
-   "Name": "bidspm outputs",
-   "ReferencesAndLinks": [
-      ""
-   ],
-   "SourceDatasets": [
-      {
-         "DOI": "doi:10.18112/openneuro.ds000114.v1.0.1",
-         "URL": "",
-         "Version": ""
-      }
-   ]
+    }
+  ],
+  "HowToAcknowledge": "",
+  "License": "",
+  "Name": "bidspm outputs",
+  "ReferencesAndLinks": [
+    ""
+  ],
+  "SourceDatasets": [
+    {
+      "DOI": "doi:10.18112/openneuro.ds000114.v1.0.1",
+      "URL": "",
+      "Version": ""
+    }
+  ]
 }

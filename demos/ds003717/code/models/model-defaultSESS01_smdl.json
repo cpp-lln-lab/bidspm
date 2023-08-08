@@ -36,14 +36,14 @@
         "Type": "glm",
         "HRF": {
           "Variables": [
-          "trial_type.AV_0_SNR",
-          "trial_type.AV_Quiet",
-          "trial_type.AV_n10_SNR",
-          "trial_type.AV_n5_SNR",
-          "trial_type.AV_p5_SNR",
-          "trial_type.A_Quiet",
-          "trial_type.NULL",
-          "trial_type.V_only_Quiet_InScanner"
+            "trial_type.AV_0_SNR",
+            "trial_type.AV_Quiet",
+            "trial_type.AV_n10_SNR",
+            "trial_type.AV_n5_SNR",
+            "trial_type.AV_p5_SNR",
+            "trial_type.A_Quiet",
+            "trial_type.NULL",
+            "trial_type.V_only_Quiet_InScanner"
           ],
           "Model": "spm"
         },

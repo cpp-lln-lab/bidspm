@@ -1,35 +1,35 @@
 {
-    "segment": {
-        "force": true
+  "segment": {
+    "force": true
+  },
+  "results": {
+    "MC": "FWE",
+    "name": "listening_1",
+    "k": 0,
+    "p": 0.05,
+    "useMask": false,
+    "nodeName": "run_level",
+    "nidm": true,
+    "binary": true,
+    "csv": true,
+    "montage": {
+      "do": true,
+      "orientation": "axial",
+      "slices": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        14,
+        16
+      ]
     },
-    "results": {
-        "MC": "FWE",
-        "name": "listening_1",
-        "k": 0,
-        "p": 0.05,
-        "useMask": false,
-        "nodeName": "run_level",
-        "nidm": true,
-        "binary": true,
-        "csv": true,
-        "montage": {
-            "do": true,
-            "orientation": "axial",
-            "slices": [
-                -4,
-                -2,
-                0,
-                2,
-                4,
-                6,
-                8,
-                10,
-                12,
-                14,
-                16
-            ]
-        },
-        "png": true,
-        "threshSpm": true
-    }
+    "png": true,
+    "threshSpm": true
+  }
 }

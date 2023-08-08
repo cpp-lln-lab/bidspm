@@ -1,129 +1,129 @@
 {
-   "Name": "parametric modulation",
-   "BIDSModelVersion": "1.0.0",
-   "Description": "model for face repetition",
-   "Input": {
-      "task": [
-         "facerepetition"
+  "Name": "parametric modulation",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "model for face repetition",
+  "Input": {
+    "task": [
+      "facerepetition"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "parametric",
+      "GroupBy": [
+        "run",
+        "subject"
       ],
-      "space": [
-         "IXI549Space"
-      ]
-   },
-   "Nodes": [
-      {
-         "Level": "Run",
-         "Name": "parametric",
-         "GroupBy": [
-            "run",
-            "subject"
-         ],
-         "Transformations": {
-            "Description": "merge the familiarity and repetition column to create the trial type column",
-            "Transformer": "bidspm",
-            "Instructions": [
-               {
-                  "Name": "Concatenate",
-                  "Input": [
-                     "face_type",
-                     "repetition_type"
-                  ],
-                  "Output": "trial_type"
-               }
-            ]
-         },
-         "Model": {
-            "X": [
-               "trial_type.famous_1",
-               "trial_type.famous_2",
-               "trial_type.unfamiliar_1",
-               "trial_type.unfamiliar_2",
-               "trans_?",
-               "rot_?"
+      "Transformations": {
+        "Description": "merge the familiarity and repetition column to create the trial type column",
+        "Transformer": "bidspm",
+        "Instructions": [
+          {
+            "Name": "Concatenate",
+            "Input": [
+              "face_type",
+              "repetition_type"
             ],
-            "HRF": {
-               "Variables": [
-                  "trial_type.famous_1",
-                  "trial_type.famous_2",
-                  "trial_type.unfamiliar_1",
-                  "trial_type.unfamiliar_2"
-               ],
-               "Model": "spm"
-            },
-            "Type": "glm",
-            "Options": {
-               "HighPassFilterCutoffHz": 0.0078,
-               "Mask": {
-                  "suffix": [
-                     "mask"
-                  ],
-                  "desc": [
-                     "brain"
-                  ]
-               }
-            },
-            "Software": {
-               "SPM": {
-                  "SerialCorrelation": "AR(1)",
-                  "ParametricModulations": [
-                     {
-                        "Name": "lag mod",
-                        "Conditions": [
-                           "trial_type.famous_2",
-                           "trial_type.unfamiliar_2"
-                        ],
-                        "Values": [
-                           "lag"
-                        ],
-                        "PolynomialExpansion": 2
-                     }
-                  ]
-               }
-            }
-         },
-         "DummyContrasts": {
-            "Test": "t",
-            "Contrasts": [
-               "trial_type.famous_1",
-               "trial_type.famous_2",
-               "trial_type.unfamiliar_1",
-               "trial_type.unfamiliar_2"
+            "Output": "trial_type"
+          }
+        ]
+      },
+      "Model": {
+        "X": [
+          "trial_type.famous_1",
+          "trial_type.famous_2",
+          "trial_type.unfamiliar_1",
+          "trial_type.unfamiliar_2",
+          "trans_?",
+          "rot_?"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.famous_1",
+            "trial_type.famous_2",
+            "trial_type.unfamiliar_1",
+            "trial_type.unfamiliar_2"
+          ],
+          "Model": "spm"
+        },
+        "Type": "glm",
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078,
+          "Mask": {
+            "suffix": [
+              "mask"
+            ],
+            "desc": [
+              "brain"
             ]
-         },
-         "Contrasts": [
-            {
-               "Name": "faces_gt_baseline",
-               "ConditionList": [
-                  "trial_type.famous_1",
+          }
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "AR(1)",
+            "ParametricModulations": [
+              {
+                "Name": "lag mod",
+                "Conditions": [
                   "trial_type.famous_2",
-                  "trial_type.unfamiliar_1",
                   "trial_type.unfamiliar_2"
-               ],
-               "Weights": [
-                  1,
-                  1,
-                  1,
-                  1
-               ],
-               "Test": "t"
-            },
-            {
-               "Name": "faces_lt_baseline",
-               "ConditionList": [
-                  "trial_type.famous_1",
-                  "trial_type.famous_2",
-                  "trial_type.unfamiliar_1",
-                  "trial_type.unfamiliar_2"
-               ],
-               "Weights": [
-                  -1,
-                  -1,
-                  -1,
-                  -1
-               ],
-               "Test": "t"
-            }
-         ]
-      }
-   ]
+                ],
+                "Values": [
+                  "lag"
+                ],
+                "PolynomialExpansion": 2
+              }
+            ]
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t",
+        "Contrasts": [
+          "trial_type.famous_1",
+          "trial_type.famous_2",
+          "trial_type.unfamiliar_1",
+          "trial_type.unfamiliar_2"
+        ]
+      },
+      "Contrasts": [
+        {
+          "Name": "faces_gt_baseline",
+          "ConditionList": [
+            "trial_type.famous_1",
+            "trial_type.famous_2",
+            "trial_type.unfamiliar_1",
+            "trial_type.unfamiliar_2"
+          ],
+          "Weights": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "Test": "t"
+        },
+        {
+          "Name": "faces_lt_baseline",
+          "ConditionList": [
+            "trial_type.famous_1",
+            "trial_type.famous_2",
+            "trial_type.unfamiliar_1",
+            "trial_type.unfamiliar_2"
+          ],
+          "Weights": [
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "Test": "t"
+        }
+      ]
+    }
+  ]
 }
