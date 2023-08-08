@@ -11,6 +11,7 @@ function args = inputParserForPreprocess()
   isLogical = @(x) islogical(x) && numel(x) == 1;
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
 
+  addParameter(args, 'task', '', ischar);
   addParameter(args, 'fwhm', 6, isPositiveScalar);
   addParameter(args, 'dry_run', false, isLogical);
   addParameter(args, 'anat_only', false, isLogical);

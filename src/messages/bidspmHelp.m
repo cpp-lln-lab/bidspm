@@ -19,7 +19,6 @@ function bidspmHelp()
   %   bidspm(bids_dir, output_dir, analysis_level, ...
   %           'action', 'some_action', ...
   %           'participant_label', {}, ...
-  %           'task', {}, ...
   %           'space', {'individual', 'IXI549Space'}, ...
   %           'bids_filter_file', struct([]), ...
   %           'verbosity', 2, ...
@@ -58,9 +57,6 @@ function bidspmHelp()
   %                           Defaults to ``{}``
   % :type participant_label:  cellstr
   %
-  % :param task:              Defaults to ``{}``
-  % :type  task:              cell string
-  %
   % :param space:             Defaults to ``{}``
   % :type  space:             cell string
   %
@@ -88,7 +84,7 @@ function bidspmHelp()
   %   bidspm(bids_dir, output_dir, 'subject', ...
   %           'action', 'preprocess', ...
   %           'participant_label', {}, ...
-  %           'task', {}, ...
+  %           'task', '', ...
   %           'space', {'individual', 'IXI549Space'}, ...
   %           'bids_filter_file', struct([]), ...
   %           'verbosity', 2, ...
@@ -107,6 +103,10 @@ function bidspmHelp()
   % :param boilerplate_only:  Only creates dataset description reports.
   %                           and methods description. Defaults to ``false``.
   % :type  boilerplate_only:  logical
+  %
+  % :param task:              Only a single task can be processed at once.
+  %                           Defaults to ``''``.
+  % :type  task:              char
   %
   % :param dry_run:           Defaults to ``false``
   % :type  dry_run:           logical
@@ -149,6 +149,9 @@ function bidspmHelp()
   %
   %
   % *Extra parameters for copy*
+  %
+  % :param task:       Defaults to ``{}``
+  % :type  task:       char or cell string
   %
   % :param force:      Overwrites previous data if true. Defaults to ``false``.
   % :type  force:      logical
@@ -218,6 +221,9 @@ function bidspmHelp()
   %           'fwhm', 6, ...
   %           'dry_run', false)
   %
+  % :param task:       Defaults to ``{}``
+  % :type  task:       char or cell string
+  %
   % :param fwhm:       Smoothing to apply to the preprocessed data. Defaults to ``6``.
   % :type  fwhm:       positive scalar
   %
@@ -245,6 +251,9 @@ function bidspmHelp()
   %           'options', struct([]), ...
   %           'ignore', {})
   %
+  %
+  % :param task:        Defaults to ``{}``
+  % :type  task:        char or cell string
   %
   % :param ignore:      can be any of ``{'contrasts', 'transformations', 'dataset'}``
   % :type  ignore:      cell string

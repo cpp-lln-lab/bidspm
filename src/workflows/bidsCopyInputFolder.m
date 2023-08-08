@@ -66,6 +66,9 @@ function bidsCopyInputFolder(varargin)
 
     if strcmp(filter.modality, 'func')
       filter.task = opt.taskName;
+      if isempty(filter.task)
+        filter.task = bids.query(BIDS, 'tasks', filter);
+      end
     end
 
     pipeline_name = opt.pipeline.name;

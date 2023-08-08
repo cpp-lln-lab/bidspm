@@ -29,6 +29,10 @@ function bidsSmoothing(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'smoothing data');
 
+  if isempty(opt.taskName)
+    opt.taskName = bids.query(BIDS, 'tasks');
+  end
+
   allRT = {};
   unRenamedFiles = {};
 

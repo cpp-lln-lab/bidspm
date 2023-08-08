@@ -27,10 +27,6 @@ function opt = getOptionsFromCliArgument(args)
     opt.subjects = args.Results.participant_label;
   end
 
-  if ~isempty(args.Results.task)
-    opt.taskName = args.Results.task;
-  end
-
   if ~isempty(args.Results.bids_filter_file)
     % TODO read from JSON if necessary
     % TODO validate
@@ -38,6 +34,10 @@ function opt = getOptionsFromCliArgument(args)
   end
 
   opt = overrideSpace(opt, args);
+
+  if isfield(args.Results, 'task')
+    opt.taskName = args.Results.task;
+  end
 
   if isfield(args.Results, 'boilerplate_only')
     opt.boilerplate_only = args.Results.boilerplate_only;
