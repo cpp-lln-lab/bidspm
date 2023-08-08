@@ -24,7 +24,6 @@ data_ds000001:
 	cd inputs/ds000001-fmriprep && datalad get sub-0[1-5]/func/*MNI*desc-*bold.nii.gz -J 12
 	cd inputs/ds000001-fmriprep && datalad get sub-0[1-5]/anat/*MNI*desc-preproc*.nii.gz -J 12
 
-
 data_ds000114:
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds000114
@@ -44,7 +43,6 @@ data_ds001734:
 	cd inputs/ds001734-fmriprep && datalad get sub-00[1]/func/*tsv -J 12
 	cd inputs/ds001734-fmriprep && datalad get sub-00[1]/func/*json -J 12
 	cd inputs/ds001734-fmriprep && datalad get sub-00[1]/func/*MNI152NLin2009cAsym*desc-preproc*bold.nii.gz -J 12
-
 
 data_ds002799:
 	mkdir -p inputs

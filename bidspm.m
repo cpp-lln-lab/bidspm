@@ -80,6 +80,9 @@ function returnCode = executeAction(varargin)
     case {'stats', 'contrasts', 'results'}
       cliStats(varargin{2:end});
 
+    case {'modelSpace', 'cvLME', 'posterior', 'BMS'}
+      cliSBayesModel(varargin{2:end});
+
     case 'meaning_of_life'
       fprintf('\n42\n\n');
 
