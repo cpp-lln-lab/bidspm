@@ -28,7 +28,7 @@
           "trial_type.A_Quiet",
           "trial_type.NULL",
           "trial_type.V_only_Quiet_InScanner",
-          "1",
+          1,
           "trans_?",
           "rot_?",
           "outlier*"
