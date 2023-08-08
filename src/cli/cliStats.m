@@ -60,8 +60,10 @@ function cliStats(varargin)
       if isSubjectLevel
         if opt.model.designOnly
           bidsFFX('specify', opt);
+          compileScrubbingStats(opt.dir.stats);
         else
           bidsFFX('specifyAndEstimate', opt);
+          compileScrubbingStats(opt.dir.stats);
         end
 
       else

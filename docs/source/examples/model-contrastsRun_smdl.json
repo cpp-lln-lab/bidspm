@@ -1,48 +1,48 @@
 {
-    "Level": "Run",
-    "Name": "run_level",
-    "X": [
+  "Level": "Run",
+  "Name": "run_level",
+  "X": [
+    "olfid_eucalyptus_left",
+    "olfid_eucalyptus_right",
+    "olfid_almond_left",
+    "olfid_almond_right",
+    "olfloc_eucalyptus_left",
+    "olfloc_eucalyptus_right",
+    "olfloc_almond_left",
+    "olfloc_almond_right",
+    "resp_03",
+    "resp_12",
+    1
+  ],
+  "DummyContrasts": {
+    "Contrasts": [
+      "olfid_eucalyptus_left",
+      "olfid_eucalyptus_right",
+      "olfid_almond_left",
+      "olfid_almond_right",
+      "olfloc_eucalyptus_left",
+      "olfloc_eucalyptus_right",
+      "olfloc_almond_left",
+      "olfloc_almond_right"
+    ],
+    "Test": "t"
+  },
+  "Contrasts": [
+    {
+      "Name": "olfid",
+      "ConditionList": [
         "olfid_eucalyptus_left",
         "olfid_eucalyptus_right",
         "olfid_almond_left",
-        "olfid_almond_right",
-        "olfloc_eucalyptus_left",
-        "olfloc_eucalyptus_right",
-        "olfloc_almond_left",
-        "olfloc_almond_right",
-        "resp_03",
-        "resp_12",
+        "olfid_almond_right"
+      ],
+      "Weights": [
+        1,
+        1,
+        1,
         1
-    ],
-    "DummyContrasts": {
-        "Contrasts": [
-            "olfid_eucalyptus_left",
-            "olfid_eucalyptus_right",
-            "olfid_almond_left",
-            "olfid_almond_right",
-            "olfloc_eucalyptus_left",
-            "olfloc_eucalyptus_right",
-            "olfloc_almond_left",
-            "olfloc_almond_right"
-        ],
-        "Test": "t"
-    },
-    "Contrasts": [
-        {
-            "Name": "olfid",
-            "ConditionList": [
-                "olfid_eucalyptus_left",
-                "olfid_eucalyptus_right",
-                "olfid_almond_left",
-                "olfid_almond_right"
-            ],
-            "Weights": [
-                1,
-                1,
-                1,
-                1
-            ],
-            "Test": "t"
-        }
-    ]
+      ],
+      "Test": "t"
+    }
+  ]
 }

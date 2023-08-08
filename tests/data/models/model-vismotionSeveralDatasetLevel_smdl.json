@@ -35,14 +35,14 @@
         },
         "Options": {
           "HighPassFilterCutoffHz": 0.008,
-            "Mask": {
-              "desc": [
-                "brain"
-              ],
-              "suffix": [
-                "mask"
-              ]
-            }
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
         },
         "Software": {
           "SPM": {
