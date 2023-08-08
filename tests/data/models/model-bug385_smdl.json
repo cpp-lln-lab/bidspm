@@ -32,7 +32,7 @@
           "trial_type.motion_RH",
           "trial_type.static_LH",
           "trial_type.static_RH",
-          "1",
+          1,
           "trans_?",
           "rot_?",
           "non_steady_state_outlier*",
