@@ -1,10 +1,10 @@
-function contrastsList = getContrastsListFromSource(node, model)
+function contrastsList = getContrastsFromParentNode(model, node)
   %
   % Recursively look for contrasts at previous levels
   %
   % UISAGE::
   %
-  %     contrastsList = getContrastsListFromSource(node, model)
+  %     contrastsList = getContrastsFromParentNode(model, node)
   %
 
   % (C) Copyright 2022 bidspm developers
@@ -19,7 +19,7 @@ function contrastsList = getContrastsListFromSource(node, model)
   end
 
   % TODO transfer to BIDS model as a get_contrasts_list method
-  if isfield(sourceNode, 'Contrasts')
+  if isfield(sourceNode, 'Contrasts') && ~isempty(sourceNode.Contrasts)
     for i = 1:numel(sourceNode.Contrasts)
       if isTtest(sourceNode.Contrasts{i}) % only contrast can be forwarded
         contrastsList{end + 1} = checkContrast(sourceNode, i);
@@ -28,7 +28,7 @@ function contrastsList = getContrastsListFromSource(node, model)
 
     % go one level deeper
   elseif isnumeric(sourceNode.Model.X) && sourceNode.Model.X == 1
-    contrastsList = getContrastsListFromSource(sourceNode, model);
+    contrastsList = getContrastsFromParentNode(model, sourceNode);
 
   end
 

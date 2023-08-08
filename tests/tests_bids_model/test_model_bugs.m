@@ -30,7 +30,7 @@ function test_model_bug_385()
   bm.get_root_node;
 
   nodeName = 'dataset';
-  contrastsList = getContrastsList(nodeName, bm);
-  dummyContrastsList = getDummyContrastsList(nodeName, bm);
+  contrastsList = getContrastsList(bm, nodeName);
+  dummyContrastsList = getDummyContrastsList(bm, nodeName);
 
 end

@@ -1,11 +1,11 @@
-function dummyContrastsList = getDummyContrastsList(node, model)
+function dummyContrastsList = getDummyContrastsList(model, node)
   %
   % Get list of names of DummyContrast from this Node or gets its from the
   % previous Nodes
   %
   % USAGE::
   %
-  %   dummyContrastsList = getDummyContrastsList(node, model)
+  %   dummyContrastsList = getDummyContrastsList(model, mode)
   %
   % :param node: node name or node content
   % :type node: char or structure
@@ -41,13 +41,13 @@ function dummyContrastsList = getDummyContrastsList(node, model)
 
         dummyContrastsList = node.Model.X;
 
-      case 'subject'
+      case {'session', 'subject'}
 
-        dummyContrastsList = getFromPreviousNode(model, node);
+        dummyContrastsList = getDummyContrastFromParentNode(model, node);
 
       case 'dataset'
 
-        dummyContrastsList = getFromPreviousNode(model, node);
+        dummyContrastsList = getDummyContrastFromParentNode(model, node);
 
         for i = 1:numel(dummyContrastsList)
 
@@ -61,31 +61,6 @@ function dummyContrastsList = getDummyContrastsList(node, model)
 
     end
 
-  end
-
-end
-
-function dummyContrastsList = getFromPreviousNode(model, node)
-
-  % base case: we reach the root of the BIDS model graph
-  % and there is no dummy contrasts anywhere
-  % Note: this assumes the root is a Run level node
-  if strcmp(node.Level, 'Run')
-    dummyContrastsList = {};
-    return
-  end
-
-  % TODO relax those assumptions
-  % assumptions
-  assert(node.Model.X == 1);
-
-  sourceNode = model.get_source_node(node.Name);
-
-  % TODO transfer to BIDS model as a get_contrasts_list method
-  if isfield(sourceNode, 'DummyContrasts') && isfield(sourceNode.DummyContrasts, 'Contrasts')
-    dummyContrastsList = sourceNode.DummyContrasts.Contrasts;
-  else
-    dummyContrastsList = getFromPreviousNode(model, sourceNode);
   end
 
 end

@@ -25,6 +25,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * [ENH] support label of activations with all atlases [1100](https://github.com/cpp-lln-lab/bidspm/pull/1100) by [Remi-Gau](https://github.com/Remi-Gau)
+* [ENH] add support for session level models #1116 be @Remi-Gau
+
+  - allow to pass dummy contrasts to session level
+  - allow inter session contrasts to be computed at the subject level
+  - improve naming of contrast to mention bids ses and run
+
 
 ### Changed
 

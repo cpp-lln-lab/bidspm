@@ -1,11 +1,11 @@
-function contrastsList = getContrastsList(node, model)
+function contrastsList = getContrastsList(model, node)
   %
   % Get list of names of Contrast from this Node
   % or gets its from the previous Nodes
   %
   % USAGE::
   %
-  %   contrastsList = getContrastsList(node, model)
+  %   contrastsList = getContrastsList(model, node)
   %
   % :param node: node name or node content
   % :type node: char or structure
@@ -47,7 +47,7 @@ function contrastsList = getContrastsList(node, model)
         assert(checkGroupBy(node));
         assert(node.Model.X == 1);
 
-        contrastsList = getContrastsListFromSource(node, model);
+        contrastsList = getContrastsFromParentNode(model, node);
 
     end
 

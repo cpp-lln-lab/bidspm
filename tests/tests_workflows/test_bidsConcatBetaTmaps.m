@@ -51,6 +51,12 @@ function test_bidsConcatBetaTmapsBasic()
   SPM.xX.name = names;
 
   SPM.Sess(2).col = SPM.Sess(1).col + numel(SPM.Sess(1).col);
+  SPM.Sess(2).row = SPM.Sess(1).row + numel(SPM.Sess(1).row);
+
+  SPM.xX.X = repmat(SPM.xX.X, [1, 2]);
+  filesSes2 = SPM.xY.P;
+  filesSes2 = regexprep(cellstr(filesSes2), 'ses-01', 'ses-02');
+  SPM.xY.P = cat(1, SPM.xY.P, char(filesSes2));
 
   save(fullfile(targetDir, 'SPM.mat'), 'SPM');
 

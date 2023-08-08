@@ -74,3 +74,72 @@ function test_getRegressorIdx_basic()
   assertEqual(status, false);
 
 end
+
+function test_getRegressorIdx_session()
+  % Check that only the regressors
+  % from a specific BIDS session are returned.
+
+  SPM.xX.name = {
+                 'Sn(1) sign_Stim1F*bf(1)'
+                 'Sn(1) sign_Stim2F*bf(1)'
+                 'Sn(2) sign_Stim1F*bf(1)'
+                 'Sn(2) sign_Stim2F*bf(1)'
+                 'Sn(2) no_resp*bf(1)'
+                 'Sn(3) sign_Stim1F*bf(1)'
+                 'Sn(3) sign_Stim2F*bf(1)'
+                 'Sn(4) sign_Stim1F*bf(1)'
+                 'Sn(4) sign_Stim2F*bf(1)'
+                 'Sn(5) sign_Stim1F*bf(1)'
+                 'Sn(5) sign_Stim2F*bf(1)'
+                };
+
+  SPM.xY.P = [
+              'sub-MSC01_ses-1_task-foo_run-1_space-MNI_desc-smth8_bold.nii,1'; ...
+              'sub-MSC01_ses-1_task-foo_run-1_space-MNI_desc-smth8_bold.nii,2'; ...
+              'sub-MSC01_ses-1_task-foo_run-2_space-MNI_desc-smth8_bold.nii,1'; ...
+              'sub-MSC01_ses-1_task-foo_run-2_space-MNI_desc-smth8_bold.nii,2'; ...
+              'sub-MSC01_ses-2_task-foo_run-1_space-MNI_desc-smth8_bold.nii,1'; ...
+              'sub-MSC01_ses-2_task-foo_run-1_space-MNI_desc-smth8_bold.nii,2'; ...
+              'sub-MSC01_ses-2_task-foo_run-1_space-MNI_desc-smth8_bold.nii,1'; ...
+              'sub-MSC01_ses-2_task-foo_run-2_space-MNI_desc-smth8_bold.nii,2'; ...
+              'sub-MSC01_ses-foo3_task-foo_space-MNI_desc-smth8_bold.nii,1   '; ...
+              'sub-MSC01_ses-foo3_task-foo_space-MNI_desc-smth8_bold.nii,2   ' ...
+             ];
+
+  % ses 1 run 1
+  SPM.Sess(1).row = [1, 2];
+  SPM.Sess(1).col = [1, 2];
+  % ses 1 run 2
+  SPM.Sess(2).row = [3, 4];
+  SPM.Sess(2).col = [3, 4, 5];
+  % ses 2 run 1
+  SPM.Sess(3).row = [5, 6];
+  SPM.Sess(3).col = [6, 7];
+  % ses 2 run 2
+  SPM.Sess(4).row = [7, 8];
+  SPM.Sess(4).col = [8, 9];
+  % ses 3
+  SPM.Sess(5).row = [9, 10];
+  SPM.Sess(5).col = [10, 11];
+
+  SPM.xX.X = rand(size(SPM.xY.P, 1), numel(SPM.xX.name));
+
+  SPM = labelSpmSessWithBidsSesAndRun(SPM);
+
+  [~, regIdx] = getRegressorIdx('sign_Stim1F', SPM);
+  expected =  false(numel(SPM.xX.name), 1);
+  expected([1, 3, 6, 8, 10]) = true;
+  assertEqual(regIdx, expected');
+
+  bids_ses = '1';
+  [~, regIdx] = getRegressorIdx('sign_Stim1F', SPM, bids_ses);
+  expected =  false(numel(SPM.xX.name), 1);
+  expected([1, 3]) = true;
+  assertEqual(regIdx, expected');
+
+  bids_ses = '2';
+  [~, regIdx] = getRegressorIdx('sign_Stim1F', SPM, bids_ses);
+  expected =  false(numel(SPM.xX.name), 1);
+  expected([6, 8]) = true;
+  assertEqual(regIdx, expected');
+end

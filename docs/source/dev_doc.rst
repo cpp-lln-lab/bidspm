@@ -348,12 +348,14 @@ bids_model
 .. autofunction:: src.bids_model.checkGroupBy
 .. _createDefaultStatsModel:
 .. autofunction:: src.bids_model.createDefaultStatsModel
+.. _getContrastsFromParentNode:
+.. autofunction:: src.bids_model.getContrastsFromParentNode
 .. _getContrastsList:
 .. autofunction:: src.bids_model.getContrastsList
 .. _getContrastsListForFactorialDesign:
 .. autofunction:: src.bids_model.getContrastsListForFactorialDesign
-.. _getContrastsListFromSource:
-.. autofunction:: src.bids_model.getContrastsListFromSource
+.. _getDummyContrastFromParentNode:
+.. autofunction:: src.bids_model.getDummyContrastFromParentNode
 .. _getDummyContrastsList:
 .. autofunction:: src.bids_model.getDummyContrastsList
 .. _getInclusiveMask:
@@ -488,8 +490,6 @@ messages
 .. autofunction:: src.messages.noSPMmat
 .. _notImplemented:
 .. autofunction:: src.messages.notImplemented
-.. _pathToPrint:
-.. autofunction:: src.messages.pathToPrint
 .. _printAvailableContrasts:
 .. autofunction:: src.messages.printAvailableContrasts
 .. _printBatchName:
@@ -582,6 +582,8 @@ stats subject_level
 .. autofunction:: src.stats.subject_level.appendContrast
 .. _checkRegressorName:
 .. autofunction:: src.stats.subject_level.checkRegressorName
+.. _constructContrastNameFromBidsEntity:
+.. autofunction:: src.stats.subject_level.constructContrastNameFromBidsEntity
 .. _convertOnsetTsvToMat:
 .. autofunction:: src.stats.subject_level.convertOnsetTsvToMat
 .. _createAndReturnCounfoundMatFile:
@@ -622,6 +624,8 @@ stats subject_level
 .. autofunction:: src.stats.subject_level.specifyContrasts
 .. _specifyDummyContrasts:
 .. autofunction:: src.stats.subject_level.specifyDummyContrasts
+.. _specifySessionLvlContrasts:
+.. autofunction:: src.stats.subject_level.specifySessionLvlContrasts
 .. _specifySubLvlContrasts:
 .. autofunction:: src.stats.subject_level.specifySubLvlContrasts
 
@@ -656,8 +660,14 @@ stats utils
 .. autofunction:: src.stats.utils.getRegressorIdx
 .. _labelActivations:
 .. autofunction:: src.stats.utils.labelActivations
+.. _labelSpmSessWithBidsSesAndRun:
+.. autofunction:: src.stats.utils.labelSpmSessWithBidsSesAndRun
 .. _returnContrastImageFile:
 .. autofunction:: src.stats.utils.returnContrastImageFile
+.. _returnNumberScrubbedTimePoints:
+.. autofunction:: src.stats.utils.returnNumberScrubbedTimePoints
+.. _validateContrasts:
+.. autofunction:: src.stats.utils.validateContrasts
 
 
 .. _utils:
