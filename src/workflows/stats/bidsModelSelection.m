@@ -141,7 +141,7 @@ function matlabbatch = bidsModelSelection(varargin)
 
   workflowName = 'macs model selection';
 
-  [~, opt] = setUpWorkflow(opt, workflowName);
+  [~, opt] = setUpWorkflow(opt, workflowName, opt.dir.raw, true);
 
   opt.orderBatches.MACS_model_space = 1;
   switch lower(action)

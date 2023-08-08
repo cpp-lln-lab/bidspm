@@ -334,7 +334,9 @@ end
 
 function checkFields(opt)
 
-  if isfield(opt, 'taskName') && isempty(opt.taskName)
+  if isfield(opt, 'taskName') && ...
+      isempty(opt.taskName) && ...
+      ~strcmp(opt.pipeline.type, 'stats')
 
     msg = 'You may need to provide the name of the task to analyze.';
     id = 'noTask';

@@ -97,7 +97,7 @@ function opt = getOptionsFromModel(opt)
 
         case {'task', 'sub', 'space'}
 
-          if isfield(opt, targetField)
+          if isfield(opt, targetField) && ~isempty(opt.(targetField))
             overrideWarning(opt.(targetField), thisEntity, inputsAlreadyInOptions, opt);
           end
 

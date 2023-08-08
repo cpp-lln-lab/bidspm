@@ -61,7 +61,7 @@ function [BIDS, opt] = getData(varargin)
                      'verbose', opt.verbosity > 1, ...
                      'filter', layout_filter);
 
-  if strcmp(opt.pipeline.type, 'stats')
+  if strcmp(opt.pipeline.type, 'stats') && isempty(opt.toolbox.MACS.model.files)
     if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file') == 2
       msg = sprintf('Loading BIDS raw layout from:\n\t%s', ...
                     bids.internal.format_path(fullfile(opt.dir.raw, 'layout.mat')));

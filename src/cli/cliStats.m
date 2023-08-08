@@ -27,6 +27,7 @@ function cliStats(varargin)
   concatenate = args.Results.concatenate;
 
   isSubjectLevel = strcmp(analysisLevel, 'subject');
+  specify_only = strcmp(action, 'specify_only');
   estimate = strcmp(action, 'stats');
   contrasts = ismember(action, {'stats', 'contrasts'});
   results = ismember(action, {'stats', 'contrasts', 'results'});
@@ -34,6 +35,10 @@ function cliStats(varargin)
   if opt.model.designOnly
     contrasts = false;
     results = false;
+  end
+
+  if specify_only
+    estimate = false;
   end
 
   saveOptions(opt);
@@ -55,16 +60,18 @@ function cliStats(varargin)
 
   else
 
+    if isSubjectLevel && ...
+            (specify_only || ...
+             estimate && opt.model.designOnly)
+      bidsFFX('specify', opt);
+      compileScrubbingStats(opt.dir.stats);
+    end
+
     if estimate
 
       if isSubjectLevel
-        if opt.model.designOnly
-          bidsFFX('specify', opt);
-          compileScrubbingStats(opt.dir.stats);
-        else
-          bidsFFX('specifyAndEstimate', opt);
-          compileScrubbingStats(opt.dir.stats);
-        end
+        bidsFFX('specifyAndEstimate', opt);
+        compileScrubbingStats(opt.dir.stats);
 
       else
         if opt.fwhm.contrast > 0
@@ -90,7 +97,8 @@ function cliStats(varargin)
     end
 
     if results
-      bidsResults(opt, 'nodeName', nodeName, ...
+      bidsResults(opt, ...
+                  'nodeName', nodeName, ...
                   'analysisLevel', analysisLevel);
     end
 

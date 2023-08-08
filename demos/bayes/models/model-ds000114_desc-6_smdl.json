@@ -1,7 +1,7 @@
 {
   "Name": "Model for ds000114 cross session test-retest",
   "BIDSModelVersion": "1.0.0",
-  "Description": "BIDS stats model for linebisection / oververbgeneration / overwordrepetition / covertverbgeneration tasks",
+  "Description": "BIDS stats model for overtverbgeneration tasks",
   "Input": {
     "task": [
       "overtverbgeneration"
@@ -13,7 +13,7 @@
   "Nodes": [
     {
       "Level": "Run",
-      "Name": "run",
+      "Name": "6Mot",
       "GroupBy": [
         "run",
         "session",
