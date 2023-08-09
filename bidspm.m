@@ -10,13 +10,13 @@ function returnCode = bidspm(varargin)
     parse(args, varargin{:});
   catch ME
     disp('arguments passed were :');
-    varargin{i}
+    varargin{i};
     for i = 1:numel(varargin)
-      fprintf(1, '- ')
-      fprintf(varargin{i})
-      fprintf(1, '\n')
+      fprintf(1, '- ');
+      fprintf(varargin{i});
+      fprintf(1, '\n');
     end
-    fprintf(1, '\n')
+    fprintf(1, '\n');
     rethrow(ME);
   end
 
