@@ -9,13 +9,14 @@ function returnCode = bidspm(varargin)
   try
     parse(args, varargin{:});
   catch ME
-    for i = 1:numel(varargin)
-      if isnumeric(varargin{i})
-        varargin{i} = num2str(varargin{i});
-      end
-    end
     disp('arguments passed were :');
-    disp([' - ' strjoin(varargin, '\n - ')]);
+    varargin{i}
+    for i = 1:numel(varargin)
+      fprintf(1, '- ')
+      fprintf(varargin{i})
+      fprintf(1, '\n')
+    end
+    fprintf(1, '\n')
     rethrow(ME);
   end
 
