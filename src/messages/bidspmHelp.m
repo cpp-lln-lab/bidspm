@@ -298,8 +298,15 @@ function bidspmHelp()
   % :param preproc_dir: path to preprocessed data
   % :type  preproc_dir: path
   %
-  % :param model_file:
-  % :type  model_file:  path to JSON file or structure
+  % :param model_file:  Path to the BIDS model file that contains the model
+  %                     to specify and the contrasts to compute.
+  %                     A path to a dir can be passed as well.
+  %                     In this case all *_smdl.json files will be used
+  %                     and looped over.
+  %                     This can useful to specify several models at once
+  %                     Before running Bayesion model selection on them.
+  % :type  model_file:  path to JSON file or dir or structure
+  %
   %
   %
   % *Optional parameters*
@@ -307,7 +314,7 @@ function bidspmHelp()
   % :param fwhm:          smoothing lelvel of the preprocessed data
   % :type  fwhm:          positive scalar
   %
-  % :param design_only:   to only run the model specification when at the group level
+  % :param design_only:   to only run the model specification
   % :type  design_only:   logical
   %
   % :param ignore:        can be any of ``{'qa'}``, to skip

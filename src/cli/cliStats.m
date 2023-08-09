@@ -13,14 +13,6 @@ function cliStats(varargin)
 
   validate(args);
 
-  opt = getOptionsFromCliArgument(args);
-  if opt.glm.roibased.do
-    opt.bidsFilterFile.roi.space = opt.space;
-    opt.bidsFilterFile.roi.label = opt.roi.name;
-  end
-  opt.pipeline.type = 'stats';
-  opt = checkOptions(opt);
-
   action = args.Results.action;
   analysisLevel = args.Results.analysis_level;
   nodeName = args.Results.node_name;
@@ -32,76 +24,100 @@ function cliStats(varargin)
   contrasts = ismember(action, {'stats', 'contrasts'});
   results = ismember(action, {'stats', 'contrasts', 'results'});
 
+  if specify_only
+    estimate = false;
+  end
+
+  opt = getOptionsFromCliArgument(args);
+  if opt.glm.roibased.do
+    opt.bidsFilterFile.roi.space = opt.space;
+    opt.bidsFilterFile.roi.label = opt.roi.name;
+  end
+
+  opt.pipeline.type = 'stats';
+  opt.pipeline.isBms = false;
+
   if opt.model.designOnly
     contrasts = false;
     results = false;
   end
 
-  if specify_only
-    estimate = false;
-  end
+  allModels = cellstr(opt.model.file);
 
-  saveOptions(opt);
+  for iModel = 1:numel(allModels)
 
-  boilerplate(opt, ...
-              'outputPath', fullfile(opt.dir.output, 'reports'), ...
-              'pipelineType', 'stats', ...
-              'verbosity', 0);
-  if opt.boilerplate_only
-    return
-  end
+    if isfield(opt, 'model')
+      opt = rmfield(opt, 'model');
+    end
+    opt.model.file = allModels{iModel};
 
-  if opt.glm.roibased.do
+    opt = checkOptions(opt);
 
-    bidsFFX('specify', opt);
-    if ~opt.model.designOnly
-      bidsRoiBasedGLM(opt);
+    saveOptions(opt);
+
+    boilerplate(opt, ...
+                'outputPath', fullfile(opt.dir.output, 'reports'), ...
+                'pipelineType', 'stats', ...
+                'verbosity', 0);
+    if opt.boilerplate_only
+      continue
     end
 
-  else
-
-    if isSubjectLevel && ...
-            (specify_only || ...
-             estimate && opt.model.designOnly)
+    if opt.glm.roibased.do
       bidsFFX('specify', opt);
-      compileScrubbingStats(opt.dir.stats);
-    end
+      if ~opt.model.designOnly
+        bidsRoiBasedGLM(opt);
+      end
 
-    if estimate
+    else
 
-      if isSubjectLevel
-        bidsFFX('specifyAndEstimate', opt);
+      if isSubjectLevel && ...
+              (specify_only || ...
+               estimate && opt.model.designOnly)
+        bidsFFX('specify', opt);
         compileScrubbingStats(opt.dir.stats);
-
-      else
-        if opt.fwhm.contrast > 0
-          bidsSmoothContrasts(opt);
-        end
-        bidsRFX('RFX', opt, 'nodeName', nodeName);
-
       end
 
-    end
-
-    if contrasts
-      if isSubjectLevel
-        bidsFFX('contrasts', opt);
-      else
-        bidsRFX('contrasts', opt, 'nodeName', nodeName);
+      if estimate
+        runEstimate(isSubjectLevel, opt, nodeName);
       end
 
-      if isSubjectLevel && concatenate
-        bidsConcatBetaTmaps(opt);
+      if contrasts
+        runContrasts(isSubjectLevel, opt, nodeName, concatenate);
       end
 
-    end
+      if results
+        bidsResults(opt, ...
+                    'nodeName', nodeName, ...
+                    'analysisLevel', analysisLevel);
+      end
 
-    if results
-      bidsResults(opt, ...
-                  'nodeName', nodeName, ...
-                  'analysisLevel', analysisLevel);
     end
 
   end
 
+end
+
+function runEstimate(isSubjectLevel, opt, nodeName)
+  if isSubjectLevel
+    bidsFFX('specifyAndEstimate', opt);
+    compileScrubbingStats(opt.dir.stats);
+  else
+    if opt.fwhm.contrast > 0
+      bidsSmoothContrasts(opt);
+    end
+    bidsRFX('RFX', opt, 'nodeName', nodeName);
+  end
+end
+
+function runContrasts(isSubjectLevel, opt, nodeName, concatenate)
+  if isSubjectLevel
+    bidsFFX('contrasts', opt);
+  else
+    bidsRFX('contrasts', opt, 'nodeName', nodeName);
+  end
+
+  if isSubjectLevel && concatenate
+    bidsConcatBetaTmaps(opt);
+  end
 end

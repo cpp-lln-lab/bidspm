@@ -56,7 +56,27 @@ function opt = getOptionsFromCliArgument(args)
     opt.query.modality = {'anat'};
   end
 
-  % preproc
+  opt = optionsPreprocessing(opt, args, action);
+
+  if ismember(lower(action), {'create_roi', ...
+                              'stats', ...
+                              'contrasts', ...
+                              'results', ...
+                              'specify_only'})
+    opt.dir.preproc = args.Results.preproc_dir;
+  end
+
+  opt = roiOptions(opt, args);
+
+  opt = optionsStats(opt, args, action);
+
+  if ismember(lower(action), {'bms'})
+    opt.toolbox.MACS.model.dir = args.Results.models_dir;
+  end
+
+end
+
+function opt = optionsPreprocessing(opt, args, action)
   if ismember(lower(action), {'preprocess'})
 
     if ismember('slicetiming', args.Results.ignore)
@@ -79,35 +99,31 @@ function opt = getOptionsFromCliArgument(args)
     opt.anatOnly = args.Results.anat_only;
 
   end
+end
 
-  if ismember(lower(action), {'create_roi', ...
-                              'stats', ...
-                              'contrasts', ...
-                              'results', ...
-                              'specify_only'})
-    opt.dir.preproc = args.Results.preproc_dir;
-  end
-
-  opt = roiOptions(opt, args);
-
-  % stats
+function opt = optionsStats(opt, args, action)
   if ismember(lower(action), {'stats', ...
                               'contrasts', ...
                               'results', ...
                               'specify_only'})
     opt.dir.preproc = args.Results.preproc_dir;
+
+    % can only be a struct, file or dir
     opt.model.file = args.Results.model_file;
+    if ~isstruct(opt.model.file)
+      if isdir(opt.model.file)
+        opt.model.file = spm_select('FPList', ...
+                                    opt.model.file, ...
+                                    '.*_smdl.json');
+      end
+    end
+
     opt.model.designOnly = args.Results.design_only;
     opt.glm.keepResiduals = args.Results.keep_residuals;
 
     opt = overrideRoiBased(opt, args);
 
   end
-
-  if ismember(lower(action), {'bms'})
-    opt.toolbox.MACS.model.dir = args.Results.models_dir;
-  end
-
 end
 
 function value = bidsAppsActions()

@@ -10,11 +10,11 @@ function opt = getOptionsFromModel(opt)
   % TODO refactor to pass everything to bids filter file instead of query?
   % TODO override content in bids_filter_file
 
-  if ~strcmpi(opt.pipeline.type, 'stats')
+  if ~ismember(opt.pipeline.type, {'stats', 'bms'})
     return
   end
 
-  if isfield(opt.toolbox.MACS.model, 'dir') && ~isempty(opt.toolbox.MACS.model.dir)
+  if opt.pipeline.isBms
     files = spm_select('FPList', ...
                        opt.toolbox.MACS.model.dir, ...
                        '.*_smdl.json');
@@ -22,13 +22,18 @@ function opt = getOptionsFromModel(opt)
     return
   end
 
-  if isempty(opt.model.file) || exist(opt.model.file, 'file') ~= 2
+  modelIsSingleFile = size(opt.model.file, 1) == 1;
+
+  if isempty(opt.model.file) || ...
+          (modelIsSingleFile && exist(opt.model.file, 'file') ~= 2)
     msg = sprintf('model file does not exist:\n %s', opt.model.file);
     id = 'modelFileMissing';
     logger('ERROR', msg, 'filename', mfilename(), 'id', id);
   end
 
-  if ~isfield(opt.model, 'bm') || isempty(opt.model.bm)
+  modelNotLoaded = ~isfield(opt.model, 'bm') || isempty(opt.model.bm);
+
+  if modelIsSingleFile && modelNotLoaded
     opt.model.bm = BidsModel('file', opt.model.file, ...
                              'tolerant', opt.tolerant, ...
                              'verbose', opt.verbosity > 1);

@@ -15,7 +15,7 @@ clear;
 clc;
 close all;
 
-download_data = true;
+download_data = false;
 clean = true;
 
 WD = fileparts(mfilename('fullpath'));
@@ -24,7 +24,7 @@ addpath(fullfile(WD, '..', '..'));
 
 bidspm();
 if download_data
-  download_moae_ds(download_data, clean);
+  download_moae_ds(download_data, clean); %#ok<*UNRCH>
 end
 
 warning('off', 'SPM:noDisplay');

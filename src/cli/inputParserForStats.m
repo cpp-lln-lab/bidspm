@@ -8,7 +8,7 @@ function args = inputParserForStats()
   args = baseInputParser();
 
   isInAvailableAtlas = @(x) (ischar(x) && ismember(x, supportedAtlases()));
-  isFileOrStruct = @(x) isstruct(x) || exist(x, 'file') == 2;
+  isFileOrStructOrIsDir = @(x) isstruct(x) || exist(x, 'file') == 2 || isdir(x);
   isLogical = @(x) islogical(x) && numel(x) == 1;
   isChar = @(x) ischar(x);
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
@@ -18,7 +18,7 @@ function args = inputParserForStats()
 
   addParameter(args, 'task', {}, isCellStr);
   addParameter(args, 'preproc_dir', pwd, isFolder);
-  addParameter(args, 'model_file', struct([]), isFileOrStruct);
+  addParameter(args, 'model_file', struct([]), isFileOrStructOrIsDir);
 
   addParameter(args, 'fwhm', 6, isPositiveScalar);
   addParameter(args, 'dry_run', false, isLogical);

@@ -124,6 +124,11 @@ function opt = checkOptions(opt)
   %     - ``opt.model.file = ''`` -
   %       Path to the BIDS model file that contains the model
   %       to specify and the contrasts to compute.
+  %       A path to a dir can be passed as well.
+  %       In this case all *_smdl.json files will be used
+  %       and looped over.
+  %       This can useful to specify several models at once
+  %       Before running Bayesion model selection on them.
   %
   %     - ``opt.fwhm.contrast = 0`` -
   %       FWHM to apply to the contrast images before bringing them at the group level.

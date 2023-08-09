@@ -13,7 +13,7 @@
   "Nodes": [
     {
       "Level": "Run",
-      "Name": "FIXME",
+      "Name": "6Mot",
       "GroupBy": [
         "run",
         "session",
@@ -22,6 +22,8 @@
       "Model": {
         "X": [
           "trial_type.Task",
+          "trans_?",
+          "rot_?",
           1
         ],
         "Type": "glm",

@@ -16,6 +16,7 @@ function cliBayesModel(varargin)
   opt = getOptionsFromCliArgument(args);
 
   opt.pipeline.type = 'stats';
+  opt.pipeline.isBms = true;
   opt = checkOptions(opt);
 
   saveOptions(opt);
