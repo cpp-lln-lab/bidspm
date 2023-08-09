@@ -12,11 +12,12 @@ SMOOTH = false;
 % set to false to not re run the model specification
 FIRST_LEVEL = true;
 
-VERBOSITY = 2;
+VERBOSITY = 1;
 
 FWHM = 8;
 
-TESTING = true;
+% to run on fewer subjects
+TESTING = false;
 
 % The directory where the data are located
 root_dir = fileparts(mfilename('fullpath'));
@@ -40,6 +41,44 @@ if SMOOTH
          'space', {'MNI152NLin2009cAsym'}, ...
          'fwhm', FWHM, ...
          'verbosity', VERBOSITY); %#ok<*UNRCH>
+end
+
+%% create models from a default one
+
+default_model_file = fullfile(models_dir, 'default_model.json');
+% FIXME: crashes with 0 real param
+nb_realignment_param = [6, 24];
+scrubbing = [0, 1];
+
+for i = 1:numel(nb_realignment_param)
+  for j = 1:numel(scrubbing)
+
+    model = bids.util.jsondecode(default_model_file);
+
+    name = sprintf('rp-%i_srub-%i', ...
+                   nb_realignment_param(i), ...
+                   scrubbing(j));
+    model.Name = name;
+    model.Nodes.Name = name;
+
+    design_matrix = model.Nodes.Model.X;
+    if scrubbing(j) == 1
+      design_matrix{end + 1} = '*outlier*'; %#ok<*SAGROW>
+    end
+    switch nb_realignment_param(i)
+      case 0
+      case 6
+        design_matrix{end + 1} = 'rot_?';
+        design_matrix{end + 1} = 'trans_?';
+      case 24
+        design_matrix{end + 1} = 'rot_*';
+        design_matrix{end + 1} = 'trans_*';
+    end
+    model.Nodes.Model.X = design_matrix;
+
+    output_file = fullfile(models_dir, ['model_' name '_smdl.json']);
+    bids.util.jsonencode(output_file, model);
+  end
 end
 
 %% Statistics

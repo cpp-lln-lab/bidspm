@@ -1,7 +1,7 @@
 {
   "Name": "default model",
   "BIDSModelVersion": "1.0.0",
-  "Description": "BIDS stats model for overtverbgeneration tasks",
+  "Description": "FIXME",
   "Input": {
     "task": [
       "overtverbgeneration"
@@ -22,8 +22,6 @@
       "Model": {
         "X": [
           "trial_type.Task",
-          "trans_?",
-          "rot_?",
           1
         ],
         "Type": "glm",
