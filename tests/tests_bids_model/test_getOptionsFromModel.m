@@ -11,10 +11,12 @@ end
 function test_getOptionsFromModel_preproc()
 
   opt.pipeline.type = 'preproc';
+  opt.toolbox.MACS.model = struct([]);
 
   opt = getOptionsFromModel(opt);
 
   expectedOptions.pipeline.type = 'preproc';
+  expectedOptions.toolbox.MACS.model = struct([]);
 
   assertEqual(opt, expectedOptions);
 
@@ -26,6 +28,7 @@ function test_getOptionsFromModel_no_model()
   opt.model.file = '';
   opt.tolerant = true;
   opt.verbosity = 3;
+  opt.toolbox.MACS.model = struct([]);
 
   assertExceptionThrown(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelFileMissing');
 
@@ -37,6 +40,7 @@ function test_getOptionsFromModel_basic()
   opt.model.file = modelFile('dummy');
   opt.verbosity = 0;
   opt.tolerant = true;
+  opt.toolbox.MACS.model = struct([]);
 
   opt = getOptionsFromModel(opt);
 
@@ -66,6 +70,7 @@ function test_getOptionsFromModel_task()
   opt.model.file = modelFile('dummy');
   opt.verbosity = 0;
   opt.tolerant = true;
+  opt.toolbox.MACS.model = struct([]);
 
   opt = getOptionsFromModel(opt);
 
@@ -90,6 +95,7 @@ function test_getOptionsFromModel_subject()
   opt.model.bm.Input.subject = {'02', '04'};
   opt.verbosity = 0;
   opt.tolerant = true;
+  opt.toolbox.MACS.model = struct([]);
 
   opt = getOptionsFromModel(opt);
 
@@ -111,6 +117,7 @@ function test_getOptionsFromModel_space()
   opt.model.file = modelFile('vislocalizer');
   opt.verbosity = 0;
   opt.tolerant = true;
+  opt.toolbox.MACS.model = struct([]);
 
   opt = getOptionsFromModel(opt);
 
@@ -131,6 +138,7 @@ function test_getOptionsFromModel_query()
   opt.query.acq = 'foo';
   opt.verbosity = 0;
   opt.tolerant = true;
+  opt.toolbox.MACS.model = struct([]);
 
   opt = getOptionsFromModel(opt);
 

@@ -18,10 +18,8 @@ function cliBayesModel(varargin)
   opt.pipeline.type = 'stats';
   opt = checkOptions(opt);
 
-  action = args.Results.action;
-
   saveOptions(opt);
 
-  bidsModelSelection(opt, 'action', action);
+  bidsModelSelection(opt, 'action', 'all');
 
 end
