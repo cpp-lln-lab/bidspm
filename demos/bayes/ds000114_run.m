@@ -50,7 +50,7 @@ default_model_file = fullfile(models_dir, 'default_model.json');
 nb_realignment_param = [6, 24];
 scrubbing = [0, 1];
 
-create_model_families(default_model_file, nb_realignment_param, scrubbing);
+create_model_families(models_dir, default_model_file, nb_realignment_param, scrubbing);
 
 %% Statistics
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
@@ -81,7 +81,7 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'verbosity', VERBOSITY);
 
 %%
-function create_model_families(default_model_file, nb_realignment_param, scrubbing)
+function create_model_families(models_dir, default_model_file, nb_realignment_param, scrubbing)
   % create models from a default one
   %
 
@@ -98,7 +98,7 @@ function create_model_families(default_model_file, nb_realignment_param, scrubbi
 
       design_matrix = model.Nodes.Model.X;
       if scrubbing(j) == 1
-        design_matrix{end + 1} = '*outlier*'; %#ok<*SAGROW>
+        design_matrix{end + 1} = '*outlier*'; %#ok<*AGROW>
       end
       switch nb_realignment_param(i)
         case 0
