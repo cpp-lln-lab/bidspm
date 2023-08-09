@@ -29,6 +29,9 @@ function compileScrubbingStats(statsFolder)
     json = bids.util.jsondecode(thisFile);
 
     output.NumberTimePoints(end + 1) = json.NumberTimePoints;
+    if isempty(json.ProportionCensored)
+      json.ProportionCensored = nan;
+    end
     output.ProportionCensored(end + 1) = json.ProportionCensored;
   end
 
