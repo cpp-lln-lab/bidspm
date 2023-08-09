@@ -18,8 +18,4 @@ function args = inputParserForBayesModel()
   addParameter(args, 'dry_run', false, isLogical);
   addParameter(args, 'skip_validation', false, isLogical);
 
-  % :param ignore:      can be any of ``{'qa'}``
-  % :type  ignore:      cell string
-  addParameter(args, 'ignore', {}, isEmptyOrCellstr);
-
 end

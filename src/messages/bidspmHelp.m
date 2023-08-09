@@ -40,16 +40,18 @@ function bidspmHelp()
   % :type action:           char
   % :param action:          defines the pipeline to run; can be any of:
   %
-  %    - ``'copy'``: copies fmriprep data for smoothing
-  %    - ``'preprocess'``: preprocesses data
-  %    - ``'smooth'``: smooths data
+  %    - ``'copy'``:          copies fmriprep data for smoothing
+  %    - ``'preprocess'``:    preprocesses data
+  %    - ``'smooth'``:        smooths data
   %    - ``'default_model'``: creates a default BIDS stats model
-  %    - ``'create_roi'``: creates ROIs from a given atlas
-  %    - ``'stats'``: runs model specification / estimation, contrast computation, display results
-  %    - ``'contrasts'``: runs contrast computation, display results
-  %    - ``'results'``: displays results
+  %    - ``'create_roi'``:    creates ROIs from a given atlas
+  %    - ``'stats'``:         runs model specification / estimation,
+  %                           contrast computation, display results
+  %    - ``'contrasts'``:     runs contrast computation, display results
+  %    - ``'results'``:       displays results
+  %    - ``'bms'``:           performs bayesian model selection
+  %   - ``'specify_only'``    only specifies the models
   %
-  % *Optional parameters common to all actions*
   %
   % :param participant_label: cell of participants labels.
   %                           For example: ``{'01', '03', '08'}``.
@@ -98,8 +100,6 @@ function bidspmHelp()
   %           'skip_validation', false)
   %
   %
-  % *Extra parameters for preprocessing*
-  %
   % :param boilerplate_only:  Only creates dataset description reports.
   %                           and methods description. Defaults to ``false``.
   % :type  boilerplate_only:  logical
@@ -147,8 +147,6 @@ function bidspmHelp()
   %           'anat_only', false, ...
   %           'force', false)
   %
-  %
-  % *Extra parameters for copy*
   %
   % :param task:       Defaults to ``{}``
   % :type  task:       char or cell string
@@ -264,9 +262,11 @@ function bidspmHelp()
   %
   % .. note::
   %
-  %   - ``'stats'``     runs model specification / estimation, contrast computation, display results
-  %   - ``'contrasts'`` runs contrast computation, display results
-  %   - ``'results'``   displays results
+  %   - ``'stats'``          runs model specification / estimation,
+  %     contrast computation, display results
+  %   - ``'contrasts'``      runs contrast computation, display results
+  %   - ``'results'``        displays results
+  %   - ``'specify_only'``   only specifies the models
   %
   % .. code-block:: matlab
   %
@@ -308,7 +308,6 @@ function bidspmHelp()
   % :type  model_file:  path to JSON file or dir or structure
   %
   %
-  %
   % *Optional parameters*
   %
   % :param fwhm:          smoothing lelvel of the preprocessed data
@@ -345,6 +344,31 @@ function bidspmHelp()
   %                           and methods description. Defaults to ``false``.
   % :type  boilerplate_only:  logical
   %
+  %
+  %
+  % **BAYESIAN MODE SELECTION**
+  %
+  % .. code-block:: matlab
+  %
+  %   bidspm(bids_dir, output_dir, 'subject', ...
+  %          'action', 'stats', ...
+  %          'participant_label', {}, ...
+  %          'space', {'individual', 'IXI549Space'}, ...
+  %          'options', struct([]), ...,
+  %          'verbosity', 2, ...
+  %          'models_dir', models_dir, ...
+  %          'fwhm', 6, ...
+  %          'dry_run', false, ...
+  %          'skip_validation', false)
+  %
+  % :param models_dir:  A path to a dir can be passed as well.
+  %                     In this case all *_smdl.json files will be used
+  %                     and looped over.
+  %
+  % .. note::
+  %
+  %   For the bayesian model selection to function
+  %   you must first specify all your models using the ``'specify_only'`` action.
   %
   %
   % **low level calls**
