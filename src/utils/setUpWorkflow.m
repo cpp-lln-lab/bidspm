@@ -58,7 +58,7 @@ function [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir, indexData)
   end
 
   if strcmp(opt.pipeline.type, 'stats') && ...
-          (isempty(opt.model.file) && isempty(opt.toolbox.MACS.model.files))
+          (isempty(opt.model.file) && ~opt.pipeline.isBms)
     opt = createDefaultStatsModel(BIDS, opt);
   end
 
