@@ -35,7 +35,6 @@ function cliStats(varargin)
   end
 
   opt.pipeline.type = 'stats';
-  opt.pipeline.isBms = false;
 
   if opt.model.designOnly
     contrasts = false;

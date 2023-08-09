@@ -22,6 +22,7 @@ function expectedOptions = defaultOptions(taskName)
                                                          'to', 'T1w'));
 
   expectedOptions.pipeline.type =  '';
+  expectedOptions.pipeline.isBms =  false;
   expectedOptions.pipeline.name = 'bidspm';
 
   expectedOptions.boilerplate_only = false;

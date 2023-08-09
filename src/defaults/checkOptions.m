@@ -62,6 +62,8 @@ function opt = checkOptions(opt)
   %     - ``opt.pipeline.type = 'preproc'`` -
   %       Switch it to ``stats`` when running GLMs.
   %     - ``opt.pipeline.name``
+  %     - ``opt.pipeline.isBms`` whether this is a bayesion model selection
+  %       pipeline
   %
   %     - ``opt.boilerplate_only = false`` -
   %       If set to ``true`` only creates dataset description reports and methods description.
@@ -69,7 +71,8 @@ function opt = checkOptions(opt)
   %
   %     - ``opt.zeropad = 2`` -
   %       Number of zeros used for padding subject numbers,
-  %       in case subjects should be fetched by their index ``1`` and not their label ``O1'``.
+  %       in case subjects should be fetched by their index ``1``
+  %       and not their label ``O1'``.
   %
   %     - ``opt.rename.do = true`` -
   %       Set to ``false`` to skip renaming files with ``bidsRename()``.
@@ -97,7 +100,8 @@ function opt = checkOptions(opt)
   %       Set to ``true`` to only preprocess the anatomical file.
   %
   %     - ``opt.segment.force = false`` -
-  %       Set to ``true`` to ignore previous output of the segmentation and force to run it again
+  %       Set to ``true`` to ignore previous output of the segmentation
+  %       and force to run it again
   %
   %     - ``opt.skullstrip.mean = false`` -
   %       Set to ``true`` to skulstrip mean functional image
@@ -261,6 +265,7 @@ function fieldsToSet = setDefaultOption()
 
   fieldsToSet.pipeline.type = '';
   fieldsToSet.pipeline.name = 'bidspm';
+  fieldsToSet.pipeline.isBms = false;
 
   fieldsToSet.boilerplate_only = false;
 
