@@ -6,7 +6,13 @@ function returnCode = bidspm(varargin)
   % (C) Copyright 2022 bidspm developers
 
   args = defaultInputParser();
-  parse(args, varargin{:});
+  try
+    parse(args, varargin{:});
+  catch ME
+    disp('arguments passed were :');
+    disp([' - ' strjoin(varargin, '\n - ')]);
+    rethrow(ME);
+  end
 
   action = args.Results.action;
 

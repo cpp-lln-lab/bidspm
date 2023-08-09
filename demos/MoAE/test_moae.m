@@ -52,7 +52,7 @@ for iOption = 1:numel(space)
   %% preproc
   bids_dir = fullfile(WD, 'inputs', 'raw');
   output_dir = fullfile(tempname, 'outputs', 'derivatives');
-  mkdir(output_dir);
+  spm_mkdir(output_dir);
 
   bidspm(bids_dir, output_dir, 'subject', ...
          'participant_label', {'01'}, ...
