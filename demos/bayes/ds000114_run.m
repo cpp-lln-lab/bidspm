@@ -50,36 +50,7 @@ default_model_file = fullfile(models_dir, 'default_model.json');
 nb_realignment_param = [6, 24];
 scrubbing = [0, 1];
 
-for i = 1:numel(nb_realignment_param)
-  for j = 1:numel(scrubbing)
-
-    model = bids.util.jsondecode(default_model_file);
-
-    name = sprintf('rp-%i_srub-%i', ...
-                   nb_realignment_param(i), ...
-                   scrubbing(j));
-    model.Name = name;
-    model.Nodes.Name = name;
-
-    design_matrix = model.Nodes.Model.X;
-    if scrubbing(j) == 1
-      design_matrix{end + 1} = '*outlier*'; %#ok<*SAGROW>
-    end
-    switch nb_realignment_param(i)
-      case 0
-      case 6
-        design_matrix{end + 1} = 'rot_?';
-        design_matrix{end + 1} = 'trans_?';
-      case 24
-        design_matrix{end + 1} = 'rot_*';
-        design_matrix{end + 1} = 'trans_*';
-    end
-    model.Nodes.Model.X = design_matrix;
-
-    output_file = fullfile(models_dir, ['model_' name '_smdl.json']);
-    bids.util.jsonencode(output_file, model);
-  end
-end
+create_model_families(default_model_file, nb_realignment_param, scrubbing);
 
 %% Statistics
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
@@ -108,3 +79,40 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'fwhm', FWHM, ...
        'skip_validation', true, ...
        'verbosity', VERBOSITY);
+
+%%
+function create_model_families(default_model_file, nb_realignment_param, scrubbing)
+  % create models from a default one
+  %
+
+  for i = 1:numel(nb_realignment_param)
+    for j = 1:numel(scrubbing)
+
+      model = bids.util.jsondecode(default_model_file);
+
+      name = sprintf('rp-%i_scrub-%i', ...
+                     nb_realignment_param(i), ...
+                     scrubbing(j));
+      model.Name = name;
+      model.Nodes.Name = name;
+
+      design_matrix = model.Nodes.Model.X;
+      if scrubbing(j) == 1
+        design_matrix{end + 1} = '*outlier*'; %#ok<*SAGROW>
+      end
+      switch nb_realignment_param(i)
+        case 0
+        case 6
+          design_matrix{end + 1} = 'rot_?';
+          design_matrix{end + 1} = 'trans_?';
+        case 24
+          design_matrix{end + 1} = 'rot_*';
+          design_matrix{end + 1} = 'trans_*';
+      end
+      model.Nodes.Model.X = design_matrix;
+
+      output_file = fullfile(models_dir, ['model_' name '_smdl.json']);
+      bids.util.jsonencode(output_file, model);
+    end
+  end
+end
