@@ -16,6 +16,7 @@ function args = inputParserForStats()
   isCellStr = @(x) iscellstr(x);
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
 
+  addParameter(args, 'space', {}, isCellStr);
   addParameter(args, 'task', {}, isCellStr);
   addParameter(args, 'preproc_dir', pwd, isFolder);
   addParameter(args, 'model_file', struct([]), isFileOrStructOrIsDir);

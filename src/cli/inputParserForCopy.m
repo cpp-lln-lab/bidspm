@@ -7,12 +7,14 @@ function args = inputParserForCopy()
   % (C) Copyright 2023 bidspm developers
   isLogical = @(x) islogical(x) && numel(x) == 1;
   isCharOrCellstr = @(x) ischar(x) || iscellstr(x);  %#ok<*ISCLSTR>
+  isCellStr = @(x) iscellstr(x);
 
   args = baseInputParser();
 
   % allow unmatched in case this is called from cliSmooth
   args.KeepUnmatched = true;
 
+  addParameter(args, 'space', {}, isCellStr);
   addParameter(args, 'task', {}, isCharOrCellstr);
   addParameter(args, 'force', false, isLogical);
   addParameter(args, 'anat_only', false, isLogical);

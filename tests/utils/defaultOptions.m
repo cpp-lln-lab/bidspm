@@ -29,7 +29,7 @@ function expectedOptions = defaultOptions(taskName)
 
   expectedOptions.anatOnly = false;
 
-  expectedOptions.space = {'individual'    'IXI549Space'};
+  expectedOptions.space = {'individual', 'IXI549Space'};
 
   expectedOptions.useBidsSchema = false;
 

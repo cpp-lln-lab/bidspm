@@ -10,7 +10,6 @@ function returnCode = bidspm(varargin)
     parse(args, varargin{:});
   catch ME
     disp('arguments passed were :');
-    varargin{i};
     for i = 1:numel(varargin)
       fprintf(1, '- ');
       fprintf(varargin{i});
