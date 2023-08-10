@@ -37,7 +37,7 @@ function cliPreprocess(varargin)
               'outputPath', fullfile(opt.dir.output, 'reports'), ...
               'pipelineType', 'preprocess', ...
               'verbosity', 0);
-  if opt.boilerplate_only
+  if opt.boilerplateOnly
     return
   end
 

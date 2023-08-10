@@ -29,6 +29,7 @@ function args = inputParserForStats()
   addParameter(args, 'design_only', false, isLogical);
   addParameter(args, 'concatenate', false, isLogical);
   addParameter(args, 'keep_residuals', false, isLogical);
+  addParameter(args, 'use_dummy_regressor', false, isLogical);
 
   addParameter(args, 'roi_atlas', 'neuromorphometrics', isInAvailableAtlas);
 

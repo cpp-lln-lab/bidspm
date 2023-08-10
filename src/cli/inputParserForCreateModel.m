@@ -8,6 +8,7 @@ function args = inputParserForCreateModel()
   args = baseInputParser();
 
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
+  isCellStr = @(x) iscellstr(x);
 
   addParameter(args, 'space', {}, isCellStr);
   addParameter(args, 'task', {}, isEmptyOrCellstr);

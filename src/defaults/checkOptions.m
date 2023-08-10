@@ -65,7 +65,7 @@ function opt = checkOptions(opt)
   %     - ``opt.pipeline.isBms`` whether this is a bayesion model selection
   %       pipeline
   %
-  %     - ``opt.boilerplate_only = false`` -
+  %     - ``opt.boilerplateOnly = false`` -
   %       If set to ``true`` only creates dataset description reports and methods description.
   %       Overwrites previous versions.
   %
@@ -267,7 +267,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.pipeline.name = 'bidspm';
   fieldsToSet.pipeline.isBms = false;
 
-  fieldsToSet.boilerplate_only = false;
+  fieldsToSet.boilerplateOnly = false;
 
   fieldsToSet.useBidsSchema = false;
 

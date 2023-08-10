@@ -18,7 +18,7 @@ function cliCreateRoi(varargin)
               'pipelineType', 'create_roi', ...
               'verbosity', 0);
 
-  if opt.boilerplate_only
+  if opt.boilerplateOnly
     return
   end
 

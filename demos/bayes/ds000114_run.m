@@ -17,7 +17,7 @@ VERBOSITY = 1;
 FWHM = 8;
 
 % to run on fewer subjects
-TESTING = false;
+TESTING = true;
 
 % The directory where the data are located
 root_dir = fileparts(mfilename('fullpath'));
