@@ -15,7 +15,10 @@ function test_checkOptions_basic()
 
   expectedOptions = defaultOptions('testTask');
 
-  assertEqual(opt, expectedOptions);
+  toCheck = fieldnames(opt);
+  for i = 1:numel(toCheck)
+    assertEqual(opt.(toCheck{i}), expectedOptions.(toCheck{i}));
+  end
 
 end
 

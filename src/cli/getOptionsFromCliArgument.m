@@ -94,7 +94,7 @@ function opt = optionsPreprocessing(opt, args, action)
       opt.QA.glm.do = false;
     end
 
-    opt.dummy_scans = args.Results.dummy_scans;
+    opt.dummyScans = args.Results.dummy_scans;
 
     opt.anatOnly = args.Results.anat_only;
 

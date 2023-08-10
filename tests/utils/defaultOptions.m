@@ -25,7 +25,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.pipeline.isBms =  false;
   expectedOptions.pipeline.name = 'bidspm';
 
-  expectedOptions.boilerplate_only = false;
+  expectedOptions.boilerplateOnly = false;
 
   expectedOptions.anatOnly = false;
 
@@ -36,7 +36,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.fwhm.func = 6;
   expectedOptions.fwhm.contrast = 0;
 
-  expectedOptions.dummy_scans = 0;
+  expectedOptions.dummyScans = 0;
 
   expectedOptions.stc.referenceSlice = [];
   expectedOptions.stc.skip = false;

@@ -9,13 +9,7 @@ function returnCode = bidspm(varargin)
   try
     parse(args, varargin{:});
   catch ME
-    disp('arguments passed were :');
-    for i = 1:numel(varargin)
-      fprintf(1, '- ');
-      fprintf(varargin{i});
-      fprintf(1, '\n');
-    end
-    fprintf(1, '\n');
+    displayArguments(varargin{:});
     rethrow(ME);
   end
 
@@ -56,7 +50,7 @@ function returnCode = executeAction(varargin)
 
     case 'help'
       system('bidspm --help');
-      help(fullfile(fileparts(mfilename('fullpath')), 'src', 'messages', 'bidspmHelp.m'));
+      help(fullfile(rootDir(), 'src', 'messages', 'bidspmHelp.m'));
 
     case 'version'
       versionBidspm();
@@ -108,12 +102,25 @@ function returnCode = executeAction(varargin)
 
 end
 
+function displayArguments(varargin)
+  disp('arguments passed were :');
+  for i = 1:numel(varargin)
+    fprintf('- ');
+    disp(varargin{i});
+  end
+  fprintf(1, '\n');
+end
+
+function value = rootDir()
+  value = fullfile(fileparts(mfilename('fullpath')));
+end
+
 %% low level actions
 function versionBidspm()
   try
     versionNumber = getVersion();
   catch
-    versionNumber = fileread(fullfile(fileparts(mfilename('fullpath')), 'version.txt'));
+    versionNumber = fileread(rootDir(), 'version.txt');
     versionNumber = versionNumber(1:end - 1);
   end
   fprintf(1, '%s\n', versionNumber);
@@ -144,8 +151,6 @@ function initBidspm(dev)
   % octave packages
   installlist = {'io', 'statistics', 'image'};
 
-  thisDirectory = fileparts(mfilename('fullpath'));
-
   global BIDSPM_INITIALIZED
   global BIDSPM_PATHS
 
@@ -157,19 +162,19 @@ function initBidspm(dev)
     end
 
     % add bidspm source code
-    BIDSPM_PATHS = fullfile(thisDirectory);
+    BIDSPM_PATHS = fullfile(rootDir());
     BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
                        pathSep, ...
-                       genpath(fullfile(thisDirectory, 'src')));
+                       genpath(fullfile(rootDir(), 'src')));
     if dev
       BIDSPM_PATHS = cat(2, BIDSPM_PATHS, pathSep, ...
-                         fullfile(thisDirectory, 'tests', 'utils'));
+                         fullfile(rootDir(), 'tests', 'utils'));
     end
 
     % for some reasons this folder was otherwise not added to the path in Octave
     BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
                        pathSep, ...
-                       genpath(fullfile(thisDirectory, 'src', 'workflows', 'stats')));
+                       genpath(fullfile(rootDir(), 'src', 'workflows', 'stats')));
 
     % add library that do not have an set up script
     libList = {'spmup'};
@@ -177,7 +182,7 @@ function initBidspm(dev)
     for i = 1:numel(libList)
       BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
                          pathSep, ...
-                         genpath(fullfile(thisDirectory, 'lib', libList{i})));
+                         genpath(fullfile(rootDir(), 'lib', libList{i})));
     end
 
     libList = {'mancoreg', ...
@@ -187,23 +192,23 @@ function initBidspm(dev)
                'utils'};
     for i = 1:numel(libList)
       BIDSPM_PATHS = cat(2, BIDSPM_PATHS, pathSep, ...
-                         fullfile(thisDirectory, 'lib', libList{i}));
+                         fullfile(rootDir(), 'lib', libList{i}));
     end
 
     BIDSPM_PATHS = cat(2, BIDSPM_PATHS, pathSep, ...
-                       fullfile(thisDirectory, 'lib', 'brain_colours', 'code'));
+                       fullfile(rootDir(), 'lib', 'brain_colours', 'code'));
 
     BIDSPM_PATHS = cat(2, BIDSPM_PATHS, pathSep, ...
-                       fullfile(thisDirectory, 'lib', 'riksneurotools', 'GLM'));
+                       fullfile(rootDir(), 'lib', 'riksneurotools', 'GLM'));
 
     addpath(BIDSPM_PATHS, '-begin');
 
     silenceOctaveWarning();
 
     % add library that have a set up script
-    run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'initCppRoi'));
-    run(fullfile(thisDirectory, 'lib', 'spm_2_bids', 'init_spm_2_bids'));
-    run(fullfile(thisDirectory, 'lib', 'octache', 'setup'));
+    run(fullfile(rootDir(), 'lib', 'CPP_ROI', 'initCppRoi'));
+    run(fullfile(rootDir(), 'lib', 'spm_2_bids', 'init_spm_2_bids'));
+    run(fullfile(rootDir(), 'lib', 'octache', 'setup'));
 
     checkDependencies(opt);
     printCredits(opt);
@@ -262,8 +267,6 @@ function uninitBidspm()
 
   % (C) Copyright 2021 bidspm developers
 
-  thisDirectory = fileparts(mfilename('fullpath'));
-
   global BIDSPM_INITIALIZED
   global BIDSPM_PATHS
 
@@ -272,7 +275,7 @@ function uninitBidspm()
     return
 
   else
-    run(fullfile(thisDirectory, 'lib', 'CPP_ROI', 'uninitCppRoi'));
+    run(fullfile(rootDir(), 'lib', 'CPP_ROI', 'uninitCppRoi'));
     rmpath(BIDSPM_PATHS);
     spm('Clean');
     spm('Quit');

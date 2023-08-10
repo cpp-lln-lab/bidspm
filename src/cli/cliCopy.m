@@ -6,7 +6,12 @@ function cliCopy(varargin)
 
   % (C) Copyright 2023 bidspm developers
   args = inputParserForCopy();
-  parse(args, varargin{:});
+  try
+    parse(args, varargin{:});
+  catch ME
+    displayArguments(varargin{:});
+    rethrow(ME);
+  end
 
   opt = getOptionsFromCliArgument(args);
   opt.pipeline.type = 'preproc';

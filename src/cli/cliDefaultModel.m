@@ -6,7 +6,13 @@ function cliDefaultModel(varargin)
 
   % (C) Copyright 2023 bidspm developers
   args = inputParserForCreateModel();
-  parse(args, varargin{:});
+  try
+    parse(args, varargin{:});
+  catch ME
+    displayArguments(varargin{:});
+    rethrow(ME);
+  end
+
   opt = getOptionsFromCliArgument(args);
   if ~isfield(opt, 'taskName')
     opt.taskName = '';
@@ -14,5 +20,6 @@ function cliDefaultModel(varargin)
   opt = checkOptions(opt);
 
   saveOptions(opt);
+
   createDefaultStatsModel(opt.dir.raw, opt, lower(args.Results.ignore));
 end

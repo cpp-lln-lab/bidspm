@@ -113,7 +113,6 @@ function opt = checkOptions(opt)
   %     - ``opt.skullstrip.do = true``  -
   %        Set to ``true`` to skip skullstripping.
   %
-  %
   %     - ``opt.stc.skip = false`` -
   %       Boolean flag to skip slice time correction or not.
   %     - ``opt.stc.referenceSlice = []`` -
@@ -122,6 +121,7 @@ function opt = checkOptions(opt)
   %
   %     - ``opt.funcVoxelDims = []`` -
   %       Voxel dimensions to use for resampling of functional data at normalization.
+  %
   %
   %  - **STATISTICS OPTIONS**
   %
@@ -143,15 +143,12 @@ function opt = checkOptions(opt)
   %
   %     - ``opt.glm.roibased.do = false`` -
   %       Set to ``true`` to use the ``bidsRoiBasedGLM`` workflow.
-  %
   %     - ``opt.glm.useDummyRegressor = false`` -
   %       Set to ``true`` to add dummy regressors when a condition is missing from a run.
   %       See ``bidsModelSelection()`` for more information.
-  %
   %     - ``opt.glm.maxNbVols = Inf`` -
   %       Sets the maximum number of volumes to include in a run in a subject level GLM.
   %       This can be useful if some time series have more volumes than necessary.
-  %
   %     - ``opt.glm.keepResiduals = false`` -
   %       Keep the subject level GLM residuals if set to ``true``.
   %
@@ -294,7 +291,7 @@ function fieldsToSet = setDefaultOption()
   %% General options for functional data
   fieldsToSet.funcVolToSelect = [];
 
-  fieldsToSet.dummy_scans = 0;
+  fieldsToSet.dummyScans = 0;
 
   %% Options for slice time correction
   % all in seconds

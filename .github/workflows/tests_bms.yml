@@ -84,4 +84,4 @@ jobs:
     - name: Run system tests MATLAB BMS
       uses: matlab-actions/run-command@v1.2.1
       with:
-        command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_bms};
+        command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); ls; run system_tests_bms};

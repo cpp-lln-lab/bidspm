@@ -21,10 +21,10 @@ function test_boilerplate_spatial_preproc()
   for iUseUnwarp = 1:2
     for iSpace = 1:numel(space)
       for fwhm = [0, 6]
-        for dummy_scans = [0, 4]
+        for dummyScans = [0, 4]
 
           printTestParameters(mfilename(), ...
-                              dummy_scans, ...
+                              dummyScans, ...
                               space{iSpace}, ...
                               useUnwarp{iUseUnwarp}, ...
                               fwhm);
@@ -35,7 +35,7 @@ function test_boilerplate_spatial_preproc()
 
           opt.stc.referenceSlice = 32;
 
-          opt.dummy_scans = dummy_scans;
+          opt.dummyScans = dummyScans;
           opt.space = space{iSpace};
           opt.realign.useUnwarp = useUnwarp{iUseUnwarp};
           opt.fwhm.func = fwhm;

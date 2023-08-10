@@ -15,7 +15,7 @@ clear;
 clc;
 close all;
 
-download_data = false;
+download_data = true;
 clean = true;
 
 WD = fileparts(mfilename('fullpath'));
@@ -54,11 +54,6 @@ for iOption = 1:numel(space)
   output_dir = fullfile(tempname, 'outputs', 'derivatives');
   spm_mkdir(output_dir);
 
-  disp(bids_dir);
-  disp(output_dir);
-  disp(ignore{iOption});
-  disp(space(iOption));
-  disp(optionsFile);
   bidspm(bids_dir, output_dir, 'subject', ...
          'participant_label', {'01'}, ...
          'action', 'preprocess', ...

@@ -9,12 +9,16 @@ function cliBayesModel(varargin)
 
   % (C) Copyright 2023 bidspm developers
   args = inputParserForBayesModel();
-  parse(args, varargin{:});
+  try
+    parse(args, varargin{:});
+  catch ME
+    displayArguments(varargin{:});
+    rethrow(ME);
+  end
 
   validate(args);
 
   opt = getOptionsFromCliArgument(args);
-
   opt.pipeline.type = 'stats';
   opt.pipeline.isBms = true;
   opt = checkOptions(opt);
