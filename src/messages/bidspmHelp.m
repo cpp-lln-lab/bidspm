@@ -364,7 +364,9 @@ function bidspmHelp()
   %                                and methods description. Defaults to ``false``.
   % :type  boilerplate_only:       ogical
   %
-  % :param use_dummy_regressor:    Defaults to ``false``.
+  % :param use_dummy_regressor:    If true any missing condition will be modelled
+  %                                by a dummy regressor of ``NaN``.
+  %                                Defaults to ``false``.
   % :type  use_dummy_regressor:    logical
   %
   %
