@@ -39,7 +39,7 @@ jobs:
     strategy:
       matrix:
         test_type: [system]
-        script: [moae, facerep, fmriprep]
+        script: [moae, facerep, fmriprep, bms]
         os: [ubuntu-latest, macos-latest]
         matlab: [R2022b]
         include:
@@ -59,12 +59,6 @@ jobs:
       if: matrix.test_type == 'system'
       run: echo ${{ matrix.test_type }} test ${{ matrix.script }}
 
-    - name: Install dependencies
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        sudo apt-get -y -qq update
-        sudo apt-get -y install unzip wget
-
     - name: Install Node
       uses: actions/setup-node@v3
       with:
@@ -74,6 +68,14 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
+
+    - name: Install dependencies
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get -y -qq update
+        sudo apt-get -y install unzip wget git-annex
+        python -m pip install --upgrade pip setuptools
+        pip install datalad
 
     - name: Clone bidspm
       uses: actions/checkout@v3
@@ -103,6 +105,9 @@ jobs:
       run: |
         cd tests
         make data
+
+    - name: Get data for BMS
+      run: make -C demos/bayes data_ds000114
 
     - name: Install Moxunit and MOcov
       run: |
