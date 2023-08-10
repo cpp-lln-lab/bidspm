@@ -39,10 +39,14 @@ jobs:
     strategy:
       matrix:
         test_type: [system]
-        script: [moae, facerep, fmriprep, bms]
+        script: [moae, facerep, fmriprep]
         os: [ubuntu-latest, macos-latest]
         matlab: [R2022b]
         include:
+        - test_type: system
+          os: ubuntu-latest
+          matlab: R2022b
+          script: bms
         - test_type: unit
           os: ubuntu-latest
           matlab: R2022b
@@ -107,6 +111,7 @@ jobs:
         make data
 
     - name: Get data for BMS
+      if: matrix.script == 'bms'
       run: make -C demos/bayes data_ds000114
 
     - name: Install Moxunit and MOcov
@@ -134,7 +139,6 @@ jobs:
         name: codecov-matlab
         fail_ci_if_error: false
       # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
-
 
     - name: Run system tests MATLAB ${{ matrix.script }}
       if: matrix.test_type == 'system'

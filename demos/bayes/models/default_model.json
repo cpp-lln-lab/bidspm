@@ -39,6 +39,12 @@
             ],
             "suffix": [
               "mask"
+            ],
+            "task": [
+              "overtverbgeneration"
+            ],
+            "space": [
+              "MNI152NLin2009cAsym"
             ]
           }
         },

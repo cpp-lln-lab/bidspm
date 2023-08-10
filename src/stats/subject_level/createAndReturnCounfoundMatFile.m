@@ -61,6 +61,11 @@ function [counfoundFile, counfoundMeta] = createAndReturnCounfoundMatFile(opt, t
   ffxDir = getFFXdir(bf.entities.sub, opt);
   counfoundFile = fullfile(ffxDir, bf.filename);
 
+  if isempty(names) || isempty(R)
+    counfoundFile = '';
+    counfoundMeta = '';
+    return
+  end
   save(counfoundFile, ...
        'names', 'R', ...
        '-v7');

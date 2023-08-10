@@ -17,7 +17,7 @@ VERBOSITY = 1;
 FWHM = 8;
 
 % to run on fewer subjects
-TESTING = true;
+TESTING = false;
 
 % The directory where the data are located
 root_dir = fileparts(mfilename('fullpath'));
@@ -47,7 +47,7 @@ end
 
 default_model_file = fullfile(models_dir, 'default_model.json');
 % FIXME: crashes with 0 real param
-nb_realignment_param = [6, 24];
+nb_realignment_param = [0, 6, 24];
 scrubbing = [0, 1];
 
 create_model_families(models_dir, default_model_file, nb_realignment_param, scrubbing);
