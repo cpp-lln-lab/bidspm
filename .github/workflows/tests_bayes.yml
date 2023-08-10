@@ -57,14 +57,14 @@ jobs:
         python -m pip install --upgrade pip setuptools
         pip install datalad
 
-    - name: Get data
-      run: make -C demos/bayes data_ds000114 
-
     - name: Clone bidspm
       uses: actions/checkout@v3
       with:
         submodules: recursive
         fetch-depth: 0
+
+    - name: Get data
+      run: make -C demos/bayes data_ds000114
 
     - name: Install validators
       run: make install
