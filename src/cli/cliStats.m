@@ -58,7 +58,7 @@ function cliStats(varargin)
                 'outputPath', fullfile(opt.dir.output, 'reports'), ...
                 'pipelineType', 'stats', ...
                 'verbosity', 0);
-    if opt.boilerplate_only
+    if opt.boilerplateOnly
       continue
     end
 

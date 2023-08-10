@@ -1,0 +1,87 @@
+---
+name: tests bayesian model selection
+
+# Uses the cron schedule for github actions
+#
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows#scheduled-events
+#
+# ┌───────────── minute (0 - 59)
+# │ ┌───────────── hour (0 - 23)
+# │ │ ┌───────────── day of the month (1 - 31)
+# │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+# │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+# │ │ │ │ │
+# │ │ │ │ │
+# │ │ │ │ │
+# * * * * *
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+  - cron: 0 0 1,15 * *
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+
+  tests:
+
+    if: github.repository_owner == 'cpp-lln-lab'
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Install Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get -y -qq update
+        sudo apt-get install -y git-annex
+        python -m pip install --upgrade pip setuptools
+        pip install datalad
+
+    - name: Get data
+      run: make -C demos/bayes data_ds000114 
+
+    - name: Clone bidspm
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        fetch-depth: 0
+
+    - name: Install validators
+      run: make install
+
+    - name: Install SPM
+      run: |
+        git clone https://github.com/spm/spm12.git --depth 1
+
+    - name: Copy Macs toolbox to SPM inputs_folder
+      run: cp -rv lib/MACS spm12/toolbox/MACS
+
+    - name: Install MATLAB
+      uses: matlab-actions/setup-matlab@v1.2.4
+      with:
+        release: R2022b
+
+    - name: Run system tests MATLAB BMS
+      uses: matlab-actions/run-command@v1.2.1
+      with:
+        command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_bms};

@@ -40,7 +40,7 @@ function opt = getOptionsFromCliArgument(args)
   end
 
   if isfield(args.Results, 'boilerplate_only')
-    opt.boilerplate_only = args.Results.boilerplate_only;
+    opt.boilerplateOnly = args.Results.boilerplate_only;
   end
 
   if isfield(args.Results, 'dry_run')
@@ -198,6 +198,9 @@ function opt = overrideFwhm(opt, args)
 end
 
 function opt = overrideSpace(opt, args)
+  if ~isfield(args.Results, 'space')
+    return
+  end
   if ~isempty(args.Results.space)
     if isfield(opt, 'space') && ~all(ismember(args.Results.space, opt.space))
       overrideMsg('space', convertToString(args.Results.space), ...

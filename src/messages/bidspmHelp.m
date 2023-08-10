@@ -306,6 +306,7 @@ function bidspmHelp()
   %          'design_only', false, ...
   %          'ignore', {}, ...
   %          'concatenate', false, ...
+  %          'use_dummy_regressor', false)
   %          'skip_validation', false)
   %
   %
@@ -359,9 +360,14 @@ function bidspmHelp()
   % :param roi_name:      Names or regex expression of the ROI to use.
   % :type  roi_name:      cell string
   %
-  % :param boilerplate_only:  Only creates dataset description reports.
-  %                           and methods description. Defaults to ``false``.
-  % :type  boilerplate_only:  logical
+  % :param boilerplate_only:       Only creates dataset description reports.
+  %                                and methods description. Defaults to ``false``.
+  % :type  boilerplate_only:       logical
+  %
+  % :param use_dummy_regressor:    If true any missing condition will be modelled
+  %                                by a dummy regressor of ``NaN``.
+  %                                Defaults to ``false``.
+  % :type  use_dummy_regressor:    logical
   %
   %
   %
@@ -393,7 +399,7 @@ function bidspmHelp()
   %
   %   For the bayesian model selection to function
   %   you must first specify all your models using the ``'specify_only'`` action
-  %   with the options ``useDummyRegressor = true``.
+  %   with the options ``'use_dummy_regressor', true``.
   %
   %   .. code-block:: matlab
   %
@@ -401,11 +407,11 @@ function bidspmHelp()
   %
   %          bidspm(bids_dir, output_dir, 'subject', ...
   %                'participant_label', participant_label, ...
-  %                'action', 'specify_only', ...
   %                'preproc_dir', preproc_dir, ...
+  %                'action', 'specify_only', ...
   %                'model_file', models_dir, ...
-  %                'fwhm', FWHM, ...
-  %                'options', opt);
+  %                'use_dummy_regressor', true
+  %                'fwhm', FWHM);
   %
   %
   % **low level calls**
