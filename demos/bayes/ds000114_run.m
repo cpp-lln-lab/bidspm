@@ -7,7 +7,7 @@ addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
 % set to false to not re run the smoothing
-SMOOTH = false;
+SMOOTH = true;
 
 % set to false to not re run the model specification
 FIRST_LEVEL = true;
@@ -17,7 +17,7 @@ VERBOSITY = 1;
 FWHM = 8;
 
 % to run on fewer subjects
-TESTING = false;
+TESTING = true;
 
 % The directory where the data are located
 root_dir = fileparts(mfilename('fullpath'));
@@ -29,7 +29,7 @@ models_dir = fullfile(root_dir, 'models');
 
 participant_label = {'[0-9]*'};
 if TESTING
-  participant_label = {'^0[12]$'};
+  participant_label = {'^0[123]$'};
 end
 
 %% Smooth

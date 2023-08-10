@@ -44,9 +44,9 @@ jobs:
         matlab: [R2022b]
         include:
         - test_type: system
+          script: bms
           os: ubuntu-latest
           matlab: R2022b
-          script: bms
         - test_type: unit
           os: ubuntu-latest
           matlab: R2022b
