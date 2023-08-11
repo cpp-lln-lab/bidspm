@@ -119,7 +119,10 @@ function opt = optionsStats(opt, args, action)
     end
 
     opt.model.designOnly = args.Results.design_only;
+
     opt.glm.keepResiduals = args.Results.keep_residuals;
+
+    opt.glm.useDummyRegressor =  args.Results.use_dummy_regressor;
 
     opt = overrideRoiBased(opt, args);
 

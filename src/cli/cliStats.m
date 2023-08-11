@@ -29,6 +29,7 @@ function cliStats(varargin)
   end
 
   opt = getOptionsFromCliArgument(args);
+
   if opt.glm.roibased.do
     opt.bidsFilterFile.roi.space = opt.space;
     opt.bidsFilterFile.roi.label = opt.roi.name;

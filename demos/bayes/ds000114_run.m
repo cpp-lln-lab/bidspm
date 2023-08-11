@@ -29,7 +29,7 @@ models_dir = fullfile(root_dir, 'models');
 
 participant_label = {'[0-9]*'};
 if TESTING
-  participant_label = {'^0[123]$'};
+  participant_label = {'^0[12]$'};
 end
 
 %% Smooth
@@ -49,11 +49,14 @@ end
 %% create models from a default one
 
 default_model_file = fullfile(models_dir, 'default_model.json');
-% FIXME: crashes with 0 real param
-nb_realignment_param = [0, 6, 24];
-scrubbing = [0, 1];
 
-create_model_families(models_dir, default_model_file, nb_realignment_param, scrubbing);
+mutliverse.strategy = {'motion', 'wm_csf', 'scrub', 'non_steady_state'};
+mutliverse.motion = {'none', 'basic', 'full'};
+mutliverse.scrub = [false, true];
+mutliverse.wm_csf = {'none', 'basic', 'full'};
+mutliverse.non_steady_state = [false, true];
+
+create_model_families(models_dir, default_model_file, mutliverse);
 
 %% Statistics
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
@@ -82,38 +85,66 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'verbosity', VERBOSITY);
 
 %%
-function create_model_families(models_dir, default_model_file, nb_realignment_param, scrubbing)
+function create_model_families(models_dir, default_model_file, mutliverse)
   % create models from a default one
   %
 
-  for i = 1:numel(nb_realignment_param)
-    for j = 1:numel(scrubbing)
+  % TODO incorporate into bidspm
 
-      model = bids.util.jsondecode(default_model_file);
+  % TODO add support for 12 motion regressors
 
-      name = sprintf('rp-%i_scrub-%i', ...
-                     nb_realignment_param(i), ...
-                     scrubbing(j));
-      model.Name = name;
-      model.Nodes.Name = name;
+  for i = 1:numel(mutliverse.motion)
+    for j = 1:numel(mutliverse.scrub)
+      for k = 1:numel(mutliverse.wm_csf)
+        for l = 1:numel(mutliverse.non_steady_state)
 
-      design_matrix = model.Nodes.Model.X;
-      if scrubbing(j) == 1
-        design_matrix{end + 1} = '*outlier*'; %#ok<*AGROW>
+          model = bids.util.jsondecode(default_model_file);
+
+          name = sprintf('rp-%s_scrub-%i_tissue-%s_nsso-%i', ...
+                         mutliverse.motion{i}, ...
+                         mutliverse.scrub(j), ...
+                         mutliverse.wm_csf{k}, ...
+                         mutliverse.non_steady_state(l));
+          model.Name = name;
+          model.Nodes.Name = name;
+
+          design_matrix = model.Nodes.Model.X;
+
+          switch mutliverse.motion{i}
+            case 'none'
+            case 'basic'
+              design_matrix{end + 1} = 'rot_?';
+              design_matrix{end + 1} = 'trans_?';
+            case 12
+            case 'full'
+              design_matrix{end + 1} = 'rot_*';
+              design_matrix{end + 1} = 'trans_*';
+          end
+
+          if mutliverse.scrub(j) == 1
+            design_matrix{end + 1} = 'motion_outlier*'; %#ok<*AGROW>
+          end
+
+          switch mutliverse.wm_csf{k}
+            case 'none'
+            case 'basic'
+              design_matrix{end + 1} = 'csf';
+              design_matrix{end + 1} = 'white';
+            case 'full'
+              design_matrix{end + 1} = 'csf_*';
+              design_matrix{end + 1} = 'white_*';
+          end
+
+          if mutliverse.non_steady_state(l)
+            design_matrix{end + 1} = 'non_steady_state_outlier*';
+          end
+
+          model.Nodes.Model.X = design_matrix;
+
+          output_file = fullfile(models_dir, ['model_' name '_smdl.json']);
+          bids.util.jsonencode(output_file, model);
+        end
       end
-      switch nb_realignment_param(i)
-        case 0
-        case 6
-          design_matrix{end + 1} = 'rot_?';
-          design_matrix{end + 1} = 'trans_?';
-        case 24
-          design_matrix{end + 1} = 'rot_*';
-          design_matrix{end + 1} = 'trans_*';
-      end
-      model.Nodes.Model.X = design_matrix;
-
-      output_file = fullfile(models_dir, ['model_' name '_smdl.json']);
-      bids.util.jsonencode(output_file, model);
     end
   end
 end
