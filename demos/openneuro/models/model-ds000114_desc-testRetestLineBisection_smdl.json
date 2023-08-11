@@ -6,7 +6,9 @@
     "task": [
       "linebisection"
     ],
-    "space": ["MNI152NLin2009cAsym"]
+    "space": [
+      "MNI152NLin2009cAsym"
+    ]
   },
   "Nodes": [
     {
@@ -42,8 +44,12 @@
         "Options": {
           "HighPassFilterCutoffHz": 0.008,
           "Mask": {
-            "desc": ["brain"],
-            "suffix": ["mask"]
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
           }
         },
         "Software": {
@@ -65,18 +71,18 @@
       },
       "Contrasts": [
         {
-           "Name": "TaskResponded_gt_CtrlResponded",
-           "ConditionList": [
-              "trial_type.Correct_Task",
-              "trial_type.Incorrect_Task",
-              "trial_type.Response_Control"
-           ],
-           "Weights": [
-              0.5,
-              0.5,
-              -1
-           ],
-           "Test": "t"
+          "Name": "TaskResponded_gt_CtrlResponded",
+          "ConditionList": [
+            "trial_type.Correct_Task",
+            "trial_type.Incorrect_Task",
+            "trial_type.Response_Control"
+          ],
+          "Weights": [
+            0.5,
+            0.5,
+            -1
+          ],
+          "Test": "t"
         }
       ]
     },
@@ -89,7 +95,9 @@
         "contrast"
       ],
       "Model": {
-        "X": [1],
+        "X": [
+          1
+        ],
         "Type": "glm"
       },
       "DummyContrasts": {
@@ -104,7 +112,9 @@
         "contrast"
       ],
       "Model": {
-        "X": [1],
+        "X": [
+          1
+        ],
         "Type": "glm"
       },
       "DummyContrasts": {
@@ -119,15 +129,24 @@
         "contrast"
       ],
       "Model": {
-        "X": ["session", 1],
+        "X": [
+          "session",
+          1
+        ],
         "Type": "glm"
       },
       "Contrasts": [
         {
-        "Name": "test_gt_retest",
-        "ConditionList": ["test", "retest"],
-        "Weights": [1, -1],
-        "Test": "t"
+          "Name": "test_gt_retest",
+          "ConditionList": [
+            "test",
+            "retest"
+          ],
+          "Weights": [
+            1,
+            -1
+          ],
+          "Test": "t"
         }
       ]
     }

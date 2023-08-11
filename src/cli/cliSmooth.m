@@ -9,7 +9,12 @@ function cliSmooth(varargin)
   % TODO make sure that options defined in JSON or passed as a structure
   % overrides any other arguments
   args = inputParserForSmooth();
-  parse(args, varargin{:});
+  try
+    parse(args, varargin{:});
+  catch ME
+    displayArguments(varargin{:});
+    rethrow(ME);
+  end
 
   opt = getOptionsFromCliArgument(args);
   opt.pipeline.type = 'preproc';

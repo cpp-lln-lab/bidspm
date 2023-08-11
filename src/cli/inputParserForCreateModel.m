@@ -8,9 +8,10 @@ function args = inputParserForCreateModel()
   args = baseInputParser();
 
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
+  isCellStr = @(x) iscellstr(x);
 
-  % realying on the base parser adds too many options
-  % like task
+  addParameter(args, 'space', {}, isCellStr);
+  addParameter(args, 'task', {}, isEmptyOrCellstr);
 
   % :param ignore: Optional. Cell string that can contain:
   %                - ``"Transformations"``

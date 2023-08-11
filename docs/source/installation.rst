@@ -6,13 +6,13 @@ Dependencies
 
 This SPM toolbox runs with Matlab and Octave.
 
-============  ================   ======================
+============  ================   =========================================
 Dependencies  Minimum required   Used for testing in CI
-============  ================   ======================
-MATLAB        2014               2020a on Ubuntu 22.04
-Octave        6.4.0              6.4.0 on Ubuntu 20.04
+============  ================   =========================================
+MATLAB        2014               2022a on Ubuntu 22.04, Windowns and MacOS
+Octave        6.4.0              6.4.0 on Ubuntu 22.04
 SPM12         7219               7771
-============  ================   ======================
+============  ================   =========================================
 
 Some functionalities require some extra SPM toolbox to work:
 for example the ALI toolbox for brain lesion segmentation.
@@ -46,13 +46,6 @@ with the following git command:
   git clone --recurse-submodules https://github.com/cpp-lln-lab/bidspm.git
 
 If you need the latest development, then you must clone from the ``dev`` branch:
-
-.. code-block:: bash
-
-  git clone --branch dev --recurse-submodules https://github.com/cpp-lln-lab/bidspm.git
-
-If you just need the code without the commit history download and unzip,
-you can fin the latest version from `HERE <https://github.com/cpp-lln-lab/bidspm/releases>`_.
 
 Initialization
 ==============

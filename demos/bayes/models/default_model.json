@@ -1,0 +1,60 @@
+{
+  "Name": "default model",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "FIXME",
+  "Input": {
+    "task": [
+      "overtverbgeneration"
+    ],
+    "space": [
+      "MNI152NLin2009cAsym"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "FIXME",
+      "GroupBy": [
+        "run",
+        "session",
+        "subject"
+      ],
+      "Model": {
+        "X": [
+          "trial_type.Task",
+          1
+        ],
+        "Type": "glm",
+        "HRF": {
+          "Variables": [
+            "trial_type.Task"
+          ],
+          "Model": "spm"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ],
+            "task": [
+              "overtverbgeneration"
+            ],
+            "space": [
+              "MNI152NLin2009cAsym"
+            ]
+          }
+        },
+        "Software": {
+          "SPM": {
+            "SerialCorrelation": "FAST",
+            "InclusiveMaskingThreshold": 0.8
+          }
+        }
+      }
+    }
+  ]
+}

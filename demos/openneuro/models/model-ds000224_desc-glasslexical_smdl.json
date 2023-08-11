@@ -3,8 +3,12 @@
   "BIDSModelVersion": "1.0.0",
   "Description": "default BIDS stats model for glasslexical task",
   "Input": {
-    "task": ["glasslexical"],
-    "space": ["MNI152NLin2009cAsym"]
+    "task": [
+      "glasslexical"
+    ],
+    "space": [
+      "MNI152NLin2009cAsym"
+    ]
   },
   "Nodes": [
     {
@@ -52,8 +56,12 @@
         "Options": {
           "HighPassFilterCutoffHz": 0.008,
           "Mask": {
-            "desc": ["brain"],
-            "suffix": ["mask"]
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
           }
         },
         "Software": {
@@ -72,29 +80,29 @@
       },
       "Contrasts": [
         {
-           "Name": "Verb_gt_Noun",
-           "ConditionList": [
+          "Name": "Verb_gt_Noun",
+          "ConditionList": [
             "trial_type.Noun",
             "trial_type.Verb"
-           ],
-           "Weights": [
-              -1,
-              1
-           ],
-           "Test": "t"
+          ],
+          "Weights": [
+            -1,
+            1
+          ],
+          "Test": "t"
         },
         {
           "Name": "Noun_gt_Verb",
           "ConditionList": [
-           "trial_type.Noun",
-           "trial_type.Verb"
+            "trial_type.Noun",
+            "trial_type.Verb"
           ],
           "Weights": [
-             1,
-             -1
+            1,
+            -1
           ],
           "Test": "t"
-       }
+        }
       ]
     },
     {
@@ -106,7 +114,9 @@
         "contrast"
       ],
       "Model": {
-        "X": [1],
+        "X": [
+          1
+        ],
         "Type": "glm"
       },
       "DummyContrasts": {
@@ -121,7 +131,9 @@
         "contrast"
       ],
       "Model": {
-        "X": [1],
+        "X": [
+          1
+        ],
         "Type": "glm"
       },
       "DummyContrasts": {
@@ -136,21 +148,42 @@
         "contrast"
       ],
       "Model": {
-        "X": ["session", 1],
+        "X": [
+          "session",
+          1
+        ],
         "Type": "glm"
       },
-      "Contrasts": [{
-        "Name": "OddSessions_gt_EvenSessions",
-        "ConditionList": [
-         "func01", "func03", "func05", "func07", "func09",
-         "func02", "func04", "func06", "func08", "func10"
-        ],
-        "Weights": [
-           1, 1, 1, 1, 1,
-           -1, -1, -1, -1, -1
-        ],
-        "Test": "t"
-     }]
+      "Contrasts": [
+        {
+          "Name": "OddSessions_gt_EvenSessions",
+          "ConditionList": [
+            "func01",
+            "func03",
+            "func05",
+            "func07",
+            "func09",
+            "func02",
+            "func04",
+            "func06",
+            "func08",
+            "func10"
+          ],
+          "Weights": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "Test": "t"
+        }
+      ]
     }
   ],
   "Edges": [
@@ -161,7 +194,11 @@
     {
       "Source": "session",
       "Destination": "compare_sessions",
-      "Filter": {"contrast": ["Noun_gt_Verb"]}
+      "Filter": {
+        "contrast": [
+          "Noun_gt_Verb"
+        ]
+      }
     },
     {
       "Source": "run",

@@ -6,11 +6,17 @@ function cliCreateRoi(varargin)
 
   % (C) Copyright 2023 bidspm developers
   args = inputParserForCreateRoi();
-  parse(args, varargin{:});
+  try
+    parse(args, varargin{:});
+  catch ME
+    displayArguments(varargin{:});
+    rethrow(ME);
+  end
 
   opt = getOptionsFromCliArgument(args);
   opt = checkOptions(opt);
   opt.roi.space = opt.space;
+
   saveOptions(opt);
 
   boilerplate(opt, ...
@@ -18,7 +24,7 @@ function cliCreateRoi(varargin)
               'pipelineType', 'create_roi', ...
               'verbosity', 0);
 
-  if opt.boilerplate_only
+  if opt.boilerplateOnly
     return
   end
 

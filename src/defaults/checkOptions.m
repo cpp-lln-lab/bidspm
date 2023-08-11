@@ -62,14 +62,17 @@ function opt = checkOptions(opt)
   %     - ``opt.pipeline.type = 'preproc'`` -
   %       Switch it to ``stats`` when running GLMs.
   %     - ``opt.pipeline.name``
+  %     - ``opt.pipeline.isBms`` whether this is a bayesion model selection
+  %       pipeline
   %
-  %     - ``opt.boilerplate_only = false`` -
+  %     - ``opt.boilerplateOnly = false`` -
   %       If set to ``true`` only creates dataset description reports and methods description.
   %       Overwrites previous versions.
   %
   %     - ``opt.zeropad = 2`` -
   %       Number of zeros used for padding subject numbers,
-  %       in case subjects should be fetched by their index ``1`` and not their label ``O1'``.
+  %       in case subjects should be fetched by their index ``1``
+  %       and not their label ``O1'``.
   %
   %     - ``opt.rename.do = true`` -
   %       Set to ``false`` to skip renaming files with ``bidsRename()``.
@@ -97,7 +100,8 @@ function opt = checkOptions(opt)
   %       Set to ``true`` to only preprocess the anatomical file.
   %
   %     - ``opt.segment.force = false`` -
-  %       Set to ``true`` to ignore previous output of the segmentation and force to run it again
+  %       Set to ``true`` to ignore previous output of the segmentation
+  %       and force to run it again
   %
   %     - ``opt.skullstrip.mean = false`` -
   %       Set to ``true`` to skulstrip mean functional image
@@ -109,7 +113,6 @@ function opt = checkOptions(opt)
   %     - ``opt.skullstrip.do = true``  -
   %        Set to ``true`` to skip skullstripping.
   %
-  %
   %     - ``opt.stc.skip = false`` -
   %       Boolean flag to skip slice time correction or not.
   %     - ``opt.stc.referenceSlice = []`` -
@@ -119,11 +122,17 @@ function opt = checkOptions(opt)
   %     - ``opt.funcVoxelDims = []`` -
   %       Voxel dimensions to use for resampling of functional data at normalization.
   %
+  %
   %  - **STATISTICS OPTIONS**
   %
   %     - ``opt.model.file = ''`` -
   %       Path to the BIDS model file that contains the model
   %       to specify and the contrasts to compute.
+  %       A path to a dir can be passed as well.
+  %       In this case all *_smdl.json files will be used
+  %       and looped over.
+  %       This can useful to specify several models at once
+  %       Before running Bayesion model selection on them.
   %
   %     - ``opt.fwhm.contrast = 0`` -
   %       FWHM to apply to the contrast images before bringing them at the group level.
@@ -134,15 +143,12 @@ function opt = checkOptions(opt)
   %
   %     - ``opt.glm.roibased.do = false`` -
   %       Set to ``true`` to use the ``bidsRoiBasedGLM`` workflow.
-  %
   %     - ``opt.glm.useDummyRegressor = false`` -
   %       Set to ``true`` to add dummy regressors when a condition is missing from a run.
   %       See ``bidsModelSelection()`` for more information.
-  %
   %     - ``opt.glm.maxNbVols = Inf`` -
   %       Sets the maximum number of volumes to include in a run in a subject level GLM.
   %       This can be useful if some time series have more volumes than necessary.
-  %
   %     - ``opt.glm.keepResiduals = false`` -
   %       Keep the subject level GLM residuals if set to ``true``.
   %
@@ -256,8 +262,9 @@ function fieldsToSet = setDefaultOption()
 
   fieldsToSet.pipeline.type = '';
   fieldsToSet.pipeline.name = 'bidspm';
+  fieldsToSet.pipeline.isBms = false;
 
-  fieldsToSet.boilerplate_only = false;
+  fieldsToSet.boilerplateOnly = false;
 
   fieldsToSet.useBidsSchema = false;
 
@@ -284,7 +291,7 @@ function fieldsToSet = setDefaultOption()
   %% General options for functional data
   fieldsToSet.funcVolToSelect = [];
 
-  fieldsToSet.dummy_scans = 0;
+  fieldsToSet.dummyScans = 0;
 
   %% Options for slice time correction
   % all in seconds
@@ -334,7 +341,9 @@ end
 
 function checkFields(opt)
 
-  if isfield(opt, 'taskName') && isempty(opt.taskName)
+  if isfield(opt, 'taskName') && ...
+      isempty(opt.taskName) && ...
+      ~strcmp(opt.pipeline.type, 'stats')
 
     msg = 'You may need to provide the name of the task to analyze.';
     id = 'noTask';

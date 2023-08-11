@@ -51,6 +51,10 @@ function spmSessOut = orderAndPadCounfoundMatFile(varargin)
   end
 
   for iRun = 1:numel(matFiles)
+    fileToLoad = matFiles{iRun};
+    if isempty(fileToLoad)
+      continue
+    end
     load(matFiles{iRun}, 'names');
     allConfoundsNames = cat(1, allConfoundsNames, names); %#ok<NODEF>
   end
@@ -58,6 +62,9 @@ function spmSessOut = orderAndPadCounfoundMatFile(varargin)
   for iRun = 1:numel(matFiles)
 
     fileToLoad = matFiles{iRun};
+    if isempty(fileToLoad)
+      continue
+    end
     load(fileToLoad, 'names', 'R');
 
     [names, R] = reorderCounfounds(names, R, allConfoundsNames);

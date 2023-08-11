@@ -43,6 +43,10 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         matlab: [R2022b]
         include:
+        - test_type: system
+          script: bms
+          os: ubuntu-latest
+          matlab: R2022b
         - test_type: unit
           os: ubuntu-latest
           matlab: R2022b
@@ -59,12 +63,6 @@ jobs:
       if: matrix.test_type == 'system'
       run: echo ${{ matrix.test_type }} test ${{ matrix.script }}
 
-    - name: Install dependencies
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        sudo apt-get -y -qq update
-        sudo apt-get -y install unzip wget
-
     - name: Install Node
       uses: actions/setup-node@v3
       with:
@@ -74,6 +72,14 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
+
+    - name: Install dependencies
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get -y -qq update
+        sudo apt-get -y install unzip wget git-annex
+        python -m pip install --upgrade pip setuptools
+        pip install datalad
 
     - name: Clone bidspm
       uses: actions/checkout@v3
@@ -104,6 +110,10 @@ jobs:
         cd tests
         make data
 
+    - name: Get data for BMS
+      if: matrix.script == 'bms'
+      run: make -C demos/bayes data_ds000114
+
     - name: Install Moxunit and MOcov
       run: |
         git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
@@ -129,7 +139,6 @@ jobs:
         name: codecov-matlab
         fail_ci_if_error: false
       # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
-
 
     - name: Run system tests MATLAB ${{ matrix.script }}
       if: matrix.test_type == 'system'

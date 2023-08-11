@@ -80,10 +80,10 @@ function outputFile = boilerplate(varargin)
 
     case 'preprocess'
 
-      if opt.dummy_scans == 0
-        opt.dummy_scans = false;
+      if opt.dummyScans == 0
+        opt.dummyScans = false;
       else
-        opt.dummy_scans = struct('nb', opt.dummy_scans);
+        opt.dummyScans = struct('nb', opt.dummyScans);
       end
 
       opt.normalization = false;

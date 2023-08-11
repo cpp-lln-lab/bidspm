@@ -27,10 +27,6 @@ function opt = getOptionsFromCliArgument(args)
     opt.subjects = args.Results.participant_label;
   end
 
-  if ~isempty(args.Results.task)
-    opt.taskName = args.Results.task;
-  end
-
   if ~isempty(args.Results.bids_filter_file)
     % TODO read from JSON if necessary
     % TODO validate
@@ -39,8 +35,12 @@ function opt = getOptionsFromCliArgument(args)
 
   opt = overrideSpace(opt, args);
 
+  if isfield(args.Results, 'task')
+    opt.taskName = args.Results.task;
+  end
+
   if isfield(args.Results, 'boilerplate_only')
-    opt.boilerplate_only = args.Results.boilerplate_only;
+    opt.boilerplateOnly = args.Results.boilerplate_only;
   end
 
   if isfield(args.Results, 'dry_run')
@@ -56,7 +56,27 @@ function opt = getOptionsFromCliArgument(args)
     opt.query.modality = {'anat'};
   end
 
-  % preproc
+  opt = optionsPreprocessing(opt, args, action);
+
+  if ismember(lower(action), {'create_roi', ...
+                              'stats', ...
+                              'contrasts', ...
+                              'results', ...
+                              'specify_only'})
+    opt.dir.preproc = args.Results.preproc_dir;
+  end
+
+  opt = roiOptions(opt, args);
+
+  opt = optionsStats(opt, args, action);
+
+  if ismember(lower(action), {'bms'})
+    opt.toolbox.MACS.model.dir = args.Results.models_dir;
+  end
+
+end
+
+function opt = optionsPreprocessing(opt, args, action)
   if ismember(lower(action), {'preprocess'})
 
     if ismember('slicetiming', args.Results.ignore)
@@ -74,29 +94,39 @@ function opt = getOptionsFromCliArgument(args)
       opt.QA.glm.do = false;
     end
 
-    opt.dummy_scans = args.Results.dummy_scans;
+    opt.dummyScans = args.Results.dummy_scans;
 
     opt.anatOnly = args.Results.anat_only;
 
   end
+end
 
-  if ismember(lower(action), {'create_roi', 'stats', 'contrasts', 'results'})
+function opt = optionsStats(opt, args, action)
+  if ismember(lower(action), {'stats', ...
+                              'contrasts', ...
+                              'results', ...
+                              'specify_only'})
     opt.dir.preproc = args.Results.preproc_dir;
-  end
 
-  opt = roiOptions(opt, args);
-
-  % stats
-  if ismember(lower(action), {'stats', 'contrasts', 'results'})
-    opt.dir.preproc = args.Results.preproc_dir;
+    % can only be a struct, file or dir
     opt.model.file = args.Results.model_file;
+    if ~isstruct(opt.model.file)
+      if isdir(opt.model.file)
+        opt.model.file = spm_select('FPList', ...
+                                    opt.model.file, ...
+                                    '.*_smdl.json');
+      end
+    end
+
     opt.model.designOnly = args.Results.design_only;
+
     opt.glm.keepResiduals = args.Results.keep_residuals;
+
+    opt.glm.useDummyRegressor =  args.Results.use_dummy_regressor;
 
     opt = overrideRoiBased(opt, args);
 
   end
-
 end
 
 function value = bidsAppsActions()
@@ -108,7 +138,9 @@ function value = bidsAppsActions()
            'default_model'; ...
            'stats'; ...
            'contrasts'; ...
-           'results'};
+           'results'; ...
+           'specify_only'; ...
+           'bms'};
 end
 
 function opt = getOptions(args)
@@ -169,6 +201,9 @@ function opt = overrideFwhm(opt, args)
 end
 
 function opt = overrideSpace(opt, args)
+  if ~isfield(args.Results, 'space')
+    return
+  end
   if ~isempty(args.Results.space)
     if isfield(opt, 'space') && ~all(ismember(args.Results.space, opt.space))
       overrideMsg('space', convertToString(args.Results.space), ...

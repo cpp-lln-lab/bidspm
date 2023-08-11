@@ -53,7 +53,7 @@ end
 function test_getEventSpecificationRoiGlm_warning_complex_contrasts()
 
   if bids.internal.is_octave()
-    return
+    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
   end
 
   % GIVEN

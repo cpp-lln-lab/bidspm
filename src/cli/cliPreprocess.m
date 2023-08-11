@@ -9,7 +9,12 @@ function cliPreprocess(varargin)
 
   % (C) Copyright 2023 bidspm developers
   args = inputParserForPreprocess();
-  parse(args, varargin{:});
+  try
+    parse(args, varargin{:});
+  catch ME
+    displayArguments(varargin{:});
+    rethrow(ME);
+  end
 
   if ~strcmp(args.Results.analysis_level, 'subject')
     errorHandling(mfilename(), ...
@@ -23,6 +28,7 @@ function cliPreprocess(varargin)
   opt = getOptionsFromCliArgument(args);
   opt.pipeline.type = 'preproc';
   opt = checkOptions(opt);
+
   saveOptions(opt);
 
   if ~opt.anatOnly && (isempty(opt.taskName) || numel(opt.taskName) > 1)
@@ -37,17 +43,17 @@ function cliPreprocess(varargin)
               'outputPath', fullfile(opt.dir.output, 'reports'), ...
               'pipelineType', 'preprocess', ...
               'verbosity', 0);
-  if opt.boilerplate_only
+  if opt.boilerplateOnly
     return
   end
 
   bidsCopyInputFolder(opt);
 
-  if opt.dummy_scans > 0
+  if opt.dummyScans > 0
     tmpOpt = opt;
     tmpOpt.dir.input = tmpOpt.dir.preproc;
     bidsRemoveDummies(tmpOpt, ...
-                      'dummyScans', tmpOpt.dummy_scans, ...
+                      'dummyScans', tmpOpt.dummyScans, ...
                       'force', false);
   end
 

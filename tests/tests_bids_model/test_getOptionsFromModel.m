@@ -11,10 +11,12 @@ end
 function test_getOptionsFromModel_preproc()
 
   opt.pipeline.type = 'preproc';
+  opt.pipeline.isBms = false;
 
   opt = getOptionsFromModel(opt);
 
   expectedOptions.pipeline.type = 'preproc';
+  expectedOptions.pipeline.isBms = false;
 
   assertEqual(opt, expectedOptions);
 
@@ -26,6 +28,7 @@ function test_getOptionsFromModel_no_model()
   opt.model.file = '';
   opt.tolerant = true;
   opt.verbosity = 3;
+  opt.pipeline.isBms = false;
 
   assertExceptionThrown(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelFileMissing');
 
@@ -37,10 +40,12 @@ function test_getOptionsFromModel_basic()
   opt.model.file = modelFile('dummy');
   opt.verbosity = 0;
   opt.tolerant = true;
+  opt.pipeline.isBms = false;
 
   opt = getOptionsFromModel(opt);
 
   expectedOptions.pipeline.type = 'stats';
+  expectedOptions.pipeline.isBms = false;
   expectedOptions.model.file = modelFile('dummy');
   expectedOptions.verbosity = 0;
   expectedOptions.tolerant = true;
@@ -66,6 +71,7 @@ function test_getOptionsFromModel_task()
   opt.model.file = modelFile('dummy');
   opt.verbosity = 0;
   opt.tolerant = true;
+  opt.pipeline.isBms = false;
 
   opt = getOptionsFromModel(opt);
 
@@ -90,6 +96,7 @@ function test_getOptionsFromModel_subject()
   opt.model.bm.Input.subject = {'02', '04'};
   opt.verbosity = 0;
   opt.tolerant = true;
+  opt.pipeline.isBms = false;
 
   opt = getOptionsFromModel(opt);
 
@@ -111,6 +118,7 @@ function test_getOptionsFromModel_space()
   opt.model.file = modelFile('vislocalizer');
   opt.verbosity = 0;
   opt.tolerant = true;
+  opt.pipeline.isBms = false;
 
   opt = getOptionsFromModel(opt);
 
@@ -131,6 +139,7 @@ function test_getOptionsFromModel_query()
   opt.query.acq = 'foo';
   opt.verbosity = 0;
   opt.tolerant = true;
+  opt.pipeline.isBms = false;
 
   opt = getOptionsFromModel(opt);
 

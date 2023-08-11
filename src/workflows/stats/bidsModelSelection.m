@@ -141,7 +141,7 @@ function matlabbatch = bidsModelSelection(varargin)
 
   workflowName = 'macs model selection';
 
-  [~, opt] = setUpWorkflow(opt, workflowName);
+  [~, opt] = setUpWorkflow(opt, workflowName, opt.dir.raw, true);
 
   opt.orderBatches.MACS_model_space = 1;
   switch lower(action)
@@ -190,7 +190,8 @@ function matlabbatch = bidsModelSelection(varargin)
       if isempty(spmMatFile)
         msg = sprintf('no SPM.mat found in:\n%s\n\n', ffxDir);
         id = 'noSPMmat';
-        logger('ERROR', msg, 'id', id, 'filename', mfilename());
+        logger('WARNING', msg, 'id', id, 'filename', mfilename());
+        continue
       end
 
       msg = struct('Subject', subLabel);

@@ -149,7 +149,8 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     end
   end
 
-  % When doing model comparison all runs must have same number of confound regressors
+  % When doing model comparison
+  % all runs must have same number of confound regressors
   % so we pad them with zeros if necessary
   spmSess = orderAndPadCounfoundMatFile(spmSess, opt);
 
@@ -177,7 +178,9 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     if ~isempty(spmSess(iSpmSess).onsetsFile)
       onsetsMatToTsv(spmSess(iSpmSess).onsetsFile);
     end
-    regressorsMatToTsv(spmSess(iSpmSess).counfoundMatFile);
+    if ~isempty(spmSess(iSpmSess).counfoundMatFile)
+      regressorsMatToTsv(spmSess(iSpmSess).counfoundMatFile);
+    end
   end
 
   if opt.model.designOnly

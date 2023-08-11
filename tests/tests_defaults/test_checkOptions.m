@@ -15,7 +15,10 @@ function test_checkOptions_basic()
 
   expectedOptions = defaultOptions('testTask');
 
-  assertEqual(opt, expectedOptions);
+  toCheck = fieldnames(opt);
+  for i = 1:numel(toCheck)
+    assertEqual(opt.(toCheck{i}), expectedOptions.(toCheck{i}));
+  end
 
 end
 
@@ -54,7 +57,7 @@ end
 function test_checkOptions_error_task()
 
   if bids.internal.is_octave()
-    return
+    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
   end
 
   opt.taskName = '';

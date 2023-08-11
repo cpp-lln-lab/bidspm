@@ -58,7 +58,7 @@ end
 function test_getInclusiveMask_no_image()
 
   if bids.internal.is_octave()
-    return
+    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
   end
 
   subLabel = '01';

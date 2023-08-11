@@ -1,8 +1,8 @@
 Usage notes
 ***********
 
-MATLAB API
-==========
+API
+===
 
 .. module:: src.messages
 .. autofunction::  bidspmHelp

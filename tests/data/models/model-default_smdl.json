@@ -34,7 +34,7 @@
         "X": [
           "trial_type.VisMot",
           "trial_type.VisStat",
-          1,
+          "1",
           "trans_?",
           "rot_?",
           "non_steady_state_outlier*",

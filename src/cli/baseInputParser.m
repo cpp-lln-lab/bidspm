@@ -23,8 +23,6 @@ function args = baseInputParser()
   addParameter(args, 'action', defaultAction, isChar);
 
   addParameter(args, 'participant_label', {}, isCellStr);
-  addParameter(args, 'task', {}, isCellStr);
-  addParameter(args, 'space', {}, isCellStr);
   addParameter(args, 'bids_filter_file', struct([]), isFileOrStruct);
 
   addParameter(args, 'verbosity', 2, isPositiveScalar);

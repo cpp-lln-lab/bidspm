@@ -22,20 +22,21 @@ function expectedOptions = defaultOptions(taskName)
                                                          'to', 'T1w'));
 
   expectedOptions.pipeline.type =  '';
+  expectedOptions.pipeline.isBms =  false;
   expectedOptions.pipeline.name = 'bidspm';
 
-  expectedOptions.boilerplate_only = false;
+  expectedOptions.boilerplateOnly = false;
 
   expectedOptions.anatOnly = false;
 
-  expectedOptions.space = {'individual'    'IXI549Space'};
+  expectedOptions.space = {'individual', 'IXI549Space'};
 
   expectedOptions.useBidsSchema = false;
 
   expectedOptions.fwhm.func = 6;
   expectedOptions.fwhm.contrast = 0;
 
-  expectedOptions.dummy_scans = 0;
+  expectedOptions.dummyScans = 0;
 
   expectedOptions.stc.referenceSlice = [];
   expectedOptions.stc.skip = false;

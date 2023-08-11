@@ -10,17 +10,30 @@ function opt = getOptionsFromModel(opt)
   % TODO refactor to pass everything to bids filter file instead of query?
   % TODO override content in bids_filter_file
 
-  if ~strcmpi(opt.pipeline.type, 'stats')
+  if ~ismember(opt.pipeline.type, {'stats', 'bms'})
     return
   end
 
-  if isempty(opt.model.file) || exist(opt.model.file, 'file') ~= 2
+  if opt.pipeline.isBms
+    files = spm_select('FPList', ...
+                       opt.toolbox.MACS.model.dir, ...
+                       '.*_smdl.json');
+    opt.toolbox.MACS.model.files = cellstr(files);
+    return
+  end
+
+  modelIsSingleFile = size(opt.model.file, 1) == 1;
+
+  if isempty(opt.model.file) || ...
+          (modelIsSingleFile && exist(opt.model.file, 'file') ~= 2)
     msg = sprintf('model file does not exist:\n %s', opt.model.file);
     id = 'modelFileMissing';
     logger('ERROR', msg, 'filename', mfilename(), 'id', id);
   end
 
-  if ~isfield(opt.model, 'bm') || isempty(opt.model.bm)
+  modelNotLoaded = ~isfield(opt.model, 'bm') || isempty(opt.model.bm);
+
+  if modelIsSingleFile && modelNotLoaded
     opt.model.bm = BidsModel('file', opt.model.file, ...
                              'tolerant', opt.tolerant, ...
                              'verbose', opt.verbosity > 1);
@@ -89,7 +102,7 @@ function opt = getOptionsFromModel(opt)
 
         case {'task', 'sub', 'space'}
 
-          if isfield(opt, targetField)
+          if isfield(opt, targetField) && ~isempty(opt.(targetField))
             overrideWarning(opt.(targetField), thisEntity, inputsAlreadyInOptions, opt);
           end
 

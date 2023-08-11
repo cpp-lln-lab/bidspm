@@ -24,7 +24,7 @@ addpath(fullfile(WD, '..', '..'));
 
 bidspm();
 if download_data
-  download_moae_ds(download_data, clean);
+  download_moae_ds(download_data, clean); %#ok<*UNRCH>
 end
 
 warning('off', 'SPM:noDisplay');
@@ -52,12 +52,12 @@ for iOption = 1:numel(space)
   %% preproc
   bids_dir = fullfile(WD, 'inputs', 'raw');
   output_dir = fullfile(tempname, 'outputs', 'derivatives');
-  mkdir(output_dir);
+  spm_mkdir(output_dir);
 
   bidspm(bids_dir, output_dir, 'subject', ...
          'participant_label', {'01'}, ...
          'action', 'preprocess', ...
-         'task', {'auditory'}, ...
+         'task', 'auditory', ...
          'ignore', ignore{iOption}, ...
          'space', space(iOption), ...
          'options', optionsFile);

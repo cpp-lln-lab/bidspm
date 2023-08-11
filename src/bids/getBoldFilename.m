@@ -45,16 +45,16 @@ function [boldFilename, subFuncDataDir, metadata] = getBoldFilename(varargin)
                          sessionID, ...
                          runID, opt.bidsFilterFile.bold.suffix);
 
-  % TODO throw an error that says what query actually failed to return a file
-  % this might need some refacoring to be able to access the query from here even though
-  % some part of it is in getInfo
   if isempty(boldFilename)
     msg = sprintf('No bold file found in:\n\t%s\nfor filter:%s\n', ...
                   bids.internal.format_path(BIDS.pth), ...
                   bids.internal.create_unordered_list(opt.query));
 
     id = 'emptyInput';
-    logger('ERROR', msg, 'filename', mfilename(), 'id', id);
+    logger('WARNING', msg, 'filename', mfilename(), 'id', id);
+    subFuncDataDir = [];
+    metadata = [];
+    return
   end
 
   % in case files have been unzipped, we do it now
