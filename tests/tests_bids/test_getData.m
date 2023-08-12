@@ -24,7 +24,7 @@ end
 
 function test_getData_error_no_matching_task()
 
-  opt = setOptions('dummy');
+  opt = setOptions('dummy', '01');
 
   % to speed up testing we use the raw dummy data
   opt.dir.preproc = getTestDataDir('raw');
@@ -36,7 +36,7 @@ end
 
 function test_getData_get_also_raw_data_for_stats_pipeline()
 
-  opt = setOptions('fmriprep');
+  opt = setOptions('fmriprep', '10');
   opt.pipeline.type = 'stats';
 
   [BIDS, ~] = getData(opt, opt.dir.input);

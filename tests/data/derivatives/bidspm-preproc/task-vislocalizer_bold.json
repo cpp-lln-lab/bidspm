@@ -9,5 +9,6 @@
   "SliceThickness": 3,
   "FlipAngle": 54,
   "NumberOfVolumesDiscardedByUser": 4,
-  "TaskName": "vislocalizer"
+  "TaskName": "vislocalizer",
+  "SliceTimingCorrected": false
 }

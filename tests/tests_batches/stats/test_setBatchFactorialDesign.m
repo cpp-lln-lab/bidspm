@@ -31,7 +31,7 @@ end
 
 function test_setBatchFactorialDesign_complex()
 
-  opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
+  opt = setOptions('vismotion', {'^01'}, 'pipelineType', 'stats');
 
   opt.model.file = spm_file(opt.model.file, ...
                             'basename', ...
@@ -99,7 +99,7 @@ end
 
 function test_setBatchFactorialDesign_wrong_model_design_matrix()
 
-  opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
+  opt = setOptions('vismotion', {'^01'}, 'pipelineType', 'stats');
 
   opt.verbosity = 1;
 

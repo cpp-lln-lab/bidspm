@@ -70,7 +70,9 @@ function test_setBatchSTC_empty()
   BIDS = getLayout(opt);
 
   matlabbatch = {};
+  warning OFF;
   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
+  warning ON;
 
   % no slice timing info for this run so nothing should be returned.
   assertEqual(matlabbatch, {});

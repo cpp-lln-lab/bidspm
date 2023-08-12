@@ -11,6 +11,7 @@ end
 function test_getAndCheckRepetitionTime_dual_task()
 
   [BIDS, opt, filter] = setUp({'vismotion', 'rest'});
+  filter.desc = "";
 
   sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter);
 

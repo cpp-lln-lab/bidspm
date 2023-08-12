@@ -12,7 +12,7 @@ function test_spm2bidsCPP_lesion_segmenting()
 
   anatFile = 'sub-01_T1w.nii';
 
-  opt = setOptions('vismotion');
+  opt = setOptions('vismotion', '01');
 
   opt = setFields(opt, ALI_my_defaults());
 
@@ -57,7 +57,7 @@ end
 
 function test_spm2bidsCPP_mapping_func()
 
-  opt = setOptions('vismotion');
+  opt = setOptions('vismotion', '01');
 
   opt = set_spm_2_bids_defaults(opt);
 
@@ -109,7 +109,7 @@ end
 
 function test_spm2bidsCPP_mapping_anat()
 
-  opt = setOptions('vismotion');
+  opt = setOptions('vismotion', '01');
 
   opt = set_spm_2_bids_defaults(opt);
 

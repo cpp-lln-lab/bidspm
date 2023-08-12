@@ -118,6 +118,6 @@ function stCorrected = areAllSliceTimeCorrected(values)
     return
   end
 
-  stCorrected = all(cellfun(@(x) (x), values, 'UniformOutput', false));
+  stCorrected = all(values{1});
 
 end
