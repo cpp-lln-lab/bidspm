@@ -56,6 +56,10 @@ mutliverse.scrub = [false, true];
 mutliverse.wm_csf = {'none', 'basic', 'full'};
 mutliverse.non_steady_state = [false, true];
 
+if TESTING
+  mutliverse.strategy = {'scrub', 'non_steady_state'};
+end
+
 create_model_families(models_dir, default_model_file, mutliverse);
 
 %% Statistics
