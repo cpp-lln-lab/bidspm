@@ -111,7 +111,7 @@ function opt = checkOptions(opt)
   %       ``p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold``
   %       will be included in the mask.
   %     - ``opt.skullstrip.do = true``  -
-  %        Set to ``true`` to skip skullstripping.
+  %       Set to ``true`` to skip skullstripping.
   %
   %     - ``opt.stc.skip = false`` -
   %       Boolean flag to skip slice time correction or not.

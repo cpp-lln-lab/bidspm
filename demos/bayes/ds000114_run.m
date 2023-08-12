@@ -50,21 +50,18 @@ end
 
 default_model_file = fullfile(models_dir, 'default_model.json');
 
-multiverse.strategy = {'motion', 'wm_csf', 'scrub', 'non_steady_state'};
 multiverse.motion = {'none', 'basic', 'full'};
-multiverse.scrub = [false, true];
+multiverse.scrub = {false, true};
 multiverse.wm_csf = {'none', 'basic', 'full'};
-multiverse.non_steady_state = [false, true];
+multiverse.non_steady_state = {false, true};
 
 if TESTING
-  multiverse.strategy = {'motion', 'wm_csf', 'scrub', 'non_steady_state'};
   multiverse.motion = {'none', 'basic'};
-  multiverse.scrub = [false, true];
   multiverse.wm_csf = {'none'};
-  multiverse.non_steady_state = false;
+  multiverse.non_steady_state = {false};
 end
 
-create_model_families(models_dir, default_model_file, multiverse);
+createModelFamilies(default_model_file, multiverse, models_dir);
 
 %% Statistics
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
@@ -91,74 +88,3 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'fwhm', FWHM, ...
        'skip_validation', true, ...
        'verbosity', VERBOSITY);
-
-%%
-function create_model_families(models_dir, default_model_file, multiverse)
-  % create models from a default one
-  %
-
-  % TODO incorporate into bidspm
-
-  % TODO add support for 12 motion regressors
-  strategyToSkip = fieldnames(multiverse);
-  idxStrategyToSkip = ~ismember(fieldnames(multiverse), multiverse.strategy);
-  strategyToSkip = strategyToSkip(idxStrategyToSkip);
-  for i = 1:numel(strategyToSkip)
-    multiverse.(strategyToSkip{i}) = {''};
-  end
-
-  for i = 1:numel(multiverse.motion)
-    for j = 1:numel(multiverse.scrub)
-      for k = 1:numel(multiverse.wm_csf)
-        for l = 1:numel(multiverse.non_steady_state)
-
-          model = bids.util.jsondecode(default_model_file);
-
-          name = sprintf('rp-%s_scrub-%i_tissue-%s_nsso-%i', ...
-                         multiverse.motion{i}, ...
-                         multiverse.scrub(j), ...
-                         multiverse.wm_csf{k}, ...
-                         multiverse.non_steady_state(l));
-          model.Name = name;
-          model.Nodes.Name = name;
-
-          design_matrix = model.Nodes.Model.X;
-
-          switch multiverse.motion{i}
-            case 'none'
-            case 'basic'
-              design_matrix{end + 1} = 'rot_?';
-              design_matrix{end + 1} = 'trans_?';
-            case 12
-            case 'full'
-              design_matrix{end + 1} = 'rot_*';
-              design_matrix{end + 1} = 'trans_*';
-          end
-
-          if multiverse.scrub(j) == 1
-            design_matrix{end + 1} = 'motion_outlier*'; %#ok<*AGROW>
-          end
-
-          switch multiverse.wm_csf{k}
-            case 'none'
-            case 'basic'
-              design_matrix{end + 1} = 'csf';
-              design_matrix{end + 1} = 'white';
-            case 'full'
-              design_matrix{end + 1} = 'csf_*';
-              design_matrix{end + 1} = 'white_*';
-          end
-
-          if multiverse.non_steady_state(l)
-            design_matrix{end + 1} = 'non_steady_state_outlier*';
-          end
-
-          model.Nodes.Model.X = design_matrix;
-
-          output_file = fullfile(models_dir, ['model_' name '_smdl.json']);
-          bids.util.jsonencode(output_file, model);
-        end
-      end
-    end
-  end
-end

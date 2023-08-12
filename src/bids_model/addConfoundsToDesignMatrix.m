@@ -2,7 +2,10 @@ function bm = addConfoundsToDesignMatrix(varargin)
   %
   % Add some typical confounds to the design matrix of bids stat model.
   %
-  % Similar to the module nilearn.interfaces.fmriprep.load_confounds.
+  % This will update the design matrix of the root node of the model.
+  %
+  % Similar to the module
+  % https://nilearn.github.io/dev/modules/generated/nilearn.interfaces.fmriprep.load_confounds.html
   %
   % USAGE::
   %
@@ -10,13 +13,49 @@ function bm = addConfoundsToDesignMatrix(varargin)
   %
   %
   % :param bm: bids stats model.
-  % :type  bm: :obj:`BidsModel` instance
-  %            or path to a ``_smdl.json`` file.
+  % :type  bm: :obj:`BidsModel` instance or path to a ``_smdl.json`` file
   %
-  % :param strategy: structure with the fields:
-  %                  ``strategy``,
-  %                  ``motion``, ``non_steady_state``, ``scrub``, ``wm_csf``
   % :type  strategy: struct
+  % :param strategy: structure describing the confoudd strategy.
+  %
+  %                  The structure must have the following field:
+  %
+  %                    - ``strategy``: cell array of char with the strategies to apply.
+  %
+  %                  The structure may have the following field:
+  %
+  %                    - ``motion``: motion regressors strategy
+  %                    - ``scrub``: scrubbing strategy
+  %                    - ``wm_csf``: white matter and cerebrospinal fluid regressors strategy
+  %                    - ``non_steady_state``: non steady state regressors strategy
+  %
+  %                  See the nilearn documentation (mentioned above)
+  %                  for more information on the possible values those strategies can take.
+  %
+  % :type  updateName: logical
+  % :param updateName: Append the name of the root node
+  %                    with a string describing the counfounds added.
+  %
+  %                    ``rp-{motion}_scrub-{scrub}_tissue-{wm_csf}_nsso-{non_steady_state}``
+  %
+  %                    default = ``false``
+  %
+  %
+  % :rtype: :obj:`BidsModel` instance
+  % :return: bids stats model with the confounds added.
+  %
+  % EXAMPLE:
+  %
+  %  .. code-block:: matlab
+  %
+  %
+  %      strategy.strategies = {'motion', 'wm_csf', 'scrub', 'non_steady_state'};
+  %      strategy.motion = 'full';
+  %      strategy.scrub = true;
+  %      strategy.non_steady_state = true;
+  %
+  %      bm = addConfoundsToDesignMatrix(path_to_statsmodel_file, 'strategy', strategy);
+  %
   %
 
   % (C) Copyright 2023 bidspm developers
@@ -29,8 +68,8 @@ function bm = addConfoundsToDesignMatrix(varargin)
   isBidsModelOrFile = @(x) isa(x, 'BidsModel') || exist(x, 'file') == 2;
   addRequired(args, 'bm', isBidsModelOrFile);
 
-  defaultStrategy.strategies = {'motion', 'non_steady_state'};
-  addParameter(args, 'strategy', defaultStrategy, @isstruct);
+  addParameter(args, 'strategy', defaultStrategy(), @isstruct);
+  addParameter(args, 'updateName', false, @islogical);
 
   parse(args, varargin{:});
 
@@ -52,7 +91,7 @@ function bm = addConfoundsToDesignMatrix(varargin)
     switch strategiesToApply{i}
 
       case 'motion'
-        switch strategy.motion
+        switch strategy.motion{1}
           case 'none'
           case 'basic'
             designMatrix{end + 1} = 'rot_?'; %#ok<*AGROW>
@@ -66,17 +105,17 @@ function bm = addConfoundsToDesignMatrix(varargin)
         end
 
       case 'non_steady_state'
-        if strategy.non_steady_state
+        if strategy.non_steady_state{1}
           designMatrix{end + 1} = 'non_steady_state_outlier*';
         end
 
       case 'scrub'
-        if strategy.scrub == 1
+        if strategy.scrub{1}
           designMatrix{end + 1} = 'motion_outlier*';
         end
 
       case 'wm_csf'
-        switch strategy.wm_csf
+        switch strategy.wm_csf{1}
           case 'none'
           case 'basic'
             designMatrix{end + 1} = 'csf';
@@ -91,7 +130,10 @@ function bm = addConfoundsToDesignMatrix(varargin)
 
       case {'global_signal', 'compcorstr', 'n_compcorstr'}
         notImplemented(mfilename(), ...
-                       sprintf('Strategey "%s" not implemented.', strategiesToApply{i}));
+                       sprintf(['Strategey "%s" not implemented.\n', ...
+                                'Supported strategies are:%s'], ...
+                               strategiesToApply{i}, ...
+                               bids.internal.create_unordered_list(supportedStrategies())));
       otherwise
         logger('WARNING',  sprintf('Unknown strategey: "%s".', ...
                                    strategiesToApply{i}), ...
@@ -104,6 +146,35 @@ function bm = addConfoundsToDesignMatrix(varargin)
 
   bm.Nodes{idx}.Model.X = designMatrix;
 
+  if args.Results.updateName
+    bm.Nodes{idx}.Name = appendSuffixToNodeName(bm.Nodes{idx}.Name, strategy);
+  end
+
+end
+
+function name = appendSuffixToNodeName(name, strategy)
+  if ~isempty(name)
+    name = [name, '_'];
+  end
+  suffix =  sprintf('rp-%s_scrub-%i_tissue-%s_nsso-%i', ...
+                    strategy.motion{1}, ...
+                    strategy.scrub{1}, ...
+                    strategy.wm_csf{1}, ...
+                    strategy.non_steady_state{1});
+
+  name = [name suffix];
+end
+
+function value = supportedStrategies()
+  value = {'motion', 'non_steady_state',  'wm_csf', 'scrub'};
+end
+
+function  value = defaultStrategy()
+  value.strategies = {};
+  value.motion = 'none';
+  value.scrub = false;
+  value.wm_csf = 'none';
+  value.non_steady_state = false;
 end
 
 function designMatrix = cleanDesignMatrix(designMatrix)
@@ -124,16 +195,23 @@ end
 
 function strategy = setFieldsStrategy(strategy)
 
-  defaultStrategy.motion = 'basic';
-  defaultStrategy.scrub = false;
-  defaultStrategy.wm_csf = 'none';
-  defaultStrategy.non_steady_state = true;
+  tmp = defaultStrategy();
 
-  strategies = fieldnames(defaultStrategy);
+  strategies = fieldnames(defaultStrategy());
   for i = 1:numel(strategies)
+
     if ~isfield(strategy, strategies{i})
-      strategy.(strategies{i}) = defaultStrategy.(strategies{i});
+      strategy.(strategies{i}) = tmp.(strategies{i});
     end
+
+    if ~iscell(strategy.(strategies{i}))
+      strategy.(strategies{i}) = {strategy.(strategies{i})};
+    end
+
+    if isnan(strategy.(strategies{i}){1})
+      strategy.(strategies{i}){1} = tmp.(strategies{i});
+    end
+
   end
 
 end

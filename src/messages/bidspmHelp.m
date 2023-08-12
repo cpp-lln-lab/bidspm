@@ -46,7 +46,7 @@ function bidspmHelp()
   %    - ``'default_model'``: creates a default BIDS stats model
   %    - ``'create_roi'``:    creates ROIs from a given atlas
   %    - ``'stats'``:         runs model specification / estimation,
-  %                           contrast computation, display results
+  %      contrast computation, display results
   %    - ``'contrasts'``:     runs contrast computation, display results
   %    - ``'results'``:       displays results
   %    - ``'bms'``:           performs bayesian model selection
@@ -188,13 +188,16 @@ function bidspmHelp()
   % :type  space:         cell string
   %
   % :param roi_atlas:     Can be any of:
-  %                       - ``'visfatlas'``
-  %                       - ``'anatomy_toobox'``
-  %                       - ``'neuromorphometrics'``
-  %                       - ``'hcpex'``
-  %                       - ``'wang'``
-  %                       - ``'glasser'``
+
+  %                        - ``'visfatlas'``
+  %                        - ``'anatomy_toobox'``
+  %                        - ``'neuromorphometrics'``
+  %                        - ``'hcpex'``
+  %                        - ``'wang'``
+  %                        - ``'glasser'``
+
   %                       Defaults to ``'neuromorphometrics'``
+
   % :type  roi_atlas:     char
   %
   % :param roi_name:      Name of the roi to create. If the ROI does not exist in the atlas,

@@ -1,6 +1,6 @@
 function compileScrubbingStats(statsFolder)
   %
-  % Make a list of *_desc-confounds_timeseries.json
+  % Make a list of ``*_desc-confounds_timeseries.json``
   % and compile their results in a single tsv.
   %
   % EXAMPLE::
