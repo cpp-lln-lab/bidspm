@@ -214,10 +214,10 @@ function test_getInclusiveMaskThreshold()
   bm = BidsModel('file', opt.model.file, 'verbose', false);
 
   inclusiveMaskThreshold = bm.getInclusiveMaskThreshold('Name', 'run_level');
-  assertEqual(inclusiveMaskThreshold, 0);
+  assertEqual(inclusiveMaskThreshold, 0.8);
 
   inclusiveMaskThreshold = bm.getInclusiveMaskThreshold();
-  assertEqual(inclusiveMaskThreshold, 0);
+  assertEqual(inclusiveMaskThreshold, 0.8);
 
 end
 

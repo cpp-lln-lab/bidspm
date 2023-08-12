@@ -27,7 +27,7 @@ output_dir = fullfile(root_dir, 'outputs', 'ds000114', 'derivatives');
 
 models_dir = fullfile(root_dir, 'models');
 
-participant_label = {'[0-9]*'};
+participant_label = {'[0-9]*'}; %#ok<*NASGU>
 if TESTING
   participant_label = {'^0[12]$'};
 end
@@ -55,6 +55,14 @@ mutliverse.motion = {'none', 'basic', 'full'};
 mutliverse.scrub = [false, true];
 mutliverse.wm_csf = {'none', 'basic', 'full'};
 mutliverse.non_steady_state = [false, true];
+
+if TESTING
+  mutliverse.strategy = {'motion', 'wm_csf', 'scrub', 'non_steady_state'};
+  mutliverse.motion = {'none', 'basic'};
+  mutliverse.scrub = [false, true];
+  mutliverse.wm_csf = {'none'};
+  mutliverse.non_steady_state = false;
+end
 
 create_model_families(models_dir, default_model_file, mutliverse);
 
@@ -92,6 +100,12 @@ function create_model_families(models_dir, default_model_file, mutliverse)
   % TODO incorporate into bidspm
 
   % TODO add support for 12 motion regressors
+  strategyToSkip = fieldnames(mutliverse);
+  idxStrategyToSkip = ~ismember(fieldnames(mutliverse), mutliverse.strategy);
+  strategyToSkip = strategyToSkip(idxStrategyToSkip);
+  for i = 1:numel(strategyToSkip)
+    mutliverse.(strategyToSkip{i}) = {''};
+  end
 
   for i = 1:numel(mutliverse.motion)
     for j = 1:numel(mutliverse.scrub)

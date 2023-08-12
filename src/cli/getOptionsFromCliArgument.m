@@ -204,14 +204,15 @@ function opt = overrideSpace(opt, args)
   if ~isfield(args.Results, 'space')
     return
   end
-  if ~isempty(args.Results.space)
-    if isfield(opt, 'space') && ~all(ismember(args.Results.space, opt.space))
+
+  if isfield(opt, 'space') && ~all(ismember(args.Results.space, opt.space))
+    if ~isempty(args.Results.space)
       overrideMsg('space', convertToString(args.Results.space), ...
                   'space', convertToString(opt.space), ...
                   opt);
     end
-    opt.space = args.Results.space;
   end
+  opt.space = args.Results.space;
 end
 
 function output = convertToString(input)

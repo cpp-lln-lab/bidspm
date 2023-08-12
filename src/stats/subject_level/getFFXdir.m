@@ -1,6 +1,6 @@
 function ffxDir = getFFXdir(subLabel, opt)
   %
-  % Sets the name the FFX directory and creates it if it does not exist
+  % Sets the name the FFX directory
   %
   % USAGE::
   %
@@ -38,8 +38,6 @@ function ffxDir = getFFXdir(subLabel, opt)
   if opt.glm.roibased.do
     ffxDir = [ffxDir '_roi'];
   end
-
-  spm_mkdir(ffxDir);
 
 end
 

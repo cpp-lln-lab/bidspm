@@ -61,6 +61,7 @@ jobs:
           datalad get sub-0[1-2]/anat/*MNI*mask.nii.gz \
                 sub-0[1-2]/anat/*MNI*T1w.nii.gz \
                 sub-0[1-2]/func/*MNI*desc-preproc*bold.nii.gz \
+                sub-0[1-2]/func/*MNI*mask.nii.gz \
                 sub-*/func/*tsv	\
                 sub-*/func/*json -J 12
           datalad status

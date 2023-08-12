@@ -12,6 +12,29 @@ end
 
 % TODO add test to better cover setScans
 
+function test_setBatchSubjectLevelGLMSpec_slicetiming_metadata()
+
+  %% GIVEN
+  subLabel = '^01';
+
+  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
+
+  % needed to update the options with the content of the model
+  opt = checkOptions(opt);
+
+  BIDS = getLayout(opt);
+
+  %% WHEN
+  matlabbatch = {};
+  matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
+
+  %% THEN
+  assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 4);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t,  14);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0, 7);
+
+end
+
 function test_setBatchSubjectLevelGLMSpec_vismotion_acq_1pt6acq()
 
   %% GIVEN
@@ -128,35 +151,12 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.sess(1).hpf, 125);
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.cvi, 'FAST');
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs, [1 0]);
-  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.mthresh, 0);
+  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.mthresh, 0.8);
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.mask, ...
               {fullfile(spm('dir'), 'tpm', 'mask_ICV.nii')});
 
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.units, 'secs');
   assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.RT, 1.55);
-
-end
-
-function test_setBatchSubjectLevelGLMSpec_slicetiming_metadata()
-
-  %% GIVEN
-  subLabel = '^01';
-
-  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
-
-  % needed to update the options with the content of the model
-  opt = checkOptions(opt);
-
-  BIDS = getLayout(opt);
-
-  %% WHEN
-  matlabbatch = {};
-  matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
-
-  %% THEN
-  assertEqual(numel(matlabbatch{1}.spm.stats.fmri_spec.sess), 4);
-  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t,  14);
-  assertEqual(matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0, 7);
 
 end
 
@@ -173,7 +173,7 @@ function test_setBatchSubjectLevelGLMSpec_inconsistent_metadata()
   %% WHEN
   matlabbatch = {};
   assertExceptionThrown(@()setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel), ...
-                        'getAndCheckSliceOrder:inconsistentSliceTimingLength');
+                        'getAndCheckRepetitionTime:differentRepetitionTime');
 
 end
 
