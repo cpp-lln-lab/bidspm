@@ -188,16 +188,16 @@ function bidspmHelp()
   % :type  space:         cell string
   %
   % :param roi_atlas:     Can be any of:
-
+  %
   %                        - ``'visfatlas'``
   %                        - ``'anatomy_toobox'``
   %                        - ``'neuromorphometrics'``
   %                        - ``'hcpex'``
   %                        - ``'wang'``
   %                        - ``'glasser'``
-
+  %
   %                       Defaults to ``'neuromorphometrics'``
-
+  %
   % :type  roi_atlas:     char
   %
   % :param roi_name:      Name of the roi to create. If the ROI does not exist in the atlas,
