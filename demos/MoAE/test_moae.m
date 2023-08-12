@@ -15,7 +15,7 @@ clear;
 clc;
 close all;
 
-download_data = false;
+download_data = true;
 clean = true;
 
 WD = fileparts(mfilename('fullpath'));
