@@ -208,7 +208,9 @@ function strategy = setFieldsStrategy(strategy)
       strategy.(strategies{i}) = {strategy.(strategies{i})};
     end
 
-    if isnan(strategy.(strategies{i}){1})
+    if ~isempty(strategy.(strategies{i})) && ...
+        isnumeric(strategy.(strategies{i}){1}) && ...
+        isnan(strategy.(strategies{i}){1})
       strategy.(strategies{i}){1} = tmp.(strategies{i});
     end
 

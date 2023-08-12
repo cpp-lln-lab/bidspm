@@ -7,6 +7,25 @@ function test_suite = test_addConfoundsToDesignMatrix %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_addConfoundsToDesignMatrix_default()
+
+  bm = BidsModel('init', true);
+
+  bm = addConfoundsToDesignMatrix(bm);
+  assertEqual(numel(bm.Nodes{1}.Model.X), 0);
+
+  strategy.strategies = {'motion', 'non_steady_state'};
+  strategy.motion = 'basic';
+  strategy.non_steady_state = true;
+
+  bm = addConfoundsToDesignMatrix(bm, 'strategy', strategy);
+  assertEqual(numel(bm.Nodes{1}.Model.X), 3);
+  assertEqual(ismember({'rot_?', 'trans_?', 'non_steady_state_outlier*'}, ...
+                       bm.Nodes{1}.Model.X), ...
+              true(1, 3));
+
+end
+
 function test_addConfoundsToDesignMatrix_from_file()
 
   modelFile = fullfile(getTestDataDir(), 'models', ...
@@ -81,25 +100,6 @@ function test_addConfoundsToDesignMatrix_update_name()
 
   bm = addConfoundsToDesignMatrix(bm, 'strategy', strategy, 'updateName', true);
   assertEqual(bm.Nodes{1}.Name, [nameBefore '_rp-full_scrub-1_tissue-full_nsso-1']);
-end
-
-function test_addConfoundsToDesignMatrix_default()
-
-  bm = BidsModel('init', true);
-
-  bm = addConfoundsToDesignMatrix(bm);
-  assertEqual(numel(bm.Nodes{1}.Model.X), 0);
-
-  strategy.strategies = {'motion', 'non_steady_state'};
-  strategy.motion = 'basic';
-  strategy.non_steady_state = true;
-
-  bm = addConfoundsToDesignMatrix(bm, 'strategy', strategy);
-  assertEqual(numel(bm.Nodes{1}.Model.X), 3);
-  assertEqual(ismember({'rot_?', 'trans_?', 'non_steady_state_outlier*'}, ...
-                       bm.Nodes{1}.Model.X), ...
-              true(1, 3));
-
 end
 
 function test_addConfoundsToDesignMatrix_warning()

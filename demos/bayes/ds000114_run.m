@@ -6,17 +6,17 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
+VERBOSITY = 2;
+
+FWHM = 8;
+
 % set to false to not re run the smoothing
 SMOOTH = true;
 
 % set to false to not re run the model specification
 FIRST_LEVEL = true;
 
-VERBOSITY = 1;
-
-FWHM = 8;
-
-% to run on fewer subjects
+% set to true to run on fewer subjects and fewer models
 TESTING = true;
 
 % The directory where the data are located
@@ -56,9 +56,9 @@ multiverse.wm_csf = {'none', 'basic', 'full'};
 multiverse.non_steady_state = {false, true};
 
 if TESTING
-  multiverse.motion = {'none', 'basic'};
-  multiverse.wm_csf = {'none'};
-  multiverse.non_steady_state = {false};
+  multiverse.motion = {'basic', 'full'};
+  multiverse.scrub = {false, true};
+  multiverse.non_steady_state = {true};
 end
 
 createModelFamilies(default_model_file, multiverse, models_dir);
@@ -68,6 +68,9 @@ preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
 %% Subject level analysis
 if FIRST_LEVEL
+
+  % Silence this warning as this dataset has not been slice time corrected.
+  warning('OFF', 'setBatchSubjectLevelGLMSpec:noSliceTimingInfoForGlm');
 
   bidspm(bids_dir, output_dir, 'subject', ...
          'participant_label', participant_label, ...
