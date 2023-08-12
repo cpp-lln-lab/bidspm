@@ -24,10 +24,15 @@ function test_getAnatFilename_return_several()
 
   BIDS = getLayout(opt);
 
+  warning('OFF');
   nbImgToReturn = 3;
   anatImage = getAnatFilename(BIDS, opt, subLabel, nbImgToReturn);
 
   assertEqual(numel(anatImage), 3);
+  warning('ON');
+
+  assertWarning(@()getAnatFilename(BIDS, opt, subLabel, nbImgToReturn), ...
+                'getAnatFilename:severalAnatFile');
 
 end
 

@@ -32,6 +32,22 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
 
   % TODO support for DelayTime and AcquisitionDuration
 
+  warning('OFF', 'query:unknowMetadata');
+
+  filter.target = 'SliceTimingCorrected';
+  sliceTimingCorrected = bids.query(BIDS, 'metadata', filter);
+  stCorrected = areAllSliceTimeCorrected(sliceTimingCorrected);
+
+  % for GLM if data is not slice time corrected
+  % we will rely on the number of slices
+  % to figure out the temporal resolution
+  % to do convolution at.
+  if strcmp(opt.pipeline.type, 'stats') && ~stCorrected
+    sliceOrder = [];
+    warning('ON', 'query:unknowMetadata');
+    return
+  end
+
   filter.target = 'SliceTiming';
   sliceTiming = bids.query(BIDS, 'metadata', filter);
 
@@ -48,23 +64,20 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
     id = 'noSliceTimingFound';
     logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
+    warning('ON', 'query:unknowMetadata');
     return
 
   end
 
   sliceTimingLengths = cellfun('length', sliceTiming);
   if length(unique(sliceTimingLengths)) > 1
-
-    sliceOrder = [];
+    warning('ON', 'query:unknowMetadata');
 
     msg = sprintf(['Inconsistent slice timing found for filter:\n%s.\n\n', ...
                    'Number of slice per volume seems different across bold files.'], ...
                   bids.internal.create_unordered_list(filter));
     id = 'inconsistentSliceTimingLength';
     logger('ERROR', msg, 'id', id, 'filename', mfilename(), 'options', opt);
-
-    return
-
   end
 
   % all slice timing should be the same,
@@ -82,6 +95,7 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
       id = 'inconsistentSliceTimingValues';
       logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
 
+      warning('ON', 'query:unknowMetadata');
       return
     end
 
@@ -89,5 +103,21 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
 
   msg = ' SLICE TIMING INFORMATION EXTRACTED FROM METADATA.';
   logger('INFO', msg, 'options', opt, 'filename', mfilename());
+
+  warning('ON', 'query:unknowMetadata');
+
+end
+
+function stCorrected = areAllSliceTimeCorrected(values)
+  if isempty(values)
+    stCorrected = false;
+    return
+  end
+  if any(cellfun('isempty', values))
+    stCorrected = false;
+    return
+  end
+
+  stCorrected = all(cellfun(@(x) (x), values, 'UniformOutput', false));
 
 end
