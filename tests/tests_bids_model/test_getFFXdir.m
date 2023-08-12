@@ -34,9 +34,7 @@ function test_getFFXdir_ignored_desc()
                               'task-vislocalizer_space-IXI549Space_FWHM-0');
 
     assertEqual(ffxDir, expectedOutput);
-    assertEqual(exist(expectedOutput, 'dir'), 7);
-
-    rmdir(ffxDir, 's');
+    assertEqual(exist(expectedOutput, 'dir'), 0);
   end
 
 end
@@ -55,9 +53,7 @@ function test_getFFXdir_basic()
   ffxDir = getFFXdir(subLabel, opt);
 
   assertEqual(ffxDir, expectedOutput);
-  assertEqual(exist(expectedOutput, 'dir'), 7);
-
-  rmdir(ffxDir, 's');
+  assertEqual(exist(expectedOutput, 'dir'), 0);
 
 end
 
@@ -78,9 +74,6 @@ function test_getFFXdir_extra_entity()
                             'task-vismotion_acq-1p60mm_space-IXI549Space_FWHM-6');
 
   assertEqual(ffxDir, expectedOutput);
-  assertEqual(exist(expectedOutput, 'dir'), 7);
-
-  rmdir(ffxDir, 's');
 
 end
 
@@ -97,8 +90,5 @@ function test_getFFXdir_user_specified()
                             'task-vismotion_space-individual_FWHM-6_node-globalSignal');
 
   assertEqual(ffxDir, expectedOutput);
-  assertEqual(exist(expectedOutput, 'dir'), 7);
-
-  rmdir(ffxDir, 's');
 
 end
