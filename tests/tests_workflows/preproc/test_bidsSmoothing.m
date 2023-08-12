@@ -10,7 +10,7 @@ end
 
 function test_bidsSmoothing_basic()
 
-  opt = setOptions('vislocalizer');
+  opt = setOptions('vislocalizer', '^01');
 
   opt.pipeline.type = 'preproc';
 
@@ -18,21 +18,28 @@ function test_bidsSmoothing_basic()
 
   opt = checkOptions(opt);
 
-  bidsSmoothing(opt);
+  srcMetadata = bidsSmoothing(opt);
+
+  assertEqual(srcMetadata, struct('RepetitionTime', [1.5500 1.5500], ...
+                                  'SliceTimingCorrected', [false false]));
 
 end
 
 function test_bidsSmoothing_fmriprep()
 
-  opt = setOptions('fmriprep');
+  opt = setOptions('fmriprep', '^10');
 
   opt.space = 'MNI152NLin2009cAsym';
   opt.query.space = opt.space; % for bidsCopy only
   opt.query.desc = 'preproc';
+  opt.query.modality = {'func'};
 
   bidsCopyInputFolder(opt, 'unzip', false);
 
-  bidsSmoothing(opt);
+  srcMetadata = bidsSmoothing(opt);
+
+  assertEqual(srcMetadata, struct('RepetitionTime', [2 2 2], ...
+                                  'SliceTimingCorrected', [false false false]));
 
   cleanUp(opt.dir.preproc);
 

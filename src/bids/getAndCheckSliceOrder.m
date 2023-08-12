@@ -109,11 +109,12 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
 end
 
 function stCorrected = areAllSliceTimeCorrected(values)
-  if isempty(values)
+  if isempty(values) || ...
+          (~iscell(values) && ~values)
     stCorrected = false;
     return
   end
-  if any(cellfun('isempty', values))
+  if iscell(values) && any(cellfun('isempty', values))
     stCorrected = false;
     return
   end

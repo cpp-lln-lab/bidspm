@@ -59,6 +59,9 @@ function [counfoundFile, counfoundMeta] = createAndReturnCounfoundMatFile(opt, t
   opt.query.task = opt.taskName;
 
   ffxDir = getFFXdir(bf.entities.sub, opt);
+  if exist(ffxDir, 'dir') == 0
+    spm_mkdir(ffxDir);
+  end
   counfoundFile = fullfile(ffxDir, bf.filename);
 
   if isempty(names) || isempty(R)

@@ -1,4 +1,4 @@
-function [matlabbatch, allRT] = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
+function [matlabbatch, srcMetadata] = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch to smooth the bold files of a subject
   %
@@ -42,7 +42,7 @@ function [matlabbatch, allRT] = setBatchSmoothingFunc(matlabbatch, BIDS, opt, su
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   allFiles = [];
-  allRT = [];
+  srcMetadata = struct('RepetitionTime', [], 'SliceTimingCorrected', []);
 
   for iSes = 1:nbSessions
 
@@ -66,14 +66,9 @@ function [matlabbatch, allRT] = setBatchSmoothingFunc(matlabbatch, BIDS, opt, su
       for iFile = 1:size(fileName, 1)
         files{iFile, 1} = validationInputFile(subFuncDataDir(iFile, :), ...
                                               fileName(iFile, :)); %#ok<*AGROW>
-
-        if isfield(metadata{iFile}, 'RepetitionTime')
-          allRT(end + 1) = metadata{iFile}.RepetitionTime;
-        else
-          allRT(end + 1) = nan;
-        end
-
       end
+
+      srcMetadata = collectSrcMetadata(srcMetadata, metadata);
 
       % add the files to list
       allFilesTemp = cellstr(char(files));
@@ -90,4 +85,22 @@ function [matlabbatch, allRT] = setBatchSmoothingFunc(matlabbatch, BIDS, opt, su
                                   [spm_get_defaults('smooth.prefix'), ...
                                    num2str(opt.fwhm.func)]);
 
+end
+
+function srcMetadata = collectSrcMetadata(srcMetadata, metadata)
+  for iFile = 1:numel(metadata)
+
+    if isfield(metadata{iFile}, 'RepetitionTime')
+      srcMetadata.RepetitionTime(end + 1) = metadata{iFile}.RepetitionTime;
+    else
+      srcMetadata.RepetitionTime(end + 1) = nan;
+    end
+
+    if isfield(metadata{iFile}, 'SliceTimingCorrected')
+      srcMetadata.SliceTimingCorrected(end + 1) = metadata{iFile}.SliceTimingCorrected;
+    else
+      srcMetadata.SliceTimingCorrected(end + 1) = false;
+    end
+
+  end
 end

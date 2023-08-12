@@ -11,9 +11,9 @@ end
 function test_bidsStc_dual_task()
 
   % Cannot test dual task for now as rest and vismotion
-  % do not have the same entities (rest has not part entity)
+  % do not have the same entities (rest has no part entity)
   %   opt = setOptions({'vismotion', 'rest'}, '');
-  opt = setOptions({'vismotion'}, '');
+  opt = setOptions({'vismotion'}, '^01');
 
   opt.bidsFilterFile.bold.acq = '';
   opt.bidsFilterFile.bold.part = 'mag';
@@ -32,7 +32,7 @@ end
 
 function test_bidsStc_basic()
 
-  opt = setOptions('vismotion', '');
+  opt = setOptions('vismotion', '^01');
 
   opt.bidsFilterFile.bold.acq = '';
 
@@ -44,9 +44,11 @@ end
 
 function test_bidsStc_skip()
 
-  opt = setOptions('vislocalizer', '');
+  opt = setOptions('vislocalizer', '^01');
 
+  warning OFF;
   matlabbatch = bidsSTC(opt);
+  warning ON;
 
   assertEqual(numel(matlabbatch), 0);
 
