@@ -50,21 +50,21 @@ end
 
 default_model_file = fullfile(models_dir, 'default_model.json');
 
-mutliverse.strategy = {'motion', 'wm_csf', 'scrub', 'non_steady_state'};
-mutliverse.motion = {'none', 'basic', 'full'};
-mutliverse.scrub = [false, true];
-mutliverse.wm_csf = {'none', 'basic', 'full'};
-mutliverse.non_steady_state = [false, true];
+multiverse.strategy = {'motion', 'wm_csf', 'scrub', 'non_steady_state'};
+multiverse.motion = {'none', 'basic', 'full'};
+multiverse.scrub = [false, true];
+multiverse.wm_csf = {'none', 'basic', 'full'};
+multiverse.non_steady_state = [false, true];
 
 if TESTING
-  mutliverse.strategy = {'motion', 'wm_csf', 'scrub', 'non_steady_state'};
-  mutliverse.motion = {'none', 'basic'};
-  mutliverse.scrub = [false, true];
-  mutliverse.wm_csf = {'none'};
-  mutliverse.non_steady_state = false;
+  multiverse.strategy = {'motion', 'wm_csf', 'scrub', 'non_steady_state'};
+  multiverse.motion = {'none', 'basic'};
+  multiverse.scrub = [false, true];
+  multiverse.wm_csf = {'none'};
+  multiverse.non_steady_state = false;
 end
 
-create_model_families(models_dir, default_model_file, mutliverse);
+create_model_families(models_dir, default_model_file, multiverse);
 
 %% Statistics
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
@@ -93,38 +93,38 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'verbosity', VERBOSITY);
 
 %%
-function create_model_families(models_dir, default_model_file, mutliverse)
+function create_model_families(models_dir, default_model_file, multiverse)
   % create models from a default one
   %
 
   % TODO incorporate into bidspm
 
   % TODO add support for 12 motion regressors
-  strategyToSkip = fieldnames(mutliverse);
-  idxStrategyToSkip = ~ismember(fieldnames(mutliverse), mutliverse.strategy);
+  strategyToSkip = fieldnames(multiverse);
+  idxStrategyToSkip = ~ismember(fieldnames(multiverse), multiverse.strategy);
   strategyToSkip = strategyToSkip(idxStrategyToSkip);
   for i = 1:numel(strategyToSkip)
-    mutliverse.(strategyToSkip{i}) = {''};
+    multiverse.(strategyToSkip{i}) = {''};
   end
 
-  for i = 1:numel(mutliverse.motion)
-    for j = 1:numel(mutliverse.scrub)
-      for k = 1:numel(mutliverse.wm_csf)
-        for l = 1:numel(mutliverse.non_steady_state)
+  for i = 1:numel(multiverse.motion)
+    for j = 1:numel(multiverse.scrub)
+      for k = 1:numel(multiverse.wm_csf)
+        for l = 1:numel(multiverse.non_steady_state)
 
           model = bids.util.jsondecode(default_model_file);
 
           name = sprintf('rp-%s_scrub-%i_tissue-%s_nsso-%i', ...
-                         mutliverse.motion{i}, ...
-                         mutliverse.scrub(j), ...
-                         mutliverse.wm_csf{k}, ...
-                         mutliverse.non_steady_state(l));
+                         multiverse.motion{i}, ...
+                         multiverse.scrub(j), ...
+                         multiverse.wm_csf{k}, ...
+                         multiverse.non_steady_state(l));
           model.Name = name;
           model.Nodes.Name = name;
 
           design_matrix = model.Nodes.Model.X;
 
-          switch mutliverse.motion{i}
+          switch multiverse.motion{i}
             case 'none'
             case 'basic'
               design_matrix{end + 1} = 'rot_?';
@@ -135,11 +135,11 @@ function create_model_families(models_dir, default_model_file, mutliverse)
               design_matrix{end + 1} = 'trans_*';
           end
 
-          if mutliverse.scrub(j) == 1
+          if multiverse.scrub(j) == 1
             design_matrix{end + 1} = 'motion_outlier*'; %#ok<*AGROW>
           end
 
-          switch mutliverse.wm_csf{k}
+          switch multiverse.wm_csf{k}
             case 'none'
             case 'basic'
               design_matrix{end + 1} = 'csf';
@@ -149,7 +149,7 @@ function create_model_families(models_dir, default_model_file, mutliverse)
               design_matrix{end + 1} = 'white_*';
           end
 
-          if mutliverse.non_steady_state(l)
+          if multiverse.non_steady_state(l)
             design_matrix{end + 1} = 'non_steady_state_outlier*';
           end
 
