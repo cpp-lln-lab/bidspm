@@ -7,7 +7,7 @@ addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
 % set to false to not re run the smoothing
-SMOOTH = true;
+SMOOTH = false;
 
 % set to false to not re run the model specification
 FIRST_LEVEL = true;
@@ -57,7 +57,11 @@ mutliverse.wm_csf = {'none', 'basic', 'full'};
 mutliverse.non_steady_state = [false, true];
 
 if TESTING
-  mutliverse.strategy = {'scrub', 'non_steady_state'};
+  mutliverse.strategy = {'motion', 'wm_csf', 'scrub', 'non_steady_state'};
+  mutliverse.motion = {'none', 'basic'};
+  mutliverse.scrub = [false, true];
+  mutliverse.wm_csf = {'none'};
+  mutliverse.non_steady_state = false;
 end
 
 create_model_families(models_dir, default_model_file, mutliverse);
@@ -96,6 +100,12 @@ function create_model_families(models_dir, default_model_file, mutliverse)
   % TODO incorporate into bidspm
 
   % TODO add support for 12 motion regressors
+  strategyToSkip = fieldnames(mutliverse);
+  idxStrategyToSkip = ~ismember(fieldnames(mutliverse), mutliverse.strategy);
+  strategyToSkip = strategyToSkip(idxStrategyToSkip);
+  for i = 1:numel(strategyToSkip)
+    mutliverse.(strategyToSkip{i}) = {''};
+  end
 
   for i = 1:numel(mutliverse.motion)
     for j = 1:numel(mutliverse.scrub)
