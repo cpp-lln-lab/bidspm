@@ -31,6 +31,10 @@ function test_getAnatFilename_return_several()
   assertEqual(numel(anatImage), 3);
   warning('ON');
 
+  if bids.internal.is_octave()
+    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
+  end
+
   assertWarning(@()getAnatFilename(BIDS, opt, subLabel, nbImgToReturn), ...
                 'getAnatFilename:severalAnatFile');
 

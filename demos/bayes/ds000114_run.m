@@ -11,7 +11,7 @@ VERBOSITY = 2;
 FWHM = 8;
 
 % set to false to not re run the smoothing
-SMOOTH = true;
+SMOOTH = false;
 
 % set to false to not re run the model specification
 FIRST_LEVEL = true;
@@ -30,6 +30,7 @@ models_dir = fullfile(root_dir, 'models');
 participant_label = {'[0-9]*'}; %#ok<*NASGU>
 if TESTING
   participant_label = {'^0[12]$'};
+  participant_label = {'[0-9]*'};
 end
 
 %% Smooth
