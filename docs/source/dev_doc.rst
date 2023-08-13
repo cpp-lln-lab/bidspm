@@ -274,6 +274,8 @@ QA
 .. autofunction:: src.QA.anatQA
 .. _censoring:
 .. autofunction:: src.QA.censoring
+.. _compileScrubbingStats:
+.. autofunction:: src.QA.compileScrubbingStats
 .. _computeDesignEfficiency:
 .. autofunction:: src.QA.computeDesignEfficiency
 .. _computeFDandRMS:
@@ -342,12 +344,16 @@ bids
 
 bids_model
 ==========
+.. _addConfoundsToDesignMatrix:
+.. autofunction:: src.bids_model.addConfoundsToDesignMatrix
 .. _checkContrast:
 .. autofunction:: src.bids_model.checkContrast
 .. _checkGroupBy:
 .. autofunction:: src.bids_model.checkGroupBy
 .. _createDefaultStatsModel:
 .. autofunction:: src.bids_model.createDefaultStatsModel
+.. _createModelFamilies:
+.. autofunction:: src.bids_model.createModelFamilies
 .. _getContrastsFromParentNode:
 .. autofunction:: src.bids_model.getContrastsFromParentNode
 .. _getContrastsList:
@@ -368,6 +374,8 @@ cli
 ===
 .. _baseInputParser:
 .. autofunction:: src.cli.baseInputParser
+.. _cliBayesModel:
+.. autofunction:: src.cli.cliBayesModel
 .. _cliCopy:
 .. autofunction:: src.cli.cliCopy
 .. _cliCreateRoi:
@@ -384,6 +392,8 @@ cli
 .. autofunction:: src.cli.getBidsFilterFile
 .. _getOptionsFromCliArgument:
 .. autofunction:: src.cli.getOptionsFromCliArgument
+.. _inputParserForBayesModel:
+.. autofunction:: src.cli.inputParserForBayesModel
 .. _inputParserForCopy:
 .. autofunction:: src.cli.inputParserForCopy
 .. _inputParserForCreateModel:
@@ -686,6 +696,8 @@ utils
 .. autofunction:: src.utils.createDataDictionary
 .. _deregexify:
 .. autofunction:: src.utils.deregexify
+.. _displayArguments:
+.. autofunction:: src.utils.displayArguments
 .. _getDist2surf:
 .. autofunction:: src.utils.getDist2surf
 .. _getFuncVoxelDims:
