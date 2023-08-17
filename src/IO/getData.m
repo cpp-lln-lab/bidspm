@@ -56,10 +56,15 @@ function [BIDS, opt] = getData(varargin)
     layout_filter = struct('sub', {opt.subjects});
   end
 
+  if strcmp(opt.pipeline.type, 'stats')
+    index_dependencies = false;
+  end
+
   BIDS = bids.layout(bidsDir, ...
                      'use_schema', opt.useBidsSchema, ...
                      'verbose', opt.verbosity > 1, ...
-                     'filter', layout_filter);
+                     'filter', layout_filter, ...
+                     'index_dependencies', index_dependencies);
 
   if strcmp(opt.pipeline.type, 'stats') && ~opt.pipeline.isBms
     if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file') == 2
@@ -67,8 +72,11 @@ function [BIDS, opt] = getData(varargin)
                     bids.internal.format_path(fullfile(opt.dir.raw, 'layout.mat')));
       logger('INFO', msg, 'options', opt, 'filename', mfilename());
       tmp = load(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
+
       if isempty(fieldnames(tmp))
-        BIDS.raw = bids.layout(opt.dir.raw, 'filter', layout_filter);
+        BIDS.raw = bids.layout(opt.dir.raw, ...
+                               'filter', layout_filter, ...
+                               'index_dependencies', index_dependencies);
       else
         BIDS.raw = tmp.BIDS;
       end
