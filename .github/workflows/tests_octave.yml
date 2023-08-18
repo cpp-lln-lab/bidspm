@@ -150,7 +150,7 @@ jobs:
       with:
         file: coverage.xml
         flags: octave
-        name: codecov-octave
+        name: codecov-octave_${{ matrix.mode }}
         fail_ci_if_error: false
       # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
 
