@@ -28,7 +28,9 @@ function test_bidsRename_basic()
 
   opt.dir.preproc = bidsDir;
 
-  BIDS = bids.layout(bidsDir, 'use_schema', false);
+  BIDS = bids.layout(bidsDir, ...
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   files = bids.query(BIDS, 'data', 'prefix', '');
   for i = 1:numel(files)

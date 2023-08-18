@@ -11,7 +11,7 @@ VERBOSITY = 2;
 FWHM = 8;
 
 % set to false to not re run the smoothing
-SMOOTH = false;
+SMOOTH = true;
 
 % set to false to not re run the model specification
 FIRST_LEVEL = true;

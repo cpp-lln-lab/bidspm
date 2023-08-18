@@ -27,7 +27,9 @@ function test_renameSegmentParameter_basic()
     bidsDir = fullfile(tmpDir, 'bidspm-preproc');
   end
 
-  BIDS = bids.layout(bidsDir, 'use_schema', false);
+  BIDS = bids.layout(bidsDir, ...
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   opt.dryRun = false;
   opt.verbosity = 2;

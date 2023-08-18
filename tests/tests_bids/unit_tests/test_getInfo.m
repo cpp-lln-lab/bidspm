@@ -93,7 +93,9 @@ function test_getInfo_no_session_no_run()
   opt = setOptions('MoAE-preproc', subLabel);
   opt.dir.input = opt.dir.preproc;
 
-  BIDS = bids.layout(opt.dir.input);
+  BIDS = bids.layout(opt.dir.input, ...
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   sessions = getInfo(BIDS, subLabel, opt, 'sessions');
   assertEqual(sessions, {''});

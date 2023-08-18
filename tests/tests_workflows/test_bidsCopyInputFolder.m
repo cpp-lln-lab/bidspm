@@ -24,7 +24,9 @@ function test_bidsCopyInputFolder_basic()
   bidsCopyInputFolder(opt, 'unzip', true);
 
   layoutRaw = bids.layout(opt.dir.raw);
-  layoutDerivatives = bids.layout(fullfile(opt.dir.preproc));
+  layoutDerivatives = bids.layout(fullfile(opt.dir.preproc), ...
+                                  'use_schema', false, ...
+                                  'index_dependencies', false);
 
   assertEqual(exist(fullfile(output_folder, 'dataset_description.json'), 'file'), ...
               2);
@@ -57,7 +59,9 @@ function test_bidsCopyInputFolder_fmriprep()
 
   bidsCopyInputFolder(opt, 'unzip', false);
 
-  layoutDerivatives = bids.layout(fullfile(opt.dir.preproc), 'use_schema', false);
+  layoutDerivatives = bids.layout(fullfile(opt.dir.preproc), ...
+                                  'use_schema', false, ...
+                                  'index_dependencies', false);
   data = bids.query(layoutDerivatives, 'data', 'extension', '.nii.gz');
   assertEqual(size(data, 1), 16);
 

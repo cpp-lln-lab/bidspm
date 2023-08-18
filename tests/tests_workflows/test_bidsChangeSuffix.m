@@ -33,7 +33,8 @@ function test_bidsChangeSuffix_basic()
   opt.verbosity = 0;
   opt.useBidsSchema = false;
 
-  BIDS_before = bids.layout(opt.dir.input, 'use_schema', opt.useBidsSchema);
+  BIDS_before = bids.layout(opt.dir.input, 'use_schema', opt.useBidsSchema, ...
+                            'index_dependencies', false);
 
   expected = bids.query(BIDS_before, 'data', 'suffix', 'bold');
   expected_metadata = bids.query(BIDS_before, 'metadata', 'suffix', 'bold');
@@ -42,7 +43,8 @@ function test_bidsChangeSuffix_basic()
   bidsChangeSuffix(opt, 'vaso', 'filter', struct('suffix', 'bold'), 'force', true);
 
   %% THEN
-  BIDS_after = bids.layout(bidsDir, 'use_schema', opt.useBidsSchema);
+  BIDS_after = bids.layout(bidsDir, 'use_schema', opt.useBidsSchema, ...
+                           'index_dependencies', false);
 
   % only vaso
   data = bids.query(BIDS_after, 'data', 'suffix', 'vaso');

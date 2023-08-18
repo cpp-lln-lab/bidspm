@@ -22,7 +22,9 @@ function test_renameUnwarpParameter_basic()
   spm_mkdir(tmpDir);
   copyfile(opt.dir.preproc, tmpDir);
 
-  BIDS = bids.layout(tmpDir, 'use_schema', false);
+  BIDS = bids.layout(tmpDir, ...
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   opt.dryRun = false;
   opt.verbosity = 2;
