@@ -10,6 +10,10 @@ end
 
 function test_bidsGenerateT1map_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('vismotion');
 
   matlabbatch = bidsGenerateT1map(opt);

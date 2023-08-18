@@ -10,6 +10,10 @@ end
 
 function test_bidsSpatialPrepro_segment_no_skustrip()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('MoAE-preproc');
 
   % some tweaks because we have dummy data
@@ -34,6 +38,10 @@ function test_bidsSpatialPrepro_segment_no_skustrip()
 end
 
 function test_bidsSpatialPrepro_basic()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('MoAE-preproc');
 
@@ -61,6 +69,10 @@ function test_bidsSpatialPrepro_basic()
 end
 
 function test_bidsSpatialPrepro_no_normalisation_no_unwarp()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('MoAE-preproc');
 
@@ -90,6 +102,10 @@ end
 
 function test_bidsSpatialPrepro_no_normalisation()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('MoAE-preproc');
 
   opt.space = 'individual';
@@ -116,6 +132,10 @@ end
 
 function test_bidsSpatialPrepro_anat_only()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('MoAE-preproc');
 
   opt.segment.force = true;
@@ -136,6 +156,10 @@ function test_bidsSpatialPrepro_anat_only()
 end
 
 function test_bidsSpatialPrepro_force_segment()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('MoAE-preproc');
 

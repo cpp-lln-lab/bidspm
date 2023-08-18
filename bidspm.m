@@ -310,6 +310,10 @@ function returnCode = run_tests()
     logger('INFO', 'This is not github CI');
   end
 
+  if usingSlowTestMode()
+    fprintf(1, 'Running in tests only.\n');
+  end
+
   logger('INFO', sprintf('Home is "%s"\n', getenv('HOME')));
 
   warning('OFF');

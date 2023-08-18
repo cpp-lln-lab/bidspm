@@ -10,6 +10,10 @@ end
 
 function test_bidsCopyInputFolder_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setTestCfg();
   opt.dir.raw = fullfile(getMoaeDir(), 'inputs', 'raw');
   opt.dir.derivatives = fullfile(tempName(), 'derivatives');
@@ -44,6 +48,10 @@ function test_bidsCopyInputFolder_basic()
 end
 
 function test_bidsCopyInputFolder_fmriprep()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setTestCfg();
   opt.taskName = {'balloonanalogrisktask'};

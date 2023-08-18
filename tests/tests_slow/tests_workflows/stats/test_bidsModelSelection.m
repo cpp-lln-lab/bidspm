@@ -14,6 +14,10 @@ end
 
 function test_bidsModelSelection_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   % GIVEN
   opt = setOptions('vislocalizer');
   opt = rmfield(opt, 'taskName');
@@ -43,6 +47,10 @@ function test_bidsModelSelection_basic()
 end
 
 function test_bidsModelSelection_actions()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   % GIVEN
   opt = setOptions('vislocalizer');
@@ -81,12 +89,21 @@ function test_bidsModelSelection_actions()
 end
 
 function test_bidsModelSelection_error_no_model_list()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('vislocalizer');
   assertExceptionThrown(@()bidsModelSelection(opt), ...
                         'bidsModelSelection:noModelList');
 end
 
 function test_bidsModelSelection_different_missing_model_file()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   % GIVEN
   opt = setOptions('vislocalizer');
@@ -106,6 +123,10 @@ end
 
 function test_bidsModelSelection_different_tasks_1()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   % GIVEN
   opt = setOptions('vislocalizer');
   opt = rmfield(opt, 'taskName');
@@ -124,6 +145,10 @@ end
 
 function test_bidsModelSelection_different_tasks_2()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   % GIVEN
   opt = setOptions('vislocalizer');
   opt = rmfield(opt, 'taskName');
@@ -141,6 +166,10 @@ function test_bidsModelSelection_different_tasks_2()
 end
 
 function test_bidsModelSelection_missing_space()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   % GIVEN
   opt = setOptions('vislocalizer');

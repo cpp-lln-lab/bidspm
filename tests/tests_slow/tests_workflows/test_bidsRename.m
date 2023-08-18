@@ -10,6 +10,10 @@ end
 
 function test_bidsRename_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   % TODO take care of
   % - SpatialReference probably not needed for space individual if anat modality
   % - transfer of Skullstripped true, if sources has it?

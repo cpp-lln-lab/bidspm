@@ -10,6 +10,10 @@ end
 
 function test_bidsChangeSuffix_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   dataset = 'ds001';
 
   dataDir = getBidsExample('ds001');

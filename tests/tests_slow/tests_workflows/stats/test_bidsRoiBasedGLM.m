@@ -10,6 +10,10 @@ end
 
 function test_bidsRoiBasedGLM_checks()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('vislocalizer', '01', 'pipelineType', 'stats');
   opt.model.bm = BidsModel('file', opt.model.file);
   opt.model.bm.Input.space = char(opt.model.bm.Input.space);
@@ -23,6 +27,10 @@ function test_bidsRoiBasedGLM_run()
   % integration test:
   %  - also makes sure that previous results are not deleted
   %
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   if bids.internal.is_octave()
     return

@@ -10,6 +10,14 @@ end
 
 function test_bidsCreateROI_neuromorphometrics()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
+  if bids.internal.is_github_ci()
+    moxunit_throw_test_skipped_exception('skip test in CI');
+  end
+
   opt = setOptions('MoAE');
 
   opt.roi.atlas = 'neuromorphometrics';
@@ -20,11 +28,6 @@ function test_bidsCreateROI_neuromorphometrics()
   opt.dryRun = false;
 
   cleanUp(opt.dir.roi);
-
-  % skip test in CI
-  if bids.internal.is_github_ci()
-    return
-  end
 
   bidsCreateROI(opt);
 
@@ -41,6 +44,14 @@ end
 
 function test_bidsCreateROI_wang()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
+  if bids.internal.is_github_ci()
+    moxunit_throw_test_skipped_exception('skip test in CI');
+  end
+
   opt = setOptions('MoAE');
 
   opt.roi.atlas = 'wang';
@@ -51,10 +62,6 @@ function test_bidsCreateROI_wang()
   opt.dryRun = false;
 
   cleanUp(opt.dir.roi);
-
-  if bids.internal.is_github_ci()
-    return
-  end
 
   bidsCreateROI(opt);
 

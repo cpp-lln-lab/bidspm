@@ -10,6 +10,10 @@ end
 
 function test_bidsStc_dual_task()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   % Cannot test dual task for now as rest and vismotion
   % do not have the same entities (rest has no part entity)
   %   opt = setOptions({'vismotion', 'rest'}, '');
@@ -32,6 +36,10 @@ end
 
 function test_bidsStc_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('vismotion', '^01');
 
   opt.bidsFilterFile.bold.acq = '';
@@ -43,6 +51,10 @@ function test_bidsStc_basic()
 end
 
 function test_bidsStc_skip()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('vislocalizer', '^01');
 

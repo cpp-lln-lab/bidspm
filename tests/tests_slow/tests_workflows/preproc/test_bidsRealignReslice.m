@@ -10,6 +10,10 @@ end
 
 function test_bidsRealignReslice_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('vislocalizer', '');
 
   opt.funcVoxelDims = [2 2 2];

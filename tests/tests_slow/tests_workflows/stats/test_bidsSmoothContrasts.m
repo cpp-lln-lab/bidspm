@@ -10,6 +10,10 @@ end
 
 function test_bidsSmoothContrasts_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
   opt.fwhm.contrast = 6;
@@ -27,6 +31,10 @@ function test_bidsSmoothContrasts_basic()
 end
 
 function test_bidsSmoothContrasts_zero_fwhm()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 

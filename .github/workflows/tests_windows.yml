@@ -42,10 +42,16 @@ jobs:
         script: [moae, facerep, fmriprep]
         os: [windows-latest]
         matlab: [R2022b]
+        mode: [fast]
         include:
         - test_type: unit
           os: windows-latest
           matlab: R2022b
+          mode: fast
+        - test_type: unit
+          os: windows-latest
+          matlab: R2022b
+          mode: slow
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -109,11 +115,17 @@ jobs:
       with:
         release: ${{ matrix.matlab }}
 
-    - name: Run unit tests MATLAB
-      if: matrix.test_type == 'unit'
+    - name: Run fast unit tests MATLAB
+      if: matrix.test_type == 'unit' && matrix.mode == 'fast'
       uses: matlab-actions/run-command@v1.2.1
       with:
         command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
+
+    - name: Run slow unit tests MATLAB
+      if: matrix.test_type == 'unit' && matrix.mode == 'slow'
+      uses: matlab-actions/run-command@v1.2.1
+      with:
+        command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); global SLOW; SLOW=true; run tests_matlab;
 
     - name: Code coverage matlab
       if: matrix.test_type == 'unit'
