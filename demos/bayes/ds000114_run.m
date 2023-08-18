@@ -30,7 +30,6 @@ models_dir = fullfile(root_dir, 'models');
 participant_label = {'[0-9]*'}; %#ok<*NASGU>
 if TESTING
   participant_label = {'^0[12]$'};
-  participant_label = {'[0-9]*'};
 end
 
 %% Smooth

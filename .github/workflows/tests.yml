@@ -39,11 +39,15 @@ jobs:
     strategy:
       matrix:
         test_type: [system]
-        script: [moae, facerep, fmriprep, bms]
+        script: [moae, facerep, fmriprep]
         os: [ubuntu-latest, macos-latest]
         matlab: [R2022b]
-        mode: [fast]
         include:
+        # only run bms on ubuntu because of datalad setup
+        - test_type: system
+          os: ubuntu-latest
+          matlab: R2022b
+          script: bms
         - test_type: unit
           os: ubuntu-latest
           matlab: R2022b

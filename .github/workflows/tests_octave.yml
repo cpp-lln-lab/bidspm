@@ -45,7 +45,6 @@ jobs:
       matrix:
         test_type: [system]
         script: [moae, facerep, fmriprep]
-        mode: [fast]
         include:
         - test_type: unit
           mode: fast

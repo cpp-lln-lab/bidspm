@@ -42,7 +42,6 @@ jobs:
         script: [moae, facerep, fmriprep]
         os: [windows-latest]
         matlab: [R2022b]
-        mode: [fast]
         include:
         - test_type: unit
           os: windows-latest

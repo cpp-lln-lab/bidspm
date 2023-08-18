@@ -310,19 +310,19 @@ function returnCode = run_tests()
     logger('INFO', 'This is not github CI');
   end
 
-  if usingSlowTestMode()
-    fprintf(1, 'Running in tests only.\n');
-  end
-
   logger('INFO', sprintf('Home is "%s"\n', getenv('HOME')));
 
   warning('OFF');
 
   spm('defaults', 'fMRI');
 
-  subfolder = '';
-
   folderToCover = fullfile(pwd, 'src');
+
+  subfolder = '';
+  if usingSlowTestMode()
+    fprintf(1, 'Running in slow tests only.\n');
+    subfolder = 'tests_slow';
+  end
   testFolder = fullfile(pwd, 'tests', subfolder);
 
   returnCode = moxunit_runtests(testFolder, ...
