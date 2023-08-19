@@ -17,7 +17,6 @@ function matlabbatch = bidsSpatialPrepro(opt)
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
   %             See checkOptions.
-  % :type opt: structure
   %
   %
   % If you want to:
@@ -59,10 +58,20 @@ function matlabbatch = bidsSpatialPrepro(opt)
     opt.orderBatches.saveCoregistrationMatrix = 4;
   end
 
-  % keep track of those flags and reset them to their initial values for each subject
-  % and we adapt them depending if some subject have already been segmented / skulstripped
+  batchToTransferMetadataTo = [];
+  if ismember('IXI549Space', opt.space)
+    batchToTransferMetadataTo = 5;
+  end
+
+  % keep track of those flags
+  % and reset them to their initial values for each subject
+  % and we adapt them depending
+  % if some subject have already been segmented / skulstripped
   segmentDo = opt.segment.do;
   skullstripDo = opt.skullstrip.do;
+
+  srcMetadata = struct('RepetitionTime', [], 'SliceTimingCorrected', []);
+  unRenamedFiles = {};
 
   for iSub = 1:numel(opt.subjects)
 
@@ -78,10 +87,15 @@ function matlabbatch = bidsSpatialPrepro(opt)
     matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);
 
     if ~opt.realign.useUnwarp
-      [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel, 'realign');
+      action = 'realign';
     else
-      [matlabbatch, voxDim] = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
+      action = 'realignUnwarp';
     end
+    [matlabbatch, voxDim, srcMetadata(iSub)] = setBatchRealign(matlabbatch, ...
+                                                               BIDS, ...
+                                                               opt, ...
+                                                               subLabel, ...
+                                                               action);
 
     % dependency from file selector ('Anatomical')
     matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
@@ -92,14 +106,18 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
     % TODO refactor with bidsSegmentSkullstrip
     %% Skip segmentation / skullstripping if done previously
-    if skullstripDo && ~opt.skullstrip.force && skullstrippingAlreadyDone(anatFile, BIDS)
+    if skullstripDo && ...
+            ~opt.skullstrip.force && ...
+            skullstrippingAlreadyDone(anatFile, BIDS)
       opt.skullstrip.do = false;
     end
-    if segmentDo && ~opt.segment.force && segmentationAlreadyDone(anatFile, BIDS)
+    if segmentDo && ~opt.segment.force && ...
+            segmentationAlreadyDone(anatFile, BIDS)
       opt.segment.do = false;
       % but if we must force the skullstripping
       % then we will need some segmentation input
-    elseif opt.skullstrip.do && ~segmentationAlreadyDone(anatFile, BIDS)
+    elseif opt.skullstrip.do && ...
+            ~segmentationAlreadyDone(anatFile, BIDS)
       opt.segment.do = true;
     end
 
@@ -120,27 +138,38 @@ function matlabbatch = bidsSpatialPrepro(opt)
     % if no unwarping was done on func, we reslice the func,
     % so we can use them later
     if ~opt.realign.useUnwarp
+      batchToTransferMetadataTo(end + 1) = numel(matlabbatch) + 1;
       matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subLabel, 'reslice');
     end
 
     batchName = ['spatial_preprocessing-' strjoin(opt.space, '-')];
 
-    saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
+    [~, batchOutput] = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
+
+    if ~opt.dryRun
+      unRenamedFiles{iSub} = filesToTransferMetadataTo(batchOutput, ...
+                                                       batchToTransferMetadataTo); %#ok<*AGROW>
+    end
 
     %% clean up and rename files
     copyFigures(BIDS, opt, subLabel);
 
   end
 
-  renameFiles(BIDS, opt);
+  createdFiles = renameFiles(BIDS, opt);
+
+  if ~opt.dryRun
+    transferMetadata(opt, createdFiles, unRenamedFiles, srcMetadata);
+  end
 
   bidsQApreproc(opt);
 
 end
 
-function renameFiles(BIDS, opt)
+function createdFiles = renameFiles(BIDS, opt)
 
   if ~opt.rename.do || opt.dryRun
+    createdFiles = [];
     return
   end
 
@@ -152,7 +181,8 @@ function renameFiles(BIDS, opt)
 
       subLabel = opt.subjects{iSub};
 
-      % this is only necessary if the rp_ files have not already been converted
+      % this is only necessary
+      % if the rp_ files have not already been converted
       % and deleted by functionalQA
       for iTask = 1:numel(opt.taskName)
         rpFiles = spm_select('FPListRec', ...
@@ -184,6 +214,6 @@ function renameFiles(BIDS, opt)
   % that only have a "r" or "ra" prefix
   opt.query =  struct('modality', {{'anat', 'func'}});
 
-  bidsRename(opt);
+  createdFiles = bidsRename(opt);
 
 end

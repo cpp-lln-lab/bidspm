@@ -53,11 +53,16 @@ function srcMetadata = bidsSmoothing(opt)
                                                                    BIDS, ...
                                                                    opt, ...
                                                                    subLabel);
-          [~, unRenamedFiles{iSub}] = saveAndRunWorkflow(matlabbatch, ...
-                                                         ['smoothing_FWHM-', ...
-                                                          num2str(opt.fwhm.func)], ...
-                                                         opt, ...
-                                                         subLabel); %#ok<*AGROW>
+          [~, batchOutput] = saveAndRunWorkflow(matlabbatch, ...
+                                                ['smoothing_FWHM-', ...
+                                                 num2str(opt.fwhm.func)], ...
+                                                opt, ...
+                                                subLabel); %#ok<*AGROW>
+          if ~opt.dryRun
+            batchToTransferMetadataTo = numel(matlabbatch);
+            unRenamedFiles{iSub} = filesToTransferMetadataTo(batchOutput, ...
+                                                             batchToTransferMetadataTo);
+          end
         case 'anat'
           % TODO opt.fwhm.func should also have a opt.fwhm.anat
           matlabbatch = {};
@@ -83,39 +88,4 @@ function srcMetadata = bidsSmoothing(opt)
 
   transferMetadata(opt, createdFiles, unRenamedFiles, srcMetadata);
 
-end
-
-function transferMetadata(opt, createdFiles, unRenamedFiles, srcMetadata)
-  % add Repetition Time to smoothed files metadata
-
-  metadataToTransfer = fieldnames(srcMetadata);
-
-  for iSub = 1:numel(opt.subjects)
-
-    subLabel = opt.subjects{iSub};
-
-    for iFile = 1:numel(createdFiles)
-
-      bf = bids.File(createdFiles{iFile});
-      if ~strcmp(bf.suffix, 'bold') || ~strcmp(bf.entities.sub, subLabel)
-        continue
-      end
-
-      jsonFile = spm_file(createdFiles{iFile}, 'ext', '.json');
-      if exist(jsonFile, 'file')
-
-        metadata = bids.util.jsondecode(jsonFile);
-        idx = ~cellfun('isempty', ...
-                       strfind(unRenamedFiles{iSub}{1}.files, ...
-                               metadata.SpmFilename));
-
-        for i = 1:numel(metadataToTransfer)
-          metadata.(metadataToTransfer{i}) = srcMetadata(iSub).(metadataToTransfer{i})(idx);
-        end
-
-        bids.util.jsonencode(jsonFile, metadata);
-      end
-
-    end
-  end
 end

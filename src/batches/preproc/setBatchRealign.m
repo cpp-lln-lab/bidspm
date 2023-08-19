@@ -1,4 +1,4 @@
-function [matlabbatch, voxDim] = setBatchRealign(varargin)
+function [matlabbatch, voxDim, srcMetadata] = setBatchRealign(varargin)
   %
   % Set the batch for realign / realign and reslice / realign and unwarp
   %
@@ -27,8 +27,9 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   % :param action: ``realign``, ``realignReslice``, ``realignUnwarp``, ``'reslice'``
   % :type  action: char
   %
-  % :returns: - :matlabbatch: (structure) (dimension)
-  %           - :voxDim: (array) (dimension)
+  % :returns: - :matlabbatch: (structure)
+  %           - :voxDim:      (array)
+  %           - :srcMetadata: (structure)
   %
   %
 
@@ -62,6 +63,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
   if opt.anatOnly
     voxDim = [];
+    srcMetadata = struct('RepetitionTime', [], 'SliceTimingCorrected', []);
     return
   end
 
@@ -92,6 +94,8 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
 
   runCounter = 1;
 
+  srcMetadata = struct('RepetitionTime', [], 'SliceTimingCorrected', []);
+
   for iTask = 1:numel(opt.taskName)
 
     opt.query = opt.bidsFilterFile.bold;
@@ -110,11 +114,11 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
         % in case we did slice timing we specify it in the file to query
         opt.query.desc = '';
         opt = addStcToQuery(BIDS, opt, subLabel);
-        [boldFilename, subFuncDataDir] = getBoldFilename(BIDS, ...
-                                                         subLabel, ...
-                                                         sessions{iSes}, ...
-                                                         runs{iRun}, ...
-                                                         opt);
+        [boldFilename, subFuncDataDir, metadata] = getBoldFilename(BIDS, ...
+                                                                   subLabel, ...
+                                                                   sessions{iSes}, ...
+                                                                   runs{iRun}, ...
+                                                                   opt);
 
         if size(boldFilename, 1) > 1
           id = 'tooManyFiles';
@@ -129,6 +133,11 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
         file = fullfile(subFuncDataDir, boldFilename);
         volumes = returnVolumeList(opt, file);
 
+        if isstruct(metadata)
+          metadata = {metadata};
+        end
+        srcMetadata = collectSrcMetadata(srcMetadata, metadata);
+
         switch action
 
           % we reslice images that come from a previous batch
@@ -142,7 +151,7 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
                 cfg_dep('Coregister: Estimate: Coregistered Images', ...
                         returnDependency(opt, 'coregister'), ...
                         substruct('.', 'cfiles'));
-            matlabbatch{end + 1}.spm.spatial = spatial;
+            matlabbatch{end + 1}.spm.spatial = spatial; %#ok<*AGROW>
             return
 
           case 'realignUnwarp'
@@ -163,50 +172,5 @@ function [matlabbatch, voxDim] = setBatchRealign(varargin)
   end
 
   matlabbatch{end + 1}.spm.spatial = spatial;
-
-  %% defaults
-  % The following lines are commented out because those parameters
-  % can be set in the spm_my_defaults.m
-
-  % -----------------
-  % REALIGN
-  % REALIGN & RESLICE
-  % -----------------
-  %
-  % matlabbatch{end}.spm.spatial.realign.estwrite.eoptions.quality = 1;
-  % matlabbatch{end}.spm.spatial.realign.estwrite.eoptions.sep = 2;
-  % matlabbatch{end}.spm.spatial.realign.estwrite.eoptions.fwhm = 5;
-  % matlabbatch{end}.spm.spatial.realign.estwrite.eoptions.rtm = 0;
-  % matlabbatch{end}.spm.spatial.realign.estwrite.eoptions.interp = 2;
-  % matlabbatch{end}.spm.spatial.realign.estwrite.eoptions.wrap = [0 0 0];
-  %
-  % matlabbatch{end}.spm.spatial.realign.estwrite.roptions.interp = 3;
-  % matlabbatch{end}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
-  % matlabbatch{end}.spm.spatial.realign.estwrite.roptions.mask = 1;
-
-  % ----------------
-  % REALIGN & UNWARP
-  % ----------------
-  %   matlabbatch{1}.spm.spatial.realignunwarp.eoptions.quality = 1;
-  %   matlabbatch{1}.spm.spatial.realignunwarp.eoptions.sep = 2;
-  %   matlabbatch{1}.spm.spatial.realignunwarp.eoptions.fwhm = 5;
-  %   matlabbatch{1}.spm.spatial.realignunwarp.eoptions.rtm = 0;
-  %   matlabbatch{1}.spm.spatial.realignunwarp.eoptions.einterp = 2;
-  %   matlabbatch{1}.spm.spatial.realignunwarp.eoptions.ewrap = [0 0 0];
-  %
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uweoptions.basfcn = [12 12];
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uweoptions.regorder = 1;
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uweoptions.lambda = 100000;
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uweoptions.jm = 0;
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uweoptions.fot = [4 5];
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uweoptions.sot = [];
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uweoptions.uwfwhm = 4;
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uweoptions.rem = 1;
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uweoptions.noi = 5;
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uweoptions.expround = 'Average';
-  %
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uwroptions.rinterp = 3;
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uwroptions.wrap = [0 0 0];
-  %   matlabbatch{1}.spm.spatial.realignunwarp.uwroptions.mask = 1;
 
 end

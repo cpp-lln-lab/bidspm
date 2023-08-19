@@ -8,20 +8,20 @@ function matlabbatch = bidsSTC(opt)
   %
   % :param opt: Options chosen for the analysis.
   %             See checkOptions.
-  % :type opt: structure
+  % :type opt:  structure
   %
   % STC will be performed using the information provided in the BIDS data set.
   % It will use the mid-volume acquisition time point as as reference.
   %
-  % In general slice order and reference slice is entered in time unit (ms) (this is
-  % the BIDS way of doing things) instead of the slice index of the reference slice
+  % In general slice order and reference slice is entered in time unit (ms)
+  % (this is the BIDS way of doing things)
+  % instead of the slice index of the reference slice
   % (the "SPM" way of doing things).
   %
-  % If no slice timing information is available from the file metadata this step will be skipped.
+  % If no slice timing information is available
+  % from the file metadata this step will be skipped.
   %
   % See also: setBatchSTC, getAndCheckSliceOrder
-  %
-  % See the documentation for more information about slice timing correction.
   %
 
   % (C) Copyright 2019 bidspm developers
@@ -30,7 +30,18 @@ function matlabbatch = bidsSTC(opt)
 
   opt.dir.input = opt.dir.preproc;
 
-  [BIDS, opt] = setUpWorkflow(opt, 'slice timing correction');
+  indexData = true;
+  indexDependencies = false;
+  [BIDS, opt] = setUpWorkflow(opt, ...
+                              'slice timing correction', ...
+                              '', ...
+                              indexData, ...
+                              indexDependencies);
+
+  srcMetadata = struct('RepetitionTime', [], ...
+                       'SliceTimingCorrected', [], ...
+                       'StartTime', []);
+  fields = fieldnames(srcMetadata);
 
   for iSub = 1:numel(opt.subjects)
 
@@ -44,11 +55,24 @@ function matlabbatch = bidsSTC(opt)
 
       opt.query.task = opt.taskName{iTask};
 
-      matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, regexify(subLabel));
+      [matlabbatch, metadata] = setBatchSTC(matlabbatch, ...
+                                            BIDS, ...
+                                            opt, ...
+                                            regexify(subLabel));
+
+      for i = 1:numel(fields)
+        srcMetadata(iSub).(fields{i}) = [srcMetadata(iSub).(fields{i}), ...
+                                         metadata.(fields{i})];
+      end
 
     end
 
-    saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
+    [~, batchOutput] = saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
+
+    if ~opt.dryRun
+      unRenamedFiles{iSub} = filesToTransferMetadataTo(batchOutput, ...
+                                                       batchToTransferMetadataTo); %#ok<*AGROW>
+    end
 
   end
 
@@ -56,6 +80,10 @@ function matlabbatch = bidsSTC(opt)
 
   prefix = get_spm_prefix_list;
   opt.query.prefix = prefix.stc;
-  bidsRename(opt);
+  createdFiles = bidsRename(opt);
+
+  if ~opt.dryRun
+    transferMetadata(opt, createdFiles, unRenamedFiles, srcMetadata);
+  end
 
 end

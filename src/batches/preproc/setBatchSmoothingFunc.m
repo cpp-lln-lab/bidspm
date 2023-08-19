@@ -59,15 +59,14 @@ function [matlabbatch, srcMetadata] = setBatchSmoothingFunc(matlabbatch, BIDS, o
         continue
       end
 
-      if isstruct(metadata)
-        metadata = {metadata};
-      end
-
       for iFile = 1:size(fileName, 1)
         files{iFile, 1} = validationInputFile(subFuncDataDir(iFile, :), ...
                                               fileName(iFile, :)); %#ok<*AGROW>
       end
 
+      if isstruct(metadata)
+        metadata = {metadata};
+      end
       srcMetadata = collectSrcMetadata(srcMetadata, metadata);
 
       % add the files to list
@@ -85,22 +84,4 @@ function [matlabbatch, srcMetadata] = setBatchSmoothingFunc(matlabbatch, BIDS, o
                                   [spm_get_defaults('smooth.prefix'), ...
                                    num2str(opt.fwhm.func)]);
 
-end
-
-function srcMetadata = collectSrcMetadata(srcMetadata, metadata)
-  for iFile = 1:numel(metadata)
-
-    if isfield(metadata{iFile}, 'RepetitionTime')
-      srcMetadata.RepetitionTime(end + 1) = metadata{iFile}.RepetitionTime;
-    else
-      srcMetadata.RepetitionTime(end + 1) = nan;
-    end
-
-    if isfield(metadata{iFile}, 'SliceTimingCorrected')
-      srcMetadata.SliceTimingCorrected(end + 1) = metadata{iFile}.SliceTimingCorrected;
-    else
-      srcMetadata.SliceTimingCorrected(end + 1) = false;
-    end
-
-  end
 end

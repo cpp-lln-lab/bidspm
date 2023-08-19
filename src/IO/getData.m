@@ -4,7 +4,7 @@ function [BIDS, opt] = getData(varargin)
   %
   % USAGE::
   %
-  %   [BIDS, opt] = getData(opt, bidsDir)
+  %   [BIDS, opt] = getData(opt, bidsDir, indexDependencies)
   %
   % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
@@ -13,6 +13,10 @@ function [BIDS, opt] = getData(varargin)
   % :param bidsDir: the directory where the data is ; default is :
   %                 ``fullfile(opt.dataDir, '..', 'derivatives', 'bidspm')``
   % :type  bidsDir: char
+  %
+  % :param indexDependencies: Use ``'index_dependencies', true`
+  %                            in bids.layout.
+  % :type  indexDependencies: logical
   %
   % :returns:
   %           - :opt: (structure)
@@ -27,7 +31,7 @@ function [BIDS, opt] = getData(varargin)
 
   addRequired(args, 'opt', @isstruct);
   addRequired(args, 'bidsDir', isFolder);
-  addOptional(args, 'index_dependencies', true, @islogical);
+  addOptional(args, 'indexDependencies', true, @islogical);
 
   try
     parse(args, varargin{:});
@@ -45,9 +49,9 @@ function [BIDS, opt] = getData(varargin)
   opt = args.Results.opt;
   bidsDir = args.Results.bidsDir;
 
-  index_dependencies = args.Results.index_dependencies;
+  indexDependencies = args.Results.indexDependencies;
   if strcmp(opt.pipeline.type, 'stats')
-    index_dependencies = false;
+    indexDependencies = false;
   end
 
   if isfield(opt, 'taskName')
@@ -66,7 +70,7 @@ function [BIDS, opt] = getData(varargin)
                      'use_schema', opt.useBidsSchema, ...
                      'verbose', opt.verbosity > 1, ...
                      'filter', layout_filter, ...
-                     'index_dependencies', index_dependencies);
+                     'index_dependencies', indexDependencies);
 
   if strcmp(opt.pipeline.type, 'stats') && ~opt.pipeline.isBms
     if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file') == 2
@@ -78,7 +82,7 @@ function [BIDS, opt] = getData(varargin)
       if isempty(fieldnames(tmp))
         BIDS.raw = bids.layout(opt.dir.raw, ...
                                'filter', layout_filter, ...
-                               'index_dependencies', index_dependencies);
+                               'index_dependencies', indexDependencies);
       else
         BIDS.raw = tmp.BIDS;
       end

@@ -46,9 +46,6 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   sliceOrder = returnSliceOrder(BIDS, opt, subLabel);
 
   filter = fileFilterForBold(opt, subLabel);
-  %   % TODO pass the repetition time metadata to the smoothed data
-  %   % so we don't have to read it from the preproc data
-  %     filter.desc = 'preproc';
   TR = getAndCheckRepetitionTime(BIDS, filter);
 
   fmri_spec.timing.units = 'secs';

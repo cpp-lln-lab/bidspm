@@ -1,4 +1,4 @@
-function matlabbatch = setBatchSTC(varargin)
+function [matlabbatch, srcMetadata] = setBatchSTC(varargin)
   %
   % Creates batch for slice timing correction
   %
@@ -22,9 +22,11 @@ function matlabbatch = setBatchSTC(varargin)
   % Slice timing units is in seconds to be BIDS compliant
   % and not in slice number as is more traditionally the case with SPM.
   %
-  % If no slice order can be found, the slice timing correction will not be performed.
+  % If no slice order can be found,
+  % the slice timing correction will not be performed.
   %
-  % If not specified in the options, this function will take the mid-volume time point as reference
+  % If not specified in the options,
+  % this function will take the mid-volume time point as reference
   % to do the slice timing correction.
   %
 
@@ -43,6 +45,10 @@ function matlabbatch = setBatchSTC(varargin)
   BIDS = args.Results.BIDS;
   opt = args.Results.opt;
   subLabel = args.Results.subLabel;
+
+  srcMetadata = struct('RepetitionTime', [], ...
+                       'SliceTimingCorrected', [], ...
+                       'StartTime', []);
 
   if opt.stc.skip
     return
@@ -117,10 +123,20 @@ function matlabbatch = setBatchSTC(varargin)
 
     % TODO check for eventually zipped files
     file = unzipAndReturnsFullpathName(files{iFile}, opt);
+
     temporal.st.scans{runCounter} = {file};
 
     runCounter = runCounter + 1;
   end
+
+  metadata = bids.query(BIDS, 'metadata', filter);
+  srcMetadata = collectSrcMetadata(srcMetadata, metadata);
+  srcMetadata.SliceTimingCorrected = true(size(srcMetadata.SliceTimingCorrected));
+
+  % See
+  % https://github.com/bids-standard/bids-specification/issues/836
+  startTime = referenceSlice / repetitionTime;
+  srcMetadata.StartTime = repmat(startTime, size(srcMetadata.SliceTimingCorrected));
 
   matlabbatch{end + 1}.spm.temporal = temporal;
 
