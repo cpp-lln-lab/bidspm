@@ -10,6 +10,10 @@ end
 
 function test_bidsSmoothing_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('vislocalizer', '^01');
 
   opt.pipeline.type = 'preproc';
@@ -26,6 +30,10 @@ function test_bidsSmoothing_basic()
 end
 
 function test_bidsSmoothing_fmriprep()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('fmriprep', '^10');
 

@@ -182,14 +182,16 @@ function designMatrix = cleanDesignMatrix(designMatrix)
   toClean = cellfun(@(x) isempty(x), designMatrix);
   designMatrix(toClean) = [];
 
-  numeric = cellfun(@(x) isnumeric(x), designMatrix);
-  tmp = unique(designMatrix(~numeric));
-  if size(tmp, 1) > 1
-    tmp = tmp';
+  if isempty(designMatrix)
+    return
   end
   if size(designMatrix, 1) > 1
     designMatrix = designMatrix';
   end
+
+  numeric = cellfun(@(x) isnumeric(x), designMatrix);
+  tmp = unique(designMatrix(~numeric));
+
   designMatrix = cat(2, tmp, designMatrix(numeric));
 end
 

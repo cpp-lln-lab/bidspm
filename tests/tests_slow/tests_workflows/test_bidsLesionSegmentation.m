@@ -10,6 +10,10 @@ end
 
 function test_bidsLesionSegmentation_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('vismotion', '', 'useRaw', true);
 
   if not(isfield(opt.toolbox, 'ALI'))

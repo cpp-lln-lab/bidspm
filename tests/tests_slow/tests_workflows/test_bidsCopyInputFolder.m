@@ -10,6 +10,10 @@ end
 
 function test_bidsCopyInputFolder_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setTestCfg();
   opt.dir.raw = fullfile(getMoaeDir(), 'inputs', 'raw');
   opt.dir.derivatives = fullfile(tempName(), 'derivatives');
@@ -24,7 +28,9 @@ function test_bidsCopyInputFolder_basic()
   bidsCopyInputFolder(opt, 'unzip', true);
 
   layoutRaw = bids.layout(opt.dir.raw);
-  layoutDerivatives = bids.layout(fullfile(opt.dir.preproc));
+  layoutDerivatives = bids.layout(fullfile(opt.dir.preproc), ...
+                                  'use_schema', false, ...
+                                  'index_dependencies', false);
 
   assertEqual(exist(fullfile(output_folder, 'dataset_description.json'), 'file'), ...
               2);
@@ -43,6 +49,10 @@ end
 
 function test_bidsCopyInputFolder_fmriprep()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setTestCfg();
   opt.taskName = {'balloonanalogrisktask'};
   opt.pipeline.type = 'preproc';
@@ -57,7 +67,9 @@ function test_bidsCopyInputFolder_fmriprep()
 
   bidsCopyInputFolder(opt, 'unzip', false);
 
-  layoutDerivatives = bids.layout(fullfile(opt.dir.preproc), 'use_schema', false);
+  layoutDerivatives = bids.layout(fullfile(opt.dir.preproc), ...
+                                  'use_schema', false, ...
+                                  'index_dependencies', false);
   data = bids.query(layoutDerivatives, 'data', 'extension', '.nii.gz');
   assertEqual(size(data, 1), 16);
 

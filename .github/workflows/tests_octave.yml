@@ -47,6 +47,9 @@ jobs:
         script: [moae, facerep, fmriprep]
         include:
         - test_type: unit
+          mode: fast
+        - test_type: unit
+          mode: slow
       fail-fast: false
 
     steps:
@@ -125,13 +128,21 @@ jobs:
         make -C spm12/src PLATFORM=octave install
         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
 
-    - name: Run unit tests Octave
-      if: matrix.test_type == 'unit'
+    - name: Run fast unit tests Octave
+      if: matrix.test_type == 'unit' && matrix.mode == 'fast'
       run: |
         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
         octave $OCTFLAGS --eval "bidspm(); cd demos/MoAE; download_moae_ds(true);"
         cd .github/workflows
         octave $OCTFLAGS --eval "tests_octave;"
+
+    - name: Run fast unit tests Octave
+      if: matrix.test_type == 'unit' && matrix.mode == 'slow'
+      run: |
+        octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
+        octave $OCTFLAGS --eval "bidspm(); cd demos/MoAE; download_moae_ds(true);"
+        cd .github/workflows
+        octave $OCTFLAGS --eval " global SLOW; SLOW=true; tests_octave;"
 
     - name: Code coverage
       if: matrix.test_type == 'unit'
@@ -139,7 +150,7 @@ jobs:
       with:
         file: coverage.xml
         flags: octave
-        name: codecov-octave
+        name: codecov-octave_${{ matrix.mode }}
         fail_ci_if_error: false
       # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
 

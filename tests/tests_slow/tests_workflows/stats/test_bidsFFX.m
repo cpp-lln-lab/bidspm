@@ -10,6 +10,10 @@ end
 
 function test_bidsFFX_bug_642()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
   opt.model.bm = BidsModel('file', opt.model.file);
   opt.model.bm.Input.space = char(opt.model.bm.Input.space);
@@ -19,6 +23,10 @@ function test_bidsFFX_bug_642()
 end
 
 function test_bidsFFX_individual()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   task = {'vislocalizer'}; % 'vismotion'
 
@@ -51,6 +59,10 @@ end
 
 function test_bidsFFX_skip_subject_no_data()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('vislocalizer', '^01', 'pipelineType', 'stats');
   opt.model.file =  fullfile(getTestDataDir(),  'models', ...
                              'model-vislocalizerWrongSpace_smdl.json');
@@ -72,6 +84,10 @@ end
 
 function test_bidsFFX_contrasts_select_node()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
   opt.stc.skip = 1;
 
@@ -83,6 +99,10 @@ function test_bidsFFX_contrasts_select_node()
 end
 
 function test_bidsFFX_contrasts()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
   opt.stc.skip = 1;
@@ -97,8 +117,12 @@ end
 
 function test_bidsFFX_fmriprep_no_smoothing()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   if bids.internal.is_github_ci()
-    return
+    moxunit_throw_test_skipped_exception('skip on github CI');
   end
 
   opt = setOptions('fmriprep', '', 'pipelineType', 'stats');
@@ -132,6 +156,10 @@ function test_bidsFFX_fmriprep_no_smoothing()
 end
 
 function test_bidsFFX_mni()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   % checks that we read the correct space from the model and get the
   % corresponding data

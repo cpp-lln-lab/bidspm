@@ -11,8 +11,6 @@ function tests_octave()
 
   cd(fullfile(fileparts(mfilename('fullpath')), '..', '..'));
 
-  bidspm('action', 'dev');
-
   success = bidspm('action', 'run_tests');
 
   toc;

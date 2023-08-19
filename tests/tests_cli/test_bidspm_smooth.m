@@ -35,7 +35,8 @@ function test_smooth()
 
   BIDS = bids.layout(fullfile(outputPath, 'derivatives', 'bidspm-preproc'), ...
                      'verbose', false, ...
-                     'use_schema', false);
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   assertEqual(numel(bids.query(BIDS, 'data', 'desc', 'smth6')), 2);
 
@@ -65,7 +66,8 @@ function test_smooth_anat_only()
 
   BIDS = bids.layout(fullfile(outputPath, 'derivatives', 'bidspm-preproc'), ...
                      'verbose', false, ...
-                     'use_schema', false);
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   assertEqual(numel(bids.query(BIDS, 'data', 'desc', 'smth6')), 2);
 

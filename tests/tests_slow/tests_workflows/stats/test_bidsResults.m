@@ -10,6 +10,10 @@ end
 
 function test_bidsResults_subject_lvl()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
@@ -72,6 +76,10 @@ end
 
 function test_bidsResults_subject_lvl_regex()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
@@ -100,6 +108,10 @@ end
 
 function test_bidsResults_no_results()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   if bids.internal.is_octave()
     moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
   end
@@ -115,6 +127,10 @@ function test_bidsResults_no_results()
 end
 
 function test_bidsResults_filter_by_nodeName()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
@@ -140,6 +156,10 @@ end
 
 function test_bidsResults_filter_by_nodeName_empty()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   opt.results = defaultResultsStructure();
@@ -151,6 +171,10 @@ function test_bidsResults_filter_by_nodeName_empty()
 end
 
 function test_bidsResults_too_many_backgrounds()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
@@ -180,6 +204,10 @@ function test_bidsResults_too_many_backgrounds()
 end
 
 function test_bidsResults_background_for_subject()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   %% GIVEN
   opt = setOptions('vislocalizer', {'01', 'ctrl01', 'blind01'}, ...
@@ -223,6 +251,10 @@ end
 
 function test_bidsResults_no_background_for_montage()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   %% GIVEN
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
@@ -252,6 +284,10 @@ end
 
 function test_bidsResults_dataset_lvl()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   % TODO requires updating dummy dataset
   return
 
@@ -272,6 +308,10 @@ function test_bidsResults_dataset_lvl()
 end
 
 function test_bidsResults_error_missing_node()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('vismotion', '', 'pipelineType', 'stats');
 

@@ -6,7 +6,7 @@ function [BIDS, opt] = getData(varargin)
   %
   %   [BIDS, opt] = getData(opt, bidsDir)
   %
-  % :type opt:  structure
+  % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
   %             See checkOptions.
   %
@@ -27,6 +27,7 @@ function [BIDS, opt] = getData(varargin)
 
   addRequired(args, 'opt', @isstruct);
   addRequired(args, 'bidsDir', isFolder);
+  addOptional(args, 'index_dependencies', true, @islogical);
 
   try
     parse(args, varargin{:});
@@ -44,6 +45,11 @@ function [BIDS, opt] = getData(varargin)
   opt = args.Results.opt;
   bidsDir = args.Results.bidsDir;
 
+  index_dependencies = args.Results.index_dependencies;
+  if strcmp(opt.pipeline.type, 'stats')
+    index_dependencies = false;
+  end
+
   if isfield(opt, 'taskName')
     msg = sprintf('FOR TASK(s): %s', strjoin(opt.taskName, ' '));
     logger('INFO', msg, 'options', opt, 'filename', mfilename());
@@ -59,7 +65,8 @@ function [BIDS, opt] = getData(varargin)
   BIDS = bids.layout(bidsDir, ...
                      'use_schema', opt.useBidsSchema, ...
                      'verbose', opt.verbosity > 1, ...
-                     'filter', layout_filter);
+                     'filter', layout_filter, ...
+                     'index_dependencies', index_dependencies);
 
   if strcmp(opt.pipeline.type, 'stats') && ~opt.pipeline.isBms
     if exist(fullfile(opt.dir.raw, 'layout.mat'), 'file') == 2
@@ -67,8 +74,11 @@ function [BIDS, opt] = getData(varargin)
                     bids.internal.format_path(fullfile(opt.dir.raw, 'layout.mat')));
       logger('INFO', msg, 'options', opt, 'filename', mfilename());
       tmp = load(fullfile(opt.dir.raw, 'layout.mat'), 'BIDS');
+
       if isempty(fieldnames(tmp))
-        BIDS.raw = bids.layout(opt.dir.raw, 'filter', layout_filter);
+        BIDS.raw = bids.layout(opt.dir.raw, ...
+                               'filter', layout_filter, ...
+                               'index_dependencies', index_dependencies);
       else
         BIDS.raw = tmp.BIDS;
       end

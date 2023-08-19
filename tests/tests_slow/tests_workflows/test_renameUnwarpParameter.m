@@ -12,6 +12,10 @@ end
 
 function test_renameUnwarpParameter_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('MoAE-preproc');
 
   % move test data into temp directory to test renaming
@@ -22,7 +26,9 @@ function test_renameUnwarpParameter_basic()
   spm_mkdir(tmpDir);
   copyfile(opt.dir.preproc, tmpDir);
 
-  BIDS = bids.layout(tmpDir, 'use_schema', false);
+  BIDS = bids.layout(tmpDir, ...
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   opt.dryRun = false;
   opt.verbosity = 2;

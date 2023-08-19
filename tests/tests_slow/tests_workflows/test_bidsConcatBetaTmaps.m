@@ -11,6 +11,10 @@ end
 
 function test_bidsConcatBetaTmapsBasic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   subLabel = '01';
 
   opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');

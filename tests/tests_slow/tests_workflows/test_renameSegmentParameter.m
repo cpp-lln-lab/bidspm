@@ -12,6 +12,10 @@ end
 
 function test_renameSegmentParameter_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   opt = setOptions('MoAE-preproc');
 
   % move test data into temp directory to test renaming
@@ -27,7 +31,9 @@ function test_renameSegmentParameter_basic()
     bidsDir = fullfile(tmpDir, 'bidspm-preproc');
   end
 
-  BIDS = bids.layout(bidsDir, 'use_schema', false);
+  BIDS = bids.layout(bidsDir, ...
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   opt.dryRun = false;
   opt.verbosity = 2;

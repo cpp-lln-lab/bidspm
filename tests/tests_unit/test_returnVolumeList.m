@@ -18,7 +18,9 @@ function test_returnVolumeList_basic()
   subLabel = '^01';
   opt = setOptions('MoAE', subLabel);
 
-  BIDS = bids.layout(opt.dir.raw);
+  BIDS = bids.layout(opt.dir.raw, ...
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   boldFile = bids.query(BIDS, 'data', 'sub', '01', 'suffix', 'bold', 'extension', '.nii');
 
@@ -38,7 +40,9 @@ function test_returnVolumeList_maximum_volumes()
 
   opt.glm.maxNbVols = 10;
 
-  BIDS = bids.layout(opt.dir.raw);
+  BIDS = bids.layout(opt.dir.raw, ...
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   boldFile = bids.query(BIDS, 'data', 'sub', '01', 'suffix', 'bold', 'extension', '.nii');
 
@@ -58,7 +62,9 @@ function test_returnVolumeList_volumes_to_select()
 
   opt.funcVolToSelect = 1:2:70;
 
-  BIDS = bids.layout(opt.dir.raw);
+  BIDS = bids.layout(opt.dir.raw, ...
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   boldFile = bids.query(BIDS, 'data', 'sub', '01', 'suffix', 'bold', 'extension', '.nii');
 
@@ -78,7 +84,9 @@ function test_returnVolumeList_select_more_volumes_than_possible()
 
   opt.funcVolToSelect = 1:2:500;
 
-  BIDS = bids.layout(opt.dir.raw);
+  BIDS = bids.layout(opt.dir.raw, ...
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   boldFile = bids.query(BIDS, 'data', 'sub', '01', 'suffix', 'bold', 'extension', '.nii');
 

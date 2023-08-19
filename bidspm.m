@@ -316,9 +316,13 @@ function returnCode = run_tests()
 
   spm('defaults', 'fMRI');
 
-  subfolder = '';
-
   folderToCover = fullfile(pwd, 'src');
+
+  subfolder = '';
+  if usingSlowTestMode()
+    fprintf(1, 'Running in slow tests only.\n');
+    subfolder = 'tests_slow';
+  end
   testFolder = fullfile(pwd, 'tests', subfolder);
 
   returnCode = moxunit_runtests(testFolder, ...

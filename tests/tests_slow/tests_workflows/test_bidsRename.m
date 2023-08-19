@@ -10,6 +10,10 @@ end
 
 function test_bidsRename_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   % TODO take care of
   % - SpatialReference probably not needed for space individual if anat modality
   % - transfer of Skullstripped true, if sources has it?
@@ -28,7 +32,9 @@ function test_bidsRename_basic()
 
   opt.dir.preproc = bidsDir;
 
-  BIDS = bids.layout(bidsDir, 'use_schema', false);
+  BIDS = bids.layout(bidsDir, ...
+                     'use_schema', false, ...
+                     'index_dependencies', false);
 
   files = bids.query(BIDS, 'data', 'prefix', '');
   for i = 1:numel(files)
