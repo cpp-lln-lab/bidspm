@@ -181,6 +181,10 @@ function designMatrix = cleanDesignMatrix(designMatrix)
   % remove empty and duplicate
   toClean = cellfun(@(x) isempty(x), designMatrix);
   designMatrix(toClean) = [];
+
+  if isempty(designMatrix)
+    return
+  end
   if size(designMatrix, 1) > 1
     designMatrix = designMatrix';
   end
