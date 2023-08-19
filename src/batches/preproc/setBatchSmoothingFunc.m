@@ -42,7 +42,9 @@ function [matlabbatch, srcMetadata] = setBatchSmoothingFunc(matlabbatch, BIDS, o
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   allFiles = [];
-  srcMetadata = struct('RepetitionTime', [], 'SliceTimingCorrected', []);
+  srcMetadata = struct('RepetitionTime', [], ...
+                       'SliceTimingCorrected', [], ...
+                       'StartTime', []);
 
   for iSes = 1:nbSessions
 

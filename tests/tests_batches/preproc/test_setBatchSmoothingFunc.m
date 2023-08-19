@@ -45,6 +45,7 @@ function test_setBatchSmoothingFunc_basic()
   assertEqual(matlabbatch{1}.spm.spatial.smooth, expectedBatch{1}.spm.spatial.smooth);
 
   assertEqual(srcMetadata, struct('RepetitionTime', [1.5500 1.5500], ...
-                                  'SliceTimingCorrected', [false false]));
+                                  'SliceTimingCorrected', [false false], ...
+                                  'StartTime', [nan nan]));
 
 end

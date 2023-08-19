@@ -70,7 +70,9 @@ function matlabbatch = bidsSpatialPrepro(opt)
   segmentDo = opt.segment.do;
   skullstripDo = opt.skullstrip.do;
 
-  srcMetadata = struct('RepetitionTime', [], 'SliceTimingCorrected', []);
+  srcMetadata = struct('RepetitionTime', [], ...
+                       'SliceTimingCorrected', [], ...
+                       'StartTime', []);
   unRenamedFiles = {};
 
   for iSub = 1:numel(opt.subjects)

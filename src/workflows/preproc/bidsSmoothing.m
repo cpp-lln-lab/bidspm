@@ -33,7 +33,9 @@ function srcMetadata = bidsSmoothing(opt)
     opt.taskName = bids.query(BIDS, 'tasks');
   end
 
-  srcMetadata = struct('RepetitionTime', [], 'SliceTimingCorrected', []);
+  srcMetadata = struct('RepetitionTime', [], ...
+                       'SliceTimingCorrected', [], ...
+                       'StartTime', []);
   unRenamedFiles = {};
 
   for iSub = 1:numel(opt.subjects)

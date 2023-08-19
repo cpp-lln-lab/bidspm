@@ -61,9 +61,12 @@ function [matlabbatch, voxDim, srcMetadata] = setBatchRealign(varargin)
   subLabel = args.Results.subLabel;
   action = args.Results.action;
 
+  srcMetadata = struct('RepetitionTime', [], ...
+                       'SliceTimingCorrected', [], ...
+                       'StartTime', []);
   if opt.anatOnly
     voxDim = [];
-    srcMetadata = struct('RepetitionTime', [], 'SliceTimingCorrected', []);
+
     return
   end
 
@@ -93,8 +96,6 @@ function [matlabbatch, voxDim, srcMetadata] = setBatchRealign(varargin)
   printBatchName(msg, opt);
 
   runCounter = 1;
-
-  srcMetadata = struct('RepetitionTime', [], 'SliceTimingCorrected', []);
 
   for iTask = 1:numel(opt.taskName)
 

@@ -32,7 +32,8 @@ function test_setBatchRealign_after_stc()
   [matlabbatch, voxDim, srcMetadata] = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
 
   assertEqual(srcMetadata, struct('RepetitionTime', [1.5, 1.5, 1.5, 1.5], ...
-                                  'SliceTimingCorrected', true(1, 4)));
+                                  'SliceTimingCorrected', true(1, 4), ...
+                                  'StartTime', nan(1, 4)));
 
   expectedBatch{1}.spm.spatial.realignunwarp.eoptions.weight = {''};
   expectedBatch{end}.spm.spatial.realignunwarp.uwroptions.uwwhich = [2 1];
@@ -87,7 +88,9 @@ function test_setBatchRealign_anat_only()
   matlabbatch = {};
   [matlabbatch, voxDim, srcMetadata] = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
 
-  assertEqual(srcMetadata, struct());
+  assertEqual(srcMetadata, struct('RepetitionTime', [], ...
+                                  'SliceTimingCorrected', [], ...
+                                  'StartTime', []));
 
   assertEqual(matlabbatch, {});
   assertEqual(voxDim, []);
@@ -128,6 +131,7 @@ function test_setBatchRealign_basic()
   [matlabbatch, ~, srcMetadata] = setBatchRealign(matlabbatch, BIDS, opt, subLabel);
 
   assertEqual(srcMetadata, struct('RepetitionTime', nan, ...
+                                  'StartTime', nan, ...
                                   'SliceTimingCorrected', 0));
 
   expectedBatch{1}.spm.spatial.realignunwarp.eoptions.weight = {''};

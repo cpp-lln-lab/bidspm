@@ -130,6 +130,9 @@ function [matlabbatch, srcMetadata] = setBatchSTC(varargin)
   end
 
   metadata = bids.query(BIDS, 'metadata', filter);
+  if ~iscell(metadata)
+    metadata = {metadata};
+  end
   srcMetadata = collectSrcMetadata(srcMetadata, metadata);
   srcMetadata.SliceTimingCorrected = true(size(srcMetadata.SliceTimingCorrected));
 

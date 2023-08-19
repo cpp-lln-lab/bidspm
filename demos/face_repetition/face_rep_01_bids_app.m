@@ -27,7 +27,7 @@
 clear;
 clc;
 
-download_data = true;
+download_data = false;
 
 % skipping validation for now
 % as raw data is not 100% valid

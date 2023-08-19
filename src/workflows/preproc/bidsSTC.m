@@ -70,6 +70,7 @@ function matlabbatch = bidsSTC(opt)
     [~, batchOutput] = saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
 
     if ~opt.dryRun
+      batchToTransferMetadataTo = 1;
       unRenamedFiles{iSub} = filesToTransferMetadataTo(batchOutput, ...
                                                        batchToTransferMetadataTo); %#ok<*AGROW>
     end
