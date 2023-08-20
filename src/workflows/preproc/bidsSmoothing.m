@@ -60,11 +60,11 @@ function srcMetadata = bidsSmoothing(opt)
                                                  num2str(opt.fwhm.func)], ...
                                                 opt, ...
                                                 subLabel); %#ok<*AGROW>
-          if ~opt.dryRun
-            batchToTransferMetadataTo = numel(matlabbatch);
-            unRenamedFiles{iSub} = filesToTransferMetadataTo(batchOutput, ...
-                                                             batchToTransferMetadataTo);
-          end
+          %           if ~opt.dryRun
+          %             batchToTransferMetadataTo = numel(matlabbatch);
+          %             unRenamedFiles{iSub} = filesToTransferMetadataTo(batchOutput, ...
+          %                                                              batchToTransferMetadataTo);
+          %           end
         case 'anat'
           % TODO opt.fwhm.func should also have a opt.fwhm.anat
           matlabbatch = {};
@@ -88,6 +88,6 @@ function srcMetadata = bidsSmoothing(opt)
   opt.query.space = opt.space;
   createdFiles = bidsRename(opt);
 
-  transferMetadata(opt, createdFiles, unRenamedFiles, srcMetadata);
+  %   transferMetadata(opt, createdFiles, unRenamedFiles, srcMetadata);
 
 end

@@ -76,7 +76,7 @@ bidspm();
 
 % ## Download the dataset
 
-download_data = true;
+download_data = false;
 clean = false;
 download_moae_ds(download_data, clean);
 
