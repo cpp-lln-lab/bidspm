@@ -34,11 +34,20 @@ function updatedFiles = transferMetadataFromJson(createdFiles, extraMetadata)
     if isempty(bf.metadata) || isempty(bf.metadata_files)
       continue
     end
-    if isfield(bf.metadata, 'Sources') && ~isempty(bf.metadata.Sources)
+
+    noToDo = @(x) all(cellfun('isempty', strfind(x, 'TODO'))); %#ok<STRCL1>
+    hasCellField = @(x, y) isfield(x.metadata, y) && ...
+                           ~isempty(x.metadata.(y)) && ...
+                           iscell(x.metadata.(y));
+    if hasCellField(bf, 'Sources') && noToDo(bf.metadata.Sources)
       sourceFiles = bf.metadata.Sources;
-    elseif isfield(bf.metadata, 'RawSources') && ~isempty(bf.metadata.RawSources)
+    elseif hasCellField(bf, 'RawSources') && noToDo(bf.metadata.RawSources)
       sourceFiles = bf.metadata.RawSources;
     else
+      continue
+    end
+
+    if ischar(sourceFiles) && strcmp(sourceFiles, 'TODO')
       continue
     end
 
