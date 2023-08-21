@@ -31,9 +31,14 @@ function updatedFiles = transferMetadataFromJson(createdFiles)
       continue
     end
 
+    if isempty(bf.modality)
+      bf.modality = guess_modality(bf);
+    end
+    bidsRoot = strrep(bf.path, fullfile(bf.bids_path, bf.filename), '');
+
     sourceFiles = bf.metadata.Sources;
 
-    metadataToTransfer = collectMetadataToTransfer(sourceFiles);
+    metadataToTransfer = collectMetadataToTransfer(sourceFiles, bidsRoot);
 
     bf = transferMetadata(bf, metadataToTransfer);
 
@@ -45,7 +50,7 @@ function updatedFiles = transferMetadataFromJson(createdFiles)
 
 end
 
-function metadataToTransfer = collectMetadataToTransfer(sourceFiles)
+function metadataToTransfer = collectMetadataToTransfer(sourceFiles, bidsRoot)
   metadataToTransfer = struct('RepetitionTime', [], ...
                               'SliceTimingCorrected', [], ...
                               'StartTime', []);
@@ -53,7 +58,7 @@ function metadataToTransfer = collectMetadataToTransfer(sourceFiles)
   fields = fieldnames(metadataToTransfer);
 
   for iSource = 1:numel(sourceFiles)
-    src = bids.File(sourceFiles{iSource});
+    src = bids.File(fullfile(bidsRoot, sourceFiles{iSource}));
 
     for iField = 1:numel(fields)
       field_ = fields{iField};
@@ -91,9 +96,14 @@ function bf = transferMetadata(bf, metadataToTransfer)
 
     bf.metadata.(field_) = metadataToTransfer.(field_);
 
-    if strcmp(field_, 'SliceTimingCorrected') && ...
-            isnan(metadataToTransfer.SliceTimingCorrected)
-      bf.metadata.(field_) = false;
+    if strcmp(field_, 'SliceTimingCorrected')
+      if isnan(metadataToTransfer.SliceTimingCorrected) || ...
+              metadataToTransfer.SliceTimingCorrected == 0
+        value = false;
+      elseif metadataToTransfer.SliceTimingCorrected == 1
+        value = true;
+      end
+      bf.metadata.(field_) = value;
     end
   end
 end

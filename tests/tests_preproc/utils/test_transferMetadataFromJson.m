@@ -81,7 +81,7 @@ function [createdFiles, outFilesJson, initialMetadata] = setUp(sourceMetadata)
 
   createdFiles = {fullfile(folder, outFile)};
   bf = bids.File(createdFiles{1});
-  initialMetadata = struct('Sources', {{fullfile(folder, inFile)}});
+  initialMetadata = struct('Sources', {{fullfile('sub-01', 'func', inFile)}});
   bf.metadata_write(initialMetadata);
 
   outFilesJson = fullfile(folder, bf.json_filename);
