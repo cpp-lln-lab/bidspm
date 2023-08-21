@@ -46,8 +46,6 @@ if SMOOTH
          'options', opt); %#ok<*UNRCH>
 end
 
-return
-
 %% create models from a default one
 
 default_model_file = fullfile(models_dir, 'default_model.json');

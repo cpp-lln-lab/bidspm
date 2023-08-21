@@ -44,8 +44,6 @@ function createdFiles = bidsRename(opt)
 
     for iFile = 1:size(data, 1)
 
-      data{iFile};
-
       [newFilename, ~, json] = spm_2_bids(data{iFile}, opt.spm_2_bids);
 
       outputFile = spm_file(data{iFile}, 'filename', newFilename);
