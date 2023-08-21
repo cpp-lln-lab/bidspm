@@ -72,6 +72,10 @@ function matlabbatch = bidsSTC(opt)
   opt.query.prefix = prefix.stc;
   createdFiles = bidsRename(opt);
 
-  transferMetadataFromJson(createdFiles);
+  for iTask = 1:numel(opt.taskName)
+    idx = ~cellfun('isempty', strfind(createdFiles, opt.taskName{iTask}));
+    files = createdFiles(idx);
+    transferMetadataFromJson(files, newMetadata(iTask));
+  end
 
 end

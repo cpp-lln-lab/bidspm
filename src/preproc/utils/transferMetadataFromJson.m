@@ -1,4 +1,4 @@
-function updatedFiles = transferMetadataFromJson(createdFiles)
+function updatedFiles = transferMetadataFromJson(createdFiles, extraMetadata)
   % Add repetition time and slice timing metadata
   % to prepocessed or smoothed files metadata
   % by reading them from the Sources files mentioned
@@ -8,13 +8,20 @@ function updatedFiles = transferMetadataFromJson(createdFiles)
   %
   % .. code_block: matlab
   %
-  %     transferMetadataFromJson(createdFiles)
+  %     transferMetadataFromJson(createdFiles, extraMetadata)
   %
   % :type  createdFiles: cellstr
   % :param createdFiles: Files renamed by spm_2_bids
   %
+  % :type  extraMetadata: struct
+  % :param extraMetadata: Extra metadata to add.
+  %
 
   % (C) Copyright 2023 bidspm developers
+
+  if nargin < 2
+    extraMetadata = struct();
+  end
 
   updatedFiles = {};
 
@@ -27,18 +34,22 @@ function updatedFiles = transferMetadataFromJson(createdFiles)
     if isempty(bf.metadata) || isempty(bf.metadata_files)
       continue
     end
-    if ~isfield(bf.metadata, 'Sources') || isempty(bf.metadata.Sources)
+    if isfield(bf.metadata, 'Sources') && ~isempty(bf.metadata.Sources)
+      sourceFiles = bf.metadata.Sources;
+    elseif isfield(bf.metadata, 'RawSources') && ~isempty(bf.metadata.RawSources)
+      sourceFiles = bf.metadata.RawSources;
+    else
       continue
     end
 
     if isempty(bf.modality)
       bf.modality = guess_modality(bf);
     end
+
     bidsRoot = strrep(bf.path, fullfile(bf.bids_path, bf.filename), '');
 
-    sourceFiles = bf.metadata.Sources;
-
     metadataToTransfer = collectMetadataToTransfer(sourceFiles, bidsRoot);
+    metadataToTransfer = setFields(metadataToTransfer, extraMetadata, true);
 
     bf = transferMetadata(bf, metadataToTransfer);
 

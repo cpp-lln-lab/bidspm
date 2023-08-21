@@ -28,7 +28,31 @@ function test_transferMetadataFromJson_basic()
 
 end
 
-function test_transferMetadataFromJson_stc()
+function test_transferMetadataFromJson_with_extra_metadata()
+
+  sourceMetadata = struct('RepetitionTime', 7);
+
+  [createdFiles, outFilesJson, initialMetadata] = setUp(sourceMetadata);
+
+  extraMetadata = struct('SliceTimingCorrected', true, ...
+                         'StartTime', 0.4);
+
+  updatedFiles = transferMetadataFromJson(createdFiles, extraMetadata);
+
+  assertEqual(updatedFiles, {outFilesJson});
+
+  updatedMetadata = bids.util.jsondecode(outFilesJson);
+
+  expectedMetadata = initialMetadata;
+  expectedMetadata.RepetitionTime = 7;
+  expectedMetadata.SliceTimingCorrected = true;
+  expectedMetadata.StartTime = 0.4;
+
+  assertEqual(updatedMetadata, expectedMetadata);
+
+end
+
+function test_transferMetadataFromJson_with_stc()
 
   sourceMetadata = struct('RepetitionTime', 7, ...
                           'SliceTimingCorrected', true, ...
