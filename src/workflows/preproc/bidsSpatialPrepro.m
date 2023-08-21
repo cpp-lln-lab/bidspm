@@ -68,15 +68,12 @@ function matlabbatch = bidsSpatialPrepro(opt)
   srcMetadata = struct('RepetitionTime', [], ...
                        'SliceTimingCorrected', [], ...
                        'StartTime', []);
-  unRenamedFiles = {};
-
   for iSub = 1:numel(opt.subjects)
 
     opt.segment.do = segmentDo;
     opt.skullstrip.do = skullstripDo;
 
     matlabbatch = {};
-    batchToTransferMetadataTo = [];
 
     subLabel = opt.subjects{iSub};
 
@@ -94,7 +91,6 @@ function matlabbatch = bidsSpatialPrepro(opt)
                                                                opt, ...
                                                                subLabel, ...
                                                                action);
-    batchToTransferMetadataTo(end + 1) = numel(matlabbatch);
 
     % dependency from file selector ('Anatomical')
     matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
@@ -137,18 +133,12 @@ function matlabbatch = bidsSpatialPrepro(opt)
     % if no unwarping was done on func, we reslice the func,
     % so we can use them later
     if ~opt.realign.useUnwarp
-      batchToTransferMetadataTo(end + 1) = numel(matlabbatch) + 1;
       matlabbatch = setBatchRealign(matlabbatch, BIDS, opt, subLabel, 'reslice');
     end
 
     batchName = ['spatial_preprocessing-' strjoin(opt.space, '-')];
 
-    [~, batchOutput] = saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
-
-    %     if ~opt.dryRun
-    %       unRenamedFiles{iSub} = filesToTransferMetadataTo(batchOutput, ...
-    %                             batchToTransferMetadataTo); %#ok<*AGROW>
-    %     end
+    saveAndRunWorkflow(matlabbatch, batchName, opt, subLabel);
 
     %% clean up and rename files
     copyFigures(BIDS, opt, subLabel);
@@ -157,9 +147,6 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
   createdFiles = renameFiles(BIDS, opt);
 
-  %   if ~opt.dryRun
-  %     transferMetadata(opt, createdFiles, unRenamedFiles, srcMetadata);
-  %   end
   transferMetadataFromJson(createdFiles);
 
   bidsQApreproc(opt);

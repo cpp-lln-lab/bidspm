@@ -31,23 +31,23 @@ function updatedFiles = transferMetadataFromJson(createdFiles, extraMetadata)
     if ~strcmp(bf.suffix, 'bold')
       continue
     end
+    if isfield(bf.entities, 'desc') && ...
+            any(ismember({'mean', 'stc'}, bf.entities.desc))
+      continue
+    end
     if isempty(bf.metadata) || isempty(bf.metadata_files)
       continue
     end
 
-    noToDo = @(x) all(cellfun('isempty', strfind(x, 'TODO'))); %#ok<STRCL1>
+    isToDo = @(x) ~cellfun('isempty', strfind(x, 'TODO')); %#ok<STRCL1>
     hasCellField = @(x, y) isfield(x.metadata, y) && ...
                            ~isempty(x.metadata.(y)) && ...
                            iscell(x.metadata.(y));
-    if hasCellField(bf, 'Sources') && noToDo(bf.metadata.Sources)
+    if hasCellField(bf, 'Sources') && ~all(isToDo(bf.metadata.Sources))
       sourceFiles = bf.metadata.Sources;
-    elseif hasCellField(bf, 'RawSources') && noToDo(bf.metadata.RawSources)
+    elseif hasCellField(bf, 'RawSources') && noAllToDo(bf.metadata.RawSources)
       sourceFiles = bf.metadata.RawSources;
     else
-      continue
-    end
-
-    if ischar(sourceFiles) && strcmp(sourceFiles, 'TODO')
       continue
     end
 
@@ -104,23 +104,25 @@ function bf = transferMetadata(bf, metadataToTransfer)
 
   for iField = 1:numel(fields)
     field_ = fields{iField};
-    metadataToTransfer.(field_) = unique(metadataToTransfer.(field_));
+    value = unique(metadataToTransfer.(field_));
 
-    if numel(metadataToTransfer.(field_)) > 1
+    value(isnan(value)) = [];
+
+    if numel(value) > 1
       % TODO warning as source file should not have conflicting info
       continue
     end
-    if isempty(metadataToTransfer.(field_))
+
+    if ~strcmp(field_, 'SliceTimingCorrected') && isempty(value)
       continue
     end
 
-    bf.metadata.(field_) = metadataToTransfer.(field_);
+    bf.metadata.(field_) = value;
 
     if strcmp(field_, 'SliceTimingCorrected')
-      if isnan(metadataToTransfer.SliceTimingCorrected) || ...
-              metadataToTransfer.SliceTimingCorrected == 0
+      if isempty(value) || value == 0
         value = false;
-      elseif metadataToTransfer.SliceTimingCorrected == 1
+      elseif value == 1
         value = true;
       end
       bf.metadata.(field_) = value;
