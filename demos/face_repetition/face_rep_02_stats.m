@@ -36,10 +36,6 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
-% skipping validation for now
-% as raw data is not 100% valid
-skip_validation = true;
-
 this_dir = fileparts(mfilename('fullpath'));
 
 bids_dir = fullfile(this_dir, 'outputs', 'raw');
@@ -69,5 +65,4 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'action', 'stats', ...
        'participant_label', {subject_label}, ...
        'preproc_dir', preproc_dir, ...
-       'model_file', model_file, ...
-       'skip_validation', skip_validation);
+       'model_file', model_file);

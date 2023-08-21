@@ -29,10 +29,6 @@ clc;
 
 download_data = false;
 
-% skipping validation for now
-% as raw data is not 100% valid
-skip_validation = true;
-
 addpath(fullfile(pwd, '..', '..'));
 
 %% Gets data and converts it to BIDS
@@ -53,5 +49,4 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'participant_label', {subject_label}, ...
        'action', 'preprocess', ...
        'task', 'facerepetition', ...
-       'space', {'individual', 'IXI549Space'}, ...
-       'skip_validation', skip_validation);
+       'space', {'individual', 'IXI549Space'});
