@@ -1,4 +1,4 @@
-function [matlabbatch, srcMetadata] = setBatchSTC(varargin)
+function [matlabbatch, newMetadata] = setBatchSTC(varargin)
   %
   % Creates batch for slice timing correction
   %
@@ -46,8 +46,7 @@ function [matlabbatch, srcMetadata] = setBatchSTC(varargin)
   opt = args.Results.opt;
   subLabel = args.Results.subLabel;
 
-  srcMetadata = struct('RepetitionTime', [], ...
-                       'SliceTimingCorrected', [], ...
+  newMetadata = struct('SliceTimingCorrected', false, ...
                        'StartTime', []);
 
   if opt.stc.skip
@@ -129,17 +128,10 @@ function [matlabbatch, srcMetadata] = setBatchSTC(varargin)
     runCounter = runCounter + 1;
   end
 
-  metadata = bids.query(BIDS, 'metadata', filter);
-  if ~iscell(metadata)
-    metadata = {metadata};
-  end
-  srcMetadata = collectSrcMetadata(srcMetadata, metadata);
-  srcMetadata.SliceTimingCorrected = true(size(srcMetadata.SliceTimingCorrected));
-
   % See
   % https://github.com/bids-standard/bids-specification/issues/836
-  startTime = referenceSlice / repetitionTime;
-  srcMetadata.StartTime = repmat(startTime, size(srcMetadata.SliceTimingCorrected));
+  newMetadata.StartTime = referenceSlice / repetitionTime;
+  newMetadata.SliceTimingCorrected = true;
 
   matlabbatch{end + 1}.spm.temporal = temporal;
 

@@ -28,6 +28,45 @@ function test_transferMetadataFromJson_basic()
 
 end
 
+function test_transferMetadataFromJson_stc()
+
+  sourceMetadata = struct('RepetitionTime', 7, ...
+                          'SliceTimingCorrected', true, ...
+                          'StartTime', 0.4);
+
+  [createdFiles, outFilesJson, initialMetadata] = setUp(sourceMetadata);
+
+  updatedFiles = transferMetadataFromJson(createdFiles);
+
+  updatedMetadata = bids.util.jsondecode(outFilesJson);
+
+  expectedMetadata = initialMetadata;
+  expectedMetadata.RepetitionTime = 7;
+  expectedMetadata.SliceTimingCorrected = true;
+  expectedMetadata.StartTime = 0.4;
+
+  assertEqual(updatedMetadata, expectedMetadata);
+
+end
+
+function test_transferMetadataFromJson_no_stc()
+
+  sourceMetadata = struct('RepetitionTime', 7);
+
+  [createdFiles, outFilesJson, initialMetadata] = setUp(sourceMetadata);
+
+  updatedFiles = transferMetadataFromJson(createdFiles);
+
+  updatedMetadata = bids.util.jsondecode(outFilesJson);
+
+  expectedMetadata = initialMetadata;
+  expectedMetadata.RepetitionTime = 7;
+  expectedMetadata.SliceTimingCorrected = false;
+
+  assertEqual(updatedMetadata, expectedMetadata);
+
+end
+
 function [createdFiles, outFilesJson, initialMetadata] = setUp(sourceMetadata)
   inFile = 'sub-01_task-foo_space-MNI_desc-preproc_bold.nii';
   outFile = 'sub-01_task-foo_space-MNI_desc-smth6_bold.nii';

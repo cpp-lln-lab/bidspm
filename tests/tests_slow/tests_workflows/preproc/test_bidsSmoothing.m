@@ -22,11 +22,7 @@ function test_bidsSmoothing_basic()
 
   opt = checkOptions(opt);
 
-  srcMetadata = bidsSmoothing(opt);
-
-  assertEqual(srcMetadata, struct('RepetitionTime', [1.5500 1.5500], ...
-                                  'SliceTimingCorrected', [false false], ...
-                                  'StartTime', [nan nan]));
+  bidsSmoothing(opt);
 
 end
 
@@ -45,11 +41,7 @@ function test_bidsSmoothing_fmriprep()
 
   bidsCopyInputFolder(opt, 'unzip', false);
 
-  srcMetadata = bidsSmoothing(opt);
-
-  assertEqual(srcMetadata, struct('RepetitionTime', [2 2 2], ...
-                                  'SliceTimingCorrected', [false false false], ...
-                                  'StartTime', [nan nan nan]));
+  bidsSmoothing(opt);
 
   cleanUp(opt.dir.preproc);
 

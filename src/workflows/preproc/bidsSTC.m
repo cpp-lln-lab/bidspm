@@ -38,10 +38,8 @@ function matlabbatch = bidsSTC(opt)
                               indexData, ...
                               indexDependencies);
 
-  srcMetadata = struct('RepetitionTime', [], ...
-                       'SliceTimingCorrected', [], ...
+  newMetadata = struct('SliceTimingCorrected', [], ...
                        'StartTime', []);
-  fields = fieldnames(srcMetadata);
 
   for iSub = 1:numel(opt.subjects)
 
@@ -60,20 +58,11 @@ function matlabbatch = bidsSTC(opt)
                                             opt, ...
                                             regexify(subLabel));
 
-      for i = 1:numel(fields)
-        srcMetadata(iSub).(fields{i}) = [srcMetadata(iSub).(fields{i}), ...
-                                         metadata.(fields{i})];
-      end
+      newMetadata(iTask) = metadata;
 
     end
 
-    [~, batchOutput] = saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
-
-    if ~opt.dryRun
-      batchToTransferMetadataTo = 1;
-      unRenamedFiles{iSub} = filesToTransferMetadataTo(batchOutput, ...
-                                                       batchToTransferMetadataTo); %#ok<*AGROW>
-    end
+    saveAndRunWorkflow(matlabbatch, 'STC', opt, subLabel);
 
   end
 
@@ -83,8 +72,6 @@ function matlabbatch = bidsSTC(opt)
   opt.query.prefix = prefix.stc;
   createdFiles = bidsRename(opt);
 
-  if ~opt.dryRun
-    transferMetadata(opt, createdFiles, unRenamedFiles, srcMetadata);
-  end
+  transferMetadataFromJson(createdFiles);
 
 end

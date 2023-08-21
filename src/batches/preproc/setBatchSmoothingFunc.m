@@ -1,4 +1,4 @@
-function [matlabbatch, srcMetadata] = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
+function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
   %
   % Creates a batch to smooth the bold files of a subject
   %
@@ -42,9 +42,6 @@ function [matlabbatch, srcMetadata] = setBatchSmoothingFunc(matlabbatch, BIDS, o
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   allFiles = [];
-  srcMetadata = struct('RepetitionTime', [], ...
-                       'SliceTimingCorrected', [], ...
-                       'StartTime', []);
 
   for iSes = 1:nbSessions
 
@@ -52,11 +49,11 @@ function [matlabbatch, srcMetadata] = setBatchSmoothingFunc(matlabbatch, BIDS, o
 
     for iRun = 1:nbRuns
 
-      [fileName, subFuncDataDir, metadata] = getBoldFilename(BIDS, ...
-                                                             subLabel, ...
-                                                             sessions{iSes}, ...
-                                                             runs{iRun}, ...
-                                                             opt);
+      [fileName, subFuncDataDir] = getBoldFilename(BIDS, ...
+                                                   subLabel, ...
+                                                   sessions{iSes}, ...
+                                                   runs{iRun}, ...
+                                                   opt);
       if isempty(fileName)
         continue
       end
@@ -65,11 +62,6 @@ function [matlabbatch, srcMetadata] = setBatchSmoothingFunc(matlabbatch, BIDS, o
         files{iFile, 1} = validationInputFile(subFuncDataDir(iFile, :), ...
                                               fileName(iFile, :)); %#ok<*AGROW>
       end
-
-      if isstruct(metadata)
-        metadata = {metadata};
-      end
-      srcMetadata = collectSrcMetadata(srcMetadata, metadata);
 
       % add the files to list
       allFilesTemp = cellstr(char(files));

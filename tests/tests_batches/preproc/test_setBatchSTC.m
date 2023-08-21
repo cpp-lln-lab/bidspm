@@ -26,10 +26,9 @@ function test_setBatchSTC_dual_task()
   nbRunsVismotion = 4;
   assertEqual(numel(matlabbatch{1}.spm.temporal.st.scans), nbRunsVismotion);
 
-  assertEqual(srcMetadata.RepetitionTime, [1.5, 1.5, 1.5, 1.5]);
-  assertEqual(srcMetadata.SliceTimingCorrected, true(1, 4));
+  assertEqual(srcMetadata.SliceTimingCorrected, true);
   assertElementsAlmostEqual(srcMetadata.StartTime, ...
-                            repmat(0.23667, [1, 4]), ...
+                            0.23667, ...
                             'absolute', 1e-5);
 
 end
@@ -64,7 +63,7 @@ function test_setBatchSTC_skip()
   matlabbatch = {};
   [matlabbatch, srcMetadata] = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
   assertEqual(matlabbatch, {});
-  assertEqual(srcMetadata.RepetitionTime, []);
+  assertEqual(srcMetadata.SliceTimingCorrected, false);
 
 end
 
@@ -83,7 +82,7 @@ function test_setBatchSTC_empty()
 
   % no slice timing info for this run so nothing should be returned.
   assertEqual(matlabbatch, {});
-  assertEqual(srcMetadata.RepetitionTime, []);
+  assertEqual(srcMetadata.SliceTimingCorrected, false);
 
 end
 
@@ -129,9 +128,8 @@ function test_setBatchSTC_basic()
 
   assertEqual(matlabbatch{1}.spm.temporal.st, expectedBatch{1}.spm.temporal.st);
 
-  assertEqual(srcMetadata.RepetitionTime, [1.5, 1.5, 1.5, 1.5]);
-  assertEqual(srcMetadata.SliceTimingCorrected, true(1, 4));
-  assertEqual(srcMetadata.StartTime, repmat(referenceSlice / TR, [1, 4]));
+  assertEqual(srcMetadata.SliceTimingCorrected, true);
+  assertEqual(srcMetadata.StartTime, referenceSlice / TR);
 
 end
 
