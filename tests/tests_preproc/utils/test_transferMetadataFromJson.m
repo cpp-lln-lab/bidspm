@@ -7,6 +7,37 @@ function test_suite = test_transferMetadataFromJson %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_transferMetadataFromJson_raw_source()
+
+  tmpPath = tempDir();
+  folder = fullfile(tmpPath, 'sub-01');
+
+  inFile = 'sub-01_task-foo_bold.nii';
+  spm_mkdir(fullfile(folder, 'func'));
+  sourceFile = fullfile(folder, 'func', inFile);
+  bf = bids.File(sourceFile);
+  sourceMetadata = struct('RepetitionTime', 7);
+  bf.metadata_write(sourceMetadata);
+
+  outFile = 'sub-01_task-foo_space-individual_desc-stc_bold.nii';
+  createdFiles = {fullfile(folder, 'func', outFile)};
+  bf = bids.File(createdFiles{1});
+
+  outMetadata = struct('Sources', {{}}, ...
+                       'RawSources', {{fullfile('sub-01', ...
+                                                'func', ...
+                                                'sub-01_task-foo_bold.nii')}});
+  bf.metadata_write(outMetadata);
+
+  updatedFiles = transferMetadataFromJson(createdFiles);
+
+  expectedMetadata = initialMetadata(createdFiles);
+  expectedMetadata.RepetitionTime = 7;
+
+  assertEqual(bids.util.jsondecode(updatedFiles{1}), expectedMetadata);
+
+end
+
 function test_transferMetadataFromJson_several_sources_with_todo()
 
   tmpPath = tempDir();

@@ -32,7 +32,7 @@ function updatedFiles = transferMetadataFromJson(createdFiles, extraMetadata)
       continue
     end
     if isfield(bf.entities, 'desc') && ...
-            any(ismember({'mean', 'stc'}, bf.entities.desc))
+            any(ismember({'mean', 'std'}, bf.entities.desc))
       continue
     end
     if isempty(bf.metadata) || isempty(bf.metadata_files)

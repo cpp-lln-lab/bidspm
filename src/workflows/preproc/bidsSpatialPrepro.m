@@ -147,6 +147,12 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
   createdFiles = renameFiles(BIDS, opt);
 
+  spaces = {'individual', 'IXI549Space'};
+  for i = 1:numel(spaces)
+    idx = ~cellfun('isempty', strfind(createdFiles, spaces{i}));
+    transferMetadataFromJson(createdFiles(idx));
+  end
+
   transferMetadataFromJson(createdFiles);
 
   bidsQApreproc(opt);
