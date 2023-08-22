@@ -45,7 +45,7 @@ function updatedFiles = transferMetadataFromJson(createdFiles, extraMetadata)
                            iscell(x.metadata.(y));
     if hasCellField(bf, 'Sources') && ~all(isToDo(bf.metadata.Sources))
       sourceFiles = bf.metadata.Sources;
-    elseif hasCellField(bf, 'RawSources') && noAllToDo(bf.metadata.RawSources)
+    elseif hasCellField(bf, 'RawSources') && ~all(isToDo(bf.metadata.RawSources))
       sourceFiles = bf.metadata.RawSources;
     else
       continue
