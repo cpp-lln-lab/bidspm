@@ -51,6 +51,8 @@ function updatedFiles = transferMetadataFromJson(createdFiles, extraMetadata)
       continue
     end
 
+    sourceFiles(isToDo(sourceFiles)) = [];
+
     if isempty(bf.modality)
       bf.modality = guess_modality(bf);
     end
@@ -87,6 +89,9 @@ function metadataToTransfer = collectMetadataToTransfer(sourceFiles, bidsRoot)
         value = src.metadata.(field_);
       else
         value = nan;
+        if islogical(metadataToTransfer.(field_))
+          value = false;
+        end
       end
 
       if strcmp(field_, 'StartTime') && isnan(value)
