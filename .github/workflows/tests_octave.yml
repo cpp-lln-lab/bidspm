@@ -136,7 +136,7 @@ jobs:
         cd .github/workflows
         octave $OCTFLAGS --eval "tests_octave;"
 
-    - name: Run fast unit tests Octave
+    - name: Run slow unit tests Octave
       if: matrix.test_type == 'unit' && matrix.mode == 'slow'
       run: |
         octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'tests', 'utils')); savepath();"
