@@ -321,7 +321,7 @@ function returnCode = run_tests()
   subfolder = '';
   if usingSlowTestMode()
     fprintf(1, 'Running in slow tests only.\n');
-    subfolder = 'tests_slow';
+    subfolder = 'tests_workflows';
   end
   testFolder = fullfile(pwd, 'tests', subfolder);
 

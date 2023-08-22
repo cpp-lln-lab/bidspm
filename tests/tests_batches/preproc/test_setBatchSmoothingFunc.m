@@ -31,7 +31,7 @@ function test_setBatchSmoothingFunc_basic()
                         'suffix', 'bold');
 
   matlabbatch = {};
-  [matlabbatch, srcMetadata] = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel);
+  matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel);
 
   expectedBatch{1}.spm.spatial.smooth.fwhm = repmat(opt.fwhm.func, [1, 3]);
 
@@ -43,8 +43,5 @@ function test_setBatchSmoothingFunc_basic()
 
   assertEqual(matlabbatch{1}.spm.spatial.smooth.data, expectedBatch{1}.spm.spatial.smooth.data);
   assertEqual(matlabbatch{1}.spm.spatial.smooth, expectedBatch{1}.spm.spatial.smooth);
-
-  assertEqual(srcMetadata, struct('RepetitionTime', [1.5500 1.5500], ...
-                                  'SliceTimingCorrected', [false false]));
 
 end

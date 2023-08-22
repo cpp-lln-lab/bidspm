@@ -36,6 +36,9 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
 
   filter.target = 'SliceTimingCorrected';
   sliceTimingCorrected = bids.query(BIDS, 'metadata', filter);
+  if ~iscell(sliceTimingCorrected)
+    sliceTimingCorrected = {sliceTimingCorrected};
+  end
   stCorrected = areAllSliceTimeCorrected(sliceTimingCorrected);
 
   % for GLM if data is not slice time corrected
@@ -109,12 +112,7 @@ function sliceOrder = getAndCheckSliceOrder(BIDS, opt, filter)
 end
 
 function stCorrected = areAllSliceTimeCorrected(values)
-  if isempty(values) || ...
-          (~iscell(values) && ~values)
-    stCorrected = false;
-    return
-  end
-  if iscell(values) && any(cellfun('isempty', values))
+  if any(cellfun('isempty', values))
     stCorrected = false;
     return
   end

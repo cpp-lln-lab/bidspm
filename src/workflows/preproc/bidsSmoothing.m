@@ -1,4 +1,4 @@
-function srcMetadata = bidsSmoothing(opt)
+function bidsSmoothing(opt)
   %
   % This performs smoothing to the functional data using a full width
   % half maximum smoothing kernel of size "opt.fwhm.func".
@@ -33,9 +33,6 @@ function srcMetadata = bidsSmoothing(opt)
     opt.taskName = bids.query(BIDS, 'tasks');
   end
 
-  srcMetadata = struct('RepetitionTime', [], 'SliceTimingCorrected', []);
-  unRenamedFiles = {};
-
   for iSub = 1:numel(opt.subjects)
 
     subLabel = opt.subjects{iSub};
@@ -49,15 +46,15 @@ function srcMetadata = bidsSmoothing(opt)
       switch modality
         case 'func'
           matlabbatch = {};
-          [matlabbatch, srcMetadata(iSub)] = setBatchSmoothingFunc(matlabbatch, ...
-                                                                   BIDS, ...
-                                                                   opt, ...
-                                                                   subLabel);
-          [~, unRenamedFiles{iSub}] = saveAndRunWorkflow(matlabbatch, ...
-                                                         ['smoothing_FWHM-', ...
-                                                          num2str(opt.fwhm.func)], ...
-                                                         opt, ...
-                                                         subLabel); %#ok<*AGROW>
+          matlabbatch = setBatchSmoothingFunc(matlabbatch, ...
+                                              BIDS, ...
+                                              opt, ...
+                                              subLabel);
+          saveAndRunWorkflow(matlabbatch, ...
+                             ['smoothing_FWHM-', ...
+                              num2str(opt.fwhm.func)], ...
+                             opt, ...
+                             subLabel); %#ok<*AGROW>
         case 'anat'
           % TODO opt.fwhm.func should also have a opt.fwhm.anat
           matlabbatch = {};
@@ -81,41 +78,6 @@ function srcMetadata = bidsSmoothing(opt)
   opt.query.space = opt.space;
   createdFiles = bidsRename(opt);
 
-  transferMetadata(opt, createdFiles, unRenamedFiles, srcMetadata);
+  transferMetadataFromJson(createdFiles);
 
-end
-
-function transferMetadata(opt, createdFiles, unRenamedFiles, srcMetadata)
-  % add Repetition Time to smoothed files metadata
-
-  metadataToTransfer = fieldnames(srcMetadata);
-
-  for iSub = 1:numel(opt.subjects)
-
-    subLabel = opt.subjects{iSub};
-
-    for iFile = 1:numel(createdFiles)
-
-      bf = bids.File(createdFiles{iFile});
-      if ~strcmp(bf.suffix, 'bold') || ~strcmp(bf.entities.sub, subLabel)
-        continue
-      end
-
-      jsonFile = spm_file(createdFiles{iFile}, 'ext', '.json');
-      if exist(jsonFile, 'file')
-
-        metadata = bids.util.jsondecode(jsonFile);
-        idx = ~cellfun('isempty', ...
-                       strfind(unRenamedFiles{iSub}{1}.files, ...
-                               metadata.SpmFilename));
-
-        for i = 1:numel(metadataToTransfer)
-          metadata.(metadataToTransfer{i}) = srcMetadata(iSub).(metadataToTransfer{i})(idx);
-        end
-
-        bids.util.jsonencode(jsonFile, metadata);
-      end
-
-    end
-  end
 end

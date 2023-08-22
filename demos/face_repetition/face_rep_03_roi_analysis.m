@@ -14,10 +14,6 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
-% skipping validation for now
-% as raw data is not 100% valid
-skip_validation = true;
-
 this_dir = fileparts(mfilename('fullpath'));
 
 %% Create roi
@@ -47,5 +43,4 @@ bidspm(bids_dir, output_dir, 'subject', ...
        'roi_name', {'V1v', 'V1d'}, ...
        'roi_dir', roi_dir, ...
        'space', {'individual'}, ...
-       'fwhm', 0, ...
-       'skip_validation', skip_validation);
+       'fwhm', 0);

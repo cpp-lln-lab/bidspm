@@ -153,7 +153,7 @@ function unfold(input, varargin)
             fprintf(file_id, ' =\t{};');
         else
             % recursively display cell
-            size_ = size_e(input);
+            size_ = size(input);
             for i = 1:numel(input)
                 name_i = [name '{' indToStr(size_, i) '}'];
                 unfold(input{i}, name_i, show, file_id);

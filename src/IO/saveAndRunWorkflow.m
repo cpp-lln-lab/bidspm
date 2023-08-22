@@ -20,6 +20,9 @@ function [status, output] = saveAndRunWorkflow(matlabbatch, batchName, opt, subL
   % :param subLabel: subject label
   % :type subLabel: char
   %
+  % :rtype: status
+  % :rtype: output - files generated for each batch
+  %
 
   % (C) Copyright 2019 bidspm developers
 

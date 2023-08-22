@@ -21,10 +21,15 @@ function test_setBatchSTC_dual_task()
   BIDS = getLayout(opt);
 
   matlabbatch = {};
-  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
+  [matlabbatch, srcMetadata] = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
   nbRunsVismotion = 4;
   assertEqual(numel(matlabbatch{1}.spm.temporal.st.scans), nbRunsVismotion);
+
+  assertEqual(srcMetadata.SliceTimingCorrected, true);
+  assertElementsAlmostEqual(srcMetadata.StartTime, ...
+                            0.23667, ...
+                            'absolute', 1e-5);
 
 end
 
@@ -56,8 +61,9 @@ function test_setBatchSTC_skip()
   opt.stc.skip = true;
 
   matlabbatch = {};
-  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
+  [matlabbatch, srcMetadata] = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
   assertEqual(matlabbatch, {});
+  assertEqual(srcMetadata.SliceTimingCorrected, false);
 
 end
 
@@ -71,11 +77,12 @@ function test_setBatchSTC_empty()
 
   matlabbatch = {};
   warning OFF;
-  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
+  [matlabbatch, srcMetadata] = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
   warning ON;
 
   % no slice timing info for this run so nothing should be returned.
   assertEqual(matlabbatch, {});
+  assertEqual(srcMetadata.SliceTimingCorrected, false);
 
 end
 
@@ -90,7 +97,7 @@ function test_setBatchSTC_basic()
   BIDS = getLayout(opt);
 
   matlabbatch = {};
-  matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
+  [matlabbatch, srcMetadata] = setBatchSTC(matlabbatch, BIDS, opt, subLabel);
 
   TR = 1.5;
   sliceOrder = repmat([0.5475, 0, 0.3825, 0.055, 0.4375, 0.11, 0.4925, 0.22, 0.6025, ...
@@ -120,6 +127,9 @@ function test_setBatchSTC_basic()
   end
 
   assertEqual(matlabbatch{1}.spm.temporal.st, expectedBatch{1}.spm.temporal.st);
+
+  assertEqual(srcMetadata.SliceTimingCorrected, true);
+  assertEqual(srcMetadata.StartTime, referenceSlice / TR);
 
 end
 

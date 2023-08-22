@@ -51,7 +51,7 @@ function matlabbatch = bidsRFX(varargin)
 
   % To speed up group level we skip indexing data
   indexData = false;
-  [~, opt] = setUpWorkflow(opt, description, [], indexData);
+  [~, opt] = setUpWorkflow(opt, description, '', indexData);
 
   checks(opt);
 
