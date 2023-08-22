@@ -162,7 +162,7 @@ end
 function createdFiles = renameFiles(BIDS, opt)
 
   if ~opt.rename.do || opt.dryRun
-    createdFiles = [];
+    createdFiles = {};
     return
   end
 
