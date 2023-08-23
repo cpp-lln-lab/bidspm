@@ -40,7 +40,11 @@ function unzippedFullpathName = unzipAndReturnsFullpathName(fullpathName, opt)
 
       gunzip(fullpathName(iFile, :));
       if ~bids.internal.is_octave()
-        delete(fullpathName(iFile, :));
+        if iscell(fullpathName)
+          delete(fullpathName{1});
+        else
+          delete(fullpathName(iFile, :));
+        end
       end
 
       unzippedFullpathName{iFile, 1} = fullfile(directory, filename);

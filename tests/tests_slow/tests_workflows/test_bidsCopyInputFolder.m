@@ -81,8 +81,3 @@ function test_bidsCopyInputFolder_fmriprep()
   bidsCopyInputFolder(opt, 'unzip', false, 'force', true);
 
 end
-
-function pth = tempName()
-  pth = tempname();
-  mkdir(pth);
-end

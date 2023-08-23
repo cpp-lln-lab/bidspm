@@ -13,9 +13,13 @@ end
 
 function test_smooth()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(inputPath, outputPath, 'subject', ...
          'action', 'smooth', ...
@@ -44,9 +48,13 @@ end
 
 function test_smooth_anat_only()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(inputPath, outputPath, 'subject', ...
          'action', 'smooth', ...
@@ -71,9 +79,4 @@ function test_smooth_anat_only()
 
   assertEqual(numel(bids.query(BIDS, 'data', 'desc', 'smth6')), 2);
 
-end
-
-function pth = tmpName()
-  pth = tempname();
-  mkdir(pth);
 end

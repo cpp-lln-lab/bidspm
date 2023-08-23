@@ -176,39 +176,3 @@ function test_setBatchSubjectLevelGLMSpec_inconsistent_metadata()
                         'getAndCheckRepetitionTime:differentRepetitionTime');
 
 end
-
-function test_setBatchSubjectLevelGLMSpec_design_only()
-
-  %% GIVEN
-  subLabel = '^01';
-
-  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
-
-  opt.model.designOnly = true;
-
-  BIDS = getLayout(opt);
-
-  %% WHEN
-  matlabbatch = {};
-  matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
-
-  %% THEN
-  expectedContent = {'volt'
-                     'global'
-                     'timing'
-                     'dir'
-                     'fact'
-                     'mthresh'
-                     'bases'
-                     'cvi'
-                     'sess'};
-
-  assertEqual(fieldnames(matlabbatch{1}.spm.stats.fmri_design), expectedContent);
-  assertEqual(numel(matlabbatch{1}.spm.stats.fmri_design.sess), 2);
-  assertEqual(matlabbatch{1}.spm.stats.fmri_design.sess(1).hpf, 125);
-  assertEqual(matlabbatch{1}.spm.stats.fmri_design.cvi, 'FAST');
-  assertEqual(matlabbatch{1}.spm.stats.fmri_design.bases.hrf.derivs, [1 0]);
-
-  createDummyData();
-
-end

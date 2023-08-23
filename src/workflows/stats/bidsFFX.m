@@ -47,7 +47,10 @@ function [matlabbatch, opt] = bidsFFX(varargin)
   % the nodeName
 
   %%
-  allowedActions = @(x) ismember(x, {'specify', 'specifyAndEstimate', 'contrasts'});
+  allowedActions = @(x) ismember(x, {'specify', ...
+                                     'estimate', ...
+                                     'specifyAndEstimate', ...
+                                     'contrasts'});
 
   args = inputParser;
 
@@ -94,11 +97,12 @@ function [matlabbatch, opt] = bidsFFX(varargin)
       case 'specify'
 
         matlabbatch = setAction(action, matlabbatch, BIDS, opt, subLabel);
+        if opt.glm.concatenateRuns
+          [matlabbatch, nbScans] = concatenateRuns(matlabbatch, opt);
+        end
 
       case 'estimate'
 
-        % TODO implement as currently subject level estimation
-        % only works with batch dependencies
         if noSPMmat(opt, subLabel, fullfile(outputDir, 'SPM.mat'))
           continue
         end
@@ -139,6 +143,11 @@ function [matlabbatch, opt] = bidsFFX(varargin)
 
     if status
       renamePng(getFFXdir(subLabel, opt));
+    end
+
+    if strcmp(action, 'specify') && opt.glm.concatenateRuns
+      outputDir = getFFXdir(subLabel, opt);
+      spm_fmri_concatenate(fullfile(outputDir, 'SPM.mat'), nbScans);
     end
 
   end
@@ -239,6 +248,9 @@ function matlabbatch = setAction(action, matlabbatch, BIDS, opt, subLabel)
                                                                         'before estimation', ...
                                                                         subLabel)));
     case 'estimate'
+      if isempty(matlabbatch)
+        matlabbatch = outputDir;
+      end
       matlabbatch = setBatchEstimateModel(matlabbatch, opt);
       matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
                                         fullfile(outputDir, ...

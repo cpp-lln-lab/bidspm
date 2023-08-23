@@ -19,14 +19,10 @@ function test_renameSegmentParameter_basic()
   opt = setOptions('MoAE-preproc');
 
   % move test data into temp directory to test renaming
-  tmpDir = fullfile(pwd, 'tmp');
-  if isdir(tmpDir)
-    rmdir(tmpDir, 's');
-  end
-  spm_mkdir(tmpDir);
+  tmpDir = tempName();
   copyfile(opt.dir.preproc, tmpDir);
 
-  bidsDir = fullfile(tmpDir);
+  bidsDir = tmpDir;
   if bids.internal.is_octave()
     bidsDir = fullfile(tmpDir, 'bidspm-preproc');
   end
@@ -48,7 +44,5 @@ function test_renameSegmentParameter_basic()
 
   segParamFiles = spm_select('FPListRec', tmpDir, '^.*label-T1w_segparam.mat$');
   assertEqual(size(segParamFiles, 1), 1);
-
-  rmdir(tmpDir, 's');
 
 end

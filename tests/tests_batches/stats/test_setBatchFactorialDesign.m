@@ -10,6 +10,9 @@ end
 
 function test_setBatchFactorialDesign_within_group()
 
+  % TODO: fixturize
+  createDummyData();
+
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
   opt.model.file = spm_file(opt.model.file, ...
@@ -30,6 +33,9 @@ function test_setBatchFactorialDesign_within_group()
 end
 
 function test_setBatchFactorialDesign_complex()
+
+  % TODO: fixturize
+  createDummyData();
 
   opt = setOptions('vismotion', {'^01'}, 'pipelineType', 'stats');
 
@@ -74,6 +80,9 @@ function test_setBatchFactorialDesign_complex()
 end
 
 function test_setBatchFactorialDesign_basic()
+
+  % TODO: fixturize
+  createDummyData();
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 

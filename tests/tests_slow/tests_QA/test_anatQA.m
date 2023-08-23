@@ -9,6 +9,10 @@ end
 
 function test_anatQA_basic()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   moaeSpm12Dir = fullfile(getTestDataDir, 'MoAE', 'derivatives', 'spm12');
 
   anatImageFile = spm_select('FPListRec', moaeSpm12Dir, '^msub.*nii$');

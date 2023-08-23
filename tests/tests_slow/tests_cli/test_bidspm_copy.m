@@ -13,6 +13,10 @@ end
 
 function test_copy_filter()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
   % add dummy aroma file to input folder
@@ -33,7 +37,7 @@ function test_copy_filter()
   copyfile(sourceFile{1}, destFile{1});
 
   %% with simple filter file
-  bids_filter_file = fullfile(tmpName(), 'bids_filter_file.json');
+  bids_filter_file = fullfile(tempName(), 'bids_filter_file.json');
   bids.util.jsonencode(bids_filter_file, ...
                        struct('bold', struct('modality', 'func')));
 
@@ -41,7 +45,7 @@ function test_copy_filter()
   % so anat should not be copied
   opt.query.modality = {'anat'};
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(inputPath, outputPath, 'subject', ...
          'action', 'copy', ...
@@ -82,9 +86,13 @@ end
 
 function test_copy()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(inputPath, outputPath, 'subject', ...
          'action', 'copy', ...
@@ -118,9 +126,13 @@ end
 
 function test_copy_anat_only()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(inputPath, outputPath, 'subject', ...
          'action', 'copy', ...
@@ -138,6 +150,10 @@ function test_copy_anat_only()
 end
 
 function test_copy_only_one_task()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
@@ -158,7 +174,7 @@ function test_copy_only_one_task()
   end
   copyfile(sourceFile{1}, destFile{1});
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(inputPath, outputPath, 'subject', ...
          'action', 'copy', ...
@@ -174,9 +190,4 @@ function test_copy_only_one_task()
 
   delete(destFile{1});
 
-end
-
-function pth = tmpName()
-  pth = tempname();
-  mkdir(pth);
 end

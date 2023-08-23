@@ -13,11 +13,15 @@ end
 
 function test_bidsCreateROI_boilerplate_only()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   if bids.internal.is_octave
     moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
   end
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(pwd, outputPath, ...
          'subject', ...
@@ -38,11 +42,15 @@ end
 
 function test_bidsCreateROI_glasser()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   if bids.internal.is_octave
     moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
   end
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(pwd, outputPath, ...
          'subject', ...
@@ -61,11 +69,15 @@ end
 
 function test_bidsCreateROI_wang()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   if bids.internal.is_octave
     moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
   end
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(pwd, outputPath, ...
          'subject', ...
@@ -84,11 +96,15 @@ end
 
 function test_bidsCreateROI_neuromorphometrics()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   if bids.internal.is_octave
     moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
   end
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(pwd, outputPath, ...
          'subject', ...
@@ -129,11 +145,15 @@ end
 
 function test_bidsCreateROI_one_hemisphere()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   if bids.internal.is_octave
     moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
   end
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(pwd, outputPath, 'subject', ...
          'action', 'create_roi', ...
@@ -148,9 +168,4 @@ function test_bidsCreateROI_one_hemisphere()
                                        'bidspm-roi', 'group'), '.*visfatlas.*_mask\.nii');
   assert(size(rois, 1) == 6);
 
-end
-
-function pth = tmpName()
-  pth = tempname();
-  mkdir(pth);
 end

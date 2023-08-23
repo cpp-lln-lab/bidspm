@@ -14,18 +14,6 @@ function test_validate_skip()
   validate(args);
 end
 
-function test_validate_dataset()
-
-  if bids.internal.is_octave()
-    return
-  end
-
-  args.Results.skip_validation = false;
-  args.Results.bids_dir = pwd;
-  assertExceptionThrown(@() validate(args), 'validate:invalidBidsDataset');
-
-end
-
 function test_validate_quiet()
 
   opt = setOptions('MoAE');

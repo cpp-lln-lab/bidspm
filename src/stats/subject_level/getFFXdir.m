@@ -39,6 +39,10 @@ function ffxDir = getFFXdir(subLabel, opt)
     ffxDir = [ffxDir '_roi'];
   end
 
+  if opt.glm.concatenateRuns
+    ffxDir = [ffxDir '_concat'];
+  end
+
 end
 
 function string = deregexify(string)

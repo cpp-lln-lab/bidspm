@@ -61,6 +61,8 @@ function opt = setOptions(varargin)
     opt.dir.derivatives = fullfile(getMoaeDir(), 'outputs', 'derivatives');
     opt.dir.stats = fullfile(opt.dir.derivatives, 'bidspm-stats');
 
+    opt.model.file = fullfile(getMoaeDir(), 'models', 'model-MoAE_smdl.json');
+
   elseif strcmp(task, 'MoAE-preproc')
 
     task = {'auditory'};

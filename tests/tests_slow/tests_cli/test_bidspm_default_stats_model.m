@@ -11,36 +11,13 @@ function test_suite = test_bidspm_default_stats_model %#ok<*STOUT>
 
 end
 
-function test_createDefaultStatsModel_CLI_ignore()
-
-  outputPath = tmpName();
-
-  opt = setOptions('vislocalizer', '');
-
-  bidspm(opt.dir.input, outputPath, 'dataset', ...
-         'action', 'default_model', ...
-         'task', {'vismotion'}, ...
-         'space', {'individual'}, ...
-         'ignore', {'contrasts', 'transformations', 'dataset'}, ...
-         'verbosity', 0);
-
-  % make sure the file was created where expected
-  expectedFilename = fullfile(outputPath, 'derivatives', 'models', ...
-                              'model-defaultVismotion_smdl.json');
-
-  % check it has the right content
-  content = spm_jsonread(expectedFilename);
-
-  assertEqual(isfield(content.Nodes, 'Transformations'), false);
-  assertEqual(isfield(content.Nodes, 'Contrasts'), false);
-  assertEqual(numel(content.Nodes), 2);
-  assertEqual(numel(content.Edges), 1);
-
-end
-
 function test_createDefaultStatsModel_CLI()
 
-  outputPath = tmpName();
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
+  outputPath = tempName();
 
   opt = setOptions('vislocalizer', '');
 
@@ -77,7 +54,33 @@ function test_createDefaultStatsModel_CLI()
 
 end
 
-function pth = tmpName()
-  pth = tempname();
-  mkdir(pth);
+function test_createDefaultStatsModel_CLI_ignore()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
+  outputPath = tempName();
+
+  opt = setOptions('vislocalizer', '');
+
+  bidspm(opt.dir.input, outputPath, 'dataset', ...
+         'action', 'default_model', ...
+         'task', {'vismotion'}, ...
+         'space', {'individual'}, ...
+         'ignore', {'contrasts', 'transformations', 'dataset'}, ...
+         'verbosity', 0);
+
+  % make sure the file was created where expected
+  expectedFilename = fullfile(outputPath, 'derivatives', 'models', ...
+                              'model-defaultVismotion_smdl.json');
+
+  % check it has the right content
+  content = spm_jsonread(expectedFilename);
+
+  assertEqual(isfield(content.Nodes, 'Transformations'), false);
+  assertEqual(isfield(content.Nodes, 'Contrasts'), false);
+  assertEqual(numel(content.Nodes), 2);
+  assertEqual(numel(content.Edges), 1);
+
 end
