@@ -6,9 +6,7 @@ function test_suite = test_bidspm_create_roi %#ok<*STOUT>
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
-
   initTestSuite;
-
 end
 
 function test_bidsCreateROI_boilerplate_only()

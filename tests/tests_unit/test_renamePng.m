@@ -10,15 +10,10 @@ end
 
 function test_renamePng_basic()
 
-  outputDir = fullfile(pwd, 'tmp');
+  outputDir = tempName();
 
-  if isdir(outputDir)
-    rmdir(outputDir, 's');
-  end
-
-  mkdir(outputDir);
-  system('touch tmp/sub-foo_designmatrix_001.png');
-  system('touch tmp/sub-foo_designmatrix_002.png');
+  touch(fullfile(outputDir, 'sub-foo_designmatrix_001.png'));
+  touch(fullfile(outputDir, 'sub-foo_designmatrix_002.png'));
 
   files = dir(fullfile(outputDir, 'sub*_00*.png'));
   assertEqual(numel(files), 2);
@@ -30,7 +25,5 @@ function test_renamePng_basic()
 
   files = dir(fullfile(outputDir, 'sub*_designmatrix.png'));
   assertEqual(numel(files), 1);
-
-  rmdir(outputDir, 's');
 
 end

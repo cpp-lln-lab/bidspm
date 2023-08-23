@@ -7,9 +7,7 @@ function test_suite = test_getROIs %#ok<*STOUT>
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
-
   initTestSuite;
-
 end
 
 function test_getROIs_individual_space_no_subject()

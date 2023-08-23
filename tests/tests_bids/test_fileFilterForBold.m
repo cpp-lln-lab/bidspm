@@ -7,9 +7,7 @@ function test_suite = test_fileFilterForBold %#ok<*STOUT>
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
-
   initTestSuite;
-
 end
 
 function test_fileFilterForBold_events()

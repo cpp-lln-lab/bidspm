@@ -5,9 +5,7 @@ function test_suite = test_setBatchSubjectLevelGLMSpec %#ok<*STOUT>
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
-
   initTestSuite;
-
 end
 
 function test_setBatchSubjectLevelGLMSpec_design_only()

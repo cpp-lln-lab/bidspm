@@ -7,9 +7,7 @@ function test_suite = test_boilerplate %#ok<*STOUT>
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
-
   initTestSuite;
-
 end
 
 function test_boilerplate_spatial_preproc()
