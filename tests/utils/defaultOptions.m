@@ -84,6 +84,7 @@ function expectedOptions = defaultOptions(taskName)
   expectedOptions.glm.maxNbVols = Inf;
   expectedOptions.glm.useDummyRegressor = false;
   expectedOptions.glm.keepResiduals = false;
+  expectedOptions.glm.concatenateRuns = false;
 
   expectedOptions.model.file = '';
   expectedOptions.model.designOnly = false;

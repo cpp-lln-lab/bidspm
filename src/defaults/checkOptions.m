@@ -137,7 +137,7 @@ function opt = checkOptions(opt)
   %     - ``opt.fwhm.contrast = 0`` -
   %       FWHM to apply to the contrast images before bringing them at the group level.
   %
-  %     - ``'opt.model.designOnly'`` -
+  %     - ``opt.model.designOnly =  false`` -
   %       If set to ``true``, the GLM will be specified without associating any data to it.
   %       Can be useful for quick design matrix inspection before running estimation.
   %
@@ -151,6 +151,10 @@ function opt = checkOptions(opt)
   %       This can be useful if some time series have more volumes than necessary.
   %     - ``opt.glm.keepResiduals = false`` -
   %       Keep the subject level GLM residuals if set to ``true``.
+  %     - ``opt.glm.concatenateRuns = false`` -
+  %       Concatenate "vertically" the images and and onsets of several run
+  %       when set to true.
+  %       Necessary to run a psycho-physiologial interaction analysis.
   %
   %     - ``opt.QA.glm.do = false`` -
   %       If set to ``true`` the residual images of a GLM at the subject levels
@@ -330,6 +334,7 @@ function fieldsToSet = setDefaultOption()
   fieldsToSet.glm.maxNbVols = Inf;
   fieldsToSet.glm.useDummyRegressor = false;
   fieldsToSet.glm.keepResiduals = false;
+  fieldsToSet.glm.concatenateRuns = false;
 
   %% Options for QA
   fieldsToSet.QA.glm.do = false;
