@@ -1,12 +1,14 @@
 function matFile = concatenateConfounds(sess)
-  % Concatenate confounds across runs.
+  % Concatenate content of matfiles with confounds across runs.
   %
   % USAGE::
   %
   %    matFile = concatenateConfounds(sess)
   %
   %
-  % :param sess: need at least a 'multi' field
+  % :param sess: Need at least a 'multi' field.
+  %              Taken from a first level GLM
+  %              ``matlabbatch{1}.spm.stats.fmri_spec.sess``
   % :type  sess: structure with numel == nb of runs
   %
 

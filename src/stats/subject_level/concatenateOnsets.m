@@ -1,18 +1,20 @@
 function matFile = concatenateOnsets(sess, repetitionTime, nbScans)
-  % Concatenate onsets and durations across runs.
+  % Concatenate across runs the content of matfiles with onsets and duration.
   %
   % USAGE::
   %
   %    matFile = concatenateOnsets(sess, repetitionTime, nbScans)
   %
   %
-  % :param sess: need at least a 'multi' field
+  % :param sess: Need at least a 'multi' field
+  %              Taken from a first level GLM
+  %              ``matlabbatch{1}.spm.stats.fmri_spec.sess``
   % :type  sess: structure with numel == nb of runs
   %
   % :param repetitionTime:
-  % :type  repetitionTime: int
+  % :type  repetitionTime: float
   %
-  % :param nbScans:
+  % :param nbScans: Number of volumes for each sessions.
   % :type  nbScans: array of int
   %
 

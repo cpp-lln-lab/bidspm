@@ -11,19 +11,10 @@ function [matlabbatch, nbScans] = concatenateRuns(matlabbatch, opt)
 
   repetitionTime = matlabbatch{1}.spm.stats.fmri_spec.timing.RT;
 
-  nbScans = [];
-
   sess = matlabbatch{1}.spm.stats.fmri_spec.sess;
 
-  % concatenate volumes
-  files = {};
-  for i = 1:numel(sess)
-    [pth, basename, ext] = fileparts(sess(i).scans{1});
-    new_vols = cellstr(spm_select('ExtList', pth, [basename, ext]));
-    nbScans(i) = numel(new_vols); %#ok<AGROW>
-    files = cat(1, files, new_vols);
-  end
-  fmri_spec.sess.scans = {char(files)};
+  [volumeList, nbScans] = concatenateImages(sess);
+  fmri_spec.sess.scans = {volumeList};
 
   fmri_spec.sess(1).multi{1} = concatenateOnsets(sess, repetitionTime, nbScans);
 
