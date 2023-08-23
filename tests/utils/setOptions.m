@@ -19,6 +19,7 @@ function opt = setOptions(varargin)
   addOptional(args, 'subLabel', default_subLabel, charOrCell);
   addParameter(args, 'useRaw', default_useRaw, @islogical);
   addParameter(args, 'pipelineType', default_pipelineType);
+  addParameter(args, 'useTempDir', false);
 
   parse(args, varargin{:});
 
@@ -135,9 +136,19 @@ function opt = setOptions(varargin)
 
   opt = checkOptions(opt);
 
-  useRaw = args.Results.useRaw;
-  if useRaw
+  if args.Results.useRaw
     opt.dir.preproc = getTestDataDir('raw');
+  end
+
+  if args.Results.useTempDir
+    tmpDir = tempName();
+    copyfile(getTestDataDir(), tmpDir);
+    dirsToUpdate = {'stats', 'derivatives', 'preproc', 'raw', 'input', 'jobs', 'output'};
+    for i = 1:numel(dirsToUpdate)
+      opt.dir.(dirsToUpdate{i}) = strrep(opt.dir.(dirsToUpdate{i}), ...
+                                         getTestDataDir(), ...
+                                         tmpDir);
+    end
   end
 
 end

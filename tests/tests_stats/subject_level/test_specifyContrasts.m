@@ -13,9 +13,6 @@ function test_specifyContrasts_vismotion_F_contrast()
   % Note requires an SPM.mat to run
   %
 
-  % TODO: fixturize
-  createDummyData();
-
   % GIVEN
   subLabel = '01';
 
@@ -111,9 +108,6 @@ function test_specifyContrasts_subject_level_F_contrast()
 end
 
 function test_specifyContrasts_bug_854()
-
-  % TODO: fixturize
-  createDummyData();
 
   % GIVEN
   subLabel = '01';
@@ -491,9 +485,6 @@ function test_specifyContrasts_vismotion()
   % Note requires an SPM.mat to run
   %
 
-  % TODO: fixturize
-  createDummyData();
-
   % GIVEN
   subLabel = '01';
 
@@ -542,9 +533,6 @@ function test_specifyContrasts_vislocalizer()
   %
   % Note requires an SPM.mat to run
   %
-
-  % TODO: fixturize
-  createDummyData();
 
   % GIVEN
   subLabel = '01';

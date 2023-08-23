@@ -17,7 +17,9 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
+  opt = setOptions('vislocalizer', subLabel, ...
+                   'pipelineType', 'stats', ...
+                   'useTempDir', true);
 
   opt.model.designOnly = true;
 
@@ -43,7 +45,5 @@ function test_setBatchSubjectLevelGLMSpec_design_only()
   assertEqual(matlabbatch{1}.spm.stats.fmri_design.sess(1).hpf, 125);
   assertEqual(matlabbatch{1}.spm.stats.fmri_design.cvi, 'FAST');
   assertEqual(matlabbatch{1}.spm.stats.fmri_design.bases.hrf.derivs, [1 0]);
-
-  createDummyData();
 
 end

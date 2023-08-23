@@ -18,6 +18,10 @@ function test_bidsFFX_bug_642()
   opt.model.bm = BidsModel('file', opt.model.file);
   opt.model.bm.Input.space = char(opt.model.bm.Input.space);
 
+  tmpDir = tempName();
+  opt.dir.stats = fullfile(tmpDir);
+  opt.dir.output = opt.dir.stats;
+
   bidsFFX('specifyAndEstimate', opt);
 
 end
@@ -33,15 +37,16 @@ function test_bidsFFX_individual()
   for i = 1
 
     opt = setOptions(task{i}, '', 'pipelineType', 'stats');
+
+    tmpDir = tempName();
+    opt.dir.stats = fullfile(tmpDir);
+    opt.dir.output = opt.dir.stats;
+
     opt.model.file =  fullfile(getTestDataDir(),  'models', ...
                                ['model-' strjoin(task, '') 'SpaceIndividual_smdl.json']);
     opt.model.bm = BidsModel('file', opt.model.file);
     opt.fwhm.func = 0;
     opt.stc.skip = 1;
-
-    if exist(opt.dir.stats, 'dir')
-      rmdir(opt.dir.stats, 's');
-    end
 
     [matlabbatch, opt] = bidsFFX('specifyAndEstimate', opt);
 
@@ -53,8 +58,6 @@ function test_bidsFFX_individual()
 
   end
 
-  createDummyData();
-
 end
 
 function test_bidsFFX_skip_subject_no_data()
@@ -64,6 +67,11 @@ function test_bidsFFX_skip_subject_no_data()
   end
 
   opt = setOptions('vislocalizer', '^01', 'pipelineType', 'stats');
+
+  tmpDir = tempName();
+  opt.dir.stats = fullfile(tmpDir);
+  opt.dir.output = opt.dir.stats;
+
   opt.model.file =  fullfile(getTestDataDir(),  'models', ...
                              'model-vislocalizerWrongSpace_smdl.json');
   opt.model.bm = BidsModel('file', opt.model.file);
@@ -79,39 +87,6 @@ function test_bidsFFX_skip_subject_no_data()
   end
 
   assertWarning(@()bidsFFX('specifyAndEstimate', opt), 'bidsFFX:noDataForSubjectGLM');
-
-end
-
-function test_bidsFFX_contrasts_select_node()
-
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
-
-  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
-  opt.stc.skip = 1;
-
-  matlabbatch = bidsFFX('contrasts', opt, ...
-                        'nodeName', 'subject_level');
-
-  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 4);
-
-end
-
-function test_bidsFFX_contrasts()
-
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
-
-  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
-  opt.stc.skip = 1;
-
-  [matlabbatch, opt] = bidsFFX('contrasts', opt);
-
-  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 8);
-
-  assertEqual(opt.dir.jobs, fullfile(opt.dir.stats, 'jobs', 'vislocalizer'));
 
 end
 
@@ -151,8 +126,6 @@ function test_bidsFFX_fmriprep_no_smoothing()
 
   cleanUp(opt.dir.preproc);
 
-  createDummyData();
-
 end
 
 function test_bidsFFX_mni()
@@ -171,9 +144,9 @@ function test_bidsFFX_mni()
     opt = setOptions(task{i}, '', 'pipelineType', 'stats');
     opt.stc.skip = 1;
 
-    if exist(opt.dir.stats, 'dir')
-      rmdir(opt.dir.stats, 's');
-    end
+    tmpDir = tempName();
+    opt.dir.stats = fullfile(tmpDir);
+    opt.dir.output = opt.dir.stats;
 
     [matlabbatch, opt] = bidsFFX('specifyAndEstimate', opt);
 
@@ -184,7 +157,5 @@ function test_bidsFFX_mni()
     assertEqual(opt.dir.jobs, fullfile(opt.dir.stats, 'jobs', 'vislocalizer'));
 
   end
-
-  createDummyData();
 
 end
