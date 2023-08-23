@@ -135,10 +135,6 @@ function test_bidsCreateROI_neuromorphometrics_inv_norm()
   %            'space', {'individual'}, ...
   %            'verbosity', 0);
   %
-  %   cleanUp(fullfile(pwd, 'tmp'));
-  %   cleanUp(fullfile(pwd, 'options'));
-  %   cleanUp(fullfile(pwd, 'error_logs'));
-  %
   %   end
 
 end

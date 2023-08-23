@@ -1,6 +1,5 @@
-% (C) Copyright 2020 bidspm developers
-
 function test_suite = test_loadAndCheckOptions %#ok<*STOUT>
+  % (C) Copyright 2020 bidspm developers
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -10,7 +9,7 @@ end
 
 function test_loadAndCheckOptions_basic()
 
-  setUp();
+  PWD = setUp();
 
   % create dummy json file
   jsonContent.taskName = 'vismotion';
@@ -25,13 +24,12 @@ function test_loadAndCheckOptions_basic()
   expectedOptions.verbosity = 0;
   assertEqual(opt, expectedOptions);
 
-  cleanUp(fullfile(pwd, 'cfg'));
-
+  teardown(PWD);
 end
 
 function test_loadAndCheckOptions_structure()
 
-  setUp();
+  PWD = setUp();
 
   % create dummy json file
   opt = setTestCfg();
@@ -45,13 +43,12 @@ function test_loadAndCheckOptions_structure()
 
   assertEqual(opt, expectedOptions);
 
-  cleanUp(fullfile(pwd, 'cfg'));
-
+  teardown(PWD);
 end
 
 function test_loadAndCheckOptions_from_file()
 
-  setUp();
+  PWD = setUp();
 
   % create dummy json file
   jsonContent.taskName = 'vismotion';
@@ -72,13 +69,12 @@ function test_loadAndCheckOptions_from_file()
 
   assertEqual(opt, expectedOptions);
 
-  cleanUp(fullfile(pwd, 'cfg'));
-
+  teardown(PWD);
 end
 
 function test_loadAndCheckOptions_from_several_files()
 
-  setUp();
+  PWD = setUp();
 
   % create old dummy json file
   jsonContent.taskName = 'vismotion';
@@ -113,13 +109,12 @@ function test_loadAndCheckOptions_from_several_files()
 
   assertEqual(opt, expectedOptions);
 
-  cleanUp(fullfile(pwd, 'cfg'));
-
+  teardown(PWD);
 end
 
 function test_loadAndCheckOptions_moae()
 
-  setUp();
+  PWD = setUp();
 
   jsonContent = setOptions('MoAE');
   jsonContent.verbosity = 0;
@@ -129,18 +124,22 @@ function test_loadAndCheckOptions_moae()
 
   opt = loadAndCheckOptions(optionJsonFile);
 
-  cleanUp(fullfile(pwd, 'cfg'));
+  teardown(PWD);
 
 end
 
-function setUp
+function PWD = setUp()
+  PWD = pwd;
+  tmpDir = tempName();
+  cd(tmpDir);
   spm_mkdir cfg;
-  delete(fullfile(pwd, 'cfg', '*.json'));
+end
+
+function teardown(pth)
+  cd(pth);
 end
 
 function opt = setTestCfg()
-
   opt.verbosity = 0;
   opt.dryRun = true;
-
 end
