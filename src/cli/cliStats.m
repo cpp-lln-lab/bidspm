@@ -100,13 +100,25 @@ end
 
 function runEstimate(isSubjectLevel, opt, nodeName)
   if isSubjectLevel
-    bidsFFX('specifyAndEstimate', opt);
-    compileScrubbingStats(opt.dir.stats);
+
+    if opt.glm.concatenateRuns
+      bidsFFX('specify', opt);
+      compileScrubbingStats(opt.dir.stats);
+      bidsFFX('estimate', opt);
+
+    else
+      bidsFFX('specifyAndEstimate', opt);
+      compileScrubbingStats(opt.dir.stats);
+    end
+
   else
+
     if opt.fwhm.contrast > 0
       bidsSmoothContrasts(opt);
     end
+
     bidsRFX('RFX', opt, 'nodeName', nodeName);
+
   end
 end
 
