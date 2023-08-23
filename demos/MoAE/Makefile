@@ -26,7 +26,7 @@ inputs/fmriprep:
 										*/*/*tsv \
 										*/*/*json \
 										*/*/*desc-preproc*.nii.gz \
-										*/*/*desc-brain*.nii.gz
+										*/*/*desc-brain*.nii.gz -J 12
 all: $(roi)
 
 $(stats):

@@ -26,6 +26,7 @@ function [matlabbatch, nbScans] = concatenateRuns(matlabbatch, opt)
   sess = matlabbatch{1}.spm.stats.fmri_spec.sess;
 
   if numel(sess) == 1
+    [~, nbScans] = concatenateImages(sess);
     return
   end
 
