@@ -18,13 +18,7 @@ function test_bidsChangeSuffix_basic()
 
   dataDir = getBidsExample('ds001');
 
-  tmpDir = fullfile(dataDir, '..', '..', 'tmp');
-
-  if isdir(tmpDir)
-    rmdir(tmpDir, 's');
-  end
-
-  bids.util.mkdir(tmpDir);
+  tmpDir = tempName();
   copyfile(dataDir, tmpDir);
 
   bidsDir = tmpDir;
@@ -61,7 +55,5 @@ function test_bidsChangeSuffix_basic()
   % same metadata
   metadata = bids.query(BIDS_after, 'metadata', 'suffix', 'vaso');
   assertEqual(metadata, expected_metadata);
-
-  rmdir(tmpDir, 's');
 
 end

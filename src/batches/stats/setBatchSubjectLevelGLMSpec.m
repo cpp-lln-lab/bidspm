@@ -71,6 +71,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   ffxDir = getFFXdir(subLabel, opt);
   if ~opt.glm.roibased.do
     overwriteDir(ffxDir, opt);
+    fprintf('\n\nDELETING DIRECTORY %s\n\n', ffxDir);
   else
     if exist(fullfile(ffxDir, 'SPM.mat'), 'file')
       delete(fullfile(ffxDir, 'SPM.mat'));
