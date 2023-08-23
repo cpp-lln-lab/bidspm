@@ -13,6 +13,10 @@ end
 
 function test_copy_filter()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
   % add dummy aroma file to input folder
@@ -82,6 +86,10 @@ end
 
 function test_copy()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
   outputPath = tempName();
@@ -118,6 +126,10 @@ end
 
 function test_copy_anat_only()
 
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
+
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
   outputPath = tempName();
@@ -138,6 +150,10 @@ function test_copy_anat_only()
 end
 
 function test_copy_only_one_task()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 

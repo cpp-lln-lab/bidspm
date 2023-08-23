@@ -10,6 +10,9 @@ end
 
 function test_setBatchSubjectLevelContrasts_F_contrast()
 
+  % TODO: fixturize
+  createDummyData();
+
   subLabel = '01';
 
   opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
@@ -42,6 +45,9 @@ function test_setBatchSubjectLevelContrasts_F_contrast()
 end
 
 function test_setBatchSubjectLevelContrasts_basic()
+
+  % TODO: fixturize
+  createDummyData();
 
   subLabel = '01';
 
@@ -99,6 +105,9 @@ function test_setBatchSubjectLevelContrasts_basic()
 end
 
 function test_setBatchSubjectLevelContrasts_select_node()
+
+  % TODO: fixturize
+  createDummyData();
 
   subLabel = '01';
 
