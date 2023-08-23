@@ -15,7 +15,9 @@ function test_setBatchSubjectLevelGLMSpec_slicetiming_metadata()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
+  opt = setOptions('vismotion', subLabel, ...
+                   'pipelineType', 'stats', ...
+                   'useTempDir', true);
 
   % needed to update the options with the content of the model
   opt = checkOptions(opt);
@@ -38,7 +40,9 @@ function test_setBatchSubjectLevelGLMSpec_vismotion_acq_1pt6acq()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
+  opt = setOptions('vismotion', subLabel, ...
+                   'pipelineType', 'stats', ...
+                   'useTempDir', true);
 
   opt.model.file = spm_file(opt.model.file, 'basename', 'model-vismotion-desc-1pt6acq_smdl');
   opt.model.bm = BidsModel('file', opt.model.file);
@@ -63,7 +67,9 @@ function test_setBatchSubjectLevelGLMSpec_brain_mask()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
+  opt = setOptions('vislocalizer', subLabel, ...
+                   'pipelineType', 'stats', ...
+                   'useTempDir', true);
 
   opt.model.bm.Nodes{1}.Model.Options.Mask = struct('desc', 'brain', 'suffix', 'mask');
 
@@ -118,7 +124,9 @@ function test_setBatchSubjectLevelGLMSpec_basic()
   %% GIVEN
   subLabel = '^01';
 
-  opt = setOptions('vislocalizer', subLabel, 'pipelineType', 'stats');
+  opt = setOptions('vislocalizer', subLabel, ...
+                   'pipelineType', 'stats', ...
+                   'useTempDir', true);
 
   opt.model.bm.Nodes{1}.Model.Options = rmfield(opt.model.bm.Nodes{1}.Model.Options, ...
                                                 'Mask');
