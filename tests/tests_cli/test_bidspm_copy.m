@@ -33,7 +33,7 @@ function test_copy_filter()
   copyfile(sourceFile{1}, destFile{1});
 
   %% with simple filter file
-  bids_filter_file = fullfile(tmpName(), 'bids_filter_file.json');
+  bids_filter_file = fullfile(tempName(), 'bids_filter_file.json');
   bids.util.jsonencode(bids_filter_file, ...
                        struct('bold', struct('modality', 'func')));
 
@@ -41,7 +41,7 @@ function test_copy_filter()
   % so anat should not be copied
   opt.query.modality = {'anat'};
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(inputPath, outputPath, 'subject', ...
          'action', 'copy', ...
@@ -84,7 +84,7 @@ function test_copy()
 
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(inputPath, outputPath, 'subject', ...
          'action', 'copy', ...
@@ -120,7 +120,7 @@ function test_copy_anat_only()
 
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(inputPath, outputPath, 'subject', ...
          'action', 'copy', ...
@@ -158,7 +158,7 @@ function test_copy_only_one_task()
   end
   copyfile(sourceFile{1}, destFile{1});
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(inputPath, outputPath, 'subject', ...
          'action', 'copy', ...
@@ -174,9 +174,4 @@ function test_copy_only_one_task()
 
   delete(destFile{1});
 
-end
-
-function pth = tmpName()
-  pth = tempname();
-  mkdir(pth);
 end

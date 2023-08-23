@@ -12,7 +12,7 @@ end
 
 function test_concatenateRuns_basic()
 
-  tempPath = tempDir();
+  tempPath = tempName();
 
   imageSrc = fullfile(getMoaeDir(), 'inputs', 'raw', ...
                       'sub-01', 'func', 'sub-01_task-auditory_bold.nii');

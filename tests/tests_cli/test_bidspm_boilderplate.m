@@ -13,7 +13,7 @@ end
 
 function test_boilerplate_only_stats()
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   opt = setOptions('MoAE');
 
@@ -41,7 +41,7 @@ end
 
 function test_boilerplate_only_stats_roi()
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   opt = setOptions('MoAE');
 
@@ -71,7 +71,7 @@ end
 
 function test_boilerplate_only_preproc()
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   opt = setOptions('MoAE');
 
@@ -89,9 +89,4 @@ function test_boilerplate_only_preproc()
                              'preprocess_citation.md'), ...
                     'file'), ...
               2);
-end
-
-function pth = tmpName()
-  pth = tempname();
-  mkdir(pth);
 end

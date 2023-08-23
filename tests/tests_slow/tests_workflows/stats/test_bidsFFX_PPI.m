@@ -10,13 +10,13 @@ end
 
 function test_bidsFFX_PPI_basic()
 
-  %   if ~usingSlowTestMode()
-  %     moxunit_throw_test_skipped_exception('slow test only');
-  %   end
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('MoAE-fmriprep', '', 'pipelineType', 'stats');
 
-  tempPath = tempDir();
+  tempPath = tempName();
 
   spm_mkdir(fullfile(tempPath, 'inputs'));
   copyfile(fullfile(opt.dir.fmriprep, '..'), fullfile(tempPath, 'inputs'));

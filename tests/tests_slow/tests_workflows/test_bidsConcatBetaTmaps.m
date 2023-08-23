@@ -23,7 +23,7 @@ function test_bidsConcatBetaTmapsBasic()
   opt.model.file = spm_file(opt.model.file, 'filename', 'model-vismotionMVPA_smdl.json');
   opt.model.bm = BidsModel('file', opt.model.file);
 
-  tmpDir = tempname;
+  tmpDir = tempName();
   copyfile(opt.dir.stats, tmpDir);
 
   opt.dir.stats = tmpDir;

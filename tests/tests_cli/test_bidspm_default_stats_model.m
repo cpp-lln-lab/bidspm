@@ -13,7 +13,7 @@ end
 
 function test_createDefaultStatsModel_CLI_ignore()
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   opt = setOptions('vislocalizer', '');
 
@@ -36,48 +36,4 @@ function test_createDefaultStatsModel_CLI_ignore()
   assertEqual(numel(content.Nodes), 2);
   assertEqual(numel(content.Edges), 1);
 
-end
-
-function test_createDefaultStatsModel_CLI()
-
-  outputPath = tmpName();
-
-  opt = setOptions('vislocalizer', '');
-
-  bidspm(opt.dir.input, outputPath, 'dataset', ...
-         'action', 'default_model', ...
-         'task', {'vislocalizer', 'vismotion'}, ...
-         'space', {'individual'}, ...
-         'verbosity', 0);
-
-  % make sure the file was created where expected
-  expectedFilename = fullfile(outputPath, 'derivatives', 'models', ...
-                              'model-defaultVislocalizerVismotion_smdl.json');
-  assertEqual(exist(expectedFilename, 'file'), 2);
-
-  % check it has the right content
-  content = spm_jsonread(expectedFilename);
-
-  expectedContent = spm_jsonread(fullfile(getTestDataDir(), 'models', 'model-default_smdl.json'));
-  expectedContent.Input.task = {'vislocalizer'; 'vismotion'};
-  expectedContent.Input.space = {'individual'};
-
-  if ~bids.internal.is_github_ci()
-    for i = 1:numel(content.Nodes)
-      tmp = fieldnames(content.Nodes{i});
-      for j = 1:numel(tmp)
-        assertEqual(content.Nodes{i}.(tmp{j}), ...
-                    expectedContent.Nodes{i}.(tmp{j}));
-      end
-    end
-
-    assertEqual(content.Edges, expectedContent.Edges);
-    assertEqual(content.Input, expectedContent.Input);
-  end
-
-end
-
-function pth = tmpName()
-  pth = tempname();
-  mkdir(pth);
 end

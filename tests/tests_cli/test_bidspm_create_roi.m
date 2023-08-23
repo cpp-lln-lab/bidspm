@@ -17,7 +17,7 @@ function test_bidsCreateROI_boilerplate_only()
     moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
   end
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(pwd, outputPath, ...
          'subject', ...
@@ -42,7 +42,7 @@ function test_bidsCreateROI_glasser()
     moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
   end
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(pwd, outputPath, ...
          'subject', ...
@@ -65,7 +65,7 @@ function test_bidsCreateROI_wang()
     moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
   end
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(pwd, outputPath, ...
          'subject', ...
@@ -88,7 +88,7 @@ function test_bidsCreateROI_neuromorphometrics()
     moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
   end
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(pwd, outputPath, ...
          'subject', ...
@@ -133,7 +133,7 @@ function test_bidsCreateROI_one_hemisphere()
     moxunit_throw_test_skipped_exception('Need bug fix in CPP ROI extractRoiFromAtlas.');
   end
 
-  outputPath = tmpName();
+  outputPath = tempName();
 
   bidspm(pwd, outputPath, 'subject', ...
          'action', 'create_roi', ...
@@ -148,9 +148,4 @@ function test_bidsCreateROI_one_hemisphere()
                                        'bidspm-roi', 'group'), '.*visfatlas.*_mask\.nii');
   assert(size(rois, 1) == 6);
 
-end
-
-function pth = tmpName()
-  pth = tempname();
-  mkdir(pth);
 end

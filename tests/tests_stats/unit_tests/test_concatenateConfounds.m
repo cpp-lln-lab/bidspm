@@ -12,7 +12,7 @@ end
 
 function test_concatenateConfounds_basic()
 
-  tempPath = tempDir();
+  tempPath = tempName();
 
   %% run 1
   names =  {'rot_x',    'trans_x', 'csf',     'white'};

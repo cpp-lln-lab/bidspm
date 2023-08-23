@@ -14,7 +14,7 @@ function test_concatenateOnsets_basic()
 
   repetitionTime = 1;
 
-  tempPath = tempDir();
+  tempPath = tempName();
 
   %% run 1
   names =     {'foo',    'bar'};

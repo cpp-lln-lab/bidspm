@@ -89,8 +89,3 @@ end
 function value = partialsPath()
   value = fullfile(returnRootDir(), 'src', 'reports', 'partials');
 end
-
-function pth = tempName()
-  pth = tempname();
-  mkdir(pth);
-end

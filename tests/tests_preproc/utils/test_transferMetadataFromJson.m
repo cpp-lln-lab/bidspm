@@ -9,7 +9,7 @@ end
 
 function test_transferMetadataFromJson_raw_source()
 
-  tmpPath = tempDir();
+  tmpPath = tempName();
   folder = fullfile(tmpPath, 'sub-01');
 
   inFile = 'sub-01_task-foo_bold.nii';
@@ -40,7 +40,7 @@ end
 
 function test_transferMetadataFromJson_several_sources_with_todo()
 
-  tmpPath = tempDir();
+  tmpPath = tempName();
   folder = fullfile(tmpPath, 'sub-01');
 
   inFile1 = 'sub-01_task-foo_space-individual_desc-preproc_bold.nii';
@@ -71,7 +71,7 @@ end
 
 function test_transferMetadataFromJson_several_sources()
 
-  tmpPath = tempDir();
+  tmpPath = tempName();
   folder = fullfile(tmpPath, 'sub-01');
 
   inFile1 = 'sub-01_task-foo_space-individual_desc-preproc_bold.nii';
@@ -240,7 +240,7 @@ function createdFiles = setUp(inMetadata, isMean, sourceToDo)
     outFile = 'sub-01_task-foo_space-MNI_desc-mean_bold.nii';
   end
 
-  tmpPath = tempDir();
+  tmpPath = tempName();
   folder = fullfile(tmpPath, 'sub-01', 'func');
   spm_mkdir(folder);
 

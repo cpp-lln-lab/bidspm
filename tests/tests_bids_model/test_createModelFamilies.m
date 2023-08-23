@@ -11,7 +11,7 @@ function test_createModelFamilies_ones_dimension()
 
   defaultModel = BidsModel('init', true);
 
-  outputDir = tempName;
+  outputDir = tempName();
 
   multiverse.motion = {'full'};
   multiverse.scrub = {true, false};
@@ -27,7 +27,7 @@ function test_createModelFamilies_basic()
 
   defaultModel = BidsModel('init', true);
 
-  outputDir = tempName;
+  outputDir = tempName();
 
   multiverse.motion = {'none'};
   multiverse.scrub = {false};
@@ -45,7 +45,7 @@ function test_createModelFamilies_all()
 
   defaultModel = BidsModel('init', true);
 
-  outputDir = tempName;
+  outputDir = tempName();
 
   multiverse.motion = {'none', 'basic', 'full'};
   multiverse.scrub = {false, true};

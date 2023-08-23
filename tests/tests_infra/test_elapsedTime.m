@@ -23,7 +23,7 @@ function test_elapsedTime_basic()
     subLabel = opt.subjects{iSub};
     printProcessingSubject(iSub, subLabel, opt);
     subjectStart = elapsedTime(opt, 'start');
-    pause(1);
+    pause(0.05);
     [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, nbIteration);
   end
 

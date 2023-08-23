@@ -19,11 +19,7 @@ function test_renameUnwarpParameter_basic()
   opt = setOptions('MoAE-preproc');
 
   % move test data into temp directory to test renaming
-  tmpDir = fullfile(pwd, 'tmp');
-  if isdir(tmpDir)
-    rmdir(tmpDir, 's');
-  end
-  spm_mkdir(tmpDir);
+  tmpDir = tempName();
   copyfile(opt.dir.preproc, tmpDir);
 
   BIDS = bids.layout(tmpDir, ...
@@ -43,7 +39,5 @@ function test_renameUnwarpParameter_basic()
 
   unwarpParamFiles = spm_select('FPListRec', tmpDir, '^.*label-bold_unwarpparam.mat$');
   assertEqual(size(unwarpParamFiles, 1), 1);
-
-  rmdir(tmpDir, 's');
 
 end

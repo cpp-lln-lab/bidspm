@@ -21,8 +21,7 @@ function test_bidsRename_basic()
   opt = setOptions('MoAE-preproc');
 
   % move test data into temp directory to test renaming
-  tmpDir = tempname;
-  spm_mkdir(tmpDir);
+  tmpDir = tempName();
   copyfile(opt.dir.preproc, tmpDir);
 
   bidsDir = tmpDir;
