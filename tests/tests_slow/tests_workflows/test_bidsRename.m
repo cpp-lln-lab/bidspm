@@ -41,7 +41,7 @@ function test_bidsRename_basic()
   end
 
   opt.dryRun = false;
-  opt.verbosity = 2;
+  opt.verbosity = 0;
 
   createdFiles = bidsRename(opt);
 

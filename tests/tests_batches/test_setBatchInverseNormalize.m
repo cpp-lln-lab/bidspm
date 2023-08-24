@@ -7,6 +7,29 @@ function test_suite = test_setBatchInverseNormalize %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_setBatchInverseNormalize_basic()
+
+  subLabel = '^01';
+
+  opt = setOptions('vismotion', subLabel);
+
+  BIDS = getLayout(opt);
+
+  imgToResample = {'foo'};
+
+  matlabbatch = {};
+  matlabbatch = setBatchInverseNormalize(matlabbatch, BIDS, opt, subLabel, imgToResample);
+
+  deformationField = fullfile(BIDS.pth, 'sub-01', 'ses-01', 'anat', ...
+                              'sub-01_ses-01_from-IXI549Space_to-T1w_mode-image_xfm.nii');
+
+  assertEqual(matlabbatch{1}.spm.spatial.normalise.write.subj.def(1), {deformationField});
+  assertEqual(matlabbatch{1}.spm.spatial.normalise.write.woptions.vox, nan(1, 3));
+  assertEqual(matlabbatch{1}.spm.spatial.normalise.write.subj.resample(1), {'foo'});
+  assertEqual(matlabbatch{1}.spm.spatial.normalise.write.woptions.bb, nan(2, 3));
+
+end
+
 function test_setBatchInverseNormalize_warning()
 
   opt = setOptions('vismotion');

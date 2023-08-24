@@ -9,10 +9,6 @@ end
 
 function test_saveOptions_basic()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
-
   opt = setOptions('dummy');
   opt.dir.derivatives = tempName();
 

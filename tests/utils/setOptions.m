@@ -143,6 +143,9 @@ function opt = setOptions(varargin)
   if args.Results.useTempDir
     tmpDir = tempName();
     copyfile(getTestDataDir(), tmpDir);
+    if bids.internal.is_octave()
+      tmpDir = fullfile(tmpDir, 'data');
+    end
     dirsToUpdate = {'stats', 'derivatives', 'preproc', 'raw', 'input', 'jobs', 'output'};
     for i = 1:numel(dirsToUpdate)
       opt.dir.(dirsToUpdate{i}) = strrep(opt.dir.(dirsToUpdate{i}), ...

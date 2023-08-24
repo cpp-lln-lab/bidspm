@@ -274,4 +274,8 @@ function [opt, tmpDir] = setUp(opt)
   opt.model.bm = BidsModel('file', opt.model.file);
   tmpDir = tempName();
   copyfile(fullfile(getTestDataDir(), 'tsv_files'), tmpDir);
+  if bids.internal.is_octave()
+    tmpDir = fullfile(tmpDir, 'tsv_files');
+  end
+
 end
