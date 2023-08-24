@@ -9,11 +9,9 @@ clear;
 clc;
 close all;
 
-% skipping validation for now
-% as raw data is not 100% valid
-skip_validation = true;
-
 download_data = true;
+
+VERBOSITY = 0;
 
 WD = fileparts(mfilename('fullpath'));
 
@@ -69,8 +67,8 @@ parfor iResolution = 1:numel(resolutions_to_test)
          'task', 'facerepetition', ...
          'space', {'IXI549Space'}, ...
          'ignore', ignore, ...
-         'options', opt, ...
-         'skip_validation', skip_validation);
+         'verbosity', VERBOSITY, ...
+         'options', opt);
 
   %% stats
 
@@ -106,7 +104,7 @@ parfor iResolution = 1:numel(resolutions_to_test)
          'preproc_dir', [preproc_dir '-preproc'], ...
          'model_file', newModel, ...
          'options', opt, ...
-         'skip_validation', skip_validation, ...
+         'verbosity', VERBOSITY, ...
          'concatenate', true);
 
 end
