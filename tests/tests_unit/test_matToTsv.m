@@ -8,8 +8,12 @@ function test_suite = test_matToTsv %#ok<*STOUT>
 end
 
 function test_onsetMatToTsv_basic()
+
   tmpDir = tempName();
   copyfile(fullfile(getTestDataDir(), 'mat_files'), tmpDir);
+  if bids.internal.is_octave()
+    tmpDir = fullfile(tmpDir, 'mat_files');
+  end
 
   onsetsMatFile = fullfile(tmpDir, 'task-olfid_onsets.mat');
 
@@ -21,6 +25,9 @@ end
 function test_regressorsMatToTsv_basic()
   tmpDir = tempName();
   copyfile(fullfile(getTestDataDir(), 'mat_files'), tmpDir);
+  if bids.internal.is_octave()
+    tmpDir = fullfile(tmpDir, 'mat_files');
+  end
 
   regressorsMatFile = fullfile(tmpDir, 'task-olfid_desc-confounds_regressors.mat');
 

@@ -11,6 +11,9 @@ function test_orderAndPadCounfoundMatFile_different_nb_confounds()
 
   tmpDir = tempName();
   copyfile(fullfile(getTestDataDir, 'mat_files'), tmpDir);
+  if bids.internal.is_octave()
+    tmpDir = fullfile(tmpDir, 'mat_files');
+  end
 
   % GIVEN
   spmSess(1).counfoundMatFile = fullfile(tmpDir, ...

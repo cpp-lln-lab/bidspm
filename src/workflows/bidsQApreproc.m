@@ -34,6 +34,7 @@ function bidsQApreproc(opt)
 
   [BIDS, opt] = setUpWorkflow(opt, 'preprocessing quality control');
 
+  visible = 'off';
   if opt.verbosity > 1
     visible = 'on';
   end

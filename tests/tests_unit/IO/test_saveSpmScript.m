@@ -70,6 +70,9 @@ function test_saveSpmScript_from_file()
 
   tmpDir = tempName();
   copyfile(fullfile(getTestDataDir(), 'mat_files'), tmpDir);
+  if bids.internal.is_octave
+    tmpDir = fullfile(tmpDir, 'mat_files');
+  end
 
   % GIVEN
   inputMatFile = fullfile(tmpDir, 'dummy_batch.mat');

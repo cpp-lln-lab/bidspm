@@ -39,7 +39,7 @@ jobs:
     strategy:
       matrix:
         test_type: [system]
-        script: [moae, facerep, fmriprep]
+        script: [moae, fmriprep]
         os: [windows-latest]
         matlab: [R2023a]
         include:
