@@ -14,14 +14,14 @@ function test_createDefaultStatsModel_basic()
 
   BIDS = getLayout(opt);
 
-  opt.dir.derivatives = pwd;
+  opt.dir.derivatives = tempName();
   opt.space = {'IXI549Space'};
   opt.taskName = {'vislocalizer'};
 
   createDefaultStatsModel(BIDS, opt);
 
   % make sure the file was created where expected
-  expectedFilename = fullfile(pwd, 'models', 'model-defaultVislocalizer_smdl.json');
+  expectedFilename = fullfile(opt.dir.derivatives, 'models', 'model-defaultVislocalizer_smdl.json');
   assertEqual(exist(expectedFilename, 'file'), 2);
 
   % check it has the right content
@@ -57,8 +57,6 @@ function test_createDefaultStatsModel_basic()
     assertEqual(content.Input, expectedContent.Input);
   end
 
-  cleanUp(fullfile(pwd, 'models'));
-
 end
 
 function test_createDefaultStatsModel_ignore()
@@ -67,7 +65,7 @@ function test_createDefaultStatsModel_ignore()
 
   BIDS = getLayout(opt);
 
-  opt.dir.derivatives = pwd;
+  opt.dir.derivatives = tempName();
   opt.space = {'IXI549Space'};
   opt.taskName = {'vislocalizer'};
 
@@ -80,7 +78,5 @@ function test_createDefaultStatsModel_ignore()
   assertEqual(isfield(content.Nodes, 'Contrasts'), false);
   assertEqual(numel(content.Nodes), 2);
   assertEqual(numel(content.Edges), 1);
-
-  cleanUp(fullfile(pwd, 'models'));
 
 end

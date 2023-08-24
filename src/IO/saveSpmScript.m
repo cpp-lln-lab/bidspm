@@ -8,8 +8,9 @@ function outputFilename = saveSpmScript(varargin)
   %
   % :param input: a ``matlabbatch`` variable (cell) or the fullpath to a ``.mat`` file
   %               containing such ``matlabbatch`` variable.
+  %
   % :param outputFilename: optional. Path to output file
-  % :type outputFilename: path
+  % :type  outputFilename: path
   %
   % :returns: - :outputFilename: (path)
   %

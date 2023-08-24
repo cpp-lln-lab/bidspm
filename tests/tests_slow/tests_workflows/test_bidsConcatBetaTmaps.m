@@ -17,16 +17,13 @@ function test_bidsConcatBetaTmapsBasic()
 
   subLabel = '01';
 
-  opt = setOptions('vismotion', subLabel, 'pipelineType', 'stats');
+  opt = setOptions('vismotion', subLabel, ...
+                   'pipelineType', 'stats', ...
+                   'useTempDir', true);
   opt.dryRun = true;
 
   opt.model.file = spm_file(opt.model.file, 'filename', 'model-vismotionMVPA_smdl.json');
   opt.model.bm = BidsModel('file', opt.model.file);
-
-  tmpDir = tempName();
-  copyfile(opt.dir.stats, tmpDir);
-
-  opt.dir.stats = tmpDir;
 
   % update content of FFX dir to mock 2 sessions
   targetDir = fullfile(opt.dir.stats, ...

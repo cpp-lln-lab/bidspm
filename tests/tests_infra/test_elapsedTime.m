@@ -1,8 +1,5 @@
 function test_suite = test_elapsedTime %#ok<*STOUT>
-  %
-
   % (C) Copyright 2020 bidspm developers
-
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
@@ -23,11 +20,11 @@ function test_elapsedTime_basic()
     subLabel = opt.subjects{iSub};
     printProcessingSubject(iSub, subLabel, opt);
     subjectStart = elapsedTime(opt, 'start');
-    pause(0.05);
+    pause(0.01);
     [~, runTime] = elapsedTime(opt, 'stop', subjectStart, runTime, nbIteration);
   end
 
-  pause(1);
+  pause(0.2);
 
   cleanUpWorkflow(opt);
 

@@ -22,12 +22,12 @@ function test_bidsCreateROI_neuromorphometrics()
 
   opt.roi.atlas = 'neuromorphometrics';
   opt.roi.name = {'Amygdala'};
+  opt.roi.hemi = {'L', 'R'};
   opt.roi.space = {'IXI549Space', 'individual'};
-  opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'bidspm-roi'), 'cpath');
+
+  opt.dir.roi = fullfile(tempName(), 'bidspm-roi');
 
   opt.dryRun = false;
-
-  cleanUp(opt.dir.roi);
 
   bidsCreateROI(opt);
 
@@ -37,8 +37,6 @@ function test_bidsCreateROI_neuromorphometrics()
   roiImages = bids.query(BIDS, 'data', 'sub', '^01', 'suffix', 'mask');
 
   assertEqual(size(roiImages, 1), 2);
-
-  cleanUp(opt.dir.roi);
 
 end
 
@@ -56,12 +54,11 @@ function test_bidsCreateROI_wang()
 
   opt.roi.atlas = 'wang';
   opt.roi.name = {'V1v', 'V1d'};
+  opt.roi.hemi = {'L', 'R'};
   opt.roi.space = {'IXI549Space', 'individual'};
-  opt.dir.roi = spm_file(fullfile(opt.dir.derivatives, 'bidspm-roi'), 'cpath');
+  opt.dir.roi = fullfile(tempName(), 'bidspm-roi');
 
   opt.dryRun = false;
-
-  cleanUp(opt.dir.roi);
 
   bidsCreateROI(opt);
 
@@ -71,7 +68,5 @@ function test_bidsCreateROI_wang()
   roiImages = bids.query(BIDS, 'data', 'sub', '^01', 'suffix', 'mask');
 
   assertEqual(size(roiImages, 1), 4);
-
-  cleanUp(opt.dir.roi);
 
 end

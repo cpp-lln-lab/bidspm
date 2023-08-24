@@ -7,9 +7,7 @@ function test_suite = test_allRunsHaveSameNbRegressors %#ok<*STOUT>
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
-
   initTestSuite;
-
 end
 
 function test_allRunsHaveSameNbRegressors_basic()

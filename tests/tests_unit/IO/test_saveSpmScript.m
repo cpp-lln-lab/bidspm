@@ -1,18 +1,15 @@
 function test_suite = test_saveSpmScript %#ok<*STOUT>
-  %
-
   % (C) Copyright 2022 bidspm developers
-
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
-
   initTestSuite;
-
 end
 
 function test_saveSpmScript_basic()
+
+  PWD = setUp();
 
   % GIVEN
   matlabbatch{1}.cfg_basicio.cfg_named_file.name = 'Anatomical';
@@ -40,11 +37,13 @@ function test_saveSpmScript_basic()
 
   assertEqual(actualContent, expectedContent);
 
-  cleanUp();
+  cd(PWD);
 
 end
 
 function test_saveSpmScript_output_name()
+
+  PWD = setUp();
 
   % GIVEN
   matlabbatch{1}.cfg_basicio.cfg_named_file.name = 'Anatomical';
@@ -61,7 +60,7 @@ function test_saveSpmScript_output_name()
   expectedContent = fullfile(getTestDataDir(), 'dummy_batch.m');
   compareContent(outputFilename, expectedFile);
 
-  cleanUp();
+  cd(PWD);
 
 end
 
@@ -69,20 +68,22 @@ function test_saveSpmScript_from_file()
 
   % TODO add tests to overwrite output filename
 
+  tmpDir = tempName();
+  copyfile(fullfile(getTestDataDir(), 'mat_files'), tmpDir);
+  if bids.internal.is_octave
+    tmpDir = fullfile(tmpDir, 'mat_files');
+  end
+
   % GIVEN
-  inputMatFile = fullfile(getTestDataDir(), 'mat_files', 'dummy_batch.mat');
+  inputMatFile = fullfile(tmpDir, 'dummy_batch.mat');
 
   % WHEN
   outputFilename = saveSpmScript(inputMatFile);
 
   % THEN
-  expectedFile = fullfile(getTestDataDir(), 'mat_files', 'dummy_batch.m');
+  expectedFile = fullfile(tmpDir, 'dummy_batch.m');
   assertEqual(exist(expectedFile, 'file'), 2);
-
-  expectedFile = fullfile(getTestDataDir(), 'dummy_batch.m');
   compareContent(outputFilename, expectedFile);
-
-  cleanUp();
 
 end
 
@@ -100,13 +101,9 @@ function compareContent(actualFile, expectedFile)
 
 end
 
-function setUp()
-
-end
-
-function cleanUp()
-
-  delete batch*.m;
-  delete(fullfile(getTestDataDir(), 'mat_files', 'dummy_batch.m'));
-
+function PWD = setUp()
+  PWD = pwd;
+  tmpDir = tempName();
+  cd(tmpDir);
+  spm_mkdir cfg;
 end

@@ -7,9 +7,7 @@ function test_suite = test_bidsModelSelection %#ok<*STOUT>
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
-
   initTestSuite;
-
 end
 
 function test_bidsModelSelection_basic()
@@ -28,7 +26,7 @@ function test_bidsModelSelection_basic()
                                            'models', ...
                                            'model-vismotionGlobalSignal_smdl.json')};
 
-  opt.verbosity = 3;
+  opt.verbosity = 0;
   % WHEN
   matlabbatch = bidsModelSelection(opt);
 

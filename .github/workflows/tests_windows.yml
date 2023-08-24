@@ -39,17 +39,17 @@ jobs:
     strategy:
       matrix:
         test_type: [system]
-        script: [moae, facerep, fmriprep]
+        script: [moae, fmriprep]
         os: [windows-latest]
-        matlab: [R2022b]
+        matlab: [R2023a]
         include:
         - test_type: unit
           os: windows-latest
-          matlab: R2022b
+          matlab: R2023a
           mode: fast
         - test_type: unit
           os: windows-latest
-          matlab: R2022b
+          matlab: R2023a
           mode: slow
       fail-fast: false
 

@@ -18,12 +18,12 @@ function test_printAvailableContrasts_basic()
 
   printAvailableContrasts(SPM, opt);
 
-  save(fullfile(pwd, 'SPM.mat'), 'SPM');
+  tmpDir = tempName();
 
-  printAvailableContrasts(fullfile(pwd, 'SPM.mat'), opt);
+  save(fullfile(tmpDir, 'SPM.mat'), 'SPM');
+
+  printAvailableContrasts(fullfile(tmpDir, 'SPM.mat'), opt);
 
   printAvailableContrasts(SPM);
-
-  delete(fullfile(pwd, 'SPM.mat'));
 
 end

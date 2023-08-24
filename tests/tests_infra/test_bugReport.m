@@ -9,39 +9,33 @@ end
 
 function test_bugReport_output_dir()
 
-  %%
   opt.dryRun = false;
   opt.verbosity = 0;
-  opt.dir.output = fullfile(pwd, 'tmp');
+  opt.dir.output = fullfile(tempName(), 'tmp');
   opt = checkOptions(opt);
 
   bugReport(opt);
-
-  cleanUp('tmp');
 
 end
 
 function test_bugReport_basic()
 
-  %%
-  bugReport();
-
-  %%
   opt.dryRun = false;
   opt.verbosity = 0;
+  opt.dir.output = tempName();
   opt = checkOptions(opt);
 
   bugReport(opt);
 
-  cleanUp('error_logs');
+  assert(isdir(fullfile(opt.dir.output, 'error_logs')));
 
 end
 
 function test_bugReport_error()
 
-  %%
   opt.dryRun = false;
   opt.verbosity = 0;
+  opt.dir.output = tempName();
   opt = checkOptions(opt);
 
   try
@@ -49,7 +43,5 @@ function test_bugReport_error()
   catch ME
     bugReport(opt, ME);
   end
-
-  cleanUp('error_logs');
 
 end

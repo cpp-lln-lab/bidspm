@@ -10,8 +10,9 @@ end
 
 function test_setBatchFactorialDesign_within_group()
 
-  % TODO: fixturize
-  createDummyData();
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
@@ -34,8 +35,9 @@ end
 
 function test_setBatchFactorialDesign_complex()
 
-  % TODO: fixturize
-  createDummyData();
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('vismotion', {'^01'}, 'pipelineType', 'stats');
 
@@ -81,8 +83,9 @@ end
 
 function test_setBatchFactorialDesign_basic()
 
-  % TODO: fixturize
-  createDummyData();
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 
@@ -107,6 +110,10 @@ function test_setBatchFactorialDesign_basic()
 end
 
 function test_setBatchFactorialDesign_wrong_model_design_matrix()
+
+  if ~usingSlowTestMode()
+    moxunit_throw_test_skipped_exception('slow test only');
+  end
 
   opt = setOptions('vismotion', {'^01'}, 'pipelineType', 'stats');
 

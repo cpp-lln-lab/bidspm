@@ -74,7 +74,7 @@ function test_bidsCopyInputFolder_fmriprep()
   assertEqual(size(data, 1), 16);
 
   % ensure that by default data are not overwritten
-  opt.verbosity = 3;
+  opt.verbosity = 0;
   bidsCopyInputFolder(opt, 'unzip', false);
 
   % or that they are

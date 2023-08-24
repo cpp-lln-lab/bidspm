@@ -1,15 +1,10 @@
 function test_suite = test_getEventSpecificationRoiGlm %#ok<*STOUT>
-  %
-
   % (C) Copyright 2019 bidspm developers
-
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
-
   initTestSuite;
-
 end
 
 % TODO
@@ -46,8 +41,6 @@ function test_getEventSpecificationRoiGlm_basic()
   assertEqual(event_specification(5).eventSpec, [1 1 1 1; 1 2 3 4]);
   assertEqual(event_specification(5).duration, 0);
 
-  cleanUp();
-
 end
 
 function test_getEventSpecificationRoiGlm_warning_complex_contrasts()
@@ -72,9 +65,5 @@ function [modelFile, spmFile] = setUp()
   modelFile = fullfile(getFaceRepDir(), ...
                        'models', ...
                        'model-faceRepetition_smdl.json');
-
-end
-
-function cleanUp()
 
 end

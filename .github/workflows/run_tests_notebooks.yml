@@ -33,7 +33,7 @@ jobs:
       uses: matlab-actions/setup-matlab@v1.2.4
       with:
           # MATLAB release to set up R2020a
-        release: R2020a
+        release: R2023a
 
     - name: Clone bidspm
       uses: actions/checkout@v3

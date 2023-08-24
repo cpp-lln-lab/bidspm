@@ -1,25 +1,24 @@
 function test_suite = test_orderAndPadCounfoundMatFile %#ok<*STOUT>
-  %
-
   % (C) Copyright 2022 bidspm developers
-
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
   catch % no problem; early Matlab versions can use initTestSuite fine
   end
-
   initTestSuite;
-
 end
 
 function test_orderAndPadCounfoundMatFile_different_nb_confounds()
 
+  tmpDir = tempName();
+  copyfile(fullfile(getTestDataDir, 'mat_files'), tmpDir);
+  if bids.internal.is_octave()
+    tmpDir = fullfile(tmpDir, 'mat_files');
+  end
+
   % GIVEN
-  spmSess(1).counfoundMatFile = fullfile(getTestDataDir, ...
-                                         'mat_files', ...
+  spmSess(1).counfoundMatFile = fullfile(tmpDir, ...
                                          'task-olfid_desc-confounds_regressors.mat');
-  spmSess(2).counfoundMatFile = fullfile(getTestDataDir, ...
-                                         'mat_files', ...
+  spmSess(2).counfoundMatFile = fullfile(tmpDir, ...
                                          'task-olfid_motion.mat');
   opt.glm.useDummyRegressor = true;
 
@@ -32,8 +31,6 @@ function test_orderAndPadCounfoundMatFile_different_nb_confounds()
   out = load(spmSessOut(2).counfoundMatFile);
   assertLessThan(numel(in.names), numel(out.names));
   assertEqual(numel(out.names), size(out.R, 2));
-
-  delete(spmSessOut(2).counfoundMatFile);
 
 end
 
@@ -64,13 +61,5 @@ function test_orderAndPadCounfoundMatFile_no_dummy_required()
 
   % THEN
   assertEqual(spmSessOut, spmSess);
-
-end
-
-function setUp()
-
-end
-
-function cleanUp()
 
 end

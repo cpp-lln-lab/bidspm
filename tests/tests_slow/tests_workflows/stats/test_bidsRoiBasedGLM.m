@@ -59,8 +59,6 @@ function test_bidsRoiBasedGLM_run()
 
   bidsFFX('specify', opt);
 
-  % rmdir(fullfile(pwd, 'options'), 's');
-
   opt.dir.roi = fullfile(opt.dir.derivatives, 'bidspm-roi');
 
   opt.roi.atlas = 'wang';

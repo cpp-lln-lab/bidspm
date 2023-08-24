@@ -10,9 +10,6 @@ end
 
 function test_setBatchSubjectLevelResults_basic()
 
-  % TODO: fixturize
-  createDummyData();
-
   % IF
   contrast_name = 'VisMot';
   [subLabel, opt, result] = setUp('vismotion', contrast_name);
@@ -55,9 +52,6 @@ end
 
 function test_setBatchSubjectLevelResults_missing_contrast_name()
 
-  % TODO: fixturize
-  createDummyData();
-
   if bids.internal.is_octave()
     moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
   end
@@ -76,9 +70,6 @@ function test_setBatchSubjectLevelResults_missing_contrast_name()
 end
 
 function test_setBatchSubjectLevelResults_error_no_matching_contrast()
-
-  % TODO: fixturize
-  createDummyData();
 
   if bids.internal.is_octave()
     moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
