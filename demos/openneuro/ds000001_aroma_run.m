@@ -6,7 +6,7 @@
 clear;
 clc;
 
-COPY = false;
+COPY = true;
 SUBJECT_LEVEL_DO = true;
 
 addpath(fullfile(pwd, '..', '..'));

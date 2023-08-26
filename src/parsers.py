@@ -2,10 +2,9 @@ from __future__ import annotations
 
 import argparse
 import logging
-from typing import IO
 
-import rich
 from rich.logging import RichHandler
+from rich_argparse import RichHelpFormatter
 
 from . import _version  # type: ignore
 
@@ -29,24 +28,18 @@ def bidspm_log(name: str = "bidspm") -> logging.Logger:
     return logging.getLogger(name)
 
 
-class MuhParser(argparse.ArgumentParser):
-    def _print_message(self, message: str, file: IO[str] | None = None) -> None:
-        rich.print(message, file=file)
-
-
-# TODO qplit in several parsers like in matlab
-
-
-def common_parser() -> MuhParser:
-    parser = MuhParser(
+def common_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
         description="bidspm is a SPM base BIDS app",
         epilog="""
         \n- all parameters use ``snake_case``,
+
         \n- most "invalid" calls simply initialize bidspm.
 
         For a more readable version of this help section,
         see the online https://bidspm.readthedocs.io/en/latest/usage_notes.html.
         """,
+        formatter_class=RichHelpFormatter,
     )
 
     parser.add_argument(
@@ -67,8 +60,6 @@ def common_parser() -> MuhParser:
         "output_dir",
         help="""
         Fullpath to the directory where the output files will be stored.
-        If you are running group level analysis this folder should be prepopulated
-        with the results of the participant level analysis.
         """,
         nargs=1,
     )
@@ -311,7 +302,7 @@ def common_parser() -> MuhParser:
 
 def validate_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="validate bids stats model",
+        description="validate bids stats model", formatter_class=RichHelpFormatter
     )
 
     parser.add_argument(

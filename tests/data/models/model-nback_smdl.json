@@ -17,12 +17,14 @@
       ],
       "Model": {
         "X": [
-          "nback"
+          "trial_type.scene*",
+          "trial_type.face*"
         ],
         "Type": "glm",
         "HRF": {
           "Variables": [
-            ""
+            "trial_type.scene*",
+            "trial_type.face*"
           ],
           "Model": "spm"
         },
@@ -35,6 +37,12 @@
             "suffix": [
               "mask"
             ]
+          }
+        },
+        "Software": {
+          "SPM": {
+            "InclusiveMaskingThreshold": 0.8,
+            "SerialCorrelation": "FAST"
           }
         }
       },
@@ -53,7 +61,8 @@
       "DummyContrasts": {
         "Test": "t",
         "Contrasts": [
-          ""
+          "trial_type.scene*",
+          "trial_type.face*"
         ]
       }
     },

@@ -1,16 +1,19 @@
-function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contrastsList, groups)
+function matlabbatch = setBatchEstimateModel(matlabbatch, opt, tmp, contrastsList, groups)
   %
   % Set up the estimate model batch for run/subject or group level GLM
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchEstimateModel(matlabbatch, opt)
+  %   % for subject level
+  %   matlabbatch = setBatchEstimateModel(matlabbatch, opt, subLabel)
+  %
+  %   % for group level
   %   matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contrastsList, groups)
   %
   % :param matlabbatch:
   % :type  matlabbatch: structure
   %
-  % :type opt:  structure
+  % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
   %             See checkOptions.
   %
@@ -29,28 +32,39 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contras
   switch nargin
 
     % run  / subject level
-    case 2
+    case 3
+
+      subLabel = tmp;
+
+      outputDir = getFFXdir(subLabel, opt);
 
       printBatchName('estimate subject level fmri model', opt);
 
       if iscell(matlabbatch)
+        opt.orderBatches.specify = 1;
+
         spmMatFile = cfg_dep('fMRI model specification SPM file', ...
-                             substruct( ...
-                                       '.', 'val', '{}', {1}, ...
+                             substruct('.', 'val', '{}', {opt.orderBatches.specify}, ...
                                        '.', 'val', '{}', {1}, ...
                                        '.', 'val', '{}', {1}), ...
                              substruct('.', 'spmmat'));
 
       elseif ischar(matlabbatch) && isdir(matlabbatch)
-        outputDir = matlabbatch;
         spmMatFile = {fullfile(outputDir, 'SPM.mat')};
         matlabbatch = {};
       end
 
       matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
 
+      opt.orderBatches.estimate = numel(matlabbatch);
+      matlabbatch = setBatchGoodnessOfFit(matlabbatch, opt);
+
+      matlabbatch = setBatchInformationCriteria(matlabbatch, opt, outputDir);
+
       % group level
     case 5
+
+      nodeName = tmp;
 
       if ischar(contrastsList)
         contrastsList = cellstr(contrastsList);
@@ -76,8 +90,11 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contras
         opt.QA.glm.do = false();
 
         matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
+        opt.orderBatches.estimate = numel(matlabbatch);
+        matlabbatch = setBatchGoodnessOfFit(matlabbatch, opt);
+        matlabbatch = setBatchInformationCriteria(matlabbatch, opt, rfxDir);
 
-        matlabbatch{end + 1}.spm.stats.review.spmmat = spmMatFile;
+        matlabbatch{end + 1}.spm.stats.review.spmmat = spmMatFile; %#ok<*AGROW>
         matlabbatch{end}.spm.stats.review.display.matrix = 1;
         matlabbatch{end}.spm.stats.review.print = false;
 
@@ -89,7 +106,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, nodeName, contras
 
     otherwise
 
-      error('Should have 2 or 5 inputs...');
+      error('Should have 3 or 5 inputs...');
 
   end
 

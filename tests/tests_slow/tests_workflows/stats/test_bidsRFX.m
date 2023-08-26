@@ -24,7 +24,7 @@ function test_bidsRFX_no_overwrite_smoke_test()
 
   matlabbatch = bidsRFX('RFX', opt);
 
-  assertEqual(numel(matlabbatch), 5);
+  assertEqual(numel(matlabbatch), 8);
 
 end
 
@@ -44,7 +44,16 @@ function test_bidsRFX_within_group_ttest()
 
   matlabbatch = bidsRFX('RFX', opt);
 
-  % creates 1 batch for (specify, figure, estimate, review, figure) for each group
+  % creates 1 batch for
+  %   - specify
+  %   - figure
+  %   - estimate
+  %   - MACS: goodness of fit
+  %   - MACS: model space
+  %   - MACS: information criteria
+  %   - review
+  %   - figure
+  % for each group
   assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
   assert(isfield(matlabbatch{2}.spm.util, 'print'));
 
@@ -52,18 +61,25 @@ function test_bidsRFX_within_group_ttest()
   assert(isfield(matlabbatch{4}.spm.util, 'print'));
 
   assert(isfield(matlabbatch{5}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{6}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{7}.spm.util, 'print'));
-
-  assert(isfield(matlabbatch{8}.spm.stats, 'fmri_est'));
+  assert(isfield(matlabbatch{6}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{7}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{8}.spm.tools, 'MACS'));
   assert(isfield(matlabbatch{9}.spm.stats, 'review'));
   assert(isfield(matlabbatch{10}.spm.util, 'print'));
+
+  assert(isfield(matlabbatch{11}.spm.stats, 'fmri_est'));
+  assert(isfield(matlabbatch{12}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{13}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{14}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{15}.spm.stats, 'review'));
+
+  assert(isfield(matlabbatch{16}.spm.util, 'print'));
 
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{5}.spm.stats.fmri_est.spmmat{1}));
 
   assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
-              fileparts(matlabbatch{8}.spm.stats.fmri_est.spmmat{1}));
+              fileparts(matlabbatch{11}.spm.stats.fmri_est.spmmat{1}));
 
 end
 
@@ -87,8 +103,11 @@ function test_bidsRFX_two_sample_ttest()
   assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
   assert(isfield(matlabbatch{2}.spm.util, 'print'));
   assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{4}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{5}.spm.util, 'print'));
+  assert(isfield(matlabbatch{4}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{5}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{6}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{7}.spm.stats, 'review'));
+  assert(isfield(matlabbatch{8}.spm.util, 'print'));
 
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{3}.spm.stats.fmri_est.spmmat{1}));
@@ -119,8 +138,11 @@ function test_bidsRFX_select_datasets_level_to_run()
   assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
   assert(isfield(matlabbatch{2}.spm.util, 'print'));
   assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{4}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{5}.spm.util, 'print'));
+  assert(isfield(matlabbatch{4}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{5}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{6}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{7}.spm.stats, 'review'));
+  assert(isfield(matlabbatch{8}.spm.util, 'print'));
 
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{3}.spm.stats.fmri_est.spmmat{1}));
@@ -144,15 +166,18 @@ function test_bidsRFX_several_datasets_level()
   matlabbatch = bidsRFX('RFX', opt);
 
   nbGroupLevelModelsReturned = 1;
-  nbBatchPerModel = 5;
+  nbBatchPerModel = 8;
 
   % only the batches from the last node is returned
   % creates 1 batch for (specify, figure, estimate, review, figure)
   assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
   assert(isfield(matlabbatch{2}.spm.util, 'print'));
   assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{4}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{5}.spm.util, 'print'));
+  assert(isfield(matlabbatch{4}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{5}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{6}.spm.tools, 'MACS'));
+  assert(isfield(matlabbatch{7}.spm.stats, 'review'));
+  assert(isfield(matlabbatch{8}.spm.util, 'print'));
 
   assertEqual(numel(matlabbatch), nbGroupLevelModelsReturned * nbBatchPerModel);
 
@@ -183,19 +208,22 @@ function test_bidsRFX_rfx()
   % 2 dummy contrasts
   % 2 contrasts
   nbGroupLevelModels = 4;
-  nbBatchPerModel = 5;
+  nbBatchPerModel = 8;
 
   % setBatchFactorial creates 2 batches for each model (specify, figure)
-  for i = 1:2:7
+  for i = 1:2:(2 * nbGroupLevelModels)
     assert(isfield(matlabbatch{i}.spm.stats, 'factorial_design'));
     assert(isfield(matlabbatch{i + 1}.spm.util, 'print'));
   end
 
   % setBatchEstimateModel creates 3 batches for each model (estimate, review, figure)
-  for i = 9:3:18
+  for i = 9:6:(nbGroupLevelModels * nbBatchPerModel)
     assert(isfield(matlabbatch{i}.spm.stats, 'fmri_est'));
-    assert(isfield(matlabbatch{i + 1}.spm.stats, 'review'));
-    assert(isfield(matlabbatch{i + 2}.spm.util, 'print'));
+    assert(isfield(matlabbatch{i + 1}.spm.tools, 'MACS'));
+    assert(isfield(matlabbatch{i + 2}.spm.tools, 'MACS'));
+    assert(isfield(matlabbatch{i + 3}.spm.tools, 'MACS'));
+    assert(isfield(matlabbatch{i + 4}.spm.stats, 'review'));
+    assert(isfield(matlabbatch{i + 5}.spm.util, 'print'));
   end
   assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
 

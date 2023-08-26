@@ -50,6 +50,15 @@ function test_bidsFFX_individual()
 
     [matlabbatch, opt] = bidsFFX('specifyAndEstimate', opt);
 
+    % specify
+    % print design matrix
+    % estimate
+    % MACS: goodness of fit
+    % MACS: model space
+    % MACS: information criteria
+    % print design matrix
+    assertEqual(numel(matlabbatch), 7);
+
     bf = bids.File(matlabbatch{1}.spm.stats.fmri_spec.sess(1).scans{1});
     assertEqual(bf.entities.space, 'individual');
     assertEqual(bf.entities.desc, 'preproc');

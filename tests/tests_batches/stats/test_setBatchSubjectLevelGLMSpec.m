@@ -113,9 +113,9 @@ function test_setBatchSubjectLevelGLMSpec_fmriprep()
   opt = checkOptions(opt);
 
   matlabbatch = {};
-  % bids matlab issue?
-  % events.TSV are in the root of the synthetic dataset
-  % matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
+
+  BIDS = getLayout(opt);
+  matlabbatch = setBatchSubjectLevelGLMSpec(matlabbatch, BIDS, opt, subLabel);
 
 end
 

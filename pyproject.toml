@@ -14,7 +14,6 @@ version-file = "src/_version.py"
 [project]
 name = "bidspm"
 description = "SPM centric bids app"
-long_description = { file = "README.md" }
 authors = [{ name = "bidspm developers" }]
 maintainers = [{ name = "Rémin Gau", email = "remi.gau@gmail.com" }]
 readme = "README.md"
@@ -23,6 +22,7 @@ requires-python = ">=3.8"
 dependencies = [
     "bsmschema",
     "rich",
+    "rich-argparse"
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
