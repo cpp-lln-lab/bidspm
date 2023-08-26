@@ -121,6 +121,6 @@ module = [
     "bsmschema.models",
     "rich",
     "rich.logging",
-    "rich-argparse",
+    "rich_argparse",
 ]
 ignore_missing_imports = true
