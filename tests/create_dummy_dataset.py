@@ -223,7 +223,7 @@ def create_preproc_func_vismotion(target_dir, sub, ses):
                 touch(this_dir / f"{basename}_space-IXI549Space_desc-{desc}_{suffix}.nii")
 
             touch(this_dir / f"{basename}_space-individual_desc-stc_{suffix}.nii")
-            touch(this_dir / f"{basename}_space-IXI549Space_label-brain_mask.nii")
+            touch(this_dir / f"{basename}_space-IXI549Space_desc-brain_mask.nii")
 
 
 def create_preproc_func_vislocalizer(target_dir, sub, ses):
@@ -247,7 +247,7 @@ def create_preproc_func_vislocalizer(target_dir, sub, ses):
     for desc in desc_label_list:
         touch(this_dir / f"{basename}_space-individual_desc-{desc}_{suffix}.nii")
         touch(this_dir / f"{basename}_space-IXI549Space_desc-{desc}_{suffix}.nii")
-        touch(this_dir / f"{basename}_space-IXI549Space_label-brain_mask.nii")
+        touch(this_dir / f"{basename}_space-IXI549Space_desc-brain_mask.nii")
 
     if ses == "01":
         touch(this_dir / f"{basename}_space-individual_desc-mean_{suffix}.nii")
@@ -264,7 +264,7 @@ def create_preproc_func_rest(target_dir, sub, ses):
 
     for space in ["individual", "IXI549Space"]:
         touch(this_dir / f"{basename}_space-{space}_desc-preproc_bold.nii")
-        touch(this_dir / f"{basename}_space-{space}_label-brain_mask.nii")
+        touch(this_dir / f"{basename}_space-{space}_desc-brain_mask.nii")
 
     shutil.copy(
         ROOT_DIR / "tests" / "data" / "tsv_files" / "rp.tsv",
@@ -288,14 +288,21 @@ def create_preproc_anat(target_dir, sub):
         touch(this_dir / f"{prefix}{basename}_{suffix}.nii")
 
     for space in ["individual", "IXI549Space"]:
-        touch(this_dir / f"{basename}_space-{space}_label-brain_mask.nii")
-        touch(this_dir / f"{basename}_space-{space}_desc-preproc_{suffix}.nii")
-        for labal in ["CSF", "GM", "WM"]:
-            touch(this_dir / f"{basename}_space-{space}_label-{labal}_probseg.nii")
+        touch(this_dir / f"{basename}_space-{space}_desc-brain_mask.nii")
+        for label in ["CSF", "GM", "WM"]:
+            res_entity = ""
+            if space == "IXI549Space":
+                res_entity = "_res-bold"
+            touch(
+                this_dir
+                / f"{basename}_space-{space}{res_entity}_label-{label}_probseg.nii"
+            )
 
     touch(this_dir / f"{basename}_space-individual_desc-biascor_{suffix}.nii")
     touch(this_dir / f"{basename}_space-individual_desc-skullstripped_{suffix}.nii")
+    touch(this_dir / f"{basename}_space-individual_desc-preproc_{suffix}.nii")
 
+    touch(this_dir / f"{basename}_space-IXI549Space_res-hi_desc-preproc_{suffix}.nii")
     touch(this_dir / f"{basename}_from-IXI549Space_to-T1w_mode-image_xfm.nii")
 
 

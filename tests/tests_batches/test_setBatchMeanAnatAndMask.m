@@ -52,10 +52,10 @@ function test_setBatchMeanAnatAndMask_basic()
 
   expectedBatch{2}.spm.util.imcalc = imcalc;
 
-  assertEqual(matlabbatch{1}.spm.util.imcalc.input, expectedBatch{1}.spm.util.imcalc.input);
-  assertEqual(matlabbatch{1}.spm.util.imcalc.output, expectedBatch{1}.spm.util.imcalc.output);
   assertEqual(matlabbatch{2}.spm.util.imcalc.input, expectedBatch{2}.spm.util.imcalc.input);
   assertEqual(matlabbatch{2}.spm.util.imcalc.output, expectedBatch{2}.spm.util.imcalc.output);
+  assertEqual(matlabbatch{1}.spm.util.imcalc.input, expectedBatch{1}.spm.util.imcalc.input);
+  assertEqual(matlabbatch{1}.spm.util.imcalc.output, expectedBatch{1}.spm.util.imcalc.output);
 
   assertEqual(numel(matlabbatch), 6);
 
