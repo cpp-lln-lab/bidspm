@@ -10,9 +10,7 @@ end
 
 function test_bidsSegmentSkullStrip_strip_and_seg_already_done()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vismotion');
 
@@ -25,9 +23,7 @@ end
 
 function test_bidsSegmentSkullStrip_force_all()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vismotion');
   opt.segment.force = true;

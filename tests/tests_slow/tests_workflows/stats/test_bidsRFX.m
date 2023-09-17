@@ -10,9 +10,7 @@ end
 
 function test_bidsRFX_no_overwrite_smoke_test()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -34,9 +32,7 @@ end
 
 function test_bidsRFX_within_group_ttest()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -93,9 +89,7 @@ end
 
 function test_bidsRFX_two_sample_ttest()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -129,9 +123,7 @@ end
 
 function test_bidsRFX_select_datasets_level_to_run()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -161,9 +153,7 @@ end
 
 function test_bidsRFX_several_datasets_level()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -198,9 +188,7 @@ end
 
 function test_bidsRFX_rfx_on_empty_dir()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
   cleanUp(fullfile(opt.dir.output, 'derivatives'));
@@ -210,9 +198,7 @@ end
 
 function test_bidsRFX_rfx()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -247,9 +233,7 @@ end
 
 function test_bidsRFX_mean()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -266,9 +250,7 @@ end
 
 function test_bidsRFX_contrast()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 

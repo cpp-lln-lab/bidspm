@@ -11,9 +11,7 @@ end
 
 function test_createDefaultStatsModel_CLI()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   outputPath = tempName();
 
@@ -54,9 +52,7 @@ end
 
 function test_createDefaultStatsModel_CLI_ignore()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   outputPath = tempName();
 

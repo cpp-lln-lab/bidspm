@@ -10,9 +10,7 @@ end
 
 function test_bidsRealignUnwarp_basic()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer', '');
   opt.bidsFilterFile.bold.part = 'mag';

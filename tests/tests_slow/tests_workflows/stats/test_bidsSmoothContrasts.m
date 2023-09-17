@@ -10,9 +10,7 @@ end
 
 function test_bidsSmoothContrasts_basic()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
@@ -32,9 +30,7 @@ end
 
 function test_bidsSmoothContrasts_zero_fwhm()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 

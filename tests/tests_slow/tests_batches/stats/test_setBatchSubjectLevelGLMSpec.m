@@ -10,9 +10,7 @@ end
 
 function test_setBatchSubjectLevelGLMSpec_design_only()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   %% GIVEN
   subLabel = '^01';

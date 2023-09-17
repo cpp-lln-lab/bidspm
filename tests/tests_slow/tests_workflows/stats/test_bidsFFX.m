@@ -10,9 +10,7 @@ end
 
 function test_bidsFFX_bug_642()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
   opt.model.bm = BidsModel('file', opt.model.file);
@@ -28,9 +26,7 @@ end
 
 function test_bidsFFX_individual()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   task = {'vislocalizer'}; % 'vismotion'
 
@@ -75,9 +71,7 @@ end
 
 function test_bidsFFX_skip_subject_no_data()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer', '^01', 'pipelineType', 'stats');
 
@@ -105,9 +99,7 @@ end
 
 function test_bidsFFX_fmriprep_no_smoothing()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   if bids.internal.is_github_ci()
     moxunit_throw_test_skipped_exception('skip on github CI');
@@ -143,9 +135,7 @@ end
 
 function test_bidsFFX_mni()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   % checks that we read the correct space from the model and get the
   % corresponding data

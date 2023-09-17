@@ -11,9 +11,7 @@ end
 
 function test_smooth()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
@@ -46,9 +44,7 @@ end
 
 function test_smooth_anat_only()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 

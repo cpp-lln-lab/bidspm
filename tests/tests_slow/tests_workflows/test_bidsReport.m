@@ -9,9 +9,7 @@ end
 
 function test_bidsReport_smoke_test()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vismotion');
 
@@ -30,9 +28,7 @@ end
 
 function test_bidsReport_basic()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('MoAE');
 

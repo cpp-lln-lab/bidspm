@@ -9,9 +9,7 @@ end
 
 function test_utils_basic()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setTestCfg();
   printCredits(opt);
