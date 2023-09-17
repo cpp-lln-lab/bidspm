@@ -3,26 +3,21 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
+import pandas as pd
+
 
 def touch(path):
     with open(path, "a"):
         pass
 
 
-def create_bids_directory_structure(
-    start_dir, subject_list, session_list, roi_list, hemispheres
-):
+def main(start_dir, subject_list, session_list, roi_list, hemispheres):
     # Create BIDS directory structure
-    start_dir = Path(start_dir).resolve()
     raw_dir = start_dir / "data" / "bidspm-raw"
-    preproc_dir = start_dir / "data" / "derivatives" / "bidspm-preproc"
-    stats_dir = start_dir / "data" / "derivatives" / "bidspm-stats"
-    roi_dir = start_dir / "data" / "derivatives" / "bidspm-roi"
-
-    subject_list = ["ctrl01", "blind01", "01"]
-    session_list = ["01", "02"]
-    roi_list = ["V1", "A1"]
-    hemispheres = ["L", "R"]
+    derivative_dir = start_dir / "data" / "derivatives"
+    preproc_dir = derivative_dir / "bidspm-preproc"
+    stats_dir = derivative_dir / "bidspm-stats"
+    roi_dir = derivative_dir / "bidspm-roi"
 
     create_raw_dataset(raw_dir, subject_list, session_list, roi_list, hemispheres)
     create_preproc_dataset(preproc_dir, subject_list, session_list, roi_list, hemispheres)
@@ -49,41 +44,44 @@ def create_raw_func_vismotion(target_dir, subject, ses):
     this_dir.mkdir(parents=True, exist_ok=True)
 
     basename = f"sub-{subject}_ses-{ses}_task-{task_name}"
+
+    filename = this_dir / f"{basename}_run-1_events.tsv"
+    events = {
+        "onset": [2, 2],
+        "duration": [2, 2],
+        "trial_type": ["VisMot", "VisStat"],
+    }
+    df = pd.DataFrame(events)
+    df.to_csv(filename, sep="\t", index=False)
+
     for run in range(1, 3):
         filename = this_dir / f"{basename}_run-{run}_part-mag{suffix}.nii"
         touch(filename)
         filename = this_dir / f"{basename}_run-{run}_part-phase{suffix}.nii"
         touch(filename)
 
-    filename = this_dir / f"{basename}_run-1_events.tsv"
-    with open(filename, "w") as f:
-        f.write("onset\tduration\ttrial_type\n")
-        f.write("2\t2\tVisMot\n")
-        f.write("4\t2\tVisStat\n")
-
     filename = this_dir / f"{basename}_run-2_events.tsv"
-    with open(filename, "w") as f:
-        f.write("onset\tduration\ttrial_type\n")
-        f.write("3\t2\tVisStat\n")
-        f.write("6\t2\tVisMot\n")
+    events = {
+        "onset": [3, 2],
+        "duration": [6, 2],
+        "trial_type": ["VisStat", "VisMot"],
+    }
+    df = pd.DataFrame(events)
+    df.to_csv(filename, sep="\t", index=False)
 
     touch(this_dir / f"{basename}_acq-1p60mm_run-1{suffix}.nii")
 
-    filename = this_dir / f"{basename}_acq-1p60mm_run-1_events.tsv"
-    with open(filename, "w") as f:
-        f.write("onset\tduration\ttrial_type\n")
-        f.write("4\t2\tVisMot\n")
-        f.write("8\t2\tVisStat\n")
+    for run in [1, 2]:
+        filename = this_dir / f"{basename}_acq-1p60mm_run-{run}_events.tsv"
+        events = {
+            "onset": [4, 2],
+            "duration": [8, 2],
+            "trial_type": ["VisMot", "VisStat"],
+        }
+        df = pd.DataFrame(events)
+        df.to_csv(filename, sep="\t", index=False)
 
-    touch(this_dir / f"{basename}_acq-1p60mm_dir-PA_run-1{suffix}.nii")
-
-    filename = this_dir / f"{basename}_acq-1p60mm_run-2_events.tsv"
-    with open(filename, "w") as f:
-        f.write("onset\tduration\ttrial_type\n")
-        f.write("4\t2\tVisMot\n")
-        f.write("8\t2\tVisStat\n")
-
-    touch(this_dir / f"{basename}_acq-1p60mm_dir-PA_run-2{suffix}.nii")
+        touch(this_dir / f"{basename}_acq-1p60mm_dir-PA_run-{run}{suffix}.nii")
 
 
 def create_raw_func_vislocalizer(target_dir, subject, ses):
@@ -98,11 +96,13 @@ def create_raw_func_vislocalizer(target_dir, subject, ses):
     filename = this_dir / f"{basename}_part-phase{suffix}.nii"
     touch(filename)
 
-    filename = this_dir / f"{basename}_events.tsv"
-    with open(filename, "w") as f:
-        f.write("onset\tduration\ttrial_type\n")
-        f.write("2\t15\tVisMot\n")
-        f.write("25\t15\tVisStat\n")
+    events = {
+        "onset": [2, 25],
+        "duration": [15, 15],
+        "trial_type": ["VisMot", "VisStat"],
+    }
+    df = pd.DataFrame(events)
+    df.to_csv(filename, sep="\t", index=False)
 
 
 def create_raw_func_rest(target_dir, subject, ses):
@@ -368,12 +368,10 @@ def create_roi_directories(roi_dir, roi_list, subject_list, hemispheres):
 
 
 if __name__ == "__main__":
-    start_dir = "."  # Change this to your desired starting directory
+    start_dir = Path().cwd()
     subject_list = ["ctrl01", "blind01", "01"]
     session_list = ["01", "02"]
     roi_list = ["V1", "A1"]
     hemispheres = ["L", "R"]
 
-    create_bids_directory_structure(
-        start_dir, subject_list, session_list, roi_list, hemispheres
-    )
+    main(start_dir, subject_list, session_list, roi_list, hemispheres)
