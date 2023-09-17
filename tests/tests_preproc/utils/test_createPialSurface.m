@@ -15,7 +15,7 @@ function test_createPialSurface_basic()
   whiteMatterFile = spm_select('FPListRec', moaeSpm12Dir, '^c2sub.*nii$');
 
   surfaceFile = createPialSurface(grayMatterFile, whiteMatterFile, ...
-                                  struct('verbosity', 3));
+                                  struct('verbosity', 0));
 
   assertEqual(exist(surfaceFile, 'file'), 2);
   delete(surfaceFile);

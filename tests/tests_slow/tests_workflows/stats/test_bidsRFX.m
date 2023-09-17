@@ -8,87 +8,132 @@ function test_suite = test_bidsRFX %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsRFX_no_overwrite_smoke_test()
+function test_bidsRFX_rfx()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
+  matlabbatch = bidsRFX('RFX', opt);
+
+  % 2 dummy contrasts
+  % 2 contrasts
+  nbGroupLevelModels = 4;
+  nbBatchPerModel = 8;
+  if bids.internal.is_octave()
+    nbBatchPerModel = 7;
+  end
+  assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
+
+  summary = batchSummary(matlabbatch);
+
+  % setBatchFactorial creates 2 batches for each model (specify, figure)
+  for i = 1:2:(2 * nbGroupLevelModels)
+    assertEqual(summary(i, :),   {'stats', 'factorial_design'});
+    assertEqual(summary(i + 1, :), {'util',  'print'});
+  end
+
+  % setBatchEstimateModel creates 3 batches for each model (estimate, review, figure)
+  batchOrder = extendBatchOrder();
+  idx = 9:6:(nbGroupLevelModels * nbBatchPerModel);
+  if bids.internal.is_octave()
+    idx = 9:5:(nbGroupLevelModels * nbBatchPerModel);
+  end
+  for i = idx
+    assertEqual(summary([i:i + size(batchOrder, 1) - 1], :), batchOrder); %#ok<*NBRAK>
+  end
+
+end
+
+function test_bidsRFX_no_overwrite_smoke_test()
+
+  markTestAs('slow');
+
+  opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
   opt.model.file = spm_file(opt.model.file, ...
                             'basename', ...
                             'model-vismotionNoOverWrite_smdl');
-
   opt.model.bm = BidsModel('file', opt.model.file);
 
   matlabbatch = bidsRFX('RFX', opt);
 
-  assertEqual(numel(matlabbatch), 5);
+  expectedNbBatch = 8;
+  if bids.internal.is_octave()
+    expectedNbBatch = 7;
+  end
+  assertEqual(numel(matlabbatch), expectedNbBatch);
 
 end
 
 function test_bidsRFX_within_group_ttest()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
-
   opt.model.file = spm_file(opt.model.file, ...
                             'basename', ...
                             'model-vislocalizerWithinGroup_smdl');
-
   opt.model.bm = BidsModel('file', opt.model.file);
 
   matlabbatch = bidsRFX('RFX', opt);
 
-  % creates 1 batch for (specify, figure, estimate, review, figure) for each group
-  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{2}.spm.util, 'print'));
+  if bids.internal.is_octave()
+    assertEqual(numel(matlabbatch), 14);
+  else
+    assertEqual(numel(matlabbatch), 16);
+  end
 
-  assert(isfield(matlabbatch{3}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{4}.spm.util, 'print'));
+  % creates 1 batch for
+  %   - specify
+  %   - figure
+  %   - estimate
+  %   - MACS: goodness of fit
+  %   - MACS: model space
+  %   - MACS: information criteria
+  %   - review
+  %   - figure
+  % for each group
 
-  assert(isfield(matlabbatch{5}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{6}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{7}.spm.util, 'print'));
-
-  assert(isfield(matlabbatch{8}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{9}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{10}.spm.util, 'print'));
+  batchOrder = {'stats', 'factorial_design'; ...
+                'util',  'print'; ...
+                'stats', 'factorial_design'; ...
+                'util',  'print'};
+  batchOrder = extendBatchOrder(batchOrder);
+  batchOrder = extendBatchOrder(batchOrder);
+  summary = batchSummary(matlabbatch);
+  assertEqual(summary, batchOrder);
 
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{5}.spm.stats.fmri_est.spmmat{1}));
-
-  assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
-              fileparts(matlabbatch{8}.spm.stats.fmri_est.spmmat{1}));
+  if bids.internal.is_octave()
+    assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
+                fileparts(matlabbatch{10}.spm.stats.fmri_est.spmmat{1}));
+  else
+    assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
+                fileparts(matlabbatch{11}.spm.stats.fmri_est.spmmat{1}));
+  end
 
 end
 
 function test_bidsRFX_two_sample_ttest()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
-
   opt.model.file = spm_file(opt.model.file, ...
                             'basename', ...
                             'model-vislocalizer2sampleTTest_smdl');
-
   opt.model.bm = BidsModel('file', opt.model.file);
 
   matlabbatch = bidsRFX('RFX', opt);
 
+  summary = batchSummary(matlabbatch);
+
   % creates 1 batch for (specify, figure, estimate, review, figure)
-  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{2}.spm.util, 'print'));
-  assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{4}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{5}.spm.util, 'print'));
+  batchOrder = {'stats', 'factorial_design'; ...
+                'util', 'print'};
+  batchOrder = extendBatchOrder(batchOrder);
+  assertEqual(summary, batchOrder);
 
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{3}.spm.stats.fmri_est.spmmat{1}));
@@ -101,26 +146,23 @@ end
 
 function test_bidsRFX_select_datasets_level_to_run()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
-
   opt.model.file = spm_file(opt.model.file, ...
                             'basename', ...
                             'model-vislocalizerSeveralDatasetLevels_smdl');
-
   opt.model.bm = BidsModel('file', opt.model.file);
 
   matlabbatch = bidsRFX('RFX', opt, 'nodeName', 'complex contrast');
 
+  summary = batchSummary(matlabbatch);
+
   % creates 1 batch for (specify, figure, estimate, review, figure)
-  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{2}.spm.util, 'print'));
-  assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{4}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{5}.spm.util, 'print'));
+  batchOrder = {'stats', 'factorial_design'; ...
+                'util',  'print'};
+  batchOrder = extendBatchOrder(batchOrder);
+  assertEqual(summary, batchOrder);
 
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{3}.spm.stats.fmri_est.spmmat{1}));
@@ -129,40 +171,37 @@ end
 
 function test_bidsRFX_several_datasets_level()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
-
   opt.model.file = spm_file(opt.model.file, ...
                             'basename', ...
                             'model-vislocalizerSeveralDatasetLevels_smdl');
-
   opt.model.bm = BidsModel('file', opt.model.file);
 
   matlabbatch = bidsRFX('RFX', opt);
 
-  nbGroupLevelModelsReturned = 1;
-  nbBatchPerModel = 5;
+  summary = batchSummary(matlabbatch);
 
   % only the batches from the last node is returned
   % creates 1 batch for (specify, figure, estimate, review, figure)
-  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{2}.spm.util, 'print'));
-  assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{4}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{5}.spm.util, 'print'));
+  batchOrder = {'stats', 'factorial_design'; ...
+                'util', 'print'};
+  batchOrder = extendBatchOrder(batchOrder);
+  assertEqual(summary, batchOrder);
 
+  nbGroupLevelModelsReturned = 1;
+  nbBatchPerModel = 8;
+  if bids.internal.is_octave()
+    nbBatchPerModel = 7;
+  end
   assertEqual(numel(matlabbatch), nbGroupLevelModelsReturned * nbBatchPerModel);
 
 end
 
 function test_bidsRFX_rfx_on_empty_dir()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
   cleanUp(fullfile(opt.dir.output, 'derivatives'));
@@ -170,61 +209,28 @@ function test_bidsRFX_rfx_on_empty_dir()
 
 end
 
-function test_bidsRFX_rfx()
-
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
-
-  opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
-
-  matlabbatch = bidsRFX('RFX', opt);
-
-  % 2 dummy contrasts
-  % 2 contrasts
-  nbGroupLevelModels = 4;
-  nbBatchPerModel = 5;
-
-  % setBatchFactorial creates 2 batches for each model (specify, figure)
-  for i = 1:2:7
-    assert(isfield(matlabbatch{i}.spm.stats, 'factorial_design'));
-    assert(isfield(matlabbatch{i + 1}.spm.util, 'print'));
-  end
-
-  % setBatchEstimateModel creates 3 batches for each model (estimate, review, figure)
-  for i = 9:3:18
-    assert(isfield(matlabbatch{i}.spm.stats, 'fmri_est'));
-    assert(isfield(matlabbatch{i + 1}.spm.stats, 'review'));
-    assert(isfield(matlabbatch{i + 2}.spm.util, 'print'));
-  end
-  assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
-
-end
-
 function test_bidsRFX_mean()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
 
   matlabbatch =  bidsRFX('meanAnatAndMask', opt);
+
   assertEqual(fieldnames(matlabbatch{1}.spm.util), {'imcalc'});
   assertEqual(fieldnames(matlabbatch{2}.spm.util), {'imcalc'});
   assertEqual(fieldnames(matlabbatch{3}.spm.spatial), {'smooth'});
   assertEqual(fieldnames(matlabbatch{4}.spm.util), {'imcalc'});
   assertEqual(fieldnames(matlabbatch{5}), {'cfg_basicio'});
   assertEqual(fieldnames(matlabbatch{6}.spm.util), {'checkreg'});
+
   assertEqual(numel(matlabbatch), 6);
 
 end
 
 function test_bidsRFX_contrast()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
@@ -237,4 +243,30 @@ function test_bidsRFX_contrast()
   assertEqual(matlabbatch{3}.spm.stats.con.consess{1}.tcon.name, 'VisMot_&_VisStat');
   assertEqual(matlabbatch{4}.spm.stats.con.consess{1}.tcon.name, 'VisMot_&_VisStat_lt_baseline');
 
+end
+
+function batchOrder = extendBatchOrder(batchOrder)
+  if nargin < 1
+    batchOrder = {};
+  end
+  extension = {'stats', 'fmri_est'; ...
+               'tools', 'MACS'; ... % skip on octave
+               'tools', 'MACS'; ...
+               'tools', 'MACS'; ...
+               'stats', 'review'; ...
+               'util', 'print'};
+  if bids.internal.is_octave()
+    extension(2, :) = [];
+  end
+  batchOrder = cat(1, batchOrder, extension);
+end
+
+function value = batchSummary(matlabbatch)
+  value = {};
+  for i = 1:numel(matlabbatch)
+    field = fieldnames(matlabbatch{i}.spm);
+    value{i, 1} = field{1}; %#ok<*AGROW>
+    field = fieldnames(matlabbatch{i}.spm.(value{i, 1}));
+    value{i, 2} = field{1};
+  end
 end

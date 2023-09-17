@@ -9,9 +9,7 @@ end
 
 function test_bidsFFX_contrasts_select_node()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
   opt.stc.skip = 1;
@@ -25,9 +23,7 @@ end
 
 function test_bidsFFX_contrasts_basic()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
   opt.stc.skip = 1;

@@ -10,9 +10,7 @@ end
 
 function test_bidsCreateROI_neuromorphometrics()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   if bids.internal.is_github_ci()
     moxunit_throw_test_skipped_exception('skip test in CI');
@@ -42,9 +40,7 @@ end
 
 function test_bidsCreateROI_wang()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   if bids.internal.is_github_ci()
     moxunit_throw_test_skipped_exception('skip test in CI');

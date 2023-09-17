@@ -10,9 +10,7 @@ end
 
 function test_computeTsnr_basic()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   if bids.internal.is_octave()
     moxunit_throw_test_skipped_exception('nanmean required.');

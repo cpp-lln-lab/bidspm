@@ -11,9 +11,7 @@ end
 
 function test_copy_filter()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
@@ -84,9 +82,7 @@ end
 
 function test_copy()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
@@ -124,9 +120,7 @@ end
 
 function test_copy_anat_only()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 
@@ -149,9 +143,7 @@ end
 
 function test_copy_only_one_task()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
 

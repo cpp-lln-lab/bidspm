@@ -48,7 +48,7 @@ if bids.internal.is_octave()
   %  resolutions_to_test = 2;
 end
 
-parfor iResolution = 1:numel(resolutions_to_test)
+for iResolution = 1:numel(resolutions_to_test)
 
   this_res = resolutions_to_test(iResolution);
 

@@ -10,9 +10,7 @@ end
 
 function test_bidsRename_basic()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   % TODO take care of
   % - SpatialReference probably not needed for space individual if anat modality

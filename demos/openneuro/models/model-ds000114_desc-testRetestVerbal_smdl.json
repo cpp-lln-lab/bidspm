@@ -4,7 +4,8 @@
   "Description": "BIDS stats model for linebisection / oververbgeneration / overwordrepetition / covertverbgeneration tasks",
   "Input": {
     "task": [
-      "overtverbgeneration"
+      "overtverbgeneration",
+      "overtwordrepetition"
     ],
     "space": [
       "MNI152NLin2009cAsym"

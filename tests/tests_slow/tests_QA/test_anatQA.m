@@ -9,9 +9,7 @@ end
 
 function test_anatQA_basic()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   moaeSpm12Dir = fullfile(getTestDataDir, 'MoAE', 'derivatives', 'spm12');
 

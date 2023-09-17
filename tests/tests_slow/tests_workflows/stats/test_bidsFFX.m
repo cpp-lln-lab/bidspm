@@ -10,9 +10,7 @@ end
 
 function test_bidsFFX_bug_642()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
   opt.model.bm = BidsModel('file', opt.model.file);
@@ -28,9 +26,7 @@ end
 
 function test_bidsFFX_individual()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   task = {'vislocalizer'}; % 'vismotion'
 
@@ -50,6 +46,19 @@ function test_bidsFFX_individual()
 
     [matlabbatch, opt] = bidsFFX('specifyAndEstimate', opt);
 
+    expectedNbBatch = 7;
+    if bids.internal.is_octave()
+      expectedNbBatch = 6;
+    end
+    % specify
+    % print design matrix
+    % estimate
+    % MACS: goodness of fit (not in octave)
+    % MACS: model space
+    % MACS: information criteria
+    % print design matrix
+    assertEqual(numel(matlabbatch), expectedNbBatch);
+
     bf = bids.File(matlabbatch{1}.spm.stats.fmri_spec.sess(1).scans{1});
     assertEqual(bf.entities.space, 'individual');
     assertEqual(bf.entities.desc, 'preproc');
@@ -62,9 +71,7 @@ end
 
 function test_bidsFFX_skip_subject_no_data()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer', '^01', 'pipelineType', 'stats');
 
@@ -83,7 +90,7 @@ function test_bidsFFX_skip_subject_no_data()
   if bids.internal.is_octave()
     %  warning 'getOptionsFromModel:modelOverridesOptions' was raised,
     %    expected 'bidsFFX:noDataForSubjectGLM'
-    return
+    moxunit_throw_test_skipped_exception('wrong warning in octave');
   end
 
   assertWarning(@()bidsFFX('specifyAndEstimate', opt), 'bidsFFX:noDataForSubjectGLM');
@@ -92,9 +99,7 @@ end
 
 function test_bidsFFX_fmriprep_no_smoothing()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   if bids.internal.is_github_ci()
     moxunit_throw_test_skipped_exception('skip on github CI');
@@ -130,9 +135,7 @@ end
 
 function test_bidsFFX_mni()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   % checks that we read the correct space from the model and get the
   % corresponding data

@@ -10,9 +10,7 @@ end
 
 function test_bidsSmoothing_basic()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('vislocalizer', '^01');
 
@@ -28,9 +26,7 @@ end
 
 function test_bidsSmoothing_fmriprep()
 
-  if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
-  end
+  markTestAs('slow');
 
   opt = setOptions('fmriprep', '^10');
 
