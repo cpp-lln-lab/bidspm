@@ -34,7 +34,7 @@ ARG    = -nodisplay -nosplash -nodesktop
 
 install:
 	npm install -g bids-validator
-	pip3 install .
+	pip3 install .[dev]
 
 help: ## Show what this Makefile can do
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
