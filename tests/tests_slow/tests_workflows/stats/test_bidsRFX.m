@@ -24,7 +24,11 @@ function test_bidsRFX_no_overwrite_smoke_test()
 
   matlabbatch = bidsRFX('RFX', opt);
 
-  assertEqual(numel(matlabbatch), 8);
+  expectedNbBatch = 8;
+  if bids.internal.is_octave()
+    expectedNbBatch = 7;
+  end
+  assertEqual(numel(matlabbatch), expectedNbBatch);
 
 end
 
@@ -44,6 +48,12 @@ function test_bidsRFX_within_group_ttest()
 
   matlabbatch = bidsRFX('RFX', opt);
 
+  if bids.internal.is_octave()
+    assertEqual(numel(matlabbatch), 15);
+  else
+    assertEqual(numel(matlabbatch), 16);
+  end
+
   % creates 1 batch for
   %   - specify
   %   - figure
@@ -54,32 +64,30 @@ function test_bidsRFX_within_group_ttest()
   %   - review
   %   - figure
   % for each group
-  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{2}.spm.util, 'print'));
 
-  assert(isfield(matlabbatch{3}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{4}.spm.util, 'print'));
-
-  assert(isfield(matlabbatch{5}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{6}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{7}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{8}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{9}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{10}.spm.util, 'print'));
-
-  assert(isfield(matlabbatch{11}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{12}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{13}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{14}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{15}.spm.stats, 'review'));
-
-  assert(isfield(matlabbatch{16}.spm.util, 'print'));
+  batchOrder = {
+                'stats', 'factorial_design'; ...
+                'util', 'print'; ...
+                'stats', 'factorial_design'; ...
+                'util', 'print'
+               };
+  batchOrder = extendBatchOrder(batchOrder);
+  batchOrder = extendBatchOrder(batchOrder);
+  for idx = 1:size(batchOrder, 1)
+    field = batchOrder{idx, 1};
+    expected = batchOrder{idx, 2};
+    assert(isfield(matlabbatch{idx}.spm.(field), expected));
+  end
 
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{5}.spm.stats.fmri_est.spmmat{1}));
-
-  assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
-              fileparts(matlabbatch{11}.spm.stats.fmri_est.spmmat{1}));
+  if bids.internal.is_octave()
+    assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
+                fileparts(matlabbatch{10}.spm.stats.fmri_est.spmmat{1}));
+  else
+    assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
+                fileparts(matlabbatch{11}.spm.stats.fmri_est.spmmat{1}));
+  end
 
 end
 
@@ -100,14 +108,15 @@ function test_bidsRFX_two_sample_ttest()
   matlabbatch = bidsRFX('RFX', opt);
 
   % creates 1 batch for (specify, figure, estimate, review, figure)
-  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{2}.spm.util, 'print'));
-  assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{4}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{5}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{6}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{7}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{8}.spm.util, 'print'));
+  batchOrder = {
+                'stats', 'factorial_design'; ...
+                'util', 'print'};
+  batchOrder = extendBatchOrder(batchOrder);
+  for idx = 1:size(batchOrder, 1)
+    field = batchOrder{idx, 1};
+    expected = batchOrder{idx, 2};
+    assert(isfield(matlabbatch{idx}.spm.(field), expected));
+  end
 
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{3}.spm.stats.fmri_est.spmmat{1}));
@@ -135,14 +144,15 @@ function test_bidsRFX_select_datasets_level_to_run()
   matlabbatch = bidsRFX('RFX', opt, 'nodeName', 'complex contrast');
 
   % creates 1 batch for (specify, figure, estimate, review, figure)
-  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{2}.spm.util, 'print'));
-  assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{4}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{5}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{6}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{7}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{8}.spm.util, 'print'));
+  batchOrder = {
+                'stats', 'factorial_design'; ...
+                'util', 'print'};
+  batchOrder = extendBatchOrder(batchOrder);
+  for idx = 1:size(batchOrder, 1)
+    field = batchOrder{idx, 1};
+    expected = batchOrder{idx, 2};
+    assert(isfield(matlabbatch{idx}.spm.(field), expected));
+  end
 
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{3}.spm.stats.fmri_est.spmmat{1}));
@@ -165,20 +175,23 @@ function test_bidsRFX_several_datasets_level()
 
   matlabbatch = bidsRFX('RFX', opt);
 
-  nbGroupLevelModelsReturned = 1;
-  nbBatchPerModel = 8;
-
   % only the batches from the last node is returned
   % creates 1 batch for (specify, figure, estimate, review, figure)
-  assert(isfield(matlabbatch{1}.spm.stats, 'factorial_design'));
-  assert(isfield(matlabbatch{2}.spm.util, 'print'));
-  assert(isfield(matlabbatch{3}.spm.stats, 'fmri_est'));
-  assert(isfield(matlabbatch{4}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{5}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{6}.spm.tools, 'MACS'));
-  assert(isfield(matlabbatch{7}.spm.stats, 'review'));
-  assert(isfield(matlabbatch{8}.spm.util, 'print'));
+  batchOrder = {
+                'stats', 'factorial_design'; ...
+                'util', 'print'};
+  batchOrder = extendBatchOrder(batchOrder);
+  for idx = 1:size(batchOrder, 1)
+    field = batchOrder{idx, 1};
+    expected = batchOrder{idx, 2};
+    assert(isfield(matlabbatch{idx}.spm.(field), expected));
+  end
 
+  nbGroupLevelModelsReturned = 1;
+  nbBatchPerModel = 8;
+  if bids.internal.is_octave()
+    assertEqual(numel(matlabbatch), 7);
+  end
   assertEqual(numel(matlabbatch), nbGroupLevelModelsReturned * nbBatchPerModel);
 
 end
@@ -209,6 +222,10 @@ function test_bidsRFX_rfx()
   % 2 contrasts
   nbGroupLevelModels = 4;
   nbBatchPerModel = 8;
+  if bids.internal.is_octave()
+    nbBatchPerModel = 7;
+  end
+  assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
 
   % setBatchFactorial creates 2 batches for each model (specify, figure)
   for i = 1:2:(2 * nbGroupLevelModels)
@@ -217,15 +234,14 @@ function test_bidsRFX_rfx()
   end
 
   % setBatchEstimateModel creates 3 batches for each model (estimate, review, figure)
+  batchOrder = extendBatchOrder();
   for i = 9:6:(nbGroupLevelModels * nbBatchPerModel)
-    assert(isfield(matlabbatch{i}.spm.stats, 'fmri_est'));
-    assert(isfield(matlabbatch{i + 1}.spm.tools, 'MACS'));
-    assert(isfield(matlabbatch{i + 2}.spm.tools, 'MACS'));
-    assert(isfield(matlabbatch{i + 3}.spm.tools, 'MACS'));
-    assert(isfield(matlabbatch{i + 4}.spm.stats, 'review'));
-    assert(isfield(matlabbatch{i + 5}.spm.util, 'print'));
+    for idx = 1:size(batchOrder, 1)
+      field = batchOrder{idx, 1};
+      expected = batchOrder{idx, 2};
+      assert(isfield(matlabbatch{i + idx - 1}.spm.(field), expected));
+    end
   end
-  assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
 
 end
 
@@ -265,4 +281,22 @@ function test_bidsRFX_contrast()
   assertEqual(matlabbatch{3}.spm.stats.con.consess{1}.tcon.name, 'VisMot_&_VisStat');
   assertEqual(matlabbatch{4}.spm.stats.con.consess{1}.tcon.name, 'VisMot_&_VisStat_lt_baseline');
 
+end
+
+function batchOrder = extendBatchOrder(batchOrder)
+  if nargin < 1
+    batchOrder = {};
+  end
+  extension = {
+               'stats', 'fmri_est'; ...
+               'tools', 'MACS'; ... % skip on octave
+               'tools', 'MACS'; ...
+               'tools', 'MACS'; ...
+               'stats', 'review'; ...
+               'util', 'print'
+              };
+  if bids.internal.is_octave()
+    batchOrder(2, :) = [];
+  end
+  batchOrder = cat(1, batchOrder, extension);
 end

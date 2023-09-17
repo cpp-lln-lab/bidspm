@@ -50,14 +50,18 @@ function test_bidsFFX_individual()
 
     [matlabbatch, opt] = bidsFFX('specifyAndEstimate', opt);
 
+    expectedNbBatch = 7;
+    if bids.internal.is_octave()
+      expectedNbBatch = 6;
+    end
     % specify
     % print design matrix
     % estimate
-    % MACS: goodness of fit
+    % MACS: goodness of fit (not in octave)
     % MACS: model space
     % MACS: information criteria
     % print design matrix
-    assertEqual(numel(matlabbatch), 7);
+    assertEqual(numel(matlabbatch), expectedNbBatch);
 
     bf = bids.File(matlabbatch{1}.spm.stats.fmri_spec.sess(1).scans{1});
     assertEqual(bf.entities.space, 'individual');
@@ -92,7 +96,7 @@ function test_bidsFFX_skip_subject_no_data()
   if bids.internal.is_octave()
     %  warning 'getOptionsFromModel:modelOverridesOptions' was raised,
     %    expected 'bidsFFX:noDataForSubjectGLM'
-    return
+    moxunit_throw_test_skipped_exception('wrong warning in octave');
   end
 
   assertWarning(@()bidsFFX('specifyAndEstimate', opt), 'bidsFFX:noDataForSubjectGLM');

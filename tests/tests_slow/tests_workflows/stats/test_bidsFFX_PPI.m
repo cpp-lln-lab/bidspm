@@ -10,13 +10,18 @@ end
 
 function test_bidsFFX_PPI_basic()
 
+  skip = false;
   if ~usingSlowTestMode()
-    moxunit_throw_test_skipped_exception('slow test only');
+    skip = true;
+    msg = 'slow test only';
   end
-
   if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('set up unzipped files with octave fails');
+    skip = true;
+    msg = 'set up unzipped files with octave fails';
     % TODO unzip the relevant files first
+  end
+  if skip
+    moxunit_throw_test_skipped_exception(msg);
   end
 
   opt = setOptions('MoAE-fmriprep', '', 'pipelineType', 'stats');
