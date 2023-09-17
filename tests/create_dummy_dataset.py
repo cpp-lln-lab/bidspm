@@ -57,7 +57,7 @@ def create_raw_func_vismotion(target_dir, sub, ses):
 
     create_events_tsv(
         filename=this_dir / f"{basename}_run-1_events.tsv",
-        onset=[2, 2],
+        onset=[2, 4],
         duration=[2, 2],
         trial_type=["VisMot", "VisStat"],
     )
@@ -70,8 +70,8 @@ def create_raw_func_vismotion(target_dir, sub, ses):
 
     create_events_tsv(
         filename=this_dir / f"{basename}_run-2_events.tsv",
-        onset=[3, 2],
-        duration=[6, 2],
+        onset=[3, 6],
+        duration=[2, 2],
         trial_type=["VisStat", "VisMot"],
     )
 
@@ -80,8 +80,8 @@ def create_raw_func_vismotion(target_dir, sub, ses):
     for run in [1, 2]:
         create_events_tsv(
             filename=this_dir / f"{basename}_acq-1p60mm_run-{run}_events.tsv",
-            onset=[4, 2],
-            duration=[8, 2],
+            onset=[4, 8],
+            duration=[2, 2],
             trial_type=["VisMot", "VisStat"],
         )
         touch(this_dir / f"{basename}_acq-1p60mm_dir-PA_run-{run}_{suffix}.nii")
