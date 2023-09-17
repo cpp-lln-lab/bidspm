@@ -20,7 +20,7 @@ function test_bidsFFX_PPI_basic()
     msg = 'set up unzipped files with octave fails';
     % TODO unzip the relevant files first
   end
-  if bids.internal.is_octave()
+  if bids.internal.is_github_ci()
     skip = true;
     msg = 'skip test in CI';
   end

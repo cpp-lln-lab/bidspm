@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import shutil
 from pathlib import Path
 
@@ -25,7 +26,7 @@ def main(start_dir, subject_list, session_list, roi_list, hemispheres):
     create_derivatives_dataset(stats_dir, subject_list, session_list)
 
 
-def create_raw_dataset(target_dir, subject_list, session_list, roi_list, hemispheres):
+def create_raw_dataset(target_dir, subject_list, session_list):
     # Create the raw BIDS dataset
     for subject in subject_list:
         for ses in session_list:
@@ -123,25 +124,24 @@ def create_raw_fmap(target_dir, subject, ses):
         touch(this_dir / f"sub-{subject}_ses-{ses}_run-1{suffix}.nii")
         touch(this_dir / f"sub-{subject}_ses-{ses}_run-2{suffix}.nii")
 
-    EchoTime1 = 0.006
-    EchoTime2 = 0.00746
-    template = '{{"EchoTime1":{}, "EchoTime2":{}, "IntendedFor":"{}"}}'
-
     suffix = "_bold"
 
+    content = {
+        "EchoTime1": 0.006,
+        "EchoTime2": 0.00746,
+        "IntendedFor": f"ses-{ses}/func/sub-{subject}_ses-{ses}_task-{task_name}_part-mag{suffix}.nii",
+    }
+
     task_name = "vislocalizer"
-    IntendedFor = (
-        f"ses-{ses}/func/sub-{subject}_ses-{ses}_task-{task_name}_part-mag{suffix}.nii"
-    )
-    json_string = template.format(EchoTime1, EchoTime2, IntendedFor)
     with open(this_dir / f"sub-{subject}_ses-{ses}_run-1_phasediff.json", "w") as f:
-        f.write(json_string)
+        json.dump(content, f, indent=4)
 
     task_name = "vismotion"
-    IntendedFor = f"ses-{ses}/func/sub-{subject}_ses-{ses}_task-{task_name}_run-1_part-mag{suffix}.nii"
-    json_string = template.format(EchoTime1, EchoTime2, IntendedFor)
+    content[
+        "IntendedFor"
+    ] = f"ses-{ses}/func/sub-{subject}_ses-{ses}_task-{task_name}_run-1_part-mag{suffix}.nii"
     with open(this_dir / f"sub-{subject}_ses-{ses}_run-2_phasediff.json", "w") as f:
-        f.write(json_string)
+        json.dump(content, f, indent=4)
 
 
 def create_raw_anat(target_dir, subject):
@@ -152,40 +152,62 @@ def create_raw_anat(target_dir, subject):
 
     touch(this_dir / f"sub-{subject}_ses-{ses}{suffix}.nii")
 
-    anat_prefix_list = ["m", "c1", "c2", "c3"]
-    for prefix in anat_prefix_list:
-        touch(this_dir / f"{prefix}sub-{subject}_ses-{ses}{suffix}.nii")
+    # MP2RAGE
+    touch(this_dir / f"sub-{subject}_ses-{ses}_UNIT1.nii")
+    touch(this_dir / f"sub-{subject}_ses-{ses}_inv-1_MP2RAGE.nii")
+    touch(this_dir / f"sub-{subject}_ses-{ses}_inv-2_MP2RAGE.nii")
 
-    space = "individual"
-    touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_desc-biascor{suffix}.nii")
-    touch(
-        this_dir / f"sub-{subject}_ses-{ses}_space-{space}_desc-skullstripped{suffix}.nii"
-    )
-    touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_desc-preproc{suffix}.nii")
-    touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_label-brain_mask.nii")
-    touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_label-CSF_probseg.nii")
-    touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_label-GM_probseg.nii")
-    touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_label-WM_probseg.nii")
+    content = {
+        "MagneticFieldStrength": 7,
+        "RepetitionTimePreparation": 4.3,
+        "InversionTime": 1,
+        "FlipAngle": 4,
+        "FatSat": "yes",
+        "EchoSpacing": 0.0072,
+        "PartialFourierInSlice": 0.75,
+    }
 
-    space = "IXI549Space"
-    touch(
-        this_dir / f"sub-{subject}_ses-{ses}_space-{space}_res-bold_label-CSF_probseg.nii"
-    )
-    touch(
-        this_dir / f"sub-{subject}_ses-{ses}_space-{space}_res-bold_label-GM_probseg.nii"
-    )
-    touch(
-        this_dir / f"sub-{subject}_ses-{ses}_space-{space}_res-bold_label-WM_probseg.nii"
-    )
-    touch(
-        this_dir
-        / f"sub-{subject}_ses-{ses}_space-{space}_res-hi_desc-preproc{suffix}.nii"
-    )
-    touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_desc-brain_mask.nii")
+    with open(this_dir / f"sub-{subject}_ses-{ses}_inv-1_MP2RAGE.json", "w") as f:
+        json.dump(content, f, indent=4)
 
-    touch(
-        this_dir / f"sub-{subject}_ses-{ses}_from-IXI549Space_to-T1w_mode-image_xfm.nii"
-    )
+    content["InversionTime"] = 3.2
+    with open(this_dir / f"sub-{subject}_ses-{ses}_inv-1_MP2RAGE.json", "w") as f:
+        json.dump(content, f, indent=4)
+
+    # anat_prefix_list = ["m", "c1", "c2", "c3"]
+    # for prefix in anat_prefix_list:
+    #     touch(this_dir / f"{prefix}sub-{subject}_ses-{ses}{suffix}.nii")
+
+    # space = "individual"
+    # touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_desc-biascor{suffix}.nii")
+    # touch(
+    #     this_dir / f"sub-{subject}_ses-{ses}_space-{space}_desc-skullstripped{suffix}.nii"
+    # )
+    # touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_desc-preproc{suffix}.nii")
+    # touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_label-brain_mask.nii")
+    # touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_label-CSF_probseg.nii")
+    # touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_label-GM_probseg.nii")
+    # touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_label-WM_probseg.nii")
+
+    # space = "IXI549Space"
+    # touch(
+    #     this_dir / f"sub-{subject}_ses-{ses}_space-{space}_res-bold_label-CSF_probseg.nii"
+    # )
+    # touch(
+    #     this_dir / f"sub-{subject}_ses-{ses}_space-{space}_res-bold_label-GM_probseg.nii"
+    # )
+    # touch(
+    #     this_dir / f"sub-{subject}_ses-{ses}_space-{space}_res-bold_label-WM_probseg.nii"
+    # )
+    # touch(
+    #     this_dir
+    #     / f"sub-{subject}_ses-{ses}_space-{space}_res-hi_desc-preproc{suffix}.nii"
+    # )
+    # touch(this_dir / f"sub-{subject}_ses-{ses}_space-{space}_desc-brain_mask.nii")
+
+    # touch(
+    #     this_dir / f"sub-{subject}_ses-{ses}_from-IXI549Space_to-T1w_mode-image_xfm.nii"
+    # )
 
 
 def create_preproc_dataset(target_dir, subject_list, session_list, roi_list, hemispheres):
