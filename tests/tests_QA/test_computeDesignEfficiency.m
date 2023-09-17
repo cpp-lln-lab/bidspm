@@ -13,7 +13,9 @@ function test_computeDesignEfficiency_vislocalizer()
 
   close all;
 
-  opt = setOptions('vismotion', '01');
+  subject = '01';
+
+  opt = setOptions('vismotion', subject);
 
   BIDS = bids.layout(opt.dir.input, ...
                      'use_schema', false, ...
@@ -28,9 +30,11 @@ function test_computeDesignEfficiency_vislocalizer()
   opt.TR = metadata{1}.RepetitionTime;
 
   eventsFile = bids.query(BIDS, 'data', ...
-                          'sub', opt.subjects, ...
+                          'sub', subject, ...
+                          'ses', '01', ...
                           'task', opt.taskName, ...
                           'acq', '', ...
+                          'run', 1, ...
                           'suffix', 'events');
 
   e = computeDesignEfficiency(eventsFile{1}, opt);
@@ -73,7 +77,7 @@ function test_computeDesignEfficiency_block_design
   for iBlock = 1:nbBlocks
     for cdt = 1:numel(conditions)
       for iTrial = 1:stimPerBlock
-        trial_type{end + 1} = conditions{cdt};
+        trial_type{end + 1} = conditions{cdt}; %#ok<*AGROW>
         onset(end + 1) = time;
         duration(end + 1) = stimDuration;
         time = time + stimDuration + ISI;

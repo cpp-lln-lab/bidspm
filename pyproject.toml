@@ -69,6 +69,7 @@ dev = [
     "coverage",
     "pytest",
     "ruamel.yaml",
+    'pandas'
 ]
 
 [project.scripts]
