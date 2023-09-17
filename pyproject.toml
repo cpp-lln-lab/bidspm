@@ -81,6 +81,12 @@ Homepage = "https://bidspm.readthedocs.io"
 
 [tool.black]
 line-length = 90
+extend-exclude = """
+(
+  demos/renaming/spm_2_bids_filenames.ipynb
+  | demos/MoAE/moae_01_bids_app.ipynb
+)
+"""
 
 [tool.isort]
 profile = "black"
