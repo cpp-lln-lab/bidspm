@@ -5,7 +5,7 @@ function createDummyData()
 
   startDir = pwd;
 
-  script = fullfile(getTestDir(), 'createDummyDataSet.sh');
+  script = fullfile(getTestDir(), 'create_dummy_dataset.py');
 
   cd(fileparts(script));
 
@@ -15,7 +15,7 @@ function createDummyData()
   [status, result] = system('rm -fr data/derivatives/bidspm-stats/group');
   [status, result] = system('rm -fr data/derivatives/bidspm-*/jobs');
 
-  system('sh createDummyDataSet.sh');
+  system('python create_dummy_dataset.py');
 
   cd(startDir);
 
