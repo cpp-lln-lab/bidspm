@@ -64,6 +64,9 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
 
     % path to beta and t-map files.
 
+    runs = [];
+    conditions = {};
+
     msg = 'Concatenating the following contrasts:';
     logger('INFO', msg, 'options', opt, 'filename', mfilename());
     for iContrast = 1:length(contrasts)

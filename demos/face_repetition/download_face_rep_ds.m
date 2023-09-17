@@ -4,6 +4,10 @@ function download_face_rep_ds(download_data)
 
   % (C) Copyright 2022 Remi Gau
 
+  if nargin < 1
+    download_data = true;
+  end
+
   if download_data
 
     WD = pwd;
