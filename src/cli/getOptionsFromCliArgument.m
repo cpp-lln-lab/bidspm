@@ -70,7 +70,7 @@ function opt = getOptionsFromCliArgument(args)
 
   opt = optionsStats(opt, args, action);
 
-  if ismember(lower(action), {'bms'})
+  if ismember(lower(action), {'bms', 'bms-posterior', 'bms-bms'})
     opt.toolbox.MACS.model.dir = args.Results.models_dir;
   end
 
@@ -140,7 +140,10 @@ function value = bidsAppsActions()
            'contrasts'; ...
            'results'; ...
            'specify_only'; ...
-           'bms'};
+           'bms'; ...
+           'bms-posterior'; ...
+           'bms-bms' ...
+          };
 end
 
 function opt = getOptions(args)

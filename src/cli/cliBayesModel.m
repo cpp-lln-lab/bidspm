@@ -18,6 +18,7 @@ function cliBayesModel(varargin)
 
   validate(args);
 
+  action = args.Results.action;
   opt = getOptionsFromCliArgument(args);
   opt.pipeline.type = 'stats';
   opt.pipeline.isBms = true;
@@ -25,6 +26,13 @@ function cliBayesModel(varargin)
 
   saveOptions(opt);
 
-  bidsModelSelection(opt, 'action', 'all');
+  switch action
+    case 'bms'
+      bidsModelSelection(opt, 'action', 'all');
+    case 'bms-posterior'
+      bidsModelSelection(opt, 'action', 'posterior');
+    case 'bms-bms'
+      bidsModelSelection(opt, 'action', 'BMS');
+  end
 
 end

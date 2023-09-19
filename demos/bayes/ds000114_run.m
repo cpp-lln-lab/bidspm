@@ -6,7 +6,7 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
-VERBOSITY = 2;
+VERBOSITY = 0;
 
 FWHM = 8;
 
@@ -15,6 +15,9 @@ SMOOTH = true;
 
 % set to false to not re run the model specification
 FIRST_LEVEL = true;
+
+% set to false to not compute cross-validated log model evidence
+CVLME = true;
 
 % set to true to run on fewer subjects and fewer models
 TESTING = true;
@@ -46,7 +49,7 @@ if SMOOTH
          'options', opt); %#ok<*UNRCH>
 end
 
-%% create models from a default one
+%% create models family from a default one
 
 default_model_file = fullfile(models_dir, 'default_model.json');
 
@@ -66,7 +69,7 @@ createModelFamilies(default_model_file, multiverse, models_dir);
 %% Statistics
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
-%% Subject level analysis
+% Subject level analysis
 if FIRST_LEVEL
 
   % Silence this warning as this dataset has not been slice time corrected.
@@ -84,8 +87,52 @@ if FIRST_LEVEL
 
 end
 
+% Run bayesian model selection
+% 1. MA_model_space:    defines a model space
+% 2. MA_cvLME_auto:     computes cross-validated log model evidence
+% 3. MS_PPs_group_auto: calculate posterior probabilities from cvLMEs
+% 4. MS_BMS_group_auto: perform cross-validated Bayesian model selection
+% 5. MS_SMM_BMS:        generate selected models maps from BMS
+if CVLME
+
+  bidspm(bids_dir, output_dir, 'subject', ...
+         'action', 'bms', ...
+         'participant_label', participant_label, ...
+         'models_dir', models_dir, ...
+         'fwhm', FWHM, ...
+         'skip_validation', true, ...
+         'verbosity', VERBOSITY);
+
+end
+
+%% Redefine the model space
+% note that it must be a subset of the one defined previously
+clear multiverse;
+delete(fullfile(pwd, 'models', 'model*.json'));
+
+multiverse.motion = {'basic', 'full'};
+multiverse.scrub = {false};
+multiverse.non_steady_state = {true};
+
+createModelFamilies(default_model_file, multiverse, models_dir);
+
+%%
+% Runs a new bayesian model selection
+% but rely on CVLME estimated previously
+% 1. MA_model_space:    defines a model space
+% 2. MS_PPs_group_auto: calculate posterior probabilities from cvLMEs
 bidspm(bids_dir, output_dir, 'subject', ...
-       'action', 'bms', ...
+       'action', 'bms-posterior', ...
+       'participant_label', participant_label, ...
+       'models_dir', models_dir, ...
+       'fwhm', FWHM, ...
+       'skip_validation', true, ...
+       'verbosity', VERBOSITY);
+
+% 3. MS_BMS_group_auto: perform cross-validated Bayesian model selection
+% 4. MS_SMM_BMS:        generate selected models maps from BMS
+bidspm(bids_dir, output_dir, 'subject', ...
+       'action', 'bms-bms', ...
        'participant_label', participant_label, ...
        'models_dir', models_dir, ...
        'fwhm', FWHM, ...

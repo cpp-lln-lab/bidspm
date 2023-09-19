@@ -10,7 +10,6 @@ function args = inputParserForBayesModel()
   isLogical = @(x) islogical(x) && numel(x) == 1;
   isPositiveScalar = @(x) isnumeric(x) && numel(x) == 1 && x >= 0;
   isFolder = @(x) isdir(x);
-  isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
 
   addParameter(args, 'models_dir', pwd, isFolder);
 

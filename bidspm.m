@@ -85,7 +85,7 @@ function returnCode = executeAction(varargin)
     case {'stats', 'contrasts', 'results', 'specify_only'}
       cliStats(varargin{2:end});
 
-    case {'bms'}
+    case {'bms', 'bms-posterior', 'bms-bms'}
       cliBayesModel(varargin{2:end});
 
     case 'meaning_of_life'
@@ -375,7 +375,9 @@ function value = bidsAppsActions()
            'contrasts'; ...
            'results'; ...
            'specify_only', ...
-           'bms'};
+           'bms'; ...
+           'bms-posterior'; ...
+           'bms-bms'};
 
 end
 

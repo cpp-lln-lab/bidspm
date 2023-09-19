@@ -24,7 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* [ENH] Add several confound strategies to add to bids stats model and a function to create family of models #1126 by @Remi-Gau
+* [ENH] add option to concatenate runs at subject level to facilite running PPI analysis #1133 by @Remi-Gau
+* [ENH] allow to run substeps of substeps of the bayesian model selection #1145 by @Remi-Gau
+* [ENH] add quality control for GLM using the MACS toolbox to give a goodness of fit several other information criteria (AIC, BIC) #1135  by @Remi-Gau
+* [ENH] add several confound strategies to add to bids stats model and a function to create family of models #1126 by @Remi-Gau
 * [ENH] add CLI to run bayesian model selection #1121 by @Remi-Gau
 * [ENH] support label of activations with all atlases [1100](https://github.com/cpp-lln-lab/bidspm/pull/1100) by [Remi-Gau](https://github.com/Remi-Gau)
 * [ENH] add support for session level models #1116 be @Remi-Gau
@@ -77,7 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [ENH] make it possible to update bidspm from any folder in [948](https://github.com/cpp-lln-lab/bidspm/pull/948) by [Remi-Gau](https://github.com/Remi-Gau)
 * [ENH] use filtering of layout in [944](https://github.com/cpp-lln-lab/bidspm/pull/944) by [Remi-Gau](https://github.com/Remi-Gau)
 * [ENH] make reports more silent in [939](https://github.com/cpp-lln-lab/bidspm/pull/939) by [Remi-Gau](https://github.com/Remi-Gau)
-* [ENH] Add CC0 license by default to all outputs in [898](https://github.com/cpp-lln-lab/bidspm/pull/898) by [Remi-Gau](https://github.com/Remi-Gau)
+* [ENH] add CC0 license by default to all outputs in [898](https://github.com/cpp-lln-lab/bidspm/pull/898) by [Remi-Gau](https://github.com/Remi-Gau)
 
 ### Changed
 
@@ -90,7 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-* [FIX] Fix vismotion demo in [1070](https://github.com/cpp-lln-lab/bidspm/pull/1070) by [Remi-Gau](https://github.com/Remi-Gau)
+* [FIX] fix vismotion demo in [1070](https://github.com/cpp-lln-lab/bidspm/pull/1070) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] Exclude from GLM specification events with onsets longer than the run duration in [1060](https://github.com/cpp-lln-lab/bidspm/pull/1060) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] remove dummies from preproc dataset and not raw dataset when using CLI in [1057](https://github.com/cpp-lln-lab/bidspm/pull/1057) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] skip smoothing when running bidspm prepoc in dryRun in [1054](https://github.com/cpp-lln-lab/bidspm/pull/1054) by [Remi-Gau](https://github.com/Remi-Gau)
