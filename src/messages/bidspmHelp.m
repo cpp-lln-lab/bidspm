@@ -388,6 +388,16 @@ function bidspmHelp()
   %          'dry_run', false, ...
   %          'skip_validation', false)
   %
+  % :param action:       Any of: ``{'bms', 'bms-posterior', 'bms-bms'}``
+  %                      `'bms'` will performm all steps for the baeysian
+  %                      model selection. If `'bms'` has been performed
+  %                      than ``'bms-posterior'`` can``'bms-bms'``
+  %                      be performed one aftr the other set a new model
+  %                      space and perform bayesian model selection on it.
+  %                      See the help section of :func:`bidsModelSelection`
+  %                      for more details.
+  % :type  action:       char
+  %
   % :param models_dir:  A path to a dir can be passed as well.
   %                     In this case all ``*_smdl.json`` files will be used
   %                     and looped over.
