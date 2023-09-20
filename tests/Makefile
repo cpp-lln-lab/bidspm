@@ -10,7 +10,7 @@ clean_local:
 	rm -rf data/derivatives/bidspm-*/jobs
 
 create_dummy_dataset: clean_local
-	sh createDummyDataSet.sh
+	python create_dummy_dataset.py
 
 bids_examples:
 	rm -rf bids-examples/

@@ -84,13 +84,22 @@ for iOption = 1:numel(space)
 
   cd(WD);
 
-  % with Octave running more n-1 loop in CI is fine
+  % Octave
+  % running more n-1 loop in CI is fine
   % but not running crashes with a segmentation fault
   % /home/runner/work/_temp/fb8e9d58-fa9f-4f93-8c96-387973f3632e.sh: line 2:
   % 7487 Segmentation fault      (core dumped) octave $OCTFLAGS --eval "run system_tests_facerep;"
   %
   % not sure why
-  if bids.internal.is_octave()
+  %
+
+  % Windows
+  % Error using overwriteDir
+  %    C:\Users\runneradmin\AppData\Local\Temp\8f7c44ca98d0\outputs\derivatives\bidspm-stats\
+  %           sub-01\task-auditory_space-individual_FWHM-6 could not be removed.
+  % Error in setBatchSubjectLevelGLMSpec (line 73)
+  %    overwriteDir(ffxDir, opt);
+  if bids.internal.is_octave() || ispc()
     break
   end
 

@@ -34,7 +34,7 @@ ARG    = -nodisplay -nosplash -nodesktop
 
 install:
 	npm install -g bids-validator
-	pip3 install .
+	pip3 install .[dev]
 
 help: ## Show what this Makefile can do
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
@@ -122,7 +122,6 @@ clean_docker:
 
 build_image: Dockerfile ## Build stable docker image from the main branch
 	docker build . -f Dockerfile -t cpplab/bidspm:unstable
-	VERSION=$(cat version.txt | cut -c2-)
 
 Dockerfile_matlab:
 	docker run --rm kaczmarj/neurodocker:0.9.1 generate docker \
@@ -137,5 +136,8 @@ Dockerfile_matlab:
 
 build_image_matlab: Dockerfile_matlab
 	docker build . -f Dockerfile_matlab -t cpplab/bidspm_matlab:unstable
+
+docker_data:
+	make -C demos/openneuro data_ds000001
 
 ################################################################################

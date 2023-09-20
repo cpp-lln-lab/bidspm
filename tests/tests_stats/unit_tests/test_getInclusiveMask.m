@@ -13,14 +13,15 @@ function test_getInclusiveMask_too_many()
   subLabel = '01';
   nodeName = 'run_level';
 
-  opt = setOptions('vismotion', '01');
+  opt = setOptions('vismotion', '01', 'useTempDir', true);
 
   opt.verbosity = 2;
 
   opt.model.bm = BidsModel('file', opt.model.file);
 
-  opt.model.bm.Nodes{1}.Model.Options.Mask.label{1} = 'brain';
-  opt.model.bm.Nodes{1}.Model.Options.Mask.desc{1} = '';
+  % dummy spec to return several images
+  opt.model.bm.Nodes{1}.Model.Options.Mask.suffix{1} = 'bold';
+  opt.model.bm.Nodes{1}.Model.Options.Mask.desc{1} = 'preproc';
 
   opt.space = opt.model.bm.Input.space;
 
