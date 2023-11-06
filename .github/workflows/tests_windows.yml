@@ -110,7 +110,7 @@ jobs:
         git clone https://github.com/MOcov/MOcov.git --depth 1
 
     - name: Install MATLAB
-      uses: matlab-actions/setup-matlab@v1.2.4
+      uses: matlab-actions/setup-matlab@v1.2.5
       with:
         release: ${{ matrix.matlab }}
 
