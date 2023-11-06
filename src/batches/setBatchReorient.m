@@ -16,7 +16,7 @@ function matlabbatch = setBatchReorient(varargin)
   % :param images:
   % :type  images: cell string
   %
-  % :param reorientMatrix:  4 X 4 transformation matric or .mat file containing
+  % :param reorientMatrix:  4 X 4 transformation matrix or .mat file containing
   %                         a ``transformationMatrix`` variable
   %
   % :param prefix:

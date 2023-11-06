@@ -343,7 +343,7 @@ function bidspmHelp()
   %                       quality controls into a single 4D image.
   % :type  ignore:        cell string
   %
-  % :param concatenate:   will contatenate the beta images of the
+  % :param concatenate:   will concatenate the beta images of the
   %                       conditions of interest convolved by an HRF.
   % :type  concatenate:   logical
   %

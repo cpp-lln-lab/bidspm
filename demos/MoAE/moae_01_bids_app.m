@@ -132,7 +132,7 @@ bidspm(bids_dir, output_dir, 'subject', ...
 
 % ## Stats
 
-% for the stats we need to specifcy where the preprocessed data is;
+% for the stats we need to specify where the preprocessed data is;
 preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
 % ### BIDS stats model

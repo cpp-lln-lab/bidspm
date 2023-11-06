@@ -1,6 +1,6 @@
 function renameSpmT(result)
   %
-  % Rename the reuslts spmT (theresholed or binarized) outputted in GLM.
+  % Rename the results spmT (theresholed or binarized) outputted in GLM.
   %
   % USAGE::
   %
