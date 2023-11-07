@@ -1,6 +1,6 @@
 function renamedFiles = renamePngCsvResults(opt, result, ext, subLabel)
   %
-  % Rename the reuslts png and csv files to a bids friendly filename.
+  % Rename the results png and csv files to a bids friendly filename.
   %
   % USAGE::
   %

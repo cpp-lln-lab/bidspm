@@ -621,7 +621,7 @@ function showDemo(majorVersion,minorVersion)
        'cprintf([1,0.5,0], ''and multi-\nline orange\n'');' 10];
    if boldFlag
        % In R2011b+ the internal bug that causes the need for an extra space
-       % is apparently fixed, so we must insert the sparator spaces manually...
+       % is apparently fixed, so we must insert the separator spaces manually...
        % On the other hand, 2011b enables *bold* format
        s = [s 'cprintf(''*blue'',   ''and *bold* (R2011b+ only)\n'');' 10];
        s = strrep(s, ''')',' '')');

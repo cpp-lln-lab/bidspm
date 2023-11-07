@@ -260,7 +260,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [DOC] general doc update by [Remi-Gau](https://github.com/Remi-Gau) in [446](https://github.com/cpp-lln-lab/bidspm/pull/446)
 * [DOC] Add figures for some workflows by [Remi-Gau](https://github.com/Remi-Gau) in [463](https://github.com/cpp-lln-lab/bidspm/pull/463)
 * [DOC] adds link and references to other SPM material by [Remi-Gau](https://github.com/Remi-Gau) in [464](https://github.com/cpp-lln-lab/bidspm/pull/464)
-* [DOC] improve resuls doc and associated how to by [Remi-Gau](https://github.com/Remi-Gau) in [470](https://github.com/cpp-lln-lab/bidspm/pull/470)
+* [DOC] improve results doc and associated how to by [Remi-Gau](https://github.com/Remi-Gau) in [470](https://github.com/cpp-lln-lab/bidspm/pull/470)
 * [DOC] Misc doc updates by [Remi-Gau](https://github.com/Remi-Gau) in [484](https://github.com/cpp-lln-lab/bidspm/pull/484)
 * [DOC] update doc on how to filter files and what files gets upsampled by [Remi-Gau](https://github.com/Remi-Gau) in [494](https://github.com/cpp-lln-lab/bidspm/pull/494)
 * [DOC] update templates by [Remi-Gau](https://github.com/Remi-Gau) in [455](https://github.com/cpp-lln-lab/bidspm/pull/455)

@@ -100,7 +100,7 @@ addopts = "-ra -vv"
 
 [tool.codespell]
 skip = "*.tsv,*.json,*.nii*,*.js,*.svg,*.eps,*.log,.git,env,build,lib,options,outputs,inputs,bids-examples,stats_model,coverage_html,stats.md,preprocess.md,ds001734"
-ignore-words-list = "fo,te,als,ane,nin,fot,fwe,commun"
+ignore-words-list = "fo,te,als,ane,nin,fot,fwe,commun,ons"
 builtin = "clear,rare"
 
 [tool.coverage.run]
