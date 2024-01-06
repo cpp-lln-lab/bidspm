@@ -103,7 +103,12 @@ classdef BidsModel < bids.Model
                       spm_get_defaults('stats.fmri.hpf'), ...
                       nodeName, ...
                       returnBsmDocURL('options'));
-        obj.bidsModelError('noHighPassFilter', msg);
+
+        opt.verbosity = 0;
+        if obj.verbose
+          opt.verbosity = 1;
+        end
+        logger('INFO', msg, 'filename', mfilename(), 'options', opt);
 
       else
 
@@ -151,7 +156,12 @@ classdef BidsModel < bids.Model
                       nodeName, ...
                       nodeName, ...
                       returnRtdURL('', 'HRF'));
-        obj.bidsModelError('noHRFderivatives', msg);
+
+        opt.verbosity = 0;
+        if obj.verbose
+          opt.verbosity = 1;
+        end
+        logger('INFO', msg, 'filename', mfilename(), 'options', opt);
       end
 
       HRFderivatives = lower(strrep(HRFderivatives, ' ', ''));
@@ -196,7 +206,12 @@ classdef BidsModel < bids.Model
                       nodeName, ...
                       nodeName, ...
                       returnBsmDocURL('options'));
-        obj.bidsModelError('noMask', msg);
+
+        opt.verbosity = 0;
+        if obj.verbose
+          opt.verbosity = 1;
+        end
+        logger('INFO', msg, 'filename', mfilename(), 'options', opt);
 
       end
 
@@ -241,7 +256,12 @@ classdef BidsModel < bids.Model
                       spm_get_defaults('mask.thresh'), ...
                       nodeName, ...
                       returnRtdURL('', 'software'));
-        obj.bidsModelError('noInclMaskThresh', msg);
+
+        opt.verbosity = 0;
+        if obj.verbose
+          opt.verbosity = 1;
+        end
+        logger('INFO', msg, 'filename', mfilename(), 'options', opt);
 
       end
 
@@ -280,7 +300,11 @@ classdef BidsModel < bids.Model
                       nodeName, ...
                       returnRtdURL('', 'software'));
 
-        obj.bidsModelError('noTemporalCorrection', msg);
+        opt.verbosity = 0;
+        if obj.verbose
+          opt.verbosity = 1;
+        end
+        logger('INFO', msg, 'filename', mfilename(), 'options', opt);
 
       end
 
