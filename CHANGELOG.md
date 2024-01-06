@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* [ENH] allow to copy anat only on raw datasets #1181 by @Remi-Gau
 * [ENH] add option to concatenate runs at subject level to facilite running PPI analysis #1133 by @Remi-Gau
 * [ENH] allow to run substeps of substeps of the bayesian model selection #1145 by @Remi-Gau
 * [ENH] add quality control for GLM using the MACS toolbox to give a goodness of fit several other information criteria (AIC, BIC) #1135  by @Remi-Gau
