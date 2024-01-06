@@ -20,6 +20,12 @@ function cliCopy(varargin)
 
   opt.query.desc = {'preproc', 'brain'};
   opt.query.suffix = {'T1w', 'bold', 'mask'};
+  if opt.anatOnly
+    opt.query.suffix = {'T1w', 'mask'};
+  end
+  if isempty(opt.taskName)
+    opt = rmfield(opt, 'taskName');
+  end
   opt.query.space = opt.space;
 
   bidsFilterFile = getBidsFilterFile(args);

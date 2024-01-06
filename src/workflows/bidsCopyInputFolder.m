@@ -3,7 +3,7 @@ function bidsCopyInputFolder(varargin)
   % Copies data from the ``opt.dir.input`` folder to the ``opt.dir.output`` folder
   %
   % Then it will search the derivatives directory for any zipped ``*.gz`` image
-  % and uncompress the files for the task of interest.
+  % and uncompress the files of interest.
   %
   % USAGE::
   %
@@ -55,6 +55,21 @@ function bidsCopyInputFolder(varargin)
   createDerivativeDir(opt);
 
   [BIDS, opt] = getData(opt, opt.dir.input);
+
+  skip_derivative_entities = false;
+  if ~isfield(BIDS.description, 'DatasetType')  || ...
+      (isfield(BIDS.description, 'DatasetType') && ...
+       strcmp(BIDS.description.DatasetType, 'raw'))
+    skip_derivative_entities = true;
+  end
+  if skip_derivative_entities
+    entities_to_skip = {'hemi', 'space', 'seg', 'res', 'den', 'label', 'desc'};
+    for i = 1:numel(entities_to_skip)
+      if isfield(opt.query, entities_to_skip{i})
+        opt.query = rmfield(opt.query, entities_to_skip{i});
+      end
+    end
+  end
 
   for iModality = 1:numel(opt.query.modality)
 
