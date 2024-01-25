@@ -106,9 +106,7 @@ function test_bidsResults_no_results()
 
   markTestAs('slow');
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
 
   opt = setOptions('vismotion', '', 'pipelineType', 'stats');
 
@@ -183,9 +181,7 @@ function test_bidsResults_too_many_backgrounds()
 
   opt = rmResultsFromModel(opt);
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
   opt.verbosity = 1;
   assertWarning(@()bidsResults(opt), 'bidsResults:tooManyMontageBackground');
 
@@ -258,9 +254,7 @@ function test_bidsResults_no_background_for_montage()
 
   opt = rmResultsFromModel(opt);
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
   opt.verbosity = 1;
   assertWarning(@()bidsResults(opt), 'checkMaskOrUnderlay:missingMaskOrUnderlay');
 

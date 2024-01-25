@@ -39,9 +39,7 @@ end
 
 function test_setBatchGenerateT1map_warning()
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
 
   subLabel = '^01';
 

@@ -29,9 +29,7 @@ function test_noSPMmat()
   % THEN
   assertEqual(status, true);
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
   opt.verbosity = 1;
   assertWarning(@()noSPMmat(opt, subLabel, spmMatFile), 'noSPMmat:noSpecifiedModel');
 
@@ -47,9 +45,7 @@ function test_noRoiFound()
   % THEN
   assertEqual(status, true);
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
   opt.verbosity = 1;
   assertWarning(@()noRoiFound(opt, roiList), 'noRoiFound:noRoiFile');
 
@@ -57,9 +53,7 @@ end
 
 function test_notImplemented()
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
   opt.verbosity = 1;
   assertWarning(@()notImplemented('foo', '', opt), 'foo:notImplemented');
 
@@ -81,9 +75,7 @@ function test_isTtest()
   % THEN
   assertEqual(status, false);
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
   assertWarning(@()isTtest(tmp), 'isTtest:notImplemented');
 
 end

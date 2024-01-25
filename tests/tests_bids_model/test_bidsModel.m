@@ -162,9 +162,7 @@ function test_getVariablesToConvolve_warning()
   opt = setOptions('vislocalizer');
   bm = BidsModel('file', opt.model.file);
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
   assertWarning(@()bm.getVariablesToConvolve('Name', 'dataset_level'), ...
                 'BidsModel:noVariablesToConvolve');
 

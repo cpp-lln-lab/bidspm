@@ -16,9 +16,7 @@ function test_checkToolbox_mp2rage()
 
   assertEqual(status, isdir(fullfile(spm('dir'), 'toolbox', 'mp2rage')));
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
 
   if ~isdir(fullfile(spm('dir'), 'toolbox', 'mp2rage'))
     assertWarning(@()checkToolbox('mp2rage', 'verbose', true), ...

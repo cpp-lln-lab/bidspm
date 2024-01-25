@@ -117,9 +117,7 @@ function test_setBatchFactorialDesign_wrong_model_design_matrix()
 
   matlabbatch = {};
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
   assertWarning(@()setBatchFactorialDesign(matlabbatch, opt, datasetNode.Name), ...
                 'setBatchFactorialDesign:notImplemented');
 

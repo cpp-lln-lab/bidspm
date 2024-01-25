@@ -52,9 +52,7 @@ end
 
 function test_setBatchSubjectLevelResults_missing_contrast_name()
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
 
   [subLabel, opt, result] = setUp('vismotion');
 
@@ -71,9 +69,7 @@ end
 
 function test_setBatchSubjectLevelResults_error_no_matching_contrast()
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
 
   contrast_name = 'NotAContrast';
   [subLabel, opt, result] = setUp('vismotion', contrast_name);

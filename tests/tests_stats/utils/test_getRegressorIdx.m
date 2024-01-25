@@ -54,9 +54,7 @@ function test_getRegressorIdx_basic()
   assertEqual(status, true);
 
   %% missing
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
   assertWarning(@()getRegressorIdx('foo', SPM), 'getRegressorIdx:missingRegressor');
 
   sts = warning('QUERY', 'getRegressorIdx:missingRegressor');

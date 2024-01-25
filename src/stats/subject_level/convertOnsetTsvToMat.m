@@ -1,4 +1,4 @@
-function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration)
+function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration, outputDir)
   %
   % Converts an events.tsv file to an onset file suitable for SPM subject level analysis.
   %
@@ -16,6 +16,9 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration)
   % :param runDuration: Total duration of the run (in seconds). Optional.
   %                     Events occurring later than this will be excluded.
   % :type  runDuration: numeric
+  %
+  % :param outputDir: Path where to save ``onset.mat``. Optional.
+  % :type  outputDir: path
   %
   % Use a BIDS stats model specified in a JSON file to:
   %
@@ -57,6 +60,10 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration)
 
   if nargin < 3
     runDuration = nan;
+  end
+
+  if nargin < 4
+    outputDir = '';
   end
 
   REQUIRED_COLUMNS = {'onset', 'duration'};
@@ -196,6 +203,9 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration)
   bf.suffix = 'onsets';
   bf.extension = '.mat';
 
+  if ~strcmp(outputDir, '')
+    pth = outputDir;
+  end
   fullpathOnsetFilename = fullfile(pth, bf.filename);
 
   names = condToModel.names; %#ok<*NASGU>

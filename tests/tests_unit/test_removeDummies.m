@@ -32,9 +32,7 @@ function test_removeDummies_not_force()
   inputFile = setUp();
   metadata.NumberOfVolumesDiscardedByUser = 10;
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
   assertWarning(@()removeDummies(inputFile, 4, metadata), ...
                 'removeDummies:dummiesAlreadyRemoved');
 
