@@ -33,9 +33,7 @@ end
 
 function test_copyGraphWindownOutput_warning()
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
 
   [opt, subLabel, action, PWD] = setUp();
   opt.verbosity = 1;

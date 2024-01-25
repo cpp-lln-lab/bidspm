@@ -27,9 +27,7 @@ function test_getInclusiveMask_too_many()
 
   BIDS = getLayout(opt);
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
 
   assertWarning(@()getInclusiveMask(opt, nodeName, BIDS, subLabel), ...
                 'getInclusiveMask:tooManyMasks');
@@ -58,9 +56,7 @@ end
 
 function test_getInclusiveMask_no_image()
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
 
   subLabel = '01';
   nodeName = 'run_level';
