@@ -57,10 +57,11 @@ function cliPreprocess(varargin)
                       'force', false);
   end
 
-  bidsCheckVoxelSize(opt);
-
-  if opt.useFieldmaps && ~opt.anatOnly
-    bidsCreateVDM(opt);
+  if ~opt.anatOnly
+    bidsCheckVoxelSize(opt);
+    if opt.useFieldmaps
+      bidsCreateVDM(opt);
+    end
   end
 
   if ~opt.stc.skip && ~opt.anatOnly
