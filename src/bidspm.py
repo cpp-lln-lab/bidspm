@@ -429,9 +429,11 @@ def run_command(cmd: str, platform: str | None = None) -> int:
 
     if platform is None:
         if Path(matlab()).exists():
+            log.info(f"Using matlab found at: {matlab()}")
             platform = matlab()
             cmd = cmd.replace(new_line, ", ")
         else:
+            log.info("Using octave")
             platform = "octave"
 
     if platform == "octave":
