@@ -39,6 +39,7 @@ function cliPreprocess(varargin)
   end
 
   bidsReport(opt);
+  % TODO adapt boiler plate for anat only
   boilerplate(opt, ...
               'outputPath', fullfile(opt.dir.output, 'reports'), ...
               'pipelineType', 'preprocess', ...
@@ -49,23 +50,26 @@ function cliPreprocess(varargin)
 
   bidsCopyInputFolder(opt);
 
-  if opt.dummyScans > 0
-    tmpOpt = opt;
-    tmpOpt.dir.input = tmpOpt.dir.preproc;
-    bidsRemoveDummies(tmpOpt, ...
-                      'dummyScans', tmpOpt.dummyScans, ...
-                      'force', false);
-  end
-
   if ~opt.anatOnly
+
     bidsCheckVoxelSize(opt);
+
+    if opt.dummyScans > 0
+      tmpOpt = opt;
+      tmpOpt.dir.input = tmpOpt.dir.preproc;
+      bidsRemoveDummies(tmpOpt, ...
+                        'dummyScans', tmpOpt.dummyScans, ...
+                        'force', false);
+    end
+
     if opt.useFieldmaps
       bidsCreateVDM(opt);
     end
-  end
 
-  if ~opt.stc.skip && ~opt.anatOnly
-    bidsSTC(opt);
+    if ~opt.stc.skip
+      bidsSTC(opt);
+    end
+
   end
 
   bidsSpatialPrepro(opt);

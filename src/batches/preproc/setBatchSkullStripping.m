@@ -66,8 +66,8 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
     return
   end
 
-  % if this is part of a pipeline we get the segmentation dependency to get
-  % the input from.
+  % if this is part of a pipeline
+  % we get the segmentation dependency to get the input from.
   % Otherwise the files to process are stored in a cell
   if isfield(opt, 'orderBatches') && ...
       isfield(opt.orderBatches, 'segment') && ...

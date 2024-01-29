@@ -102,7 +102,7 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
 
   anatImage = unzipAndReturnsFullpathName(anat);
 
-  msg = sprintf('  selecting anat file: %s', ...
+  msg = sprintf('  selecting anat file(s): %s', ...
                 bids.internal.create_unordered_list(bids.internal.format_path(anat)));
   logger('DEBUG', msg, 'options', opt, 'filename', mfilename());
 
