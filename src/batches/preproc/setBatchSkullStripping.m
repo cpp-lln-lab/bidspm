@@ -24,9 +24,10 @@ function matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel)
   % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
   % This function will get its inputs from the segmentation batch by reading
-  % the dependency from ``opt.orderBatches.segment``. If this field is not specified it will
-  % try to get the results from the segmentation by relying on the ``anat``
-  % image returned by ``getAnatFilename``.
+  % the dependency from ``opt.orderBatches.segment``.
+  % If this field is not specified it will try
+  % to get the results from the segmentation by relying
+  % on the ``anat`` image returned by ``getAnatFilename``.
   %
   % The threshold for inclusion in the mask can be set by::
   %

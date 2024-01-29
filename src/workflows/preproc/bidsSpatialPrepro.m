@@ -249,7 +249,7 @@ function [matlabbatch, opt] = setBatchesSegmentationAndSkullstrip(varargin)
     opt.segment.do = true;
   end
 
-  [matlabbatch, opt] = setBatchSegmentation(matlabbatch, opt);
+  [matlabbatch, opt] = setBatchSegmentation(matlabbatch, opt, anatFile);
 
   matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
   opt.orderBatches.skullStripping = numel(matlabbatch) - 1;
