@@ -143,9 +143,9 @@ def create_raw_fmap(target_dir, sub, ses):
         json.dump(content, f, indent=4)
 
     task = "vismotion"
-    content[
-        "IntendedFor"
-    ] = f"ses-{ses}/func/sub-{sub}_ses-{ses}_task-{task}_run-1_part-mag_{suffix}.nii"
+    content["IntendedFor"] = (
+        f"ses-{ses}/func/sub-{sub}_ses-{ses}_task-{task}_run-1_part-mag_{suffix}.nii"
+    )
     with open(this_dir / f"sub-{sub}_ses-{ses}_run-2_phasediff.json", "w") as f:
         json.dump(content, f, indent=4)
 
