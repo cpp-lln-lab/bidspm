@@ -1,4 +1,5 @@
 """Convert Octave notebooks to scripts."""
+
 from __future__ import annotations
 
 import json
