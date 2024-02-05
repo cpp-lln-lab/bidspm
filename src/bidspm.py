@@ -9,8 +9,7 @@ from typing import Any
 from rich import print
 
 from src.matlab import matlab
-from src.parsers import bidspm_log
-from src.parsers import common_parser
+from src.parsers import bidspm_log, common_parser
 
 log = bidspm_log(name="bidspm")
 

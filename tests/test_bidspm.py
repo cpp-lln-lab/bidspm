@@ -5,11 +5,13 @@ from pathlib import Path
 
 import pytest
 
-from src.bidspm import append_base_arguments
-from src.bidspm import append_common_arguments
-from src.bidspm import base_cmd
-from src.bidspm import bidspm
-from src.bidspm import run_command
+from src.bidspm import (
+    append_base_arguments,
+    append_common_arguments,
+    base_cmd,
+    bidspm,
+    run_command,
+)
 from src.parsers import common_parser
 
 

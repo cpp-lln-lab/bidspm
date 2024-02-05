@@ -7,8 +7,7 @@ from typing import Any
 import pydantic
 from bsmschema.models import BIDSStatsModel
 
-from src.parsers import bidspm_log
-from src.parsers import validate_parser
+from src.parsers import bidspm_log, validate_parser
 
 log = bidspm_log(name="bidspm")
 
