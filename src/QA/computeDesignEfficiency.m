@@ -1,4 +1,4 @@
-function e = computeDesignEfficiency(tsvFile, opt)
+function [e, X] = computeDesignEfficiency(tsvFile, opt)
   %
   % Calculate efficiency for fMRI GLMs. Relies on Rik Henson's fMRI_GLM_efficiency function.
   %
@@ -147,7 +147,9 @@ function e = computeDesignEfficiency(tsvFile, opt)
   end
 
   %%
-  [e, ~, ~, X] = fMRI_GLM_efficiency(opt);
+  [e, ~, ~, X_detrended] = fMRI_GLM_efficiency(opt);
+
+  X = createDesignMatrix(opt);
 
   if opt.verbosity
     for i = 1:numel(opt.CM)
@@ -159,7 +161,8 @@ function e = computeDesignEfficiency(tsvFile, opt)
 
     bids.util.plot_events(tsvFile);
 
-    figure('name', 'design matrix', 'position', [50 50 1000 1000]);
+    figure('name', 'detrended filtered design matrix', ...
+           'position', [50 50 1000 1000]);
 
     % TODO add a second axis with scale in seconds
 
@@ -227,7 +230,9 @@ function plotFft(signal, rt, HPF)
 
   plot(Hz(q), gX(q, :));
 
-  patch([0 1 1 0] / HPF, [0 0 1 1] * max(max(gX)), [1 1 1] * .9);
+  p1 = patch([0 1 1 0] / HPF, [0 0 1 1] * max(max(gX)), [1 1 1] * 0.5);
+  p1.FaceVertexAlphaData = 0.5;
+  p1.FaceAlpha = 'flat';
 
   xlabel('Frequency (Hz)');
   ylabel('relative spectral density');

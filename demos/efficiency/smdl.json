@@ -27,8 +27,10 @@
       },
       "Model": {
         "X": [
-          "trial_type.cdt_A",
-          "trial_type.cdt_B"
+          "trial_type.alcohol",
+          "trial_type.neutral",
+          "trial_type.negative",
+          "trial_type.positive"
         ],
         "Type": "glm",
         "HRF": {
@@ -38,7 +40,7 @@
           "Model": "DoubleGamma"
         },
         "Options": {
-          "HighPassFilterCutoffHz": 0.008,
+          "HighPassFilterCutoffHz": 0.0078125,
           "Mask": {
             "desc": [
               "brain"
@@ -52,23 +54,49 @@
       },
       "Contrasts": [
         {
-          "type": "t",
-          "Name": "A_gt_B",
+          "Test": "t",
+          "Name": "alcohol_gt_neutral",
           "Weights": [
             1,
             -1
           ],
           "ConditionList": [
-            "trial_type.cdt_A",
-            "trial_type.cdt_B"
+            "trial_type.alcohol",
+            "trial_type.neutral"
+          ]
+        },
+        {
+          "Test": "t",
+          "Name": "negative_gt_neutral",
+          "Weights": [
+            1,
+            -1
+          ],
+          "ConditionList": [
+            "trial_type.negative",
+            "trial_type.neutral"
+          ]
+        },
+        {
+          "Test": "t",
+          "Name": "positive_gt_neutral",
+          "Weights": [
+            1,
+            -1
+          ],
+          "ConditionList": [
+            "trial_type.positive",
+            "trial_type.neutral"
           ]
         }
       ],
       "DummyContrasts": {
         "type": "t",
         "Contrasts": [
-          "trial_type.cdt_A",
-          "trial_type.cdt_B"
+          "trial_type.alcohol",
+          "trial_type.neutral",
+          "trial_type.negative",
+          "trial_type.positive"
         ]
       }
     }
