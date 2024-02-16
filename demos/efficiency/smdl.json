@@ -1,0 +1,77 @@
+{
+  "Name": "empty_model",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "This is an empty BIDS stats model.",
+  "Input": {
+    "task": [
+      ""
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run",
+      "GroupBy": [
+        ""
+      ],
+      "Transformations": {
+        "Transformer": "",
+        "Instructions": [
+          {
+            "Name": "",
+            "Inputs": [
+              ""
+            ]
+          }
+        ]
+      },
+      "Model": {
+        "X": [
+          "trial_type.cdt_A",
+          "trial_type.cdt_B"
+        ],
+        "Type": "glm",
+        "HRF": {
+          "Variables": [
+            ""
+          ],
+          "Model": "DoubleGamma"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.008,
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        },
+        "Software": []
+      },
+      "Contrasts": [
+        {
+          "type": "t",
+          "Name": "A_gt_B",
+          "Weights": [
+            1,
+            -1
+          ],
+          "ConditionList": [
+            "trial_type.cdt_A",
+            "trial_type.cdt_B"
+          ]
+        }
+      ],
+      "DummyContrasts": {
+        "type": "t",
+        "Contrasts": [
+          "trial_type.cdt_A",
+          "trial_type.cdt_B"
+        ]
+      }
+    }
+  ],
+  "Edges": []
+}
