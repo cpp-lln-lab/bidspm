@@ -52,8 +52,8 @@ bm.write('smdl.json');
 IBI = 25;
 ISI = 0;
 stimDuration = 4;
-stimPerBlock = 40;
-nbBlocks = 1;
+stimPerBlock = 5;
+nbBlocks = 8;
 
 TR = 1;
 
