@@ -57,6 +57,8 @@ nbBlocks = 8;
 
 TR = 1;
 
+randomize = true;
+
 trial_type = {};
 onset = [];
 duration = [];
@@ -64,14 +66,25 @@ duration = [];
 time = 0;
 
 for iBlock = 1:nbBlocks
-  for cdt = 1:numel(conditions)
+
+  condition_order = 1:4;
+  if randomize
+    condition_order = randperm(4);
+  end
+
+  for i = 1:numel(conditions)
+
+    condition_idx = condition_order(i);
+
     for iTrial = 1:stimPerBlock
-      trial_type{end + 1} = conditions{cdt}; %#ok<*SAGROW>
+      trial_type{end + 1} = conditions{condition_idx}; %#ok<*SAGROW>
       onset(end + 1) = time;
       duration(end + 1) = stimDuration;
       time = time + stimDuration + ISI;
     end
+
     time = time + IBI;
+
   end
 end
 
