@@ -171,6 +171,15 @@ function initBidspm(dev)
                          fullfile(rootDir(), 'tests', 'utils'));
     end
 
+    % Make sure MACS toolbox used by SPM is the one from bidspm
+    fprintf(1, "Copying MACS toolbox to SPM toolbox dir.\n");
+    SPM_DIR = spm('dir');
+    MACS_TOOLBOX_DIR = fullfile(rootDir(), 'lib', 'MACS');
+    if exist(fullfile(SPM_DIR, 'toolbox', 'MACS'), 'dir') == 7
+      rmdir(fullfile(SPM_DIR, 'toolbox', 'MACS'), 's');
+    end
+    copyfile(MACS_TOOLBOX_DIR, fullfile(SPM_DIR, 'toolbox'));
+
     % for some reasons this folder was otherwise not added to the path in Octave
     BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
                        pathSep, ...
