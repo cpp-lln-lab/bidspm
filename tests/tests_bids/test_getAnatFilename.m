@@ -86,6 +86,8 @@ function test_getAnatFilename_basic()
 
   opt = setOptions('vislocalizer', subLabel, 'useRaw', true);
 
+  warning('OFF', 'getAnatFilename:severalAnatFile');
+
   BIDS = getLayout(opt);
 
   [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
@@ -109,6 +111,8 @@ function test_getAnatFilename_basic()
 
   anatImage = getAnatFilename(BIDS, opt, subLabel);
   assertEqual(anatImage, 'sub-ctrl01_ses-01_T1w.nii');
+
+  warning('ON', 'getAnatFilename:severalAnatFile');
 
 end
 

@@ -48,7 +48,7 @@ data_ds000224:
 data_ds001168:
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds001168
-	cd inputs/ds001168 && datalad get ds001168/sub-0[12] -J 2
+	cd inputs/ds001168 && datalad get ds001168/sub-0[12] -J 12
 
 data_ds001734:
 	mkdir -p inputs
@@ -65,5 +65,13 @@ data_ds002799:
 	cd inputs && datalad install ///openneuro/ds002799
 	datalad get -d inputs/ds002799 inputs/ds002799/derivatives/fmriprep/sub-292/*/func/*MNI152NLin2009cAsym*
 	datalad get -d inputs/ds002799 inputs/ds002799/derivatives/fmriprep/sub-292/*/func/*tsv
-	datalad get -d inputs/ds002799 inputs/ds002799/derivatives/fmriprep/sub-30[27]/*/func/*MNI152NLin2009cAsym* -J 2
-	datalad get -d inputs/ds002799 inputs/ds002799/derivatives/fmriprep/sub-30[27]/*/func/*tsv -J 2
+	datalad get -d inputs/ds002799 inputs/ds002799/derivatives/fmriprep/sub-30[27]/*/func/*MNI152NLin2009cAsym* -J 12
+	datalad get -d inputs/ds002799 inputs/ds002799/derivatives/fmriprep/sub-30[27]/*/func/*tsv -J 12
+
+
+data_ds000201:
+	mkdir -p inputs
+	cd inputs && datalad install ///openneuro/ds000201
+	datalad get -d inputs/ds000201 inputs/ds000201/sub-900[1-5]/*/anat/*T1w* -J 12
+# datalad get -d inputs/ds000201 inputs/ds000201/sub-900[1-5]/*/func -J 12
+# datalad get -d inputs/ds000201 inputs/ds000201/sub-900[1-5]/*/fmap -J 12

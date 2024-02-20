@@ -42,9 +42,9 @@ def create_raw_dataset(target_dir, subject_list, session_list):
             create_raw_func_vismotion(target_dir, sub, ses)
             create_raw_func_vislocalizer(target_dir, sub, ses)
             create_raw_fmap(target_dir, sub, ses)
+            create_raw_anat(target_dir, sub, ses)
 
         create_raw_func_rest(target_dir, sub, "02")
-        create_raw_anat(target_dir, sub)
 
 
 def create_raw_func_vismotion(target_dir, sub, ses):
@@ -150,8 +150,7 @@ def create_raw_fmap(target_dir, sub, ses):
         json.dump(content, f, indent=4)
 
 
-def create_raw_anat(target_dir, sub):
-    ses = "01"
+def create_raw_anat(target_dir, sub, ses="01"):
     suffix = "T1w"
     this_dir = target_dir / f"sub-{sub}" / f"ses-{ses}" / "anat"
 

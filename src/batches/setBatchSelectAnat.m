@@ -34,9 +34,17 @@ function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel)
 
   printBatchName('selecting anatomical image', opt);
 
-  [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel);
+  nbImgToReturn = 1;
+  if opt.anatOnly
+    nbImgToReturn = Inf;
+  end
+  [anatImage, anatDataDir] = getAnatFilename(BIDS, opt, subLabel, nbImgToReturn);
 
   matlabbatch{end + 1}.cfg_basicio.cfg_named_file.name = 'Anatomical';
-  matlabbatch{end}.cfg_basicio.cfg_named_file.files = { {fullfile(anatDataDir, anatImage)} };
+  if ischar(anatImage)
+    matlabbatch{end}.cfg_basicio.cfg_named_file.files = { {fullfile(anatDataDir, anatImage)} };
+  else
+    matlabbatch{end}.cfg_basicio.cfg_named_file.files = { fullfile(anatDataDir, anatImage) };
+  end
 
 end

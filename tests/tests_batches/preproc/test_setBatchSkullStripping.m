@@ -10,6 +10,8 @@ end
 
 function test_setBatchSkullStripping_basic()
 
+  warning('OFF', 'getAnatFilename:severalAnatFile');
+
   subLabel = '01';
 
   opt = setOptions('vislocalizer', subLabel);
@@ -41,9 +43,13 @@ function test_setBatchSkullStripping_basic()
   delete(fullfile(BIDS.pth, 'sub-01', 'ses-01', 'anat', ...
                   'sub-01_ses-01_space-individual_desc-brain_mask.json'));
 
+  warning('ON', 'getAnatFilename:severalAnatFile');
+
 end
 
 function test_setBatchSkullStripping_without_segment
+
+  warning('OFF', 'getAnatFilename:severalAnatFile');
 
   subLabel = '01';
 
@@ -55,6 +61,8 @@ function test_setBatchSkullStripping_without_segment
   matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
 
   assertEqual(numel(matlabbatch{1}.spm.util.imcalc.input{1}), 1);
+
+  warning('ON', 'getAnatFilename:severalAnatFile');
 
 end
 
