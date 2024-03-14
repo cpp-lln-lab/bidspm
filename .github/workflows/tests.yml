@@ -131,19 +131,19 @@ jobs:
         git clone https://github.com/MOcov/MOcov.git --depth 1
 
     - name: Install MATLAB
-      uses: matlab-actions/setup-matlab@v2.0.0
+      uses: matlab-actions/setup-matlab@v2.1.0
       with:
         release: ${{ matrix.matlab }}
 
     - name: Run fast unit tests MATLAB
       if: matrix.test_type == 'unit' && matrix.mode == 'fast'
-      uses: matlab-actions/run-command@v2.0.0
+      uses: matlab-actions/run-command@v2.1.0
       with:
         command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
 
     - name: Run slow unit tests MATLAB
       if: matrix.test_type == 'unit' && matrix.mode == 'slow'
-      uses: matlab-actions/run-command@v2.0.0
+      uses: matlab-actions/run-command@v2.1.0
       with:
         command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); global SLOW; SLOW=true; run tests_matlab;
 
@@ -159,6 +159,6 @@ jobs:
 
     - name: Run system tests MATLAB ${{ matrix.script }}
       if: matrix.test_type == 'system'
-      uses: matlab-actions/run-command@v2.0.0
+      uses: matlab-actions/run-command@v2.1.0
       with:
         command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_${{ matrix.script }};

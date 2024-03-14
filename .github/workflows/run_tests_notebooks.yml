@@ -30,7 +30,7 @@ jobs:
         sudo apt-get -y install unzip wget tree
 
     - name: Install MATLAB
-      uses: matlab-actions/setup-matlab@v2.0.0
+      uses: matlab-actions/setup-matlab@v2.1.0
       with:
           # MATLAB release to set up R2020a
         release: R2023a
@@ -49,7 +49,7 @@ jobs:
       run: cp -rv lib/MACS spm12/toolbox/MACS
 
     - name: Test notebooks
-      uses: matlab-actions/run-command@v2.0.0
+      uses: matlab-actions/run-command@v2.1.0
       with:
         command: |
           root_dir = getenv('GITHUB_WORKSPACE');
