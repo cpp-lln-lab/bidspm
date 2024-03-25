@@ -50,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-* [FIX] copy the MACS toolbox to the SPM toolbox folder during the initialisation #???? by @Remi-Gau
+* [FIX] copy the MACS toolbox to the SPM toolbox folder during the initialisation #1203 by @Remi-Gau
 * [FIX] save onsets.mat directly in subject stats folder #1187 by @Remi-Gau
 * [FIX] do not compute subject level contrast when running dataset level #1102 by @Remi-Gau
 * [FIX] copy `RepetitionTime` in sidecar JSON after running smoothing in #1099 by @Remi-Gau
