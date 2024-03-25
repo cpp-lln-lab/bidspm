@@ -46,6 +46,7 @@ WORKDIR /home/neuro
 
 COPY . /home/neuro/bidspm
 WORKDIR /home/neuro/bidspm
+RUN cp -rv lib/MACS /opt/spm12/toolbox/MACS
 RUN pip install --no-cache-dir --upgrade pip && \
     pip3 --no-cache-dir install . && \
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \

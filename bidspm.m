@@ -142,6 +142,8 @@ function initBidspm(dev)
     dev = false;
   end
 
+  more off;
+
   opt.verbosity = 2;
   opt.msg.color = '';
 
