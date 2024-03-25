@@ -1,4 +1,6 @@
 ---
+name: docker test
+
 on:
   push:
     branches:
