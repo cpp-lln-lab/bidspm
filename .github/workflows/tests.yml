@@ -105,9 +105,6 @@ jobs:
       run: |
         git clone https://github.com/spm/spm12.git --depth 1
 
-    - name: Copy Macs toolbox to SPM inputs_folder
-      run: cp -rv lib/MACS spm12/toolbox/MACS
-
     - name: Get moae fmriprep data from OSF
       run: |
         mkdir -p demos/MoAE/inputs/
