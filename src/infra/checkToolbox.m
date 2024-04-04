@@ -65,13 +65,7 @@ function status = checkToolbox(varargin)
 
       if ~status && install
 
-        msg = sprintf('installing MACS toolbox in:\n%s.\n\n', ...
-                      fullfile(spm('dir'), 'toolbox', 'MACS'));
-        id = 'installingMacsToolbox';
-        logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
-
-        copyfile(fullfile(returnRootDir(), 'lib', 'MACS'), ...
-                 fullfile(spm('dir'), 'toolbox', 'MACS'));
+        installMacstoolbox(opt);
 
         status = checkToolbox(toolboxName);
 
@@ -93,4 +87,21 @@ function status = checkToolbox(varargin)
     logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
   end
 
+end
+
+function installMacstoolbox(opt)
+  SPM_DIR = spm('dir');
+  MACS_TOOLBOX_DIR = fullfile(returnRootDir(), 'lib', 'MACS');
+
+  target_dir = fullfile(SPM_DIR, 'toolbox', 'MACS');
+
+  msg = sprintf('installing MACS toolbox in:\n%s.\n\n', target_dir);
+  id = 'installingMacsToolbox';
+  logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+
+  if exist(target_dir, 'dir') == 7
+    rmdir(target_dir, 's');
+  end
+  mkdir(target_dir);
+  copyfile(MACS_TOOLBOX_DIR, target_dir);
 end
