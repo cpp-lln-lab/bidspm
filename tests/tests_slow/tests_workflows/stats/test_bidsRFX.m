@@ -37,7 +37,7 @@ function test_bidsRFX_rfx()
   batchOrder = extendBatchOrder();
   idx = 9:6:(nbGroupLevelModels * nbBatchPerModel);
   if bids.internal.is_octave()
-    idx = 9:5:(nbGroupLevelModels * nbBatchPerModel);
+    idx = 9:4:(nbGroupLevelModels * nbBatchPerModel);
   end
   for i = idx
     assertEqual(summary([i:i + size(batchOrder, 1) - 1], :), batchOrder); %#ok<*NBRAK>
@@ -107,7 +107,7 @@ function test_bidsRFX_within_group_ttest()
               fileparts(matlabbatch{5}.spm.stats.fmri_est.spmmat{1}));
   if bids.internal.is_octave()
     assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
-                fileparts(matlabbatch{10}.spm.stats.fmri_est.spmmat{1}));
+                fileparts(matlabbatch{8}.spm.stats.fmri_est.spmmat{1}));
   else
     assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
                 fileparts(matlabbatch{11}.spm.stats.fmri_est.spmmat{1}));
