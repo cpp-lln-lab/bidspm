@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [ENH] allow to copy anat only on raw datasets #1181 by @Remi-Gau
 * [ENH] add option to concatenate runs at subject level to facilite running PPI analysis #1133 by @Remi-Gau
 * [ENH] allow to run substeps of substeps of the bayesian model selection #1145 by @Remi-Gau
-* [ENH] add quality control for GLM using the MACS toolbox to give a goodness of fit several other information criteria (AIC, BIC) #1135  by @Remi-Gau
+* [ENH] add quality control for GLM using the MACS toolbox to give a goodness of fit and several other information criteria (AIC, BIC) (MATLAB only) #1135  by @Remi-Gau
 * [ENH] add several confound strategies to add to bids stats model and a function to create family of models #1126 by @Remi-Gau
 * [ENH] add CLI to run bayesian model selection #1121 by @Remi-Gau
 * [ENH] support label of activations with all atlases [1100](https://github.com/cpp-lln-lab/bidspm/pull/1100) by [Remi-Gau](https://github.com/Remi-Gau)
