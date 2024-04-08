@@ -21,7 +21,7 @@ function test_bidsRFX_rfx()
   nbGroupLevelModels = 4;
   nbBatchPerModel = 8;
   if bids.internal.is_octave()
-    nbBatchPerModel = 7;
+    nbBatchPerModel = 5;
   end
   assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
 
@@ -59,7 +59,7 @@ function test_bidsRFX_no_overwrite_smoke_test()
 
   expectedNbBatch = 8;
   if bids.internal.is_octave()
-    expectedNbBatch = 7;
+    expectedNbBatch = 5;
   end
   assertEqual(numel(matlabbatch), expectedNbBatch);
 
@@ -78,7 +78,7 @@ function test_bidsRFX_within_group_ttest()
   matlabbatch = bidsRFX('RFX', opt);
 
   if bids.internal.is_octave()
-    assertEqual(numel(matlabbatch), 14);
+    assertEqual(numel(matlabbatch), 10);
   else
     assertEqual(numel(matlabbatch), 16);
   end
@@ -256,7 +256,7 @@ function batchOrder = extendBatchOrder(batchOrder)
                'stats', 'review'; ...
                'util', 'print'};
   if bids.internal.is_octave()
-    extension(2, :) = [];
+    extension(2:4, :) = [];
   end
   batchOrder = cat(1, batchOrder, extension);
 end
