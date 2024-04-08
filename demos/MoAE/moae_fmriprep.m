@@ -22,8 +22,8 @@ clc;
 addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
-DOWNLOAD_DATA = false;
-SMOOTH = false;
+DOWNLOAD_DATA = true;
+SMOOTH = true;
 
 % Getting the raw dataset to get the events.tsv
 download_moae_ds(DOWNLOAD_DATA);
