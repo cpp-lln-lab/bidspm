@@ -272,8 +272,10 @@ function updateMacstoolbox()
   if exist(target_dir, 'dir') == 7
     msg = sprintf('updating MACS toolbox: ');
     fprintf(1, msg);
-    system(sprintf('git -C %s pull', ...
-                   target_dir));
+[status, cmdout] = system(sprintf('git -C %s pull', target_dir));
+if status ~= 0
+    fprintf(2, 'Failed to update MACS toolbox: %s\n', cmdout);
+end
 
   else
     msg = sprintf('installing MACS toolbox in:\n%s.\n', target_dir);
