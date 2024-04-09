@@ -37,7 +37,7 @@ function test_bidsRFX_rfx()
   batchOrder = extendBatchOrder();
   idx = 9:6:(nbGroupLevelModels * nbBatchPerModel);
   if bids.internal.is_octave()
-    idx = 9:4:(nbGroupLevelModels * nbBatchPerModel);
+    idx = 9:3:(nbGroupLevelModels * nbBatchPerModel);
   end
   for i = idx
     assertEqual(summary([i:i + size(batchOrder, 1) - 1], :), batchOrder); %#ok<*NBRAK>
@@ -193,7 +193,7 @@ function test_bidsRFX_several_datasets_level()
   nbGroupLevelModelsReturned = 1;
   nbBatchPerModel = 8;
   if bids.internal.is_octave()
-    nbBatchPerModel = 7;
+    nbBatchPerModel = 5;
   end
   assertEqual(numel(matlabbatch), nbGroupLevelModelsReturned * nbBatchPerModel);
 
