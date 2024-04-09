@@ -65,7 +65,7 @@ function status = checkToolbox(varargin)
 
       if ~status && install
 
-        updateMacstoolbox(opt);
+        updateMacstoolbox();
 
         status = checkToolbox(toolboxName);
 

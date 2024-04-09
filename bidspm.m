@@ -274,7 +274,7 @@ function updateMacstoolbox()
     fprintf(1, msg);
     [status, cmdout] = system(sprintf('git -C %s pull', target_dir));
     if status ~= 0
-      fprintf(2, 'Failed to update MACS toolbox: %s\n', cmdout);
+      fprintf(1, 'Failed to update MACS toolbox: %s\n', cmdout);
     end
 
   else
