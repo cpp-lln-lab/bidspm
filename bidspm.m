@@ -172,7 +172,7 @@ function initBidspm(dev)
     end
 
     % Make sure MACS toolbox used by SPM is the one from bidspm
-    installMacstoolbox();
+    updateMacstoolbox();
 
     % for some reasons this folder was otherwise not added to the path in Octave
     BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
@@ -259,20 +259,29 @@ function initBidspm(dev)
 
 end
 
-function installMacstoolbox()
+function updateMacstoolbox()
 
   SPM_DIR = spm('dir');
   target_dir = fullfile(SPM_DIR, 'toolbox', 'MACS');
   MACS_TOOLBOX_DIR = fullfile(rootDir(), 'lib', 'MACS');
 
-  msg = sprintf('installing MACS toolbox in:\n%s.\n\n', target_dir);
-  fprintf(1, msg);
-
-  if exist(target_dir, 'dir') == 7
+  if exist(target_dir, 'dir') == 7 && exist(fullfile(target_dir, '.git'), 'dir') == 0
     rmdir(target_dir, 's');
   end
-  mkdir(target_dir);
-  copyfile(MACS_TOOLBOX_DIR, target_dir);
+
+  if exist(target_dir, 'dir') == 7
+    msg = sprintf('updating MACS toolbox: ');
+    fprintf(1, msg);
+    system(sprintf('git -C %s pull', ...
+                   target_dir));
+
+  else
+    msg = sprintf('installing MACS toolbox in:\n%s.\n', target_dir);
+    fprintf(1, msg);
+    system(sprintf('git clone %s %s', ...
+                   MACS_TOOLBOX_DIR, ...
+                   target_dir));
+  end
 end
 
 function uninitBidspm()
