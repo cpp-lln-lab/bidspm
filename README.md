@@ -34,12 +34,6 @@ In a terminal or a git bash prompt, type:
 git clone --recurse-submodules https://github.com/cpp-lln-lab/bidspm.git
 ```
 
-To get the latest version that is on the `dev` branch.
-
-```bash
-git clone --recurse-submodules --branch dev https://github.com/cpp-lln-lab/bidspm.git
-```
-
 To start using bidspm, you just need to initialize it for this MATLAB / Octave session with:
 
 ```matlab
