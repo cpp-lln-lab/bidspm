@@ -56,7 +56,7 @@ repos:
     args: [--profile, black]
 
 - repo: https://github.com/psf/black
-  rev: 24.4.0
+  rev: 24.4.2
   hooks:
   - id: black
     args: [--config=pyproject.toml]
@@ -79,7 +79,7 @@ repos:
   - id: flynt
 
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v1.9.0
+  rev: v1.10.0
   hooks:
   - id: mypy
     additional_dependencies: [types-all]
@@ -87,7 +87,7 @@ repos:
     args: [--config-file, pyproject.toml]
 
 - repo: https://github.com/MarcoGorelli/auto-walrus
-  rev: 0.3.3
+  rev: 0.3.4
   hooks:
   - id: auto-walrus
 
@@ -98,7 +98,7 @@ repos:
     args: [--mapping, '2', --sequence, '2', --offset, '0']
 
 - repo: https://github.com/hadolint/hadolint
-  rev: v2.12.1-beta
+  rev: v2.13.0-beta
   hooks:
   - id: hadolint-docker
     name: Lint Dockerfiles
