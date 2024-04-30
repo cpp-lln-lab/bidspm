@@ -96,7 +96,7 @@ how to use them and call them in your JSON.
 You can find a list of the available variables transformations in the
 [bids matlab doc](https://bids-matlab.readthedocs.io/en/main/transformers.html)
 and on the
-[variable-transforms repository](https://github.com/bids-standard/variable-transform)
+[variable-transforms repository](https://bids-matlab.readthedocs.io/en/main/variable_transformations.html)
 
 The advantage of these bids-matlab transformers is that they allow you to
 directly test them on tsv files to quickly see what outcome a series of
