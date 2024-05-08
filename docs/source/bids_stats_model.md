@@ -89,12 +89,12 @@ variables, before you put them in the design matrix.
 Currently bidspm can only transform variables contained in `events.tsv` files.
 
 It uses
-[bids-matlab transformers](https://bids-matlab.readthedocs.io/en/main/transformers.html)
+[bids-matlab transformers](https://bids-matlab.readthedocs.io/en/main/variable_transformations.html)
 to run those transformations. Please see this bids-matlab documentation to know
 how to use them and call them in your JSON.
 
 You can find a list of the available variables transformations in the
-[bids matlab doc](https://bids-matlab.readthedocs.io/en/main/transformers.html)
+[bids matlab doc](https://bids-matlab.readthedocs.io/en/main/variable_transformations.html)
 and on the
 [variable-transforms repository](https://bids-matlab.readthedocs.io/en/main/variable_transformations.html)
 
