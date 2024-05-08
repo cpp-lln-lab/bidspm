@@ -161,7 +161,7 @@ jobs:
           if [[ -n "${DOCKER_TOKEN}" ]]; then
 
               # make sure we have a lowercase repo
-              user_name=cpplab
+              user_name=remigau
               repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
 
               echo "${DOCKER_TOKEN}" | docker login -u "${DOCKER_USER}" --password-stdin
