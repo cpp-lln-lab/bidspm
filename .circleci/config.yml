@@ -193,11 +193,8 @@ workflows:
         - get_data
     - deploy:
         context:
-        - DOCKER_HUB
+        - DOCKER_TOKEN
         requires:
         - test
-        filters:
-          tags:
-            only: /.*/
 
 # VS Code Extension Version: 1.5.1
