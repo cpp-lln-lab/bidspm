@@ -41,28 +41,28 @@ jobs:
         test_type: [system]
         script: [moae, facerep, fmriprep]
         os: [ubuntu-latest, macos-latest]
-        matlab: [R2023a]
+        matlab: [R2023b]
         include:
         # only run bms on ubuntu because of datalad setup
         - test_type: system
           os: ubuntu-latest
-          matlab: R2023a
+          matlab: R2023b
           script: bms
         - test_type: unit
           os: ubuntu-latest
-          matlab: R2023a
+          matlab: R2023b
           mode: fast
         - test_type: unit
           os: macos-latest
-          matlab: R2023a
+          matlab: R2023b
           mode: fast
         - test_type: unit
           os: ubuntu-latest
-          matlab: R2023a
+          matlab: R2023b
           mode: slow
         - test_type: unit
           os: macos-latest
-          matlab: R2023a
+          matlab: R2023b
           mode: slow
       fail-fast: false
 
