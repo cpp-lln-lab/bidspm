@@ -193,7 +193,7 @@ workflows:
         - get_data
     - deploy:
         context:
-        - DOCKER_TOKEN
+        - DOCKER_HUB
         requires:
         - test
 
