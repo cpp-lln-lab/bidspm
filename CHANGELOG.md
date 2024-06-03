@@ -352,7 +352,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [FIX] apply [425](https://github.com/cpp-lln-lab/bidspm/pull/425) to dev by [Remi-Gau](https://github.com/Remi-Gau) in  [426](https://github.com/cpp-lln-lab/bidspm/pull/426)
 * [FIX] Fix facerep demo by [Remi-Gau](https://github.com/Remi-Gau) in [438](https://github.com/cpp-lln-lab/bidspm/pull/438)
 * [FIX] make sure default BIDS models are usable by [Remi-Gau](https://github.com/Remi-Gau) in [459](https://github.com/cpp-lln-lab/bidspm/pull/459)
-* [FIX] reolve issues to get anat file from a different session from the func data by [Remi-Gau](https://github.com/Remi-Gau) in [462](https://github.com/cpp-lln-lab/bidspm/pull/462)
+* [FIX] resolve issues to get anat file from a different session from the func data by [Remi-Gau](https://github.com/Remi-Gau) in [462](https://github.com/cpp-lln-lab/bidspm/pull/462)
 * [FIX] returnRootDir did not return the root dir by [Remi-Gau](https://github.com/Remi-Gau) in [498](https://github.com/cpp-lln-lab/bidspm/pull/498)
 * [FIX] throw error when no repetition time was found by [Remi-Gau](https://github.com/Remi-Gau) in [509](https://github.com/cpp-lln-lab/bidspm/pull/509)
 * [FIX] update vismotion demo by [Remi-Gau](https://github.com/Remi-Gau) in [513](https://github.com/cpp-lln-lab/bidspm/pull/513)

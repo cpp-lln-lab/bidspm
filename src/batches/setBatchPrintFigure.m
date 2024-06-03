@@ -1,6 +1,6 @@
 function matlabbatch = setBatchPrintFigure(matlabbatch, opt, figureName)
   %
-  % template to creae new setBatch functions
+  % template to create new setBatch functions
   %
   % USAGE::
   %
