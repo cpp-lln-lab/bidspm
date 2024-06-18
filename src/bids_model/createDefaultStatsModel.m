@@ -106,7 +106,7 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
 
     if strcmp(levelsToUpdate{i}, 'subject')
       bm.Nodes{idx}.GroupBy = {'subject', 'contrast'};
-    elseif strcmp(levelsToUpdate{i}, 'subject')
+    elseif strcmp(levelsToUpdate{i}, 'dataset')
       bm.Nodes{idx}.GroupBy = {'contrast'};
     end
 
