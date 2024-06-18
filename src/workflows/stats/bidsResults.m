@@ -392,13 +392,13 @@ function matlabbatch = bidsResultsSubject(opt, subLabel, iRes, isRunLevel)
 
     contrastNb = getContrastNb(tmp, opt, SPM);
 
-    constrastsNamesList = {SPM.xCon(contrastNb).name}';
+    contrastsNamesList = {SPM.xCon(contrastNb).name}';
 
-    for j = 1:numel(constrastsNamesList)
+    for j = 1:numel(contrastsNamesList)
 
       result = opt.results(iRes);
 
-      result.name = constrastsNamesList{j};
+      result.name = contrastsNamesList{j};
 
       if ~isRunLevel
         % skip contrast with name ending in _[0-9]+ as they are run level
