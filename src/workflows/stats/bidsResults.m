@@ -361,15 +361,15 @@ function matlabbatch = bidsResultsSubject(opt, subLabel, iRes, isRunLevel)
       %
       % Only necessary
       % if the user did not specify the run number in result.name
-      % by adding an "_[0-9]*" to indicate the run number to get this contrast
+      % by adding an "_[0-9]+" to indicate the run number to get this contrast
       % for example
       %
       %  opt.result.name = 'listening_1'
       %
 
-      endsWithRunNumber = regexp(contrastName, '_[0-9]*\${0,1}$', 'match');
+      endsWithRunNumber = regexp(contrastName, '_[0-9]+\${0,1}$', 'match');
       if isempty(endsWithRunNumber)
-        tmp.name = [contrastName '_[0-9]*'];
+        tmp.name = [contrastName '_[0-9]+'];
       else
         tmp.name = contrastName;
       end
@@ -401,9 +401,9 @@ function matlabbatch = bidsResultsSubject(opt, subLabel, iRes, isRunLevel)
       result.name = constrastsNamesList{j};
 
       if ~isRunLevel
-        % skip contrast with name ending in _[0-9]* as they are run level
+        % skip contrast with name ending in _[0-9]+ as they are run level
         % contrasts
-        endsWithRunNumber = regexp(result.name, '_[0-9]*$', 'match');
+        endsWithRunNumber = regexp(result.name, '_[0-9]+$', 'match');
         if ~isempty(endsWithRunNumber)
           continue
         end
