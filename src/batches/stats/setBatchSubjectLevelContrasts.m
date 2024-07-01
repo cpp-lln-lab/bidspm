@@ -16,7 +16,7 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
   % :param subLabel:
   % :type subLabel: char
   %
-  % :returns: - :matlabbatch:
+  % :return: :matlabbatch:
   %
   %
   % See also: bidsFFX, specifyContrasts, setBatchContrasts

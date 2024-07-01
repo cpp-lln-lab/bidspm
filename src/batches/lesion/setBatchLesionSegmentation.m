@@ -11,7 +11,7 @@ function matlabbatch = setBatchLesionSegmentation(matlabbatch, BIDS, opt, subLab
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
   %
-  % :returns: - :matlabbatch: (structure)
+  % :return: :matlabbatch: (structure)
   %
 
   % (C) Copyright 2021 bidspm developers

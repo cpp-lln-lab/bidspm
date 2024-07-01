@@ -18,7 +18,7 @@ function matlabbatch = setBatch3Dto4D(matlabbatch, opt, volumesList, RT, outputN
   %            to be written in the 4D file header
   % :type RT: float
   %
-  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  % :return: :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
   % ``dataType``:
   %

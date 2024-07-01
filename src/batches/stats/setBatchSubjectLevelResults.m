@@ -15,7 +15,7 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   % :param subLabel:
   % :type subLabel: char
   %
-  % :returns: - :matlabbatch: (structure)
+  % :return: :matlabbatch: (structure)
   %
   % See also: bidsResults, setBatchResults
   %

@@ -15,7 +15,7 @@ function notImplemented(varargin)
   % :param opt:
   % :type  opt: struct
   %
-  % :returns: - :status: (boolean)
+  % :return: :status: (boolean)
   %
   % EXAMPLE::
   %

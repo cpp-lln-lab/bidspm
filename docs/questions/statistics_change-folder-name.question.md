@@ -20,7 +20,8 @@ like in the example below
     {
       "Level": "Run",
       "Name": "run_level",
-    ...
+    }
+  ]
 ```
 
 then {func}`src.stats.subject_level.getFFXdir.m` will set the subject level folder to be named as follow:
@@ -37,7 +38,8 @@ However if your `Nodes.Name` is not one of the "default" values, like this
     {
       "Level": "Run",
       "Name": "parametric",
-    ...
+    }
+  ]
 ```
 
 then the subject level folder to be named as follow:

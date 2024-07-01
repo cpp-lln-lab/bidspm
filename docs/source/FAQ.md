@@ -2,27 +2,27 @@
 <!-- DO NOT EDIT MANUALLY -->
 (faq)=
 # Frequently Asked Questions
-- [BIDS: What is a BIDS way to name and store Regions of Interest (ROIs)?](#bids:-what-is-a-bids-way-to-name-and-store-regions-of-interest-(rois))
-- [General: Can I use parallelization with bidspm?](#general:-can-i-use-parallelization-with-bidspm)
-- [General: How can I know that things are set up properly before I run an analysis?](#general:-how-can-i-know-that-things-are-set-up-properly-before-i-run-an-analysis)
-- [General: How can I prevent from having SPM windows pop up all the time?](#general:-how-can-i-prevent-from-having-spm-windows-pop-up-all-the-time)
-- [General: How can I run bidspm from the command line?](#general:-how-can-i-run-bidspm-from-the-command-line)
-- [General: How can I run bidspm only certain files, like just the session `02` for example?](#general:-how-can-i-run-bidspm-only-certain-files,-like-just-the-session-`02`-for-example)
-- [General: What happens if we run same code twice?](#general:-what-happens-if-we-run-same-code-twice)
-- [Results: How can I change which slices are shown in a montage?](#results:-how-can-i-change-which-slices-are-shown-in-a-montage)
-- [SPM: How can get the data from some specific voxel in a nifti image?](#spm:-how-can-get-the-data-from-some-specific-voxel-in-a-nifti-image)
-- [SPM: How can I use SPM image calculator (`imcalc`) to create a ROI?](#spm:-how-can-i-use-spm-image-calculator-(`imcalc`)-to-create-a-roi)
-- [SPM: How can set the value of a specific voxel in a nifti image?](#spm:-how-can-set-the-value-of-a-specific-voxel-in-a-nifti-image)
-- [SPM: How do I get the header of a nifti image?](#spm:-how-do-i-get-the-header-of-a-nifti-image)
-- [SPM: How do I know which matlab function performs a given SPM process?](#spm:-how-do-i-know-which-matlab-function-performs-a-given-spm-process)
-- [SPM: How do I merge 2 masks with SPM?](#spm:-how-do-i-merge-2-masks-with-spm)
-- [SPM: What is the content of the SPM.mat file?](#spm:-what-is-the-content-of-the-spmmat-file)
-- [Statistics: How can change the name of the folder of the subject level analysis?](#statistics:-how-can-change-the-name-of-the-folder-of-the-subject-level-analysis)
-- [Statistics: How can I see what the transformation in the BIDS stats model will do to my events.tsv?](#statistics:-how-can-i-see-what-the-transformation-in-the-bids-stats-model-will-do-to-my-eventstsv)
-- [Statistics: How should I name my conditions in my events.tsv?](#statistics:-how-should-i-name-my-conditions-in-my-eventstsv)
-- [Statistics: How should I structure my data to run my statistical analysis?](#statistics:-how-should-i-structure-my-data-to-run-my-statistical-analysis)
+- [BIDS: What is a BIDS way to name and store Regions of Interest (ROIs)?](#bids-what-is-a-bids-way-to-name-and-store-regions-of-interest-rois)
+- [General: Can I use parallelization with bidspm?](#general-can-i-use-parallelization-with-bidspm)
+- [General: How can I know that things are set up properly before I run an analysis?](#general-how-can-i-know-that-things-are-set-up-properly-before-i-run-an-analysis)
+- [General: How can I prevent from having SPM windows pop up all the time?](#general-how-can-i-prevent-from-having-spm-windows-pop-up-all-the-time)
+- [General: How can I run bidspm from the command line?](#general-how-can-i-run-bidspm-from-the-command-line)
+- [General: How can I run bidspm only certain files, like just the session `02` for example?](#general-how-can-i-run-bidspm-only-certain-files-like-just-the-session-02-for-example)
+- [General: What happens if we run same code twice?](#general-what-happens-if-we-run-same-code-twice)
+- [Results: How can I change which slices are shown in a montage?](#results-how-can-i-change-which-slices-are-shown-in-a-montage)
+- [SPM: How can get the data from some specific voxel in a nifti image?](#spm-how-can-get-the-data-from-some-specific-voxel-in-a-nifti-image)
+- [SPM: How can I use SPM image calculator (`imcalc`) to create a ROI?](#spm-how-can-i-use-spm-image-calculator-imcalc-to-create-a-roi)
+- [SPM: How can set the value of a specific voxel in a nifti image?](#spm-how-can-set-the-value-of-a-specific-voxel-in-a-nifti-image)
+- [SPM: How do I get the header of a nifti image?](#spm-how-do-i-get-the-header-of-a-nifti-image)
+- [SPM: How do I know which matlab function performs a given SPM process?](#spm-how-do-i-know-which-matlab-function-performs-a-given-spm-process)
+- [SPM: How do I merge 2 masks with SPM?](#spm-how-do-i-merge-2-masks-with-spm)
+- [SPM: What is the content of the SPM.mat file?](#spm-what-is-the-content-of-the-spmmat-file)
+- [Statistics: How can change the name of the folder of the subject level analysis?](#statistics-how-can-change-the-name-of-the-folder-of-the-subject-level-analysis)
+- [Statistics: How can I see what the transformation in the BIDS stats model will do to my events.tsv?](#statistics-how-can-i-see-what-the-transformation-in-the-bids-stats-model-will-do-to-my-eventstsv)
+- [Statistics: How should I name my conditions in my events.tsv?](#statistics-how-should-i-name-my-conditions-in-my-eventstsv)
+- [Statistics: How should I structure my data to run my statistical analysis?](#statistics-how-should-i-structure-my-data-to-run-my-statistical-analysis)
 
-<a name="bids:-what-is-a-bids-way-to-name-and-store-regions-of-interest-(rois)"></a>
+<a name="bids-what-is-a-bids-way-to-name-and-store-regions-of-interest-rois"></a>
 ## BIDS: What is a BIDS way to name and store Regions of Interest (ROIs)?
 
 There is no "official" way to name ROI in BIDS, but you can apply BIDS naming
@@ -78,7 +78,7 @@ You can use bids-matlab to help you create BIDS valid filenames.
      hemi-R_space-MNI_label-V1v_desc-wang_mask.nii
 ```
 
-<a name="general:-can-i-use-parallelization-with-bidspm"></a>
+<a name="general-can-i-use-parallelization-with-bidspm"></a>
 ## General: Can I use parallelization with bidspm?
 
 You can use parallelization with bidspm.
@@ -98,7 +98,7 @@ parfor i = 1:length(subjects)
 end
 ```
 
-<a name="general:-how-can-i-know-that-things-are-set-up-properly-before-i-run-an-analysis"></a>
+<a name="general-how-can-i-know-that-things-are-set-up-properly-before-i-run-an-analysis"></a>
 ## General: How can I know that things are set up properly before I run an analysis?
 
 If you want to set things up but not let SPM actually run the batches you can
@@ -111,7 +111,7 @@ takes over and starts running the batches, but you can at least see if the
 batches will be constructed without error and then inspect with the SPM GUI to
 make sure everything is fine.
 
-<a name="general:-how-can-i-prevent-from-having-spm-windows-pop-up-all-the-time"></a>
+<a name="general-how-can-i-prevent-from-having-spm-windows-pop-up-all-the-time"></a>
 ## General: How can I prevent from having SPM windows pop up all the time?
 
 Running large number of batches when the GUI of MATLAB is active can be
@@ -135,7 +135,7 @@ end
 This should be picked up by bidspm and SPM upon initialization and ensure that
 SPM runs in command line mode.
 
-<a name="general:-how-can-i-run-bidspm-from-the-command-line"></a>
+<a name="general-how-can-i-run-bidspm-from-the-command-line"></a>
 ## General: How can I run bidspm from the command line?
 
 You can use the Python CLI of bidspm to run many functionalities from the
@@ -171,7 +171,7 @@ matlab=/usr/local/MATLAB/R20XXx/bin/matlab
 matlabcli='/usr/local/MATLAB/R20XXx/bin/matlab -nodisplay -nosplash -nodesktop'
 ```
 
-<a name="general:-how-can-i-run-bidspm-only-certain-files,-like-just-the-session-`02`-for-example"></a>
+<a name="general-how-can-i-run-bidspm-only-certain-files-like-just-the-session-02-for-example"></a>
 ## General: How can I run bidspm only certain files, like just the session `02` for example?
 
 Currently there are 2 ways of doing this.
@@ -256,7 +256,7 @@ you would define your filter like this:
   opt.query.run = {'02', '05'}
 ```
 
-<a name="general:-what-happens-if-we-run-same-code-twice"></a>
+<a name="general-what-happens-if-we-run-same-code-twice"></a>
 ## General: What happens if we run same code twice?
 
 In the vast majority of cases, if you have not touched anything to your options,
@@ -299,7 +299,7 @@ The output folder name (generated by `getFFXdir()` for the subject level and by
 See
 [this question for more details](#statistics:-how-can-change-the-name-of-the-folder-of-the-subject-level-analysis).
 
-<a name="results:-how-can-i-change-which-slices-are-shown-in-a-montage"></a>
+<a name="results-how-can-i-change-which-slices-are-shown-in-a-montage"></a>
 ## Results: How can I change which slices are shown in a montage?
 
 > In `bidsspm(..., 'action', 'results', ...)`
@@ -318,7 +318,7 @@ changed like this (see `bidsResults` help section for more information):
     opt.results(1).montage.orientation = 'axial';
 ```
 
-<a name="spm:-how-can-get-the-data-from-some-specific-voxel-in-a-nifti-image"></a>
+<a name="spm-how-can-get-the-data-from-some-specific-voxel-in-a-nifti-image"></a>
 ## SPM: How can get the data from some specific voxel in a nifti image?
 
 ### `spm_read_vols`
@@ -355,7 +355,7 @@ data = spm_get_data(header, XYZ)
 
 - `data`      - [n x m] double values
 
-<a name="spm:-how-can-i-use-spm-image-calculator-(`imcalc`)-to-create-a-roi"></a>
+<a name="spm-how-can-i-use-spm-image-calculator-imcalc-to-create-a-roi"></a>
 ## SPM: How can I use SPM image calculator (`imcalc`) to create a ROI?
 
 The image calculator utility is accessible in the SPM batch GUI:
@@ -388,7 +388,7 @@ matlabbatch{1}.spm.util.imcalc.options.interp = 1;
 matlabbatch{1}.spm.util.imcalc.options.dtype = 4;
 ```
 
-<a name="spm:-how-can-set-the-value-of-a-specific-voxel-in-a-nifti-image"></a>
+<a name="spm-how-can-set-the-value-of-a-specific-voxel-in-a-nifti-image"></a>
 ## SPM: How can set the value of a specific voxel in a nifti image?
 
 This can be done with the `spm_write_vols` function.
@@ -414,7 +414,7 @@ new_header.fname = 'changed_nifti.nii';
 spm_write_vol(new_header, content);
 ```
 
-<a name="spm:-how-do-i-get-the-header-of-a-nifti-image"></a>
+<a name="spm-how-do-i-get-the-header-of-a-nifti-image"></a>
 ## SPM: How do I get the header of a nifti image?
 
 ### Getting the header
@@ -500,7 +500,7 @@ world_space_coordinates = header.mat * voxel_subscripts;
 world_space_coordinates = world_space_coordinates(1:3);
 ```
 
-<a name="spm:-how-do-i-know-which-matlab-function-performs-a-given-spm-process"></a>
+<a name="spm-how-do-i-know-which-matlab-function-performs-a-given-spm-process"></a>
 ## SPM: How do I know which matlab function performs a given SPM process?
 
 If you are looking for which SPM function does task X, click on the `help`
@@ -530,7 +530,7 @@ Once you have identified the you can then type either type `help function_name`
 if you want some more information about this function or `edit function_name` if
 you want to see the code and figure out how the function works.
 
-<a name="spm:-how-do-i-merge-2-masks-with-spm"></a>
+<a name="spm-how-do-i-merge-2-masks-with-spm"></a>
 ## SPM: How do I merge 2 masks with SPM?
 
 Here is a code snippet to merge 2 masks:
@@ -574,7 +574,7 @@ Also good way to learn about some basic low level functions of SPM.
 For more info about basic files, check the
 [SPM wikibooks](https://en.wikibooks.org/wiki/SPM/Programming_intro#SPM_functions).
 
-<a name="spm:-what-is-the-content-of-the-spmmat-file"></a>
+<a name="spm-what-is-the-content-of-the-spmmat-file"></a>
 ## SPM: What is the content of the SPM.mat file?
 
 This is here because SPM has the sad (and bad) Matlabic tradition of using variable names
@@ -882,7 +882,7 @@ added after running contrasts
   - `SPM.xCon.Vcon` - Name of contrast (for 'T's) or ESS (for 'F's) image
   - `SPM.xCon.Vspm` - Name of SPM image
 
-<a name="statistics:-how-can-change-the-name-of-the-folder-of-the-subject-level-analysis"></a>
+<a name="statistics-how-can-change-the-name-of-the-folder-of-the-subject-level-analysis"></a>
 ## Statistics: How can change the name of the folder of the subject level analysis?
 
 This can be done by changing the `Name` of the run level `Nodes`
@@ -903,7 +903,8 @@ like in the example below
     {
       "Level": "Run",
       "Name": "run_level",
-    ...
+    }
+  ]
 ```
 
 then {func}`src.stats.subject_level.getFFXdir.m` will set the subject level folder to be named as follow:
@@ -920,7 +921,8 @@ However if your `Nodes.Name` is not one of the "default" values, like this
     {
       "Level": "Run",
       "Name": "parametric",
-    ...
+    }
+  ]
 ```
 
 then the subject level folder to be named as follow:
@@ -930,7 +932,7 @@ sub-subLabel
 └── task-taskLabel_space-spaceLabel_FWHM-FWHMValue_node-parametric
 ```
 
-<a name="statistics:-how-can-i-see-what-the-transformation-in-the-bids-stats-model-will-do-to-my-eventstsv"></a>
+<a name="statistics-how-can-i-see-what-the-transformation-in-the-bids-stats-model-will-do-to-my-eventstsv"></a>
 ## Statistics: How can I see what the transformation in the BIDS stats model will do to my events.tsv?
 
 You can use the `bids.util.plot_events` function to help you visualize what events will be used in your GLM.
@@ -968,7 +970,7 @@ transformers = model.Nodes{1}.Transformations.Instructions;
 bids.util.tsvwrite(fullfile(pwd, 'new_events.tsv'), new_content);
 ```
 
-<a name="statistics:-how-should-i-name-my-conditions-in-my-eventstsv"></a>
+<a name="statistics-how-should-i-name-my-conditions-in-my-eventstsv"></a>
 ## Statistics: How should I name my conditions in my events.tsv?
 
 In BIDS format, conditions should be named in the `trial_type` column of the `events.tsv` file.
@@ -1066,7 +1068,7 @@ of your BIDS stats model.
 
 Related issue: https://github.com/cpp-lln-lab/bidspm/issues/973
 
-<a name="statistics:-how-should-i-structure-my-data-to-run-my-statistical-analysis"></a>
+<a name="statistics-how-should-i-structure-my-data-to-run-my-statistical-analysis"></a>
 ## Statistics: How should I structure my data to run my statistical analysis?
 
 The main thing to remember is that bidspm will read the events.tsv files from

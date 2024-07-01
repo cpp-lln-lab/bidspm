@@ -17,7 +17,7 @@ function [matlabbatch, newMetadata] = setBatchSTC(varargin)
   % :param subLabel: subject label
   % :type  subLabel: char
   %
-  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  % :return: :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
   % Slice timing units is in seconds to be BIDS compliant
   % and not in slice number as is more traditionally the case with SPM.

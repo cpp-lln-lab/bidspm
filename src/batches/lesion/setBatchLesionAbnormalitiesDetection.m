@@ -11,7 +11,7 @@ function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, im
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
   %
-  % :returns: - :matlabbatch: (structure)
+  % :return: :matlabbatch: (structure)
   %
 
   % (C) Copyright 2021 bidspm developers

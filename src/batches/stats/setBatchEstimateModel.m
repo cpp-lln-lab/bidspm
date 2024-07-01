@@ -24,7 +24,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, tmp, contrastsLis
   % :type  contrastsList: cell string
   %
   %
-  % :returns: - :matlabbatch: (structure)
+  % :return: :matlabbatch: (structure)
   %
 
   % (C) Copyright 2019 bidspm developers

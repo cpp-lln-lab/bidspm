@@ -9,7 +9,7 @@ function blipDir = getBlipDirection(metadata)
   % :param metadata: image metadata
   % :type metadata: structure
   %
-  % :returns: - :blipDir:
+  % :return: :blipDir:
   %
   % Used to create the voxel dsiplacement map (VDM) from the fieldmap
   %

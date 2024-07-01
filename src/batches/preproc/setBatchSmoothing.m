@@ -22,7 +22,7 @@ function matlabbatch = setBatchSmoothing(matlabbatch, opt, images, fwhm, prefix)
   % :param prefix:
   % :type prefix: char
   %
-  % :returns: - :matlabbatch: (structure)
+  % :return: :matlabbatch: (structure)
   %
   %
   % See also: bidsSmoothing, bidsRFX, setBatchSmoothingFunc, setBatchSmoothConImages

@@ -53,7 +53,14 @@ templates_path = ["_templates"]
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ["examples", "defaults", "demo", "images/*.md", "lib/CPP_ROI"]
+exclude_patterns = [
+    "examples",
+    "defaults",
+    "demo",
+    "images/*.md",
+    "lib/**/*.m",
+    "tests/**/*.m",
+]
 
 suppress_warnings = ["myst.header", "myst.xref_missing"]
 
@@ -65,11 +72,11 @@ master_doc = "index"
 
 bibtex_bibfiles = ["references.bib"]
 
-# source_suffix = ['.rst', '.md']
-source_suffix = ".rst"
+source_suffix = [".rst", ".md"]
+# source_suffix = ".rst"
 
 intersphinx_mapping = {
-    "bids-matlab": ("https://bids-matlab.readthedocs.io/en/latest", None)
+    "bids-matlab": ("https://bids-matlab.readthedocs.io/en/main", None)
 }
 
 coverage_show_missing_items = True
@@ -79,7 +86,7 @@ coverage_show_missing_items = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
+html_theme = "pydata_sphinx_theme"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -90,16 +97,5 @@ html_logo = "images/cpp_lab_logo.png"
 
 html_theme_options = {
     "collapse_navigation": False,
-    "display_version": False,
     "navigation_depth": 4,
-}
-
-html_sidebars = {
-    "**": [
-        "about.html",
-        "navigation.html",
-        "relations.html",  # needs 'show_related': True theme option to display
-        "searchbox.html",
-        "donate.html",
-    ]
 }

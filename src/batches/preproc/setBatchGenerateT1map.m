@@ -20,7 +20,7 @@ function matlabbatch = setBatchGenerateT1map(varargin)
   % :param subLabel: subject label
   % :type subLabel: char
   %
-  % :returns: - :matlabbatch: (cell) The matlabbatch ready to run the spm job
+  % :return: :matlabbatch: (cell) The matlabbatch ready to run the spm job
   %
   % Relies on the MP2RAGE toolbox for SPM.
   %

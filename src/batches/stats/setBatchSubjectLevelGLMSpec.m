@@ -20,12 +20,12 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   % :param subLabel:
   % :type subLabel: char
   %
-  % :returns: - :matlabbatch: (structure)
+  % :return: matlabbatch
+  % :rtype: structure
   %
   %
 
   % (C) Copyright 2019 bidspm developers
-
   [matlabbatch, BIDS, opt, subLabel] =  deal(varargin{:});
 
   if ~isfield(BIDS, 'raw')

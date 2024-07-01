@@ -20,7 +20,7 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
   %             See checkOptions.
   % :type  opt:  structure
   %
-  % :returns: - :anatImage: (string)
+  % :return: :anatImage: (string)
   %           - :anatDataDir: (string)
   %
 

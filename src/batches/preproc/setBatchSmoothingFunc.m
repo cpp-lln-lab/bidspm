@@ -20,7 +20,7 @@ function matlabbatch = setBatchSmoothingFunc(matlabbatch, BIDS, opt, subLabel)
   % :param subLabel: subject label
   % :type  subLabel: char
   %
-  % :returns: - :matlabbatch: (structure)
+  % :return: :matlabbatch: (structure)
   %
   %
   % See also: bidsSmoothing, setBatchSmoothing

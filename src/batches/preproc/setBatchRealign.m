@@ -27,7 +27,7 @@ function [matlabbatch, voxDim, srcMetadata] = setBatchRealign(varargin)
   % :param action: ``realign``, ``realignReslice``, ``realignUnwarp``, ``'reslice'``
   % :type  action: char
   %
-  % :returns: - :matlabbatch: (structure)
+  % :return: :matlabbatch: (structure)
   %           - :voxDim:      (array)
   %           - :srcMetadata: (structure)
   %

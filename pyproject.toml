@@ -45,7 +45,7 @@ doc = [
     "sphinx",
     "sphinx-argparse",
     "sphinx-copybutton",
-    "sphinx-rtd-theme",
+    "pydata-sphinx-theme",
     "sphinxcontrib-bibtex",
     "sphinxcontrib-matlabdomain",
     "sphinxcontrib-mermaid",

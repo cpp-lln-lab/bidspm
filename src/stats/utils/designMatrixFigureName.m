@@ -14,7 +14,7 @@ function filename = designMatrixFigureName(varargin)
   % :param subLabel: optional argument. default: ``''``
   % :type  subLabel: char
   %
-  % :returns: - :filename: (string)
+  % :return: :filename: (string)
   %
   %
 

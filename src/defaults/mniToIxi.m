@@ -9,7 +9,7 @@ function optOut = mniToIxi(varargin)
   % :param foo: options
   % :type foo: structure
   %
-  % :returns: - :opt_out: (type) (structure)
+  % :return: :opt_out: (type) (structure)
   %
   %
 

@@ -10,7 +10,7 @@ function regressorsTsvFile = regressorsMatToTsv(varargin)
   % :param regressorsMatFile: obligatory argument.
   % :type regressorsMatFile: fullpath
   %
-  % :returns: - :regressorsTsvFile: (path)
+  % :return: :regressorsTsvFile: (path)
   %
   %
 

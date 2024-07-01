@@ -10,7 +10,7 @@ function matlabbatch = setBatchInverseNormalize(matlabbatch, BIDS, opt, subLabel
   % :type  matlabbatch: structure
   %
   %
-  % :returns: - :matlabbatch: (structure)
+  % :return: :matlabbatch: (structure)
   %
 
   % (C) Copyright 2022 bidspm developers

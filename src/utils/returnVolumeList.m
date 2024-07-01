@@ -10,7 +10,7 @@ function volumes = returnVolumeList(varargin)
   % :param boldFile:
   % :type boldFile: fullpath
   %
-  % :returns: - :volumes: (cell string)
+  % :return: :volumes: (cell string)
   %
 
   % (C) Copyright 2022 bidspm developers

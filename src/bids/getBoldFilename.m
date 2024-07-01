@@ -28,7 +28,7 @@ function [boldFilename, subFuncDataDir, metadata] = getBoldFilename(varargin)
   % :type opt:  structure
   %
   %
-  % :returns: - :boldFilename: (string)
+  % :return: :boldFilename: (string)
   %           - :subFuncDataDir: (string)
   %
   %

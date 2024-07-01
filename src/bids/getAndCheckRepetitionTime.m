@@ -14,7 +14,7 @@ function repetitionTime = getAndCheckRepetitionTime(varargin)
   % :param filter: obligatory argument.
   % :type  filter: structure
   %
-  % :returns: - :repetitionTime: (float) (1x1)
+  % :return: :repetitionTime: (float) (1x1)
   %
   % Example::
   %

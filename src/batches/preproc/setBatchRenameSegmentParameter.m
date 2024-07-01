@@ -13,7 +13,7 @@ function matlabbatch = setBatchRenameSegmentParameter(varargin)
   %             See checkOptions.
   %
   %
-  % :returns: - :matlabbatch: (cell) The matlabbatch ready to run the spm job
+  % :return: :matlabbatch: (cell) The matlabbatch ready to run the spm job
   %
 
   % (C) Copyright 2022 bidspm developers

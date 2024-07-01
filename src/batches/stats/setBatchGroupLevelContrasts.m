@@ -14,7 +14,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
   % :param nodeName:
   % :type nodeName: char
   %
-  % :returns: - :matlabbatch:
+  % :return: :matlabbatch:
   %
   %
   %

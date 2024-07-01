@@ -19,7 +19,7 @@ function matlabbatch = setBatchResults(matlabbatch, opt, result)
   %   results.label = subLabel;
   %   results.nbSubj = 1;
   %
-  % :returns: - :matlabbatch: (structure)
+  % :return: :matlabbatch: (structure)
   %
   % See also: setBatchSubjectLevelResults, setBatchGroupLevelResults
   %

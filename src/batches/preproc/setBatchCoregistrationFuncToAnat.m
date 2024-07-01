@@ -21,7 +21,7 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, 
   % :param subLabel: subject label
   % :type  subLabel: char
   %
-  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  % :return: :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
 
   % (C) Copyright 2020 bidspm developers

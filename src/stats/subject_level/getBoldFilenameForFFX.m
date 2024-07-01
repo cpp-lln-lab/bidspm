@@ -24,7 +24,7 @@ function boldFilename = getBoldFilenameForFFX(varargin)
   % :param iRun:
   % :type  iRun: integer
   %
-  % :returns: - :boldFilename: (string)
+  % :return: :boldFilename: (string)
   %
   %
 

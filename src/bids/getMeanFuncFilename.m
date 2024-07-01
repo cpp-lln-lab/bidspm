@@ -17,7 +17,7 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt)
   %             See checkOptions.
   % :type  opt: structure
   %
-  % :returns: - :meanImage: (string)
+  % :return: :meanImage: (string)
   %           - :meanFuncDir: (string)
   %
 

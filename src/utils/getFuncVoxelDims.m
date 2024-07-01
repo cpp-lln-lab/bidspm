@@ -14,7 +14,7 @@ function [voxDim, opt] = getFuncVoxelDims(opt, subFuncDataDir, fileName)
   % :param fileName:
   % :type fileName:
   %
-  % :returns: - :voxDim:
+  % :return: :voxDim:
   %           - :opt:
   %
   %

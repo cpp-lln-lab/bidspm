@@ -23,7 +23,7 @@ function matlabbatch = setBatchReorient(varargin)
   % :type  prefix: char
   %
   %
-  % :returns: - :matlabbatch: (cell) The matlabbatch ready to run the spm job
+  % :return: :matlabbatch: (cell) The matlabbatch ready to run the spm job
   %
   %
 

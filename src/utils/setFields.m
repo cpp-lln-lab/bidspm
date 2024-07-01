@@ -19,7 +19,7 @@ function structure = setFields(structure, fieldsToSet, overwrite)
   % :param overwrite:
   % :type overwrite: boolean
   %
-  % :returns: - :structure: (structure)
+  % :return: :structure: (structure)
   %
   %
 

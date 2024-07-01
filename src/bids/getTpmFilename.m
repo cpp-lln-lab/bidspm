@@ -23,7 +23,7 @@ function [gm, wm, csf] = getTpmFilename(BIDS, anatImage, res, space)
   % :param res:
   % :param res: char
   %
-  % :returns: - :gm: (string) grey matter TPM
+  % :return: :gm: (string) grey matter TPM
   %           - :wm: (string) white matter TPM
   %           - :csf: (string) csf matter TPM
   %

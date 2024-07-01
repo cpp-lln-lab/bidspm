@@ -23,7 +23,7 @@ function matlabbatch = setBatchReslice(matlabbatch, opt, referenceImg, sourceIma
   %                neighbour = ``0``.
   % :type  interp: integer >= 0
   %
-  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  % :return: :matlabbatch: (structure) The matlabbatch ready to run the spm job
   %
 
   % (C) Copyright 2020 bidspm developers

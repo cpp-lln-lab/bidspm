@@ -38,7 +38,7 @@ function matlabbatch = setBatchImageCalculation(varargin)
   %
   %
   %
-  % :returns: - :matlabbatch:
+  % :return: :matlabbatch:
   %
 
   % (C) Copyright 2020 bidspm developers

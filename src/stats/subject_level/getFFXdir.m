@@ -13,7 +13,7 @@ function ffxDir = getFFXdir(subLabel, opt)
   % :param opt: Options chosen for the analysis.
   %             See checkOptions.
   %
-  % :returns: - :ffxDir: (string)
+  % :return: :ffxDir: (string)
   %
 
   % (C) Copyright 2019 bidspm developers

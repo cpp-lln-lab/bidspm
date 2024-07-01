@@ -17,7 +17,7 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   % :param boldFilename:
   % :type  boldFilename: path
   %
-  % :returns: - :vdmFile: (string)
+  % :return: :vdmFile: (string)
   %
 
   % (C) Copyright 2020 bidspm developers

@@ -13,7 +13,7 @@ function matlabbatch = setBatchSmoothConImages(matlabbatch, opt)
   % :param opt: Options chosen for the analysis.
   %             See checkOptions.
   %
-  % :returns: - :matlabbatch:
+  % :return: :matlabbatch:
   %
   %
   % See also: bidsRFX, setBatchSmoothing, setBatchSmoothingFunc

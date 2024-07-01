@@ -15,7 +15,7 @@ function matlabbatch = setBatchGroupLevelResults(varargin)
   % :param result:
   % :type result: structure
   %
-  % :returns: - :matlabbatch: (structure)
+  % :return: :matlabbatch: (structure)
   %
 
   % (C) Copyright 2019 bidspm developers

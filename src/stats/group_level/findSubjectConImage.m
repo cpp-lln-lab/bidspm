@@ -20,7 +20,7 @@ function file = findSubjectConImage(varargin)
   % :type contrastName: char or cellstr
   %
   %
-  % :returns: - file : a fullpath or a cellstrng of fullpath
+  % :return: file : a fullpath or a cellstrng of fullpath
   %
   %
 

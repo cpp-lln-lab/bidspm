@@ -25,7 +25,7 @@ function filenames = getConfoundsRegressorFilename(BIDS, opt, subLabel, session,
   % :type opt:        structure
   %
   %
-  % :returns: - :filename: (string)
+  % :return: :filename: (string)
   %
 
   % (C) Copyright 2021 bidspm developers
