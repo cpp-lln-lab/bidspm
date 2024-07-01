@@ -49,4 +49,6 @@ From: bids/base_validator
     bidspm "$@"
 
 %help
-    BIDSpm container
+    This is a bidspm container.
+    Please see the documentation for more instructions:
+    https://bidspm.readthedocs.io/en/latest/
