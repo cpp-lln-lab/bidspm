@@ -1,7 +1,7 @@
 {
-  "Name": "default_rest_vislocalizer_vismotion_model",
+  "Name": "default_vislocalizer_model",
   "BIDSModelVersion": "1.0.0",
-  "Description": "default BIDS stats model for rest/vislocalizer/vismotion task",
+  "Description": "default BIDS stats model for vislocalizer task",
   "Input": {
     "task": [
       "vislocalizer"
@@ -61,8 +61,8 @@
         },
         "Software": {
           "SPM": {
-            "InclusiveMaskingThreshold": 0.8,
-            "SerialCorrelation": "FAST"
+            "SerialCorrelation": "FAST",
+            "InclusiveMaskingThreshold": 0.8
           }
         }
       },
@@ -107,7 +107,7 @@
       "Level": "Dataset",
       "Name": "dataset",
       "GroupBy": [
-        ""
+        "contrast"
       ],
       "Model": {
         "X": [
