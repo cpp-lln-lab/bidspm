@@ -372,6 +372,10 @@ function matlabbatch = bidsResultsSubject(opt, subLabel, iRes, isRunLevel)
         tmp.name = contrastName;
       end
 
+    else
+
+      tmp.name = contrastName;
+
     end
 
     tmp.dir = getFFXdir(subLabel, opt);
