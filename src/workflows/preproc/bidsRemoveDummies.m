@@ -15,7 +15,7 @@ function bidsRemoveDummies(varargin)
   %
   % :param force: use ``'force', true`` to remove dummy scans even if metadata say
   %               they have already been removed
-  % :type  force: boolean
+  % :type  force: logical
   %
   % EXAMPLE::
   %

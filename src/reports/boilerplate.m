@@ -22,7 +22,7 @@ function outputFile = boilerplate(varargin)
   % :type partialsPath: path
   %
   % :param verbose:
-  % :type verbose: boolean
+  % :type verbose: logical
   %
   %
   % EXAMPLE::

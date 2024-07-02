@@ -24,15 +24,15 @@ function matlabbatch = setBatchGenerateT1map(varargin)
   %
   % Relies on the MP2RAGE toolbox for SPM.
   %
-  %   https://github.com/benoitberanger/mp2rage
+  % https://github.com/benoitberanger/mp2rage
   %
   % Some non-BIDS metadata need to be added to the JSON files of the inversion
   % images for this to work (check the README of the toolbox for more info):
   %
-  %   - ``EchoSpacing``
-  %   - ``SlicePartialFourier`` or ``PartialFourierInSlice``:
-  %     between 0 and 1 (example: 6/8)
-  %   - ``FatSat``: must be "yes" or "no"
+  % - ``EchoSpacing``
+  % - ``SlicePartialFourier`` or ``PartialFourierInSlice``:
+  %   between 0 and 1 (example: 6/8)
+  % - ``FatSat``: must be "yes" or "no"
   %
   % Most of the those metadata should be available from the PDF of with yout
   % sequence details.

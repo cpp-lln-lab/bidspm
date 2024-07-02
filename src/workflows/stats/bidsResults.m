@@ -44,13 +44,13 @@ function matlabbatch = bidsResults(varargin)
   %
   % For each contrat, you can adapt:
   %
-  %  - voxel level threshold (``p``) [between 0 and 1]
-  %  - cluster level threshold (``k``) [positive integer]
-  %  - type of multiple comparison (``MC``):
+  % - voxel level threshold (``p``) [between 0 and 1]
+  % - cluster level threshold (``k``) [positive integer]
+  % - type of multiple comparison (``MC``):
   %
-  %    - ``'FWE'`` is the default
-  %    - ``'FDR'``
-  %    - ``'none'``
+  %   - ``'FWE'`` is the default
+  %   - ``'FDR'``
+  %   - ``'none'``
   %
   % You can thus specify something different for a second contrast::
   %
@@ -81,13 +81,13 @@ function matlabbatch = bidsResults(varargin)
   % will be labelled.
   % You can specify the atlas to use for that by choosing between
   %
-  %  - ``'Neuromorphometrics'`` (default)
-  %  - ``'aal'``
-  %  - ``'visfatlas'``
-  %  - ``'anatomy_toobox'``
-  %  - ``'hcpex'``
-  %  - ``'glasser'``
-  %  - ``'wang'``
+  % - ``'Neuromorphometrics'`` (default)
+  % - ``'aal'``
+  % - ``'visfatlas'``
+  % - ``'anatomy_toobox'``
+  % - ``'hcpex'``
+  % - ``'glasser'``
+  % - ``'wang'``
   %
   % .. code-block:: matlab
   %

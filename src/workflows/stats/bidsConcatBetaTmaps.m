@@ -11,7 +11,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
   %             See :func:`checkOptions`.
   %
   % :param deleteIndTmaps: decide to delete t-maps. Default to ``false``.
-  % :type deleteIndTmaps: (boolean)
+  % :type deleteIndTmaps: logical
   %
   % A valid BIDS stats model is required for this workflow:
   % this is because the beta images to concatenate

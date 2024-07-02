@@ -1,9 +1,9 @@
-function saveMatlabBatch(matlabbatch, batchType, opt, subLabel) %#ok<INUSL>
+function saveMatlabBatch(matlabbatch, batchType, opt, subLabel)
   %
   % Saves the matlabbatch job in a .m file.
   % Environment information are saved in a .json file.
   %
-  %  % USAGE::
+  % USAGE::
   %
   %   saveMatlabBatch(matlabbatch, batchType, opt, [subLabel])
   %

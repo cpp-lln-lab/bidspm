@@ -1,5 +1,11 @@
 # Outputs of bidspm
 
+```{toctree}
+
+mapping
+method_section
+```
+
 ## jobs and logs
 
 Each batch is saved in `jobs` folder in time a stamped m-file: those are more

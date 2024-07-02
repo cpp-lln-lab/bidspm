@@ -14,10 +14,10 @@ function bidsCopyInputFolder(varargin)
   % :type opt: structure
   %
   % :param unzip: defaults to true
-  % :type unzip: boolean
+  % :type unzip: logical
   %
   % :param force: defaults to true
-  % :type force: boolean
+  % :type force: logical
   %
   % See also: bids.copy_to_derivative
   %

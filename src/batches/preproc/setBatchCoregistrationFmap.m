@@ -18,7 +18,8 @@ function matlabbatch = setBatchCoregistrationFmap(matlabbatch, BIDS, opt, subLab
   % :param subLabel:
   % :type  subLabel: char
   %
-  % :return: :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  % :return: matlabbatch, The matlabbatch ready to run the spm job
+  % :rtype: structure
   %
   % TODO implement for 'phase12', 'fieldmap', 'epi'
   %

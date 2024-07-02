@@ -16,7 +16,7 @@ function bidsChangeSuffix(varargin)
   % :type  filter: structure
   %
   % :param force: If set to ``true`` it will overwrite already existing files. Default: ``false``
-  % :type  force: boolean
+  % :type  force: logical
   %
   %
   % EXAMPLE::

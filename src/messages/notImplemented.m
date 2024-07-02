@@ -15,7 +15,8 @@ function notImplemented(varargin)
   % :param opt:
   % :type  opt: struct
   %
-  % :return: :status: (boolean)
+  % :return: status
+  % :rtype: logical
   %
   % EXAMPLE::
   %

@@ -20,14 +20,14 @@ function bm = addConfoundsToDesignMatrix(varargin)
   %
   %                  The structure must have the following field:
   %
-  %                    - ``strategy``: cell array of char with the strategies to apply.
+  %                  - ``strategy``: cell array of char with the strategies to apply.
   %
   %                  The structure may have the following field:
   %
-  %                    - ``motion``: motion regressors strategy
-  %                    - ``scrub``: scrubbing strategy
-  %                    - ``wm_csf``: white matter and cerebrospinal fluid regressors strategy
-  %                    - ``non_steady_state``: non steady state regressors strategy
+  %                  - ``motion``: motion regressors strategy
+  %                  - ``scrub``: scrubbing strategy
+  %                  - ``wm_csf``: white matter and cerebrospinal fluid regressors strategy
+  %                  - ``non_steady_state``: non steady state regressors strategy
   %
   %                  See the nilearn documentation (mentioned above)
   %                  for more information on the possible values those strategies can take.

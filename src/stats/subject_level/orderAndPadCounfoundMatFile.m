@@ -17,7 +17,8 @@ function spmSessOut = orderAndPadCounfoundMatFile(varargin)
   %             See :func:`checkOptions`.
   % :type opt: structure
   %
-  % :return: :status: (boolean)
+  % :return: status
+  % :rtype: logical
   %
   %
   % See also: reorderCounfounds

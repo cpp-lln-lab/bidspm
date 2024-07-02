@@ -65,8 +65,8 @@ with. This class inherits from bids-matlab {mat:class}`+bids.Model` class.
 There are also extra functions to interact with those models.
 
 ```{eval-rst}
-- :func:`src.bids_model.getContrastsList`
-- :func:`src.bids_model.getDummyContrastsList`
+- :func:`getContrastsList`
+- :func:`getDummyContrastsList`
 ```
 
 ## bidspm implementation of the BIDS stats model
@@ -294,7 +294,7 @@ Corresponding options in SPM batch
 It is possible to specify the results you want to view directly the
 `Model.Software` object of any `Nodes` in the BIDS stats model.
 
-See the help section of the `bidsResults` function for more detail, but here is
+See the help section of the {func}`bidsResults` function for more detail, but here is
 an example how you could specify it in a JSON.
 
 ```json

@@ -21,7 +21,7 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   % :param subLabel:
   % :type  subLabel: char
   %
-  % :return: :matlabbatch:
+  % :return: matlabbatch
   %
 
   % (C) Copyright 2020 bidspm developers

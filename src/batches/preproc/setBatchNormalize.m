@@ -18,8 +18,8 @@ function matlabbatch = setBatchNormalize(matlabbatch, deformField, voxDim, imgTo
   % :param imgToResample:
   % :type  imgToResample:
   %
-  % :return: :matlabbatch: (structure)
-  %
+  % :return: matlabbatch
+  % :rtype: structure
 
   % (C) Copyright 2019 bidspm developers
 

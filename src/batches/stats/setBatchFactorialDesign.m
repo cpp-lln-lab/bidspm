@@ -16,8 +16,8 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
   % :param nodeName:
   % :type  nodeName: char
   %
-  % :return: :matlabbatch: (structure)
-  %
+  % :return: matlabbatch
+  % :rtype: structure
 
   % (C) Copyright 2019 bidspm developers
 

@@ -12,7 +12,8 @@ function status = noSPMmat(varargin)
   % :param spmMatFile:
   % :type spmMatFile: path
   %
-  % :return: :status: (boolean)
+  % :return: status
+  % :rtype: logical
   %
 
   % (C) Copyright 2022 bidspm developers

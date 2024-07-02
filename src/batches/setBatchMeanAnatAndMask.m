@@ -17,8 +17,8 @@ function matlabbatch = setBatchMeanAnatAndMask(matlabbatch, opt, outputDir)
   % :param outputDir:
   % :type  outputDir: string
   %
-  % :return: :matlabbatch: (structure)
-  %
+  % :return: matlabbatch
+  % :rtype: structure
 
   % (C) Copyright 2019 bidspm developers
 

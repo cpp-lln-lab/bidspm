@@ -11,8 +11,8 @@ function matlabbatch = setBatchLesionOverlapMap(matlabbatch, BIDS, opt, subLabel
   % :param matlabbatch: list of SPM batches
   % :type matlabbatch: structure
   %
-  % :return: :matlabbatch: (structure)
-  %
+  % :return: matlabbatch
+  % :rtype: structure
 
   % (C) Copyright 2021 bidspm developers
 

@@ -1,6 +1,9 @@
 Installation
 ************
 
+..  toctree::
+    docker
+
 Dependencies
 ============
 

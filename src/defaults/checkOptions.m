@@ -13,157 +13,157 @@ function opt = checkOptions(opt)
   % :rtype: structure
   %
   %
-  %  - **GENERIC OPTIONS**
+  % **GENERIC OPTIONS**
   %
-  %     - ``opt.dir`` - See ``setDirectories()``.
+  % - ``opt.dir`` - See ``setDirectories()``.
   %
-  %     - ``opt.groups = {''}`` -
-  %       Group of subjects to analyze
+  % - ``opt.groups = {''}`` -
+  %   Group of subjects to analyze
   %
-  %     - ``opt.subjects = {[]}`` -
-  %       Suject to run in each group.
+  % - ``opt.subjects = {[]}`` -
+  %   Suject to run in each group.
   %
-  %     - ``opt.space = {'individual', 'IXI549Space'}`` -
-  %       Space where we conduct the analysis
+  % - ``opt.space = {'individual', 'IXI549Space'}`` -
+  %   Space where we conduct the analysis
   %
-  %     - ``opt.taskName``
+  % - ``opt.taskName``
   %
-  %     - ``opt.query = struct('modality', {{'anat', 'func'}})`` -
-  %       a structure used to specify subset of files to only run analysis on.
-  %       See ``bids.query()`` to see how to specify.
+  % - ``opt.query = struct('modality', {{'anat', 'func'}})`` -
+  %   a structure used to specify subset of files to only run analysis on.
+  %   See ``bids.query()`` to see how to specify.
   %
-  %       .. warning::
+  %   .. warning::
   %
-  %         ``opt.query`` might be progressively deprecated in favor of ``opt.bidsFilterFile``
-  %         that allows using different filters for T1w and bold data.
+  %     ``opt.query`` might be progressively deprecated in favor of ``opt.bidsFilterFile``
+  %     that allows using different filters for T1w and bold data.
   %
-  %     - ``opt.bidsFilterFile`` -
-  %       Sets how to define a typical images "bold", "T1w"... in terms of their bids entities.
-  %       The default value is:
+  % - ``opt.bidsFilterFile`` -
+  %   Sets how to define a typical images "bold", "T1w"... in terms of their bids entities.
+  %   The default value is:
   %
-  %     .. code-block:: matlab
+  %   .. code-block:: matlab
   %
-  %        struct('fmap', struct('modality', 'fmap'), ...
-  %               'bold', struct('modality', 'func', 'suffix', 'bold'), ...
-  %               't2w',  struct('modality', 'anat', 'suffix', 'T2w'), ...
-  %               't1w',  struct('modality', 'anat', 'space', '', 'suffix', 'T1w'), ...
-  %               'roi',  struct('modality', 'roi', 'suffix', 'mask'), ...
-  %               'xfm',  struct('modality', 'anat', 'suffix', 'xfm', 'to', 'T1w'));
+  %      struct('fmap', struct('modality', 'fmap'), ...
+  %             'bold', struct('modality', 'func', 'suffix', 'bold'), ...
+  %             't2w',  struct('modality', 'anat', 'suffix', 'T2w'), ...
+  %             't1w',  struct('modality', 'anat', 'space', '', 'suffix', 'T1w'), ...
+  %             'roi',  struct('modality', 'roi', 'suffix', 'mask'), ...
+  %             'xfm',  struct('modality', 'anat', 'suffix', 'xfm', 'to', 'T1w'));
   %
-  %     - ``opt.verbosity = 1`` - Set it to ``0``
-  %       if you want to see less output on the prompt.
+  % - ``opt.verbosity = 1`` - Set it to ``0``
+  %   if you want to see less output on the prompt.
   %
-  %     - ``opt.tolerant = true`` -
-  %       Set it to ``false`` if you want turn warning into errors.
+  % - ``opt.tolerant = true`` -
+  %   Set it to ``false`` if you want turn warning into errors.
   %
-  %     - ``opt.dryRun = false`` -
-  %       Set it to ``true`` in case you don't want to run the analysis.
+  % - ``opt.dryRun = false`` -
+  %   Set it to ``true`` in case you don't want to run the analysis.
   %
-  %     - ``opt.pipeline.type = 'preproc'`` -
-  %       Switch it to ``stats`` when running GLMs.
-  %     - ``opt.pipeline.name``
-  %     - ``opt.pipeline.isBms`` whether this is a bayesion model selection
-  %       pipeline
+  % - ``opt.pipeline.type = 'preproc'`` -
+  %   Switch it to ``stats`` when running GLMs.
+  % - ``opt.pipeline.name``
+  % - ``opt.pipeline.isBms`` whether this is a bayesion model selection
+  %   pipeline
   %
-  %     - ``opt.boilerplateOnly = false`` -
-  %       If set to ``true`` only creates dataset description reports and methods description.
-  %       Overwrites previous versions.
+  % - ``opt.boilerplateOnly = false`` -
+  %   If set to ``true`` only creates dataset description reports and methods description.
+  %   Overwrites previous versions.
   %
-  %     - ``opt.zeropad = 2`` -
-  %       Number of zeros used for padding subject numbers,
-  %       in case subjects should be fetched by their index ``1``
-  %       and not their label ``O1'``.
+  % - ``opt.zeropad = 2`` -
+  %   Number of zeros used for padding subject numbers,
+  %   in case subjects should be fetched by their index ``1``
+  %   and not their label ``O1'``.
   %
-  %     - ``opt.rename.do = true`` -
-  %       Set to ``false`` to skip renaming files with ``bidsRename()``.
-  %       Mostly for debugging as the output files won't be usable
-  %       by any of the stats workflows.
-  %     - ``opt.rename.overwrite = true`` -
-  %       To overwrite any eventual previous output of ``bidsRename()``.
+  % - ``opt.rename.do = true`` -
+  %   Set to ``false`` to skip renaming files with ``bidsRename()``.
+  %   Mostly for debugging as the output files won't be usable
+  %   by any of the stats workflows.
+  % - ``opt.rename.overwrite = true`` -
+  %   To overwrite any eventual previous output of ``bidsRename()``.
   %
-  %     - ``opt.msg.color = blue`` -
-  %       Default font color of the prompt messages.
+  % - ``opt.msg.color = blue`` -
+  %   Default font color of the prompt messages.
   %
-  %  - **PREPROCESSING OPTIONS**
+  % **PREPROCESSING OPTIONS**
   %
-  %     - ``opt.realign.useUnwarp = true``
+  % - ``opt.realign.useUnwarp = true``
   %
-  %     - ``opt.useFieldmaps = true`` -
-  %       When set to ``true`` the preprocessing pipeline will look
-  %       for the voxel displacement maps (created by ``bidsCreateVDM()``)
-  %       and will use them for realign and unwarp.
+  % - ``opt.useFieldmaps = true`` -
+  %   When set to ``true`` the preprocessing pipeline will look
+  %   for the voxel displacement maps (created by ``bidsCreateVDM()``)
+  %   and will use them for realign and unwarp.
   %
-  %     - ``opt.fwhm.func = 6`` -
-  %       FWHM to apply to the preprocessed functional images.
+  % - ``opt.fwhm.func = 6`` -
+  %   FWHM to apply to the preprocessed functional images.
   %
-  %     - ``opt.anatOnly = false`` -
-  %       Set to ``true`` to only preprocess the anatomical file.
+  % - ``opt.anatOnly = false`` -
+  %   Set to ``true`` to only preprocess the anatomical file.
   %
-  %     - ``opt.segment.force = false`` -
-  %       Set to ``true`` to ignore previous output of the segmentation
-  %       and force to run it again
+  % - ``opt.segment.force = false`` -
+  %   Set to ``true`` to ignore previous output of the segmentation
+  %   and force to run it again
   %
-  %     - ``opt.skullstrip.mean = false`` -
-  %       Set to ``true`` to skulstrip mean functional image
-  %     - ``opt.skullstrip.threshold = 0.75`` -
-  %       Threshold used for the skull stripping.
-  %       Any voxel with
-  %       ``p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold``
-  %       will be included in the mask.
-  %     - ``opt.skullstrip.do = true``  -
-  %       Set to ``true`` to skip skullstripping.
+  % - ``opt.skullstrip.mean = false`` -
+  %   Set to ``true`` to skulstrip mean functional image
+  % - ``opt.skullstrip.threshold = 0.75`` -
+  %   Threshold used for the skull stripping.
+  %   Any voxel with
+  %   ``p(grayMatter) +  p(whiteMatter) + p(CSF) > threshold``
+  %   will be included in the mask.
+  % - ``opt.skullstrip.do = true``  -
+  %   Set to ``true`` to skip skullstripping.
   %
-  %     - ``opt.stc.skip = false`` -
-  %       Boolean flag to skip slice time correction or not.
-  %     - ``opt.stc.referenceSlice = []`` -
-  %       Reference slice (in seconds) for the slice timing correction.
-  %       If left empty the mid-volume acquisition time point will be selected at run time.
+  % - ``opt.stc.skip = false`` -
+  %   Boolean flag to skip slice time correction or not.
+  % - ``opt.stc.referenceSlice = []`` -
+  %   Reference slice (in seconds) for the slice timing correction.
+  %   If left empty the mid-volume acquisition time point will be selected at run time.
   %
-  %     - ``opt.funcVoxelDims = []`` -
-  %       Voxel dimensions to use for resampling of functional data at normalization.
+  % - ``opt.funcVoxelDims = []`` -
+  %   Voxel dimensions to use for resampling of functional data at normalization.
   %
   %
-  %  - **STATISTICS OPTIONS**
+  % **STATISTICS OPTIONS**
   %
-  %     - ``opt.model.file = ''`` -
-  %       Path to the BIDS model file that contains the model
-  %       to specify and the contrasts to compute.
-  %       A path to a dir can be passed as well.
-  %       In this case all ``*_smdl.json`` files will be used
-  %       and looped over.
-  %       This can useful to specify several models at once
-  %       Before running Bayesion model selection on them.
+  % - ``opt.model.file = ''`` -
+  %   Path to the BIDS model file that contains the model
+  %   to specify and the contrasts to compute.
+  %   A path to a dir can be passed as well.
+  %   In this case all ``*_smdl.json`` files will be used
+  %   and looped over.
+  %   This can useful to specify several models at once
+  %   Before running Bayesion model selection on them.
   %
-  %     - ``opt.fwhm.contrast = 0`` -
-  %       FWHM to apply to the contrast images before bringing them at the group level.
+  % - ``opt.fwhm.contrast = 0`` -
+  %   FWHM to apply to the contrast images before bringing them at the group level.
   %
-  %     - ``opt.model.designOnly =  false`` -
-  %       If set to ``true``, the GLM will be specified without associating any data to it.
-  %       Can be useful for quick design matrix inspection before running estimation.
+  % - ``opt.model.designOnly =  false`` -
+  %   If set to ``true``, the GLM will be specified without associating any data to it.
+  %   Can be useful for quick design matrix inspection before running estimation.
   %
-  %     - ``opt.glm.roibased.do = false`` -
-  %       Set to ``true`` to use the ``bidsRoiBasedGLM`` workflow.
-  %     - ``opt.glm.useDummyRegressor = false`` -
-  %       Set to ``true`` to add dummy regressors when a condition is missing from a run.
-  %       See ``bidsModelSelection()`` for more information.
-  %     - ``opt.glm.maxNbVols = Inf`` -
-  %       Sets the maximum number of volumes to include in a run in a subject level GLM.
-  %       This can be useful if some time series have more volumes than necessary.
-  %     - ``opt.glm.keepResiduals = false`` -
-  %       Keep the subject level GLM residuals if set to ``true``.
-  %     - ``opt.glm.concatenateRuns = false`` -
-  %       Concatenate "vertically" the images and and onsets of several run
-  %       when set to true.
-  %       Necessary to run a psycho-physiologial interaction analysis.
+  % - ``opt.glm.roibased.do = false`` -
+  %   Set to ``true`` to use the ``bidsRoiBasedGLM`` workflow.
+  % - ``opt.glm.useDummyRegressor = false`` -
+  %   Set to ``true`` to add dummy regressors when a condition is missing from a run.
+  %   See ``bidsModelSelection()`` for more information.
+  % - ``opt.glm.maxNbVols = Inf`` -
+  %   Sets the maximum number of volumes to include in a run in a subject level GLM.
+  %   This can be useful if some time series have more volumes than necessary.
+  % - ``opt.glm.keepResiduals = false`` -
+  %   Keep the subject level GLM residuals if set to ``true``.
+  % - ``opt.glm.concatenateRuns = false`` -
+  %   Concatenate "vertically" the images and and onsets of several run
+  %   when set to true.
+  %   Necessary to run a psycho-physiologial interaction analysis.
   %
-  %     - ``opt.QA.glm.do = false`` -
-  %       If set to ``true`` the residual images of a GLM at the subject levels
-  %       will be used to estimate if there is any remaining structure
-  %       in the GLM residuals (the power spectra are not flat) that could indicate
-  %       the subject level results are likely confounded.
-  %       See ``plot_power_spectra_of_GLM_residuals.m`` and `Accurate autocorrelation modeling
-  %       substantially improves fMRI reliability
-  %       <https://www.nature.com/articles/s41467-019-09230-w.pdf>`_ for more info.
+  % - ``opt.QA.glm.do = false`` -
+  %   If set to ``true`` the residual images of a GLM at the subject levels
+  %   will be used to estimate if there is any remaining structure
+  %   in the GLM residuals (the power spectra are not flat) that could indicate
+  %   the subject level results are likely confounded.
+  %   See ``plot_power_spectra_of_GLM_residuals.m`` and `Accurate autocorrelation modeling
+  %   substantially improves fMRI reliability
+  %   <https://www.nature.com/articles/s41467-019-09230-w.pdf>`_ for more info.
   %
   %
 

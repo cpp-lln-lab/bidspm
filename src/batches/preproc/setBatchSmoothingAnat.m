@@ -19,8 +19,8 @@ function matlabbatch = setBatchSmoothingAnat(matlabbatch, BIDS, opt, subLabel)
   % :param subLabel:
   % :type  subLabel:
   %
-  % :return: :matlabbatch: (structure)
-  %
+  % :return: matlabbatch
+  % :rtype: structure
   %
   % See also: bidsSmoothing, setBatchSmoothing
   %

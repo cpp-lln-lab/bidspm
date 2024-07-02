@@ -22,7 +22,8 @@ function matlabbatch = setBatchCoregistration(varargin)
   % :param other: Other images to apply the coregistration to
   % :type  other: cell string
   %
-  % :return: :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  % :return: matlabbatch, The matlabbatch ready to run the spm job
+  % :rtype: structure
   %
   %
 

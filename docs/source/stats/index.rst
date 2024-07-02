@@ -3,6 +3,10 @@
 Statistics
 **********
 
+..  toctree::
+    bids_stats_model
+
+
 Make sure you are familiar with the :ref:`bids_stats_model`,
 before you embark on to statistical analysis.
 

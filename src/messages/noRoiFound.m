@@ -12,7 +12,8 @@ function status = noRoiFound(varargin)
   % :param folder: optional argument. default: ``''``
   % :type folder: path
   %
-  % :return: :status: (boolean)
+  % :return: status
+  % :rtype: logical
   %
 
   % (C) Copyright 2022 bidspm developers

@@ -11,7 +11,8 @@ function matlabbatch = setBatchPrintFigure(matlabbatch, opt, figureName)
   % :param figureName:
   % :type figureName:  string
   %
-  % :return: :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  % :return: matlabbatch, The matlabbatch ready to run the spm job
+  % :rtype: structure
   %
 
   % (C) Copyright 2020 bidspm developers

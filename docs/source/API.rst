@@ -1,7 +1,7 @@
 .. _dev_doc:
 
-Developers documentation
-************************
+API
+***
 
 At the highest levels bidspm is organized in workflows:
 
@@ -51,7 +51,7 @@ workflows
 .. _workflows roi:
 
 workflows roi
-=============
+-------------
 .. _bidsCreateROI:
 .. autofunction:: src.workflows.roi.bidsCreateROI
 .. _bidsRoiBasedGLM:
@@ -61,7 +61,7 @@ workflows roi
 .. _workflows lesion:
 
 workflows lesion
-================
+----------------
 .. _bidsLesionAbnormalitiesDetection:
 .. autofunction:: src.workflows.lesion.bidsLesionAbnormalitiesDetection
 .. _bidsLesionOverlapMap:
@@ -73,7 +73,7 @@ workflows lesion
 .. _workflows stats:
 
 workflows stats
-===============
+---------------
 .. _bidsConcatBetaTmaps:
 .. autofunction:: src.workflows.stats.bidsConcatBetaTmaps
 .. _bidsFFX:
@@ -91,7 +91,7 @@ workflows stats
 .. _workflows preproc:
 
 workflows preproc
-=================
+-----------------
 .. _bidsCreateVDM:
 .. autofunction:: src.workflows.preproc.bidsCreateVDM
 .. _bidsGenerateT1map:
@@ -141,7 +141,7 @@ batches
 .. _batches lesion:
 
 batches lesion
-==============
+--------------
 .. _setBatchLesionAbnormalitiesDetection:
 .. autofunction:: src.batches.lesion.setBatchLesionAbnormalitiesDetection
 .. _setBatchLesionOverlapMap:
@@ -153,7 +153,7 @@ batches lesion
 .. _batches stats:
 
 batches stats
-=============
+-------------
 .. _setBatchContrasts:
 .. autofunction:: src.batches.stats.setBatchContrasts
 .. _setBatchEstimateModel:
@@ -164,10 +164,14 @@ batches stats
 .. autofunction:: src.batches.stats.setBatchFactorialDesignImplicitMasking
 .. _setBatchFatorialDesignGlobalCalcAndNorm:
 .. autofunction:: src.batches.stats.setBatchFatorialDesignGlobalCalcAndNorm
+.. _setBatchGoodnessOfFit:
+.. autofunction:: src.batches.stats.setBatchGoodnessOfFit
 .. _setBatchGroupLevelContrasts:
 .. autofunction:: src.batches.stats.setBatchGroupLevelContrasts
 .. _setBatchGroupLevelResults:
 .. autofunction:: src.batches.stats.setBatchGroupLevelResults
+.. _setBatchInformationCriteria:
+.. autofunction:: src.batches.stats.setBatchInformationCriteria
 .. _setBatchResults:
 .. autofunction:: src.batches.stats.setBatchResults
 .. _setBatchSubjectLevelContrasts:
@@ -183,7 +187,7 @@ batches stats
 .. _batches preproc:
 
 batches preproc
-===============
+---------------
 .. _setBatchComputeVDM:
 .. autofunction:: src.batches.preproc.setBatchComputeVDM
 .. _setBatchCoregistration:
@@ -282,6 +286,8 @@ QA
 .. autofunction:: src.QA.computeFDandRMS
 .. _computeRobustOutliers:
 .. autofunction:: src.QA.computeRobustOutliers
+.. _createDesignMatrix:
+.. autofunction:: src.QA.createDesignMatrix
 .. _mriqcQA:
 .. autofunction:: src.QA.mriqcQA
 .. _plotConfounds:
@@ -519,7 +525,7 @@ messages
 .. _preproc fieldmaps:
 
 preproc fieldmaps
-=================
+-----------------
 .. _getBlipDirection:
 .. autofunction:: src.preproc.fieldmaps.getBlipDirection
 .. _getMetadataFromIntendedForFunc:
@@ -533,7 +539,9 @@ preproc fieldmaps
 .. _preproc utils:
 
 preproc utils
-=============
+-------------
+.. _collectSrcMetadata:
+.. autofunction:: src.preproc.utils.collectSrcMetadata
 .. _createPialSurface:
 .. autofunction:: src.preproc.utils.createPialSurface
 .. _getAcquisitionTime:
@@ -544,6 +552,8 @@ preproc utils
 .. autofunction:: src.preproc.utils.segmentationAlreadyDone
 .. _skullstrippingAlreadyDone:
 .. autofunction:: src.preproc.utils.skullstrippingAlreadyDone
+.. _transferMetadataFromJson:
+.. autofunction:: src.preproc.utils.transferMetadataFromJson
 
 
 .. _reports:
@@ -561,7 +571,7 @@ reports
 .. _stats results:
 
 stats results
-=============
+-------------
 .. _convertPvalueToString:
 .. autofunction:: src.stats.results.convertPvalueToString
 .. _renameNidm:
@@ -585,13 +595,21 @@ stats results
 .. _stats subject_level:
 
 stats subject_level
-===================
+-------------------
 .. _allRunsHaveSameNbRegressors:
 .. autofunction:: src.stats.subject_level.allRunsHaveSameNbRegressors
 .. _appendContrast:
 .. autofunction:: src.stats.subject_level.appendContrast
 .. _checkRegressorName:
 .. autofunction:: src.stats.subject_level.checkRegressorName
+.. _concatenateConfounds:
+.. autofunction:: src.stats.subject_level.concatenateConfounds
+.. _concatenateImages:
+.. autofunction:: src.stats.subject_level.concatenateImages
+.. _concatenateOnsets:
+.. autofunction:: src.stats.subject_level.concatenateOnsets
+.. _concatenateRuns:
+.. autofunction:: src.stats.subject_level.concatenateRuns
 .. _constructContrastNameFromBidsEntity:
 .. autofunction:: src.stats.subject_level.constructContrastNameFromBidsEntity
 .. _convertOnsetTsvToMat:
@@ -643,7 +661,7 @@ stats subject_level
 .. _stats group_level:
 
 stats group_level
-=================
+-----------------
 .. _computeCumulativeFwhm:
 .. autofunction:: src.stats.group_level.computeCumulativeFwhm
 .. _findSubjectConImage:
@@ -657,11 +675,13 @@ stats group_level
 .. _stats utils:
 
 stats utils
-===========
+-----------
 .. _createGlmDirName:
 .. autofunction:: src.stats.utils.createGlmDirName
 .. _designMatrixFigureName:
 .. autofunction:: src.stats.utils.designMatrixFigureName
+.. _endsWithRunNumber:
+.. autofunction:: src.stats.utils.endsWithRunNumber
 .. _fillInResultStructure:
 .. autofunction:: src.stats.utils.fillInResultStructure
 .. _getContrastNb:

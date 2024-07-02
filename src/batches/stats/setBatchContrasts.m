@@ -19,8 +19,8 @@ function matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess)
   % :param consess:
   % :type  consess: cell
   %
-  % :return: :matlabbatch: (structure)
-  %
+  % :return: matlabbatch
+  % :rtype: structure
 
   % (C) Copyright 2019 bidspm developers
 

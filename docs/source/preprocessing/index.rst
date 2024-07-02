@@ -3,6 +3,10 @@
 Preprocessing
 *************
 
+..  toctree::
+    fieldmaps
+    mancoreg
+
 Preprocessing workflows
 =======================
 

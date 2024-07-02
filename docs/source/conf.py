@@ -46,6 +46,7 @@ matlab_src_dir = os.path.dirname(os.path.abspath("../../src"))
 matlab_short_links = True
 matlab_auto_link = "basic"
 primary_domain = "mat"
+autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -98,8 +99,8 @@ html_theme = "pydata_sphinx_theme"
 html_logo = "images/cpp_lab_logo.png"
 
 html_theme_options = {
-    "collapse_navigation": False,
-    "show_nav_level": 4,
+    "collapse_navigation": True,
+    "show_nav_level": 5,
     "icon_links": [
         {
             "name": "github",
@@ -108,7 +109,32 @@ html_theme_options = {
             "type": "fontawesome",
         }
     ],
+    "show_toc_level": 5,
+    "navbar_align": "left",
+    "secondary_sidebar_items": {
+        "**/*": ["page-toc", "edit-this-page", "sourcelink"],
+        "API": ["page-toc"],
+        "general_information": ["page-toc"],
+        "usage_notes": ["page-toc"],
+        "configuration": ["page-toc"],
+        "demos": ["page-toc"],
+        "FAQ": ["page-toc"],
+        "links_and_references": ["page-toc"],
+        "CHANGELOG": ["page-toc"],
+        "CONTRIBUTING": ["page-toc"],
+    },
 }
 
 
-html_sidebars = {"**": ["sidebar-nav-bs", "sidebar-ethical-ads"]}
+html_sidebars = {
+    "**": ["sidebar-nav-bs", "sidebar-ethical-ads"],
+    "API": [],
+    "general_information": [],
+    "usage_notes": [],
+    "configuration": [],
+    "demos": [],
+    "FAQ": [],
+    "links_and_references": [],
+    "CHANGELOG": [],
+    "CONTRIBUTING": [],
+}
