@@ -26,7 +26,7 @@ Welcome to bidspm documentation!
    fieldmaps
    quality_analysis
    mancoreg
-   docker
+   containers
    CHANGELOG
    links_and_references
    CONTRIBUTING

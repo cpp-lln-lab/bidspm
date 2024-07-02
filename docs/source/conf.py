@@ -53,7 +53,7 @@ templates_path = ["_templates"]
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ["examples", "defaults", "demo", "images/*.md", "lib/CPP_ROI"]
+exclude_patterns = ["examples", "defaults", "demo", "images/*.md", "lib/CPP_ROI/**"]
 
 suppress_warnings = ["myst.header", "myst.xref_missing"]
 
@@ -69,7 +69,7 @@ bibtex_bibfiles = ["references.bib"]
 source_suffix = ".rst"
 
 intersphinx_mapping = {
-    "bids-matlab": ("https://bids-matlab.readthedocs.io/en/latest", None)
+    "bids-matlab": ("https://bids-matlab.readthedocs.io/en/main", None)
 }
 
 coverage_show_missing_items = True

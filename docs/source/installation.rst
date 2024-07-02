@@ -71,6 +71,15 @@ You can also remove bidspm from the path with:
 Installation on a computing cluster
 ===================================
 
+.. warning::
+
+  If you are planning to use bidspm on a compute cluster,
+  it may be easier to use a containerized version of it.
+  The repository includes an Apptainer ``bidspm.def`` definition file
+  to help.
+
+  Please see the containers section of the documentation.
+
 ..
 
   For stand alone download
