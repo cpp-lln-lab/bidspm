@@ -13,27 +13,10 @@ Demos
 
 The demos show show you different way to use bidspm.
 
-MoAE
-====
+..  toctree::
+    :maxdepth: 2
 
-::
-
-    /demos/MoAE
-        ├── models
-        └── options
-
-This "Mother of All Experiments" is based on the block design dataset of SPM.
-
-In the ``options`` folder has several examples of how to encode the options of your
-analysis in a json file.
-
-In the ``models`` shows the BIDS statistical model used to run the GLM of this demo.
-
-.. automodule:: demos.MoAE
-.. autoscript:: moae_01_bids_app
-.. autoscript:: moae_fmriprep
-.. autoscript:: moae_02_create_roi_extract_data
-.. autoscript:: moae_03_slice_display
+    moae
 
 .. _face repetition demo:
 

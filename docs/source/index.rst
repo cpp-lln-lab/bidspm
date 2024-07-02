@@ -15,7 +15,7 @@ Welcome to bidspm documentation!
    installation/index
    usage_notes
    configuration
-   demos
+   demos/index
    faq/index
    stats/index
    preprocessing/index

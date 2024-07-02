@@ -31,18 +31,18 @@
 %   - ``bidsFFX.m``
 %   - ``bidsResults.m``
 %
-%  .. note::
+% .. note::
 %
-%        Results might be a bit different from those in the SPM manual as some
-%        default options are slightly different in this pipeline
-%        (e.g use of FAST instead of AR(1), motion regressors added)
-%
-%
-%  type `bidspm help` or `bidspm('action', 'help')`
-%  or see this page: https://bidspm.readthedocs.io/en/stable/bids_app_api.html
-%  for more information on what parameters are obligatory or optional
+%   Results might be a bit different from those in the SPM manual as some
+%   default options are slightly different in this pipeline
+%   (e.g use of FAST instead of AR(1), motion regressors added)
 %
 %
+% type `bidspm help` or `bidspm('action', 'help')`
+% or see this page: https://bidspm.readthedocs.io/en/stable/bids_app_api.html
+% for more information on what parameters are obligatory or optional
+%
+
 %  (C) Copyright 2022 Remi Gau
 
 % ## Note: octave notebook
