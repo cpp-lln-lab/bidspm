@@ -44,61 +44,6 @@ Please see our
 [documentation](https://bidspm.readthedocs.io/en/latest/installation.html) for
 more info.
 
-### Installing the Command line Interface (CLI)
-
-If you want to use the BIDS app python based CLI of bidspm.
-
-You need to
-
--   [python3](https://www.python.org/downloads/)
--   pip
-
-If you are using MATLAB, you need to edit the file `src/matlab.py`,
-so that it returns the fullpath to the MATLAB executable on your computer.
-
-You can then install the bidspm CLI from within the `bidspm` folder with:
-
-```bash
-pip install .
-```
-
-You can then type the following to see which command you have access to:
-```bash
-bidspm --help
-```
-
-### BIDS validation
-
-After installing bidspm python package, you can get access to extra validation options.
-
-### BIDS stats model validation
-
-Please see [the documentation](https://bidspm.readthedocs.io/en/latest/bids_stats_model.html#using-the-bids-stats-model-python-package)
-
-### BIDS dataset validation
-
-To run the bids-validator when running bidspm, you
-will need:
-
--   [node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
--   the bidspm python CLI (see above)
-
-You can then install:
-
--   the bids validator
-
-by running from the command line in the root folder of the repository:
-
-```bash
-make install
-```
-
-or
-
-```bash
-npm install -g bids-validator
-```
-
 ## Usage
 
 For some of its functionality bidspm has a BIDS app like API.

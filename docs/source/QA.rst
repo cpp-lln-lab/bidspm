@@ -10,7 +10,7 @@ Quality control
 
 
 - :func:`anatQA`
-- :func:`functionalQA`
+- :func:`bidsQApreproc`
 
 .. _fig_spatialPrepro-reports:
 .. figure::  preprocessing/images/bidsSpatialPrepro/out_report.png

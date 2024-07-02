@@ -16,7 +16,7 @@ function bidsResliceTpmToFunc(opt)
   % by :func:`bidsSpatialPrepro`
   % or :func:`bidsSegmentSkullStrip`.
   %
-  % It is necessary to run this workflow before running the ``functionalQA`` pipeline
+  % It is necessary to run this workflow before running the :func:`bidsQApreproc` pipeline
   % as the computation of the tSNR by ``spmup`` requires the TPMs to have the same dimension
   % as the functional.
   %
