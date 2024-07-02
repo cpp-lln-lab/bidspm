@@ -7,11 +7,11 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
   %   opt = createDefaultStatsModel(BIDS, opt)
   %
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
   % :type  BIDS: struct or path
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   % :param ignore: Optional. Cell string that can contain:

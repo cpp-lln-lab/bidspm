@@ -13,7 +13,7 @@ function davg = getDist2surf(varargin)
   %
   % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
   % :return: :davg: (float) (1 x 1)
   %

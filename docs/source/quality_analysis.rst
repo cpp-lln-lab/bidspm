@@ -9,11 +9,11 @@ Quality control
    mentioned in them already exist.
 
 
-- :func:`anatomicalQA`
+- :func:`anatQA`
 - :func:`functionalQA`
 
 .. _fig_spatialPrepro-reports:
-.. figure::  images/bidsSpatialPrepro/out_report.png
+.. figure::  preprocessing/images/bidsSpatialPrepro/out_report.png
    :align:   center
 
    workflows for QA as part of the spatial preprocessing workflow

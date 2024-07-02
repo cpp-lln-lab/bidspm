@@ -54,11 +54,14 @@ templates_path = ["_templates"]
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = [
-    "examples",
-    "defaults",
+    "**/examples/*",
+    "**/images/*",
+    "**/lib/**",
     "demo",
-    "images/*.md",
-    "lib/**/*.m",
+    "defaults",
+    "examples",
+    "images",
+    "lib",
     "tests/**/*.m",
 ]
 
@@ -73,7 +76,6 @@ master_doc = "index"
 bibtex_bibfiles = ["references.bib"]
 
 source_suffix = [".rst", ".md"]
-# source_suffix = ".rst"
 
 intersphinx_mapping = {
     "bids-matlab": ("https://bids-matlab.readthedocs.io/en/main", None)
@@ -97,5 +99,16 @@ html_logo = "images/cpp_lab_logo.png"
 
 html_theme_options = {
     "collapse_navigation": False,
-    "navigation_depth": 4,
+    "show_nav_level": 4,
+    "icon_links": [
+        {
+            "name": "github",
+            "url": "https://github.com/cpp-lln-lab/bidspm.git",
+            "icon": "fa-brands fa-square-github",
+            "type": "fontawesome",
+        }
+    ],
 }
+
+
+html_sidebars = {"**": ["sidebar-nav-bs", "sidebar-ethical-ads"]}

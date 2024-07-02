@@ -11,7 +11,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
   %
   % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
   % :param nodeName:
   % :type  nodeName: char

@@ -1,7 +1,7 @@
 {# FAQ template #}
 <!-- DO NOT EDIT MANUALLY -->
 (faq)=
-# Frequently Asked Questions
+# FAQ
 
 {%- for question in questions %}
 - [{{ question.title }}](#{{ question.slug }})

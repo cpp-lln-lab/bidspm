@@ -13,7 +13,7 @@ function matlabbatch = setBatchSmoothingAnat(matlabbatch, BIDS, opt, subLabel)
   % :param BIDS: dataset layout.
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   % :param subLabel:

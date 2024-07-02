@@ -12,25 +12,45 @@ Welcome to bidspm documentation!
    :caption: Content
 
    general_information
-   installation
    usage_notes
    configuration
-   bids_stats_model
    demos
-   statistics
-   preprocessing
-   output_files
-   mapping
-   method_section
    FAQ
-   fieldmaps
    quality_analysis
-   mancoreg
-   docker
    CHANGELOG
    links_and_references
    CONTRIBUTING
    dev_doc
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Installation
+
+   installation/installation
+   installation/docker
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Preprocessing
+
+   preprocessing/preprocessing
+   preprocessing/fieldmaps
+   preprocessing/mancoreg
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Stats
+
+   stats/statistics
+   stats/bids_stats_model
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Output
+
+   output/output_files
+   output/method_section
+   output/mapping
 
 
 Indices and tables

@@ -16,7 +16,7 @@ function opt = loadAndCheckOptions(optionJsonFile)
   %                        containing the options.
   % :type optionJsonFile: char
   %
-  % :returns: :opt: (structure) Options chosen for the analysis. See ``checkOptions()``.
+  % :return: opt: (structure) Options chosen for the analysis. See ``checkOptions()``.
   %
   % .. TODO
   %

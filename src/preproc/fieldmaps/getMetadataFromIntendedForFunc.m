@@ -10,12 +10,12 @@ function [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmap
   %   [totalReadoutTime, blipDir] = getMetadataFromIntendedForFunc(BIDS, fmapMetadata)
   %
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
   % :type BIDS: structure
   % :param fmapMetadata:
   % :type fmapMetadata: structure
   %
-  % :returns: :totalReadoutTime: (type) (dimension)
+  % :return: totalReadoutTime: (type) (dimension)
   %           :blipDir: (type) (dimension)
   %
   % At the moment the VDM is created based on the characteristics of the last

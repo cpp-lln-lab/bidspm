@@ -11,7 +11,7 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile, runDur
   %   onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile)
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   % :param subLabel:
@@ -24,7 +24,7 @@ function onsetFilename = createAndReturnOnsetFile(opt, subLabel, tsvFile, runDur
   %                     Events occurring later than this will be excluded.
   % :type  runDuration: numeric
   %
-  % :returns: :onsetFilename: (path) fullpath name of the file created.
+  % :return: onsetFilename: (path) fullpath name of the file created.
   %
   % See also: convertOnsetTsvToMat
   %

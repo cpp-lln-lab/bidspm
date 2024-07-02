@@ -49,6 +49,7 @@ doc = [
     "sphinxcontrib-bibtex",
     "sphinxcontrib-matlabdomain",
     "sphinxcontrib-mermaid",
+    "setuptools"
 ]
 docs = ["bidspm[doc]"]
 style = [

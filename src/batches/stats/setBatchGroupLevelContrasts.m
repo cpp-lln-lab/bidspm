@@ -8,13 +8,14 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
   % :type matlabbatch: structure
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
+  %
   % :type  opt: structure
   %
   % :param nodeName:
   % :type nodeName: char
   %
-  % :return: :matlabbatch:
+  % :return: matlabbatch
   %
   %
   %

@@ -4,9 +4,10 @@ function volumes = returnVolumeList(varargin)
   %
   %   volumes = returnVolumeList(opt, boldFile)
   %
-  % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
+  % :type opt:  structure
+  %
   % :param boldFile:
   % :type boldFile: fullpath
   %

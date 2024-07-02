@@ -8,7 +8,7 @@ function matlabbatch = bidsModelSelection(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type opt: structure
   % :param action: any of ``'all'``, ``'modelSpace'``, ``'cvLME'``,
   %                ``'posterior'``, ``'BMS'``

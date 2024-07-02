@@ -1,7 +1,7 @@
 
 <!-- DO NOT EDIT MANUALLY -->
 (faq)=
-# Frequently Asked Questions
+# FAQ
 - [BIDS: What is a BIDS way to name and store Regions of Interest (ROIs)?](#bids-what-is-a-bids-way-to-name-and-store-regions-of-interest-rois)
 - [General: Can I use parallelization with bidspm?](#general-can-i-use-parallelization-with-bidspm)
 - [General: How can I know that things are set up properly before I run an analysis?](#general-how-can-i-know-that-things-are-set-up-properly-before-i-run-an-analysis)

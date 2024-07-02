@@ -15,10 +15,11 @@ function [matlabbatch, voxDim, srcMetadata] = setBatchRealign(varargin)
   %
   % :type  BIDS: structure
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
+  %
   % :type  opt: structure
   %
   % :param subLabel: subject label
@@ -27,9 +28,11 @@ function [matlabbatch, voxDim, srcMetadata] = setBatchRealign(varargin)
   % :param action: ``realign``, ``realignReslice``, ``realignUnwarp``, ``'reslice'``
   % :type  action: char
   %
-  % :return: :matlabbatch: (structure)
+  % :return: matlabbatch
   %           - :voxDim:      (array)
   %           - :srcMetadata: (structure)
+  %
+  % :rtype: structure
   %
   %
 

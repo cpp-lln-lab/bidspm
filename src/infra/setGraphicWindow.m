@@ -6,13 +6,12 @@ function [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
   %
   %   [interactiveWindow, graphWindow, cmdLine] = setGraphicWindow(opt)
   %
-  % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
-  % :return: :interactiveWindow:
-  %           - :graphWindow:
-  %           - :cmdLine: (boolean)
+  % :type opt:  structure
+  %
+  % :return: interactiveWindow, graphWindow, cmdLine
   %
 
   % (C) Copyright 2019 bidspm developers

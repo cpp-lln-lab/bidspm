@@ -26,7 +26,7 @@ function [e, X] = computeDesignEfficiency(tsvFile, opt)
   % :type tsvFile: char
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   %

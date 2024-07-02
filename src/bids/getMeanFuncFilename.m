@@ -7,18 +7,23 @@ function [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt)
   %   [meanImage, meanFuncDir] = getMeanFuncFilename(BIDS, subLabel, opt)
   %
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
+  %
   % :type BIDS: structure
   %
   % :param subLabel:
   % :type  subLabel: char
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
+  %
   % :type  opt: structure
   %
-  % :return: :meanImage: (string)
-  %           - :meanFuncDir: (string)
+  % :return: meanImage
+  % :rtype: string
+  %
+  % :return: meanFuncDir
+  % :rtype: string
   %
 
   % (C) Copyright 2020 bidspm developers

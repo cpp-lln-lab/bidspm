@@ -26,7 +26,7 @@ See this [section](general_information#bidspm)
 You can add those lines to the `.vscode/settings.json` of your project to help
 you validate BIDS stats models as you write them.
 
-```{literalinclude} ../../.vscode/settings.json
+```{literalinclude} ../../../.vscode/settings.json
    :language: json
 ```
 
@@ -437,7 +437,7 @@ outputFile = boilerplate(opt, ...
                         'pipelineType', 'stats');
 ```
 
-```{literalinclude} ./examples/stats.md
+```{literalinclude} ../output/examples/stats.md
    :language: markdown
 ```
 
@@ -446,7 +446,7 @@ outputFile = boilerplate(opt, ...
 Those are not yet fully implemented but there is an example of how to get
 started in the face repetition demo folder.
 
-```{literalinclude} ../../demos/face_repetition/models/model-faceRepetitionParametric_smdl.json
+```{literalinclude} ../../../demos/face_repetition/models/model-faceRepetitionParametric_smdl.json
    :language: json
 ```
 
@@ -468,6 +468,6 @@ Several of the [demos](demos) have their own model and you can find several
 
 An example of JSON file could look something like that:
 
-```{literalinclude} ../../tests/data/models/model-vislocalizer_smdl.json
+```{literalinclude} ../../../tests/data/models/model-vislocalizer_smdl.json
    :language: json
 ```

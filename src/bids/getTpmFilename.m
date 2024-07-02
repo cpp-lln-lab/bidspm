@@ -7,11 +7,13 @@ function [gm, wm, csf] = getTpmFilename(BIDS, anatImage, res, space)
   %   [gm, wm, csf] = getTpmFilenames(BIDS, opt, subLabel, space, res)
   %
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData
+  %
   % :type  BIDS: structure
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See checkOptions
+  %
   % :type opt:  structure
   %
   % :param anatImage:
@@ -23,9 +25,21 @@ function [gm, wm, csf] = getTpmFilename(BIDS, anatImage, res, space)
   % :param res:
   % :param res: char
   %
-  % :return: :gm: (string) grey matter TPM
-  %           - :wm: (string) white matter TPM
-  %           - :csf: (string) csf matter TPM
+  % :return: gm
+  %          grey matter TPM
+  %
+  % :rtype:  string
+  %
+  % :return: wm
+  %          white matter TPM
+  %
+  % :rtype:  string
+  %
+  % :return: csf
+  %          csf TPM
+  %
+  % :rtype:  string
+  %
   %
 
   % (C) Copyright 2021 bidspm developers

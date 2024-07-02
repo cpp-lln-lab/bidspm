@@ -3,7 +3,7 @@ function bidspmHelp()
   % General intro function for bidspm
   %
   %
-  % Note::
+  % .. note::
   %
   %   - all parameters use ``snake_case``
   %   - most "invalid" calls simply initialize bidspm
@@ -283,6 +283,7 @@ function bidspmHelp()
   %
   %   - ``'stats'``          runs model specification / estimation,
   %     contrast computation, display results
+  %
   %   - ``'contrasts'``      runs contrast computation, display results
   %   - ``'results'``        displays results
   %   - ``'specify_only'``   only specifies the models
@@ -321,7 +322,7 @@ function bidspmHelp()
   % :param model_file:  Path to the BIDS model file that contains the model
   %                     to specify and the contrasts to compute.
   %                     A path to a dir can be passed as well.
-  %                     In this case all *_smdl.json files will be used
+  %                     In this case all ``*_smdl.json`` files will be used
   %                     and looped over.
   %                     This can useful to specify several models at once
   %                     Before running Bayesion model selection on them.

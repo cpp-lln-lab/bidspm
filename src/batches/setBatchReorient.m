@@ -9,9 +9,10 @@ function matlabbatch = setBatchReorient(varargin)
   % :param matlabbatch: matlabbatch to append to.
   % :type  matlabbatch: cell
   %
-  % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
+  %
+  % :type  opt:  structure
   %
   % :param images:
   % :type  images: cell string

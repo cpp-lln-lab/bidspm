@@ -6,16 +6,16 @@ function opt = checkOptions(opt)
   %
   %   opt = checkOptions(opt)
   %
-  % :type  opt: structure
   % :param opt: Options chosen for the analysis.
+  % :type  opt: structure
   %
-  % :returns:
+  % :return: opt
+  % :rtype: structure
   %
-  % - :opt: the option structure with missing values filled in by the defaults.
   %
   %  - **GENERIC OPTIONS**
   %
-  %     - ``opt.dir`` - See ``setDirectories()`.
+  %     - ``opt.dir`` - See ``setDirectories()``.
   %
   %     - ``opt.groups = {''}`` -
   %       Group of subjects to analyze
@@ -129,7 +129,7 @@ function opt = checkOptions(opt)
   %       Path to the BIDS model file that contains the model
   %       to specify and the contrasts to compute.
   %       A path to a dir can be passed as well.
-  %       In this case all *_smdl.json files will be used
+  %       In this case all ``*_smdl.json`` files will be used
   %       and looped over.
   %       This can useful to specify several models at once
   %       Before running Bayesion model selection on them.

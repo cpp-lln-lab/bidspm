@@ -7,25 +7,27 @@ function filenames = getConfoundsRegressorFilename(BIDS, opt, subLabel, session,
   %   realignParamFile = getRealignParamFile(BIDS, subLabel, session, run, opt)
   %
   % :param BIDS:       dataset layout.
-  %                    See also: bids.layout, getData.
+  %                    See bids.layout, getData.
   % :type BIDS:        structure
   %
-  % :param subLabel:  label of the subject ; in BIDS lingo that means that for a file name
-  %                   ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``
+  % :param subLabel:  label of the subject
+  %                   in BIDS lingo that means that for a file name
+  %                   ``sub-02_task-foo_bold.nii`` the subLabel will be the string ``02``.
   % :type subLabel:   char
   %
-  % :param session:   session label (for `ses-001`, the label will be `001`)
+  % :param session:   session label (for ``ses-001``, the label will be ``001``)
   % :type session:    char
   %
-  % :param run:       run index label (for `run-001`, the label will be `001`)
+  % :param run:       run index label (for ``run-001``, the label will be ``001``)
   % :type run:        char
   %
   % :param opt:       Options chosen for the analysis.
-  %                   See checkOptions.
+  %                   See :func:`checkOptions`.
   % :type opt:        structure
   %
   %
-  % :return: :filename: (string)
+  % :return: filename
+  % :rtype: string
   %
 
   % (C) Copyright 2021 bidspm developers
