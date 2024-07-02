@@ -48,20 +48,20 @@ workflows
 .. autofunction:: src.workflows.bidsReport
 
 
-.. _workflows roi:
+.. _roi:
 
-workflows roi
--------------
+roi
+---
 .. _bidsCreateROI:
 .. autofunction:: src.workflows.roi.bidsCreateROI
 .. _bidsRoiBasedGLM:
 .. autofunction:: src.workflows.roi.bidsRoiBasedGLM
 
 
-.. _workflows lesion:
+.. _lesion:
 
-workflows lesion
-----------------
+lesion
+------
 .. _bidsLesionAbnormalitiesDetection:
 .. autofunction:: src.workflows.lesion.bidsLesionAbnormalitiesDetection
 .. _bidsLesionOverlapMap:
@@ -70,10 +70,10 @@ workflows lesion
 .. autofunction:: src.workflows.lesion.bidsLesionSegmentation
 
 
-.. _workflows stats:
+.. _stats:
 
-workflows stats
----------------
+stats
+-----
 .. _bidsConcatBetaTmaps:
 .. autofunction:: src.workflows.stats.bidsConcatBetaTmaps
 .. _bidsFFX:
@@ -88,10 +88,10 @@ workflows stats
 .. autofunction:: src.workflows.stats.bidsSmoothContrasts
 
 
-.. _workflows preproc:
+.. _preproc:
 
-workflows preproc
------------------
+preproc
+-------
 .. _bidsCreateVDM:
 .. autofunction:: src.workflows.preproc.bidsCreateVDM
 .. _bidsGenerateT1map:
@@ -138,10 +138,10 @@ batches
 .. autofunction:: src.batches.setBatchSelectAnat
 
 
-.. _batches lesion:
+.. _lesion:
 
-batches lesion
---------------
+lesion
+------
 .. _setBatchLesionAbnormalitiesDetection:
 .. autofunction:: src.batches.lesion.setBatchLesionAbnormalitiesDetection
 .. _setBatchLesionOverlapMap:
@@ -150,10 +150,10 @@ batches lesion
 .. autofunction:: src.batches.lesion.setBatchLesionSegmentation
 
 
-.. _batches stats:
+.. _stats:
 
-batches stats
--------------
+stats
+-----
 .. _setBatchContrasts:
 .. autofunction:: src.batches.stats.setBatchContrasts
 .. _setBatchEstimateModel:
@@ -184,10 +184,10 @@ batches stats
 .. autofunction:: src.batches.stats.setBatchTwoSampleTTest
 
 
-.. _batches preproc:
+.. _preproc:
 
-batches preproc
----------------
+preproc
+-------
 .. _setBatchComputeVDM:
 .. autofunction:: src.batches.preproc.setBatchComputeVDM
 .. _setBatchCoregistration:
@@ -522,10 +522,16 @@ messages
 .. autofunction:: src.messages.timeStamp
 
 
-.. _preproc fieldmaps:
+.. _preproc:
 
-preproc fieldmaps
------------------
+preproc
+=======
+
+
+.. _fieldmaps:
+
+fieldmaps
+---------
 .. _getBlipDirection:
 .. autofunction:: src.preproc.fieldmaps.getBlipDirection
 .. _getMetadataFromIntendedForFunc:
@@ -536,10 +542,10 @@ preproc fieldmaps
 .. autofunction:: src.preproc.fieldmaps.getVdmFile
 
 
-.. _preproc utils:
+.. _utils:
 
-preproc utils
--------------
+utils
+-----
 .. _collectSrcMetadata:
 .. autofunction:: src.preproc.utils.collectSrcMetadata
 .. _createPialSurface:
@@ -568,10 +574,22 @@ reports
 .. autofunction:: src.reports.copyGraphWindownOutput
 
 
-.. _stats results:
+.. _partials:
 
-stats results
--------------
+partials
+--------
+
+
+.. _stats:
+
+stats
+=====
+
+
+.. _results:
+
+results
+-------
 .. _convertPvalueToString:
 .. autofunction:: src.stats.results.convertPvalueToString
 .. _renameNidm:
@@ -592,10 +610,10 @@ stats results
 .. autofunction:: src.stats.results.setNidm
 
 
-.. _stats subject_level:
+.. _subject_level:
 
-stats subject_level
--------------------
+subject_level
+-------------
 .. _allRunsHaveSameNbRegressors:
 .. autofunction:: src.stats.subject_level.allRunsHaveSameNbRegressors
 .. _appendContrast:
@@ -658,10 +676,10 @@ stats subject_level
 .. autofunction:: src.stats.subject_level.specifySubLvlContrasts
 
 
-.. _stats group_level:
+.. _group_level:
 
-stats group_level
------------------
+group_level
+-----------
 .. _computeCumulativeFwhm:
 .. autofunction:: src.stats.group_level.computeCumulativeFwhm
 .. _findSubjectConImage:
@@ -672,10 +690,10 @@ stats group_level
 .. autofunction:: src.stats.group_level.groupLevelGlmType
 
 
-.. _stats utils:
+.. _utils:
 
-stats utils
------------
+utils
+-----
 .. _createGlmDirName:
 .. autofunction:: src.stats.utils.createGlmDirName
 .. _designMatrixFigureName:

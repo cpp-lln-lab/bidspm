@@ -16,7 +16,7 @@ file_ignore_list = "BidsModel"
 
 
 def return_title(path: Path, parent_folder=None, level=1):
-    tmp = f"{path.name}" if parent_folder is None else f"{parent_folder} {path.name}"
+    tmp = f"{path.name}"  # if parent_folder is None else f"{parent_folder} {path.name}"
     tmp.replace("_", " ")
 
     if level == 1:
@@ -39,9 +39,8 @@ def append_dir_content(
 
     m_files = sorted(list(path.glob("*.m")))
 
-    if len(m_files) > 0:
-        title = return_title(path=path, parent_folder=parent_folder, level=level)
-        content += title
+    title = return_title(path=path, parent_folder=parent_folder, level=level)
+    content += title
 
     for file in m_files:
         if file.stem in file_ignore_list:

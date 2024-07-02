@@ -16,12 +16,12 @@ Welcome to bidspm documentation!
    usage_notes
    configuration
    demos
+   FAQ
    stats/index
    preprocessing/index
    output/index
-   FAQ
-   quality_analysis
+   QA
+   API
    links_and_references
    CHANGELOG
    CONTRIBUTING
-   API

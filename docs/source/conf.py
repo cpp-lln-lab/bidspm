@@ -100,7 +100,10 @@ html_logo = "images/cpp_lab_logo.png"
 
 html_theme_options = {
     "collapse_navigation": True,
+    "show_toc_level": 5,
     "show_nav_level": 5,
+    "navbar_align": "left",
+    "header_links_before_dropdown": 6,
     "icon_links": [
         {
             "name": "github",
@@ -109,8 +112,6 @@ html_theme_options = {
             "type": "fontawesome",
         }
     ],
-    "show_toc_level": 5,
-    "navbar_align": "left",
     "secondary_sidebar_items": {
         "**/*": ["page-toc", "edit-this-page", "sourcelink"],
         "API": ["page-toc"],
@@ -134,6 +135,7 @@ html_sidebars = {
     "configuration": [],
     "demos": [],
     "FAQ": [],
+    "QA": [],
     "links_and_references": [],
     "CHANGELOG": [],
     "CONTRIBUTING": [],
