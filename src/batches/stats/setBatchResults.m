@@ -14,14 +14,15 @@ function matlabbatch = setBatchResults(matlabbatch, opt, result)
   % :param results:
   % :type results: structure
   %
-  %   results.dir = ffxDir;
-  %   results.contrastNb = conNb;
-  %   results.label = subLabel;
-  %   results.nbSubj = 1;
+  % - ``results.dir = ffxDir;``
+  % - ``results.contrastNb = conNb;``
+  % - ``results.label = subLabel;``
+  % - ``results.nbSubj = 1;``
   %
   % :return: matlabbatch
   % :rtype: structure
-  % See also: setBatchSubjectLevelResults, setBatchGroupLevelResults
+  %
+  % See: :func:`setBatchSubjectLevelResults`, :func:`setBatchGroupLevelResults`
   %
   %
 

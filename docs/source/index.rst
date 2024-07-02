@@ -16,7 +16,7 @@ Welcome to bidspm documentation!
    usage_notes
    configuration
    demos
-   FAQ
+   faq/index
    stats/index
    preprocessing/index
    output/index

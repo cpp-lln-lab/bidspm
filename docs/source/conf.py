@@ -78,9 +78,9 @@ bibtex_bibfiles = ["references.bib"]
 
 source_suffix = [".rst", ".md"]
 
-intersphinx_mapping = {
-    "bids-matlab": ("https://bids-matlab.readthedocs.io/en/main", None)
-}
+# intersphinx_mapping = {
+#     "bids-matlab": ("https://bids-matlab.readthedocs.io/en/main", None)
+# }
 
 coverage_show_missing_items = True
 

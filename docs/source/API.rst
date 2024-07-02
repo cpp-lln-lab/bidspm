@@ -27,9 +27,6 @@ Other workflows, batches and related helper functions are listed below.
 
 .. AUTOMATICALLY GENERATED
 
-
-.. _workflows:
-
 workflows
 =========
 .. _bidsChangeSuffix:
@@ -47,18 +44,12 @@ workflows
 .. _bidsReport:
 .. autofunction:: src.workflows.bidsReport
 
-
-.. _roi:
-
 roi
 ---
 .. _bidsCreateROI:
 .. autofunction:: src.workflows.roi.bidsCreateROI
 .. _bidsRoiBasedGLM:
 .. autofunction:: src.workflows.roi.bidsRoiBasedGLM
-
-
-.. _lesion:
 
 lesion
 ------
@@ -68,9 +59,6 @@ lesion
 .. autofunction:: src.workflows.lesion.bidsLesionOverlapMap
 .. _bidsLesionSegmentation:
 .. autofunction:: src.workflows.lesion.bidsLesionSegmentation
-
-
-.. _stats:
 
 stats
 -----
@@ -86,9 +74,6 @@ stats
 .. autofunction:: src.workflows.stats.bidsResults
 .. _bidsSmoothContrasts:
 .. autofunction:: src.workflows.stats.bidsSmoothContrasts
-
-
-.. _preproc:
 
 preproc
 -------
@@ -115,9 +100,6 @@ preproc
 .. _bidsWholeBrainFuncMask:
 .. autofunction:: src.workflows.preproc.bidsWholeBrainFuncMask
 
-
-.. _batches:
-
 batches
 =======
 .. _saveMatlabBatch:
@@ -137,9 +119,6 @@ batches
 .. _setBatchSelectAnat:
 .. autofunction:: src.batches.setBatchSelectAnat
 
-
-.. _lesion:
-
 lesion
 ------
 .. _setBatchLesionAbnormalitiesDetection:
@@ -148,9 +127,6 @@ lesion
 .. autofunction:: src.batches.lesion.setBatchLesionOverlapMap
 .. _setBatchLesionSegmentation:
 .. autofunction:: src.batches.lesion.setBatchLesionSegmentation
-
-
-.. _stats:
 
 stats
 -----
@@ -182,9 +158,6 @@ stats
 .. autofunction:: src.batches.stats.setBatchSubjectLevelResults
 .. _setBatchTwoSampleTTest:
 .. autofunction:: src.batches.stats.setBatchTwoSampleTTest
-
-
-.. _preproc:
 
 preproc
 -------
@@ -229,9 +202,6 @@ preproc
 .. _setBatchSmoothingFunc:
 .. autofunction:: src.batches.preproc.setBatchSmoothingFunc
 
-
-.. _IO:
-
 IO
 ==
 .. _addGitIgnore:
@@ -269,9 +239,6 @@ IO
 .. _unzipAndReturnsFullpathName:
 .. autofunction:: src.IO.unzipAndReturnsFullpathName
 
-
-.. _QA:
-
 QA
 ==
 .. _anatQA:
@@ -298,9 +265,6 @@ QA
 .. autofunction:: src.QA.plotRoiTimeCourse
 .. _realignQA:
 .. autofunction:: src.QA.realignQA
-
-
-.. _bids:
 
 bids
 ====
@@ -345,9 +309,6 @@ bids
 .. _validate:
 .. autofunction:: src.bids.validate
 
-
-.. _bids_model:
-
 bids_model
 ==========
 .. _addConfoundsToDesignMatrix:
@@ -372,9 +333,6 @@ bids_model
 .. autofunction:: src.bids_model.getDummyContrastsList
 .. _getInclusiveMask:
 .. autofunction:: src.bids_model.getInclusiveMask
-
-
-.. _cli:
 
 cli
 ===
@@ -413,16 +371,10 @@ cli
 .. _inputParserForStats:
 .. autofunction:: src.cli.inputParserForStats
 
-
-.. _constants:
-
 constants
 =========
 .. _lowLevelActions:
 .. autofunction:: src.constants.lowLevelActions
-
-
-.. _defaults:
 
 defaults
 ========
@@ -450,9 +402,6 @@ defaults
 .. autofunction:: src.defaults.spm_my_defaults
 .. _validateResultsStructure:
 .. autofunction:: src.defaults.validateResultsStructure
-
-
-.. _infra:
 
 infra
 =====
@@ -484,9 +433,6 @@ infra
 .. autofunction:: src.infra.setGraphicWindow
 .. _silenceOctaveWarning:
 .. autofunction:: src.infra.silenceOctaveWarning
-
-
-.. _messages:
 
 messages
 ========
@@ -521,14 +467,8 @@ messages
 .. _timeStamp:
 .. autofunction:: src.messages.timeStamp
 
-
-.. _preproc:
-
 preproc
 =======
-
-
-.. _fieldmaps:
 
 fieldmaps
 ---------
@@ -540,9 +480,6 @@ fieldmaps
 .. autofunction:: src.preproc.fieldmaps.getTotalReadoutTime
 .. _getVdmFile:
 .. autofunction:: src.preproc.fieldmaps.getVdmFile
-
-
-.. _utils:
 
 utils
 -----
@@ -561,9 +498,6 @@ utils
 .. _transferMetadataFromJson:
 .. autofunction:: src.preproc.utils.transferMetadataFromJson
 
-
-.. _reports:
-
 reports
 =======
 .. _boilerplate:
@@ -573,20 +507,11 @@ reports
 .. _copyGraphWindownOutput:
 .. autofunction:: src.reports.copyGraphWindownOutput
 
-
-.. _partials:
-
 partials
 --------
 
-
-.. _stats:
-
 stats
 =====
-
-
-.. _results:
 
 results
 -------
@@ -608,9 +533,6 @@ results
 .. autofunction:: src.stats.results.setMontage
 .. _setNidm:
 .. autofunction:: src.stats.results.setNidm
-
-
-.. _subject_level:
 
 subject_level
 -------------
@@ -675,9 +597,6 @@ subject_level
 .. _specifySubLvlContrasts:
 .. autofunction:: src.stats.subject_level.specifySubLvlContrasts
 
-
-.. _group_level:
-
 group_level
 -----------
 .. _computeCumulativeFwhm:
@@ -688,9 +607,6 @@ group_level
 .. autofunction:: src.stats.group_level.getRFXdir
 .. _groupLevelGlmType:
 .. autofunction:: src.stats.group_level.groupLevelGlmType
-
-
-.. _utils:
 
 utils
 -----
@@ -716,9 +632,6 @@ utils
 .. autofunction:: src.stats.utils.returnNumberScrubbedTimePoints
 .. _validateContrasts:
 .. autofunction:: src.stats.utils.validateContrasts
-
-
-.. _utils:
 
 utils
 =====
@@ -762,9 +675,6 @@ utils
 .. autofunction:: src.utils.validationInputFile
 .. _volumeSplicing:
 .. autofunction:: src.utils.volumeSplicing
-
-
-.. _validators:
 
 validators
 ==========

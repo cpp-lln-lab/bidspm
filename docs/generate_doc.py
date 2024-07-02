@@ -15,8 +15,8 @@ dir_ignore_list = ("__pycache__", "bidspm.egg-info", "workflows", "batches")
 file_ignore_list = "BidsModel"
 
 
-def return_title(path: Path, parent_folder=None, level=1):
-    tmp = f"{path.name}"  # if parent_folder is None else f"{parent_folder} {path.name}"
+def return_title(path: Path, level=1):
+    tmp = f"{path.name}"
     tmp.replace("_", " ")
 
     if level == 1:
@@ -24,8 +24,8 @@ def return_title(path: Path, parent_folder=None, level=1):
     if level > 1:
         string = "-"
 
-    title = f"\n\n.. _{tmp}:\n"
-    title += f"\n{tmp}\n"
+    # title = f"\n\n.. _{tmp}:\n"
+    title = f"\n{tmp}\n"
     title += string * len(tmp) + "\n"
 
     return title
@@ -39,7 +39,7 @@ def append_dir_content(
 
     m_files = sorted(list(path.glob("*.m")))
 
-    title = return_title(path=path, parent_folder=parent_folder, level=level)
+    title = return_title(path=path, level=level)
     content += title
 
     for file in m_files:

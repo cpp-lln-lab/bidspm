@@ -1,0 +1,4 @@
+---
+questions_path: .  # Where questions should be stored
+output_path: ../../source/faq/general.md   # Where FAQ.md should be generated
+templates_path: .   # Path to templates
