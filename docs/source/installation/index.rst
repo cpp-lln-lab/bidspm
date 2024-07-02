@@ -69,5 +69,7 @@ You can also remove bidspm from the path with:
   bidspm uninit
 
 ..  toctree::
+    :maxdepth: 2
+
     containers
     hpc

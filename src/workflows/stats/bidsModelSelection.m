@@ -30,9 +30,13 @@ function matlabbatch = bidsModelSelection(varargin)
   %
   % This way you can run all steps at once::
   %
+  % .. code-block:: matlab
+  %
   %   bidsModelSelection(opt, 'action', 'all');
   %
   % Or in sequence (can be useful to split running cvLME in several batches of subjects)
+  %
+  % .. code-block:: matlab
   %
   %   bidsModelSelection(opt, 'action', 'cvLME');
   %   bidsModelSelection(opt, 'action', 'posterior');
@@ -56,7 +60,9 @@ function matlabbatch = bidsModelSelection(varargin)
   %    Adding dummy (empty) regressors will make your model non-estimable by
   %    SPM, where as the MACS toolbox can deal with this.
   %
-  % - specify each model for each subject::
+  % - specify each model for each subject
+  %
+  %   .. code-block:: matlab
   %
   %     opt = opt_stats_subject_level();
   %

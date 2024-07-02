@@ -15,7 +15,7 @@ function opt = checkOptions(opt)
   %
   % **GENERIC OPTIONS**
   %
-  % - ``opt.dir`` - See ``setDirectories()``.
+  % - ``opt.dir`` - See :func:`setDirectories`.
   %
   % - ``opt.groups = {''}`` -
   %   Group of subjects to analyze
@@ -30,7 +30,7 @@ function opt = checkOptions(opt)
   %
   % - ``opt.query = struct('modality', {{'anat', 'func'}})`` -
   %   a structure used to specify subset of files to only run analysis on.
-  %   See ``bids.query()`` to see how to specify.
+  %   See :func:`bids.query` to see how to specify.
   %
   %   .. warning::
   %
@@ -75,11 +75,11 @@ function opt = checkOptions(opt)
   %   and not their label ``O1'``.
   %
   % - ``opt.rename.do = true`` -
-  %   Set to ``false`` to skip renaming files with ``bidsRename()``.
+  %   Set to ``false`` to skip renaming files with :func:`bidsRename`.
   %   Mostly for debugging as the output files won't be usable
   %   by any of the stats workflows.
   % - ``opt.rename.overwrite = true`` -
-  %   To overwrite any eventual previous output of ``bidsRename()``.
+  %   To overwrite any eventual previous output of :func:`bidsRename`.
   %
   % - ``opt.msg.color = blue`` -
   %   Default font color of the prompt messages.
@@ -90,7 +90,7 @@ function opt = checkOptions(opt)
   %
   % - ``opt.useFieldmaps = true`` -
   %   When set to ``true`` the preprocessing pipeline will look
-  %   for the voxel displacement maps (created by ``bidsCreateVDM()``)
+  %   for the voxel displacement maps (created by :func:`bidsCreateVDM`)
   %   and will use them for realign and unwarp.
   %
   % - ``opt.fwhm.func = 6`` -
@@ -145,7 +145,7 @@ function opt = checkOptions(opt)
   %   Set to ``true`` to use the ``bidsRoiBasedGLM`` workflow.
   % - ``opt.glm.useDummyRegressor = false`` -
   %   Set to ``true`` to add dummy regressors when a condition is missing from a run.
-  %   See ``bidsModelSelection()`` for more information.
+  %   See :func:`bidsModelSelection` for more information.
   % - ``opt.glm.maxNbVols = Inf`` -
   %   Sets the maximum number of volumes to include in a run in a subject level GLM.
   %   This can be useful if some time series have more volumes than necessary.

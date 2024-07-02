@@ -24,7 +24,6 @@ def return_title(path: Path, level=1):
     if level > 1:
         string = "-"
 
-    # title = f"\n\n.. _{tmp}:\n"
     title = f"\n{tmp}\n"
     title += string * len(tmp) + "\n"
 
@@ -46,7 +45,6 @@ def append_dir_content(
         if file.stem in file_ignore_list:
             continue
 
-        content += f".. _{file.stem}:\n"
         if parent_folder is None:
             function_name = f"src.{path.name}.{file.stem}"
         else:

@@ -29,7 +29,7 @@ function skipped = bidsRoiBasedGLM(opt)
   %
   % Adapted from the MarsBar tutorial: lib/CPP_ROI/lib/marsbar-0.44/examples/batch
   %
-  % See also: bidsCreateRoi, plotRoiTimeCourse, getEventSpecificationRoiGlm
+  % See: :func:`bidsCreateRoi`, :func:`plotRoiTimeCourse`, :func:`getEventSpecificationRoiGlm`
   %
 
   % (C) Copyright 2021 bidspm developers

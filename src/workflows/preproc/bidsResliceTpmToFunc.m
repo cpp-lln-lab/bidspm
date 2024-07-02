@@ -12,8 +12,9 @@ function bidsResliceTpmToFunc(opt)
   %             See :func:`checkOptions`.
   % :type opt: structure
   %
-  % Assumes that the anatomical has already been segmented by ``bidsSpatialPrepro()``
-  % or ``bidsSegmentSkullStrip()``.
+  % Assumes that the anatomical has already been segmented
+  % by :func:`bidsSpatialPrepro`
+  % or :func:`bidsSegmentSkullStrip`.
   %
   % It is necessary to run this workflow before running the ``functionalQA`` pipeline
   % as the computation of the tSNR by ``spmup`` requires the TPMs to have the same dimension

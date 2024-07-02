@@ -11,7 +11,7 @@ function bidsRealignReslice(opt)
   %             See :func:`checkOptions`.
   % :type opt: structure
   %
-  % Assumes that ``bidsSTC()`` has already been run if ``opt.stc.skip`` is not set
+  % Assumes that :func:`bidsSTC` has already been run if ``opt.stc.skip`` is not set
   % to ``true``.
   %
   %
