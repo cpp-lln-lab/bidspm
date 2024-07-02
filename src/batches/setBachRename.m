@@ -6,7 +6,7 @@ function matlabbatch = setBachRename(varargin)
   %   matlabbatch = setBachRename(matlabbatch, files, moveTo, patternReplace, overwriteDuplicate)
   %
   %
-  % :returns: - :matlabbatch: (cell) The matlabbatch ready to run the spm job
+  % :return: :matlabbatch: (cell) The matlabbatch ready to run the spm job
   %
 
   % (C) Copyright 2022 bidspm developers

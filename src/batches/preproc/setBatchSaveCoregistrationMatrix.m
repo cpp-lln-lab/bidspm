@@ -9,18 +9,19 @@ function matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, 
   % :param matlabbatch:
   % :type  matlabbatch: structure
   %
-  % :type  BIDS: structure
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
+  %
+  % :type  BIDS: structure
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   % :param subLabel:
   % :type  subLabel: char
   %
-  % :returns: - :matlabbatch:
+  % :return: matlabbatch
   %
 
   % (C) Copyright 2020 bidspm developers

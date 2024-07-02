@@ -10,29 +10,29 @@ function matlabbatch = setBatchGenerateT1map(varargin)
   % :type matlabbatch: cell
   %
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
   % :type BIDS: structure
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   % :param subLabel: subject label
   % :type subLabel: char
   %
-  % :returns: - :matlabbatch: (cell) The matlabbatch ready to run the spm job
+  % :return: :matlabbatch: (cell) The matlabbatch ready to run the spm job
   %
   % Relies on the MP2RAGE toolbox for SPM.
   %
-  %   https://github.com/benoitberanger/mp2rage
+  % https://github.com/benoitberanger/mp2rage
   %
   % Some non-BIDS metadata need to be added to the JSON files of the inversion
   % images for this to work (check the README of the toolbox for more info):
   %
-  %   - ``EchoSpacing``
-  %   - ``SlicePartialFourier`` or ``PartialFourierInSlice``:
-  %     between 0 and 1 (example: 6/8)
-  %   - ``FatSat``: must be "yes" or "no"
+  % - ``EchoSpacing``
+  % - ``SlicePartialFourier`` or ``PartialFourierInSlice``:
+  %   between 0 and 1 (example: 6/8)
+  % - ``FatSat``: must be "yes" or "no"
   %
   % Most of the those metadata should be available from the PDF of with yout
   % sequence details.

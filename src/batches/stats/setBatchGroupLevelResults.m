@@ -10,13 +10,13 @@ function matlabbatch = setBatchGroupLevelResults(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
   % :param result:
   % :type result: structure
   %
-  % :returns: - :matlabbatch: (structure)
-  %
+  % :return: matlabbatch
+  % :rtype: structure
 
   % (C) Copyright 2019 bidspm developers
 

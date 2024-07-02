@@ -31,30 +31,30 @@ function [json, fig] = anatQA(varargin)
   %
   % json is a structure with the following fields:
   %
-  %        - SNR : the signal-to-Noise Ratio.
-  %                That is: the mean intensity within gray
-  %                and white matter divided by the standard deviation
-  %                of the values outside the brain.
-  %                Higher values are better.
+  % - SNR : the signal-to-Noise Ratio.
+  %         That is: the mean intensity within gray
+  %         and white matter divided by the standard deviation
+  %         of the values outside the brain.
+  %         Higher values are better.
   %
-  %        - CNR : the Contrast to Noise Ratio.
-  %                That is: the mean of the white matter intensity values
-  %                minus the mean of the gray matter intensity values
-  %                divided by the standard deviation
-  %                of the values outside the brain.
-  %                Higher values are better.
+  % - CNR : the Contrast to Noise Ratio.
+  %         That is: the mean of the white matter intensity values
+  %         minus the mean of the gray matter intensity values
+  %         divided by the standard deviation
+  %         of the values outside the brain.
+  %         Higher values are better.
   %
-  %        - FBER: Foreground to Background Energy Ratio,
-  %                That is: the variance of voxels in grey and white matter
-  %                divided by the variance of voxels outside the brain.
-  %                Higher values are better.
+  % - FBER: Foreground to Background Energy Ratio,
+  %         That is: the variance of voxels in grey and white matter
+  %         divided by the variance of voxels outside the brain.
+  %         Higher values are better.
   %
-  %        - EFC : Entropy Focus Criterion,
-  %                That is: the entropy of voxel intensities proportional
-  %                to the maximum possible entropy for a similarly sized image.
-  %                Indicates ghosting and head motion-induced blurring.
-  %                Lower values are better.
-  %                See <http://ieeexplore.ieee.org/document/650886/>
+  % - EFC : Entropy Focus Criterion,
+  %         That is: the entropy of voxel intensities proportional
+  %         to the maximum possible entropy for a similarly sized image.
+  %         Indicates ghosting and head motion-induced blurring.
+  %         Lower values are better.
+  %         See <http://ieeexplore.ieee.org/document/650886/>
   %
   % .. note::
   %

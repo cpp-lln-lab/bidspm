@@ -15,7 +15,7 @@ function contrasts = specifyContrasts(model, SPM, nodeName)
   % :param nodeName: name of the node to return name of
   % :type nodeName: char
   %
-  % :returns: - :contrasts: (structure)
+  % :return: :contrasts: (structure)
   %
   % To know the names of the columns of the design matrix, type :
   % ``strvcat(SPM.xX.name)``

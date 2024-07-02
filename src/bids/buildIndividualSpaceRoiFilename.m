@@ -12,7 +12,7 @@ function roiBidsFile = buildIndividualSpaceRoiFilename(deformationField, roiFile
   % :param roiFilename: path to roi image.
   % :type  roiFilename: path
   %
-  % :returns: - :roiBidsFile: (bids.File object)
+  % :return: :roiBidsFile: (bids.File object)
   %
   %
 

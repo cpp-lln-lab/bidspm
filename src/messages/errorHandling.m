@@ -14,10 +14,10 @@ function errorHandling(varargin)
   % :type msg: char
   %
   % :param tolerant: If set to ``true`` errors are converted into warnings
-  % :type tolerant: boolean
+  % :type tolerant: logical
   %
   % :param verbose: If set to ``0`` or ``false`` this will silence any warning
-  % :type verbose: boolean
+  % :type verbose: logical
   %
   % EXAMPLE::
   %

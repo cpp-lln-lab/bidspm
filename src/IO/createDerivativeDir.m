@@ -8,7 +8,7 @@ function  createDerivativeDir(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
 
   % (C) Copyright 2019 bidspm developers

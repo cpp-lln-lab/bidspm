@@ -2,8 +2,8 @@ function checkRegressorName(SPM)
   %
   % extra checks for ``bidsModelSelection`` to make sure that:
   %
-  %   - all sessions can be vertically concatenated
-  %   - after concatenation all regressors have the same name (or that there are dummy regressors)
+  % - all sessions can be vertically concatenated
+  % - after concatenation all regressors have the same name (or that there are dummy regressors)
   %
   % USAGE::
   %

@@ -15,7 +15,7 @@ function figureFile = plotRoiTimeCourse(varargin)
   % :type tsvFile: path
   %
   % :param verbose: to show figure or not
-  % :type verbose: boolean
+  % :type verbose: logical
   %
   % :param colors:
   % :type colors: ``n X 3`` array

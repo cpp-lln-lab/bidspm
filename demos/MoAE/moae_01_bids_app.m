@@ -6,17 +6,15 @@
 %
 %   -  download the dataset from the FIL for the block design SPM tutorial
 %
-%
 % - **Preprocessing**
 %
 %   - copies the necessary data from the raw to the derivative folder,
 %   - runs spatial preprocessing
 %
-%     those are otherwise handled by the workflows:
+%   those are otherwise handled by the workflows:
 %
-%   - ``bidsCopyInputFolder.m``
-%   - ``bidsSpatialPrepro.m``
-%
+%   - :func:`bidsCopyInputFolder`
+%   - :func:`bidsSpatialPrepro`
 %
 % - **Stats**
 %
@@ -28,21 +26,21 @@
 %
 %   that are otherwise handled by the workflows
 %
-%   - ``bidsFFX.m``
-%   - ``bidsResults.m``
+%   - :func:`bidsFFX`
+%   - :func:`bidsResults`
 %
-%  .. note::
+% .. note::
 %
-%        Results might be a bit different from those in the SPM manual as some
-%        default options are slightly different in this pipeline
-%        (e.g use of FAST instead of AR(1), motion regressors added)
-%
-%
-%  type `bidspm help` or `bidspm('action', 'help')`
-%  or see this page: https://bidspm.readthedocs.io/en/stable/bids_app_api.html
-%  for more information on what parameters are obligatory or optional
+%   Results might be a bit different from those in the SPM manual as some
+%   default options are slightly different in this pipeline
+%   (e.g use of FAST instead of AR(1), motion regressors added)
 %
 %
+% type `bidspm help` or `bidspm('action', 'help')`
+% or see this page: https://bidspm.readthedocs.io/en/stable/bids_app_api.html
+% for more information on what parameters are obligatory or optional
+%
+
 %  (C) Copyright 2022 Remi Gau
 
 % ## Note: octave notebook

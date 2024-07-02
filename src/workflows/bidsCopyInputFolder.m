@@ -10,14 +10,14 @@ function bidsCopyInputFolder(varargin)
   %   bidsCopyInputFolder(opt, 'unzip', true, 'force', true)
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type opt: structure
   %
   % :param unzip: defaults to true
-  % :type unzip: boolean
+  % :type unzip: logical
   %
   % :param force: defaults to true
-  % :type force: boolean
+  % :type force: logical
   %
   % See also: bids.copy_to_derivative
   %

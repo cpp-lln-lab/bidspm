@@ -12,7 +12,7 @@ function outputFilename = saveSpmScript(varargin)
   % :param outputFilename: optional. Path to output file
   % :type  outputFilename: path
   %
-  % :returns: - :outputFilename: (path)
+  % :return: :outputFilename: (path)
   %
 
   % (C) Copyright 2022 bidspm developers

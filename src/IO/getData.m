@@ -6,21 +6,27 @@ function [BIDS, opt] = getData(varargin)
   %
   %   [BIDS, opt] = getData(opt, bidsDir, indexDependencies)
   %
-  % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
-  % :param bidsDir: the directory where the data is ; default is :
+  % :type  opt:  structure
+  %
+  % :param bidsDir: the directory where the data is ; defaults to
   %                 ``fullfile(opt.dataDir, '..', 'derivatives', 'bidspm')``
+  %
   % :type  bidsDir: char
   %
-  % :param indexDependencies: Use ``'index_dependencies', true`
-  %                            in bids.layout.
+  % :param indexDependencies: Use ``'index_dependencies', true``
+  %                           in bids.layout.
+  %
   % :type  indexDependencies: logical
   %
-  % :returns:
-  %           - :opt: (structure)
-  %           - :BIDS: (structure)
+  % :return: opt
+  % :rtype: structure
+  %
+  % :return: BIDS
+  % :rtype: structure
+  %
   %
 
   % (C) Copyright 2020 bidspm developers

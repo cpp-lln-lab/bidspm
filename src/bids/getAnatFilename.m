@@ -10,18 +10,23 @@ function [anatImage, anatDataDir] = getAnatFilename(varargin)
   %   [anatImage, anatDataDir] = getAnatFilename(BIDS, subLabel, opt, nbImgToReturn, tolerant)
   %
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
+  %
   % :type  BIDS: structure
   %
   % :param subLabel:
   % :type  subLabel:  char
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
+  %
   % :type  opt:  structure
   %
-  % :returns: - :anatImage: (string)
-  %           - :anatDataDir: (string)
+  % :return: anatImage
+  % :rtype: string
+  % :return: anatDataDir
+  % :rtype: string
+  %
   %
 
   % (C) Copyright 2020 bidspm developers

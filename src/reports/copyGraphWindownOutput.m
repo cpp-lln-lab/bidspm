@@ -13,7 +13,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
   % :param subLabel: Subject label (for example `'01'`).
   % :type subLabel: char
@@ -25,7 +25,7 @@ function imgNb = copyGraphWindownOutput(opt, subLabel, action, imgNb)
   %               adding a new figure a folder.
   % :type imgNb: vector of integer
   %
-  % :returns: :imgNb: (integer) number of the next image to get.
+  % :return: imgNb: (integer) number of the next image to get.
   %
 
   % (C) Copyright 2019 bidspm developers

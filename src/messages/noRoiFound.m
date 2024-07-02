@@ -6,13 +6,14 @@ function status = noRoiFound(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :param roiList: obligatory argument.
   % :type roiList: cell
   % :param folder: optional argument. default: ``''``
   % :type folder: path
   %
-  % :returns: - :status: (boolean)
+  % :return: status
+  % :rtype: logical
   %
 
   % (C) Copyright 2022 bidspm developers

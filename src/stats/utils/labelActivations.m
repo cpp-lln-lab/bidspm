@@ -23,7 +23,7 @@ function tsvFile = labelActivations(varargin)
   %
   %                 Defaults to ``'neuromorphometrics'``
   %
-  % :returns: - :tsvFile: (path)
+  % :return: :tsvFile: (path)
   %
 
   % (C) Copyright 2022 bidspm developers

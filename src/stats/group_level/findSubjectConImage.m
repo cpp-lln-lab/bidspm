@@ -10,7 +10,7 @@ function file = findSubjectConImage(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type opt: structure
   %
   % :param subLabel:
@@ -20,7 +20,7 @@ function file = findSubjectConImage(varargin)
   % :type contrastName: char or cellstr
   %
   %
-  % :returns: - file : a fullpath or a cellstrng of fullpath
+  % :return: file : a fullpath or a cellstrng of fullpath
   %
   %
 

@@ -1,4 +1,4 @@
-## Contributing guidelines
+## Contributing
 
 Feel free to open issues to report a bug and ask for improvements.
 

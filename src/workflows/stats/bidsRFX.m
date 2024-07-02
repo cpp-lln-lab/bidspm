@@ -18,7 +18,7 @@ function matlabbatch = bidsRFX(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type opt: structure
   %
   % :param nodeName: name of the BIDS stats model to run analysis on

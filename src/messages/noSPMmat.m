@@ -6,13 +6,14 @@ function status = noSPMmat(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :param subLabel:
   % :type subLabel: char
   % :param spmMatFile:
   % :type spmMatFile: path
   %
-  % :returns: - :status: (boolean)
+  % :return: status
+  % :rtype: logical
   %
 
   % (C) Copyright 2022 bidspm developers

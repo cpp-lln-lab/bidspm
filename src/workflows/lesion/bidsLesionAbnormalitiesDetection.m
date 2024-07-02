@@ -10,12 +10,12 @@ function bidsLesionAbnormalitiesDetection(opt, extraOptions)
   %  bidsLesionAbnormalitiesDetection(opt, extraOptions)
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type opt: structure
   %
   % :param extraOptions: Options chosen for analysis of another dataset
   %                      in case they need to be merged.
-  %                      See checkOptions.
+  %                      See :func:`checkOptions`.
   % :type extraOptions: structure
   %
   % Lesion abnormalities detection will be performed using the information provided

@@ -18,16 +18,17 @@ function matlabbatch = setBatch3Dto4D(matlabbatch, opt, volumesList, RT, outputN
   %            to be written in the 4D file header
   % :type RT: float
   %
-  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  % :return: matlabbatch, The matlabbatch ready to run the spm job
+  % :rtype: structure
   %
   % ``dataType``:
   %
-  %   - 0:  SAME
-  %   - 2:  UINT8   - unsigned char
-  %   - 4:  INT16   - signed short
-  %   - 8:  INT32   - signed int
-  %   - 16: FLOAT32 - single prec. float
-  %   - 64: FLOAT64 - double prec. float
+  % - 0:  SAME
+  % - 2:  UINT8   - unsigned char
+  % - 4:  INT16   - signed short
+  % - 8:  INT32   - signed int
+  % - 16: FLOAT32 - single prec. float
+  % - 64: FLOAT64 - double prec. float
   %
 
   % (C) Copyright 2020 bidspm developers

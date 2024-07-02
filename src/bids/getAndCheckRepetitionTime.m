@@ -8,13 +8,13 @@ function repetitionTime = getAndCheckRepetitionTime(varargin)
   %   repetitionTime = getAndCheckRepetitionTime(BIDS, filter)
   %
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
   % :type  BIDS: structure
   %
   % :param filter: obligatory argument.
   % :type  filter: structure
   %
-  % :returns: - :repetitionTime: (float) (1x1)
+  % :return: :repetitionTime: (float) (1x1)
   %
   % Example::
   %

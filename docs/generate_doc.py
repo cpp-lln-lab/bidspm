@@ -8,39 +8,43 @@ code_src = Path(__file__).parent.parent.joinpath("src")
 
 doc_src = Path(__file__).parent.joinpath("source")
 
-bidspm_file = doc_src.joinpath("dev_doc.rst")
+bidspm_file = doc_src.joinpath("API.rst")
 
 dir_ignore_list = ("__pycache__", "bidspm.egg-info", "workflows", "batches")
 
 file_ignore_list = "BidsModel"
 
 
-def return_title(path: Path, parent_folder=None):
-    tmp = f"{path.name}" if parent_folder is None else f"{parent_folder} {path.name}"
+def return_title(path: Path, level=1):
+    tmp = f"{path.name}"
     tmp.replace("_", " ")
 
-    title = f"\n\n.. _{tmp}:\n"
-    title += f"\n{tmp}\n"
-    title += "=" * len(tmp) + "\n"
+    if level == 1:
+        string = "="
+    if level > 1:
+        string = "-"
+
+    title = f"\n{tmp}\n"
+    title += string * len(tmp) + "\n"
 
     return title
 
 
-def append_dir_content(path: Path, content: str, parent_folder=None, recursive=False):
+def append_dir_content(
+    path: Path, content: str, parent_folder=None, recursive=False, level=1
+):
     if not path.is_dir():
         return content
 
     m_files = sorted(list(path.glob("*.m")))
 
-    if len(m_files) > 0:
-        title = return_title(path=path, parent_folder=parent_folder)
-        content += title
+    title = return_title(path=path, level=level)
+    content += title
 
     for file in m_files:
         if file.stem in file_ignore_list:
             continue
 
-        content += f".. _{file.stem}:\n"
         if parent_folder is None:
             function_name = f"src.{path.name}.{file.stem}"
         else:
@@ -53,7 +57,11 @@ def append_dir_content(path: Path, content: str, parent_folder=None, recursive=F
         print(path)
         for subpath in path.iterdir():
             content = append_dir_content(
-                subpath, content, parent_folder=path.name, recursive=recursive
+                subpath,
+                content,
+                parent_folder=path.name,
+                recursive=recursive,
+                level=level + 1,
             )
 
     return content

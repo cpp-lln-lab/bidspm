@@ -11,7 +11,7 @@ function matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
   % :param spmMatFile:
   % :type  spmMatFile: char
@@ -19,8 +19,8 @@ function matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess)
   % :param consess:
   % :type  consess: cell
   %
-  % :returns: - :matlabbatch: (structure)
-  %
+  % :return: matlabbatch
+  % :rtype: structure
 
   % (C) Copyright 2019 bidspm developers
 

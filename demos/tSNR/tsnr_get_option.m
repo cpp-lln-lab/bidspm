@@ -7,7 +7,7 @@ function opt = tsnr_get_option()
   %
   %  opt = tSNR_get_option()
   %
-  % :returns: - :opt: (struct)
+  % :return: :opt: (struct)
   %
 
   % (C) Copyright 2021 bidspm developers

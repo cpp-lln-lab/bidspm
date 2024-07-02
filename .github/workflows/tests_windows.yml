@@ -41,15 +41,15 @@ jobs:
         test_type: [system]
         script: [moae, fmriprep]
         os: [windows-latest]
-        matlab: [R2023a]
+        matlab: [R2023b]
         include:
         - test_type: unit
           os: windows-latest
-          matlab: R2023a
+          matlab: R2023b
           mode: fast
         - test_type: unit
           os: windows-latest
-          matlab: R2023a
+          matlab: R2023b
           mode: slow
       fail-fast: false
 

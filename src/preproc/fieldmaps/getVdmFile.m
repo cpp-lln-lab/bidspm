@@ -8,16 +8,16 @@ function vdmFile = getVdmFile(BIDS, opt, boldFilename)
   %
   % :type  BIDS: structure
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   % :param boldFilename:
   % :type  boldFilename: path
   %
-  % :returns: - :vdmFile: (string)
+  % :return: :vdmFile: (string)
   %
 
   % (C) Copyright 2020 bidspm developers

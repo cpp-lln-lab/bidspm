@@ -62,7 +62,6 @@ SPM to BIDS filename conversion
 
 :func:`set_spm_2_bids_defaults`
 
-
 Setting directories
 ===================
 

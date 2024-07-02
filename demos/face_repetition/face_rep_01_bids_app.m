@@ -7,15 +7,15 @@
 %
 % **Preprocessing**
 %
-%   - copies the necessary data from the raw to the derivative folder,
-%   - runs slice time correction
-%   - runs spatial preprocessing
+% - copies the necessary data from the raw to the derivative folder,
+% - runs slice time correction
+% - runs spatial preprocessing
 %
 % those are otherwise handled by the workflows:
 %
-%   - ``bidsCopyInputFolder.m``
-%   - ``bidsSTC.m``
-%   - ``bidsSpatialPrepro.m``
+% - :func:`bidsCopyInputFolder`
+% - :func:`bidsSTC`
+% - :func:`bidsSpatialPrepro`
 %
 % type `bidspm help` or `bidspm('action', 'help')`
 % or see this page: https://bidspm.readthedocs.io/en/stable/bids_app_api.html

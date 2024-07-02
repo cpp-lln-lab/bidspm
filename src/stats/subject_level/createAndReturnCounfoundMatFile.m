@@ -13,13 +13,13 @@ function [counfoundFile, counfoundMeta] = createAndReturnCounfoundMatFile(opt, t
   %   counfoundMatFile = createAndReturnCounfoundMatFile(opt, tsvFile)
   %
   % :param opt:     Options chosen for the analysis.
-  %                 See checkOptions.
+  %                 See :func:`checkOptions`.
   % :type opt:      structure
   %
   % :param tsvFile: fullpath name of the tsv file.
   % :type  tsvFile: char
   %
-  % :returns: :counfoundMatFile: (string) fullpath name of the file created.
+  % :return: counfoundMatFile: (string) fullpath name of the file created.
   %
   % See also: setBatchSubjectLevelGLMSpec, createConfounds
   %

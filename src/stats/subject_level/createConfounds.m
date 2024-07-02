@@ -23,8 +23,7 @@ function [names, R] = createConfounds(tsvContent, designMatrix, maxNbVols)
   %                   Default to ``Inf``.
   % :type  maxNbVols: positive integer or Inf
   %
-  % :returns: :names:
-  % :returns: :R:
+  % :return: names, R
   %
   % EXAMPLE::
   %

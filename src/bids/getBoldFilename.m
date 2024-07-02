@@ -10,7 +10,7 @@ function [boldFilename, subFuncDataDir, metadata] = getBoldFilename(varargin)
   %   [boldFilename, subFuncDataDir] = getBoldFilename(BIDS, subLabel, sessionID, runID, opt)
   %
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
   % :type BIDS:         structure
   %
   % :param subLabel:    label of the subject ; in BIDS lingo that means that for a file name
@@ -24,12 +24,12 @@ function [boldFilename, subFuncDataDir, metadata] = getBoldFilename(varargin)
   % :type runID:        char
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type opt:  structure
   %
   %
-  % :returns: - :boldFilename: (string)
-  %           - :subFuncDataDir: (string)
+  % :return: boldFilename, subFuncDataDir
+  % :rtype: string, string
   %
   %
 

@@ -14,8 +14,7 @@ function [names, R] = sanitizeConfounds(names, R)
   % :type  R: array
   %
   %
-  % :returns: :names:
-  % :returns: :R:
+  % :return: names, R
 
   % (C) Copyright 2023 bidspm developers
 

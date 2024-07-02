@@ -11,10 +11,10 @@ function status = checkToolbox(varargin)
   % :type toolboxName: char
   %
   % :param verbose: parameter
-  % :type  verbose: boolean
+  % :type  verbose: logical
   %
   % :param install: parameter
-  % :type  install: boolean
+  % :type  install: logical
   %
   % EXAMPLE::
   %
