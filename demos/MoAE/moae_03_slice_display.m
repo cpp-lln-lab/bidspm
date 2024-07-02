@@ -1,9 +1,9 @@
 % This script shows how to display the results of a GLM
 % by having on the same image:
 %
-%   - the beta estimates
-%   - the t statistics
-%   - ROI contours
+% - the beta estimates
+% - the t statistics
+% - ROI contours
 %
 %
 

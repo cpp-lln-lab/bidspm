@@ -6,17 +6,15 @@
 %
 %   -  download the dataset from the FIL for the block design SPM tutorial
 %
-%
 % - **Preprocessing**
 %
 %   - copies the necessary data from the raw to the derivative folder,
 %   - runs spatial preprocessing
 %
-%     those are otherwise handled by the workflows:
+%   those are otherwise handled by the workflows:
 %
-%   - ``bidsCopyInputFolder.m``
-%   - ``bidsSpatialPrepro.m``
-%
+%   - :func:`bidsCopyInputFolder`
+%   - :func:`bidsSpatialPrepro`
 %
 % - **Stats**
 %
@@ -28,8 +26,8 @@
 %
 %   that are otherwise handled by the workflows
 %
-%   - ``bidsFFX.m``
-%   - ``bidsResults.m``
+%   - :func:`bidsFFX`
+%   - :func:`bidsResults`
 %
 % .. note::
 %

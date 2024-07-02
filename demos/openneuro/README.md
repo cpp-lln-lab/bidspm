@@ -1,11 +1,11 @@
 # Demos based on openneuro datasets
 
 -   ds000001: one task, one session, several runs
--   ds000114: several tasks, several sessions, one or several runs depending on
-    task
--   ds001168: resting state, several sessions, several acquisition, fieldmaps,
-    physio data
--   ds002799: resting state and task, several sessions, with fmriprep data
+-   ds000114: several tasks, several sessions, one or several runs depending on task
+-   ds000224:
+-   ds001168: resting state, several sessions, several acquisition, fieldmaps, physio data
+-   ds001734: one task, one session, several runs, several groups, >100 participants, fmriprep data
+-   ds002799: resting state and task, several sessions, fmriprep data
 
 ## Download with datalad
 
@@ -32,13 +32,14 @@ cd openneuro/dsXXXXXX
 datalad get /openneuro/dsXXXXXX/sub-0001/func/sub-0001*
 ```
 
-## NARPS: ds001734
+## ds001734: NARPS
 
-More details here:
+More details [here](https://docs.google.com/spreadsheets/d/1FU_F6kdxOD4PRQDIHXGHS4zTi_jEVaUqY_Zwg0z6S64/edit#gid=1019165812&range=A51).
 
-https://docs.google.com/spreadsheets/d/1FU_F6kdxOD4PRQDIHXGHS4zTi_jEVaUqY_Zwg0z6S64/edit#gid=1019165812&range=A51
 
-TODO: add expected value to the model
+<!-- TODO
+add expected value to the model
+-->
 
 ```matlab
 % compute euclidean distance to the indifference line defined by
@@ -53,7 +54,10 @@ dist = abs(a * x + b * y + c) / (a^2 + b^2)^.5;
 onsets{iRun}.EV = dist; % create an "expected value" regressor
 ```
 
-TODO: transformers cannot yet be appled to confounds
+<!-- TODO
+transformers cannot yet be appled to confounds
+-->
+
 
 ```json
 {

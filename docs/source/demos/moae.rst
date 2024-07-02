@@ -1,3 +1,5 @@
+.. _moae demo:
+
 MoAE
 ****
 
@@ -16,8 +18,8 @@ In the ``models`` shows the BIDS statistical model used to run the GLM of this d
 
 .. automodule:: demos.MoAE
 
-preproc + stats
-===============
+preprocessing + stats
+=====================
 
 .. autoscript:: moae_01_bids_app
 
@@ -25,10 +27,18 @@ preproc + stats
     :language: matlab
     :linenos:
     :caption: moae_01_bids_app.m
-    :lines: 69-175
+    :lines: 69-
 
-fmriprep
-========
+.. admonition:: BIDS stats model
+    :class: dropdown
+
+    .. literalinclude:: ../../../demos/MoAE/models/model-MoAE_smdl.json
+        :language: json
+        :linenos:
+        :caption: model-MoAE_smdl.json
+
+stats with fmriprep output + default stats model
+================================================
 
 .. autoscript:: moae_fmriprep
 
@@ -36,7 +46,7 @@ fmriprep
     :language: matlab
     :linenos:
     :caption: moae_fmriprep.m
-    :lines: 19-117
+    :lines: 19-
 
 region of interest
 ==================
@@ -46,7 +56,15 @@ region of interest
     :language: matlab
     :linenos:
     :caption: moae_02_create_roi_extract_data.m
-    :lines: 12-84
+    :lines: 12-
+
+.. admonition:: BIDS stats model
+    :class: dropdown
+
+    .. literalinclude:: ../../../demos/MoAE/models/model-MoAE_smdl.json
+        :language: json
+        :linenos:
+        :caption: model-MoAE_smdl.json
 
 slice display
 =============
@@ -56,7 +74,15 @@ slice display
     :language: matlab
     :linenos:
     :caption: moae_03_slice_display.m
-    :lines: 11-119
+    :lines: 11-
+
+.. admonition:: BIDS stats model
+    :class: dropdown
+
+    .. literalinclude:: ../../../demos/MoAE/models/model-MoAE_smdl.json
+        :language: json
+        :linenos:
+        :caption: model-MoAE_smdl.json
 
 .. .. include:: ../../../demos/MoAE/README.md
 ..    :parser: myst_parser.sphinx_

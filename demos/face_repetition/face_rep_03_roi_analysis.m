@@ -5,6 +5,8 @@
 %
 % Then uses marsbar to run a ROI based GLM
 %
+%
+
 % (C) Copyright 2019 Remi Gau
 
 clear;

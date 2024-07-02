@@ -39,6 +39,7 @@ extensions = [
     "sphinxcontrib.mermaid",
     "sphinxcontrib.bibtex",
     "sphinx_copybutton",
+    # "sphinx_togglebutton",
     "myst_parser",
     "sphinxarg.ext",
 ]
