@@ -127,7 +127,9 @@ module = [
     "bsmschema.models",
     "rich",
     "rich.logging",
-    "rich_argparse"
+    "rich_argparse",
+    "bidspm._version",
+    "pydantic"  # just to silence errors
 ]
 
 [tool.pytest.ini_options]
