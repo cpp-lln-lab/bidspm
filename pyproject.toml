@@ -66,8 +66,8 @@ style = [
 ]
 
 [project.scripts]
-bidspm = "src.bidspm:cli"
-validate_model = "src.validate:main"
+bidspm = "bidspm:cli"
+validate_model = "validate:main"
 
 [project.urls]
 Homepage = "https://bidspm.readthedocs.io"
