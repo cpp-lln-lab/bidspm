@@ -88,7 +88,7 @@ After installing bidspm python package, you can get access to extra validation o
 
 #### BIDS stats model validation
 
-Please see [the documentation](https://bidspm.readthedocs.io/en/latest/bids_stats_model.html#using-the-bids-stats-model-python-package)
+Please see [the documentation](https://bidspm.readthedocs.io/en/latest/stats/bids_stats_model.html#using-the-bids-stats-model-python-package)
 
 #### BIDS dataset validation
 
