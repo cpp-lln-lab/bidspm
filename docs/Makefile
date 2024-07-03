@@ -38,6 +38,14 @@ clean:
 view:
 	$(BROWSER) build/html/index.html
 
+update_faq:
+	cd faq/bids && faqtory build
+	cd faq/general && faqtory build
+	cd faq/preproc && faqtory build
+	cd faq/results && faqtory build
+	cd faq/spm && faqtory build
+	cd faq/stats && faqtory build
+
 bidspm-manual.pdf:
 	bash create_manual.sh
 

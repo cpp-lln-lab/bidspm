@@ -130,10 +130,10 @@ will usually be set automatically when running:
 
 But you can set those by hand if you prefer.
 
-List of defaults
-################
-
 .. only:: html
 
-    .. literalinclude:: default_options.m
-        :language: matlab
+  .. admonition:: List of defaults
+      :class: dropdown
+
+      .. literalinclude:: default_options.m
+          :language: matlab

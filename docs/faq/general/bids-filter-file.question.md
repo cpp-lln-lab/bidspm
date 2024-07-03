@@ -1,7 +1,6 @@
 ---
 title:
-    "How can I run bidspm only certain files, like just the session
-    `02` for example?"
+    "How can I run bidspm only certain files, like just the session `02` for example?"
 ---
 
 Currently there are 2 ways of doing this.
@@ -10,8 +9,8 @@ Currently there are 2 ways of doing this.
     `bids_filter_file.json` file or its counterpart field `opt.bidsFilterFile`
 -   using the `opt.query` option field.
 
-On the long run the plan is to use only the `bids_filter_file`, but for now both
-possibilities should work.
+On the long run the plan is to use only the `bids_filter_file`,
+but for now both possibilities should work.
 
 ### `bids filter file`
 
@@ -40,9 +39,9 @@ The default content in this case would be:
 {
     "fmap": { "datatype": "fmap" },
     "bold": { "datatype": "func", "suffix": "bold" },
-    "t2w": { "datatype": "anat", "suffix": "T2w" },
-    "t1w": { "datatype": "anat", "space": "", "suffix": "T1w" },
-    "roi": { "datatype": "roi", "suffix": "mask" }
+    "t2w":  { "datatype": "anat", "suffix": "T2w" },
+    "t1w":  { "datatype": "anat", "space": "", "suffix": "T1w" },
+    "roi":  { "datatype": "roi", "suffix": "mask" }
 }
 ```
 

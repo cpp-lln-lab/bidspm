@@ -46,6 +46,7 @@ doc = [
     "sphinx-argparse",
     "sphinx-copybutton",
     "pydata-sphinx-theme",
+    "sphinx-togglebutton",
     "sphinxcontrib-bibtex",
     "sphinxcontrib-matlabdomain",
     "sphinxcontrib-mermaid",
@@ -100,8 +101,8 @@ combine_as_imports = true
 addopts = "-ra -vv"
 
 [tool.codespell]
-skip = "*.tsv,*.json,*.nii*,*.js,*.svg,*.eps,*.log,.git,env,build,lib,options,outputs,inputs,bids-examples,stats_model,coverage_html,stats.md,preprocess.md,ds001734"
-ignore-words-list = "fo,te,als,ane,nin,fot,fwe,commun,ons"
+skip = "*.tsv,*.json,*.nii*,*.js,*.svg,*.eps,*.log,.git,env,build,lib,options,outputs,inputs,bids-examples,stats_model,coverage_html,ds001734"
+ignore-words-list = "fo,te,als,ane,nin,fot,fwe,commun,ons,buildd"
 builtin = "clear,rare"
 
 [tool.coverage.run]

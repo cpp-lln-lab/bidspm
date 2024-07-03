@@ -1,116 +1,118 @@
 ---
 exclude: |
-  (?x)^(
-  demos/renaming/spm_2_bids_filenames.ipynb
-  | demos/MoAE/moae_01_bids_app.ipynb
-  )$
+    (?x)^(
+    demos/renaming/spm_2_bids_filenames.ipynb
+    | demos/MoAE/moae_01_bids_app.ipynb
+    )$
 
 repos:
-- repo: local
+-   repo: local
 
-  hooks:
-  - id: mh_style
-    name: mh_style
-    entry: mh_style
-    args: [--process-slx, --fix]
-    files: ^(.*\.(m|slx))$
-    language: python
-    additional_dependencies: [miss_hit_core]
+    hooks:
+    -   id: mh_style
+        name: mh_style
+        entry: mh_style
+        args: [--process-slx, --fix]
+        files: ^(.*\.(m|slx))$
+        language: python
+        additional_dependencies: [miss_hit_core]
 
-  - id: mh_metric
-    name: mh_metric
-    entry: mh_metric
-    args: [--ci]
-    files: ^(.*\.(m|slx))$
-    language: python
-    additional_dependencies: [miss_hit_core]
+    -   id: mh_metric
+        name: mh_metric
+        entry: mh_metric
+        args: [--ci]
+        files: ^(.*\.(m|slx))$
+        language: python
+        additional_dependencies: [miss_hit_core]
 
-  - id: mh_lint
-    name: mh_lint
-    entry: mh_lint
-    files: ^(.*\.(m|slx))$
-    language: python
-    additional_dependencies: [miss_hit]
+    -   id: mh_lint
+        name: mh_lint
+        entry: mh_lint
+        files: ^(.*\.(m|slx))$
+        language: python
+        additional_dependencies: [miss_hit]
 
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.6.0
-  hooks:
-  - id: trailing-whitespace
-  - id: end-of-file-fixer
-  - id: check-yaml
-  - id: check-json
-  - id: check-added-large-files
-  - id: pretty-format-json
-    args: [--autofix, --no-sort-keys]
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-json
+    -   id: check-added-large-files
+    -   id: pretty-format-json
+        args: [--autofix, --no-sort-keys]
 
-- repo: https://github.com/pre-commit/pygrep-hooks
-  rev: v1.10.0
-  hooks:
-  - id: rst-backticks
-  - id: rst-inline-touching-normal
+-   repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+    rev: 0.2.3
+    hooks:
+    -   id: yamlfmt
+        args: [--mapping, '4', --sequence, '4', --offset, '0']
 
-- repo: https://github.com/pycqa/isort
-  rev: 5.13.2
-  hooks:
-  - id: isort
-    args: [--profile, black]
+-   repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+    -   id: rst-backticks
+    -   id: rst-inline-touching-normal
 
-- repo: https://github.com/psf/black
-  rev: 24.4.2
-  hooks:
-  - id: black
-    args: [--config=pyproject.toml]
+-   repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+    -   id: isort
+        args: [--profile, black]
 
-- repo: https://github.com/asottile/pyupgrade
-  rev: v3.16.0
-  hooks:
-  - id: pyupgrade
-    args: [--py38-plus]
+-   repo: https://github.com/psf/black
+    rev: 24.4.2
+    hooks:
+    -   id: black
+        args: [--config=pyproject.toml]
 
-- repo: https://github.com/pycqa/flake8
-  rev: 7.1.0
-  hooks:
-  - id: flake8
-    exclude: tests_.*.py|version.*.py|setup.py
+-   repo: https://github.com/asottile/pyupgrade
+    rev: v3.16.0
+    hooks:
+    -   id: pyupgrade
+        args: [--py38-plus]
 
-- repo: https://github.com/ikamensh/flynt/
-  rev: 1.0.1
-  hooks:
-  - id: flynt
+-   repo: https://github.com/pycqa/flake8
+    rev: 7.1.0
+    hooks:
+    -   id: flake8
+        exclude: tests_.*.py|version.*.py|setup.py
 
-- repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v1.10.0
-  hooks:
-  - id: mypy
-    additional_dependencies: [types-all]
-    files: bidspm
-    args: [--config-file, pyproject.toml]
+-   repo: https://github.com/ikamensh/flynt/
+    rev: 1.0.1
+    hooks:
+    -   id: flynt
 
-- repo: https://github.com/MarcoGorelli/auto-walrus
-  rev: 0.3.4
-  hooks:
-  - id: auto-walrus
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+    -   id: mypy
+        additional_dependencies: [types-all]
+        files: bidspm
+        args: [--config-file, pyproject.toml]
 
-- repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
-  rev: 0.2.3
-  hooks:
-  - id: yamlfmt
-    args: [--mapping, '2', --sequence, '2', --offset, '0']
+-   repo: https://github.com/MarcoGorelli/auto-walrus
+    rev: 0.3.4
+    hooks:
+    -   id: auto-walrus
 
-- repo: https://github.com/hadolint/hadolint
-  rev: v2.13.0-beta
-  hooks:
-  - id: hadolint-docker
-    name: Lint Dockerfiles
-    description: Runs hadolint Docker image to lint Dockerfiles
-    language: docker_image
-    types: [dockerfile]
-    entry: ghcr.io/hadolint/hadolint hadolint
+-   repo: https://github.com/hadolint/hadolint
+    rev: v2.13.0-beta
+    hooks:
+    -   id: hadolint-docker
+        name: Lint Dockerfiles
+        description: Runs hadolint Docker image to lint Dockerfiles
+        language: docker_image
+        types: [dockerfile]
+        entry: ghcr.io/hadolint/hadolint hadolint
 
-- repo: https://github.com/codespell-project/codespell
-  rev: v2.3.0
-  hooks:
-  - id: codespell
+-   repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+    -   id: codespell
+        args: [--toml, pyproject.toml]
+        additional_dependencies: [tomli]
 
 ci:
-  skip: [hadolint-docker]
+    skip: [hadolint-docker]

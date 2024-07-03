@@ -25,7 +25,6 @@ preprocessing + stats
 
 .. literalinclude:: ../../../demos/MoAE/moae_01_bids_app.m
     :language: matlab
-    :linenos:
     :caption: moae_01_bids_app.m
     :lines: 69-
 
@@ -34,7 +33,6 @@ preprocessing + stats
 
     .. literalinclude:: ../../../demos/MoAE/models/model-MoAE_smdl.json
         :language: json
-        :linenos:
         :caption: model-MoAE_smdl.json
 
 stats with fmriprep output + default stats model
@@ -44,7 +42,6 @@ stats with fmriprep output + default stats model
 
 .. literalinclude:: ../../../demos/MoAE/moae_fmriprep.m
     :language: matlab
-    :linenos:
     :caption: moae_fmriprep.m
     :lines: 19-
 
@@ -63,7 +60,6 @@ region of interest
 
     .. literalinclude:: ../../../demos/MoAE/models/model-MoAE_smdl.json
         :language: json
-        :linenos:
         :caption: model-MoAE_smdl.json
 
 slice display
@@ -72,7 +68,6 @@ slice display
 .. autoscript:: moae_03_slice_display
 .. literalinclude:: ../../../demos/MoAE/moae_03_slice_display.m
     :language: matlab
-    :linenos:
     :caption: moae_03_slice_display.m
     :lines: 11-
 
@@ -81,7 +76,6 @@ slice display
 
     .. literalinclude:: ../../../demos/MoAE/models/model-MoAE_smdl.json
         :language: json
-        :linenos:
         :caption: model-MoAE_smdl.json
 
 .. .. include:: ../../../demos/MoAE/README.md

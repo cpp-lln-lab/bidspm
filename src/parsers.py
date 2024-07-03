@@ -6,7 +6,7 @@ import logging
 from rich.logging import RichHandler
 from rich_argparse import RichHelpFormatter
 
-from . import _version  # type: ignore
+from . import _version
 
 log = logging.getLogger("bidspm")
 

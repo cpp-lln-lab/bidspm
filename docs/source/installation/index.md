@@ -62,6 +62,14 @@ bidspm comes with a BIDS app CLI.
 If you are using MATLAB, you need to edit the file `src/matlab.py`,
 so that it returns the fullpath to the MATLAB executable on your computer.
 
+For this you first need to know where is the MATLAB application.
+Here are the typical location depending on your operating system
+(where `XXx` corresponds to the version you use).
+
+-   Windows: `C:\Program Files\MATLAB\R20XXx\bin\matlab.exe`
+-   Mac: `/Applications/Matlab_R20XXx.app/bin/matlab`
+-   Linux: `/usr/local/MATLAB/R20XXx/bin/matlab`
+
 You can then install the bidspm CLI from within the `bidspm` folder with:
 
 ```bash

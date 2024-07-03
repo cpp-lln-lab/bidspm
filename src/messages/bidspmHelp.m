@@ -59,9 +59,6 @@ function bidspmHelp()
   %                           Defaults to ``{}``
   % :type participant_label:  cellstr
   %
-  % :param space:             Defaults to ``{}``
-  % :type  space:             cell string
-  %
   % :param bids_filter_file:  path to JSON file or structure
   % :type  bids_filter_file:  path
   %
@@ -391,10 +388,10 @@ function bidspmHelp()
   %
   % :param action:       Any of: ``{'bms', 'bms-posterior', 'bms-bms'}``
   %                      `'bms'` will performm all steps for the baeysian
-  %                      model selection. If `'bms'` has been performed
-  %                      than ``'bms-posterior'`` can``'bms-bms'``
-  %                      be performed one aftr the other set a new model
-  %                      space and perform bayesian model selection on it.
+  %                      model selection.
+  %                      If `'bms'` has been performed
+  %                      then ``'bms-posterior'`` can``'bms-bms'``
+  %                      be performed one after the other.
   %                      See the help section of :func:`bidsModelSelection`
   %                      for more details.
   % :type  action:       char

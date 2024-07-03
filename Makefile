@@ -71,15 +71,6 @@ release: validate_cff bump_version lint manual
 ################################################################################
 #   doc
 
-update_faq:
-	cd docs/faq/bids && faqtory build
-	cd docs/faq/general && faqtory build
-	cd docs/faq/preproc && faqtory build
-	cd docs/faq/results && faqtory build
-	cd docs/faq/spm && faqtory build
-	cd docs/faq/stats && faqtory build
-
-
 clean_doc:
 	cd docs && make clean
 
