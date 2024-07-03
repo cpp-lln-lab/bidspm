@@ -119,7 +119,7 @@ jobs:
         -   checkout
 
         -   run:
-                name: stats
+                name: stats subject level
                 command: |
                     user_name=cpplab
                     repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
@@ -139,6 +139,26 @@ jobs:
                           --skip_validation \
                           --fwhm 8 \
                           --participant_label 01 02 \
+                          --verbosity 2
+
+        -   run:
+                name: stats group level
+                command: |
+                    user_name=cpplab
+                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
+                    docker run -ti --rm  \
+                      -v /tmp/workspace/data/ds000001:/bids_dataset \
+                      -v ${HOME}/outputs:/outputs \
+                      -v ~/project/demos/openneuro/models:/models \
+                        ${user_name}/${repo_name} \
+                          /bids_dataset \
+                          /outputs/ds000001 \
+                          dataset \
+                          --action stats \
+                          --preproc_dir /outputs/ds000001/derivatives/bidspm-preproc \
+                          --model_file /models/model-balloonanalogrisktaskDefault_smdl.json \
+                          --space MNI152NLin2009cAsym \
+                          --skip_validation \
                           --verbosity 2
                 no_output_timeout: 6h
 
