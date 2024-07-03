@@ -4,6 +4,7 @@ From: bids/base_validator:1.13.1
 %files
     pyproject.toml /opt/bidspm/pyproject.toml
     requirements.txt /opt/bidspm/requirements.txt
+    README.md  /opt/bidspm/README.md
     bidspm.m /opt/bidspm/bidspm.m
     src /opt/bidspm/src
     lib /opt/bidspm/lib
