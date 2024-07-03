@@ -1,5 +1,5 @@
 BootStrap: docker
-From: bids/base_validator
+From: bids/base_validator:1.13.1
 
 %post
     apt-get -qq update
@@ -41,6 +41,7 @@ From: bids/base_validator
     mkdir /opt/bidspm
     git clone --recurse-submodules https://github.com/cpp-lln-lab/bidspm.git /opt/bidspm
     pip install --no-cache-dir --upgrade pip && \
+    pip3 --no-cache-dir install -r /opt/requirements.txt && \
     pip3 --no-cache-dir install /opt/bidspm && \
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
     octave --no-gui --eval "addpath('/opt/bidspm/'); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path"

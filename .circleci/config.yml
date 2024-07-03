@@ -127,6 +127,7 @@ jobs:
                       -v /tmp/workspace/data/ds000001:/bids_dataset \
                       -v ${HOME}/outputs:/outputs \
                       -v ~/project/demos/openneuro/models:/models \
+                      -v ~/project/demos/openneuro/options:/options \
                         ${user_name}/${repo_name} \
                           /bids_dataset \
                           /outputs/ds000001 \
@@ -139,7 +140,8 @@ jobs:
                           --skip_validation \
                           --fwhm 8 \
                           --participant_label 01 02 \
-                          --verbosity 2
+                          --verbosity 2 \
+                          --options /options/ds000001.json
 
         -   run:
                 name: stats group level
@@ -159,7 +161,8 @@ jobs:
                           --model_file /models/model-balloonanalogrisktaskDefault_smdl.json \
                           --space MNI152NLin2009cAsym \
                           --skip_validation \
-                          --verbosity 2
+                          --verbosity 2 \
+                          --options /options/ds000001.json
                 no_output_timeout: 6h
 
 

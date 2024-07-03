@@ -49,6 +49,8 @@ src/bidspm/_version.py
 **/__pycache__
 **/build
 .coverage
+.pytest_cache
+.tox
 
 .mypy_cache
 
