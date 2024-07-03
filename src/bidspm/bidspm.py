@@ -321,12 +321,12 @@ def cli(argv: Any = sys.argv) -> None:
         else None
     )
     preproc_dir = (
-        Path(args.preproc_dir[0]).resolve() if args.preproc_dir is not None else None
+        Path(args.preproc_dir[0]).absolute() if args.preproc_dir is not None else None
     )
     model_file = (
-        Path(args.model_file[0]).resolve() if args.model_file is not None else None
+        Path(args.model_file[0]).absolute() if args.model_file is not None else None
     )
-    options = Path(args.bids_dir[0]).resolve()
+    options = Path(args.options[0]).absolute() if args.options is not None else None
 
     return_code = bidspm(
         bids_dir,
