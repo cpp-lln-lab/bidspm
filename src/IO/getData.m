@@ -60,7 +60,12 @@ function [BIDS, opt] = getData(varargin)
     indexDependencies = false;
   end
 
-  if isfield(opt, 'taskName')
+  anatOnly = false;
+  if isfield(opt, 'anatOnly')
+    anatOnly = opt.anatOnly;
+  end
+
+  if ~anatOnly && isfield(opt, 'taskName')
     msg = sprintf('FOR TASK(s): %s', strjoin(opt.taskName, ' '));
     logger('INFO', msg, 'options', opt, 'filename', mfilename());
   end
@@ -70,6 +75,10 @@ function [BIDS, opt] = getData(varargin)
   layout_filter = struct([]);
   if ~isempty(opt.subjects{1}) && ~ismember('', opt.subjects)
     layout_filter = struct('sub', {opt.subjects});
+  end
+
+  if anatOnly
+    layout_filter(1).modality = {'anat'};
   end
 
   BIDS = bids.layout(bidsDir, ...
@@ -100,7 +109,8 @@ function [BIDS, opt] = getData(varargin)
   end
 
   % make sure that the required tasks exist in the data set
-  if isfield(opt, 'taskName') && ~any(ismember(opt.taskName, bids.query(BIDS, 'tasks')))
+  if ~anatOnly && isfield(opt, 'taskName') && ...
+          ~any(ismember(opt.taskName, bids.query(BIDS, 'tasks')))
 
     msg = sprintf(['The task %s that you have asked for ', ...
                    'does not exist in this dataset.\n', ...
