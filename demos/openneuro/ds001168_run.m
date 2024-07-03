@@ -1,8 +1,12 @@
+% Show how to denoise resting state data using the GLM
+% by removing confounds from the time series
+%
 % .. warning
 %
 %   the fieldmap handling is still work in progress
 %   and is therefore skipped in this analysis
 %
+
 % (C) Copyright 2020 bidspm developers
 
 clear;

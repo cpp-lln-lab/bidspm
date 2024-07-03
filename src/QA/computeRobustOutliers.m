@@ -2,8 +2,7 @@ function outliers = computeRobustOutliers(varargin)
   %
   % Computes robust ouliers of a time series using S-outliers or Carling's k
   %
-  %
-  % EXAMPLE::
+  % USAGE::
   %
   %     outliers = computeRobustOutliers(time_series, 'outlierType', 'Carling')
   %

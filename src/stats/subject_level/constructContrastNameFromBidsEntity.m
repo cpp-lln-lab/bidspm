@@ -2,6 +2,10 @@ function contrastName = constructContrastNameFromBidsEntity(cdtName, SPM, iSess)
   %
   % Try using bids ses and run info saved in the SPM to build a contrast name.
   %
+  % USAGE::
+  %
+  %   contrastName = constructContrastNameFromBidsEntity(cdtName, SPM, iSess)
+  %
   % If no information is foun
   % it falls back on using the the SPM session number
   %

@@ -26,5 +26,6 @@ For the others, feel free to browse the ``demos`` folder of the repository.
 
     moae
     face_repetition
+    bayesian_model_selection
     vis_motion
     openneuro

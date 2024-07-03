@@ -4,7 +4,7 @@ function [json, fig] = anatQA(varargin)
   % *Preprocessed Connectome Project Quality Assurance Protocol (QAP)*
   % <http://preprocessed-connectomes-project.org/quality-assessment-protocol/>
   %
-  % EXAMPLE::
+  % USAGE::
   %
   %     [json, fig] = anatQA(anatImageFile, grayMatterFile, whiteMatterFile, ...
   %                          'noBackground', true, 'visible', 'on')

@@ -1,3 +1,9 @@
+% Runs:
+% - preprocessing
+% - stats at the suject level
+% - stats at the group level
+%
+
 % (C) Copyright 2020 bidspm developers
 
 clear;

@@ -1,6 +1,6 @@
 % attempt at a full factorial design
 %
-%
+
 % (C) Copyright 2019 Remi Gau
 
 clear;
