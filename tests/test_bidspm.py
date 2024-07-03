@@ -3,8 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
+from bidspm.parsers import common_parser
 from src.bidspm import (
     append_base_arguments,
     append_common_arguments,
@@ -12,7 +11,6 @@ from src.bidspm import (
     bidspm,
     run_command,
 )
-from src.parsers import common_parser
 
 
 def test_base_cmd():
@@ -28,7 +26,7 @@ def test_parser():
     parser = common_parser()
     assert parser.description == "bidspm is a SPM base BIDS app"
 
-    args, unknowns = parser.parse_known_args(
+    args, _ = parser.parse_known_args(
         [
             "/path/to/bids",
             "/path/to/output",
