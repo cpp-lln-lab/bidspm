@@ -3,7 +3,7 @@ From: bids/base_validator:1.13.1
 
 %files
     pyproject.toml /opt/bidspm/pyproject.toml
-    pyproject.toml /opt/bidspm/requirements.txt
+    requirements.txt /opt/bidspm/requirements.txt
     bidspm.m /opt/bidspm/bidspm.m
     src /opt/bidspm/src
     lib /opt/bidspm/lib
