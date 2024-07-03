@@ -75,7 +75,7 @@ jobs:
                 -   data/ds000001
                 -   data/ds000001-fmriprep
 
-    test:
+    smooth:
         machine:
             image: ubuntu-2204:2022.10.2
 
@@ -115,6 +115,46 @@ jobs:
                           --verbosity 2
                 no_output_timeout: 6h
 
+    stats:
+        machine:
+            image: ubuntu-2204:2022.10.2
+
+        steps:
+        -   attach_workspace:
+                at: /tmp/workspace
+        -   run: docker load -i /tmp/workspace/docker/image.tar
+
+        -   run: mkdir -p ${HOME}/outputs/ds000001/derivatives
+
+        -   run:
+                name: print version
+                command: |
+                    user_name=cpplab
+                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
+                    docker run -ti --rm \
+                      -v /tmp/workspace/data/ds000001:/bids_dataset \
+                        ${user_name}/${repo_name} --version
+
+        -   run:
+                name: smooth
+                command: |
+                    user_name=cpplab
+                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
+                    docker run -ti --rm \
+                      -v /tmp/workspace/data/ds000001-fmriprep:/bids_dataset \
+                      -v ${HOME}/outputs:/outputs \
+                        ${user_name}/${repo_name} \
+                          /bids_dataset \
+                          /outputs/ds000001 \
+                          subject \
+                          --action smooth \
+                          --task balloonanalogrisktask \
+                          --participant_label 01 02 \
+                          --space MNI152NLin2009cAsym \
+                          --fwhm 0 \
+                          --verbosity 2
+                no_output_timeout: 6h
+
     # needed to access the model
         -   checkout
 
@@ -138,7 +178,7 @@ jobs:
                           --ignore slicetiming \
                           --space MNI152NLin2009cAsym \
                           --skip_validation \
-                          --fwhm 8 \
+                          --fwhm 0 \
                           --participant_label 01 02 \
                           --verbosity 2 \
                           --options /options/ds000001.json
@@ -161,6 +201,7 @@ jobs:
                           --model_file /models/model-balloonanalogrisktaskDefault_smdl.json \
                           --space MNI152NLin2009cAsym \
                           --skip_validation \
+                          --fwhm 0 \
                           --verbosity 2 \
                           --options /options/ds000001.json
                 no_output_timeout: 6h
@@ -210,7 +251,11 @@ workflows:
         jobs:
         -   build
         -   get_data
-        -   test:
+        -   smooth:
+                requires:
+                -   build
+                -   get_data
+        -   stats:
                 requires:
                 -   build
                 -   get_data
@@ -218,6 +263,6 @@ workflows:
                 context:
                 -   DOCKER_HUB
                 requires:
-                -   test
+                -   build
 
 # VS Code Extension Version: 1.5.1
