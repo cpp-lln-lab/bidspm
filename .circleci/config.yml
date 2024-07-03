@@ -103,7 +103,7 @@ jobs:
                           --space MNI152NLin2009cAsym \
                           --verbosity 2
 
-                    cat ${HOME}/outputs/*.json
+                    cat ${HOME}/outputs/**/*.json
 
         -   run:
                 name: default model dataset level
@@ -122,7 +122,7 @@ jobs:
                           --space MNI152NLin2009cAsym \
                           --verbosity 2
 
-                    cat ${HOME}/outputs/*.json
+                    cat ${HOME}/outputs/**/*.json
 
 
     smooth:
