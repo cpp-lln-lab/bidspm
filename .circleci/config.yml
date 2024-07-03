@@ -103,7 +103,7 @@ jobs:
                           --space MNI152NLin2009cAsym \
                           --verbosity 2
 
-                    cat ${HOME}/outputs/**/*.json
+                    cat ${HOME}/outputs/ds000001/derivatives/models/*.json
 
         -   run:
                 name: default model dataset level
@@ -122,10 +122,9 @@ jobs:
                           --space MNI152NLin2009cAsym \
                           --verbosity 2
 
-                    cat ${HOME}/outputs/**/*.json
+                    cat ${HOME}/outputs/ds000001/derivatives/models/*.json
 
-
-    smooth:
+    stats:
         machine:
             image: ubuntu-2204:2022.10.2
 
@@ -154,27 +153,6 @@ jobs:
                           --space MNI152NLin2009cAsym \
                           --fwhm 8 \
                           --verbosity 2
-                no_output_timeout: 6h
-
-    stats:
-        machine:
-            image: ubuntu-2204:2022.10.2
-
-        steps:
-        -   attach_workspace:
-                at: /tmp/workspace
-        -   run: docker load -i /tmp/workspace/docker/image.tar
-
-        -   run: mkdir -p ${HOME}/outputs/ds000001/derivatives
-
-        -   run:
-                name: print version
-                command: |
-                    user_name=cpplab
-                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
-                    docker run -ti --rm \
-                      -v /tmp/workspace/data/ds000001:/bids_dataset \
-                        ${user_name}/${repo_name} --version
 
         # needed to access the model
         -   checkout
@@ -225,8 +203,6 @@ jobs:
                           --fwhm 0 \
                           --verbosity 2 \
                           --options /options/ds000001.json
-                no_output_timeout: 6h
-
 
     deploy:
 
@@ -273,10 +249,6 @@ workflows:
         -   build
         -   get_data
         -   default_model:
-                requires:
-                -   build
-                -   get_data
-        -   smooth:
                 requires:
                 -   build
                 -   get_data
