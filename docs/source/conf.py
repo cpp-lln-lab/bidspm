@@ -129,7 +129,7 @@ html_theme_options = {
 
 
 html_sidebars = {
-    "**": ["sidebar-nav-bs", "sidebar-ethical-ads"],
+    "**": ["sidebar-nav-bs"],
     "API": [],
     "general_information": [],
     "usage_notes": [],
