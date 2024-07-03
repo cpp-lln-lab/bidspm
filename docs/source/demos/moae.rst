@@ -23,53 +23,66 @@ preprocessing + stats
 
 .. autoscript:: moae_01_bids_app
 
-.. literalinclude:: ../../../demos/MoAE/moae_01_bids_app.m
-    :language: matlab
-    :caption: moae_01_bids_app.m
-    :lines: 69-
+.. admonition:: script
+    :class: dropdown
+
+    .. literalinclude:: ../../../demos/MoAE/moae_01_bids_app.m
+        :language: matlab
+        :caption: demos/MoAE/moae_01_bids_app.m
+        :lines: 69-
 
 .. admonition:: BIDS stats model
     :class: dropdown
 
     .. literalinclude:: ../../../demos/MoAE/models/model-MoAE_smdl.json
         :language: json
-        :caption: model-MoAE_smdl.json
+        :caption: demos/MoAE/models/model-MoAE_smdl.json
 
 stats with fmriprep output + default stats model
 ================================================
 
 .. autoscript:: moae_fmriprep
 
-.. literalinclude:: ../../../demos/MoAE/moae_fmriprep.m
-    :language: matlab
-    :caption: moae_fmriprep.m
-    :lines: 19-
+.. admonition:: script
+    :class: dropdown
+
+    .. literalinclude:: ../../../demos/MoAE/moae_fmriprep.m
+        :language: matlab
+        :caption: demos/MoAE/moae_fmriprep.m
+        :lines: 19-
 
 region of interest
 ==================
 
 .. autoscript:: moae_02_create_roi_extract_data
-.. literalinclude:: ../../../demos/MoAE/moae_02_create_roi_extract_data.m
-    :language: matlab
-    :linenos:
-    :caption: moae_02_create_roi_extract_data.m
-    :lines: 12-
+
+.. admonition:: script
+    :class: dropdown
+
+    .. literalinclude:: ../../../demos/MoAE/moae_02_create_roi_extract_data.m
+        :language: matlab
+        :caption: demos/MoAE/moae_02_create_roi_extract_data.m
+        :lines: 12-
 
 .. admonition:: BIDS stats model
     :class: dropdown
 
     .. literalinclude:: ../../../demos/MoAE/models/model-MoAE_smdl.json
         :language: json
-        :caption: model-MoAE_smdl.json
+        :caption: demos/MoAE/models/model-MoAE_smdl.json
 
 slice display
 =============
 
 .. autoscript:: moae_03_slice_display
-.. literalinclude:: ../../../demos/MoAE/moae_03_slice_display.m
-    :language: matlab
-    :caption: moae_03_slice_display.m
-    :lines: 11-
+
+.. admonition:: script
+    :class: dropdown
+
+    .. literalinclude:: ../../../demos/MoAE/moae_03_slice_display.m
+        :language: matlab
+        :caption: demos/MoAE/moae_03_slice_display.m
+        :lines: 11-
 
 .. admonition:: BIDS stats model
     :class: dropdown

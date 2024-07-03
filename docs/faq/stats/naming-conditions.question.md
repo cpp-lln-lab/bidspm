@@ -17,9 +17,8 @@ For example: `1` or `one` or `condition1` are short but not descriptive.
 
 An extra requirement to have condition names that can work with bidspm
 is that condition names ending with an underscore followed by one or more digits
-may lead to unwanted behavior (error or nothing happening
-- see [issue](https://github.com/cpp-lln-lab/bidspm/issues/973))
-when computing results of a GLM.
+may lead to unwanted behavior
+(error or nothing happening - see [issue](https://github.com/cpp-lln-lab/bidspm/issues/973) when computing results of a GLM.)
 
 So for example:
 

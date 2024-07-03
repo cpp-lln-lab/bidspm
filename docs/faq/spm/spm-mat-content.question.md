@@ -8,7 +8,7 @@ and the generally math enclined happy,
 rather than the `TypicalLongVariableNames` that many programmers and new comers
 would prefer to see to help with code readability.
 
-Adapted from: http://andysbrainblog.blogspot.com/2013/10/whats-in-spmmat-file.html
+Adapted from: [andysbrainblog](http://andysbrainblog.blogspot.com/2013/10/whats-in-spmmat-file.html)
 
 
 ### details on experiment
@@ -185,7 +185,7 @@ If global normalization is `scaling`, see `spm_fmri_spm_ui` for parameters that 
 - `SPM.xVi.Vi`  - array of non-sphericity components
 
     - defaults to `{speye(size(xX.X,1))}` - i.i.d.
-    - specifying a cell array of constraints ((Qi)
+    - specifying a cell array of constraints (Qi)
     - These constraints invoke `spm_reml` to estimate hyperparameters assuming V is constant over voxels that provide a high precise estimate of xX.V
 
 - `SPM.xVi.form` - form of non-sphericity (either `'none'` or `'AR(1)'` or `'FAST'`)

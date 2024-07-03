@@ -1,4 +1,4 @@
-# Outputs of bidspm
+# Outputs
 
 ```{toctree}
 :maxdepth: 2
