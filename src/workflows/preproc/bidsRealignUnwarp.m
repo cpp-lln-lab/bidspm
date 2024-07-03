@@ -8,12 +8,12 @@ function bidsRealignUnwarp(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type opt: structure
   %
   % Assumes that ``bidsSTC`` has already been run.
   %
-  % If the ``bidsCreateVDM()`` workflow has been run before the voxel displacement
+  % If the :func:`bidsCreateVDM` workflow has been run before the voxel displacement
   % maps will be used unless ``opt.useFieldmaps`` is set to ``false``.
   %
   %

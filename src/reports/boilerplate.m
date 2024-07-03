@@ -10,7 +10,7 @@ function outputFile = boilerplate(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
   % :param outputPath:
   % :type outputPath: char
@@ -22,7 +22,7 @@ function outputFile = boilerplate(varargin)
   % :type partialsPath: path
   %
   % :param verbose:
-  % :type verbose: boolean
+  % :type verbose: logical
   %
   %
   % EXAMPLE::

@@ -7,14 +7,14 @@
 %
 % This script will run the FFX and contrasts on the the face repetition dataset from SPM.
 %
-%   - GLM specification + estimation
-%   - compute contrasts
-%   - show results
+% - GLM specification + estimation
+% - compute contrasts
+% - show results
 %
 % that are otherwise handled by the workflows
 %
-%   - ``bidsFFX.m``
-%   - ``bidsResults.m``
+% - :func:`bidsFFX`
+% - :func:`bidsResults`
 %
 % .. note::
 %
@@ -28,6 +28,7 @@
 % for more information on what parameters are obligatory or optional
 %
 %
+
 % (C) Copyright 2022 Remi Gau
 
 clear;

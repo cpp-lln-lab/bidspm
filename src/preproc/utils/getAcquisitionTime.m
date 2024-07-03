@@ -8,7 +8,7 @@ function acquisitionTime = getAcquisitionTime(sliceOrder, repetitionTime)
   % :param metadata: sliceOrder
   % :type  metadata: vector
   %
-  % :returns: - :acquisitionTime:
+  % :return: acquisitionTime
   %
 
   % (C) Copyright 2022 bidspm developers

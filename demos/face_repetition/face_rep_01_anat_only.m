@@ -7,19 +7,20 @@
 %
 % **Preprocessing**
 %
-%   - copies the necessary data from the raw to the derivative folder,
-%   - runs spatial preprocessing
+% - copies the necessary data from the raw to the derivative folder,
+% - runs spatial preprocessing
 %
 % those are otherwise handled by the workflows:
 %
-%   - ``bidsCopyInputFolder.m``
-%   - ``bidsSpatialPrepro.m``
+% - :func:`bidsCopyInputFolder`
+% - :func:`bidsSpatialPrepro`
 %
 % type `bidspm help` or `bidspm('action', 'help')`
 % or see this page: https://bidspm.readthedocs.io/en/stable/bids_app_api.html
 % for more information on what parameters are obligatory or optional
 %
 %
+
 % (C) Copyright 2022 Remi Gau
 
 clear;

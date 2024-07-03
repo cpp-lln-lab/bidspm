@@ -15,7 +15,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, tmp, contrastsLis
   %
   % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
   % :param nodeName:
   % :type  nodeName: char
@@ -24,8 +24,8 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, tmp, contrastsLis
   % :type  contrastsList: cell string
   %
   %
-  % :returns: - :matlabbatch: (structure)
-  %
+  % :return: matlabbatch
+  % :rtype: structure
 
   % (C) Copyright 2019 bidspm developers
 

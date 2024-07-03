@@ -15,10 +15,10 @@ function createModelFamilies(varargin)
   %                    Each field of the structure is a dimension of the multiverse.
   %                    Possible dimensions are:
   %
-  %                     - ``motion``: motion regressors strategy
-  %                     - ``scrub``: scrubbing strategy
-  %                     - ``wm_csf``: white matter and cerebrospinal fluid regressors strategy
-  %                     - ``non_steady_state``: non steady state regressors strategy
+  %                    - ``motion``: motion regressors strategy
+  %                    - ``scrub``: scrubbing strategy
+  %                    - ``wm_csf``: white matter and cerebrospinal fluid regressors strategy
+  %                    - ``non_steady_state``: non steady state regressors strategy
   % :type  multiverse: struct
   %
   % EXAMPLE:

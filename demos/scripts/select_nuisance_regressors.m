@@ -1,8 +1,9 @@
-% (C) Copyright 2022 bidspm developers
+% Takes the .tsv file with the nuisance regressors
+% and adds a "included_" prefix to the regressors that are chosen.
+%
+% Regressors are chosen to explain most variance.
 
-% Takes the .tsv file with the nuisance regressors and adds a "included_"
-% prefix to the regressors that are chosen. Regressors are chosen to
-% explain most variance.
+% (C) Copyright 2022 bidspm developers
 
 % maxNbRegPerTissue defines the number of regressors per tissu (here CSF) is chosen.
 % The N maxNbRegPerTissue will be picked.

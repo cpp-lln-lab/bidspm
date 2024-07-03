@@ -11,7 +11,7 @@ function eventSpecification = getEventSpecificationRoiGlm(varargin)
   % :param model_file: obligatory argument. fullpath to BIDS stats model
   % :type  model_file: fullpath
   %
-  % :returns: - :event_specification: (structure) (dimension)
+  % :return: :event_specification: (structure) (dimension)
   %
   % event_specification(1).name 'F1'
   % event_specification(1).event_spec [1;1]

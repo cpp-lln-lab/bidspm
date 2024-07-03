@@ -17,7 +17,7 @@ function outputFile = volumeSplicing(varargin)
   %                    same folder as the input file.
   % :type  outputFile: char
   %
-  % :returns: - :outputFileFullPath:
+  % :return: :outputFileFullPath:
   %
   % Example::
   %

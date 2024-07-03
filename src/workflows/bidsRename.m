@@ -8,10 +8,10 @@ function createdFiles = bidsRename(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type opt: structure
   %
-  % See the spm_2_bids submodule and ``defaults.set_spm_2_bids_defaults``
+  % See the spm_2_bids submodule and :func:`set_spm_2_bids_defaults`
   % for more info.
   %
   %

@@ -2,6 +2,10 @@ function fig = plotConfounds(confounds, visible)
   %
   % Plots realignement parameters, framewise displacement, global signal
   %
+  % USAGE::
+  %
+  %   fig = plotConfounds(confounds, visible)
+  %
   % :type  confounds:  nXm array
   % :param confounds:  confounds
   %

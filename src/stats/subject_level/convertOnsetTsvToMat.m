@@ -7,7 +7,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration,
   %   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`src.defaults.checkOptions`.
   % :type  opt: structure
   %
   % :param tsvFile:
@@ -40,7 +40,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration,
   % if ``opt.glm.useDummyRegressor`` is set to ``true``,
   % any missing condition will be replaced by a DummyRegressor.
   %
-  % :returns: :fullpathOnsetFilename: (string) name of the output ``.mat`` file.
+  % :return: fullpathOnsetFilename: (string) name of the output ``.mat`` file.
   %
   % EXAMPLE::
   %

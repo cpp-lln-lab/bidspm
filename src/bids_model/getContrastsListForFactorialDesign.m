@@ -6,6 +6,10 @@ function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
   % otherwise we dig in this in Node
   % or the previous one to find the list of contrasts
   %
+  % USAGE::
+  %
+  %   contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
+  %
   %
 
   % (C) Copyright 2022 bidspm developers

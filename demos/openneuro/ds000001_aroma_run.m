@@ -1,7 +1,10 @@
+% Runs:
+% - select only the 'AROMA' files from the fMRIprep output
+% - stats at the suject level
+% - stats at the group level
+%
+
 % (C) Copyright 2020 bidspm developers
-%
-% shows how to use the AROMA smoothed files from fmriprep to run a first level
-%
 
 clear;
 clc;
@@ -22,6 +25,7 @@ participant_label = {'01', '02', '03', '04', '05'};
 task = {'balloonanalogrisktask'};
 space = {'MNI152NLin6Asym'};
 
+% use bids filter to only include AROMA files
 bids_filter_file = struct('bold', struct('modality', 'func', ...
                                          'suffix', 'bold', ...
                                          'desc', {'smoothAROMAnonaggr'}));

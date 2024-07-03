@@ -15,8 +15,8 @@ function [e, X] = computeDesignEfficiency(tsvFile, opt)
   %   In general see the `BrainPower doc <https://brainpower.readthedocs.io/en/latest/index.html>`_
   %   but more specifically the tools below:
   %
-  %     - `neuropower <http://neuropowertools.org/neuropower/neuropowerstart/>`_
-  %     - `some of the Canlab tools <https://github.com/canlab/CanlabCore/tree/master/CanlabCore/OptimizeDesign11>`_
+  %   - `neuropower <http://neuropowertools.org/neuropower/neuropowerstart/>`_
+  %   - `some of the Canlab tools <https://github.com/canlab/CanlabCore/tree/master/CanlabCore/OptimizeDesign11>`_
   %
   % USAGE::
   %
@@ -26,7 +26,7 @@ function [e, X] = computeDesignEfficiency(tsvFile, opt)
   % :type tsvFile: char
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   %

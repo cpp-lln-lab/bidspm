@@ -13,9 +13,9 @@ function davg = getDist2surf(varargin)
   %
   % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
-  % :returns: - :davg: (float) (1 x 1)
+  % :return: :davg: (float) (1 x 1)
   %
   %
   % Adapted from motion finger print functions and script (mw_mfp.m) from Marko Wilke

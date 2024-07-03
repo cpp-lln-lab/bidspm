@@ -1,67 +1,33 @@
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-packages = ["src"]
-
-[tool.hatch.version]
-source = "vcs"
-
-[tool.hatch.build.hooks.vcs]
-version-file = "src/_version.py"
+requires = ["hatchling", "hatch-vcs"]
 
 [project]
-name = "bidspm"
-description = "SPM centric bids app"
-authors = [{ name = "bidspm developers" }]
-maintainers = [{ name = "Rémin Gau", email = "remi.gau@gmail.com" }]
-readme = "README.md"
-license = { text = "GPL-3.0" }
-requires-python = ">=3.8"
+authors = [{name = "bidspm developers"}]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3"
+]
 dependencies = [
     "bsmschema",
     "rich",
     "rich-argparse"
 ]
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-    "Programming Language :: Python :: 3",
-]
+description = "SPM centric bids app"
 # Version from setuptools_scm
 dynamic = ["version"]
+license = {text = "GPL-3.0"}
+maintainers = [{name = "Rémin Gau", email = "remi.gau@gmail.com"}]
+name = "bidspm"
+readme = "README.md"
+requires-python = ">=3.8"
 
 [project.optional-dependencies]
 demo = [
     "jupyterlab",
-    "octave-kernel",
-]
-doc = [
-    "urllib3==1.26.15",
-    "faqtory",
-    "myst-parser",
-    "sphinx",
-    "sphinx-argparse",
-    "sphinx-copybutton",
-    "sphinx-rtd-theme",
-    "sphinxcontrib-bibtex",
-    "sphinxcontrib-matlabdomain",
-    "sphinxcontrib-mermaid",
-]
-docs = ["bidspm[doc]"]
-style = [
-	"black",
-    "codespell",
-    "flake8",
-    "flake8-docstrings",
-    "miss-hit",
-    "mypy",
-    "pre-commit",
-    "reorder-python-imports",
-    "rstcheck",
-    "sourcery",
+    "octave-kernel"
 ]
 dev = [
     "bidspm[demo,doc,style]",
@@ -71,48 +37,80 @@ dev = [
     "ruamel.yaml",
     'pandas'
 ]
+doc = [
+    "urllib3==1.26.15",
+    "faqtory",
+    "myst-parser",
+    "sphinx",
+    "sphinx-argparse",
+    "sphinx-copybutton",
+    "pydata-sphinx-theme",
+    "sphinx-togglebutton",
+    "sphinxcontrib-bibtex",
+    "sphinxcontrib-matlabdomain",
+    "sphinxcontrib-mermaid",
+    "setuptools"
+]
+docs = ["bidspm[doc]"]
+style = [
+    "black",
+    "codespell",
+    "flake8",
+    "flake8-docstrings",
+    "miss-hit",
+    "mypy",
+    "pre-commit",
+    "reorder-python-imports",
+    "rstcheck",
+    "sourcery"
+]
 
 [project.scripts]
-bidspm = "src.bidspm:cli"
-validate_model = "src.validate:main"
+bidspm = "bidspm:cli"
+validate_model = "validate:main"
 
 [project.urls]
 Homepage = "https://bidspm.readthedocs.io"
 
-
 [tool.black]
-line-length = 90
 extend-exclude = """
 (
   demos/renaming/spm_2_bids_filenames.ipynb
   | demos/MoAE/moae_01_bids_app.ipynb
 )
 """
-
-[tool.isort]
-profile = "black"
-line_length = 90
-skip_gitignore = true
-combine_as_imports = true
-
-[tool.pytest.ini_options]
-addopts = "-ra -vv"
+line-length = 90
 
 [tool.codespell]
-skip = "*.tsv,*.json,*.nii*,*.js,*.svg,*.eps,*.log,.git,env,build,lib,options,outputs,inputs,bids-examples,stats_model,coverage_html,stats.md,preprocess.md,ds001734"
-ignore-words-list = "fo,te,als,ane,nin,fot,fwe,commun,ons"
 builtin = "clear,rare"
+ignore-words-list = "fo,te,als,ane,nin,fot,fwe,commun,ons,buildd"
+skip = "*.tsv,*.json,*.nii*,*.js,*.svg,*.eps,*.log,.git,env,build,lib,options,outputs,inputs,bids-examples,stats_model,coverage_html,ds001734"
+
+[tool.coverage.report]
+omit = [
+    "*_version.py",
+    "__init__.py"
+]
+show_missing = true
+skip_covered = true
 
 [tool.coverage.run]
 branch = true
 
-[tool.coverage.report]
-show_missing = true
-skip_covered = true
-omit = [
-    "*_version.py",
-    "__init__.py",
-]
+[tool.hatch.build.hooks.vcs]
+version-file = "src/bidspm/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bidspm"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.isort]
+combine_as_imports = true
+line_length = 90
+profile = "black"
+skip_gitignore = true
 
 [tool.mypy]
 check_untyped_defs = true
@@ -124,10 +122,15 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
+ignore_missing_imports = true
 module = [
     "bsmschema.models",
     "rich",
     "rich.logging",
     "rich_argparse",
+    "bidspm._version",
+    "pydantic"  # just to silence errors
 ]
-ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = "-ra -vv"

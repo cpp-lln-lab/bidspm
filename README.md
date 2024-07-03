@@ -26,7 +26,7 @@ This is a Matlab / Octave toolbox to perform MRI data analysis on a
 docker pull cpplab/bidspm:latest
 ```
 
-### From the source
+### From source
 
 In a terminal or a git bash prompt, type:
 
@@ -34,77 +34,19 @@ In a terminal or a git bash prompt, type:
 git clone --recurse-submodules https://github.com/cpp-lln-lab/bidspm.git
 ```
 
-To start using bidspm, you just need to initialize it for this MATLAB / Octave session with:
+To start using bidspm, you just need to initialize it for the current MATLAB / Octave session with:
 
 ```matlab
 bidspm()
 ```
 
-Please see our
-[documentation](https://bidspm.readthedocs.io/en/latest/installation.html) for
-more info.
-
-### Installing the Command line Interface (CLI)
-
-If you want to use the BIDS app python based CLI of bidspm.
-
-You need to
-
--   [python3](https://www.python.org/downloads/)
--   pip
-
-If you are using MATLAB, you need to edit the file `src/matlab.py`,
-so that it returns the fullpath to the MATLAB executable on your computer.
-
-You can then install the bidspm CLI from within the `bidspm` folder with:
-
-```bash
-pip install .
-```
-
-You can then type the following to see which command you have access to:
-```bash
-bidspm --help
-```
-
-### BIDS validation
-
-After installing bidspm python package, you can get access to extra validation options.
-
-### BIDS stats model validation
-
-Please see [the documentation](https://bidspm.readthedocs.io/en/latest/bids_stats_model.html#using-the-bids-stats-model-python-package)
-
-### BIDS dataset validation
-
-To run the bids-validator when running bidspm, you
-will need:
-
--   [node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
--   the bidspm python CLI (see above)
-
-You can then install:
-
--   the bids validator
-
-by running from the command line in the root folder of the repository:
-
-```bash
-make install
-```
-
-or
-
-```bash
-npm install -g bids-validator
-```
+Please see our [documentation](https://bidspm.readthedocs.io/en/latest/installation.html) for more info.
 
 ## Usage
 
 For some of its functionality bidspm has a BIDS app like API.
 
-See
-[this page for more information](https://bidspm.readthedocs.io/en/latest/usage_notes.html).
+See [this page for more information](https://bidspm.readthedocs.io/en/latest/usage_notes.html).
 
 But in brief they are of the form:
 
@@ -178,24 +120,22 @@ bidspm(bids_dir, output_dir, 'subject', ...
 
 ### Statistics
 
-The model specification are set up using the
-[BIDS stats model](https://bids-standard.github.io/stats-models/) and can be
-used to perform:
+The model specification are set up using the [BIDS stats model](https://bids-standard.github.io/stats-models/)
+and can be used to perform:
 
 -   whole GLM at the subject level
--   whole brain GLM at the group level à la SPM (meaning using a summary
-    statistics approach).
+-   whole brain GLM at the group level à la SPM (meaning using a summary statistics approach).
 -   ROI based GLM (using marsbar)
 -   model selection (with the MACS toolbox)
 
 ### Preprocessing
 
-If your data is fairly "typical" (for example whole brain coverage functional
-data with one associated anatomical scan for each subject), you might be better
-off running [fmriprep](https://fmriprep.org/en/stable/) on your data.
+If your data is fairly "typical"
+(for example whole brain coverage functional data with one associated anatomical scan for each subject),
+you might be better off running [fmriprep](https://fmriprep.org/en/stable/) on your data.
 
-If you have more exotic data that cannot be handled well by fmriprep then bidspm
-has some automated workflows to perform amongst other things:
+If you have more exotic data that cannot be handled well by fmriprep
+then bidspm has some automated workflows to perform amongst other things:
 
 -   remove dummies
 
@@ -210,10 +150,8 @@ has some automated workflows to perform amongst other things:
 
 -   smoothing
 
--   fieldmaps processing and voxel displacement map creation (work in progress)
-
-All (well almost all) preprocessed outputs are saved as BIDS derivatives with
-BIDS compliant filenames.
+All (well almost all) preprocessed outputs are saved as BIDS derivatives
+with BIDS compliant filenames.
 
 ### Quality control:
 
@@ -221,8 +159,7 @@ BIDS compliant filenames.
 -   functional data (work in progress)
 -   GLM auto-correlation check
 
-Please see our
-[documentation](https://bidspm.readthedocs.io/en/latest/index.html) for more info.
+Please see our [documentation](https://bidspm.readthedocs.io/en/latest/index.html) for more info.
 
 ## Citation
 
@@ -243,7 +180,8 @@ Please see our
 
 ## Contributors
 
-Thanks goes to these wonderful people
+Thanks goes to these wonderful people.
+
 ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
@@ -285,6 +223,5 @@ Thanks goes to these wonderful people
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the
-[all-contributors](https://github.com/all-contributors/all-contributors)
-specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
+Contributions of any kind welcome!
