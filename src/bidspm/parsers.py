@@ -6,12 +6,9 @@ import logging
 from rich.logging import RichHandler
 from rich_argparse import RichHelpFormatter
 
-from . import _version
+from ._version import __version__  # type ignore
 
 log = logging.getLogger("bidspm")
-
-
-__version__ = _version.__version__
 
 
 def bidspm_log(name: str = "bidspm") -> logging.Logger:

@@ -40,8 +40,7 @@ derivatives/models
 derivatives/options
 
 # hatch
-src/_version.py
-
+src/bidspm/_version.py
 
 ###############################################################################
 # python

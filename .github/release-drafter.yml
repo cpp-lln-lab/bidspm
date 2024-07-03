@@ -1,6 +1,6 @@
 ---
 template: |
-  ## Release Notes
+    ## Release Notes
 
-  ## CHANGES
-  $CHANGES
+    ## CHANGES
+    $CHANGES

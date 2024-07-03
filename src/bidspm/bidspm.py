@@ -8,8 +8,8 @@ from typing import Any
 
 from rich import print
 
-from src.matlab import matlab
-from src.parsers import bidspm_log, common_parser
+from .matlab import matlab
+from .parsers import bidspm_log, common_parser
 
 log = bidspm_log(name="bidspm")
 
@@ -165,13 +165,15 @@ def create_roi(
     preproc_dir: Path | None = None,
     verbosity: int = 2,
     participant_label: list[str] | None = None,
-    roi_dir: Path | None = Path(),
+    roi_dir: Path | None = None,
     roi_atlas: str | None = "neuromorphometrics",
     roi_name: list[str] | None = None,
     space: list[str] | None = None,
     bids_filter_file: Path | None = None,
 ) -> int:
     roi_name = "{ '" + "', '".join(roi_name) + "' }" if roi_name is not None else None  # type: ignore
+    if roi_dir is None:
+        roi_dir = Path()
 
     cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
     cmd = append_main_cmd(cmd=cmd, analysis_level="subject", action=action)

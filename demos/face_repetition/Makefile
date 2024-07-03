@@ -16,6 +16,8 @@ clean:
 	rm -rf outputs/derivatives outputs/raw
 	rm -rf cfg
 	rm face_rep.zip
+	mkdir inputs
+	touch inputs/.gitkeep
 
 all: $(roi)
 
