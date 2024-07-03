@@ -38,6 +38,7 @@ def append_base_arguments(
     space: list[str] | None = None,
     task: list[str] | None = None,
     ignore: list[str] | None = None,
+    options: Path | None = None,
 ) -> str:
     """Append arguments common to all actions to the command string."""
     task = "{ '" + "', '".join(task) + "' }" if task is not None else None  # type: ignore
@@ -52,6 +53,8 @@ def append_base_arguments(
         cmd += f"{new_line}'task', {task}"
     if ignore:
         cmd += f"{new_line}'ignore', {ignore}"
+    if options:
+        cmd += f"{new_line}'options', '{str(options)}'"
 
     return cmd
 
@@ -92,6 +95,7 @@ def default_model(
     space: list[str] | None = None,
     task: list[str] | None = None,
     ignore: list[str] | None = None,
+    options: Path | None = None,
 ) -> int | str:
     if space and len(space) > 1:
         log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
@@ -106,6 +110,7 @@ def default_model(
         space=space,
         task=task,
         ignore=ignore,
+        options=options,
     )
     cmd = end_cmd(cmd)
 
@@ -129,6 +134,7 @@ def preprocess(
     skip_validation: bool = False,
     bids_filter_file: Path | None = None,
     dry_run: bool = False,
+    options: Path | None = None,
 ) -> int | str:
     if action == "preprocess" and task and len(task) > 1:
         log.error(f"Only one task allowed for preprocessing. Got\n:{task}")
@@ -143,6 +149,7 @@ def preprocess(
         space=space,
         task=task,
         ignore=ignore,
+        options=options,
     )
     cmd = append_common_arguments(
         cmd=cmd,
@@ -179,6 +186,7 @@ def create_roi(
     roi_name: list[str] | None = None,
     space: list[str] | None = None,
     bids_filter_file: Path | None = None,
+    options: Path | None = None,
 ) -> str:
     roi_name = "{ '" + "', '".join(roi_name) + "' }" if roi_name is not None else None  # type: ignore
     if roi_dir is None:
@@ -191,6 +199,7 @@ def create_roi(
         action="create_roi",
         verbosity=verbosity,
         space=space,
+        options=options,
     )
     cmd = append_common_arguments(
         cmd=cmd,
@@ -230,6 +239,7 @@ def stats(
     concatenate: bool = False,
     design_only: bool = False,
     keep_residuals: bool = False,
+    options: Path | None = None,
 ) -> int | str:
     if space and len(space) > 1:
         log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
@@ -244,6 +254,7 @@ def stats(
         space=space,
         task=task,
         ignore=ignore,
+        options=options,
     )
     cmd = append_common_arguments(
         cmd=cmd,
@@ -279,11 +290,17 @@ def generate_cmd(
     space: list[str] | None = None,
     task: list[str] | None = None,
     ignore: list[str] | None = None,
+    options: Path | None = None,
 ) -> str:
     cmd = base_cmd(bids_dir=bids_dir, output_dir=output_dir)
     cmd = append_main_cmd(cmd=cmd, analysis_level=analysis_level, action=action)
     cmd = append_base_arguments(
-        cmd=cmd, verbosity=verbosity, space=space, task=task, ignore=ignore
+        cmd=cmd,
+        verbosity=verbosity,
+        space=space,
+        task=task,
+        ignore=ignore,
+        options=options,
     )
     return cmd
 
@@ -309,6 +326,7 @@ def cli(argv: Any = sys.argv) -> None:
     model_file = (
         Path(args.model_file[0]).resolve() if args.model_file is not None else None
     )
+    options = Path(args.bids_dir[0]).resolve()
 
     return_code = bidspm(
         bids_dir,
@@ -335,6 +353,7 @@ def cli(argv: Any = sys.argv) -> None:
         concatenate=args.concatenate,
         design_only=args.design_only,
         keep_residuals=args.keep_residuals,
+        options=options,
     )
 
     if return_code == 1:
@@ -368,6 +387,7 @@ def bidspm(
     concatenate: bool = False,
     design_only: bool = False,
     keep_residuals: bool = False,
+    options: Path | None = None,
 ) -> int:
     if not bids_dir.is_dir():
         log.error(f"The 'bids_dir' does not exist:\n\t{bids_dir}")
@@ -386,6 +406,7 @@ def bidspm(
             task=task,
             space=space,
             ignore=ignore,
+            options=options,
         )
 
     elif action in {"preprocess", "smooth"}:
@@ -404,6 +425,7 @@ def bidspm(
             anat_only=anat_only,
             bids_filter_file=bids_filter_file,
             dry_run=dry_run,
+            options=options,
         )
     elif action in {"create_roi"}:
         cmd = create_roi(
@@ -417,6 +439,7 @@ def bidspm(
             roi_name=roi_name,
             space=space,
             bids_filter_file=bids_filter_file,
+            options=options,
         )
 
     elif action in {"stats", "contrasts", "results"}:
@@ -447,6 +470,7 @@ def bidspm(
             concatenate=concatenate,
             design_only=design_only,
             keep_residuals=keep_residuals,
+            options=options,
         )
     else:
         log.error(f"\nunknown action: {action}")

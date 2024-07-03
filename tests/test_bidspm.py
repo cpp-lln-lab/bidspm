@@ -133,6 +133,31 @@ def test_preprocess(action, dry_run, skip_validation, anat_only):
     )
 
 
+def test_options():
+    cmd = preprocess(
+        bids_dir=Path(),
+        output_dir=Path(),
+        action="preprocess",
+        participant_label=["01"],
+        space=["MNI"],
+        task=["rest"],
+        options=Path() / "foo.json",
+    )
+    assert "'options', 'foo.json'" in cmd
+
+    cmd = stats(
+        bids_dir=Path(),
+        output_dir=Path(),
+        preproc_dir=Path(),
+        analysis_level="subject",
+        model_file=Path(),
+        action="stats",
+        participant_label=["01"],
+        options=Path() / "foo.json",
+    )
+    assert "'options', 'foo.json'" in cmd
+
+
 @pytest.mark.parametrize("analysis_level", ["subject", "dataset"])
 @pytest.mark.parametrize(
     "action",
