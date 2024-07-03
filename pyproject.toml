@@ -66,8 +66,8 @@ style = [
 ]
 
 [project.scripts]
-bidspm = "bidspm:cli"
-validate_model = "validate:main"
+bidspm = "bidspm.bidspm:cli"
+validate_model = "bidspm.validate:cli"
 
 [project.urls]
 Homepage = "https://bidspm.readthedocs.io"
@@ -133,4 +133,10 @@ module = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "-ra -vv"
+addopts = "-ra -q -vv --showlocals --strict-markers --strict-config"
+# filterwarnings = ["error"]
+# log_cli_level = "warning"
+minversion = "6.0.0"
+norecursedirs = "data"
+testpaths = ["tests/"]
+xfail_strict = true

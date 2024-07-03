@@ -27,28 +27,31 @@ def validate(file: Path) -> int:
         return 1
 
 
-def main(argv: Any = sys.argv) -> None:
-    parser = validate_parser()
-    args = parser.parse_args(argv[1:])
+def main(input: Path) -> int:
+    if not input.exists():
+        raise FileNotFoundError(f"{input} does not exist.")
 
-    input_ = Path(args.model[0])
+    if input.is_file():
+        log.info(f"Validating {input}")
+        global_status = validate(input)
 
-    if not input_.exists():
-        raise FileNotFoundError(f"{input_} does not exist.")
-
-    elif input_.is_file():
-        log.info(f"Validating {input_}")
-        return_code = validate(input_)
-        sys.exit(return_code)
-
-    if input_.is_dir():
+    elif input.is_dir():
         global_status = 0
-        for file in input_.glob("*_smdl.json"):
+        for file in input.glob("*_smdl.json"):
             return_code = validate(file)
             if return_code == 1:
                 global_status = 1
-        sys.exit(global_status)
+
+    return global_status
+
+
+def cli(argv: Any = sys.argv) -> None:
+    parser = validate_parser()
+    args = parser.parse_args(argv[1:])
+    input_ = Path(args.model[0]).resolve()
+    return_code = main(input=input_)
+    sys.exit(return_code)
 
 
 if __name__ == "__main__":
-    main()
+    cli(sys.argv)

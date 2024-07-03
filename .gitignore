@@ -29,6 +29,7 @@ skipped_roi_*.tsv
 CHANGES
 README
 tests/data/tsv_files/moae_results_table.tsv
+htmlcov
 
 # Project specific
 onsets*_events.mat

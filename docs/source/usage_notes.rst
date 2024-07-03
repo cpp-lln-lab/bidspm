@@ -11,5 +11,5 @@ Command line API
 ================
 
 .. argparse::
-   :ref: src.parsers.common_parser
+   :ref: src.bidspm.parsers.common_parser
    :prog: bidspm
