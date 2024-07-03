@@ -47,7 +47,7 @@ From: bids/base_validator:1.13.1
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
 
     pip install --no-cache-dir --upgrade pip
-    pip3 --no-cache-dir install -r /opt/requirements.txt
+    pip3 --no-cache-dir install -r /opt/bidspm/requirements.txt
     pip3 --no-cache-dir install /opt/bidspm
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
     octave --no-gui --eval "addpath('/opt/bidspm/'); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path"
