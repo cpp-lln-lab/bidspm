@@ -17,7 +17,10 @@ function saveOptions(opt)
   spm_mkdir(optionDir);
 
   taskString = '';
-  if isfield(opt, 'taskName')
+  if isfield(opt, 'taskName') && ...
+    iscellstr(opt.taskName) && ...
+    length(opt.taskName) > 1 && ...
+    opt.taskName{1} ~= ''
     taskString = ['_task-', strjoin(opt.taskName, '')];
   end
 

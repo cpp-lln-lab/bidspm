@@ -13,12 +13,12 @@ from .parsers import bidspm_log, common_parser
 
 log = bidspm_log(name="bidspm")
 
-new_line = ", ...\n\t\t\t "
+new_line = ", ...\n\t "
 
 
 def base_cmd(bids_dir: Path, output_dir: Path) -> str:
-    cmd = " bidspm();"
-    cmd += f" bidspm('{bids_dir}'{new_line}'{output_dir}'"
+    cmd = " bidspm('init');"
+    cmd += f" bidspm( '{bids_dir}'{new_line}'{output_dir}'"
     return cmd
 
 
@@ -36,12 +36,14 @@ def append_base_arguments(
     cmd: str,
     verbosity: int | None = None,
     space: list[str] | None = None,
-    task: list[str] | None = None,
+    task: list[str] | str | None = None,
     ignore: list[str] | None = None,
     options: Path | None = None,
 ) -> str:
     """Append arguments common to all actions to the command string."""
-    task = "{ '" + "', '".join(task) + "' }" if task is not None else None  # type: ignore
+    if task != "{''}":
+        task = "{ '" + "', '".join(task) + "' }" if task is not None else None
+
     space = "{ '" + "', '".join(space) + "' }" if space is not None else None  # type: ignore
     ignore = "{ '" + "', '".join(ignore) + "' }" if ignore is not None else None  # type: ignore
 
@@ -93,13 +95,16 @@ def default_model(
     analysis_level: str = "dataset",
     verbosity: int = 2,
     space: list[str] | None = None,
-    task: list[str] | None = None,
+    task: list[str] | str | None = None,
     ignore: list[str] | None = None,
     options: Path | None = None,
 ) -> int | str:
     if space and len(space) > 1:
         log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
         return 1
+
+    if task is None:
+        task = "{''}"
 
     cmd = generate_cmd(
         bids_dir=bids_dir,
@@ -288,7 +293,7 @@ def generate_cmd(
     action: str,
     verbosity: int = 2,
     space: list[str] | None = None,
-    task: list[str] | None = None,
+    task: list[str] | str | None = None,
     ignore: list[str] | None = None,
     options: Path | None = None,
 ) -> str:
@@ -326,7 +331,7 @@ def cli(argv: Any = sys.argv) -> None:
     model_file = (
         Path(args.model_file[0]).absolute() if args.model_file is not None else None
     )
-    options = Path(args.options[0]).absolute() if args.options is not None else None
+    options = Path(args.options).absolute() if args.options is not None else None
 
     return_code = bidspm(
         bids_dir,
