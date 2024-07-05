@@ -315,13 +315,13 @@ def cli(argv: Any = sys.argv) -> None:
 
     args, _ = parser.parse_known_args(argv[1:])
 
-    bids_dir = Path(args.bids_dir[0]).resolve()
-    output_dir = Path(args.output_dir[0]).resolve()
+    bids_dir = Path(args.bids_dir[0]).absolute()
+    output_dir = Path(args.output_dir[0]).absolute()
     analysis_level = args.analysis_level[0]
     action = args.action[0]
     roi_atlas = args.roi_atlas[0]
     bids_filter_file = (
-        Path(args.bids_filter_file[0]).resolve()
+        Path(args.bids_filter_file[0]).absolute()
         if args.bids_filter_file is not None
         else None
     )
