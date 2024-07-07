@@ -261,7 +261,7 @@ function updateMacstoolbox()
   end
 
   if exist(target_dir, 'dir') == 7
-    msg = sprintf('updating MACS toolbox: ');
+    msg = sprintf('updating MACS toolbox\n');
     fprintf(1, msg);
     [status, cmdout] = system(sprintf('git -C %s pull', target_dir));
     if status ~= 0

@@ -101,7 +101,7 @@ jobs:
                           --action default_model \
                           --task balloonanalogrisktask \
                           --space MNI152NLin2009cAsym \
-                          --verbosity 2
+                          --verbosity 3
 
                     cat ${HOME}/outputs/ds000001/derivatives/models/*.json
 
@@ -120,7 +120,7 @@ jobs:
                           --action default_model \
                           --task balloonanalogrisktask \
                           --space MNI152NLin2009cAsym \
-                          --verbosity 2
+                          --verbosity 3
 
                     cat ${HOME}/outputs/ds000001/derivatives/models/*.json
 
@@ -152,7 +152,7 @@ jobs:
                           --participant_label 01 02 \
                           --space MNI152NLin2009cAsym \
                           --fwhm 8 \
-                          --verbosity 2
+                          --verbosity 3
 
         # needed to access the model
         -   checkout
@@ -179,7 +179,7 @@ jobs:
                           --skip_validation \
                           --fwhm 0 \
                           --participant_label 01 02 \
-                          --verbosity 2 \
+                          --verbosity 3 \
                           --options /options/ds000001.json
 
         -   run:
@@ -201,7 +201,7 @@ jobs:
                           --space MNI152NLin2009cAsym \
                           --skip_validation \
                           --fwhm 0 \
-                          --verbosity 2 \
+                          --verbosity 3 \
                           --options /options/ds000001.json
 
     deploy:
