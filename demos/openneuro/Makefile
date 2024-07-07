@@ -23,7 +23,7 @@ data_ds000001:
 	cd inputs/ds000001-fmriprep && datalad get sub-0[1-2]/func/*json -J 12
 	cd inputs/ds000001-fmriprep && datalad get sub-0[1-2]/anat/*MNI*desc-preproc*.nii.gz -J 12
 	cd inputs/ds000001-fmriprep && datalad get sub-0[1-2]/func/*MNI*desc-preproc*.nii.gz -J 12
-    cd inputs/ds000001-fmriprep && datalad get sub-0[1-2]/func/*MNI*desc-*bold.nii.gz -J 12
+	cd inputs/ds000001-fmriprep && datalad get sub-0[1-2]/func/*MNI*desc-*bold.nii.gz -J 12
 
 data_ds000114:
 	mkdir -p inputs
