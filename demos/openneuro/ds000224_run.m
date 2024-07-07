@@ -1,3 +1,5 @@
+% show ROI based analysis.
+
 % (C) Copyright 2023 bidspm developers
 
 clear;

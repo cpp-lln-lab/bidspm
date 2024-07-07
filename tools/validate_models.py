@@ -23,7 +23,7 @@ def validate_file(full_file_name):
 
 
 def validate_dir(directory):
-    for root, dirs, files in os.walk(directory):
+    for root, _, files in os.walk(directory):
         for name in files:
             full_file_name = join(root, name)
             validate_file(full_file_name)

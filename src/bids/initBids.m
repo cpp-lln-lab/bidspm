@@ -8,7 +8,7 @@ function initBids(varargin)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
 
   % (C) Copyright 2022 bidspm developers

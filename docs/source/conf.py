@@ -39,6 +39,7 @@ extensions = [
     "sphinxcontrib.mermaid",
     "sphinxcontrib.bibtex",
     "sphinx_copybutton",
+    "sphinx_togglebutton",
     "myst_parser",
     "sphinxarg.ext",
 ]
@@ -46,6 +47,7 @@ matlab_src_dir = os.path.dirname(os.path.abspath("../../src"))
 matlab_short_links = True
 matlab_auto_link = "basic"
 primary_domain = "mat"
+autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -53,7 +55,17 @@ templates_path = ["_templates"]
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ["examples", "defaults", "demo", "images/*.md", "lib/CPP_ROI"]
+exclude_patterns = [
+    "**/examples/*",
+    "**/images/*",
+    "**/lib/**",
+    "demo",
+    "defaults",
+    "examples",
+    "images",
+    "lib",
+    "tests/**/*.m",
+]
 
 suppress_warnings = ["myst.header", "myst.xref_missing"]
 
@@ -65,12 +77,11 @@ master_doc = "index"
 
 bibtex_bibfiles = ["references.bib"]
 
-# source_suffix = ['.rst', '.md']
-source_suffix = ".rst"
+source_suffix = [".rst", ".md"]
 
-intersphinx_mapping = {
-    "bids-matlab": ("https://bids-matlab.readthedocs.io/en/latest", None)
-}
+# intersphinx_mapping = {
+#     "bids-matlab": ("https://bids-matlab.readthedocs.io/en/main", None)
+# }
 
 coverage_show_missing_items = True
 
@@ -79,7 +90,7 @@ coverage_show_missing_items = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
+html_theme = "pydata_sphinx_theme"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -89,17 +100,44 @@ html_theme = "sphinx_rtd_theme"
 html_logo = "images/cpp_lab_logo.png"
 
 html_theme_options = {
-    "collapse_navigation": False,
-    "display_version": False,
-    "navigation_depth": 4,
+    "collapse_navigation": True,
+    "show_toc_level": 5,
+    "show_nav_level": 5,
+    "navbar_align": "left",
+    "header_links_before_dropdown": 6,
+    "icon_links": [
+        {
+            "name": "github",
+            "url": "https://github.com/cpp-lln-lab/bidspm.git",
+            "icon": "fa-brands fa-square-github",
+            "type": "fontawesome",
+        }
+    ],
+    "secondary_sidebar_items": {
+        "**/*": ["page-toc", "edit-this-page", "sourcelink"],
+        "API": ["page-toc"],
+        "general_information": ["page-toc"],
+        "usage_notes": ["page-toc"],
+        "configuration": ["page-toc"],
+        "demos": ["page-toc"],
+        "FAQ": ["page-toc"],
+        "links_and_references": ["page-toc"],
+        "CHANGELOG": ["page-toc"],
+        "CONTRIBUTING": ["page-toc"],
+    },
 }
 
+
 html_sidebars = {
-    "**": [
-        "about.html",
-        "navigation.html",
-        "relations.html",  # needs 'show_related': True theme option to display
-        "searchbox.html",
-        "donate.html",
-    ]
+    "**": ["sidebar-nav-bs"],
+    "API": [],
+    "general_information": [],
+    "usage_notes": [],
+    "configuration": [],
+    "demos": [],
+    "FAQ": [],
+    "QA": [],
+    "links_and_references": [],
+    "CHANGELOG": [],
+    "CONTRIBUTING": [],
 }

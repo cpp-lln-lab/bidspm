@@ -9,13 +9,14 @@ function matlabbatch = setBatchSubjectLevelResults(varargin)
   % :type matlabbatch: structure
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   % :param subLabel:
   % :type subLabel: char
   %
-  % :returns: - :matlabbatch: (structure)
+  % :return: matlabbatch
+  % :rtype: structure
   %
   % See also: bidsResults, setBatchResults
   %

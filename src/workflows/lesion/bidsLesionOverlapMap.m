@@ -11,7 +11,7 @@ function bidsLesionOverlapMap(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type opt: structure
   %
   % Lesion overlap map will be created using the information provided from the

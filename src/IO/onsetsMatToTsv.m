@@ -11,7 +11,7 @@ function onsetsTsvFile = onsetsMatToTsv(varargin)
   % :param onsetMatFile: obligatory argument.
   % :type onsetMatFile: fullpath
   %
-  % :returns: - :onsetTsvFile: (path)
+  % :return: :onsetTsvFile: (path)
   %
   %
 

@@ -8,7 +8,8 @@ function status = checkFmriprep(BIDS)
   %
   %
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
+  %
   % :type BIDS: struct
   %
 

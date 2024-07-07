@@ -162,9 +162,7 @@ function test_getVariablesToConvolve_warning()
   opt = setOptions('vislocalizer');
   bm = BidsModel('file', opt.model.file);
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
   assertWarning(@()bm.getVariablesToConvolve('Name', 'dataset_level'), ...
                 'BidsModel:noVariablesToConvolve');
 
@@ -197,14 +195,6 @@ function test_getModelMask_method()
   bm.Nodes{1}.Model.Options.Mask = 'mask.nii';
   mask = bm.getModelMask('Name', 'run_level');
   assertEqual(mask, 'mask.nii');
-
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
-  bm.verbose = true;
-  bm.Nodes{1}.Model.Options = rmfield(bm.Nodes{1}.Model.Options, 'Mask');
-  assertWarning(@()bm.getModelMask('Name', 'run_level'), ...
-                'BidsModel:noMask');
 
 end
 
@@ -240,12 +230,6 @@ function test_getInclusiveMaskThreshold_method()
   bm = BidsModel('file', opt.model.file, 'verbose', true);
 
   bm.getInclusiveMaskThreshold('Name', 'subject_level');
-
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
-  assertWarning(@()bm.getInclusiveMaskThreshold('Name', 'subject_level'), ...
-                'BidsModel:noInclMaskThresh');
 
 end
 

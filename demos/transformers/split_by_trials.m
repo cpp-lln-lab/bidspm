@@ -17,7 +17,7 @@
 %
 % You can find a list of the available variables transformations
 % in the bids matlab doc:
-% - https://bids-matlab.readthedocs.io/en/latest/transformers.html
+% - https://bids-matlab.readthedocs.io/en/main/variable_transformations.html
 % on the variable-transforms repository
 % - https://github.com/bids-standard/variable-transform
 %

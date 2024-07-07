@@ -97,7 +97,7 @@ function unfold(input, varargin)
             for i = 1:NF
 
                 if NS > 1
-                    size_ = size_e(input);
+                    size_ = size(input);
                     if show
                         name_i = [name '(' indToStr(size_, h) ').' F{i}];
                     else

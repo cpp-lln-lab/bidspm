@@ -11,7 +11,7 @@ function matlabbatch = setBatchSmoothing(matlabbatch, opt, images, fwhm, prefix)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
   % :param images:
   % :type images: fullpath
@@ -22,8 +22,8 @@ function matlabbatch = setBatchSmoothing(matlabbatch, opt, images, fwhm, prefix)
   % :param prefix:
   % :type prefix: char
   %
-  % :returns: - :matlabbatch: (structure)
-  %
+  % :return: matlabbatch
+  % :rtype: structure
   %
   % See also: bidsSmoothing, bidsRFX, setBatchSmoothingFunc, setBatchSmoothConImages
   %

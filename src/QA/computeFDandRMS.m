@@ -1,11 +1,8 @@
 function [fd, rms] = computeFDandRMS(motionParameters, radius)
   %
-  % simple routine that computes framewise displacement as a sum (FD) and RMS
+  % Compute framewise displacement as a sum (FD) and RMS.
   %
-  % Power et al. (2012) doi:10.1016/j.neuroimage.2011.10.018
-  % Power et al. (2014) doi:10.1016/j.neuroimage.2013.08.048
-  %
-  % Example::
+  % USAGE::
   %
   %         [FD,RMS] = computeFDandRMS(motionParameters, radius)
   %
@@ -16,9 +13,13 @@ function [fd, rms] = computeFDandRMS(motionParameters, radius)
   % :type  radius:  nX6 array
   % :param radius: brain radius
   %
+  % Power et al. (2012) doi:10.1016/j.neuroimage.2011.10.018
+  % Power et al. (2014) doi:10.1016/j.neuroimage.2013.08.048
+  %
   % See also: plotRPandFDandRMS, getDist2surf
   %
   % Adapted from Cyril Pernet's spmup
+  %
 
   % (C) Copyright 2023 Cyril Pernet
   % (C) Copyright 2023 Remi Gau

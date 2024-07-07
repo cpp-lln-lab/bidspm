@@ -23,23 +23,23 @@ end
 function test_buildIndividualSpaceRoiFilename_entities
 
   defField = 'preproc/sub-01/anat/sub-01_from-IXI549Space_to-T1w_mode-image_xfm.nii';
-  roiFilename = 'roi/group/wspace-MNI_atlas-wang_label-V1d_mask.nii';
+  roiFilename = 'roi/group/wspace-MNI_seg-wang_label-V1d_mask.nii';
 
   roiBidsFile = buildIndividualSpaceRoiFilename(defField, roiFilename);
 
   assertEqual(roiBidsFile.filename, ...
-              'sub-01_space-individual_atlas-wang_label-V1d_mask.nii');
+              'sub-01_space-individual_seg-wang_label-V1d_mask.nii');
 
 end
 
 function test_buildIndividualSpaceRoiFilename_session
 
   defField = 'preproc/sub-01/ses-01/anat/sub-01_ses-01_from-IXI549Space_to-T1w_mode-image_xfm.nii';
-  roiFilename = 'roi/group/whemi-L_space-MNI_atlas-wang_label-V1d_mask.nii';
+  roiFilename = 'roi/group/whemi-L_space-MNI_seg-wang_label-V1d_mask.nii';
 
   roiBidsFile = buildIndividualSpaceRoiFilename(defField, roiFilename);
 
   assertEqual(roiBidsFile.filename, ...
-              'sub-01_ses-01_hemi-L_space-individual_atlas-wang_label-V1d_mask.nii');
+              'sub-01_ses-01_hemi-L_space-individual_seg-wang_label-V1d_mask.nii');
 
 end

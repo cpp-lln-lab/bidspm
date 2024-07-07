@@ -24,9 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* [ENH] allow to copy anat only on raw datasets #1181 by @Remi-Gau
 * [ENH] add option to concatenate runs at subject level to facilite running PPI analysis #1133 by @Remi-Gau
 * [ENH] allow to run substeps of substeps of the bayesian model selection #1145 by @Remi-Gau
-* [ENH] add quality control for GLM using the MACS toolbox to give a goodness of fit several other information criteria (AIC, BIC) #1135  by @Remi-Gau
+* [ENH] add quality control for GLM using the MACS toolbox to give a goodness of fit and several other information criteria (AIC, BIC) (MATLAB only) #1135  by @Remi-Gau
 * [ENH] add several confound strategies to add to bids stats model and a function to create family of models #1126 by @Remi-Gau
 * [ENH] add CLI to run bayesian model selection #1121 by @Remi-Gau
 * [ENH] support label of activations with all atlases [1100](https://github.com/cpp-lln-lab/bidspm/pull/1100) by [Remi-Gau](https://github.com/Remi-Gau)
@@ -49,6 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* [FIX] copy the MACS toolbox to the SPM toolbox folder during the initialisation #1203 by @Remi-Gau
+* [FIX] save onsets.mat directly in subject stats folder #1187 by @Remi-Gau
 * [FIX] do not compute subject level contrast when running dataset level #1102 by @Remi-Gau
 * [FIX] copy `RepetitionTime` in sidecar JSON after running smoothing in #1099 by @Remi-Gau
 * [FIX] rename results files (csv, tsv, png, nii) of each contrasts #1104 by @Remi-Gau
@@ -260,7 +263,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [DOC] general doc update by [Remi-Gau](https://github.com/Remi-Gau) in [446](https://github.com/cpp-lln-lab/bidspm/pull/446)
 * [DOC] Add figures for some workflows by [Remi-Gau](https://github.com/Remi-Gau) in [463](https://github.com/cpp-lln-lab/bidspm/pull/463)
 * [DOC] adds link and references to other SPM material by [Remi-Gau](https://github.com/Remi-Gau) in [464](https://github.com/cpp-lln-lab/bidspm/pull/464)
-* [DOC] improve resuls doc and associated how to by [Remi-Gau](https://github.com/Remi-Gau) in [470](https://github.com/cpp-lln-lab/bidspm/pull/470)
+* [DOC] improve results doc and associated how to by [Remi-Gau](https://github.com/Remi-Gau) in [470](https://github.com/cpp-lln-lab/bidspm/pull/470)
 * [DOC] Misc doc updates by [Remi-Gau](https://github.com/Remi-Gau) in [484](https://github.com/cpp-lln-lab/bidspm/pull/484)
 * [DOC] update doc on how to filter files and what files gets upsampled by [Remi-Gau](https://github.com/Remi-Gau) in [494](https://github.com/cpp-lln-lab/bidspm/pull/494)
 * [DOC] update templates by [Remi-Gau](https://github.com/Remi-Gau) in [455](https://github.com/cpp-lln-lab/bidspm/pull/455)
@@ -349,7 +352,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [FIX] apply [425](https://github.com/cpp-lln-lab/bidspm/pull/425) to dev by [Remi-Gau](https://github.com/Remi-Gau) in  [426](https://github.com/cpp-lln-lab/bidspm/pull/426)
 * [FIX] Fix facerep demo by [Remi-Gau](https://github.com/Remi-Gau) in [438](https://github.com/cpp-lln-lab/bidspm/pull/438)
 * [FIX] make sure default BIDS models are usable by [Remi-Gau](https://github.com/Remi-Gau) in [459](https://github.com/cpp-lln-lab/bidspm/pull/459)
-* [FIX] reolve issues to get anat file from a different session from the func data by [Remi-Gau](https://github.com/Remi-Gau) in [462](https://github.com/cpp-lln-lab/bidspm/pull/462)
+* [FIX] resolve issues to get anat file from a different session from the func data by [Remi-Gau](https://github.com/Remi-Gau) in [462](https://github.com/cpp-lln-lab/bidspm/pull/462)
 * [FIX] returnRootDir did not return the root dir by [Remi-Gau](https://github.com/Remi-Gau) in [498](https://github.com/cpp-lln-lab/bidspm/pull/498)
 * [FIX] throw error when no repetition time was found by [Remi-Gau](https://github.com/Remi-Gau) in [509](https://github.com/cpp-lln-lab/bidspm/pull/509)
 * [FIX] update vismotion demo by [Remi-Gau](https://github.com/Remi-Gau) in [513](https://github.com/cpp-lln-lab/bidspm/pull/513)

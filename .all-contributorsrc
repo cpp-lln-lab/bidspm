@@ -216,6 +216,26 @@
         "bug",
         "userTesting"
       ]
+    },
+    {
+      "login": "monique2208",
+      "name": "Monique Denissen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15329571?v=4",
+      "profile": "https://github.com/monique2208",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "d-ni374",
+      "name": "Daniel Huber",
+      "avatar_url": "https://avatars.githubusercontent.com/u/166691050?v=4",
+      "profile": "https://github.com/d-ni374",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -224,5 +244,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true,
-  "commitConvention": "angular"
+  "commitConvention": "angular",
+  "commitType": "docs"
 }

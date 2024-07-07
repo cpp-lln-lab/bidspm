@@ -56,9 +56,7 @@ end
 
 function test_checkOptions_error_task()
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
 
   opt.taskName = '';
   opt.verbosity = 1;

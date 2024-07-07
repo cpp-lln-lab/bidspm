@@ -9,8 +9,6 @@
 % AND it will run some extra checks implemented in bids-matlab
 % and bidspm.
 %
-% See also: https://bidspm.readthedocs.io/en/latest/bids_stats_model.html#using-the-bids-stats-model-python-package
-%
 
 this_dir = fileparts(mfilename('fullpath'));
 

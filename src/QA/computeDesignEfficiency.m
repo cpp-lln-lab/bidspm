@@ -1,4 +1,4 @@
-function e = computeDesignEfficiency(tsvFile, opt)
+function [e, X] = computeDesignEfficiency(tsvFile, opt)
   %
   % Calculate efficiency for fMRI GLMs. Relies on Rik Henson's fMRI_GLM_efficiency function.
   %
@@ -15,8 +15,8 @@ function e = computeDesignEfficiency(tsvFile, opt)
   %   In general see the `BrainPower doc <https://brainpower.readthedocs.io/en/latest/index.html>`_
   %   but more specifically the tools below:
   %
-  %     - `neuropower <http://neuropowertools.org/neuropower/neuropowerstart/>`_
-  %     - `some of the Canlab tools <https://github.com/canlab/CanlabCore/tree/master/CanlabCore/OptimizeDesign11>`_
+  %   - `neuropower <http://neuropowertools.org/neuropower/neuropowerstart/>`_
+  %   - `some of the Canlab tools <https://github.com/canlab/CanlabCore/tree/master/CanlabCore/OptimizeDesign11>`_
   %
   % USAGE::
   %
@@ -26,7 +26,7 @@ function e = computeDesignEfficiency(tsvFile, opt)
   % :type tsvFile: char
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   %
@@ -46,59 +46,59 @@ function e = computeDesignEfficiency(tsvFile, opt)
   %
   % EXAMPLE:
   %
-  % .. code-block:: guess
+  % .. code-block:: matlab
   %
-  %       %% create stats model JSON
-  %       json = createEmptyStatsModel();
-  %       runStepIdx = 1;
-  %       json.Steps{runStepIdx}.Model.X = {'trial_type.cdt_A', 'trial_type.cdt_B'};
-  %       json.Steps{runStepIdx}.DummyContrasts = {'trial_type.cdt_A', 'trial_type.cdt_B'};
+  %    %% create stats model JSON
+  %    bm = BidsModel();
+  %    NodeIdx = 1;
+  %    bm.Nodes{NodeIdx}.Model.X = {'trial_type.cdt_A', 'trial_type.cdt_B'};
+  %    bm.Nodes{NodeIdx}.DummyContrasts = struct('type', 't', ...
+  %                                              'Contrasts', {{'trial_type.cdt_A', 'trial_type.cdt_B'}});
   %
-  %       contrast = struct('type', 't', ...
-  %                         'Name', 'A_gt_B', ...
-  %                         'weights', [1, -1], ...
-  %                         'ConditionList', {{'trial_type.cdt_A', 'trial_type.cdt_B'}});
+  %    contrast = struct('type', 't', ...
+  %                      'Name', 'A_gt_B', ...
+  %                      'Weights', [1, -1], ...
+  %                      'ConditionList', {{'trial_type.cdt_A', 'trial_type.cdt_B'}});
   %
-  %       json.Steps{runStepIdx}.Contrasts = contrast;
+  %    bm.Nodes{NodeIdx}.Contrasts{1} = contrast;
   %
-  %       bids.util.jsonwrite('smdl.json', json);
+  %    bm.write('smdl.json');
   %
-  %       %% create events TSV file
-  %       conditions = {'cdt_A', 'cdt_B'};
-  %       IBI = 5;
-  %       ISI = 0.1;
-  %       stimDuration = 1.5;
-  %       stimPerBlock = 12;
-  %       nbBlocks = 10;
+  %    %% create events TSV file
+  %    conditions = {'cdt_A', 'cdt_B'};
+  %    IBI = 5;
+  %    ISI = 0.1;
+  %    stimDuration = 1.5;
+  %    stimPerBlock = 12;
+  %    nbBlocks = 10;
   %
-  %       trial_type = {};
-  %       onset = [];
-  %       duration = [];
+  %    trial_type = {};
+  %    onset = [];
+  %    duration = [];
   %
-  %       time = 0;
+  %    time = 0;
   %
-  %       for iBlock = 1:nbBlocks
-  %         for cdt = 1:numel(conditions)
-  %           for iTrial = 1:stimPerBlock
-  %             trial_type{end + 1} = conditions{cdt};
-  %             onset(end + 1) = time;
-  %             duration(end + 1) = stimDuration;
-  %             time = time + stimDuration + ISI;
-  %           end
-  %           time = time + IBI;
-  %         end
-  %       end
+  %    for iBlock = 1:nbBlocks
+  %      for cdt = 1:numel(conditions)
+  %        for iTrial = 1:stimPerBlock
+  %          trial_type{end + 1} = conditions{cdt}; %#ok<*SAGROW>
+  %          onset(end + 1) = time;
+  %          duration(end + 1) = stimDuration;
+  %          time = time + stimDuration + ISI;
+  %        end
+  %        time = time + IBI;
+  %      end
+  %    end
   %
-  %       tsv = struct('trial_type',  {trial_type}, 'onset', onset, 'duration', duration');
+  %    tsv = struct('trial_type',  {trial_type}, 'onset', onset, 'duration', duration');
   %
-  %       bids.util.tsvwrite('events.tsv', tsv);
+  %    bids.util.tsvwrite('events.tsv', tsv);
   %
-  %       opt.TR = 2;
+  %    opt.TR = 2;
   %
-  %       opt.model.file = fullfile(pwd, 'smdl.json');
+  %    opt.model.file = fullfile(pwd, 'smdl.json');
   %
-  %       e = computeDesignEfficiency(fullfile(pwd, 'events.tsv'), opt);
-  %
+  %    e = computeDesignEfficiency(fullfile(pwd, 'events.tsv'), opt);
   %
 
   % (C) Copyright 2021 Remi Gau
@@ -147,7 +147,9 @@ function e = computeDesignEfficiency(tsvFile, opt)
   end
 
   %%
-  [e, ~, ~, X] = fMRI_GLM_efficiency(opt);
+  [e, ~, ~, X_detrended] = fMRI_GLM_efficiency(opt);
+
+  X = createDesignMatrix(opt);
 
   if opt.verbosity
     for i = 1:numel(opt.CM)
@@ -157,9 +159,10 @@ function e = computeDesignEfficiency(tsvFile, opt)
 
   if opt.verbosity && ~bids.internal.is_github_ci()
 
-    plotEvents(tsvFile);
+    bids.util.plot_events(tsvFile);
 
-    figure('name', 'design matrix', 'position', [50 50 1000 1000]);
+    figure('name', 'detrended filtered design matrix', ...
+           'position', [50 50 1000 1000]);
 
     % TODO add a second axis with scale in seconds
 
@@ -227,7 +230,9 @@ function plotFft(signal, rt, HPF)
 
   plot(Hz(q), gX(q, :));
 
-  patch([0 1 1 0] / HPF, [0 0 1 1] * max(max(gX)), [1 1 1] * .9);
+  p1 = patch([0 1 1 0] / HPF, [0 0 1 1] * max(max(gX)), [1 1 1] * 0.5);
+  p1.FaceVertexAlphaData = 0.5;
+  p1.FaceAlpha = 'flat';
 
   xlabel('Frequency (Hz)');
   ylabel('relative spectral density');

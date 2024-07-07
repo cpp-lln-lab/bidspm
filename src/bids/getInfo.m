@@ -23,7 +23,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   %
   %
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
   % :type  BIDS: structure
   %
   % :param subLabel: label of the subject ; in BIDS lingo that means that for a file name
@@ -31,7 +31,7 @@ function varargout = getInfo(BIDS, subLabel, opt, info, varargin)
   % :type  subLabel: char
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   % :param info: ``sessions``, ``runs``, ``filename``, ``metadata``

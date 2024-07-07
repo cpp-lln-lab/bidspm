@@ -6,7 +6,7 @@ function filename = designMatrixFigureName(varargin)
   %
   % :type  opt:      structure
   % :param opt:      Options chosen for the analysis.
-  %                  See checkOptions.
+  %                  See :func:`checkOptions`.
   %
   % :param desc:     optional argument. default: ``''``
   % :type  desc:     char
@@ -14,7 +14,7 @@ function filename = designMatrixFigureName(varargin)
   % :param subLabel: optional argument. default: ``''``
   % :type  subLabel: char
   %
-  % :returns: - :filename: (string)
+  % :return: :filename: (string)
   %
   %
 

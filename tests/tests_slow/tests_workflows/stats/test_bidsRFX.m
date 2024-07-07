@@ -21,7 +21,7 @@ function test_bidsRFX_rfx()
   nbGroupLevelModels = 4;
   nbBatchPerModel = 8;
   if bids.internal.is_octave()
-    nbBatchPerModel = 7;
+    nbBatchPerModel = 5;
   end
   assertEqual(numel(matlabbatch), nbGroupLevelModels * nbBatchPerModel);
 
@@ -37,7 +37,7 @@ function test_bidsRFX_rfx()
   batchOrder = extendBatchOrder();
   idx = 9:6:(nbGroupLevelModels * nbBatchPerModel);
   if bids.internal.is_octave()
-    idx = 9:5:(nbGroupLevelModels * nbBatchPerModel);
+    idx = 9:3:(nbGroupLevelModels * nbBatchPerModel);
   end
   for i = idx
     assertEqual(summary([i:i + size(batchOrder, 1) - 1], :), batchOrder); %#ok<*NBRAK>
@@ -59,7 +59,7 @@ function test_bidsRFX_no_overwrite_smoke_test()
 
   expectedNbBatch = 8;
   if bids.internal.is_octave()
-    expectedNbBatch = 7;
+    expectedNbBatch = 5;
   end
   assertEqual(numel(matlabbatch), expectedNbBatch);
 
@@ -78,7 +78,7 @@ function test_bidsRFX_within_group_ttest()
   matlabbatch = bidsRFX('RFX', opt);
 
   if bids.internal.is_octave()
-    assertEqual(numel(matlabbatch), 14);
+    assertEqual(numel(matlabbatch), 10);
   else
     assertEqual(numel(matlabbatch), 16);
   end
@@ -107,7 +107,7 @@ function test_bidsRFX_within_group_ttest()
               fileparts(matlabbatch{5}.spm.stats.fmri_est.spmmat{1}));
   if bids.internal.is_octave()
     assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
-                fileparts(matlabbatch{10}.spm.stats.fmri_est.spmmat{1}));
+                fileparts(matlabbatch{8}.spm.stats.fmri_est.spmmat{1}));
   else
     assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
                 fileparts(matlabbatch{11}.spm.stats.fmri_est.spmmat{1}));
@@ -193,7 +193,7 @@ function test_bidsRFX_several_datasets_level()
   nbGroupLevelModelsReturned = 1;
   nbBatchPerModel = 8;
   if bids.internal.is_octave()
-    nbBatchPerModel = 7;
+    nbBatchPerModel = 5;
   end
   assertEqual(numel(matlabbatch), nbGroupLevelModelsReturned * nbBatchPerModel);
 
@@ -256,7 +256,7 @@ function batchOrder = extendBatchOrder(batchOrder)
                'stats', 'review'; ...
                'util', 'print'};
   if bids.internal.is_octave()
-    extension(2, :) = [];
+    extension(2:4, :) = [];
   end
   batchOrder = cat(1, batchOrder, extension);
 end

@@ -45,3 +45,15 @@ function test_getData_get_also_raw_data_for_stats_pipeline()
   assert(~isempty(bids.query(BIDS.raw, 'data', 'suffix', 'events')));
 
 end
+
+function test_getData_anat_only()
+  % https://github.com/bids-standard/bids-matlab/issues/1206
+
+  opt = setOptions('vismotion');
+  opt.anatOnly = true;
+
+  [BIDS, ~] = getData(opt, opt.dir.input);
+
+  assert(isempty(bids.query(BIDS, 'data', 'modality', 'func')));
+
+end

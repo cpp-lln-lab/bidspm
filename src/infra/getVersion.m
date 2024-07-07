@@ -7,7 +7,7 @@ function versionNumber = getVersion()
   %
   %   versionNumber = getVersion()
   %
-  % :returns: :versionNumber: (string) Use semantic versioning format (like v0.1.0)
+  % :return: versionNumber: (string) Use semantic versioning format (like v0.1.0)
   %
 
   % (C) Copyright 2020 bidspm developers

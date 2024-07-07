@@ -17,9 +17,9 @@ function structure = setFields(structure, fieldsToSet, overwrite)
   % :type fieldsToSet: char
   %
   % :param overwrite:
-  % :type overwrite: boolean
+  % :type overwrite: logical
   %
-  % :returns: - :structure: (structure)
+  % :return: structure
   %
   %
 

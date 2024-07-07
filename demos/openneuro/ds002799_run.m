@@ -1,8 +1,7 @@
 % Runs smoothing and stats on ds002799 from openneuro
+% Shows how to incorporate variable transformation in the stats model.
 %
-% To get the data run (requires datalad):
-%
-%
+
 % (C) Copyright 2022 Remi Gau
 
 clear;

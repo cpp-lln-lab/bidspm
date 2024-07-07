@@ -1,0 +1,105 @@
+{
+  "Name": "empty_model",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "This is an empty BIDS stats model.",
+  "Input": {
+    "task": [
+      ""
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run",
+      "GroupBy": [
+        ""
+      ],
+      "Transformations": {
+        "Transformer": "",
+        "Instructions": [
+          {
+            "Name": "",
+            "Inputs": [
+              ""
+            ]
+          }
+        ]
+      },
+      "Model": {
+        "X": [
+          "trial_type.alcohol",
+          "trial_type.neutral",
+          "trial_type.negative",
+          "trial_type.positive"
+        ],
+        "Type": "glm",
+        "HRF": {
+          "Variables": [
+            ""
+          ],
+          "Model": "DoubleGamma"
+        },
+        "Options": {
+          "HighPassFilterCutoffHz": 0.0078125,
+          "Mask": {
+            "desc": [
+              "brain"
+            ],
+            "suffix": [
+              "mask"
+            ]
+          }
+        },
+        "Software": []
+      },
+      "Contrasts": [
+        {
+          "Test": "t",
+          "Name": "alcohol_gt_neutral",
+          "Weights": [
+            1,
+            -1
+          ],
+          "ConditionList": [
+            "trial_type.alcohol",
+            "trial_type.neutral"
+          ]
+        },
+        {
+          "Test": "t",
+          "Name": "negative_gt_neutral",
+          "Weights": [
+            1,
+            -1
+          ],
+          "ConditionList": [
+            "trial_type.negative",
+            "trial_type.neutral"
+          ]
+        },
+        {
+          "Test": "t",
+          "Name": "positive_gt_neutral",
+          "Weights": [
+            1,
+            -1
+          ],
+          "ConditionList": [
+            "trial_type.positive",
+            "trial_type.neutral"
+          ]
+        }
+      ],
+      "DummyContrasts": {
+        "type": "t",
+        "Contrasts": [
+          "trial_type.alcohol",
+          "trial_type.neutral",
+          "trial_type.negative",
+          "trial_type.positive"
+        ]
+      }
+    }
+  ],
+  "Edges": []
+}

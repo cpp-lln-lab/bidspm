@@ -14,6 +14,8 @@ clean:
 	rm -rf outputs/derivatives
 	rm -rf cfg
 	rm -f MoAEpilot.zip
+	mkdir inputs
+	touch inputs/.gitkeep
 
 inputs/raw:
 	mkdir inputs/ -p

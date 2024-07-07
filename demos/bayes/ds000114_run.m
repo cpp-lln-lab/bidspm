@@ -1,3 +1,17 @@
+% This script will:
+%
+% - smooth the data
+% - create models family all encoded as bids stats model from a default one
+% - estimate the subject level GLM for each model
+% - run bayesian model selection
+%
+%   #. MA_model_space:    defines a model space
+%   #. MA_cvLME_auto:     computes cross-validated log model evidence
+%   #. MS_PPs_group_auto: calculate posterior probabilities from cvLMEs
+%   #. MS_BMS_group_auto: perform cross-validated Bayesian model selection
+%   #. MS_SMM_BMS:        generate selected models maps from BMS
+%
+
 % (C) Copyright 2023 bidspm developers
 
 clear;

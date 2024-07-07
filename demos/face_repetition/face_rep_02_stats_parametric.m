@@ -1,7 +1,7 @@
 % This script will run the parametric model and contrasts
 % on the the face repetition dataset from SPM.
 %
-%
+
 % (C) Copyright 2019 Remi Gau
 
 % TODO

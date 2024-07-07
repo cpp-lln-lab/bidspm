@@ -7,7 +7,7 @@
   [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cpp-lln-lab/bidspm/main)
   [![tests matlab](https://github.com/cpp-lln-lab/bidspm/actions/workflows/tests.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/tests.yml)
   [![tests octave](https://github.com/cpp-lln-lab/bidspm/actions/workflows/tests_octave.yml/badge.svg)](https://github.com/cpp-lln-lab/bidspm/actions/workflows/tests_octave.yml)
-  [![codecov](https://codecov.io/gh/cpp-lln-lab/bidspm/branch/main/graph/badge.svg?token=PMQYH0DIPX)](https://codecov.io/gh/cpp-lln-lab/bidspm)
+  [![codecov](https://codecov.io/gh/cpp-lln-lab/bidspm/graph/badge.svg?token=PMQYH0DIPX)](https://codecov.io/gh/cpp-lln-lab/bidspm)
   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3554331.svg)](https://doi.org/10.5281/zenodo.3554331)
   [![GitHub last commit](https://img.shields.io/github/last-commit/cpp-lln-lab/bidspm)](https://github.com/cpp-lln-lab/bidspm.git)
   [![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](https://github.com/cpp-lln-lab/bidspm#contributors)
@@ -26,7 +26,7 @@ This is a Matlab / Octave toolbox to perform MRI data analysis on a
 docker pull cpplab/bidspm:latest
 ```
 
-### From the source
+### From source
 
 In a terminal or a git bash prompt, type:
 
@@ -34,83 +34,19 @@ In a terminal or a git bash prompt, type:
 git clone --recurse-submodules https://github.com/cpp-lln-lab/bidspm.git
 ```
 
-To get the latest version that is on the `dev` branch.
-
-```bash
-git clone --recurse-submodules --branch dev https://github.com/cpp-lln-lab/bidspm.git
-```
-
-To start using bidspm, you just need to initialize it for this MATLAB / Octave session with:
+To start using bidspm, you just need to initialize it for the current MATLAB / Octave session with:
 
 ```matlab
 bidspm()
 ```
 
-Please see our
-[documentation](https://bidspm.readthedocs.io/en/latest/installation.html) for
-more info.
-
-### Installing the Command line Interface (CLI)
-
-If you want to use the BIDS app python based CLI of bidspm.
-
-You need to
-
--   [python3](https://www.python.org/downloads/)
--   pip
-
-If you are using MATLAB, you need to edit the file `src/matlab.py`,
-so that it returns the fullpath to the MATLAB executable on your computer.
-
-You can then install the bidspm CLI from within the `bidspm` folder with:
-
-```bash
-pip install .
-```
-
-You can then type the following to see which command you have access to:
-```bash
-bidspm --help
-```
-
-### BIDS validation
-
-After installing bidspm python package, you can get access to extra validation options.
-
-### BIDS stats model validation
-
-Please see [the documentation](https://bidspm.readthedocs.io/en/latest/bids_stats_model.html#using-the-bids-stats-model-python-package)
-
-### BIDS dataset validation
-
-To run the bids-validator when running bidspm, you
-will need:
-
--   [node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
--   the bidspm python CLI (see above)
-
-You can then install:
-
--   the bids validator
-
-by running from the command line in the root folder of the repository:
-
-```bash
-make install
-```
-
-or
-
-```bash
-npm install -g bids-validator
-```
+Please see our [documentation](https://bidspm.readthedocs.io/en/latest/installation/index.html) for more info.
 
 ## Usage
 
 For some of its functionality bidspm has a BIDS app like API.
 
-See
-[this page for more information](https://bidspm.readthedocs.io/en/latest/usage_notes.html).
+See [this page for more information](https://bidspm.readthedocs.io/en/latest/usage_notes.html).
 
 But in brief they are of the form:
 
@@ -184,24 +120,22 @@ bidspm(bids_dir, output_dir, 'subject', ...
 
 ### Statistics
 
-The model specification are set up using the
-[BIDS stats model](https://bids-standard.github.io/stats-models/) and can be
-used to perform:
+The model specification are set up using the [BIDS stats model](https://bids-standard.github.io/stats-models/)
+and can be used to perform:
 
 -   whole GLM at the subject level
--   whole brain GLM at the group level à la SPM (meaning using a summary
-    statistics approach).
+-   whole brain GLM at the group level à la SPM (meaning using a summary statistics approach).
 -   ROI based GLM (using marsbar)
 -   model selection (with the MACS toolbox)
 
 ### Preprocessing
 
-If your data is fairly "typical" (for example whole brain coverage functional
-data with one associated anatomical scan for each subject), you might be better
-off running [fmriprep](https://fmriprep.org/en/stable/) on your data.
+If your data is fairly "typical"
+(for example whole brain coverage functional data with one associated anatomical scan for each subject),
+you might be better off running [fmriprep](https://fmriprep.org/en/stable/) on your data.
 
-If you have more exotic data that cannot be handled well by fmriprep then bidspm
-has some automated workflows to perform amongst other things:
+If you have more exotic data that cannot be handled well by fmriprep
+then bidspm has some automated workflows to perform amongst other things:
 
 -   remove dummies
 
@@ -216,10 +150,8 @@ has some automated workflows to perform amongst other things:
 
 -   smoothing
 
--   fieldmaps processing and voxel displacement map creation (work in progress)
-
-All (well almost all) preprocessed outputs are saved as BIDS derivatives with
-BIDS compliant filenames.
+All (well almost all) preprocessed outputs are saved as BIDS derivatives
+with BIDS compliant filenames.
 
 ### Quality control:
 
@@ -227,8 +159,7 @@ BIDS compliant filenames.
 -   functional data (work in progress)
 -   GLM auto-correlation check
 
-Please see our
-[documentation](https://bidspm.readthedocs.io/en/latest/index.html) for more info.
+Please see our [documentation](https://bidspm.readthedocs.io/en/latest/index.html) for more info.
 
 ## Citation
 
@@ -249,7 +180,8 @@ Please see our
 
 ## Contributors
 
-Thanks goes to these wonderful people
+Thanks goes to these wonderful people.
+
 ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
@@ -258,28 +190,30 @@ Thanks goes to these wonderful people
 <table>
   <tbody>
     <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/avanaudenhaege"><img src="https://avatars.githubusercontent.com/u/75271651?v=4?s=100" width="100px;" alt="Alice Van Audenhaege"/><br /><sub><b>Alice Van Audenhaege</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Aavanaudenhaege" title="Bug reports">🐛</a> <a href="#userTesting-avanaudenhaege" title="User Testing">📓</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/anege"><img src="https://avatars0.githubusercontent.com/u/50317099?v=4?s=100" width="100px;" alt="Ane Gurtubay"/><br /><sub><b>Ane Gurtubay</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/commits?author=anege" title="Code">💻</a> <a href="#design-anege" title="Design">🎨</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/CerenB"><img src="https://avatars1.githubusercontent.com/u/10451654?v=4?s=100" width="100px;" alt="Ceren Battal"/><br /><sub><b>Ceren Battal</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3ACerenB" title="Bug reports">🐛</a> <a href="#content-CerenB" title="Content">🖋</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=CerenB" title="Documentation">📖</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=CerenB" title="Code">💻</a> <a href="https://github.com/cpp-lln-lab/bidspm/pulls?q=is%3Apr+reviewed-by%3ACerenB" title="Reviewed Pull Requests">👀</a> <a href="#userTesting-CerenB" title="User Testing">📓</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/christine0903"><img src="https://avatars.githubusercontent.com/u/70207207?v=4?s=100" width="100px;" alt="Christine Chouinard-Leclaire"/><br /><sub><b>Christine Chouinard-Leclaire</b></sub></a><br /><a href="#ideas-christine0903" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Achristine0903" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/d-ni374"><img src="https://avatars.githubusercontent.com/u/166691050?v=4?s=100" width="100px;" alt="Daniel Huber"/><br /><sub><b>Daniel Huber</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Ad-ni374" title="Bug reports">🐛</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=d-ni374" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/fedefalag"><img src="https://avatars2.githubusercontent.com/u/50373329?v=4?s=100" width="100px;" alt="Federica Falagiarda"/><br /><sub><b>Federica Falagiarda</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Afedefalag" title="Bug reports">🐛</a> <a href="#userTesting-fedefalag" title="User Testing">📓</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/fcerpe"><img src="https://avatars.githubusercontent.com/u/73432853?v=4?s=100" width="100px;" alt="Filippo Cerpelloni"/><br /><sub><b>Filippo Cerpelloni</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Afcerpe" title="Bug reports">🐛</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=fcerpe" title="Tests">⚠️</a> <a href="#userTesting-fcerpe" title="User Testing">📓</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/iqrashahzad14"><img src="https://avatars.githubusercontent.com/u/75671348?v=4?s=100" width="100px;" alt="Iqra Shahzad"/><br /><sub><b>Iqra Shahzad</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Aiqrashahzad14" title="Bug reports">🐛</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=iqrashahzad14" title="Documentation">📖</a> <a href="#question-iqrashahzad14" title="Answering Questions">💬</a> <a href="https://github.com/cpp-lln-lab/bidspm/pulls?q=is%3Apr+reviewed-by%3Aiqrashahzad14" title="Reviewed Pull Requests">👀</a> <a href="#userTesting-iqrashahzad14" title="User Testing">📓</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/JacMatu"><img src="https://avatars.githubusercontent.com/u/94451915?v=4?s=100" width="100px;" alt="JacMatu"/><br /><sub><b>JacMatu</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3AJacMatu" title="Bug reports">🐛</a> <a href="#userTesting-JacMatu" title="User Testing">📓</a></td>
     </tr>
     <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/iqrashahzad14"><img src="https://avatars.githubusercontent.com/u/75671348?v=4?s=100" width="100px;" alt="Iqra Shahzad"/><br /><sub><b>Iqra Shahzad</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Aiqrashahzad14" title="Bug reports">🐛</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=iqrashahzad14" title="Documentation">📖</a> <a href="#question-iqrashahzad14" title="Answering Questions">💬</a> <a href="https://github.com/cpp-lln-lab/bidspm/pulls?q=is%3Apr+reviewed-by%3Aiqrashahzad14" title="Reviewed Pull Requests">👀</a> <a href="#userTesting-iqrashahzad14" title="User Testing">📓</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/JacMatu"><img src="https://avatars.githubusercontent.com/u/94451915?v=4?s=100" width="100px;" alt="Jacek Matuszewski"/><br /><sub><b>Jacek Matuszewski</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3AJacMatu" title="Bug reports">🐛</a> <a href="#userTesting-JacMatu" title="User Testing">📓</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/JeanneCaronGuyon"><img src="https://avatars.githubusercontent.com/u/8718798?v=4?s=100" width="100px;" alt="Jeanne Caron-Guyon"/><br /><sub><b>Jeanne Caron-Guyon</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3AJeanneCaronGuyon" title="Bug reports">🐛</a> <a href="#example-JeanneCaronGuyon" title="Examples">💡</a> <a href="#userTesting-JeanneCaronGuyon" title="User Testing">📓</a> <a href="#question-JeanneCaronGuyon" title="Answering Questions">💬</a> <a href="#tutorial-JeanneCaronGuyon" title="Tutorials">✅</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Manon-56"><img src="https://avatars.githubusercontent.com/u/102988114?v=4?s=100" width="100px;" alt="Manon Chateaux"/><br /><sub><b>Manon Chateaux</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3AManon-56" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/marcobarilari"><img src="https://avatars3.githubusercontent.com/u/38101692?v=4?s=100" width="100px;" alt="Marco Barilari"/><br /><sub><b>Marco Barilari</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/commits?author=marcobarilari" title="Code">💻</a> <a href="#design-marcobarilari" title="Design">🎨</a> <a href="https://github.com/cpp-lln-lab/bidspm/pulls?q=is%3Apr+reviewed-by%3Amarcobarilari" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=marcobarilari" title="Documentation">📖</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=marcobarilari" title="Tests">⚠️</a> <a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Amarcobarilari" title="Bug reports">🐛</a> <a href="#userTesting-marcobarilari" title="User Testing">📓</a> <a href="#ideas-marcobarilari" title="Ideas, Planning, & Feedback">🤔</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/mwmaclean"><img src="https://avatars.githubusercontent.com/u/54547865?v=4?s=100" width="100px;" alt="Michèle MacLean"/><br /><sub><b>Michèle MacLean</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/commits?author=mwmaclean" title="Code">💻</a> <a href="#ideas-mwmaclean" title="Ideas, Planning, & Feedback">🤔</a> <a href="#userTesting-mwmaclean" title="User Testing">📓</a> <a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Amwmaclean" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/mohmdrezk"><img src="https://avatars2.githubusercontent.com/u/9597815?v=4?s=100" width="100px;" alt="Mohamed Rezk"/><br /><sub><b>Mohamed Rezk</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/commits?author=mohmdrezk" title="Code">💻</a> <a href="https://github.com/cpp-lln-lab/bidspm/pulls?q=is%3Apr+reviewed-by%3Amohmdrezk" title="Reviewed Pull Requests">👀</a> <a href="#design-mohmdrezk" title="Design">🎨</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mcgnunes"><img src="https://avatars.githubusercontent.com/u/98760858?v=4?s=100" width="100px;" alt="Márcia Nunes"/><br /><sub><b>Márcia Nunes</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Amcgnunes" title="Bug reports">🐛</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://cpplab.be"><img src="https://avatars0.githubusercontent.com/u/55407947?v=4?s=100" width="100px;" alt="Olivier Collignon"/><br /><sub><b>Olivier Collignon</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/commits?author=OliColli" title="Code">💻</a> <a href="#design-OliColli" title="Design">🎨</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=OliColli" title="Documentation">📖</a> <a href="#financial-OliColli" title="Financial">💵</a> <a href="#fundingFinding-OliColli" title="Funding Finding">🔍</a></td>
     </tr>
     <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/monique2208"><img src="https://avatars.githubusercontent.com/u/15329571?v=4?s=100" width="100px;" alt="Monique Denissen"/><br /><sub><b>Monique Denissen</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Amonique2208" title="Bug reports">🐛</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=monique2208" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mcgnunes"><img src="https://avatars.githubusercontent.com/u/98760858?v=4?s=100" width="100px;" alt="Márcia Nunes"/><br /><sub><b>Márcia Nunes</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Amcgnunes" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://cpplab.be"><img src="https://avatars0.githubusercontent.com/u/55407947?v=4?s=100" width="100px;" alt="Olivier Collignon"/><br /><sub><b>Olivier Collignon</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/commits?author=OliColli" title="Code">💻</a> <a href="#design-OliColli" title="Design">🎨</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=OliColli" title="Documentation">📖</a> <a href="#financial-OliColli" title="Financial">💵</a> <a href="#fundingFinding-OliColli" title="Funding Finding">🔍</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://remi-gau.github.io/"><img src="https://avatars3.githubusercontent.com/u/6961185?v=4?s=100" width="100px;" alt="Remi Gau"/><br /><sub><b>Remi Gau</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/commits?author=Remi-Gau" title="Code">💻</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=Remi-Gau" title="Documentation">📖</a> <a href="#ideas-Remi-Gau" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-Remi-Gau" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#design-Remi-Gau" title="Design">🎨</a> <a href="https://github.com/cpp-lln-lab/bidspm/pulls?q=is%3Apr+reviewed-by%3ARemi-Gau" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3ARemi-Gau" title="Bug reports">🐛</a> <a href="https://github.com/cpp-lln-lab/bidspm/commits?author=Remi-Gau" title="Tests">⚠️</a> <a href="#content-Remi-Gau" title="Content">🖋</a> <a href="#design-Remi-Gau" title="Design">🎨</a> <a href="#tutorial-Remi-Gau" title="Tutorials">✅</a> <a href="#maintenance-Remi-Gau" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SteMat9787"><img src="https://avatars.githubusercontent.com/u/50380749?v=4?s=100" width="100px;" alt="Stefania Mattioni"/><br /><sub><b>Stefania Mattioni</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3ASteMat9787" title="Bug reports">🐛</a> <a href="#userTesting-SteMat9787" title="User Testing">📓</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/yyang1234"><img src="https://avatars.githubusercontent.com/u/59220868?v=4?s=100" width="100px;" alt="Ying Yang"/><br /><sub><b>Ying Yang</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Ayyang1234" title="Bug reports">🐛</a> <a href="#userTesting-yyang1234" title="User Testing">📓</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/avanaudenhaege"><img src="https://avatars.githubusercontent.com/u/75271651?v=4?s=100" width="100px;" alt="avanaudenhaege"/><br /><sub><b>avanaudenhaege</b></sub></a><br /><a href="https://github.com/cpp-lln-lab/bidspm/issues?q=author%3Aavanaudenhaege" title="Bug reports">🐛</a> <a href="#userTesting-avanaudenhaege" title="User Testing">📓</a></td>
     </tr>
   </tbody>
 </table>
@@ -289,6 +223,5 @@ Thanks goes to these wonderful people
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the
-[all-contributors](https://github.com/all-contributors/all-contributors)
-specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
+Contributions of any kind welcome!

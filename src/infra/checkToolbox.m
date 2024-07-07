@@ -11,10 +11,10 @@ function status = checkToolbox(varargin)
   % :type toolboxName: char
   %
   % :param verbose: parameter
-  % :type  verbose: boolean
+  % :type  verbose: logical
   %
   % :param install: parameter
-  % :type  install: boolean
+  % :type  install: logical
   %
   % EXAMPLE::
   %
@@ -65,13 +65,7 @@ function status = checkToolbox(varargin)
 
       if ~status && install
 
-        msg = sprintf('installing MACS toolbox in:\n%s.\n\n', ...
-                      fullfile(spm('dir'), 'toolbox', 'MACS'));
-        id = 'installingMacsToolbox';
-        logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
-
-        copyfile(fullfile(returnRootDir(), 'lib', 'MACS'), ...
-                 fullfile(spm('dir'), 'toolbox', 'MACS'));
+        updateMacstoolbox();
 
         status = checkToolbox(toolboxName);
 
@@ -93,4 +87,29 @@ function status = checkToolbox(varargin)
     logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
   end
 
+end
+
+function updateMacstoolbox()
+
+  SPM_DIR = spm('dir');
+  target_dir = fullfile(SPM_DIR, 'toolbox', 'MACS');
+  MACS_TOOLBOX_DIR = fullfile(rootDir(), 'lib', 'MACS');
+
+  if exist(target_dir, 'dir') == 7 && exist(fullfile(target_dir, '.git'), 'dir') == 0
+    rmdir(target_dir, 's');
+  end
+
+  if exist(target_dir, 'dir') == 7
+    msg = sprintf('updating MACS toolbox\n');
+    fprintf(1, msg);
+    system(sprintf('git -C %s pull', ...
+                   target_dir));
+
+  else
+    msg = sprintf('installing MACS toolbox in:\n%s.\n', target_dir);
+    fprintf(1, msg);
+    system(sprintf('git clone %s %s', ...
+                   MACS_TOOLBOX_DIR, ...
+                   target_dir));
+  end
 end

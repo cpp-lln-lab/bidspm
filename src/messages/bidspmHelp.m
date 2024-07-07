@@ -3,7 +3,7 @@ function bidspmHelp()
   % General intro function for bidspm
   %
   %
-  % Note::
+  % .. note::
   %
   %   - all parameters use ``snake_case``
   %   - most "invalid" calls simply initialize bidspm
@@ -58,9 +58,6 @@ function bidspmHelp()
   %                           Can be a regular expression.
   %                           Defaults to ``{}``
   % :type participant_label:  cellstr
-  %
-  % :param space:             Defaults to ``{}``
-  % :type  space:             cell string
   %
   % :param bids_filter_file:  path to JSON file or structure
   % :type  bids_filter_file:  path
@@ -283,6 +280,7 @@ function bidspmHelp()
   %
   %   - ``'stats'``          runs model specification / estimation,
   %     contrast computation, display results
+  %
   %   - ``'contrasts'``      runs contrast computation, display results
   %   - ``'results'``        displays results
   %   - ``'specify_only'``   only specifies the models
@@ -321,7 +319,7 @@ function bidspmHelp()
   % :param model_file:  Path to the BIDS model file that contains the model
   %                     to specify and the contrasts to compute.
   %                     A path to a dir can be passed as well.
-  %                     In this case all *_smdl.json files will be used
+  %                     In this case all ``*_smdl.json`` files will be used
   %                     and looped over.
   %                     This can useful to specify several models at once
   %                     Before running Bayesion model selection on them.
@@ -343,7 +341,7 @@ function bidspmHelp()
   %                       quality controls into a single 4D image.
   % :type  ignore:        cell string
   %
-  % :param concatenate:   will contatenate the beta images of the
+  % :param concatenate:   will concatenate the beta images of the
   %                       conditions of interest convolved by an HRF.
   % :type  concatenate:   logical
   %
@@ -390,10 +388,10 @@ function bidspmHelp()
   %
   % :param action:       Any of: ``{'bms', 'bms-posterior', 'bms-bms'}``
   %                      `'bms'` will performm all steps for the baeysian
-  %                      model selection. If `'bms'` has been performed
-  %                      than ``'bms-posterior'`` can``'bms-bms'``
-  %                      be performed one aftr the other set a new model
-  %                      space and perform bayesian model selection on it.
+  %                      model selection.
+  %                      If `'bms'` has been performed
+  %                      then ``'bms-posterior'`` can``'bms-bms'``
+  %                      be performed one after the other.
   %                      See the help section of :func:`bidsModelSelection`
   %                      for more details.
   % :type  action:       char

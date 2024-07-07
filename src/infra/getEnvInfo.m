@@ -7,7 +7,7 @@ function [OS, generatedBy] = getEnvInfo(opt)
   %
   %   [OS, generatedBy] = getEnvInfo()
   %
-  % :returns: :OS: (structure) (dimension)
+  % :return: OS: (structure) (dimension)
   %           :generatedBy: (structure) (dimension)
   %
 

@@ -130,9 +130,7 @@ function test_convertOnsetTsvToMat_warning_missing_variable_to_convolve
 
   opt.verbosity = 1;
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
                 'convertOnsetTsvToMat:variableNotFound');
 
@@ -179,6 +177,26 @@ function test_convertOnsetTsvToMat_basic()
   assertEqual(names, {'VisMot', 'VisStat'});
   assertEqual(onsets, {2, 4});
   assertEqual(durations, {2, 2});
+
+end
+
+function test_convertOnsetTsvToMat_output_dir()
+
+  % GIVEN
+  opt = setOptions('vismotion');
+  [opt, tmpDir] = setUp(opt);
+  tsvFile = fullfile(tmpDir, 'sub-01_task-vismotion_events.tsv');
+
+  % WHEN
+  runDuration = nan;
+  outputDir = fullfile(tmpDir, 'foo');
+  spm_mkdir(outputDir);
+  fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration, outputDir);
+
+  % THEN
+  assertEqual(fullfile(outputDir, 'sub-01_task-vismotion_onsets.mat'), ...
+              fullpathOnsetFilename);
+  assertEqual(exist(fullpathOnsetFilename, 'file'), 2);
 
 end
 
@@ -261,9 +279,7 @@ function test_convertOnsetTsvToMat_missing_trial_type()
 
   opt.verbosity = 1;
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
 
   assertWarning(@() convertOnsetTsvToMat(opt, tsvFile), ...
                 'convertOnsetTsvToMat:trialTypeNotFound');

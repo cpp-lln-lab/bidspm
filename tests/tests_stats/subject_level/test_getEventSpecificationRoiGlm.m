@@ -45,9 +45,7 @@ end
 
 function test_getEventSpecificationRoiGlm_warning_complex_contrasts()
 
-  if bids.internal.is_octave()
-    moxunit_throw_test_skipped_exception('Octave:mixed-string-concat warning thrown');
-  end
+  skipIfOctave('mixed-string-concat warning thrown');
 
   % GIVEN
   [modelFile, spmFile] = setUp();

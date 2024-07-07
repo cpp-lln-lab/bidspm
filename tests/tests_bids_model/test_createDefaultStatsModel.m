@@ -14,6 +14,7 @@ function test_createDefaultStatsModel_basic()
 
   BIDS = getLayout(opt);
 
+  %   opt.dir.derivatives = pwd;
   opt.dir.derivatives = tempName();
   opt.space = {'IXI549Space'};
   opt.taskName = {'vislocalizer'};
