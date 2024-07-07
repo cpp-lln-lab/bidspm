@@ -191,6 +191,7 @@ jobs:
                       -v /tmp/workspace/data/ds000001:/bids_dataset \
                       -v ${HOME}/outputs:/outputs \
                       -v ~/project/demos/openneuro/models:/models \
+                      -v ~/project/demos/openneuro/options:/options \
                         ${user_name}/${repo_name} \
                           /bids_dataset \
                           /outputs/ds000001 \
