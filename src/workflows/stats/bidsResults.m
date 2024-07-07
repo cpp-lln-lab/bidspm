@@ -368,7 +368,7 @@ function matlabbatch = bidsResultsSubject(opt, subLabel, iRes, isRunLevel)
       %
 
       tmp.name = [contrastName '_[0-9]+'];
-      if ~endsWithRunNumber(contrastName)
+      if endsWithRunNumber(contrastName)
         tmp.name = contrastName;
       end
 
