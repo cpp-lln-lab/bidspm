@@ -6,7 +6,7 @@ function contrastName = constructContrastNameFromBidsEntity(cdtName, SPM, iSess)
   %
   %   contrastName = constructContrastNameFromBidsEntity(cdtName, SPM, iSess)
   %
-  % If no information is foun
+  % If no information is found
   % it falls back on using the the SPM session number
   %
   % :param SPM: content of SPM.mat
