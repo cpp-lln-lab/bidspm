@@ -19,8 +19,7 @@ function saveOptions(opt)
   taskString = '';
   if isfield(opt, 'taskName') && ...
     iscellstr(opt.taskName) && ...
-    length(opt.taskName) > 1 && ...
-    ~strcmp(opt.taskName{1}, '')
+    ~all(cellfun(@(x) strcmp(x, ''), opt.taskName))
     taskString = ['_task-', strjoin(opt.taskName, '')];
   end
 
