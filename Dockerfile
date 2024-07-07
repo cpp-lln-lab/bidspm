@@ -1,4 +1,4 @@
-FROM bids/base_validator
+FROM bids/base_validator:1.13.1
 
 ARG DEBIAN_FRONTEND="noninteractive"
 
@@ -48,6 +48,7 @@ WORKDIR /home/neuro
 COPY . /home/neuro/bidspm
 WORKDIR /home/neuro/bidspm
 RUN pip install --no-cache-dir --upgrade pip && \
+    pip3 --no-cache-dir install -r requirements.txt && \
     pip3 --no-cache-dir install . && \
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
     octave --no-gui --eval "addpath(pwd); savepath(); bidspm(); path"

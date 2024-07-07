@@ -40,7 +40,7 @@ To start using bidspm, you just need to initialize it for the current MATLAB / O
 bidspm()
 ```
 
-Please see our [documentation](https://bidspm.readthedocs.io/en/latest/installation.html) for more info.
+Please see our [documentation](https://bidspm.readthedocs.io/en/latest/installation/index.html) for more info.
 
 ## Usage
 

@@ -108,6 +108,7 @@ coverage: ## use coverage
 	coverage erase
 	coverage run --source src -m pytest
 	coverage report -m
+	coverage html
 
 ################################################################################
 #   DOCKER

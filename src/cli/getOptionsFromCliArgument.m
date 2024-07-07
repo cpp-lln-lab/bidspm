@@ -74,6 +74,11 @@ function opt = getOptionsFromCliArgument(args)
     opt.toolbox.MACS.model.dir = args.Results.models_dir;
   end
 
+  if opt.verbosity > 3
+    unfold(opt);
+  end
+  unfold(opt);
+
 end
 
 function opt = optionsPreprocessing(opt, args, action)
@@ -147,10 +152,14 @@ function value = bidsAppsActions()
 end
 
 function opt = getOptions(args)
+
   if isstruct(args.Results.options)
     opt = args.Results.options;
   elseif exist(args.Results.options, 'file') == 2
     opt = bids.util.jsondecode(args.Results.options);
+    opt = checkOptions(opt);
+    logger('INFO', ['options loaded from file:\n', args.Results.options], ...
+           'options', opt);
   end
   if isempty(opt)
     % set defaults

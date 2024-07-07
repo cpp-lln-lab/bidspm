@@ -1,5 +1,14 @@
 BootStrap: docker
-From: bids/base_validator
+From: bids/base_validator:1.13.1
+
+%files
+    pyproject.toml /opt/bidspm/pyproject.toml
+    requirements.txt /opt/bidspm/requirements.txt
+    README.md  /opt/bidspm/README.md
+    bidspm.m /opt/bidspm/bidspm.m
+    src /opt/bidspm/src
+    lib /opt/bidspm/lib
+    .git /opt/bidspm/.git
 
 %post
     apt-get -qq update
@@ -38,10 +47,9 @@ From: bids/base_validator
     make -C /opt/spm12/src PLATFORM=octave install
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
 
-    mkdir /opt/bidspm
-    git clone --recurse-submodules https://github.com/cpp-lln-lab/bidspm.git /opt/bidspm
-    pip install --no-cache-dir --upgrade pip && \
-    pip3 --no-cache-dir install /opt/bidspm && \
+    pip install --upgrade pip
+    pip install -r /opt/bidspm/requirements.txt
+    pip install /opt/bidspm
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
     octave --no-gui --eval "addpath('/opt/bidspm/'); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path"
 

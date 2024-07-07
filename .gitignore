@@ -29,6 +29,7 @@ skipped_roi_*.tsv
 CHANGES
 README
 tests/data/tsv_files/moae_results_table.tsv
+htmlcov
 
 # Project specific
 onsets*_events.mat
@@ -48,6 +49,8 @@ src/bidspm/_version.py
 **/__pycache__
 **/build
 .coverage
+.pytest_cache
+.tox
 
 .mypy_cache
 

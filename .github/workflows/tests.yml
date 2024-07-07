@@ -65,7 +65,7 @@ jobs:
                     matlab: R2023b
                     mode: slow
                 -   test_type: unit
-                    os: macos-latest
+                    os: macos-13
                     matlab: R2023b
                     mode: fast
             fail-fast: false
