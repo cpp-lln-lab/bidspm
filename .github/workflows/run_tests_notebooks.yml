@@ -3,56 +3,53 @@ name: test notebooks
 
 on:
 
-  pull_request:
-    branches:
-    - main
-    paths:
-    - '**.m'
-    - .github/workflows/*system*
-    - lib
+    pull_request:
+        branches:
+        -   main
+        paths:
+        -   '**.m'
+        -   .github/workflows/*system*
+        -   lib
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    workflow_dispatch:
 
 jobs:
 
-  system_tests_matlab:
+    system_tests_matlab:
 
     # only trigger update on upstream repo
-    if: github.repository_owner == 'cpp-lln-lab'
+        if: github.repository_owner == 'cpp-lln-lab'
 
-    runs-on: ubuntu-22.04
+        runs-on: ubuntu-22.04
 
-    steps:
-    - name: Install dependencies
-      run: |
-        sudo apt-get -y -qq update
-        sudo apt-get -y install unzip wget tree
+        steps:
+        -   name: Install dependencies
+            run: |
+                sudo apt-get -y -qq update
+                sudo apt-get -y install unzip wget tree
 
-    - name: Install MATLAB
-      uses: matlab-actions/setup-matlab@v1.2.5
-      with:
+        -   name: Install MATLAB
+            uses: matlab-actions/setup-matlab@v2.2.0
+            with:
           # MATLAB release to set up R2020a
-        release: R2023a
+                release: R2023a
 
-    - name: Clone bidspm
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
-        fetch-depth: 0
+        -   name: Clone bidspm
+            uses: actions/checkout@v4
+            with:
+                submodules: recursive
+                fetch-depth: 0
 
-    - name: Install SPM
-      run: |
-        git clone https://github.com/spm/spm12.git --depth 1
+        -   name: Install SPM
+            run: |
+                git clone https://github.com/spm/spm12.git --depth 1
 
-    - name: Copy Macs toolbox to SPM inputs_folder
-      run: cp -rv lib/MACS spm12/toolbox/MACS
-
-    - name: Test notebooks
-      uses: matlab-actions/run-command@v1.2.3
-      with:
-        command: |
-          root_dir = getenv('GITHUB_WORKSPACE');
-          addpath(fullfile(root_dir, 'spm12'));
-          cd(fullfile(root_dir, 'demos'));
-          run test_notebooks;
+        -   name: Test notebooks
+            uses: matlab-actions/run-command@v2.1.1
+            with:
+                command: |
+                    root_dir = getenv('GITHUB_WORKSPACE');
+                    addpath(fullfile(root_dir, 'spm12'));
+                    cd(fullfile(root_dir, 'demos'));
+                    run test_notebooks;

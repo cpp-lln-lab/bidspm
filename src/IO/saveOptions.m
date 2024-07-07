@@ -8,7 +8,7 @@ function saveOptions(opt)
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
 
   % (C) Copyright 2020 bidspm developers
@@ -17,7 +17,9 @@ function saveOptions(opt)
   spm_mkdir(optionDir);
 
   taskString = '';
-  if isfield(opt, 'taskName')
+  if isfield(opt, 'taskName') && ...
+    iscellstr(opt.taskName) && ...
+    ~all(cellfun(@(x) strcmp(x, ''), opt.taskName))
     taskString = ['_task-', strjoin(opt.taskName, '')];
   end
 

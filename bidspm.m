@@ -171,19 +171,13 @@ function initBidspm(dev)
                          fullfile(rootDir(), 'tests', 'utils'));
     end
 
+    % Make sure MACS toolbox used by SPM is the one from bidspm
+    updateMacstoolbox();
+
     % for some reasons this folder was otherwise not added to the path in Octave
     BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
                        pathSep, ...
                        genpath(fullfile(rootDir(), 'src', 'workflows', 'stats')));
-
-    % add library that do not have an set up script
-    libList = {'spmup'};
-
-    for i = 1:numel(libList)
-      BIDSPM_PATHS = cat(2, BIDSPM_PATHS, ...
-                         pathSep, ...
-                         genpath(fullfile(rootDir(), 'lib', libList{i})));
-    end
 
     libList = {'mancoreg', ...
                'bids-matlab', ...
@@ -254,6 +248,33 @@ function initBidspm(dev)
 
   end
 
+end
+
+function updateMacstoolbox()
+
+  SPM_DIR = spm('dir');
+  target_dir = fullfile(SPM_DIR, 'toolbox', 'MACS');
+  MACS_TOOLBOX_DIR = fullfile(rootDir(), 'lib', 'MACS');
+
+  if exist(target_dir, 'dir') == 7 && exist(fullfile(target_dir, '.git'), 'dir') == 0
+    rmdir(target_dir, 's');
+  end
+
+  if exist(target_dir, 'dir') == 7
+    msg = sprintf('updating MACS toolbox\n');
+    fprintf(1, msg);
+    [status, cmdout] = system(sprintf('git -C %s pull', target_dir));
+    if status ~= 0
+      fprintf(1, 'Failed to update MACS toolbox: %s\n', cmdout);
+    end
+
+  else
+    msg = sprintf('installing MACS toolbox in:\n%s.\n', target_dir);
+    fprintf(1, msg);
+    system(sprintf('git clone %s %s', ...
+                   MACS_TOOLBOX_DIR, ...
+                   target_dir));
+  end
 end
 
 function uninitBidspm()

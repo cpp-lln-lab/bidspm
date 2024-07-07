@@ -1,6 +1,6 @@
 function defaults = MACS_my_defaults()
   %
-  %  USAGE::
+  % USAGE::
   %
   %    defaults = MACS_my_defaults()
   %

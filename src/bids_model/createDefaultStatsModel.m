@@ -7,11 +7,11 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
   %   opt = createDefaultStatsModel(BIDS, opt)
   %
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
   % :type  BIDS: struct or path
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   % :param ignore: Optional. Cell string that can contain:
@@ -27,33 +27,33 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
   %
   %     fullfile(pwd, 'models', ['model-default' opt.taskName '_smdl.json']);
   %
-  % This model has 3 "Nodes" in that order:
+  % This model has 3 "Nodes" in that order
   %
-  %  - Run level:
+  % - Run level
   %
-  %     - will create a GLM with a design matrix that includes all
-  %       all the possible type of trial_types that exist across
-  %       all subjects and runs for the task specified in ``opt``,
-  %       as well as the realignment parameters.
+  %   - will create a GLM with a design matrix that includes all
+  %     all the possible type of trial_types that exist across
+  %     all subjects and runs for the task specified in ``opt``,
+  %     as well as the realignment parameters.
   %
-  %     - use ``DummyContrasts`` to generate contrasts for each trial_type
-  %       for each run. This can be useful to run MVPA analysis on the beta
-  %       images of each run.
+  %   - use ``DummyContrasts`` to generate contrasts for each trial_type
+  %     for each run. This can be useful to run MVPA analysis on the beta
+  %     images of each run.
   %
-  %  - Subject level:
+  % - Subject level
   %
-  %     - will create a GLM with a design matrix that includes all
-  %       all the possible type of trial_types that exist across
-  %       all subjects and runs for the task specified in ``opt``,
-  %       as well as the realignment parameters.
+  %   - will create a GLM with a design matrix that includes all
+  %     all the possible type of trial_types that exist across
+  %     all subjects and runs for the task specified in ``opt``,
+  %     as well as the realignment parameters.
   %
-  %     - use ``DummyContrasts`` to generate contrasts for all each trial_type
-  %       across runs
+  %   - use ``DummyContrasts`` to generate contrasts for all each trial_type
+  %     across runs
   %
-  %    Dataset level:
+  % - Dataset level
   %
-  %    - use ``DummyContrasts`` to generate contrasts for each trial_type
-  %      for at the group level.
+  %   - use ``DummyContrasts`` to generate contrasts for each trial_type
+  %     for at the group level.
   %
   % EXAMPLE::
   %
@@ -106,7 +106,7 @@ function opt = createDefaultStatsModel(BIDS, opt, ignore)
 
     if strcmp(levelsToUpdate{i}, 'subject')
       bm.Nodes{idx}.GroupBy = {'subject', 'contrast'};
-    elseif strcmp(levelsToUpdate{i}, 'subject')
+    elseif strcmp(levelsToUpdate{i}, 'dataset')
       bm.Nodes{idx}.GroupBy = {'contrast'};
     end
 

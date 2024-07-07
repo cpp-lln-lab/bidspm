@@ -1,7 +1,10 @@
+% Runs:
+% - smoothing of fmriprep data
+% - stats at the suject level
+% - stats at the group level
+%
+
 % (C) Copyright 2020 bidspm developers
-%
-% shows how to smooth files from fmriprep to run a first level
-%
 
 clear;
 clc;

@@ -6,18 +6,21 @@ function [matlabbatch, newMetadata] = setBatchSTC(varargin)
   %
   %   matlabbatch = setBatchSTC(matlabbatch, BIDS, opt, subLabel)
   %
-  % :type  BIDS: structure
   % :param BIDS: dataset layout.
-  %              See also: bids.layout, getData.
+  %              See: bids.layout, getData.
+  %
+  % :type  BIDS: structure
   %
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
+  %
   % :type  opt: structure
   %
   % :param subLabel: subject label
   % :type  subLabel: char
   %
-  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  % :return: matlabbatch, The matlabbatch ready to run the spm job
+  % :rtype: structure
   %
   % Slice timing units is in seconds to be BIDS compliant
   % and not in slice number as is more traditionally the case with SPM.

@@ -16,10 +16,10 @@ function removeDummies(varargin)
   % :type metadata: structure
   %
   % :param force:
-  % :type force: boolean
+  % :type force: logical
   %
   % :param verbose:
-  % :type verbose: boolean
+  % :type verbose: logical
   %
   %
 

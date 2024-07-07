@@ -3,7 +3,7 @@ function censoringRegressors = censoring(data)
   % routine that computes robust outliers for each column of the data in
   % and return a matrix of censoring regressors (0s and a 1 per column)
   %
-  % EXAMPLE::
+  % USAGE::
   %
   %     censoringRegressors = censoring(data)
   %

@@ -1,6 +1,10 @@
 function plotEvents(eventsFile, modelFile)
   %
-  % See bids.util.plot_events
+  % USAGE::
+  %
+  %   plotEvents(eventsFile, modelFile)
+  %
+  % See also: bids.util.plot_events
   %
 
   % (C) Copyright 2020 bidspm developers

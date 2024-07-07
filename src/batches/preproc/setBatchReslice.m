@@ -11,7 +11,7 @@ function matlabbatch = setBatchReslice(matlabbatch, opt, referenceImg, sourceIma
   %
   % :type  opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
   %
   % :param referenceImg: Reference image (only one image)
   % :type  referenceImg: char or cellstring
@@ -23,7 +23,8 @@ function matlabbatch = setBatchReslice(matlabbatch, opt, referenceImg, sourceIma
   %                neighbour = ``0``.
   % :type  interp: integer >= 0
   %
-  % :returns: - :matlabbatch: (structure) The matlabbatch ready to run the spm job
+  % :return: matlabbatch, The matlabbatch ready to run the spm job
+  % :rtype: structure
   %
 
   % (C) Copyright 2020 bidspm developers

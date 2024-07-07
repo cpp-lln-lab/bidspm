@@ -9,7 +9,7 @@ function batchFileName = returnBatchFileName(batchType, ext)
   % :param ext: optional.
   % :type ext: structure
   %
-  % :returns: - :batchFileName: (path)
+  % :return: :batchFileName: (path)
   %
   %
 

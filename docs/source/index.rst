@@ -12,29 +12,16 @@ Welcome to bidspm documentation!
    :caption: Content
 
    general_information
-   installation
+   installation/index
    usage_notes
    configuration
-   bids_stats_model
-   demos
-   statistics
-   preprocessing
-   output_files
-   mapping
-   method_section
-   FAQ
-   fieldmaps
-   quality_analysis
-   mancoreg
-   docker
-   CHANGELOG
+   demos/index
+   faq/index
+   stats/index
+   preprocessing/index
+   output/index
+   QA
+   API
    links_and_references
+   CHANGELOG
    CONTRIBUTING
-   dev_doc
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`search`

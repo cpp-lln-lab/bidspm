@@ -11,9 +11,9 @@ function [BIDS, opt] = setUpWorkflow(varargin)
   %
   %   [BIDS, opt, group] = setUpWorkflow(opt, workflowName, bidsDir, indexData)
   %
-  % :type opt:  structure
   % :param opt: Options chosen for the analysis.
-  %             See checkOptions.
+  %             See :func:`checkOptions`.
+  % :type opt:  structure
   %
   % :param workflowName: name that will be printed on screen
   % :type  workflowName: char
@@ -28,14 +28,12 @@ function [BIDS, opt] = setUpWorkflow(varargin)
   %                   ``getData``. Default to ``true``.
   % :param indexData: logical, default = true
   %
-  % :param index_dependencies: Use ``'index_dependencies', true`
-  %                            in bids.layout.
-  % :type  index_dependencies: logical, default = true
+  % :param index_dependencies: Use ``'index_dependencies', true``
+  %                            in bids.layout. default = true
+  % :type  index_dependencies: logical
   %
-  % :returns:
-  %
-  %           - :BIDS: (structure) returned by ``getData``
-  %           - :opt: options checked
+  % :returns: ``BIDS`` layout returned by ``getData``, ``opt`` options checked
+  % :rtype: structure, structure
   %
 
   % (C) Copyright 2019 bidspm developers

@@ -1,64 +1,64 @@
 ---
 title: BIDSPM an SPM centric BIDS app
 tags:
-- BIDS
-- brain imaging data structure
-- neuroimaging
-- automated pipeline
-- MRI
-- MATLAB
-- Octave
-- SPM
+-   BIDS
+-   brain imaging data structure
+-   neuroimaging
+-   automated pipeline
+-   MRI
+-   MATLAB
+-   Octave
+-   SPM
 authors:
-- name: Rémi Gau
-  orcid: 0000-0002-1535-9767
-  affiliation: 1
-- name: Marco Barilari
-  orcid: 0000-0002-3313-3120
-  affiliation: 1
-- name: Ceren Battal
-  orcid: 0000-0002-9844-7630
-  affiliation: 1
-- name: Jeanne Caron-Guyon
-  orcid: 0000-0001-8681-5267
-  affiliation: 1
-- name: Filippo Cerpelloni
-  orcid: 0000-0001-8070-5753
-  affiliation: 1
-- name: Christine Chouinard-Leclaire
-  orcid: 0000-0002-1066-6266
-  affiliation: 2
-- name: Federica Falagiarda
-  orcid: 0000-0001-7844-1605
-  affiliation: 1
-- name: Ane Gurtubay
-  orcid: 0000-0003-3824-2219
-  affiliation: 1
-- name: Michèle MacLean
-  orcid: 0000-0002-0174-9326
-  affiliation: 2
-- name: Stefania Mattioni
-  orcid: 0000-0001-8279-6118
-  affiliation: 3
-- name: Márcia Nunes
-- name: Mohamed Rezk
-  orcid: 0000-0002-1866-8645
-  affiliation: 1
-- name: Iqra Shahzad
-  orcid: 0000-0002-8724-7668
-  affiliation: 1
-- name: Ying Yang
-  orcid: 0000-0002-4157-2975
-  affiliation: 1
-- name: Olivier Collignon
-  orcid: 0000-0003-1882-3550
-  affiliation: 1
+-   name: Rémi Gau
+    orcid: 0000-0002-1535-9767
+    affiliation: 1
+-   name: Marco Barilari
+    orcid: 0000-0002-3313-3120
+    affiliation: 1
+-   name: Ceren Battal
+    orcid: 0000-0002-9844-7630
+    affiliation: 1
+-   name: Jeanne Caron-Guyon
+    orcid: 0000-0001-8681-5267
+    affiliation: 1
+-   name: Filippo Cerpelloni
+    orcid: 0000-0001-8070-5753
+    affiliation: 1
+-   name: Christine Chouinard-Leclaire
+    orcid: 0000-0002-1066-6266
+    affiliation: 2
+-   name: Federica Falagiarda
+    orcid: 0000-0001-7844-1605
+    affiliation: 1
+-   name: Ane Gurtubay
+    orcid: 0000-0003-3824-2219
+    affiliation: 1
+-   name: Michèle MacLean
+    orcid: 0000-0002-0174-9326
+    affiliation: 2
+-   name: Stefania Mattioni
+    orcid: 0000-0001-8279-6118
+    affiliation: 3
+-   name: Márcia Nunes
+-   name: Mohamed Rezk
+    orcid: 0000-0002-1866-8645
+    affiliation: 1
+-   name: Iqra Shahzad
+    orcid: 0000-0002-8724-7668
+    affiliation: 1
+-   name: Ying Yang
+    orcid: 0000-0002-4157-2975
+    affiliation: 1
+-   name: Olivier Collignon
+    orcid: 0000-0003-1882-3550
+    affiliation: 1
 affiliations:
-- name: Université catholique de Louvain
-  index: 1
-- name: Université de Montréal
-  index: 2
-- name: University of Gent
-  index: 3
+-   name: Université catholique de Louvain
+    index: 1
+-   name: Université de Montréal
+    index: 2
+-   name: University of Gent
+    index: 3
 date: '2022-12-17'
 bibliography: paper.bib

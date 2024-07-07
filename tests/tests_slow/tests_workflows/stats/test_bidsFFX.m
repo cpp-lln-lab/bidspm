@@ -48,7 +48,7 @@ function test_bidsFFX_individual()
 
     expectedNbBatch = 7;
     if bids.internal.is_octave()
-      expectedNbBatch = 6;
+      expectedNbBatch = 4;
     end
     % specify
     % print design matrix

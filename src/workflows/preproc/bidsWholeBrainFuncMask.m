@@ -2,6 +2,10 @@ function mask = bidsWholeBrainFuncMask(opt)
   %
   % Create segmented-skull stripped mean functional image
   %
+  % USAGE::
+  %
+  %   mask = bidsWholeBrainFuncMask(opt)
+  %
 
   % (C) Copyright 2020 bidspm developers
 

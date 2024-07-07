@@ -1,6 +1,14 @@
 function matlabbatch = setBatchInformationCriteria(matlabbatch, opt, outputDir)
 
   % (C) Copyright 2023 bidspm developers
+
+  if bids.internal.is_octave()
+    notImplemented(mfilename(), ...
+                   'Information criterion not implemented in Octave.', ...
+                   opt);
+    return
+  end
+
   MA_model_space.dir = {outputDir};
   MA_model_space.models{1}{1}(1) = cfg_dep('Model estimation: SPM.mat File', ...
                                            returnDependency(opt, 'estimate'), ...

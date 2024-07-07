@@ -10,7 +10,7 @@ function totalReadoutTime = getTotalReadoutTime(metadata)
   % :param metadata: image metadata
   % :type metadata: structure
   %
-  % :returns: - :totalReadoutTime: (float) in millisecond
+  % :return: :totalReadoutTime: (float) in millisecond
   %
   % Currently this relies on the user adding extra metadata in the json of the
   % functional files as the metadata queried are not "official" BIDS metadata

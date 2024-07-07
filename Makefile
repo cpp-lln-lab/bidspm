@@ -71,9 +71,6 @@ release: validate_cff bump_version lint manual
 ################################################################################
 #   doc
 
-update_faq:
-	faqtory build
-
 clean_doc:
 	cd docs && make clean
 
@@ -111,6 +108,7 @@ coverage: ## use coverage
 	coverage erase
 	coverage run --source src -m pytest
 	coverage report -m
+	coverage html
 
 ################################################################################
 #   DOCKER

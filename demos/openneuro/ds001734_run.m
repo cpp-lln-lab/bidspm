@@ -1,6 +1,7 @@
 %
 % Analysis of the NARPS dataset
 %
+
 % (C) Copyright 2022 bidspm developers
 
 clear;

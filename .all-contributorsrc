@@ -223,7 +223,18 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/15329571?v=4",
       "profile": "https://github.com/monique2208",
       "contributions": [
-        "bug"
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "d-ni374",
+      "name": "Daniel Huber",
+      "avatar_url": "https://avatars.githubusercontent.com/u/166691050?v=4",
+      "profile": "https://github.com/d-ni374",
+      "contributions": [
+        "bug",
+        "code"
       ]
     }
   ],

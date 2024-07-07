@@ -1,4 +1,6 @@
 function displayArguments(varargin)
+  %
+
   % (C) Copyright 2023 bidspm developers
   disp('arguments passed were :');
   for i = 1:numel(varargin)

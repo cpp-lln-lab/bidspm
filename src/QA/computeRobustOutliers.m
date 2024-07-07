@@ -2,8 +2,7 @@ function outliers = computeRobustOutliers(varargin)
   %
   % Computes robust ouliers of a time series using S-outliers or Carling's k
   %
-  %
-  % EXAMPLE::
+  % USAGE::
   %
   %     outliers = computeRobustOutliers(time_series, 'outlierType', 'Carling')
   %
@@ -35,17 +34,17 @@ function outliers = computeRobustOutliers(varargin)
   %
   % References:
   %
-  %     - Rousseeuw, P. J., and Croux, C. (1993). Alternatives to the the median
-  %       absolute deviation. J. Am. Stat. Assoc. 88, 1273-1263.
-  %       <https://www.tandfonline.com/doi/abs/10.1080/01621459.1993.10476408>
+  % - Rousseeuw, P. J., and Croux, C. (1993). Alternatives to the the median
+  %   absolute deviation. J. Am. Stat. Assoc. 88, 1273-1263.
+  %   <https://www.tandfonline.com/doi/abs/10.1080/01621459.1993.10476408>
   %
-  %     - Carling, K. (2000). Resistant outlier rules and the non-Gaussian case.
-  %       Stat. Data Anal. 33, 249:258.
-  %       <http://www.sciencedirect.com/science/article/pii/S0167947399000572>
+  % - Carling, K. (2000). Resistant outlier rules and the non-Gaussian case.
+  %   Stat. Data Anal. 33, 249:258.
+  %   <http://www.sciencedirect.com/science/article/pii/S0167947399000572>
   %
-  %     - Hoaglin, D.C., Iglewicz, B. (1987) Fine-tuning some resistant rules for
-  %       outlier labelling. J. Amer. Statist. Assoc., 82 , 1147:1149
-  %       <http://www.tandfonline.com/doi/abs/10.1080/01621459.1986.10478363>
+  % - Hoaglin, D.C., Iglewicz, B. (1987) Fine-tuning some resistant rules for
+  %   outlier labelling. J. Amer. Statist. Assoc., 82 , 1147:1149
+  %   <http://www.tandfonline.com/doi/abs/10.1080/01621459.1986.10478363>
   %
   % Adapted from Cyril Pernet's spmup
   %

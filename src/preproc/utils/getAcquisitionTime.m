@@ -8,7 +8,7 @@ function acquisitionTime = getAcquisitionTime(sliceOrder, repetitionTime)
   % :param metadata: sliceOrder
   % :type  metadata: vector
   %
-  % :returns: - :acquisitionTime:
+  % :return: acquisitionTime
   %
 
   % (C) Copyright 2022 bidspm developers
@@ -18,8 +18,8 @@ function acquisitionTime = getAcquisitionTime(sliceOrder, repetitionTime)
 
   acquisitionTime = computeAcquisitionTime(sliceOrder, repetitionTime);
 
-  % ceil to avoid making this too brittle
-  if any(sliceOrder > ceil(acquisitionTime * 100) / 100)
+  % add small time buffer (0.01 s) to avoid making this too brittle
+  if any(sliceOrder > acquisitionTime + 0.01)
     sliceOrder = bids.internal.create_unordered_list(num2str(sliceOrder));
     msg = sprintf(['Acquisition time cannot be < to any slice timing value:\n\n', ...
                    'Current values:', ...

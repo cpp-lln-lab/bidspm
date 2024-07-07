@@ -2,202 +2,265 @@
 version: 2.1
 
 jobs:
-  build:
+    build:
 
-    machine:
-      image: ubuntu-2204:2022.10.2
-    steps:
-    - checkout
-    - run: make fix_submodule
-    - restore_cache:
-        keys:
-        - my_cache
-    - run:
-        name: Build Docker image
-        command: |
-          set -eux -o pipefail
-          # make sure we have a lowercase repo
-          user_name=cpplab
-          repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
-          if [[ -e "${HOME}/docker/image.tar" ]]; then
-              docker load -i "${HOME}/docker/image.tar"
-          fi
-          git describe --tags --always > version
-          docker build -t "${user_name}/${repo_name}" .
-          mkdir -p "${HOME}/docker"
-          docker save "${user_name}/${repo_name}" > "${HOME}/docker/image.tar"
-          docker images
-    - persist_to_workspace:
-        root: /home/circleci
-        paths:
-        - docker/image.tar
+        machine:
+            image: ubuntu-2204:2022.10.2
+        steps:
+        -   checkout
+        -   run: make fix_submodule
+        -   restore_cache:
+                keys:
+                -   my_cache
+        -   run:
+                name: Build Docker image
+                command: |
+                    set -eux -o pipefail
+                    # make sure we have a lowercase repo
+                    user_name=cpplab
+                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
+                    if [[ -e "${HOME}/docker/image.tar" ]]; then
+                        docker load -i "${HOME}/docker/image.tar"
+                    fi
+                    git describe --tags --always > version
+                    docker build -t "${user_name}/${repo_name}" .
+                    mkdir -p "${HOME}/docker"
+                    docker save "${user_name}/${repo_name}" > "${HOME}/docker/image.tar"
+                    docker images
+        -   persist_to_workspace:
+                root: /home/circleci
+                paths:
+                -   docker/image.tar
 
-  get_data:
-    machine:
-      image: ubuntu-2204:2022.10.2
-    steps:
-    - checkout
-    - run:
-        name: Install dependencies
-        command: |
-          sudo apt-get update
-          sudo apt-get install -y python3 git-annex
-          python3 -m pip install --upgrade pip setuptools
-          pip3 install datalad
-          datalad wtf
-    - restore_cache:
-        keys:
-        - my_cache
-    - run:
-        name: Get ds000001
-        command: |
-          # Git set up: to keep datalad warnings away
-          git config --global --add user.name "Ford Escort"
-          git config --global --add user.email 42@H2G2.com
-          mkdir -p ${HOME}/data/
-          datalad install -s ///openneuro/ds000001 ${HOME}/data/ds000001
-          datalad install -s ///openneuro-derivatives/ds000001-fmriprep ${HOME}/data/ds000001-fmriprep
-          cd ${HOME}/data/ds000001-fmriprep/
-          datalad get sub-0[1-2]/anat/*MNI*mask.nii.gz \
-                sub-0[1-2]/anat/*MNI*T1w.nii.gz \
-                sub-0[1-2]/func/*MNI*desc-preproc*bold.nii.gz \
-                sub-0[1-2]/func/*MNI*mask.nii.gz \
-                sub-*/func/*tsv	\
-                sub-*/func/*json -J 12
-          datalad status
-    - save_cache:
-        key: my_cache
-        paths:
-        - ~/data
-    - persist_to_workspace:
-        root: /home/circleci
-        paths:
-        - data/ds000001
-        - data/ds000001-fmriprep
+    get_data:
+        machine:
+            image: ubuntu-2204:2022.10.2
+        steps:
+        -   checkout
+        -   run:
+                name: Install dependencies
+                command: |
+                    sudo apt-get update
+                    sudo apt-get install -y python3 git-annex
+                    python3 -m pip install --upgrade pip setuptools
+                    pip3 install datalad
+                    datalad wtf
+        -   restore_cache:
+                keys:
+                -   my_cache
+        -   run:
+                name: Get ds000001
+                command: |
+                    # Git set up: to keep datalad warnings away
+                    git config --global --add user.name "Ford Escort"
+                    git config --global --add user.email 42@H2G2.com
+                    mkdir -p ${HOME}/data/
+                    datalad install -s ///openneuro/ds000001 ${HOME}/data/ds000001
+                    datalad install -s ///openneuro-derivatives/ds000001-fmriprep ${HOME}/data/ds000001-fmriprep
+                    cd ${HOME}/data/ds000001-fmriprep/
+                    datalad get sub-0[1-2]/anat/*MNI*mask.nii.gz \
+                          sub-0[1-2]/anat/*MNI*T1w.nii.gz \
+                          sub-0[1-2]/func/*MNI*desc-preproc*bold.nii.gz \
+                          sub-0[1-2]/func/*MNI*mask.nii.gz \
+                          sub-*/func/*tsv	\
+                          sub-*/func/*json -J 12
+                    datalad status
+        -   save_cache:
+                key: my_cache
+                paths:
+                -   ~/data
+        -   persist_to_workspace:
+                root: /home/circleci
+                paths:
+                -   data/ds000001
+                -   data/ds000001-fmriprep
 
-  test:
-    machine:
-      image: ubuntu-2204:2022.10.2
+    default_model:
+        machine:
+            image: ubuntu-2204:2022.10.2
 
-    steps:
-    - attach_workspace:
-        at: /tmp/workspace
-    - run: docker load -i /tmp/workspace/docker/image.tar
+        steps:
+        -   attach_workspace:
+                at: /tmp/workspace
+        -   run: docker load -i /tmp/workspace/docker/image.tar
 
-    - run: mkdir -p ${HOME}/outputs/ds000001/derivatives
+        -   run: mkdir -p ${HOME}/outputs/ds000001/derivatives
 
-    - run:
-        name: print version
-        command: |
-          user_name=cpplab
-          repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
-          docker run -ti --rm \
-            -v /tmp/workspace/data/ds000001:/bids_dataset \
-              ${user_name}/${repo_name} --version
+        -   run:
+                name: default model subject level
+                command: |
+                    user_name=cpplab
+                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
+                    docker run -ti --rm \
+                      -v /tmp/workspace/data/ds000001:/bids_dataset \
+                      -v ${HOME}/outputs:/outputs \
+                        ${user_name}/${repo_name} \
+                          /bids_dataset \
+                          /outputs/ds000001 \
+                          subject \
+                          --action default_model \
+                          --task balloonanalogrisktask \
+                          --space MNI152NLin2009cAsym \
+                          --verbosity 3
 
-    - run:
-        name: smooth
-        command: |
-          user_name=cpplab
-          repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
-          docker run -ti --rm \
-            -v /tmp/workspace/data/ds000001-fmriprep:/bids_dataset \
-            -v ${HOME}/outputs:/outputs \
-              ${user_name}/${repo_name} \
-                /bids_dataset \
-                /outputs/ds000001 \
-                subject \
-                --action smooth \
-                --task balloonanalogrisktask \
-                --participant_label 01 02 \
-                --space MNI152NLin2009cAsym \
-                --fwhm 8 \
-                --verbosity 2
-        no_output_timeout: 6h
+                    cat ${HOME}/outputs/ds000001/derivatives/models/*.json
 
-    # needed to access the model
-    - checkout
+        -   run:
+                name: default model dataset level
+                command: |
+                    user_name=cpplab
+                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
+                    docker run -ti --rm \
+                      -v /tmp/workspace/data/ds000001:/bids_dataset \
+                      -v ${HOME}/outputs:/outputs \
+                        ${user_name}/${repo_name} \
+                          /bids_dataset \
+                          /outputs/ds000001 \
+                          dataset \
+                          --action default_model \
+                          --task balloonanalogrisktask \
+                          --space MNI152NLin2009cAsym \
+                          --verbosity 3
 
-    - run:
-        name: stats
-        command: |
-          user_name=cpplab
-          repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
-          docker run -ti --rm  \
-            -v /tmp/workspace/data/ds000001:/bids_dataset \
-            -v ${HOME}/outputs:/outputs \
-            -v ~/project/demos/openneuro/models:/models \
-              ${user_name}/${repo_name} \
-                /bids_dataset \
-                /outputs/ds000001 \
-                subject \
-                --action stats \
-                --preproc_dir /outputs/ds000001/derivatives/bidspm-preproc \
-                --model_file /models/model-balloonanalogrisktaskDefault_smdl.json \
-                --ignore slicetiming \
-                --space MNI152NLin2009cAsym \
-                --skip_validation \
-                --fwhm 8 \
-                --participant_label 01 02 \
-                --verbosity 2
-        no_output_timeout: 6h
+                    cat ${HOME}/outputs/ds000001/derivatives/models/*.json
 
+    stats:
+        machine:
+            image: ubuntu-2204:2022.10.2
 
-  deploy:
+        steps:
+        -   attach_workspace:
+                at: /tmp/workspace
+        -   run: docker load -i /tmp/workspace/docker/image.tar
 
-    machine:
-      image: ubuntu-2204:2022.10.2
+        -   run: mkdir -p ${HOME}/outputs/ds000001/derivatives
 
-    steps:
-    - attach_workspace:
-        at: /tmp/workspace
+        -   run:
+                name: smooth
+                command: |
+                    user_name=cpplab
+                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
+                    docker run -ti --rm \
+                      -v /tmp/workspace/data/ds000001-fmriprep:/bids_dataset \
+                      -v ${HOME}/outputs:/outputs \
+                        ${user_name}/${repo_name} \
+                          /bids_dataset \
+                          /outputs/ds000001 \
+                          subject \
+                          --action smooth \
+                          --task balloonanalogrisktask \
+                          --participant_label 01 02 \
+                          --space MNI152NLin2009cAsym \
+                          --fwhm 8 \
+                          --verbosity 3
 
-    - run: docker load -i /tmp/workspace/docker/image.tar
-    - run:
-        name: push to dockerhub
-        command: |
-          set -ex -o pipefail
+        # needed to access the model
+        -   checkout
 
-          if [[ -n "${DOCKER_TOKEN}" ]]; then
+        -   run:
+                name: stats subject level
+                command: |
+                    user_name=cpplab
+                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
+                    docker run -ti --rm  \
+                      -v /tmp/workspace/data/ds000001:/bids_dataset \
+                      -v ${HOME}/outputs:/outputs \
+                      -v ~/project/demos/openneuro/models:/models \
+                      -v ~/project/demos/openneuro/options:/options \
+                        ${user_name}/${repo_name} \
+                          /bids_dataset \
+                          /outputs/ds000001 \
+                          subject \
+                          --action stats \
+                          --preproc_dir /outputs/ds000001/derivatives/bidspm-preproc \
+                          --model_file /models/model-balloonanalogrisktaskDefault_smdl.json \
+                          --ignore slicetiming \
+                          --space MNI152NLin2009cAsym \
+                          --skip_validation \
+                          --fwhm 0 \
+                          --participant_label 01 02 \
+                          --verbosity 3 \
+                          --options /options/ds000001.json
 
-              # make sure we have a lowercase repo
-              user_name=cpplab
-              repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
+        -   run:
+                name: stats group level
+                command: |
+                    user_name=cpplab
+                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
+                    docker run -ti --rm  \
+                      -v /tmp/workspace/data/ds000001:/bids_dataset \
+                      -v ${HOME}/outputs:/outputs \
+                      -v ~/project/demos/openneuro/models:/models \
+                      -v ~/project/demos/openneuro/options:/options \
+                        ${user_name}/${repo_name} \
+                          /bids_dataset \
+                          /outputs/ds000001 \
+                          dataset \
+                          --action stats \
+                          --preproc_dir /outputs/ds000001/derivatives/bidspm-preproc \
+                          --model_file /models/model-balloonanalogrisktaskDefault_smdl.json \
+                          --space MNI152NLin2009cAsym \
+                          --skip_validation \
+                          --fwhm 0 \
+                          --verbosity 3 \
+                          --options /options/ds000001.json
 
-              echo "${DOCKER_TOKEN}" | docker login -u "${DOCKER_USER}" --password-stdin
+    deploy:
 
-              : "Pushing to DockerHub ${user_name}/${repo_name}:unstable"
-              docker tag "${user_name}/${repo_name}" "${user_name}/${repo_name}:unstable"
-              docker push "${user_name}/${repo_name}:unstable"
+        machine:
+            image: ubuntu-2204:2022.10.2
 
-              if [[ -n "${CIRCLE_TAG}" ]]; then
-                  : "Pushing to DockerHub ${user_name}/${repo_name}:${CIRCLE_TAG}"
-                  docker push "${user_name}/${repo_name}:latest"
-                  docker tag "${user_name}/${repo_name}" "${user_name}/${repo_name}:${CIRCLE_TAG}"
-                  docker push "${user_name}/${repo_name}:${CIRCLE_TAG}"
-              fi
+        steps:
+        -   attach_workspace:
+                at: /tmp/workspace
 
-          else
-              : "No DOCKER_TOKEN, skipping push to DockerHub"
-              exit 1
-          fi
+        -   run: docker load -i /tmp/workspace/docker/image.tar
+        -   run:
+                name: push to dockerhub
+                command: |
+                    set -ex -o pipefail
+
+                    if [[ -n "${DOCKER_TOKEN}" ]]; then
+
+                        # make sure we have a lowercase repo
+                        user_name=remigau
+                        repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
+
+                        echo "${DOCKER_TOKEN}" | docker login -u "${DOCKER_USER}" --password-stdin
+
+                        : "Pushing to DockerHub ${user_name}/${repo_name}:unstable"
+                        docker tag "${user_name}/${repo_name}" "${user_name}/${repo_name}:unstable"
+                        docker push "${user_name}/${repo_name}:unstable"
+
+                        if [[ -n "${CIRCLE_TAG}" ]]; then
+                            : "Pushing to DockerHub ${user_name}/${repo_name}:${CIRCLE_TAG}"
+                            docker push "${user_name}/${repo_name}:latest"
+                            docker tag "${user_name}/${repo_name}" "${user_name}/${repo_name}:${CIRCLE_TAG}"
+                            docker push "${user_name}/${repo_name}:${CIRCLE_TAG}"
+                        fi
+
+                    else
+                        : "No DOCKER_TOKEN, skipping push to DockerHub"
+                        exit 1
+                    fi
 
 workflows:
-  build-test-deploy:
-    jobs:
-    - build
-    - get_data
-    - test:
-        requires:
-        - build
-        - get_data
-    - deploy:
-        context:
-        - DOCKER_HUB
-        requires:
-        - test
-        filters:
-          tags:
-            only: /.*/
+    build-test-deploy:
+        jobs:
+        -   build
+        -   get_data
+        -   default_model:
+                requires:
+                -   build
+                -   get_data
+        -   stats:
+                requires:
+                -   build
+                -   get_data
+        -   deploy:
+                context:
+                -   DOCKER_HUB
+                requires:
+                -   build
 
 # VS Code Extension Version: 1.5.1

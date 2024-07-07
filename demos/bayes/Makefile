@@ -1,5 +1,10 @@
 .PHONY: clean data data_ds000001
 
+clean:
+	rm -rf inputs
+	mkdir inputs
+	touch inputs/.gitkeep
+
 data_install:
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds000114
