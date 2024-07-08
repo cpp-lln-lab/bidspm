@@ -2,9 +2,10 @@
 from __future__ import annotations
 
 import re
-from pathlib import Path
 
-change_log = Path(__file__).parent.parent / "CHANGELOG.md"
+from utils import root_dir
+
+change_log = root_dir() / "CHANGELOG.md"
 
 with open(change_log) as f:
     lines = f.readlines()
