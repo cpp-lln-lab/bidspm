@@ -25,6 +25,7 @@ RUN apt-get update -qq && \
         python3-pip \
         python3 \
         software-properties-common \
+        unzip \
         zip && \
     apt-get clean && \
     rm -rf \
