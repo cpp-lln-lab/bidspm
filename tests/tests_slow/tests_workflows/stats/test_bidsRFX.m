@@ -254,7 +254,7 @@ function batchOrder = extendBatchOrder(batchOrder)
                'stats', 'review'; ...
                'util', 'print'};
   if bids.internal.is_octave()
-    extension(2:4, :) = [];
+    extension(2:3, :) = [];
   end
   batchOrder = cat(1, batchOrder, extension);
 end
