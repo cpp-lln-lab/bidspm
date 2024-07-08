@@ -24,7 +24,8 @@ RUN apt-get update -qq && \
         octave-statistics \
         python3-pip \
         python3 \
-        software-properties-common && \
+        software-properties-common \
+        zip && \
     apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
