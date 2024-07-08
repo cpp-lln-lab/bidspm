@@ -1,3 +1,5 @@
+"""Print functions that are called less than twice in the code base."""
+
 from pathlib import Path
 
 from rich import print
@@ -5,12 +7,12 @@ from rich import print
 from utils import root_dir
 
 
-def find_files_with_extension(directory, extension):
+def find_files_with_extension(directory, extension) -> list[Path]:
     """Recursively find all files in directory with the given extension."""
     return list(Path(directory).rglob(f"*{extension}"))
 
 
-def main():
+def main() -> None:
     src_folder = root_dir() / "src"
     files = find_files_with_extension(src_folder, ".m")
 

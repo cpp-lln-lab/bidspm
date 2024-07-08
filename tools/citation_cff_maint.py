@@ -40,7 +40,7 @@ def sort_authors(authors: list[dict[str, str]]) -> list[dict[str, str]]:
     return authors
 
 
-def main():
+def main() -> None:
     """Update names.rst and AUTHORS.rst files."""
     citation = read_citation_cff()
     citation["authors"] = sort_authors(citation["authors"])
