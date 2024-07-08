@@ -1,5 +1,12 @@
 FROM bids/base_validator:1.13.1
 
+LABEL org.opencontainers.image.source="https://github.com/cpp-lln-lab/bidspm"
+LABEL org.opencontainers.image.url="https://github.com/cpp-lln-lab/bidspm"
+LABEL org.opencontainers.image.documentation="https://bidspm.readthedocs.io/en/latest"
+LABEL org.opencontainers.image.licenses="GPL-3.0"
+LABEL org.opencontainers.image.title="bidspm"
+LABEL org.opencontainers.image.description="an SPM-centric BIDS app"
+
 ARG DEBIAN_FRONTEND="noninteractive"
 
 ## basic OS tools install octave

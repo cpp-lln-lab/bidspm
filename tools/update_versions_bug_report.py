@@ -9,9 +9,9 @@ yaml.indent(mapping=2, sequence=4, offset=2)
 
 
 def main():
-    bug_report = (root_dir / ".github" / "ISSUE_TEMPLATE" / "bug_report.yml").absolute()
+    bug_report = (root_dir() / ".github" / "ISSUE_TEMPLATE" / "bug_report.yml").absolute()
 
-    versions_file = (root_dir / "versions.txt").absolute()
+    versions_file = (root_dir() / "tools" / "versions.txt").absolute()
 
     with open(bug_report, encoding="utf8") as input_file:
         content = yaml.load(input_file)
