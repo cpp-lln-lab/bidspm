@@ -46,7 +46,7 @@ update_faq:
 	cd faq/spm && faqtory build
 	cd faq/stats && faqtory build
 
-bidspm-manual.pdf:
+bidspm-manual.pdf: update_faq
 	bash create_manual.sh
 
 boilerplate:

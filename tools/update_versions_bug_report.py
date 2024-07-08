@@ -1,21 +1,17 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 import ruamel.yaml
+
+from utils import root_dir
 
 yaml = ruamel.yaml.YAML()
 yaml.indent(mapping=2, sequence=4, offset=2)
 
 
 def main():
-    bug_report = (
-        Path(__file__)
-        .parent.parent.joinpath(".github", "ISSUE_TEMPLATE", "bug_report.yml")
-        .resolve()
-    )
+    bug_report = (root_dir() / ".github" / "ISSUE_TEMPLATE" / "bug_report.yml").absolute()
 
-    versions_file = Path(__file__).parent.joinpath("versions.txt").resolve()
+    versions_file = (root_dir() / "tools" / "versions.txt").absolute()
 
     with open(bug_report, encoding="utf8") as input_file:
         content = yaml.load(input_file)
