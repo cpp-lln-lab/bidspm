@@ -79,8 +79,22 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
     printProcessingSubject(iSub, subLabel, opt);
 
+    %% Anat
     matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel);
+    anatFiles = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1};
 
+    if opt.anatOnly && numel(anatFiles) > 1
+      printBatchName('coregister all anatomical data to first anatomical', opt);
+      for iAnat = 2:numel(anatFiles)
+        matlabbatch = setBatchCoregistration(matlabbatch, ...
+                                             opt, ...
+                                             anatFiles{1}, ...
+                                             anatFiles{iAnat});
+      end
+    end
+
+    %% Func
+    % dependency from SelectAnat
     if ~opt.realign.useUnwarp
       action = 'realign';
     else
@@ -92,35 +106,20 @@ function matlabbatch = bidsSpatialPrepro(opt)
                                                                subLabel, ...
                                                                action);
 
-    % dependency from file selector ('Anatomical')
     matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
 
     matlabbatch = setBatchSaveCoregistrationMatrix(matlabbatch, BIDS, opt, subLabel);
 
-    anatFile = matlabbatch{1}.cfg_basicio.cfg_named_file.files{1}{1};
-
-    % TODO refactor with bidsSegmentSkullstrip
-    %% Skip segmentation / skullstripping if done previously
-    if skullstripDo && ...
-            ~opt.skullstrip.force && ...
-            skullstrippingAlreadyDone(anatFile, BIDS)
-      opt.skullstrip.do = false;
+    %% Segmentation / Skullstripping
+    for iAnat = 1:numel(anatFiles)
+      [matlabbatch, opt] = setBatchesSegmentationAndSkullstrip(matlabbatch, ...
+                                                               BIDS, ...
+                                                               opt, ...
+                                                               subLabel, ...
+                                                               segmentDo, ...
+                                                               skullstripDo, ...
+                                                               anatFiles{iAnat});
     end
-    if segmentDo && ~opt.segment.force && ...
-            segmentationAlreadyDone(anatFile, BIDS)
-      opt.segment.do = false;
-      % but if we must force the skullstripping
-      % then we will need some segmentation input
-    elseif opt.skullstrip.do && ...
-            ~segmentationAlreadyDone(anatFile, BIDS)
-      opt.segment.do = true;
-    end
-
-    [matlabbatch, opt] = setBatchSegmentation(matlabbatch, opt);
-
-    matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
-    opt.orderBatches.skullStripping = numel(matlabbatch) - 1;
-    opt.orderBatches.skullStrippingMask = numel(matlabbatch);
 
     %% Normalization
     if ismember('IXI549Space', opt.space)
@@ -209,4 +208,50 @@ function createdFiles = renameFiles(BIDS, opt)
 
   createdFiles = bidsRename(opt);
 
+end
+
+function [matlabbatch, opt] = setBatchesSegmentationAndSkullstrip(varargin)
+
+  args = inputParser;
+
+  addRequired(args, 'matlabbatch', @iscell);
+  addRequired(args, 'BIDS', @isstruct);
+  addRequired(args, 'opt', @isstruct);
+  addRequired(args, 'subLabel', @ischar);
+  addRequired(args, 'segmentDo', @islogical);
+  addRequired(args, 'skullstripDo', @islogical);
+  addRequired(args, 'anatFile', @ischar);
+
+  parse(args, varargin{:});
+
+  matlabbatch = args.Results.matlabbatch;
+  BIDS = args.Results.BIDS;
+  opt = args.Results.opt;
+  subLabel = args.Results.subLabel;
+  segmentDo = args.Results.segmentDo;
+  skullstripDo = args.Results.skullstripDo;
+  anatFile = args.Results.anatFile;
+
+  % TODO refactor with bidsSegmentSkullstrip
+  %% Skip segmentation / skullstripping if done previously
+  if skullstripDo && ...
+          ~opt.skullstrip.force && ...
+          skullstrippingAlreadyDone(anatFile, BIDS)
+    opt.skullstrip.do = false;
+  end
+  if segmentDo && ~opt.segment.force && ...
+          segmentationAlreadyDone(anatFile, BIDS)
+    opt.segment.do = false;
+    % but if we must force the skullstripping
+    % then we will need some segmentation input
+  elseif opt.skullstrip.do && ...
+          ~segmentationAlreadyDone(anatFile, BIDS)
+    opt.segment.do = true;
+  end
+
+  [matlabbatch, opt] = setBatchSegmentation(matlabbatch, opt, anatFile);
+
+  matlabbatch = setBatchSkullStripping(matlabbatch, BIDS, opt, subLabel);
+  opt.orderBatches.skullStripping = numel(matlabbatch) - 1;
+  opt.orderBatches.skullStrippingMask = numel(matlabbatch);
 end

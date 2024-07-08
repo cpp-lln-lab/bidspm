@@ -19,11 +19,22 @@ function [matlabbatch, opt] = setBatchSegmentation(matlabbatch, opt, imageToSegm
 
   % (C) Copyright 2020 bidspm developers
 
+  % TODO
+  % implement the opt.segment.do and opt.segment.force
+  % with segmentationAlreadyDone ?
+
+  if nargin < 3
+    imageToSegment = '';
+  end
+  if iscell(imageToSegment)
+    imageToSegment = char(imageToSegment);
+  end
+
   if ~opt.segment.do
-    opt.orderBatches.segment = 0;
+    opt.orderBatches.segment = [0];
     return
   else
-    opt.orderBatches.segment = numel(matlabbatch) + 1;
+    opt.orderBatches.segment(end + 1) = numel(matlabbatch) + 1;
   end
 
   printBatchName('Segmentation anatomical image', opt);
@@ -35,29 +46,23 @@ function [matlabbatch, opt] = setBatchSegmentation(matlabbatch, opt, imageToSegm
   % save bias corrected image = true
   preproc.channel.write = [false true];
 
-  % first part assumes we are in the bidsSpatialPreproc workflow
-  if isfield(opt, 'orderBatches') && isfield(opt.orderBatches, 'selectAnat')
-
-    % SAVE BIAS CORRECTED IMAGE
-    preproc.channel.vols(1) = cfg_dep('Named File Selector: Anatomical(1) - Files', ...
-                                      returnDependency(opt, 'selectAnat'), ...
-                                      substruct('.', 'files', '{}', {1}));
-  else
-
-    % TODO
-    % implement the opt.segment.do and opt.segment.force
-    % with segmentationAlreadyDone ?
-
-    % in case a cell was given as input
-    if iscell(imageToSegment)
-      imageToSegment = char(imageToSegment);
-    end
-
-    % add all the images to segment
+  % assumes vanilla bidsSpatialPreproc workflow
+  % - not anat only
+  if ~strcmp(imageToSegment, '')
     for iImg = 1:size(imageToSegment, 1)
       file = validationInputFile([], deblank(imageToSegment(iImg, :)));
       preproc.channel.vols{iImg, 1} = file;
     end
+
+  elseif isfield(opt, 'orderBatches') && isfield(opt.orderBatches, 'selectAnat')
+
+    preproc.channel.vols(1) = cfg_dep('Named File Selector: Anatomical(1) - Files', ...
+                                      returnDependency(opt, 'selectAnat'), ...
+                                      substruct('.', 'files', '{}', {1}));
+
+  else
+    % ???
+    return
 
   end
 
