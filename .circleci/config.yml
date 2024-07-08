@@ -202,6 +202,7 @@ jobs:
                           --space MNI152NLin2009cAsym \
                           --skip_validation \
                           --fwhm 0 \
+                          --participant_label 01 02 \
                           --verbosity 3 \
                           --options /options/ds000001.json
 

@@ -91,7 +91,6 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, tmp, contrastsLis
 
         matlabbatch = returnEstimateModelBatch(matlabbatch, spmMatFile, opt);
         opt.orderBatches.estimate = numel(matlabbatch);
-        matlabbatch = setBatchGoodnessOfFit(matlabbatch, opt);
         matlabbatch = setBatchInformationCriteria(matlabbatch, opt, rfxDir);
 
         matlabbatch{end + 1}.spm.stats.review.spmmat = spmMatFile; %#ok<*AGROW>

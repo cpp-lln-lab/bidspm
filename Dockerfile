@@ -5,25 +5,28 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ## basic OS tools install octave
 RUN apt-get update -qq && \
     apt-get -qq -y --no-install-recommends install \
-        build-essential \
-        software-properties-common \
         apt-utils \
+        build-essential \
         ca-certificates \
-        git \
         curl \
-        python3 \
-        python3-pip \
+        default-jre \
         fonts-freefont-otf \
         ghostscript \
+        git \
         gnuplot-x11 \
         libcurl4-gnutls-dev \
-        octave \
         liboctave-dev \
+        octave \
         octave-common \
         octave-io \
         octave-image \
         octave-signal \
-        octave-statistics && \
+        octave-statistics \
+        python3-pip \
+        python3 \
+        software-properties-common \
+        unzip \
+        zip && \
     apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
@@ -41,7 +44,6 @@ RUN mkdir /opt/spm12 && \
     make -C /opt/spm12/src PLATFORM=octave && \
     make -C /opt/spm12/src PLATFORM=octave install && \
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
-
 
 WORKDIR /home/neuro
 

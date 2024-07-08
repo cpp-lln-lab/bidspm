@@ -19,7 +19,7 @@ function test_bidsRFX_rfx()
   % 2 dummy contrasts
   % 2 contrasts
   nbGroupLevelModels = 4;
-  nbBatchPerModel = 8;
+  nbBatchPerModel = 7;
   if bids.internal.is_octave()
     nbBatchPerModel = 5;
   end
@@ -35,7 +35,7 @@ function test_bidsRFX_rfx()
 
   % setBatchEstimateModel creates 3 batches for each model (estimate, review, figure)
   batchOrder = extendBatchOrder();
-  idx = 9:6:(nbGroupLevelModels * nbBatchPerModel);
+  idx = 9:5:(nbGroupLevelModels * nbBatchPerModel);
   if bids.internal.is_octave()
     idx = 9:3:(nbGroupLevelModels * nbBatchPerModel);
   end
@@ -57,7 +57,7 @@ function test_bidsRFX_no_overwrite_smoke_test()
 
   matlabbatch = bidsRFX('RFX', opt);
 
-  expectedNbBatch = 8;
+  expectedNbBatch = 7;
   if bids.internal.is_octave()
     expectedNbBatch = 5;
   end
@@ -80,14 +80,13 @@ function test_bidsRFX_within_group_ttest()
   if bids.internal.is_octave()
     assertEqual(numel(matlabbatch), 10);
   else
-    assertEqual(numel(matlabbatch), 16);
+    assertEqual(numel(matlabbatch), 14);
   end
 
   % creates 1 batch for
   %   - specify
   %   - figure
   %   - estimate
-  %   - MACS: goodness of fit
   %   - MACS: model space
   %   - MACS: information criteria
   %   - review
@@ -110,7 +109,7 @@ function test_bidsRFX_within_group_ttest()
                 fileparts(matlabbatch{8}.spm.stats.fmri_est.spmmat{1}));
   else
     assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, ...
-                fileparts(matlabbatch{11}.spm.stats.fmri_est.spmmat{1}));
+                fileparts(matlabbatch{10}.spm.stats.fmri_est.spmmat{1}));
   end
 
 end
@@ -191,7 +190,7 @@ function test_bidsRFX_several_datasets_level()
   assertEqual(summary, batchOrder);
 
   nbGroupLevelModelsReturned = 1;
-  nbBatchPerModel = 8;
+  nbBatchPerModel = 7;
   if bids.internal.is_octave()
     nbBatchPerModel = 5;
   end
@@ -250,13 +249,12 @@ function batchOrder = extendBatchOrder(batchOrder)
     batchOrder = {};
   end
   extension = {'stats', 'fmri_est'; ...
-               'tools', 'MACS'; ... % skip on octave
                'tools', 'MACS'; ...
                'tools', 'MACS'; ...
                'stats', 'review'; ...
                'util', 'print'};
   if bids.internal.is_octave()
-    extension(2:4, :) = [];
+    extension(2:3, :) = [];
   end
   batchOrder = cat(1, batchOrder, extension);
 end
