@@ -43,5 +43,5 @@ octave_all: octave_roi
 octave_stats: moae_01_bids_app.m
 	octave $(OCTFLAGS) --eval "run('moae_01_bids_app.m');exit;"
 
-octave_roi: moae_03_create_roi_extract_data.m
+octave_roi: moae_02_create_roi_extract_data.m
 	octave $(OCTFLAGS) --eval "run('moae_02_create_roi_extract_data.m');exit;"
