@@ -59,13 +59,15 @@ update: ## Tries to get the latest version of the current branch from upstream
 fix_submodule: ## Fix any submodules that would not be checked out
 	git submodule update --init --recursive && git submodule update --recursive
 
-bump_version:
-	bash tools/bump_version.sh
+prepare_release:
+	python tools/citation_cff_maint.py
+	python tools/tools/add_links_to_changelog.py
+	python tools/bump_version.py
 
 validate_cff: ## Validate the citation file
 	cffconvert --validate
 
-release: validate_cff bump_version lint manual
+release: validate_cff prepare_release lint manual
 
 
 ################################################################################
