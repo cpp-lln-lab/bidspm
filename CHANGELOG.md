@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* [ENH] add Apptainer definition #1254 by @Remi-Gau and @monique2208
 * [ENH] allow to copy anat only on raw datasets #1181 by @Remi-Gau
 * [ENH] add option to concatenate runs at subject level to facilite running PPI analysis #1133 by @Remi-Gau
 * [ENH] allow to run substeps of substeps of the bayesian model selection #1145 by @Remi-Gau
@@ -40,7 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* [DOC] change theme and structure of the documentation #1256 @Remi-Gau
 * [REF] Refactor and update CLI in #1096 @Remi-Gau
+* [ENH] {func}`getData` only loads anat data when requested #1257 @Remi-Gau
 
 ### Deprecated
 
@@ -50,12 +53,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* [FIX] update {func}`createDefaultStatsModel` to use proper `GroupBy` at the dataset level #1248 by @d-ni374
+* [FIX] make {func}`getAcquisitionTime` less brittle #1248 by @d-ni374
+* [FIX] fix regular expression in {func}`bidsResults` to identify contrasts #1248 by @d-ni374
+* [FIX] pass analysis level to stats actions when using python CLI #1258 @Remi-Gau
+* [FIX] remove goodness of fit from dataset level analysis as it is not supported by the MACS toolbox #1265 by @Remi-Gau
+* [FIX] add java and zip to container recipes to allow using nidm results with octave #1265 by @Remi-Gau
 * [FIX] copy the MACS toolbox to the SPM toolbox folder during the initialisation #1203 by @Remi-Gau
-* [FIX] save onsets.mat directly in subject stats folder #1187 by @Remi-Gau
+* [FIX] save `onsets.mat` directly in subject stats folder #1187 by @Remi-Gau
 * [FIX] do not compute subject level contrast when running dataset level #1102 by @Remi-Gau
 * [FIX] copy `RepetitionTime` in sidecar JSON after running smoothing in #1099 by @Remi-Gau
 * [FIX] rename results files (csv, tsv, png, nii) of each contrasts #1104 by @Remi-Gau
-* [DIX] reslice ROIS before running ROI based analysis to make sure they are at the resolution of the BOLD images in #1110 by @Remi-Gau
+* [FIX] reslice ROIS before running ROI based analysis to make sure they are at the resolution of the BOLD images in #1110 by @Remi-Gau
 
 ### Security
 
