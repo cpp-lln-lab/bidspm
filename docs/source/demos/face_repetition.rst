@@ -3,7 +3,7 @@
 Face repetition
 ***************
 
-This is based on the event related design dataset of SPM.
+This is based on the `event related design dataset of SPM <https://www.fil.ion.ucl.ac.uk/spm/docs/tutorials/fmri/event/>`_.
 
 .. automodule:: demos.face_repetition
 

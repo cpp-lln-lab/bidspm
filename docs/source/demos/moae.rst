@@ -9,7 +9,8 @@ MoAE
         ├── models
         └── options
 
-This "Mother of All Experiments" is based on the block design dataset of SPM.
+This "Mother of All Experiments" is based on
+`the block design dataset of SPM <https://www.fil.ion.ucl.ac.uk/spm/docs/tutorials/fmri/block/>`_.
 
 In the ``options`` folder has several examples of how to encode the options of your
 analysis in a json file.

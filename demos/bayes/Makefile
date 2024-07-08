@@ -1,4 +1,4 @@
-.PHONY: clean data data_ds000001
+.PHONY: clean
 
 clean:
 	rm -rf inputs

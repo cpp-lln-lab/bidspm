@@ -1,5 +1,8 @@
 # Face repetition demo
 
+This is based on the [event related design dataset of SPM](https://www.fil.ion.ucl.ac.uk/spm/docs/tutorials/fmri/event/).
+
+
 ## CLI commands
 
 ### Preprocessing
