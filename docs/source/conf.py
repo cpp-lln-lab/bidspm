@@ -79,9 +79,18 @@ bibtex_bibfiles = ["references.bib"]
 
 source_suffix = [".rst", ".md"]
 
-# intersphinx_mapping = {
-#     "bids-matlab": ("https://bids-matlab.readthedocs.io/en/main", None)
-# }
+intersphinx_mapping = {
+    "bids-matlab": ("https://bids-matlab.readthedocs.io/en/main", None),
+    "nilearn": ("https://nilearn.github.io/stable", None),
+}
+
+# We recommend adding the following config value.
+# Sphinx defaults to automatically resolve *unresolved* labels using all your Intersphinx mappings.
+# This behavior has unintended side-effects, namely that documentations local references can
+# suddenly resolve to an external location.
+# See also:
+# https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html#confval-intersphinx_disabled_reftypes
+# intersphinx_disabled_reftypes = ["*"]
 
 coverage_show_missing_items = True
 

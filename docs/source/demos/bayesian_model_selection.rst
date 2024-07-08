@@ -5,14 +5,14 @@ Bayesian model selection
 
 .. automodule:: demos.bayes
 
-.. autoscript:: ds000114_run
+.. autoscript:: ds000114_bayes_run
 
 .. admonition:: script
     :class: dropdown
 
-    .. literalinclude:: ../../../demos/bayes/ds000114_run.m
+    .. literalinclude:: ../../../demos/bayes/ds000114_bayes_run.m
         :language: matlab
-        :caption: demos/bayes/ds000114_run.m
+        :caption: demos/bayes/ds000114_bayes_run.m
         :lines: 16-
 
 .. admonition:: Default BIDS stats model

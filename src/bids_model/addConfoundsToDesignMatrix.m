@@ -4,8 +4,7 @@ function bm = addConfoundsToDesignMatrix(varargin)
   %
   % This will update the design matrix of the root node of the model.
   %
-  % Similar to the module
-  % https://nilearn.github.io/dev/modules/generated/nilearn.interfaces.fmriprep.load_confounds.html
+  % Similar to the :func:`nilearn.interfaces.fmriprep.load_confounds`
   %
   % USAGE::
   %

@@ -10,7 +10,7 @@ function matlabbatch = setBatchSelectAnat(matlabbatch, BIDS, opt, subLabel)
   % :type  matlabbatch: structure
   %
   % :param BIDS: dataset layout.
-  %              See: bids.layout, getData.
+  %              See: :mat:func:`+bids.layout`, :func:`getData`.
   %
   % :type  BIDS: structure
   %

@@ -9,6 +9,8 @@
 
 ## ds000001: Balloon analog risk
 
+- [Source dataset](https://openneuro.org/datasets/ds000001)
+
 ### Features
 
 -   one task
@@ -26,6 +28,8 @@
 
 ## ds000114: test-retest
 
+- [Source dataset](https://openneuro.org/datasets/ds000114)
+
 ### Features
 
 -   several tasks
@@ -40,6 +44,8 @@
 
 ## ds000224
 
+- [Source dataset](https://openneuro.org/datasets/ds000224)
+
 ### Scripts
 
 ```{eval-rst}
@@ -47,6 +53,8 @@
 ```
 
 ## ds001168
+
+- [Source dataset](https://openneuro.org/datasets/ds001168)
 
 ### Features
 
@@ -62,15 +70,9 @@
 .. autoscript:: ds001168_run
 ```
 
-## ds002799: NARPS
-
-### Features
-
--   resting state and task
--   several sessions
--   fmriprep data
-
 ## ds001734: NARPS
+
+- [Source dataset](https://openneuro.org/datasets/ds001734)
 
 ### Features
 
@@ -127,3 +129,13 @@ transformers cannot yet be appled to confounds
 ```{eval-rst}
 .. autoscript:: ds001734_run
 ```
+
+## ds002799
+
+- [Source dataset](https://openneuro.org/datasets/ds002799)
+
+### Features
+
+-   resting state and task
+-   several sessions
+-   fmriprep data
