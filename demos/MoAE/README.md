@@ -1,6 +1,6 @@
 # Mother of All Experiments
 
-This "Mother of All Experiments" is based on the block design of SPM.
+This ["Mother of All Experiments" is based on the block design of SPM](https://www.fil.ion.ucl.ac.uk/spm/docs/tutorials/fmri/block/).
 
 In the `options` folder has several examples of how to encode the options of
 your analysis in a json file.
