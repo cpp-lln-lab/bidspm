@@ -1,7 +1,6 @@
 {
   "Level": "Subject",
   "Name": "subject_level",
-  "Description": "Only averaging at the subject level is supported for now.",
   "GroupBy": [
     "contrast",
     "subject"

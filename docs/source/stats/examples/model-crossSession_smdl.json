@@ -1,15 +1,4 @@
 {
-  "Name": "Model for ds000114 cross session test-retest",
-  "BIDSModelVersion": "1.0.0",
-  "Description": "BIDS stats model for linebisection / oververbgeneration / overwordrepetition / covertverbgeneration tasks",
-  "Input": {
-    "task": [
-      "linebisection"
-    ],
-    "space": [
-      "MNI152NLin2009cAsym"
-    ]
-  },
   "Nodes": [
     {
       "Level": "Run",
@@ -40,23 +29,6 @@
             "trial_type.Response_Control"
           ],
           "Model": "spm"
-        },
-        "Options": {
-          "HighPassFilterCutoffHz": 0.008,
-          "Mask": {
-            "desc": [
-              "brain"
-            ],
-            "suffix": [
-              "mask"
-            ]
-          }
-        },
-        "Software": {
-          "SPM": {
-            "SerialCorrelation": "FAST",
-            "InclusiveMaskingThreshold": 0.8
-          }
         }
       },
       "DummyContrasts": {
@@ -99,35 +71,6 @@
           1
         ],
         "Type": "glm"
-      },
-      "DummyContrasts": {
-        "Test": "t"
-      }
-    },
-    {
-      "Level": "Subject",
-      "Name": "subject",
-      "GroupBy": [
-        "subject",
-        "contrast"
-      ],
-      "Model": {
-        "X": [
-          1
-        ],
-        "Type": "glm",
-        "Software": {
-          "bidspm": {
-            "Results": [
-              {
-                "name": [
-                  "Correct_Task",
-                  "TaskResponded_gt_CtrlResponded"
-                ]
-              }
-            ]
-          }
-        }
       },
       "DummyContrasts": {
         "Test": "t"
@@ -187,10 +130,6 @@
     {
       "Source": "session",
       "Destination": "compare_sessions"
-    },
-    {
-      "Source": "run",
-      "Destination": "subject"
     }
   ]
 }

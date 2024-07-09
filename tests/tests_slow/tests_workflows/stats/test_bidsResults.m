@@ -8,6 +8,21 @@ function test_suite = test_bidsResults %#ok<*STOUT>
   initTestSuite;
 end
 
+function test_bidsResults_no_results()
+
+  markTestAs('slow');
+
+  skipIfOctave('mixed-string-concat warning thrown');
+
+  opt = setOptions('vismotion', '', 'pipelineType', 'stats');
+  opt.verbosity = 2;
+
+  opt = rmfield(opt, 'results');
+
+  assertWarning(@() bidsResults(opt), 'bidsResults:noResultsAsked');
+
+end
+
 function test_bidsResults_subject_lvl()
 
   markTestAs('slow');
@@ -99,22 +114,6 @@ function test_bidsResults_subject_lvl_regex()
   %  'VisMot_gt_VisStat'
   %  'VisStat_gt_VisMot'
   assertEqual(numel(matlabbatch), 3);
-
-end
-
-function test_bidsResults_no_results()
-
-  markTestAs('slow');
-
-  skipIfOctave('mixed-string-concat warning thrown');
-
-  opt = setOptions('vismotion', '', 'pipelineType', 'stats');
-
-  assertWarning(@() bidsResults(opt), 'bidsResults:noResultsAsked');
-
-  opt = rmfield(opt, 'results');
-
-  assertWarning(@() bidsResults(opt), 'bidsResults:noResultsAsked');
 
 end
 

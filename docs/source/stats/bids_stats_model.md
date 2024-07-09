@@ -245,7 +245,7 @@ object of a node in the BIDS stats model.
 ```
 
 These values will explicitly be added to your your default BIDS stats model
-if you use bidspm 'default_model' action.
+if you use bidspm `'default_model'` action.
 
 ```matlab
 bidspm(bids_dir, output_dir, 'dataset', ...
@@ -291,11 +291,11 @@ Corresponding options in SPM batch
 
 #### Results
 
-It is possible to specify the results you want to view directly the
-`Model.Software` object of any `Nodes` in the BIDS stats model.
+It is possible to specify the results you want to view directly
+in the `Model.Software` object of any `Nodes` in the BIDS stats model.
 
-See the help section of the {func}`bidsResults` function for more detail, but here is
-an example how you could specify it in a JSON.
+See the help section of the {func}`bidsResults` function for more detail,
+but here is an example how you could specify it in a JSON.
 
 ```json
 "Model": {
@@ -348,48 +348,139 @@ an example how you could specify it in a JSON.
 
 #### Run level
 
-To stay close to the way most SPM users are familiar with, all runs are analyzed
-in one single GLM.
+To stay close to the way most SPM users are familiar with,
+all runs are analyzed in one single GLM.
 
-Contrasts are the run level that are either specified using `DummyContrasts` or
-`Contrasts` will be computed and will have the run number appended to their name
-in the SPM gui as shown in {ref}`contrast_run_1` and {ref}`contrast_run_2`.
+Contrasts are the run level
+that are either specified using `DummyContrasts` or `Contrasts` will be computed.
 
-```{literalinclude} ./examples/model-contrastsRun_smdl.json
+##### Implicit contrast numbering
+
+If a run label or session label cannot be inferred from the BIDS filenames
+for example with a subject like this one (with trial type `listening`):
+
+```
+sub-01
+└── func
+    ├── sub-01_task-auditory_bold.nii
+    └── sub-01_task-auditory_events.tsv
+```
+
+a number will be appended to their name (for example `listening_1`)
+as shown in the SPM gui in {ref}`contrast_1`.
+
+```{literalinclude} ./examples/model-NoRun_smdl.json
 :language: json
+:emphasize-lines: 22-39
+```
+
+```{figure} ./images/gui_contrast_no_run.png
+---
+name: contrast_1
+align: center
+---
+Contrast naming when no explicit run or session can be inferred
+```
+
+##### Explicit contrast numbering
+
+###### Run label
+
+When possible the contrast name
+will be containing the BIDS session and / or run label
+from where it came from.
+For example `cash_demean_run-1`, `cash_demean_run-2` if only run labels are available,
+with a subject like this one (with trial type `cash_demean`):
+
+```
+sub-01
+└── func
+    ├── sub-01_task-balloonanalogrisktask_run-01_bold.nii.gz
+    ├── sub-01_task-balloonanalogrisktask_run-01_events.tsv
+    ├── sub-01_task-balloonanalogrisktask_run-02_bold.nii.gz
+    ├── sub-01_task-balloonanalogrisktask_run-02_events.tsv
+    ├── sub-01_task-balloonanalogrisktask_run-03_bold.nii.gz
+    └── sub-01_task-balloonanalogrisktask_run-03_events.tsv
+```
+
+as shown in {ref}`contrast_run-1` and {ref}`contrast_run-2`.
+
+```{literalinclude} ./examples/model-ContrastWithRuns_smdl.json
+:language: json
+:emphasize-lines: 29-37
 ```
 
 ```{figure} ./images/gui_contrast_run_1.png
 ---
-name: contrast_run_1
+name: contrast_run-1
 align: center
 ---
-Contrast for run 1
+Contrast for run-1
 ```
 
 ```{figure} ./images/gui_contrast_run_2.png
 ---
-name: contrast_run_2
+name: contrast_run-2
 align: center
 ---
-Contrast for run 2
+Contrast for run-2
 ```
+
+###### Session label
+
+For a subject likes this one (with trial type `Correct_Task`)
+
+```
+sub-01
+├── ses-retest
+│   └── func
+│       ├── sub-01_ses-retest_task-linebisection_bold.nii.gz
+│       └── sub-01_ses-retest_task-linebisection_events.tsv
+└── ses-test
+    └── func
+        ├── sub-01_ses-test_task-linebisection_bold.nii.gz
+        └── sub-01_ses-test_task-linebisection_events.tsv
+```
+
+contrasts would be named `Correct_Task_ses-test`, `Correct_Task_ses-retest`
+since only session labels are available
 
 #### Subject level
 
-At the moment the only type of model supported at the run level is averaging of
-run level contrasts.
+At the moment the only type of model supported at the subject level are:
+
+- averaging of run level contrasts (fixed effect analysis)
+- cross-session comparisons
+
+##### fixed effect analysis
+
+In this case the only the basename of the contrast being averaged is kept,
+and any session or run label is removed.
 
 ```{literalinclude} ./examples/model-contrastsSubject_smdl.json
 :language: json
 ```
 
-```{figure} ./images/gui_contrast_run_1_and_2.png
+```{figure} ./images/gui_contrast_subject_level.png
 ---
 name: contrast_subject
 align: center
 ---
-Subject level contrast averaging beta of run 1 and 2
+Subject level contrast averaging beta across runs
+```
+
+##### cross-session comparisons
+
+```{literalinclude} ./examples/model-crossSession_smdl.json
+:language: json
+```
+
+```{figure} ./images/gui_contrast_cross_session.png
+---
+name: contrast_subject
+align: center
+---
+Subject level contrast averaging beta across runs
 ```
 
 ## Dataset level
@@ -399,13 +490,14 @@ At the moment only, the only type of models that are supported are:
 - one sample t-test: averaging across all subjects
 
 ```{literalinclude} ./examples/model-datasetLevel_smdl.json
-   :language: json
+:language: json
 ```
 
 - one sample t-test: averaging across all subjects of a specific group
 
 ```{literalinclude} ./examples/model_withinGroup_smdl.json
-   :language: json
+:language: json
+:emphasize-lines: 5-8
 ```
 
 - 2 samples t-test: comparing 2 groups
@@ -415,13 +507,13 @@ group based on a `group` or `Group` column in the `participants.tsv` of in the
 raw dataset.
 
 ```{literalinclude} ./examples/model_betweenGroups_smdl.json
-   :language: json
+:language: json
+:emphasize-lines: 8-28
 ```
 
 ### Method section
 
-It is possible to write a draft of method section based on a BIDS statistical
-model.
+It is possible to write a draft of method section based on a BIDS statistical model.
 
 ```matlab
 opt.model.file = fullfile(pwd, ...
@@ -454,14 +546,14 @@ See the help section of `convertOnsetTsvToMat` for more information.
 
 ## Examples
 
-There are several examples of models in the
-[model zoo](https://github.com/bids-standard/model-zoo) along with links to
-their datasets.
+There are several examples of models
+in the [model zoo](https://github.com/bids-standard/model-zoo)
+along with links to their datasets.
 
 <!-- markdown-link-check-disable -->
 
-Several of the [demos](demos) have their own model and you can find several
-"dummy" models (without corresponding data) used for testing
+Several of the [demos](demos) have their own model
+and you can find several "dummy" models (without corresponding data) used for testing
 [in this folder](https://github.com/cpp-lln-lab/bidspm/tree/main/tests/data/models).
 
 <!-- markdown-link-check-enable -->
