@@ -346,6 +346,17 @@ but here is an example how you could specify it in a JSON.
 
 ### Contrasts
 
+    % session label but not run label could be inferred from bids names
+    % the session has only one run with no run label in the file name
+
+
+    % only run label could be inferred from bids names
+    % there is only one session
+    % but it is not used explicitly in the filenames
+
+
+    % subject level contrast names should have nothing appended
+
 #### Run level
 
 To stay close to the way most SPM users are familiar with,
@@ -357,8 +368,17 @@ that are either specified using `DummyContrasts` or `Contrasts` will be computed
 ##### Implicit contrast numbering
 
 If a run label or session label cannot be inferred from the BIDS filenames
-a number will be appended to their name in the SPM gui
-as shown in {ref}`contrast_1`.
+for example with a subject like this one (with trial type `listening`):
+
+```
+sub-01
+└── func
+    ├── sub-01_task-auditory_bold.nii
+    └── sub-01_task-auditory_events.tsv
+```
+
+a number will be appended to their name (for example `listening_1`)
+as shown in the SPM gui in {ref}`contrast_1`.
 
 ```{literalinclude} ./examples/model-NoRun_smdl.json
 :language: json
@@ -375,9 +395,26 @@ Contrast naming when no explicit run or session can be inferred
 
 ##### Explicit contrast numbering
 
+###### Run label
+
 When possible the contrast name
 will be containing the BIDS session and / or run label
-from where it came from as shown in {ref}`contrast_run-1` and {ref}`contrast_run-2`.
+from where it came from.
+For example `cash_demean_run-1`, `cash_demean_run-2` if only run labels are available,
+with a subject like this one (with trial type `cash_demean`):
+
+```
+sub-01
+└── func
+    ├── sub-01_task-balloonanalogrisktask_run-01_bold.nii.gz
+    ├── sub-01_task-balloonanalogrisktask_run-01_events.tsv
+    ├── sub-01_task-balloonanalogrisktask_run-02_bold.nii.gz
+    ├── sub-01_task-balloonanalogrisktask_run-02_events.tsv
+    ├── sub-01_task-balloonanalogrisktask_run-03_bold.nii.gz
+    └── sub-01_task-balloonanalogrisktask_run-03_events.tsv
+```
+
+as shown in {ref}`contrast_run-1` and {ref}`contrast_run-2`.
 
 ```{literalinclude} ./examples/model-ContrastWithRuns_smdl.json
 :language: json
@@ -400,6 +437,25 @@ align: center
 Contrast for run-2
 ```
 
+###### Session label
+
+For a subject likes this one (with trial type `Correct_Task`)
+
+```
+sub-01
+├── ses-retest
+│   └── func
+│       ├── sub-01_ses-retest_task-linebisection_bold.nii.gz
+│       └── sub-01_ses-retest_task-linebisection_events.tsv
+└── ses-test
+    └── func
+        ├── sub-01_ses-test_task-linebisection_bold.nii.gz
+        └── sub-01_ses-test_task-linebisection_events.tsv
+```
+
+contrasts would be named `Correct_Task_ses-test`, `Correct_Task_ses-retest`
+since only session labels are available
+
 #### Subject level
 
 At the moment the only type of model supported at the subject level are:
@@ -408,6 +464,9 @@ At the moment the only type of model supported at the subject level are:
 - cross-session comparisons
 
 ##### fixed effect analysis
+
+In this case the only the basename of the contrast being averaged is kept,
+and any session or run label is removed.
 
 ```{literalinclude} ./examples/model-contrastsSubject_smdl.json
 :language: json
