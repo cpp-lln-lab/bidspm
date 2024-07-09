@@ -304,7 +304,10 @@ function [status] = checks(opt)
   if ~isfield(opt, 'results') || isempty(opt.results) || ...
           strcmp(opt.results(1).name{1}, '')
     id = 'noResultsAsked';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename());
+    logger('WARNING', msg, ...
+           'id', id, ...
+           'filename', mfilename(), ...
+           'options', opt);
     status = false;
   end
 
@@ -313,7 +316,10 @@ function [status] = checks(opt)
 
   if isempty(listNodeNames) || isempty(listNodeLevels)
     id = 'noResultsAsked';
-    logger('WARNING', msg, 'id', id, 'filename', mfilename());
+    logger('WARNING', msg, ...
+           'id', id, ...
+           'filename', mfilename(), ...
+           'options', opt);
     status = false;
     return
   end

@@ -423,7 +423,17 @@ Subject level contrast averaging beta across runs
 
 ##### cross-session comparisons
 
+```{literalinclude} ./examples/model-crossSession_smdl.json
+:language: json
+```
 
+```{figure} ./images/gui_contrast_cross_session.png
+---
+name: contrast_subject
+align: center
+---
+Subject level contrast averaging beta across runs
+```
 
 ## Dataset level
 
