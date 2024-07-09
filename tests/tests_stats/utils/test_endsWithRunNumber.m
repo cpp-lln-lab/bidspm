@@ -9,7 +9,7 @@ end
 
 function test_endsWithRunNumber_basic()
 
-  assertEqual(endsWithRunNumber('foo_1'), true);
+  assertEqual(endsWithRunNumber('foo_run-1'), true);
   assertEqual(endsWithRunNumber('foo_1_'), false);
   assertEqual(endsWithRunNumber('foo_1_a'), false);
   assertEqual(endsWithRunNumber('foo_'), false);
