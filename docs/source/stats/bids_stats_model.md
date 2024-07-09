@@ -346,17 +346,6 @@ but here is an example how you could specify it in a JSON.
 
 ### Contrasts
 
-    % session label but not run label could be inferred from bids names
-    % the session has only one run with no run label in the file name
-
-
-    % only run label could be inferred from bids names
-    % there is only one session
-    % but it is not used explicitly in the filenames
-
-
-    % subject level contrast names should have nothing appended
-
 #### Run level
 
 To stay close to the way most SPM users are familiar with,
