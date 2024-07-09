@@ -21,7 +21,7 @@ bids_dir = fullfile(root_dir, 'inputs', 'ds000001');
 fmriprep_dir =  fullfile(root_dir, 'inputs', 'ds000001-fmriprep');
 output_dir = fullfile(root_dir, 'outputs', 'ds000001', 'derivatives');
 
-participant_label = {'01', '02', '03', '04', '05'};
+participant_label = {'01', '02', '03'};
 task = {'balloonanalogrisktask'};
 space = {'MNI152NLin6Asym'};
 
