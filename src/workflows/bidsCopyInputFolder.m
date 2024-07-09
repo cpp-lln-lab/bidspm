@@ -80,9 +80,10 @@ function bidsCopyInputFolder(varargin)
     filter.sub = opt.subjects;
 
     if strcmp(filter.modality, 'func')
-      filter.task = opt.taskName;
-      if isempty(filter.task)
+      if ~isfield(opt, 'taskName') || isempty(opt.taskName)
         filter.task = bids.query(BIDS, 'tasks', filter);
+      else
+        filter.task = opt.taskName;
       end
     end
 
@@ -116,7 +117,9 @@ function bidsCopyInputFolder(varargin)
       if isfield(filter, 'desc')
         filter = rmfield(filter, 'desc');
       end
-      filter = rmfield(filter, 'space');
+      if isfield(filter, 'space')
+        filter = rmfield(filter, 'space');
+      end
       filter.suffix = {'regressors', 'timeseries', 'motion', 'outliers'};
 
       bids.copy_to_derivative(BIDS, ...

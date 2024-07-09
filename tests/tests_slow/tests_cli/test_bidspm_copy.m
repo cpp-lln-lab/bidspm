@@ -9,7 +9,7 @@ function test_suite = test_bidspm_copy %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_copy_filter()
+function test_copy_simple_filter()
 
   markTestAs('slow');
 
@@ -32,10 +32,12 @@ function test_copy_filter()
   end
   copyfile(sourceFile{1}, destFile{1});
 
-  %% with simple filter file
+  % simple filter file
   bids_filter_file = fullfile(tempName(), 'bids_filter_file.json');
   bids.util.jsonencode(bids_filter_file, ...
-                       struct('bold', struct('modality', 'func')));
+                       struct('bold', struct('modality', 'func', ...
+                                             'extension', '.nii.gz', ...
+                                             'desc', {{'preproc', 'brain'}})));
 
   % filter takes precedence over predefined opt.query
   % so anat should not be copied
@@ -55,13 +57,45 @@ function test_copy_filter()
                      'verbose', false, ...
                      'use_schema', false);
 
-  assertEqual(numel(bids.query(BIDS, 'data')), 5);
+  assertEqual(numel(bids.query(BIDS, 'data')), 4);
 
-  %% now with more complex filter as struct
+  delete(destFile{1});
+
+end
+
+function test_copy_complex_filter()
+
+  markTestAs('slow');
+
+  inputPath = fullfile(getMoaeDir(), 'inputs', 'fmriprep');
+
+  % add dummy aroma file to input folder
+  BIDS = bids.layout(inputPath, ...
+                     'verbose', false, ...
+                     'use_schema', false);
+  sourceFile = bids.query(BIDS, 'data', ...
+                          'suffix', 'bold', ...
+                          'desc', 'preproc', ...
+                          'space', 'T1w');
+  bf = bids.File(sourceFile{1});
+  bf.entities.desc = 'smoothAROMAnonaggr';
+  bf = bf.update;
+  destFile = bids.internal.file_utils(sourceFile, 'filename', bf.filename);
+  if exist(destFile{1}, 'file')
+    delete(destFile{1});
+  end
+  copyfile(sourceFile{1}, destFile{1});
+
+  % more complex filter as struct
   bids_filter_file = struct('bold', struct('modality', 'func', ...
                                            'suffix', 'bold', ...
-                                           'desc', {'smoothAROMAnonaggr'; ...
-                                                    'preproc'}));
+                                           'desc', {{'smoothAROMAnonaggr'; ...
+                                                     'preproc'}}), ...
+                            'anat', struct('modality', 'anat', ...
+                                           'suffix', 't1w', ...
+                                           'desc', 'preproc'));
+
+  outputPath = tempName();
 
   bidspm(inputPath, outputPath, 'subject', ...
          'action', 'copy', ...
@@ -74,7 +108,7 @@ function test_copy_filter()
                      'verbose', false, ...
                      'use_schema', false);
 
-  assertEqual(numel(bids.query(BIDS, 'data')), 6);
+  assertEqual(numel(bids.query(BIDS, 'data')), 4);
 
   delete(destFile{1});
 

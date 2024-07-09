@@ -18,41 +18,44 @@ function cliCopy(varargin)
 
   opt = checkOptions(opt);
 
-  opt.query.desc = {'preproc', 'brain'};
-  opt.query.suffix = {'T1w', 'bold', 'mask'};
-  if opt.anatOnly
-    opt.query.suffix = {'T1w', 'mask'};
-  end
+  bidsFilterFile = getBidsFilterFile(args);
+
   if isempty(opt.taskName)
     opt = rmfield(opt, 'taskName');
   end
-  opt.query.space = opt.space;
 
-  bidsFilterFile = getBidsFilterFile(args);
+  if isempty(bidsFilterFile)
+    opt.query.desc = {'preproc', 'brain'};
 
-  if ~isempty(bidsFilterFile)
-    suffixes = fieldnames(bidsFilterFile);
-    modalities = {};
-    for i = 1:numel(suffixes)
-      modalities{end + 1} = bidsFilterFile.(suffixes{i}).modality; %#ok<*AGROW>
-      if isfield(bidsFilterFile.(suffixes{i}), 'suffix')
-        opt.query.suffix = cat(2, ...
-                               opt.query.suffix, ...
-                               bidsFilterFile.(suffixes{i}).suffix);
-      end
-      if isfield(bidsFilterFile.(suffixes{i}), 'desc')
-        opt.query.desc = cat(2, ...
-                             opt.query.desc, ...
-                             bidsFilterFile.(suffixes{i}).desc);
-      end
+    opt.query.suffix = {'T1w',  'mask', 'bold', 'events'};
+
+    if opt.anatOnly
+      opt.query.suffix = {'T1w', 'mask'};
     end
-    opt.query.modality = unique(modalities);
+
+    opt.query.space = opt.space;
+
+    saveOptions(opt);
+
+    bidsCopyInputFolder(opt, 'unzip', true, 'force', args.Results.force);
+
+  else
+
+    suffixes = fieldnames(bidsFilterFile);
+    for i = 1:numel(suffixes)
+
+      if opt.anatOnly && ~strcmp(bidsFilterFile.(suffixes{i}).modality, 'anat')
+        continue
+      end
+
+      opt.query = bidsFilterFile.(suffixes{i});
+
+      saveOptions(opt);
+
+      bidsCopyInputFolder(opt, 'unzip', true, 'force', args.Results.force);
+
+    end
+
   end
-  opt.query.suffix = unique(opt.query.suffix);
-  opt.query.desc = unique(opt.query.desc);
-
-  saveOptions(opt);
-
-  bidsCopyInputFolder(opt, 'unzip', true, 'force', args.Results.force);
 
 end
