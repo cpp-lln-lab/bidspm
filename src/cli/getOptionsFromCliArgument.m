@@ -77,7 +77,6 @@ function opt = getOptionsFromCliArgument(args)
   if opt.verbosity > 3
     unfold(opt);
   end
-  unfold(opt);
 
 end
 

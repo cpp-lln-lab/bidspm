@@ -80,9 +80,10 @@ function bidsCopyInputFolder(varargin)
     filter.sub = opt.subjects;
 
     if strcmp(filter.modality, 'func')
-      filter.task = opt.taskName;
-      if isempty(filter.task)
+      if ~isfield(opt, 'taskName') || isempty(opt.taskName)
         filter.task = bids.query(BIDS, 'tasks', filter);
+      else
+        filter.task = opt.taskName;
       end
     end
 
