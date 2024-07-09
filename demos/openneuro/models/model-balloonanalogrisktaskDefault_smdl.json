@@ -75,7 +75,19 @@
         "X": [
           1
         ],
-        "Type": "glm"
+        "Type": "glm",
+        "Software": {
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "cash_demean"
+                ],
+                "nidm": false
+              }
+            ]
+          }
+        }
       },
       "DummyContrasts": {
         "Test": "t"

@@ -1,0 +1,40 @@
+{
+  "Level": "Run",
+  "Name": "run_level",
+  "GroupBy": [
+    "run",
+    "subject"
+  ],
+  "Model": {
+    "X": [
+      "trial_type.listening",
+      "trans_?",
+      "rot_?"
+    ],
+    "HRF": {
+      "Variables": [
+        "trial_type.listening"
+      ],
+      "Model": "spm"
+    },
+    "Type": "glm"
+  },
+  "DummyContrasts": {
+    "Test": "t",
+    "Contrasts": [
+      "trial_type.listening"
+    ]
+  },
+  "Contrasts": [
+    {
+      "Name": "listening_inf_baseline",
+      "ConditionList": [
+        "trial_type.listening"
+      ],
+      "Weights": [
+        -1
+      ],
+      "Test": "t"
+    }
+  ]
+}
