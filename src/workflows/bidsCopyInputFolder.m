@@ -117,7 +117,9 @@ function bidsCopyInputFolder(varargin)
       if isfield(filter, 'desc')
         filter = rmfield(filter, 'desc');
       end
-      filter = rmfield(filter, 'space');
+      if isfield(filter, 'space')
+        filter = rmfield(filter, 'space');
+      end
       filter.suffix = {'regressors', 'timeseries', 'motion', 'outliers'};
 
       bids.copy_to_derivative(BIDS, ...
