@@ -9,4 +9,4 @@ addpath(fullfile(root_dir, 'spm12'));
 
 cd(fullfile(root_dir, 'demos', 'bayes'));
 
-run ds000114_run;
+run ds000114_bayes_run;

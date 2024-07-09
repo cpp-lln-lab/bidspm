@@ -10,6 +10,9 @@ function value = endsWithRunNumber(contrastName)
   %
 
   % (C) Copyright 2024 bidspm developers
-  result = regexp(contrastName, '_[0-9]+\${0,1}$', 'match');
+  result = regexp( ...
+                  contrastName, ...
+                  '.*(_[0-9]+\$?$|_(?:ses|run)-[0-9]*$|_ses-[0-9]*_run-[0-9]*$)', ...
+                  'match');
   value =  ~isempty(result);
   return

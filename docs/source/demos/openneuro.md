@@ -35,6 +35,7 @@
 -   several tasks
 -   several sessions
 -   one or several runs depending on task
+-   fmriprep data
 
 ### Scripts
 
@@ -45,6 +46,10 @@
 ## ds000224
 
 - [Source dataset](https://openneuro.org/datasets/ds000224)
+
+### Features
+
+-   fmriprep data
 
 ### Scripts
 

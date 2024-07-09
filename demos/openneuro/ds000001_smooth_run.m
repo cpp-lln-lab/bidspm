@@ -1,7 +1,6 @@
 % Runs:
 % - smoothing of fmriprep data
 % - stats at the suject level
-% - stats at the group level
 %
 
 % (C) Copyright 2020 bidspm developers
@@ -20,7 +19,7 @@ bids_dir = fullfile(root_dir, 'inputs', 'ds000001');
 fmriprep_dir =  fullfile(root_dir, 'inputs', 'ds000001-fmriprep');
 output_dir = fullfile(root_dir, 'outputs', 'ds000001', 'derivatives');
 
-participant_label = {'01', '02', '03', '04', '05'};
+participant_label = {'01', '02', '03'};
 task = {'balloonanalogrisktask'};
 space = {'MNI152NLin2009cAsym'};
 
