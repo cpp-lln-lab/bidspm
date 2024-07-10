@@ -472,7 +472,7 @@ def _add_roi_atlas(parser: ArgumentParser) -> ArgumentParser:
         type=str,
         nargs=1,
         default="neuromorphometrics",
-        choices=SUPPORTED_ATLASES,
+        choices=list(SUPPORTED_ATLASES),
     )
     return parser
 
