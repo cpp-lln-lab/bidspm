@@ -25,18 +25,23 @@ with open(Path(__file__).parent / "data" / "exit_codes.json") as f:
 SUPPORTED_ACTIONS = set(ALLOWED_ACTIONS) - NOT_IMPLEMENTED
 
 
+ul_it = "\n\t- "
+
+
 def validate_actions(action: str) -> None:
     if action not in ALLOWED_ACTIONS:
         log.error(
-            f"\nUnknown action: '{action}'."
-            f"\nSupported actions are: \n\t- {'\n\t- '.join(SUPPORTED_ACTIONS)}"
+            f"Unknown action: '{action}'."
+            "\nSupported actions are:"
+            f"{ul_it}{ul_it.join(SUPPORTED_ACTIONS)}"
         )
         raise SystemExit(EXIT_CODES["USAGE"]["Value"])
 
     if action in NOT_IMPLEMENTED:
         log.error(
-            f"\tThe action '{action}' is not yet implemented."
-            f"\nSupported actions are: \n\t- {'\n\t- '.join(SUPPORTED_ACTIONS)}"
+            f"The action '{action}' is not yet implemented."
+            "\nSupported actions are:"
+            f"{ul_it}{ul_it.join(SUPPORTED_ACTIONS)}"
         )
         raise SystemExit(EXIT_CODES["USAGE"]["Value"])
 
@@ -74,11 +79,11 @@ def cli(argv: Any = sys.argv) -> None:
     validate_actions(action)
 
     if not bids_dir.is_dir():
-        log.error(f"The 'bids_dir' does not exist:\n\t{bids_dir}")
+        log.error("The 'bids_dir' does not exist:\n\t" f"{bids_dir}")
         exit(EXIT_CODES["NOINPUT"]["Value"])
 
     if preproc_dir is not None and not preproc_dir.is_dir():
-        log.error(f"The 'preproc_dir' does not exist:\n\t{preproc_dir}")
+        log.error("The 'preproc_dir' does not exist:\n\t" f"{preproc_dir}")
         exit(EXIT_CODES["NOINPUT"]["Value"])
 
     if action in {"stats", "contrasts", "results"}:
