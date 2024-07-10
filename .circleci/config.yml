@@ -223,21 +223,23 @@ jobs:
 
                     if [[ -n "${DOCKER_TOKEN}" ]]; then
 
-                        # make sure we have a lowercase repo
                         user_name=remigau
+                        dockerhub_org=cpplab
+                        # make sure we have a lowercase repo
                         repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
 
-                        echo "${DOCKER_TOKEN}" | docker login -u "${DOCKER_USER}" --password-stdin
+                        echo "${DOCKER_TOKEN}" | docker login -u "${user_name}" --password-stdin
 
-                        : "Pushing to DockerHub ${user_name}/${repo_name}:unstable"
-                        docker tag "${user_name}/${repo_name}" "${user_name}/${repo_name}:unstable"
-                        docker push "${user_name}/${repo_name}:unstable"
+                        : "Pushing to DockerHub ${dockerhub_org}/${repo_name}:unstable"
+                        docker tag "${dockerhub_org}/${repo_name}" "${dockerhub_org}/${repo_name}:unstable"
+                        docker push "${dockerhub_org}/${repo_name}:unstable"
 
                         if [[ -n "${CIRCLE_TAG}" ]]; then
-                            : "Pushing to DockerHub ${user_name}/${repo_name}:${CIRCLE_TAG}"
-                            docker push "${user_name}/${repo_name}:latest"
-                            docker tag "${user_name}/${repo_name}" "${user_name}/${repo_name}:${CIRCLE_TAG}"
-                            docker push "${user_name}/${repo_name}:${CIRCLE_TAG}"
+                            : "Pushing to DockerHub ${dockerhub_org}/${repo_name}:${CIRCLE_TAG}"
+                            docker tag "${dockerhub_org}/${repo_name}" "${dockerhub_org}/${repo_name}:latest"
+                            docker push "${dockerhub_org}/${repo_name}:latest"
+                            docker tag "${dockerhub_org}/${repo_name}" "${dockerhub_org}/${repo_name}:${CIRCLE_TAG}"
+                            docker push "${dockerhub_org}/${repo_name}:${CIRCLE_TAG}"
                         fi
 
                     else
