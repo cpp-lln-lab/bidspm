@@ -101,14 +101,14 @@ jobs:
 
         -   run:
                 name: create output directory
-                command: mkdir -p ${HOME}/outputs/ds000001/derivatives
+                command: mkdir -p /home/circleci/project/outputs/ds000001/derivatives
 
         -   run:
                 name: default model subject level
                 command: |
                     docker run -ti --rm \
                       -v /tmp/workspace/data/ds000001:/bids_dataset \
-                      -v ${HOME}/outputs:/outputs \
+                      -v /home/circleci/project/outputs:/outputs \
                         << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /bids_dataset \
                           /outputs/ds000001 \
@@ -118,14 +118,14 @@ jobs:
                           --space MNI152NLin2009cAsym \
                           --verbosity 3
 
-                    cat ${HOME}/outputs/ds000001/derivatives/models/*.json
+                    cat /home/circleci/project/outputs/ds000001/derivatives/models/*.json
 
         -   run:
                 name: default model dataset level
                 command: |
                     docker run -ti --rm \
                       -v /tmp/workspace/data/ds000001:/bids_dataset \
-                      -v ${HOME}/outputs:/outputs \
+                      -v /home/circleci/project/outputs:/outputs \
                         << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /bids_dataset \
                           /outputs/ds000001 \
@@ -135,14 +135,14 @@ jobs:
                           --space MNI152NLin2009cAsym \
                           --verbosity 3
 
-                    cat ${HOME}/outputs/ds000001/derivatives/models/*.json
+                    cat /home/circleci/project/outputs/ds000001/derivatives/models/*.json
 
         -   run:
                 name: create roi
                 command: |
                     docker run -ti --rm \
                       -v /tmp/workspace/data/ds000001:/bids_dataset \
-                      -v ${HOME}/outputs:/outputs \
+                      -v /home/circleci/project/outputs/outputs:/outputs \
                         << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /outputs/ds000001 \
                           /outputs/ds000001 \
@@ -154,7 +154,7 @@ jobs:
                           --verbosity 3
 
         -   store_artifacts:
-                path: ${HOME}/outputs/ds000001/derivatives/
+                path: /home/circleci/project/outputs/outputs/
 
     stats:
         machine:
@@ -175,14 +175,14 @@ jobs:
 
         -   run:
                 name: create output directory
-                command: mkdir -p ${HOME}/outputs/ds000001/derivatives
+                command: mkdir -p /home/circleci/project/outputs/ds000001/derivatives
 
         -   run:
                 name: smooth
                 command: |
                     docker run -ti --rm \
                       -v /tmp/workspace/data/ds000001-fmriprep:/bids_dataset \
-                      -v ${HOME}/outputs:/outputs \
+                      -v /home/circleci/project/outputs:/outputs \
                         << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /bids_dataset \
                           /outputs/ds000001 \
@@ -202,7 +202,7 @@ jobs:
                 command: |
                     docker run -ti --rm  \
                       -v /tmp/workspace/data/ds000001:/bids_dataset \
-                      -v ${HOME}/outputs:/outputs \
+                      -v /home/circleci/project/outputs:/outputs \
                       -v ~/project/demos/openneuro/models:/models \
                       -v ~/project/demos/openneuro/options:/options \
                         << parameters.dh_orga >>/<< parameters.dh_repo >> \
@@ -225,7 +225,7 @@ jobs:
                 command: |
                     docker run -ti --rm  \
                       -v /tmp/workspace/data/ds000001:/bids_dataset \
-                      -v ${HOME}/outputs:/outputs \
+                      -v /home/circleci/project/outputs:/outputs \
                       -v ~/project/demos/openneuro/models:/models \
                       -v ~/project/demos/openneuro/options:/options \
                         << parameters.dh_orga >>/<< parameters.dh_repo >> \
@@ -243,7 +243,7 @@ jobs:
                           --options /options/ds000001.json
 
         -   store_artifacts:
-                path: ${HOME}/outputs/ds000001/derivatives/bidspm-stats
+                path: /home/circleci/project/outputs/ds000001/derivatives/bidspm-stats
 
     deploy:
 
