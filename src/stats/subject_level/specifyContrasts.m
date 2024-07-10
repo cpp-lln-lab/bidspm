@@ -180,13 +180,13 @@ function [contrasts, counter] = specifyRunLvlContrasts(model, node, contrasts, c
 
   for iCon = 1:length(node.Contrasts)
 
-    this_contrast = checkContrast(node, iCon);
+    thisContrast = checkContrast(model, node, iCon);
 
-    if isempty(this_contrast) || strcmp(this_contrast.Test, 'pass')
+    if isempty(thisContrast) || strcmp(thisContrast.Test, 'pass')
       continue
     end
 
-    conditionList = this_contrast.ConditionList;
+    conditionList = thisContrast.ConditionList;
 
     for iCdt = 1:length(conditionList)
       cdtName = conditionList{iCdt};
@@ -201,7 +201,7 @@ function [contrasts, counter] = specifyRunLvlContrasts(model, node, contrasts, c
 
     if length(nbRuns) > 1
       msg = sprintf('Skipping contrast %s: runs are missing condition %s', ...
-                    this_contrast.Name, cdtName);
+                    thisContrast.Name, cdtName);
       id = 'runMissingCondition';
       logger('WARNING', msg, 'id', id, 'filename', mfilename());
 
@@ -213,22 +213,24 @@ function [contrasts, counter] = specifyRunLvlContrasts(model, node, contrasts, c
       % Use the SPM Sess index for the contrast name
       iSess = getSessionForRegressorNb(regIdx{1}(iRun), model.SPM);
 
-      contrastName = constructContrastNameFromBidsEntity(this_contrast.Name, model.SPM, iSess);
-      C = newContrast(model.SPM, contrastName, this_contrast.Test, conditionList);
+      contrastName = constructContrastNameFromBidsEntity(thisContrast.Name, model.SPM, iSess);
+      C = newContrast(model.SPM, contrastName, thisContrast.Test, conditionList);
 
       for iCdt = 1:length(conditionList)
 
-        if strcmp(this_contrast.Test, 't')
-          C.C(end, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
+        if strcmp(thisContrast.Test, 't')
+          C.C(end, regIdx{iCdt}(iRun)) = thisContrast.Weights(iCdt);
 
-        elseif strcmp(this_contrast.Test, 'F')
-          C.C(iCdt, regIdx{iCdt}(iRun)) = this_contrast.Weights(iCdt);
+        elseif strcmp(thisContrast.Test, 'F')
+          for i = 1:size(thisContrast.Weights, 1)
+            C.C(i, regIdx{iCdt}(iRun)) = thisContrast.Weights(i, iCdt);
+          end
 
         end
 
       end
 
-      [contrasts, counter] = appendContrast(contrasts, C, counter, this_contrast.Test);
+      [contrasts, counter] = appendContrast(contrasts, C, counter, thisContrast.Test);
 
     end
 

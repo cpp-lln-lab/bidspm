@@ -36,7 +36,7 @@ function [contrasts, count] = specifySubLvlContrasts(model, node, contrasts, cou
   % amongst themselves or inferior to baseline
   for iCon = 1:length(node.Contrasts)
 
-    thisContrast = checkContrast(node, iCon);
+    thisContrast = checkContrast(model, node, iCon);
 
     if isempty(thisContrast) || strcmp(thisContrast.Test, 'pass')
       continue
@@ -123,9 +123,12 @@ function [contrasts, count] = averageAtSubjectLevel(model, contrasts, count, thi
       C.C(end, regIdx) = thisContrast.Weights(iCdt);
 
     elseif strcmp(thisContrast.Test, 'F')
+
       for i = 1:numel(regIdx)
-        C.C(row, regIdx(i)) = thisContrast.Weights(iCdt);
-        row = row + 1;
+        for i_w = 1:size(thisContrast.Weights, 1)
+          C.C(row, regIdx(i)) = thisContrast.Weights(i_w, iCdt);
+          row = row + 1;
+        end
       end
 
     end
@@ -133,6 +136,9 @@ function [contrasts, count] = averageAtSubjectLevel(model, contrasts, count, thi
     clear regIdx;
 
   end
+
+  rows_to_rm = all(C.C == 0, 2);
+  C.C(rows_to_rm, :) = [];
 
   % do not create this contrast if a condition is missing
   if exist('status', 'var')
