@@ -11,6 +11,7 @@ from bidspm.bidspm import (
     base_cmd,
     create_roi,
     default_model,
+    new_line,
     preprocess,
     run_command,
     stats,
@@ -22,7 +23,7 @@ def test_base_cmd():
     bids_dir = Path("/path/to/bids")
     output_dir = Path("/path/to/output")
     cmd = base_cmd(bids_dir, output_dir)
-    assert cmd == " bidspm('init'); bidspm( '/path/to/bids', ...\n\t '/path/to/output'"
+    assert cmd == f" bidspm( '/path/to/bids'{new_line}'/path/to/output'"
 
 
 def test_append_common_arguments():
@@ -33,9 +34,9 @@ def test_append_common_arguments():
         skip_validation=True,
         dry_run=True,
     )
-    assert (
-        cmd
-        == ", ...\n\t 'fwhm', 6, ...\n\t 'participant_label', { '01', '02' }, ...\n\t 'skip_validation', true, ...\n\t 'dry_run', true"
+    assert cmd == (
+        f"{new_line}'fwhm', 6{new_line}'participant_label', {'{'} '01', '02' {'}'}"
+        f"{new_line}'skip_validation', true{new_line}'dry_run', true"
     )
 
 
@@ -43,9 +44,9 @@ def test_append_base_arguments():
     cmd = append_base_arguments(
         cmd="", verbosity=0, space=["foo", "bar"], task=["spam", "eggs"], ignore=["nii"]
     )
-    assert (
-        cmd
-        == ", ...\n\t 'verbosity', 0, ...\n\t 'space', { 'foo', 'bar' }, ...\n\t 'task', { 'spam', 'eggs' }, ...\n\t 'ignore', { 'nii' }"
+    assert cmd == (
+        f"{new_line}'verbosity', 0{new_line}'space', {'{'} 'foo', 'bar' {'}'}"
+        f"{new_line}'task', {'{'} 'spam', 'eggs' {'}'}{new_line}'ignore', {'{'} 'nii' {'}'}"
     )
 
 

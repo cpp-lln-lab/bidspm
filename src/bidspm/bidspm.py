@@ -12,12 +12,11 @@ from .parsers import bidspm_log
 
 log = bidspm_log(name="bidspm")
 
-new_line = ", ...\n\t "
+new_line = ", ...\n\t  "
 
 
 def base_cmd(bids_dir: Path, output_dir: Path) -> str:
-    cmd = " bidspm('init');"
-    cmd += f" bidspm( '{bids_dir}'{new_line}'{output_dir}'"
+    cmd = f" bidspm( '{bids_dir}'{new_line}'{output_dir}'"
     return cmd
 
 
@@ -27,7 +26,7 @@ def append_main_cmd(cmd: str, analysis_level: str, action: str) -> str:
 
 
 def end_cmd(cmd: str) -> str:
-    cmd += "); exit;"
+    cmd += ");  exit;"
     return cmd
 
 
@@ -393,7 +392,12 @@ def bidspm(
             options=options,
         )
 
-    return cmd if isinstance(cmd, int) else run_command(cmd)
+    if isinstance(cmd, int):
+        return cmd
+
+    cmd = f" bidspm('init'); try; {cmd} catch;  exit; end;"
+
+    return run_command(cmd)
 
 
 def run_command(cmd: str, platform: str | None = None) -> int:

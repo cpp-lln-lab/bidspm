@@ -5,6 +5,7 @@ function cliDefaultModel(varargin)
   %
 
   % (C) Copyright 2023 bidspm developers
+
   args = inputParserForCreateModel();
   try
     parse(args, varargin{:});

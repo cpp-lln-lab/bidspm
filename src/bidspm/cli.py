@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .bidspm import bidspm
-from .parsers import bidspm_log, common_parser
+from .parsers import ALLOWED_ACTIONS, bidspm_log, common_parser
 
 log = bidspm_log(name="bidspm")
 
@@ -18,9 +18,6 @@ NOT_IMPLEMENTED = {
     "copy",
     "specify_only",
 }
-
-with open(Path(__file__).parent / "data" / "allowed_actions.json") as f:
-    ALLOWED_ACTIONS = json.load(f)
 
 with open(Path(__file__).parent / "data" / "exit_codes.json") as f:
     EXIT_CODES = json.load(f)

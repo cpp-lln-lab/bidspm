@@ -15,6 +15,15 @@ log = logging.getLogger("bidspm")
 with open(Path(__file__).parent / "data" / "allowed_actions.json") as f:
     ALLOWED_ACTIONS = json.load(f)
 
+SUPPORTED_ATLASES = {
+    "anatomy_toobox",
+    "glasser",
+    "hcpex",
+    "neuromorphometrics",
+    "visfatlas",
+    "wang",
+}
+
 
 def bidspm_log(name: str = "bidspm") -> logging.Logger:
     """Create log."""
@@ -237,7 +246,7 @@ def common_parser() -> argparse.ArgumentParser:
         type=str,
         nargs=1,
         default="neuromorphometrics",
-        choices=["neuromorphometrics", "wang", "anatomy_toobox", "visfatlas", "hcpex"],
+        choices=SUPPORTED_ATLASES,
     )
 
     stats_only = parser.add_argument_group("stats only arguments")
