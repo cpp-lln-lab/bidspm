@@ -61,6 +61,7 @@ test = [
 
 [project.scripts]
 bidspm = "bidspm.cli:cli"
+bidspm_2 = "bidspm.cli:new_cli"
 validate_model = "bidspm.validate:cli"
 
 [project.urls]

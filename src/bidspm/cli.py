@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .bidspm import bidspm
-from .parsers import ALLOWED_ACTIONS, bidspm_log, common_parser
+from .parsers import ALLOWED_ACTIONS, bidspm_log, common_parser, sub_command_parser
 
 log = bidspm_log(name="bidspm")
 
@@ -139,3 +139,10 @@ def cli(argv: Any = sys.argv) -> None:
         raise SystemExit(EXIT_CODES["FAILURE"]["Value"])
     else:
         sys.exit(EXIT_CODES["SUCCESS"]["Value"])
+
+
+def new_cli(argv: Any = sys.argv) -> None:
+
+    parser = sub_command_parser()
+
+    args, _ = parser.parse_known_args(argv[1:])
