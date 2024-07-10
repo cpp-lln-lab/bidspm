@@ -6,26 +6,32 @@ jobs:
 
         machine:
             image: ubuntu-2204:2022.10.2
+        parameters:
+            dh_orga:
+                type: string
+                default: cpplab
+            dh_repo:
+                type: string
+                default: bidspm
         steps:
         -   checkout
-        -   run: make fix_submodule
+        -   run:
+                name: update submodules
+                command: make fix_submodule
         -   restore_cache:
                 keys:
                 -   my_cache
         -   run:
-                name: Build Docker image
+                name: build Docker image
                 command: |
                     set -eux -o pipefail
-                    # make sure we have a lowercase repo
-                    user_name=cpplab
-                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
                     if [[ -e "${HOME}/docker/image.tar" ]]; then
                         docker load -i "${HOME}/docker/image.tar"
                     fi
                     git describe --tags --always > version
-                    docker build -t "${user_name}/${repo_name}" .
+                    docker build -t << parameters.dh_orga >>/<< parameters.dh_repo >> .
                     mkdir -p "${HOME}/docker"
-                    docker save "${user_name}/${repo_name}" > "${HOME}/docker/image.tar"
+                    docker save << parameters.dh_orga >>/<< parameters.dh_repo >> "${HOME}/docker/image.tar"
                     docker images
         -   persist_to_workspace:
                 root: /home/circleci
@@ -38,7 +44,7 @@ jobs:
         steps:
         -   checkout
         -   run:
-                name: Install dependencies
+                name: install dependencies
                 command: |
                     sudo apt-get update
                     sudo apt-get install -y python3 git-annex
@@ -49,7 +55,7 @@ jobs:
                 keys:
                 -   my_cache
         -   run:
-                name: Get ds000001
+                name: get ds000001
                 command: |
                     # Git set up: to keep datalad warnings away
                     git config --global --add user.name "Ford Escort"
@@ -75,26 +81,35 @@ jobs:
                 -   data/ds000001
                 -   data/ds000001-fmriprep
 
-    default_model:
+    fast:
+        # run actions that run quickly
         machine:
             image: ubuntu-2204:2022.10.2
-
+        parameters:
+            dh_orga:
+                type: string
+                default: cpplab
+            dh_repo:
+                type: string
+                default: bidspm
         steps:
         -   attach_workspace:
                 at: /tmp/workspace
-        -   run: docker load -i /tmp/workspace/docker/image.tar
+        -   run:
+                name: load docker image
+                command: docker load -i /tmp/workspace/docker/image.tar
 
-        -   run: mkdir -p ${HOME}/outputs/ds000001/derivatives
+        -   run:
+                name: create output directory
+                command: mkdir -p ${HOME}/outputs/ds000001/derivatives
 
         -   run:
                 name: default model subject level
                 command: |
-                    user_name=cpplab
-                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
                     docker run -ti --rm \
                       -v /tmp/workspace/data/ds000001:/bids_dataset \
                       -v ${HOME}/outputs:/outputs \
-                        ${user_name}/${repo_name} \
+                        << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /bids_dataset \
                           /outputs/ds000001 \
                           subject \
@@ -108,12 +123,10 @@ jobs:
         -   run:
                 name: default model dataset level
                 command: |
-                    user_name=cpplab
-                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
                     docker run -ti --rm \
                       -v /tmp/workspace/data/ds000001:/bids_dataset \
                       -v ${HOME}/outputs:/outputs \
-                        ${user_name}/${repo_name} \
+                        << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /bids_dataset \
                           /outputs/ds000001 \
                           dataset \
@@ -124,26 +137,53 @@ jobs:
 
                     cat ${HOME}/outputs/ds000001/derivatives/models/*.json
 
+        -   run:
+                name: create roi
+                command: |
+                    docker run -ti --rm \
+                      -v /tmp/workspace/data/ds000001:/bids_dataset \
+                      -v ${HOME}/outputs:/outputs \
+                        << parameters.dh_orga >>/<< parameters.dh_repo >> \
+                          /outputs/ds000001 \
+                          /outputs/ds000001 \
+                          dataset \
+                          --action create_roi \
+                          --roi_atlas wang \
+                          --roi_name V1v V1d \
+                          --space IXI549Space \
+                          --verbosity 3
+
+        -   store_artifacts:
+                path: ${HOME}/outputs/ds000001/derivatives/
+
     stats:
         machine:
             image: ubuntu-2204:2022.10.2
-
+        parameters:
+            dh_orga:
+                type: string
+                default: cpplab
+            dh_repo:
+                type: string
+                default: bidspm
         steps:
         -   attach_workspace:
                 at: /tmp/workspace
-        -   run: docker load -i /tmp/workspace/docker/image.tar
+        -   run:
+                name: load docker image
+                command: docker load -i /tmp/workspace/docker/image.tar
 
-        -   run: mkdir -p ${HOME}/outputs/ds000001/derivatives
+        -   run:
+                name: create output directory
+                command: mkdir -p ${HOME}/outputs/ds000001/derivatives
 
         -   run:
                 name: smooth
                 command: |
-                    user_name=cpplab
-                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
                     docker run -ti --rm \
                       -v /tmp/workspace/data/ds000001-fmriprep:/bids_dataset \
                       -v ${HOME}/outputs:/outputs \
-                        ${user_name}/${repo_name} \
+                        << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /bids_dataset \
                           /outputs/ds000001 \
                           subject \
@@ -160,14 +200,12 @@ jobs:
         -   run:
                 name: stats subject level
                 command: |
-                    user_name=cpplab
-                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
                     docker run -ti --rm  \
                       -v /tmp/workspace/data/ds000001:/bids_dataset \
                       -v ${HOME}/outputs:/outputs \
                       -v ~/project/demos/openneuro/models:/models \
                       -v ~/project/demos/openneuro/options:/options \
-                        ${user_name}/${repo_name} \
+                        << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /bids_dataset \
                           /outputs/ds000001 \
                           subject \
@@ -185,14 +223,12 @@ jobs:
         -   run:
                 name: stats group level
                 command: |
-                    user_name=cpplab
-                    repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
                     docker run -ti --rm  \
                       -v /tmp/workspace/data/ds000001:/bids_dataset \
                       -v ${HOME}/outputs:/outputs \
                       -v ~/project/demos/openneuro/models:/models \
                       -v ~/project/demos/openneuro/options:/options \
-                        ${user_name}/${repo_name} \
+                        << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /bids_dataset \
                           /outputs/ds000001 \
                           dataset \
@@ -206,16 +242,27 @@ jobs:
                           --verbosity 3 \
                           --options /options/ds000001.json
 
+        -   store_artifacts:
+                path: ${HOME}/outputs/ds000001/derivatives/bidspm-stats
+
     deploy:
 
         machine:
             image: ubuntu-2204:2022.10.2
-
+        parameters:
+            dh_orga:
+                type: string
+                default: cpplab
+            dh_repo:
+                type: string
+                default: bidspm
         steps:
         -   attach_workspace:
                 at: /tmp/workspace
 
-        -   run: docker load -i /tmp/workspace/docker/image.tar
+        -   run:
+                name: load docker image
+                command: docker load -i /tmp/workspace/docker/image.tar
         -   run:
                 name: push to dockerhub
                 command: |
@@ -224,22 +271,19 @@ jobs:
                     if [[ -n "${DOCKER_TOKEN}" ]]; then
 
                         user_name=remigau
-                        dockerhub_org=cpplab
-                        # make sure we have a lowercase repo
-                        repo_name=$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')
 
                         echo "${DOCKER_TOKEN}" | docker login -u "${user_name}" --password-stdin
 
-                        : "Pushing to DockerHub ${dockerhub_org}/${repo_name}:unstable"
-                        docker tag "${dockerhub_org}/${repo_name}" "${dockerhub_org}/${repo_name}:unstable"
-                        docker push "${dockerhub_org}/${repo_name}:unstable"
+                        : Pushing to DockerHub << parameters.dh_orga >>/<< parameters.dh_repo >>:unstable
+                        docker tag << parameters.dh_orga >>/<< parameters.dh_repo >> << parameters.dh_orga >>/<< parameters.dh_repo >>:unstable
+                        docker push << parameters.dh_orga >>/<< parameters.dh_repo >>:unstable
 
                         if [[ -n "${CIRCLE_TAG}" ]]; then
-                            : "Pushing to DockerHub ${dockerhub_org}/${repo_name}:${CIRCLE_TAG}"
-                            docker tag "${dockerhub_org}/${repo_name}" "${dockerhub_org}/${repo_name}:latest"
-                            docker push "${dockerhub_org}/${repo_name}:latest"
-                            docker tag "${dockerhub_org}/${repo_name}" "${dockerhub_org}/${repo_name}:${CIRCLE_TAG}"
-                            docker push "${dockerhub_org}/${repo_name}:${CIRCLE_TAG}"
+                            : Pushing to DockerHub << parameters.dh_orga >>/<< parameters.dh_repo >>:"${CIRCLE_TAG}"
+                            docker tag << parameters.dh_orga >>/<< parameters.dh_repo >> << parameters.dh_orga >>/<< parameters.dh_repo >>:latest
+                            docker push << parameters.dh_orga >>/<< parameters.dh_repo >>:latest
+                            docker tag << parameters.dh_orga >>/<< parameters.dh_repo >> << parameters.dh_orga >>/<< parameters.dh_repo >>:"${CIRCLE_TAG}"
+                            docker push << parameters.dh_orga >>/<< parameters.dh_repo >>:"${CIRCLE_TAG}"
                         fi
 
                     else
@@ -252,7 +296,7 @@ workflows:
         jobs:
         -   build
         -   get_data
-        -   default_model:
+        -   fast:
                 requires:
                 -   build
                 -   get_data
@@ -265,5 +309,6 @@ workflows:
                 -   DOCKER_HUB
                 requires:
                 -   build
+                -   fast
 
 # VS Code Extension Version: 1.5.1

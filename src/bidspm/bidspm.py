@@ -74,7 +74,8 @@ def append_common_arguments(
         else None
     )
 
-    cmd += f"{new_line}'fwhm', {fwhm}"
+    if fwhm:
+        cmd += f"{new_line}'fwhm', {fwhm}"
     if participant_label:
         cmd += f"{new_line}'participant_label', {participant_label}"
     if skip_validation:
@@ -200,6 +201,7 @@ def create_roi(
         cmd=cmd,
         participant_label=participant_label,
         bids_filter_file=bids_filter_file,
+        fwhm=None,
     )
     cmd += f"{new_line}'roi_atlas', '{roi_atlas}'"
     cmd += f"{new_line}'roi_name', {roi_name}"
