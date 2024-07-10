@@ -31,7 +31,7 @@ jobs:
                     git describe --tags --always > version
                     docker build -t << parameters.dh_orga >>/<< parameters.dh_repo >> .
                     mkdir -p "${HOME}/docker"
-                    docker save << parameters.dh_orga >>/<< parameters.dh_repo >> "${HOME}/docker/image.tar"
+                    docker save << parameters.dh_orga >>/<< parameters.dh_repo >> > "${HOME}/docker/image.tar"
                     docker images
         -   persist_to_workspace:
                 root: /home/circleci
