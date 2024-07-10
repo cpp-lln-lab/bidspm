@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* [ENH] align specification of F contrasts on the BIDS stats model: they should now be specified as a 2D matrix and not a 1D vector. #1276 @Remi-Gau
 * [DOC] change theme and structure of the documentation #1256 @Remi-Gau
 * [REF] Refactor and update CLI in #1096 @Remi-Gau
 * [ENH] {func}`getData` only loads anat data when requested #1257 @Remi-Gau
@@ -55,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * [FIX] update {func}`createDefaultStatsModel` to use proper `GroupBy` at the dataset level #1248 by @d-ni374
 * [FIX] make {func}`getAcquisitionTime` less brittle #1248 by @d-ni374
-* [FIX] fix regular expression in {func}`bidsResults` to identify contrasts #1248 by @d-ni374
+* [FIX] fix regular expression in {func}`bidsResults` to identify contrasts #1248 by @d-ni374 and #1275 by @Remi-Gau
 * [FIX] pass analysis level to stats actions when using python CLI #1258 @Remi-Gau
 * [FIX] remove goodness of fit from dataset level analysis as it is not supported by the MACS toolbox #1265 by @Remi-Gau
 * [FIX] add java and zip to container recipes to allow using nidm results with octave #1265 by @Remi-Gau

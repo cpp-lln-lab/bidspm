@@ -1,18 +1,19 @@
-function contrast = checkContrast(node, iCon)
+function contrast = checkContrast(model, node, iCon)
   %
   % Validates contrast specification
   %
-  % put some of that in bids.Model
   %
   % USAGE::
   %
-  %     contrast = checkContrast(node, iCon)
+  %     contrast = checkContrast(model, node, iCon)
   %
   %
+
+  % TODO put some of that in bids.Model
 
   % (C) Copyright 2022 bidspm developers
 
-  BidsModel.validate_constrasts(node);
+  model.validate_constrasts(node);
 
   if ~ismember(lower(node.Level), {'run', 'session', 'subject'}) && ...
           ~isTtest(node.Contrasts(iCon))

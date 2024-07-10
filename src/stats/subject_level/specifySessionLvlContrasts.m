@@ -32,7 +32,7 @@ function [contrasts, counter] = specifySessionLvlContrasts(model, node, contrast
   % amongst themselves or inferior to baseline
   for iCon = 1:length(node.Contrasts)
 
-    this_contrast = checkContrast(node, iCon);
+    this_contrast = checkContrast(model, node, iCon);
 
     if isempty(this_contrast) || strcmp(this_contrast.Test, 'pass')
       continue

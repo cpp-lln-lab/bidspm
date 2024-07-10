@@ -36,6 +36,7 @@ function test_getContrastsList_basic()
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 
+  opt.model.bm.Nodes{3}.Contrasts{1}.Test = 't';
   opt.model.bm.Nodes{3}.Contrasts{1}.Name = 'foo';
   opt.model.bm.Nodes{3}.Contrasts{1}.ConditionList = {'foo'};
   opt.model.bm.Nodes{3}.Contrasts{1}.Weights = -1;

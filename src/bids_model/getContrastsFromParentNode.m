@@ -22,7 +22,7 @@ function contrastsList = getContrastsFromParentNode(model, node)
   if isfield(sourceNode, 'Contrasts') && ~isempty(sourceNode.Contrasts)
     for i = 1:numel(sourceNode.Contrasts)
       if isTtest(sourceNode.Contrasts{i}) % only contrast can be forwarded
-        contrastsList{end + 1} = checkContrast(sourceNode, i);
+        contrastsList{end + 1} = checkContrast(model, sourceNode, i);
       end
     end
 
