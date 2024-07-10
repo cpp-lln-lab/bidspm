@@ -26,6 +26,8 @@ This is a Matlab / Octave toolbox to perform MRI data analysis on a
 docker pull cpplab/bidspm:latest
 ```
 
+This is a test.
+
 ### From source
 
 In a terminal or a git bash prompt, type:
