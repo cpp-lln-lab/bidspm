@@ -12,7 +12,7 @@ addpath(fullfile(pwd, '..', '..'));
 bidspm();
 
 % The directory where the data are located
-root_dir = fullfile(fileparts(mfilename('fullpath')));
+root_dir = fileparts(mfilename('fullpath'));
 root_dir = pwd;
 
 %% Parameters

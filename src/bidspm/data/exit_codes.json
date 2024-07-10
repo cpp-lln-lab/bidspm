@@ -1,0 +1,50 @@
+{
+  "SUCCESS": {
+    "Value": 0,
+    "Description": "The program completed successfully."
+  },
+  "FAILURE": {
+    "Value": 1,
+    "Description": "The program failed for unspecified reasons."
+  },
+  "INVALID": {
+    "Value": 16,
+    "Description": "An input dataset failed BIDS validation."
+  },
+  "17": {
+    "Value": 17,
+    "Description": "Unknown analysis level."
+  },
+  "18": {
+    "Value": 18,
+    "Description": "Entity-based filtering options selected no files."
+  },
+  "19": {
+    "Value": 19,
+    "Description": "Both command-line arguments and a parameter invocation file were passed to the application."
+  },
+  "USAGE": {
+    "Value": 64,
+    "Description": "The command was used incorrectly."
+  },
+  "DATAERR": {
+    "Value": 65,
+    "Description": "The input data was incorrect in some way."
+  },
+  "NOINPUT": {
+    "Value": 66,
+    "Description": "The input data was missing or unreadable."
+  },
+  "CANTCREAT": {
+    "Value": 73,
+    "Description": "An output file/directory cannot be created."
+  },
+  "IOERR": {
+    "Value": 64,
+    "Description": "Failure during file reading/writing."
+  },
+  "TEMPFAIL": {
+    "Value": 75,
+    "Description": "Temporary failure. Another run is expected to succeed."
+  }
+}

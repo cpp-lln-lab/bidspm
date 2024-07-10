@@ -18,6 +18,11 @@ jobs:
     # only trigger update on upstream repo
         if: github.repository_owner == 'cpp-lln-lab'
 
+        strategy:
+            fail-fast: false
+            matrix:
+                python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+
         steps:
 
         -   name: Install dependencies
@@ -34,8 +39,9 @@ jobs:
                 node-version: 18
 
         -   uses: actions/setup-python@v5
+            name: Set up Python ${{ matrix.python-version }}
             with:
-                python-version: '3.10'
+                python-version: ${{ matrix.python-version }}
 
         -   name: Clone bidspm
             uses: actions/checkout@v4
@@ -46,7 +52,7 @@ jobs:
         -   name: Install validators
             run: |
                 make install
-                pip install .[dev]
+                pip install .[test]
 
         -   name: Run tests and generate coverage report
             run: |
@@ -61,4 +67,3 @@ jobs:
                 flags: cli
                 name: codecov-cli
                 fail_ci_if_error: false
-        # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits

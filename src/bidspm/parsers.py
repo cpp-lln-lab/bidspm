@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import json
 import logging
+from pathlib import Path
 
 from rich.logging import RichHandler
 from rich_argparse import RichHelpFormatter
@@ -9,6 +11,18 @@ from rich_argparse import RichHelpFormatter
 from ._version import __version__  # type ignore
 
 log = logging.getLogger("bidspm")
+
+with open(Path(__file__).parent / "data" / "allowed_actions.json") as f:
+    ALLOWED_ACTIONS = json.load(f)
+
+SUPPORTED_ATLASES = {
+    "anatomy_toobox",
+    "glasser",
+    "hcpex",
+    "neuromorphometrics",
+    "visfatlas",
+    "wang",
+}
 
 
 def bidspm_log(name: str = "bidspm") -> logging.Logger:
@@ -25,7 +39,7 @@ def bidspm_log(name: str = "bidspm") -> logging.Logger:
     return logging.getLogger(name)
 
 
-def common_parser() -> argparse.ArgumentParser:
+def base_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="bidspm is a SPM base BIDS app",
         epilog="""
@@ -71,24 +85,11 @@ def common_parser() -> argparse.ArgumentParser:
         type=str,
         nargs=1,
     )
-    parser.add_argument(
-        "--action",
-        help="""
-        Action to perform.
-        """,
-        choices=[
-            "preprocess",
-            "smooth",
-            "default_model",
-            "create_roi",
-            "stats",
-            "contrasts",
-            "results",
-        ],
-        required=True,
-        type=str,
-        nargs=1,
-    )
+
+    return parser
+
+
+def add_common_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     parser.add_argument(
         "--verbosity",
         help="""
@@ -99,6 +100,67 @@ def common_parser() -> argparse.ArgumentParser:
         type=int,
         nargs=1,
     )
+
+    parser.add_argument(
+        "--bids_filter_file",
+        help="""
+        Fullpath to a JSON file describing custom BIDS input filters.
+        """,
+        type=str,
+        nargs=1,
+    )
+
+    parser.add_argument(
+        "--options",
+        help="""
+        Path to JSON file containing bidspm options.
+        """,
+    )
+
+    return parser
+
+
+def sub_command_parser() -> argparse.ArgumentParser:
+    parser = base_parser()
+    subparsers = parser.add_subparsers(
+        dest="command",
+        help="Choose a subcommand",
+        required=True,
+    )
+
+    default_parser = subparsers.add_parser(
+        "default_model",
+        help="""Create default model""",
+        formatter_class=parser.formatter_class,
+    )
+    default_parser = add_common_arguments(default_parser)
+
+    roi_parser = subparsers.add_parser(
+        "create_roi",
+        help="""Create ROIs""",
+        formatter_class=parser.formatter_class,
+    )
+    roi_parser = add_common_arguments(roi_parser)
+
+    return parser
+
+
+def common_parser() -> argparse.ArgumentParser:
+    parser = base_parser()
+
+    parser.add_argument(
+        "--action",
+        help="""
+        Action to perform.
+        """,
+        choices=ALLOWED_ACTIONS,
+        required=True,
+        type=str,
+        nargs=1,
+    )
+
+    parser = add_common_arguments(parser)
+
     parser.add_argument(
         "--task",
         help="""
@@ -163,14 +225,7 @@ def common_parser() -> argparse.ArgumentParser:
         action="store_true",
         default=False,
     )
-    parser.add_argument(
-        "--bids_filter_file",
-        help="""
-        Fullpath to a JSON file describing custom BIDS input filters.
-        """,
-        type=str,
-        nargs=1,
-    )
+
     parser.add_argument(
         "--fwhm",
         help="""
@@ -180,12 +235,6 @@ def common_parser() -> argparse.ArgumentParser:
         type=float,
         nargs=1,
         default=6.0,
-    )
-    parser.add_argument(
-        "--options",
-        help="""
-        Path to JSON file containing bidspm options.
-        """,
     )
     parser.add_argument(
         "--skip_validation",
@@ -231,7 +280,7 @@ def common_parser() -> argparse.ArgumentParser:
         default=0,
     )
 
-    create_roi_only = parser.add_argument_group("create roi only arguments")
+    create_roi_only = parser.add_argument_group("create_roi and stats only arguments")
     create_roi_only.add_argument(
         "--roi_atlas",
         help="""
@@ -240,7 +289,7 @@ def common_parser() -> argparse.ArgumentParser:
         type=str,
         nargs=1,
         default="neuromorphometrics",
-        choices=["neuromorphometrics", "wang", "anatomy_toobox", "visfatlas", "hcpex"],
+        choices=SUPPORTED_ATLASES,
     )
 
     stats_only = parser.add_argument_group("stats only arguments")

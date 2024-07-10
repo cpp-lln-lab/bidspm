@@ -1,6 +1,6 @@
 % (C) Copyright 2022 bidspm developers
 
-this_dir = fullfile(fileparts(mfilename('fullpath')));
+this_dir = fileparts(mfilename('fullpath'));
 
 % we are using the output data from the MoAE demo
 % so make sure you have run it before trying this.

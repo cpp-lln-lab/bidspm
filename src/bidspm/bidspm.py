@@ -2,23 +2,21 @@
 from __future__ import annotations
 
 import subprocess
-import sys
 from pathlib import Path
 from typing import Any
 
 from rich import print
 
 from .matlab import matlab
-from .parsers import bidspm_log, common_parser
+from .parsers import bidspm_log
 
 log = bidspm_log(name="bidspm")
 
-new_line = ", ...\n\t "
+new_line = ", ...\n\t  "
 
 
 def base_cmd(bids_dir: Path, output_dir: Path) -> str:
-    cmd = " bidspm('init');"
-    cmd += f" bidspm( '{bids_dir}'{new_line}'{output_dir}'"
+    cmd = f" bidspm( '{bids_dir}'{new_line}'{output_dir}'"
     return cmd
 
 
@@ -28,7 +26,7 @@ def append_main_cmd(cmd: str, analysis_level: str, action: str) -> str:
 
 
 def end_cmd(cmd: str) -> str:
-    cmd += "); exit;"
+    cmd += ");  exit;"
     return cmd
 
 
@@ -99,10 +97,6 @@ def default_model(
     ignore: list[str] | None = None,
     options: Path | None = None,
 ) -> int | str:
-    if space and len(space) > 1:
-        log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
-        return 1
-
     if task is None:
         task = "{''}"
 
@@ -141,10 +135,6 @@ def preprocess(
     dry_run: bool = False,
     options: Path | None = None,
 ) -> int | str:
-    if action == "preprocess" and task and len(task) > 1:
-        log.error(f"Only one task allowed for preprocessing. Got\n:{task}")
-        return 1
-
     cmd = generate_cmd(
         bids_dir=bids_dir,
         output_dir=output_dir,
@@ -229,8 +219,8 @@ def stats(
     output_dir: Path,
     analysis_level: str,
     action: str,
-    preproc_dir: Path,
-    model_file: Path,
+    preproc_dir: Path | None,
+    model_file: Path | None,
     verbosity: int = 2,
     participant_label: list[str] | None = None,
     fwhm: Any = 6,
@@ -246,10 +236,6 @@ def stats(
     keep_residuals: bool = False,
     options: Path | None = None,
 ) -> int | str:
-    if space and len(space) > 1:
-        log.error(f"Only one space allowed for statistical analysis. Got\n:{space}")
-        return 1
-
     cmd = generate_cmd(
         bids_dir=bids_dir,
         output_dir=output_dir,
@@ -281,7 +267,7 @@ def stats(
         cmd += f"{new_line}'keep_residuals', true"
     cmd = end_cmd(cmd)
 
-    log.info("Running statistics.")
+    log.info(f"Running {action}.")
 
     return cmd
 
@@ -308,63 +294,6 @@ def generate_cmd(
         options=options,
     )
     return cmd
-
-
-def cli(argv: Any = sys.argv) -> None:
-    parser = common_parser()
-
-    args, _ = parser.parse_known_args(argv[1:])
-
-    bids_dir = Path(args.bids_dir[0]).absolute()
-    output_dir = Path(args.output_dir[0]).absolute()
-    analysis_level = args.analysis_level[0]
-    action = args.action[0]
-    roi_atlas = args.roi_atlas[0]
-    bids_filter_file = (
-        Path(args.bids_filter_file[0]).absolute()
-        if args.bids_filter_file is not None
-        else None
-    )
-    preproc_dir = (
-        Path(args.preproc_dir[0]).absolute() if args.preproc_dir is not None else None
-    )
-    model_file = (
-        Path(args.model_file[0]).absolute() if args.model_file is not None else None
-    )
-    options = Path(args.options).absolute() if args.options is not None else None
-
-    return_code = bidspm(
-        bids_dir,
-        output_dir,
-        analysis_level,
-        action=action,
-        participant_label=args.participant_label,
-        verbosity=args.verbosity,
-        task=args.task,
-        space=args.space,
-        ignore=args.ignore,
-        fwhm=args.fwhm,
-        bids_filter_file=bids_filter_file,
-        dummy_scans=args.dummy_scans,
-        anat_only=args.anat_only,
-        skip_validation=args.skip_validation,
-        dry_run=args.dry_run,
-        preproc_dir=preproc_dir,
-        model_file=model_file,
-        roi_based=args.roi_based,
-        roi_atlas=roi_atlas,
-        roi_name=args.roi_name,
-        roi_dir=args.roi_dir,
-        concatenate=args.concatenate,
-        design_only=args.design_only,
-        keep_residuals=args.keep_residuals,
-        options=options,
-    )
-
-    if return_code == 1:
-        sys.exit(1)
-    else:
-        sys.exit(0)
 
 
 def bidspm(
@@ -394,13 +323,6 @@ def bidspm(
     keep_residuals: bool = False,
     options: Path | None = None,
 ) -> int:
-    if not bids_dir.is_dir():
-        log.error(f"The 'bids_dir' does not exist:\n\t{bids_dir}")
-        return 1
-
-    if preproc_dir is not None and not preproc_dir.is_dir():
-        log.error(f"The 'preproc_dir' does not exist:\n\t{preproc_dir}")
-        return 1
 
     if action == "default_model":
         cmd = default_model(
@@ -448,14 +370,6 @@ def bidspm(
         )
 
     elif action in {"stats", "contrasts", "results"}:
-        if preproc_dir is None or not preproc_dir.exists():
-            log.error(f"'preproc_dir' must be specified for stats. Got:\n{preproc_dir}")
-            return 1
-
-        if model_file is None or not model_file.exists():
-            log.error(f"'model_file' must be specified for stats. Got:\n{model_file}")
-            return 1
-
         cmd = stats(
             bids_dir=bids_dir,
             output_dir=output_dir,
@@ -477,11 +391,13 @@ def bidspm(
             keep_residuals=keep_residuals,
             options=options,
         )
-    else:
-        log.error(f"\nunknown action: {action}")
-        return 1
 
-    return cmd if isinstance(cmd, int) else run_command(cmd)
+    if isinstance(cmd, int):
+        return cmd
+
+    cmd = f" bidspm('init'); try; {cmd} catch;  exit; end;"
+
+    return run_command(cmd)
 
 
 def run_command(cmd: str, platform: str | None = None) -> int:
