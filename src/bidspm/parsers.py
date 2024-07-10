@@ -289,7 +289,7 @@ def common_parser() -> argparse.ArgumentParser:
         type=str,
         nargs=1,
         default="neuromorphometrics",
-        choices=SUPPORTED_ATLASES,
+        choices=list(SUPPORTED_ATLASES),
     )
 
     stats_only = parser.add_argument_group("stats only arguments")
