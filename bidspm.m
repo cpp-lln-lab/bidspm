@@ -112,7 +112,7 @@ function displayArguments(varargin)
 end
 
 function value = rootDir()
-  value = fullfile(fileparts(mfilename('fullpath')));
+  value = fileparts(mfilename('fullpath'));
 end
 
 %% low level actions

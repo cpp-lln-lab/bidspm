@@ -66,7 +66,7 @@ function test_setDirectories_inputs_outputs()
   %
   expected = defaultOptions();
 
-  baseDir = fullfile(fileparts(mfilename('fullpath')));
+  baseDir = fileparts(mfilename('fullpath'));
   expected.dir.raw = fullfile(baseDir, 'inputs', 'raw');
   expected.dir.derivatives = fullfile(baseDir, 'outputs', 'derivatives');
   expected.dir.preproc = fullfile(expected.dir.derivatives, 'bidspm-preproc');

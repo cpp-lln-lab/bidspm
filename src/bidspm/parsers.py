@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import json
 import logging
+from pathlib import Path
 
 from rich.logging import RichHandler
 from rich_argparse import RichHelpFormatter
@@ -9,6 +11,9 @@ from rich_argparse import RichHelpFormatter
 from ._version import __version__  # type ignore
 
 log = logging.getLogger("bidspm")
+
+with open(Path(__file__).parent / "data" / "allowed_actions.json") as f:
+    ALLOWED_ACTIONS = json.load(f)
 
 
 def bidspm_log(name: str = "bidspm") -> logging.Logger:
@@ -76,15 +81,7 @@ def common_parser() -> argparse.ArgumentParser:
         help="""
         Action to perform.
         """,
-        choices=[
-            "preprocess",
-            "smooth",
-            "default_model",
-            "create_roi",
-            "stats",
-            "contrasts",
-            "results",
-        ],
+        choices=ALLOWED_ACTIONS,
         required=True,
         type=str,
         nargs=1,
@@ -231,7 +228,7 @@ def common_parser() -> argparse.ArgumentParser:
         default=0,
     )
 
-    create_roi_only = parser.add_argument_group("create roi only arguments")
+    create_roi_only = parser.add_argument_group("create_roi and stats only arguments")
     create_roi_only.add_argument(
         "--roi_atlas",
         help="""

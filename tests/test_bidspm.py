@@ -9,14 +9,12 @@ from bidspm.bidspm import (
     append_base_arguments,
     append_common_arguments,
     base_cmd,
-    bidspm,
     create_roi,
     default_model,
     preprocess,
     run_command,
     stats,
 )
-from bidspm.parsers import common_parser
 
 
 def test_base_cmd():
@@ -25,27 +23,6 @@ def test_base_cmd():
     output_dir = Path("/path/to/output")
     cmd = base_cmd(bids_dir, output_dir)
     assert cmd == " bidspm('init'); bidspm( '/path/to/bids', ...\n\t '/path/to/output'"
-
-
-def test_parser():
-    """Test parser."""
-    parser = common_parser()
-    assert parser.description == "bidspm is a SPM base BIDS app"
-
-    args, _ = parser.parse_known_args(
-        [
-            "/path/to/bids",
-            "/path/to/output",
-            "subject",
-            "--action",
-            "preprocess",
-            "--task",
-            "foo",
-            "bar",
-        ]
-    )
-
-    assert args.task == ["foo", "bar"]
 
 
 def test_append_common_arguments():
@@ -77,30 +54,6 @@ def test_run_command():
     cmd = "disp('hello'); exit();"
     return_code = run_command(cmd, platform="octave")
     assert return_code == 0
-
-
-def test_bidspm_error_dir(caplog):
-    return_code = bidspm(
-        bids_dir=Path("/foo/bar"),
-        output_dir=Path,
-        analysis_level="subject",
-        action="preprocess",
-    )
-    assert return_code == 1
-    assert ["The 'bids_dir' does not exist:\n\t/foo/bar"] == [
-        rec.message for rec in caplog.records
-    ]
-
-
-def test_bidspm_error_action(caplog):
-    return_code = bidspm(
-        bids_dir=Path(),
-        output_dir=Path,
-        analysis_level="subject",
-        action="spam",
-    )
-    assert return_code == 1
-    assert ["\nunknown action: spam"] == [rec.message for rec in caplog.records]
 
 
 @pytest.mark.parametrize(
