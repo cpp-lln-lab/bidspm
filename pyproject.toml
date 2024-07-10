@@ -30,10 +30,8 @@ demo = [
     "octave-kernel"
 ]
 dev = [
-    "bidspm[demo,doc,style]",
+    "bidspm[demo,doc,style,test]",
     "cffconvert",
-    "coverage",
-    "pytest",
     "ruamel.yaml",
     'pandas'
 ]
@@ -53,16 +51,12 @@ doc = [
 ]
 docs = ["bidspm[doc]"]
 style = [
-    "black",
-    "codespell",
-    "flake8",
-    "flake8-docstrings",
-    "miss-hit",
-    "mypy",
     "pre-commit",
-    "reorder-python-imports",
-    "rstcheck",
     "sourcery"
+]
+test = [
+    "coverage",
+    "pytest"
 ]
 
 [project.scripts]
