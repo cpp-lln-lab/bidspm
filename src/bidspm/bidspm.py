@@ -186,7 +186,7 @@ def create_roi(
 ) -> str:
     roi_name = "{ '" + "', '".join(roi_name) + "' }" if roi_name is not None else None  # type: ignore
     if roi_dir is None:
-        roi_dir = Path()
+        roi_dir = output_dir
 
     cmd = generate_cmd(
         bids_dir=bids_dir,
