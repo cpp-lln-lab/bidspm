@@ -14,7 +14,7 @@ function bidsCreateROI(opt)
   %   opt.roi.atlas = 'wang';
   %   opt.roi.hemi = {'L', 'R'};
   %   opt.roi.name = {'V1v', 'V1d'};
-  %   opt.roi.space = {'IXI549Space''};
+  %   opt.roi.space = {'IXI549Space'};
   %
   %   bidsCreateROI(opt);
   %
