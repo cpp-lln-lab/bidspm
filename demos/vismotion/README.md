@@ -62,7 +62,7 @@ This will install the data:
 
 ```bash
 datalad install -d . \
-                -s git@gin.g-node.org:/cpp-lln-lab/Trento_VisMotionLocalizer_MR_raw.git \
+                -s git@gin.g-node.org:/cpp-lln-lab/Toronto_VisMotionLocalizer_MR_raw.git \
                 --recursive \
                 --jobs 12 \
                 inputs/raw
