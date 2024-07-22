@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import argparse
 import json
 import logging
+from argparse import ArgumentParser, _ArgumentGroup
 from pathlib import Path
 
 from rich.logging import RichHandler
@@ -39,8 +39,8 @@ def bidspm_log(name: str = "bidspm") -> logging.Logger:
     return logging.getLogger(name)
 
 
-def base_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
+def base_parser() -> ArgumentParser:
+    parser = ArgumentParser(
         description="bidspm is a SPM base BIDS app",
         epilog="""
         \n- all parameters use ``snake_case``,
@@ -89,7 +89,23 @@ def base_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def add_common_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
+def add_common_arguments(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
+    parser.add_argument(
+        "--participant_label",
+        help="""
+        The label(s) of the participant(s) that should be analyzed.
+        The label corresponds to sub-<participant_label> from the BIDS spec
+        (so it does not include "sub-").
+        If this parameter is not provided all subjects should be analyzed.
+        Multiple participants can be specified with a space separated list.
+        Can be a regular expression.
+        Example: ``'01', '03', '08'``.
+        """,
+        nargs="+",
+    )
+
     parser.add_argument(
         "--verbosity",
         help="""
@@ -120,7 +136,54 @@ def add_common_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentPa
     return parser
 
 
-def sub_command_parser() -> argparse.ArgumentParser:
+def add_common_stats_arguments(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
+    parser.add_argument(
+        "--model_file",
+        help="""
+        Fullpath to BIDS stats model.
+        """,
+        type=str,
+        nargs=1,
+    )
+    parser.add_argument(
+        "--preproc_dir",
+        help="""
+        Fullpath to the directory with the preprocessed data.
+        """,
+        type=str,
+        nargs=1,
+    )
+    parser = add_boilerplate_only(parser)
+    return parser
+
+
+def add_preproc_arguments(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
+    parser.add_argument(
+        "--anat_only",
+        help="""
+        If preprocessing should be done only on anatomical data.
+        """,
+        action="store_true",
+        default=False,
+    )
+    parser.add_argument(
+        "--dummy_scans",
+        help="""
+        Number of dummy scans to remove.
+        """,
+        type=int,
+        nargs=1,
+        default=0,
+    )
+    # parser = add_boilerplate_only(parser)
+    return parser
+
+
+def sub_command_parser() -> ArgumentParser:
     parser = base_parser()
     subparsers = parser.add_subparsers(
         dest="command",
@@ -141,11 +204,56 @@ def sub_command_parser() -> argparse.ArgumentParser:
         formatter_class=parser.formatter_class,
     )
     roi_parser = add_common_arguments(roi_parser)
+    roi_parser = add_boilerplate_only(roi_parser)
+
+    preproc_parser = subparsers.add_parser(
+        "preproc",
+        help="""Preprocessing""",
+        formatter_class=parser.formatter_class,
+    )
+    preproc_parser = add_task(preproc_parser)
+    preproc_parser = add_space(preproc_parser)
+
+    # %% STATS
+    stats_parser = subparsers.add_parser(
+        "stats",
+        help="""Create ROIs""",
+        formatter_class=parser.formatter_class,
+    )
+    stats_parser = add_common_arguments(stats_parser)
+    stats_parser = add_common_stats_arguments(stats_parser)
+    stats_parser = add_keep_residuals(stats_parser)
+    stats_parser = add_design_only(stats_parser)
+
+    contrasts_parser = subparsers.add_parser(
+        "contrasts",
+        help="""Create ROIs""",
+        formatter_class=parser.formatter_class,
+    )
+    contrasts_parser = add_common_arguments(contrasts_parser)
+    contrasts_parser = add_common_stats_arguments(contrasts_parser)
+    contrasts_parser.add_argument(
+        "--concatenate",
+        help="""
+        To create 4D image of all the beta and contrast images of the conditions
+        of interest included in the run level design matrix.
+        """,
+        action="store_true",
+        default=False,
+    )
+
+    results_parser = subparsers.add_parser(
+        "results",
+        help="""Create ROIs""",
+        formatter_class=parser.formatter_class,
+    )
+    results_parser = add_common_arguments(results_parser)
+    results_parser = add_common_stats_arguments(results_parser)
 
     return parser
 
 
-def common_parser() -> argparse.ArgumentParser:
+def common_parser() -> ArgumentParser:
     parser = base_parser()
 
     parser.add_argument(
@@ -160,24 +268,8 @@ def common_parser() -> argparse.ArgumentParser:
     )
 
     parser = add_common_arguments(parser)
-
-    parser.add_argument(
-        "--task",
-        help="""
-        Tasks of the input data.
-        """,
-        type=str,
-        nargs="+",
-    )
-    parser.add_argument(
-        "--space",
-        help="""
-        Space of the input data.
-        """,
-        default=["IXI549Space"],
-        type=str,
-        nargs="+",
-    )
+    parser = add_task(parser)
+    parser = add_space(parser)
     parser.add_argument(
         "--ignore",
         help="""
@@ -194,28 +286,35 @@ def common_parser() -> argparse.ArgumentParser:
         ],
         nargs="+",
     )
-    parser.add_argument(
-        "--participant_label",
-        help="""
-        The label(s) of the participant(s) that should be analyzed.
-        The label corresponds to sub-<participant_label> from the BIDS spec
-        (so it does not include "sub-").
-        If this parameter is not provided all subjects should be analyzed.
-        Multiple participants can be specified with a space separated list.
-        Can be a regular expression.
-        Example: ``'01', '03', '08'``.
-        """,
-        nargs="+",
-    )
-    parser.add_argument(
-        "--boilerplate_only",
-        help="""
-        When set to ``true`` this will only generate figures describing the raw data,
-        the methods section boilerplate.
-        """,
-        action="store_true",
-        default=False,
-    )
+
+    parser = add_dry_run(parser)
+
+    parser = add_fwhm(parser)
+
+    parser = add_skip_validation(parser)
+
+    parser = add_roi_dir(parser)
+    parser = add_roi_name(parser)
+
+    preprocess_only = parser.add_argument_group("preprocess only arguments")
+    preprocess_only = add_preproc_arguments(preprocess_only)
+
+    create_roi_only = parser.add_argument_group("create_roi and stats only arguments")
+    create_roi_only = add_roi_atlas(create_roi_only)
+
+    stats_only = parser.add_argument_group("stats only arguments")
+    stats_only = add_common_stats_arguments(stats_only)
+    stats_only = add_keep_residuals(stats_only)
+    stats_only = add_concatenate(stats_only)
+    stats_only = add_design_only(stats_only)
+    stats_only = add_roi_based(stats_only)
+
+    return parser
+
+
+def add_dry_run(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
     parser.add_argument(
         "--dry_run",
         help="""
@@ -225,7 +324,10 @@ def common_parser() -> argparse.ArgumentParser:
         action="store_true",
         default=False,
     )
+    return parser
 
+
+def add_fwhm(parser: ArgumentParser | _ArgumentGroup) -> ArgumentParser | _ArgumentGroup:
     parser.add_argument(
         "--fwhm",
         help="""
@@ -236,6 +338,12 @@ def common_parser() -> argparse.ArgumentParser:
         nargs=1,
         default=6.0,
     )
+    return parser
+
+
+def add_skip_validation(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
     parser.add_argument(
         "--skip_validation",
         help="""
@@ -244,6 +352,12 @@ def common_parser() -> argparse.ArgumentParser:
         action="store_true",
         default=False,
     )
+    return parser
+
+
+def add_roi_dir(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
     parser.add_argument(
         "--roi_dir",
         help="""
@@ -252,6 +366,12 @@ def common_parser() -> argparse.ArgumentParser:
         type=str,
         nargs=1,
     )
+    return parser
+
+
+def add_roi_name(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
     parser.add_argument(
         "--roi_name",
         help="""
@@ -260,28 +380,53 @@ def common_parser() -> argparse.ArgumentParser:
         """,
         nargs="+",
     )
+    return parser
 
-    preprocess_only = parser.add_argument_group("preprocess only arguments")
-    preprocess_only.add_argument(
-        "--anat_only",
+
+def add_task(parser: ArgumentParser | _ArgumentGroup) -> ArgumentParser | _ArgumentGroup:
+    parser.add_argument(
+        "--task",
         help="""
-        If preprocessing should be done only on anatomical data.
+        Tasks of the input data.
+        """,
+        type=str,
+        nargs="+",
+    )
+    return parser
+
+
+def add_space(parser: ArgumentParser | _ArgumentGroup) -> ArgumentParser | _ArgumentGroup:
+    parser.add_argument(
+        "--space",
+        help="""
+        Space of the input data.
+        """,
+        default=["IXI549Space"],
+        type=str,
+        nargs="+",
+    )
+    return parser
+
+
+def add_boilerplate_only(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
+    parser.add_argument(
+        "--boilerplate_only",
+        help="""
+        When set to ``true`` this will only generate figures describing the raw data,
+        the methods section boilerplate.
         """,
         action="store_true",
         default=False,
     )
-    preprocess_only.add_argument(
-        "--dummy_scans",
-        help="""
-        Number of dummy scans to remove.
-        """,
-        type=int,
-        nargs=1,
-        default=0,
-    )
+    return parser
 
-    create_roi_only = parser.add_argument_group("create_roi and stats only arguments")
-    create_roi_only.add_argument(
+
+def add_roi_atlas(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
+    parser.add_argument(
         "--roi_atlas",
         help="""
         Atlas to create the regions of interest from.
@@ -291,25 +436,13 @@ def common_parser() -> argparse.ArgumentParser:
         default="neuromorphometrics",
         choices=SUPPORTED_ATLASES,
     )
+    return parser
 
-    stats_only = parser.add_argument_group("stats only arguments")
-    stats_only.add_argument(
-        "--model_file",
-        help="""
-        Fullpath to BIDS stats model.
-        """,
-        type=str,
-        nargs=1,
-    )
-    stats_only.add_argument(
-        "--preproc_dir",
-        help="""
-        Fullpath to the directory with the preprocessed data.
-        """,
-        type=str,
-        nargs=1,
-    )
-    stats_only.add_argument(
+
+def add_keep_residuals(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
+    parser.add_argument(
         "--keep_residuals",
         help="""
         Keep GLM residuals.
@@ -317,7 +450,13 @@ def common_parser() -> argparse.ArgumentParser:
         action="store_true",
         default=False,
     )
-    stats_only.add_argument(
+    return parser
+
+
+def add_concatenate(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
+    parser.add_argument(
         "--concatenate",
         help="""
         To create 4D image of all the beta and contrast images of the conditions
@@ -326,7 +465,13 @@ def common_parser() -> argparse.ArgumentParser:
         action="store_true",
         default=False,
     )
-    stats_only.add_argument(
+    return parser
+
+
+def add_design_only(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
+    parser.add_argument(
         "--design_only",
         help="""
         To only specify the GLM without estimating it.
@@ -334,7 +479,13 @@ def common_parser() -> argparse.ArgumentParser:
         action="store_true",
         default=False,
     )
-    stats_only.add_argument(
+    return parser
+
+
+def add_roi_based(
+    parser: ArgumentParser | _ArgumentGroup,
+) -> ArgumentParser | _ArgumentGroup:
+    parser.add_argument(
         "--roi_based",
         help="""
         To run stats only in regions of interests.
@@ -342,12 +493,11 @@ def common_parser() -> argparse.ArgumentParser:
         action="store_true",
         default=False,
     )
-
     return parser
 
 
-def validate_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
+def validate_parser() -> ArgumentParser:
+    parser = ArgumentParser(
         description="validate bids stats model", formatter_class=RichHelpFormatter
     )
 
