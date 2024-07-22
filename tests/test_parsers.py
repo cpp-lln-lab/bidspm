@@ -44,6 +44,12 @@ def test_bms():
             "path_to_filter",
             "--options",
             "path_options",
+            "--models_dir",
+            "path_models_dir",
+            "--fwhm",
+            "9",
+            "--dry_run",
+            "--skip_validation",
         ]
     )
 
@@ -191,6 +197,7 @@ def test_stats(action):
             "path_to_model",
             "--preproc_dir",
             "path_to_preproc",
+            "--boilerplate_only",
         ]
     )
 

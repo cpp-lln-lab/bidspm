@@ -302,6 +302,17 @@ def sub_command_parser() -> ArgumentParser:
         formatter_class=parser.formatter_class,
     )
     bms_parser = add_common_arguments(bms_parser)
+    bms_parser.add_argument(
+        "--models_dir",
+        help="""
+        Fullpath to the directory with the models.
+        """,
+        type=str,
+        nargs=1,
+    )
+    bms_parser = add_fwhm(bms_parser)
+    bms_parser = add_dry_run(bms_parser)
+    bms_parser = add_skip_validation(bms_parser)
 
     return parser
 
