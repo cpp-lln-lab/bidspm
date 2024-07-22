@@ -24,8 +24,7 @@ def test_parser():
     assert args.task == ["foo", "bar"]
 
 
-@pytest.mark.parametrize("action", ["bms"])
-def test_bms(action):
+def test_bms():
     """Test sub commands parser."""
     parser = sub_command_parser()
     assert parser.description == "bidspm is a SPM base BIDS app"
@@ -35,7 +34,7 @@ def test_bms(action):
             "/path/to/bids",
             "/path/to/output",
             "subject",
-            action,
+            "bms",
             "--participant_label",
             "01",
             "02",
@@ -51,8 +50,47 @@ def test_bms(action):
     assert args.participant_label == ["01", "02"]
 
 
-@pytest.mark.parametrize("action", ["preprocess"])
-def test_preprocess(action):
+def test_create_roi():
+    """Test create_roi sub commands parser."""
+    parser = sub_command_parser()
+    assert parser.description == "bidspm is a SPM base BIDS app"
+
+    args = parser.parse_args(
+        [
+            "/path/to/bids",
+            "/path/to/output",
+            "subject",
+            "create_roi",
+            "--participant_label",
+            "01",
+            "02",
+            "--verbosity",
+            "3",
+            "--bids_filter_file",
+            "path_to_filter",
+            "--options",
+            "path_options",
+            "--space",
+            "IXI549Space",
+            "--boilerplate_only",
+            "--roi_dir",
+            "path_to_roi_dir",
+            "--preproc_dir",
+            "path_to_preproc_dir",
+            "--hemisphere",
+            "L",
+            "--roi_atlas",
+            "neuromorphometrics",
+            "--roi_name",
+            "V1",
+            "V2",
+        ]
+    )
+
+    assert args.participant_label == ["01", "02"]
+
+
+def test_preprocess():
     """Test sub commands parser."""
     parser = sub_command_parser()
     assert parser.description == "bidspm is a SPM base BIDS app"
@@ -62,7 +100,7 @@ def test_preprocess(action):
             "/path/to/bids",
             "/path/to/output",
             "subject",
-            action,
+            "preprocess",
             "--participant_label",
             "01",
             "02",

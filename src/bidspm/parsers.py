@@ -149,6 +149,12 @@ def add_common_stats_arguments(
         type=str,
         nargs=1,
     )
+    parser = add_preproc_dir(parser)
+    parser = add_boilerplate_only(parser)
+    return parser
+
+
+def add_preproc_dir(parser):
     parser.add_argument(
         "--preproc_dir",
         help="""
@@ -157,7 +163,6 @@ def add_common_stats_arguments(
         type=str,
         nargs=1,
     )
-    parser = add_boilerplate_only(parser)
     return parser
 
 
@@ -207,6 +212,19 @@ def sub_command_parser() -> ArgumentParser:
     )
     roi_parser = add_common_arguments(roi_parser)
     roi_parser = add_boilerplate_only(roi_parser)
+    roi_parser = add_space(roi_parser)
+    roi_parser = add_roi_dir(roi_parser)
+    roi_parser = add_roi_name(roi_parser)
+    roi_parser = add_roi_atlas(roi_parser)
+    roi_parser = add_preproc_dir(roi_parser)
+    roi_parser.add_argument(
+        "--hemisphere",
+        help="""
+        To specify steps to skip.
+        """,
+        choices=["L", "R"],
+        nargs="+",
+    )
 
     preproc_parser = subparsers.add_parser(
         "preprocess",
