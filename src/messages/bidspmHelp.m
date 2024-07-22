@@ -212,6 +212,7 @@ function bidspmHelp()
   % :type  preproc_dir:   path
   %
   %
+  %
   % **SMOOTH:**
   %
   % Copies files to output dir and smooths them.
@@ -260,7 +261,9 @@ function bidspmHelp()
   %          'bids_filter_file', struct([]), ...
   %          'verbosity', 2, ...
   %          'options', struct([]), ...
-  %          'ignore', {})
+  %          'options', struct([]), ...
+  %          'ignore', {}, ...
+  %          'skip_validation', false)
   %
   %
   % :param space:       Defaults to ``{}``
@@ -271,6 +274,10 @@ function bidspmHelp()
   %
   % :param ignore:      can be any of ``{'contrasts', 'transformations', 'dataset'}``
   % :type  ignore:      cell string
+  %
+  % :param skip_validation:   To skip bids dataset or bids stats model validation.
+  %                           Defaults to ``false``.
+  % :type  skip_validation:   logical
   %
   %
   %
@@ -370,6 +377,10 @@ function bidspmHelp()
   %                                Defaults to ``false``.
   % :type  use_dummy_regressor:    logical
   %
+  % :param skip_validation:   To skip bids dataset or bids stats model validation.
+  %                           Defaults to ``false``.
+  % :type  skip_validation:   logical
+  %
   %
   %
   % **BAYESIAN MODE SELECTION**
@@ -405,6 +416,11 @@ function bidspmHelp()
   %
   % :param fwhm:          smoothing level of the preprocessed data
   % :type  fwhm:          positive scalar
+  %
+  % :param skip_validation:   To skip bids dataset or bids stats model validation.
+  %                           Defaults to ``false``.
+  % :type  skip_validation:   logical
+  %
   %
   % .. note::
   %

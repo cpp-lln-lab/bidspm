@@ -90,6 +90,41 @@ def test_create_roi():
     assert args.participant_label == ["01", "02"]
 
 
+def test_default_model():
+    """Test default_model sub commands parser."""
+    parser = sub_command_parser()
+    assert parser.description == "bidspm is a SPM base BIDS app"
+
+    args = parser.parse_args(
+        [
+            "/path/to/bids",
+            "/path/to/output",
+            "subject",
+            "default_model",
+            "--participant_label",
+            "01",
+            "02",
+            "--verbosity",
+            "3",
+            "--bids_filter_file",
+            "path_to_filter",
+            "--options",
+            "path_options",
+            "--space",
+            "IXI549Space",
+            "--task",
+            "rest",
+            "--ignore",
+            "Transformations",
+            "Contrasts",
+            "Dataset",
+            "--skip_validation",
+        ]
+    )
+
+    assert args.participant_label == ["01", "02"]
+
+
 def test_preprocess():
     """Test sub commands parser."""
     parser = sub_command_parser()

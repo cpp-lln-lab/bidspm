@@ -19,5 +19,6 @@ function args = inputParserForCreateModel()
   %                - ``"Dataset"``
   %                Can be used to avoid generating certain objects of the BIDS stats model.
   addParameter(args, 'ignore', {}, isEmptyOrCellstr);
+  addParameter(args, 'skip_validation', false, isLogical);
 
 end

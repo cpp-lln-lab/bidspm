@@ -14,6 +14,8 @@ function cliDefaultModel(varargin)
     rethrow(ME);
   end
 
+  validate(args);
+
   opt = getOptionsFromCliArgument(args);
   if ~isfield(opt, 'taskName')
     opt.taskName = '';

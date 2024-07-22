@@ -204,6 +204,17 @@ def sub_command_parser() -> ArgumentParser:
         formatter_class=parser.formatter_class,
     )
     default_parser = add_common_arguments(default_parser)
+    default_parser = add_task(default_parser)
+    default_parser = add_space(default_parser)
+    default_parser = add_skip_validation(default_parser)
+    default_parser.add_argument(
+        "--ignore",
+        help="""
+        To specify steps to skip.
+        """,
+        choices=["Transformations", "Contrasts", "Dataset"],
+        nargs="+",
+    )
 
     roi_parser = subparsers.add_parser(
         "create_roi",
