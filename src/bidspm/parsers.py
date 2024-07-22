@@ -131,6 +131,8 @@ def add_common_arguments(
         help="""
         Path to JSON file containing bidspm options.
         """,
+        type=str,
+        nargs=1,
     )
 
     return parser
@@ -207,17 +209,31 @@ def sub_command_parser() -> ArgumentParser:
     roi_parser = add_boilerplate_only(roi_parser)
 
     preproc_parser = subparsers.add_parser(
-        "preproc",
+        "preprocess",
         help="""Preprocessing""",
         formatter_class=parser.formatter_class,
     )
+    preproc_parser = add_common_arguments(preproc_parser)
+    preproc_parser = add_boilerplate_only(preproc_parser)
+    preproc_parser = add_preproc_arguments(preproc_parser)
     preproc_parser = add_task(preproc_parser)
     preproc_parser = add_space(preproc_parser)
+    preproc_parser = add_fwhm(preproc_parser)
+    preproc_parser = add_dry_run(preproc_parser)
+    preproc_parser = add_skip_validation(preproc_parser)
+    preproc_parser.add_argument(
+        "--ignore",
+        help="""
+        To specify steps to skip.
+        """,
+        choices=["fieldmaps", "slicetiming", "unwarp", "qa"],
+        nargs="+",
+    )
 
     # %% STATS
     stats_parser = subparsers.add_parser(
         "stats",
-        help="""Create ROIs""",
+        help="""Run stats""",
         formatter_class=parser.formatter_class,
     )
     stats_parser = add_common_arguments(stats_parser)
@@ -227,7 +243,7 @@ def sub_command_parser() -> ArgumentParser:
 
     contrasts_parser = subparsers.add_parser(
         "contrasts",
-        help="""Create ROIs""",
+        help="""Compute contrasts""",
         formatter_class=parser.formatter_class,
     )
     contrasts_parser = add_common_arguments(contrasts_parser)
@@ -244,11 +260,19 @@ def sub_command_parser() -> ArgumentParser:
 
     results_parser = subparsers.add_parser(
         "results",
-        help="""Create ROIs""",
+        help="""Get results""",
         formatter_class=parser.formatter_class,
     )
     results_parser = add_common_arguments(results_parser)
     results_parser = add_common_stats_arguments(results_parser)
+
+    # BMS
+    bms_parser = subparsers.add_parser(
+        "bms",
+        help="""Run bayesian model selection""",
+        formatter_class=parser.formatter_class,
+    )
+    bms_parser = add_common_arguments(bms_parser)
 
     return parser
 
