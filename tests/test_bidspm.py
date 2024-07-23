@@ -219,6 +219,8 @@ def test_generate_command_default_model(analysis_level):
         ]
     )
 
+    assert "fwhm" not in cmd
+
     print()
     print(cmd)
 

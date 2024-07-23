@@ -38,13 +38,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - allow inter session contrasts to be computed at the subject level
   - improve naming of contrast to mention bids ses and run
 
+* [ENH] add Bayesian model selection to the python CLI #1292 @Remi-Gau
 
 ### Changed
+
 
 * [ENH] align specification of F contrasts on the BIDS stats model: they should now be specified as a 2D matrix and not a 1D vector. #1276 @Remi-Gau
 * [DOC] change theme and structure of the documentation #1256 @Remi-Gau
 * [REF] Refactor and update CLI in #1096 @Remi-Gau
 * [ENH] {func}`getData` only loads anat data when requested #1257 @Remi-Gau
+* [ENH] the python CLI now uses sub-commands instead of the named parameter `--action` #1292 @Remi-Gau
 
 ### Deprecated
 

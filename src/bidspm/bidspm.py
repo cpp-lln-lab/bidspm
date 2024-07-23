@@ -120,6 +120,7 @@ def default_model(
         participant_label=participant_label,
         skip_validation=skip_validation,
         bids_filter_file=bids_filter_file,
+        fwhm=None,
     )
     cmd = end_cmd(cmd)
 
