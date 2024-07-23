@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from bidspm.cli import cli, run_command
+from bidspm.cli import _run_command, cli
 
 
 def test_bidspm_error_dir(caplog):
@@ -20,5 +20,5 @@ def test_bidspm_error_dir(caplog):
 def test_run_command():
     """Test run_command."""
     cmd = "disp('hello'); exit();"
-    return_code = run_command(cmd, platform="octave")
+    return_code = _run_command(cmd, platform="octave")
     assert return_code == 0
