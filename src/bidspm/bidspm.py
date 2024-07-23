@@ -30,6 +30,11 @@ def end_cmd(cmd: str) -> str:
     return cmd
 
 
+def _cellify(content: list[str] | str) -> str:
+    """Turn list into the string for a matlab cell."""
+    return "{ '" + "', '".join(content) + "' }"
+
+
 def append_base_arguments(
     cmd: str,
     verbosity: str | int | None = None,
@@ -40,18 +45,18 @@ def append_base_arguments(
 ) -> str:
     """Append arguments common to all actions to the command string."""
     if task != "{''}":
-        task = "{ '" + "', '".join(task) + "' }" if task is not None else None
+        task = _cellify(task) if task is not None else None
 
-    space = "{ '" + "', '".join(space) + "' }" if space is not None else None  # type: ignore
-    ignore = "{ '" + "', '".join(ignore) + "' }" if ignore is not None else None  # type: ignore
+    space_cell: None | str = _cellify(space) if space is not None else None
+    ignore_cell: None | str = _cellify(ignore) if ignore is not None else None
 
     if verbosity is not None:
         cmd += f"{new_line}'verbosity', {verbosity}"
-    if space:
+    if space_cell:
         cmd += f"{new_line}'space', {space}"
     if task:
         cmd += f"{new_line}'task', {task}"
-    if ignore:
+    if ignore_cell:
         cmd += f"{new_line}'ignore', {ignore}"
     if options:
         cmd += f"{new_line}'options', '{str(options)}'"
@@ -64,14 +69,12 @@ def append_common_arguments(
     skip_validation: bool = False,
     dry_run: bool = False,
     fwhm: Any = 6,
-    participant_label: list[str] | None = None,
+    participant_label: str | list[str] | None = None,
     bids_filter_file: Path | None = None,
 ) -> str:
     """Append arguments common to preproc and stats."""
     participant_label = (
-        "{ '" + "', '".join(participant_label) + "' }"  # type: ignore
-        if participant_label is not None
-        else None
+        _cellify(participant_label) if participant_label is not None else None
     )
 
     if fwhm:
@@ -194,12 +197,12 @@ def create_roi(
     participant_label: list[str] | None = None,
     roi_dir: Path | None = None,
     roi_atlas: str | None = "neuromorphometrics",
-    roi_name: list[str] | None = None,
+    roi_name: str | list[str] | None = None,
     space: list[str] | None = None,
     bids_filter_file: Path | None = None,
     options: Path | None = None,
 ) -> str:
-    roi_name = "{ '" + "', '".join(roi_name) + "' }" if roi_name is not None else None  # type: ignore
+    roi_name = _cellify(roi_name) if roi_name is not None else None
     if roi_dir is None:
         roi_dir = output_dir
 
@@ -250,7 +253,7 @@ def stats(
     roi_based: bool = False,
     roi_dir: Path | None = None,
     roi_atlas: str | None = None,
-    roi_name: list[str] | None = None,
+    roi_name: str | list[str] | None = None,
     use_dummy_regressor: bool = False,
     concatenate: bool = False,
     design_only: bool = False,
@@ -283,7 +286,7 @@ def stats(
         cmd += f"{new_line}'roi_based', true"
         if roi_dir:
             cmd += f"{new_line}'roi_dir', '{roi_dir}'"
-        roi_name = "{ '" + "', '".join(roi_name) + "' }" if roi_name is not None else None  # type: ignore
+        roi_name = _cellify(roi_name) if roi_name is not None else None
         if roi_name:
             cmd += f"{new_line}'roi_name', {roi_name}"
     if concatenate:

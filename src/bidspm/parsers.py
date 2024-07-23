@@ -396,8 +396,9 @@ def _add_fwhm(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--fwhm",
         help="""
-        The full width at half maximum of the gaussian kernel to apply to the preprocessed data
-        or to use as inputs for the statistical analysis.
+The full width at half maximum of the gaussian kernel
+to apply to the preprocessed data
+or to use as inputs for the statistical analysis.
         """,
         type=float,
         nargs=1,
