@@ -8,7 +8,7 @@ from bidspm.cli import cli
 def test_bidspm_error_dir(caplog):
 
     with pytest.raises(SystemExit) as pytest_wrapped_e:
-        cli(["bidspm", "/foo/bar", str(Path()), "subject", "--action", "preprocess"])
+        cli(["bidspm", "/foo/bar", str(Path()), "subject", "preprocess"])
 
     assert pytest_wrapped_e.type == SystemExit
     assert pytest_wrapped_e.value.code == 66
@@ -19,7 +19,7 @@ def test_bidspm_error_dir(caplog):
 
 def test_bidspm_error_action(caplog):
     with pytest.raises(SystemExit) as pytest_wrapped_e:
-        cli(["bidspm", str(Path()), str(Path()), "subject", "--action", "bms"])
+        cli(["bidspm", str(Path()), str(Path()), "subject", "bms"])
 
     assert pytest_wrapped_e.type == SystemExit
     assert pytest_wrapped_e.value.code == 64

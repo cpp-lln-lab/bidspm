@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .bidspm import bidspm
-from .parsers import ALLOWED_ACTIONS, bidspm_log, common_parser, sub_command_parser
+from .parsers import ALLOWED_ACTIONS, bidspm_log, sub_command_parser
 
 log = bidspm_log(name="bidspm")
 
@@ -47,93 +47,106 @@ def validate_actions(action: str) -> None:
 
 
 def cli(argv: Any = sys.argv) -> None:
-    parser = common_parser()
+    parser = sub_command_parser()
 
-    args, _ = parser.parse_known_args(argv[1:])
+    args = parser.parse_args(argv[1:])
 
     bids_dir = Path(args.bids_dir[0]).absolute()
     output_dir = Path(args.output_dir[0]).absolute()
     analysis_level = args.analysis_level[0]
-    action = args.action[0]
-    roi_atlas = args.roi_atlas[0]
+
+    command = args.command
+    validate_actions(command)
+
     bids_filter_file = (
         Path(args.bids_filter_file[0]).absolute()
         if args.bids_filter_file is not None
         else None
     )
 
-    preproc_dir: Path | None = (
-        Path(args.preproc_dir[0]).absolute() if args.preproc_dir is not None else None
-    )
-    model_file: Path | None = (
-        Path(args.model_file[0]).absolute() if args.model_file is not None else None
-    )
     options: Path | None = (
         Path(args.options).absolute() if args.options is not None else None
     )
 
-    space = args.space
+    preproc_dir: Path | None = None
+    if preproc_dir := getattr(args, "preproc_dir", None):
+        preproc_dir = (
+            Path(args.preproc_dir[0]).absolute() if args.preproc_dir is not None else None
+        )
+    if preproc_dir is not None and not preproc_dir.is_dir():
+        log.error("The 'preproc_dir' does not exist:\n\t" f"{preproc_dir}")
+        exit(EXIT_CODES["NOINPUT"]["Value"])
 
-    task = args.task
+    if command in {"stats", "contrasts", "results", "default_model"} and (
+        args.space and len(args.space) > 1
+    ):
+        log.error(
+            "Only one space allowed for statistical analysis.\n" f"Got: {args.space}"
+        )
+        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
 
-    validate_actions(action)
+    model_file: Path | None = None
+    if model_file := getattr(args, "model_file", None):
+        model_file: Path | None = (
+            Path(args.model_file[0]).absolute() if args.model_file is not None else None
+        )
 
     if not bids_dir.is_dir():
         log.error("The 'bids_dir' does not exist:\n\t" f"{bids_dir}")
         exit(EXIT_CODES["NOINPUT"]["Value"])
 
-    if preproc_dir is not None and not preproc_dir.is_dir():
-        log.error("The 'preproc_dir' does not exist:\n\t" f"{preproc_dir}")
-        exit(EXIT_CODES["NOINPUT"]["Value"])
+    if command == "default_model":
+        return_code = bidspm(
+            bids_dir=bids_dir,
+            output_dir=output_dir,
+            analysis_level=analysis_level,
+            action=command,
+            verbosity=args.verbosity,
+            task=args.task,
+            space=args.space,
+            ignore=args.ignore,
+            options=options,
+            skip_validation=args.skip_validation,
+        )
 
-    if action in {"stats", "contrasts", "results"}:
-        if preproc_dir is None or not preproc_dir.exists():
-            log.error(
-                "'preproc_dir' must be specified for stats.\n" f"Got: {preproc_dir}"
-            )
+    elif command == "create_roi":
+        return_code = bidspm(
+            bids_dir=bids_dir,
+            output_dir=output_dir,
+            action=command,
+            preproc_dir=preproc_dir,
+            verbosity=args.verbosity,
+            participant_label=args.participant_label,
+            roi_dir=args.roi_dir,
+            roi_atlas=args.roi_atlas[0],
+            roi_name=args.roi_name,
+            space=args.space,
+            bids_filter_file=bids_filter_file,
+            options=options,
+        )
+
+    elif command in {"preprocess", "smooth"}:
+        if command == "preprocess" and args.task and len(args.task) > 1:
+            log.error("Only one task allowed for preprocessing.\n" f"Got: {args.task}")
             raise SystemExit(EXIT_CODES["USAGE"]["Value"])
 
-        if model_file is None or not model_file.exists():
-            log.error("'model_file' must be specified for stats.\n" f"Got: {model_file}")
-            raise SystemExit(EXIT_CODES["USAGE"]["Value"])
-
-    if action in {"stats", "contrasts", "results", "default_model"} and (
-        space and len(space) > 1
-    ):
-        log.error("Only one space allowed for statistical analysis.\n" f"Got: {space}")
-        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
-
-    if action == "preprocess" and task and len(task) > 1:
-        log.error("Only one task allowed for preprocessing.\n" f"Got: {task}")
-        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
-
-    return_code = bidspm(
-        bids_dir,
-        output_dir,
-        analysis_level,
-        action=action,
-        participant_label=args.participant_label,
-        verbosity=args.verbosity,
-        task=task,
-        space=space,
-        ignore=args.ignore,
-        fwhm=args.fwhm,
-        bids_filter_file=bids_filter_file,
-        dummy_scans=args.dummy_scans,
-        anat_only=args.anat_only,
-        skip_validation=args.skip_validation,
-        dry_run=args.dry_run,
-        preproc_dir=preproc_dir,
-        model_file=model_file,
-        roi_based=args.roi_based,
-        roi_atlas=roi_atlas,
-        roi_name=args.roi_name,
-        roi_dir=args.roi_dir,
-        concatenate=args.concatenate,
-        design_only=args.design_only,
-        keep_residuals=args.keep_residuals,
-        options=options,
-    )
+        return_code = bidspm(
+            bids_dir=bids_dir,
+            output_dir=output_dir,
+            action=command,
+            participant_label=args.participant_label,
+            verbosity=args.verbosity,
+            task=args.task,
+            space=args.space,
+            ignore=args.ignore,
+            fwhm=args.fwhm,
+            dummy_scans=args.dummy_scans,
+            skip_validation=args.skip_validation,
+            anat_only=args.anat_only,
+            bids_filter_file=bids_filter_file,
+            dry_run=args.dry_run,
+            options=options,
+        )
 
     if return_code == 1:
         raise SystemExit(EXIT_CODES["FAILURE"]["Value"])

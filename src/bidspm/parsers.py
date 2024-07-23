@@ -368,65 +368,6 @@ by a dummy regressor of ``NaN``.
     return parser
 
 
-def common_parser() -> ArgumentParser:
-    parser = base_parser()
-
-    parser.add_argument(
-        "--action",
-        help="""
-        Action to perform.
-        """,
-        choices=ALLOWED_ACTIONS,
-        required=True,
-        type=str,
-        nargs=1,
-    )
-
-    parser = add_common_arguments(parser)
-    parser = add_task(parser)
-    parser = add_space(parser)
-    parser.add_argument(
-        "--ignore",
-        help="""
-        To specify steps to skip.
-        """,
-        choices=[
-            "fieldmaps",
-            "slicetiming",
-            "unwarp",
-            "qa",
-            "contrasts",
-            "transformations",
-            "dataset",
-        ],
-        nargs="+",
-    )
-
-    parser = add_dry_run(parser)
-
-    parser = add_fwhm(parser)
-
-    parser = add_skip_validation(parser)
-
-    parser = add_roi_dir(parser)
-    parser = add_roi_name(parser)
-
-    preprocess_only = parser.add_argument_group("preprocess only arguments")
-    preprocess_only = add_preproc_arguments(preprocess_only)
-
-    create_roi_only = parser.add_argument_group("create_roi and stats only arguments")
-    create_roi_only = add_roi_atlas(create_roi_only)
-
-    stats_only = parser.add_argument_group("stats only arguments")
-    stats_only = add_common_stats_arguments(stats_only)
-    stats_only = add_keep_residuals(stats_only)
-    stats_only = add_concatenate(stats_only)
-    stats_only = add_design_only(stats_only)
-    stats_only = add_roi_based(stats_only)
-
-    return parser
-
-
 def add_dry_run(
     parser: ArgumentParser | _ArgumentGroup,
 ) -> ArgumentParser | _ArgumentGroup:
