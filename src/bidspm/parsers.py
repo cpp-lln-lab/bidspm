@@ -150,6 +150,7 @@ def add_common_stats_arguments(
         nargs=1,
     )
     parser = add_preproc_dir(parser)
+
     parser = add_boilerplate_only(parser)
     return parser
 
@@ -186,7 +187,6 @@ def add_preproc_arguments(
         nargs=1,
         default=0,
     )
-    # parser = add_boilerplate_only(parser)
     return parser
 
 
@@ -267,8 +267,48 @@ def sub_command_parser() -> ArgumentParser:
     )
     stats_parser = add_common_arguments(stats_parser)
     stats_parser = add_common_stats_arguments(stats_parser)
+    stats_parser = add_task(stats_parser)
+    stats_parser = add_space(stats_parser)
+    stats_parser = add_fwhm(stats_parser)
+    stats_parser = add_dry_run(stats_parser)
+    stats_parser = add_skip_validation(stats_parser)
     stats_parser = add_keep_residuals(stats_parser)
     stats_parser = add_design_only(stats_parser)
+    stats_parser.add_argument(
+        "--use_dummy_regressor",
+        help="""
+        If true any missing condition will be modelled
+by a dummy regressor of ``NaN``.
+        """,
+        action="store_true",
+        default=False,
+    )
+    stats_parser.add_argument(
+        "--ignore",
+        help="""
+        To specify steps to skip.
+        """,
+        choices=["qa"],
+        nargs="+",
+    )
+    stats_parser.add_argument(
+        "--roi_based",
+        help="""
+        Use to run a ROI-based analysis.
+        """,
+        action="store_true",
+        default=False,
+    )
+    stats_parser = add_roi_dir(stats_parser)
+    stats_parser = add_roi_name(stats_parser)
+    stats_parser.add_argument(
+        "--node_name",
+        help="""
+        Model node to run.
+        """,
+        type=str,
+        nargs=1,
+    )
 
     contrasts_parser = subparsers.add_parser(
         "contrasts",
@@ -277,6 +317,11 @@ def sub_command_parser() -> ArgumentParser:
     )
     contrasts_parser = add_common_arguments(contrasts_parser)
     contrasts_parser = add_common_stats_arguments(contrasts_parser)
+    contrasts_parser = add_task(contrasts_parser)
+    contrasts_parser = add_space(contrasts_parser)
+    contrasts_parser = add_fwhm(contrasts_parser)
+    contrasts_parser = add_dry_run(contrasts_parser)
+    contrasts_parser = add_skip_validation(contrasts_parser)
     contrasts_parser.add_argument(
         "--concatenate",
         help="""
@@ -294,6 +339,12 @@ def sub_command_parser() -> ArgumentParser:
     )
     results_parser = add_common_arguments(results_parser)
     results_parser = add_common_stats_arguments(results_parser)
+    results_parser = add_task(results_parser)
+    results_parser = add_space(results_parser)
+    results_parser = add_fwhm(results_parser)
+    results_parser = add_dry_run(results_parser)
+    results_parser = add_skip_validation(results_parser)
+    results_parser = add_roi_atlas(results_parser)
 
     # BMS
     bms_parser = subparsers.add_parser(

@@ -381,6 +381,9 @@ function bidspmHelp()
   %                           Defaults to ``false``.
   % :type  skip_validation:   logical
   %
+  % :param node_name:   Model node to run.
+  % :type  node_name:   char
+  %
   %
   %
   % **BAYESIAN MODE SELECTION**
