@@ -2,13 +2,9 @@
 from __future__ import annotations
 
 import json
-import subprocess
 from pathlib import Path
 from typing import Any
 
-from rich import print
-
-from .matlab import matlab
 from .parsers import bidspm_log, sub_command_parser
 
 with open(Path(__file__).parent / "data" / "exit_codes.json") as f:
@@ -469,48 +465,7 @@ def bidspm(
 
     cmd = f" bidspm('init'); try; {cmd} catch;  exit; end;"
 
-    return run_command(cmd)
-
-
-def run_command(cmd: str, platform: str | None = None) -> int:
-    print("\nRunning the following command:\n")
-    print(cmd.replace(";", ";\n"))
-    print()
-
-    # TODO exit matlab / octave on crash
-
-    if platform is None:
-        if Path(matlab()).exists():
-            platform = matlab()
-            cmd = cmd.replace(new_line, ", ")
-        else:
-            platform = "octave"
-
-    if platform == "octave":
-        completed_process = subprocess.run(
-            [
-                "octave",
-                "--no-gui",
-                "--no-window-system",
-                "--silent",
-                "--eval",
-                f"{cmd}",
-            ]
-        )
-
-    else:
-        completed_process = subprocess.run(
-            [
-                platform,
-                "-nodisplay",
-                "-nosplash",
-                "-nodesktop",
-                "-r",
-                f"{cmd}",
-            ]
-        )
-
-    return completed_process.returncode
+    return cmd
 
 
 def generate_command_default_model(argv: Any) -> str:

@@ -2,11 +2,15 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
 
-from .bidspm import bidspm
+from rich import print
+
+from .bidspm import bidspm, new_line
+from .matlab import matlab
 from .parsers import ALLOWED_ACTIONS, bidspm_log, sub_command_parser
 
 log = bidspm_log(name="bidspm")
@@ -87,7 +91,7 @@ def cli(argv: Any = sys.argv) -> None:
 
     model_file: Path | None = None
     if model_file := getattr(args, "model_file", None):
-        model_file: Path | None = (
+        model_file = (
             Path(args.model_file[0]).absolute() if args.model_file is not None else None
         )
 
@@ -96,7 +100,7 @@ def cli(argv: Any = sys.argv) -> None:
         exit(EXIT_CODES["NOINPUT"]["Value"])
 
     if command == "default_model":
-        return_code = bidspm(
+        cmd = bidspm(
             bids_dir=bids_dir,
             output_dir=output_dir,
             analysis_level=analysis_level,
@@ -110,7 +114,7 @@ def cli(argv: Any = sys.argv) -> None:
         )
 
     elif command == "create_roi":
-        return_code = bidspm(
+        cmd = bidspm(
             bids_dir=bids_dir,
             output_dir=output_dir,
             analysis_level=analysis_level,
@@ -127,7 +131,7 @@ def cli(argv: Any = sys.argv) -> None:
         )
 
     elif command == "smooth":
-        return_code = bidspm(
+        cmd = bidspm(
             bids_dir=bids_dir,
             output_dir=output_dir,
             analysis_level=analysis_level,
@@ -148,7 +152,7 @@ def cli(argv: Any = sys.argv) -> None:
             log.error("Only one task allowed for preprocessing.\n" f"Got: {args.task}")
             raise SystemExit(EXIT_CODES["USAGE"]["Value"])
 
-        return_code = bidspm(
+        cmd = bidspm(
             bids_dir=bids_dir,
             output_dir=output_dir,
             analysis_level=analysis_level,
@@ -168,7 +172,7 @@ def cli(argv: Any = sys.argv) -> None:
         )
 
     elif command == "stats":
-        return_code = bidspm(
+        cmd = bidspm(
             bids_dir=bids_dir,
             output_dir=output_dir,
             analysis_level=analysis_level,
@@ -193,7 +197,7 @@ def cli(argv: Any = sys.argv) -> None:
         )
 
     elif command == "contrasts":
-        return_code = bidspm(
+        cmd = bidspm(
             bids_dir=bids_dir,
             output_dir=output_dir,
             analysis_level=analysis_level,
@@ -214,7 +218,7 @@ def cli(argv: Any = sys.argv) -> None:
         )
 
     elif command == "results":
-        return_code = bidspm(
+        cmd = bidspm(
             bids_dir=bids_dir,
             output_dir=output_dir,
             analysis_level=analysis_level,
@@ -233,7 +237,53 @@ def cli(argv: Any = sys.argv) -> None:
             roi_atlas=args.roi_atlas[0],
         )
 
+    if isinstance(cmd, int):
+        sys.exit(cmd)
+
+    return_code = run_command(cmd)
+
     if return_code == 1:
         raise SystemExit(EXIT_CODES["FAILURE"]["Value"])
     else:
         sys.exit(EXIT_CODES["SUCCESS"]["Value"])
+
+
+def run_command(cmd: str, platform: str | None = None) -> int:
+    print("\nRunning the following command:\n")
+    print(cmd.replace(";", ";\n"))
+    print()
+
+    # TODO exit matlab / octave on crash
+
+    if platform is None:
+        if Path(matlab()).exists():
+            platform = matlab()
+            cmd = cmd.replace(new_line, ", ")
+        else:
+            platform = "octave"
+
+    if platform == "octave":
+        completed_process = subprocess.run(
+            [
+                "octave",
+                "--no-gui",
+                "--no-window-system",
+                "--silent",
+                "--eval",
+                f"{cmd}",
+            ]
+        )
+
+    else:
+        completed_process = subprocess.run(
+            [
+                platform,
+                "-nodisplay",
+                "-nosplash",
+                "-nodesktop",
+                "-r",
+                f"{cmd}",
+            ]
+        )
+
+    return completed_process.returncode
