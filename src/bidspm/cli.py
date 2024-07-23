@@ -113,6 +113,7 @@ def cli(argv: Any = sys.argv) -> None:
         return_code = bidspm(
             bids_dir=bids_dir,
             output_dir=output_dir,
+            analysis_level=analysis_level,
             action=command,
             preproc_dir=preproc_dir,
             verbosity=args.verbosity,
@@ -125,14 +126,32 @@ def cli(argv: Any = sys.argv) -> None:
             options=options,
         )
 
-    elif command in {"preprocess", "smooth"}:
-        if command == "preprocess" and args.task and len(args.task) > 1:
+    elif command == "smooth":
+        return_code = bidspm(
+            bids_dir=bids_dir,
+            output_dir=output_dir,
+            analysis_level=analysis_level,
+            action=command,
+            participant_label=args.participant_label,
+            verbosity=args.verbosity,
+            task=args.task,
+            space=args.space,
+            fwhm=args.fwhm,
+            anat_only=args.anat_only,
+            bids_filter_file=bids_filter_file,
+            dry_run=args.dry_run,
+            options=options,
+        )
+
+    elif command == "preprocess":
+        if args.task and len(args.task) > 1:
             log.error("Only one task allowed for preprocessing.\n" f"Got: {args.task}")
             raise SystemExit(EXIT_CODES["USAGE"]["Value"])
 
         return_code = bidspm(
             bids_dir=bids_dir,
             output_dir=output_dir,
+            analysis_level=analysis_level,
             action=command,
             participant_label=args.participant_label,
             verbosity=args.verbosity,
@@ -148,14 +167,73 @@ def cli(argv: Any = sys.argv) -> None:
             options=options,
         )
 
+    elif command == "stats":
+        return_code = bidspm(
+            bids_dir=bids_dir,
+            output_dir=output_dir,
+            analysis_level=analysis_level,
+            action=command,
+            preproc_dir=preproc_dir,
+            model_file=model_file,
+            verbosity=args.verbosity,
+            participant_label=args.participant_label,
+            task=args.task,
+            space=args.space,
+            ignore=args.ignore,
+            fwhm=args.fwhm,
+            skip_validation=args.skip_validation,
+            bids_filter_file=bids_filter_file,
+            dry_run=args.dry_run,
+            roi_based=args.roi_based,
+            roi_atlas=args.roi_atlas[0],
+            design_only=args.design_only,
+            keep_residuals=args.keep_residuals,
+            options=options,
+            concatenate=args.concatenate,
+        )
+
+    elif command == "contrasts":
+        return_code = bidspm(
+            bids_dir=bids_dir,
+            output_dir=output_dir,
+            analysis_level=analysis_level,
+            action=command,
+            preproc_dir=preproc_dir,
+            model_file=model_file,
+            verbosity=args.verbosity,
+            participant_label=args.participant_label,
+            task=args.task,
+            space=args.space,
+            fwhm=args.fwhm,
+            skip_validation=args.skip_validation,
+            bids_filter_file=bids_filter_file,
+            dry_run=args.dry_run,
+            roi_based=args.roi_based,
+            concatenate=args.concatenate,
+            options=options,
+        )
+
+    elif command == "results":
+        return_code = bidspm(
+            bids_dir=bids_dir,
+            output_dir=output_dir,
+            analysis_level=analysis_level,
+            action=command,
+            preproc_dir=preproc_dir,
+            model_file=model_file,
+            verbosity=args.verbosity,
+            participant_label=args.participant_label,
+            task=args.task,
+            space=args.space,
+            fwhm=args.fwhm,
+            skip_validation=args.skip_validation,
+            bids_filter_file=bids_filter_file,
+            dry_run=args.dry_run,
+            options=options,
+            roi_atlas=args.roi_atlas[0],
+        )
+
     if return_code == 1:
         raise SystemExit(EXIT_CODES["FAILURE"]["Value"])
     else:
         sys.exit(EXIT_CODES["SUCCESS"]["Value"])
-
-
-def new_cli(argv: Any = sys.argv) -> None:
-
-    parser = sub_command_parser()
-
-    args, _ = parser.parse_known_args(argv[1:])

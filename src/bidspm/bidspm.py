@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import json
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -8,7 +9,10 @@ from typing import Any
 from rich import print
 
 from .matlab import matlab
-from .parsers import bidspm_log
+from .parsers import bidspm_log, sub_command_parser
+
+with open(Path(__file__).parent / "data" / "exit_codes.json") as f:
+    EXIT_CODES = json.load(f)
 
 log = bidspm_log(name="bidspm")
 
@@ -92,9 +96,12 @@ def default_model(
     bids_dir: Path,
     output_dir: Path,
     analysis_level: str = "dataset",
+    participant_label: list[str] | None = None,
     verbosity: int = 2,
     space: list[str] | None = None,
     task: list[str] | str | None = None,
+    skip_validation: bool = False,
+    bids_filter_file: Path | None = None,
     ignore: list[str] | None = None,
     options: Path | None = None,
 ) -> int | str:
@@ -111,6 +118,12 @@ def default_model(
         task=task,
         ignore=ignore,
         options=options,
+    )
+    cmd = append_common_arguments(
+        cmd=cmd,
+        participant_label=participant_label,
+        skip_validation=skip_validation,
+        bids_filter_file=bids_filter_file,
     )
     cmd = end_cmd(cmd)
 
@@ -174,6 +187,7 @@ def preprocess(
 def create_roi(
     bids_dir: Path,
     output_dir: Path,
+    analysis_level="subject",
     preproc_dir: Path | None = None,
     verbosity: int = 2,
     participant_label: list[str] | None = None,
@@ -191,7 +205,7 @@ def create_roi(
     cmd = generate_cmd(
         bids_dir=bids_dir,
         output_dir=output_dir,
-        analysis_level="subject",
+        analysis_level=analysis_level,
         action="create_roi",
         verbosity=verbosity,
         space=space,
@@ -441,3 +455,84 @@ def run_command(cmd: str, platform: str | None = None) -> int:
         )
 
     return completed_process.returncode
+
+
+def generate_command_default_model(argv):
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    bids_filter_file = (
+        Path(args.bids_filter_file[0]).absolute()
+        if args.bids_filter_file is not None
+        else None
+    )
+    options: Path | None = (
+        Path(args.options[0]).absolute() if args.options is not None else None
+    )
+    cmd = default_model(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        bids_filter_file=bids_filter_file,
+        options=options,
+        task=args.task,
+        space=args.space,
+        skip_validation=args.skip_validation,
+        ignore=args.ignore,
+    )
+    return cmd
+
+
+def generate_command_create_roi(argv):
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    bids_filter_file = (
+        Path(args.bids_filter_file[0]).absolute()
+        if args.bids_filter_file is not None
+        else None
+    )
+    options: Path | None = (
+        Path(args.options[0]).absolute() if args.options is not None else None
+    )
+
+    preproc_dir = (
+        Path(args.preproc_dir[0]).absolute() if args.preproc_dir is not None else None
+    )
+    if preproc_dir is not None and not preproc_dir.is_dir():
+        log.error("The 'preproc_dir' does not exist:\n\t" f"{preproc_dir}")
+        exit(EXIT_CODES["NOINPUT"]["Value"])
+
+    if args.roi_dir is None:
+        roi_dir = None
+    else:
+        roi_dir = args.roi_dir[0]
+    if roi_dir is None:
+        roi_dir = Path(args.output_dir[0]).absolute()
+    else:
+        roi_dir = Path(roi_dir).absolute()
+
+    cmd = create_roi(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        preproc_dir=preproc_dir,
+        verbosity=_get_verbosity(args),
+        participant_label=args.participant_label,
+        roi_dir=roi_dir,
+        roi_atlas=args.roi_atlas,
+        roi_name=args.roi_name,
+        space=args.space,
+        bids_filter_file=bids_filter_file,
+        options=options,
+    )
+    return cmd
+
+
+def _get_verbosity(args):
+    if isinstance(args.verbosity, list):
+        return args.verbosity[0]
+    else:
+        return args.verbosity

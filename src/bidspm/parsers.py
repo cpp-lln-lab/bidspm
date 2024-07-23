@@ -43,10 +43,7 @@ def base_parser() -> ArgumentParser:
     parser = ArgumentParser(
         description="bidspm is a SPM base BIDS app",
         epilog="""
-        \n- all parameters use ``snake_case``,
-
-        \n- most "invalid" calls simply initialize bidspm.
-
+        All parameters use ``snake_case``.
         For a more readable version of this help section,
         see the online https://bidspm.readthedocs.io/en/latest/usage_notes.html.
         """,
@@ -150,7 +147,11 @@ def add_common_stats_arguments(
         nargs=1,
     )
     parser = add_preproc_dir(parser)
-
+    parser = add_task(parser)
+    parser = add_space(parser)
+    parser = add_fwhm(parser)
+    parser = add_dry_run(parser)
+    parser = add_skip_validation(parser)
     parser = add_boilerplate_only(parser)
     return parser
 
@@ -167,9 +168,7 @@ def add_preproc_dir(parser):
     return parser
 
 
-def add_preproc_arguments(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
+def add_anat_only(parser):
     parser.add_argument(
         "--anat_only",
         help="""
@@ -177,15 +176,6 @@ def add_preproc_arguments(
         """,
         action="store_true",
         default=False,
-    )
-    parser.add_argument(
-        "--dummy_scans",
-        help="""
-        Number of dummy scans to remove.
-        """,
-        type=int,
-        nargs=1,
-        default=0,
     )
     return parser
 
@@ -197,6 +187,49 @@ def sub_command_parser() -> ArgumentParser:
         help="Choose a subcommand",
         required=True,
     )
+
+    preproc_parser = subparsers.add_parser(
+        "preprocess",
+        help="""Preprocessing""",
+        formatter_class=parser.formatter_class,
+    )
+    preproc_parser = add_common_arguments(preproc_parser)
+    preproc_parser = add_boilerplate_only(preproc_parser)
+    parser = add_anat_only(parser)
+    parser.add_argument(
+        "--dummy_scans",
+        help="""
+        Number of dummy scans to remove.
+        """,
+        type=int,
+        nargs=1,
+        default=0,
+    )
+    preproc_parser = add_task(preproc_parser)
+    preproc_parser = add_space(preproc_parser)
+    preproc_parser = add_fwhm(preproc_parser)
+    preproc_parser = add_dry_run(preproc_parser)
+    preproc_parser = add_skip_validation(preproc_parser)
+    preproc_parser.add_argument(
+        "--ignore",
+        help="""
+        To specify steps to skip.
+        """,
+        choices=["fieldmaps", "slicetiming", "unwarp", "qa"],
+        nargs="+",
+    )
+
+    smooth_parser = subparsers.add_parser(
+        "smooth",
+        help="""Smooth""",
+        formatter_class=parser.formatter_class,
+    )
+    smooth_parser = add_common_arguments(smooth_parser)
+    smooth_parser = add_task(smooth_parser)
+    smooth_parser = add_space(smooth_parser)
+    smooth_parser = add_fwhm(smooth_parser)
+    smooth_parser = add_anat_only(smooth_parser)
+    smooth_parser = add_dry_run(smooth_parser)
 
     default_parser = subparsers.add_parser(
         "default_model",
@@ -225,7 +258,15 @@ def sub_command_parser() -> ArgumentParser:
     roi_parser = add_boilerplate_only(roi_parser)
     roi_parser = add_space(roi_parser)
     roi_parser = add_roi_dir(roi_parser)
-    roi_parser = add_roi_name(roi_parser)
+    roi_parser.add_argument(
+        "--roi_name",
+        help="""
+        Name of the roi to create. If the ROI does not exist in the atlas,
+        the list of available ROI will be returned in the error message.
+        """,
+        nargs="+",
+        required=True,
+    )
     roi_parser = add_roi_atlas(roi_parser)
     roi_parser = add_preproc_dir(roi_parser)
     roi_parser.add_argument(
@@ -237,41 +278,14 @@ def sub_command_parser() -> ArgumentParser:
         nargs="+",
     )
 
-    preproc_parser = subparsers.add_parser(
-        "preprocess",
-        help="""Preprocessing""",
-        formatter_class=parser.formatter_class,
-    )
-    preproc_parser = add_common_arguments(preproc_parser)
-    preproc_parser = add_boilerplate_only(preproc_parser)
-    preproc_parser = add_preproc_arguments(preproc_parser)
-    preproc_parser = add_task(preproc_parser)
-    preproc_parser = add_space(preproc_parser)
-    preproc_parser = add_fwhm(preproc_parser)
-    preproc_parser = add_dry_run(preproc_parser)
-    preproc_parser = add_skip_validation(preproc_parser)
-    preproc_parser.add_argument(
-        "--ignore",
-        help="""
-        To specify steps to skip.
-        """,
-        choices=["fieldmaps", "slicetiming", "unwarp", "qa"],
-        nargs="+",
-    )
-
     # %% STATS
     stats_parser = subparsers.add_parser(
         "stats",
-        help="""Run stats""",
+        help="""Specify and estimate GLM, compute contrasts and get results""",
         formatter_class=parser.formatter_class,
     )
     stats_parser = add_common_arguments(stats_parser)
     stats_parser = add_common_stats_arguments(stats_parser)
-    stats_parser = add_task(stats_parser)
-    stats_parser = add_space(stats_parser)
-    stats_parser = add_fwhm(stats_parser)
-    stats_parser = add_dry_run(stats_parser)
-    stats_parser = add_skip_validation(stats_parser)
     stats_parser = add_keep_residuals(stats_parser)
     stats_parser = add_design_only(stats_parser)
     stats_parser.add_argument(
@@ -300,7 +314,14 @@ by a dummy regressor of ``NaN``.
         default=False,
     )
     stats_parser = add_roi_dir(stats_parser)
-    stats_parser = add_roi_name(stats_parser)
+    stats_parser.add_argument(
+        "--roi_name",
+        help="""
+        Name of the roi to create. If the ROI does not exist in the atlas,
+        the list of available ROI will be returned in the error message.
+        """,
+        nargs="+",
+    )
     stats_parser.add_argument(
         "--node_name",
         help="""
@@ -309,19 +330,24 @@ by a dummy regressor of ``NaN``.
         type=str,
         nargs=1,
     )
+    stats_parser.add_argument(
+        "--concatenate",
+        help="""
+        To create 4D image of all the beta and contrast images of the conditions
+        of interest included in the run level design matrix.
+        """,
+        action="store_true",
+        default=False,
+    )
+    stats_parser = add_roi_atlas(stats_parser)
 
     contrasts_parser = subparsers.add_parser(
         "contrasts",
-        help="""Compute contrasts""",
+        help="""Compute contrasts and get results""",
         formatter_class=parser.formatter_class,
     )
     contrasts_parser = add_common_arguments(contrasts_parser)
     contrasts_parser = add_common_stats_arguments(contrasts_parser)
-    contrasts_parser = add_task(contrasts_parser)
-    contrasts_parser = add_space(contrasts_parser)
-    contrasts_parser = add_fwhm(contrasts_parser)
-    contrasts_parser = add_dry_run(contrasts_parser)
-    contrasts_parser = add_skip_validation(contrasts_parser)
     contrasts_parser.add_argument(
         "--concatenate",
         help="""
@@ -339,11 +365,6 @@ by a dummy regressor of ``NaN``.
     )
     results_parser = add_common_arguments(results_parser)
     results_parser = add_common_stats_arguments(results_parser)
-    results_parser = add_task(results_parser)
-    results_parser = add_space(results_parser)
-    results_parser = add_fwhm(results_parser)
-    results_parser = add_dry_run(results_parser)
-    results_parser = add_skip_validation(results_parser)
     results_parser = add_roi_atlas(results_parser)
 
     # BMS
@@ -421,20 +442,6 @@ def add_roi_dir(
         """,
         type=str,
         nargs=1,
-    )
-    return parser
-
-
-def add_roi_name(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
-    parser.add_argument(
-        "--roi_name",
-        help="""
-        Name of the roi to create. If the ROI does not exist in the atlas,
-        the list of available ROI will be returned in the error message.
-        """,
-        nargs="+",
     )
     return parser
 

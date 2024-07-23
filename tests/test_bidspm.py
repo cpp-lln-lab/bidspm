@@ -4,6 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+from rich import print
 
 from bidspm.bidspm import (
     append_base_arguments,
@@ -11,6 +12,8 @@ from bidspm.bidspm import (
     base_cmd,
     create_roi,
     default_model,
+    generate_command_create_roi,
+    generate_command_default_model,
     new_line,
     preprocess,
     run_command,
@@ -185,3 +188,112 @@ def test_create_roi():
         space=["MNI"],
         bids_filter_file=None,
     )
+
+
+@pytest.mark.parametrize("analysis_level", ["subject", "dataset"])
+def test_generate_command_default_model(analysis_level):
+    """Test default_model sub commands parser."""
+    cmd = generate_command_default_model(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            analysis_level,
+            "default_model",
+            "--participant_label",
+            "01",
+            "02",
+            "--verbosity",
+            "3",
+            "--bids_filter_file",
+            str((Path() / "filter.json").absolute()),
+            "--options",
+            str((Path() / "options.json").absolute()),
+            "--space",
+            "IXI549Space",
+            "--task",
+            "rest",
+            "--ignore",
+            "Transformations",
+            "Contrasts",
+            "Dataset",
+            "--skip_validation",
+        ]
+    )
+
+    print()
+    print(cmd)
+
+
+def test_generate_command_default_model_minimal():
+    """Test default_model sub commands parser."""
+    cmd = generate_command_default_model(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "default_model",
+        ]
+    )
+
+    print()
+    print(cmd)
+
+
+@pytest.mark.parametrize("analysis_level", ["subject", "dataset"])
+def test_generate_command_create_roi(analysis_level):
+    """Test default_model sub commands parser."""
+    cmd = generate_command_create_roi(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            analysis_level,
+            "create_roi",
+            "--participant_label",
+            "01",
+            "02",
+            "--verbosity",
+            "3",
+            "--bids_filter_file",
+            str((Path() / "filter.json").absolute()),
+            "--options",
+            str((Path() / "options.json").absolute()),
+            "--space",
+            "IXI549Space",
+            "--boilerplate_only",
+            "--roi_dir",
+            str(Path().absolute()),
+            "--preproc_dir",
+            str(Path().absolute()),
+            "--hemisphere",
+            "L",
+            "--roi_atlas",
+            "neuromorphometrics",
+            "--roi_name",
+            "V1",
+            "V2",
+        ]
+    )
+
+    print()
+    print(cmd)
+
+
+def test_generate_command_create_roi_minimal():
+    """Test default_model sub commands parser."""
+    cmd = generate_command_create_roi(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "create_roi",
+            "--roi_name",
+            "V1",
+        ]
+    )
+
+    print()
+    print(cmd)
