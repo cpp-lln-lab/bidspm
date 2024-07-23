@@ -39,7 +39,7 @@ def bidspm_log(name: str = "bidspm") -> logging.Logger:
     return logging.getLogger(name)
 
 
-def base_parser() -> ArgumentParser:
+def _base_parser() -> ArgumentParser:
     parser = ArgumentParser(
         description="bidspm is a SPM base BIDS app",
         epilog="""
@@ -86,7 +86,7 @@ def base_parser() -> ArgumentParser:
     return parser
 
 
-def add_common_arguments(
+def _add_common_arguments(
     parser: ArgumentParser,
 ) -> ArgumentParser:
     parser.add_argument(
@@ -135,7 +135,7 @@ def add_common_arguments(
     return parser
 
 
-def add_common_stats_arguments(
+def _add_common_stats_arguments(
     parser: ArgumentParser,
 ) -> ArgumentParser:
     parser.add_argument(
@@ -147,18 +147,18 @@ def add_common_stats_arguments(
         nargs=1,
         required=True,
     )
-    parser = add_preproc_dir(parser)
-    parser = add_task(parser)
-    parser = add_space(parser)
-    parser = add_fwhm(parser)
-    parser = add_dry_run(parser)
-    parser = add_skip_validation(parser)
-    parser = add_boilerplate_only(parser)
+    parser = _add_preproc_dir(parser)
+    parser = _add_task(parser)
+    parser = _add_space(parser)
+    parser = _add_fwhm(parser)
+    parser = _add_dry_run(parser)
+    parser = _add_skip_validation(parser)
+    parser = _add_boilerplate_only(parser)
     return parser
 
 
 def sub_command_parser() -> ArgumentParser:
-    parser = base_parser()
+    parser = _base_parser()
     subparsers = parser.add_subparsers(
         dest="command",
         help="Choose a subcommand",
@@ -170,9 +170,9 @@ def sub_command_parser() -> ArgumentParser:
         help="""Preprocessing""",
         formatter_class=parser.formatter_class,
     )
-    preproc_parser = add_common_arguments(preproc_parser)
-    preproc_parser = add_boilerplate_only(preproc_parser)
-    preproc_parser = add_anat_only(preproc_parser)
+    preproc_parser = _add_common_arguments(preproc_parser)
+    preproc_parser = _add_boilerplate_only(preproc_parser)
+    preproc_parser = _add_anat_only(preproc_parser)
     preproc_parser.add_argument(
         "--dummy_scans",
         help="""
@@ -182,11 +182,11 @@ def sub_command_parser() -> ArgumentParser:
         nargs=1,
         default=0,
     )
-    preproc_parser = add_task(preproc_parser)
-    preproc_parser = add_space(preproc_parser)
-    preproc_parser = add_fwhm(preproc_parser)
-    preproc_parser = add_dry_run(preproc_parser)
-    preproc_parser = add_skip_validation(preproc_parser)
+    preproc_parser = _add_task(preproc_parser)
+    preproc_parser = _add_space(preproc_parser)
+    preproc_parser = _add_fwhm(preproc_parser)
+    preproc_parser = _add_dry_run(preproc_parser)
+    preproc_parser = _add_skip_validation(preproc_parser)
     preproc_parser.add_argument(
         "--ignore",
         help="""
@@ -201,22 +201,22 @@ def sub_command_parser() -> ArgumentParser:
         help="""Smooth""",
         formatter_class=parser.formatter_class,
     )
-    smooth_parser = add_common_arguments(smooth_parser)
-    smooth_parser = add_task(smooth_parser)
-    smooth_parser = add_space(smooth_parser)
-    smooth_parser = add_fwhm(smooth_parser)
-    smooth_parser = add_anat_only(smooth_parser)
-    smooth_parser = add_dry_run(smooth_parser)
+    smooth_parser = _add_common_arguments(smooth_parser)
+    smooth_parser = _add_task(smooth_parser)
+    smooth_parser = _add_space(smooth_parser)
+    smooth_parser = _add_fwhm(smooth_parser)
+    smooth_parser = _add_anat_only(smooth_parser)
+    smooth_parser = _add_dry_run(smooth_parser)
 
     default_parser = subparsers.add_parser(
         "default_model",
         help="""Create default model""",
         formatter_class=parser.formatter_class,
     )
-    default_parser = add_common_arguments(default_parser)
-    default_parser = add_task(default_parser)
-    default_parser = add_space(default_parser)
-    default_parser = add_skip_validation(default_parser)
+    default_parser = _add_common_arguments(default_parser)
+    default_parser = _add_task(default_parser)
+    default_parser = _add_space(default_parser)
+    default_parser = _add_skip_validation(default_parser)
     default_parser.add_argument(
         "--ignore",
         help="""
@@ -231,10 +231,10 @@ def sub_command_parser() -> ArgumentParser:
         help="""Create ROIs""",
         formatter_class=parser.formatter_class,
     )
-    roi_parser = add_common_arguments(roi_parser)
-    roi_parser = add_boilerplate_only(roi_parser)
-    roi_parser = add_space(roi_parser)
-    roi_parser = add_roi_dir(roi_parser)
+    roi_parser = _add_common_arguments(roi_parser)
+    roi_parser = _add_boilerplate_only(roi_parser)
+    roi_parser = _add_space(roi_parser)
+    roi_parser = _add_roi_dir(roi_parser)
     roi_parser.add_argument(
         "--roi_name",
         help="""
@@ -244,8 +244,8 @@ def sub_command_parser() -> ArgumentParser:
         nargs="+",
         required=True,
     )
-    roi_parser = add_roi_atlas(roi_parser)
-    roi_parser = add_preproc_dir(roi_parser)
+    roi_parser = _add_roi_atlas(roi_parser)
+    roi_parser = _add_preproc_dir(roi_parser)
     roi_parser.add_argument(
         "--hemisphere",
         help="""
@@ -261,10 +261,10 @@ def sub_command_parser() -> ArgumentParser:
         help="""Specify and estimate GLM, compute contrasts and get results""",
         formatter_class=parser.formatter_class,
     )
-    stats_parser = add_common_arguments(stats_parser)
-    stats_parser = add_common_stats_arguments(stats_parser)
-    stats_parser = add_keep_residuals(stats_parser)
-    stats_parser = add_design_only(stats_parser)
+    stats_parser = _add_common_arguments(stats_parser)
+    stats_parser = _add_common_stats_arguments(stats_parser)
+    stats_parser = _add_keep_residuals(stats_parser)
+    stats_parser = _add_design_only(stats_parser)
     stats_parser.add_argument(
         "--use_dummy_regressor",
         help="""
@@ -290,7 +290,7 @@ by a dummy regressor of ``NaN``.
         action="store_true",
         default=False,
     )
-    stats_parser = add_roi_dir(stats_parser)
+    stats_parser = _add_roi_dir(stats_parser)
     stats_parser.add_argument(
         "--roi_name",
         help="""
@@ -316,15 +316,15 @@ by a dummy regressor of ``NaN``.
         action="store_true",
         default=False,
     )
-    stats_parser = add_roi_atlas(stats_parser)
+    stats_parser = _add_roi_atlas(stats_parser)
 
     contrasts_parser = subparsers.add_parser(
         "contrasts",
         help="""Compute contrasts and get results""",
         formatter_class=parser.formatter_class,
     )
-    contrasts_parser = add_common_arguments(contrasts_parser)
-    contrasts_parser = add_common_stats_arguments(contrasts_parser)
+    contrasts_parser = _add_common_arguments(contrasts_parser)
+    contrasts_parser = _add_common_stats_arguments(contrasts_parser)
     contrasts_parser.add_argument(
         "--concatenate",
         help="""
@@ -340,9 +340,9 @@ by a dummy regressor of ``NaN``.
         help="""Get results""",
         formatter_class=parser.formatter_class,
     )
-    results_parser = add_common_arguments(results_parser)
-    results_parser = add_common_stats_arguments(results_parser)
-    results_parser = add_roi_atlas(results_parser)
+    results_parser = _add_common_arguments(results_parser)
+    results_parser = _add_common_stats_arguments(results_parser)
+    results_parser = _add_roi_atlas(results_parser)
 
     # BMS
     bms_parser = subparsers.add_parser(
@@ -350,7 +350,7 @@ by a dummy regressor of ``NaN``.
         help="""Run bayesian model selection""",
         formatter_class=parser.formatter_class,
     )
-    bms_parser = add_common_arguments(bms_parser)
+    bms_parser = _add_common_arguments(bms_parser)
     bms_parser.add_argument(
         "--models_dir",
         help="""
@@ -360,14 +360,14 @@ by a dummy regressor of ``NaN``.
         nargs=1,
         required=True,
     )
-    bms_parser = add_fwhm(bms_parser)
-    bms_parser = add_dry_run(bms_parser)
-    bms_parser = add_skip_validation(bms_parser)
+    bms_parser = _add_fwhm(bms_parser)
+    bms_parser = _add_dry_run(bms_parser)
+    bms_parser = _add_skip_validation(bms_parser)
 
     return parser
 
 
-def add_dry_run(parser: ArgumentParser) -> ArgumentParser:
+def _add_dry_run(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--dry_run",
         help="""
@@ -380,7 +380,7 @@ def add_dry_run(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def add_preproc_dir(parser: ArgumentParser) -> ArgumentParser:
+def _add_preproc_dir(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--preproc_dir",
         help="""
@@ -392,7 +392,7 @@ def add_preproc_dir(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def add_fwhm(parser: ArgumentParser) -> ArgumentParser:
+def _add_fwhm(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--fwhm",
         help="""
@@ -406,7 +406,7 @@ def add_fwhm(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def add_skip_validation(parser: ArgumentParser) -> ArgumentParser:
+def _add_skip_validation(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--skip_validation",
         help="""
@@ -418,7 +418,7 @@ def add_skip_validation(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def add_roi_dir(parser: ArgumentParser) -> ArgumentParser:
+def _add_roi_dir(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--roi_dir",
         help="""
@@ -430,7 +430,7 @@ def add_roi_dir(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def add_task(parser: ArgumentParser) -> ArgumentParser:
+def _add_task(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--task",
         help="""
@@ -442,7 +442,7 @@ def add_task(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def add_space(parser: ArgumentParser) -> ArgumentParser:
+def _add_space(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--space",
         help="""
@@ -455,7 +455,7 @@ def add_space(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def add_boilerplate_only(parser: ArgumentParser) -> ArgumentParser:
+def _add_boilerplate_only(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--boilerplate_only",
         help="""
@@ -468,7 +468,7 @@ def add_boilerplate_only(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def add_roi_atlas(parser: ArgumentParser) -> ArgumentParser:
+def _add_roi_atlas(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--roi_atlas",
         help="""
@@ -482,7 +482,7 @@ def add_roi_atlas(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def add_keep_residuals(parser: ArgumentParser) -> ArgumentParser:
+def _add_keep_residuals(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--keep_residuals",
         help="""
@@ -494,20 +494,7 @@ def add_keep_residuals(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def add_concatenate(parser: ArgumentParser) -> ArgumentParser:
-    parser.add_argument(
-        "--concatenate",
-        help="""
-        To create 4D image of all the beta and contrast images of the conditions
-        of interest included in the run level design matrix.
-        """,
-        action="store_true",
-        default=False,
-    )
-    return parser
-
-
-def add_design_only(parser: ArgumentParser) -> ArgumentParser:
+def _add_design_only(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--design_only",
         help="""
@@ -519,19 +506,7 @@ def add_design_only(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def add_roi_based(parser: ArgumentParser) -> ArgumentParser:
-    parser.add_argument(
-        "--roi_based",
-        help="""
-        To run stats only in regions of interests.
-        """,
-        action="store_true",
-        default=False,
-    )
-    return parser
-
-
-def add_anat_only(parser: ArgumentParser) -> ArgumentParser:
+def _add_anat_only(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--anat_only",
         help="""

@@ -15,12 +15,3 @@ def test_bidspm_error_dir(caplog):
     assert ["The 'bids_dir' does not exist:\n\t/foo/bar"] == [
         rec.message for rec in caplog.records
     ]
-
-
-def test_bidspm_error_action(caplog):
-    with pytest.raises(SystemExit) as pytest_wrapped_e:
-        cli(["bidspm", str(Path()), str(Path()), "subject", "bms"])
-
-    assert pytest_wrapped_e.type == SystemExit
-    assert pytest_wrapped_e.value.code == 64
-    assert any("not yet implemented" in rec.message for rec in caplog.records)
