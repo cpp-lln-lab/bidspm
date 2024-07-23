@@ -9,7 +9,17 @@ from typing import Any
 
 from rich import print
 
-from .bidspm import bidspm, new_line
+from .bidspm import (
+    generate_command_bms,
+    generate_command_contrasts,
+    generate_command_create_roi,
+    generate_command_default_model,
+    generate_command_preprocess,
+    generate_command_results,
+    generate_command_smooth,
+    generate_command_stats,
+    new_line,
+)
 from .matlab import matlab
 from .parsers import ALLOWED_ACTIONS, bidspm_log, sub_command_parser
 
@@ -32,215 +42,40 @@ SUPPORTED_ACTIONS = set(ALLOWED_ACTIONS) - NOT_IMPLEMENTED
 ul_it = "\n\t- "
 
 
-def validate_actions(action: str) -> None:
-    if action not in ALLOWED_ACTIONS:
-        log.error(
-            f"Unknown action: '{action}'."
-            "\nSupported actions are:"
-            f"{ul_it}{ul_it.join(SUPPORTED_ACTIONS)}"
-        )
-        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
-
-    if action in NOT_IMPLEMENTED:
-        log.error(
-            f"The action '{action}' is not yet implemented."
-            "\nSupported actions are:"
-            f"{ul_it}{ul_it.join(SUPPORTED_ACTIONS)}"
-        )
-        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
-
-
 def cli(argv: Any = sys.argv) -> None:
     parser = sub_command_parser()
 
     args = parser.parse_args(argv[1:])
 
-    bids_dir = Path(args.bids_dir[0]).absolute()
-    output_dir = Path(args.output_dir[0]).absolute()
-    analysis_level = args.analysis_level[0]
+    _validate_bids_dir(args)
+    _validate_analysis_level(args)
+    _validate_actions(args.command)
+    _validate_task(args)
+    _validate_space(args)
 
-    command = args.command
-    validate_actions(command)
-
-    bids_filter_file = (
-        Path(args.bids_filter_file[0]).absolute()
-        if args.bids_filter_file is not None
-        else None
-    )
-
-    options: Path | None = (
-        Path(args.options).absolute() if args.options is not None else None
-    )
-
-    preproc_dir: Path | None = None
-    if preproc_dir := getattr(args, "preproc_dir", None):
-        preproc_dir = (
-            Path(args.preproc_dir[0]).absolute() if args.preproc_dir is not None else None
-        )
-    if preproc_dir is not None and not preproc_dir.is_dir():
-        log.error("The 'preproc_dir' does not exist:\n\t" f"{preproc_dir}")
-        exit(EXIT_CODES["NOINPUT"]["Value"])
-
-    if command in {"stats", "contrasts", "results", "default_model"} and (
-        args.space and len(args.space) > 1
-    ):
-        log.error(
-            "Only one space allowed for statistical analysis.\n" f"Got: {args.space}"
-        )
-        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
-
-    model_file: Path | None = None
-    if model_file := getattr(args, "model_file", None):
-        model_file = (
-            Path(args.model_file[0]).absolute() if args.model_file is not None else None
-        )
-
-    if not bids_dir.is_dir():
-        log.error("The 'bids_dir' does not exist:\n\t" f"{bids_dir}")
-        exit(EXIT_CODES["NOINPUT"]["Value"])
-
-    if command == "default_model":
-        cmd = bidspm(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            analysis_level=analysis_level,
-            action=command,
-            verbosity=args.verbosity,
-            task=args.task,
-            space=args.space,
-            ignore=args.ignore,
-            options=options,
-            skip_validation=args.skip_validation,
-        )
-
-    elif command == "create_roi":
-        cmd = bidspm(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            analysis_level=analysis_level,
-            action=command,
-            preproc_dir=preproc_dir,
-            verbosity=args.verbosity,
-            participant_label=args.participant_label,
-            roi_dir=args.roi_dir,
-            roi_atlas=args.roi_atlas[0],
-            roi_name=args.roi_name,
-            space=args.space,
-            bids_filter_file=bids_filter_file,
-            options=options,
-        )
-
-    elif command == "smooth":
-        cmd = bidspm(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            analysis_level=analysis_level,
-            action=command,
-            participant_label=args.participant_label,
-            verbosity=args.verbosity,
-            task=args.task,
-            space=args.space,
-            fwhm=args.fwhm,
-            anat_only=args.anat_only,
-            bids_filter_file=bids_filter_file,
-            dry_run=args.dry_run,
-            options=options,
-        )
-
-    elif command == "preprocess":
-        if args.task and len(args.task) > 1:
-            log.error("Only one task allowed for preprocessing.\n" f"Got: {args.task}")
-            raise SystemExit(EXIT_CODES["USAGE"]["Value"])
-
-        cmd = bidspm(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            analysis_level=analysis_level,
-            action=command,
-            participant_label=args.participant_label,
-            verbosity=args.verbosity,
-            task=args.task,
-            space=args.space,
-            ignore=args.ignore,
-            fwhm=args.fwhm,
-            dummy_scans=args.dummy_scans,
-            skip_validation=args.skip_validation,
-            anat_only=args.anat_only,
-            bids_filter_file=bids_filter_file,
-            dry_run=args.dry_run,
-            options=options,
-        )
-
-    elif command == "stats":
-        cmd = bidspm(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            analysis_level=analysis_level,
-            action=command,
-            preproc_dir=preproc_dir,
-            model_file=model_file,
-            verbosity=args.verbosity,
-            participant_label=args.participant_label,
-            task=args.task,
-            space=args.space,
-            ignore=args.ignore,
-            fwhm=args.fwhm,
-            skip_validation=args.skip_validation,
-            bids_filter_file=bids_filter_file,
-            dry_run=args.dry_run,
-            roi_based=args.roi_based,
-            roi_atlas=args.roi_atlas[0],
-            design_only=args.design_only,
-            keep_residuals=args.keep_residuals,
-            options=options,
-            concatenate=args.concatenate,
-        )
-
-    elif command == "contrasts":
-        cmd = bidspm(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            analysis_level=analysis_level,
-            action=command,
-            preproc_dir=preproc_dir,
-            model_file=model_file,
-            verbosity=args.verbosity,
-            participant_label=args.participant_label,
-            task=args.task,
-            space=args.space,
-            fwhm=args.fwhm,
-            skip_validation=args.skip_validation,
-            bids_filter_file=bids_filter_file,
-            dry_run=args.dry_run,
-            roi_based=args.roi_based,
-            concatenate=args.concatenate,
-            options=options,
-        )
-
-    elif command == "results":
-        cmd = bidspm(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            analysis_level=analysis_level,
-            action=command,
-            preproc_dir=preproc_dir,
-            model_file=model_file,
-            verbosity=args.verbosity,
-            participant_label=args.participant_label,
-            task=args.task,
-            space=args.space,
-            fwhm=args.fwhm,
-            skip_validation=args.skip_validation,
-            bids_filter_file=bids_filter_file,
-            dry_run=args.dry_run,
-            options=options,
-            roi_atlas=args.roi_atlas[0],
-        )
+    if args.command == "default_model":
+        cmd = generate_command_default_model(argv)
+    elif args.command == "create_roi":
+        cmd = generate_command_create_roi(argv)
+    elif args.command == "smooth":
+        cmd = generate_command_smooth(argv)
+    elif args.command == "preprocess":
+        cmd = generate_command_preprocess(argv)
+    elif args.command == "stats":
+        cmd = generate_command_stats(argv)
+    elif args.command == "contrasts":
+        cmd = generate_command_contrasts(argv)
+    elif args.command == "results":
+        cmd = generate_command_results(argv)
+    elif args.command == "bms":
+        cmd = generate_command_bms(argv)
 
     if isinstance(cmd, int):
-        sys.exit(cmd)
+        raise SystemExit(cmd)
 
-    return_code = run_command(cmd)
+    cmd = f" bidspm('init'); try; {cmd} catch;  exit; end;"
+
+    return_code = _run_command(cmd)
 
     if return_code == 1:
         raise SystemExit(EXIT_CODES["FAILURE"]["Value"])
@@ -248,7 +83,7 @@ def cli(argv: Any = sys.argv) -> None:
         sys.exit(EXIT_CODES["SUCCESS"]["Value"])
 
 
-def run_command(cmd: str, platform: str | None = None) -> int:
+def _run_command(cmd: str, platform: str | None = None) -> int:
     print("\nRunning the following command:\n")
     print(cmd.replace(";", ";\n"))
     print()
@@ -287,3 +122,53 @@ def run_command(cmd: str, platform: str | None = None) -> int:
         )
 
     return completed_process.returncode
+
+
+def _validate_actions(action: str) -> None:
+    if action not in ALLOWED_ACTIONS:
+        log.error(
+            f"Unknown action: '{action}'."
+            "\nSupported actions are:"
+            f"{ul_it}{ul_it.join(SUPPORTED_ACTIONS)}"
+        )
+        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
+
+    if action in NOT_IMPLEMENTED:
+        log.error(
+            f"The action '{action}' is not yet implemented."
+            "\nSupported actions are:"
+            f"{ul_it}{ul_it.join(SUPPORTED_ACTIONS)}"
+        )
+        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
+
+
+def _validate_bids_dir(args: Any) -> None:
+    bids_dir = Path(args.bids_dir[0]).absolute()
+    if not bids_dir.is_dir():
+        log.error("The 'bids_dir' does not exist:\n\t" f"{bids_dir}")
+        raise SystemExit(EXIT_CODES["NOINPUT"]["Value"])
+
+
+def _validate_space(args: Any) -> None:
+    if args.command in {"stats", "contrasts", "results", "default_model", "bms"} and (
+        args.space and len(args.space) > 1
+    ):
+        log.error(
+            "Only one space allowed for statistical analysis.\n" f"Got: {args.space}"
+        )
+        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
+
+
+def _validate_analysis_level(args: Any) -> None:
+    if args.command in {"smooth", "preprocess"} and args.analysis_level[0] != "subject":
+        log.error(
+            f"'analysis_level' can only be 'subject' for {args.command}.\n"
+            f"Got: {args.analysis_level[0]}"
+        )
+        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
+
+
+def _validate_task(args: Any) -> None:
+    if args.command in {"preprocess"} and args.task and len(args.task) > 1:
+        log.error("Only one task allowed for preprocessing.\n" f"Got: {args.task}")
+        raise SystemExit(EXIT_CODES["USAGE"]["Value"])

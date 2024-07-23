@@ -366,109 +366,7 @@ def generate_cmd(
     return cmd
 
 
-def bidspm(
-    bids_dir: Path,
-    output_dir: Path,
-    analysis_level: str,
-    action: str,
-    participant_label: list[str] | None = None,
-    verbosity: int = 2,
-    task: list[str] | None = None,
-    space: list[str] | None = None,
-    ignore: list[str] | None = None,
-    fwhm: Any = None,
-    bids_filter_file: Path | None = None,
-    dummy_scans: int | None = 0,
-    anat_only: bool = False,
-    skip_validation: bool = False,
-    dry_run: bool = False,
-    preproc_dir: Path | None = None,
-    model_file: Path | None = None,
-    roi_based: bool = False,
-    roi_atlas: str | None = None,
-    roi_name: list[str] | None = None,
-    roi_dir: Path | None = None,
-    concatenate: bool = False,
-    design_only: bool = False,
-    keep_residuals: bool = False,
-    options: Path | None = None,
-) -> int:
-
-    if action == "default_model":
-        cmd = default_model(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            analysis_level=analysis_level,
-            verbosity=verbosity,
-            task=task,
-            space=space,
-            ignore=ignore,
-            options=options,
-        )
-    elif action in {"preprocess", "smooth"}:
-        cmd = preprocess(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            action=action,
-            participant_label=participant_label,
-            verbosity=verbosity,
-            task=task,
-            space=space,
-            ignore=ignore,
-            fwhm=fwhm,
-            dummy_scans=dummy_scans,
-            skip_validation=skip_validation,
-            anat_only=anat_only,
-            bids_filter_file=bids_filter_file,
-            dry_run=dry_run,
-            options=options,
-        )
-    elif action in {"create_roi"}:
-        cmd = create_roi(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            preproc_dir=preproc_dir,
-            verbosity=verbosity,
-            participant_label=participant_label,
-            roi_dir=roi_dir,
-            roi_atlas=roi_atlas,
-            roi_name=roi_name,
-            space=space,
-            bids_filter_file=bids_filter_file,
-            options=options,
-        )
-    elif action in {"stats", "contrasts", "results"}:
-        cmd = stats(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            analysis_level=analysis_level,
-            action=action,
-            preproc_dir=preproc_dir,
-            model_file=model_file,
-            verbosity=verbosity,
-            participant_label=participant_label,
-            space=space,
-            ignore=ignore,
-            fwhm=fwhm,
-            skip_validation=skip_validation,
-            bids_filter_file=bids_filter_file,
-            dry_run=dry_run,
-            roi_based=roi_based,
-            concatenate=concatenate,
-            design_only=design_only,
-            keep_residuals=keep_residuals,
-            options=options,
-        )
-
-    if isinstance(cmd, int):
-        return cmd
-
-    cmd = f" bidspm('init'); try; {cmd} catch;  exit; end;"
-
-    return cmd
-
-
-def generate_command_default_model(argv: Any) -> str:
+def generate_command_default_model(argv: Any) -> int | str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
@@ -515,16 +413,9 @@ def generate_command_create_roi(argv: Any) -> str:
     return cmd
 
 
-def generate_command_smooth(argv: Any) -> str:
+def generate_command_smooth(argv: Any) -> int | str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
-
-    if args.analysis_level[0] != "subject":
-        log.error(
-            "'analysis_level' can only be 'subject' for smoothing.\n"
-            f"Got: {args.analysis_level[0]}"
-        )
-        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
 
     cmd = preprocess(
         bids_dir=Path(args.bids_dir[0]).absolute(),
@@ -544,20 +435,9 @@ def generate_command_smooth(argv: Any) -> str:
     return cmd
 
 
-def generate_command_preprocess(argv: Any) -> str:
+def generate_command_preprocess(argv: Any) -> int | str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
-
-    if args.task and len(args.task) > 1:
-        log.error("Only one task allowed for preprocessing.\n" f"Got: {args.task}")
-        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
-
-    if args.analysis_level[0] != "subject":
-        log.error(
-            "'analysis_level' can only be 'subject' for preprocessing.\n"
-            f"Got: {args.analysis_level[0]}"
-        )
-        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
 
     cmd = preprocess(
         bids_dir=Path(args.bids_dir[0]).absolute(),
@@ -581,7 +461,7 @@ def generate_command_preprocess(argv: Any) -> str:
     return cmd
 
 
-def generate_command_stats(argv: Any) -> str:
+def generate_command_stats(argv: Any) -> int | str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
@@ -627,7 +507,7 @@ def generate_command_stats(argv: Any) -> str:
     return cmd
 
 
-def generate_command_contrasts(argv: Any) -> str:
+def generate_command_contrasts(argv: Any) -> int | str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
@@ -655,7 +535,7 @@ def generate_command_contrasts(argv: Any) -> str:
     return cmd
 
 
-def generate_command_results(argv: Any) -> str:
+def generate_command_results(argv: Any) -> int | str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
@@ -683,7 +563,7 @@ def generate_command_results(argv: Any) -> str:
     return cmd
 
 
-def generate_command_bms(argv: Any) -> str:
+def generate_command_bms(argv: Any) -> int | str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
