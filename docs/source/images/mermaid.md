@@ -17,4 +17,4 @@ graph TD
     batch_02 --> E[SPM12]
     end
 
-    CLI -->|--action results\n--participant-label 01 02\n--model_file smdl.json| bidsResults
+    CLI -->|results\n--participant-label 01 02\n--model_file smdl.json| bidsResults

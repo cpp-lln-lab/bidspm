@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from bidspm.cli import cli
+from bidspm.cli import cli, run_command
 
 
 def test_bidspm_error_dir(caplog):
@@ -15,3 +15,10 @@ def test_bidspm_error_dir(caplog):
     assert ["The 'bids_dir' does not exist:\n\t/foo/bar"] == [
         rec.message for rec in caplog.records
     ]
+
+
+def test_run_command():
+    """Test run_command."""
+    cmd = "disp('hello'); exit();"
+    return_code = run_command(cmd, platform="octave")
+    assert return_code == 0

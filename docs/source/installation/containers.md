@@ -48,7 +48,7 @@ docker run -it --rm \
         /derivatives \
         subject \
         --task auditory \
-        --action preprocess \
+        preprocess \
         --fwhm 8
 ```
 
@@ -68,7 +68,7 @@ docker run -it --rm \
         /raw \
         /derivatives \
         subject \
-        --action stats \
+        stats \
         --preproc_dir /derivatives/bidspm-preproc \
         --model_file /models/smdl.json \
         --fwhm 8

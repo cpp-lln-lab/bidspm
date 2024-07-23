@@ -22,7 +22,6 @@ from bidspm.bidspm import (
     generate_command_stats,
     new_line,
     preprocess,
-    run_command,
     stats,
 )
 
@@ -57,13 +56,6 @@ def test_append_base_arguments():
         f"{new_line}'verbosity', 0{new_line}'space', {'{'} 'foo', 'bar' {'}'}"
         f"{new_line}'task', {'{'} 'spam', 'eggs' {'}'}{new_line}'ignore', {'{'} 'nii' {'}'}"
     )
-
-
-def test_run_command():
-    """Test run_command."""
-    cmd = "disp('hello'); exit();"
-    return_code = run_command(cmd, platform="octave")
-    assert return_code == 0
 
 
 @pytest.mark.parametrize(

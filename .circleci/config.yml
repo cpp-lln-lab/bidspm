@@ -113,7 +113,7 @@ jobs:
                           /bids_dataset \
                           /outputs/ds000001 \
                           subject \
-                          --action default_model \
+                          default_model \
                           --task balloonanalogrisktask \
                           --space MNI152NLin2009cAsym \
                           --verbosity 3
@@ -130,7 +130,7 @@ jobs:
                           /bids_dataset \
                           /outputs/ds000001 \
                           dataset \
-                          --action default_model \
+                          default_model \
                           --task balloonanalogrisktask \
                           --space MNI152NLin2009cAsym \
                           --verbosity 3
@@ -150,7 +150,7 @@ jobs:
                           /outputs/ds000001 \
                           /outputs/ds000001 \
                           dataset \
-                          --action create_roi \
+                          create_roi \
                           --roi_atlas wang \
                           --roi_name V1v V1d \
                           --space IXI549Space \
@@ -190,7 +190,7 @@ jobs:
                           /bids_dataset \
                           /outputs/ds000001 \
                           subject \
-                          --action smooth \
+                          smooth \
                           --task balloonanalogrisktask \
                           --participant_label 01 02 \
                           --space MNI152NLin2009cAsym \
@@ -212,7 +212,7 @@ jobs:
                           /bids_dataset \
                           /outputs/ds000001 \
                           subject \
-                          --action stats \
+                          stats \
                           --preproc_dir /outputs/ds000001/derivatives/bidspm-preproc \
                           --model_file /models/model-balloonanalogrisktaskDefault_smdl.json \
                           --ignore slicetiming \
@@ -235,7 +235,7 @@ jobs:
                           /bids_dataset \
                           /outputs/ds000001 \
                           dataset \
-                          --action stats \
+                          stats \
                           --preproc_dir /outputs/ds000001/derivatives/bidspm-preproc \
                           --model_file /models/model-balloonanalogrisktaskDefault_smdl.json \
                           --space MNI152NLin2009cAsym \
