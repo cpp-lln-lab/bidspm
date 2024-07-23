@@ -157,7 +157,7 @@ def add_common_stats_arguments(
     return parser
 
 
-def add_preproc_dir(parser):
+def add_preproc_dir(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--preproc_dir",
         help="""
@@ -169,7 +169,7 @@ def add_preproc_dir(parser):
     return parser
 
 
-def add_anat_only(parser):
+def add_anat_only(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--anat_only",
         help="""

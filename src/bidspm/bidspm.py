@@ -36,7 +36,7 @@ def end_cmd(cmd: str) -> str:
 
 def append_base_arguments(
     cmd: str,
-    verbosity: int | None = None,
+    verbosity: str | int | None = None,
     space: list[str] | None = None,
     task: list[str] | str | None = None,
     ignore: list[str] | None = None,
@@ -97,7 +97,7 @@ def default_model(
     output_dir: Path,
     analysis_level: str = "dataset",
     participant_label: list[str] | None = None,
-    verbosity: int = 2,
+    verbosity: str | int = 2,
     space: list[str] | None = None,
     task: list[str] | str | None = None,
     skip_validation: bool = False,
@@ -136,11 +136,11 @@ def preprocess(
     bids_dir: Path,
     output_dir: Path,
     action: str,
-    analysis_level="subject",
-    verbosity: int = 2,
+    analysis_level: str = "subject",
+    verbosity: str | int = 2,
     participant_label: list[str] | None = None,
     fwhm: Any = 6,
-    dummy_scans: int | None = None,
+    dummy_scans: str | int | None = None,
     space: list[str] | None = None,
     task: list[str] | None = None,
     ignore: list[str] | None = None,
@@ -191,9 +191,9 @@ def preprocess(
 def create_roi(
     bids_dir: Path,
     output_dir: Path,
-    analysis_level="subject",
+    analysis_level: str = "subject",
     preproc_dir: Path | None = None,
-    verbosity: int = 2,
+    verbosity: str | int = 2,
     participant_label: list[str] | None = None,
     roi_dir: Path | None = None,
     roi_atlas: str | None = "neuromorphometrics",
@@ -241,7 +241,7 @@ def stats(
     action: str,
     preproc_dir: Path | None,
     model_file: Path | None,
-    verbosity: int = 2,
+    verbosity: str | int = 2,
     participant_label: list[str] | None = None,
     fwhm: Any = 6,
     space: list[str] | None = None,
@@ -251,6 +251,10 @@ def stats(
     bids_filter_file: Path | None = None,
     dry_run: bool = False,
     roi_based: bool = False,
+    roi_dir: Path | None = None,
+    roi_atlas: str | None = None,
+    roi_name: list[str] | None = None,
+    use_dummy_regressor: bool = False,
     concatenate: bool = False,
     design_only: bool = False,
     keep_residuals: bool = False,
@@ -280,6 +284,11 @@ def stats(
     cmd += f"{new_line}'model_file', '{model_file}'"
     if roi_based:
         cmd += f"{new_line}'roi_based', true"
+        if roi_dir:
+            cmd += f"{new_line}'roi_dir', '{roi_dir}'"
+        roi_name = "{ '" + "', '".join(roi_name) + "' }" if roi_name is not None else None  # type: ignore
+        if roi_name:
+            cmd += f"{new_line}'roi_name', {roi_name}"
     if concatenate:
         cmd += f"{new_line}'concatenate', true"
     if design_only:
@@ -288,6 +297,10 @@ def stats(
         cmd += f"{new_line}'keep_residuals', true"
     if boilerplate_only:
         cmd += f"{new_line}'boilerplate_only', true"
+    if use_dummy_regressor:
+        cmd += f"{new_line}'use_dummy_regressor', true"
+    if roi_atlas:
+        cmd += f"{new_line}'roi_atlas', '{roi_atlas}'"
     cmd = end_cmd(cmd)
 
     log.info(f"Running {action}.")
@@ -300,7 +313,7 @@ def generate_cmd(
     output_dir: Path,
     analysis_level: str,
     action: str,
-    verbosity: int = 2,
+    verbosity: str | int = 2,
     space: list[str] | None = None,
     task: list[str] | str | None = None,
     ignore: list[str] | None = None,
@@ -462,7 +475,7 @@ def run_command(cmd: str, platform: str | None = None) -> int:
     return completed_process.returncode
 
 
-def generate_command_default_model(argv):
+def generate_command_default_model(argv: Any) -> str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
@@ -482,7 +495,7 @@ def generate_command_default_model(argv):
     return cmd
 
 
-def generate_command_create_roi(argv):
+def generate_command_create_roi(argv: Any) -> str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
@@ -500,7 +513,7 @@ def generate_command_create_roi(argv):
         verbosity=_get_verbosity(args),
         participant_label=args.participant_label,
         roi_dir=roi_dir,
-        roi_atlas=args.roi_atlas,
+        roi_atlas=_get_roi_atlas(args),
         roi_name=args.roi_name,
         space=args.space,
         bids_filter_file=_get_bids_filter_file(args),
@@ -509,7 +522,7 @@ def generate_command_create_roi(argv):
     return cmd
 
 
-def generate_command_smooth(argv):
+def generate_command_smooth(argv: Any) -> str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
@@ -538,7 +551,7 @@ def generate_command_smooth(argv):
     return cmd
 
 
-def generate_command_preprocess(argv):
+def generate_command_preprocess(argv: Any) -> str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
@@ -575,7 +588,53 @@ def generate_command_preprocess(argv):
     return cmd
 
 
-def generate_command_contrasts(argv):
+def generate_command_stats(argv: Any) -> str:
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    preproc_dir = _get_preproc_dir(args)
+    if preproc_dir is None:
+        log.error("No 'preproc_dir' was provided.")
+        exit(EXIT_CODES["NOINPUT"]["Value"])
+    if preproc_dir is not None and not preproc_dir.is_dir():
+        log.error("The 'preproc_dir' does not exist:\n\t" f"{preproc_dir}")
+        exit(EXIT_CODES["NOINPUT"]["Value"])
+
+    roi_name = None
+    roi_dir = None
+    if args.roi_based:
+        roi_name = args.roi_name
+        roi_dir = Path(args.roi_dir[0]).absolute()
+
+    cmd = stats(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        action="stats",
+        preproc_dir=preproc_dir,
+        model_file=Path(args.model_file[0]).absolute(),
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        space=args.space,
+        fwhm=_get_fwhm(args),
+        skip_validation=args.skip_validation,
+        bids_filter_file=_get_bids_filter_file(args),
+        dry_run=args.dry_run,
+        concatenate=args.concatenate,
+        options=_get_options(args),
+        design_only=args.design_only,
+        use_dummy_regressor=args.use_dummy_regressor,
+        keep_residuals=args.keep_residuals,
+        ignore=args.ignore,
+        roi_based=args.roi_based,
+        roi_name=roi_name,
+        roi_dir=roi_dir,
+        roi_atlas=_get_roi_atlas(args),
+    )
+    return cmd
+
+
+def generate_command_contrasts(argv: Any) -> str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
@@ -603,32 +662,67 @@ def generate_command_contrasts(argv):
     return cmd
 
 
-def _get_verbosity(args):
+def generate_command_results(argv: Any) -> str:
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    preproc_dir = _get_preproc_dir(args)
+    if preproc_dir is None:
+        preproc_dir = Path().absolute()
+
+    cmd = stats(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        action="results",
+        preproc_dir=preproc_dir,
+        model_file=Path(args.model_file[0]).absolute(),
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        space=args.space,
+        fwhm=_get_fwhm(args),
+        skip_validation=args.skip_validation,
+        bids_filter_file=_get_bids_filter_file(args),
+        dry_run=args.dry_run,
+        options=_get_options(args),
+        roi_atlas=_get_roi_atlas(args),
+    )
+    return cmd
+
+
+def _get_verbosity(args: Any) -> str | int:
     if isinstance(args.verbosity, list):
         return args.verbosity[0]
     else:
         return args.verbosity
 
 
-def _get_fwhm(args):
+def _get_roi_atlas(args: Any) -> str:
+    if isinstance(args.roi_atlas, list):
+        return args.roi_atlas[0]
+    else:
+        return args.roi_atlas
+
+
+def _get_fwhm(args: Any) -> str | int:
     if isinstance(args.fwhm, list):
         return args.fwhm[0]
     else:
         return args.fwhm
 
 
-def _get_dummy_scans(args):
+def _get_dummy_scans(args: Any) -> int | str:
     if isinstance(args.dummy_scans, list):
         return args.dummy_scans[0]
     else:
         return args.dummy_scans
 
 
-def _get_options(args) -> Path | None:
+def _get_options(args: Any) -> Path | None:
     return Path(args.options[0]).absolute() if args.options is not None else None
 
 
-def _get_bids_filter_file(args):
+def _get_bids_filter_file(args: Any) -> Path | None:
     return (
         Path(args.bids_filter_file[0]).absolute()
         if args.bids_filter_file is not None
@@ -636,8 +730,5 @@ def _get_bids_filter_file(args):
     )
 
 
-def _get_preproc_dir(args):
+def _get_preproc_dir(args: Any) -> Path | None:
     return Path(args.preproc_dir[0]).absolute() if args.preproc_dir is not None else None
-    # if preproc_dir is not None and not preproc_dir.is_dir():
-    #     log.error("The 'preproc_dir' does not exist:\n\t" f"{preproc_dir}")
-    # exit(EXIT_CODES["NOINPUT"]["Value"])

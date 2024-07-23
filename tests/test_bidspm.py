@@ -16,7 +16,9 @@ from bidspm.bidspm import (
     generate_command_create_roi,
     generate_command_default_model,
     generate_command_preprocess,
+    generate_command_results,
     generate_command_smooth,
+    generate_command_stats,
     new_line,
     preprocess,
     run_command,
@@ -462,3 +464,125 @@ def test_generate_command_contrasts_minimal():
 
     print()
     print(cmd)
+
+
+def test_generate_command_stats():
+    """Test default_model sub commands parser."""
+    cmd = generate_command_stats(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "stats",
+            "--participant_label",
+            "01",
+            "02",
+            "--verbosity",
+            "3",
+            "--bids_filter_file",
+            str((Path() / "filter.json").absolute()),
+            "--options",
+            str((Path() / "options.json").absolute()),
+            "--model_file",
+            str((Path() / "model.json").absolute()),
+            "--preproc_dir",
+            str(Path().absolute()),
+            "--boilerplate_only",
+            "--space",
+            "IXI549Space",
+            "--task",
+            "rest",
+            "--fwhm",
+            "8",
+            "--dry_run",
+            "--skip_validation",
+            "--concatenate",
+            "--design_only",
+            "--keep_residuals",
+            "--use_dummy_regressor",
+            "--roi_based",
+            "--roi_dir",
+            "path_to_rois",
+            "--roi_name",
+            "V1",
+            "V3",
+            "--ignore",
+            "qa",
+            "--roi_atlas",
+            "wang",
+        ]
+    )
+
+    print()
+    print(cmd)
+
+    assert "design_only" in cmd
+    assert "ignore" in cmd
+    assert "roi_atlas" in cmd
+    assert "roi_name" in cmd
+    assert "use_dummy_regressor" in cmd
+    assert "keep_residuals" in cmd
+    assert "concatenate" in cmd
+
+
+def test_generate_command_stats_minimal():
+    """Test default_model sub commands parser."""
+    cmd = generate_command_stats(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "stats",
+            "--model_file",
+            str((Path() / "model.json").absolute()),
+            "--preproc_dir",
+            str(Path().absolute()),
+        ]
+    )
+
+    print()
+    print(cmd)
+
+
+def test_generate_command_results():
+    """Test default_model sub commands parser."""
+    cmd = generate_command_results(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "results",
+            "--participant_label",
+            "01",
+            "02",
+            "--verbosity",
+            "3",
+            "--bids_filter_file",
+            str((Path() / "filter.json").absolute()),
+            "--options",
+            str((Path() / "options.json").absolute()),
+            "--model_file",
+            str((Path() / "model.json").absolute()),
+            "--preproc_dir",
+            str(Path().absolute()),
+            "--boilerplate_only",
+            "--space",
+            "IXI549Space",
+            "--task",
+            "rest",
+            "--fwhm",
+            "8",
+            "--dry_run",
+            "--skip_validation",
+            "--roi_atlas",
+            "wang",
+        ]
+    )
+
+    print()
+    print(cmd)
+
+    assert "roi_atlas" in cmd
