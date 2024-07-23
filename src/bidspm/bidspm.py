@@ -136,6 +136,7 @@ def preprocess(
     bids_dir: Path,
     output_dir: Path,
     action: str,
+    analysis_level="subject",
     verbosity: int = 2,
     participant_label: list[str] | None = None,
     fwhm: Any = 6,
@@ -148,11 +149,12 @@ def preprocess(
     bids_filter_file: Path | None = None,
     dry_run: bool = False,
     options: Path | None = None,
+    boilerplate_only: bool = False,
 ) -> int | str:
     cmd = generate_cmd(
         bids_dir=bids_dir,
         output_dir=output_dir,
-        analysis_level="subject",
+        analysis_level=analysis_level,
         action=action,
         verbosity=verbosity,
         space=space,
@@ -172,6 +174,8 @@ def preprocess(
         cmd += f"{new_line}'anat_only', true"
     if dummy_scans:
         cmd += f"{new_line}'dummy_scans', {dummy_scans}"
+    if boilerplate_only:
+        cmd += f"{new_line}'boilerplate_only', true"
     cmd = end_cmd(cmd)
 
     if action == "preprocess":
@@ -251,6 +255,7 @@ def stats(
     design_only: bool = False,
     keep_residuals: bool = False,
     options: Path | None = None,
+    boilerplate_only: bool = False,
 ) -> int | str:
     cmd = generate_cmd(
         bids_dir=bids_dir,
@@ -281,6 +286,8 @@ def stats(
         cmd += f"{new_line}'design_only', true"
     if keep_residuals:
         cmd += f"{new_line}'keep_residuals', true"
+    if boilerplate_only:
+        cmd += f"{new_line}'boilerplate_only', true"
     cmd = end_cmd(cmd)
 
     log.info(f"Running {action}.")
@@ -351,7 +358,6 @@ def bidspm(
             ignore=ignore,
             options=options,
         )
-
     elif action in {"preprocess", "smooth"}:
         cmd = preprocess(
             bids_dir=bids_dir,
@@ -384,7 +390,6 @@ def bidspm(
             bids_filter_file=bids_filter_file,
             options=options,
         )
-
     elif action in {"stats", "contrasts", "results"}:
         cmd = stats(
             bids_dir=bids_dir,
@@ -461,22 +466,14 @@ def generate_command_default_model(argv):
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
-    bids_filter_file = (
-        Path(args.bids_filter_file[0]).absolute()
-        if args.bids_filter_file is not None
-        else None
-    )
-    options: Path | None = (
-        Path(args.options[0]).absolute() if args.options is not None else None
-    )
     cmd = default_model(
         bids_dir=Path(args.bids_dir[0]).absolute(),
         output_dir=Path(args.output_dir[0]).absolute(),
         analysis_level=args.analysis_level[0],
         participant_label=args.participant_label,
         verbosity=_get_verbosity(args),
-        bids_filter_file=bids_filter_file,
-        options=options,
+        bids_filter_file=_get_bids_filter_file(args),
+        options=_get_options(args),
         task=args.task,
         space=args.space,
         skip_validation=args.skip_validation,
@@ -489,44 +486,119 @@ def generate_command_create_roi(argv):
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
-    bids_filter_file = (
-        Path(args.bids_filter_file[0]).absolute()
-        if args.bids_filter_file is not None
-        else None
-    )
-    options: Path | None = (
-        Path(args.options[0]).absolute() if args.options is not None else None
-    )
-
-    preproc_dir = (
-        Path(args.preproc_dir[0]).absolute() if args.preproc_dir is not None else None
-    )
-    if preproc_dir is not None and not preproc_dir.is_dir():
-        log.error("The 'preproc_dir' does not exist:\n\t" f"{preproc_dir}")
-        exit(EXIT_CODES["NOINPUT"]["Value"])
-
-    if args.roi_dir is None:
-        roi_dir = None
+    if args.roi_dir is None or args.roi_dir[0] is None:
+        roi_dir = args.output_dir[0]
     else:
         roi_dir = args.roi_dir[0]
-    if roi_dir is None:
-        roi_dir = Path(args.output_dir[0]).absolute()
-    else:
-        roi_dir = Path(roi_dir).absolute()
+    roi_dir = Path(roi_dir).absolute()
 
     cmd = create_roi(
         bids_dir=Path(args.bids_dir[0]).absolute(),
         output_dir=Path(args.output_dir[0]).absolute(),
         analysis_level=args.analysis_level[0],
-        preproc_dir=preproc_dir,
+        preproc_dir=_get_preproc_dir(args),
         verbosity=_get_verbosity(args),
         participant_label=args.participant_label,
         roi_dir=roi_dir,
         roi_atlas=args.roi_atlas,
         roi_name=args.roi_name,
         space=args.space,
-        bids_filter_file=bids_filter_file,
-        options=options,
+        bids_filter_file=_get_bids_filter_file(args),
+        options=_get_options(args),
+    )
+    return cmd
+
+
+def generate_command_smooth(argv):
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    if args.analysis_level[0] != "subject":
+        log.error(
+            "'analysis_level' can only be 'subject' for smoothing.\n"
+            f"Got: {args.analysis_level[0]}"
+        )
+        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
+
+    cmd = preprocess(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        action="smooth",
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        task=args.task,
+        space=args.space,
+        fwhm=_get_fwhm(args),
+        anat_only=args.anat_only,
+        bids_filter_file=_get_bids_filter_file(args),
+        dry_run=args.dry_run,
+        options=_get_options(args),
+    )
+    return cmd
+
+
+def generate_command_preprocess(argv):
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    if args.task and len(args.task) > 1:
+        log.error("Only one task allowed for preprocessing.\n" f"Got: {args.task}")
+        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
+
+    if args.analysis_level[0] != "subject":
+        log.error(
+            "'analysis_level' can only be 'subject' for preprocessing.\n"
+            f"Got: {args.analysis_level[0]}"
+        )
+        raise SystemExit(EXIT_CODES["USAGE"]["Value"])
+
+    cmd = preprocess(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        action="preprocess",
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        task=args.task,
+        space=args.space,
+        fwhm=_get_fwhm(args),
+        anat_only=args.anat_only,
+        bids_filter_file=_get_bids_filter_file(args),
+        dry_run=args.dry_run,
+        options=_get_options(args),
+        ignore=args.ignore,
+        boilerplate_only=args.boilerplate_only,
+        dummy_scans=_get_dummy_scans(args),
+        skip_validation=args.skip_validation,
+    )
+    return cmd
+
+
+def generate_command_contrasts(argv):
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    preproc_dir = _get_preproc_dir(args)
+    if preproc_dir is None:
+        preproc_dir = Path().absolute()
+
+    cmd = stats(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        action="contrasts",
+        preproc_dir=preproc_dir,
+        model_file=Path(args.model_file[0]).absolute(),
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        space=args.space,
+        fwhm=_get_fwhm(args),
+        skip_validation=args.skip_validation,
+        bids_filter_file=_get_bids_filter_file(args),
+        dry_run=args.dry_run,
+        concatenate=args.concatenate,
+        options=_get_options(args),
     )
     return cmd
 
@@ -536,3 +608,36 @@ def _get_verbosity(args):
         return args.verbosity[0]
     else:
         return args.verbosity
+
+
+def _get_fwhm(args):
+    if isinstance(args.fwhm, list):
+        return args.fwhm[0]
+    else:
+        return args.fwhm
+
+
+def _get_dummy_scans(args):
+    if isinstance(args.dummy_scans, list):
+        return args.dummy_scans[0]
+    else:
+        return args.dummy_scans
+
+
+def _get_options(args) -> Path | None:
+    return Path(args.options[0]).absolute() if args.options is not None else None
+
+
+def _get_bids_filter_file(args):
+    return (
+        Path(args.bids_filter_file[0]).absolute()
+        if args.bids_filter_file is not None
+        else None
+    )
+
+
+def _get_preproc_dir(args):
+    return Path(args.preproc_dir[0]).absolute() if args.preproc_dir is not None else None
+    # if preproc_dir is not None and not preproc_dir.is_dir():
+    #     log.error("The 'preproc_dir' does not exist:\n\t" f"{preproc_dir}")
+    # exit(EXIT_CODES["NOINPUT"]["Value"])

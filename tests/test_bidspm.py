@@ -12,8 +12,11 @@ from bidspm.bidspm import (
     base_cmd,
     create_roi,
     default_model,
+    generate_command_contrasts,
     generate_command_create_roi,
     generate_command_default_model,
+    generate_command_preprocess,
+    generate_command_smooth,
     new_line,
     preprocess,
     run_command,
@@ -292,6 +295,168 @@ def test_generate_command_create_roi_minimal():
             "create_roi",
             "--roi_name",
             "V1",
+        ]
+    )
+
+    print()
+    print(cmd)
+
+
+def test_generate_command_smooth():
+    """Test default_model sub commands parser."""
+    cmd = generate_command_smooth(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "smooth",
+            "--participant_label",
+            "01",
+            "02",
+            "--verbosity",
+            "3",
+            "--bids_filter_file",
+            str((Path() / "filter.json").absolute()),
+            "--options",
+            str((Path() / "options.json").absolute()),
+            "--space",
+            "IXI549Space",
+            "--anat_only",
+            "--dry_run",
+        ]
+    )
+
+    print()
+    print(cmd)
+
+
+def test_generate_command_smooth_minimal():
+    """Test default_model sub commands parser."""
+    cmd = generate_command_smooth(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "smooth",
+        ]
+    )
+
+    print()
+    print(cmd)
+
+
+def test_generate_command_preprocess():
+    """Test default_model sub commands parser."""
+    cmd = generate_command_preprocess(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "preprocess",
+            "--participant_label",
+            "01",
+            "02",
+            "--verbosity",
+            "3",
+            "--bids_filter_file",
+            str((Path() / "filter.json").absolute()),
+            "--options",
+            str((Path() / "options.json").absolute()),
+            "--space",
+            "IXI549Space",
+            "--task",
+            "rest",
+            "--fwhm",
+            "8",
+            "--dry_run",
+            "--anat_only",
+            "--skip_validation",
+            "--boilerplate_only",
+            "--dummy_scans",
+            "3",
+            "--ignore",
+            "slicetiming",
+            "unwarp",
+        ]
+    )
+
+    assert "boilerplate_only" in cmd
+    assert "ignore" in cmd
+    assert "dummy_scans" in cmd
+
+    print()
+    print(cmd)
+
+
+def test_generate_command_preprocess_minimal():
+    """Test default_model sub commands parser."""
+    cmd = generate_command_preprocess(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "preprocess",
+        ]
+    )
+
+    print()
+    print(cmd)
+
+
+def test_generate_command_contrasts():
+    """Test default_model sub commands parser."""
+    cmd = generate_command_contrasts(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "contrasts",
+            "--participant_label",
+            "01",
+            "02",
+            "--verbosity",
+            "3",
+            "--bids_filter_file",
+            str((Path() / "filter.json").absolute()),
+            "--options",
+            str((Path() / "options.json").absolute()),
+            "--model_file",
+            str((Path() / "model.json").absolute()),
+            "--preproc_dir",
+            str(Path().absolute()),
+            "--boilerplate_only",
+            "--space",
+            "IXI549Space",
+            "--task",
+            "rest",
+            "--fwhm",
+            "8",
+            "--dry_run",
+            "--skip_validation",
+            "--concatenate",
+        ]
+    )
+
+    print()
+    print(cmd)
+
+
+def test_generate_command_contrasts_minimal():
+    """Test default_model sub commands parser."""
+    cmd = generate_command_contrasts(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "contrasts",
+            "--model_file",
+            str((Path() / "model.json").absolute()),
         ]
     )
 

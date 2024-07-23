@@ -145,6 +145,7 @@ def add_common_stats_arguments(
         """,
         type=str,
         nargs=1,
+        required=True,
     )
     parser = add_preproc_dir(parser)
     parser = add_task(parser)
@@ -195,8 +196,8 @@ def sub_command_parser() -> ArgumentParser:
     )
     preproc_parser = add_common_arguments(preproc_parser)
     preproc_parser = add_boilerplate_only(preproc_parser)
-    parser = add_anat_only(parser)
-    parser.add_argument(
+    preproc_parser = add_anat_only(preproc_parser)
+    preproc_parser.add_argument(
         "--dummy_scans",
         help="""
         Number of dummy scans to remove.
