@@ -7,6 +7,7 @@ function args = inputParserForCreateModel()
   % (C) Copyright 2023 bidspm developers
   args = baseInputParser();
 
+  isLogical = @(x) islogical(x) && numel(x) == 1;
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
   isCellStr = @(x) iscellstr(x);
 
