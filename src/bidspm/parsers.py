@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
-from argparse import ArgumentParser, _ArgumentGroup
+from argparse import ArgumentParser
 from pathlib import Path
 
 from rich.logging import RichHandler
@@ -87,8 +87,8 @@ def base_parser() -> ArgumentParser:
 
 
 def add_common_arguments(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
+    parser: ArgumentParser,
+) -> ArgumentParser:
     parser.add_argument(
         "--participant_label",
         help="""
@@ -136,8 +136,8 @@ def add_common_arguments(
 
 
 def add_common_stats_arguments(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
+    parser: ArgumentParser,
+) -> ArgumentParser:
     parser.add_argument(
         "--model_file",
         help="""
@@ -154,30 +154,6 @@ def add_common_stats_arguments(
     parser = add_dry_run(parser)
     parser = add_skip_validation(parser)
     parser = add_boilerplate_only(parser)
-    return parser
-
-
-def add_preproc_dir(parser: ArgumentParser) -> ArgumentParser:
-    parser.add_argument(
-        "--preproc_dir",
-        help="""
-        Fullpath to the directory with the preprocessed data.
-        """,
-        type=str,
-        nargs=1,
-    )
-    return parser
-
-
-def add_anat_only(parser: ArgumentParser) -> ArgumentParser:
-    parser.add_argument(
-        "--anat_only",
-        help="""
-        If preprocessing should be done only on anatomical data.
-        """,
-        action="store_true",
-        default=False,
-    )
     return parser
 
 
@@ -382,6 +358,7 @@ by a dummy regressor of ``NaN``.
         """,
         type=str,
         nargs=1,
+        required=True,
     )
     bms_parser = add_fwhm(bms_parser)
     bms_parser = add_dry_run(bms_parser)
@@ -390,9 +367,7 @@ by a dummy regressor of ``NaN``.
     return parser
 
 
-def add_dry_run(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
+def add_dry_run(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--dry_run",
         help="""
@@ -405,7 +380,19 @@ def add_dry_run(
     return parser
 
 
-def add_fwhm(parser: ArgumentParser | _ArgumentGroup) -> ArgumentParser | _ArgumentGroup:
+def add_preproc_dir(parser: ArgumentParser) -> ArgumentParser:
+    parser.add_argument(
+        "--preproc_dir",
+        help="""
+        Fullpath to the directory with the preprocessed data.
+        """,
+        type=str,
+        nargs=1,
+    )
+    return parser
+
+
+def add_fwhm(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--fwhm",
         help="""
@@ -419,9 +406,7 @@ def add_fwhm(parser: ArgumentParser | _ArgumentGroup) -> ArgumentParser | _Argum
     return parser
 
 
-def add_skip_validation(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
+def add_skip_validation(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--skip_validation",
         help="""
@@ -433,9 +418,7 @@ def add_skip_validation(
     return parser
 
 
-def add_roi_dir(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
+def add_roi_dir(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--roi_dir",
         help="""
@@ -447,7 +430,7 @@ def add_roi_dir(
     return parser
 
 
-def add_task(parser: ArgumentParser | _ArgumentGroup) -> ArgumentParser | _ArgumentGroup:
+def add_task(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--task",
         help="""
@@ -459,7 +442,7 @@ def add_task(parser: ArgumentParser | _ArgumentGroup) -> ArgumentParser | _Argum
     return parser
 
 
-def add_space(parser: ArgumentParser | _ArgumentGroup) -> ArgumentParser | _ArgumentGroup:
+def add_space(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--space",
         help="""
@@ -472,9 +455,7 @@ def add_space(parser: ArgumentParser | _ArgumentGroup) -> ArgumentParser | _Argu
     return parser
 
 
-def add_boilerplate_only(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
+def add_boilerplate_only(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--boilerplate_only",
         help="""
@@ -487,9 +468,7 @@ def add_boilerplate_only(
     return parser
 
 
-def add_roi_atlas(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
+def add_roi_atlas(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--roi_atlas",
         help="""
@@ -503,9 +482,7 @@ def add_roi_atlas(
     return parser
 
 
-def add_keep_residuals(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
+def add_keep_residuals(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--keep_residuals",
         help="""
@@ -517,9 +494,7 @@ def add_keep_residuals(
     return parser
 
 
-def add_concatenate(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
+def add_concatenate(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--concatenate",
         help="""
@@ -532,9 +507,7 @@ def add_concatenate(
     return parser
 
 
-def add_design_only(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
+def add_design_only(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--design_only",
         help="""
@@ -546,13 +519,23 @@ def add_design_only(
     return parser
 
 
-def add_roi_based(
-    parser: ArgumentParser | _ArgumentGroup,
-) -> ArgumentParser | _ArgumentGroup:
+def add_roi_based(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument(
         "--roi_based",
         help="""
         To run stats only in regions of interests.
+        """,
+        action="store_true",
+        default=False,
+    )
+    return parser
+
+
+def add_anat_only(parser: ArgumentParser) -> ArgumentParser:
+    parser.add_argument(
+        "--anat_only",
+        help="""
+        If preprocessing should be done only on anatomical data.
         """,
         action="store_true",
         default=False,

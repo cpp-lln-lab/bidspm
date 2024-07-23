@@ -308,6 +308,44 @@ def stats(
     return cmd
 
 
+def bms(
+    bids_dir: Path,
+    output_dir: Path,
+    analysis_level: str,
+    action: str,
+    models_dir: Path,
+    verbosity: str | int = 2,
+    participant_label: list[str] | None = None,
+    fwhm: Any = 6,
+    skip_validation: bool = False,
+    bids_filter_file: Path | None = None,
+    dry_run: bool = False,
+    options: Path | None = None,
+) -> int | str:
+    cmd = generate_cmd(
+        bids_dir=bids_dir,
+        output_dir=output_dir,
+        analysis_level=analysis_level,
+        action=action,
+        verbosity=verbosity,
+        options=options,
+    )
+    cmd = append_common_arguments(
+        cmd=cmd,
+        fwhm=fwhm,
+        participant_label=participant_label,
+        skip_validation=skip_validation,
+        dry_run=dry_run,
+        bids_filter_file=bids_filter_file,
+    )
+    cmd += f"{new_line}'models_dir', '{models_dir}'"
+    cmd = end_cmd(cmd)
+
+    log.info(f"Running {action}.")
+
+    return cmd
+
+
 def generate_cmd(
     bids_dir: Path,
     output_dir: Path,
@@ -686,6 +724,27 @@ def generate_command_results(argv: Any) -> str:
         dry_run=args.dry_run,
         options=_get_options(args),
         roi_atlas=_get_roi_atlas(args),
+    )
+    return cmd
+
+
+def generate_command_bms(argv: Any) -> str:
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    cmd = bms(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        action="bms",
+        models_dir=Path(args.models_dir[0]).absolute(),
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        fwhm=_get_fwhm(args),
+        skip_validation=args.skip_validation,
+        bids_filter_file=_get_bids_filter_file(args),
+        dry_run=args.dry_run,
+        options=_get_options(args),
     )
     return cmd
 

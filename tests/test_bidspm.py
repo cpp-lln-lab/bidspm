@@ -12,6 +12,7 @@ from bidspm.bidspm import (
     base_cmd,
     create_roi,
     default_model,
+    generate_command_bms,
     generate_command_contrasts,
     generate_command_create_roi,
     generate_command_default_model,
@@ -197,7 +198,7 @@ def test_create_roi():
 
 @pytest.mark.parametrize("analysis_level", ["subject", "dataset"])
 def test_generate_command_default_model(analysis_level):
-    """Test default_model sub commands parser."""
+    """Test generate_command_default_model."""
     cmd = generate_command_default_model(
         [
             "bidspm",
@@ -231,7 +232,7 @@ def test_generate_command_default_model(analysis_level):
 
 
 def test_generate_command_default_model_minimal():
-    """Test default_model sub commands parser."""
+    """Test generate_command_default_model with only required arguments."""
     cmd = generate_command_default_model(
         [
             "bidspm",
@@ -248,7 +249,7 @@ def test_generate_command_default_model_minimal():
 
 @pytest.mark.parametrize("analysis_level", ["subject", "dataset"])
 def test_generate_command_create_roi(analysis_level):
-    """Test default_model sub commands parser."""
+    """Test generate_command_create_roi."""
     cmd = generate_command_create_roi(
         [
             "bidspm",
@@ -287,7 +288,7 @@ def test_generate_command_create_roi(analysis_level):
 
 
 def test_generate_command_create_roi_minimal():
-    """Test default_model sub commands parser."""
+    """Test generate_command_create_roi with only required arguments."""
     cmd = generate_command_create_roi(
         [
             "bidspm",
@@ -305,7 +306,7 @@ def test_generate_command_create_roi_minimal():
 
 
 def test_generate_command_smooth():
-    """Test default_model sub commands parser."""
+    """Test generate_command_smooth."""
     cmd = generate_command_smooth(
         [
             "bidspm",
@@ -334,7 +335,7 @@ def test_generate_command_smooth():
 
 
 def test_generate_command_smooth_minimal():
-    """Test default_model sub commands parser."""
+    """Testgenerate_command_smooth with only required arguments."""
     cmd = generate_command_smooth(
         [
             "bidspm",
@@ -350,7 +351,7 @@ def test_generate_command_smooth_minimal():
 
 
 def test_generate_command_preprocess():
-    """Test default_model sub commands parser."""
+    """Test generate_command_preprocess."""
     cmd = generate_command_preprocess(
         [
             "bidspm",
@@ -394,7 +395,7 @@ def test_generate_command_preprocess():
 
 
 def test_generate_command_preprocess_minimal():
-    """Test default_model sub commands parser."""
+    """Test generate_command_preprocess with only required arguments."""
     cmd = generate_command_preprocess(
         [
             "bidspm",
@@ -409,65 +410,8 @@ def test_generate_command_preprocess_minimal():
     print(cmd)
 
 
-def test_generate_command_contrasts():
-    """Test default_model sub commands parser."""
-    cmd = generate_command_contrasts(
-        [
-            "bidspm",
-            str(Path().absolute()),
-            str(Path().absolute()),
-            "subject",
-            "contrasts",
-            "--participant_label",
-            "01",
-            "02",
-            "--verbosity",
-            "3",
-            "--bids_filter_file",
-            str((Path() / "filter.json").absolute()),
-            "--options",
-            str((Path() / "options.json").absolute()),
-            "--model_file",
-            str((Path() / "model.json").absolute()),
-            "--preproc_dir",
-            str(Path().absolute()),
-            "--boilerplate_only",
-            "--space",
-            "IXI549Space",
-            "--task",
-            "rest",
-            "--fwhm",
-            "8",
-            "--dry_run",
-            "--skip_validation",
-            "--concatenate",
-        ]
-    )
-
-    print()
-    print(cmd)
-
-
-def test_generate_command_contrasts_minimal():
-    """Test default_model sub commands parser."""
-    cmd = generate_command_contrasts(
-        [
-            "bidspm",
-            str(Path().absolute()),
-            str(Path().absolute()),
-            "subject",
-            "contrasts",
-            "--model_file",
-            str((Path() / "model.json").absolute()),
-        ]
-    )
-
-    print()
-    print(cmd)
-
-
 def test_generate_command_stats():
-    """Test default_model sub commands parser."""
+    """Test generate_command_stats."""
     cmd = generate_command_stats(
         [
             "bidspm",
@@ -527,7 +471,7 @@ def test_generate_command_stats():
 
 
 def test_generate_command_stats_minimal():
-    """Test default_model sub commands parser."""
+    """Test generate_command_stats with only required arguments."""
     cmd = generate_command_stats(
         [
             "bidspm",
@@ -546,8 +490,65 @@ def test_generate_command_stats_minimal():
     print(cmd)
 
 
+def test_generate_command_contrasts():
+    """Test generate_command_contrasts."""
+    cmd = generate_command_contrasts(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "contrasts",
+            "--participant_label",
+            "01",
+            "02",
+            "--verbosity",
+            "3",
+            "--bids_filter_file",
+            str((Path() / "filter.json").absolute()),
+            "--options",
+            str((Path() / "options.json").absolute()),
+            "--model_file",
+            str((Path() / "model.json").absolute()),
+            "--preproc_dir",
+            str(Path().absolute()),
+            "--boilerplate_only",
+            "--space",
+            "IXI549Space",
+            "--task",
+            "rest",
+            "--fwhm",
+            "8",
+            "--dry_run",
+            "--skip_validation",
+            "--concatenate",
+        ]
+    )
+
+    print()
+    print(cmd)
+
+
+def test_generate_command_contrasts_minimal():
+    """Test generate_command_contrasts with only required arguments."""
+    cmd = generate_command_contrasts(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "contrasts",
+            "--model_file",
+            str((Path() / "model.json").absolute()),
+        ]
+    )
+
+    print()
+    print(cmd)
+
+
 def test_generate_command_results():
-    """Test default_model sub commands parser."""
+    """Test generate_command_results."""
     cmd = generate_command_results(
         [
             "bidspm",
@@ -586,3 +587,52 @@ def test_generate_command_results():
     print(cmd)
 
     assert "roi_atlas" in cmd
+
+
+def test_generate_command_results_minimal():
+    """Test generate_command_results with only required arguments."""
+    cmd = generate_command_results(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "results",
+            "--model_file",
+            str((Path() / "model.json").absolute()),
+        ]
+    )
+
+    print()
+    print(cmd)
+
+
+def test_generate_command_bms():
+    """Test generate_command_results with only required arguments."""
+    cmd = generate_command_bms(
+        [
+            "bidspm",
+            str(Path().absolute()),
+            str(Path().absolute()),
+            "subject",
+            "bms",
+            "--participant_label",
+            "01",
+            "02",
+            "--verbosity",
+            "3",
+            "--bids_filter_file",
+            str((Path() / "filter.json").absolute()),
+            "--options",
+            str((Path() / "options.json").absolute()),
+            "--models_dir",
+            str(Path().absolute()),
+            "--fwhm",
+            "9",
+            "--dry_run",
+            "--skip_validation",
+        ]
+    )
+
+    print()
+    print(cmd)
