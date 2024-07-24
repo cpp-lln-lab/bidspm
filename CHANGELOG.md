@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* [ENH] make `addConfoundsToDesignMatrix` a method of `BidsModel` #1294 by @Remi-Gau
 * [ENH] add Apptainer definition #1254 by @Remi-Gau and @monique2208
 * [ENH] allow to copy anat only on raw datasets #1181 by @Remi-Gau
 * [ENH] add option to concatenate runs at subject level to facilite running PPI analysis #1133 by @Remi-Gau
