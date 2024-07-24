@@ -2,12 +2,26 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
 
-from .bidspm import bidspm
-from .parsers import ALLOWED_ACTIONS, bidspm_log, common_parser, sub_command_parser
+from rich import print
+
+from .bidspm import (
+    generate_command_bms,
+    generate_command_contrasts,
+    generate_command_create_roi,
+    generate_command_default_model,
+    generate_command_preprocess,
+    generate_command_results,
+    generate_command_smooth,
+    generate_command_stats,
+    new_line,
+)
+from .matlab import matlab
+from .parsers import ALLOWED_ACTIONS, bidspm_log, sub_command_parser
 
 log = bidspm_log(name="bidspm")
 
@@ -28,7 +42,89 @@ SUPPORTED_ACTIONS = set(ALLOWED_ACTIONS) - NOT_IMPLEMENTED
 ul_it = "\n\t- "
 
 
-def validate_actions(action: str) -> None:
+def cli(argv: Any = sys.argv) -> None:
+    parser = sub_command_parser()
+
+    args = parser.parse_args(argv[1:])
+
+    _validate_bids_dir(args)
+    _validate_analysis_level(args)
+    _validate_actions(args.command)
+    _validate_task(args)
+    _validate_space(args)
+
+    if args.command == "default_model":
+        cmd = generate_command_default_model(argv)
+    elif args.command == "create_roi":
+        cmd = generate_command_create_roi(argv)
+    elif args.command == "smooth":
+        cmd = generate_command_smooth(argv)
+    elif args.command == "preprocess":
+        cmd = generate_command_preprocess(argv)
+    elif args.command == "stats":
+        cmd = generate_command_stats(argv)
+    elif args.command == "contrasts":
+        cmd = generate_command_contrasts(argv)
+    elif args.command == "results":
+        cmd = generate_command_results(argv)
+    elif args.command == "bms":
+        cmd = generate_command_bms(argv)
+
+    if isinstance(cmd, int):
+        raise SystemExit(cmd)
+
+    cmd = f" bidspm('init'); try; {cmd} catch;  exit; end;"
+
+    return_code = _run_command(cmd)
+
+    if return_code == 1:
+        raise SystemExit(EXIT_CODES["FAILURE"]["Value"])
+    else:
+        sys.exit(EXIT_CODES["SUCCESS"]["Value"])
+
+
+def _run_command(cmd: str, platform: str | None = None) -> int:
+    print("\nRunning the following command:\n")
+    print(cmd.replace(";", ";\n"))
+    print()
+
+    # TODO exit matlab / octave on crash
+
+    if platform is None:
+        if Path(matlab()).exists():
+            platform = matlab()
+            cmd = cmd.replace(new_line, ", ")
+        else:
+            platform = "octave"
+
+    if platform == "octave":
+        completed_process = subprocess.run(
+            [
+                "octave",
+                "--no-gui",
+                "--no-window-system",
+                "--silent",
+                "--eval",
+                f"{cmd}",
+            ]
+        )
+
+    else:
+        completed_process = subprocess.run(
+            [
+                platform,
+                "-nodisplay",
+                "-nosplash",
+                "-nodesktop",
+                "-r",
+                f"{cmd}",
+            ]
+        )
+
+    return completed_process.returncode
+
+
+def _validate_actions(action: str) -> None:
     if action not in ALLOWED_ACTIONS:
         log.error(
             f"Unknown action: '{action}'."
@@ -46,103 +142,33 @@ def validate_actions(action: str) -> None:
         raise SystemExit(EXIT_CODES["USAGE"]["Value"])
 
 
-def cli(argv: Any = sys.argv) -> None:
-    parser = common_parser()
-
-    args, _ = parser.parse_known_args(argv[1:])
-
+def _validate_bids_dir(args: Any) -> None:
     bids_dir = Path(args.bids_dir[0]).absolute()
-    output_dir = Path(args.output_dir[0]).absolute()
-    analysis_level = args.analysis_level[0]
-    action = args.action[0]
-    roi_atlas = args.roi_atlas[0]
-    bids_filter_file = (
-        Path(args.bids_filter_file[0]).absolute()
-        if args.bids_filter_file is not None
-        else None
-    )
-
-    preproc_dir: Path | None = (
-        Path(args.preproc_dir[0]).absolute() if args.preproc_dir is not None else None
-    )
-    model_file: Path | None = (
-        Path(args.model_file[0]).absolute() if args.model_file is not None else None
-    )
-    options: Path | None = (
-        Path(args.options).absolute() if args.options is not None else None
-    )
-
-    space = args.space
-
-    task = args.task
-
-    validate_actions(action)
-
     if not bids_dir.is_dir():
         log.error("The 'bids_dir' does not exist:\n\t" f"{bids_dir}")
-        exit(EXIT_CODES["NOINPUT"]["Value"])
+        raise SystemExit(EXIT_CODES["NOINPUT"]["Value"])
 
-    if preproc_dir is not None and not preproc_dir.is_dir():
-        log.error("The 'preproc_dir' does not exist:\n\t" f"{preproc_dir}")
-        exit(EXIT_CODES["NOINPUT"]["Value"])
 
-    if action in {"stats", "contrasts", "results"}:
-        if preproc_dir is None or not preproc_dir.exists():
-            log.error(
-                "'preproc_dir' must be specified for stats.\n" f"Got: {preproc_dir}"
-            )
-            raise SystemExit(EXIT_CODES["USAGE"]["Value"])
-
-        if model_file is None or not model_file.exists():
-            log.error("'model_file' must be specified for stats.\n" f"Got: {model_file}")
-            raise SystemExit(EXIT_CODES["USAGE"]["Value"])
-
-    if action in {"stats", "contrasts", "results", "default_model"} and (
-        space and len(space) > 1
+def _validate_space(args: Any) -> None:
+    if args.command in {"stats", "contrasts", "results", "default_model", "bms"} and (
+        args.space and len(args.space) > 1
     ):
-        log.error("Only one space allowed for statistical analysis.\n" f"Got: {space}")
+        log.error(
+            "Only one space allowed for statistical analysis.\n" f"Got: {args.space}"
+        )
         raise SystemExit(EXIT_CODES["USAGE"]["Value"])
 
-    if action == "preprocess" and task and len(task) > 1:
-        log.error("Only one task allowed for preprocessing.\n" f"Got: {task}")
+
+def _validate_analysis_level(args: Any) -> None:
+    if args.command in {"smooth", "preprocess"} and args.analysis_level[0] != "subject":
+        log.error(
+            f"'analysis_level' can only be 'subject' for {args.command}.\n"
+            f"Got: {args.analysis_level[0]}"
+        )
         raise SystemExit(EXIT_CODES["USAGE"]["Value"])
 
-    return_code = bidspm(
-        bids_dir,
-        output_dir,
-        analysis_level,
-        action=action,
-        participant_label=args.participant_label,
-        verbosity=args.verbosity,
-        task=task,
-        space=space,
-        ignore=args.ignore,
-        fwhm=args.fwhm,
-        bids_filter_file=bids_filter_file,
-        dummy_scans=args.dummy_scans,
-        anat_only=args.anat_only,
-        skip_validation=args.skip_validation,
-        dry_run=args.dry_run,
-        preproc_dir=preproc_dir,
-        model_file=model_file,
-        roi_based=args.roi_based,
-        roi_atlas=roi_atlas,
-        roi_name=args.roi_name,
-        roi_dir=args.roi_dir,
-        concatenate=args.concatenate,
-        design_only=args.design_only,
-        keep_residuals=args.keep_residuals,
-        options=options,
-    )
 
-    if return_code == 1:
-        raise SystemExit(EXIT_CODES["FAILURE"]["Value"])
-    else:
-        sys.exit(EXIT_CODES["SUCCESS"]["Value"])
-
-
-def new_cli(argv: Any = sys.argv) -> None:
-
-    parser = sub_command_parser()
-
-    args, _ = parser.parse_known_args(argv[1:])
+def _validate_task(args: Any) -> None:
+    if args.command in {"preprocess"} and args.task and len(args.task) > 1:
+        log.error("Only one task allowed for preprocessing.\n" f"Got: {args.task}")
+        raise SystemExit(EXIT_CODES["USAGE"]["Value"])

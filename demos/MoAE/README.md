@@ -19,7 +19,7 @@ bidspm \
     $PWD/inputs/raw \
     $PWD/outputs/derivatives \
     subject \
-    --action preprocess \
+    preprocess \
     --participant_label 01 \
     --space individual IXI549Space \
     --task auditory \
@@ -37,7 +37,7 @@ bidspm \
     $PWD/inputs/fmriprep \
     $PWD/outputs/derivatives \
     subject \
-    --action smooth \
+    smooth \
     --participant_label 01 \
     --space '^.*MNI.*$' \
     --task auditory \
@@ -52,7 +52,7 @@ bidspm \
     $PWD/inputs/raw \
     $PWD/outputs/derivatives \
      dataset \
-    --action default_model \
+    default_model \
     --space IXI549Space \
     --task auditory \
     --verbosity 2 \
@@ -66,7 +66,7 @@ bidspm \
     $PWD/inputs/raw \
     $PWD/outputs/derivatives \
     subject \
-    --action stats \
+    stats \
     --preproc_dir $PWD/outputs/derivatives/bidspm-preproc \
     --model_file $PWD/models/model-MoAE_smdl.json \
     --fwhm 6
@@ -77,7 +77,7 @@ bidspm \
     $PWD/inputs/raw \
     $PWD/outputs/derivatives \
     subject \
-    --action stats \
+    stats \
     --preproc_dir $PWD/outputs/derivatives/bidspm-preproc \
     --model_file $PWD/outputs/derivatives/models/model-defaultAuditory_smdl.json \
     --fwhm 6
@@ -96,7 +96,7 @@ docker run -it --rm \
         /derivatives \
         subject \
         --task auditory \
-        --action preprocess \
+        preprocess \
         --fwhm 8
 ```
 
@@ -111,7 +111,7 @@ docker run -it --rm \
         /raw \
         /derivatives \
         subject \
-        --action stats \
+        stats \
         --preproc_dir /derivatives/bidspm-preproc \
         --model_file /models/model-MoAE_smdl.json \
         --fwhm 6

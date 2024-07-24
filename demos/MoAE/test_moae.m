@@ -31,17 +31,18 @@ warning('off', 'SPM:noDisplay');
 
 optionsFile = fullfile(WD, 'options', 'options_task-auditory.json');
 
-space = {'individual'
+space = {
          'IXI549Space'
+         'individual'
          'IXI549Space'
          'individual'};
-ignore = {{'unwarp'}
-          {'unwarp', 'qa'}
+ignore = {{'unwarp', 'qa'}
+          {'unwarp'}
           {''}
           {''}};
-
-models = {fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')
+models = {
           fullfile(WD, 'models', 'model-MoAE_smdl.json')
+          fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')
           fullfile(WD, 'models', 'model-MoAE_smdl.json')
           fullfile(WD, 'models', 'model-MoAEindividual_smdl.json')};
 
@@ -65,14 +66,16 @@ for iOption = 1:numel(space)
   %% stats
   preproc_dir = fullfile(output_dir, 'bidspm-preproc');
 
-  % only specify the subject level model
-  bidspm(bids_dir, output_dir, 'subject', ...
-         'participant_label', {'01'}, ...
-         'action', 'stats', ...
-         'preproc_dir', preproc_dir, ...
-         'model_file', models{iOption}, ...
-         'options', optionsFile, ...
-         'design_only', true);
+  if ~bids.internal.is_octave() && ~ispc()
+    % only specify the subject level model
+    bidspm(bids_dir, output_dir, 'subject', ...
+           'participant_label', {'01'}, ...
+           'action', 'stats', ...
+           'preproc_dir', preproc_dir, ...
+           'model_file', models{iOption}, ...
+           'options', optionsFile, ...
+           'design_only', true);
+  end
 
   % specify, estimate model and contrasts, and view results
   bidspm(bids_dir, output_dir, 'subject', ...

@@ -17,7 +17,6 @@ function args = inputParserForCreateRoi()
   isLogical = @(x) islogical(x) && numel(x) == 1;
 
   addParameter(args, 'space', {}, isCellStr);
-  addParameter(args, 'roi_dir', '', isDir);
   addParameter(args, 'preproc_dir', '', isDir);
   addParameter(args, 'hemisphere', {'L', 'R'}, isCellStr);
   addParameter(args, 'roi_atlas', 'neuromorphometrics', isInAvailableAtlas);

@@ -477,7 +477,7 @@ Subject level contrast averaging beta across runs
 
 ```{figure} ./images/gui_contrast_cross_session.png
 ---
-name: contrast_subject
+name: contrast_subject_cross_sessions
 align: center
 ---
 Subject level contrast averaging beta across runs

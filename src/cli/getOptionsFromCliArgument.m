@@ -150,8 +150,12 @@ function opt = getOptions(args)
 end
 
 function opt = roiOptions(opt, args)
+
   if isfield(args.Results, 'roi_dir')
-    opt.dir.roi = args.Results.roi_dir;
+    opt.dir.roi = args.Results.output_dir;
+  end
+  if ismember(lower(args.Results.action), {'create_roi'})
+    opt.dir.roi = fullfile(args.Results.output_dir, 'derivatives', 'bidspm-roi');
   end
   if isfield(args.Results, 'roi_atlas')
     opt.roi.atlas = args.Results.roi_atlas;
