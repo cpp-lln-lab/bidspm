@@ -11,32 +11,14 @@ function test_addConfoundsToDesignMatrix_default()
 
   bm = BidsModel('init', true);
 
-  bm = addConfoundsToDesignMatrix(bm);
+  bm = bm.addConfoundsToDesignMatrix();
   assertEqual(numel(bm.Nodes{1}.Model.X), 0);
 
   strategy.strategies = {'motion', 'non_steady_state'};
   strategy.motion = 'basic';
   strategy.non_steady_state = true;
 
-  bm = addConfoundsToDesignMatrix(bm, 'strategy', strategy);
-  assertEqual(numel(bm.Nodes{1}.Model.X), 3);
-  assertEqual(ismember({'rot_?', 'trans_?', 'non_steady_state_outlier*'}, ...
-                       bm.Nodes{1}.Model.X), ...
-              true(1, 3));
-
-end
-
-function test_addConfoundsToDesignMatrix_from_file()
-
-  modelFile = fullfile(getTestDataDir(), 'models', ...
-                       'model-balloonanalogrisktask_smdl.json');
-
-  strategy.strategies = {'motion', 'non_steady_state'};
-  strategy.motion = 'basic';
-  strategy.non_steady_state = true;
-
-  bm = addConfoundsToDesignMatrix(modelFile, 'strategy', strategy);
-
+  bm = bm.addConfoundsToDesignMatrix('strategy', strategy);
   assertEqual(numel(bm.Nodes{1}.Model.X), 3);
   assertEqual(ismember({'rot_?', 'trans_?', 'non_steady_state_outlier*'}, ...
                        bm.Nodes{1}.Model.X), ...
@@ -51,7 +33,7 @@ function test_addConfoundsToDesignMatrix_with_numerial_and_no_duplicate()
 
   strategy.strategies = {'motion'};
   strategy.motion = 'basic';
-  bm = addConfoundsToDesignMatrix(bm, 'strategy', strategy);
+  bm = bm.addConfoundsToDesignMatrix('strategy', strategy);
 
   assertEqual(numel(bm.Nodes{1}.Model.X), 3);
 
@@ -72,7 +54,7 @@ function test_addConfoundsToDesignMatrix_full()
   strategy.wm_csf = 'full';
   strategy.non_steady_state = true;
 
-  bm = addConfoundsToDesignMatrix(bm, 'strategy', strategy);
+  bm = bm.addConfoundsToDesignMatrix('strategy', strategy);
 
   assertEqual(numel(bm.Nodes{1}.Model.X), 6);
 
@@ -95,10 +77,10 @@ function test_addConfoundsToDesignMatrix_update_name()
   strategy.wm_csf = 'full';
   strategy.non_steady_state = true;
 
-  bm = addConfoundsToDesignMatrix(bm, 'strategy', strategy);
+  bm = bm.addConfoundsToDesignMatrix('strategy', strategy);
   assertEqual(bm.Nodes{1}.Name, nameBefore);
 
-  bm = addConfoundsToDesignMatrix(bm, 'strategy', strategy, 'updateName', true);
+  bm = bm.addConfoundsToDesignMatrix('strategy', strategy, 'updateName', true);
   assertEqual(bm.Nodes{1}.Name, [nameBefore '_rp-full_scrub-1_tissue-full_nsso-1']);
 end
 
@@ -112,11 +94,11 @@ function test_addConfoundsToDesignMatrix_warning()
 
   strategy.strategies = {'foo'};
 
-  assertWarning(@()addConfoundsToDesignMatrix(bm, 'strategy', strategy), ...
-                'addConfoundsToDesignMatrix:unknownStrategy');
+  assertWarning(@()bm.addConfoundsToDesignMatrix('strategy', strategy), ...
+                'BidsModel:unknownStrategy');
 
   strategy.strategies = {'global_signal'};
 
-  assertWarning(@()addConfoundsToDesignMatrix(bm, 'strategy', strategy), ...
-                'addConfoundsToDesignMatrix:notImplemented');
+  assertWarning(@()bm.addConfoundsToDesignMatrix('strategy', strategy), ...
+                'BidsModel:notImplemented');
 end
