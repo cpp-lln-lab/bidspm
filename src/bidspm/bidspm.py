@@ -44,20 +44,19 @@ def append_base_arguments(
     options: Path | None = None,
 ) -> str:
     """Append arguments common to all actions to the command string."""
-    if task != "{''}":
-        task = _cellify(task) if task is not None else None
-
+    if task is not None:
+        task_cell = _cellify(task) if isinstance(task, list) else task
     space_cell: None | str = _cellify(space) if space is not None else None
     ignore_cell: None | str = _cellify(ignore) if ignore is not None else None
 
     if verbosity is not None:
         cmd += f"{new_line}'verbosity', {verbosity}"
     if space_cell:
-        cmd += f"{new_line}'space', {space}"
+        cmd += f"{new_line}'space', {space_cell}"
     if task:
-        cmd += f"{new_line}'task', {task}"
+        cmd += f"{new_line}'task', {task_cell}"
     if ignore_cell:
-        cmd += f"{new_line}'ignore', {ignore}"
+        cmd += f"{new_line}'ignore', {ignore_cell}"
     if options:
         cmd += f"{new_line}'options', '{str(options)}'"
 
