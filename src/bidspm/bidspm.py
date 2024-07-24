@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import subprocess
+import json
 from pathlib import Path
 from typing import Any
 
-from rich import print
+from .parsers import bidspm_log, sub_command_parser
 
-from .matlab import matlab
-from .parsers import bidspm_log
+with open(Path(__file__).parent / "data" / "exit_codes.json") as f:
+    EXIT_CODES = json.load(f)
 
 log = bidspm_log(name="bidspm")
 
@@ -30,29 +30,33 @@ def end_cmd(cmd: str) -> str:
     return cmd
 
 
+def _cellify(content: list[str] | str) -> str:
+    """Turn list into the string for a matlab cell."""
+    return "{ '" + "', '".join(content) + "' }"
+
+
 def append_base_arguments(
     cmd: str,
-    verbosity: int | None = None,
+    verbosity: str | int | None = None,
     space: list[str] | None = None,
     task: list[str] | str | None = None,
     ignore: list[str] | None = None,
     options: Path | None = None,
 ) -> str:
     """Append arguments common to all actions to the command string."""
-    if task != "{''}":
-        task = "{ '" + "', '".join(task) + "' }" if task is not None else None
-
-    space = "{ '" + "', '".join(space) + "' }" if space is not None else None  # type: ignore
-    ignore = "{ '" + "', '".join(ignore) + "' }" if ignore is not None else None  # type: ignore
+    if task is not None:
+        task_cell = _cellify(task) if isinstance(task, list) else task
+    space_cell: None | str = _cellify(space) if space is not None else None
+    ignore_cell: None | str = _cellify(ignore) if ignore is not None else None
 
     if verbosity is not None:
         cmd += f"{new_line}'verbosity', {verbosity}"
-    if space:
-        cmd += f"{new_line}'space', {space}"
+    if space_cell:
+        cmd += f"{new_line}'space', {space_cell}"
     if task:
-        cmd += f"{new_line}'task', {task}"
-    if ignore:
-        cmd += f"{new_line}'ignore', {ignore}"
+        cmd += f"{new_line}'task', {task_cell}"
+    if ignore_cell:
+        cmd += f"{new_line}'ignore', {ignore_cell}"
     if options:
         cmd += f"{new_line}'options', '{str(options)}'"
 
@@ -64,17 +68,15 @@ def append_common_arguments(
     skip_validation: bool = False,
     dry_run: bool = False,
     fwhm: Any = 6,
-    participant_label: list[str] | None = None,
+    participant_label: str | list[str] | None = None,
     bids_filter_file: Path | None = None,
 ) -> str:
     """Append arguments common to preproc and stats."""
     participant_label = (
-        "{ '" + "', '".join(participant_label) + "' }"  # type: ignore
-        if participant_label is not None
-        else None
+        _cellify(participant_label) if participant_label is not None else None
     )
 
-    if fwhm:
+    if fwhm is not None:
         cmd += f"{new_line}'fwhm', {fwhm}"
     if participant_label:
         cmd += f"{new_line}'participant_label', {participant_label}"
@@ -92,9 +94,12 @@ def default_model(
     bids_dir: Path,
     output_dir: Path,
     analysis_level: str = "dataset",
-    verbosity: int = 2,
+    participant_label: list[str] | None = None,
+    verbosity: str | int = 2,
     space: list[str] | None = None,
     task: list[str] | str | None = None,
+    skip_validation: bool = False,
+    bids_filter_file: Path | None = None,
     ignore: list[str] | None = None,
     options: Path | None = None,
 ) -> int | str:
@@ -112,6 +117,13 @@ def default_model(
         ignore=ignore,
         options=options,
     )
+    cmd = append_common_arguments(
+        cmd=cmd,
+        participant_label=participant_label,
+        skip_validation=skip_validation,
+        bids_filter_file=bids_filter_file,
+        fwhm=None,
+    )
     cmd = end_cmd(cmd)
 
     log.info("Creating default model.")
@@ -123,10 +135,11 @@ def preprocess(
     bids_dir: Path,
     output_dir: Path,
     action: str,
-    verbosity: int = 2,
+    analysis_level: str = "subject",
+    verbosity: str | int = 2,
     participant_label: list[str] | None = None,
     fwhm: Any = 6,
-    dummy_scans: int | None = None,
+    dummy_scans: str | int | None = None,
     space: list[str] | None = None,
     task: list[str] | None = None,
     ignore: list[str] | None = None,
@@ -135,11 +148,12 @@ def preprocess(
     bids_filter_file: Path | None = None,
     dry_run: bool = False,
     options: Path | None = None,
+    boilerplate_only: bool = False,
 ) -> int | str:
     cmd = generate_cmd(
         bids_dir=bids_dir,
         output_dir=output_dir,
-        analysis_level="subject",
+        analysis_level=analysis_level,
         action=action,
         verbosity=verbosity,
         space=space,
@@ -157,8 +171,10 @@ def preprocess(
     )
     if anat_only:
         cmd += f"{new_line}'anat_only', true"
-    if dummy_scans:
+    if dummy_scans is not None:
         cmd += f"{new_line}'dummy_scans', {dummy_scans}"
+    if boilerplate_only:
+        cmd += f"{new_line}'boilerplate_only', true"
     cmd = end_cmd(cmd)
 
     if action == "preprocess":
@@ -174,24 +190,22 @@ def preprocess(
 def create_roi(
     bids_dir: Path,
     output_dir: Path,
+    analysis_level: str = "subject",
     preproc_dir: Path | None = None,
-    verbosity: int = 2,
+    verbosity: str | int = 2,
     participant_label: list[str] | None = None,
-    roi_dir: Path | None = None,
     roi_atlas: str | None = "neuromorphometrics",
-    roi_name: list[str] | None = None,
+    roi_name: str | list[str] | None = None,
     space: list[str] | None = None,
     bids_filter_file: Path | None = None,
     options: Path | None = None,
 ) -> str:
-    roi_name = "{ '" + "', '".join(roi_name) + "' }" if roi_name is not None else None  # type: ignore
-    if roi_dir is None:
-        roi_dir = output_dir
+    roi_name = _cellify(roi_name) if roi_name is not None else None
 
     cmd = generate_cmd(
         bids_dir=bids_dir,
         output_dir=output_dir,
-        analysis_level="subject",
+        analysis_level=analysis_level,
         action="create_roi",
         verbosity=verbosity,
         space=space,
@@ -205,8 +219,6 @@ def create_roi(
     )
     cmd += f"{new_line}'roi_atlas', '{roi_atlas}'"
     cmd += f"{new_line}'roi_name', {roi_name}"
-    if roi_dir:
-        cmd += f"{new_line}'roi_dir', '{roi_dir}'"
     if preproc_dir:
         cmd += f"{new_line}'preproc_dir', '{preproc_dir}'"
     cmd = end_cmd(cmd)
@@ -223,7 +235,7 @@ def stats(
     action: str,
     preproc_dir: Path | None,
     model_file: Path | None,
-    verbosity: int = 2,
+    verbosity: str | int = 2,
     participant_label: list[str] | None = None,
     fwhm: Any = 6,
     space: list[str] | None = None,
@@ -233,10 +245,15 @@ def stats(
     bids_filter_file: Path | None = None,
     dry_run: bool = False,
     roi_based: bool = False,
+    roi_dir: Path | None = None,
+    roi_atlas: str | None = None,
+    roi_name: str | list[str] | None = None,
+    use_dummy_regressor: bool = False,
     concatenate: bool = False,
     design_only: bool = False,
     keep_residuals: bool = False,
     options: Path | None = None,
+    boilerplate_only: bool = False,
 ) -> int | str:
     cmd = generate_cmd(
         bids_dir=bids_dir,
@@ -261,12 +278,61 @@ def stats(
     cmd += f"{new_line}'model_file', '{model_file}'"
     if roi_based:
         cmd += f"{new_line}'roi_based', true"
+        if roi_dir:
+            cmd += f"{new_line}'roi_dir', '{roi_dir}'"
+        roi_name = _cellify(roi_name) if roi_name is not None else None
+        if roi_name:
+            cmd += f"{new_line}'roi_name', {roi_name}"
     if concatenate:
         cmd += f"{new_line}'concatenate', true"
     if design_only:
         cmd += f"{new_line}'design_only', true"
     if keep_residuals:
         cmd += f"{new_line}'keep_residuals', true"
+    if boilerplate_only:
+        cmd += f"{new_line}'boilerplate_only', true"
+    if use_dummy_regressor:
+        cmd += f"{new_line}'use_dummy_regressor', true"
+    if roi_atlas:
+        cmd += f"{new_line}'roi_atlas', '{roi_atlas}'"
+    cmd = end_cmd(cmd)
+
+    log.info(f"Running {action}.")
+
+    return cmd
+
+
+def bms(
+    bids_dir: Path,
+    output_dir: Path,
+    analysis_level: str,
+    action: str,
+    models_dir: Path,
+    verbosity: str | int = 2,
+    participant_label: list[str] | None = None,
+    fwhm: Any = 6,
+    skip_validation: bool = False,
+    bids_filter_file: Path | None = None,
+    dry_run: bool = False,
+    options: Path | None = None,
+) -> int | str:
+    cmd = generate_cmd(
+        bids_dir=bids_dir,
+        output_dir=output_dir,
+        analysis_level=analysis_level,
+        action=action,
+        verbosity=verbosity,
+        options=options,
+    )
+    cmd = append_common_arguments(
+        cmd=cmd,
+        fwhm=fwhm,
+        participant_label=participant_label,
+        skip_validation=skip_validation,
+        dry_run=dry_run,
+        bids_filter_file=bids_filter_file,
+    )
+    cmd += f"{new_line}'models_dir', '{models_dir}'"
     cmd = end_cmd(cmd)
 
     log.info(f"Running {action}.")
@@ -279,7 +345,7 @@ def generate_cmd(
     output_dir: Path,
     analysis_level: str,
     action: str,
-    verbosity: int = 2,
+    verbosity: str | int = 2,
     space: list[str] | None = None,
     task: list[str] | str | None = None,
     ignore: list[str] | None = None,
@@ -298,146 +364,253 @@ def generate_cmd(
     return cmd
 
 
-def bidspm(
-    bids_dir: Path,
-    output_dir: Path,
-    analysis_level: str,
-    action: str,
-    participant_label: list[str] | None = None,
-    verbosity: int = 2,
-    task: list[str] | None = None,
-    space: list[str] | None = None,
-    ignore: list[str] | None = None,
-    fwhm: Any = None,
-    bids_filter_file: Path | None = None,
-    dummy_scans: int | None = 0,
-    anat_only: bool = False,
-    skip_validation: bool = False,
-    dry_run: bool = False,
-    preproc_dir: Path | None = None,
-    model_file: Path | None = None,
-    roi_based: bool = False,
-    roi_atlas: str | None = None,
-    roi_name: list[str] | None = None,
-    roi_dir: Path | None = None,
-    concatenate: bool = False,
-    design_only: bool = False,
-    keep_residuals: bool = False,
-    options: Path | None = None,
-) -> int:
+def generate_command_default_model(argv: Any) -> int | str:
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
 
-    if action == "default_model":
-        cmd = default_model(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            analysis_level=analysis_level,
-            verbosity=verbosity,
-            task=task,
-            space=space,
-            ignore=ignore,
-            options=options,
-        )
-
-    elif action in {"preprocess", "smooth"}:
-        cmd = preprocess(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            action=action,
-            participant_label=participant_label,
-            verbosity=verbosity,
-            task=task,
-            space=space,
-            ignore=ignore,
-            fwhm=fwhm,
-            dummy_scans=dummy_scans,
-            skip_validation=skip_validation,
-            anat_only=anat_only,
-            bids_filter_file=bids_filter_file,
-            dry_run=dry_run,
-            options=options,
-        )
-    elif action in {"create_roi"}:
-        cmd = create_roi(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            preproc_dir=preproc_dir,
-            verbosity=verbosity,
-            participant_label=participant_label,
-            roi_dir=roi_dir,
-            roi_atlas=roi_atlas,
-            roi_name=roi_name,
-            space=space,
-            bids_filter_file=bids_filter_file,
-            options=options,
-        )
-
-    elif action in {"stats", "contrasts", "results"}:
-        cmd = stats(
-            bids_dir=bids_dir,
-            output_dir=output_dir,
-            analysis_level=analysis_level,
-            action=action,
-            preproc_dir=preproc_dir,
-            model_file=model_file,
-            verbosity=verbosity,
-            participant_label=participant_label,
-            space=space,
-            ignore=ignore,
-            fwhm=fwhm,
-            skip_validation=skip_validation,
-            bids_filter_file=bids_filter_file,
-            dry_run=dry_run,
-            roi_based=roi_based,
-            concatenate=concatenate,
-            design_only=design_only,
-            keep_residuals=keep_residuals,
-            options=options,
-        )
-
-    if isinstance(cmd, int):
-        return cmd
-
-    cmd = f" bidspm('init'); try; {cmd} catch;  exit; end;"
-
-    return run_command(cmd)
+    cmd = default_model(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        bids_filter_file=_get_bids_filter_file(args),
+        options=_get_options(args),
+        task=args.task,
+        space=args.space,
+        skip_validation=args.skip_validation,
+        ignore=args.ignore,
+    )
+    return cmd
 
 
-def run_command(cmd: str, platform: str | None = None) -> int:
-    print("\nRunning the following command:\n")
-    print(cmd.replace(";", ";\n"))
-    print()
+def generate_command_create_roi(argv: Any) -> str:
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
 
-    # TODO exit matlab / octave on crash
+    cmd = create_roi(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        preproc_dir=_get_preproc_dir(args),
+        verbosity=_get_verbosity(args),
+        participant_label=args.participant_label,
+        roi_atlas=_get_roi_atlas(args),
+        roi_name=args.roi_name,
+        space=args.space,
+        bids_filter_file=_get_bids_filter_file(args),
+        options=_get_options(args),
+    )
+    return cmd
 
-    if platform is None:
-        if Path(matlab()).exists():
-            platform = matlab()
-            cmd = cmd.replace(new_line, ", ")
-        else:
-            platform = "octave"
 
-    if platform == "octave":
-        completed_process = subprocess.run(
-            [
-                "octave",
-                "--no-gui",
-                "--no-window-system",
-                "--silent",
-                "--eval",
-                f"{cmd}",
-            ]
-        )
+def generate_command_smooth(argv: Any) -> int | str:
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
 
+    cmd = preprocess(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        action="smooth",
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        task=args.task,
+        space=args.space,
+        fwhm=_get_fwhm(args),
+        anat_only=args.anat_only,
+        bids_filter_file=_get_bids_filter_file(args),
+        dry_run=args.dry_run,
+        options=_get_options(args),
+    )
+    return cmd
+
+
+def generate_command_preprocess(argv: Any) -> int | str:
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    cmd = preprocess(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        action="preprocess",
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        task=args.task,
+        space=args.space,
+        fwhm=_get_fwhm(args),
+        anat_only=args.anat_only,
+        bids_filter_file=_get_bids_filter_file(args),
+        dry_run=args.dry_run,
+        options=_get_options(args),
+        ignore=args.ignore,
+        boilerplate_only=args.boilerplate_only,
+        dummy_scans=_get_dummy_scans(args),
+        skip_validation=args.skip_validation,
+    )
+    return cmd
+
+
+def generate_command_stats(argv: Any) -> int | str:
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    preproc_dir = _get_preproc_dir(args)
+    if preproc_dir is None:
+        log.error("No 'preproc_dir' was provided.")
+        exit(EXIT_CODES["NOINPUT"]["Value"])
+    if preproc_dir is not None and not preproc_dir.is_dir():
+        log.error("The 'preproc_dir' does not exist:\n\t" f"{preproc_dir}")
+        exit(EXIT_CODES["NOINPUT"]["Value"])
+
+    roi_name = None
+    roi_dir = None
+    if args.roi_based:
+        roi_name = args.roi_name
+        roi_dir = Path(args.roi_dir[0]).absolute()
+
+    cmd = stats(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        action="stats",
+        preproc_dir=preproc_dir,
+        model_file=Path(args.model_file[0]).absolute(),
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        space=args.space,
+        fwhm=_get_fwhm(args),
+        skip_validation=args.skip_validation,
+        bids_filter_file=_get_bids_filter_file(args),
+        dry_run=args.dry_run,
+        concatenate=args.concatenate,
+        options=_get_options(args),
+        design_only=args.design_only,
+        use_dummy_regressor=args.use_dummy_regressor,
+        keep_residuals=args.keep_residuals,
+        ignore=args.ignore,
+        roi_based=args.roi_based,
+        roi_name=roi_name,
+        roi_dir=roi_dir,
+        roi_atlas=_get_roi_atlas(args),
+    )
+    return cmd
+
+
+def generate_command_contrasts(argv: Any) -> int | str:
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    preproc_dir = _get_preproc_dir(args)
+    if preproc_dir is None:
+        preproc_dir = Path().absolute()
+
+    cmd = stats(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        action="contrasts",
+        preproc_dir=preproc_dir,
+        model_file=Path(args.model_file[0]).absolute(),
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        space=args.space,
+        fwhm=_get_fwhm(args),
+        skip_validation=args.skip_validation,
+        bids_filter_file=_get_bids_filter_file(args),
+        dry_run=args.dry_run,
+        concatenate=args.concatenate,
+        options=_get_options(args),
+    )
+    return cmd
+
+
+def generate_command_results(argv: Any) -> int | str:
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    preproc_dir = _get_preproc_dir(args)
+    if preproc_dir is None:
+        preproc_dir = Path().absolute()
+
+    cmd = stats(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        action="results",
+        preproc_dir=preproc_dir,
+        model_file=Path(args.model_file[0]).absolute(),
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        space=args.space,
+        fwhm=_get_fwhm(args),
+        skip_validation=args.skip_validation,
+        bids_filter_file=_get_bids_filter_file(args),
+        dry_run=args.dry_run,
+        options=_get_options(args),
+        roi_atlas=_get_roi_atlas(args),
+    )
+    return cmd
+
+
+def generate_command_bms(argv: Any) -> int | str:
+    parser = sub_command_parser()
+    args = parser.parse_args(argv[1:])
+
+    cmd = bms(
+        bids_dir=Path(args.bids_dir[0]).absolute(),
+        output_dir=Path(args.output_dir[0]).absolute(),
+        analysis_level=args.analysis_level[0],
+        action="bms",
+        models_dir=Path(args.models_dir[0]).absolute(),
+        participant_label=args.participant_label,
+        verbosity=_get_verbosity(args),
+        fwhm=_get_fwhm(args),
+        skip_validation=args.skip_validation,
+        bids_filter_file=_get_bids_filter_file(args),
+        dry_run=args.dry_run,
+        options=_get_options(args),
+    )
+    return cmd
+
+
+def _get_verbosity(args: Any) -> str | int:
+    if isinstance(args.verbosity, list):
+        return args.verbosity[0]
     else:
-        completed_process = subprocess.run(
-            [
-                platform,
-                "-nodisplay",
-                "-nosplash",
-                "-nodesktop",
-                "-r",
-                f"{cmd}",
-            ]
-        )
+        return args.verbosity
 
-    return completed_process.returncode
+
+def _get_roi_atlas(args: Any) -> str:
+    if isinstance(args.roi_atlas, list):
+        return args.roi_atlas[0]
+    else:
+        return args.roi_atlas
+
+
+def _get_fwhm(args: Any) -> str | int:
+    return args.fwhm[0] if isinstance(args.fwhm, list) else args.fwhm
+
+
+def _get_dummy_scans(args: Any) -> int | str:
+    if isinstance(args.dummy_scans, list):
+        return args.dummy_scans[0]
+    else:
+        return args.dummy_scans
+
+
+def _get_options(args: Any) -> Path | None:
+    return Path(args.options[0]).absolute() if args.options is not None else None
+
+
+def _get_bids_filter_file(args: Any) -> Path | None:
+    return (
+        Path(args.bids_filter_file[0]).absolute()
+        if args.bids_filter_file is not None
+        else None
+    )
+
+
+def _get_preproc_dir(args: Any) -> Path | None:
+    return Path(args.preproc_dir[0]).absolute() if args.preproc_dir is not None else None

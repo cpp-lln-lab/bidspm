@@ -21,7 +21,8 @@ def validate(file: Path) -> int:
     except pydantic.error_wrappers.ValidationError as e:
         log.warning(
             f"""{file} is not a valid BIDS Stats Model file.
-    Please use the validator: https://bids-standard.github.io/stats-models/validator.html"""
+Please use the validator: https://bids-standard.github.io/stats-models/validator.html
+"""
         )
         log.warning(e)
         return 1

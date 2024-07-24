@@ -7,6 +7,7 @@ function args = inputParserForCreateModel()
   % (C) Copyright 2023 bidspm developers
   args = baseInputParser();
 
+  isLogical = @(x) islogical(x) && numel(x) == 1;
   isEmptyOrCellstr = @(x) isempty(x) || iscellstr(x);  %#ok<*ISCLSTR>
   isCellStr = @(x) iscellstr(x);
 
@@ -19,5 +20,6 @@ function args = inputParserForCreateModel()
   %                - ``"Dataset"``
   %                Can be used to avoid generating certain objects of the BIDS stats model.
   addParameter(args, 'ignore', {}, isEmptyOrCellstr);
+  addParameter(args, 'skip_validation', false, isLogical);
 
 end

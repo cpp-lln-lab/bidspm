@@ -12,7 +12,7 @@ bidspm \
     $PWD/outputs/raw \
     $PWD/outputs/derivatives \
     subject \
-    --action preprocess \
+    preprocess \
     --participant_label 01 \
     --space individual IXI549Space \
     --task facerepetition \
@@ -25,7 +25,7 @@ bidspm \
     $PWD/outputs/raw \
     $PWD/outputs/derivatives \
     subject \
-    --action preprocess \
+    preprocess \
     --space individual IXI549Space \
     --anat_only \
     --skip_validation
@@ -38,7 +38,7 @@ bidspm \
     $PWD/outputs/raw \
     $PWD/outputs/derivatives \
     subject \
-    --action create_roi \
+    create_roi \
     --roi_atlas wang \
     --roi_name MST hMT
 ```
@@ -48,7 +48,7 @@ bidspm \
     $PWD/outputs/raw \
     $PWD/outputs/derivatives \
     subject \
-    --action create_roi \
+    create_roi \
     --roi_atlas hpcex \
     --roi_name MST MT
 ```
@@ -65,7 +65,7 @@ docker run -it --rm \
         /raw \
         /derivatives \
         subject \
-        --action create_roi \
+        create_roi \
         --roi_atlas hcpex \
         --roi_name MST MT
 ```
