@@ -76,7 +76,7 @@ def append_common_arguments(
         _cellify(participant_label) if participant_label is not None else None
     )
 
-    if fwhm:
+    if fwhm is not None:
         cmd += f"{new_line}'fwhm', {fwhm}"
     if participant_label:
         cmd += f"{new_line}'participant_label', {participant_label}"
@@ -171,7 +171,7 @@ def preprocess(
     )
     if anat_only:
         cmd += f"{new_line}'anat_only', true"
-    if dummy_scans:
+    if dummy_scans is not None:
         cmd += f"{new_line}'dummy_scans', {dummy_scans}"
     if boilerplate_only:
         cmd += f"{new_line}'boilerplate_only', true"
@@ -602,10 +602,7 @@ def _get_roi_atlas(args: Any) -> str:
 
 
 def _get_fwhm(args: Any) -> str | int:
-    if isinstance(args.fwhm, list):
-        return args.fwhm[0]
-    else:
-        return args.fwhm
+    return args.fwhm[0] if isinstance(args.fwhm, list) else args.fwhm
 
 
 def _get_dummy_scans(args: Any) -> int | str:

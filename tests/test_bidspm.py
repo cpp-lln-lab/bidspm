@@ -373,7 +373,7 @@ def test_generate_command_preprocess():
             "--skip_validation",
             "--boilerplate_only",
             "--dummy_scans",
-            "3",
+            "0",
             "--ignore",
             "slicetiming",
             "unwarp",
@@ -432,7 +432,7 @@ def test_generate_command_stats():
             "--task",
             "rest",
             "--fwhm",
-            "8",
+            "0",
             "--dry_run",
             "--skip_validation",
             "--concatenate",
@@ -462,6 +462,7 @@ def test_generate_command_stats():
     assert "use_dummy_regressor" in cmd
     assert "keep_residuals" in cmd
     assert "concatenate" in cmd
+    assert "fwhm" in cmd
 
 
 def test_generate_command_stats_minimal():
