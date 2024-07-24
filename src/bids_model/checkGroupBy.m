@@ -1,4 +1,4 @@
-function [status, groupBy] = checkGroupBy(node)
+function [status, groupBy] = checkGroupBy(node, extraVar)
   %
   % Only certain type of GroupBy supported for now for each level
   %
@@ -9,6 +9,10 @@ function [status, groupBy] = checkGroupBy(node)
 
   status = true;
   groupBy = sort(node.GroupBy);
+
+  if nargin < 2
+    extraVar = {};
+  end
 
   switch lower(node.Level)
 
@@ -49,23 +53,31 @@ function [status, groupBy] = checkGroupBy(node)
 
     case 'dataset'
 
+      supportedGroupBy = {'["contrast"]', '["contrast", "group"]'};
+
       % only certain type of GroupBy supported for now
-      if numel(groupBy) > 2 || ~all(ismember(lower(groupBy), {'contrast', 'group'}))
-
-        status = false;
-
-        supportedGroupBy = {'["contrast"]', '["contrast", "group"]'};
-
+      status = false;
+      if numel(groupBy) == 1 && all(ismember(lower(groupBy), {'contrast'}))
+        status = true;
+      elseif numel(groupBy) == 2 && iscellstr(extraVar) && numel(extraVar) > 0
+        for i = 1:numel(extraVar)
+          if all(ismember(lower(groupBy), {'contrast', extraVar{i}}))
+            status = true;
+            break
+          end
+        end
       end
 
   end
 
-  if ~status
-    template = 'only "GroupBy": %s supported %s node level';
-    msg = sprintf(template, ...
-                  bids.internal.create_unordered_list(supportedGroupBy), ...
-                  node.Level);
-    notImplemented(mfilename(), msg);
+  if status
+    return
   end
+
+  template = 'only "GroupBy": %s supported %s node level';
+  msg = sprintf(template, ...
+                bids.internal.create_unordered_list(supportedGroupBy), ...
+                node.Level);
+  notImplemented(mfilename(), msg);
 
 end

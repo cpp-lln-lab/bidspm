@@ -31,7 +31,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
   contrastsList = {};
   groups = {};
 
-  [status, groupBy] = checks(opt, nodeName);
+  [status, groupBy, glmType] = checks(opt, nodeName);
   if ~status
     return
   end
@@ -46,79 +46,100 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
   % - first case is we pool over all subjects
   % - second case is we pool over all the subject of a group defined in the
   %   participants.tsv of the raw dataset
-  if all(ismember(lower(groupBy), {'contrast'}))
+  if strcmp(glmType, 'one_sample_t_test')
+    if numel(groupBy) == 1 && strcmpi(groupBy, {'contrast'})
+      [matlabbatch, contrastsList, groups] = tTestAcrossSubject(opt, contrasts);
+    elseif numel(groupBy) == 2
+      [matlabbatch, contrastsList, groups] = tTestForGroup(opt, contrasts);
+    end
+  end
+end
+
+function [matlabbatch, contrastsList, groups] = tTestAcrossSubject(opt, contrasts)
+
+  % to keep track of all the contrast we used
+  % and to which group each batch corresponds to
+  % the later is needed to be able to create proper RFX dir name
+  contrastsList = {};
+  groups = {};
+
+  % collect all con images from all subjects
+  for iSub = 1:numel(opt.subjects)
+    subLabel = opt.subjects{iSub};
+    conImages{iSub} = findSubjectConImage(opt, subLabel, contrasts);
+  end
+
+  % TODO further refactoring is possible?
+  for iCon = 1:numel(contrasts)
+
+    contrastName = contrasts{iCon};
+
+    contrastsList{end + 1, 1} = contrastName;
+    groups{end + 1, 1} = 'ALL';
+
+    msg = sprintf('  Group contrast: "%s"', contrastName);
+    logger('INFO', msg, 'options', opt, 'filename', mfilename());
+
+    icell = allocateSubjectsContrasts(opt, opt.subjects, conImages, iCon);
+
+    matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, icell);
+
+  end
+end
+
+function [matlabbatch, contrastsList, groups] = tTestForGroup(opt, contrasts)
+
+  % to keep track of all the contrast we used
+  % and to which group each batch corresponds to
+  % the later is needed to be able to create proper RFX dir name
+  contrastsList = {};
+  groups = {};
+
+  groupColumnHdr = setxor(groupBy, {'contrast'});
+
+  checkColumnParticipantsTsv(BIDS, groupColumnHdr);
+
+  availableGroups = unique(BIDS.raw.participants.content.(groupColumnHdr));
+
+  for iGroup = 1:numel(availableGroups)
+
+    thisGroup = availableGroups{iGroup};
+
+    % grab subjects label from participants.tsv in raw
+    % and only keep those that are part of the requested subjects
+    %
+    % Note that this will lead to different results depending on the requested
+    % subejcts
+    %
+    tsv = BIDS.raw.participants.content;
+    subjectsInGroup = strcmp(tsv.(groupColumnHdr), thisGroup);
+    subjectsLabel = regexprep(tsv.participant_id(subjectsInGroup), '^sub-', '');
+    subjectsLabel = intersect(subjectsLabel, opt.subjects);
 
     % collect all con images from all subjects
-    for iSub = 1:numel(opt.subjects)
-      subLabel = opt.subjects{iSub};
+    for iSub = 1:numel(subjectsLabel)
+      subLabel = subjectsLabel{iSub};
       conImages{iSub} = findSubjectConImage(opt, subLabel, contrasts);
     end
 
-    % TODO further refactoring is possible?
     for iCon = 1:numel(contrasts)
 
       contrastName = contrasts{iCon};
 
       contrastsList{end + 1, 1} = contrastName;
-      groups{end + 1, 1} = 'ALL';
+      groups{end + 1, 1} = thisGroup;
 
-      msg = sprintf('  Group contrast: "%s"', contrastName);
+      msg = sprintf('  Group contrast "%s" for group "%s"', contrastName, thisGroup);
       logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
-      icell = allocateSubjectsContrasts(opt, opt.subjects, conImages, iCon);
+      icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon);
 
-      matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, icell);
-
-    end
-
-  elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
-
-    groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
-
-    checkColumnParticipantsTsv(BIDS, groupColumnHdr);
-
-    availableGroups = unique(BIDS.raw.participants.content.(groupColumnHdr));
-
-    for iGroup = 1:numel(availableGroups)
-
-      thisGroup = availableGroups{iGroup};
-
-      % grab subjects label from participants.tsv in raw
-      % and only keep those that are part of the requested subjects
-      %
-      % Note that this will lead to different results depending on the requested
-      % subejcts
-      %
-      tsv = BIDS.raw.participants.content;
-      subjectsInGroup = strcmp(tsv.(groupColumnHdr), thisGroup);
-      subjectsLabel = regexprep(tsv.participant_id(subjectsInGroup), '^sub-', '');
-      subjectsLabel = intersect(subjectsLabel, opt.subjects);
-
-      % collect all con images from all subjects
-      for iSub = 1:numel(subjectsLabel)
-        subLabel = subjectsLabel{iSub};
-        conImages{iSub} = findSubjectConImage(opt, subLabel, contrasts);
-      end
-
-      for iCon = 1:numel(contrasts)
-
-        contrastName = contrasts{iCon};
-
-        contrastsList{end + 1, 1} = contrastName;
-        groups{end + 1, 1} = thisGroup;
-
-        msg = sprintf('  Group contrast "%s" for group "%s"', contrastName, thisGroup);
-        logger('INFO', msg, 'options', opt, 'filename', mfilename());
-
-        icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon);
-
-        matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, icell, thisGroup);
-
-      end
+      matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, icell, thisGroup);
 
     end
 
   end
+
 end
 
 function icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon)
@@ -199,47 +220,51 @@ function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell,
 
   factorialDesign = setBatchFactorialDesignImplicitMasking(factorialDesign);
 
-  factorialDesign = setBatchFatorialDesignGlobalCalcAndNorm(factorialDesign);
+  factorialDesign = setBatchFactorialDesignGlobalCalcAndNorm(factorialDesign);
 
   matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
 
 end
 
-function [status, groupBy] = checks(opt, nodeName)
+function [status, groupBy, glmType] = checks(opt, nodeName)
 
   thisNode = opt.model.bm.get_nodes('Name', nodeName);
 
   commonMsg = sprintf('for the dataset level node: "%s"', nodeName);
 
-  [status, groupBy] = checkGroupBy(thisNode);
+  status = checkGroupBy(thisNode);
+
+  participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+
+  [glmType, ~, groupBy] = groupLevelGlmType(opt, nodeName, participants);
 
   % only certain type of model supported for now
-  designMatrix = opt.model.bm.get_design_matrix('Name', nodeName);
-  if iscell(designMatrix) || (designMatrix ~= 1)
+  if ismember(glmType, {'unknown'})
+    % should probably exit if we are on 2 sample T test
 
-    msg = sprintf('Models other than group average not implemented yet %s', commonMsg);
+    msg = sprintf('Models other than group average /comparisons not implemented yet %s', commonMsg);
     notImplemented(mfilename(), msg, opt);
 
     status = false;
 
   end
 
-  datasetLvlDummyContrasts = opt.model.bm.get_dummy_contrasts('Name', nodeName);
-  if isempty(datasetLvlDummyContrasts) || ~isfield(datasetLvlDummyContrasts, 'Test')
-
-    msg = sprintf('Only DummyContrasts are implemented %s', commonMsg);
-    notImplemented(mfilename(), msg, opt);
-
-    status = false;
-
-  end
-
-  datasetLvlContrasts = opt.model.bm.get_contrasts('Name', nodeName);
-  if ~isempty(datasetLvlContrasts)
-
-    msg = sprintf('Contrasts are not yet implemented %s', commonMsg);
-    notImplemented(mfilename(), msg, opt);
-
-  end
+  %   datasetLvlDummyContrasts = opt.model.bm.get_dummy_contrasts('Name', nodeName);
+  %   if isempty(datasetLvlDummyContrasts) || ~isfield(datasetLvlDummyContrasts, 'Test')
+  %
+  %     msg = sprintf('Only DummyContrasts are implemented %s', commonMsg);
+  %     notImplemented(mfilename(), msg, opt);
+  %
+  %     status = false;
+  %
+  %   end
+  %
+  %   datasetLvlContrasts = opt.model.bm.get_contrasts('Name', nodeName);
+  %   if ~isempty(datasetLvlContrasts)
+  %
+  %     msg = sprintf('Contrasts are not yet implemented %s', commonMsg);
+  %     notImplemented(mfilename(), msg, opt);
+  %
+  %   end
 
 end

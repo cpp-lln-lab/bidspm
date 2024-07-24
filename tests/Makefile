@@ -11,6 +11,7 @@ clean_local:
 
 create_dummy_dataset: clean_local
 	python create_dummy_dataset.py
+	python create_3_groups_dataset.py
 
 bids_examples:
 	rm -rf bids-examples/

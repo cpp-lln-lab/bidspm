@@ -89,6 +89,8 @@ function matlabbatch = bidsRFX(varargin)
 
     case 'rfx'
 
+      participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+
       for i = 1:numel(datasetNodes)
 
         msg = sprintf('\n PROCESSING NODE: %s\n', nodeName);
@@ -98,7 +100,7 @@ function matlabbatch = bidsRFX(varargin)
 
         nodeName = datasetNodes{i}.Name;
 
-        switch  groupLevelGlmType(opt, nodeName)
+        switch  groupLevelGlmType(opt, nodeName, participants)
 
           case 'one_sample_t_test'
             [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabbatch, ...

@@ -15,7 +15,9 @@ function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
   % (C) Copyright 2022 bidspm developers
 
   % assuming we want to only average at the group level
-  if opt.model.bm.get_design_matrix('Name', nodeName) == 1
+  participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+  [groupGlmType, ~, ~] =  groupLevelGlmType(opt, nodeName, participants);
+  if ismember(groupGlmType, {'one_sample_t_test', 'one_way_anova'})
 
     edge = opt.model.bm.get_edge('Destination', nodeName);
 
@@ -48,6 +50,8 @@ function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
     commonMsg = sprintf('for the dataset level node: "%s"', nodeName);
     msg = sprintf('Models other than group average not implemented yet %s', commonMsg);
     notImplemented(mfilename(), msg, opt);
+
+    contrastsList = {};
 
   end
 

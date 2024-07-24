@@ -146,7 +146,7 @@ function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(vararg
 
     factorialDesign = setBatchFactorialDesignImplicitMasking(factorialDesign);
 
-    factorialDesign = setBatchFatorialDesignGlobalCalcAndNorm(factorialDesign);
+    factorialDesign = setBatchFactorialDesignGlobalCalcAndNorm(factorialDesign);
 
     matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
 

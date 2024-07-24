@@ -1,7 +1,10 @@
 import json
+import shutil
 from pathlib import Path
 
 import pandas as pd
+
+ROOT_DIR = Path(__file__).parent.parent
 
 
 def touch(path: Path):
@@ -69,3 +72,36 @@ def create_raw_func_vismotion(target_dir, sub, ses):
             trial_type=["VisMot", "VisStat"],
         )
         touch(this_dir / f"{basename}_acq-1p60mm_dir-PA_run-{run}_{suffix}.nii")
+
+
+def create_preproc_func_vismotion(target_dir, sub, ses):
+    suffix = "bold"
+    task = "vismotion"
+    this_dir = target_dir / f"sub-{sub}" / f"ses-{ses}" / "func"
+
+    for acq_entity in ["", "_acq-1p60mm"]:
+        basename = f"sub-{sub}_ses-{ses}_task-{task}{acq_entity}_part-mag"
+
+        if ses == "01":
+            touch(this_dir / f"{basename}_space-individual_desc-mean_{suffix}.nii")
+            touch(this_dir / f"{basename}_space-IXI549Space_desc-mean_{suffix}.nii")
+            touch(this_dir / f"mean_{basename}_{suffix}.nii")
+
+        for run in range(1, 3):
+            basename = f"sub-{sub}_ses-{ses}_task-{task}{acq_entity}_run-{run}_part-mag"
+
+            desc_label_list = ["preproc", "mean", "smth6"]
+            for desc in desc_label_list:
+                touch(this_dir / f"{basename}_space-individual_desc-{desc}_{suffix}.nii")
+                touch(this_dir / f"{basename}_space-IXI549Space_desc-{desc}_{suffix}.nii")
+
+            touch(this_dir / f"{basename}_space-individual_desc-stc_{suffix}.nii")
+            touch(this_dir / f"{basename}_space-IXI549Space_desc-brain_mask.nii")
+
+            filename = this_dir / f"rp_{basename}_{suffix}.txt"
+            shutil.copy(ROOT_DIR / "tests" / "data" / "tsv_files" / "rp.txt", filename)
+
+            shutil.copy(
+                ROOT_DIR / "tests" / "data" / "tsv_files" / "rp.tsv",
+                this_dir / f"{basename}_desc-confounds_regressors.tsv",
+            )

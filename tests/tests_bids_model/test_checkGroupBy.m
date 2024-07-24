@@ -44,14 +44,30 @@ function test_checkGroupBy_dataset()
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 
-  opt.model.bm.Nodes{3}.GroupBy = {'subject'};
+  % should be fine
+  opt.model.bm.Nodes{3}.GroupBy = {'contrast'};
+  [status, ~] = checkGroupBy(opt.model.bm.Nodes{3});
+  assertEqual(status, true);
 
+  opt.model.bm.Nodes{3}.GroupBy = {'subject'};
   assertWarning(@()checkGroupBy(opt.model.bm.Nodes{3}), ...
                 'checkGroupBy:notImplemented');
 
   opt.model.bm.Nodes{3}.GroupBy = {'session', 'subject'};
-
   assertWarning(@()checkGroupBy(opt.model.bm.Nodes{3}), ...
                 'checkGroupBy:notImplemented');
+
+  opt.model.bm.Nodes{3}.GroupBy = {'session', 'subject', 'foo'};
+  assertWarning(@()checkGroupBy(opt.model.bm.Nodes{3}), ...
+                'checkGroupBy:notImplemented');
+
+end
+
+function test_checkGroupBy_dataset_group_from_participant()
+
+  opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
+
+  opt.model.bm.Nodes{3}.GroupBy = {'contrast', 'diagnostic'};
+  checkGroupBy(opt.model.bm.Nodes{3}, {'diagnostic'});
 
 end

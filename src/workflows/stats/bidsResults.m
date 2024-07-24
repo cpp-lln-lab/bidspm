@@ -447,6 +447,8 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
   opt = checkMontage(opt, iRes, node);
 
+  participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+
   for i = 1:length(opt.results(iRes).name)
 
     result = opt.results(iRes);
@@ -459,11 +461,11 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
       logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
     end
 
-    switch  groupLevelGlmType(opt, result.nodeName)
+    [glmType, ~, groupBy] = groupLevelGlmType(opt, result.nodeName, participants);
+
+    switch  glmType
 
       case 'one_sample_t_test'
-
-        [~, ~, groupBy] =  groupLevelGlmType(opt, result.nodeName);
 
         if all(ismember(lower(groupBy), {'contrast'}))
 
@@ -474,8 +476,6 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
           matlabbatch = appendToBatch(matlabbatch, opt, result);
 
         elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
-
-          participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
 
           groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
           availableGroups = unique(participants.(groupColumnHdr));

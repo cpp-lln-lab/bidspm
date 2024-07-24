@@ -4,9 +4,15 @@ import json
 import shutil
 from pathlib import Path
 
-from utils import create_events_tsv, create_raw_func_vismotion, touch, write_ds_desc
+from utils import (
+    ROOT_DIR,
+    create_events_tsv,
+    create_preproc_func_vismotion,
+    create_raw_func_vismotion,
+    touch,
+    write_ds_desc,
+)
 
-ROOT_DIR = Path(__file__).parent.parent
 START_DIR = Path(__file__).parent
 SUBJECTS = ["ctrl01", "blind01", "01"]
 SESSIONS = ["01", "02"]
@@ -135,39 +141,6 @@ def create_preproc_dataset(target_dir, subject_list, session_list):
             create_preproc_func_vislocalizer(target_dir, sub, ses)
         create_preproc_func_rest(target_dir, sub, "02")
         create_preproc_anat(target_dir, sub)
-
-
-def create_preproc_func_vismotion(target_dir, sub, ses):
-    suffix = "bold"
-    task = "vismotion"
-    this_dir = target_dir / f"sub-{sub}" / f"ses-{ses}" / "func"
-
-    for acq_entity in ["", "_acq-1p60mm"]:
-        basename = f"sub-{sub}_ses-{ses}_task-{task}{acq_entity}_part-mag"
-
-        if ses == "01":
-            touch(this_dir / f"{basename}_space-individual_desc-mean_{suffix}.nii")
-            touch(this_dir / f"{basename}_space-IXI549Space_desc-mean_{suffix}.nii")
-            touch(this_dir / f"mean_{basename}_{suffix}.nii")
-
-        for run in range(1, 3):
-            basename = f"sub-{sub}_ses-{ses}_task-{task}{acq_entity}_run-{run}_part-mag"
-
-            filename = this_dir / f"rp_{basename}_{suffix}.txt"
-            shutil.copy(ROOT_DIR / "tests" / "data" / "tsv_files" / "rp.txt", filename)
-
-            shutil.copy(
-                ROOT_DIR / "tests" / "data" / "tsv_files" / "rp.tsv",
-                this_dir / f"{basename}_desc-confounds_regressors.tsv",
-            )
-
-            desc_label_list = ["preproc", "mean", "smth6"]
-            for desc in desc_label_list:
-                touch(this_dir / f"{basename}_space-individual_desc-{desc}_{suffix}.nii")
-                touch(this_dir / f"{basename}_space-IXI549Space_desc-{desc}_{suffix}.nii")
-
-            touch(this_dir / f"{basename}_space-individual_desc-stc_{suffix}.nii")
-            touch(this_dir / f"{basename}_space-IXI549Space_desc-brain_mask.nii")
 
 
 def create_preproc_func_vislocalizer(target_dir, sub, ses):
