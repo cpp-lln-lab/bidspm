@@ -188,7 +188,6 @@ bids
 
 bids_model
 ==========
-.. autofunction:: src.bids_model.addConfoundsToDesignMatrix
 .. autofunction:: src.bids_model.checkContrast
 .. autofunction:: src.bids_model.checkGroupBy
 .. autofunction:: src.bids_model.createDefaultStatsModel

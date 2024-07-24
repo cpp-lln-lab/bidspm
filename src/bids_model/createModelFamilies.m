@@ -39,7 +39,7 @@ function createModelFamilies(varargin)
   args = inputParser;
   args.CaseSensitive = false;
   args.KeepUnmatched = false;
-  args.FunctionName = 'addConfoundsToDesignMatrix';
+  args.FunctionName = 'createModelFamilies';
 
   isBidsModelOrFile = @(x) isa(x, 'BidsModel') || exist(x, 'file') == 2;
 
@@ -81,7 +81,7 @@ function createModelFamilies(varargin)
                             'non_steady_state', multiverse.non_steady_state{l});
 
           bm = defaultModel;
-          bm = addConfoundsToDesignMatrix(bm, 'strategy', strategy, 'updateName', true);
+          bm = bm.addConfoundsToDesignMatrix('strategy', strategy, 'updateName', true);
 
           name = bm.Nodes{idx}.Name;
           bm.Name = name;
