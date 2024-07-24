@@ -133,7 +133,8 @@ jobs:
                           default_model \
                           --task balloonanalogrisktask \
                           --space MNI152NLin2009cAsym \
-                          --verbosity 3
+                          --verbosity 3 \
+                          --skip_validation
 
                     cat /home/circleci/outputs/ds000001/derivatives/models/*.json
 
@@ -215,7 +216,6 @@ jobs:
                           stats \
                           --preproc_dir /outputs/ds000001/derivatives/bidspm-preproc \
                           --model_file /models/model-balloonanalogrisktaskDefault_smdl.json \
-                          --ignore slicetiming \
                           --space MNI152NLin2009cAsym \
                           --skip_validation \
                           --fwhm 0 \
