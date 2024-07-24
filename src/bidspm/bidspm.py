@@ -194,7 +194,6 @@ def create_roi(
     preproc_dir: Path | None = None,
     verbosity: str | int = 2,
     participant_label: list[str] | None = None,
-    roi_dir: Path | None = None,
     roi_atlas: str | None = "neuromorphometrics",
     roi_name: str | list[str] | None = None,
     space: list[str] | None = None,
@@ -202,8 +201,6 @@ def create_roi(
     options: Path | None = None,
 ) -> str:
     roi_name = _cellify(roi_name) if roi_name is not None else None
-    if roi_dir is None:
-        roi_dir = output_dir
 
     cmd = generate_cmd(
         bids_dir=bids_dir,
@@ -222,8 +219,6 @@ def create_roi(
     )
     cmd += f"{new_line}'roi_atlas', '{roi_atlas}'"
     cmd += f"{new_line}'roi_name', {roi_name}"
-    if roi_dir:
-        cmd += f"{new_line}'roi_dir', '{roi_dir}'"
     if preproc_dir:
         cmd += f"{new_line}'preproc_dir', '{preproc_dir}'"
     cmd = end_cmd(cmd)
@@ -393,12 +388,6 @@ def generate_command_create_roi(argv: Any) -> str:
     parser = sub_command_parser()
     args = parser.parse_args(argv[1:])
 
-    if args.roi_dir is None or args.roi_dir[0] is None:
-        roi_dir = args.output_dir[0]
-    else:
-        roi_dir = args.roi_dir[0]
-    roi_dir = Path(roi_dir).absolute()
-
     cmd = create_roi(
         bids_dir=Path(args.bids_dir[0]).absolute(),
         output_dir=Path(args.output_dir[0]).absolute(),
@@ -406,7 +395,6 @@ def generate_command_create_roi(argv: Any) -> str:
         preproc_dir=_get_preproc_dir(args),
         verbosity=_get_verbosity(args),
         participant_label=args.participant_label,
-        roi_dir=roi_dir,
         roi_atlas=_get_roi_atlas(args),
         roi_name=args.roi_name,
         space=args.space,

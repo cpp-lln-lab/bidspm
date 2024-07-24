@@ -234,7 +234,6 @@ def sub_command_parser() -> ArgumentParser:
     roi_parser = _add_common_arguments(roi_parser)
     roi_parser = _add_boilerplate_only(roi_parser)
     roi_parser = _add_space(roi_parser)
-    roi_parser = _add_roi_dir(roi_parser)
     roi_parser.add_argument(
         "--roi_name",
         help="""
@@ -290,7 +289,14 @@ by a dummy regressor of ``NaN``.
         action="store_true",
         default=False,
     )
-    stats_parser = _add_roi_dir(stats_parser)
+    stats_parser.add_argument(
+        "--roi_dir",
+        help="""
+        Fullpath to the directory with the regions of interest.
+        """,
+        type=str,
+        nargs=1,
+    )
     stats_parser.add_argument(
         "--roi_name",
         help="""
@@ -415,18 +421,6 @@ def _add_skip_validation(parser: ArgumentParser) -> ArgumentParser:
         """,
         action="store_true",
         default=False,
-    )
-    return parser
-
-
-def _add_roi_dir(parser: ArgumentParser) -> ArgumentParser:
-    parser.add_argument(
-        "--roi_dir",
-        help="""
-        Fullpath to the directory with the regions of interest.
-        """,
-        type=str,
-        nargs=1,
     )
     return parser
 
