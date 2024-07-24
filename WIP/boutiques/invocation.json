@@ -1,9 +1,0 @@
-{
-  "bids_dir": "ds001",
-  "output_dir_name": "example-output",
-  "analysis_level": "subject",
-  "participant_label": [
-    "01"
-  ],
-  "action": "preprocess"
-}
