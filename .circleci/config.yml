@@ -149,7 +149,7 @@ jobs:
                       -v /tmp/workspace/data/ds000001:/bids_dataset \
                       -v /home/circleci/outputs:/outputs \
                         << parameters.dh_orga >>/<< parameters.dh_repo >> \
-                          /outputs/ds000001 \
+                          /bids_dataset \
                           /outputs/ds000001 \
                           dataset \
                           create_roi \
