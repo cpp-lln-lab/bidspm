@@ -58,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* [FIX] ensure that {func}`setBatchCoregistrationFuncToAnat` takes into account bids_filter #1295 by @d-ni374
 * [FIX] update {func}`createDefaultStatsModel` to use proper `GroupBy` at the dataset level #1248 by @d-ni374
 * [FIX] make {func}`getAcquisitionTime` less brittle #1248 by @d-ni374
 * [FIX] fix regular expression in {func}`bidsResults` to identify contrasts #1248 by @d-ni374 and #1275 by @Remi-Gau

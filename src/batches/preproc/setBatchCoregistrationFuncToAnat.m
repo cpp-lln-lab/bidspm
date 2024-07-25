@@ -56,6 +56,8 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, 
 
   % OTHER IMAGES : DEPENDENCY FROM REALIGNEMENT
 
+  opt.query = opt.bidsFilterFile.bold;
+
   [sessions, nbSessions] = getInfo(BIDS, subLabel, opt, 'Sessions');
 
   runCounter = 1;

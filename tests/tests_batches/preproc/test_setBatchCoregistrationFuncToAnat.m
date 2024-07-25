@@ -56,6 +56,40 @@ function test_setBatchCoregistrationFuncToAnat_basic()
 
 end
 
+function test_setBatchCoregistrationFuncToAnat_one_session()
+
+  subLabel = '01';
+
+  opt = setOptions('vismotion', subLabel);
+
+  opt.bidsFilterFile.bold.ses = '02';
+
+  BIDS = getLayout(opt);
+
+  opt.orderBatches.selectAnat = 1;
+  opt.orderBatches.realign = 2;
+
+  matlabbatch = {};
+  matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, subLabel);
+
+  nbRuns = 2;
+
+  meanImageToUse = 'meanuwr';
+  otherImageToUse = 'uwrfiles';
+
+  expectedBatch = returnExpectedBatch(nbRuns, meanImageToUse, otherImageToUse);
+  assertEqual( ...
+              matlabbatch{1}.spm.spatial.coreg.estimate.ref, ...
+              expectedBatch{1}.spm.spatial.coreg.estimate.ref);
+  assertEqual( ...
+              matlabbatch{1}.spm.spatial.coreg.estimate.source, ...
+              expectedBatch{1}.spm.spatial.coreg.estimate.source);
+  assertEqual( ...
+              matlabbatch{1}.spm.spatial.coreg.estimate.other, ...
+              expectedBatch{1}.spm.spatial.coreg.estimate.other);
+
+end
+
 function test_setBatchCoregistrationFuncToAnat_no_unwarp()
 
   subLabel = '01';

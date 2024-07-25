@@ -158,8 +158,6 @@ jobs:
                           --space IXI549Space \
                           --verbosity 3
 
-                    cat /home/circleci/outputs
-
         -   store_artifacts:
                 path: /home/circleci/outputs
 
