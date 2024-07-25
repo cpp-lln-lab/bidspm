@@ -1,3 +1,5 @@
+% Demo to compare activations across sessions.
+
 % (C) Copyright 2023 bidspm developers
 
 clear;
