@@ -48,8 +48,9 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
         end
 
+        % TODO make more general than just with group
       elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
-
+        % TODO make more general than just with group
         groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
         availableGroups = unique(participants.(groupColumnHdr));
 
@@ -71,13 +72,66 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
       end
 
+    case 'one_way_anova'
+
+      % T test for ANOVA
+      %
+      % Loop over the subject level contrasts passed
+      % through the Edge filter.
+      % Then generate the between group contrasts.
+
+      designMatrix = removeIntercept(designMatrix);
+
+      groups = unique(participants.(designMatrix{1}));
+
+      edge = opt.model.bm.get_edge('Destination', nodeName);
+      contrastsList = edge.Filter.contrast;
+
+      thisContrast = opt.model.bm.get_contrasts('Name', nodeName);
+
+      for j = 1:numel(contrastsList)
+
+        spmMatFile = fullfile(getRFXdir(opt, ...
+                                        nodeName, ...
+                                        contrastsList{j}, ...
+                                        '1WayANOVA'), ...
+                              'SPM.mat');
+
+        for iCon = 1:numel(thisContrast)
+
+          % Sort conditions and weights
+          [ConditionList, I] = sort(thisContrast{iCon}.ConditionList);
+          for iCdt = 1:numel(ConditionList)
+            ConditionList{iCdt} =  strrep(ConditionList{iCdt}, [designMatrix{1}, '.'], '');
+          end
+          Weights = thisContrast{iCon}.Weights(I);
+
+          % Create contrast vectors by what was passed in the model
+          convec = zeros(size(groups));
+          for iGroup = 1:numel(groups)
+            index = strcmp(groups{iGroup}, ConditionList);
+            if any(index)
+              convec(iGroup) = Weights(index);
+            end
+          end
+
+          consess{iCon}.tcon.name = thisContrast{iCon}.Name;
+          consess{iCon}.tcon.convec = convec;
+          consess{iCon}.tcon.sessrep = 'none';
+        end
+
+        matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+
+      end
+
     case 'two_sample_t_test'
 
       designMatrix = removeIntercept(designMatrix);
 
+      % TODO make more general than just with group
       if ismember(lower(designMatrix), {'group'})
-        % TODO will this ignore the contrasts define at other levels and not
-        % passed through the filter ?
+        % TODO will this ignore the contrasts define at other levels
+        % and not passed through the filter ?
         edge = opt.model.bm.get_edge('Destination', nodeName);
         contrastsList = edge.Filter.contrast;
       end

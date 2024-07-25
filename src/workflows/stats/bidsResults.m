@@ -475,7 +475,10 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
           matlabbatch = appendToBatch(matlabbatch, opt, result);
 
+          % TODO make more general than just with group
         elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
+
+          % TODO make more general than just with group
 
           groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
           availableGroups = unique(participants.(groupColumnHdr));

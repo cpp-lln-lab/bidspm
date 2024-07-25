@@ -61,10 +61,10 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
       contrastsList = {};
       groups = {};
 
+      % TODO all contrasts should have the same name
       contrasts = getContrastsListForFactorialDesign(opt, nodeName);
 
       % TODO refactor
-
       designMatrix = opt.model.bm.get_design_matrix('Name', nodeName);
       designMatrix = cellfun(@(x) num2str(x), designMatrix, 'uniformoutput', false);
 
@@ -73,7 +73,11 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
 
       checkColumnParticipantsTsv(BIDS, groupColumnHdr);
 
-      availableGroups = unique(BIDS.raw.participants.content.(groupColumnHdr));
+      % Sorting is important so that we know in which order
+      % the groups are entered in the design matrix.
+      % Otherwise it will be harder to properly design
+      % the contrast vectors later.
+      availableGroups = sort(unique(BIDS.raw.participants.content.(groupColumnHdr)));
 
       label = '1WayANOVA';
 

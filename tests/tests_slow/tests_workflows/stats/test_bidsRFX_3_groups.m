@@ -8,7 +8,27 @@ function test_suite = test_bidsRFX_3_groups %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsRFX_two_sample_ttest()
+function test_bidsRFX_one_way_anova()
+
+  %   markTestAs('slow');
+  %
+  %   opt = setOptions('3_groups', '', 'pipelineType', 'stats');
+  %
+  %   opt.model.bm = BidsModel('file', opt.model.file);
+  %   opt.verbosity = 3;
+  %
+  %   matlabbatch = bidsRFX('RFX', opt, 'nodeName', 'between_groups');
+  %
+  %   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
+  %               fileparts(matlabbatch{2}.spm.stats.fmri_est.spmmat{1}));
+  %   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
+  %               matlabbatch{3}.spm.tools.MACS.MA_model_space.dir{1});
+  %
+  %   assertEqual(batchSummary(matlabbatch), expectedBatchOrder());
+
+end
+
+function test_bidsRFX_one_way_anova_contrast()
 
   markTestAs('slow');
 
@@ -17,14 +37,25 @@ function test_bidsRFX_two_sample_ttest()
   opt.model.bm = BidsModel('file', opt.model.file);
   opt.verbosity = 3;
 
-  matlabbatch = bidsRFX('RFX', opt, 'nodeName', 'between_groups');
+  nodeName = 'between_groups';
 
-  assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
-              fileparts(matlabbatch{2}.spm.stats.fmri_est.spmmat{1}));
-  assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
-              matlabbatch{3}.spm.tools.MACS.MA_model_space.dir{1});
+  matlabbatch = bidsRFX('contrasts', opt, 'nodeName', nodeName);
 
-  summary = batchSummary(matlabbatch);
+  contrastName = 'VisMot_gt_VisStat';
+  rfxDir = getRFXdir(opt, nodeName, contrastName, '1WayANOVA');
+  assertEqual(fileparts(matlabbatch{1}.spm.stats.con.spmmat{1}), rfxDir);
+
+  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 2);
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{1}.tcon.convec, [0; -1; 1]);
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{2}.tcon.convec, [-1; 0; 1]);
+
+  contrastName = 'VisStat_gt_VisMot';
+  rfxDir = getRFXdir(opt, nodeName, contrastName, '1WayANOVA');
+  assertEqual(fileparts(matlabbatch{2}.spm.stats.con.spmmat{1}), rfxDir);
+
+  assertEqual(numel(matlabbatch{2}.spm.stats.con.consess), 2);
+  assertEqual(matlabbatch{2}.spm.stats.con.consess{1}.tcon.convec, [0; -1; 1]);
+  assertEqual(matlabbatch{2}.spm.stats.con.consess{2}.tcon.convec, [-1; 0; 1]);
 
 end
 
@@ -38,17 +69,13 @@ function value = batchSummary(matlabbatch)
   end
 end
 
-function batchOrder = extendBatchOrder(batchOrder)
-  if nargin < 1
-    batchOrder = {};
-  end
-  extension = {'stats', 'fmri_est'; ...
-               'tools', 'MACS'; ...
-               'tools', 'MACS'; ...
-               'stats', 'review'; ...
-               'util', 'print'};
-  if bids.internal.is_octave()
-    extension(2:3, :) = [];
-  end
-  batchOrder = cat(1, batchOrder, extension);
+function value = expectedBatchOrder()
+
+  value = {'stats', 'factorial_design'; ...
+           'stats', 'fmri_est'; ...
+           'tools', 'MACS'; ...
+           'tools', 'MACS'; ...
+           'stats', 'review'; ...
+           'util',  'print'};
+
 end

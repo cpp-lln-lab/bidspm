@@ -46,6 +46,18 @@
             -1
           ],
           "Test": "t"
+        },
+        {
+          "Name": "VisStat_gt_VisMot",
+          "ConditionList": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Weights": [
+            -1,
+            1
+          ],
+          "Test": "t"
         }
       ]
     },
@@ -100,15 +112,29 @@
       "Contrasts": [
         {
           "Name": "VisMot_gt_VisStat",
+          "Description": "3 groups but not sorted alphabetically whereas the groups are entered alphabetically in the design matrix.",
           "ConditionList": [
+            "diagnostic.relative",
             "diagnostic.ctrl",
-            "diagnostic.blind",
-            "diagnostic.relative"
+            "diagnostic.blind"
           ],
           "Weights": [
             1,
             -1,
             0
+          ],
+          "Test": "t"
+        },
+        {
+          "Name": "VisMot_gt_VisStat",
+          "Description": "Only 2 groups should be OK but needs to be handled properly: should give a vector [-1, 0, 1]",
+          "ConditionList": [
+            "diagnostic.blind",
+            "diagnostic.relative"
+          ],
+          "Weights": [
+            -1,
+            1
           ],
           "Test": "t"
         }
@@ -129,7 +155,8 @@
       "Destination": "between_groups",
       "Filter": {
         "contrast": [
-          "VisMot_gt_VisStat"
+          "VisMot_gt_VisStat",
+          "VisStat_gt_VisMot"
         ]
       }
     }
