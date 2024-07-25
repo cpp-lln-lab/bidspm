@@ -12,29 +12,19 @@ function test_bidsRFX_two_sample_ttest()
 
   markTestAs('slow');
 
-  opt = setOptions('vislocalizer',  '', 'pipelineType', 'stats');
-  opt.model.file = spm_file(opt.model.file, ...
-                            'basename', ...
-                            'model-vislocalizer2sampleTTest_smdl');
+  opt = setOptions('3_groups', '', 'pipelineType', 'stats');
+
   opt.model.bm = BidsModel('file', opt.model.file);
   opt.verbosity = 3;
 
-  matlabbatch = bidsRFX('RFX', opt);
-
-  summary = batchSummary(matlabbatch);
-
-  % creates 1 batch for (specify, figure, estimate, review, figure)
-  batchOrder = {'stats', 'factorial_design'; ...
-                'util', 'print'};
-  batchOrder = extendBatchOrder(batchOrder);
-  assertEqual(summary, batchOrder);
+  matlabbatch = bidsRFX('RFX', opt, 'nodeName', 'between_groups');
 
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
-              fileparts(matlabbatch{3}.spm.stats.fmri_est.spmmat{1}));
+              fileparts(matlabbatch{2}.spm.stats.fmri_est.spmmat{1}));
+  assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
+              matlabbatch{3}.spm.tools.MACS.MA_model_space.dir{1});
 
-  % 2 blind and 1 ctrl
-  assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.t2.scans1), 2);
-  assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.t2.scans2), 1);
+  summary = batchSummary(matlabbatch);
 
 end
 

@@ -26,13 +26,13 @@ function [contrasts, counter] = specifyDummyContrasts(model, node, contrasts, co
     return
   end
 
-  if ismember(node.Level, {'session'}) && ~checkGroupBy(node)
+  if ismember(node.Level, {'Session'}) && ~checkGroupBy(node)
     return
   end
-  if strcmp(node.Level, 'subject') && ~checkGroupBy(node)
+  if strcmp(node.Level, 'Subject') && ~checkGroupBy(node)
     return
   end
-  if ismember(node.Level, {'dataset'})
+  if ismember(node.Level, {'Dataset'})
     % see setBatchGroupLevelContrasts
     return
   end

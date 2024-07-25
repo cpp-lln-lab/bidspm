@@ -75,6 +75,8 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
 
       availableGroups = unique(BIDS.raw.participants.content.(groupColumnHdr));
 
+      label = '1WayANOVA';
+
       rfxDir = getRFXdir(opt, nodeName, contrasts{1}, '1WayANOVA');
       overwriteDir(rfxDir, opt);
 
@@ -125,6 +127,9 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
         end
 
       end
+
+      groups = {label};
+      contrastsList = {contrastsList{1}};
 
   end
 end

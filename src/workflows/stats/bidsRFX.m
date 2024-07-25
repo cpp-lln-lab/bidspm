@@ -59,7 +59,6 @@ function matlabbatch = bidsRFX(varargin)
 
   % TODO refactor
   % - extract function for anat and mask computation
-  % - merge rfx and ffx into a single "stats" workflow
 
   if ismember(lower(action), {'meananatandmask', 'rfx', 'contrasts'})
     opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'bidspm-groupStats');
@@ -102,7 +101,7 @@ function matlabbatch = bidsRFX(varargin)
 
         switch  groupLevelGlmType(opt, nodeName, participants)
 
-          case 'one_sample_t_test'
+          case {'one_sample_t_test', 'one_way_anova'}
             [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabbatch, ...
                                                                            opt, ...
                                                                            datasetNodes{i}.Name);

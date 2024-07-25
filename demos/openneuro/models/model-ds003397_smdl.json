@@ -63,23 +63,6 @@
     },
     {
       "Level": "Dataset",
-      "Name": "dataset_level",
-      "GroupBy": [
-        "contrast",
-        "group"
-      ],
-      "Model": {
-        "Type": "glm",
-        "X": [
-          1
-        ]
-      },
-      "DummyContrasts": {
-        "Test": "t"
-      }
-    },
-    {
-      "Level": "Dataset",
       "Name": "between_groups",
       "Description": "one way anova",
       "GroupBy": [
@@ -94,7 +77,7 @@
       },
       "Contrasts": [
         {
-          "Name": "VisMot_gt_VisStat",
+          "Name": "flashing checkerboard",
           "ConditionList": [
             "group.B",
             "group.I",
@@ -114,10 +97,6 @@
     {
       "Source": "run_level",
       "Destination": "subject_level"
-    },
-    {
-      "Source": "subject_level",
-      "Destination": "dataset_level"
     },
     {
       "Source": "subject_level",

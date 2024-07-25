@@ -9,6 +9,7 @@ exclude =
     tests/*
     _version.py
     demos/*
+    WIP/*
 count = True
 show-source = True
 statistics = True
