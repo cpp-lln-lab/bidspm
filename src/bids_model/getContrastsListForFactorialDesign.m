@@ -15,8 +15,13 @@ function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
   % (C) Copyright 2022 bidspm developers
 
   % assuming we want to only average at the group level
+
+  % TODO refactor
   participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+  columns = fieldnames(participants);
+
   [groupGlmType, ~, ~] =  groupLevelGlmType(opt, nodeName, participants);
+
   if ismember(groupGlmType, {'one_sample_t_test', 'one_way_anova'})
 
     edge = opt.model.bm.get_edge('Destination', nodeName);
@@ -30,14 +35,14 @@ function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
     else
 
       % this assumes DummyContrasts exist
-      contrastsList = getDummyContrastsList(opt.model.bm, nodeName);
+      contrastsList = getDummyContrastsList(opt.model.bm, nodeName, columns);
 
       node = opt.model.bm.get_nodes('Name', nodeName);
 
       % if no specific dummy contrasts mentioned also include all contrasts from previous levels
       % or if contrasts are mentioned we grab them
       if ~isfield(node.DummyContrasts, 'Contrasts') || isfield(node, 'Contrasts')
-        tmp = getContrastsList(opt.model.bm, nodeName);
+        tmp = getContrastsList(opt.model.bm, nodeName, columns);
         for i = 1:numel(tmp)
           contrastsList{end + 1} = tmp{i}.Name;
         end
@@ -48,7 +53,8 @@ function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
   else
 
     commonMsg = sprintf('for the dataset level node: "%s"', nodeName);
-    msg = sprintf('Models other than group average not implemented yet %s', commonMsg);
+    msg = sprintf(['Models other than group average / comparisons ', ...
+                   'not implemented yet %s'], commonMsg);
     notImplemented(mfilename(), msg, opt);
 
     contrastsList = {};

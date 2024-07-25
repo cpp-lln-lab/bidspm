@@ -2,7 +2,7 @@ function [status, groupBy] = checkGroupBy(node, extraVar)
   %
   % Only certain type of GroupBy supported for now for each level
   %
-  % This helps doing some defensive programming
+  % This helps doing some defensive programming.
   %
 
   % (C) Copyright 2022 bidspm developers
@@ -53,12 +53,15 @@ function [status, groupBy] = checkGroupBy(node, extraVar)
 
     case 'dataset'
 
-      supportedGroupBy = {'["contrast"]', '["contrast", "group"]'};
+      supportedGroupBy = { ...
+                          '["contrast"]', ...
+                          '["contrast", "x"] for "x" being a participant.tsv column name.'};
 
       % only certain type of GroupBy supported for now
       status = false;
       if numel(groupBy) == 1 && all(ismember(lower(groupBy), {'contrast'}))
         status = true;
+
       elseif numel(groupBy) == 2 && iscellstr(extraVar) && numel(extraVar) > 0
         for i = 1:numel(extraVar)
           if all(ismember(groupBy, {'contrast', extraVar{i}}))
@@ -66,6 +69,7 @@ function [status, groupBy] = checkGroupBy(node, extraVar)
             break
           end
         end
+
       end
 
   end

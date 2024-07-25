@@ -36,6 +36,8 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
     return
   end
 
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
   printBatchName(sprintf('specify group level fmri model for node "%s"', nodeName), opt);
 
   % now we fetch the contrast for each subject and allocate them in the batch
@@ -59,9 +61,9 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
       contrastsList = {};
       groups = {};
 
-      [BIDS, opt] = getData(opt, opt.dir.preproc);
-
       contrasts = getContrastsListForFactorialDesign(opt, nodeName);
+
+      % TODO refactor
 
       designMatrix = opt.model.bm.get_design_matrix('Name', nodeName);
       designMatrix = cellfun(@(x) num2str(x), designMatrix, 'uniformoutput', false);
@@ -176,6 +178,7 @@ function [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, 
   node = opt.model.bm.get_nodes('Name', nodeName);
   groupBy = node.GroupBy;
 
+  % TODO refactor
   groupColumnHdr = setxor(groupBy, {'contrast'});
   groupColumnHdr = groupColumnHdr{1};
 
@@ -344,6 +347,7 @@ function [status, groupBy, glmType] = checks(opt, nodeName)
 
   commonMsg = sprintf('for the dataset level node: "%s"', nodeName);
 
+  % TODO refactor
   participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
   columns = fieldnames(participants);
   status = checkGroupBy(thisNode, columns);
@@ -351,32 +355,37 @@ function [status, groupBy, glmType] = checks(opt, nodeName)
   [glmType, ~, groupBy] = groupLevelGlmType(opt, nodeName, participants);
 
   % only certain type of model supported for now
-  if ismember(glmType, {'unknown'})
-    % should probably exit if we are on 2 sample T test
-
-    msg = sprintf('Models other than group average /comparisons not implemented yet %s', commonMsg);
+  if ismember(glmType, {'unknown', 'two_sample_t_test'})
+    % TODO update message to with better info for 2 sample T-Test
+    msg = sprintf(['Models other than group average / comparisons ', ...
+                   'not implemented yet %s'], commonMsg);
     notImplemented(mfilename(), msg, opt);
-
     status = false;
-
+    return
   end
 
-  %   datasetLvlDummyContrasts = opt.model.bm.get_dummy_contrasts('Name', nodeName);
-  %   if isempty(datasetLvlDummyContrasts) || ~isfield(datasetLvlDummyContrasts, 'Test')
-  %
-  %     msg = sprintf('Only DummyContrasts are implemented %s', commonMsg);
-  %     notImplemented(mfilename(), msg, opt);
-  %
-  %     status = false;
-  %
-  %   end
-  %
-  %   datasetLvlContrasts = opt.model.bm.get_contrasts('Name', nodeName);
-  %   if ~isempty(datasetLvlContrasts)
-  %
-  %     msg = sprintf('Contrasts are not yet implemented %s', commonMsg);
-  %     notImplemented(mfilename(), msg, opt);
-  %
-  %   end
+  datasetLvlContrasts = opt.model.bm.get_contrasts('Name', nodeName);
+  datasetLvlDummyContrasts = opt.model.bm.get_dummy_contrasts('Name', nodeName);
+
+  if isempty(datasetLvlContrasts) && isempty(datasetLvlDummyContrasts)
+    msg = sprintf('No contrast specified %s', commonMsg);
+    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
+    status = false;
+    return
+  end
+
+  if ismember(glmType, {'one_sample_t_test'}) && ...
+    (not(isempty(datasetLvlContrasts)) || isempty(datasetLvlDummyContrasts))
+    msg = sprintf('For one-sample t-test only DummyContrasts are implemented %s', commonMsg);
+    notImplemented(mfilename(), msg, opt);
+    status = false;
+  end
+
+  if ismember(glmType, {'one_way_anova'}) && ...
+          (isempty(datasetLvlContrasts) || not(isempty(datasetLvlDummyContrasts)))
+    msg = sprintf('For one-way ANOVA only contrasts are yet implemented %s', commonMsg);
+    notImplemented(mfilename(), msg, opt);
+    status = false;
+  end
 
 end

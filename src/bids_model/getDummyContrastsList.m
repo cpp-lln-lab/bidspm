@@ -1,4 +1,4 @@
-function dummyContrastsList = getDummyContrastsList(model, node)
+function dummyContrastsList = getDummyContrastsList(model, node, extraVar)
   %
   % Get list of names of DummyContrast from this Node or gets its from the
   % previous Nodes
@@ -18,6 +18,10 @@ function dummyContrastsList = getDummyContrastsList(model, node)
 
   % (C) Copyright 2022 bidspm developers
 
+  if nargin < 3
+    extraVar = {};
+  end
+
   dummyContrastsList = {};
 
   if ischar(node)
@@ -33,7 +37,7 @@ function dummyContrastsList = getDummyContrastsList(model, node)
 
   else
 
-    assert(checkGroupBy(node));
+    assert(checkGroupBy(node, extraVar));
 
     switch lower(node.Level)
 

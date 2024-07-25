@@ -26,6 +26,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
   printBatchName('group level contrast estimation', opt);
 
+  % TODO refactor
   participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
   [groupGlmType, designMatrix, groupBy] =  groupLevelGlmType(opt, nodeName, participants);
 

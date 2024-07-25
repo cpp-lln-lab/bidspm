@@ -6,6 +6,8 @@ function [type, srcDesignMatrix, groupBy] = groupLevelGlmType(opt, nodeName, par
   if nargin < 3
     participants = struct();
   end
+
+  % TODO refactor
   columns = fieldnames(participants);
 
   srcDesignMatrix = opt.model.bm.getBidsDesignMatrix('Name', nodeName);

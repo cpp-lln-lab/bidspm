@@ -66,6 +66,7 @@ function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(vararg
   group1 = group1{2};
   group2 = group2{2};
 
+  % TODO refactor
   availableGroups = unique(BIDS.raw.participants.content.(groupField));
 
   if any(~ismember({group1, group2}, availableGroups))
