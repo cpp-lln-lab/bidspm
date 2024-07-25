@@ -15,7 +15,7 @@ from utils import (
 ROOT_DIR = Path(__file__).parent.parent
 START_DIR = Path(__file__).parent
 SUBJECTS = ["ctrl01", "blind01", "relative01", "ctrl02", "blind02", "relative02"]
-SUBJECTS = ["ctrl01", "blind01", "relative01"]
+# SUBJECTS = ["ctrl01", "blind01", "relative01"]
 SESSIONS = ["01", "02"]
 SESSIONS = ["01"]
 

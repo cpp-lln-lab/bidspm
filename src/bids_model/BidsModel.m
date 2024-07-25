@@ -90,7 +90,8 @@ classdef BidsModel < bids.Model
 
       [model, nodeName] = obj.getDefaultModel(varargin{:});
 
-      if ~isfield(model.Options, 'HighPassFilterCutoffHz') || ...
+      if ~isfield(model, 'Options') || ...
+          ~isfield(model.Options, 'HighPassFilterCutoffHz') || ...
           isempty(model.Options.HighPassFilterCutoffHz)
 
         msg = sprintf(['No high-pass filter for Node "%s"\n', ...
@@ -106,7 +107,7 @@ classdef BidsModel < bids.Model
 
         opt.verbosity = 0;
         if obj.verbose
-          opt.verbosity = 1;
+          opt.verbosity = 3;
         end
         logger('INFO', msg, 'filename', mfilename(), 'options', opt);
 

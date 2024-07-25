@@ -36,32 +36,106 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
     return
   end
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
-
   printBatchName(sprintf('specify group level fmri model for node "%s"', nodeName), opt);
-
-  contrasts = getContrastsListForFactorialDesign(opt, nodeName);
 
   % now we fetch the contrast for each subject and allocate them in the batch
   % - first case is we pool over all subjects
   % - second case is we pool over all the subject of a group defined in the
   %   participants.tsv of the raw dataset
-  if strcmp(glmType, 'one_sample_t_test')
-    if numel(groupBy) == 1 && strcmpi(groupBy, {'contrast'})
-      [matlabbatch, contrastsList, groups] = tTestAcrossSubject(opt, contrasts);
-    elseif numel(groupBy) == 2
-      [matlabbatch, contrastsList, groups] = tTestForGroup(opt, contrasts);
-    end
+  switch glmType
+    case 'one_sample_t_test'
+
+      if numel(groupBy) == 1 && strcmpi(groupBy, {'contrast'})
+        [matlabbatch, contrastsList, groups] = tTestAcrossSubject(matlabbatch, opt, nodeName);
+      elseif numel(groupBy) == 2
+        [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, nodeName);
+      end
+
+    case 'one_way_anova'
+
+      % to keep track of all the contrast we used
+      % and to which group each batch corresponds to
+      % the later is needed to be able to create proper RFX dir name
+      contrastsList = {};
+      groups = {};
+
+      [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+      contrasts = getContrastsListForFactorialDesign(opt, nodeName);
+
+      designMatrix = opt.model.bm.get_design_matrix('Name', nodeName);
+      designMatrix = cellfun(@(x) num2str(x), designMatrix, 'uniformoutput', false);
+
+      groupColumnHdr = setxor(designMatrix, {'1'});
+      groupColumnHdr = groupColumnHdr{1};
+
+      checkColumnParticipantsTsv(BIDS, groupColumnHdr);
+
+      availableGroups = unique(BIDS.raw.participants.content.(groupColumnHdr));
+
+      rfxDir = getRFXdir(opt, nodeName, contrasts{1}, '1WayANOVA');
+      overwriteDir(rfxDir, opt);
+
+      assert(exist(fullfile(rfxDir, 'SPM.mat'), 'file') == 0);
+
+      matlabbatch = returnOneWayAnovaBatch(matlabbatch, rfxDir);
+
+      mask = getInclusiveMask(opt, nodeName);
+      matlabbatch{end}.spm.stats.factorial_design.masking.em = {mask};
+
+      icell(1).scans = {};
+
+      for iGroup = 1:numel(availableGroups)
+
+        thisGroup = availableGroups{iGroup};
+
+        % grab subjects label from participants.tsv in raw
+        % and only keep those that are part of the requested subjects
+        %
+        % Note that this will lead to different results
+        % depending on the requested subejcts
+        %
+        tsv = BIDS.raw.participants.content;
+        subjectsInGroup = strcmp(tsv.(groupColumnHdr), thisGroup);
+        subjectsLabel = regexprep(tsv.participant_id(subjectsInGroup), '^sub-', '');
+        subjectsLabel = intersect(subjectsLabel, opt.subjects);
+
+        % collect all con images from all subjects
+        for iSub = 1:numel(subjectsLabel)
+          subLabel = subjectsLabel{iSub};
+          conImages{iSub} = findSubjectConImage(opt, subLabel, contrasts);
+        end
+
+        for iCon = 1:numel(contrasts)
+
+          contrastName = contrasts{iCon};
+
+          contrastsList{end + 1, 1} = contrastName;
+          groups{end + 1, 1} = thisGroup;
+
+          msg = sprintf('  Group contrast "%s" for group "%s"', contrastName, thisGroup);
+          logger('INFO', msg, 'options', opt, 'filename', mfilename());
+
+          icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon);
+
+          matlabbatch{end}.spm.stats.factorial_design.des.anova.icell(iGroup).scans = icell.scans;
+
+        end
+
+      end
+
   end
 end
 
-function [matlabbatch, contrastsList, groups] = tTestAcrossSubject(opt, contrasts)
+function [matlabbatch, contrastsList, groups] = tTestAcrossSubject(matlabbatch, opt, nodeName)
 
   % to keep track of all the contrast we used
   % and to which group each batch corresponds to
   % the later is needed to be able to create proper RFX dir name
   contrastsList = {};
   groups = {};
+
+  contrasts = getContrastsListForFactorialDesign(opt, nodeName);
 
   % collect all con images from all subjects
   for iSub = 1:numel(opt.subjects)
@@ -87,7 +161,7 @@ function [matlabbatch, contrastsList, groups] = tTestAcrossSubject(opt, contrast
   end
 end
 
-function [matlabbatch, contrastsList, groups] = tTestForGroup(opt, contrasts)
+function [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, nodeName)
 
   % to keep track of all the contrast we used
   % and to which group each batch corresponds to
@@ -95,7 +169,15 @@ function [matlabbatch, contrastsList, groups] = tTestForGroup(opt, contrasts)
   contrastsList = {};
   groups = {};
 
+  [BIDS, opt] = getData(opt, opt.dir.preproc);
+
+  contrasts = getContrastsListForFactorialDesign(opt, nodeName);
+
+  node = opt.model.bm.get_nodes('Name', nodeName);
+  groupBy = node.GroupBy;
+
   groupColumnHdr = setxor(groupBy, {'contrast'});
+  groupColumnHdr = groupColumnHdr{1};
 
   checkColumnParticipantsTsv(BIDS, groupColumnHdr);
 
@@ -226,15 +308,45 @@ function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell,
 
 end
 
+function matlabbatch = returnOneWayAnovaBatch(matlabbatch, directory)
+
+  factorialDesign.dir = {directory};
+
+  factorialDesign.des.anova.icell(1).scans = {};
+
+  % Assumes groups are independent
+  factorialDesign.des.anova.dept = 0;
+  % 1: Assumes that the variance is not the same across groups
+  % 0: There is no difference in the variance between groups
+  factorialDesign.des.anova.variance = 1;
+  factorialDesign.des.anova.gmsca = 0;
+  factorialDesign.des.anova.ancova = 0;
+
+  factorialDesign.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
+
+  factorialDesign.multi_cov = struct('files', {}, 'iCFI', {}, 'iCC', {});
+
+  factorialDesign.masking.tm.tm_none = 1;
+  factorialDesign.masking.im = 1;
+  factorialDesign.masking.em = {''};
+
+  factorialDesign.globalc.g_omit = 1;
+  factorialDesign.globalm.gmsca.gmsca_no = 1;
+  factorialDesign.globalm.glonorm = 1;
+
+  matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
+
+end
+
 function [status, groupBy, glmType] = checks(opt, nodeName)
 
   thisNode = opt.model.bm.get_nodes('Name', nodeName);
 
   commonMsg = sprintf('for the dataset level node: "%s"', nodeName);
 
-  status = checkGroupBy(thisNode);
-
   participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+  columns = fieldnames(participants);
+  status = checkGroupBy(thisNode, columns);
 
   [glmType, ~, groupBy] = groupLevelGlmType(opt, nodeName, participants);
 

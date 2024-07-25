@@ -61,7 +61,7 @@ function [status, groupBy] = checkGroupBy(node, extraVar)
         status = true;
       elseif numel(groupBy) == 2 && iscellstr(extraVar) && numel(extraVar) > 0
         for i = 1:numel(extraVar)
-          if all(ismember(lower(groupBy), {'contrast', extraVar{i}}))
+          if all(ismember(groupBy, {'contrast', extraVar{i}}))
             status = true;
             break
           end

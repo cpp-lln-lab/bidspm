@@ -14,7 +14,9 @@ function test_setBatchFactorialDesign_between_3_groups()
   opt.verbosity = 3;
 
   matlabbatch = {};
-  matlabbatch = setBatchFactorialDesign(matlabbatch, opt, 'between_groups');
+  [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabbatch, ...
+                                                                 opt, ...
+                                                                 'between_groups');
   matlabbatch;
 
 end

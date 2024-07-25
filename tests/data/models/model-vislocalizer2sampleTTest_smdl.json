@@ -86,7 +86,7 @@
         "Type": "glm",
         "X": [
           1,
-          "group"
+          "Group"
         ],
         "Options": {
           "Mask": {
