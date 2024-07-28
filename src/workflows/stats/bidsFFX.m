@@ -115,6 +115,8 @@ function [matlabbatch, opt] = bidsFFX(varargin)
 
       case 'contrasts'
 
+        opt.model.bm.validateConstrasts();
+
         if isempty(nodeName)
           matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);
         else

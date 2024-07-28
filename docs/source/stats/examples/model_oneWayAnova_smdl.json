@@ -55,38 +55,7 @@
         "Type": "glm",
         "X": [
           1
-        ],
-        "Software": {
-          "bidspm": {
-            "Results": [
-              {
-                "name": [
-                  "flashing checkerboard"
-                ],
-                "p": 0.05,
-                "MC": "FWE",
-                "png": true,
-                "binary": false,
-                "nidm": false,
-                "montage": {
-                  "do": true,
-                  "slices": [
-                    -4,
-                    0,
-                    4,
-                    8,
-                    16
-                  ],
-                  "background": {
-                    "suffix": "T1w",
-                    "desc": "preproc",
-                    "modality": "anat"
-                  }
-                }
-              }
-            ]
-          }
-        }
+        ]
       },
       "DummyContrasts": {
         "Test": "t"
@@ -104,38 +73,20 @@
         "X": [
           1,
           "group"
-        ],
-        "Software": {
-          "bidspm": {
-            "Results": [
-              {
-                "name": [
-                  "B > I",
-                  "average across groups"
-                ],
-                "p": 0.001,
-                "MC": "none",
-                "png": true,
-                "binary": false,
-                "nidm": false,
-                "montage": {
-                  "do": false
-                }
-              }
-            ]
-          }
-        }
+        ]
       },
       "Contrasts": [
         {
           "Name": "B > I",
           "ConditionList": [
             "group.B",
-            "group.I"
+            "group.I",
+            "group.BI"
           ],
           "Weights": [
             1,
-            -1
+            -1,
+            0
           ],
           "Test": "t"
         },

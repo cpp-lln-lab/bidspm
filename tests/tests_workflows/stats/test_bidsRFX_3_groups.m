@@ -46,7 +46,7 @@ function test_bidsRFX_one_way_anova_results()
   opt = setOptions('3_groups', '', 'pipelineType', 'stats');
 
   opt.model.bm = BidsModel('file', opt.model.file);
-  opt.verbosity = 3;
+  opt.verbosity = 0;
 
   nodeName = 'between_groups';
 
@@ -79,26 +79,5 @@ function test_bidsRFX_one_way_anova_results()
   assertEqual(matlabbatch{3}.spm.stats.results.conspec.contrasts, 2);
   assertEqual(matlabbatch{4}.result.name, 'VisStatGtVisMot - blind_gt_relative');
   assertEqual(matlabbatch{4}.spm.stats.results.conspec.contrasts, 1);
-
-end
-
-function value = batchSummary(matlabbatch)
-  value = {};
-  for i = 1:numel(matlabbatch)
-    field = fieldnames(matlabbatch{i}.spm);
-    value{i, 1} = field{1}; %#ok<*AGROW>
-    field = fieldnames(matlabbatch{i}.spm.(value{i, 1}));
-    value{i, 2} = field{1};
-  end
-end
-
-function value = expectedBatchOrder()
-
-  value = {'stats', 'factorial_design'; ...
-           'stats', 'fmri_est'; ...
-           'tools', 'MACS'; ...
-           'tools', 'MACS'; ...
-           'stats', 'review'; ...
-           'util',  'print'};
 
 end

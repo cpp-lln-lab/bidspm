@@ -24,7 +24,9 @@ function test_bidsRFX_one_way_anova()
   rfxDir = getRFXdir(opt, nodeName, contrastName, '1WayANOVA');
 
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, rfxDir);
-  assertEqual(matlabbatch{3}.spm.tools.MACS.MA_model_space.dir{1}, rfxDir);
+  if ~bids.internal.is_octave
+    assertEqual(matlabbatch{3}.spm.tools.MACS.MA_model_space.dir{1}, rfxDir);
+  end
   assertEqual(fileparts(matlabbatch{2}.spm.stats.fmri_est.spmmat{1}), rfxDir);
 
   assertEqual(batchSummary(matlabbatch), expectedBatchOrder());

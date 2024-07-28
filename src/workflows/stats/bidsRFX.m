@@ -133,6 +133,8 @@ function matlabbatch = bidsRFX(varargin)
 
     case 'contrasts'
 
+      opt.model.bm.validateConstrasts();
+
       for i = 1:numel(datasetNodes)
         matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, datasetNodes{i}.Name);
         saveAndRunWorkflow(matlabbatch, 'contrasts_rfx', opt);

@@ -35,6 +35,7 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
   load(spmMatFile, 'SPM');
 
   model = opt.model.bm;
+  model.validateConstrasts();
 
   % Create Contrasts
   if nargin < 4 || isempty(nodeName)
