@@ -163,23 +163,10 @@ function checkRootNode(opt)
   % This only concerns 'specify' and 'specifyAndEstimate'
   %
 
+  opt.model.bm.validateRootNode();
+
   thisNode = opt.model.bm.get_root_node;
-
-  if ismember(lower(thisNode.Level), {'session', 'subject'})
-
-    notImplemented(mfilename(), ...
-                   '"session" and "subject" level Node not implemented yet');
-
-  elseif ismember(lower(thisNode.Level), {'dataset'})
-
-    msg = sprintf(['Your model seems to be having dataset Node at its root\n.', ...
-                   'Validate it: https://bids-standard.github.io/stats-models/validator.html\n']);
-    id = 'wrongLevel';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename());
-
-  end
-
-  checkGroupBy(thisNode);
+  opt.model.bm.validateGroupBy(thisNode);
 
   % should not be necessary
   % mostly in case users did not validate the model inputs

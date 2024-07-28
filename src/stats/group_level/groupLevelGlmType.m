@@ -10,18 +10,15 @@ function [type, srcDesignMatrix, groupBy] = groupLevelGlmType(opt, nodeName, par
   % TODO refactor
   columns = fieldnames(participants);
 
-  srcDesignMatrix = opt.model.bm.getBidsDesignMatrix('Name', nodeName);
-  designMatrix = srcDesignMatrix;
-
   node = opt.model.bm.get_nodes('Name', nodeName);
-
   groupBy = node.GroupBy;
+  srcDesignMatrix = node.Model.X;
 
   type = 'unknown';
-  if isnumeric(designMatrix) && designMatrix == 1
+  if isnumeric(srcDesignMatrix) && srcDesignMatrix == 1
     type = 'one_sample_t_test';
 
-  elseif iscell(designMatrix) && numel(designMatrix) == 2
+  elseif iscell(srcDesignMatrix) && numel(srcDesignMatrix) == 2
 
     designMatrix = cellfun(@(x) num2str(x), srcDesignMatrix, 'uniformoutput', false);
 

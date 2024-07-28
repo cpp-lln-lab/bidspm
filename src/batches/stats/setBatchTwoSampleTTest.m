@@ -44,7 +44,7 @@ function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(vararg
   %%
   printBatchName('specify group level paired T-test fmri model', opt);
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  [~, opt] = getData(opt, opt.dir.preproc);
 
   node = opt.model.bm.get_nodes('Name', nodeName);
 
@@ -67,7 +67,8 @@ function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(vararg
   group2 = group2{2};
 
   % TODO refactor
-  availableGroups = unique(BIDS.raw.participants.content.(groupField));
+  availableGroups = getAvailableGroups(opt, groupField);
+  participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
 
   if any(~ismember({group1, group2}, availableGroups))
     error(['Some requested group is not present: %s.', ...
@@ -103,8 +104,8 @@ function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(vararg
 
       subLabel = opt.subjects{iSub};
 
-      idx = strcmp(BIDS.raw.participants.content.participant_id, ['sub-' subLabel]);
-      participantGroup = BIDS.raw.participants.content.(groupField){idx};
+      idx = strcmp(participants.participant_id, ['sub-' subLabel]);
+      participantGroup = participants.(groupField){idx};
 
       if numel(contrastsList) == 1
         file = conImages{iSub};

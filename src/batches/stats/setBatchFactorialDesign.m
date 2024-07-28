@@ -36,7 +36,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
     return
   end
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  [~, opt] = getData(opt, opt.dir.preproc);
 
   printBatchName(sprintf('specify group level fmri model for node "%s"', nodeName), opt);
 
@@ -71,13 +71,11 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
       groupColumnHdr = setxor(designMatrix, {'1'});
       groupColumnHdr = groupColumnHdr{1};
 
-      checkColumnParticipantsTsv(BIDS, groupColumnHdr);
-
       % Sorting is important so that we know in which order
       % the groups are entered in the design matrix.
       % Otherwise it will be harder to properly design
       % the contrast vectors later.
-      availableGroups = sort(unique(BIDS.raw.participants.content.(groupColumnHdr)));
+      availableGroups = getAvailableGroups(opt, groupColumnHdr);
 
       label = '1WayANOVA';
 
@@ -103,7 +101,8 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
         % Note that this will lead to different results
         % depending on the requested subejcts
         %
-        tsv = BIDS.raw.participants.content;
+        tsvFile = fullfile(opt.dir.raw, 'participants.tsv');
+        tsv = bids.util.tsvread(tsvFile);
         subjectsInGroup = strcmp(tsv.(groupColumnHdr), thisGroup);
         subjectsLabel = regexprep(tsv.participant_id(subjectsInGroup), '^sub-', '');
         subjectsLabel = intersect(subjectsLabel, opt.subjects);
@@ -180,7 +179,7 @@ function [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, 
   contrastsList = {};
   groups = {};
 
-  [BIDS, opt] = getData(opt, opt.dir.preproc);
+  [~, opt] = getData(opt, opt.dir.preproc);
 
   contrasts = getContrastsListForFactorialDesign(opt, nodeName);
 
@@ -191,9 +190,7 @@ function [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, 
   groupColumnHdr = setxor(groupBy, {'contrast'});
   groupColumnHdr = groupColumnHdr{1};
 
-  checkColumnParticipantsTsv(BIDS, groupColumnHdr);
-
-  availableGroups = unique(BIDS.raw.participants.content.(groupColumnHdr));
+  availableGroups = getAvailableGroups(opt, groupColumnHdr);
 
   for iGroup = 1:numel(availableGroups)
 
@@ -205,7 +202,8 @@ function [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, 
     % Note that this will lead to different results depending on the requested
     % subejcts
     %
-    tsv = BIDS.raw.participants.content;
+    tsvFile = fullfile(opt.dir.raw, 'participants.tsv');
+    tsv = bids.util.tsvread(tsvFile);
     subjectsInGroup = strcmp(tsv.(groupColumnHdr), thisGroup);
     subjectsLabel = regexprep(tsv.participant_id(subjectsInGroup), '^sub-', '');
     subjectsLabel = intersect(subjectsLabel, opt.subjects);
@@ -352,14 +350,13 @@ end
 
 function [status, groupBy, glmType] = checks(opt, nodeName)
 
-  thisNode = opt.model.bm.get_nodes('Name', nodeName);
-
   commonMsg = sprintf('for the dataset level node: "%s"', nodeName);
 
   % TODO refactor
   participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
   columns = fieldnames(participants);
-  status = checkGroupBy(thisNode, columns);
+
+  status = opt.model.bm.validateGroupBy(nodeName, columns);
 
   [glmType, ~, groupBy] = groupLevelGlmType(opt, nodeName, participants);
 

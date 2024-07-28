@@ -11,12 +11,11 @@ end
 function test_setBatchFactorialDesign_between_3_groups()
 
   opt = setOptions('3_groups', '', 'pipelineType', 'stats');
-  opt.verbosity = 3;
+  opt.verbosity = 0;
 
   matlabbatch = {};
   [matlabbatch, ~, ~] = setBatchFactorialDesign(matlabbatch, ...
                                                 opt, ...
                                                 'between_groups');
-  matlabbatch;
 
 end
