@@ -9,8 +9,6 @@ function mask = bidsWholeBrainFuncMask(opt)
 
   % (C) Copyright 2020 bidspm developers
 
-  % TODO add test
-
   opt.pipeline.type = 'preproc';
 
   opt.dir.input = opt.dir.preproc;

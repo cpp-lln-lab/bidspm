@@ -57,6 +57,10 @@ function contrasts = specifyContrasts(model, SPM, nodeName)
       node = node{1};
     end
 
+    if ismember(lower(node.Level), {'session', 'subject'}) && ~model.validateGroupBy(node)
+      continue
+    end
+
     [contrasts, counter] = specifyDummyContrasts(model, node, contrasts, counter);
 
     switch lower(node.Level)
@@ -65,15 +69,9 @@ function contrasts = specifyContrasts(model, SPM, nodeName)
         [contrasts, counter] = specifyRunLvlContrasts(model, node, contrasts, counter);
 
       case 'session'
-        if ~checkGroupBy(node)
-          continue
-        end
         [contrasts, counter] = specifySessionLvlContrasts(model, node, contrasts, counter);
 
       case 'subject'
-        if ~checkGroupBy(node)
-          continue
-        end
         [contrasts, counter] = specifySubLvlContrasts(model, node, contrasts, counter);
 
     end

@@ -167,7 +167,6 @@ bids
 ====
 .. autofunction:: src.bids.addStcToQuery
 .. autofunction:: src.bids.buildIndividualSpaceRoiFilename
-.. autofunction:: src.bids.checkColumnParticipantsTsv
 .. autofunction:: src.bids.checkFmriprep
 .. autofunction:: src.bids.fileFilterForBold
 .. autofunction:: src.bids.generatedBy

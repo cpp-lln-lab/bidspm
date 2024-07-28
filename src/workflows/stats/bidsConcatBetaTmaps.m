@@ -119,7 +119,7 @@ function bidsConcatBetaTmaps(opt, deleteTmaps)
 
     spm_save(fullfile(ffxDir, bf.filename), tsvContent);
 
-    % TODO in the dev branch make those output filenames "BIDS derivatives" compliant
+    % TODO make those output filenames "BIDS derivatives" compliant
     % beta maps
     bf = bids.File(nameStructure);
     bf.extension = '.nii';

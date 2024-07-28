@@ -37,7 +37,7 @@ function dummyContrastsList = getDummyContrastsList(model, node, extraVar)
 
   else
 
-    assert(checkGroupBy(node, extraVar));
+    assert(model.validateGroupBy(node, extraVar));
 
     switch lower(node.Level)
 

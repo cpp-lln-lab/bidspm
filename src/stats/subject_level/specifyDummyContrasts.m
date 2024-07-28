@@ -26,10 +26,7 @@ function [contrasts, counter] = specifyDummyContrasts(model, node, contrasts, co
     return
   end
 
-  if ismember(node.Level, {'Session'}) && ~checkGroupBy(node)
-    return
-  end
-  if strcmp(node.Level, 'Subject') && ~checkGroupBy(node)
+  if ismember(node.Level, {'Subject', 'Session'}) && ~model.validateGroupBy(node)
     return
   end
   if ismember(node.Level, {'Dataset'})

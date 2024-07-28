@@ -48,7 +48,7 @@ function contrastsList = getContrastsList(model, node, extraVar)
         % TODO relax those assumptions
 
         % assumptions
-        assert(checkGroupBy(node, extraVar));
+        assert(model.validateGroupBy(node, extraVar));
         assert(node.Model.X == 1);
 
         contrastsList = getContrastsFromParentNode(model, node);
