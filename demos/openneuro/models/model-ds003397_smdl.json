@@ -113,7 +113,7 @@
                   "B > I",
                   "average across groups"
                 ],
-                "p": 0.05,
+                "p": 0.001,
                 "MC": "none",
                 "png": true,
                 "binary": false,

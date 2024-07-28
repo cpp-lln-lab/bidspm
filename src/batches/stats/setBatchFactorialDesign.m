@@ -81,7 +81,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
 
       label = '1WayANOVA';
 
-      rfxDir = getRFXdir(opt, nodeName, contrasts{1}, '1WayANOVA');
+      rfxDir = getRFXdir(opt, nodeName, contrasts{1}, label);
       overwriteDir(rfxDir, opt);
 
       assert(exist(fullfile(rfxDir, 'SPM.mat'), 'file') == 0);

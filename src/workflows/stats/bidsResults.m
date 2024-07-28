@@ -479,7 +479,6 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
         elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
 
           % TODO make more general than just with group
-
           groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
           availableGroups = unique(participants.(groupColumnHdr));
 
@@ -506,6 +505,27 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
           result.name = [thisContrast{iCon}.Name ' - ' name];
           result.contrastNb = iCon;
           matlabbatch = appendToBatch(matlabbatch, opt, result);
+        end
+
+      case 'one_way_anova'
+
+        contrastsList = getContrastsListForFactorialDesign(opt, result.nodeName);
+
+        for iCon = 1:numel(contrastsList)
+
+          label = '1WayANOVA';
+          result.dir = getRFXdir(opt, result.nodeName, contrastsList{iCon}, label);
+
+          load(fullfile(result.dir, 'SPM.mat'), 'SPM');
+
+          result.name =  name;
+          contrastNb = getContrastNb(result, opt, SPM);
+          result.contrastNb = contrastNb;
+
+          result.name = [bids.internal.camel_case(contrastsList{iCon}) ' - ' name];
+
+          matlabbatch = appendToBatch(matlabbatch, opt, result);
+
         end
 
       otherwise

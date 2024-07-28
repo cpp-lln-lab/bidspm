@@ -107,11 +107,31 @@
         "X": [
           1,
           "diagnostic"
-        ]
+        ],
+        "Software": {
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "relative_gt_ctrl",
+                  "blind_gt_relative"
+                ],
+                "p": 0.05,
+                "MC": "none",
+                "png": true,
+                "binary": false,
+                "nidm": false,
+                "montage": {
+                  "do": false
+                }
+              }
+            ]
+          }
+        }
       },
       "Contrasts": [
         {
-          "Name": "VisMot_gt_VisStat",
+          "Name": "relative_gt_ctrl",
           "Description": "3 groups but not sorted alphabetically whereas the groups are entered alphabetically in the design matrix.",
           "ConditionList": [
             "diagnostic.relative",
@@ -126,7 +146,7 @@
           "Test": "t"
         },
         {
-          "Name": "VisMot_gt_VisStat",
+          "Name": "blind_gt_relative",
           "Description": "Only 2 groups should be OK but needs to be handled properly: should give a vector [-1, 0, 1]",
           "ConditionList": [
             "diagnostic.blind",
