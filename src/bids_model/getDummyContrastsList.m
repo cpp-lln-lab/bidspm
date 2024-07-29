@@ -43,7 +43,7 @@ function dummyContrastsList = getDummyContrastsList(model, node, participants)
 
       case 'run'
 
-        dummyContrastsList = node.Model.X;
+        dummyContrastsList = node.Model.HRF.Variables;
 
       case {'session', 'subject'}
 

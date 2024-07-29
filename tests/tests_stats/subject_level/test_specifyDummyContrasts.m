@@ -170,6 +170,6 @@ function test_specifyDummyContrasts_subselect_contrasts()
 
   contrasts = specifyDummyContrasts(model, node, contrasts, counter);
 
-  assertEqual(numel({contrasts.name}), 8);
+  assertEqual(numel({contrasts.name}), 20);
 
 end
