@@ -21,10 +21,6 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
 
   % (C) Copyright 2019 bidspm developers
 
-  % TODO implement other models than group average of contrast from lower levels
-
-  % TODO implement Contrasts and not just dummy contrasts
-
   % to keep track of all the contrast we used
   % and to which group each batch corresponds to
   % the later is needed to be able to create proper RFX dir name
@@ -55,12 +51,6 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
 
     case 'one_way_anova'
 
-      % to keep track of all the contrast we used
-      % and to which group each batch corresponds to
-      % the later is needed to be able to create proper RFX dir name
-      contrastsList = {};
-      groups = {};
-
       % TODO all contrasts should have the same name
       contrasts = getContrastsListForFactorialDesign(opt, nodeName);
 
@@ -83,8 +73,6 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
       mask = getInclusiveMask(opt, nodeName);
       matlabbatch{end}.spm.stats.factorial_design.masking.em = {mask};
 
-      icell(1).scans = {};
-
       for iGroup = 1:numel(availableGroups)
 
         thisGroup = availableGroups{iGroup};
@@ -100,9 +88,6 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
         for iCon = 1:numel(contrasts)
 
           contrastName = contrasts{iCon};
-
-          contrastsList{end + 1, 1} = contrastName;
-          groups{end + 1, 1} = thisGroup;
 
           msg = sprintf('  Group contrast "%s" for group "%s"', contrastName, thisGroup);
           logger('INFO', msg, 'options', opt, 'filename', mfilename());
@@ -273,27 +258,16 @@ function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell,
     thisGroup = 'GROUP';
   end
 
-  factorialDesign.dir = {directory};
+  factorialDesign = commonFaxtorialDesignBatch(directory);
 
   factorialDesign.des.fd.icell = icell;
+
+  factorialDesign.des.fd.fact = varianceStruct();
 
   % GROUP and the number of levels in the group.
   % If 2 groups, then number of levels = 2
   factorialDesign.des.fd.fact.name = thisGroup;
   factorialDesign.des.fd.fact.levels = numel(icell);
-
-  factorialDesign.des.fd.fact.dept = 0;
-
-  % 1: Assumes that the variance is not the same across groups
-  % 0: There is no difference in the variance between groups
-  factorialDesign.des.fd.fact.variance = 1;
-  factorialDesign.des.fd.fact.gmsca = 0;
-  factorialDesign.des.fd.fact.ancova = 0;
-  % factorial_design.cov = [];
-
-  factorialDesign = setBatchFactorialDesignImplicitMasking(factorialDesign);
-
-  factorialDesign = setBatchFactorialDesignGlobalCalcAndNorm(factorialDesign);
 
   matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
 
@@ -301,31 +275,40 @@ end
 
 function matlabbatch = returnOneWayAnovaBatch(matlabbatch, directory)
 
-  factorialDesign.dir = {directory};
+  factorialDesign = commonFaxtorialDesignBatch(directory);
+
+  factorialDesign.des.anova = varianceStruct();
 
   factorialDesign.des.anova.icell(1).scans = {};
-
-  % Assumes groups are independent
-  factorialDesign.des.anova.dept = 0;
-  % 1: Assumes that the variance is not the same across groups
-  % 0: There is no difference in the variance between groups
-  factorialDesign.des.anova.variance = 1;
-  factorialDesign.des.anova.gmsca = 0;
-  factorialDesign.des.anova.ancova = 0;
 
   factorialDesign.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
 
   factorialDesign.multi_cov = struct('files', {}, 'iCFI', {}, 'iCC', {});
 
-  factorialDesign.masking.tm.tm_none = 1;
-  factorialDesign.masking.im = 1;
-
   factorialDesign.masking.em = {''};
+
+  matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
+
+end
+
+function factorialDesign = commonFaxtorialDesignBatch(directory)
+  factorialDesign.dir = {directory};
 
   factorialDesign = setBatchFactorialDesignImplicitMasking(factorialDesign);
   factorialDesign = setBatchFactorialDesignGlobalCalcAndNorm(factorialDesign);
+end
 
-  matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
+function value = varianceStruct()
+
+  value = struct();
+
+  % Assumes groups are independent
+  value(1).dept = 0;
+  % 1: Assumes that the variance is not the same across groups
+  % 0: There is no difference in the variance between groups
+  value.variance = 1;
+  value.gmsca = 0;
+  value.ancova = 0;
 
 end
 

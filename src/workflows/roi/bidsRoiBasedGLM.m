@@ -76,7 +76,7 @@ function skipped = bidsRoiBasedGLM(opt)
     logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
     outputDir = getFFXdir(subLabel, opt);
-    if ~checkSpmMat(outputDir, opt, strict)
+    if ~checkSpmMat(outputDir, opt)
       continue
     end
     spmMatFile = fullfile(outputDir, 'SPM.mat');
