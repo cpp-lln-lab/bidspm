@@ -8,7 +8,7 @@ function test_suite = test_setBatchGroupLevelContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchGroupLevelContrasts_between_groups()
+function test_setBatchGroupLevelContrasts_two_sample_ttest()
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 

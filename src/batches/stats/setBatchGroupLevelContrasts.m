@@ -30,13 +30,13 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
   participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
 
-  groupColumnHdr = bm.getGroupColumnHdrFromGroupBy(nodeName, participants);
-  availableGroups = getAvailableGroups(opt, groupColumnHdr);
-
   [groupGlmType, groupBy] =  bm.groupLevelGlmType(nodeName, participants);
   switch groupGlmType
 
     case 'one_sample_t_test'
+
+      groupColumnHdr = bm.getGroupColumnHdrFromGroupBy(nodeName, participants);
+      availableGroups = getAvailableGroups(opt, groupColumnHdr);
 
       contrastsList = getContrastsListForFactorialDesign(opt, nodeName);
 
@@ -80,6 +80,9 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
       % through the Edge filter.
       % Then generate the between group contrasts.
 
+      groupColumnHdr = bm.getGroupColumnHdrFromDesignMatrix(nodeName);
+      availableGroups = getAvailableGroups(opt, groupColumnHdr);
+
       edge = bm.get_edge('Destination', nodeName);
       contrastsList = edge.Filter.contrast;
 
@@ -96,10 +99,12 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
         for iCon = 1:numel(thisContrast)
 
           % Sort conditions and weights
-          [ConditionList, I] = sort(thisContrast{iCon}.ConditionList);
-          for iCdt = 1:numel(ConditionList)
-            ConditionList{iCdt} =  strrep(ConditionList{iCdt}, [groupColumnHdr, '.'], '');
+          ConditionList = {};
+          for iCdt = 1:numel(thisContrast{iCon}.ConditionList)
+            ConditionList{iCdt} =  strrep(thisContrast{iCon}.ConditionList{iCdt}, ...
+                                          [groupColumnHdr, '.'], '');
           end
+          [ConditionList, I] = sort(ConditionList);
           Weights = thisContrast{iCon}.Weights(I);
 
           % Create contrast vectors by what was passed in the model
