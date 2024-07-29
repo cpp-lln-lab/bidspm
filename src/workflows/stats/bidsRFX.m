@@ -90,6 +90,8 @@ function matlabbatch = bidsRFX(varargin)
 
     case 'rfx'
 
+      [~, opt] = getData(opt, opt.dir.preproc);
+
       participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
 
       matlabbatch = {};

@@ -32,8 +32,6 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
     return
   end
 
-  [~, opt] = getData(opt, opt.dir.preproc);
-
   printBatchName(sprintf('specify group level fmri model for node "%s"', nodeName), opt);
 
   % now we fetch the contrast for each subject and allocate them in the batch

@@ -13,6 +13,8 @@ function test_setBatchFactorialDesign_between_3_groups()
   opt = setOptions('3_groups', '', 'pipelineType', 'stats');
   opt.verbosity = 0;
 
+  [~, opt] = getData(opt, opt.dir.preproc);
+
   matlabbatch = {};
   [matlabbatch, ~, ~] = setBatchFactorialDesign(matlabbatch, ...
                                                 opt, ...

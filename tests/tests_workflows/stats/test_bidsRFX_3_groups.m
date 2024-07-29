@@ -27,6 +27,8 @@ function test_bidsRFX_one_way_anova_contrast()
 
   opt = setOptions('3_groups', '', 'pipelineType', 'stats');
 
+  [~, opt] = getData(opt, opt.dir.preproc);
+
   opt.model.bm = BidsModel('file', opt.model.file);
   opt.verbosity = 0;
 
