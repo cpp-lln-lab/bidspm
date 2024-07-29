@@ -84,7 +84,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
         assert(~checkSpmMat(rfxDir, opt));
 
         if strcmp(glmType, 'two_sample_t_test')
-          factorialDesign = returnTwoSampleTTestBatch(opt, nodeName);
+          factorialDesign = returnTwoSampleTTestBatch(rfxDir);
         else
           factorialDesign = returnOneWayAnovaBatch(rfxDir);
         end
@@ -267,7 +267,9 @@ function matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, i
 
   assert(iscellstr(icell.scans));
 
-  matlabbatch = returnFactorialDesignBatch(matlabbatch, rfxDir, icell, thisGroup);
+  factorialDesign = returnFactorialDesignBatch(rfxDir, icell, thisGroup);
+
+  matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
 
   mask = getInclusiveMask(opt, nodeName);
   matlabbatch{end}.spm.stats.factorial_design.masking.em = {mask};
@@ -278,8 +280,7 @@ function matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, i
                                                                     'before estimation')));
 end
 
-function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell, thisGroup)
-
+function factorialDesign = returnFactorialDesignBatch(directory, icell, thisGroup)
   if isempty(thisGroup)
     thisGroup = 'GROUP';
   end
@@ -294,13 +295,9 @@ function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell,
   % If 2 groups, then number of levels = 2
   factorialDesign.des.fd.fact.name = thisGroup;
   factorialDesign.des.fd.fact.levels = numel(icell);
-
-  matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
-
 end
 
 function factorialDesign = returnTwoSampleTTestBatch(directory)
-
   factorialDesign = commonFaxtorialDesignBatch(directory);
 
   factorialDesign.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
@@ -310,11 +307,9 @@ function factorialDesign = returnTwoSampleTTestBatch(directory)
 
   factorialDesign.des.t2.scans1 = {};
   factorialDesign.des.t2.scans2 = {};
-
 end
 
 function factorialDesign = returnOneWayAnovaBatch(directory)
-
   factorialDesign = commonFaxtorialDesignBatch(directory);
 
   factorialDesign.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
@@ -323,7 +318,6 @@ function factorialDesign = returnOneWayAnovaBatch(directory)
   factorialDesign.des.anova = varianceStruct();
 
   factorialDesign.des.anova.icell(1).scans = {};
-
 end
 
 function factorialDesign = commonFaxtorialDesignBatch(directory)
@@ -360,7 +354,7 @@ function [status, groupBy, glmType] = checks(opt, nodeName)
   [glmType, groupBy] = bm.groupLevelGlmType(nodeName, participants);
 
   % only certain type of model supported for now
-  if ismember(glmType, {'unknown', 'two_sample_t_test'})
+  if ismember(glmType, {'unknown'})
     % TODO update message to with better info for 2 sample T-Test
     msg = sprintf(['Models other than group average / comparisons ', ...
                    'not implemented yet %s'], commonMsg);
@@ -384,11 +378,13 @@ function [status, groupBy, glmType] = checks(opt, nodeName)
     msg = sprintf('For one-sample t-test only DummyContrasts are implemented %s', commonMsg);
     notImplemented(mfilename(), msg, opt);
     status = false;
+    return
   end
 
-  if ismember(glmType, {'one_way_anova'}) && ...
+  if ismember(glmType, {'one_way_anova', 'two_sample_t_test'}) && ...
           (isempty(datasetLvlContrasts) || not(isempty(datasetLvlDummyContrasts)))
-    msg = sprintf('For one-way ANOVA only contrasts are yet implemented %s', commonMsg);
+    msg = sprintf(['For one-way ANOVA or 2 samples t-test ', ...
+                   'only contrasts are implemented %s'], commonMsg);
     notImplemented(mfilename(), msg, opt);
     status = false;
   end

@@ -72,7 +72,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
       end
 
-    case 'one_way_anova'
+    case {'two_sample_t_test', 'one_way_anova' }
 
       % T test for ANOVA
       %
@@ -116,31 +116,6 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
           consess{iCon}.tcon.name = thisContrast{iCon}.Name;
           consess{iCon}.tcon.convec = convec;
-          consess{iCon}.tcon.sessrep = 'none';
-        end
-
-        matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
-
-      end
-
-    case 'two_sample_t_test'
-
-      edge = bm.get_edge('Destination', nodeName);
-      contrastsList = edge.Filter.contrast;
-
-      for j = 1:numel(contrastsList)
-
-        thisContrast = bm.get_contrasts('Name', nodeName);
-
-        spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
-
-        if ~opt.dryRun
-          assert(exist(spmMatFile, 'file') == 2);
-        end
-
-        for iCon = 1:numel(thisContrast)
-          consess{iCon}.tcon.name = thisContrast{iCon}.Name;
-          consess{iCon}.tcon.convec = thisContrast{iCon}.Weights;
           consess{iCon}.tcon.sessrep = 'none';
         end
 

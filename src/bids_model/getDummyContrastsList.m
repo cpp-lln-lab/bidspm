@@ -31,7 +31,7 @@ function dummyContrastsList = getDummyContrastsList(model, node, participants)
     end
   end
 
-  if isfield(node.DummyContrasts, 'Contrasts')
+  if isfield(node, 'DummyContrasts') && isfield(node.DummyContrasts, 'Contrasts1')
 
     dummyContrastsList = node.DummyContrasts.Contrasts;
 

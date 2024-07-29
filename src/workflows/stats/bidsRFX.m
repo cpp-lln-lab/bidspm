@@ -92,12 +92,12 @@ function matlabbatch = bidsRFX(varargin)
 
       participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
 
+      matlabbatch = {};
+
       for i = 1:numel(datasetNodes)
 
         msg = sprintf('\n PROCESSING NODE: %s\n', nodeName);
         logger('INFO', msg, 'options', opt, 'filename', mfilename());
-
-        matlabbatch = {};
 
         nodeName = datasetNodes{i}.Name;
 
