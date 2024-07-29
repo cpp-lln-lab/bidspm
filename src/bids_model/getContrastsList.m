@@ -1,4 +1,4 @@
-function contrastsList = getContrastsList(model, node, extraVar)
+function contrastsList = getContrastsList(model, node, participants)
   %
   % Get list of names of Contrast from this Node
   % or gets its from the previous Nodes
@@ -19,7 +19,7 @@ function contrastsList = getContrastsList(model, node, extraVar)
   % (C) Copyright 2022 bidspm developers
 
   if nargin < 3
-    extraVar = {};
+    participants = struct();
   end
 
   contrastsList = {};
@@ -48,7 +48,7 @@ function contrastsList = getContrastsList(model, node, extraVar)
         % TODO relax those assumptions
 
         % assumptions
-        assert(model.validateGroupBy(node, extraVar));
+        assert(model.validateGroupBy(node.Name participants));
         assert(node.Model.X == 1);
 
         contrastsList = getContrastsFromParentNode(model, node);

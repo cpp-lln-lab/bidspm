@@ -443,7 +443,9 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
   matlabbatch = {};
 
-  node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
+  model = opt.model.bm;
+
+  node = model.get_nodes('Name',  opt.results(iRes).nodeName);
 
   opt = checkMontage(opt, iRes, node);
 
@@ -461,7 +463,7 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
       logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
     end
 
-    [glmType, ~, groupBy] = groupLevelGlmType(opt, result.nodeName, participants);
+    [glmType, groupBy] =  model.groupLevelGlmType(result.nodeName, participants);
 
     switch  glmType
 
@@ -480,7 +482,7 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
           % TODO make more general than just with group
           groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
-          availableGroups = unique(participants.(groupColumnHdr));
+          availableGroups = getAvailableGroups(opt, groupColumnHdr);
 
           for iGroup = 1:numel(availableGroups)
 
@@ -497,7 +499,7 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
       case 'two_sample_t_test'
 
-        thisContrast = opt.model.bm.get_contrasts('Name', result.nodeName);
+        thisContrast = model.get_contrasts('Name', result.nodeName);
 
         result.dir = getRFXdir(opt, result.nodeName, name);
 

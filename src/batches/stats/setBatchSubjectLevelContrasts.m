@@ -4,7 +4,7 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
   %
   % USAGE::
   %
-  %   matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, funcFWHM)
+  %   matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, nodeName)
   %
   % :param matlabbatch:
   % :type matlabbatch: structure

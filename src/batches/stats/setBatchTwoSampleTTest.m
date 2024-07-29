@@ -66,9 +66,7 @@ function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(vararg
   group1 = group1{2};
   group2 = group2{2};
 
-  % TODO refactor
   availableGroups = getAvailableGroups(opt, groupField);
-  participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
 
   if any(~ismember({group1, group2}, availableGroups))
     error(['Some requested group is not present: %s.', ...
@@ -85,6 +83,7 @@ function [matlabbatch, contrastsList, groupList] = setBatchTwoSampleTTest(vararg
     conImages{iSub} = findSubjectConImage(opt, subLabel, contrastsList);
   end
 
+  participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
   % set up the batch
   for iCon = 1:numel(contrastsList)
 

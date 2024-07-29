@@ -64,17 +64,11 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
       % TODO all contrasts should have the same name
       contrasts = getContrastsListForFactorialDesign(opt, nodeName);
 
-      % TODO refactor
-      designMatrix = opt.model.bm.get_design_matrix('Name', nodeName);
-      designMatrix = cellfun(@(x) num2str(x), designMatrix, 'uniformoutput', false);
-
-      groupColumnHdr = setxor(designMatrix, {'1'});
-      groupColumnHdr = groupColumnHdr{1};
-
       % Sorting is important so that we know in which order
       % the groups are entered in the design matrix.
       % Otherwise it will be harder to properly design
       % the contrast vectors later.
+      groupColumnHdr = opt.model.bm.getGroupColumnHdrFromDesignMatrix(nodeName);
       availableGroups = getAvailableGroups(opt, groupColumnHdr);
 
       label = '1WayANOVA';
@@ -101,10 +95,9 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
         % Note that this will lead to different results
         % depending on the requested subejcts
         %
-        tsvFile = fullfile(opt.dir.raw, 'participants.tsv');
-        tsv = bids.util.tsvread(tsvFile);
-        subjectsInGroup = strcmp(tsv.(groupColumnHdr), thisGroup);
-        subjectsLabel = regexprep(tsv.participant_id(subjectsInGroup), '^sub-', '');
+        participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+        subjectsInGroup = strcmp(participants.(groupColumnHdr), thisGroup);
+        subjectsLabel = regexprep(participants.participant_id(subjectsInGroup), '^sub-', '');
         subjectsLabel = intersect(subjectsLabel, opt.subjects);
 
         % collect all con images from all subjects
@@ -183,13 +176,8 @@ function [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, 
 
   contrasts = getContrastsListForFactorialDesign(opt, nodeName);
 
-  node = opt.model.bm.get_nodes('Name', nodeName);
-  groupBy = node.GroupBy;
-
-  % TODO refactor
-  groupColumnHdr = setxor(groupBy, {'contrast'});
-  groupColumnHdr = groupColumnHdr{1};
-
+  participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+  groupColumnHdr = opt.model.bm.getGroupColumnHdrFromGroupBy(nodeName, participants);
   availableGroups = getAvailableGroups(opt, groupColumnHdr);
 
   for iGroup = 1:numel(availableGroups)
@@ -202,10 +190,8 @@ function [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, 
     % Note that this will lead to different results depending on the requested
     % subejcts
     %
-    tsvFile = fullfile(opt.dir.raw, 'participants.tsv');
-    tsv = bids.util.tsvread(tsvFile);
-    subjectsInGroup = strcmp(tsv.(groupColumnHdr), thisGroup);
-    subjectsLabel = regexprep(tsv.participant_id(subjectsInGroup), '^sub-', '');
+    subjectsInGroup = strcmp(participants.(groupColumnHdr), thisGroup);
+    subjectsLabel = regexprep(participants.participant_id(subjectsInGroup), '^sub-', '');
     subjectsLabel = intersect(subjectsLabel, opt.subjects);
 
     % collect all con images from all subjects
@@ -301,6 +287,7 @@ function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell,
   % If 2 groups, then number of levels = 2
   factorialDesign.des.fd.fact.name = thisGroup;
   factorialDesign.des.fd.fact.levels = numel(icell);
+
   factorialDesign.des.fd.fact.dept = 0;
 
   % 1: Assumes that the variance is not the same across groups
@@ -338,11 +325,11 @@ function matlabbatch = returnOneWayAnovaBatch(matlabbatch, directory)
 
   factorialDesign.masking.tm.tm_none = 1;
   factorialDesign.masking.im = 1;
+
   factorialDesign.masking.em = {''};
 
-  factorialDesign.globalc.g_omit = 1;
-  factorialDesign.globalm.gmsca.gmsca_no = 1;
-  factorialDesign.globalm.glonorm = 1;
+  factorialDesign = setBatchFactorialDesignImplicitMasking(factorialDesign);
+  factorialDesign = setBatchFactorialDesignGlobalCalcAndNorm(factorialDesign);
 
   matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
 
@@ -354,11 +341,12 @@ function [status, groupBy, glmType] = checks(opt, nodeName)
 
   % TODO refactor
   participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
-  columns = fieldnames(participants);
 
-  status = opt.model.bm.validateGroupBy(nodeName, columns);
+  model = opt.model.bm;
 
-  [glmType, ~, groupBy] = groupLevelGlmType(opt, nodeName, participants);
+  status = model.validateGroupBy(nodeName, participants);
+
+  [glmType, groupBy] = model.groupLevelGlmType(nodeName, participants);
 
   % only certain type of model supported for now
   if ismember(glmType, {'unknown', 'two_sample_t_test'})
@@ -370,8 +358,8 @@ function [status, groupBy, glmType] = checks(opt, nodeName)
     return
   end
 
-  datasetLvlContrasts = opt.model.bm.get_contrasts('Name', nodeName);
-  datasetLvlDummyContrasts = opt.model.bm.get_dummy_contrasts('Name', nodeName);
+  datasetLvlContrasts = model.get_contrasts('Name', nodeName);
+  datasetLvlDummyContrasts = model.get_dummy_contrasts('Name', nodeName);
 
   if isempty(datasetLvlContrasts) && isempty(datasetLvlDummyContrasts)
     msg = sprintf('No contrast specified %s', commonMsg);

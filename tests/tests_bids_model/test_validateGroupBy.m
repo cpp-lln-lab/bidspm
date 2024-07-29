@@ -14,14 +14,13 @@ function test_validateGroupBy_run()
 
   bm = BidsModel('file', opt.model.file);
   bm.verbose = false;
-  node = bm.Nodes{1};
+  nodeName = bm.Nodes{1}.Name;
 
-  node.GroupBy = {'subject'};
-  assertWarning(@()bm.validateGroupBy(node), 'BidsModel:notImplemented');
+  bm.Nodes{1}.GroupBy = {'subject'};
+  assertWarning(@()bm.validateGroupBy(nodeName), 'BidsModel:notImplemented');
 
-  node.GroupBy = {'run', 'dataset'};
-  bm.Nodes{1} = node;
-  assertWarning(@()bm.validateGroupBy(node.Name), 'BidsModel:notImplemented');
+  bm.Nodes{1}.GroupBy = {'run', 'dataset'};
+  assertWarning(@()bm.validateGroupBy(nodeName), 'BidsModel:notImplemented');
 
 end
 
@@ -30,13 +29,13 @@ function test_validateGroupBy_subject()
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
   bm = BidsModel('file', opt.model.file);
   bm.verbose = false;
-  node = bm.Nodes{2};
+  nodeName = bm.Nodes{2}.Name;
 
-  node.GroupBy = {'subject'};
-  assertWarning(@()bm.validateGroupBy(node), 'BidsModel:notImplemented');
+  bm.Nodes{2}.GroupBy = {'subject'};
+  assertWarning(@()bm.validateGroupBy(nodeName), 'BidsModel:notImplemented');
 
-  node.GroupBy = {'session', 'subject'};
-  assertWarning(@()bm.validateGroupBy(node), 'BidsModel:notImplemented');
+  bm.Nodes{2}.GroupBy = {'session', 'subject'};
+  assertWarning(@()bm.validateGroupBy(nodeName), 'BidsModel:notImplemented');
 end
 
 function test_checkGroupBy_dataset()
@@ -45,21 +44,21 @@ function test_checkGroupBy_dataset()
 
   bm = BidsModel('file', opt.model.file);
   bm.verbose = false;
+  nodeName = bm.Nodes{3}.Name;
 
   % should be fine
-  node = bm.Nodes{3};
-  node.GroupBy = {'contrast'};
-  status = bm.validateGroupBy(node);
+  bm.Nodes{3}.GroupBy = {'contrast'};
+  status = bm.validateGroupBy(nodeName);
   assertEqual(status, true);
 
-  node.GroupBy = {'subject'};
-  assertWarning(@()bm.validateGroupBy(node), 'BidsModel:notImplemented');
+  bm.Nodes{3}.GroupBy = {'subject'};
+  assertWarning(@()bm.validateGroupBy(nodeName), 'BidsModel:notImplemented');
 
-  node.GroupBy = {'session', 'subject'};
-  assertWarning(@()bm.validateGroupBy(node), 'BidsModel:notImplemented');
+  bm.Nodes{3}.GroupBy = {'session', 'subject'};
+  assertWarning(@()bm.validateGroupBy(nodeName), 'BidsModel:notImplemented');
 
-  node.GroupBy = {'session', 'subject', 'foo'};
-  assertWarning(@()bm.validateGroupBy(node), 'BidsModel:notImplemented');
+  bm.Nodes{3}.GroupBy = {'session', 'subject', 'foo'};
+  assertWarning(@()bm.validateGroupBy(nodeName), 'BidsModel:notImplemented');
 
 end
 
@@ -69,8 +68,9 @@ function test_checkGroupBy_dataset_group_from_participant()
 
   bm = BidsModel('file', opt.model.file);
   bm.verbose = false;
+  nodeName = bm.Nodes{3}.Name;
 
   bm.Nodes{3}.GroupBy = {'contrast', 'diagnostic'};
-  bm.validateGroupBy(bm.Nodes{3}, {'diagnostic'});
+  bm.validateGroupBy(nodeName, {'diagnostic'});
 
 end

@@ -60,10 +60,10 @@ jobs:
                 coverage run --source src -m pytest
                 coverage xml
 
-        -   name: Code coverage
-            uses: codecov/codecov-action@v4
-            with:
-                file: coverage.xml
-                flags: cli
-                name: codecov-cli
-                fail_ci_if_error: false
+        # -   name: Code coverage
+        #     uses: codecov/codecov-action@v4
+        #     with:
+        #         file: coverage.xml
+        #         flags: cli
+        #         name: codecov-cli
+        #         fail_ci_if_error: false

@@ -26,17 +26,21 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
   printBatchName('group level contrast estimation', opt);
 
-  % TODO refactor
-  participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
-  [groupGlmType, designMatrix, groupBy] =  groupLevelGlmType(opt, nodeName, participants);
+  model = opt.model.bm;
 
+  participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+
+  groupColumnHdr = model.getGroupColumnHdrFromGroupBy(nodeName, participants);
+  availableGroups = getAvailableGroups(opt, groupColumnHdr);
+
+  [groupGlmType, groupBy] =  model.groupLevelGlmType(nodeName, participants);
   switch groupGlmType
 
     case 'one_sample_t_test'
 
       contrastsList = getContrastsListForFactorialDesign(opt, nodeName);
 
-      if all(ismember(lower(groupBy), {'contrast'}))
+      if numel(groupBy) == 1 && ismember(lower(groupBy), {'contrast'})
 
         for j = 1:numel(contrastsList)
 
@@ -48,11 +52,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
         end
 
-        % TODO make more general than just with group
-      elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
-        % TODO make more general than just with group
-        groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
-        availableGroups = unique(participants.(groupColumnHdr));
+      elseif numel(groupBy) == 2 && any(ismember(groupBy, fieldnames(participants)))
 
         for j = 1:numel(contrastsList)
 
@@ -80,14 +80,10 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
       % through the Edge filter.
       % Then generate the between group contrasts.
 
-      designMatrix = removeIntercept(designMatrix);
-
-      groups = unique(participants.(designMatrix{1}));
-
-      edge = opt.model.bm.get_edge('Destination', nodeName);
+      edge = model.get_edge('Destination', nodeName);
       contrastsList = edge.Filter.contrast;
 
-      thisContrast = opt.model.bm.get_contrasts('Name', nodeName);
+      thisContrast = model.get_contrasts('Name', nodeName);
 
       for j = 1:numel(contrastsList)
 
@@ -102,14 +98,14 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
           % Sort conditions and weights
           [ConditionList, I] = sort(thisContrast{iCon}.ConditionList);
           for iCdt = 1:numel(ConditionList)
-            ConditionList{iCdt} =  strrep(ConditionList{iCdt}, [designMatrix{1}, '.'], '');
+            ConditionList{iCdt} =  strrep(ConditionList{iCdt}, [groupColumnHdr, '.'], '');
           end
           Weights = thisContrast{iCon}.Weights(I);
 
           % Create contrast vectors by what was passed in the model
-          convec = zeros(size(groups));
-          for iGroup = 1:numel(groups)
-            index = strcmp(groups{iGroup}, ConditionList);
+          convec = zeros(size(availableGroups));
+          for iGroup = 1:numel(availableGroups)
+            index = strcmp(availableGroups{iGroup}, ConditionList);
             if any(index)
               convec(iGroup) = Weights(index);
             end
@@ -128,17 +124,16 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
       designMatrix = removeIntercept(designMatrix);
 
-      % TODO make more general than just with group
-      if ismember(lower(designMatrix), {'group'})
+      if any(ismember(designMatrix, fieldnames(participants)))
         % TODO will this ignore the contrasts define at other levels
         % and not passed through the filter ?
-        edge = opt.model.bm.get_edge('Destination', nodeName);
+        edge = model.get_edge('Destination', nodeName);
         contrastsList = edge.Filter.contrast;
       end
 
       for j = 1:numel(contrastsList)
 
-        thisContrast = opt.model.bm.get_contrasts('Name', nodeName);
+        thisContrast = model.get_contrasts('Name', nodeName);
 
         spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
 

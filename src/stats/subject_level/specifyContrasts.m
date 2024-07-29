@@ -57,7 +57,7 @@ function contrasts = specifyContrasts(model, SPM, nodeName)
       node = node{1};
     end
 
-    if ismember(lower(node.Level), {'session', 'subject'}) && ~model.validateGroupBy(node)
+    if ismember(lower(node.Level), {'session', 'subject'}) && ~model.validateGroupBy(node.Name)
       continue
     end
 

@@ -14,17 +14,16 @@ function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
 
   % (C) Copyright 2022 bidspm developers
 
-  % assuming we want to only average at the group level
-
-  % TODO refactor
+  % assuming we want to only average / comparisons at the group level
   participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
-  columns = fieldnames(participants);
 
-  [groupGlmType, ~, ~] =  groupLevelGlmType(opt, nodeName, participants);
+  model = opt.model.bm;
+
+  groupGlmType =  model.groupLevelGlmType(nodeName, participants);
 
   if ismember(groupGlmType, {'one_sample_t_test', 'one_way_anova'})
 
-    edge = opt.model.bm.get_edge('Destination', nodeName);
+    edge = model.get_edge('Destination', nodeName);
 
     if isfield(edge, 'Filter') && ...
         isfield(edge.Filter, 'contrast')  && ...
@@ -35,9 +34,9 @@ function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
     else
 
       % this assumes DummyContrasts exist
-      contrastsList = getDummyContrastsList(opt.model.bm, nodeName, columns);
+      contrastsList = getDummyContrastsList(opt.model.bm, nodeName, participants);
 
-      node = opt.model.bm.get_nodes('Name', nodeName);
+      node = model.get_nodes('Name', nodeName);
 
       % if no specific dummy contrasts mentioned also include all contrasts from previous levels
       % or if contrasts are mentioned we grab them

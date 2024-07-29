@@ -1,4 +1,4 @@
-function dummyContrastsList = getDummyContrastsList(model, node, extraVar)
+function dummyContrastsList = getDummyContrastsList(model, node, participants)
   %
   % Get list of names of DummyContrast from this Node or gets its from the
   % previous Nodes
@@ -19,7 +19,7 @@ function dummyContrastsList = getDummyContrastsList(model, node, extraVar)
   % (C) Copyright 2022 bidspm developers
 
   if nargin < 3
-    extraVar = {};
+    participants = struct();
   end
 
   dummyContrastsList = {};
@@ -37,7 +37,7 @@ function dummyContrastsList = getDummyContrastsList(model, node, extraVar)
 
   else
 
-    assert(model.validateGroupBy(node, extraVar));
+    assert(model.validateGroupBy(node.Name, participants));
 
     switch lower(node.Level)
 

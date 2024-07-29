@@ -99,7 +99,7 @@ function matlabbatch = bidsRFX(varargin)
 
         nodeName = datasetNodes{i}.Name;
 
-        switch  groupLevelGlmType(opt, nodeName, participants)
+        switch  opt.model.bm.groupLevelGlmType(nodeName, participants)
 
           case {'one_sample_t_test', 'one_way_anova'}
             [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabbatch, ...

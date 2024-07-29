@@ -347,6 +347,82 @@ classdef BidsModel < bids.Model
 
     end
 
+    function [type, groupBy] = groupLevelGlmType(obj, nodeName, participants)
+      %
+      % Return type of GLM for a dataset level node.
+      %
+      % USAGE::
+      %
+      %  [type, groupBy] = bm.groupLevelGlmType(obj, nodeName, participants)
+      %
+      % :param nodeName:
+      % :type  nodeName: char
+      %
+      % :param participants: content of participants.tsv
+      % :type  participants: struct
+      %
+      if nargin < 3
+        participants = struct();
+      end
+
+      node = obj.get_nodes('Name', nodeName);
+
+      groupBy = node.GroupBy;
+      type = 'unknown';
+
+      if ~strcmpi(node.Level, 'Dataset')
+        return
+      end
+
+      designMatrix = node.Model.X;
+
+      if isnumeric(designMatrix) && designMatrix == 1
+        type = 'one_sample_t_test';
+
+      elseif iscell(designMatrix) && numel(designMatrix) == 2
+
+        groupColumHdr = getGroupColumnHdrFromDesignMatrix(obj, nodeName);
+
+        if isempty(groupColumHdr) || ~isfield(participants, groupColumHdr)
+          type = 'unknown';
+        else
+          levels = participants.(groupColumHdr);
+          switch numel(unique(levels))
+            case 1
+              type = 'one_sample_t_test';
+            case 2
+              type = 'two_sample_t_test';
+            otherwise
+              type = 'one_way_anova';
+          end
+        end
+
+      end
+
+    end
+
+    function groupColumnHdr = getGroupColumnHdrFromDesignMatrix(obj, nodeName)
+      node = obj.get_nodes('Name', nodeName);
+      designMatrix = node.Model.X;
+      if iscell(designMatrix) && numel(designMatrix) == 2
+        designMatrix = removeIntercept(designMatrix);
+        groupColumnHdr = designMatrix{1};
+      else
+        groupColumnHdr = '';
+      end
+    end
+
+    function groupColumnHdr = getGroupColumnHdrFromGroupBy(obj, nodeName, participants)
+      node = obj.get_nodes('Name', nodeName);
+      groupBy = node.GroupBy;
+      groupColumnHdr = intersect(groupBy, fieldnames(participants));
+      if isempty(groupColumnHdr)
+        groupColumnHdr = '';
+      else
+        groupColumnHdr = groupColumnHdr{1};
+      end
+    end
+
     function obj = addConfoundsToDesignMatrix(obj, varargin)
       %
       % Add some typical confounds to the design matrix of bids stat model.
@@ -517,7 +593,11 @@ classdef BidsModel < bids.Model
       end
     end
 
-    function status = validateGroupBy(obj, node, extraVar)
+    function status = validateGroupBy(obj, nodeName, participants)
+      %
+      % USAGE::
+      %
+      %   bm = bm.validateGroupBy(nodeName, participants);
       %
       % Only certain type of GroupBy supported for now for each level
       %
@@ -526,76 +606,60 @@ classdef BidsModel < bids.Model
 
       % (C) Copyright 2022 bidspm developers
 
-      status = true;
+      status = false;
 
-      if ischar(node)
-        node = obj.get_nodes('Name', node);
-        if isempty(node)
-          return
-        end
+      node = obj.get_nodes('Name', nodeName);
+      if isempty(node)
+        return
       end
 
       groupBy = sort(node.GroupBy);
 
       if nargin < 3
-        extraVar = {};
+        participants = struct();
       end
+
+      extraVar = fieldnames(participants);
 
       switch lower(node.Level)
 
         case 'run'
 
           % only certain type of GroupBy supported for now
-          if ~ismember('run', groupBy) || ...
-              ~all(ismember(groupBy, {'run', 'session', 'subject'}))
-
-            status = false;
-
-            supportedGroupBy = {'["run", "subject"]', ...
-                                '["run", "session", "subject"]'};
-
+          supportedGroupBy = {'["run", "subject"]', '["run", "session", "subject"]'};
+          if ismember('run', groupBy) && ...
+              all(ismember(groupBy, {'run', 'session', 'subject'}))
+            status = true;
           end
 
         case 'session'
 
-          if ~(numel(groupBy) == 3) || ...
-              ~all(ismember(groupBy, {'contrast', 'session', 'subject'}))
-
-            status = false;
-
-            supportedGroupBy = {'["contrast", "session", "subject"]'};
-
+          % only certain type of GroupBy supported for now
+          supportedGroupBy = {'["contrast", "session", "subject"]'};
+          if numel(groupBy) == 3 && ...
+              all(ismember(groupBy, {'contrast', 'session', 'subject'}))
+            status = true;
           end
 
         case 'subject'
 
-          if ~(numel(groupBy) == 2) || ...
-              not(all([ismember('contrast', groupBy) ismember('subject', groupBy)]))
-
-            status = false;
-
-            supportedGroupBy = {'["contrast", "subject"]'};
-
+          supportedGroupBy = {'["contrast", "subject"]'};
+          if numel(groupBy) == 2 && ...
+              all(ismember(groupBy, {'contrast', 'subject'}))
+            status = true;
           end
 
         case 'dataset'
 
+          % only certain type of GroupBy supported for now
           supportedGroupBy = {'["contrast"]', ...
                               '["contrast", "x"] for "x" being a participant.tsv column name.'};
 
-          % only certain type of GroupBy supported for now
-          status = false;
-          if numel(groupBy) == 1 && all(ismember(lower(groupBy), {'contrast'}))
+          if numel(groupBy) == 1 && ismember(lower(groupBy), {'contrast'})
             status = true;
-
-          elseif numel(groupBy) == 2 && iscellstr(extraVar) && numel(extraVar) > 0
-            for i = 1:numel(extraVar)
-              if all(ismember(groupBy, {'contrast', extraVar{i}}))
-                status = true;
-                break
-              end
-            end
-
+          elseif numel(groupBy) == 2 && any(ismember(lower(groupBy), {'contrast'})) && ...
+            iscellstr(extraVar) && numel(extraVar) > 0 && any(ismember(groupBy, extraVar))
+            status = true;
           end
 
       end
@@ -757,4 +821,13 @@ function strategy = setFieldsStrategy(strategy)
 
   end
 
+end
+
+function designMatrix = removeIntercept(designMatrix)
+  %
+  % remove intercept because SPM includes it anyway
+  %
+
+  isIntercept = cellfun(@(x) (numel(x) == 1) && (x == 1), designMatrix, 'UniformOutput', true);
+  designMatrix(isIntercept) = [];
 end
