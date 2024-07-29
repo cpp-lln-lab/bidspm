@@ -13,7 +13,7 @@ end
 function test_fileFilterForBold_events()
 
   opt.bidsFilterFile.bold = struct('modality', 'func', 'suffix', 'bold');
-  opt.verbosity = 2;
+  opt.verbosity = 0;
   opt.taskName = 'foo';
   opt.fwhm.func = 6;
   opt.space = {'IXI549Space'};
@@ -38,7 +38,7 @@ function test_fileFilterForBold_events_aroma()
   opt.bidsFilterFile.bold = struct('modality', 'func', ...
                                    'suffix', 'bold', ...
                                    'desc', {'smoothAROMAnonaggr'});
-  opt.verbosity = 2;
+  opt.verbosity = 0;
   opt.taskName = 'foo';
   opt.fwhm.func = 6;
   opt.space = {'MNI152NLin6Asym'};
@@ -61,7 +61,7 @@ end
 function test_fileFilterForBold_confounds()
 
   opt.bidsFilterFile.bold = struct('modality', 'func', 'suffix', 'bold');
-  opt.verbosity = 2;
+  opt.verbosity = 0;
   opt.taskName = 'foo';
   opt.fwhm.func = 6;
   opt.space = {'IXI549Space'};
@@ -84,7 +84,7 @@ end
 function test_fileFilterForBold_basic()
 
   opt.bidsFilterFile.bold = struct('modality', 'func', 'suffix', 'bold');
-  opt.verbosity = 2;
+  opt.verbosity = 0;
   opt.taskName = 'foo';
   opt.fwhm.func = 6;
   opt.space = {'IXI549Space'};
@@ -111,7 +111,7 @@ function test_fileFilterForBold_desc()
   opt.bidsFilterFile.bold = struct('modality', 'func', ...
                                    'suffix', 'bold', ...
                                    'desc', {'smoothAROMAnonaggr'});
-  opt.verbosity = 2;
+  opt.verbosity = 0;
   opt.taskName = 'foo';
   opt.fwhm.func = 6;
   opt.space = {'MNI152NLin6Asym'};
@@ -138,7 +138,7 @@ end
 function test_fileFilterForBold_no_smooth()
 
   opt.bidsFilterFile.bold = struct('modality', 'func', 'suffix', 'bold');
-  opt.verbosity = 2;
+  opt.verbosity = 0;
   opt.taskName = 'foo';
   opt.fwhm.func = 0;
   opt.space = {'IXI549Space'};
@@ -163,7 +163,7 @@ end
 function test_fileFilterForBold_stc()
 
   opt.bidsFilterFile.bold = struct('modality', 'func', 'suffix', 'bold');
-  opt.verbosity = 2;
+  opt.verbosity = 0;
   opt.taskName = 'foo';
   opt.fwhm.func = 0;
   opt.space = {'IXI549Space'};

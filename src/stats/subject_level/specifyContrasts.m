@@ -113,7 +113,7 @@ function nodeList = getNodeList(bm)
     return
   end
 
-  if isempty(model.Edges)
+  if isempty(bm.Edges)
     bm = bm.get_edges_from_nodes();
   end
 

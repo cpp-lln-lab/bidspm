@@ -30,7 +30,7 @@ function test_renameSegmentParameter_basic()
                      'index_dependencies', false);
 
   opt.dryRun = false;
-  opt.verbosity = 2;
+  opt.verbosity = 0;
 
   segParamFiles = spm_select('FPListRec', tmpDir, '^.*_T1w_seg8.mat$');
   assertEqual(size(segParamFiles, 1), 1);

@@ -48,7 +48,7 @@ function test_setBatchGenerateT1map_warning()
   BIDS = getLayout(opt);
 
   matlabbatch = {};
-  opt.verbosity = 2;
+  opt.verbosity = 1;
   assertWarning(@() setBatchGenerateT1map(matlabbatch, BIDS, opt, subLabel), ...
                 'setBatchGenerateT1map:missingNonBIDSMetadata');
 

@@ -79,11 +79,11 @@ function skipped = bidsRoiBasedGLM(opt)
     if ~checkSpmMat(outputDir, opt, strict)
       continue
     end
-    spmFile = fullfile(outputDir, 'SPM.mat');
-    load(spmFile, 'SPM');
+    spmMatFile = fullfile(outputDir, 'SPM.mat');
+    load(spmMatFile, 'SPM');
     model = mardo(SPM);
 
-    eventSpec = getEventSpecificationRoiGlm(spmFile, opt.model.file);
+    eventSpec = getEventSpecificationRoiGlm(spmMatFile, opt.model.file);
 
     subTempDir = fullfile(tempDir, ['sub-' subLabel]);
     spm_mkdir(subTempDir);

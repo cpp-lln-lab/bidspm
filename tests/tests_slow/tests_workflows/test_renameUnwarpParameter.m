@@ -25,7 +25,7 @@ function test_renameUnwarpParameter_basic()
                      'index_dependencies', false);
 
   opt.dryRun = false;
-  opt.verbosity = 2;
+  opt.verbosity = 0;
 
   unwarpParamFiles = spm_select('FPListRec', tmpDir, '^.*_bold_uw.mat$');
   assertEqual(size(unwarpParamFiles, 1), 1);

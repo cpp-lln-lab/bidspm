@@ -185,7 +185,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     matlabbatch{end + 1}.spm.stats.fmri_design = fmri_spec;
 
   else
-    node = model.get_root_node();
+    node = bm.get_root_node();
 
     fmri_spec.mask = {getInclusiveMask(opt, node.Name, BIDS, subLabel)};
     matlabbatch{end + 1}.spm.stats.fmri_spec = fmri_spec;

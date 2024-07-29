@@ -27,10 +27,10 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
 
   printBatchName('subject level contrasts specification', opt);
 
-  spmMatFile = fullfile(getFFXdir(subLabel, opt), 'SPM.mat');
-  if ~checkSpmMat(dir, opt)
+  if ~checkSpmMat(getFFXdir(subLabel, opt), opt)
     return
   end
+  spmMatFile = fullfile(getFFXdir(subLabel, opt), 'SPM.mat');
 
   load(spmMatFile, 'SPM');
 

@@ -1,6 +1,11 @@
 function availableGroups = getAvailableGroups(opt, groupColumnHdr)
 
   % (C) Copyright 2024 bidspm developers
+  if isempty(groupColumnHdr)
+    availableGroups = {};
+    return
+  end
+
   tsvFile = fullfile(opt.dir.raw, 'participants.tsv');
 
   assert(exist(tsvFile, 'file') == 2);

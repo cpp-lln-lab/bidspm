@@ -38,7 +38,7 @@ function test_validateGroupBy_subject()
   assertWarning(@()bm.validateGroupBy(nodeName), 'BidsModel:notImplemented');
 end
 
-function test_checkGroupBy_dataset()
+function test_validateGroupBy_dataset()
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 
@@ -62,7 +62,7 @@ function test_checkGroupBy_dataset()
 
 end
 
-function test_checkGroupBy_dataset_group_from_participant()
+function test_validateGroupBy_dataset_group_from_participant()
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
 
@@ -71,6 +71,6 @@ function test_checkGroupBy_dataset_group_from_participant()
   nodeName = bm.Nodes{3}.Name;
 
   bm.Nodes{3}.GroupBy = {'contrast', 'diagnostic'};
-  bm.validateGroupBy(nodeName, {'diagnostic'});
+  bm.validateGroupBy(nodeName, struct('diagnostic', {{'foo', 'bar'}}));
 
 end

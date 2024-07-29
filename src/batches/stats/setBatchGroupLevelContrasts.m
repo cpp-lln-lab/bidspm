@@ -122,14 +122,8 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
     case 'two_sample_t_test'
 
-      designMatrix = removeIntercept(designMatrix);
-
-      if any(ismember(designMatrix, fieldnames(participants)))
-        % TODO will this ignore the contrasts define at other levels
-        % and not passed through the filter ?
-        edge = bm.get_edge('Destination', nodeName);
-        contrastsList = edge.Filter.contrast;
-      end
+      edge = bm.get_edge('Destination', nodeName);
+      contrastsList = edge.Filter.contrast;
 
       for j = 1:numel(contrastsList)
 

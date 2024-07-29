@@ -93,8 +93,8 @@ stats
 .. autofunction:: src.batches.stats.setBatchContrasts
 .. autofunction:: src.batches.stats.setBatchEstimateModel
 .. autofunction:: src.batches.stats.setBatchFactorialDesign
+.. autofunction:: src.batches.stats.setBatchFactorialDesignGlobalCalcAndNorm
 .. autofunction:: src.batches.stats.setBatchFactorialDesignImplicitMasking
-.. autofunction:: src.batches.stats.setBatchFatorialDesignGlobalCalcAndNorm
 .. autofunction:: src.batches.stats.setBatchGoodnessOfFit
 .. autofunction:: src.batches.stats.setBatchGroupLevelContrasts
 .. autofunction:: src.batches.stats.setBatchGroupLevelResults
@@ -173,6 +173,7 @@ bids
 .. autofunction:: src.bids.getAnatFilename
 .. autofunction:: src.bids.getAndCheckRepetitionTime
 .. autofunction:: src.bids.getAndCheckSliceOrder
+.. autofunction:: src.bids.getAvailableGroups
 .. autofunction:: src.bids.getBoldFilename
 .. autofunction:: src.bids.getInfo
 .. autofunction:: src.bids.getMeanFuncFilename
@@ -188,7 +189,6 @@ bids
 bids_model
 ==========
 .. autofunction:: src.bids_model.checkContrast
-.. autofunction:: src.bids_model.checkGroupBy
 .. autofunction:: src.bids_model.createDefaultStatsModel
 .. autofunction:: src.bids_model.createModelFamilies
 .. autofunction:: src.bids_model.getContrastsFromParentNode
@@ -197,6 +197,12 @@ bids_model
 .. autofunction:: src.bids_model.getDummyContrastFromParentNode
 .. autofunction:: src.bids_model.getDummyContrastsList
 .. autofunction:: src.bids_model.getInclusiveMask
+
+bidspm
+======
+
+data
+----
 
 cli
 ===
@@ -220,6 +226,7 @@ cli
 
 constants
 =========
+.. autofunction:: src.constants.bidsAppsActions
 .. autofunction:: src.constants.lowLevelActions
 
 defaults
@@ -262,7 +269,6 @@ messages
 .. autofunction:: src.messages.errorHandling
 .. autofunction:: src.messages.logger
 .. autofunction:: src.messages.noRoiFound
-.. autofunction:: src.messages.noSPMmat
 .. autofunction:: src.messages.notImplemented
 .. autofunction:: src.messages.printAvailableContrasts
 .. autofunction:: src.messages.printBatchName
@@ -339,7 +345,6 @@ subject_level
 .. autofunction:: src.stats.subject_level.getSessionForRegressorNb
 .. autofunction:: src.stats.subject_level.newContrast
 .. autofunction:: src.stats.subject_level.orderAndPadCounfoundMatFile
-.. autofunction:: src.stats.subject_level.removeIntercept
 .. autofunction:: src.stats.subject_level.reorderCounfounds
 .. autofunction:: src.stats.subject_level.sanitizeConfounds
 .. autofunction:: src.stats.subject_level.saveRoiGlmSummaryTable
@@ -354,10 +359,10 @@ group_level
 .. autofunction:: src.stats.group_level.computeCumulativeFwhm
 .. autofunction:: src.stats.group_level.findSubjectConImage
 .. autofunction:: src.stats.group_level.getRFXdir
-.. autofunction:: src.stats.group_level.groupLevelGlmType
 
 utils
 -----
+.. autofunction:: src.stats.utils.checkSpmMat
 .. autofunction:: src.stats.utils.createGlmDirName
 .. autofunction:: src.stats.utils.designMatrixFigureName
 .. autofunction:: src.stats.utils.endsWithRunNumber
@@ -366,6 +371,7 @@ utils
 .. autofunction:: src.stats.utils.getRegressorIdx
 .. autofunction:: src.stats.utils.labelActivations
 .. autofunction:: src.stats.utils.labelSpmSessWithBidsSesAndRun
+.. autofunction:: src.stats.utils.removeIntercept
 .. autofunction:: src.stats.utils.returnContrastImageFile
 .. autofunction:: src.stats.utils.returnNumberScrubbedTimePoints
 .. autofunction:: src.stats.utils.validateContrasts

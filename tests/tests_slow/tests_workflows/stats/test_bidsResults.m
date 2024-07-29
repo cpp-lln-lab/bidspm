@@ -15,7 +15,7 @@ function test_bidsResults_no_results()
   skipIfOctave('mixed-string-concat warning thrown');
 
   opt = setOptions('vismotion', '', 'pipelineType', 'stats');
-  opt.verbosity = 2;
+  opt.verbosity = 1;
 
   opt = rmfield(opt, 'results');
 
