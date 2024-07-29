@@ -67,10 +67,9 @@ function rfxDir = getRFXdir(varargin)
 
   sub = 'ALL';
   if ~isempty(contrastName)
-    thisNode = opt.model.bm.get_nodes('Name', nodeName);
-
-    % TODO make more general than just with group
-    if all(ismember(lower(thisNode.GroupBy), {'contrast', 'group'})) && ~isempty(thisGroup)
+    participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+    groupColumnHdr = opt.model.bm.getGroupColumnHdrFromGroupBy(nodeName, participants);
+    if ~isempty(groupColumnHdr) && ~isempty(thisGroup)
       sub = thisGroup;
     end
   end
