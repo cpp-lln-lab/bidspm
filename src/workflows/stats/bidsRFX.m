@@ -65,12 +65,14 @@ function matlabbatch = bidsRFX(varargin)
     opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
   end
 
+  bm = opt.model.bm;
+
   if ismember(lower(action), {'rfx', 'contrasts'})
     % TODO add possibility to pass several nodeNames at once
     if ~isempty(nodeName)
-      datasetNodes = opt.model.bm.get_nodes('Name', nodeName);
+      datasetNodes = bm.get_nodes('Name', nodeName);
     else
-      datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
+      datasetNodes = bm.get_nodes('Level', 'Dataset');
     end
     if isstruct(datasetNodes)
       datasetNodes = {datasetNodes};
@@ -99,7 +101,7 @@ function matlabbatch = bidsRFX(varargin)
 
         nodeName = datasetNodes{i}.Name;
 
-        switch  opt.model.bm.groupLevelGlmType(nodeName, participants)
+        switch  bm.groupLevelGlmType(nodeName, participants)
 
           case {'one_sample_t_test', 'one_way_anova'}
             [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabbatch, ...
@@ -133,7 +135,7 @@ function matlabbatch = bidsRFX(varargin)
 
     case 'contrasts'
 
-      opt.model.bm.validateConstrasts();
+      bm.validateConstrasts();
 
       for i = 1:numel(datasetNodes)
         matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, datasetNodes{i}.Name);

@@ -26,14 +26,14 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
   printBatchName('group level contrast estimation', opt);
 
-  model = opt.model.bm;
+  bm = opt.model.bm;
 
   participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
 
-  groupColumnHdr = model.getGroupColumnHdrFromGroupBy(nodeName, participants);
+  groupColumnHdr = bm.getGroupColumnHdrFromGroupBy(nodeName, participants);
   availableGroups = getAvailableGroups(opt, groupColumnHdr);
 
-  [groupGlmType, groupBy] =  model.groupLevelGlmType(nodeName, participants);
+  [groupGlmType, groupBy] =  bm.groupLevelGlmType(nodeName, participants);
   switch groupGlmType
 
     case 'one_sample_t_test'
@@ -80,10 +80,10 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
       % through the Edge filter.
       % Then generate the between group contrasts.
 
-      edge = model.get_edge('Destination', nodeName);
+      edge = bm.get_edge('Destination', nodeName);
       contrastsList = edge.Filter.contrast;
 
-      thisContrast = model.get_contrasts('Name', nodeName);
+      thisContrast = bm.get_contrasts('Name', nodeName);
 
       for j = 1:numel(contrastsList)
 
@@ -127,13 +127,13 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
       if any(ismember(designMatrix, fieldnames(participants)))
         % TODO will this ignore the contrasts define at other levels
         % and not passed through the filter ?
-        edge = model.get_edge('Destination', nodeName);
+        edge = bm.get_edge('Destination', nodeName);
         contrastsList = edge.Filter.contrast;
       end
 
       for j = 1:numel(contrastsList)
 
-        thisContrast = model.get_contrasts('Name', nodeName);
+        thisContrast = bm.get_contrasts('Name', nodeName);
 
         spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
 

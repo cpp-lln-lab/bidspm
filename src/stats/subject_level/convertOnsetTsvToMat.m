@@ -113,8 +113,10 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration,
     opt.model.bm = BidsModel('file', opt.model.file);
   end
 
-  varToConvolve = opt.model.bm.getVariablesToConvolve();
-  designMatrix = opt.model.bm.getBidsDesignMatrix();
+  bm = opt.model.bm;
+
+  varToConvolve = bm.getVariablesToConvolve();
+  designMatrix = bm.getBidsDesignMatrix();
   designMatrix = removeIntercept(designMatrix);
 
   % conditions to be filled according to the conditions present in each run
@@ -125,7 +127,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration,
   condToModel.idx = 1;
 
   % TODO get / apply transformers from a specific node
-  transformers = opt.model.bm.getBidsTransformers();
+  transformers = bm.getBidsTransformers();
   tsv.content = bids.transformers(transformers, tsv.content);
 
   for iVar = 1:numel(varToConvolve)

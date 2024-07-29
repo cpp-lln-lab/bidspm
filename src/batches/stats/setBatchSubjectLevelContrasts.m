@@ -28,20 +28,20 @@ function matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel,
   printBatchName('subject level contrasts specification', opt);
 
   spmMatFile = fullfile(getFFXdir(subLabel, opt), 'SPM.mat');
-  if noSPMmat(opt, subLabel, spmMatFile)
+  if ~checkSpmMat(dir, opt)
     return
   end
 
   load(spmMatFile, 'SPM');
 
-  model = opt.model.bm;
-  model.validateConstrasts();
+  bm = opt.model.bm;
+  bm.validateConstrasts();
 
   % Create Contrasts
   if nargin < 4 || isempty(nodeName)
-    contrasts = specifyContrasts(model, SPM);
+    contrasts = specifyContrasts(bm, SPM);
   else
-    contrasts = specifyContrasts(model, SPM, nodeName);
+    contrasts = specifyContrasts(bm, SPM, nodeName);
   end
 
   validateContrasts(contrasts);

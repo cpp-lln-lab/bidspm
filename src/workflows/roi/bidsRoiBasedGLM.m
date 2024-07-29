@@ -76,12 +76,10 @@ function skipped = bidsRoiBasedGLM(opt)
     logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
     outputDir = getFFXdir(subLabel, opt);
-
-    spmFile = fullfile(outputDir, 'SPM.mat');
-
-    if noSPMmat(opt, subLabel, spmFile)
+    if ~checkSpmMat(outputDir, opt, strict)
       continue
     end
+    spmFile = fullfile(outputDir, 'SPM.mat');
     load(spmFile, 'SPM');
     model = mardo(SPM);
 

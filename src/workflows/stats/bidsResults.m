@@ -159,7 +159,9 @@ function matlabbatch = bidsResults(varargin)
 
   opt.dir.output = opt.dir.stats;
 
-  modelResults = opt.model.bm.getResults();
+  bm = opt.model.bm;
+
+  modelResults = bm.getResults();
   if ~isempty(modelResults)
     opt.results = modelResults;
   end
@@ -183,7 +185,7 @@ function matlabbatch = bidsResults(varargin)
   % loop through the steps to compute for each contrast mentioned for each node
   for iRes = 1:length(opt.results)
 
-    node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
+    node = bm.get_nodes('Name',  opt.results(iRes).nodeName);
 
     if isempty(node)
 
@@ -393,9 +395,7 @@ function matlabbatch = bidsResultsSubject(opt, subLabel, iRes, isRunLevel)
 
     tmp.dir = getFFXdir(subLabel, opt);
 
-    status = checkSpmMat(tmp.dir, opt);
-
-    if ~status
+    if ~checkSpmMat(tmp.dir, opt)
       return
     end
 
@@ -443,9 +443,9 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
   matlabbatch = {};
 
-  model = opt.model.bm;
+  bm = opt.model.bm;
 
-  node = model.get_nodes('Name',  opt.results(iRes).nodeName);
+  node = bm.get_nodes('Name',  opt.results(iRes).nodeName);
 
   opt = checkMontage(opt, iRes, node);
 
@@ -463,7 +463,7 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
       logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
     end
 
-    [glmType, groupBy] =  model.groupLevelGlmType(result.nodeName, participants);
+    [glmType, groupBy] =  bm.groupLevelGlmType(result.nodeName, participants);
 
     switch  glmType
 
@@ -499,7 +499,7 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
       case 'two_sample_t_test'
 
-        thisContrast = model.get_contrasts('Name', result.nodeName);
+        thisContrast = bm.get_contrasts('Name', result.nodeName);
 
         result.dir = getRFXdir(opt, result.nodeName, name);
 
@@ -538,18 +538,6 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
   end
 
-end
-
-function status = checkSpmMat(dir, opt)
-  status = exist(fullfile(dir, 'SPM.mat'), 'file');
-  if ~status
-    if nargin < 2
-      opt = struct('verbosity', 2);
-    end
-    msg = sprintf('\nCould not find a SPM.mat file in directory:\n%s\n', dir);
-    id = 'noSpmMatFile';
-    logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
-  end
 end
 
 function matlabbatch = appendToBatch(matlabbatch, opt, result)

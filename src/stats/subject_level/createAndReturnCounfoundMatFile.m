@@ -42,9 +42,11 @@ function [counfoundFile, counfoundMeta] = createAndReturnCounfoundMatFile(opt, t
     return
   end
 
-  designMatrix = opt.model.bm.getBidsDesignMatrix();
+  bm = opt.model.bm;
 
-  transformers = opt.model.bm.getBidsTransformers();
+  designMatrix = bm.getBidsDesignMatrix();
+
+  transformers = bm.getBidsTransformers();
   content = bids.transformers(transformers, content);
 
   [names, R] = createConfounds(content, designMatrix, opt.glm.maxNbVols); %#ok<*ASGLU>

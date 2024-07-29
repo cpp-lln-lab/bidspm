@@ -103,7 +103,7 @@ function [matlabbatch, opt] = bidsFFX(varargin)
 
       case 'estimate'
 
-        if noSPMmat(opt, subLabel, fullfile(outputDir, 'SPM.mat'))
+        if ~checkSpmMat(outputDir, opt)
           continue
         end
         matlabbatch = setAction(action, matlabbatch, BIDS, opt, subLabel);
@@ -159,10 +159,11 @@ function checkRootNode(opt)
   % This only concerns 'specify' and 'specifyAndEstimate'
   %
 
-  opt.model.bm.validateRootNode();
+  bm = opt.model.bm;
+  bm.validateRootNode();
 
-  thisNode = opt.model.bm.get_root_node;
-  opt.model.bm.validateGroupBy(thisNode);
+  thisNode = bm.get_root_node;
+  bm.validateGroupBy(thisNode.Name);
 
   % should not be necessary
   % mostly in case users did not validate the model inputs

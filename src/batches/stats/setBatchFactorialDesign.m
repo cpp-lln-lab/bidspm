@@ -76,7 +76,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
       rfxDir = getRFXdir(opt, nodeName, contrasts{1}, label);
       overwriteDir(rfxDir, opt);
 
-      assert(exist(fullfile(rfxDir, 'SPM.mat'), 'file') == 0);
+      assert(~checkSpmMat(rfxDir, opt));
 
       matlabbatch = returnOneWayAnovaBatch(matlabbatch, rfxDir);
 
@@ -89,16 +89,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
 
         thisGroup = availableGroups{iGroup};
 
-        % grab subjects label from participants.tsv in raw
-        % and only keep those that are part of the requested subjects
-        %
-        % Note that this will lead to different results
-        % depending on the requested subejcts
-        %
-        participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
-        subjectsInGroup = strcmp(participants.(groupColumnHdr), thisGroup);
-        subjectsLabel = regexprep(participants.participant_id(subjectsInGroup), '^sub-', '');
-        subjectsLabel = intersect(subjectsLabel, opt.subjects);
+        subjectsLabel = returnSubjectLabelInGroup(opt, groupColumnHdr, thisGroup);
 
         % collect all con images from all subjects
         for iSub = 1:numel(subjectsLabel)
@@ -183,16 +174,7 @@ function [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, 
   for iGroup = 1:numel(availableGroups)
 
     thisGroup = availableGroups{iGroup};
-
-    % grab subjects label from participants.tsv in raw
-    % and only keep those that are part of the requested subjects
-    %
-    % Note that this will lead to different results depending on the requested
-    % subejcts
-    %
-    subjectsInGroup = strcmp(participants.(groupColumnHdr), thisGroup);
-    subjectsLabel = regexprep(participants.participant_id(subjectsInGroup), '^sub-', '');
-    subjectsLabel = intersect(subjectsLabel, opt.subjects);
+    subjectsLabel = returnSubjectLabelInGroup(opt, groupColumnHdr, thisGroup);
 
     % collect all con images from all subjects
     for iSub = 1:numel(subjectsLabel)
@@ -218,6 +200,18 @@ function [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, 
 
   end
 
+end
+
+function subjectsLabel = returnSubjectLabelInGroup(opt, groupColumnHdr, group)
+  % grab subjects label from participants.tsv in raw
+  % and only keep those that are part of the requested subjects
+  %
+  % Note that this will lead to different results depending on the requested subejcts
+  %
+  participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+  subjectsInGroup = strcmp(participants.(groupColumnHdr), group);
+  subjectsLabel = regexprep(participants.participant_id(subjectsInGroup), '^sub-', '');
+  subjectsLabel = intersect(subjectsLabel, opt.subjects);
 end
 
 function icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon)
@@ -256,7 +250,7 @@ function matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, i
   rfxDir = getRFXdir(opt, nodeName, contrastName, thisGroup);
   overwriteDir(rfxDir, opt);
 
-  assert(exist(fullfile(rfxDir, 'SPM.mat'), 'file') == 0);
+  assert(~checkSpmMat(rfxDir, opt));
 
   icell(1).levels = 1;
 
@@ -342,11 +336,11 @@ function [status, groupBy, glmType] = checks(opt, nodeName)
   % TODO refactor
   participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
 
-  model = opt.model.bm;
+  bm = opt.model.bm;
 
-  status = model.validateGroupBy(nodeName, participants);
+  status = bm.validateGroupBy(nodeName, participants);
 
-  [glmType, groupBy] = model.groupLevelGlmType(nodeName, participants);
+  [glmType, groupBy] = bm.groupLevelGlmType(nodeName, participants);
 
   % only certain type of model supported for now
   if ismember(glmType, {'unknown', 'two_sample_t_test'})
@@ -358,8 +352,8 @@ function [status, groupBy, glmType] = checks(opt, nodeName)
     return
   end
 
-  datasetLvlContrasts = model.get_contrasts('Name', nodeName);
-  datasetLvlDummyContrasts = model.get_dummy_contrasts('Name', nodeName);
+  datasetLvlContrasts = bm.get_contrasts('Name', nodeName);
+  datasetLvlDummyContrasts = bm.get_dummy_contrasts('Name', nodeName);
 
   if isempty(datasetLvlContrasts) && isempty(datasetLvlDummyContrasts)
     msg = sprintf('No contrast specified %s', commonMsg);

@@ -13,13 +13,15 @@ function mask = getInclusiveMask(opt, nodeName, BIDS, subLabel)
 
   % (C) Copyright 2022 bidspm developers
 
+  bm = opt.model.bm;
+
   if nargin < 2
-    [mask, nodeName] = opt.model.bm.getModelMask();
+    [mask, nodeName] = bm.getModelMask();
   else
-    [mask, nodeName] = opt.model.bm.getModelMask('Name', nodeName);
+    [mask, nodeName] = bm.getModelMask('Name', nodeName);
   end
 
-  node = opt.model.bm.get_nodes('Name',  nodeName);
+  node = bm.get_nodes('Name',  nodeName);
 
   % TODO refactor with bidsResults part for checking background for montage
   if isstruct(mask)

@@ -184,7 +184,9 @@ function contrastsList = getContrastsListForDatasetLevel(opt, nodeName)
   %   }
   % }
 
-  edge = opt.model.bm.get_edge('Destination', nodeName);
+  bm = opt.model.bm;
+
+  edge = bm.get_edge('Destination', nodeName);
 
   if isfield(edge, 'Filter') && ...
       isfield(edge.Filter, 'contrast')  && ...
@@ -195,12 +197,12 @@ function contrastsList = getContrastsListForDatasetLevel(opt, nodeName)
   else
 
     % TODO?? can't imagine a 2 sample t-test with dummy contrasts
-    node = opt.model.bm.get_nodes('Name', nodeName);
+    node = bm.get_nodes('Name', nodeName);
 
     % if no specific dummy contrasts mentioned also include all contrasts from previous levels
     % or if contrasts are mentioned we grab them
     if isfield(node, 'Contrasts')
-      tmp = getContrastsList(opt.model.bm, nodeName);
+      tmp = getContrastsList(bm, nodeName);
       for i = 1:numel(tmp)
         contrastsList{end + 1} = tmp{i}.Name;
       end

@@ -36,7 +36,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     logger('ERROR', msg, 'filename', mfilename(), 'id', 'missingRawDir');
   end
 
-  opt.model.bm.getModelType();
+  bm = opt.model.bm;
 
   printBatchName('specify subject level fmri model', opt);
 
@@ -87,11 +87,11 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
   fmri_spec.fact = struct('name', {}, 'levels', {});
 
-  fmri_spec.mthresh = opt.model.bm.getInclusiveMaskThreshold();
+  fmri_spec.mthresh = bm.getInclusiveMaskThreshold();
 
-  fmri_spec.bases.hrf.derivs = opt.model.bm.getHRFderivatives();
+  fmri_spec.bases.hrf.derivs = bm.getHRFderivatives();
 
-  fmri_spec.cvi = opt.model.bm.getSerialCorrelationCorrection();
+  fmri_spec.cvi = bm.getSerialCorrelationCorrection();
 
   %% List scans, onsets, confounds for each task / session / run
   subLabel = regexify(subLabel);
@@ -167,7 +167,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     % multicondition selection
     fmri_spec.sess(iSpmSess).cond = struct('name', {}, 'onset', {}, 'duration', {});
 
-    fmri_spec.sess(iSpmSess).hpf = opt.model.bm.getHighPassFilter();
+    fmri_spec.sess(iSpmSess).hpf = bm.getHighPassFilter();
 
   end
 
@@ -185,7 +185,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
     matlabbatch{end + 1}.spm.stats.fmri_design = fmri_spec;
 
   else
-    node = opt.model.bm.get_root_node;
+    node = model.get_root_node();
 
     fmri_spec.mask = {getInclusiveMask(opt, node.Name, BIDS, subLabel)};
     matlabbatch{end + 1}.spm.stats.fmri_spec = fmri_spec;

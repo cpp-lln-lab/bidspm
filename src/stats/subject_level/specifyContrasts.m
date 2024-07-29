@@ -89,7 +89,7 @@ function contrasts = specifyContrasts(model, SPM, nodeName)
 
 end
 
-function nodeList = getNodeList(model)
+function nodeList = getNodeList(bm)
   %
   %  Return all the nodes present in the bids stats model
   %  - if there is only one,
@@ -97,33 +97,33 @@ function nodeList = getNodeList(model)
   %
   nodeList = {};
 
-  if isempty(model.Nodes)
+  if isempty(bm.Nodes)
     return
   end
 
-  if numel(model.Nodes) == 1
-    if iscell(model.Nodes)
-      nodeList = model.Nodes{1};
+  if numel(bm.Nodes) == 1
+    if iscell(bm.Nodes)
+      nodeList = bm.Nodes{1};
     else
       % should not be necessary
       % but in case nodes were not coerced to cell
       % during test set up
-      nodeList = model.Nodes(1);
+      nodeList = bm.Nodes(1);
     end
     return
   end
 
   if isempty(model.Edges)
-    model = model.get_edges_from_nodes();
+    bm = bm.get_edges_from_nodes();
   end
 
-  for i = 1:numel(model.Edges)
-    nodeList{end + 1} = model.Edges{i}.Source; %#ok<*AGROW>
-    nodeList{end + 1} = model.Edges{i}.Destination;
+  for i = 1:numel(bm.Edges)
+    nodeList{end + 1} = bm.Edges{i}.Source; %#ok<*AGROW>
+    nodeList{end + 1} = bm.Edges{i}.Destination;
   end
   nodeList = unique(nodeList);
   for iNode = 1:length(nodeList)
-    nodeList{iNode} = model.get_nodes('Name', nodeList{iNode});
+    nodeList{iNode} = bm.get_nodes('Name', nodeList{iNode});
   end
 
 end
