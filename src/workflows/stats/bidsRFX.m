@@ -103,14 +103,10 @@ function matlabbatch = bidsRFX(varargin)
 
         switch  bm.groupLevelGlmType(nodeName, participants)
 
-          case {'one_sample_t_test', 'one_way_anova'}
+          case {'one_sample_t_test', 'two_sample_t_test', 'one_way_anova'}
             [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabbatch, ...
                                                                            opt, ...
                                                                            datasetNodes{i}.Name);
-          case 'two_sample_t_test'
-            [matlabbatch, contrastsList, groups] = setBatchTwoSampleTTest(matlabbatch, ...
-                                                                          opt, ...
-                                                                          datasetNodes{i}.Name);
           otherwise
             msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
             notImplemented(mfilename(), msg);

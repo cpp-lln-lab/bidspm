@@ -21,7 +21,7 @@ function contrastsList = getContrastsListForFactorialDesign(opt, nodeName)
 
   groupGlmType =  bm.groupLevelGlmType(nodeName, participants);
 
-  if ismember(groupGlmType, {'one_sample_t_test', 'one_way_anova'})
+  if ismember(groupGlmType, {'one_sample_t_test', 'two_sample_t_test', 'one_way_anova'})
 
     edge = bm.get_edge('Destination', nodeName);
 

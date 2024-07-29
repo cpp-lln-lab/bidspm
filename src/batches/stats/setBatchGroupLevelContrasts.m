@@ -99,11 +99,9 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
         for iCon = 1:numel(thisContrast)
 
           % Sort conditions and weights
-          ConditionList = {};
-          for iCdt = 1:numel(thisContrast{iCon}.ConditionList)
-            ConditionList{iCdt} =  strrep(thisContrast{iCon}.ConditionList{iCdt}, ...
-                                          [groupColumnHdr, '.'], '');
-          end
+          ConditionList = strrep(thisContrast{iCon}.ConditionList, ...
+                                 [groupColumnHdr, '.'], ...
+                                 '');
           [ConditionList, I] = sort(ConditionList);
           Weights = thisContrast{iCon}.Weights(I);
 

@@ -49,10 +49,15 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
         [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, nodeName);
       end
 
-    case 'one_way_anova'
+    case  {'two_sample_t_test', 'one_way_anova'}
 
-      % TODO all contrasts should have the same name
-      contrasts = getContrastsListForFactorialDesign(opt, nodeName);
+      if strcmp(glmType, 'two_sample_t_test')
+        label = '2samplesTTest';
+      else
+        label = '1WayANOVA';
+      end
+
+      contrastsList = getContrastsListForFactorialDesign(opt, nodeName);
 
       % Sorting is important so that we know in which order
       % the groups are entered in the design matrix.
@@ -61,47 +66,70 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
       groupColumnHdr = opt.model.bm.getGroupColumnHdrFromDesignMatrix(nodeName);
       availableGroups = getAvailableGroups(opt, groupColumnHdr);
 
-      label = '1WayANOVA';
+      if strcmp(glmType, 'two_sample_t_test') && numel(availableGroups) > 2
+        list = bids.internal.create_unordered_list(availableGroups);
+        msg = sprintf('Too many groups for 2 samples t-test: "%s"', list);
+        logger('ERROR', msg, 'options', opt, 'filename', filename, 'id', id);
+      end
 
-      rfxDir = getRFXdir(opt, nodeName, contrasts{1}, label);
-      overwriteDir(rfxDir, opt);
+      for iCon = 1:numel(contrastsList)
 
-      assert(~checkSpmMat(rfxDir, opt));
+        groups{end + 1} = label; %#ok<*AGROW>
 
-      matlabbatch = returnOneWayAnovaBatch(matlabbatch, rfxDir);
+        contrastName = contrastsList{iCon};
 
-      mask = getInclusiveMask(opt, nodeName);
-      matlabbatch{end}.spm.stats.factorial_design.masking.em = {mask};
+        rfxDir = getRFXdir(opt, nodeName, contrastName, '1WayANOVA');
+        overwriteDir(rfxDir, opt);
 
-      for iGroup = 1:numel(availableGroups)
+        assert(~checkSpmMat(rfxDir, opt));
 
-        thisGroup = availableGroups{iGroup};
-
-        subjectsLabel = returnSubjectLabelInGroup(opt, groupColumnHdr, thisGroup);
-
-        % collect all con images from all subjects
-        for iSub = 1:numel(subjectsLabel)
-          subLabel = subjectsLabel{iSub};
-          conImages{iSub} = findSubjectConImage(opt, subLabel, contrasts);
+        if strcmp(glmType, 'two_sample_t_test')
+          factorialDesign = returnTwoSampleTTestBatch(opt, nodeName);
+        else
+          factorialDesign = returnOneWayAnovaBatch(rfxDir);
         end
 
-        for iCon = 1:numel(contrasts)
+        for iGroup = 1:numel(availableGroups)
 
-          contrastName = contrasts{iCon};
+          thisGroup = availableGroups{iGroup};
+
+          subjectsLabel = returnSubjectLabelInGroup(opt, groupColumnHdr, thisGroup);
+
+          % collect all con images from all subjects
+          for iSub = 1:numel(subjectsLabel)
+            subLabel = subjectsLabel{iSub};
+            conImages{iSub} = findSubjectConImage(opt, subLabel,  contrastName);
+          end
 
           msg = sprintf('  Group contrast "%s" for group "%s"', contrastName, thisGroup);
           logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
-          icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon);
+          icell = allocateSubjectsConImages(opt, subjectsLabel, conImages, iCon);
 
-          matlabbatch{end}.spm.stats.factorial_design.des.anova.icell(iGroup).scans = icell.scans;
+          if strcmp(glmType, 'two_sample_t_test')
+            if iGroup == 1
+              factorialDesign.des.t2.scans1 = icell.scans;
+
+            elseif iGroup == 2
+              factorialDesign.des.t2.scans2 = icell.scans;
+            end
+          elseif strcmp(glmType, 'one_way_anova')
+            factorialDesign.des.anova.icell(iGroup).scans = icell.scans;
+          end
 
         end
 
-      end
+        mask = getInclusiveMask(opt, nodeName);
+        factorialDesign.masking.em = {mask};
 
-      groups = {label};
-      contrastsList = {contrastsList{1}};
+        matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
+
+        matlabbatch = setBatchPrintFigure(matlabbatch, opt, ...
+                                          fullfile(rfxDir, ...
+                                                   designMatrixFigureName(opt, ...
+                                                                          'before estimation')));
+
+      end
 
   end
 end
@@ -133,7 +161,7 @@ function [matlabbatch, contrastsList, groups] = tTestAcrossSubject(matlabbatch, 
     msg = sprintf('  Group contrast: "%s"', contrastName);
     logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
-    icell = allocateSubjectsContrasts(opt, opt.subjects, conImages, iCon);
+    icell = allocateSubjectsConImages(opt, opt.subjects, conImages, iCon);
 
     matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, icell);
 
@@ -147,8 +175,6 @@ function [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, 
   % the later is needed to be able to create proper RFX dir name
   contrastsList = {};
   groups = {};
-
-  [~, opt] = getData(opt, opt.dir.preproc);
 
   contrasts = getContrastsListForFactorialDesign(opt, nodeName);
 
@@ -177,7 +203,7 @@ function [matlabbatch, contrastsList, groups] = tTestForGroup(matlabbatch, opt, 
       msg = sprintf('  Group contrast "%s" for group "%s"', contrastName, thisGroup);
       logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
-      icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon);
+      icell = allocateSubjectsConImages(opt, subjectsLabel, conImages, iCon);
 
       matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, icell, thisGroup);
 
@@ -199,7 +225,7 @@ function subjectsLabel = returnSubjectLabelInGroup(opt, groupColumnHdr, group)
   subjectsLabel = intersect(subjectsLabel, opt.subjects);
 end
 
-function icell = allocateSubjectsContrasts(opt, subjectsLabel, conImages, iCon)
+function icell = allocateSubjectsConImages(opt, subjectsLabel, conImages, iCon)
 
   icell(1).scans = {};
 
@@ -273,27 +299,35 @@ function matlabbatch = returnFactorialDesignBatch(matlabbatch, directory, icell,
 
 end
 
-function matlabbatch = returnOneWayAnovaBatch(matlabbatch, directory)
+function factorialDesign = returnTwoSampleTTestBatch(directory)
 
   factorialDesign = commonFaxtorialDesignBatch(directory);
+
+  factorialDesign.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
+  factorialDesign.multi_cov = struct('files', {}, 'iCFI', {}, 'iCC', {});
+
+  factorialDesign.des.t2 = varianceStruct();
+
+  factorialDesign.des.t2.scans1 = {};
+  factorialDesign.des.t2.scans2 = {};
+
+end
+
+function factorialDesign = returnOneWayAnovaBatch(directory)
+
+  factorialDesign = commonFaxtorialDesignBatch(directory);
+
+  factorialDesign.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
+  factorialDesign.multi_cov = struct('files', {}, 'iCFI', {}, 'iCC', {});
 
   factorialDesign.des.anova = varianceStruct();
 
   factorialDesign.des.anova.icell(1).scans = {};
 
-  factorialDesign.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
-
-  factorialDesign.multi_cov = struct('files', {}, 'iCFI', {}, 'iCC', {});
-
-  factorialDesign.masking.em = {''};
-
-  matlabbatch{end + 1}.spm.stats.factorial_design = factorialDesign;
-
 end
 
 function factorialDesign = commonFaxtorialDesignBatch(directory)
   factorialDesign.dir = {directory};
-
   factorialDesign = setBatchFactorialDesignImplicitMasking(factorialDesign);
   factorialDesign = setBatchFactorialDesignGlobalCalcAndNorm(factorialDesign);
 end

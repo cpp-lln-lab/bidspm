@@ -114,13 +114,14 @@
         },
         {
           "Name": "ctrl_gt_blind",
+          "Description": "Check that non sorted conditions are handled properly.",
           "ConditionList": [
-            "Group.blind",
-            "Group.ctrl"
+            "Group.ctrl",
+            "Group.blind"
           ],
           "Weights": [
-            -1,
-            1
+            1,
+            -1
           ],
           "Test": "t"
         }
