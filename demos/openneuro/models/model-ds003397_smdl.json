@@ -127,8 +127,8 @@
                   "B > I",
                   "average across groups"
                 ],
-                "p": 0.001,
-                "MC": "none",
+                "p": 0.01,
+                "MC": "FWE",
                 "png": true,
                 "binary": false,
                 "nidm": false,
@@ -166,6 +166,32 @@
             1
           ],
           "Test": "t"
+        },
+        {
+          "Name": "some F test",
+          "ConditionList": [
+            "group.B",
+            "group.BI",
+            "group.I"
+          ],
+          "Weights": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1
+            ]
+          ],
+          "Test": "F"
         }
       ]
     }
