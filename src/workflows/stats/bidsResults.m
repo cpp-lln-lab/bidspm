@@ -497,25 +497,19 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
         end
 
-      case 'two_sample_t_test'
+      case {'two_sample_t_test', 'one_way_anova'}
 
-        thisContrast = bm.get_contrasts('Name', result.nodeName);
-
-        result.dir = getRFXdir(opt, result.nodeName, name);
-
-        for  iCon = 1:numel(thisContrast)
-          result.name = [thisContrast{iCon}.Name ' - ' name];
-          result.contrastNb = iCon;
-          matlabbatch = appendToBatch(matlabbatch, opt, result);
-        end
-
-      case 'one_way_anova'
-
-        contrastsList = getContrastsListForFactorialDesign(opt, result.nodeName);
+        edge = bm.get_edge('Destination', result.nodeName);
+        contrastsList = edge.Filter.contrast;
 
         for iCon = 1:numel(contrastsList)
 
-          label = '1WayANOVA';
+          if strcmp(glmType, 'two_sample_t_test')
+            label = '2samplesTTest';
+          else
+            label = '1WayANOVA';
+          end
+
           result.dir = getRFXdir(opt, result.nodeName, contrastsList{iCon}, label);
 
           load(fullfile(result.dir, 'SPM.mat'), 'SPM');

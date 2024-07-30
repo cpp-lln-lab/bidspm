@@ -157,6 +157,24 @@
             1
           ],
           "Test": "t"
+        },
+        {
+          "Name": "F_test",
+          "ConditionList": [
+            "diagnostic.blind",
+            "diagnostic.relative"
+          ],
+          "Weights": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "Test": "F"
         }
       ]
     }

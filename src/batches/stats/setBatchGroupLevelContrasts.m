@@ -88,35 +88,37 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
       thisContrast = bm.get_contrasts('Name', nodeName);
 
+      if strcmp(groupGlmType, 'two_sample_t_test')
+        label = '2samplesTTest';
+      else
+        label = '1WayANOVA';
+      end
+
       for j = 1:numel(contrastsList)
 
         spmMatFile = fullfile(getRFXdir(opt, ...
                                         nodeName, ...
                                         contrastsList{j}, ...
-                                        '1WayANOVA'), ...
+                                        label), ...
                               'SPM.mat');
 
         for iCon = 1:numel(thisContrast)
 
-          % Sort conditions and weights
-          ConditionList = strrep(thisContrast{iCon}.ConditionList, ...
-                                 [groupColumnHdr, '.'], ...
-                                 '');
-          [ConditionList, I] = sort(ConditionList);
-          Weights = thisContrast{iCon}.Weights(I);
+          convec = generateConStruct(thisContrast{iCon}, ...
+                                     availableGroups, ...
+                                     groupColumnHdr);
 
-          % Create contrast vectors by what was passed in the model
-          convec = zeros(size(availableGroups));
-          for iGroup = 1:numel(availableGroups)
-            index = strcmp(availableGroups{iGroup}, ConditionList);
-            if any(index)
-              convec(iGroup) = Weights(index);
-            end
+          if strcmp(thisContrast{iCon}.Test, 't')
+            consess{iCon}.tcon.name = thisContrast{iCon}.Name; %#ok<*AGROW>
+            consess{iCon}.tcon.sessrep = 'none';
+            consess{iCon}.tcon.convec = convec;
+
+          elseif strcmp(thisContrast{iCon}.Test, 'F')
+            consess{iCon}.fcon.name = thisContrast{iCon}.Name;
+            consess{iCon}.fcon.sessrep = 'none';
+            consess{iCon}.fcon.convec = convec;
+
           end
-
-          consess{iCon}.tcon.name = thisContrast{iCon}.Name;
-          consess{iCon}.tcon.convec = convec;
-          consess{iCon}.tcon.sessrep = 'none';
         end
 
         matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
@@ -142,5 +144,42 @@ function matlabbatch = setGroupContrast(matlabbatch, opt, spmMatFile, name, weig
   consess{1}.tcon.sessrep = 'none';
 
   matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+
+end
+
+function convec = generateConStruct(thisContrast, availableGroups, groupColumnHdr)
+  % Sort conditions and weights
+  ConditionList = strrep(thisContrast.ConditionList, ...
+                         [groupColumnHdr, '.'], ...
+                         '');
+  [ConditionList, I] = sort(ConditionList);
+
+  if strcmp(thisContrast.Test, 't')
+
+    Weights = thisContrast.Weights(I);
+
+    % Create contrast vectors by what was passed in the model
+    convec = zeros(size(availableGroups));
+    for iGroup = 1:numel(availableGroups)
+      index = strcmp(availableGroups{iGroup}, ConditionList);
+      if any(index)
+        convec(iGroup) = Weights(index);
+      end
+    end
+
+  elseif strcmp(thisContrast.Test, 'F')
+
+    Weights = thisContrast.Weights(I, :);
+
+    % Create contrast vectors by what was passed in the mode
+    convec = zeros(size(Weights, 1), numel(availableGroups));
+    for iGroup = 1:numel(availableGroups)
+      index = strcmp(availableGroups{iGroup}, ConditionList);
+      if any(index)
+        convec(:, iGroup) = Weights(:, index);
+      end
+    end
+
+  end
 
 end

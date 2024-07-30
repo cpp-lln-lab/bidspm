@@ -40,20 +40,25 @@ function test_bidsRFX_one_way_anova_contrast()
   rfxDir = getRFXdir(opt, nodeName, contrastName, '1WayANOVA');
   assertEqual(fileparts(matlabbatch{1}.spm.stats.con.spmmat{1}), rfxDir);
 
-  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 2);
+  assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 3);
+
   assertEqual(matlabbatch{1}.spm.stats.con.consess{1}.tcon.name, 'relative_gt_ctrl');
   assertEqual(matlabbatch{1}.spm.stats.con.consess{1}.tcon.convec, [0; -1; 1]);
   assertEqual(matlabbatch{1}.spm.stats.con.consess{2}.tcon.name, 'blind_gt_relative');
   assertEqual(matlabbatch{1}.spm.stats.con.consess{2}.tcon.convec, [-1; 0; 1]);
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{3}.fcon.name, 'F_test');
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{3}.fcon.convec, [1, 0, 0; 0, 0, 1]);
 
   contrastName = 'VisStat_gt_VisMot';
   rfxDir = getRFXdir(opt, nodeName, contrastName, '1WayANOVA');
   assertEqual(fileparts(matlabbatch{2}.spm.stats.con.spmmat{1}), rfxDir);
 
-  assertEqual(numel(matlabbatch{2}.spm.stats.con.consess), 2);
-  assertEqual(matlabbatch{1}.spm.stats.con.consess{1}.tcon.name, 'relative_gt_ctrl');
+  assertEqual(numel(matlabbatch{2}.spm.stats.con.consess), 3);
+  assertEqual(matlabbatch{2}.spm.stats.con.consess{1}.tcon.name, 'relative_gt_ctrl');
   assertEqual(matlabbatch{2}.spm.stats.con.consess{1}.tcon.convec, [0; -1; 1]);
-  assertEqual(matlabbatch{1}.spm.stats.con.consess{2}.tcon.name, 'blind_gt_relative');
+  assertEqual(matlabbatch{2}.spm.stats.con.consess{2}.tcon.name, 'blind_gt_relative');
   assertEqual(matlabbatch{2}.spm.stats.con.consess{2}.tcon.convec, [-1; 0; 1]);
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{3}.fcon.name, 'F_test');
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{3}.fcon.convec, [1, 0, 0; 0, 0, 1]);
 
 end

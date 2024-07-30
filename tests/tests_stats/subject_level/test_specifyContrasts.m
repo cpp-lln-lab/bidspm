@@ -11,6 +11,8 @@ end
 function test_specifyContrasts_bug_854()
   % no error when no contrast to build
 
+  skipIfOctave('mixed-string-concat warning thrown');
+
   % GIVEN
   subLabel = '01';
 
