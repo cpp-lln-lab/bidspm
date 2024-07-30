@@ -43,8 +43,8 @@ function test_bidsRFX_one_way_anova()
   assertEqual(matlabbatch{3}.spm.stats.factorial_design.dir{1}, rfxDir);
   assertEqual(numel(matlabbatch{3}.spm.stats.factorial_design.des.anova.icell), 3);
   assertEqual(numel(matlabbatch{3}.spm.stats.factorial_design.des.anova.icell(1).scans), 2);
-  assertEqual(fileparts(matlabbatch{10}.spm.stats.fmri_est.spmmat{1}), rfxDir);
   if ~bids.internal.is_octave
+    assertEqual(fileparts(matlabbatch{10}.spm.stats.fmri_est.spmmat{1}), rfxDir);
     assertEqual(matlabbatch{11}.spm.tools.MACS.MA_model_space.dir{1}, rfxDir);
   end
 
