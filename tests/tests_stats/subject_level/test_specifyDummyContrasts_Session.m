@@ -74,7 +74,7 @@ function test_specifyDummyContrasts_session()
   contrasts = struct('C', [], 'name', []);
   counter = 0;
   contrasts = specifyDummyContrasts(model, node, contrasts, counter);
-  assertEqual(numel({contrasts.name}), 11);
+  assertEqual(numel({contrasts.name}), 5);
 
   node = model.Nodes{2};
   contrasts = struct('C', [], 'name', []);
