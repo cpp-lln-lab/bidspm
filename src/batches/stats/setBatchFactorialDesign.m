@@ -259,6 +259,7 @@ function matlabbatch = assignToBatch(matlabbatch, opt, nodeName, contrastName, i
   rfxDir = getRFXdir(opt, nodeName, contrastName, thisGroup);
   overwriteDir(rfxDir, opt);
 
+  opt.verbosity = 0;
   assert(~checkSpmMat(rfxDir, opt));
 
   icell(1).levels = 1;
@@ -364,19 +365,10 @@ function [status, groupBy, glmType] = checks(opt, nodeName)
   datasetLvlContrasts = bm.get_contrasts('Name', nodeName);
   datasetLvlDummyContrasts = bm.get_dummy_contrasts('Name', nodeName);
 
-  if isempty(datasetLvlContrasts) && isempty(datasetLvlDummyContrasts)
-    msg = sprintf('No contrast specified %s', commonMsg);
-    logger('WARNING', msg, 'id', id, 'filename', mfilename(), 'options', opt);
-    status = false;
-    return
-  end
-
   if ismember(glmType, {'one_sample_t_test'}) && ...
     (not(isempty(datasetLvlContrasts)) || isempty(datasetLvlDummyContrasts))
     msg = sprintf('For one-sample t-test only DummyContrasts are implemented %s', commonMsg);
     notImplemented(mfilename(), msg, opt);
-    status = false;
-    return
   end
 
   if ismember(glmType, {'one_way_anova', 'two_sample_t_test'}) && ...
@@ -384,7 +376,6 @@ function [status, groupBy, glmType] = checks(opt, nodeName)
     msg = sprintf(['For one-way ANOVA or 2 samples t-test ', ...
                    'only contrasts are implemented %s'], commonMsg);
     notImplemented(mfilename(), msg, opt);
-    status = false;
   end
 
 end

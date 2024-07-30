@@ -94,14 +94,14 @@ function matlabbatch = bidsRFX(varargin)
 
       participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
 
-      matlabbatch = {};
-
       for i = 1:numel(datasetNodes)
+
+        matlabbatch = {};
+
+        nodeName = datasetNodes{i}.Name;
 
         msg = sprintf('\n PROCESSING NODE: %s\n', nodeName);
         logger('INFO', msg, 'options', opt, 'filename', mfilename());
-
-        nodeName = datasetNodes{i}.Name;
 
         switch  bm.groupLevelGlmType(nodeName, participants)
 

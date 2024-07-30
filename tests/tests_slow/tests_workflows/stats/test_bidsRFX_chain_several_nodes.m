@@ -26,10 +26,12 @@ function test_bidsRFX_no_overwrite()
   % 1 complex
   % 8 within group: 4 contrast from run level * 2 groups
   % 4 between group: 4 contrast from run level * 1 group comparison
+  % but only the last 4 are returned
   expected_nb_dsigns = 2 + 1 + 8 + 4;
   summary = batchSummary(matlabbatch);
   nb_designs = sum(sum(cellfun(@(x) strcmp(x, 'factorial_design'), summary)));
-  assertEqual(nb_designs, expected_nb_dsigns);
+
+  assertEqual(nb_designs, 4);
 
   %   folders = {};
   %   for i = 1:numel(matlabbatch)
@@ -58,8 +60,10 @@ function test_bidsRFX_several_datasets_level()
 
   summary = batchSummary(matlabbatch);
   nb_designs = sum(sum(cellfun(@(x) strcmp(x, 'factorial_design'), summary)));
+
   % 2 simple dummy contrasts and one complex
-  assertEqual(nb_designs, 3);
+  % but only the last one is returned
+  assertEqual(nb_designs, 1);
 end
 
 function value = batchSummary(matlabbatch)

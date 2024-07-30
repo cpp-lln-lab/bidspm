@@ -108,21 +108,6 @@
     },
     {
       "Level": "Dataset",
-      "Name": "within_group",
-      "Description": "within group t-test",
-      "GroupBy": [
-        "contrast",
-        "group"
-      ],
-      "Model": {
-        "Type": "glm",
-        "X": [
-          1
-        ]
-      }
-    },
-    {
-      "Level": "Dataset",
       "Name": "between_groups",
       "Description": "one way anova",
       "GroupBy": [
@@ -193,10 +178,6 @@
     {
       "Source": "subject_level",
       "Destination": "dataset_level"
-    },
-    {
-      "Source": "subject_level",
-      "Destination": "within_group"
     },
     {
       "Source": "subject_level",
