@@ -76,7 +76,7 @@ function [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabba
 
         contrastName = contrastsList{iCon};
 
-        rfxDir = getRFXdir(opt, nodeName, contrastName, '1WayANOVA');
+        rfxDir = getRFXdir(opt, nodeName, contrastName, label);
         overwriteDir(rfxDir, opt);
 
         assert(~checkSpmMat(rfxDir, opt));
@@ -283,7 +283,7 @@ function factorialDesign = returnFactorialDesignBatch(directory, icell, thisGrou
     thisGroup = 'GROUP';
   end
 
-  factorialDesign = commonFaxtorialDesignBatch(directory);
+  factorialDesign = commonFactorialDesignBatch(directory);
 
   factorialDesign.des.fd.icell = icell;
 
@@ -296,7 +296,7 @@ function factorialDesign = returnFactorialDesignBatch(directory, icell, thisGrou
 end
 
 function factorialDesign = returnTwoSampleTTestBatch(directory)
-  factorialDesign = commonFaxtorialDesignBatch(directory);
+  factorialDesign = commonFactorialDesignBatch(directory);
 
   factorialDesign.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
   factorialDesign.multi_cov = struct('files', {}, 'iCFI', {}, 'iCC', {});
@@ -308,7 +308,7 @@ function factorialDesign = returnTwoSampleTTestBatch(directory)
 end
 
 function factorialDesign = returnOneWayAnovaBatch(directory)
-  factorialDesign = commonFaxtorialDesignBatch(directory);
+  factorialDesign = commonFactorialDesignBatch(directory);
 
   factorialDesign.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
   factorialDesign.multi_cov = struct('files', {}, 'iCFI', {}, 'iCC', {});
@@ -318,7 +318,7 @@ function factorialDesign = returnOneWayAnovaBatch(directory)
   factorialDesign.des.anova.icell(1).scans = {};
 end
 
-function factorialDesign = commonFaxtorialDesignBatch(directory)
+function factorialDesign = commonFactorialDesignBatch(directory)
   factorialDesign.dir = {directory};
   factorialDesign = setBatchFactorialDesignImplicitMasking(factorialDesign);
   factorialDesign = setBatchFactorialDesignGlobalCalcAndNorm(factorialDesign);

@@ -66,12 +66,8 @@ function rfxDir = getRFXdir(varargin)
   end
 
   sub = 'ALL';
-  if ~isempty(contrastName)
-    participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
-    groupColumnHdr = opt.model.bm.getGroupColumnHdrFromGroupBy(nodeName, participants);
-    if ~isempty(groupColumnHdr) && ~isempty(thisGroup)
-      sub = thisGroup;
-    end
+  if ~isempty(contrastName) && ~isempty(thisGroup)
+    sub = thisGroup;
   end
 
   glmDirName = ['sub-', sub, '_', glmDirName];

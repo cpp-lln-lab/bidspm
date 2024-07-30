@@ -18,13 +18,29 @@ function test_bidsRFX_no_overwrite()
                             'model-vismotionNoOverWrite_smdl');
   opt.model.bm = BidsModel('file', opt.model.file);
 
+  opt.ignore = {'qa'};
+
   matlabbatch = bidsRFX('RFX', opt);
 
-  expectedNbBatch = 79;
-  if bids.internal.is_octave()
-    expectedNbBatch = 5;
-  end
-  assertEqual(numel(matlabbatch), expectedNbBatch);
+  % 2 simple dummy contrasts
+  % 1 complex
+  % 8 within group: 4 contrast from run level * 2 groups
+  % 4 between group: 4 contrast from run level * 1 group comparison
+  expected_nb_dsigns = 2 + 1 + 8 + 4;
+  summary = batchSummary(matlabbatch);
+  nb_designs = sum(sum(cellfun(@(x) strcmp(x, 'factorial_design'), summary)));
+  assertEqual(nb_designs, expected_nb_dsigns);
+
+  %   folders = {};
+  %   for i = 1:numel(matlabbatch)
+  %       if isfield(matlabbatch{i}.spm, 'stats') && ...
+  %             isfield(matlabbatch{i}.spm.stats, 'factorial_design')
+  %           [~, tmp] = fileparts(matlabbatch{i}.spm.stats.factorial_design.dir{1});
+  %           folders{end+1, 1} = tmp;
+  %
+  %       end
+  %   end
+  %   folders
 
 end
 
@@ -41,36 +57,9 @@ function test_bidsRFX_several_datasets_level()
   matlabbatch = bidsRFX('RFX', opt);
 
   summary = batchSummary(matlabbatch);
-
-  % only the batches from the last node is returned
-  % creates 1 batch for (specify, figure, estimate, review, figure)
-  batchOrder = {'stats', 'factorial_design'; ...
-                'util', 'print'};
-  batchOrder = extendBatchOrder(batchOrder);
-  assertEqual(summary, batchOrder);
-
-  nbGroupLevelModelsReturned = 1;
-  nbBatchPerModel = 7;
-  if bids.internal.is_octave()
-    nbBatchPerModel = 5;
-  end
-  assertEqual(numel(matlabbatch), nbGroupLevelModelsReturned * nbBatchPerModel);
-
-end
-
-function batchOrder = extendBatchOrder(batchOrder)
-  if nargin < 1
-    batchOrder = {};
-  end
-  extension = {'stats', 'fmri_est'; ...
-               'tools', 'MACS'; ...
-               'tools', 'MACS'; ...
-               'stats', 'review'; ...
-               'util', 'print'};
-  if bids.internal.is_octave()
-    extension(2:3, :) = [];
-  end
-  batchOrder = cat(1, batchOrder, extension);
+  nb_designs = sum(sum(cellfun(@(x) strcmp(x, 'factorial_design'), summary)));
+  % 2 simple dummy contrasts and one complex
+  assertEqual(nb_designs, 3);
 end
 
 function value = batchSummary(matlabbatch)

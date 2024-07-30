@@ -45,6 +45,12 @@ function test_bidsRFX_within_group_ttest()
   summary = batchSummary(matlabbatch);
   assertEqual(summary, batchOrder);
 
+  [~, folder] = fileparts(matlabbatch{1}.spm.stats.factorial_design.dir{1});
+  assert(bids.internal.starts_with(folder, 'sub-blind'));
+
+  [~, folder] = fileparts(matlabbatch{3}.spm.stats.factorial_design.dir{1});
+  assert(bids.internal.starts_with(folder, 'sub-ctrl'));
+
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{5}.spm.stats.fmri_est.spmmat{1}));
   if bids.internal.is_octave()
@@ -76,6 +82,9 @@ function test_bidsRFX_two_sample_ttest()
                 'util', 'print'};
   batchOrder = extendBatchOrder(batchOrder);
   assertEqual(summary, batchOrder);
+
+  [~, folder] = fileparts(matlabbatch{1}.spm.stats.factorial_design.dir{1});
+  assert(bids.internal.starts_with(folder, 'sub-2samplesTTest'));
 
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, ...
               fileparts(matlabbatch{3}.spm.stats.fmri_est.spmmat{1}));

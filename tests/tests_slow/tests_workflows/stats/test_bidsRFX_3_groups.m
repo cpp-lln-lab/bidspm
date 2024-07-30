@@ -23,8 +23,13 @@ function test_bidsRFX_one_way_anova()
 
   nodeName = 'between_groups';
   contrastName = 'VisMot_gt_VisStat';
+
+  [~, folder] = fileparts(matlabbatch{1}.spm.stats.factorial_design.dir{1});
+  assert(bids.internal.starts_with(folder, 'sub-1WayANOVA'));
+
   rfxDir = getRFXdir(opt, nodeName, contrastName, '1WayANOVA');
   assertEqual(matlabbatch{1}.spm.stats.factorial_design.dir{1}, rfxDir);
+
   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.anova.icell), 3);
   assertEqual(numel(matlabbatch{1}.spm.stats.factorial_design.des.anova.icell(1).scans), 2);
   assertEqual(fileparts(matlabbatch{5}.spm.stats.fmri_est.spmmat{1}), rfxDir);
