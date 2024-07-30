@@ -58,6 +58,8 @@ function contrastNb = getContrastNb(result, opt, SPM)
     id = 'noMatchingContrastName';
     logger('WARNING', msg, 'id', id, 'filename', mfilename());
 
+    contrastNb = [];
+
     return
 
   end

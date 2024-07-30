@@ -190,15 +190,10 @@ function matlabbatch = bidsModelSelection(varargin)
       end
 
       ffxDir = getFFXdir(subLabel, opt);
-
-      spmMatFile = spm_select('FPList', ffxDir, 'SPM.mat');
-
-      if isempty(spmMatFile)
-        msg = sprintf('no SPM.mat found in:\n%s\n\n', ffxDir);
-        id = 'noSPMmat';
-        logger('WARNING', msg, 'id', id, 'filename', mfilename());
+      if not(checkSpmMat(ffxDir, opt))
         continue
       end
+      spmMatFile = spm_select('FPList', ffxDir, 'SPM.mat');
 
       msg = struct('Subject', subLabel);
       msg.Model = names{iModel};

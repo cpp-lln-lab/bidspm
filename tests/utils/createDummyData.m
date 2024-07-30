@@ -16,6 +16,7 @@ function createDummyData()
   [status, result] = system('rm -fr data/derivatives/bidspm-*/jobs');
 
   system('python create_dummy_dataset.py');
+  system('python create_3_groups_dataset.py');
 
   cd(startDir);
 

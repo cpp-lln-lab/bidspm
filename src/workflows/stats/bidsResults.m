@@ -159,7 +159,9 @@ function matlabbatch = bidsResults(varargin)
 
   opt.dir.output = opt.dir.stats;
 
-  modelResults = opt.model.bm.getResults();
+  bm = opt.model.bm;
+
+  modelResults = bm.getResults();
   if ~isempty(modelResults)
     opt.results = modelResults;
   end
@@ -183,7 +185,7 @@ function matlabbatch = bidsResults(varargin)
   % loop through the steps to compute for each contrast mentioned for each node
   for iRes = 1:length(opt.results)
 
-    node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
+    node = bm.get_nodes('Name',  opt.results(iRes).nodeName);
 
     if isempty(node)
 
@@ -393,9 +395,7 @@ function matlabbatch = bidsResultsSubject(opt, subLabel, iRes, isRunLevel)
 
     tmp.dir = getFFXdir(subLabel, opt);
 
-    status = checkSpmMat(tmp.dir, opt);
-
-    if ~status
+    if ~checkSpmMat(tmp.dir, opt)
       return
     end
 
@@ -443,9 +443,13 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
   matlabbatch = {};
 
-  node = opt.model.bm.get_nodes('Name',  opt.results(iRes).nodeName);
+  bm = opt.model.bm;
+
+  node = bm.get_nodes('Name',  opt.results(iRes).nodeName);
 
   opt = checkMontage(opt, iRes, node);
+
+  participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
 
   for i = 1:length(opt.results(iRes).name)
 
@@ -459,11 +463,11 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
       logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename());
     end
 
-    switch  groupLevelGlmType(opt, result.nodeName)
+    [glmType, groupBy] =  bm.groupLevelGlmType(result.nodeName, participants);
+
+    switch  glmType
 
       case 'one_sample_t_test'
-
-        [~, ~, groupBy] =  groupLevelGlmType(opt, result.nodeName);
 
         if all(ismember(lower(groupBy), {'contrast'}))
 
@@ -473,12 +477,12 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
           matlabbatch = appendToBatch(matlabbatch, opt, result);
 
+          % TODO make more general than just with group
         elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
 
-          participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
-
+          % TODO make more general than just with group
           groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
-          availableGroups = unique(participants.(groupColumnHdr));
+          availableGroups = getAvailableGroups(opt, groupColumnHdr);
 
           for iGroup = 1:numel(availableGroups)
 
@@ -493,16 +497,31 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
         end
 
-      case 'two_sample_t_test'
+      case {'two_sample_t_test', 'one_way_anova'}
 
-        thisContrast = opt.model.bm.get_contrasts('Name', result.nodeName);
+        edge = bm.get_edge('Destination', result.nodeName);
+        contrastsList = edge.Filter.contrast;
 
-        result.dir = getRFXdir(opt, result.nodeName, name);
+        for iCon = 1:numel(contrastsList)
 
-        for  iCon = 1:numel(thisContrast)
-          result.name = [thisContrast{iCon}.Name ' - ' name];
-          result.contrastNb = iCon;
+          if strcmp(glmType, 'two_sample_t_test')
+            label = '2samplesTTest';
+          else
+            label = '1WayANOVA';
+          end
+
+          result.dir = getRFXdir(opt, result.nodeName, contrastsList{iCon}, label);
+
+          load(fullfile(result.dir, 'SPM.mat'), 'SPM');
+
+          result.name =  name;
+          contrastNb = getContrastNb(result, opt, SPM);
+          result.contrastNb = contrastNb;
+
+          result.name = [bids.internal.camel_case(contrastsList{iCon}) ' - ' name];
+
           matlabbatch = appendToBatch(matlabbatch, opt, result);
+
         end
 
       otherwise
@@ -513,18 +532,6 @@ function matlabbatch = bidsResultsDataset(opt, iRes)
 
   end
 
-end
-
-function status = checkSpmMat(dir, opt)
-  status = exist(fullfile(dir, 'SPM.mat'), 'file');
-  if ~status
-    if nargin < 2
-      opt = struct('verbosity', 2);
-    end
-    msg = sprintf('\nCould not find a SPM.mat file in directory:\n%s\n', dir);
-    id = 'noSpmMatFile';
-    logger('WARNING', msg, 'id', id, 'options', opt, 'filename', mfilename);
-  end
 end
 
 function matlabbatch = appendToBatch(matlabbatch, opt, result)

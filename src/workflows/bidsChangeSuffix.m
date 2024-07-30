@@ -8,7 +8,7 @@ function bidsChangeSuffix(varargin)
   %             See :func:`checkOptions`.
   % :type  opt: structure
   %
-  % :param newSuffix: TODO: add checks on newSuffix to make sure it only contains [a-zA-Z0-9]
+  % :param newSuffix:
   % :type  newSuffix: char
   %
   % :param filter: structure to decide which files to include. Default:
@@ -35,6 +35,8 @@ function bidsChangeSuffix(varargin)
   %
 
   % (C) Copyright 2022 bidspm developers
+
+  % TODO: add checks on newSuffix to make sure it only contains [a-zA-Z0-9]
 
   args = inputParser;
 

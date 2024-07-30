@@ -8,7 +8,7 @@ function test_suite = test_setBatchGroupLevelContrasts %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_setBatchGroupLevelContrasts_between_groups()
+function test_setBatchGroupLevelContrasts_two_sample_ttest()
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
@@ -22,7 +22,9 @@ function test_setBatchGroupLevelContrasts_between_groups()
 
   assertEqual(numel(matlabbatch{1}.spm.stats.con.consess), 2);
   assertEqual(matlabbatch{1}.spm.stats.con.consess{1}.tcon.name, 'blind_gt_ctrl');
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{1}.tcon.convec, [1; -1]);
   assertEqual(matlabbatch{1}.spm.stats.con.consess{2}.tcon.name, 'ctrl_gt_blind');
+  assertEqual(matlabbatch{1}.spm.stats.con.consess{2}.tcon.convec, [-1; 1]);
 
 end
 

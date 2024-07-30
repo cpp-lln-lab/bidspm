@@ -1,0 +1,218 @@
+{
+  "Name": "1_way_ANOVA",
+  "BIDSModelVersion": "1.0.0",
+  "Input": {
+    "task": [
+      "checkerboard"
+    ],
+    "space": [
+      "MNI152NLin2009cAsym"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          "trial_type.flashing checkerboard",
+          "trans_?",
+          "rot_?"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.flashing checkerboard"
+          ],
+          "Model": "spm"
+        }
+      },
+      "Contrasts": [
+        {
+          "Name": "flashing checkerboard",
+          "ConditionList": [
+            "trial_type.flashing checkerboard"
+          ],
+          "Weights": [
+            1
+          ],
+          "Test": "t"
+        }
+      ]
+    },
+    {
+      "Level": "Subject",
+      "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1
+        ],
+        "Software": {
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "flashing checkerboard"
+                ],
+                "p": 0.05,
+                "MC": "FWE",
+                "png": true,
+                "binary": false,
+                "nidm": false,
+                "montage": {
+                  "do": true,
+                  "slices": [
+                    -4,
+                    0,
+                    4,
+                    8,
+                    16
+                  ],
+                  "background": {
+                    "suffix": "T1w",
+                    "desc": "preproc",
+                    "modality": "anat"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "dataset_level",
+      "Description": "average across all subjects",
+      "GroupBy": [
+        "contrast"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1
+        ]
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "between_groups",
+      "Description": "one way anova",
+      "GroupBy": [
+        "contrast"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1,
+          "group"
+        ],
+        "Software": {
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "B > I",
+                  "average across groups"
+                ],
+                "p": 0.01,
+                "MC": "FWE",
+                "png": true,
+                "binary": false,
+                "nidm": false,
+                "montage": {
+                  "do": false
+                }
+              }
+            ]
+          }
+        }
+      },
+      "Contrasts": [
+        {
+          "Name": "B > I",
+          "ConditionList": [
+            "group.B",
+            "group.I"
+          ],
+          "Weights": [
+            1,
+            -1
+          ],
+          "Test": "t"
+        },
+        {
+          "Name": "average across groups",
+          "ConditionList": [
+            "group.B",
+            "group.I",
+            "group.BI"
+          ],
+          "Weights": [
+            1,
+            1,
+            1
+          ],
+          "Test": "t"
+        },
+        {
+          "Name": "some F test",
+          "ConditionList": [
+            "group.B",
+            "group.BI",
+            "group.I"
+          ],
+          "Weights": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1
+            ]
+          ],
+          "Test": "F"
+        }
+      ]
+    }
+  ],
+  "Edges": [
+    {
+      "Source": "run_level",
+      "Destination": "subject_level"
+    },
+    {
+      "Source": "subject_level",
+      "Destination": "dataset_level"
+    },
+    {
+      "Source": "subject_level",
+      "Destination": "between_groups",
+      "Filter": {
+        "contrast": [
+          "flashing checkerboard"
+        ]
+      }
+    }
+  ]
+}

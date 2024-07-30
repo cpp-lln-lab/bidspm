@@ -27,7 +27,7 @@ function test_getOptionsFromModel_no_model()
   opt.pipeline.type = 'stats';
   opt.model.file = '';
   opt.tolerant = true;
-  opt.verbosity = 3;
+  opt.verbosity = 1;
   opt.pipeline.isBms = false;
 
   assertExceptionThrown(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelFileMissing');
@@ -79,7 +79,7 @@ function test_getOptionsFromModel_task()
 
   %%
   opt.taskName = {'foo'};
-  opt.verbosity = 2;
+  opt.verbosity = 1;
   opt.tolerant = true;
 
   assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelOverridesOptions');
@@ -104,7 +104,7 @@ function test_getOptionsFromModel_subject()
 
   %%
   opt.subjects = '02';
-  opt.verbosity = 2;
+  opt.verbosity = 1;
 
   assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelOverridesOptions');
 
@@ -147,7 +147,7 @@ function test_getOptionsFromModel_query()
 
   %%
   opt.query.acq = 'foo';
-  opt.verbosity = 2;
+  opt.verbosity = 1;
 
   assertWarning(@() getOptionsFromModel(opt), 'getOptionsFromModel:modelOverridesOptions');
 

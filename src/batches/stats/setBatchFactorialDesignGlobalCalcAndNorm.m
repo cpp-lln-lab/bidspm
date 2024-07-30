@@ -1,8 +1,8 @@
-function factorialDesign = setBatchFatorialDesignGlobalCalcAndNorm(factorialDesign)
+function factorialDesign = setBatchFactorialDesignGlobalCalcAndNorm(factorialDesign)
   %
   % USAGE::
   %
-  %   factorialDesign = setBatchFatorialDesignGlobalCalcAndNorm(factorialDesign)
+  %   factorialDesign = setBatchFactorialDesignGlobalCalcAndNorm(factorialDesign)
   %
   %
 

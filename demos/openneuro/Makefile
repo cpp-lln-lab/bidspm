@@ -74,3 +74,13 @@ data_ds002799:
 	datalad get -d inputs/ds002799 inputs/ds002799/derivatives/fmriprep/sub-292/*/func/*tsv
 	datalad get -d inputs/ds002799 inputs/ds002799/derivatives/fmriprep/sub-30[27]/*/func/*MNI152NLin2009cAsym* -J 2
 	datalad get -d inputs/ds002799 inputs/ds002799/derivatives/fmriprep/sub-30[27]/*/func/*tsv -J 2
+
+data_ds003397:
+	mkdir -p inputs
+	cd inputs && datalad install ///openneuro/ds003397
+	cd inputs && datalad install https://github.com/OpenNeuroDerivatives/ds003397-fmriprep
+	cd inputs/ds003397-fmriprep && datalad get sub-[01][1267]/anat/*MNI152NLin2009cAsym*T1w.nii.gz -J 12
+	cd inputs/ds003397-fmriprep && datalad get sub-[01][1267]/anat/*mask*.nii.gz -J 12
+	cd inputs/ds003397-fmriprep && datalad get sub-[01][1267]/func/*time*tsv -J 12
+	cd inputs/ds003397-fmriprep && datalad get sub-[01][1267]/func/*json -J 12
+	cd inputs/ds003397-fmriprep && datalad get sub-[01][1267]/func/*MNI152NLin2009cAsym*desc-preproc*bold.nii.gz -J 12

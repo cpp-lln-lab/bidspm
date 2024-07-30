@@ -1,4 +1,4 @@
-function dummyContrastsList = getDummyContrastsList(model, node)
+function dummyContrastsList = getDummyContrastsList(model, node, participants)
   %
   % Get list of names of DummyContrast from this Node or gets its from the
   % previous Nodes
@@ -18,6 +18,10 @@ function dummyContrastsList = getDummyContrastsList(model, node)
 
   % (C) Copyright 2022 bidspm developers
 
+  if nargin < 3
+    participants = struct();
+  end
+
   dummyContrastsList = {};
 
   if ischar(node)
@@ -27,19 +31,19 @@ function dummyContrastsList = getDummyContrastsList(model, node)
     end
   end
 
-  if isfield(node.DummyContrasts, 'Contrasts')
+  if isfield(node, 'DummyContrasts') && isfield(node.DummyContrasts, 'Contrasts')
 
     dummyContrastsList = node.DummyContrasts.Contrasts;
 
   else
 
-    assert(checkGroupBy(node));
+    assert(model.validateGroupBy(node.Name, participants));
 
     switch lower(node.Level)
 
       case 'run'
 
-        dummyContrastsList = node.Model.X;
+        dummyContrastsList = node.Model.HRF.Variables;
 
       case {'session', 'subject'}
 

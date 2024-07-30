@@ -15,7 +15,7 @@ function test_getInclusiveMask_too_many()
 
   opt = setOptions('vismotion', '01', 'useTempDir', true);
 
-  opt.verbosity = 2;
+  opt.verbosity = 1;
 
   opt.model.bm = BidsModel('file', opt.model.file);
 
@@ -63,7 +63,7 @@ function test_getInclusiveMask_no_image()
 
   opt = setOptions('vismotion', '01');
 
-  opt.verbosity = 2;
+  opt.verbosity = 1;
 
   opt.model.bm = BidsModel('file', opt.model.file);
 

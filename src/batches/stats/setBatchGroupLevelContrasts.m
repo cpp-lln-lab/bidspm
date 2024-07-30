@@ -26,15 +26,21 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
   printBatchName('group level contrast estimation', opt);
 
-  [groupGlmType, designMatrix, groupBy] =  groupLevelGlmType(opt, nodeName);
+  bm = opt.model.bm;
 
+  participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+
+  [groupGlmType, groupBy] =  bm.groupLevelGlmType(nodeName, participants);
   switch groupGlmType
 
     case 'one_sample_t_test'
 
+      groupColumnHdr = bm.getGroupColumnHdrFromGroupBy(nodeName, participants);
+      availableGroups = getAvailableGroups(opt, groupColumnHdr);
+
       contrastsList = getContrastsListForFactorialDesign(opt, nodeName);
 
-      if all(ismember(lower(groupBy), {'contrast'}))
+      if numel(groupBy) == 1 && ismember(lower(groupBy), {'contrast'})
 
         for j = 1:numel(contrastsList)
 
@@ -46,12 +52,7 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
         end
 
-      elseif all(ismember(lower(groupBy), {'contrast', 'group'}))
-
-        participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
-
-        groupColumnHdr = groupBy{ismember(lower(groupBy), {'group'})};
-        availableGroups = unique(participants.(groupColumnHdr));
+      elseif numel(groupBy) == 2 && any(ismember(groupBy, fieldnames(participants)))
 
         for j = 1:numel(contrastsList)
 
@@ -71,31 +72,53 @@ function matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, nodeName)
 
       end
 
-    case 'two_sample_t_test'
+    case {'two_sample_t_test', 'one_way_anova' }
 
-      designMatrix = removeIntercept(designMatrix);
+      % T test for ANOVA
+      %
+      % Loop over the subject level contrasts passed
+      % through the Edge filter.
+      % Then generate the between group contrasts.
 
-      if ismember(lower(designMatrix), {'group'})
-        % TODO will this ignore the contrasts define at other levels and not
-        % passed through the filter ?
-        edge = opt.model.bm.get_edge('Destination', nodeName);
-        contrastsList = edge.Filter.contrast;
+      groupColumnHdr = bm.getGroupColumnHdrFromDesignMatrix(nodeName);
+      availableGroups = getAvailableGroups(opt, groupColumnHdr);
+
+      edge = bm.get_edge('Destination', nodeName);
+      contrastsList = edge.Filter.contrast;
+
+      thisContrast = bm.get_contrasts('Name', nodeName);
+
+      if strcmp(groupGlmType, 'two_sample_t_test')
+        label = '2samplesTTest';
+      else
+        label = '1WayANOVA';
       end
 
       for j = 1:numel(contrastsList)
 
-        thisContrast = opt.model.bm.get_contrasts('Name', nodeName);
-
-        spmMatFile = fullfile(getRFXdir(opt, nodeName, contrastsList{j}), 'SPM.mat');
-
-        if ~opt.dryRun
-          assert(exist(spmMatFile, 'file') == 2);
-        end
+        spmMatFile = fullfile(getRFXdir(opt, ...
+                                        nodeName, ...
+                                        contrastsList{j}, ...
+                                        label), ...
+                              'SPM.mat');
 
         for iCon = 1:numel(thisContrast)
-          consess{iCon}.tcon.name = thisContrast{iCon}.Name;
-          consess{iCon}.tcon.convec = thisContrast{iCon}.Weights;
-          consess{iCon}.tcon.sessrep = 'none';
+
+          convec = generateConStruct(thisContrast{iCon}, ...
+                                     availableGroups, ...
+                                     groupColumnHdr);
+
+          if strcmp(thisContrast{iCon}.Test, 't')
+            consess{iCon}.tcon.name = thisContrast{iCon}.Name; %#ok<*AGROW>
+            consess{iCon}.tcon.sessrep = 'none';
+            consess{iCon}.tcon.convec = convec;
+
+          elseif strcmp(thisContrast{iCon}.Test, 'F')
+            consess{iCon}.fcon.name = thisContrast{iCon}.Name;
+            consess{iCon}.fcon.sessrep = 'none';
+            consess{iCon}.fcon.convec = convec;
+
+          end
         end
 
         matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
@@ -121,5 +144,42 @@ function matlabbatch = setGroupContrast(matlabbatch, opt, spmMatFile, name, weig
   consess{1}.tcon.sessrep = 'none';
 
   matlabbatch = setBatchContrasts(matlabbatch, opt, spmMatFile, consess);
+
+end
+
+function convec = generateConStruct(thisContrast, availableGroups, groupColumnHdr)
+  % Sort conditions and weights
+  ConditionList = strrep(thisContrast.ConditionList, ...
+                         [groupColumnHdr, '.'], ...
+                         '');
+  [ConditionList, I] = sort(ConditionList);
+
+  if strcmp(thisContrast.Test, 't')
+
+    Weights = thisContrast.Weights(I);
+
+    % Create contrast vectors by what was passed in the model
+    convec = zeros(size(availableGroups));
+    for iGroup = 1:numel(availableGroups)
+      index = strcmp(availableGroups{iGroup}, ConditionList);
+      if any(index)
+        convec(iGroup) = Weights(index);
+      end
+    end
+
+  elseif strcmp(thisContrast.Test, 'F')
+
+    Weights = thisContrast.Weights(I, :);
+
+    % Create contrast vectors by what was passed in the mode
+    convec = zeros(size(Weights, 1), numel(availableGroups));
+    for iGroup = 1:numel(availableGroups)
+      index = strcmp(availableGroups{iGroup}, ConditionList);
+      if any(index)
+        convec(:, iGroup) = Weights(:, index);
+      end
+    end
+
+  end
 
 end

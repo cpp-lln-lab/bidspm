@@ -8,21 +8,6 @@ function test_suite = test_bidsResults %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_bidsResults_no_results()
-
-  markTestAs('slow');
-
-  skipIfOctave('mixed-string-concat warning thrown');
-
-  opt = setOptions('vismotion', '', 'pipelineType', 'stats');
-  opt.verbosity = 2;
-
-  opt = rmfield(opt, 'results');
-
-  assertWarning(@() bidsResults(opt), 'bidsResults:noResultsAsked');
-
-end
-
 function test_bidsResults_subject_lvl()
 
   markTestAs('slow');
@@ -140,20 +125,6 @@ function test_bidsResults_filter_by_nodeName()
 
   %% THEN
   assertEqual(numel(matlabbatch), 1);
-
-end
-
-function test_bidsResults_filter_by_nodeName_empty()
-
-  markTestAs('slow');
-
-  opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
-
-  opt.results = defaultResultsStructure();
-
-  opt.results.nodeName = 'subject_level';
-
-  bidsResults(opt, 'nodeName', 'foo');
 
 end
 
@@ -279,21 +250,6 @@ function test_bidsResults_dataset_lvl()
   %% WHEN
 
   matlabbatch = bidsResults(opt);
-
-end
-
-function test_bidsResults_error_missing_node()
-
-  markTestAs('slow');
-
-  opt = setOptions('vismotion', '', 'pipelineType', 'stats');
-
-  opt.results = defaultResultsStructure();
-
-  opt.results.nodeName = 'egg';
-  opt.results.name = {'spam'};
-
-  assertWarning(@()bidsResults(opt), 'Model:missingNode');
 
 end
 

@@ -1,0 +1,202 @@
+{
+  "Name": "vismotion",
+  "BIDSModelVersion": "1.0.0",
+  "Description": "contrasts for the motion dataset",
+  "Input": {
+    "task": [
+      "vismotion"
+    ],
+    "space": [
+      "IXI549Space"
+    ]
+  },
+  "Nodes": [
+    {
+      "Level": "Run",
+      "Name": "run_level",
+      "GroupBy": [
+        "run",
+        "subject"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          "trial_type.VisMot",
+          "trial_type.VisStat",
+          "trans_?",
+          "rot_?"
+        ],
+        "HRF": {
+          "Variables": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Model": "spm"
+        }
+      },
+      "Contrasts": [
+        {
+          "Name": "VisMot_gt_VisStat",
+          "ConditionList": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Weights": [
+            1,
+            -1
+          ],
+          "Test": "t"
+        },
+        {
+          "Name": "VisStat_gt_VisMot",
+          "ConditionList": [
+            "trial_type.VisMot",
+            "trial_type.VisStat"
+          ],
+          "Weights": [
+            -1,
+            1
+          ],
+          "Test": "t"
+        }
+      ]
+    },
+    {
+      "Level": "Subject",
+      "Name": "subject_level",
+      "GroupBy": [
+        "contrast",
+        "subject"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1
+        ]
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "dataset_level",
+      "GroupBy": [
+        "contrast",
+        "diagnostic"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1
+        ]
+      },
+      "DummyContrasts": {
+        "Test": "t"
+      }
+    },
+    {
+      "Level": "Dataset",
+      "Name": "between_groups",
+      "Description": "one way anova",
+      "GroupBy": [
+        "contrast"
+      ],
+      "Model": {
+        "Type": "glm",
+        "X": [
+          1,
+          "diagnostic"
+        ],
+        "Software": {
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "relative_gt_ctrl",
+                  "blind_gt_relative"
+                ],
+                "p": 0.05,
+                "MC": "none",
+                "png": true,
+                "binary": false,
+                "nidm": false,
+                "montage": {
+                  "do": false
+                }
+              }
+            ]
+          }
+        }
+      },
+      "Contrasts": [
+        {
+          "Name": "relative_gt_ctrl",
+          "Description": "3 groups but not sorted alphabetically whereas the groups are entered alphabetically in the design matrix.",
+          "ConditionList": [
+            "diagnostic.relative",
+            "diagnostic.ctrl",
+            "diagnostic.blind"
+          ],
+          "Weights": [
+            1,
+            -1,
+            0
+          ],
+          "Test": "t"
+        },
+        {
+          "Name": "blind_gt_relative",
+          "Description": "Only 2 groups should be OK but needs to be handled properly: should give a vector [-1, 0, 1]",
+          "ConditionList": [
+            "diagnostic.blind",
+            "diagnostic.relative"
+          ],
+          "Weights": [
+            -1,
+            1
+          ],
+          "Test": "t"
+        },
+        {
+          "Name": "F_test",
+          "ConditionList": [
+            "diagnostic.blind",
+            "diagnostic.relative"
+          ],
+          "Weights": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "Test": "F"
+        }
+      ]
+    }
+  ],
+  "Edges": [
+    {
+      "Source": "run_level",
+      "Destination": "subject_level"
+    },
+    {
+      "Source": "subject_level",
+      "Destination": "dataset_level"
+    },
+    {
+      "Source": "subject_level",
+      "Destination": "between_groups",
+      "Filter": {
+        "contrast": [
+          "VisMot_gt_VisStat",
+          "VisStat_gt_VisMot"
+        ]
+      }
+    }
+  ]
+}

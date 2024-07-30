@@ -21,8 +21,6 @@ function bidsLesionOverlapMap(opt)
 
   % (C) Copyright 2021 bidspm developers
 
-  % TODO add test
-
   if checkToolbox('ALI', 'verbose', opt.verbosity > 0)
     opt = setFields(opt, ALI_my_defaults());
   end

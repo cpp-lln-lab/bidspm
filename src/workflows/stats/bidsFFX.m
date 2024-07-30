@@ -103,7 +103,7 @@ function [matlabbatch, opt] = bidsFFX(varargin)
 
       case 'estimate'
 
-        if noSPMmat(opt, subLabel, fullfile(outputDir, 'SPM.mat'))
+        if ~checkSpmMat(outputDir, opt)
           continue
         end
         matlabbatch = setAction(action, matlabbatch, BIDS, opt, subLabel);
@@ -115,11 +115,9 @@ function [matlabbatch, opt] = bidsFFX(varargin)
 
       case 'contrasts'
 
-        if isempty(nodeName)
-          matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel);
-        else
-          matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, nodeName);
-        end
+        opt.model.bm.validateConstrasts();
+
+        matlabbatch = setBatchSubjectLevelContrasts(matlabbatch, opt, subLabel, nodeName);
 
     end
 
@@ -161,23 +159,11 @@ function checkRootNode(opt)
   % This only concerns 'specify' and 'specifyAndEstimate'
   %
 
-  thisNode = opt.model.bm.get_root_node;
+  bm = opt.model.bm;
+  bm.validateRootNode();
 
-  if ismember(lower(thisNode.Level), {'session', 'subject'})
-
-    notImplemented(mfilename(), ...
-                   '"session" and "subject" level Node not implemented yet');
-
-  elseif ismember(lower(thisNode.Level), {'dataset'})
-
-    msg = sprintf(['Your model seems to be having dataset Node at its root\n.', ...
-                   'Validate it: https://bids-standard.github.io/stats-models/validator.html\n']);
-    id = 'wrongLevel';
-    logger('ERROR', msg, 'id', id, 'filename', mfilename());
-
-  end
-
-  checkGroupBy(thisNode);
+  thisNode = bm.get_root_node;
+  bm.validateGroupBy(thisNode.Name);
 
   % should not be necessary
   % mostly in case users did not validate the model inputs

@@ -80,7 +80,6 @@ function renameFileAndUpdateMetadata(opt, data, newFilename, json, createdFiles)
     return
   end
 
-  % TODO write test for this
   if ~opt.rename.overwrite && exist(outputFile, 'file') || ...
       ismember(newFilename, createdFiles)
 

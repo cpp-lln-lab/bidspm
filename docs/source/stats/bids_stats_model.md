@@ -487,28 +487,41 @@ Subject level contrast averaging beta across runs
 
 At the moment only, the only type of models that are supported are:
 
-- one sample t-test: averaging across all subjects
+### one sample t-test: averaging across all subjects
 
 ```{literalinclude} ./examples/model-datasetLevel_smdl.json
 :language: json
 ```
 
-- one sample t-test: averaging across all subjects of a specific group
+### one sample t-test: averaging across all subjects of a specific group
 
 ```{literalinclude} ./examples/model_withinGroup_smdl.json
 :language: json
 :emphasize-lines: 5-8
 ```
 
-- 2 samples t-test: comparing 2 groups
+### 2 samples t-test: comparing 2 groups
 
-At the moment this can only be based on how participants are allocated to a
-group based on a `group` or `Group` column in the `participants.tsv` of in the
-raw dataset.
+Participants are allocated to a group based on a the corresponding column
+in the `participants.tsv` of in the raw dataset (`Group` in this case).
 
 ```{literalinclude} ./examples/model_betweenGroups_smdl.json
 :language: json
 :emphasize-lines: 8-28
+```
+
+### one way ANOVA: comparing several groups
+
+Participants are allocated to a group based on a the corresponding column
+in the `participants.tsv` of in the raw dataset (`Group` in this case).
+
+```{literalinclude} ./examples/model_oneWayAnova_smdl.json
+:language: json
+:emphasize-lines: 64-108
+```
+
+```{note}
+Contrast must be explicitly passed the `Edges.Filter.contrast`.
 ```
 
 ### Method section

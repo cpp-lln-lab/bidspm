@@ -191,7 +191,7 @@
     {
       "Level": "Dataset",
       "Name": "between_groups",
-      "Description": "2 sample t-test of the all_olf condition",
+      "Description": "2 sample t-test",
       "GroupBy": [
         "contrast"
       ],
@@ -199,7 +199,7 @@
         "Type": "glm",
         "X": [
           1,
-          "group"
+          "Group"
         ],
         "Options": {
           "Mask": {
@@ -226,6 +226,36 @@
           "Test": "t"
         }
       ]
+    }
+  ],
+  "Edges": [
+    {
+      "Source": "run_level",
+      "Destination": "subject_level"
+    },
+    {
+      "Source": "subject_level",
+      "Destination": "simple contrast"
+    },
+    {
+      "Source": "subject_level",
+      "Destination": "complex contrast"
+    },
+    {
+      "Source": "subject_level",
+      "Destination": "within_group"
+    },
+    {
+      "Source": "subject_level",
+      "Destination": "between_groups",
+      "Filter": {
+        "contrast": [
+          "VisMot",
+          "VisStat",
+          "VisMot_gt_VisStat",
+          "VisStat_gt_VisMot"
+        ]
+      }
     }
   ]
 }

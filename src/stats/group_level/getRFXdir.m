@@ -66,11 +66,8 @@ function rfxDir = getRFXdir(varargin)
   end
 
   sub = 'ALL';
-  if ~isempty(contrastName)
-    thisNode = opt.model.bm.get_nodes('Name', nodeName);
-    if all(ismember(lower(thisNode.GroupBy), {'contrast', 'group'})) && ~isempty(thisGroup)
-      sub = thisGroup;
-    end
+  if ~isempty(contrastName) && ~isempty(thisGroup)
+    sub = thisGroup;
   end
 
   glmDirName = ['sub-', sub, '_', glmDirName];

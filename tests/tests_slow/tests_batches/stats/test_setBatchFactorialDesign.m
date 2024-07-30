@@ -14,6 +14,8 @@ function test_setBatchFactorialDesign_within_group()
 
   opt = setOptions('vislocalizer', '', 'pipelineType', 'stats');
 
+  [~, opt] = getData(opt, opt.dir.preproc);
+
   opt.model.file = spm_file(opt.model.file, ...
                             'basename', ...
                             'model-vislocalizerWithinGroup_smdl');
@@ -36,6 +38,8 @@ function test_setBatchFactorialDesign_complex()
   markTestAs('slow');
 
   opt = setOptions('vismotion', {'^01'}, 'pipelineType', 'stats');
+
+  [~, opt] = getData(opt, opt.dir.preproc);
 
   opt.model.file = spm_file(opt.model.file, ...
                             'basename', ...
@@ -82,6 +86,8 @@ function test_setBatchFactorialDesign_basic()
   markTestAs('slow');
 
   opt = setOptions('vismotion', {'01' 'ctrl01'}, 'pipelineType', 'stats');
+
+  [~, opt] = getData(opt, opt.dir.preproc);
 
   datasetNode = opt.model.bm.get_nodes('Level', 'dataset');
 

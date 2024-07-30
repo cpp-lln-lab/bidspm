@@ -16,8 +16,6 @@ function matlabbatch = setBatchLesionAbnormalitiesDetection(matlabbatch, opt, im
 
   % (C) Copyright 2021 bidspm developers
 
-  % TODO add test
-
   printBatchName('Lesion abnormalities', opt);
 
   outliers_detection = opt.toolbox.ALI.outliers_detection;

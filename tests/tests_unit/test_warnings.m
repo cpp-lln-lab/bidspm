@@ -10,31 +10,6 @@ function test_suite = test_warnings %#ok<*STOUT>
   initTestSuite;
 end
 
-function test_noSPMmat()
-
-  opt.verbosity = 0;
-  subLabel = '01';
-
-  % GIVEN
-  spmMatFile = fullfile(getTestDataDir(), 'mat_files', 'SPM.mat');
-  % WHEN
-  status = noSPMmat(opt, subLabel, spmMatFile);
-  % THEN
-  assertEqual(status, false);
-
-  % GIVEN
-  spmMatFile = fullfile(pwd, 'sub-01', 'stats', 'foo', 'SPM.mat');
-  % WHEN
-  status = noSPMmat(opt, subLabel, spmMatFile);
-  % THEN
-  assertEqual(status, true);
-
-  skipIfOctave('mixed-string-concat warning thrown');
-  opt.verbosity = 1;
-  assertWarning(@()noSPMmat(opt, subLabel, spmMatFile), 'noSPMmat:noSpecifiedModel');
-
-end
-
 function test_noRoiFound()
 
   % GIVEN

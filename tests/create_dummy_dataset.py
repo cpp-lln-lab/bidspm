@@ -4,9 +4,15 @@ import json
 import shutil
 from pathlib import Path
 
-import pandas as pd
+from utils import (
+    ROOT_DIR,
+    create_events_tsv,
+    create_preproc_func_vismotion,
+    create_raw_func_vismotion,
+    touch,
+    write_ds_desc,
+)
 
-ROOT_DIR = Path(__file__).parent.parent
 START_DIR = Path(__file__).parent
 SUBJECTS = ["ctrl01", "blind01", "01"]
 SESSIONS = ["01", "02"]
@@ -14,15 +20,10 @@ ROIS = ["V1", "A1"]
 HEMISPHERES = ["L", "R"]
 
 
-def touch(path: Path):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "a"):
-        pass
-
-
 def main(start_dir, subject_list, session_list, roi_list, hemispheres):
     # Create BIDS directory structure
     raw_dir = start_dir / "data" / "bidspm-raw"
+    write_ds_desc(start_dir / "data" / "bidspm-raw")
     derivative_dir = start_dir / "data" / "derivatives"
     preproc_dir = derivative_dir / "bidspm-preproc"
     stats_dir = derivative_dir / "bidspm-stats"
@@ -47,46 +48,6 @@ def create_raw_dataset(target_dir, subject_list, session_list):
         create_raw_anat(target_dir, sub)
 
 
-def create_raw_func_vismotion(target_dir, sub, ses):
-    suffix = "bold"
-    task = "vismotion"
-    this_dir = target_dir / f"sub-{sub}" / f"ses-{ses}" / "func"
-    this_dir.mkdir(parents=True, exist_ok=True)
-
-    basename = f"sub-{sub}_ses-{ses}_task-{task}"
-
-    create_events_tsv(
-        filename=this_dir / f"{basename}_run-1_events.tsv",
-        onset=[2, 4],
-        duration=[2, 2],
-        trial_type=["VisMot", "VisStat"],
-    )
-
-    for run in range(1, 3):
-        filename = this_dir / f"{basename}_run-{run}_part-mag_{suffix}.nii"
-        touch(filename)
-        filename = this_dir / f"{basename}_run-{run}_part-phase_{suffix}.nii"
-        touch(filename)
-
-    create_events_tsv(
-        filename=this_dir / f"{basename}_run-2_events.tsv",
-        onset=[3, 6],
-        duration=[2, 2],
-        trial_type=["VisStat", "VisMot"],
-    )
-
-    touch(this_dir / f"{basename}_acq-1p60mm_run-1_{suffix}.nii")
-
-    for run in [1, 2]:
-        create_events_tsv(
-            filename=this_dir / f"{basename}_acq-1p60mm_run-{run}_events.tsv",
-            onset=[4, 8],
-            duration=[2, 2],
-            trial_type=["VisMot", "VisStat"],
-        )
-        touch(this_dir / f"{basename}_acq-1p60mm_dir-PA_run-{run}_{suffix}.nii")
-
-
 def create_raw_func_vislocalizer(target_dir, sub, ses):
     suffix = "bold"
     task = "vislocalizer"
@@ -102,16 +63,6 @@ def create_raw_func_vislocalizer(target_dir, sub, ses):
         duration=[15, 15],
         trial_type=["VisMot", "VisStat"],
     )
-
-
-def create_events_tsv(filename, onset, duration, trial_type):
-    events = {
-        "onset": onset,
-        "duration": duration,
-        "trial_type": trial_type,
-    }
-    df = pd.DataFrame(events)
-    df.to_csv(filename, sep="\t", index=False)
 
 
 def create_raw_func_rest(target_dir, sub, ses):
@@ -192,40 +143,6 @@ def create_preproc_dataset(target_dir, subject_list, session_list):
         create_preproc_anat(target_dir, sub)
 
 
-def create_preproc_func_vismotion(target_dir, sub, ses):
-    suffix = "bold"
-    task = "vismotion"
-    this_dir = target_dir / f"sub-{sub}" / f"ses-{ses}" / "func"
-    this_dir.mkdir(parents=True, exist_ok=True)
-
-    for acq_entity in ["", "_acq-1p60mm"]:
-        basename = f"sub-{sub}_ses-{ses}_task-{task}{acq_entity}_part-mag"
-
-        if ses == "01":
-            touch(this_dir / f"{basename}_space-individual_desc-mean_{suffix}.nii")
-            touch(this_dir / f"{basename}_space-IXI549Space_desc-mean_{suffix}.nii")
-            touch(this_dir / f"mean_{basename}_{suffix}.nii")
-
-        for run in range(1, 3):
-            basename = f"sub-{sub}_ses-{ses}_task-{task}{acq_entity}_run-{run}_part-mag"
-
-            filename = this_dir / f"rp_{basename}_{suffix}.txt"
-            shutil.copy(ROOT_DIR / "tests" / "data" / "tsv_files" / "rp.txt", filename)
-
-            shutil.copy(
-                ROOT_DIR / "tests" / "data" / "tsv_files" / "rp.tsv",
-                this_dir / f"{basename}_desc-confounds_regressors.tsv",
-            )
-
-            desc_label_list = ["preproc", "mean", "smth6"]
-            for desc in desc_label_list:
-                touch(this_dir / f"{basename}_space-individual_desc-{desc}_{suffix}.nii")
-                touch(this_dir / f"{basename}_space-IXI549Space_desc-{desc}_{suffix}.nii")
-
-            touch(this_dir / f"{basename}_space-individual_desc-stc_{suffix}.nii")
-            touch(this_dir / f"{basename}_space-IXI549Space_desc-brain_mask.nii")
-
-
 def create_preproc_func_vislocalizer(target_dir, sub, ses):
     suffix = "bold"
     task = "vislocalizer"
@@ -277,7 +194,6 @@ def create_preproc_anat(target_dir, sub):
     suffix = "T1w"
 
     this_dir = target_dir / f"sub-{sub}" / f"ses-{ses}" / "anat"
-    this_dir.mkdir(parents=True, exist_ok=True)
 
     basename = f"sub-{sub}_ses-{ses}"
 
@@ -312,14 +228,13 @@ def create_stats_dataset(stats_dir, subject_list):
     for sub in subject_list:
         for task in task_list:
             this_dir = stats_dir / f"sub-{sub}" / f"task-{task}_space-IXI549Space_FWHM-6"
-            this_dir.mkdir(parents=True, exist_ok=True)
+
+            touch(this_dir / "mask.nii")
 
             shutil.copy(
                 ROOT_DIR / "tests" / "data" / "mat_files" / "SPM.mat",
                 this_dir / "SPM.mat",
             )
-
-            touch(this_dir / "mask.nii")
 
             for i in range(1, 10):
                 touch(this_dir / f"beta_000{i}.nii")
@@ -336,14 +251,13 @@ def create_stats_dataset(stats_dir, subject_list):
                 / f"sub-{sub}"
                 / f"task-{task}_space-IXI549Space_FWHM-6_node-globalSignal"
             )
-            this_dir.mkdir(parents=True, exist_ok=True)
+
+            touch(this_dir / "mask.nii")
 
             shutil.copy(
                 ROOT_DIR / "tests" / "data" / "mat_files" / "SPM.mat",
                 this_dir / "SPM.mat",
             )
-
-            touch(this_dir / "mask.nii")
 
             for i in range(1, 11):
                 touch(this_dir / f"beta_000{i}.nii")
@@ -356,7 +270,6 @@ def create_stats_dataset(stats_dir, subject_list):
 def create_roi_directories(roi_dir, roi_list, subject_list, hemispheres):
     # Create ROI directories
     roi_group_dir = roi_dir / "group"
-    roi_group_dir.mkdir(parents=True, exist_ok=True)
 
     for roi in roi_list:
         touch(roi_group_dir / f"{roi}_mask.nii")

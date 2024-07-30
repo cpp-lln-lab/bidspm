@@ -110,6 +110,18 @@ function opt = setOptions(varargin)
     opt.model.file = fullfile(getTestDataDir(),  'models', ...
                               ['model-' strjoin(task, '') '_smdl.json']);
 
+  elseif strcmp(task, '3_groups')
+
+    task = {'vismotion'};
+
+    dataDir = fullfile(getTestDir(), 'data', '3_groups');
+
+    opt.dir.raw = fullfile(dataDir, 'bidspm-raw');
+    opt.dir.preproc = fullfile(dataDir, 'derivatives', 'bidspm-preproc');
+    opt.dir.stats = fullfile(dataDir, 'derivatives', 'bidspm-stats');
+
+    opt.model.file = fullfile(getTestDataDir(),  'models', 'model-vismotionOneWayANOVA_smdl.json');
+
   else
 
     opt.dir.raw = getTestDataDir('raw');

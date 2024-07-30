@@ -58,6 +58,9 @@ function test_specifyDummyContrasts_session()
   model.SPM = SPM;
 
   model.Nodes{1}.DummyContrasts.Contrasts{1} = 'sign_Stim1F';
+  model.Nodes{1}.GroupBy = {'run', 'subject'};
+  model.Nodes{1}.Model.X = {'sign_Stim1F', 'sign_Stim2F', 'no_resp'};
+  model.Nodes{1}.Model.HRF.Variables = {'sign_Stim1F', 'sign_Stim2F', 'no_resp'};
 
   model.Nodes{2, 1} = model.Nodes{1};
   model.Nodes{end}.Name = 'Session';

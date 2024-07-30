@@ -10,6 +10,9 @@ tmp
 
 */*.json
 
+data/3_groups/derivatives
+data/3_groups/bidspm*
+
 data/derivatives/bidspm-*/jobs
 data/derivatives/bidspm-preproc/sub*
 

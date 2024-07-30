@@ -144,3 +144,19 @@ transformers cannot yet be appled to confounds
 -   resting state and task
 -   several sessions
 -   fmriprep data
+
+## ds003379
+
+- [Source dataset](https://openneuro.org/datasets/ds003379)
+
+### Features
+
+-   checkerboard localizer
+-   3 groups
+-   fmriprep data
+
+### Scripts
+
+```{eval-rst}
+.. autoscript:: ds003379_run
+```

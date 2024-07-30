@@ -59,19 +59,20 @@ function matlabbatch = bidsRFX(varargin)
 
   % TODO refactor
   % - extract function for anat and mask computation
-  % - merge rfx and ffx into a single "stats" workflow
 
   if ismember(lower(action), {'meananatandmask', 'rfx', 'contrasts'})
     opt.dir.output = fullfile(opt.dir.stats, 'derivatives', 'bidspm-groupStats');
     opt.dir.jobs = fullfile(opt.dir.output, 'jobs',  strjoin(opt.taskName, ''));
   end
 
+  bm = opt.model.bm;
+
   if ismember(lower(action), {'rfx', 'contrasts'})
     % TODO add possibility to pass several nodeNames at once
     if ~isempty(nodeName)
-      datasetNodes = opt.model.bm.get_nodes('Name', nodeName);
+      datasetNodes = bm.get_nodes('Name', nodeName);
     else
-      datasetNodes = opt.model.bm.get_nodes('Level', 'Dataset');
+      datasetNodes = bm.get_nodes('Level', 'Dataset');
     end
     if isstruct(datasetNodes)
       datasetNodes = {datasetNodes};
@@ -89,25 +90,25 @@ function matlabbatch = bidsRFX(varargin)
 
     case 'rfx'
 
-      for i = 1:numel(datasetNodes)
+      [~, opt] = getData(opt, opt.dir.preproc);
 
-        msg = sprintf('\n PROCESSING NODE: %s\n', nodeName);
-        logger('INFO', msg, 'options', opt, 'filename', mfilename());
+      participants = bids.util.tsvread(fullfile(opt.dir.raw, 'participants.tsv'));
+
+      for i = 1:numel(datasetNodes)
 
         matlabbatch = {};
 
         nodeName = datasetNodes{i}.Name;
 
-        switch  groupLevelGlmType(opt, nodeName)
+        msg = sprintf('\n PROCESSING NODE: %s\n', nodeName);
+        logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
-          case 'one_sample_t_test'
+        switch  bm.groupLevelGlmType(nodeName, participants)
+
+          case {'one_sample_t_test', 'two_sample_t_test', 'one_way_anova'}
             [matlabbatch, contrastsList, groups] = setBatchFactorialDesign(matlabbatch, ...
                                                                            opt, ...
                                                                            datasetNodes{i}.Name);
-          case 'two_sample_t_test'
-            [matlabbatch, contrastsList, groups] = setBatchTwoSampleTTest(matlabbatch, ...
-                                                                          opt, ...
-                                                                          datasetNodes{i}.Name);
           otherwise
             msg = sprintf('Node %s has has model type I cannot handle.\n', nodeName);
             notImplemented(mfilename(), msg);
@@ -131,6 +132,8 @@ function matlabbatch = bidsRFX(varargin)
       end
 
     case 'contrasts'
+
+      bm.validateConstrasts();
 
       for i = 1:numel(datasetNodes)
         matlabbatch = setBatchGroupLevelContrasts(matlabbatch, opt, datasetNodes{i}.Name);
