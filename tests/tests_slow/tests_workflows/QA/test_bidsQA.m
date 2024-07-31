@@ -11,49 +11,45 @@ end
 
 function test_bidsQA_raw()
 
-  %   markTestAs('slow');
-  %
-  %     opt = setOptions('vislocalizer');
-  %
-  %      expectedOutput = fullfile(opt.dir.output, ...
-  %         'reports', ...
-  %         'bidspm-raw_split_by-task.png');
-  %
-  %     if exist(expectedOutput, 'file')
-  %         delete(expectedOutput)
-  %     end
-  %
-  %     bidsQA(opt)
-  %
-  %     assertEqual(exist(expectedOutput, 'file'), 2)
+  markTestAs('slow');
+
+  opt = setOptions('vislocalizer');
+
+  expectedOutput = fullfile(opt.dir.output, ...
+                            'reports', ...
+                            'bidspm-raw_split_by-task.png');
+
+  if exist(expectedOutput, 'file')
+    delete(expectedOutput);
+  end
+
+  bidsQA(opt);
+
+  assertEqual(exist(expectedOutput, 'file'), 2);
 
 end
 
 function test_bidsQA_mriqc()
 
-  %   markTestAs('slow');
-  %
-  % if ispc()
-  % moxunit_throw_test_skipped_exception('requires datalad setup');
-  % end
-  %
-  %   ds000114mriqc = spm_file(fullfile(getTestDir(), ...
-  %                                     '..', 'demos', 'openneuro', ...
-  %                                     'inputs', 'ds000114-mriqc'), 'cpath');
-  %
-  %   opt.dir.input = ds000114mriqc;
-  %
-  %   bidsQA(opt);
+  markTestAs('slow');
+
+  if ispc() || ismac()
+    moxunit_throw_test_skipped_exception('requires datalad setup');
+  end
+
+  ds000114mriqc = spm_file(fullfile(getTestDir(), ...
+                                    '..', 'demos', 'openneuro', ...
+                                    'inputs', 'ds000114-mriqc'), 'cpath');
+
+  opt.dir.input = ds000114mriqc;
+
+  bidsQA(opt);
 
 end
 
 function test_bidsQA_bidspm()
 
   markTestAs('slow');
-
-  if ispc()
-    moxunit_throw_test_skipped_exception('requires datalad setup');
-  end
 
   opt = setOptions('vislocalizer');
 
@@ -76,6 +72,10 @@ end
 function test_bidsQA_fmriprep()
 
   markTestAs('slow');
+
+  if ispc() || ismac()
+    moxunit_throw_test_skipped_exception('requires datalad setup');
+  end
 
   ds000114fmriprep = spm_file(fullfile(getTestDir(), ...
                                        '..', 'demos', 'openneuro', ...

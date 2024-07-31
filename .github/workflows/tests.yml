@@ -118,6 +118,7 @@ jobs:
                 mv moae_fmriprep fmriprep
 
         -   name: Get data for testing QA
+            if: matrix.os == 'ubuntu-latest'
             run: |
                 cd demos/openneuro/
                 make data_ds000114_mriqc
