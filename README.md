@@ -153,7 +153,7 @@ then bidspm has some automated workflows to perform amongst other things:
 All (well almost all) preprocessed outputs are saved as BIDS derivatives
 with BIDS compliant filenames.
 
-### Quality control:
+### Quality control
 
 -   anatomical data (work in progress)
 -   functional data (work in progress)
