@@ -1,4 +1,4 @@
-function mriqcQA(opt, suffix)
+function bidsQAmriqc(opt, suffix)
   %
   %  uses the report from MRIQC (bold and T1) identify outliers using
   %  robust statistics (interquartile range).
@@ -8,7 +8,7 @@ function mriqcQA(opt, suffix)
   %
   % USAGE::
   %
-  %   mriqcQA(opt, suffix);
+  %   bidsQAmriqc(opt, suffix);
   %
   % :type opt:  structure
   % :param opt: Options chosen for the analysis.
@@ -18,8 +18,8 @@ function mriqcQA(opt, suffix)
   %
   %   opt.dir.mriqc = '/home/remi/gin/dataset/derivatives/mriqc';
   %
-  %   mriqcQA(opt, 'T1w');
-  %   mriqcQA(opt, 'bold');
+  %   bidsQAmriqc(opt, 'T1w');
+  %   bidsQAmriqc(opt, 'bold');
   %
   % Dependencies (in case you want to use it as standalone):
   %

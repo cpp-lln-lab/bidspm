@@ -1,9 +1,24 @@
-function bidsQA(opt, varargin)
+function filename = bidsQA(opt, varargin)
   %
   % Run QA on a BIDS dataset.
   %
+  % Find outliers in MRIQC output
+  % or to view number of outlier timepoints
+  % (for a given metric and threshold) in each functional run
+  %
+  %
+  % USAGE::
+  %
+  %   figurePath = bidsQA(opt, varargin);
+  %
+  % :param opt: Options chosen for the analysis.
+  %             See :func:`checkOptions`.
+  % :type opt:  structure
+  %
 
   % (C) Copyright 2024 Remi Gau
+
+  filename = '';
 
   dsDesc = bids.util.jsondecode(fullfile(opt.dir.input, 'dataset_description.json'));
 
@@ -31,7 +46,7 @@ function bidsQA(opt, varargin)
         bidsQAmriqc(opt, 'bold');
 
       elseif  any(ismember({'fMRIPrep', 'bidspm'}, pipelines))
-        bidsQApreproc(opt, varargin{:});
+        filename = bidsQApreproc(opt, varargin{:});
       end
   end
 end

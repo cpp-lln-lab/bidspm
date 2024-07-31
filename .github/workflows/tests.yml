@@ -121,6 +121,7 @@ jobs:
             run: |
                 cd demos/openneuro/
                 make data_ds000114_mriqc
+                make data_ds000114_fmriprep
 
         -   name: Prepare test data unix
             run: |

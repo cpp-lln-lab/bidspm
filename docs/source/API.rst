@@ -33,7 +33,6 @@ workflows
 .. autofunction:: src.workflows.bidsCheckVoxelSize
 .. autofunction:: src.workflows.bidsCopyInputFolder
 .. autofunction:: src.workflows.bidsInverseNormalize
-.. autofunction:: src.workflows.bidsQAbidspm
 .. autofunction:: src.workflows.bidsRename
 .. autofunction:: src.workflows.bidsReport
 
@@ -41,6 +40,13 @@ roi
 ---
 .. autofunction:: src.workflows.roi.bidsCreateROI
 .. autofunction:: src.workflows.roi.bidsRoiBasedGLM
+
+QA
+--
+.. autofunction:: src.workflows.QA.bidsQA
+.. autofunction:: src.workflows.QA.bidsQAbidspm
+.. autofunction:: src.workflows.QA.bidsQAmriqc
+.. autofunction:: src.workflows.QA.bidsQApreproc
 
 lesion
 ------
@@ -103,7 +109,6 @@ stats
 .. autofunction:: src.batches.stats.setBatchSubjectLevelContrasts
 .. autofunction:: src.batches.stats.setBatchSubjectLevelGLMSpec
 .. autofunction:: src.batches.stats.setBatchSubjectLevelResults
-.. autofunction:: src.batches.stats.setBatchTwoSampleTTest
 
 preproc
 -------
@@ -157,7 +162,6 @@ QA
 .. autofunction:: src.QA.computeFDandRMS
 .. autofunction:: src.QA.computeRobustOutliers
 .. autofunction:: src.QA.createDesignMatrix
-.. autofunction:: src.QA.mriqcQA
 .. autofunction:: src.QA.plotConfounds
 .. autofunction:: src.QA.plotEvents
 .. autofunction:: src.QA.plotRoiTimeCourse
@@ -203,6 +207,9 @@ bidspm
 
 data
 ----
+
+__pycache__
+-----------
 
 cli
 ===

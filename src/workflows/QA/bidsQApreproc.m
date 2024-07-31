@@ -1,11 +1,25 @@
-function bidsQApreproc(opt, varargin)
+function filename = bidsQApreproc(opt, varargin)
   %
   % Use confounds preprocessed datasets to estimate
   % the number of timepoints with values superior to threshold.
   %
+  % Plots the proportion of timepoints per run
+  % (to identify runs with that goes above a limit).
   %
-  % plots the proportion of timepoints per run
-  % (to identify runs with that goes above a limit)
+  % USAGE::
+  %
+  %   figurePath = bidsQApreproc(opt, 'metric', metric, 'threshold', threshold);
+  %
+  % :param opt: Options chosen for the analysis.
+  %             See :func:`checkOptions`.
+  % :type opt:  structure
+  %
+  % :param metric: default = 'framewise_displacement'
+  % :type  metric: char
+  %
+  % :param threshold: default = 0.2
+  % :param threshold: numeric
+  %
 
   % (C) Copyright 2024 bidspm developers
 
@@ -81,6 +95,9 @@ function bidsQApreproc(opt, varargin)
 
   plotFigure(df, metric, threshold);
 
+  output_path = fullfile(opt.dir.output, 'reports');
+  filename = printFigure(output_path, metric);
+
 end
 
 function plotFigure(df, metric, threshold)
@@ -126,5 +143,18 @@ function plotFigure(df, metric, threshold)
       'ytick', 0:.05:1, ...
       'yticklabel', 0:.05:1, ...
       'fontsize', 8, 'tickdir', 'out');
+
+end
+
+function filename = printFigure(outputPath, metric)
+  bids.util.mkdir(outputPath);
+
+  filename = regexprep(['outliers_', metric, '.png'], ' - ', '_');
+  filename = regexprep(filename, ' ', '-');
+  filename = regexprep(filename, '[\(\)]', '');
+  filename = fullfile(outputPath, filename);
+
+  print(filename, '-dpng');
+  fprintf('Figure saved:\n\t%s\n', filename);
 
 end
