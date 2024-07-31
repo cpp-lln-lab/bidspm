@@ -11,6 +11,7 @@ function bidsQApreproc(opt, varargin)
 
   % TODO
   % - handle opt.bidsFilterFile
+  % - save collected values to tsv to make it easier to apply new threshold
   %
   % could also plots the sum of the proportion of timepoints over the 4 runs
   % to identify participants whoe move a lot
