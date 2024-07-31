@@ -155,7 +155,7 @@ jobs:
                 flags: octave
                 name: codecov-octave_${{ matrix.mode }}
                 fail_ci_if_error: false
-      # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
+                # token: ${{ secrets.CODECOV_TOKEN }}
 
         -   name: Run system tests octave ${{ matrix.script }}
             if: matrix.test_type == 'system'
