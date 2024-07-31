@@ -33,7 +33,7 @@ workflows
 .. autofunction:: src.workflows.bidsCheckVoxelSize
 .. autofunction:: src.workflows.bidsCopyInputFolder
 .. autofunction:: src.workflows.bidsInverseNormalize
-.. autofunction:: src.workflows.bidsQApreproc
+.. autofunction:: src.workflows.bidsQAbidspm
 .. autofunction:: src.workflows.bidsRename
 .. autofunction:: src.workflows.bidsReport
 

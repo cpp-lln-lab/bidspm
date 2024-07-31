@@ -1,4 +1,4 @@
-function test_suite = test_mriqcQA %#ok<*STOUT>
+function test_suite = test_bidsQAmriqc %#ok<*STOUT>
   % (C) Copyright 2022 bidspm developers
   try % assignment of 'localfunctions' is necessary in Matlab >= 2016
     test_functions = localfunctions(); %#ok<*NASGU>
@@ -11,6 +11,6 @@ function test_mriqc_basic()
 
   opt.dir.mriqc = fullfile(getTestDataDir, 'tsv_files');
 
-  mriqcQA(opt, 'T1w');
+  bidsQAmriqc(opt, 'T1w');
 
 end
