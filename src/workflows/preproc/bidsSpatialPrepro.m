@@ -155,7 +155,7 @@ function matlabbatch = bidsSpatialPrepro(opt)
 
   transferMetadataFromJson(createdFiles);
 
-  bidsQApreproc(opt);
+  bidsQAbidspm(opt);
 
 end
 

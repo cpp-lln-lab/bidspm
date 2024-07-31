@@ -117,6 +117,13 @@ jobs:
                 unzip download
                 mv moae_fmriprep fmriprep
 
+        -   name: Get data for testing QA
+            if: matrix.os == 'ubuntu-latest'
+            run: |
+                cd demos/openneuro/
+                make data_ds000114_mriqc
+                make data_ds000114_fmriprep
+
         -   name: Prepare test data unix
             run: |
                 cd tests
@@ -156,7 +163,7 @@ jobs:
                 flags: ${{ matrix.os }}_matlab-${{ matrix.matlab }}_${{ matrix.mode }}
                 name: codecov-matlab
                 fail_ci_if_error: false
-      # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
+                token: ${{ secrets.CODECOV_TOKEN }}
 
         -   name: Run system tests MATLAB ${{ matrix.script }}
             if: matrix.test_type == 'system'

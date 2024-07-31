@@ -61,7 +61,7 @@ jobs:
         -   name: Install dependencies
             run: |
                 sudo apt-get -y -qq update
-                sudo apt-get -y install unzip wget
+                sudo apt-get -y install unzip wget git-annex
 
         -   name: Install Node
             uses: actions/setup-node@v4
@@ -79,6 +79,11 @@ jobs:
                 submodules: recursive
                 fetch-depth: 0
 
+        -   name: Install datalad
+            run: |
+                python -m pip install --upgrade pip setuptools
+                pip install datalad
+
         -   name: Install validators
             run: make install
 
@@ -93,6 +98,12 @@ jobs:
                 wget https://osf.io/vufjs/download
                 unzip download
                 mv moae_fmriprep fmriprep
+
+        -   name: Get data for testing QA
+            run: |
+                cd demos/openneuro/
+                make data_ds000114_mriqc
+                make data_ds000114_fmriprep
 
         -   name: Prepare test data
             run: |
@@ -149,7 +160,7 @@ jobs:
                 flags: octave
                 name: codecov-octave_${{ matrix.mode }}
                 fail_ci_if_error: false
-      # token: ${{ secrets.CODECOV_TOKEN }}  # not required but might help API rate limits
+                # token: ${{ secrets.CODECOV_TOKEN }}
 
         -   name: Run system tests octave ${{ matrix.script }}
             if: matrix.test_type == 'system'

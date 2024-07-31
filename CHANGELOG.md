@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* [ENH] add QA workflow `bidsQA` to find outliers in MRIQC output or to view number of outlier timepoints (for a given metric and threshold) in each functional run #1297 by @Remi-Gau
 * [ENH] add support for one-way ANOVA across groups at the group level #1296 by @Remi-Gau
 * [ENH] allow for 2 sample T-Test, within group T-Test and one-way ANOVA to ne more flexible with respect to what praticipants.tsv column to use to allocate subjects in each group #1296 by @Remi-Gau
 * [ENH] make `addConfoundsToDesignMatrix` a method of `BidsModel` #1294 by @Remi-Gau

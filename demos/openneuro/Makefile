@@ -14,13 +14,15 @@ clean:
 
 data: data_ds000001 data_ds000114 data_ds001168
 
-data_ds000001:
+data_ds000001_fmriprep:
+	cd inputs && datalad install ///openneuro-derivatives/ds000001-fmriprep
+	cd inputs/ds000001-fmriprep && datalad get sub-*/func/*tsv -J 12
+	cd inputs/ds000001-fmriprep && datalad get sub-*/func/*json -J 12
+
+data_ds000001: data_ds000001_fmriprep
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds000001
-	cd inputs && datalad install ///openneuro-derivatives/ds000001-fmriprep
 	cd inputs/ds000001 && datalad get sub-0[1-5] -J 3
-	cd inputs/ds000001-fmriprep && datalad get sub-0[1-5]/func/*tsv -J 12
-	cd inputs/ds000001-fmriprep && datalad get sub-0[1-5]/func/*json -J 12
 	cd inputs/ds000001-fmriprep && datalad get sub-0[1-5]/anat/*MNI*desc-preproc*.nii.gz -J 12
 	cd inputs/ds000001-fmriprep && datalad get sub-0[1-5]/func/*MNI*desc-preproc*.nii.gz -J 12
 	cd inputs/ds000001-fmriprep && datalad get sub-0[1-3]/func/*MNI*desc-*bold.nii.gz -J 12
@@ -28,16 +30,24 @@ data_ds000001:
 data_ds000114_raw:
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds000114
-	cd inputs/ds000114 && datalad get sub-0[1-2]/ses-*/anat/*T1w*.nii.gz -J 12
-	cd inputs/ds000114 && datalad get sub-0[1-2]/ses-*/func/*linebisection* -J 12
+	cd inputs/ds000114 && datalad get sub-0[1-5]/ses-*/anat/*T1w*.nii.gz -J 12
+	cd inputs/ds000114 && datalad get sub-0[1-5]/ses-*/func/*bold* -J 12
 
-data_ds000114:
+data_ds000114_mriqc:
+	mkdir -p inputs
+	cd inputs && datalad install ///openneuro-derivatives/ds000114-mriqc
+	cd inputs/ds000114-mriqc && datalad get *.tsv
+
+data_ds000114_fmriprep:
+	mkdir -p inputs
+	cd inputs && datalad install ///openneuro-derivatives/ds000114-fmriprep
+	cd inputs/ds000114-fmriprep && datalad get sub-0*/ses-*/func/*tsv -J 12
+	cd inputs/ds000114-fmriprep && datalad get sub-0*/ses-*/func/*json -J 12
+
+data_ds000114: data_ds000114_fmriprep
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds000114
-	cd inputs && datalad install ///openneuro-derivatives/ds000114-fmriprep
 	cd inputs/ds000114-fmriprep && datalad get sub-0[1-2]/anat/*MNI*desc-preproc*.nii.gz -J 12
-	cd inputs/ds000114-fmriprep && datalad get sub-0[1-2]/ses-*/func/*tsv -J 12
-	cd inputs/ds000114-fmriprep && datalad get sub-0[1-2]/ses-*/func/*json -J 12
 	cd inputs/ds000114-fmriprep && datalad get sub-0[1-2]/ses-*/func/*MNI*_mask.nii.gz -J 12
 	cd inputs/ds000114-fmriprep && datalad get sub-0[1-2]/ses-*/func/*MNI*desc-preproc*bold.nii.gz -J 12
 

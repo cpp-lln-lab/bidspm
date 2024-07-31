@@ -8,18 +8,19 @@ function [BIDS, opt] = getData(varargin)
   %
   % :param opt: Options chosen for the analysis.
   %             See :func:`checkOptions`.
-  %
   % :type  opt:  structure
   %
   % :param bidsDir: the directory where the data is ; defaults to
   %                 ``fullfile(opt.dataDir, '..', 'derivatives', 'bidspm')``
-  %
   % :type  bidsDir: char
   %
   % :param indexDependencies: Use ``'index_dependencies', true``
   %                           in bids.layout.
-  %
   % :type  indexDependencies: logical
+  %
+  % :param layoutFilter: filter to pass to bids.layout. default = struct()
+  % :type  layoutFilter: struct
+  %
   %
   % :return: opt
   % :rtype: structure
@@ -38,6 +39,7 @@ function [BIDS, opt] = getData(varargin)
   addRequired(args, 'opt', @isstruct);
   addRequired(args, 'bidsDir', isFolder);
   addOptional(args, 'indexDependencies', true, @islogical);
+  addOptional(args, 'layoutFilter', struct(), @isstruct);
 
   try
     parse(args, varargin{:});
@@ -60,6 +62,8 @@ function [BIDS, opt] = getData(varargin)
     indexDependencies = false;
   end
 
+  layoutFilter = args.Results.layoutFilter;
+
   anatOnly = false;
   if isfield(opt, 'anatOnly')
     anatOnly = opt.anatOnly;
@@ -72,19 +76,18 @@ function [BIDS, opt] = getData(varargin)
 
   validationInputFile(bidsDir, 'dataset_description.json');
 
-  layout_filter = struct([]);
   if ~isempty(opt.subjects{1}) && ~ismember('', opt.subjects)
-    layout_filter = struct('sub', {opt.subjects});
+    layoutFilter.sub = opt.subjects;
   end
 
   if anatOnly
-    layout_filter(1).modality = {'anat'};
+    layoutFilter(1).modality = {'anat'};
   end
 
   BIDS = bids.layout(bidsDir, ...
                      'use_schema', opt.useBidsSchema, ...
                      'verbose', opt.verbosity > 1, ...
-                     'filter', layout_filter, ...
+                     'filter', layoutFilter, ...
                      'index_dependencies', indexDependencies);
 
   if strcmp(opt.pipeline.type, 'stats') && ~opt.pipeline.isBms
@@ -96,7 +99,7 @@ function [BIDS, opt] = getData(varargin)
 
       if isempty(fieldnames(tmp))
         BIDS.raw = bids.layout(opt.dir.raw, ...
-                               'filter', layout_filter, ...
+                               'filter', layoutFilter, ...
                                'index_dependencies', indexDependencies);
       else
         BIDS.raw = tmp.BIDS;
@@ -104,7 +107,7 @@ function [BIDS, opt] = getData(varargin)
     else
       BIDS.raw = bids.layout(opt.dir.raw, ...
                              'verbose', opt.verbosity > 1, ...
-                             'filter', layout_filter);
+                             'filter', layoutFilter);
     end
   end
 

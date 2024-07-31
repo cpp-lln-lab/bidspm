@@ -9,7 +9,7 @@ function [BIDS, opt] = setUpWorkflow(varargin)
   %
   % USAGE::
   %
-  %   [BIDS, opt, group] = setUpWorkflow(opt, workflowName, bidsDir, indexData)
+  %   [BIDS, opt] = setUpWorkflow(opt, workflowName, bidsDir, indexData, index_dependencies)
   %
   % :param opt: Options chosen for the analysis.
   %             See :func:`checkOptions`.
@@ -32,6 +32,10 @@ function [BIDS, opt] = setUpWorkflow(varargin)
   %                            in bids.layout. default = true
   % :type  index_dependencies: logical
   %
+  % :param layoutFilter: filter to pass to bids.layout. default = struct()
+  % :type  layoutFilter: struct
+  %
+  %
   % :returns: ``BIDS`` layout returned by ``getData``, ``opt`` options checked
   % :rtype: structure, structure
   %
@@ -47,6 +51,7 @@ function [BIDS, opt] = setUpWorkflow(varargin)
   addOptional(args, 'bidsDir', '', @ischar);
   addOptional(args, 'indexData', true, @islogical);
   addOptional(args, 'indexDependencies', true, @islogical);
+  addOptional(args, 'layoutFilter', struct(), @isstruct);
 
   parse(args, varargin{:});
 
@@ -55,6 +60,7 @@ function [BIDS, opt] = setUpWorkflow(varargin)
   bidsDir = args.Results.bidsDir;
   indexData = args.Results.indexData;
   indexDependencies = args.Results.indexDependencies;
+  layoutFilter = args.Results.layoutFilter;
 
   if isempty(bidsDir)
     bidsDir = opt.dir.input;
@@ -67,7 +73,7 @@ function [BIDS, opt] = setUpWorkflow(varargin)
   opt = loadAndCheckOptions(opt);
 
   if indexData
-    [BIDS, opt] = getData(opt, bidsDir, indexDependencies);
+    [BIDS, opt] = getData(opt, bidsDir, indexDependencies, layoutFilter);
   end
 
   if strcmp(opt.pipeline.type, 'stats') && ...
