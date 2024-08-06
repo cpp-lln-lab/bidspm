@@ -6,4 +6,9 @@ This directory contains a
 ## How to use
 
 * Install Boutiques: `pip install boutiques`
-* Run the example: `bosh exec launch --no-container  boutiques/bidspm_3.1.1.json boutiques/invocation.json`
+* Run the example:
+
+```bash
+bosh exec launch --no-container  boutiques/bidspm_3.1.1.json boutiques/invocation_smooth.json
+bosh exec launch --no-container  boutiques/bidspm_3.1.1.json boutiques/invocation_stats.json
+```
