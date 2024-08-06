@@ -87,7 +87,6 @@ repos:
     rev: v1.11.1
     hooks:
     -   id: mypy
-        additional_dependencies: [types-all]
         files: bidspm
         args: [--config-file, pyproject.toml]
 
