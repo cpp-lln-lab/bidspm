@@ -12,54 +12,40 @@ on:
 
 jobs:
     tests_cli:
-
         runs-on: ubuntu-22.04
-
-    # only trigger update on upstream repo
         if: github.repository_owner == 'cpp-lln-lab'
-
         strategy:
             fail-fast: false
             matrix:
                 python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
-
         steps:
-
         -   name: Install dependencies
             run: |
                 sudo apt-get -y -qq update
                 sudo apt-get -y install octave liboctave-dev
-
         -   name: Info
-            run: |
-                octave --version
-
+            run: octave --version
         -   uses: actions/setup-node@v4
             with:
                 node-version: 18
-
         -   uses: actions/setup-python@v5
             name: Set up Python ${{ matrix.python-version }}
             with:
                 python-version: ${{ matrix.python-version }}
-
         -   name: Clone bidspm
             uses: actions/checkout@v4
             with:
                 submodules: recursive
                 fetch-depth: 0
-
         -   name: Install validators
             run: |
                 make install
                 pip install .[test]
-
         -   name: Run tests and generate coverage report
             run: |
                 coverage erase
                 coverage run --source src -m pytest
                 coverage xml
-
         # -   name: Code coverage
         #     uses: codecov/codecov-action@v4
         #     with:
@@ -67,3 +53,67 @@ jobs:
         #         flags: cli
         #         name: codecov-cli
         #         fail_ci_if_error: false
+
+    boutiques:
+        runs-on: ubuntu-22.04
+        if: github.repository_owner == 'cpp-lln-lab'
+        steps:
+        -   name: Clone bidspm
+            uses: actions/checkout@v4
+            with:
+                submodules: recursive
+                fetch-depth: 0
+
+        -   uses: actions/setup-node@v4
+            with:
+                node-version: 18
+        -   uses: actions/setup-python@v5
+            name: Set up Python
+            with:
+                python-version: '3.12'
+
+        -   name: Install dependencies
+            run: |
+                sudo apt-get -y -qq update
+                sudo apt-get -y install unzip wget git-annex
+        -   name: Install datalad
+            run: |
+                python -m pip install --upgrade pip setuptools
+                pip install datalad
+
+        -   name: Get data
+            run: |
+                cd demos/openneuro/
+                make data_ds000114_verbal
+
+        -   name: Install SPM
+            run: git clone https://github.com/spm/spm12.git --depth 1
+        -   name: Install octave
+            run: |
+                sudo apt-get -y -qq update
+                sudo apt-get -y install \
+                    octave \
+                    liboctave-dev\
+                    octave-common \
+                    octave-io \
+                    octave-image \
+                    octave-signal \
+                    octave-statistics
+        -   name: Compile SPM
+            run: |
+                make -C spm12/src PLATFORM=octave distclean
+                make -C spm12/src PLATFORM=octave
+                make -C spm12/src PLATFORM=octave install
+                octave $OCTFLAGS --eval "addpath(fullfile(pwd, 'spm12')); savepath();"
+        -   name: Info
+            run: octave --version
+
+        -   name: Install
+            run: |
+                make install
+                pip install boutiques
+
+        -   name: Run via boutiques
+            run: |
+                bosh exec launch --no-container  boutiques/bidspm_3.1.1.json boutiques/invocation_smooth.json
+                bosh exec launch --no-container  boutiques/bidspm_3.1.1.json boutiques/invocation_stats.json

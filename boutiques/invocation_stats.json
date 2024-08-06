@@ -1,0 +1,17 @@
+{
+  "bids_dir": "./demos/openneuro/inputs/ds000114",
+  "output_dir": "./demos/openneuro/outputs/ds000114/derivatives",
+  "analysis_level": "subject",
+  "command": "stats",
+  "participant_label": [
+    "01",
+    "02"
+  ],
+  "preproc_dir": "./demos/openneuro/outputs/ds000114/derivatives/bidspm-preproc",
+  "verbosity": 2,
+  "fwhm": 6.0,
+  "model_file": "./demos/openneuro/models/model-ds000114_desc-testRetestVerbal_smdl.json",
+  "dry_run": false,
+  "skip_validation": true,
+  "roi_atlas": "hcpex"
+}

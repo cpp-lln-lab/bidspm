@@ -44,6 +44,14 @@ data_ds000114_fmriprep:
 	cd inputs/ds000114-fmriprep && datalad get sub-0*/ses-*/func/*tsv -J 12
 	cd inputs/ds000114-fmriprep && datalad get sub-0*/ses-*/func/*json -J 12
 
+data_ds000114_verbal: data_ds000114_fmriprep
+	mkdir -p inputs
+	cd inputs && datalad install ///openneuro/ds000114
+	cd inputs/ds000114-fmriprep && datalad get sub-0[1-2]/anat/*MNI*desc-preproc*.nii.gz -J 12
+	cd inputs/ds000114-fmriprep && datalad get sub-0[1-2]/ses-*/func/*MNI*_mask.nii.gz -J 12
+	cd inputs/ds000114-fmriprep && datalad get sub-0[1-2]/ses-*/func/*verb*MNI*desc-preproc*bold.nii.gz -J 12
+	cd inputs/ds000114-fmriprep && datalad get sub-0[1-2]/ses-*/func/*word*MNI*desc-preproc*bold.nii.gz -J 12
+
 data_ds000114: data_ds000114_fmriprep
 	mkdir -p inputs
 	cd inputs && datalad install ///openneuro/ds000114

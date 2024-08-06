@@ -1,0 +1,22 @@
+{
+  "bids_dir": "./demos/openneuro/inputs/ds000114-fmriprep",
+  "output_dir": "./demos/openneuro/outputs/ds000114/derivatives",
+  "analysis_level": "subject",
+  "command": "smooth",
+  "participant_label": [
+    "01",
+    "02"
+  ],
+  "verbosity": 2,
+  "task": [
+    "overtverbgeneration",
+    "overtwordrepetition",
+    "covertverbgeneration"
+  ],
+  "space": [
+    "MNI152NLin2009cAsym"
+  ],
+  "fwhm": 6.0,
+  "anat_only": false,
+  "dry_run": false
+}
