@@ -74,7 +74,7 @@ def _base_parser() -> ArgumentParser:
     parser.add_argument(
         "analysis_level",
         help="""
-        Level of the analysis that will be performed.
+        Level of the analysis that wsub_command_parserill be performed.
         Multiple participant level analyses can be run independently
         (in parallel) using the same ``output_dir``.
         """,

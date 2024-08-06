@@ -1,0 +1,546 @@
+{
+  "name": "tool name",
+  "description": "tool description",
+  "tool-version": "3.1.1",
+  "schema-version": "0.5",
+  "command-line": "bidspm [VERSION] [BIDS_DIR] [OUTPUT_DIR] [ANALYSIS_LEVEL] [COMMAND] [PARTICIPANT_LABEL] [VERBOSITY] [BIDS_FILTER_FILE] [OPTIONS] [BOILERPLATE_ONLY] [ANAT_ONLY] [DUMMY_SCANS] [TASK] [SPACE] [FWHM] [DRY_RUN] [SKIP_VALIDATION] [IGNORE] [ROI_NAME] [ROI_ATLAS] [PREPROC_DIR] [HEMISPHERE] [MODEL_FILE] [KEEP_RESIDUALS] [DESIGN_ONLY] [USE_DUMMY_REGRESSOR] [ROI_BASED] [ROI_DIR] [NODE_NAME] [CONCATENATE] [MODELS_DIR]",
+  "inputs": [
+    {
+      "name": "version",
+      "id": "version",
+      "description": "show program's version number and exit",
+      "type": "Flag",
+      "optional": true,
+      "command-line-flag": "-v",
+      "value-key": "[VERSION]"
+    },
+    {
+      "name": "bids_dir",
+      "id": "bids_dir",
+      "description": "Fullpath to the directory with the input dataset formatted according to the BIDS standard",
+      "type": "String",
+      "optional": false,
+      "value-key": "[BIDS_DIR]"
+    },
+    {
+      "name": "output_dir",
+      "id": "output_dir",
+      "description": "Fullpath to the directory where the output files will be stored",
+      "type": "String",
+      "optional": false,
+      "value-key": "[OUTPUT_DIR]"
+    },
+    {
+      "name": "analysis_level",
+      "id": "analysis_level",
+      "description": "Level of the analysis that wsub_command_parserill be performed. Multiple participant level analyses can be run independently (in parallel) using the same ``output_dir``",
+      "type": "String",
+      "optional": false,
+      "value-key": "[ANALYSIS_LEVEL]",
+      "value-choices": [
+        "subject",
+        "dataset"
+      ]
+    },
+    {
+      "name": "participant_label",
+      "id": "participant_label",
+      "description": "The label(s) of the participant(s) that should be analyzed. The label corresponds to sub-<participant_label> from the BIDS spec (so it does not include \"sub-\"). If this parameter is not provided all subjects should be analyzed. Multiple participants can be specified with a space separated list. Can be a regular expression. Example: ``'01', '03', '08'``",
+      "type": "String",
+      "list": true,
+      "optional": true,
+      "command-line-flag": "--participant_label",
+      "value-key": "[PARTICIPANT_LABEL]"
+    },
+    {
+      "name": "verbosity",
+      "id": "verbosity",
+      "description": "Verbosity level",
+      "type": "Number",
+      "optional": true,
+      "default-value": 2,
+      "command-line-flag": "--verbosity",
+      "value-key": "[VERBOSITY]",
+      "value-choices": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "bids_filter_file",
+      "id": "bids_filter_file",
+      "description": "Fullpath to a JSON file describing custom BIDS input filters",
+      "type": "String",
+      "optional": true,
+      "command-line-flag": "--bids_filter_file",
+      "value-key": "[BIDS_FILTER_FILE]"
+    },
+    {
+      "name": "options",
+      "id": "options",
+      "description": "Path to JSON file containing bidspm options",
+      "type": "String",
+      "optional": true,
+      "command-line-flag": "--options",
+      "value-key": "[OPTIONS]"
+    },
+    {
+      "name": "boilerplate_only",
+      "id": "boilerplate_only",
+      "description": "When set to ``true`` this will only generate figures describing the raw data, the methods section boilerplate",
+      "type": "Flag",
+      "optional": true,
+      "command-line-flag": "--boilerplate_only",
+      "value-key": "[BOILERPLATE_ONLY]"
+    },
+    {
+      "name": "anat_only",
+      "id": "anat_only",
+      "description": "If preprocessing should be done only on anatomical data",
+      "type": "Flag",
+      "optional": true,
+      "command-line-flag": "--anat_only",
+      "value-key": "[ANAT_ONLY]"
+    },
+    {
+      "name": "dummy_scans",
+      "id": "dummy_scans",
+      "description": "Number of dummy scans to remove",
+      "type": "Number",
+      "optional": true,
+      "command-line-flag": "--dummy_scans",
+      "value-key": "[DUMMY_SCANS]"
+    },
+    {
+      "name": "task",
+      "id": "task",
+      "description": "Tasks of the input data",
+      "type": "String",
+      "list": true,
+      "optional": true,
+      "command-line-flag": "--task",
+      "value-key": "[TASK]"
+    },
+    {
+      "name": "space",
+      "id": "space",
+      "description": "Space of the input data",
+      "type": "String",
+      "list": true,
+      "optional": true,
+      "default-value": [
+        "IXI549Space"
+      ],
+      "command-line-flag": "--space",
+      "value-key": "[SPACE]"
+    },
+    {
+      "name": "fwhm",
+      "id": "fwhm",
+      "description": "The full width at half maximum of the gaussian kernel to apply to the preprocessed data or to use as inputs for the statistical analysis",
+      "type": "Number",
+      "optional": true,
+      "default-value": 6.0,
+      "command-line-flag": "--fwhm",
+      "value-key": "[FWHM]"
+    },
+    {
+      "name": "dry_run",
+      "id": "dry_run",
+      "description": "When set to ``true`` this will generate and save the SPM batches, but not actually run them",
+      "type": "Flag",
+      "optional": true,
+      "command-line-flag": "--dry_run",
+      "value-key": "[DRY_RUN]"
+    },
+    {
+      "name": "skip_validation",
+      "id": "skip_validation",
+      "description": "To skip BIDS dataset and BIDS stats model validation",
+      "type": "Flag",
+      "optional": true,
+      "command-line-flag": "--skip_validation",
+      "value-key": "[SKIP_VALIDATION]"
+    },
+    {
+      "name": "ignore",
+      "id": "ignore",
+      "description": "To specify steps to skip",
+      "type": "String",
+      "list": true,
+      "optional": true,
+      "command-line-flag": "--ignore",
+      "value-key": "[IGNORE]",
+      "value-choices": [
+        "fieldmaps",
+        "slicetiming",
+        "unwarp",
+        "qa"
+      ]
+    },
+    {
+      "name": "roi_name",
+      "id": "roi_name",
+      "description": "Name of the roi to create. If the ROI does not exist in the atlas, the list of available ROI will be returned in the error message",
+      "type": "String",
+      "list": true,
+      "optional": true,
+      "command-line-flag": "--roi_name",
+      "value-key": "[ROI_NAME]"
+    },
+    {
+      "name": "roi_atlas",
+      "id": "roi_atlas",
+      "description": "Atlas to create the regions of interest from",
+      "type": "String",
+      "optional": true,
+      "command-line-flag": "--roi_atlas",
+      "value-key": "[ROI_ATLAS]",
+      "value-choices": [
+        "anatomy_toobox",
+        "wang",
+        "visfatlas",
+        "glasser",
+        "neuromorphometrics",
+        "hcpex"
+      ]
+    },
+    {
+      "name": "preproc_dir",
+      "id": "preproc_dir",
+      "description": "Fullpath to the directory with the preprocessed data",
+      "type": "String",
+      "optional": true,
+      "command-line-flag": "--preproc_dir",
+      "value-key": "[PREPROC_DIR]"
+    },
+    {
+      "name": "hemisphere",
+      "id": "hemisphere",
+      "description": "To specify steps to skip",
+      "type": "String",
+      "list": true,
+      "optional": true,
+      "command-line-flag": "--hemisphere",
+      "value-key": "[HEMISPHERE]",
+      "value-choices": [
+        "L",
+        "R"
+      ]
+    },
+    {
+      "name": "model_file",
+      "id": "model_file",
+      "description": "Fullpath to BIDS stats model",
+      "type": "String",
+      "optional": true,
+      "command-line-flag": "--model_file",
+      "value-key": "[MODEL_FILE]"
+    },
+    {
+      "name": "keep_residuals",
+      "id": "keep_residuals",
+      "description": "Keep GLM residuals",
+      "type": "Flag",
+      "optional": true,
+      "command-line-flag": "--keep_residuals",
+      "value-key": "[KEEP_RESIDUALS]"
+    },
+    {
+      "name": "design_only",
+      "id": "design_only",
+      "description": "To only specify the GLM without estimating it",
+      "type": "Flag",
+      "optional": true,
+      "command-line-flag": "--design_only",
+      "value-key": "[DESIGN_ONLY]"
+    },
+    {
+      "name": "use_dummy_regressor",
+      "id": "use_dummy_regressor",
+      "description": "If true any missing condition will be modelled by a dummy regressor of ``NaN``",
+      "type": "Flag",
+      "optional": true,
+      "command-line-flag": "--use_dummy_regressor",
+      "value-key": "[USE_DUMMY_REGRESSOR]"
+    },
+    {
+      "name": "roi_based",
+      "id": "roi_based",
+      "description": "Use to run a ROI-based analysis",
+      "type": "Flag",
+      "optional": true,
+      "command-line-flag": "--roi_based",
+      "value-key": "[ROI_BASED]"
+    },
+    {
+      "name": "roi_dir",
+      "id": "roi_dir",
+      "description": "Fullpath to the directory with the regions of interest",
+      "type": "String",
+      "optional": true,
+      "command-line-flag": "--roi_dir",
+      "value-key": "[ROI_DIR]"
+    },
+    {
+      "name": "node_name",
+      "id": "node_name",
+      "description": "Model node to run",
+      "type": "String",
+      "optional": true,
+      "command-line-flag": "--node_name",
+      "value-key": "[NODE_NAME]"
+    },
+    {
+      "name": "concatenate",
+      "id": "concatenate",
+      "description": "To create 4D image of all the beta and contrast images of the conditions of interest included in the run level design matrix",
+      "type": "Flag",
+      "optional": true,
+      "command-line-flag": "--concatenate",
+      "value-key": "[CONCATENATE]"
+    },
+    {
+      "name": "models_dir",
+      "id": "models_dir",
+      "description": "Fullpath to the directory with the models",
+      "type": "String",
+      "optional": true,
+      "command-line-flag": "--models_dir",
+      "value-key": "[MODELS_DIR]"
+    },
+    {
+      "name": "command",
+      "id": "command",
+      "description": "Choose a subcommand",
+      "type": "String",
+      "optional": false,
+      "value-key": "[COMMAND]",
+      "value-choices": [
+        "preprocess",
+        "smooth",
+        "default_model",
+        "create_roi",
+        "stats",
+        "contrasts",
+        "results",
+        "bms"
+      ],
+      "value-requires": {
+        "preprocess": [],
+        "smooth": [],
+        "default_model": [],
+        "create_roi": [
+          "roi_name"
+        ],
+        "stats": [
+          "model_file"
+        ],
+        "contrasts": [],
+        "results": [],
+        "bms": [
+          "models_dir"
+        ]
+      },
+      "value-disables": {
+        "preprocess": [
+          "roi_based",
+          "keep_residuals",
+          "node_name",
+          "model_file",
+          "preproc_dir",
+          "hemisphere",
+          "roi_atlas",
+          "concatenate",
+          "models_dir",
+          "roi_name",
+          "roi_dir",
+          "design_only",
+          "use_dummy_regressor"
+        ],
+        "smooth": [
+          "roi_based",
+          "keep_residuals",
+          "node_name",
+          "model_file",
+          "preproc_dir",
+          "hemisphere",
+          "roi_atlas",
+          "concatenate",
+          "dummy_scans",
+          "models_dir",
+          "boilerplate_only",
+          "roi_name",
+          "roi_dir",
+          "design_only",
+          "use_dummy_regressor",
+          "skip_validation",
+          "ignore"
+        ],
+        "default_model": [
+          "space",
+          "roi_based",
+          "keep_residuals",
+          "node_name",
+          "model_file",
+          "preproc_dir",
+          "hemisphere",
+          "roi_atlas",
+          "concatenate",
+          "dummy_scans",
+          "models_dir",
+          "fwhm",
+          "boilerplate_only",
+          "task",
+          "dry_run",
+          "roi_name",
+          "participant_label",
+          "roi_dir",
+          "design_only",
+          "use_dummy_regressor",
+          "skip_validation",
+          "anat_only",
+          "bids_filter_file",
+          "ignore",
+          "options",
+          "verbosity"
+        ],
+        "create_roi": [
+          "space",
+          "roi_based",
+          "keep_residuals",
+          "node_name",
+          "model_file",
+          "concatenate",
+          "dummy_scans",
+          "models_dir",
+          "fwhm",
+          "boilerplate_only",
+          "task",
+          "dry_run",
+          "participant_label",
+          "roi_dir",
+          "design_only",
+          "use_dummy_regressor",
+          "skip_validation",
+          "anat_only",
+          "bids_filter_file",
+          "ignore",
+          "options",
+          "verbosity"
+        ],
+        "stats": [
+          "space",
+          "preproc_dir",
+          "hemisphere",
+          "roi_atlas",
+          "dummy_scans",
+          "models_dir",
+          "fwhm",
+          "boilerplate_only",
+          "task",
+          "dry_run",
+          "roi_name",
+          "participant_label",
+          "skip_validation",
+          "anat_only",
+          "bids_filter_file",
+          "ignore",
+          "options",
+          "verbosity"
+        ],
+        "contrasts": [
+          "space",
+          "roi_based",
+          "keep_residuals",
+          "node_name",
+          "model_file",
+          "preproc_dir",
+          "hemisphere",
+          "roi_atlas",
+          "concatenate",
+          "dummy_scans",
+          "models_dir",
+          "fwhm",
+          "boilerplate_only",
+          "task",
+          "dry_run",
+          "roi_name",
+          "participant_label",
+          "roi_dir",
+          "design_only",
+          "use_dummy_regressor",
+          "skip_validation",
+          "anat_only",
+          "bids_filter_file",
+          "ignore",
+          "options",
+          "verbosity"
+        ],
+        "results": [
+          "space",
+          "roi_based",
+          "keep_residuals",
+          "node_name",
+          "model_file",
+          "preproc_dir",
+          "hemisphere",
+          "roi_atlas",
+          "concatenate",
+          "dummy_scans",
+          "models_dir",
+          "fwhm",
+          "boilerplate_only",
+          "task",
+          "dry_run",
+          "roi_name",
+          "participant_label",
+          "roi_dir",
+          "design_only",
+          "use_dummy_regressor",
+          "skip_validation",
+          "anat_only",
+          "bids_filter_file",
+          "ignore",
+          "options",
+          "verbosity"
+        ],
+        "bms": [
+          "space",
+          "roi_based",
+          "keep_residuals",
+          "node_name",
+          "model_file",
+          "preproc_dir",
+          "hemisphere",
+          "roi_atlas",
+          "concatenate",
+          "dummy_scans",
+          "fwhm",
+          "boilerplate_only",
+          "task",
+          "dry_run",
+          "roi_name",
+          "participant_label",
+          "roi_dir",
+          "design_only",
+          "use_dummy_regressor",
+          "skip_validation",
+          "anat_only",
+          "bids_filter_file",
+          "ignore",
+          "options",
+          "verbosity"
+        ]
+      }
+    }
+  ],
+  "tags": {},
+  "suggested-resources": {
+    "cpu-cores": 1,
+    "ram": 1,
+    "walltime-estimate": 60
+  }
+}
