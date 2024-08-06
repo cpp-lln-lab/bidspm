@@ -114,4 +114,6 @@ jobs:
                 pip install boutiques
 
         -   name: Run via boutiques
-            run: bosh exec launch --no-container  boutiques/bidspm_3.1.1.json boutiques/invocation.json
+            run: |
+                bosh exec launch --no-container  boutiques/bidspm_3.1.1.json boutiques/invocation_smooth.json
+                bosh exec launch --no-container  boutiques/bidspm_3.1.1.json boutiques/invocation_stats.json
