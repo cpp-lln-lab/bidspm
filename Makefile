@@ -123,20 +123,6 @@ clean_docker:
 build_image: Dockerfile ## Build stable docker image from the main branch
 	docker build . -f Dockerfile -t cpplab/bidspm:unstable
 
-Dockerfile_matlab:
-	docker run --rm kaczmarj/neurodocker:0.9.1 generate docker \
-		--pkg-manager apt \
-		--base-image debian:stretch-slim \
-		--spm12 version=r7771 \
-		--install nodejs npm \
-		--run "node -v && npm -v && npm install -g bids-validator" \
-		--user neuro \
-		--run "mkdir code output bidspm" \
-		--copy ".", "/home/neuro/bidspm/" > Dockerfile_matlab
-
-build_image_matlab: Dockerfile_matlab
-	docker build . -f Dockerfile_matlab -t cpplab/bidspm_matlab:unstable
-
 docker_data:
 	make -C demos/openneuro data_ds000001
 
