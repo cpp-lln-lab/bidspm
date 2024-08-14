@@ -50,6 +50,8 @@ From: bids/base_validator:1.13.1
     make -C /opt/spm12/src PLATFORM=octave install
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
 
+    git restore .
+
     pip install --upgrade pip
     pip install -r /opt/bidspm/requirements.txt
     pip install /opt/bidspm
