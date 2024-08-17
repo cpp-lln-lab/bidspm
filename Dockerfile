@@ -19,11 +19,6 @@ RUN apt-get update -qq && \
         fonts-freefont-otf \
         ghostscript \
         gnuplot-x11 \
-        octave-common \
-        octave-io \
-        octave-image \
-        octave-signal \
-        octave-statistics \
         python3-pip \
         python3 \
         unzip && \
