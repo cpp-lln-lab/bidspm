@@ -56,7 +56,8 @@ WORKDIR /home/neuro
 
 COPY . /home/neuro/bidspm
 WORKDIR /home/neuro/bidspm
-RUN pip install --no-cache-dir --upgrade pip && \
+RUN git restore . && \
+    pip install --no-cache-dir --upgrade pip && \
     pip3 --no-cache-dir install -r requirements.txt && \
     pip3 --no-cache-dir install . && \
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
