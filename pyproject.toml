@@ -39,13 +39,13 @@ doc = [
     "urllib3",
     "faqtory",
     "myst-parser",
-    "sphinx<8",
+    "sphinx",
     "sphinx-argparse",
     "sphinx-copybutton",
     "pydata-sphinx-theme",
     "sphinx-togglebutton",
     "sphinxcontrib-bibtex",
-    "sphinxcontrib-matlabdomain",
+    "sphinxcontrib-matlabdomain>=0.22.1",
     "sphinxcontrib-mermaid",
     "setuptools"
 ]
