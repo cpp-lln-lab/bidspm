@@ -51,12 +51,15 @@ From: bids/base_validator:1.13.1
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
 
     git -C /opt/bidspm restore .
+    git -C /opt/bidspm/lib/CPP_ROI/atlas/HCPex reset --hard
+    git -C /opt/bidspm/lib/CPP_ROI/atlas/HCPex clean --force -dfx
 
     pip install --upgrade pip
     pip install -r /opt/bidspm/requirements.txt
     pip install /opt/bidspm
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
-    octave --no-gui --eval "addpath('/opt/bidspm/'); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path"
+    octave --no-gui --eval "addpath('/opt/bidspm/'); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path"  && \
+    octave --no-gui --eval "path"
 
 %runscript
     bidspm "$@"
