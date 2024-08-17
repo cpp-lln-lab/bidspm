@@ -60,6 +60,7 @@ From: gnuoctave/octave:9.2.0
 
     octave --no-gui --version
     octave --no-gui --eval "pkg list"
+    bidspm --version
 
 %runscript
     bidspm "$@"
