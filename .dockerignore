@@ -1,18 +1,6 @@
-# ignoring this might speed up build
-# by preventing passing extra content to the docker daemon
+lib/spmup
 
-.github
-.mypy_cache
-.vscode
-binder
-coverage_html
-**/demos
-**/docs
-templates
-**/tests
-**/bids-examples
-lib/**/.git
-
+docs/posters/2023_ohbm/poster/betterposter-thumbnail-portrait.png
 
 # General
 .DS_Store
@@ -23,6 +11,8 @@ lib/**/.git
 *.html
 *.docx
 *.ps
+*.~lock.*
+*.ppt*
 
 new_events.tsv
 
@@ -38,14 +28,20 @@ skipped_roi_*.tsv
 # created by tests
 CHANGES
 README
+tests/data/tsv_files/moae_results_table.tsv
+htmlcov
 
 # Project specific
 onsets*_events.mat
 
-
 ## from running tests in root dir
 */group/*
 models/*
+derivatives/models
+derivatives/options
+
+# hatch
+src/bidspm/_version.py
 
 ###############################################################################
 # python
@@ -53,6 +49,10 @@ models/*
 **/__pycache__
 **/build
 .coverage
+.pytest_cache
+.tox
+
+.mypy_cache
 
 # jupyter notebooks
 .ipynb_checkpoints

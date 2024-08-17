@@ -58,13 +58,10 @@ templates_path = ["_templates"]
 exclude_patterns = [
     "**/examples/*",
     "**/images/*",
-    "**/lib/**",
     "demo",
     "defaults",
     "examples",
     "images",
-    "lib",
-    "tests/**/*.m",
 ]
 
 suppress_warnings = ["myst.header", "myst.xref_missing"]

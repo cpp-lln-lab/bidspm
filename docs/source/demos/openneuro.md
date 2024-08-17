@@ -158,5 +158,5 @@ transformers cannot yet be appled to confounds
 ### Scripts
 
 ```{eval-rst}
-.. autoscript:: ds003379_run
+.. autoscript:: ds003397_run
 ```

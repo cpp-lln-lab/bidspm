@@ -6,6 +6,9 @@
 # Required
 version: 2
 
+submodules:
+    exclude: [lib/riksneurotools, lib/CPP_ROI]
+
 build:
     os: ubuntu-22.04
     tools:

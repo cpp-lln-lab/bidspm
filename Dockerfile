@@ -56,11 +56,17 @@ WORKDIR /home/neuro
 
 COPY . /home/neuro/bidspm
 WORKDIR /home/neuro/bidspm
-RUN pip install --no-cache-dir --upgrade pip && \
+RUN git restore . && \
+    git -C lib/CPP_ROI/atlas/HCPex reset --hard && \
+    git -C lib/CPP_ROI/atlas/HCPex clean --force -dfx && \
+    git status && \
+    pip install --no-cache-dir --upgrade pip && \
     pip3 --no-cache-dir install -r requirements.txt && \
     pip3 --no-cache-dir install . && \
-    octave --no-gui --eval "addpath('/opt/spm12/'); savepath ();" && \
-    octave --no-gui --eval "addpath(pwd); savepath(); bidspm(); path"
+    octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
+    octave --no-gui --eval "addpath(pwd); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path" && \
+    octave --no-gui --eval "path"
+
 
 WORKDIR /home/neuro
 

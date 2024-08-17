@@ -104,6 +104,10 @@ jobs:
                 command: mkdir -p /home/circleci/outputs/ds000001/derivatives
 
         -   run:
+                name: version
+                command: docker run -ti --rm << parameters.dh_orga >>/<< parameters.dh_repo >> --version
+
+        -   run:
                 name: default model subject level
                 command: |
                     docker run -ti --rm \

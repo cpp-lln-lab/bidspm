@@ -36,7 +36,7 @@ dev = [
     'pandas'
 ]
 doc = [
-    "urllib3==1.26.15",
+    "urllib3",
     "faqtory",
     "myst-parser",
     "sphinx",
@@ -45,7 +45,7 @@ doc = [
     "pydata-sphinx-theme",
     "sphinx-togglebutton",
     "sphinxcontrib-bibtex",
-    "sphinxcontrib-matlabdomain",
+    "sphinxcontrib-matlabdomain>=0.22.1",
     "sphinxcontrib-mermaid",
     "setuptools"
 ]
