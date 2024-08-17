@@ -59,6 +59,7 @@ WORKDIR /home/neuro/bidspm
 RUN git restore . && \
     git -C lib/CPP_ROI/atlas/HCPex reset --hard && \
     git -C lib/CPP_ROI/atlas/HCPex clean --force -dfx && \
+    git status && \
     pip install --no-cache-dir --upgrade pip && \
     pip3 --no-cache-dir install -r requirements.txt && \
     pip3 --no-cache-dir install . && \

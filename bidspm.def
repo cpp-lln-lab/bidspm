@@ -53,6 +53,7 @@ From: bids/base_validator:1.13.1
     git -C /opt/bidspm restore .
     git -C /opt/bidspm/lib/CPP_ROI/atlas/HCPex reset --hard
     git -C /opt/bidspm/lib/CPP_ROI/atlas/HCPex clean --force -dfx
+    git status
 
     pip install --upgrade pip
     pip install -r /opt/bidspm/requirements.txt
