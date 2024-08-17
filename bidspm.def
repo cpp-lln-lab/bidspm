@@ -1,5 +1,5 @@
 BootStrap: docker
-From: bids/base_validator:1.13.1
+From: gnuoctave/octave:9.2.0
 
 %files
     pyproject.toml /opt/bidspm/pyproject.toml
@@ -16,15 +16,10 @@ From: bids/base_validator:1.13.1
         apt-utils \
         build-essential \
         ca-certificates \
-        curl \
         default-jre \
         fonts-freefont-otf \
         ghostscript \
-        git \
         gnuplot-x11 \
-        libcurl4-gnutls-dev \
-        liboctave-dev \
-        octave \
         octave-common \
         octave-io \
         octave-image \
@@ -33,14 +28,18 @@ From: bids/base_validator:1.13.1
         python3-pip \
         python3 \
         software-properties-common \
-        unzip \
-        zip && \
+        unzip && \
     apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
         /var/*/apt/*/partial \
         /var/lib/apt/lists/* \
         /var/log/apt/term*
+
+    # install bids validator
+    # TODO find out how to pin version
+    curl -fsSL https://deno.land/install.sh | sh
+    deno install -Agf https://github.com/bids-standard/bids-validator/raw/deno-build/bids-validator.js
 
     mkdir /opt/spm12
     curl -fsSL --retry 5 https://github.com/spm/spm12/archive/r7771.tar.gz | tar -xzC /opt/spm12 --strip-components 1
@@ -53,9 +52,6 @@ From: bids/base_validator:1.13.1
     git -C /opt/bidspm restore .
     git -C /opt/bidspm/ submodule foreach --recursive 'git reset --hard'
     git -C /opt/bidspm/ submodule foreach --recursive 'git clean --force -dfx'
-    git -C /opt/bidspm/ status
-
-
 
     pip install --upgrade pip
     pip install -r /opt/bidspm/requirements.txt

@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [REF] Refactor and update CLI in #1096 @Remi-Gau
 * [ENH] {func}`getData` only loads anat data when requested #1257 @Remi-Gau
 * [ENH] the python CLI now uses sub-commands instead of the named parameter `--action` #1292 @Remi-Gau
+* [ENH] change base image in container to use Octave 9.2.0 #1292 @Remi-Gau
 
 ### Deprecated
 
@@ -73,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [FIX] copy `RepetitionTime` in sidecar JSON after running smoothing in #1099 by @Remi-Gau
 * [FIX] rename results files (csv, tsv, png, nii) of each contrasts #1104 by @Remi-Gau
 * [FIX] reslice ROIS before running ROI based analysis to make sure they are at the resolution of the BOLD images in #1110 by @Remi-Gau
+* [FIX] ensure that there is a clean version number in containers #1306 @Remi-Gau
 
 ### Security
 

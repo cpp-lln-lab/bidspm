@@ -1,4 +1,6 @@
-FROM bids/base_validator:1.13.1
+# FROM bids/base_validator:1.13.1
+# https://github.com/gnu-octave/docker/tree/main
+FROM gnuoctave/octave:9.2.0@sha256:b4cab2446a847530129fe8333a4b31eb046efb4b14bb3182e781fa2238116108
 
 LABEL org.opencontainers.image.source="https://github.com/cpp-lln-lab/bidspm"
 LABEL org.opencontainers.image.url="https://github.com/cpp-lln-lab/bidspm"
@@ -15,15 +17,10 @@ RUN apt-get update -qq && \
         apt-utils \
         build-essential \
         ca-certificates \
-        curl \
         default-jre \
         fonts-freefont-otf \
         ghostscript \
-        git \
         gnuplot-x11 \
-        libcurl4-gnutls-dev \
-        liboctave-dev \
-        octave \
         octave-common \
         octave-io \
         octave-image \
@@ -32,14 +29,18 @@ RUN apt-get update -qq && \
         python3-pip \
         python3 \
         software-properties-common \
-        unzip \
-        zip && \
+        unzip && \
     apt-get clean && \
     rm -rf \
         /tmp/hsperfdata* \
         /var/*/apt/*/partial \
         /var/lib/apt/lists/* \
         /var/log/apt/term*
+
+# install bids validator
+# TODO find out how to pin version
+RUN curl -fsSL https://deno.land/install.sh | sh && \
+    deno install -Agf https://github.com/bids-standard/bids-validator/raw/deno-build/bids-validator.js
 
 ## Install SPM
 RUN mkdir /opt/spm12 && \
@@ -57,9 +58,8 @@ WORKDIR /home/neuro
 COPY . /home/neuro/bidspm
 WORKDIR /home/neuro/bidspm
 RUN git restore . && \
-    git -C lib/CPP_ROI/atlas/HCPex reset --hard && \
-    git -C lib/CPP_ROI/atlas/HCPex clean --force -dfx && \
-    git status && \
+    git submodule foreach --recursive 'git reset --hard' && \
+    git submodule foreach --recursive 'git clean --force -dfx' && \
     pip install --no-cache-dir --upgrade pip && \
     pip3 --no-cache-dir install -r requirements.txt && \
     pip3 --no-cache-dir install . && \
