@@ -17,8 +17,7 @@ name: tests octave
 
 env:
     OCTFLAGS: --no-gui --no-window-system --silent
-    # Force to use color
-    FORCE_COLOR: true
+
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
@@ -121,7 +120,12 @@ jobs:
                 sudo apt-get -y -qq update
                 sudo apt-get -y install \
                   octave \
-                  liboctave-dev
+                  liboctave-dev\
+                  octave-common \
+                  octave-io \
+                  octave-image \
+                  octave-signal \
+                  octave-statistics
                 make -C MOxUnit install
                 make -C MOcov install
 
