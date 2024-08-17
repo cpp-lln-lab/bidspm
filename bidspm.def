@@ -13,9 +13,7 @@ From: gnuoctave/octave:9.2.0
 %post
     apt-get -qq update
     DEBIAN_FRONTEND=noninteractive apt-get --yes --quiet install \
-        apt-utils \
-        build-essential \
-        ca-certificates \
+        curl \
         default-jre \
         fonts-freefont-otf \
         ghostscript \
@@ -27,7 +25,6 @@ From: gnuoctave/octave:9.2.0
         octave-statistics \
         python3-pip \
         python3 \
-        software-properties-common \
         unzip && \
     apt-get clean && \
     rm -rf \
@@ -43,7 +40,7 @@ From: gnuoctave/octave:9.2.0
 
     mkdir /opt/spm12
     curl -fsSL --retry 5 https://github.com/spm/spm12/archive/r7771.tar.gz | tar -xzC /opt/spm12 --strip-components 1
-    curl -fsSL --retry 5 https://raw.githubusercontent.com/spm/spm-octave/main/spm12_r7771.patch | patch -p0
+    curl -fsSL --retry 5 https://raw.githubusercontent.com/spm/spm-octave/main/spm12_r7771.patch | patch -p3 -d /opt/spm12
     make -C /opt/spm12/src PLATFORM=octave distclean
     make -C /opt/spm12/src PLATFORM=octave
     make -C /opt/spm12/src PLATFORM=octave install

@@ -14,9 +14,7 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ## basic OS tools install octave
 RUN apt-get update -qq && \
     apt-get -qq -y --no-install-recommends install \
-        apt-utils \
-        build-essential \
-        ca-certificates \
+        curl \
         default-jre \
         fonts-freefont-otf \
         ghostscript \
@@ -28,7 +26,6 @@ RUN apt-get update -qq && \
         octave-statistics \
         python3-pip \
         python3 \
-        software-properties-common \
         unzip && \
     apt-get clean && \
     rm -rf \
@@ -40,6 +37,8 @@ RUN apt-get update -qq && \
 # install bids validator
 # TODO find out how to pin version
 RUN curl -fsSL https://deno.land/install.sh | sh && \
+    export DENO_INSTALL="/root/.deno" && \
+    export PATH="$DENO_INSTALL/bin:$PATH" && \
     deno install -Agf https://github.com/bids-standard/bids-validator/raw/deno-build/bids-validator.js
 
 ## Install SPM
@@ -47,7 +46,7 @@ RUN mkdir /opt/spm12 && \
     curl -SL https://github.com/spm/spm12/archive/r7771.tar.gz | \
     tar -xzC /opt/spm12 --strip-components 1 && \
     curl -SL https://raw.githubusercontent.com/spm/spm-octave/main/spm12_r7771.patch | \
-    patch -p0 && \
+    patch -p3 -d /opt/spm12 && \
     make -C /opt/spm12/src PLATFORM=octave distclean && \
     make -C /opt/spm12/src PLATFORM=octave && \
     make -C /opt/spm12/src PLATFORM=octave install && \
@@ -66,7 +65,6 @@ RUN git restore . && \
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
     octave --no-gui --eval "addpath(pwd); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path" && \
     octave --no-gui --eval "path"
-
 
 WORKDIR /home/neuro
 
