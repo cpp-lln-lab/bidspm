@@ -37,6 +37,8 @@ From: gnuoctave/octave:9.2.0
     # TODO find out how to pin version
     curl -fsSL https://deno.land/install.sh | sh
     deno install -Agf https://github.com/bids-standard/bids-validator/raw/deno-build/bids-validator.js
+    export DENO_INSTALL="/root/.deno"
+    export PATH="$DENO_INSTALL/bin:$PATH"
 
     mkdir /opt/spm12
     curl -fsSL --retry 5 https://github.com/spm/spm12/archive/r7771.tar.gz | tar -xzC /opt/spm12 --strip-components 1
