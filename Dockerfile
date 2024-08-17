@@ -14,6 +14,7 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ## basic OS tools install octave
 RUN apt-get update -qq && \
     apt-get -qq -y --no-install-recommends install \
+        apt-utils \
         curl \
         default-jre \
         fonts-freefont-otf \

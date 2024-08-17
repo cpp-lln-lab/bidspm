@@ -19,6 +19,10 @@ concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
 
+# Force to use color
+env:
+    FORCE_COLOR: true
+
 on:
     push:
         branches: [main]

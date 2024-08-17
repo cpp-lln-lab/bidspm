@@ -13,6 +13,7 @@ From: gnuoctave/octave:9.2.0
 %post
     apt-get -qq update
     DEBIAN_FRONTEND=noninteractive apt-get --yes --quiet install \
+        apt-utils \
         curl \
         default-jre \
         fonts-freefont-otf \

@@ -7,6 +7,10 @@ on:
     pull_request:
         branches: [main]
 
+# Force to use color
+env:
+    FORCE_COLOR: true
+
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
