@@ -59,8 +59,8 @@ From: gnuoctave/octave:9.2.0
 
     git -C /opt/bidspm/ status
 
-    python --version
-    pip list
+    python3 --version
+    pip3 list
 
     bidspm --version
 

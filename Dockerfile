@@ -62,8 +62,8 @@ RUN octave --no-gui --version && \
     octave --no-gui --eval "path" && \
     octave --no-gui --eval "pkg list" && \
     git status && \
-    python --version && \
-    pip list && \
+    python3 --version && \
+    pip3 list && \
     bidspm --version
 
 WORKDIR /home/neuro
