@@ -11,8 +11,6 @@ From: gnuoctave/octave:9.2.0
     .git /opt/bidspm/.git
 
 %post
-    octave --no-gui --version
-
     apt-get -qq update
     DEBIAN_FRONTEND=noninteractive apt-get --yes --quiet install \
         curl \
@@ -29,8 +27,6 @@ From: gnuoctave/octave:9.2.0
         /var/*/apt/*/partial \
         /var/lib/apt/lists/* \
         /var/log/apt/term*
-
-    octave --no-gui --version
 
     # install bids validator
     # TODO find out how to pin version
@@ -54,12 +50,18 @@ From: gnuoctave/octave:9.2.0
     pip install --upgrade pip
     pip install -r /opt/bidspm/requirements.txt
     pip install /opt/bidspm
-    octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
-    octave --no-gui --eval "addpath('/opt/bidspm/'); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path"  && \
-    octave --no-gui --eval "path"
+    octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');"
+    octave --no-gui --eval "addpath('/opt/bidspm/'); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path"
 
     octave --no-gui --version
+    octave --no-gui --eval "path"
     octave --no-gui --eval "pkg list"
+
+    git -C /opt/bidspm/ status
+
+    python --version
+    pip list
+
     bidspm --version
 
 %runscript

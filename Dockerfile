@@ -56,8 +56,15 @@ RUN git restore . && \
     pip3 --no-cache-dir install -r requirements.txt && \
     pip3 --no-cache-dir install . && \
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
-    octave --no-gui --eval "addpath(pwd); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path" && \
-    octave --no-gui --eval "path"
+    octave --no-gui --eval "addpath(pwd); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path"
+
+RUN octave --no-gui --version && \
+    octave --no-gui --eval "path" && \
+    octave --no-gui --eval "pkg list" && \
+    git status && \
+    python --version && \
+    pip list && \
+    bidspm --version
 
 WORKDIR /home/neuro
 

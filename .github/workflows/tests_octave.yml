@@ -120,12 +120,7 @@ jobs:
                 sudo apt-get -y -qq update
                 sudo apt-get -y install \
                   octave \
-                  liboctave-dev\
-                  octave-common \
-                  octave-io \
-                  octave-image \
-                  octave-signal \
-                  octave-statistics
+                  liboctave-dev
                 make -C MOxUnit install
                 make -C MOcov install
 
