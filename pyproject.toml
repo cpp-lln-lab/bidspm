@@ -36,7 +36,7 @@ dev = [
     'pandas'
 ]
 doc = [
-    "urllib3==1.26.15",
+    "urllib3",
     "faqtory",
     "myst-parser",
     "sphinx",

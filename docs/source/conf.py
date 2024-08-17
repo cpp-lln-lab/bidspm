@@ -58,12 +58,11 @@ templates_path = ["_templates"]
 exclude_patterns = [
     "**/examples/*",
     "**/images/*",
-    "**/lib/**",
     "demo",
     "defaults",
     "examples",
     "images",
-    "lib",
+    "../lib/**/*.m",
     "tests/**/*.m",
 ]
 
