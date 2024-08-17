@@ -62,8 +62,6 @@ exclude_patterns = [
     "defaults",
     "examples",
     "images",
-    "../lib/**/*.m",
-    "tests/**/*.m",
 ]
 
 suppress_warnings = ["myst.header", "myst.xref_missing"]

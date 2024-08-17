@@ -39,7 +39,7 @@ doc = [
     "urllib3",
     "faqtory",
     "myst-parser",
-    "sphinx",
+    "sphinx<8",
     "sphinx-argparse",
     "sphinx-copybutton",
     "pydata-sphinx-theme",
