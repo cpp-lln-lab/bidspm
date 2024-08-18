@@ -101,13 +101,15 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
   spmSess = struct('scans', '', 'onsetsFile', '', 'counfoundMatFile', '');
   spmSessCounter = 1;
 
+  opt_for_query = opt;
+
   for iTask = 1:numel(opt.taskName)
 
-    opt.query.task = opt.taskName{iTask};
+    opt_for_query.query.task = opt_for_query.taskName{iTask};
 
     for iSes = 1:nbSessions
 
-      [runs, nbRuns] = getInfo(BIDS, subLabel, opt, 'Runs', sessions{iSes});
+      [runs, nbRuns] = getInfo(BIDS, subLabel, opt_for_query, 'Runs', sessions{iSes});
 
       for iRun = 1:nbRuns
 
@@ -116,7 +118,11 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
           logger('INFO', msg, 'options', opt, 'filename', mfilename());
         end
 
-        spmSess(spmSessCounter).scans = getBoldFilenameForFFX(BIDS, opt, subLabel, iSes, iRun);
+        spmSess(spmSessCounter).scans = getBoldFilenameForFFX(BIDS, ...
+                                                              opt_for_query, ...
+                                                              subLabel, ...
+                                                              iSes, ...
+                                                              iRun);
 
         runDuration = getRunDuration(opt, spmSess(spmSessCounter).scans, TR);
 
@@ -131,7 +137,7 @@ function matlabbatch = setBatchSubjectLevelGLMSpec(varargin)
 
         % get confounds
         confoundsRegFile = getConfoundsRegressorFilename(BIDS, ...
-                                                         opt, ...
+                                                         opt_for_query, ...
                                                          subLabel, ...
                                                          sessions{iSes}, ...
                                                          runs{iRun});

@@ -34,8 +34,7 @@ switch TASK
                           'model-ds000114_desc-testRetestLineBisection_smdl.json');
   case 'verbal'
     task = {'overtverbgeneration', ...
-            'overtwordrepetition', ...
-            'covertverbgeneration'};
+            'overtwordrepetition'};
 
     opt = struct([]);
 
