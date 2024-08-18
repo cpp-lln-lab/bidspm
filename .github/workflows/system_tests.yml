@@ -1,5 +1,5 @@
 ---
-name: unit tests matlab
+name: system tests matlab
 
 # Uses the cron schedule for github actions
 #
@@ -27,7 +27,7 @@ on:
     schedule:
     -   cron: 0 0 1,15 * *
 
-    # Allows you to run this workflow manually from the Actions tab
+  # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
 
 jobs:
@@ -38,14 +38,22 @@ jobs:
 
         strategy:
             matrix:
-                mode: [fast, slow]
+                script: [moae, facerep, fmriprep]
                 os: [ubuntu-latest, macos-13]
                 matlab: [R2023b]
+                include:
+        # only run bms on ubuntu because of datalad setup
+                -   os: ubuntu-latest
+                    matlab: R2023b
+                    script: bms
             fail-fast: false
 
         runs-on: ${{ matrix.os }}
 
         steps:
+
+        -   name: test ${{ matrix.script }}
+            run: test ${{ matrix.script }}
 
         -   name: Install Node
             uses: actions/setup-node@v4
@@ -86,45 +94,21 @@ jobs:
                 unzip download
                 mv moae_fmriprep fmriprep
 
-        -   name: Get data for testing QA
-            if: matrix.os == 'ubuntu-latest'
-            run: |
-                cd demos/openneuro/
-                make data_ds000114_mriqc
-                make data_ds000114_fmriprep
-
         -   name: Prepare test data unix
             run: |
                 cd tests
                 make data
 
-        -   name: Install Moxunit and MOcov
-            run: |
-                git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
-                git clone https://github.com/MOcov/MOcov.git --depth 1
+        -   name: Get data for BMS
+            if: matrix.script == 'bms'
+            run: make -C demos/bayes data_ds000114
 
         -   name: Install MATLAB
             uses: matlab-actions/setup-matlab@v2.2.0
             with:
                 release: ${{ matrix.matlab }}
 
-        -   name: Run fast unit tests MATLAB
-            if: matrix.mode == 'fast'
+        -   name: Run system tests MATLAB ${{ matrix.script }}
             uses: matlab-actions/run-command@v2.1.1
             with:
-                command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
-
-        -   name: Run slow unit tests MATLAB
-            if: matrix.mode == 'slow'
-            uses: matlab-actions/run-command@v2.1.1
-            with:
-                command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); global SLOW; SLOW=true; run tests_matlab;
-
-        -   name: Code coverage matlab
-            uses: codecov/codecov-action@v4
-            with:
-                file: coverage.xml
-                flags: ${{ matrix.os }}_matlab-${{ matrix.matlab }}_${{ matrix.mode }}
-                name: codecov-matlab
-                fail_ci_if_error: false
-                token: ${{ secrets.CODECOV_TOKEN }}
+                command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_${{ matrix.script }};
