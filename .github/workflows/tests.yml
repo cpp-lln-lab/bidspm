@@ -31,56 +31,24 @@ on:
     schedule:
     -   cron: 0 0 1,15 * *
 
-  # Allows you to run this workflow manually from the Actions tab
+    # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
 
 jobs:
 
-    tests:
+    fast_tests:
 
         if: github.repository_owner == 'cpp-lln-lab'
 
         strategy:
             matrix:
-                test_type: [system]
-                script: [moae, facerep, fmriprep]
                 os: [ubuntu-latest, macos-13]
                 matlab: [R2023b]
-                include:
-        # only run bms on ubuntu because of datalad setup
-                -   test_type: system
-                    os: ubuntu-latest
-                    matlab: R2023b
-                    script: bms
-                -   test_type: unit
-                    os: ubuntu-latest
-                    matlab: R2023b
-                    mode: fast
-                -   test_type: unit
-                    os: macos-13
-                    matlab: R2023b
-                    mode: fast
-                -   test_type: unit
-                    os: ubuntu-latest
-                    matlab: R2023b
-                    mode: slow
-                -   test_type: unit
-                    os: macos-13
-                    matlab: R2023b
-                    mode: slow
-                -   test_type: unit
-                    os: macos-13
-                    matlab: R2023b
-                    mode: fast
             fail-fast: false
 
         runs-on: ${{ matrix.os }}
 
         steps:
-
-        -   name: ${{ matrix.test_type }} test
-            if: matrix.test_type == 'system'
-            run: echo ${{ matrix.test_type }} test ${{ matrix.script }}
 
         -   name: Install Node
             uses: actions/setup-node@v4
@@ -133,10 +101,6 @@ jobs:
                 cd tests
                 make data
 
-        -   name: Get data for BMS
-            if: matrix.script == 'bms'
-            run: make -C demos/bayes data_ds000114
-
         -   name: Install Moxunit and MOcov
             run: |
                 git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
@@ -148,29 +112,187 @@ jobs:
                 release: ${{ matrix.matlab }}
 
         -   name: Run fast unit tests MATLAB
-            if: matrix.test_type == 'unit' && matrix.mode == 'fast'
             uses: matlab-actions/run-command@v2.1.1
             with:
                 command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
 
+        -   name: Code coverage matlab
+            uses: codecov/codecov-action@v4
+            with:
+                file: coverage.xml
+                flags: ${{ matrix.os }}_matlab-${{ matrix.matlab }}_fast
+                name: codecov-matlab
+                fail_ci_if_error: false
+                token: ${{ secrets.CODECOV_TOKEN }}
+
+    slow_tests:
+
+        needs: [fast_tests]
+        if: github.repository_owner == 'cpp-lln-lab'
+
+        strategy:
+            matrix:
+                os: [ubuntu-latest, macos-13]
+                matlab: [R2023b]
+            fail-fast: false
+
+        runs-on: ${{ matrix.os }}
+
+        steps:
+
+        -   name: Install Node
+            uses: actions/setup-node@v4
+            with:
+                node-version: 18
+
+        -   name: Install python
+            uses: actions/setup-python@v5
+            with:
+                python-version: '3.11'
+
+        -   name: Install dependencies
+            if: matrix.os == 'ubuntu-latest'
+            run: |
+                sudo apt-get -y -qq update
+                sudo apt-get -y install unzip wget git-annex
+                python -m pip install --upgrade pip setuptools
+                pip install datalad
+
+        -   name: Clone bidspm
+            uses: actions/checkout@v4
+            with:
+                submodules: recursive
+                fetch-depth: 0
+
+        -   name: Install validators
+            run: make install
+
+        -   name: Install SPM
+            run: |
+                git clone https://github.com/spm/spm12.git --depth 1
+
+        -   name: Get moae fmriprep data from OSF
+            run: |
+                mkdir -p demos/MoAE/inputs/
+                cd demos/MoAE/inputs/
+                wget https://osf.io/vufjs/download
+                unzip download
+                mv moae_fmriprep fmriprep
+
+        -   name: Get data for testing QA
+            if: matrix.os == 'ubuntu-latest'
+            run: |
+                cd demos/openneuro/
+                make data_ds000114_mriqc
+                make data_ds000114_fmriprep
+
+        -   name: Prepare test data unix
+            run: |
+                cd tests
+                make data
+
+        -   name: Install Moxunit and MOcov
+            run: |
+                git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
+                git clone https://github.com/MOcov/MOcov.git --depth 1
+
+        -   name: Install MATLAB
+            uses: matlab-actions/setup-matlab@v2.2.0
+            with:
+                release: ${{ matrix.matlab }}
+
         -   name: Run slow unit tests MATLAB
-            if: matrix.test_type == 'unit' && matrix.mode == 'slow'
             uses: matlab-actions/run-command@v2.1.1
             with:
                 command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); global SLOW; SLOW=true; run tests_matlab;
 
         -   name: Code coverage matlab
-            if: matrix.test_type == 'unit'
             uses: codecov/codecov-action@v4
             with:
                 file: coverage.xml
-                flags: ${{ matrix.os }}_matlab-${{ matrix.matlab }}_${{ matrix.mode }}
+                flags: ${{ matrix.os }}_matlab-${{ matrix.matlab }}_slow
                 name: codecov-matlab
                 fail_ci_if_error: false
                 token: ${{ secrets.CODECOV_TOKEN }}
 
+    system_tests:
+
+        needs: [fast_tests]
+        if: github.repository_owner == 'cpp-lln-lab'
+
+        strategy:
+            matrix:
+                script: [moae, facerep, fmriprep]
+                os: [ubuntu-latest, macos-13]
+                matlab: [R2023b]
+                include:
+        # only run bms on ubuntu because of datalad setup
+                -   os: ubuntu-latest
+                    matlab: R2023b
+                    script: bms
+            fail-fast: false
+
+        runs-on: ${{ matrix.os }}
+
+        steps:
+
+        -   name: test ${{ matrix.script }}
+            run: test ${{ matrix.script }}
+
+        -   name: Install Node
+            uses: actions/setup-node@v4
+            with:
+                node-version: 18
+
+        -   name: Install python
+            uses: actions/setup-python@v5
+            with:
+                python-version: '3.11'
+
+        -   name: Install dependencies
+            if: matrix.os == 'ubuntu-latest'
+            run: |
+                sudo apt-get -y -qq update
+                sudo apt-get -y install unzip wget git-annex
+                python -m pip install --upgrade pip setuptools
+                pip install datalad
+
+        -   name: Clone bidspm
+            uses: actions/checkout@v4
+            with:
+                submodules: recursive
+                fetch-depth: 0
+
+        -   name: Install validators
+            run: make install
+
+        -   name: Install SPM
+            run: |
+                git clone https://github.com/spm/spm12.git --depth 1
+
+        -   name: Get moae fmriprep data from OSF
+            run: |
+                mkdir -p demos/MoAE/inputs/
+                cd demos/MoAE/inputs/
+                wget https://osf.io/vufjs/download
+                unzip download
+                mv moae_fmriprep fmriprep
+
+        -   name: Prepare test data unix
+            run: |
+                cd tests
+                make data
+
+        -   name: Get data for BMS
+            if: matrix.script == 'bms'
+            run: make -C demos/bayes data_ds000114
+
+        -   name: Install MATLAB
+            uses: matlab-actions/setup-matlab@v2.2.0
+            with:
+                release: ${{ matrix.matlab }}
+
         -   name: Run system tests MATLAB ${{ matrix.script }}
-            if: matrix.test_type == 'system'
             uses: matlab-actions/run-command@v2.1.1
             with:
                 command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_${{ matrix.script }};
