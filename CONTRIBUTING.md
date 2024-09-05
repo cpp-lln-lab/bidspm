@@ -116,3 +116,5 @@ make update_faq
 - [ ] merge to default branch
 - [ ] create a tagged release
 - [ ] build and push docker images if necessary
+- [ ] after release
+  - [ ] set version in `citation.cff` to dev

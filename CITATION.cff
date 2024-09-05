@@ -1,120 +1,121 @@
 cff-version: 1.2.0
 
-title: "bidspm"
+title: bidspm
 
-version: 3.1.0dev
+version: 4.0.0
 
-abstract: bidspm is a set of pipelines and tools for Octave / MATLAB to process and analyze BIDS data sets using SPM12.
+abstract: bidspm is a set of pipelines and tools for Octave / MATLAB to process and
+  analyze BIDS data sets using SPM12.
 
-message: "If you use this software, please cite it as below."
+message: If you use this software, please cite it as below.
 
-repository-code: "https://github.com/cpp-lln-lab/bidspm"
+repository-code: https://github.com/cpp-lln-lab/bidspm
 
 identifiers:
   - description: This is the collection of archived snapshots of all releases of bidspm
     type: doi
-    value: "10.5281/zenodo.3554331"
+    value: 10.5281/zenodo.3554331
   - description: OHBM 2023 poster
     type: doi
-    value: "10.5281/zenodo.8099835"
+    value: 10.5281/zenodo.8099835
 
 contact:
-  - affiliation: "Université catholique de Louvain"
+  - affiliation: Université catholique de Louvain
     email: remi.gau2@mcgill.ca
     family-names: Gau
     given-names: Rémi
 
 authors:
-- family-names: "Gau"
-  given-names: "Rémi"
-  orcid: "https://orcid.org/0000-0002-1535-9767"
-  affiliation: "Origami lab, McGill University, Montreal, Québec, Canada"
+  - family-names: Van Audenhaege
+    given-names: Alice
+    affiliation: Université catholique de Louvain
+    orcid: https://orcid.org/0000-0002-5276-8818
 
-- family-names: "Barilari"
-  given-names: "Marco"
-  orcid: "https://orcid.org/0000-0002-3313-3120"
-  affiliation: "Université catholique de Louvain"
+  - family-names: Gurtubay
+    given-names: Ane
+    orcid: https://orcid.org/0000-0003-3824-2219
+    affiliation: Université catholique de Louvain
 
-- family-names: "Battal"
-  given-names: "Ceren"
-  orcid: "https://orcid.org/0000-0002-9844-7630"
-  affiliation: "Université catholique de Louvain"
+  - family-names: Battal
+    given-names: Ceren
+    orcid: https://orcid.org/0000-0002-9844-7630
+    affiliation: Université catholique de Louvain
 
-- family-names: "Rezk"
-  given-names: "Mohamed"
-  orcid: "https://orcid.org/0000-0002-1866-8645"
-  affiliation: "Université catholique de Louvain"
+  - family-names: Chouinard-Leclaire
+    given-names: Christine
+    orcid: https://orcid.org/0000-0002-1066-6266
+    affiliation: Université de Montréal
 
-- family-names: "Gurtubay"
-  given-names: "Ane"
-  orcid: "https://orcid.org/0000-0003-3824-2219"
-  affiliation: "Université catholique de Louvain"
+  - family-names: Huber
+    given-names: Daniel
+    affiliation: University of Innsbruck
 
-- family-names: "Falagiarda"
-  given-names: "Federica"
-  orcid: "https://orcid.org/0000-0001-7844-1605"
-  affiliation: "Université catholique de Louvain"
+  - family-names: Falagiarda
+    given-names: Federica
+    orcid: https://orcid.org/0000-0001-7844-1605
+    affiliation: Université catholique de Louvain
 
-- family-names: "MacLean"
-  given-names: "Michèle"
-  orcid: "https://orcid.org/0000-0002-0174-9326"
-  affiliation: "Université de Montréal"
+  - family-names: Cerpelloni
+    given-names: Filippo
+    orcid: https://orcid.org/0000-0001-8070-5753
+    affiliation: Université catholique de Louvain
 
-- family-names: "Cerpelloni"
-  given-names: "Filippo"
-  orcid: "https://orcid.org/0000-0001-8070-5753"
-  affiliation: "Université catholique de Louvain"
+  - family-names: Shahzad
+    given-names: Iqra
+    orcid: https://orcid.org/0000-0002-8724-7668
+    affiliation: Université catholique de Louvain
 
-- family-names: "Shahzad"
-  given-names: "Iqra"
-  orcid: "https://orcid.org/0000-0002-8724-7668"
-  affiliation: "Université catholique de Louvain"
+  - family-names: Matuszewski
+    given-names: Jacek
+    affiliation: Université catholique de Louvain
+    orcid: https://orcid.org/0000-0001-9752-3294
 
-- family-names: "Nunes"
-  given-names: "Márcia"
+  - family-names: Caron-Guyon
+    given-names: Jeanne
+    orcid: https://orcid.org/0000-0001-8681-5267
+    affiliation: Université catholique de Louvain
 
-- family-names: "Caron-Guyon"
-  given-names: "Jeanne"
-  orcid: "https://orcid.org/0000-0001-8681-5267"
-  affiliation: "Université catholique de Louvain"
+  - family-names: Barilari
+    given-names: Marco
+    orcid: https://orcid.org/0000-0002-3313-3120
+    affiliation: Université catholique de Louvain
 
-- family-names: "Chouinard-Leclaire"
-  given-names: "Christine"
-  orcid: "https://orcid.org/0000-0002-1066-6266"
-  affiliation: "Université de Montréal"
+  - family-names: MacLean
+    given-names: Michèle
+    orcid: https://orcid.org/0000-0002-0174-9326
+    affiliation: Université de Montréal
 
-- family-names: "Yang"
-  given-names: "Ying"
-  orcid: "https://orcid.org/0000-0002-4157-2975"
-  affiliation: "Université catholique de Louvain"
+  - family-names: Rezk
+    given-names: Mohamed
+    orcid: https://orcid.org/0000-0002-1866-8645
+    affiliation: Université catholique de Louvain
 
-- family-names: "Mattioni"
-  given-names: "Stefania"
-  affiliation: "University of Gent"
-  orcid: "https://orcid.org/0000-0001-8279-6118"
+  - family-names: Denissen
+    given-names: Monique
 
-- family-names: Huber
-  given-names:  Daniel
-  affiliation: University of Innsbruck
 
-- family-names: "Van Audenhaege"
-  given-names:  "Alice"
-  affiliation: "Université catholique de Louvain"
-  orcid: "https://orcid.org/0000-0002-5276-8818"
+  - family-names: Nunes
+    given-names: Márcia
 
-- family-names: "Matuszewski"
-  given-names:  "Jacek"
-  affiliation: "Université catholique de Louvain"
-  orcid: "https://orcid.org/0000-0001-9752-3294"
+  - family-names: Collignon
+    given-names: Olivier
+    orcid: https://orcid.org/0000-0003-1882-3550
+    affiliation: Université catholique de Louvain
 
-- family-names: "Collignon"
-  given-names: "Olivier"
-  orcid: "https://orcid.org/0000-0003-1882-3550"
-  affiliation: "Université catholique de Louvain"
+  - family-names: Gau
+    given-names: Rémi
+    orcid: https://orcid.org/0000-0002-1535-9767
+    affiliation: Origami lab, McGill University, Montreal, Québec, Canada
 
-- family-names: "Denissen"
-  given-names: "Monique"
+  - family-names: Mattioni
+    given-names: Stefania
+    affiliation: University of Gent
+    orcid: https://orcid.org/0000-0001-8279-6118
 
+  - family-names: Yang
+    given-names: Ying
+    orcid: https://orcid.org/0000-0002-4157-2975
+    affiliation: Université catholique de Louvain
 
 license: GPL-3.0
 

@@ -1,11 +1,11 @@
 ## Pre processing
 
-The (f)MRI data were pre-processed with bidspm (v3.1.0dev; https://github.com/cpp-lln-lab/bidspm; DOI: https://doi.org/10.5281/zenodo.3554331 - [@bidspm])
+The (f)MRI data were pre-processed with bidspm (v4.0.; https://github.com/cpp-lln-lab/bidspm; DOI: https://doi.org/10.5281/zenodo.3554331 - [@bidspm])
 using statistical parametric mapping
 (SPM12 - 7771; Wellcome Center for Neuroimaging, London, UK;
 https://www.fil.ion.ucl.ac.uk/spm; RRID:SCR_007037)
 using MATLAB 9.4.0.813654 (R2018a)
-on a unix computer (Linux version 6.5.0-41-generic (buildd@lcy02-amd64-120) (x86_64-linux-gnu-gcc-12 (Ubuntu 12.3.0-1ubuntu1~22.04) 12.3.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #41~22.04.2-Ubuntu SMP PREEMPT_DYNAMIC Mon Jun  3 11:32:55 UTC 2
+on a unix computer (Linux version 6.8.0-40-generic (buildd@lcy02-amd64-078) (x86_64-linux-gnu-gcc-12 (Ubuntu 12.3.0-1ubuntu1~22.04) 12.3.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #40~22.04.3-Ubuntu SMP PREEMPT_DYNAMIC Tue Jul 30 17:30:19 UTC 2
 )
 .
 
@@ -56,5 +56,5 @@ gaussian kernel (FWHM = 6 mm).
 ## References
 
 This method section was automatically generated using bidspm
-(v3.1.0dev; https://github.com/cpp-lln-lab/bidspm; DOI: https://doi.org/10.5281/zenodo.3554331)
+(v4.0.; https://github.com/cpp-lln-lab/bidspm; DOI: https://doi.org/10.5281/zenodo.3554331)
 and octache (https://github.com/Remi-Gau/Octache).

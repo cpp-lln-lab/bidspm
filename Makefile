@@ -61,37 +61,14 @@ fix_submodule: ## Fix any submodules that would not be checked out
 
 prepare_release:
 	python tools/citation_cff_maint.py
-	python tools/tools/add_links_to_changelog.py
+	python tools/add_links_to_changelog.py
 	python tools/bump_version.py
+	cd docs && make release
 
 validate_cff: ## Validate the citation file
 	cffconvert --validate
 
-release: validate_cff prepare_release lint manual
-
-
-################################################################################
-#   doc
-
-clean_doc:
-	cd docs && make clean
-
-manual: update_faq ## Build PDF version of the doc
-	cd docs && sh create_manual.sh
-
-
-################################################################################
-#   lint
-
-lint: lint_matlab lint_python ## Clean MATLAB and python code
-
-lint_matlab: ## Clean MATLAB code
-	mh_style --fix && mh_metric --ci && mh_lint
-
-lint_python: ## Clean python code
-	black *.py src tests docs
-	flake8	*.py src tests docs
-	mypy *.py src
+release: validate_cff prepare_release
 
 ################################################################################
 #   test
