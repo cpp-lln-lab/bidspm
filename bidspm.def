@@ -1,5 +1,5 @@
 BootStrap: docker
-From: bids/base_validator:1.13.1
+From: ubuntu:jammy-20240808
 
 %files
     pyproject.toml /opt/bidspm/pyproject.toml

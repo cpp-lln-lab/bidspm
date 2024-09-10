@@ -1,4 +1,4 @@
-FROM ubuntu:noble-20240801@sha256:8a37d68f4f73ebf3d4efafbcf66379bf3728902a8038616808f04e34a9ab63ee
+FROM ubuntu:jammy-20240808@sha256:adbb90115a21969d2fe6fa7f9af4253e16d45f8d4c1e930182610c4731962658
 
 LABEL org.opencontainers.image.source="https://github.com/cpp-lln-lab/bidspm"
 LABEL org.opencontainers.image.url="https://github.com/cpp-lln-lab/bidspm"
