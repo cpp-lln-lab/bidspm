@@ -61,10 +61,10 @@ jobs:
             if: matrix.test_type == 'system'
             run: echo ${{ matrix.test_type }} test ${{ matrix.script }}
 
-        -   name: Install Node
-            uses: actions/setup-node@v4
+        -   name: Install Deno
+            uses: denoland/setup-deno@v1
             with:
-                node-version: 18
+                deno-version: v1.x
 
         -   name: Install python
             uses: actions/setup-python@v5

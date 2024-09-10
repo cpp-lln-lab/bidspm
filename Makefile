@@ -33,7 +33,7 @@ ARG    = -nodisplay -nosplash -nodesktop
 .PHONY: help clean clean_demos clean_test update fix_submodule
 
 install:
-	npm install -g bids-validator
+	deno install -Agf -n bids-validator jsr:@bids/validator
 	pip3 install .[dev]
 
 help: ## Show what this Makefile can do
