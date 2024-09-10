@@ -33,10 +33,12 @@ help:
 
 clean:
 	rm -rf $(BUILDDIR)
-	rm -f bidspm-manual.pdf
 
 view:
 	$(BROWSER) build/html/index.html
+
+release: update_faq boilerplate clean_default_options default_mapping
+	python generate_doc.py
 
 update_faq:
 	cd faq/bids && faqtory build
@@ -45,9 +47,6 @@ update_faq:
 	cd faq/results && faqtory build
 	cd faq/spm && faqtory build
 	cd faq/stats && faqtory build
-
-bidspm-manual.pdf: update_faq
-	bash create_manual.sh
 
 boilerplate:
 	$(MATLAB) $(ARG) -r "print_boilerplate; exit()"

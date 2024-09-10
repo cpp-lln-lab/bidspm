@@ -1,5 +1,5 @@
 BootStrap: docker
-From: bids/base_validator:1.13.1
+From: ubuntu:jammy-20240808
 
 %files
     pyproject.toml /opt/bidspm/pyproject.toml
@@ -42,6 +42,11 @@ From: bids/base_validator:1.13.1
         /var/lib/apt/lists/* \
         /var/log/apt/term*
 
+    curl -fsSL https://deno.land/install.sh | sh
+    export DENO_INSTALL="/root/.deno"
+    export PATH="$DENO_INSTALL/bin:$PATH"
+    deno install -Agf -n bids-validator jsr:@bids/validator@1.14.12
+
     mkdir /opt/spm12
     curl -fsSL --retry 5 https://github.com/spm/spm12/archive/r7771.tar.gz | tar -xzC /opt/spm12 --strip-components 1
     curl -fsSL --retry 5 https://raw.githubusercontent.com/spm/spm-octave/main/spm12_r7771.patch | patch -p0
@@ -54,8 +59,6 @@ From: bids/base_validator:1.13.1
     git -C /opt/bidspm/ submodule foreach --recursive 'git reset --hard'
     git -C /opt/bidspm/ submodule foreach --recursive 'git clean --force -dfx'
     git -C /opt/bidspm/ status
-
-
 
     pip install --upgrade pip
     pip install -r /opt/bidspm/requirements.txt

@@ -1,4 +1,4 @@
-FROM bids/base_validator:1.13.1
+FROM ubuntu:jammy-20240808@sha256:adbb90115a21969d2fe6fa7f9af4253e16d45f8d4c1e930182610c4731962658
 
 LABEL org.opencontainers.image.source="https://github.com/cpp-lln-lab/bidspm"
 LABEL org.opencontainers.image.url="https://github.com/cpp-lln-lab/bidspm"
@@ -40,6 +40,12 @@ RUN apt-get update -qq && \
         /var/*/apt/*/partial \
         /var/lib/apt/lists/* \
         /var/log/apt/term*
+
+## Install validator
+RUN curl -fsSL https://deno.land/install.sh | sh && \
+    export DENO_INSTALL="/root/.deno" && \
+    export PATH="$DENO_INSTALL/bin:$PATH" && \
+    deno install -Agf -n bids-validator jsr:@bids/validator@1.14.12
 
 ## Install SPM
 RUN mkdir /opt/spm12 && \

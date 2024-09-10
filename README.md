@@ -169,7 +169,7 @@ Please see our [documentation](https://bidspm.readthedocs.io/en/latest/index.htm
   license = {GPL-3.0},
   title = {{bidspm}},
   url = {https://github.com/cpp-lln-lab/bidspm},
-  version = {3.1.0dev}
+  version = {4.0.0}
 }
 ```
 

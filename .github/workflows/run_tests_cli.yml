@@ -25,9 +25,10 @@ jobs:
                 sudo apt-get -y install octave liboctave-dev
         -   name: Info
             run: octave --version
-        -   uses: actions/setup-node@v4
+        -   name: Install Deno
+            uses: denoland/setup-deno@v1
             with:
-                node-version: 18
+                deno-version: v1.x
         -   uses: actions/setup-python@v5
             name: Set up Python ${{ matrix.python-version }}
             with:
@@ -63,10 +64,10 @@ jobs:
             with:
                 submodules: recursive
                 fetch-depth: 0
-
-        -   uses: actions/setup-node@v4
+        -   name: Install Deno
+            uses: denoland/setup-deno@v1
             with:
-                node-version: 18
+                deno-version: v1.x
         -   uses: actions/setup-python@v5
             name: Set up Python
             with:
