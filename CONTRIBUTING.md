@@ -96,7 +96,7 @@ New questions must be added to `docs/questions` and the main FAQ.md can be
 created with:
 
 ```bash
-make update_faq
+make -C doc update_faq
 ```
 
 ### release protocol
@@ -110,11 +110,15 @@ make update_faq
 - [ ] update binder
 - [ ] update docker recipes
 - [ ] update changelog
+  - [ ] change from `[unreleased]` to the version number
+  - [ ] remove unused sections (like `security`)
 - [ ] run `make release`
 - [ ] open a pull request (PR) from this release candidate branch targeting the default branch
 - [ ] fix any remaining failing continuous integration (test, markdown and code linting...)
 - [ ] merge to default branch
-- [ ] create a tagged release
+- [ ] create a github tagged release
 - [ ] build and push docker images if necessary
 - [ ] after release
   - [ ] set version in `citation.cff` to dev
+  - [ ] update changelog
+    - [ ] add an `[unreleased]` section
