@@ -19,40 +19,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 -->
 
-## [Unreleased]
-
+## [unreleased]
 
 ### Added
 
-* [ENH] add QA workflow `bidsQA` to find outliers in MRIQC output or to view number of outlier timepoints (for a given metric and threshold) in each functional run [1297](https://github.com/cpp-lln-lab/bidspm/pull/1297) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [ENH] add support for one-way ANOVA across groups at the group level [1296](https://github.com/cpp-lln-lab/bidspm/pull/1296) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [ENH] allow for 2 sample T-Test, within group T-Test and one-way ANOVA to ne more flexible with respect to what praticipants.tsv column to use to allocate subjects in each group [1296](https://github.com/cpp-lln-lab/bidspm/pull/1296) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [ENH] make `addConfoundsToDesignMatrix` a method of `BidsModel` [1294](https://github.com/cpp-lln-lab/bidspm/pull/1294) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [ENH] add Apptainer definition [1254](https://github.com/cpp-lln-lab/bidspm/pull/1254) by by [Remi-Gau](https://github.com/Remi-Gau)  and by [monique2208](https://github.com/monique2208)
-* [ENH] allow to copy anat only on raw datasets [1181](https://github.com/cpp-lln-lab/bidspm/pull/1181) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [ENH] add option to concatenate runs at subject level to facilite running PPI analysis [1133](https://github.com/cpp-lln-lab/bidspm/pull/1133) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [ENH] allow to run substeps of substeps of the bayesian model selection [1145](https://github.com/cpp-lln-lab/bidspm/pull/1145) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [ENH] add quality control for GLM using the MACS toolbox to give a goodness of fit and several other information criteria (AIC, BIC) (MATLAB only) [1135](https://github.com/cpp-lln-lab/bidspm/pull/1135)  by by [Remi-Gau](https://github.com/Remi-Gau)
-* [ENH] add several confound strategies to add to bids stats model and a function to create family of models [1126](https://github.com/cpp-lln-lab/bidspm/pull/1126) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [ENH] add CLI to run bayesian model selection [1121](https://github.com/cpp-lln-lab/bidspm/pull/1121) by by [Remi-Gau](https://github.com/Remi-Gau)
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [v4.0.0] - 2024-09-11
+
+**Full Changelog**: https://github.com/cpp-lln-lab/bidspm/compare/v3.1.0...v4.0.0
+
+### Added
+
+* [ENH] add QA workflow `bidsQA` to find outliers in MRIQC output or to view number of outlier timepoints (for a given metric and threshold) in each functional run [1297](https://github.com/cpp-lln-lab/bidspm/pull/1297) by [Remi-Gau](https://github.com/Remi-Gau)
+* [ENH] add support for one-way ANOVA across groups at the group level [1296](https://github.com/cpp-lln-lab/bidspm/pull/1296) by [Remi-Gau](https://github.com/Remi-Gau)
+* [ENH] allow for 2 sample T-Test, within group T-Test and one-way ANOVA to be more flexible with respect to what praticipants.tsv column to use to allocate subjects in each group [1296](https://github.com/cpp-lln-lab/bidspm/pull/1296) by [Remi-Gau](https://github.com/Remi-Gau)
+* [ENH] make `addConfoundsToDesignMatrix` a method of `BidsModel` [1294](https://github.com/cpp-lln-lab/bidspm/pull/1294) by [Remi-Gau](https://github.com/Remi-Gau)
+* [ENH] add Apptainer definition [1254](https://github.com/cpp-lln-lab/bidspm/pull/1254) by [Remi-Gau](https://github.com/Remi-Gau) and by [monique2208](https://github.com/monique2208)
+* [ENH] allow to copy anat only on raw datasets [1181](https://github.com/cpp-lln-lab/bidspm/pull/1181) by [Remi-Gau](https://github.com/Remi-Gau)
+* [ENH] add option to concatenate runs at subject level to facilite running PPI analysis [1133](https://github.com/cpp-lln-lab/bidspm/pull/1133) by [Remi-Gau](https://github.com/Remi-Gau)
+* [ENH] allow to run substeps of the bayesian model selection [1145](https://github.com/cpp-lln-lab/bidspm/pull/1145) by [Remi-Gau](https://github.com/Remi-Gau)
+* [ENH] add quality control for GLM using the MACS toolbox to give a goodness of fit and several other information criteria (AIC, BIC) (MATLAB only) [1135](https://github.com/cpp-lln-lab/bidspm/pull/1135)  by [Remi-Gau](https://github.com/Remi-Gau)
+* [ENH] add several confound strategies to add to bids stats model and a function to create family of models [1126](https://github.com/cpp-lln-lab/bidspm/pull/1126) by [Remi-Gau](https://github.com/Remi-Gau)
+* [ENH] add CLI to run bayesian model selection [1121](https://github.com/cpp-lln-lab/bidspm/pull/1121) by [Remi-Gau](https://github.com/Remi-Gau)
 * [ENH] support label of activations with all atlases [1100](https://github.com/cpp-lln-lab/bidspm/pull/1100) by [Remi-Gau](https://github.com/Remi-Gau)
 * [ENH] add support for session level models [1116](https://github.com/cpp-lln-lab/bidspm/pull/1116) be by [Remi-Gau](https://github.com/Remi-Gau)
-
   - allow to pass dummy contrasts to session level
   - allow inter session contrasts to be computed at the subject level
   - improve naming of contrast to mention bids ses and run
-
 * [ENH] add Bayesian model selection to the python CLI [1292](https://github.com/cpp-lln-lab/bidspm/pull/1292) by [Remi-Gau](https://github.com/Remi-Gau)
 
 ### Changed
 
 * [ENH] align specification of F contrasts on the BIDS stats model: they should now be specified as a 2D matrix and not a 1D vector. [1276](https://github.com/cpp-lln-lab/bidspm/pull/1276) by [Remi-Gau](https://github.com/Remi-Gau)
 * [DOC] change theme and structure of the documentation [1256](https://github.com/cpp-lln-lab/bidspm/pull/1256) by [Remi-Gau](https://github.com/Remi-Gau)
-* [REF] Refactor and update CLI in [1096](https://github.com/cpp-lln-lab/bidspm/pull/1096) by [Remi-Gau](https://github.com/Remi-Gau)
+* [REF] refactor and update CLI in [1096](https://github.com/cpp-lln-lab/bidspm/pull/1096) by [Remi-Gau](https://github.com/Remi-Gau)
 * [ENH] {func}`getData` only loads anat data when requested [1257](https://github.com/cpp-lln-lab/bidspm/pull/1257) by [Remi-Gau](https://github.com/Remi-Gau)
 * [ENH] the python CLI now uses sub-commands instead of the named parameter `--action` [1292](https://github.com/cpp-lln-lab/bidspm/pull/1292) by [Remi-Gau](https://github.com/Remi-Gau)
-
-### Deprecated
 
 ### Removed
 
@@ -60,22 +71,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-* [FIX] ensure that {func}`setBatchCoregistrationFuncToAnat` takes into account bids_filter [1295](https://github.com/cpp-lln-lab/bidspm/pull/1295) by by [d-ni374](https://github.com/d-ni374)
-* [FIX] update {func}`createDefaultStatsModel` to use proper `GroupBy` at the dataset level [1248](https://github.com/cpp-lln-lab/bidspm/pull/1248) by by [d-ni374](https://github.com/d-ni374)
-* [FIX] make {func}`getAcquisitionTime` less brittle [1248](https://github.com/cpp-lln-lab/bidspm/pull/1248) by by [d-ni374](https://github.com/d-ni374)
-* [FIX] fix regular expression in {func}`bidsResults` to identify contrasts [1248](https://github.com/cpp-lln-lab/bidspm/pull/1248) by by [d-ni374](https://github.com/d-ni374)  and [1275](https://github.com/cpp-lln-lab/bidspm/pull/1275) by by [Remi-Gau](https://github.com/Remi-Gau)
+* [FIX] ensure that {func}`setBatchCoregistrationFuncToAnat` takes into account bids_filter [1295](https://github.com/cpp-lln-lab/bidspm/pull/1295) by [d-ni374](https://github.com/d-ni374)
+* [FIX] update {func}`createDefaultStatsModel` to use proper `GroupBy` at the dataset level [1248](https://github.com/cpp-lln-lab/bidspm/pull/1248) by [d-ni374](https://github.com/d-ni374)
+* [FIX] make {func}`getAcquisitionTime` less brittle [1248](https://github.com/cpp-lln-lab/bidspm/pull/1248) by [d-ni374](https://github.com/d-ni374)
+* [FIX] fix regular expression in {func}`bidsResults` to identify contrasts [1248](https://github.com/cpp-lln-lab/bidspm/pull/1248) by [d-ni374](https://github.com/d-ni374)  and [1275](https://github.com/cpp-lln-lab/bidspm/pull/1275) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] pass analysis level to stats actions when using python CLI [1258](https://github.com/cpp-lln-lab/bidspm/pull/1258) by [Remi-Gau](https://github.com/Remi-Gau)
-* [FIX] remove goodness of fit from dataset level analysis as it is not supported by the MACS toolbox [1265](https://github.com/cpp-lln-lab/bidspm/pull/1265) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [FIX] add java and zip to container recipes to allow using nidm results with octave [1265](https://github.com/cpp-lln-lab/bidspm/pull/1265) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [FIX] copy the MACS toolbox to the SPM toolbox folder during the initialisation [1203](https://github.com/cpp-lln-lab/bidspm/pull/1203) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [FIX] save `onsets.mat` directly in subject stats folder [1187](https://github.com/cpp-lln-lab/bidspm/pull/1187) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [FIX] do not compute subject level contrast when running dataset level [1102](https://github.com/cpp-lln-lab/bidspm/pull/1102) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [FIX] copy `RepetitionTime` in sidecar JSON after running smoothing in [1099](https://github.com/cpp-lln-lab/bidspm/pull/1099) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [FIX] rename results files (csv, tsv, png, nii) of each contrasts [1104](https://github.com/cpp-lln-lab/bidspm/pull/1104) by by [Remi-Gau](https://github.com/Remi-Gau)
-* [FIX] reslice ROIS before running ROI based analysis to make sure they are at the resolution of the BOLD images in [1110](https://github.com/cpp-lln-lab/bidspm/pull/1110) by by [Remi-Gau](https://github.com/Remi-Gau)
-
-### Security
-
+* [FIX] remove goodness of fit from dataset level analysis as it is not supported by the MACS toolbox [1265](https://github.com/cpp-lln-lab/bidspm/pull/1265) by [Remi-Gau](https://github.com/Remi-Gau)
+* [FIX] add java and zip to container recipes to allow using nidm results with octave [1265](https://github.com/cpp-lln-lab/bidspm/pull/1265) by [Remi-Gau](https://github.com/Remi-Gau)
+* [FIX] copy the MACS toolbox to the SPM toolbox folder during the initialisation [1203](https://github.com/cpp-lln-lab/bidspm/pull/1203) by [Remi-Gau](https://github.com/Remi-Gau)
+* [FIX] save `onsets.mat` directly in subject stats folder [1187](https://github.com/cpp-lln-lab/bidspm/pull/1187) by [Remi-Gau](https://github.com/Remi-Gau)
+* [FIX] do not compute subject level contrast when running dataset level [1102](https://github.com/cpp-lln-lab/bidspm/pull/1102) by [Remi-Gau](https://github.com/Remi-Gau)
+* [FIX] copy `RepetitionTime` in sidecar JSON after running smoothing in [1099](https://github.com/cpp-lln-lab/bidspm/pull/1099) by [Remi-Gau](https://github.com/Remi-Gau)
+* [FIX] rename results files (csv, tsv, png, nii) of each contrasts [1104](https://github.com/cpp-lln-lab/bidspm/pull/1104) by [Remi-Gau](https://github.com/Remi-Gau)
+* [FIX] reslice ROIS before running ROI based analysis to make sure they are at the resolution of the BOLD images in [1110](https://github.com/cpp-lln-lab/bidspm/pull/1110) by [Remi-Gau](https://github.com/Remi-Gau)
 
 ## [3.1.0] - 2023-07-01
 
