@@ -11,12 +11,14 @@ function montage = createMontage(varargin)
   %                         'cxs', [0 255])
   %
   %
-  % Simple function to create a montage / mosaic of multiple slices from a single 3D
+  % Simple function to create a montage /
+  %  mosaic of multiple slices from a single 3D
   % image matrix.
   %
   % INPUT:
   % img           - 3D (x,y,z) image matrix
-  % columns       - number of columns in montage (rows are calculated accordingly)
+  % columns       - number of columns in montage
+  % (rows are calculated accordingly)
   % rotate        - rotate images 90 deg clockwise? yes = 1; no = 0.
   % cmap          - figure colormap
   % visibility    - show figure?
@@ -116,27 +118,7 @@ function montage = createMontage(varargin)
     montage.whole_img = whole;
   end
 
-  % Get screen size for plotting - [1 1 w h]
-  scr_size = get(0, 'ScreenSize');
-  dist = scr_size(4);
-  if scr_size(3) < dist
-    dist = scr_size(3);
-  end
-
-  % Create figure - outerposition = [left bottom width height]
-  if strcmp(shape, 'max')
-    f = figure('visible', visibility, ...
-               'units', 'normalized', ...
-               'outerposition', [0 0 1 1]);
-  elseif strcmp(shape, 'square')
-    f = figure('visible', visibility, ...
-               'units', 'pixels', ...
-               'outerposition', [0 0 dist dist]);
-  else
-    f = figure('visible', visibility, ...
-               'units', 'pixels', ...
-               'outerposition', [0 0 dist dist]);
-  end
+  f = initMontageFigure(shape, visibility);
 
   ax = subplot(1, 1, 1);
   im = imagesc(ax, montage.whole_img);
