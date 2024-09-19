@@ -19,17 +19,10 @@ function output = fmrwhy_util_createOverlayMontage(templateImg, overlayImg, colu
 
   % Create background montage
   montage_template = fmrwhy_util_createMontage(templateImg, columns, rotate, 'Template volume', clrmp, 'off', shape, cxs);
-  % Get screen size for plotting
-  scr_size = get(0, 'ScreenSize');
-  dist = scr_size(4);
-  if scr_size(3) < dist
-    dist = scr_size(3);
-  end
 
   % Create figures with background montage and overlaid masks
-  % f(i) = figure('units','pixels','outerposition',[0 0 dist dist]);
   f = figure('units', 'normalized', 'outerposition', [0 0 1 1], 'visible', visibility);
-  im1 = imagesc(montage_template.whole_img);
+  imagesc(montage_template.whole_img);
   colormap(clrmp);
   if ~isempty(cxs)
     caxis(cxs);
@@ -45,10 +38,6 @@ function output = fmrwhy_util_createOverlayMontage(templateImg, overlayImg, colu
   hold(ax, 'on');
   [Nimx, Nimy] = size(montage_template.whole_img);
   oo = ones(Nimx, Nimy);
-  zz = zeros(Nimx, Nimy);
-  red = cat(3, oo, zz, zz);
-  green = cat(3, zz, oo, zz);
-  blue = cat(3, zz, oo, oo);
 
   if iscell(overlayImg)
     for i = 1:numel(overlayImg)
@@ -68,7 +57,7 @@ function output = fmrwhy_util_createOverlayMontage(templateImg, overlayImg, colu
       bound_whole_bin = bwboundaries(montage_overlay{i}.whole_img);
       Nblobs_bin = numel(bound_whole_bin);
       for b = 1:Nblobs_bin
-        p = plot(ax, bound_whole_bin{b, 1}(:, 2), bound_whole_bin{b, 1}(:, 1), 'color', rbgclr, 'LineWidth', 1);
+        plot(ax, bound_whole_bin{b, 1}(:, 2), bound_whole_bin{b, 1}(:, 1), 'color', rbgclr, 'LineWidth', 1);
       end
     end
   end
