@@ -113,7 +113,7 @@ jobs:
                 command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
 
         -   name: Code coverage matlab
-            uses: codecov/codecov-action@v4
+            uses: codecov/codecov-action@v5
             with:
                 file: coverage.xml
                 flags: ${{ matrix.os }}_matlab-${{ matrix.matlab }}_fast
@@ -203,7 +203,7 @@ jobs:
                 command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); global SLOW; SLOW=true; run tests_matlab;
 
         -   name: Code coverage matlab
-            uses: codecov/codecov-action@v4
+            uses: codecov/codecov-action@v5
             with:
                 file: coverage.xml
                 flags: ${{ matrix.os }}_matlab-${{ matrix.matlab }}_slow
