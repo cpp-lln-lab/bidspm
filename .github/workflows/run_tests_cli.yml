@@ -22,7 +22,7 @@ jobs:
         -   name: Install dependencies
             run: |
                 sudo apt-get -y -qq update
-                sudo apt-get -y install octave liboctave-dev
+                sudo apt-get -y install octave octave-dev
         -   name: Info
             run: octave --version
         -   name: Install Deno
@@ -94,7 +94,7 @@ jobs:
                 sudo apt-get -y -qq update
                 sudo apt-get -y install \
                     octave \
-                    liboctave-dev\
+                    octave-dev\
                     octave-common \
                     octave-io \
                     octave-image \
