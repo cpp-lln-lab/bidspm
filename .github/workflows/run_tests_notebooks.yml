@@ -21,7 +21,7 @@ jobs:
     # only trigger update on upstream repo
         if: github.repository_owner == 'cpp-lln-lab'
 
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-latest
 
         steps:
         -   name: Install dependencies

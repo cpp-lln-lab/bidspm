@@ -99,6 +99,11 @@ jobs:
                 unzip download
                 mv moae_fmriprep fmriprep
 
+        -   name: Post-install
+            run: |
+                git config --global --add user.name "Ford Escort"
+                git config --global --add user.email 42@H2G2.com
+
         -   name: Get data for testing QA
             run: |
                 cd demos/openneuro/
