@@ -5,6 +5,9 @@
     },
     {
       "pattern": ".stats.md#.*"
+    },
+    {
+      "pattern": "https://hub.docker.com/repository/docker/cpplab/bidspm"
     }
   ]
 }
