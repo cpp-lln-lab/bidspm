@@ -77,7 +77,7 @@ line-length = 90
 
 [tool.codespell]
 builtin = "clear,rare"
-ignore-words-list = "fo,te,als,ane,nin,fot,fwe,commun,ons,buildd"
+ignore-words-list = "fo,te,als,ane,nin,fot,fwe,commun,ons,buildd,anc"
 skip = "*.tsv,*.json,*.nii*,*.js,*.svg,*.eps,*.log,.git,env,build,lib,options,outputs,inputs,bids-examples,stats_model,coverage_html,ds001734"
 
 [tool.coverage.report]
