@@ -66,13 +66,13 @@ repos:
     -   id: rst-inline-touching-normal
 
 -   repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+    rev: 6.0.0
     hooks:
     -   id: isort
         args: [--profile, black]
 
 -   repo: https://github.com/psf/black
-    rev: 24.10.0
+    rev: 25.1.0
     hooks:
     -   id: black
         args: [--config=pyproject.toml]
@@ -101,7 +101,7 @@ repos:
         entry: ghcr.io/hadolint/hadolint hadolint
 
 -   repo: https://github.com/codespell-project/codespell
-    rev: v2.4.0
+    rev: v2.4.1
     hooks:
     -   id: codespell
         args: [--toml, pyproject.toml]
