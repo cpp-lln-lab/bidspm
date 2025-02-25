@@ -76,7 +76,44 @@
         "X": [
           1
         ],
-        "Type": "glm"
+        "Type": "glm",
+        "Software": {
+          "bidspm": {
+            "Results": [
+              {
+                "name": [
+                  "Task"
+                ],
+                "p": 0.05,
+                "MC": "FWE",
+                "png": true,
+                "binary": true,
+                "threshSpm": true,
+                "nidm": true,
+                "montage": {
+                  "do": true,
+                  "orientation": "axial",
+                  "slices": [
+                    -26,
+                    -22,
+                    -18,
+                    -14,
+                    -10,
+                    -6,
+                    -2,
+                    2,
+                    6
+                  ],
+                  "background": {
+                    "suffix": "T1w",
+                    "desc": "preproc",
+                    "modality": "anat"
+                  }
+                }
+              }
+            ]
+          }
+        }
       },
       "DummyContrasts": {
         "Test": "t"

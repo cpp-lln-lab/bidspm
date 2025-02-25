@@ -16,14 +16,20 @@ function renameOutputResults(opt, result, subLabel)
   end
 
   if result.nidm
+    % TODO currently name of nidm file does not include
+    %   the label of the contrast that was used to generate it.
     renameNidm(opt, result, subLabel);
   end
 
   if result.png
+    % TODO currently name of PNG file does not include
+    %   the label of the contrast that was used to generate it.
     renamePngCsvResults(opt, result, '.png', subLabel);
   end
 
   if result.csv
+    % TODO currently name of CSV file does not include
+    %   the label of the contrast that was used to generate it.
 
     renamePngCsvResults(opt, result, '.csv', subLabel);
 

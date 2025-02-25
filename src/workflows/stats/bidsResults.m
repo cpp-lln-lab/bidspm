@@ -226,7 +226,7 @@ function matlabbatch = bidsResults(varargin)
 
           for iBatch = 1:numel(matlabbatch)
             batch{1} = struct('spm', matlabbatch{iBatch}.spm);
-            status = saveAndRunWorkflow(batch, batchName, opt, subLabel);
+            status = saveAndRunWorkflow(batch, [batchName, '_', num2str(iBatch)], opt, subLabel);
 
             if status && isfield(matlabbatch{iBatch}, 'result')
               renameOutputResults(opt, matlabbatch{iBatch}.result, subLabel);
