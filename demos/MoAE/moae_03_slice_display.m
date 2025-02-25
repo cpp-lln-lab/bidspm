@@ -31,18 +31,10 @@ opt.dir.stats = fullfile(opt.dir.derivatives, 'bidspm-stats');
 
 opt.model.file = fullfile(this_dir, 'models', 'model-MoAE_smdl.json');
 
-% Specify the result to compute
-opt.results(1).nodeName = 'run_level';
+% read the model
+opt = checkOptions(opt);
 
-opt.results(1).name = 'listening';
-% MONTAGE FIGURE OPTIONS
-opt.results(1).montage.do = true();
-opt.results(1).montage.slices = -4:2:16; % in mm
-% axial is default 'sagittal', 'coronal'
-opt.results(1).montage.orientation = 'axial';
-% will use the MNI T1 template by default but the underlay image can be changed.
-opt.results(1).montage.background = ...
-    fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
+opt.results = opt.model.bm.Nodes{1}.Model.Software.bidspm.Results{1};
 
 opt = checkOptions(opt);
 
@@ -55,10 +47,6 @@ filter = struct('sub', subLabel, ...
 
 rightRoiFile = bids.query(BIDS_ROI, 'data', filter);
 
-filter.hemi = 'L';
-
-leftRoiFile = bids.query(BIDS_ROI, 'data', filter);
-
 % we get the con image to extract data
 ffxDir = getFFXdir(subLabel, opt);
 maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
@@ -66,7 +54,7 @@ bf = bids.File(spm_file(maskImage, 'filename'));
 conImage = spm_select('FPList', ffxDir, ['^con_' bf.entities.label '.nii$']);
 
 %% Layers to put on the figure
-layers = sd_config_layers('init', {'truecolor', 'dual', 'contour', 'contour'});
+layers = sd_config_layers('init', {'truecolor', 'dual', 'contour'});
 
 % Layer 1: Anatomical map
 [anat_normalized_file, anatRange] = return_normalized_anat_file(opt, subLabel);
@@ -100,20 +88,18 @@ layers(2).opacity.label = '| t |';
 
 %% Layer 3 and 4: Contour of ROI
 
+roi = spm_select('FPList', ffxDir, ['^sub_.*' bf.entities.label '.*_mask.nii$']);
+
 layers(3).color.file = rightRoiFile{1};
 layers(3).color.map = [0 0 0];
 layers(3).color.line_width = 2;
-
-layers(4).color.file = leftRoiFile{1};
-layers(4).color.map = [1 1 1];
-layers(4).color.line_width = 2;
 
 %% Settings
 settings = sd_config_settings('init');
 
 % we reuse the details for the SPM montage
+settings.slice.disp_slices = opt.results(1).montage.slices;
 settings.slice.orientation = opt.results(1).montage.orientation;
-settings.slice.disp_slices = -15:3:18;
 settings.fig_specs.n.slice_column = 4;
 settings.fig_specs.title = opt.results(1).name;
 
