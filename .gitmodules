@@ -1,7 +1,7 @@
 [submodule "lib/bids-matlab"]
 	path = lib/bids-matlab
 	url = https://github.com/bids-standard/bids-matlab.git
-	branch = dev
+	branch = main
 [submodule "lib/CPP_ROI"]
 	path = lib/CPP_ROI
 	url = https://github.com/cpp-lln-lab/CPP_ROI.git
