@@ -109,10 +109,10 @@ bidspm-stats
 │       ├── spmT_0001.nii           |
 │       ├── spmT_*.nii     ----------
 │       |
-│       ├── sub-blnd01_task-taskName_space-space_desc-contrastName_label-0039_p-0pt050_k-10_MC-FWE_montage.png
+│       ├── sub-blnd01_task-taskName_space-space_label-0039_desc-contrastName_p-0pt050_k-10_MC-FWE_montage.png
 │       |
-│       ├── sub-blnd01_task-taskName_space-space_desc-afterEstimation_designmatrix.png
-│       ├── sub-blnd01_task-taskName_space-space_desc-beforeEstimation_designmatrix.png
+│       ├── sub-blnd01_task-taskName_space-space_label-0001_desc-afterEstimation_designmatrix.png
+│       ├── sub-blnd01_task-taskName_space-space_label-0002_desc-beforeEstimation_designmatrix.png
 │       |
 │       ├── sub-blnd01_task-taskName_run-01_desc-confounds_regressors.mat ------
 │       ├── sub-blnd01_task-taskName_run-01_desc-confounds_regressors.tsv      |
