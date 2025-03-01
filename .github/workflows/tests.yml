@@ -108,7 +108,7 @@ jobs:
                 git clone https://github.com/MOcov/MOcov.git --depth 1
 
         -   name: Install MATLAB
-            uses: matlab-actions/setup-matlab@v2.3.0
+            uses: matlab-actions/setup-matlab@v2.3.1
             with:
                 release: ${{ matrix.matlab }}
 
@@ -203,7 +203,7 @@ jobs:
                 git clone https://github.com/MOcov/MOcov.git --depth 1
 
         -   name: Install MATLAB
-            uses: matlab-actions/setup-matlab@v2.3.0
+            uses: matlab-actions/setup-matlab@v2.3.1
             with:
                 release: ${{ matrix.matlab }}
 
@@ -299,7 +299,7 @@ jobs:
             run: make -C demos/bayes data_ds000114
 
         -   name: Install MATLAB
-            uses: matlab-actions/setup-matlab@v2.3.0
+            uses: matlab-actions/setup-matlab@v2.3.1
             with:
                 release: ${{ matrix.matlab }}
 
