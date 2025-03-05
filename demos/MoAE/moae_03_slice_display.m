@@ -38,15 +38,6 @@ opt.results = opt.model.bm.Nodes{1}.Model.Software.bidspm.Results{1};
 
 opt = checkOptions(opt);
 
-use_schema = false;
-BIDS_ROI = bids.layout(opt.dir.roi, 'use_schema', use_schema);
-
-filter = struct('sub', subLabel, ...
-                'hemi', 'R', ...
-                'desc', 'auditoryCortex');
-
-rightRoiFile = bids.query(BIDS_ROI, 'data', filter);
-
 % we get the con image to extract data
 ffxDir = getFFXdir(subLabel, opt);
 maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
@@ -60,7 +51,6 @@ layers = sd_config_layers('init', {'truecolor', 'dual', 'contour'});
 [anat_normalized_file, anatRange] = return_normalized_anat_file(opt, subLabel);
 layers(1).color.file = anat_normalized_file;
 layers(1).color.range = [0 anatRange(2)];
-
 layers(1).color.map = gray(256);
 
 %% Layer 2: Dual-coded layer
@@ -83,14 +73,12 @@ layers(2).color.label = '\beta_{listening} - \beta_{baseline} (a.u.)';
 spmTImage = spm_select('FPList', ffxDir, ['^spmT_' bf.entities.label '.nii$']);
 layers(2).opacity.file = spmTImage;
 
-layers(2).opacity.range = [2 3];
+layers(2).opacity.range = [0 3];
 layers(2).opacity.label = '| t |';
 
 %% Layer 3 and 4: Contour of ROI
-
-roi = spm_select('FPList', ffxDir, ['^sub_.*' bf.entities.label '.*_mask.nii$']);
-
-layers(3).color.file = rightRoiFile{1};
+contour = spm_select('FPList', ffxDir, ['^sub.*' bf.entities.label '.*_mask.nii']);
+layers(3).color.file = contour;
 layers(3).color.map = [0 0 0];
 layers(3).color.line_width = 2;
 
