@@ -25,8 +25,8 @@ function result  = defaultResultsStructure()
 
   % transparent plot
   layers{1} = struct('color', struct('file', result.montage.background, ...
-                                  'range', [0 1], ...
-                                  'map', gray(256)));
+                                     'range', [0 1], ...
+                                     'map', gray(256)));
 
   color_map_folder = fullfile(fileparts(which('map_luminance')), '..', 'mat_maps');
   load(fullfile(color_map_folder, 'diverging_bwr_iso.mat'));
