@@ -34,7 +34,7 @@ function result  = defaultResultsStructure()
   layers(2) = struct('color', struct('file', [], ... % con image
                                      'map', diverging_bwr, ...
                                      'range', [-4 4]), ...
-                                     'label', '\beta_{listening} - \beta_{baseline} (a.u.)', ...
+                     'label', '\beta_{listening} - \beta_{baseline} (a.u.)', ...
                      'opacity', struct('file', [], ... % spmT image
                                        'range', [2 3], ...
                                        'label', '| t |'));
@@ -42,10 +42,10 @@ function result  = defaultResultsStructure()
   layers(3) = struct('color', struct('file', [], ... % spmT mask thresholded at 0.05 FWD
                                      'map', [0 0 0], ...
                                      'line_width', 2));
-  
+
   %% Settings
   settings = sd_config_settings('init');
-  
+
   % we reuse the details for the SPM montage
   settings.slice.orientation = opt.results(1).montage.orientation;
   settings.slice.disp_slices = -50:10:50;
