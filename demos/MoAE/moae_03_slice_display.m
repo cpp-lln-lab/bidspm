@@ -31,15 +31,25 @@ opt.dir.stats = fullfile(opt.dir.derivatives, 'bidspm-stats');
 
 opt.model.file = fullfile(this_dir, 'models', 'model-MoAE_smdl.json');
 
+opt.subjects = [subLabel];
+
 % read the model
 opt = checkOptions(opt);
 
-opt.results = opt.model.bm.Nodes{1}.Model.Software.bidspm.Results{1};
+iRes = 1;
+
+opt.results = opt.model.bm.Nodes{iRes}.Model.Software.bidspm.Results{1};
+
+node = opt.model.bm.Nodes{iRes};
+[opt, BIDS] = checkMontage(opt, iRes, node, struct([]), subLabel);
 
 opt = checkOptions(opt);
 
+opt.results(iRes).montage = setMontage(opt.results(iRes));
+
 % we get the con image to extract data
 ffxDir = getFFXdir(subLabel, opt);
+
 maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
 bf = bids.File(spm_file(maskImage, 'filename'));
 conImage = spm_select('FPList', ffxDir, ['^con_' bf.entities.label '.nii$']);
@@ -48,9 +58,12 @@ conImage = spm_select('FPList', ffxDir, ['^con_' bf.entities.label '.nii$']);
 layers = sd_config_layers('init', {'truecolor', 'dual', 'contour'});
 
 % Layer 1: Anatomical map
-[anat_normalized_file, anatRange] = return_normalized_anat_file(opt, subLabel);
-layers(1).color.file = anat_normalized_file;
-layers(1).color.range = [0 anatRange(2)];
+layers(1).color.file = opt.results(iRes).montage.background{1};
+
+hdr = spm_vol(layers(1).color.file);
+[max_val, min_val] = slover('volmaxmin', hdr);
+layers(1).color.range = [0 max_val];
+
 layers(1).color.map = gray(256);
 
 %% Layer 2: Dual-coded layer
