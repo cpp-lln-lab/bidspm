@@ -23,7 +23,7 @@ function result  = defaultResultsStructure()
 
   result.nidm = true();
 
-  % tranparent plot
+  % transparent plot
   layers = struct('color', struct('file', fullfile(spm('dir'), 'canonical', 'avg152T1.nii'), ...
                                   'range', [0 1], ...
                                   'map', gray(256)));
