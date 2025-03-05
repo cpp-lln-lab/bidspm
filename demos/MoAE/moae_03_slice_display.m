@@ -47,61 +47,68 @@ opt = checkOptions(opt);
 
 opt.results(iRes).montage = setMontage(opt.results(iRes));
 
+opt.results(iRes).sdConfig
+
 % we get the con image to extract data
 ffxDir = getFFXdir(subLabel, opt);
 
 maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
 bf = bids.File(spm_file(maskImage, 'filename'));
-conImage = spm_select('FPList', ffxDir, ['^con_' bf.entities.label '.nii$']);
+
 
 %% Layers to put on the figure
 layers = sd_config_layers('init', {'truecolor', 'dual', 'contour'});
 
 % Layer 1: Anatomical map
-layers(1).color.file = opt.results(iRes).montage.background{1};
+overwrite = true;
+layers(1) = setFields(layers(1), opt.results(iRes).sdConfig.layers{1}, overwrite);
 
-hdr = spm_vol(layers(1).color.file);
-[max_val, min_val] = slover('volmaxmin', hdr);
-layers(1).color.range = [0 max_val];
+% layers(1).color.file = opt.results(iRes).montage.background{1};
+% 
+% hdr = spm_vol(layers(1).color.file);
+% [max_val, min_val] = slover('volmaxmin', hdr);
+% layers(1).color.range = [0 max_val];
 
-layers(1).color.map = gray(256);
 
 %% Layer 2: Dual-coded layer
 %
 %   - contrast estimates color-coded;
+layers(2) = setFields(layers(2), opt.results(iRes).sdConfig.layers{2}, overwrite);
 
+conImage = spm_select('FPList', ffxDir, ['^con_' bf.entities.label '.nii$']);
 layers(2).color.file = conImage;
 
 color_map_folder = fullfile(fileparts(which('map_luminance')), '..', 'mat_maps');
-load(fullfile(color_map_folder, 'diverging_bwr_iso.mat'));
+load(fullfile(color_map_folder, layers(2).color.map));
 layers(2).color.map = diverging_bwr;
 
-layers(2).color.range = [-4 4];
-layers(2).color.label = '\beta_{listening} - \beta_{baseline} (a.u.)';
+% layers(2).color.range = [-4 4];
+% layers(2).color.label = '\beta_{listening} - \beta_{baseline} (a.u.)';
 
-%% Layer 2: Dual-coded layer
-%
+
 %   - t-statistics opacity-coded
-
 spmTImage = spm_select('FPList', ffxDir, ['^spmT_' bf.entities.label '.nii$']);
 layers(2).opacity.file = spmTImage;
 
-layers(2).opacity.range = [0 3];
-layers(2).opacity.label = '| t |';
+% layers(2).opacity.range = [0 3];
+% layers(2).opacity.label = '| t |';
 
 %% Layer 3 and 4: Contour of ROI
+layers(3) = setFields(layers(3), opt.results(iRes).sdConfig.layers{3}, overwrite);
+
 contour = spm_select('FPList', ffxDir, ['^sub.*' bf.entities.label '.*_mask.nii']);
+
 layers(3).color.file = contour;
-layers(3).color.map = [0 0 0];
-layers(3).color.line_width = 2;
+% layers(3).color.map = [0 0 0];
+% layers(3).color.line_width = 2;
 
 %% Settings
-settings = sd_config_settings('init');
+settings = opt.results(iRes).sdConfig.settings;
 
 % we reuse the details for the SPM montage
-settings.slice.disp_slices = opt.results(1).montage.slices;
-settings.slice.orientation = opt.results(1).montage.orientation;
-settings.fig_specs.n.slice_column = 4;
+% settings.slice.disp_slices = opt.results(1).montage.slices;
+% settings.slice.orientation = opt.results(1).montage.orientation;
+
 settings.fig_specs.title = opt.results(1).name;
 
 %% Display the layers
