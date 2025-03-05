@@ -67,9 +67,9 @@ function test_setBatchResults_export()
   export{1}.png = true;
   export{2}.csv = true;
   export{3}.tspm.basename = ...
-      'sub-01_task-test_space-individual_desc-test_p-0pt050_k-0_MC-FDR_spmT';
+      'sub-01_task-test_space-individual_label-0001_desc-test_p-0pt050_k-0_MC-FDR_spmT';
   export{4}.binary.basename = ...
-      'sub-01_task-test_space-individual_desc-test_p-0pt050_k-0_MC-FDR_mask';
+      'sub-01_task-test_space-individual_label-0001_desc-test_p-0pt050_k-0_MC-FDR_mask';
 
   export{5}.nidm.modality = 'FMRI';
   export{end}.nidm.refspace = 'subject';
