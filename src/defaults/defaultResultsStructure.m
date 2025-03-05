@@ -43,12 +43,15 @@ function result  = defaultResultsStructure()
                                      'map', [0 0 0], ...
                                      'line_width', 2));
 
-  %% Settings
+  result.sdConfig.layers = layers;
+
   settings = sd_config_settings('init');
 
-  % we reuse the details for the SPM montage
+  settings.slice.orientation = results.montage.orientation;
   settings.slice.disp_slices = -50:10:50;
   settings.fig_specs.n.slice_column = 4;
   settings.fig_specs.title = [];
+
+  result.sdConfig.settings = settings;
 
 end
