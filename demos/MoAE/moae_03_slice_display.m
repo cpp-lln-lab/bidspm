@@ -47,14 +47,13 @@ opt = checkOptions(opt);
 
 opt.results(iRes).montage = setMontage(opt.results(iRes));
 
-opt.results(iRes).sdConfig
+opt.results(iRes).sdConfig;
 
 % we get the con image to extract data
 ffxDir = getFFXdir(subLabel, opt);
 
 maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
 bf = bids.File(spm_file(maskImage, 'filename'));
-
 
 %% Layers to put on the figure
 layers = sd_config_layers('init', {'truecolor', 'dual', 'contour'});
@@ -64,11 +63,10 @@ overwrite = true;
 layers(1) = setFields(layers(1), opt.results(iRes).sdConfig.layers{1}, overwrite);
 
 % layers(1).color.file = opt.results(iRes).montage.background{1};
-% 
+%
 % hdr = spm_vol(layers(1).color.file);
 % [max_val, min_val] = slover('volmaxmin', hdr);
 % layers(1).color.range = [0 max_val];
-
 
 %% Layer 2: Dual-coded layer
 %
@@ -84,7 +82,6 @@ layers(2).color.map = diverging_bwr;
 
 % layers(2).color.range = [-4 4];
 % layers(2).color.label = '\beta_{listening} - \beta_{baseline} (a.u.)';
-
 
 %   - t-statistics opacity-coded
 spmTImage = spm_select('FPList', ffxDir, ['^spmT_' bf.entities.label '.nii$']);
