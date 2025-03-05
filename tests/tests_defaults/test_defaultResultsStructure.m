@@ -36,8 +36,7 @@ function test_defaultResultsStructure_basic()
   expected.montage.background = fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
 
   expected.nidm = true();
-  
-  
+
   layers{1} = struct('color', struct('file', expected.montage.background, ...
                                      'range', [0 1], ...
                                      'map', gray(256)));
@@ -57,7 +56,7 @@ function test_defaultResultsStructure_basic()
   expected.sdConfig.layers = layers;
 
   settings = sd_config_settings('init');
-  
+
   settings = sd_config_settings('init');
 
   settings.slice.orientation = expected.montage.orientation;

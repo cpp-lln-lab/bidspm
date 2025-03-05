@@ -28,8 +28,8 @@ function result  = defaultResultsStructure()
                                      'range', [0 1], ...
                                      'map', gray(256)));
 
-%   color_map_folder = fullfile(fileparts(which('map_luminance')), '..', 'mat_maps');
-%   load(fullfile(color_map_folder, 'diverging_bwr_iso.mat'));
+  %   color_map_folder = fullfile(fileparts(which('map_luminance')), '..', 'mat_maps');
+  %   load(fullfile(color_map_folder, 'diverging_bwr_iso.mat'));
 
   layers{2} = struct('color', struct('file', [], ... % con image
                                      'map', 'diverging_bwr_iso', ...
