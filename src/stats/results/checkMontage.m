@@ -1,7 +1,7 @@
 function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
-  % 
+  %
   % Check values for create a slice montage.
-  % 
+  %
   % Set default values if they are missing.
   %
   % USAGE::
@@ -66,5 +66,5 @@ function [opt, BIDS] = checkMontage(opt, iRes, node, BIDS, subLabel)
     opt.results(iRes).montage.background = background;
 
   end
-  
+
 end
