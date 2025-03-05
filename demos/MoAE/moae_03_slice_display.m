@@ -31,90 +31,81 @@ opt.dir.stats = fullfile(opt.dir.derivatives, 'bidspm-stats');
 
 opt.model.file = fullfile(this_dir, 'models', 'model-MoAE_smdl.json');
 
-% Specify the result to compute
-opt.results(1).nodeName = 'run_level';
+opt.subjects = [subLabel];
 
-opt.results(1).name = 'listening';
-% MONTAGE FIGURE OPTIONS
-opt.results(1).montage.do = true();
-opt.results(1).montage.slices = -4:2:16; % in mm
-% axial is default 'sagittal', 'coronal'
-opt.results(1).montage.orientation = 'axial';
-% will use the MNI T1 template by default but the underlay image can be changed.
-opt.results(1).montage.background = ...
-    fullfile(spm('dir'), 'canonical', 'avg152T1.nii');
+% read the model
+opt = checkOptions(opt);
+
+iRes = 1;
+
+opt.results = opt.model.bm.Nodes{iRes}.Model.Software.bidspm.Results{1};
+
+node = opt.model.bm.Nodes{iRes};
+[opt, BIDS] = checkMontage(opt, iRes, node, struct([]), subLabel);
 
 opt = checkOptions(opt);
 
-use_schema = false;
-BIDS_ROI = bids.layout(opt.dir.roi, 'use_schema', use_schema);
+opt.results(iRes).montage = setMontage(opt.results(iRes));
 
-filter = struct('sub', subLabel, ...
-                'hemi', 'R', ...
-                'desc', 'auditoryCortex');
-
-rightRoiFile = bids.query(BIDS_ROI, 'data', filter);
-
-filter.hemi = 'L';
-
-leftRoiFile = bids.query(BIDS_ROI, 'data', filter);
+opt.results(iRes).sdConfig;
 
 % we get the con image to extract data
 ffxDir = getFFXdir(subLabel, opt);
+
 maskImage = spm_select('FPList', ffxDir, '^.*_mask.nii$');
 bf = bids.File(spm_file(maskImage, 'filename'));
-conImage = spm_select('FPList', ffxDir, ['^con_' bf.entities.label '.nii$']);
 
 %% Layers to put on the figure
-layers = sd_config_layers('init', {'truecolor', 'dual', 'contour', 'contour'});
+layers = sd_config_layers('init', {'truecolor', 'dual', 'contour'});
 
 % Layer 1: Anatomical map
-[anat_normalized_file, anatRange] = return_normalized_anat_file(opt, subLabel);
-layers(1).color.file = anat_normalized_file;
-layers(1).color.range = [0 anatRange(2)];
+overwrite = true;
+layers(1) = setFields(layers(1), opt.results(iRes).sdConfig.layers{1}, overwrite);
 
-layers(1).color.map = gray(256);
+% layers(1).color.file = opt.results(iRes).montage.background{1};
+%
+% hdr = spm_vol(layers(1).color.file);
+% [max_val, min_val] = slover('volmaxmin', hdr);
+% layers(1).color.range = [0 max_val];
 
 %% Layer 2: Dual-coded layer
 %
 %   - contrast estimates color-coded;
+layers(2) = setFields(layers(2), opt.results(iRes).sdConfig.layers{2}, overwrite);
 
+conImage = spm_select('FPList', ffxDir, ['^con_' bf.entities.label '.nii$']);
 layers(2).color.file = conImage;
 
 color_map_folder = fullfile(fileparts(which('map_luminance')), '..', 'mat_maps');
-load(fullfile(color_map_folder, 'diverging_bwr_iso.mat'));
+load(fullfile(color_map_folder, layers(2).color.map));
 layers(2).color.map = diverging_bwr;
 
-layers(2).color.range = [-4 4];
-layers(2).color.label = '\beta_{listening} - \beta_{baseline} (a.u.)';
+% layers(2).color.range = [-4 4];
+% layers(2).color.label = '\beta_{listening} - \beta_{baseline} (a.u.)';
 
-%% Layer 2: Dual-coded layer
-%
 %   - t-statistics opacity-coded
-
 spmTImage = spm_select('FPList', ffxDir, ['^spmT_' bf.entities.label '.nii$']);
 layers(2).opacity.file = spmTImage;
 
-layers(2).opacity.range = [2 3];
-layers(2).opacity.label = '| t |';
+% layers(2).opacity.range = [0 3];
+% layers(2).opacity.label = '| t |';
 
 %% Layer 3 and 4: Contour of ROI
+layers(3) = setFields(layers(3), opt.results(iRes).sdConfig.layers{3}, overwrite);
 
-layers(3).color.file = rightRoiFile{1};
-layers(3).color.map = [0 0 0];
-layers(3).color.line_width = 2;
+contour = spm_select('FPList', ffxDir, ['^sub.*' bf.entities.label '.*_mask.nii']);
 
-layers(4).color.file = leftRoiFile{1};
-layers(4).color.map = [1 1 1];
-layers(4).color.line_width = 2;
+layers(3).color.file = contour;
+% layers(3).color.map = [0 0 0];
+% layers(3).color.line_width = 2;
 
 %% Settings
-settings = sd_config_settings('init');
+settings = opt.results(iRes).sdConfig.settings;
 
 % we reuse the details for the SPM montage
-settings.slice.orientation = opt.results(1).montage.orientation;
-settings.slice.disp_slices = -15:3:18;
-settings.fig_specs.n.slice_column = 4;
+% settings.slice.disp_slices = opt.results(1).montage.slices;
+% settings.slice.orientation = opt.results(1).montage.orientation;
+
 settings.fig_specs.title = opt.results(1).name;
 
 %% Display the layers
