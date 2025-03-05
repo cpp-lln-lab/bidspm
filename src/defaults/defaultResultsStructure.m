@@ -47,7 +47,6 @@ function result  = defaultResultsStructure()
   settings = sd_config_settings('init');
 
   % we reuse the details for the SPM montage
-  settings.slice.orientation = opt.results(1).montage.orientation;
   settings.slice.disp_slices = -50:10:50;
   settings.fig_specs.n.slice_column = 4;
   settings.fig_specs.title = [];
