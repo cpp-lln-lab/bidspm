@@ -24,14 +24,14 @@ function result  = defaultResultsStructure()
   result.nidm = true();
 
   % transparent plot
-  layers = struct('color', struct('file', fullfile(spm('dir'), 'canonical', 'avg152T1.nii'), ...
+  layers{1} = struct('color', struct('file', result.montage.background, ...
                                   'range', [0 1], ...
                                   'map', gray(256)));
 
   color_map_folder = fullfile(fileparts(which('map_luminance')), '..', 'mat_maps');
   load(fullfile(color_map_folder, 'diverging_bwr_iso.mat'));
 
-  layers(2) = struct('color', struct('file', [], ... % con image
+  layers{2} = struct('color', struct('file', [], ... % con image
                                      'map', diverging_bwr, ...
                                      'range', [-4 4]), ...
                      'label', '\beta_{listening} - \beta_{baseline} (a.u.)', ...
@@ -39,7 +39,7 @@ function result  = defaultResultsStructure()
                                        'range', [2 3], ...
                                        'label', '| t |'));
 
-  layers(3) = struct('color', struct('file', [], ... % spmT mask thresholded at 0.05 FWD
+  layers{3} = struct('color', struct('file', [], ... % spmT mask thresholded at 0.05 FWD
                                      'map', [0 0 0], ...
                                      'line_width', 2));
 
@@ -47,7 +47,7 @@ function result  = defaultResultsStructure()
 
   settings = sd_config_settings('init');
 
-  settings.slice.orientation = results.montage.orientation;
+  settings.slice.orientation = result.montage.orientation;
   settings.slice.disp_slices = -50:10:50;
   settings.fig_specs.n.slice_column = 4;
   settings.fig_specs.title = [];
