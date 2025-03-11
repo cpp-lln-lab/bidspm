@@ -271,6 +271,8 @@ function matlabbatch = bidsResults(varargin)
 
   cleanUpWorkflow(opt);
 
+  transparentMontage(opt)
+
 end
 
 function [opt, listNodeLevels] = keepRequestedNodes(opt, nodeName, analysisLevel)
