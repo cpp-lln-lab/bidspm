@@ -271,7 +271,7 @@ function matlabbatch = bidsResults(varargin)
 
   cleanUpWorkflow(opt);
 
-  transparentMontage(opt)
+  transparentMontage(opt);
 
 end
 
