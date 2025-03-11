@@ -27,7 +27,6 @@ opt.model.file = fullfile(this_dir, 'models', 'model-MoAE_smdl.json');
 
 opt.subjects = {'01'};
 
-% read the model
 opt = checkOptions(opt);
 
 transparentMontage(opt);
