@@ -46,7 +46,7 @@ jobs:
                 git clone https://github.com/spm/spm12.git --depth 1
 
         -   name: Test notebooks
-            uses: matlab-actions/run-command@v2.1.1
+            uses: matlab-actions/run-command@v2.2.1
             with:
                 command: |
                     root_dir = getenv('GITHUB_WORKSPACE');
