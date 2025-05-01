@@ -113,7 +113,7 @@ jobs:
                 release: ${{ matrix.matlab }}
 
         -   name: Run fast unit tests MATLAB
-            uses: matlab-actions/run-command@v2.1.1
+            uses: matlab-actions/run-command@v2.2.1
             with:
                 command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
 
@@ -208,7 +208,7 @@ jobs:
                 release: ${{ matrix.matlab }}
 
         -   name: Run slow unit tests MATLAB
-            uses: matlab-actions/run-command@v2.1.1
+            uses: matlab-actions/run-command@v2.2.1
             with:
                 command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); global SLOW; SLOW=true; run tests_matlab;
 
@@ -304,6 +304,6 @@ jobs:
                 release: ${{ matrix.matlab }}
 
         -   name: Run system tests MATLAB ${{ matrix.script }}
-            uses: matlab-actions/run-command@v2.1.1
+            uses: matlab-actions/run-command@v2.2.1
             with:
                 command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_${{ matrix.script }};
