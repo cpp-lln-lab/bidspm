@@ -8,18 +8,23 @@ function renameSpmT(result)
   %
 
   % (C) Copyright 2023 bidspm developers
-  outputFiles = spm_select('FPList', result.dir, '^spmT_[0-9].*_sub-.*nii$');
+  prefixes = {'spmT', 'spmF'};
+  for i_prefix = 1:numel(prefixes)
 
-  for iFile = 1:size(outputFiles, 1)
+    outputFiles = spm_select('FPList', result.dir, ['^' prefixes{i_prefix} '_[0-9].*_sub-.*nii$']);
 
-    source = deblank(outputFiles(iFile, :));
+    for iFile = 1:size(outputFiles, 1)
 
-    basename = spm_file(source, 'basename');
-    split = strfind(basename, '_sub');
-    bf = bids.File(basename(split + 1:end));
+      source = deblank(outputFiles(iFile, :));
 
-    target = spm_file(source, 'basename', bf.filename);
+      basename = spm_file(source, 'basename');
+      split = strfind(basename, '_sub');
+      bf = bids.File(basename(split + 1:end));
 
-    movefile(source, target);
+      target = spm_file(source, 'basename', bf.filename);
+
+      movefile(source, target);
+    end
+
   end
 end

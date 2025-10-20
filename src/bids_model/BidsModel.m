@@ -312,6 +312,7 @@ classdef BidsModel < bids.Model
     end
 
     function results = getResults(obj)
+      %    return results from all nodes
 
       results = struct([]);
       idx = 1;
