@@ -37,7 +37,7 @@ repos:
         additional_dependencies: [miss_hit]
 
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -48,7 +48,7 @@ repos:
         args: [--autofix, --no-sort-keys]
 
 -   repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: v2.14.0
+    rev: v2.15.0
     hooks:
     -   id: pretty-format-toml
         args: [--autofix, --indent, '4']
@@ -66,32 +66,32 @@ repos:
     -   id: rst-inline-touching-normal
 
 -   repo: https://github.com/pycqa/isort
-    rev: 6.0.1
+    rev: 7.0.0
     hooks:
     -   id: isort
         args: [--profile, black]
 
--   repo: https://github.com/psf/black
-    rev: 25.1.0
+-   repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 25.11.0
     hooks:
     -   id: black
         args: [--config=pyproject.toml]
 
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v3.19.1
+    rev: v3.21.1
     hooks:
     -   id: pyupgrade
         args: [--py38-plus]
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.15.0
+    rev: v1.18.2
     hooks:
     -   id: mypy
         files: bidspm
         args: [--config-file, pyproject.toml]
 
 -   repo: https://github.com/hadolint/hadolint
-    rev: v2.13.1-beta
+    rev: v2.14.0
     hooks:
     -   id: hadolint-docker
         name: Lint Dockerfiles
@@ -114,7 +114,7 @@ repos:
 # flake8-functions checks functions quality: https://pypi.org/project/flake8-functions/
 # flake8-bugbear detects some common bugs: https://github.com/PyCQA/flake8-bugbear
 -   repo: https://github.com/pyCQA/flake8
-    rev: 7.2.0
+    rev: 7.3.0
     hooks:
     -   id: flake8
         args: [--config, .flake8, --verbose, src, tools, docs, demos, tests]
