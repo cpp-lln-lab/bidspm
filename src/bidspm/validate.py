@@ -19,11 +19,9 @@ def validate(file: Path) -> int:
         BIDSStatsModel.parse_file(file)
         return 0
     except pydantic.error_wrappers.ValidationError as e:
-        log.warning(
-            f"""{file} is not a valid BIDS Stats Model file.
+        log.warning(f"""{file} is not a valid BIDS Stats Model file.
 Please use the validator: https://bids-standard.github.io/stats-models/validator.html
-"""
-        )
+""")
         log.warning(e)
         return 1
 
