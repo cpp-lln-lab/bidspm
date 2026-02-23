@@ -48,7 +48,7 @@ repos:
         args: [--autofix, --no-sort-keys]
 
 -   repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: v2.15.0
+    rev: v2.16.0
     hooks:
     -   id: pretty-format-toml
         args: [--autofix, --indent, '4']
@@ -66,25 +66,25 @@ repos:
     -   id: rst-inline-touching-normal
 
 -   repo: https://github.com/pycqa/isort
-    rev: 7.0.0
+    rev: 8.0.0
     hooks:
     -   id: isort
         args: [--profile, black]
 
 -   repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 25.11.0
+    rev: 26.1.0
     hooks:
     -   id: black
         args: [--config=pyproject.toml]
 
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.1
+    rev: v3.21.2
     hooks:
     -   id: pyupgrade
         args: [--py38-plus]
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.18.2
+    rev: v1.19.1
     hooks:
     -   id: mypy
         files: bidspm
