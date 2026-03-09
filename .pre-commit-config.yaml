@@ -1,41 +1,38 @@
 ---
-exclude: |
-    (?x)^(
-    demos/renaming/spm_2_bids_filenames.ipynb
-    | demos/MoAE/moae_01_bids_app.ipynb
-    )$
-
+exclude: "(?x)^(\ndemos/renaming/spm_2_bids_filenames.ipynb\n| demos/MoAE/moae_01_bids_app.ipynb\n)$\n"
 ci:
-    skip: [hadolint-docker]
-
-
+    autoupdate_commit_msg: 'chore: update pre-commit hooks'
+    autoupdate_schedule: monthly
+    autofix_commit_msg: 'style: pre-commit fixes'
 repos:
 -   repo: local
-
     hooks:
     -   id: mh_style
         name: mh_style
         entry: mh_style
-        args: [--process-slx, --fix]
+        args:
+        -   --process-slx
+        -   --fix
         files: ^(.*\.(m|slx))$
         language: python
-        additional_dependencies: [miss_hit_core]
-
+        additional_dependencies:
+        -   miss_hit_core
     -   id: mh_metric
         name: mh_metric
         entry: mh_metric
-        args: [--ci]
+        args:
+        -   --ci
         files: ^(.*\.(m|slx))$
         language: python
-        additional_dependencies: [miss_hit_core]
-
+        additional_dependencies:
+        -   miss_hit_core
     -   id: mh_lint
         name: mh_lint
         entry: mh_lint
         files: ^(.*\.(m|slx))$
         language: python
-        additional_dependencies: [miss_hit]
-
+        additional_dependencies:
+        -   miss_hit
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
@@ -45,51 +42,60 @@ repos:
     -   id: check-json
     -   id: check-added-large-files
     -   id: pretty-format-json
-        args: [--autofix, --no-sort-keys]
-
+        args:
+        -   --autofix
+        -   --no-sort-keys
 -   repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
     rev: v2.16.0
     hooks:
     -   id: pretty-format-toml
-        args: [--autofix, --indent, '4']
-
+        args:
+        -   --autofix
+        -   --indent
+        -   '4'
 -   repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
     rev: 0.2.3
     hooks:
     -   id: yamlfmt
-        args: [--mapping, '4', --sequence, '4', --offset, '0']
-
+        args:
+        -   --mapping
+        -   '4'
+        -   --sequence
+        -   '4'
+        -   --offset
+        -   '0'
 -   repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.10.0
     hooks:
     -   id: rst-backticks
     -   id: rst-inline-touching-normal
-
 -   repo: https://github.com/pycqa/isort
     rev: 8.0.1
     hooks:
     -   id: isort
-        args: [--profile, black]
-
+        args:
+        -   --profile
+        -   black
 -   repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 26.1.0
+    rev: 26.3.0
     hooks:
     -   id: black
-        args: [--config=pyproject.toml]
-
+        args:
+        -   --config=pyproject.toml
 -   repo: https://github.com/asottile/pyupgrade
     rev: v3.21.2
     hooks:
     -   id: pyupgrade
-        args: [--py38-plus]
-
+        args:
+        -   --py38-plus
 -   repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.19.1
     hooks:
     -   id: mypy
         files: bidspm
-        args: [--config-file, pyproject.toml]
-
+        args:
+        -   --config-file
+        -   pyproject.toml
 -   repo: https://github.com/hadolint/hadolint
     rev: v2.14.0
     hooks:
@@ -97,25 +103,32 @@ repos:
         name: Lint Dockerfiles
         description: Runs hadolint Docker image to lint Dockerfiles
         language: docker_image
-        types: [dockerfile]
+        types:
+        -   dockerfile
         entry: ghcr.io/hadolint/hadolint hadolint
-
 -   repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+    rev: v2.4.2
     hooks:
     -   id: codespell
-        args: [--toml, pyproject.toml]
-        additional_dependencies: [tomli]
-
-# Check that Python code complies with PEP8 guidelines
-# flake8 uses pydocstyle to check docstrings: https://flake8.pycqa.org/en/latest/
-# flake8-docstrings: https://pypi.org/project/flake8-docstrings/
-# flake8-use-fstring forces to use fstrings: https://pypi.org/project/flake8-use-fstring/
-# flake8-functions checks functions quality: https://pypi.org/project/flake8-functions/
-# flake8-bugbear detects some common bugs: https://github.com/PyCQA/flake8-bugbear
+        args:
+        -   --toml
+        -   pyproject.toml
+        additional_dependencies:
+        -   tomli
 -   repo: https://github.com/pyCQA/flake8
     rev: 7.3.0
     hooks:
     -   id: flake8
-        args: [--config, .flake8, --verbose, src, tools, docs, demos, tests]
-        additional_dependencies: [flake8-docstrings, flake8-use-fstring, flake8-bugbear]
+        args:
+        -   --config
+        -   .flake8
+        -   --verbose
+        -   src
+        -   tools
+        -   docs
+        -   demos
+        -   tests
+        additional_dependencies:
+        -   flake8-docstrings
+        -   flake8-use-fstring
+        -   flake8-bugbear
