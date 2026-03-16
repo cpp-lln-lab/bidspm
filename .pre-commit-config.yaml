@@ -2,7 +2,7 @@
 exclude: "(?x)^(\ndemos/renaming/spm_2_bids_filenames.ipynb\n| demos/MoAE/moae_01_bids_app.ipynb\n)$\n"
 ci:
     autoupdate_commit_msg: 'chore: update pre-commit hooks'
-    autoupdate_schedule: monthly
+    autoupdate_schedule: quarterly
     autofix_commit_msg: 'style: pre-commit fixes'
 repos:
 -   repo: local
