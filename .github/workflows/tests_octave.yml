@@ -159,7 +159,7 @@ jobs:
 
         -   name: Code coverage
             if: matrix.test_type == 'unit'
-            uses: codecov/codecov-action@v5
+            uses: codecov/codecov-action@v7
             with:
                 file: coverage.xml
                 flags: octave
