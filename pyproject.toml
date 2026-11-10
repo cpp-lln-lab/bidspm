@@ -3,7 +3,7 @@ build-backend = "hatchling.build"
 requires = ["hatchling", "hatch-vcs"]
 
 [project]
-authors = [{name = "bidspm developers"}]
+authors = [{ name = "bidspm developers" }]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
@@ -18,8 +18,8 @@ dependencies = [
 description = "SPM centric bids app"
 # Version from setuptools_scm
 dynamic = ["version"]
-license = {text = "GPL-3.0"}
-maintainers = [{name = "Rémin Gau", email = "remi.gau@gmail.com"}]
+license = { text = "GPL-3.0" }
+maintainers = [{ name = "Rémin Gau", email = "remi.gau@gmail.com" }]
 name = "bidspm"
 readme = "README.md"
 requires-python = ">=3.8"
