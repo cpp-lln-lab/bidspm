@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * [ENH] Add SPM's contrast number in filename of each contrasts output filename #1347 by @Remi-Gau
+* [INFRA] Migrate the documentation to sphinxcontrib-matlabdomain 1.0 (pre-release) by @jasonnicholson
 
 ### Deprecated
 

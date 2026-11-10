@@ -3,9 +3,9 @@
 Bayesian model selection
 ************************
 
-.. automodule:: demos.bayes
+.. mat:autofolder:: demos/bayes/
 
-.. autoscript:: ds000114_bayes_run
+.. autoscript:: demos/bayes/ds000114_bayes_run.m
 
 .. admonition:: script
     :class: dropdown

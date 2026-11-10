@@ -45,7 +45,7 @@ doc = [
     "pydata-sphinx-theme",
     "sphinx-togglebutton",
     "sphinxcontrib-bibtex",
-    "sphinxcontrib-matlabdomain>=0.22.1",
+    "sphinxcontrib-matlabdomain @ git+https://github.com/sphinx-contrib/matlabdomain.git@241941e28ed48f0712f1dfa7624f274592ca424b ; python_version >= '3.11'",
     "sphinxcontrib-mermaid",
     "setuptools"
 ]
@@ -96,6 +96,9 @@ version-file = "src/bidspm/_version.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/bidspm"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.hatch.version]
 source = "vcs"

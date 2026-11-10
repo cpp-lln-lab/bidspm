@@ -30,9 +30,7 @@ def return_title(path: Path, level=1):
     return title
 
 
-def append_dir_content(
-    path: Path, content: str, parent_folder=None, recursive=False, level=1
-):
+def append_dir_content(path: Path, content: str, recursive=False, level=1):
     if not path.is_dir():
         return content
 
@@ -45,10 +43,7 @@ def append_dir_content(
         if file.stem in file_ignore_list:
             continue
 
-        if parent_folder is None:
-            function_name = f"src.{path.name}.{file.stem}"
-        else:
-            function_name = f"src.{parent_folder}.{path.name}.{file.stem}"
+        function_name = file.relative_to(code_src.parent).as_posix()
         content += f".. autofunction:: {function_name}\n"
 
         print(function_name)
@@ -59,7 +54,6 @@ def append_dir_content(
             content = append_dir_content(
                 subpath,
                 content,
-                parent_folder=path.name,
                 recursive=recursive,
                 level=level + 1,
             )
@@ -75,12 +69,8 @@ def update_content(old_content, f):
     content = """.. AUTOMATICALLY GENERATED
 """
 
-    content = append_dir_content(
-        code_src.joinpath("workflows"), content, parent_folder=None, recursive=True
-    )
-    content = append_dir_content(
-        code_src.joinpath("batches"), content, parent_folder=None, recursive=True
-    )
+    content = append_dir_content(code_src.joinpath("workflows"), content, recursive=True)
+    content = append_dir_content(code_src.joinpath("batches"), content, recursive=True)
 
     subfolders = sorted(list(code_src.iterdir()))
 
@@ -89,9 +79,7 @@ def update_content(old_content, f):
             continue
 
         if path.is_dir():
-            content = append_dir_content(
-                path, content, parent_folder=None, recursive=True
-            )
+            content = append_dir_content(path, content, recursive=True)
 
     print(content, file=f)
 

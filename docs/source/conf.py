@@ -43,8 +43,19 @@ extensions = [
     "myst_parser",
     "sphinxarg.ext",
 ]
-matlab_src_dir = os.path.dirname(os.path.abspath("../../src"))
-matlab_short_links = True
+matlab_src_code_project_root = "../.."
+matlab_src_include_patterns = ["*.m", "src/**", "demos/**", "lib/mancoreg/**"]
+matlab_src_exclude_patterns = [
+    "README.*",
+    "CHANGES.*",
+    "CHANGELOG.*",
+    "LICENSE.*",
+    "CONTRIBUTING.*",
+    "CODE_OF_CONDUCT.*",
+    "SECURITY.*",
+    "demos/ds003717",
+    "test_api.m",
+]
 matlab_auto_link = "basic"
 primary_domain = "mat"
 autosummary_generate = True

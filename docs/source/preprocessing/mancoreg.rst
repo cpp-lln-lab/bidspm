@@ -5,7 +5,7 @@ Manual coregistration tools
 
 ----
 
-.. automodule:: lib.mancoreg
+.. mat:autofolder:: lib/mancoreg/
 
-.. autofunction:: mancoreg
-.. autofunction:: mancoregCallbacks
+.. autofunction:: lib/mancoreg/mancoreg.m
+.. autofunction:: lib/mancoreg/mancoregCallbacks.m
