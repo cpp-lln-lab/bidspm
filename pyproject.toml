@@ -45,7 +45,7 @@ doc = [
     "pydata-sphinx-theme",
     "sphinx-togglebutton",
     "sphinxcontrib-bibtex",
-    "sphinxcontrib-matlabdomain @ git+https://github.com/sphinx-contrib/matlabdomain.git@241941e28ed48f0712f1dfa7624f274592ca424b ; python_version >= '3.11'",
+    "sphinxcontrib-matlabdomain @ git+https://github.com/sphinx-contrib/matlabdomain.git@0270cc88531f21c38ef741a5408c84ec46870716 ; python_version >= '3.11'",
     "sphinxcontrib-mermaid",
     "setuptools"
 ]
