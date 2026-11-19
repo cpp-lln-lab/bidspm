@@ -40,7 +40,7 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, 
            returnDependency(opt, 'selectAnat'), ...
            substruct('.', 'files', '{}', {1}));
 
-  % SOURCE IMAGE : DEPENDENCY FROM REALIGNEMENT
+  % SOURCE IMAGE : DEPENDENCY FROM REALIGNMENT
   % Mean Image
   meanImageToUse = 'meanuwr';
   otherImageToUse = 'uwrfiles';
@@ -54,7 +54,7 @@ function matlabbatch = setBatchCoregistrationFuncToAnat(matlabbatch, BIDS, opt, 
               returnDependency(opt, 'realign'), ...
               substruct('.', meanImageToUse));
 
-  % OTHER IMAGES : DEPENDENCY FROM REALIGNEMENT
+  % OTHER IMAGES : DEPENDENCY FROM REALIGNMENT
 
   opt.query = opt.bidsFilterFile.bold;
 
