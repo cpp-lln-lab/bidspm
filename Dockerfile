@@ -58,6 +58,14 @@ RUN mkdir /opt/spm12 && \
     make -C /opt/spm12/src PLATFORM=octave install && \
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
 
+COPY --from=ghcr.io/astral-sh/uv:0.13.5 /uv /uvx /bin/
+ENV UV_PYTHON_INSTALL_DIR=/opt/uv/python \
+    UV_PROJECT_ENVIRONMENT=/opt/venv \
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    UV_NO_CACHE=1
+ENV PATH="/opt/venv/bin:${PATH}"
+
 WORKDIR /home/neuro
 
 COPY . /home/neuro/bidspm
@@ -66,9 +74,7 @@ RUN git restore . && \
     git -C lib/CPP_ROI/atlas/HCPex reset --hard && \
     git -C lib/CPP_ROI/atlas/HCPex clean --force -dfx && \
     git status && \
-    pip install --no-cache-dir --upgrade pip && \
-    pip3 --no-cache-dir install -r requirements.txt && \
-    pip3 --no-cache-dir install . && \
+    uv sync --locked --no-dev --no-editable --python 3.12 && \
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
     octave --no-gui --eval "addpath(pwd); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path" && \
     octave --no-gui --eval "path"

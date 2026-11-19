@@ -10,7 +10,7 @@ def test_bidspm_error_dir(caplog):
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         cli(["bidspm", "/foo/bar", str(Path()), "subject", "preprocess"])
 
-    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.type is SystemExit
     assert pytest_wrapped_e.value.code == 66
     assert ["The 'bids_dir' does not exist:\n\t/foo/bar"] == [
         rec.message for rec in caplog.records

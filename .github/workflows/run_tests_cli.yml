@@ -17,7 +17,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+                python-version: ['3.11', '3.12', '3.13', '3.14', '3.15']
         steps:
         -   name: Install dependencies
             run: |
@@ -29,8 +29,8 @@ jobs:
             uses: denoland/setup-deno@v2
             with:
                 deno-version: v1.x
-        -   uses: actions/setup-python@v7
-            name: Set up Python ${{ matrix.python-version }}
+        -   name: Install uv and set up Python ${{ matrix.python-version }}
+            uses: astral-sh/setup-uv@v7
             with:
                 python-version: ${{ matrix.python-version }}
         -   name: Clone bidspm
@@ -38,15 +38,15 @@ jobs:
             with:
                 submodules: recursive
                 fetch-depth: 0
-        -   name: Install validators
+        -   name: Install validators and bidspm
             run: |
-                make install
-                pip install .[test]
+                deno install -Agf -n bids-validator jsr:@bids/validator
+                uv sync --locked --no-default-groups --group test
         -   name: Run tests and generate coverage report
             run: |
-                coverage erase
-                coverage run --source src -m pytest
-                coverage xml
+                uv run coverage erase
+                uv run coverage run --source src -m pytest
+                uv run coverage xml
         # -   name: Code coverage
         #     uses: codecov/codecov-action@v4
         #     with:
@@ -114,12 +114,17 @@ jobs:
         -   name: Info
             run: octave --version
 
+        -   name: Install uv
+            uses: astral-sh/setup-uv@v7
+            with:
+                python-version: '3.12'
         -   name: Install
             run: |
-                make install
-                pip install boutiques
+                deno install -Agf -n bids-validator jsr:@bids/validator
+                uv sync --locked --no-default-groups
+                uv pip install boutiques
 
         -   name: Run via boutiques
             run: |
-                bosh exec launch --no-container  boutiques/bidspm_3.1.1.json boutiques/invocation_smooth.json
-                bosh exec launch --no-container  boutiques/bidspm_3.1.1.json boutiques/invocation_stats.json
+                uv run --no-sync bosh exec launch --no-container  boutiques/bidspm_3.1.1.json boutiques/invocation_smooth.json
+                uv run --no-sync bosh exec launch --no-container  boutiques/bidspm_3.1.1.json boutiques/invocation_stats.json
