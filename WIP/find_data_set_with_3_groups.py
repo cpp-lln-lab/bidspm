@@ -9,7 +9,6 @@ for ds in openneuro.iterdir():
     file = ds / "participants.tsv"
 
     if file.exists():
-
         try:
             df = pd.read_csv(file, sep="\t")
         except ParserError:

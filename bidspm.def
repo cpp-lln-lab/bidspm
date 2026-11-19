@@ -3,7 +3,7 @@ From: ubuntu:jammy-20240808
 
 %files
     pyproject.toml /opt/bidspm/pyproject.toml
-    requirements.txt /opt/bidspm/requirements.txt
+    uv.lock /opt/bidspm/uv.lock
     README.md  /opt/bidspm/README.md
     bidspm.m /opt/bidspm/bidspm.m
     src /opt/bidspm/src
@@ -60,12 +60,17 @@ From: ubuntu:jammy-20240808
     git -C /opt/bidspm/ submodule foreach --recursive 'git clean --force -dfx'
     git -C /opt/bidspm/ status
 
-    pip install --upgrade pip
-    pip install -r /opt/bidspm/requirements.txt
-    pip install /opt/bidspm
+    curl -LsSf https://astral.sh/uv/0.13.5/install.sh | env UV_INSTALL_DIR=/usr/local/bin sh
+    export UV_PYTHON_INSTALL_DIR=/opt/uv/python
+    export UV_PROJECT_ENVIRONMENT=/opt/venv
+    export UV_NO_CACHE=1
+    cd /opt/bidspm && uv sync --locked --no-dev --no-editable --python 3.12 && cd -
     octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
     octave --no-gui --eval "addpath('/opt/bidspm/'); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path"  && \
     octave --no-gui --eval "path"
+
+%environment
+    export PATH="/opt/venv/bin:${PATH}"
 
 %runscript
     bidspm "$@"

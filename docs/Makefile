@@ -41,12 +41,12 @@ release: update_faq boilerplate clean_default_options default_mapping
 	python generate_doc.py
 
 update_faq:
-	cd faq/bids && faqtory build
-	cd faq/general && faqtory build
-	cd faq/preproc && faqtory build
-	cd faq/results && faqtory build
-	cd faq/spm && faqtory build
-	cd faq/stats && faqtory build
+	cd faq/bids && uvx faqtory build
+	cd faq/general && uvx faqtory build
+	cd faq/preproc && uvx faqtory build
+	cd faq/results && uvx faqtory build
+	cd faq/spm && uvx faqtory build
+	cd faq/stats && uvx faqtory build
 
 boilerplate:
 	$(MATLAB) $(ARG) -r "print_boilerplate; exit()"
