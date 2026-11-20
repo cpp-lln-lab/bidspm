@@ -84,6 +84,8 @@ jobs:
                 python -m pip install --upgrade pip setuptools
                 pip install datalad
 
+        -   name: Install uv
+            uses: astral-sh/setup-uv@v7
         -   name: Install validators
             run: make install
 
