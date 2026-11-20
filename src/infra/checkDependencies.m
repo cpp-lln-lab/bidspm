@@ -28,8 +28,10 @@ function checkDependencies(opt)
   msg = sprintf(' Using %s %s', a, b);
   logger('INFO', msg, 'options', opt, 'filename', mfilename());
 
-  if ~strcmp(a, SPM_main) || str2num(b) < SPM_sub
-    str = sprintf('%s %s %s.\n%s', ...
+  % name is 'SPM12' for SPM12, 'SPM25', 'SPM26'... for newer releases
+  spmMajor = sscanf(a, 'SPM%d');
+  if isempty(spmMajor) || spmMajor < 12 || (spmMajor == 12 && str2double(b) < SPM_sub)
+    str = sprintf('%s %s %i.\n%s', ...
                   'The current version SPM version is less than', SPM_main, SPM_sub, ...
                   'Update with: spm_update update');
     warning(str); %#ok<*SPWRN>

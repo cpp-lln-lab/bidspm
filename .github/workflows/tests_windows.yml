@@ -15,6 +15,9 @@ name: tests windows
 # │ │ │ │ │
 # * * * * *
 
+env:
+    SPM_VERSION: 26.10.01
+
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
@@ -86,7 +89,9 @@ jobs:
 
         -   name: Install SPM
             run: |
-                git clone https://github.com/spm/spm12.git --depth 1
+                Invoke-WebRequest -Uri "https://github.com/spm/spm/releases/download/$env:SPM_VERSION/spm_$env:SPM_VERSION.zip" -OutFile "spm.zip"
+                Expand-Archive -Path ".\spm.zip" -DestinationPath ".\"
+                Remove-Item ".\spm.zip"
 
         -   name: Get moae fmriprep data from OSF
             run: |
