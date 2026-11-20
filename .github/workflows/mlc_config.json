@@ -8,6 +8,27 @@
     },
     {
       "pattern": "https://hub.docker.com/repository/docker/cpplab/bidspm"
+    },
+    {
+      "pattern": "zenodo.org|doi.org/10.5281/zenodo"
+    },
+    {
+      "pattern": "jiscmail.ac.uk"
+    },
+    {
+      "pattern": "gin.g-node.org"
+    },
+    {
+      "pattern": "^https://github.com/cpp-lln-lab/bidspm/(pull|issues)/"
     }
+  ],
+  "timeout": "20s",
+  "retryOn429": true,
+  "retryCount": 5,
+  "fallbackRetryDelay": "30s",
+  "aliveStatusCodes": [
+    200,
+    206,
+    429
   ]
 }
