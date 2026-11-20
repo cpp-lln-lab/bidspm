@@ -36,8 +36,8 @@ jobs:
         -   name: Install MATLAB
             uses: matlab-actions/setup-matlab@v3.1.0
             with:
-          # MATLAB release to set up R2020a
-                release: R2023a
+          # MATLAB release to set up
+                release: R2026b
 
         -   name: Clone bidspm
             uses: actions/checkout@v7
