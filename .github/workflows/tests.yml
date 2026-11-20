@@ -132,7 +132,6 @@ jobs:
 
     slow_tests:
 
-        needs: [fast_tests]
         if: github.repository_owner == 'cpp-lln-lab'
 
         strategy:
@@ -231,7 +230,6 @@ jobs:
 
     system_tests:
 
-        needs: [fast_tests]
         if: github.repository_owner == 'cpp-lln-lab'
 
         strategy:
