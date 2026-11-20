@@ -78,7 +78,7 @@ function matlabbatch = setBatchEstimateModel(matlabbatch, opt, tmp, contrastsLis
 
       printBatchName('estimate group level fmri model', opt);
 
-      for j = 1:size(contrastsList)
+      for j = 1:numel(contrastsList)
 
         rfxDir = getRFXdir(opt, nodeName, contrastsList{j}, groups{j});
         spmMatFile = { fullfile(rfxDir, 'SPM.mat') };
