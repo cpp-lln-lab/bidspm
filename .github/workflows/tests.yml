@@ -38,8 +38,8 @@ jobs:
 
         strategy:
             matrix:
-                os: [ubuntu-latest, macos-13]
-                matlab: [R2023b]
+                os: [ubuntu-latest, macos-latest]
+                matlab: [R2026b]
             fail-fast: false
 
         runs-on: ${{ matrix.os }}
@@ -137,8 +137,8 @@ jobs:
 
         strategy:
             matrix:
-                os: [ubuntu-latest, macos-13]
-                matlab: [R2023b]
+                os: [ubuntu-latest, macos-latest]
+                matlab: [R2026b]
             fail-fast: false
 
         runs-on: ${{ matrix.os }}
@@ -237,12 +237,12 @@ jobs:
         strategy:
             matrix:
                 script: [moae, facerep, fmriprep]
-                os: [ubuntu-latest, macos-13]
-                matlab: [R2023b]
+                os: [ubuntu-latest, macos-latest]
+                matlab: [R2026b]
                 include:
         # only run bms on ubuntu because of datalad setup
                 -   os: ubuntu-latest
-                    matlab: R2023b
+                    matlab: R2026b
                     script: bms
             fail-fast: false
 
