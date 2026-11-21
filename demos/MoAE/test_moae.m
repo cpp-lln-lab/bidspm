@@ -52,7 +52,15 @@ for iOption = 1:numel(space)
 
   %% preproc
   bids_dir = fullfile(WD, 'inputs', 'raw');
-  output_dir = fullfile(tempname, 'outputs', 'derivatives');
+  tmp_dir = tempname;
+  if ispc()
+    % recent MATLAB versions return long temporary names
+    % (e.g. tp9c6ae9c4_e77b_487f_a5b9_8db2e7071178)
+    % that push some output files over the 260 characters path limit on Windows
+    [parent_dir, tmp_name] = fileparts(tmp_dir);
+    tmp_dir = fullfile(parent_dir, tmp_name(end - 7:end));
+  end
+  output_dir = fullfile(tmp_dir, 'outputs', 'derivatives');
   spm_mkdir(output_dir);
 
   bidspm(bids_dir, output_dir, 'subject', ...
