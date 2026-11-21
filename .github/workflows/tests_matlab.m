@@ -4,7 +4,7 @@
 root_dir = getenv('GITHUB_WORKSPACE');
 
 if ~isempty(root_dir)
-  addpath(fullfile(root_dir, 'spm12'));
+  addpath(fullfile(root_dir, 'spm'));
   addpath(fullfile(root_dir, 'MOcov', 'MOcov'));
 
   cd(fullfile(root_dir, 'MOxUnit', 'MOxUnit'));

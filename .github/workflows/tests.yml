@@ -15,6 +15,9 @@ name: tests matlab
 # │ │ │ │ │
 # * * * * *
 
+env:
+    SPM_VERSION: 26.10.01
+
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
@@ -79,7 +82,9 @@ jobs:
 
         -   name: Install SPM
             run: |
-                git clone https://github.com/spm/spm12.git --depth 1
+                curl -fsSL -o spm.zip https://github.com/spm/spm/releases/download/${SPM_VERSION}/spm_${SPM_VERSION}.zip
+                unzip -q spm.zip
+                rm spm.zip
 
         -   name: Get moae fmriprep data from OSF
             run: |
@@ -177,7 +182,9 @@ jobs:
 
         -   name: Install SPM
             run: |
-                git clone https://github.com/spm/spm12.git --depth 1
+                curl -fsSL -o spm.zip https://github.com/spm/spm/releases/download/${SPM_VERSION}/spm_${SPM_VERSION}.zip
+                unzip -q spm.zip
+                rm spm.zip
 
         -   name: Get moae fmriprep data from OSF
             run: |
@@ -284,7 +291,9 @@ jobs:
 
         -   name: Install SPM
             run: |
-                git clone https://github.com/spm/spm12.git --depth 1
+                curl -fsSL -o spm.zip https://github.com/spm/spm/releases/download/${SPM_VERSION}/spm_${SPM_VERSION}.zip
+                unzip -q spm.zip
+                rm spm.zip
 
         -   name: Get moae fmriprep data from OSF
             run: |

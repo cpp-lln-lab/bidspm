@@ -48,15 +48,15 @@ RUN curl -fsSL https://deno.land/install.sh | sh && \
     deno install -Agf -n bids-validator jsr:@bids/validator@1.14.12
 
 ## Install SPM
-RUN mkdir /opt/spm12 && \
-    curl -SL https://github.com/spm/spm12/archive/r7771.tar.gz | \
-    tar -xzC /opt/spm12 --strip-components 1 && \
-    curl -SL https://raw.githubusercontent.com/spm/spm-octave/main/spm12_r7771.patch | \
-    patch -p0 && \
-    make -C /opt/spm12/src PLATFORM=octave distclean && \
-    make -C /opt/spm12/src PLATFORM=octave && \
-    make -C /opt/spm12/src PLATFORM=octave install && \
-    ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
+ARG SPM_VERSION=26.10.01
+RUN curl -fsSL --retry 5 -o /tmp/spm.zip \
+        https://github.com/spm/spm/releases/download/${SPM_VERSION}/spm_${SPM_VERSION}.zip && \
+    unzip -q /tmp/spm.zip -d /opt && \
+    rm /tmp/spm.zip && \
+    make -C /opt/spm/src PLATFORM=octave distclean && \
+    make -C /opt/spm/src PLATFORM=octave && \
+    make -C /opt/spm/src PLATFORM=octave install && \
+    ln -s /opt/spm/bin/spm-octave /usr/local/bin/spm
 
 COPY --from=ghcr.io/astral-sh/uv:0.13.5 /uv /uvx /bin/
 ENV UV_PYTHON_INSTALL_DIR=/opt/uv/python \
@@ -75,7 +75,7 @@ RUN git restore . && \
     git -C lib/CPP_ROI/atlas/HCPex clean --force -dfx && \
     git status && \
     uv sync --locked --no-dev --no-editable --python 3.12 && \
-    octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
+    octave --no-gui --eval "addpath('/opt/spm/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
     octave --no-gui --eval "addpath(pwd); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path" && \
     octave --no-gui --eval "path"
 

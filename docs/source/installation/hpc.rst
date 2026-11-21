@@ -48,11 +48,13 @@ and typing:
 
 2. Get SPM
 
-You can simply clone the latest version of SPM from github with:
+Download and unzip a release of SPM from github
+(see https://github.com/spm/spm/releases for the latest one):
 
 .. code-block:: bash
 
-  git clone https://github.com/spm/spm12.git --depth 1
+  curl -fsSL -o spm.zip https://github.com/spm/spm/releases/download/26.10.01/spm_26.10.01.zip
+  unzip -q spm.zip
 
 3. Load the Octave modules
 
@@ -74,9 +76,9 @@ This relies on running the following Make commands:
 
 .. code-block:: bash
 
-  make -C spm12/src PLATFORM=octave distclean
-  make -C spm12/src PLATFORM=octave
-  make -C spm12/src PLATFORM=octave install
+  make -C spm/src PLATFORM=octave distclean
+  make -C spm/src PLATFORM=octave
+  make -C spm/src PLATFORM=octave install
 
 5. Add SPM to the path
 
@@ -105,11 +107,11 @@ Launch Octave:
   Read https://www.octave.org/bugs.html to learn how to submit bug reports.
   For information about changes from previous versions, type 'news'.
 
-Add the SPM12 folder to the path and save the path:
+Add the SPM folder to the path and save the path:
 
 .. code-block:: matlab
 
-  octave:1> addpath(fullfile(pwd, 'spm12'))
+  octave:1> addpath(fullfile(pwd, 'spm'))
   octave:2> savepath
   octave:3> exit
 
