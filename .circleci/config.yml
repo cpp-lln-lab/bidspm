@@ -18,9 +18,6 @@ jobs:
         -   run:
                 name: update submodules
                 command: make fix_submodule
-        -   restore_cache:
-                keys:
-                -   my_cache
         -   run:
                 name: build Docker image
                 command: |
@@ -56,7 +53,7 @@ jobs:
                     datalad wtf
         -   restore_cache:
                 keys:
-                -   my_cache
+                -   ds000001-data-v1
         -   run:
                 name: get ds000001
                 command: |
@@ -64,8 +61,12 @@ jobs:
                     git config --global --add user.name "Ford Escort"
                     git config --global --add user.email 42@H2G2.com
                     mkdir -p ${HOME}/data/
-                    datalad install -s ///openneuro/ds000001 ${HOME}/data/ds000001
-                    datalad install -s ///openneuro-derivatives/ds000001-fmriprep ${HOME}/data/ds000001-fmriprep
+                    if [[ ! -d ${HOME}/data/ds000001 ]]; then
+                        datalad install -s ///openneuro/ds000001 ${HOME}/data/ds000001
+                    fi
+                    if [[ ! -d ${HOME}/data/ds000001-fmriprep ]]; then
+                        datalad install -s ///openneuro-derivatives/ds000001-fmriprep ${HOME}/data/ds000001-fmriprep
+                    fi
                     cd ${HOME}/data/ds000001-fmriprep/
                     datalad get sub-0[1-2]/anat/*MNI*mask.nii.gz \
                           sub-0[1-2]/anat/*MNI*T1w.nii.gz \
@@ -74,15 +75,12 @@ jobs:
                           sub-*/func/*tsv	\
                           sub-*/func/*json -J 12
                     datalad status
+        # the data is passed to the other jobs via the cache and not the workspace:
+        # downloading large workspace layers is fragile
         -   save_cache:
-                key: my_cache
+                key: ds000001-data-v1
                 paths:
                 -   ~/data
-        -   persist_to_workspace:
-                root: /home/circleci
-                paths:
-                -   data/ds000001
-                -   data/ds000001-fmriprep
 
     fast:
         # run actions that run quickly
@@ -101,6 +99,9 @@ jobs:
         -   run:
                 name: load docker image
                 command: docker load -i /tmp/workspace/docker/image.tar
+        -   restore_cache:
+                keys:
+                -   ds000001-data-v1
 
         -   run:
                 name: create output directory
@@ -114,7 +115,7 @@ jobs:
                 name: default model subject level
                 command: |
                     docker run -ti --rm \
-                      -v /tmp/workspace/data/ds000001:/bids_dataset \
+                      -v /home/circleci/data/ds000001:/bids_dataset \
                       -v /home/circleci/outputs:/outputs \
                         << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /bids_dataset \
@@ -132,7 +133,7 @@ jobs:
                 name: default model dataset level
                 command: |
                     docker run -ti --rm \
-                      -v /tmp/workspace/data/ds000001:/bids_dataset \
+                      -v /home/circleci/data/ds000001:/bids_dataset \
                       -v /home/circleci/outputs:/outputs \
                         << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /bids_dataset \
@@ -153,7 +154,7 @@ jobs:
                 name: create roi
                 command: |
                     docker run -ti --rm \
-                      -v /tmp/workspace/data/ds000001:/bids_dataset \
+                      -v /home/circleci/data/ds000001:/bids_dataset \
                       -v /home/circleci/outputs:/outputs \
                         << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /bids_dataset \
@@ -184,6 +185,9 @@ jobs:
         -   run:
                 name: load docker image
                 command: docker load -i /tmp/workspace/docker/image.tar
+        -   restore_cache:
+                keys:
+                -   ds000001-data-v1
 
         -   run:
                 name: create output directory
@@ -193,7 +197,7 @@ jobs:
                 name: smooth
                 command: |
                     docker run -ti --rm \
-                      -v /tmp/workspace/data/ds000001-fmriprep:/bids_dataset \
+                      -v /home/circleci/data/ds000001-fmriprep:/bids_dataset \
                       -v /home/circleci/outputs:/outputs \
                         << parameters.dh_orga >>/<< parameters.dh_repo >> \
                           /bids_dataset \
@@ -213,7 +217,7 @@ jobs:
                 name: stats subject level
                 command: |
                     docker run -ti --rm  \
-                      -v /tmp/workspace/data/ds000001:/bids_dataset \
+                      -v /home/circleci/data/ds000001:/bids_dataset \
                       -v /home/circleci/outputs:/outputs \
                       -v ~/project/demos/openneuro/models:/models \
                       -v ~/project/demos/openneuro/options:/options \
@@ -235,7 +239,7 @@ jobs:
                 name: stats group level
                 command: |
                     docker run -ti --rm  \
-                      -v /tmp/workspace/data/ds000001:/bids_dataset \
+                      -v /home/circleci/data/ds000001:/bids_dataset \
                       -v /home/circleci/outputs:/outputs \
                       -v ~/project/demos/openneuro/models:/models \
                       -v ~/project/demos/openneuro/options:/options \
