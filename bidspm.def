@@ -47,13 +47,14 @@ From: ubuntu:jammy-20240808
     export PATH="$DENO_INSTALL/bin:$PATH"
     deno install -Agf -n bids-validator jsr:@bids/validator@1.14.12
 
-    mkdir /opt/spm12
-    curl -fsSL --retry 5 https://github.com/spm/spm12/archive/r7771.tar.gz | tar -xzC /opt/spm12 --strip-components 1
-    curl -fsSL --retry 5 https://raw.githubusercontent.com/spm/spm-octave/main/spm12_r7771.patch | patch -p0
-    make -C /opt/spm12/src PLATFORM=octave distclean
-    make -C /opt/spm12/src PLATFORM=octave
-    make -C /opt/spm12/src PLATFORM=octave install
-    ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
+    SPM_VERSION=26.10.01
+    curl -fsSL --retry 5 -o /tmp/spm.zip https://github.com/spm/spm/releases/download/${SPM_VERSION}/spm_${SPM_VERSION}.zip
+    unzip -q /tmp/spm.zip -d /opt
+    rm /tmp/spm.zip
+    make -C /opt/spm/src PLATFORM=octave distclean
+    make -C /opt/spm/src PLATFORM=octave
+    make -C /opt/spm/src PLATFORM=octave install
+    ln -s /opt/spm/bin/spm-octave /usr/local/bin/spm
 
     git -C /opt/bidspm restore .
     git -C /opt/bidspm/ submodule foreach --recursive 'git reset --hard'
@@ -65,7 +66,7 @@ From: ubuntu:jammy-20240808
     export UV_PROJECT_ENVIRONMENT=/opt/venv
     export UV_NO_CACHE=1
     cd /opt/bidspm && uv sync --locked --no-dev --no-editable --python 3.12 && cd -
-    octave --no-gui --eval "addpath('/opt/spm12/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
+    octave --no-gui --eval "addpath('/opt/spm/'); savepath ('/usr/share/octave/site/m/startup/octaverc');" && \
     octave --no-gui --eval "addpath('/opt/bidspm/'); savepath('/usr/share/octave/site/m/startup/octaverc'); bidspm(); path"  && \
     octave --no-gui --eval "path"
 
