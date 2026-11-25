@@ -17,12 +17,12 @@ analysis in a json file.
 
 In the ``models`` shows the BIDS statistical model used to run the GLM of this demo.
 
-.. automodule:: demos.MoAE
+.. mat:autofolder:: demos/MoAE/
 
 preprocessing + stats
 =====================
 
-.. autoscript:: moae_01_bids_app
+.. autoscript:: demos/MoAE/moae_01_bids_app.m
 
 .. admonition:: script
     :class: dropdown
@@ -42,7 +42,7 @@ preprocessing + stats
 stats with fmriprep output + default stats model
 ================================================
 
-.. autoscript:: moae_fmriprep
+.. autoscript:: demos/MoAE/moae_fmriprep.m
 
 .. admonition:: script
     :class: dropdown
@@ -55,7 +55,7 @@ stats with fmriprep output + default stats model
 region of interest
 ==================
 
-.. autoscript:: moae_02_create_roi_extract_data
+.. autoscript:: demos/MoAE/moae_02_create_roi_extract_data.m
 
 .. admonition:: script
     :class: dropdown
@@ -75,7 +75,7 @@ region of interest
 slice display
 =============
 
-.. autoscript:: moae_03_slice_display
+.. autoscript:: demos/MoAE/moae_03_slice_display.m
 
 .. admonition:: script
     :class: dropdown

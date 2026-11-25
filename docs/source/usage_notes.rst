@@ -4,8 +4,9 @@ Usage notes
 API
 ===
 
-.. module:: src.messages
-.. autofunction::  bidspmHelp
+.. mat:folder:: src/messages/
+.. autofunction:: src/messages/bidspmHelp.m
+   :no-index:
 
 Command line API
 ================

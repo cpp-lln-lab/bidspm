@@ -429,7 +429,7 @@ classdef BidsModel < bids.Model
       %
       % This will update the design matrix of the root node of the model.
       %
-      % Similar to the :func:`nilearn.interfaces.fmriprep.load_confounds`
+      % Similar to the :py:func:`nilearn.interfaces.fmriprep.load_confounds`
       %
       % USAGE::
       %

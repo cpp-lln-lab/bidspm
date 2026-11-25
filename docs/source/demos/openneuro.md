@@ -4,7 +4,7 @@
    :parser: myst_parser.sphinx_
 ```
 ```{eval-rst}
-.. automodule:: demos.openneuro
+.. mat:autofolder:: demos/openneuro/
 ```
 
 ## ds000001: Balloon analog risk
@@ -21,9 +21,9 @@
 ### Scripts
 
 ```{eval-rst}
-.. autoscript:: ds000001_run
-.. autoscript:: ds000001_smooth_run
-.. autoscript:: ds000001_aroma_run
+.. autoscript:: demos/openneuro/ds000001_run.m
+.. autoscript:: demos/openneuro/ds000001_smooth_run.m
+.. autoscript:: demos/openneuro/ds000001_aroma_run.m
 ```
 
 ## ds000114: test-retest
@@ -40,7 +40,7 @@
 ### Scripts
 
 ```{eval-rst}
-.. autoscript:: ds000114_run
+.. autoscript:: demos/openneuro/ds000114_run.m
 ```
 
 ## ds000224
@@ -54,7 +54,7 @@
 ### Scripts
 
 ```{eval-rst}
-.. autoscript:: ds000224_run
+.. autoscript:: demos/openneuro/ds000224_run.m
 ```
 
 ## ds001168
@@ -72,7 +72,7 @@
 ### Scripts
 
 ```{eval-rst}
-.. autoscript:: ds001168_run
+.. autoscript:: demos/openneuro/ds001168_run.m
 ```
 
 ## ds001734: NARPS
@@ -132,7 +132,7 @@ transformers cannot yet be appled to confounds
 ### Scripts
 
 ```{eval-rst}
-.. autoscript:: ds001734_run
+.. autoscript:: demos/openneuro/ds001734_run.m
 ```
 
 ## ds002799
@@ -158,5 +158,5 @@ transformers cannot yet be appled to confounds
 ### Scripts
 
 ```{eval-rst}
-.. autoscript:: ds003397_run
+.. autoscript:: demos/openneuro/ds003397_run.m
 ```

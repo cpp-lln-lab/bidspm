@@ -55,10 +55,10 @@ validate_model path_to_your_model_json
 ## Loading and interacting with a BIDS stats model
 
 You can use the `BidsModel` class to create a bids model instance and interact
-with. This class inherits from bids-matlab {mat:class}`+bids.Model` class.
+with. This class inherits from bids-matlab {mat:class}`bids.Model` class.
 
 ```{eval-rst}
-.. autoclass:: src.bids_model.BidsModel
+.. autoclass:: src/bids_model/BidsModel.m
    :members:
 ```
 

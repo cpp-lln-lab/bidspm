@@ -7,7 +7,7 @@ function fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile, runDuration,
   %   fullpathOnsetFilename = convertOnsetTsvToMat(opt, tsvFile)
   %
   % :param opt: Options chosen for the analysis.
-  %             See :func:`src.defaults.checkOptions`.
+  %             See :func:`checkOptions`.
   % :type  opt: structure
   %
   % :param tsvFile:
