@@ -21,9 +21,13 @@ jobs:
                 submodules: recursive
                 fetch-depth: 0
 
-        -   uses: eWaterCycle/setup-apptainer@v2
+        -   uses: eWaterCycle/setup-apptainer@v3
             with:
                 apptainer-version: 1.3.0
+        -   name: remove dangling symlinks
+            # apptainer copies %files with 'cp -L', which fails on broken symlinks
+            # (e.g. lib/bids-matlab/docs/source/*.md whose targets end with a newline)
+            run: find lib -xtype l -print -delete
         -   name: build sif image
             run: apptainer build bidspm.sif bidspm.def
         -   name: version

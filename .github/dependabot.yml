@@ -17,3 +17,11 @@ updates:
         gitsubmodule-dependencies:
             patterns:
             -   '*'
+-   package-ecosystem: uv
+    directory: /
+    schedule:
+        interval: semiannually
+    groups:
+        python-dependencies:
+            patterns:
+            -   '*'

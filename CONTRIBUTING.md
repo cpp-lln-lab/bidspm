@@ -11,11 +11,12 @@ clarification.
 
 ### Installation
 
-To install bidspm and make changes to it, it is recommend to install the python
-package in editable mode with all its development dependencies.
+To install bidspm and make changes to it, it is recommended to use
+[uv](https://docs.astral.sh/uv/) to install the python package in editable mode
+with all its development dependencies.
 
 ```bash
-pip install -e .[dev]
+uv sync
 ```
 
 ### Initialisation

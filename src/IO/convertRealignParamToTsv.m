@@ -1,6 +1,6 @@
 function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
   %
-  % Convert SPM typical realignement files to a BIDs compatible TSV one.
+  % Convert SPM typical realignment files to a BIDs compatible TSV one.
   %
   % USAGE::
   %
@@ -8,7 +8,7 @@ function rpTsvFile = convertRealignParamToTsv(rpTxtFile, opt, rmInput)
   %
   %
   % :type  rpTxtFile: path
-  % :param rpTxtFile: path to SPM realignement parameter txt file.
+  % :param rpTxtFile: path to SPM realignment parameter txt file.
   %
   % :type  opt: structure
   % :param opt: Options chosen for the analysis.

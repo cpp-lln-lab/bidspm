@@ -461,7 +461,7 @@ def generate_command_stats(argv: Any) -> int | str:
         log.error("No 'preproc_dir' was provided.")
         exit(EXIT_CODES["NOINPUT"]["Value"])
     if preproc_dir is not None and not preproc_dir.is_dir():
-        log.error("The 'preproc_dir' does not exist:\n\t" f"{preproc_dir}")
+        log.error(f"The 'preproc_dir' does not exist:\n\t{preproc_dir}")
         exit(EXIT_CODES["NOINPUT"]["Value"])
 
     roi_name = None

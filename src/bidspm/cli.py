@@ -145,7 +145,7 @@ def _validate_actions(action: str) -> None:
 def _validate_bids_dir(args: Any) -> None:
     bids_dir = Path(args.bids_dir[0]).absolute()
     if not bids_dir.is_dir():
-        log.error("The 'bids_dir' does not exist:\n\t" f"{bids_dir}")
+        log.error(f"The 'bids_dir' does not exist:\n\t{bids_dir}")
         raise SystemExit(EXIT_CODES["NOINPUT"]["Value"])
 
 
@@ -153,9 +153,7 @@ def _validate_space(args: Any) -> None:
     if args.command in {"stats", "contrasts", "results", "default_model", "bms"} and (
         args.space and len(args.space) > 1
     ):
-        log.error(
-            "Only one space allowed for statistical analysis.\n" f"Got: {args.space}"
-        )
+        log.error(f"Only one space allowed for statistical analysis.\nGot: {args.space}")
         raise SystemExit(EXIT_CODES["USAGE"]["Value"])
 
 
@@ -170,5 +168,5 @@ def _validate_analysis_level(args: Any) -> None:
 
 def _validate_task(args: Any) -> None:
     if args.command in {"preprocess"} and args.task and len(args.task) > 1:
-        log.error("Only one task allowed for preprocessing.\n" f"Got: {args.task}")
+        log.error(f"Only one task allowed for preprocessing.\nGot: {args.task}")
         raise SystemExit(EXIT_CODES["USAGE"]["Value"])

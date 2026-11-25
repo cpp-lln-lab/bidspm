@@ -4,11 +4,11 @@
 
 This SPM toolbox runs with Matlab and Octave.
 
-| Dependencies | Minimum required | Used for testing in CI                     |
-| ------------ | ---------------- | ------------------------------------------ |
-| MATLAB       | 2014             |  2023b on Ubuntu 22.04, Windowns and MacOS |
-| Octave       | 6.4.0            |  6.4.0 on Ubuntu 22.04                     |
-| SPM12        | 7219             |  7771                                      |
+| Dependencies | Minimum required | Used for testing in CI                       |
+| ------------ | ---------------- | -------------------------------------------- |
+| MATLAB       | 2014             | R2026b on Ubuntu 26.04, Windows and macOS    |
+| Octave       | 6.4.0            | 11.1.0 on Ubuntu 26.04                       |
+| SPM          | SPM12 r7219      | [26.10.01](https://github.com/spm/spm/releases/tag/26.10.01) |
 
 
 Some functionalities require some extra SPM toolbox to work:

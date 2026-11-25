@@ -16,7 +16,8 @@ function validate(args)
   logger('INFO', msg);
 
   [sts_data, msg_data] = bids.validate(args.Results.bids_dir);
-  if sts_data == 1 && ~bids.internal.starts_with(msg_data, 'Require')
+  % the bids-validator exits with a non-zero code (16) when it finds errors
+  if sts_data ~= 0 && ~bids.internal.starts_with(msg_data, 'Require')
     msg_data = sprintf('\nBIDS validation of %s failed:\n\n%s\n\nCheck with:\n %s\n\n', ...
                        args.Results.bids_dir, ...
                        msg_data, ...

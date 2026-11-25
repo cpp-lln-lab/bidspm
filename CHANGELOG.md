@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * [ENH] Add SPM's contrast number in filename of each contrasts output filename #1347 by @Remi-Gau
 * [INFRA] Migrate the documentation to sphinxcontrib-matlabdomain 1.0 (pre-release) by @jasonnicholson
+* [MAINT] Require python >= 3.11, manage python dependencies with uv and dependency groups, and use ruff for linting and formatting by @Remi-Gau
 
 ### Deprecated
 
@@ -131,7 +132,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [FIX] handle phase entity in filename in [1034](https://github.com/cpp-lln-lab/bidspm/pull/1034) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] fix group level results after contrasts smoothing  in [1021](https://github.com/cpp-lln-lab/bidspm/pull/1021) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] copy to derivatives handles bids filter file and minimize re copying files that already exist in [1015](https://github.com/cpp-lln-lab/bidspm/pull/1015) by [Remi-Gau](https://github.com/Remi-Gau)
-* [FIX] allow cli to run constrat smoothing in [1012](https://github.com/cpp-lln-lab/bidspm/pull/1012) by [Remi-Gau](https://github.com/Remi-Gau)
+* [FIX] allow cli to run contrat smoothing in [1012](https://github.com/cpp-lln-lab/bidspm/pull/1012) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] Force copy of data from fmriprep folder even if bidspm-preproc folder exists in [1009](https://github.com/cpp-lln-lab/bidspm/pull/1009) by [marcobarilari](https://github.com/marcobarilari)
 * [FIX] report proper fold number in labelfold.tsv in [989](https://github.com/cpp-lln-lab/bidspm/pull/989) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] inconsistent slice timing throw errors and not warnings in [982](https://github.com/cpp-lln-lab/bidspm/pull/982) by [Remi-Gau](https://github.com/Remi-Gau)
@@ -268,7 +269,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [FIX] returnRootDir only relies on fullpaths in [676](https://github.com/cpp-lln-lab/bidspm/pull/676) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] set minimum compatible fmriprep version in [675](https://github.com/cpp-lln-lab/bidspm/pull/675) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] renaming of design matrix images at group level in [668](https://github.com/cpp-lln-lab/bidspm/pull/668) by [Remi-Gau](https://github.com/Remi-Gau)
-* [FIX] make sure 2 sample ttest can run more than one contrasts in [665](https://github.com/cpp-lln-lab/bidspm/pull/665) by [Remi-Gau](https://github.com/Remi-Gau)
+* [FIX] make sure 2 sample t-test can run more than one contrasts in [665](https://github.com/cpp-lln-lab/bidspm/pull/665) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] label actiation: csv results file with no significant voxels are ignored with a warning in [663](https://github.com/cpp-lln-lab/bidspm/pull/663) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] onsets and confounds are saved in the proper dir when there are several tasks in [659](https://github.com/cpp-lln-lab/bidspm/pull/659) by [Remi-Gau](https://github.com/Remi-Gau)
 * [FIX] fix silent dry run override in [657](https://github.com/cpp-lln-lab/bidspm/pull/657) by [Remi-Gau](https://github.com/Remi-Gau)

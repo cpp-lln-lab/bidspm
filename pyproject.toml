@@ -2,18 +2,59 @@
 build-backend = "hatchling.build"
 requires = ["hatchling", "hatch-vcs"]
 
+[dependency-groups]
+demo = [
+    "jupyterlab>=4.6.6",
+    "octave-kernel>=1.1.1"
+]
+dev = [
+    { include-group = "demo" },
+    { include-group = "doc" },
+    { include-group = "style" },
+    { include-group = "test" },
+    "pandas>=3.1.1",
+    "ruamel.yaml>=0.19.1"
+]
+doc = [
+    "myst-parser>=5.2.0",
+    "pydata-sphinx-theme>=0.24.0",
+    "setuptools>=84.2.1",
+    "sphinx>=9.0.4",
+    "sphinx-argparse>=0.6.1",
+    "sphinx-copybutton>=0.5.2",
+    "sphinx-togglebutton>=0.4.5",
+    "sphinxcontrib-bibtex>=2.7.0",
+    "sphinxcontrib-matlabdomain @ git+https://github.com/sphinx-contrib/matlabdomain.git@0270cc88531f21c38ef741a5408c84ec46870716 ; python_version >= '3.11'",
+    "sphinxcontrib-mermaid>=2.1.1",
+    "urllib3>=2.8.0"
+]
+style = [
+    "pre-commit>=4.7.0",
+    "ruff>=0.17.6",
+    "sourcery>=1.46.0"
+]
+test = [
+    "coverage>=7.17.3",
+    "pytest>=9.0.0"
+]
+
 [project]
 authors = [{ name = "bidspm developers" }]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-    "Programming Language :: Python :: 3"
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15"
 ]
 dependencies = [
-    "bsmschema",
-    "rich",
-    "rich-argparse"
+    "bsmschema>=0.1.1",
+    "rich>=15.0.0",
+    "rich-argparse>=1.8.0"
 ]
 description = "SPM centric bids app"
 # Version from setuptools_scm
@@ -22,42 +63,7 @@ license = { text = "GPL-3.0" }
 maintainers = [{ name = "Rémin Gau", email = "remi.gau@gmail.com" }]
 name = "bidspm"
 readme = "README.md"
-requires-python = ">=3.8"
-
-[project.optional-dependencies]
-demo = [
-    "jupyterlab",
-    "octave-kernel"
-]
-dev = [
-    "bidspm[demo,doc,style,test]",
-    "cffconvert",
-    "ruamel.yaml",
-    'pandas'
-]
-doc = [
-    "urllib3",
-    "faqtory",
-    "myst-parser",
-    "sphinx",
-    "sphinx-argparse",
-    "sphinx-copybutton",
-    "pydata-sphinx-theme",
-    "sphinx-togglebutton",
-    "sphinxcontrib-bibtex",
-    "sphinxcontrib-matlabdomain @ git+https://github.com/sphinx-contrib/matlabdomain.git@0270cc88531f21c38ef741a5408c84ec46870716 ; python_version >= '3.11'",
-    "sphinxcontrib-mermaid",
-    "setuptools"
-]
-docs = ["bidspm[doc]"]
-style = [
-    "pre-commit",
-    "sourcery"
-]
-test = [
-    "coverage",
-    "pytest"
-]
+requires-python = ">=3.11"
 
 [project.scripts]
 bidspm = "bidspm.cli:cli"
@@ -65,15 +71,6 @@ validate_model = "bidspm.validate:cli"
 
 [project.urls]
 Homepage = "https://bidspm.readthedocs.io"
-
-[tool.black]
-extend-exclude = """
-(
-  demos/renaming/spm_2_bids_filenames.ipynb
-  | demos/MoAE/moae_01_bids_app.ipynb
-)
-"""
-line-length = 90
 
 [tool.codespell]
 builtin = "clear,rare"
@@ -103,12 +100,6 @@ allow-direct-references = true
 [tool.hatch.version]
 source = "vcs"
 
-[tool.isort]
-combine_as_imports = true
-line_length = 90
-profile = "black"
-skip_gitignore = true
-
 [tool.mypy]
 check_untyped_defs = true
 disallow_any_generics = true
@@ -133,7 +124,50 @@ module = [
 addopts = "-ra -q -vv --showlocals --strict-markers --strict-config"
 # filterwarnings = ["error"]
 # log_cli_level = "warning"
-minversion = "6.0.0"
+minversion = "9.0.0"
 norecursedirs = "data"
 testpaths = ["tests/"]
 xfail_strict = true
+
+[tool.ruff]
+extend-exclude = [
+    "demos/MoAE/moae_01_bids_app.ipynb",
+    "demos/renaming/spm_2_bids_filenames.ipynb",
+    "lib",
+    "src/bidspm/_version.py"
+]
+line-length = 90
+target-version = "py311"
+
+[tool.ruff.lint]
+ignore = [
+    "D100",
+    "D101",
+    "D103",
+    "D104",
+    "F841"
+]
+select = [
+    "B",  # flake8-bugbear
+    "C90",  # mccabe
+    "D",  # pydocstyle
+    "E",  # pycodestyle errors
+    "F",  # pyflakes
+    "I",  # isort
+    "UP",  # pyupgrade
+    "W"  # pycodestyle warnings
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.ruff.lint.mccabe]
+max-complexity = 11
+
+[tool.ruff.lint.per-file-ignores]
+"WIP/**" = ["D"]
+"demos/**" = ["D"]
+"tests/**" = ["D", "E501"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"

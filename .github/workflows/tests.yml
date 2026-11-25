@@ -15,6 +15,9 @@ name: tests matlab
 # │ │ │ │ │
 # * * * * *
 
+env:
+    SPM_VERSION: 26.10.01
+
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
@@ -38,8 +41,8 @@ jobs:
 
         strategy:
             matrix:
-                os: [ubuntu-latest, macos-13]
-                matlab: [R2023b]
+                os: [ubuntu-latest, macos-latest]
+                matlab: [R2026b]
             fail-fast: false
 
         runs-on: ${{ matrix.os }}
@@ -70,12 +73,18 @@ jobs:
                 submodules: recursive
                 fetch-depth: 0
 
+        -   name: Install uv
+            uses: astral-sh/setup-uv@v7
+            with:
+                activate-environment: true
         -   name: Install validators
             run: make install
 
         -   name: Install SPM
             run: |
-                git clone https://github.com/spm/spm12.git --depth 1
+                curl -fsSL -o spm.zip https://github.com/spm/spm/releases/download/${SPM_VERSION}/spm_${SPM_VERSION}.zip
+                unzip -q spm.zip
+                rm spm.zip
 
         -   name: Get moae fmriprep data from OSF
             run: |
@@ -108,12 +117,12 @@ jobs:
                 git clone https://github.com/MOcov/MOcov.git --depth 1
 
         -   name: Install MATLAB
-            uses: matlab-actions/setup-matlab@v3.0.1
+            uses: matlab-actions/setup-matlab@v3.1.0
             with:
                 release: ${{ matrix.matlab }}
 
         -   name: Run fast unit tests MATLAB
-            uses: matlab-actions/run-command@v3.2.0
+            uses: matlab-actions/run-command@v3.3.0
             with:
                 command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run tests_matlab;
 
@@ -128,13 +137,12 @@ jobs:
 
     slow_tests:
 
-        needs: [fast_tests]
         if: github.repository_owner == 'cpp-lln-lab'
 
         strategy:
             matrix:
-                os: [ubuntu-latest, macos-13]
-                matlab: [R2023b]
+                os: [ubuntu-latest, macos-latest]
+                matlab: [R2026b]
             fail-fast: false
 
         runs-on: ${{ matrix.os }}
@@ -165,12 +173,18 @@ jobs:
                 submodules: recursive
                 fetch-depth: 0
 
+        -   name: Install uv
+            uses: astral-sh/setup-uv@v7
+            with:
+                activate-environment: true
         -   name: Install validators
             run: make install
 
         -   name: Install SPM
             run: |
-                git clone https://github.com/spm/spm12.git --depth 1
+                curl -fsSL -o spm.zip https://github.com/spm/spm/releases/download/${SPM_VERSION}/spm_${SPM_VERSION}.zip
+                unzip -q spm.zip
+                rm spm.zip
 
         -   name: Get moae fmriprep data from OSF
             run: |
@@ -203,12 +217,12 @@ jobs:
                 git clone https://github.com/MOcov/MOcov.git --depth 1
 
         -   name: Install MATLAB
-            uses: matlab-actions/setup-matlab@v3.0.1
+            uses: matlab-actions/setup-matlab@v3.1.0
             with:
                 release: ${{ matrix.matlab }}
 
         -   name: Run slow unit tests MATLAB
-            uses: matlab-actions/run-command@v3.2.0
+            uses: matlab-actions/run-command@v3.3.0
             with:
                 command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); global SLOW; SLOW=true; run tests_matlab;
 
@@ -223,18 +237,17 @@ jobs:
 
     system_tests:
 
-        needs: [fast_tests]
         if: github.repository_owner == 'cpp-lln-lab'
 
         strategy:
             matrix:
                 script: [moae, facerep, fmriprep]
-                os: [ubuntu-latest, macos-13]
-                matlab: [R2023b]
+                os: [ubuntu-latest, macos-latest]
+                matlab: [R2026b]
                 include:
         # only run bms on ubuntu because of datalad setup
                 -   os: ubuntu-latest
-                    matlab: R2023b
+                    matlab: R2026b
                     script: bms
             fail-fast: false
 
@@ -269,12 +282,18 @@ jobs:
                 submodules: recursive
                 fetch-depth: 0
 
+        -   name: Install uv
+            uses: astral-sh/setup-uv@v7
+            with:
+                activate-environment: true
         -   name: Install validators
             run: make install
 
         -   name: Install SPM
             run: |
-                git clone https://github.com/spm/spm12.git --depth 1
+                curl -fsSL -o spm.zip https://github.com/spm/spm/releases/download/${SPM_VERSION}/spm_${SPM_VERSION}.zip
+                unzip -q spm.zip
+                rm spm.zip
 
         -   name: Get moae fmriprep data from OSF
             run: |
@@ -299,11 +318,11 @@ jobs:
             run: make -C demos/bayes data_ds000114
 
         -   name: Install MATLAB
-            uses: matlab-actions/setup-matlab@v3.0.1
+            uses: matlab-actions/setup-matlab@v3.1.0
             with:
                 release: ${{ matrix.matlab }}
 
         -   name: Run system tests MATLAB ${{ matrix.script }}
-            uses: matlab-actions/run-command@v3.2.0
+            uses: matlab-actions/run-command@v3.3.0
             with:
                 command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run system_tests_${{ matrix.script }};

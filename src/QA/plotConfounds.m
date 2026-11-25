@@ -1,6 +1,6 @@
 function fig = plotConfounds(confounds, visible)
   %
-  % Plots realignement parameters, framewise displacement, global signal
+  % Plots realignment parameters, framewise displacement, global signal
   %
   % USAGE::
   %

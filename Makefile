@@ -34,7 +34,7 @@ ARG    = -nodisplay -nosplash -nodesktop
 
 install:
 	deno install -Agf -n bids-validator jsr:@bids/validator
-	pip3 install .[dev]
+	uv sync
 
 help: ## Show what this Makefile can do
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
@@ -60,13 +60,13 @@ fix_submodule: ## Fix any submodules that would not be checked out
 	git submodule update --init --recursive && git submodule update --recursive
 
 prepare_release:
-	python tools/citation_cff_maint.py
-	python tools/add_links_to_changelog.py
-	python tools/bump_version.py
+	uv run python tools/citation_cff_maint.py
+	uv run python tools/add_links_to_changelog.py
+	uv run python tools/bump_version.py
 	cd docs && make release
 
 validate_cff: ## Validate the citation file
-	cffconvert --validate
+	uvx cffconvert --validate
 
 release: validate_cff prepare_release
 

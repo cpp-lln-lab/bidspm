@@ -1,6 +1,7 @@
 import json
 
 import boutiques.creator as bc
+
 from bidspm.parsers import sub_command_parser
 
 newDescriptor = bc.CreateDescriptor(sub_command_parser(), execname="bidspm")

@@ -60,6 +60,7 @@ src/bidspm/_version.py
 ## virtual env
 env
 venv
+.venv
 
 ###############################################################################
 # node stuff

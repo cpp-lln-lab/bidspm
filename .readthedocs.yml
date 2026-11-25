@@ -10,10 +10,18 @@ submodules:
     exclude: [lib/riksneurotools, lib/CPP_ROI]
 
 build:
-    os: ubuntu-22.04
+    os: ubuntu-24.04
     tools:
         python: '3.12'
     jobs:
+        pre_create_environment:
+        -   asdf plugin add uv
+        -   asdf install uv latest
+        -   asdf global uv latest
+        create_environment:
+        -   uv venv "${READTHEDOCS_VIRTUALENV_PATH}"
+        install:
+        -   UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv sync --frozen --no-default-groups --group doc
         pre_build:
         -   make -C docs update_faq
 
@@ -26,11 +34,3 @@ sphinx:
 # Optionally build your docs in additional formats such as PDF
 formats:
 -   pdf
-
-# Optionally set the version of Python and requirements required to build your docs
-python:
-    install:
-    -   method: pip
-        path: .
-        extra_requirements:
-        -   docs
